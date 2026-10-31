@@ -30,7 +30,7 @@ work without rediscovering the layout.
 | `CONTRIBUTING.md` | Human-facing version of this file (workflows, code style, PR rules) |
 | `CHANGELOG.md` | Canonical user-facing release history (mirrors the in-app What's New) |
 | `SECURITY.md` | Disclosure policy + privacy summary |
-| `data/crisc/` | CRISC course (paid pack, not wired into the apps yet): `notes/d{1..4}.json` and `originals/d{1..4}.json` + `_framework_library.md`. Outline: `docs/content/CRISC_BLUEPRINT.md`; plan: `docs/content/CRISC_BANK_PLAN.md`; standard: `.claude/agents/crisc-standards-auditor.md`. Lint notes with `scripts/lint_notes.py <file> --outline docs/content/CRISC_BLUEPRINT.md --bank data/crisc/originals` |
+| `data/crisc/` | CRISC course (paid pack, not wired into the apps yet): `notes/d{1..4}.json` + `notes/_course.json`, `originals/d{1..4}.json` + `_framework_library.md`, `glossary.json`, `mindset/principles.json`, `exam/` (guide + final review week), `tools/` (practice-link sync, originality check). `verify_repo.sh` runs the CRISC gates. Outline: `docs/content/CRISC_BLUEPRINT.md`; plan: `docs/content/CRISC_BANK_PLAN.md`; standard: `.claude/agents/crisc-standards-auditor.md`. Lint notes with `scripts/lint_notes.py <file> --outline docs/content/CRISC_BLUEPRINT.md --bank data/crisc/originals` |
 | `mobile/` | **Expo (React Native) iOS + Android app.** Own `package.json`, tests and `mobile/CLAUDE.md`. Reads questions from `data/domain*.json` via `mobile/scripts/build-content.mjs` |
 | `docs/mobile/ARCHITECTURE.md` | Mobile tech-stack decision, architecture, roadmap, store-launch plan |
 | `supabase/migrations/` | Phase 3 database schema (accounts + sync). Written, not yet applied |

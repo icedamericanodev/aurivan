@@ -99,6 +99,21 @@ Each bullet was opened on 30 Oct 2026 unless marked Likely.
 - NIST AI 100-1 (AI RMF 1.0) GOVERN 2.1 (roles, responsibilities and lines of communication for AI risks are documented and clear)
   - All Verified, 30 Oct 2026, against https://nvlpubs.nist.gov/nistpubs/ai/NIST.AI.100-1.pdf, Table 1 (GOVERN subcategories), pages 22 to 23. GOVERN 1.6 uses the same string as the CC library.
 
+### Round 2 additions (crisc_d1_021 to 045, 31 Oct 2026)
+- ISACA Glossary (risk capacity)
+- ISACA Glossary (enterprise risk management)
+- ISACA Glossary (business continuity plan)
+- ISACA Glossary (asset value)
+  - All Verified, 31 Oct 2026: https://www.isaca.org/resources/glossary re-opened with curl and each entry read. Risk capacity: the objective magnitude or amount of loss an enterprise can tolerate without risking its continued existence (crisc_d1_041). Enterprise risk management: assesses, controls, exploits, finances and monitors risk from all sources to increase short- and long-term value to stakeholders (crisc_d1_039, upside of unused appetite). Business continuity plan: a plan to respond to the disruption of critical business processes, depending on the contingency plan for restoring critical systems (crisc_d1_027, crisc_d1_029). Asset value: the value of an asset to both the business and to competitors (crisc_d1_030, value by business impact rather than cost).
+- NIST CSF 2.0 ID.AM-05 (assets are prioritized based on classification, criticality, resources and impact on the mission)
+- NIST CSF 2.0 GV.SC-05 (requirements to address cybersecurity risks in supply chains are established, prioritized and integrated into contracts and other types of agreements with suppliers and other relevant third parties)
+  - Both Verified, 31 Oct 2026, against https://nvlpubs.nist.gov/nistpubs/CSWP/NIST.CSWP.29.pdf (re-downloaded; GV.SC-05 and ID.AM-05 read in Appendix A). GV.SC-05 supports crisc_d1_043 (supplier SLA terms must meet the business recovery need) and, since the round 2 gate (31 Oct 2026), crisc_d4_037 (exit terms and data return with a young vendor); ID.AM-05 supports crisc_d1_030 and crisc_d1_031 (classification and impact drive asset priority).
+- NIST SP 800-34 Rev. 1 Section 2.2 (Types of Plans: Business Continuity Plan and Disaster Recovery Plan)
+  - Verified, 31 Oct 2026, against https://nvlpubs.nist.gov/nistpubs/Legacy/SP/nistspecialpublication800-34r1.pdf. 2.2.1: the BCP sustains mission/business processes and its expectations are matched with information system capabilities; 2.2.6: the DRP is information system-focused and may support a BCP. Used by crisc_d1_027 and, since the round 2 gate (31 Oct 2026), crisc_d1_028 (the continuity plan updated after warehousing was outsourced; with COBIT 2019 DSS04).
+- NIST AI 100-1 (AI RMF 1.0) GOVERN 2.3 (executive leadership takes responsibility for decisions about risks of AI system development and deployment)
+  - Verified, 31 Oct 2026, against https://nvlpubs.nist.gov/nistpubs/ai/NIST.AI.100-1.pdf, Table 1 (GOVERN subcategories). Used by crisc_d1_038 (senior management sees AI exposure in the risk profile to decide on it).
+  - Note: other round 2 parts reuse bullets already in this library: ISACA Glossary (recovery time objective), (current risk) and (risk owner); NIST CSF 2.0 GV.RM-03, GV.RR-01, ID.RA-07 and Section 3.1; NIST AI 100-1 GOVERN 1.1 and MANAGE 3.1; NIST IR 8286B-upd1 Section 2.4.3 (CSRC page re-opened 31 Oct 2026: published February 2025, no withdrawal notice).
+
 ### Named in notes as context only (not keyed, hosts blocked)
 ISO 31000:2018, COSO ERM (2017), the IIA Three Lines Model (2020) and the EU AI Act (Regulation (EU) 2024/1689) are named in the notes as context only. Not added as bullets.
 
@@ -168,7 +183,13 @@ published 18 Dec 2025). Cite the Rev. 1 forms below in every CRISC domain.
 - ISACA Glossary (maximum tolerable outage)
   - Verified, 31 Oct 2026, same page: "The maximum amount of time that an organization can tolerate the disruption of a critical business function or IT system before it causes significant harm to the business". The Glossary has no MTD entry. Defined in notes 2B2.2 (MTO, with MTD as other sources' term); not keyed.
 - ISACA Glossary (acceptable interruption window)
-  - Verified, 31 Oct 2026, same page: "The maximum period of time that a system can be unavailable before compromising the achievement of the enterprise's business objectives". Defined in notes 2B2.2; not keyed.
+  - Verified, 31 Oct 2026, same page: "The maximum period of time that a system can be unavailable before compromising the achievement of the enterprise's business objectives". Defined in notes 2B2.2; not keyed (a distractor in crisc_d2_037).
+- ISACA Glossary (service delivery objective)
+  - New, repair round 1. Verified, 31 Oct 2026, isaca.org/resources/glossary fetched with `curl -sS -L` and the entry read: "The level of services directly related to the business needs that must be reached during the alternate process mode until the normal situation is restored". Used in crisc_d2_037; defined in notes 2B2.2.
+- ISACA Glossary (recovery point objective)
+  - New, repair round 1. Verified, 31 Oct 2026, same page: "The earliest point in time that is acceptable to recover data, determined based on the acceptable data loss in case of a disruption in operations. The RPO effectively quantifies the permissible amount of data loss in case of interruption." Used in crisc_d2_034.
+- ISACA Glossary (risk acceptance)
+  - Re-listed from the Domain 3 round 2 block (Verified 31 Oct 2026: a decision to accept a risk, made according to the risk appetite and risk tolerance set by senior management). Used in crisc_d2_045.
 - ISACA Glossary (control owner)
   - Verified, 31 Oct 2026, same page: the person assigned "the authority and accountability for making control-related decisions" and "responsible for ensuring that the control is implemented and is operating effectively and efficiently". Defined in notes 2B3.1 (since repair round 1, 31 Oct 2026, the key term carries the Glossary wording alone; KaiSip's "often the manager whose team runs the control" sits in how_it_works, unattributed); used in the explanations of crisc_d2_002, crisc_d2_019 and crisc_d2_020; not keyed in Domain 2.
 - ISACA Glossary (impact analysis)
@@ -193,10 +214,16 @@ published 18 Dec 2025). Cite the Rev. 1 forms below in every CRISC domain.
 ### SP 800-30 Rev. 1, Guide for Conducting Risk Assessments (Sep 2012)
 - NIST SP 800-30 Rev. 1 Section 2.3.1 (Risk Models: threats, vulnerabilities, likelihood and impact)
   - Same form as the CC library. Verified again 30 Oct 2026, nvlpubs PDF: risk is a function of adverse impact and likelihood; threat scenarios show how a threat source's events exploit vulnerabilities. Used in crisc_d2_005.
+- NIST SP 800-30 Rev. 1 Section 2.3.1 (Risk Models: likelihood is assessed with respect to a specific time frame)
+  - New, round 2. Verified, 31 Oct 2026, nvlpubs.nist.gov/nistpubs/Legacy/SP/nistspecialpublication800-30r1.pdf re-opened: under Likelihood, "the likelihood that a threat event will be initiated or will occur is assessed with respect to a specific time frame (e.g., the next six months, the next year, or the period until a specified milestone is reached)". Used in crisc_d2_032.
+- NIST SP 800-30 Rev. 1 Section 2.3.1 (Risk Models: predisposing conditions such as a flood-prone location affect likelihood)
+  - New, round 2. Verified, 31 Oct 2026, same PDF: a predisposing condition "affects (i.e., increases or decreases) the likelihood that threat events, once initiated, result in adverse impacts"; examples include "the location of a facility in a hurricane- or flood-prone region". Used in crisc_d2_028.
 - NIST SP 800-30 Rev. 1 Section 2.3.2 (Assessment Approaches: quantitative assessments support cost-benefit analysis of risk responses)
   - Same form as the CC library. Verified again 30 Oct 2026. 800-30 does not use SLE, ARO or ALE. Used in crisc_d2_016.
 - NIST SP 800-30 Rev. 1 Section 2.3.2 (Assessment Approaches: subjective inputs or high uncertainty lessen quantitative rigor)
   - New. Verified, 30 Oct 2026, nvlpubs PDF: "the rigor of quantification is significantly lessened when subjective determinations are buried within the quantitative assessments, or when significant uncertainty surrounds the determination of values". Used in crisc_d2_017.
+- NIST SP 800-30 Rev. 1 Section 2.3.2 (Assessment Approaches: semi-quantitative bins and scales have meaning only within the assessment)
+  - New, round 2. Verified, 31 Oct 2026, same PDF re-opened: semi-quantitative assessments use "bins, scales, or representative numbers whose values and meanings are not maintained in other contexts"; each bin or range "needs to be clearly defined and/or characterized by meaningful examples". Used in crisc_d2_042.
 - NIST SP 800-30 Rev. 1 Section 2.3.3 (Analysis Approaches: threat-oriented, asset/impact-oriented and vulnerability-oriented)
   - New. Verified, 30 Oct 2026: differences in the starting point can bias results so some risks are not identified; adding a second orientation improves rigor. Fits an exercise that exposes a missed business dependency. Used in crisc_d2_008.
 - NIST SP 800-30 Rev. 1 Section 3.1 (Preparing for the Risk Assessment: purpose, scope, assumptions, information sources and risk model)
@@ -211,12 +238,16 @@ published 18 Dec 2025). Cite the Rev. 1 forms below in every CRISC domain.
 ### SP 800-34 Rev. 1, Contingency Planning Guide for Federal Information Systems (May 2010, updated Nov 2010)
 - NIST SP 800-34 Rev. 1 Section 3.2.1 (Determine Business Processes and Recovery Criticality: MTD, RTO and RPO)
   - Same form as the CC library. Verified again 30 Oct 2026, nvlpubs PDF: process owners, leadership and business managers determine acceptable downtime; MTD is what the system owner or authorizing official is willing to accept; the RTO must normally be shorter than the MTD; RPO reflects how much data loss the process can tolerate. Used in crisc_d2_012. NIST's MTD is the ISACA Glossary's maximum tolerable outage (MTO); since 31 Oct 2026 the D2 notes and crisc_d2_012's explanation use MTO, keeping MTD only in this NIST citation.
+- NIST SP 800-34 Rev. 1 Section 3.5.3 (Exercises: tabletop exercises are discussion-based and examine roles, responsibilities, coordination and decision making)
+  - New, round 2. Verified, 31 Oct 2026, nvlpubs.nist.gov/nistpubs/Legacy/SP/nistspecialpublication800-34r1.pdf re-opened: tabletop exercises are "discussion-based exercises"; a facilitator presents a scenario and asks questions "which initiates a discussion among the participants of roles, responsibilities, coordination, and decision making"; they do not deploy equipment or other resources. Used in crisc_d2_029, crisc_d2_030.
 
 ### IR 8286 Rev. 1, Integrating Cybersecurity and Enterprise Risk Management (ERM) (Dec 2025)
 - NIST IR 8286 Rev. 1 Section 3 Table 1 (Descriptions of notional cybersecurity risk register template elements)
   - New. Verified, 30 Oct 2026, nvlpubs.nist.gov/nistpubs/ir/2025/NIST.IR.8286r1.pdf (published 18 Dec 2025; supersedes IR 8286, Oct 2020): elements include risk description (threats, assets, methods and impacts in every scenario), current assessment likelihood, impact and exposure rating, risk response type and description, risk owner ("responsible and accountable"), status. The text before Table 1 explains current risk versus inherent risk. Note on terms: Table 1's "Current Assessment" columns mean the estimate before any (further) risk response, which later cycles call inherent; this differs from the ISACA Glossary's "current risk" (risk as it stands, counting actions already taken). crisc_d2_013 pairs the two because the text after Table 1 keeps the current assessment separate from anticipated changes from a planned response, which is the item's point. Used in crisc_d2_013.
 - NIST IR 8286 Rev. 1 Section 3.5.2 (Responding to Residual Risk)
-  - New. Verified, 30 Oct 2026: residual risk remains after a response; if beyond the acceptable level the risk owner evaluates further action; enterprise risk officers analyze residual risk against appetite and tolerance set by senior leadership, and senior management makes final decisions. Used in crisc_d2_018, crisc_d2_020.
+  - New. Verified, 30 Oct 2026: residual risk remains after a response; if beyond the acceptable level the risk owner evaluates further action; enterprise risk officers analyze residual risk against appetite and tolerance set by senior leadership, and senior management makes final decisions. Used in crisc_d2_018, crisc_d2_020, crisc_d2_045.
+- NIST IR 8286 Rev. 1 Section 2.1 (Overview of ERM: risk appetite and risk tolerance)
+  - Re-listed from the Domain 1 block (Verified 30 Oct 2026: risk appetite is set by the most senior leadership, and tolerance is narrower and more specific). Used in crisc_d2_041.
 - NIST IR 8286 Rev. 1 Section 3.8 (Creating and Maintaining an Enterprise-Level Cybersecurity Risk Register)
   - New. Verified, 30 Oct 2026: registers with agreed criteria and categories are normalized and aggregated into the enterprise risk register and risk profile. Supports notes 2B3.3. Used in crisc_d2_014 (re-aimed to aggregation, 30 Oct 2026 review).
 
@@ -228,7 +259,7 @@ published 18 Dec 2025). Cite the Rev. 1 forms below in every CRISC domain.
 - NIST IR 8286A Rev. 1 Section 2.2.5 (Recording Identified Risks: risk scenarios in cause-and-effect form)
   - New. Verified, 30 Oct 2026: detailed scenarios in cause-and-effect form; balance top-down (objectives) and bottom-up (threats and vulnerabilities) considerations; keep a practical, manageable set of risks. Used in crisc_d2_007.
 - NIST IR 8286A Rev. 1 Section 2.3.1 (Selecting Risk Analysis Methodologies)
-  - New. Verified, 30 Oct 2026: quotes IEC 31010:2019 that the main criteria for choosing qualitative or quantitative techniques are the output most useful to stakeholders and the availability and reliability of data; quantitative techniques generally need high-quality data. Used in crisc_d2_017.
+  - New. Verified, 30 Oct 2026: quotes IEC 31010:2019 that the main criteria for choosing qualitative or quantitative techniques are the output most useful to stakeholders and the availability and reliability of data; quantitative techniques generally need high-quality data. Used in crisc_d2_017, crisc_d2_040, crisc_d2_041.
 - NIST IR 8286A Rev. 1 Section 2.2.2 (Determination of Potential Threats)
   - New. Verified, 30 Oct 2026: threat enumeration combines data-driven threat awareness with business judgment; lists ISACs, technical threat models and MITRE ATT&CK as inputs. Supports notes 2A2.2; not keyed in the pilot.
 
@@ -318,7 +349,7 @@ published 18 Dec 2025). Cite the Rev. 1 forms below in every CRISC domain.
 - NIST CSF 2.0 GV.RR-02 (roles, responsibilities and authorities related to cybersecurity risk management are established, communicated, understood and enforced)
 - NIST CSF 2.0 ID.RA-06 (risk responses are chosen, prioritized, planned, tracked and communicated)
 - NIST CSF 2.0 ID.RA-07 (changes and exceptions are managed, assessed for risk impact, recorded and tracked)
-  - All Verified, 30 Oct 2026, against NIST.CSWP.29.pdf (nvlpubs.nist.gov), subcategory text read. GV.RR-02, ID.RA-06 and ID.RA-07 use the same strings as the CC library. GV.SC-07 (crisc_d3_006; string aligned on 31 Oct 2026 with the D4 block's CSWP 29 wording, "The risks posed by a supplier, their products and services, and other third parties are understood, recorded, prioritized, assessed, responded to, and monitored over the course of the relationship"), GV.RM-02 (crisc_d3_016 and crisc_d3_019; same string as the D1 block and the CC library, text read in the CSWP 29 PDF on 30 Oct 2026: "Risk appetite and risk tolerance statements are established, communicated, and maintained"; it replaced GV.OV-01, a loose fit for board-report content, after the audit), GV.RR-02 (crisc_d3_005 and crisc_d3_011), ID.RA-06 (crisc_d3_013), ID.RA-07 (crisc_d3_007).
+  - All Verified, 30 Oct 2026, against NIST.CSWP.29.pdf (nvlpubs.nist.gov), subcategory text read. GV.RR-02, ID.RA-06 and ID.RA-07 use the same strings as the CC library. GV.SC-07 (crisc_d3_006, and crisc_d4_037 since the round 2 gate, 31 Oct 2026; string aligned on 31 Oct 2026 with the D4 block's CSWP 29 wording, "The risks posed by a supplier, their products and services, and other third parties are understood, recorded, prioritized, assessed, responded to, and monitored over the course of the relationship"), GV.RM-02 (crisc_d3_016 and crisc_d3_019; same string as the D1 block and the CC library, text read in the CSWP 29 PDF on 30 Oct 2026: "Risk appetite and risk tolerance statements are established, communicated, and maintained"; it replaced GV.OV-01, a loose fit for board-report content, after the audit), GV.RR-02 (crisc_d3_005 and crisc_d3_011), ID.RA-06 (crisc_d3_013), ID.RA-07 (crisc_d3_007).
 
 ### NIST AI 100-1, AI Risk Management Framework (AI RMF 1.0, Jan 2023)
 - NIST AI 100-1 (AI RMF 1.0) GOVERN 1.1 (legal and regulatory requirements involving AI are understood, managed and documented)
@@ -327,6 +358,28 @@ published 18 Dec 2025). Cite the Rev. 1 forms below in every CRISC domain.
 - NIST AI 100-1 (AI RMF 1.0) MEASURE 2.4 (the functionality and behavior of the AI system are monitored when in production)
 - NIST AI 100-1 (AI RMF 1.0) MANAGE 4.1 (post-deployment monitoring plans, including capturing user input, appeal and override)
   - All Verified, 30 Oct 2026, against NIST.AI.100-1.pdf (nvlpubs.nist.gov), Tables 1, 3 and 4. GOVERN 3.2, MEASURE 2.4 and MANAGE 4.1 use the same strings as the CC library. MANAGE 1.3 says risk response options "can include mitigating, transferring, avoiding, or accepting" (crisc_d3_004). GOVERN 1.1 (crisc_d3_020), GOVERN 3.2 (crisc_d3_004), MEASURE 2.4 and MANAGE 4.1 (crisc_d3_017).
+
+### Round 2 additions (crisc_d3_021 to 050, 31 Oct 2026)
+- ISACA Glossary (risk acceptance)
+- ISACA Glossary (preventive control)
+- ISACA Glossary (key control indicator)
+  - All Verified, 31 Oct 2026: https://www.isaca.org/resources/glossary downloaded and each entry read. Risk acceptance: a decision to accept a risk, made according to the risk appetite and risk tolerance set by senior management (crisc_d3_021, crisc_d3_024). Preventive control: an internal control used to avoid undesirable events, errors and other occurrences (crisc_d3_032). Key control indicator: a measure of the effectiveness of controls that indicates a failure or weakness which may increase the likelihood or impact of risk events (crisc_d3_042, crisc_d3_045).
+- NIST CSF 2.0 Section 3.1 (Organizational Profiles step 4: analyze the gaps between the Current and Target Profiles and develop a prioritized action plan)
+- NIST CSF 2.0 Section 3.2 (CSF Tiers: progression to higher Tiers is encouraged when risks or mandates are greater or when cost-benefit analysis supports it)
+  - Both Verified, 31 Oct 2026, against https://nvlpubs.nist.gov/nistpubs/CSWP/NIST.CSWP.29.pdf (re-downloaded). Section 3.1 step 4: "Conduct a gap analysis to identify and analyze the differences between the Current and Target Profiles, and develop a prioritized action plan" (crisc_d3_034). Section 3.2: Tiers characterize the rigor of risk governance and management practices; "Progression to higher Tiers is encouraged when risks or mandates are greater or when a cost-benefit analysis indicates a feasible and cost-effective reduction of negative cybersecurity risks" (crisc_d3_035, by analogy: Tiers are organization-level rigor, applied here to risk-based targets). The existing D4 bullet for Section 3.1 (Current and Target Profiles) is reused by crisc_d3_033.
+- NIST SP 800-137 Section 3.2.2 (Establish Monitoring and Assessment Frequencies: control volatility, impact level, known weaknesses, risk tolerance and threat information)
+  - Verified, 31 Oct 2026, against https://nvlpubs.nist.gov/nistpubs/Legacy/SP/nistspecialpublication800-137.pdf (re-downloaded): organizations set each control's assessment frequency and each metric's monitoring frequency from security control volatility, system impact level, critical functions, identified weaknesses, organizational risk tolerance, threat and vulnerability information (crisc_d3_046).
+- NIST SP 800-55v1 Section 3.1.4 (Data Quality: a validation process checks the integrity, accuracy and structure of data before any analysis is done)
+  - Verified, 31 Oct 2026, against https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-55v1.pdf (re-downloaded): data validity is suspect when the source holds information from only a few organizational elements; "Having a validation process in place to check the integrity, accuracy, and structure of the data provides a way to address potential errors before any analysis is done" (crisc_d3_040, crisc_d3_041).
+- NIST IR 8286B-upd1 Section 2.2.4 (Considerations of Positive Risks as an Input to ERM)
+- NIST IR 8286B-upd1 Section 2.2.5 (Visualizing Risk Priority: heat maps are a quick-reference guide with limited ability to convey risk information)
+  - Both Verified, 31 Oct 2026, against https://nvlpubs.nist.gov/nistpubs/ir/2025/NIST.IR.8286B-upd1.pdf (re-downloaded). 2.2.4: risks of all types, positive and negative, are included in communications and prioritization so senior managers see uncertainties that might bring benefit or harm (crisc_d3_050). 2.2.5: heat maps "should be used with caution"; colors and positions are "a guide for quick reference", and a matrix based on likelihood and impact "is equally limited" (crisc_d3_047).
+- NIST IR 8286C Rev. 1 Section 5.1 (Key CSRM Mechanisms: risk tolerance is translated into security controls, KPIs and KRIs)
+- NIST IR 8286C Rev. 1 Section 5.2 (Monitoring Risks: KRIs are observed for trends such as rising likelihood or failing controls)
+  - Both Verified, 31 Oct 2026, against https://nvlpubs.nist.gov/nistpubs/ir/2025/NIST.IR.8286Cr1.pdf (re-downloaded). 5.1: tolerance statements are translated into the triad of security controls, KPIs (measures that show program success) and KRIs (measures valuable for predicting risk) (crisc_d3_043). 5.2: "KRIs can be observed to monitor trends", and a practitioner who sees a KRI change checks whether likelihood or severity is rising, a new risk has entered, or controls are failing (crisc_d3_045, crisc_d3_047).
+- NIST SP 800-30 Rev. 1 Section 2.3.1 (Risk Models: uncertainty can be communicated by giving ranges of values rather than single values)
+- NIST SP 800-30 Rev. 1 Section 3.2 Task 2-6 (Determine Risk: several moderate-level risks can aggregate to a higher level of risk)
+  - Both Verified, 31 Oct 2026, against https://nvlpubs.nist.gov/nistpubs/Legacy/SP/nistspecialpublication800-30r1.pdf (re-downloaded). 2.3.1, Uncertainty: the degree of uncertainty "can be communicated ... by providing ranges of values rather than single values for identified risks" (crisc_d3_049). Task 2-6: "when multiple risks materialize, even if each risk is at the moderate level, the set of those moderate-level risks could aggregate to a higher level of risk" (crisc_d3_030).
 
 ### Named in the D3 notes as context only (not keyed)
 These use `*` instead of `- ` so the parser does not read them as citable strings. Promote one to a `- ` bullet only after checking its fit to an item.
@@ -419,6 +472,48 @@ summaries of the official text. Bullets also present in the CC library
   - Verified, 30 Oct 2026: PDF (Aug 2011, includes updates as of 10 Oct 2019; csrc.nist.gov confirms this is the current final) read. Under "Unscheduled or Unauthorized Changes": unscheduled (emergency) changes "are still managed and controlled" and "are reviewed/resolved by the CCB as soon as is practical after unscheduled changes are made". CCB is the configuration control board. Used in crisc_d4_003.
 - NIST Privacy Framework Version 1.0 Section 1.2.1 (Cybersecurity and Privacy Risk Management: privacy risk can arise from data processing unrelated to cybersecurity incidents)
   - Verified, 30 Oct 2026: PDF (NIST.CSWP.01162020, Jan 2020) read. Section 1.2.1 says managing cybersecurity risk "is not sufficient, as privacy risks can also arise by means unrelated to cybersecurity incidents" (Figure 2). The NIST Privacy Framework page lists Version 1.1 only as an initial public draft on 30 Oct 2026, so 1.0 is the citable final. Used in crisc_d4_019.
+
+### Round 2 additions (crisc_d4_021 to 045, 31 Oct 2026)
+Every source below was opened on 31 Oct 2026 in this session: the ISACA Glossary page was fetched from isaca.org and each NIST PDF downloaded from nvlpubs.nist.gov with `curl -sS -L`, converted with pdftotext and the entry, control or section read. CSRC pages confirm SP 800-188 (Sep 2023), SP 800-207 (Aug 2020), SP 800-218 (Feb 2022) and SP 800-50 Rev. 1 (Sep 2024) as current finals with no withdrawal.
+- ISACA Glossary (enterprise architecture)
+  - Verified, 31 Oct 2026: "A description of the fundamental underlying design of the business system components ... the relationships among them and the manner in which they support the enterprise's objectives." Used in crisc_d4_021.
+- ISACA Glossary (shared responsibility model)
+  - Verified, 31 Oct 2026: "A cloud security framework that dictates the security obligations of a cloud service provider and its users to ensure accountability." Used in crisc_d4_033.
+- ISACA Glossary (privacy by design)
+  - Verified, 31 Oct 2026: "The integration of privacy into the entire engineering process." Used in crisc_d4_043.
+- NIST SP 800-53 Rev. 5 PM-7 (Enterprise Architecture)
+  - Verified, 31 Oct 2026: develop and maintain an enterprise architecture "with consideration for information security, privacy, and the resulting risk"; the discussion ties integrated requirements to mission and business processes. Used in crisc_d4_021.
+- NIST SP 800-53 Rev. 5 CM-8 (System Component Inventory)
+  - Verified, 31 Oct 2026: the inventory "accurately reflects the system", includes all components and has no duplicate accounting; it is reviewed and updated. Used in crisc_d4_025 (servers the endpoint detection console sees but the CMDB omits sit outside operations processes, since the round 2 gate; reconciling counts before a report until then; laptop encryption until repair round 1, 31 Oct 2026).
+- NIST SP 800-53 Rev. 5 CP-4 (Contingency Plan Testing)
+  - Verified, 31 Oct 2026: test the plan to determine its effectiveness and readiness, review results and initiate corrective actions; the discussion lists checklists, walk-through and tabletop exercises, simulations (parallel or full interrupt) and comprehensive exercises. Used in crisc_d4_034.
+- NIST SP 800-53 Rev. 5 SA-4 (Acquisition Process)
+  - Verified, 31 Oct 2026: include security and privacy functional, strength, assurance and documentation requirements and acceptance criteria in the acquisition contract. Used in crisc_d4_027.
+- NIST SP 800-53 Rev. 5 SA-9 (External System Services)
+  - Verified, 31 Oct 2026: define and document organizational oversight and user roles and responsibilities for external system services; the discussion says "The responsibility for managing risks from the use of external system services remains with authorizing officials." Used in crisc_d4_033.
+- NIST SP 800-53 Rev. 5 SA-9(5) (External System Services | Processing, Storage, and Service Location)
+  - Verified, 31 Oct 2026: restrict the location of processing, data storage or services to organization-defined locations based on organization-defined requirements; the discussion notes provider criteria for location may differ from the organization's. Used in crisc_d4_045.
+- NIST SP 800-53 Rev. 5 SA-8(33) (Security and Privacy Engineering Principles | Minimization)
+  - Verified, 31 Oct 2026: process only personally identifiable information "directly relevant and necessary to accomplish an authorized purpose" and keep it only as long as necessary. Used in crisc_d4_043.
+- NIST SP 800-53 Rev. 5 AC-6 (Least Privilege)
+  - Verified, 31 Oct 2026: allow only authorized accesses "necessary to accomplish assigned organizational tasks". Used in crisc_d4_039 (30-day administrator grants sized to the task; standing rights until repair round 1, 31 Oct 2026).
+- NIST CSF 2.0 ID.AM-01 (inventories of hardware managed by the organization are maintained)
+- NIST CSF 2.0 ID.AM-07 (inventories of data and corresponding metadata for designated data types are maintained)
+- NIST CSF 2.0 PR.DS-11 (backups of data are created, protected, maintained and tested)
+- NIST CSF 2.0 Section 3.2 (CSF Tiers: progression to higher Tiers is encouraged when risks or mandates are greater or when cost-benefit supports it)
+  - All four Verified, 31 Oct 2026, against the CSWP 29 PDF. Section 3.2 reads: "Progression to higher Tiers is encouraged when risks or mandates are greater or when a cost-benefit analysis indicates a feasible and cost-effective reduction of negative cybersecurity risks", and names the Tiers Partial, Risk Informed, Repeatable and Adaptive. Uses: ID.AM-01 in crisc_d4_025; ID.AM-07 in 030; PR.DS-11 in 035. Section 3.2 was cited by crisc_d4_038 until repair round 1 (31 Oct 2026), when that item was replaced by a framework-mapping item citing Section 3.1; kept for later batches.
+- NIST SP 800-218 Version 1.1 PO.4.1 (define criteria for software security checks, such as adding them to the Definition of Done in agile methodologies)
+  - Verified, 31 Oct 2026: PO.4.1 "Define criteria for software security checks and track throughout the SDLC"; Example 3 "Add software security criteria to existing checks (e.g., the Definition of Done in agile SDLC methodologies)". v1.1 is the current final (the v1.2 draft is noted above). Used in crisc_d4_031.
+- NIST SP 800-207 Section 7 (Migrating to a Zero Trust Architecture: an incremental journey rather than a wholesale replacement)
+  - Verified, 31 Oct 2026: "Implementing a ZTA is a journey rather than a wholesale replacement of infrastructure or processes"; organizations "incrementally implement" zero trust to protect their highest value data assets, and 7.3.3 notes a first transition may start with a low-risk business process. Used in crisc_d4_040; the notes 4B1.2 adoption bullet was corrected to this wording.
+- NIST SP 800-188 Section 2.2 (Terminology: de-identified data can be re-identified by joining it with other datasets, and pseudonyms can raise that risk)
+  - Verified, 31 Oct 2026 (Sep 2023 PDF): de-identified data "can be re-identified if the dataset is joined with a second dataset" of rooms, times and names, and "the existence of the pseudonym identifiers frequently increases the risk of re-identification through other means". Used in crisc_d4_044.
+- NIST AI 100-1 (AI RMF 1.0) Section 3.4 (Accountable and Transparent: maintaining the provenance of training data supports transparency and accountability)
+  - Verified, 31 Oct 2026: "Maintaining the provenance of training data and supporting attribution of the AI system's decisions to subsets of training data can assist with both transparency and accountability." Used in crisc_d4_029.
+- ISACA Glossary (opportunity)
+  - Verified, 31 Oct 2026 (isaca.org glossary page fetched with `curl -sS -L`, entry read): "An uncertain event that may positively impact meeting objectives." Used in crisc_d4_037 (an evaluation of new technology that lists only threats) until the round 2 gate, 31 Oct 2026, when that item moved to exit terms and vendor lock-in (GV.SC-05 and GV.SC-07); no item cites it now, kept for later batches.
+- ISACA Glossary (anonymization)
+  - Verified, 31 Oct 2026 (same fetch): "Irreversible severance of a data set from the identity of the data contributor to prevent any future reidentification, even by the organization collecting the data under any condition." Used in crisc_d4_044 (trip records with a stable code per card are pseudonymized, not anonymized).
 
 ### Opened for the notes only (not used as framework_ref)
   - NIST SP 800-218 (SSDF Version 1.1, Feb 2022): practice groups PO, PS, PW, RV and practice titles PO.1, PW.1, PW.8, RV.3 read; Section 1 says secure practices are integrated into any SDLC model, including Agile and DevOps. Checked again 31 Oct 2026: v1.1 is still the final edition; SP 800-218 Rev. 1 (SSDF Version 1.2) is an initial public draft published 17 Dec 2025 (comments closed 30 Jan 2026), so the notes cite v1.1 and name the draft.

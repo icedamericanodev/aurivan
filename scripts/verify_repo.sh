@@ -261,6 +261,30 @@ if ! python3 scripts/lint_exam_guide.py; then
   status=1
 fi
 
+# 6c-crisc. CRISC course (paid pack, not wired into the apps yet) ---------
+# The same gates the CRISC reviews use: questions, notes (against the CRISC
+# outline and bank), principles, exam guide + final review week, and the
+# notes' "Practice this concept" links. Errors fail the check.
+printf "\nCRISC course (data/crisc):\n"
+crisc_ok=1
+for d in 1 2 3 4; do
+  out=$(python3 scripts/lint_exam_style_v2.py --file "data/crisc/originals/d$d.json" | tail -1)
+  printf "  D%s questions: %s\n" "$d" "$out"
+  case "$out" in *" 0 error(s)"*) ;; *) crisc_ok=0 ;; esac
+  out=$(python3 scripts/lint_notes.py "data/crisc/notes/d$d.json" --outline docs/content/CRISC_BLUEPRINT.md --bank data/crisc/originals | tail -1)
+  printf "  D%s notes: %s\n" "$d" "$out"
+  case "$out" in *" 0 error(s)"*) ;; *) crisc_ok=0 ;; esac
+done
+python3 scripts/lint_principles.py data/crisc/mindset/principles.json --notes data/crisc/notes --bank data/crisc/originals >/dev/null || crisc_ok=0
+python3 scripts/lint_exam_guide.py --cert crisc data/crisc/exam/crisc_exam_guide.json >/dev/null || crisc_ok=0
+python3 data/crisc/tools/sync_practice_ids.py --check >/dev/null || { echo "  $FAIL practice links out of date: python3 data/crisc/tools/sync_practice_ids.py"; crisc_ok=0; }
+if [ $crisc_ok -eq 1 ]; then
+  echo "  $OK principles, exam guide, final review week and practice links clean"
+else
+  echo "  $FAIL CRISC content has errors (run the commands above)"
+  status=1
+fi
+
 # 6d. Web <-> mobile design-token parity (premium pass §0) -------------------
 # The web dark tokens that the premium pass moved (raised, wrongBg, the
 # section gap) must match mobile/src/theme/tokens.ts. A pair the web has moved

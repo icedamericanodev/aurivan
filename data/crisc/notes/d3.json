@@ -54,6 +54,11 @@
           "id": "3A1.1",
           "name": "The Four Risk Responses",
           "legacy_ids": [],
+          "practice_ids": [
+            "crisc_d3_001",
+            "crisc_d3_003",
+            "crisc_d3_004"
+          ],
           "definition": "Risk responses are the four ways an organization deals with an analyzed risk: accept it, mitigate it with controls, transfer or share it, or avoid the activity causing it.",
           "why_it_matters": "The response decides how much risk is left and what that costs. The wrong choice wastes money on a risk already within appetite, or leaves a risk above appetite untreated.",
           "how_it_works": [
@@ -66,7 +71,7 @@
           "types": [
             {
               "term": "Accept",
-              "meaning": "The risk owner knowingly keeps the risk, usually because it is within appetite or treatment would cost more than it saves."
+              "meaning": "The risk owner knowingly keeps the risk because it is within appetite, tolerance and their authority, often where further treatment would cost more than it saves; carrying risk above appetite needs temporary acceptance from the level that set the limit."
             },
             {
               "term": "Mitigate",
@@ -81,7 +86,7 @@
               "meaning": "The business stops, changes or never starts the activity that creates the risk."
             }
           ],
-          "example": "A regional airline's loyalty team wants members to pay for flights with stored points through a new partner app. Amara, the risk analyst, rates the account-takeover fraud risk above appetite. They lay out four options, each with its cost and the target risk it would leave: accept the risk, add step-up authentication, insure fraud losses, or drop the feature. Amara then presents the comparison to the loyalty director.",
+          "example": "A regional airline's loyalty team wants members to pay for flights with stored points through a new partner app. Amara, the risk analyst, rates the account-takeover fraud risk above appetite. They lay out four options, each with its cost and the target risk it would leave: accept the risk (needing temporary acceptance from the level that set the appetite), add step-up authentication, insure fraud losses, or drop the feature. Amara then presents the comparison to the loyalty director.",
           "audit_focus": {
             "review": [
               "Compare each response in the register with the risk rating and appetite",
@@ -110,7 +115,7 @@
           "key_terms": [
             {
               "term": "Risk response",
-              "definition": "Any mix of acceptance, mitigation, transfer (sharing) or avoidance that brings as much future residual risk (expected after implementation) as budgets allow within appetite."
+              "definition": "How the risk owner deals with a risk: accept, mitigate, transfer or avoid, alone or mixed, aiming to bring target risk inside appetite."
             },
             {
               "term": "Response option analysis",
@@ -123,6 +128,10 @@
           "id": "3A1.2",
           "name": "Choosing a Response by Appetite and Cost-Benefit",
           "legacy_ids": [],
+          "practice_ids": [
+            "crisc_d3_002",
+            "crisc_d3_010"
+          ],
           "definition": "Response selection is choosing the option expected to bring risk within appetite at a cost proportionate to the loss it prevents, while still supporting business objectives.",
           "why_it_matters": "Spending more on a control than the loss it prevents destroys value, and so does treating a risk already within appetite. Proportion keeps the budget on the risks that matter most.",
           "how_it_works": [
@@ -171,6 +180,10 @@
           "id": "3A1.3",
           "name": "Residual Risk and Risk Acceptance",
           "legacy_ids": [],
+          "practice_ids": [
+            "crisc_d3_021",
+            "crisc_d3_024"
+          ],
           "definition": "Residual risk is the risk left after a response is in place; risk acceptance is the risk owner's documented decision to keep what remains.",
           "why_it_matters": "No response removes all risk. Unless someone with authority formally accepts what is left, the organization carries exposure nobody agreed to and nobody watches.",
           "how_it_works": [
@@ -212,7 +225,7 @@
             },
             {
               "term": "Residual risk",
-              "definition": "Risk left after management implements a response; the owner accepts it if within appetite, or treats or elevates it."
+              "definition": "What is left of a risk once the response is in place and working; the owner accepts it within appetite, or treats or elevates it."
             },
             {
               "term": "Implicit acceptance",
@@ -240,6 +253,10 @@
           "id": "3A2.1",
           "name": "Assigning Risk Owners",
           "legacy_ids": [],
+          "practice_ids": [
+            "crisc_d3_022",
+            "crisc_d3_023"
+          ],
           "definition": "A risk owner is the person given the authority and accountability to make decisions about a risk, and who answers for the loss if it happens.",
           "why_it_matters": "A risk without a capable owner drifts: nobody decides its response, funds the controls or answers when it happens. Ownership at the wrong level gives the decision to people who cannot act on it.",
           "how_it_works": [
@@ -247,7 +264,8 @@
             "Match authority to size: the owner must be able to fund treatment and accept residual risk at that rating.",
             "Name one accountable person, not a committee or a department; others contribute as stakeholders or control owners.",
             "Revalidate ownership regularly and after reorganizations, departures or process changes.",
-            "IT usually owns technology controls, while the business owns the business risk those controls protect."
+            "IT usually owns technology controls, while the business owns the business risk those controls protect.",
+            "Validate an owner by what they have done, such as response choices, acceptances and plan approvals they signed, not by their name in the register."
           ],
           "example": "A city council's payroll risk is listed under 'Finance and IT' with no single name. Lina, the council's risk analyst, maps the payroll process and finds that the payroll manager runs it but can approve only small purchases. Lina proposes the finance director as risk owner and the payroll manager as control owner, and asks senior management to confirm the assignment, with the director accepting the role in writing.",
           "audit_focus": {
@@ -290,7 +308,10 @@
           "id": "3A2.2",
           "name": "Control Owners and Validating Ownership",
           "legacy_ids": [],
-          "definition": "A control owner is accountable for a control being implemented and operating effectively, often as the manager whose team runs it; validation confirms owners perform the role.",
+          "practice_ids": [
+            "crisc_d3_005"
+          ],
+          "definition": "A control owner is accountable for a control being in place and working, often as the manager whose team runs it; validation confirms owners perform the role.",
           "why_it_matters": "A control that nobody owns decays quietly: reviews stop, settings drift and evidence disappears. Validating ownership finds these gaps before a test or an incident does.",
           "how_it_works": [
             "Each key control gets one named owner who answers for it working, keeps its evidence and reports when it fails; day-to-day operation may sit with their team.",
@@ -382,6 +403,9 @@
           "id": "3A3.1",
           "name": "Vendor Due Diligence and Contracts",
           "legacy_ids": [],
+          "practice_ids": [
+            "crisc_d3_025"
+          ],
           "definition": "Vendor due diligence is assessing a supplier's risk before signing, then writing the controls you need into the contract, such as security duties, audit rights and exit terms.",
           "why_it_matters": "After signing, leverage drops sharply. Terms left out of the contract, such as breach notice or the right to audit, are hard to add later, and the organization still answers for the outcome.",
           "how_it_works": [
@@ -411,6 +435,10 @@
             {
               "trap": "Outsourcing the service also outsources the risk.",
               "why": "The ISACA Glossary lists outsourcing as a way to transfer risk, but what moves is part of the operational and financial consequence. The organization still answers to its customers and regulators, so accountability and the business impact stay."
+            },
+            {
+              "trap": "A vendor's own questionnaire answers can stand in for a refused right to audit.",
+              "why": "Self-reported answers are weak assurance. Contract for independent assurance reports instead."
             }
           ],
           "key_terms": [
@@ -420,7 +448,7 @@
             },
             {
               "term": "Service level agreement (SLA)",
-              "definition": "An agreement defining minimum performance targets for a service and how they will be measured."
+              "definition": "An agreement that sets the service levels a provider must meet, how they are measured and the remedy when one is missed."
             },
             {
               "term": "Vendor criticality tier",
@@ -432,6 +460,10 @@
           "id": "3A3.2",
           "name": "Ongoing Vendor Monitoring and Assurance Reports",
           "legacy_ids": [],
+          "practice_ids": [
+            "crisc_d3_006",
+            "crisc_d3_026"
+          ],
           "definition": "Ongoing vendor monitoring is reviewing a supplier's performance, controls and risk throughout the relationship, using assurance reports, SLA results, incidents and changes in its own suppliers.",
           "why_it_matters": "A vendor that was sound at onboarding can change owners, cut staff, add subcontractors or suffer a breach. Monitoring catches drift while there is still time to respond.",
           "how_it_works": [
@@ -490,6 +522,9 @@
           "id": "3A3.3",
           "name": "AI Vendors and the Model Supply Chain",
           "legacy_ids": [],
+          "practice_ids": [
+            "crisc_d3_027"
+          ],
           "definition": "AI supply chain risk is the risk from third-party models, training data, AI services and tools, which can change, fail or behave unexpectedly outside the organization's control.",
           "why_it_matters": "A vendor can retrain or swap the model behind a service without notice, and its training data may be unknown. The business still owns any harm the AI output causes.",
           "how_it_works": [
@@ -497,7 +532,8 @@
             "Put AI terms in the contract: change notice, performance commitments, data use limits and incident reporting.",
             "Monitor the vendor's model in production as part of your own monitoring, especially after vendor updates.",
             "Plan contingency for a high-risk AI service failing, including a manual or non-AI fallback.",
-            "Treat downloaded pre-trained models as untrusted components until their source and integrity are checked."
+            "Treat downloaded pre-trained models as untrusted components until their source and integrity are checked.",
+            "Service credits for missed accuracy targets refund fees; they neither detect wrong outputs nor repair the harm, so the business keeps checking outputs it relies on."
           ],
           "example": "A bank's mortgage team uses a vendor's AI tool to pull income figures from scanned payslips. After the vendor's quiet update, extraction errors double. Nadia, a risk analyst, links the spike to the update date, records the issue against the vendor risk entry and recommends to the lending director a contract clause requiring advance notice of model changes, plus a staff check on high-value files.",
           "audit_focus": {
@@ -548,6 +584,9 @@
           "id": "3A4.1",
           "name": "Tracking Issues and Findings to Closure",
           "legacy_ids": [],
+          "practice_ids": [
+            "crisc_d3_029"
+          ],
           "definition": "Issue management is logging each control weakness, audit finding or incident lesson with an owner, an action and a due date, then tracking it until closure is validated.",
           "why_it_matters": "Findings that are logged but never really fixed leave the same risk open while reports show progress. Overdue items are often where the next incident comes from.",
           "how_it_works": [
@@ -594,6 +633,11 @@
           "id": "3A4.2",
           "name": "Exceptions and Exemptions",
           "legacy_ids": [],
+          "practice_ids": [
+            "crisc_d3_007",
+            "crisc_d3_028",
+            "crisc_d3_030"
+          ],
           "definition": "An exception is a temporary, approved deviation from a policy or standard; an exemption is an approved exclusion from a requirement that does not apply or cannot apply.",
           "why_it_matters": "Business sometimes cannot meet a requirement on time. A managed deviation keeps that risk visible, compensated and time-bound; an unmanaged one becomes a permanent, hidden gap.",
           "how_it_works": [
@@ -661,7 +705,7 @@
           "key_terms": [
             {
               "term": "Compensating control",
-              "definition": "A control that reduces the risk of a missing or weak control, keeping exposure acceptable while the gap remains."
+              "definition": "An alternative control that reduces risk when a required control is missing, weak or cannot be applied; it keeps exposure acceptable while the gap remains."
             },
             {
               "term": "Exception register",
@@ -686,6 +730,11 @@
           "id": "3B1.1",
           "name": "Control Types by Function",
           "legacy_ids": [],
+          "practice_ids": [
+            "crisc_d3_008",
+            "crisc_d3_031",
+            "crisc_d3_032"
+          ],
           "definition": "Control types by function describe what a control does about a risk event: stop it, discourage it, find it, fix it, or stand in for a missing control.",
           "why_it_matters": "Calling a detective control preventive overstates protection and understates residual risk. Knowing the function shows which part of the risk a control actually reduces.",
           "how_it_works": [
@@ -892,6 +941,9 @@
           "id": "3B2.1",
           "name": "Selecting Controls by Root Cause and Cost-Benefit",
           "legacy_ids": [],
+          "practice_ids": [
+            "crisc_d3_009"
+          ],
           "definition": "Control selection is choosing controls that address the cause of a risk, fit the size of the risk and cost less than the loss they prevent.",
           "why_it_matters": "Controls aimed at symptoms leave the cause in place, so the risk comes back. Controls out of proportion to the risk use budget that other risks need.",
           "how_it_works": [
@@ -940,6 +992,9 @@
           "id": "3B2.2",
           "name": "Implementing Controls With Control Owners",
           "legacy_ids": [],
+          "practice_ids": [
+            "crisc_d3_011"
+          ],
           "definition": "Control implementation is putting a selected control into operation with its owner, procedure, evidence and success measures agreed before it goes live.",
           "why_it_matters": "A well-designed control rolled out without an owner, procedure or evidence trail fails quietly. Agreeing these with the control owner up front makes the control testable and lasting.",
           "how_it_works": [
@@ -984,6 +1039,10 @@
           "id": "3B2.3",
           "name": "Control Gap Analysis",
           "legacy_ids": [],
+          "practice_ids": [
+            "crisc_d3_033",
+            "crisc_d3_034"
+          ],
           "definition": "Control gap analysis compares the current controls on a risk with the controls needed to bring it within appetite, judging both how they are designed and how they operate.",
           "why_it_matters": "Gaps show where residual risk is higher than the register claims. Finding them before an incident lets the risk owner fund the most important fixes first.",
           "how_it_works": [
@@ -1045,6 +1104,9 @@
           "id": "3B3.1",
           "name": "Testing Techniques and Evidence Strength",
           "legacy_ids": [],
+          "practice_ids": [
+            "crisc_d3_012"
+          ],
           "definition": "Control testing techniques are the ways evidence about a control is gathered: asking people, watching it run, inspecting records, or performing it again independently.",
           "why_it_matters": "Techniques give very different assurance. A control rated effective on interviews alone may never actually run, and the rating then hides real exposure from the risk owner.",
           "how_it_works": [
@@ -1107,6 +1169,9 @@
           "id": "3B3.2",
           "name": "Design and Operating Effectiveness Testing",
           "legacy_ids": [],
+          "practice_ids": [
+            "crisc_d3_036"
+          ],
           "definition": "Design testing asks whether a control could meet its objective as built; operating testing asks whether it actually worked consistently over a period, usually by sampling.",
           "why_it_matters": "A well-designed control can still be skipped in practice. Reporting a design test as proof of operation overstates assurance and leaves the risk owner relying on a control that may not run.",
           "how_it_works": [
@@ -1189,6 +1254,10 @@
           "id": "3B3.3",
           "name": "Assessing Control Maturity",
           "legacy_ids": [],
+          "practice_ids": [
+            "crisc_d3_035",
+            "crisc_d3_037"
+          ],
           "definition": "Control maturity is how well a control or process is defined, repeated, measured and improved, usually rated on a scale from ad hoc to optimized.",
           "why_it_matters": "A control can work today only because one skilled person runs it. Maturity shows whether it will keep working through turnover and growth, which an effectiveness test alone may miss.",
           "how_it_works": [
@@ -1196,7 +1265,8 @@
             "Rate against evidence: documented procedures, consistent records, metrics and improvement actions.",
             "Agree a target level with the risk owner based on the risk; not every control needs the top level.",
             "Feed the gap between current and target maturity into the improvement plan.",
-            "Read assessment results for adequacy (the right controls), effectiveness (working) and maturity (sustainable) together."
+            "Read assessment results for adequacy (the right controls), effectiveness (working) and maturity (sustainable) together.",
+            "A control can pass every test yet sit at low maturity, for example when it depends on one person and nothing is written down."
           ],
           "example": "A regional bank's fraud monitoring catches most cases, but only one analyst knows how the detection rules are tuned, and nothing is written down. Elif, the IT risk lead, rates the control effective but low in maturity against a target of 'defined'. They recommend to the head of fraud operations a documented tuning procedure, a trained backup and a monthly detection-rate measure.",
           "audit_focus": {
@@ -1216,6 +1286,10 @@
             {
               "trap": "Every control should reach the highest maturity level.",
               "why": "Maturity has a cost. The target should match the risk; low-risk controls can stay at a basic, repeatable level."
+            },
+            {
+              "trap": "One low maturity target for every control keeps costs down.",
+              "why": "A single target under-protects the controls behind high risks and overspends on minor ones. Each target is set with the risk owner by the risk the control addresses."
             }
           ],
           "key_terms": [
@@ -1224,8 +1298,8 @@
               "definition": "A rating of how defined, managed and improved a process is, on a published scale."
             },
             {
-              "term": "Key person dependency",
-              "definition": "A control that works only because one person knows how to run it."
+              "term": "Key-person dependency",
+              "definition": "Reliance on one person's knowledge or access to run a control, with no trained backup, so the control fails when that person is away."
             }
           ]
         }
@@ -1245,6 +1319,10 @@
           "id": "3C1.1",
           "name": "Building a Risk Action Plan",
           "legacy_ids": [],
+          "practice_ids": [
+            "crisc_d3_038",
+            "crisc_d3_039"
+          ],
           "definition": "A risk action plan sets out how a chosen response will be carried out: the actions, an owner for each, resources, milestones, target dates and the target risk at completion.",
           "why_it_matters": "A response without a plan stays an intention. Owners, dates and resources turn it into work that can be tracked, funded and escalated when it slips.",
           "how_it_works": [
@@ -1293,6 +1371,9 @@
           "id": "3C1.2",
           "name": "Validating Execution and Tracking to Closure",
           "legacy_ids": [],
+          "practice_ids": [
+            "crisc_d3_013"
+          ],
           "definition": "Validating execution is confirming, with evidence, that the actions in a risk plan were carried out as agreed and reduced the risk as expected.",
           "why_it_matters": "Status reports often say done when a control is installed but untested. Validation stops the register from showing a lower risk than really exists.",
           "how_it_works": [
@@ -1393,6 +1474,9 @@
           "id": "3C2.2",
           "name": "Aggregating and Normalizing Risk Data",
           "legacy_ids": [],
+          "practice_ids": [
+            "crisc_d3_014"
+          ],
           "definition": "Risk aggregation combines risks from many units or systems into one enterprise view, after normalizing them to the same rating criteria so they can be compared.",
           "why_it_matters": "Senior management needs one picture of enterprise risk. Adding ratings from different scales, or averaging away a severe local risk, gives a picture that looks precise but is wrong.",
           "how_it_works": [
@@ -1425,7 +1509,7 @@
           "key_terms": [
             {
               "term": "Risk aggregation",
-              "definition": "Integrating risk assessments at a corporate level to get a complete view of the enterprise's overall risk."
+              "definition": "Rolling unit-level ratings up into one view of total enterprise exposure, on common criteria and allowing for correlated risks."
             },
             {
               "term": "Normalization",
@@ -1441,6 +1525,10 @@
           "id": "3C2.3",
           "name": "Validating Data Before Reporting",
           "legacy_ids": [],
+          "practice_ids": [
+            "crisc_d3_040",
+            "crisc_d3_041"
+          ],
           "definition": "Data validation is checking that risk and control data are complete, accurate, current and consistent before they are analyzed or reported to decision makers.",
           "why_it_matters": "A wrong figure in a board report can drive the wrong decision and damages trust in the whole risk function. Checking before reporting costs far less than correcting afterward.",
           "how_it_works": [
@@ -1448,7 +1536,8 @@
             "Accuracy: a sample reconciles to the source records.",
             "Currency: the data dates match the reporting period.",
             "Consistency: definitions and scales match across sources and over time.",
-            "Known limitations are stated in the report rather than left out."
+            "Known limitations are stated in the report rather than left out.",
+            "When a metric's data source or tool changes, confirm the new source covers the same population and definitions before comparing periods."
           ],
           "example": "A national rail operator's dashboard shows patch compliance jumping from 70% to 98% in one month. Before the board pack goes out, Ines, the risk analyst, reconciles the figure with the patch tool and finds that 40 live servers stopped reporting and dropped out of the count. They correct the figure and note the reporting gap for the infrastructure director.",
           "audit_focus": {
@@ -1498,6 +1587,11 @@
           "id": "3C3.1",
           "name": "KRIs, KCIs and KPIs",
           "legacy_ids": [],
+          "practice_ids": [
+            "crisc_d3_015",
+            "crisc_d3_042",
+            "crisc_d3_043"
+          ],
           "definition": "Key risk indicators (KRIs) signal changing risk exposure, key control indicators (KCIs) show how well controls work, and key performance indicators (KPIs) measure progress toward process goals.",
           "why_it_matters": "Mixing them up sends the wrong signal: a KPI can stay green while risk rises. Each answers a different question for a different owner.",
           "how_it_works": [
@@ -1571,7 +1665,7 @@
           "key_terms": [
             {
               "term": "Key goal indicator (KGI)",
-              "definition": "A measure that tells management after the fact whether a process met its business requirements."
+              "definition": "A lagging metric, read at period end, of whether a business goal that a process supports was reached."
             },
             {
               "term": "Indicator owner",
@@ -1642,6 +1736,11 @@
           "id": "3C3.3",
           "name": "Thresholds and AI Model Indicators",
           "legacy_ids": [],
+          "practice_ids": [
+            "crisc_d3_016",
+            "crisc_d3_017",
+            "crisc_d3_044"
+          ],
           "definition": "KRI thresholds are preset limits, linked to risk appetite and tolerance, that trigger review, escalation or action when an indicator crosses them.",
           "why_it_matters": "Without thresholds, a climbing KRI is just a number. Limits tied to tolerance tell the owner when to act and who must be told.",
           "how_it_works": [
@@ -1649,7 +1748,8 @@
             "Define the action and escalation for each level before any breach happens.",
             "Review thresholds when appetite, the business or the risk changes.",
             "For AI systems, track drift, error rates, override rates and complaints, with limits set by the model's business owner.",
-            "A breach goes to the risk owner and, through the agreed escalation path, to the level that set the threshold."
+            "A breach goes to the risk owner and, through the agreed escalation path, to the level that set the threshold.",
+            "For human review of AI outputs, KCIs such as override rates and time spent per review warn when reviewers start approving by habit."
           ],
           "example": "An insurer's claims-triage model flags claims for fast payment. Aisha, the risk analyst, proposes indicators for it: the share of fast-tracked claims later found invalid, the rate of staff overrides and weekly drift in the input data. Each gets amber and red limits agreed with the claims director; red means claims return to manual triage until the model is reviewed.",
           "audit_focus": {
@@ -1706,6 +1806,10 @@
           "id": "3C4.1",
           "name": "Continuous Monitoring and Automated Alerts",
           "legacy_ids": [],
+          "practice_ids": [
+            "crisc_d3_018",
+            "crisc_d3_046"
+          ],
           "definition": "Continuous monitoring is keeping ongoing awareness of security, vulnerabilities and threats to support risk decisions, using automated feeds and assessments at a frequency set by risk.",
           "why_it_matters": "Yearly reviews miss what changes between them. Ongoing monitoring catches control failures and new exposure while there is still time to respond, provided someone acts on the alerts.",
           "how_it_works": [
@@ -1742,7 +1846,7 @@
           "key_terms": [
             {
               "term": "Information security continuous monitoring (ISCM)",
-              "definition": "NIST's term for ongoing awareness of security, vulnerabilities and threats to support organizational risk decisions."
+              "definition": "NIST's name for continuous monitoring of security posture, vulnerabilities and threats, used to keep risk decisions current."
             },
             {
               "term": "Continuous control monitoring",
@@ -1758,13 +1862,17 @@
           "id": "3C4.2",
           "name": "Control Self-Assessment and Trend Analysis",
           "legacy_ids": [],
+          "practice_ids": [
+            "crisc_d3_045"
+          ],
           "definition": "Control self-assessment (CSA) has managers and staff evaluate their own risks and controls, often in facilitated workshops; trend analysis reads monitoring results over time.",
           "why_it_matters": "People who run a process see risks and workarounds that outside reviews miss. Trends show whether exposure is improving or slipping, which a single snapshot cannot.",
           "how_it_works": [
             "The risk function designs the questions and facilitates; managers answer for their own areas.",
             "CSA builds ownership and awareness, but results are self-reported, so key answers are spot-checked independently.",
             "Trend analysis compares indicator values over several periods to show direction, speed and seasonal patterns.",
-            "A worsening trend can justify action even before a threshold is breached."
+            "A worsening trend can justify action even before a threshold is breached.",
+            "A worsening KCI goes to the control owner, who fixes the control; the risk function challenges and tracks it but does not take over running it."
           ],
           "example": "A city council's twelve departments complete a quarterly self-assessment of their records controls. Fatima, the risk analyst, notes that the housing department's scores rose sharply while its complaint volume also rose. They spot-check three of its answers against records, find two overstated, and raise the difference with the housing director.",
           "audit_focus": {
@@ -1857,10 +1965,13 @@
           "id": "3C5.1",
           "name": "Heat Maps, Scorecards and Dashboards",
           "legacy_ids": [],
+          "practice_ids": [
+            "crisc_d3_047"
+          ],
           "definition": "Risk reporting formats present risk and control information visually: heat maps plot likelihood against impact, scorecards rate results against targets, and dashboards combine indicators.",
           "why_it_matters": "The format shapes the decision. A good visual shows what needs attention at a glance; a poor one hides trends, ranges and risks sitting just outside the red cells.",
           "how_it_works": [
-            "Heat maps show relative position but not trend; add arrows or prior-period markers to show movement.",
+            "Heat maps show relative position but not trend; add trend arrows fed by each risk's KRI history, because a risk can hold its cell while its drivers worsen.",
             "Heat-map scores are ordinal, so cells cannot be added or averaged meaningfully.",
             "Scorecards and dashboards show indicators against thresholds and trend, not raw counts alone.",
             "Every visual needs a date, a data source and a note of known limitations."
@@ -1906,7 +2017,7 @@
             },
             {
               "term": "Trend marker",
-              "definition": "A sign, such as an arrow, showing a risk's direction since the last report."
+              "definition": "A sign, such as an arrow fed by indicator history, showing a risk's direction since the last report."
             }
           ]
         },
@@ -1914,6 +2025,10 @@
           "id": "3C5.2",
           "name": "Reporting for the Audience and the Decision",
           "legacy_ids": [],
+          "practice_ids": [
+            "crisc_d3_019",
+            "crisc_d3_048"
+          ],
           "definition": "Audience-based reporting gives each stakeholder what they need for their own decisions: the board sees the risk profile against appetite, and owners see their risks and actions.",
           "why_it_matters": "A report the reader cannot act on is noise. Technical detail swamps the board, and summary colors starve the people who must fix things.",
           "how_it_works": [
@@ -1934,7 +2049,7 @@
               "Report distribution lists by audience"
             ],
             "recommend": "Have the risk function tailor each report to its audience and state the decision requested.",
-            "decides": "The board or committee that set appetite decides on breaches reported to it"
+            "decides": "The risk owner and the body that approved the breached threshold decide the response"
           },
           "isaca_rule": "Report to the level that can decide, in the terms that audience uses. The board needs risk against appetite and the decisions asked of it; owners need actions. Escalate a breach to the risk owner and whoever set the limit, without waiting for the next cycle.",
           "exam_traps": [
@@ -1950,7 +2065,7 @@
           "key_terms": [
             {
               "term": "Risk profile",
-              "definition": "The overall picture of the risks an organization faces at a point in time."
+              "definition": "The current, aggregated view of the risks the enterprise faces, reported to senior management and the board against appetite."
             },
             {
               "term": "Decision request",
@@ -1974,6 +2089,9 @@
           "id": "3C6.1",
           "name": "Horizon Scanning and Emerging Risk Sources",
           "legacy_ids": [],
+          "practice_ids": [
+            "crisc_d3_050"
+          ],
           "definition": "Horizon scanning is the regular search for new or changing risks from technology, regulation, markets, threats and society, before they are well understood or measurable.",
           "why_it_matters": "Emerging risks give the least warning and the most surprise. Spotting them early leaves time to study them, prepare and take up any opportunity they bring.",
           "how_it_works": [
@@ -2018,6 +2136,10 @@
           "id": "3C6.2",
           "name": "Recording and Reporting Emerging Risk",
           "legacy_ids": [],
+          "practice_ids": [
+            "crisc_d3_020",
+            "crisc_d3_049"
+          ],
           "definition": "Recording emerging risk means entering it in the register with its uncertainty stated, an owner and a review date, then reporting it so leaders can prepare without overreacting.",
           "why_it_matters": "Leaders need early sight of what may change the risk profile. Presenting an uncertain risk as certain wastes money, and leaving it out leaves them unprepared.",
           "how_it_works": [
@@ -2066,19 +2188,19 @@
     }
   ],
   "key_terminologies": {
-    "Risk response": "Accepting, mitigating, transferring (sharing) or avoiding a risk so that as much of the Glossary's future residual risk (the risk expected once the response is implemented) as budgets allow falls within appetite.",
-    "Risk acceptance": "A documented decision by a risk owner with the authority to make it, made according to the appetite and tolerance the board and senior management set, to keep a risk and absorb any loss.",
+    "Risk response": "How the risk owner decides to deal with a risk (accept, mitigate, transfer or avoid, alone or mixed); the aim is to get the target level (the Glossary's future residual risk) inside appetite, and any gap the budget leaves above appetite is treated further or escalated by the owner to the level that set the appetite.",
+    "Risk acceptance": "The risk owner's recorded decision to keep a risk at its current level without further treatment, because it sits inside the appetite and tolerance the board and senior management set and the owner has authority for that level.",
     "Current risk": "Today's exposure, counting only responses already implemented, not those proposed; it is compared with appetite to decide whether treatment is needed.",
-    "Residual risk": "The risk that remains after a response has been implemented; the risk owner accepts it if it is within appetite, or chooses further treatment or elevates it to whoever set the appetite.",
+    "Residual risk": "What is left of a risk once the chosen response is in place and working; the risk owner accepts it if it is within appetite, or chooses further treatment or elevates it to the level that set the appetite.",
     "Target risk": "The level a planned response is expected to reach (the Glossary's future residual risk); it judges whether a plan is enough, never today's position.",
-    "Risk owner": "The person with authority and accountability for decisions about a risk, who answers for the loss if it happens.",
-    "Control owner": "The person with the authority and accountability for control-related decisions, who ensures a control is implemented and operating effectively; often the manager whose team runs it.",
+    "Risk owner": "The named person who answers for a risk: decides how it is treated, accepts what remains and carries the loss if it occurs.",
+    "Control owner": "The manager who answers for one control doing its job, from its design and daily running to the fix when it fails; often the manager whose team runs it, or who manages the supplier that does.",
     "Risk transfer": "Shifting part of a risk's financial consequence to another party, such as an insurer; accountability stays with the organization.",
     "Right to audit": "A contract clause letting the customer, or an assessor it appoints, examine a vendor's controls and records.",
     "Fourth party": "A vendor's own supplier or subcontractor, such as the cloud host behind a software provider.",
     "Exception": "A temporary, approved deviation from a policy or standard, with compensating controls and an expiry date.",
     "Exemption": "An approved exclusion from a requirement for a defined scope, reviewed periodically.",
-    "Compensating control": "A control that reduces risk where a required control is missing or weak.",
+    "Compensating control": "An alternative control that reduces risk when a required control is missing, weak or cannot be applied.",
     "Preventive control": "A control that stops an unwanted event before it happens.",
     "Detective control": "A control that finds and reports an unwanted event after it occurs.",
     "Corrective control": "A control that limits damage and restores normal operation after an event.",
@@ -2086,12 +2208,12 @@
     "Operating effectiveness": "Whether a control actually worked consistently over a period.",
     "Reperformance": "A test in which the tester independently performs a control again and compares the results.",
     "Risk action plan": "The actions, owners, resources and dates for carrying out a chosen risk response.",
-    "Risk aggregation": "Integrating risk assessments across units into one enterprise view, after normalizing them to common criteria.",
-    "Key risk indicator (KRI)": "A metric tied to a risk scenario that warns of changing exposure against thresholds.",
+    "Risk aggregation": "Rolling unit-level risk ratings up into one view of the enterprise's total exposure, after normalizing them to common criteria; correlated risks are not simply added.",
+    "Key risk indicator (KRI)": "A metric picked to give early warning on a significant risk, because it reliably moves before that risk's likelihood or impact changes; it is read against thresholds drawn from appetite and tolerance.",
     "Key control indicator (KCI)": "A metric showing whether a control is weakening or failing.",
     "Key performance indicator (KPI)": "A metric of progress toward a process or project goal.",
     "Leading indicator": "A predictive metric that changes before a risk event, giving time to act.",
-    "Continuous monitoring": "Ongoing awareness of security, vulnerabilities and threats, at a frequency set by risk, to support risk decisions.",
+    "Continuous monitoring": "Watching security posture, vulnerabilities and threats on a continuing basis, at a frequency set by risk, so risk decisions rest on current information rather than a yearly snapshot.",
     "Control self-assessment (CSA)": "Managers and staff evaluating their own risks and controls, usually facilitated by the risk function.",
     "Heat map": "A grid that ranks risks by likelihood and impact bands; ISACA's glossary calls it a risk map.",
     "Emerging risk": "A new or changing risk whose likelihood and impact are not yet well understood.",
@@ -2106,7 +2228,7 @@
     {
       "title": "ISACA Interactive Glossary (risk owner, control owner, risk response, risk transfer, risk acceptance, risk aggregation, current risk, residual risk, risk tolerance, KRI, KCI, risk map, control types)",
       "url": "https://www.isaca.org/resources/glossary",
-      "checked": "2026-10-30: entries read this session; 2026-10-31: control owner, current risk, residual risk, risk response and risk tolerance re-read for the quality pass"
+      "checked": "2026-10-30: entries read this session; 2026-10-31: control owner, current risk, residual risk, risk response and risk tolerance re-read for the quality pass; 2026-10-31: key control indicator, preventive control, risk acceptance and residual risk re-read for round 2"
     },
     {
       "title": "ISACA Risk IT Framework, 2nd Edition",
@@ -2126,12 +2248,12 @@
     {
       "title": "NIST IR 8286B-upd1, Prioritizing Cybersecurity Risk for Enterprise Risk Management (Feb 2025)",
       "url": "https://csrc.nist.gov/pubs/ir/8286/b/upd1/final",
-      "checked": "2026-10-30: Sections 2.3 and 2.4 read in the PDF"
+      "checked": "2026-10-30: Sections 2.3 and 2.4 read in the PDF; 2026-10-31: Sections 2.2.4 and 2.2.5 read for round 2"
     },
     {
       "title": "NIST IR 8286C Rev. 1, Staging Cybersecurity Risks for Enterprise Risk Management and Governance Oversight (Dec 2025; supersedes IR 8286C-upd1, withdrawn 18 Dec 2025)",
       "url": "https://csrc.nist.gov/pubs/ir/8286/c/r1/final",
-      "checked": "2026-10-31: Section 2.2 (Normalization of Cybersecurity Risk Registers) read in the PDF, nvlpubs.nist.gov/nistpubs/ir/2025/NIST.IR.8286Cr1.pdf"
+      "checked": "2026-10-31: Section 2.2 (Normalization of Cybersecurity Risk Registers) read in the PDF, nvlpubs.nist.gov/nistpubs/ir/2025/NIST.IR.8286Cr1.pdf; 2026-10-31: Sections 5.1 and 5.2 (KPIs, KRIs and monitoring trends) read for round 2"
     },
     {
       "title": "NIST SP 800-53 Rev. 5, Security and Privacy Controls for Information Systems and Organizations",
@@ -2151,7 +2273,7 @@
     {
       "title": "NIST SP 800-137, Information Security Continuous Monitoring (ISCM) for Federal Information Systems and Organizations (Sep 2011)",
       "url": "https://csrc.nist.gov/pubs/sp/800/137/final",
-      "checked": "2026-10-30: Sections 3.4 and 3.5 read in the PDF"
+      "checked": "2026-10-30: Sections 3.4 and 3.5 read in the PDF; 2026-10-31: Section 3.2.2 (monitoring and assessment frequencies) read in the PDF for round 2"
     },
     {
       "title": "NIST SP 800-161 Rev. 1, Cybersecurity Supply Chain Risk Management Practices for Systems and Organizations (May 2022, updated Nov 2024)",
@@ -2161,17 +2283,17 @@
     {
       "title": "NIST SP 800-55 Vol. 1, Measurement Guide for Information Security: Identifying and Selecting Measures (Dec 2024)",
       "url": "https://csrc.nist.gov/pubs/sp/800/55/v1/final",
-      "checked": "2026-10-30: Sections 2.4 and 4.4 read in the PDF"
+      "checked": "2026-10-30: Sections 2.4 and 4.4 read in the PDF; 2026-10-31: Section 3.1.4 (Data Quality) read in the PDF for round 2"
     },
     {
       "title": "NIST CSWP 29, The NIST Cybersecurity Framework (CSF) 2.0 (Feb 2024)",
       "url": "https://csrc.nist.gov/pubs/cswp/29/the-nist-cybersecurity-framework-csf-20/final",
-      "checked": "2026-10-30: GV.OV, GV.RM, GV.RR, GV.SC and ID.RA subcategories read in the PDF"
+      "checked": "2026-10-30: GV.OV, GV.RM, GV.RR, GV.SC and ID.RA subcategories read in the PDF; 2026-10-31: Sections 3.1 and 3.2 (Profiles and Tiers) and GV.SC-05 to GV.SC-10 read for round 2"
     },
     {
       "title": "NIST AI 100-1, Artificial Intelligence Risk Management Framework (AI RMF 1.0) (Jan 2023)",
       "url": "https://www.nist.gov/itl/ai-risk-management-framework",
-      "checked": "2026-10-30: GOVERN 1.1, GOVERN 3.2, MEASURE 2.4, MANAGE 1.3 and MANAGE 4.1 read in the PDF from nvlpubs.nist.gov"
+      "checked": "2026-10-30: GOVERN 1.1, GOVERN 3.2, MEASURE 2.4, MANAGE 1.3 and MANAGE 4.1 read in the PDF from nvlpubs.nist.gov; 2026-10-31: MANAGE 3.1 and GOVERN 6.1 to 6.2 read for round 2"
     },
     {
       "title": "AICPA SOC 2 reporting; ISO 31000:2018; ISO/IEC 27005:2022; COSO ERM (2017); IIA Three Lines Model (2020)",

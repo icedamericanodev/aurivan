@@ -44,12 +44,15 @@
           "id": "2A1.1",
           "name": "Loss Events, Incidents and Near Misses",
           "legacy_ids": [],
+          "practice_ids": [
+            "crisc_d2_001"
+          ],
           "definition": "A risk event is something that happened, or nearly happened, that shows a risk scenario can occur. Loss events cause harm; near misses stop just short of it.",
           "why_it_matters": "Events are the best evidence a practitioner has about real likelihood and impact. Counting only losses hides how often controls were nearly beaten, so the register understates risk.",
           "how_it_works": [
             "A loss event is one where a threat event actually causes harm, such as money lost or a service stopped.",
             "A near miss would have caused loss but was stopped by a control, by chance or by timing.",
-            "An incident breaks, or nearly breaks, security policy; it may or may not cause loss.",
+            "An incident breaks, or nearly breaks, security policy; it need not cause loss.",
             "Each event is linked to the scenario it supports and used to re-rate that scenario's likelihood or impact.",
             "Fixing the immediate cause closes the incident ticket, not the risk."
           ],
@@ -80,7 +83,7 @@
           "key_terms": [
             {
               "term": "Loss event",
-              "definition": "Any event in which a threat event results in loss (ISACA Glossary, which credits the FAIR taxonomy)."
+              "definition": "A threat event that actually causes loss, such as lost money, data or service; the ISACA Glossary credits the term to the FAIR taxonomy."
             },
             {
               "term": "Near miss",
@@ -88,7 +91,7 @@
             },
             {
               "term": "Incident",
-              "definition": "A violation, or imminent threat of violation, of security policies, acceptable use policies or standard security practices."
+              "definition": "(Security sense) An event harming, or about to harm, the confidentiality, integrity or availability of information, or breaching law or security rules."
             }
           ],
           "memory_aid": "Loss hurt, near miss nearly hurt: both re-rate the scenario."
@@ -97,6 +100,9 @@
           "id": "2A1.2",
           "name": "Internal and External Event Sources",
           "legacy_ids": [],
+          "practice_ids": [
+            "crisc_d2_021"
+          ],
           "definition": "Event sources are where risk event data comes from: inside the enterprise, such as incident logs and audit findings, and outside it, such as peers, regulators and insurers.",
           "why_it_matters": "Internal data shows the enterprise's own controls and history; external data covers events too rare to have happened here yet. Relying on one source alone distorts likelihood.",
           "how_it_works": [
@@ -145,6 +151,10 @@
           "id": "2A1.3",
           "name": "AI Risk Events: Bias and Model Drift",
           "legacy_ids": [],
+          "practice_ids": [
+            "crisc_d2_002",
+            "crisc_d2_022"
+          ],
           "definition": "AI risk events are occurrences in which an AI system harms objectives, such as a biased decision, a harmful output, or accuracy that falls as live data drifts.",
           "why_it_matters": "AI failures often look like normal outputs, so nobody files an incident. Without event capture, a biased or drifting model keeps making decisions the business is accountable for.",
           "how_it_works": [
@@ -207,6 +217,10 @@
           "id": "2A2.1",
           "name": "Threat Sources and Threat Events",
           "legacy_ids": [],
+          "practice_ids": [
+            "crisc_d2_003",
+            "crisc_d2_023"
+          ],
           "definition": "A threat source is anyone or anything that could cause harm; a threat event is what that source does, such as phishing staff or flooding a data center.",
           "why_it_matters": "Scenarios built only around outside hackers miss insiders, errors, equipment failures and disasters. A full taxonomy keeps identification complete and keeps threats separate from weaknesses.",
           "how_it_works": [
@@ -261,7 +275,7 @@
           "key_terms": [
             {
               "term": "Threat event",
-              "definition": "An event in which a threat source acts against an asset in a way that could directly cause harm."
+              "definition": "A specific occurrence, such as a phishing campaign or a flood, through which a threat source could harm an asset or disrupt a process."
             },
             {
               "term": "Privileged insider",
@@ -273,6 +287,9 @@
           "id": "2A2.2",
           "name": "Threat Intelligence and Threat Modeling",
           "legacy_ids": [],
+          "practice_ids": [
+            "crisc_d2_024"
+          ],
           "definition": "Threat intelligence is analyzed information about threat actors and their methods; threat modeling is a structured way to work out how a system could be attacked or fail.",
           "why_it_matters": "Intelligence shows what is happening outside; modeling shows whether it matters to this enterprise's assets. A feed nobody analyzes creates noise, not risk insight.",
           "how_it_works": [
@@ -351,6 +368,10 @@
           "id": "2A2.3",
           "name": "AI-Specific Threats",
           "legacy_ids": [],
+          "practice_ids": [
+            "crisc_d2_004",
+            "crisc_d2_025"
+          ],
           "definition": "AI-specific threats attack the parts unique to AI systems: the prompts they accept, the data they learn from and the trained model itself.",
           "why_it_matters": "Firewalls and malware tools do not see a malicious instruction hidden in a document an AI assistant reads. Missing these threats leaves AI scenarios out of the register.",
           "how_it_works": [
@@ -363,7 +384,7 @@
           "types": [
             {
               "term": "Prompt injection",
-              "meaning": "Crafted input that makes a language model ignore its instructions and produce unintended or harmful output."
+              "meaning": "Instructions hidden in text a language model reads, such as a prompt, document or web page, that make it override its intended behavior, leak data or act harmfully."
             },
             {
               "term": "Data poisoning",
@@ -427,6 +448,11 @@
           "id": "2A3.1",
           "name": "Vulnerabilities in People, Process and Technology",
           "legacy_ids": [],
+          "practice_ids": [
+            "crisc_d2_006",
+            "crisc_d2_026",
+            "crisc_d2_028"
+          ],
           "definition": "A vulnerability is a weakness in the design, implementation, operation or internal control of a process or system that a threat could exploit.",
           "why_it_matters": "Most serious losses combine a technical flaw with a process gap or a human error. Looking only at scanner output leaves the process and people weaknesses unmanaged.",
           "how_it_works": [
@@ -479,6 +505,10 @@
             {
               "trap": "The vulnerability scanner report is the complete list of the enterprise's vulnerabilities.",
               "why": "Scanners find technical flaws only. Process gaps, weak segregation of duties and people weaknesses come from walkthroughs, control tests and audits."
+            },
+            {
+              "trap": "A data center in a flood zone is the threat source in its outage scenario.",
+              "why": "The flood is the environmental threat. The site's location is a predisposing condition: it acts on nothing, but it raises the likelihood that a flood causes harm (NIST SP 800-30 Rev. 1 Section 2.3.1)."
             }
           ],
           "key_terms": [
@@ -500,6 +530,9 @@
           "id": "2A3.2",
           "name": "CVSS as a Severity Input",
           "legacy_ids": [],
+          "practice_ids": [
+            "crisc_d2_005"
+          ],
           "definition": "CVSS (Common Vulnerability Scoring System) v4.0 is FIRST's open standard for scoring the technical severity of a software vulnerability from 0 to 10.",
           "why_it_matters": "A CVSS score describes the flaw, not the enterprise's exposure. Used as the risk rating, it can rank an isolated test server above a payment system just because its flaw scored higher.",
           "how_it_works": [
@@ -549,6 +582,9 @@
           "id": "2A3.3",
           "name": "Risk-Based Remediation Priority",
           "legacy_ids": [],
+          "practice_ids": [
+            "crisc_d2_027"
+          ],
           "definition": "Risk-based remediation ranks vulnerability fixes by business impact and likelihood of exploitation, not by severity score or discovery date alone.",
           "why_it_matters": "No enterprise can fix everything at once. Ranking by business risk spends limited patching effort where a successful exploit would hurt objectives most.",
           "how_it_works": [
@@ -610,6 +646,9 @@
           "id": "2A4.1",
           "name": "Anatomy of a Risk Scenario",
           "legacy_ids": [],
+          "practice_ids": [
+            "crisc_d2_007"
+          ],
           "definition": "A risk scenario is a specific, assessable description of how a threat could cause an event that affects an asset and harms business objectives.",
           "why_it_matters": "A vague entry such as 'cyberattack' cannot be rated, owned or treated. A specific scenario shows which controls matter and lets the owner compare it with appetite.",
           "how_it_works": [
@@ -643,7 +682,7 @@
           "key_terms": [
             {
               "term": "Risk scenario",
-              "definition": "ISACA Glossary: a tangible and assessable representation of risk."
+              "definition": "A concrete account of how a threat could cause an event that harms objectives, naming the cause, asset and business impact, specific enough to rate."
             },
             {
               "term": "Cause-and-effect statement",
@@ -656,6 +695,9 @@
           "id": "2A4.2",
           "name": "Top-Down and Bottom-Up Scenario Development",
           "legacy_ids": [],
+          "practice_ids": [
+            "crisc_d2_031"
+          ],
           "definition": "Top-down development starts from business objectives and asks what could stop them; bottom-up development starts from assets, threats and vulnerabilities and asks where they could lead.",
           "why_it_matters": "Each approach misses what the other catches. Using both keeps the scenario set tied to objectives without missing technical threats, and keeps it small enough to manage.",
           "how_it_works": [
@@ -729,12 +771,17 @@
           "id": "2A4.3",
           "name": "Validating Scenarios and Tabletop Exercises",
           "legacy_ids": [],
+          "practice_ids": [
+            "crisc_d2_008",
+            "crisc_d2_029",
+            "crisc_d2_030"
+          ],
           "definition": "Validation confirms with business owners that a scenario is realistic and its impact is right; a tabletop exercise walks a team through a scenario to test plans and find gaps.",
           "why_it_matters": "Scenarios written by the risk team alone often misjudge business impact. Tabletop exercises reveal missing scenarios, unclear roles and weak responses before a real event does.",
           "how_it_works": [
             "Process and asset owners review each scenario's events, impacts and existing controls and sign off the description.",
             "A tabletop exercise is a facilitated, discussion-based walkthrough; no systems are touched.",
-            "Participants include business owners, control owners, IT, communications and, where relevant, key suppliers.",
+            "Participants include business owners, control owners, IT, communications and key suppliers; the exercise tests decisions, so the owners who would make them must take part.",
             "Injects, new facts added during play, test decisions such as escalation, customer notice and recovery order.",
             "Findings become actions: new or revised scenarios, register updates and control changes, each with an owner and a date."
           ],
@@ -790,7 +837,10 @@
           "id": "2B1.1",
           "name": "Likelihood, Impact and Risk",
           "legacy_ids": [],
-          "definition": "Risk is the combination of how likely an event is and how much it would affect objectives. The ISACA Glossary calls it an event's likelihood combined with its impact.",
+          "practice_ids": [
+            "crisc_d2_032"
+          ],
+          "definition": "Risk is the chance that an event happens, weighed with how much it would affect objectives; the ISACA Glossary frames it as likelihood combined with impact.",
           "why_it_matters": "Rating only impact makes every disaster look urgent; rating only likelihood ignores rare but severe events. Both together let owners compare risks fairly against appetite.",
           "how_it_works": [
             "Likelihood combines the chance a threat event starts and the chance it causes harm, over a stated time frame.",
@@ -817,6 +867,10 @@
             {
               "trap": "A high-impact event is always a high risk.",
               "why": "If likelihood is very low and controls are strong, the combined risk may be moderate. Both factors set the rating."
+            },
+            {
+              "trap": "When two analysts rate the same scenario differently, average the ratings or keep the higher one.",
+              "why": "Check the basis first. Ratings made over different time frames, scales or level definitions cannot be compared; fix the basis, then re-rate."
             }
           ],
           "key_terms": [
@@ -838,6 +892,11 @@
           "id": "2B1.2",
           "name": "The Risk Assessment Process and Scope",
           "legacy_ids": [],
+          "practice_ids": [
+            "crisc_d2_009",
+            "crisc_d2_010",
+            "crisc_d2_033"
+          ],
           "definition": "A risk assessment identifies, estimates and prioritizes risk. NIST SP 800-30 runs it in four steps: prepare, conduct, communicate the results and maintain the assessment.",
           "why_it_matters": "Skipping preparation means assessing the wrong things against the wrong criteria. Skipping communication or maintenance means decisions rest on results nobody saw or that are out of date.",
           "how_it_works": [
@@ -882,7 +941,7 @@
             },
             {
               "term": "Risk evaluation",
-              "definition": "Comparing estimated risk with risk criteria to decide how significant it is."
+              "definition": "The decision step after analysis: setting each rated risk against the agreed criteria and appetite to decide whether it needs a response, and how urgently."
             }
           ],
           "memory_aid": "Prepare, conduct, communicate, maintain: scope before threats."
@@ -904,6 +963,10 @@
           "id": "2B2.1",
           "name": "BIA Purpose, Dependencies and AI Systems",
           "legacy_ids": [],
+          "practice_ids": [
+            "crisc_d2_011",
+            "crisc_d2_036"
+          ],
           "definition": "A business impact analysis (BIA) finds the critical business processes, how their impact grows over time when disrupted, and the resources and dependencies they need to recover.",
           "why_it_matters": "Recovery money and effort are limited. The BIA tells the enterprise what to restore first, and it gives risk assessments the impact data they need.",
           "how_it_works": [
@@ -977,14 +1040,20 @@
           "id": "2B2.2",
           "name": "MTO, RTO and RPO",
           "legacy_ids": [],
-          "definition": "MTO is a critical function's longest tolerable disruption; RTO, the time allowed to recover a business function or resource; RPO, the earliest restore point that tolerable data loss allows.",
-          "why_it_matters": "These numbers drive recovery design and cost. If IT sets them alone, they reflect what the technology can do, not what the business can survive.",
+          "practice_ids": [
+            "crisc_d2_012",
+            "crisc_d2_034",
+            "crisc_d2_035",
+            "crisc_d2_037"
+          ],
+          "definition": "MTO is a critical function's longest tolerable disruption; RTO, the time allowed to recover a function or resource; RPO, the earliest restore point that tolerable data loss allows.",
+          "why_it_matters": "These numbers drive recovery design and cost. Set by IT alone, they reflect what the technology can do, not what the business can survive.",
           "how_it_works": [
-            "Process owners and leadership set the maximum tolerable outage (MTO; other sources say MTD) from the impact-over-time results.",
+            "Process owners and leadership set the maximum tolerable outage (MTO; other sources say MTD) from impact-over-time results.",
             "The recovery time objective (RTO) for each supporting function or resource must normally be shorter than the MTO, leaving time to reprocess work.",
-            "The recovery point objective (RPO) is the earliest point in time to which data must be recoverable; a four-hour RPO allows up to four hours of lost data.",
-            "RTO is about time to recover and RPO is about data that may be lost, so they are set separately.",
-            "Shorter objectives cost more, so the business weighs recovery cost against the impact the BIA found."
+            "The recovery point objective (RPO) is the earliest point to which data must be recoverable; a four-hour RPO allows up to four hours of lost data.",
+            "The service delivery objective (SDO) sets the service level, such as share of normal volume, needed in alternate mode.",
+            "Shorter objectives cost more; when tested recovery misses the MTO, the process owner weighs that cost against the BIA impact."
           ],
           "compare": {
             "columns": [
@@ -1019,7 +1088,7 @@
               }
             ]
           },
-          "example": "A veterinary clinic chain moves its records system to the cloud. The IT manager proposes a 72-hour RTO because the standard cloud backup restores in that time. Grace Liu, the risk analyst, asks the clinical operations lead what happens without records; they say emergency surgery becomes unsafe after 12 hours. Grace records the gap between the proposed RTO and the business tolerance.",
+          "example": "A veterinary chain moves its records system to the cloud, and IT proposes a 72-hour RTO because the cloud backup restores in that time. Grace Liu, the risk analyst, asks the clinical operations lead, who says emergency surgery becomes unsafe after 12 hours without records. Grace records the gap against the business tolerance.",
           "audit_focus": {
             "review": [
               "Trace each approved objective to the BIA result and owner sign-off",
@@ -1032,7 +1101,7 @@
             "recommend": "Have business owners set recovery objectives from the BIA and have IT design recovery to meet them.",
             "decides": "Process owners set MTO, RTO and RPO; senior management funds the recovery"
           },
-          "isaca_rule": "Recovery objectives come from the business, through the BIA, not from what IT can deliver today. RTO must fit inside the MTO, and RPO is set separately by how much data loss is tolerable.",
+          "isaca_rule": "Recovery objectives come from the business, through the BIA, not from what IT can deliver today. RTO must fit inside the MTO; RPO is set separately by tolerable data loss.",
           "exam_traps": [
             {
               "trap": "RTO and RPO are two names for how fast a system comes back.",
@@ -1040,17 +1109,21 @@
             },
             {
               "trap": "IT should set the RTO because it knows the recovery technology.",
-              "why": "IT knows what is achievable and what it costs, but only business owners know how long the process can be down. IT advises; the business sets the objective."
+              "why": "IT knows what is achievable and its cost; only business owners know how long the process can be down. IT advises; the business decides."
             }
           ],
           "key_terms": [
             {
               "term": "Maximum tolerable outage (MTO)",
-              "definition": "ISACA Glossary term for the longest a critical function or system can be disrupted before significant harm."
+              "definition": "ISACA term: the outage limit of a critical process or system, past which the damage to the enterprise becomes significant."
             },
             {
               "term": "Acceptable interruption window (AIW)",
-              "definition": "ISACA Glossary term for the longest a system can be unavailable before business objectives are compromised."
+              "definition": "ISACA term: the business's downtime limit for a system, set at the point where a longer outage would start to put business objectives at risk."
+            },
+            {
+              "term": "Service delivery objective (SDO)",
+              "definition": "ISACA term: the agreed level of service the business must still get on recovery arrangements, often below normal; it sizes the alternate setup."
             }
           ],
           "memory_aid": "RTO looks forward to recovery; RPO looks back to the last good data."
@@ -1060,7 +1133,7 @@
     {
       "topic_id": "2B3",
       "topic_name": "Risk Register",
-      "overview": "This topic covers the risk register: the record of identified, analyzed and prioritized risk scenarios, each with an owner, ratings, controls, response, status and indicators. It must be kept current as events and controls change, and it feeds the enterprise risk profile senior management uses to decide.",
+      "overview": "This topic covers the risk register: the working record of risk scenarios, each with an owner, ratings, controls, response, status and indicators. It must be kept current as events and controls change, and it feeds the enterprise risk profile senior management uses to decide.",
       "can_do": [
         "Name the fields a complete register entry needs",
         "Explain why every entry needs an accountable business owner",
@@ -1072,7 +1145,7 @@
           "id": "2B3.1",
           "name": "Register Fields and Ownership",
           "legacy_ids": [],
-          "definition": "A risk register is the record of risk scenarios that have been identified, analyzed and prioritized, with the owner, ratings, controls and response for each one.",
+          "definition": "A risk register is the working record of risk scenarios, with the owner, ratings, controls, chosen response and status for each one.",
           "why_it_matters": "The register is how risk is tracked and decided on. An entry with no owner has nobody to accept, treat or monitor it, so it drifts.",
           "how_it_works": [
             "Core fields: ID, scenario, category, risk owner, inherent and current ratings (with the target rating for any planned response), existing controls, response, action plan, status, KRIs and review date.",
@@ -1104,11 +1177,11 @@
           "key_terms": [
             {
               "term": "Risk owner",
-              "definition": "ISACA Glossary: the person with authority and accountability for risk-based decisions, who owns the loss of a realized scenario."
+              "definition": "The named person who answers for a risk: decides how it is treated, accepts what remains and carries the loss if it occurs."
             },
             {
               "term": "Control owner",
-              "definition": "ISACA Glossary: the person assigned authority and accountability for control-related decisions, who ensures the control is implemented and operating effectively and efficiently."
+              "definition": "The manager who answers for one control doing its job, from design and daily running to fixing it when it fails."
             },
             {
               "term": "Action owner",
@@ -1124,6 +1197,11 @@
           "id": "2B3.2",
           "name": "Keeping the Register Current",
           "legacy_ids": [],
+          "practice_ids": [
+            "crisc_d2_013",
+            "crisc_d2_038",
+            "crisc_d2_039"
+          ],
           "definition": "Keeping the register current means updating ratings, controls, responses and status whenever events, assessments, control tests or business changes alter a risk.",
           "why_it_matters": "Decisions are only as good as the register behind them. A stale register reports risks as treated that are not, and hides risks that have grown.",
           "how_it_works": [
@@ -1131,7 +1209,7 @@
             "Status follows evidence: an entry moves to treated only when the response is implemented and working, not when it is planned.",
             "Current and residual ratings credit a control only after it is implemented and tested, not on the day it is approved.",
             "Each owner reviews their entries on a set cycle, and KRIs flag when an earlier review is needed.",
-            "Closing an entry needs a reason, such as the asset being retired or the risk avoided, and the owner's approval."
+            "Closing an entry needs a reason, such as the asset being retired or the risk avoided, and the owner's approval; closed entries stay in the register as history."
           ],
           "example": "A pension fund's register shows member portal account takeover as treated because multifactor sign-in was approved in March. In September, Elif Yilmaz, the risk analyst, finds the rollout covers only 20% of members. Elif moves the status back to in treatment, re-scores the current risk on the control as it stands, and flags the gap to the member services director.",
           "audit_focus": {
@@ -1168,6 +1246,9 @@
           "id": "2B3.3",
           "name": "From Register to Enterprise Risk Profile",
           "legacy_ids": [],
+          "practice_ids": [
+            "crisc_d2_014"
+          ],
           "definition": "The enterprise risk profile is the combined view of an enterprise's significant risks, built by normalizing and aggregating unit and IT risk registers for senior management and the board.",
           "why_it_matters": "Leaders cannot read hundreds of entries. Consistent registers that roll up show which risks threaten enterprise objectives and where appetite is exceeded.",
           "how_it_works": [
@@ -1208,7 +1289,7 @@
             },
             {
               "term": "Aggregation",
-              "definition": "Combining related risks to show their total effect on enterprise objectives."
+              "definition": "Rolling unit-level ratings up into one view of total enterprise exposure, on common criteria and allowing for correlated risks."
             }
           ]
         }
@@ -1229,6 +1310,9 @@
           "id": "2B4.1",
           "name": "Qualitative and Semi-Quantitative Analysis",
           "legacy_ids": [],
+          "practice_ids": [
+            "crisc_d2_042"
+          ],
           "definition": "Qualitative analysis rates likelihood and impact on defined word scales, such as low to very high; semi-quantitative analysis maps those levels to numbered bins or scores.",
           "why_it_matters": "Most enterprises lack reliable loss data for many risks. Well-defined scales give fast, comparable ratings decision makers understand, as long as everyone uses them the same way.",
           "how_it_works": [
@@ -1236,6 +1320,7 @@
             "Without defined levels, different experts produce very different ratings for the same risk.",
             "Semi-quantitative scales, such as 1 to 5 or bins of 0 to 100, allow finer ranking than words alone.",
             "Scores on these scales show order, not true size: a 4 is not exactly twice as bad as a 2.",
+            "Equal scores can hide different shapes: frequent small losses and rare severe ones may need different responses, so report likelihood and impact, not only the combined score.",
             "One enterprise scale is used by every unit, so ratings can be compared and aggregated."
           ],
           "compare": {
@@ -1306,6 +1391,11 @@
           "id": "2B4.2",
           "name": "Quantitative Analysis: SLE, ARO and ALE",
           "legacy_ids": [],
+          "practice_ids": [
+            "crisc_d2_015",
+            "crisc_d2_016",
+            "crisc_d2_043"
+          ],
           "definition": "Quantitative analysis expresses risk in money and probability. The classic method multiplies single loss expectancy (SLE) by annual rate of occurrence (ARO) to get annualized loss expectancy (ALE).",
           "why_it_matters": "Money values let owners weigh a control's cost against the loss it avoids, which supports cost-benefit decisions that word scales cannot.",
           "how_it_works": [
@@ -1360,13 +1450,18 @@
           "id": "2B4.3",
           "name": "Choosing a Method: Data, Decisions, FAIR and Monte Carlo",
           "legacy_ids": [],
+          "practice_ids": [
+            "crisc_d2_017",
+            "crisc_d2_040",
+            "crisc_d2_041"
+          ],
           "definition": "Choosing a method means matching the analysis to the decision it must support and the quality of the data available, from simple scales to FAIR models and Monte Carlo simulation.",
           "why_it_matters": "A precise-looking number built on guesses misleads decision makers more than an honest qualitative rating. The method must fit both the data and the decision.",
           "how_it_works": [
             "Ask what the decision needs: ranking many risks, a funding case for one control, or capital and insurance planning.",
             "Check the data: loss history, industry benchmarks and expert estimates, and how reliable each one is.",
             "FAIR, an Open Group standard, breaks risk into loss event frequency and loss magnitude for quantitative analysis.",
-            "Monte Carlo simulation runs thousands of trials from estimated ranges to produce a spread of possible losses, not one figure.",
+            "Monte Carlo simulation runs thousands of trials from estimated ranges to give a spread of losses; a limit on large losses is tested on its tail, not the mean.",
             "Ranges with stated confidence beat single-point numbers when data is uncertain.",
             "Methods can be combined: qualitative screening first, then quantitative analysis of the top risks."
           ],
@@ -1414,7 +1509,7 @@
     {
       "topic_id": "2B5",
       "topic_name": "Inherent and Residual Risk",
-      "overview": "This topic covers inherent risk (before any controls), current risk (counting only controls working today) and residual risk (what remains once a chosen response is implemented; from then on it is the current risk). A planned response's projection is the ISACA Glossary's future residual risk (KaiSip: target risk): it judges the plan, not today's position. Owners compare current risk with appetite, and controls earn credit only when tested.",
+      "overview": "This topic covers inherent risk (before any management action, controls included), current risk (counting only controls working today) and residual risk (what remains once a chosen response is implemented; from then on it is the current risk). A planned response's projection is the ISACA Glossary's future residual risk (KaiSip: target risk): it judges the plan, not today's position. Owners compare current risk with appetite, and controls earn credit only when tested.",
       "can_do": [
         "Tell inherent, current and residual risk apart in a scenario",
         "Explain why a control's existence does not prove its effect",
@@ -1426,14 +1521,18 @@
           "id": "2B5.1",
           "name": "Inherent, Current and Residual Risk",
           "legacy_ids": [],
+          "practice_ids": [
+            "crisc_d2_018",
+            "crisc_d2_044"
+          ],
           "definition": "Inherent risk is risk before any management action; current risk reflects controls already in place; residual risk is what remains after the chosen risk response is implemented.",
-          "why_it_matters": "Mixing these up leads to wrong decisions. Comparing inherent risk with appetite overstates the need for new controls; counting planned controls as working understates real exposure.",
+          "why_it_matters": "Comparing inherent risk with appetite overstates the need for new controls; counting planned controls as working understates real exposure.",
           "how_it_works": [
             "Inherent risk shows how much a scenario depends on controls; a high inherent rating marks controls that must not fail.",
             "Current risk counts only actions already taken, not those proposed or planned.",
             "Residual risk is rated with the same scales and method as inherent risk, so the two are comparable.",
             "Current risk, counting only implemented, working responses, is compared with appetite now; a planned response's future residual risk shows whether the plan is enough.",
-            "Residual risk is never zero; some uncertainty always remains after any response."
+            "Residual risk is never zero; some uncertainty remains after any response."
           ],
           "compare": {
             "columns": [
@@ -1476,11 +1575,11 @@
             "recommend": "Have the risk function record inherent, current and target ratings separately, crediting only implemented, working controls in current risk, for owners to confirm.",
             "decides": "The risk owner compares current risk with appetite and decides further treatment"
           },
-          "isaca_rule": "Inherent risk shows reliance on controls; current risk is today's exposure; residual risk is what an implemented response leaves. Compare current risk with appetite to decide on treatment, and check that a plan's expected residual risk falls within appetite. Never compare inherent risk, or count planned controls as working.",
+          "isaca_rule": "Inherent risk shows reliance on controls; current risk is today's exposure; residual risk is what an implemented response leaves. Compare current risk with appetite to decide on treatment, and check that a plan's target (future residual) risk falls within appetite. Never compare inherent risk, or count planned controls as working.",
           "exam_traps": [
             {
               "trap": "Compare inherent risk with appetite to decide whether to add controls.",
-              "why": "Inherent risk ignores controls already working. The decision compares the risk that exists now, counting only implemented, working controls, with appetite."
+              "why": "Inherent risk ignores all management action. The decision compares the risk that exists now, counting only implemented, working controls, with appetite."
             },
             {
               "trap": "Residual risk is never the figure to compare with appetite.",
@@ -1490,7 +1589,7 @@
           "key_terms": [
             {
               "term": "Future residual risk",
-              "definition": "ISACA Glossary phrase (risk response entry) for current risk with the planned response implemented; KaiSip calls it target risk."
+              "definition": "ISACA Glossary name for the level a risk should reach once the planned response is in place; KaiSip calls it target risk."
             },
             {
               "term": "Target risk",
@@ -1506,6 +1605,9 @@
           "id": "2B5.2",
           "name": "Control Effectiveness and the Residual Gap",
           "legacy_ids": [],
+          "practice_ids": [
+            "crisc_d2_019"
+          ],
           "definition": "Control effectiveness is how well a control actually reduces a risk's likelihood or impact; it sets the gap between inherent and residual risk.",
           "why_it_matters": "A residual rating that assumes controls work, without evidence, can hide a risk far above appetite. Effectiveness must be shown, not assumed.",
           "how_it_works": [
@@ -1546,7 +1648,7 @@
             },
             {
               "term": "Key control indicator (KCI)",
-              "definition": "A measure of control effectiveness that signals failure or weakness that could raise a risk's likelihood or impact, such as the count of failed backups."
+              "definition": "A metric showing that a control is weakening or failing before the risk it guards against grows, such as test restores missing recovery objectives."
             }
           ]
         },
@@ -1554,12 +1656,16 @@
           "id": "2B5.3",
           "name": "Residual Risk Against Appetite and Tolerance",
           "legacy_ids": [],
+          "practice_ids": [
+            "crisc_d2_020",
+            "crisc_d2_045"
+          ],
           "definition": "Comparing residual risk, the current risk once a response is in place, with appetite and tolerance decides the next step: accept and monitor, treat further, or escalate a tolerance breach.",
           "why_it_matters": "This comparison is where analysis becomes a decision. It must reach the person with authority to decide, together with the options and their costs.",
           "how_it_works": [
             "Within appetite: the risk owner may accept the risk, document the acceptance and monitor it with KRIs.",
             "Above appetite: the practitioner presents treatment options, such as mitigate, transfer or avoid, with costs, for the risk owner to choose.",
-            "Beyond tolerance: escalate promptly to the risk owner and to the level that set the threshold, often senior management.",
+            "Beyond tolerance: escalate promptly to the risk owner and the level that set the threshold, showing current risk against the tolerance it breaches.",
             "Acceptance is documented with the owner's name, the rationale and a review date.",
             "Residual risk is reviewed again when KRIs move, controls change or the business changes."
           ],
@@ -1576,25 +1682,29 @@
             "recommend": "Have risk owners document acceptance within appetite and choose treatment options for risks above it.",
             "decides": "The risk owner decides within appetite; breaches go to the owner and the limit-setting level"
           },
-          "isaca_rule": "Residual risk within appetite can be accepted by the risk owner and monitored. Above appetite, the practitioner presents options and the owner chooses. The practitioner never accepts risk on the owner's behalf.",
+          "isaca_rule": "Residual risk within appetite can be accepted by the risk owner and monitored. Above appetite, the practitioner presents treatment options and the owner chooses one, or escalates to the level that set the appetite if the risk is to be carried. The practitioner never accepts risk on the owner's behalf.",
           "exam_traps": [
             {
               "trap": "After controls are added, the risk practitioner can sign off the residual risk as acceptable.",
               "why": "Acceptance belongs to the risk owner, who has the authority. The practitioner analyzes, recommends and documents, but never accepts the risk."
+            },
+            {
+              "trap": "A risk owner can accept any risk in their own area.",
+              "why": "Owners accept risk within the appetite and tolerance set above them. Acceptance of a risk beyond tolerance goes to the level that set the limit."
             }
           ],
           "key_terms": [
             {
               "term": "Risk appetite",
-              "definition": "ISACA Glossary: the broad amount of risk an entity is willing to accept in pursuit of its mission."
+              "definition": "The overall level and kinds of risk the enterprise has chosen to take on to achieve its objectives, set by the board and senior management."
             },
             {
               "term": "Risk tolerance",
-              "definition": "The acceptable variation management allows for a particular risk as the enterprise pursues its objectives."
+              "definition": "How far a particular risk or result may move from what the appetite intends before it must be escalated, usually set as a measurable limit."
             },
             {
               "term": "Risk acceptance",
-              "definition": "A documented decision by an authorized owner to hold a risk, made within appetite and tolerance."
+              "definition": "The risk owner's recorded decision to keep a risk without further treatment, because it sits inside appetite and tolerance and within the owner's authority."
             }
           ]
         }
@@ -1603,33 +1713,33 @@
   ],
   "key_terminologies": {
     "Risk event": "Something that happened, or nearly happened, showing that a risk scenario can occur.",
-    "Loss event": "An event in which a threat event results in loss.",
+    "Loss event": "A threat event that actually causes loss, such as lost money, data, service or reputation.",
     "Near miss": "An event that would have caused loss but was stopped by a control, chance or timing.",
     "Threat source": "Anyone or anything that could cause harm: adversarial, accidental, structural or environmental.",
-    "Threat event": "What a threat source does against an asset that could directly cause harm.",
-    "Vulnerability": "A weakness in design, implementation, operation or internal control that a threat could exploit.",
+    "Threat event": "A specific occurrence, such as a phishing campaign or a flood, through which a threat source could harm an asset or disrupt a process.",
+    "Vulnerability": "A weakness that a threat could exploit, whether in technology, a process, people's skills or the controls and governance around them.",
     "Threat modeling": "A structured way, such as STRIDE or attack trees, to work out how a system could be harmed.",
     "CVSS": "Common Vulnerability Scoring System: FIRST's 0 to 10 severity score for a software flaw; one input to risk, not the risk rating.",
-    "Risk scenario": "A tangible, assessable description of how a threat could cause an event that harms objectives.",
+    "Risk scenario": "A concrete account of how a threat could cause an event that harms objectives, naming the cause, the asset affected and the business impact, specific enough to be rated.",
     "Tabletop exercise": "A facilitated discussion in which a team walks through a scenario to test plans and find gaps.",
     "Risk assessment": "The process of identifying, estimating and prioritizing risk: prepare, conduct, communicate, maintain.",
     "Business impact analysis (BIA)": "Analysis of critical processes, how impact grows over time and what they depend on; it ignores likelihood.",
-    "Maximum tolerable outage (MTO)": "ISACA Glossary term for the longest a critical business function or IT system can be disrupted before significant harm; other sources say maximum tolerable downtime (MTD).",
-    "Acceptable interruption window (AIW)": "ISACA Glossary term for the longest a system can be unavailable before business objectives are compromised.",
-    "Recovery time objective (RTO)": "The time allowed to recover a business function or resource after a disruption; normally shorter than the MTO.",
+    "Maximum tolerable outage (MTO)": "ISACA Glossary term for the outage limit of a critical process or system: past it, the damage to the enterprise becomes significant, so recovery must finish first. Other sources say maximum tolerable downtime (MTD).",
+    "Acceptable interruption window (AIW)": "ISACA Glossary term for the business's downtime limit for a system, set at the point where a longer outage would start to put objectives at risk; recovery must finish inside it.",
+    "Recovery time objective (RTO)": "The target for how soon a business function, or a resource it depends on, must be working again after a disruption; set by the business within the MTO.",
     "Recovery point objective (RPO)": "How much data loss, measured back in time, the business can tolerate.",
-    "Risk register": "A list of risk scenarios that have been identified, analyzed and prioritized, each with an owner.",
-    "Risk owner": "The accountable person with authority to make risk-based decisions and who bears the loss.",
+    "Risk register": "The working record of risk scenarios, each with its owner, rating, response and status.",
+    "Risk owner": "The named person who answers for a risk: decides how it is treated, accepts what remains and carries the loss if it occurs.",
     "Enterprise risk profile": "The aggregated view of an enterprise's significant risks, compared with appetite.",
     "Qualitative analysis": "Rating likelihood and impact on defined word scales, such as low to very high.",
     "Single loss expectancy (SLE)": "Expected loss from one occurrence: asset value times exposure factor.",
     "Annual rate of occurrence (ARO)": "Expected number of occurrences per year.",
     "Annualized loss expectancy (ALE)": "Expected yearly loss: SLE times ARO.",
-    "Inherent risk": "Risk before management takes any action, such as implementing controls.",
-    "Current risk": "Risk as it stands today, counting actions already taken but not those planned; compared with appetite now.",
-    "Residual risk": "Risk remaining after management has implemented a risk response; shows whether the response brought risk within appetite.",
-    "Future residual risk": "ISACA Glossary phrase for current risk with a planned response implemented; KaiSip calls it target risk and uses it to judge the plan.",
-    "Prompt injection": "Crafted input that makes a language model ignore its instructions or produce harmful output.",
+    "Inherent risk": "The level of a risk if management had done nothing about it: no controls, no transfer and no other response.",
+    "Current risk": "Today's exposure, counting only responses already in place and working, not planned or proposed ones; it is what is compared with appetite now.",
+    "Residual risk": "What is left of a risk once the chosen response is in place and working; it shows whether the response brought the risk within appetite.",
+    "Future residual risk": "ISACA Glossary name (in its risk response entry) for the level a risk is expected to reach once the planned response is in place; KaiSip calls it target risk and uses it to judge the plan.",
+    "Prompt injection": "An attack that hides instructions in text a language model reads, such as a prompt, document or web page, so the model overrides its intended behavior, leaks data or acts harmfully.",
     "Data poisoning": "Corrupting an AI model's training or fine-tuning data so it learns wrong or hidden behavior.",
     "Model drift": "Loss of an AI model's accuracy over time as live data or real-world patterns change."
   },

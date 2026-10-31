@@ -44,6 +44,9 @@
           "id": "4A1.1",
           "name": "Enterprise Architecture and Architecture Review",
           "legacy_ids": [],
+          "practice_ids": [
+            "crisc_d4_021"
+          ],
           "definition": "Enterprise architecture (EA) is the documented model of how business processes, data, applications and technology fit together to deliver the organization's strategy.",
           "why_it_matters": "EA shows where a new system, vendor or AI service touches critical data and processes, so risk can be judged before money is committed. Without it, risk decisions are made one project at a time.",
           "how_it_works": [
@@ -93,6 +96,9 @@
           "id": "4A1.2",
           "name": "Technology Roadmaps and Off-Roadmap Technology",
           "legacy_ids": [],
+          "practice_ids": [
+            "crisc_d4_001"
+          ],
           "definition": "A technology roadmap is a time-based plan showing which technologies the organization will adopt, upgrade or retire, and how each supports business goals.",
           "why_it_matters": "A roadmap lets risk be planned: end-of-support dates, skills and funding are known years ahead. Technology bought outside it often arrives with no risk review, no support model and no owner.",
           "how_it_works": [
@@ -125,7 +131,7 @@
           "key_terms": [
             {
               "term": "Shadow IT",
-              "definition": "Systems, services, hardware or software used for enterprise work without proper vetting and approval from the IT or cybersecurity function."
+              "definition": "Technology that staff or business units buy or use for work outside the enterprise's approval, security review and inventory."
             },
             {
               "term": "End of support",
@@ -137,6 +143,10 @@
           "id": "4A1.3",
           "name": "Technical Debt and Legacy Systems",
           "legacy_ids": [],
+          "practice_ids": [
+            "crisc_d4_002",
+            "crisc_d4_022"
+          ],
           "definition": "Technical debt is the future cost and risk created by shortcuts or aging technology, such as legacy systems that are hard to patch, change or support.",
           "why_it_matters": "Legacy systems often run critical processes, so their weaknesses are business risks. Because they still work, the risk is easy to overlook until a failure, breach or skills gap makes it urgent.",
           "how_it_works": [
@@ -159,7 +169,7 @@
             "recommend": "Have each legacy system's business owner approve a dated plan to upgrade, isolate or replace it.",
             "decides": "The business owner signs any time-limited acceptance of legacy risk"
           },
-          "isaca_rule": "'It still works' is not a risk assessment. The practitioner records legacy and technical-debt risk in the register with a business owner, analyzes it against appetite and presents options; the owner chooses and may accept residual risk within appetite for a defined period, escalating anything beyond appetite to senior management.",
+          "isaca_rule": "'It still works' is not a risk assessment. The practitioner registers legacy and technical-debt risk with a business owner, analyzes it against appetite and presents options; the owner chooses and may accept residual risk within appetite for a defined period, escalating anything beyond appetite to the level that set it.",
           "exam_traps": [
             {
               "trap": "Leaving a legacy system off the risk register because it has run without failure for years.",
@@ -173,7 +183,7 @@
             },
             {
               "term": "Compensating control",
-              "definition": "A substitute control that reduces risk when the preferred control cannot be applied."
+              "definition": "An alternative control that reduces risk when a required control is missing, weak or cannot be applied."
             },
             {
               "term": "Extended support",
@@ -181,7 +191,7 @@
             },
             {
               "term": "Future residual risk",
-              "definition": "ISACA Glossary phrase for current risk once a planned response is implemented; KaiSip calls it target risk and uses it to judge the plan."
+              "definition": "ISACA Glossary name for the level a risk should reach once the planned response is in place; KaiSip calls it target risk."
             }
           ]
         }
@@ -201,14 +211,20 @@
           "id": "4A2.1",
           "name": "Change and Configuration Management",
           "legacy_ids": [],
+          "practice_ids": [
+            "crisc_d4_003",
+            "crisc_d4_024",
+            "crisc_d4_025"
+          ],
           "definition": "Change management is the controlled process for requesting, assessing, approving, testing, implementing and reviewing changes, with configuration management keeping an accurate record of approved settings.",
           "why_it_matters": "Many outages and security incidents follow a change. Controlled change keeps risk within appetite by making sure someone judged the impact, can undo the change and knows what the system should look like.",
           "how_it_works": [
             "Each change has a request, an impact assessment, an approval suited to its risk, a test result and a back-out plan.",
             "Emergency changes may bypass the normal approval path, usually through an emergency approver, but are documented and reviewed after the fact as soon as practical.",
-            "A configuration management database (CMDB) records configuration items, their approved settings and how they depend on each other.",
+            "A configuration management database (CMDB) records configuration items and dependencies; assets missing from it sit outside patching, change and backup, so differing counts from other tools are reconciled.",
             "Comparing live settings with the baseline finds unauthorized changes, which are investigated, not quietly reversed.",
-            "Low-risk, repeatable changes can be pre-approved, so review effort follows risk."
+            "Low-risk, repeatable changes can be pre-approved, so review effort follows risk.",
+            "A growing share of emergency changes is analyzed for its cause, such as slow normal approvals or poor planning, before more approval steps are added."
           ],
           "types": [
             {
@@ -234,10 +250,10 @@
               "Change tickets with approver names, test evidence and rollback steps",
               "Configuration drift reports from monitoring tools"
             ],
-            "recommend": "Have the change manager set emergency-change criteria and report emergency volume and overdue reviews monthly.",
+            "recommend": "Have the change manager analyze why emergency changes are rising, then set emergency-change criteria and report volume and overdue reviews monthly.",
             "decides": "The change authority approves changes; the risk owner accepts any remaining change risk"
           },
-          "isaca_rule": "The risk view of change asks: was the impact assessed, approved by the right authority and reversible? Emergency changes are allowed, but each gets a timely retrospective review. Growing emergency volume is a risk signal to report, not a paperwork issue.",
+          "isaca_rule": "The risk view of change asks: was the impact assessed, approved by the right authority and reversible? Emergency changes are allowed, but each gets a timely retrospective review. Growing emergency volume is a risk signal: report it and find out why the normal path is being avoided.",
           "exam_traps": [
             {
               "trap": "Accepting an emergency change as complete once service is restored.",
@@ -263,6 +279,10 @@
           "id": "4A2.2",
           "name": "Incident and Problem Management",
           "legacy_ids": [],
+          "practice_ids": [
+            "crisc_d4_004",
+            "crisc_d4_023"
+          ],
           "definition": "Incident management restores normal service quickly after a disruption; problem management finds and removes the root cause so the incident does not happen again.",
           "why_it_matters": "Fixing symptoms without the cause lets the same failure recur, often at a worse time. Repeat incidents raise likelihood, and an unknown root cause hides what really needs a control.",
           "how_it_works": [
@@ -270,7 +290,8 @@
             "A problem is opened when incidents repeat, a major incident occurs or a trend appears.",
             "Root cause analysis finds why it happened; a known error records the cause and any workaround.",
             "A permanent fix usually goes through change management, so problem and change processes connect.",
-            "Incident and problem trends feed the risk register and key risk indicators."
+            "Incident and problem trends feed the risk register and key risk indicators.",
+            "When a permanent fix is costly or unfunded, the risk and options go to the owner of the affected business process; IT does not accept it by default."
           ],
           "compare": {
             "columns": [
@@ -407,11 +428,16 @@
           "id": "4A3.1",
           "name": "Risk Across the SDLC Phases",
           "legacy_ids": [],
+          "practice_ids": [
+            "crisc_d4_005",
+            "crisc_d4_027",
+            "crisc_d4_028"
+          ],
           "definition": "The system development life cycle (SDLC) is the sequence of phases from initiation through design, build, testing, implementation, operation and disposal, each with its own risk activities.",
           "why_it_matters": "A flaw found in design costs little to fix; the same flaw found after go-live costs far more and may already have caused harm. Risk activities in every phase keep the project within appetite.",
           "how_it_works": [
-            "Initiation: confirm the business case, owner, data sensitivity and an initial risk assessment.",
-            "Requirements and design: define security, privacy and control requirements alongside functional ones.",
+            "Initiation: confirm the business case, owner, data sensitivity and an initial risk assessment, and update that assessment whenever the scope or data changes.",
+            "Requirements and design: define security, privacy and control requirements alongside functional ones; for a purchased system, put them in the selection criteria and contract.",
             "Build and test: verify requirements are met; business users, not developers, sign off acceptance testing.",
             "Implementation: confirm the owner accepts residual risk within appetite, or orders more treatment, before go-live.",
             "Post-implementation review: check whether benefits arrived and risks stayed within appetite.",
@@ -508,6 +534,10 @@
           "id": "4A3.3",
           "name": "AI Models in the SDLC",
           "legacy_ids": [],
+          "practice_ids": [
+            "crisc_d4_006",
+            "crisc_d4_026"
+          ],
           "definition": "AI models follow a life cycle of design, data preparation, training, validation, deployment, monitoring and retraining, and each new model version is a change to control.",
           "why_it_matters": "A retrained model can behave differently even when no code changed. Without version control, validation and approval, a model update can quietly add bias, errors or new exposure to business decisions.",
           "how_it_works": [
@@ -515,7 +545,8 @@
             "Retraining or replacing a model goes through change management, with validation against agreed performance and fairness criteria.",
             "The model's business owner approves deployment; data scientists build and test it.",
             "Production monitoring watches for drift, the gradual loss of accuracy as real-world data changes.",
-            "A rollback plan lets the team return to the previous version if the new one misbehaves."
+            "A rollback plan lets the team return to the previous version if the new one misbehaves.",
+            "Edits to an AI system's instructions, prompts or settings change its behavior too, so they are tested and approved like code before reaching users."
           ],
           "example": "An insurer's claims team retrains its fraud-scoring model every month with new data, and data scientists push each version live themselves. Elif, the risk analyst, finds that one release doubled false fraud flags for a single region. Elif records the risk and proposes a release gate: validation results reviewed and approved by the claims director before deployment.",
           "audit_focus": {
@@ -569,6 +600,10 @@
           "id": "4A4.1",
           "name": "Data Lifecycle, Classification and Ownership",
           "legacy_ids": [],
+          "practice_ids": [
+            "crisc_d4_007",
+            "crisc_d4_030"
+          ],
           "definition": "Data lifecycle management controls data through each stage, create, store, use, share, archive and destroy, according to its classification and its owner's rules.",
           "why_it_matters": "Data risk changes at each stage: sharing brings new parties, archives get forgotten and old copies outlive their purpose. Classification and a named owner make protection match value and sensitivity.",
           "how_it_works": [
@@ -576,7 +611,8 @@
             "The data custodian, often IT, applies the owner's rules through storage, backup and access controls.",
             "Classification levels set handling rules, such as encryption, sharing limits and retention.",
             "A data inventory shows where each class of data lives, including copies in test and analytics systems.",
-            "Each stage has controls: input checks at creation, access control in use, agreements when shared."
+            "Each stage has controls: input checks at creation, access control in use, agreements when shared.",
+            "Data that no business unit claims is reported so senior management can assign an owner; IT protects it as custodian in the meantime."
           ],
           "compare": {
             "columns": [
@@ -642,6 +678,9 @@
           "id": "4A4.2",
           "name": "Retention and Sanitization",
           "legacy_ids": [],
+          "practice_ids": [
+            "crisc_d4_008"
+          ],
           "definition": "Retention sets how long each type of data is kept, and sanitization makes data on storage media unrecoverable once it is no longer needed.",
           "why_it_matters": "Data kept past its purpose adds breach impact, legal exposure and cost with no business value. Data removed the wrong way may still be recoverable when equipment is reused, sold or discarded.",
           "how_it_works": [
@@ -708,6 +747,9 @@
           "id": "4A4.3",
           "name": "AI Training Data Through the Lifecycle",
           "legacy_ids": [],
+          "practice_ids": [
+            "crisc_d4_029"
+          ],
           "definition": "AI training data management applies the data lifecycle to data used to train, test and tune models, from sourcing and labeling through retention and deletion.",
           "why_it_matters": "A model reflects its data. Poor, biased, poisoned or unlawfully sourced training data becomes poor or unlawful decisions, and personal data inside a model can be hard to remove later.",
           "how_it_works": [
@@ -768,6 +810,9 @@
           "id": "4A5.1",
           "name": "Portfolio Management by Value and Risk",
           "legacy_ids": [],
+          "practice_ids": [
+            "crisc_d4_009"
+          ],
           "definition": "Portfolio management selects, prioritizes and balances the organization's programs and projects by their expected value, risk and fit with strategy.",
           "why_it_matters": "Money and people are limited. A portfolio view stops low-value, high-risk projects from consuming resources and shows senior management the combined risk of everything in flight.",
           "how_it_works": [
@@ -816,6 +861,11 @@
           "id": "4A5.2",
           "name": "Project Risk and Agile Delivery",
           "legacy_ids": [],
+          "practice_ids": [
+            "crisc_d4_010",
+            "crisc_d4_031",
+            "crisc_d4_032"
+          ],
           "definition": "Project risk is uncertainty that can affect a project's scope, time, cost or quality; in Agile delivery it is managed in short, repeated cycles.",
           "why_it_matters": "Project risks often become operational IT risks after go-live. If they are tracked only inside the project, or dropped to meet a date, the enterprise inherits exposure no one approved.",
           "how_it_works": [
@@ -823,7 +873,8 @@
             "In Agile, risk items and security tasks sit in the backlog and are prioritized alongside features.",
             "The definition of done includes security, privacy and control criteria, so work is not finished without them.",
             "Sprint reviews and retrospectives are natural points to update risk status.",
-            "Agile reduces heavy documents, not risk records: decisions and accepted risks are still recorded."
+            "Agile reduces heavy documents, not risk records: decisions and accepted risks are still recorded.",
+            "At project closure, open risks that continue into operation move to the enterprise register with an operational owner; they do not close with the project."
           ],
           "example": "A bank's mobile team works in two-week sprints and has postponed its fraud-control stories for four sprints to hit a launch date. Zara, the IT risk analyst, raises the deferred stories as a project risk that will become an operational fraud risk at launch, and asks the product owner to review it with the business sponsor.",
           "audit_focus": {
@@ -881,14 +932,18 @@
           "id": "4A6.1",
           "name": "Recovery Strategies and Alternate Sites",
           "legacy_ids": [],
-          "definition": "Recovery strategies are the planned ways to restore systems after a disruption, such as hot, warm or cold sites or cloud failover, chosen to meet recovery objectives.",
-          "why_it_matters": "The strategy decides whether the business can recover within its tolerance for downtime and data loss. Too little capability breaches tolerance; too much spends money on systems that could wait.",
+          "practice_ids": [
+            "crisc_d4_011",
+            "crisc_d4_033"
+          ],
+          "definition": "Recovery strategies are planned ways to restore systems after a disruption, such as hot, warm or cold sites or cloud failover, chosen to meet recovery objectives.",
+          "why_it_matters": "The strategy decides whether the business recovers within its tolerance for downtime and data loss. Too little capability breaches tolerance; too much wastes money.",
           "how_it_works": [
-            "Through the business impact analysis, process owners set each critical process's MTO and an RTO within it, and set the RPO separately, from the data loss they can tolerate.",
+            "Through the business impact analysis, process owners set each critical process's MTO, an RTO within it, and an RPO from the data loss they can tolerate.",
             "The strategy must meet RTO and RPO by design, at a cost the owner accepts.",
-            "An alternate site is placed and built so the same event cannot disable both sites.",
+            "An alternate site is placed so the same event cannot disable both sites.",
             "Shared dependencies, such as one network carrier, identity service or power feed, are single points of failure.",
-            "Cloud recovery follows a shared responsibility model: the service model and contract decide who runs backups and failover; the customer stays accountable for its data and confirms recovery is tested."
+            "Cloud recovery is a shared responsibility: the contract sets who restores what, often the platform but not data the customer's users delete; the customer stays accountable for its data."
           ],
           "compare": {
             "columns": [
@@ -931,7 +986,7 @@
               }
             ]
           },
-          "example": "A food distributor's recovery site sits in a building across the street from its main data center, on the same power substation and flood plain. Dara, the risk analyst, maps both sites to the regional flood scenario and shows the operations director that one flood would take out both, breaching the four-hour RTO for order processing.",
+          "example": "A food distributor's recovery site is across the street from its data center, on the same substation and flood plain. Dara, the risk analyst, maps both sites to the flood scenario and shows the operations director that one flood would take out both, breaching order processing's four-hour RTO.",
           "audit_focus": {
             "review": [
               "Walk through the recovery timeline for one critical process against its RTO and RPO",
@@ -944,33 +999,29 @@
             "recommend": "Have the business continuity manager remove shared dependencies or present the residual gap to process owners.",
             "decides": "The process owner signs off the chosen strategy and its cost"
           },
-          "isaca_rule": "A recovery strategy is judged by whether it meets the RTO and RPO under the scenarios that matter. The practitioner looks for shared single points of failure and reports the gap; the business owner chooses the strategy and accepts its cost and any residual risk within appetite.",
+          "isaca_rule": "A recovery strategy is judged by whether it meets the RTO and RPO under the scenarios that matter. The practitioner finds shared single points of failure and reports the gap; the business owner chooses the strategy and accepts its cost and residual risk within appetite.",
           "exam_traps": [
             {
-              "trap": "Counting a recovery site as adequate because it exists and has equipment.",
-              "why": "A site exposed to the same hazard, network or supplier as the primary fails with it. Separation and independence matter as much as equipment."
+              "trap": "Counting a recovery site as adequate because it exists and is equipped.",
+              "why": "A site exposed to the same hazard, network or supplier as the primary fails with it; independence matters as much as equipment."
             }
           ],
           "key_terms": [
             {
               "term": "Recovery time objective (RTO)",
-              "definition": "The time allowed to recover a business function or resource after a disruption, set within the MTO."
+              "definition": "The target for how soon a business function, or a resource it depends on, must be working again after a disruption, set within the MTO."
             },
             {
               "term": "Recovery point objective (RPO)",
-              "definition": "The earliest point in time to which data must be recoverable, set from the data loss the business can accept; it quantifies that permissible loss."
-            },
-            {
-              "term": "Single point of failure",
-              "definition": "One component whose failure stops the whole service."
+              "definition": "How far back in time recovered data may be after a disruption, set by the data loss the business accepts; it drives backup frequency."
             },
             {
               "term": "Maximum tolerable outage (MTO)",
-              "definition": "ISACA term for the longest a critical function or IT system can be disrupted before significant harm; many sources call it MTD."
+              "definition": "ISACA term for the outage limit of a critical process or system, past which damage becomes significant; recovery must finish within it. Others say MTD."
             },
             {
               "term": "Acceptable interruption window (AIW)",
-              "definition": "ISACA term for the longest a system can be unavailable before business objectives are compromised."
+              "definition": "ISACA term: the business's downtime limit for a system, set at the point where a longer outage would start to put business objectives at risk."
             }
           ]
         },
@@ -978,6 +1029,10 @@
           "id": "4A6.2",
           "name": "Backups and Ransomware Recovery",
           "legacy_ids": [],
+          "practice_ids": [
+            "crisc_d4_012",
+            "crisc_d4_035"
+          ],
           "definition": "Backups are protected copies of data and systems kept so they can be restored after loss, corruption or attack, including ransomware.",
           "why_it_matters": "Backups are often the last control against ransomware and destructive attacks. If attackers can reach or encrypt them, or restores fail, the organization faces long outages or pressure to pay.",
           "how_it_works": [
@@ -985,7 +1040,8 @@
             "Immutable or offline copies cannot be changed or deleted by an attacker who gains administrator access.",
             "Backup frequency is set by the RPO; restore speed must support the RTO.",
             "In ransomware recovery, contain the attack first, then verify backups are clean before restoring.",
-            "Restores are tested regularly, because a backup that was never restored is an untested assumption."
+            "Restores are tested regularly, because a backup that was never restored is an untested assumption.",
+            "A useful key control indicator for backups is the share of test restores that meet the RTO and RPO, not the share of backup jobs completed."
           ],
           "example": "A logistics firm's backups run nightly and the console shows green every day. Sam, the IT risk analyst, asks when a full restore was last tested; the answer is never. Sam records the risk that the RTO for the dispatch system is unproven and proposes a scheduled restore test to the infrastructure manager.",
           "audit_focus": {
@@ -1030,6 +1086,9 @@
           "id": "4A6.3",
           "name": "Testing Recovery Capability",
           "legacy_ids": [],
+          "practice_ids": [
+            "crisc_d4_034"
+          ],
           "definition": "Recovery testing checks that disaster recovery capability, and the technology side of continuity plans, works, using methods that range from checklist reviews and tabletop exercises to full interruption tests.",
           "why_it_matters": "An untested plan is an assumption. Tests show whether RTO and RPO are met, whether people know their roles and where the gaps are, so owners can decide on fixes before a real event.",
           "how_it_works": [
@@ -1107,6 +1166,11 @@
           "id": "4A7.1",
           "name": "Evaluating Emerging Technologies",
           "legacy_ids": [],
+          "practice_ids": [
+            "crisc_d4_013",
+            "crisc_d4_036",
+            "crisc_d4_037"
+          ],
           "definition": "Evaluating emerging technology means assessing a new technology's threats, vulnerabilities and opportunities for the business before and during adoption.",
           "why_it_matters": "New technology can create advantage, new exposure or both. The ISACA Glossary's enterprise risk management exploits risk as well as controlling it, to increase stakeholder value, so leaders weigh both instead of banning by reflex or adopting blind.",
           "how_it_works": [
@@ -1114,7 +1178,8 @@
             "Identify new threats and vulnerabilities, including those inherited from vendors and integrations.",
             "Check vendor claims through evidence, pilots and independent assessments, not marketing material.",
             "Compare the risk with appetite and propose conditions, such as a limited pilot, extra controls or exit terms.",
-            "Track the technology as an emerging risk and revisit the assessment as it matures."
+            "Track the technology as an emerging risk and revisit the assessment as it matures.",
+            "With little data, record the risk early as an emerging risk with stated uncertainty, a proposed owner and a review date, rather than waiting for losses."
           ],
           "types": [
             {
@@ -1154,14 +1219,14 @@
               "why": "Uncertainty calls for assessment, not prohibition. A ban can forgo value and push staff toward unmanaged workarounds."
             },
             {
-              "trap": "Approving adoption on the strength of vendor claims and certifications.",
-              "why": "Vendor claims describe the product, not how it fits the organization's data, processes and appetite. Evidence and a fit-specific assessment are needed."
+              "trap": "Judging a new platform on vendor claims, certifications and features alone.",
+              "why": "Claims and certifications describe the product, not its fit with the organization's data and appetite, or a way out if a young vendor fails. That needs evidence and exit terms."
             }
           ],
           "key_terms": [
             {
               "term": "Opportunity (positive risk)",
-              "definition": "An uncertain event that would benefit objectives if it happened."
+              "definition": "A possible future event or condition that would help the enterprise meet its objectives if it happened."
             },
             {
               "term": "Post-quantum cryptography",
@@ -1177,6 +1242,9 @@
           "id": "4A7.2",
           "name": "AI and Machine Learning Adoption",
           "legacy_ids": [],
+          "practice_ids": [
+            "crisc_d4_014"
+          ],
           "definition": "AI adoption risk covers the threats and opportunities of using artificial intelligence (AI) and machine learning in business processes, from vendor tools to in-house models.",
           "why_it_matters": "AI can speed decisions and cut costs, but errors, bias, data leakage and opaque behavior can harm customers and breach law at scale. The risk sits with the business process that relies on the AI.",
           "how_it_works": [
@@ -1217,7 +1285,7 @@
             },
             {
               "term": "Prompt injection",
-              "definition": "Crafted input that makes an AI system ignore its instructions or reveal data."
+              "definition": "Instructions hidden in text an AI system reads, such as a prompt, document or web page, that make it override its behavior or leak data."
             }
           ]
         }
@@ -1238,6 +1306,10 @@
           "id": "4B1.1",
           "name": "Core Security Principles",
           "legacy_ids": [],
+          "practice_ids": [
+            "crisc_d4_015",
+            "crisc_d4_039"
+          ],
           "definition": "Core security principles are the design rules behind controls: protect confidentiality, integrity and availability, layer defenses, grant least privilege and separate duties.",
           "why_it_matters": "These principles let a practitioner judge whether a control set is sound without knowing every product. Gaps against them, such as one control guarding everything, point to concentrated risk.",
           "how_it_works": [
@@ -1282,7 +1354,11 @@
             },
             {
               "term": "Need-to-know",
-              "definition": "ISACA Glossary principle that people can see only the data, systems and spaces their job needs; least privilege extends it to what they can do."
+              "definition": "Access to specific information only when a current task needs it, even if role or clearance allows more; least privilege limits actions once there."
+            },
+            {
+              "term": "Just-in-time access",
+              "definition": "Elevated access granted for a specific task and a limited time, then removed, instead of standing administrator rights."
             }
           ]
         },
@@ -1290,6 +1366,9 @@
           "id": "4B1.2",
           "name": "Zero Trust Architecture",
           "legacy_ids": [],
+          "practice_ids": [
+            "crisc_d4_040"
+          ],
           "definition": "Zero Trust is a security approach that grants no implicit trust based on network location; each access request is checked using identity, device state and policy.",
           "why_it_matters": "Remote work, cloud and partners have dissolved the network edge. Zero Trust limits how far a stolen account or infected device can reach, lowering the impact of the most common attack paths.",
           "how_it_works": [
@@ -1297,7 +1376,8 @@
             "Decisions use identity, device health, behavior and data sensitivity, and are re-checked over time.",
             "Least privilege and micro-segmentation keep each user or workload to what it needs.",
             "Monitoring of assets and access feeds back into policy decisions.",
-            "Adoption is a multi-year journey, usually starting with the most critical data and identities."
+            "Adoption is incremental: NIST SP 800-207 describes moving one business process at a time, often piloting on a lower-risk process, to protect the highest-value data.",
+            "Until a rollout covers a scenario's users and assets, the register credits only the coverage that is live and working; the finished rollout is target risk."
           ],
           "example": "A manufacturer's engineers connect to plant systems through a remote access link that, once joined, reaches the whole network. Yusuf, the risk analyst, maps this to a ransomware scenario rated above appetite and proposes a phased Zero Trust plan, starting with per-application access to plant control systems, for the CIO and plant director to prioritize.",
           "audit_focus": {
@@ -1338,13 +1418,17 @@
           "id": "4B1.3",
           "name": "Security Frameworks and Standards",
           "legacy_ids": [],
+          "practice_ids": [
+            "crisc_d4_016",
+            "crisc_d4_038"
+          ],
           "definition": "Security frameworks and standards are structured sets of outcomes, controls or requirements, such as NIST CSF 2.0 or ISO/IEC 27001, used to organize and benchmark security.",
           "why_it_matters": "Frameworks give a common language for current and target state, help align practice with regulation and contracts, and show gaps. They describe what good looks like, not the organization's actual risk.",
           "how_it_works": [
             "NIST CSF 2.0 has six functions: Govern, Identify, Protect, Detect, Respond and Recover.",
             "Profiles compare the current state with a target state chosen by risk and business needs.",
             "ISO/IEC 27001 sets requirements for an information security management system that can be certified.",
-            "A framework is tailored: controls are chosen by risk assessment, not adopted wholesale.",
+            "A framework is tailored: controls and target Tiers are chosen by risk and cost-benefit, so different units can rightly have different targets.",
             "Certification shows a management system met a standard within a scope on a date; it does not prove risk is low.",
             "A register rating records current risk; it moves when a scenario is reassessed on evidence, not because a profile or certificate changed."
           ],
@@ -1380,6 +1464,10 @@
             {
               "term": "Tailoring",
               "definition": "Adjusting a framework's controls to the organization's risks, systems and obligations."
+            },
+            {
+              "term": "CSF Tier",
+              "definition": "NIST CSF 2.0 rating of how rigorous risk governance and management practices are: Partial, Risk Informed, Repeatable or Adaptive."
             }
           ]
         }
@@ -1399,6 +1487,11 @@
           "id": "4B2.1",
           "name": "Risk-Aware Culture and Role-Based Training",
           "legacy_ids": [],
+          "practice_ids": [
+            "crisc_d4_017",
+            "crisc_d4_041",
+            "crisc_d4_042"
+          ],
           "definition": "A risk-aware culture is one where people at every level understand the risks in their work, speak up about them and act within appetite, supported by targeted training.",
           "why_it_matters": "Most controls depend on people. Where staff fear blame or see risk as someone else's job, problems stay hidden until they become incidents; where they speak up, risk is found early.",
           "how_it_works": [
@@ -1431,7 +1524,7 @@
           "key_terms": [
             {
               "term": "Risk culture",
-              "definition": "The shared values and behaviors that shape how people see and handle risk."
+              "definition": "The values and beliefs people across the enterprise share about risk, and the behavior they drive."
             },
             {
               "term": "Role-based training",
@@ -1447,6 +1540,9 @@
           "id": "4B2.2",
           "name": "Measuring Awareness, Phishing Simulations and Shadow AI",
           "legacy_ids": [],
+          "practice_ids": [
+            "crisc_d4_018"
+          ],
           "definition": "Measuring awareness means tracking whether behavior changes after training, using measures such as reporting rates and simulation results, not just course completion.",
           "why_it_matters": "Completion rates show who clicked through a course, not who acts safely. Behavior measures show whether training reduces risk and where to focus, including new risks such as staff pasting data into public AI tools.",
           "how_it_works": [
@@ -1511,6 +1607,9 @@
           "id": "4B3.1",
           "name": "Privacy Principles",
           "legacy_ids": [],
+          "practice_ids": [
+            "crisc_d4_019"
+          ],
           "definition": "Privacy principles are rules for fair handling of personal data, including purpose limitation, data minimization, a lawful basis such as consent, transparency and individual rights.",
           "why_it_matters": "Privacy harm affects people and brings regulatory, legal and trust consequences. A secure system can still breach privacy if it collects too much or uses data for an undisclosed purpose.",
           "how_it_works": [
@@ -1562,7 +1661,7 @@
             "recommend": "Have the privacy officer review every new use of personal data against its stated purpose before launch.",
             "decides": "The data owner decides on use, with the privacy officer's advice"
           },
-          "isaca_rule": "Privacy is not the same as security. Ask whether the purpose was set before collection and whether the use matches it; strong encryption does not make an unfair use acceptable. The data owner and privacy officer decide, with legal advice.",
+          "isaca_rule": "Privacy is not the same as security. Ask whether the purpose was set before collection and whether the use matches it; strong encryption does not make an unfair use acceptable. The data owner decides, advised by the privacy officer and legal counsel.",
           "exam_traps": [
             {
               "trap": "Assuming encrypted data has no privacy risk.",
@@ -1576,7 +1675,7 @@
           "key_terms": [
             {
               "term": "Purpose limitation",
-              "definition": "Collecting personal data for specified, explicit and legitimate purposes and not using it later in ways incompatible with them."
+              "definition": "Personal data may be used only for the specific, legitimate purposes declared at collection, or compatible ones; unrelated new uses need their own legal basis."
             },
             {
               "term": "Data minimization",
@@ -1584,7 +1683,7 @@
             },
             {
               "term": "Personal data",
-              "definition": "Any information relating to an identified or identifiable person."
+              "definition": "Any information that tells you about a particular person, or lets someone work out who they are, alone or combined with other data."
             }
           ]
         },
@@ -1592,6 +1691,10 @@
           "id": "4B3.2",
           "name": "Privacy by Design and Privacy Impact Assessment",
           "legacy_ids": [],
+          "practice_ids": [
+            "crisc_d4_020",
+            "crisc_d4_043"
+          ],
           "definition": "Privacy by design builds privacy protections into systems from the start, and a privacy impact assessment (PIA) analyzes how a system handles personal data and the risks involved.",
           "why_it_matters": "Privacy fixes after launch are costly and may come after people are harmed. A PIA at the design stage finds problems while they are cheap to fix and gives owners a documented basis for decisions.",
           "how_it_works": [
@@ -1640,6 +1743,10 @@
           "id": "4B3.3",
           "name": "Personal Data in AI and Cross-Border Transfers",
           "legacy_ids": [],
+          "practice_ids": [
+            "crisc_d4_044",
+            "crisc_d4_045"
+          ],
           "definition": "Personal data in AI and cross-border transfers create risk when personal data trains or feeds AI systems, or moves to a country with different legal protections.",
           "why_it_matters": "AI can infer sensitive facts, memorize training data and make decisions about people, and data sent abroad may fall under weaker or conflicting laws. Both raise legal exposure and harm to individuals.",
           "how_it_works": [
@@ -1647,7 +1754,8 @@
             "Minimize or de-identify data where the purpose allows, knowing de-identified data can sometimes be re-identified.",
             "Assess AI outputs for privacy harm, such as inferences about health or exposure of training data.",
             "Before transferring data abroad, confirm the legal mechanism and the protections at the destination.",
-            "Contracts with AI and cloud providers set where data is stored, whether it trains their models and how it is deleted."
+            "Contracts with AI and cloud providers set where data is stored, whether it trains their models and how it is deleted.",
+            "Removing names is not enough when exact times, places or rare details remain, because those records can be linked back to the people involved."
           ],
           "example": "A hospital group wants to send patient notes to an overseas AI transcription service. Chidi, the privacy risk analyst, checks where the data will be processed, whether the vendor trains its models on customer data and what transfer rules apply. Chidi asks legal counsel to confirm the transfer basis and reports the findings to the clinical director.",
           "audit_focus": {
@@ -1659,7 +1767,7 @@
               "Transfer assessments naming destination countries and safeguards",
               "AI vendor contracts covering training use, location and deletion"
             ],
-            "recommend": "Have the privacy officer and legal counsel approve any transfer of personal data to AI or overseas services.",
+            "recommend": "Have the privacy officer and legal counsel review every transfer of personal data to AI or overseas services before the data owner approves it.",
             "decides": "The data owner decides, with legal counsel and the privacy officer advising"
           },
           "isaca_rule": "Personal data keeps its privacy rules inside AI and across borders. The practitioner checks purpose, lawful basis, minimization, location and vendor data use before the data moves; legal counsel advises on the law and the data owner decides.",
@@ -1693,19 +1801,19 @@
     "Technical debt": "The future cost and risk created by shortcuts, deferred upgrades or aging technology.",
     "Change management": "The controlled process for assessing, approving, testing, implementing and reviewing changes.",
     "Emergency change": "A change made fast to restore service or stop harm, then documented and reviewed after the fact.",
-    "Incident management": "The process that restores normal service as quickly as possible after a disruption.",
-    "Problem management": "The process that finds and removes the root cause of one or more incidents.",
+    "Incident management": "The process for logging, prioritizing and resolving incidents so the affected service is back in use quickly.",
+    "Problem management": "The process that investigates what lies behind one incident or a pattern of them and removes that cause, so the failure does not return.",
     "CI/CD pipeline": "The automated path that builds, tests and deploys code changes to production.",
     "System development life cycle (SDLC)": "The phases of a system from initiation through design, build, test, operation and disposal.",
     "Secure Software Development Framework (SSDF)": "NIST SP 800-218, a set of practices for building security into any software development model.",
-    "Data owner": "The accountable business manager responsible for the integrity, accuracy and use of data, who classifies it and decides access and retention.",
+    "Data owner": "The business manager accountable for a set of data: its quality, its proper use and its protection. They classify it and decide who may access it and how long it is kept.",
     "Data custodian": "The party, often IT, that stores and protects data according to the owner's rules.",
     "Sanitization": "Making data on storage media unrecoverable, by clearing, purging or destroying it.",
     "Portfolio management": "Selecting and prioritizing programs and projects by value, risk and strategic fit.",
     "Definition of done": "The agreed criteria, including control criteria, an Agile work item must meet to be complete.",
-    "Recovery time objective (RTO)": "The time allowed to recover a business function or resource after a disruption, set by the business within the maximum tolerable outage.",
-    "Recovery point objective (RPO)": "The earliest point in time to which data must be recoverable after a disruption, set from how much data loss the business can accept; it quantifies that permissible loss.",
-    "Maximum tolerable outage (MTO)": "ISACA's term for the longest a critical business function or IT system can be disrupted before significant harm; other sources say maximum tolerable downtime (MTD).",
+    "Recovery time objective (RTO)": "The target for how soon a business function, or a resource it depends on, must be working again after a disruption, set by the business within the maximum tolerable outage.",
+    "Recovery point objective (RPO)": "How far back in time recovered data may be after a disruption, set from how much data loss the business can accept; it drives how often data is backed up or replicated.",
+    "Maximum tolerable outage (MTO)": "ISACA's term for the outage limit of a critical process or system: past it, the damage to the enterprise becomes significant, so recovery must be complete within it. Other sources say maximum tolerable downtime (MTD).",
     "Hot site": "An alternate site equipped and configured to take over processing within minutes to hours.",
     "Immutable backup": "A backup copy that cannot be altered or deleted for a set period, even by administrators.",
     "Emerging technology": "A technology new to the organization or the market whose risks and benefits are not yet well understood.",
@@ -1715,7 +1823,7 @@
     "NIST Cybersecurity Framework (CSF) 2.0": "A NIST framework of cybersecurity outcomes in six functions: Govern, Identify, Protect, Detect, Respond and Recover.",
     "Risk-aware culture": "A culture where people understand the risks in their work, speak up and act within appetite.",
     "Shadow AI": "Use of AI tools for work without the organization's approval or controls.",
-    "Purpose limitation": "Collecting personal data for specified, explicit and legitimate purposes and not using it later in ways incompatible with them.",
+    "Purpose limitation": "A privacy principle: personal data may be used only for the specific, legitimate purposes declared when it was collected, or for purposes compatible with them; an unrelated new use needs its own legal basis.",
     "Privacy impact assessment (PIA)": "An analysis of how a system or activity handles personal data, its privacy risks and mitigations."
   },
   "references": [

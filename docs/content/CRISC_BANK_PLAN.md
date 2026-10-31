@@ -19,11 +19,12 @@ it can be sold:
 | Part | File(s) | Owner agents | Status |
 |---|---|---|---|
 | Blueprint | `docs/content/CRISC_BLUEPRINT.md` | cert-blueprint-researcher | Done, 30 Oct 2026 |
-| Study notes | `data/crisc/notes/d{1..4}.json` | crisc-d{N}-domain-expert | All 43 outline sub-areas, 115 subtopics; audited and fixed in the kickoff PR |
-| Questions | `data/crisc/originals/d{1..4}.json` | crisc-d{N}-domain-expert | Pilot, 20 per domain, fully reviewed |
+| Study notes | `data/crisc/notes/d{1..4}.json` + `_course.json` (strategy tips, cross-domain connections) | crisc-d{N}-domain-expert | All 43 outline sub-areas, 115 subtopics, Practice this concept links (`data/crisc/tools/sync_practice_ids.py`) |
+| Questions | `data/crisc/originals/d{1..4}.json` | crisc-d{N}-domain-expert | 185 reviewed (45 / 45 / 50 / 45): enough for one full 150-item mock without repeats |
 | Citation library | `data/crisc/originals/_framework_library.md` | domain experts | Started with the pilot |
-| Principles (mindset cards) | `data/crisc/mindset/principles.json` (schema `docs/content/PRINCIPLES_SCHEMA.md`) | isaca-mindset-coach | Not started |
-| Exam guide and final-review week | `data/crisc/exam/` (schema `docs/content/EXAM_GUIDE_SCHEMA.md`) | isaca-mindset-coach | Not started |
+| Principles (mindset cards) | `data/crisc/mindset/principles.json` (schema `docs/content/PRINCIPLES_SCHEMA.md`) | isaca-mindset-coach | 19 principles; every item tagged |
+| Exam guide and final-review week | `data/crisc/exam/` (schema `docs/content/EXAM_GUIDE_SCHEMA.md`) | isaca-mindset-coach | Both done and reviewed |
+| Glossary | `data/crisc/glossary.json` (same shape as the CISA glossary) | isaca-mindset-coach, isaca-concept-reviewer | 265 terms; meaning checked against the ISACA Glossary; wording gated by `data/crisc/tools/check_originality.py` |
 | Decision lessons | `data/crisc/lessons/` (schema `docs/content/LESSONS_SCHEMA.md`) | crisc-d{N}-domain-expert, learning-game-designer | Not started |
 | Game decks | per the games content in `mobile/src/content/games/` | learning-game-designer | Not started |
 | Course description and store copy | this file, section 7 | growth-marketer, app-store-compliance-reviewer | Not started |
@@ -102,6 +103,17 @@ Same order as CC. Don't skip a step to go faster.
 7. **Notes check:** `notes-application-tester` (pointed at `data/crisc/`) after
    round 2: can a learner answer the reviewed items from the notes alone?
 8. **PR** per round, reviewed and merged under the CLAUDE.md PR rules.
+
+## 5b. Originality gate for definitions
+
+`data/crisc/tools/check_originality.py --ref <isaca.json>` compares every
+glossary definition and notes key term with the ISACA Glossary entry for the
+same term and fails on a 6-word run in the same order, a 30% share of shared
+3-word phrases, or 0.6 sequence similarity. The reference file is fetched from
+https://www.isaca.org/resources/glossary into the scratchpad and is never
+committed (ISACA's text stays out of the repo). Run it on every glossary or
+notes change; reviewers then check meaning only, so originality reviews can't
+loop on sentence shape.
 
 ## 6. Pilot calibration rules
 
