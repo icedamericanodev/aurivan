@@ -10,26 +10,35 @@ Never put the bank size in learner copy.
 
 ## 1. Targets
 
-Decided 31 Oct 2026 by `product-manager` and `behavioral-scientist`, asked
-separately; both reached about 300.
+**Owner decision, 31 Oct 2026: a bank of 400.** `product-manager` and
+`behavioral-scientist`, asked separately, had both proposed about 300 (range
+250–350); the owner raised it to 400 so the course offers more practice at
+launch and covers more of SOXCPA's 1,022 slides, side topics included.
 
 | | Value |
 |---|---|
-| Full bank | about **300** (250–350) |
+| Full bank | **400** (owner, 31 Oct 2026) |
 | Pilot | 20 per domain, IDs `csoe_dN_001`–`020`, every course part touched at least once |
 | Held-out mock items | about 70 (two 35-item forms), never served in practice |
 | Mix per domain | about 30% foundational (recall), 55% application, 15% analysis |
 | Angles per rule | two or three (actor, timing, consequence, the look-alike rule); never more rewordings of one fact |
 
-Per-domain targets (blueprint "Question targets"): D1 42 · D2 48 · D3 48 ·
-D4 81 · D5 81, from each domain's share of the topic lines in SOXCPA's course
-synopsis (KaiSip's reading, not SOXCPA's). If the bank grows, scale every
-domain by its weight.
+Per-domain targets (blueprint "Question targets"): D1 56 · D2 64 · D3 64 ·
+D4 108 · D5 108, from each domain's share of the topic lines in SOXCPA's
+course synopsis (KaiSip's reading, not SOXCPA's). If the bank grows again,
+scale every domain by its weight.
 
-Why not 1,000 like CISA, CC, CRISC and AAIA: the exam is 35 items, open book,
-and tests about 120–160 distinct rules. A 1,000-item fact bank would be the
-same facts reworded, which trains learners to recognise wording, and a
-learner would see most items once instead of three or four times.
+**Guarding against padding at 400** (the experts' concern above 350): the
+exam tests roughly 120–160 core rules, so 400 items only work if the extra
+items widen coverage rather than reword the same facts.
+- Every synopsis line gets items before any rule gets a third angle; side
+  topics (ADR levels, EDGAR, SSAE 18, FSOC, orderly liquidation, the Volcker
+  Rule, the Federal Insurance Office, E-SOX and J-SOX once their sources
+  open) are where most new items go.
+- At most three angles per rule; the cross-domain gate runs after every 100
+  new items and treats a fourth angle on one rule as a near-duplicate.
+- Why not 1,000 like CISA, CC, CRISC and AAIA: a 1,000-item fact bank for a
+  35-item open-book exam would be the same facts reworded.
 
 ## 2. Batch size and cadence
 
@@ -37,7 +46,9 @@ learner would see most items once instead of three or four times.
 - Pilot: 20 per domain (about 100 in all, depending on the final domain
   count), in one round, run by domain pairs so reviews stay readable.
 - After the pilot, batches of 20–25 per domain until the targets are met:
-  about three more rounds.
+  about five more rounds (300 items to go: D1 36 · D2 44 · D3 44 · D4 88 ·
+  D5 88). D4 and D5 need about twice as many rounds as D1–D3, so from round
+  3 they run alone.
 - Cross-domain gate (`csoe-cross-domain-reviewer`) after the pilot, after
   every ~100 new items, and as the final gate before a release.
 
@@ -107,12 +118,12 @@ Decided 31 Oct 2026 by `product-manager`:
   questions and notes; the rest is planned once the outline exists. Add a
   one-page "where to look" sheet (section, who, what, deadline, consequence)
   for the open-book exam.
-- **Free sample:** the shared rule is about 20% of the questions, at least
-  100. On a 300-item bank, "at least 100" gives away a third.
-  `product-manager` proposes about 25% (about 75 items) plus the diagnostic
-  and one full 35-item mock. Chosen by domain and course part, best-reviewed
-  items only, every domain represented, and good enough to sell the course.
-  Changing the shared rule is an owner decision (section 8).
+- **Free sample (owner decision, 31 Oct 2026): at least 100 questions**, the
+  shared rule unchanged. On the 400-item bank that is 25%. Plus the
+  diagnostic and one short timed mock (the shared rule; a free full 35-item
+  mock is not part of the decision). Chosen by domain and course part,
+  best-reviewed items only, every domain represented, never from the
+  held-out mock items, and good enough to sell the course.
 - Don't build the purchase flow here (Phase E, `mobile-app-engineer`).
 
 ## 6. Calibration rules (binding for every batch)
@@ -178,27 +189,34 @@ SEC, PCAOB or COSO logos or seals, and no COSO framework text. Re-check the
 Google Play rules once support.google.com is reachable (they came from search
 results), and escalate if SOXCPA objects or the USPTO shows a registration.
 
-## 8. Owner decisions (open)
+## 8. Owner decisions
 
-Raised after the experts weighed in; each needs the owner.
+Decided by the owner on 31 Oct 2026:
 
-1. **Enrol in the SOXCPA course?** The exam tests only what the official
-   presentations (1,022 slides) answer. The synopsis is now opened, so scope
-   is mapped by topic, but not by detail. Enrolling costs US$147 (refundable
-   within 60 days) and creates an account with the issuer (CLAUDE.md "major":
-   new paid services or accounts). We would still never copy from them.
-2. **COSO edition.** The course teaches both 1992 and 2013 (and ERM 2004 and
-   2017). KaiSip teaches 2013 and 2017 as current and the older editions as
-   history, keying only where the editions agree or the item names the
-   edition. Owner call only if that is not acceptable.
-3. **Free sample for small banks.** Keep "at least 100" or cap at 25% of the
-   bank (product-manager's proposal). product-manager also proposed a free
-   full 35-item mock; the shared rule allows one short timed mock, and
-   app-store-compliance-reviewer kept the copy to that until the owner
-   decides.
-4. **Roadmap placement.** product-manager scores CSOE 2.0 (niche market,
-   unverified scope, small bank) and suggests building it after Phase E
-   payments run for CRISC and AAIA. It is not in `docs/ROADMAP.md` yet.
+1. **Do not enrol in the SOXCPA course for now** (cost). Instead, look for
+   feedback from people who passed the exam. Searched 31 Oct 2026: no
+   Reddit thread mentions the CSOE (reddit.com is also blocked from the cloud
+   environment), and the only first-hand material is one LinkedIn "passed"
+   post without detail and a 2010 forum reply praising the program (seen as
+   a search snippet; the forum is blocked). Nothing describes the questions,
+   which fits SOXCPA's policy of no sample questions and no review after the
+   exam. So SOXCPA's own pages stay the source of truth for format and
+   scope (`CSOE_BLUEPRINT.md` "How SOXCPA writes its questions"). The owner
+   plans to sit the CSOE later; their debrief (topics and question styles
+   recalled, never the questions themselves, which SOXCPA does not release)
+   will be the best check of KaiSip's coverage.
+2. **Free sample: at least 100 questions** (section 5).
+3. **Bank: 400 questions** (section 1).
+4. **Timing: finish CSOE now**, so KaiSip has it to offer at launch and adds
+   certifications after. (`product-manager` had suggested building it after
+   Phase E payments go live for CRISC and AAIA; the owner chose otherwise.)
+   `docs/ROADMAP.md` is owned outside the CSOE sessions; add CSOE there when
+   that file is next edited.
+
+Still settled by policy, not open:
+- **COSO edition.** KaiSip teaches 2013 and 2017 as current and the older
+  editions as history, keying only where the editions agree or the item
+  names the edition.
 
 ## Progress
 

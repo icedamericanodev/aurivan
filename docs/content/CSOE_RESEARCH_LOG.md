@@ -25,6 +25,21 @@ pass (search summaries only) is kept below as history, with corrections.
 The owner also attached a copy of P2; its SHA-256 matches the file on the
 issuer's site.
 
+## Exam-taker feedback (searched 31 Oct 2026, third pass)
+
+The owner asked for feedback from people who passed, instead of enrolling.
+
+| What was searched | Result | Status |
+|---|---|---|
+| Reddit (search engines; reddit.com direct) | No thread mentions the CSOE; reddit.com is blocked from the cloud environment | — |
+| LinkedIn, Quora, forums | One LinkedIn profile saying the person passed the CSOE (no detail): https://www.linkedin.com/in/aayushi-shah-802856134/ ; a 2010-era reply on sarbanes-oxley-forum.com calling the program very good (search snippet only; host blocked): http://www.sarbanes-oxley-forum.com/topic/7630/sox-certification-2910 | SECONDARY |
+| Vendor blogs | Repeat SOXCPA's rules; one says content covers internal controls, Sections 302 and 404, COSO and the SEC's and PCAOB's roles: https://www.lumos.com/topic/sox-compliance-is-a-sox-certification-worth-it , https://guzmangray.com/sox-audit-certification/ , https://pathlock.com/blog/sox-compliance/sox-certifications-and-trainings/ | SECONDARY |
+
+Conclusion: no public source describes the questions. SOXCPA sends no sample
+questions and does not release the exam afterwards (P2), so this is
+expected. The owner's own debrief after sitting the exam (topics and styles
+only) is the planned check.
+
 ## Network (31 Oct 2026, second pass)
 
 | Host | Result |
