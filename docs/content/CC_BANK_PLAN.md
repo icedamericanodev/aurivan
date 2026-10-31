@@ -91,7 +91,10 @@ The pilot set this order. Don't skip a step to go faster.
      --outline docs/content/CC_BLUEPRINT.md --bank data/cc/originals` must show
      0 errors (it also warns when a notes example retells a bank question), and
      `python3 data/cc/tools/sync_practice_ids.py` refreshes the notes'
-     "Practice this concept" links. Its "stem names no actor" warning looks for CISA
+     "Practice this concept" links.
+   - `python3 data/cc/tools/check_cc.py --similarity` lists question and
+     notes-example pairs that share many words (0.18 and up). Read each one
+     and re-angle whichever retells the other's scenario (rule 8). Its "stem names no actor" warning looks for CISA
      actors, so it is expected on CC items, but every stem must still name
      who acts.
    - Every `framework_ref` part must match a library bullet exactly.
@@ -293,9 +296,28 @@ Lessons from the D2/D3/D5 round, for batch 3:
   is wrong).
 - Name the guide in the stem when an older model would give another answer
   (SP 800-61r3 shares lessons during an incident).
-- Notes gap: the D5 notes do not yet cover network attack types (DoS, on-path,
-  spoofing), which moved into 5.2 in the 2026 outline. Add a 5.2 sub-topic
-  before any batch tests them.
+- Notes gap closed 31 Oct 2026: notes 5.2.9 (network attacks: DoS, on-path,
+  spoofing) now exists; batch 3 adds its first questions.
+
+**Cross-review round (31 Oct 2026).** All 225 items were read together by
+`cc-cross-domain-reviewer`, two notes-versus-bank tests and a structure scan.
+Fixed: two pairs of items that taught opposite rules (drift versus unapproved
+change; lessons-learned timing), one rule for risk acceptance everywhere (the
+risk owner within tolerance, senior management beyond it), 27 notes worked
+examples that mirrored their own questions, missing or contradicting notes
+facts, auditor wording in "In practice" blocks, the ties-shared longest-option
+rate (now 17-21% in every domain), and a citation to the now-final IR 8547.
+Every change was blind-tested and audited.
+
+Batch 3 guidance from this round:
+- Write a question for 1.5.3 (the ethics canons themselves; none tests them
+  now) and the first questions for 5.2.9.
+- D3: keep authentication mechanisms to about 30% of 3.1 items, so the
+  identity life cycle keeps most of the section's slots.
+- Write counter-examples to the "stem names an owner, so the key routes to
+  that owner" pattern: owners named, but the procedure assigns the task.
+- Give D1 more weight than D2 and D5 (D1 is under its 24% outline weight),
+  and vary D1 settings away from healthcare.
 
 ## 7. Follow-ups outside this plan's scope
 

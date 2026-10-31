@@ -44,6 +44,9 @@
           "id": "4.1.1",
           "name": "Network Building Blocks",
           "legacy_ids": [],
+          "practice_ids": [
+            "cc_d4_021"
+          ],
           "definition": "A network is a set of connected devices, called nodes, that exchange data by shared rules; switches link devices within a site and routers link networks.",
           "why_it_matters": "You cannot protect traffic you cannot picture. Knowing which device forwards what, and by which address, shows where a control belongs.",
           "how_it_works": [
@@ -92,6 +95,10 @@
           "id": "4.1.2",
           "name": "The OSI Model",
           "legacy_ids": [],
+          "practice_ids": [
+            "cc_d4_001",
+            "cc_d4_032"
+          ],
           "definition": "The Open Systems Interconnection (OSI) model is a seven-layer reference model that splits network communication into separate jobs, from physical signals to applications.",
           "why_it_matters": "Name the layer where a device works or an attack lands, and you can pick a control that operates there.",
           "how_it_works": [
@@ -145,6 +152,9 @@
           "id": "4.1.3",
           "name": "The TCP/IP Model, TCP and UDP",
           "legacy_ids": [],
+          "practice_ids": [
+            "cc_d4_022"
+          ],
           "definition": "Named after the Transmission Control Protocol (TCP) and the Internet Protocol (IP), the TCP/IP model is the four-layer model the internet runs on.",
           "why_it_matters": "Real traffic follows TCP/IP, so tools, logs and firewall rules use its terms, including which transport protocol a service needs.",
           "how_it_works": [
@@ -233,6 +243,9 @@
           "id": "4.1.4",
           "name": "IPv4 and IPv6",
           "legacy_ids": [],
+          "practice_ids": [
+            "cc_d4_023"
+          ],
           "definition": "IPv4 and IPv6 are the two versions of the Internet Protocol (IP): IPv4 uses 32-bit addresses, and IPv6 uses 128-bit addresses.",
           "why_it_matters": "Most networks run both at once, and an IPv6 path nobody filters lets traffic slip around IPv4-only controls.",
           "how_it_works": [
@@ -325,6 +338,10 @@
           "id": "4.1.5",
           "name": "Ports, Protocols and Secure Alternatives",
           "legacy_ids": [],
+          "practice_ids": [
+            "cc_d4_002",
+            "cc_d4_033"
+          ],
           "definition": "A port is a number from 0 to 65535 that tells a host which service receives traffic; a protocol is the set of rules that service speaks.",
           "why_it_matters": "Cleartext (unencrypted) protocols send passwords and data as plain readable text, so anyone on the path can read them.",
           "how_it_works": [
@@ -415,7 +432,7 @@
             "recommend": "Report cleartext protocols and unneeded open ports to the system owner, suggesting the secure replacement.",
             "decides": "The system owner decides when a protocol is replaced or a port closed"
           },
-          "isaca_rule": "First ask whether the service must run at all, and turn off what nobody needs. For the rest, choose the encrypted protocol for the same job: SSH over Telnet, SFTP over FTP, HTTPS over HTTP.",
+          "isaca_rule": "First ask whether the service must run at all, and propose turning off what nobody needs. For the rest, choose the encrypted protocol for the same job: SSH over Telnet, SFTP over FTP, HTTPS over HTTP.",
           "exam_traps": [
             {
               "trap": "SFTP and FTPS are the same protocol.",
@@ -442,6 +459,9 @@
           "id": "4.1.6",
           "name": "Virtual Private Networks (VPNs)",
           "legacy_ids": [],
+          "practice_ids": [
+            "cc_d4_003"
+          ],
           "definition": "A virtual private network (VPN) creates an encrypted tunnel across an untrusted network, such as the internet, so traffic cannot be read or changed on the way.",
           "why_it_matters": "A VPN protects remote traffic in transit, but it also extends the internal network to whatever device sits at the far end.",
           "how_it_works": [
@@ -530,6 +550,10 @@
           "id": "4.1.7",
           "name": "Firewalls: Ports and Applications",
           "legacy_ids": [],
+          "practice_ids": [
+            "cc_d4_024",
+            "cc_d4_025"
+          ],
           "definition": "A firewall is a device or software that allows or blocks traffic between networks or hosts by rules on addresses, ports, connection state or application.",
           "why_it_matters": "Firewalls enforce which traffic may cross a boundary, and a rule set that allows too much quietly undoes that protection.",
           "how_it_works": [
@@ -625,6 +649,10 @@
           "id": "4.1.8",
           "name": "Intrusion Detection and Prevention Systems",
           "legacy_ids": [],
+          "practice_ids": [
+            "cc_d4_004",
+            "cc_d4_034"
+          ],
           "definition": "An intrusion detection system (IDS) alerts on suspicious traffic or host activity; an intrusion prevention system (IPS) sits in the traffic path and can also block it.",
           "why_it_matters": "Firewalls decide what may pass, but allowed traffic can still carry attacks; detection spots them, and prevention can stop them.",
           "how_it_works": [
@@ -724,6 +752,10 @@
           "id": "4.1.9",
           "name": "AI in Traffic Monitoring, IDS and Firewalls",
           "legacy_ids": [],
+          "practice_ids": [
+            "cc_d4_005",
+            "cc_d4_035"
+          ],
           "definition": "AI-assisted network defense uses artificial intelligence (AI), mainly machine learning, to learn normal traffic and flag or block unusual behavior that fixed rules miss.",
           "why_it_matters": "Machine learning surfaces the few events that matter among millions, but its mistakes need the same human oversight as any control.",
           "how_it_works": [
@@ -774,6 +806,10 @@
           "id": "4.1.10",
           "name": "Wireless Security: Wi-Fi and Bluetooth",
           "legacy_ids": [],
+          "practice_ids": [
+            "cc_d4_006",
+            "cc_d4_036"
+          ],
           "definition": "Wireless security protects data sent by radio, over Wi-Fi and Bluetooth, where anyone within range can pick up the signal.",
           "why_it_matters": "Radio passes through walls, so without strong encryption and sign-in, anyone nearby can listen in or join.",
           "how_it_works": [
@@ -781,7 +817,7 @@
             "Guest Wi-Fi belongs on its own segment; hiding the network name or filtering by media access control (MAC) address adds little.",
             "Turn off Wi-Fi Protected Setup (WPS) PIN pairing, which can be guessed, and change default access point passwords.",
             "Keep Bluetooth devices non-discoverable except while pairing, refuse unexpected requests and keep their firmware updated.",
-            "Microwave ovens and other radio devices crowd the 2.4 gigahertz (GHz) band; moving to 5 or 6 GHz avoids them, while more power still shares the noise."
+            "Microwave ovens, cordless phones and Bluetooth crowd the 2.4 gigahertz (GHz) band; moving Wi-Fi to 5 or 6 GHz avoids them, while raising power does not remove noise."
           ],
           "compare": {
             "columns": [
@@ -874,6 +910,9 @@
           "id": "4.1.11",
           "name": "Embedded Systems and Industrial Control Systems",
           "legacy_ids": [],
+          "practice_ids": [
+            "cc_d4_007"
+          ],
           "definition": "An embedded system is a computer built into a device to do one job; industrial control systems (ICS) use them to run physical processes like power and water.",
           "why_it_matters": "An ICS attack can cause blackouts, floods or injuries, not just lost data, so safety and availability come first.",
           "how_it_works": [
@@ -972,6 +1011,9 @@
           "id": "4.1.12",
           "name": "Internet of Things (IoT) Security",
           "legacy_ids": [],
+          "practice_ids": [
+            "cc_d4_008"
+          ],
           "definition": "The Internet of Things (IoT) is the mass of everyday connected devices, such as cameras, smart televisions and sensors, that collect data or act with little human input.",
           "why_it_matters": "IoT devices are many, often unmanaged and rarely updated, so weak ones get hijacked into botnets or used as a foothold.",
           "how_it_works": [
@@ -1034,6 +1076,9 @@
           "id": "4.2.1",
           "name": "Network Segmentation",
           "legacy_ids": [],
+          "practice_ids": [
+            "cc_d4_026"
+          ],
           "definition": "Network segmentation divides a network into smaller parts, with controls on the traffic between them, so a problem in one part cannot spread freely.",
           "why_it_matters": "On a flat network, one infected laptop can reach every server; segmentation contains attacks and shields the most sensitive systems.",
           "how_it_works": [
@@ -1082,6 +1127,10 @@
           "id": "4.2.2",
           "name": "Firewall Zones and the Screened Subnet (DMZ)",
           "legacy_ids": [],
+          "practice_ids": [
+            "cc_d4_009",
+            "cc_d4_037"
+          ],
           "definition": "A firewall zone groups networks of equal trust; a screened subnet, often called a demilitarized zone (DMZ), holds public-facing servers between the internet and internal networks.",
           "why_it_matters": "Public-facing servers are the most attacked systems; in their own zone, a breached web server does not open the internal network.",
           "how_it_works": [
@@ -1152,6 +1201,10 @@
           "id": "4.2.3",
           "name": "Virtual LANs (VLANs)",
           "legacy_ids": [],
+          "practice_ids": [
+            "cc_d4_010",
+            "cc_d4_038"
+          ],
           "definition": "A virtual local area network (VLAN) splits one physical switched network into separate logical networks, so devices in different VLANs cannot talk directly at layer 2.",
           "why_it_matters": "VLANs separate staff, guests and smart devices without extra switches, but they protect only if traffic between them is filtered.",
           "how_it_works": [
@@ -1200,6 +1253,10 @@
           "id": "4.2.4",
           "name": "Micro-Segmentation",
           "legacy_ids": [],
+          "practice_ids": [
+            "cc_d4_011",
+            "cc_d4_039"
+          ],
           "definition": "Micro-segmentation applies security policy to individual workloads, such as single servers, virtual machines or containers, so each talks only to the systems it needs.",
           "why_it_matters": "Ordinary segments allow free movement inside each one; micro-segmentation shrinks the boundary to one workload, sharply limiting lateral movement.",
           "how_it_works": [
@@ -1249,7 +1306,7 @@
               }
             ]
           },
-          "example": "A wine distributor's IT team drafted micro-segmentation rules for its twelve order-processing servers from one week of traffic records. Before the rules block anything, Noor, a junior systems engineer, runs them in report-only mode for a full month. The logs show a month-end invoicing job that the week of records missed, so Noor adds that flow to the change request before the rules are enforced.",
+          "example": "A wine distributor's IT team drafted micro-segmentation rules for its twelve order-processing servers from one week of traffic records. Before the rules block anything, Noor, a junior system administrator, runs them in report-only mode for a full month. The logs show a month-end invoicing job that the week of records missed, so Noor adds that flow to the change request before the rules are enforced.",
           "audit_focus": {
             "review": [
               "Map a workload's real traffic before any rule for it is written",
@@ -1289,6 +1346,9 @@
           "id": "4.2.5",
           "name": "Defense in Depth",
           "legacy_ids": [],
+          "practice_ids": [
+            "cc_d4_027"
+          ],
           "definition": "Defense in depth layers independent physical, technical and administrative controls, so that if one fails or is bypassed, others still protect the asset.",
           "why_it_matters": "Every control fails sometimes; layers buy time to detect and respond before one failure becomes a breach.",
           "how_it_works": [
@@ -1341,6 +1401,10 @@
           "id": "4.2.6",
           "name": "Zero Trust Principles",
           "legacy_ids": [],
+          "practice_ids": [
+            "cc_d4_012",
+            "cc_d4_040"
+          ],
           "definition": "Zero Trust is a security approach that grants no trust for network location alone and checks every request to every resource, every time.",
           "why_it_matters": "Remote work, cloud services and stolen credentials have erased the safe inside network; Zero Trust limits what an intruder can do.",
           "how_it_works": [
@@ -1426,6 +1490,9 @@
           "id": "4.2.7",
           "name": "Zero Trust Architecture Components",
           "legacy_ids": [],
+          "practice_ids": [
+            "cc_d4_028"
+          ],
           "definition": "A Zero Trust architecture separates deciding from enforcing: a decision point judges each access request, and enforcement points carry out the decision.",
           "why_it_matters": "A resource with no enforcement point in front of it sits outside the policy's protection.",
           "how_it_works": [
@@ -1495,6 +1562,9 @@
           "id": "4.2.8",
           "name": "Network Access Control (NAC)",
           "legacy_ids": [],
+          "practice_ids": [
+            "cc_d4_013"
+          ],
           "definition": "Network access control (NAC) checks who and what is connecting, and whether the device meets security requirements, before granting the right level of access.",
           "why_it_matters": "Anyone can plug into a meeting-room port; NAC keeps unknown or unhealthy devices away from sensitive systems.",
           "how_it_works": [
@@ -1543,6 +1613,9 @@
           "id": "4.2.9",
           "name": "Segmenting AI Development Environments",
           "legacy_ids": [],
+          "practice_ids": [
+            "cc_d4_014"
+          ],
           "definition": "Segmenting artificial intelligence (AI) development environments keeps model building, training and testing on separate, controlled segments, away from production systems and their data.",
           "why_it_matters": "Experiments are less locked down than production, so without isolation a weak test server can expose real customer data or a live model.",
           "how_it_works": [
@@ -1605,6 +1678,10 @@
           "id": "4.3.1",
           "name": "The Five Essential Characteristics of Cloud Computing",
           "legacy_ids": [],
+          "practice_ids": [
+            "cc_d4_015",
+            "cc_d4_041"
+          ],
           "definition": "Cloud computing is using computing resources, such as servers, storage and software, from a shared pool over a network, scaling as needed and paying for use.",
           "why_it_matters": "Self-service and elasticity speed things up, but they also let anyone with an account create, expose or delete resources in minutes.",
           "how_it_works": [
@@ -1675,6 +1752,9 @@
           "id": "4.3.2",
           "name": "Virtualization and Containers in the Cloud",
           "legacy_ids": [],
+          "practice_ids": [
+            "cc_d4_029"
+          ],
           "definition": "Virtualization uses a hypervisor to run many isolated virtual machines on one physical server; containers share one operating system kernel but keep applications apart.",
           "why_it_matters": "Cloud pooling depends on this isolation, and one badly built image can be copied into hundreds of running workloads.",
           "how_it_works": [
@@ -1756,6 +1836,10 @@
           "id": "4.3.3",
           "name": "Cloud Service Models: IaaS, PaaS and SaaS",
           "legacy_ids": [],
+          "practice_ids": [
+            "cc_d4_016",
+            "cc_d4_042"
+          ],
           "definition": "Cloud service models describe what the provider delivers: infrastructure as a service (IaaS), platform as a service (PaaS) or software as a service (SaaS).",
           "why_it_matters": "The service model decides how much the customer must secure; misreading it leaves layers nobody patches.",
           "how_it_works": [
@@ -1845,6 +1929,9 @@
           "id": "4.3.4",
           "name": "Cloud Deployment Models",
           "legacy_ids": [],
+          "practice_ids": [
+            "cc_d4_018"
+          ],
           "definition": "Cloud deployment models describe who the cloud infrastructure is built for and shared with: public, private, community or hybrid.",
           "why_it_matters": "The model shapes control, cost and risk, and regulated data may need more control than a public cloud gives by default.",
           "how_it_works": [
@@ -1939,6 +2026,10 @@
           "id": "4.3.5",
           "name": "The Shared Responsibility Model",
           "legacy_ids": [],
+          "practice_ids": [
+            "cc_d4_017",
+            "cc_d4_043"
+          ],
           "definition": "The shared responsibility model divides cloud security duties: the provider secures the cloud itself, and the customer secures what it puts in the cloud.",
           "why_it_matters": "Many cloud breaches come from customers assuming the provider handles something it does not, such as access settings.",
           "how_it_works": [
@@ -2041,6 +2132,9 @@
           "id": "4.3.6",
           "name": "Cloud Roles and Agreements",
           "legacy_ids": [],
+          "practice_ids": [
+            "cc_d4_030"
+          ],
           "definition": "Cloud roles name the parties in a cloud service, such as consumer, provider, broker, carrier and auditor; agreements set out what each must do.",
           "why_it_matters": "Shared duties work only when written down and checked, or the customer cannot know which risks are still its own.",
           "how_it_works": [
@@ -2111,6 +2205,9 @@
           "id": "4.3.7",
           "name": "Protecting Data in the Cloud",
           "legacy_ids": [],
+          "practice_ids": [
+            "cc_d4_031"
+          ],
           "definition": "Protecting cloud data means classifying it, encrypting it in transit and at rest, controlling the keys, and making sure it can be recovered and fully deleted.",
           "why_it_matters": "The data stays the customer's responsibility in every model, and well-controlled encryption limits the damage if storage is exposed.",
           "how_it_works": [
@@ -2201,6 +2298,10 @@
           "id": "4.3.8",
           "name": "Cloud Misconfiguration, CSPM and CASB",
           "legacy_ids": [],
+          "practice_ids": [
+            "cc_d4_019",
+            "cc_d4_044"
+          ],
           "definition": "A cloud misconfiguration is a setting that leaves resources more exposed than intended, such as public storage, open ports or excessive permissions.",
           "why_it_matters": "Misconfiguration is among the commonest causes of cloud data exposure, because self-service lets anyone create resources quickly.",
           "how_it_works": [
@@ -2251,7 +2352,7 @@
             "recommend": "Fix baseline failures your procedure assigns you, recording the change; send others to the resource owner, and escalate exposed sensitive data as an incident.",
             "decides": "The procedure or resource owner sets who fixes it; only the risk owner accepts the risk"
           },
-          "isaca_rule": "In the cloud, the likeliest breach is the customer's own setting. Use baselines and continuous checks, and report flagged exposure fast, because exposure time matters.",
+          "isaca_rule": "In the cloud, the likeliest breach is the customer's own setting. Use baselines and continuous checks, fix the drift your procedure assigns you, and report exposed sensitive data fast, because exposure time matters.",
           "exam_traps": [
             {
               "trap": "If a storage bucket was public, the provider caused the breach.",
@@ -2282,6 +2383,10 @@
           "id": "4.3.9",
           "name": "Shared Responsibility for AI Workloads",
           "legacy_ids": [],
+          "practice_ids": [
+            "cc_d4_020",
+            "cc_d4_045"
+          ],
           "definition": "Shared responsibility for cloud-hosted artificial intelligence (AI) workloads splits duties: the provider secures the AI platform; the customer secures data, models, access and use.",
           "why_it_matters": "Teams that assume the provider secures everything leave training data, tuned models and access settings exposed.",
           "how_it_works": [

@@ -37,6 +37,9 @@
           "id": "3.1.1",
           "name": "Identities, Accounts and the Life Cycle",
           "legacy_ids": [],
+          "practice_ids": [
+            "cc_d3_021"
+          ],
           "definition": "An identity represents one person or system; accounts are its logins on specific systems. The identity life cycle manages both, from creation to removal.",
           "why_it_matters": "Access can only be controlled and traced when every account belongs to a known identity with an owner. Orphaned and shared accounts give attackers easy doors.",
           "how_it_works": [
@@ -111,6 +114,9 @@
           "id": "3.1.2",
           "name": "Defining Roles and Entitlements",
           "legacy_ids": [],
+          "practice_ids": [
+            "cc_d3_022"
+          ],
           "definition": "Defining roles means grouping the access a job needs into a named role, so people get a standard, approved set of entitlements instead of one-off grants.",
           "why_it_matters": "Clear roles make provisioning consistent and reviews possible. Without them, access is copied from coworkers and people collect rights they never needed.",
           "how_it_works": [
@@ -158,6 +164,10 @@
           "id": "3.1.3",
           "name": "Provisioning and Identity Proofing",
           "legacy_ids": [],
+          "practice_ids": [
+            "cc_d3_004",
+            "cc_d3_027"
+          ],
           "definition": "Provisioning creates an account and grants its approved access. Identity proofing first checks that the person is who they claim to be, before credentials are issued.",
           "why_it_matters": "Getting access right on day one is easier than fixing it later. Weak proofing lets an impostor be enrolled with legitimate credentials.",
           "how_it_works": [
@@ -205,6 +215,10 @@
           "id": "3.1.4",
           "name": "Authentication Factors and MFA",
           "legacy_ids": [],
+          "practice_ids": [
+            "cc_d3_001",
+            "cc_d3_028"
+          ],
           "definition": "Authentication factors are categories of proof: something you know, something you have and something you are. Multifactor authentication (MFA) combines at least two different categories.",
           "why_it_matters": "Stolen passwords are common. A second factor from a different category means an attacker must steal two unlike things.",
           "how_it_works": [
@@ -272,12 +286,16 @@
           "id": "3.1.5",
           "name": "Phishing-Resistant MFA and Passkeys",
           "legacy_ids": [],
+          "practice_ids": [
+            "cc_d3_002",
+            "cc_d3_029"
+          ],
           "definition": "Phishing-resistant authentication ties each sign-in to the genuine site, so a fake site cannot capture and reuse it. Passkeys and Fast Identity Online 2 (FIDO2) security keys are examples.",
           "why_it_matters": "Codes from multifactor authentication (MFA) can be relayed through fake login pages, and push prompts repeated until a tired user approves.",
           "how_it_works": [
             "A passkey's private key is never sent to any site, nor is the PIN or fingerprint that unlocks it; it signs a challenge only for the real site.",
             "The browser checks the site's address, so a look-alike domain gets nothing it can reuse.",
-            "Text and app codes can be typed into a fake page and replayed.",
+            "Text and app codes can be typed into a fake page and relayed to the real site at once.",
             "Number matching stops blind approvals, but a fake page can show the real number, so it is not phishing-resistant.",
             "Synced passkeys copy across a user's devices; device-bound security keys never leave one.",
             "Offering a weaker option beside passkeys, such as a texted code, lets a fake page ask for that instead."
@@ -358,6 +376,10 @@
           "id": "3.1.6",
           "name": "Passwords and Modern Password Standards",
           "legacy_ids": [],
+          "practice_ids": [
+            "cc_d3_003",
+            "cc_d3_030"
+          ],
           "definition": "A password standard sets the rules for creating, checking and storing passwords. The National Institute of Standards and Technology (NIST) favors length and breach screening over character mixes.",
           "why_it_matters": "Old rules pushed people toward patterns like Summer2026! and sticky notes. The policy says passwords must be strong; the standard sets the exact numbers.",
           "how_it_works": [
@@ -409,6 +431,10 @@
           "id": "3.1.7",
           "name": "Single Sign-On and Federation",
           "legacy_ids": [],
+          "practice_ids": [
+            "cc_d3_005",
+            "cc_d3_031"
+          ],
           "definition": "Single sign-on (SSO) lets a user sign in once at an identity provider and reach many applications; federation extends that trust to applications run by other organizations.",
           "why_it_matters": "SSO means fewer passwords and one off switch, but it concentrates risk: one stolen login or outage affects every app.",
           "how_it_works": [
@@ -489,6 +515,9 @@
           "id": "3.1.8",
           "name": "Adaptive Authentication and AI Behavior Analysis",
           "legacy_ids": [],
+          "practice_ids": [
+            "cc_d3_023"
+          ],
           "definition": "Adaptive, or risk-based, authentication adjusts sign-in checks to the risk of each attempt, often using AI models that learn each user's normal behavior and flag unusual activity.",
           "why_it_matters": "Fixed rules miss stolen credentials used normally. Behavior analysis can catch an attacker who has the right password.",
           "how_it_works": [
@@ -536,6 +565,10 @@
           "id": "3.1.9",
           "name": "Movers and Privilege Creep",
           "legacy_ids": [],
+          "practice_ids": [
+            "cc_d3_009",
+            "cc_d3_032"
+          ],
           "definition": "A mover is a person whose job or duties change. Handling a mover adds the new role's access and removes old access the new role does not need.",
           "why_it_matters": "Movers are the stage most often missed. Keeping old rights at each move builds privilege creep and can create separation of duties conflicts.",
           "how_it_works": [
@@ -583,6 +616,9 @@
           "id": "3.1.10",
           "name": "Access Reviews and Recertification",
           "legacy_ids": [],
+          "practice_ids": [
+            "cc_d3_006"
+          ],
           "definition": "An access review is a regular check, by someone who knows the work, that each account and right is still needed. Recertification is the formal sign-off of that check.",
           "why_it_matters": "Gaps happen: a missed mover, an emergency grant never removed, a forgotten test account. Reviews catch what slipped through.",
           "how_it_works": [
@@ -645,6 +681,9 @@
           "id": "3.1.11",
           "name": "Deprovisioning Leavers",
           "legacy_ids": [],
+          "practice_ids": [
+            "cc_d3_007"
+          ],
           "definition": "Deprovisioning removes an identity's access when it is no longer needed: disabling accounts, revoking credentials and sessions, and collecting devices and badges.",
           "why_it_matters": "Accounts left behind by former staff, contractors and vendors are a common route for misuse. Prompt removal also protects former staff from blame.",
           "how_it_works": [
@@ -692,6 +731,10 @@
           "id": "3.1.12",
           "name": "Non-Human Identities Through the Life Cycle",
           "legacy_ids": [],
+          "practice_ids": [
+            "cc_d3_010",
+            "cc_d3_033"
+          ],
           "definition": "Non-human identities are accounts used by software, such as service accounts, bots, application programming interface (API) keys and AI agents. They need the same life cycle as people.",
           "why_it_matters": "They often outnumber staff and never resign. The Open Worldwide Application Security Project (OWASP) ranks improper offboarding and leaked secrets as their top risks.",
           "how_it_works": [
@@ -740,6 +783,9 @@
           "id": "3.1.13",
           "name": "IAM Frameworks and Tools",
           "legacy_ids": [],
+          "practice_ids": [
+            "cc_d3_024"
+          ],
           "definition": "Identity and access management (IAM) frameworks are published guides to good identity practice; IAM tools are the systems that carry it out, such as directories and governance platforms.",
           "why_it_matters": "Frameworks give a shared, defensible standard instead of one person's opinion. Tools make the life cycle repeatable and keep the records reviews need.",
           "how_it_works": [
@@ -801,6 +847,9 @@
           "id": "3.1.14",
           "name": "Access Requests and Approvals",
           "legacy_ids": [],
+          "practice_ids": [
+            "cc_d3_008"
+          ],
           "definition": "An access request is a recorded ask for a specific right. The owner of the resource approves it, and a different person fulfills and records it.",
           "why_it_matters": "Most access changes happen after day one. A request path stops rights being granted on a hallway word or a convincing message, and leaves a record.",
           "how_it_works": [
@@ -848,6 +897,9 @@
           "id": "3.1.15",
           "name": "Third-Party, Guest and Federated Access",
           "legacy_ids": [],
+          "practice_ids": [
+            "cc_d3_025"
+          ],
           "definition": "Third-party access lets contractors, vendors and partners use your systems, through guest accounts you create or by trusting their own organization's sign-in through federation.",
           "why_it_matters": "Outside users are often forgotten when their work ends, and their employer may never tell you they left.",
           "how_it_works": [
@@ -895,6 +947,9 @@
           "id": "3.1.16",
           "name": "Sessions, Timeouts and Reauthentication",
           "legacy_ids": [],
+          "practice_ids": [
+            "cc_d3_026"
+          ],
           "definition": "A session is the period after sign-in when a user can act without proving their identity again. Session controls decide how long it lasts and when to check again.",
           "why_it_matters": "A stolen session token or an unlocked screen gives someone the user's access without any password. Session limits shrink that window.",
           "how_it_works": [
@@ -955,6 +1010,10 @@
           "id": "3.2.1",
           "name": "Logical Access Controls and Access Decisions",
           "legacy_ids": [],
+          "practice_ids": [
+            "cc_d3_011",
+            "cc_d3_037"
+          ],
           "definition": "Logical access controls are software rules that decide whether a subject, such as a user or process, may perform an action on an object, such as a file.",
           "why_it_matters": "Once someone is signed in, these rules stop them reading payroll or deleting records they should not touch.",
           "how_it_works": [
@@ -1010,6 +1069,10 @@
           "id": "3.2.2",
           "name": "Least Privilege and Need to Know",
           "legacy_ids": [],
+          "practice_ids": [
+            "cc_d3_012",
+            "cc_d3_038"
+          ],
           "definition": "Least privilege gives each user or process the minimum access its task needs, for as long as needed. Need to know limits information to people whose duties require it.",
           "why_it_matters": "If an account is stolen or misused, least privilege limits the damage to what it could reach. Nobody can delete what they cannot touch.",
           "how_it_works": [
@@ -1087,6 +1150,10 @@
           "id": "3.2.3",
           "name": "Separation of Duties and Two-Person Control",
           "legacy_ids": [],
+          "practice_ids": [
+            "cc_d3_013",
+            "cc_d3_039"
+          ],
           "definition": "Separation of duties (SoD) splits a sensitive task so no single person can complete it alone; two-person control requires two people to act together.",
           "why_it_matters": "One person with end-to-end control can commit and hide fraud or a costly mistake. Splitting duties means abuse needs collusion.",
           "how_it_works": [
@@ -1153,6 +1220,10 @@
           "id": "3.2.4",
           "name": "Privileged Access Management",
           "legacy_ids": [],
+          "practice_ids": [
+            "cc_d3_014",
+            "cc_d3_040"
+          ],
           "definition": "Privileged access management (PAM) controls accounts that can change systems, security settings or other users' access, such as administrator, root and database owner accounts.",
           "why_it_matters": "Privileged accounts are the keys attackers want most: one compromise can switch off defenses or reach everything.",
           "how_it_works": [
@@ -1200,6 +1271,10 @@
           "id": "3.2.5",
           "name": "Discretionary Access Control (DAC)",
           "legacy_ids": [],
+          "practice_ids": [
+            "cc_d3_015",
+            "cc_d3_041"
+          ],
           "definition": "Discretionary access control (DAC) lets the owner of a resource, usually its creator, decide who else may access it and what they may do.",
           "why_it_matters": "DAC is how most file shares and cloud documents work: flexible, but data can be overshared with one click.",
           "how_it_works": [
@@ -1248,6 +1323,10 @@
           "id": "3.2.6",
           "name": "Mandatory Access Control (MAC)",
           "legacy_ids": [],
+          "practice_ids": [
+            "cc_d3_016",
+            "cc_d3_042"
+          ],
           "definition": "Mandatory access control (MAC) lets the system, not the owner, decide access by comparing a subject's clearance with the object's classification label under central policy.",
           "why_it_matters": "MAC protects data that one user's choice must never leak, as in military systems. It is not the network MAC address (Domain 4).",
           "how_it_works": [
@@ -1256,7 +1335,7 @@
             "Access needs enough clearance plus a need to know; users cannot change labels, even on their own files.",
             "MAC is strong but rigid and costly, so it suits high-security settings."
           ],
-          "example": "At a navy shipyard, a test manager adds Kofi, a contractor cleared only to Confidential, to the manager's own folder of Secret trial results so Kofi can help write them up. The system still turns Kofi away: under MAC, an owner's sharing cannot outweigh the label. Kofi calls the help desk. Ruth, the agent, leaves labels and rights alone, logs the ticket as working as designed and reports the attempted share to the security officer.",
+          "example": "At a navy shipyard, a test manager adds Kofi, a contractor cleared only to Confidential, to the manager's own folder of Secret trial results so Kofi can help write them up. The system still turns Kofi away: under MAC, an owner's sharing cannot outweigh the label. Kofi calls the help desk. Ruth, the help desk analyst, leaves labels and rights alone, logs the ticket as working as designed and reports the attempted share to the security officer.",
           "audit_focus": {
             "review": [
               "Confirm new data carries the correct classification label",
@@ -1299,6 +1378,9 @@
           "id": "3.2.7",
           "name": "Role-Based Access Control (RBAC)",
           "legacy_ids": [],
+          "practice_ids": [
+            "cc_d3_034"
+          ],
           "definition": "Role-based access control (RBAC) attaches permissions to roles that match job functions, then assigns people to roles, so access follows the job rather than the person.",
           "why_it_matters": "RBAC is the most common model in business systems because it scales. Changing someone's job means changing their role.",
           "how_it_works": [
@@ -1346,6 +1428,10 @@
           "id": "3.2.8",
           "name": "Attribute-Based Access Control (ABAC)",
           "legacy_ids": [],
+          "practice_ids": [
+            "cc_d3_017",
+            "cc_d3_043"
+          ],
           "definition": "Attribute-based access control (ABAC) decides each request by checking a policy against attributes of the user, the resource, the action and the environment, such as time or location.",
           "why_it_matters": "ABAC handles fine-grained, changing conditions that roles cannot, such as approving expenses only for one's own region, in business hours, from a managed device.",
           "how_it_works": [
@@ -1393,6 +1479,9 @@
           "id": "3.2.9",
           "name": "Rule-Based Access Control",
           "legacy_ids": [],
+          "practice_ids": [
+            "cc_d3_035"
+          ],
           "definition": "Rule-based access control applies fixed rules, set by an administrator, to every subject alike, such as firewall rules or a ban on sign-ins outside business hours.",
           "why_it_matters": "Rules set limits whoever the user is, which suits network traffic, hours and locations. Do not confuse it with role-based access control (RBAC).",
           "how_it_works": [
@@ -1440,6 +1529,9 @@
           "id": "3.2.10",
           "name": "Choosing an Access Control Model",
           "legacy_ids": [],
+          "practice_ids": [
+            "cc_d3_036"
+          ],
           "definition": "Choosing an access control model starts with one question: who or what decides access (the owner, labels, job roles, attributes or fixed rules), and does that fit the risk?",
           "why_it_matters": "Scenarios describe who decides rather than naming the model, and real organizations mix models, so knowing where each fits avoids a poor choice.",
           "how_it_works": [
@@ -1540,6 +1632,10 @@
           "id": "3.2.11",
           "name": "Least Privilege and SoD for Automated Systems and AI Agents",
           "legacy_ids": [],
+          "practice_ids": [
+            "cc_d3_019",
+            "cc_d3_044"
+          ],
           "definition": "Applying least privilege and separation of duties to automation means scripts, bots and AI agents get only the access their task needs and cannot finish high-risk actions alone.",
           "why_it_matters": "An over-privileged bot or a manipulated AI agent can do damage in seconds. The Open Worldwide Application Security Project (OWASP) calls this risk excessive agency.",
           "how_it_works": [
@@ -1587,6 +1683,10 @@
           "id": "3.2.12",
           "name": "Just-in-Time and Break-Glass Access",
           "legacy_ids": [],
+          "practice_ids": [
+            "cc_d3_020",
+            "cc_d3_045"
+          ],
           "definition": "Just-in-time access grants privileged rights only for an approved task and period, then removes them. Break-glass access is a sealed emergency account for when normal access fails.",
           "why_it_matters": "Standing admin rights are available to attackers around the clock. Granting them only when needed shrinks that window.",
           "how_it_works": [
@@ -1635,6 +1735,9 @@
           "id": "3.2.13",
           "name": "Access Model Scenarios: Worked Examples",
           "legacy_ids": [],
+          "practice_ids": [
+            "cc_d3_018"
+          ],
           "definition": "Worked scenarios practice naming the access control model from clues: who sets the permission, what the decision depends on, and whether users can change it.",
           "why_it_matters": "Short scenarios describe the decision instead of naming the model. Reading for the decider, not for words like secure or flexible, settles most choices.",
           "how_it_works": [

@@ -68,6 +68,8 @@ Read first:
    - Each item carries a `_provenance` note describing how it was authored.
 10. **Inclusive and global.** Neutral names, globally recognisable settings (hospital, school, city council, logistics firm, small business), US spelling and they/them for people.
 
+11. **Canonical role names.** Use these in items and notes so the bank reads as one course: help desk (analyst or technician), security manager, security team, incident response lead, risk owner, policy owner, data owner, system owner, continuity coordinator, awareness lead, system administrator, network technician. Risk acceptance follows one rule everywhere: the risk owner accepts within tolerance, senior management decides beyond it (treat further or accept).
+
 ## Tiered findings when auditing
 - **HARD ERROR:** wrong or disputed key; a second defensible answer; a factual error; an outdated source; a CISA auditor lens; copied text; a trademark misuse ("CC®" and "ISC2®" go in notices only, and never imply endorsement).
 - **PRECISION:** a giveaway cue; a strawman distractor; a weak explanation; a tip that doesn't teach; a stem missing the deciding fact.

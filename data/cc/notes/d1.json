@@ -58,6 +58,10 @@
           "id": "1.1.1",
           "name": "The CIA Triad",
           "legacy_ids": [],
+          "practice_ids": [
+            "cc_d1_001",
+            "cc_d1_026"
+          ],
           "definition": "The CIA triad is the three core goals of security: confidentiality (only the right people see data), integrity (data stays correct) and availability (it works when needed).",
           "why_it_matters": "Naming the goal an incident hurts points to the right response. The triad also shows trade-offs: tight lockdown can block people who need access.",
           "how_it_works": [
@@ -143,6 +147,9 @@
           "id": "1.1.2",
           "name": "Confidentiality",
           "legacy_ids": [],
+          "practice_ids": [
+            "cc_d1_021"
+          ],
           "definition": "Confidentiality means keeping information away from people, processes and devices not authorized to see it, whether stored, sent or in use.",
           "why_it_matters": "Leaked data cannot be pulled back. Disclosure can break laws, harm customers and help attackers, so prevention matters most.",
           "how_it_works": [
@@ -190,6 +197,9 @@
           "id": "1.1.3",
           "name": "Integrity and Authenticity",
           "legacy_ids": [],
+          "practice_ids": [
+            "cc_d1_022"
+          ],
           "definition": "Integrity means data stays accurate and complete, changed only through authorized means; authenticity means data truly comes from its claimed source.",
           "why_it_matters": "A silently changed payment, dose or setting can do more harm than a leak, because people keep trusting it.",
           "how_it_works": [
@@ -269,6 +279,9 @@
           "id": "1.1.4",
           "name": "Availability",
           "legacy_ids": [],
+          "practice_ids": [
+            "cc_d1_023"
+          ],
           "definition": "Availability means authorized users can reach the systems, data and services they need, in a usable state, when they need them.",
           "why_it_matters": "A hospital that cannot open records, or a store that cannot take payments, is harmed even without a leak. Some outages endanger people.",
           "how_it_works": [
@@ -312,6 +325,9 @@
           "id": "1.1.5",
           "name": "Authentication",
           "legacy_ids": [],
+          "practice_ids": [
+            "cc_d1_024"
+          ],
           "definition": "Authentication is proving you are the identity you claim, using something you know, something you have or something you are.",
           "why_it_matters": "Every later access decision trusts the identity. If an attacker passes authentication, the system works for the attacker.",
           "how_it_works": [
@@ -373,6 +389,10 @@
           "id": "1.1.6",
           "name": "Authorization and Accounting",
           "legacy_ids": [],
+          "practice_ids": [
+            "cc_d1_003",
+            "cc_d1_027"
+          ],
           "definition": "Authorization decides what an authenticated identity may do; accounting records what it actually did, so actions can be traced to a person or process.",
           "why_it_matters": "Authorization limits the damage one account can cause. Accounting gives the evidence to spot misuse and hold people to answer for it.",
           "how_it_works": [
@@ -454,6 +474,9 @@
           "id": "1.1.7",
           "name": "Non-Repudiation",
           "legacy_ids": [],
+          "practice_ids": [
+            "cc_d1_002"
+          ],
           "definition": "Non-repudiation is evidence strong enough that a person cannot credibly deny sending a message, signing a document or performing an action.",
           "why_it_matters": "Contracts, payments and investigations depend on proof of who did what. Without it, anyone can claim someone else acted in their name.",
           "how_it_works": [
@@ -504,6 +527,10 @@
           "id": "1.1.8",
           "name": "Privacy and Personal Data",
           "legacy_ids": [],
+          "practice_ids": [
+            "cc_d1_004",
+            "cc_d1_028"
+          ],
           "definition": "Privacy is a person's right to control how information about them is collected, used, shared and kept.",
           "why_it_matters": "Privacy can be breached without any leak, just by using data for a purpose people never agreed to. Breaches bring fines and lost trust.",
           "how_it_works": [
@@ -580,6 +607,9 @@
           "id": "1.1.9",
           "name": "AI and the Core Security Concepts",
           "legacy_ids": [],
+          "practice_ids": [
+            "cc_d1_025"
+          ],
           "definition": "AI systems share the security goals of other software, plus new risks: poisoned training data, personal data exposed through models and hard-to-trace automated actions.",
           "why_it_matters": "Corrupted data, leaked secrets or untraceable actions make confidentiality, integrity and accountability fail in new ways.",
           "how_it_works": [
@@ -675,6 +705,9 @@
           "id": "1.2.1",
           "name": "Threats, Vulnerabilities and Risk",
           "legacy_ids": [],
+          "practice_ids": [
+            "cc_d1_005"
+          ],
           "definition": "Risk is the chance that a threat will exploit a vulnerability and harm an asset, judged by likelihood and impact.",
           "why_it_matters": "Clear terms let teams compare very different problems, such as phishing and a flood, and spend effort where it removes the most harm.",
           "how_it_works": [
@@ -755,6 +788,9 @@
           "id": "1.2.2",
           "name": "The Risk Management Lifecycle",
           "legacy_ids": [],
+          "practice_ids": [
+            "cc_d1_029"
+          ],
           "definition": "The risk management lifecycle is the repeating cycle of identifying, assessing, treating and monitoring risks, with communication throughout.",
           "why_it_matters": "A one-time assessment goes stale as systems, threats and plans change. The cycle keeps decisions current.",
           "how_it_works": [
@@ -800,6 +836,9 @@
           "id": "1.2.3",
           "name": "Assessing Likelihood and Impact",
           "legacy_ids": [],
+          "practice_ids": [
+            "cc_d1_030"
+          ],
           "definition": "Risk assessment rates each identified risk by how likely it is and how much harm it would cause, so the worst get attention first.",
           "why_it_matters": "Without consistent ratings, the loudest concern wins instead of the most serious. Ranking puts limited budget where it matters most.",
           "how_it_works": [
@@ -848,6 +887,9 @@
           "id": "1.2.4",
           "name": "Qualitative and Quantitative Analysis",
           "legacy_ids": [],
+          "practice_ids": [
+            "cc_d1_007"
+          ],
           "definition": "Qualitative analysis rates risks with levels such as low, medium and high; quantitative analysis estimates them in numbers, usually money lost per year.",
           "why_it_matters": "Descriptive ratings suit most decisions; numbers help justify spending on a costly control.",
           "how_it_works": [
@@ -937,12 +979,16 @@
           "id": "1.2.5",
           "name": "Risk Treatment Options",
           "legacy_ids": [],
+          "practice_ids": [
+            "cc_d1_008",
+            "cc_d1_032"
+          ],
           "definition": "Risk treatment is choosing how to respond to an assessed risk: avoid, mitigate, transfer (share) or accept it.",
           "why_it_matters": "Every risk gets a response, even a documented decision to live with it.",
           "how_it_works": [
             "The rating, each option's cost and the risk appetite guide the choice.",
             "Transfer moves financial impact, not accountability.",
-            "Ignoring a risk is not acceptance; acceptance is a documented decision by the risk owner."
+            "Ignoring a risk is not acceptance; acceptance is a documented decision by whoever holds the authority: the risk owner within tolerance, senior management beyond it."
           ],
           "types": [
             {
@@ -983,7 +1029,7 @@
             },
             {
               "trap": "Doing nothing about a risk counts as accepting it.",
-              "why": "Acceptance is a deliberate, documented decision by the risk owner. An ignored risk is unmanaged."
+              "why": "Acceptance is a deliberate, documented decision by the risk owner, or by senior management beyond tolerance. An ignored risk is unmanaged."
             }
           ],
           "key_terms": [
@@ -1002,6 +1048,10 @@
           "id": "1.2.6",
           "name": "Risk Appetite, Tolerance and Acceptance",
           "legacy_ids": [],
+          "practice_ids": [
+            "cc_d1_006",
+            "cc_d1_033"
+          ],
           "definition": "Risk appetite is the broad amount and type of risk leaders will take on; risk tolerance is the measurable limit for a specific objective.",
           "why_it_matters": "They turn leaders' attitudes into limits that show when a remaining risk must be escalated.",
           "how_it_works": [
@@ -1027,7 +1077,7 @@
           "exam_traps": [
             {
               "trap": "The analyst who found a small risk can accept it to save time.",
-              "why": "Acceptance commits the organization, so it belongs to the risk owner. The analyst documents and escalates."
+              "why": "Acceptance commits the organization, so it belongs to the risk owner within tolerance and to senior management beyond it. The analyst documents and escalates."
             },
             {
               "trap": "Risk appetite and risk tolerance mean the same thing.",
@@ -1049,6 +1099,9 @@
           "id": "1.2.7",
           "name": "Risk Register, Ownership and Reporting",
           "legacy_ids": [],
+          "practice_ids": [
+            "cc_d1_031"
+          ],
           "definition": "A risk register is the shared record of known risks, each with a rating, an owner, a treatment and a status.",
           "why_it_matters": "A risk nobody owns usually goes untreated. The register makes ownership visible and proves the organization acted on what it knew.",
           "how_it_works": [
@@ -1148,6 +1201,9 @@
           "id": "1.3.1",
           "name": "Security Governance and Its Roles",
           "legacy_ids": [],
+          "practice_ids": [
+            "cc_d1_034"
+          ],
           "definition": "Security governance is how leaders set direction, assign responsibility and oversee security so it supports business goals and meets legal duties.",
           "why_it_matters": "Without governance, security is a pile of disconnected tools. Governance gives every control a reason, an owner and leadership's authority.",
           "how_it_works": [
@@ -1194,6 +1250,9 @@
           "id": "1.3.2",
           "name": "Laws and Regulations",
           "legacy_ids": [],
+          "practice_ids": [
+            "cc_d1_035"
+          ],
           "definition": "Laws are rules passed by governments, and regulations are detailed rules agencies issue under those laws; both are mandatory.",
           "why_it_matters": "Breaking a law brings fines or criminal charges. Legal duties, such as reporting deadlines, set minimums no policy can lower.",
           "how_it_works": [
@@ -1277,6 +1336,9 @@
           "id": "1.3.3",
           "name": "Security Frameworks and Guidelines",
           "legacy_ids": [],
+          "practice_ids": [
+            "cc_d1_011"
+          ],
           "definition": "A security framework is a published structure of practices or outcomes for building and measuring a security program; guidelines give recommended, not required, practice.",
           "why_it_matters": "Frameworks save inventing security from scratch. They are voluntary unless a law or contract requires one.",
           "how_it_works": [
@@ -1359,6 +1421,10 @@
           "id": "1.3.4",
           "name": "Security Policies",
           "legacy_ids": [],
+          "practice_ids": [
+            "cc_d1_010",
+            "cc_d1_036"
+          ],
           "definition": "A security policy is a high-level, mandatory statement, approved by senior management, of what the organization requires and why.",
           "why_it_matters": "Policy gives every rule its authority. When staff push back on a control, the policy shows leadership required it.",
           "how_it_works": [
@@ -1407,6 +1473,10 @@
           "id": "1.3.5",
           "name": "Standards, Procedures and Guidelines",
           "legacy_ids": [],
+          "practice_ids": [
+            "cc_d1_009",
+            "cc_d1_037"
+          ],
           "definition": "Standards set mandatory, specific requirements; procedures give mandatory steps; guidelines offer optional advice. All three sit under policy.",
           "why_it_matters": "Treating a guideline as mandatory blocks people; treating a standard as optional leaves gaps.",
           "how_it_works": [
@@ -1502,6 +1572,9 @@
           "id": "1.3.6",
           "name": "Laws and Rules That Apply to AI",
           "legacy_ids": [],
+          "practice_ids": [
+            "cc_d1_012"
+          ],
           "definition": "AI governance applies the laws and internal rules that already bind an organization, plus new AI-specific laws, to the AI tools it builds or uses.",
           "why_it_matters": "AI tools process personal data and decide things about people at scale, so unreviewed use can quietly break the law.",
           "how_it_works": [
@@ -1559,6 +1632,9 @@
           "id": "1.4.1",
           "name": "What a Security Control Is",
           "legacy_ids": [],
+          "practice_ids": [
+            "cc_d1_038"
+          ],
           "definition": "A security control, or safeguard, is any measure that lowers risk by reducing the likelihood of a harmful event or the damage it causes.",
           "why_it_matters": "Controls are how risk decisions become real. The wrong control, or one costing more than the harm it prevents, wastes money.",
           "how_it_works": [
@@ -1602,6 +1678,9 @@
           "id": "1.4.2",
           "name": "Technical Controls",
           "legacy_ids": [],
+          "practice_ids": [
+            "cc_d1_013"
+          ],
           "definition": "Technical controls, also called logical controls, are safeguards built into hardware, software or firmware, such as firewalls, encryption and access permissions.",
           "why_it_matters": "They enforce rules automatically and consistently, so protection does not depend on people remembering a policy.",
           "how_it_works": [
@@ -1649,6 +1728,9 @@
           "id": "1.4.3",
           "name": "Administrative Controls",
           "legacy_ids": [],
+          "practice_ids": [
+            "cc_d1_039"
+          ],
           "definition": "Administrative controls, also called managerial controls, are the policies, procedures, training and people practices that direct how security is handled.",
           "why_it_matters": "Many attacks target people, and most technical controls exist because a policy requires them. Administrative controls set the rules.",
           "how_it_works": [
@@ -1696,6 +1778,9 @@
           "id": "1.4.4",
           "name": "Physical Controls",
           "legacy_ids": [],
+          "practice_ids": [
+            "cc_d1_016"
+          ],
           "definition": "Physical controls are tangible measures that protect people, buildings and equipment, such as fences, locks, badge readers and fire suppression.",
           "why_it_matters": "Physical access can bypass many technical controls. Physical controls also protect the most important asset: people's lives.",
           "how_it_works": [
@@ -1768,6 +1853,10 @@
           "id": "1.4.5",
           "name": "Control Functions",
           "legacy_ids": [],
+          "practice_ids": [
+            "cc_d1_014",
+            "cc_d1_041"
+          ],
           "definition": "A control's function is what it does against a threat: prevent, detect, correct, deter, recover or compensate for a missing control.",
           "why_it_matters": "Knowing functions reveals gaps, such as alarms that detect a break-in with nothing to prevent it.",
           "how_it_works": [
@@ -1841,6 +1930,10 @@
           "id": "1.4.6",
           "name": "Layering and Compensating Controls",
           "legacy_ids": [],
+          "practice_ids": [
+            "cc_d1_015",
+            "cc_d1_042"
+          ],
           "definition": "Layering means protecting an asset with several controls of different types and functions, so when one fails, others still protect it.",
           "why_it_matters": "Every control can fail. Mixing types means one mistake does not lead straight to a breach.",
           "how_it_works": [
@@ -1888,6 +1981,9 @@
           "id": "1.4.7",
           "name": "Controls for AI Tools",
           "legacy_ids": [],
+          "practice_ids": [
+            "cc_d1_040"
+          ],
           "definition": "AI tools need the same three control types as any system: technical, administrative and physical safeguards for their data, models and actions.",
           "why_it_matters": "AI systems handle sensitive data and act automatically, so one gap can let a poisoned or tricked model cause harm at scale.",
           "how_it_works": [
@@ -1948,6 +2044,9 @@
           "id": "1.5.1",
           "name": "Professional Code of Conduct",
           "legacy_ids": [],
+          "practice_ids": [
+            "cc_d1_020"
+          ],
           "definition": "A professional code of conduct is a written set of expected behaviors, from an employer or professional body, covering honesty, conflicts of interest and confidentiality.",
           "why_it_matters": "Security staff hold powerful access. A code makes expectations clear and gives a basis for action when someone crosses the line.",
           "how_it_works": [
@@ -1996,6 +2095,10 @@
           "id": "1.5.2",
           "name": "Due Care and Due Diligence",
           "legacy_ids": [],
+          "practice_ids": [
+            "cc_d1_017",
+            "cc_d1_045"
+          ],
           "definition": "Due diligence is investigating risks and checking that safeguards work; due care is acting on that knowledge as a prudent person would.",
           "why_it_matters": "Courts, regulators and customers judge whether an organization acted reasonably. Falling short on either can count as negligence.",
           "how_it_works": [
@@ -2134,6 +2237,10 @@
           "id": "1.5.4",
           "name": "Applying the Canons to Dilemmas",
           "legacy_ids": [],
+          "practice_ids": [
+            "cc_d1_018",
+            "cc_d1_043"
+          ],
           "definition": "Applying the canons means testing each possible action against all four and choosing one that protects the public while staying honest, legal and responsible.",
           "why_it_matters": "Real dilemmas pit loyalty to an employer against public safety or honesty, and ISC2 gives no ranking rule, so judgment is needed.",
           "how_it_works": [
@@ -2183,6 +2290,9 @@
           "id": "1.5.5",
           "name": "Ethics Complaints and Enforcement",
           "legacy_ids": [],
+          "practice_ids": [
+            "cc_d1_044"
+          ],
           "definition": "ISC2 enforces its code through a formal process: a written, sworn complaint is reviewed by an ethics committee and may lead to sanctions.",
           "why_it_matters": "The process gives the code real consequences and sets out who may complain about which canon.",
           "how_it_works": [
@@ -2231,6 +2341,9 @@
           "id": "1.5.6",
           "name": "Ethical Use of AI at Work",
           "legacy_ids": [],
+          "practice_ids": [
+            "cc_d1_019"
+          ],
           "definition": "Ethical AI use means bringing the same honesty, care and respect for people's data to AI tools as to any other work, with a person answerable for results.",
           "why_it_matters": "AI makes it easy to leak confidential data, pass off unchecked output or act on wrong answers. The canons still apply.",
           "how_it_works": [

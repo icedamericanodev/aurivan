@@ -13,6 +13,10 @@ Runs the gates every CC batch must pass before review, in one place:
     target 15-24%, as scripts/check_longest_option.py does for CISA), and the
     key at most 8 characters longer than the longest distractor
   - coverage: notes sub-topics with no question
+  - lens: CC notes' rule and "In practice" fields never speak as an auditor
+    or credit ISACA (the CC lens is the practitioner's)
+  - --similarity: lists item / notes-example pairs that share many words, so
+    an author can check no question retells a worked example (plan rule 8)
 
 Usage:
   python3 data/cc/tools/check_cc.py            # all five domains
@@ -20,6 +24,7 @@ Usage:
   python3 data/cc/tools/check_cc.py --coverage # also list uncovered sub-topics
   python3 data/cc/tools/check_cc.py --list 3   # also list items where the key is longest or tied
   python3 data/cc/tools/check_cc.py 4 --lib staged.md  # accept staged, not yet merged citations
+  python3 data/cc/tools/check_cc.py --similarity       # also list item / notes-example overlaps
 Exit 1 on any ERROR. Style rules (stem and option length, echoes, absolutes)
 stay in scripts/lint_exam_style_v2.py --file data/cc/originals/dN.json.
 """
@@ -35,6 +40,8 @@ FIELDS = ["id", "domain", "subtopic", "difficulty", "bloom_level", "question", "
           "framework_ref", "related_concepts", "_provenance", "style_version"]
 BLOOM = {"foundational": "Foundational", "application": "Application", "analysis": "Analysis"}
 MIN_RATE, MAX_RATE = 0.15, 0.24
+LENS = re.compile(r"\b(ISACA|IS auditors?|the auditor|auditors? (?:recommend|assess|report))", re.I)
+STOP = set("the a an and or of to in on for with by is are was be it its this that as at from their they them what which who when should most best first".split())
 
 
 def library_bullets(extra=()):
@@ -48,6 +55,42 @@ def library_bullets(extra=()):
 def notes_ids(d):
     notes = json.loads((CC / "notes" / f"d{d}.json").read_text(encoding="utf-8"))
     return [s["id"] for t in notes["topics"] for s in t["subtopics"]]
+
+
+def words(text):
+    return {w for w in re.findall(r"[a-z]+", text.lower()) if len(w) > 2 and w not in STOP}
+
+
+def similarity(threshold=0.18):
+    """Item (stem and options) against every notes worked example, all domains."""
+    examples = []
+    for d in range(1, 6):
+        notes = json.loads((CC / "notes" / f"d{d}.json").read_text(encoding="utf-8"))
+        examples += [(s["id"], words(s.get("example", ""))) for t in notes["topics"] for s in t["subtopics"]]
+    pairs = []
+    for d in range(1, 6):
+        for q in json.loads((CC / "originals" / f"d{d}.json").read_text(encoding="utf-8"))["questions"]:
+            qw = words(q["question"] + " " + " ".join(q["options"].values()))
+            for sid, ew in examples:
+                score = len(qw & ew) / max(len(qw | ew), 1)
+                if score >= threshold:
+                    pairs.append((score, q["id"], sid))
+    for score, qid, sid in sorted(pairs, reverse=True):
+        print(f"   similar {score:.2f}: {qid} vs notes {sid} example")
+    print(f"similarity: {len(pairs)} pair(s) at or above {threshold}; read each and re-angle any retold scenario")
+
+
+def lens_errors(d):
+    """CC notes must not speak as an auditor in their rule and In practice fields."""
+    notes = json.loads((CC / "notes" / f"d{d}.json").read_text(encoding="utf-8"))
+    out = []
+    for t in notes["topics"]:
+        for s in t["subtopics"]:
+            text = s.get("isaca_rule", "") + " " + json.dumps(s.get("audit_focus", {}), ensure_ascii=False)
+            m = LENS.search(text)
+            if m:
+                out.append(f"notes {s['id']}: auditor wording '{m.group(0)}' in the rule or In practice fields")
+    return out
 
 
 def pick_longest_rate(qs, length):
@@ -141,6 +184,9 @@ def main(argv):
             for e in errs:
                 print(f"ERROR {q.get('id')}: {e}")
             errors += len(errs)
+        for e in lens_errors(d):
+            print(f"ERROR D{d} {e}")
+            errors += 1
         for code, c in sorted(labels.items()):
             if len(c) > 1:
                 print(f"ERROR D{d}: section {code} uses more than one label: {dict(c)}")
@@ -168,6 +214,8 @@ def main(argv):
             print(f"   key longest: {', '.join(tops)}")
         if show_cov and uncovered:
             print(f"   uncovered: {', '.join(uncovered)}")
+    if "--similarity" in argv:
+        similarity()
     sys.exit(1 if errors else 0)
 
 

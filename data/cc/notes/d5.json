@@ -58,6 +58,9 @@
           "id": "5.1.1",
           "name": "Data Classification and Labeling",
           "legacy_ids": [],
+          "practice_ids": [
+            "cc_d5_004"
+          ],
           "definition": "Data classification sorts information into sensitivity levels, such as public, internal, confidential and restricted, so each level gets protection that fits its value.",
           "why_it_matters": "Without classification, secrets get too little protection and public brochures too much. Labels make the level visible, so people and tools apply the right handling rules.",
           "how_it_works": [
@@ -142,6 +145,9 @@
           "id": "5.1.2",
           "name": "Data Handling Across the Lifecycle",
           "legacy_ids": [],
+          "practice_ids": [
+            "cc_d5_021"
+          ],
           "definition": "Data handling is the set of rules for how data at each classification level is created, stored, used, shared, archived and destroyed.",
           "why_it_matters": "Data often leaks while it is used or shared, not while stored. Rules for every stage close those gaps and keep the organization within the law.",
           "how_it_works": [
@@ -189,6 +195,9 @@
           "id": "5.1.3",
           "name": "Data Masking and Tokenization",
           "legacy_ids": [],
+          "practice_ids": [
+            "cc_d5_022"
+          ],
           "definition": "Data masking hides real values behind realistic fakes or partial views; tokenization swaps a sensitive value for a random token that only a secure vault can map back.",
           "why_it_matters": "Testing, support and analytics often need data but not the real sensitive values. Masking and tokenization let that work go ahead with less real data exposed.",
           "how_it_works": [
@@ -269,6 +278,9 @@
           "id": "5.1.4",
           "name": "Media Sanitization: Clear, Purge and Destroy",
           "legacy_ids": [],
+          "practice_ids": [
+            "cc_d5_002"
+          ],
           "definition": "Media sanitization makes data on storage media infeasible to recover, by clearing, purging or destroying it, before the media is reused, released or discarded.",
           "why_it_matters": "Deleting files or formatting a drive removes the pointers, not the data, so free tools can bring it back. Retired laptops, copiers and phones have leaked records this way.",
           "how_it_works": [
@@ -357,6 +369,10 @@
           "id": "5.1.5",
           "name": "Symmetric and Asymmetric Encryption",
           "legacy_ids": [],
+          "practice_ids": [
+            "cc_d5_001",
+            "cc_d5_025"
+          ],
           "definition": "Encryption turns readable plaintext into unreadable ciphertext using a key. Symmetric encryption uses one shared key; asymmetric encryption uses a public and private key pair.",
           "why_it_matters": "Encryption keeps stolen or intercepted data confidential, but the wrong type or lost keys leave data exposed or unrecoverable.",
           "how_it_works": [
@@ -450,6 +466,9 @@
           "id": "5.1.6",
           "name": "Hashing, Digital Signatures and Certificates",
           "legacy_ids": [],
+          "practice_ids": [
+            "cc_d5_023"
+          ],
           "definition": "A hash turns any input into a fixed-length, one-way digest; a digital signature applies the signer's private key to a hash to prove origin and integrity.",
           "why_it_matters": "Hashing shows whether data changed. Signatures and certificates prove who sent data or runs a website.",
           "how_it_works": [
@@ -539,6 +558,9 @@
           "id": "5.1.7",
           "name": "Quantum-Resistant Cryptography",
           "legacy_ids": [],
+          "practice_ids": [
+            "cc_d5_024"
+          ],
           "definition": "Quantum-resistant, or post-quantum, cryptography uses new public-key algorithms designed to stay secure against a future quantum computer that could break today's methods.",
           "why_it_matters": "Attackers can record encrypted traffic now and decrypt it once a capable quantum computer exists. Data that must stay secret for years is already at risk.",
           "how_it_works": [
@@ -616,6 +638,10 @@
           "id": "5.1.8",
           "name": "Data Leakage into Public AI Services",
           "legacy_ids": [],
+          "practice_ids": [
+            "cc_d5_003",
+            "cc_d5_026"
+          ],
           "definition": "Data leakage into public artificial intelligence (AI) services happens when people paste or upload sensitive information into an AI tool their organization does not control.",
           "why_it_matters": "A prompt is a data transfer. Depending on the terms, the provider may store it, read it or train models on it.",
           "how_it_works": [
@@ -677,6 +703,10 @@
           "id": "5.2.1",
           "name": "Events, Alerts and Incidents",
           "legacy_ids": [],
+          "practice_ids": [
+            "cc_d5_005",
+            "cc_d5_031"
+          ],
           "definition": "An event is anything observable on a system or network; an alert flags an event for review; an incident actually or imminently harms security or violates policy.",
           "why_it_matters": "Treating every event as an incident swamps the response team; treating a real incident as routine lets damage spread.",
           "how_it_works": [
@@ -742,6 +772,9 @@
           "id": "5.2.2",
           "name": "Logging and Monitoring",
           "legacy_ids": [],
+          "practice_ids": [
+            "cc_d5_027"
+          ],
           "definition": "Logging records who did what, when, where and with what result; monitoring reviews those records, often in a central tool, to spot problems quickly.",
           "why_it_matters": "Without logs, attacks go unseen and investigations have no evidence. Logs nobody reviews, or that attackers can erase, give false comfort.",
           "how_it_works": [
@@ -789,6 +822,9 @@
           "id": "5.2.3",
           "name": "Event Triage: Use Cases, Prioritization and Correlation",
           "legacy_ids": [],
+          "practice_ids": [
+            "cc_d5_006"
+          ],
           "definition": "Event triage sorts incoming alerts to decide which are real, how urgent each is and who must act, using defined use cases, priority rules and correlation.",
           "why_it_matters": "A security operations center can receive thousands of alerts a day. Triage puts the dangerous few in front of analysts first, so a real attack is not lost in the noise.",
           "how_it_works": [
@@ -865,6 +901,10 @@
           "id": "5.2.4",
           "name": "AI-Driven Correlation and Alert Fatigue",
           "legacy_ids": [],
+          "practice_ids": [
+            "cc_d5_007",
+            "cc_d5_032"
+          ],
           "definition": "Artificial intelligence (AI) correlation uses machine learning to group, rank and summarize security alerts; alert fatigue is when too many alerts cause analysts to miss real ones.",
           "why_it_matters": "Overloaded analysts close alerts on instinct, and real attacks slip past. AI cuts the noise, but trusted blindly or manipulated, it can hide what matters.",
           "how_it_works": [
@@ -912,6 +952,9 @@
           "id": "5.2.5",
           "name": "Threat Actors and Motives",
           "legacy_ids": [],
+          "practice_ids": [
+            "cc_d5_028"
+          ],
           "definition": "A threat actor is a person or group that could harm an organization's systems or data; their motive, such as money, spying or protest, predicts what they target.",
           "why_it_matters": "Actors want different things and have very different skills. Knowing who is likely to attack, and why, tells defenders what to protect first.",
           "how_it_works": [
@@ -985,6 +1028,9 @@
           "id": "5.2.6",
           "name": "Cyber Threat Intelligence",
           "legacy_ids": [],
+          "practice_ids": [
+            "cc_d5_029"
+          ],
           "definition": "Cyber threat intelligence (CTI) is threat information that has been collected, analyzed and put in context, so defenders can make better decisions about likely attacks.",
           "why_it_matters": "Raw threat data is noise until someone judges what matters here.",
           "how_it_works": [
@@ -1050,6 +1096,9 @@
           "id": "5.2.7",
           "name": "Threat Frameworks: MITRE ATT&CK and the Kill Chain",
           "legacy_ids": [],
+          "practice_ids": [
+            "cc_d5_008"
+          ],
           "definition": "Threat frameworks describe attacks in a shared language: MITRE ATT&CK (Adversarial Tactics, Techniques and Common Knowledge) catalogs real attacker methods; the Cyber Kill Chain orders attack stages.",
           "why_it_matters": "A shared language lets analysts, tools and reports describe behavior the same way, and mapping defenses to it shows the detection gaps.",
           "how_it_works": [
@@ -1133,6 +1182,9 @@
           "id": "5.2.8",
           "name": "Malware Basics",
           "legacy_ids": [],
+          "practice_ids": [
+            "cc_d5_030"
+          ],
           "definition": "Malware, short for malicious software, is any program written to harm a system or its users, such as by stealing data, locking files or handing control to an attacker.",
           "why_it_matters": "Knowing how each kind spreads and what it does helps a practitioner spot the signs and take the right first step.",
           "how_it_works": [
@@ -1252,7 +1304,7 @@
                 "cells": [
                   "Rate limiting (capping requests per source), edge filtering, spare capacity and upstream DDoS protection",
                   "Transport Layer Security (TLS) with certificate checks (see 5.1.6); DNS Security Extensions (DNSSEC); switch checks on ARP replies (dynamic ARP inspection)",
-                  "Edge filters that drop outside traffic claiming internal addresses; switch port security, which limits the devices each port accepts; email sender checks"
+                  "Edge filters that drop outside traffic claiming internal addresses; network access control (see 4.2.8), which checks credentials, not just a MAC address; email sender checks"
                 ]
               },
               {
@@ -1307,7 +1359,7 @@
           "key_terms": [
             {
               "term": "Replay attack",
-              "definition": "Resending a captured sign-in to pose as its sender. One-time codes work once, but a fake page can relay a fresh one; passkeys stop both."
+              "definition": "Resending captured valid data, such as a sign-in, to pose as its sender. One-time codes and passkeys resist it; only passkeys also resist fake-page relays."
             },
             {
               "term": "Upstream DDoS protection",
@@ -1333,6 +1385,9 @@
           "id": "5.3.1",
           "name": "The Incident Response Plan and Team",
           "legacy_ids": [],
+          "practice_ids": [
+            "cc_d5_033"
+          ],
           "definition": "An incident response plan is the approved document that says what counts as an incident, who responds, what authority they have, how to communicate and which steps to follow.",
           "why_it_matters": "In a crisis, people improvise, act alone or wait for permission. A plan approved in advance sets roles, authority and contacts, so the response is fast and coordinated.",
           "how_it_works": [
@@ -1403,6 +1458,10 @@
           "id": "5.3.2",
           "name": "The Incident Response Lifecycle and CSF 2.0",
           "legacy_ids": [],
+          "practice_ids": [
+            "cc_d5_010",
+            "cc_d5_036"
+          ],
           "definition": "The incident response lifecycle runs from preparation through detection and analysis, containment, eradication and recovery to lessons learned, which feed back into preparation.",
           "why_it_matters": "Steps out of order cause harm: wiping before containment lets the attacker carry on elsewhere, and restoring before eradication brings them back.",
           "how_it_works": [
@@ -1452,7 +1511,7 @@
             "svg": "<svg viewBox='0 0 520 196' xmlns='http://www.w3.org/2000/svg' role='img' aria-label='The incident response lifecycle as a loop: preparation, then detection and analysis, then containment, eradication and recovery, then lessons learned, which feed back into preparation'><rect x='14' y='22' width='150' height='46' rx='4' fill='var(--surface)' stroke='var(--border2)' stroke-width='1'/><text x='89' y='43' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='11' font-weight='700' fill='var(--text)'>Preparation</text><text x='89' y='56' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='9' font-weight='400' fill='var(--text)'>Plan, team, tools</text><rect x='185' y='22' width='150' height='46' rx='4' fill='var(--surface)' stroke='var(--border2)' stroke-width='1'/><text x='260' y='43' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='10' font-weight='700' fill='var(--text)'>Detection and analysis</text><text x='260' y='56' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='9' font-weight='400' fill='var(--text)'>Confirm and scope</text><rect x='356' y='22' width='150' height='46' rx='4' fill='var(--accent-fill)'/><text x='431' y='43' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='11' font-weight='700' fill='#ffffff'>Containment</text><text x='431' y='56' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='9' font-weight='400' fill='#ffffff'>Stop the spread</text><line x1='166' y1='45.0' x2='176' y2='45.0' stroke='var(--text2)' stroke-width='1.5'/><path d='M176,41.0 L183,45.0 L176,49.0 Z' fill='var(--text2)'/><line x1='337' y1='45.0' x2='347' y2='45.0' stroke='var(--text2)' stroke-width='1.5'/><path d='M347,41.0 L354,45.0 L347,49.0 Z' fill='var(--text2)'/><line x1='431.0' y1='70' x2='431.0' y2='119' stroke='var(--text2)' stroke-width='1.5'/><path d='M427.0,119 L431.0,126 L435.0,119 Z' fill='var(--text2)'/><rect x='356' y='128' width='150' height='46' rx='4' fill='var(--accent-fill)'/><text x='431' y='149' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='11' font-weight='700' fill='#ffffff'>Eradication</text><text x='431' y='162' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='9' font-weight='400' fill='#ffffff'>Remove the cause</text><rect x='185' y='128' width='150' height='46' rx='4' fill='var(--accent-fill)'/><text x='260' y='149' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='11' font-weight='700' fill='#ffffff'>Recovery</text><text x='260' y='162' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='9' font-weight='400' fill='#ffffff'>Restore from clean sources</text><rect x='14' y='128' width='150' height='46' rx='4' fill='var(--surface)' stroke='var(--border2)' stroke-width='1'/><text x='89' y='149' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='11' font-weight='700' fill='var(--text)'>Lessons learned</text><text x='89' y='162' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='9' font-weight='400' fill='var(--text)'>Fix gaps, update plan</text><line x1='354' y1='151.0' x2='344' y2='151.0' stroke='var(--text2)' stroke-width='1.5'/><path d='M344,147.0 L337,151.0 L344,155.0 Z' fill='var(--text2)'/><line x1='183' y1='151.0' x2='173' y2='151.0' stroke='var(--text2)' stroke-width='1.5'/><path d='M173,147.0 L166,151.0 L173,155.0 Z' fill='var(--text2)'/><line x1='89.0' y1='126' x2='89.0' y2='77' stroke='var(--text2)' stroke-width='1.5'/><path d='M85.0,77 L89.0,70 L93.0,77 Z' fill='var(--text2)'/><text x='97' y='101' text-anchor='start' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='9' font-weight='400' fill='var(--text2)'>Feeds back</text><text x='423' y='101' text-anchor='end' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='9' font-weight='400' fill='var(--text2)'>Once contained</text><text x='260' y='190' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='9' font-weight='400' fill='var(--text2)'>Shaded steps handle the incident: contain, then eradicate, then recover.</text></svg>",
             "caption": "The incident response lifecycle. Order matters: contain before you eradicate, and eradicate before you recover. Lessons learned feed back into preparation."
           },
-          "example": "Malware is found on a ferry company's ticketing server, and a sales manager wants it rebuilt from backup at once. Ellis, a systems administrator on the response team, reminds the incident response lead of the plan's order: contain and scope, remove the cause, check the backup predates the infection, then restore.",
+          "example": "Malware is found on a ferry company's ticketing server, and a sales manager wants it rebuilt from backup at once. Ellis, a system administrator on the response team, reminds the incident response lead of the plan's order: contain and scope, remove the cause, check the backup predates the infection, then restore.",
           "audit_focus": {
             "review": [
               "Confirm which phase the response is in before taking an action",
@@ -1492,6 +1551,10 @@
           "id": "5.3.3",
           "name": "Containment, Eradication and Recovery",
           "legacy_ids": [],
+          "practice_ids": [
+            "cc_d5_009",
+            "cc_d5_037"
+          ],
           "definition": "Containment stops an incident from spreading, eradication removes its cause, and recovery returns affected systems to normal, trusted operation, in that order.",
           "why_it_matters": "Cleaning up before containing lets an attacker move elsewhere; restoring before eradication puts the attacker straight back.",
           "how_it_works": [
@@ -1539,6 +1602,9 @@
           "id": "5.3.4",
           "name": "Evidence Handling and Chain of Custody",
           "legacy_ids": [],
+          "practice_ids": [
+            "cc_d5_011"
+          ],
           "definition": "Evidence handling keeps digital and physical evidence reliable; chain of custody records everyone who handled it, when and why, from collection onward.",
           "why_it_matters": "Incidents can lead to discipline, insurance claims or court, where evidence that cannot be shown untouched may be rejected.",
           "how_it_works": [
@@ -1587,6 +1653,9 @@
           "id": "5.3.5",
           "name": "Data Handling During an Incident",
           "legacy_ids": [],
+          "practice_ids": [
+            "cc_d5_012"
+          ],
           "definition": "Data handling during an incident applies the organization's classification and handling rules to everything the response touches, including evidence, logs, reports and messages.",
           "why_it_matters": "Response copies of disks, logs and records can hold the very data the attacker wanted. Mishandling them, or speaking too soon, can cause a second breach.",
           "how_it_works": [
@@ -1634,6 +1703,9 @@
           "id": "5.3.6",
           "name": "Lessons Learned and Continuous Improvement",
           "legacy_ids": [],
+          "practice_ids": [
+            "cc_d5_034"
+          ],
           "definition": "Lessons learned is the review after an incident or exercise that asks what happened, what worked, what did not and what to change, then tracks the changes to completion.",
           "why_it_matters": "Without a review, the same weakness causes the next incident. Improvements also keep the plan current as systems, threats and people change.",
           "how_it_works": [
@@ -1681,6 +1753,9 @@
           "id": "5.3.7",
           "name": "Incident Response Exercises and Tabletops",
           "legacy_ids": [],
+          "practice_ids": [
+            "cc_d5_035"
+          ],
           "definition": "Incident response exercises test the plan and the people before a real incident, ranging from discussion-based tabletops to hands-on, full-scale exercises.",
           "why_it_matters": "A plan nobody has practiced fails under pressure: numbers are wrong, roles unclear and decisions stall. Exercises find these gaps while mistakes cost nothing.",
           "how_it_works": [
@@ -1760,6 +1835,9 @@
           "id": "5.4.1",
           "name": "Asset Inventory and Ownership",
           "legacy_ids": [],
+          "practice_ids": [
+            "cc_d5_038"
+          ],
           "definition": "An asset inventory is an up-to-date list of hardware, software, data, cloud services and artificial intelligence (AI) assets, each with a named owner.",
           "why_it_matters": "Unknown assets are not patched, monitored or backed up, so attackers often get in through them. The inventory underpins nearly every other control.",
           "how_it_works": [
@@ -1779,7 +1857,7 @@
               "Inventory entries missing an owner or a support end date"
             ],
             "recommend": "Report unknown or unowned assets to your supervisor so that an owner can be assigned.",
-            "decides": "The asset owner decides how the asset is used and accepts its risks"
+            "decides": "The asset owner decides use; the risk owner accepts within tolerance, senior management beyond"
           },
           "isaca_rule": "Inventory comes first: every asset needs an entry and an owner. When you find something unknown, record it and find its owner instead of ignoring it or unplugging it yourself.",
           "exam_traps": [
@@ -1807,6 +1885,9 @@
           "id": "5.4.2",
           "name": "The Asset Lifecycle",
           "legacy_ids": [],
+          "practice_ids": [
+            "cc_d5_039"
+          ],
           "definition": "The asset lifecycle covers each stage of an asset's life, from planning and buying through deployment, operation and maintenance to retirement and secure disposal.",
           "why_it_matters": "Security problems are cheapest to avoid early and easiest to forget at the end. A device bought without requirements, or discarded unsanitized, can expose data for years.",
           "how_it_works": [
@@ -1855,6 +1936,9 @@
           "id": "5.4.3",
           "name": "End-of-Life Software and Devices",
           "legacy_ids": [],
+          "practice_ids": [
+            "cc_d5_014"
+          ],
           "definition": "End-of-life (EOL) software or hardware no longer gets vendor support, including security patches, so newly found weaknesses stay unfixed for good.",
           "why_it_matters": "Attackers seek out unsupported products because every new flaw stays open, and these systems often run important processes.",
           "how_it_works": [
@@ -1903,6 +1987,10 @@
           "id": "5.4.4",
           "name": "Configuration Management and Secure Baselines",
           "legacy_ids": [],
+          "practice_ids": [
+            "cc_d5_013",
+            "cc_d5_040"
+          ],
           "definition": "Configuration management keeps systems in a known, approved state by defining secure baselines, applying them consistently, and detecting and correcting drift from them.",
           "why_it_matters": "Defaults are built for easy setup, and attackers know them. Without baselines, every system differs and weaknesses hide.",
           "how_it_works": [
@@ -1951,6 +2039,9 @@
           "id": "5.4.5",
           "name": "Patch Management",
           "legacy_ids": [],
+          "practice_ids": [
+            "cc_d5_016"
+          ],
           "definition": "Patch management finds, tests, approves and installs software updates that fix flaws, then confirms they worked, across every system in the inventory.",
           "why_it_matters": "Many breaches use flaws that already had a patch. Patching quickly closes those doors, but careless patching can break critical systems, so speed and testing are balanced.",
           "how_it_works": [
@@ -1960,7 +2051,7 @@
             "Urgent patches for actively exploited flaws use the emergency change route: faster, but still recorded.",
             "Rescans confirm each patch; systems that cannot be patched get compensating controls and an exception."
           ],
-          "example": "A vendor fixes a flaw in a file transfer product that attackers are already exploiting, and a pharmacy chain runs it on an internet-facing server. Devon, a systems administrator, confirms the server is affected and raises an emergency change. After a quick test and the change manager's approval, Devon patches and rescans.",
+          "example": "A vendor fixes a flaw in a file transfer product that attackers are already exploiting, and a pharmacy chain runs it on an internet-facing server. Devon, a system administrator, confirms the server is affected and raises an emergency change. After a quick test and the change manager's approval, Devon patches and rescans.",
           "audit_focus": {
             "review": [
               "Match each new patch to affected systems in the inventory",
@@ -1999,6 +2090,10 @@
           "id": "5.4.6",
           "name": "Change Management",
           "legacy_ids": [],
+          "practice_ids": [
+            "cc_d5_015",
+            "cc_d5_041"
+          ],
           "definition": "Change management is the controlled process for requesting, assessing, approving, testing, making and reviewing changes to systems, so changes do not cause outages or security gaps.",
           "why_it_matters": "Unplanned, untested changes are a leading cause of outages, and an unapproved change can quietly open a security hole.",
           "how_it_works": [
@@ -2007,7 +2102,7 @@
             "Approved changes are tested, scheduled, made and checked, and configuration records are updated.",
             "Standard changes, low-risk fixes a procedure pre-approves, such as returning a setting to its baseline, can be made at once but are still recorded.",
             "Emergency changes get fast approval from a designated person, then are recorded and reviewed soon after.",
-            "Changes found without approval are treated as possible incidents until explained."
+            "A change without approval is a possible incident until explained: restore routine drift on systems you maintain, and report, not undo, unexplained exposure on systems you don't run."
           ],
           "example": "At 2 a.m., a ferry company's booking website goes down when its certificate expires. Ola, the on-call system administrator, phones the manager on call for emergency changes, who agrees to the fix. Ola installs the renewed certificate, confirms bookings work again, and next morning completes the change record for the usual review.",
           "audit_focus": {
@@ -2022,7 +2117,7 @@
             "recommend": "Report pressure to make an unapproved change to your supervisor or the change manager, and an unexplained, risky change as a possible incident.",
             "decides": "The change advisory board or designated approver authorizes the change"
           },
-          "isaca_rule": "No change without approval, testing and a way back. Urgency changes how fast approval happens, not whether it happens.",
+          "isaca_rule": "No change without approval, testing and a way back; a standard change carries that approval in advance through its procedure. Urgency changes how fast approval happens, not whether it happens.",
           "exam_traps": [
             {
               "trap": "Emergency changes skip the change process entirely.",
@@ -2061,6 +2156,9 @@
           "id": "5.5.1",
           "name": "Red, Blue and Purple Teams",
           "legacy_ids": [],
+          "practice_ids": [
+            "cc_d5_018"
+          ],
           "definition": "A red team plays the attacker, a blue team defends and detects, and a purple team is red and blue working together to improve detection and response.",
           "why_it_matters": "Defenses that are never challenged give false confidence. Realistic attacks show whether people, processes and tools actually detect and stop what real attackers do.",
           "how_it_works": [
@@ -2141,6 +2239,10 @@
           "id": "5.5.2",
           "name": "Vulnerability Scanning and Penetration Testing",
           "legacy_ids": [],
+          "practice_ids": [
+            "cc_d5_017",
+            "cc_d5_044"
+          ],
           "definition": "A vulnerability scan uses automated tools to find known weaknesses; a penetration test is an authorized, mostly manual attempt to exploit weaknesses to show real impact.",
           "why_it_matters": "Scans show what might be wrong; penetration tests show what an attacker could actually do. A clean scan does not prove safety.",
           "how_it_works": [
@@ -2224,6 +2326,9 @@
           "id": "5.5.3",
           "name": "Static and Dynamic Application Testing",
           "legacy_ids": [],
+          "practice_ids": [
+            "cc_d5_019"
+          ],
           "definition": "Static application security testing (SAST) examines source code without running it; dynamic application security testing (DAST) probes the running application from outside, as an attacker would.",
           "why_it_matters": "Flaws are cheapest to fix while code is written and dearest in production. Each method finds problems the other misses, so applications need both.",
           "how_it_works": [
@@ -2280,7 +2385,7 @@
               "Library versions flagged as vulnerable in the dependency report"
             ],
             "recommend": "Raise releases planned with unresolved critical findings to the application owner and security lead.",
-            "decides": "The application owner decides on release, accepting any remaining risk"
+            "decides": "The application owner decides release; the risk owner accepts within tolerance, senior management beyond"
           },
           "isaca_rule": "Use both: SAST early on the code, DAST later on the running application, plus checks on third-party components. A clean result from one does not cover the other's blind spots.",
           "exam_traps": [
@@ -2308,6 +2413,9 @@
           "id": "5.5.4",
           "name": "Threat Modeling",
           "legacy_ids": [],
+          "practice_ids": [
+            "cc_d5_042"
+          ],
           "definition": "Threat modeling is a structured way to find what could go wrong with a system's design, rank those threats, and choose defenses before the system is built or changed.",
           "why_it_matters": "Design flaws are costly to fix after building. Thinking like an attacker at the whiteboard finds them early.",
           "how_it_works": [
@@ -2381,6 +2489,9 @@
           "id": "5.5.5",
           "name": "Physical and Social Engineering Penetration Tests",
           "legacy_ids": [],
+          "practice_ids": [
+            "cc_d5_043"
+          ],
           "definition": "Physical and social engineering penetration tests check, with written permission, whether people and premises resist tricks such as phishing, baiting, tailgating and impersonation.",
           "why_it_matters": "Attackers often find people and doors easier than firewalls. These tests show whether staff challenge strangers and report suspicious messages.",
           "how_it_works": [
@@ -2447,6 +2558,10 @@
           "id": "5.5.6",
           "name": "Testing AI-Integrated Defenses",
           "legacy_ids": [],
+          "practice_ids": [
+            "cc_d5_020",
+            "cc_d5_045"
+          ],
           "definition": "Testing AI-integrated defenses checks whether security tools that rely on artificial intelligence (AI) can be fooled, manipulated or made to fail, and whether people can override them.",
           "why_it_matters": "AI now filters email and ranks alerts. If an attacker can trick the model, the defense fails silently.",
           "how_it_works": [
@@ -2484,7 +2599,7 @@
               "Detection results for known attacks after each model update"
             ],
             "recommend": "Report any AI weakness that exposes data or takes unapproved actions to the application owner and security lead.",
-            "decides": "The application owner decides on fixes and accepts any remaining risk"
+            "decides": "The application owner decides fixes; the risk owner accepts within tolerance, senior management beyond"
           },
           "isaca_rule": "Treat an AI component as a control that can be fooled. Test it with authorization, limit what it can do, keep a person able to override it, and retest after model or data changes.",
           "exam_traps": [
@@ -2587,7 +2702,7 @@
     {
       "title": "NIST IR 8547, Transition to Post-Quantum Cryptography Standards (final, Oct 2026)",
       "url": "https://csrc.nist.gov/pubs/ir/8547/final",
-      "checked": "2026-10-28: final page on csrc.nist.gov shows 'Date Published: October 2026'; timeline not read, so the notes give no deprecation dates"
+      "checked": "2026-10-31: final published 27 Oct 2026 (obsoletes the Nov 2024 draft); Sec. 4.1.3 read; timeline not read, so the notes give no deprecation dates"
     },
     {
       "title": "NIST AI 100-2 E2025, Adversarial Machine Learning: A Taxonomy and Terminology of Attacks and Mitigations (Mar 2025)",

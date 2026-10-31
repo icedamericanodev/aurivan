@@ -862,13 +862,13 @@
     "Final two: B beats A because RSA is the quantum-vulnerable algorithm; AES-256 holds up, even for 30-year secrets.",
     "Exam cue: rank post-quantum work by two facts together: a public-key algorithm in use, and how long the data must stay secret."
    ],
-   "framework_ref": "NIST FIPS 203 Section 1.2 (Context: large-scale quantum computers would put public-key key establishment and signatures at risk); NIST IR 8547 ipd Section 4.1.3 (Symmetric Cryptography: draft guidance that symmetric primitives are far less vulnerable to known quantum attacks)",
+   "framework_ref": "NIST FIPS 203 Section 1.2 (Context: large-scale quantum computers would put public-key key establishment and signatures at risk); NIST IR 8547 Section 4.1.3 (Symmetric Cryptography: symmetric standards, including hash functions and block ciphers, are significantly less vulnerable to known quantum attacks than public-key standards)",
    "related_concepts": [
     "Harvest now, decrypt later",
     "Post-quantum cryptography",
     "Crypto agility"
    ],
-   "_provenance": "Authored from concept: 'public-key algorithms protecting long-lived secrets face the greatest quantum risk; symmetric encryption mainly needs long keys' (notes 5.1.7 Quantum-Resistant Cryptography). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D5 batch 2, 30 Oct 2026.",
+   "_provenance": "Authored from concept: 'public-key algorithms protecting long-lived secrets face the greatest quantum risk; symmetric encryption mainly needs long keys' (notes 5.1.7 Quantum-Resistant Cryptography). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D5 batch 2, 30 Oct 2026. Citation update (31 Oct 2026): NIST IR 8547 became final on 27 Oct 2026; the draft citation now points to the final Section 4.1.3.",
    "style_version": 2
   },
   {
@@ -1069,7 +1069,7 @@
    "pre_read": "Note how the tool arrived, whether it spreads to other files or machines, and what it does once inside.",
    "correct_explanation": "A Trojan hides a malicious function inside a program the user wants, so the user installs it willingly; here the hidden function is remote access. A virus is the runner-up, since the user did run a program, but a virus copies itself into other files and spreads. This tool never spread; the hidden function inside a useful tool marks it as a Trojan.",
    "wrong_explanations": {
-    "A": "Tempting because the attacker connects over the network. But a worm spreads by itself with no one installing it; here the volunteer chose to install the tool.",
+    "A": "Tempting because the tool came over a network and talks to the attacker. But a worm spreads by itself between machines; here the volunteer chose to install it.",
     "B": "Closest choice: the user did install a program. But a virus copies itself into other files and spreads; this tool never spread to any file or computer.",
     "C": "Tempting because ransomware is the best-known malware. But ransomware locks files and demands payment; nothing here was encrypted or demanded."
    },
@@ -1571,7 +1571,7 @@
    "correct": "A",
    "key_concept": "Scanning and exploitation are different activities; each needs the system owner's approval for that type and level of testing.",
    "pre_read": "Compare what the owner approved with what the analyst now wants to do. Ask whether one covers the other.",
-   "correct_explanation": "A scan identifies known weaknesses; exploiting one is penetration testing, which needs its own written approval and agreed scope from the system owner. Asking first keeps the analyst authorized. Exploiting under the scanning approval is the runner-up: it seems covered, but approval is for a specific type and level of testing, and an exploit can crash a production database.",
+   "correct_explanation": "A scan identifies known weaknesses; exploiting one is penetration testing, which needs separate written approval and agreed scope from the system owner. Asking also tells the owner about the critical flaw. Exploiting under the scanning approval is the runner-up: it seems covered, but approval is for a specific type and level of testing, and an exploit can crash a production database.",
    "wrong_explanations": {
     "B": "Closest choice: the owner did approve testing of a kind. But scanning looks for flaws, and exploiting one is a different, riskier activity the approval does not cover.",
     "C": "Tempting because critical flaws need fixing fast. But the database belongs to its owner, and changing it skips change management; report the finding and let the owner decide.",
