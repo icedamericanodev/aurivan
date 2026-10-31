@@ -185,7 +185,7 @@
           "key_terms": [
             {
               "term": "Need to know",
-              "definition": "Access only to the information a current task requires, even if clearance would allow more."
+              "definition": "Limiting information to people whose current duties require it, even if their clearance would allow more."
             },
             {
               "term": "Shoulder surfing",
@@ -312,8 +312,8 @@
           ],
           "key_terms": [
             {
-              "term": "Single point of failure",
-              "definition": "One component whose failure stops the whole service, such as a lone server."
+              "term": "Single point of failure (SPOF)",
+              "definition": "One component whose failure stops the whole service or protection, such as a lone server."
             },
             {
               "term": "Distributed denial of service (DDoS)",
@@ -377,7 +377,7 @@
           "key_terms": [
             {
               "term": "Identification",
-              "definition": "Claiming an identity, such as typing a username, before it is verified."
+              "definition": "Claiming an identity, such as by entering a username; it proves nothing until authentication verifies it."
             },
             {
               "term": "Single-factor authentication",
@@ -462,11 +462,11 @@
           "key_terms": [
             {
               "term": "Least privilege",
-              "definition": "Giving each identity only the access its current task needs."
+              "definition": "Giving each identity only the access its task needs, for only as long as needed."
             },
             {
               "term": "Accountability",
-              "definition": "Tracing each action to one responsible person or process who can answer for it."
+              "definition": "Tracing each action to one answerable person or process through unique IDs and logs; in governance, it means answering for an outcome."
             }
           ]
         },
@@ -680,7 +680,7 @@
           "key_terms": [
             {
               "term": "Data poisoning",
-              "definition": "Planting misleading records in training data so a model learns wrong or hidden behavior."
+              "definition": "Tampering with the data a model learns from so it learns wrong or hidden behavior, such as ignoring an attacker's activity."
             },
             {
               "term": "Training data",
@@ -776,11 +776,11 @@
           "key_terms": [
             {
               "term": "Threat actor",
-              "definition": "The person or group behind a threat, such as a criminal gang or careless insider."
+              "definition": "The person or group behind a threat, such as criminals, nation-states, hacktivists or careless or malicious insiders."
             },
             {
               "term": "Threat vector",
-              "definition": "The path a threat uses to reach its target, such as email or a USB drive."
+              "definition": "The path a threat uses to reach its target, such as email, a web application or a removable drive."
             }
           ]
         },
@@ -1087,7 +1087,7 @@
           "key_terms": [
             {
               "term": "Residual risk",
-              "definition": "The risk left after controls. Its owner may accept it within tolerance; only senior management can accept it beyond."
+              "definition": "The risk left after controls are applied; the risk owner may accept it within tolerance, and senior management decides beyond it (treat further or accept)."
             },
             {
               "term": "Risk owner",
@@ -1176,7 +1176,7 @@
           "key_terms": [
             {
               "term": "Escalation",
-              "definition": "Passing an issue to someone with more authority when it is beyond your role."
+              "definition": "Passing an issue beyond your role to the right owner or a higher authority, using a set path and timing."
             },
             {
               "term": "Risk report",
@@ -1238,11 +1238,11 @@
           "key_terms": [
             {
               "term": "Data owner",
-              "definition": "The business leader accountable for a data set, who classifies it and approves access."
+              "definition": "The business leader accountable for a data set, who decides its classification and who may access it."
             },
             {
               "term": "Data custodian",
-              "definition": "The person or team, often IT, that handles data day to day as the owner directs."
+              "definition": "The person or team, often IT, that looks after data day to day, such as backups and access settings, as the data owner directs."
             }
           ]
         },
@@ -1328,7 +1328,7 @@
             },
             {
               "term": "Breach notification",
-              "definition": "A legal duty to tell regulators or affected people within a set time when certain data is exposed."
+              "definition": "A legal or contractual duty to tell regulators, affected people or partners within set deadlines when certain data is exposed."
             }
           ]
         },
@@ -1461,11 +1461,11 @@
           "key_terms": [
             {
               "term": "Acceptable use policy (AUP)",
-              "definition": "The rules users accept for using the organization's systems, data and networks."
+              "definition": "The rules staff accept for using the organization's systems, data, networks and services, including AI tools."
             },
             {
               "term": "Policy exception",
-              "definition": "A recorded, approved and time-limited permission to depart from a policy."
+              "definition": "A recorded, time-limited permission to depart from a policy, approved by the policy owner; the risk owner accepts any risk that remains."
             }
           ]
         },
@@ -1559,7 +1559,11 @@
           "key_terms": [
             {
               "term": "Security baseline",
-              "definition": "A mandatory minimum configuration for one type of system. In metrics, a baseline means a starting value."
+              "definition": "The approved, mandatory minimum secure configuration for one type of system; any change from it goes through change management."
+            },
+            {
+              "term": "Baseline (for a metric)",
+              "definition": "The starting value of a measure, used to judge later change."
             },
             {
               "term": "Document hierarchy",
@@ -1716,7 +1720,7 @@
           "key_terms": [
             {
               "term": "Intrusion detection system (IDS)",
-              "definition": "A tool that watches activity and alerts on signs of attack, without blocking it."
+              "definition": "A tool that watches network traffic or hosts and alerts on signs of attack, without blocking it."
             },
             {
               "term": "Endpoint",
@@ -1969,7 +1973,7 @@
           "key_terms": [
             {
               "term": "Defense in depth",
-              "definition": "Layering independent controls so one failure does not expose the asset."
+              "definition": "Layering independent physical, technical and administrative controls so one failure does not expose the asset."
             },
             {
               "term": "Exception review",
@@ -2023,7 +2027,7 @@
             },
             {
               "term": "Service account",
-              "definition": "A non-human account a program or AI agent uses; 3.1 covers its life cycle."
+              "definition": "A non-human account used by an application, process or AI agent rather than a person."
             }
           ]
         }
@@ -2176,25 +2180,25 @@
           "why_it_matters": "Following the code is a condition of certification, and a proven breach can cost the credential.",
           "how_it_works": [
             "The preamble explains why the code exists: others rely on members behaving ethically.",
-            "The canons below are in ISC2's order, in short form; the exact wording is on ISC2's ethics page.",
+            "The canons below are in ISC2's order, quoted word for word, each with a plain-words gloss.",
             "ISC2 gives no ranking rule; judge conflicts by the facts, protecting people first in safety cases."
           ],
           "types": [
             {
               "term": "Canon 1: Society",
-              "meaning": "Protect society, the common good, the public trust and confidence it depends on, and the infrastructure."
+              "meaning": "\"Protect society, the common good, necessary public trust and confidence, and the infrastructure.\" Gloss: keep the public, and the systems and trust it relies on, safe."
             },
             {
               "term": "Canon 2: Honor",
-              "meaning": "Act honorably, honestly, justly, responsibly and legally."
+              "meaning": "\"Act honorably, honestly, justly, responsibly, and legally.\" Gloss: be honest and fair, and obey the law."
             },
             {
               "term": "Canon 3: Principals",
-              "meaning": "Give diligent, competent service to principals, such as employers and clients."
+              "meaning": "\"Provide diligent and competent service to principals.\" Gloss: serve employers and clients with care and skill."
             },
             {
               "term": "Canon 4: Profession",
-              "meaning": "Advance and protect the profession."
+              "meaning": "\"Advance and protect the profession.\" Gloss: support the security field and its good name."
             }
           ],
           "example": "A friend at a rival firm asks a newly certified analyst for their employer's internal incident response playbook. Handing it over would fail their duty to their employer (canon 3) and be dishonest (canon 2). They decline and suggest free guidance from the US National Institute of Standards and Technology (NIST).",
@@ -2393,33 +2397,35 @@
   "key_terminologies": {
     "CIA triad": "Confidentiality, integrity and availability: the three core goals of security.",
     "AAA": "Authentication, authorization and accounting: prove identity, grant permissions, record activity.",
-    "Non-repudiation": "Proof strong enough that a person cannot credibly deny an action, usually from a digital signature.",
+    "Non-repudiation": "Proof that a specific party sent or approved something, so they cannot credibly deny it; usually from a digital signature.",
     "Personally identifiable information (PII)": "Data that identifies a person, alone or combined with other data.",
     "Privacy by design": "Building privacy protections into a system from the first design step, with protective defaults.",
     "Threat": "Anything that could harm an asset, such as an attacker, an error or a storm.",
     "Vulnerability": "A weakness a threat can exploit, such as unpatched software.",
     "Risk": "The likelihood that a threat exploits a vulnerability, combined with the impact if it does.",
     "Risk treatment": "Responding to a risk by avoiding, mitigating, transferring or accepting it.",
-    "Residual risk": "The risk left after controls are applied; its owner may accept it within tolerance, and only senior management can accept it beyond.",
+    "Residual risk": "The risk left after controls are applied; the risk owner may accept it within tolerance, and senior management decides beyond it (treat further or accept).",
     "Risk appetite": "The broad amount and type of risk the board and senior management will take on to meet goals.",
     "Risk tolerance": "The narrower, measurable limit of risk accepted for a specific objective.",
-    "Risk owner": "The person with authority to decide a risk's treatment and accept what remains within tolerance.",
-    "Annualized loss expectancy (ALE)": "Expected yearly loss from a risk: single loss expectancy times annual rate of occurrence.",
+    "Risk owner": "The person accountable for a risk, with authority to decide its treatment and accept what remains within tolerance.",
+    "Risk register": "A shared record of identified risks, each with its owner, rating, treatment, status and next review date.",
+    "Annualized loss expectancy (ALE)": "Expected yearly loss from a risk: single loss expectancy (SLE) times annualized rate of occurrence (ARO).",
     "Regulation": "A mandatory rule issued by a government agency under the authority of a law.",
-    "Framework": "A published, usually voluntary structure for building a security program, such as the NIST Cybersecurity Framework (CSF) 2.0.",
+    "Framework": "A published, usually voluntary set of practices for organizing security work, such as the National Institute of Standards and Technology (NIST) CSF 2.0.",
     "Policy": "A mandatory, high-level statement of what is required and why, approved by senior management.",
-    "Standard": "A mandatory, specific requirement that supports a policy, such as approved encryption settings.",
+    "Policy owner": "The manager accountable for a policy, who keeps it current and approves or rejects exceptions to it.",
+    "System owner": "The manager accountable for a system's operation and security, who approves access to it and requests its changes; report its issues to them.",
+    "Standard": "Internally, a mandatory, specific rule that supports a policy, such as approved encryption settings; an outside standard binds once adopted or required.",
     "Procedure": "Mandatory step-by-step instructions for carrying out a task.",
     "Guideline": "Optional, recommended practice that leaves room for judgment.",
     "Technical control": "A safeguard built into hardware or software, such as a firewall or encryption.",
     "Administrative control": "A policy, procedure, training or people practice that directs behavior.",
     "Physical control": "A tangible safeguard for people and facilities, such as a lock, fence or guard.",
-    "Compensating control": "An alternative control that lowers the same risk when the usual control is not possible, approved as a recorded exception.",
+    "Compensating control": "An alternative control that lowers the same risk when the usual one, such as patching, is not possible; approved as a recorded exception.",
     "Due diligence": "Investigating and verifying: finding out what risks exist and whether safeguards work.",
     "Due care": "Acting responsibly on what you know, as a reasonable person would.",
     "ISC2 Code of Ethics": "The preamble and four canons every ISC2-certified member must follow.",
-    "Model or data poisoning": "Corrupting an AI model or its training data so it learns wrong or hidden behavior; an integrity attack.",
-    "Malware": "Malicious software, such as a virus, worm or ransomware, built to harm systems or steal data."
+    "Model or data poisoning": "Tampering with an AI model or the data it learns from so it learns wrong or hidden behavior, such as ignoring an attacker's activity; an integrity attack."
   },
   "references": [
     {

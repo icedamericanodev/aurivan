@@ -36,17 +36,17 @@ Pearson VUE test centers.
 
 | Setting | Full mock | Mini mock |
 |---|---|---|
-| Questions | 125 (the exam's maximum) | 50 |
-| Minutes | 120 | 48 (same pace: 120 / 125 × 50) |
-| D1 Security Principles (24%) | 30 | 12 |
-| D2 Security Governance (17.3%) | 22 | 9 |
-| D3 Identity and Access Management (IAM) Concepts (20%) | 25 | 10 |
-| D4 Networking and Cloud Security Concepts (21.3%) | 27 | 11 |
-| D5 Security Operations and Incident Response (17.3%) | 21 | 8 |
+| Questions | 125 (the exam's maximum) | 42 (a third of the exam, as `miniMockSize()` in `mobile/src/engine/finalWeek.ts`) |
+| Minutes | 120 | 40 (same pace, `mockPace()`: round(120 / 125 × 42)) |
+| D1 Security Principles (24%) | 30 | 10 |
+| D2 Security Governance (17.3%) | 22 | 7 |
+| D3 Identity and Access Management (IAM) Concepts (20%) | 25 | 9 |
+| D4 Networking and Cloud Security Concepts (21.3%) | 27 | 9 |
+| D5 Security Operations and Incident Response (17.3%) | 21 | 7 |
 
 - Allocation uses the same largest-remainder rule as `allocate()` in
-  `mobile/src/engine/blueprint.ts`. ISC2 rounds the weights to one decimal, so
-  they sum to 99.9; `allocate()` handles it.
+  `mobile/src/engine/blueprint.ts`. ISC2's published weights sum to 99.9 (its
+  table shows Total 100%); `allocate()` handles it.
 - Difficulty mix: about 35% foundational, 50% application, 15% analysis
   (the CC item rule in `.claude/agents/isc2-cc-standards-auditor.md`).
 - Learner disclaimer on the mock screen: "This practice exam has a fixed length
@@ -72,7 +72,7 @@ the existing `ISC2` issuer and `ISC2_TM` helper):
     mindset:
       'Think like an entry-level security practitioner: protect people first, follow policy and procedure, ' +
       'do the task your role assigns, escalate to the owner when it is outside your authority, ' +
-      'leave risk acceptance to the risk owner, and pick the basic control that fits.',
+      'leave risk acceptance to the risk owner within tolerance and to senior management beyond it, and pick the basic control that fits.',
     trademarkNotice: ISC2_TM('CC'),
     status: 'coming_soon',
     exam: {
@@ -83,7 +83,7 @@ the existing `ISC2` issuer and `ISC2_TM` helper):
       passingNote: 'ISC2 reports pass or fail only; the passing mark is a scaled 700 out of 1000.',
     },
     domains: [
-      // Outline effective 1 Sep 2026. ISC2 rounds to one decimal, so the weights sum to 99.9 (allocate() handles it).
+      // Outline effective 1 Sep 2026. ISC2's published weights sum to 99.9 (its table shows Total 100%); allocate() handles it.
       { id: '1', name: 'Security Principles', short: 'Principles', weight: 24, tone: 0 },
       { id: '2', name: 'Security Governance', short: 'Governance', weight: 17.3, tone: 1 },
       { id: '3', name: 'Identity and Access Management (IAM) Concepts', short: 'IAM', weight: 20, tone: 2 },
@@ -105,11 +105,27 @@ mobile rule on weights).
   fixed it yourself, when your job was to report it to the owner." and "You
   picked a tool or a quick fix before following the policy or procedure." The
   tag labels must stay as they are, because the CC final review week quotes
-  them exactly. The screen also serves CISA, so the examples may need to differ
-  by certification.
+  them exactly. Day 6 glosses them for CC instead: "Acted as the wrong person"
+  also covers passing up your own task, "Tool before policy" means a skipped
+  step, "Missed FIRST or BEST" covers any priority word, and a learner who
+  picked the close second tags the reason it lost (the app has no such tag).
+  The screen also serves CISA, so the examples may need to differ by
+  certification. Whether CC gets its own tag set is a product decision.
 - The glossary task in the final review week needs a CC glossary view.
-- ISC2's pages disagree on the CC rescheduling fee (the pricing page lists
-  US$50; a May 2025 ISC2 article says CC is exempt). The guide gives no figure
-  and tells learners to check. Re-check before showing any amount.
+- CC reschedule fee: US$50 (cancel US$100), charged by Pearson; One Million
+  Pledge first-time CC sitters by 31 Dec 2026 pay no reschedule fee (cancel fee
+  not waived). Source: https://www.isc2.org/exams/schedule-exam and
+  https://www.isc2.org/frequently-asked-questions (checked 31 Oct 2026). The
+  guide now states these amounts.
+- `mobile/src/engine/pace.ts` keeps a 15-minute reserve to revisit flagged
+  questions, so CC's target pace would show as about 50 seconds with "time to
+  revisit flagged ones". The real CC exam has no review, and the CC files plan
+  about 55 seconds a question with question 65 at the 1-hour mark. Give the
+  pace engine a per-exam no-review case (no reserve, no "flagged" wording)
+  before CC ships.
+- The slip coach's role line (`PATTERN_COPY.role.coach` in
+  `mobile/src/engine/slipCoach.ts`) says "auditor, manager or board?".
+  Suggested CC wording: "Ask who you are in the question, and whether the
+  decision is yours or the owner's."
 - Re-check the exam guide's facts every 180 days (the linter warns when they
   are older).

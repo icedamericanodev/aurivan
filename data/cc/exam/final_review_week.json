@@ -3,7 +3,7 @@
   "certification": "cc",
   "title": "Final review week",
   "updated": "2026-10-31",
-  "intro": "Use this plan in the last 7 days, once you have studied all five domains and taken at least one mock. The aim now is to sharpen what you know, not to learn new material. Most days take about an hour; the mock day takes longer.",
+  "intro": "Use this plan in the last 7 days, after studying all five domains and taking at least one mock. The aim is to sharpen what you know, not learn new material. Most days take an hour; the mock day about 2 hours, the next day up to 90 minutes.",
   "how_it_works": [
     "Short reviews spread over several days hold up better than one long session the night before.",
     "Answer from memory first, then check. Recalling builds memory; rereading mostly makes pages feel familiar.",
@@ -18,7 +18,7 @@
       "title": "Full rehearsal",
       "goal": "Sit one full timed mock at the time of day your exam starts, to test your pace and focus.",
       "tasks": [
-        {"text": "Take a full timed mock in one sitting at your exam's start time, with your phone away and no notes.", "action": {"kind": "mock_full"}},
+        {"text": "Take a full timed mock in one sitting at your exam's start time. Block about 2 hours, turn notifications off and keep notes closed.", "action": {"kind": "mock_full"}},
         {"text": "Practice the real exam's rhythm: about 55 seconds a question, answer each one once and never go back, even if the mock lets you."},
         {"text": "Your misses go to your mistake journal on their own. Rest tonight and review them tomorrow."}
       ],
@@ -31,12 +31,12 @@
       "goal": "Trace each mock miss back to the thinking slip behind it. Stop after about 90 minutes, even if some are left.",
       "tasks": [
         {"text": "In your mistake journal, review each miss from yesterday's mock, starting with Domains 1 and 4, the two heaviest.", "action": {"kind": "mistakes"}},
-        {"text": "Tag why you missed each one: “Acted as the wrong person”, “Missed FIRST or BEST”, “Tool before policy”, “Fixed the symptom, not the cause”, “Misread” or “Didn’t know it”."},
+        {"text": "Tag each miss: “Acted as the wrong person”, “Missed FIRST or BEST”, “Tool before policy” (a skipped step), “Fixed the symptom, not the cause”, “Misread” or “Didn’t know it”."},
         {"text": "Read the principles behind the slip you tagged most often.", "action": {"kind": "principles", "target": "top_slip"}},
         {"text": "From memory, list three Domain 1 and three Domain 4 points. Then open the lists and check.", "sheet": ["1", "4"]},
-        {"text": "Read the principles on your role: what is yours to do, and what goes to the owner who decides.", "action": {"kind": "principles", "target": "role"}}
+        {"text": "Read the principles on your role. “Acted as the wrong person” covers doing the owner’s job and passing up your own.", "action": {"kind": "principles", "target": "role"}}
       ],
-      "remember": "A miss you understand teaches more than a right answer you guessed."
+      "remember": "“Missed FIRST or BEST” covers any priority word. Picked the close second? Tag the reason it lost."
     },
     {
       "id": "day-5",
@@ -50,7 +50,7 @@
         {"text": "For a topic you missed more than once, read its note, then close it and explain the idea in two sentences.", "action": {"kind": "note"}},
         {"text": "Read the principles on choosing the basic control that fits the risk.", "action": {"kind": "principles", "target": "controls"}}
       ],
-      "remember": "Weight matters: Domains 1 and 4 together carry just under half the exam."
+      "remember": "Weight matters: Domains 1 and 4 together carry about 45% of the exam."
     },
     {
       "id": "day-4",
@@ -89,7 +89,7 @@
         {"text": "Read the principles on what to do when something goes wrong: report it, contain it and preserve evidence.", "action": {"kind": "principles", "target": "response"}},
         {"text": "Read the ethics principles: due care, due diligence and the four canons weighed together.", "action": {"kind": "principles", "target": "ethics"}},
         {"text": "Look up any term on the lists that still feels unclear.", "action": {"kind": "glossary"}},
-        {"text": "Confirm your booking, ID and route, and reread the exam-day rules from ISC2 and your booking confirmation."}
+        {"text": "Confirm your booking, both IDs and your route, and reread the exam-day rules from ISC2 and your booking confirmation."}
       ],
       "remember": "Recall beats rereading. Leave new material alone now."
     },
@@ -112,7 +112,7 @@
     "eve": [
       "Your booking is confirmed, and you have checked the ID and exam-day rules from ISC2 and your booking confirmation.",
       "Your route and travel time to the Pearson VUE test center are planned, with time to spare for check-in.",
-      "Your ID is laid out where you will see it in the morning.",
+      "Both IDs are laid out for the morning: a primary with photo and signature and a secondary with signature, both unexpired originals matching your booking name.",
       "You have read the reminder for your most common slip.",
       "Skip alcohol tonight; it makes sleep lighter.",
       "If worries keep circling, write them down for a few minutes, then put the page away.",
@@ -120,8 +120,8 @@
     ],
     "morning": [
       "Eat a familiar breakfast and keep your usual caffeine.",
-      "Reread your pace plan: about 55 seconds a question, and question 65 at the 1-hour mark.",
-      "Leave early enough to reach the test center before the check-in time on your booking confirmation.",
+      "Reread your pace plan: about 55 seconds a question, question 65 at the 1-hour mark and question 100 by about 92 minutes.",
+      "Leave early enough to reach the test center at least 30 minutes before your start time, as ISC2 asks. Arriving late can cost you your seat and your fee.",
       "A racing heart is your body getting ready. Treat it as energy for focus, not a sign of danger.",
       "If your mind goes blank, breathe out slowly, reread the last line of the question, choose your best answer and move on.",
       "Expect many questions to feel hard. An adaptive exam is built that way, so it says nothing about how you are doing."
@@ -133,7 +133,7 @@
         "id": "1",
         "name": "Security Principles",
         "points": [
-          {"text": "Name the goal at stake first: confidentiality (who can see it), integrity (is it still correct) or availability (can people use it when needed). Then pick a control built for that goal.", "note": "1.1.1"},
+          {"text": "Name the goal at stake: confidentiality (who can see it), integrity (is it still correct) or availability (can people use it). Personal data also raises privacy: should it be kept at all? Then match the control to the goal.", "note": "1.1.1"},
           {"text": "Identification claims who you are, authentication proves it, authorization sets what you may do and accounting records what you did. Multi-factor authentication (MFA) needs two different types: something you know, have or are.", "note": "1.1.6"},
           {"text": "Risk is likelihood and impact together. You rarely control the threat, so you lower risk by reducing weaknesses (likelihood) or limiting the damage (impact). Treatment options: avoid, mitigate, transfer or accept.", "note": "1.2.5"},
           {"text": "You never accept risk yourself. The risk owner accepts within tolerance, and senior management decides beyond it. Your job is to record the risk and route it to its owner.", "note": "1.2.6"},
@@ -146,11 +146,11 @@
         "id": "2",
         "name": "Security Governance",
         "points": [
-          {"text": "Governance, risk and compliance (GRC) means security follows the business's goals and rules. Your part: follow the policies, know who owns each system, and raise risks to that owner. Leaders can hand out tasks, but they stay accountable.", "note": "2.1.2"},
+          {"text": "Governance, risk and compliance (GRC) means security follows the business's goals and rules. Your part: follow the policies, know who owns each system, and raise risks to that owner. Leaders can hand out tasks, but they stay accountable.", "note": "2.1.1"},
           {"text": "Disaster recovery restores IT. It is one part of business continuity, which also covers people, places, suppliers and communication. People's safety comes before any asset.", "note": "2.2.2"},
-          {"text": "The business impact analysis (BIA) comes first and starts from business functions. The recovery time objective (RTO) must fit inside the maximum tolerable downtime (MTD); the recovery point objective (RPO) is how much data you can lose.", "note": "2.2.4"},
+          {"text": "Business impact analysis (BIA) comes first. Recovery time objective (RTO): how fast a system must be back, inside the maximum tolerable downtime (MTD), the longest outage the business can bear. Recovery point objective (RPO): how much data you can lose.", "note": "2.2.4"},
           {"text": "Redundancy keeps service running when a part fails; backups bring back deleted, corrupted or encrypted data. A backup counts only when a restore has been tested and attackers can't reach it.", "note": "2.2.5"},
-          {"text": "Plan tests run from least to most disruptive: checklist, tabletop, simulation, parallel, full interruption. Choose the least disruptive test that meets the goal.", "note": "2.2.7"},
+          {"text": "Plan tests run from least to most disruptive: checklist (read it), tabletop (talk it through), simulation (act it out), parallel (run the backup site alongside live), full interruption (switch live off). Choose the least disruptive test that meets the goal.", "note": "2.2.7"},
           {"text": "Urgency, authority and secrecy are warning signs. Verify through a channel you already trust, never one the requester supplies, and report every attempt, including your own click.", "note": "2.3.3"},
           {"text": "Key performance indicators (KPIs) show how well things run; key risk indicators (KRIs) warn that risk is rising. If a metric crosses its threshold, report it at once. Never change the number or the threshold yourself; only its owner can.", "note": "2.4.4"}
         ]
@@ -160,7 +160,7 @@
         "name": "Identity and Access Management (IAM) Concepts",
         "points": [
           {"text": "No ticket, no access. The owner approves, someone else sets it up, and the record shows both. Urgency changes how fast a request moves, never whether it is checked.", "note": "3.1.14"},
-          {"text": "Joiners start with the smallest fitting role. Movers lose old access before gaining new, which stops privilege creep. Leavers lose access the same day, and at once for a hostile exit.", "note": "3.1.9"},
+          {"text": "Joiners start with the smallest fitting role. Movers lose old access at the move, which stops privilege creep; only approved, time-limited handover access may stay. Leavers lose access the same day, and at once for a hostile exit.", "note": "3.1.9"},
           {"text": "In an access review, the owner confirms who should keep each access. Your part: remove what the owner says to remove, and record it. Access nobody confirms is removed.", "note": "3.1.10"},
           {"text": "Least privilege: only the access the task needs, for only as long as needed. Separation of duties: no one person can start, approve and hide a sensitive action.", "note": "3.2.3"},
           {"text": "Who decides access? The owner: discretionary (DAC). Labels the system enforces: mandatory (MAC). The job: role-based (RBAC). Several conditions at once: attribute-based (ABAC). One fixed rule for all: rule-based.", "note": "3.2.10"},
@@ -186,7 +186,7 @@
         "name": "Security Operations and Incident Response",
         "points": [
           {"text": "The data owner sets the classification; everyone else applies it. Protect unlabeled data at the higher level until the owner answers, and follow the label wherever the data goes.", "note": "5.1.1"},
-          {"text": "Deleting is not sanitizing. Clear for low-risk reuse, purge before sensitive media leaves your control, destroy when it can't be purged. Verify, and keep the record.", "note": "5.1.4"},
+          {"text": "Deleting is not sanitizing. Clear (overwrite so normal tools can't recover it) for low-risk reuse, purge (wipe so even lab tools can't) before sensitive media leaves your control, and destroy when it can't be purged. Verify, and keep the record.", "note": "5.1.4"},
           {"text": "Symmetric encryption suits bulk data; asymmetric exchanges keys and proves identity. A hash shows whether data changed; a digital signature shows who sent it and that it is unchanged. Neither keeps it secret.", "note": "5.1.6"},
           {"text": "Not every event is an incident. Triage by impact, not arrival order, and hand anything over the threshold to the incident response team instead of carrying on alone.", "note": "5.2.3"},
           {"text": "Incident order: contain, then eradicate, then recover, then lessons learned. Isolate rather than power off unless the playbook says otherwise, and restore only from clean sources.", "note": "5.3.3"},
@@ -237,7 +237,7 @@
     ],
     "pace": [
       "Up to 125 questions in 2 hours is a little under a minute each. Aim for about 55 seconds so even the longest exam fits.",
-      "Checkpoint: question 65 at the 1-hour mark. Ahead is fine; keep the same care.",
+      "Checkpoints: question 65 at the 1-hour mark, question 100 by about 92 minutes. Ahead is fine; keep the same care.",
       "The exam is adaptive: once you finalize an answer, you can't go back to review or change it. Give each question one careful read, then commit.",
       "Past about 90 seconds on one question, eliminate what you can, choose your best answer and move on.",
       "Make sure you reach at least question 100 within the 2 hours. Running out of time before that is an automatic fail.",

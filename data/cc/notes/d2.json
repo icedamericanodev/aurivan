@@ -261,7 +261,7 @@
           "key_terms": [
             {
               "term": "Accountability",
-              "definition": "Being answerable for an outcome; it stays with the owner even when tasks are delegated."
+              "definition": "Being answerable for an outcome; it stays with the owner even when the work is delegated or outsourced."
             },
             {
               "term": "Reporting line",
@@ -554,7 +554,7 @@
           "key_terms": [
             {
               "term": "Residual risk",
-              "definition": "The risk left after controls are applied; the risk owner accepts it within tolerance, and only senior management can accept it above tolerance."
+              "definition": "The risk left after controls are applied; the risk owner may accept it within tolerance, and senior management decides beyond it (treat further or accept)."
             },
             {
               "term": "Treatment plan",
@@ -696,7 +696,7 @@
           "key_terms": [
             {
               "term": "Single point of failure (SPOF)",
-              "definition": "One component whose failure stops a whole service because nothing can take its place."
+              "definition": "One component whose failure stops the whole service or protection, such as a lone server."
             },
             {
               "term": "Failover",
@@ -1381,7 +1381,7 @@
             },
             {
               "term": "Policy exception",
-              "definition": "A recorded, time-limited permission to depart from a policy, approved by the policy owner and reviewed before it expires."
+              "definition": "A recorded, time-limited permission to depart from a policy, approved by the policy owner; the risk owner accepts any risk that remains."
             }
           ]
         },
@@ -1768,7 +1768,7 @@
           "key_terms": [
             {
               "term": "Passphrase",
-              "definition": "A password made of several words, long enough to resist guessing yet easy to remember."
+              "definition": "A long password made of several words, easy to remember yet hard to guess."
             },
             {
               "term": "Password manager",
@@ -2052,7 +2052,7 @@
             },
             {
               "term": "Privileged account",
-              "definition": "An account with administrator-level rights that could do serious harm if misused."
+              "definition": "An account that can change systems, security settings or other users' access, so misuse can do serious harm."
             }
           ]
         },
@@ -2117,7 +2117,7 @@
             },
             {
               "term": "Escalation",
-              "definition": "Passing an issue to a higher authority or the right owner, using a set path and timing."
+              "definition": "Passing an issue beyond your role to the right owner or a higher authority, using a set path and timing."
             }
           ]
         },
@@ -2258,7 +2258,7 @@
             },
             {
               "term": "Root cause",
-              "definition": "The underlying reason a problem happened, which a fix must address to stop it recurring."
+              "definition": "The underlying reason a problem or incident happened, such as a missing patch, which the fix must address to stop it recurring."
             }
           ]
         },
@@ -2318,11 +2318,11 @@
   ],
   "key_terminologies": {
     "Governance, risk and compliance (GRC)": "A joined-up way of directing an organization, managing its risks and meeting its obligations.",
-    "Risk appetite": "The amount and type of risk leaders are willing to take to pursue their goals.",
+    "Risk appetite": "The broad amount and type of risk the board and senior management will take on to meet goals.",
     "Data owner": "The business leader accountable for a data set, who decides its classification and who may access it.",
-    "Custodian": "The person or team, often IT, that looks after data or systems as the owner directs.",
+    "Data custodian": "The person or team, often IT, that looks after data day to day, such as backups and access settings, as the data owner directs.",
     "RACI chart": "A table showing, for each task, who is Responsible, Accountable, Consulted and Informed.",
-    "Framework": "A published structure of practices or controls that organizes security work, such as the NIST (National Institute of Standards and Technology) Cybersecurity Framework.",
+    "Framework": "A published, usually voluntary set of practices for organizing security work, such as the National Institute of Standards and Technology (NIST) CSF 2.0.",
     "Compliance": "Meeting the laws, regulations, contracts and internal policies that apply, and being able to prove it.",
     "Redundancy": "Spare components or paths that take over when one fails.",
     "High availability (HA)": "Keeping a service running with very little downtime, using redundancy and failover.",
@@ -2333,15 +2333,17 @@
     "Recovery time objective (RTO)": "The target time to restore a function; it must fit within the MTD.",
     "Recovery point objective (RPO)": "The most data, measured in time, the business can afford to lose.",
     "Hot site": "A recovery site with equipment, connections and current data, ready within minutes to hours.",
+    "Warm site": "A recovery site with equipment in place but data still to restore, ready in hours to days; between a hot and a cold site in cost and speed.",
     "Cold site": "A recovery site with space, power and cooling only; equipping it takes days to weeks.",
-    "Immutable backup": "A backup that cannot be changed or deleted until its retention period ends.",
+    "Immutable backup": "A backup that cannot be changed or deleted, even by an administrator, until its retention period ends.",
+    "Full, incremental and differential backups": "A full backup copies everything; an incremental copies changes since the last backup of any kind; a differential copies all changes since the last full.",
     "Model drift": "A gradual decline in an AI model's accuracy as real-world conditions change.",
     "Security culture": "The shared attitudes and habits that shape how people treat security every day.",
     "Social engineering": "Manipulating people, instead of systems, to gain information, access or money.",
     "Phishing": "A fake message that pretends to come from a trusted source to trick the reader.",
+    "Phishing variants": "Spear phishing targets chosen people; whaling targets senior leaders; smishing uses texts, vishing voice calls and quishing quick response (QR) codes.",
     "Deepfake": "AI-generated or AI-altered audio or video that imitates a real person.",
-    "Passphrase": "A long password made of several words, easier to remember and hard to guess.",
-    "Multifactor authentication (MFA)": "Signing in with two or more different kinds of proof.",
+    "Passphrase": "A long password made of several words, easy to remember yet hard to guess.",
     "Metric": "A measure compared with a goal or target to show progress or risk.",
     "Key performance indicator (KPI)": "A metric showing how well a process meets its goal.",
     "Key risk indicator (KRI)": "A metric giving early warning that a risk is growing toward its limit.",

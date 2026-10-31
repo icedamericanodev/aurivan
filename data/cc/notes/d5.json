@@ -132,11 +132,11 @@
           "key_terms": [
             {
               "term": "Data owner",
-              "definition": "The person accountable for a data set, who sets its classification and approves access."
+              "definition": "The business leader accountable for a data set, who decides its classification and who may access it."
             },
             {
               "term": "Data custodian",
-              "definition": "The person or team that looks after data day to day, such as backups, following the owner's rules."
+              "definition": "The person or team, often IT, that looks after data day to day, such as backups and access settings, as the data owner directs."
             }
           ],
           "memory_aid": "Owner decides, label shows, controls follow."
@@ -356,8 +356,8 @@
           ],
           "key_terms": [
             {
-              "term": "Cryptographic erase",
-              "definition": "Destroying the keys to encrypted data, leaving unreadable ciphertext; also called crypto-shredding, and often the only purge option in the cloud."
+              "term": "Cryptographic erase (crypto-shredding)",
+              "definition": "Destroying the keys to encrypted data so only unreadable ciphertext remains; often the only purge option in the cloud."
             },
             {
               "term": "Certificate of sanitization",
@@ -546,11 +546,11 @@
           "key_terms": [
             {
               "term": "Salted hash",
-              "definition": "Passwords stored with a random value added before slow hashing, so identical passwords give different results."
+              "definition": "A password hash made with a random value added first, so identical passwords give different results; use a slow hashing algorithm."
             },
             {
               "term": "Non-repudiation",
-              "definition": "Proof that a specific party sent or approved something, so they cannot credibly deny it."
+              "definition": "Proof that a specific party sent or approved something, so they cannot credibly deny it; usually from a digital signature."
             }
           ]
         },
@@ -682,7 +682,7 @@
             },
             {
               "term": "Acceptable use policy (AUP)",
-              "definition": "Rules for how staff may use organization systems and services, including AI tools."
+              "definition": "The rules staff accept for using the organization's systems, data, networks and services, including AI tools."
             }
           ]
         }
@@ -810,7 +810,7 @@
           "key_terms": [
             {
               "term": "Security operations center (SOC)",
-              "definition": "The team that monitors and responds to security events; not the System and Organization Controls (SOC) reports in Domain 4."
+              "definition": "The team that monitors and responds to security events; not a System and Organization Controls (SOC) report."
             },
             {
               "term": "Log integrity",
@@ -944,7 +944,7 @@
             },
             {
               "term": "Data poisoning",
-              "definition": "Tampering with the data a model learns from, so it learns to ignore certain activity."
+              "definition": "Tampering with the data a model learns from so it learns wrong or hidden behavior, such as ignoring an attacker's activity."
             }
           ]
         },
@@ -1020,7 +1020,7 @@
             },
             {
               "term": "Threat vector",
-              "definition": "The path an attacker uses to reach a target, such as email, a web application or a removable drive."
+              "definition": "The path a threat uses to reach its target, such as email, a web application or a removable drive."
             }
           ]
         },
@@ -1247,7 +1247,7 @@
           "key_terms": [
             {
               "term": "Botnet",
-              "definition": "Infected devices, called bots, that an attacker controls remotely, often for spam or denial-of-service attacks."
+              "definition": "Hijacked devices, called bots, that an attacker controls remotely, often to flood targets with traffic or send spam."
             },
             {
               "term": "Command and control (C2)",
@@ -1691,11 +1691,11 @@
           "key_terms": [
             {
               "term": "Need to know",
-              "definition": "Sharing information only with people who require it to do their part in the response."
+              "definition": "Limiting information to people whose current duties require it, even if their clearance would allow more."
             },
             {
               "term": "Breach notification",
-              "definition": "A legal or contractual duty to tell affected people, regulators or partners about certain breaches within set deadlines."
+              "definition": "A legal or contractual duty to tell regulators, affected people or partners within set deadlines when certain data is exposed."
             }
           ]
         },
@@ -1745,7 +1745,7 @@
             },
             {
               "term": "Root cause",
-              "definition": "The underlying reason an incident happened, such as a missing patch, rather than its symptoms."
+              "definition": "The underlying reason a problem or incident happened, such as a missing patch, which the fix must address to stop it recurring."
             }
           ]
         },
@@ -1873,7 +1873,7 @@
           "key_terms": [
             {
               "term": "Shadow IT",
-              "definition": "Technology used for work without IT or security approval, such as unapproved cloud apps."
+              "definition": "Technology, such as cloud apps, that staff use for work without IT or security approval."
             },
             {
               "term": "Configuration management database (CMDB)",
@@ -1975,11 +1975,11 @@
           "key_terms": [
             {
               "term": "Compensating control",
-              "definition": "An alternative safeguard, such as network isolation, used when the normal control, such as patching, is not possible."
+              "definition": "An alternative control that lowers the same risk when the usual one, such as patching, is not possible; approved as a recorded exception."
             },
             {
-              "term": "Risk exception",
-              "definition": "A documented, time-limited approval from the policy owner to operate outside a policy, reviewed before it expires."
+              "term": "Policy exception",
+              "definition": "A recorded, time-limited permission to depart from a policy, approved by the policy owner; the risk owner accepts any risk that remains."
             }
           ]
         },
@@ -2027,7 +2027,7 @@
           "key_terms": [
             {
               "term": "Configuration drift",
-              "definition": "Gradual, often unapproved changes that move a system away from its approved baseline."
+              "definition": "Gradual, often unapproved changes that move a system's settings away from its approved baseline."
             },
             {
               "term": "Attack surface",
@@ -2384,8 +2384,8 @@
               "Critical findings still open before each release",
               "Library versions flagged as vulnerable in the dependency report"
             ],
-            "recommend": "Raise releases planned with unresolved critical findings to the application owner and security lead.",
-            "decides": "The application owner decides release; the risk owner accepts within tolerance, senior management beyond"
+            "recommend": "Raise releases planned with unresolved critical findings to the system owner and security lead.",
+            "decides": "The system owner decides release; the risk owner accepts within tolerance, senior management beyond"
           },
           "isaca_rule": "Use both: SAST early on the code, DAST later on the running application, plus checks on third-party components. A clean result from one does not cover the other's blind spots.",
           "exam_traps": [
@@ -2588,7 +2588,7 @@
               "meaning": "An AI tool given more permissions or autonomy than it needs, so a manipulated model can do real damage."
             }
           ],
-          "example": "A law firm adds an AI assistant that summarizes incoming email. During an authorized test, Remy, a junior security analyst, sends an email with hidden text telling the assistant to forward the client list outside the firm. The assistant tries, but its permissions block sending. Remy records the result and reports the weakness to the application owner.",
+          "example": "A law firm adds an AI assistant that summarizes incoming email. During an authorized test, Remy, a junior security analyst, sends an email with hidden text telling the assistant to forward the client list outside the firm. The assistant tries, but its permissions block sending. Remy records the result and reports the weakness to the system owner.",
           "audit_focus": {
             "review": [
               "Test AI features only within the approved scope and test accounts",
@@ -2598,8 +2598,8 @@
               "The AI tool's permissions and which actions need human approval",
               "Detection results for known attacks after each model update"
             ],
-            "recommend": "Report any AI weakness that exposes data or takes unapproved actions to the application owner and security lead.",
-            "decides": "The application owner decides fixes; the risk owner accepts within tolerance, senior management beyond"
+            "recommend": "Report any AI weakness that exposes data or takes unapproved actions to the system owner and security lead.",
+            "decides": "The system owner decides fixes; the risk owner accepts within tolerance, senior management beyond"
           },
           "isaca_rule": "Treat an AI component as a control that can be fooled. Test it with authorization, limit what it can do, keep a person able to override it, and retest after model or data changes.",
           "exam_traps": [
@@ -2628,35 +2628,44 @@
   ],
   "key_terminologies": {
     "Classification and labeling": "Classification sets data's sensitivity level, decided by its owner; labeling marks the data so people and tools apply the matching handling rules.",
-    "Masking vs tokenization": "Masking hides real values behind fake or partial ones; tokenization swaps them for random tokens that only a protected vault can map back.",
+    "Data masking": "Hiding real values behind fake or partial ones, such as showing only a card's last four digits.",
+    "Tokenization": "Swapping real values for random tokens that only a protected vault can map back to the originals.",
     "Media sanitization": "Making data on media infeasible to recover by the clear, purge or destroy method.",
     "Symmetric encryption": "Encryption with one shared secret key; fast, so it is used for bulk data. Needs n(n−1)/2 keys for n people.",
     "Asymmetric encryption": "Encryption with a public and private key pair; used for key exchange and signatures. Needs 2n keys for n people.",
-    "Hashing": "A one-way function producing a fixed-length digest. A plain hash uses no key; a keyed hash (HMAC) adds one. It is not encryption.",
+    "Hashing": "A one-way function giving a fixed-length digest; not encryption. A keyed hash, the hash-based message authentication code (HMAC), adds a secret key.",
     "Digital signature": "Proof of origin and integrity, made with the signer's private key and checked with their public key.",
     "Certificate authority (CA)": "A trusted organization that verifies an owner's identity and signs the certificate linking them to a public key.",
-    "Post-quantum cryptography": "Public-key algorithms designed to resist future quantum computers, such as the standards NIST published in 2024.",
-    "Event vs incident": "An event is anything observable; an incident actually or imminently harms security or violates policy, and starts the response plan.",
-    "SIEM": "Security information and event management: a system that collects and correlates logs and raises alerts.",
+    "Quantum-resistant (post-quantum) cryptography": "Public-key algorithms built to resist future quantum computers, such as the US federal standards published in 2024.",
+    "Event": "Anything observable in a system or network, such as a sign-in or a file change; most events are harmless.",
+    "Incident": "An event that actually or imminently harms security or violates policy; declaring one starts the incident response plan.",
+    "Triage": "Sorting events and alerts by impact and urgency to decide which need action first and which go to the incident response team.",
+    "Security information and event management (SIEM)": "A system that collects and correlates logs from many sources and raises alerts.",
     "Security operations center (SOC)": "The team that monitors and responds to security events; not a System and Organization Controls (SOC) report.",
-    "Alert fatigue": "Missed threats caused by analysts facing more alerts than they can properly review.",
-    "Malware": "Malicious software, such as viruses, worms, Trojans, ransomware, spyware and rootkits.",
-    "Threat actor": "A person or group that could cause harm, such as criminals, nation-states, hacktivists or insiders.",
+    "Alert fatigue": "Overload when analysts face more alerts, many of them false, than they can review, so real threats get missed or dismissed.",
+    "Malware": "Malicious software, such as viruses, worms, Trojans, ransomware, spyware and rootkits, built to harm systems or steal data.",
+    "Threat actor": "The person or group behind a threat, such as criminals, nation-states, hacktivists or careless or malicious insiders.",
     "Cyber threat intelligence (CTI)": "Analyzed information about threats, used to anticipate, detect and respond to attacks.",
-    "MITRE ATT&CK": "A free knowledge base of real attacker tactics and techniques, used to map detections and plan tests.",
+    "MITRE ATT&CK": "MITRE's free knowledge base of Adversarial Tactics, Techniques and Common Knowledge (ATT&CK): real attacker behavior, used to map detections and plan tests.",
     "Denial of service (DoS)": "An attack that overloads a service so real users cannot reach it; a distributed (DDoS) attack comes from many devices at once.",
     "On-path attack": "An attack in which someone secretly sits between two parties to read or change their traffic; also called man-in-the-middle.",
     "Incident response plan": "The approved document that sets incident definitions, roles, authority, communication and response steps.",
     "Containment": "Stopping an incident from spreading, for example by isolating a host; it comes before eradication.",
+    "Eradication and recovery": "Eradication removes the cause, such as malware or a rogue account; recovery then restores systems from clean sources and watches them.",
     "Chain of custody": "A record of everyone who handled evidence, when and why, showing it was not altered.",
     "Tabletop exercise": "A discussion-based walk-through of an incident scenario to test roles and decisions, without touching systems.",
     "Asset inventory": "An up-to-date list of hardware, software, data, cloud and AI assets, each with a named owner.",
-    "End-of-life (EOL)": "A product its vendor no longer supports, so newly found flaws are not patched.",
-    "Secure baseline": "The approved minimum secure configuration for one type of system.",
+    "End-of-life (EOL)": "A product past its vendor's end of support, so newly found flaws stay unpatched; check the vendor's support dates, not the product's age.",
+    "Security baseline": "The approved, mandatory minimum secure configuration for one type of system; any change from it goes through change management.",
     "Change management": "The process for requesting, approving, testing, making and reviewing changes to systems.",
+    "Patch management": "The routine process of finding, testing, approving and installing vendor fixes, prioritized by exposure and active exploitation.",
+    "Common Vulnerability Scoring System (CVSS)": "A 0 to 10 severity score for a flaw, maintained by the Forum of Incident Response and Security Teams (FIRST); it rates the flaw, not your organization's risk.",
+    "Red, blue and purple teams": "A red team plays authorized attackers, a blue team defends and detects, and purple teaming has both work together to improve defenses.",
+    "Vulnerability scan": "An automated, authorized check that lists known weaknesses, such as missing patches, without trying to exploit them.",
     "Penetration test": "An authorized attempt to exploit weaknesses to show what an attacker could achieve; a scan alone is not one.",
-    "SAST and DAST": "Static testing examines code without running it; dynamic testing probes the running application.",
-    "Prompt injection": "Hidden instructions in input or content that try to make an AI tool ignore its rules."
+    "Static and dynamic application security testing (SAST and DAST)": "Static application security testing (SAST) examines code without running it; dynamic testing (DAST) probes the running application.",
+    "Threat modeling": "Mapping a system's data flows and trust boundaries, ideally during design, to find how it could be attacked and what controls it needs.",
+    "Prompt injection": "Crafted or hidden instructions in input or content that try to make an AI tool ignore its original instructions or rules."
   },
   "references": [
     {
