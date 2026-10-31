@@ -4498,7 +4498,7 @@ header {
 .stat-card::before { display: none; }
 .stat-card:hover { transform: none; box-shadow: none; }
 .stat-num { font: 500 34px/34px var(--f-serif); letter-spacing: -0.8px; }
-#sStreak { color: var(--text); } /* right answers in a row: ink (clay means study days) */
+#sStreak { color: var(--clay); } /* study days in a row (Grove C2): clay, as the streak is on Today */
 .stat-label { font: 500 14px/20px var(--f-sans); color: var(--text2); }
 @media (max-width: 580px) {
   .stat-card:nth-child(3) { border-left: 0; }
@@ -6578,7 +6578,10 @@ body[data-tab="mock"][data-mview="q"] #subNav { display: none; }
    the phone bottom bar under it): focused controls scroll clear of both. */
 html { scroll-padding-bottom: calc(104px + var(--consent-h, 0px)); }
 @media (max-width: 767px) {
-  html { scroll-padding-bottom: calc(192px + var(--consent-h, 0px) + env(safe-area-inset-bottom)); }
+  /* At least the tab bar's measured height (--tabbar-h, set by bnavFit) plus
+     its 16px float and a margin, so a wrapped bar at large text never covers
+     a focused row (Grove C2, WCAG 2.4.11). */
+  html { scroll-padding-bottom: calc(max(192px, var(--tabbar-h, 64px) + 40px) + var(--consent-h, 0px) + env(safe-area-inset-bottom)); }
 }
 /* ── STUDY RAIL (desktop, owner-approved 19 Oct 2026) ───────────────────────
    A 320px column after <main> (railSync): the page and the rail are one
@@ -6706,9 +6709,11 @@ html { scroll-padding-bottom: calc(104px + var(--consent-h, 0px)); }
 }
 @media (min-width: 1240px) {
   .study-wrap.fg-frame { grid-template-columns: minmax(0, var(--frame-main)) var(--frame-margin); column-gap: var(--frame-gap); }
-  /* Today and Your progress: the page spans the frame, the same two tracks inside. */
+  /* Today, Your progress, You and Settings: the page spans the frame, the same two tracks inside. */
   body[data-tab="home"] .fg-frame > main.app,
-  body[data-tab="progress"] .fg-frame > main.app { grid-column: 1 / -1; }
+  body[data-tab="progress"] .fg-frame > main.app,
+  body[data-tab="you"] .fg-frame > main.app,
+  body[data-tab="settings"] .fg-frame > main.app { grid-column: 1 / -1; }
   .fg-frame > .fg-margin:not([hidden]) {
     display: block; grid-column: 2; grid-row: 2;
     position: sticky; top: 32px; z-index: 1; max-height: calc(100vh - 64px); overflow-y: auto; overscroll-behavior: contain;
@@ -7245,7 +7250,7 @@ html { scroll-padding-bottom: calc(104px + var(--consent-h, 0px)); }
 .rail-sync-h { font: 600 13px/17px var(--f-sans); color: var(--text); }
 .rail-sync-m { font: 400 12px/16px var(--f-sans); color: var(--muted); }
 
-/* You header (§5.4): the 44px rounded-square settings button scrolls to Settings. */
+/* You header (§5.4): the 44px rounded-square cog opens the Settings page (Grove C2). */
 .you-top { display: flex; align-items: center; justify-content: space-between; gap: var(--sp-md); }
 .you-top .you-title { margin: 0; min-width: 0; }
 .you-set-btn {
@@ -7255,14 +7260,264 @@ html { scroll-padding-bottom: calc(104px + var(--consent-h, 0px)); }
 }
 .you-set-btn:hover { color: var(--text); }
 .you-set-btn:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
-.you-set-t { display: none; }
-@media (min-width: 768px) {
-  /* A quiet text button: the cog and its word, no card. */
-  .you-set-btn { width: auto; min-height: 44px; height: auto; gap: 8px; padding: 0 12px; background: none; box-shadow: none; font: 600 15px/20px var(--f-sans); }
-  .you-set-btn:hover { box-shadow: inset 0 0 0 1px var(--border2); }
-  .you-set-t { display: inline; }
-}
 #youSettingsH { scroll-margin-top: var(--sp-xxl); }
+/* ── GROVE UPLIFT, PHASE 3: You and Settings (C2, 31 Oct 2026) ─────────────
+   scratchpad you-c2/final/SPEC.md. You is one scroll in the phone's order;
+   from 1240px (the frame spans both tracks there) its two column groups sit
+   side by side. They are real DOM groups, so reading and focus order match
+   what is seen at every width (no CSS order or grid placement). Settings is
+   its own page with the same cards. Text sizes here are in rem, so the
+   browser's text size grows them (from 130% the stem chart steps aside for
+   its list); every row is 44px or more. */
+.you { max-width: none; display: flex; flex-direction: column; gap: 14px; }
+.you-top { align-items: flex-start; }
+.you-prof { flex: 1; min-width: 0; margin: 0; padding: 0; border: 0; align-items: center; gap: 14px; }
+.you-prof .you-title, .you-prof-n { margin: 0; font: var(--t-hero); font-size: 1.875rem; line-height: 1.133; letter-spacing: var(--tr-hero); color: var(--text); overflow-wrap: anywhere; }
+.you-prof-t { padding-top: 0; display: flex; flex-direction: column; gap: 2px; }
+.you-prof-l { margin: 0; font: 500 0.875rem/1.43 var(--f-sans); color: var(--text2); }
+.you-prof-m { margin: 0; font: 500 0.8125rem/1.385 var(--f-sans); color: var(--muted); }
+.you-prof .you-prof-add { min-height: 44px; align-self: flex-start; }
+.you-prof-i { color: var(--on-forest); }
+/* The cog: a 44px card button at every width (no word beside it). */
+.you-set-btn { text-decoration: none; }
+.you-sum { display: flex; flex-direction: column; gap: 12px; padding-top: 14px; border-top: 1px solid var(--border); }
+.you-status { margin: 0; font: 400 1.25rem/1.35 var(--f-serif); letter-spacing: -.1px; color: var(--text); text-wrap: pretty; }
+.you-status b { font-weight: 500; }
+.you-nowrap { white-space: nowrap; }
+.you-sum-acts { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+.you-go {
+  display: inline-flex; align-items: center; gap: 6px; min-height: 44px; padding: 0 12px 0 16px; border: 0; border-radius: var(--r-14);
+  background: var(--btn); color: var(--on-btn); font: 600 0.875rem/1.286 var(--f-sans); cursor: pointer;
+}
+.you-go:hover { background: var(--forest-top); }
+[data-theme="dark"] .you-go:hover { background: var(--sap); }
+.you-chip {
+  display: inline-flex; align-items: center; gap: 10px; min-height: 44px; max-width: 100%; padding: 4px 12px 4px 6px;
+  border: 0; border-radius: var(--r-pill); background: var(--forest); color: var(--on-forest); font: 600 0.8438rem/1.333 var(--f-sans); text-align: left; cursor: pointer;
+}
+.you-chip:hover { background: var(--forest-top); }
+.you-chip > .ico { flex: none; color: var(--on-forest2); }
+.you-chip-art { flex: none; display: flex; align-items: center; justify-content: center; width: 34px; height: 34px; border-radius: var(--r-round); background: rgba(255,255,255,.08); }
+.you-chip-t { min-width: 0; }
+.you-chip-k { display: block; font: 600 0.625rem/1.3 var(--f-sans); letter-spacing: .1em; text-transform: uppercase; color: var(--on-forest2); }
+.you-chip-s { font-weight: 500; color: var(--on-forest2); }
+/* The chip sits on the paper: its ring is the page's focus ring (a CSS check
+   keeps it so: see the grove-check comment below), never the forest's. */
+.you-go:focus-visible, .you-chip:focus-visible, .you-set-btn:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
+/* grove-check: .you-chip:focus-visible outline-color is var(--focus-ring) */
+.you-chip:focus-visible { outline-color: var(--focus-ring); }
+/* The plant's stage glyphs (chip, card): forest-panel colours in both themes. */
+.you-st-soil { fill: none; stroke: #8A7560; stroke-width: 1.5; }
+.you-st-seed { fill: var(--seed); stroke: #E9D9C4; stroke-width: 1; }
+.you-st-line { fill: none; stroke: var(--sap); stroke-width: 1.4; stroke-linecap: round; }
+.you-st-w2 { stroke-width: 2.2; }
+.you-st-w3 { stroke-width: 3; }
+.you-st-fill { fill: var(--forest-track); stroke: var(--sap); stroke-width: 1.2; }
+
+/* Cards, headings and rows */
+.you-card { background: var(--surface); border-radius: var(--r-card); box-shadow: var(--card-shadow); }
+.you-card-h { margin: 0; padding: 16px 16px 4px; font: 500 1.1875rem/1.263 var(--f-serif); letter-spacing: -.1px; color: var(--text); }
+.you-card-sub { margin: 0; padding: 0 16px 6px; font: 400 0.8125rem/1.385 var(--f-sans); color: var(--text2); }
+.you-kick { margin: 0; font: 600 0.6875rem/1.273 var(--f-sans); letter-spacing: .12em; text-transform: uppercase; color: var(--text2); }
+.you-fig { margin: 0; font: italic 400 1rem/1.312 var(--f-serif); color: var(--text); }
+.you-cap { margin: 0; font: 400 0.8125rem/1.385 var(--f-sans); color: var(--text2); }
+.you-card .you-list { padding: 2px 0 4px; container-type: inline-size; }
+.you-card .you-list > li { position: relative; }
+.you-card .you-list > li + li::before { content: ''; position: absolute; top: 0; left: 66px; right: 16px; height: 1px; background: var(--border); }
+.you-card .you-row { gap: 14px; min-height: 56px; padding: 10px 14px 10px 16px; border-bottom: 0; border-radius: 0; }
+.you-card .you-row:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: -2px; border-radius: var(--r-14); }
+.you-card .you-ico { width: 36px; height: 36px; border-radius: var(--r-badge); }
+.you-card .you-t { font: 600 0.9375rem/1.333 var(--f-sans); }
+.you-card .you-m { font: 400 0.8125rem/1.385 var(--f-sans); }
+.you-v { flex: none; font: 400 0.8125rem/1.385 var(--f-sans); color: var(--text2); text-align: right; }
+.you-ext { display: inline-flex; color: var(--muted); margin-right: -6px; }
+.you-setrow .you-ico { background: var(--forest); color: var(--on-forest); }
+.you-foot { margin: 0; padding: 4px 4px 0; font: 400 0.75rem/1.5 var(--f-sans); color: var(--muted); }
+/* Large text or a narrow card: the icons step aside and values drop under the title. */
+@container (max-width: 20em) {
+  .you-card .you-row { flex-wrap: wrap; column-gap: 10px; row-gap: 2px; }
+  .you-card .you-ico { display: none; }
+  .you-card .you-text { flex: 1 1 0; }
+  .you-card .you-v { order: 5; flex-basis: 100%; text-align: left; }
+  .you-card .you-list > li + li::before { left: 16px; }
+}
+
+/* Numbers */
+.you-nums { display: flex; flex-direction: column; gap: 8px; }
+.you-nums .you-stats-wait { margin: 0; padding: 0 4px; }
+.you-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(6rem, 100%), 1fr)); gap: 8px; margin: 0; }
+.you-stat, .you-streak { background: var(--surface); border-radius: 18px; box-shadow: var(--card-shadow); }
+.you-stat { display: flex; flex-direction: column; gap: 3px; min-width: 0; padding: 12px 14px; }
+.you-stat dd, .you-streak dd { margin: 0; }
+.you-num { font: 500 1.875rem/1.133 var(--f-serif); letter-spacing: -.6px; color: var(--text); font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
+.you-num.you-num-w, .you-num-w { font-size: 1.25rem; line-height: 1.3; letter-spacing: 0; }
+.you-num-clay { color: var(--clay); }
+.you-unit { font: 500 0.8125rem/1.385 var(--f-sans); letter-spacing: 0; color: var(--text2); }
+.you-stat-h { font: 400 0.75rem/1.333 var(--f-sans); color: var(--text2); }
+.you-stat-h[hidden] { display: none; }
+.you-stats-note { padding: 0 4px; font: 400 0.8125rem/1.385 var(--f-sans); color: var(--muted); }
+.you-streak { display: flex; flex-wrap: wrap; gap: 16px; align-items: center; padding: 12px 16px; }
+.you-streak[hidden] { display: none; }
+.you-streak-n { display: flex; flex-direction: column; gap: 3px; min-width: 92px; margin: 0; }
+.you-streak-q { flex: 1; min-width: 150px; margin: 0; padding-left: 16px; border-left: 1px solid var(--border); font: italic 400 0.9375rem/1.333 var(--f-serif); color: var(--text2); }
+.you-streak-quiet .you-streak-n { display: none; }
+.you-streak-quiet .you-streak-q { padding-left: 0; border-left: 0; }
+
+/* Estimated readiness: Today's ring without the disc, on the paper card */
+.you-ready { display: flex; flex-direction: column; gap: 10px; padding: 14px 16px; }
+.you-ready {
+  --hero-tick-on: var(--forest); --hero-tick-off: var(--border2); --hero-tick-rng: #B98A2E; --hero-tick-mark: var(--clay);
+  --leaf-line: #86806F;
+}
+[data-theme="dark"] .you-ready { --hero-tick-on: var(--sap); --hero-tick-off: var(--forest-track); --hero-tick-rng: #E9C46A; --leaf-line: #8A978D; }
+.you-ready-top { display: flex; flex-wrap: wrap; align-items: center; gap: 14px; }
+.you-ring { flex: none; line-height: 0; }
+.you-ready .td-ring { width: 84px; height: 84px; font-size: inherit; aspect-ratio: auto; }
+.you-ready .td-tk { stroke-width: 5; stroke-linecap: round; }
+.you-ready .td-tk-mark { stroke-width: 7; }
+.you-ready .td-dot.on { r: 4.6px; }
+.you-ready .td-dot.off { r: 3.6px; stroke-width: 2; }
+.you-ready-t { flex: 1; display: flex; flex-direction: column; gap: 2px; min-width: 150px; }
+.you-ready-n { margin: 0; font: 500 1.5rem/1.167 var(--f-serif); letter-spacing: -.2px; color: var(--text); font-variant-numeric: tabular-nums; }
+.you-to { font: 400 0.9375rem/1.333 var(--f-serif); color: var(--muted); }
+.you-key { list-style: none; margin: 0; padding: 10px 0 0; border-top: 1px solid var(--border); display: flex; flex-direction: column; gap: 6px; }
+.you-key li { display: flex; gap: 10px; align-items: flex-start; font: 400 0.8125rem/1.462 var(--f-sans); color: var(--text2); }
+.you-key svg { flex: none; margin-top: 2px; }
+.you-key b { font-weight: 600; color: var(--text); }
+.you-k-rng { fill: none; stroke: var(--hero-tick-rng); stroke-width: 2.5; stroke-linecap: round; }
+.you-k-mark { fill: none; stroke: var(--clay); stroke-width: 3; stroke-linecap: round; }
+.you-k-dash { fill: none; stroke: var(--text2); stroke-width: 1.2; stroke-dasharray: 3 3; }
+
+/* Five areas */
+.you-areas { display: flex; flex-direction: column; gap: 6px; padding: 16px 12px 14px; container-type: inline-size; }
+.you-areas-h { display: flex; flex-direction: column; gap: 1px; padding: 0 4px; }
+.you-areas .you-key { margin: 4px 4px 0; }
+/* The chart's own list is replaced by the visible one below it. */
+.you-stems .fg-stemlist { display: none !important; }
+.fg-large .you-stems { display: none; }
+@container (max-width: 299px) { .you-stems { display: none; } }
+.you-areal { list-style: none; margin: 0; padding: 4px 4px 6px; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(12rem, 100%), 1fr)); gap: 4px 16px; }
+.you-areal li { display: flex; flex-wrap: wrap; align-items: baseline; column-gap: 8px; min-width: 0; padding: 6px 0; border-bottom: 1px solid var(--border); }
+.you-al-k { font: 600 0.875rem/1.429 var(--f-sans); color: var(--text); }
+.you-al-v { margin-left: auto; font: 500 1rem/1.25 var(--f-serif); color: var(--text); font-variant-numeric: tabular-nums; }
+.you-al-n { flex-basis: 100%; font: 400 0.75rem/1.333 var(--f-sans); color: var(--text2); }
+.you-clay { color: var(--clay); font-weight: 600; }
+
+/* The plant card: the forest panel in both themes */
+.you-plant {
+  --text: var(--on-forest); --text2: var(--on-forest2); --muted: var(--on-forest2); --border: rgba(255,255,255,.12);
+  --surface2: var(--hero-inset); --accent: var(--sap); --accent-text: var(--sap); --raised2: var(--hero-inset); --focus-ring: var(--on-forest);
+  margin: 0; display: flex; flex-direction: column; gap: 14px; padding: 18px 16px 12px; border-radius: var(--r-card);
+  background: var(--hero-panel); box-shadow: var(--sh-hero); color: var(--on-forest); scroll-margin-top: 16px;
+}
+.you-plant[hidden] { display: none; }
+.you-pl-top { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 14px; }
+.you-pl-art { flex: none; width: 96px; line-height: 0; }
+.you-pl-art .plnt-svg, .you-pl-art svg { display: block; width: 96px; height: auto; max-height: 112px; }
+.you-pl-t { flex: 1 1 9rem; min-width: 0; display: flex; flex-direction: column; gap: 3px; padding-bottom: 8px; }
+.you-pl-h { margin: 0; font: 600 0.6875rem/1.273 var(--f-sans); letter-spacing: .12em; text-transform: uppercase; color: var(--on-forest2); }
+.you-pl-h:focus { outline: none; }
+.you-pl-h:focus-visible { outline: 2px solid var(--on-forest); outline-offset: 3px; border-radius: var(--r-6); }
+.you-pl-name { margin: 0; font: 500 1.75rem/1.071 var(--f-serif); letter-spacing: -.3px; color: var(--on-forest); overflow-wrap: anywhere; }
+.you-pl-s { margin: 0; font: 600 0.8438rem/1.333 var(--f-sans); color: var(--on-forest); }
+.you-pl-q { margin: 0; font: italic 400 0.875rem/1.357 var(--f-serif); color: var(--on-forest2); }
+.you-stages { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(2.5rem, 1fr)); gap: 6px; }
+.you-stg { display: flex; flex-direction: column; align-items: center; gap: 5px; min-width: 0; }
+.you-stg-t { width: 100%; max-width: 4.5rem; aspect-ratio: 1; border-radius: 13px; background: var(--hero-inset); display: flex; align-items: center; justify-content: center; }
+.you-stg-t .you-st { width: 70%; height: auto; }
+.you-stg-n { font: 400 0.6875rem/1.273 var(--f-sans); color: var(--on-forest2); text-align: center; overflow-wrap: anywhere; }
+.you-stg.now .you-stg-t { background: var(--forest-track); box-shadow: inset 0 0 0 1.5px var(--sap); }
+.you-stg.now .you-stg-n { color: var(--on-forest); font-weight: 700; }
+.you-stg.done .you-st-line, .you-stg.done .you-st-fill { stroke: #8FB49B; }
+.you-stg.done .you-st-fill { fill: none; }
+.you-stg.locked .you-st-line, .you-stg.locked .you-st-fill, .you-stg.locked .you-st-seed { stroke: rgba(188,210,194,.6); fill: none; stroke-dasharray: 2 2; }
+.you-pl-btn {
+  display: flex; align-items: center; justify-content: space-between; gap: 8px; width: 100%; min-height: 44px; padding: 0 14px;
+  border: 0; border-radius: var(--r-14); background: var(--hero-inset); color: var(--on-forest); font: 600 0.875rem/1.286 var(--f-sans); cursor: pointer; list-style: none;
+}
+.you-pl-btn::-webkit-details-marker { display: none; }
+.you-pl-btn:hover { box-shadow: inset 0 0 0 1px var(--forest-line); }
+.you-pl-btn:focus-visible { outline: 2px solid var(--on-forest); outline-offset: 2px; }
+.you-pl-more[open] > .you-pl-btn .ico { transform: rotate(180deg); }
+.you-pl-more > :not(summary) { margin-left: 2px; margin-right: 2px; }
+.you-plant .plnt-look-line { font-size: 0.9375rem; line-height: 1.4; }
+.you-plant .plnt-note { margin-top: 0; }
+.you-plant .you-row { min-height: 52px; border-bottom-color: rgba(255,255,255,.12); }
+.you-plant .you-row:focus-visible { outline: 2px solid var(--on-forest); outline-offset: -2px; border-radius: var(--r-12); }
+.you-plant .plnt-bar { background: rgba(255,255,255,.12); }
+
+/* Mock exams, badges */
+.you-mocks { padding-bottom: 10px; }
+.you-mocks .empty-state { display: flex; flex-wrap: wrap; align-items: flex-start; gap: 4px 14px; margin: 0; padding: 6px 16px 4px; text-align: left; background: none; border: 0; box-shadow: none; }
+.you-mocks .empty-state .es-icon { width: 36px; height: 36px; margin: 2px 0 0; padding: 7px; border-radius: var(--r-badge); background: var(--surface2); color: var(--accent-text); }
+.you-mocks .empty-state .es-heading, .you-mocks .empty-state .es-body, .you-mocks .empty-state .es-actions { flex: 1 1 calc(100% - 50px); margin: 0 0 0 50px; text-align: left; }
+.you-mocks .empty-state .es-heading { flex: 1 1 0; margin: 8px 0 0; font: 600 0.9375rem/1.333 var(--f-sans); color: var(--text); }
+.you-mocks .empty-state .es-body { font: 400 0.8125rem/1.385 var(--f-sans); color: var(--text2); max-width: none; }
+.you-mocks .empty-state .es-actions { justify-content: flex-start; }
+.you-mocks .empty-state .es-btn.ghost { min-height: 44px; padding: 0; background: none; border: 0; color: var(--accent-text); font: 600 0.875rem/1.286 var(--f-sans); }
+.you-mk { margin: 4px 16px 0; border-top: 0; }
+.you-link { display: inline-flex; align-items: center; gap: 2px; min-height: 44px; margin: 0 16px; font: 600 0.875rem/1.286 var(--f-sans); color: var(--accent-text); text-decoration: none; }
+.you-link:hover { text-decoration: underline; text-underline-offset: 3px; }
+.you-link:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; border-radius: var(--r-sm); }
+.you-badges { padding: 12px 16px 10px; }
+.you-badges .pg-herb { margin: 0; }
+.you-badges .fg-sheet-nm { font: 500 1.1875rem/1.263 var(--f-serif); }
+.you-badges .fg-sheet-p { font: 400 0.8125rem/1.385 var(--f-sans); color: var(--text2); }
+.you-badges .td-link { min-height: 44px; }
+
+/* Settings */
+.set-head { display: flex; flex-direction: column; gap: 4px; }
+.set-head .you-title { margin: 0; font: var(--t-hero); font-size: 1.875rem; line-height: 1.133; }
+.set-head .you-title:focus { outline: none; }
+.set-sub { margin: 0; font: 400 0.875rem/1.429 var(--f-sans); color: var(--text2); }
+.set .you-name-edit { padding: 4px 16px 14px 66px; border-bottom: 0; }
+.set-reset-h { padding: 14px 16px 2px; }
+.set-danger { border-radius: 20px; box-shadow: 0 0 0 1px var(--border); }
+.set-fresh .you-ico { background: var(--badge-clay); color: var(--clay); }
+.set-fresh .you-t { color: var(--clay); }
+.set-card .you-sw-w { flex: none; min-width: 22px; font: 600 0.75rem/1.333 var(--f-sans); color: var(--text2); text-align: right; }
+.set-card .you-sw-w::before { content: 'Off'; }
+.set-card .you-row[aria-checked="true"] .you-sw-w::before { content: 'On'; }
+.set-card .you-switch { width: 48px; height: 28px; border: 0; background: var(--control); }
+.set-card .you-switch::after { top: 3px; left: 3px; width: 22px; height: 22px; background: #FFFFFF; }
+[data-theme="dark"] .set-card .you-switch::after { background: var(--text); }
+.set-card .you-row[aria-checked="true"] .you-switch { background: var(--btn); }
+.set-card .you-row[aria-checked="true"] .you-switch::after { transform: translateX(20px); background: var(--on-btn); }
+#setOthersLi[hidden] { display: none; }
+
+/* The Start fresh sheet: the safe choice first and filled, Back up first as a
+   quiet text button, Clear progress outlined in clay and last. */
+.ks-stack .mock-confirm-btns { flex-direction: column; flex-wrap: nowrap; }
+.ks-stack .mock-confirm-btn { width: 100%; min-height: 48px; }
+.ks-stack .mock-confirm-btn.cancel { background: var(--btn); border-color: var(--btn); color: var(--on-btn); }
+.ks-stack .mock-confirm-btn.ks-extra { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 44px; background: none; border-color: transparent; color: var(--accent-text); }
+.ks-stack .mock-confirm-btn.danger { background: none; border: 1.5px solid var(--clay); color: var(--clay); }
+.ks-say { margin: var(--sp-sm) 0 0; min-height: 20px; font: 600 0.875rem/1.429 var(--f-sans); color: var(--accent-text); text-align: center; }
+
+/* From 1240px the frame spans both tracks: two real column groups. */
+.you-cols { display: flex; flex-direction: column; gap: 14px; }
+.you-col { display: flex; flex-direction: column; gap: 14px; min-width: 0; }
+@media (min-width: 1240px) {
+  .you { gap: 20px; }
+  .you-prof .you-title, .you-prof-n { font-size: 2.125rem; line-height: 1.118; }
+  .you-prof .you-prof-leaf { width: 64px; height: 64px; }
+  .you-sum { flex-direction: row; align-items: center; justify-content: space-between; gap: 24px; }
+  .you-status { font-size: 1.4375rem; line-height: 1.348; max-width: 36em; }
+  .you-sum-acts { flex: none; flex-wrap: nowrap; }
+  .you-cols { display: grid; grid-template-columns: minmax(0, 1.32fr) minmax(0, 1fr); gap: 20px; align-items: start; }
+  .set .you-cols { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+  .you-col { gap: 16px; }
+  .you-card-h { padding: 18px 20px 4px; }
+  .you-card-sub { padding: 0 20px 6px; }
+  .you-card .you-row { padding: 10px 18px 10px 20px; }
+  .you-card .you-list > li + li::before { left: 70px; right: 20px; }
+  .you-ready { padding: 16px 20px; }
+  .you-areas { padding: 20px 18px 18px; }
+  .you-plant { padding: 22px 20px 14px; }
+  .you-badges { padding: 16px 20px 14px; }
+  .set .you-name-edit { padding-left: 70px; }
+  .set-reset-h { padding: 16px 20px 2px; }
+}
 /* ── GROVE UPLIFT, PHASE 2: Today ──────────────────────────────────────────
    GROVE_HANDOFF.md §6.3, §6.4, §6.6 and §7 Today; screens 01 (phone) and 05
    (web). Phones: the hero (the ring with the plant, Accuracy and Exam date),
@@ -7411,7 +7666,6 @@ html { scroll-padding-bottom: calc(104px + var(--consent-h, 0px)); }
 .td-tile-num { padding-top: 0; font: 500 24px/28px var(--f-serif); letter-spacing: -.02em; font-variant-numeric: tabular-nums; }
 .td-tile-a { padding-top: 4px; font: 600 15px/22px var(--f-sans); color: var(--sap); }
 .td-tile-hint { font: 400 12px/16px var(--f-sans); color: var(--on-forest2); }
-/* The hint is its own line under the number ("Latest tries" from 30 answers, G26). */
 /* The plant line: one italic caption per hero, at the hero's foot under the
    plan (phones too; the copy inside the figure stays hidden and keys its
    redraw). Plain words, no label in front (expert decision, 31 Oct 2026). */
@@ -7651,8 +7905,6 @@ html { scroll-padding-bottom: calc(104px + var(--consent-h, 0px)); }
 /* Estimated readiness */
 .td-ready { display: flex; flex-direction: column; gap: 10px; padding: 20px; }
 .td-ready-s { margin: 0; font: 600 15px/20px var(--f-sans); color: var(--text); }
-.td-ready-range { font: 500 32px/1 var(--f-serif); letter-spacing: -.02em; font-variant-numeric: tabular-nums; }
-.td-ready-to { font-size: 17px; color: var(--text2); }
 .td-ready-x { margin: 0; font: 400 13px/18px var(--f-sans); color: var(--text2); }
 .td-ready .td-gain { margin: 6px 0 0; font: 400 13px/18px var(--f-sans); color: var(--text2); }
 .td-ready .td-gain-d { margin: 0; font: 600 15px/20px var(--f-sans); color: var(--text); }
@@ -7737,7 +7989,11 @@ html { scroll-padding-bottom: calc(104px + var(--consent-h, 0px)); }
         <li><a class="sn-subitem" data-tab="bookmarks" href="#saved" onclick="return navTo(event,'bookmarks')">Saved <span class="tab-badge" id="bkBadge" style="display:none">0</span></a></li>
       </ul>
     </li>
-    <li><a class="sn-item" data-sec="you" href="#you" onclick="return navTo(event,'you')"><svg class="ico" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="8" r="4"/><path d="M4 21c1-4 4-6 8-6s7 2 8 6"/></svg><span>You</span></a></li>
+    <li><a class="sn-item" data-sec="you" href="#you" onclick="return navTo(event,'you')"><svg class="ico" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="8" r="4"/><path d="M4 21c1-4 4-6 8-6s7 2 8 6"/></svg><span>You</span></a>
+      <ul class="sn-sub">
+        <li><a class="sn-subitem" data-tab="settings" href="#settings" onclick="return navTo(event,'settings')">Settings</a></li>
+      </ul>
+    </li>
   </ul>
 </nav>
 <!-- Desktop rail: "Get KaiSip for Android". Hidden unless APP_CTA.mode is
@@ -7967,76 +8223,119 @@ html { scroll-padding-bottom: calc(104px + var(--consent-h, 0px)); }
   </section>
 </div>
 
-<!-- YOU: progress, settings, your data, help and about (replaces the More sheet and header menu) -->
-<div id="screen-you" class="screen" role="region" aria-labelledby="youTitle">
+<!-- YOU (Grove C2, 31 Oct 2026): one scroll, in the phone's order. The
+     profile with the cog (to Settings), the summary with the next step and the
+     plant chip, then two real column groups (they sit side by side from
+     1240px; the DOM order is the reading and focus order at every width), the
+     Settings row and the footer. Settings, Your data and Help and about have
+     their own page (#screen-settings, Sky's request). Filled by renderYou(). -->
+<div id="screen-you" class="screen">
   <div class="you">
-    <!-- Grove: the header row. The settings button (the phone's cog, never a
-         sun: premium round, G13) scrolls to Settings below: a 44px icon
-         button on phones, the cog and the word "Settings" from 768px. -->
     <div class="you-top">
-      <h1 class="you-title" id="youTitle">You</h1>
-      <button type="button" class="you-set-btn" aria-label="Settings" onclick="youGoSettings()"><svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915"/><circle cx="12" cy="12" r="3"/></svg><span class="you-set-t" aria-hidden="true">Settings</span></button>
+      <!-- Your study profile (v12.37): the name as the page title (or "You"
+           and "Add your name"), the first study day and the exam date.
+           Filled by renderYouProfile; it asks for nothing. -->
+      <div class="you-prof" id="youProfile"><h1 class="you-title" id="youTitle">You</h1></div>
+      <a class="you-set-btn" href="#settings" aria-label="Settings" onclick="return youGoSettings(event)"><svg class="ico" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915"/><circle cx="12" cy="12" r="3"/></svg></a>
     </div>
-    <!-- Your study profile (v12.37): the name (or "Add your name"), the first
-         study day and the exam date, read back from what the learner chose and
-         did. Filled by renderYouProfile; it asks for nothing. -->
-    <section class="you-prof" id="youProfile" aria-labelledby="youProfH"></section>
-    <!-- Your plant, below the desktop breakpoint (plantYouInline); from
-         1180px it moves to the study rail beside the page. -->
-    <section class="you-plant" id="youPlant" aria-labelledby="plYouH" hidden></section>
-    <section class="you-group" aria-labelledby="youProgressH">
-      <h2 class="you-head" id="youProgressH">Progress</h2>
-      <!-- Practice totals (moved from the Practice page, web step 3). "In a
-           row" = right answers in a row, in ink: clay is for study days. -->
-      <p class="you-stats-wait" id="youStatsWait">Your stats appear after 10 questions</p>
-      <div class="stats-row you-stats" id="youStats" hidden>
-        <div class="stat-card"><span class="stat-num" id="sTotal">0</span><span class="stat-label">Answered</span></div>
-        <div class="stat-card"><span class="stat-num good" id="sCorrect">0</span><span class="stat-label">Correct</span></div>
-        <div class="stat-card"><span class="stat-num" id="sPct">--</span><span class="stat-label">Accuracy</span></div>
-        <div class="stat-card"><span class="stat-num" id="sStreak">0</span><span class="stat-label" id="sStreakL">This week</span></div>
+    <section class="you-sum" id="youSummary" aria-labelledby="youSumH"><h2 class="sr-only" id="youSumH">This week</h2></section>
+    <div class="you-cols">
+      <div class="you-col">
+        <section class="you-nums" aria-labelledby="youProgressH">
+          <h2 class="sr-only" id="youProgressH">Your numbers</h2>
+          <!-- Practice totals (moved from the Practice page, web step 3), from 10 answers. -->
+          <p class="you-stats-wait" id="youStatsWait">Your stats appear after 10 questions</p>
+          <dl class="you-stats" id="youStats" hidden>
+            <div class="you-stat"><dt class="you-kick">Answered</dt><dd class="you-num" id="sTotal">0</dd></div>
+            <div class="you-stat"><dt class="you-kick">Correct</dt><dd class="you-num" id="sCorrect">0</dd></div>
+            <div class="you-stat"><dt class="you-kick">Accuracy</dt><dd class="you-num" id="sPct">--</dd><dd class="you-stat-h" id="sPctH" hidden></dd></div>
+          </dl>
+          <p class="you-stats-wait you-stats-note" id="youStatsNote" hidden>Each question counts once, at your latest try.</p>
+          <!-- The fourth tile: study days in a row (studyDayStreak, DECISIONS 3),
+               "Starts today" under 2 study days in all, the week's study days
+               from the 14th study day. Right answers in a row (S.streak) stay
+               in the saved data; this tile no longer shows them. -->
+          <div class="you-streak" id="youStreak" hidden>
+            <dl class="you-streak-n"><dt class="you-kick" id="sStreakL">Streak</dt><dd class="you-num you-num-clay" id="sStreak"></dd></dl>
+            <p class="you-streak-q">A missed day never undoes your plant.</p>
+          </div>
+        </section>
+        <section class="you-card you-ready" id="youReady" aria-labelledby="youReadyH"></section>
+        <section class="you-card you-areas" id="youAreas" aria-labelledby="youAreasH"></section>
       </div>
-      <p class="you-stats-wait" id="youStatsNote" hidden>Each question counts once, at your latest try.</p>
-      <ul class="you-list">
-        <!-- Your progress (v12.41): where you stand, the signs for your exam date, charts and study days. -->
-        <li><a class="you-row" href="#progress" onclick="return navTo(event,'progress')"><span class="you-ico" aria-hidden="true"><svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1"/></svg></span><span class="you-text"><span class="you-t">Your progress</span><span class="you-m">Where you stand, charts and study days</span></span><span class="you-chev" aria-hidden="true"><svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m9 6 6 6-6 6"/></svg></span></a></li>
-        <li><a class="you-row" href="#weak-spots" onclick="return navTo(event,'weakspots')"><span class="you-ico" aria-hidden="true"><svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3.5 20.5h17"/><path d="M7 17v-5M12 17V6M17 17v-8"/></svg></span><span class="you-text"><span class="you-t">Weak spots</span><span class="you-m">Where to focus next</span></span><span class="you-chev" aria-hidden="true"><svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m9 6 6 6-6 6"/></svg></span></a></li>
-        <li><button type="button" class="you-row" onclick="showSessionSummary()"><span class="you-ico" aria-hidden="true"><svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3 12h4l3-7.5 4 15 3-7.5h4"/></svg></span><span class="you-text"><span class="you-t">Session summary</span><span class="you-m">What you did this session</span></span><span class="you-chev" aria-hidden="true"><svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m9 6 6 6-6 6"/></svg></span></button></li>
-      </ul>
-    </section>
-    <section class="you-group" aria-labelledby="youSettingsH">
-      <h2 class="you-head" id="youSettingsH">Settings</h2>
-      <ul class="you-list">
-        <!-- Your name (as on mobile Settings): optional, kept on this device, used only for Today's greeting. -->
-        <li><button type="button" class="you-row" id="youNameBtn" aria-expanded="false" aria-controls="youNameEdit" onclick="toggleNameEdit()"><span class="you-ico" aria-hidden="true"><svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="8" r="4"/><path d="M4.5 20.5a7.5 7.5 0 0 1 15 0"/></svg></span><span class="you-text"><span class="you-t">Your name</span><span class="you-m" id="youNameM">Optional, for the greeting on Today</span></span><span class="you-chev" aria-hidden="true"><svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m6 9 6 6 6-6"/></svg></span></button>
+      <div class="you-col">
+        <!-- Your plant (plantYouInline, at every width: You has no plant rail). -->
+        <section class="you-plant" id="youPlant" aria-labelledby="plYouH" hidden></section>
+        <section class="you-card you-mocks" id="youMocks" aria-labelledby="youMocksH"></section>
+        <div class="you-card you-badges" id="youBadges"></div>
+        <section class="you-card" aria-labelledby="youToolsH">
+          <h2 class="you-card-h" id="youToolsH">Study tools</h2>
+          <ul class="you-list"><li><button type="button" class="you-row" onclick="youRevisit()" aria-labelledby="youRevT youRevV"><span class="you-ico" aria-hidden="true"><svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3.5 12a8.5 8.5 0 1 0 2.6-6.1L3.5 8.5"/><path d="M3.5 3.5v5h5"/></svg></span><span class="you-text"><span class="you-t" id="youRevT">Questions to revisit</span></span><span class="you-v" id="youRevV">None today</span><span class="you-chev" aria-hidden="true"><svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m9 6 6 6-6 6"/></svg></span></button></li><li><a class="you-row" href="#saved" onclick="return navTo(event,'bookmarks')" aria-labelledby="youSavT youSavV"><span class="you-ico" aria-hidden="true"><svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M6.5 3.5h11v17l-5.5-3.8-5.5 3.8z"/></svg></span><span class="you-text"><span class="you-t" id="youSavT">Saved questions</span></span><span class="you-v" id="youSavV">None yet</span><span class="you-chev" aria-hidden="true"><svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m9 6 6 6-6 6"/></svg></span></a></li></ul>
+        </section>
+        <section class="you-card" aria-labelledby="youMoreH">
+          <h2 class="you-card-h" id="youMoreH">In more detail</h2>
+          <ul class="you-list"><li><a class="you-row" href="#progress" onclick="return navTo(event,'progress')" aria-labelledby="youProgT" aria-describedby="youProgM"><span class="you-ico" aria-hidden="true"><svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1"/></svg></span><span class="you-text"><span class="you-t" id="youProgT">Your progress</span><span class="you-m" id="youProgM">Your range in detail, charts and study days</span></span><span class="you-chev" aria-hidden="true"><svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m9 6 6 6-6 6"/></svg></span></a></li><li><a class="you-row" href="#weak-spots" onclick="return navTo(event,'weakspots')" aria-labelledby="youWeakT" aria-describedby="youWeakM"><span class="you-ico" aria-hidden="true"><svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3.5 20.5h17"/><path d="M7 17v-5M12 17V6M17 17v-8"/></svg></span><span class="you-text"><span class="you-t" id="youWeakT">Weak spots</span><span class="you-m" id="youWeakM">Each area&rsquo;s score, and a drill for the low ones</span></span><span class="you-chev" aria-hidden="true"><svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m9 6 6 6-6 6"/></svg></span></a></li><li><button type="button" class="you-row" aria-haspopup="dialog" onclick="showSessionSummary()" aria-labelledby="youSessT" aria-describedby="youSessM"><span class="you-ico" aria-hidden="true"><svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3 12h4l3-7.5 4 15 3-7.5h4"/></svg></span><span class="you-text"><span class="you-t" id="youSessT">Session summary</span><span class="you-m" id="youSessM">What you did this session</span></span><span class="you-chev" aria-hidden="true"><svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m9 6 6 6-6 6"/></svg></span></button></li></ul>
+        </section>
+      </div>
+    </div>
+    <div class="you-card you-setrow">
+      <ul class="you-list"><li><a class="you-row" href="#settings" onclick="return navTo(event,'settings')" aria-labelledby="youSetT" aria-describedby="youSetM"><span class="you-ico" aria-hidden="true"><svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915"/><circle cx="12" cy="12" r="3"/></svg></span><span class="you-text"><span class="you-t" id="youSetT">Settings</span><span class="you-m" id="youSetM">Name, exam date, dark mode, your data, help and about</span></span><span class="you-chev" aria-hidden="true"><svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m9 6 6 6-6 6"/></svg></span></a></li></ul>
+    </div>
+    <p class="you-foot">Not affiliated with or endorsed by ISACA&reg;. CISA&reg; is a registered trademark of ISACA.</p>
+  </div>
+</div>
+
+<!-- SETTINGS (Grove C2, 31 Oct 2026): its own page under You, so it is easy
+     to find without a long scroll (Sky's request; DECISIONS 12). Three ways
+     in: the cog on You, the Settings row on You and, on computers, Settings
+     under You in the rail. Back is the page bar's "You" link (#subNav). -->
+<div id="screen-settings" class="screen">
+  <div class="you set">
+    <div class="set-head">
+      <h1 class="you-title" id="setTitle" tabindex="-1">Settings</h1>
+      <p class="set-sub">Kept in this browser only. Change any of it whenever you like.</p>
+    </div>
+    <div class="you-cols">
+      <div class="you-col">
+        <section class="you-card set-card" aria-labelledby="youSettingsH">
+          <h2 class="you-card-h" id="youSettingsH">General</h2>
+          <ul class="you-list">
+            <!-- Your name (as on mobile Settings): optional, kept on this device, used only for Today's greeting. -->
+            <li><button type="button" class="you-row" id="youNameBtn" aria-expanded="false" aria-controls="youNameEdit" aria-labelledby="youNameT" aria-describedby="youNameM" onclick="toggleNameEdit()"><span class="you-ico" aria-hidden="true"><svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="8" r="4"/><path d="M4.5 20.5a7.5 7.5 0 0 1 15 0"/></svg></span><span class="you-text"><span class="you-t" id="youNameT">Your name</span><span class="you-m" id="youNameM">Optional &middot; for the greeting on Today</span></span><span class="you-chev" aria-hidden="true"><svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m6 9 6 6 6-6"/></svg></span></button>
           <div class="you-name-edit" id="youNameEdit" hidden>
             <label class="ph-field" for="youNameInput">Name or nickname</label>
             <input type="text" class="you-name-input" id="youNameInput" maxlength="24" autocomplete="nickname" autocapitalize="words" spellcheck="false" aria-describedby="youNameHint" onkeydown="if(event.key==='Enter'){event.preventDefault();saveDisplayName();}else if(event.key==='Escape'){event.preventDefault();toggleNameEdit(false);}">
             <p class="ph-hint" id="youNameHint" aria-live="polite">Kept in this browser only. It just helps us say hello.</p>
             <div class="you-name-acts"><button type="button" class="ph-done you-name-save" onclick="saveDisplayName()">Save</button><button type="button" class="ph-done" onclick="toggleNameEdit(false)">Cancel</button></div>
           </div></li>
-        <!-- Exam date (v12.30): the one place to set or change it, as on mobile Settings. -->
-        <li><button type="button" class="you-row" id="youExamDateBtn" aria-haspopup="dialog" onclick="openExamDateSheet(false)"><span class="you-ico" aria-hidden="true"><svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="4" y="5" width="16" height="15.5" rx="2"/><path d="M4 9.5h16M8.5 3v4M15.5 3v4"/></svg></span><span class="you-text"><span class="you-t">Exam date</span><span class="you-m" id="youExamDateM">Not set</span></span><span class="you-chev" aria-hidden="true"><svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m9 6 6 6-6 6"/></svg></span></button></li>
-        <li><button type="button" class="you-row" id="darkToggleBtn" role="switch" aria-checked="false" aria-labelledby="youDarkT" aria-describedby="youDarkM" onclick="toggleDarkMode()"><span class="you-ico" aria-hidden="true"><svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M20 14.6A8.2 8.2 0 1 1 9.4 4a6.6 6.6 0 0 0 10.6 10.6z"/></svg></span><span class="you-text"><span class="you-t" id="youDarkT">Dark mode</span><span class="you-m" id="youDarkM">Easier on the eyes at night</span></span><span class="you-switch" aria-hidden="true"></span></button></li>
-        <li><button type="button" class="you-row" id="examModeBtn" role="switch" aria-checked="false" aria-labelledby="youExamT" aria-describedby="youExamM" onclick="toggleExamMode()"><span class="you-ico" aria-hidden="true"><svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4V2.8h6V4"/><path d="M8.5 10h7M8.5 13.5h7M8.5 17h4"/></svg></span><span class="you-text"><span class="you-t" id="youExamT">Exam-day rehearsal</span><span class="you-m" id="youExamM">Same questions, without the tips and coaching after you answer</span></span><span class="you-switch" aria-hidden="true"></span></button></li>
-      </ul>
-    </section>
-    <section class="you-group" aria-labelledby="youDataH">
-      <h2 class="you-head" id="youDataH">Your data</h2>
-      <ul class="you-list">
-        <li><button type="button" class="you-row" onclick="showYourData()"><span class="you-ico" aria-hidden="true"><svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 3.5v11M7.5 10l4.5 4.5 4.5-4.5"/><path d="M4.5 17v2.5a1 1 0 0 0 1 1h13a1 1 0 0 0 1-1V17"/></svg></span><span class="you-text"><span class="you-t">Your data</span><span class="you-m">Back up, restore or start fresh</span></span><span class="you-chev" aria-hidden="true"><svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m9 6 6 6-6 6"/></svg></span></button></li>
-      </ul>
-    </section>
-    <section class="you-group" aria-labelledby="youHelpH">
-      <h2 class="you-head" id="youHelpH">Help and about</h2>
-      <ul class="you-list">
-        <li><button type="button" class="you-row" onclick="showChangelog()"><span class="you-ico" aria-hidden="true"><svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 3.5 13.8 9 19.5 10.5 13.8 12 12 17.5 10.2 12 4.5 10.5 10.2 9z"/><path d="M19 17v4M17 19h4"/></svg></span><span class="you-text"><span class="you-t">What&#39;s New</span></span><span class="you-chev" aria-hidden="true"><svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m9 6 6 6-6 6"/></svg></span></button></li>
-        <li><a class="you-row" href="#help" onclick="return navTo(event,'faq')"><span class="you-ico" aria-hidden="true"><svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="9"/><path d="M9.6 9.2a2.5 2.5 0 1 1 3.4 2.3c-.6.3-1 .8-1 1.5v.6"/><path d="M12 16.8h.01"/></svg></span><span class="you-text"><span class="you-t">FAQ and help</span></span><span class="you-chev" aria-hidden="true"><svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m9 6 6 6-6 6"/></svg></span></a></li>
-        <li><button type="button" class="you-row" onclick="showOnboarding()"><span class="you-ico" aria-hidden="true"><svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="9"/><path d="M12 11v5.5M12 7.6h.01"/></svg></span><span class="you-text"><span class="you-t">How KaiSip works</span><span class="you-m">The welcome screen again</span></span><span class="you-chev" aria-hidden="true"><svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m9 6 6 6-6 6"/></svg></span></button></li>
-        <li><button type="button" class="you-row" onclick="showFeedback()"><span class="you-ico" aria-hidden="true"><svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M20.5 15a2 2 0 0 1-2 2H8l-4.5 3.5V5.5a2 2 0 0 1 2-2h13a2 2 0 0 1 2 2z"/></svg></span><span class="you-text"><span class="you-t">Send feedback</span></span><span class="you-chev" aria-hidden="true"><svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m9 6 6 6-6 6"/></svg></span></button></li>
-        <li><button type="button" class="you-row" onclick="openSupport()" aria-label="Support KaiSip (opens in a new tab)"><span class="you-ico" aria-hidden="true"><svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 20s-7.5-4.6-7.5-10.2A4.3 4.3 0 0 1 12 7.2a4.3 4.3 0 0 1 7.5 2.6C19.5 15.4 12 20 12 20z"/></svg></span><span class="you-text"><span class="you-t">Support KaiSip</span></span><span class="you-chev" aria-hidden="true"><svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m9 6 6 6-6 6"/></svg></span></button></li>
-        <li><a class="you-row" href="#about" onclick="return navTo(event,'about')"><span class="you-ico" aria-hidden="true"><svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 21v-9"/><path d="M12 12c0-4 3-6 7-6 0 4-3 6-7 6z"/><path d="M12 14c0-3-2-5-6-5 0 3 2 5 6 5z"/></svg></span><span class="you-text"><span class="you-t">About KaiSip</span></span><span class="you-chev" aria-hidden="true"><svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m9 6 6 6-6 6"/></svg></span></a></li>
-      </ul>
-    </section>
+            <!-- Exam date (v12.30): the one place to set or change it, as on mobile Settings. -->
+            <li><button type="button" class="you-row" id="youExamDateBtn" aria-haspopup="dialog" onclick="openExamDateSheet(false)" aria-labelledby="youExamDateT" aria-describedby="youExamDateM"><span class="you-ico" aria-hidden="true"><svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="4" y="5" width="16" height="15.5" rx="2"/><path d="M4 9.5h16M8.5 3v4M15.5 3v4"/></svg></span><span class="you-text"><span class="you-t" id="youExamDateT">Exam date</span><span class="you-m" id="youExamDateM">Not set &middot; shapes your plan and exam week</span></span><span class="you-chev" aria-hidden="true"><svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m9 6 6 6-6 6"/></svg></span></button></li>
+            <li><button type="button" class="you-row" id="darkToggleBtn" role="switch" aria-checked="false" aria-labelledby="youDarkT" aria-describedby="youDarkM" onclick="toggleDarkMode()"><span class="you-ico" aria-hidden="true"><svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M20 14.6A8.2 8.2 0 1 1 9.4 4a6.6 6.6 0 0 0 10.6 10.6z"/></svg></span><span class="you-text"><span class="you-t" id="youDarkT">Dark mode</span><span class="you-m" id="youDarkM">Easier on the eyes at night</span></span><span class="you-sw-w" aria-hidden="true"></span><span class="you-switch" aria-hidden="true"></span></button></li>
+            <li><button type="button" class="you-row" id="examModeBtn" role="switch" aria-checked="false" aria-labelledby="youExamT" aria-describedby="youExamM" onclick="toggleExamMode()"><span class="you-ico" aria-hidden="true"><svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4V2.8h6V4"/><path d="M8.5 10h7M8.5 13.5h7M8.5 17h4"/></svg></span><span class="you-text"><span class="you-t" id="youExamT">Exam-day rehearsal</span><span class="you-m" id="youExamM">Practice like exam day: no tips or coaching after you answer</span></span><span class="you-sw-w" aria-hidden="true"></span><span class="you-switch" aria-hidden="true"></span></button></li>
+          </ul>
+        </section>
+        <section class="you-card set-card" aria-labelledby="youDataH">
+          <h2 class="you-card-h" id="youDataH">Your data</h2>
+          <p class="you-card-sub">Your progress is kept in this browser only. Keep a backup.</p>
+          <ul class="you-list"><li><button type="button" class="you-row" id="setBackup" onclick="exportProgress()" aria-labelledby="setBackupT" aria-describedby="setBackupM"><span class="you-ico" aria-hidden="true"><svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 3.5v11M7.5 10l4.5 4.5 4.5-4.5"/><path d="M4.5 17v2.5a1 1 0 0 0 1 1h13a1 1 0 0 0 1-1V17"/></svg></span><span class="you-text"><span class="you-t" id="setBackupT">Back up</span><span class="you-m" id="setBackupM">Save a file of your progress</span></span><span class="you-chev" aria-hidden="true"><svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m9 6 6 6-6 6"/></svg></span></button></li><li><button type="button" class="you-row" id="setRestore" onclick="youRestore()" aria-labelledby="setRestoreT" aria-describedby="setRestoreM"><span class="you-ico" aria-hidden="true"><svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 15.5v-11M7.5 9 12 4.5 16.5 9"/><path d="M4.5 17v2.5a1 1 0 0 0 1 1h13a1 1 0 0 0 1-1V17"/></svg></span><span class="you-text"><span class="you-t" id="setRestoreT">Restore</span><span class="you-m" id="setRestoreM">Load a backup file</span></span><span class="you-chev" aria-hidden="true"><svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m9 6 6 6-6 6"/></svg></span></button></li>
+            <li id="setOthersLi" hidden><button type="button" class="you-row" id="setOthers" aria-haspopup="dialog" onclick="showYourData()" aria-labelledby="setOthersT" aria-describedby="setOthersM"><span class="you-ico" aria-hidden="true"><svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="4" y="4" width="16" height="6" rx="1.5"/><rect x="4" y="14" width="16" height="6" rx="1.5"/></svg></span><span class="you-text"><span class="you-t" id="setOthersT">Other saved progress</span><span class="you-m" id="setOthersM">Earlier progress records in this browser</span></span><span class="you-chev" aria-hidden="true"><svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m9 6 6 6-6 6"/></svg></span></button></li>
+          </ul>
+          <!-- The one file input for a restore (Settings and the Your data sheet both use it). -->
+          <input type="file" id="setFile" accept=".json" hidden onchange="importProgress(this.files[0]);this.value=''">
+        </section>
+        <section class="you-card set-card set-danger" aria-labelledby="setResetH">
+          <h3 class="you-kick set-reset-h" id="setResetH">Reset</h3>
+          <ul class="you-list"><li><button type="button" class="you-row" id="setReadReset" aria-haspopup="dialog" onclick="confirmResetReadingProgress()" aria-labelledby="setReadResetT" aria-describedby="setReadResetM"><span class="you-ico" aria-hidden="true"><svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M2.5 4.5h6a3.5 3.5 0 0 1 3.5 3.5v12.5a2.5 2.5 0 0 0-2.5-2.5h-7z"/><path d="M21.5 4.5h-6A3.5 3.5 0 0 0 12 8v12.5a2.5 2.5 0 0 1 2.5-2.5h7z"/></svg></span><span class="you-text"><span class="you-t" id="setReadResetT">Reset reading progress</span><span class="you-m" id="setReadResetM">Every study note goes back to not read. Asks first.</span></span><span class="you-chev" aria-hidden="true"><svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m9 6 6 6-6 6"/></svg></span></button></li><li><button type="button" class="you-row set-fresh" id="setStartFresh" aria-haspopup="dialog" onclick="confirmResetProgress()" aria-labelledby="setStartFreshT" aria-describedby="setStartFreshM"><span class="you-ico" aria-hidden="true"><svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M20 12a8 8 0 1 1-2.3-5.7"/><path d="M20 4.5v4h-4"/></svg></span><span class="you-text"><span class="you-t" id="setStartFreshT">Start fresh</span><span class="you-m" id="setStartFreshM">Clear progress in this browser. Asks first.</span></span><span class="you-chev" aria-hidden="true"><svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m9 6 6 6-6 6"/></svg></span></button></li></ul>
+        </section>
+      </div>
+      <div class="you-col">
+        <section class="you-card set-card" aria-labelledby="youHelpH">
+          <h2 class="you-card-h" id="youHelpH">Help and about</h2>
+          <ul class="you-list"><li><button type="button" class="you-row" aria-haspopup="dialog" onclick="showChangelog()" aria-labelledby="setNewT"><span class="you-ico" aria-hidden="true"><svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 3.5 13.8 9 19.5 10.5 13.8 12 12 17.5 10.2 12 4.5 10.5 10.2 9z"/><path d="M19 17v4M17 19h4"/></svg></span><span class="you-text"><span class="you-t" id="setNewT">What&#39;s New</span></span><span class="you-chev" aria-hidden="true"><svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m9 6 6 6-6 6"/></svg></span></button></li><li><a class="you-row" href="#help" onclick="return navTo(event,'faq')" aria-labelledby="setFaqT"><span class="you-ico" aria-hidden="true"><svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="9"/><path d="M9.6 9.2a2.5 2.5 0 1 1 3.4 2.3c-.6.3-1 .8-1 1.5v.6"/><path d="M12 16.8h.01"/></svg></span><span class="you-text"><span class="you-t" id="setFaqT">FAQ and help</span></span><span class="you-chev" aria-hidden="true"><svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m9 6 6 6-6 6"/></svg></span></a></li><li><button type="button" class="you-row" aria-haspopup="dialog" onclick="showOnboarding()" aria-labelledby="setHowT" aria-describedby="setHowM"><span class="you-ico" aria-hidden="true"><svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="9"/><path d="M12 11v5.5M12 7.6h.01"/></svg></span><span class="you-text"><span class="you-t" id="setHowT">How KaiSip works</span><span class="you-m" id="setHowM">The welcome screen again</span></span><span class="you-chev" aria-hidden="true"><svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m9 6 6 6-6 6"/></svg></span></button></li><li><button type="button" class="you-row" aria-haspopup="dialog" onclick="showFeedback()" aria-labelledby="setFeedT"><span class="you-ico" aria-hidden="true"><svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M20.5 15a2 2 0 0 1-2 2H8l-4.5 3.5V5.5a2 2 0 0 1 2-2h13a2 2 0 0 1 2 2z"/></svg></span><span class="you-text"><span class="you-t" id="setFeedT">Send feedback</span></span><span class="you-chev" aria-hidden="true"><svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m9 6 6 6-6 6"/></svg></span></button></li><li><button type="button" class="you-row" onclick="openSupport()" aria-labelledby="setSupportT"><span class="you-ico" aria-hidden="true"><svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 20s-7.5-4.6-7.5-10.2A4.3 4.3 0 0 1 12 7.2a4.3 4.3 0 0 1 7.5 2.6C19.5 15.4 12 20 12 20z"/></svg></span><span class="you-text"><span class="you-t" id="setSupportT">Support KaiSip<span class="sr-only"> (opens in a new tab)</span></span></span><span class="you-ext" aria-hidden="true"><svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M14 4.5h5.5V10"/><path d="M19.5 4.5 11 13"/><path d="M17.5 13.5v5a1 1 0 0 1-1 1h-11a1 1 0 0 1-1-1v-11a1 1 0 0 1 1-1h5"/></svg></span><span class="you-chev" aria-hidden="true"><svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m9 6 6 6-6 6"/></svg></span></button></li><li><a class="you-row" href="#about" onclick="return navTo(event,'about')" aria-labelledby="setAboutT"><span class="you-ico" aria-hidden="true"><svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 21v-9"/><path d="M12 12c0-4 3-6 7-6 0 4-3 6-7 6z"/><path d="M12 14c0-3-2-5-6-5 0 3 2 5 6 5z"/></svg></span><span class="you-text"><span class="you-t" id="setAboutT">About KaiSip</span></span><span class="you-chev" aria-hidden="true"><svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m9 6 6 6-6 6"/></svg></span></a></li></ul>
+        </section>
+        <p class="you-foot">Not affiliated with or endorsed by ISACA&reg;. CISA&reg; is a registered trademark of ISACA.</p>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -8100,14 +8399,14 @@ html { scroll-padding-bottom: calc(104px + var(--consent-h, 0px)); }
 <script id="glossData" type="application/json">[{"id":1,"term":"Acceptable use policy (AUP)","acronym":"AUP","def":"Written rules that tell staff what they may and may not do with the organization's systems, networks and internet access. Users usually acknowledge it before they get an account.","scopeNotes":"","domain":2,"category":"Control"},{"id":2,"term":"Access control","acronym":null,"def":"Any measure that limits who can reach systems, data or physical areas, and what they can do once there. The IS auditor verifies that access is based on job need and has been approved.","scopeNotes":"","domain":5,"category":"Control"},{"id":3,"term":"Access control list (ACL)","acronym":"ACL","def":"A list attached to a resource that names which users, groups or devices may use it and with what permissions, such as read or write.","scopeNotes":"Also called an access control table. The IS auditor reviews ACLs for excessive rights and generic accounts.","domain":5,"category":"Control"},{"id":4,"term":"Access control table","acronym":null,"def":"Another name for an access control list: the stored set of rules a system checks to decide which users or devices may use a resource and how.","scopeNotes":"","domain":5,"category":"Control"},{"id":5,"term":"Access method","acronym":null,"def":"How software finds and reads stored records, for example one after another (sequential) or by jumping straight to a key (direct). It is separate from how the file is laid out.","scopeNotes":"","domain":0,"category":"Process"},{"id":6,"term":"Access rights","acronym":null,"def":"What a given user, program or device is allowed to do, such as view, add, change or delete records. Data owners approve these permissions under the security policy.","scopeNotes":"","domain":2,"category":"Technology"},{"id":7,"term":"Administrative controls","acronym":null,"def":"Management-set policies, procedures and practices, such as hiring checks, training and approvals, that guide how people work. They are not technical or physical safeguards.","scopeNotes":"","domain":2,"category":"Control"},{"id":8,"term":"Anonymous File Transfer Protocol (AFTP)","acronym":"AFTP","def":"A way to fetch public files from an FTP server without a personal account, usually by logging in as \"anonymous.\" Because no one is identified, it should never expose sensitive data.","scopeNotes":"","domain":5,"category":"Technology"},{"id":9,"term":"Antivirus software","acronym":null,"def":"Software that scans for known malicious code and blocks, removes or quarantines infected files. It is usually installed on endpoints, servers and mail gateways and needs current signatures.","scopeNotes":"","domain":5,"category":"Technology"},{"id":10,"term":"Application","acronym":null,"def":"A program, or group of programs, that does a specific business job, such as payroll or order entry.","scopeNotes":"Contrast with the operating system and other software that runs the computer itself rather than a business task.","domain":3,"category":"Technology"},{"id":11,"term":"Application controls","acronym":null,"def":"Controls built into or around a specific application that keep its input, processing and output complete, accurate and authorized, such as edit checks and batch totals.","scopeNotes":"","domain":3,"category":"Control"},{"id":12,"term":"Application layer","acronym":null,"def":"Layer 7 of the Open Systems Interconnection (OSI) model, closest to the user. It lets programs on different machines exchange data through services such as HTTP, email and file transfer.","scopeNotes":"","domain":3,"category":"Technology"},{"id":13,"term":"Application programming interface (API)","acronym":"API","def":"A defined set of calls and data formats that lets one program request services or data from another. The IS auditor verifies how API access is authenticated and logged.","scopeNotes":"","domain":3,"category":"Technology"},{"id":14,"term":"Artificial intelligence (AI)","acronym":"AI","def":"Computer systems that perform tasks normally needing human judgment, such as recognizing patterns, predicting outcomes or understanding language, often by learning from data rather than fixed rules.","scopeNotes":"","domain":0,"category":"Technology"},{"id":15,"term":"Asymmetric key (public key)","acronym":null,"def":"Encryption that uses a matched key pair: one key locks the data and the other unlocks it. One key is shared openly; the other stays private.","scopeNotes":"","domain":5,"category":"Technology"},{"id":16,"term":"Audit evidence","acronym":null,"def":"The records, observations, confirmations and test results the IS auditor relies on to reach conclusions and support the audit opinion. Under ITAF it must be sufficient and appropriate (relevant and reliable).","scopeNotes":"","domain":1,"category":"Concept"},{"id":17,"term":"Audit objective","acronym":null,"def":"What a particular audit sets out to determine, such as whether access controls over payroll work as intended.","scopeNotes":"Objectives drive the scope, the procedures and the evidence the IS auditor needs.","domain":1,"category":"Concept"},{"id":18,"term":"Audit plan","acronym":null,"def":"A document laying out the audit work ahead: what it covers and aims to achieve, the schedule, the staff assigned and the budget.","scopeNotes":"Can mean a single engagement plan or the audit function's plan for a whole period, usually risk-based.","domain":1,"category":"Control"},{"id":19,"term":"Audit program","acronym":null,"def":"A step-by-step list of procedures for auditing a subject, telling the team what to test and how.","scopeNotes":"","domain":1,"category":"Control"},{"id":20,"term":"Audit risk","acronym":null,"def":"The chance that the IS auditor reaches a wrong conclusion, such as reporting controls as effective when material weaknesses exist.","scopeNotes":"Has three parts: inherent risk (the risk built into the area), control risk (controls fail to prevent or detect a problem) and detection risk (the IS auditor's procedures miss it). Only detection risk is under the IS auditor's control.","domain":1,"category":"Concept"},{"id":21,"term":"Audit trail","acronym":null,"def":"A record of the steps, data and people involved in processing a transaction, from start to finish, so it can be traced and reconstructed.","scopeNotes":"","domain":1,"category":"Concept"},{"id":22,"term":"Authentication","acronym":null,"def":"Confirming that a user, device or process really is who or what it claims to be before access is granted, for example with a password, token or biometric.","scopeNotes":"Can also mean confirming that data has not been altered.","domain":5,"category":"Technology"},{"id":23,"term":"Backup","acronym":null,"def":"Copies of data, software and settings, plus the procedures and equipment to restore them, kept so operations can resume if the originals are lost or damaged.","scopeNotes":"","domain":4,"category":"Control"},{"id":24,"term":"Balanced scorecard (BSC)","acronym":"BSC","def":"A management tool that judges strategy from four angles at once: customer, financial, learning and growth, and internal business process.","scopeNotes":"IT versions help show IT's contribution to business goals.","domain":4,"category":"Process"},{"id":25,"term":"Benchmarking","acronym":null,"def":"Comparing performance with peers or published standards to set targets or find gaps.","scopeNotes":"","domain":0,"category":"Technology"},{"id":26,"term":"Biometrics","acronym":null,"def":"Identifying or verifying a person by a measurable body trait or behavior, such as a fingerprint, face, iris or palm.","scopeNotes":"","domain":5,"category":"Process"},{"id":27,"term":"Black box testing","acronym":null,"def":"Testing a system by feeding inputs and checking outputs against requirements, without looking at the code inside.","scopeNotes":"Suits user acceptance and functional testing.","domain":3,"category":"Process"},{"id":28,"term":"Broadband","acronym":null,"def":"A transmission method that splits one medium into several frequency channels so it can carry many signals at once, such as data, voice and video.","scopeNotes":"","domain":0,"category":"Concept"},{"id":29,"term":"Brouter","acronym":null,"def":"A hybrid device that acts as a router for traffic it knows how to route and as a bridge for everything else.","scopeNotes":"","domain":0,"category":"Technology"},{"id":30,"term":"Bus","acronym":null,"def":"The set of shared wires or channels over which a computer's parts, or the machines on a network, pass signals to each other.","scopeNotes":"","domain":0,"category":"Technology"},{"id":31,"term":"Bus configuration","acronym":null,"def":"A network layout where every device connects to a single shared cable, so all nodes see every transmission. It is cheap and simple, but one cable fault can stop the network.","scopeNotes":"","domain":0,"category":"Technology"},{"id":32,"term":"Business case","acronym":null,"def":"A document that justifies an investment by setting out its costs, benefits, risks and options. It supports the go/no-go decision and is revisited throughout the investment.","scopeNotes":"The IS auditor verifies that it exists, is approved and is updated at key decision points.","domain":2,"category":"Process"},{"id":33,"term":"Business continuity plan (BCP)","acronym":"BCP","def":"An organization's plan for keeping critical business processes running, or restoring them quickly, after a disruption.","scopeNotes":"Relies on the disaster recovery plan to bring the IT systems back.","domain":4,"category":"Technology"},{"id":34,"term":"Business impact analysis (BIA)","acronym":"BIA","def":"An analysis of which business processes matter most and how the harm from losing each grows over time. It sets recovery priorities and each process's recovery time objective (RTO) and recovery point objective (RPO).","scopeNotes":"Business process owners supply the impact estimates, not IT alone. The BIA comes before choosing a recovery strategy.","domain":4,"category":"Technology"},{"id":35,"term":"Business process reengineering (BPR)","acronym":"BPR","def":"Rethinking and redesigning core business processes from the ground up to achieve major gains in cost, speed, quality or service.","scopeNotes":"The IS auditor evaluates whether key controls survive the redesign.","domain":3,"category":"Technology"},{"id":36,"term":"Business risk","acronym":null,"def":"The chance that an event or situation stops the organization from meeting its business goals.","scopeNotes":"","domain":3,"category":"Concept"},{"id":37,"term":"Capability Maturity Model Integration (CMMI)","acronym":"CMMI","def":"A widely used model that rates process capability and organizational maturity on defined levels, used to guide process improvement.","scopeNotes":"","domain":3,"category":"Process"},{"id":38,"term":"Card swipe","acronym":null,"def":"A physical access control in which people present a coded card to a reader to unlock a door. It admits only enabled cards and logs attempts, but cannot stop tailgating alone.","scopeNotes":"The logs give the IS auditor evidence of who entered and when.","domain":3,"category":"Control"},{"id":39,"term":"Central processing unit (CPU)","acronym":"CPU","def":"The main processor of a computer that carries out program instructions and coordinates the other hardware.","scopeNotes":"","domain":0,"category":"Control"},{"id":40,"term":"Certificate (Certification) authority (CA)","acronym":"CA","def":"A trusted party that confirms the identity of people or systems and issues digital certificates binding them to their public keys.","scopeNotes":"","domain":5,"category":"Concept"},{"id":41,"term":"Certificate revocation list (CRL)","acronym":"CRL","def":"A signed list of certificates no longer trusted, published by a CA on a schedule.","scopeNotes":"The gap between updates is a risk: a revoked certificate may still be accepted in the meantime.","domain":5,"category":"Concept"},{"id":42,"term":"Certification practice statement (CPS)","acronym":"CPS","def":"A CA's published description of how it issues, protects and revokes certificates.","scopeNotes":"Helps relying parties judge how far to trust that CA's certificates.","domain":5,"category":"Concept"},{"id":43,"term":"Chain of custody","acronym":null,"def":"A record of who held each piece of evidence, and when, from collection to court, so it can be shown it was not tampered with.","scopeNotes":"Broken custody can make evidence inadmissible.","domain":1,"category":"Process"},{"id":44,"term":"Challenge/response token","acronym":null,"def":"A login method where the server sends a random value, the user's token or a secret the user holds transforms it, and the server checks the result. The secret itself never crosses the network.","scopeNotes":"Because each challenge is new, captured responses cannot be replayed.","domain":5,"category":"Technology"},{"id":45,"term":"Change management (CM)","acronym":"CM","def":"Helping people accept and adopt a new way of working, through leadership, communication, training, incentives and attention to culture.","scopeNotes":"This is the people side of change (COBIT 2019 BAI05). In most CISA questions, \"change management\" means the IT process for requesting, testing, approving and moving system changes into production (BAI06).","domain":3,"category":"Process"},{"id":46,"term":"Ciphertext","acronym":null,"def":"Scrambled data produced by encryption, unreadable without the key.","scopeNotes":"","domain":5,"category":"Technology"},{"id":47,"term":"Circuit-switched network","acronym":null,"def":"A network that sets up a dedicated end-to-end path between two parties before any data is sent and holds it for the whole session, like a traditional phone call.","scopeNotes":"","domain":0,"category":"Technology"},{"id":48,"term":"Circular routing","acronym":null,"def":"The route a message travels as each gateway passes it to the next at the physical layer, the lowest layer of the networking model known as OSI (Open Systems Interconnection).","scopeNotes":"","domain":0,"category":"Technology"},{"id":49,"term":"Client-server","acronym":null,"def":"An arrangement where user-facing programs ask for work or data and central machines supply it, so processing is split between the two.","scopeNotes":"Adds control points: the IS auditor reviews security on both the client and the server side.","domain":3,"category":"Technology"},{"id":50,"term":"Cloud computing","acronym":null,"def":"Using shared, on-demand computing resources, such as servers, storage and applications, over a network. Resources scale up or down quickly with little provider involvement.","scopeNotes":"The IS auditor focuses on the contract, the provider's assurance reports and who is responsible for which controls.","domain":3,"category":"Technology"},{"id":51,"term":"Coaxial cable","acronym":null,"def":"A cable with a central copper conductor wrapped in insulation, a braided metal shield and an outer jacket. It carries more data than basic twisted pair over limited distances.","scopeNotes":"","domain":0,"category":"Concept"},{"id":52,"term":"Cold site","acronym":null,"def":"A recovery facility with power, cooling and space but no computers installed. Equipment must be brought in after a disaster, so recovery takes days or weeks.","scopeNotes":"Cheapest site option, suited to long recovery time objectives.","domain":4,"category":"Technology"},{"id":53,"term":"Compensating control","acronym":null,"def":"A substitute safeguard used when the preferred control cannot be applied, such as an extra supervisor review where duties cannot be segregated.","scopeNotes":"","domain":1,"category":"Control"},{"id":54,"term":"Completely connected (mesh) configuration","acronym":null,"def":"A network layout in which each node links to many or all others, giving several alternate paths. It is highly resilient but costly, so it is common in backbones.","scopeNotes":"","domain":4,"category":"Technology"},{"id":55,"term":"Compliance testing","acronym":null,"def":"Testing whether controls exist and operate as designed throughout the period under review.","scopeNotes":"Also called tests of controls. Contrast with substantive testing, which checks the data itself.","domain":1,"category":"Control"},{"id":56,"term":"Comprehensive audit","acronym":null,"def":"A broad-scope review that checks both the reliability of a unit's financial figures and how well its controls work.","scopeNotes":"","domain":3,"category":"Control"},{"id":57,"term":"Computer emergency response team (CERT)","acronym":"CERT","def":"A team, also called a computer security incident response team (CSIRT), that the organization calls on when a security incident occurs. It coordinates detection, containment, recovery and communication.","scopeNotes":"","domain":4,"category":"Technology"},{"id":58,"term":"Computer forensics","acronym":null,"def":"Collecting, preserving and analyzing digital data in a sound, repeatable way so the findings can be used in legal or disciplinary action.","scopeNotes":"Evidence handling and chain of custody decide whether results are admissible.","domain":5,"category":"Technology"},{"id":59,"term":"Computer-assisted audit technique (CAAT)","acronym":"CAAT","def":"Any technique in which the IS auditor uses a computer to carry out audit tests, for example data analytics tools, test data, embedded audit modules or an integrated test facility.","scopeNotes":"Lets the IS auditor test whole populations, not just samples.","domain":1,"category":"Technology"},{"id":60,"term":"Configuration management (CM)","acronym":"CM","def":"Tracking and controlling the settings and versions of IT components across their life, so every change is known, approved and recorded.","scopeNotes":"","domain":2,"category":"Control"},{"id":61,"term":"Contingency planning","acronym":null,"def":"Preparing in advance the steps, resources and arrangements an organization will use if an unexpected event disrupts normal operations.","scopeNotes":"","domain":2,"category":"Control"},{"id":62,"term":"Continuous auditing approach","acronym":null,"def":"A method where audit software runs alongside live systems, testing transactions and flagging exceptions as they happen instead of after the period ends.","scopeNotes":"Best suited to high-volume, paperless environments.","domain":1,"category":"Technology"},{"id":63,"term":"Control objective","acronym":null,"def":"The result a control is meant to achieve, such as only authorized payments being made.","scopeNotes":"","domain":4,"category":"Control"},{"id":64,"term":"Control practice","acronym":null,"def":"A specific action or mechanism that helps achieve a control objective, for example a monthly review of user access lists.","scopeNotes":"","domain":2,"category":"Control"},{"id":65,"term":"Control risk","acronym":null,"def":"The chance that a material error or loss happens and is not prevented or caught in time by internal controls, because they are missing, badly designed or not working.","scopeNotes":"One of the three parts of audit risk.","domain":3,"category":"Control"},{"id":66,"term":"Cookie","acronym":null,"def":"A small file a website stores in the user's browser to remember things like login state or preferences between visits.","scopeNotes":"Cookies can be stolen or misused, so sensitive data and session tokens in them need protection.","domain":4,"category":"Concept"},{"id":67,"term":"Corrective control","acronym":null,"def":"A control that limits damage and restores normal operation after a problem is found, such as restoring from backup or patching a flaw.","scopeNotes":"","domain":5,"category":"Control"},{"id":68,"term":"Countermeasure","acronym":null,"def":"Any action, device or process put in place to reduce a threat or a vulnerability.","scopeNotes":"","domain":5,"category":"Process"},{"id":69,"term":"Critical success factor (CSF)","acronym":"CSF","def":"One of the few things that must go right for an objective to be achieved.","scopeNotes":"","domain":2,"category":"Control"},{"id":70,"term":"Data custodian","acronym":null,"def":"The role, usually IT or a provider, that runs systems and applies the owner's protection requirements, such as storage, backup and access settings.","scopeNotes":"","domain":0,"category":"Technology"},{"id":71,"term":"Data Encryption Standard (DES)","acronym":"DES","def":"An early symmetric block cipher with a 56-bit key, now easy to break by brute force and withdrawn. Its successor is AES, the Advanced Encryption Standard.","scopeNotes":"Finding DES still in use is a weakness to report.","domain":5,"category":"Control"},{"id":72,"term":"Data leakage","acronym":null,"def":"Sensitive data leaving the organization without authorization, whether by email, upload, removable media or printed copies.","scopeNotes":"","domain":0,"category":"Concept"},{"id":73,"term":"Data owner","acronym":null,"def":"The business manager accountable for a data set's classification, access approvals and acceptable use.","scopeNotes":"Owners approve access; custodians carry it out.","domain":0,"category":"Technology"},{"id":74,"term":"Data security","acronym":null,"def":"Measures that protect information from unauthorized viewing or change and keep it accessible to the right people when they need it.","scopeNotes":"","domain":4,"category":"Control"},{"id":75,"term":"Database","acronym":null,"def":"An organized store of related data, kept so many programs can share it without each needing to know how it is physically held.","scopeNotes":"","domain":4,"category":"Technology"},{"id":76,"term":"Database administrator (DBA)","acronym":"DBA","def":"The person or team who designs, builds and maintains databases and manages their security, access and performance.","scopeNotes":"DBAs hold powerful rights, so the IS auditor verifies that their activity is logged and independently reviewed.","domain":3,"category":"Technology"},{"id":77,"term":"Database management system (DBMS)","acronym":"DBMS","def":"Software that sits between users and a database to define, store, find and protect data, including deciding who can read or change it.","scopeNotes":"","domain":2,"category":"Control"},{"id":78,"term":"Decision support systems (DSS)","acronym":"DSS","def":"Software that lets managers explore data and try out \"what-if\" models when a decision cannot be reduced to fixed rules.","scopeNotes":"","domain":0,"category":"Technology"},{"id":79,"term":"Decryption","acronym":null,"def":"Turning ciphertext back into readable plaintext using the right key; the reverse of encryption.","scopeNotes":"","domain":5,"category":"Technology"},{"id":80,"term":"Decryption key","acronym":null,"def":"The value used with a decryption algorithm to turn ciphertext back into plaintext.","scopeNotes":"","domain":5,"category":"Technology"},{"id":81,"term":"Degauss","acronym":null,"def":"Erasing magnetic media, such as tapes and older hard disks, with a strong alternating magnetic field so the data cannot be recovered.","scopeNotes":"Does not work on solid-state drives; those need other sanitization methods.","domain":4,"category":"Concept"},{"id":82,"term":"Detective control","acronym":null,"def":"A control that finds and reports errors, irregularities or intrusions after they occur, such as log reviews, reconciliations or intrusion detection alerts.","scopeNotes":"","domain":3,"category":"Control"},{"id":83,"term":"Digital certificate","acronym":null,"def":"An electronic document, signed by a certificate authority, that binds a public key to a named person, device or organization.","scopeNotes":"","domain":5,"category":"Concept"},{"id":84,"term":"Digital signature","acronym":null,"def":"A value created with the sender's private key that lets the receiver confirm who sent a message and that it was not changed.","scopeNotes":"Provides authentication, integrity and nonrepudiation, but not confidentiality.","domain":5,"category":"Concept"},{"id":85,"term":"Disaster recovery plan (DRP)","acronym":"DRP","def":"The documented steps and resources for restoring IT systems, data and facilities within agreed times after a disaster.","scopeNotes":"Supports the business continuity plan.","domain":4,"category":"Concept"},{"id":86,"term":"Discovery sampling","acronym":null,"def":"An attribute sampling method used when a single occurrence matters, such as fraud. The sample is sized so that if the problem exists above a set rate, one case is very likely found.","scopeNotes":"","domain":1,"category":"Concept"},{"id":87,"term":"Discretionary access control (DAC)","acronym":"DAC","def":"Access control where the owner of a resource decides who else may use it and can change those permissions.","scopeNotes":"Contrast with mandatory access control, where users cannot change the rules.","domain":5,"category":"Control"},{"id":88,"term":"Domain name system (DNS)","acronym":"DNS","def":"The internet's distributed lookup service that translates names like example.com into IP addresses, and back.","scopeNotes":"","domain":0,"category":"Technology"},{"id":89,"term":"Domain name system (DNS) poisoning","acronym":"DNS","def":"An attack that plants false entries in a DNS server or cache, so users asking for a real site are silently sent to an attacker's address.","scopeNotes":"Also called DNS cache poisoning.","domain":0,"category":"Technology"},{"id":90,"term":"Dry-pipe fire extinguisher system","acronym":null,"def":"A sprinkler system whose pipes stay empty until a fire is detected; water then flows in and discharges. It lowers the risk of leaks damaging equipment.","scopeNotes":"Often preferred in computer rooms over wet-pipe systems.","domain":4,"category":"Technology"},{"id":91,"term":"Dynamic Host Configuration Protocol (DHCP)","acronym":"DHCP","def":"A protocol that automatically gives devices on a network an IP address and related settings, such as gateway and DNS server, from a managed pool.","scopeNotes":"","domain":4,"category":"Technology"},{"id":92,"term":"Ecommerce","acronym":null,"def":"Trading online: companies selling to and buying from consumers, vendors and partners over the internet.","scopeNotes":"Ecommerce controls focus on authentication, transaction integrity, privacy and nonrepudiation.","domain":0,"category":"Process"},{"id":93,"term":"Electronic data interchange (EDI)","acronym":"EDI","def":"The computer-to-computer exchange of standard business documents, such as orders and invoices, between organizations in an agreed format, replacing paper.","scopeNotes":"The IS auditor reviews transmission controls, authorization and the completeness of transactions.","domain":2,"category":"Concept"},{"id":94,"term":"Electronic funds transfer (EFT)","acronym":"EFT","def":"Moving money between accounts electronically rather than by cash or check.","scopeNotes":"","domain":0,"category":"Concept"},{"id":95,"term":"Email/interpersonal messaging","acronym":null,"def":"Sending text messages and attachments from one person to another person or group over a network.","scopeNotes":"","domain":3,"category":"Technology"},{"id":96,"term":"Embedded audit module (EAM)","acronym":"EAM","def":"Audit code built into an application that watches live transactions and records those meeting set criteria for the IS auditor to review.","scopeNotes":"A continuous auditing technique.","domain":3,"category":"Technology"},{"id":97,"term":"Encryption","acronym":null,"def":"Turning readable data (plaintext) into unreadable data (ciphertext) with an algorithm and a key, so only holders of the right key can read it.","scopeNotes":"","domain":5,"category":"Technology"},{"id":98,"term":"Encryption key","acronym":null,"def":"The value a cipher uses to turn plaintext into ciphertext. In symmetric encryption it is a shared secret; in public key encryption it is usually the recipient's public key.","scopeNotes":"","domain":5,"category":"Technology"},{"id":99,"term":"End-user computing","acronym":null,"def":"Business users building and running their own applications, such as spreadsheets or small databases, outside formal IT development.","scopeNotes":"These tools often lack testing, change control and backup, so the IS auditor reviews the critical ones.","domain":3,"category":"Technology"},{"id":100,"term":"Enterprise resource planning (ERP)","acronym":"ERP","def":"An integrated software suite that runs core business functions, such as finance, purchasing and HR, on one shared database in near real time.","scopeNotes":"","domain":0,"category":"Technology"},{"id":101,"term":"Ethernet","acronym":null,"def":"The most common wired LAN technology. Early shared Ethernet used collision detection (CSMA/CD) when two devices sent at once; modern switched, full-duplex Ethernet avoids collisions.","scopeNotes":"","domain":0,"category":"Technology"},{"id":102,"term":"Evidence","acronym":null,"def":"Anything the IS auditor obtains during an audit, such as documents, observations, interview notes or system output, to support findings and conclusions. See audit evidence for the quality tests it must pass.","scopeNotes":"","domain":1,"category":"Concept"},{"id":103,"term":"Exception reports","acronym":null,"def":"Reports that list only transactions or data falling outside expected limits or rules, so staff can follow them up.","scopeNotes":"","domain":0,"category":"Concept"},{"id":104,"term":"eXtensible Markup Language (XML)","acronym":"XML","def":"A text-based markup language that lets users define their own tags, used to describe, store and exchange structured data between systems.","scopeNotes":"","domain":3,"category":"Process"},{"id":105,"term":"Extranet","acronym":null,"def":"A private network that gives outside partners, such as customers and suppliers, controlled access to selected internal systems and data over the internet.","scopeNotes":"Relies on strong authentication and encryption, often a VPN.","domain":0,"category":"Technology"},{"id":106,"term":"Fallback procedures","acronym":null,"def":"A plan for going back to the old, working system if a new release or upgrade fails.","scopeNotes":"Should be defined and tested before go-live.","domain":3,"category":"Control"},{"id":107,"term":"False authorization","acronym":null,"def":"A biometric error in which an impostor is wrongly accepted as a valid user.","scopeNotes":"Also called false acceptance. This error type matters most for security.","domain":5,"category":"Technology"},{"id":108,"term":"False enrollment","acronym":null,"def":"A biometric failure in which someone who should not be registered gets a template stored and becomes a recognized user.","scopeNotes":"Enrollment is when a person's biometric trait is first captured and stored.","domain":5,"category":"Technology"},{"id":109,"term":"Feasibility study","acronym":null,"def":"An early study of whether a proposed system or project is practical and worthwhile, weighing technical, financial and operational factors.","scopeNotes":"","domain":3,"category":"Technology"},{"id":110,"term":"Fiber-optic cable","acronym":null,"def":"Cable that carries data as pulses of light through thin glass strands. It offers high speed over long distances and resists interference and tapping.","scopeNotes":"","domain":0,"category":"Technology"},{"id":111,"term":"File Transfer Protocol (FTP)","acronym":"FTP","def":"A standard protocol for moving files between computers over a TCP/IP network.","scopeNotes":"Plain FTP sends credentials in clear text; secure variants are preferred.","domain":0,"category":"Control"},{"id":112,"term":"Financial audit","acronym":null,"def":"An audit that checks whether financial statements and records are accurate and fairly presented.","scopeNotes":"","domain":3,"category":"Concept"},{"id":113,"term":"Firewall","acronym":null,"def":"A device or software that sits between networks and permits or blocks traffic based on set rules, typically separating a trusted network from the internet.","scopeNotes":"","domain":5,"category":"Technology"},{"id":114,"term":"Firmware","acronym":null,"def":"Software held on a hardware chip, often in read-only memory, that controls the device and is not changed during normal processing. Firmware updates are controlled changes.","scopeNotes":"","domain":0,"category":"Technology"},{"id":115,"term":"Fourth-generation language (4GL)","acronym":null,"def":"A high-level, user-friendly programming language in which users state what result they want rather than how to get it, often used for queries and reports.","scopeNotes":"","domain":0,"category":"Technology"},{"id":116,"term":"Frame relay","acronym":null,"def":"An older carrier service for linking sites across a wide area. It moves variable-sized units of data over fixed logical paths and was quicker than earlier packet-based services.","scopeNotes":"Better for data than for live voice or video.","domain":0,"category":"Technology"},{"id":117,"term":"Function point analysis (FPA)","acronym":"FPA","def":"Sizing software by the inputs, outputs, inquiries, files and interfaces it provides, independent of the programming language.","scopeNotes":"Used to estimate development effort and cost.","domain":3,"category":"Process"},{"id":118,"term":"Gateway","acronym":null,"def":"A device that connects networks using different protocols and translates between them.","scopeNotes":"","domain":5,"category":"Technology"},{"id":119,"term":"Generalized audit software (GAS)","acronym":"GAS","def":"Off-the-shelf software the IS auditor uses to read and analyze data from many systems and file formats, for example to extract exceptions, compare files, recompute totals, stratify and sample.","scopeNotes":"","domain":1,"category":"Technology"},{"id":120,"term":"Governance","acronym":null,"def":"The board's role, or that of an equivalent governing body, in deciding what the organization must achieve: it weighs what stakeholders need, sets priorities for management, and tracks results and compliance.","scopeNotes":"Governance sets direction; management carries it out.","domain":3,"category":"Process"},{"id":121,"term":"Hacker","acronym":null,"def":"Someone who tries to break into computer systems without permission.","scopeNotes":"","domain":0,"category":"Technology"},{"id":122,"term":"Handprint scanner","acronym":null,"def":"A biometric reader that identifies a person by measuring the shape and features of the hand.","scopeNotes":"","domain":5,"category":"Technology"},{"id":123,"term":"Hash total","acronym":null,"def":"A sum of a non-money field, such as account numbers, used only to detect changed or missing records.","scopeNotes":"Compared before and after processing; the total itself has no business meaning.","domain":5,"category":"Control"},{"id":124,"term":"Help desk","acronym":null,"def":"The support function users contact for help with IT problems. It logs, solves or escalates issues and tracks them until closed.","scopeNotes":"Ticket logs give the IS auditor evidence of how incidents are handled.","domain":0,"category":"Technology"},{"id":125,"term":"Hierarchical database","acronym":null,"def":"A database that arranges records in a tree, where one parent record can link to many child records but every child links to only one parent.","scopeNotes":"","domain":0,"category":"Technology"},{"id":126,"term":"Honeypot","acronym":null,"def":"A decoy system set up to attract attackers so their methods can be watched and studied, away from real production systems.","scopeNotes":"","domain":5,"category":"Technology"},{"id":127,"term":"Hot site","acronym":null,"def":"A fully equipped and configured recovery site that can take over operations within hours.","scopeNotes":"The most expensive site option, used for very short recovery time objectives.","domain":4,"category":"Technology"},{"id":128,"term":"Hypertext Markup Language (HTML)","acronym":"HTML","def":"The tagging language browsers read to lay out a web page, marking which text is a heading, paragraph, list item or link.","scopeNotes":"","domain":3,"category":"Concept"},{"id":129,"term":"Incident","acronym":null,"def":"An unplanned event that interrupts, or could interrupt, an IT service or that compromises the confidentiality, integrity or availability of information. A security incident is one kind.","scopeNotes":"","domain":5,"category":"Control"},{"id":130,"term":"Incident response","acronym":null,"def":"How an organization detects, analyzes, contains and recovers from an incident, then learns from it. Serious events may require invoking the disaster recovery plan (DRP).","scopeNotes":"","domain":4,"category":"Concept"},{"id":131,"term":"Information processing facility (IPF)","acronym":"IPF","def":"The data center: where the organization's computers run, together with its supporting rooms.","scopeNotes":"","domain":0,"category":"Technology"},{"id":132,"term":"Information systems (IS)","acronym":"IS","def":"The people, processes, data and technology an organization uses to collect, process, store and share information.","scopeNotes":"Broader than IT, which is only the technology component.","domain":0,"category":"Technology"},{"id":133,"term":"Inherent risk","acronym":null,"def":"Risk before any controls or other responses are applied.","scopeNotes":"One of the three parts of audit risk. The IS auditor assesses it but cannot change it.","domain":2,"category":"Control"},{"id":134,"term":"Instant messaging (IM)","acronym":"IM","def":"Real-time exchange of typed messages, and often files or media, between people over a network.","scopeNotes":"","domain":0,"category":"Concept"},{"id":135,"term":"Integrated services digital network (ISDN)","acronym":"ISDN","def":"A digital phone network standard that carries voice, video and data together over ordinary telephone lines in 64-kbps channels.","scopeNotes":"","domain":2,"category":"Technology"},{"id":136,"term":"Integrated test facilities (ITF)","acronym":"ITF","def":"A testing method that runs fictitious test records, such as a dummy customer, through the live production system and checks the results.","scopeNotes":"Test entries must be removed or reversed so they do not affect real accounts.","domain":1,"category":"Technology"},{"id":137,"term":"Integrity","acronym":null,"def":"Assurance that information is accurate and complete and has not been changed or destroyed without authorization.","scopeNotes":"","domain":0,"category":"Concept"},{"id":138,"term":"Internal controls","acronym":null,"def":"The safeguards management builds into the way the organization works, such as rules, approvals, reviews and system checks, so it can be reasonably sure its objectives will be met.","scopeNotes":"Controls prevent, detect or correct problems. They give reasonable assurance, never absolute assurance.","domain":3,"category":"Concept"},{"id":139,"term":"IP Security (IPSec)","acronym":null,"def":"A suite of protocols that protects traffic at the network layer by authenticating and encrypting IP packets, often used for VPNs.","scopeNotes":"","domain":5,"category":"Technology"},{"id":140,"term":"IT steering committee","acronym":null,"def":"A management-level group that oversees IT projects and service delivery and makes sure they carry out the IT strategy.","scopeNotes":"Differs from the board-level IT strategy committee, which focuses on direction.","domain":3,"category":"Process"},{"id":141,"term":"IT strategic plan","acronym":null,"def":"A long-range plan, often covering three to five years, that shows how IT will support the organization's strategic objectives. Business and IT management prepare it jointly.","scopeNotes":"The IS auditor verifies that it is aligned with the business strategy.","domain":2,"category":"Process"},{"id":142,"term":"Key goal indicator (KGI)","acronym":"KGI","def":"A measure looking back on results to show whether an IT process met its goal.","scopeNotes":"Lagging measure. Contrast with KPIs, which track progress along the way.","domain":3,"category":"Process"},{"id":143,"term":"Key performance indicator (KPI)","acronym":"KPI","def":"A measure of how well a process is performing toward a goal, such as the share of audit reports issued on time; an early signal of whether the goal will be reached.","scopeNotes":"","domain":2,"category":"Concept"},{"id":144,"term":"Leased line","acronym":null,"def":"A private communication line rented full time between two fixed points, always available rather than dialed when needed.","scopeNotes":"Also called a dedicated line.","domain":0,"category":"Technology"},{"id":145,"term":"Licensing agreement","acronym":null,"def":"A contract setting the terms under which the software owner allows a customer to install and use the software.","scopeNotes":"The IS auditor verifies that installed copies stay within licensed numbers.","domain":2,"category":"Technology"},{"id":146,"term":"Local area network (LAN)","acronym":"LAN","def":"A network that links computers and devices within a limited area, such as an office or building.","scopeNotes":"","domain":0,"category":"Technology"},{"id":147,"term":"Log","acronym":null,"def":"A time-ordered record of events or activities on a system; also the act of recording them.","scopeNotes":"","domain":0,"category":"Technology"},{"id":148,"term":"Logical access controls","acronym":null,"def":"Software-based measures, such as user IDs, passwords and permissions, that limit who can use systems, programs and data.","scopeNotes":"","domain":5,"category":"Control"},{"id":149,"term":"Logon","acronym":null,"def":"Signing in to a system, usually by entering a username and a password.","scopeNotes":"","domain":5,"category":"Technology"},{"id":150,"term":"Malware","acronym":null,"def":"Any harmful code, such as viruses, worms, Trojans or spyware, built to damage systems, steal data or gain access without permission.","scopeNotes":"","domain":5,"category":"Technology"},{"id":151,"term":"Mandatory access control (MAC)","acronym":"MAC","def":"Access control where the system enforces rules based on data classification and user clearance, and ordinary users or owners cannot change them.","scopeNotes":"Stricter than discretionary access control.","domain":5,"category":"Control"},{"id":152,"term":"Media access control (MAC)","acronym":"MAC","def":"The lower part of the OSI data link layer (Layer 2) that controls how devices take turns using the physical network medium.","scopeNotes":"Not the same as mandatory access control, which shares the acronym.","domain":5,"category":"Control"},{"id":153,"term":"Middleware","acronym":null,"def":"Software between applications that routes, queues and converts messages, so different systems can work together.","scopeNotes":"","domain":3,"category":"Concept"},{"id":154,"term":"Mobile site","acronym":null,"def":"A transportable recovery facility, such as a trailer fitted with equipment, that can be brought to a chosen location after a disaster.","scopeNotes":"","domain":3,"category":"Concept"},{"id":155,"term":"Network","acronym":null,"def":"Computers and other devices linked together, with the equipment needed to connect them, so they can share data and resources.","scopeNotes":"","domain":0,"category":"Technology"},{"id":156,"term":"Network administrator","acronym":null,"def":"The person who plans, installs and keeps the organization's network running, sometimes including phone systems.","scopeNotes":"","domain":0,"category":"Technology"},{"id":157,"term":"Network attached storage (NAS)","acronym":"NAS","def":"A file server appliance attached to the network that gives many users and systems shared storage space.","scopeNotes":"","domain":0,"category":"Technology"},{"id":158,"term":"Network interface card (NIC)","acronym":"NIC","def":"The hardware component that connects a computer to a network.","scopeNotes":"","domain":0,"category":"Technology"},{"id":159,"term":"Nondisclosure agreement (NDA)","acronym":"NDA","def":"A contract in which the parties agree to keep shared secrets private; for staff it often applies even after they leave.","scopeNotes":"Common when parties explore a deal or when staff are hired.","domain":4,"category":"Concept"},{"id":160,"term":"Operating system (OS)","acronym":"OS","def":"The base software that runs a computer, sharing out processor time, memory and devices among programs and offering them common services.","scopeNotes":"It also enforces many security controls, such as access rights.","domain":0,"category":"Control"},{"id":161,"term":"Operational audit","acronym":null,"def":"A review of whether a department or function uses its resources well and achieves what it is meant to, and whether its controls help it do so.","scopeNotes":"","domain":3,"category":"Control"},{"id":162,"term":"Outsourcing","acronym":null,"def":"Contracting an outside provider to run IT or other work on the organization's behalf.","scopeNotes":"The organization stays accountable for the outsourced function and its risk; the provider takes on responsibility for doing the work.","domain":2,"category":"Concept"},{"id":163,"term":"Paper test","acronym":null,"def":"A disaster recovery test in which team members read through the plan together and talk through their roles, without carrying out any steps.","scopeNotes":"Also called a desk-based evaluation or structured walkthrough. More involved than a checklist review, but less disruptive than preparedness or full operational tests.","domain":3,"category":"Concept"},{"id":164,"term":"Password","acronym":null,"def":"A secret string of characters a user enters to prove identity when logging in.","scopeNotes":"","domain":5,"category":"Technology"},{"id":165,"term":"Patch management","acronym":null,"def":"Finding, testing, approving and installing software fixes in a controlled way to keep systems current and secure.","scopeNotes":"Patches should go through change management and be tested first.","domain":3,"category":"Technology"},{"id":166,"term":"Penetration testing","acronym":null,"def":"An authorized, controlled attack on systems that copies real attacker methods to find weaknesses before others do.","scopeNotes":"Needs a clear scope and written approval from management before testing starts.","domain":5,"category":"Concept"},{"id":167,"term":"Phishing","acronym":null,"def":"A social engineering attack, usually by email, that poses as a trusted source to trick people into revealing information or running malicious content.","scopeNotes":"","domain":5,"category":"Concept"},{"id":168,"term":"Phreakers","acronym":null,"def":"People who break into phone systems and telecom lines, often to make free calls or listen in.","scopeNotes":"","domain":0,"category":"Technology"},{"id":169,"term":"Plaintext","acronym":null,"def":"Readable data before encryption or after decryption.","scopeNotes":"","domain":0,"category":"Concept"},{"id":170,"term":"Point-to-Point Protocol (PPP)","acronym":"PPP","def":"A data link protocol that carries network traffic over a direct link between two points, such as a dial-up or serial connection. It also handles authentication and link setup.","scopeNotes":"","domain":0,"category":"Technology"},{"id":171,"term":"Policy","acronym":null,"def":"A high-level management statement of intent that sets out what is required and what is not allowed.","scopeNotes":"Standards and procedures sit below policies and support them.","domain":2,"category":"Control"},{"id":172,"term":"Preventive control","acronym":null,"def":"A control that stops errors, fraud or other unwanted events before they happen, such as segregation of duties or input validation.","scopeNotes":"","domain":1,"category":"Control"},{"id":173,"term":"Privacy","acronym":null,"def":"An individual's right to expect that data about them is handled fairly: gathered, kept, passed on and destroyed only in ways that fit the reason it was obtained.","scopeNotes":"","domain":4,"category":"Concept"},{"id":174,"term":"Private key cryptosystems","acronym":null,"def":"Encryption where the sender and receiver share one secret key that both locks and unlocks the data.","scopeNotes":"Also called symmetric encryption. Key distribution is the main challenge.","domain":5,"category":"Technology"},{"id":175,"term":"Procedure","acronym":null,"def":"Written, detailed steps for carrying out a task in line with policies and standards.","scopeNotes":"","domain":2,"category":"Control"},{"id":176,"term":"Process","acronym":null,"def":"Any repeatable chain of work that converts inputs into results, operating within the organization's rules.","scopeNotes":"","domain":2,"category":"Process"},{"id":177,"term":"Protocol","acronym":null,"def":"An agreed set of rules for how two systems format and exchange data.","scopeNotes":"","domain":0,"category":"Control"},{"id":178,"term":"Public key cryptosystem","acronym":null,"def":"A cryptosystem using a public and private key pair: what one key encrypts only the other can decrypt.","scopeNotes":"Encrypting with the recipient's public key gives confidentiality; signing with the sender's private key gives authenticity.","domain":5,"category":"Technology"},{"id":179,"term":"Public key encryption","acronym":null,"def":"Encryption using two related keys: a public key anyone can use and a private key kept secret by its owner.","scopeNotes":"Same as asymmetric key encryption.","domain":5,"category":"Technology"},{"id":180,"term":"Public key infrastructure (PKI)","acronym":"PKI","def":"The policies, roles, systems and procedures that create, issue, manage and revoke digital certificates linking public keys to their owners.","scopeNotes":"","domain":5,"category":"Process"},{"id":181,"term":"Quality assurance (QA)","acronym":"QA","def":"Planned activities that build confidence a product or process will meet its requirements, mainly by improving how work is done rather than checking finished output.","scopeNotes":"","domain":3,"category":"Technology"},{"id":182,"term":"Reciprocal agreement","acronym":null,"def":"An arrangement in which two or more organizations with compatible systems agree to lend each other processing capacity in an emergency.","scopeNotes":"Cheap but hard to enforce and rarely tested; the IS auditor questions whether the capacity really exists.","domain":3,"category":"Process"},{"id":183,"term":"Recovery point objective (RPO)","acronym":"RPO","def":"The most data, measured in time, a business can afford to lose in a disruption. It sets the oldest acceptable restore point and drives backup frequency.","scopeNotes":"A low RPO means frequent backups or replication.","domain":4,"category":"Concept"},{"id":184,"term":"Recovery strategy","acronym":null,"def":"The chosen approach for meeting a process's recovery objectives, such as an alternate site or manual procedures.","scopeNotes":"Choosing between options such as hot, warm or cold sites depends on the RTO and on cost.","domain":4,"category":"Process"},{"id":185,"term":"Recovery time objective (RTO)","acronym":"RTO","def":"The target time within which a business function or system must be restored after a disruption. It is set inside the maximum tolerable downtime, leaving time to verify data.","scopeNotes":"A short RTO calls for a faster, costlier recovery option.","domain":4,"category":"Concept"},{"id":186,"term":"Registration authority (RA)","acronym":"RA","def":"The function that checks who a requester is before a certificate is created, then passes the approved request on to the CA for signing.","scopeNotes":"","domain":5,"category":"Technology"},{"id":187,"term":"Remote access service (RAS)","acronym":"RAS","def":"Hardware and software that let users connect to an organization's network and resources from a remote location.","scopeNotes":"Remote connections need strong authentication and logging.","domain":0,"category":"Technology"},{"id":188,"term":"Remote procedure call (RPC)","acronym":"RPC","def":"A protocol that lets a program on one computer run a procedure on another computer as if it were local, then receive the results.","scopeNotes":"","domain":2,"category":"Technology"},{"id":189,"term":"Repeaters","acronym":null,"def":"A Layer 1 (physical layer) device that rebuilds a signal weakened by distance and forwards it, so cabling can extend further.","scopeNotes":"","domain":0,"category":"Technology"},{"id":190,"term":"Request for proposal (RFP)","acronym":"RFP","def":"A formal invitation asking vendors to propose how they would meet stated requirements, and at what cost.","scopeNotes":"","domain":2,"category":"Technology"},{"id":191,"term":"Ring topology","acronym":null,"def":"A network layout in which devices connect in a closed loop and messages pass from one device to the next until they reach their destination.","scopeNotes":"","domain":0,"category":"Technology"},{"id":192,"term":"Risk","acronym":null,"def":"How likely something harmful is to happen, combined with how bad the harm would be.","scopeNotes":"","domain":1,"category":"Concept"},{"id":193,"term":"Risk analysis","acronym":null,"def":"Working out, for each identified risk, how likely it is and how much harm it could do, so risks can be compared and ranked.","scopeNotes":"Can be qualitative (high, medium, low) or quantitative (such as annualized loss expectancy). Its output feeds risk evaluation.","domain":5,"category":"Process"},{"id":194,"term":"Risk appetite","acronym":null,"def":"How much risk, in total, the organization is prepared to take on to achieve its strategy, as set by the board and senior management.","scopeNotes":"Risk tolerance turns it into limits for specific risks.","domain":0,"category":"Concept"},{"id":195,"term":"Risk assessment","acronym":null,"def":"Identifying risks and rating how likely and serious each one is.","scopeNotes":"The IS auditor uses it to focus the audit plan on the areas of greatest risk.","domain":3,"category":"Process"},{"id":196,"term":"Risk evaluation","acronym":null,"def":"Judging how serious an assessed risk is by setting it against the organization's agreed thresholds, to decide whether it needs treatment.","scopeNotes":"","domain":3,"category":"Process"},{"id":197,"term":"Risk management","acronym":null,"def":"The ongoing work of identifying, assessing, responding to and monitoring risks so they stay within the organization's risk appetite.","scopeNotes":"","domain":2,"category":"Control"},{"id":198,"term":"Risk mitigation","acronym":null,"def":"Reducing risk by putting controls or countermeasures in place.","scopeNotes":"","domain":2,"category":"Control"},{"id":199,"term":"Risk tolerance","acronym":null,"def":"The limit on how far a particular risk or result may drift from target before management must respond. It turns the broad risk appetite into specific, measurable thresholds.","scopeNotes":"","domain":2,"category":"Process"},{"id":200,"term":"Risk transfer","acronym":null,"def":"Moving the financial impact of a risk to a third party, for example through insurance or a contract.","scopeNotes":"Also called risk sharing. Accountability stays with the organization.","domain":2,"category":"Control"},{"id":201,"term":"Risk treatment","acronym":null,"def":"Choosing and carrying out a response to a risk: mitigate (reduce) it, avoid it, transfer or share it, or accept it.","scopeNotes":"Accepting risk is a management decision. The IS auditor reports the risk but never accepts it.","domain":3,"category":"Process"},{"id":202,"term":"Router","acronym":null,"def":"A Layer 3 device that reads where each packet is headed and picks the best path to forward it to the next network.","scopeNotes":"Routers can also filter traffic by address, protocol or port.","domain":0,"category":"Technology"},{"id":203,"term":"RSA (RSA)","acronym":"RSA","def":"A widely used public key algorithm, named after its three inventors, that can both encrypt data and sign it.","scopeNotes":"Its strength rests on how hard it is to factor very large numbers.","domain":5,"category":"Technology"},{"id":204,"term":"Secure Sockets Layer (SSL)","acronym":"SSL","def":"An older protocol that encrypts traffic between a browser and a server. It has been replaced by Transport Layer Security (TLS).","scopeNotes":"Every SSL version, and TLS 1.0 and 1.1, is deprecated and should be disabled; use TLS 1.2 or, preferably, TLS 1.3.","domain":5,"category":"Technology"},{"id":205,"term":"Segregation/separation of duties (SoD)","acronym":null,"def":"Splitting key tasks, such as authorizing, recording and handling assets, among different people so no one person can commit and hide errors or fraud.","scopeNotes":"Where SoD is not possible, management applies compensating controls, such as independent review of activity logs, and the IS auditor verifies that they work.","domain":1,"category":"Concept"},{"id":206,"term":"Service level agreement (SLA)","acronym":"SLA","def":"A contract or formal agreement that sets measurable service targets, such as uptime and response times, between a provider and its customer, and how results are reported.","scopeNotes":"","domain":4,"category":"Concept"},{"id":207,"term":"Simple Object Access Protocol (SOAP)","acronym":"SOAP","def":"An XML-based messaging protocol that lets applications exchange structured data over the internet, usually over HTTP.","scopeNotes":"Because it travels through ports firewalls normally allow, it needs its own security controls.","domain":3,"category":"Technology"},{"id":208,"term":"Spyware","acronym":null,"def":"Software that secretly monitors what a user does and sends the information to someone else without the user's consent.","scopeNotes":"","domain":5,"category":"Technology"},{"id":209,"term":"Standard","acronym":null,"def":"A binding rule that spells out exactly how something must be done, set either by the organization or by an outside body such as ISO.","scopeNotes":"","domain":3,"category":"Control"},{"id":210,"term":"Star topology","acronym":null,"def":"A network layout in which every device connects to a central hub or switch, which passes all traffic between them.","scopeNotes":"The central device is a single point of failure.","domain":0,"category":"Control"},{"id":211,"term":"Statistical sampling","acronym":null,"def":"Choosing sample items at random and using probability theory to draw conclusions about the whole population, with a measurable level of confidence.","scopeNotes":"Lets the IS auditor measure sampling risk objectively.","domain":1,"category":"Process"},{"id":212,"term":"Storage area networks (SANs)","acronym":null,"def":"A dedicated high-speed network that connects servers to shared storage devices.","scopeNotes":"","domain":4,"category":"Technology"},{"id":213,"term":"Structured Query Language (SQL)","acronym":"SQL","def":"The standard language for querying and managing data in relational databases.","scopeNotes":"","domain":3,"category":"Technology"},{"id":214,"term":"Switches","acronym":null,"def":"Layer 2 devices that link computers on a LAN and deliver each frame only to the port where its recipient sits, which cuts down collisions.","scopeNotes":"","domain":0,"category":"Technology"},{"id":215,"term":"System development life cycle (SDLC)","acronym":"SDLC","def":"The stages a system passes through, from first idea and feasibility, through design, build and testing, to go-live and a post-implementation review.","scopeNotes":"The IS auditor verifies that controls are built in at each phase, not added at the end.","domain":3,"category":"Technology"},{"id":216,"term":"Threat","acronym":null,"def":"Anything, such as a person, event or natural force, that could exploit a vulnerability and harm an asset.","scopeNotes":"","domain":5,"category":"Concept"},{"id":217,"term":"Token ring topology","acronym":null,"def":"A ring network in which a special message, the token, passes from device to device, and only the device holding it may transmit.","scopeNotes":"This prevents two devices sending at once.","domain":0,"category":"Technology"},{"id":218,"term":"Transmission Control Protocol/Internet Protocol (TCP/IP)","acronym":"TCP/IP","def":"The family of protocols that the internet and most networks run on, covering addressing, routing and reliable delivery of data.","scopeNotes":"","domain":2,"category":"Technology"},{"id":219,"term":"Trojan horse","acronym":null,"def":"Malicious code hidden inside a program that appears legitimate and useful.","scopeNotes":"","domain":5,"category":"Technology"},{"id":220,"term":"Twisted pair","acronym":null,"def":"Cable made of pairs of insulated copper wires twisted together to reduce interference. It is cheap and common but more open to interference and tapping than fiber.","scopeNotes":"","domain":4,"category":"Concept"},{"id":221,"term":"Uninterruptible power supply (UPS)","acronym":"UPS","def":"A battery-based device that keeps equipment running for a short time during a power failure or voltage drop, allowing an orderly shutdown or switch to a generator.","scopeNotes":"","domain":4,"category":"Technology"},{"id":222,"term":"Universal Serial BUS (USB)","acronym":"USB","def":"A common standard for connecting external devices, such as drives, keyboards and phones, to a computer.","scopeNotes":"USB ports are a common route for data leakage and malware, so many organizations restrict them.","domain":2,"category":"Control"},{"id":223,"term":"Variable sampling","acronym":null,"def":"Sampling that estimates an amount, such as the total or average value of all items, from the items tested.","scopeNotes":"Used in substantive testing. Attribute sampling estimates a rate instead.","domain":1,"category":"Process"},{"id":224,"term":"Voice-over Internet Protocol (VoIP)","acronym":null,"def":"Technology that carries phone calls as data over the internet or another IP network instead of traditional phone lines.","scopeNotes":"","domain":0,"category":"Technology"},{"id":225,"term":"Vulnerability","acronym":null,"def":"A gap or flaw, in technology, a process or a control, that a threat could take advantage of.","scopeNotes":"","domain":5,"category":"Control"},{"id":226,"term":"Vulnerability analysis","acronym":null,"def":"Finding, classifying and ranking weaknesses in systems or processes.","scopeNotes":"","domain":5,"category":"Process"},{"id":227,"term":"Warm site","acronym":null,"def":"A recovery site with power, network and some equipment ready, but not a full set of hardware or current data. Recovery takes from hours to a few days.","scopeNotes":"Sits between a hot site and a cold site in cost and speed.","domain":4,"category":"Technology"},{"id":228,"term":"White box testing","acronym":null,"def":"Testing that looks inside a program's code and logic to check that each path works as intended.","scopeNotes":"Usually done by developers at unit level.","domain":3,"category":"Process"},{"id":229,"term":"Wi-Fi Protected Access (WPA)","acronym":"WPA","def":"Security protocols that protect Wi-Fi networks with stronger encryption and authentication than WEP.","scopeNotes":"WPA2 and WPA3 are the current versions; original WPA is outdated.","domain":5,"category":"Technology"},{"id":230,"term":"Wide area network (WAN)","acronym":"WAN","def":"A network that links computers and LANs across a wide geographic area, such as between cities or countries.","scopeNotes":"","domain":0,"category":"Technology"},{"id":231,"term":"Wide area network (WAN) switch","acronym":"WAN","def":"Layer 2 equipment in a telecom provider's core that moves customer traffic for wide-area technologies such as frame relay and ISDN.","scopeNotes":"","domain":0,"category":"Technology"},{"id":232,"term":"Wired Equivalent Privacy (WEP)","acronym":"WEP","def":"An early Wi-Fi security protocol meant to give wireless networks privacy similar to a wired network. It has serious flaws and is easily broken.","scopeNotes":"Replaced by WPA and WPA2; finding WEP in use is a weakness.","domain":5,"category":"Control"},{"id":233,"term":"Wiretapping","acronym":null,"def":"Secretly listening in on calls or data as they pass along communication lines.","scopeNotes":"","domain":5,"category":"Concept"},{"id":234,"term":"X.25 Interface","acronym":null,"def":"An older International Telecommunication Union (ITU) standard defining how terminals connect to public packet-switched data networks.","scopeNotes":"","domain":0,"category":"Technology"}]</script>
 <script id="faqData" type="application/json">[
 {"cat":"Using the app","q":"How do I start practicing?","a":"Open Practice from the bottom navigation, choose a domain (or 'All domains'), and answer questions one at a time. Your first question loads automatically — read the explanation after every answer, right or wrong."},
-{"cat":"Using the app","q":"What does Exam-day rehearsal change?","a":"Turn on Exam-day rehearsal under You to practice the way exam day feels: the scenario sits inside the question, and the tips and coaching after you answer are hidden. The questions are the same exam-style questions either way. Turn it off to see the full scenario, tips and coaching again."},
+{"cat":"Using the app","q":"What does Exam-day rehearsal change?","a":"Turn on Exam-day rehearsal in Settings (the cog on You) to practice the way exam day feels: the scenario sits inside the question, and the tips and coaching after you answer are hidden. The questions are the same exam-style questions either way. Turn it off to see the full scenario, tips and coaching again."},
 {"cat":"Using the app","q":"How does the Mock Exam work?","a":"Choose a full mock (150 questions, 4 hours) or a mini mock (50 questions, 80 minutes). Both follow the real CISA blueprint: the same domain mix and a realistic spread of difficulty. Like the real exam, you see no right or wrong while you answer. Your score, a breakdown by domain and every explanation come at the end."},
 {"cat":"Using the app","q":"What are Questions to revisit?","a":"Questions you miss come back the next day, then at widening intervals as you get them right, until they retire. A right answer you marked Unsure or Guessing comes back too. Today's plan starts with them, a few at a time, oldest first."},
 {"cat":"Using the app","q":"How do I save a question for later?","a":"Use the bookmark control on a question to save it. Saved questions live under Practice, then Saved, where you can revisit them any time."},
 {"cat":"Using the app","q":"What does the Weak Spots tab show?","a":"Weak Spots shows how each of the five domains is going and lets you start a drill on the ones that need work. Until a domain has 30 answers it shows Building, Steady or Strong instead of a number, so a few answers never read as a verdict."},
-{"cat":"Using the app","q":"Some tabs are missing on my phone — where are they?","a":"On phones the bottom bar shows Today, Learn, Practice and You. Learn holds Study notes, Glossary, Principles, About the CISA exam and Final review week; Practice holds Mock exam and Saved; You holds Weak spots, settings and help."},
+{"cat":"Using the app","q":"Some tabs are missing on my phone. Where are they?","a":"On phones the bottom bar shows Today, Learn, Practice and You. Learn holds Study notes, Glossary, Principles, About the CISA exam and Final review week; Practice holds Mock exam and Saved; You holds Weak spots and Your progress, and its Settings page (the cog on You) holds your name, exam date, data and help."},
 {"cat":"Using the app","q":"What are Study notes?","a":"Study notes are a study reference. Each topic has a plain-language explanation, clear diagrams, and the common mistakes to watch for, organized by domain."},
-{"cat":"Using the app","q":"How do I switch to dark mode?","a":"Open You and turn on Dark mode. Your choice is remembered for next time."},
+{"cat":"Using the app","q":"How do I switch to dark mode?","a":"Open Settings (the cog on You) and turn on Dark mode. Your choice is remembered for next time."},
 {"cat":"The CISA exam","q":"How many questions are on the CISA exam?","a":"The CISA exam has 150 multiple-choice questions."},
 {"cat":"The CISA exam","q":"How long is the exam?","a":"You are given 4 hours to complete the CISA exam."},
 {"cat":"The CISA exam","q":"What score do I need to pass?","a":"CISA is scored on a scale of 200 to 800, and a score of 450 or higher is a passing result."},
@@ -8126,8 +8425,8 @@ html { scroll-padding-bottom: calc(104px + var(--consent-h, 0px)); }
 {"cat":"About & your data","q":"Where do the questions and notes come from?","a":"Original questions and notes, written with AI assistance and checked against ISACA’s published exam outline and standards."},
 {"cat":"About & your data","q":"Does the app cost anything?","a":"Not during the beta. KaiSip is free during the beta, with no account and no ads. If paid features come later, we'll say so here first, and everything you've saved stays yours."},
 {"cat":"About & your data","q":"Is my data private?","a":"Yes. Your progress is stored only in your own browser and never leaves your device. There is no sign-up, and your answers are not sent to any server."},
-{"cat":"About & your data","q":"Where is my progress saved?","a":"All progress is saved locally in your browser. Clearing your browser data or using a different device or browser will start you fresh. Open You, then Your data, to export a copy, import one, or reset."},
-{"cat":"About & your data","q":"How do I report a problem or suggest a feature?","a":"Open You, then Send feedback — it goes straight to the team."}
+{"cat":"About & your data","q":"Where is my progress saved?","a":"All progress is saved locally in your browser. Clearing your browser data or using a different device or browser will start you fresh. Open Settings (the cog on You), then use Your data to back up a copy, restore one, or start fresh."},
+{"cat":"About & your data","q":"How do I report a problem or suggest a feature?","a":"Open Settings (the cog on You), then Send feedback. It goes straight to the team."}
 ]</script>
 <script id="qbData" type="application/json">{"1":[],"2":[],"3":[],"4":[],"5":[]}</script>
 <script>
@@ -10028,7 +10327,7 @@ function exportProgress(otherId) {
   // The progress in use is saved first, then read once.
   if (!otherId) saveState();
   var profile = id ? getProfiles()[id] : null;
-  if (!profile) { showToast('Nothing to export yet.', 'info', 2400); return; }
+  if (!profile) { showToast('Nothing to export yet.', 'info', 2400); return false; }
   // The marker below is the file's original name, kept so older exports still import.
   var out = {cisaMindsetExport: true, version: 1, profile: profile};
   // v12.34.1: the exam date travels too, so the app can use it. It is kept per
@@ -10054,6 +10353,7 @@ function exportProgress(otherId) {
   a.click();
   if (!otherId) { try { localStorage.setItem(BACKUP_SAVED_KEY, String(Date.now())); } catch (e) {} }
   setTimeout(function(){ document.body.removeChild(a); URL.revokeObjectURL(url); }, 1000);
+  return true;
 }
 
 // A progress file is JSON and well under this size (browser storage holds about
@@ -10083,7 +10383,7 @@ function importProgress(file) {
       ksConfirm({
         title: 'Restore this file?',
         body: 'The progress in this browser is replaced with the progress in the file.'
-          + (addName ? ' Today will also greet you as ' + addName + ', the name in the file. Change or clear it any time in You.' : ''),
+          + (addName ? ' Today will also greet you as ' + addName + ', the name in the file. Change or clear it any time in Settings.' : ''),
         confirmLabel: 'Replace my progress',
         danger: true,
         onConfirm: function () {
@@ -10175,13 +10475,12 @@ function showYourData() {
     + '<p class="yd-text">Your progress is saved in this browser, on this device only. There is no account, so clearing your browser data removes it. Export a file to keep a copy or move it to another browser.</p>'
     + '<div class="yd-actions">'
     + '<button type="button" class="act-btn" onclick="exportProgress()">Export progress</button>'
-    + '<button type="button" class="act-btn" onclick="document.getElementById(\'ydFile\').click()">Import progress</button>'
-    + '<input type="file" id="ydFile" accept=".json" hidden onchange="importProgress(this.files[0]);this.value=\'\'">'
+    + '<button type="button" class="act-btn" onclick="youRestore()">Import progress</button>'
     + '</div>'
     + othersHtml
     + '<div class="yd-danger-row">'
     + '<button type="button" class="act-btn danger" onclick="confirmResetReadingProgress()">Reset reading progress</button>'
-    + '<button type="button" class="act-btn danger" onclick="confirmResetProgress()">Reset all progress</button>'
+    + '<button type="button" class="act-btn danger" onclick="confirmResetProgress()">Start fresh</button>'
     + '</div>'
     + '<button class="cl-close" onclick="closeSummary()">Done</button>'
     + '</div></div>';
@@ -11703,14 +12002,16 @@ var conceptPracticeDone = false; // the end card is showing
 function cpScrollBehavior() {
   return (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) ? 'auto' : 'smooth';
 }
-// Grove: the You header's settings button. Scrolls to the Settings group and
-// moves focus to its heading, so keyboard and screen reader users land there too.
-function youGoSettings() {
-  var h = document.getElementById('youSettingsH');
-  if (!h) return;
-  if (!h.hasAttribute('tabindex')) h.setAttribute('tabindex', '-1');
-  h.scrollIntoView({ behavior: cpScrollBehavior(), block: 'start' });
-  try { h.focus({ preventScroll: true }); } catch (e) {}
+// Grove C2: the You page's cog and its Settings row open the Settings page
+// (its own page since Sky's request, 31 Oct 2026) and move focus to its
+// title, so keyboard and screen reader users land there too.
+function youGoSettings(e) {
+  var r = navTo(e || null, 'settings');
+  if (r === false) {
+    var h = document.getElementById('setTitle');
+    if (h) { try { h.focus({ preventScroll: true }); } catch (ex) {} }
+  }
+  return r;
 }
 function cpScrollTo(el) {
   if (!el) return;
@@ -12087,6 +12388,7 @@ function switchTab(t, opts) {
   if (t === 'bookmarks') renderBookmarks();
   if (t === 'weakspots') renderWeakSpots();
   if (t === 'progress') renderProgress();
+  if (t === 'you') renderYou();
   if (t === 'mock') renderMockSetup();
   if (t === 'topics') renderTopics();
   if (t === 'glossary') renderGlossary();
@@ -12133,7 +12435,7 @@ var NAV_SECTION = {
   home: 'today',
   topics: 'learn', glossary: 'learn', principles: 'learn', examguide: 'learn', finalweek: 'learn',
   practice: 'practice', mock: 'practice', bookmarks: 'practice',
-  you: 'you', weakspots: 'you', progress: 'you', faq: 'you', about: 'you'
+  you: 'you', settings: 'you', weakspots: 'you', progress: 'you', faq: 'you', about: 'you'
 };
 // The page a section opens on (its first page) and its listed sub-pages.
 var NAV_HOME = { today: 'home', learn: 'topics', practice: 'practice', you: 'you' };
@@ -12148,7 +12450,7 @@ var NAV_HASH = {
   home: 'today', topics: 'notes', glossary: 'glossary', principles: 'principles',
   examguide: 'exam-guide', finalweek: 'final-week',
   practice: 'practice', mock: 'mock', bookmarks: 'saved',
-  you: 'you', weakspots: 'weak-spots', progress: 'progress', faq: 'help', about: 'about'
+  you: 'you', settings: 'settings', weakspots: 'weak-spots', progress: 'progress', faq: 'help', about: 'about'
 };
 var NAV_ALIAS = {
   today: 'home', home: 'home',
@@ -12157,12 +12459,12 @@ var NAV_ALIAS = {
   'exam-guide': 'examguide', 'about-the-exam': 'examguide', 'final-week': 'finalweek', 'final-review-week': 'finalweek',
   practice: 'practice', mock: 'mock', 'mock-exam': 'mock',
   saved: 'bookmarks', bookmarks: 'bookmarks',
-  you: 'you', settings: 'you', more: 'you',
+  you: 'you', settings: 'settings', more: 'you',
   weak: 'weakspots', weakspots: 'weakspots', 'weak-spots': 'weakspots',
   progress: 'progress', 'your-progress': 'progress', 'readiness-report': 'progress', readiness: 'progress',
   faq: 'faq', help: 'faq', about: 'about',
   'whats-new': 'you!changelog', changelog: 'you!changelog',
-  data: 'you!data', 'your-data': 'you!data'
+  data: 'settings!data', 'your-data': 'settings!data'
 };
 // The last page used in each section, so Learn reopens where you were.
 var navLastPage = { learn: 'topics', practice: 'practice' };
@@ -12219,7 +12521,7 @@ var NAV_TITLE = {
   topics: 'Study notes', glossary: 'Glossary', principles: 'Principles',
   examguide: 'About the CISA exam', finalweek: 'Final review week',
   practice: 'Practice', mock: 'Mock exam', bookmarks: 'Saved',
-  you: 'You', weakspots: 'Weak spots', progress: 'Your progress', faq: 'Help', about: 'About'
+  you: 'You', settings: 'Settings', weakspots: 'Weak spots', progress: 'Your progress', faq: 'Help', about: 'About'
 };
 function syncNav(t) {
   var sec = NAV_SECTION[t] || 'today';
@@ -12268,7 +12570,7 @@ function syncNav(t) {
     }
     subNavFade(sub);
   }
-  if (t === 'you') syncYouSettings();
+  if (t === 'you' || t === 'settings') syncYouSettings();
   updateHeaderCountdown();
   try {
     var want = '#' + (NAV_HASH[t] || 'today');
@@ -12318,15 +12620,15 @@ function subNavFade(sub) {
   sub.classList.toggle('sn-fade-r', max > 2 && sub.scrollLeft < max - 2);
   sub.classList.toggle('sn-fade-l', max > 2 && sub.scrollLeft > 2);
 }
-// The You page's on/off rows show the saved choices.
+// The Settings page's rows show the saved choices (and You's profile).
 function syncYouSettings() {
-  try { syncThemeSwitch(); syncExamModeBtn(); syncNameRow(); } catch (e) {}
+  try { syncThemeSwitch(); syncExamModeBtn(); syncNameRow(); renderYouExamDate(); youOthersSync(); } catch (e) {}
 }
 // You → Your name: the row shows the saved name; it opens a small field.
 var NAME_HELPER = 'Kept in this browser only. It just helps us say hello.';
 function syncNameRow() {
   var m = document.getElementById('youNameM');
-  if (m) m.textContent = getDisplayName() || 'Optional, for the greeting on Today';
+  if (m) m.textContent = (getDisplayName() || 'Optional') + ' \u00b7 for the greeting on Today';
   try { renderYouProfile(); } catch (e) {}
 }
 function toggleNameEdit(open) {
@@ -12623,7 +12925,7 @@ function nameAskDue(st, today, otherCard) {
 }
 function todayNameSavedHtml() {
   return '<div class="plnt-invite"><span class="you-ico" aria-hidden="true">' + ico('check', 20) + '</span>'
-    + '<p class="plnt-invite-m td-name-ok" id="tdNameOk" tabindex="-1"><strong>Saved in this browser.</strong> Change or clear it any time in You.</p></div>';
+    + '<p class="plnt-invite-m td-name-ok" id="tdNameOk" tabindex="-1"><strong>Saved in this browser.</strong> Change or clear it any time in Settings.</p></div>';
 }
 function todayNameHtml(show) {
   if (todayNameNote === 'saved') {
@@ -12711,7 +13013,7 @@ function todayNameNotNow() {
   var t = document.getElementById('tdGo') || document.getElementById('tdTitle');
   if (t) { try { t.focus({ preventScroll: true }); } catch (e) {} }
   var say = document.getElementById('tdNameSay');
-  if (say) setTimeout(function () { say.textContent = 'No name. You can add one any time in You.'; }, 60);
+  if (say) setTimeout(function () { say.textContent = 'No name. You can add one any time in Settings.'; }, 60);
 }
 
 // ── YOU: YOUR STUDY PROFILE (v12.37) ──
@@ -12752,19 +13054,245 @@ function renderYouProfile() {
   var left = exam ? examDaysLeft() : null;
   if (exam && left !== null && left < 0) exam += ' · Date passed';
   var initial = name ? Array.from(name)[0].toLocaleUpperCase() : '';
+  // Grove C2: the name is the page's title (h1), or "You" with "Add your name".
   el.innerHTML = profileLeafSvg(initial)
-    + '<div class="you-prof-t">'
-    + '<h2 class="you-prof-n" id="youProfH">' + (name ? '<span class="sr-only">Your study profile: </span>' + escapeHtml(name) : 'Your study profile') + '</h2>'
+    + '<div class="you-prof-t" id="youProfH">'
+    + '<h1 class="you-title you-prof-n" id="youTitle">' + (name ? escapeHtml(name) : 'You') + '</h1>'
     + (since ? '<p class="you-prof-l">Studying for ' + escapeHtml(ACTIVE.name) + ' since ' + escapeHtml(since) + '</p>' : '')
     + (exam ? '<p class="you-prof-m">Exam ' + escapeHtml(exam) + '</p>' : '')
     + (name ? '' : '<button type="button" class="plnt-ghost you-prof-add" onclick="youProfileAddName()">Add your name</button>')
     + '</div>';
 }
-// "Add your name" opens the existing field under Settings → Your name.
+// "Add your name" opens Settings with its name field open and focus in it.
 function youProfileAddName() {
-  var inp = document.getElementById('youNameInput');
+  navTo(null, 'settings');
   toggleNameEdit(true);
+  var inp = document.getElementById('youNameInput');
   if (inp) { try { inp.scrollIntoView({ block: 'center', behavior: 'auto' }); } catch (e) {} }
+}
+
+// ── YOU (Grove C2, 31 Oct 2026; scratchpad you-c2/final/SPEC.md) ──
+// One scroll in the phone's order: the profile, one sentence for the week
+// with the next step and the plant chip, the numbers, the readiness ring
+// (Today's own ring code, without the disc), the five areas, the plant,
+// mock exams, badges, study tools, "In more detail" and the Settings row.
+// Presentation only: every number comes from the engines Today uses
+// (computeTodayReadiness, todayReadinessRange, studyDayStreak), so You and
+// Today cannot disagree. Focus next is r.focusId, Today's own.
+var youRingGrown = false;   // the ring's marks light up once per visit, as on Today
+var youRingIo = null;
+var youChipKey = '';
+function renderYou() {
+  var box = document.getElementById('youSummary');
+  if (!box || typeof S === 'undefined' || !S) return;
+  var now = new Date();
+  var r = computeTodayReadiness();
+  var range = todayReadinessRange(r);
+  var st = todayState(now, r);
+  fgLargeText();
+  try { renderYouProfile(); } catch (e) {}
+  youChipKey = '';
+  box.innerHTML = '<h2 class="sr-only" id="youSumH">This week</h2>' + youSummaryHtml(r, range, st);
+  try { updateStats(); } catch (e) {}
+  var grow = !youRingGrown;
+  youRingGrown = true;
+  var put = function (id, html) { var el = document.getElementById(id); if (el) el.innerHTML = html; };
+  put('youReady', youReadyHtml(r, range, grow));
+  put('youAreas', youAreasHtml(r));
+  put('youMocks', youMocksHtml());
+  // The website's Badges sheet, as Your progress draws it (its own ids here,
+  // since both pages stay in the document).
+  put('youBadges', plantSafe(pgHerbariumHtml).replace(/pgHerbH/g, 'youHerbH'));
+  youToolsSync();
+  youRingWatch();
+}
+// The summary: one sentence for the week, then the next step and the plant.
+// Days: "No study days yet this week" / "1 study day" / "N study days". The
+// readiness part: the range, the count toward the first range, or how to get
+// one. Focus next is Today's r.focusId; "where you'll gain most" once there
+// are answers (Today's rule). The countdown joins with no-break spaces, so a
+// line never starts with the dot; none without a date or after it.
+function youSummaryHtml(r, range, st) {
+  var days = studyDaysThisWeek(new Date());
+  var parts = [days > 0 ? studyDaysWeekWords(days) : 'No study days yet this week'];
+  if (range.enough) parts.push('Readiness <span class="you-nowrap">' + range.low + ' to ' + range.high + '</span>, a study estimate');
+  else if (r.answered > 0) parts.push(todayRingSoFar(range) + ' of ' + RD_RANGE_MIN_ANSWERS + ' answers toward your first readiness range');
+  else parts.push('Answer ' + RD_RANGE_MIN_ANSWERS + ' questions to see your first readiness range');
+  var f = r.focusId && DI[r.focusId] ? String(r.focusId) : '';
+  var left = st ? st.days : examDaysLeft();
+  var cd = left !== null && left >= 0
+    ? '&nbsp;&middot;&nbsp;' + (left === 0 ? 'Exam&nbsp;day' : left + '&nbsp;' + (left === 1 ? 'day' : 'days') + ' to go') : '';
+  var text = f
+    ? parts.join('. ') + '. Focus next: <b>' + escapeHtml(DI[f].short) + '</b>' + (r.answered > 0 ? ', where you&rsquo;ll gain most' : '') + cd + '.'
+    : parts.join('. ') + cd + '.';
+  var go = f ? '<button type="button" class="you-go" onclick="todayPracticeDomain(\'' + escapeHtml(f) + '\')">Practice '
+    + escapeHtml(DI[f].short) + ico('chevron', 16) + '</button>' : '';
+  return '<p class="you-status">' + text + '</p><div class="you-sum-acts">' + go + youChipHtml() + '</div>';
+}
+// The plant's six stages as small line drawings (the same six for every
+// species): the chip shows the current one, the plant card all six.
+var YOU_STAGE_SVG = [
+  '',
+  '<path class="you-st-soil" d="M8 46 Q22 42 36 46"/><ellipse class="you-st-seed" cx="22" cy="42" rx="6" ry="4.5"/><path class="you-st-line" d="M22 38 V33 M22 35 Q18 34 17 31"/>',
+  '<path class="you-st-soil" d="M8 46 Q22 42 36 46"/><path class="you-st-line" d="M22 45 V30"/><path class="you-st-fill" d="M22 36 C16 35 13 31 13 27 C18 28 21 31 22 36Z M22 33 C28 31 31 27 31 23 C26 24 23 28 22 33Z"/>',
+  '<path class="you-st-soil" d="M8 46 Q22 42 36 46"/><path class="you-st-line" d="M22 45 V14"/><path class="you-st-fill" d="M22 38 C16 37 13 33 13 29 C18 30 21 33 22 38Z M22 31 C28 29 31 25 31 21 C26 22 23 26 22 31Z M22 24 C17 23 15 19 15 16 C19 17 21 20 22 24Z"/>',
+  '<path class="you-st-soil" d="M8 46 Q22 42 36 46"/><path class="you-st-line you-st-w2" d="M22 45 V26"/><circle class="you-st-fill" cx="22" cy="19" r="10"/>',
+  '<path class="you-st-soil" d="M6 46 Q22 42 38 46"/><path class="you-st-line you-st-w3" d="M22 45 V28"/><path class="you-st-fill" d="M10 24 C6 14 16 8 22 10 C28 6 39 12 35 22 C38 28 30 32 22 29 C14 32 7 30 10 24Z"/>',
+  '<path class="you-st-soil" d="M3 46 Q22 41 41 46"/><path class="you-st-line you-st-w3" d="M22 45 V30 M22 34 L15 28 M22 33 L29 27"/><path class="you-st-fill" d="M4 24 C1 14 10 6 18 9 C23 3 34 4 36 11 C43 12 44 22 38 26 C36 32 26 32 22 29 C16 33 6 31 4 24Z"/>'
+];
+function youStageSvg(g, w, h) {
+  return '<svg class="you-st" viewBox="0 0 44 52"' + (w ? ' width="' + w + '" height="' + h + '"' : '') + ' aria-hidden="true" focusable="false">' + (YOU_STAGE_SVG[g] || YOU_STAGE_SVG[1]) + '</svg>';
+}
+// The plant chip: a button that takes you to the plant card below (focus on
+// its heading; the address stays #you), or opens "Pick a plant" when there
+// is no card yet. Nothing while the plant script is still loading.
+function youChipHtml() {
+  var K = plantApi();
+  if (!K) return '<span id="youChip" hidden></span>';
+  var p = S.plant, g = p ? p.growth : 1;
+  var text = p
+    ? escapeHtml(K.plant.plantCallName(p)) + ' <span class="you-chip-s">&middot; ' + escapeHtml(K.plant.GROWTH_NAMES[g]) + ', stage ' + g + ' of ' + K.plant.MAX_GROWTH + '</span>'
+    : 'Pick your plant';
+  return '<button type="button" class="you-chip" id="youChip" onclick="youChipGo()"><span class="you-chip-art" aria-hidden="true">' + youStageSvg(g, 22, 26) + '</span>'
+    + '<span class="you-chip-t"><span class="you-chip-k">Your plant</span> ' + text + '</span>' + ico('chevron', 16) + '</button>';
+}
+function youChipSync() {
+  var chip = document.getElementById('youChip');
+  if (!chip || document.activeElement === chip) return;
+  var html = youChipHtml();
+  if (html === youChipKey) return;
+  youChipKey = html;
+  chip.outerHTML = html;
+}
+function youChipGo() {
+  var h = document.querySelector('#youPlant:not([hidden]) h2');
+  if (h) {
+    h.setAttribute('tabindex', '-1');
+    try { h.scrollIntoView({ behavior: cpScrollBehavior(), block: 'start' }); } catch (e) {}
+    try { h.focus({ preventScroll: true }); } catch (e) {}
+    return;
+  }
+  if (plantApi()) plantOpen('new', 'you');
+}
+// Estimated readiness: Today's ring without its disc (seed dots before the
+// first range, then ticks, the gold range and the clay study bar), the range
+// in words and a key that says what the marks mean.
+function youReadyHtml(r, range, grow) {
+  var ring = '<div class="you-ring">' + todayRingHtml(range, { exam: false }, { plant: false }, { grow: grow, disc: false }) + '</div>';
+  var so = todayRingSoFar(range);
+  var words = range.enough
+    ? '<p class="you-ready-n">' + range.low + '<span class="you-to"> to </span>' + range.high + '</p><p class="you-cap">' + TODAY_EST_LINE + '</p>'
+    : '<p class="you-ready-n">' + so + '<span class="you-to"> of ' + RD_RANGE_MIN_ANSWERS + ' answers</span></p><p class="you-cap">until your first readiness range</p>';
+  var html = '<div class="you-ready-top">' + ring + '<div class="you-ready-t"><h2 class="you-kick" id="youReadyH">Estimated readiness</h2>' + words + '</div></div>';
+  if (!range.enough) return html;
+  var gap = FG_STUDY_BAR - range.low;
+  return html + '<ul class="you-key you-rkey" aria-label="Ring key">'
+    + '<li><svg width="14" height="16" viewBox="0 0 14 16" aria-hidden="true" focusable="false"><path class="you-k-rng" d="M4 2v12M10 2v12"/></svg><span><b>Gold ticks:</b> your range.</span></li>'
+    + '<li><svg width="14" height="16" viewBox="0 0 14 16" aria-hidden="true" focusable="false"><path class="you-k-mark" d="M7 1v14"/></svg><span><b>Clay mark:</b> ' + FG_STUDY_BAR
+    + ', this app&rsquo;s own study bar for your low end. ' + (gap > 0 ? 'Your low end, ' + range.low + ', is ' + gap + ' under it.' : 'Your low end, ' + range.low + ', is at or above it.') + '</span></li></ul>';
+}
+function youRingWatch() {
+  if (youRingIo) { youRingIo.disconnect(); youRingIo = null; }
+  var ring = document.querySelector('#youReady .td-ring.td-wait');
+  if (!ring) return;
+  youRingIo = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) {
+      if (!e.isIntersecting) return;
+      e.target.classList.remove('td-wait');
+      if (youRingIo) { youRingIo.disconnect(); youRingIo = null; }
+    });
+  }, { threshold: 0.3, rootMargin: '0px 0px -80px 0px' });
+  youRingIo.observe(ring);
+}
+// Five areas, one scale: the stem chart (one picture, one sentence per area
+// for a screen reader), then the same facts as a list that grows with the
+// text size, then the key (a plain list: fgKeyList numbers its rows).
+function youAreasHtml(r) {
+  var said = [], items = [];
+  var areas = r.domains.map(function (x) {
+    var pct = pgPct(x), n = x.answered, nm = DI[x.id].short;
+    var gain = n > 0 && r.answered > 0 && x.id === r.focusId;
+    var val, note = [];
+    if (n <= 0) { val = 'Not started'; said.push(nm + ', not started.'); }
+    else if (n < DOMAIN_READ_MIN) {
+      val = n + ' of ' + DOMAIN_READ_MIN; note.push('answers, still a seed');
+      said.push(nm + ', ' + n + ' of ' + DOMAIN_READ_MIN + ' answers, still a seed.');
+    } else {
+      val = pct + '%';
+      if (pct < DOMAIN_TARGET_PCT) note.push('<span class="you-clay">below ' + DOMAIN_TARGET_PCT + '</span>');
+      said.push(nm + ' ' + pct + ' percent' + (pct < DOMAIN_TARGET_PCT ? ', below ' + DOMAIN_TARGET_PCT : '') + '.');
+    }
+    if (gain) note.push('where you&rsquo;ll gain most');
+    items.push('<li><span class="you-al-k">' + escapeHtml(nm) + '</span><span class="you-al-v">' + val + '</span>'
+      + (note.length ? '<span class="you-al-n">' + note.join(', ') + '</span>' : '') + '</li>');
+    return { id: x.id, name: DI[x.id].name, short: nm, pct: pct, answered: n };
+  });
+  var dash = '<svg width="18" height="16" viewBox="0 0 18 16" aria-hidden="true" focusable="false"><path class="you-k-dash" d="M1 8h16"/></svg>';
+  var tip = '<svg width="18" height="16" viewBox="0 0 18 16" aria-hidden="true" focusable="false"><ellipse class="fg-st-leaf c" cx="9" cy="8" rx="3.4" ry="5.6"/></svg>';
+  var seed = '<svg width="18" height="16" viewBox="0 0 18 16" aria-hidden="true" focusable="false"><ellipse class="fg-st-seed" cx="9" cy="9" rx="6.5" ry="4.2"/></svg>';
+  return '<div class="you-areas-h"><h2 class="you-fig" id="youAreasH">Five areas, one scale</h2><p class="you-cap">Built from your answers in this app.</p></div>'
+    + '<div class="you-stems" role="img" aria-label="' + escapeHtml('Five areas on one scale, with a dashed line at ' + DOMAIN_TARGET_PCT + '. ' + said.join(' ')) + '">'
+    + fgStemChart(areas, { label: 'Each area' }) + '</div>'
+    + '<ul class="you-areal" aria-label="Each area">' + items.join('') + '</ul>'
+    + '<ul class="you-key" aria-label="Chart key">'
+    + '<li>' + dash + '<span><b>Dashed line:</b> ' + DOMAIN_TARGET_PCT + ', the target for each area. (The study bar, ' + FG_STUDY_BAR + ', is for your overall low end.)</span></li>'
+    + '<li>' + tip + '<span><b>Clay tip and &ldquo;below ' + DOMAIN_TARGET_PCT + '&rdquo;:</b> that area sits under the line.</span></li>'
+    + '<li>' + seed + '<span><b>Seed:</b> fewer than ' + DOMAIN_READ_MIN + ' answers. It grows a stem at ' + DOMAIN_READ_MIN + '.</span></li></ul>';
+}
+// Mock exams: the newest three (mockPastRowsHtml: name, date, right of
+// asked, percent; no Review, past answers are not kept) and a link to all of
+// them, or a quiet empty state with a way to start a mini mock.
+function youMocksHtml() {
+  var hist = (Array.isArray(S.mockHistory) ? S.mockHistory : []).slice(0, 3);
+  var h = '<h2 class="you-card-h" id="youMocksH">Mock exams</h2>';
+  if (!hist.length) {
+    return h + emptyState({ kind: 'chart', heading: 'No mocks yet', body: 'A mini mock shows how the exam feels. Start one whenever you like.',
+      actions: [{ label: 'Start a mini mock', style: 'ghost', onclick: 'youStartMini()' }] });
+  }
+  return h + '<ul class="td-legend mk-past you-mk">' + mockPastRowsHtml(hist) + '</ul>'
+    + '<a class="you-link" href="#progress" onclick="return navTo(event,\'progress\')">All past mocks in Your progress' + ico('chevron', 16) + '</a>';
+}
+function youStartMini() {
+  switchTab('mock');
+  try { showMockConfirm('mini'); } catch (e) {}
+}
+// Study tools: what is due today (a session takes at most REVIEW_SESSION_CAP)
+// and how many questions are saved.
+function youToolsSync() {
+  var due = Math.min(getDueReview().length, REVIEW_SESSION_CAP);
+  var n = Array.isArray(S.bookmarks) ? S.bookmarks.length : 0;
+  var rv = document.getElementById('youRevV'), sv = document.getElementById('youSavV');
+  if (rv) rv.textContent = due > 0 ? due + ' ready today' : 'None today';
+  if (sv) sv.textContent = n > 0 ? n + ' saved' : 'None yet';
+}
+function youRevisit() { startReviewQueue(REVIEW_SESSION_CAP); }
+// Settings → Your data → Restore: the one file input (the sheet uses it too).
+function youRestore() {
+  var f = document.getElementById('setFile');
+  if (f) f.click();
+}
+// Settings → Other saved progress: only when there are earlier records.
+function youOthersSync() {
+  var li = document.getElementById('setOthersLi');
+  if (!li) return;
+  var n = 0;
+  try { n = otherProgressRecords().length; } catch (e) { n = 0; }
+  li.hidden = n === 0;
+}
+// The fourth number (DECISIONS 3): study days in a row, as on Today. Below
+// the 14th study day: "Starts today" while there are fewer than 2 study days
+// in all, then "N days in a row" from a streak of 2; under 2 after that the
+// count steps aside. From the 14th study day: the week's study days.
+function youStreakWords(now) {
+  var list = todayStudyDayList(parityDayKey(now.getTime()));
+  if (list.length >= TODAY_WEEK_LINE_FROM) {
+    var w = studyDaysThisWeek(now);
+    return { k: 'This week', html: w > 0 ? w + '<span class="you-unit"> ' + (w === 1 ? 'study day' : 'study days') + '</span>' : '' };
+  }
+  var streak = studyDayStreak(now.getTime());
+  if (streak >= STREAK_SHOW_MIN) return { k: 'Streak', html: streak + '<span class="you-unit"> days in a row</span>' };
+  if (list.length < 2) return { k: 'Streak', html: '<span class="you-num-w">Starts today</span>' };
+  return { k: 'Streak', html: '' };
 }
 
 // Whole days to the saved exam date (local midnight to midnight): null when
@@ -13317,7 +13845,7 @@ function backupNudgeSave() {
 function backupNudgeLater() {
   try { localStorage.setItem(BACKUP_LATER_KEY, String(Date.now())); } catch (e) {}
   backupNudgeClose();
-  showToast('We’ll remind you in two weeks. Back up any time from You.', 'info', 3000);
+  showToast('We’ll remind you in two weeks. Back up any time from Settings.', 'info', 3000);
 }
 
 // ── TODAY: STATES, THE WEEK AND THE MINDSET CHECK (web Today redesign) ──
@@ -13798,9 +14326,11 @@ function todayDot(i, n, on) {
     + (on ? ' style="--i:' + i + '"' : '') + '/>';
 }
 // o: { grow (the first light-up this visit), handoff (the range arrived this
-// visit), first (the first range: under TODAY_FIRST_RANGE_UNTIL answers) }
+// visit), first (the first range: under TODAY_FIRST_RANGE_UNTIL answers),
+// disc: false (the marks only, no disc and no plant: You's small ring) }
 function todayRingHtml(range, st, shoot, o) {
   o = o || {};
+  var disc = o.disc !== false;
   var ticks = '', dots = '', mark = '', label = '', i, n = RD_RANGE_MIN_ANSWERS;
   if (!st.exam && !range.enough) {
     var so = todayRingSoFar(range);
@@ -13824,7 +14354,7 @@ function todayRingHtml(range, st, shoot, o) {
   }
   // The disc is forest in both themes, so the plant takes its dark palette.
   // Full size at every stage (it never shrinks as it grows).
-  var art = shoot.plant ? plantSafe(function () { return plantDraw(shoot.v, 'today', 108, { fit: true, theme: 'dark' }); }) : '';
+  var art = disc && shoot.plant ? plantSafe(function () { return plantDraw(shoot.v, 'today', 108, { fit: true, theme: 'dark' }); }) : '';
   if (art && o.fade && shoot.grew && shoot.grew.from) {
     // The visit after it grew: the art fades over from the old stage.
     var was = plantSafe(function () {
@@ -13833,14 +14363,14 @@ function todayRingHtml(range, st, shoot, o) {
     });
     if (was) art = '<span class="td-art-old">' + was + '</span><span class="td-art-new">' + art + '</span>';
   }
-  if (!art) art = todaySeedSvg();
+  if (!art && disc) art = todaySeedSvg();
   var wait = (o.grow || o.handoff || o.fade) && typeof IntersectionObserver === 'function';
-  return '<div class="td-ring' + (st.exam ? ' td-ring-bare' : '') + (o.grow ? ' grow' : '') + (o.handoff ? ' td-ho' : '')
+  return '<div class="td-ring' + (st.exam ? ' td-ring-bare' : '') + (disc ? '' : ' td-ring-nodisc') + (o.grow ? ' grow' : '') + (o.handoff ? ' td-ho' : '')
     + (o.fade ? ' td-grew' : '') + (wait ? ' td-wait' : '') + '">'
     + '<svg class="td-ring-svg" viewBox="0 0 200 200" focusable="false"' + (label ? ' role="img" aria-label="' + escapeHtml(label) + '"' : ' aria-hidden="true"') + '>'
     + dots + ticks + mark
-    + '<circle class="td-ring-disc" cx="100" cy="100" r="70"/></svg>'
-    + '<div class="td-ring-in"><div class="td-ring-art' + (shoot.plant ? '' : ' is-seed') + '" aria-hidden="true">' + art + '</div></div></div>';
+    + (disc ? '<circle class="td-ring-disc" cx="100" cy="100" r="70"/>' : '') + '</svg>'
+    + (disc ? '<div class="td-ring-in"><div class="td-ring-art' + (shoot.plant ? '' : ' is-seed') + '" aria-hidden="true">' + art + '</div></div>' : '') + '</div>';
 }
 // The caption under the ring, in the same spot in both states (screen
 // readers hear the ring's label instead, so it is said once):
@@ -14187,7 +14717,7 @@ function fgRunningHead(left, rightHtml) {
 // in a set or a mock: there the strip is the head. The pages that show it:
 var PAGE_RH = {
   home: 1, practice: 1, mock: 1, bookmarks: 1, weakspots: 1, progress: 1, topics: 1, principles: 1,
-  examguide: 1, finalweek: 1, glossary: 1, faq: 1, about: 1, you: 1
+  examguide: 1, finalweek: 1, glossary: 1, faq: 1, about: 1, you: 1, settings: 1
 };
 var pageRhRight = {};   // a page's own right side: { progress: html, mockResults: { kind, total, at, min } }
 function pageRhHtml(t) {
@@ -15434,24 +15964,32 @@ function updateStats() {
   var pe = document.getElementById('sPct');
   // Same honest rule as the domains: "Too few yet" until 30 answers, then the number.
   pe.textContent = t > 0 ? domainReadLabel(read) : '--';
-  pe.className = 'stat-num';
-  // Right answers in a row from 2; below that, the week's study days (never a 0 or 1 streak).
-  var inRow = (Number(S.streak) || 0) >= STREAK_SHOW_MIN;
-  document.getElementById('sStreak').textContent = inRow ? S.streak : studyDaysThisWeek();
+  pe.className = 'you-num';
+  var ph = document.getElementById('sPctH');
+  if (ph) {
+    ph.textContent = t > 0 && !read.enough ? 'Shows at ' + DOMAIN_READ_MIN + ' answers' : '';
+    ph.hidden = !ph.textContent;
+  }
+  // Grove C2: the fourth number is study days in a row (studyDayStreak, as
+  // on Today), no longer right answers in a row (S.streak stays in the save).
+  var sk = youStreakWords(new Date());
+  document.getElementById('sStreak').innerHTML = sk.html;
   var sl = document.getElementById('sStreakL');
-  if (sl) sl.textContent = inRow ? 'In a row' : 'Study days this week';
+  if (sl) sl.textContent = sk.k;
   var sNote = document.getElementById('youStatsNote');
-  if (sNote) sNote.textContent = 'Each question counts once, at your latest try.' + (inRow ? ' In a row counts right answers.' : '');
+  if (sNote) sNote.textContent = 'Each question counts once, at your latest try.';
   // v12.30: the stats wait for 10 answers (a row of zeros is not progress);
-  // a band word ("Building") is set as a word, not as a numeral.
+  // a band word ("Too few yet") is set as a word, not as a numeral.
   var statsReady = t >= YOU_STATS_MIN;
   var grid = document.getElementById('youStats');
   var wait = document.getElementById('youStatsWait');
   var sn = document.getElementById('youStatsNote');
+  var tile = document.getElementById('youStreak');
   if (grid) grid.hidden = !statsReady;
   if (sn) sn.hidden = !statsReady;
   if (wait) wait.hidden = statsReady;
-  if (t > 0 && !read.enough) pe.className = 'stat-num stat-word';
+  if (tile) { tile.hidden = !statsReady; tile.classList.toggle('you-streak-quiet', !sk.html); }
+  if (t > 0 && !read.enough) pe.className = 'you-num you-num-w';
   var n = S.bookmarks.length;
   var bd = document.getElementById('bkBadge');
   bd.textContent = n;
@@ -16767,7 +17305,8 @@ function railSync() {
   if (page === 'mock' && wide) secs = railMockSections();
   if (page === 'results') { railResultsInline(!wide); if (wide) secs = railResultsSections(); }
   else railResultsInline(false);
-  if (page === 'you') { plantSafe(function () { plantYouInline(!wide); }); if (wide) secs = plantSafe(plantRailSections) || []; }
+  // You (Grove C2): the plant card is in the page at every width, never in the margin.
+  if (page === 'you') plantSafe(function () { plantYouInline(true); });
   else plantSafe(function () { plantYouInline(false); });
   // The question view keeps its column before the answer, so nothing moves on Check.
   var on = wide && (page === 'q' || secs.length > 0);
@@ -17323,6 +17862,7 @@ function plantOpenYou() {
 function plantYouHtml(where) {
   var K = plantApi();
   if (!K) return '';
+  if (where !== 'rail') return plantYouCardHtml(K);
   var hid = where === 'rail' ? 'plRailH' : 'plYouH';
   var head = '<h2 class="' + (where === 'rail' ? 'plnt-cap' : 'you-head') + '" id="' + hid + '">Your plant</h2>';
   var now = Date.now();
@@ -17393,7 +17933,88 @@ function plantYouHtml(where) {
   if (!rail) html += '</details>';
   return html;
 }
-// Below the rail's breakpoint the plant sits near the top of You.
+// Grove C2: You's plant card, a forest panel at every width (You has no
+// plant rail). The plant, its name and stage, the six stages, then one
+// disclosure, "Look, plant and name", with the look, the plant and the name
+// and what grows it next. Before the first finished set there is no card
+// (the chip above opens "Pick a plant" instead).
+function plantYouCardHtml(K) {
+  var head = '<h2 class="you-pl-h" id="plYouH" tabindex="-1">Your plant</h2>';
+  var now = Date.now();
+  plantSync(now);
+  var p = S.plant;
+  if (!p) {
+    // Not before the first finished set (as Today's invitation).
+    if (!firstSetDone()) return '';
+    return '<div class="you-pl-top"><div class="you-pl-art">' + youStageSvg(1, 72, 85) + '</div><div class="you-pl-t">' + head
+      + '<p class="you-pl-name">Nothing planted yet</p>'
+      + '<p class="you-pl-q">Pick a plant and give it a name. It grows only from real progress across the exam outline, and it never wilts.</p></div></div>'
+      + '<button type="button" class="you-pl-btn" id="plActPlant" onclick="plantOpen(\'new\',\'you\')">Pick a plant' + ico('chevron', 18) + '</button>';
+  }
+  var v = plantView(now);
+  var info = K.plant.SPECIES_INFO[p.species];
+  var g = p.growth, max = K.plant.MAX_GROWTH;
+  var kind = (/^[aeiou]/i.test(info.lower) ? 'An ' : 'A ') + info.lower;
+  var html = '<div class="you-pl-top"><div class="you-pl-art">' + plantDraw(v, 'you', 96, { fit: true, theme: 'dark', label: v.label, breathe: plantBreathe('inline') }) + '</div>'
+    + '<div class="you-pl-t">' + head
+    + '<p class="you-pl-name">' + escapeHtml(K.plant.plantCallName(p)) + '</p>'
+    + '<p class="you-pl-s">' + escapeHtml(kind + ' \u00b7 ' + K.plant.GROWTH_NAMES[g] + ' \u00b7 stage ' + g + ' of ' + max) + '</p>'
+    + '<p class="you-pl-q">Grows only from real progress, never wilts.</p></div></div>';
+  var stages = '';
+  for (var i = 1; i <= max; i++) {
+    var state = i < g ? 'done' : i === g ? 'now' : 'locked';
+    stages += '<li class="you-stg ' + state + '"' + (i === g ? ' aria-current="step"' : '') + '><span class="you-stg-t">' + youStageSvg(i) + '</span>'
+      + '<span class="you-stg-n">' + escapeHtml(K.plant.GROWTH_NAMES[i]) + '<span class="sr-only">, stage ' + i + ' of ' + max + ', '
+      + (state === 'done' ? 'grown' : state === 'now' ? 'now' : 'still to come') + '</span></span></li>';
+  }
+  html += '<ol class="you-stages" aria-label="' + escapeHtml('Six stages of your ' + info.lower) + '">' + stages + '</ol>';
+  // The back-fill line, once (kept for this visit); then the rest line.
+  if (p.backfill && !p.backfill.seen) {
+    plantBackfillShown = { at: p.backfill.at, line: K.plant.backfillLine(p, p.backfill.growth) };
+    S.plant = Object.assign({}, p, { backfill: Object.assign({}, p.backfill, { seen: true }) });
+    saveState();
+  }
+  var notes = [];
+  if (plantBackfillShown && p.backfill && plantBackfillShown.at === p.backfill.at) notes.push(['From your study so far', plantBackfillShown.line]);
+  var rest = K.plant.restLine(p, v.lastDay, v.today, v.exam) || (v.resting ? K.plant.plantCallName(p) + ' is resting. Pick up whenever you\u2019re ready.' : null);
+  if (rest) notes.push([v.exam === 'day' ? 'Exam day' : 'Resting', rest]);
+  notes.forEach(function (n) {
+    html += '<div class="plnt-note"><p class="plnt-note-h">' + escapeHtml(n[0]) + '</p><p class="plnt-note-m">' + escapeHtml(n[1]) + '</p></div>';
+  });
+  var row = function (id, fn, t, m) {
+    return '<li><button type="button" class="you-row" id="' + id + '" onclick="' + fn + '"><span class="you-text"><span class="you-t">' + t + '</span><span class="you-m">' + m + '</span></span>'
+      + '<span class="you-chev" aria-hidden="true">' + ico('chevron', 18) + '</span></button></li>';
+  };
+  html += '<details class="you-pl-more"' + (plantMoreOpen ? ' open' : '') + ' ontoggle="plantMoreOpen=this.open"><summary class="you-pl-btn">Look, plant and name' + ico('chevron-down', 18) + '</summary>'
+    + '<p class="plnt-look-line">' + escapeHtml(K.plant.GROWTH_LOOKS[g]) + '</p>'
+    + '<ul class="you-list plnt-acts">'
+    + row('plActLook', "plantOpen('look','you')", 'Change its look', 'Colour, ground, planter and visitor')
+    + row('plActSpecies', "plantOpen('species','you')", 'Change plant', 'Same growth, new look.')
+    + row('plActName', "plantOpen('name','you')", 'Rename', p.name ? 'Now: ' + escapeHtml(p.name) : 'No name yet')
+    + '</ul>';
+  var f = plantFactsNow(now);
+  var next = f ? K.plant.nextGrowthSteps(g, f) : null;
+  html += '<h3 class="plnt-sub">What grows it next' + (next ? '<span class="plnt-sub-m">' + K.plant.GROWTH_NAMES[next.growth] + '</span>' : '') + '</h3>';
+  if (!f) {
+    html += '<p class="plnt-meta">Working it out from your progress&hellip;</p>';
+  } else if (next) {
+    html += '<ul class="plnt-steps">' + next.steps.map(function (st) {
+      var pc = Math.round(Math.max(0, Math.min(1, st.progress)) * 100);
+      var word = st.progress >= 1 ? 'Done' : st.progress <= 0 ? 'Not yet' : pc + '%';
+      var spoken = st.progress >= 1 ? 'Done' : st.progress <= 0 ? 'Not yet' : pc + ' percent there';
+      return '<li class="plnt-step"><div class="plnt-step-row"><span class="plnt-step-t">' + escapeHtml(st.label) + '<span class="sr-only">. ' + spoken + '.</span></span>'
+        + '<span class="plnt-step-v' + (st.progress >= 1 ? ' done' : '') + '" aria-hidden="true">' + word + '</span></div>'
+        + '<div class="plnt-bar" aria-hidden="true"><span style="width:' + pc + '%"></span></div></li>';
+    }).join('') + '</ul>'
+      + '<p class="plnt-small">\u201cKnow the outline\u201d counts: ' + escapeHtml(K.plant.SPREAD_EXPLAINER.charAt(0).toLowerCase() + K.plant.SPREAD_EXPLAINER.slice(1)) + '</p>'
+      + '<p class="plnt-small">Only real progress grows it: never taps, minutes, streaks or games. It never shrinks.</p>';
+  } else {
+    html += '<p class="plnt-meta">Fully grown, and in season. It keeps all of its growth.</p>';
+  }
+  return html + '</details>';
+}
+// The plant card on You (Grove C2: at every width, no rail). The chip in
+// the summary follows the plant (the plant script can arrive after You).
 function plantYouInline(show) {
   var slot = document.getElementById('youPlant');
   if (!slot) return;
@@ -17404,6 +18025,7 @@ function plantYouInline(show) {
     slot.setAttribute('data-key', key);
   }
   slot.hidden = !html;
+  if (show) youChipSync();
 }
 function plantRailSections() {
   var html = plantYouHtml('rail');
@@ -20455,7 +21077,7 @@ function storeExamDate(iso) {
   try { updateHeaderCountdown(); } catch (e) {}
   try { renderYouExamDate(); } catch (e) {}
   try { if (S.activeTab === 'home') renderHome(); } catch (e) {}
-  showToast(iso ? 'Exam date saved: ' + examDateWords(iso) : 'No date for now. Add it any time from You.', 'info', 2600);
+  showToast(iso ? 'Exam date saved: ' + examDateWords(iso) : 'No date for now. Add it any time from Settings.', 'info', 2600);
 }
 function setExamDateMonths(n) {
   storeExamDate(n > 0 ? isoLocalDate(monthsFromToday(n)) : '');
@@ -20516,27 +21138,42 @@ function renderYouExamDate() {
   if (!m) return;
   var cur = savedExamDate();
   var days = examDaysLeft();
-  m.textContent = !cur ? 'Not set' : (days !== null && days < 0 ? examDateWords(cur) + ' · Date passed' : examDateWords(cur));
+  m.textContent = !cur ? 'Not set \u00b7 shapes your plan and exam week'
+    : days !== null && days < 0 ? examDateWords(cur) + ' \u00b7 Date passed'
+    : days === 0 ? examDateWords(cur) + ' \u00b7 Exam day'
+    : days !== null ? examDateWords(cur) + ' \u00b7 ' + days + (days === 1 ? ' day' : ' days') + ' to go'
+    : examDateWords(cur);
 }
 
 // A small confirm sheet for the resets and the import (v12.30: no browser
-// confirm() boxes). onConfirm runs only on the explicit button.
+// confirm() boxes). onConfirm runs only on the explicit button. Optional
+// (Grove C2): cancelLabel (the safe button's words), and extra
+// { label, icon, onClick, done, failed }: a third button that runs without
+// closing the sheet (Start fresh's "Back up first"); focus stays on it and a
+// polite line under the buttons says how it went. The body describes the
+// dialog (aria-describedby).
 var ksConfirmAction = null;
+var ksConfirmExtra = null;
 function ksConfirm(o) {
   var modal = document.getElementById('flagModal');
   if (!modal) return;
   ksConfirmAction = o.onConfirm || null;
+  ksConfirmExtra = o.extra && typeof o.extra.onClick === 'function' ? o.extra : null;
   // Where focus goes when the sheet closes, when the opener will be gone.
   if (o.returnTo) modal.setAttribute('data-return', o.returnTo);
+  var x = ksConfirmExtra;
   modal.innerHTML = '<div class="mock-confirm-overlay ks-sheet-overlay" onclick="closeFlagModal(event)">'
-    + '<div class="mock-confirm-modal ks-sheet" role="dialog" aria-modal="true" aria-labelledby="ksConfH">'
+    + '<div class="mock-confirm-modal ks-sheet' + (x ? ' ks-stack' : '') + '" role="dialog" aria-modal="true" aria-labelledby="ksConfH" aria-describedby="ksConfB">'
     + '<h2 class="mock-confirm-head" id="ksConfH">' + escapeHtml(o.title) + '</h2>'
     + '<div class="mock-confirm-body">'
-    + '<p class="ks-sheet-sub">' + escapeHtml(o.body) + '</p>'
+    + '<p class="ks-sheet-sub" id="ksConfB">' + escapeHtml(o.body) + '</p>'
     + '<div class="mock-confirm-btns">'
-    + '<button type="button" class="mock-confirm-btn cancel" onclick="closeFlagModal()">Cancel</button>'
+    + '<button type="button" class="mock-confirm-btn cancel" onclick="closeFlagModal()">' + escapeHtml(o.cancelLabel || 'Cancel') + '</button>'
+    + (x ? '<button type="button" class="mock-confirm-btn ks-extra" id="ksConfExtra" onclick="runKsExtra()">' + (x.icon ? ico(x.icon, 18) : '') + escapeHtml(x.label) + '</button>' : '')
     + '<button type="button" class="mock-confirm-btn ' + (o.danger ? 'danger' : 'gostart') + '" id="ksConfGo" onclick="runKsConfirm()">' + escapeHtml(o.confirmLabel) + '</button>'
-    + '</div></div></div></div>';
+    + '</div>'
+    + (x ? '<p class="ks-say" id="ksConfSay" role="status" aria-live="polite"></p>' : '')
+    + '</div></div></div>';
   // The safe choice takes focus, so Enter never confirms by accident.
   // (After the dialog manager has noted the opener, so focus goes back there on close.)
   var c = modal.querySelector('.mock-confirm-btn.cancel');
@@ -20545,16 +21182,32 @@ function ksConfirm(o) {
 function runKsConfirm() {
   var fn = ksConfirmAction;
   ksConfirmAction = null;
+  ksConfirmExtra = null;
   closeFlagModal();
   if (typeof fn === 'function') fn();
 }
+function runKsExtra() {
+  var x = ksConfirmExtra;
+  if (!x) return;
+  var ok = false;
+  try { ok = x.onClick() !== false; } catch (e) { ok = false; }
+  var say = document.getElementById('ksConfSay');
+  if (!say) return;
+  // Emptied first, so saying it twice is heard twice.
+  say.textContent = '';
+  setTimeout(function () { say.textContent = ok ? (x.done || 'Done.') : (x.failed || 'That did not work.'); }, 60);
+}
 
 // â”€â”€ RESET PROGRESS â”€â”€
+// Start fresh (Settings, and the Your data sheet): the safe button first and
+// focused, then "Back up first" (a file, the sheet stays open), then clear.
 function confirmResetProgress() {
   ksConfirm({
-    title: 'Reset all progress?',
-    body: 'Every answer, score and note in this browser is cleared. This cannot be undone.',
-    confirmLabel: 'Reset everything',
+    title: 'Start fresh?',
+    body: 'Every answer, score and note in this browser is cleared. Only a backup file can bring them back.',
+    cancelLabel: 'Keep my progress',
+    extra: { label: 'Back up first', icon: 'install', onClick: function () { return exportProgress(); }, done: 'Backup saved.', failed: 'Backup failed.' },
+    confirmLabel: 'Clear progress',
     danger: true,
     onConfirm: doResetProgress
   });
@@ -23190,7 +23843,7 @@ if (shouldResumeCurrent() && (!S.activeTab || S.activeTab === 'practice')) {
   renderResumePrompt();
 }
 
-// An address that asks for a popup (#whats-new, #your-data) opens it on You.
+// An address that asks for a popup (#whats-new on You, #your-data on Settings) opens it.
 if (bootNav && bootNav.action) setTimeout(function () { navRunAction(bootNav.action); }, 0);
 
 // First visit: the welcome (onboarding) opens after a short pause.
@@ -25459,7 +26112,7 @@ function toggleDarkMode() {
   // The plant's ground shadow and resting dusk follow the theme.
   try { plantRefresh(); } catch (e) {}
 }
-// The "Dark mode" switch on You shows the theme in use.
+// The "Dark mode" switch on Settings shows the theme in use.
 function syncThemeSwitch() {
   var btn = document.getElementById('darkToggleBtn');
   if (!btn) return;
@@ -25493,7 +26146,7 @@ function syncExamModeBtn() {
   var icon = document.getElementById('examModeIcon');
   var label = document.getElementById('examModeLabel');
   if (!btn) return;
-  // The control is the "Exam-day rehearsal" switch on You.
+  // The control is the "Exam-day rehearsal" switch on Settings.
   btn.setAttribute('aria-checked', S.examMode ? 'true' : 'false');
   if (S.examMode) {
     if (icon) icon.innerHTML = ico('exam', 18);
