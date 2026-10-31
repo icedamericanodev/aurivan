@@ -11,6 +11,7 @@
  * the domain's last note was just read.
  */
 import { router, useLocalSearchParams } from 'expo-router';
+import { openTab } from '../../lib/actions';
 import { useEffect, useMemo, useState } from 'react';
 import { AccessibilityInfo, View } from 'react-native';
 import { EmptyScreen } from '../../components/emptyScreen';
@@ -56,9 +57,10 @@ export default function NotesHome() {
     return (
       <EmptyScreen
         header="Study notes"
+        fallback="/learn"
         title="Notes are on the way"
         body="Study notes for this exam aren't in the app yet. Lessons and practice are ready now."
-        primary={{ label: 'Back to Learn', onPress: () => router.replace('/learn') }}
+        primary={{ label: 'Back to Learn', onPress: () => openTab('/learn') }}
       />
     );
   }

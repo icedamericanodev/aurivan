@@ -62,7 +62,7 @@ import { haptic } from '../../lib/haptics';
 import { noteLessonFinished } from '../../lib/lessonNews';
 import { monthYear } from '../../lib/format';
 import { lessonNotes } from '../../lib/outline';
-import { openSessionFromStack, openTab } from '../../lib/actions';
+import { backOr, openSessionFromStack, openTab } from '../../lib/actions';
 import { guardedStart, startFromIds, startPractice } from '../../lib/sessions';
 import { useProgress } from '../../store/progress';
 import { useSettings } from '../../store/settings';
@@ -206,7 +206,7 @@ export default function LessonPlayer() {
       <SafeAreaView style={{ flex: 1, backgroundColor: c.bg, padding: space.gutter, justifyContent: 'center' }}>
         <T v="headline" center>This lesson isn’t available.</T>
         <Gap />
-        <Button label="Back" onPress={() => router.back()} />
+        <Button label="Back" onPress={() => backOr('/learn')} />
       </SafeAreaView>
     );
   }
@@ -273,7 +273,7 @@ export default function LessonPlayer() {
         />
         <PushedHeader
           icon="close"
-          onBack={() => router.back()}
+          onBack={() => backOr('/learn')}
           center={<SegmentBar total={total} done={showingDone ? total : shownIndex} current={showingDone ? total : shownIndex} />}
           right={
             showingDone ? undefined : (

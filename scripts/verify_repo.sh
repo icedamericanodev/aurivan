@@ -209,6 +209,39 @@ if ! python3 scripts/check_longest_option.py; then
   status=1
 fi
 
+# 6a2. AAIA course (data/aaia/) ---------------------------------------------
+# The paid AAIA pack: item style (lint_exam_style_v2 --file, exit 1 = error),
+# notes against the AAIA outline and bank, and the bank checks (citations in
+# the AAIA library, area coverage, length tell, notes links).
+if [ -d data/aaia/originals ]; then
+  printf "\n"
+  python3 scripts/check_aaia_bank.py || status=1
+  for f in data/aaia/originals/d[0-9].json; do
+    out=$(python3 scripts/lint_exam_style_v2.py --file "$f"); rc=$?
+    printf "  %s: %s\n" "$(basename "$f")" "$(printf '%s\n' "$out" | tail -1)"
+    if [ "$rc" -eq 1 ]; then printf '%s\n' "$out" | grep '^ERROR' | sed 's/^/    /'; status=1; fi
+  done
+  for f in data/aaia/notes/d[0-9].json; do
+    out=$(python3 scripts/lint_notes.py "$f" --outline docs/content/AAIA_BLUEPRINT.md --bank data/aaia/originals); rc=$?
+    printf "  notes %s: %s\n" "$(basename "$f")" "$(printf '%s\n' "$out" | tail -1)"
+    if [ "$rc" -ne 0 ]; then printf '%s\n' "$out" | grep '^ERROR' | sed 's/^/    /'; status=1; fi
+  done
+  # Principles, exam guide and final review week (each "skipped" until written),
+  # then the app's own pack builders run on every AAIA file (dry run, temp folder).
+  out=$(python3 scripts/lint_principles.py --cert aaia); rc=$?
+  printf "  principles: %s\n" "$(printf '%s\n' "$out" | tail -1 | sed 's/^ *//; s/^Principles lint (aaia): //')"
+  if [ "$rc" -ne 0 ]; then printf '%s\n' "$out" | grep '✗' | sed 's/^ */    /'; status=1; fi
+  out=$(python3 scripts/lint_exam_guide.py --cert aaia); rc=$?
+  printf '%s\n' "$out" | grep 'skipped' | sed 's/^ */  exam guide: /'
+  if [ "$rc" -ne 0 ]; then printf '%s\n' "$out" | grep '✗' | sed 's/^ */    /'; status=1;
+  elif printf '%s\n' "$out" | grep -q '✓'; then printf "  exam guide: %s\n" "$(printf '%s\n' "$out" | tail -1 | sed 's/^ *//')"; fi
+  if command -v node >/dev/null 2>&1; then
+    node scripts/aaia_pack_dry_run.cjs || status=1
+  else
+    printf "  AAIA pack dry run: skipped (node not found)\n"
+  fi
+fi
+
 # 6b. Mindset principles (data/mindset/principles.json) ----------------------
 # Schema, ids, practice-question and subtopic cross-references, word limits,
 # family/domain coverage, legacy id mapping. Errors fail the check; warnings

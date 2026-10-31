@@ -4,6 +4,11 @@ All notable user-facing changes to this app. The in-app **What's New** modal mir
 
 For internal/technical history, see git log and PR descriptions.
 
+## [v12.49.10] — More questions linked to exam principles
+
+### Improved
+- A few more practice questions now show the exam principle they test.
+
 ## [v12.49.9] — Priority-word explanations line up
 
 ### Improved

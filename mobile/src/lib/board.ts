@@ -36,7 +36,6 @@
  */
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useEffect } from 'react';
-import { InteractionManager } from 'react-native';
 import { create } from 'zustand';
 import { getBackend } from '../cloud/backend';
 import { CLOUD } from '../cloud/flag';
@@ -362,11 +361,26 @@ export function checkDraft(cert: string, text: string, itemRef: string | null, n
   };
 }
 
-/** Builds the fingerprint off the typing path (on composer open, after its animation): the first check doesn't freeze typing (CR N9). */
+/** If the phone never goes idle, build the fingerprint after this long anyway (ms). */
+const WARM_TIMEOUT_MS = 1500;
+
+/**
+ * Builds the fingerprint off the typing path (on composer open, after its animation): the first check doesn't freeze typing (CR N9).
+ * Expo SDK 58 (React Native 0.88) removed InteractionManager, so this waits for the
+ * phone's next idle moment instead (requestIdleCallback, React Native's suggested
+ * replacement), at most WARM_TIMEOUT_MS. Where there is no idle callback, a short timer does the same job.
+ */
 export function warmLeakGuard(cert: string): { cancel: () => void } {
-  return InteractionManager.runAfterInteractions(() => {
+  const run = () => {
     bankFingerprint(cert);
-  });
+  };
+  const g = globalThis as { requestIdleCallback?: typeof requestIdleCallback; cancelIdleCallback?: typeof cancelIdleCallback };
+  if (typeof g.requestIdleCallback === 'function' && typeof g.cancelIdleCallback === 'function') {
+    const id = g.requestIdleCallback(run, { timeout: WARM_TIMEOUT_MS });
+    return { cancel: () => g.cancelIdleCallback!(id) };
+  }
+  const timer = setTimeout(run, 0);
+  return { cancel: () => clearTimeout(timer) };
 }
 
 /**

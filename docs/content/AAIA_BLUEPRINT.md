@@ -18,6 +18,7 @@ Tasks are paraphrased. Short headings in quotes are ISACA's.
 | Scored / unscored | ISACA exams mix scored items with unscored pre-test items; the guide gives no count for AAIA | S1 |
 | Scoring | Scaled 200–800; 450 or higher passes. Domain results are informational only; the score counts total correct items regardless of domain | S1 |
 | Languages | English, Simplified Chinese, Spanish | S1 |
+| Delivery | Computer-based, at PSI test centers or by live remote proctoring. Residents of India, Mainland China and Hong Kong: test centers only (checked on S3, 31 Oct 2026) | S1, S3 |
 | Fees | US$459 ISACA members, US$599 non-members; non-refundable | S1 |
 | Retakes | Four attempts in a rolling 12 months: wait 30 days before attempt 2, then 90 days before attempts 3 and 4 | S1 |
 | Prerequisite | An active credential from the Qualified Prerequisite List (below) | S1 |

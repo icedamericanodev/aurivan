@@ -11,7 +11,7 @@ pass (search summaries only) is kept below as history, with corrections.
 | Earlier lead (first pass) | Opened source says | Source |
 |---|---|---|
 | "Cannot go back" was in the owner's brief only | Confirmed: no moving backwards to review or change answers | P2 |
-| Retakes: "a second opportunity" (owner) vs "three a year" (blog) | Up to 3 attempts a year; after a third failure, wait one year from the first exam, then 3 more. The blog was closer | P1, P2 |
+| Retakes: "a second opportunity" (owner) vs "three a year" (blog) | Up to 3 attempts a year. After a third failure the program page says wait at least one year before retaking (P1), while the steps PDF counts the year from the first exam (P2). The blog was closer | P1, P2 |
 | Certificate lifetime validity (secondary) | Confirmed: lifetime, no renewal or recertification | P3 |
 | No list price found | US$147 all-inclusive; full refund within 60 days | P1 |
 | Course parts from search summaries | Confirmed, with far more detail: Part 1 walks the Act title by title; Part 4 adds spreadsheets, SAS 70 / SSAE 16 / SSAE 18 and J-SOX; Part 5 adds FSOC, orderly liquidation, the Federal Insurance Office and the Volcker Rule | P1 |
@@ -24,6 +24,34 @@ pass (search summaries only) is kept below as history, with corrections.
 
 The owner also attached a copy of P2; its SHA-256 matches the file on the
 issuer's site.
+
+## Exam-taker feedback (searched 31 Oct 2026, third pass)
+
+The owner asked for feedback from people who passed, instead of enrolling.
+
+| What was searched | Result | Status |
+|---|---|---|
+| Reddit (search engines; reddit.com direct) | No thread mentions the CSOE; reddit.com is blocked from the cloud environment | — |
+| LinkedIn, Quora, forums | One LinkedIn profile saying the person passed the CSOE (no detail): https://www.linkedin.com/in/aayushi-shah-802856134/ ; a 2010-era reply on sarbanes-oxley-forum.com calling the program very good (search snippet only; host blocked): http://www.sarbanes-oxley-forum.com/topic/7630/sox-certification-2910 | SECONDARY |
+| Vendor blogs | Repeat SOXCPA's rules; one says content covers internal controls, Sections 302 and 404, COSO and the SEC's and PCAOB's roles: https://www.lumos.com/topic/sox-compliance-is-a-sox-certification-worth-it , https://guzmangray.com/sox-audit-certification/ , https://pathlock.com/blog/sox-compliance/sox-certifications-and-trainings/ | SECONDARY |
+
+Conclusion: no public source describes the questions. SOXCPA sends no sample
+questions and does not release the exam afterwards (P2), so this is
+expected. The owner's own debrief after sitting the exam (topics and styles
+only) is the planned check.
+
+## Rules watch (batch 2 currency checks, 31 Oct 2026)
+
+These items are correct today. Re-check them at every batch and fix the bank the day one changes.
+
+| Watch | Status on 31 Oct 2026 | What it would change |
+|---|---|---|
+| SEC Release No. 33-11419 (May 2026 proposal on filer categories) | Proposed, not adopted (fact sheet opened) | Would end the accelerated filer and smaller reporting company categories and change deadlines. Items that would flip: csoe_d1_004, 008, 015, 025, 034 |
+| SEC Release No. 33-11414 | Proposed, not adopted | Recheck with 33-11419 |
+| Section 16(a) for FPI insiders: Pub. L. 119-60 Section 8103, from 18 Mar 2026; SEC exemptive orders Release Nos. 34-104931 (5 Mar 2026) and 34-105517 (20 May 2026) | In force (orders opened). The orders exempt insiders of FPIs incorporated in listed jurisdictions and subject to a listed insider-reporting rule. Officers outside the local rule still file, and 10% owners of FPIs stay outside Section 16(a) (Rule 16a-2) | Taught in notes 1A3.3 and 3B1.3. New orders could add jurisdictions |
+| SEC v. Jarkesy, No. 22-859 (2024) | Decided (opened on Cornell) | A defendant facing civil penalties for securities fraud has a jury right, so those claims go to federal court unless settled. Taught in notes 4A3.5 |
+| AICPA attestation proposals (2026) | Exposure drafts, adoption expected 2027 | SSAE No. 18 (AT-C 320, as amended by SSAE No. 23) stays current until then |
+| Volcker Rule proposals | Not checked (federalreserve.gov refused) | csoe_d4_036 keys on the statute, so no change for now |
 
 ## Network (31 Oct 2026, second pass)
 

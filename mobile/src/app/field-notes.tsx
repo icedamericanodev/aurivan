@@ -10,6 +10,7 @@
  *   case opens at that shelf), unless badges are hidden in Settings.
  */
 import { router } from 'expo-router';
+import { backOr } from '../lib/actions';
 import { useMemo } from 'react';
 import { ScrollView, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -45,7 +46,7 @@ export default function FieldNotes() {
   return (
     <SafeAreaView edges={['top', 'bottom']} style={{ flex: 1, backgroundColor: c.bg }}>
       <ScrollView contentContainerStyle={{ paddingHorizontal: space.gutter, paddingBottom: space.xxl }}>
-        <PushedHeader title="Field notes" onBack={() => router.back()} />
+        <PushedHeader title="Field notes" onBack={() => backOr('/you')} />
         <T v="meta" style={{ marginTop: space.sm }}>Your level in each game, and how it grows.</T>
 
         <Section title="Game levels" />

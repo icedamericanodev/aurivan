@@ -24,7 +24,7 @@ are in `docs/content/CSOE_RESEARCH_LOG.md`.
 | Navigation | No moving back to review or change answers; no skipping (answer in the order presented); no stop and resume (closing the browser loses the answers and fails the attempt) | P2 |
 | Scope | "The exam contains only questions that have been clearly answered in the official presentations" | P2 |
 | Official presentations | 1,022 slides, as downloadable PDFs; SOXCPA estimates about 29 hours of study on average and advises studying them at least twice | P1, P3 |
-| Attempts | Up to 3 a year at no extra cost; after a third failure, wait one year from the first exam, then 3 more | P1, P2 |
+| Attempts | Up to 3 a year at no extra cost. After a third failure the pages differ: the program page says wait at least one year before retaking (P1); the steps PDF counts the year from the first exam (P2). Ask SOXCPA | P1, P2 |
 | Sample questions | SOXCPA sends no sample questions or past exams | P2 |
 | Certificate | PDF by email 7 business days after passing, with a QR code to a personal verification page | P1, P2 |
 | Validity | Lifetime; no renewal fees, no retake, no recertification | P3 |
@@ -239,18 +239,18 @@ and 1B2 are added once their sources open):
 
 ## Question targets
 
-Bank size decided 31 Oct 2026 by `product-manager` and `behavioral-scientist`
-(asked separately; both reached about 300). Per-domain targets scale that by
-the weights above.
+Bank size: **400**, the owner's decision on 31 Oct 2026 (`product-manager`
+and `behavioral-scientist` had each proposed about 300). Per-domain targets
+scale it by the weights above.
 
 | Domain | Weight | Target | Pilot |
 |---|---|---|---|
-| D1 Scope and reach of the Act | 14% | 42 | 20 |
-| D2 The PCAOB and auditor independence | 16% | 48 | 20 |
-| D3 Corporate responsibility and financial disclosure | 16% | 48 | 20 |
-| D4 The SEC, enforcement and Dodd-Frank | 27% | 81 | 20 |
-| D5 Internal control frameworks and SOX scope | 27% | 81 | 20 |
-| Total | | **300** | **100** |
+| D1 Scope and reach of the Act | 14% | 56 | 20 |
+| D2 The PCAOB and auditor independence | 16% | 64 | 20 |
+| D3 Corporate responsibility and financial disclosure | 16% | 64 | 20 |
+| D4 The SEC, enforcement and Dodd-Frank | 27% | 108 | 20 |
+| D5 Internal control frameworks and SOX scope | 27% | 108 | 20 |
+| Total | | **400** | **100** |
 
 - Mix per domain: about 30% foundational (recall), 55% application, 15%
   analysis (6 / 11 / 3 in a pilot of 20).
@@ -311,6 +311,7 @@ then pick the best of the rest.
    rulemaking list on every batch.
 5. **Not seen:** the official presentations themselves (paid). The exam asks
    only what they answer, so a few KaiSip items may test public law the
-   presentations skip, or miss a detail they stress. Owner decision whether
-   to enrol (CSOE_BANK_PLAN.md section 8).
+   presentations skip, or miss a detail they stress. The owner chose not to
+   enrol for now (CSOE_BANK_PLAN.md section 8); public exam-taker feedback
+   was searched and holds nothing about the questions.
 6. **Domain experts** for each domain: `.claude/agents/csoe-d{1..5}-domain-expert.md`.

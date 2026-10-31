@@ -2,9 +2,10 @@
 //
 // Shots: the welcome (the best feature first), "Where are you starting from?" right after it (no name
 // step), the first set's closing screen offering a plant (and after "Not now"), Today with "Short on
-// time? 5 questions", Today's one name ask, Help with "I'm a beta tester", the Tester question on
-// day 3, the Week 1 check-in with the study-day count, Send feedback with "Something confused me",
-// and Report a problem with "I couldn't find something".
+// time? 5 questions", Today's one name ask (its field in the card since 1.44, with a name typed in),
+// Help with "I'm a beta tester", the Tester question on day 3, the Week 1 check-in with the study-day
+// count, Send feedback with "Something confused me", and Report a problem with "I couldn't find
+// something".
 // NARROW=1 uses a 360-wide phone; FONT_SCALE=2 approximates 200% text.
 import { createRequire } from 'module';
 import fs from 'fs';
@@ -150,19 +151,19 @@ await edit(S, `v.state.fitPrompt = 'answered'; v.state.displayName = 'Maya';`);
 await go('/home', 2800);
 await shot('m04-today-short-on-time');
 
-// ── 4. Today's one name ask (the day after the first study day) ─────────
+// ── 4. Today's one name ask (the day after the first study day), typed in ─
 await edit(S, `delete v.state.displayName;`);
 await edit(SEEN, `v.state.nameAsk = 'due'; v.state.reminderAsk = { first: 'later', second: true };`);
 await edit(P, `v.state.plantSettings = { promptHidden: true }; const c = v.state.byCert.cisa; c.milestones = Object.assign(c.milestones || { earned: {} }, { days: 4, lastDay: a }); v.state.days = {};`, dk(now - DAY));
 await go('/home', 2800);
 await into('What should we call you?', 'm05');
 await shot('m05-today-name-ask');
-await press('Add a name', 900);
-await page.getByRole('textbox', { name: 'Your name' }).fill('Maya');
+// Mobile 1.44: the field sits in the card ("Name or nickname", components/beta.tsx), no sheet.
+// Nothing is saved without "Save my name", so typing here leaves the learner unnamed.
+await page.getByRole('textbox', { name: 'Name or nickname' }).first().click();
+await page.getByRole('textbox', { name: 'Name or nickname' }).first().fill('Maya');
 await wait(400);
-await shot('m05b-name-sheet');
-await page.getByLabel('Cancel, Your name').first().click().catch(() => {});
-await wait(400);
+await shot('m05b-name-typed');
 
 // ── 5. Help: "I'm a beta tester" ────────────────────────────────────────
 await edit(SEEN, `v.state.nameAsk = 'shown';`);

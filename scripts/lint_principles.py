@@ -7,8 +7,16 @@ Usage:
     # another certification's file, checked against its own notes and bank:
     python3 scripts/lint_principles.py data/crisc/mindset/principles.json \
         --notes data/crisc/notes --bank data/crisc/originals
+    # the AAIA course (data/aaia/principles.json, its notes and bank):
+    python3 scripts/lint_principles.py --cert aaia
 
 Optional flags (the defaults check the CISA files, unchanged):
+    --cert aaia   the AAIA files: data/aaia/principles.json (or a draft path),
+                  notes data/aaia/notes/d1-3.json (topic codes like 1A and
+                  subtopic codes like 1A.2 are both allowed), bank
+                  data/aaia/originals/d1-3.json (ids like aaia_d1_004),
+                  domains 1-3, no old PRINCIPLES_LIB ids. A principles file
+                  that is not written yet prints "skipped: ..." and exits 0
     --notes PATH  notes file, or a folder of d{N}.json notes files, that
                   subtopic codes must exist in (codes like 3C3.2 are allowed)
     --bank DIR    folder of d{N}.json question files; domains come from the
@@ -69,6 +77,28 @@ LEGACY_IDS = {
 # Used only if mobile/ is absent from the checkout.
 FALLBACK_SLIPS = {"runner-up", "priority", "overconfident", "role", "tech-first",
                   "symptom", "misread", "knowledge"}
+
+# --cert profiles. CISA (the default) is the module constants above, unchanged.
+AAIA = ROOT / "data" / "aaia"
+CERT_PROFILES = {
+    "aaia": {
+        "principles": AAIA / "principles.json",
+        "notes": AAIA / "notes",
+        "bank": AAIA / "originals",
+        "domains": {1, 2, 3},
+        "qid": r"^aaia_d([1-3])_\d{3}$",
+        "qid_example": "aaia_d1_004",
+        # The AAIA outline (docs/content/AAIA_BLUEPRINT.md): areas 1A-3E and
+        # their subtopics 1A.1-3E.3. A principle may link either.
+        "subtopic": r"^([1-3])[A-G](?:\.\d+)?$",
+        "subtopic_example": "1A or 1A.2",
+        "topic_codes": True,
+    },
+}
+# Wording of two messages; a --cert profile swaps in its own id formats.
+QID_EXAMPLE = "d1_004"
+SUBTOPIC_EXAMPLE = "1A3.6"
+TOPIC_CODES = False  # also accept topic codes (1A) as subtopics
 
 TOP_KEYS = {"schema_version", "title", "updated", "description", "families",
             "principles", "slip_map"}
@@ -220,6 +250,8 @@ def load_subtopic_codes():
         # One combined file holds "domains"; a per-domain file holds "topics".
         for d in notes.get("domains", [notes]):
             for t in d.get("topics", []):
+                if TOPIC_CODES:
+                    codes.add(t.get("topic_id"))
                 for s in t.get("subtopics", []):
                     codes.add(s.get("id"))
     return codes
@@ -426,7 +458,7 @@ def check_principle(p, i, ctx):
     for s in subs:
         m = SUBTOPIC.match(s) if isinstance(s, str) else None
         if not m:
-            err(where, f"subtopic '{s}' is not a note code like 1A3.6")
+            err(where, f"subtopic '{s}' is not a note code like {SUBTOPIC_EXAMPLE}")
             continue
         if ctx["codes"] and s not in ctx["codes"]:
             err(where, f"subtopic '{s}' does not exist in {rel(NOTES)}")
@@ -443,7 +475,7 @@ def check_principle(p, i, ctx):
     for q in pids:
         m = QID.match(q) if isinstance(q, str) else None
         if not m:
-            err(where, f"practice id '{q}' is not like d1_004")
+            err(where, f"practice id '{q}' is not like {QID_EXAMPLE}")
             continue
         if ctx["qids"] and q not in ctx["qids"]:
             err(where, f"practice id '{q}' does not exist in {rel(ORIGINALS)}")
@@ -504,12 +536,30 @@ def configure(notes=None, bank=None):
         LEGACY_IDS = set()  # the old web PRINCIPLES_LIB was CISA only
 
 
+def configure_cert(cert):
+    """Point every check at a --cert profile (CERT_PROFILES). Returns its default file."""
+    global NOTES, ORIGINALS, DOMAINS, QID, SUBTOPIC, LEGACY_IDS
+    global QID_EXAMPLE, SUBTOPIC_EXAMPLE, TOPIC_CODES
+    prof = CERT_PROFILES.get(cert)
+    if prof is None:
+        print(f"✗ --cert {cert}: unknown certification (known: {', '.join(sorted(CERT_PROFILES))})")
+        sys.exit(2)
+    NOTES, ORIGINALS = prof["notes"], prof["bank"]
+    DOMAINS = set(prof["domains"])
+    QID = re.compile(prof["qid"])
+    SUBTOPIC = re.compile(prof["subtopic"])
+    QID_EXAMPLE, SUBTOPIC_EXAMPLE = prof["qid_example"], prof["subtopic_example"]
+    TOPIC_CODES = prof["topic_codes"]
+    LEGACY_IDS = set()  # the old web PRINCIPLES_LIB was CISA only
+    return prof["principles"]
+
+
 def parse_args(argv):
-    path, opts = None, {"notes": None, "bank": None}
+    path, opts = None, {"notes": None, "bank": None, "cert": None}
     args = list(argv[1:])
     while args:
         a = args.pop(0)
-        if a in ("--notes", "--bank"):
+        if a in ("--notes", "--bank", "--cert"):
             if not args:
                 print(f"✗ {a} needs a value")
                 sys.exit(2)
@@ -524,6 +574,14 @@ def parse_args(argv):
 
 def main(argv):
     path, opts = parse_args(argv)
+    cert = (opts.pop("cert") or "").lower()
+    if cert and cert != "cisa":
+        default = configure_cert(cert)
+        if path == DEFAULT:
+            path = default
+        if not path.exists():
+            print(f"Principles lint ({cert}): skipped: {rel(path)} not written yet")
+            return 0
     configure(**opts)
     try:
         doc = json.loads(path.read_text())

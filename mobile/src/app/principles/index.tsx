@@ -23,6 +23,7 @@
  * shows the whole list.
  */
 import { router, useLocalSearchParams } from 'expo-router';
+import { openTab } from '../../lib/actions';
 import { useState } from 'react';
 import { View } from 'react-native';
 import { EmptyScreen } from '../../components/emptyScreen';
@@ -51,9 +52,10 @@ export default function PrinciplesHome() {
     return (
       <EmptyScreen
         header="Principles"
+        fallback="/learn"
         title="Principles are on the way"
         body="The exam-mindset principles for this exam aren't in the app yet. Lessons and practice are ready now."
-        primary={{ label: 'Back to Learn', onPress: () => router.replace('/learn') }}
+        primary={{ label: 'Back to Learn', onPress: () => openTab('/learn') }}
       />
     );
   }

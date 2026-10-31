@@ -46,6 +46,7 @@ import Constants from 'expo-constants';
 import { useCallback, useEffect, useRef, useState, type ReactNode, type RefObject } from 'react';
 import * as ExpoRouter from 'expo-router';
 import { router, useLocalSearchParams } from 'expo-router';
+import { backOr } from '../lib/actions';
 import { Alert, Linking, Platform, View, type ScrollView } from 'react-native';
 import { aboutLine, AccountSettingsGroup } from '../components/account';
 import { BoardSettingsGroup } from '../components/board';
@@ -790,7 +791,7 @@ export default function Settings() {
       <SettingsSubScreen.Provider value={subCategory !== undefined}>
         {/* Same pushed header as Saved and Mistakes: the title lives in the bar. A door's screen: its name
             is the bar's title, and screen-reader focus starts there. */}
-        <PushedHeader title={subCategory ? subCategory.title : 'Settings'} titleRef={subCategory ? subHeadRef : undefined} onBack={() => router.back()} />
+        <PushedHeader title={subCategory ? subCategory.title : 'Settings'} titleRef={subCategory ? subHeadRef : undefined} onBack={() => backOr('/you')} />
 
         {subCategory ? (
           subCategory.draw()
