@@ -172,3 +172,13 @@ Rule for the form builder: Draw no two items of a pair into the same form. Keep 
 | csoe_d4_035 | csoe_d4_079 | both on the insurance office's powers |
 | csoe_d4_047 | csoe_d4_065 | the SEC acts through a federal court |
 | csoe_d4_053 | csoe_d4_077 | Title II; 077 names the FDIC's recommending role (d4_053 is held out) |
+| csoe_d5_042 | csoe_d5_068 | d5_068's explanation and exam cue give the management-accountable, board-oversees split (held-out d5_042) |
+| csoe_d5_038 | csoe_d5_082 | d5_038's stem states d5_082's key (SOC 1 for user entities) |
+| csoe_d5_018 | csoe_d5_084 | d5_084 wrong explanation C and tip 1: monitoring outsourced controls is management's work |
+| csoe_d5_001 | csoe_d5_062 | both test reasonable assurance |
+| csoe_d5_001 | csoe_d5_070 | d5_070 teaches that effective control cannot guarantee results |
+| csoe_d5_064 | csoe_d5_077 | both Release 33-8810 II.A.2.b monitoring evidence |
+| csoe_d5_033 | csoe_d5_071 | entity-wide view vs portfolio view |
+| csoe_d5_010 | csoe_d5_073 | ERM is broader than internal control |
+| csoe_d5_032 | csoe_d5_073 | the 2017 misconceptions box |
+| csoe_d5_032 | csoe_d5_074 | the 2017 misconceptions box |
