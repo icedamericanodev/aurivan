@@ -13,3 +13,7 @@ section 3). They read and write only `data/cc/`.
 Style rules (stem and option length, echoes, absolutes) are checked by
 `python3 scripts/lint_exam_style_v2.py --file data/cc/originals/dN.json`; its
 "stem names no actor" warning looks for CISA actors and is expected on CC items.
+
+Notes are checked by the shared notes linter given the CC outline and bank:
+`python3 scripts/lint_notes.py data/cc/notes/dN.json --outline docs/content/CC_BLUEPRINT.md --bank data/cc/originals`
+(without `--outline` it compares with the CISA outline and reports a false error).

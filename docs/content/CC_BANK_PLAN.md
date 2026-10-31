@@ -86,7 +86,12 @@ The pilot set this order. Don't skip a step to go faster.
      `scripts/check_longest_option.py` applies to CISA since #155). Tools are
      described in `data/cc/tools/README.md`.
    - `python3 scripts/lint_exam_style_v2.py --file data/cc/originals/dN.json`
-     must show 0 errors. Its "stem names no actor" warning looks for CISA
+     must show 0 errors.
+   - When notes change: `python3 scripts/lint_notes.py data/cc/notes/dN.json
+     --outline docs/content/CC_BLUEPRINT.md --bank data/cc/originals` must show
+     0 errors (it also warns when a notes example retells a bank question), and
+     `python3 data/cc/tools/sync_practice_ids.py` refreshes the notes'
+     "Practice this concept" links. Its "stem names no actor" warning looks for CISA
      actors, so it is expected on CC items, but every stem must still name
      who acts.
    - Every `framework_ref` part must match a library bullet exactly.
@@ -297,8 +302,7 @@ Lessons from the D2/D3/D5 round, for batch 3:
 - The CC-only checks now live in `data/cc/tools/check_cc.py` (library match,
   notes links, tip structure, length tells). What remains for a session that
   owns `scripts/`: let `lint_exam_style_v2.py` accept CC actors so its "stem
-  names no actor" warning stops firing on CC items, and let
-  `scripts/lint_notes.py` check CC notes against the CC outline (it compares
-  every notes file with the CISA outline today).
+  names no actor" warning stops firing on CC items. (`scripts/lint_notes.py`
+  already checks CC notes when given the CC outline and bank; see section 3.)
 - Done 31 Oct 2026: the five domain-expert agent files and the standards
   auditor now point at the blueprint targets, this plan and the checker.
