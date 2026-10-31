@@ -2,7 +2,7 @@
 
 Two items are linked when one item's explanation or key gives away the other's answer, or both test the same rule from contrasting angles. A held-out mock form must never contain both items of a pair. Source: the batch 2 cross-domain review (31 Oct 2026); extend it at every cross-domain gate.
 
-Rule for the form builder: Draw no two items of a pair into the same form. Keep the hubs csoe_d3_038 and csoe_d4_029 in practice, not in the held-out set: their facts recur too often to test cleanly.
+Rule for the form builder: Draw no two items of a pair into the same form. Keep the hubs csoe_d3_038, csoe_d4_029 and csoe_d4_001 in practice, not in the held-out set: their facts recur too often to test cleanly.
 
 | Item A | Item B | Why linked |
 |---|---|---|
@@ -97,3 +97,14 @@ Rule for the form builder: Draw no two items of a pair into the same form. Keep 
 | csoe_d2_057 | csoe_d2_063 | d2_057 exam cue contrasts the two small-firm exemptions |
 | csoe_d2_058 | csoe_d2_059 | two angles on the audit-partner definition |
 | csoe_d2_017 | csoe_d2_059 | d2_059 tips: the lead partner and reviewer have the five-year limit |
+| csoe_d4_014 | csoe_d4_049 | both key 18 U.S.C. 1349 |
+| csoe_d4_055 | csoe_d4_056 | d4_056: the U.S. buffer comes from Basel III through the agencies' rule |
+| csoe_d4_038 | csoe_d4_058 | d4_038: independent directors decide the Rule 10D-1 cost exception |
+| csoe_d4_019 | csoe_d4_058 | d4_058's wrong explanation D and its tips: recovery does not turn on the officer's role (no-fault) |
+| csoe_d4_051 | csoe_d4_052 | both Exchange Act Section 32(a) as raised by Section 1106 |
+| csoe_d4_032 | csoe_d4_052 | mirror individual-versus-entity penalty items |
+| csoe_d4_045 | csoe_d2_054 | both the Section 19(b) self-regulatory route |
+| csoe_d1_054 | csoe_d4_047 | both Section 1103; each explanation states the other's key |
+| csoe_d2_003 | csoe_d4_060 | Section 109 fee allocation, contrasting measures |
+| csoe_d4_018 | csoe_d4_057 | d4_057: the 989G(b) study touched only 404(b); 404(a) stays |
+| csoe_d3_043 | csoe_d4_046 | d3_043's exam cue: audit committee rules are listing conditions |
