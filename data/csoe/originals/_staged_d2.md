@@ -9,7 +9,7 @@ library's form, to merge into `_framework_library.md` with
 - Sarbanes-Oxley Act of 2002 Section 101(b) (Status of the Board)
   - Verified (opened 31 Oct 2026): https://www.govinfo.gov/content/pkg/PLAW-107publ204/html/PLAW-107publ204.htm; checked Section 101(a)-(b): a nonprofit corporation, not an agency or establishment of the U.S. government; members and staff not federal officers or employees
 - Sarbanes-Oxley Act of 2002 Section 101(e) (Board membership)
-  - Verified (opened 31 Oct 2026): https://www.govinfo.gov/content/pkg/PLAW-107publ204/html/PLAW-107publ204.htm; checked five members; two and only two are or have been CPAs (CPA chair out of practice 5 years); full-time, no other professional or business activity; SEC appoints after consulting the Fed chair and Treasury Secretary; 5-year terms, 2-term limit; unchanged in 15 U.S.C. 7211(e) except Dodd-Frank's broker-dealer wording
+  - Verified (opened 31 Oct 2026): https://www.govinfo.gov/content/pkg/PLAW-107publ204/html/PLAW-107publ204.htm; checked five members; two and only two are or have been CPAs (CPA chair out of practice 5 years); full-time, no other professional or business activity; SEC appoints after consulting the Fed chair and Treasury Secretary; 5-year terms, 2-term limit; unchanged in 15 U.S.C. 7211(e) except Dodd-Frank's broker-dealer wording. Caveat: the for-cause removal limit in 101(e)(6) (and 107(d)(3)) was held unconstitutional and severed in Free Enterprise Fund v. PCAOB, 561 U.S. 477 (2010), so the SEC may remove Board members at will; items do not key on removal
 - Sarbanes-Oxley Act of 2002 Section 102(a) (Mandatory registration)
   - Verified (opened 31 Oct 2026): https://www.govinfo.gov/content/pkg/PLAW-107publ204/html/PLAW-107publ204.htm; checked unlawful for an unregistered firm to prepare, issue or participate in an issuer's audit report; current text (https://www.law.cornell.edu/uscode/text/15/7212) drops the 180-day start-up phrase and adds brokers and dealers
 - Sarbanes-Oxley Act of 2002 Section 102(c) (Action on applications)
@@ -72,4 +72,9 @@ library's form, to merge into `_framework_library.md` with
 ## SEC releases
 
 - SEC Release No. 33-8221 (Policy statement reaffirming FASB as a designated private-sector standard setter)
-  - Verified (opened 31 Oct 2026): https://www.sec.gov/rules/policy/33-8221.htm; checked summary: the SEC determined FASB and the FAF meet the Section 108 criteria, so FASB standards are recognized as generally accepted for the federal securities laws (Aug. 2003)
+  - Verified (opened 31 Oct 2026): https://www.sec.gov/rules/policy/33-8221.htm; checked summary: the SEC determined FASB and the FAF meet the Section 108 criteria, so FASB standards are recognized as generally accepted for the federal securities laws (signed April 25, 2003)
+
+## Court decisions
+
+- Free Enterprise Fund v. PCAOB 561 U.S. 477 (2010) (Removal of Board members)
+  - Verified (opened 31 Oct 2026): https://www.govinfo.gov/content/pkg/USREPORTS-561/pdf/USREPORTS-561-477.pdf; checked syllabus: the dual for-cause removal limits in 15 U.S.C. 7211(e)(6) and 7217(d)(3) are unconstitutional and severable; the Board continues, and its members are removable by the SEC at will
