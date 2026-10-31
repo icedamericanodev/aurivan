@@ -20,6 +20,7 @@
  * Takes no link parameters and calls nothing until a tap.
  */
 import { router } from 'expo-router';
+import { openTab } from '../../../lib/actions';
 import { useEffect, useRef, useState } from 'react';
 import { Alert, View } from 'react-native';
 import { AccountNotice } from '../../../components/account';
@@ -46,7 +47,7 @@ export default function SignOut() {
     setBusy('out');
     const r = await signOutHere({ removeLocal: remove });
     setBusy(null);
-    if (r.ok) router.replace('/you');
+    if (r.ok) openTab('/you');
     else setNotice(copy('err.server'));
   };
   const go = async () => {

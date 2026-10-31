@@ -25,6 +25,7 @@
  * calm "not in the app yet" screen. Nothing is saved.
  */
 import { router, useLocalSearchParams } from 'expo-router';
+import { openTab } from '../lib/actions';
 import { createRef, useEffect, useMemo, useRef, useState, type RefObject } from 'react';
 import { View } from 'react-native';
 import { EmptyScreen } from '../components/emptyScreen';
@@ -59,7 +60,7 @@ export default function ExamGuideScreen() {
         art="fieldbook"
         title="Not in the app yet"
         body="A guide to this exam isn't ready yet. Lessons and practice are ready now."
-        primary={{ label: 'Back to Learn', onPress: () => router.replace('/learn') }}
+        primary={{ label: 'Back to Learn', onPress: () => openTab('/learn') }}
       />
     );
   }

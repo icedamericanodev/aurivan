@@ -27,6 +27,10 @@ const openSession = () => router.push('/session');
  * 1.20). The tabs sit at the bottom of that stack; push and navigate would
  * both stack a NEW tab navigator on top (expo-router 57), so dismiss back to
  * the one already there. Nothing under this screen (a deep link): replace.
+ * A bare router.replace('/home') stacks a new one too (it swaps only the top
+ * screen for a whole new tab navigator): mobile 1.54.1 moved Results, Session,
+ * the first set's closing screen and the empty states here
+ * (src/__tests__/stacked-tabs-router58.test.tsx). Use this for every tab.
  */
 /** Practice, opened at Drills: where every old Play link lands (app/play.tsx, lib/legacyLinks.ts, a badge's "Study for this"). */
 export const DRILLS_SECTION = 'drills';

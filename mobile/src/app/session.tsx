@@ -62,6 +62,7 @@
  * - "Next question" is the plate button over a hairline. A mock is unchanged.
  */
 import * as Router from 'expo-router';
+import { openTab } from '../lib/actions';
 import { router, useFocusEffect } from 'expo-router';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import {
@@ -389,7 +390,7 @@ export default function SessionScreen() {
 
   // Android hardware back button runs the same "End/Pause?" confirmation
   // as the on-screen button, instead of silently leaving the quiz.
-  const leaveRef = useRef<() => void>(() => router.replace('/home'));
+  const leaveRef = useRef<() => void>(() => openTab('/home'));
   useFocusEffect(
     useCallback(() => {
       const sub = BackHandler.addEventListener('hardwareBackPress', () => {
@@ -439,7 +440,7 @@ export default function SessionScreen() {
           label="Back to Today"
           onPress={() => {
             useSession.getState().clear();
-            router.replace('/home');
+            openTab('/home');
           }}
         />
       </SafeAreaView>
@@ -510,7 +511,7 @@ export default function SessionScreen() {
     if (Object.keys(active.responses).length > 0) finishSession({ celebrate: false });
     useSession.getState().clear();
     if (router.canGoBack()) router.back();
-    else router.replace('/home');
+    else openTab('/home');
   };
   const next = () => {
     if (!isLast) goTo(active.index + 1);
@@ -547,7 +548,7 @@ export default function SessionScreen() {
       const body = active.deadline ? 'Your answers are saved. The clock keeps running — resume from Today.' : 'Your answers are saved. Resume from Today.';
       Alert.alert('Pause exam?', body, [
         { text: 'Stay', style: 'cancel' },
-        { text: 'Pause', onPress: () => router.replace('/home') },
+        { text: 'Pause', onPress: () => openTab('/home') },
       ]);
     } else {
       const answered = Object.keys(active.responses).length;
@@ -560,7 +561,7 @@ export default function SessionScreen() {
               finishSession({ celebrate: !active.firstSet });
             } else {
               useSession.getState().clear();
-              router.replace('/home');
+              openTab('/home');
             }
           },
         },
