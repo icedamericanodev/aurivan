@@ -7,6 +7,9 @@ sub-topic it was authored from in `_provenance` ("notes 3A2.1 ..."); the
 first one named is its home, so each question sits under exactly one
 sub-topic, in the same domain. Sub-topics with no question get no field.
 
+Questions held out for the mock forms (data/csoe/exam/mock_forms.json,
+`held_out`) are never linked: practice must not serve them.
+
 Idempotent: run it after any batch or notes change.
 
 Usage:
@@ -32,6 +35,8 @@ def indent_of(raw):
 def main(argv):
     check = "--check" in argv
     drift = 0
+    forms = CSOE / "exam" / "mock_forms.json"
+    held = set(json.loads(forms.read_text(encoding="utf-8")).get("held_out", [])) if forms.exists() else set()
     doms = sorted(int(p.stem[1:]) for p in (CSOE / "originals").glob("d*.json") if p.stem[1:].isdigit())
     for d in doms:
         if not (CSOE / "notes" / f"d{d}.json").exists():
@@ -40,6 +45,8 @@ def main(argv):
         qs = json.loads((CSOE / "originals" / f"d{d}.json").read_text(encoding="utf-8"))["questions"]
         home = defaultdict(list)
         for q in qs:
+            if q["id"] in held:
+                continue
             m = re.search(r"\bnotes (\d[A-G]\d\.\d+)", q["_provenance"])
             if m:
                 home[m.group(1)].append(q["id"])

@@ -25,7 +25,9 @@ launch and covers more of SOXCPA's 1,022 slides, side topics included.
 
 Per-domain targets (blueprint "Question targets"): D1 56 · D2 64 · D3 64 ·
 D4 108 · D5 108, from each domain's share of the topic lines in SOXCPA's
-course synopsis (KaiSip's reading, not SOXCPA's). If the bank grows again,
+course synopsis (KaiSip's reading, not SOXCPA's). Adjusted 31 Oct 2026: D3
+holds 68 (4 held-out core items written for the mock forms), so D4 and D5
+target 106 each to keep the bank at 400. If the bank grows again,
 scale every domain by its weight.
 
 **Guarding against padding at 400** (the experts' concern above 350): the
@@ -110,6 +112,20 @@ a step.
 
 Linked pairs: never draw both items of a pair listed in `docs/content/CSOE_LINKED_PAIRS.md` into the same form, and keep the hub items it names in practice.
 
+Forms drawn 31 Oct 2026 at 304 items: `data/csoe/exam/mock_forms.json`, two
+35-item forms (D1 5, D2 6, D3 6, D4 9, D5 9 each), 70 items held out.
+- Drawn by `data/csoe/tools/draw_mock_forms.py --draw` (seeded). Check them
+  after every batch with `--check`.
+- No linked pair sits anywhere in the held-out set. No hub, and no item a
+  principle card links to, is held out.
+- Each form is at the 30/55/15 mix, with keys spread across A–D and 31–32
+  outline codes.
+- `sync_practice_ids.py` leaves held-out items out of the notes' "Practice this
+  concept" lists.
+- When CSOE is wired into the apps, the content build must also leave them out
+  of practice and the free sample, and serve them only as these forms
+  (`mobile-app-engineer`).
+
 ## 5. Pack: paid, lowest price tier
 
 Decided 31 Oct 2026 by `product-manager`:
@@ -140,8 +156,8 @@ The same pieces as the CISA course, each in `data/csoe/`:
 | Principles ("how CSOE questions think") | `mindset/principles.json` (`docs/content/PRINCIPLES_SCHEMA.md`, CRISC-style deviations) | Written, audited and fixed (31 Oct 2026) |
 | About the exam | `exam/csoe_exam_guide.json` (`docs/content/EXAM_GUIDE_SCHEMA.md`) | Written, audited and fixed (31 Oct 2026) |
 | Final review week | `exam/final_review_week.json` | Written, audited and fixed (31 Oct 2026) |
-| Practice | `originals/d{1..5}.json` | 304 reviewed; growing to 400 |
-| Mock exam | the app's mock engine reads the bank; the held-out forms go in `exam/mock_forms.json` (two 35-item forms, never served in practice) | Forms drawn once the bank passes about 300; the forward-only mode is an app task (section 4). Release gate: the final review week asks for a 35-question, 90-minute mock, so it must exist before the course ships |
+| Practice | `originals/d{1..5}.json` | 356 reviewed; growing to 400 |
+| Mock exam | the app's mock engine reads the bank; the held-out forms go in `exam/mock_forms.json` (two 35-item forms, never served in practice) | Two held-out forms drawn 31 Oct 2026 (`exam/mock_forms.json`, 70 items); the forward-only mode and excluding held-out items from practice are app tasks (section 4). Release gate: the final review week asks for a 35-question, 90-minute mock, so it must exist before the course ships |
 | Lessons | `lessons.json` (`docs/content/LESSONS_SCHEMA.md`) | After the bank |
 | Game decks | `mobile/src/content/games/csoe/` | App task, when CSOE is wired in |
 
@@ -250,6 +266,7 @@ Still settled by policy, not open:
 | Pilot, notes plus 20 items per domain (31 Oct 2026) | 20 | 20 | 20 | 20 | 20 | 100 |
 | Batch 2, 20 items per domain plus notes (31 Oct 2026) | 40 | 40 | 40 | 40 | 40 | 200 |
 | Batch 3, D1-D3 to target, D4 and D5 +20 (31 Oct 2026) | 56 | 64 | 64 | 60 | 60 | 304 |
+| Batch 4, D4 and D5 +24, plus 4 held-out D3 core items (31 Oct 2026) | 56 | 64 | 68 | 84 | 84 | 356 |
 
 Pilot reviews (31 Oct 2026):
 - **Blind test:** 100/100 picks matched the keys (testers saw no keys,
@@ -332,6 +349,51 @@ Batch 3 reviews (31 Oct 2026):
     reviewer", "emerging growth company", "Release No.".
   - `CSOE_LINKED_PAIRS.md` now holds 123 linked pairs and 7 practice-only hubs.
 - **Library:** the batch's staged citations merged, one label per citation.
+
+Batch 4 reviews (31 Oct 2026):
+- **Mock forms:**
+  - Two held-out 35-item forms drawn from 304 items.
+  - A standards audit swapped 16 items, for practice leaks, a key that could
+    flip under a pending proposal, and rules tested twice.
+  - Four core items were written for the forms (csoe_d3_065-068, on material
+    weakness severity, Section 302 content and the Section 906 knowledge
+    tiers). They passed a blind test 4/4 and an audit.
+  - The same audit caught a practice item (D1-021) teaching that Section 906
+    needs no knowledge. It was fixed.
+- **Blind test:** 48/48 picks matched the keys. Every changed item was
+  re-tested blind and matched: D4 11/11, D5 17/17, then 3 and 5 more.
+- **Standards audits:** FIX THEN SHIP. Six D5 items keyed on COSO
+  commissioned papers' own advice, and were replaced with framework or SEC
+  text. One D4 item that went too deep was replaced. The D4 award-bar
+  overstatement was fixed.
+- **Rules currency:** about 90 facts checked; none that an item keys on was
+  wrong. Rules-watch rows added: the FPI concept release, the SOC 2 criteria
+  exposure drafts, and the repeal of the no-deny policy.
+- **Cross-domain review (356 items):** FIX THEN SHIP, with no wrong keys and
+  no held-out leaks.
+  - 44 edits made: one near-duplicate narrowed, near-leaks toward held-out
+    keys closed, two items anchored in SEC text, and naming fixed.
+  - Three edits were skipped because they needed a change to the shared
+    `scripts/lint_exam_style_v2.py`, which this work does not touch: the
+    "Release No." form in two held-out stems.
+- **Bank total:** D3 is at 68 because of the held-out core items. To keep the
+  bank at the owner's 400, D4 and D5 now target 106 each (22 more each).
+
+Lessons for batch 5 (D4 and D5 only, 22 items each to go):
+- **Closed:** all the batch 4 closures, plus settlements, subpoenas and
+  formal orders, orderly liquidation, the Rule 10D-1 package, Rule 2-06, PCAOB
+  and broker-dealers, the Federal Insurance Office, Comptroller General
+  studies, award bars, Section 806, SEC staff FAQ Q8, ERM 2017 benefits and
+  misconceptions, and the COSO 2013 "which principle" format.
+- **Sources:** never key on a COSO commissioned paper's own advice. Such
+  papers may only report framework content.
+- **Where items go:** remaining D4 items go to 4A1, 4A2 and 4B3. D5 items on
+  SEC 404 evaluation guidance (Release No. 33-8810) go under 3B2-style
+  evaluation lines, not 5A1. 5B1 and 5C2 are source-limited (blueprint open
+  items).
+- **Checks:** check every new explanation against the held-out set in
+  `data/csoe/exam/mock_forms.json`. A practice item may not state a held-out
+  key.
 
 Lessons for batch 4 (D4 and D5 only, 48 items each to go):
 - **Closed rules:** no new items on Item 406, Form 8-K/Section 409, Part 205,
