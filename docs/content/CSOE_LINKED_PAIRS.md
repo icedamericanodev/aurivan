@@ -108,3 +108,4 @@ Rule for the form builder: Draw no two items of a pair into the same form. Keep 
 | csoe_d2_003 | csoe_d4_060 | Section 109 fee allocation, contrasting measures |
 | csoe_d4_018 | csoe_d4_057 | d4_057: the 989G(b) study touched only 404(b); 404(a) stays |
 | csoe_d3_043 | csoe_d4_046 | d3_043's exam cue: audit committee rules are listing conditions |
+| csoe_d1_008 | csoe_d4_057 | d4_057 explanation states the 2020 Rule 12b-2 revenue test (d1_008's key) |
