@@ -2,6 +2,12 @@
   "extends": "expo/tsconfig.base",
   "compilerOptions": {
     "strict": true,
+    // Expo SDK 58 (React Native 0.88): "react-native-legacy-deep-imports" keeps
+    // React Native's older, looser types for now, so refs like useRef<View> still
+    // type-check. TEMPORARY: the next PR retypes those refs (ViewInstance etc.)
+    // and removes this condition; React Native drops the old types after 0.89.
+    // Keep "react-native" too: this list replaces expo/tsconfig.base's, it doesn't add to it.
+    "customConditions": ["react-native", "react-native-legacy-deep-imports"],
     "noUncheckedIndexedAccess": false,
     "resolveJsonModule": true,
     "paths": {

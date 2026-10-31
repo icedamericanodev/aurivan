@@ -67,7 +67,11 @@ export const SERIF_MIN = 13;
 export interface LayoutProps {
   face: WidgetFace;
   theme: WidgetTheme;
-  /** The widget's size in dp, as the launcher reports it. */
+  /**
+   * The widget's size in dp. Since react-native-android-widget 0.26 (Expo SDK 58) this is the
+   * launcher's size for the current orientation (Android 12+: its exact size list), corrected
+   * to the real on-screen size after the first tap (the library then redraws, WIDGET_RESIZED).
+   */
   width: number;
   height: number;
   /** The phone's font size setting (1 = default). */
