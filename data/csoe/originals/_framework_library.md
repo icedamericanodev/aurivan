@@ -182,7 +182,7 @@ sec.gov opens; do not cite them until then.
 - 15 U.S.C. 7262(a) (Management's internal control report)
   - Verified (opened 31 Oct 2026): https://www.law.cornell.edu/uscode/text/15/7262; checked 404(a): each annual report under Section 13(a) or 15(d) contains management's internal control report and its assessment as of fiscal year-end.
 - 15 U.S.C. 7262(b) (Internal control evaluation and reporting)
-  - Verified (opened 31 Oct 2026): https://www.law.cornell.edu/uscode/text/15/7262; checked the current text, including the JOBS Act Section 103 amendment excluding emerging growth companies from the auditor's attestation.
+  - Verified (opened 31 Oct 2026): https://www.law.cornell.edu/uscode/text/15/7262; checked the current text, including the JOBS Act Section 103 amendment excluding emerging growth companies from the auditor's attestation; the firm that prepares or issues the audit report attests to and reports on management's assessment under the Board's attestation standards, and the attestation shall not be the subject of a separate engagement.
 - 18 U.S.C. 1350 (Failure of corporate officers to certify financial reports)
   - Verified (opened 31 Oct 2026): https://www.law.cornell.edu/uscode/text/18/1350; checked 1350(a): the written statement by the chief executive officer and chief financial officer accompanying each periodic report containing financial statements filed under Section 13(a) or 15(d).
 - 18 U.S.C. 1514A(a) (Whistleblower protection for employees of publicly traded companies)
