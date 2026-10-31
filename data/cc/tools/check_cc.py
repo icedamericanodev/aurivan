@@ -11,7 +11,9 @@ Runs the gates every CC batch must pass before review, in one place:
     runner-up's wrong explanation starts "Closest choice:"
   - length tells: key spread, "pick the longest" win rate (ties shared,
     target 15-24%, as scripts/check_longest_option.py does for CISA), the
-    reverse "pick the shortest" rate (12-30%), and the key at most 8
+    reverse "pick the shortest" rate (12-30%), the stored key order (repeat
+    rate at lags 1-4 within 15-35% and no run over 3, so letters were not
+    rotated by hand; data/cc/tools/key_sequence.py makes one), and the key at most 8
     characters longer than the longest distractor; --new N shows both rates
     for one batch alone
   - coverage: notes sub-topics with no question
@@ -44,6 +46,18 @@ FIELDS = ["id", "domain", "subtopic", "difficulty", "bloom_level", "question", "
 BLOOM = {"foundational": "Foundational", "application": "Application", "analysis": "Analysis"}
 MIN_RATE, MAX_RATE = 0.15, 0.24
 SHORT_MIN, SHORT_MAX = 0.12, 0.30  # "pick the shortest" must not become the reverse tell
+LAG_MIN, LAG_MAX, MAX_RUN = 0.15, 0.35, 3  # stored key order must look random (chance is 25%)
+
+
+def key_order(keys):
+    """Repeat rate of the stored key letter at lags 1-4, and the longest run."""
+    lags = [sum(keys[i] == keys[i + p] for i in range(len(keys) - p)) / max(len(keys) - p, 1)
+            for p in (1, 2, 3, 4)]
+    run = best = 1
+    for i in range(1, len(keys)):
+        run = run + 1 if keys[i] == keys[i - 1] else 1
+        best = max(best, run)
+    return lags, best
 LENS = re.compile(r"\b(ISACA|IS auditors?|the auditor|auditors? (?:recommend|assess|report))", re.I)
 STOP = set("the a an and or of to in on for with by is are was be it its this that as at from their they them what which who when should most best first".split())
 
@@ -205,6 +219,12 @@ def main(argv):
         status = "✓"
         if not MIN_RATE <= rate <= MAX_RATE:
             status = f"ERROR pick-longest outside {MIN_RATE:.0%}-{MAX_RATE:.0%}"
+            errors += 1
+        lags, run = key_order([q["correct"] for q in qs])
+        if len(qs) >= 20 and (any(not LAG_MIN <= r <= LAG_MAX for r in lags) or run > MAX_RUN):
+            status += (f" ERROR key order looks patterned (repeat rate at lags 1-4 "
+                       f"{'/'.join(f'{r:.0%}' for r in lags)}, longest run {run}; want "
+                       f"{LAG_MIN:.0%}-{LAG_MAX:.0%} and runs of {MAX_RUN} or less: use key_sequence.py)")
             errors += 1
         if not SHORT_MIN <= srate <= SHORT_MAX:
             status += f" ERROR pick-shortest {srate:.1%} outside {SHORT_MIN:.0%}-{SHORT_MAX:.0%}"

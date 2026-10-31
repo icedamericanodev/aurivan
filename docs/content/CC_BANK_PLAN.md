@@ -332,8 +332,10 @@ Batch 4 guidance from this round:
   "pick the shortest" rate leaves 12-30%, and `--new N` shows a batch alone.
 - Key letter order: authors rotated letters by hand, which left a periodic
   pattern (every 4th key repeats up to 50%; back-to-back repeats 3-14%, chance
-  is about 25%). Batch 4 authors take their key letters from a pre-generated
-  random, balanced sequence; the existing bank is re-keyed in its own pass.
+  is about 25%). Fixed 31 Oct 2026: 54 items had their key moved by swapping
+  two options (no text changed), and `check_cc.py` now fails a patterned key
+  order. Batch 4 authors take their letters from
+  `python3 data/cc/tools/key_sequence.py N COUNT`.
 - Rival words: give a distractor any oversight or least-privilege word the key
   uses (record, log, monitor, need), and avoid urgency words ("now") on the key
   alone.

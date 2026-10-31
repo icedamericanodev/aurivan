@@ -268,22 +268,22 @@
    "question": "A student residence with a staff network and a residents' Wi-Fi network is adding a smart door-lock hub. Where should the IT technician propose placing it to BEST limit risk?",
    "options": {
     "A": "On the staff network, behind the edge firewall",
-    "B": "On its own segment, allowing only the traffic it needs",
+    "B": "On the staff network, with its default password changed",
     "C": "On the residents' Wi-Fi network, apart from staff systems",
-    "D": "On the staff network, with its default password changed"
+    "D": "On its own segment, allowing only the traffic it needs"
    },
-   "correct": "B",
+   "correct": "D",
    "key_concept": "IoT devices often lack strong built-in security, so they go on their own segment with only the traffic they need allowed.",
    "pre_read": "For each placement, picture which people and devices could reach the hub.",
    "correct_explanation": "Smart devices often lack the security features of a laptop, so they belong on their own segment, with filtering that allows only the traffic they need, such as updates and the lock app. The residents' Wi-Fi is the runner-up because it keeps the hub away from staff systems, but it puts the hub beside every resident's device, where anyone could probe it.",
    "wrong_explanations": {
     "A": "Tempting because the edge firewall blocks outside attackers. But once the hub is hijacked, that firewall cannot stop it reaching staff systems on the same network.",
-    "C": "Closest choice: it does keep the hub away from staff systems. But every resident's device could then reach the hub that controls their doors.",
-    "D": "Tempting because default passwords are a common smart-device weakness. But a hijacked hub would still share a network with staff systems."
+    "B": "Tempting because default passwords are a common smart-device weakness. But a hijacked hub would still share a network with staff systems.",
+    "C": "Closest choice: it does keep the hub away from staff systems. But every resident's device could then reach the hub that controls their doors."
    },
    "tips": [
-    "Eliminate: A trusts the edge firewall to stop a threat already inside, and D fixes one weakness but leaves the hub on the staff network.",
-    "Final two: B beats C because a dedicated segment exposes the hub to nothing it does not need; the residents' Wi-Fi puts it beside every resident's device.",
+    "Eliminate: A trusts the edge firewall to stop a threat already inside, and B fixes one weakness but leaves the hub on the staff network.",
+    "Final two: D beats C because a dedicated segment exposes the hub to nothing it does not need; the residents' Wi-Fi puts it beside every resident's device.",
     "Exam cue: treat each smart device as an untrusted computer: give it a segment of its own and allow only the traffic it needs."
    ],
    "framework_ref": "NIST SP 800-53 Rev. 5 SC-7(21) (Boundary Protection | Isolation of System Components); NIST SP 800-213 Section 2.3 (How IoT Devices May Create Security Challenges)",
@@ -292,7 +292,7 @@
     "Flat networks",
     "Least functionality"
    ],
-   "_provenance": "Authored from concept: 'treat connected devices as untrusted and put them on their own segment' (notes 4.1.12 Internet of Things (IoT) Security). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 pilot batch, 30 Oct 2026.",
+   "_provenance": "Authored from concept: 'treat connected devices as untrusted and put them on their own segment' (notes 4.1.12 Internet of Things (IoT) Security). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 pilot batch, 30 Oct 2026. Key letter moved from B to D (31 Oct 2026) to break a periodic key order; options and letter references swapped, text unchanged.",
    "style_version": 2
   },
   {
@@ -304,22 +304,22 @@
    "question": "A charity is launching a public donation website backed by a database of donor details. Which layout should the network technician propose as BEST?",
    "options": {
     "A": "Web server and database together in the screened subnet",
-    "B": "Web server in the screened subnet, database on the internal network",
+    "B": "Web server outside the firewall, with the database in the screened subnet",
     "C": "Web server and database together on the internal network",
-    "D": "Web server outside the firewall, with the database in the screened subnet"
+    "D": "Web server in the screened subnet, database on the internal network"
    },
-   "correct": "B",
+   "correct": "D",
    "key_concept": "Public-facing servers go in the screened subnet; the sensitive data they use stays on the internal network behind filtered connections.",
    "pre_read": "For each layout, trace the path an attacker on the internet would take to reach the donor data.",
    "correct_explanation": "The web server must accept connections from anyone, so it goes in the screened subnet, where firewall rules limit what it can reach. The donor database holds the valuable data, so it stays internal, with only the web server's narrow database connection allowed in. Placing both in the screened subnet is the runner-up, but it leaves the donor data one hop from the internet.",
    "wrong_explanations": {
     "A": "Closest choice: the screened subnet is right for the web server. But the donor database then sits one step from the internet; it belongs deeper inside.",
-    "C": "Tempting because the internal network is the most protected zone. But accepting public connections there exposes every internal system if the web server is breached.",
-    "D": "Tempting because it keeps the database off the internet. But a server outside the firewall gets no filtering, and the donor data still sits in a less trusted zone."
+    "B": "Tempting because it keeps the database off the internet. But a server outside the firewall gets no filtering, and the donor data still sits in a less trusted zone.",
+    "C": "Tempting because the internal network is the most protected zone. But accepting public connections there exposes every internal system if the web server is breached."
    },
    "tips": [
-    "Eliminate: C invites public connections into the internal network, and D leaves the web server unfiltered and the data in a less trusted zone.",
-    "Final two: B beats A because the database holds the valuable data and stays internal; only the web server needs to face the public.",
+    "Eliminate: C invites public connections into the internal network, and B leaves the web server unfiltered and the data in a less trusted zone.",
+    "Final two: D beats A because the database holds the valuable data and stays internal; only the web server needs to face the public.",
     "Exam cue: place each system by who must reach it: public-facing servers in the screened subnet, sensitive data deeper inside."
    ],
    "framework_ref": "NIST SP 800-41 Rev. 1 Section 3.1 (Network Layouts with Firewalls: public-facing servers on the DMZ); NIST SP 800-53 Rev. 5 SC-7 (Boundary Protection)",
@@ -328,7 +328,7 @@
     "Firewall zones",
     "Data placement"
    ],
-   "_provenance": "Authored from concept: 'public-facing systems go in the screened subnet and sensitive data stays deeper inside' (notes 4.2.2 Firewall Zones and the Screened Subnet (DMZ)). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 pilot batch, 30 Oct 2026.",
+   "_provenance": "Authored from concept: 'public-facing systems go in the screened subnet and sensitive data stays deeper inside' (notes 4.2.2 Firewall Zones and the Screened Subnet (DMZ)). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 pilot batch, 30 Oct 2026. Key letter moved from B to D (31 Oct 2026) to break a periodic key order; options and letter references swapped, text unchanged.",
    "style_version": 2
   },
   {
@@ -521,21 +521,21 @@
    "options": {
     "A": "Measured service",
     "B": "Rapid elasticity",
-    "C": "Broad network access",
-    "D": "On-demand self-service"
+    "C": "On-demand self-service",
+    "D": "Broad network access"
    },
-   "correct": "D",
+   "correct": "C",
    "key_concept": "On-demand self-service means customers provision resources themselves, whenever needed, without human interaction with the provider.",
    "pre_read": "Match the detail in the stem to one characteristic's definition, not to cloud computing in general.",
    "correct_explanation": "On-demand self-service means a customer provisions computing resources, such as servers or storage, on their own whenever needed, with no human interaction with the provider. Here staff set up servers through the portal without a ticket or a call. Rapid elasticity is the runner-up because capacity grew quickly, but it describes resources scaling out and back in with demand, not who provisions them.",
    "wrong_explanations": {
     "A": "Tempting because cloud use is metered. But measured service is about tracking and billing usage, and the stem says nothing about metering.",
     "B": "Closest choice: new servers did appear quickly. But elasticity means capacity scaling out and in with demand; the deciding detail is staff provisioning without provider help.",
-    "C": "Tempting because the portal is reached over the network. But broad network access means using services from many kinds of devices through standard methods."
+    "D": "Tempting because the portal is reached over the network. But broad network access means using services from many kinds of devices through standard methods."
    },
    "tips": [
-    "Eliminate: A is about metering and billing use, and C is about reaching services from many kinds of devices.",
-    "Final two: D beats B because the deciding detail is customers provisioning without provider help; elasticity is capacity growing and shrinking with demand.",
+    "Eliminate: A is about metering and billing use, and D is about reaching services from many kinds of devices.",
+    "Final two: C beats B because the deciding detail is customers provisioning without provider help; elasticity is capacity growing and shrinking with demand.",
     "Exam cue: ask who acts and why: customers provisioning alone is self-service, capacity tracking demand is elasticity, and billing by use is measured service."
    ],
    "framework_ref": "NIST SP 800-145 Section 2 (The NIST Definition of Cloud Computing: essential characteristics)",
@@ -544,7 +544,7 @@
     "Self-service provisioning",
     "Rapid elasticity"
    ],
-   "_provenance": "Authored from concept: 'match a cloud behavior to the essential characteristic it shows' (notes 4.3.1 The Five Essential Characteristics of Cloud Computing). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 pilot batch, 30 Oct 2026.",
+   "_provenance": "Authored from concept: 'match a cloud behavior to the essential characteristic it shows' (notes 4.3.1 The Five Essential Characteristics of Cloud Computing). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 pilot batch, 30 Oct 2026. Key letter moved from D to C (31 Oct 2026) to break a periodic key order; options and letter references swapped, text unchanged.",
    "style_version": 2
   },
   {
@@ -809,21 +809,21 @@
    "options": {
     "A": "Use the IPsec support built into IPv6 as protection",
     "B": "Turn IPv6 on now and add rules after a month of monitoring",
-    "C": "Let the existing IPv4 rules filter IPv6 traffic too",
-    "D": "Write IPv6 rules matching the IPv4 policy before turning it on"
+    "C": "Write IPv6 rules matching the IPv4 policy before turning it on",
+    "D": "Let the existing IPv4 rules filter IPv6 traffic too"
    },
-   "correct": "D",
+   "correct": "C",
    "key_concept": "IPv4 and IPv6 need matching firewall rules; IPv6 is not secure by default, and IPv4 rules do not filter IPv6 traffic.",
    "pre_read": "Compare what each option assumes about how IPv6 traffic will be protected.",
    "correct_explanation": "IPv4 rules do not match IPv6 traffic, so turning IPv6 on without matching rules can leave a second, unfiltered door. The technician should mirror the IPv4 policy for IPv6 first, so both versions get the same allow and deny decisions. Monitoring first is the runner-up because learning real traffic is useful, but the network would be exposed for the whole month.",
    "wrong_explanations": {
     "A": "Tempting because IPv6 was designed with IPsec in mind. But IPsec protects only connections set up to use it; it filters nothing at the firewall.",
     "B": "Closest choice: watching real IPv6 traffic does help tune rules later. But for that month IPv6 would run with no rules of its own, an unguarded second door.",
-    "C": "Tempting because both are versions of IP. But IPv4 rules match IPv4 addresses only; without IPv6 rules, IPv6 traffic may pass unchecked or be handled unpredictably."
+    "D": "Tempting because both are versions of IP. But IPv4 rules match IPv4 addresses only; without IPv6 rules, IPv6 traffic may pass unchecked or be handled unpredictably."
    },
    "tips": [
-    "Eliminate: A treats IPv6 as secure by default, and C assumes IPv4 rules also filter IPv6 traffic.",
-    "Final two: D beats B because rules must be ready the day IPv6 starts; a month of monitoring leaves it unfiltered.",
+    "Eliminate: A treats IPv6 as secure by default, and D assumes IPv4 rules also filter IPv6 traffic.",
+    "Final two: C beats B because rules must be ready the day IPv6 starts; a month of monitoring leaves it unfiltered.",
     "Exam cue: newer is not safer. Treat IPv4 and IPv6 as two doors into one room, and guard both with the same rules."
    ],
    "framework_ref": "NIST SP 800-41 Rev. 1 Section 4.1.2 (IPv6: filter IPv6 traffic as fully as IPv4)",
@@ -832,7 +832,7 @@
     "Firewall rule parity",
     "Secure by default myth"
    ],
-   "_provenance": "Authored from concept: 'every rule, log and alert should cover both IP versions' (notes 4.1.4 IPv4 and IPv6). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 2, 30 Oct 2026.",
+   "_provenance": "Authored from concept: 'every rule, log and alert should cover both IP versions' (notes 4.1.4 IPv4 and IPv6). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 2, 30 Oct 2026. Key letter moved from D to C (31 Oct 2026) to break a periodic key order; options and letter references swapped, text unchanged.",
    "style_version": 2
   },
   {
@@ -988,22 +988,22 @@
    "question": "At a bank adopting Zero Trust, an AI assistant asks to read data from a customer records service, and the request reaches an enforcement point. Which component MOST accurately makes the allow-or-deny decision?",
    "options": {
     "A": "The AI assistant, based on the task it was given",
-    "B": "The policy engine, weighing the request against policy",
+    "B": "The network firewall, based on the assistant's IP address",
     "C": "The enforcement point that received the request",
-    "D": "The network firewall, based on the assistant's IP address"
+    "D": "The policy engine, weighing the request against policy"
    },
-   "correct": "B",
+   "correct": "D",
    "key_concept": "In Zero Trust the policy engine decides each request and the enforcement point carries out the decision, for people and AI agents alike.",
    "pre_read": "Treat the AI assistant like any other requester, and follow its request through the architecture.",
    "correct_explanation": "Zero Trust separates deciding from enforcing. The policy engine weighs each request against policy and inputs such as identity and device state, and an AI assistant is judged like any other subject. The enforcement point is the runner-up because the request reaches it first and it allows or blocks the session, but it only carries out the decision the policy engine makes.",
    "wrong_explanations": {
     "A": "Tempting because the assistant knows its own task. But a subject never authorizes itself; an AI agent's requests are judged by policy, like a person's.",
-    "C": "Closest choice: the enforcement point does allow or block the session. But it only carries out the decision; the policy engine makes it.",
-    "D": "Tempting because firewalls control access by address. But Zero Trust grants nothing for network location; each request is judged on policy, identity and context."
+    "B": "Tempting because firewalls control access by address. But Zero Trust grants nothing for network location; each request is judged on policy, identity and context.",
+    "C": "Closest choice: the enforcement point does allow or block the session. But it only carries out the decision; the policy engine makes it."
    },
    "tips": [
-    "Eliminate: A lets the requester authorize itself, and D decides by network location, which Zero Trust rejects.",
-    "Final two: B beats C because the policy engine decides and the enforcement point only carries that decision out.",
+    "Eliminate: A lets the requester authorize itself, and B decides by network location, which Zero Trust rejects.",
+    "Final two: D beats C because the policy engine decides and the enforcement point only carries that decision out.",
     "Exam cue: in Zero Trust the policy engine decides and enforcement points act, whether the requester is a person or an AI agent."
    ],
    "framework_ref": "NIST SP 800-207 Section 3 (Logical Components of Zero Trust Architecture)",
@@ -1012,7 +1012,7 @@
     "Policy enforcement point",
     "AI agents as subjects"
    ],
-   "_provenance": "Authored from concept: 'a decision point judges each request and enforcement points carry it out, for person and non-person subjects' (notes 4.2.7 Zero Trust Architecture Components). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 2, 30 Oct 2026.",
+   "_provenance": "Authored from concept: 'a decision point judges each request and enforcement points carry it out, for person and non-person subjects' (notes 4.2.7 Zero Trust Architecture Components). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 2, 30 Oct 2026. Key letter moved from B to D (31 Oct 2026) to break a periodic key order; options and letter references swapped, text unchanged.",
    "style_version": 2
   },
   {
@@ -1276,22 +1276,22 @@
    "question": "A furniture retailer's delivery drivers connect Bluetooth barcode scanners to their phones, and the IT technician finds the scanners announce themselves to nearby devices all day. Which change is BEST?",
    "options": {
     "A": "Update the scanners' firmware on a regular schedule",
-    "B": "Keep the scanners non-discoverable except while pairing",
-    "C": "Count on Bluetooth's short range to keep strangers away",
+    "B": "Count on Bluetooth's short range to keep strangers away",
+    "C": "Keep the scanners non-discoverable except while pairing",
     "D": "Require a screen-lock PIN on each driver's phone"
    },
-   "correct": "B",
+   "correct": "C",
    "key_concept": "Bluetooth devices should be discoverable only while pairing; staying discoverable invites unwanted pairing attempts.",
    "pre_read": "Picture the scanners on a busy delivery day, then read each option in turn.",
    "correct_explanation": "A discoverable device announces itself to anyone nearby and invites pairing attempts. Making the scanners discoverable only while pairing closes that exposure without stopping the drivers' work. Regular firmware updates are the runner-up because they fix known Bluetooth flaws and matter too, but they leave the scanners advertising themselves all day, which is the weakness found.",
    "wrong_explanations": {
     "A": "Closest choice: firmware updates do fix Bluetooth flaws. But they leave the scanners advertising themselves all day, the weakness the technician actually found.",
-    "C": "Tempting because Bluetooth reaches only a few meters. But antennas extend that range, and drivers work in busy public places where strangers are close.",
+    "B": "Tempting because Bluetooth reaches only a few meters. But antennas extend that range, and drivers work in busy public places where strangers are close.",
     "D": "Tempting because it protects the phone. But a phone's screen lock does nothing to stop strangers finding and pairing with the discoverable scanners."
    },
    "tips": [
-    "Eliminate: C trusts short range, which antennas and crowds defeat, and D locks the phone but leaves the scanners open.",
-    "Final two: B beats A because it closes the weakness found; firmware updates help, but the scanners would still advertise all day.",
+    "Eliminate: B trusts short range, which antennas and crowds defeat, and D locks the phone but leaves the scanners open.",
+    "Final two: C beats A because it closes the weakness found; firmware updates help, but the scanners would still advertise all day.",
     "Exam cue: match the fix to the finding. Bluetooth devices should be discoverable only while pairing."
    ],
    "framework_ref": "NIST SP 800-121 Rev. 2 Update 1 Section 4.4 (Bluetooth Security Checklist: undiscoverable except when pairing)",
@@ -1300,7 +1300,7 @@
     "Pairing",
     "Wireless range"
    ],
-   "_provenance": "Authored from concept: 'keep Bluetooth devices non-discoverable except while pairing' (notes 4.1.10 Wireless Security: Wi-Fi and Bluetooth). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 2, 30 Oct 2026.",
+   "_provenance": "Authored from concept: 'keep Bluetooth devices non-discoverable except while pairing' (notes 4.1.10 Wireless Security: Wi-Fi and Bluetooth). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 2, 30 Oct 2026. Key letter moved from B to C (31 Oct 2026) to break a periodic key order; options and letter references swapped, text unchanged.",
    "style_version": 2
   },
   {
@@ -1456,22 +1456,22 @@
    "question": "A recruitment agency's security analyst learns that its cloud servers run on physical hardware shared with other customers, each kept separate by the provider. Which essential cloud characteristic does this MOST accurately show?",
    "options": {
     "A": "Rapid elasticity",
-    "B": "Virtualization",
+    "B": "Resource pooling",
     "C": "Broad network access",
-    "D": "Resource pooling"
+    "D": "Virtualization"
    },
-   "correct": "D",
+   "correct": "B",
    "key_concept": "Resource pooling means the provider serves many customers from shared hardware, assigning resources as needed while keeping customers apart.",
    "pre_read": "Note exactly what is shared, and between whom, before matching a characteristic.",
    "correct_explanation": "Resource pooling means the provider serves many customers from shared physical resources, assigning and reassigning them as demand changes, with each customer kept separate. Hardware shared across customers is exactly that. Rapid elasticity is the runner-up because pooling makes fast scaling possible, but elasticity describes one customer's capacity growing and shrinking with demand, not hardware shared among customers.",
    "wrong_explanations": {
     "A": "Closest choice: pooling is what makes quick scaling possible. But elasticity is one customer's capacity growing and shrinking; sharing hardware among customers is pooling.",
-    "B": "Tempting because virtualization lets customers share hardware. But it is the technology that enables pooling, not one of the five essential characteristics.",
-    "C": "Tempting because the servers are reached over a network. But broad network access means using services from many kinds of devices through standard methods."
+    "C": "Tempting because the servers are reached over a network. But broad network access means using services from many kinds of devices through standard methods.",
+    "D": "Tempting because virtualization lets customers share hardware. But it is the technology that enables pooling, not one of the five essential characteristics."
    },
    "tips": [
-    "Eliminate: B is a technology, not one of the five characteristics, and C is about reaching services from many kinds of devices.",
-    "Final two: D beats A because sharing hardware among customers is pooling; elasticity is one customer's capacity tracking demand.",
+    "Eliminate: D is a technology, not one of the five characteristics, and C is about reaching services from many kinds of devices.",
+    "Final two: B beats A because sharing hardware among customers is pooling; elasticity is one customer's capacity tracking demand.",
     "Exam cue: shared hardware is pooling, scaling with demand is elasticity, and virtualization is the tool underneath, not a characteristic."
    ],
    "framework_ref": "NIST SP 800-145 Section 2 (The NIST Definition of Cloud Computing: essential characteristics)",
@@ -1480,7 +1480,7 @@
     "Multi-tenancy",
     "Rapid elasticity"
    ],
-   "_provenance": "Authored from concept: 'shared hardware among customers is resource pooling, which virtualization enables' (notes 4.3.1 The Five Essential Characteristics of Cloud Computing). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 2, 30 Oct 2026.",
+   "_provenance": "Authored from concept: 'shared hardware among customers is resource pooling, which virtualization enables' (notes 4.3.1 The Five Essential Characteristics of Cloud Computing). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 2, 30 Oct 2026. Key letter moved from D to B (31 Oct 2026) to break a periodic key order; options and letter references swapped, text unchanged.",
    "style_version": 2
   },
   {
@@ -1492,22 +1492,22 @@
    "question": "A small theater company wants email and shared calendars online without running or patching any servers or programs itself. Which service model should its IT volunteer choose as BEST?",
    "options": {
     "A": "Infrastructure as a service (IaaS)",
-    "B": "Platform as a service (PaaS)",
-    "C": "Software as a service (SaaS)",
+    "B": "Software as a service (SaaS)",
+    "C": "Platform as a service (PaaS)",
     "D": "A private cloud deployment"
    },
-   "correct": "C",
+   "correct": "B",
    "key_concept": "In SaaS the provider runs the whole application; the customer still manages its users, settings and data.",
    "pre_read": "List what the company is willing to manage itself, then match a model to that list.",
    "correct_explanation": "SaaS delivers a finished application, such as email and calendars, that the provider runs and patches from top to bottom. The theater company then manages only its users, settings and data. PaaS is the runner-up because the provider manages a lot there too, but the customer must still deploy its own application on the platform and look after it.",
    "wrong_explanations": {
     "A": "Tempting because it is flexible. But IaaS leaves the customer running and patching operating systems and software, the very work the company wants to avoid.",
-    "B": "Closest choice: PaaS does hand the operating system and runtime to the provider. But the company would still have to deploy and maintain its own email application.",
+    "C": "Closest choice: PaaS does hand the operating system and runtime to the provider. But the company would still have to deploy and maintain its own email application.",
     "D": "Tempting because it sounds safe and simple. But it names a deployment model, not a service model, and a private cloud usually means more work, not less."
    },
    "tips": [
     "Eliminate: A leaves the company patching servers, and D names a deployment model, not a service model.",
-    "Final two: C beats B because SaaS delivers the finished application; with PaaS the company would still run its own email software.",
+    "Final two: B beats C because SaaS delivers the finished application; with PaaS the company would still run its own email software.",
     "Exam cue: the less the customer wants to run, the higher up the stack: IaaS, then PaaS, then SaaS. Users and data always stay with the customer."
    ],
    "framework_ref": "NIST SP 800-145 Section 2 (The NIST Definition of Cloud Computing: service models)",
@@ -1516,7 +1516,7 @@
     "Platform as a service",
     "Service versus deployment models"
    ],
-   "_provenance": "Authored from concept: 'match the service model to what the customer will still run' (notes 4.3.3 Cloud Service Models: IaaS, PaaS and SaaS). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 2, 30 Oct 2026.",
+   "_provenance": "Authored from concept: 'match the service model to what the customer will still run' (notes 4.3.3 Cloud Service Models: IaaS, PaaS and SaaS). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 2, 30 Oct 2026. Key letter moved from C to B (31 Oct 2026) to break a periodic key order; options and letter references swapped, text unchanged.",
    "style_version": 2
   },
   {
@@ -1853,21 +1853,21 @@
    "options": {
     "A": "By IP address order, filling each subnet in turn",
     "B": "By office floor, so each floor's devices share one segment",
-    "C": "By trust level and purpose, so rules fit each group",
-    "D": "By device type, so like devices share the same rules"
+    "C": "By device type, so like devices share the same rules",
+    "D": "By trust level and purpose, so rules fit each group"
    },
-   "correct": "C",
+   "correct": "D",
    "key_concept": "Segments group systems that share a trust level and purpose, so rules between them can allow only the traffic each group needs.",
    "pre_read": "Picture which devices would end up sharing a segment under each option.",
    "correct_explanation": "Segmentation works by putting systems with the same trust level and job together, then allowing only needed traffic between groups. Guests, staff computers and payment systems need very different protection, so they belong apart. Grouping by device type is the runner-up because similar devices often get similar settings, but a guest's laptop and a staff laptop are the same type with very different trust, so they would share a segment.",
    "wrong_explanations": {
     "A": "Tempting because subnets are often filled this way. But address order says nothing about risk, and subnets without rules between them are not real segments.",
     "B": "Tempting because floors give a neat physical layout. But one floor mixes guests, staff and payment systems, so its segment would join devices needing very different protection.",
-    "D": "Closest choice: similar devices often need similar settings. But a guest's laptop and a staff laptop are the same type with very different trust, so they would share a segment."
+    "C": "Closest choice: similar devices often need similar settings. But a guest's laptop and a staff laptop are the same type with very different trust, so they would share a segment."
    },
    "tips": [
     "Eliminate: A groups by address order, which says nothing about risk, and B groups by floor, which puts guest and payment devices side by side.",
-    "Final two: C beats D because segment rules depend on trust and purpose; grouping by type would put a guest's laptop beside a staff laptop.",
+    "Final two: D beats C because segment rules depend on trust and purpose; grouping by type would put a guest's laptop beside a staff laptop.",
     "Exam cue: group by trust and purpose, then filter between the groups. Floor, address range or device type help only where they match trust."
    ],
    "framework_ref": "NIST SP 800-53 Rev. 5 SC-7(21) (Boundary Protection | Isolation of System Components)",
@@ -1876,7 +1876,7 @@
     "Trust levels",
     "East-west traffic"
    ],
-   "_provenance": "Authored from concept: 'systems are grouped by trust level and purpose, with controls on the traffic between them' (notes 4.2.1 Network Segmentation). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 3, 31 Oct 2026. Fix-up round 2 (31 Oct 2026): C no longer echoes the stem's 'systems' and now carries a reason clause like the other options. Final pass (31 Oct 2026): the stem now names the staff, guest and payment devices the explanations argue from, and the pre-read no longer echoes the key. Audit fix-up (31 Oct 2026): D (device maker) was a strawman; it is now grouping by device type, a plausible rival with its own rules clause, and the tips and explanations name D as the runner-up.",
+   "_provenance": "Authored from concept: 'systems are grouped by trust level and purpose, with controls on the traffic between them' (notes 4.2.1 Network Segmentation). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 3, 31 Oct 2026. Fix-up round 2 (31 Oct 2026): C no longer echoes the stem's 'systems' and now carries a reason clause like the other options. Final pass (31 Oct 2026): the stem now names the staff, guest and payment devices the explanations argue from, and the pre-read no longer echoes the key. Audit fix-up (31 Oct 2026): D (device maker) was a strawman; it is now grouping by device type, a plausible rival with its own rules clause, and the tips and explanations name D as the runner-up. Key letter moved from C to D (31 Oct 2026) to break a periodic key order; options and letter references swapped, text unchanged.",
    "style_version": 2
   },
   {
@@ -2249,21 +2249,21 @@
    "options": {
     "A": "Ask the finance director if the laptop's connections are expected",
     "B": "Close the alert, as the monitor cannot read encrypted traffic",
-    "C": "Let the monitor block the laptop, then close the alert",
-    "D": "Review the connections in the laptop's logs and flow records"
+    "C": "Review the connections in the laptop's logs and flow records",
+    "D": "Let the monitor block the laptop, then close the alert"
    },
-   "correct": "D",
+   "correct": "C",
    "key_concept": "AI monitors read timing, volume and destination even in encrypted traffic; when the runbook assigns you an alert, verify it yourself first.",
    "pre_read": "Picture the possible explanations for these connections, harmless and harmful.",
    "correct_explanation": "Encryption hides content, not timing, volume or destination, and a steady beat to a brand-new domain is typical of malware. The runbook gives verification to the on-shift analyst, so they check the connections against the laptop's logs and flow records and escalate if the alert holds up. Asking the finance director is the runner-up because they use the laptop, but the runbook assigns the check, and asking first could alert whoever is behind the connections.",
    "wrong_explanations": {
     "A": "Closest choice: the director may know of a legitimate app. But the runbook assigns verification to the analyst, and asking first could alert an insider or attacker.",
     "B": "Tempting because encryption hides the content. But AI monitors judge timing, volume and destination, which encryption does not hide.",
-    "C": "Tempting because automatic blocking is fast. But AI scores can be wrong, and blocking a director's laptop is a high-impact step that needs a person's check."
+    "D": "Tempting because automatic blocking is fast. But AI scores can be wrong, and blocking a director's laptop is a high-impact step that needs a person's check."
    },
    "tips": [
-    "Eliminate: B forgets that timing, volume and destination stay visible under encryption, and C hands a high-impact block to the AI tool unchecked.",
-    "Final two: D beats A because the runbook assigns verification to the analyst; a named laptop owner does not take over a task the procedure gives you.",
+    "Eliminate: B forgets that timing, volume and destination stay visible under encryption, and D hands a high-impact block to the AI tool unchecked.",
+    "Final two: C beats A because the runbook assigns verification to the analyst; a named laptop owner does not take over a task the procedure gives you.",
     "Exam cue: treat an AI alert as a lead to verify. If the runbook gives you the check, do it before routing the case elsewhere."
    ],
    "framework_ref": "NIST SP 800-53 Rev. 5 SI-4(13) (System Monitoring | Analyze Traffic and Event Patterns); NIST SP 800-53 Rev. 5 IR-4 (Incident Handling)",
@@ -2272,7 +2272,7 @@
     "Encrypted traffic",
     "In-role action"
    ],
-   "_provenance": "Authored from concept: 'AI models still analyze timing, volume and destinations when traffic is encrypted; treat AI detection as an assistant whose alerts are verified' (notes 4.1.9 AI in Traffic Monitoring, IDS and Firewalls). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 3, 31 Oct 2026. Fix-up round 2 (31 Oct 2026): the stem now says the pattern looks like a malware check-in, so asking the laptop's user first is clearly weaker. Final pass (31 Oct 2026): A now names the laptop too, so the stem's 'laptop' is not echoed only in the key. Audit fix-up (31 Oct 2026): the stem names the analyst instead of 'they', and D is shortened (and no longer echoes the stem's 'checking') so the key is no longer the longest option.",
+   "_provenance": "Authored from concept: 'AI models still analyze timing, volume and destinations when traffic is encrypted; treat AI detection as an assistant whose alerts are verified' (notes 4.1.9 AI in Traffic Monitoring, IDS and Firewalls). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 3, 31 Oct 2026. Fix-up round 2 (31 Oct 2026): the stem now says the pattern looks like a malware check-in, so asking the laptop's user first is clearly weaker. Final pass (31 Oct 2026): A now names the laptop too, so the stem's 'laptop' is not echoed only in the key. Audit fix-up (31 Oct 2026): the stem names the analyst instead of 'they', and D is shortened (and no longer echoes the stem's 'checking') so the key is no longer the longest option. Key letter moved from D to C (31 Oct 2026) to break a periodic key order; options and letter references swapped, text unchanged.",
    "style_version": 2
   },
   {
@@ -2392,22 +2392,22 @@
    "question": "A youth sports league must install its own approved monitoring agent on the operating system of every server behind its registration app. Which cloud service model MOST directly lets its volunteer system administrator do this?",
    "options": {
     "A": "Software as a service (SaaS)",
-    "B": "Platform as a service (PaaS)",
+    "B": "Infrastructure as a service (IaaS)",
     "C": "Function as a service (FaaS, serverless)",
-    "D": "Infrastructure as a service (IaaS)"
+    "D": "Platform as a service (PaaS)"
    },
-   "correct": "D",
+   "correct": "B",
    "key_concept": "Only IaaS hands the customer the guest operating system, so software that must run on that operating system needs IaaS.",
    "pre_read": "Sort the layers under the app into those the league needs to touch and those it does not.",
    "correct_explanation": "Only infrastructure as a service hands the customer the guest operating system, so only IaaS lets the league install its own agent there; the league then also patches and hardens those systems. Platform as a service is the runner-up because the league still deploys its own app, but the provider runs the operating system beneath it and customers cannot install software there.",
    "wrong_explanations": {
     "A": "Tempting because it needs the least work. But in SaaS the provider runs the whole application stack, and customers never reach its servers.",
-    "B": "Closest choice: the league still deploys and secures its own app in PaaS. But the provider runs the operating system underneath, so the league cannot install an agent on it.",
-    "C": "Tempting because it also runs the league's own code. But function as a service (serverless) hides the servers entirely; there is no operating system the customer can reach."
+    "C": "Tempting because it also runs the league's own code. But function as a service (serverless) hides the servers entirely; there is no operating system the customer can reach.",
+    "D": "Closest choice: the league still deploys and secures its own app in PaaS. But the provider runs the operating system underneath, so the league cannot install an agent on it."
    },
    "tips": [
     "Eliminate: A and C give the customer no operating system to manage; the provider runs every server in both.",
-    "Final two: D beats B because only IaaS gives the customer the guest operating system; in PaaS the provider runs it.",
+    "Final two: B beats D because only IaaS gives the customer the guest operating system; in PaaS the provider runs it.",
     "Exam cue: if a task needs software installed on the server's own operating system, look for IaaS; PaaS and serverless keep that layer with the provider."
    ],
    "framework_ref": "NIST SP 800-145 Section 2 (The NIST Definition of Cloud Computing: service models)",
@@ -2416,7 +2416,7 @@
     "Service models",
     "Customer control"
    ],
-   "_provenance": "Authored from concept: 'in IaaS the customer manages the operating system and everything above it; PaaS and SaaS hand those layers to the provider' (notes 4.3.3 Cloud Service Models: IaaS, PaaS and SaaS). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 3, 31 Oct 2026. Fix-up round 2 (31 Oct 2026): stem, key concept and exam cue re-angled to installing software on the guest operating system, so the item no longer mirrors cc_d4_042's stack-position cue. Final pass (31 Oct 2026): C now uses its acronym like the other options.",
+   "_provenance": "Authored from concept: 'in IaaS the customer manages the operating system and everything above it; PaaS and SaaS hand those layers to the provider' (notes 4.3.3 Cloud Service Models: IaaS, PaaS and SaaS). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 3, 31 Oct 2026. Fix-up round 2 (31 Oct 2026): stem, key concept and exam cue re-angled to installing software on the guest operating system, so the item no longer mirrors cc_d4_042's stack-position cue. Final pass (31 Oct 2026): C now uses its acronym like the other options. Key letter moved from D to B (31 Oct 2026) to break a periodic key order; options and letter references swapped, text unchanged.",
    "style_version": 2
   },
   {
@@ -2428,22 +2428,22 @@
    "question": "A dance school's own booking app runs on platform as a service (PaaS), and its email is software as a service (SaaS). Which split for fixing a code flaw in each is MOST accurate?",
    "options": {
     "A": "The school fixes the flaws in both applications",
-    "B": "Each provider fixes the flaw in the application it hosts",
-    "C": "The school fixes the booking app; the email provider fixes email",
+    "B": "The school fixes the booking app; the email provider fixes email",
+    "C": "Each provider fixes the flaw in the application it hosts",
     "D": "The school fixes the email; the platform provider fixes the booking app"
    },
-   "correct": "C",
+   "correct": "B",
    "key_concept": "In SaaS the provider runs and fixes the application itself; in PaaS the provider runs only the platform, so the customer fixes its own application.",
    "pre_read": "Take each service on its own, and ask what the school controls in it.",
    "correct_explanation": "Shared responsibility is not the same in every model. In PaaS the provider runs the operating system and runtime, but the booking app is the school's own code, so the school fixes it. In SaaS the provider runs the whole application, so it fixes the email flaw. The school fixing both is the runner-up because it does fix its own app and set its email options, but it cannot reach the SaaS provider's code.",
    "wrong_explanations": {
     "A": "Closest choice: the school does fix its own booking app and sets its email settings. But in SaaS the provider runs the application, so only it can fix the code.",
-    "B": "Tempting because a PaaS provider patches a lot. But it patches the operating system and runtime beneath the app; the booking app is the school's own code to fix.",
+    "C": "Tempting because a PaaS provider patches a lot. But it patches the operating system and runtime beneath the app; the booking app is the school's own code to fix.",
     "D": "Tempting because it splits the work. But it reverses the split: a platform provider does not fix customers' code, and the school cannot reach the email provider's code."
    },
    "tips": [
-    "Eliminate: B has the platform provider fixing the school's own code, and D reverses which party fixes each application.",
-    "Final two: C beats A because in SaaS the provider runs the application and its code; the school sets the email options but cannot fix its code.",
+    "Eliminate: C has the platform provider fixing the school's own code, and D reverses which party fixes each application.",
+    "Final two: B beats A because in SaaS the provider runs the application and its code; the school sets the email options but cannot fix its code.",
     "Exam cue: never apply one split to every cloud service. Check the model first, then ask who controls the layer with the flaw."
    ],
    "framework_ref": "NIST SP 800-145 Section 2 (The NIST Definition of Cloud Computing: service models)",
@@ -2452,7 +2452,7 @@
     "Platform as a service",
     "Software as a service"
    ],
-   "_provenance": "Authored from concept: 'in PaaS and SaaS the provider patches more layers; the application row differs: the customer runs its own app in PaaS, the provider runs it in SaaS' (notes 4.3.5 The Shared Responsibility Model). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 3, 31 Oct 2026. Final pass (31 Oct 2026): re-angled from guest operating system patching (taught by cc_d4_043 and cc_d4_067) to the application layer under PaaS versus SaaS; key letter unchanged. Audit (31 Oct 2026): runner-up moved from B to A so the deciding fact is the SaaS application row, not the PaaS lesson cc_d4_016 already tests. Cross-domain gate (31 Oct 2026): key_concept now leads with the SaaS half so it does not echo cc_d4_016.",
+   "_provenance": "Authored from concept: 'in PaaS and SaaS the provider patches more layers; the application row differs: the customer runs its own app in PaaS, the provider runs it in SaaS' (notes 4.3.5 The Shared Responsibility Model). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 3, 31 Oct 2026. Final pass (31 Oct 2026): re-angled from guest operating system patching (taught by cc_d4_043 and cc_d4_067) to the application layer under PaaS versus SaaS; key letter unchanged. Audit (31 Oct 2026): runner-up moved from B to A so the deciding fact is the SaaS application row, not the PaaS lesson cc_d4_016 already tests. Cross-domain gate (31 Oct 2026): key_concept now leads with the SaaS half so it does not echo cc_d4_016. Key letter moved from C to B (31 Oct 2026) to break a periodic key order; options and letter references swapped, text unchanged.",
    "style_version": 2
   },
   {

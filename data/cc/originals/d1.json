@@ -197,21 +197,21 @@
       "options": {
         "A": "Sign the acceptance and copy the risk owner",
         "B": "Hold the launch until the residual risk is gone",
-        "C": "Document the risk and route the acceptance to the risk owner",
-        "D": "Escalate the acceptance to the school board for sign-off"
+        "C": "Escalate the acceptance to the school board for sign-off",
+        "D": "Document the risk and route the acceptance to the risk owner"
       },
-      "correct": "C",
+      "correct": "D",
       "key_concept": "Within tolerance, only the risk owner accepts residual risk; the practitioner documents it and routes it there, never accepting it.",
       "pre_read": "Notice who is asking, who is being asked to sign, and who owns the risk.",
       "correct_explanation": "Accepting risk commits the organization, so only someone with that authority may do it: within tolerance, the risk owner, here the IT director. The analyst's role is to document the residual risk clearly and route the acceptance to that owner. Signing and then copying the owner is the tempting runner-up, but the analyst would still be making the owner's decision.",
       "wrong_explanations": {
         "A": "Closest choice: the risk owner is told. But being told is not deciding; the analyst's signature would commit the organization without authority.",
         "B": "Tempting because removing all risk sounds safest. But controls rarely remove all risk; risk within tolerance can be formally accepted instead.",
-        "D": "Tempting because the board sits at the top. But boards set risk appetite rather than signing each acceptance; within tolerance, the risk owner decides."
+        "C": "Tempting because the board sits at the top. But boards set risk appetite rather than signing each acceptance; within tolerance, the risk owner decides."
       },
       "tips": [
-        "Eliminate: B expects zero residual risk, which controls rarely reach, and D sends a within-tolerance risk to the board, which sets appetite rather than signing each acceptance.",
-        "Final two: C beats A because only the risk owner may accept the risk; copying the owner after signing still leaves the analyst making the decision.",
+        "Eliminate: B expects zero residual risk, which controls rarely reach, and C sends a within-tolerance risk to the board, which sets appetite rather than signing each acceptance.",
+        "Final two: D beats A because only the risk owner may accept the risk; copying the owner after signing still leaves the analyst making the decision.",
         "Exam cue: when asked to accept or sign off a risk, document it and route it to whoever holds the authority: the risk owner within tolerance, senior management beyond it."
       ],
       "framework_ref": "ISO/IEC 27001:2022 Clause 6.1.3 f) (risk owners approve the risk treatment plan and accept residual risk); NIST CSF 2.0 GV.RM-02 (risk appetite and risk tolerance statements are established, communicated and maintained)",
@@ -220,7 +220,7 @@
         "Risk owner",
         "Risk tolerance"
       ],
-      "_provenance": "Authored from concept: notes 1.2.6 Risk Appetite, Tolerance and Acceptance (practitioners never accept risk; within tolerance the risk owner accepts, above it senior management decides). Original school district parent portal scenario written for KaiSip; no ISC2 training, CBK or prep-bank text used. CC pilot batch, Oct 2026. Review fixes 28 Oct 2026 (blind test and standards audit): calibrated cues, teaching fields and pre_read. Audit fix 29 Oct 2026: distractor wording shortened so the key is not always out-worded. Fix-up round 2 (31 Oct 2026, audit): key_concept now limits the risk owner's acceptance to risk within tolerance, matching notes 1.2.6, where senior management decides beyond it.",
+      "_provenance": "Authored from concept: notes 1.2.6 Risk Appetite, Tolerance and Acceptance (practitioners never accept risk; within tolerance the risk owner accepts, above it senior management decides). Original school district parent portal scenario written for KaiSip; no ISC2 training, CBK or prep-bank text used. CC pilot batch, Oct 2026. Review fixes 28 Oct 2026 (blind test and standards audit): calibrated cues, teaching fields and pre_read. Audit fix 29 Oct 2026: distractor wording shortened so the key is not always out-worded. Fix-up round 2 (31 Oct 2026, audit): key_concept now limits the risk owner's acceptance to risk within tolerance, matching notes 1.2.6, where senior management decides beyond it. Key letter moved from C to D (31 Oct 2026) to break a periodic key order; options and letter references swapped, text unchanged.",
       "style_version": 2
     },
     {
@@ -377,22 +377,22 @@
       "question": "A software firm's largest customer asks for independent proof that the firm's security management meets a recognized standard. Which approach BEST provides this?",
       "options": {
         "A": "A self-assessment against the NIST Cybersecurity Framework (CSF) 2.0",
-        "B": "Certification against ISO/IEC 27001 by an accredited body",
+        "B": "Adopting the essential safeguards of the Center for Internet Security (CIS) Controls",
         "C": "A penetration test report from an external testing firm",
-        "D": "Adopting the essential safeguards of the Center for Internet Security (CIS) Controls"
+        "D": "Certification against ISO/IEC 27001 by an accredited body"
       },
-      "correct": "B",
+      "correct": "D",
       "key_concept": "ISO/IEC 27001 is certifiable by accredited bodies; NIST CSF 2.0 and the CIS Controls are voluntary and carry no certification.",
       "pre_read": "Notice that the customer wants independent proof about security management. Ask which option can deliver both.",
       "correct_explanation": "ISO/IEC 27001 sets certifiable requirements for an information security management system, and an accredited certification body checks them independently for a stated scope. That is the proof the customer wants. A self-assessment against the National Institute of Standards and Technology (NIST) Cybersecurity Framework is useful for describing and improving posture, but the framework is voluntary, has no certification scheme, and a self-assessment is not independent.",
       "wrong_explanations": {
         "A": "Closest choice: CSF 2.0 is widely respected. But it is a voluntary framework with no certification, and a self-assessment is not independent proof.",
-        "C": "Tempting because an external firm is independent. But a test probes technical weaknesses at one point in time; it does not show security management meets a standard.",
-        "D": "Tempting because the CIS Controls are widely respected. But they are a prioritized list of safeguards with no formal certification, so adopting them gives no independent proof."
+        "B": "Tempting because the CIS Controls are widely respected. But they are a prioritized list of safeguards with no formal certification, so adopting them gives no independent proof.",
+        "C": "Tempting because an external firm is independent. But a test probes technical weaknesses at one point in time; it does not show security management meets a standard."
       },
       "tips": [
-        "Eliminate: C tests technical weaknesses rather than security management, and D adopts a safeguard list that has no formal certification.",
-        "Final two: B beats A because only ISO/IEC 27001 offers certification by an accredited body; the CSF is voluntary and a self-assessment is not independent.",
+        "Eliminate: C tests technical weaknesses rather than security management, and B adopts a safeguard list that has no formal certification.",
+        "Final two: D beats A because only ISO/IEC 27001 offers certification by an accredited body; the CSF is voluntary and a self-assessment is not independent.",
         "Exam cue: certified, independent proof of security management points to ISO/IEC 27001. CSF describes posture; CIS Controls give a starting list."
       ],
       "framework_ref": "ISO/IEC 27001:2022 (Information security management systems: Requirements); NIST CSF 2.0 Section 1 (CSF Overview); CIS Controls v8.1 (Implementation Groups)",
@@ -401,7 +401,7 @@
         "Certification",
         "Frameworks vs standards"
       ],
-      "_provenance": "Authored from concept: notes 1.3.3 Security Frameworks and Guidelines (compare table: certification yes for ISO/IEC 27001, no for CSF 2.0 and CIS Controls). Original customer assurance scenario written for KaiSip; no ISC2 training, CBK or prep-bank text used. CC pilot batch, Oct 2026. Review fixes 28 Oct 2026 (blind test and standards audit): calibrated cues, teaching fields and pre_read.",
+      "_provenance": "Authored from concept: notes 1.3.3 Security Frameworks and Guidelines (compare table: certification yes for ISO/IEC 27001, no for CSF 2.0 and CIS Controls). Original customer assurance scenario written for KaiSip; no ISC2 training, CBK or prep-bank text used. CC pilot batch, Oct 2026. Review fixes 28 Oct 2026 (blind test and standards audit): calibrated cues, teaching fields and pre_read. Key letter moved from B to D (31 Oct 2026) to break a periodic key order; options and letter references swapped, text unchanged.",
       "style_version": 2
     },
     {
@@ -629,22 +629,22 @@
       "question": "A consulting firm's tester finds that outsiders can change a city's traffic signals, and the city asks for the flaw to be left out of the report. What is the tester's BEST response?",
       "options": {
         "A": "Honor the city's request and leave the flaw out of the report",
-        "B": "Publish the flaw online so the city is pushed to fix it",
+        "B": "Report the flaw accurately and explain its public safety risk",
         "C": "Change the signal settings to close the flaw before reporting",
-        "D": "Report the flaw accurately and explain its public safety risk"
+        "D": "Publish the flaw online so the city is pushed to fix it"
       },
-      "correct": "D",
+      "correct": "B",
       "key_concept": "Serving principals never requires dishonesty; the ethical choice is honest, legal, protects people and uses proper channels.",
       "pre_read": "Test each option against honesty, public safety, duty to the client and staying within authority. Look for one that passes all four.",
       "correct_explanation": "Leaving out a known safety flaw would make the report dishonest and leave the public exposed, so honesty and protecting society point the same way. Serving the client diligently means giving them an accurate report and explaining the risk, not hiding it. This is decided by the facts, not by which canon is listed first: concealment fails the client too, since an unfixed flaw harms them.",
       "wrong_explanations": {
         "A": "Closest choice: diligent service to principals is a canon. But that duty never includes a dishonest report that leaves the public at risk.",
-        "B": "Tempting because public pressure can force a fix. But publishing before the city can fix the flaw hands attackers a way to change signals and endangers people.",
-        "C": "Tempting because closing the flaw directly seems helpful. But testers work within the authorized scope; changing live signals goes beyond it and could cause harm on the roads."
+        "C": "Tempting because closing the flaw directly seems helpful. But testers work within the authorized scope; changing live signals goes beyond it and could cause harm on the roads.",
+        "D": "Tempting because public pressure can force a fix. But publishing before the city can fix the flaw hands attackers a way to change signals and endangers people."
       },
       "tips": [
-        "Eliminate: B exposes the flaw to attackers before it is fixed, and C changes live systems outside the tester's authorized scope.",
-        "Final two: D beats A because honest reporting serves the client and protects the public; diligent service never extends to hiding a safety flaw.",
+        "Eliminate: D exposes the flaw to attackers before it is fixed, and C changes live systems outside the tester's authorized scope.",
+        "Final two: B beats A because honest reporting serves the client and protects the public; diligent service never extends to hiding a safety flaw.",
         "Exam cue: in ethics dilemmas, test each option against all four canons. The best answer is usually honest, legal, protective of people and done through proper channels."
       ],
       "framework_ref": "ISC2 Code of Ethics, Preamble and Canons",
@@ -653,7 +653,7 @@
         "Principals",
         "Public safety"
       ],
-      "_provenance": "Authored from concept: notes 1.5.4 Applying the Canons to Dilemmas (reject deceptive options even if a principal asks; protect people where safety is at stake; stay within your authority) and 1.5.3 (no ranking rule; not keyed on canon order). Original traffic-signal scenario written for KaiSip; no ISC2 training, CBK or prep-bank text used. CC pilot batch, Oct 2026. Review fixes 28 Oct 2026 (blind test and standards audit): calibrated cues, teaching fields and pre_read.",
+      "_provenance": "Authored from concept: notes 1.5.4 Applying the Canons to Dilemmas (reject deceptive options even if a principal asks; protect people where safety is at stake; stay within your authority) and 1.5.3 (no ranking rule; not keyed on canon order). Original traffic-signal scenario written for KaiSip; no ISC2 training, CBK or prep-bank text used. CC pilot batch, Oct 2026. Review fixes 28 Oct 2026 (blind test and standards audit): calibrated cues, teaching fields and pre_read. Key letter moved from D to B (31 Oct 2026) to break a periodic key order; options and letter references swapped, text unchanged.",
       "style_version": 2
     },
     {
@@ -665,22 +665,22 @@
       "question": "A junior analyst at a consulting firm wants a free public AI chatbot to review a client's firewall rules quickly. What is the BEST way for the analyst to proceed?",
       "options": {
         "A": "Paste the rules after removing the client's company name",
-        "B": "Paste the rules, then have the AI's advice approved before use",
-        "C": "Paste the rules into an AI tool approved for client data",
+        "B": "Paste the rules into an AI tool approved for client data",
+        "C": "Paste the rules, then have the AI's advice approved before use",
         "D": "Paste the rules, then tell the client once the review is done"
       },
-      "correct": "C",
+      "correct": "B",
       "key_concept": "Professionals keep principals' confidential data out of AI tools not approved for it, and stay accountable for AI-assisted work.",
       "pre_read": "Notice what the client's firewall rules reveal. Then ask where each option sends them.",
       "correct_explanation": "Firewall rules reveal how a client's network is built, which is confidential information entrusted to the firm. Pasting them into an unapproved public tool can expose it beyond the firm's control, failing the duty of diligent, competent service to the client. Removing the company name is the tempting shortcut, but the addresses and services in the rules still expose the client. An approved tool keeps the data within agreed protections.",
       "wrong_explanations": {
         "A": "Closest choice: it reduces what is shared. But the rules themselves still expose the client's network details to a tool nobody approved for them.",
-        "B": "Tempting because approving AI advice before use is part of competent work. But it does nothing about the client data already sent to an unapproved service.",
+        "C": "Tempting because approving AI advice before use is part of competent work. But it does nothing about the client data already sent to an unapproved service.",
         "D": "Tempting because telling the client is honest. But afterward is too late; the data has already left the firm's control without permission."
       },
       "tips": [
-        "Eliminate: B checks the output but still leaks the input, and D informs the client only after their data has left the firm's control.",
-        "Final two: C beats A because removing a name does not remove what the rules reveal; client data belongs only in tools approved for it.",
+        "Eliminate: C checks the output but still leaks the input, and D informs the client only after their data has left the firm's control.",
+        "Final two: B beats A because removing a name does not remove what the rules reveal; client data belongs only in tools approved for it.",
         "Exam cue: with AI tools, protect the principal's data first. Use tools approved for that data, verify the output, and stay honest about how work was produced."
       ],
       "framework_ref": "ISC2 Code of Ethics, Canons (service to principals); ISO/IEC 27002:2022 Control 5.10 (Acceptable use of information and other associated assets)",
@@ -689,7 +689,7 @@
         "Confidentiality of client data",
         "Approved tools"
       ],
-      "_provenance": "Authored from concept: notes 1.5.6 Ethical Use of AI at Work (keep principals' confidential data out of AI tools not approved for it; check AI output). Cross-link 5.1.8 owns the data-leakage teaching; this item keeps the ethics angle. Original firewall-rules scenario written for KaiSip; no ISC2 training, CBK or prep-bank text used. CC pilot batch, Oct 2026. Review fixes 28 Oct 2026 (blind test and standards audit): calibrated cues, teaching fields and pre_read.",
+      "_provenance": "Authored from concept: notes 1.5.6 Ethical Use of AI at Work (keep principals' confidential data out of AI tools not approved for it; check AI output). Cross-link 5.1.8 owns the data-leakage teaching; this item keeps the ethics angle. Original firewall-rules scenario written for KaiSip; no ISC2 training, CBK or prep-bank text used. CC pilot batch, Oct 2026. Review fixes 28 Oct 2026 (blind test and standards audit): calibrated cues, teaching fields and pre_read. Key letter moved from C to B (31 Oct 2026) to break a periodic key order; options and letter references swapped, text unchanged.",
       "style_version": 2
     },
     {
@@ -1242,21 +1242,21 @@
       "options": {
         "A": "A government law that applies to every business that takes card payments",
         "B": "An optional guideline the chain may follow if it chooses",
-        "C": "An ISO standard that binds a company once it is certified",
-        "D": "An industry standard the chain must meet under its card agreements"
+        "C": "An industry standard the chain must meet under its card agreements",
+        "D": "An ISO standard that binds a company once it is certified"
       },
-      "correct": "D",
+      "correct": "C",
       "key_concept": "PCI DSS is an industry standard, not a law; it binds merchants through their contracts with card brands and banks.",
       "pre_read": "Ask who writes PCI DSS and how a business becomes bound by it. Law, contract and choice bind in different ways.",
       "correct_explanation": "PCI DSS comes from the payment card industry's own standards council, not from a government. It binds merchants through their agreements with banks and card brands, so a chain that takes cards must meet it even though it is not legislation. Calling it optional, the runner-up, confuses 'not a law' with 'not mandatory': contracts can make a standard compulsory, with penalties for failing it.",
       "wrong_explanations": {
         "A": "Tempting because PCI DSS is strict and widely required. But it is written by the card industry, not a legislature; contracts make it binding.",
         "B": "Closest choice: PCI DSS is not a law. But the chain's card agreements require it, so meeting it is not a matter of choice.",
-        "C": "Tempting because ISO publishes well-known standards. But PCI DSS comes from the card industry's own council and binds through card agreements."
+        "D": "Tempting because ISO publishes well-known standards. But PCI DSS comes from the card industry's own council and binds through card agreements."
       },
       "tips": [
-        "Eliminate: A treats PCI DSS as legislation, and C credits it to ISO, but it is the card industry's own standard.",
-        "Final two: D beats B because contracts can make a standard mandatory; not being a law does not make it optional.",
+        "Eliminate: A treats PCI DSS as legislation, and D credits it to ISO, but it is the card industry's own standard.",
+        "Final two: C beats B because contracts can make a standard mandatory; not being a law does not make it optional.",
         "Exam cue: ask where a rule's force comes from. Laws bind by legislation, industry standards often by contract, frameworks by choice."
       ],
       "framework_ref": "NIST CSF 2.0 GV.OC-03 (legal, regulatory and contractual requirements, including privacy obligations, are understood and managed); ISO/IEC 27002:2022 Control 5.31 (Legal, statutory, regulatory and contractual requirements)",
@@ -1265,7 +1265,7 @@
         "Contractual requirements",
         "Laws versus standards"
       ],
-      "_provenance": "Authored from concept: 'industry rules such as PCI DSS bind through contracts, not legislation' (notes 1.3.2 Laws and Regulations). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D1 batch 2, 30 Oct 2026.",
+      "_provenance": "Authored from concept: 'industry rules such as PCI DSS bind through contracts, not legislation' (notes 1.3.2 Laws and Regulations). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D1 batch 2, 30 Oct 2026. Key letter moved from D to C (31 Oct 2026) to break a periodic key order; options and letter references swapped, text unchanged.",
       "style_version": 2
     },
     {
@@ -1565,22 +1565,22 @@
       "question": "A bakery owner who hired a certified consultant files a sworn written complaint naming the canon on competent service, but attaches no supporting evidence. What will the ethics committee MOST likely do?",
       "options": {
         "A": "Investigate the consultant's work to find the missing evidence",
-        "B": "Close the complaint unless it makes a solid initial case",
-        "C": "Suspend the consultant's certification until the facts are settled",
+        "B": "Suspend the consultant's certification until the facts are settled",
+        "C": "Close the complaint unless it makes a solid initial case",
         "D": "Reject the complaint because clients lack standing under that canon"
       },
-      "correct": "B",
+      "correct": "C",
       "key_concept": "The ethics committee does not investigate; it weighs the sworn evidence submitted and closes complaints that make no solid initial case.",
       "pre_read": "Ask what the committee can and cannot do with a complaint, and what it relies on to act.",
       "correct_explanation": "The committee is not an investigative body and cannot compel testimony; it considers only what complainants submit in writing. If the submission does not make a solid initial (prima facie) case, it closes the complaint without prejudice. Investigating, the runner-up, is what many expect of a disciplinary body, but this committee has no investigative resources, so gathering evidence is the complainant's job.",
       "wrong_explanations": {
         "A": "Closest choice: many oversight bodies investigate. But this committee has no investigative role or resources; it weighs only the evidence it is sent.",
-        "C": "Tempting because the concern is serious. But the committee only recommends; the board decides discipline, and doubt about the facts favors the respondent.",
+        "B": "Tempting because the concern is serious. But the committee only recommends; the board decides discipline, and doubt about the facts favors the respondent.",
         "D": "Tempting because standing rules vary by canon. But clients are principals, and principals may complain about the canon on competent service."
       },
       "tips": [
-        "Eliminate: C skips the respondent's rights and the board's decision, and D overlooks that clients are principals with standing under that canon.",
-        "Final two: B beats A because the committee does not investigate; without enough submitted evidence, it closes the complaint.",
+        "Eliminate: B skips the respondent's rights and the board's decision, and D overlooks that clients are principals with standing under that canon.",
+        "Final two: C beats A because the committee does not investigate; without enough submitted evidence, it closes the complaint.",
         "Exam cue: the ethics committee weighs sworn, written evidence it is given. It does not investigate, and it closes complaints that make no prima facie case."
       ],
       "framework_ref": "ISC2 Ethical Complaint Procedures (standing of complainant and form of complaints)",
@@ -1589,7 +1589,7 @@
         "Standing",
         "Principals"
       ],
-      "_provenance": "Authored from concept: 'complaints are sworn, written, name the canon and need standing; the committee does not investigate' (notes 1.5.5 Ethics Complaints and Enforcement). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D1 batch 2, 30 Oct 2026. Standards audit fix (30 Oct 2026): re-angled from the notes 1.5.5 worked example (standing) to the committee's role; key moves to B.",
+      "_provenance": "Authored from concept: 'complaints are sworn, written, name the canon and need standing; the committee does not investigate' (notes 1.5.5 Ethics Complaints and Enforcement). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D1 batch 2, 30 Oct 2026. Standards audit fix (30 Oct 2026): re-angled from the notes 1.5.5 worked example (standing) to the committee's role; key moves to B. Key letter moved from B to C (31 Oct 2026) to break a periodic key order; options and letter references swapped, text unchanged.",
       "style_version": 2
     },
     {
@@ -1710,21 +1710,21 @@
       "options": {
         "A": "Encrypt every chat session between taxpayers and staff",
         "B": "Filter out traffic above normal daily levels that week",
-        "C": "Back up the chat server's data every hour that week",
-        "D": "Add server capacity sized for the deadline-week peak"
+        "C": "Add server capacity sized for the deadline-week peak",
+        "D": "Back up the chat server's data every hour that week"
       },
-      "correct": "D",
+      "correct": "C",
       "key_concept": "Availability needs enough capacity for known peaks; filtering suits attack traffic, not genuine demand.",
       "pre_read": "Note what causes the outages and who is sending the extra traffic.",
       "correct_explanation": "The outages come from genuine demand that outgrows the service, so the fix is enough capacity for the known peak, planned and tested before deadline week. Filtering, the runner-up, is a denial-of-service defense: here the extra traffic is real taxpayers, so capping it at normal levels would turn away the very people the chat exists to serve.",
       "wrong_explanations": {
         "A": "Tempting because chats may hold tax details worth protecting. But encryption serves confidentiality; it adds no capacity and may add load.",
         "B": "Closest choice: filtering protects availability against floods of bogus requests. But these visitors are genuine taxpayers, so dropping traffic above normal levels would deny them service.",
-        "C": "Tempting because backups protect availability after data loss. But the chat crashes from overload; restoring data does not keep it answering during the peak."
+        "D": "Tempting because backups protect availability after data loss. But the chat crashes from overload; restoring data does not keep it answering during the peak."
       },
       "tips": [
-        "Eliminate: C restores lost data and A protects secrecy; neither keeps an overloaded service running.",
-        "Final two: D beats B because the surge is genuine demand; filtering suits attack traffic and here would turn real taxpayers away.",
+        "Eliminate: D restores lost data and A protects secrecy; neither keeps an overloaded service running.",
+        "Final two: C beats B because the surge is genuine demand; filtering suits attack traffic and here would turn real taxpayers away.",
         "Exam cue: match the availability control to the cause. Predictable genuine peaks need capacity; floods of bogus traffic need filtering."
       ],
       "framework_ref": "NIST CSF 2.0 PR.IR-04 (adequate resource capacity to ensure availability is maintained); NIST SP 800-12 Rev. 1 Section 1.4 (Important Terminology: confidentiality, integrity, availability)",
@@ -1733,7 +1733,7 @@
         "Capacity planning",
         "Denial of service versus genuine demand"
       ],
-      "_provenance": "Authored from concept: 'patching and capacity planning prevent faults and overload' (notes 1.1.4 Availability). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D1 batch 3, 31 Oct 2026.",
+      "_provenance": "Authored from concept: 'patching and capacity planning prevent faults and overload' (notes 1.1.4 Availability). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D1 batch 3, 31 Oct 2026. Key letter moved from D to C (31 Oct 2026) to break a periodic key order; options and letter references swapped, text unchanged.",
       "style_version": 2
     },
     {
@@ -1889,22 +1889,22 @@
       "question": "Working within the risk appetite its leaders set, a boat-hire company's risk team has listed its risks and rated each for likelihood and impact. Which lifecycle step MOST logically comes next?",
       "options": {
         "A": "Monitor each rated risk for changes in threats and systems",
-        "B": "Treat each rated risk by choosing how to respond to it",
+        "B": "Frame the context by setting the company's risk appetite",
         "C": "Close the register, since rating the risks completes the cycle",
-        "D": "Frame the context by setting the company's risk appetite"
+        "D": "Treat each rated risk by choosing how to respond to it"
       },
-      "correct": "B",
+      "correct": "D",
       "key_concept": "After risks are identified and assessed, the next lifecycle step is treatment; monitoring follows and the cycle repeats.",
       "pre_read": "Place what the team has already done on the risk lifecycle before choosing the step that follows.",
       "correct_explanation": "The lifecycle runs frame, identify, assess, treat and monitor. The team has identified and assessed, so the next step is treatment: deciding for each risk whether to avoid, mitigate, transfer or accept it, within the appetite already set. Monitoring, the runner-up, is a real and ongoing step, but it watches risks after a response is chosen; there is nothing yet to track.",
       "wrong_explanations": {
         "A": "Closest choice: monitoring is part of the cycle and never stops. But it follows treatment; without a chosen response there is no plan to track.",
-        "C": "Tempting because rating feels like the finish line. But a rated risk with no response is unmanaged, and the cycle keeps repeating.",
-        "D": "Tempting because framing comes before everything else. But the stem says leaders already set the appetite, so this step is done."
+        "B": "Tempting because framing comes before everything else. But the stem says leaders already set the appetite, so this step is done.",
+        "C": "Tempting because rating feels like the finish line. But a rated risk with no response is unmanaged, and the cycle keeps repeating."
       },
       "tips": [
-        "Eliminate: D repeats framing that leaders already finished, and C stops the cycle before any risk has a response.",
-        "Final two: B beats A because treatment comes straight after assessment; monitoring tracks responses that do not exist yet.",
+        "Eliminate: B repeats framing that leaders already finished, and C stops the cycle before any risk has a response.",
+        "Final two: D beats A because treatment comes straight after assessment; monitoring tracks responses that do not exist yet.",
         "Exam cue: learn the order frame, identify, assess, treat, monitor, then repeat. Place the stem's facts on that loop to find the next step."
       ],
       "framework_ref": "NIST SP 800-39 Section 2.1 (Components of Risk Management: frame, assess, respond and monitor); NIST SP 800-39 Section 3.3 (Responding to Risk: accept, avoid, mitigate, share or transfer)",
@@ -1913,7 +1913,7 @@
         "Risk treatment",
         "Risk monitoring"
       ],
-      "_provenance": "Authored from concept: 'treat each risk: avoid, mitigate, transfer or accept' (notes 1.2.2 The Risk Management Lifecycle). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D1 batch 3, 31 Oct 2026. Fix-up round 2, second pass (31 Oct 2026, blind test and audit): key B lengthened so it is no longer clearly the shortest option.",
+      "_provenance": "Authored from concept: 'treat each risk: avoid, mitigate, transfer or accept' (notes 1.2.2 The Risk Management Lifecycle). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D1 batch 3, 31 Oct 2026. Fix-up round 2, second pass (31 Oct 2026, blind test and audit): key B lengthened so it is no longer clearly the shortest option. Key letter moved from B to D (31 Oct 2026) to break a periodic key order; options and letter references swapped, text unchanged.",
       "style_version": 2
     },
     {
@@ -2358,21 +2358,21 @@
       "options": {
         "A": "Cameras recording everyone who enters the vault room",
         "B": "A signed code of conduct from each cashier on their first day",
-        "C": "Background checks on candidates before their first day",
-        "D": "A badge-and-PIN lock on the vault room door"
+        "C": "A badge-and-PIN lock on the vault room door",
+        "D": "Background checks on candidates before their first day"
       },
-      "correct": "C",
+      "correct": "D",
       "key_concept": "Personnel screening is an administrative control that lowers people risk before access is granted.",
       "pre_read": "Sort the options by control type, then ask which one targets the specific risk the stem names.",
       "correct_explanation": "Personnel screening, such as a background check completed before a new cashier starts, is an administrative control that works before access is granted, so someone with a relevant theft record never reaches the vault room. A signed code of conduct, the runner-up, is also administrative and sets expectations, but it comes after hiring and reveals nothing about a candidate's past.",
       "wrong_explanations": {
         "A": "Tempting because cameras deter and record theft. But they are physical controls that act after someone is already hired and inside.",
         "B": "Closest choice: a code of conduct is a real administrative control. But it is signed after hiring and tells the casino nothing about a candidate's history.",
-        "D": "Tempting because it limits who enters the vault. But it is a physical access control, and a newly hired cashier would hold a badge anyway."
+        "C": "Tempting because it limits who enters the vault. But it is a physical access control, and a newly hired cashier would hold a badge anyway."
       },
       "tips": [
-        "Eliminate: A and D are physical controls, and both act only after the person is already hired.",
-        "Final two: C beats B because screening works before a cashier starts; a code of conduct sets rules but reveals nothing about a candidate's past.",
+        "Eliminate: A and C are physical controls, and both act only after the person is already hired.",
+        "Final two: D beats B because screening works before a cashier starts; a code of conduct sets rules but reveals nothing about a candidate's past.",
         "Exam cue: for people risks, look at hiring practices first. Screening keeps risk out; training and codes shape people already inside."
       ],
       "framework_ref": "NIST SP 800-53 Rev. 5 PS-3 (Personnel Screening); NIST SP 800-53 Rev. 5 PL-4 (Rules of Behavior)",
@@ -2381,7 +2381,7 @@
         "Personnel screening",
         "Hiring practices"
       ],
-      "_provenance": "Authored from concept: 'hiring practices include background checks and prompt access removal when people leave' (notes 1.4.3 Administrative Controls). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D1 batch 3, 31 Oct 2026. Batch 3 fix-up (31 Oct 2026, blind test and audit): pre_read no longer describes the key's timing.",
+      "_provenance": "Authored from concept: 'hiring practices include background checks and prompt access removal when people leave' (notes 1.4.3 Administrative Controls). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D1 batch 3, 31 Oct 2026. Batch 3 fix-up (31 Oct 2026, blind test and audit): pre_read no longer describes the key's timing. Key letter moved from C to D (31 Oct 2026) to break a periodic key order; options and letter references swapped, text unchanged.",
       "style_version": 2
     },
     {

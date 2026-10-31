@@ -88,22 +88,22 @@
    "question": "A payroll clerk realizes they pasted staff salary details into a free public AI chatbot to tidy a table. What should the clerk do FIRST?",
    "options": {
     "A": "Delete the conversation from the chatbot's history",
-    "B": "Report the exposure to the security team at once",
+    "B": "Tell the affected staff that their salaries were exposed",
     "C": "Finish the table in the approved AI tool instead",
-    "D": "Tell the affected staff that their salaries were exposed"
+    "D": "Report the exposure to the security team at once"
    },
-   "correct": "B",
+   "correct": "D",
    "key_concept": "Pasting sensitive data into a public AI service discloses it to an outsider; report it at once so the response team can act.",
    "pre_read": "Notice where the data went and who controls that service now. Then weigh what each option does about the copy already sent.",
    "correct_explanation": "Typing data into a public AI service hands it to an outside company, so this is a possible incident, and copies may already be stored. Reporting at once lets the security team assess it and involve legal counsel. Telling the staff is the runner-up: honesty matters, but whether and how to notify people is a decision for legal counsel and management once the facts are known.",
    "wrong_explanations": {
     "A": "Tempting because the chat disappears from view. But the provider may already have stored or logged copies, and staying quiet delays the response.",
-    "C": "Tempting because it follows the AI policy from now on. But the salary data has already left the company, and that exposure still needs reporting.",
-    "D": "Closest choice: being open with colleagues feels honest. But notification is a legal decision with set rules; the clerk reports the facts and lets the response team decide."
+    "B": "Closest choice: being open with colleagues feels honest. But notification is a legal decision with set rules; the clerk reports the facts and lets the response team decide.",
+    "C": "Tempting because it follows the AI policy from now on. But the salary data has already left the company, and that exposure still needs reporting."
    },
    "tips": [
     "Eliminate: A deletes a chat the provider may already have copied, and C fixes future work while the past exposure goes unreported.",
-    "Final two: B beats D because the clerk's job is to report the facts; deciding whether to notify people belongs to legal counsel and management.",
+    "Final two: D beats B because the clerk's job is to report the facts; deciding whether to notify people belongs to legal counsel and management.",
     "Exam cue: when sensitive data reaches an outside AI tool by mistake, report it promptly through the proper channel instead of fixing or announcing it yourself."
    ],
    "framework_ref": "ISO/IEC 27002:2022 Control 8.12 (Data leakage prevention); ISO/IEC 27002:2022 Control 6.8 (Information security event reporting)",
@@ -112,7 +112,7 @@
     "Data leakage",
     "Event reporting"
    ],
-   "_provenance": "Authored from concept: 'accidental disclosure to a public AI service is reported, not hidden or announced' (notes 5.1.8 Data Leakage into Public AI Services). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D5 pilot batch, 29 Oct 2026.",
+   "_provenance": "Authored from concept: 'accidental disclosure to a public AI service is reported, not hidden or announced' (notes 5.1.8 Data Leakage into Public AI Services). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D5 pilot batch, 29 Oct 2026. Key letter moved from B to D (31 Oct 2026) to break a periodic key order; options and letter references swapped, text unchanged.",
    "style_version": 2
   },
   {
@@ -412,22 +412,22 @@
    "question": "A hotel's booking system has a confirmed breach, and its response plan names a spokesperson for customers. What should a help desk analyst do FIRST when a guest asks if their card was stolen?",
    "options": {
     "A": "Answer the guest honestly, then brief the spokesperson",
-    "B": "Pass the query to the spokesperson, logging the call",
-    "C": "Assure the guest that no card data was affected",
+    "B": "Assure the guest that no card data was affected",
+    "C": "Pass the query to the spokesperson, logging the call",
     "D": "Email the guest the incident notes gathered so far"
    },
-   "correct": "B",
+   "correct": "C",
    "key_concept": "During an incident, only roles named in the plan speak to customers; others pass questions on without denying or disclosing.",
    "pre_read": "Notice what the plan says about who talks to customers, and how much the help desk analyst actually knows.",
    "correct_explanation": "During a breach, only the roles the plan names speak to customers, because early details are often incomplete and statements carry legal duties. Passing the question on, with the guest's details logged, is honest and keeps the message accurate. Answering honestly is the runner-up: honesty matters, but the analyst's partial view could be wrong, and customer statements are the spokesperson's job.",
    "wrong_explanations": {
     "A": "Closest choice: honesty is a professional duty. But early facts are often incomplete, and the plan gives customer statements to the spokesperson, not the help desk.",
-    "C": "Tempting because it calms the guest. But nobody can yet stand behind that claim, and false reassurance breaks the duty to act honestly.",
+    "B": "Tempting because it calms the guest. But nobody can yet stand behind that claim, and false reassurance breaks the duty to act honestly.",
     "D": "Tempting because it seems open and transparent. But incident notes are restricted, need-to-know data; sending them outside creates a new exposure."
    },
    "tips": [
-    "Eliminate: C offers reassurance nobody can stand behind, and D sends restricted incident notes outside the hotel.",
-    "Final two: B beats A because the plan gives customer statements to the spokesperson; an analyst's partial view may be wrong and carries legal weight.",
+    "Eliminate: B offers reassurance nobody can stand behind, and D sends restricted incident notes outside the hotel.",
+    "Final two: C beats A because the plan gives customer statements to the spokesperson; an analyst's partial view may be wrong and carries legal weight.",
     "Exam cue: during an incident, refer outside questions to the role the plan names. Being honest means not misleading anyone, not speaking for the organization."
    ],
    "framework_ref": "NIST CSF 2.0 RS.CO-03 (information is shared with designated internal and external stakeholders); ISO/IEC 27002:2022 Control 5.26 (Response to information security incidents)",
@@ -436,7 +436,7 @@
     "Breach notification",
     "Designated spokesperson"
    ],
-   "_provenance": "Authored from concept: 'during an incident, outside questions go to the role the plan names' (notes 5.3.5 Data Handling During an Incident). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D5 pilot batch, 29 Oct 2026.",
+   "_provenance": "Authored from concept: 'during an incident, outside questions go to the role the plan names' (notes 5.3.5 Data Handling During an Incident). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D5 pilot batch, 29 Oct 2026. Key letter moved from B to C (31 Oct 2026) to break a periodic key order; options and letter references swapped, text unchanged.",
    "style_version": 2
   },
   {
@@ -449,21 +449,21 @@
    "options": {
     "A": "An acceptable use policy for the laptops",
     "B": "A configuration drift report",
-    "C": "The vendor's default settings",
-    "D": "A secure configuration baseline"
+    "C": "A secure configuration baseline",
+    "D": "The vendor's default settings"
    },
-   "correct": "D",
+   "correct": "C",
    "key_concept": "A secure baseline is the approved minimum configuration for a type of system; drift is any unapproved move away from it.",
    "pre_read": "Notice what the document contains and when the team uses it.",
    "correct_explanation": "A secure baseline is the approved minimum configuration for one type of system, applied to each new device before use and changed only through change management. A drift report is the runner-up because it works with the same settings: it lists where systems have moved away from the approved configuration, but it is not the standard itself.",
    "wrong_explanations": {
     "A": "Tempting because policies also set rules for laptops. But an acceptable use policy tells people how they may use them; it does not list each device's settings.",
     "B": "Closest choice: drift reports deal with the same settings. But they show where systems have strayed; the baseline is the approved standard they compare against.",
-    "C": "Tempting because vendors supply settings out of the box. But defaults favor easy setup and are publicly known; teams harden them into a baseline."
+    "D": "Tempting because vendors supply settings out of the box. But defaults favor easy setup and are publicly known; teams harden them into a baseline."
    },
    "tips": [
-    "Eliminate: A governs how people use the laptops, not their settings, and C describes out-of-the-box settings, which favor easy setup over security.",
-    "Final two: D beats B because the baseline is the approved standard itself; a drift report shows where systems have moved away from it.",
+    "Eliminate: A governs how people use the laptops, not their settings, and D describes out-of-the-box settings, which favor easy setup over security.",
+    "Final two: C beats B because the baseline is the approved standard itself; a drift report shows where systems have moved away from it.",
     "Exam cue: the baseline is the approved starting point, drift is any move away from it, and only change management may alter it."
    ],
    "framework_ref": "NIST SP 800-53 Rev. 5 CM-2 (Baseline Configuration); NIST CSF 2.0 PR.PS-01 (configuration management practices are established and applied)",
@@ -472,7 +472,7 @@
     "Configuration drift",
     "Change management"
    ],
-   "_provenance": "Authored from concept: 'a secure baseline is the approved minimum configuration' (notes 5.4.4 Configuration Management and Secure Baselines). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D5 pilot batch, 29 Oct 2026. Cross-review fixes (31 Oct 2026): A gains 'new' so the key no longer ties for longest. Fix round 1 (31 Oct 2026): A is now an acceptable use policy, a real misconception, in place of the rollback-plan strawman; the stem drops 'security' so no stem word is echoed only in the key.",
+   "_provenance": "Authored from concept: 'a secure baseline is the approved minimum configuration' (notes 5.4.4 Configuration Management and Secure Baselines). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D5 pilot batch, 29 Oct 2026. Cross-review fixes (31 Oct 2026): A gains 'new' so the key no longer ties for longest. Fix round 1 (31 Oct 2026): A is now an acceptable use policy, a real misconception, in place of the rollback-plan strawman; the stem drops 'security' so no stem word is echoed only in the key. Key letter moved from D to C (31 Oct 2026) to break a periodic key order; options and letter references swapped, text unchanged.",
    "style_version": 2
   },
   {
@@ -736,22 +736,22 @@
    "question": "A transit agency's records clerk is running the scheduled destruction of personnel files past their seven-year retention, and legal counsel has put one former employee's files under legal hold. Which action is BEST?",
    "options": {
     "A": "Destroy the expired files on schedule, since the retention period has ended",
-    "B": "Keep every personnel file indefinitely in case of future claims",
-    "C": "Set aside the held employee's files and destroy the rest",
+    "B": "Set aside the held employee's files and destroy the rest",
+    "C": "Keep every personnel file indefinitely in case of future claims",
     "D": "Postpone the destruction run until that employee's hold is lifted"
    },
-   "correct": "C",
+   "correct": "B",
    "key_concept": "A legal hold pauses destruction only for the records it names; all other records still follow the retention schedule.",
    "pre_read": "Notice which files the hold covers and which it does not. Then ask what the retention schedule requires for each group.",
    "correct_explanation": "A legal hold pauses destruction only for the records it names, so the clerk keeps that employee's files and destroys the others as the retention schedule requires. Postponing the whole run is the runner-up: it feels cautious, but it keeps personal data past its retention for no legal reason, adding storage cost and exposure if those files are later breached.",
    "wrong_explanations": {
     "A": "Tempting because the schedule says these files are due. But a legal hold overrides the schedule for the records it covers, so destroying them could breach legal duties.",
-    "B": "Tempting because keeping everything feels safe. But personal data kept past its retention adds cost and exposure, and the schedule exists to say when it must go.",
+    "C": "Tempting because keeping everything feels safe. But personal data kept past its retention adds cost and exposure, and the schedule exists to say when it must go.",
     "D": "Closest choice: pausing does protect the held files. But the hold covers one person only; keeping everyone else's files past retention breaks the schedule for no legal reason."
    },
    "tips": [
-    "Eliminate: A destroys files a legal hold protects, and B keeps every file forever, which breaks the retention schedule and adds risk.",
-    "Final two: C beats D because a legal hold covers only the records it names; everything else still follows the schedule.",
+    "Eliminate: A destroys files a legal hold protects, and C keeps every file forever, which breaks the retention schedule and adds risk.",
+    "Final two: B beats D because a legal hold covers only the records it names; everything else still follows the schedule.",
     "Exam cue: a legal hold pauses destruction for named records only. Keeping data longer than the schedule allows is a risk, not a safeguard."
    ],
    "framework_ref": "NIST SP 800-53 Rev. 5 SI-12 (Information Management and Retention); NIST SP 800-122 Section 4.2.1 (Minimizing the Use, Collection, and Retention of PII: destruction follows retention schedules and litigation holds)",
@@ -760,7 +760,7 @@
     "Retention schedule",
     "Data lifecycle"
    ],
-   "_provenance": "Authored from concept: 'a legal hold pauses destruction only for the records it names; the rest follow the retention schedule' (notes 5.1.2 Data Handling Across the Lifecycle). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D5 batch 2, 30 Oct 2026. Cross-review fixes (31 Oct 2026): relabeled analysis: two stated facts (retention schedule and legal hold) pull in different directions.",
+   "_provenance": "Authored from concept: 'a legal hold pauses destruction only for the records it names; the rest follow the retention schedule' (notes 5.1.2 Data Handling Across the Lifecycle). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D5 batch 2, 30 Oct 2026. Cross-review fixes (31 Oct 2026): relabeled analysis: two stated facts (retention schedule and legal hold) pull in different directions. Key letter moved from C to B (31 Oct 2026) to break a periodic key order; options and letter references swapped, text unchanged.",
    "style_version": 2
   },
   {
@@ -808,22 +808,22 @@
    "question": "A recruiter digitally signs emails carrying job offers, and a hiring manager believes the signature also keeps the salary figures private. Which statement is MOST accurate for the IT technician to give?",
    "options": {
     "A": "It hides the figures from everyone except the named candidate",
-    "B": "It encrypts the figures with the recruiter's private key",
+    "B": "It proves who sent the email and that it was not changed",
     "C": "It proves nobody else read the email on its way",
-    "D": "It proves who sent the email and that it was not changed"
+    "D": "It encrypts the figures with the recruiter's private key"
    },
-   "correct": "D",
+   "correct": "B",
    "key_concept": "A digital signature proves origin and integrity, not confidentiality; keeping content private needs encryption.",
    "pre_read": "Ask what the hiring manager wants: proof of the sender, or secrecy of the figures. Then recall what signing actually does.",
    "correct_explanation": "A digital signature applies the sender's private key to a hash of the message, and anyone can check it with the sender's public key. That proves origin and integrity, but the salary figures stay readable. The runner-up mixes signing with encryption: whatever the private key protects, the public key opens, so nothing becomes secret. To keep the figures private, the email must also be encrypted.",
    "wrong_explanations": {
     "A": "Tempting because only the candidate is meant to read the offer. But hiding content takes encryption with the candidate's key; a signature leaves the text readable.",
-    "B": "Closest choice: signing does use the private key. But it is applied to a hash that anyone with the public key can check, so nothing becomes secret.",
-    "C": "Tempting because a valid signature feels like a sealed envelope. But it shows only that the message is unchanged, not who has seen it."
+    "C": "Tempting because a valid signature feels like a sealed envelope. But it shows only that the message is unchanged, not who has seen it.",
+    "D": "Closest choice: signing does use the private key. But it is applied to a hash that anyone with the public key can check, so nothing becomes secret."
    },
    "tips": [
     "Eliminate: A and C both credit the signature with secrecy, but a signature leaves the message readable and shows nothing about who saw it.",
-    "Final two: D beats B because the private key signs a hash that anyone can verify with the public key; that proves origin, not privacy.",
+    "Final two: B beats D because the private key signs a hash that anyone can verify with the public key; that proves origin, not privacy.",
     "Exam cue: signing proves who sent it and that it is unchanged; encrypting keeps it secret. Needing both means doing both."
    ],
    "framework_ref": "NIST SP 800-12 Rev. 1 Section 9.1.3.2 (Public Key Electronic Signatures: anyone can verify with the signer's public key); NIST SP 800-12 Rev. 1 Section 9.1.1 (Data Encryption)",
@@ -832,7 +832,7 @@
     "Confidentiality",
     "Non-repudiation"
    ],
-   "_provenance": "Authored from concept: 'a digital signature proves origin and integrity but keeps nothing secret' (notes 5.1.6 Hashing, Digital Signatures and Certificates). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D5 batch 2, 30 Oct 2026.",
+   "_provenance": "Authored from concept: 'a digital signature proves origin and integrity but keeps nothing secret' (notes 5.1.6 Hashing, Digital Signatures and Certificates). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D5 batch 2, 30 Oct 2026. Key letter moved from D to B (31 Oct 2026) to break a periodic key order; options and letter references swapped, text unchanged.",
    "style_version": 2
   },
   {
@@ -989,21 +989,21 @@
    "options": {
     "A": "A malicious insider, because staff data left the organization",
     "B": "An external threat, since the data reached an outside mail server",
-    "C": "An accidental insider, because a staff member's error exposed data",
-    "D": "No threat source, because nobody meant to cause any harm"
+    "C": "No threat source, because nobody meant to cause any harm",
+    "D": "An accidental insider, because a staff member's error exposed data"
    },
-   "correct": "C",
+   "correct": "D",
    "key_concept": "Threat sources include accidental human error; insiders can harm the organization by mistake as well as on purpose.",
    "pre_read": "Ask who caused the exposure and whether they meant to. Then match those two facts to a threat source.",
    "correct_explanation": "Threat sources include accidental ones: people who cause harm through errors in their everyday work. The officer is an insider who exposed data by mistake, so this is an accidental insider threat. No threat source is the runner-up: intent matters when judging adversaries, but accidents still expose data, and risk assessments plan for them too.",
    "wrong_explanations": {
     "A": "Tempting because insiders can misuse their access. But malicious means intent, and this was a mistake; labeling it malice would misdirect the response.",
     "B": "Tempting because the data reached an outsider. But the threat source is whoever caused the exposure, and that was a staff member inside the charity.",
-    "D": "Closest choice: nobody meant harm. But threat sources include accidental human error, and a misdirected email can expose data as badly as an attack."
+    "C": "Closest choice: nobody meant harm. But threat sources include accidental human error, and a misdirected email can expose data as badly as an attack."
    },
    "tips": [
     "Eliminate: A assumes intent where there was only a mistake, and B names the recipient, though the error came from inside.",
-    "Final two: C beats D because accidental errors are a recognized threat source; harm does not need intent.",
+    "Final two: D beats C because accidental errors are a recognized threat source; harm does not need intent.",
     "Exam cue: insider threats can be deliberate or accidental. Classify by who caused the harm and whether they meant it."
    ],
    "framework_ref": "NIST SP 800-30 Rev. 1 Appendix D Table D-2 (Taxonomy of Threat Sources: adversarial, accidental, structural and environmental); NIST CSF 2.0 ID.RA-03 (internal and external threats to the organization are identified and recorded)",
@@ -1012,7 +1012,7 @@
     "Accidental threat source",
     "Data exposure"
    ],
-   "_provenance": "Authored from concept: 'insiders can cause harm by accident as well as on purpose; accidental error is a threat source' (notes 5.2.5 Threat Actors and Motives). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D5 batch 2, 30 Oct 2026.",
+   "_provenance": "Authored from concept: 'insiders can cause harm by accident as well as on purpose; accidental error is a threat source' (notes 5.2.5 Threat Actors and Motives). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D5 batch 2, 30 Oct 2026. Key letter moved from C to D (31 Oct 2026) to break a periodic key order; options and letter references swapped, text unchanged.",
    "style_version": 2
   },
   {
@@ -1456,22 +1456,22 @@
    "question": "A security analyst's weekly review finds a new firewall rule, with no change request, allowing internet access to the payroll database on a firewall the network team runs. What should the analyst do FIRST?",
    "options": {
     "A": "Delete the rule at once to restore the approved configuration",
-    "B": "File a change request now so the rule is approved retroactively",
+    "B": "Report it as a possible incident for responders to handle",
     "C": "Leave it, since a senior engineer probably added it for a reason",
-    "D": "Report it as a possible incident for responders to handle"
+    "D": "File a change request now so the rule is approved retroactively"
    },
-   "correct": "D",
+   "correct": "B",
    "key_concept": "An unexplained change that opens a serious exposure is a possible incident; if you do not run the system, report it instead of undoing it.",
    "pre_read": "Ask what an unexplained change could mean, and who runs the firewall. Then decide what the analyst's role allows.",
    "correct_explanation": "A change with no approval is treated as a possible incident until explained, and a rule opening the payroll database to the internet could be an intruder's work. Reporting it starts the response, and the firewall's owners and responders decide on containment. Deleting the rule is the runner-up: it closes the exposure, but the analyst does not run the firewall, and deleting it alters the evidence responders need to trace who added it.",
    "wrong_explanations": {
     "A": "Closest choice: the rule is risky and should not stay. But the network team runs the firewall, and deleting the rule alone alters evidence responders need to trace it.",
-    "B": "Tempting because change requests fix missing paperwork. But approving an unexplained rule after the fact could legitimize an intruder's change.",
-    "C": "Tempting because senior staff do make quick fixes. But unapproved changes are treated as possible incidents until explained, whoever may have made them."
+    "C": "Tempting because senior staff do make quick fixes. But unapproved changes are treated as possible incidents until explained, whoever may have made them.",
+    "D": "Tempting because change requests fix missing paperwork. But approving an unexplained rule after the fact could legitimize an intruder's change."
    },
    "tips": [
-    "Eliminate: B approves an unexplained change after the fact, and C assumes good intent without checking.",
-    "Final two: D beats A because an unexplained rule exposing payroll data is a possible incident, on a firewall the analyst doesn't run; owners and responders decide containment.",
+    "Eliminate: D approves an unexplained change after the fact, and C assumes good intent without checking.",
+    "Final two: B beats A because an unexplained rule exposing payroll data is a possible incident, on a firewall the analyst doesn't run; owners and responders decide containment.",
     "Exam cue: an unexplained change that opens a path to sensitive data is a possible incident. On a system you don't run, report it; don't quietly undo it."
    ],
    "framework_ref": "NIST SP 800-53 Rev. 5 CM-3 (Configuration Change Control); ISO/IEC 27002:2022 Control 6.8 (Information security event reporting)",
@@ -1480,7 +1480,7 @@
     "Change management",
     "Incident reporting"
    ],
-   "_provenance": "Authored from concept: 'an unapproved change is a possible incident until explained; report it instead of quietly undoing it' (notes 5.4.6 Change Management). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D5 batch 2, 30 Oct 2026. Cross-review fixes (31 Oct 2026): key_concept and exam cue now name the two deciding facts (unexplained and risky; a system the analyst does not run), agreeing with cc_d5_040; key unchanged. Fix round 1 (31 Oct 2026): Final two now gives the two deciding facts (unexplained and risky; a firewall the analyst does not run) instead of a blanket rule, agreeing with cc_d5_040. Fix round 2 (31 Oct 2026): D drops 'security', which echoed the stem only in the key; D is no longer the single longest option.",
+   "_provenance": "Authored from concept: 'an unapproved change is a possible incident until explained; report it instead of quietly undoing it' (notes 5.4.6 Change Management). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D5 batch 2, 30 Oct 2026. Cross-review fixes (31 Oct 2026): key_concept and exam cue now name the two deciding facts (unexplained and risky; a system the analyst does not run), agreeing with cc_d5_040; key unchanged. Fix round 1 (31 Oct 2026): Final two now gives the two deciding facts (unexplained and risky; a firewall the analyst does not run) instead of a blanket rule, agreeing with cc_d5_040. Fix round 2 (31 Oct 2026): D drops 'security', which echoed the stem only in the key; D is no longer the single longest option. Key letter moved from D to B (31 Oct 2026) to break a periodic key order; options and letter references swapped, text unchanged.",
    "style_version": 2
   },
   {
@@ -1708,22 +1708,22 @@
    "question": "A help desk analyst at a shipping company is explaining website certificates to new staff. What does a trusted certificate authority's signature on a site's certificate MOST directly assure?",
    "options": {
     "A": "The site's code has been checked and is free of known flaws",
-    "B": "The public key in the certificate belongs to the named site",
-    "C": "The site's owner has been vetted as honest and safe to pay",
+    "B": "The site's owner has been vetted as honest and safe to pay",
+    "C": "The public key in the certificate belongs to the named site",
     "D": "Traffic to the site is encrypted with the certificate authority's key"
    },
-   "correct": "B",
+   "correct": "C",
    "key_concept": "A certificate authority's signature binds a public key to its named owner; it says nothing about the owner's honesty or the site's code.",
    "pre_read": "Ask what a certificate authority actually checks before it signs, and what it never checks.",
    "correct_explanation": "A certificate binds a public key to its owner: the certificate authority verifies that the named party controls the key, then signs, so a browser can trust it is talking to the real site. The vetted-owner option is the runner-up: verification checks identity and control of the name, not honesty, so a fraudster can hold a valid certificate for their own look-alike site.",
    "wrong_explanations": {
     "A": "Tempting because a valid certificate feels like a safety seal. But certificate authorities check identity, not code; a certified site can still have serious flaws.",
-    "C": "Closest choice: the authority does verify who the owner is. But identity is not honesty, and criminals can obtain valid certificates for their own look-alike sites.",
+    "B": "Closest choice: the authority does verify who the owner is. But identity is not honesty, and criminals can obtain valid certificates for their own look-alike sites.",
     "D": "Tempting because certificates enable encryption. But the session uses keys agreed with the site; the authority's private key only signs certificates."
    },
    "tips": [
     "Eliminate: A expects certificates to test code, and D puts the authority's key into the traffic; certificates do neither.",
-    "Final two: B beats C because a certificate proves who holds the key, not whether they are honest; criminals can get valid certificates too.",
+    "Final two: C beats B because a certificate proves who holds the key, not whether they are honest; criminals can get valid certificates too.",
     "Exam cue: a certificate answers 'is this key really theirs?' It does not answer 'are they trustworthy?' or 'is their software safe?'"
    ],
    "framework_ref": "NIST SP 800-57 Part 1 Rev. 5 Section 2.1 (Glossary: a public-key certificate is signed by a trusted party, binding the public key to the entity); NIST SP 800-12 Rev. 1 Section 9.1.3.2 (Public Key Electronic Signatures: anyone can verify with the signer's public key)",
@@ -1732,7 +1732,7 @@
     "Public key infrastructure (PKI)",
     "Digital signatures"
    ],
-   "_provenance": "Authored from concept: 'a certificate authority's signature binds a public key to its owner, not to the owner's honesty' (notes 5.1.6 Hashing, Digital Signatures and Certificates). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D5 batch 3, 31 Oct 2026.",
+   "_provenance": "Authored from concept: 'a certificate authority's signature binds a public key to its owner, not to the owner's honesty' (notes 5.1.6 Hashing, Digital Signatures and Certificates). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D5 batch 3, 31 Oct 2026. Key letter moved from B to C (31 Oct 2026) to break a periodic key order; options and letter references swapped, text unchanged.",
    "style_version": 2
   },
   {
@@ -2032,22 +2032,22 @@
    "question": "A car rental firm classifies customers' driver's license scans as restricted, its highest level, and an analyst's draft incident report includes screenshots of several. Which classification is MOST appropriate for the report?",
    "options": {
     "A": "Internal, since only named responders can see the restricted scans",
-    "B": "Confidential, the level the incident report template sets",
-    "C": "Restricted, the level of the most sensitive data inside it",
+    "B": "Restricted, the level of the most sensitive data inside it",
+    "C": "Confidential, the level the incident report template sets",
     "D": "Unclassified, until the incident is closed and reviewed"
    },
-   "correct": "C",
+   "correct": "B",
    "key_concept": "Incident records take the classification of the most sensitive data they contain, whoever can open them today.",
    "pre_read": "Ask what decides a document's classification: its contents, its template or who can see it.",
    "correct_explanation": "A document takes the classification of the most sensitive data inside it, so a report holding restricted license scans is itself restricted and is handled that way wherever it goes. Internal is the runner-up: limiting it to named responders does narrow who sees it today, but access settings do not lower the classification, and the report may later be copied, printed or shared.",
    "wrong_explanations": {
     "A": "Closest choice: only named responders can see it today. But who can see a document does not set its level; the restricted scans inside do.",
-    "B": "Tempting because templates save effort. But a default label cannot lower the protection that the restricted scans inside the report require.",
+    "C": "Tempting because templates save effort. But a default label cannot lower the protection that the restricted scans inside the report require.",
     "D": "Tempting because the report is still a draft. But drafts hold the same data, and leaving them unclassified invites careless sharing during the response."
    },
    "tips": [
-    "Eliminate: B lets a template default set the level, and D leaves a draft unclassified; content, not format or stage, sets classification.",
-    "Final two: C beats A because classification follows the most sensitive content; limiting who sees it does not lower its level.",
+    "Eliminate: C lets a template default set the level, and D leaves a draft unclassified; content, not format or stage, sets classification.",
+    "Final two: B beats A because classification follows the most sensitive content; limiting who sees it does not lower its level.",
     "Exam cue: a report inherits the highest classification of any data inside it, during an incident as at any other time."
    ],
    "framework_ref": "NIST SP 800-61 Rev. 3 Table 3 (RS.AN-06: incident response records can contain sensitive information and are safeguarded, with access for authorized personnel only); ISO/IEC 27002:2022 Control 5.12 (Classification of information)",
@@ -2056,7 +2056,7 @@
     "Incident records",
     "Need to know"
    ],
-   "_provenance": "Authored from concept: 'incident records take the classification of the most sensitive data they contain' (notes 5.3.5 Data Handling During an Incident). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D5 batch 3, 31 Oct 2026.",
+   "_provenance": "Authored from concept: 'incident records take the classification of the most sensitive data they contain' (notes 5.3.5 Data Handling During an Incident). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D5 batch 3, 31 Oct 2026. Key letter moved from C to B (31 Oct 2026) to break a periodic key order; options and letter references swapped, text unchanged.",
    "style_version": 2
   },
   {
