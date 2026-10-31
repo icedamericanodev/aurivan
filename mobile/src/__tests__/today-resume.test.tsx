@@ -8,12 +8,13 @@
  * the first "Also today" row, said once.
  */
 import { act, create, type ReactTestInstance, type ReactTestRenderer } from 'react-test-renderer';
-import { Dimensions } from 'react-native';
+import { Alert, Dimensions } from 'react-native';
 import { router } from 'expo-router';
 import { setMockReducedMotion } from '../../jest/reanimated-mock';
 import Today from '../app/(tabs)/home';
 import { resetCelebrationsForTest, resetOncePerDayForTest, setSystemReducedMotionForTest } from '../components/motion';
 import { startMock } from '../lib/sessions';
+import { startFirstSet } from '../lib/firstSet';
 import { dayKey } from '../engine/streak';
 import { useProgress } from '../store/progress';
 import { useSeen } from '../store/seen';
@@ -76,6 +77,7 @@ const NOW = new Date(2026, 9, 15, 9, 0, 0); // a Thursday morning
 const today = () => dayKey(NOW.getTime());
 const WARM: PlanItem = { kind: 'practice', count: 5, label: 'Warm-up · 5 questions' };
 const REVIEW: PlanItem = { kind: 'review', count: 4, due: 4 };
+const MINI: PlanItem = { kind: 'mock', questions: 50, label: 'Mini mock · 50 questions' };
 
 const storePlan = (items: PlanItem[], done: boolean[]) => {
   const plan: DayPlan = { day: today(), certId: 'cisa', budget: 30, items, done, start: { score: 0, domains: {} }, answered: 0, correct: 0, minutes: 0 };
@@ -173,4 +175,72 @@ describe('Today: a paused session can always be resumed', () => {
     mount(<Today />);
     expect(resumeRows()).toHaveLength(0);
   });
+  it('a cleared plan with an optional mock still open lists only the paused session, not the mock', () => {
+    // The mini mock beside timed items is optional: the day clears without it, and it is not listed under the clearing.
+    storePlan([REVIEW, MINI, WARM], [true, false, true]);
+    pauseMiniMock();
+    mount(<Today />);
+    expect(allText()).toContain('Today’s clearing');
+    const list = byTestID('also-today');
+    expect(list).toHaveLength(1);
+    expect(resumeRows()).toHaveLength(1);
+    // Only the Resume row: the open optional mock ("Mini mock · 50 questions") is not offered again.
+    expect(textOf(list[0])).not.toContain('Mini mock · 50');
+  });
+
+  it('a paused mock whose time already ran out is still offered on a cleared day (the session screen submits it)', () => {
+    storePlan([REVIEW, WARM], [true, true]);
+    pauseMiniMock();
+    act(() => {
+      useSession.setState((s) => ({ active: { ...s.active!, deadline: NOW.getTime() - 60_000 } }));
+    });
+    mount(<Today />);
+    const rows = resumeRows();
+    expect(rows).toHaveLength(1);
+    // The heading's minutes never go to zero or below for an expired clock.
+    expect(allText()).not.toMatch(/About (0|-\d+) min/);
+    act(() => {
+      rows[0].props.onPress();
+    });
+    expect(router.push).toHaveBeenCalledWith('/session');
+  });
+
+  it('a paused first set on a cleared day is offered (there is no first-set Start left to pick it up)', () => {
+    storePlan([REVIEW, WARM], [true, true]);
+    act(() => {
+      startFirstSet('cisa');
+    });
+    expect(useSession.getState().active?.firstSet).toBe(true);
+    mount(<Today />);
+    expect(resumeRows()).toHaveLength(1);
+  });
+
+  it('a paused first set is NOT listed while the first set is the open plan item (its Start resumes it)', () => {
+    storePlan([{ kind: 'practice', count: 5, label: 'First set', why: 'first' } as PlanItem], [false]);
+    act(() => {
+      startFirstSet('cisa');
+    });
+    mount(<Today />);
+    expect(resumeRows()).toHaveLength(0);
+  });
+
+  it('"Do a little more" on a cleared day never silently replaces the paused session', () => {
+    const alert = jest.spyOn(Alert, 'alert').mockImplementation(() => {});
+    storePlan([REVIEW, WARM], [true, true]);
+    pauseMiniMock();
+    const paused = useSession.getState().active!;
+    mount(<Today />);
+    const more = root().findAll((n) => typeof n.props.onPress === 'function' && n.props.accessibilityLabel === 'Do a little more');
+    expect(more.length).toBeGreaterThan(0);
+    act(() => {
+      more[0].props.onPress();
+    });
+    // It asks first (guardedStart) and, until the learner picks "Discard and start", the paused session stays.
+    expect(alert).toHaveBeenCalledTimes(1);
+    expect(alert.mock.calls[0][0]).toBe('Replace your unfinished session?');
+    expect(useSession.getState().active?.id).toBe(paused.id);
+    expect(useSession.getState().active?.finishedAt).toBeUndefined();
+    alert.mockRestore();
+  });
 });
+
