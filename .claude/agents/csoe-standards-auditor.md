@@ -35,7 +35,8 @@ Read first:
 - **Teachable patterns, not issuer claims.** Tips may say "on CSOE items, look for who signs"; never claim "SOXCPA says" or that an item is on the exam.
 
 ## Item construction rules
-1. **Length and difficulty.**
+1. **Stem form, length and difficulty.**
+   - SOXCPA's stems are "a question asked, or an incomplete statement to be completed" (exam steps PDF). Use both: about a quarter of each new batch as incomplete statements ending in a colon (for example "Under Section 404(b), the registered public accounting firm must:"), each option then completing the sentence grammatically. See `CSOE_BLUEPRINT.md` "How SOXCPA writes its questions".
    - Stems are one to three sentences. A short scenario names the company type and filer status when the answer depends on it ("a non-accelerated filer", "a foreign private issuer filing Form 20-F").
    - Mix per domain: about **30% foundational (recall), 55% application, 15% analysis** (behavioral-scientist, 31 Oct 2026: open-book, fact-based exam). Recall items test telling two look-alike rules apart, not isolated trivia.
    - Four options, as on the real exam.

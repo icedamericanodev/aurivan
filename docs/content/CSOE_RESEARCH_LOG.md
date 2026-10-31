@@ -19,6 +19,7 @@ pass (search summaries only) is kept below as history, with corrections.
 | — | Official presentations: 1,022 slides; about 29 hours of study; SOXCPA sends no sample questions | P1, P2, P3 |
 | — | Exam advice: look for the best answer; cross out the options you know are wrong first | P2 |
 | — | SOXCPA is wholly owned by Compliance LLC | P3 |
+| — | Question format: a stem that is "a question asked, or an incomplete statement to be completed", plus four responses; one template across Compliance LLC's exams; no review of the exam afterwards | P2, P3, P7, P8 |
 | No USPTO record found through aggregators | USPTO search opened: no record for "Certified Sarbanes-Oxley Expert", "SOXCPA" or the association's name; "CSOE" has one unrelated live application (serial 99526032, class 42 software, not registered) | tmsearch.uspto.gov |
 
 The owner also attached a copy of P2; its SHA-256 matches the file on the
@@ -149,6 +150,8 @@ Primary (the issuer's own pages; P1–P3 opened in full on 31 Oct 2026, second p
 - P3: Questions about the certification and the exams (FAQ PDF), https://www.sarbanes-oxley-association.com/Questions_About_The_Certification_And_The_Exams_1.pdf
 - P4: Certified EU Sarbanes-Oxley Expert (CEUSOE), https://www.sarbanes-oxley-association.com/CEUSOE_Distance_Learning_and_Certification.htm
 - P5: Certified Japanese Sarbanes-Oxley Expert (CJSOXE), https://www.sarbanes-oxley-association.com/CJSOXE_Distance_Learning_and_Certification.htm
+- P7: CEUSOE exam steps PDF, https://www.sarbanes-oxley-association.com/CEUSOE_Certification_Steps_1.pdf (opened 31 Oct 2026; identical to P2 apart from the exam name)
+- P8: CJSOXE exam steps PDF, https://www.sarbanes-oxley-association.com/CJSOXE_Certification_Steps_1.pdf (opened 31 Oct 2026; same exam rules and stem description)
 - P6: Lifetime membership, https://www.sarbanes-oxley-association.com/Lifetime_Membership.html and https://www.sarbanes-oxley-association.com/How_to_become_member.htm
 
 Secondary (context only; checked 31 Oct 2026 through search summaries):
@@ -160,4 +163,5 @@ Secondary (context only; checked 31 Oct 2026 through search summaries):
 - S6: Trademark aggregators: https://trademarkdir.com/owner/sarbanes-oxley-group, https://markinton.com/trademark/csox-78658358
 - S7: The Knowledge Academy, Sarbanes-Oxley Certified Professional, https://www.theknowledgeacademy.com/us/courses/sarbanes-oxley-training/sarbanes-oxley-certified-professional/ (a different credential)
 - S8: Chartered Certifications, CSOP, https://charteredcertifications.com/learning/courses/certified-sarbanes-oxley-professional-csop (a different credential)
+- S10: IARCP (a sister association under Compliance LLC), CRCMP exam steps, https://www.risk-compliance-association.com/CRCMP_Certification_Steps_1.pdf (search summary only; the host is blocked): same stem description, 35 items, 90 minutes, 70%
 - S9: Scribd upload "Certified Sarbanes-Oxley Expert Overview", https://www.scribd.com/document/461801720/1-CSOE-pdf (a user upload of what looks like issuer material; never use it as a source or copy from it)

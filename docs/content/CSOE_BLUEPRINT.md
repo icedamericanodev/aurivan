@@ -36,6 +36,47 @@ KaiSip's CSOE mock copies the navigation rules (forward only, no skip, no
 pause) once the mock engine supports them, and says its score is not
 SOXCPA's.
 
+## How SOXCPA writes its questions (and how that differs from ISACA)
+
+Checked 31 Oct 2026 in SOXCPA's exam steps PDF (P2), its FAQ (P3), the steps
+PDFs of its sister exams (P7, P8) and, through search only, the IARCP's
+CRCMP steps (S10). SOXCPA's parent, Compliance LLC, uses one exam template
+for all its associations: the CSOE and CEUSOE steps PDFs are word for word
+the same apart from the exam name.
+
+| | SOXCPA (CSOE) | ISACA (CISA, CRISC, AAIA) |
+|---|---|---|
+| Stem | "A question asked, or an incomplete statement to be completed" (P2) | Mostly short scenarios ending in a question |
+| What decides the key | What the official presentations "clearly" answer: the Act, the SEC and PCAOB rules, the frameworks as the course teaches them | A job-practice role lens (auditor, risk practitioner) choosing among defensible actions |
+| Priority words | Not described; the instruction is generic: "look for the best answer", "cross out all the answers you know are incorrect" | BEST, FIRST, MOST, PRIMARY are central |
+| Length and scoring | 35 items, 90 minutes, 70% raw score | CISA and CRISC 150 items in 4 hours, AAIA 90 items in 2.5 hours; scaled 200–800 (`CISA_ECO.md`, `CRISC_BLUEPRINT.md`, `AAIA_BLUEPRINT.md`) |
+| Navigation | Answer in the order shown; no skip, no back, no pause | Review and change answers allowed |
+| Practice material | None: no sample questions, no past exams, no review of your exam afterwards | Official QAE database and practice quizzes |
+| Book | Open book (the presentations) | Closed book |
+| Platform | A generic online testing application (myTestCom) | Proctored test centers or remote proctoring |
+
+What KaiSip takes from this:
+
+1. **Two stem types.** Write both direct questions and incomplete
+   statements ("Under Section 404(b), the registered public accounting firm
+   must:"). From the next batch, about a quarter of each domain's new items
+   use the incomplete-statement form. `data/csoe/tools/style_csoe.py`
+   accepts a stem ending in a colon or an ellipsis.
+2. **The rule decides, not a role.** Keys come from the text of the law and
+   the frameworks; no ISACA-style role lens. Priority words are used only
+   where the stem really ranks options; a stem that names its rule asks
+   directly.
+3. **Best answer by elimination.** SOXCPA's own advice matches the KaiSip
+   tip voice (Eliminate, then Final two), so keep it.
+4. **Breadth over depth.** Any of 1,022 slides can be asked, including side
+   topics (ADR levels, the Volcker Rule, SSAE 18, E-SOX and J-SOX), so cover
+   every synopsis line before going deep on any one.
+5. **Open book, short clock.** About 2.5 minutes an item and no going back:
+   train recall first and fast lookup second (bank plan section 4).
+6. **No official practice exists.** KaiSip must never claim its items match
+   or come from SOXCPA's exam; it can say only that they follow the
+   published format.
+
 ## SOXCPA's course synopsis (P1, summarized)
 
 | Part | SOXCPA's headings |

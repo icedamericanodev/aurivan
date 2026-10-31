@@ -135,7 +135,10 @@ name the runner-up testers weigh. CSOE adds:
    302/906/404; 404(a)/404(b); management/auditor; SEC/PCAOB; significant
    deficiency/material weakness; accelerated/non-accelerated; disclosure
    controls/ICFR; Section 304/Rule 10D-1 clawbacks; Section 802/Rule 17a-4.
-5. **No issuer wording.** Nothing from SOXCPA's presentations or uploads of
+5. **Both stem forms.** About a quarter of each new batch uses SOXCPA's
+   incomplete-statement form (ends in a colon; each option completes the
+   sentence). The pilot used questions only; batch 2 adds the second form.
+6. **No issuer wording.** Nothing from SOXCPA's presentations or uploads of
    them; build from the public law in our own words.
 
 ## 7. Course description (store copy)

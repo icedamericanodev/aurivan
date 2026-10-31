@@ -23,6 +23,8 @@ SOXCPA material, a prep bank or a blocked host.
   - Verified (opened 31 Oct 2026): https://www.law.cornell.edu/uscode/text/11/523; checked paragraph (a)(19): securities law violation or securities fraud debts from a judgment, order, settlement agreement or administrative order are not discharged
 - 15 U.S.C. 77e (Prohibitions relating to interstate commerce and the mails)
   - Verified (opened 31 Oct 2026): https://www.law.cornell.edu/uscode/text/15/77e; checked Securities Act Section 5(a) and (c): no sale or offer through the mails or interstate commerce unless a registration statement is in effect or filed
+- 15 U.S.C. 78d(a) (Establishment of the Securities and Exchange Commission)
+  - Verified (opened 31 Oct 2026): https://www.law.cornell.edu/uscode/text/15/78d; checked that Exchange Act Section 4(a) established the Commission, five commissioners appointed by the President with Senate consent (same bullet text as _staged_d1.md, so the merge keeps one form)
 - 15 U.S.C. 78u-6(b) (Whistleblower awards: amount and payment from the Fund)
   - Verified (opened 31 Oct 2026): https://www.law.cornell.edu/uscode/text/15/78u-6; checked (a)(1) covered action over $1,000,000, (b)(1) awards of 10 to 30 percent of what is collected, (b)(2) paid from the Investor Protection Fund (text current through Pub. L. 119-21, 4 Jul 2025)
 - 15 U.S.C. 78u-6(c)(2)(C) (Denial of award for information gained through a required audit)
@@ -42,7 +44,7 @@ SOXCPA material, a prep bank or a blocked host.
 
 ## 17 CFR (Securities and Exchange Commission)
 - 17 CFR 202.5(a) (Preliminary and formal investigations)
-  - Verified (opened 31 Oct 2026): https://www.law.cornell.edu/cfr/text/17/202.5; checked no process issued or testimony compelled in a preliminary investigation; formal investigations and process at the Commission's discretion; non-public unless ordered (amended through 91 FR 29896, 21 May 2026)
+  - Verified (opened 31 Oct 2026): https://www.law.cornell.edu/cfr/text/17/202.5; checked no process issued or testimony compelled in a preliminary investigation; formal investigations and process at the Commission's discretion; non-public unless ordered. The last amendment, SEC Release No. 33-11417 (91 FR 29896, effective 21 May 2026), repealed only paragraph (e), the 1972 no-deny settlement policy; (a) to (d) and (f) are unchanged
 - 17 CFR 202.5(c) (Wells submissions)
   - Verified (opened 31 Oct 2026): https://www.law.cornell.edu/cfr/text/17/202.5; checked written statements by persons involved in investigations and staff advice on the general nature of the investigation and indicated violations before a recommendation to the Commission
 - 17 CFR 202.5(f) (Settlements do not extend to criminal charges)
@@ -65,6 +67,8 @@ SOXCPA material, a prep bank or a blocked host.
 ## Dodd-Frank Act
 - Dodd-Frank Act Section 112(a) (Purposes and duties of the Financial Stability Oversight Council)
   - Verified (opened 31 Oct 2026): https://www.govinfo.gov/content/pkg/PLAW-111publ203/html/PLAW-111publ203.htm; checked purposes (identify risks to U.S. financial stability, promote market discipline, respond to emerging threats) and duties; Section 111(b) membership with the Secretary of the Treasury as Chairperson and the Federal Insurance Office Director as a nonvoting member
+- Dodd-Frank Act Section 502 (Federal Insurance Office)
+  - Verified (opened 31 Oct 2026): https://www.govinfo.gov/content/pkg/PLAW-111publ203/html/PLAW-111publ203.htm; checked new 31 U.S.C. 313: the Office within the Department of the Treasury, its monitoring and advisory functions, the Director's advisory seat on the Council, and 313(k) (no general supervisory or regulatory authority over the business of insurance)
 - Dodd-Frank Act Section 204(a) (Purpose of orderly liquidation authority)
   - Verified (opened 31 Oct 2026): https://www.govinfo.gov/content/pkg/PLAW-111publ203/html/PLAW-111publ203.htm; checked liquidation of failing financial companies posing significant risk to financial stability, creditors and shareholders bear losses, responsible management not retained; 204(b) the FDIC as receiver
 - Dodd-Frank Act Section 214 (Prohibition on taxpayer funding)
