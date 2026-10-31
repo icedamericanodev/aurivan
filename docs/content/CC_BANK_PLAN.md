@@ -294,8 +294,11 @@ Lessons from the D2/D3/D5 round, for batch 3:
 
 ## 7. Follow-ups outside this plan's scope
 
-- A CC mode for `scripts/lint_exam_style_v2.py` (CC actors in place of the CISA
-  actor check, and a library-match check for `data/cc/`). This touches
-  `scripts/`, so it waits for a session that owns shared tooling.
-- Align the five domain-expert agent files' "at least" counts with the
-  blueprint table.
+- The CC-only checks now live in `data/cc/tools/check_cc.py` (library match,
+  notes links, tip structure, length tells). What remains for a session that
+  owns `scripts/`: let `lint_exam_style_v2.py` accept CC actors so its "stem
+  names no actor" warning stops firing on CC items, and let
+  `scripts/lint_notes.py` check CC notes against the CC outline (it compares
+  every notes file with the CISA outline today).
+- Done 31 Oct 2026: the five domain-expert agent files and the standards
+  auditor now point at the blueprint targets, this plan and the checker.
