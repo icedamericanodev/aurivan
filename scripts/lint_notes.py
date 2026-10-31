@@ -66,10 +66,15 @@ AF_MISSING = []
 PRACTICE_SEEN = {}
 _BANK = None
 def bank_ids():
-    """Question ids in data/domain{1..5}.json (practice_ids must point at these)."""
+    """Question ids practice_ids may point at: data/domain{1..5}.json, or the --bank folder's d{N}.json."""
     global _BANK
     if _BANK is None:
         _BANK = set()
+        if BANK != ROOT / "data" / "originals":  # another cert's bank (--bank)
+            for f in sorted(BANK.glob("d*.json")):
+                data = json.loads(f.read_text())
+                _BANK |= {q["id"] for q in (data["questions"] if isinstance(data, dict) else data)}
+            return _BANK
         for n in range(1, 6):
             f = ROOT / "data" / f"domain{n}.json"
             if f.exists():
@@ -217,7 +222,7 @@ def lint_sub(r, s, topic_id, seen_terms):
             for q in pids:
                 if q not in bank:
                     r.err(where, f"practice_ids: {q} is not in the question bank")
-                elif not q.startswith(dom):
+                elif not (q.startswith(dom) or "_" + dom in q):  # d4_012, or aaia_d1_003 in another cert
                     r.err(where, f"practice_ids: {q} is from another domain")
                 elif q in PRACTICE_SEEN:
                     r.err(where, f"practice_ids: {q} is also under {PRACTICE_SEEN[q]}")
