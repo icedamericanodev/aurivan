@@ -386,7 +386,7 @@
             "At least 15 characters when a password is the only factor, and 8 alongside another factor.",
             "Allow at least 64 characters and pasting, so password managers work (habits: see 2.3.6).",
             "Screen new passwords against a blocklist; do not demand character mixes or scheduled changes.",
-            "Force a change on evidence of compromise, limit failed attempts and store only salted hashes."
+            "Force a change on evidence of compromise, limit failed attempts and store only salted hashes from a slow, password-specific algorithm; a fast hash such as SHA-256 is cracked quickly."
           ],
           "example": "At a ski resort, Marta, a lift supervisor, resets their password to one they also used on a shopping site that was breached. The new screening check refuses it, and Marta phones IT to ask for an exception. Joel, the IT assistant, explains the blocklist, keeps the check in place and helps Marta create a long passphrase in the password manager.",
           "audit_focus": {
@@ -424,6 +424,10 @@
             {
               "term": "Password blocklist",
               "definition": "Common, expected and breached passwords that new passwords are checked against."
+            },
+            {
+              "term": "Encoding",
+              "definition": "Converting data into another format, such as Base64, so systems can handle it; anyone can reverse it without a key, so it is not encryption."
             }
           ]
         },
@@ -888,8 +892,8 @@
               "definition": "Carrying out an approved request in the systems, done by someone other than the approver."
             },
             {
-              "term": "Callback verification",
-              "definition": "Confirming a request through a number or channel already on file, not one in the request."
+              "term": "Out-of-band verification",
+              "definition": "Confirming a request through a separate, trusted channel already on file, such as a known phone number (a callback), never one given in the request."
             }
           ]
         },
@@ -938,8 +942,8 @@
               "definition": "The internal person who requests an outside user's access and confirms it is still needed."
             },
             {
-              "term": "Federation trust",
-              "definition": "An agreement, backed by exchanged keys, letting one organization accept sign-ins proved by another."
+              "term": "Federation",
+              "definition": "Trust between organizations, set by agreement and exchanged keys, that lets one accept the other's sign-ins."
             }
           ]
         },
@@ -1188,7 +1192,7 @@
               "Sign-off records for independent reviews of high-risk transactions"
             ],
             "recommend": "Report SoD conflicts to the system owner; never quietly give one person both duties.",
-            "decides": "The system owner splits the duties or accepts a compensating control"
+            "decides": "The policy owner approves a compensating control as an exception; the risk owner accepts what remains"
           },
           "isaca_rule": "No one person should be able to start, approve and hide a sensitive action. Split duties, or add independent review.",
           "exam_traps": [
@@ -1847,7 +1851,7 @@
     "Multifactor authentication (MFA)": "Sign-in that combines at least two different factor categories: something you know, something you have or something you are.",
     "Phishing-resistant authentication": "Sign-in tied to the genuine site, such as passkeys and Fast Identity Online 2 (FIDO2) keys, that a fake page cannot capture and reuse.",
     "Single sign-on (SSO)": "One sign-in at an identity provider that gives access to many applications.",
-    "Federation": "Trust between organizations or systems that lets one accept the other's sign-ins.",
+    "Federation": "Trust between organizations, set by agreement and exchanged keys, that lets one accept the other's sign-ins.",
     "Adaptive authentication": "Sign-in checks that rise or fall with the risk score of each attempt.",
     "Session": "The period after sign-in when a user can act without proving identity again; timeouts limit it.",
     "Least privilege": "Giving each identity only the access its task needs, for only as long as needed.",

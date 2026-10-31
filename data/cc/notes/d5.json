@@ -551,6 +551,10 @@
             {
               "term": "Non-repudiation",
               "definition": "Proof that a specific party sent or approved something, so they cannot credibly deny it; usually from a digital signature."
+            },
+            {
+              "term": "Certificate authority (CA)",
+              "definition": "A trusted organization that verifies an owner's identity and signs the certificate linking them to a public key."
             }
           ]
         },
@@ -630,6 +634,10 @@
             {
               "term": "Crypto agility",
               "definition": "The ability to swap cryptographic algorithms in a system without a major redesign."
+            },
+            {
+              "term": "Quantum-resistant (post-quantum) cryptography",
+              "definition": "Public-key algorithms built to resist future quantum computers, such as the US federal standards published in 2024."
             }
           ],
           "memory_aid": "Public-key is at risk, symmetric holds: list it, rank it, swap it."
@@ -943,8 +951,12 @@
               "definition": "Automatically hiding or closing low-value alerts; useful against noise, risky if it hides real attacks."
             },
             {
-              "term": "Data poisoning",
-              "definition": "Tampering with the data a model learns from so it learns wrong or hidden behavior, such as ignoring an attacker's activity."
+              "term": "Model or data poisoning",
+              "definition": "Tampering with an AI model or its training data so it learns wrong or hidden behavior, such as ignoring attacks; an integrity attack."
+            },
+            {
+              "term": "Alert fatigue",
+              "definition": "Overload when analysts face more alerts, many of them false, than they can review, so real threats get missed or dismissed."
             }
           ]
         },
@@ -1089,6 +1101,10 @@
             {
               "term": "Traffic Light Protocol (TLP)",
               "definition": "A labeling scheme from the Forum of Incident Response and Security Teams (FIRST) setting how far information, and any part copied from it, may travel."
+            },
+            {
+              "term": "Cyber threat intelligence (CTI)",
+              "definition": "Analyzed information about threats, used to anticipate, detect and respond to attacks."
             }
           ]
         },
@@ -1595,6 +1611,10 @@
             {
               "term": "Persistence",
               "definition": "Ways an attacker keeps access after a reboot or cleanup, such as hidden accounts or scheduled tasks."
+            },
+            {
+              "term": "Eradication and recovery",
+              "definition": "Eradication removes the cause, such as malware or a rogue account; recovery then restores systems from clean sources and watches them."
             }
           ]
         },
@@ -1646,6 +1666,10 @@
             {
               "term": "Write blocker",
               "definition": "A device or tool that lets investigators read a drive without changing any data on it."
+            },
+            {
+              "term": "Chain of custody",
+              "definition": "A record of everyone who handled evidence, when and why, showing it was not altered."
             }
           ]
         },
@@ -1969,7 +1993,7 @@
             },
             {
               "trap": "An analyst should switch off an unsupported machine as soon as they find it.",
-              "why": "It may run a critical or life-safety process. Record and report it; the owner decides on replacement or compensating controls."
+              "why": "It may run a critical or life-safety process. Record and report it; the asset owner decides on replacement, and compensating controls need a recorded exception."
             }
           ],
           "key_terms": [
@@ -2319,6 +2343,10 @@
             {
               "term": "Credentialed scan",
               "definition": "A scan that logs in to each system, so it can see missing patches and settings an outsider cannot."
+            },
+            {
+              "term": "Common Vulnerability Scoring System (CVSS)",
+              "definition": "A 0 to 10 severity score for a flaw, kept by FIRST, a global incident response forum; it rates the flaw, not your own risk."
             }
           ]
         },
@@ -2635,37 +2663,28 @@
     "Asymmetric encryption": "Encryption with a public and private key pair; used for key exchange and signatures. Needs 2n keys for n people.",
     "Hashing": "A one-way function giving a fixed-length digest; not encryption. A keyed hash, the hash-based message authentication code (HMAC), adds a secret key.",
     "Digital signature": "Proof of origin and integrity, made with the signer's private key and checked with their public key.",
-    "Certificate authority (CA)": "A trusted organization that verifies an owner's identity and signs the certificate linking them to a public key.",
-    "Quantum-resistant (post-quantum) cryptography": "Public-key algorithms built to resist future quantum computers, such as the US federal standards published in 2024.",
     "Event": "Anything observable in a system or network, such as a sign-in or a file change; most events are harmless.",
     "Incident": "An event that actually or imminently harms security or violates policy; declaring one starts the incident response plan.",
     "Triage": "Sorting events and alerts by impact and urgency to decide which need action first and which go to the incident response team.",
     "Security information and event management (SIEM)": "A system that collects and correlates logs from many sources and raises alerts.",
-    "Security operations center (SOC)": "The team that monitors and responds to security events; not a System and Organization Controls (SOC) report.",
-    "Alert fatigue": "Overload when analysts face more alerts, many of them false, than they can review, so real threats get missed or dismissed.",
     "Malware": "Malicious software, such as viruses, worms, Trojans, ransomware, spyware and rootkits, built to harm systems or steal data.",
     "Threat actor": "The person or group behind a threat, such as criminals, nation-states, hacktivists or careless or malicious insiders.",
-    "Cyber threat intelligence (CTI)": "Analyzed information about threats, used to anticipate, detect and respond to attacks.",
     "MITRE ATT&CK": "MITRE's free knowledge base of Adversarial Tactics, Techniques and Common Knowledge (ATT&CK): real attacker behavior, used to map detections and plan tests.",
     "Denial of service (DoS)": "An attack that overloads a service so real users cannot reach it; a distributed (DDoS) attack comes from many devices at once.",
     "On-path attack": "An attack in which someone secretly sits between two parties to read or change their traffic; also called man-in-the-middle.",
     "Incident response plan": "The approved document that sets incident definitions, roles, authority, communication and response steps.",
     "Containment": "Stopping an incident from spreading, for example by isolating a host; it comes before eradication.",
-    "Eradication and recovery": "Eradication removes the cause, such as malware or a rogue account; recovery then restores systems from clean sources and watches them.",
-    "Chain of custody": "A record of everyone who handled evidence, when and why, showing it was not altered.",
     "Tabletop exercise": "A discussion-based walk-through of an incident scenario to test roles and decisions, without touching systems.",
     "Asset inventory": "An up-to-date list of hardware, software, data, cloud and AI assets, each with a named owner.",
     "End-of-life (EOL)": "A product past its vendor's end of support, so newly found flaws stay unpatched; check the vendor's support dates, not the product's age.",
     "Security baseline": "The approved, mandatory minimum secure configuration for one type of system; any change from it goes through change management.",
     "Change management": "The process for requesting, approving, testing, making and reviewing changes to systems.",
     "Patch management": "The routine process of finding, testing, approving and installing vendor fixes, prioritized by exposure and active exploitation.",
-    "Common Vulnerability Scoring System (CVSS)": "A 0 to 10 severity score for a flaw, maintained by the Forum of Incident Response and Security Teams (FIRST); it rates the flaw, not your organization's risk.",
     "Red, blue and purple teams": "A red team plays authorized attackers, a blue team defends and detects, and purple teaming has both work together to improve defenses.",
     "Vulnerability scan": "An automated, authorized check that lists known weaknesses, such as missing patches, without trying to exploit them.",
     "Penetration test": "An authorized attempt to exploit weaknesses to show what an attacker could achieve; a scan alone is not one.",
     "Static and dynamic application security testing (SAST and DAST)": "Static application security testing (SAST) examines code without running it; dynamic testing (DAST) probes the running application.",
-    "Threat modeling": "Mapping a system's data flows and trust boundaries, ideally during design, to find how it could be attacked and what controls it needs.",
-    "Prompt injection": "Crafted or hidden instructions in input or content that try to make an AI tool ignore its original instructions or rules."
+    "Threat modeling": "Mapping a system's data flows and trust boundaries, ideally during design, to find how it could be attacked and what controls it needs."
   },
   "references": [
     {

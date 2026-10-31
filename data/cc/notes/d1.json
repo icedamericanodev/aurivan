@@ -301,7 +301,7 @@
               "Restore test record with time taken"
             ],
             "recommend": "Report single points of failure and repeated backup failures to the system owner.",
-            "decides": "The system owner decides how much downtime is acceptable"
+            "decides": "Business owners set acceptable downtime; senior management funds any gap"
           },
           "isaca_rule": "Ask what happens if it stops. Protect the most critical services first, and treat a backup that has never been restored as unproven.",
           "exam_traps": [
@@ -317,7 +317,7 @@
             },
             {
               "term": "Distributed denial of service (DDoS)",
-              "definition": "A denial of service attack sent from many machines at once, so it is harder to block."
+              "definition": "A denial of service attack sent from many devices at once, often a botnet, so blocking one source does not stop it."
             }
           ]
         },
@@ -466,7 +466,7 @@
             },
             {
               "term": "Accountability",
-              "definition": "Tracing each action to one answerable person or process through unique IDs and logs; in governance, it means answering for an outcome."
+              "definition": "Answering for actions and outcomes, traced by unique IDs and logs; it stays with the owner even when work is delegated or outsourced."
             }
           ]
         },
@@ -664,7 +664,7 @@
               "Agent activity log tied to a named owner"
             ],
             "recommend": "Report unvetted training data or untraceable AI actions to the system owner before release.",
-            "decides": "The risk owner accepts any remaining risk"
+            "decides": "The risk owner accepts remaining risk within tolerance; senior management decides beyond it"
           },
           "isaca_rule": "Treat an AI system as an asset: guard its training data, keep personal data out unless the data owner approves, and make every action traceable.",
           "exam_traps": [
@@ -679,8 +679,8 @@
           ],
           "key_terms": [
             {
-              "term": "Data poisoning",
-              "definition": "Tampering with the data a model learns from so it learns wrong or hidden behavior, such as ignoring an attacker's activity."
+              "term": "Model or data poisoning",
+              "definition": "Tampering with an AI model or its training data so it learns wrong or hidden behavior, such as ignoring attacks; an integrity attack."
             },
             {
               "term": "Training data",
@@ -760,7 +760,7 @@
               "Threat reports showing active exploitation"
             ],
             "recommend": "Log new weaknesses in the risk register and notify the asset owner promptly.",
-            "decides": "The asset owner decides the treatment"
+            "decides": "The risk owner decides the treatment; senior management decides beyond tolerance"
           },
           "isaca_rule": "Name the parts before choosing a fix: asset, threat, vulnerability, likelihood and impact. You lower risk by removing weaknesses, because you cannot remove attackers.",
           "exam_traps": [
@@ -1704,7 +1704,7 @@
               "Test result showing the block worked"
             ],
             "recommend": "Report settings that differ from the standard to the system owner for a controlled fix.",
-            "decides": "The system owner approves configuration changes"
+            "decides": "The system owner requests the change; the change advisory board approves it"
           },
           "isaca_rule": "Use technical controls to enforce what policy requires, especially where people forget or bypass rules. Changes to them go through the change process.",
           "exam_traps": [
@@ -2007,7 +2007,7 @@
               "Log entries tying each AI output to its prompt, model version and approver"
             ],
             "recommend": "Report AI tools lacking logging or human review to the system owner.",
-            "decides": "The risk owner accepts remaining risk before deployment"
+            "decides": "The risk owner accepts remaining risk within tolerance before deployment; senior management beyond it"
           },
           "isaca_rule": "Classify AI controls like any others. Keep a person accountable for high-impact AI decisions, and limit and log what AI agents can do.",
           "exam_traps": [
@@ -2424,8 +2424,7 @@
     "Compensating control": "An alternative control that lowers the same risk when the usual one, such as patching, is not possible; approved as a recorded exception.",
     "Due diligence": "Investigating and verifying: finding out what risks exist and whether safeguards work.",
     "Due care": "Acting responsibly on what you know, as a reasonable person would.",
-    "ISC2 Code of Ethics": "The preamble and four canons every ISC2-certified member must follow.",
-    "Model or data poisoning": "Tampering with an AI model or the data it learns from so it learns wrong or hidden behavior, such as ignoring an attacker's activity; an integrity attack."
+    "ISC2 Code of Ethics": "The preamble and four canons every ISC2-certified member must follow."
   },
   "references": [
     {
