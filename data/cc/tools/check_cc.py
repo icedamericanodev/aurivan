@@ -19,6 +19,7 @@ Usage:
   python3 data/cc/tools/check_cc.py 2 5        # some domains
   python3 data/cc/tools/check_cc.py --coverage # also list uncovered sub-topics
   python3 data/cc/tools/check_cc.py --list 3   # also list items where the key is longest or tied
+  python3 data/cc/tools/check_cc.py 4 --lib staged.md  # accept staged, not yet merged citations
 Exit 1 on any ERROR. Style rules (stem and option length, echoes, absolutes)
 stay in scripts/lint_exam_style_v2.py --file data/cc/originals/dN.json.
 """
@@ -36,8 +37,11 @@ BLOOM = {"foundational": "Foundational", "application": "Application", "analysis
 MIN_RATE, MAX_RATE = 0.15, 0.24
 
 
-def library_bullets():
+def library_bullets(extra=()):
+    """Library bullets, plus any staged citation files (--lib FILE) not yet merged."""
     text = (CC / "originals" / "_framework_library.md").read_text(encoding="utf-8")
+    for path in extra:
+        text += "\n" + Path(path).read_text(encoding="utf-8")
     return {line[2:].strip() for line in text.splitlines() if line.startswith("- ")}
 
 
@@ -114,10 +118,11 @@ def check_item(q, d, n, ids, bullets):
 
 
 def main(argv):
+    libs = [argv[i + 1] for i, a in enumerate(argv) if a == "--lib"]
     doms = [int(a) for a in argv if a.isdigit()] or [1, 2, 3, 4, 5]
     show_cov = "--coverage" in argv
     show_list = "--list" in argv
-    bullets = library_bullets()
+    bullets = library_bullets(libs)
     errors = 0
     for d in doms:
         path = CC / "originals" / f"d{d}.json"
