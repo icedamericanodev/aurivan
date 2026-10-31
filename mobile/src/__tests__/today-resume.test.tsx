@@ -1,5 +1,5 @@
 /**
- * Mobile 1.54.1: a paused session can always be resumed from Today.
+ * Mobile 1.54.2: a paused session can always be resumed from Today.
  *
  * Before, the only way back into a paused, unfinished session was the first row of "Also today", and that
  * whole list sat in the "plan not done yet" branch. So once today's plan was cleared, a learner who paused a

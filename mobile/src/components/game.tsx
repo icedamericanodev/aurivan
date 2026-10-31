@@ -4,6 +4,7 @@
  * Games stay full-screen and calm.
  */
 import { router } from 'expo-router';
+import { openTab } from '../lib/actions';
 import { useEffect, useMemo, useRef, useState, type ReactNode, type Ref } from 'react';
 import { AccessibilityInfo, Pressable, ScrollView, View } from 'react-native';
 import Animated, { FadeIn, ReduceMotion } from 'react-native-reanimated';
@@ -744,7 +745,7 @@ export function GameUnavailable({ game }: { game: GameId }) {
       header={GAMES[game].name}
       title="This game is on the way"
       body="It needs more practice questions for this exam first. Practice is ready in the meantime."
-      primary={{ label: 'Go to Practice', onPress: () => router.replace('/practice') }}
+      primary={{ label: 'Go to Practice', onPress: () => openTab('/practice') }}
     />
   );
 }

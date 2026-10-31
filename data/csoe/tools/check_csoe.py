@@ -18,6 +18,9 @@ Runs the gates every CSOE batch must pass before review, in one place:
   - the reverse tell: "pick the shortest" must win at most 30% (ties
     shared; chance is 25%). Added 31 Oct 2026 after a CSOE blind tester won
     half of a domain's items by always picking the shortest option
+  - they/them: no gendered pronoun (he, she, him, her, his, hers, himself,
+    herself) in any item or in the domain's notes; KaiSip uses they/them
+    for people (added 31 Oct 2026 after the batch-2 audit found some)
   - mix: the foundational / application / analysis split (target about
     30/55/15 for CSOE, docs/content/CSOE_BANK_PLAN.md), reported, not gated, and the
     key at most 8 characters longer than the longest distractor
@@ -45,6 +48,7 @@ FIELDS = ["id", "domain", "subtopic", "difficulty", "bloom_level", "question", "
 BLOOM = {"foundational": "Foundational", "application": "Application", "analysis": "Analysis"}
 MIN_RATE, MAX_RATE = 0.15, 0.24
 MAX_SHORT_RATE = 0.30
+GENDERED = re.compile(r"\b(he|she|him|her|his|hers|himself|herself)\b", re.I)
 
 
 def library_bullets(extra=()):
@@ -166,6 +170,18 @@ def main(argv):
             if len(c) > 1:
                 print(f"ERROR D{d}: topic {code} uses more than one label: {dict(c)}")
                 errors += 1
+        for q in qs:
+            if GENDERED.search(json.dumps(q, ensure_ascii=False)):
+                print(f"ERROR {q.get('id')}: gendered pronoun; use they/them")
+                errors += 1
+        notes_path = CSOE / "notes" / f"d{d}.json"
+        if notes_path.exists():
+            for t in json.loads(notes_path.read_text(encoding="utf-8"))["topics"]:
+                for sub in t["subtopics"]:
+                    hit = GENDERED.search(json.dumps(sub, ensure_ascii=False))
+                    if hit:
+                        print(f"ERROR notes {sub['id']}: gendered pronoun '{hit.group(0)}'; use they/them")
+                        errors += 1
         spread = Counter(q["correct"] for q in qs)
         rate = pick_longest_rate(qs, len)
         wrate = pick_longest_rate(qs, lambda s: len(s.split()))

@@ -11,28 +11,21 @@ import { guardedStart, startPractice, startReview } from './sessions';
 
 const openSession = () => router.push('/session');
 
-/**
- * Open a set that was just started from a screen deep in the root stack: a
- * study note, a notes domain page, Lesson complete (mobile 1.20). Those can sit
- * on top of an old session or its Results (Session → miss → note, Results →
- * "Read the notes…" → note, Session → "Review the lesson"). Pushing /session
- * there would leave two session screens on one `active` (both would finish it
- * and open Results twice), or an old Results re-rendering under the new set.
- * So: back to the tabs first, then the session. expo-router queues both and
- * works out the push after the pop. Guided keeps a plain push on purpose:
- * its Results returns to the Guided screen under the session.
- */
-/**
- * Go to a tab (Today, Learn, Practice…) from a screen in the root stack (mobile
- * 1.20). The tabs sit at the bottom of that stack; push and navigate would
- * both stack a NEW tab navigator on top (expo-router 57), so dismiss back to
- * the one already there. Nothing under this screen (a deep link): replace.
- */
 /** Practice, opened at Drills: where every old Play link lands (app/play.tsx, lib/legacyLinks.ts, a badge's "Study for this"). */
 export const DRILLS_SECTION = 'drills';
 export const DRILLS_HREF = { pathname: '/practice', params: { section: DRILLS_SECTION } } as const;
 export const DRILLS_PATH = `/practice?section=${DRILLS_SECTION}`;
 
+/**
+ * Go to a tab (Today, Learn, Practice…) from a screen in the root stack (mobile
+ * 1.20). The tabs sit at the bottom of that stack; push and navigate would
+ * both stack a NEW tab navigator on top (expo-router 57), so dismiss back to
+ * the one already there. Nothing under this screen (a deep link): replace.
+ * A bare router.replace('/home') stacks a new one too (it swaps only the top
+ * screen for a whole new tab navigator): mobile 1.54.1 moved Results, Session,
+ * the first set's closing screen and the empty states here
+ * (src/__tests__/stacked-tabs-router58.test.tsx). Use this for every tab.
+ */
 export function openTab(href: TabHref) {
   if (router.canDismiss()) router.dismissTo(href);
   else router.replace(href);
@@ -59,6 +52,17 @@ export function safeDecode(raw: string): string {
   }
 }
 
+/**
+ * Open a set that was just started from a screen deep in the root stack: a
+ * study note, a notes domain page, Lesson complete (mobile 1.20). Those can sit
+ * on top of an old session or its Results (Session → miss → note, Results →
+ * "Read the notes…" → note, Session → "Review the lesson"). Pushing /session
+ * there would leave two session screens on one `active` (both would finish it
+ * and open Results twice), or an old Results re-rendering under the new set.
+ * So: back to the tabs first, then the session. expo-router queues both and
+ * works out the push after the pop. Guided keeps a plain push on purpose:
+ * its Results returns to the Guided screen under the session.
+ */
 export function openSessionFromStack() {
   if (router.canDismiss()) router.dismissAll();
   router.push('/session');

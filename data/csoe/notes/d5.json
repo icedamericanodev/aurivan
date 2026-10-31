@@ -39,7 +39,8 @@
       "can_do": [
         "Define internal control the COSO way and explain why assurance is only reasonable",
         "Name the 1992 objective categories and the five components without mixing up the cube's faces",
-        "Explain what SEC rules require of management's framework, and where COSO fits"
+        "Explain what SEC rules require of management's framework, and where COSO fits",
+        "Decide whether a safeguarding or compliance control falls inside the SEC's ICFR"
       ],
       "subtopics": [
         {
@@ -47,7 +48,8 @@
           "name": "Internal Control as a Process",
           "legacy_ids": [],
           "practice_ids": [
-            "csoe_d5_001"
+            "csoe_d5_001",
+            "csoe_d5_021"
           ],
           "definition": "Internal control, in COSO's definition, is a process carried out by the board, management and other personnel to give reasonable assurance that objectives will be achieved.",
           "why_it_matters": "Every Section 404 report rests on this idea. Seeing internal control as a people-driven process with reasonable, not absolute, assurance stops you treating a policy binder or one department as the whole control system.",
@@ -134,7 +136,7 @@
               }
             ]
           },
-          "example": "A logistics company's compliance lead reviews a training slide on COSO. The draft lists monitoring as an objective and compliance as a component. She moves monitoring to the component row, keeps compliance with operations and financial reporting as objectives, and labels the third face with the company's divisions before the slide goes out.",
+          "example": "A logistics company's compliance lead reviews a training slide on COSO. The draft lists monitoring as an objective and compliance as a component. The lead moves monitoring to the component row, keeps compliance with operations and financial reporting as objectives, and labels the third face with the company's divisions before the slide goes out.",
           "audit_focus": {
             "review": [
               "Compare management's framework mapping with COSO's components and objectives",
@@ -185,7 +187,7 @@
             "Item 308(a)(2) of Regulation S-K: management's annual report must state which framework it used.",
             "The SEC's 2007 guidance (Release No. 33-8810) explains one way to evaluate ICFR; it does not replace the framework."
           ],
-          "example": "A software company's new chief accounting officer wants to swap COSO for a checklist her team wrote over a weekend. The general counsel notes that the rule needs a recognized framework built through public due process and named in the annual report. The officer keeps COSO and uses the team's checklist only as an internal testing aid.",
+          "example": "A software company's new chief accounting officer wants to swap COSO for a checklist the officer's team wrote over a weekend. The general counsel notes that the rule needs a recognized framework built through public due process and named in the annual report. The officer keeps COSO and uses the team's checklist only as an internal testing aid.",
           "audit_focus": {
             "review": [
               "Confirm the framework named in management's report is suitable and recognized",
@@ -220,6 +222,59 @@
             }
           ],
           "memory_aid": "Suitable, recognized, due process: COSO passes, but it is not compulsory."
+        },
+        {
+          "id": "5A1.4",
+          "name": "What the SEC's ICFR Takes from COSO",
+          "legacy_ids": [],
+          "practice_ids": [
+            "csoe_d5_022",
+            "csoe_d5_023"
+          ],
+          "definition": "The SEC's internal control over financial reporting takes COSO's financial reporting slice, adds safeguarding of assets that could materially affect the statements, and leaves out operations objectives.",
+          "why_it_matters": "Scope decides what management tests and reports under Section 404. A control can matter to the business yet sit outside ICFR, or move inside it when the financial statements come to depend on it.",
+          "how_it_works": [
+            "Rule 13a-15(f) defines ICFR around reliable financial reporting and lists three kinds of policies: records, recording and authorization, and safeguarding of assets.",
+            "Clause (3) covers preventing or promptly detecting unauthorized acquisition, use or disposition of assets that could materially affect the financial statements.",
+            "The SEC wrote safeguarding in to follow COSO's 1994 addendum, because COSO 1992 placed safeguarding mainly under operations (SEC Release No. 33-8238, Section II.A.3).",
+            "Left out: COSO's operations objectives, and compliance objectives other than laws directly related to preparing the financial statements, such as the SEC's reporting rules (same release).",
+            "A warehouse fence is normally an operations control, but it supports financial reporting when interim figures rely solely on perpetual inventory records (Release No. 33-8238, footnote 57)."
+          ],
+          "example": "A parking operator collects cash at unattended kiosks and records revenue from the kiosk counts. The controller keeps kiosk key custody and count segregation in ICFR scope, since cash taken before counting would understate revenue, and leaves a customer wait-time target out of the ICFR assessment.",
+          "audit_focus": {
+            "review": [
+              "Compare the ICFR scope memo with the three clauses of Rule 13a-15(f)",
+              "Test whether asset-protection controls are scoped where statements rely on records"
+            ],
+            "evidence": [
+              "Scoping memo explaining why each control is in or out of ICFR",
+              "Process map showing how interim inventory figures are produced"
+            ],
+            "recommend": "Have the SOX lead write down the ICFR scope reason for each asset-protection and compliance control.",
+            "decides": "Management decides the ICFR scope under the SEC's definition"
+          },
+          "isaca_rule": "ICFR is COSO's financial reporting slice plus safeguarding of assets that could materially affect the statements. Operations controls, and compliance controls unrelated to preparing the statements, stay outside unless the statements come to depend on them.",
+          "exam_traps": [
+            {
+              "trap": "Safeguarding of assets is an operations objective, so it is never part of ICFR.",
+              "why": "Rule 13a-15(f)(3) puts safeguarding in ICFR where unauthorized acquisition, use or disposition of assets could materially affect the financial statements."
+            },
+            {
+              "trap": "ICFR covers every compliance control, because COSO has a compliance objective.",
+              "why": "The SEC's definition keeps only compliance with laws directly related to preparing the financial statements, such as the SEC's own reporting rules."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Safeguarding of assets",
+              "definition": "Controls that prevent or promptly detect unauthorized acquisition, use or disposition of a company's assets."
+            },
+            {
+              "term": "Perpetual inventory records",
+              "definition": "Running records that update inventory quantities with each receipt and sale between physical counts."
+            }
+          ],
+          "memory_aid": "Reporting slice plus asset guarding; operations and unrelated compliance stay out."
         }
       ]
     },
@@ -240,7 +295,9 @@
           "legacy_ids": [],
           "practice_ids": [
             "csoe_d5_004",
-            "csoe_d5_006"
+            "csoe_d5_006",
+            "csoe_d5_024",
+            "csoe_d5_025"
           ],
           "definition": "COSO's 2013 update kept the 1992 definition and five components, set out 17 principles, and widened financial reporting into reporting of all kinds.",
           "why_it_matters": "Items test what changed and what did not. A learner who thinks 2013 added a component, or that 1992 is still current, picks the wrong answer and may describe the framework wrongly in a filing.",
@@ -249,7 +306,8 @@
             "Added: 17 principles that formalize concepts already in the 1992 text, with points of focus as supporting characteristics (FAQ, Questions 1 and 4).",
             "Widened: reporting now covers internal and external, financial and non-financial reporting (COSO 2013 Executive Summary).",
             "Superseded: COSO treated the 1992 framework as superseded after 15 December 2014 and asked external reports to say which edition was used (FAQ, Question 6).",
-            "SOX assertions: COSO expected no change to management's 404(a) and the auditor's 404(b) assertions (FAQ, Question 5)."
+            "SOX assertions: COSO expected no change to management's 404(a) and the auditor's 404(b) assertions (FAQ, Question 5).",
+            "Points of focus help judge a principle; COSO does not require each to be assessed separately, and some may not suit every entity (FAQ, Question 4)."
           ],
           "example": "In 2014 a consumer-goods company's SOX team still documented controls against the 1992 text. Before the deadline, the controller compares each control with the 17 principles, finds two principles with no supporting controls, assigns owners to close them, and changes the annual report wording to name the 2013 edition.",
           "audit_focus": {
@@ -261,7 +319,7 @@
               "Principle-by-principle mapping of key controls with named owners",
               "Annual ICFR report text naming the 2013 framework"
             ],
-            "recommend": "Have the SOX program lead map controls to all 17 principles and name the 2013 edition in the report.",
+            "recommend": "Have the SOX program lead keep a dated gap log per principle and update the report's framework citation.",
             "decides": "Management decides the framework edition and owns any gaps"
           },
           "isaca_rule": "2013 kept the definition and the five components, made 17 principles explicit and widened reporting. The 1992 edition is history, superseded after 15 December 2014; name the edition you used.",
@@ -292,7 +350,8 @@
           "name": "The 17 Principles",
           "legacy_ids": [],
           "practice_ids": [
-            "csoe_d5_007"
+            "csoe_d5_007",
+            "csoe_d5_026"
           ],
           "definition": "The 17 principles are fundamental concepts under five components: five in control environment, four in risk assessment, three in control activities, three in information and communication, two in monitoring.",
           "why_it_matters": "Placing an activity under the right component and principle is a common item type. It also shows management where its control set has gaps, because every relevant principle must be present and functioning.",
@@ -392,6 +451,59 @@
             }
           ],
           "memory_aid": "Present on paper, functioning in practice, operating together as one."
+        },
+        {
+          "id": "5A2.4",
+          "name": "Applying the Framework to Cyber Risk",
+          "legacy_ids": [],
+          "practice_ids": [
+            "csoe_d5_027"
+          ],
+          "definition": "COSO's 2015 paper COSO in the Cyber Age shows how the 2013 internal control framework's five components and 17 principles can be used to manage cyber risk.",
+          "why_it_matters": "Cyber attacks can disrupt systems that process transactions and hold data. Using the familiar components gives boards, management and IT staff one shared language for cyber risk and its controls.",
+          "how_it_works": [
+            "Commissioned by COSO and written by Deloitte (January 2015), the paper applies the existing 2013 framework; it creates no new framework (COSO in the Cyber Age).",
+            "The cyber risk assessment begins by finding which information systems are most valuable, measured by their impact on the entity's objectives.",
+            "Principles 7 and 8 then guide analysis of likely attackers, their methods and fraud risk; principle 9 covers changes such as cloud use or outsourcing.",
+            "Trying to protect everything equally overprotects some systems and underprotects others (same paper).",
+            "Control activities layer preventive and detective controls, including general controls over technology (principle 11).",
+            "Control environment and monitoring are foundational: if they are not present and functioning, cyber controls are unlikely to work."
+          ],
+          "example": "A regional hospital applies COSO to cyber risk: it first rates which systems matter most to billing and reporting, then studies who would attack those and how, then layers access, logging and review controls.",
+          "audit_focus": {
+            "review": [
+              "Compare the cyber risk assessment with the ranking of critical systems",
+              "Trace each critical system to its preventive and detective controls"
+            ],
+            "evidence": [
+              "Systems inventory with business impact ratings",
+              "Threat profile prepared for the most critical systems"
+            ],
+            "recommend": "Have the risk team agree system rankings with business owners before cyber control selection.",
+            "decides": "Management sets cyber risk priorities under board oversight"
+          },
+          "isaca_rule": "Cyber risk uses the same five components and 17 principles. Begin with the information systems most critical to objectives, then the threats to them, then layered controls; never try to protect everything equally.",
+          "exam_traps": [
+            {
+              "trap": "A cyber risk assessment should start by listing threat actors and their attack methods.",
+              "why": "COSO's 2015 paper starts with which information systems are most valuable to the entity's objectives; threat analysis then focuses on those systems."
+            },
+            {
+              "trap": "COSO created a separate cyber framework with its own components.",
+              "why": "COSO in the Cyber Age applies the existing 2013 framework's components and principles to cyber risk."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Cyber risk assessment",
+              "definition": "Identifying and analyzing cyber threats to the information systems that matter most to an entity's objectives."
+            },
+            {
+              "term": "Layered controls",
+              "definition": "Several preventive and detective controls placed so that intruders who pass one defense still meet others."
+            }
+          ],
+          "memory_aid": "Crown jewels first, attackers second, layered controls third."
         }
       ]
     },
@@ -402,7 +514,8 @@
       "can_do": [
         "List the eight 2004 ERM components and spot the ones internal control lacks",
         "Name the four ERM objective categories",
-        "Explain why ERM is broader than internal control and does not replace the Section 404 assessment"
+        "Explain why ERM is broader than internal control and does not replace the Section 404 assessment",
+        "Tell risk appetite from risk tolerance and name the four 2004 response options"
       ],
       "subtopics": [
         {
@@ -410,7 +523,8 @@
           "name": "The 2004 ERM Components and Objectives",
           "legacy_ids": [],
           "practice_ids": [
-            "csoe_d5_009"
+            "csoe_d5_009",
+            "csoe_d5_030"
           ],
           "definition": "COSO's 2004 ERM framework has eight interrelated components and four objective categories, adding a strategic category to operations, reporting and compliance.",
           "why_it_matters": "Distractors mix the 2004 ERM lists with the internal control lists. Knowing which components ERM adds, such as event identification, lets you spot the swap quickly.",
@@ -418,7 +532,8 @@
             "Eight components: internal environment, objective setting, event identification, risk assessment, risk response, control activities, information and communication, monitoring (COSO thought paper, 2011, Appendix A).",
             "Four objective categories: strategic, operations, reporting and compliance (COSO risk appetite thought paper, 2012).",
             "Its cube sets objectives and components against the entity's levels, from entity-level to subsidiary.",
-            "Beyond internal control's five, ERM adds objective setting, event identification and risk response, and opens with the internal environment."
+            "Beyond internal control's five, ERM adds objective setting, event identification and risk response, and opens with the internal environment.",
+            "Internal control has no objective-setting component: objectives are a precondition to risk assessment, under principle 6 (COSO 2013 Executive Summary)."
           ],
           "compare": {
             "columns": [
@@ -449,17 +564,17 @@
               }
             ]
           },
-          "example": "A chemicals maker's new risk committee asks its chief risk officer to start an ERM program. She first agrees strategic objectives with management, then runs workshops on events that could help or hurt them, and records a chosen response for each. The SOX team keeps its separate internal control assessment for the annual report.",
+          "example": "A chemicals maker's new risk committee asks its chief risk officer to start an ERM program. The officer first agrees strategic objectives with management, then runs workshops on events that could help or hurt them, and records a chosen response for each. The SOX team keeps its separate internal control assessment for the annual report.",
           "audit_focus": {
             "review": [
-              "Compare the ERM program's components with the eight 2004 components",
+              "Sample the risk register for entries lacking a named owner",
               "Trace each significant risk to a recorded risk response"
             ],
             "evidence": [
               "Risk register showing identified events and chosen responses",
               "Committee minutes approving strategic objectives and risk appetite"
             ],
-            "recommend": "Have the chief risk officer document event identification and a risk response for each strategic objective.",
+            "recommend": "Have the chief risk officer file workshop outputs and the chosen treatment for every major exposure.",
             "decides": "Management chooses risk responses; the board oversees risk"
           },
           "isaca_rule": "ERM 2004: eight components and four objective categories. Objective setting, event identification and risk response are ERM additions; strategic is the extra objective category.",
@@ -504,14 +619,14 @@
           "example": "At a media group, a director proposes skipping this year's SOX testing because the new ERM program covers all risks. The CFO explains that ERM supports strategy, but the annual report still needs management's assessment of ICFR against its control framework, so testing goes ahead on schedule.",
           "audit_focus": {
             "review": [
-              "Compare the ICFR assessment scope with the ERM program's scope",
+              "Read the scoping memo to confirm SOX testing is not replaced by ERM",
               "Confirm the annual report names an internal control framework"
             ],
             "evidence": [
-              "Annual ICFR report naming the internal control framework used",
+              "Signed Form 10-K page carrying management's assessment",
               "ERM charter describing its strategy and enterprise risk scope"
             ],
-            "recommend": "Have management keep the Section 404 assessment on its internal control framework and run ERM alongside it.",
+            "recommend": "Have the CFO record in the SOX plan why ERM work supplements, not substitutes for, ICFR testing.",
             "decides": "Management chooses the frameworks; the board oversees both"
           },
           "isaca_rule": "ERM is broader and includes internal control; neither framework supersedes the other. Section 404 asks for management's assessment of ICFR, so ERM does not replace the internal control assessment.",
@@ -536,6 +651,59 @@
             }
           ],
           "memory_aid": "ERM contains internal control; it does not replace it."
+        },
+        {
+          "id": "5B1.3",
+          "name": "Risk Appetite, Tolerance and Responses (2004)",
+          "legacy_ids": [],
+          "practice_ids": [
+            "csoe_d5_028",
+            "csoe_d5_029"
+          ],
+          "definition": "In COSO's 2004 ERM framework, risk appetite is the broad amount of risk an entity accepts in pursuit of value; risk tolerance applies it to specific objectives.",
+          "why_it_matters": "Appetite sets the outer limit for strategy, and tolerances tell operating units how much variation is acceptable. Mixing them up leaves staff without usable limits, and responses then lack a yardstick.",
+          "how_it_works": [
+            "Risk appetite: the amount of risk, on a broad level, an entity is willing to accept in pursuit of value (COSO risk appetite thought paper, 2012, quoting the 2004 framework).",
+            "Risk tolerance: the acceptable variation around a specific objective, best measured in that objective's own units (same paper, page 11).",
+            "Appetite is broad and strategic; tolerance is tactical and operational, and staying within tolerances keeps the entity within appetite.",
+            "Risk assessment follows event identification and comes before risk response (COSO thought paper Risk Assessment in Practice, 2012).",
+            "Risk response examines four options, accept, reduce, share or avoid, weighs costs and benefits and chooses a response (same paper)."
+          ],
+          "example": "A water utility's board states a low appetite for service-disruption risk. Management sets tolerances of no more than four outage hours per customer a year and capital projects within 5% of budget, then records its choice to share drought risk through a supply agreement.",
+          "audit_focus": {
+            "review": [
+              "Compare stated risk tolerances with the board's risk appetite statement",
+              "Trace each major risk to a recorded response choice"
+            ],
+            "evidence": [
+              "Appetite statement recorded in board minutes",
+              "Risk register showing the response chosen for each major risk"
+            ],
+            "recommend": "Have management express tolerances in each objective's own measures and record the response chosen for every major risk.",
+            "decides": "Directors own the appetite; operating management owns tolerances"
+          },
+          "isaca_rule": "Appetite is the broad limit set with strategy; tolerance is the measurable band around one objective. After assessing a risk, ERM 2004 responds by accepting, reducing, sharing or avoiding it.",
+          "exam_traps": [
+            {
+              "trap": "Risk tolerance is the board's overall statement of how much risk the entity accepts.",
+              "why": "That is risk appetite. Tolerance applies appetite to a specific objective, as acceptable variation measured in that objective's units."
+            },
+            {
+              "trap": "Choosing to accept, reduce, share or avoid a risk is part of risk assessment.",
+              "why": "In ERM 2004 those choices make up the risk response component, which comes after risk assessment."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Risk tolerance",
+              "definition": "The acceptable level of variation around a specific objective, usually measured in the same units as that objective."
+            },
+            {
+              "term": "Response options (ERM 2004)",
+              "definition": "Accept, reduce, share or avoid: the four ways ERM 2004 lets an entity respond to an assessed risk."
+            }
+          ],
+          "memory_aid": "Appetite is the whole plate; tolerance is each portion."
         }
       ]
     },
@@ -546,7 +714,8 @@
       "can_do": [
         "Name the five 2017 ERM components and tell them from the internal control components",
         "Explain how the 2017 framework uses risk when a strategy is chosen",
-        "Reject the claim that ERM 2017 updated the internal control framework"
+        "Reject the claim that ERM 2017 updated the internal control framework",
+        "Place risk appetite and the portfolio view in their 2017 components"
       ],
       "subtopics": [
         {
@@ -554,7 +723,8 @@
           "name": "Five Components and 20 Principles",
           "legacy_ids": [],
           "practice_ids": [
-            "csoe_d5_012"
+            "csoe_d5_012",
+            "csoe_d5_032"
           ],
           "definition": "COSO's 2017 ERM framework is a set of 20 principles grouped into five components, from governance and culture to information, communication and reporting.",
           "why_it_matters": "The 2017 numbers sit beside internal control's 17 principles and the 2004 ERM's eight components, so items swap them. The 2017 component names also differ from internal control's five.",
@@ -597,17 +767,17 @@
               }
             ]
           },
-          "example": "A water utility's board asks its risk officer to modernize a program built on the 2004 model. He regroups its activities under the five 2017 components, adds a risk appetite the board approves, and starts reporting a portfolio view of risk each quarter, while the SOX team's internal control work stays as it is.",
+          "example": "A water utility's board asks its risk officer to modernize a program built on the 2004 model. The officer regroups its activities under the five 2017 components, adds a risk appetite the board approves, and starts reporting a portfolio view of risk each quarter, while the SOX team's internal control work stays as it is.",
           "audit_focus": {
             "review": [
-              "Compare the ERM program with the five 2017 components",
+              "Map each existing ERM activity to its 2017 component and principle",
               "Confirm the board approved a defined risk appetite"
             ],
             "evidence": [
-              "Board-approved risk appetite statement",
-              "Quarterly portfolio view of risk reported to the board"
+              "Signed appetite statement with the board approval date",
+              "Quarterly aggregated exposure report sent to directors"
             ],
-            "recommend": "Have the risk officer align the ERM program with the 2017 components and report risk against appetite.",
+            "recommend": "Have the risk officer keep a mapping table from old activities to the 2017 principles and file it for directors.",
             "decides": "The board concurs with risk appetite; management runs ERM"
           },
           "isaca_rule": "ERM 2017: five components, 20 principles, risk tied to strategy and performance. Do not confuse it with internal control's five components and 17 principles, or with ERM 2004's eight components.",
@@ -652,14 +822,14 @@
           "audit_focus": {
             "review": [
               "Compare strategy papers with the risk appetite the board approved",
-              "Confirm each alternative strategy shows its own risk profile"
+              "Inspect each option paper for a separate exposure analysis"
             ],
             "evidence": [
               "Board papers comparing alternative strategies and their risk profiles",
               "Minutes showing the board challenged strategy and appetite"
             ],
-            "recommend": "Have management present each alternative's risk profile and mission fit before the board chooses.",
-            "decides": "The board concurs with strategy and risk appetite"
+            "recommend": "Have management attach an exposure comparison and a values check to every option paper sent to directors.",
+            "decides": "Directors approve the chosen direction after challenging management"
           },
           "isaca_rule": "ERM 2017 looks at three things: risks to the chosen strategy, whether the strategy fits the mission and values, and the risk profile of each alternative. Risk shapes the choice, not only the execution.",
           "exam_traps": [
@@ -683,6 +853,58 @@
             }
           ],
           "memory_aid": "Fit, profile, threats: three questions before and after choosing a strategy."
+        },
+        {
+          "id": "5B2.3",
+          "name": "Risk Appetite and the Portfolio View (2017)",
+          "legacy_ids": [],
+          "practice_ids": [
+            "csoe_d5_031",
+            "csoe_d5_033"
+          ],
+          "definition": "In COSO's 2017 ERM framework, risk appetite is defined while setting strategy, and the performance component builds a portfolio view of the total risk the entity takes.",
+          "why_it_matters": "Business units can each stay within their own limits while their combined risk breaches what the board accepted. Setting appetite with strategy and checking a portfolio view closes that gap.",
+          "how_it_works": [
+            "Strategy and objective-setting holds principle 7, defines risk appetite in the context of creating, preserving and realizing value (COSO ERM 2017 Executive Summary).",
+            "The same component analyzes business context, evaluates alternative strategies and formulates business objectives (principles 6, 8 and 9).",
+            "Performance identifies risk, assesses severity, prioritizes against appetite, implements responses and develops a portfolio view (principles 10 to 14).",
+            "Governance and culture holds board risk oversight (principle 1); review and revision assesses substantial change (principle 15)."
+          ],
+          "example": "An airline's fuel, currency and route teams each report their own risk measures. The chief risk officer combines them into one view of total earnings at risk and compares it with the board's appetite.",
+          "audit_focus": {
+            "review": [
+              "Compare the entity-wide risk profile with the board's risk appetite",
+              "Trace how business-line exposures are combined into one view"
+            ],
+            "evidence": [
+              "Portfolio report aggregating exposures across business lines",
+              "Board minutes reviewing strategy and risk appetite together"
+            ],
+            "recommend": "Have the chief risk officer combine exposures across units and report them against appetite to the board.",
+            "decides": "Management proposes appetite with strategy; the board reviews and concurs"
+          },
+          "isaca_rule": "Appetite is set with strategy (strategy and objective-setting, principle 7); the portfolio view of total risk sits in performance (principle 14). Units within their own limits do not prove the whole is within appetite.",
+          "exam_traps": [
+            {
+              "trap": "Risk appetite is defined under governance and culture, because the board oversees risk.",
+              "why": "Board oversight is principle 1 in governance and culture, but ERM 2017 places defining risk appetite in strategy and objective-setting, principle 7."
+            },
+            {
+              "trap": "If every unit stays within its own limits, the entity is within its risk appetite.",
+              "why": "Only a portfolio view of combined exposure, principle 14 in performance, shows whether the total fits the board's appetite."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Strategy and objective-setting",
+              "definition": "The ERM 2017 component where business context is analyzed, risk appetite defined, strategies evaluated and objectives set."
+            },
+            {
+              "term": "Performance component",
+              "definition": "The ERM 2017 component that identifies, assesses and prioritizes risks, selects responses and builds the portfolio view."
+            }
+          ],
+          "memory_aid": "Appetite with strategy; portfolio in performance."
         }
       ]
     },
@@ -693,7 +915,8 @@
       "can_do": [
         "Decide whether a system or spreadsheet is in scope from the risk it supports",
         "Name the IT general control areas and evaluate only the ones that matter",
-        "Pick the control that protects a spreadsheet's access, formulas or changes"
+        "Pick the control that protects a spreadsheet's access, formulas or changes",
+        "Explain which of several controls management may select and how IT fits the top-down approach"
       ],
       "subtopics": [
         {
@@ -701,7 +924,8 @@
           "name": "Which Systems Are in Scope",
           "legacy_ids": [],
           "practice_ids": [
-            "csoe_d5_016"
+            "csoe_d5_016",
+            "csoe_d5_037"
           ],
           "definition": "A system or tool is in SOX scope when a control that addresses a financial reporting risk depends on it, whether it was purchased, built in-house or is a spreadsheet.",
           "why_it_matters": "Scoping too narrowly leaves material risks untested; scoping too widely wastes effort. The SEC's top-down approach ties scope to financial reporting risk, not to how software was acquired.",
@@ -711,7 +935,7 @@
             "When a control depends on IT, management considers the application control and the IT general controls behind it.",
             "Rule 13a-15(f) defines ICFR by what it achieves for financial reporting, not by the technology used."
           ],
-          "example": "An engineering firm's SOX lead reviews two tools: the enterprise system module that calculates depreciation on equipment, and a staff cafeteria ordering app. She scopes in the depreciation module and the general controls supporting it, leaves the cafeteria app out because it addresses no financial reporting risk, and records the reasoning in the scoping memo.",
+          "example": "An engineering firm's SOX lead reviews two tools: the enterprise system module that calculates depreciation on equipment, and a staff cafeteria ordering app. The lead scopes in the depreciation module and the general controls supporting it, leaves the cafeteria app out because it addresses no financial reporting risk, and records the reasoning in the scoping memo.",
           "audit_focus": {
             "review": [
               "Trace each significant account to the systems its key controls use",
@@ -752,7 +976,8 @@
           "name": "IT General Controls",
           "legacy_ids": [],
           "practice_ids": [
-            "csoe_d5_014"
+            "csoe_d5_014",
+            "csoe_d5_035"
           ],
           "definition": "IT general controls are controls over the IT environment, such as program development, program changes, computer operations and access, that keep automated controls working consistently.",
           "why_it_matters": "Automated controls are only as reliable as the general controls around them. The SEC limits the required evaluation to the general controls that matter for financial reporting, which keeps the assessment focused.",
@@ -761,7 +986,8 @@
             "Management evaluates only the general controls needed for other controls that address financial reporting risks to operate properly and consistently.",
             "General controls alone ordinarily do not address financial reporting risks; they support the application controls that do.",
             "General controls that mainly serve operational efficiency need not be evaluated for ICFR.",
-            "COSO 2013 principle 11 covers selecting and developing general control activities over technology."
+            "COSO 2013 principle 11 covers selecting and developing general control activities over technology.",
+            "Combination controls, such as a person investigating items on a computer-generated exception report, bring both the manual step and the IT behind the report into scope (footnote 36)."
           ],
           "example": "A credit union's automated interest calculation is a key control. The IT compliance lead tests change management on the core banking system, because an unapproved code change could alter the calculation, but leaves the help desk's response-time targets out of the SOX plan because they affect efficiency, not financial reporting.",
           "audit_focus": {
@@ -774,7 +1000,7 @@
               "User access reviews for systems supporting key controls"
             ],
             "recommend": "Have IT management test the general controls that support key automated controls and document each link.",
-            "decides": "Management decides which general controls are relevant"
+            "decides": "IT and finance management agree which supporting controls matter"
           },
           "isaca_rule": "Evaluate the IT general controls that keep in-scope automated controls working, not every IT control. General controls support application controls; alone they rarely address a financial reporting risk.",
           "exam_traps": [
@@ -851,6 +1077,58 @@
             }
           ],
           "memory_aid": "Lock it, log it, check it, review the logic."
+        },
+        {
+          "id": "5C1.4",
+          "name": "Automated Controls in Management's Evaluation",
+          "legacy_ids": [],
+          "practice_ids": [
+            "csoe_d5_034",
+            "csoe_d5_036"
+          ],
+          "definition": "When several controls each address a financial reporting risk, management may evaluate the one it can test most efficiently, and automated controls often qualify when IT general controls work.",
+          "why_it_matters": "Testing every control that touches a risk wastes effort. The SEC's guidance lets management focus on controls that adequately address the risk and are efficient to evaluate, with IT scoped inside the same approach.",
+          "how_it_works": [
+            "Where more than one control adequately addresses a risk, management may select the one whose operating evidence is obtained more efficiently (SEC Release No. 33-8810, Section II.A.1.b).",
+            "With effective IT general controls, automated controls may be more efficient to evaluate than manual ones (same section).",
+            "Automated controls on a stable system with effective IT general controls may be assessed as lower risk than judgmental manual controls (Release No. 33-8810, Section II.A.2.a).",
+            "Identifying IT risks and controls is part of the top-down, risk-based approach, not a separate evaluation (Release No. 33-8810, Section II.A.1.d)."
+          ],
+          "example": "A utility's billing risk is covered both by an automated rate-table check in its billing system and by a supervisor's monthly sample review of bills. General controls over the billing system tested effective, so management evaluates the automated check as its key control and notes why it adequately addresses the risk.",
+          "audit_focus": {
+            "review": [
+              "Compare each risk's selected key control with the documented rationale",
+              "Inspect IT general control results before relying on automated controls"
+            ],
+            "evidence": [
+              "Risk and control matrix naming one key control per risk",
+              "IT general control test results for systems behind automated controls"
+            ],
+            "recommend": "Have the SOX lead justify each key control choice against the risk and the evidence it needs.",
+            "decides": "Management chooses which controls support its assessment"
+          },
+          "isaca_rule": "Evaluate controls that adequately address the risk, choosing the most efficient to evaluate when several do. Effective IT general controls make automated controls efficient to rely on, and IT is scoped inside the top-down approach.",
+          "exam_traps": [
+            {
+              "trap": "Management must test every control that addresses a financial reporting risk.",
+              "why": "Release No. 33-8810 lets management select, among controls that each adequately address the risk, the one whose evidence it can evaluate most efficiently."
+            },
+            {
+              "trap": "IT risks are scoped in a separate IT review after the business processes.",
+              "why": "The SEC says identifying IT risks and controls should be an integral part of the top-down, risk-based approach, not a separate evaluation."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Automated control",
+              "definition": "A control performed by software each time, such as an automated three-way match, without a person acting."
+            },
+            {
+              "term": "Key control",
+              "definition": "A control management selects and evaluates because it adequately addresses a financial reporting risk."
+            }
+          ],
+          "memory_aid": "Several good controls? Test the efficient one; IT rides along top-down."
         }
       ]
     },
@@ -861,7 +1139,8 @@
       "can_do": [
         "Explain who stays responsible for ICFR when a process is outsourced",
         "Tell a Type 1 report from a Type 2 report and pick the one a scenario needs",
-        "Decide what management reports when it cannot get evidence from a service organization"
+        "Decide what management reports when it cannot get evidence from a service organization",
+        "Trace the service auditor standard from SAS 70 to SSAE No. 18 and tell it from the user auditor's"
       ],
       "subtopics": [
         {
@@ -869,7 +1148,9 @@
           "name": "Outsourcing Keeps the Responsibility",
           "legacy_ids": [],
           "practice_ids": [
-            "csoe_d5_018"
+            "csoe_d5_018",
+            "csoe_d5_039",
+            "csoe_d5_040"
           ],
           "definition": "When a company outsources a process that affects its financial statements, its own management stays responsible for assessing the controls over that process for Section 404.",
           "why_it_matters": "Outsourcing moves the work, not the accountability. Management's annual report covers the whole of ICFR, outsourced processes included, so management needs evidence that those controls work.",
@@ -928,7 +1209,7 @@
             "Type 2: controls described, suitably designed, placed in operation, and tested for operating effectiveness during a period (SEC staff ICFR FAQ, footnote 3; Release No. 33-8810, footnote 54).",
             "Type 1: speaks as of a date, without the tests of operating effectiveness over a period that define a Type 2 report.",
             "SOC 1 examines a service organization's controls likely to be relevant to user entities' ICFR (AICPA SOC 1 page).",
-            "SOC 1 reports were formerly known as SAS 70 reports; service auditors now examine under SSAE No. 18, and user auditors follow AU-C section 402 (AICPA).",
+            "SOC 1 reports were formerly known as SAS 70 reports; service auditors now examine under SSAE No. 18 (AICPA).",
             "SOC 2 reports address trust services criteria such as security and availability, not ICFR (AICPA SOC suite page)."
           ],
           "compare": {
@@ -960,15 +1241,15 @@
               }
             ]
           },
-          "example": "A medical device maker stores finished goods at an outside warehouse. The controller receives a Type 1 report and notes it has no tests of operating effectiveness. She asks for the warehouse's Type 2 report covering most of the fiscal year and plans her own testing of receiving controls for the months it does not cover.",
+          "example": "A medical device maker stores finished goods at an outside warehouse. The controller receives a Type 1 report and notes it has no tests of operating effectiveness. The controller asks for the warehouse's Type 2 report covering most of the fiscal year and plans the company's own testing of receiving controls for the months it does not cover.",
           "audit_focus": {
             "review": [
-              "Compare the report's period with the company's fiscal year",
+              "Match the service auditor's test window to the company's year-end",
               "Inspect the report type, scope and any exceptions found"
             ],
             "evidence": [
               "SOC 1 Type 2 report with its period, opinion and test results",
-              "Management's own testing covering months outside the report period"
+              "Workpapers for in-house tests of the gap period"
             ],
             "recommend": "Have management obtain a SOC 1 Type 2 report and test any months it does not cover.",
             "decides": "User-company management decides whether the evidence is enough"
@@ -1024,7 +1305,7 @@
             ],
             "evidence": [
               "Correspondence showing the request and the provider's refusal",
-              "Test results for in-house compensating controls through year-end"
+              "Recalculation workpapers signed by the reviewer at each quarter-end"
             ],
             "recommend": "Have management build and test compensating controls, or judge whether the gap makes ICFR ineffective.",
             "decides": "Management concludes on effectiveness without a scope limitation"
@@ -1051,6 +1332,58 @@
             }
           ],
           "memory_aid": "Can't see it? Judge it; never carve it out."
+        },
+        {
+          "id": "5C2.4",
+          "name": "From SAS 70 to SSAE 18",
+          "legacy_ids": [],
+          "practice_ids": [
+            "csoe_d5_038"
+          ],
+          "definition": "Service auditor reports have moved from SAS 70 reports to SOC 1 reports, which service auditors now issue under SSAE No. 18, the AICPA's recodified attestation standards.",
+          "why_it_matters": "The SEC's 2007 staff answers still say 'Type 2 SAS 70 report'. Knowing the chain lets you read them as meaning today's SOC 1 Type 2 report.",
+          "how_it_works": [
+            "SOC 1 reports were formerly known as SAS 70 reports (AICPA employee benefit plan SOC 1 resource page, opened 31 Oct 2026).",
+            "SSAE No. 18 recodified the attestation standards and superseded SSAE Nos. 10 to 17, SSAE No. 16 among them, except SSAE No. 15 (AICPA SSAE No. 18 page).",
+            "A SOC 1 examination falls under AT-C section 320, part of SSAE No. 18 as amended (AICPA SOC 1 guide page; AICPA list of SSAEs current as of August 2026).",
+            "The user auditor has a separate standard: user auditors of nonissuers follow AU-C section 402; an issuer's auditor follows PCAOB standards (AICPA).",
+            "SOC 1 reports are intended for user entities and their auditors (AICPA SOC 1 page)."
+          ],
+          "example": "A health insurer's controller finds the SEC staff's 2007 answer on 'Type 2 SAS 70 reports' and asks what to request from its claims processor today. The SOX lead requests a SOC 1 Type 2 report issued under SSAE No. 18 for the fiscal-year period and maps it to the insurer's claims risks.",
+          "audit_focus": {
+            "review": [
+              "Inspect the standard named in each SOC 1 report's opinion",
+              "Map report periods and control objectives to the company's risks"
+            ],
+            "evidence": [
+              "Service auditor's opinion page stating standard and period",
+              "Mapping of report control objectives to financial reporting risks"
+            ],
+            "recommend": "Have management request current SOC 1 Type 2 reports and read older 'SAS 70' guidance as referring to them.",
+            "decides": "User-company management decides whether a report is enough evidence"
+          },
+          "isaca_rule": "Read 'SAS 70 report' in older SEC guidance as today's SOC 1 report. Service auditors examine under SSAE No. 18 (AT-C section 320); user auditors of nonissuers follow AU-C section 402, and an issuer's auditor follows PCAOB standards.",
+          "exam_traps": [
+            {
+              "trap": "SSAE No. 16 is still the current standard for SOC 1 examinations.",
+              "why": "SSAE No. 18 recodified and superseded SSAE Nos. 10 to 17 (except No. 15), so SOC 1 examinations now fall under AT-C section 320."
+            },
+            {
+              "trap": "AU-C section 402 governs the service auditor's SOC 1 examination.",
+              "why": "It guides a nonissuer's auditor whose client uses a service organization; issuer audits follow PCAOB standards. Service auditors use SSAE No. 18."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "AT-C section 320",
+              "definition": "The AICPA attestation section, within SSAE No. 18 as amended, under which a service auditor performs a SOC 1 examination."
+            },
+            {
+              "term": "AU-C section 402",
+              "definition": "The AICPA auditing section for a nonissuer's auditor whose client uses a service organization; issuer audits follow PCAOB standards."
+            }
+          ],
+          "memory_aid": "Service auditor: AT-C 320. Nonissuer's user auditor: AU-C 402. SAS 70 is the old name."
         }
       ]
     }
@@ -1075,7 +1408,10 @@
     "SOC 1 report": "A service auditor's report on controls likely to be relevant to user entities' ICFR; formerly a SAS 70 report.",
     "Type 1 report": "A service auditor's report as of a date, without the tests of operating effectiveness that a Type 2 report adds.",
     "Type 2 report": "A service auditor's report that adds tests of operating effectiveness over a specified period.",
-    "Scope limitation": "Leaving part of ICFR out of the conclusion; not allowed in management's annual ICFR report."
+    "Scope limitation": "Leaving part of ICFR out of the conclusion; not allowed in management's annual ICFR report.",
+    "Risk tolerance": "The acceptable variation around a specific objective, measured in that objective's own units (ERM 2004).",
+    "Safeguarding of assets": "Preventing or promptly detecting unauthorized acquisition, use or disposition of assets; part of the SEC's ICFR definition where losses could materially affect the financial statements.",
+    "SSAE No. 18": "The AICPA's recodified attestation standards, under which service auditors now issue SOC 1 reports (AT-C section 320)."
   },
   "references": [
     {
@@ -1157,6 +1493,41 @@
       "title": "AICPA & CIMA: Employee benefit plans, SOC 1 reports and service organizations resource center (SAS 70, SSAE No. 18, AU-C 402)",
       "url": "https://www.aicpa-cima.com/resources/toolkit/ebp-soc-1-reports-and-service-organizations",
       "checked": "2026-10-31"
+    },
+    {
+      "title": "SEC Release No. 33-8238, Section II.A.3 and footnote 57 (safeguarding of assets in ICFR)",
+      "url": "https://www.sec.gov/files/rules/final/33-8238.htm",
+      "checked": "2026-10-31: Section II.A.3 and footnote 57 read"
+    },
+    {
+      "title": "SEC Release No. 33-8810, Sections II.A.1.b, II.A.1.d and II.A.2.a",
+      "url": "https://www.sec.gov/files/rules/interp/2007/33-8810.pdf",
+      "checked": "2026-10-31: control selection, IT within the top-down approach, footnote 36"
+    },
+    {
+      "title": "COSO thought paper: COSO in the Cyber Age (January 2015)",
+      "url": "https://www.coso.org/_files/ugd/3059fc_9af90248e5a34ae3addd148d256107c0.pdf",
+      "checked": "2026-10-31: cyber risk assessment begins with the most valuable information systems"
+    },
+    {
+      "title": "COSO Internal Control—Integrated Framework Principles poster (2013)",
+      "url": "https://www.coso.org/_files/ugd/3059fc_77d5d0f3d569439990b170bd3b909d7e.pdf",
+      "checked": "2026-10-31: principles 6 and 9 named"
+    },
+    {
+      "title": "AICPA & CIMA: Statement on Standards for Attestation Engagements No. 18",
+      "url": "https://www.aicpa-cima.com/resources/download/aicpa-statement-on-standards-for-attestation-engagements-no-18",
+      "checked": "2026-10-31: supersedes SSAE Nos. 10 to 17 except No. 15"
+    },
+    {
+      "title": "AICPA & CIMA: AICPA SSAEs currently effective",
+      "url": "https://www.aicpa-cima.com/resources/download/aicpa-ssaes-currently-effective",
+      "checked": "2026-10-31: SSAE No. 18 as amended, current as of August 2026"
+    },
+    {
+      "title": "AICPA & CIMA: SOC 1 guide (2025) product page",
+      "url": "https://www.aicpa-cima.com/cpe-learning/publication/reporting-on-an-examination-of-controls-at-a-service-organization-relevant-to-user-entities-internal-control-over-financial-reporting-soc-1-guide",
+      "checked": "2026-10-31: SOC 1 examinations under AT-C section 320"
     }
   ]
 }
