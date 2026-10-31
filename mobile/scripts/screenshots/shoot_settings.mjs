@@ -1,8 +1,8 @@
 // Mobile 1.17 "a tidy Settings" (SHOTS=settings, see run.sh).
 //
 // Shots: Settings (top, middle, end), every sheet (Exam, Exam date calendar,
-// Daily time, Starting point, Default mode, Time and days, Theme, Motion,
-// About), the calendar after moving a month and picking a day, Settings
+// Daily time, Starting point, Default mode, Time and days, Motion, About), the
+// Theme control (one tap on the page since mobile 1.43, so no sheet), the calendar after moving a month and picking a day, Settings
 // opened at "Badges and your plant" (the plant screens' link), onboarding's
 // date step with the calendar, and You without the theme switch.
 // NARROW=1 uses a 360-wide phone; FONT_SCALE=2 approximates 200% text.
@@ -139,14 +139,16 @@ await toTop('Reminders', 20);
 await openRow('Time and days');
 await shot('st09-sheet-time-and-days');
 await closeSheet();
-await openRow('Theme');
-await shot('st10-sheet-theme');
-await closeSheet();
+// Theme is a System / Light / Dark control on the page (mobile 1.43): no sheet to open.
+await toTop('Theme', 20);
+await shot('st10-theme-control');
 await openRow('Motion');
 await shot('st11-sheet-motion');
 await closeSheet();
+// About KaiSip sits behind the "Help and about" door (mobile 1.46): open it, then the row.
 await page.mouse.wheel(0, 30000);
 await wait(600);
+await press(/^Help and about, /, 1500);
 await press(/^About KaiSip/);
 await shot('st12-sheet-about');
 await closeSheet();
@@ -184,9 +186,10 @@ await shot('st16-you-top');
 // The web build has no real updates: run.sh exports it with
 // EXPO_PUBLIC_AURIVAN_SHOTS=1, so a demo client (src/lib/updates.ts) answers
 // after 1.5 s per step, in the way this window value asks for.
+// Check for updates is on the Help and about screen (mobile 1.46), opened here by its link.
 const demo = async (mode) => {
   await ctx.addInitScript((m) => (window.__AURIVAN_UPDATE_DEMO__ = m), mode);
-  await go('/settings', 2000);
+  await go('/settings-section?category=help', 2000);
   await page.mouse.wheel(0, 30000);
   await wait(800);
 };
