@@ -68,7 +68,10 @@ describe('ScaleBar', () => {
     });
     layout(340);
     expect(allText()).toContain(ESTIMATE_WORDS);
-    expect(allText()).toContain('64–72');
+    // Grove: the range reads "64 to 72" in words (the figure and the bracket's label), as on the website; never a dash.
+    expect(allText()).toMatch(/64\s+to\s+72/);
+    expect(allText()).toContain('64 to 72');
+    expect(allText()).not.toMatch(/[\u2013\u2014]/);
     expect(scaleSpoken(range)).toBe('Estimated readiness 64 to 72 percent, a study estimate, not a prediction. The tick marks this app’s 80 percent study bar.');
     expect(labels()).toContain(scaleSpoken(range));
     expect(`${allText()} ${labels().join(' ')}`).not.toMatch(/\bpass|you'?re ready|official/i);
@@ -102,6 +105,9 @@ describe('StemChart', () => {
     // Below the line: the word in clay AND the words "below 70" (never colour alone).
     expect(t).toContain('below 70');
     expect(t).toContain('↑3');
+    // Too few yet: the word "seed" where the number will grow, never a dash (Grove).
+    expect(t).toContain('seed');
+    expect(t).not.toMatch(/[\u2013\u2014]/);
     expect(list()).toHaveLength(0);
   }));
 
@@ -122,8 +128,11 @@ describe('StemChart', () => {
       layout(240);
       expect(list()).toHaveLength(1);
     });
-    // The list's too-few-yet bar is an outline with no fill.
-    expect(allText()).toContain('too few yet');
+    // The list's too-few-yet bar is an outline with no fill; its figure is words, as on the website, never a dash.
+    expect(allText()).toContain('Too few yet');
+    expect(allText()).toContain('not measured yet');
+    expect(allText()).toContain('Not started');
+    expect(allText()).not.toMatch(/[\u2013\u2014]/);
   });
 
   // UX review H1: the "70 line" label is drawn after the stems, so the last column's stem never paints over it.

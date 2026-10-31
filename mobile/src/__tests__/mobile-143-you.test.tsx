@@ -127,12 +127,13 @@ describe('the You screen (Field Guide since mobile 1.51)', () => {
     expect(t).not.toContain('Herbarium');
   });
 
-  it('thin data: "too few yet · N answered", an outline, and no number', () => {
+  it('thin data: "Too few yet", "not measured yet · N answered", an outline, and no number', () => {
     seedDomain('2', 12, 9);
     act(() => {
       r = create(<AreaRows cert={cisa} readiness={computeReadiness(cisa, selectCert(useProgress.getState(), 'cisa').answers)} />);
     });
-    expect(allText()).toMatch(/IT Governance\s+–\s+too few yet\s+· 12 answered/);
+    // The website's list words (Grove: no dash for a missing number).
+    expect(allText()).toMatch(/IT Governance\s+Too few yet\s+not measured yet\s+· 12 answered/);
     // The ruler is an outline with no fill (dashed), never a lighter bar with a height it hasn't earned.
     const outline = root().findAll((n) => typeof n.type === 'string' && StyleSheet.flatten(n.props.style ?? {}).borderStyle === 'dashed' && StyleSheet.flatten(n.props.style ?? {}).height === 8);
     expect(outline).toHaveLength(1);

@@ -7,7 +7,8 @@
  * - A measured stem (30 answers or more) is drawn to its percent, with the
  *   number above it.
  * - Too few yet (1 to 29 answers): a seed in the soil with a dashed outline
- *   of a shoot, a "–" above it and the words "too few yet · 18 answered". It
+ *   of a shoot, the word "seed" above it (no number, and no dash: Grove) and the
+ *   words "too few yet · 18 answered". It
  *   never claims a height the data hasn't earned (the web draws the same).
  * - Not started: the seed alone and the words "not started".
  * - Below the line: the status word in `clay` AND the words "below 70" (clay
@@ -220,8 +221,9 @@ function Chart({ stems, line, play, run, delay, w, fs }: { stems: readonly Stem[
                     {s.down ? <T v="caption" color={c.ink2} style={{ marginLeft: 2, marginTop: 6 }}>{`↓${Math.round(s.down)}`}</T> : null}
                   </View>
                 ) : (
+                  // Too few yet: a word where the number will grow (Grove has no dashes), naming the seed drawn below.
                   <View style={{ backgroundColor: c.raised2, paddingHorizontal: 3 }}>
-                    <FieldText v="chart" color={c.ink2}>–</FieldText>
+                    <FieldText v="chart" color={c.ink2}>seed</FieldText>
                   </View>
                 )}
               </View>
@@ -416,6 +418,14 @@ function GrowNumber({ s, cx, top, drop, order, run, delay }: { s: Stem; cx: numb
   );
 }
 
+/**
+ * The list's figure and words, as the website's list writes them (fgStemChart): before 30 answers the
+ * figure is words ("Not started", "Too few yet"), never a dash, and the line under it says "not measured
+ * yet" (or nothing before any answer), so the state is never said twice in one row.
+ */
+export const listFigure = (s: Stem) => (s.answered <= 0 ? 'Not started' : 'Too few yet');
+export const listWord = (s: Stem) => (s.answered <= 0 ? null : s.thin ? 'not measured yet' : stemWord(s));
+
 /** The list (large text, narrow screens): one row per area, a ruler bar with the line, the word and the figure. */
 export function StemList({ stems, line = 70 }: { stems: readonly Stem[]; line?: number }) {
   const { c } = useTheme();
@@ -424,6 +434,7 @@ export function StemList({ stems, line = 70 }: { stems: readonly Stem[]; line?: 
       {stems.map((s, i) => {
         const red = !s.thin && s.pct !== null && s.below;
         const extra = stemLines(s, line);
+        const word = listWord(s);
         return (
           <View
             key={s.key}
@@ -434,7 +445,7 @@ export function StemList({ stems, line = 70 }: { stems: readonly Stem[]; line?: 
             <View style={{ flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between', alignItems: 'baseline', columnGap: space.md }}>
               <T v="label" style={{ flexShrink: 1 }}>{s.name}</T>
               <View style={{ flexDirection: 'row', alignItems: 'baseline', gap: 4 }}>
-                {s.pct !== null ? <BigNum value={String(s.pct)} pct size={17} /> : <T v="meta">–</T>}
+                {s.pct !== null ? <BigNum value={String(s.pct)} pct size={17} /> : <T v="meta">{listFigure(s)}</T>}
                 {s.up ? <T v="caption" color={c.clay}>{`↑${Math.round(s.up)}`}</T> : null}
                 {s.down ? <T v="caption" color={c.ink2}>{`↓${Math.round(s.down)}`}</T> : null}
               </View>
@@ -454,12 +465,15 @@ export function StemList({ stems, line = 70 }: { stems: readonly Stem[]; line?: 
                 <View style={{ width: 2, height: 16, backgroundColor: c.ink2 }} />
               </View>
             </View>
-            <View style={{ flexDirection: 'row', flexWrap: 'wrap', alignItems: 'baseline', columnGap: space.sm }}>
-              <FieldText v="fig" color={red ? c.clay : c.ink2}>{stemWord(s)}</FieldText>
-              {extra.map((l) => (
-                <FieldText key={l} v="small" color={red && l.startsWith('below') ? c.clay : c.ink2}>{`· ${l}`}</FieldText>
-              ))}
-            </View>
+            {word || extra.length ? (
+              <View style={{ flexDirection: 'row', flexWrap: 'wrap', alignItems: 'baseline', columnGap: space.sm }}>
+                {word ? <FieldText v="fig" color={red ? c.clay : c.ink2}>{word}</FieldText> : null}
+                {extra.map((l, k) => (
+                  // The first line under a figure with no word has no leading dot (nothing before it to join).
+                  <FieldText key={l} v="small" color={red && l.startsWith('below') ? c.clay : c.ink2}>{word || k > 0 ? `· ${l}` : l}</FieldText>
+                ))}
+              </View>
+            ) : null}
           </View>
         );
       })}

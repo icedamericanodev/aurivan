@@ -18,14 +18,14 @@ import { biggestGrowth, clearingTitle, dayAccuracy, isOptional, itemMinutes, typ
 import { legacyTitle, type PlanItem } from '../engine/planner';
 import { SMALL_SAMPLE } from '../engine/resultsCopy';
 import type { Readiness } from '../engine/readiness';
-import { RANGE_MIN_ANSWERS, rangeLabel, rangeSpoken, type ReadinessRange } from '../engine/readinessRange';
+import { RANGE_MIN_ANSWERS, rangeSpoken, type ReadinessRange } from '../engine/readinessRange';
 import { haptic } from '../lib/haptics';
 import { grewLine, LARGE_TEXT, motion, radius, space } from '../theme/tokens';
 import { useTheme } from '../theme/useTheme';
 import { GrowthRings, MiniStem, PlanLeaf } from './glyphs';
 import { Check, ICON_STROKE, Pinwheel, Play, RotateCcw, Target, Timer } from './icons';
 import { AnimatedPressable, FadeIn, Pop, usePressScale, type Celebration, type Growth } from './motion';
-import { ESTIMATE_WORDS, FieldText, ScaleBar } from './fieldguide';
+import { ESTIMATE_WORDS, FieldText, RangeNum, rangeWords, ScaleBar } from './fieldguide';
 import { READY_LOW } from '../engine/examReady';
 import { BigNum, DomainDot, ICON_SIZE, Row, Stat, StatRow, T, useFontScale } from './ui';
 import { aboutMin, spokenMin, timeStat } from '../engine/pace';
@@ -363,18 +363,15 @@ export function PlanChecklist({
   );
 }
 
-// ── Readiness number: "62–70%" or "Not enough data yet" ───────────────
-/** "62–70" for two bounds (what a rolling range starts from). */
-export const boundsLabel = (b: number[]) => (b.length === 2 ? rangeLabel({ enough: true, answered: 0, low: b[0], high: b[1], centre: b[0] }) : null);
+// ── Readiness number: "62 to 70" or "Not enough data yet" ─────────────
 
 export function ReadinessFigure({ range, size = 52, growth }: { range: ReadinessRange; size?: 52 | 38 | 34 | 30 | 24; growth?: Growth }) {
   const { c } = useTheme();
   if (!range.enough) {
     return <T v={size === 52 ? 'hero' : 'headline'} color={c.ink}>Not enough data yet</T>;
   }
-  // Rolls on the first view of the day, or up from what you last saw.
-  const roll = growth ? { play: growth.play, from: boundsLabel(growth.from), run: growth.run } : undefined;
-  return <BigNum value={rangeLabel(range)} pct size={size} roll={roll} />;
+  // Rolls on the first view of the day, or up from what you last saw. "62 to 70", as on You (Grove: no dashes).
+  return <RangeNum low={range.low} high={range.high} size={size} growth={growth} />;
 }
 
 /** Shown with the readiness range: it is a study estimate, not a promise of a pass. */
@@ -661,7 +658,7 @@ export function ringsSpoken(cert: Certification, values: (number | null)[], spok
  * The clearing's numbers. Mobile 1.9, in a full celebration (≤ 1.2 s, any
  * tap skips to the end): the three stats roll up, 60 ms apart; the mini
  * stem grows from where readiness stood this morning to now (premium round
- * 2: it was a mini ring); then "grew to" and the growth line fade in last. Short: the panel cross-fades in.
+ * 2: it was a mini ring); then "grew, now" and the growth line fade in last. Short: the panel cross-fades in.
  * Reduced: all of it at once. The words are the same in every mode.
  */
 export function ClearingBody({
@@ -756,12 +753,14 @@ export function clearingGrowth(grew: { area: string; points: number } | null, ar
 }
 
 /**
- * "Readiness grew to 67–77%": never a negative framing ("holding at" otherwise).
- * A word joiner after the dash keeps the range on one line ("67–" never ends a line).
+ * "Readiness grew, now 67 to 77%": never a negative framing ("holding at 67 to 77%"
+ * otherwise; "grew, now" so the line never says "to" twice).
+ * No-break spaces keep the range on one line ("67 to" never ends a line); a
+ * sentence keeps its %, as the website's "Your estimated readiness is 63 to 73%".
  */
 export function clearingLine(plan: DayPlan, readiness: Readiness, range: ReadinessRange): string {
   return range.enough
-    ? `Readiness ${readiness.score > plan.start.score ? 'grew to' : 'holding at'} ${rangeLabel(range).replace('–', '–\u2060')}%`
+    ? `Readiness ${readiness.score > plan.start.score ? 'grew, now' : 'holding at'} ${rangeWords(range).replace(/ /g, '\u00a0')}%`
     : 'Readiness takes shape as you answer';
 }
 

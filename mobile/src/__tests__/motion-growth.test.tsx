@@ -275,7 +275,7 @@ describe('celebrations', () => {
       return (
         <Celebrate celebration={cel}>
           <FadeIn delay={900}>
-            <Text>Readiness grew to 67–77%</Text>
+            <Text>Readiness grew, now 67 to 77%</Text>
           </FadeIn>
           <LeafFall run={cel.mode === 'full'} colors={['#2B6E4A']} width={40} height={100} />
         </Celebrate>

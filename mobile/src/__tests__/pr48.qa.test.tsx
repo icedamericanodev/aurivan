@@ -354,8 +354,8 @@ describe('answering, then switching tabs: every tab shows fresh numbers', () => 
     const range = engineRange();
     expect(range.enough).toBe(true);
     if (range.enough) {
-      // Today says it in its clearing ("Readiness grew to 45–61%", a word joiner inside); You in its rings label.
-      expect(joined('home').replace(/\u2060/g, '')).toContain(`${range.low}–${range.high}`);
+      // Today says it in its clearing ("Readiness grew, now 45 to 61%", no-break spaces inside); You in its rings label.
+      expect(joined('home').replace(/\u00a0/g, ' ')).toContain(`${range.low} to ${range.high}`);
       expect(joined('you')).toContain(`[Estimated readiness ${range.low} to ${range.high} percent, a study estimate`);
     }
     const answered = Object.keys(cp().answers).length;
