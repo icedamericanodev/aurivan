@@ -222,7 +222,7 @@ published 18 Dec 2025). Cite the Rev. 1 forms below in every CRISC domain.
 - NIST CSF 2.0 ID.RA-02 (cyber threat intelligence is received from information sharing forums and sources)
   - New. Verified, 30 Oct 2026, nvlpubs NIST.CSWP.29.pdf. Used in crisc_d2_004.
 - NIST CSF 2.0 ID.RA-05 (threats, vulnerabilities, likelihoods and impacts are used to understand inherent risk and inform risk response prioritization)
-  - New. Verified, 30 Oct 2026. No longer keyed after the 30 Oct 2026 review: it concerns inherent risk, while crisc_d2_018 keys residual risk against appetite (replaced there by IR 8286 Rev. 1 Section 3.5.2).
+  - New. Verified, 30 Oct 2026. Dropped from crisc_d2_018 in the 30 Oct 2026 review (it concerns inherent risk, while 018 keys residual risk against appetite; replaced there by IR 8286 Rev. 1 Section 3.5.2). Keyed again from 31 Oct 2026 by crisc_d4_016, where inherent risk inputs fit (see the Domain 4 CSF note).
 - NIST CSF 2.0 ID.IM-02 (improvements are identified from security tests and exercises, including those done in coordination with suppliers and relevant third parties)
   - Same form as the CC library. Verified again 30 Oct 2026. Used in crisc_d2_008.
 
