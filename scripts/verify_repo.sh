@@ -278,8 +278,21 @@ done
 python3 scripts/lint_principles.py data/crisc/mindset/principles.json --notes data/crisc/notes --bank data/crisc/originals >/dev/null || crisc_ok=0
 python3 scripts/lint_exam_guide.py --cert crisc data/crisc/exam/crisc_exam_guide.json >/dev/null || crisc_ok=0
 python3 data/crisc/tools/sync_practice_ids.py --check >/dev/null || { echo "  $FAIL practice links out of date: python3 data/crisc/tools/sync_practice_ids.py"; crisc_ok=0; }
+python3 - <<'PY' || crisc_ok=0
+import json, sys
+g = json.load(open("data/crisc/glossary.json"))
+need = {"id", "term", "acronym", "def", "scopeNotes", "domain", "category"}
+bad = [e.get("id") for e in g if not need <= set(e) or e["domain"] not in range(5) or not e["def"].strip()]
+ids, terms = [e["id"] for e in g], [e["term"].lower() for e in g]
+if bad or len(set(ids)) != len(ids) or len(set(terms)) != len(terms):
+    print(f"  ✗ glossary: {len(bad)} bad entries, duplicate ids or terms")
+    sys.exit(1)
+PY
+if command -v node >/dev/null 2>&1; then
+  node scripts/crisc_pack_dry_run.cjs | sed 's/^CRISC pack dry run/  App pack dry run/' || crisc_ok=0
+fi
 if [ $crisc_ok -eq 1 ]; then
-  echo "  $OK principles, exam guide, final review week and practice links clean"
+  echo "  $OK principles, exam guide, final review week, glossary, practice links and app pack clean"
 else
   echo "  $FAIL CRISC content has errors (run the commands above)"
   status=1
