@@ -57,6 +57,7 @@ export default function NotesHome() {
     return (
       <EmptyScreen
         header="Study notes"
+        fallback="/learn"
         title="Notes are on the way"
         body="Study notes for this exam aren't in the app yet. Lessons and practice are ready now."
         primary={{ label: 'Back to Learn', onPress: () => openTab('/learn') }}

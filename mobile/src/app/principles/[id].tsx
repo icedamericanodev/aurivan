@@ -62,6 +62,7 @@ export default function PrincipleScreen() {
     return (
       <EmptyScreen
         header="Principles"
+        fallback="/learn"
         title="Principle not found"
         body="It may have moved in a content update. Every principle is in the list."
         primary={{ label: 'All principles', onPress: () => router.replace('/principles') }}
