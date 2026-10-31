@@ -147,3 +147,7 @@ Rule for the form builder: Draw no two items of a pair into the same form. Keep 
 | csoe_d3_025 | csoe_d3_067 | d3_067 says the disclosure committee only advises |
 | csoe_d3_006 | csoe_d3_066 | d3_066 says the 404(a) report is annual (d3_006's key) |
 | csoe_d3_006 | csoe_d3_067 | d3_067 says the 404(a) report is annual (d3_006's key) |
+| csoe_d5_021 | csoe_d5_061 | proposed by the D5 batch 4 author (process definition) |
+| csoe_d5_053 | csoe_d5_068 | proposed by the D5 batch 4 author |
+| csoe_d5_019 | csoe_d5_082 | proposed by the D5 batch 4 author (SOC report users) |
+| csoe_d5_018 | csoe_d5_083 | proposed by the D5 batch 4 author (outsourced activity in ICFR) |
