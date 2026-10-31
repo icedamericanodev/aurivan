@@ -678,14 +678,14 @@
             "recommend": "Have data owners approve a retention schedule with legal counsel and require verified sanitization of all retired media.",
             "decides": "The data owner signs off retention periods after legal review"
           },
-          "isaca_rule": "Keep data while a legal or business need exists, then dispose of it in a verified way. Keeping everything just in case raises risk, and deleting is not sanitizing. The data owner sets retention with legal advice.",
+          "isaca_rule": "Keep data while a legal or business need exists, then dispose of it in a verified way: scheduled, logged deletion for live records and sanitization for media leaving use. Keeping everything just in case raises risk. The data owner sets retention with legal advice.",
           "exam_traps": [
             {
               "trap": "Keeping all data indefinitely in case it is needed later.",
               "why": "Every extra record adds breach impact and legal discovery exposure. Retention should end when the legal or business need ends."
             },
             {
-              "trap": "Treating file deletion or a quick reformat as secure disposal.",
+              "trap": "Treating file deletion or a quick reformat as secure disposal of media being reused, sold or discarded.",
               "why": "Deletion often leaves data recoverable. Sanitization must match the media and data sensitivity, and be verified."
             }
           ],
@@ -728,7 +728,7 @@
               "Lineage records linking model versions to data versions"
             ],
             "recommend": "Have the model owner require documented data sourcing, quality and privacy review before any training run.",
-            "decides": "The data owner permits training use; the model owner signs off model risk"
+            "decides": "The data owner permits training use; the use case's risk owner accepts model risk"
           },
           "isaca_rule": "Training data is data: it needs an owner, a lawful source, quality checks and a retention period. The practitioner asks where the data came from and whether it fits the purpose before the model is built, not after it misbehaves.",
           "exam_traps": [
