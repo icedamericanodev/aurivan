@@ -4,6 +4,11 @@ All notable user-facing changes to this app. The in-app **What's New** modal mir
 
 For internal/technical history, see git log and PR descriptions.
 
+## [v12.49.7] — Clearer IT policies topic
+
+### Improved
+- The IT policies topic now makes clearer how everyday practice is checked against the written rules.
+
 ## [v12.49.6] — Clearer final-two coaching
 
 ### Improved
