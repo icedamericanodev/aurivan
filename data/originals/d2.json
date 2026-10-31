@@ -1500,8 +1500,8 @@
       "question": "An e-commerce firm will use purchase history for personalized product recommendations. Which GDPR lawful basis should the IS auditor expect management to have chosen as MOST appropriate?",
       "options": {
         "A": "Consent, or legitimate interests with a documented assessment",
-        "B": "Vital interests, as relevant offers protect the customer's welfare",
-        "C": "Public task, as online retail supports the regional economy",
+        "B": "Legal obligation, as consumer law requires keeping sales records",
+        "C": "Vital interests, as offers protect customers from poor purchases",
         "D": "Contract performance, as the customer accepted the terms of sale"
       },
       "correct": "A",
@@ -1509,12 +1509,12 @@
       "pre_read": "Ask whether recommendations are truly necessary to deliver what the customer bought. That test decides the contract basis.",
       "correct_explanation": "Personalized recommendations are marketing, so the firm needs either clear opt-in consent or legitimate interests supported by a documented assessment showing customers' rights do not override that interest. Contract performance is tempting because a sale took place, but EDPB guidance says the processing must be objectively necessary to deliver the contract, and recommendations are not needed to deliver a purchase.",
       "wrong_explanations": {
-        "B": "Vital interests cover life-or-death situations. Product suggestions do not protect anyone's life.",
-        "C": "Public task applies to official functions set out in law. A retailer's marketing does not qualify.",
+        "B": "Retention laws do require keeping sales records, which makes this tempting. But that duty covers storing the records, not reusing them for marketing, which needs its own lawful basis.",
+        "C": "Vital interests covers life-or-death situations, such as medical emergencies. Product recommendations are commercial, so this basis cannot apply.",
         "D": "Contract performance properly covers order, payment and delivery data; a lawful basis attaches to each purpose, not to the customer relationship."
       },
       "tips": [
-        "Eliminate: B is reserved for life-threatening situations, and C applies to official public functions.",
+        "Eliminate: B and C, because a legal duty to keep sales records does not cover marketing use, and vital interests covers life-or-death situations, not product offers.",
         "Final two: A beats D because marketing is not necessary to fulfill a purchase; contract basis covers only what delivery requires.",
         "Exam cue: for marketing use of personal data, expect consent or documented legitimate interests, not contract."
       ],
@@ -1525,7 +1525,7 @@
         "Consent",
         "Lawful basis"
       ],
-      "_provenance": "Authored from concept: 'Legal Basis for Processing - consent or LegitInt+LIA for marketing, distinct from vital/public/contract claims'. Public source: GDPR Article 6 + EDPB Guidelines 2/2019. All scenario specifics (e-commerce personalization) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): auditor evaluates management's lawful basis instead of choosing it.",
+      "_provenance": "Authored from concept: 'Legal Basis for Processing - consent or LegitInt+LIA for marketing, distinct from vital/public/contract claims'. Public source: GDPR Article 6 + EDPB Guidelines 2/2019. All scenario specifics (e-commerce personalization) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): auditor evaluates management's lawful basis instead of choosing it. Strawman pass (Oct 2026): eliminated option(s) rewritten to a plausible same-type error; blind re-tested.",
       "style_version": 2
     },
     {
@@ -4350,7 +4350,7 @@
       "question": "An IS auditor at a defense contractor reviews a new data loss prevention program. Which design feature MOST supports its effectiveness?",
       "options": {
         "A": "Blocking enforced on every egress channel regardless of context",
-        "B": "Vendor default policies, left unchanged to reduce effort",
+        "B": "Vendor default rule packs for common regulated data types",
         "C": "Policies driven by data classification and tuned per channel",
         "D": "Monitoring of data flows with no enforcement action taken"
       },
@@ -4360,7 +4360,7 @@
       "correct_explanation": "DLP can only protect data it can recognize, so classification comes first; policies are then tuned for email, endpoint and cloud channels and refined from false-positive analysis. Blanket blocking feels like the strongest protection for a defense contractor, but without classification it blocks legitimate work, floods analysts with alerts and drives users to unmonitored workarounds.",
       "wrong_explanations": {
         "A": "Hard blocking is an established DLP mode, but strictness is not precision; controls are judged by accuracy, not volume stopped.",
-        "B": "Defaults do not reflect the contractor's own data or classification scheme, so sensitive data may go unrecognized.",
+        "B": "Built-in rule packs look ready to use. They detect generic patterns such as card or ID numbers, not the contractor's own design data, so classified material can leave unrecognized.",
         "D": "Monitoring alone lets sensitive data leave. Monitor mode suits tuning new rules before blocking, not a program's permanent design."
       },
       "tips": [
@@ -4375,7 +4375,7 @@
         "Data classification",
         "False-positive tuning"
       ],
-      "_provenance": "Authored from concept: 'DLP program design - risk-based multi-element approach, no prior D2 coverage'. Public source: NIST SP 800-53 + CSA + ISACA Data Governance. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. D2 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): Tip no longer says 'ignores'. Cross-domain round: cue, convention or explanation aligned with related items across the bank.",
+      "_provenance": "Authored from concept: 'DLP program design - risk-based multi-element approach, no prior D2 coverage'. Public source: NIST SP 800-53 + CSA + ISACA Data Governance. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. D2 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): Tip no longer says 'ignores'. Cross-domain round: cue, convention or explanation aligned with related items across the bank. Strawman pass (Oct 2026): eliminated option(s) rewritten to a plausible same-type error; blind re-tested.",
       "style_version": 2
     },
     {
@@ -5592,8 +5592,8 @@
       "options": {
         "A": "Set global objectives and metrics, letting regions adapt methods",
         "B": "Mandate identical enterprise processes, templates and metrics everywhere",
-        "C": "Let each region keep its current practices without a common standard",
-        "D": "Outsource the program to a consultancy to avoid internal friction"
+        "C": "Benchmark each region's maturity and report the gaps to the CIO",
+        "D": "Have a consultancy design and run the program for each region"
       },
       "correct": "A",
       "key_concept": "Multi-region quality programs standardize objectives and metrics globally while allowing regional flexibility in how results are achieved.",
@@ -5601,11 +5601,11 @@
       "correct_explanation": "Customers need consistent outcomes, so the program should fix global objectives and metrics while letting each region choose how to meet them, preserving existing certifications and lifting lower-maturity sites in phases (APO11). Identical processes everywhere look like the purest form of consistency, but they ignore regional maturity, language and regulation, so adoption stalls and outcomes stay uneven.",
       "wrong_explanations": {
         "B": "Programs answer for the outcomes customers see. Identical templates do ease comparison, yet standards fix the result and leave the route local.",
-        "C": "Full autonomy keeps today's inconsistent results and gives no basis for a common quality commitment across the seven countries.",
-        "D": "A consultancy can help, but accountability for quality stays with management, and outsourcing does not resolve regional adoption."
+        "C": "A maturity baseline is a useful input, which makes this appealing. Reporting the gaps sets no shared objectives or metrics, so the regions stay inconsistent.",
+        "D": "Consultants bring method and speed across countries. Accountability for quality stays with management, and a program run from outside does not build regional ownership."
       },
       "tips": [
-        "Eliminate: C keeps today's inconsistency, and D hands off accountability that management must keep.",
+        "Eliminate: C and D, because C reports regional gaps without setting a common standard, and D hands off accountability that management must keep.",
         "Final two: A beats B because governance standardizes outcomes and measures, while forced identical methods fail in diverse regions.",
         "Exam cue: for multi-site programs, prefer 'common what, local how' over uniform mandates or full autonomy."
       ],
@@ -5616,7 +5616,7 @@
         "Regional adaptation",
         "Quality governance forum"
       ],
-      "_provenance": "Authored from concept: 'Global quality program implementation across regional contexts - dual-layer design, complements d2_048 (quality framework selection) and d2_065 (operational excellence framework selection)'. Public source: ISO 9001:2015 + ISACA Quality Management. All scenario specifics (7-country technology firm with mixed maturity) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): removed customer complaints absent from the stem.",
+      "_provenance": "Authored from concept: 'Global quality program implementation across regional contexts - dual-layer design, complements d2_048 (quality framework selection) and d2_065 (operational excellence framework selection)'. Public source: ISO 9001:2015 + ISACA Quality Management. All scenario specifics (7-country technology firm with mixed maturity) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): removed customer complaints absent from the stem. Strawman pass (Oct 2026): eliminated option(s) rewritten to a plausible same-type error; blind re-tested.",
       "style_version": 2
     },
     {
@@ -5704,7 +5704,7 @@
       "bloom_level": "Analysis",
       "question": "Over the past year, 70% of projects at a retailer requested waivers from architecture standards last updated five years ago. Which conclusion is MOST appropriate for the IS auditor?",
       "options": {
-        "A": "Project teams are deliberately ignoring architecture governance",
+        "A": "Project teams need training on the current architecture standards",
         "B": "The standards are probably outdated and should be reviewed",
         "C": "The architecture board should reject future waiver requests",
         "D": "Waivers show the governance process is working as designed"
@@ -5714,12 +5714,12 @@
       "pre_read": "Look at the pattern across projects and the age of the standards before blaming anyone.",
       "correct_explanation": "When most projects need waivers from five-year-old standards, the pattern points to the standards, not the teams: they likely no longer reflect current technology or business needs and should be reviewed and updated. Saying the process works because waivers are requested treats each request in isolation; a waiver rate this high means the standards have stopped guiding decisions and waivers have become the norm.",
       "wrong_explanations": {
-        "A": "Teams requesting waivers are using governance, not ignoring it. The pattern points to the standards, not to the teams.",
+        "A": "Training looks like a fair fix for heavy waiver use, but when 70% of projects seek waivers from five-year-old standards, the pattern points to the standards.",
         "C": "Rejecting waivers forces projects onto standards that may be obsolete. It treats the symptom and could block sound designs.",
         "D": "A busy waiver route does show teams asking instead of bypassing. Exception volume is feedback on the rule itself."
       },
       "tips": [
-        "Eliminate: A blames teams who are in fact using the waiver process, and C blocks waivers without asking why they arise.",
+        "Eliminate: A and C, because A treats the pattern as a training gap in the teams, and C blocks waivers without asking why they arise.",
         "Final two: B beats D because a high waiver rate signals obsolete standards; handling each waiver correctly does not fix the cause.",
         "Exam cue: when exceptions become the norm, question the rule itself and recommend reviewing it."
       ],
@@ -5730,7 +5730,7 @@
         "Standards review",
         "Architecture governance"
       ],
-      "_provenance": "Authored from concept: 'Zero Trust architecture governance - layered approach, no prior D2 coverage'. Public source: NIST SP 800-207 + CISA Zero Trust Maturity Model. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Rebalanced (Oct 2026): re-angled from 5A4 to 2A4.",
+      "_provenance": "Authored from concept: 'Zero Trust architecture governance - layered approach, no prior D2 coverage'. Public source: NIST SP 800-207 + CISA Zero Trust Maturity Model. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Rebalanced (Oct 2026): re-angled from 5A4 to 2A4. Strawman pass (Oct 2026): eliminated option(s) rewritten to a plausible same-type error; blind re-tested.",
       "style_version": 2
     },
     {
@@ -5743,7 +5743,7 @@
       "options": {
         "A": "A short set of goal-linked metrics with targets and trends",
         "B": "A named owner accountable for each of the 150 metrics",
-        "C": "Monthly delivery of the full report instead of quarterly",
+        "C": "Group the 150 metrics into sections for each IT function",
         "D": "A briefing session teaching directors to read operational metrics"
       },
       "correct": "A",
@@ -5752,11 +5752,11 @@
       "correct_explanation": "Boards need a few metrics showing whether IT is achieving enterprise goals, each with a target, a trend and clear exceptions, while detailed operational metrics stay with management. Training directors to read 150 metrics treats the board as the problem; even well-trained directors would still lack a clear view of strategic progress, because the report is pitched at the wrong level.",
       "wrong_explanations": {
         "B": "Named owners improve accountability for each figure, but the board still receives 150 operational metrics and cannot see progress on goals.",
-        "C": "More frequent delivery multiplies the overload. The issue is the content and level of the report, not how often it arrives.",
+        "C": "Grouping makes the report easier to navigate. Directors still get 150 operational figures with no link to goals, so they still cannot tell whether IT is on track.",
         "D": "An auditor would support director education on IT generally, but a report is cut to fit its reader, never the reader to fit the report."
       },
       "tips": [
-        "Eliminate: B keeps all 150 metrics, and C sends the same overload more often.",
+        "Eliminate: B and C, because both keep all 150 operational metrics, either by naming owners or by regrouping them by function.",
         "Final two: A beats D because board reports should show goal-linked results; training directors on detail misplaces the fix.",
         "Exam cue: tailor performance reports to the audience; boards get a few goal-linked metrics with targets, trends and exceptions."
       ],
@@ -5767,7 +5767,7 @@
         "Exception reporting",
         "Audience-appropriate reporting"
       ],
-      "_provenance": "Authored from concept: 'Threat intelligence program design - operationalized multi-source, no prior D2 coverage'. Public source: NIST SP 800-150 + ISO/IEC 27035. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): removed loosely attributed NIST SP 800-150 citation from the explanation. Rebalanced (Oct 2026): re-angled from 5B4 to 2B3. Rebalance review (Oct 2026): rewrote distractor B in credible governance language.",
+      "_provenance": "Authored from concept: 'Threat intelligence program design - operationalized multi-source, no prior D2 coverage'. Public source: NIST SP 800-150 + ISO/IEC 27035. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): removed loosely attributed NIST SP 800-150 citation from the explanation. Rebalanced (Oct 2026): re-angled from 5B4 to 2B3. Rebalance review (Oct 2026): rewrote distractor B in credible governance language. Strawman pass (Oct 2026): eliminated option(s) rewritten to a plausible same-type error; blind re-tested.",
       "style_version": 2
     },
     {
@@ -5782,7 +5782,7 @@
         "A": "The technology standards catalog listing approved products and versions",
         "B": "The architecture principles approved by the board",
         "C": "Data flow and interface diagrams for the order process",
-        "D": "The organization chart of the architecture team"
+        "D": "The application inventory listing each of the eight systems"
       },
       "correct": "C",
       "key_concept": "EA data flow and interface views help auditors locate control points where data enters, moves and transforms across systems.",
@@ -5791,10 +5791,10 @@
       "wrong_explanations": {
         "A": "The catalog shows which products are approved. It does not show how order data moves between the eight systems.",
         "B": "Principles guide decisions at a high level. They give no detail about where this process's data flows or is transformed.",
-        "D": "The team's structure shows who maintains the architecture. It reveals nothing about the order process or its controls."
+        "D": "The inventory confirms which systems are in scope, a natural starting point. It does not show where order data enters, moves or is transformed, which is where controls sit."
       },
       "tips": [
-        "Eliminate: B is too high-level, and D describes the architecture team rather than the process.",
+        "Eliminate: B and D, because B is too high-level, and D lists the eight systems without showing how order data moves between them.",
         "Final two: C beats A because control points sit where data moves and changes; a product catalog does not show flows.",
         "Exam cue: for multi-system processes, auditors use data flow and interface views to find input, interface and reconciliation controls."
       ],
@@ -5805,7 +5805,7 @@
         "Interface controls",
         "Audit planning"
       ],
-      "_provenance": "Authored from concept: 'IT-OT convergence governance - distinct OT profile + IEC 62443, no prior D2 coverage'. Public source: IEC 62443 + NIST SP 800-82. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Rebalanced (Oct 2026): re-angled from 5A4 to 2A4. Rebalance review (Oct 2026): replaced an unverifiable planning citation with ISACA Standard 1201.",
+      "_provenance": "Authored from concept: 'IT-OT convergence governance - distinct OT profile + IEC 62443, no prior D2 coverage'. Public source: IEC 62443 + NIST SP 800-82. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Rebalanced (Oct 2026): re-angled from 5A4 to 2A4. Rebalance review (Oct 2026): replaced an unverifiable planning citation with ISACA Standard 1201. Strawman pass (Oct 2026): eliminated option(s) rewritten to a plausible same-type error; blind re-tested.",
       "style_version": 2
     },
     {
@@ -5856,7 +5856,7 @@
       "options": {
         "A": "Every API passes through a central gateway with rate limiting",
         "B": "A complete inventory of APIs, including undocumented shadow APIs",
-        "C": "API owners deploy independently to preserve delivery speed",
+        "C": "Design standards that every new API must meet before release",
         "D": "Security staff manually review each API once a quarter"
       },
       "correct": "B",
@@ -5865,11 +5865,11 @@
       "correct_explanation": "API governance starts with knowing what exists. A complete inventory, including shadow and deprecated APIs, defines the scope for design standards, gateway coverage, testing and version control. A gateway with rate limiting is a strong runtime control, but it protects only the APIs routed through it; undocumented APIs bypass it entirely, so inventory must come first.",
       "wrong_explanations": {
         "A": "A gateway is valuable, but it only covers APIs routed through it. Without an inventory, shadow APIs stay exposed and unseen.",
-        "C": "Decentralized deployment without standards is how shadow APIs arise. It removes the oversight governance is meant to provide.",
+        "C": "Design standards are core API governance. They apply only to APIs going through release, so undocumented shadow APIs already in production stay outside them until an inventory finds them.",
         "D": "Quarterly manual reviews cannot keep pace with frequent releases and give no runtime protection between reviews."
       },
       "tips": [
-        "Eliminate: C removes central oversight, and D is too infrequent and manual for a fast-changing platform.",
+        "Eliminate: C and D, because C governs only new APIs, leaving existing shadow APIs unseen, and D is too infrequent and manual for a fast-changing platform.",
         "Final two: B beats A because a gateway protects only known APIs; the inventory defines what must be protected.",
         "Exam cue: when asked what comes FIRST, look for the inventory or scope step that every other control depends on."
       ],
@@ -5880,7 +5880,7 @@
         "Shadow APIs",
         "OWASP API Top 10"
       ],
-      "_provenance": "Authored from concept: 'API governance multi-layer program, no prior D2 coverage'. Public source: OWASP API Security Top 10 + CSA. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'API governance multi-layer program, no prior D2 coverage'. Public source: OWASP API Security Top 10 + CSA. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Strawman pass (Oct 2026): eliminated option(s) rewritten to a plausible same-type error; blind re-tested.",
       "style_version": 2
     },
     {
@@ -6459,7 +6459,7 @@
         "A": "The dashboard may display too many metrics for the board",
         "B": "Targets are being set to look good rather than drive improvement",
         "C": "The board may review the dashboard too rarely to spot trends",
-        "D": "IT may lack the tools to automate metric collection"
+        "D": "Some board metrics may rely on manually collected source data"
       },
       "correct": "B",
       "key_concept": "Performance targets must be tied to business goals and approved independently; lowering them to stay green misleads governance.",
@@ -6468,10 +6468,10 @@
       "wrong_explanations": {
         "A": "Metric overload is a design issue, but it does not explain why every figure turns green. The concern is how targets are set.",
         "C": "Review frequency affects timing. Frequent review still sees only green if the targets themselves have been lowered to stay green.",
-        "D": "Automation affects collection effort, not target integrity. Fully automated figures can still be measured against weakened targets."
+        "D": "Manual collection is a real accuracy risk. But accurate figures measured against targets lowered each year still show green, so collection does not explain the pattern."
       },
       "tips": [
-        "Eliminate: A is a presentation choice the board can trim, and D is a tooling cost that changes effort, not meaning.",
+        "Eliminate: A and D, because A is a presentation choice the board can trim, and D concerns data collection, which cannot explain targets that fall each year.",
         "Final two: B beats C because lowered targets hide the problem; more frequent review still sees only green.",
         "Exam cue: when every metric is green, check how targets were set and who approved changes to them."
       ],
@@ -6482,7 +6482,7 @@
         "Board oversight",
         "Dashboards"
       ],
-      "_provenance": "Authored from concept: 'Supply-chain attack detection and response - major-incident multi-element, complements d2_155 (OSS governance application)'. Public source: NIST SP 800-218 + EO 14028 + CISA SBOM. All scenario specifics (SaaS platform, compromised dependency 3 days ago, last 3 deployments) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Rebalanced (Oct 2026): re-angled from 5B5 to 2B3.",
+      "_provenance": "Authored from concept: 'Supply-chain attack detection and response - major-incident multi-element, complements d2_155 (OSS governance application)'. Public source: NIST SP 800-218 + EO 14028 + CISA SBOM. All scenario specifics (SaaS platform, compromised dependency 3 days ago, last 3 deployments) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Rebalanced (Oct 2026): re-angled from 5B5 to 2B3. Strawman pass (Oct 2026): eliminated option(s) rewritten to a plausible same-type error; blind re-tested.",
       "style_version": 2
     },
     {
@@ -6495,7 +6495,7 @@
       "options": {
         "A": "Preserve evidence under counsel and cooperate in a structured way",
         "B": "Hand over every requested record at once, with voluntary extra disclosures",
-        "C": "Refuse to produce evidence, citing legal privilege, and contest the scope",
+        "C": "Remediate the gaps under review before submitting evidence",
         "D": "Request a deadline extension before collecting any evidence"
       },
       "correct": "A",
@@ -6504,11 +6504,11 @@
       "correct_explanation": "GDPR requires cooperation with the supervisory authority, but the response must also be accurate and controlled. A counsel-led approach preserves evidence, reviews what is produced and cooperates within the requested scope and timeline. Handing over everything at once with voluntary extras looks cooperative, but unreviewed material can be inaccurate or incomplete and may widen the investigation beyond the original concerns.",
       "wrong_explanations": {
         "B": "Full disclosure honors the duty to assist the authority, but what leaves the organization is reviewed first: regulators act on accuracy, not volume.",
-        "C": "Controllers must cooperate with the authority. Blanket refusal invites enforcement and stronger penalties.",
+        "C": "Fixing problems first feels responsible. But changing systems under investigation before preserving evidence can look like tampering and delays cooperation the authority is entitled to.",
         "D": "An extension may be reasonable, but delaying preservation risks losing evidence; the firm should secure evidence and cooperate within the timeline."
       },
       "tips": [
-        "Eliminate: C breaches the duty to cooperate with the authority, and D delays evidence preservation while seeking more time.",
+        "Eliminate: C and D, because C changes the systems under investigation before preserving evidence, and D delays evidence preservation while seeking more time.",
         "Final two: A beats B because cooperation must be accurate and governed, not an unreviewed dump of records.",
         "Exam cue: in a regulatory inquiry, prefer structured, counsel-led cooperation over either refusal or uncontrolled disclosure."
       ],
@@ -6519,7 +6519,7 @@
         "GDPR Article 31",
         "Litigation hold"
       ],
-      "_provenance": "Authored from concept: 'Privacy regulator enforcement investigation response - structured counsel-led, complements d2_165 (privacy/security/compliance integrated audit) and d2_122 (multi-jurisdiction GDPR/CCPA)'. Public source: GDPR Article 31/83 + EDPB 06/2022. All scenario specifics (SaaS firm, 6-month complaint window, four GDPR articles, 30-day deadline) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. D2 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): D (pay the fine) was a strawman; it is now an extension request that delays preservation.",
+      "_provenance": "Authored from concept: 'Privacy regulator enforcement investigation response - structured counsel-led, complements d2_165 (privacy/security/compliance integrated audit) and d2_122 (multi-jurisdiction GDPR/CCPA)'. Public source: GDPR Article 31/83 + EDPB 06/2022. All scenario specifics (SaaS firm, 6-month complaint window, four GDPR articles, 30-day deadline) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. D2 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): D (pay the fine) was a strawman; it is now an extension request that delays preservation. Strawman pass (Oct 2026): eliminated option(s) rewritten to a plausible same-type error; blind re-tested.",
       "style_version": 2
     },
     {
@@ -6568,9 +6568,9 @@
       "bloom_level": "Application",
       "question": "IT security drafted a new access control policy without consulting HR, legal or the business units that must apply it. Which risk is GREATEST for the IS auditor to raise?",
       "options": {
-        "A": "The policy may be published later than planned",
+        "A": "The policy may need early revision once others review it",
         "B": "Users may find the policy unworkable and bypass it",
-        "C": "The policy may not follow the corporate document template",
+        "C": "The policy may repeat rules already set in HR procedures",
         "D": "IT security may lack authority to enforce the policy"
       },
       "correct": "B",
@@ -6578,12 +6578,12 @@
       "pre_read": "Notice who was left out of drafting. Ask what happens when those people must follow the rules.",
       "correct_explanation": "A policy only works if the people who must apply it can do so. Drafting without HR, legal and business input risks rules that clash with real processes, so staff route around them and the policy fails in practice. Lack of authority is the closest concern, but IT security may properly draft a policy; its authority comes later, from top-management approval.",
       "wrong_explanations": {
-        "A": "A later publication date is a scheduling issue. It does not make the policy less effective once issued.",
-        "C": "Template formatting is a document-control matter fixed in review; it does not affect whether people can follow the rules.",
+        "A": "Late input from HR and legal often forces rework. Rework costs effort but ends in a reviewed policy; the larger exposure is rules users cannot work with.",
+        "C": "Overlap with HR rules is a real drafting result of skipping HR. Duplicated rules can be merged in review, and they do not stop people from following the policy.",
         "D": "Enforcement authority matters for any policy, though a gap the remaining process will close ranks below one nothing addresses."
       },
       "tips": [
-        "Eliminate: A is a scheduling point and C a formatting point; neither affects whether the policy can be followed.",
+        "Eliminate: A and C, because A is rework effort and C a drafting overlap; neither affects whether the policy can be followed.",
         "Final two: B beats D because drafting by IT security is normal and authority comes at approval, but missing stakeholder input makes rules unworkable.",
         "Exam cue: policies that skip consultation with those who must apply them invite workarounds; look for stakeholder input before approval."
       ],
@@ -6594,7 +6594,7 @@
         "Self-review threat",
         "Advisory role"
       ],
-      "_provenance": "Authored from concept: 'Audit function restructuring - phased multi-element evolution, complements d2_009 (audit role boundaries), d2_010 (governance audit), d2_165 (integrated audit)'. Public source: IIA Standards 1300-1330. All scenario specifics (regional health insurer, 35 auditors, current-state mix, audit-committee dissatisfaction) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): spelled out CAE. Rebalanced (Oct 2026): re-angled from 1A1 to 2A3. Cross-domain review (Oct 2026): duplicate fix. D2 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): C (the auditor's workload) was off-category; it is now template non-conformance.",
+      "_provenance": "Authored from concept: 'Audit function restructuring - phased multi-element evolution, complements d2_009 (audit role boundaries), d2_010 (governance audit), d2_165 (integrated audit)'. Public source: IIA Standards 1300-1330. All scenario specifics (regional health insurer, 35 auditors, current-state mix, audit-committee dissatisfaction) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): spelled out CAE. Rebalanced (Oct 2026): re-angled from 1A1 to 2A3. Cross-domain review (Oct 2026): duplicate fix. D2 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): C (the auditor's workload) was off-category; it is now template non-conformance. Strawman pass (Oct 2026): eliminated option(s) rewritten to a plausible same-type error; blind re-tested.",
       "style_version": 2
     },
     {
@@ -6642,8 +6642,8 @@
       "bloom_level": "Analysis",
       "question": "A holding company is divesting a subsidiary that shares its identity, ERP and network services; the deal closes in nine months. Which IT approach should the IS auditor recommend as BEST?",
       "options": {
-        "A": "Leave separation planning to the buyer after the deal closes",
-        "B": "Share identity, ERP and network indefinitely under an open-ended contract",
+        "A": "Separate the network first, then plan identity and ERP after close",
+        "B": "Agree a transition services agreement renewable each year as needed",
         "C": "Cut over every system at close, with no transition services agreement",
         "D": "Plan separation with a scoped, exit-dated transition services agreement"
       },
@@ -6652,8 +6652,8 @@
       "pre_read": "Notice how many services are shared and how short the time is. Ask which option protects both a clean exit and stable operations.",
       "correct_explanation": "Shared identity, ERP and network services cannot be untangled safely without a plan. Mapping data and system separation, backed by a transition services agreement with defined scope, service levels and an exit date, protects operations while the subsidiary moves to independence. A clean break at close sounds efficient, but cutting every shared service at once risks serious disruption and untested separation.",
       "wrong_explanations": {
-        "A": "Without pre-close planning, data ownership and access are unclear on day one, exposing both parties to data and access risk.",
-        "B": "Open-ended sharing with no exit criteria keeps the companies entangled and leaves access to shared data unresolved.",
+        "A": "Starting with the network shows progress. Identity and ERP carry the data and access risk, and leaving them until after close leaves day-one ownership unclear.",
+        "B": "A transition services agreement keeps operations running after close. With yearly renewal and no exit date or scope, the businesses can stay entangled and shared-data access stays unresolved.",
         "C": "A cutover at close shares the transition agreement's firm end date. Deal dates are legal milestones, though, not proof of operational readiness."
       },
       "tips": [
@@ -6668,7 +6668,7 @@
         "Divestiture IT",
         "M&A IT"
       ],
-      "_provenance": "Authored from concept: 'IT carve-out during divestiture - structured multi-element program, complements d2_104 (failed M&A IT integration synthesis) and d2_128 (acquisition target IT due diligence)'. Public source: ISACA M&A IT Due Diligence + OCC Licensing Manual. All scenario specifics (holding company divesting insurance subsidiary, 9-month timeline, 6-month TSA preference) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): removed deal-team fact absent from the stem. D2 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): Tip no longer says 'at all'.",
+      "_provenance": "Authored from concept: 'IT carve-out during divestiture - structured multi-element program, complements d2_104 (failed M&A IT integration synthesis) and d2_128 (acquisition target IT due diligence)'. Public source: ISACA M&A IT Due Diligence + OCC Licensing Manual. All scenario specifics (holding company divesting insurance subsidiary, 9-month timeline, 6-month TSA preference) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): removed deal-team fact absent from the stem. D2 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): Tip no longer says 'at all'. Strawman pass (Oct 2026): eliminated option(s) rewritten to a plausible same-type error; blind re-tested.",
       "style_version": 2
     },
     {
@@ -6822,7 +6822,7 @@
       "bloom_level": "Analysis",
       "question": "A foreign subsidiary adopted the group IT policy word for word, but one clause conflicts with local employment law on monitoring staff. What should the IS auditor recommend as BEST?",
       "options": {
-        "A": "Apply the group clause as written, since group policy binds every subsidiary",
+        "A": "Apply the clause and log the legal conflict as accepted risk",
         "B": "Let the subsidiary rewrite its entire policy set to suit local law",
         "C": "Keep the group policy and add an approved local addendum",
         "D": "Suspend staff monitoring across the group until the conflict is resolved"
@@ -6832,7 +6832,7 @@
       "pre_read": "Look for the answer that satisfies local law while preserving group consistency and oversight.",
       "correct_explanation": "Group policy should set a consistent baseline, while each jurisdiction's legal obligations must still be met. A local addendum, approved through group governance, adjusts only the conflicting clause and keeps everything else aligned. Rewriting the entire policy set does fix the legal conflict, but it fragments the framework, weakens group oversight and invites unrelated local deviations that no one has assessed.",
       "wrong_explanations": {
-        "A": "Internal policy cannot override the law. Enforcing the clause would expose the subsidiary to legal penalties and employee claims.",
+        "A": "Logging accepted risk looks like proper governance, but management cannot accept a breach of local law as a risk; the clause must be adjusted for that jurisdiction.",
         "B": "A full rewrite fixes one clause at the cost of consistency. Group oversight weakens and unassessed local deviations creep in.",
         "D": "Stopping monitoring everywhere overreacts to a local conflict. Other entities lose a control that is lawful where they operate."
       },
@@ -6848,7 +6848,7 @@
         "Legal compliance",
         "Policy consistency"
       ],
-      "_provenance": "Authored from concept: 'Precision-word BEST vs FIRST in multi-jurisdiction privacy governance — BEST = global baseline + Privacy Governance Council + board KPIs + regulatory-triggered review; FIRST = baseline only'. Paired companion to d2_066. Public sources: GDPR, EDPB Guidelines, ISO/IEC 27701, ISACA Privacy A/A Program. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): spelled out DSAR. Cross-domain review (Oct 2026): re-angled or clarified to remove duplication/contradiction. Final cross-domain polish (Oct 2026). Rebalanced (Oct 2026): re-angled from 2A6 to 2A3. Rebalance review (Oct 2026): option A now states the rationale its explanation rejects.",
+      "_provenance": "Authored from concept: 'Precision-word BEST vs FIRST in multi-jurisdiction privacy governance — BEST = global baseline + Privacy Governance Council + board KPIs + regulatory-triggered review; FIRST = baseline only'. Paired companion to d2_066. Public sources: GDPR, EDPB Guidelines, ISO/IEC 27701, ISACA Privacy A/A Program. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): spelled out DSAR. Cross-domain review (Oct 2026): re-angled or clarified to remove duplication/contradiction. Final cross-domain polish (Oct 2026). Rebalanced (Oct 2026): re-angled from 2A6 to 2A3. Rebalance review (Oct 2026): option A now states the rationale its explanation rejects. Strawman pass (Oct 2026): eliminated option(s) rewritten to a plausible same-type error; blind re-tested.",
       "style_version": 2
     },
     {
@@ -6859,7 +6859,7 @@
       "bloom_level": "Analysis",
       "question": "A SaaS provider's capacity forecasts are validated, but extra capacity can be funded only through an annual budget set a year ahead. What should the IS auditor recommend as BEST?",
       "options": {
-        "A": "Cut forecast growth to fit within the approved budget",
+        "A": "Hold capacity requests until the next annual budget cycle",
         "B": "Release capacity funding in stages as forecasts change",
         "C": "Buy a full year's peak capacity at the start of each budget",
         "D": "Let teams exceed the budget and seek approval afterward"
@@ -6869,17 +6869,17 @@
       "pre_read": "Notice the forecast is sound but the funding cycle is rigid. Ask which fix aligns money with demand.",
       "correct_explanation": "Capacity must follow demand, so funding needs a governed mechanism, such as pre-approved tranches released when forecasts cross agreed points, rather than a fixed annual figure. Buying a full year's peak up front avoids shortfalls, but it ties up money in idle capacity for months and still fails if growth outruns the forecast.",
       "wrong_explanations": {
-        "A": "Changing the forecast to fit the budget hides the demand instead of meeting it.",
+        "A": "Waiting for the budget cycle respects financial control. But validated demand then goes unfunded for up to a year, which repeats the shortfall the forecasts predict.",
         "C": "Buying peak capacity up front would be right if demand were steady across the year; when it moves, governed funding moves with it.",
         "D": "Spending first and approving later bypasses financial governance."
       },
       "tips": [
-        "Eliminate: A falsifies demand to fit the budget, and D bypasses approval controls.",
+        "Eliminate: A and D, because A leaves validated demand waiting a year for the budget, and D bypasses approval controls.",
         "Final two: B beats C because governed, staged funding tracks demand without idle spend.",
         "Exam cue: when governance processes lag business change, adapt the process rather than the facts."
       ],
       "framework_ref": "COBIT 2019 BAI04 (Managed Availability and Capacity); COBIT 2019 APO06 (Managed Budget and Costs)",
-      "_provenance": "Authored from concept: 'Precision-word PRIMARY in capacity-planning governance — anchor consideration is validated business-demand, contrasted with technical-craft (model accuracy), efficiency (cost-of-headroom), and compliance (SLA) framings'. Paired companion to d2_045 (FIRST) and d2_181 (BEST). Public sources: COBIT 2019 BAI04, ITIL 4 Capacity and Performance Management, ISO/IEC 20000-1. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Cross-domain review (Oct 2026): re-angled or clarified to remove duplication/contradiction. Final cross-domain polish (Oct 2026).",
+      "_provenance": "Authored from concept: 'Precision-word PRIMARY in capacity-planning governance — anchor consideration is validated business-demand, contrasted with technical-craft (model accuracy), efficiency (cost-of-headroom), and compliance (SLA) framings'. Paired companion to d2_045 (FIRST) and d2_181 (BEST). Public sources: COBIT 2019 BAI04, ITIL 4 Capacity and Performance Management, ISO/IEC 20000-1. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Cross-domain review (Oct 2026): re-angled or clarified to remove duplication/contradiction. Final cross-domain polish (Oct 2026). Strawman pass (Oct 2026): eliminated option(s) rewritten to a plausible same-type error; blind re-tested.",
       "style_version": 2
     },
     {
@@ -6894,7 +6894,7 @@
         "A": "Without a defined standard, compliance cannot be judged consistently",
         "B": "Regional control owners may not test their methods regularly",
         "C": "One region's method may prove weaker than the other two",
-        "D": "Some regions may be spending more on authentication than others"
+        "D": "Regions may not document which authentication method they use"
       },
       "correct": "A",
       "key_concept": "Standards make policy measurable; without one, implementations diverge and compliance cannot be assessed consistently.",
@@ -6903,10 +6903,10 @@
       "wrong_explanations": {
         "B": "Testing needs a defined requirement to test against. Without the standard, owners would only confirm each region's own interpretation.",
         "C": "An auditor would ask whether one region is weaker, yet weaker can only be judged against a defined requirement: criteria precede conformance testing.",
-        "D": "Spending differences are not the control issue. The concern is whether authentication meets a defined, measurable requirement."
+        "D": "Documentation helps testing. Each region could document its method fully, but with no standard defining \"strong,\" there is still nothing to judge those methods against."
       },
       "tips": [
-        "Eliminate: B tests methods against a requirement no document defines, and D shifts the focus to cost.",
+        "Eliminate: B and D, because both check each region's method, by testing or documentation, against a requirement no document defines.",
         "Final two: A beats C because the missing standard is the root cause; a weak regional method is one symptom of it.",
         "Exam cue: when a policy uses vague terms, look for the standard that makes it measurable; without it, compliance cannot be tested."
       ],
@@ -6917,7 +6917,7 @@
         "Policy implementation",
         "Consistency"
       ],
-      "_provenance": "Authored from concept: 'Precision-word MOST IMPORTANT in multi-jurisdiction privacy governance — lawful-basis identification (GDPR Article 6 and equivalents) is the non-negotiable factor; DSAR SLAs, transfer mechanisms, and translated notices are downstream of it'. Paired companion to d2_066 (FIRST) and d2_182 (BEST). Public sources: GDPR Article 6, EDPB Guidelines 5/2020 on consent and lawful basis, ISO/IEC 27701, ISACA Privacy A/A Program, IAPP CIPP body of knowledge. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Round 2 review (Oct 2026): framework_ref trimmed to the jurisdictions in the stem. Rebalanced (Oct 2026): re-angled from 2A6 to 2A3. Rebalance review (Oct 2026): rewrote distractor B in credible governance language. D2 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): Gap echo removed: the stem no longer says no standard defines the term; the key's 'defined standard' must now be inferred.",
+      "_provenance": "Authored from concept: 'Precision-word MOST IMPORTANT in multi-jurisdiction privacy governance — lawful-basis identification (GDPR Article 6 and equivalents) is the non-negotiable factor; DSAR SLAs, transfer mechanisms, and translated notices are downstream of it'. Paired companion to d2_066 (FIRST) and d2_182 (BEST). Public sources: GDPR Article 6, EDPB Guidelines 5/2020 on consent and lawful basis, ISO/IEC 27701, ISACA Privacy A/A Program, IAPP CIPP body of knowledge. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Round 2 review (Oct 2026): framework_ref trimmed to the jurisdictions in the stem. Rebalanced (Oct 2026): re-angled from 2A6 to 2A3. Rebalance review (Oct 2026): rewrote distractor B in credible governance language. D2 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): Gap echo removed: the stem no longer says no standard defines the term; the key's 'defined standard' must now be inferred. Strawman pass (Oct 2026): eliminated option(s) rewritten to a plausible same-type error; blind re-tested.",
       "style_version": 2
     },
     {
@@ -7061,7 +7061,7 @@
       "question": "The chief risk officer asks internal audit to run the IT risk management process until a new risk manager is hired. What is the IS auditor's GREATEST concern?",
       "options": {
         "A": "The risk register may lack enough detail on IT risks",
-        "B": "The risk function may lose budget for the vacant post",
+        "B": "Risk owners may defer decisions until the hire is made",
         "C": "Audit staff may lack specialist IT risk skills",
         "D": "Audit would later be assuring a process it operated"
       },
@@ -7071,7 +7071,7 @@
       "correct_explanation": "Under the Three Lines Model, internal audit gives independent assurance over risk management, so running the second-line process itself would mean auditing its own work. A skills gap is a real practical risk, but it could be closed through training or support, whereas the loss of objectivity cannot be fixed while audit operates the process.",
       "wrong_explanations": {
         "A": "Register detail is a quality issue for the risk function to fix, not the main threat.",
-        "B": "Budget for the post is a management matter and does not affect assurance.",
+        "B": "Stalled decisions are a real cost of a vacancy. They are a management issue the CRO can address, and they do not threaten audit's independence.",
         "C": "Skills can be developed or supplemented; independence lost by operating the process cannot."
       },
       "tips": [
@@ -7080,7 +7080,7 @@
         "Exam cue: when audit is asked to perform first- or second-line work, the main concern is independence."
       ],
       "framework_ref": "IIA Three Lines Model (2020 update of the Three Lines of Defense Model)",
-      "_provenance": "Authored from concept: 'Three Lines Model roles - operational, risk and compliance, internal audit'. Foundational recall tier addressing the bank's recall-tier shortage. Public sources: IIA Three Lines Model 2020 position paper. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Cross-domain review (Oct 2026): re-angled or clarified to remove duplication/contradiction.",
+      "_provenance": "Authored from concept: 'Three Lines Model roles - operational, risk and compliance, internal audit'. Foundational recall tier addressing the bank's recall-tier shortage. Public sources: IIA Three Lines Model 2020 position paper. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Cross-domain review (Oct 2026): re-angled or clarified to remove duplication/contradiction. Strawman pass (Oct 2026): eliminated option(s) rewritten to a plausible same-type error; blind re-tested.",
       "style_version": 2
     },
     {
@@ -7161,7 +7161,7 @@
       "bloom_level": "Application",
       "question": "Staff at a bank use three versions of the IT acceptable use policy, kept on shared drives and in old emails. Which risk should the IS auditor consider GREATEST?",
       "options": {
-        "A": "Storage space is wasted by duplicate copies of the policy",
+        "A": "Old emails may breach the bank's records retention rules",
         "B": "Management may be unable to show which version staff accepted",
         "C": "Older versions may not show the policy owner or next review date",
         "D": "Staff may follow superseded rules without knowing it"
@@ -7171,12 +7171,12 @@
       "pre_read": "Ask what goes wrong in daily operations when nobody knows which version is current.",
       "correct_explanation": "Without document control, staff cannot tell which version is current, so they may apply superseded rules and the policy fails at its purpose of directing behavior. A central repository with version control and withdrawal of old copies addresses this. Being unable to show which version staff accepted is a genuine evidence problem, but it matters mainly after an incident; following the wrong rules helps cause one.",
       "wrong_explanations": {
-        "A": "Storage cost is trivial. Duplicate copies matter only because people might follow the wrong one.",
+        "A": "Retention is a valid records-management point. But keeping old emails too long does not change which rules staff apply, which is where the policy fails.",
         "B": "Proof of acceptance is an evidence gap that matters when enforcing after a breach. Staff applying superseded rules is the control failure itself, so it is the greater risk.",
         "C": "Missing owner and review details are a document-control gap, but they do not change what staff do. The risk lies in staff applying rules that are no longer current."
       },
       "tips": [
-        "Eliminate: A worries about storage, and C about missing document details; neither changes how staff behave.",
+        "Eliminate: A and C, because A is a records-retention point and C concerns missing document details; neither changes how staff behave.",
         "Final two: D beats B because applying outdated rules is the control failure itself; weak proof of acceptance matters later.",
         "Exam cue: for policy documents, look for one controlled current version, with old copies withdrawn and changes communicated."
       ],
@@ -7187,7 +7187,7 @@
         "Policy management",
         "Policy communication"
       ],
-      "_provenance": "Authored from concept: 'IT Policy Management. Document and Version Control'. Original Aurivan item (Oct 2026), written for CISA topic 2A3. All scenario specifics invented for this question. Rebalance review (Oct 2026): explained why D outranks B and replaced the cosmetic branding distractor.",
+      "_provenance": "Authored from concept: 'IT Policy Management. Document and Version Control'. Original Aurivan item (Oct 2026), written for CISA topic 2A3. All scenario specifics invented for this question. Rebalance review (Oct 2026): explained why D outranks B and replaced the cosmetic branding distractor. Strawman pass (Oct 2026): eliminated option(s) rewritten to a plausible same-type error; blind re-tested.",
       "style_version": 2
     },
     {
@@ -7312,7 +7312,7 @@
       "question": "An IS auditor finds an IT quality program checks only that releases match technical specifications, yet many releases fail acceptance by the departments that requested them. Which weakness is GREATEST?",
       "options": {
         "A": "The technical specifications may lack enough detail to test against",
-        "B": "Users may be too critical when they test new releases",
+        "B": "Acceptance testing may start too late in each release cycle",
         "C": "The QA team may be testing too few releases each quarter",
         "D": "Quality criteria are not tied to business and user requirements"
       },
@@ -7322,11 +7322,11 @@
       "correct_explanation": "Quality means fitness for purpose as defined by the customer, so quality criteria must trace to business and user requirements. A program that checks only technical conformance can pass releases that meet the specification yet fail the business. More detailed specifications would sharpen technical testing, but if the specifications do not reflect user needs, greater detail only confirms the wrong thing more precisely.",
       "wrong_explanations": {
         "A": "More detail sharpens conformance testing, but if specifications miss user needs, releases still pass QA and fail the business.",
-        "B": "Blaming users ignores the pattern. Consistent rejections show the quality criteria miss what users need.",
+        "B": "Earlier acceptance testing finds rejections sooner. But releases built to criteria that miss user needs are still rejected, just earlier.",
         "C": "Testing more releases against the same criteria would just pass more releases that users reject. Coverage is not the gap."
       },
       "tips": [
-        "Eliminate: B blames the users without evidence that their testing is unfair, and C adds coverage with the same flawed criteria.",
+        "Eliminate: B and C, because B moves acceptance earlier and C adds coverage, both still testing against the same specification-only criteria.",
         "Final two: D beats A because quality must trace to user needs; more detailed specifications can still miss them.",
         "Exam cue: quality is fitness for purpose; if requesters reject what QA passes, check where the quality criteria come from."
       ],
@@ -7337,7 +7337,7 @@
         "Quality criteria",
         "User acceptance"
       ],
-      "_provenance": "Authored from concept: 'Quality Management. Customer-Defined Quality Criteria'. Original Aurivan item (Oct 2026), written for CISA topic 2B4. All scenario specifics invented for this question. Rebalance review (Oct 2026): removed the stem echo of the key.",
+      "_provenance": "Authored from concept: 'Quality Management. Customer-Defined Quality Criteria'. Original Aurivan item (Oct 2026), written for CISA topic 2B4. All scenario specifics invented for this question. Rebalance review (Oct 2026): removed the stem echo of the key. Strawman pass (Oct 2026): eliminated option(s) rewritten to a plausible same-type error; blind re-tested.",
       "style_version": 2
     },
     {
@@ -7613,7 +7613,7 @@
       "options": {
         "A": "The board is informed about IT but is not governing it",
         "B": "IT performed well, so no board decisions were needed",
-        "C": "Management is probably keeping serious IT problems out of its reports",
+        "C": "The reports are too technical for directors to act on",
         "D": "The board has formally delegated IT accountability to management"
       },
       "correct": "A",
@@ -7622,11 +7622,11 @@
       "correct_explanation": "Governance means evaluating, directing and monitoring. Two years of reports with no decisions, questions or follow-up show the board receiving information without exercising any of those roles, so IT is in effect steering itself. Good performance does not explain the silence: even when results are on target, a governing board still sets direction, approves priorities and challenges what it is told. Passive receipt of reports is information, not oversight.",
       "wrong_explanations": {
         "B": "Even strong results need a board that sets direction and challenges reports. Two years without a single question cannot be explained by performance alone.",
-        "C": "Nothing in the facts suggests concealment. The evidence describes how the board behaves, not what management discloses, so this is speculation.",
+        "C": "Hard-to-read reports can dull engagement. But nothing in the facts faults the reports, and two years without one question describes how the board behaves, not how the reports are written.",
         "D": "Nothing shows a formal delegation, and accountability for IT cannot be delegated anyway; the board keeps it whatever it hands to management."
       },
       "tips": [
-        "Eliminate: C assumes concealment that nothing in the facts suggests, and D claims a delegation of accountability that a board cannot make.",
+        "Eliminate: C and D, because C faults report design that nothing in the facts questions, and D claims a delegation of accountability that a board cannot make.",
         "Final two: A beats B because governing means directing and challenging, which good results do not replace; B mistakes silence for oversight.",
         "Exam cue: reports that are received but never questioned or acted on point to information, not governance."
       ],
@@ -7637,7 +7637,7 @@
         "Governance evidence",
         "Board accountability"
       ],
-      "_provenance": "Authored from concept: 'a board that receives IT reports but never acts on them is not governing'. Original KaiSip item (Oct 2026), written for CISA topic 2A2 to add practice to a thin subtopic and test a lesson its existing items do not. All scenario specifics invented for this question. No legacy bank consulted.",
+      "_provenance": "Authored from concept: 'a board that receives IT reports but never acts on them is not governing'. Original KaiSip item (Oct 2026), written for CISA topic 2A2 to add practice to a thin subtopic and test a lesson its existing items do not. All scenario specifics invented for this question. No legacy bank consulted. Strawman pass (Oct 2026): eliminated option(s) rewritten to a plausible same-type error; blind re-tested.",
       "style_version": 2
     },
     {
@@ -7727,7 +7727,7 @@
         "A": "Remote approvals could let the administrator release unauthorized payments",
         "B": "No one else performs the role, so irregularities stay hidden",
         "C": "Two weeks is too short for leave to expose concealed fraud",
-        "D": "The administrator may become fatigued without a genuine break"
+        "D": "Leave dates known in advance let the administrator prepare cover"
       },
       "correct": "B",
       "key_concept": "Mandatory leave detects concealed irregularities only when the holder steps away and someone else performs the role.",
@@ -7736,10 +7736,10 @@
       "wrong_explanations": {
         "A": "Remote payment approval is a recognized access concern in treasury; findings, though, are framed by the purpose of the control that failed.",
         "C": "Two consecutive weeks is a common, adequate period. Length is not the problem when the person keeps doing the job throughout.",
-        "D": "Wellbeing matters, but mandatory leave is a detective control here. Treating it as a perk misses why the IS auditor reviews it."
+        "D": "Unannounced leave can make mandatory leave stronger. Here, though, the administrator never hands over, so no timing change would let anyone else see the work."
       },
       "tips": [
-        "Eliminate: C faults the length of the leave rather than the missing handover, and D treats leave as a welfare benefit rather than a control.",
+        "Eliminate: C and D, because C faults the length and D the scheduling of the leave, while the missing handover is what defeats the control.",
         "Final two: B beats A because remote misuse is possible from the office too; the new problem is that no substitute ever sees the work.",
         "Exam cue: mandatory leave counts only if access is suspended and another trained person performs the role."
       ],
@@ -7750,7 +7750,7 @@
         "Insider fraud",
         "Privileged access"
       ],
-      "_provenance": "Authored from concept: 'mandatory leave detects nothing if the holder keeps working remotely'. Original KaiSip item (Oct 2026), written for CISA topic 2B1 to add practice to a thin subtopic and test a lesson its existing items do not. All scenario specifics invented for this question. No legacy bank consulted. D2 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): Standard 1207 cited by its library name. Tip wording softened.",
+      "_provenance": "Authored from concept: 'mandatory leave detects nothing if the holder keeps working remotely'. Original KaiSip item (Oct 2026), written for CISA topic 2B1 to add practice to a thin subtopic and test a lesson its existing items do not. All scenario specifics invented for this question. No legacy bank consulted. D2 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): Standard 1207 cited by its library name. Tip wording softened. Strawman pass (Oct 2026): eliminated option(s) rewritten to a plausible same-type error; blind re-tested.",
       "style_version": 2
     },
     {
@@ -7986,7 +7986,7 @@
       "options": {
         "A": "Have the board accept the risk of noncompliance",
         "B": "Comply with the law in the most cost-effective way",
-        "C": "Comply on time for breaches likely to become public",
+        "C": "Delay compliance until the regulator issues guidance",
         "D": "Have the IS audit team run breach reporting to save cost"
       },
       "correct": "B",
@@ -7995,11 +7995,11 @@
       "correct_explanation": "A legal duty is not a risk to buy out with a fine: management decides how to comply, not whether. The appropriate response is to meet the 72-hour requirement in the most cost-effective way. Board acceptance looks like proper risk governance, but no level of the organization can accept deliberately breaking the law, and fines often bring regulatory orders and reputational damage on top.",
       "wrong_explanations": {
         "A": "Risk acceptance covers risks within appetite, not deliberate breaches of law. Board approval would make the violation a board decision, not a lawful one.",
-        "C": "Timeliness depends on the law, not on publicity; choosing which reports to file on time is still deliberate noncompliance.",
+        "C": "Waiting for guidance can seem prudent with a new law. But the 72-hour duty is already in force, so delaying is still noncompliance the firm has chosen.",
         "D": "Running an operational process would impair the IS audit team's independence when it later audits breach reporting."
       },
       "tips": [
-        "Eliminate: C files on time selectively, which is still deliberate noncompliance, and D puts the IS auditors in charge of a process they must audit.",
+        "Eliminate: C and D, because C postpones a duty already in force, and D puts the IS auditors in charge of a process they must audit.",
         "Final two: B beats A because no one, not even the board, can accept a deliberate breach of law as a risk decision.",
         "Exam cue: for mandatory obligations, choose the answer about how to comply cost-effectively, never whether to comply."
       ],
@@ -8010,7 +8010,7 @@
         "Mandatory obligations",
         "Breach notification"
       ],
-      "_provenance": "Authored from concept: 'mandatory legal obligations are not open to cost trade-offs'. Original KaiSip item (Oct 2026), written for CISA topic 2A1 to add practice to a thin subtopic and test a lesson its existing items do not. All scenario specifics invented for this question. No legacy bank consulted. D2 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): C (wait until another firm is fined) was a strawman; it is now selective timely reporting.",
+      "_provenance": "Authored from concept: 'mandatory legal obligations are not open to cost trade-offs'. Original KaiSip item (Oct 2026), written for CISA topic 2A1 to add practice to a thin subtopic and test a lesson its existing items do not. All scenario specifics invented for this question. No legacy bank consulted. D2 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): C (wait until another firm is fined) was a strawman; it is now selective timely reporting. Strawman pass (Oct 2026): eliminated option(s) rewritten to a plausible same-type error; blind re-tested.",
       "style_version": 2
     },
     {
@@ -8135,7 +8135,7 @@
       "options": {
         "A": "Two senior developers hold undocumented knowledge of the platform",
         "B": "The platform's core component license ends if the company is sold",
-        "C": "The company uses a different email system from the buyer",
+        "C": "The company runs an ERP version the buyer does not support",
         "D": "Several security policies have not been reviewed in over two years"
       },
       "correct": "B",
@@ -8144,7 +8144,7 @@
       "correct_explanation": "A change-of-control clause that ends the core component license threatens the buyer's right to run the platform that produces all the revenue. Only terms agreed before closing, such as the licensor's consent or a price change, can address it. Undocumented developer knowledge is a serious key-person risk, but retention agreements and documentation can reduce it, while the clause lets the licensor end or reprice the right to run the revenue platform.",
       "wrong_explanations": {
         "A": "An auditor would flag key-person dependency in any software deal, yet risks the buyer controls after closing usually rank below those a third party holds.",
-        "C": "Different email systems are a routine integration task after closing. They do not affect the value or legality of what is being bought.",
+        "C": "Unsupported ERP versions add integration cost, which buyers notice. It is a post-closing integration task, and it does not threaten the right to run the platform that earns the revenue.",
         "D": "Overdue policy reviews are a minor governance gap the buyer can fix after closing, with little effect on the price or the deal."
       },
       "tips": [
@@ -8159,7 +8159,7 @@
         "Key-person risk",
         "Deal-breaker criteria"
       ],
-      "_provenance": "Authored from concept: 'change-of-control clauses can remove rights the target depends on'. Original KaiSip item (Oct 2026), written for CISA topic 2A5 to add practice to a thin subtopic and test a lesson its existing items do not (d2_128 tests risk-based depth of review). All scenario specifics invented for this question. No legacy bank consulted.",
+      "_provenance": "Authored from concept: 'change-of-control clauses can remove rights the target depends on'. Original KaiSip item (Oct 2026), written for CISA topic 2A5 to add practice to a thin subtopic and test a lesson its existing items do not (d2_128 tests risk-based depth of review). All scenario specifics invented for this question. No legacy bank consulted. Strawman pass (Oct 2026): eliminated option(s) rewritten to a plausible same-type error; blind re-tested.",
       "style_version": 2
     },
     {

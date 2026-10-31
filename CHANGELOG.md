@@ -4,6 +4,11 @@ All notable user-facing changes to this app. The in-app **What's New** modal mir
 
 For internal/technical history, see git log and PR descriptions.
 
+## [v12.49.4] — More realistic wrong answers
+
+### Improved
+- Some wrong answers that were too easy to rule out are now realistic mistakes, so you need to know the topic to set them aside.
+
 ## [v12.49.3] — Topic titles match ISACA
 
 ### Improved
