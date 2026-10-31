@@ -7154,6 +7154,9 @@ html { scroll-padding-bottom: calc(104px + var(--consent-h, 0px)); }
 #bottomNav .bnav-item:hover:not([aria-current]), #bottomNav .bnav-item:hover:not([aria-current]) .bnav-label { color: var(--text); }
 #bottomNav .bnav-item[aria-current] { color: var(--text); }
 #bottomNav .bnav-item[aria-current] .bnav-icon { background: var(--forest-track); color: var(--sap); }
+/* Dark: the pill alone is under 3:1 on the bar, so a --sap edge (10:1) marks
+   the current tab by shape as well as colour (WCAG 1.4.11). */
+[data-theme="dark"] #bottomNav .bnav-item[aria-current] .bnav-icon { box-shadow: inset 0 0 0 1.5px var(--sap); }
 #bottomNav .bnav-item[aria-current] .bnav-label { color: var(--text); }
 #bottomNav .bnav-item[aria-current]::after, #bottomNav .bnav-item.active::after { display: none; }
 /* Focus sits outside the item, on the bar, so it shows around the whole tab. */
