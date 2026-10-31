@@ -124,22 +124,22 @@
       "question": "A sales team asks an IT support analyst to install a free AI extension that rewrites customer emails, but the security team's approved tools list omits it. What should the analyst do FIRST?",
       "options": {
         "A": "Let the team use it on emails with customer names removed",
-        "B": "Block the extension's website for every staff member on the web filter",
+        "B": "Explain the request process and submit the extension for review",
         "C": "Install it for the team and log it in the AI inventory",
-        "D": "Explain the request process and submit the extension for review"
+        "D": "Block the extension's website for every staff member on the web filter"
       },
-      "correct": "D",
+      "correct": "B",
       "key_concept": "New AI tools are reviewed and approved before use; practitioners route requests to the approvers rather than installing, banning or improvising.",
       "pre_read": "Notice who keeps the approved tools list and what data the extension would see.",
       "correct_explanation": "The security team owns the approved tools list, so the analyst's job is to explain the request process and submit the extension for review, which lets the security team and data owner check how the vendor handles customer emails. Installing it and logging it in the AI inventory is the runner-up: the inventory records each use, but a new use is reviewed before it starts, not recorded afterward.",
       "wrong_explanations": {
         "A": "Tempting because removing names feels safer. But the emails' content still reaches an unvetted service, and the tool remains unapproved.",
-        "B": "Tempting because a block removes the risk quickly. But blanket bans push staff toward hidden tools, and the security team, which owns the list, decides on blocking.",
-        "C": "Closest choice: recording AI use is part of governance. But a new use is reviewed before it starts; installing first lets customer emails reach an unvetted service."
+        "C": "Closest choice: recording AI use is part of governance. But a new use is reviewed before it starts; installing first lets customer emails reach an unvetted service.",
+        "D": "Tempting because a block removes the risk quickly. But blanket bans push staff toward hidden tools, and the security team, which owns the list, decides on blocking."
       },
       "tips": [
-        "Eliminate: A still sends customer content to an unvetted service, and B bans the tool outright, which pushes staff to hidden tools and is not the analyst's call.",
-        "Final two: D beats C because a new AI use is reviewed before it starts; logging it in the inventory after installing skips the approval.",
+        "Eliminate: A still sends customer content to an unvetted service, and D bans the tool outright, which pushes staff to hidden tools and is not the analyst's call.",
+        "Final two: B beats C because a new AI use is reviewed before it starts; logging it in the inventory after installing skips the approval.",
         "Exam cue: an AI tool missing from the approved list is a request to route, not a shortcut to take or a block to impose yourself."
       ],
       "framework_ref": "NIST AI 100-1 (AI RMF 1.0) GOVERN 1.6 (mechanisms are in place to inventory AI systems); ISO/IEC 27002:2022 Control 5.10 (Acceptable use of information and other associated assets)",
@@ -148,7 +148,7 @@
         "Approved tools list",
         "AI inventory"
       ],
-      "_provenance": "Authored from concept: 'use only approved AI tools; report unapproved ones rather than blocking or approving them yourself' (notes 2.1.8 Governing AI Use). Email-rewriting extension chosen to avoid the notes' AI note-taker example and cc_d1_019's public chatbot. Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 pilot batch, 29 Oct 2026. Cross-review fix (31 Oct 2026): C's explanation no longer says the inventory holds only approved uses (cc_d5_038 records unknown ones); B's explanation names the list owner as the blocking decider; option B lengthened so the key no longer ties for longest (CD-06, CD-07, CD-14). Fix-up round 1 (31 Oct 2026): key reworded so the stem's 'approved' is no longer echoed only in the key ('approval route') (rule 10).",
+      "_provenance": "Authored from concept: 'use only approved AI tools; report unapproved ones rather than blocking or approving them yourself' (notes 2.1.8 Governing AI Use). Email-rewriting extension chosen to avoid the notes' AI note-taker example and cc_d1_019's public chatbot. Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 pilot batch, 29 Oct 2026. Cross-review fix (31 Oct 2026): C's explanation no longer says the inventory holds only approved uses (cc_d5_038 records unknown ones); B's explanation names the list owner as the blocking decider; option B lengthened so the key no longer ties for longest (CD-06, CD-07, CD-14). Fix-up round 1 (31 Oct 2026): key reworded so the stem's 'approved' is no longer echoed only in the key ('approval route') (rule 10). Key letter moved from D to B (31 Oct 2026) to break a periodic key order; options and letter references swapped, text unchanged.",
       "style_version": 2
     },
     {
@@ -268,22 +268,22 @@
       "question": "IT proposes a hot site for a council's records archive, whose approved recovery time objective (RTO) is three weeks, and senior management will choose. Which step is BEST for the analyst preparing the options?",
       "options": {
         "A": "Recommend the hot site that IT has put forward",
-        "B": "Reset the archive's three-week recovery target to one day",
-        "C": "Compare each site's recovery time and cost with the target",
+        "B": "Compare each site's recovery time and cost with the target",
+        "C": "Reset the archive's three-week recovery target to one day",
         "D": "Sign the contract for the cheaper cold site now"
       },
-      "correct": "C",
+      "correct": "B",
       "key_concept": "The RTO decides which recovery site fits; senior management chooses and funds it, and the analyst sets each option's time and cost against the target.",
       "pre_read": "Note the approved target, who proposed what and who makes the final choice.",
       "correct_explanation": "A three-week RTO leaves time to equip a cold or warm site, so a hot site, built for recovery in hours, would cost far more than the target needs. Senior management chooses the site, so the analyst sets each option's recovery time and cost against the target. Signing for a cold site is the runner-up: it may well be the right fit, but the decision and the money are not the analyst's.",
       "wrong_explanations": {
         "A": "Tempting because IT proposed it and faster feels safer. But a hot site is built for recovery in hours, far more than a three-week target needs.",
-        "B": "Tempting because it makes the costlier site look justified. But recovery targets come from the business impact analysis; an analyst does not change them to fit a preferred option.",
+        "C": "Tempting because it makes the costlier site look justified. But recovery targets come from the business impact analysis; an analyst does not change them to fit a preferred option.",
         "D": "Closest choice: a cold site may well fit a three-week target. But senior management chooses and funds the site; the analyst cannot commit the council to a contract."
       },
       "tips": [
-        "Eliminate: A pays for recovery in hours against a three-week target, and B bends the business's target to fit the costlier site.",
-        "Final two: C beats D because senior management chooses and funds the site; the analyst lays out recovery time and cost instead of signing a contract.",
+        "Eliminate: A pays for recovery in hours against a three-week target, and C bends the business's target to fit the costlier site.",
+        "Final two: B beats D because senior management chooses and funds the site; the analyst lays out recovery time and cost instead of signing a contract.",
         "Exam cue: let the RTO pick the site: hours means hot or tested cloud, days means warm, weeks means cold. Faster is not better when the target does not need it."
       ],
       "framework_ref": "NIST SP 800-34 Rev. 1 Section 3.4.3 (Alternate Sites); NIST SP 800-53 Rev. 5 CP-7 (Alternate Processing Site)",
@@ -292,7 +292,7 @@
         "Recovery time objective (RTO)",
         "Decision authority"
       ],
-      "_provenance": "Authored from concept: 'let the RTO pick the site; senior management chooses and funds it' (notes 2.2.6 Recovery Sites). Audit re-angle 29 Oct 2026: the cheaper site is the right fit, so the item tests the rule instead of repeating the notes' cold-site example; distractors A, B and D are worded as actions without reason clauses. Calibration: the stem names who decides. Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 pilot batch, 29 Oct 2026.",
+      "_provenance": "Authored from concept: 'let the RTO pick the site; senior management chooses and funds it' (notes 2.2.6 Recovery Sites). Audit re-angle 29 Oct 2026: the cheaper site is the right fit, so the item tests the rule instead of repeating the notes' cold-site example; distractors A, B and D are worded as actions without reason clauses. Calibration: the stem names who decides. Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 pilot batch, 29 Oct 2026. Key letter moved from C to B (31 Oct 2026) to break a periodic key order; options and letter references swapped, text unchanged.",
       "style_version": 2
     },
     {
@@ -412,22 +412,22 @@
       "question": "Impostor callers have twice talked a university's help desk into resetting staff passwords this month. Which change is BEST for the awareness lead to make?",
       "options": {
         "A": "Repeat the yearly security training for every staff member",
-        "B": "Run a campus poster campaign about scam callers for everyone",
+        "B": "Add caller-verification practice to help desk training",
         "C": "Put the help desk agents who reset the passwords on formal warning",
-        "D": "Add caller-verification practice to help desk training"
+        "D": "Run a campus poster campaign about scam callers for everyone"
       },
-      "correct": "D",
+      "correct": "B",
       "key_concept": "Match learning to role and risk: everyone gets awareness, and a role that repeats one mistake gets targeted training.",
       "pre_read": "Notice which group made the mistake, and how each option reaches that group.",
       "correct_explanation": "The resets show one group lacking one skill: checking a caller's identity before acting. Role-based training adds that practice for the help desk, on top of general awareness. A poster campaign is the runner-up because it raises awareness of scam callers, but awareness reminds people to notice; it does not teach agents the verification steps their job needs.",
       "wrong_explanations": {
         "A": "Tempting because it repeats familiar training. But one yearly course for everyone does not teach help desk agents how to verify callers.",
-        "B": "Closest choice: awareness of scam callers helps everyone. But posters remind people to notice; the help desk needs practice in the steps that verify a caller.",
-        "C": "Tempting because consequences seem to teach. But punishment makes people hide mistakes, and the agents still lack the verification skill."
+        "C": "Tempting because consequences seem to teach. But punishment makes people hide mistakes, and the agents still lack the verification skill.",
+        "D": "Closest choice: awareness of scam callers helps everyone. But posters remind people to notice; the help desk needs practice in the steps that verify a caller."
       },
       "tips": [
         "Eliminate: A repeats one course for everyone, and C punishes agents who were never taught the skill; neither builds caller verification.",
-        "Final two: D beats B because the help desk needs a job skill; awareness reminds, but role-based training teaches the steps.",
+        "Final two: B beats D because the help desk needs a job skill; awareness reminds, but role-based training teaches the steps.",
         "Exam cue: when one role keeps making one mistake, train that role on that task. Awareness is for everyone; training is for the job."
       ],
       "framework_ref": "NIST CSF 2.0 PR.AT-02 (individuals in specialized roles are provided with awareness and training to perform relevant tasks with cybersecurity risks in mind); NIST SP 800-53 Rev. 5 AT-3 (Role-based Training)",
@@ -436,7 +436,7 @@
         "Awareness versus training",
         "Caller verification"
       ],
-      "_provenance": "Authored from concept: 'match the learning to the role and the risk' (notes 2.3.2 Awareness, Training and Education). University help desk chosen to avoid the notes' hospital example. Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 pilot batch, 29 Oct 2026. Audit fix 29 Oct 2026: option C no longer assumes two agents; the stem says only that impostors succeeded twice. Cross-review fix (31 Oct 2026): 'training lead' renamed 'awareness lead' to follow the canonical role list (CD-26); option C names the help desk so 'help desk' is no longer echoed only in the key (rule 10). Fix-up round 1 (31 Oct 2026): option B says 'scam callers', so the stem's 'callers' is no longer echoed only in the key (rule 10).",
+      "_provenance": "Authored from concept: 'match the learning to the role and the risk' (notes 2.3.2 Awareness, Training and Education). University help desk chosen to avoid the notes' hospital example. Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 pilot batch, 29 Oct 2026. Audit fix 29 Oct 2026: option C no longer assumes two agents; the stem says only that impostors succeeded twice. Cross-review fix (31 Oct 2026): 'training lead' renamed 'awareness lead' to follow the canonical role list (CD-26); option C names the help desk so 'help desk' is no longer echoed only in the key (rule 10). Fix-up round 1 (31 Oct 2026): option B says 'scam callers', so the stem's 'callers' is no longer echoed only in the key (rule 10). Key letter moved from D to B (31 Oct 2026) to break a periodic key order; options and letter references swapped, text unchanged.",
       "style_version": 2
     },
     {
@@ -737,21 +737,21 @@
       "options": {
         "A": "Cover every department to the same depth in the first year",
         "B": "Buy a GRC platform first and load a control library into it",
-        "C": "Start with the services and data that carry the most risk",
-        "D": "Start with the IT department that runs most of the systems"
+        "C": "Start with the IT department that runs most of the systems",
+        "D": "Start with the services and data that carry the most risk"
       },
-      "correct": "C",
+      "correct": "D",
       "key_concept": "A GRC program is scoped by risk: limited effort goes first to the services and data whose loss would harm the organization most.",
       "pre_read": "Notice the program's limit, one year of funding, and ask what should decide where that effort goes.",
       "correct_explanation": "A GRC program starts from what matters most to the mission: the critical services, the data with legal or contract duties, and the risks leaders care about. Limited funding goes where harm would be greatest. Starting with the IT department is the runner-up: IT runs the systems, but risk sits in business services and data across many departments, so an IT-first start can miss the highest risks.",
       "wrong_explanations": {
         "A": "Tempting because equal coverage feels fair. But one year's funding spread evenly gives low-risk areas the same effort as critical ones.",
         "B": "Tempting because tools make GRC visible. But a platform only holds decisions; it cannot tell the program which services and obligations matter most.",
-        "D": "Closest choice: IT runs many systems. But the highest risks sit in business services and data owned across the organization, not in one department."
+        "C": "Closest choice: IT runs many systems. But the highest risks sit in business services and data owned across the organization, not in one department."
       },
       "tips": [
         "Eliminate: A spreads limited effort evenly instead of by risk, and B buys a tool before the program knows its scope.",
-        "Final two: C beats D because a GRC program is scoped by business risk; IT runs systems, but critical services and data span many departments.",
+        "Final two: D beats C because a GRC program is scoped by business risk; IT runs systems, but critical services and data span many departments.",
         "Exam cue: plan GRC from the mission outward. Critical services, obligations and risk come first; scope, framework and tools follow."
       ],
       "framework_ref": "NIST CSF 2.0 GV.OC-01 (the organizational mission is understood and informs cybersecurity risk management); NIST CSF 2.0 ID.AM-05 (assets are prioritized based on classification, criticality, resources and impact on the mission)",
@@ -760,7 +760,7 @@
         "Risk-based planning",
         "Critical services"
       ],
-      "_provenance": "Authored from concept: 'set scope, owners and obligations first, so effort goes where risk is greatest' (notes 2.1.2 Planning a GRC Program). Angle: risk-based scoping of limited effort, not the notes example of listing obligations before buying tools. Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 batch 2, 30 Oct 2026.",
+      "_provenance": "Authored from concept: 'set scope, owners and obligations first, so effort goes where risk is greatest' (notes 2.1.2 Planning a GRC Program). Angle: risk-based scoping of limited effort, not the notes example of listing obligations before buying tools. Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 batch 2, 30 Oct 2026. Key letter moved from C to D (31 Oct 2026) to break a periodic key order; options and letter references swapped, text unchanged.",
       "style_version": 2
     },
     {
@@ -1025,21 +1025,21 @@
       "options": {
         "A": "Logs of every answer the model has given to users",
         "B": "A second copy of the document library, stored offsite",
-        "C": "Versioned copies of the model, its prompts and its settings",
-        "D": "A faster server to rebuild the chatbot quickly"
+        "C": "A faster server to rebuild the chatbot quickly",
+        "D": "Versioned copies of the model, its prompts and its settings"
       },
-      "correct": "C",
+      "correct": "D",
       "key_concept": "Restoring an AI service needs the model version, prompts and settings as well as its data, backed up and versioned together.",
       "pre_read": "List what makes the chatbot answer the way it does, then compare that list with what the backups cover.",
       "correct_explanation": "An AI service is rebuilt from more than its data: the tuned model, its prompts and its settings all shape the answers, and only matching versions restore the same behavior. Backing up these versions closes the gap. An offsite copy of the library is the runner-up: it follows the 3-2-1 rule, but it protects what is already backed up and still leaves the model unrecoverable.",
       "wrong_explanations": {
         "A": "Tempting because logs record what the model said. But past answers cannot rebuild the model version, prompts or settings that produced them.",
         "B": "Closest choice: an offsite copy is good practice. But it protects the library, which is already backed up, and leaves the model and settings unrecoverable.",
-        "D": "Tempting because speed matters in recovery. But a fast server with nothing to restore onto it rebuilds an empty service."
+        "C": "Tempting because speed matters in recovery. But a fast server with nothing to restore onto it rebuilds an empty service."
       },
       "tips": [
-        "Eliminate: A keeps records of past answers, not the parts that produce them, and D adds speed with nothing to restore.",
-        "Final two: C beats B because the model, prompts and settings are what is missing; another library copy protects what is already covered.",
+        "Eliminate: A keeps records of past answers, not the parts that produce them, and C adds speed with nothing to restore.",
+        "Final two: D beats B because the model, prompts and settings are what is missing; another library copy protects what is already covered.",
         "Exam cue: to restore an AI service, back up everything that shapes its behavior: model versions, prompts, settings and data, versioned together."
       ],
       "framework_ref": "NIST SP 800-53 Rev. 5 CP-9 (System Backup); NIST SP 800-53 Rev. 5 CM-2(3) (Baseline Configuration | Retention of Previous Configurations)",
@@ -1048,7 +1048,7 @@
         "Model versioning",
         "Restore scope"
       ],
-      "_provenance": "Authored from concept: 'back up what rebuilds the service: model versions, settings and prompts, and the training data' (notes 2.2.8 Backing Up AI Systems and Model Drift). Angle: backup scope for an AI service; model drift is tested in cc_d2_019. Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 batch 2, 30 Oct 2026.",
+      "_provenance": "Authored from concept: 'back up what rebuilds the service: model versions, settings and prompts, and the training data' (notes 2.2.8 Backing Up AI Systems and Model Drift). Angle: backup scope for an AI service; model drift is tested in cc_d2_019. Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 batch 2, 30 Oct 2026. Key letter moved from C to D (31 Oct 2026) to break a periodic key order; options and letter references swapped, text unchanged.",
       "style_version": 2
     },
     {
@@ -1096,22 +1096,22 @@
       "question": "A fire alarm sounds while a technician at a printing plant swaps backup drives, and the drives due offsite, which hold the only current copy, sit across the room. What should the technician do FIRST?",
       "options": {
         "A": "Finish the swap, then leave by the nearest exit",
-        "B": "Leave by the nearest exit and go to the assembly point",
+        "B": "Leave by the nearest exit, then return for the drives",
         "C": "Collect the drives from across the room, then leave",
-        "D": "Leave by the nearest exit, then return for the drives"
+        "D": "Leave by the nearest exit and go to the assembly point"
       },
-      "correct": "B",
+      "correct": "D",
       "key_concept": "In any emergency, human safety comes first: evacuate and be accounted for before thinking about equipment or data.",
       "pre_read": "Notice what is at risk in the room: people, equipment and data. Rank them before choosing.",
       "correct_explanation": "Human safety comes before data and equipment in every continuity plan. When the alarm sounds, the first response is to leave by the nearest safe exit and report to the assembly point so everyone can be accounted for. Collecting the drives is the runner-up: losing the offsite copy would hurt recovery, but recovery plans can cope with lost data, and nothing replaces a person.",
       "wrong_explanations": {
         "A": "Tempting because the task is nearly done. But every minute spent finishing work during a fire alarm is a minute of avoidable danger.",
-        "C": "Closest choice: the copy matters to recovery. But crossing the room to fetch equipment delays evacuation; no backup is worth a person's safety.",
-        "D": "Tempting because it puts leaving first. But going back into a building during a fire alarm puts a life at risk again; emergency services decide when it is safe."
+        "B": "Tempting because it puts leaving first. But going back into a building during a fire alarm puts a life at risk again; emergency services decide when it is safe.",
+        "C": "Closest choice: the copy matters to recovery. But crossing the room to fetch equipment delays evacuation; no backup is worth a person's safety."
       },
       "tips": [
-        "Eliminate: A delays leaving to finish the task, and D sends the technician back inside, though a fire alarm means getting out and staying out.",
-        "Final two: B beats C because people come before data; fetching the drives delays evacuation, and recovery plans exist for lost data.",
+        "Eliminate: A delays leaving to finish the task, and B sends the technician back inside, though a fire alarm means getting out and staying out.",
+        "Final two: D beats C because people come before data; fetching the drives delays evacuation, and recovery plans exist for lost data.",
         "Exam cue: when life safety is at stake, pick the answer that protects people first. Equipment and data can be replaced or recovered."
       ],
       "framework_ref": "NIST SP 800-34 Rev. 1 Section 2.2.8 (Occupant Emergency Plan (OEP))",
@@ -1120,7 +1120,7 @@
         "Occupant emergency plan",
         "Evacuation"
       ],
-      "_provenance": "Authored from concept: 'human safety comes first: account for people before saving equipment or data' (notes 2.2.2 Business Continuity vs Disaster Recovery). Calibration: people-safety-first item; the pilot item tests what makes a plan DR rather than BC. Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 batch 2, 30 Oct 2026.",
+      "_provenance": "Authored from concept: 'human safety comes first: account for people before saving equipment or data' (notes 2.2.2 Business Continuity vs Disaster Recovery). Calibration: people-safety-first item; the pilot item tests what makes a plan DR rather than BC. Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 batch 2, 30 Oct 2026. Key letter moved from B to D (31 Oct 2026) to break a periodic key order; options and letter references swapped, text unchanged.",
       "style_version": 2
     },
     {
@@ -1313,21 +1313,21 @@
       "options": {
         "A": "Hold the door and help carry the ladder inside",
         "B": "Check the contractor's ID card, then hold the door",
-        "C": "Let them in, then report it if they act oddly",
-        "D": "Direct them to reception to sign in and be collected"
+        "C": "Direct them to reception to sign in and be collected",
+        "D": "Let them in, then report it if they act oddly"
       },
-      "correct": "D",
+      "correct": "C",
       "key_concept": "Never let unbadged people through a controlled door; send them to reception, because uniforms and ID cards are easy to fake.",
       "pre_read": "Notice what the person is asking for, and what the badge reader on the door is meant to check.",
       "correct_explanation": "Holding a controlled door for someone without a badge is piggybacking, and a work vest and a ladder are a classic way to get it. The safe, polite answer is to send them to reception, where visits are checked and staff come to collect them. Checking their ID card is the runner-up: it feels like verification, but the card comes from the visitor and is easy to fake.",
       "wrong_explanations": {
         "A": "Tempting because helping is polite. But holding a controlled door lets an unverified person past the badge reader, which is exactly what the disguise is for.",
         "B": "Closest choice: checking ID feels careful. But the visitor supplies the card and it is easy to fake; verification needs a channel the organization controls.",
-        "C": "Tempting because reporting is good practice. But once inside, an intruder can act at once; the badge reader exists to stop entry, not record it."
+        "D": "Tempting because reporting is good practice. But once inside, an intruder can act at once; the badge reader exists to stop entry, not record it."
       },
       "tips": [
-        "Eliminate: A lets an unverified person past the badge reader, and C reports only after access is already given.",
-        "Final two: D beats B because verification must come through a channel you trust; an ID card the visitor carries proves little.",
+        "Eliminate: A lets an unverified person past the badge reader, and D reports only after access is already given.",
+        "Final two: C beats B because verification must come through a channel you trust; an ID card the visitor carries proves little.",
         "Exam cue: uniforms, ladders and urgency are props. Send anyone without a badge to the proper check-in point instead of judging them yourself."
       ],
       "framework_ref": "NIST SP 800-53 Rev. 5 AT-2(3) (Literacy Training and Awareness | Social Engineering and Mining); NIST SP 800-53 Rev. 5 PE-3 (Physical Access Control)",
@@ -1336,7 +1336,7 @@
         "Visitor check-in",
         "Pretexting"
       ],
-      "_provenance": "Authored from concept: 'verify through a separate known channel and follow procedure' (notes 2.3.3 Social Engineering Tactics). Angle: in-person piggybacking; the pilot items test quid pro quo and phone requests. Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 batch 2, 30 Oct 2026. Standards audit fix (30 Oct 2026): re-set away from cc_d5_043's courier prop.",
+      "_provenance": "Authored from concept: 'verify through a separate known channel and follow procedure' (notes 2.3.3 Social Engineering Tactics). Angle: in-person piggybacking; the pilot items test quid pro quo and phone requests. Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 batch 2, 30 Oct 2026. Standards audit fix (30 Oct 2026): re-set away from cc_d5_043's courier prop. Key letter moved from D to C (31 Oct 2026) to break a periodic key order; options and letter references swapped, text unchanged.",
       "style_version": 2
     },
     {
@@ -1421,21 +1421,21 @@
       "options": {
         "A": "Send the job-cut lure only to staff who clicked before",
         "B": "Announce the test date so staff know to watch for it",
-        "C": "Keep the job-cut lure, since realistic tests teach the most",
-        "D": "Replace it with a realistic lure, such as a parcel notice"
+        "C": "Replace it with a realistic lure, such as a parcel notice",
+        "D": "Keep the job-cut lure, since realistic tests teach the most"
       },
-      "correct": "D",
+      "correct": "C",
       "key_concept": "Phishing simulations should be realistic but must avoid lures that cause real distress, since trust drives reporting.",
       "pre_read": "Notice what is happening to staff right now, and how this lure would land on them.",
       "correct_explanation": "Simulations exist to build skills and trust. A lure about job cuts during a real restructuring causes genuine fear and anger that outlast the test and damage reporting, while a realistic lure without that harm still teaches staff to spot phishing. Keeping the job-cut lure is the runner-up: realism matters, but realism bought with real distress costs more trust than it teaches.",
       "wrong_explanations": {
         "A": "Tempting because past clickers need practice. But aiming a distressing lure at them feels punitive and makes them less likely to report.",
         "B": "Tempting because warning staff seems fair. But staff then watch only on that day; saying that tests happen at random is enough.",
-        "C": "Closest choice: realistic lures do teach well. But this one exploits a real fear during real job changes, damaging trust in the security team."
+        "D": "Closest choice: realistic lures do teach well. But this one exploits a real fear during real job changes, damaging trust in the security team."
       },
       "tips": [
         "Eliminate: A singles out past clickers, which reads as punishment, and B announces the date, which turns the test into a memory exercise.",
-        "Final two: D beats C because simulations must teach without real harm; a job-cut lure during restructuring costs the trust reporting depends on.",
+        "Final two: C beats D because simulations must teach without real harm; a job-cut lure during restructuring costs the trust reporting depends on.",
         "Exam cue: good simulations are realistic, approved in advance, no-blame and never cruel. Trust is what makes people report real attacks."
       ],
       "framework_ref": "NIST SP 800-53 Rev. 5 AT-2(1) (Literacy Training and Awareness | Practical Exercises); NIST SP 800-50 Rev. 1 Section 2.7.2 (Experiential Learning: phishing exercises reviewed in advance, run at random and never punitive)",
@@ -1444,7 +1444,7 @@
         "Reporting culture",
         "Ethical test design"
       ],
-      "_provenance": "Authored from concept: 'simulations avoid lures that cause real distress and treat a click as a teaching moment' (notes 2.3.7 Reporting Culture and Phishing Simulations). Angle: lure design; the pilot item tests naming clickers. Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 batch 2, 30 Oct 2026. Standards audit fix (30 Oct 2026): key no longer the only negated option; citation paraphrase matches what the section says.",
+      "_provenance": "Authored from concept: 'simulations avoid lures that cause real distress and treat a click as a teaching moment' (notes 2.3.7 Reporting Culture and Phishing Simulations). Angle: lure design; the pilot item tests naming clickers. Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 batch 2, 30 Oct 2026. Standards audit fix (30 Oct 2026): key no longer the only negated option; citation paraphrase matches what the section says. Key letter moved from D to C (31 Oct 2026) to break a periodic key order; options and letter references swapped, text unchanged.",
       "style_version": 2
     },
     {
@@ -1456,22 +1456,22 @@
       "question": "A software reseller's phishing report rate jumped from 20% to 55% once reports from a new email button were counted with help desk calls. What should the reporting analyst do FIRST?",
       "options": {
         "A": "Present the rise as proof that awareness training is working",
-        "B": "Note the counting change and mark where the trend restarts",
-        "C": "Report the new count as usual, as the data is more complete",
+        "B": "Report the new count as usual, as the data is more complete",
+        "C": "Note the counting change and mark where the trend restarts",
         "D": "Drop the metric, since its figures can no longer be trusted"
       },
-      "correct": "B",
+      "correct": "C",
       "key_concept": "Metrics must be collected the same way each period; when the method changes, record it and restart the baseline.",
       "pre_read": "Notice what changed at the same moment the number jumped.",
       "correct_explanation": "A metric is comparable over time only if it is measured the same way. Counting button reports as well as calls changed the method, so much of the jump may reflect the new count, not new behavior. The analyst notes the change and marks the break. Reporting the new figure as usual is the runner-up: the data is better, but a silent method change makes the jump look like progress.",
       "wrong_explanations": {
         "A": "Tempting because the number moved the right way. But the counting changed at the same time, so the rise cannot be credited to training.",
-        "C": "Closest choice: the new data is more complete. But changing the method without a note makes old and new figures look comparable when they are not.",
+        "B": "Closest choice: the new data is more complete. But changing the method without a note makes old and new figures look comparable when they are not.",
         "D": "Tempting because the trend broke. But the metric is still useful; noting the change and building a new baseline keeps it meaningful."
       },
       "tips": [
         "Eliminate: A credits training with a rise the new counting may explain, and D drops a useful metric instead of noting the method change.",
-        "Final two: B beats C because a quiet method change breaks the trend; better data still needs a note so readers compare like with like.",
+        "Final two: C beats B because a quiet method change breaks the trend; better data still needs a note so readers compare like with like.",
         "Exam cue: when the way a number is counted changes, record the change and restart the baseline. Comparable beats impressive."
       ],
       "framework_ref": "NIST SP 800-55v1 Section 3.2 (Characteristics of Measures: consistency, time-based reference and replicability); NIST SP 800-55v1 Section 2.4 (Metrics: key risk indicators and key performance indicators)",
@@ -1480,7 +1480,7 @@
         "Baseline",
         "Trend breaks"
       ],
-      "_provenance": "Authored from concept: 'collect data the same way every period, so trends mean something' (notes 2.4.1 Measures and Metrics: The Basics). Angle: a method change breaking a trend, not the notes example of replacing a vanity count. Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 batch 2, 30 Oct 2026.",
+      "_provenance": "Authored from concept: 'collect data the same way every period, so trends mean something' (notes 2.4.1 Measures and Metrics: The Basics). Angle: a method change breaking a trend, not the notes example of replacing a vanity count. Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 batch 2, 30 Oct 2026. Key letter moved from B to C (31 Oct 2026) to break a periodic key order; options and letter references swapped, text unchanged.",
       "style_version": 2
     },
     {
@@ -1888,22 +1888,22 @@
       "question": "A theme park's continuity coordinator asks function owners to rate how harm grows during outages for a business impact analysis (BIA). Which outage should the BIA rate MOST severe?",
       "options": {
         "A": "Online ticket sales stop, so the year's busiest weekend loses its sales",
-        "B": "Ride sensor monitoring stops, so faults go unseen on running rides",
+        "B": "The park news blog goes offline, so visitors miss updates",
         "C": "Staff payroll runs two days late, so wages reach accounts late",
-        "D": "The park news blog goes offline, so visitors miss updates"
+        "D": "Ride sensor monitoring stops, so faults go unseen on running rides"
       },
-      "correct": "B",
+      "correct": "D",
       "key_concept": "A BIA rates how harm grows when each function stops; outages that put people at risk rank above financial loss.",
       "pre_read": "Notice what each outage would stop, and what could follow from it.",
       "correct_explanation": "A BIA rates the harm each outage causes over time, and harm to people is the most severe kind. Without ride sensor monitoring, faults that could injure riders go unseen, so that function ranks above any revenue loss. Lost ticket sales on the busiest weekend is the runner-up: the money is real and grows by the hour, but it can be recovered in a way an injury cannot.",
       "wrong_explanations": {
         "A": "Closest choice: lost sales on a peak weekend are a serious impact. But money can be recovered; a ride fault no one can see can injure people.",
-        "C": "Tempting because every employee is affected. But a two-day pay delay is limited and recoverable, far below a risk to riders' safety.",
-        "D": "Tempting because visitors notice it. But a news blog outage causes little harm, even over days, and can wait behind critical functions."
+        "B": "Tempting because visitors notice it. But a news blog outage causes little harm, even over days, and can wait behind critical functions.",
+        "C": "Tempting because every employee is affected. But a two-day pay delay is limited and recoverable, far below a risk to riders' safety."
       },
       "tips": [
-        "Eliminate: C is a short, recoverable delay, and D is a low-impact outage that can wait for days.",
-        "Final two: B beats A because harm to people outranks lost revenue when a BIA rates impact.",
+        "Eliminate: C is a short, recoverable delay, and B is a low-impact outage that can wait for days.",
+        "Final two: D beats A because harm to people outranks lost revenue when a BIA rates impact.",
         "Exam cue: in any ranking of impact, people's safety comes first. Then weigh how fast harm grows for money, obligations and reputation."
       ],
       "framework_ref": "NIST SP 800-34 Rev. 1 Appendix B (Sample BIA Template: impact categories can include harm to individuals); NIST SP 800-34 Rev. 1 Section 3.2.1 (Determine Business Processes and Recovery Criticality: MTD, RTO and RPO)",
@@ -1912,7 +1912,7 @@
         "Life safety first",
         "Impact categories"
       ],
-      "_provenance": "Authored from concept: 'Function owners rate how harm grows at several outage lengths' (notes 2.2.3 Business Impact Analysis (BIA)). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 batch 3, 31 Oct 2026. Fix-up (31 Oct 2026): option B states the rides keep running, so 'operators would stop the rides' cannot turn it into a revenue-only outage.",
+      "_provenance": "Authored from concept: 'Function owners rate how harm grows at several outage lengths' (notes 2.2.3 Business Impact Analysis (BIA)). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 batch 3, 31 Oct 2026. Fix-up (31 Oct 2026): option B states the rides keep running, so 'operators would stop the rides' cannot turn it into a revenue-only outage. Key letter moved from B to D (31 Oct 2026) to break a periodic key order; options and letter references swapped, text unchanged.",
       "style_version": 2
     },
     {
@@ -1997,21 +1997,21 @@
       "options": {
         "A": "A tabletop exercise where the team talks through the plan",
         "B": "A simulation where teams act out their recovery roles on test systems",
-        "C": "A full interruption test where production at the main site stops",
-        "D": "A parallel test where the standby site runs beside production"
+        "C": "A parallel test where the standby site runs beside production",
+        "D": "A full interruption test where production at the main site stops"
       },
-      "correct": "D",
+      "correct": "C",
       "key_concept": "A parallel test runs systems at the recovery site while production continues; a simulation rehearses roles on test systems; a full interruption stops production.",
       "pre_read": "Notice what the coordinator must prove and what must keep running.",
       "correct_explanation": "A parallel test brings systems up at the recovery site and runs real work there while production carries on, so it proves the site can run the draw system. A simulation is the runner-up: it also leaves production alone and rehearses roles, but on test systems it cannot show that the recovery site itself runs the system. A full interruption would prove it, but shutting the main site is ruled out.",
       "wrong_explanations": {
         "A": "Tempting because tabletops find gaps cheaply. But talking through steps cannot prove the system actually runs at the recovery site.",
         "B": "Closest choice: it keeps production running and rehearses the team's roles. But it uses test systems, so it cannot prove the draw system actually runs at the recovery site.",
-        "C": "Tempting because it is the most realistic test. But it stops the main site, which the goal rules out, and needs senior management approval because it risks a real outage."
+        "D": "Tempting because it is the most realistic test. But it stops the main site, which the goal rules out, and needs senior management approval because it risks a real outage."
       },
       "tips": [
-        "Eliminate: A is a discussion test that cannot show anything runs, and C shuts down the main site, which the goal rules out.",
-        "Final two: D beats B because a parallel test runs the real system at the recovery site beside production; a simulation rehearses on test systems.",
+        "Eliminate: A is a discussion test that cannot show anything runs, and D shuts down the main site, which the goal rules out.",
+        "Final two: C beats B because a parallel test runs the real system at the recovery site beside production; a simulation rehearses on test systems.",
         "Exam cue: choose the least disruptive test that still proves the goal. Tabletops and simulations rehearse people; a parallel test proves the real system runs at the recovery site while production carries on."
       ],
       "framework_ref": "NIST SP 800-53 Rev. 5 CP-4 (Contingency Plan Testing); NIST SP 800-34 Rev. 1 Section 3.5 (Plan Testing, Training, and Exercises)",
@@ -2020,7 +2020,7 @@
         "Simulation",
         "Plan testing"
       ],
-      "_provenance": "Authored from concept: 'Test in order of risk: checklist, tabletop, simulation, parallel, full interruption' (notes 2.2.7 Testing and Maintaining BC and DR Plans). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 batch 3, 31 Oct 2026. Final pass (31 Oct 2026): stem no longer echoes 'runs' from the key, and the runner-up is now a simulation (B, was a checklist review), because the stem itself ruled out the full interruption test; explanations and tips follow.",
+      "_provenance": "Authored from concept: 'Test in order of risk: checklist, tabletop, simulation, parallel, full interruption' (notes 2.2.7 Testing and Maintaining BC and DR Plans). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 batch 3, 31 Oct 2026. Final pass (31 Oct 2026): stem no longer echoes 'runs' from the key, and the runner-up is now a simulation (B, was a checklist review), because the stem itself ruled out the full interruption test; explanations and tips follow. Key letter moved from D to C (31 Oct 2026) to break a periodic key order; options and letter references swapped, text unchanged.",
       "style_version": 2
     },
     {
@@ -2068,22 +2068,22 @@
       "question": "A newspaper's AI threat-monitoring tool keeps its tuned detection rules, settings and logs only on the servers it watches. What should the security analyst propose to BEST keep detection working through a ransomware recovery?",
       "options": {
         "A": "Mirror rules, settings and logs to a server on the same network",
-        "B": "Pause monitoring until the server restores are finished",
-        "C": "Copy rules, settings and logs to separate offline storage",
+        "B": "Copy rules, settings and logs to separate offline storage",
+        "C": "Pause monitoring until the server restores are finished",
         "D": "Retrain the tool on fresh traffic once the servers are restored"
       },
-      "correct": "C",
+      "correct": "B",
       "key_concept": "Detection tools need their rules, settings and logs backed up away from the systems they watch, so monitoring survives the event.",
       "pre_read": "Notice where the tool's knowledge lives and what ransomware would reach.",
       "correct_explanation": "Ransomware that encrypts the watched servers would take the tool's tuned rules, settings and logs with them, leaving recovery unwatched. Copies kept away from those servers can be restored early, so detection works while systems come back. A mirror on a server in the same network is the runner-up: it keeps a second copy, but the same attack can reach both.",
       "wrong_explanations": {
         "A": "Closest choice: a mirror keeps a second copy. But a server on the same network can be encrypted in the same attack, taking the copy with it.",
-        "B": "Tempting because recovery is busy. But attackers exploit the confusion, and restored systems need watching; monitoring belongs early in recovery.",
+        "C": "Tempting because recovery is busy. But attackers exploit the confusion, and restored systems need watching; monitoring belongs early in recovery.",
         "D": "Tempting because the tool can learn again. But retraining takes time and loses months of tuning, leaving recovery poorly watched."
       },
       "tips": [
-        "Eliminate: B drops monitoring just when attackers exploit the confusion, and D loses months of tuning and leaves a blind period while the tool relearns.",
-        "Final two: C beats A because copies on separate offline storage survive the attack; a mirror on the same network can be encrypted at the same time.",
+        "Eliminate: C drops monitoring just when attackers exploit the confusion, and D loses months of tuning and leaves a blind period while the tool relearns.",
+        "Final two: B beats A because copies on separate offline storage survive the attack; a mirror on the same network can be encrypted at the same time.",
         "Exam cue: detection must survive the outage it warns about. Keep its rules, settings and logs apart from the systems it watches."
       ],
       "framework_ref": "NIST SP 800-53 Rev. 5 CP-9(3) (System Backup | Separate Storage for Critical Information); NIST SP 800-53 Rev. 5 AU-9(2) (Protection of Audit Information | Store on Separate Physical Systems or Components)",
@@ -2092,7 +2092,7 @@
         "Separate backup storage",
         "AI monitoring"
       ],
-      "_provenance": "Authored from concept: 'Back up detection rules, settings and logs away from the monitored systems' (notes 2.2.9 AI-Assisted Detection and Resilience). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 batch 3, 31 Oct 2026. Final pass (31 Oct 2026): stem no longer echoes cc_d2_030's 'restore monitoring early' (the lesson is where the copy is kept); option B lost its reason clause (rule 3). Fix-up (31 Oct 2026): key and runner-up both carry the stem's rules, settings and logs, so they differ only in where the copy is kept (rule 10).",
+      "_provenance": "Authored from concept: 'Back up detection rules, settings and logs away from the monitored systems' (notes 2.2.9 AI-Assisted Detection and Resilience). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 batch 3, 31 Oct 2026. Final pass (31 Oct 2026): stem no longer echoes cc_d2_030's 'restore monitoring early' (the lesson is where the copy is kept); option B lost its reason clause (rule 3). Fix-up (31 Oct 2026): key and runner-up both carry the stem's rules, settings and logs, so they differ only in where the copy is kept (rule 10). Key letter moved from C to B (31 Oct 2026) to break a periodic key order; options and letter references swapped, text unchanged.",
       "style_version": 2
     },
     {

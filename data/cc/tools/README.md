@@ -17,3 +17,15 @@ Style rules (stem and option length, echoes, absolutes) are checked by
 Notes are checked by the shared notes linter given the CC outline and bank:
 `python3 scripts/lint_notes.py data/cc/notes/dN.json --outline docs/content/CC_BLUEPRINT.md --bank data/cc/originals`
 (without `--outline` it compares with the CISA outline and reports a false error).
+
+## key_sequence.py
+
+Makes the key letters for a new batch, so authors never rotate letters by
+hand (hand rotation left a periodic key order that the key-order gate in
+`check_cc.py` now fails). Run it before writing a batch and give each item the
+letter it prints:
+
+    python3 data/cc/tools/key_sequence.py 4 25
+
+Each domain stays balanced, and the stored order keeps a repeat rate of 15-35%
+at lags 1-4 with no run longer than 3.

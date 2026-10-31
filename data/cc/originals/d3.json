@@ -665,21 +665,21 @@
       "options": {
         "A": "Let the agent pay refunds under the support manager's login",
         "B": "Give the agent the full finance access the vendor requests",
-        "C": "Let the agent draft refunds for a person to approve",
-        "D": "Let the agent pay refunds and review its logs each month"
+        "C": "Let the agent pay refunds and review its logs each month",
+        "D": "Let the agent draft refunds for a person to approve"
       },
-      "correct": "C",
+      "correct": "D",
       "key_concept": "AI agents get least privilege and cannot finish high-impact actions alone; a person approves payments, deletions and similar steps.",
       "pre_read": "Note where the agent's input comes from, and what each option lets it do with money.",
       "correct_explanation": "An agent that reads customer complaints can be misled by crafted text, and a paid refund is hard to undo, so the agent drafts and a person approves before money moves. Monthly log review is the runner-up: logging the agent's actions is good practice, but it finds a bad refund weeks after it is paid, not before.",
       "wrong_explanations": {
         "A": "Tempting because it works at once with no setup. But a borrowed login gives the agent all the manager's rights and makes its actions look like the manager's.",
         "B": "Tempting because the vendor knows its agent. But a vendor's request is not a task need; broad finance access lets a manipulated or faulty agent do far more harm.",
-        "D": "Closest choice: logging the agent is good practice. But monthly review finds bad refunds long after the money has gone; payments need approval before they happen."
+        "C": "Closest choice: logging the agent is good practice. But monthly review finds bad refunds long after the money has gone; payments need approval before they happen."
       },
       "tips": [
         "Eliminate: A lends the agent a person's login, and B grants the broad access a vendor asks for; both break least privilege for agents.",
-        "Final two: C beats D because human approval stops a bad payment before it happens; a monthly log review only finds it afterward.",
+        "Final two: D beats C because human approval stops a bad payment before it happens; a monthly log review only finds it afterward.",
         "Exam cue: for AI agents and bots, high-impact actions such as payments get a human approval step, not just an after-the-fact review."
       ],
       "framework_ref": "OWASP Top 10 for LLM Applications 2025 LLM06 (Excessive Agency); NIST SP 800-53 Rev. 5 AC-6 (Least Privilege)",
@@ -688,7 +688,7 @@
         "Prompt injection",
         "Human in the loop"
       ],
-      "_provenance": "Authored from concept: 'AI agents cannot finish high-impact actions alone; a human approves before money moves' (notes 3.2.11 Least Privilege and SoD for Automated Systems and AI Agents). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D3 pilot batch, 28 Oct 2026.",
+      "_provenance": "Authored from concept: 'AI agents cannot finish high-impact actions alone; a human approves before money moves' (notes 3.2.11 Least Privilege and SoD for Automated Systems and AI Agents). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D3 pilot batch, 28 Oct 2026. Key letter moved from C to D (31 Oct 2026) to break a periodic key order; options and letter references swapped, text unchanged.",
       "style_version": 2
     },
     {
@@ -809,21 +809,21 @@
       "options": {
         "A": "Allow access, because the password was correct",
         "B": "Ask for the answer to a stored security question",
-        "C": "Ask for a passkey from the lecturer's enrolled phone",
-        "D": "Block the attempt and lock the lecturer's account for review"
+        "C": "Block the attempt and lock the lecturer's account for review",
+        "D": "Ask for a passkey from the lecturer's enrolled phone"
       },
-      "correct": "C",
+      "correct": "D",
       "key_concept": "Risk-based authentication scales the check to the risk: a medium score triggers a stronger factor, not a lockout.",
       "pre_read": "Note what is normal and what is new about this sign-in attempt.",
       "correct_explanation": "Risk-based authentication matches the check to the risk. Low risk passes, medium risk asks for a stronger factor and high risk is blocked for review. A right password on an unfamiliar laptop is medium, so a passkey from the enrolled phone fits. Blocking and locking the account is the runner-up: it treats a common, explainable change as an attack and locks out a genuine user.",
       "wrong_explanations": {
         "A": "Tempting because the password matched. But a stolen password matches too; the unfamiliar laptop is exactly the signal the score exists to act on.",
         "B": "Tempting because it adds a step. But a security question is another thing you know, and its answers are often guessable or public.",
-        "D": "Closest choice: caution feels safe. But blocking and locking is the response to high risk; a new laptop alone calls for more proof, not a lockout."
+        "C": "Closest choice: caution feels safe. But blocking and locking is the response to high risk; a new laptop alone calls for more proof, not a lockout."
       },
       "tips": [
         "Eliminate: A treats a matching password as enough despite the risk signal, and B adds a second, often guessable thing you know rather than a stronger factor.",
-        "Final two: C beats D because medium risk calls for more proof; blocking and locking is for high risk and locks out a genuine user.",
+        "Final two: D beats C because medium risk calls for more proof; blocking and locking is for high risk and locks out a genuine user.",
         "Exam cue: adaptive authentication steps up proof as risk rises: pass, then ask for a stronger factor, then block for review."
       ],
       "framework_ref": "NIST SP 800-53 Rev. 5 IA-10 (Adaptive Authentication)",
@@ -832,7 +832,7 @@
         "AI behavior analysis",
         "Risk scoring"
       ],
-      "_provenance": "Authored from concept: 'adaptive authentication asks for stronger proof as the risk score rises' (notes 3.1.8 Adaptive Authentication and AI Behavior Analysis). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D3 batch 2, 30 Oct 2026.",
+      "_provenance": "Authored from concept: 'adaptive authentication asks for stronger proof as the risk score rises' (notes 3.1.8 Adaptive Authentication and AI Behavior Analysis). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D3 batch 2, 30 Oct 2026. Key letter moved from C to D (31 Oct 2026) to break a periodic key order; options and letter references swapped, text unchanged.",
       "style_version": 2
     },
     {
@@ -1133,21 +1133,21 @@
       "options": {
         "A": "Keep the claims access until the handler confirms handovers are done",
         "B": "Ask the underwriting manager to approve keeping the old access",
-        "C": "Record the claims access as temporary, with an end date",
-        "D": "Keep the claims access, since both teams belong to the insurer"
+        "C": "Keep the claims access, since both teams belong to the insurer",
+        "D": "Record the claims access as temporary, with an end date"
       },
-      "correct": "C",
+      "correct": "D",
       "key_concept": "When a mover needs old access for a handover, grant it as approved, temporary access that expires on a set date.",
       "pre_read": "Note what the claims manager asked for and for how long.",
       "correct_explanation": "Handover access is a real need, but it must be approved for a set period and then expire, or the mover keeps old rights indefinitely. Recording it as temporary with a two-week end date meets the need and removes it automatically. Keeping it until the handler says they are done is the runner-up: it depends on someone remembering, and leftover access tends to stay.",
       "wrong_explanations": {
         "A": "Closest choice: it allows for handovers. But with no end date, removal depends on someone remembering, and leftover rights become privilege creep.",
         "B": "Tempting because the new manager approves new access. But the claims manager decides about claims access, and this keeps the old access with no end date.",
-        "D": "Tempting because both teams sit inside one company. But access follows the job, not the employer; old rights the new job does not need should go."
+        "C": "Tempting because both teams sit inside one company. But access follows the job, not the employer; old rights the new job does not need should go."
       },
       "tips": [
-        "Eliminate: D ties access to the employer instead of the job, and B asks the wrong manager to approve old access with no end date.",
-        "Final two: C beats A because an end date removes the access automatically; waiting for the handler's word lets it linger.",
+        "Eliminate: C ties access to the employer instead of the job, and B asks the wrong manager to approve old access with no end date.",
+        "Final two: D beats A because an end date removes the access automatically; waiting for the handler's word lets it linger.",
         "Exam cue: movers lose old access at the move. If a handover needs some of it, grant it as temporary access with an end date."
       ],
       "framework_ref": "NIST SP 800-53 Rev. 5 PS-5 (Personnel Transfer); NIST SP 800-53 Rev. 5 AC-2 (Account Management)",
@@ -1156,7 +1156,7 @@
         "Privilege creep",
         "Temporary access"
       ],
-      "_provenance": "Authored from concept: 'handover access for a mover is approved separately and expires' (notes 3.1.9 Movers and Privilege Creep). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D3 batch 2, 30 Oct 2026.",
+      "_provenance": "Authored from concept: 'handover access for a mover is approved separately and expires' (notes 3.1.9 Movers and Privilege Creep). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D3 batch 2, 30 Oct 2026. Key letter moved from C to D (31 Oct 2026) to break a periodic key order; options and letter references swapped, text unchanged.",
       "style_version": 2
     },
     {
@@ -1312,22 +1312,22 @@
       "question": "A school's system administrator must give 25 new teachers edit access to the shared lesson-plan folder. Which approach is BEST?",
       "options": {
         "A": "Grant each teacher edit rights on the folder one by one",
-        "B": "Share the folder with everyone so no teacher is missed",
+        "B": "Add the teachers to a group that holds the folder rights",
         "C": "Give the teachers one shared login that has the folder rights",
-        "D": "Add the teachers to a group that holds the folder rights"
+        "D": "Share the folder with everyone so no teacher is missed"
       },
-      "correct": "D",
+      "correct": "B",
       "key_concept": "Grant permissions to groups or roles and manage membership, so access stays easy to review and remove.",
       "pre_read": "Think ahead to the day one of these teachers leaves, and what each option leaves behind.",
       "correct_explanation": "Permissions are best granted to groups, not individuals. Adding the teachers to a group that holds the folder rights gives the same access, and when a teacher leaves or changes job, removing them from the group removes the access. Granting rights one by one is the runner-up: it works today, but 25 separate entries are hard to review and easy to leave behind.",
       "wrong_explanations": {
         "A": "Closest choice: it gives the right access today. But 25 separate entries are hard to review, and each must be found and removed when a teacher moves.",
-        "B": "Tempting because nobody is left out. But everyone includes pupils, office staff and visitors, far beyond the teachers who need the folder.",
-        "C": "Tempting because one login is quick to set up. But a shared login hides which teacher made each change and cannot be removed for one person."
+        "C": "Tempting because one login is quick to set up. But a shared login hides which teacher made each change and cannot be removed for one person.",
+        "D": "Tempting because nobody is left out. But everyone includes pupils, office staff and visitors, far beyond the teachers who need the folder."
       },
       "tips": [
-        "Eliminate: B opens the folder to far more people than need it, and C puts every teacher on one login that cannot show who acted.",
-        "Final two: D beats A because group membership is easy to review and remove; individual grants pile up and get missed.",
+        "Eliminate: D opens the folder to far more people than need it, and C puts every teacher on one login that cannot show who acted.",
+        "Final two: B beats A because group membership is easy to review and remove; individual grants pile up and get missed.",
         "Exam cue: grant rights to groups or roles, then manage who belongs. It keeps reviews and removals simple."
       ],
       "framework_ref": "NIST SP 800-53 Rev. 5 AC-2 (Account Management); NIST SP 800-53 Rev. 5 AC-3 (Access Enforcement)",
@@ -1336,7 +1336,7 @@
         "Authorization",
         "Access reviews"
       ],
-      "_provenance": "Authored from concept: 'grant permissions to groups or roles rather than individuals' (notes 3.2.1 Logical Access Controls and Access Decisions). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D3 batch 2, 30 Oct 2026.",
+      "_provenance": "Authored from concept: 'grant permissions to groups or roles rather than individuals' (notes 3.2.1 Logical Access Controls and Access Decisions). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D3 batch 2, 30 Oct 2026. Key letter moved from D to B (31 Oct 2026) to break a periodic key order; options and letter references swapped, text unchanged.",
       "style_version": 2
     },
     {
@@ -1457,21 +1457,21 @@
       "options": {
         "A": "Ask the freelancer to confirm they deleted the manuscripts",
         "B": "Give the editor read access in place of full control",
-        "C": "Share the folder by link instead of by name",
-        "D": "Give the editor edit rights that do not include sharing"
+        "C": "Give the editor edit rights that do not include sharing",
+        "D": "Share the folder by link instead of by name"
       },
-      "correct": "D",
+      "correct": "C",
       "key_concept": "Under discretionary access control, holders of full control can pass access on, so grant only the rights each person needs.",
       "pre_read": "Trace how the manuscripts reached the freelancer, step by step.",
       "correct_explanation": "Under discretionary access control, whoever holds full control can pass access on. Edit rights without the right to share let the editor do the job while sharing decisions stay with the owner. Read access is the runner-up: it would stop the reshare, but an editor must change the manuscripts, so it blocks the work the access exists for.",
       "wrong_explanations": {
         "A": "Tempting because it seems to undo the share. But copies may already exist, and nothing stops the next onward share.",
         "B": "Closest choice: read access would stop the reshare. But the editor must change the manuscripts, so read access blocks their job; edit rights without sharing fit it.",
-        "C": "Tempting because links feel tidy. But anyone who obtains a link can open the folder, which widens sharing instead of limiting it."
+        "D": "Tempting because links feel tidy. But anyone who obtains a link can open the folder, which widens sharing instead of limiting it."
       },
       "tips": [
-        "Eliminate: A tries to undo one share after the fact, and C widens access to anyone holding the link.",
-        "Final two: D beats B because the editor needs to change the manuscripts; edit rights without sharing fit the job, while read access blocks it.",
+        "Eliminate: A tries to undo one share after the fact, and D widens access to anyone holding the link.",
+        "Final two: C beats B because the editor needs to change the manuscripts; edit rights without sharing fit the job, while read access blocks it.",
         "Exam cue: in discretionary access control, full control includes passing access on. Grant the rights the job needs, and keep sharing with the owner."
       ],
       "framework_ref": "NIST SP 800-53 Rev. 5 AC-3(4) (Access Enforcement | Discretionary Access Control); NIST SP 800-53 Rev. 5 AC-6 (Least Privilege)",
@@ -1480,7 +1480,7 @@
         "Oversharing",
         "Sharing rights"
       ],
-      "_provenance": "Authored from concept: 'under DAC, full control lets holders pass access on, so limit sharing rights' (notes 3.2.5 Discretionary Access Control (DAC)). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D3 batch 2, 30 Oct 2026.",
+      "_provenance": "Authored from concept: 'under DAC, full control lets holders pass access on, so limit sharing rights' (notes 3.2.5 Discretionary Access Control (DAC)). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D3 batch 2, 30 Oct 2026. Key letter moved from D to C (31 Oct 2026) to break a periodic key order; options and letter references swapped, text unchanged.",
       "style_version": 2
     },
     {
@@ -1708,22 +1708,22 @@
       "question": "A language school's HR system sends a start record for a teacher beginning in three weeks, and procedure has the help desk technician prepare accounts on receipt. What is the technician's BEST action?",
       "options": {
         "A": "Create and enable the account now, sending the teacher a unique password",
-        "B": "Create the account now and keep it disabled until day one",
-        "C": "Create the account with the access of the teacher being replaced",
+        "B": "Create the account with the access of the teacher being replaced",
+        "C": "Create the account now and keep it disabled until day one",
         "D": "Create the account with the standard first password for new hires"
       },
-      "correct": "B",
+      "correct": "C",
       "key_concept": "Provision from the HR record, with unique first credentials and the approved role, and enable access only when the person starts.",
       "pre_read": "Think about who could use each account during the three weeks before the teacher arrives.",
       "correct_explanation": "Provisioning from the HR record is right, but an account enabled weeks early is live access nobody needs yet. Creating it now and enabling it on the start date gives the teacher working access on day one without that gap. Enabling it now with a unique password is the runner-up: unique first credentials are right, but the account goes live weeks early, usable by anyone who obtains that password.",
       "wrong_explanations": {
         "A": "Closest choice: unique first passwords are right. But the account sits live and unused for three weeks, open to anyone who obtains that password before the teacher arrives.",
-        "C": "Tempting because the jobs match. But the predecessor may hold leftover rights; the approved role, not another person's access, sets what the teacher gets.",
+        "B": "Tempting because the jobs match. But the predecessor may hold leftover rights; the approved role, not another person's access, sets what the teacher gets.",
         "D": "Tempting because one standard password is simple. But anyone who knows it can sign in as any new hire; first credentials must be unique."
       },
       "tips": [
-        "Eliminate: D gives new hires a guessable standard first password, and C copies another person's rights instead of the approved role.",
-        "Final two: B beats A because access should go live when it is needed; a unique password still leaves an enabled, unused account open for three weeks.",
+        "Eliminate: D gives new hires a guessable standard first password, and B copies another person's rights instead of the approved role.",
+        "Final two: C beats A because access should go live when it is needed; a unique password still leaves an enabled, unused account open for three weeks.",
         "Exam cue: provision from the trusted record, give the approved role only, and switch access on when the person actually starts."
       ],
       "framework_ref": "NIST SP 800-53 Rev. 5 AC-2 (Account Management); CIS Controls v8.1 Safeguard 6.1 (Establish an Access Granting Process)",
@@ -1732,7 +1732,7 @@
         "Joiners",
         "Dormant accounts"
       ],
-      "_provenance": "Authored from concept: 'provision from the trusted record and enable access when the person starts' (notes 3.1.3 Provisioning and Identity Proofing). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D3 batch 3, 31 Oct 2026.",
+      "_provenance": "Authored from concept: 'provision from the trusted record and enable access when the person starts' (notes 3.1.3 Provisioning and Identity Proofing). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D3 batch 3, 31 Oct 2026. Key letter moved from B to C (31 Oct 2026) to break a periodic key order; options and letter references swapped, text unchanged.",
       "style_version": 2
     },
     {
@@ -1745,21 +1745,21 @@
       "options": {
         "A": "Leave the blocks, since AI scoring errs on the side of caution",
         "B": "Raise the risk threshold until the musicians' sign-ins pass",
-        "C": "Ask the security manager to suspend scoring for every musician's sign-in",
-        "D": "Report the false alarms and their start date to the security manager"
+        "C": "Report the false alarms and their start date to the security manager",
+        "D": "Ask the security manager to suspend scoring for every musician's sign-in"
       },
-      "correct": "D",
+      "correct": "C",
       "key_concept": "Confirmed false alarms from AI risk scoring go to the threshold owner for tuning; the analyst reports, the owner retunes.",
       "pre_read": "Note who sets the thresholds and what the analyst has already established.",
       "correct_explanation": "AI scoring errs both ways, so confirmed false alarms go back to whoever owns the thresholds. Reporting them with the date the blocks began, which matches the hall's change of provider, lets the security manager retune the model for the new network. Raising the threshold is the runner-up: it would unblock the musicians, but it changes a setting the analyst does not own and, loosened for every sign-in, could let real attackers through.",
       "wrong_explanations": {
         "A": "Tempting because caution feels safe. But blocking genuine users is a real failure too; confirmed false alarms should be fed back so the model is tuned.",
         "B": "Closest choice: a higher threshold would unblock the musicians. But the security manager sets thresholds, and a looser threshold applies to every sign-in, so it could pass real attackers too.",
-        "C": "Tempting because it ends the disruption fast. But suspending scoring removes a layer of protection; the fix is tuning the model, not turning the control off."
+        "D": "Tempting because it ends the disruption fast. But suspending scoring removes a layer of protection; the fix is tuning the model, not turning the control off."
       },
       "tips": [
-        "Eliminate: C asks to switch the control off instead of tuning it, and A accepts confirmed false alarms instead of feeding them back.",
-        "Final two: D beats B because thresholds belong to the security manager; the analyst reports the evidence and the owner retunes.",
+        "Eliminate: D asks to switch the control off instead of tuning it, and A accepts confirmed false alarms instead of feeding them back.",
+        "Final two: C beats B because thresholds belong to the security manager; the analyst reports the evidence and the owner retunes.",
         "Exam cue: AI scoring needs human feedback. Send confirmed false alarms, with evidence, to whoever owns the thresholds instead of retuning it yourself."
       ],
       "framework_ref": "NIST SP 800-53 Rev. 5 IA-10 (Adaptive Authentication); NIST AI 100-1 (AI RMF 1.0) MEASURE 2.4 (the functionality and behavior of the AI system are monitored when in production)",
@@ -1768,7 +1768,7 @@
         "False positives",
         "AI model tuning"
       ],
-      "_provenance": "Authored from concept: 'people review AI risk alerts and tune thresholds, which the security manager approves' (notes 3.1.8 Adaptive Authentication and AI Behavior Analysis). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D3 batch 3, 31 Oct 2026. Re-angled 31 Oct 2026 (final audit): travel scenario replaced by a network change so it no longer retells cc_d3_066 or notes 3.1.8.",
+      "_provenance": "Authored from concept: 'people review AI risk alerts and tune thresholds, which the security manager approves' (notes 3.1.8 Adaptive Authentication and AI Behavior Analysis). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D3 batch 3, 31 Oct 2026. Re-angled 31 Oct 2026 (final audit): travel scenario replaced by a network change so it no longer retells cc_d3_066 or notes 3.1.8. Key letter moved from D to C (31 Oct 2026) to break a periodic key order; options and letter references swapped, text unchanged.",
       "style_version": 2
     },
     {
@@ -2069,21 +2069,21 @@
       "options": {
         "A": "Each technician account expires on the day the three-year contract ends",
         "B": "The elevator firm gets admin rights to manage its staff's accounts",
-        "C": "The elevator firm reports each technician's departure within a day",
-        "D": "The elevator firm vets each technician before they get an account"
+        "C": "The elevator firm vets each technician before they get an account",
+        "D": "The elevator firm reports each technician's departure within a day"
       },
-      "correct": "C",
+      "correct": "D",
       "key_concept": "An outsider's departure never reaches your HR records, so contracts require partners to report leavers promptly and sponsors act on each notice.",
       "pre_read": "Picture a technician who leaves in the contract's first month, and trace when each clause ends their access.",
       "correct_explanation": "Outside staff leave without the company's HR records showing it, so the contract must require the elevator firm to report each technician's departure within a day; the company's sponsor then has that access removed. Expiry at contract end is the runner-up: matching access to the contract is good practice, but technicians often leave mid-contract, and a leaver would keep access until the contract ends.",
       "wrong_explanations": {
         "A": "Closest choice: matching access to the contract is good practice. But a technician who leaves in month three keeps access until the contract ends, years later.",
         "B": "Tempting because the firm would remove its own leavers. But portal admin rights let an outside firm, not the company's sponsor and owner, decide who gets and keeps accounts.",
-        "D": "Tempting because vetting is a common contract term. But it checks technicians when they start; it never tells the company when one leaves."
+        "C": "Tempting because vetting is a common contract term. But it checks technicians when they start; it never tells the company when one leaves."
       },
       "tips": [
-        "Eliminate: B gives an outside firm admin rights to decide who has portal accounts, and D checks technicians at the start but says nothing about when they leave.",
-        "Final two: C beats A because technicians leave mid-contract; a leaver notice starts removal within a day, while contract-end expiry leaves it open for years.",
+        "Eliminate: B gives an outside firm admin rights to decide who has portal accounts, and C checks technicians at the start but says nothing about when they leave.",
+        "Final two: D beats A because technicians leave mid-contract; a leaver notice starts removal within a day, while contract-end expiry leaves it open for years.",
         "Exam cue: your HR never sees an outsider leave, so contracts require partners to report leavers, and the sponsor acts on each notice."
       ],
       "framework_ref": "NIST SP 800-53 Rev. 5 PS-7 (External Personnel Security); NIST SP 800-53 Rev. 5 AC-2 (Account Management)",
@@ -2092,7 +2092,7 @@
         "Leaver notice",
         "Contracts"
       ],
-      "_provenance": "Authored from concept: 'contracts should require partners to report staff who leave or change roles' (notes 3.1.15 Third-Party, Guest and Federated Access). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D3 batch 3, 31 Oct 2026.",
+      "_provenance": "Authored from concept: 'contracts should require partners to report staff who leave or change roles' (notes 3.1.15 Third-Party, Guest and Federated Access). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D3 batch 3, 31 Oct 2026. Key letter moved from C to D (31 Oct 2026) to break a periodic key order; options and letter references swapped, text unchanged.",
       "style_version": 2
     },
     {
@@ -2176,22 +2176,22 @@
       "question": "A marathon organizer's new chief executive asks IT for edit access to every system, to stay informed about operations. Which response should the security manager propose as BEST?",
       "options": {
         "A": "A separate admin account for the edits they need",
-        "B": "Full edit access, since a chief executive oversees every system",
+        "B": "Read-only dashboards covering what the executive needs to follow",
         "C": "Full edit access, with every change logged and reviewed monthly",
-        "D": "Read-only dashboards covering what the executive needs to follow"
+        "D": "Full edit access, since a chief executive oversees every system"
       },
-      "correct": "D",
+      "correct": "B",
       "key_concept": "Least privilege gives each person, whatever their rank, only the access their task needs.",
       "pre_read": "Separate what the executive wants to see from what they would need to change.",
       "correct_explanation": "Least privilege gives the access a task needs, and rank is not a task. Staying informed needs visibility, not the power to change records, so read-only dashboards meet the need and limit damage if the executive's account is phished. Logged edit access is the runner-up: logs help trace misuse, but they record harm after it happens, and the executive's account stays a prized target.",
       "wrong_explanations": {
         "A": "Tempting because separate admin accounts are good practice. But staying informed needs no edits at all, so a second account only adds another privileged target.",
-        "B": "Tempting because executives oversee everything. But overseeing is not editing, and senior accounts are prime targets for attackers.",
-        "C": "Closest choice: logging and review add oversight. But they detect misuse after it happens; the edit rights a phished account could abuse remain."
+        "C": "Closest choice: logging and review add oversight. But they detect misuse after it happens; the edit rights a phished account could abuse remain.",
+        "D": "Tempting because executives oversee everything. But overseeing is not editing, and senior accounts are prime targets for attackers."
       },
       "tips": [
-        "Eliminate: B grants access by rank instead of task, and A adds a privileged account for edits the executive's task never needs.",
-        "Final two: D beats C because read-only access meets the need to stay informed; logging edit rights only detects misuse later.",
+        "Eliminate: D grants access by rank instead of task, and A adds a privileged account for edits the executive's task never needs.",
+        "Final two: B beats C because read-only access meets the need to stay informed; logging edit rights only detects misuse later.",
         "Exam cue: least privilege applies to every rank. Match the access to the task's verb: viewing needs read, not edit."
       ],
       "framework_ref": "NIST SP 800-53 Rev. 5 AC-6 (Least Privilege)",
@@ -2200,7 +2200,7 @@
         "Senior accounts",
         "Read-only access"
       ],
-      "_provenance": "Authored from concept: 'senior staff get least privilege too' (notes 3.2.2 Least Privilege and Need to Know). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D3 batch 3, 31 Oct 2026.",
+      "_provenance": "Authored from concept: 'senior staff get least privilege too' (notes 3.2.2 Least Privilege and Need to Know). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D3 batch 3, 31 Oct 2026. Key letter moved from D to B (31 Oct 2026) to break a periodic key order; options and letter references swapped, text unchanged.",
       "style_version": 2
     },
     {
@@ -2212,22 +2212,22 @@
       "question": "At an events company, a clerk enters payments and a manager approves them, but the clerk can still edit a payment after approval. Which assessment should the security analyst give as MOST accurate?",
       "options": {
         "A": "The duties are separated, since a manager approves every payment",
-        "B": "The duties are combined, but logging the clerk's edits makes that acceptable",
-        "C": "The duties are combined, since the clerk can alter approved payments",
+        "B": "The duties are combined, since the clerk can alter approved payments",
+        "C": "The duties are combined, but logging the clerk's edits makes that acceptable",
         "D": "The duties are separated, since each person's account holds least privilege"
       },
-      "correct": "C",
+      "correct": "B",
       "key_concept": "Separation of duties holds only if no one person can complete the process alone, including by editing it after approval.",
       "pre_read": "Count who can take a payment from entry to approval on their own.",
       "correct_explanation": "Separation of duties works only if no one person can complete a sensitive process alone. Because the clerk can edit a payment after the manager approves it, the clerk alone still decides what is finally paid. Manager approval is the runner-up: it looks like a split, but an approval the clerk can change afterward checks nothing; edits after approval should need a fresh approval.",
       "wrong_explanations": {
         "A": "Closest choice: a manager does approve each payment. But the clerk can change the payment afterward, so the approval no longer controls what is paid.",
-        "B": "Tempting because logs record each edit. But logging detects a change after it happens; it does not stop one person from deciding alone what is paid.",
+        "C": "Tempting because logs record each edit. But logging detects a change after it happens; it does not stop one person from deciding alone what is paid.",
         "D": "Tempting because each account is narrow. But least privilege limits what one account does; separation of duties makes sure no one person can finish the process alone."
       },
       "tips": [
-        "Eliminate: B accepts the combined duty because edits are logged, which detects but does not split, and D confuses least privilege with separation of duties.",
-        "Final two: C beats A because the clerk can still change a payment after approval; an approval one person can undo separates nothing.",
+        "Eliminate: C accepts the combined duty because edits are logged, which detects but does not split, and D confuses least privilege with separation of duties.",
+        "Final two: B beats A because the clerk can still change a payment after approval; an approval one person can undo separates nothing.",
         "Exam cue: test separation of duties by asking whether one person can still finish the task alone, including by changing it after the check."
       ],
       "framework_ref": "NIST SP 800-53 Rev. 5 AC-5 (Separation of Duties)",
@@ -2236,7 +2236,7 @@
         "Approval integrity",
         "Least privilege"
       ],
-      "_provenance": "Authored from concept: 'an approved item cannot be changed without a fresh approval' (notes 3.2.3 Separation of Duties and Two-Person Control). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D3 batch 3, 31 Oct 2026.",
+      "_provenance": "Authored from concept: 'an approved item cannot be changed without a fresh approval' (notes 3.2.3 Separation of Duties and Two-Person Control). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D3 batch 3, 31 Oct 2026. Key letter moved from C to B (31 Oct 2026) to break a periodic key order; options and letter references swapped, text unchanged.",
       "style_version": 2
     },
     {
@@ -2284,22 +2284,22 @@
       "question": "At an animation studio that uses discretionary access control, a designer opens a malicious attachment, and the malware reshares the designer's project files with an outside address. Which weakness does this MOST clearly show?",
       "options": {
         "A": "A central administrator set the files' labels too low",
-        "B": "Any program a user runs acts with the user's sharing rights",
-        "C": "The designer's job role held more permissions than needed",
+        "B": "The designer's job role held more permissions than needed",
+        "C": "Any program a user runs acts with the user's sharing rights",
         "D": "Owners often share files with more people than needed"
       },
-      "correct": "B",
+      "correct": "C",
       "key_concept": "Under discretionary access control, any program the owner runs, including malware, acts with the owner's rights to share and change files.",
       "pre_read": "Trace each step from the attachment opening to the files being shared.",
       "correct_explanation": "Under discretionary access control, the owner decides who may access their files, and any program the owner runs acts with those same rights. Malware launched by the designer could therefore reshare the files as if the designer had chosen to. Owner oversharing is the runner-up: it is a real weakness of the model, but here the designer made no sharing choice; the malware acted with their rights.",
       "wrong_explanations": {
         "A": "Tempting because labels control access in some models. But centrally set labels belong to mandatory access control, not to owner-decided sharing.",
-        "C": "Tempting because extra role rights cause harm. But job roles belong to role-based access control; here the file owner's own rights were used.",
+        "B": "Tempting because extra role rights cause harm. But job roles belong to role-based access control; here the file owner's own rights were used.",
         "D": "Closest choice: oversharing is a classic weakness of this model. But the designer chose nothing here; the malware shared the files using the designer's rights."
       },
       "tips": [
-        "Eliminate: A describes labels from mandatory access control, and C describes job roles from role-based access control; neither fits owner-decided sharing.",
-        "Final two: B beats D because the designer shared nothing; malware ran with the owner's rights, which is the model's built-in weakness.",
+        "Eliminate: A describes labels from mandatory access control, and B describes job roles from role-based access control; neither fits owner-decided sharing.",
+        "Final two: C beats D because the designer shared nothing; malware ran with the owner's rights, which is the model's built-in weakness.",
         "Exam cue: in discretionary access control, the owner's rights travel with whatever the owner runs, malware included."
       ],
       "framework_ref": "NIST SP 800-53 Rev. 5 AC-3(4) (Access Enforcement | Discretionary Access Control)",
@@ -2308,7 +2308,7 @@
         "Malware",
         "Owner rights"
       ],
-      "_provenance": "Authored from concept: 'malware running with the user's rights is a weakness of DAC' (notes 3.2.5 Discretionary Access Control (DAC)). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D3 batch 3, 31 Oct 2026.",
+      "_provenance": "Authored from concept: 'malware running with the user's rights is a weakness of DAC' (notes 3.2.5 Discretionary Access Control (DAC)). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D3 batch 3, 31 Oct 2026. Key letter moved from B to C (31 Oct 2026) to break a periodic key order; options and letter references swapped, text unchanged.",
       "style_version": 2
     },
     {
@@ -2321,21 +2321,21 @@
       "options": {
         "A": "Keep the grants, since the 40 staff use them every day",
         "B": "Remove the 40 grants now; owners re-add those still needed",
-        "C": "Create a separate role for each of the 40 staff members",
-        "D": "Have role owners fold needed grants into roles or drop them"
+        "C": "Have role owners fold needed grants into roles or drop them",
+        "D": "Create a separate role for each of the 40 staff members"
       },
-      "correct": "D",
+      "correct": "C",
       "key_concept": "Role-based access control works when rights come through roles; the role owner decides whether a direct grant joins a role or goes.",
       "pre_read": "Ask who can tell which of the direct grants are still needed.",
       "correct_explanation": "Role-based access control works when rights come through roles; direct grants bypass the catalog and its reviews. The role owner decides whether each needed right belongs in a role, perhaps as a time-limited extra, or should go. Removing all 40 at once is the runner-up: it restores the model fast and lets owners re-add rights, but it acts before the owner decides and may cut access that live work still needs.",
       "wrong_explanations": {
         "A": "Tempting because the access is in use. But use is not approval; direct grants escape role reviews and build privilege creep.",
         "B": "Closest choice: direct grants should end, and owners can re-add rights. But removal comes before the owner's decision and may cut access live work needs; the owner decides first.",
-        "C": "Tempting because it puts every right in a role. But one role per person is role explosion, which nobody can manage or review."
+        "D": "Tempting because it puts every right in a role. But one role per person is role explosion, which nobody can manage or review."
       },
       "tips": [
-        "Eliminate: A treats daily use as approval, and C creates one role per person, which is role explosion.",
-        "Final two: D beats B because the role owner decides which rights stay; removing all at once could cut access people need for live work.",
+        "Eliminate: A treats daily use as approval, and D creates one role per person, which is role explosion.",
+        "Final two: C beats B because the role owner decides which rights stay; removing all at once could cut access people need for live work.",
         "Exam cue: in role-based access control, rights should flow through roles. Report direct grants to the role owner to fold in or remove."
       ],
       "framework_ref": "NIST SP 800-53 Rev. 5 AC-3(7) (Access Enforcement | Role-based Access Control); NIST SP 800-53 Rev. 5 AC-6(7) (Least Privilege | Review of User Privileges)",
@@ -2344,7 +2344,7 @@
         "Direct grants",
         "Role owner"
       ],
-      "_provenance": "Authored from concept: 'role-based access control weakens when rights are granted outside any role' (notes 3.2.7 Role-Based Access Control (RBAC)). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D3 batch 3, 31 Oct 2026.",
+      "_provenance": "Authored from concept: 'role-based access control weakens when rights are granted outside any role' (notes 3.2.7 Role-Based Access Control (RBAC)). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D3 batch 3, 31 Oct 2026. Key letter moved from D to C (31 Oct 2026) to break a periodic key order; options and letter references swapped, text unchanged.",
       "style_version": 2
     },
     {
