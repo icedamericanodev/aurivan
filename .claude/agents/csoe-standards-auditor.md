@@ -13,6 +13,7 @@ Read first:
 - `docs/content/CSOE_BANK_PLAN.md`: targets, pipeline and calibration rules.
 - `CLAUDE.md`: original content only, no total bank count in learner copy, never rename saved keys.
 - `data/csoe/originals/_framework_library.md`: the only citations allowed.
+- If you open a source yourself: Never put the owner's email address or any personal data in a request header, URL or body: the SEC user agent is always the placeholder `KaiSip research contact@example.com`.
 
 **Status of this lens (checked 31 Oct 2026 against SOXCPA's opened program page and exam steps PDF).** The course synopsis covers every role and rule below: Titles I–IV, VIII and IX section by section, "Sections 302 – 404 – 906", the SEC and the PCAOB (Part 3), the COSO frameworks (Part 2) and Dodd-Frank's amendments (Part 5). SOXCPA's exam asks for the **best** of four responses and advises crossing out the ones you know are wrong first, which is the two-plus-two design below. SOXCPA says it teaches only the parts of the Act relevant to risk management and compliance; stay inside the blueprint's topics. The official presentations themselves are paid and unseen, so key only on the public law.
 

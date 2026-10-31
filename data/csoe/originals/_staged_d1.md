@@ -32,6 +32,8 @@ into `_framework_library.md` with `python3 data/csoe/tools/merge_library.py`.
   - Verified (opened 31 Oct 2026): https://www.law.cornell.edu/uscode/text/18/1350; checked 1350(a): the written statement by the chief executive officer and chief financial officer accompanying each periodic report containing financial statements filed under Section 13(a) or 15(d).
 - 18 U.S.C. 1514A(a) (Whistleblower protection for employees of publicly traded companies)
   - Verified (opened 31 Oct 2026): https://www.law.cornell.edu/uscode/text/18/1514A; checked the covered companies (including subsidiaries and affiliates whose financial information is consolidated), the protected channels (federal agency, Congress, a person with supervisory authority) and the 180-day complaint period in (b)(2)(D).
+- 18 U.S.C. 1520 (Destruction of corporate audit records)
+  - Verified (opened 31 Oct 2026): https://www.law.cornell.edu/uscode/text/18/1520; checked (a)(1): any accountant who audits an issuer to which Exchange Act Section 10A(a) applies keeps audit or review workpapers for 5 years from the end of the fiscal period audited; (b) knowing and willful violations, up to 10 years.
 - 18 U.S.C. 1519 (Destruction, alteration, or falsification of records in federal investigations)
   - Verified (opened 31 Oct 2026): https://www.law.cornell.edu/uscode/text/18/1519; checked that it applies to whoever knowingly alters, destroys or falsifies records with intent to impede a federal investigation or matter, up to 20 years.
 
@@ -50,7 +52,11 @@ into `_framework_library.md` with `python3 data/csoe/tools/merge_library.py`.
 - 17 CFR 240.10A-3(c)(3) (Exemption for foreign private issuers with a board of auditors)
   - Verified (opened 31 Oct 2026): https://www.law.cornell.edu/cfr/text/17/240.10A-3; checked conditions (c)(3)(i)–(vi), including independence from management, responsibility for appointing and overseeing the auditor, and (vi) applying (b)(3)–(b)(5) to the board of auditors.
 - 17 CFR 249.220f (Form 20-F)
-  - Verified (opened 31 Oct 2026): https://www.law.cornell.edu/cfr/text/17/249.220f; checked that any foreign private issuer may use Form 20-F for Section 12 registration and Section 13(a) or 15(d) annual reports, due within six months after fiscal year-end.
+  - Verified (opened 31 Oct 2026): https://www.law.cornell.edu/cfr/text/17/249.220f; checked that any foreign private issuer may use Form 20-F for Section 12 registration and Section 13(a) or 15(d) annual reports. Do not cite this section for the deadline: the codified paragraph (b) still shows the pre-2011 period and was never conformed; the current deadline is in Form 20-F General Instruction A.(b).
+- 17 CFR 239.36(c) (Form F-6 eligibility)
+  - Verified (opened 31 Oct 2026): https://www.law.cornell.edu/cfr/text/17/239.36; checked that Form F-6 registers depositary shares evidenced by ADRs, issued by a depositary, and is available only if the issuer of the deposited securities reports under Section 13(a) or 15(d) or the deposited securities are exempt under Rule 12g3-2(b), unless the issuer files a registration statement on another form at the same time. Same text as Form F-6 General Instruction I.A(3) (https://www.sec.gov/files/formf-6.pdf, opened 31 Oct 2026).
+- 17 CFR 240.12g3-2(b) (Exemption for foreign private issuers)
+  - Verified (opened 31 Oct 2026): https://www.law.cornell.edu/cfr/text/17/240.12g3-2; checked (b)(1): a foreign private issuer is exempt from Section 12(g) registration if it does not report under Section 13(a) or 15(d), keeps a foreign listing that is its primary trading market, and publishes the required information in English.
 - 17 CFR 249.310(b) (Form 10-K filing deadlines)
   - Verified (opened 31 Oct 2026): https://www.law.cornell.edu/cfr/text/17/249.310; checked 60 days for large accelerated filers, 75 days for accelerated filers and 90 days for all other registrants. Also read 17 CFR 249.308a (Form 10-Q: 40 and 45 days).
 - 17 CFR 232.101 (Mandated electronic submissions and exceptions)
@@ -67,3 +73,8 @@ into `_framework_library.md` with `python3 data/csoe/tools/merge_library.py`.
 
 - SEC Investor Bulletin: American Depositary Receipts, August 2012 (ADR program levels)
   - Verified (opened 31 Oct 2026): https://www.sec.gov/files/adr-bulletin.pdf; checked Level 1 (over the counter, Form F-6 only, no capital raising, the only level that may be unsponsored), Level 2 (exchange listing, Form 20-F, no capital raising), Level 3 (capital raising on Form F-1, F-3 or F-4, plus Form 20-F), and that Form F-6 covers only the deposit terms. The bulletin says it is not a legal interpretation; it is cited for how the market categorizes programs.
+
+## SEC forms
+
+- Form 20-F General Instruction A.(b) (Annual report due date)
+  - Verified (opened 31 Oct 2026): https://www.sec.gov/files/form20-f.pdf (OMB approval expiring December 31, 2026); checked that a foreign private issuer must file its annual report on Form 20-F within four months after the end of the fiscal year. SEC Release No. 33-8959 (https://www.sec.gov/rules/final/2008/33-8959.pdf, opened 31 Oct 2026) shortened the period from six months to four for fiscal years ending on or after December 15, 2011.
