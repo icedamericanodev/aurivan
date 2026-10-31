@@ -223,6 +223,7 @@ the notice is part of the description.
 | Round | D1 | D2 | D3 | Total |
 |---|---|---|---|---|
 | Pilot (30 Oct 2026) | 20 | 20 | 20 | 60 |
+| Batch 2 (31 Oct 2026) | +30 | +30 | +30 | 150 |
 
 Pilot review, 30 Oct 2026:
 - **Blind tests:** 60/60 picks matched the keys on the first pass. After the
@@ -241,6 +242,30 @@ Pilot review, 30 Oct 2026:
 - **Carried to batch 2:** 2G.1 has no item yet; vary settings (travel and
   pension settings are used); a few items stay answerable from general audit
   sense (D2 007, 014, 017; D3 004, 011, 019) and are the first to re-angle.
+
+Batch 2 review, 31 Oct 2026 (multi-agent workflow; two usage-limit restarts, resumed from saved results):
+- **Authors:** the three domain experts wrote 30 items each and re-angled six pilot items (D2 007, 014, 017;
+  D3 004, 011, 019) so they need AI knowledge.
+- **Five reviewers per domain:** blind tester, AAIA standards auditor, ISACA concept reviewer, a second
+  domain expert, ISACA language reviewer. First blind pass 96/96; no HARD ERRORs; about 400 PRECISION and
+  OBSERVATION findings, each applied or rejected with a recorded reason by the domain expert.
+- **Fix loops:** every changed item was blind re-tested and re-audited (up to three rounds per domain); every
+  re-test matched its key. No key was disputed and nothing needed the owner's judgement beyond the D1 029/030
+  call below.
+- **Cross-domain gate:** 10 PRECISION fixes (two near-duplicate lessons across domains, reused settings, two
+  who-decides wordings), applied and re-tested.
+- **Citations:** three NIST citations added after checking the opened texts (AI 100-1 Section 5.2; AI 100-2e2025
+  Sections 2.4.2 and 3.3.2).
+- **Completeness critic:** no gaps (every subtopic has 2+ items, 2G.1 has 2, D3 has 13 AI-in-the-audit items,
+  8/15/7 difficulty, length tell 17/18/17%).
+
+**Carried to batch 3** (decided by the D1 domain expert under the "experts
+decide first" rule, 31 Oct 2026): `aaia_d1_029` (who signs off pre-launch
+validation) and `aaia_d1_030` (who owns a model) have correct, CISA-consistent
+keys but can be answered from general governance knowledge. Keep them for now;
+in batch 3, re-angle 030 around an AI-specific owner power (pause or override
+the model, approve a retrain) and 029 toward what validation must test, checked
+against `aaia_d2_014` so the two do not duplicate.
 
 ## 10. Follow-ups outside this plan's scope
 
