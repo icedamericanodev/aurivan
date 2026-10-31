@@ -2,7 +2,7 @@
 
 Two items are linked when one item's explanation or key gives away the other's answer, or both test the same rule from contrasting angles. A held-out mock form must never contain both items of a pair. Source: the batch 2 cross-domain review (31 Oct 2026); extend it at every cross-domain gate.
 
-Rule for the form builder: Draw no two items of a pair into the same form. Keep the hubs csoe_d3_038 and csoe_d4_029 in practice, not in the held-out set: their facts recur too often to test cleanly.
+Rule for the form builder: Draw no two items of a pair into the same form. Keep the hubs csoe_d3_038, csoe_d4_029, csoe_d4_001, csoe_d2_012, csoe_d2_014, csoe_d5_045 and csoe_d5_056 in practice, not in the held-out set: their facts recur too often to test cleanly.
 
 | Item A | Item B | Why linked |
 |---|---|---|
@@ -50,3 +50,83 @@ Rule for the form builder: Draw no two items of a pair into the same form. Keep 
 | csoe_d5_016 | csoe_d5_035 | parallel keys, both A ('...and the [IT/general] controls behind them') |
 | csoe_d5_018 | csoe_d5_039 | d5_039 CE: management keeps the responsibility and may rely on a Type 2 report |
 | csoe_d1_024 | csoe_d1_038 | only if XD-01 is not applied |
+| csoe_d5_020 | csoe_d5_043 | d5_020's exam cue gives the acquired-business-only exception; 043's wrong explanation C and tip 1 give d5_020's runner-up |
+| csoe_d5_040 | csoe_d5_049 | both rest on SEC staff ICFR FAQ Question 8 |
+| csoe_d5_003 | csoe_d5_051 | 051's stem and explanation say a home-country framework may be used |
+| csoe_d5_004 | csoe_d5_054 | d5_004's explanation says the 17 principles were drawn from the components |
+| csoe_d5_002 | csoe_d5_046 | d5_002's explanation names the cube's other faces |
+| csoe_d5_002 | csoe_d5_045 | d5_002 wrong explanation D: entity levels are the cube's third dimension (045's key) |
+| csoe_d5_028 | csoe_d5_045 | 045 wrong explanation C: accept, reduce, share and avoid are options in risk response (028's key) |
+| csoe_d5_009 | csoe_d5_045 | d5_009 lists the eight 2004 components; 045 option B is three of them |
+| csoe_d5_007 | csoe_d5_044 | d5_007 exam cue: oversight is control environment (044's key) |
+| csoe_d5_030 | csoe_d5_044 | d5_030: board oversight is principle 2 in control environment |
+| csoe_d5_031 | csoe_d5_056 | 056 wrong explanation B: strategy and objective-setting sets risk appetite (031's key) |
+| csoe_d5_047 | csoe_d5_056 | 047 wrong explanation D: principle 16 sits in review and revision (056's key) |
+| csoe_d5_052 | csoe_d5_056 | 052 wrong explanation A: review and revision handles change once strategy is set |
+| csoe_d5_033 | csoe_d5_052 | shared option wording; d5_033 wrong explanation A explains principle 15 |
+| csoe_d5_057 | csoe_d5_060 | 060 wrong explanation C: the internal control framework suits entities of any size |
+| csoe_d5_003 | csoe_d5_048 | 048 tests a non-COSO framework's suitability, implying COSO is not mandated |
+| csoe_d3_042 | csoe_d3_043 | d3_042 explanation and exam cue state notice to the exchange (d3_043's key) |
+| csoe_d3_011 | csoe_d3_053 | d3_053 says fair-fund money goes to victims; d3_011 calls fair funds an exception to the Treasury rule |
+| csoe_d3_046 | csoe_d4_019 | d4_019 wrong explanations: Section 304 turns on misconduct and reaches only the CEO and CFO |
+| csoe_d3_032 | csoe_d3_058 | same rule (Regulation G Rule 100); each names the other's key |
+| csoe_d3_007 | csoe_d3_045 | d3_045 explanation: Rule 13b2-2(b) carries out Section 303 (d3_007's key) |
+| csoe_d3_051 | csoe_d3_052 | the Section 307 duty runs inside the client; each settles the other's final two |
+| csoe_d3_019 | csoe_d3_060 | d3_019 explanation: the website route works when the annual report announced it |
+| csoe_d1_039 | csoe_d3_054 | d3_054 explanation: Section 402 bars loans to directors and executive officers (d1_039's basis) |
+| csoe_d1_039 | csoe_d3_012 | same reason (d3_012 explanation) |
+| csoe_d3_008 | csoe_d3_046 | d3_046's stem states Section 304's 12-month window (part of d3_008's key) |
+| csoe_d2_019 | csoe_d2_060 | d2_060 explanation: a former team member in an oversight role in the look-back bars the firm |
+| csoe_d2_019 | csoe_d2_061 | d2_061 explanation: a former team member in an oversight role leaves the firm not independent |
+| csoe_d2_060 | csoe_d2_061 | d2_060 exam cue names the role test that d2_061 keys |
+| csoe_d2_014 | csoe_d2_055 | d2_055 explanation: permitted non-audit services need audit committee preapproval |
+| csoe_d2_015 | csoe_d2_055 | d2_055 wrong explanation A and tips: the de minimis waiver |
+| csoe_d2_011 | csoe_d2_051 | d2_051 explanation: FASB writes U.S. accounting standards |
+| csoe_d2_011 | csoe_d2_050 | d2_050 explanation: the SEC recognizes a qualifying private standard setter |
+| csoe_d2_020 | csoe_d2_062 | d2_062 explanation: Section 207 ordered only a study of firm rotation |
+| csoe_d2_033 | csoe_d2_052 | contrasting angles on who changes Board rules |
+| csoe_d2_004 | csoe_d2_043 | d2_043 explanation: Board sanctions are open to SEC review |
+| csoe_d2_006 | csoe_d2_047 | same Section 106 production duty, contrasting angles |
+| csoe_d2_012 | csoe_d2_054 | contrasting angles on Section 107(b) processing of Board rules |
+| csoe_d2_054 | csoe_d4_045 | both key the Exchange Act Section 19(b) process (PCAOB vs exchange) |
+| csoe_d2_012 | csoe_d4_045 | d2_012 explanation: the SEC publishes notice, takes comment and approves |
+| csoe_d2_049 | csoe_d4_059 | both rest on 929F-amended PCAOB discipline provisions |
+| csoe_d2_047 | csoe_d4_037 | foreign counterpart regulators: production through them vs Board sharing with them |
+| csoe_d2_048 | csoe_d3_015 | 404(b) attestation in the audit vs the Section 103 audit-report content |
+| csoe_d2_007 | csoe_d2_057 | look-alike three-year cycles: firm inspection vs special engagement review |
+| csoe_d2_057 | csoe_d2_063 | d2_057 exam cue contrasts the two small-firm exemptions |
+| csoe_d2_058 | csoe_d2_059 | two angles on the audit-partner definition |
+| csoe_d2_017 | csoe_d2_059 | d2_059 tips: the lead partner and reviewer have the five-year limit |
+| csoe_d4_014 | csoe_d4_049 | both key 18 U.S.C. 1349 |
+| csoe_d4_055 | csoe_d4_056 | d4_056: the U.S. buffer comes from Basel III through the agencies' rule |
+| csoe_d4_038 | csoe_d4_058 | d4_038: independent directors decide the Rule 10D-1 cost exception |
+| csoe_d4_019 | csoe_d4_058 | d4_058's wrong explanation D and its tips: recovery does not turn on the officer's role (no-fault) |
+| csoe_d4_051 | csoe_d4_052 | both Exchange Act Section 32(a) as raised by Section 1106 |
+| csoe_d4_032 | csoe_d4_052 | mirror individual-versus-entity penalty items |
+| csoe_d1_054 | csoe_d4_047 | both Section 1103; each explanation states the other's key |
+| csoe_d2_003 | csoe_d4_060 | Section 109 fee allocation, contrasting measures |
+| csoe_d4_018 | csoe_d4_057 | d4_057: the 989G(b) study touched only 404(b); 404(a) stays |
+| csoe_d3_043 | csoe_d4_046 | d3_043's exam cue: audit committee rules are listing conditions |
+| csoe_d1_008 | csoe_d4_057 | d4_057 explanation states the 2020 Rule 12b-2 revenue test (d1_008's key) |
+| csoe_d1_048 | csoe_d1_053 | parallel signer lists; d1_048 states d1_053's key |
+| csoe_d1_047 | csoe_d1_048 | d1_048 wrong explanation B: Form F-6 holds no company financials |
+| csoe_d1_010 | csoe_d1_047 | d1_010 wrong explanation C: Form F-6 covers only the deposit terms |
+| csoe_d1_017 | csoe_d1_047 | d1_017 wrong explanation C: Form F-6 registers only the deposit terms |
+| csoe_d1_012 | csoe_d1_052 | d1_052 option B describes the 10A-3(c)(3) board-of-auditors exemption |
+| csoe_d1_044 | csoe_d1_045 | d1_044 tip 2: Title VII only ordered a study |
+| csoe_d1_022 | csoe_d1_045 | d1_022 exam cue: Title VII ordered studies |
+| csoe_d1_018 | csoe_d1_051 | d1_051 exam cue: the ADR level decides whether the company reports at all |
+
+| csoe_d2_037 | csoe_d2_056 | d2_037 CE: Section 204 sends 'other material written communications' to the audit committee (d2_056's key) |
+| csoe_d2_018 | csoe_d2_056 | d2_018 CE: the report covers critical policies, alternatives 'and other material written communications' (d2_056's key) |
+| csoe_d2_026 | csoe_d2_047 | d2_026 CE, WA and tip 2: Section 106(f) lets staff accept production through foreign counterparts (d2_047's key) |
+| csoe_d5_012 | csoe_d5_045 | d5_045 WD: the 2017 update has five components and 20 principles (d5_012's key); drop if the WD edit is applied |
+| csoe_d5_031 | csoe_d5_052 | d5_031 CE places analyzing business context in strategy and objective-setting (d5_052's key) |
+| csoe_d5_020 | csoe_d5_051 | d5_020 CE and exam cue: management's report must always state whether ICFR is effective (d5_051's key) |
+| csoe_d1_041 | csoe_d4_021 | d1_041 WB and tip 1: Item 308(a) carries out Section 404(a)'s rules (d4_021's key); d4_021's exam cue teaches d1_041's statute-versus-rule test |
+| csoe_d1_042 | csoe_d2_043 | d1_042 CE and WB: the SEC reviews Board sanctions under Section 107(c), half of d2_043's key |
+| csoe_d2_017 | csoe_d2_058 | d2_058 WB: the five-year limit binds the partners who lead or review the audit (d2_017's key) |
+| csoe_d4_045 | csoe_d4_046 | d4_046 CE: exchange listing rules went to the SEC under Exchange Act Section 19(b) (d4_045's process) |
+| csoe_d5_004 | csoe_d5_053 | d5_053 KC and option A: the 2013 update's 17 principles (part of d5_004's key) |
+| csoe_d5_045 | csoe_d5_046 | both test cube faces; d5_046 WD and d5_045's exam cue: the third face is the entity's structure |
+| csoe_d3_057 | csoe_d3_058 | d3_057 WB: Regulation G covers calls as well as releases, which rules out d3_058's option C (partial) |

@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "comment": "Original KaiSip CSOE practice questions for Domain 3 (Corporate responsibility and financial disclosure), written from the public law (the Sarbanes-Oxley Act, the U.S. Code and SEC rules and releases) and KaiSip's own notes (data/csoe/notes/d3.json). No SOXCPA material was used. Not affiliated with or endorsed by the Sarbanes Oxley Compliance Professionals Association (SOXCPA). Schema: docs/content/QUESTION_SCHEMA.md; writing rules: docs/content/EXAM_STYLE_V2.md and .claude/agents/csoe-standards-auditor.md. Pilot csoe_d3_001 to csoe_d3_020, 31 Oct 2026. Batch 2 csoe_d3_021 to csoe_d3_040, 31 Oct 2026.",
+    "comment": "Original KaiSip CSOE practice questions for Domain 3 (Corporate responsibility and financial disclosure), written from the public law (the Sarbanes-Oxley Act, the U.S. Code and SEC rules and releases) and KaiSip's own notes (data/csoe/notes/d3.json). No SOXCPA material was used. Not affiliated with or endorsed by the Sarbanes Oxley Compliance Professionals Association (SOXCPA). Schema: docs/content/QUESTION_SCHEMA.md; writing rules: docs/content/EXAM_STYLE_V2.md and .claude/agents/csoe-standards-auditor.md. Pilot csoe_d3_001 to csoe_d3_020, 31 Oct 2026. Batch 2 csoe_d3_021 to csoe_d3_040, 31 Oct 2026. Batch 3 csoe_d3_041 to csoe_d3_064, 31 Oct 2026.",
     "schema_version": 1
   },
   "domain": 3,
@@ -1445,6 +1445,870 @@
         "Section 407"
       ],
       "_provenance": "Authored from concept: KaiSip notes 3B3.2 and 17 CFR 229.407(d)(5)(iv), opened 31 Oct 2026, CSOE batch 2. Original scenario written for KaiSip from the public law; no SOXCPA material.",
+      "style_version": 2
+    },
+    {
+      "id": "csoe_d3_041",
+      "domain": 3,
+      "subtopic": "3A1 Audit committees. Large shareholder on the committee",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "Director Mara Ellis owns 8% of Kestrel Labs' voting stock, is not an executive officer and takes only board fees. Under Rule 10A-3, may the board seat Mara on the audit committee?",
+      "options": {
+        "A": "No, because any holder of over 5% is an affiliated person",
+        "B": "Yes, since a holder at this level is deemed not to control",
+        "C": "No, unless shareholders approve the seat at the next annual meeting",
+        "D": "Yes, but as a non-voting observer, not as a full member"
+      },
+      "correct": "B",
+      "key_concept": "Rule 10A-3 deems a holder of no more than 10% of any voting class who is not an executive officer not to control the issuer.",
+      "pre_read": "Check the director's stake and role against the rule's definition of an affiliated person before weighing fees.",
+      "correct_explanation": "Rule 10A-3(e)(1)(ii) is a safe harbor: a person who owns no more than 10% of any class of the issuer's voting equity and is not an executive officer is deemed not to control it, so Mara is not an affiliated person. With no consulting or advisory fee, Mara meets the independence test. Option D describes an observer exemption open only to some foreign private issuers' affiliates.",
+      "wrong_explanations": {
+        "D": "Closest choice: Rule 10A-3 does allow non-voting affiliate observers, but only on a foreign private issuer's committee. Mara is not an affiliate, so full membership is allowed.",
+        "A": "Tempting because 5% is a familiar ownership line. But Rule 10A-3's safe harbor turns on more than 10% of a voting class, and Mara holds 8%.",
+        "C": "Tempting because shareholders elect directors. But Rule 10A-3 sets the independence test itself and adds no shareholder approval for a committee seat."
+      },
+      "tips": [
+        "Eliminate: A and C. Rule 10A-3's safe harbor sits at 10% of a voting class, not 5%, and the rule adds no shareholder vote for a committee seat.",
+        "Final two: B beats D because Mara falls inside the control safe harbor, so full membership is allowed; observer status is a foreign private issuer exemption for actual affiliates.",
+        "Exam cue: a committee candidate holding 10% or less of each voting class, and not an executive officer, is deemed not to control the issuer."
+      ],
+      "framework_ref": "17 CFR 240.10A-3(e)(1) (Definition of affiliate and the control safe harbor); 17 CFR 240.10A-3(b)(1) (Audit committee member independence)",
+      "related_concepts": [
+        "Affiliated person",
+        "Control safe harbor",
+        "Audit committee independence"
+      ],
+      "_provenance": "Authored from concept: KaiSip notes 3A1.4 and 17 CFR 240.10A-3(e)(1)(ii) and (b)(1)(iv)(D), opened 31 Oct 2026, CSOE batch 3. Original scenario written for KaiSip from the public law; no SOXCPA material.",
+      "style_version": 2
+    },
+    {
+      "id": "csoe_d3_042",
+      "domain": 3,
+      "subtopic": "3A1 Audit committees. Independence lost mid-term",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "For reasons outside their reasonable control, a committee member of Fenwood Tools loses independence. If Fenwood's exchange applies the cure period Rule 10A-3(a)(3) permits, how long may the member stay on the committee?",
+      "options": {
+        "A": "Until the end of the board term the member now serves",
+        "B": "None; the member must leave the committee at once",
+        "C": "Until the later of the next annual meeting or one year",
+        "D": "Until the earlier of the next annual meeting or one year"
+      },
+      "correct": "D",
+      "key_concept": "Exchange rules may let a member who loses independence through no fault stay until the earlier of the next annual meeting or one year.",
+      "pre_read": "Note why the member lost independence, then recall which of the rule's two end dates controls.",
+      "correct_explanation": "Rule 10A-3(a)(3) lets exchange rules keep a member who stops being independent for reasons outside their reasonable control, with the issuer's notice to the exchange, until the earlier of the next annual shareholders meeting or one year from the event. The issuer must also disclose that reliance under Rule 10A-3(d). Option C reverses the limit: the earlier date, not the later, ends the stay.",
+      "wrong_explanations": {
+        "C": "Closest choice: both dates come from the rule. But Rule 10A-3(a)(3) ends the stay at whichever comes first, not whichever comes last.",
+        "A": "Tempting because directors serve set terms. But the grace period is tied to the next annual meeting or one year, not to the member's board term.",
+        "B": "Tempting because independence is a listing condition. But Rule 10A-3(a)(3) lets exchanges allow a short stay when the cause was outside the member's control."
+      },
+      "tips": [
+        "Eliminate: A and B. The rule ties the grace period to the annual meeting or one year, not to a board term, and it allows a stay rather than instant removal.",
+        "Final two: D beats C because Rule 10A-3(a)(3) ends the stay at the earlier of the next annual meeting or one year after the event.",
+        "Exam cue: when a member loses independence for reasons outside their control, look for notice to the exchange and the earlier of two end dates."
+      ],
+      "framework_ref": "17 CFR 240.10A-3(a) (Listing prohibition, opportunity to cure and notice of noncompliance); 17 CFR 240.10A-3(d) (Disclosure of reliance on an exemption); Sarbanes-Oxley Act of 2002 Section 301 (Public company audit committees)",
+      "related_concepts": [
+        "Opportunity to cure",
+        "Audit committee independence",
+        "Listing standards"
+      ],
+      "_provenance": "Authored from concept: KaiSip notes 3A1.4 and 17 CFR 240.10A-3(a)(3) and (d), opened 31 Oct 2026, CSOE batch 3. Original scenario written for KaiSip from the public law; no SOXCPA material.",
+      "style_version": 2
+    },
+    {
+      "id": "csoe_d3_043",
+      "domain": 3,
+      "subtopic": "3A1 Audit committees. Reporting a lapse",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "Under Rule 10A-3(a)(4), once an executive officer of a listed issuer learns of material noncompliance with the audit committee requirements, exchange rules must require the issuer to:",
+      "options": {
+        "A": "promptly notify the exchange that lists its securities",
+        "B": "disclose the noncompliance in its next annual report",
+        "C": "report the noncompliance to the SEC's Division of Enforcement",
+        "D": "suspend trading in its listed securities until it is cured"
+      },
+      "correct": "A",
+      "key_concept": "A listed issuer must promptly notify its exchange once an executive officer learns of material noncompliance with the audit committee rules.",
+      "pre_read": "Recall how Rule 10A-3 is enforced, through listing standards, and ask who must hear about a breach.",
+      "correct_explanation": "Rule 10A-3(a)(4) requires exchange rules to make a listed issuer notify the exchange promptly after an executive officer becomes aware of any material noncompliance with the audit committee standards. The exchange then applies its cure procedures under Rule 10A-3(a)(3) before any delisting. Option B confuses this with Rule 10A-3(d), which requires disclosure of reliance on certain exemptions.",
+      "wrong_explanations": {
+        "B": "Closest choice: Rule 10A-3(d) does require disclosure in proxy statements and annual reports. But that covers reliance on exemptions; noncompliance goes promptly to the exchange.",
+        "C": "Tempting because the SEC adopted the rule. But Rule 10A-3 works through listing standards, so the notice goes to the exchange that enforces them.",
+        "D": "Tempting because delisting is the final sanction. But the issuer notifies the exchange and gets a chance to cure; it does not halt its own trading."
+      },
+      "tips": [
+        "Eliminate: C and D. Rule 10A-3 works through exchange listing standards rather than SEC enforcement referrals, and the issuer gets a chance to cure rather than halting trading.",
+        "Final two: A beats B because Rule 10A-3(a)(4) requires prompt notice to the exchange; the proxy and annual report disclosure in Rule 10A-3(d) concerns exemptions.",
+        "Exam cue: audit committee rules are listing conditions, so a lapse is reported to the exchange, which offers a cure before delisting."
+      ],
+      "framework_ref": "17 CFR 240.10A-3(a) (Listing prohibition, opportunity to cure and notice of noncompliance); Sarbanes-Oxley Act of 2002 Section 301 (Public company audit committees)",
+      "related_concepts": [
+        "Listing standards",
+        "Notice of noncompliance",
+        "Opportunity to cure"
+      ],
+      "_provenance": "Authored from concept: KaiSip notes 3A1.4 and 17 CFR 240.10A-3(a)(1), (a)(3) and (a)(4), opened 31 Oct 2026, CSOE batch 3. Original scenario written for KaiSip from the public law; no SOXCPA material.",
+      "style_version": 2
+    },
+    {
+      "id": "csoe_d3_044",
+      "domain": 3,
+      "subtopic": "3A1 Audit committees. Committee at a first listing",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "Brookvale Bio, never before an SEC reporting company, lists in its IPO with a three-member audit committee; one member is independent. Under Rule 10A-3(b)(1)(iv)(A), how long may both others serve while not independent?",
+      "options": {
+        "A": "Up to one year after the registration statement takes effect",
+        "B": "Until the first annual shareholders meeting after listing",
+        "C": "Up to 90 days after the registration statement takes effect",
+        "D": "No time; each must be independent on the listing date"
+      },
+      "correct": "C",
+      "key_concept": "A first-time registrant may have all but one audit committee member non-independent for 90 days, and a minority for one year.",
+      "pre_read": "Count the members who are not independent, then match that number to the phase-in window that allows it.",
+      "correct_explanation": "Rule 10A-3(b)(1)(iv)(A) phases a first-time registrant into the rule: all but one audit committee member may be non-independent for 90 days after the registration statement takes effect, and a minority for one year. With three members, a minority is one, so both non-independent members may serve together only for the first 90 days. Option A is the minority's longer window.",
+      "wrong_explanations": {
+        "A": "Closest choice: one year is in the rule, but only for a minority of members. Two of three is a majority, so both may stay only 90 days.",
+        "B": "Tempting because many governance deadlines run to the annual meeting. But the phase-in runs from the registration statement's effective date.",
+        "D": "Tempting because independence is a listing condition. But the rule gives a company listing for the first time a phase-in, starting with one independent member."
+      },
+      "tips": [
+        "Eliminate: B and D. The phase-in runs from the registration statement's effective date, not an annual meeting, and the rule does give new registrants a phase-in.",
+        "Final two: C beats A because all but one member may be non-independent for 90 days; the one-year window covers only a minority, here one of three.",
+        "Exam cue: a new listing phases in: one independent member at listing, a majority after 90 days, all independent after one year."
+      ],
+      "framework_ref": "17 CFR 240.10A-3(b)(1) (Audit committee member independence); Sarbanes-Oxley Act of 2002 Section 301 (Public company audit committees)",
+      "related_concepts": [
+        "Phase-in for new listings",
+        "Audit committee independence",
+        "Initial public offering"
+      ],
+      "_provenance": "Authored from concept: KaiSip notes 3A1.1 and 17 CFR 240.10A-3(b)(1)(iv)(A), opened 31 Oct 2026, CSOE batch 3. Original scenario written for KaiSip from the public law; no SOXCPA material.",
+      "style_version": 2
+    },
+    {
+      "id": "csoe_d3_045",
+      "domain": 3,
+      "subtopic": "3A3 Audit influence, forfeiture, bars and blackout periods. Pressure on the audit partner",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "A CFO tells the audit partner the firm will lose its tax work unless a disputed reserve issue stays out of its report to the audit committee. Under Rule 13b2-2(b), which is MOST accurate?",
+      "options": {
+        "A": "Lawful, because the auditor alone decides what its report says",
+        "B": "Barred whenever the reserve later proves to be misstated",
+        "C": "Barred if the CFO should have known it could materially mislead",
+        "D": "Lawful unless the CFO intended to defraud the auditor"
+      },
+      "correct": "C",
+      "key_concept": "Rule 13b2-2(b) bars pressure on the auditor when the officer knew or should have known it could make the statements materially misleading.",
+      "pre_read": "Separate the state of mind the rule requires from the outcome, and ask whether the pressure must succeed.",
+      "correct_explanation": "Rule 13b2-2(b)(1), adopted to carry out Section 303, bars an officer from coercing or manipulating the auditor when the officer knew or should have known the action, if successful, could make the financial statements materially misleading. Rule 13b2-2(b)(2)(iv) lists pressing an auditor not to communicate matters to the audit committee. Option D demands intent to defraud, a higher bar than the rule sets.",
+      "wrong_explanations": {
+        "D": "Closest choice: Section 303 speaks of fraudulent influence. But the SEC's Rule 13b2-2(b) reaches an officer who knew or should have known, not just one who meant to defraud.",
+        "A": "Tempting because the auditor controls its own report. But Rule 13b2-2(b)(2)(iv) treats pressing an auditor not to tell the audit committee as improper influence.",
+        "B": "Tempting because harm makes the case stronger. But the rule asks whether the pressure, if successful, could mislead, so no misstatement has to occur."
+      },
+      "tips": [
+        "Eliminate: A and B. Rule 13b2-2(b)(2)(iv) covers pressure to keep matters from the audit committee, and the test is what the pressure could cause if it worked.",
+        "Final two: C beats D because Rule 13b2-2(b)(1) uses a knew-or-should-have-known standard, so proof of intent to defraud is not required.",
+        "Exam cue: pressure on the auditor is judged by what the officer knew or should have known and what could result, not by the outcome."
+      ],
+      "framework_ref": "17 CFR 240.13b2-2(b) (Improper influence on the conduct of audits); Sarbanes-Oxley Act of 2002 Section 303 (Improper influence on conduct of audits)",
+      "related_concepts": [
+        "Improper influence",
+        "Rule 13b2-2",
+        "Audit committee communications"
+      ],
+      "_provenance": "Authored from concept: KaiSip notes 3A3.1 and 17 CFR 240.13b2-2(b), opened 31 Oct 2026, CSOE batch 3. Original scenario written for KaiSip from the public law; no SOXCPA material.",
+      "style_version": 2
+    },
+    {
+      "id": "csoe_d3_046",
+      "domain": 3,
+      "subtopic": "3A3 Audit influence, forfeiture, bars and blackout periods. Whose misconduct triggers repayment",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "Halford Mills restates because its controller falsified revenue; the CEO and CFO took no part. Under Section 304, who must repay bonuses received in the 12 months after the misstated filing?",
+      "options": {
+        "A": "The CEO and CFO, even though neither was involved",
+        "B": "The controller alone, as the person who committed the misconduct",
+        "C": "No one, because the CEO and CFO committed no misconduct",
+        "D": "Every executive officer who received incentive pay that year"
+      },
+      "correct": "A",
+      "key_concept": "Section 304 reimbursement falls on the CEO and CFO when misconduct causes a restatement, whether or not they took part in it.",
+      "pre_read": "Ask whose misconduct the statute requires, and which officers it names to repay.",
+      "correct_explanation": "Section 304 applies when the issuer must restate because of material noncompliance resulting from misconduct; the statute then makes the CEO and CFO reimburse the issuer. It does not require that those two officers committed the misconduct, and the SEC describes the trigger as issuer misconduct. Option C adds a personal-fault condition the text does not contain.",
+      "wrong_explanations": {
+        "C": "Closest choice: many clawbacks follow personal fault. But Section 304 turns on a restatement caused by misconduct at the issuer, not on the CEO's or CFO's own conduct.",
+        "B": "Tempting because the controller caused the restatement. But Section 304 names the chief executive officer and chief financial officer as the people who reimburse.",
+        "D": "Tempting because some clawback rules reach more officers. But Section 304 names the CEO and CFO, and no one else."
+      },
+      "tips": [
+        "Eliminate: B and D. Section 304 names the CEO and CFO as the officers who repay, not the wrongdoer as such and not every executive officer.",
+        "Final two: A beats C because Section 304 requires a restatement caused by misconduct, without requiring that the CEO or CFO committed it.",
+        "Exam cue: in Section 304, look for misconduct behind the restatement; the CEO and CFO repay even when the misconduct was someone else's."
+      ],
+      "framework_ref": "Sarbanes-Oxley Act of 2002 Section 304 (Forfeiture of certain bonuses and profits); SEC Release No. 33-11126 Section IV.A (Baseline: Section 304 recovery triggered by issuer misconduct)",
+      "related_concepts": [
+        "Forfeiture",
+        "Issuer misconduct",
+        "Accounting restatement"
+      ],
+      "_provenance": "Authored from concept: KaiSip notes 3A3.2 and 15 U.S.C. 7243(a) and SEC Release No. 33-11126 Section IV.A, opened 31 Oct 2026, CSOE batch 3. Original scenario written for KaiSip from the public law; no SOXCPA material.",
+      "style_version": 2
+    },
+    {
+      "id": "csoe_d3_047",
+      "domain": 3,
+      "subtopic": "3A3 Audit influence, forfeiture, bars and blackout periods. Exemption from repayment",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "Under Section 304(b), the power to exempt an officer from the duty in Section 304(a) to reimburse the issuer after a misconduct restatement belongs to:",
+      "options": {
+        "A": "the board's compensation committee, acting for the issuer",
+        "B": "the audit committee, after it reviews the restatement",
+        "C": "a federal court, in the action to recover the amounts",
+        "D": "the Securities and Exchange Commission itself"
+      },
+      "correct": "D",
+      "key_concept": "Section 304(b) gives the SEC the power to exempt any person from the Section 304(a) reimbursement duty.",
+      "pre_read": "Ask which body the statute itself names when it allows exceptions to the duty.",
+      "correct_explanation": "Section 304(b) lets the Commission exempt any person from the reimbursement duty in Section 304(a), as it deems necessary and appropriate. The power sits with the SEC, the agency that enforces the section, not with the issuer's board or its committees. Option C is tempting because courts hear recovery actions, but the statute gives the exemption power to the SEC.",
+      "wrong_explanations": {
+        "C": "Closest choice: a court may decide a Section 304 case the SEC brings. But the power to grant an exemption is given to the Commission itself.",
+        "A": "Tempting because compensation committees set and recover pay. But a company body cannot waive a federal statute; Section 304(b) gives that power to the SEC.",
+        "B": "Tempting because the audit committee oversees restatements. But it has no power to excuse officers from a federal reimbursement duty."
+      },
+      "tips": [
+        "Eliminate: A and B. Neither board committee can excuse an officer from a duty that a federal statute imposes.",
+        "Final two: D beats C because Section 304(b) gives the exemption power to the SEC; courts hear cases but do not hold that power.",
+        "Exam cue: a power to exempt someone from a SOX duty sits with a public body named in the Act; a company's board cannot waive federal law."
+      ],
+      "framework_ref": "Sarbanes-Oxley Act of 2002 Section 304 (Forfeiture of certain bonuses and profits)",
+      "related_concepts": [
+        "Forfeiture",
+        "SEC exemptive authority",
+        "Section 304"
+      ],
+      "_provenance": "Authored from concept: KaiSip notes 3A3.2 and 15 U.S.C. 7243(b), opened 31 Oct 2026, CSOE batch 3. Original scenario written for KaiSip from the public law; no SOXCPA material.",
+      "style_version": 2
+    },
+    {
+      "id": "csoe_d3_048",
+      "domain": 3,
+      "subtopic": "3A3 Audit influence, forfeiture, bars and blackout periods. Relief a court may order",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "Under Exchange Act Section 21(d)(5), added by Section 305(b), when the SEC sues a former CFO under the securities laws, a federal court may grant:",
+      "options": {
+        "A": "the remedies a securities statute lists by name, and no others",
+        "B": "any equitable relief appropriate or necessary for investors",
+        "C": "criminal fines and prison terms for willful violations",
+        "D": "money damages paid into the SEC's own operating budget"
+      },
+      "correct": "B",
+      "key_concept": "Section 305(b) lets federal courts grant any equitable relief appropriate or necessary for investors in SEC actions.",
+      "pre_read": "Ask whether the power is limited to named remedies or stated broadly, and whether the case is civil or criminal.",
+      "correct_explanation": "Section 305(b) added Exchange Act Section 21(d)(5): in any action or proceeding the SEC brings under the securities laws, the SEC may seek, and any federal court may grant, any equitable relief that may be appropriate or necessary for the benefit of investors. The power is open-ended rather than limited to remedies a statute lists, which is why option A fails.",
+      "wrong_explanations": {
+        "A": "Closest choice: many remedies are listed by name, such as officer bars. But Section 21(d)(5) adds a general power to grant any equitable relief that benefits investors.",
+        "C": "Tempting because fraud can be a crime. But SEC actions are civil; criminal fines and prison come from prosecutions the Justice Department brings.",
+        "D": "Tempting because the SEC collects money in its cases. But equitable relief serves investors, and nothing in the provision funds the SEC's operating budget."
+      },
+      "tips": [
+        "Eliminate: C and D. SEC cases are civil, so criminal sentences come from prosecutors, and the relief serves investors, not the SEC's budget.",
+        "Final two: B beats A because Section 21(d)(5) lets courts grant any equitable relief appropriate or necessary for investors, beyond the remedies listed by name.",
+        "Exam cue: the phrase any equitable relief for the benefit of investors marks Section 305(b); it widens what courts may order in SEC civil cases."
+      ],
+      "framework_ref": "Sarbanes-Oxley Act of 2002 Section 305(b) (Equitable relief); 15 U.S.C. 78u(d)(5) (Equitable relief)",
+      "related_concepts": [
+        "Equitable relief",
+        "SEC civil actions",
+        "Section 305"
+      ],
+      "_provenance": "Authored from concept: KaiSip notes 3A3.3 and Section 305(b) and 15 U.S.C. 78u(d)(5), opened 31 Oct 2026, CSOE batch 3. Original scenario written for KaiSip from the public law; no SOXCPA material.",
+      "style_version": 2
+    },
+    {
+      "id": "csoe_d3_049",
+      "domain": 3,
+      "subtopic": "3A3 Audit influence, forfeiture, bars and blackout periods. Barring a fraud violator",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "The SEC wants to bar a CFO who committed Rule 10b-5 fraud from serving as a public company officer, through its own cease-and-desist proceeding. Which provision MOST directly allows this?",
+      "options": {
+        "A": "Section 1105, which lets the SEC itself bar officers and directors",
+        "B": "Section 305, which lets a federal court bar officers and directors",
+        "C": "Section 304, which makes the CEO and CFO repay their bonuses",
+        "D": "Section 306, which bars insider trades during pension blackouts"
+      },
+      "correct": "A",
+      "key_concept": "Section 1105 lets the SEC itself bar a securities fraud violator from serving as an officer or director in a cease-and-desist proceeding.",
+      "pre_read": "Note who orders the bar and in what kind of proceeding before matching a section.",
+      "correct_explanation": "Section 1105 added Exchange Act Section 21C(f), which lets the Commission, in a cease-and-desist proceeding, bar a person who violated Section 10(b) or its rules from acting as an officer or director of a reporting issuer, permanently or for a set period. Section 305 concerns bars a federal court orders in an SEC lawsuit, so option B misses the administrative route.",
+      "wrong_explanations": {
+        "B": "Closest choice: Section 305 does govern officer and director bars. But those are ordered by a federal court; Section 1105 gives the SEC its own administrative bar.",
+        "C": "Tempting because Section 304 also targets officers. But it recovers CEO and CFO pay after a misconduct restatement; it does not bar anyone from office.",
+        "D": "Tempting because Section 306 also restricts insiders. But it limits trading during pension blackouts and does not remove anyone from office."
+      },
+      "tips": [
+        "Eliminate: C and D. Section 304 recovers pay and Section 306 limits blackout trading; neither removes a person from office.",
+        "Final two: A beats B because Section 1105 lets the SEC bar officers in its own cease-and-desist proceeding, while Section 305's bars come from a court.",
+        "Exam cue: a bar a court orders points to Section 305; a bar the SEC orders itself, in a cease-and-desist proceeding, points to Section 1105."
+      ],
+      "framework_ref": "Sarbanes-Oxley Act of 2002 Section 1105 (Authority of the Commission to prohibit persons from serving as officers or directors); 15 U.S.C. 78u-3(f) (Authority of the Commission to prohibit persons from serving as officers or directors)",
+      "related_concepts": [
+        "Officer and director bar",
+        "Cease-and-desist proceeding",
+        "Section 1105"
+      ],
+      "_provenance": "Authored from concept: KaiSip notes 3A3.3 and Section 1105 and 15 U.S.C. 78u-3(f), opened 31 Oct 2026, CSOE batch 3. Original scenario written for KaiSip from the public law; no SOXCPA material.",
+      "style_version": 2
+    },
+    {
+      "id": "csoe_d3_050",
+      "domain": 3,
+      "subtopic": "3A3 Audit influence, forfeiture, bars and blackout periods. Shares bought before joining",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "During a qualifying pension blackout, an executive officer sells company shares bought on the open market years before joining. Under Regulation BTR, when is the sale outside Section 306(a)'s ban?",
+      "options": {
+        "A": "In no case; every sale in a blackout is treated as covered",
+        "B": "Whenever the officer states the shares were bought before joining",
+        "C": "If the officer specifically identifies them, as in tax filings",
+        "D": "If the board approves the sale before the blackout begins"
+      },
+      "correct": "C",
+      "key_concept": "During a blackout, an insider's sale is presumed to involve service-acquired stock unless specific identification, used consistently, shows otherwise.",
+      "pre_read": "Ask what the rule presumes about a blackout sale and what proof the insider needs to rebut it.",
+      "correct_explanation": "Under 17 CFR 245.101(b), any sale during a blackout is treated as involving stock acquired in connection with service, to the extent of the insider's pecuniary interest, unless the insider establishes otherwise by specific identification of the securities and shows the same identification was used for related purposes such as tax reporting. A bare statement, as in option B, is not enough.",
+      "wrong_explanations": {
+        "B": "Closest choice: shares bought before joining can fall outside the ban. But the officer must prove it by specific identification, used consistently, not by a statement.",
+        "A": "Tempting because the rule presumes a covered sale. But the presumption can be rebutted by specifically identifying shares acquired outside the officer's service.",
+        "D": "Tempting because boards pre-clear insider trades. But board approval does not lift Section 306(a); the test is where the shares came from."
+      },
+      "tips": [
+        "Eliminate: A and D. The presumption that a blackout sale is covered can be rebutted, and board approval cannot lift the statutory ban.",
+        "Final two: C beats B because Regulation BTR requires specific identification of the shares, used the same way for tax and reporting, not a simple statement.",
+        "Exam cue: in a blackout, an insider's sale is presumed to be of service-acquired stock; specific identification of other shares rebuts it."
+      ],
+      "framework_ref": "17 CFR 245.101(b) (Sales presumed to involve stock acquired through service); Sarbanes-Oxley Act of 2002 Section 306(a) (Insider trades during pension fund blackout periods)",
+      "related_concepts": [
+        "Blackout period",
+        "Regulation BTR",
+        "Specific identification"
+      ],
+      "_provenance": "Authored from concept: KaiSip notes 3A3.4 and 17 CFR 245.101(b) and 245.100(a), opened 31 Oct 2026, CSOE batch 3. Original scenario written for KaiSip from the public law; no SOXCPA material.",
+      "style_version": 2
+    },
+    {
+      "id": "csoe_d3_051",
+      "domain": 3,
+      "subtopic": "3A4 Attorneys and fair funds. Junior lawyer under supervision",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A junior associate at an outside law firm, working under a partner on a client's Form 10-K, finds evidence of a material violation. Under the SEC's Section 307 rules, which is MOST accurate?",
+      "options": {
+        "A": "The associate has no duty, since the partner directs the work",
+        "B": "The associate must report the evidence directly to the SEC",
+        "C": "The associate must also make sure the partner passes it up",
+        "D": "The associate meets the duty by reporting to the partner"
+      },
+      "correct": "D",
+      "key_concept": "A subordinate attorney meets the Section 307 reporting duty by reporting evidence of a material violation to the supervising attorney.",
+      "pre_read": "Note who supervises the associate's work and what the rules ask of a lawyer working under supervision.",
+      "correct_explanation": "17 CFR 205.5 treats a lawyer working under another lawyer's supervision as a subordinate attorney. The subordinate must comply despite acting under direction, and complies with 205.3 by reporting the evidence to the supervising attorney, who then carries the reporting duty under 205.4(c). If the associate reasonably believes the partner failed to act, 205.5(d) permits, but does not require, further steps.",
+      "wrong_explanations": {
+        "C": "Closest choice: the associate may go further if the partner fails to comply. But 205.5(d) makes that optional; the report to the partner already meets the duty.",
+        "A": "Tempting because the partner runs the matter. But 205.5(b) says a subordinate attorney must comply even when acting under another lawyer's direction.",
+        "B": "Tempting because the SEC enforces the rules. But the duty runs up the ladder inside the client, starting here with the supervising attorney."
+      },
+      "tips": [
+        "Eliminate: A and B. Rule 205.5(b) keeps the duty on a supervised lawyer, and the Section 307 duty runs inside the client, not to the SEC.",
+        "Final two: D beats C because a subordinate attorney complies by reporting to the supervising attorney; going further is permitted, not required.",
+        "Exam cue: a supervised lawyer's report to the supervisor meets their duty, and the supervisor then owns the up-the-ladder report."
+      ],
+      "framework_ref": "17 CFR 205.5 (Responsibilities of a subordinate attorney); Sarbanes-Oxley Act of 2002 Section 307 (Rules of professional responsibility for attorneys)",
+      "related_concepts": [
+        "Subordinate attorney",
+        "Supervisory attorney",
+        "Up-the-ladder reporting"
+      ],
+      "_provenance": "Authored from concept: KaiSip notes 3A4.3 and 17 CFR 205.4 and 205.5, opened 31 Oct 2026, CSOE batch 3. Original scenario written for KaiSip from the public law; no SOXCPA material.",
+      "style_version": 2
+    },
+    {
+      "id": "csoe_d3_052",
+      "domain": 3,
+      "subtopic": "3A4 Attorneys and fair funds. After the board fails to act",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "An outside lawyer reported evidence up the ladder, yet the board lets a revenue fraud continue, and investors face substantial losses. Under the SEC's Section 307 rules, what may the lawyer do?",
+      "options": {
+        "A": "Nothing further, since privilege bars any disclosure outside the client",
+        "B": "Disclose client confidences to the SEC as reasonably necessary",
+        "C": "Report it to the SEC, as required once the board fails",
+        "D": "Announce the fraud publicly in a statement to investors"
+      },
+      "correct": "B",
+      "key_concept": "A lawyer may, but need not, reveal client confidences to the SEC as reasonably necessary to prevent a material violation causing substantial injury.",
+      "pre_read": "Separate what the attorney rules require from what they only permit, and notice who may receive the information.",
+      "correct_explanation": "17 CFR 205.3(d)(2) lets a lawyer appearing and practicing before the SEC for an issuer reveal confidential information to the Commission, without the issuer's consent, to the extent the lawyer reasonably believes necessary to prevent a material violation likely to cause substantial financial injury to the issuer or investors. It is a permission, not a duty, which is why option C fails.",
+      "wrong_explanations": {
+        "C": "Closest choice: the SEC is the right recipient. But 205.3(d)(2) says the lawyer may reveal information; no rule requires a report to the SEC.",
+        "A": "Tempting because lawyers guard client confidences. But 205.3(d)(2) expressly permits disclosure to the SEC to prevent a material violation likely to cause substantial injury.",
+        "D": "Tempting as a way to warn investors. But the permission covers disclosure to the SEC, not public statements."
+      },
+      "tips": [
+        "Eliminate: A and D. Rule 205.3(d)(2) permits disclosure despite confidentiality, and the permitted recipient is the SEC, not the public.",
+        "Final two: B beats C because the rule lets the lawyer reveal information to the SEC but never requires it.",
+        "Exam cue: in the Section 307 rules, reporting up the ladder is mandatory; going to the SEC with confidences is optional and limited."
+      ],
+      "framework_ref": "17 CFR 205.3(d)(2) (Disclosure of confidential information to the Commission); Sarbanes-Oxley Act of 2002 Section 307 (Rules of professional responsibility for attorneys)",
+      "related_concepts": [
+        "Issuer confidences",
+        "Up-the-ladder reporting",
+        "Material violation"
+      ],
+      "_provenance": "Authored from concept: KaiSip notes 3A4.3 and 17 CFR 205.3(d)(2), opened 31 Oct 2026, CSOE batch 3. Original scenario written for KaiSip from the public law; no SOXCPA material.",
+      "style_version": 2
+    },
+    {
+      "id": "csoe_d3_053",
+      "domain": 3,
+      "subtopic": "3A4 Attorneys and fair funds. Donations to a victims' fund",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "The board of a charitable foundation offers money to an SEC fair fund set up for victims of an accounting fraud. Under Section 308(b), what may the SEC do with the gift?",
+      "options": {
+        "A": "Refuse it, since fair funds may hold enforcement money alone",
+        "B": "Accept it, but send it to the U.S. Treasury",
+        "C": "Accept it and add it to the fund for the victims",
+        "D": "Refuse it unless a court first orders disgorgement"
+      },
+      "correct": "C",
+      "key_concept": "Section 308(b) lets the SEC accept gifts, bequests and devises for a fair fund and allocate them to the victims.",
+      "pre_read": "Ask what the fair funds section says about where a fund's money may come from and where it goes.",
+      "correct_explanation": "Section 308(b) authorizes the SEC to accept, hold, administer and use gifts, bequests and devises of property, real or personal, for a disgorgement fund or other fund for victims. Gifts of money are deposited in the fund and allocated to the victims with the rest of it. Option A overlooks this express power to take donations alongside enforcement money.",
+      "wrong_explanations": {
+        "A": "Closest choice: fair funds are built mainly from enforcement money. But Section 308(b) expressly lets the SEC accept gifts and bequests for them as well.",
+        "B": "Tempting because federal receipts often go to the Treasury. But Section 308(b) says gifts are deposited in the fund and allocated to victims.",
+        "D": "Tempting because fair funds began with disgorgement. But Section 308(b) needs no court order before the SEC accepts a gift for a fund."
+      },
+      "tips": [
+        "Eliminate: B and D. Section 308(b) deposits gifts in the fund itself, not the Treasury, and needs no court order to accept them.",
+        "Final two: C beats A because Section 308(b) authorizes gifts, bequests and devises for fair funds, beyond enforcement money.",
+        "Exam cue: fair funds exist to repay harmed investors, so money a fund takes in, donations included, goes to those investors."
+      ],
+      "framework_ref": "15 U.S.C. 7246(b) (Acceptance of additional donations); Dodd-Frank Act Section 929B (Fair Fund amendments)",
+      "related_concepts": [
+        "Fair fund",
+        "Gifts and bequests",
+        "Victims of securities violations"
+      ],
+      "_provenance": "Authored from concept: KaiSip notes 3A4.2 and 15 U.S.C. 7246(b), opened 31 Oct 2026, CSOE batch 3. Original scenario written for KaiSip from the public law; no SOXCPA material.",
+      "style_version": 2
+    },
+    {
+      "id": "csoe_d3_054",
+      "domain": 3,
+      "subtopic": "3B1 Periodic report disclosures and insider dealings. Mortgage from a bank subsidiary",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "Harborview Bancorp, a listed bank holding company, wants its FDIC-insured bank to make a home mortgage to a director under the Federal Reserve's insider lending limits. Under Section 402, is the loan allowed?",
+      "options": {
+        "A": "Yes, because an insured bank's regulated loans are carved out",
+        "B": "No, because Section 402 reaches credit made through any subsidiary",
+        "C": "Yes, if the full board approves it with the director abstaining",
+        "D": "No, unless the director repays it before the next annual report"
+      },
+      "correct": "A",
+      "key_concept": "Section 402's loan ban does not apply to an insured depository institution's loans that are subject to federal insider lending restrictions.",
+      "pre_read": "Identify who makes the loan and which banking rules already govern it before applying the loan ban.",
+      "correct_explanation": "Section 402 added Exchange Act Section 13(k), which bars personal loans to directors and executive officers, including through a subsidiary. Section 13(k)(3) carves out loans made or maintained by an insured depository institution that are subject to the insider lending restrictions of 12 U.S.C. 375b. Harborview's FDIC-insured bank fits that carve-out, so option B's subsidiary point does not decide the case.",
+      "wrong_explanations": {
+        "B": "Closest choice: Section 402 does reach loans through subsidiaries. But Section 13(k)(3) excludes an insured bank's loans that are subject to federal insider lending rules.",
+        "C": "Tempting because board approval governs many related-party deals. But approval cannot lift Section 402; this loan is allowed because of the insured-bank carve-out.",
+        "D": "Tempting as a short-term workaround. But Section 402 has no repayment window; the loan stands or falls on the insured-bank carve-out."
+      },
+      "tips": [
+        "Eliminate: C and D. Board approval cannot lift Section 402's ban, and the section has no repay-before-reporting exception.",
+        "Final two: A beats B because Section 13(k)(3) excludes insured depository institutions' loans subject to federal insider lending limits, even inside a holding company.",
+        "Exam cue: an insider loan by an FDIC-insured bank under federal insider lending rules sits outside Section 402; most other insider loans do not."
+      ],
+      "framework_ref": "15 U.S.C. 78m(k)(3) (Rule of construction for certain loans); Sarbanes-Oxley Act of 2002 Section 402(a) (Prohibition on personal loans to executives)",
+      "related_concepts": [
+        "Personal loan ban",
+        "Insured depository institution",
+        "Insider lending restrictions"
+      ],
+      "_provenance": "Authored from concept: KaiSip notes 3B1.2 and 15 U.S.C. 78m(k)(3), opened 31 Oct 2026, CSOE batch 3. Original scenario written for KaiSip from the public law; no SOXCPA material.",
+      "style_version": 2
+    },
+    {
+      "id": "csoe_d3_055",
+      "domain": 3,
+      "subtopic": "3B1 Periodic report disclosures and insider dealings. Insiders of a foreign private issuer",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "Valdris SA is a Brazilian foreign private issuer with Section 12(b) shares, and no SEC exemptive order covers Brazil. Under Section 16(a) and the SEC's rules today, which insiders must file?",
+      "options": {
+        "A": "None, because foreign private issuers stay exempt from Section 16",
+        "B": "Its directors, officers and holders of more than 10 percent",
+        "C": "Its CEO and CFO alone, as signers of its certifications",
+        "D": "Its directors and officers, but not its 10 percent holders"
+      },
+      "correct": "D",
+      "key_concept": "Since 18 Mar 2026, foreign private issuer directors and officers file Section 16(a) reports unless exempted by SEC order; 10 percent owners do not.",
+      "pre_read": "Check the issuer's status, any exemptive order, and which kinds of insiders the amended filing duty names.",
+      "correct_explanation": "The Holding Foreign Insiders Accountable Act amended Section 16(a)(1) to cover every director and officer of a foreign private issuer with Section 12-registered equity, from 18 Mar 2026, unless an SEC order exempts them. Rule 16a-2 keeps the Section 16(a) rules from applying to such an issuer's more-than-10-percent owners. Option B applies the domestic filer list.",
+      "wrong_explanations": {
+        "B": "Closest choice: that is the list for a domestic issuer. For a foreign private issuer, Rule 16a-2 excludes more-than-10-percent owners from the Section 16(a) rules.",
+        "A": "Tempting because foreign private issuers long had a Section 16 exemption. Since 18 Mar 2026, under the Holding Foreign Insiders Accountable Act, their directors and officers file Section 16(a) reports.",
+        "C": "Tempting because the CEO and CFO sign certifications. But Section 16(a) reaches every director and officer of the issuer, not just the certifying officers."
+      },
+      "tips": [
+        "Eliminate: A and C. The foreign private issuer exemption from Section 16(a) ended for directors and officers, and the duty reaches all of them, not two officers.",
+        "Final two: D beats B because Rule 16a-2 keeps the Section 16(a) rules away from a foreign private issuer's more-than-10-percent owners.",
+        "Exam cue: for a foreign private issuer, Section 16(a) now covers directors and officers; check for an SEC exemptive order before concluding they must file."
+      ],
+      "framework_ref": "15 U.S.C. 78p(a)(1) (Directors, officers and principal stockholders required to file); 17 CFR 240.16a-2 (Persons and transactions subject to section 16); Sarbanes-Oxley Act of 2002 Section 403(a) (Disclosures of transactions involving management and principal stockholders)",
+      "related_concepts": [
+        "Section 16 report",
+        "Foreign private issuer",
+        "Beneficial owner"
+      ],
+      "_provenance": "Authored from concept: KaiSip notes 3B1.3 and 15 U.S.C. 78p(a)(1), 17 CFR 240.16a-2 and SEC Release No. 34-104931, opened 31 Oct 2026, CSOE batch 3. Original scenario written for KaiSip from the public law; no SOXCPA material.",
+      "style_version": 2
+    },
+    {
+      "id": "csoe_d3_056",
+      "domain": 3,
+      "subtopic": "3B1 Periodic report disclosures and insider dealings. Posting insider reports online",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "Under Rule 16a-3(k), the legal team of a listed company that maintains a corporate website must post each Form 3, 4 or 5 its insiders file:",
+      "options": {
+        "A": "once the SEC staff has reviewed and accepted the form",
+        "B": "by the end of the business day after the form is filed",
+        "C": "as an exhibit to its next quarterly report on Form 10-Q",
+        "D": "by the end of the business day after the insider trades"
+      },
+      "correct": "B",
+      "key_concept": "A company with a website posts each insider's Form 3, 4 or 5 by the end of the business day after it is filed.",
+      "pre_read": "Note which event starts the company's posting clock: the insider's trade or the filing of the form.",
+      "correct_explanation": "Rule 16a-3(k), carrying out Section 16(a)(4)(C) as added by Section 403, requires an issuer that maintains a corporate website to post any Form 3, 4 or 5 filed for its equity securities by the end of the business day after filing, and to keep each form there for at least 12 months. The clock runs from the filing, not the trade, so option D fails.",
+      "wrong_explanations": {
+        "D": "Closest choice: the deadline is the end of the next business day. But it runs from the day the form is filed, not the day the insider trades.",
+        "A": "Tempting because the SEC posts the forms too. But the company's posting duty does not wait for any SEC review; it follows the filing itself.",
+        "C": "Tempting because quarterly reports collect many disclosures. But Section 403 made insider reports public quickly, on the company's website, not in the next 10-Q."
+      },
+      "tips": [
+        "Eliminate: A and C. The posting duty does not wait for SEC review, and Section 403 sought speed, not a quarterly roundup.",
+        "Final two: B beats D because Rule 16a-3(k) counts from the filing of the form, not from the insider's trade.",
+        "Exam cue: Section 403 made insider reports fast and public: electronic filing, then posting by the SEC and on the company's website by the next business day's end."
+      ],
+      "framework_ref": "17 CFR 240.16a-3(k) (Website posting of Section 16 forms); 15 U.S.C. 78p(a)(4) (Electronic filing and availability); Sarbanes-Oxley Act of 2002 Section 403(a) (Disclosures of transactions involving management and principal stockholders)",
+      "related_concepts": [
+        "Section 16 report",
+        "Website posting",
+        "Section 403"
+      ],
+      "_provenance": "Authored from concept: KaiSip notes 3B1.3 and 17 CFR 240.16a-3(k) and 15 U.S.C. 78p(a)(4), opened 31 Oct 2026, CSOE batch 3. Original scenario written for KaiSip from the public law; no SOXCPA material.",
+      "style_version": 2
+    },
+    {
+      "id": "csoe_d3_057",
+      "domain": 3,
+      "subtopic": "3B1 Periodic report disclosures and insider dealings. Adjusted figure in the annual report",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "Drafting the Form 10-K, a controller proposes adding an adjusted EBITDA line to the face of the audited income statement. Under Item 10(e) of Regulation S-K, how may the measure appear in the filing?",
+      "options": {
+        "A": "On the income statement's face, if a note reconciles it to GAAP",
+        "B": "Anywhere, since non-GAAP rules cover press releases, not filings",
+        "C": "Outside the statements and notes, with the required GAAP comparison",
+        "D": "On the income statement's face, if the independent auditor audits it"
+      },
+      "correct": "C",
+      "key_concept": "Item 10(e) bars non-GAAP measures from the face of the GAAP statements and notes; elsewhere in a filing they need the GAAP comparison.",
+      "pre_read": "Notice where in the 10-K the measure would sit, and which non-GAAP rule governs SEC filings.",
+      "correct_explanation": "Item 10(e)(1)(ii)(C) bars presenting non-GAAP measures on the face of the GAAP financial statements or in the accompanying notes. The measure may appear elsewhere in the 10-K, such as MD&A, if it meets Item 10(e)(1)(i), which includes giving the comparable GAAP measure equal or greater prominence. A reconciling note, as option A suggests, does not cure the placement.",
+      "wrong_explanations": {
+        "A": "Closest choice: Item 10(e) does call for a reconciliation. But Item 10(e)(1)(ii)(C) bars non-GAAP measures from the face of the statements and the notes, reconciled or not.",
+        "B": "Tempting because Regulation G governs non-GAAP figures outside filings, such as press releases and calls. But Item 10(e) sets stricter conditions for non-GAAP measures in SEC filings like the 10-K.",
+        "D": "Tempting because audited figures seem safe. But an audit does not change the rule; non-GAAP measures stay off the face of the GAAP statements."
+      },
+      "tips": [
+        "Eliminate: B and D. Item 10(e) governs non-GAAP measures in SEC filings, and an audit cannot make a prohibited placement acceptable.",
+        "Final two: C beats A because Item 10(e)(1)(ii)(C) keeps non-GAAP measures off the face of the statements and out of the notes, whatever the reconciliation.",
+        "Exam cue: in a filing, non-GAAP numbers sit outside the financial statements, with the GAAP figure at least as prominent."
+      ],
+      "framework_ref": "17 CFR 229.10(e) (Use of non-GAAP financial measures in Commission filings); Sarbanes-Oxley Act of 2002 Section 401(b) (Commission rules on pro forma figures)",
+      "related_concepts": [
+        "Non-GAAP financial measure",
+        "Item 10(e)",
+        "Equal or greater prominence"
+      ],
+      "_provenance": "Authored from concept: KaiSip notes 3B1.4 and 17 CFR 229.10(e)(1), opened 31 Oct 2026, CSOE batch 3. Original scenario written for KaiSip from the public law; no SOXCPA material.",
+      "style_version": 2
+    },
+    {
+      "id": "csoe_d3_058",
+      "domain": 3,
+      "subtopic": "3B1 Periodic report disclosures and insider dealings. Adjusted figure said on a webcast",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "On a live earnings webcast with no press release, Pinecrest Foods' CFO cites adjusted earnings per share, a non-GAAP measure. Under Rule 100 of Regulation G, how can Pinecrest comply?",
+      "options": {
+        "A": "Post the required data online then, citing its address on the call",
+        "B": "Post the required data online the business day after the call",
+        "C": "Nothing, as Regulation G covers written releases, not spoken remarks",
+        "D": "Include the required data in its next quarterly report on Form 10-Q"
+      },
+      "correct": "A",
+      "key_concept": "A non-GAAP measure spoken on a call or webcast meets Regulation G if the required information is online then and its location is announced.",
+      "pre_read": "Notice how the measure was made public and when the supporting information would become available.",
+      "correct_explanation": "Regulation G reaches any public disclosure of a non-GAAP measure, including spoken remarks. Note 1 to Rule 100 says a measure made public orally, by telephone or by webcast complies if the required GAAP information is on the company's website when the measure is made public and the same presentation tells listeners where to find it. Posting a day later, as in option B, misses that timing.",
+      "wrong_explanations": {
+        "B": "Closest choice: the website is the right place. But Note 1 to Rule 100 needs the information there when the measure is spoken, not a day later.",
+        "C": "Tempting because press releases are the usual concern. But Regulation G covers any public disclosure, including a webcast or a call.",
+        "D": "Tempting because periodic reports carry GAAP figures. But the duty attaches when the measure is made public, not when the next 10-Q is filed."
+      },
+      "tips": [
+        "Eliminate: C and D. Regulation G reaches spoken disclosures, and the duty arises when the measure is made public, not at the next periodic report.",
+        "Final two: A beats B because Note 1 to Rule 100 needs the information online at the moment of the webcast, with its location given during it.",
+        "Exam cue: for a non-GAAP number said aloud, think website at the same moment, plus telling the audience where to look."
+      ],
+      "framework_ref": "17 CFR 244.100 Note 1 (Non-GAAP measures made public orally or by webcast); 17 CFR 244.100(a) (Non-GAAP measures: comparable GAAP measure and reconciliation)",
+      "related_concepts": [
+        "Non-GAAP financial measure",
+        "Regulation G",
+        "Webcast disclosure"
+      ],
+      "_provenance": "Authored from concept: KaiSip notes 3B1.4 and 17 CFR 244.100, Note 1, opened 31 Oct 2026, CSOE batch 3. Original scenario written for KaiSip from the public law; no SOXCPA material.",
+      "style_version": 2
+    },
+    {
+      "id": "csoe_d3_059",
+      "domain": 3,
+      "subtopic": "3B3 Ethics code, financial expert, SEC review and real-time disclosure. What a code must promote",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "Under Item 406(b), a code of ethics for senior officers is written standards reasonably designed to deter wrongdoing and to promote, among other things:",
+      "options": {
+        "A": "prompt reporting of code violations to the SEC's enforcement staff",
+        "B": "approval of each officer's trades by the audit committee",
+        "C": "an annual review of officer conduct by the independent auditor",
+        "D": "prompt internal reporting of violations to a person the code names"
+      },
+      "correct": "D",
+      "key_concept": "Item 406(b) defines a code of ethics by five aims, including prompt internal reporting of violations to a person the code identifies.",
+      "pre_read": "Recall the five aims in the SEC's definition and notice where violations are reported.",
+      "correct_explanation": "Item 406(b) defines a code of ethics as written standards reasonably designed to deter wrongdoing and to promote honest and ethical conduct; full, fair, accurate, timely and understandable disclosure; compliance with laws; prompt internal reporting of violations to an appropriate person identified in the code; and accountability for adherence. Reporting runs inside the company, which is why option A fails.",
+      "wrong_explanations": {
+        "A": "Closest choice: prompt reporting of violations is in the definition. But Item 406(b) means internal reporting to a person the code identifies, not reports to the SEC.",
+        "B": "Tempting because insider trading needs controls. But pre-approving officers' trades is not one of the five aims in Item 406(b)'s definition.",
+        "C": "Tempting because auditors review controls. But the definition calls for accountability for adherence, not an annual review by the independent auditor."
+      },
+      "tips": [
+        "Eliminate: B and C. Neither trade approval by a committee nor an auditor's review of conduct appears among Item 406(b)'s five aims.",
+        "Final two: D beats A because Item 406(b) asks for prompt internal reporting of violations to a person the code names, not reports to the SEC.",
+        "Exam cue: Item 406(b)'s five aims: honest conduct, good disclosure, legal compliance, internal reporting of violations and accountability."
+      ],
+      "framework_ref": "17 CFR 229.406 (Code of ethics); Sarbanes-Oxley Act of 2002 Section 406 (Code of ethics for senior financial officers)",
+      "related_concepts": [
+        "Code of ethics",
+        "Internal reporting",
+        "Accountability"
+      ],
+      "_provenance": "Authored from concept: KaiSip notes 3B3.1 and 17 CFR 229.406(b), opened 31 Oct 2026, CSOE batch 3. Original scenario written for KaiSip from the public law; no SOXCPA material.",
+      "style_version": 2
+    },
+    {
+      "id": "csoe_d3_060",
+      "domain": 3,
+      "subtopic": "3B3 Ethics code, financial expert, SEC review and real-time disclosure. Making the code available",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "Ridgefield Tools' general counsel wants to make its code of ethics for senior financial officers available without filing it as an exhibit. Under Item 406(c), which approach works?",
+      "options": {
+        "A": "Post the code online; the annual report need not mention it",
+        "B": "Post it online; the annual report gives the address and says so",
+        "C": "Describe its main points in the company's proxy statement",
+        "D": "Keep it on file for SEC staff to request during a review"
+      },
+      "correct": "B",
+      "key_concept": "Under Item 406(c), a company may make its code available on its website only if the annual report gives the address and notes the posting.",
+      "pre_read": "List the ways the SEC allows the code to reach the public and what each route needs in the annual report.",
+      "correct_explanation": "Item 406(c) gives three ways to make the code available: file it as an exhibit to the annual report; post it on the company's website and disclose in the annual report the web address and the fact of posting; or undertake in the annual report to provide free copies on request. Option A omits the annual report disclosure the website route requires.",
+      "wrong_explanations": {
+        "A": "Closest choice: website posting is one of the routes. But Item 406(c)(2) also requires the annual report to give the web address and say the code is posted.",
+        "C": "Tempting because proxies describe governance. But a summary does not make the code available; Item 406(c) wants the code itself filed, posted or provided.",
+        "D": "Tempting because the SEC reviews filings. But Item 406(c) makes the company provide the code to the public, not hold it for staff."
+      },
+      "tips": [
+        "Eliminate: C and D. Item 406(c) requires the code itself to reach the public, not a proxy summary or a copy kept for SEC staff.",
+        "Final two: B beats A because the website route works only when the annual report discloses the web address and that the code is posted there.",
+        "Exam cue: a code of ethics is made available by filing it, posting it with an annual report pointer, or promising free copies on request."
+      ],
+      "framework_ref": "17 CFR 229.406 (Code of ethics); Sarbanes-Oxley Act of 2002 Section 406 (Code of ethics for senior financial officers)",
+      "related_concepts": [
+        "Code of ethics",
+        "Website posting",
+        "Annual report"
+      ],
+      "_provenance": "Authored from concept: KaiSip notes 3B3.1 and 17 CFR 229.406(c), opened 31 Oct 2026, CSOE batch 3. Original scenario written for KaiSip from the public law; no SOXCPA material.",
+      "style_version": 2
+    },
+    {
+      "id": "csoe_d3_061",
+      "domain": 3,
+      "subtopic": "3B3 Ethics code, financial expert, SEC review and real-time disclosure. A former CEO as financial expert",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A director who never held a finance post, but as CEO elsewhere actively supervised a CFO and controller for years, joins the audit committee. Under Item 407(d)(5), may the board name them its financial expert?",
+      "options": {
+        "A": "No, because the attributes must come from holding a finance post",
+        "B": "Yes, provided the director also holds a CPA license",
+        "C": "Yes, if supervising them gave the person all five attributes",
+        "D": "No, unless the independent auditor first certifies the expertise"
+      },
+      "correct": "C",
+      "key_concept": "A person can gain the audit committee financial expert attributes by actively supervising a CFO or controller, not only by holding a finance job.",
+      "pre_read": "Separate the five attributes from the ways the rule lets a person acquire them.",
+      "correct_explanation": "Item 407(d)(5)(ii) lists five attributes an audit committee financial expert must have, and Item 407(d)(5)(iii)(B) recognizes experience actively supervising a principal financial officer, controller or similar person as a way to acquire them. A finance title is not required, so option A is too narrow, but the board must still find that the person has every attribute.",
+      "wrong_explanations": {
+        "A": "Closest choice: finance roles are one route. But Item 407(d)(5)(iii)(B) also counts active supervision of a CFO or controller, so the person may qualify.",
+        "B": "Tempting because accountants plainly have the attributes. But Item 407(d)(5) sets no license requirement; public accounting is one route among several.",
+        "D": "Tempting because auditors judge financial skills. But the board makes the determination; the rule gives the independent auditor no role in it."
+      },
+      "tips": [
+        "Eliminate: B and D. Item 407(d)(5) requires no CPA license, and the board, not the independent auditor, determines who qualifies.",
+        "Final two: C beats A because Item 407(d)(5)(iii) accepts experience actively supervising a CFO or controller as a route to the five attributes.",
+        "Exam cue: the financial expert test is the five attributes; the route to them can be a finance job, supervising one, overseeing reporting or other relevant experience."
+      ],
+      "framework_ref": "17 CFR 229.407(d)(5) (Audit committee financial expert); Sarbanes-Oxley Act of 2002 Section 407 (Disclosure of audit committee financial expert)",
+      "related_concepts": [
+        "Audit committee financial expert",
+        "Five attributes",
+        "Board determination"
+      ],
+      "_provenance": "Authored from concept: KaiSip notes 3B3.2 and 17 CFR 229.407(d)(5)(ii) and (iii), opened 31 Oct 2026, CSOE batch 3. Original scenario written for KaiSip from the public law; no SOXCPA material.",
+      "style_version": 2
+    },
+    {
+      "id": "csoe_d3_062",
+      "domain": 3,
+      "subtopic": "3B3 Ethics code, financial expert, SEC review and real-time disclosure. What starts a non-reliance report",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "On 3 March, Elm Park Retail's audit committee concludes last year's statements should no longer be relied upon because of an error. Under Item 4.02 of Form 8-K, what starts the filing clock?",
+      "options": {
+        "A": "The audit committee's conclusion, on the day it was reached",
+        "B": "The filing of the restated statements in an amended 10-K",
+        "C": "The independent auditor's written concurrence with the conclusion",
+        "D": "The board's later approval of a press release announcing it"
+      },
+      "correct": "A",
+      "key_concept": "Item 4.02(a) is triggered when the board, a committee or authorized officers conclude past statements should no longer be relied upon.",
+      "pre_read": "Separate the decision that the statements cannot be relied on from the later events that follow it.",
+      "correct_explanation": "Item 4.02(a) is triggered when the board, a board committee or authorized officers conclude that previously issued financial statements should no longer be relied upon because of an error. The Form 8-K reports the date of that conclusion, and the general Form 8-K deadline runs from it, not from the later restatement. Option C describes Item 4.02(b), triggered by the auditor's own notice.",
+      "wrong_explanations": {
+        "C": "Closest choice: an auditor's notice can trigger Item 4.02, but under paragraph (b). Here the committee's own conclusion triggers paragraph (a); no auditor concurrence is needed.",
+        "B": "Tempting because the restatement completes the story. But Item 4.02(a) reports the conclusion when it is reached; the restatement may come months later.",
+        "D": "Tempting because companies often announce restatements. But a press release does not start the clock; the non-reliance conclusion itself does."
+      },
+      "tips": [
+        "Eliminate: B and D. Item 4.02(a) reports the non-reliance conclusion when reached, not when restated statements or a press release follow.",
+        "Final two: A beats C because Item 4.02(a) is triggered by the company's own conclusion; the auditor's notice is the separate trigger in paragraph (b).",
+        "Exam cue: for non-reliance, find the moment the board, a committee or authorized officers concluded the statements cannot be relied on."
+      ],
+      "framework_ref": "Form 8-K Item 4.02 (Non-reliance on previously issued financial statements or a related audit report or completed interim review); Sarbanes-Oxley Act of 2002 Section 409 (Real time issuer disclosures)",
+      "related_concepts": [
+        "Non-reliance",
+        "Form 8-K",
+        "Restatement"
+      ],
+      "_provenance": "Authored from concept: KaiSip notes 3B3.4 and Form 8-K Item 4.02, opened 31 Oct 2026, CSOE batch 3. Original scenario written for KaiSip from the public law; no SOXCPA material.",
+      "style_version": 2
+    },
+    {
+      "id": "csoe_d3_063",
+      "domain": 3,
+      "subtopic": "3B3 Ethics code, financial expert, SEC review and real-time disclosure. A missed current report",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "Westbrook Labs' legal team misses the Form 8-K due for a material definitive agreement under Item 1.01. Under Rule 13a-11(c), which statement about the missed report is MOST accurate?",
+      "options": {
+        "A": "It is a Rule 10b-5 fraud violation, since investors lacked the facts",
+        "B": "It breaches no rule, since Item 1.01 sits within the safe harbor",
+        "C": "It is cured once the next Form 10-Q reports the agreement",
+        "D": "It is not a Rule 10b-5 violation, but it breaches Rule 13a-11"
+      },
+      "correct": "D",
+      "key_concept": "Rule 13a-11(c) keeps certain missed Form 8-K reports from being deemed Rule 10b-5 violations, but the filing duty is still breached.",
+      "pre_read": "Separate antifraud liability from the duty to file, and check which of the two the safe harbor addresses.",
+      "correct_explanation": "Rule 13a-11(a) requires each Form 8-K within the form's deadline, so missing one breaches that rule. Rule 13a-11(c) is a limited safe harbor: failing to file a report required solely by listed items, Item 1.01 among them, is not deemed a violation of Exchange Act Section 10(b) and Rule 10b-5. Option B reads the safe harbor as a full excuse.",
+      "wrong_explanations": {
+        "B": "Closest choice: Item 1.01 is in the safe harbor. But Rule 13a-11(c) protects against Rule 10b-5 alone; the duty to file under Rule 13a-11(a) still applies.",
+        "A": "Tempting because missing disclosures can mislead investors. But Rule 13a-11(c) says a missed Item 1.01 report is not, by itself, deemed a Rule 10b-5 violation.",
+        "C": "Tempting because a later periodic report can carry the information. But a later report does not undo the missed Rule 13a-11(a) deadline."
+      },
+      "tips": [
+        "Eliminate: A and C. Rule 13a-11(c) keeps a missed Item 1.01 report from being deemed a Rule 10b-5 violation, and a later Form 10-Q does not undo a missed Form 8-K deadline.",
+        "Final two: D beats B because the safe harbor covers Rule 10b-5 liability alone; the Rule 13a-11 filing duty is still breached.",
+        "Exam cue: a Form 8-K safe harbor answers one question, antifraud liability, and leaves the filing duty in place."
+      ],
+      "framework_ref": "17 CFR 240.13a-11(a) (Current reports on Form 8-K); 17 CFR 240.13a-11(c) (Limited safe harbor from Rule 10b-5 for certain Form 8-K items); Sarbanes-Oxley Act of 2002 Section 409 (Real time issuer disclosures)",
+      "related_concepts": [
+        "Form 8-K",
+        "Safe harbor",
+        "Rule 10b-5"
+      ],
+      "_provenance": "Authored from concept: KaiSip notes 3B3.4 and 17 CFR 240.13a-11, opened 31 Oct 2026, CSOE batch 3. Original scenario written for KaiSip from the public law; no SOXCPA material.",
+      "style_version": 2
+    },
+    {
+      "id": "csoe_d3_064",
+      "domain": 3,
+      "subtopic": "3B3 Ethics code, financial expert, SEC review and real-time disclosure. Earnings release on Form 8-K",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "Under General Instruction B.2 of Form 8-K, an earnings release that a listed company's management furnishes under Item 2.02 is:",
+      "options": {
+        "A": "deemed filed, as is every report submitted on Form 8-K",
+        "B": "not treated as filed for Section 18 unless stated or incorporated",
+        "C": "exempt from Regulation G, because furnished items are not filings",
+        "D": "treated as filed once the company files its next Form 10-Q"
+      },
+      "correct": "B",
+      "key_concept": "An earnings release furnished under Form 8-K Item 2.02 is not deemed filed for Section 18 unless the company says so or incorporates it.",
+      "pre_read": "Distinguish filed from furnished, and recall which Form 8-K items the general instructions treat as furnished.",
+      "correct_explanation": "General Instruction B.2 says information furnished under Item 2.02 or Item 7.01 is not deemed filed for purposes of Exchange Act Section 18, or otherwise subject to that section's liabilities, unless the company states that it is filed or incorporates it by reference into a filing. Option A treats every Form 8-K submission alike, but these two items are furnished, not filed.",
+      "wrong_explanations": {
+        "A": "Closest choice: most Form 8-K items are filed. But General Instruction B.2 treats Item 2.02 and Item 7.01 information as furnished, so Section 18 does not attach by default.",
+        "C": "Tempting because furnished items escape Section 18. But Regulation G still covers any public non-GAAP disclosure, and Item 2.02 also applies Item 10(e)(1)(i).",
+        "D": "Tempting because periodic reports are filed. But a later Form 10-Q does not turn the release into a filed document unless the company incorporates it."
+      },
+      "tips": [
+        "Eliminate: C and D. Furnishing does not lift Regulation G, and a later 10-Q does not make the release filed unless the company incorporates it.",
+        "Final two: B beats A because General Instruction B.2 treats Item 2.02 information as furnished, outside Section 18 liability unless the company elects otherwise.",
+        "Exam cue: earnings releases (Item 2.02) and Regulation FD reports (Item 7.01) are furnished, not filed, on Form 8-K."
+      ],
+      "framework_ref": "Form 8-K General Instruction B.2 (Furnished information not deemed filed for Section 18); Sarbanes-Oxley Act of 2002 Section 409 (Real time issuer disclosures)",
+      "related_concepts": [
+        "Furnished information",
+        "Form 8-K",
+        "Earnings release"
+      ],
+      "_provenance": "Authored from concept: KaiSip notes 3B3.4 and Form 8-K General Instruction B.2 and Item 2.02, opened 31 Oct 2026, CSOE batch 3. Original scenario written for KaiSip from the public law; no SOXCPA material.",
       "style_version": 2
     }
   ]

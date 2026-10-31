@@ -46,12 +46,16 @@ These items are correct today. Re-check them at every batch and fix the bank the
 
 | Watch | Status on 31 Oct 2026 | What it would change |
 |---|---|---|
-| SEC Release No. 33-11419 (May 2026 proposal on filer categories) | Proposed, not adopted (fact sheet opened) | Would end the accelerated filer and smaller reporting company categories and change deadlines. Items that would flip: csoe_d1_004, 008, 015, 025, 034 |
+| SEC Release No. 33-11419 (May 2026 proposal on filer categories) | Proposed, not adopted (fact sheet opened) | Would end the accelerated filer and smaller reporting company categories and change deadlines. Items that would flip: csoe_d1_004, 008, 015, 025, 034. Recheck csoe_d1_051 (written to hold under both tests) and csoe_d5_053 |
 | SEC Release No. 33-11414 | Proposed, not adopted | Recheck with 33-11419 |
 | Section 16(a) for FPI insiders: Pub. L. 119-60 Section 8103, from 18 Mar 2026; SEC exemptive orders Release Nos. 34-104931 (5 Mar 2026) and 34-105517 (20 May 2026) | In force (orders opened). The orders exempt insiders of FPIs incorporated in listed jurisdictions and subject to a listed insider-reporting rule. Officers outside the local rule still file, and 10% owners of FPIs stay outside Section 16(a) (Rule 16a-2) | Taught in notes 1A3.3 and 3B1.3. New orders could add jurisdictions |
 | SEC v. Jarkesy, No. 22-859 (2024) | Decided (opened on Cornell) | A defendant facing civil penalties for securities fraud has a jury right, so those claims go to federal court unless settled. Taught in notes 4A3.5 |
 | AICPA attestation proposals (2026) | Exposure drafts, adoption expected 2027 | SSAE No. 18 (AT-C 320, as amended by SSAE No. 23) stays current until then |
-| Volcker Rule proposals | Not checked (federalreserve.gov refused) | csoe_d4_036 keys on the statute, so no change for now |
+| Volcker Rule | Checked 31 Oct 2026 (batch 3): the statute and Regulation VV 248.12 agree on the 3 percent limits; the 2019-2020 amendments left them unchanged; no Volcker proposal in the Federal Register since 2020. Banks with $10 billion or less in assets and 5 percent or less in trading assets are outside Section 619 since 2018 | Volcker items must name a bank above that size (csoe_d4_036, 054) |
+| SEC proxy proposals S7-2026-33 (Proxy Solicitation Modernization) and S7-2026-32; semiannual reporting S7-2026-17 | Proposed, not adopted | Recheck notes 4A1.3 and csoe_d4_041 if adopted |
+| COSO ERM update | COSO has announced plans to update the 2017 ERM framework; no new edition yet | Recheck D5 ERM items and notes 5B2 when a new edition is published |
+| PCAOB rules and Exchange Act Section 19(b)(3)(A) | Open question from the batch 3 cross-domain review: can a PCAOB fee rule take effect on filing, as an exchange fee change can? Section 107(b)(2) requires SEC approval before a Board rule takes effect; no key depends on the point | Check the PCAOB's own rule filings when pcaobus.org opens, before writing any item on it |
+| Basel III in U.S. rules | Keyed on the 2013 U.S. capital rule (78 FR 62018) and 12 CFR 217 (bis.org and federalreserve.gov blocked). The March 2026 capital proposals are pending | Never state Basel's own text; recheck 12 CFR 217.11 when the proposals are final |
 
 ## Network (31 Oct 2026, second pass)
 

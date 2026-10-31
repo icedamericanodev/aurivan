@@ -140,7 +140,7 @@ The same pieces as the CISA course, each in `data/csoe/`:
 | Principles ("how CSOE questions think") | `mindset/principles.json` (`docs/content/PRINCIPLES_SCHEMA.md`, CRISC-style deviations) | Written, audited and fixed (31 Oct 2026) |
 | About the exam | `exam/csoe_exam_guide.json` (`docs/content/EXAM_GUIDE_SCHEMA.md`) | Written, audited and fixed (31 Oct 2026) |
 | Final review week | `exam/final_review_week.json` | Written, audited and fixed (31 Oct 2026) |
-| Practice | `originals/d{1..5}.json` | 200 reviewed; growing to 400 |
+| Practice | `originals/d{1..5}.json` | 304 reviewed; growing to 400 |
 | Mock exam | the app's mock engine reads the bank; the held-out forms go in `exam/mock_forms.json` (two 35-item forms, never served in practice) | Forms drawn once the bank passes about 300; the forward-only mode is an app task (section 4). Release gate: the final review week asks for a 35-question, 90-minute mock, so it must exist before the course ships |
 | Lessons | `lessons.json` (`docs/content/LESSONS_SCHEMA.md`) | After the bank |
 | Game decks | `mobile/src/content/games/csoe/` | App task, when CSOE is wired in |
@@ -249,6 +249,7 @@ Still settled by policy, not open:
 | Groundwork (31 Oct 2026) | — | — | — | — | — | 0 |
 | Pilot, notes plus 20 items per domain (31 Oct 2026) | 20 | 20 | 20 | 20 | 20 | 100 |
 | Batch 2, 20 items per domain plus notes (31 Oct 2026) | 40 | 40 | 40 | 40 | 40 | 200 |
+| Batch 3, D1-D3 to target, D4 and D5 +20 (31 Oct 2026) | 56 | 64 | 64 | 60 | 60 | 304 |
 
 Pilot reviews (31 Oct 2026):
 - **Blind test:** 100/100 picks matched the keys (testers saw no keys,
@@ -307,6 +308,51 @@ Batch 2 reviews (31 Oct 2026):
 - **Principles, exam guide and final week:** audited FIX THEN SHIP; 4 hard
   errors fixed (the mock described as forward-only when the app allows going
   back, in three places; only one of SOXCPA's two retake-wait versions).
+
+Batch 3 reviews (31 Oct 2026):
+- **Blind test:** 104/104 picks matched the keys. Every changed item was
+  re-tested blind and matched (D1 10, D2 13, D3 10, D4 12, D5 11, then 3
+  more after the cross-domain fixes).
+- **Standards audits:** FIX THEN SHIP in every domain, with no wrong key.
+  - Three items were replaced:
+    - two D2 items on Exchange Act Section 10A(b), a 1995 rule outside the course;
+    - one D4 item on general administrative law.
+  - One D1 item was reworked because it tested bare number recall.
+  - One hard error was fixed: a D4 explanation that narrowed Section 1103.
+- **Rules currency:** about 237 facts checked at the primary source. Nothing
+  keyed was wrong. Fixed: a Wells-process note (rejected submissions generally
+  do not reach the Commission), a release page locator, and several notes
+  lines. The rules watch gained rows for Volcker, the proxy proposals, the
+  COSO ERM update and Basel.
+- **Cross-domain review (304 items):** FIX THEN SHIP, no wrong keys, every
+  number stated twice matches. 30 edits:
+  - one near-duplicate re-angled (D4-049);
+  - explanation leaks closed;
+  - names standardized: "Exchange Act Section 19(b)", "engagement quality
+    reviewer", "emerging growth company", "Release No.".
+  - `CSOE_LINKED_PAIRS.md` now holds 123 linked pairs and 7 practice-only hubs.
+- **Library:** the batch's staged citations merged, one label per citation.
+
+Lessons for batch 4 (D4 and D5 only, 48 items each to go):
+- **Closed rules:** no new items on Item 406, Form 8-K/Section 409, Part 205,
+  Section 402, Section 306(a), Section 304, cooling-off, Section 204/Rule
+  2-07, Section 107(b), preapproval, Section 106 production, Section 207,
+  partner rotation, Rule 12g3-2(b), Form F-6, the Release 33-8810 IT
+  guidance, 5C1 IT scope, ERM 2017 "which principle or component", or
+  Volcker.
+- **Scope test:** a rule enters the bank only if it is in the Act, Dodd-Frank,
+  the SEC's rules carrying them out, or the COSO frameworks. Older
+  securities law that SOX only renamed (such as Section 10A(b)) and general
+  agency law are out.
+- **Recall:** no bare number or year recall; test the lesson the number
+  supports.
+- **Company names:** fictional companies must not point to a country that an
+  SEC order or rule treats specially; check the stem against the facts it
+  sets.
+- **Length tell:** by word count the key is the longest option in about 30% of
+  items in D1-D3. Balance word length as well as character length.
+- **Explanations:** check every new explanation against the linked-pairs file
+  for sentences that state another item's key.
 
 Lessons for batch 3:
 - D1 writes 6 of 20 as incomplete statements (batch 2 had 4).

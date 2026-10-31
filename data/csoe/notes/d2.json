@@ -96,7 +96,8 @@
      "practice_ids": [
       "csoe_d2_002",
       "csoe_d2_022",
-      "csoe_d2_023"
+      "csoe_d2_023",
+      "csoe_d2_041"
      ],
      "definition": "The PCAOB has five full-time members appointed by the SEC, of whom two, and only two, are or have been certified public accountants (CPAs).",
      "why_it_matters": "Capping CPA seats keeps the profession from controlling its own regulator, and full-time service keeps members free of ties to audit firms.",
@@ -200,7 +201,8 @@
      "name": "SEC Oversight of the Board",
      "legacy_ids": [],
      "practice_ids": [
-      "csoe_d2_004"
+      "csoe_d2_004",
+      "csoe_d2_042"
      ],
      "definition": "Section 107 gives the SEC oversight and enforcement authority over the PCAOB: it approves Board rules, reviews Board sanctions, and can censure or limit the Board.",
      "why_it_matters": "The SEC is the PCAOB's regulator. Items that reverse the two roles, or let the Board act without SEC review, are testing this section.",
@@ -406,6 +408,110 @@
        "definition": "An issuer required to file reports under Exchange Act Section 13 or 15(d) (15 U.S.C. 7214(i)(1)(A))."
       }
      ]
+    },
+    {
+     "id": "2A2.4",
+     "name": "Registration Decisions and Public Records",
+     "legacy_ids": [],
+     "practice_ids": [
+      "csoe_d2_043",
+      "csoe_d2_044"
+     ],
+     "definition": "Section 102 sets how the PCAOB acts on a registration application, treats a refusal as a disciplinary sanction, and opens registration filings to the public, minus proprietary parts.",
+     "why_it_matters": "A refused firm cannot audit issuers, so the Act gives it the protections that come with a sanction. Public filings show who audits whom without exposing a firm's trade secrets.",
+     "how_it_works": [
+      "The Board approves a completed application within 45 days unless it first issues a written disapproval or asks for more information (Section 102(c)(1), opened 31 Oct 2026).",
+      "A written disapproval counts as a disciplinary sanction under Sections 105(d) and 107(c), so it is reported and the SEC can review it (Section 102(c)(2)).",
+      "Each registered firm files an annual report with the Board, and more often if required, to update its registration information (Section 102(d)).",
+      "Applications and annual reports are open to public inspection, subject to Board and SEC rules and confidentiality laws (Section 102(e)).",
+      "In all events, the Board must protect information the firm reasonably identifies as proprietary (Section 102(e))."
+     ],
+     "example": "Rosa, the risk partner at a mid-sized firm preparing its first PCAOB filing, reviews which internal methodology guides to include. Rosa labels each guide with a short reason for confidential treatment and briefs the managing partner on the routes open if the Board turns the filing down.",
+     "audit_focus": {
+      "review": [
+       "Inspect the Board's public registry entry against the firm's own filing copy",
+       "Confirm each confidential marking in the filing carries a stated reason"
+      ],
+      "evidence": [
+       "Board registration decision letters and any written disapproval notice",
+       "Firm's annual report to the Board, with confidential sections marked"
+      ],
+      "recommend": "Have the firm's registration team document the basis for every confidentiality claim before filing.",
+      "decides": "The Board decides applications; the SEC may review any disapproval as a sanction"
+     },
+     "isaca_rule": "A refused registration is treated as a disciplinary sanction, so the SEC can review it. Registration filings are public, but the Board must protect what the firm reasonably identifies as proprietary.",
+     "exam_traps": [
+      {
+       "trap": "A PCAOB refusal to register a firm is final; the SEC plays no part.",
+       "why": "Section 102(c)(2) treats a written disapproval as a disciplinary sanction, which brings in SEC review under Section 107(c)."
+      },
+      {
+       "trap": "Everything in a registration application is published.",
+       "why": "Section 102(e) opens filings to public inspection but requires the Board to protect information the firm reasonably identifies as proprietary."
+      }
+     ],
+     "key_terms": [
+      {
+       "term": "Notice of disapproval",
+       "definition": "The Board's written refusal of a completed registration application, treated as a disciplinary sanction."
+      },
+      {
+       "term": "Proprietary information",
+       "definition": "Confidential business information, such as internal methods, that a firm reasonably flags for protection from public disclosure."
+      }
+     ]
+    },
+    {
+     "id": "2A2.5",
+     "name": "Substantial-Role Firms, Exemptions and Alternate Production",
+     "legacy_ids": [],
+     "practice_ids": [
+      "csoe_d2_045",
+      "csoe_d2_046",
+      "csoe_d2_047"
+     ],
+     "definition": "Section 106 lets the Board reach foreign firms that shape issuer audits without signing reports, lets U.S. authorities exempt foreign firms, and lets staff accept papers through other channels.",
+     "why_it_matters": "Group audits rely on firms abroad, and foreign laws can block transfers of papers. These tools keep U.S. oversight on the work investors rely on while allowing for real conflicts of law.",
+     "how_it_works": [
+      "The Board may determine, by rule, that a foreign firm issuing no audit reports plays such a substantial role that it must register and accept oversight (Section 106(a)(2)).",
+      "The SEC, and the Board with SEC approval, may exempt any foreign firm or class of firms from the Act or its rules, with or without conditions (Section 106(c)).",
+      "Staff may let a foreign firm produce through alternate means, such as foreign counterpart regulators (15 U.S.C. 7216(f), added in 2010, opened 31 Oct 2026).",
+      "A willful refusal to comply with an SEC or Board request under Section 106 is a violation of the Act (15 U.S.C. 7216(e))."
+     ],
+     "example": "Ana, the compliance head at a registered firm, plans the group audit of an issuer with plants in three countries. One component firm abroad cannot ship its files under local secrecy law, so Ana raises with PCAOB staff, before fieldwork, whether that country's audit regulator can act as the channel.",
+     "audit_focus": {
+      "review": [
+       "Map each component firm abroad to its PCAOB registration status",
+       "Inspect correspondence agreeing any alternate production route with SEC or Board staff"
+      ],
+      "evidence": [
+       "Board rules or orders naming substantial-role firms",
+       "Written SEC or Board exemption orders covering foreign firms"
+      ],
+      "recommend": "Have the group engagement team settle the production route for each foreign component before relying on its work.",
+      "decides": "The Board sets substantial-role rules; the SEC, or the Board with its approval, grants exemptions"
+     },
+     "isaca_rule": "Signing an issuer's audit report means registering; a substantial role can mean registering by Board rule. Only the SEC, or the Board with SEC approval, exempts foreign firms, and staff may accept papers through foreign regulators.",
+     "exam_traps": [
+      {
+       "trap": "A foreign firm that signs no audit report is beyond the PCAOB's reach.",
+       "why": "Section 106(a)(2) lets the Board require a substantial-role firm to register, and Section 106(b) reaches the workpapers of firms whose material work is relied on."
+      },
+      {
+       "trap": "Foreign secrecy law excuses a foreign firm from producing workpapers.",
+       "why": "The duty stays; Section 106(f) lets staff accept another route, such as a foreign counterpart, and a willful refusal violates the Act."
+      }
+     ],
+     "key_terms": [
+      {
+       "term": "Substantial role",
+       "definition": "Work on issuer audits significant enough that the Board, by rule, treats the foreign firm as needing registration."
+      },
+      {
+       "term": "Alternate means",
+       "definition": "A route other than direct delivery, such as a foreign regulator, that staff may accept for producing papers."
+      }
+     ]
     }
    ]
   },
@@ -426,7 +532,8 @@
      "legacy_ids": [],
      "practice_ids": [
       "csoe_d2_008",
-      "csoe_d2_009"
+      "csoe_d2_009",
+      "csoe_d2_048"
      ],
      "definition": "Section 103 directs the PCAOB to set, by rule, the auditing, attestation, quality control, ethics and independence standards registered firms use for issuer audit reports.",
      "why_it_matters": "These standards replaced profession-made rules for public company audits, and Section 103 writes a few requirements straight into the law, which are common exam targets.",
@@ -625,6 +732,57 @@
        "definition": "A role at an issuer, broker or dealer that involves its accounting, financial reporting or management of its finances."
       }
      ]
+    },
+    {
+     "id": "2A3.5",
+     "name": "Failure to Supervise",
+     "legacy_ids": [],
+     "practice_ids": [
+      "csoe_d2_049"
+     ],
+     "definition": "Section 105(c)(6) lets the Board sanction a registered firm or its supervisors for failing reasonably to supervise a rule breaker, with a safe harbor for sound procedures.",
+     "why_it_matters": "Audit work is done by teams. The rule holds firms and supervisors to account for weak oversight, while protecting supervisors who follow sound procedures in good faith.",
+     "how_it_works": [
+      "The Board may sanction the firm or a supervisory person when both findings below are made (15 U.S.C. 7215(c)(6)(A), opened 31 Oct 2026).",
+      "Two findings are needed: the firm failed reasonably to supervise an associated person, and that person then broke the Act, Board rules, securities laws or professional standards.",
+      "The safe harbor first needs firm procedures and a system that comply with Board rules and would reasonably prevent and detect the violation (Section 105(c)(6)(B)).",
+      "It also needs the supervisor to have reasonably carried out those procedures, with no reasonable cause to believe they were not being followed.",
+      "Dodd-Frank Section 929F(h) added former supervisors; the Board's wider reach to former associated persons is in 4C2.4 (notes to 15 U.S.C. 7215, opened 31 Oct 2026)."
+     ],
+     "example": "An inspection finds that a senior associate skipped inventory steps on one issuer audit. Kofi, the firm's head of quality, prepares a timeline for the Board showing who oversaw the associate, what they looked at and why nothing signaled the gap.",
+     "audit_focus": {
+      "review": [
+       "Trace supervisory sign-offs on the engagement to the firm's written review procedures",
+       "Compare the firm's supervision policies with Board quality control rules"
+      ],
+      "evidence": [
+       "Signed engagement review checklists and supervision logs",
+       "Training and acknowledgment records for the firm's supervision procedures"
+      ],
+      "recommend": "Have the firm's quality leaders document each supervisor's review steps so the safe harbor can be shown.",
+      "decides": "The Board decides whether supervision failed, subject to SEC review"
+     },
+     "isaca_rule": "A firm or supervisor can be sanctioned for failing reasonably to supervise someone who breaks the rules, but not if compliant procedures existed and the supervisor reasonably followed them without cause for suspicion.",
+     "exam_traps": [
+      {
+       "trap": "A supervisor is automatically sanctioned whenever a team member breaks the rules.",
+       "why": "Section 105(c)(6) requires a failure reasonably to supervise, and its safe harbor protects supervisors who reasonably followed compliant procedures."
+      },
+      {
+       "trap": "Written procedures alone protect a supervisor.",
+       "why": "The safe harbor needs both compliant procedures that would reasonably prevent and detect the violation and a supervisor who reasonably carried them out with no reasonable cause to think they were being ignored."
+      }
+     ],
+     "key_terms": [
+      {
+       "term": "Supervisory person",
+       "definition": "Someone at a registered firm responsible for overseeing the work of an associated person."
+      },
+      {
+       "term": "Safe harbor",
+       "definition": "A set of conditions that, when met, means a person is not treated as having broken a rule."
+      }
+     ]
     }
    ]
   },
@@ -635,7 +793,8 @@
    "can_do": [
     "Tell which body sets accounting standards and which sets auditing standards for issuers",
     "Explain when a new PCAOB rule or standard takes effect",
-    "Decide whether a new PCAOB rule applies to an emerging growth company's audit"
+    "Decide whether a new PCAOB rule applies to an emerging growth company's audit",
+    "Explain how the Board adopts standards drafted by professional and advisory groups"
    ],
    "subtopics": [
     {
@@ -643,7 +802,9 @@
      "name": "Recognized Accounting Standard Setters",
      "legacy_ids": [],
      "practice_ids": [
-      "csoe_d2_011"
+      "csoe_d2_011",
+      "csoe_d2_050",
+      "csoe_d2_051"
      ],
      "definition": "Section 108 lets the SEC recognize, as generally accepted, the accounting principles of a private standard setter that meets set criteria; the SEC recognized FASB in 2003.",
      "why_it_matters": "The PCAOB sets auditing standards, not accounting standards. Mixing up the two bodies is one of the most common errors in this domain.",
@@ -652,7 +813,8 @@
       "It must be funded under Section 109 and able to act promptly on emerging accounting issues (Section 108(a)).",
       "In Release No. 33-8221 (2003) the SEC found FASB met the criteria, so FASB standards are generally accepted under the securities laws.",
       "The SEC keeps its own power to set accounting principles (Section 108(c)).",
-      "Issuers fund the recognized standard setter through an accounting support fee as well (Section 109(a) and (e))."
+      "Issuers fund the recognized standard setter through an accounting support fee as well (Section 109(a) and (e)).",
+      "Section 108(d) had the SEC study a principles-based accounting system and report to Congress within one year (15 U.S.C. 7218(d), opened 31 Oct 2026)."
      ],
      "example": "Tomas, a controller at a regional bank, asks why the bank's accounting support fees cover a standard setter it never hired. Tomas learns that Section 109 funds the SEC-recognized standard setter, FASB, through issuer fees, and records both the PCAOB and FASB amounts as regulatory costs.",
      "audit_focus": {
@@ -691,14 +853,15 @@
      "legacy_ids": [],
      "practice_ids": [
       "csoe_d2_012",
-      "csoe_d2_033"
+      "csoe_d2_033",
+      "csoe_d2_054"
      ],
      "definition": "Under Section 107(b), no PCAOB rule or standard takes effect until the SEC approves it, after publishing notice and inviting public comment.",
      "why_it_matters": "Firms and issuers must know when a new standard binds them. A standard the Board has adopted but the SEC has not approved is not yet in force.",
      "how_it_works": [
       "The Board adopts a proposed rule or standard and files it with the SEC (Section 107(b)).",
-      "The SEC publishes notice and lets interested persons comment, under Exchange Act Section 19(b) (Section 107(b)(4); 15 U.S.C. 78s(b)(1)).",
-      "The SEC approves a rule if it is consistent with the Act and the securities laws, or needed to protect investors (Section 107(b)(3)).",
+      "The SEC handles proposals under Exchange Act Section 19(b) as if the Board were a registered securities association: notice, comment, then a decision (Section 107(b)(4)).",
+      "The SEC approves a rule consistent with the Act and securities laws, or necessary or appropriate for the public interest or investor protection (Section 107(b)(3)).",
       "No Board rule takes effect without prior SEC approval (Section 107(b)(2)); the SEC may also delete from or add to Board rules (Section 107(b)(5)).",
       "Independence rules that implement Title II are Board rules too, with the same approval step (Section 103(b))."
      ],
@@ -779,6 +942,58 @@
        "definition": "A supplement to the audit report giving more detail on the audit and the financial statements."
       }
      ]
+    },
+    {
+     "id": "2A4.4",
+     "name": "How the Board Builds Its Standards",
+     "legacy_ids": [],
+     "practice_ids": [
+      "csoe_d2_052",
+      "csoe_d2_053"
+     ],
+     "definition": "Section 103 lets the PCAOB write its own standards or adopt ones proposed by professional or advisory groups, while keeping full control over everything it adopts.",
+     "why_it_matters": "Standard setting draws on the profession's expertise without handing it control. Exam items test who drafts, who decides and who may sit on the advisory groups.",
+     "how_it_works": [
+      "The Board sets auditing, attestation, quality control, ethics and independence standards for registered firms by rule (Section 103(a)(1)).",
+      "It may adopt as its rules standards proposed by professional groups it designates or by its advisory groups, subject to Section 107 (Section 103(a)(3)(A)(i)).",
+      "It keeps full authority to modify, supplement, revise or repeal any adopted standard, in whole or in part (Section 103(a)(3)(A)(ii)).",
+      "Expert advisory groups may include practicing accountants and other experts, under Board conflict-of-interest rules, and recommend content, including drafts (Section 103(a)(4)).",
+      "The Board reports its standard-setting results and pending agenda in its annual report to the SEC (Section 103(d))."
+     ],
+     "example": "Hiroshi, a technical partner at a regional firm, is invited to join a PCAOB panel on going-concern reporting. Before accepting, Hiroshi asks the firm's general counsel to review the Board's conflict-of-interest requirements for advisers and lists the firm's issuer clients most affected by the topic.",
+     "audit_focus": {
+      "review": [
+       "Trace each adopted standard to its Board adoption and SEC approval records",
+       "Compare advisory group membership disclosures with the Board's conflict rules"
+      ],
+      "evidence": [
+       "Board adopting releases citing the group that proposed the text",
+       "Advisory panel meeting records and membership lists posted by the Board"
+      ],
+      "recommend": "Have the firm's methodology team track each standard's origin and later Board amendments in one register.",
+      "decides": "The Board decides, subject to SEC approval; outside panels only advise"
+     },
+     "isaca_rule": "The Board may borrow drafts from professional groups and take advice from expert groups that include practicing accountants, but whatever it adopts becomes a Board rule, and the Board keeps full authority to amend or repeal it.",
+     "exam_traps": [
+      {
+       "trap": "A professional group that drafted a standard controls later changes to it.",
+       "why": "Section 103(a)(3)(A)(ii) keeps full authority with the Board to modify or repeal any standard it adopted."
+      },
+      {
+       "trap": "Practicing accountants may not serve on PCAOB advisory groups.",
+       "why": "Section 103(a)(4) expressly allows practicing accountants on expert advisory groups, subject to Board rules preventing conflicts of interest."
+      }
+     ],
+     "key_terms": [
+      {
+       "term": "Designated professional group",
+       "definition": "A group of accountants the Board designates or recognizes by rule as a source of proposed standards."
+      },
+      {
+       "term": "Expert advisory group",
+       "definition": "A panel the Board convenes to recommend the content of its standards, including drafts."
+      }
+     ]
     }
    ]
   },
@@ -848,13 +1063,14 @@
      "practice_ids": [
       "csoe_d2_014",
       "csoe_d2_016",
-      "csoe_d2_034"
+      "csoe_d2_034",
+      "csoe_d2_055"
      ],
      "definition": "Section 202 requires the issuer's audit committee to approve in advance all audit services and every permitted non-audit service, tax services included, that its auditor provides.",
      "why_it_matters": "Preapproval puts the independent audit committee, not management, in control of what else the auditor does, so fees cannot quietly erode independence.",
      "how_it_works": [
-      "All audit services and permitted non-audit services need the audit committee's advance approval (Exchange Act Section 10A(h) and (i)(1)(A)).",
-      "Tax services are not on the Section 201 list and need preapproval (10A(h)); PCAOB Rules 3522-3524 (not yet checked here) restrict some tax services.",
+      "All audit services, comfort letters for underwritings included, and permitted non-audit services need the audit committee's advance approval (Exchange Act Section 10A(h) and (i)(1)(A)).",
+      "Tax services are not on the Section 201 list and need preapproval (10A(h)); PCAOB ethics rules (not opened) also restrict some tax services.",
       "The committee may delegate preapproval to independent directors on the committee, whose decisions go to the full committee at each scheduled meeting (10A(i)(3)).",
       "Preapproval policies must be detailed by service, keep the committee informed of each service, and never delegate its duties to management (17 CFR 210.2-01(c)(7)(i)(B)).",
       "Approved non-audit services are disclosed to investors in periodic reports (10A(i)(2))."
@@ -945,11 +1161,12 @@
   {
    "topic_id": "2B2",
    "topic_name": "Partner rotation and auditor reports to the audit committee",
-   "overview": "Section 203 rotates the lead and reviewing audit partners after five consecutive years; the firm itself does not have to rotate. Section 204 makes the auditor report critical accounting policies, alternative treatments and other key written communications to the audit committee.",
+   "overview": "Section 203 rotates the lead and reviewing audit partners after five consecutive years; the firm itself does not have to rotate. Section 204 makes the auditor report critical accounting policies, alternative treatments and other key written communications to the audit committee. SEC rules define which partners rotate and exempt the smallest firms while the PCAOB reviews their engagements.",
    "can_do": [
     "Apply the partner rotation and time-out periods to an engagement history",
     "Tell partner rotation from audit firm rotation",
-    "List what the auditor must report to the audit committee, and when"
+    "List what the auditor must report to the audit committee, and when",
+    "Decide which partners the SEC rotation rules cover, and when a small firm is exempt"
    ],
    "subtopics": [
     {
@@ -1010,7 +1227,8 @@
      "legacy_ids": [],
      "practice_ids": [
       "csoe_d2_018",
-      "csoe_d2_037"
+      "csoe_d2_037",
+      "csoe_d2_056"
      ],
      "definition": "Section 204 requires the issuer's registered firm to report critical accounting policies, alternative GAAP treatments and other material written communications to the audit committee on time.",
      "why_it_matters": "The audit committee oversees the auditor and the financial reporting process. It can weigh management's choices only if it hears what the auditor discussed and preferred.",
@@ -1018,6 +1236,7 @@
       "Report all critical accounting policies and practices to be used (Exchange Act Section 10A(k)(1)).",
       "Report alternative GAAP treatments discussed with management, their ramifications, and the treatment the firm prefers (10A(k)(2)).",
       "Report other material written communications with management, such as the management letter or schedule of unadjusted differences (10A(k)(3)).",
+      "The SEC's adopting release adds examples such as reports on internal control observations and the engagement letter (Release No. 33-8183 Section II.G.3, opened 31 Oct 2026).",
       "SEC Rule 2-07 requires these reports before the audit report is filed with the SEC (17 CFR 210.2-07(a))."
      ],
      "example": "Before an energy issuer files its annual report, the independent auditor gives the audit committee the schedule of unadjusted differences it sent to management. Chen, the committee secretary, files it with the minutes, and the chair asks management to explain each item it left uncorrected.",
@@ -1054,13 +1273,112 @@
        "definition": "The auditor's written comments to management on matters found during the audit."
       }
      ]
+    },
+    {
+     "id": "2B2.3",
+     "name": "Which Partners Count for Rotation",
+     "legacy_ids": [],
+     "practice_ids": [
+      "csoe_d2_058",
+      "csoe_d2_059"
+     ],
+     "definition": "SEC rules apply partner rotation to audit partners, a defined group that leaves out partners who only consult the audit team on technical issues.",
+     "why_it_matters": "Rotation limits mean nothing until you know who they cover. Items test whether a role, such as a national office adviser, is an audit partner at all.",
+     "how_it_works": [
+      "Audit partners include the lead partner and the engagement quality reviewer (17 CFR 210.2-01(f)(7)(ii)(A) and (B), opened 31 Oct 2026).",
+      "They also include other team partners with more than ten hours on the consolidated statements (210.2-01(f)(7)(ii)(C), opened 31 Oct 2026).",
+      "Lead partners on subsidiaries with 20% or more of consolidated assets or revenues are audit partners too (210.2-01(f)(7)(ii)(D), opened 31 Oct 2026).",
+      "Partners who only consult the team on technical or industry-specific issues, such as national office partners, are excluded (210.2-01(f)(7)(ii); Release No. 33-8183 Section II.C.2).",
+      "Only audit partners are subject to the five-year and seven-year limits in Rule 2-01(c)(6) (opened 31 Oct 2026)."
+     ],
+     "example": "Before planning starts at a listed shipping company, Tomasz, the audit committee chair, notes that a subsidiary now earns a quarter of group revenue. Tomasz asks the firm to add that subsidiary's lead partner to its rotation tracking and to report how long the partner has served there.",
+     "audit_focus": {
+      "review": [
+       "Compare the firm's audit partner list with the Rule 2-01(f)(7)(ii) categories",
+       "Trace subsidiary lead partners to the 20% asset or revenue test"
+      ],
+      "evidence": [
+       "Firm's schedule of audit partners with consecutive years on the client",
+       "Subsidiary asset and revenue shares from the consolidation schedules"
+      ],
+      "recommend": "Have the audit committee review the firm's audit partner classifications whenever subsidiary sizes shift.",
+      "decides": "The firm classifies partners; the audit committee oversees its rotation compliance"
+     },
+     "isaca_rule": "Rotation reaches audit partners only: the lead partner, the engagement quality reviewer, other decision-making partners with more than ten hours, and lead partners on 20% subsidiaries. Technical consultants, such as national office partners, are not audit partners.",
+     "exam_traps": [
+      {
+       "trap": "Every partner who works on an issuer's audit must rotate.",
+       "why": "Rule 2-01(f)(7)(ii) limits rotation to defined audit partners and excludes partners who only consult on technical or industry issues."
+      }
+     ],
+     "key_terms": [
+      {
+       "term": "Audit partner",
+       "definition": "A partner on the audit team covered by SEC rotation rules, as defined in Rule 2-01(f)(7)(ii)."
+      },
+      {
+       "term": "National office partner",
+       "definition": "A firm's technical specialist consulted on accounting or auditing questions, outside the audit's decision-making team."
+      }
+     ]
+    },
+    {
+     "id": "2B2.4",
+     "name": "Rotation Relief for Small Firms",
+     "legacy_ids": [],
+     "practice_ids": [
+      "csoe_d2_057"
+     ],
+     "definition": "SEC Rule 2-01(c)(6)(ii) exempts very small audit firms from partner rotation, but only while the PCAOB reviews the engagements that would otherwise breach the limits.",
+     "why_it_matters": "A firm with a handful of partners may have no one to rotate in. The SEC eased the rule for such firms but traded rotation for outside review, and items test that condition.",
+     "how_it_works": [
+      "The exemption covers a firm with fewer than five issuer audit clients and fewer than ten partners (17 CFR 210.2-01(c)(6)(ii), opened 31 Oct 2026).",
+      "It holds only if the PCAOB reviews each engagement that would otherwise breach the rotation limits at least once every three years (210.2-01(c)(6)(ii)).",
+      "The SEC codified an earlier professional exemption and added the Board review to protect audit quality (Release No. 33-8183 Section II.C.4, opened 31 Oct 2026).",
+      "The release calls it a special review, focused on audit quality and the independence and competence of key engagement personnel.",
+      "Compare Rule 2-01(c)(8): the partner pay rule exempts firms of the same size with no review condition (see 2B3.5)."
+     ],
+     "example": "Mei runs a small CPA practice with two public company clients. Before taking on a third, Mei sets a reminder to ask each client's audit committee chair when the PCAOB last examined that engagement, and records the answers.",
+     "audit_focus": {
+      "review": [
+       "Compare the firm's partner and issuer client counts with the exemption limits",
+       "Trace each engagement relying on the exemption to its latest Board review date"
+      ],
+      "evidence": [
+       "Firm's year-end headcount report and list of public audit clients",
+       "Board correspondence confirming the special review of each engagement"
+      ],
+      "recommend": "Have the audit committee confirm each year that the Board review condition is still met before the partner continues.",
+      "decides": "The firm claims the exemption; the Board's reviews keep it available"
+     },
+     "isaca_rule": "A firm with fewer than five issuer audit clients and fewer than ten partners is exempt from partner rotation only while the PCAOB reviews each affected engagement at least once every three years.",
+     "exam_traps": [
+      {
+       "trap": "Small firms are exempt from partner rotation outright.",
+       "why": "Rule 2-01(c)(6)(ii) makes the exemption depend on a PCAOB review of each affected engagement at least once every three years."
+      },
+      {
+       "trap": "The audit committee can approve a partner's longer service instead.",
+       "why": "Neither Section 203 nor Rule 2-01(c)(6) gives the audit committee power to extend a partner's service."
+      }
+     ],
+     "key_terms": [
+      {
+       "term": "Small-firm rotation exemption",
+       "definition": "Relief from partner rotation for firms with fewer than five issuer audit clients and fewer than ten partners, tied to PCAOB review."
+      },
+      {
+       "term": "Special review",
+       "definition": "The Board's review of a small firm's exempt engagements, focused on audit quality and key personnel's independence and competence."
+      }
+     ]
     }
    ]
   },
   {
    "topic_id": "2B3",
    "topic_name": "Conflicts of interest, studies and state regulators",
-   "overview": "Section 206 imposes a one-year cooling-off period before audit staff take a top finance role at the client. Section 207 ordered a study of mandatory firm rotation, Section 208 had the SEC write the independence rules, and Section 209 leaves standards for nonregistered firms to the states.",
+   "overview": "Section 206 imposes a one-year cooling-off period before audit staff take a top finance role at the client. Section 207 ordered a study of mandatory firm rotation, Section 208 had the SEC write the independence rules, and Section 209 leaves standards for nonregistered firms to the states. SEC rules also bar contingent fees and audit partner pay for selling other services.",
    "can_do": [
     "Apply the cooling-off rule to a hire from the audit firm",
     "Tell what Title II required from what it only studied",
@@ -1073,7 +1391,9 @@
      "name": "The Cooling-Off Period",
      "legacy_ids": [],
      "practice_ids": [
-      "csoe_d2_019"
+      "csoe_d2_019",
+      "csoe_d2_060",
+      "csoe_d2_061"
      ],
      "definition": "Section 206 bars a firm from auditing an issuer whose top finance officer worked on its audit at the firm in the year before the audit began.",
      "why_it_matters": "A former auditor in a top finance job may know and influence the audit approach. The one-year cooling-off period reduces that risk.",
@@ -1081,7 +1401,7 @@
       "The covered roles are CEO, controller, CFO, chief accounting officer, or anyone in an equivalent position (Exchange Act Section 10A(l)).",
       "The bar applies if the person was employed by the firm and took part in the audit in any capacity during the one-year period before the audit began.",
       "SEC Rule 2-01(c)(2)(iii)(B) applies it to any financial reporting oversight role; audit procedures start the day after the prior annual report is filed.",
-      "The SEC rule excludes team members, other than the lead partner and quality reviewer, with 10 or fewer hours, and allows narrow merger and emergency exceptions.",
+      "The SEC rule excludes team members, other than the lead partner and engagement quality reviewer, with 10 or fewer hours, and allows narrow merger and emergency exceptions.",
       "The consequence falls on the firm: performing that audit is unlawful (Section 208(b))."
      ],
      "example": "Dev, a senior associate who worked on a pharmacy chain's audit, is offered the chain's director of financial reporting job, a financial reporting oversight role. Before accepting, Dev asks the firm's independence office, which compares Dev's last day on the engagement with the date the next audit's procedures will start.",
@@ -1115,7 +1435,7 @@
       },
       {
        "term": "Financial reporting oversight role",
-       "definition": "A role that can influence the financial statements, such as director, CEO, CFO, controller or director of internal audit."
+       "definition": "A role that can influence the financial statements, such as CEO, CFO, general counsel, controller or director of internal audit (Rule 2-01(f)(3)(ii))."
       }
      ]
     },
@@ -1125,7 +1445,8 @@
      "legacy_ids": [],
      "practice_ids": [
       "csoe_d2_020",
-      "csoe_d2_040"
+      "csoe_d2_040",
+      "csoe_d2_062"
      ],
      "definition": "Section 207 ordered a Comptroller General study of mandatory audit firm rotation, and Section 208 directed the SEC to write the rules carrying out Title II.",
      "why_it_matters": "Exam items test what Title II required and what it only studied. Partners must rotate; audit firm rotation stayed a study topic.",
@@ -1258,6 +1579,58 @@
        "definition": "A change to another law that brings its wording into line with a new act, such as Section 205's edits to the Exchange Act."
       }
      ]
+    },
+    {
+     "id": "2B3.5",
+     "name": "Partner Pay and Contingent Fees",
+     "legacy_ids": [],
+     "practice_ids": [
+      "csoe_d2_063",
+      "csoe_d2_064"
+     ],
+     "definition": "SEC Rule 2-01 bars two money links between auditor and client: audit partner pay for selling other services, and contingent fees or commissions.",
+     "why_it_matters": "Section 208 had the SEC write the independence rules. These two target mutual interest: an auditor who profits from outcomes or sales may lose objectivity.",
+     "how_it_works": [
+      "An auditor that serves an audit client for a contingent fee or commission is not independent (17 CFR 210.2-01(c)(5), opened 31 Oct 2026).",
+      "A contingent fee depends on a specified finding or result; fees may still vary with complexity, and court-fixed fees are not contingent (210.2-01(f)(10)).",
+      "Independence is also lost if an audit partner is paid for selling the client services other than audit, review or attest work (210.2-01(c)(8), opened 31 Oct 2026).",
+      "Firms with fewer than ten partners and fewer than five issuer audit clients are exempt from the compensation rule (210.2-01(c)(8), opened 31 Oct 2026).",
+      "Approving the service does not cure either breach; both rules turn on how the money is earned."
+     ],
+     "example": "Grace, the head of independence at a large firm, reviews the audit partners' bonus plan before the new year. Grace removes a bonus tied to cross-selling consulting work to audit clients and rewrites a fee letter for an audit client's systems project so the fee no longer depends on savings achieved.",
+     "audit_focus": {
+      "review": [
+       "Compare audit partner bonus criteria with the Rule 2-01(c)(8) bar",
+       "Inspect fee terms in each non-audit engagement letter for result-based pricing"
+      ],
+      "evidence": [
+       "Partner compensation plan and bonus calculation records",
+       "Signed engagement letters showing how each fee is set"
+      ],
+      "recommend": "Have the audit committee obtain the firm's yearly written confirmation on partner pay and fee terms.",
+      "decides": "The firm sets pay and fees; the audit committee oversees independence"
+     },
+     "isaca_rule": "An auditor loses independence if it works for an audit client on a contingent fee or commission, or if an audit partner is paid for selling the client non-audit services, outside the small-firm exemption.",
+     "exam_traps": [
+      {
+       "trap": "A fee that varies with the work's complexity is a contingent fee.",
+       "why": "Rule 2-01(f)(10) says fees may vary with complexity; a fee is contingent when it depends on a finding or result."
+      },
+      {
+       "trap": "Audit committee preapproval makes a partner's sales bonus acceptable.",
+       "why": "Rule 2-01(c)(8) concerns the partner's pay, not the service; approving the service does not change the impairment."
+      }
+     ],
+     "key_terms": [
+      {
+       "term": "Contingent fee",
+       "definition": "A fee charged only if, or in an amount set by, a specified finding or result."
+      },
+      {
+       "term": "Commission",
+       "definition": "A payment tied to selling or referring a product or service."
+      }
+     ]
     }
    ]
   }
@@ -1283,7 +1656,9 @@
   "Cooling-off period": "The one-year bar on auditing an issuer whose top finance officer worked on its audit at the firm.",
   "Comptroller General": "The head of the Government Accountability Office, which Section 207 directed to study firm rotation.",
   "Emerging growth company (EGC)": "A newly public issuer under a revenue cap; some PCAOB rules do not apply to its audits.",
-  "Section 10A": "The Exchange Act section where Title II placed the auditor independence rules (subsections g to l)."
+  "Section 10A": "The Exchange Act section where Title II placed the auditor independence rules (subsections g to l).",
+  "Audit partner": "A partner covered by SEC rotation rules: the lead partner, the engagement quality reviewer and other decision-making partners, not technical consultants.",
+  "Contingent fee": "A fee that depends on a finding or result; providing any service to an audit client on one impairs independence."
  },
  "references": [
   {
@@ -1294,7 +1669,7 @@
   {
    "title": "15 U.S.C. 7211-7219 and 7231-7234 (Title I and II as codified and amended)",
    "url": "https://www.law.cornell.edu/uscode/text/15/7211",
-   "checked": "2026-10-31: 7211, 7212, 7213, 7214, 7215, 7216, 7217, 7219, 7231, 7232 read with amendment notes; batch 2 also read 7213(a)(3)(C), 7214(f)-(i) as amended by Pub. L. 117-328, 7215(b)(3) and (c)(7), 7216(d), 7233 and 7234"
+   "checked": "2026-10-31: 7211, 7212, 7213, 7214, 7215, 7216, 7217, 7219, 7231, 7232 read with amendment notes; batch 2 also read 7213(a)(3)(C), 7214(f)-(i) as amended by Pub. L. 117-328, 7215(b)(3) and (c)(7), 7216(d), 7233 and 7234; batch 3 read 7212(c)-(e), 7213(a)(3), (a)(4) and (d), 7215(c)(6) with its 2010 amendment notes, 7216(a), (c), (e) and (f), 7217(b)(4) and (d), and 7218"
   },
   {
    "title": "15 U.S.C. 78j-1 (Exchange Act Section 10A, subsections g to l)",
@@ -1319,7 +1694,7 @@
   {
    "title": "17 CFR 210.2-01 (Qualifications of accountants: SEC auditor independence rule)",
    "url": "https://www.law.cornell.edu/cfr/text/17/210.2-01",
-   "checked": "2026-10-31: paragraphs (c)(2), (c)(4), (c)(6), (c)(7) and (f) read"
+   "checked": "2026-10-31: paragraphs (c)(2), (c)(4), (c)(6), (c)(7) and (f) read; batch 3 also read (c)(5), (c)(8), (f)(3), (f)(7) and (f)(10), and the eCFR version history (no amendment after 9 Jun 2021)"
   },
   {
    "title": "17 CFR 210.2-06 (Retention of audit and review records)",
@@ -1345,6 +1720,16 @@
    "title": "Free Enterprise Fund v. PCAOB, 561 U.S. 477 (2010)",
    "url": "https://www.govinfo.gov/content/pkg/USREPORTS-561/pdf/USREPORTS-561-477.pdf",
    "checked": "2026-10-31: syllabus and holding read (removal limits in 15 U.S.C. 7211(e)(6) and 7217(d)(3) severed; members removable by the SEC at will)"
+  },
+  {
+   "title": "15 U.S.C. 77s(b) (Securities Act Section 19(b): recognition of accounting standards, added by Sarbanes-Oxley Section 108(a))",
+   "url": "https://www.law.cornell.edu/uscode/text/15/77s",
+   "checked": "2026-10-31: (b)(1) and (b)(2) read"
+  },
+  {
+   "title": "SEC Release No. 33-8183 (Strengthening the Commission's requirements regarding auditor independence, 2003)",
+   "url": "https://www.sec.gov/files/rules/final/33-8183.htm",
+   "checked": "2026-10-31: Sections II.A, II.C, II.E and II.G read"
   }
  ]
 }
