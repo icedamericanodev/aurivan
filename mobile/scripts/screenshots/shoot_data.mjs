@@ -1,4 +1,5 @@
-// Settings → Your data screenshots (393x852 @2x): the section, the save
+// Settings → Your data screenshots (393x852 @2x): the door on Settings, the
+// Your data screen (since mobile 1.46 its own screen, settings-section?category=data), the save
 // confirmation, the bad-file message, the restore preview (normal and
 // "older backup"), the restored state with "Undo restore", and on a new
 // phone the welcome screen's "Restore from a backup" with the fresh preview. Usage: node shoot_data.mjs <seed.json> <out> <suffix>
@@ -23,13 +24,6 @@ const errs = [];
 page.on('pageerror', (e) => errs.push(e.message));
 const snap = async (name) => { await page.screenshot({ path: `${out}/${name}${sfx}.png` }); console.log('shot', name + sfx); };
 const open = async (path, wait = 1800) => { await page.goto(base + path, { waitUntil: 'networkidle' }); await page.waitForTimeout(wait); };
-const scrollTo = async (text, top = 110) => {
-  const el = page.getByText(text, { exact: true }).first();
-  await el.scrollIntoViewIfNeeded();
-  const box = await el.boundingBox();
-  if (box) { await page.mouse.move(196, 500); await page.mouse.wheel(0, box.y - top); }
-  await page.waitForTimeout(700);
-};
 
 // Two real backups built from the demo seed:
 // - OLDER: the demo learner earlier on (fewer answers, earlier last day, a
@@ -60,10 +54,19 @@ const pick = async (name, text) => {
   await (await chooser).setFiles({ name, mimeType: 'application/json', buffer: Buffer.from(text) });
   await page.waitForTimeout(1200);
 };
+const toTop = async () => { await page.mouse.move(196, 500); await page.mouse.wheel(0, -3000); await page.waitForTimeout(700); };
 const toEnd = async () => { await page.mouse.move(196, 500); await page.mouse.wheel(0, 3000); await page.waitForTimeout(700); };
 
+// Settings → Your data: the door sits in the last card ("Data and help"); tapping it opens the screen.
 await open('/settings');
-await scrollTo('Your data');
+const door = page.getByRole('button', { name: /^Your data, / });
+await door.scrollIntoViewIfNeeded();
+await page.waitForTimeout(700);
+await snap('d00-settings-door');
+await door.click();
+await page.waitForURL(/settings-section/);
+await page.getByRole('button', { name: 'Save a backup' }).waitFor();
+await page.waitForTimeout(1200);
 await snap('d01-your-data');
 
 // Save a backup (the web build downloads the file): the calm confirmation.
@@ -71,12 +74,12 @@ const download = page.waitForEvent('download');
 await page.getByRole('button', { name: 'Save a backup' }).click();
 await download;
 await page.waitForTimeout(900);
-await scrollTo('Your data');
+await toTop();
 await snap('d02-save-confirmation');
 
 // A file that isn't a KaiSip backup: one calm message, nothing changes.
 await pick('holiday-photos.json', JSON.stringify({ app: 'something-else', photos: [] }));
-await scrollTo('Your data');
+await toTop();
 await snap('d03-restore-error');
 
 // A newer backup: the normal preview (with the Study reminder row).
@@ -93,7 +96,7 @@ await snap('d05-restore-preview-behind');
 await toEnd();
 await page.getByRole('button', { name: 'Replace my progress' }).click();
 await page.waitForTimeout(1500);
-await scrollTo('Your data');
+await toTop();
 await snap('d06-restored');
 
 // A new phone: the welcome screen, with "Restore from a backup" under "Get started".

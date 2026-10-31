@@ -11,6 +11,27 @@ opened source and recorded in `data/cc/originals/_framework_library.md`.
 CC is not wired into the apps yet (that is Stage 2.7), so bank work needs no
 `APP_VERSION` bump. Never put the bank size in learner copy.
 
+### Stage 2.7 blocker: notes headings
+
+CC notes keep the shared keys `audit_focus` and `isaca_rule` (one schema for
+CISA, CC, CRISC and AAIA; decided 31 Oct 2026 with `product-manager`). The key
+names are internal and learners never see them. What would leak are the CISA
+headings typed into the notes screen (`mobile/src/components/notes.tsx`:
+"Think like the IS auditor", "Auditing it", "The IS auditor's lens", "Typical
+recommendation"). Before CC ships, the notes screen must take its headings from
+the certification. CC uses:
+
+- Section heading: "Think like a security practitioner"
+- `audit_focus`: "In practice", with the parts "What to check", "What shows it
+  works", "What you do" and "Who decides"
+- `isaca_rule`: "The practitioner's rule"
+
+Done when a test opens a CC note and finds no "auditor", "IS auditor", "ISACA"
+or "Auditing it" text, and the CC notes screenshots are checked at Stage 2.8.
+CRISC and AAIA need their own headings through the same setup. If neutral key
+names are ever wanted, rename once for every certification and keep the old
+names readable; never fork a CC-only schema.
+
 ## 1. Targets by outline weight
 
 From the "Question targets" table in `docs/content/CC_BLUEPRINT.md` (bank of
@@ -59,13 +80,26 @@ The pilot set this order. Don't skip a step to go faster.
 1. **Author** with `cc-d{N}-domain-expert`, under `isc2-cc-standards-auditor.md`
    and the pilot calibration rules (section 6).
 2. **Self-check:**
+   - `python3 data/cc/tools/check_cc.py N` must show 0 errors: item shape,
+     IDs, notes and library links, tip structure, key spread, and the "pick
+     the longest" rate (15–24%, ties shared, the same rule
+     `scripts/check_longest_option.py` applies to CISA since #155). Tools are
+     described in `data/cc/tools/README.md`.
    - `python3 scripts/lint_exam_style_v2.py --file data/cc/originals/dN.json`
-     must show 0 errors. Its "stem names no actor" warning looks for CISA
+     must show 0 errors.
+   - When notes change: `python3 scripts/lint_notes.py data/cc/notes/dN.json
+     --outline docs/content/CC_BLUEPRINT.md --bank data/cc/originals` must show
+     0 errors (it also warns when a notes example retells a bank question), and
+     `python3 data/cc/tools/sync_practice_ids.py` refreshes the notes'
+     "Practice this concept" links.
+   - `python3 data/cc/tools/check_cc.py --similarity` lists question and
+     notes-example pairs that share many words (0.18 and up). Read each one
+     and re-angle whichever retells the other's scenario (rule 8). Its "stem names no actor" warning looks for CISA
      actors, so it is expected on CC items, but every stem must still name
      who acts.
    - Every `framework_ref` part must match a library bullet exactly.
 3. **Blind test** with `qa-question-tester`, on a copy that has only the id,
-   stem and options (no key, explanations or tips). Compare its picks with
+   stem and options (`data/cc/tools/blind_copy.py`; no key, explanations or tips). Compare its picks with
    the keys afterwards.
 4. **Standards audit** with `isc2-cc-standards-auditor`, plus the domain
    expert's accuracy pass.
@@ -246,15 +280,51 @@ Learned from two blind tests and two standards audits of the pilot.
 | Round | D1 | D2 | D3 | D4 | D5 | Total |
 |---|---|---|---|---|---|---|
 | Pilot (Oct 2026) | 20 | 20 | 20 | 20 | 20 | 100 |
-| Batch 2 (30 Oct 2026) | +25 | | | +25 | | 150 |
+| Batch 2, D1 and D4 (30 Oct 2026) | +25 | | | +25 | | 150 |
+| Batch 2, D2, D3 and D5 (30 Oct 2026) | | +25 | +25 | | +25 | 225 |
 
-Batch 2 for D1 and D4: blind test 25/25 in each domain; re-tests of every
-changed item all matched the keys. No hard errors remained.
+Batch 2: the first blind test matched the keys 25/25 in every domain, and
+re-tests of every changed item all matched. The audits found 7 hard errors
+across the round (D1 1, D2 3, D3 2, D5 1); all are fixed.
+
+Lessons from the D2/D3/D5 round, for batch 3:
+- Check every new item against the other four domains as well as the notes.
+  The worst finding was two domains teaching the same AI-tool lesson in the
+  same batch (cc_d2_026 and cc_d5_026).
+- Use the cited source's own term (SP 800-84 calls a timed restore a test;
+  SP 800-63B-4 allows synced passkeys, so "the key never leaves the device"
+  is wrong).
+- Name the guide in the stem when an older model would give another answer
+  (SP 800-61r3 shares lessons during an incident).
+- Notes gap closed 31 Oct 2026: notes 5.2.9 (network attacks: DoS, on-path,
+  spoofing) now exists; batch 3 adds its first questions.
+
+**Cross-review round (31 Oct 2026).** All 225 items were read together by
+`cc-cross-domain-reviewer`, two notes-versus-bank tests and a structure scan.
+Fixed: two pairs of items that taught opposite rules (drift versus unapproved
+change; lessons-learned timing), one rule for risk acceptance everywhere (the
+risk owner within tolerance, senior management beyond it), 27 notes worked
+examples that mirrored their own questions, missing or contradicting notes
+facts, auditor wording in "In practice" blocks, the ties-shared longest-option
+rate (now 17-21% in every domain), and a citation to the now-final IR 8547.
+Every change was blind-tested and audited.
+
+Batch 3 guidance from this round:
+- Write a question for 1.5.3 (the ethics canons themselves; none tests them
+  now) and the first questions for 5.2.9.
+- D3: keep authentication mechanisms to about 30% of 3.1 items, so the
+  identity life cycle keeps most of the section's slots.
+- Write counter-examples to the "stem names an owner, so the key routes to
+  that owner" pattern: owners named, but the procedure assigns the task.
+- Give D1 more weight than D2 and D5 (D1 is under its 24% outline weight),
+  and vary D1 settings away from healthcare.
 
 ## 7. Follow-ups outside this plan's scope
 
-- A CC mode for `scripts/lint_exam_style_v2.py` (CC actors in place of the CISA
-  actor check, and a library-match check for `data/cc/`). This touches
-  `scripts/`, so it waits for a session that owns shared tooling.
-- Align the five domain-expert agent files' "at least" counts with the
-  blueprint table.
+- The CC-only checks now live in `data/cc/tools/check_cc.py` (library match,
+  notes links, tip structure, length tells). What remains for a session that
+  owns `scripts/`: let `lint_exam_style_v2.py` accept CC actors so its "stem
+  names no actor" warning stops firing on CC items. (`scripts/lint_notes.py`
+  already checks CC notes when given the CC outline and bank; see section 3.)
+- Done 31 Oct 2026: the five domain-expert agent files and the standards
+  auditor now point at the blueprint targets, this plan and the checker.

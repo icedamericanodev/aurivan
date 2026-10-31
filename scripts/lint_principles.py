@@ -4,6 +4,16 @@
 Usage:
     python3 scripts/lint_principles.py                 # data/mindset/principles.json
     python3 scripts/lint_principles.py path/to/file    # a draft copy
+    # another certification's file, checked against its own notes and bank:
+    python3 scripts/lint_principles.py data/crisc/mindset/principles.json \
+        --notes data/crisc/notes --bank data/crisc/originals
+
+Optional flags (the defaults check the CISA files, unchanged):
+    --notes PATH  notes file, or a folder of d{N}.json notes files, that
+                  subtopic codes must exist in (codes like 3C3.2 are allowed)
+    --bank DIR    folder of d{N}.json question files; domains come from the
+                  files present, ids may carry a prefix (crisc_d3_015) and the
+                  old CISA PRINCIPLES_LIB ids are not required
 
 Errors break the schema, a cross-reference or a hard limit. Warnings are
 gaps to close (for example a principle with fewer than 3 practice questions).
@@ -134,16 +144,27 @@ def walk_strings(node, path):
             yield from walk_strings(v, f"{path}.{k}" if path else k)
 
 
+def rel(path):
+    path = Path(path).resolve()
+    return path.relative_to(ROOT) if path.is_relative_to(ROOT) else path
+
+
+def qdomain(qid):
+    """Domain number of a question id, or None if the id is malformed."""
+    m = QID.match(qid) if isinstance(qid, str) else None
+    return int(m.group(1)) if m else None
+
+
 def load_questions():
     """Return (all question ids, {id: principle_id} for tagged questions)."""
     ids = set()
     tags = {}
-    for n in range(1, 6):
+    for n in sorted(DOMAINS):
         f = ORIGINALS / f"d{n}.json"
         try:
             data = json.loads(f.read_text())
         except (OSError, ValueError) as e:
-            err(str(f.relative_to(ROOT)), f"cannot read question bank ({e})")
+            err(str(rel(f)), f"cannot read question bank ({e})")
             continue
         for q in data.get("questions", []):
             ids.add(q.get("id"))
@@ -186,16 +207,21 @@ def check_question_tags(doc, ctx):
 
 
 def load_subtopic_codes():
-    try:
-        notes = json.loads(NOTES.read_text())
-    except (OSError, ValueError) as e:
-        err("data/cisa_notes.json", f"cannot read notes ({e})")
-        return set()
+    files = sorted(NOTES.glob("d*.json")) if NOTES.is_dir() else [NOTES]
+    if not files:
+        err(str(rel(NOTES)), "no d{N}.json notes files found")
     codes = set()
-    for d in notes.get("domains", []):
-        for t in d.get("topics", []):
-            for s in t.get("subtopics", []):
-                codes.add(s.get("id"))
+    for f in files:
+        try:
+            notes = json.loads(f.read_text())
+        except (OSError, ValueError) as e:
+            err(str(rel(f)), f"cannot read notes ({e})")
+            continue
+        # One combined file holds "domains"; a per-domain file holds "topics".
+        for d in notes.get("domains", [notes]):
+            for t in d.get("topics", []):
+                for s in t.get("subtopics", []):
+                    codes.add(s.get("id"))
     return codes
 
 
@@ -213,6 +239,9 @@ def load_slip_patterns():
     return keys or set(FALLBACK_SLIPS)
 
 
+RUNNER_UP = re.compile(r"runner[- ]?up", re.I)
+
+
 def check_text_hygiene(doc):
     for path, s in walk_strings(doc, ""):
         for rx in BANK_SIZE:
@@ -223,6 +252,11 @@ def check_text_hygiene(doc):
         for m in BRITISH.finditer(s):
             if m.group(0).lower() not in BRITISH_OK:
                 err(path, f"British spelling '{m.group(0)}' (use US English)")
+        # Learner copy says "closest wrong choice", never "runner-up". The
+        # slip_pattern id 'runner-up' stays: saved slip-coach data and the
+        # slip_map key use it.
+        if RUNNER_UP.search(s) and not path.endswith(".slip_pattern"):
+            err(path, "says 'runner-up' (learner copy says 'closest wrong choice')")
 
 
 def check_families(families):
@@ -373,7 +407,7 @@ def check_principle(p, i, ctx):
     doms = p.get("domains")
     if not (isinstance(doms, list) and doms and all(isinstance(d, int) for d in doms)
             and set(doms) <= DOMAINS and len(set(doms)) == len(doms)):
-        err(where, "domains must be a non-empty list of unique integers 1-5")
+        err(where, f"domains must be a non-empty list of unique integers {min(DOMAINS)}-{max(DOMAINS)}")
         doms = []
     elif doms != sorted(doms):
         err(where, "domains must be sorted ascending")
@@ -395,7 +429,7 @@ def check_principle(p, i, ctx):
             err(where, f"subtopic '{s}' is not a note code like 1A3.6")
             continue
         if ctx["codes"] and s not in ctx["codes"]:
-            err(where, f"subtopic '{s}' does not exist in data/cisa_notes.json")
+            err(where, f"subtopic '{s}' does not exist in {rel(NOTES)}")
         if int(m.group(1)) not in doms:
             err(where, f"subtopic '{s}' is in D{m.group(1)}, which is not in domains")
 
@@ -412,7 +446,7 @@ def check_principle(p, i, ctx):
             err(where, f"practice id '{q}' is not like d1_004")
             continue
         if ctx["qids"] and q not in ctx["qids"]:
-            err(where, f"practice id '{q}' does not exist in data/originals")
+            err(where, f"practice id '{q}' does not exist in {rel(ORIGINALS)}")
         if int(m.group(1)) not in doms:
             err(where, f"practice id '{q}' is in D{m.group(1)}, which is not in domains")
         owner = ctx["practice_owner"].get(q)
@@ -421,7 +455,7 @@ def check_principle(p, i, ctx):
         ctx["practice_owner"][q] = pid
     if len(pids) < MIN_PRACTICE:
         warn(where, f"only {len(pids)} practice_ids (target {MIN_PRACTICE}+); write questions for this gap")
-    if len({q[:2] for q in pids if isinstance(q, str)}) == 1 and len(doms) > 1:
+    if len({qdomain(q) for q in pids if qdomain(q)}) == 1 and len(doms) > 1:
         warn(where, "practice_ids all come from one domain")
 
     # slip_pattern
@@ -449,8 +483,48 @@ def check_principle(p, i, ctx):
             ctx["old_owner"][v] = pid
 
 
+def configure(notes=None, bank=None):
+    """Point the checks at another certification's notes and bank.
+
+    With no flags nothing changes: the CISA notes, the CISA bank, domains 1-5
+    and the old PRINCIPLES_LIB ids."""
+    global NOTES, ORIGINALS, DOMAINS, QID, SUBTOPIC, LEGACY_IDS
+    if notes:
+        NOTES = Path(notes).resolve()
+        SUBTOPIC = re.compile(r"^([1-9])[A-Z]\d+\.\d+$")
+    if bank:
+        ORIGINALS = Path(bank).resolve()
+        found = {int(m.group(1)) for f in ORIGINALS.glob("d*.json")
+                 if (m := re.fullmatch(r"d([1-9])\.json", f.name))}
+        if not found:
+            print(f"✗ no d{{N}}.json question files in {bank}")
+            sys.exit(1)
+        DOMAINS = found
+        QID = re.compile(r"^(?:[a-z]+_)?d([1-9])_\d{3}$")
+        LEGACY_IDS = set()  # the old web PRINCIPLES_LIB was CISA only
+
+
+def parse_args(argv):
+    path, opts = None, {"notes": None, "bank": None}
+    args = list(argv[1:])
+    while args:
+        a = args.pop(0)
+        if a in ("--notes", "--bank"):
+            if not args:
+                print(f"✗ {a} needs a value")
+                sys.exit(2)
+            opts[a[2:]] = args.pop(0)
+        elif a.startswith("--"):
+            print(f"✗ unknown option {a}")
+            sys.exit(2)
+        else:
+            path = Path(a)
+    return path or DEFAULT, opts
+
+
 def main(argv):
-    path = Path(argv[1]) if len(argv) > 1 else DEFAULT
+    path, opts = parse_args(argv)
+    configure(**opts)
     try:
         doc = json.loads(path.read_text())
     except (OSError, ValueError) as e:
@@ -528,8 +602,8 @@ def main(argv):
     check_text_hygiene(doc)
 
     # Report.
-    rel = path.relative_to(ROOT) if path.is_relative_to(ROOT) else path
-    print(f"Principles lint: {rel}")
+    shown = rel(path)
+    print(f"Principles lint: {shown}")
     print(f"  {len(principles)} principles in {len(ctx['families'])} families")
     fam_line = ", ".join(f"{f} {len(ctx['per_family'].get(f, []))}" for f in ctx["families"])
     print(f"  per family: {fam_line}")
@@ -538,7 +612,7 @@ def main(argv):
     n_q = len(ctx["qids"] - {None})
     print(f"  question tags (principle_id): {len(ctx['tags'])} of {n_q} tagged")
     if ctx["tags"]:
-        tagged_doms = sorted({int(q[1]) for q in ctx["tags"] if isinstance(q, str) and QID.match(q)})
+        tagged_doms = sorted({qdomain(q) for q in ctx["tags"] if qdomain(q)})
         for pid, per_dom in tag_counts.items():
             total = sum(per_dom.values())
             split = ", ".join(f"D{d} {per_dom.get(d, 0)}" for d in tagged_doms)

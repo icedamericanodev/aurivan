@@ -153,6 +153,8 @@ describe('widget source guards', () => {
     for (const xml of [backup, transfer]) {
       expect(xml).toContain('<exclude domain="file" path="widget_images/" />');
       expect(xml).toContain('<exclude domain="sharedpref" path="com.kaisip.app.WIDGET_SIZES.xml" />');
+      // react-native-android-widget 0.26 (Expo SDK 58) keeps the sizes it measured in a second file.
+      expect(xml).toContain('<exclude domain="sharedpref" path="rnwidget.measured_sizes.xml" />');
       expect(xml).not.toContain('<include');
     }
     expect(transfer).toContain('<cloud-backup>');

@@ -1,0 +1,1838 @@
+{
+  "domain_number": 4,
+  "domain_name": "The SEC, enforcement and Dodd-Frank",
+  "exam_weight": "27%",
+  "source": "Original KaiSip notes written from the public law: the Sarbanes-Oxley Act (Pub. L. 107-204), the Dodd-Frank Act (Pub. L. 111-203), the U.S. Code, SEC rules in 17 CFR and SEC publications, each opened and checked on 31 Oct 2026. Not affiliated with or endorsed by the Sarbanes Oxley Compliance Professionals Association (SOXCPA), the SEC or the PCAOB.",
+  "overview": "This domain covers the agency that enforces the Sarbanes-Oxley Act and the tools around it: the two securities laws the SEC administers, how it writes rules, and how its investigations, settlements and referrals work. It then covers the Act's records and fraud crimes, protections and rewards for whistleblowers, and the Dodd-Frank Act of 2010, which created new financial stability bodies and amended SOX.",
+  "analogy": "Think of a national sports league. Its founding rulebooks say how players join and how games are played, and the league office writes new rules after asking teams for comments. The office investigates fouls, warns players before charging them and can fine or suspend, but only the police can arrest. Tampering with game footage is a separate crime, and players who report cheating are protected and can be rewarded. After a scandal, a reform law adds a safety council and updates some old rules.",
+  "parts": [
+    {
+      "part": "A",
+      "name": "The SEC",
+      "topic_ids": [
+        "4A1",
+        "4A2",
+        "4A3"
+      ]
+    },
+    {
+      "part": "B",
+      "name": "Fraud accountability and whistleblowers",
+      "topic_ids": [
+        "4B1",
+        "4B2",
+        "4B3"
+      ]
+    },
+    {
+      "part": "C",
+      "name": "The Dodd-Frank Act",
+      "topic_ids": [
+        "4C1",
+        "4C2",
+        "4C3"
+      ]
+    }
+  ],
+  "topics": [
+    {
+      "topic_id": "4A1",
+      "topic_name": "The Securities Act and the Exchange Act",
+      "overview": "The two founding securities laws split the work: the 1933 Act governs offerings, and the 1934 Act created the SEC and governs trading, market firms and periodic reports. The Sarbanes-Oxley Act sits on top of them, and the SEC enforces it as part of the Exchange Act.",
+      "can_do": [
+        "Tell which Act governs an offering and which governs trading and reporting",
+        "Name the Act that created the SEC",
+        "Explain how a SOX violation is enforced through the Exchange Act"
+      ],
+      "subtopics": [
+        {
+          "id": "4A1.1",
+          "name": "The Securities Act of 1933",
+          "legacy_ids": [],
+          "practice_ids": [
+            "csoe_d4_001",
+            "csoe_d4_040"
+          ],
+          "definition": "The Securities Act of 1933 is the federal law that governs offers and sales of securities, requiring registration and disclosure and banning fraud in sales.",
+          "why_it_matters": "It is the entry gate to U.S. public markets: before a company sells securities to the public, investors must get the facts. Mixing it up with the 1934 Act is a classic exam trap.",
+          "how_it_works": [
+            "The SEC calls it the 'truth in securities' law, with two aims: give investors key facts about offered securities and ban fraud in their sale.",
+            "Section 5 (15 U.S.C. 77e) bars offering or selling a security through the mails or interstate commerce unless a registration statement is filed or in effect.",
+            "Registration forms describe the business, the security, management and financial statements certified by independent accountants.",
+            "Some offerings are exempt, such as private offerings to a limited number of investors, limited-size or intrastate offerings, and government securities.",
+            "The SEC requires accurate disclosure but does not guarantee it or judge whether a security is a good investment."
+          ],
+          "compare": {
+            "columns": [
+              "Securities Act of 1933",
+              "Securities Exchange Act of 1934"
+            ],
+            "rows": [
+              {
+                "label": "Main subject",
+                "cells": [
+                  "Offers and sales of securities",
+                  "Trading, market firms and reporting after issue"
+                ]
+              },
+              {
+                "label": "Key duty",
+                "cells": [
+                  "Register the offering and deliver a prospectus",
+                  "File periodic reports; register exchanges and brokers"
+                ]
+              },
+              {
+                "label": "Created the SEC?",
+                "cells": [
+                  "No",
+                  "Yes, in Section 4"
+                ]
+              }
+            ]
+          },
+          "example": "Brightwell Foods plans to raise money by selling new bonds to the public. Its treasurer, Ana, assumes the company's existing annual reports cover the sale. Outside counsel explains that the bond offering needs its own registration statement and prospectus under the 1933 Act unless an exemption applies, and the team starts drafting the filing.",
+          "audit_focus": {
+            "review": [
+              "Compare each planned offering with the registration duty and the exemptions",
+              "Trace prospectus figures to the audited numbers they come from"
+            ],
+            "evidence": [
+              "EDGAR filing record for each offering document",
+              "Legal opinion supporting any exemption claimed"
+            ],
+            "recommend": "Have the finance team and counsel confirm registration or an exemption before any offer is made.",
+            "decides": "The board approves the offering; counsel advises on registration"
+          },
+          "isaca_rule": "A new offer or sale of securities points to the 1933 Act: register it or rely on an exemption, and never mislead buyers. Trading, market firms and periodic reports after issue belong to the 1934 Act.",
+          "exam_traps": [
+            {
+              "trap": "SEC registration means the SEC vouches for the investment.",
+              "why": "The SEC requires accurate disclosure but does not guarantee it; investors make their own judgment about the security."
+            },
+            {
+              "trap": "Every sale of securities must be registered.",
+              "why": "Exemptions exist, such as private offerings to a limited number of persons, limited-size and intrastate offerings, and government securities."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Registration statement",
+              "definition": "The disclosure document an issuer files with the SEC before offering securities, covering the business, the security, management and finances."
+            },
+            {
+              "term": "Prospectus",
+              "definition": "The offering document given to investors, drawn from the registration statement."
+            },
+            {
+              "term": "Exempt offering",
+              "definition": "An offering the law lets a company make without registering, such as a private offering."
+            }
+          ],
+          "memory_aid": "1933: the first sale. Register it or find an exemption."
+        },
+        {
+          "id": "4A1.2",
+          "name": "The Securities Exchange Act of 1934",
+          "legacy_ids": [],
+          "practice_ids": [
+            "csoe_d4_002"
+          ],
+          "definition": "The Securities Exchange Act of 1934 created the SEC and governs securities trading, exchanges, brokers and the periodic reports of companies with publicly traded securities.",
+          "why_it_matters": "Most SOX duties attach to companies that report under this Act, and SOX is enforced through it. Knowing which Act applies tells you who must comply and how violations are pursued.",
+          "how_it_works": [
+            "Section 4 (15 U.S.C. 78d) established the Securities and Exchange Commission, with five commissioners appointed by the President with Senate consent.",
+            "The Act lets the SEC register, regulate and oversee exchanges, brokers, transfer agents, clearing agencies and self-regulatory organizations such as FINRA.",
+            "It requires periodic reports from companies with publicly traded securities and covers proxy solicitations, tender offers and insider trading.",
+            "SOX Section 3(b) treats a violation of SOX, an SEC rule under it or a PCAOB rule like an Exchange Act violation, with the same penalties.",
+            "So SOX did not replace the 1933 or 1934 Act; it added duties that the SEC enforces with its existing powers."
+          ],
+          "example": "Harbor Logistics already has listed shares. A new director, Sam, asks whether SOX replaced the old securities laws. The general counsel explains that the company still files annual and quarterly reports under the 1934 Act, and that SOX duties such as officer certifications sit on top of those reports.",
+          "audit_focus": {
+            "review": [
+              "Confirm which periodic reports the company must file under the Exchange Act",
+              "Map each SOX duty to the Exchange Act report it attaches to"
+            ],
+            "evidence": [
+              "Filing history on EDGAR showing timely annual and quarterly reports",
+              "Disclosure calendar listing report deadlines and SOX steps"
+            ],
+            "recommend": "Have the disclosure committee track Exchange Act filings and the SOX duties attached to each report.",
+            "decides": "The CEO and CFO answer for the reports they certify"
+          },
+          "isaca_rule": "The 1934 Act created the SEC and governs what happens after issue: trading, market firms and periodic reports. A SOX violation is enforced as an Exchange Act violation (SOX Section 3(b)).",
+          "exam_traps": [
+            {
+              "trap": "The Securities Act of 1933 created the SEC.",
+              "why": "The SEC was established by Section 4 of the 1934 Act (15 U.S.C. 78d). The 1933 Act governs offerings."
+            },
+            {
+              "trap": "SOX replaced the 1933 and 1934 Acts.",
+              "why": "SOX added duties on top of them, and Section 3(b) enforces SOX violations as Exchange Act violations, so both older Acts remain in force."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Self-regulatory organization (SRO)",
+              "definition": "A body such as an exchange or FINRA that writes and enforces rules for its members under SEC oversight."
+            },
+            {
+              "term": "Periodic reports",
+              "definition": "The annual, quarterly and current reports that companies with publicly traded securities file under the Exchange Act."
+            }
+          ],
+          "memory_aid": "1934: the SEC is born, and trading and reports follow."
+        }
+      ]
+    },
+    {
+      "topic_id": "4A2",
+      "topic_name": "SEC rulemaking",
+      "overview": "Much of SOX works through SEC rules rather than the statute's own words. This topic covers how the SEC adopts a rule, from public proposal to effective date, and how SOX sections direct the rules that set the detailed duties.",
+      "can_do": [
+        "Put the steps of notice-and-comment rulemaking in order",
+        "Tell when a rule binds companies: proposed, adopted or effective",
+        "Find the SEC rule behind a SOX section, such as Rule 2-06 behind Section 802"
+      ],
+      "subtopics": [
+        {
+          "id": "4A2.1",
+          "name": "Notice-and-Comment Rulemaking",
+          "legacy_ids": [],
+          "practice_ids": [
+            "csoe_d4_003",
+            "csoe_d4_022"
+          ],
+          "definition": "Notice-and-comment rulemaking is the process by which the SEC proposes a rule publicly, takes comments, and then adopts a final rule with its reasons.",
+          "why_it_matters": "SEC rules carry the force of law, and many SOX duties work through them. Knowing the steps tells you whether a rule is only proposed, adopted, or already binding.",
+          "how_it_works": [
+            "The SEC publishes a notice of proposed rulemaking in the Federal Register, with the rule's terms or subjects and its legal authority (5 U.S.C. 553(b)).",
+            "Interested persons submit written data, views or arguments, which the SEC considers before adopting the rule (553(c)).",
+            "The final rule includes a concise general statement of its basis and purpose (553(c)).",
+            "A substantive rule is published at least 30 days before its effective date, unless an exception applies (553(d)).",
+            "Interpretive rules, policy statements, procedural rules, or a stated good-cause finding can skip notice and comment (553(b)).",
+            "Anyone may petition the SEC to issue, amend or repeal a rule (553(e))."
+          ],
+          "example": "A trade group reads an SEC proposal for a new disclosure item in the Federal Register. Its policy director, Lee, files a comment letter with cost data before the deadline. Months later the SEC adopts a revised final rule whose release explains which comments changed the text and sets an effective date.",
+          "audit_focus": {
+            "review": [
+              "Inspect the rule tracker for proposals that affect the company's filings",
+              "Compare the company's adoption plan with the rule's compliance dates"
+            ],
+            "evidence": [
+              "Rule tracker entries with owners and compliance dates",
+              "Comment letters the company filed, if any"
+            ],
+            "recommend": "Have the legal team monitor proposed SEC rules and plan compliance from each final rule's effective date.",
+            "decides": "The Commission votes to adopt final rules; management plans compliance"
+          },
+          "isaca_rule": "A substantive SEC rule goes from proposal to comment to a final rule with reasons, then takes effect at least 30 days later (5 U.S.C. 553). A statute telling the SEC to act says what to adopt, not that comment can be skipped.",
+          "exam_traps": [
+            {
+              "trap": "Once Congress orders a rule, the SEC can adopt it without public comment.",
+              "why": "Section 553 still applies unless an exception fits, such as an interpretive rule or a good-cause finding the agency states in the rule."
+            },
+            {
+              "trap": "A proposed rule binds companies from the day it is published.",
+              "why": "Only a final rule binds, and a substantive rule generally takes effect at least 30 days after it is published."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Federal Register",
+              "definition": "The U.S. government's daily publication of proposed and final agency rules and notices."
+            },
+            {
+              "term": "Good cause",
+              "definition": "An agency finding, stated in the rule, that notice and comment are impracticable, unnecessary or contrary to the public interest."
+            }
+          ],
+          "memory_aid": "Propose, comment, adopt, wait: then the rule binds."
+        },
+        {
+          "id": "4A2.2",
+          "name": "Rules the Sarbanes-Oxley Act Directed",
+          "legacy_ids": [],
+          "practice_ids": [
+            "csoe_d4_021"
+          ],
+          "definition": "Many SOX duties take effect through SEC rules: the Act tells the SEC to write rules, and those rules set the detailed requirements companies and auditors follow.",
+          "why_it_matters": "The right answer often names the rule, not only the section. Knowing that a section works through a rule tells you where the detail lives and who enforces it.",
+          "how_it_works": [
+            "Section 3(a) lets the SEC adopt rules needed in the public interest, to protect investors or to carry out the Act.",
+            "Some sections set deadlines: 18 U.S.C. 1520(a)(2), from Section 802, told the SEC to adopt audit record rules within 180 days, after notice and comment.",
+            "The SEC's retention rule is Rule 2-06 of Regulation S-X (17 CFR 210.2-06, published 30 Jan 2003), which sets a seven-year period.",
+            "Section 404(a) names management's responsibility and assessment, then directs SEC rules; Item 308(a) (17 CFR 229.308(a), opened 31 Oct 2026) sets the full contents.",
+            "No PCAOB rule takes effect without prior SEC approval (SOX Section 107(b)); the SEC oversees the PCAOB, not the reverse."
+          ],
+          "example": "Morgan, a new compliance analyst at Tidewater Health, finds Section 404(a) in the Act but cannot find what management's report must contain. Their manager shows them the SEC's rules in Regulation S-K, which list the report's contents, and explains that the Act set the duty while the rule supplies the detail.",
+          "audit_focus": {
+            "review": [
+              "Map each SOX section the company relies on to its implementing SEC rule",
+              "Compare internal policies with the current rule text, not only the statute"
+            ],
+            "evidence": [
+              "Rule-to-policy map naming each CFR section and its owner",
+              "Dated copies of each implementing rule as last reviewed"
+            ],
+            "recommend": "Have the compliance team cite the implementing SEC rule for each SOX duty in internal policies.",
+            "decides": "Management complies with the rules the SEC writes and enforces"
+          },
+          "isaca_rule": "When a SOX section tells the SEC to prescribe rules, the duty in practice is the rule's text. Cite both the section and the rule, check the current CFR, and remember that PCAOB rules need SEC approval.",
+          "exam_traps": [
+            {
+              "trap": "The statute alone tells you everything a company or auditor must do.",
+              "why": "Many sections only direct rulemaking; the detail, such as Rule 2-06's seven-year period, sits in the SEC's rules."
+            },
+            {
+              "trap": "Rule 2-06 is a PCAOB auditing standard.",
+              "why": "It is an SEC rule in Regulation S-X (17 CFR 210.2-06), though it points to PCAOB and SEC standards for what workpapers contain."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Regulation S-X",
+              "definition": "The SEC's rules on the form and content of financial statements, including Rule 2-06 on audit record retention."
+            },
+            {
+              "term": "Regulation S-K",
+              "definition": "The SEC's rules on non-financial disclosure in filings, including management's internal control report."
+            }
+          ],
+          "memory_aid": "The Act sets the duty; the rule sets the detail."
+        }
+      ]
+    },
+    {
+      "topic_id": "4A3",
+      "topic_name": "SEC investigations, disclosure and settlements",
+      "overview": "An SEC enforcement matter moves from inquiry to investigation, may bring a Wells notice, and ends in a civil action, an administrative proceeding, a settlement, a referral or a closing. Along the way the company must decide what to disclose and must preserve its records.",
+      "can_do": [
+        "Tell a voluntary request from a subpoena under a formal order",
+        "Explain what a Wells notice is and is not",
+        "Name what an SEC settlement can and cannot resolve",
+        "Separate the duty to preserve records from the judgment on disclosure"
+      ],
+      "subtopics": [
+        {
+          "id": "4A3.1",
+          "name": "Inquiries, Investigations and Formal Orders",
+          "legacy_ids": [],
+          "practice_ids": [
+            "csoe_d4_005"
+          ],
+          "definition": "An SEC enforcement matter starts as a matter under inquiry, may become an investigation, and gains subpoena power only when the Commission issues a formal order.",
+          "why_it_matters": "The stage tells a company what the SEC can demand. Voluntary requests are answered by choice; a subpoena under a formal order must be obeyed. Neither stage is a finding of wrongdoing.",
+          "how_it_works": [
+            "Tips, complaints, referrals and news can open a matter under inquiry (MUI); the bar is low because a MUI only gathers facts (Enforcement Manual 2.2.1).",
+            "In a preliminary inquiry no process is issued and no testimony is compelled (17 CFR 202.5(a)); staff ask for documents and interviews voluntarily.",
+            "The Commission may issue a formal order of investigation naming staff as officers who can administer oaths, subpoena witnesses and require documents (Manual 2.2.3).",
+            "A formal order is an early investigative step, not a determination that anyone violated the law (Manual 2.2.3).",
+            "Investigations are nonpublic unless the Commission orders otherwise (202.5(a))."
+          ],
+          "example": "Quay Retail's general counsel, Priya, receives an SEC letter asking for sales contracts. They ask whether the company must comply. Outside counsel notes that the letter cites no subpoena, so production is voluntary, but advises cooperating and preserving everything, since the staff can still seek more power from the Commission.",
+          "audit_focus": {
+            "review": [
+              "Confirm whether each SEC request is voluntary or made under subpoena",
+              "Trace every SEC request to a log entry and a response owner"
+            ],
+            "evidence": [
+              "Copies of SEC letters, subpoenas and any formal order shown",
+              "Request log with dates, scope and responses"
+            ],
+            "recommend": "Have the general counsel log every SEC request, note its legal basis, and coordinate one company response.",
+            "decides": "The Commission issues formal orders; counsel decides how the company responds"
+          },
+          "isaca_rule": "No formal order, no compulsion: before it, SEC staff can only ask. A formal order lets named staff subpoena documents and testimony, but it is still not a finding of violation.",
+          "exam_traps": [
+            {
+              "trap": "A formal order of investigation means the SEC has found a violation.",
+              "why": "The Enforcement Manual calls it an early investigative step that designates officers and grants subpoena power; it decides nothing about guilt."
+            },
+            {
+              "trap": "SEC staff can compel testimony in a matter under inquiry.",
+              "why": "Compelled testimony needs subpoena power, which comes from a formal order issued in an investigation."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Matter under inquiry (MUI)",
+              "definition": "The SEC enforcement staff's preliminary look at facts to decide whether a full investigation is worth opening."
+            },
+            {
+              "term": "Formal order of investigation",
+              "definition": "A Commission order that names staff as officers with power to subpoena witnesses and documents."
+            },
+            {
+              "term": "Subpoena",
+              "definition": "A legal order requiring a person to produce documents or give testimony."
+            }
+          ],
+          "memory_aid": "Ask first, order second: subpoenas need a formal order."
+        },
+        {
+          "id": "4A3.2",
+          "name": "The Wells Process",
+          "legacy_ids": [],
+          "practice_ids": [
+            "csoe_d4_004"
+          ],
+          "definition": "The Wells process lets a person whom SEC staff plan to charge learn the proposed charges and answer in writing before the Commission decides.",
+          "why_it_matters": "A Wells notice is the last chance to change the Commission's mind before an action is filed. Treating it as a verdict, or ignoring it, are both costly mistakes.",
+          "how_it_works": [
+            "Rule 5(c) (17 CFR 202.5(c)) lets persons involved in an investigation submit a written statement of their position to the Commission.",
+            "A Wells notice says the staff has preliminarily decided to recommend an action, names the proposed violations and invites a submission (Enforcement Manual 2.3).",
+            "Absent timing constraints, recipients get four weeks; written submissions are typically capped at 40 pages and videos at 12 minutes (Manual 2.3).",
+            "Staff should share salient evidence the recipient may not know; any submission goes to the Commission with the staff's recommendation (Manual 2.3; Rule 5(c)).",
+            "Staff may skip the notice when immediate action is needed to protect investors, such as an emergency asset freeze (Manual 2.3).",
+            "The Commission may use a submission in any action, and others may be able to obtain it (Manual 2.3)."
+          ],
+          "example": "Nova Pharma's former sales chief, Jordan, gets a call from SEC staff and then a letter naming proposed charges of misleading investors. Jordan's lawyer drafts a 35-page response arguing the statements were accurate, files it within four weeks, and warns Jordan that the Commission may use it in any later case.",
+          "audit_focus": {
+            "review": [
+              "Compare the notice's proposed charges with the evidence the staff shared",
+              "Confirm the submission deadline, length limit and format"
+            ],
+            "evidence": [
+              "Written Wells notice and notes of the Wells call",
+              "Filed submission with its date and page count"
+            ],
+            "recommend": "Have counsel brief the board and file any Wells submission within the stated limits.",
+            "decides": "The Commission decides whether to bring an action; the board directs the company's response"
+          },
+          "isaca_rule": "A Wells notice is a preliminary staff recommendation plus an invitation to respond. Only the Commission decides to sue or start proceedings, and anything submitted can be used against the sender.",
+          "exam_traps": [
+            {
+              "trap": "A Wells notice is a finding that the recipient broke the law.",
+              "why": "It reports the staff's preliminary determination to recommend action; the Commission has decided nothing yet."
+            },
+            {
+              "trap": "Everyone the SEC charges first receives a Wells notice.",
+              "why": "Staff may skip it when urgent action is needed, such as an emergency asset freeze to stop an ongoing fraud."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Wells notice",
+              "definition": "A staff communication saying it preliminarily plans to recommend charges, naming them and inviting a response."
+            },
+            {
+              "term": "Wells submission",
+              "definition": "The recipient's written or video statement to the Commission arguing against the proposed action."
+            }
+          ],
+          "memory_aid": "Wells: warning, evidence shared, written answer, Commission decides."
+        },
+        {
+          "id": "4A3.3",
+          "name": "Enforcement Outcomes and Settlements",
+          "legacy_ids": [],
+          "practice_ids": [
+            "csoe_d4_006",
+            "csoe_d4_025"
+          ],
+          "definition": "SEC enforcement ends in a civil court action, an administrative proceeding, a settlement, a criminal referral or a closed investigation; the SEC itself never prosecutes crimes.",
+          "why_it_matters": "Learners must know what an SEC case can and cannot do. Confusing civil SEC remedies with criminal charges brought by the Justice Department is a common trap.",
+          "how_it_works": [
+            "After investigating, the Commission may start administrative proceedings, seek injunctions in court and, for willful violations, refer the matter to the Justice Department (17 CFR 202.5(b)).",
+            "The SEC brings civil, not criminal, actions; criminal authorities may run parallel cases (Enforcement Manual 5.2).",
+            "A person may offer to settle in writing; the offer waives a hearing and judicial review, and is final only on the Commission's order (17 CFR 201.240).",
+            "A settlement resolves only civil or administrative claims; it cannot reach criminal charges, which belong to the Attorney General (202.5(f)).",
+            "If staff close a matter, a termination notice is not an exoneration (202.5(d)).",
+            "Release No. 33-11417 repealed Rule 202.5(e), the 1972 no-deny settlement policy, from 21 May 2026; the rest of Rule 202.5 stands."
+          ],
+          "example": "Cobalt Mining's former operations chief agrees with SEC staff on terms to end an administrative case over misleading reserve estimates. The chief, not their lawyer, signs the written offer, as the rule requires. The division presents it to the Commission, and the deal is final only when the Commission issues its findings and order.",
+          "audit_focus": {
+            "review": [
+              "Compare settlement terms with the claims and parties they resolve",
+              "Confirm the Commission issued a final order accepting the offer"
+            ],
+            "evidence": [
+              "Executed settlement papers and the order that accepts them",
+              "Board minutes approving the company's settlement"
+            ],
+            "recommend": "Have counsel confirm in writing that any SEC settlement covers civil claims only, and plan for parallel cases.",
+            "decides": "The Commission accepts settlements; the Justice Department handles criminal charges"
+          },
+          "isaca_rule": "The SEC's tools are civil: court actions, administrative proceedings and settlements. Criminal cases go to the Justice Department, and no SEC settlement can trade away criminal exposure.",
+          "exam_traps": [
+            {
+              "trap": "The SEC brings criminal charges for willful securities fraud.",
+              "why": "It refers willful violations to the Department of Justice; the SEC itself brings only civil actions."
+            },
+            {
+              "trap": "A closed SEC investigation clears the company.",
+              "why": "Rule 5(d) says a termination notice must not be read as exoneration or as a promise that no action will follow."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Administrative proceeding",
+              "definition": "An SEC case heard inside the agency, rather than in federal court, that can lead to sanctions."
+            },
+            {
+              "term": "Offer of settlement",
+              "definition": "A written offer, signed by the person, to resolve an SEC proceeding; final only on the Commission's order."
+            },
+            {
+              "term": "Parallel proceedings",
+              "definition": "A civil SEC case and a criminal case on the same facts, run by different authorities."
+            }
+          ],
+          "memory_aid": "SEC sues civilly; Justice prosecutes; settling ends only the civil side."
+        },
+        {
+          "id": "4A3.4",
+          "name": "Disclosing an Investigation and Preserving Records",
+          "legacy_ids": [],
+          "practice_ids": [
+            "csoe_d4_023",
+            "csoe_d4_024"
+          ],
+          "definition": "Disclosing an SEC investigation is a materiality judgment under the disclosure rules, while preserving related records is a legal duty once proceedings are anticipated.",
+          "why_it_matters": "A company under investigation faces two separate questions: what to tell investors and what to keep. Getting either wrong can add new liability to the original matter.",
+          "how_it_works": [
+            "Regulation S-K Item 103 asks for material pending legal proceedings, including those known to be contemplated by governmental authorities (17 CFR 229.103(a)).",
+            "Item 103 turns on materiality, so whether an inquiry must be described is a judgment the company makes with counsel.",
+            "SEC staff may send a document preservation letter covering all forms, including messaging apps and personal devices (Enforcement Manual 3.2.2).",
+            "A duty to preserve generally arises when litigation is reasonably anticipated or pending (Manual 3.2.2).",
+            "Destroying records to obstruct a federal matter, even one only expected, is a crime (18 U.S.C. 1519)."
+          ],
+          "example": "Ridgeline Software receives an SEC preservation letter about its revenue practices. The legal team issues a hold notice to all sales staff, covering their phone chats, and suspends routine email deletion. Separately, the disclosure committee meets with counsel to judge whether the inquiry is material enough to describe in the next quarterly report.",
+          "audit_focus": {
+            "review": [
+              "Confirm a legal hold reached every custodian named in the letter",
+              "Inspect deletion settings for suspended auto-delete on relevant systems",
+              "Evaluate the disclosure committee's materiality analysis"
+            ],
+            "evidence": [
+              "Legal hold notices with custodian acknowledgments",
+              "System logs showing auto-deletion suspended",
+              "Disclosure committee minutes on the investigation"
+            ],
+            "recommend": "Have the legal team issue holds at once and document the disclosure committee's materiality decision.",
+            "decides": "Management and the disclosure committee decide disclosure on counsel's advice"
+          },
+          "isaca_rule": "Keep everything; decide disclosure on materiality. A preservation duty starts when proceedings are reasonably anticipated, and destroying records to obstruct is a federal crime; whether to disclose an inquiry follows the materiality test in Item 103.",
+          "exam_traps": [
+            {
+              "trap": "Every SEC inquiry must be disclosed in the next periodic report.",
+              "why": "Item 103 covers material proceedings, including those known to be contemplated by authorities; whether an inquiry qualifies is a materiality judgment."
+            },
+            {
+              "trap": "Routine deletion schedules can keep running during an investigation.",
+              "why": "Once litigation is reasonably anticipated, relevant records must be kept; staff preservation letters ask for all forms, including messaging apps."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Document preservation letter",
+              "definition": "An SEC staff letter telling a recipient to keep all potentially relevant documents and messages."
+            },
+            {
+              "term": "Legal hold",
+              "definition": "A company instruction suspending deletion of records relevant to a pending or expected proceeding."
+            },
+            {
+              "term": "Item 103",
+              "definition": "The Regulation S-K disclosure item on material pending legal proceedings, including those contemplated by authorities."
+            }
+          ],
+          "memory_aid": "Keep it all; disclose what is material."
+        },
+        {
+          "id": "4A3.5",
+          "name": "Common Violations and Enforcement Forums",
+          "legacy_ids": [],
+          "practice_ids": [
+            "csoe_d4_026"
+          ],
+          "definition": "Common violations are the kinds of misconduct the SEC says most often lead to its investigations, such as misleading disclosure, market manipulation, insider trading and unregistered sales.",
+          "why_it_matters": "Naming the violation is the first step in an enforcement question; knowing the forums tells you who hears the case.",
+          "how_it_works": [
+            "The SEC lists six common violations, starting with misleading statements or omissions, price manipulation and theft of customers' funds or securities (How Investigations Work, opened 31 Oct 2026).",
+            "The list adds broker-dealers failing to treat customers fairly, insider trading, and selling unregistered securities.",
+            "Insider trading is illegal when a person trades while holding material nonpublic information, in breach of a duty to withhold it or not trade (SEC Statutes and Regulations page).",
+            "In a civil action, the SEC sues in federal district court for remedies such as an injunction, penalties or disgorgement.",
+            "In an administrative proceeding, an administrative law judge independent of the Commission hears the case; either side may appeal to the Commission.",
+            "Since SEC v. Jarkesy (2024), defendants facing civil penalties for securities fraud have a jury right, so contested claims of that kind go to federal court."
+          ],
+          "example": "Before a product recall is announced, Jordan, a regional sales director at Pinecrest Foods, sells company shares through a relative's account. Market surveillance flags the trade and SEC staff open an inquiry. The compliance officer flags possible insider trading and preserves Jordan's records.",
+          "audit_focus": {
+            "review": [
+              "Compare preclearance requests with trades by insiders near announcements",
+              "Inspect blackout calendars against the dates of material events"
+            ],
+            "evidence": [
+              "Insider list with dated preclearance approvals",
+              "Trading policy acknowledgments signed by insiders"
+            ],
+            "recommend": "Have the compliance team test trades by insiders against material event dates each quarter.",
+            "decides": "SEC staff recommend action, and the Commission votes on it"
+          },
+          "isaca_rule": "Name the violation from the facts: trading on undisclosed material news is insider trading; misleading statements are misrepresentation. The SEC pursues them civilly: contested fraud claims seeking penalties go to federal court (SEC v. Jarkesy, 2024); administrative proceedings remain for other sanctions and settled orders, and many cases settle.",
+          "exam_traps": [
+            {
+              "trap": "Any profitable trade just before an announcement is market manipulation.",
+              "why": "Manipulation means trading to move prices artificially. Trading on material nonpublic information in breach of a duty is insider trading, a separate common violation."
+            },
+            {
+              "trap": "An administrative law judge's decision ends the matter.",
+              "why": "Either side may appeal the initial decision to the Commission, which may affirm, reverse or send it back."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Market manipulation",
+              "definition": "Trading or other conduct meant to move a security's price artificially rather than through genuine supply and demand."
+            },
+            {
+              "term": "Administrative law judge",
+              "definition": "A judge independent of the Commission who hears SEC administrative proceedings and issues an initial decision."
+            }
+          ],
+          "memory_aid": "Name the wrong, then the forum: fraud penalties mean a jury in court."
+        }
+      ]
+    },
+    {
+      "topic_id": "4B1",
+      "topic_name": "Records and securities fraud penalties",
+      "overview": "Title VIII of SOX, the Corporate and Criminal Fraud Accountability Act, made record destruction and securities fraud serious federal crimes, set retention duties for auditors, kept fraud debts alive through bankruptcy and set time limits for investor suits.",
+      "can_do": [
+        "Tell Section 1519's record crime from Section 1520's auditor retention duty",
+        "Give the auditor retention periods in the statute and in the SEC rule",
+        "Apply the bankruptcy exception and the time limits for securities fraud claims"
+      ],
+      "subtopics": [
+        {
+          "id": "4B1.1",
+          "name": "Destroying or Falsifying Records",
+          "legacy_ids": [],
+          "practice_ids": [
+            "csoe_d4_008"
+          ],
+          "definition": "Section 802 made it a federal crime for anyone to destroy, alter or falsify records with intent to obstruct a federal matter, punishable by up to 20 years.",
+          "why_it_matters": "It reaches any person, not only auditors or officers, and it can apply before an investigation exists. A cover-up often carries more risk than the original problem.",
+          "how_it_works": [
+            "18 U.S.C. 1519 covers knowingly altering, destroying, concealing, covering up or falsifying any record, document or tangible object.",
+            "The intent must be to impede, obstruct or influence a matter within a federal agency's jurisdiction or a bankruptcy case.",
+            "It applies in relation to or in contemplation of such a matter, so no investigation needs to be open yet.",
+            "The maximum is 20 years in prison, a fine, or both (18 U.S.C. 1519).",
+            "Section 1102 separately punishes corruptly destroying records to impair their use in an official proceeding, also up to 20 years (18 U.S.C. 1512(c))."
+          ],
+          "example": "A plant manager at Fernway Chemicals expects a federal environmental inspection next month. Fearing fines, they edit the plant's emissions log to remove three spills. A compliance analyst finds the original file on a backup and reports it to counsel, who explains that editing records in anticipation of a federal inspection can be a crime.",
+          "audit_focus": {
+            "review": [
+              "Compare edited records with backups and system audit trails",
+              "Inspect change logs for edits made once a federal matter was expected"
+            ],
+            "evidence": [
+              "System audit trail showing who changed each record and when",
+              "Preserved snapshots taken before any suspected change"
+            ],
+            "recommend": "Have management lock records relevant to any expected federal review and report suspected tampering to counsel at once.",
+            "decides": "Prosecutors decide charges; the board oversees the company's response"
+          },
+          "isaca_rule": "Anyone, any record, intent to obstruct, a federal matter pending or expected: that is Section 1519, up to 20 years. It is wider than the auditor workpaper duty in Section 1520.",
+          "exam_traps": [
+            {
+              "trap": "Destroying records is a crime only once an investigation has started.",
+              "why": "Section 1519 also covers acts in contemplation of a federal matter, so destruction before any inquiry can qualify."
+            },
+            {
+              "trap": "Section 802's record crimes apply only to auditors.",
+              "why": "Section 1519 applies to whoever alters or destroys records; only Section 1520 is aimed at accountants who audit issuers."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Obstruction",
+              "definition": "Acting to impede or influence an investigation or proceeding, for example by destroying or falsifying evidence."
+            },
+            {
+              "term": "In contemplation of",
+              "definition": "Done while expecting a future matter, before it formally begins."
+            }
+          ],
+          "memory_aid": "1519: anyone, any record, any federal matter, even one only expected."
+        },
+        {
+          "id": "4B1.2",
+          "name": "Audit Workpaper Retention",
+          "legacy_ids": [],
+          "practice_ids": [
+            "csoe_d4_007"
+          ],
+          "definition": "Audit workpaper retention is the duty of an issuer's auditor to keep audit and review records for a set period: five years by statute, seven by SEC rule.",
+          "why_it_matters": "These records are how regulators and courts test an audit later. Two numbers sit in two sources, and the exam asks which one auditors must meet.",
+          "how_it_works": [
+            "18 U.S.C. 1520 (Section 802) has issuer auditors keep workpapers five years from the end of the fiscal period in which the audit or review was concluded.",
+            "Knowingly and willfully breaking that duty, or the SEC's retention rules, carries up to 10 years in prison (1520(b)).",
+            "The SEC's Rule 2-06 (17 CFR 210.2-06) requires seven years after the auditor concludes the audit or review.",
+            "Rule 2-06 covers workpapers, memos, correspondence and electronic records holding conclusions, opinions, analysis or financial data.",
+            "It also covers records that conflict with the auditor's final conclusions on a significant matter, such as consultations on differences of opinion."
+          ],
+          "compare": {
+            "columns": [
+              "18 U.S.C. 1520(a)(1)",
+              "Rule 2-06",
+              "Rule 17a-4"
+            ],
+            "rows": [
+              {
+                "label": "Who",
+                "cells": [
+                  "Auditors of issuers",
+                  "Auditors of issuers and registered investment companies",
+                  "Exchange members, brokers and dealers"
+                ]
+              },
+              {
+                "label": "Period",
+                "cells": [
+                  "Five years from the end of the fiscal period in which the audit or review ended",
+                  "Seven years after the audit or review ends",
+                  "Six or three years, by record type"
+                ]
+              },
+              {
+                "label": "Records",
+                "cells": [
+                  "Audit or review workpapers",
+                  "Workpapers plus memos, correspondence and conflicting views",
+                  "Broker-dealer business records"
+                ]
+              }
+            ]
+          },
+          "example": "At a regional accounting practice, an IT lead plans to purge client folders after five years to save storage. The quality partner stops the change: the SEC's rule runs longer, and it also reaches emails and memos recording disagreements with the final conclusions, which the purge would have deleted first.",
+          "audit_focus": {
+            "review": [
+              "Compare the retention schedule with Rule 2-06's seven-year period",
+              "Check closed engagements to confirm their records still exist",
+              "Inspect deletion jobs for exceptions covering engagement records"
+            ],
+            "evidence": [
+              "Records retention policy with periods by record type",
+              "Archived engagement files with closing dates"
+            ],
+            "recommend": "Have the firm's leaders set a seven-year minimum for issuer engagement records, including emails and memos.",
+            "decides": "Firm leaders own the retention policy and approve any exceptions"
+          },
+          "isaca_rule": "For an issuer's auditor, meet the longer period: seven years under Rule 2-06, which also reaches memos, correspondence and dissenting views. The five years in 18 U.S.C. 1520 is the statute's own floor.",
+          "exam_traps": [
+            {
+              "trap": "Auditors only need to keep workpapers for five years.",
+              "why": "Five years is the statute (18 U.S.C. 1520); the SEC's Rule 2-06 requires seven years after the audit or review is concluded."
+            },
+            {
+              "trap": "Rule 17a-4 is the SOX retention rule for auditors.",
+              "why": "Rule 17a-4 covers the records of exchange members, brokers and dealers; auditors' issuer records fall under Rule 2-06."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Workpapers",
+              "definition": "An auditor's record of procedures applied, evidence obtained and conclusions reached (Rule 2-06(b))."
+            },
+            {
+              "term": "Review",
+              "definition": "An engagement on financial statements narrower than an audit; Rule 2-06 covers its records as well."
+            }
+          ],
+          "memory_aid": "Statute five, SEC seven: keep seven."
+        },
+        {
+          "id": "4B1.3",
+          "name": "Bankruptcy, Time Limits and Securities Fraud",
+          "legacy_ids": [],
+          "practice_ids": [
+            "csoe_d4_009",
+            "csoe_d4_027",
+            "csoe_d4_028"
+          ],
+          "definition": "Sections 803, 804 and 807 made securities fraud debts survive bankruptcy, set time limits for private fraud suits, and created a 25-year securities fraud crime.",
+          "why_it_matters": "Together they make fraud costly and lasting for wrongdoers and give investors a clear window to sue. Each section carries one number the exam can test.",
+          "how_it_works": [
+            "Section 803 added 11 U.S.C. 523(a)(19): debts for securities law violations or securities fraud are not discharged in bankruptcy.",
+            "That covers debts from judgments, orders, settlement agreements the debtor signed, and orders for damages, fines, penalties or disgorgement.",
+            "Section 804 (28 U.S.C. 1658(b)): private securities fraud claims must be filed within two years of discovery or five years of the violation, whichever comes first.",
+            "Section 804 created no new right to sue; it set time limits for existing private claims.",
+            "Section 807 created 18 U.S.C. 1348: knowingly executing a scheme to defraud in connection with a reporting company's securities carries up to 25 years."
+          ],
+          "example": "Investors in Larkspur Energy learn in 2026 that its reserve reports were inflated. Their lawyer checks the dates: the misleading reports came out in 2024, so the suit fits inside both the two-year limit from discovery and the five-year limit from the violation, and the lawyer files promptly.",
+          "audit_focus": {
+            "review": [
+              "Compare claim dates with the two-year and five-year limits",
+              "Trace any settlement debts to the agreements that created them"
+            ],
+            "evidence": [
+              "Chronology showing when misstatements were made and found",
+              "Settlement agreements and court orders showing amounts owed"
+            ],
+            "recommend": "Have counsel calendar limitation dates for any investor claims and record settlement debts accurately.",
+            "decides": "Courts decide limits and discharge; counsel advises the board on claims"
+          },
+          "isaca_rule": "Securities fraud debts survive bankruptcy, even from a settlement (803). Private fraud suits: two years from discovery or five from the violation, whichever is first (804). Securities fraud itself: up to 25 years (807).",
+          "exam_traps": [
+            {
+              "trap": "A settlement that admits no wrongdoing can be wiped out in bankruptcy.",
+              "why": "Section 523(a)(19) covers any settlement agreement the debtor entered into, without asking about admissions."
+            },
+            {
+              "trap": "Investors always have five years to sue for securities fraud.",
+              "why": "The claim must be brought by the earlier of two years after discovery or five years after the violation."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Nondischargeable debt",
+              "definition": "A debt that survives bankruptcy and must still be paid after the case ends."
+            },
+            {
+              "term": "Statute of limitations",
+              "definition": "The deadline for bringing a legal claim, after which the claim is barred."
+            },
+            {
+              "term": "Disgorgement",
+              "definition": "An order to give up profits gained from a violation."
+            }
+          ],
+          "memory_aid": "803 survives, 804 two-or-five, 807 twenty-five."
+        }
+      ]
+    },
+    {
+      "topic_id": "4B2",
+      "topic_name": "Whistleblower protection",
+      "overview": "Federal law protects and rewards people who report securities fraud. SOX Section 806 shields employees from retaliation through a Labor Department process; Dodd-Frank added SEC cash awards and a direct court route; and SOX Section 1107 makes retaliating against informants a crime.",
+      "can_do": [
+        "Name who Section 806 protects, where the complaint goes and by when",
+        "Apply the Dodd-Frank award conditions and exclusions",
+        "Match a retaliation fact pattern to Section 806, Section 21F(h) or Section 1107"
+      ],
+      "subtopics": [
+        {
+          "id": "4B2.1",
+          "name": "Section 806 Retaliation Protection",
+          "legacy_ids": [],
+          "practice_ids": [
+            "csoe_d4_010"
+          ],
+          "definition": "Section 806 protects employees of public companies from retaliation for reporting suspected fraud or securities violations, starting with a complaint to the Secretary of Labor.",
+          "why_it_matters": "Employees often spot fraud first. Without protection few would report; with it, a company that punishes a good-faith report faces reinstatement, back pay and damages.",
+          "how_it_works": [
+            "Covered: companies registered under Exchange Act Section 12 or reporting under 15(d), their consolidated subsidiaries and affiliates, and rating organizations (18 U.S.C. 1514A(a)).",
+            "Protected: giving information on mail, wire, bank or securities fraud, SEC rule violations or shareholder fraud to a federal agency, Congress or a supervisor.",
+            "Also protected: filing, testifying in or assisting a related proceeding (1514A(a)(2)).",
+            "The employee files with the Secretary of Labor within 180 days of the violation or of learning of it (1514A(b)(2)(D)).",
+            "With no final Labor decision in 180 days, and no bad-faith delay by the employee, they may sue in federal court with a jury (1514A(b)).",
+            "Remedies: reinstatement with seniority, back pay with interest, and special damages including litigation costs and attorney fees (1514A(c))."
+          ],
+          "example": "Theo, a payroll specialist at a listed retailer's consolidated subsidiary, tells the regional controller that bonuses are being booked to the wrong year to beat analyst targets. Two weeks later Theo is moved to a night shift with lower pay. Theo files a complaint with the Department of Labor, naming both the subsidiary and the parent.",
+          "audit_focus": {
+            "review": [
+              "Trace each reported concern to its intake record and outcome",
+              "Compare later job actions against reporters with peers' treatment"
+            ],
+            "evidence": [
+              "Hotline and complaint logs with dates and resolutions",
+              "HR records of transfers, pay changes and terminations after reports"
+            ],
+            "recommend": "Have the audit committee review any adverse action against an employee who reported fraud before it takes effect.",
+            "decides": "The Labor Department, then a federal court, decides retaliation claims"
+          },
+          "isaca_rule": "Section 806 protects public company employees, including those of consolidated subsidiaries, who report fraud internally or to authorities. Complaint to the Secretary of Labor within 180 days; court with a jury if Labor has not decided within 180 days.",
+          "exam_traps": [
+            {
+              "trap": "Only reports made to the SEC are protected under Section 806.",
+              "why": "Reports to a supervisor or another person with authority to investigate, to Congress or to a federal agency are all protected."
+            },
+            {
+              "trap": "Section 806 complaints go straight to federal court.",
+              "why": "The employee first files with the Secretary of Labor; court is open only if Labor has not decided within 180 days."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Retaliation",
+              "definition": "Firing, demoting, suspending, threatening, harassing or otherwise discriminating against an employee for a protected act."
+            },
+            {
+              "term": "Protected activity",
+              "definition": "A lawful report or assistance about suspected fraud or securities violations that the law shields from retaliation."
+            }
+          ],
+          "memory_aid": "806: report, protected; Labor first, 180 days."
+        },
+        {
+          "id": "4B2.2",
+          "name": "SEC Whistleblower Awards",
+          "legacy_ids": [],
+          "practice_ids": [
+            "csoe_d4_011",
+            "csoe_d4_012"
+          ],
+          "definition": "Dodd-Frank Section 922 created SEC awards of 10 to 30 percent of collected sanctions for people who voluntarily give original information leading to actions over $1 million.",
+          "why_it_matters": "Money brings tips the SEC might never get otherwise. Knowing who qualifies, and who is excluded, is central to whistleblower questions.",
+          "how_it_works": [
+            "A covered action is an SEC judicial or administrative action with monetary sanctions over $1 million (15 U.S.C. 78u-6(a)(1)).",
+            "Original information comes from the whistleblower's own knowledge or analysis and is not already known to the SEC from another source (78u-6(a)(3)).",
+            "Awards total 10 to 30 percent of sanctions collected, set at the SEC's discretion, and are paid from its Investor Protection Fund (78u-6(b)).",
+            "No award goes to regulators' or law enforcement staff, people convicted in the matter, or auditors whose required-audit tip is contrary to Section 10A (78u-6(c)(2)).",
+            "Anonymous claimants must use a lawyer, and the SEC must keep identifying information confidential (78u-6(d), (h)(2)).",
+            "After the SEC posts a notice of covered action, claimants have 90 calendar days to apply (SEC Whistleblower Program page)."
+          ],
+          "example": "Rosa, a sales engineer at a medical device maker, sees invoices backdated to inflate revenue. Rosa sends documents and their own analysis to the SEC through a lawyer, without giving a name. Two years later the SEC collects $6 million in sanctions and posts a notice of covered action, and the lawyer files Rosa's claim in time.",
+          "audit_focus": {
+            "review": [
+              "Compare the company's speak-up policy with SEC whistleblower protections",
+              "Inspect employment agreements for clauses that discourage contacting the SEC"
+            ],
+            "evidence": [
+              "Employment and severance agreement templates reviewed by counsel",
+              "Speak-up policy and training completion records"
+            ],
+            "recommend": "Have legal counsel remove any agreement language that could stop employees from reporting to the SEC.",
+            "decides": "SEC staff process claims; the Commission decides awards and amounts"
+          },
+          "isaca_rule": "Dodd-Frank awards: original information, given voluntarily to the SEC, leading to sanctions over $1 million; 10 to 30 percent of what is collected, paid from the SEC's fund. Check the exclusions, including auditors acting contrary to Section 10A.",
+          "exam_traps": [
+            {
+              "trap": "The company that committed the fraud pays the whistleblower's award.",
+              "why": "Awards are paid from the SEC's Investor Protection Fund; the wrongdoer pays sanctions to the government."
+            },
+            {
+              "trap": "A whistleblower must report inside the company before an award is possible.",
+              "why": "Section 21F does not list internal reporting as an award condition; the information must reach the SEC in the form it requires."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Original information",
+              "definition": "Information from a whistleblower's own knowledge or analysis that the SEC does not already have from another source."
+            },
+            {
+              "term": "Covered action",
+              "definition": "An SEC court or administrative action that results in monetary sanctions over $1 million."
+            }
+          ],
+          "memory_aid": "Original, voluntary, over a million: 10 to 30 percent from the SEC's fund."
+        },
+        {
+          "id": "4B2.3",
+          "name": "Other Anti-Retaliation Routes",
+          "legacy_ids": [],
+          "practice_ids": [
+            "csoe_d4_029",
+            "csoe_d4_030",
+            "csoe_d4_031"
+          ],
+          "definition": "Beyond Section 806, Dodd-Frank lets SEC whistleblowers sue retaliating employers directly in court, and SOX Section 1107 makes retaliating against informants a federal crime.",
+          "why_it_matters": "Each route has its own forum, deadline and remedy. Exam items test which route a fact pattern points to, and whether the consequence is civil or criminal.",
+          "how_it_works": [
+            "Section 21F(h) bars retaliation for giving the SEC information, assisting its actions, or making disclosures SOX requires or protects (15 U.S.C. 78u-6(h)(1)(A)).",
+            "Protection covers only people who reported to the SEC in writing before the retaliation (17 CFR 240.21F-2(d)(1)).",
+            "The employee sues directly in federal district court; no Labor complaint comes first (78u-6(h)(1)(B)(i)).",
+            "Deadline: six years after the violation or three years after the material facts were known, and never more than 10 years (78u-6(h)(1)(B)(iii)).",
+            "Relief: reinstatement, two times back pay with interest, and litigation costs and attorney fees (78u-6(h)(1)(C)).",
+            "Section 1107 (18 U.S.C. 1513(e)): knowingly retaliating against anyone for giving law enforcement truthful information about a federal offense carries up to 10 years in prison."
+          ],
+          "compare": {
+            "columns": [
+              "SOX Section 806",
+              "Exchange Act Section 21F(h)",
+              "SOX Section 1107"
+            ],
+            "rows": [
+              {
+                "label": "Type",
+                "cells": [
+                  "Civil",
+                  "Civil",
+                  "Criminal"
+                ]
+              },
+              {
+                "label": "Starts with",
+                "cells": [
+                  "Complaint to the Secretary of Labor",
+                  "Suit in federal district court",
+                  "Federal prosecution"
+                ]
+              },
+              {
+                "label": "Deadline",
+                "cells": [
+                  "180 days",
+                  "6 years, or 3 from knowledge; 10 at most",
+                  "Not set in this section"
+                ]
+              },
+              {
+                "label": "Pay relief",
+                "cells": [
+                  "Back pay with interest",
+                  "Two times back pay with interest",
+                  "None; prison or a fine"
+                ]
+              }
+            ]
+          },
+          "example": "Ivy, a fund analyst, gives the SEC evidence of hidden fees and also speaks to FBI agents. Soon after, Ivy is demoted. Ivy's lawyer skips the Labor process and sues in federal court under Section 21F, seeking double back pay, while prosecutors consider whether the demotion, as payback for talking to the FBI, is a crime.",
+          "audit_focus": {
+            "review": [
+              "Map each reporting channel to the protection and forum it triggers",
+              "Inspect adverse actions taken soon after an employee reported externally"
+            ],
+            "evidence": [
+              "Legal analysis of reports made to the SEC and law enforcement",
+              "HR action log with dates and decision makers"
+            ],
+            "recommend": "Have the general counsel review adverse actions against known reporters before they take effect.",
+            "decides": "Courts decide civil claims; prosecutors decide criminal charges with the board kept informed"
+          },
+          "isaca_rule": "Match the route to the facts: Section 806 starts with Labor within 180 days; Exchange Act Section 21F(h), added by Dodd-Frank, goes straight to court with double back pay; Section 1107 is a crime, up to 10 years, for retaliating against informants to law enforcement.",
+          "exam_traps": [
+            {
+              "trap": "Retaliating against an informant can only lead to civil remedies.",
+              "why": "Section 1107 makes knowing retaliation against a person who gave law enforcement truthful information a crime, with up to 10 years."
+            },
+            {
+              "trap": "Dodd-Frank retaliation claims must start at the Department of Labor.",
+              "why": "Section 21F(h) lets the individual sue directly in federal district court."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Double back pay",
+              "definition": "Relief under Dodd-Frank of two times the back pay owed, with interest."
+            },
+            {
+              "term": "Informant",
+              "definition": "A person who gives law enforcement truthful information about a possible federal offense."
+            }
+          ],
+          "memory_aid": "Labor in 180 days, court direct, crime for revenge."
+        },
+        {
+          "id": "4B2.4",
+          "name": "Whistleblowers Outside the United States",
+          "legacy_ids": [],
+          "practice_ids": [
+            "csoe_d4_039"
+          ],
+          "definition": "Foreign whistleblowers are people outside the United States who report securities violations to the SEC; award eligibility turns on who employs them, not on citizenship.",
+          "why_it_matters": "Issuers have staff and subsidiaries abroad; testing nationality instead of employer gives wrong answers about who may claim an award.",
+          "how_it_works": [
+            "A whistleblower is any individual who gives the SEC information on a securities law violation as the SEC requires (15 U.S.C. 78u-6(a)(6), opened 31 Oct 2026).",
+            "Neither that definition nor the award exclusions in Rule 21F-8(c) sets a citizenship or residence test.",
+            "The statute bars awards to staff of appropriate regulatory agencies, the Justice Department, SROs, the PCAOB and any law enforcement organization; it names no foreign regulator (78u-6(c)(2)(A)).",
+            "Rule 21F-8(c)(2) adds anyone working for a foreign government or a foreign financial regulatory authority, now or when they got the information (17 CFR 240.21F-8).",
+            "The SEC may share whistleblower information with foreign securities and law enforcement authorities under confidentiality assurances it sets (78u-6(h)(2)(D))."
+          ],
+          "example": "Ana, a sales manager at the Brazilian subsidiary of a U.S.-listed issuer, asks a lawyer whether a written SEC tip about bribes could earn an award, though they are not a U.S. citizen. The lawyer says citizenship is not a test, but a friend who examines banks for Brazil's regulator would be excluded.",
+          "audit_focus": {
+            "review": [
+              "Compare each translated whistleblower policy with the English version",
+              "Inspect hotline intake records from foreign subsidiaries"
+            ],
+            "evidence": [
+              "Translated policies with dated approvals",
+              "Training attendance records for staff abroad"
+            ],
+            "recommend": "Have the compliance team describe the SEC reporting route accurately in every language version of the policy.",
+            "decides": "SEC staff review award claims, and the Commission decides them"
+          },
+          "isaca_rule": "For award eligibility abroad, ask who employed the tipster when they learned the facts. Citizenship and residence are not tests; Rule 21F-8(c)(2) excludes staff of foreign governments and foreign financial regulators, on top of the statute's list.",
+          "exam_traps": [
+            {
+              "trap": "Only U.S. citizens or residents can receive SEC whistleblower awards.",
+              "why": "The statute defines a whistleblower as any individual who reports to the SEC; the exclusions turn on employer and conduct, not nationality."
+            },
+            {
+              "trap": "The statute's exclusions name no foreign regulator, so foreign regulators' staff qualify.",
+              "why": "Rule 21F-8(c)(2) extends the bar to members, officers and employees of foreign governments and foreign financial regulatory authorities."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Foreign financial regulatory authority",
+              "definition": "A foreign securities authority or other foreign government body that regulates financial activities (Exchange Act Section 3(a)(52))."
+            },
+            {
+              "term": "Form TCR",
+              "definition": "The SEC form for a tip, complaint or referral that a person uses to seek award eligibility."
+            }
+          ],
+          "memory_aid": "Ask who employs them, not where they live."
+        }
+      ]
+    },
+    {
+      "topic_id": "4B3",
+      "topic_name": "White-collar penalty enhancements",
+      "overview": "Title IX of SOX, the White-Collar Crime Penalty Enhancement Act of 2002, raised maximum penalties for fraud, made attempts and conspiracies as punishable as the finished crime, and told the Sentencing Commission to toughen its guidelines. Section 906, also in Title IX, is taught with the officer certifications in Domain 3.",
+      "can_do": [
+        "Apply the same-penalty rule to attempts and conspiracies",
+        "Give the before-and-after maximums for mail and wire fraud",
+        "Tell Title IX's numbers from securities fraud's 25 years under Section 807"
+      ],
+      "subtopics": [
+        {
+          "id": "4B3.1",
+          "name": "Attempts and Conspiracies",
+          "legacy_ids": [],
+          "practice_ids": [
+            "csoe_d4_014"
+          ],
+          "definition": "Section 902 makes attempting or conspiring to commit a federal fraud offense punishable by the same penalties as the completed offense.",
+          "why_it_matters": "Fraud schemes are often caught before they finish. This rule means an interrupted or failed plan carries the same statutory maximum as a successful one.",
+          "how_it_works": [
+            "Section 902 added 18 U.S.C. 1349 to chapter 63 of title 18, the chapter on mail fraud and other frauds.",
+            "Chapter 63 holds offenses such as mail fraud (1341), wire fraud (1343) and securities fraud (1348).",
+            "Anyone who attempts or conspires to commit such an offense faces the same penalties as the offense that was the object.",
+            "No completed trade, loss or victim is needed for an attempt or conspiracy charge."
+          ],
+          "example": "A trader at Pinecrest Brokerage starts entering fake customer orders to push up a thinly traded stock, but the firm's surveillance team blocks them before any order executes. The firm's counsel explains that an attempt to commit securities fraud is punished like the finished offense, and the firm reports the conduct.",
+          "audit_focus": {
+            "review": [
+              "Inspect surveillance alerts for schemes stopped before completion",
+              "Trace escalation of blocked schemes to compliance and counsel"
+            ],
+            "evidence": [
+              "Surveillance alert records showing blocked orders or transfers",
+              "Escalation memos to counsel with dates"
+            ],
+            "recommend": "Have compliance escalate attempted schemes to counsel even when no loss occurred.",
+            "decides": "Prosecutors decide whether to charge an attempt or conspiracy; the board oversees reporting"
+          },
+          "isaca_rule": "Under Section 902, an attempt or conspiracy equals the offense for penalty purposes. A scheme stopped before anyone loses money still carries the full statutory maximum.",
+          "exam_traps": [
+            {
+              "trap": "An unfinished fraud scheme carries a lower statutory maximum.",
+              "why": "18 U.S.C. 1349 gives attempts and conspiracies the same penalties as the offense they aimed at."
+            },
+            {
+              "trap": "No crime occurs if no investor lost money.",
+              "why": "Attempting or conspiring to commit a chapter 63 fraud offense is a crime in itself."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Conspiracy",
+              "definition": "An agreement between two or more people to commit a crime."
+            },
+            {
+              "term": "Attempt",
+              "definition": "An effort to commit a crime that falls short of completion."
+            }
+          ],
+          "memory_aid": "Tried or planned it? Same maximum as doing it."
+        },
+        {
+          "id": "4B3.2",
+          "name": "Higher Fraud and Pension Penalties",
+          "legacy_ids": [],
+          "practice_ids": [
+            "csoe_d4_013",
+            "csoe_d4_032",
+            "csoe_d4_033"
+          ],
+          "definition": "Sections 903 to 905 raised maximum penalties for mail and wire fraud and for willful pension reporting violations, and directed tougher sentencing guidelines.",
+          "why_it_matters": "Congress raised these penalties to deter white-collar fraud. Exam items test the before-and-after numbers and which offense each number belongs to.",
+          "how_it_works": [
+            "Section 903 raised the maximum prison term for mail fraud (18 U.S.C. 1341) and wire fraud (1343) from five to 20 years.",
+            "A higher tier, up to 30 years and a $1 million fine, applies when the fraud affects a financial institution or a declared disaster (18 U.S.C. 1341, 1343).",
+            "Section 904 raised willful ERISA reporting penalties to $100,000 (from $5,000) and 10 years (from one) for individuals, and $500,000 for entities (29 U.S.C. 1131).",
+            "Section 905 told the U.S. Sentencing Commission to review its guidelines so they reflect the Act's higher penalties.",
+            "Section 805 did the same for obstruction and extensive fraud, including offenses under Sections 1519 and 1520."
+          ],
+          "example": "A union pension plan's administrator willfully skips a required financial report to hide investment losses. Prosecutors note that, since 2002, a willful ERISA reporting violation can bring up to 10 years in prison and a $100,000 fine for an individual, not the old one year and $5,000.",
+          "audit_focus": {
+            "review": [
+              "Compare training materials' penalty figures with the current U.S. Code",
+              "Confirm pension plan reports were filed on time"
+            ],
+            "evidence": [
+              "Training slides with penalty figures and their sources",
+              "Plan filing records with submission dates"
+            ],
+            "recommend": "Have the compliance team update penalty figures in training each year from the current U.S. Code.",
+            "decides": "Judges set sentences; plan administrators must file the reports"
+          },
+          "isaca_rule": "Title IX numbers: mail and wire fraud went from 5 to 20 years (903); willful ERISA reporting violations reach $100,000 and 10 years for individuals and $500,000 for entities (904). Securities fraud's 25 years comes from Section 807.",
+          "exam_traps": [
+            {
+              "trap": "SOX set mail fraud's maximum at 25 years.",
+              "why": "Section 903 set 20 years; 25 years is the maximum for securities fraud under 18 U.S.C. 1348, created by Section 807."
+            },
+            {
+              "trap": "Title IX contains the whistleblower protections.",
+              "why": "Whistleblower protection is Section 806 in Title VIII; Title IX raised white-collar penalties and added the Section 906 certification."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "ERISA",
+              "definition": "The Employee Retirement Income Security Act of 1974, which governs private pension and benefit plans."
+            },
+            {
+              "term": "Sentencing guidelines",
+              "definition": "Federal rules courts consult to set a sentence within the statutory maximum."
+            }
+          ],
+          "memory_aid": "Title IX: five became 20 for mail and wire."
+        }
+      ]
+    },
+    {
+      "topic_id": "4C1",
+      "topic_name": "Dodd-Frank's aims and new bodies",
+      "overview": "The Dodd-Frank Act of 2010 set out to promote financial stability, end too big to fail and bailouts, and protect consumers. It created a council to watch system-wide risk, a process to liquidate failing financial companies, a Federal Insurance Office, and limits on banks' own trading.",
+      "can_do": [
+        "State Dodd-Frank's aims from its own long title",
+        "Tell the FSOC's role from the Federal Insurance Office's",
+        "Explain who bears losses under orderly liquidation",
+        "Describe what the Volcker Rule bars and permits"
+      ],
+      "subtopics": [
+        {
+          "id": "4C1.1",
+          "name": "Dodd-Frank's Purposes and the FSOC",
+          "legacy_ids": [],
+          "practice_ids": [
+            "csoe_d4_015",
+            "csoe_d4_034"
+          ],
+          "definition": "The Dodd-Frank Act, signed on 21 July 2010, reformed U.S. financial regulation and created the Financial Stability Oversight Council to watch for threats to stability.",
+          "why_it_matters": "Dodd-Frank is the second major reform after SOX, and it amended SOX. Knowing its stated aims and new bodies places each provision in context.",
+          "how_it_works": [
+            "Its long title lists the aims: promote financial stability through accountability and transparency, end 'too big to fail', end bailouts to protect taxpayers, and protect consumers (Pub. L. 111-203).",
+            "Title I created the Financial Stability Oversight Council (FSOC), chaired by the Treasury Secretary, with 10 voting members (Section 111(b)).",
+            "Voting members include the heads of the Federal Reserve Board, the SEC, the FDIC and the CFTC, plus an independent member with insurance expertise.",
+            "The FSOC identifies risks to U.S. financial stability, promotes market discipline and responds to emerging threats (Section 112(a)(1)).",
+            "It can require Federal Reserve supervision of nonbank financial companies whose distress or activities could threaten stability (Section 112(a)(2)(H))."
+          ],
+          "example": "Ledgerline, a fast-growing payments company, is not a bank. Its general counsel warns the board that if Ledgerline's distress could threaten U.S. financial stability, the FSOC can place it under Federal Reserve supervision, with stricter standards. The board asks finance to model the company's links to other large firms.",
+          "audit_focus": {
+            "review": [
+              "Map Dodd-Frank titles to the company's business lines",
+              "Evaluate whether the company could draw an FSOC designation"
+            ],
+            "evidence": [
+              "Regulatory inventory of the Dodd-Frank provisions that apply",
+              "Board materials on system-wide risk exposure"
+            ],
+            "recommend": "Have the general counsel keep a current map of the Dodd-Frank provisions that apply to the company.",
+            "decides": "The Council decides designations; the board oversees the company's response"
+          },
+          "isaca_rule": "Dodd-Frank (Pub. L. 111-203, 21 July 2010) aims at financial stability, an end to too big to fail and bailouts, and consumer protection. Its Title I council, the FSOC, chaired by the Treasury Secretary, watches system-wide risk.",
+          "exam_traps": [
+            {
+              "trap": "Dodd-Frank replaced the Sarbanes-Oxley Act.",
+              "why": "It amended SOX in places, such as Section 404(c) and the whistleblower rules, but SOX remains in force."
+            },
+            {
+              "trap": "The SEC chair leads the FSOC.",
+              "why": "The Treasury Secretary chairs the Council; the SEC chair is one of its voting members (Section 111(b))."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Financial Stability Oversight Council (FSOC)",
+              "definition": "The Dodd-Frank council, chaired by the Treasury Secretary, that monitors and responds to risks to U.S. financial stability."
+            },
+            {
+              "term": "Nonbank financial company",
+              "definition": "A financial firm that is not a bank holding company, which the FSOC can place under Federal Reserve supervision."
+            },
+            {
+              "term": "Market discipline",
+              "definition": "Investors and creditors limiting risk-taking because they expect no government rescue."
+            }
+          ],
+          "memory_aid": "Treasury chairs the FSOC; stability is its job."
+        },
+        {
+          "id": "4C1.2",
+          "name": "Orderly Liquidation Authority",
+          "legacy_ids": [],
+          "practice_ids": [
+            "csoe_d4_016"
+          ],
+          "definition": "Title II's orderly liquidation authority lets the FDIC act as receiver to wind down a failing financial company that threatens stability, without taxpayer losses.",
+          "why_it_matters": "It turns the Act's promise to end bailouts into a process: failing firms are liquidated, not rescued, and losses fall on those who invested in them.",
+          "how_it_works": [
+            "Purpose: liquidate failing financial companies that pose significant risk to U.S. financial stability, mitigating that risk and minimizing moral hazard (Section 204(a)).",
+            "Creditors and shareholders bear the losses, and management responsible for the failure is not retained (Section 204(a)(1)-(2)).",
+            "The FDIC acts as receiver once appointed (Section 204(b)).",
+            "Every company put into receivership must be liquidated, and no taxpayer funds may be used to prevent liquidation (Section 214(a)).",
+            "Costs are recovered from the company's assets or through assessments on the financial sector; taxpayers bear no losses (Section 214(b)-(c))."
+          ],
+          "example": "Regulators begin winding down Halsey Capital, a large financial group whose collapse could disrupt funding markets. The FDIC, as receiver, replaces the executives responsible, sells business lines and leaves shareholders with nothing. Bondholders recover only part of their claims, and the remaining costs are billed to large financial firms through assessments.",
+          "audit_focus": {
+            "review": [
+              "Evaluate how disclosures describe who absorbs losses in a failure",
+              "Compare investor materials with Title II's order of losses"
+            ],
+            "evidence": [
+              "Risk factor disclosures on failure and liquidation",
+              "Board materials on failure scenarios"
+            ],
+            "recommend": "Have management state plainly in disclosures that shareholders and creditors, not taxpayers, would absorb losses in a liquidation.",
+            "decides": "The FDIC as receiver runs the wind-down; the board cooperates"
+          },
+          "isaca_rule": "Orderly liquidation means liquidation, never rescue: the FDIC as receiver, losses on shareholders and creditors, responsible managers out, costs recovered from assets or industry assessments, and no losses for taxpayers.",
+          "exam_traps": [
+            {
+              "trap": "Taxpayers fund the liquidation and are repaid later.",
+              "why": "Section 214 bars taxpayer funds that prevent liquidation and says taxpayers bear no losses; costs come from assets or industry assessments."
+            },
+            {
+              "trap": "Managers stay on to run the company through the process.",
+              "why": "Section 204(a)(2) says management responsible for the company's condition will not be retained."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Receiver",
+              "definition": "The party appointed to take control of a failed company and wind it down; under Title II, the FDIC."
+            },
+            {
+              "term": "Moral hazard",
+              "definition": "Taking on more risk because someone else is expected to bear the losses."
+            }
+          ],
+          "memory_aid": "Liquidate, don't rescue: owners and lenders lose, taxpayers don't."
+        },
+        {
+          "id": "4C1.3",
+          "name": "The Federal Insurance Office and the Volcker Rule",
+          "legacy_ids": [],
+          "practice_ids": [
+            "csoe_d4_035",
+            "csoe_d4_036"
+          ],
+          "definition": "Dodd-Frank created a Federal Insurance Office in the Treasury to monitor insurance, and Section 619, called the Volcker Rule, limits banking entities' proprietary trading and fund stakes.",
+          "why_it_matters": "Both appear in the course's Dodd-Frank list. The exam tests what each does and does not do, such as regulating insurers directly or banning all bank trading.",
+          "how_it_works": [
+            "Section 502 created the Federal Insurance Office within the Treasury, headed by a Director the Treasury Secretary appoints (31 U.S.C. 313(a)-(b)).",
+            "The Office monitors the insurance industry, including gaps that could feed a systemic crisis, advises the Secretary, and may recommend that the FSOC designate an insurer (313(c)).",
+            "It has no general supervisory or regulatory authority over the business of insurance (313(k)), and its Director is a nonvoting FSOC member.",
+            "Section 619 bars banking entities from proprietary trading and from owning or sponsoring hedge funds or private equity funds, unless an exception applies.",
+            "Permitted: government obligations, market making sized to client demand, risk-reducing hedges (Bank Holding Company Act Section 13(d)(1), added by Section 619; 12 U.S.C. 1851(d)(1))."
+          ],
+          "example": "Westbrook Bank's trading desk wants to buy corporate bonds purely to profit from short-term price moves. Compliance blocks the trade as proprietary trading under Section 619. The desk may still make markets in those bonds sized to expected client demand, and may hedge specific risks in positions it already holds.",
+          "audit_focus": {
+            "review": [
+              "Check trading desk positions and match each to a permitted activity",
+              "Compare desk inventory limits with expected client demand"
+            ],
+            "evidence": [
+              "Desk mandates naming the permitted activity relied on",
+              "Inventory and hedging records by desk"
+            ],
+            "recommend": "Have the bank's compliance team document the permitted activity for every trading desk.",
+            "decides": "Senior management approves desk mandates within the agencies' rules"
+          },
+          "isaca_rule": "The Federal Insurance Office monitors and advises but does not regulate insurers. Section 619 bars banking entities from proprietary trading and hedge or private equity fund stakes, except listed permitted activities such as market making and hedging.",
+          "exam_traps": [
+            {
+              "trap": "The Federal Insurance Office regulates and supervises insurance companies.",
+              "why": "31 U.S.C. 313(k) says it has no general supervisory or regulatory authority over the business of insurance."
+            },
+            {
+              "trap": "The Volcker Rule bans all trading by banks.",
+              "why": "Section 619 permits activities such as market making, underwriting, hedging and trading government obligations."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Proprietary trading",
+              "definition": "A banking entity trading for its own account to profit, rather than for customers."
+            },
+            {
+              "term": "Market making",
+              "definition": "Standing ready to buy and sell a security for clients, sized to their reasonably expected near-term demand."
+            }
+          ],
+          "memory_aid": "FIO watches insurance; Volcker stops banks betting their own money."
+        }
+      ]
+    },
+    {
+      "topic_id": "4C2",
+      "topic_name": "Dodd-Frank, the PCAOB and Basel",
+      "overview": "Dodd-Frank widened the PCAOB's reach to the auditors of brokers and dealers and let the Board share confidential information with foreign auditor regulators. The Basel bank capital standards are held from these notes until a primary source can be checked.",
+      "can_do": [
+        "Explain how Dodd-Frank extended PCAOB oversight to auditors of brokers and dealers",
+        "Tell the PCAOB's role over auditors from the SEC's role over broker-dealers",
+        "List the conditions for PCAOB sharing with foreign auditor regulators"
+      ],
+      "subtopics": [
+        {
+          "id": "4C2.1",
+          "name": "PCAOB Oversight of Broker and Dealer Auditors",
+          "legacy_ids": [],
+          "practice_ids": [
+            "csoe_d4_017"
+          ],
+          "definition": "Dodd-Frank Section 982 extended the PCAOB's oversight from the auditors of public companies to the auditors of brokers and dealers that file certified financial statements.",
+          "why_it_matters": "Customers with assets at brokers and dealers rely on their audited statements. The change put those audits under the independent oversight SOX created for issuer audits.",
+          "how_it_works": [
+            "Section 982 replaced 'issuers' with 'issuers, brokers, and dealers' across the PCAOB's mission in SOX Section 101.",
+            "Firms that prepare audit reports for brokers or dealers register with the Board, unless exempt from its inspection program (SOX Sections 102 and 104(a)(2)(D)).",
+            "The Board may, by rule, inspect firms that audit brokers or dealers; such rules need prior SEC approval (SOX Section 104(a)(2)).",
+            "The Board's support fees are allocated among brokers and dealers in proportion to their net capital (SOX Section 109(h)).",
+            "The PCAOB still oversees the audit firm; brokers and dealers themselves are regulated by the SEC and self-regulatory organizations."
+          ],
+          "example": "Calder Securities, a small broker-dealer, hires a local CPA practice to audit its annual statements. The partner learns the practice must register with the Board and follow its standards for this engagement, and that its work may be inspected. Calder itself stays under the SEC and FINRA.",
+          "audit_focus": {
+            "review": [
+              "Confirm the broker-dealer's audit firm is registered with the PCAOB",
+              "Inspect the audit report for reference to PCAOB standards"
+            ],
+            "evidence": [
+              "Public PCAOB listing showing the firm's registration status",
+              "Signed audit report filed with the annual statements"
+            ],
+            "recommend": "Have the broker-dealer's management confirm its audit firm's PCAOB registration before each engagement.",
+            "decides": "The audit firm answers to the Board; management chooses a registered firm"
+          },
+          "isaca_rule": "Since Dodd-Frank, the PCAOB oversees auditors of issuers, brokers and dealers: registration, standards, inspections and discipline. It regulates the auditor, never the broker-dealer, and its inspection rules need SEC approval.",
+          "exam_traps": [
+            {
+              "trap": "Dodd-Frank abolished the PCAOB.",
+              "why": "It widened the PCAOB's reach to auditors of brokers and dealers; the Board continues under SEC oversight."
+            },
+            {
+              "trap": "The PCAOB now inspects broker-dealers themselves.",
+              "why": "It inspects audit firms; brokers and dealers are regulated by the SEC and self-regulatory organizations."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Broker-dealer",
+              "definition": "A firm registered with the SEC to trade securities for customers, for itself, or both."
+            },
+            {
+              "term": "Net capital",
+              "definition": "A broker-dealer's capital measure, which the PCAOB uses to share its support fees among brokers and dealers."
+            }
+          ],
+          "memory_aid": "982: auditors of brokers and dealers join the PCAOB's watch."
+        },
+        {
+          "id": "4C2.2",
+          "name": "Sharing Information with Foreign Auditor Regulators",
+          "legacy_ids": [],
+          "practice_ids": [
+            "csoe_d4_037"
+          ],
+          "definition": "Dodd-Frank Section 981 lets the PCAOB share confidential inspection and investigation information with foreign auditor oversight authorities when set conditions are met.",
+          "why_it_matters": "Many audit firms work across borders. Sharing lets regulators coordinate oversight of the same firms while keeping sensitive information protected.",
+          "how_it_works": [
+            "Section 981 defines a foreign auditor oversight authority: a body a foreign government empowers to inspect or regulate public accounting firms.",
+            "The PCAOB may share information, which stays confidential and privileged in its hands, at the Board's discretion (SOX Section 105(b)(5)(C)).",
+            "The Board must find sharing necessary to accomplish the Act's purposes or to protect investors.",
+            "The foreign authority must give confidentiality assurances and describe its information systems and controls and its relevant laws.",
+            "The Board must also determine that sharing is appropriate.",
+            "Dodd-Frank also made foreign firms that do material audit work name a U.S. agent for SEC and Board requests (Section 106(d); see 2A2)."
+          ],
+          "example": "A PCAOB inspection team reviews the U.S. work of an audit firm that a regulator abroad also oversees. The foreign regulator asks for the findings. Before sharing, the Board obtains written confidentiality assurances, a description of the regulator's information controls and access laws, and records why sharing protects investors.",
+          "audit_focus": {
+            "review": [
+              "Confirm each sharing request met the statutory conditions",
+              "Trace shared files to the confidentiality assurances received"
+            ],
+            "evidence": [
+              "Signed letters from the foreign body on keeping data secret",
+              "Board determination recording why sharing was appropriate"
+            ],
+            "recommend": "Have PCAOB staff document every statutory condition before releasing information to a foreign authority.",
+            "decides": "The Board itself makes the final call on each request"
+          },
+          "isaca_rule": "Section 981 permits, but never requires, PCAOB sharing with foreign auditor regulators. Three gates: necessity for the Act's purposes or investor protection, the foreign body's assurances and descriptions, and a Board finding that sharing is appropriate.",
+          "exam_traps": [
+            {
+              "trap": "Shared PCAOB information loses its confidential status.",
+              "why": "Section 981 says the information keeps its confidential and privileged status in the Board's hands."
+            },
+            {
+              "trap": "The PCAOB must share whenever a foreign regulator asks.",
+              "why": "Sharing is at the Board's discretion and only after the statutory conditions are met."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Foreign auditor oversight authority",
+              "definition": "A body a foreign government empowers to inspect or regulate public accounting firms."
+            },
+            {
+              "term": "Privileged information",
+              "definition": "Information protected from forced disclosure in legal proceedings."
+            }
+          ],
+          "memory_aid": "Share with care: need, assurances, the Board's yes."
+        }
+      ]
+    },
+    {
+      "topic_id": "4C3",
+      "topic_name": "The Sarbanes-Oxley amendments",
+      "overview": "Dodd-Frank changed SOX in three ways learners meet often: it exempted smaller filers from the auditor's internal control attestation, strengthened the Section 806 whistleblower rules, and required listed companies to claw back pay awarded on numbers later restated.",
+      "can_do": [
+        "State exactly what Section 404(c) exempts, and for whom",
+        "Compare the 2002 and current versions of Section 806",
+        "Tell a Rule 10D-1 clawback from a Section 304 forfeiture"
+      ],
+      "subtopics": [
+        {
+          "id": "4C3.1",
+          "name": "Section 404(c) and the Smaller-Issuer Study",
+          "legacy_ids": [],
+          "practice_ids": [
+            "csoe_d4_018"
+          ],
+          "definition": "Dodd-Frank Section 989G(a) added Section 404(c), which exempts issuers that are neither large accelerated nor accelerated filers from the auditor's internal control attestation.",
+          "why_it_matters": "It is why many smaller companies get no auditor opinion on internal control. The exam tests exactly what was exempted, and what was not.",
+          "how_it_works": [
+            "Section 404(c) says Section 404(b) does not apply to an issuer that is neither a large accelerated filer nor an accelerated filer under Rule 12b-2.",
+            "Section 404(a) still applies: management must report on and assess internal control over financial reporting (ICFR) as of year-end.",
+            "Section 989G(b) ordered an SEC study, due within nine months, on easing 404(b) for issuers with market capitalization between $75 million and $250 million.",
+            "The study was not an exemption; the exemption rests on filer status, which Rule 12b-2 defines.",
+            "The JOBS Act later exempted emerging growth companies from 404(b) as well (15 U.S.C. 7262(b))."
+          ],
+          "example": "Beacon Tools has always filed as a smaller company with no outside opinion on its controls. After its status changes to accelerated filer under Rule 12b-2, its CFO learns the old exemption no longer fits: the next annual report needs the outside firm's internal control report as well as management's own.",
+          "audit_focus": {
+            "review": [
+              "Reperform the year-end filer status determination with the finance team",
+              "Compare the 10-K's control reports with the filer status reached"
+            ],
+            "evidence": [
+              "Year-end filer status worksheet and its inputs",
+              "Signed outside firm attestation report, when one is required"
+            ],
+            "recommend": "Have the CFO confirm filer status each year and plan for an outside attestation when status changes.",
+            "decides": "Management assesses ICFR; the audit committee oversees the outside firm"
+          },
+          "isaca_rule": "Section 404(c) removes only 404(b), the auditor's attestation, and only for issuers that are neither large accelerated nor accelerated filers. Management's 404(a) assessment still applies. The $75 million to $250 million range in 989G(b) was a study, not a rule.",
+          "exam_traps": [
+            {
+              "trap": "Dodd-Frank exempted small companies from all of Section 404.",
+              "why": "Section 404(c) removes only the auditor's attestation under 404(b); management's assessment under 404(a) remains."
+            },
+            {
+              "trap": "Companies under $250 million in market value are exempt from 404(b).",
+              "why": "$75 million to $250 million was the range for an SEC study under 989G(b); the exemption turns on Rule 12b-2 filer status."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Non-accelerated filer",
+              "definition": "An issuer that is neither a large accelerated nor an accelerated filer under Rule 12b-2."
+            },
+            {
+              "term": "Auditor attestation",
+              "definition": "The outside audit firm's report on internal control over financial reporting under Section 404(b)."
+            }
+          ],
+          "memory_aid": "404(c) cuts the auditor's b, never management's a."
+        },
+        {
+          "id": "4C3.2",
+          "name": "Dodd-Frank Changes to Section 806",
+          "legacy_ids": [],
+          "practice_ids": [
+            "csoe_d4_020"
+          ],
+          "definition": "Dodd-Frank amended Section 806 to lengthen the complaint deadline, add jury trials, cover subsidiaries and rating agencies, and void waivers and predispute arbitration agreements.",
+          "why_it_matters": "These changes made SOX whistleblower claims easier to bring and harder to sign away. Exam items often test the old version against the current one.",
+          "how_it_works": [
+            "Section 922(c) raised the deadline from 90 to 180 days and let it run from when the employee learns of the violation (1514A(b)(2)(D)).",
+            "It added a right to a jury trial when the employee takes the claim to federal court (1514A(b)(2)(E)).",
+            "It added subsection (e): Section 806 rights cannot be waived by any agreement, policy or condition of employment.",
+            "Under the same subsection, no predispute arbitration agreement is valid if it requires arbitrating a Section 806 dispute.",
+            "Section 929A covered subsidiaries and affiliates consolidated into the public company's statements; Section 922(b) added rating organizations."
+          ],
+          "compare": {
+            "columns": [
+              "2002 text",
+              "Current text"
+            ],
+            "rows": [
+              {
+                "label": "Deadline",
+                "cells": [
+                  "90 days after the violation",
+                  "180 days after the violation or after learning of it"
+                ]
+              },
+              {
+                "label": "Jury trial in court",
+                "cells": [
+                  "Not stated",
+                  "Yes"
+                ]
+              },
+              {
+                "label": "Arbitration",
+                "cells": [
+                  "Not addressed",
+                  "Predispute agreements unenforceable"
+                ]
+              },
+              {
+                "label": "Covered employers",
+                "cells": [
+                  "Public companies",
+                  "Plus consolidated subsidiaries, affiliates and rating organizations"
+                ]
+              }
+            ]
+          },
+          "example": "Juniper Analytics, a consolidated subsidiary of a listed insurer, asks every new hire to waive whistleblower claims in exchange for a signing bonus. The parent's general counsel orders the clause removed: Section 806 rights cannot be signed away, and the subsidiary's staff are covered just like the parent's.",
+          "audit_focus": {
+            "review": [
+              "Inspect employment and severance templates for waiver or arbitration clauses",
+              "Confirm subsidiaries' staff receive the same whistleblower notices"
+            ],
+            "evidence": [
+              "Current offer letter and severance agreement templates",
+              "Policy acknowledgments from subsidiary employees"
+            ],
+            "recommend": "Have legal counsel remove any clause that waives Section 806 rights or forces their arbitration.",
+            "decides": "Management removes such clauses; courts refuse to enforce them"
+          },
+          "isaca_rule": "Know both versions: the 2002 text gave 90 days; since Dodd-Frank, 180 days from the violation or from learning of it, a jury in court, consolidated subsidiaries covered, and no waiver or predispute arbitration of Section 806 rights.",
+          "exam_traps": [
+            {
+              "trap": "An employee who signed an arbitration agreement at hiring must arbitrate a Section 806 claim.",
+              "why": "Since Dodd-Frank, a predispute arbitration agreement is not valid or enforceable for a Section 806 dispute."
+            },
+            {
+              "trap": "Section 806 does not reach a public company's subsidiaries.",
+              "why": "Section 929A added subsidiaries and affiliates whose financial information is consolidated into the public company's statements."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Predispute arbitration agreement",
+              "definition": "An agreement, made before any dispute arises, to resolve future disputes by arbitration instead of in court."
+            },
+            {
+              "term": "Waiver",
+              "definition": "Giving up a legal right, usually in an agreement; Section 806 rights cannot be waived."
+            }
+          ],
+          "memory_aid": "After 2010: 180 days, a jury, no waiver, no forced arbitration."
+        },
+        {
+          "id": "4C3.3",
+          "name": "Clawback Policies Under Rule 10D-1",
+          "legacy_ids": [],
+          "practice_ids": [
+            "csoe_d4_019",
+            "csoe_d4_038"
+          ],
+          "definition": "Rule 10D-1, adopted under Dodd-Frank Section 954, requires listed issuers to recover erroneously awarded incentive pay from executive officers after an accounting restatement, regardless of fault.",
+          "why_it_matters": "Executives should not keep pay earned on wrong numbers. The rule is easy to confuse with SOX Section 304, which is narrower and needs misconduct.",
+          "how_it_works": [
+            "Exchanges must refuse to list issuers that lack a compliant written recovery policy (17 CFR 240.10D-1(a)).",
+            "A restatement to correct a material error, or one that would cause a material misstatement if left uncorrected, triggers recovery (10D-1(b)(1)).",
+            "The policy covers incentive pay received by current or former executive officers in the three completed fiscal years before the restatement date (10D-1(b)(1)(i)).",
+            "Only the excess over what the restated numbers would have paid is recovered, computed without regard to taxes (10D-1(b)(1)(iii)).",
+            "Recovery applies regardless of fault (SEC Release No. 33-11126), and the issuer may not indemnify executives against it (10D-1(b)(1)(v)).",
+            "Narrow exceptions apply where independent directors find recovery impracticable, such as costs exceeding the amount (10D-1(b)(1)(iv))."
+          ],
+          "compare": {
+            "columns": [
+              "SOX Section 304",
+              "Rule 10D-1"
+            ],
+            "rows": [
+              {
+                "label": "Who repays",
+                "cells": [
+                  "CEO and CFO",
+                  "All current and former executive officers"
+                ]
+              },
+              {
+                "label": "Trigger",
+                "cells": [
+                  "Restatement due to misconduct",
+                  "Restatement due to material noncompliance, no fault needed"
+                ]
+              },
+              {
+                "label": "Look-back",
+                "cells": [
+                  "12 months after the misstated filing",
+                  "Three completed fiscal years before the restatement date"
+                ]
+              },
+              {
+                "label": "What is repaid",
+                "cells": [
+                  "Bonuses, incentive pay and stock-sale profits",
+                  "Incentive pay above the restated amount"
+                ]
+              }
+            ]
+          },
+          "example": "Arden Hotels finds a lease accounting mistake made in good faith and corrects two years of results. The compensation committee works out, officer by officer, how much earnings-based pay would not have been earned on the corrected numbers, and sends repayment demands, with no exceptions for officers who had no part in the mistake.",
+          "audit_focus": {
+            "review": [
+              "Compare the recovery policy's terms with Rule 10D-1's requirements",
+              "Reperform the excess-pay calculation for a sample of executive officers"
+            ],
+            "evidence": [
+              "Board-approved written recovery policy filed as required",
+              "Recovery calculations and repayment records after any restatement"
+            ],
+            "recommend": "Have the compensation committee recover excess incentive pay promptly after any required restatement, without regard to fault.",
+            "decides": "Independent directors decide any impracticability exception"
+          },
+          "isaca_rule": "Rule 10D-1 is no-fault and broad: every executive officer, three completed fiscal years before the restatement date, only the excess pay, and no indemnity. Section 304 is narrower: CEO and CFO, misconduct, 12 months.",
+          "exam_traps": [
+            {
+              "trap": "A clawback under Rule 10D-1 requires executive misconduct.",
+              "why": "Recovery applies regardless of fault; misconduct is the trigger only under SOX Section 304."
+            },
+            {
+              "trap": "The issuer recovers the whole bonus.",
+              "why": "Only the amount above what the restated results would have paid is recovered."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Erroneously awarded compensation",
+              "definition": "Incentive pay received above what would have been paid had it been based on the restated numbers."
+            },
+            {
+              "term": "Incentive-based compensation",
+              "definition": "Pay granted, earned or vested based wholly or partly on a financial reporting measure."
+            },
+            {
+              "term": "Executive officer",
+              "definition": "Under Rule 10D-1, the president, principal financial and accounting officers, vice-presidents running principal business units, and other policy makers."
+            }
+          ],
+          "memory_aid": "10D-1: no fault, all executives, three years, excess only."
+        }
+      ]
+    }
+  ],
+  "key_terminologies": {
+    "Securities and Exchange Commission (SEC)": "The federal agency created by the 1934 Act that writes securities rules and enforces the securities laws, including SOX.",
+    "Securities Act of 1933": "The law governing offers and sales of securities: registration, prospectus disclosure and antifraud.",
+    "Securities Exchange Act of 1934": "The law that created the SEC and governs trading, market firms and periodic reports.",
+    "Notice and comment": "The rulemaking steps of publishing a proposed rule and taking public comments before adopting it.",
+    "Formal order of investigation": "A Commission order giving named staff subpoena power in an investigation.",
+    "Wells notice": "A staff notice that it plans to recommend charges, with a chance to respond first.",
+    "Section 1519": "The SOX-created crime of destroying or falsifying records to obstruct a federal matter, up to 20 years.",
+    "Rule 2-06": "The SEC rule requiring an issuer's auditor to keep audit and review records for seven years.",
+    "Nondischargeable debt": "A debt that survives bankruptcy, as securities fraud debts do under Section 803.",
+    "Section 806": "The SOX protection against retaliation for employees who report fraud, enforced through the Secretary of Labor.",
+    "Original information": "A whistleblower's own knowledge or analysis that the SEC does not already have.",
+    "Investor Protection Fund": "The SEC fund that pays Dodd-Frank whistleblower awards.",
+    "Section 1349": "The SOX-created rule that attempts and conspiracies carry the same penalties as the fraud offense.",
+    "Financial Stability Oversight Council (FSOC)": "The Dodd-Frank council, chaired by the Treasury Secretary, that watches system-wide financial risk.",
+    "Orderly liquidation authority": "The Dodd-Frank Title II process for winding down failing financial companies without taxpayer losses.",
+    "Federal Insurance Office": "A Treasury office that monitors insurance but does not regulate insurers.",
+    "Volcker Rule": "Dodd-Frank Section 619's limits on banking entities' proprietary trading and hedge or private equity fund stakes.",
+    "Section 404(c)": "The Dodd-Frank exemption of non-accelerated filers from the auditor's internal control attestation.",
+    "Predispute arbitration agreement": "An agreement made before any dispute to arbitrate future claims; unenforceable for Section 806 claims.",
+    "Rule 10D-1": "The SEC rule requiring listed issuers to claw back incentive pay after a restatement, without regard to fault."
+  },
+  "references": [
+    {
+      "title": "Sarbanes-Oxley Act of 2002, Pub. L. 107-204 (Sections 3, 802-807, 902-905, 1102, 1107)",
+      "url": "https://www.govinfo.gov/content/pkg/PLAW-107publ204/html/PLAW-107publ204.htm",
+      "checked": "2026-10-31"
+    },
+    {
+      "title": "Dodd-Frank Wall Street Reform and Consumer Protection Act, Pub. L. 111-203 (Sections 111, 112, 204, 214, 502, 619, 922, 929A, 954, 981, 982, 989G)",
+      "url": "https://www.govinfo.gov/content/pkg/PLAW-111publ203/html/PLAW-111publ203.htm",
+      "checked": "2026-10-31"
+    },
+    {
+      "title": "SEC, Statutes and Regulations (the laws that govern the securities industry)",
+      "url": "https://www.sec.gov/about/about-securities-laws",
+      "checked": "2026-10-31"
+    },
+    {
+      "title": "15 U.S.C. 77e (Securities Act Section 5) and 15 U.S.C. 78d (establishment of the SEC)",
+      "url": "https://www.law.cornell.edu/uscode/text/15/77e",
+      "checked": "2026-10-31"
+    },
+    {
+      "title": "5 U.S.C. 553, Rule making",
+      "url": "https://www.law.cornell.edu/uscode/text/5/553",
+      "checked": "2026-10-31"
+    },
+    {
+      "title": "SEC Division of Enforcement, Enforcement Manual (24 Feb 2026)",
+      "url": "https://www.sec.gov/divisions/enforce/enforcementmanual.pdf",
+      "checked": "2026-10-31"
+    },
+    {
+      "title": "17 CFR 202.5, Enforcement activities; 17 CFR 201.240, Offers of settlement; 17 CFR 229.103, Legal proceedings",
+      "url": "https://www.law.cornell.edu/cfr/text/17/202.5",
+      "checked": "2026-10-31"
+    },
+    {
+      "title": "18 U.S.C. 1519, 1520, 1341, 1343, 1348, 1349, 1513(e) and 1514A",
+      "url": "https://www.law.cornell.edu/uscode/text/18/1514A",
+      "checked": "2026-10-31"
+    },
+    {
+      "title": "17 CFR 210.2-06, Retention of audit and review records; 17 CFR 240.17a-4, broker-dealer records",
+      "url": "https://www.law.cornell.edu/cfr/text/17/210.2-06",
+      "checked": "2026-10-31"
+    },
+    {
+      "title": "11 U.S.C. 523(a)(19); 28 U.S.C. 1658(b); 29 U.S.C. 1131",
+      "url": "https://www.law.cornell.edu/uscode/text/28/1658",
+      "checked": "2026-10-31"
+    },
+    {
+      "title": "15 U.S.C. 78u-6, Securities whistleblower incentives and protection; SEC Whistleblower Program page",
+      "url": "https://www.law.cornell.edu/uscode/text/15/78u-6",
+      "checked": "2026-10-31"
+    },
+    {
+      "title": "17 CFR 240.10D-1 and SEC Release No. 33-11126 (recovery of erroneously awarded compensation)",
+      "url": "https://www.sec.gov/files/rules/final/2022/33-11126.pdf",
+      "checked": "2026-10-31"
+    },
+    {
+      "title": "15 U.S.C. 7262, Management assessment of internal controls (Section 404 as amended)",
+      "url": "https://www.law.cornell.edu/uscode/text/15/7262",
+      "checked": "2026-10-31"
+    },
+    {
+      "title": "SEC, How Investigations Work (common violations, civil and administrative actions)",
+      "url": "https://www.sec.gov/enforce/how-investigations-work",
+      "checked": "2026-10-31"
+    },
+    {
+      "title": "17 CFR 240.21F-2 and 240.21F-8 (whistleblower status, retaliation protection and award eligibility)",
+      "url": "https://www.law.cornell.edu/cfr/text/17/240.21F-8",
+      "checked": "2026-10-31"
+    },
+    {
+      "title": "12 U.S.C. 1851 (Volcker Rule), 12 U.S.C. 5321 (FSOC membership) and 31 U.S.C. 313 (Federal Insurance Office)",
+      "url": "https://www.law.cornell.edu/uscode/text/12/1851",
+      "checked": "2026-10-31"
+    },
+    {
+      "title": "15 U.S.C. 7215(b)(5)(C) (PCAOB sharing with foreign auditor oversight authorities)",
+      "url": "https://www.law.cornell.edu/uscode/text/15/7215",
+      "checked": "2026-10-31"
+    }
+  ]
+}

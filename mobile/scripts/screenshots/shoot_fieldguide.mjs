@@ -64,12 +64,21 @@ const go = async (route, ms = 2600) => {
   await page.goto(BASE + route, { waitUntil: 'networkidle' });
   await wait(ms);
 };
-const into = async (text, block = 'start') => {
-  const n = page.getByText(text).first();
+// `exact` matches the whole text, case and all ("Sheet I", not "Sheet II"; "Answered", not a thin stem's "12 answered").
+const into = async (text, block = 'start', exact = false) => {
+  const n = page.getByText(text, { exact }).first();
   if (await n.count()) {
     await n.evaluate((x, b) => x.scrollIntoView({ block: b }), block);
     await wait(700);
   } else console.log(`"${text}" did not show`);
+};
+// A block by its testID (React Native Web writes it as data-testid): sturdier than words that recur on the page.
+const intoId = async (id, block = 'start') => {
+  const n = page.locator(`[data-testid="${id}"]`).first();
+  if (await n.count()) {
+    await n.evaluate((x, b) => x.scrollIntoView({ block: b }), block);
+    await wait(700);
+  } else console.log(`[${id}] did not show`);
 };
 const edit = (key, fn, arg = null) =>
   page.evaluate(
@@ -100,23 +109,26 @@ await edit(P, `const m = v.state.byCert.cisa.milestones; if (m.backfill) m.backf
 if (want('you')) {
   await go('/you');
   await shot('fg-you');
-  await into('Fig. 5', 'start');
+  // The areas plate (Fig. 5), then the stats' label rows. "Answered" alone also hit a thin area's
+  // "12 answered" line inside the plate, so the stats shot framed the plate's foot: anchored by testID now.
+  await intoId('areas-plate', 'start');
   await shot('fg-you-areas');
-  await into('Answered', 'center');
+  await intoId('you-stats', 'center');
   await shot('fg-you-stats');
 }
 
 if (want('herbarium')) {
   await go('/milestones');
   await shot('fg-herbarium');
-  await into('Sheet I', 'start');
+  await into('Sheet I', 'start', true);
   await shot('fg-herbarium-sheets');
 }
 
 if (want('today')) {
   await go('/home');
   await shot('fg-today');
-  await into('Readiness', 'center');
+  // "Estimated readiness" over the scale bar: the whole block is the report's button (testID readiness-tap).
+  await intoId('readiness-tap', 'center');
   await shot('fg-today-readiness');
 }
 
@@ -140,7 +152,7 @@ if (want('results')) {
   );
   await go('/results', 2800);
   await shot('fg-results');
-  await into('What you missed', 'start');
+  await into('What you missed', 'start', true);
   await shot('fg-results-missed');
 }
 
@@ -167,11 +179,12 @@ if (want('drills')) {
   await go('/practice?section=drills', 3200);
   await toDrills();
   await shot('fg-drills');
-  const more = page.getByText('More drills').first();
+  // The "More drills" row (exact: the waiting line "More drills open after…" is not the row).
+  const more = page.getByText('More drills', { exact: true }).first();
   if (await more.count()) {
     await more.click();
     await wait(700);
-    await into('More drills', 'start');
+    await into('More drills', 'start', true);
   }
   await shot('fg-drills-more');
   await go('/practice');
@@ -196,7 +209,7 @@ if (want('full')) {
     { d5, d4, now },
   );
   await go('/you');
-  await into('Fig. 5', 'start');
+  await intoId('areas-plate', 'start');
   await shot('fg-full-you-areas');
 }
 
@@ -227,7 +240,8 @@ if (want('new')) {
   await edit(
     P,
     `const cp = v.state.byCert.cisa; cp.answers = {}; cp.review = {}; cp.mistakes = {}; cp.mocks = []; cp.gameBest = {}; cp.gameRecent = {}; cp.gameGrowth = {}; delete cp.plant; cp.milestones = { earned: {}, backfill: { at: Date.now(), count: 0, seen: true } };
-     v.state.streak = { current: 0, best: 0, lastDay: null }; v.state.days = {};`,
+     cp.lessonsDone = []; cp.bookmarks = []; cp.notesRead = []; delete cp.notesEverRead; delete cp.moments; delete cp.mastery;
+     v.state.streak = { current: 0, best: 0, lastDay: null }; v.state.days = {}; v.state.today = { day: '', answered: 0 };`,
   );
   await edit('aurivan.session.v1', `v.state.active = null;`);
   await edit(S, `delete v.state.displayName;`);
@@ -235,12 +249,13 @@ if (want('new')) {
   await shot('fg-new-today');
   await go('/you');
   await shot('fg-new-you');
-  await into('Fig. 5', 'start');
+  await intoId('areas-plate', 'start');
   await shot('fg-new-you-areas');
   await go('/milestones');
   await shot('fg-new-herbarium');
   // A new learner's Drills: the three core games, the rest after 50 answers (one quiet line).
   await go('/practice?section=drills', 3200);
+  await toDrills();
   await shot('fg-new-drills');
 }
 

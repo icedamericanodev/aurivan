@@ -294,6 +294,62 @@ forensic techniques and similar).
 - **D4** (148): d4_001 d4_002 d4_003 d4_006 d4_008 d4_009 d4_010 d4_013 d4_016 d4_017 d4_021 d4_023 d4_024 d4_027 d4_028 d4_031 d4_032 d4_034 d4_035 d4_036 d4_040 d4_044 d4_045 d4_046 d4_055 d4_056 d4_061 d4_062 d4_066 d4_067 d4_068 d4_072 d4_073 d4_077 d4_079 d4_084 d4_086 d4_088 d4_089 d4_091 d4_092 d4_094 d4_095 d4_097 d4_099 d4_100 d4_101 d4_102 d4_103 d4_104 d4_105 d4_106 d4_107 d4_113 d4_114 d4_121 d4_122 d4_125 d4_129 d4_130 d4_131 d4_132 d4_134 d4_135 d4_137 d4_140 d4_141 d4_142 d4_143 d4_146 d4_152 d4_154 d4_157 d4_158 d4_161 d4_162 d4_163 d4_165 d4_168 d4_169 d4_173 d4_175 d4_180 d4_182 d4_184 d4_187 d4_188 d4_189 d4_190 d4_192 d4_194 d4_195 d4_200 d4_202 d4_205 d4_206 d4_208 d4_210 d4_214 d4_215 d4_216 d4_217 d4_221 d4_227 d4_228 d4_232 d4_233 d4_237 d4_238 d4_239 d4_240 d4_242 d4_245 d4_246 d4_254 d4_256 d4_257 d4_261 d4_262 d4_266 d4_267 d4_268 d4_270 d4_274 d4_275 d4_277 d4_278 d4_282 d4_283 d4_284 d4_286 d4_287 d4_292 d4_294 d4_295 d4_296 d4_297 d4_298 d4_299 d4_301 d4_303 d4_304 d4_308 d4_310 d4_311 d4_312 d4_317 d4_318
 - **D5** (143): d5_002 d5_003 d5_004 d5_005 d5_011 d5_013 d5_019 d5_021 d5_022 d5_023 d5_024 d5_028 d5_029 d5_035 d5_036 d5_040 d5_041 d5_042 d5_043 d5_046 d5_047 d5_050 d5_051 d5_053 d5_054 d5_056 d5_061 d5_062 d5_063 d5_065 d5_066 d5_067 d5_068 d5_069 d5_075 d5_076 d5_082 d5_084 d5_087 d5_093 d5_097 d5_104 d5_114 d5_120 d5_122 d5_125 d5_128 d5_129 d5_130 d5_132 d5_133 d5_138 d5_139 d5_141 d5_142 d5_145 d5_146 d5_148 d5_150 d5_151 d5_153 d5_157 d5_161 d5_162 d5_163 d5_167 d5_168 d5_169 d5_173 d5_174 d5_181 d5_188 d5_189 d5_191 d5_192 d5_194 d5_199 d5_202 d5_204 d5_205 d5_206 d5_214 d5_221 d5_225 d5_226 d5_228 d5_229 d5_230 d5_234 d5_235 d5_237 d5_242 d5_249 d5_251 d5_257 d5_263 d5_265 d5_268 d5_269 d5_271 d5_278 d5_281 d5_282 d5_283 d5_284 d5_285 d5_286 d5_287 d5_288 d5_291 d5_292 d5_298 d5_300 d5_301 d5_302 d5_304 d5_305 d5_306 d5_307 d5_308 d5_309 d5_311 d5_313 d5_314 d5_315 d5_316 d5_317 d5_318 d5_319 d5_320 d5_322 d5_323 d5_325 d5_328 d5_329 d5_330 d5_334 d5_335 d5_344 d5_345 d5_346 d5_350 d5_351
 
+## Untagged sweep (31 October 2026)
+The 542 untagged questions were re-read as they now stand (many were rewritten
+after the first tagging: the exam-style v2 rewrite, the D4 difficulty upgrade
+and re-angles), so some items listed above as low confidence are now tagged.
+
+Method, three rounds:
+1. **Two independent taggers** (`isaca-mindset-coach`) read every untagged item
+   against this rubric. A tag went forward only where both chose the same
+   principle at high or medium confidence: 63 items.
+2. **Reading-family check.** A third reader re-checked the 25 reading-family
+   proposals against the tie-break "content families before the reading
+   family": all 25 kept (the decisive step is a stated fact or a prerequisite).
+3. **Adversarial check.** Three skeptics, each with a distinct lens (the
+   tie-breaks, "is this a knowledge item?", the nearest competing principle),
+   tried to refute all 63. A tag was dropped when two or more refuted it.
+
+**Tagged: 56** (737 → 793 of 1279). Treat them as medium
+confidence for review. By principle:
+- `answer-from-the-stem` (15): d1_039 d1_145 d2_106 d2_213 d3_020 d3_039 d3_146 d3_149 d3_154 d4_077 d4_194 d4_228 d4_239 d5_173 d5_237
+- `root-cause-over-symptom` (13): d2_153 d2_194 d3_045 d3_065 d3_106 d4_221 d4_275 d4_301 d5_104 d5_128 d5_129 d5_141 d5_328
+- `final-two` (9): d3_101 d4_003 d4_086 d4_140 d4_180 d4_233 d4_287 d5_133 d5_228
+- `prevent-before-detect` (8): d2_159 d3_013 d3_127 d4_152 d4_282 d5_051 d5_097 d5_214
+- `fit-method-to-objective` (4): d1_156 d4_016 d4_044 d4_187
+- `evidence-quality` (3): d3_083 d3_110 d4_274
+- `risk-sets-priority` (2): d2_208 d5_053
+- `governance-before-technology` (1): d2_180
+- `recover-by-business-priority` (1): d4_192
+
+Reading-family tags (24 of 56) are a larger share than in the
+first pass because the remaining untagged items are mostly ones where no
+content principle decides the final two.
+
+**Refuted in round 3, left untagged (7):** d1_022 d2_019 d2_056 d2_076 d3_032 d4_079 d4_246. In d2_056
+and d2_076 the skeptics preferred a different principle (`risk-sets-priority`,
+`governance-before-technology`); that is a disagreement, so neither is tagged.
+
+**Taggers disagreed in round 1, left untagged (30):** d1_178 d2_020 d2_045 d2_070 d2_157 d3_025 d3_037 d3_121 d4_089 d4_097 d4_101 d4_102 d4_104 d4_105 d4_131 d4_134 d4_245 d4_286 d4_292 d5_056 d5_114 d5_145 d5_150 d5_162 d5_163 d5_169 d5_194 d5_205 d5_226 d5_304.
+
+**Still untagged:** 486 questions. The key turns on knowing a definition,
+technique, standard or rule. The `practice_ids` seeds in `principles.json` are
+unchanged.
+
+### Round 4: the 30 disagreements (31 October 2026)
+The 30 questions where the two round-1 taggers disagreed were re-read by two
+fresh blind taggers (`isaca-mindset-coach`, `cisa-isaca-standards-auditor`) who
+did not see the earlier picks. A tag went forward only when both fresh taggers
+chose the same principle at high or medium confidence and it matched one of the
+round-1 picks (3 of 4 readers agree); the same three skeptics then tried to
+refute it, and a tag was kept when at most one refuted it.
+
+**Tagged (11):** d2_020 `answer-from-the-stem`; d2_157 `final-two`; d4_089 `answer-from-the-stem`; d4_134 `recover-by-business-priority`; d5_056 `risk-sets-priority`; d5_114 `final-two`; d5_145 `answer-from-the-stem`; d5_150 `answer-from-the-stem`; d5_163 `root-cause-over-symptom`; d5_194 `governance-before-technology`; d5_226 `answer-from-the-stem`.
+d4_134 and d5_194 each drew one refutation (the knowledge-item lens) and are
+medium confidence.
+
+**Still untagged (19):** d1_178 d2_045 d2_070 d3_025 d3_037 d3_121 d4_097 d4_101 d4_102 d4_104 d4_105 d4_131 d4_245 d4_286 d4_292 d5_162 d5_169 d5_205 d5_304.
+
 ## Rollout plan
 1. **D1 pilot and panel review.** Done (above).
 2. **D2-D5 tagging.** Done (above). Next: a second reader checks each

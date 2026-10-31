@@ -378,7 +378,7 @@ const answersIn = (p) => Object.keys((p && p.state && p.state.byCert && p.state.
       await row.scrollIntoViewIfNeeded(); await row.click(); await sleep(700);
       const txt = await ev(page2, () => [...document.querySelectorAll('[aria-label]')].map((e) => e.getAttribute('aria-label')).filter((t) => /^(Your answer|Your pick|Best answer)/i.test(t)));
       const best = txt.find((t) => /^Best answer/i.test(t)) || '';
-      // Phone 1.53 renamed the review's red row "Your answer" to "Your pick"; accept both.
+      // The review labels the learner's wrong pick "Your pick" since mobile 1.53 ("Your answer" before).
       const yours = txt.find((t) => /^Your (answer|pick)/i.test(t)) || '';
       c.check(new RegExp(`^Best answer,? ${p.keyDisp}\\b`).test(best) || norm(best).includes(norm(bank[p.id].options[bank[p.id].correct]).slice(0, 30)), `review row ${i + 1}: best-answer line "${best.slice(0, 60)}" is not letter ${p.keyDisp}`);
       if (!p.right) c.check(new RegExp(`^Your (answer|pick),? ${p.disp}\\b`).test(yours) || norm(yours).includes(p.optText.slice(0, 30)), `review row ${i + 1}: your-answer line "${yours.slice(0, 60)}" is not letter ${p.disp}`);

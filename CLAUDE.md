@@ -15,17 +15,21 @@ work without rediscovering the layout.
 | `data/domain{1..5}.json` | **Generated** from `data/originals/` by `scripts/originals_to_domain.py`. Per-domain question banks the apps load. Don't edit by hand. |
 | `data/cisa_notes.json` | Topics notes (web Topics tab + mobile Study notes). Schema v2: `docs/content/NOTES_SCHEMA_V2.md`; lint with `scripts/lint_notes.py` |
 | `data/glossary.json` | Glossary tab data |
+| `data/aaia/` | ISACA AAIA course (paid pack, not wired into the apps yet): `notes/d{1..3}.json` (notes schema v2) and `originals/d{1..3}.json` + `_framework_library.md`. Outline and lens: `docs/content/AAIA_BLUEPRINT.md`; plan: `docs/content/AAIA_BANK_PLAN.md`. Lint notes with `scripts/lint_notes.py <file> --outline docs/content/AAIA_BLUEPRINT.md --bank data/aaia/originals` |
 | `scripts/originals_to_domain.py` | Idempotent converter: `data/originals/d{N}.json` → `data/domain{N}.json` (all domains, or pass a domain number) |
 | `scripts/build_site.sh` | Builds the public website into `_site/` (allowlist only). Deploy steps: `docs/WEBSITE_DEPLOY.md` |
 | `wrangler.jsonc` | Cloudflare settings, used only if the site is connected via the Workers screen: publish `_site/` only |
 | `scripts/verify_repo.sh` | Repo health check (run via the SessionStart hook) |
 | `scripts/lint_exam_style_v2.py` | Harness for exam-style v2 questions (short stems, Eliminate / Final two / Exam cue tips). Rules: `docs/content/EXAM_STYLE_V2.md` |
+| `scripts/check_longest_option.py` | Longest-option tell per domain: how often "always pick the longest" would win (target about 20%, chance 25%; fails outside 15–24%). Run by `verify_repo.sh` |
+| `scripts/check_aaia_bank.py` | AAIA bank checks: every `framework_ref` part in `data/aaia/originals/_framework_library.md`, ids, area coverage, the length tell (enforced from 40 questions per domain), notes links, no "AAIA®". Run by `verify_repo.sh` with the AAIA exam-style and notes lints |
 | `scripts/print_alignment.py` | Prints v2 options beside their explanations and tips for the alignment read (catches option texts under the wrong letters) |
 | `scripts/lint_inline_js.sh` | Extracts inline `<script>` blocks from `index.html` and runs ESLint `no-undef` |
 | `.claude/settings.json` | Permission allowlist + SessionStart validation hook |
 | `CONTRIBUTING.md` | Human-facing version of this file (workflows, code style, PR rules) |
 | `CHANGELOG.md` | Canonical user-facing release history (mirrors the in-app What's New) |
 | `SECURITY.md` | Disclosure policy + privacy summary |
+| `data/crisc/` | CRISC course (paid pack, not wired into the apps yet): `notes/d{1..4}.json` and `originals/d{1..4}.json` + `_framework_library.md`. Outline: `docs/content/CRISC_BLUEPRINT.md`; plan: `docs/content/CRISC_BANK_PLAN.md`; standard: `.claude/agents/crisc-standards-auditor.md`. Lint notes with `scripts/lint_notes.py <file> --outline docs/content/CRISC_BLUEPRINT.md --bank data/crisc/originals` |
 | `mobile/` | **Expo (React Native) iOS + Android app.** Own `package.json`, tests and `mobile/CLAUDE.md`. Reads questions from `data/domain*.json` via `mobile/scripts/build-content.mjs` |
 | `docs/mobile/ARCHITECTURE.md` | Mobile tech-stack decision, architecture, roadmap, store-launch plan |
 | `supabase/migrations/` | Phase 3 database schema (accounts + sync). Written, not yet applied |
@@ -190,6 +194,7 @@ kill %1
 ## Mobile app workflow (added with `mobile/`)
 
 - `npm run shots` inside `mobile/` captures phone-size screenshots of the key screens with demo data (`mobile/scripts/screenshots/`). Send them to the maintainer after UI changes.
+  CI (`.github/workflows/mobile-shots.yml`) runs the default, `settings` and `data` sets on every pull request that changes `mobile/src/` or the scripts; when a screen changes, update the `shoot_*.mjs` steps that point at it in the same pull request. The pictures are a download on each run.
 - Run `npm run check` inside `mobile/` after touching `mobile/` or `data/domain*.json`
   (CI runs the same in `.github/workflows/mobile.yml`). The content-pack
   test fails if any question has a broken answer key.
@@ -198,9 +203,12 @@ kill %1
 - Mobile releases bump `expo.version` in `mobile/app.json`; web-only rules
   (`APP_VERSION`, What's New) do not apply to mobile-only changes.
 - Mobile agents: `mobile-app-engineer`, `mobile-qa-tester`, `mobile-ux-reviewer`,
-  `mobile-security-auditor`, `app-store-compliance-reviewer`. Multi-cert content
+  `mobile-security-auditor`, `app-store-compliance-reviewer`. AAIA content: `aaia-standards-auditor`
+  (shared standard), `aaia-d1-domain-expert`, `aaia-d2-domain-expert`, `aaia-d3-domain-expert`,
+  `aaia-cross-domain-reviewer`. Multi-cert content
   agents: `isaca-concept-reviewer`, `isaca-mindset-coach`, `qa-question-tester`,
   `cert-blueprint-researcher`. Product/marketing: `product-manager`, `growth-marketer`, `brand-logo-designer` (logo, icon, splash, lockups), `mobile-ui-designer` (assess and redesign crowded screens, then implement), `mobile-motion-designer` (motion system, micro-interactions, Reduce Motion), `mobile-performance-engineer` (lag, slow tabs and screens: measure with realistic saves, find the regressing release, fix root causes), `mascot-character-designer` (the tree companion's art, stages and customization), `community-support-designer` (report a problem, support email, feedback board and moderation). Learning and motivation: `behavioral-scientist` (habits, nudges, rewards, pacing), `learning-game-designer` (brain games, names, badges).
+  CRISC content: `crisc-standards-auditor` (shared standard), `crisc-d1..d4-domain-expert`, `crisc-cross-domain-reviewer`. AAIA kickoff prompt (done; history only): `docs/content/AAIA_KICKOFF_PROMPT.md`; continue AAIA from `docs/content/AAIA_BANK_PLAN.md`.
   Notes and web: `cisa-notes-curator` (notes structure and rewrites), `learner-reader`
   (first-time candidate read-through), `web-app-engineer` (index.html),
   `notes-application-tester` (do the notes let a learner answer the bank?),
@@ -273,6 +281,26 @@ Fix-and-push is automatic; only major issues are escalated.
      the "major" list in step 4 even after the experts weigh in. Then bring
      their recommendation and the options in one short question, never an open
      question.
+
+### Session wrap-up (maintainer rule, added 2026-10-31)
+
+The maintainer asked that finished sessions archive themselves instead of
+sitting idle. When a session's work is done:
+
+1. **Check nothing is left.** Every PR it opened is merged or closed (none
+   waiting on CI, reviews or the maintainer); no scheduled task or `send_later`
+   reminder it created is still pending (`list_triggers`, matched by its own
+   session id); no background job is running; its branch is clean and pushed,
+   with the post-merge hygiene below done.
+2. **Anything waiting on the maintainer** (a PR left for them to merge, an open
+   question, a manual step): do NOT archive. Say in one line what is waiting.
+3. **Otherwise** tell the maintainer in one short line that the session is done,
+   then archive it with `archive_session` (its own id from `get_session`) as the
+   very last action. `unarchive_session` undoes it.
+4. **When asked to tidy up other sessions** (`list_sessions` with `mine: true`),
+   apply the same check to each, reading its last messages and its PRs. Archive
+   only sessions that are idle with nothing waiting; never one that is running,
+   blocked on the maintainer, or has a pending scheduled task.
 
 ### Post-merge branch hygiene (CRITICAL — avoids recurring squash-merge conflicts)
 

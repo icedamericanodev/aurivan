@@ -201,6 +201,33 @@ else
   printf "  ${OK} reported (errors=%s warnings=%s; new batches should use --batch --strict)\n" "$errors_count" "$warnings_count"
 fi
 
+# 6a. Longest-option tell ----------------------------------------------------
+# Per domain, how often "always pick the longest option" (ties shared) would
+# win. Chance is 25%; the target is about 20%. Outside 15–24% fails.
+printf "\n"
+if ! python3 scripts/check_longest_option.py; then
+  status=1
+fi
+
+# 6a2. AAIA course (data/aaia/) ---------------------------------------------
+# The paid AAIA pack: item style (lint_exam_style_v2 --file, exit 1 = error),
+# notes against the AAIA outline and bank, and the bank checks (citations in
+# the AAIA library, area coverage, length tell, notes links).
+if [ -d data/aaia/originals ]; then
+  printf "\n"
+  python3 scripts/check_aaia_bank.py || status=1
+  for f in data/aaia/originals/d[0-9].json; do
+    out=$(python3 scripts/lint_exam_style_v2.py --file "$f"); rc=$?
+    printf "  %s: %s\n" "$(basename "$f")" "$(printf '%s\n' "$out" | tail -1)"
+    if [ "$rc" -eq 1 ]; then printf '%s\n' "$out" | grep '^ERROR' | sed 's/^/    /'; status=1; fi
+  done
+  for f in data/aaia/notes/d[0-9].json; do
+    out=$(python3 scripts/lint_notes.py "$f" --outline docs/content/AAIA_BLUEPRINT.md --bank data/aaia/originals); rc=$?
+    printf "  notes %s: %s\n" "$(basename "$f")" "$(printf '%s\n' "$out" | tail -1)"
+    if [ "$rc" -ne 0 ]; then printf '%s\n' "$out" | grep '^ERROR' | sed 's/^/    /'; status=1; fi
+  done
+fi
+
 # 6b. Mindset principles (data/mindset/principles.json) ----------------------
 # Schema, ids, practice-question and subtopic cross-references, word limits,
 # family/domain coverage, legacy id mapping. Errors fail the check; warnings
