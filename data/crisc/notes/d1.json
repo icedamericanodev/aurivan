@@ -160,7 +160,7 @@
       "topic_name": "Organizational Structure, Roles, and Responsibilities",
       "overview": "Every CRISC decision has an owner. This topic covers who sets direction (the board and senior management), who oversees (committees and the chief risk officer), who owns and decides on each risk, who answers for controls, and what the risk practitioner does, including for AI systems.",
       "can_do": [
-        "Name the body that approves risk appetite and the risk management framework",
+        "Name who approves risk appetite and who approves the risk management framework",
         "Tell the risk owner, control owner and risk practitioner apart in a scenario",
         "Assign one accountable owner when several teams share an activity, including an AI use case"
       ],
@@ -298,11 +298,11 @@
           "key_terms": [
             {
               "term": "Risk acceptance",
-              "definition": "The risk owner's documented decision to bear a risk at its current level, within appetite."
+              "definition": "The risk owner's recorded decision to keep a risk without further treatment, because it sits inside appetite and tolerance and within the owner's authority."
             },
             {
               "term": "Residual risk",
-              "definition": "The risk that remains after a response has been implemented; the risk owner accepts it if it is within appetite, or chooses further treatment."
+              "definition": "What is left of a risk once the chosen response is in place and working; the owner accepts it within appetite or chooses further treatment."
             }
           ]
         },
@@ -882,7 +882,7 @@
             },
             {
               "term": "Acceptable interruption window (AIW)",
-              "definition": "ISACA term: how long a system can stay down before the business can no longer meet its objectives."
+              "definition": "ISACA term: the business's downtime limit for a system, set at the point where a longer outage would start to put business objectives at risk."
             }
           ]
         }
@@ -1606,7 +1606,7 @@
             },
             {
               "term": "Future residual risk",
-              "definition": "The ISACA Glossary's phrase for current risk with a planned response implemented; KaiSip calls it target risk and uses it to judge the plan."
+              "definition": "ISACA Glossary name for the level a risk should reach once the planned response is in place; KaiSip calls it target risk."
             }
           ],
           "memory_aid": "Capacity is the cliff edge, appetite is the path, tolerance is the guardrail."
@@ -1659,7 +1659,7 @@
             },
             {
               "term": "Key risk indicator (KRI)",
-              "definition": "One of the few risk indicators chosen because it tracks an important risk closely and moves early, compared with thresholds drawn from appetite and tolerance."
+              "definition": "A metric picked for early warning on a significant risk, as it moves before likelihood or impact changes; read against appetite and tolerance thresholds."
             }
           ]
         },
@@ -1711,7 +1711,7 @@
             },
             {
               "term": "Temporary acceptance",
-              "definition": "A time-limited decision, approved by the level that set the limit, to carry risk above tolerance while a fix is delivered."
+              "definition": "A time-limited decision, approved by the level that set the limit, to carry risk above appetite or tolerance while a fix is delivered."
             }
           ]
         }
@@ -1904,13 +1904,13 @@
     }
   ],
   "key_terminologies": {
-    "Risk": "The combination of how likely an event is and how much it would affect objectives; ISO 31000 frames it as the effect of uncertainty on objectives.",
-    "Governance": "Setting direction, making decisions and monitoring performance so the enterprise meets its objectives; led by the board.",
+    "Risk": "The chance that an event happens, weighed together with how much it would affect objectives if it did; ISO 31000 frames it as the effect of uncertainty on objectives.",
+    "Governance": "The board-led system that evaluates what stakeholders need, directs management on priorities, and checks whether the agreed objectives are being met.",
     "Risk appetite": "The overall level and kinds of risk the enterprise has chosen to take on to achieve its strategy and objectives, set by the board and senior management.",
     "Risk tolerance": "How far a particular risk or result may move from what the appetite intends before it must be escalated, usually set as a measurable limit.",
     "Risk capacity": "The most loss, in money, capital or operations, the enterprise could take and still survive and meet its obligations.",
     "Risk owner": "The named person who answers for a risk: decides how it is treated, accepts what remains and carries the loss if it occurs.",
-    "Control owner": "The person accountable for a control: they make the decisions about it and answer for it being in place and working; often the manager whose team runs it, or who manages the supplier that does.",
+    "Control owner": "The manager who answers for one control doing its job, from its design and daily running to the fix when it fails; often the manager whose team runs it, or who manages the supplier that does.",
     "Risk practitioner": "The professional who identifies, analyzes, recommends, facilitates, monitors and reports on risk; advises but does not decide for the owner.",
     "Goals cascade": "The COBIT 2019 chain from stakeholder needs to enterprise goals to alignment goals for information and technology.",
     "RACI": "A responsibility grid marking, for each activity, who does the work (R), who answers for it (A), who gives input (C) and who is kept updated (I); exactly one A per activity.",
@@ -1918,7 +1918,7 @@
     "Policy": "Management's formal statement of what people must and must not do, approved by senior management.",
     "Standard": "A mandatory, measurable requirement that supports a policy.",
     "Guideline": "Advisory good practice that people may depart from for a sound reason.",
-    "Policy exception": "An approved, time-limited departure from a policy or standard, with its risk accepted by the owner.",
+    "Policy exception": "An approved, time-limited departure from a policy or standard, with its risk accepted by the risk owner at the authority level the rating requires.",
     "Business continuity plan (BCP)": "A plan for keeping critical business processes running during and after a disruption.",
     "Disaster recovery plan (DRP)": "A plan for restoring the IT systems and facilities that critical processes depend on.",
     "Asset inventory": "A register of the enterprise's assets, including cloud services, data and AI models, each with a business owner.",
@@ -1926,7 +1926,7 @@
     "Risk taxonomy": "A common scheme of risk categories that lets risks from every unit be compared and combined.",
     "Risk register": "The record of identified risks with owner, rating, response and status.",
     "Risk profile": "The current, aggregated view of the risks the enterprise faces, reported to senior management and the board against appetite.",
-    "Risk aggregation": "Combining related risks into an enterprise view, allowing for shared causes rather than simply adding scores.",
+    "Risk aggregation": "Rolling unit-level risk ratings up into one view of the enterprise's total exposure, after normalizing them to common criteria; correlated risks are not simply added.",
     "Lines of defense": "A model separating risk ownership (first line), oversight and challenge (second line) and independent assurance (third line).",
     "Risk management framework": "The enterprise's approved principles, roles, methods and reporting for managing risk.",
     "Compliance risk": "The risk of penalties, sanctions or lost licenses from failing legal, regulatory or contractual obligations."

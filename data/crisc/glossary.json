@@ -3,7 +3,7 @@
     "id": 1,
     "term": "Acceptable interruption window (AIW)",
     "acronym": "AIW",
-    "def": "How long a system can stay down before the business can no longer meet its objectives. Recovery has to bring it back inside this window.",
+    "def": "The business's downtime limit for a system, set at the point where a longer outage would start to put business objectives at risk. Recovery has to bring the system back inside it.",
     "scopeNotes": "MTO and AIW are business limits on how long an outage can last; RTO is the recovery target set inside them; RPO limits data loss, not downtime.",
     "domain": 2,
     "category": "Metric"
@@ -183,7 +183,7 @@
     "id": 21,
     "term": "Business continuity plan (BCP)",
     "acronym": "BCP",
-    "def": "A plan for keeping critical business processes running during and after a disruption. It relies on the disaster recovery plan to restore the systems those processes use.",
+    "def": "A plan for keeping critical business processes running during and after a disruption. The IT systems those processes need are brought back under the disaster recovery plan.",
     "scopeNotes": "BCP keeps the business process going; the DRP restores IT. Both draw their priorities from the BIA.",
     "domain": 1,
     "category": "Document"
@@ -426,7 +426,7 @@
     "id": 48,
     "term": "Control owner",
     "acronym": null,
-    "def": "The person accountable for a control: they make the decisions about it and answer for it being in place and working. Often the manager whose team runs it, or who manages the supplier that does.",
+    "def": "The manager who answers for one control doing its job, from its design and daily running to the fix when it fails. Often the manager whose team runs it, or who manages the supplier that does.",
     "scopeNotes": "The risk owner decides the response and accepts the risk; the control owner answers for a control being in place and working; the action owner completes a treatment task. When a supplier runs the control, the control owner stays an internal manager, often the contract manager.",
     "domain": 1,
     "category": "Role"
@@ -813,7 +813,7 @@
     "id": 91,
     "term": "Future residual risk",
     "acronym": null,
-    "def": "The ISACA Glossary's phrase for current risk once a planned response is defined and implemented. KaiSip calls it target risk and uses it to judge whether a plan is enough.",
+    "def": "The name the ISACA Glossary uses, inside its risk response entry, for the level a risk is expected to reach once the planned response is in place. KaiSip calls it target risk and uses it to judge whether a plan is enough.",
     "scopeNotes": "Inherent ignores all management action; current counts only actions already taken; residual is what an implemented response leaves; future residual (KaiSip: target) is what a planned response should reach.",
     "domain": 3,
     "category": "Concept"
@@ -849,7 +849,7 @@
     "id": 95,
     "term": "Governance",
     "acronym": null,
-    "def": "Setting direction, making decisions and monitoring performance so the enterprise meets its objectives, led by the board.",
+    "def": "The board-led system that evaluates what stakeholders need, directs management on priorities, and checks whether the agreed objectives are being met.",
     "scopeNotes": "Governance evaluates, directs and monitors; management plans, builds, runs and monitors within that direction.",
     "domain": 1,
     "category": "Concept"
@@ -939,8 +939,8 @@
     "id": 105,
     "term": "Incident",
     "acronym": null,
-    "def": "An event that damages, or threatens at any moment to damage, the confidentiality, integrity or availability of information or systems, or that breaks the law or the enterprise's security or acceptable use rules. Alerts become incidents only once triage confirms them.",
-    "scopeNotes": "",
+    "def": "An event that damages, or is about to damage, the confidentiality, integrity or availability of information or systems, or that breaks, or is about to break, the law or the enterprise's security or acceptable use rules. Alerts become incidents only once triage confirms them.",
+    "scopeNotes": "This is the ISACA Glossary's security sense. In IT service management (incident management, CRISC 4A2), an incident is any unplanned interruption to a service or drop in its quality, security-related or not; problem management then removes the cause.",
     "domain": 2,
     "category": "Concept"
   },
@@ -957,7 +957,7 @@
     "id": 107,
     "term": "Incident response plan (IRP)",
     "acronym": "IRP",
-    "def": "A documented approach to detecting, containing, recovering from and learning from security incidents.",
+    "def": "The written playbook for a suspected security incident: who confirms and contains it, how affected systems are restored, who must be told, and how lessons feed back into controls.",
     "scopeNotes": "",
     "domain": 4,
     "category": "Document"
@@ -1048,7 +1048,7 @@
     "term": "Key control indicator (KCI)",
     "acronym": "KCI",
     "def": "A metric showing that a control is weakening or failing before the risk it guards against grows, such as the share of test restores that miss their recovery objectives.",
-    "scopeNotes": "KRI warns that a risk is changing; KCI shows a control weakening; KPI tracks how well a process performs; KGI confirms after the fact whether a goal was met.",
+    "scopeNotes": "KRI warns that a risk is changing; KCI shows a control weakening; KPI tracks how well a process performs; KGI reports, at period end, whether a goal was reached.",
     "domain": 3,
     "category": "Metric"
   },
@@ -1056,8 +1056,8 @@
     "id": 118,
     "term": "Key goal indicator (KGI)",
     "acronym": "KGI",
-    "def": "A lagging measure that shows, once a period has ended, whether a process delivered the business outcome it exists to deliver.",
-    "scopeNotes": "KRI warns that a risk is changing; KCI shows a control weakening; KPI tracks how well a process performs; KGI confirms after the fact whether a goal was met.",
+    "def": "A lagging metric, read at the end of a period, of whether a business goal that a process supports was reached, such as the share of orders delivered on time over the year.",
+    "scopeNotes": "KRI warns that a risk is changing; KCI shows a control weakening; KPI tracks how well a process performs; KGI reports, at period end, whether a goal was reached.",
     "domain": 3,
     "category": "Metric"
   },
@@ -1066,7 +1066,7 @@
     "term": "Key performance indicator (KPI)",
     "acronym": "KPI",
     "def": "A measure of how well a process or project is performing against its goal, such as tickets closed on time.",
-    "scopeNotes": "KRI warns that a risk is changing; KCI shows a control weakening; KPI tracks how well a process performs; KGI confirms after the fact whether a goal was met.",
+    "scopeNotes": "KRI warns that a risk is changing; KCI shows a control weakening; KPI tracks how well a process performs; KGI reports, at period end, whether a goal was reached.",
     "domain": 3,
     "category": "Metric"
   },
@@ -1074,8 +1074,8 @@
     "id": 120,
     "term": "Key risk indicator (KRI)",
     "acronym": "KRI",
-    "def": "One of the few risk indicators chosen because it tracks an important risk closely and moves early. It is compared with thresholds drawn from appetite and tolerance.",
-    "scopeNotes": "KRI warns that a risk is changing; KCI shows a control weakening; KPI tracks how well a process performs; KGI confirms after the fact whether a goal was met. The best KRIs lead rather than lag.",
+    "def": "A metric picked to give early warning on a significant risk, because it reliably moves before that risk's likelihood or impact changes. It is read against thresholds drawn from appetite and tolerance.",
+    "scopeNotes": "KRI warns that a risk is changing; KCI shows a control weakening; KPI tracks how well a process performs; KGI reports, at period end, whether a goal was reached. The best KRIs lead rather than lag.",
     "domain": 3,
     "category": "Metric"
   },
@@ -1335,7 +1335,7 @@
     "id": 149,
     "term": "Outsourcing",
     "acronym": null,
-    "def": "Contracting a third party to run an IT or business function that the enterprise would otherwise run itself.",
+    "def": "An arrangement in which an outside provider runs an IT or business process under contract, in place of the enterprise's own staff.",
     "scopeNotes": "Outsourcing moves the work, not the accountability.",
     "domain": 3,
     "category": "Process"
@@ -1470,7 +1470,7 @@
     "id": 164,
     "term": "Problem management",
     "acronym": null,
-    "def": "The process that finds and removes the underlying cause of one or more incidents.",
+    "def": "The process that investigates what lies behind one incident or a pattern of them and removes that cause, so the failure does not return.",
     "scopeNotes": "",
     "domain": 4,
     "category": "Process"
@@ -1497,7 +1497,7 @@
     "id": 167,
     "term": "Prompt injection",
     "acronym": null,
-    "def": "Crafted input that makes a language model ignore its instructions, reveal data or produce harmful output.",
+    "def": "An attack that hides instructions in text a language model reads, such as a prompt, document or web page, so the model overrides its intended behavior, leaks data or acts harmfully.",
     "scopeNotes": "",
     "domain": 4,
     "category": "Concept"
@@ -1515,7 +1515,7 @@
     "id": 169,
     "term": "Purpose limitation",
     "acronym": null,
-    "def": "A privacy principle: personal data is gathered only for clearly stated, lawful purposes, and any later use must fit those purposes; an unrelated new use needs its own legal basis.",
+    "def": "A privacy principle: personal data may be used only for the specific, legitimate purposes declared when it was collected, or for purposes compatible with them; an unrelated new use needs its own legal basis.",
     "scopeNotes": "",
     "domain": 4,
     "category": "Control"
@@ -1632,7 +1632,7 @@
     "id": 182,
     "term": "Risk",
     "acronym": null,
-    "def": "The combination of how likely an event is and how much it would affect objectives. Risk is always judged by its business impact, not by technical severity alone.",
+    "def": "The chance that an event happens, weighed together with how much it would affect objectives if it did. Risk is always judged by its business impact, not by technical severity alone.",
     "scopeNotes": "ISO 31000 describes risk as the effect of uncertainty on objectives, which also covers upside (opportunity).",
     "domain": 0,
     "category": "Concept"
@@ -1642,7 +1642,7 @@
     "term": "Risk acceptance",
     "acronym": null,
     "def": "The risk owner's recorded decision to keep a risk at its current level without further treatment, because it sits inside the appetite and tolerance the board and senior management set and the owner has authority for that level.",
-    "scopeNotes": "The practitioner recommends and records; only the owner accepts. Unrecorded acceptance is implicit acceptance. Carrying risk above tolerance is not the owner's call: it needs a time-limited temporary acceptance from the level that set the limit.",
+    "scopeNotes": "The practitioner recommends and records; only the owner accepts. Unrecorded acceptance is implicit acceptance. Carrying risk above appetite or tolerance is not the owner's call: it needs a time-limited temporary acceptance from the level that set the limit.",
     "domain": 3,
     "category": "Process"
   },
@@ -1659,7 +1659,7 @@
     "id": 185,
     "term": "Risk aggregation",
     "acronym": null,
-    "def": "Combining risk assessments from across units into one enterprise-wide picture, after putting them on common criteria.",
+    "def": "Rolling unit-level risk ratings up into one view of the enterprise's total exposure, after normalizing them to common criteria.",
     "scopeNotes": "Allow for correlated risks; do not just add scores.",
     "domain": 3,
     "category": "Process"
@@ -1794,7 +1794,7 @@
     "id": 200,
     "term": "Risk indicator",
     "acronym": null,
-    "def": "Any metric that suggests exposure to a risk is rising or that a risk could happen. Key risk indicators are the few chosen for relevance and predictive power.",
+    "def": "Any metric that suggests exposure to a risk is rising or that a risk could happen. Key risk indicators are the few that management watches most closely, because each tracks a significant risk and gives early warning.",
     "scopeNotes": "",
     "domain": 3,
     "category": "Metric"
@@ -1875,7 +1875,7 @@
     "id": 209,
     "term": "Risk response",
     "acronym": null,
-    "def": "The option, or mix of options, a risk owner chooses: accept, mitigate, transfer (share) or avoid. The aim is to bring the risk expected after the response (future residual risk; KaiSip: target) within appetite, as far as budget allows.",
+    "def": "How a risk owner decides to deal with a risk, using one or a mix of accept, mitigate, transfer (share) or avoid. The aim is to get the level the response should reach (future residual risk; KaiSip: target) inside appetite; where budget falls short and the remaining risk is still above appetite, the owner treats it further or escalates it to the level that set the appetite, which may approve a time-limited temporary acceptance.",
     "scopeNotes": "The risk owner chooses the response; the practitioner analyzes options and recommends.",
     "domain": 3,
     "category": "Process"
@@ -2010,9 +2010,9 @@
     "id": 224,
     "term": "Service delivery objective (SDO)",
     "acronym": "SDO",
-    "def": "The minimum service the business needs while running on recovery arrangements, until normal operations are back.",
+    "def": "The level of service the business has agreed it must still get while it runs on recovery arrangements, often below normal. It sets how much capacity the alternate setup must provide.",
     "scopeNotes": "",
-    "domain": 4,
+    "domain": 2,
     "category": "Metric"
   },
   {
@@ -2172,7 +2172,7 @@
     "id": 242,
     "term": "Temporary acceptance",
     "acronym": null,
-    "def": "A time-limited decision, approved by the level that set the limit, to carry risk above tolerance while a fix is delivered.",
+    "def": "A time-limited decision, approved by the level that set the limit, to carry risk above appetite or tolerance while a fix is delivered.",
     "scopeNotes": "",
     "domain": 1,
     "category": "Process"
@@ -2199,7 +2199,7 @@
     "id": 245,
     "term": "Threat event",
     "acronym": null,
-    "def": "A specific occurrence, such as a phishing campaign or a flood, in which a threat source targets an asset and could cause harm.",
+    "def": "A specific occurrence, such as a phishing campaign or a flood, through which a threat source could harm an asset or disrupt a process.",
     "scopeNotes": "",
     "domain": 2,
     "category": "Concept"

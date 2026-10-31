@@ -191,7 +191,7 @@
             },
             {
               "term": "Future residual risk",
-              "definition": "ISACA Glossary phrase for current risk once a planned response is implemented; KaiSip calls it target risk and uses it to judge the plan."
+              "definition": "ISACA Glossary name for the level a risk should reach once the planned response is in place; KaiSip calls it target risk."
             }
           ]
         }
@@ -1021,7 +1021,7 @@
             },
             {
               "term": "Acceptable interruption window (AIW)",
-              "definition": "ISACA term: how long a system can stay down before the business can no longer meet its objectives."
+              "definition": "ISACA term: the business's downtime limit for a system, set at the point where a longer outage would start to put business objectives at risk."
             }
           ]
         },
@@ -1285,7 +1285,7 @@
             },
             {
               "term": "Prompt injection",
-              "definition": "Crafted input that makes an AI system ignore its instructions or reveal data."
+              "definition": "Instructions hidden in text an AI system reads, such as a prompt, document or web page, that make it override its behavior or leak data."
             }
           ]
         }
@@ -1661,7 +1661,7 @@
             "recommend": "Have the privacy officer review every new use of personal data against its stated purpose before launch.",
             "decides": "The data owner decides on use, with the privacy officer's advice"
           },
-          "isaca_rule": "Privacy is not the same as security. Ask whether the purpose was set before collection and whether the use matches it; strong encryption does not make an unfair use acceptable. The data owner and privacy officer decide, with legal advice.",
+          "isaca_rule": "Privacy is not the same as security. Ask whether the purpose was set before collection and whether the use matches it; strong encryption does not make an unfair use acceptable. The data owner decides, advised by the privacy officer and legal counsel.",
           "exam_traps": [
             {
               "trap": "Assuming encrypted data has no privacy risk.",
@@ -1675,7 +1675,7 @@
           "key_terms": [
             {
               "term": "Purpose limitation",
-              "definition": "Personal data is gathered only for clearly stated, lawful purposes, and later use must fit them; an unrelated new use needs its own legal basis."
+              "definition": "Personal data may be used only for the specific, legitimate purposes declared at collection, or compatible ones; unrelated new uses need their own legal basis."
             },
             {
               "term": "Data minimization",
@@ -1767,7 +1767,7 @@
               "Transfer assessments naming destination countries and safeguards",
               "AI vendor contracts covering training use, location and deletion"
             ],
-            "recommend": "Have the privacy officer and legal counsel approve any transfer of personal data to AI or overseas services.",
+            "recommend": "Have the privacy officer and legal counsel review every transfer of personal data to AI or overseas services before the data owner approves it.",
             "decides": "The data owner decides, with legal counsel and the privacy officer advising"
           },
           "isaca_rule": "Personal data keeps its privacy rules inside AI and across borders. The practitioner checks purpose, lawful basis, minimization, location and vendor data use before the data moves; legal counsel advises on the law and the data owner decides.",
@@ -1802,11 +1802,11 @@
     "Change management": "The controlled process for assessing, approving, testing, implementing and reviewing changes.",
     "Emergency change": "A change made fast to restore service or stop harm, then documented and reviewed after the fact.",
     "Incident management": "The process for logging, prioritizing and resolving incidents so the affected service is back in use quickly.",
-    "Problem management": "The process that finds and removes the root cause of one or more incidents.",
+    "Problem management": "The process that investigates what lies behind one incident or a pattern of them and removes that cause, so the failure does not return.",
     "CI/CD pipeline": "The automated path that builds, tests and deploys code changes to production.",
     "System development life cycle (SDLC)": "The phases of a system from initiation through design, build, test, operation and disposal.",
     "Secure Software Development Framework (SSDF)": "NIST SP 800-218, a set of practices for building security into any software development model.",
-    "Data owner": "The business manager accountable for a set of data: its quality (integrity and accuracy), proper use and protection. They classify it and decide who may access it and how long it is kept.",
+    "Data owner": "The business manager accountable for a set of data: its quality, its proper use and its protection. They classify it and decide who may access it and how long it is kept.",
     "Data custodian": "The party, often IT, that stores and protects data according to the owner's rules.",
     "Sanitization": "Making data on storage media unrecoverable, by clearing, purging or destroying it.",
     "Portfolio management": "Selecting and prioritizing programs and projects by value, risk and strategic fit.",
@@ -1823,7 +1823,7 @@
     "NIST Cybersecurity Framework (CSF) 2.0": "A NIST framework of cybersecurity outcomes in six functions: Govern, Identify, Protect, Detect, Respond and Recover.",
     "Risk-aware culture": "A culture where people understand the risks in their work, speak up and act within appetite.",
     "Shadow AI": "Use of AI tools for work without the organization's approval or controls.",
-    "Purpose limitation": "A privacy principle: personal data is gathered only for clearly stated, lawful purposes, and any later use must fit those purposes; an unrelated new use needs its own legal basis.",
+    "Purpose limitation": "A privacy principle: personal data may be used only for the specific, legitimate purposes declared when it was collected, or for purposes compatible with them; an unrelated new use needs its own legal basis.",
     "Privacy impact assessment (PIA)": "An analysis of how a system or activity handles personal data, its privacy risks and mitigations."
   },
   "references": [

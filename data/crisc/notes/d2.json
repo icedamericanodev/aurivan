@@ -91,7 +91,7 @@
             },
             {
               "term": "Incident",
-              "definition": "An event that damages, or threatens at any moment to damage, the confidentiality, integrity or availability of information, or breaks the law or security rules."
+              "definition": "(Security sense) An event harming, or about to harm, the confidentiality, integrity or availability of information, or breaching law or security rules."
             }
           ],
           "memory_aid": "Loss hurt, near miss nearly hurt: both re-rate the scenario."
@@ -275,7 +275,7 @@
           "key_terms": [
             {
               "term": "Threat event",
-              "definition": "A specific occurrence, such as a phishing campaign or a flood, in which a threat source targets an asset and could cause harm."
+              "definition": "A specific occurrence, such as a phishing campaign or a flood, through which a threat source could harm an asset or disrupt a process."
             },
             {
               "term": "Privileged insider",
@@ -384,7 +384,7 @@
           "types": [
             {
               "term": "Prompt injection",
-              "meaning": "Crafted input that makes a language model ignore its instructions and produce unintended or harmful output."
+              "meaning": "Instructions hidden in text a language model reads, such as a prompt, document or web page, that make it override its intended behavior, leak data or act harmfully."
             },
             {
               "term": "Data poisoning",
@@ -840,7 +840,7 @@
           "practice_ids": [
             "crisc_d2_032"
           ],
-          "definition": "Risk is the combination of how likely an event is and how much it would affect objectives. The ISACA Glossary calls it an event's likelihood combined with its impact.",
+          "definition": "Risk is the chance that an event happens, weighed with how much it would affect objectives; the ISACA Glossary frames it as likelihood combined with impact.",
           "why_it_matters": "Rating only impact makes every disaster look urgent; rating only likelihood ignores rare but severe events. Both together let owners compare risks fairly against appetite.",
           "how_it_works": [
             "Likelihood combines the chance a threat event starts and the chance it causes harm, over a stated time frame.",
@@ -1119,11 +1119,11 @@
             },
             {
               "term": "Acceptable interruption window (AIW)",
-              "definition": "ISACA term: how long a system can be down before the business can no longer meet its objectives."
+              "definition": "ISACA term: the business's downtime limit for a system, set at the point where a longer outage would start to put business objectives at risk."
             },
             {
               "term": "Service delivery objective (SDO)",
-              "definition": "ISACA term: the minimum service the business needs while running on recovery arrangements, until normal operations are back."
+              "definition": "ISACA term: the agreed level of service the business must still get on recovery arrangements, often below normal; it sizes the alternate setup."
             }
           ],
           "memory_aid": "RTO looks forward to recovery; RPO looks back to the last good data."
@@ -1181,7 +1181,7 @@
             },
             {
               "term": "Control owner",
-              "definition": "The person accountable for a control: decides about it and answers for it being in place and working; often the manager whose team runs it."
+              "definition": "The manager who answers for one control doing its job, from design and daily running to fixing it when it fails."
             },
             {
               "term": "Action owner",
@@ -1289,7 +1289,7 @@
             },
             {
               "term": "Aggregation",
-              "definition": "Combining related risks to show their total effect on enterprise objectives."
+              "definition": "Rolling unit-level ratings up into one view of total enterprise exposure, on common criteria and allowing for correlated risks."
             }
           ]
         }
@@ -1589,7 +1589,7 @@
           "key_terms": [
             {
               "term": "Future residual risk",
-              "definition": "ISACA Glossary phrase (risk response entry) for current risk with the planned response implemented; KaiSip calls it target risk."
+              "definition": "ISACA Glossary name for the level a risk should reach once the planned response is in place; KaiSip calls it target risk."
             },
             {
               "term": "Target risk",
@@ -1682,7 +1682,7 @@
             "recommend": "Have risk owners document acceptance within appetite and choose treatment options for risks above it.",
             "decides": "The risk owner decides within appetite; breaches go to the owner and the limit-setting level"
           },
-          "isaca_rule": "Residual risk within appetite can be accepted by the risk owner and monitored. Above appetite, the practitioner presents options and the owner chooses. The practitioner never accepts risk on the owner's behalf.",
+          "isaca_rule": "Residual risk within appetite can be accepted by the risk owner and monitored. Above appetite, the practitioner presents treatment options and the owner chooses one, or escalates to the level that set the appetite if the risk is to be carried. The practitioner never accepts risk on the owner's behalf.",
           "exam_traps": [
             {
               "trap": "After controls are added, the risk practitioner can sign off the residual risk as acceptable.",
@@ -1704,7 +1704,7 @@
             },
             {
               "term": "Risk acceptance",
-              "definition": "A documented decision by an authorized owner to hold a risk, made within appetite and tolerance."
+              "definition": "The risk owner's recorded decision to keep a risk without further treatment, because it sits inside appetite and tolerance and within the owner's authority."
             }
           ]
         }
@@ -1716,7 +1716,7 @@
     "Loss event": "A threat event that actually causes loss, such as lost money, data, service or reputation.",
     "Near miss": "An event that would have caused loss but was stopped by a control, chance or timing.",
     "Threat source": "Anyone or anything that could cause harm: adversarial, accidental, structural or environmental.",
-    "Threat event": "A specific occurrence, such as a phishing campaign or a flood, in which a threat source targets an asset and could cause harm.",
+    "Threat event": "A specific occurrence, such as a phishing campaign or a flood, through which a threat source could harm an asset or disrupt a process.",
     "Vulnerability": "A weakness that a threat could exploit, whether in technology, a process, people's skills or the controls and governance around them.",
     "Threat modeling": "A structured way, such as STRIDE or attack trees, to work out how a system could be harmed.",
     "CVSS": "Common Vulnerability Scoring System: FIRST's 0 to 10 severity score for a software flaw; one input to risk, not the risk rating.",
@@ -1725,8 +1725,8 @@
     "Risk assessment": "The process of identifying, estimating and prioritizing risk: prepare, conduct, communicate, maintain.",
     "Business impact analysis (BIA)": "Analysis of critical processes, how impact grows over time and what they depend on; it ignores likelihood.",
     "Maximum tolerable outage (MTO)": "ISACA Glossary term for the outage limit of a critical process or system: past it, the damage to the enterprise becomes significant, so recovery must finish first. Other sources say maximum tolerable downtime (MTD).",
-    "Acceptable interruption window (AIW)": "ISACA Glossary term for how long a system can stay down before the business can no longer meet its objectives; recovery must finish inside it.",
-    "Recovery time objective (RTO)": "The target for how soon a business function, or a resource it depends on, must be working again after a disruption; normally shorter than the MTO.",
+    "Acceptable interruption window (AIW)": "ISACA Glossary term for the business's downtime limit for a system, set at the point where a longer outage would start to put objectives at risk; recovery must finish inside it.",
+    "Recovery time objective (RTO)": "The target for how soon a business function, or a resource it depends on, must be working again after a disruption; set by the business within the MTO.",
     "Recovery point objective (RPO)": "How much data loss, measured back in time, the business can tolerate.",
     "Risk register": "The working record of risk scenarios, each with its owner, rating, response and status.",
     "Risk owner": "The named person who answers for a risk: decides how it is treated, accepts what remains and carries the loss if it occurs.",
@@ -1736,10 +1736,10 @@
     "Annual rate of occurrence (ARO)": "Expected number of occurrences per year.",
     "Annualized loss expectancy (ALE)": "Expected yearly loss: SLE times ARO.",
     "Inherent risk": "The level of a risk if management had done nothing about it: no controls, no transfer and no other response.",
-    "Current risk": "Risk as it stands today, counting actions already taken but not those planned; compared with appetite now.",
+    "Current risk": "Today's exposure, counting only responses already in place and working, not planned or proposed ones; it is what is compared with appetite now.",
     "Residual risk": "What is left of a risk once the chosen response is in place and working; it shows whether the response brought the risk within appetite.",
-    "Future residual risk": "ISACA Glossary phrase for current risk with a planned response implemented; KaiSip calls it target risk and uses it to judge the plan.",
-    "Prompt injection": "Crafted input that makes a language model ignore its instructions or produce harmful output.",
+    "Future residual risk": "ISACA Glossary name (in its risk response entry) for the level a risk is expected to reach once the planned response is in place; KaiSip calls it target risk and uses it to judge the plan.",
+    "Prompt injection": "An attack that hides instructions in text a language model reads, such as a prompt, document or web page, so the model overrides its intended behavior, leaks data or acts harmfully.",
     "Data poisoning": "Corrupting an AI model's training or fine-tuning data so it learns wrong or hidden behavior.",
     "Model drift": "Loss of an AI model's accuracy over time as live data or real-world patterns change."
   },
