@@ -75,3 +75,4 @@ Rule for the form builder: Draw no two items of a pair into the same form. Keep 
 | csoe_d3_019 | csoe_d3_060 | d3_019 explanation: the website route works when the annual report announced it |
 | csoe_d1_039 | csoe_d3_054 | d3_054 explanation: Section 402 bars loans to directors and executive officers (d1_039's basis) |
 | csoe_d1_039 | csoe_d3_012 | same reason (d3_012 explanation) |
+| csoe_d3_008 | csoe_d3_046 | d3_046's stem states Section 304's 12-month window (part of d3_008's key) |
