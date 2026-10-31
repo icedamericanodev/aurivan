@@ -71,7 +71,7 @@
         "trap": "Approve the treatment that looks most sensible, then brief the director when they return.",
         "why": "The analyst can recommend, but the owner who bears the loss decides. Approving on the owner's behalf leaves a decision with no accountable owner."
       },
-      "nuance": "A risk owner can delegate a decision in writing to another manager, such as approving low-rated exceptions within a set limit. The practitioner still only assesses and advises; anything outside the delegation returns to the owner.",
+      "nuance": "Even a low-rated exception accepts risk, so approval stays with the risk owner at the authority level the rating requires. The practitioner may be delegated tasks such as running the exception register or tracking expiry dates, never the approval.",
       "domains": [
         1,
         2,
@@ -123,7 +123,7 @@
         "trap": "Propose the IT manager as risk owner, since IT hosts the site and can act fastest.",
         "why": "The risk owner is the manager whose objective bears the loss. IT can be assigned the hosting controls as their control owner; building or hosting the site never makes anyone the risk owner."
       },
-      "nuance": "For a risk shared across units, senior management can name one lead owner and record the others as contributors. It is still one named person, never a group.",
+      "nuance": "For a shared risk, senior management names one lead owner, never a group. ISACA's outline makes assigning and validating ownership a practitioner task: propose an owner for management to confirm; owning the risk yourself is the slip.",
       "domains": [
         1,
         3,
@@ -281,7 +281,7 @@
         "scenario": "A clinic network's tolerance allows at most four hours of scheduling downtime a month. A new assessment rates the risk at about one hour, and IT proposes a second hosting site.",
         "right": "Report the risk as within tolerance and recommend the owner accept and monitor it.",
         "trap": "Support the second hosting site so downtime falls well below the monthly limit.",
-        "why": "The risk sits within tolerance, so the response is acceptance and monitoring. Spending more buys a reduction the owner did not ask for."
+        "why": "The risk sits within tolerance, so the practitioner recommends acceptance and monitoring; the owner decides. Spending more buys a reduction the owner did not ask for."
       },
       "nuance": "A law, contract or regulator can require a control even for risk within appetite. Capacity, the most the enterprise can bear, sits above appetite and is never the target.",
       "domains": [
@@ -333,7 +333,7 @@
         "trap": "Ban personal phones at the front desk and tell staff the new rule starts today.",
         "why": "The size of the exposure is unknown, so a ban may be wrong or unworkable. Assessment first gives the owner a basis for choosing the response."
       },
-      "nuance": "During a live incident, such as an active attack or data being stolen, the incident plan's containment comes first. An unapproved tool in use, even with personal data, is a risk to assess with its owner before anyone blocks it.",
+      "nuance": "Containment comes first in a declared incident, such as an active attack or data theft. Staff using an unapproved tool, even with personal data, is not one: assess the risk with its owner before anyone blocks the tool.",
       "domains": [
         1,
         2,
@@ -396,7 +396,7 @@
         "trap": "Rank each unit's list on its own scale, then merge them with the top-rated risks first.",
         "why": "Ratings on different scales cannot be compared directly. Mapping them onto one set of criteria first makes the combined ranking mean something."
       },
-      "nuance": "A business impact analysis (BIA) deliberately measures only impact and how it grows over time, which sets recovery limits; it does not rate likelihood, so it feeds the risk assessment but cannot replace it.",
+      "nuance": "A business impact analysis (BIA) measures only impact and how it grows over time; process owners use it to set recovery limits such as maximum tolerable outage (MTO). It rates no likelihood, so it feeds, not replaces, the risk assessment.",
       "domains": [
         1,
         2,
@@ -434,7 +434,7 @@
       "order": 3,
       "title": "Inherent, current, residual and target risk",
       "rule": "Compare current risk, counting only controls in place and working, with appetite; planned controls give future residual (target) risk.",
-      "why": "Inherent risk ignores every action management has taken or might take. Current risk is today's exposure, counting only actions already taken; once a response is implemented, the residual risk it leaves becomes today's current risk. A control that is approved, planned or untested has not reduced anything yet, so it shapes future residual (target) risk, not today's rating.",
+      "why": "Inherent risk ignores every action management has taken or might take. Current risk counts only actions already taken; once a response is implemented, the residual risk it leaves is today's current risk. A control only approved or planned shapes future residual (target) risk; one installed but untested earns no credit until evidence shows it works.",
       "triggers": [
         "closed because the tool was approved",
         "projected once the controls go live",
@@ -458,7 +458,7 @@
         "trap": "Lower the rating now, and raise it again if the spring installation slips.",
         "why": "Buying a control does not reduce exposure. Today's current risk counts only controls in place and working; the planned result is future residual (target) risk."
       },
-      "nuance": "ISACA's Glossary calls the level a planned response should reach future residual risk; KaiSip calls it target risk. Questions may use current, residual or future residual risk: match each to what has actually been implemented.",
+      "nuance": "ISACA's Glossary uses future residual risk, in its risk response entry, for current risk with the planned response implemented; KaiSip says target risk. An option comparing residual risk with appetite is sound unless it credits planned or untested controls.",
       "domains": [
         2,
         3
@@ -483,7 +483,7 @@
       "family": "analysis",
       "order": 4,
       "title": "Emerging and AI risk gets an owner",
-      "rule": "Record emerging, AI and legacy-technology risk early in the register, with a business owner, stated uncertainty and review date.",
+      "rule": "Record emerging, AI and legacy-technology risk early in the register, with a proposed business owner, stated uncertainty and review date.",
       "why": "New technology, model drift and draft regulation are uncertain, which tempts teams either to wait or to ban. Neither lets the business weigh the risk against the opportunity. A register entry with an owner makes the risk visible early, so it is assessed against appetite like any other and revisited as facts arrive.",
       "triggers": [
         "AI model",
@@ -503,11 +503,11 @@
       },
       "check": {
         "scenario": "A grocery chain will soon have to report product carbon data under a draft law whose final text is a year away. The risk analyst hears about it at a conference.",
-        "right": "Record an emerging risk with an owner, its uncertainty and a review date, and track the draft.",
+        "right": "Record an emerging risk with a proposed owner, its uncertainty and a review date, and track the draft.",
         "trap": "Note the draft law in the horizon-scanning file and assess it once the final text is out.",
         "why": "Waiting for certainty leaves the business unprepared. An owned, dated entry keeps the risk visible and reviewed as the law takes shape."
       },
-      "nuance": "Recording early is not rating high: state the uncertainty and avoid treating a possible risk as certain. Where AI makes high-impact decisions about people, test bias and accuracy on the enterprise's own data before go-live.",
+      "nuance": "Recording early is not rating high: state the uncertainty and avoid treating a possible risk as certain. Where AI makes high-impact decisions about people, make sure bias and accuracy are tested on the enterprise's own data before go-live.",
       "domains": [
         1,
         2,
@@ -663,7 +663,7 @@
       },
       "check": {
         "scenario": "A gallery buys a cyber insurance policy covering ransomware recovery costs. The finance director proposes cutting the backup-testing budget, since the losses are now covered.",
-        "right": "Keep backup testing, since the policy pays part of the cost but does not prevent an outage.",
+        "right": "Advise keeping backup testing, since the policy pays part of the cost but does not prevent an outage.",
         "trap": "Cut backup testing in line with the cover, and review the budget when the policy renews.",
         "why": "Insurance shifts part of the financial loss after an event. It does not lower likelihood or the harm of an outage, so the controls stay."
       },
@@ -801,9 +801,9 @@
       "id": "escalate-to-the-limit-setter",
       "family": "monitoring",
       "order": 3,
-      "title": "Escalate to whoever set the limit",
+      "title": "Escalate to the owner and the limit-setter",
       "rule": "Escalate a validated tolerance breach, or acceptance beyond someone's authority, promptly to the owner and the level that set it.",
-      "why": "A breach of tolerance is a governance event, not a technical ticket: the people who set the limit decide whether to treat, accept or change it. Waiting for the next scheduled review, or letting a delivery team accept risk, keeps the decision away from those accountable.",
+      "why": "A tolerance breach is a governance event, not a technical ticket: the risk owner decides how to get back within limits, and only the level that set the limit can change it or approve carrying risk above it. Waiting for the next scheduled review, or letting a delivery team accept risk, keeps the decision from those accountable.",
       "triggers": [
         "has exceeded tolerance",
         "handled as a routine ticket",
@@ -814,7 +814,7 @@
       ],
       "trap": {
         "move": "Fixing it quietly at a technical level, raising the threshold to fit, or holding it for the next scheduled report.",
-        "why_wrong": "Each keeps the decision below the people who set the limit. Changing a threshold to fit the data is a decision only they can make."
+        "why_wrong": "Each keeps the decision from the risk owner and the people who set the limit. Changing a threshold to fit the data is a decision only the limit-setter can make."
       },
       "example": {
         "scenario": "A payment processor's tolerance allows at most 0.5% of card authorizations to fail in a day. A validated KRI has shown 1.2% for three days while engineers tune servers.",
