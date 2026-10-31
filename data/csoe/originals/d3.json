@@ -1,0 +1,731 @@
+{
+  "_meta": {
+    "comment": "Original KaiSip CSOE practice questions for Domain 3 (Corporate responsibility and financial disclosure), written from the public law (the Sarbanes-Oxley Act, the U.S. Code and SEC rules and releases) and KaiSip's own notes (data/csoe/notes/d3.json). No SOXCPA material was used. Not affiliated with or endorsed by the Sarbanes Oxley Compliance Professionals Association (SOXCPA). Schema: docs/content/QUESTION_SCHEMA.md; writing rules: docs/content/EXAM_STYLE_V2.md and .claude/agents/csoe-standards-auditor.md. Pilot csoe_d3_001 to csoe_d3_020, 31 Oct 2026.",
+    "schema_version": 1
+  },
+  "domain": 3,
+  "domain_name": "Corporate responsibility and financial disclosure",
+  "weight": "16%",
+  "questions": [
+    {
+      "id": "csoe_d3_001",
+      "domain": 3,
+      "subtopic": "3A1 Audit committees. Member eligibility",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A listed company's board wants a director on its audit committee who also earns a consulting fee from a company subsidiary. Under Rule 10A-3, which statement is MOST accurate?",
+      "options": {
+        "A": "The director may serve once shareholders are told about the fee",
+        "B": "The director may serve only after the fee arrangement ends",
+        "C": "The director may serve because they are not a company employee",
+        "D": "The director may serve because a subsidiary, not the issuer, pays"
+      },
+      "correct": "B",
+      "key_concept": "An audit committee member may take no consulting, advisory or other compensatory fee from the issuer or any subsidiary.",
+      "pre_read": "Recall which payments Rule 10A-3 lets a committee member receive, and from which companies in the group.",
+      "correct_explanation": "Rule 10A-3 bars an audit committee member from accepting any consulting, advisory or other compensatory fee, directly or indirectly, from the issuer or any subsidiary, other than for board and committee service. The consulting fee therefore disqualifies the director while it continues. Option D fails because the rule names subsidiaries expressly, so which company in the group pays makes no difference.",
+      "wrong_explanations": {
+        "A": "Tempting because disclosure fixes many governance gaps. But independence is a listing condition; telling shareholders about the fee does not make the director independent.",
+        "C": "Tempting because employees plainly lack independence. But Rule 10A-3 also bars consulting and advisory fees and affiliate status, so non-employees can fail too.",
+        "D": "Closest choice: the fee does come from a subsidiary. But Rule 10A-3 covers fees from the issuer or any subsidiary, so the payer changes nothing."
+      },
+      "tips": [
+        "Eliminate: A and C. Disclosure does not cure a failed independence test, and Rule 10A-3 looks beyond employment to any consulting or advisory fee.",
+        "Final two: B beats D because the fee ban covers payments from the issuer or any of its subsidiaries.",
+        "Exam cue: for audit committee independence, any non-board fee from the company group disqualifies the member, whatever the amount or which entity pays."
+      ],
+      "framework_ref": "17 CFR 240.10A-3(b)(1) (Audit committee member independence); Sarbanes-Oxley Act of 2002 Section 301 (Public company audit committees)",
+      "related_concepts": [
+        "Audit committee independence",
+        "Compensatory fee",
+        "Affiliated person"
+      ],
+      "_provenance": "Authored from concept: KaiSip notes 3A1.1 and 17 CFR 240.10A-3(b)(1)(ii), 31 Oct 2026, CSOE pilot. Original scenario written for KaiSip from the public law; no SOXCPA material.",
+      "style_version": 2
+    },
+    {
+      "id": "csoe_d3_002",
+      "domain": 3,
+      "subtopic": "3A1 Audit committees. Accounting dispute",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "At a listed company, the CFO and the independent auditor disagree on when to recognize revenue from a large contract. Under Section 301, who is directly responsible for resolving the disagreement?",
+      "options": {
+        "A": "The CFO, who prepares the financial statements",
+        "B": "The PCAOB, which inspects and disciplines the audit firm",
+        "C": "The full board of directors, which appoints the committees",
+        "D": "The audit committee, which oversees the audit firm's work"
+      },
+      "correct": "D",
+      "key_concept": "The audit committee oversees the auditor's work, including resolving financial reporting disagreements between management and the auditor.",
+      "pre_read": "Identify which body Section 301 makes directly responsible for the auditor's work, and what that oversight includes.",
+      "correct_explanation": "Section 301 makes the audit committee, acting as a committee of the board, directly responsible for overseeing the audit firm's work, including resolving disagreements between management and the auditor about financial reporting. The firm reports directly to the committee. A listed company must have an audit committee, and the Act places this duty on that committee rather than on the board as a whole.",
+      "wrong_explanations": {
+        "A": "Tempting because the CFO prepares the numbers in dispute. But the CFO is one side of the disagreement; Section 301 gives its resolution to the audit committee.",
+        "B": "Tempting because the PCAOB oversees audit firms. But it inspects and disciplines firms; it does not settle a company's accounting disputes with its auditor.",
+        "C": "Closest choice: the audit committee is a committee of the board. But Section 301 assigns oversight of the auditor, including disputes, directly to the audit committee."
+      },
+      "tips": [
+        "Eliminate: A and B. The CFO is one side of the dispute, and the PCAOB regulates audit firms rather than resolving a client's reporting disagreements.",
+        "Final two: D beats C because Section 301 places oversight of the auditor, including management-auditor disputes, on the audit committee itself.",
+        "Exam cue: hiring, paying, overseeing or refereeing the independent auditor points to the audit committee, not management or the whole board."
+      ],
+      "framework_ref": "Sarbanes-Oxley Act of 2002 Section 301 (Public company audit committees); 17 CFR 240.10A-3(b)(2) (Audit committee responsibility for the registered public accounting firm)",
+      "related_concepts": [
+        "Audit committee oversight",
+        "Registered public accounting firm",
+        "Auditor reporting line"
+      ],
+      "_provenance": "Authored from concept: KaiSip notes 3A1.2 and Sarbanes-Oxley Act of 2002 Section 301 and 17 CFR 240.10A-3(b)(2), 31 Oct 2026, CSOE pilot. Original scenario written for KaiSip from the public law; no SOXCPA material.",
+      "style_version": 2
+    },
+    {
+      "id": "csoe_d3_003",
+      "domain": 3,
+      "subtopic": "3A1 Audit committees. Employee concerns",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "An employee at a listed company wants to report questionable accounting without giving their name. What does Section 301 require?",
+      "options": {
+        "A": "Audit committee procedures for anonymous submission",
+        "B": "An anonymous hotline run by the independent auditor",
+        "C": "An internal audit unit taking anonymous reports",
+        "D": "An anonymous reporting line straight to the SEC"
+      },
+      "correct": "A",
+      "key_concept": "Audit committees must set procedures for accounting complaints and for employees' confidential, anonymous submission of concerns.",
+      "pre_read": "Recall which body owns the complaint procedures and what employees must be able to do through them.",
+      "correct_explanation": "Section 301 requires each audit committee to set procedures for the confidential, anonymous submission by employees of concerns about questionable accounting or auditing, alongside procedures for complaints the company receives. The committee owns the procedures; staff or a vendor may run them. SOX itself does not require an internal audit function, so an internal audit team is not what the section demands.",
+      "wrong_explanations": {
+        "B": "Tempting because the audit firm is independent of management. But Section 301 puts the anonymous channel under the audit committee's procedures, not the independent auditor.",
+        "C": "Closest choice: internal audit often takes reports. But Section 301 requires procedures set by the audit committee; SOX does not itself require an internal audit function.",
+        "D": "Tempting because the SEC accepts anonymous tips. But that is a separate whistleblower route; Section 301 requires an internal channel set by the audit committee."
+      },
+      "tips": [
+        "Eliminate: B and D. Section 301 places the channel under the audit committee, so neither the audit firm's hotline nor a line to the SEC is what it requires.",
+        "Final two: A beats C because Section 301 makes the audit committee set the procedures, and SOX does not mandate an internal audit function.",
+        "Exam cue: anonymous employee concerns about accounting point to the audit committee's Section 301 complaint procedures."
+      ],
+      "framework_ref": "Sarbanes-Oxley Act of 2002 Section 301 (Public company audit committees); 17 CFR 240.10A-3(b)(3) (Audit committee complaint procedures)",
+      "related_concepts": [
+        "Complaint procedures",
+        "Anonymous submission",
+        "Audit committee duties"
+      ],
+      "_provenance": "Authored from concept: KaiSip notes 3A1.3 and Sarbanes-Oxley Act of 2002 Section 301 and 17 CFR 240.10A-3(b)(3), 31 Oct 2026, CSOE pilot. Original scenario written for KaiSip from the public law; no SOXCPA material.",
+      "style_version": 2
+    },
+    {
+      "id": "csoe_d3_004",
+      "domain": 3,
+      "subtopic": "3A2 Officer certifications: Sections 302 and 906. Disclosures behind the signature",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "Before signing the quarterly Section 302 certification, a CFO learns that the assistant controller, who approves journal entries, took $8,000 from petty cash, an immaterial amount. What is the MOST accurate requirement?",
+      "options": {
+        "A": "Leave it out of the disclosures, since the amount is immaterial",
+        "B": "Report it in the Section 906 statement furnished with the report",
+        "C": "Disclose it to the auditors and the audit committee",
+        "D": "Disclose it as a material weakness in the 10-Q"
+      },
+      "correct": "C",
+      "key_concept": "Officers disclose to the auditors and audit committee any fraud, material or not, involving management or key internal control staff.",
+      "pre_read": "Note the employee's role in internal control, then recall what the certification says officers have disclosed, and to whom.",
+      "correct_explanation": "The Section 302 certification states that the signing officers have disclosed to the auditors and the audit committee any fraud, whether or not material, involving management or other employees with a significant role in internal control. An assistant controller who approves journal entries has that role. The rule calls for disclosure to those two parties; it does not turn an immaterial theft into a publicly reported material weakness.",
+      "wrong_explanations": {
+        "A": "Tempting because most disclosure turns on materiality. But the 302 certification covers fraud by key control staff whether or not it is material.",
+        "B": "Tempting because 906 is also an officer certification. But the 906 statement covers compliance and fair presentation, not reporting fraud to anyone.",
+        "D": "Closest choice: the theft may signal a control deficiency. But the certification requires disclosure to the auditors and audit committee; it does not label this a material weakness."
+      },
+      "tips": [
+        "Eliminate: A and B. The 302 duty covers fraud by key control staff even when immaterial, and the 906 statement contains no fraud disclosure.",
+        "Final two: C beats D because the certification sends insider fraud to the auditors and audit committee without making an immaterial theft a public material weakness.",
+        "Exam cue: fraud by management or key control staff, material or not, goes to the auditors and audit committee under Section 302."
+      ],
+      "framework_ref": "Sarbanes-Oxley Act of 2002 Section 302(a) (Corporate responsibility for financial reports); 17 CFR 240.13a-14(a) (Certification of disclosure in annual and quarterly reports)",
+      "related_concepts": [
+        "Section 302 certification",
+        "Fraud disclosure",
+        "Significant role in internal control"
+      ],
+      "_provenance": "Authored from concept: KaiSip notes 3A2.1 and Sarbanes-Oxley Act of 2002 Section 302(a)(5)(B) and 17 CFR 240.13a-14(a), 31 Oct 2026, CSOE pilot. Original scenario written for KaiSip from the public law; no SOXCPA material.",
+      "style_version": 2
+    },
+    {
+      "id": "csoe_d3_005",
+      "domain": 3,
+      "subtopic": "3A2 Officer certifications: Sections 302 and 906. Penalty tier",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "A CEO willfully certifies a Section 906 statement knowing the periodic report does not comply with the Exchange Act. What is the GREATEST criminal penalty the statute allows?",
+      "options": {
+        "A": "Up to $1 million in fines and 10 years in prison",
+        "B": "Up to $5 million in fines and 20 years in prison",
+        "C": "Repayment of bonuses received in the following 12 months",
+        "D": "A civil money penalty and a bar from serving as an officer"
+      },
+      "correct": "B",
+      "key_concept": "Section 906 has two criminal tiers: knowing certification up to $1 million and 10 years; willful up to $5 million and 20 years.",
+      "pre_read": "Find the word in the stem that tells you which of the statute's two penalty tiers applies.",
+      "correct_explanation": "18 U.S.C. 1350, added by Section 906, has two penalty tiers. Knowingly certifying a noncompliant report carries fines up to $1 million, prison up to 10 years, or both. Willfully certifying it, as here, carries fines up to $5 million, prison up to 20 years, or both. The word willfully in the stem selects the higher tier.",
+      "wrong_explanations": {
+        "A": "Closest choice: this is the 906 penalty for knowing certification. Willful certification moves to the higher tier of $5 million and 20 years.",
+        "C": "Tempting because repayment follows misconduct restatements. But that is Section 304, a civil reimbursement duty, not the criminal penalty for a false 906 certification.",
+        "D": "Tempting because the SEC can seek bars and civil penalties. But the question asks for the criminal penalty under 18 U.S.C. 1350, which means fines and prison."
+      },
+      "tips": [
+        "Eliminate: C and D. Bonus repayment is Section 304 and bars are civil remedies, while Section 906 sets criminal fines and prison.",
+        "Final two: B beats A because willful certification carries the higher tier; $1 million and 10 years applies to knowing certification.",
+        "Exam cue: for Section 906, knowing means up to $1 million and 10 years; willful means up to $5 million and 20 years."
+      ],
+      "framework_ref": "18 U.S.C. 1350(c) (Criminal penalties)",
+      "related_concepts": [
+        "Section 906 certification",
+        "Knowing versus willful",
+        "Criminal penalties"
+      ],
+      "_provenance": "Authored from concept: KaiSip notes 3A2.2 and 18 U.S.C. 1350(c), 31 Oct 2026, CSOE pilot. Original scenario written for KaiSip from the public law; no SOXCPA material.",
+      "style_version": 2
+    },
+    {
+      "id": "csoe_d3_006",
+      "domain": 3,
+      "subtopic": "3A2 Officer certifications: Sections 302 and 906. Quarterly filing contents",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "Preparing a Form 10-Q, a CFO plans to attach Section 302 and 906 certifications and include a Section 404 management report on internal control. Which assessment is MOST accurate?",
+      "options": {
+        "A": "Drop the 404 report, which goes with the annual report alone",
+        "B": "Drop the 906 statement, which goes with the annual report alone",
+        "C": "Drop the 302 certification, which goes with the annual report alone",
+        "D": "Keep the three items, since each is required in every quarterly report"
+      },
+      "correct": "A",
+      "key_concept": "Sections 302 and 906 certifications go with quarterly and annual reports; the Section 404(a) management report is annual only.",
+      "pre_read": "For each of the three items, recall which periodic reports the statute names.",
+      "correct_explanation": "Section 404(a) requires management's internal control report in each annual report only, so it does not belong in a Form 10-Q. Section 302 covers each annual and quarterly report, and Section 906 (18 U.S.C. 1350) covers every periodic report containing financial statements, which includes a 10-Q. Both certifications stay; only the 404 report comes out.",
+      "wrong_explanations": {
+        "B": "Closest choice: some link the criminal 906 statement to the 10-K alone. But 18 U.S.C. 1350 covers every periodic report with financial statements, including a 10-Q.",
+        "C": "Tempting because annual reports carry the most certifications. But Section 302 expressly covers each annual or quarterly report.",
+        "D": "Tempting because all three are SOX duties. But Section 404(a) asks for management's internal control report in the annual report, not each quarter."
+      },
+      "tips": [
+        "Eliminate: C and D. Section 302 names quarterly reports expressly, and the Section 404 management report is an annual requirement.",
+        "Final two: A beats B because 18 U.S.C. 1350 reaches every periodic report with financial statements, while 404(a) is annual.",
+        "Exam cue: on a 10-Q, look for the 302 and 906 certifications; the 404 internal control report appears once a year, in the 10-K."
+      ],
+      "framework_ref": "Sarbanes-Oxley Act of 2002 Section 404(a) (Management assessment of internal controls); Sarbanes-Oxley Act of 2002 Section 302(a) (Corporate responsibility for financial reports); 18 U.S.C. 1350(a) (Certification of periodic financial reports)",
+      "related_concepts": [
+        "Sections 302, 404 and 906 compared",
+        "Periodic reports",
+        "Annual internal control report"
+      ],
+      "_provenance": "Authored from concept: KaiSip notes 3A2.3 and Sarbanes-Oxley Act of 2002 Sections 302(a) and 404(a) and 18 U.S.C. 1350(a), 31 Oct 2026, CSOE pilot. Original scenario written for KaiSip from the public law; no SOXCPA material.",
+      "style_version": 2
+    },
+    {
+      "id": "csoe_d3_007",
+      "domain": 3,
+      "subtopic": "3A3 Audit influence, forfeiture, bars and blackout periods. Conduct toward the auditor",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "Following the CEO's direction, a regional sales vice president hides from the auditors a side letter giving a customer return rights, to keep revenue in the quarter. Which provision MOST directly prohibits this?",
+      "options": {
+        "A": "Section 304, which makes officers repay bonuses after misconduct",
+        "B": "Section 302, which requires officers to disclose fraud to auditors",
+        "C": "Section 307, which requires lawyers to report violations internally",
+        "D": "Section 303, which bars misleading the auditor to distort statements"
+      },
+      "correct": "D",
+      "key_concept": "Section 303 bars officers, directors and those acting under their direction from fraudulently misleading or pressuring the auditor.",
+      "pre_read": "Ask which provision is aimed at conduct toward the auditor, and whether it reaches staff acting on an officer's instructions.",
+      "correct_explanation": "Section 303 makes it unlawful for an officer or director, or anyone acting under their direction, to fraudulently influence, coerce, manipulate or mislead the auditor to make the financial statements materially misleading. Hiding a side letter on the CEO's direction fits that prohibition. Section 302 is an officer certification that includes disclosing fraud; it does not itself prohibit misleading the auditor.",
+      "wrong_explanations": {
+        "A": "Tempting because misconduct can lead to repayment. But Section 304 applies after a misconduct restatement and recovers CEO and CFO pay; it does not prohibit misleading auditors.",
+        "B": "Closest choice: officers certify they disclosed fraud to the auditors. But that is a certification duty; Section 303 is the provision that prohibits misleading the auditor.",
+        "C": "Tempting because it concerns reporting violations. But Section 307 sets duties for attorneys practicing before the SEC, not for sales staff dealing with auditors."
+      },
+      "tips": [
+        "Eliminate: A and C. Section 304 recovers pay after a restatement, and Section 307 governs attorneys' internal reporting, not conduct toward auditors.",
+        "Final two: D beats B because Section 303 prohibits misleading the auditor, and it reaches anyone acting under an officer's direction.",
+        "Exam cue: pressure on, or deception of, the independent auditor by insiders or their staff points to Section 303."
+      ],
+      "framework_ref": "Sarbanes-Oxley Act of 2002 Section 303 (Improper influence on conduct of audits)",
+      "related_concepts": [
+        "Improper influence on audits",
+        "Acting under an officer's direction",
+        "Auditor independence in practice"
+      ],
+      "_provenance": "Authored from concept: KaiSip notes 3A3.1 and Sarbanes-Oxley Act of 2002 Section 303(a), 31 Oct 2026, CSOE pilot. Original scenario written for KaiSip from the public law; no SOXCPA material.",
+      "style_version": 2
+    },
+    {
+      "id": "csoe_d3_008",
+      "domain": 3,
+      "subtopic": "3A3 Audit influence, forfeiture, bars and blackout periods. Amounts repaid",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A company restates its financial statements because misconduct caused material noncompliance with reporting requirements. Under Section 304, which CEO and CFO amounts must be reimbursed?",
+      "options": {
+        "A": "Base salary paid for each period the restatement covers",
+        "B": "Incentive pay received in the three fiscal years before the restatement",
+        "C": "Bonuses and stock-sale profits in the 12 months after first issuance",
+        "D": "Any pay the audit committee links to the misconduct"
+      },
+      "correct": "C",
+      "key_concept": "Section 304 recovers CEO and CFO bonuses, incentive or equity pay and stock-sale profits from 12 months after first issuance.",
+      "pre_read": "Recall the look-back window Section 304 uses and the kinds of pay it reaches.",
+      "correct_explanation": "Section 304 requires the CEO and CFO to reimburse bonuses and other incentive-based or equity-based pay received, and profits from selling company stock, during the 12 months after the misstated document was first publicly issued or filed. The three-year look-back reaching every executive officer belongs to the Rule 10D-1 recovery policy, a separate no-fault listing rule.",
+      "wrong_explanations": {
+        "A": "Tempting because salary is the largest pay item. But Section 304 reaches bonuses, incentive or equity pay and stock-sale profits, not base salary.",
+        "B": "Closest choice: that is Rule 10D-1, which needs no misconduct and reaches every executive officer. Section 304 covers the CEO and CFO for 12 months after first issuance.",
+        "D": "Tempting because the audit committee oversees reporting. But Section 304 sets the amounts by statute; it does not leave them to committee judgment."
+      },
+      "tips": [
+        "Eliminate: A and D. Section 304 does not reach base salary, and the statute, not the audit committee, defines what is repaid.",
+        "Final two: C beats B because Section 304 uses the 12 months after first issuance; the three-year look-back is the Rule 10D-1 policy.",
+        "Exam cue: misconduct restatement plus CEO and CFO plus a 12-month window points to Section 304, not the Rule 10D-1 clawback."
+      ],
+      "framework_ref": "Sarbanes-Oxley Act of 2002 Section 304 (Forfeiture of certain bonuses and profits)",
+      "related_concepts": [
+        "Forfeiture of bonuses and profits",
+        "Rule 10D-1 recovery policy",
+        "Accounting restatement"
+      ],
+      "_provenance": "Authored from concept: KaiSip notes 3A3.2 and Sarbanes-Oxley Act of 2002 Section 304(a) and, for contrast, 17 CFR 240.10D-1(b), 31 Oct 2026, CSOE pilot. Original scenario written for KaiSip from the public law; no SOXCPA material.",
+      "style_version": 2
+    },
+    {
+      "id": "csoe_d3_009",
+      "domain": 3,
+      "subtopic": "3A3 Audit influence, forfeiture, bars and blackout periods. Trade during a plan freeze",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "During a ten-business-day freeze that stops every 401(k) participant from trading company stock, a director sells shares received as director pay, at a profit. What is the MOST accurate consequence?",
+      "options": {
+        "A": "The director's profit from the sale belongs to the issuer",
+        "B": "The SEC must sue within 60 days to recover the profit",
+        "C": "The sale stands, since the director meant no harm",
+        "D": "The sale stands, since the director has no plan account"
+      },
+      "correct": "A",
+      "key_concept": "Profits from a director's or executive officer's trade during a pension blackout belong to the issuer, regardless of intent.",
+      "pre_read": "Check whether the freeze is a blackout under the statute, then recall who is restricted and who gets any profit.",
+      "correct_explanation": "Section 306(a) makes it unlawful for a director or executive officer to sell stock acquired through that service during a blackout of more than three business days affecting at least half of plan participants. Any profit belongs to the issuer, whatever the director intended. The issuer recovers it; a shareholder may sue on the issuer's behalf if the issuer does not act within 60 days of a request.",
+      "wrong_explanations": {
+        "B": "Closest choice: 60 days does appear in Section 306. But it is the time the issuer has before a shareholder may sue; the profit goes to the issuer.",
+        "C": "Tempting because many violations require intent. But Section 306(a) makes the profit recoverable irrespective of the director's intention.",
+        "D": "Tempting because the freeze affects plan participants. But the trading ban applies to directors and executive officers whether or not they hold plan accounts."
+      },
+      "tips": [
+        "Eliminate: C and D. Section 306(a) disregards intent, and the ban reaches directors and executive officers whether or not they are plan participants.",
+        "Final two: A beats B because the profit belongs to the issuer, and 60 days is when a shareholder may sue on its behalf.",
+        "Exam cue: an insider trade during a pension blackout means the issuer recovers the profit, regardless of intent."
+      ],
+      "framework_ref": "Sarbanes-Oxley Act of 2002 Section 306(a) (Insider trades during pension fund blackout periods)",
+      "related_concepts": [
+        "Pension blackout period",
+        "Recovery of insider profits",
+        "Directors and executive officers"
+      ],
+      "_provenance": "Authored from concept: KaiSip notes 3A3.4 and Sarbanes-Oxley Act of 2002 Section 306(a)(1), (2) and (4), 31 Oct 2026, CSOE pilot. Original scenario written for KaiSip from the public law; no SOXCPA material.",
+      "style_version": 2
+    },
+    {
+      "id": "csoe_d3_010",
+      "domain": 3,
+      "subtopic": "3A4 Attorneys and fair funds. First report",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An outside lawyer representing a listed company with no qualified legal compliance committee finds evidence of a material securities violation. Under Section 307, where must the lawyer report FIRST?",
+      "options": {
+        "A": "To the audit committee of the board of directors",
+        "B": "To the chief legal officer, alone or with the CEO",
+        "C": "To the SEC's Division of Enforcement, in writing",
+        "D": "Nowhere, because legal privilege keeps the evidence confidential"
+      },
+      "correct": "B",
+      "key_concept": "An attorney's report of a material violation goes first to the chief legal officer, alone or with the CEO, then up the ladder.",
+      "pre_read": "Recall the order of the reporting ladder the Section 307 rule sets, and when the second rung applies.",
+      "correct_explanation": "Section 307 required SEC rules making an attorney who practices before the SEC for an issuer report evidence of a material violation up the ladder. Under 17 CFR 205.3(b), the first report goes to the chief legal officer, or to that officer and the CEO. Only if they fail to respond appropriately does the report go to the audit committee, another independent committee or the board.",
+      "wrong_explanations": {
+        "A": "Closest choice: the audit committee is the second rung. The rule sends the report there only after no appropriate response, or when reporting first would be futile.",
+        "C": "Tempting because the SEC enforces securities law. But Section 307 sets an internal reporting ladder; it does not require a first report to the SEC.",
+        "D": "Tempting because lawyers protect client confidences. But the rule requires reporting inside the company, and doing so does not breach privilege."
+      },
+      "tips": [
+        "Eliminate: C and D. The Section 307 rule keeps the report inside the company, and reporting to its officers does not breach client confidences.",
+        "Final two: B beats A because the chief legal officer, alone or with the CEO, comes first; the audit committee is the next rung.",
+        "Exam cue: attorney evidence of a violation climbs the ladder: the chief legal officer, alone or with the CEO, first; then the audit committee, another independent committee or the board."
+      ],
+      "framework_ref": "Sarbanes-Oxley Act of 2002 Section 307 (Rules of professional responsibility for attorneys); 17 CFR 205.3(b) (Duty to report evidence of a material violation)",
+      "related_concepts": [
+        "Up-the-ladder reporting",
+        "Material violation",
+        "Chief legal officer"
+      ],
+      "_provenance": "Authored from concept: KaiSip notes 3A4.1 and Sarbanes-Oxley Act of 2002 Section 307 and 17 CFR 205.3(b), 31 Oct 2026, CSOE pilot. Original scenario written for KaiSip from the public law; no SOXCPA material.",
+      "style_version": 2
+    },
+    {
+      "id": "csoe_d3_011",
+      "domain": 3,
+      "subtopic": "3A4 Attorneys and fair funds. Where a penalty goes",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "The SEC obtains a civil penalty against a former CFO who misled investors. Under Section 308, what may the SEC do with the penalty?",
+      "options": {
+        "A": "Pay it to the U.S. Treasury, apart from any victims' fund",
+        "B": "Pay it to the company to make up its own losses",
+        "C": "Pay it to the PCAOB to fund audit firm inspections",
+        "D": "Add it to a disgorgement or other fund for the victims"
+      },
+      "correct": "D",
+      "key_concept": "Under Section 308, the SEC can add a civil penalty to a disgorgement fund or other fund for the violation's victims.",
+      "pre_read": "Recall who Section 308 was written to benefit and what it allows the SEC to do with penalty money.",
+      "correct_explanation": "Section 308(a), as amended by Dodd-Frank Section 929B, lets the SEC, on its motion or at its direction, add any civil penalty it obtains, by order or settlement, to a disgorgement fund or other fund for the victims of the violation. Since 2010 no disgorgement order is needed. Fair funds are an exception to penalties going to the U.S. Treasury.",
+      "wrong_explanations": {
+        "A": "Closest choice: civil penalties generally go to the Treasury. But Section 308 lets the SEC add the penalty to a fund for the victims instead.",
+        "B": "Tempting because the company may have been harmed too. But Section 308 directs the money toward the investors who were victims of the violation.",
+        "C": "Tempting because the PCAOB oversees auditors. But Section 308 concerns SEC actions against violators and funds for their victims, not PCAOB funding."
+      },
+      "tips": [
+        "Eliminate: B and C. Fair funds serve the investors harmed by a violation, not the company's own losses or the PCAOB's budget.",
+        "Final two: D beats A because Section 308 lets the SEC add civil penalties to a disgorgement or other fund for victims, instead of the Treasury.",
+        "Exam cue: a civil penalty steered to harmed investors through a fund points to Section 308 fair funds; no disgorgement order is needed."
+      ],
+      "framework_ref": "Sarbanes-Oxley Act of 2002 Section 308(a) (Civil penalties to be used for the relief of victims); Dodd-Frank Act Section 929B (Fair Fund amendments)",
+      "related_concepts": [
+        "Fair funds",
+        "Disgorgement",
+        "Civil penalties"
+      ],
+      "_provenance": "Authored from concept: KaiSip notes 3A4.2 and Sarbanes-Oxley Act of 2002 Section 308(a) as amended by Dodd-Frank Section 929B (15 U.S.C. 7246), 31 Oct 2026, CSOE pilot. Original scenario written for KaiSip from the public law; no SOXCPA material.",
+      "style_version": 2
+    },
+    {
+      "id": "csoe_d3_012",
+      "domain": 3,
+      "subtopic": "3B1 Periodic report disclosures and insider dealings. Credit to an executive",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A retail chain that issues its own credit cards to shoppers reviews four proposals for its CFO. Under Section 402, which arrangement is permitted?",
+      "options": {
+        "A": "A low-rate relocation loan made through a foreign subsidiary",
+        "B": "A personal loan the company arranges with a partner bank",
+        "C": "A card account on the terms offered to the general public",
+        "D": "A pre-2002 personal loan renewed this year on better terms"
+      },
+      "correct": "C",
+      "key_concept": "Section 402 bars personal loans to directors and executive officers, except ordinary-course consumer credit on public terms.",
+      "pre_read": "Recall the ways of providing credit Section 402 prohibits, and the conditions of its consumer credit exception.",
+      "correct_explanation": "Section 402 bars an issuer, directly or through a subsidiary, from extending, arranging or renewing personal loans to directors and executive officers. It excepts consumer credit, such as a credit card, made in the ordinary course of the issuer's consumer credit business, generally offered to the public, on terms no better than the public receives. A card account on public terms fits that exception; arranging a bank loan does not.",
+      "wrong_explanations": {
+        "A": "Tempting because a foreign subsidiary seems outside the rule. But Section 402 covers credit extended directly or indirectly, including through any subsidiary.",
+        "B": "Closest choice: the bank, not the company, would lend. But Section 402 also prohibits arranging an extension of credit for a director or executive officer.",
+        "D": "Tempting because older loans were grandfathered. But that protection ends if the loan is renewed or materially modified after the Act."
+      },
+      "tips": [
+        "Eliminate: A and D. Section 402 reaches credit through any subsidiary, and renewing an older loan ends its grandfathered status.",
+        "Final two: C beats B because ordinary-course consumer credit on public terms is excepted, while arranging a loan is itself prohibited.",
+        "Exam cue: an insider loan is barred whether made, arranged or renewed; ordinary-course consumer credit on public terms is the exception."
+      ],
+      "framework_ref": "Sarbanes-Oxley Act of 2002 Section 402(a) (Prohibition on personal loans to executives)",
+      "related_concepts": [
+        "Personal loan ban",
+        "Consumer credit exception",
+        "Executive officers"
+      ],
+      "_provenance": "Authored from concept: KaiSip notes 3B1.2 and Sarbanes-Oxley Act of 2002 Section 402(a), 31 Oct 2026, CSOE pilot. Original scenario written for KaiSip from the public law; no SOXCPA material.",
+      "style_version": 2
+    },
+    {
+      "id": "csoe_d3_013",
+      "domain": 3,
+      "subtopic": "3B1 Periodic report disclosures and insider dealings. Reporting deadline",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "A director of a listed company buys company shares on a Monday. Under Section 403, by when must the director report the purchase?",
+      "options": {
+        "A": "Within 10 days after the end of the month of the trade",
+        "B": "Before the end of the second business day after the trade",
+        "C": "Within 10 days after the director first joined the board",
+        "D": "With the company's next quarterly report on Form 10-Q"
+      },
+      "correct": "B",
+      "key_concept": "Insiders report a change in ownership before the end of the second business day after the trade.",
+      "pre_read": "Separate the deadline for a first statement on becoming an insider from the deadline for later trades.",
+      "correct_explanation": "Section 403 rewrote Exchange Act Section 16(a). A director, officer or owner of more than 10 percent must report a change in ownership before the end of the second business day after the trade is executed, unless the SEC sets another time where two days is not feasible. Ten days applies to the initial statement after becoming an insider, not to later trades.",
+      "wrong_explanations": {
+        "A": "Closest choice: this was Section 16(a)'s deadline before 2002. Section 403 replaced it with a report before the end of the second business day after the trade.",
+        "C": "Tempting because 10 days is a real Section 16(a) deadline. But it applies to the initial statement after becoming a director, not to later trades.",
+        "D": "Tempting because quarterly reports disclose many changes. But insider ownership changes are filed separately and quickly, not with the Form 10-Q."
+      },
+      "tips": [
+        "Eliminate: C and D. Ten days covers the initial statement on becoming an insider, and insider trades are reported separately from the 10-Q.",
+        "Final two: B beats A because Section 403 requires change reports by the end of the second business day, not on a monthly cycle.",
+        "Exam cue: an insider's change in holdings is due within two business days; the initial statement is due within 10 days."
+      ],
+      "framework_ref": "Sarbanes-Oxley Act of 2002 Section 403(a) (Disclosures of transactions involving management and principal stockholders)",
+      "related_concepts": [
+        "Section 16 reports",
+        "Change in beneficial ownership",
+        "Insider reporting deadlines"
+      ],
+      "_provenance": "Authored from concept: KaiSip notes 3B1.3 and Sarbanes-Oxley Act of 2002 Section 403(a), 31 Oct 2026, CSOE pilot. Original scenario written for KaiSip from the public law; no SOXCPA material.",
+      "style_version": 2
+    },
+    {
+      "id": "csoe_d3_014",
+      "domain": 3,
+      "subtopic": "3B2 Management's assessment of internal control. As-of date",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "Management of a calendar-year company prepares its report on internal control over financial reporting. Under Section 404(a), as of which date must it assess effectiveness?",
+      "options": {
+        "A": "December 31, the end of the most recent fiscal year",
+        "B": "Any date within 90 days before the annual report is filed",
+        "C": "Across the whole fiscal year, from January through December",
+        "D": "The date the audit firm signs its attestation report"
+      },
+      "correct": "A",
+      "key_concept": "Management assesses internal control over financial reporting as of the end of the most recent fiscal year.",
+      "pre_read": "Decide whether the assessment is a point-in-time conclusion or a period conclusion, and which point the statute names.",
+      "correct_explanation": "Section 404(a) and Item 308(a) require management to assess the effectiveness of internal control over financial reporting as of the end of the most recent fiscal year. For a calendar-year company that is December 31. The 90-day window appears in Section 302's text; SEC rules now set the officers' evaluation of disclosure controls at each quarter-end (Rule 13a-15(b)).",
+      "wrong_explanations": {
+        "B": "Closest choice: Section 302's text speaks of an evaluation within 90 days. SEC rules now set disclosure controls evaluations at quarter-end, and 404(a) fixes the assessment at year-end.",
+        "C": "Tempting because testing happens during the year. But the conclusion is stated as of a point in time, the fiscal year-end, not across the period.",
+        "D": "Tempting because the attestation follows the assessment. But the audit firm's signing date does not set management's as-of date; the fiscal year-end does."
+      },
+      "tips": [
+        "Eliminate: C and D. The assessment is a point-in-time conclusion, and the audit firm's signing date does not set management's as-of date.",
+        "Final two: A beats B because Section 404(a) fixes the as-of date at fiscal year-end; the 90-day window is Section 302's original text, now replaced by quarter-end evaluations.",
+        "Exam cue: management's 404(a) assessment is as of fiscal year-end, even when testing runs throughout the year."
+      ],
+      "framework_ref": "Sarbanes-Oxley Act of 2002 Section 404(a) (Management assessment of internal controls); 17 CFR 229.308(a) (Management's annual report on internal control over financial reporting)",
+      "related_concepts": [
+        "Management's internal control report",
+        "As-of date",
+        "Section 404(a)"
+      ],
+      "_provenance": "Authored from concept: KaiSip notes 3B2.1 and Sarbanes-Oxley Act of 2002 Section 404(a)(2) and 17 CFR 229.308(a)(3), 31 Oct 2026, CSOE pilot. Original scenario written for KaiSip from the public law; no SOXCPA material.",
+      "style_version": 2
+    },
+    {
+      "id": "csoe_d3_015",
+      "domain": 3,
+      "subtopic": "3B2 Management's assessment of internal control. The auditor's part",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "Tamsin Freight is an accelerated filer, not an emerging growth company. Under Section 404(b), the registered public accounting firm that issues its audit report must:",
+      "options": {
+        "A": "Replace management's assessment with its own audit of controls",
+        "B": "Sign a Section 302 certification, as the CEO and CFO do",
+        "C": "Attest to management's assessment through a separate engagement",
+        "D": "Attest to management's assessment within its audit engagement"
+      },
+      "correct": "D",
+      "key_concept": "Under Section 404(b), the firm that issues the audit report attests to management's internal control assessment, and the attestation may not be a separate engagement.",
+      "pre_read": "Think about who performs the assessment, who attests to it, and how the attestation relates to the audit.",
+      "correct_explanation": "Section 404(b) requires the registered public accounting firm that prepares or issues the issuer's audit report to attest to, and report on, management's internal control assessment under the PCAOB's attestation standards, and says the attestation shall not be the subject of a separate engagement. Tamsin is an accelerated filer and not an emerging growth company, so the attestation applies. Option C names the right duty in the wrong form: the attestation sits inside the audit.",
+      "wrong_explanations": {
+        "A": "Tempting because the auditor tests controls too. But Section 404(a) gives the assessment to management; the firm attests to that assessment and never replaces it.",
+        "B": "Tempting because both are SOX duties tied to the annual report. But the CEO and CFO sign the Section 302 certifications; the auditor signs no certification.",
+        "C": "Closest choice: the firm does attest to management's assessment, but Section 404(b) says the attestation shall not be the subject of a separate engagement."
+      },
+      "tips": [
+        "Eliminate: A, because the auditor attests to management's assessment rather than replacing it, and B, because only the CEO and CFO sign Section 302 certifications.",
+        "Final two: D beats C because Section 404(b) bars a separate engagement; the attestation is part of the audit by the firm that issues the audit report.",
+        "Exam cue: on 404(b) items check three things: an accelerated or large accelerated filer, not an emerging growth company, and the firm that issues the audit report, inside that audit."
+      ],
+      "framework_ref": "15 U.S.C. 7262(b) (Internal control evaluation and reporting); 17 CFR 229.308(b) (Attestation report of the registered public accounting firm)",
+      "related_concepts": [
+        "Section 404(b) attestation",
+        "Registered public accounting firm",
+        "Attestation report"
+      ],
+      "_provenance": "Authored from concept: KaiSip notes 3B2.2 and Sarbanes-Oxley Act of 2002 Section 404(b) as amended (15 U.S.C. 7262(b)) and 17 CFR 229.308(b), 31 Oct 2026, CSOE pilot; re-angled after the cross-domain review (duplicated csoe_d1_005). Original scenario written for KaiSip from the public law; no SOXCPA material.",
+      "style_version": 2
+    },
+    {
+      "id": "csoe_d3_016",
+      "domain": 3,
+      "subtopic": "3B2 Management's assessment of internal control. Weakness fixed in the year",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "In September, an accelerated filer finds a material weakness in revenue cutoff; replacement controls test effective at its December 31 year-end, and no other weakness is open. What may management MOST accurately conclude?",
+      "options": {
+        "A": "Controls were not effective, because a weakness existed before year-end",
+        "B": "Controls were effective except for the revenue cutoff weakness",
+        "C": "Controls were effective, as the weakness was remediated by year-end",
+        "D": "No conclusion is possible until the auditor retests the new controls"
+      },
+      "correct": "C",
+      "key_concept": "A material weakness remediated and tested before fiscal year-end does not prevent an effective conclusion as of year-end.",
+      "pre_read": "Focus on the date the assessment speaks to, and on what the testing showed at that date.",
+      "correct_explanation": "Item 308(a) asks for management's assessment as of fiscal year-end, and management may not conclude controls are effective if a material weakness exists then. Release No. 33-8810 (Section II.A, footnote 20) says that if all material weaknesses found are remediated by fiscal year-end, management may conclude ICFR is effective as of year-end, but should consider whether disclosing the remediated weakness is appropriate or required under Item 307 or 308.",
+      "wrong_explanations": {
+        "A": "Closest choice: a material weakness did exist in September. But the assessment is as of year-end, and this one was remediated and tested by then.",
+        "B": "Tempting because it seems candid. But SEC guidance says management should not qualify its conclusion with exceptions; it states effective or not effective.",
+        "D": "Tempting because auditors test controls too. But management makes its own year-end conclusion; the auditor's work does not delay or replace it."
+      },
+      "tips": [
+        "Eliminate: B and D. SEC guidance bars except-for conclusions, and management concludes on its own evidence without waiting for the auditor.",
+        "Final two: C beats A because the 404(a) assessment is as of year-end, and a weakness remediated and tested by then does not block an effective conclusion.",
+        "Exam cue: judge material weaknesses at the as-of date. Open at year-end means not effective; fixed and tested before it allows effective, though disclosing the fixed weakness should be considered."
+      ],
+      "framework_ref": "17 CFR 229.308(a) (Management's annual report on internal control over financial reporting); SEC Release No. 33-8810 Section II.A (The evaluation process); SEC Release No. 33-8810 Section II.B.2 (Expression of assessment of effectiveness of ICFR by management)",
+      "related_concepts": [
+        "Material weakness remediation",
+        "Year-end conclusion",
+        "Qualified conclusions"
+      ],
+      "_provenance": "Authored from concept: KaiSip notes 3B2.4 and 17 CFR 229.308(a)(3) and SEC Release No. 33-8810 Sections II.A (footnote 20) and II.B.2, 31 Oct 2026, CSOE pilot. Original scenario written for KaiSip from the public law; no SOXCPA material.",
+      "style_version": 2
+    },
+    {
+      "id": "csoe_d3_017",
+      "domain": 3,
+      "subtopic": "3B2 Management's assessment of internal control. Rating a failed review",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "Management finds the review of large manual journal entries did not operate all year, yet no misstatement resulted, and the CFO says this cannot be a material weakness. Which response is MOST accurate?",
+      "options": {
+        "A": "Severity turns on the material misstatements actually found",
+        "B": "Severity turns on the risk that a material misstatement is missed",
+        "C": "Severity is set by the independent auditor, not by management",
+        "D": "Severity turns on how many separate controls failed this year"
+      },
+      "correct": "B",
+      "key_concept": "Deficiency severity depends on the reasonable possibility of a material misstatement going unprevented or undetected, not on actual errors.",
+      "pre_read": "Recall what the material weakness definition measures: what happened, or what could happen.",
+      "correct_explanation": "A material weakness exists when there is a reasonable possibility that a material misstatement will not be prevented or detected on a timely basis (Rule 12b-2). Release No. 33-8810 states that severity does not depend on whether a misstatement actually occurred. A key review that failed all year over large manual entries can be a material weakness even though no error was found.",
+      "wrong_explanations": {
+        "A": "Closest choice: actual errors are strong evidence of a deficiency. But severity rests on what could be missed, so finding no misstatement does not settle it.",
+        "C": "Tempting because auditors assess deficiencies too. But management evaluates severity for its own 404(a) report under SEC rules and guidance.",
+        "D": "Tempting because several failures can combine. But one failed control can be a material weakness; severity rests on likelihood and size, not a count."
+      },
+      "tips": [
+        "Eliminate: C and D. Management rates severity for its own report, and severity depends on likelihood and magnitude rather than on counting failed controls.",
+        "Final two: B beats A because the definition asks whether a material misstatement could go unprevented or undetected, not whether one occurred.",
+        "Exam cue: when a stem says no error was found, ask what could have been missed; severity follows the potential, not the actual."
+      ],
+      "framework_ref": "17 CFR 240.12b-2 (Definition of material weakness); SEC Release No. 33-8810 Section II.B.1 (Evaluation of control deficiencies)",
+      "related_concepts": [
+        "Material weakness",
+        "Reasonable possibility",
+        "Deficiency severity"
+      ],
+      "_provenance": "Authored from concept: KaiSip notes 3B2.3 and 17 CFR 240.12b-2 and SEC Release No. 33-8810 Section II.B.1, 31 Oct 2026, CSOE pilot. Original scenario written for KaiSip from the public law; no SOXCPA material.",
+      "style_version": 2
+    },
+    {
+      "id": "csoe_d3_018",
+      "domain": 3,
+      "subtopic": "3B3 Ethics code, financial expert, SEC review and real-time disclosure. Committee without an expert",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A listed company's board determines that no audit committee member meets the SEC's definition of an audit committee financial expert. What does Section 407 require?",
+      "options": {
+        "A": "Disclose that the committee has none and explain why not",
+        "B": "Disclose that the committee has none, giving no reasons",
+        "C": "Appoint a qualified expert to the committee before filing",
+        "D": "Name the committee's most experienced member as its expert"
+      },
+      "correct": "A",
+      "key_concept": "Section 407 is disclose-or-explain: name the financial expert, or state there is none and explain why.",
+      "pre_read": "Decide whether Section 407 requires the company to have an expert or to disclose something, and what that disclosure must include.",
+      "correct_explanation": "Section 407 and Item 407(d)(5) are disclose-or-explain rules. The company discloses whether the board has determined that at least one audit committee financial expert serves on the committee; if none does, it must say so and explain why. The Act does not require the company to have an expert, so the explanation, not an appointment, is what the rule demands.",
+      "wrong_explanations": {
+        "B": "Closest choice: the company must disclose that it has no expert. But Item 407(d)(5) also requires it to explain why it has none.",
+        "C": "Tempting because an expert strengthens the committee. But Section 407 requires disclosure, not appointment; a company may lack an expert if it explains why.",
+        "D": "Tempting because someone must fill the role. But the expert must have every attribute the SEC lists; naming an unqualified member would misstate the disclosure."
+      },
+      "tips": [
+        "Eliminate: C and D. Section 407 requires disclosure rather than appointment, and a member without the SEC's attributes cannot be named as the expert.",
+        "Final two: A beats B because the rule requires an explanation of why the committee has no financial expert.",
+        "Exam cue: Sections 406 and 407 are disclose-or-explain: say whether you have it, and if not, say why."
+      ],
+      "framework_ref": "Sarbanes-Oxley Act of 2002 Section 407 (Disclosure of audit committee financial expert); 17 CFR 229.407(d)(5) (Audit committee financial expert)",
+      "related_concepts": [
+        "Audit committee financial expert",
+        "Disclose-or-explain",
+        "Board determination"
+      ],
+      "_provenance": "Authored from concept: KaiSip notes 3B3.2 and Sarbanes-Oxley Act of 2002 Section 407(a) and 17 CFR 229.407(d)(5), 31 Oct 2026, CSOE pilot. Original scenario written for KaiSip from the public law; no SOXCPA material.",
+      "style_version": 2
+    },
+    {
+      "id": "csoe_d3_019",
+      "domain": 3,
+      "subtopic": "3B3 Ethics code, financial expert, SEC review and real-time disclosure. Waiver for an officer",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A domestic issuer's board grants its CFO a waiver from the conflict-of-interest provision of its code of ethics for senior financial officers. What does Section 406 require?",
+      "options": {
+        "A": "Seek SEC approval of the waiver before it applies",
+        "B": "Report the waiver in the next annual report on Form 10-K",
+        "C": "Disclose the waiver immediately, on Form 8-K or online",
+        "D": "Keep the waiver internal, since adopting a code is optional"
+      },
+      "correct": "C",
+      "key_concept": "Any change in or waiver of the code of ethics for senior financial officers must be disclosed immediately.",
+      "pre_read": "Separate the rule about having a code from the rule about changing or waiving one, and recall its timing.",
+      "correct_explanation": "Section 406(b) requires immediate disclosure of any change in or waiver of the code of ethics for senior financial officers. Under Form 8-K Item 5.05, a domestic issuer files within four business days, or posts the waiver on its website within four business days if its last annual report announced that method. Waiting for the next Form 10-K misses the deadline.",
+      "wrong_explanations": {
+        "A": "Tempting because the SEC oversees disclosure. But Section 406 requires disclosure of the waiver, not SEC approval before it applies.",
+        "B": "Closest choice: the annual report does cover the code. But waivers must be disclosed within four business days on Form 8-K or the website, not held for the 10-K.",
+        "D": "Tempting because Section 406 is disclose-or-explain for adopting a code. But once a code exists, any waiver for senior financial officers must be disclosed."
+      },
+      "tips": [
+        "Eliminate: A and D. Section 406 requires disclosure rather than SEC approval, and the disclose-or-explain choice on adopting a code does not cover waivers.",
+        "Final two: C beats B because Section 406(b) requires immediate disclosure of waivers, not disclosure in the next annual report.",
+        "Exam cue: a change in or waiver of the senior financial officers' code means immediate disclosure on Form 8-K or online."
+      ],
+      "framework_ref": "Sarbanes-Oxley Act of 2002 Section 406 (Code of ethics for senior financial officers); 17 CFR 229.406 (Code of ethics)",
+      "related_concepts": [
+        "Code of ethics",
+        "Waiver disclosure",
+        "Form 8-K"
+      ],
+      "_provenance": "Authored from concept: KaiSip notes 3B3.1 and Sarbanes-Oxley Act of 2002 Section 406(b) and 17 CFR 229.406(d), 31 Oct 2026, CSOE pilot. Original scenario written for KaiSip from the public law; no SOXCPA material.",
+      "style_version": 2
+    },
+    {
+      "id": "csoe_d3_020",
+      "domain": 3,
+      "subtopic": "3B3 Ethics code, financial expert, SEC review and real-time disclosure. Review cycle",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "The CFO of a listed company that has filed Section 13(a) reports for years asks how often the SEC must review them. Under Section 408, what is the GREATEST interval allowed between reviews?",
+      "options": {
+        "A": "At least once every year",
+        "B": "At least once every five years",
+        "C": "Whenever a material restatement is issued",
+        "D": "At least once every three years"
+      },
+      "correct": "D",
+      "key_concept": "The SEC must review each reporting issuer's disclosures at least once every three years.",
+      "pre_read": "Recall the statutory floor for SEC review and the role of the scheduling factors Section 408 lists.",
+      "correct_explanation": "Section 408 requires the SEC to review the disclosures of issuers reporting under Section 13(a), including their financial statements, on a regular and systematic basis. Section 408(c) sets the floor: no issuer may be reviewed less often than once every three years. Restatements, volatility and size are scheduling factors that can bring a review sooner, not the sole trigger.",
+      "wrong_explanations": {
+        "A": "Closest choice: many issuers are reviewed more often than the minimum. But Section 408 sets the floor at once every three years, not every year.",
+        "B": "Tempting because five years appears elsewhere in SOX, in audit partner rotation. But Section 408 sets the review floor at three years.",
+        "C": "Tempting because restatements are a review factor. But Section 408(b) lists them as scheduling factors; the three-year floor applies to every reporting issuer."
+      },
+      "tips": [
+        "Eliminate: B and C. Five years is not the review floor, and restatements only affect scheduling within the three-year cycle.",
+        "Final two: D beats A because Section 408(c) requires review at least once every three years; yearly review is not the statutory minimum.",
+        "Exam cue: SEC review of each reporting issuer's filings happens at least once every three years under Section 408."
+      ],
+      "framework_ref": "Sarbanes-Oxley Act of 2002 Section 408 (Enhanced review of periodic disclosures by issuers)",
+      "related_concepts": [
+        "SEC review of filings",
+        "Section 408 scheduling factors",
+        "Comment letters"
+      ],
+      "_provenance": "Authored from concept: KaiSip notes 3B3.3 and Sarbanes-Oxley Act of 2002 Section 408, 31 Oct 2026, CSOE pilot. Original scenario written for KaiSip from the public law; no SOXCPA material.",
+      "style_version": 2
+    }
+  ]
+}
