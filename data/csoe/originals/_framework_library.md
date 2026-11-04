@@ -53,7 +53,7 @@ These are the sources the pilot will need. None is a citation yet.
 | SEC Release No. 34-88365 (March 2020) | sec.gov | Accelerated filer definition amendments |
 | Dodd-Frank Act, Pub. L. 111-203 | govinfo.gov | Sections 989G, 954, 922 and the PCAOB broker-dealer provisions |
 | JOBS Act, Pub. L. 112-106 | govinfo.gov | Section 103 (EGCs and 404(b)); current EGC revenue cap on sec.gov |
-| PCAOB AS 2201, AS 1305 | pcaobus.org | Integrated audit of ICFR; deficiency definitions; communications; current amendments |
+| PCAOB AS 2201, AS 1305 | pcaobus.org (owner-saved copies, 4 Nov 2026; see the PCAOB section) | Integrated audit of ICFR; deficiency definitions; communications; current amendments |
 | COSO Internal Control—Integrated Framework (2013), executive summary | coso.org | Five components and 17 principle names only |
 
 The release numbers above come from memory and must be confirmed when
@@ -879,3 +879,35 @@ sec.gov opens; do not cite them until then.
   - Verified (opened 31 Oct 2026): https://www.law.cornell.edu/cfr/text/12/217.11; checked for an institution not subject to 12 CFR 225.8 or 238.170, the buffer is the lowest excess of the three risk-based ratios over their minimums; if it is not greater than 2.5 percent plus any countercyclical amount, distributions and discretionary bonus payments are limited to a maximum payout amount (Table 1); the Federal Reserve Board may permit a payout on request
 - 78 FR 62018 Section IV.D (Capital conservation buffer)
   - Verified (opened 31 Oct 2026): https://www.govinfo.gov/content/pkg/FR-2013-10-11/html/2013-21653.htm; checked Section IV.D (pp. 62033-62037): to encourage capital conservation, distributions and discretionary bonus payments are limited for banking organizations that do not hold a common equity tier 1 buffer above the minimum risk-based requirements, consistent with Basel III; a buffer greater than 2.5 percent of risk-weighted assets (plus any applicable countercyclical amount) avoids a maximum payout amount; the final rule states the buffer mechanics are unchanged from the proposal
+
+## PCAOB
+
+Source: PCAOB AS 2201 as shown on its pcaobus.org standard page, in a PDF the
+owner saved on 4 Nov 2026 (SHA-256 3c205f28a54261486d6ff8c2202cac079c5c5153a11749073d20e6b48847847b;
+AS 1305: 6e4732c8de809dd50f2c099044b31d1876ded03a4b6b6c71d1f03e7d7a8f60aa).
+pcaobus.org's bot challenge blocks automated requests, so KaiSip's tools did not
+open the page. The page notes amendments to .09 and a new .99 effective
+15 Dec 2026 (PCAOB Release No. 2024-005, approved by SEC Release No. 34-100968;
+date moved by SEC Release No. 34-103803); none of the paragraphs below is among
+them. Change each status to "Verified (opened, DATE)" once pcaobus.org opens.
+
+- PCAOB AS 2201.05 (Same control framework as management)
+  - Verified (owner-supplied copy of the pcaobus.org page, saved 4 Nov 2026): https://pcaobus.org/oversight/standards/auditing-standards/details/AS2201; checked .05 and footnote 7: the auditor uses the same suitable, recognized control framework for the ICFR audit as management uses for its annual evaluation; footnote 7 points to Exchange Act Rules 13a-15(c) and 15d-15(c) and gives the COSO report and the Financial Reporting Council's Turnbull guidance (October 2005) as examples of such frameworks.
+- PCAOB AS 2201.B18 (Service organization services in the information system)
+  - Verified (owner-supplied copy of the pcaobus.org page, saved 4 Nov 2026): https://pcaobus.org/oversight/standards/auditing-standards/details/AS2201; checked .B17-.B18: AS 2601 applies to the financial statement audit and its concepts may be applied to the ICFR audit; a service organization's services that are part of the company's information system (as AS 2601.03 describes) are part of the information and communication component of ICFR, and the auditor includes the service organization's activities when determining the evidence the opinion needs.
+- PCAOB AS 2201.B20 (Evidence of operating effectiveness at a service organization)
+  - Verified (owner-supplied copy of the pcaobus.org page, saved 4 Nov 2026): https://pcaobus.org/oversight/standards/auditing-standards/details/AS2201; checked .B19-.B20: evidence that relevant controls operate effectively may come from a service auditor's report on controls placed in operation and tests of operating effectiveness (or an agreed-upon procedures report describing relevant tests), tests of the user organization's controls over the service organization's activities, or tests of controls at the service organization; the note says a report on controls placed in operation without tests of controls, results and an opinion on operating effectiveness "does not provide evidence of operating effectiveness".
+- PCAOB AS 2201.B23 (Service auditor's reputation, competence and independence)
+  - Verified (owner-supplied copy of the pcaobus.org page, saved 4 Nov 2026): https://pcaobus.org/oversight/standards/auditing-standards/details/AS2201; checked .B21-.B23: in judging whether a report with tests gives sufficient evidence, the auditor weighs the test period against management's assessment date, the scope and controls tested, and the results and opinion (.B21), evaluates whether the company applies controls the report assumes (.B22), and inquires about the service auditor's reputation, competence and independence (.B23).
+- PCAOB AS 2201.B27 (No reference to the service auditor's report)
+  - Verified (owner-supplied copy of the pcaobus.org page, saved 4 Nov 2026): https://pcaobus.org/oversight/standards/auditing-standards/details/AS2201; checked .B24-.B27: added procedures when much time has passed between the report's test period and management's assessment date, starting with inquiries of management about changes at the service organization (.B24), risk factors for more evidence (.B25), possible added procedures (.B26); .B27: the auditor should not refer to the service auditor's report when expressing the ICFR opinion.
+- PCAOB AS 2201.C8 (Opinions based in part on another firm's report)
+  - Verified (owner-supplied copy of the pcaobus.org page, saved 4 Nov 2026): https://pcaobus.org/oversight/standards/auditing-standards/details/AS2201; checked .C8-.C11: only the lead auditor of the financial statements can be the lead auditor of ICFR; AS 1206 sets the requirements when the lead auditor refers in its report to another public accounting firm's report on one or more of the company's business units.
+- PCAOB AS 2201.B28 (Entirely automated application controls)
+  - Verified (owner-supplied copy of the pcaobus.org page, saved 4 Nov 2026): https://pcaobus.org/oversight/standards/auditing-standards/details/AS2201; checked .B28 and .60: entirely automated application controls are generally not subject to breakdowns due to human failure, which allows a benchmarking strategy in subsequent years' audits.
+- PCAOB AS 2201.B29 (Conditions for benchmarking an automated control)
+  - Verified (owner-supplied copy of the pcaobus.org page, saved 4 Nov 2026): https://pcaobus.org/oversight/standards/auditing-standards/details/AS2201; checked .B29-.B31: if general controls over program changes, access to programs and computer operations are effective and continue to be tested, and the auditor verifies the automated application control has not changed since the baseline, the auditor may conclude it continues to be effective without repeating the prior year's specific tests; .B30: the control may depend on related files, tables, data and parameters; .B31: risk factors for choosing benchmarking (match to a defined program, stability, a reliable report of program compilation dates).
+- PCAOB AS 2201.B32 (Benchmarking purchased software)
+  - Verified (owner-supplied copy of the pcaobus.org page, saved 4 Nov 2026): https://pcaobus.org/oversight/standards/auditing-standards/details/AS2201; checked .B32: benchmarking can be especially effective for companies using purchased software when program changes are remote, for example when the vendor does not allow access to or modification of the source code.
+- PCAOB AS 2201.B33 (Reestablishing the benchmark baseline)
+  - Verified (owner-supplied copy of the pcaobus.org page, saved 4 Nov 2026): https://pcaobus.org/oversight/standards/auditing-standards/details/AS2201; checked .B33: after a period that depends on the circumstances, the baseline should be reestablished; factors are the effectiveness of the IT control environment, the nature of any changes to the programs, the nature and timing of other related tests, the consequences of errors, and whether the control is sensitive to other business factors that may have changed.

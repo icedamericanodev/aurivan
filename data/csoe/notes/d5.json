@@ -1790,7 +1790,7 @@
             "csoe_d5_106"
           ],
           "definition": "Under PCAOB AS 2201, the auditor may carry forward an earlier test of an entirely automated control, called benchmarking, if general controls stay effective and the control is unchanged.",
-          "why_it_matters": "AS 2201 lets the auditor rely on an earlier test of an unchanged automated control, but only on stated conditions, and the baseline must be retested in time.",
+          "why_it_matters": "AS 2201 lets the auditor rely on an earlier test of an unchanged automated control, but only on stated conditions, and the baseline should be reestablished after a period.",
           "how_it_works": [
             "Entirely automated application controls are generally not subject to breakdowns from human failure, which is what allows benchmarking (AS 2201.B28, owner-supplied copy saved 4 Nov 2026).",
             "Conditions: general controls over program changes, access to programs and computer operations are effective and still tested, and the auditor verifies the control is unchanged since its baseline (.B29).",
@@ -1798,7 +1798,7 @@
             "Benchmarking suits stable programs with reliable compilation-date reports, and especially purchased software whose code the vendor does not let anyone change (.B31-.B32).",
             "The baseline is reestablished after a period; factors include program changes, the consequences of errors and changed business factors the control assumes (.B33)."
           ],
-          "example": "A freight carrier's auditor tested the automated fuel-surcharge calculation two years ago. Change and access testing is clean and the program has not been recompiled since, so the earlier result carries forward. When the carrier adds a new surcharge table, the auditor plans a fresh test.",
+          "example": "A freight carrier's auditor tested the automated fuel-surcharge calculation two years ago. Change, access and operations testing is clean and the program has not been recompiled since, so the earlier result carries forward. When the carrier adds a new surcharge table, the auditor plans a fresh test.",
           "audit_focus": {
             "review": [
               "Compare the program's compilation date with the baseline test date",
@@ -1811,11 +1811,11 @@
             "recommend": "Have management keep reliable program change records so its auditor can confirm automated controls are unchanged.",
             "decides": "Management owns the control; the registered firm judges benchmarking under AS 2201"
           },
-          "isaca_rule": "AS 2201.B29: an unchanged, entirely automated control can rest on its baseline test if general controls over changes, access and operations stay effective and tested. AS 2201.B33: reestablish the baseline after a period or when business factors it assumes change.",
+          "isaca_rule": "AS 2201.B29: an unchanged, entirely automated control can rest on its baseline test if general controls over changes, access and operations stay effective and tested. AS 2201.B33: reestablish the baseline after a period, weighing program changes, error consequences and changed business factors.",
           "exam_traps": [
             {
               "trap": "Once an automated control is tested, the auditor never needs to test it again.",
-              "why": "AS 2201.B33 says the baseline must be reestablished after a period, weighing program changes, error consequences and changed business factors."
+              "why": "AS 2201.B33 says the baseline should be reestablished after a period, weighing program changes, error consequences and changed business factors."
             },
             {
               "trap": "Purchased software is enough on its own to justify benchmarking.",
@@ -2213,7 +2213,7 @@
             "A long gap between the report's test period and the assessment date calls for added procedures, starting with inquiries of management about changes (.B24-.B25).",
             "The auditor does not refer to the service auditor's report in the ICFR opinion (.B27); Appendix C reference is to another firm's audit of a business unit (.C8)."
           ],
-          "example": "A regional insurer's claims processor sends a tested report covering January to September; the insurer's year ends in December. Its auditor evaluates the tests, asks management about changes at the processor since September, and issues an opinion that does not mention the service auditor.",
+          "example": "A regional insurer's claims processor offers only a report on controls placed in operation. Its auditor tests the insurer's own reconciliations of the processor's output instead, and issues an opinion that does not mention the service auditor.",
           "audit_focus": {
             "review": [
               "Agree the report's test window to the issuer's fiscal year-end",
@@ -2226,7 +2226,7 @@
             "recommend": "Have management obtain the provider's report early and track changes at the provider after its test period.",
             "decides": "Management owns ICFR; the registered firm forms its own opinion on it"
           },
-          "isaca_rule": "AS 2201 Appendix B: outsourced services in the information system sit in information and communication. Only a report with tests shows controls worked. Bridge a period gap with added procedures. Do not refer to the service auditor's report in the opinion.",
+          "isaca_rule": "AS 2201 Appendix B: outsourced information-system services sit in information and communication. A service auditor's report shows controls worked only if it includes tests; otherwise test the company's controls over the provider or test at the provider. Do not refer to the service auditor's report in the opinion.",
           "exam_traps": [
             {
               "trap": "A report on controls placed in operation shows that the provider's controls worked.",
