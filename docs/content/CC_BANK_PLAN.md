@@ -283,6 +283,7 @@ Learned from two blind tests and two standards audits of the pilot.
 | Batch 2, D1 and D4 (30 Oct 2026) | +25 | | | +25 | | 150 |
 | Batch 2, D2, D3 and D5 (30 Oct 2026) | | +25 | +25 | | +25 | 225 |
 | Batch 3, all domains (31 Oct 2026) | +30 | +20 | +25 | +25 | +20 | 345 |
+| Batch 4, all domains (4 Nov 2026) | +35 | +25 | +30 | +30 | +25 | 490 |
 
 Batch 2: the first blind test matched the keys 25/25 in every domain, and
 re-tests of every changed item all matched. The audits found 7 hard errors
@@ -342,6 +343,22 @@ Batch 4 guidance from this round:
 - Canonical roles now include "access analyst" (D3); notes say "security
   manager", not "security management".
 - D1 still needs the most items (240 target, 75 now).
+
+**Batch 4 (4 Nov 2026).** 145 new items, written to key letters drawn by
+`key_sequence.py`, so the stored order passes the key-order gate without any
+re-keying. The first blind test matched every key (145/145); the audits found
+no HARD errors. A final cross-domain gate found two lessons taught twice in
+the batch across domains (re-angled), a soft contradiction about whether an
+accepted risk has a review date (fixed: it always does), and stem or owner
+words echoed only on the key (given a rival). Inside the batch, the key is the
+longest option in 15-20% of items and the shortest in 12-21%.
+
+Batch 5 guidance from this round:
+- No more hazard-rescue scenarios in 2.2, and no more AI-agent stop or
+  approval items in 5.5.6 for now; both clusters are full.
+- When the stem names the owner, give a distractor the owner too, so the key
+  is not the only option that mentions them.
+- D1 is still furthest from its target (240; 110 now).
 
 ## 7. Follow-ups outside this plan's scope
 
