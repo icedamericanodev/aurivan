@@ -328,7 +328,7 @@
             "One control can protect several risks, so its owner may serve several risk owners.",
             "Risk owners rely on control owners to keep residual risk at the level they accepted.",
             "Validate by asking the owner to describe the control and show recent evidence, not just by reading the register.",
-            "When a control owner changes jobs, ownership transfers formally, with a handover of procedures and evidence."
+            "When a control owner changes jobs, or a project hands over a control it built, ownership transfers formally, with a handover of procedures and evidence."
           ],
           "compare": {
             "columns": [
@@ -486,7 +486,7 @@
             "Act on exceptions in the report and on complementary user entity controls, the duties the customer must perform itself.",
             "Track fourth parties: the vendor's own subcontractors, especially those that host or process your data.",
             "Watch concentration: many critical services on one provider or region create a single point of failure.",
-            "Trigger reassessment on events such as a breach, a merger, missed SLAs or a new subcontractor."
+            "Trigger reassessment on events such as a breach, a sale or merger, missed SLAs or a new subcontractor."
           ],
           "example": "A mid-size insurer relies on a claims-processing vendor whose new SOC 2 Type 2 report covers its main data center but not the overseas site that now handles the insurer's claims. Chen, a risk analyst, notices the scope gap and two exceptions in access reviews. They update the vendor risk entry and ask the claims director to request coverage of the overseas site.",
           "audit_focus": {
@@ -924,7 +924,7 @@
             "NIST SP 800-53 Rev. 5 is a catalog of security and privacy controls; its starting baselines are published separately in SP 800-53B.",
             "CSF 2.0 lists outcomes under six functions: Govern, Identify, Protect, Detect, Respond and Recover; it does not prescribe the controls that achieve them.",
             "Tailor by scoping out what does not apply, setting parameters and adding controls for risks the baseline misses.",
-            "Map internal controls to every framework and regulation that applies, so one control can meet several requirements."
+            "Map internal controls to every framework and regulation that applies, so one control can meet several requirements; re-map whenever one is revised."
           ],
           "example": "A software-as-a-service provider adopts every control in a large catalog to win a government contract, and its backlog grows to 400 items. Oluwaseun, the risk analyst, maps the catalog to the provider's own risk assessment, marks controls that cannot apply to a cloud-only service and proposes a tailored baseline, with a recorded reason for each change, to the chief technology officer.",
           "audit_focus": {
@@ -1159,7 +1159,7 @@
           "how_it_works": [
             "Inquiry is weakest on its own; combine it with another technique for any key control.",
             "Observation shows the control at one moment, and people may act differently while watched.",
-            "Inspection of records shows the control ran over time, if the records are complete and genuine.",
+            "Inspection of records shows the control ran over time, if the records are complete and genuine; records made after the fact need system evidence from the period.",
             "Reperformance gives the strongest evidence, because the tester reaches the result independently.",
             "NIST SP 800-53A groups methods as examine, interview and test, with depth and coverage set by the assurance needed."
           ],
@@ -1440,7 +1440,7 @@
             "Confirm the control is implemented, then that it operates, before treating the action as complete.",
             "Re-rate the risk after validation; that residual rating is compared with the target the plan set.",
             "Escalate slipping or blocked actions to the risk owner, and past agreed limits to senior management.",
-            "Close the plan only when the risk reaches the expected level or a new decision is recorded.",
+            "Close the plan only when the risk reaches the expected level or a new decision is recorded on today's rating, not the plan's target.",
             "If validated actions leave the risk above target, report the shortfall to the risk owner, who decides on further treatment, acceptance within their authority or elevation."
           ],
           "example": "A port operator's plan to separate its crane-control network from the office network is reported complete. Arjun, the risk analyst, asks the network team for a connection test from an office laptop, which still reaches two cranes. They mark the action incomplete, record the test result and inform the operations director with a proposed new date.",
@@ -1552,7 +1552,8 @@
             "Merge duplicate or similar risks into a representative risk, keeping a link back to each source entry.",
             "Look for the same risk treated differently by different units, and find out why.",
             "Keep severe single risks visible; aggregation must not average them into a moderate total.",
-            "Watch for correlated risks, such as several units relying on one vendor, that add up to a larger exposure."
+            "Watch for correlated risks, such as several units relying on one vendor, that add up to a larger exposure.",
+            "To compare units, turn counts into rates on a common base, such as complaints per 1,000 chats; a common scale aligns ratings, not volumes."
           ],
           "example": "A hospital group asks its five hospitals for their top risks. Two rate on a 1 to 5 scale and three on 1 to 10, and one hospital's critical ransomware risk disappears when the scores are averaged. Malik, the enterprise risk analyst, converts every rating to the group scale, keeps the critical risk as its own line and notes that four hospitals share one imaging vendor.",
           "audit_focus": {
@@ -2243,7 +2244,7 @@
           "definition": "Recording emerging risk means entering it in the register with its uncertainty stated, an owner and a review date, then reporting it so leaders can prepare without overreacting.",
           "why_it_matters": "Leaders need early sight of what may change the risk profile. Presenting an uncertain risk as certain wastes money, and leaving it out leaves them unprepared.",
           "how_it_works": [
-            "Record the risk as a scenario, with a confidence level and the assumptions behind any rating.",
+            "Record the risk as a scenario of how it would affect objectives, with a confidence level and the assumptions behind any rating.",
             "Use ranges or alternative scenarios rather than single scores while uncertainty is high.",
             "Set short review dates, and refine the rating as evidence arrives.",
             "Report emerging risks in their own section: what is known, what is not, and what is being done to learn more.",
