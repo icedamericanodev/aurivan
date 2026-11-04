@@ -572,6 +572,19 @@ async function boot() {
     showGate('email', e.message);
   }
 }
+/**
+ * Supabase sends the QR code as "data:image/svg+xml;utf-8,<svg …>" with the
+ * SVG not URL-encoded. Browsers refuse that (a "#" in a colour ends the URL),
+ * so the SVG part is encoded here. An already-encoded or base64 one is kept.
+ */
+function qrSrc(raw) {
+  var s = String(raw || '');
+  if (!s) return '';
+  var m = /^data:image\/svg\+xml(;[^,]*)?,([\s\S]*)$/.exec(s);
+  if (m && /</.test(m[2]) && !/;base64/i.test(m[1] || '')) return 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(m[2]);
+  if (/^\s*<svg/i.test(s)) return 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(s);
+  return s;
+}
 async function startMfa() {
   $('mfaInput').value = '';
   var list = await Auth.factors();
@@ -584,7 +597,7 @@ async function startMfa() {
     var f = await Auth.enroll();
     mfa.factorId = f.id;
     $('mfaSetup').hidden = false;
-    $('mfaQr').src = f.totp && f.totp.qr_code ? f.totp.qr_code : '';
+    $('mfaQr').src = qrSrc(f.totp && f.totp.qr_code);
     $('mfaSecret').textContent = f.totp && f.totp.secret ? f.totp.secret.replace(/(.{4})/g, '$1 ').trim() : '';
     $('mfaLead').textContent = 'Tester details are personal data, so the desk asks for a second code from an authenticator app (Google Authenticator, Microsoft Authenticator, 1Password…). This is set up once.';
   }
