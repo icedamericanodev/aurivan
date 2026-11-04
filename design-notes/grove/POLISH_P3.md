@@ -78,3 +78,18 @@ Every blocking finding is fixed in `index.html`; DECISIONS 13 and 14 record the 
 - Focus lands on the page title from Today's avatar, You's detail rows, Settings' FAQ and About rows and after a restore; Help and About opened from Settings go back to Settings.
 - Restore brings back dark mode, Exam-day rehearsal and the set length where this browser has none (new `prefs` field in the file).
 - What's New headings ("v12.49: title") and About KaiSip have no dashes.
+
+
+## Round 2 after the strict review (4 Nov 2026)
+
+Every blocking finding is fixed in `index.html`; none needed an owner decision changed. In short:
+
+- Q6 again: Session summary (from You's "In more detail") names the same next area as You, in its words and its DI short name ("Focus next: IS Operations, where you'll gain most." or ", today's set."), then one true line: "An area gets its score once it has 30 answers." while an area has fewer, or "Every area here is at or above 70." The old lowest-score rule, the full domain name, "Domain 4" and the dash are gone.
+- Q6 again: the Practice hub's "Picked for you" set is the area Today and You name until the learner picks a domain on purpose on that page load (any domain chip, area row or Practice button), so it never calls an old choice, often the strongest area, a pick. While today's set is unfinished it is that set's area, "today's set". Nothing new is saved.
+- Item 1 again: in each area chart the names, band words and extra lines of neighbouring areas keep at least 8px between them. Where two labels on the same row would come closer, every other area's labels drop by whole rows (the least that clears them). Measured 12.4px or more at 375, 390, 414 and 768 (it was about 3px), and 26px or more in the wide drawing.
+- The chart: the top of a stem and its tip leaf is the score itself, never above it, and under 70 the whole tip stays at least 3px under the dashed line (measured 14px or more under it at 375 to 1280).
+- At 200% browser text the plant card, "Add your name" and the Badges empty state on You grow with the rest of the page (rem on You only; Today and the rail keep px). Every text node on You outside the drawings is at least 1.3x its 1x size.
+- Forced colours: "Set a date" on Today, a button tile, keeps a ButtonText edge at every width, so it no longer looks like the static Accuracy tile.
+- The readiness key has a third line for the scale bar: "Bracket on the bar: the same range on a straight scale, in blocks of 10." The bar itself is the Grove scale bar (its alternating blocks are its steps of 10) and is unchanged.
+- Restore: "Back up first" shows only when this browser has answers (an empty browser says "This browser has no answers yet, so there is nothing here to back up."), and its done line gives the count ("Backup saved: 213 answers."). Start fresh keeps its button.
+- Dashes: the FAQ answers, the "Question banks still loading" and "Bookmark drill" toasts, the filter-complete line, the auditor-vs-implementer alert and the glossary intro use a colon, a semicolon or a full stop; Weak spots and the Practice hub's By domain leave the value empty under 30 answers (the row already says "too few yet"), and a mock's Pace reads "none" with no answers.

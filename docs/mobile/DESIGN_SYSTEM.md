@@ -2136,3 +2136,11 @@ Recorded in `design-notes/grove/DECISIONS.md` 12. The phone keeps its own Settin
   - *Backup prefs:* the file carries a new `prefs` field (dark mode, Exam-day rehearsal, set length: only choices this browser has made, each under its existing key); a restore adds each only where this browser has none and says so in the sheet.
   - *Forced colours:* the dark off thumb is CanvasText; Today's Start and every `.fg-btn` keep a ButtonText edge, and Today's cards (from 768px the hero card) a CanvasText edge.
   - *Dashes:* What's New headings read "v12.49: title"; About's vision and mission have no dashes.
+- **Polish round 2 (web, 4 Nov 2026, DECISIONS 13):**
+  - *Stem chart labels:* neighbouring areas' names, words and extra lines keep at least 8px between them (an estimate of about 6.2px a character at 11px, 7.8 at 14px); where two on the same row would come closer, every other area's labels drop by whole rows, the least that clears them.
+  - *Stem tips:* the top of a stem and its tip leaf is the score; under 70 the whole tip stays at least 3px under the dashed line. The score sits 8px (wide: 10px) over the tip.
+  - *One next area:* Session summary's "Focus next" and the Practice hub's "Picked for you" follow You's next area (the hub until the learner picks a domain on purpose on that page load).
+  - *Readiness key:* a third line, "Bracket on the bar: the same range on a straight scale, in blocks of 10."
+  - *Text in rem on You:* the plant card, "Add your name" and the empty Badges plate (shared px rules, overridden on You only).
+  - *Forced colours:* a tile that is a button (Today's "Set a date") keeps a ButtonText edge at every width.
+  - *Restore:* "Back up first" only when this browser has answers; its done line gives the count.
