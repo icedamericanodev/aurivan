@@ -86,7 +86,7 @@ if [ "$WHAT" != mobile ]; then
   WEB_ROOT="$REPO"
   if [ "${SMOKE_WEB_SITE:-}" = 1 ]; then
     echo "· web: building the public site (scripts/build_site.sh)"
-    ( cd "$REPO" && bash scripts/build_site.sh ) > "$OUT/build-site.log" 2>&1 || { echo "build_site.sh failed: see $OUT/build-site.log" >&2; exit 1; }
+    ( cd "$REPO" && SITE_MODE=app bash scripts/build_site.sh ) > "$OUT/build-site.log" 2>&1 || { echo "build_site.sh failed: see $OUT/build-site.log" >&2; exit 1; }
     # Serve a private copy: another build of _site/ during the run (it starts
     # with rm -rf) would otherwise show up as 404s.
     cp -R "$REPO/_site" "$TMP/site"; WEB_ROOT="$TMP/site"

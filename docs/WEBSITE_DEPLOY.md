@@ -6,6 +6,25 @@ is in `docs/ARCHITECTURE_E2E.md` (sections 2, 4 and 5).
 
 ## Current setup (16 Oct 2026)
 
+- **Closed to a landing page (owner, 4 Nov 2026)** until the phone app is in
+  the stores. `scripts/build_site.sh` defaults to `SITE_MODE=landing`:
+  kaisip.com shows the beta landing page (`beta.html`, also at `/beta`) and
+  any other address shows it too; Privacy, Terms and Help stay public (the
+  phone app and the store listings link to them). The web study app and every
+  data file are not published. **To reopen the web app at launch:** change
+  `landing` to `app` on the `SITE_MODE=` line in `scripts/build_site.sh` (CI
+  already builds the app mode on every pull request, so it stays ready), add
+  the "Open the web app" links back to `beta.html`, and check
+  `https://kaisip.com/` shows the app.
+- **Preview of the web app while closed:** https://kaisip.com/preview-u63raxyfxc/
+  (unlisted, `noindex`, free sample only, rebuilt on every merge; the folder
+  name is `PREVIEW_DIR` in `scripts/build_site.sh` and has its own rule in
+  `_headers`). Same address as the live site, so progress saved there stays
+  when the app reopens. Optional lock: Cloudflare Zero Trust → Access →
+  Applications → Add (Self-hosted), domain `kaisip.com`, path
+  `preview-u63raxyfxc`, policy "Allow" with the owner's email (one-time PIN).
+  At launch, delete the folder setting, its `_headers` rule and any Access app.
+
 - **Live addresses:** https://kaisip.com and https://www.kaisip.com (custom
   domains on the Cloudflare Worker `kaisip`), plus the test address
   https://kaisip.certprep-support.workers.dev.
