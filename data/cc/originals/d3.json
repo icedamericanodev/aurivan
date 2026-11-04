@@ -2716,7 +2716,7 @@
       "question": "A conference center's booking app, owned by its events director, now uses single sign-on (SSO) with MFA but still accepts users' old local passwords. What should the access analyst do FIRST?",
       "options": {
         "A": "Report the local logins to the director to be switched off",
-        "B": "Switch off the local logins in the app's settings yourself",
+        "B": "Switch off the local logins in the app's settings directly",
         "C": "Ask the director to keep local logins as an SSO backup",
         "D": "Make the local passwords longer and expire them yearly"
       },
@@ -2740,7 +2740,7 @@
         "Local accounts",
         "Identity provider"
       ],
-      "_provenance": "Authored from concept: 'local logins beside SSO bypass its MFA and are reported to the system owner' (notes 3.1.7 Single Sign-On and Federation). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D3 batch 4, 1 Nov 2026.",
+      "_provenance": "Authored from concept: 'local logins beside SSO bypass its MFA and are reported to the system owner' (notes 3.1.7 Single Sign-On and Federation). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D3 batch 4, 1 Nov 2026. Fix (4 Nov 2026, blind re-test): B says 'directly', not 'yourself', so no option stands out by person.",
       "style_version": 2
     },
     {
@@ -3147,22 +3147,22 @@
       "bloom_level": "Foundational",
       "question": "A model railway museum hires a contractor to rewrite only its events page over the next two weeks. Which access should the access analyst set up as BEST?",
       "options": {
-        "A": "Edit rights to the events page with no end date set",
+        "A": "Edit rights to the events page under a shared staff login",
         "B": "View access, with staff pasting in the contractor's new text",
-        "C": "Edit rights to the whole website that end automatically in two weeks",
-        "D": "Edit rights to the events page that end automatically in two weeks"
+        "C": "Site-wide edit rights set to expire when the two weeks end",
+        "D": "Edit rights to the events page that expire after two weeks"
       },
       "correct": "D",
       "key_concept": "Least privilege limits scope and time: only the access a task needs, ending automatically when the task should be done.",
       "pre_read": "Check each option for how much it grants, and for how long.",
       "correct_explanation": "Least privilege limits how far access reaches as well as how long it lasts: the contractor needs edit rights to one page, for two weeks. Page-only rights that end automatically fit both limits. Site-wide rights with the same end date are the runner-up: the timing is right, but the task touches one page, so edit rights to every other page go beyond what the work needs.",
       "wrong_explanations": {
-        "A": "Tempting because the scope is exactly right. But with no end date the rights stay live after the work is done.",
+        "A": "Tempting because the scope is exactly right. But a shared staff login hides who made each edit, and the rights outlive the contractor's job.",
         "B": "Tempting because it grants the least access possible. But least privilege means what the task needs, and the contractor cannot do the work without edit rights.",
         "C": "Closest choice: the end date is right. But the task is one page, so rights to the whole site go beyond what the work needs."
       },
       "tips": [
-        "Eliminate: A leaves the rights open after the job, and B grants less than the work needs; least privilege is what the task needs, no more, no less.",
+        "Eliminate: A puts the contractor on a shared staff login, so no edit traces to them, and B grants less than the work needs; least privilege is what the task needs, no more, no less.",
         "Final two: D beats C because least privilege limits how far rights reach as well as how long they last; the job is one page.",
         "Exam cue: size temporary access on both axes: only what the task touches, and only for as long as it runs."
       ],
@@ -3172,7 +3172,7 @@
         "Temporary access",
         "Contractors"
       ],
-      "_provenance": "Authored from concept: 'least privilege limits both scope and duration' (notes 3.2.2 Least Privilege and Need to Know). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D3 batch 4, 1 Nov 2026.",
+      "_provenance": "Authored from concept: 'least privilege limits both scope and duration' (notes 3.2.2 Least Privilege and Need to Know). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D3 batch 4, 1 Nov 2026. Fix (4 Nov 2026, blind re-test): distractor A changed to a shared staff login so the key no longer combines A's scope with C's timing. Options C and D reworded so the key shares no phrase with both other options.",
       "style_version": 2
     },
     {

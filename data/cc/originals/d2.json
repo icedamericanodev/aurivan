@@ -2893,25 +2893,25 @@
       "subtopic": "2.3 Security awareness. AI-boosted phishing and deepfakes",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "Attackers who took over the phone number of a toy maker's executive used an artificial intelligence (AI) cloned voice to pass a clerk's payment callback. Which control should the security manager propose as BEST?",
+      "question": "Attackers who took over a toy maker's executive's phone number used an artificial intelligence (AI) cloned voice to pass a clerk's callback for a large payment. What should the security manager propose as BEST?",
       "options": {
-        "A": "Repeat the callback on the same number",
-        "B": "Require two staff to sign off on large payments",
-        "C": "Install a tool that flags deepfake audio on payment calls",
+        "A": "Repeat the callback on the same number before paying",
+        "B": "Require a second staff member to approve large payments",
+        "C": "Train clerks to listen for signs of a cloned voice",
         "D": "Ask executives to remove recorded talks from public sites"
       },
       "correct": "B",
       "key_concept": "When one check, such as a callback, can be beaten, add a control needing two people, such as two sign-offs on large payments.",
       "pre_read": "Notice which check the attacker already beat, and how.",
-      "correct_explanation": "Callbacks to known numbers remain a good check, but this one failed because the attacker controlled the number. Requiring two staff to sign off on large payments means one deceived person cannot send money alone, whoever the caller seems to be. A tool that flags deepfake audio on payment calls is the runner-up: it can help, but detectors miss new techniques, and one missed call still pays the attacker.",
+      "correct_explanation": "Callbacks to known numbers remain a good check, but this one failed because the attacker controlled the number. Requiring a second staff member to approve large payments means one deceived person cannot send money alone, whoever the caller seems to be. Training clerks to listen for cloned voices is the runner-up: awareness helps, but good clones are hard to hear, and one fooled clerk still pays the attacker.",
       "wrong_explanations": {
         "A": "Tempting because a repeat check feels thorough. But it uses the same number the attacker controls, so the same cloned voice answers again.",
-        "C": "Closest choice: detection tools can flag some fakes on payment calls. But they miss new techniques, and a missed call still ends in payment unless a second person must agree.",
+        "C": "Closest choice: clerks should know cloned voices exist. But good clones are hard to hear, and a fooled clerk still pays unless a second person must approve.",
         "D": "Tempting because clones need voice samples. But a short sample can be enough, and recordings exist in many places beyond company sites."
       },
       "tips": [
         "Eliminate: A repeats a check through the number the attacker already controls, and D cannot remove every recording a clone could use.",
-        "Final two: B beats C because two sign-offs work even when a fake goes undetected; detection tools can miss.",
+        "Final two: B beats C because a second approver stops the payment even when a clone sounds real; people cannot reliably hear a good fake.",
         "Exam cue: when one check has been beaten, add a control that does not rely on one person or one channel, such as a second approver."
       ],
       "framework_ref": "NIST AI 600-1 (Generative AI Profile) Section 2.8 (Information Integrity: deepfakes and content that impersonates others); NIST SP 800-53 Rev. 5 AC-3(2) (Access Enforcement | Dual Authorization)",
@@ -2920,7 +2920,7 @@
         "Dual approval",
         "Process controls"
       ],
-      "_provenance": "Authored from concept: 'Defenses rely on process: callbacks to known numbers, code phrases and dual approval for payments' (notes 2.3.5 AI-Boosted Phishing and Deepfakes). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 batch 4, 1 Nov 2026. Re-angled in fix-up round 2 (callback already defeated) so it does not repeat cc_d2_013 or cc_d2_038.",
+      "_provenance": "Authored from concept: 'Defenses rely on process: callbacks to known numbers, code phrases and dual approval for payments' (notes 2.3.5 AI-Boosted Phishing and Deepfakes). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D2 batch 4, 1 Nov 2026. Re-angled in fix-up round 2 (callback already defeated) so it does not repeat cc_d2_013 or cc_d2_038. Fix (4 Nov 2026, blind re-test): runner-up C changed from a deepfake-detection tool, which a candidate could defend as targeting the attack, to listening training; A and B reworded so no option is a length outlier.",
       "style_version": 2
     },
     {
