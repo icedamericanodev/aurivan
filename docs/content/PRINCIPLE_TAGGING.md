@@ -509,8 +509,11 @@ aaia_d2_092.
 Seed moved (31 Oct 2026): aaia_d3_035 now seeds reproducible-ai-evidence; contain-and-preserve-ai has 2 seeds (aaia_d2_019, aaia_d2_049) and needs a new incident item for a third.
 
 ### Batch 4 (4 November 2026)
-aaia_d2_093-134 and aaia_d3_051-082 were read against the rule above; none
-is a seed. Changed: aaia_d2_110 moved from `named-human-owner` to
+aaia_d2_093-134 and aaia_d3_051-082 were read against the rule above.
+Seeds added (4 Nov 2026): aaia_d2_131 seeds `contain-and-preserve-ai` (logs
+saved before a restart; the runner-up restarts first) and aaia_d3_055 seeds
+`auditor-assesses-never-owns-ai` (the runner-up has the IS auditor act as the
+independent validator), so both cards now have three seeds. Changed: aaia_d2_110 moved from `named-human-owner` to
 `test-the-ai-as-used` (after the re-angle, its runner-up loses because IT's
 standard prompts are not how the teams use the model); aaia_d3_060 moved from
 `real-human-oversight` to `test-the-ai-as-used` (both options show a stop;
@@ -525,7 +528,12 @@ make collection with no purpose acceptable), aaia_d2_124
 after retraining) and aaia_d2_130 `triage-by-harm-close-on-cause` (one
 account's query burst is a suspected attack, not a capacity issue). Two tags
 removed (below). aaia_d3_080 had already lost its tag in the review loop; it
-stays untagged.
+stays untagged. In the final fix round, aaia_d3_065 moved from
+`ai-changes-are-changes` to `reproducible-ai-evidence` (the settings history
+is the exact-settings record; the decision log only infers it) and
+aaia_d3_067 to `independence-of-ai-assurance` (the runner-up is the
+builders' own validation gate offered as approval); the old tag's domains
+omit D3.
 
 **Untagged new items (low confidence):**
 - aaia_d2_095: data-preparation knowledge (a cleaning rule deleted real hauls); `fix-the-control-not-the-model` favors a detecting check, which is the runner-up.
@@ -549,6 +557,6 @@ aaia_d3_054 aaia_d3_058 aaia_d3_059 aaia_d3_060 aaia_d3_065 aaia_d3_067
 aaia_d3_069 aaia_d3_071 aaia_d3_072 aaia_d3_073 aaia_d3_074 aaia_d3_075
 aaia_d3_078 aaia_d3_079.
 
-**Seed gap still open:** aaia_d3_055 and aaia_d3_082 carry
-`auditor-assesses-never-owns-ai`, but both are D3, so the card still has no
-D1 item whose runner-up has the IS auditor signing or approving.
+**Still open:** `auditor-assesses-never-owns-ai` has no D1 seed (aaia_d3_055
+and aaia_d3_082 are D3); add a D1 item whose runner-up has the IS auditor
+signing or approving in the next D1 round.
