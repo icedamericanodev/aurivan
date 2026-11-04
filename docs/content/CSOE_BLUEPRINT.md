@@ -323,9 +323,14 @@ then pick the best of the rest.
      papers that report its content are used up for items, and items may not
      key on a commissioned paper's own advice. Add no more 5B1 items unless the
      owner supplies the 2004 framework.
-   - **5C2 (service organizations):** every opened angle is used. One in-scope
-     angle remains: an issuer's user auditor works under PCAOB standards
-     (Section 103), while AU-C 402 covers nonissuers. It needs an AICPA page
-     stating that, opened and dated.
+   - **5C2 (service organizations):** every opened angle is used, including
+     the last one (an issuer's user auditor works under PCAOB standards,
+     Section 103; csoe_d5_099, batch 5). Add no more 5C2 items unless a new
+     AICPA or PCAOB source is opened.
+   - **5A1 and 5A2 (COSO internal control, batch 5, 4 Nov 2026):** take no more
+     COSO publication facts (dates, document names, template details). New
+     items need a framework concept or SEC text not yet keyed.
+   - **D4 (batch 5):** general securities and agency law past the Act's own
+     reach (resales, tender offers, rulemaking procedure) is out of scope.
    - **Basel II pillars:** bis.org is unreachable.
 8. **Where SEC 404 guidance items go.** 5A1 holds items keyed on Release No. 33-8810 (d5_062-064, 077, 078) where the release ties to COSO concepts. From batch 5, items on how management evaluates ICFR (evidence, risk identification, deficiencies) go to 3B2; 5A1 takes only the framework itself and the SEC's account of it.

@@ -269,6 +269,7 @@ Still settled by policy, not open:
 | Batch 2, 20 items per domain plus notes (31 Oct 2026) | 40 | 40 | 40 | 40 | 40 | 200 |
 | Batch 3, D1-D3 to target, D4 and D5 +20 (31 Oct 2026) | 56 | 64 | 64 | 60 | 60 | 304 |
 | Batch 4, D4 and D5 +24, plus 4 held-out D3 core items (31 Oct 2026) | 56 | 64 | 68 | 84 | 84 | 356 |
+| Batch 5, D4 +12 and D5 +16 after cuts; bank final (4 Nov 2026) | 56 | 64 | 68 | 96 | 100 | 384 |
 
 Pilot reviews (31 Oct 2026):
 - **Blind test:** 100/100 picks matched the keys (testers saw no keys,
@@ -380,6 +381,24 @@ Batch 4 reviews (31 Oct 2026):
     "Release No." form in two held-out stems.
 - **Bank total:** D3 is at 68 because of the held-out core items. To keep the
   bank at the owner's 400, D4 and D5 now target 106 each (22 more each).
+
+Batch 5 reviews (4 Nov 2026):
+- **Drafted:** 22 items each for D4 and D5 (to 106).
+- **Blind test:** 44/44 picks matched the keys. Every changed item was
+  re-tested blind and matched: D4 9/9, D5 7/7.
+- **Standards audits:** both found padding past the in-scope sources.
+  - D4: 11 items cut (investor resale law, a bidder's tender-offer duty,
+    general rulemaking and agency law, bare-number and repeated lessons). One near-leak toward a
+    held-out key was closed. A new Section 13(b)(6) item was written; it
+    passed its blind test and an audit.
+  - D5: 6 items cut as padding (COSO publication facts and repeated
+    angles); no strong in-scope replacement was found.
+- **Rules currency:** 49 D4 facts and every D5 fact checked; none wrong.
+  The 5 U.S.C. 553 library line now records the (d) exceptions. Rules-watch
+  row added for Fischer v. United States (18 U.S.C. 1512(c)(2)).
+- **Bank final at 384** (`product-manager`, section 1). The IDs are
+  consecutive again after the cuts; linked pairs use the new IDs.
+- **Cross-domain review (384 items):** XD_RESULT
 
 Lessons for batch 5 (D4 and D5 only, 22 items each to go):
 - **Closed:** all the batch 4 closures, plus settlements, subpoenas and
