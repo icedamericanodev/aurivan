@@ -29,7 +29,7 @@ Cloudflare publishes `_site/`:
 
 | File | Why |
 |---|---|
-| `index.html`, `privacy.html`, `terms.html`, `support.html` | The pages |
+| `index.html`, `privacy.html`, `terms.html`, `support.html`, `beta.html` | The pages (`beta.html` is the beta-tester sign-up page at `/beta`; `/testers`, `/tester` and `/join` redirect to it) |
 | `assets/` (images, icons, fonts, stylesheets, plus one named script: `assets/kaisip-plant.js`) | Icons and fonts the pages use, and the plant companion (generated from the mobile app by `mobile/scripts/build-web-plant.mjs`) |
 | `data/domain1.json` … `data/domain5.json`, `data/cisa_notes.json`, `data/mindset/principles.json` | The data the web app loads |
 | `_headers`, `_redirects` | Security headers and friendly redirects |
@@ -59,9 +59,10 @@ the web practice needs a sample pack instead (see the A2 report).
 - **Every response:** HTTPS only for a year (HSTS, no "preload" yet), no
   sniffing, no framing, a strict referrer policy, and no camera, microphone,
   location or payment access.
-- **Privacy, Terms, Support:** an **enforced** strict Content Security
+- **Privacy, Terms, Support, Beta:** an **enforced** strict Content Security
   Policy. These pages have no scripts, so only this site's styles, images and
-  fonts load. The one script allowed is Cloudflare Web Analytics, which
+  fonts load. The beta page's sign-up buttons are plain links to the Google
+  Form, so nothing from Google loads on it. The one script allowed is Cloudflare Web Analytics, which
   Cloudflare adds itself once it is switched on.
 - **The web app (`/`, and any unknown address, which shows the app):** an
   **enforced** policy on the catch-all `/*` rule (web v12.28) that allows
@@ -110,7 +111,7 @@ the web practice needs a sample pack instead (see the A2 report).
    - **Branch control → Preview branches:** *None* (or *Custom branches*,
      include `claude/*`, if you want a preview link for each pull request).
    - **Build watch paths → Include paths:** `index.html`, `privacy.html`,
-     `terms.html`, `support.html`, `assets/*`, `data/domain*.json`,
+     `terms.html`, `support.html`, `beta.html`, `assets/*`, `data/domain*.json`,
      `data/cisa_notes.json`, `data/mindset/principles.json`, `_headers`,
      `_redirects`, `scripts/build_site.sh`.
      Changes to the mobile app or the docs then don't start a website build.

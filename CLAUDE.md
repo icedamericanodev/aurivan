@@ -238,6 +238,18 @@ Fix-and-push is automatic; only major issues are escalated.
    - mobile behaviour → `mobile-qa-tester`
    - question content → `qa-question-tester` (blind) and `cisa-d{N}-standards-auditor`
    - web UI → `cisa-ux-reviewer`
+   - website and marketing pages (`beta.html`, a landing page, the legal
+     pages' wording, store-listing copy) → `cisa-ux-reviewer`, then the
+     **expert panel** in parallel: `growth-marketer` (conversion),
+     `app-store-compliance-reviewer` (Play/Apple policy, reward and trademark
+     wording, privacy), `product-manager` (scope), `behavioral-scientist`
+     (motivation, no dark patterns), `learner-reader` (a first-time candidate
+     on a phone) and `premium-web-designer` (critique only). Run it with the
+     saved workflow `.claude/workflows/web-page-expert-review.js` (pass the
+     page path as `args.page` and the page's goal as `args.goal`). A
+     reconciler sorts the results into agreed fixes (apply them), reviewer
+     disagreements and owner decisions; bring the last two to the maintainer
+     in one short message with the panel's recommendation (rule 8 below).
    - every merge to main and every phone build → `smoke-tester` (walks the
      key learner paths on web and phone; harness in `scripts/smoke/`)
 3. Fix every finding the reviewers mark blocking, plus plainly correct nits.
