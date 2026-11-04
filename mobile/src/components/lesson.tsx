@@ -359,7 +359,7 @@ function LessonCover({ scene, lesson, art, tone }: { scene: Extract<Scene, { typ
  * words, only split (a content test checks the join). Not the steps template: the items are parts of
  * a whole, not a sequence, so there is no path between them and no "Step 1 of 4". Each item is a
  * row: a 32 disc in `raised2` (a hairline `line` ring keeps it visible on light paper) holding a
- * `serifNumeral(17)` in `accentText`, the label in `label`, the rest of its words in `meta`; hairlines
+ * number in `aside` (the scale's key-number role) in `accentText`, the label in `label`, the rest of its words in `meta`; hairlines
  * between rows. The figure is ONE screen-reader stop, "A list of 4: Purpose; Responsibility; …".
  * Its rows arrive 120 ms apart in reading order (all at once under Reduce Motion).
  */
@@ -378,8 +378,8 @@ function IdeaListScene({ heading, list }: { heading: string; list: IdeaList }) {
           return (
             <FadeIn key={item} build delay={partDelay(k + 2)}>
               <View style={{ flexDirection: 'row', alignItems: p.note ? 'flex-start' : 'center', gap: space.md, paddingVertical: space.sm, borderTopWidth: k === 0 ? 0 : 1, borderTopColor: c.line }}>
-                <View style={{ width: 32, height: 32, borderRadius: radius.pill, backgroundColor: c.raised2, borderWidth: 1, borderColor: c.line, alignItems: 'center', justifyContent: 'center' }}>
-                  <BigNum value={String(k + 1)} size={17} color={c.accentText} />
+                <View style={{ minWidth: 32, minHeight: 32, padding: 2, borderRadius: radius.pill, backgroundColor: c.raised2, borderWidth: 1, borderColor: c.line, alignItems: 'center', justifyContent: 'center' }}>
+                  <T v="aside" color={c.accentText}>{String(k + 1)}</T>
                 </View>
                 <View style={{ flex: 1, minWidth: 0, paddingTop: p.note ? 4 : 0 }}>
                   <T v="label">{p.label}</T>
@@ -408,10 +408,10 @@ function StepsScene({ scene }: { scene: Extract<Scene, { type: 'flow' }> }) {
       <SceneTop kicker={sceneKicker(scene)!} heading={scene.heading} />
       {scene.steps.map((step, i) => (
         <Part key={step.label} i={i + 1} spoken={`Step ${i + 1} of ${n}: ${step.label}. ${step.note}`} style={{ flexDirection: 'row', gap: space.md }}>
-          <View style={{ alignItems: 'center', width: 32 }} accessible={false} importantForAccessibility="no-hide-descendants">
+          <View style={{ alignItems: 'center', minWidth: 32 }} accessible={false} importantForAccessibility="no-hide-descendants">
             {/* The stop arrives with its step (fade + rise; no spring: nothing springs as a scene mounts). */}
-            <View style={{ width: 32, height: 32, borderRadius: radius.pill, backgroundColor: c.soft, alignItems: 'center', justifyContent: 'center' }}>
-              <BigNum value={String(i + 1)} size={17} color={c.accentText} />
+            <View style={{ minWidth: 32, minHeight: 32, padding: 2, borderRadius: radius.pill, backgroundColor: c.soft, alignItems: 'center', justifyContent: 'center' }}>
+              <T v="aside" color={c.accentText}>{String(i + 1)}</T>
             </View>
             {/* The path to the next stop draws down in the time it takes that stop to arrive. */}
             {i < n - 1 && (

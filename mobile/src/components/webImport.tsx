@@ -66,13 +66,13 @@ export function WebImportPreview({
     <Modal visible={web !== null} animationType={reduceMotion ? 'fade' : 'slide'} presentationStyle="pageSheet" onRequestClose={busy ? () => {} : onCancel}>
       <SafeAreaView edges={['top', 'bottom']} style={{ flex: 1, backgroundColor: c.raised2 }}>
         <ScrollView style={{ flex: 1 }} contentContainerStyle={{ padding: space.gutter, paddingBottom: space.xl }} testID="web-import">
-          <T v="display" accessibilityRole="header">Add your website progress?</T>
+          <T v="hero" accessibilityRole="header">Add your website progress?</T>
           <T v="body" color={c.ink2} style={{ marginTop: space.md }}>
             {`This adds what you studied on the KaiSip website to this phone. Nothing here is replaced or deleted. You can undo it for ${UNDO_DAYS} days in Your data.`}
           </T>
           {several && web && (
             <>
-              <T v="caption" color={c.accentText} accessibilityRole="header" style={{ marginTop: space.xl }}>Which progress?</T>
+              <T v="headline" accessibilityRole="header" style={{ marginTop: space.xl }}>Which progress?</T>
               <T v="meta" style={{ marginTop: space.xs }}>This file has more than one. Add one at a time.</T>
               <View accessibilityRole="radiogroup" style={{ marginTop: space.sm }}>
                 {web.profiles.map((p, i) => (
@@ -88,7 +88,7 @@ export function WebImportPreview({
               </View>
             </>
           )}
-          <T v="caption" color={c.accentText} accessibilityRole="header" style={{ marginTop: space.xl }}>
+          <T v="headline" accessibilityRole="header" style={{ marginTop: space.xl }}>
             {summary?.nothingNew ? 'Already on this phone' : 'What will be added'}
           </T>
           {summary?.nothingNew ? (

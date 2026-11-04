@@ -54,7 +54,7 @@ function Release({ entry, latest }: { entry: WhatsNewEntry; latest: boolean }) {
       {groups.map(([label, items]) =>
         items?.length ? (
           <View key={label} style={{ marginTop: space.md }}>
-            <T v="caption" accessibilityRole="header">{label}</T>
+            <T v="headline" accessibilityRole="header">{label}</T>
             <Bullets items={items} />
           </View>
         ) : null,

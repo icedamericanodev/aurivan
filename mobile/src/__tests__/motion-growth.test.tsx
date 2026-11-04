@@ -47,7 +47,8 @@ import { flushSayLaterForTest } from '../lib/a11y';
 import * as haptics from '../lib/haptics';
 import { SEEN_MAX_KEYS, useSeen } from '../store/seen';
 import { useSettings } from '../store/settings';
-import { motion, serifNumeral, type as typeScale } from '../theme/tokens';
+import { numRole } from '../theme/grove';
+import { motion, type as typeScale } from '../theme/tokens';
 
 jest.mock('@react-native-async-storage/async-storage', () =>
   jest.requireActual('@react-native-async-storage/async-storage/jest/async-storage-mock'),
@@ -133,7 +134,8 @@ describe('rollSlots and columnRows', () => {
 
 // ── RollingText / BigNum roll ──────────────────────────────────────────
 describe('rolling numbers', () => {
-  const LH = serifNumeral(52).lineHeight!;
+  // The 52 step is the type scale's num.score (52/52, TYPE_SCALE.md section 2.1).
+  const LH = numRole[52].style.lineHeight!;
   /** Row to row in a column: the line plus the odometer's blank gap. */
   const PITCH = Math.round(LH + 52 * ROLL.gap);
 

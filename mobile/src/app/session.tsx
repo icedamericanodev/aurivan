@@ -1145,7 +1145,7 @@ export default function SessionScreen() {
         <SafeAreaView style={{ flex: 1, backgroundColor: c.raised2 }}>
           <ScrollView contentContainerStyle={{ padding: space.lg, paddingBottom: navFooterH + space.xl }}>
             <Row style={{ justifyContent: 'space-between' }}>
-              <T v="display" accessibilityRole="header">Questions</T>
+              <T v="hero" accessibilityRole="header">Questions</T>
               <Button kind="ghost" label="Close" onPress={() => setNavOpen(false)} />
             </Row>
             <T v="small" num color={c.ink}>{navSummary}</T>

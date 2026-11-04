@@ -14,7 +14,8 @@
  * Every colour here is the kit's value, matched to the web's CSS (index.html, the "Grove
  * uplift tokens" blocks). Contrast notes are in docs/mobile/DESIGN_SYSTEM.md section 21.9.
  */
-import { dark, font, light, radius } from './tokens';
+import type { TextStyle } from 'react-native';
+import { dark, fieldType, font, LARGE_TEXT, light, maxScale, percentSup, radius, serifNumeral, type, type FieldVariant } from './tokens';
 
 /** Grove colours, per theme (`g` from useTheme()). Hex only, like the Palette. */
 export interface GroveInk {
@@ -107,6 +108,95 @@ export const heroInk: { light: HeroInk; dark: HeroInk } = {
 
 /**
  * A word inside a reading-serif sentence, a weight heavier (Grove You C2: the focus area in You's
- * summary, the web's bold). The size and line height come from the sentence's own variant.
+ * summary, the web's bold; the Coach me word in a stem). The size and line height come from the
+ * sentence's own variant: only the weight steps up (TYPE_SCALE.md row 197).
  */
 export const groveEmphasis = { fontFamily: font.serif500 } as const;
+
+// ── The type scale's extra roles (design-notes/grove/TYPE_SCALE.md section 3) ──────────────────
+//
+// Plain English: every word in the app uses one of 15 text roles, and every serif number one of
+// five numeral steps. Most roles already exist as `type.*` in theme/tokens.ts (display, hero,
+// headline, label, body, small, meta, caption, tab ...). The rest are defined here, ONCE, each
+// with how far it may grow when the learner turns up the phone's text size (`max`, the
+// maxFontSizeMultiplier). `<T v="...">` in components/ui.tsx takes these names too, so a screen
+// writes `<T v="numStat">` and never a size of its own.
+//
+// Why here and not in tokens.ts: tokens.ts is compiled into the website's bundles, so editing it
+// rewrites index.html. These are aliases of tokens.ts values plus six new literal styles.
+
+/** One role: its style and how far it grows with the phone's text size. */
+export interface TypeRole {
+  style: TextStyle;
+  max: number;
+}
+
+export const role = {
+  /** Fraunces 400 roman 18/26: a question read in place, You's summary sentence, a recapped question. */
+  read: { style: { fontFamily: font.serif400, fontSize: 18, lineHeight: 26 }, max: 2 },
+  /** Fraunces 500 22/26: card titles, a sheet's name, a stat's value in words. Stops at x1.6 so it stays under hero. */
+  title: { style: fieldType.value, max: 1.6 },
+  /** Fraunces 400 italic 16/22: the coach's line, italic sublines, "Why not B", key and step numbers. */
+  aside: { style: fieldType.sub, max: 2 },
+  /** Figtree 600 17/22: solid buttons (primary, secondary, danger). */
+  button: { style: { fontFamily: font.sans600, fontSize: 17, lineHeight: 22 }, max: 2 },
+  /** Figtree 600 15/20: chips, segmented controls, pills that are buttons. */
+  chip: { style: { fontFamily: font.sans600, fontSize: 15, lineHeight: 20 }, max: 2 },
+  /** Figtree 500 16/24: your pick on the answer screen (always beside "Your pick" and its mark). */
+  optionPick: { style: { fontFamily: font.sans500, fontSize: 16, lineHeight: 24 }, max: 2 },
+  /** Figtree 600 16/24: the best answer on the answer screen (always beside "Best answer" and its mark). */
+  optionBest: { style: { fontFamily: font.sans600, fontSize: 16, lineHeight: 24 }, max: 2 },
+  /** Figtree 600 14/18: the letter in an option badge (exception E4; the badge grows with it). */
+  badgeLetter: { style: { fontFamily: font.sans600, fontSize: 14, lineHeight: 18 }, max: 2 },
+  /** Fraunces 500 52/52: the one big score (results, a game round). */
+  numScore: { style: type.number, max: 1.3 },
+  /** Fraunces 500 38/41: the readiness range "63 to 73". */
+  numRange: { style: serifNumeral(38), max: 1.3 },
+  /** Fraunces 500 30/32: stat rows (Answered, Correct, Accuracy; results stats). */
+  numStat: { style: serifNumeral(30), max: 1.3 },
+  /** Fraunces 500 22/26: tile numbers, inline counts in a card ("59 due"); the same metric as title. */
+  numValue: { style: fieldType.value, max: 1.3 },
+  /** Fraunces 500 20/22: a number inside a row or list (an area's %, a list count). */
+  numInline: { style: serifNumeral(20), max: 1.3 },
+} as const satisfies Record<string, TypeRole>;
+export type RoleName = keyof typeof role;
+
+/** The five numeral steps, by size (52 score, 38 range, 30 stat, 22 value, 20 inline). Nothing else. */
+export type NumStep = 52 | 38 | 30 | 22 | 20;
+export const numRole: Record<NumStep, TypeRole> = { 52: role.numScore, 38: role.numRange, 30: role.numStat, 22: role.numValue, 20: role.numInline };
+
+/** The raised % after a serif numeral: 0.48 of the numeral, never under 11pt (TYPE_SCALE.md section 2.1). */
+export function percentFor(size: NumStep): TextStyle {
+  return percentSup(Math.max(size, 23));
+}
+
+/**
+ * The readiness range's numeral step: 38, stepping down only when space runs out (TYPE_SCALE.md
+ * section 2.1). Large text (x1.3 and up) or a narrow phone (under 360pt) is one step (30); both
+ * together are two (22). Always "63 to 73", never one number.
+ */
+export function rangeStep(fontScale: number, width: number): 38 | 30 | 22 {
+  const tight = (fontScale >= LARGE_TEXT ? 1 : 0) + (width < 360 ? 1 : 0);
+  return tight === 0 ? 38 : tight === 1 ? 30 : 22;
+}
+
+/**
+ * The Field Guide cuts the type scale retired (TYPE_SCALE.md rows 188, 190, 206, 207, 208): each now
+ * draws its role, so `FieldText` callers keep their variant names and get the scale's size. The
+ * old cuts stay in tokens.ts (bundled into the website) until the next bundle rebuild.
+ * - value: a card title, a sheet's name, a value in words: title (x1.6). Numbers use `<T v="numValue">`.
+ * - verdict: "Correct" / "Not quite" is hero 28/34 (was 30/34).
+ * - recap: the recapped question is read 18/26 (was 17/24).
+ * - option / best: the answer screen's rows are 16/24 (were 16/22).
+ * - sub, keyNo, why: aside 16/22 at x2 (why was 15/21; keyNo stopped at x1.3).
+ */
+export const fieldRole: Partial<Record<FieldVariant, TypeRole>> = {
+  value: role.title,
+  verdict: { style: type.hero, max: maxScale.hero },
+  recap: role.read,
+  option: role.optionPick,
+  best: role.optionBest,
+  sub: role.aside,
+  keyNo: role.aside,
+  why: role.aside,
+};

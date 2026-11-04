@@ -456,7 +456,7 @@ export function StemList({ stems, line = 70 }: { stems: readonly Stem[]; line?: 
             <View style={{ flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between', alignItems: 'baseline', columnGap: space.md }}>
               <T v="label" style={{ flexShrink: 1 }}>{s.name}</T>
               <View style={{ flexDirection: 'row', alignItems: 'baseline', gap: 4 }}>
-                {s.pct !== null ? <BigNum value={String(s.pct)} pct size={17} /> : <T v="meta">{listFigure(s)}</T>}
+                {s.pct !== null ? <BigNum value={String(s.pct)} pct size={20} /> : <T v="meta">{listFigure(s)}</T>}
                 {s.up ? <T v="caption" color={c.clay}>{`↑${Math.round(s.up)}`}</T> : null}
                 {s.down ? <T v="caption" color={c.ink2}>{`↓${Math.round(s.down)}`}</T> : null}
               </View>

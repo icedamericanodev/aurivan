@@ -169,7 +169,7 @@ export default function DeleteAccount() {
 
   const header = (title: AccountCopyKey) => (
     <View ref={titleRef} accessible accessibilityRole="header" accessibilityLabel={copy(title)} style={{ marginTop: space.sm }}>
-      <T v="hero">{copy(title)}</T>
+      <T v="display">{copy(title)}</T>
     </View>
   );
 

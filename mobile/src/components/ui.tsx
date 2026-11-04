@@ -3,8 +3,9 @@
  * changing a colour or a corner radius here updates the whole app.
  *
  * This is the ONLY component file allowed to set fontSize / lineHeight /
- * fontFamily (via the `type` map in theme/tokens.ts). ESLint enforces it.
- * Spec: docs/mobile/DESIGN_SYSTEM.md ("Grove v2").
+ * fontFamily / fontWeight / letterSpacing / fontStyle (via the `type` map in
+ * theme/tokens.ts and the `role` map in theme/grove.ts). ESLint enforces it.
+ * Spec: design-notes/grove/TYPE_SCALE.md, then docs/mobile/DESIGN_SYSTEM.md.
  *
  * Surface rules (spec §5), in one breath: content sits on the paper by
  * default; lists use hairlines, not boxes; raised white rows only for
@@ -35,6 +36,7 @@ import {
   useWindowDimensions,
   View,
   type StyleProp,
+  type TextProps,
   type TextStyle,
   type ViewStyle,
 } from 'react-native';
@@ -47,7 +49,6 @@ import type { DomainInfo } from '../content/types';
 import { lastWholeWordIndex } from '../engine/games/priorityLens';
 import {
   cardShadow,
-  font,
   darkCardTopLight,
   fieldMaxScale,
   fieldType,
@@ -56,22 +57,16 @@ import {
   LARGE_TEXT,
   maxScale,
   motion,
-  numeralUnit,
-  percentSup,
   radius,
   raisedShadow,
-  serifNumeral,
   space,
   STEM_LONG_CHARS,
-  statUnit,
-  statWord,
   stemLong,
   type,
-  type NumeralSize,
   type TypeVariant,
   type Palette,
 } from '../theme/tokens';
-import { groveRadius, grovePlate, heroPanel, type HeroGradient } from '../theme/grove';
+import { groveEmphasis, groveRadius, grovePlate, heroPanel, numRole, percentFor, role, type HeroGradient, type NumStep, type RoleName } from '../theme/grove';
 import { useTheme } from '../theme/useTheme';
 import { Botany, botanySize, EmptyArt, type BotanyKind, type EmptyArtKind } from './glyphs';
 import { Check, ChevronLeft, ChevronRight, ICON_STROKE, Minus, Plus, Search, Settings as SettingsIcon, X } from './icons';
@@ -305,11 +300,16 @@ export function Screen({
   );
 }
 
-// ── Text: the Grove v2 type scale ──────────────────────────────────────
+// ── Text: the Grove type scale (design-notes/grove/TYPE_SCALE.md) ─────
 // Fraunces (serif) for reading moments and big numbers: number, stat,
 // display, hero, stem, quote, stage. Figtree (sans) for everything you
 // tap or scan: headline, label, body, small, meta, caption, tab.
-export type Variant = TypeVariant;
+// The scale's other roles (read, title, aside, button, chip, the answer
+// screen's optionPick / optionBest, badgeLetter, and the numeral steps
+// numScore, numRange, numStat, numValue, numInline) come from
+// theme/grove.ts `role`, each with its own text-size limit.
+export type Variant = TypeVariant | RoleName;
+const isRole = (v: Variant): v is RoleName => v in role;
 
 export function T({
   children,
@@ -323,6 +323,7 @@ export function T({
   maxFontSizeMultiplier,
   numberOfLines,
   selectable,
+  onTextLayout,
 }: {
   children: ReactNode;
   v?: Variant;
@@ -339,18 +340,24 @@ export function T({
   numberOfLines?: number;
   /** Lets the learner select and copy the text (an email address, a report to paste). */
   selectable?: boolean;
+  /** The laid-out lines (Today's greeting steps down to hero when it would wrap to a third line). */
+  onTextLayout?: TextProps['onTextLayout'];
 }) {
   const { c } = useTheme();
+  // A role from theme/grove.ts carries its own style and limit; the rest come from theme/tokens.ts.
+  const look = isRole(v) ? role[v].style : type[v];
+  const limit = isRole(v) ? role[v].max : maxScale[v];
   // Meta lines and small captions are secondary text by default.
   const defaultColor = v === 'meta' || v === 'caption' ? c.ink2 : c.ink;
   return (
     <Text
       accessibilityLabel={accessibilityLabel}
       accessibilityRole={accessibilityRole}
-      maxFontSizeMultiplier={maxFontSizeMultiplier ?? maxScale[v]}
+      maxFontSizeMultiplier={maxFontSizeMultiplier ?? limit}
       numberOfLines={numberOfLines}
       selectable={selectable}
-      style={[type[v], { color: color ?? defaultColor }, num && styles.num, center && { textAlign: 'center' }, style]}
+      onTextLayout={onTextLayout}
+      style={[look, { color: color ?? defaultColor }, num && styles.num, center && { textAlign: 'center' }, style]}
     >
       {children}
     </Text>
@@ -390,7 +397,7 @@ export function Stem({ children, color, highlight }: { children: string; color?:
     <View>
       <T v="stem" color={color} style={style}>
         {before}
-        <Text style={{ fontFamily: font.serif500 }}>{highlight}</Text>
+        <Text style={groveEmphasis}>{highlight}</Text>
         {after}
       </T>
       <Animated.View
@@ -401,7 +408,7 @@ export function Stem({ children, color, highlight }: { children: string; color?:
       >
         <T v="stem" color="transparent" style={style}>
           {before}
-          <Text style={{ color: c.tip, fontFamily: font.serif500 }}>{highlight}</Text>
+          <Text style={[groveEmphasis, { color: c.tip }]}>{highlight}</Text>
           {after}
         </T>
       </Animated.View>
@@ -491,7 +498,7 @@ export function Button({
       ]}
     >
       {iconLeading && icon?.(look.fg)}
-      <Text maxFontSizeMultiplier={maxScale.label} style={[isForest || isGhost ? type.label : styles.buttonLabel, { color: look.fg, flexShrink: 1, textAlign: 'center' }]}>
+      <Text maxFontSizeMultiplier={isForest || isGhost ? maxScale.label : role.button.max} style={[isForest || isGhost ? type.label : role.button.style, { color: look.fg, flexShrink: 1, textAlign: 'center' }]}>
         {label}
       </Text>
       {!iconLeading && icon?.(look.fg)}
@@ -941,7 +948,7 @@ export function Section({
    * Premium round 2 (Field Guide foundation, spec §21.2): `head` sets the title as a Field Guide
    * section head, `fieldType.head` (Figtree 600 11/14, tracked, caps) in `ink` ("LOOK IT UP").
    * Write the title in sentence case: the caps are drawn, and screen readers hear the sentence-case
-   * words ("Look it up"), still as a header. `headline` (the default) is the 1.21 Figtree 20.
+   * words ("Look it up"), still as a header. `headline` (the default) is Figtree 600 17/24.
    */
   variant?: 'headline' | 'head';
   /** Spoken meta, when it differs ("About 19 minutes" for "About 19 min"). */
@@ -1448,7 +1455,7 @@ export function Chip({
           <Check size={14} color={c.bg} strokeWidth={2.5} />
         </Animated.View>
       )}
-      <Animated.Text maxFontSizeMultiplier={2} style={[styles.chipLabel, labelInk]}>{label}</Animated.Text>
+      <Animated.Text maxFontSizeMultiplier={role.chip.max} style={[role.chip.style, styles.chipLabel, labelInk]}>{label}</Animated.Text>
     </AnimatedPressable>
   );
 }
@@ -1540,12 +1547,12 @@ export function Stat({
     <View accessible accessibilityLabel={`${label}: ${said}`} style={[styles.stat, listed && styles.statListed, listed && note ? { flexWrap: 'wrap' } : null]}>
       <T v="caption" color={labelColor ?? c.ink2} style={listed ? { flexShrink: 1 } : undefined}>{label}</T>
       {word !== undefined ? (
-        <Text maxFontSizeMultiplier={2} style={[statWord, { color: fg }, listed ? { flexShrink: 1, textAlign: 'right' } : { marginTop: space.xs }]}>{word}</Text>
+        <T v="title" color={fg} style={listed ? { flexShrink: 1, textAlign: 'right' } : { marginTop: space.xs }}>{word}</T>
       ) : (
         <View style={[styles.statValue, listed && { marginTop: 0, justifyContent: 'flex-end', flexShrink: 1 }]}>
           <BigNum value={value ?? ''} pct={pct} size={30} color={fg} roll={roll} />
           {unit && (
-            <Text maxFontSizeMultiplier={2} style={[statUnit, { color: unitColor ?? c.ink2 }]}>{unit}</Text>
+            <T v="meta" color={unitColor ?? c.ink2}>{unit}</T>
           )}
         </View>
       )}
@@ -1631,7 +1638,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  buttonLabel: { fontFamily: font.sans600, fontSize: 17, lineHeight: 22 },
   card: { borderRadius: radius.md, borderWidth: 1.5, padding: space.lg },
   // L2 in light mode: the one real shadow (boxShadow, so no Android elevation and no draw-order change;
   // Android 7–8 has no outset boxShadow, so it gets elevation 1 there: see cardLiftFor).
@@ -1704,7 +1710,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  chipLabel: { fontFamily: font.sans600, fontSize: 15, lineHeight: 20, flexShrink: 1 },
+  chipLabel: { flexShrink: 1 },
   // Covers the 1.5 outline too, so the selected chip reads as one ink shape.
   chipFill: { top: -1.5, left: -1.5, right: -1.5, bottom: -1.5, borderRadius: radius.pill },
   search: { minHeight: 48, borderRadius: radius.md, borderWidth: 1.5, paddingLeft: space.md, flexDirection: 'row', alignItems: 'center' },
@@ -1751,8 +1757,8 @@ export function StatRow({ children, style, line, frame = true }: { children: Rea
 // ── Serif numerals (spec §10.4) ───────────────────────────────────────
 /**
  * A Fraunces numeral with an optional raised % ("70" + a small, lifted "%").
- * Sizes: 52 = readiness / results, 34 = stats, 17–30 inline.
- * Numbers cap at ×1.3 text size: a fixed shape holds them.
+ * Sizes: the five numeral steps (TYPE_SCALE.md section 2): 52 score, 38 readiness range,
+ * 30 stat, 22 value, 20 inline. Numbers cap at ×1.3 text size: a fixed shape holds them.
  */
 /** How a numeral rolls (motion.tsx RollingText): from what was shown, when `play`. */
 export interface Roll {
@@ -1774,7 +1780,8 @@ export function BigNum({
 }: {
   value: string;
   pct?: boolean;
-  size: NumeralSize | 34 | 38 | 52;
+  /** One of the five numeral steps: 52 score, 38 range, 30 stat, 22 value, 20 inline. */
+  size: NumStep;
   color?: string;
   accessibilityLabel?: string;
   /**
@@ -1787,6 +1794,7 @@ export function BigNum({
 }) {
   const { c } = useTheme();
   const fg = color ?? c.ink;
+  const step = numRole[size];
   return (
     <View style={styles.bigNum} accessible={Boolean(accessibilityLabel)} accessibilityLabel={accessibilityLabel}>
       {roll ? (
@@ -1796,13 +1804,13 @@ export function BigNum({
           play={roll.play}
           run={roll.run}
           delay={roll.delay}
-          style={{ ...serifNumeral(size), ...styles.num }}
-          maxScale={1.3}
+          style={{ ...step.style, ...styles.num }}
+          maxScale={step.max}
           color={fg}
           // No label of its own: this BigNum's label (above) or its group's says the final value.
         />
       ) : (
-        <Text maxFontSizeMultiplier={1.3} style={[serifNumeral(size), styles.num, { color: fg }]}>{value}</Text>
+        <Text maxFontSizeMultiplier={step.max} style={[step.style, styles.num, { color: fg }]}>{value}</Text>
       )}
       {pct && <Percent size={size} color={fg} roll={roll} />}
     </View>
@@ -1813,9 +1821,10 @@ export function BigNum({
  * The raised "%". On a count-up from blank it fades in as the first digit
  * arrives (never a lone "%" waiting for its number); otherwise it is simply there.
  */
-function Percent({ size, color, roll }: { size: NumeralSize | 34 | 38 | 52; color: string; roll?: Roll }) {
+function Percent({ size, color, roll }: { size: NumStep; color: string; roll?: Roll }) {
   const { reduced } = useMotion();
-  const sign = <Text maxFontSizeMultiplier={1.3} style={[percentSup(size), { color, marginLeft: 2 }]}>%</Text>;
+  // 0.48 of its numeral, never under 11pt (the inline step's 20 would give 10pt).
+  const sign = <Text maxFontSizeMultiplier={numRole[size].max} style={[percentFor(size), { color, marginLeft: 2 }]}>%</Text>;
   if (!roll?.play || reduced || roll.from) return sign;
   return (
     <FadeIn key={roll.run ?? 0} rise={false} dur="quick" delay={roll.delay ?? 0}>
@@ -1824,13 +1833,13 @@ function Percent({ size, color, roll }: { size: NumeralSize | 34 | 38 | 52; colo
   );
 }
 
-/** Figtree 12/16 unit under or beside a serif numeral ("due", "questions"). */
+/** The unit under or beside a serif numeral ("due", "questions"): meta 14/20 (TYPE_SCALE.md row 205). */
 export function Unit({ children, color }: { children: string; color?: string }) {
   const { c } = useTheme();
-  return <Text maxFontSizeMultiplier={2} style={[numeralUnit, styles.numUnit, { color: color ?? c.ink2 }]}>{children}</Text>;
+  return <T v="meta" color={color ?? c.ink2} style={styles.numUnit}>{children}</T>;
 }
 
-/** Right-aligned count in a list row: serif 22 numeral over a unit ("59 / due"). */
+/** Right-aligned count in a list row: the 22 value step over a unit ("59 / due"). */
 export function Trail({ value, unit, color }: { value: string; unit: string; color?: string }) {
   return (
     <View style={{ alignItems: 'flex-end' }}>
@@ -1840,11 +1849,11 @@ export function Trail({ value, unit, color }: { value: string; unit: string; col
   );
 }
 
-/** Lead numeral for mock rows: serif 26 over a unit ("50 / questions"). */
+/** Lead numeral for mock rows: the 22 value step over a unit ("50 / questions"; was 26, off the scale). */
 export function Lead({ value, unit }: { value: string; unit: string }) {
   return (
     <View style={{ minWidth: 52 }}>
-      <BigNum value={value} size={26} />
+      <BigNum value={value} size={22} />
       <Unit>{unit}</Unit>
     </View>
   );
@@ -1903,6 +1912,8 @@ export function PushedHeader({
 }) {
   const { c } = useTheme();
   const Icon = icon === 'back' ? ChevronLeft : X;
+  // Row 214: from x1.3 text the bar's title takes a second line instead of being cut.
+  const titleLines = useFontScale() >= LARGE_TEXT ? 2 : 1;
   return (
     <View style={styles.pushed}>
       <Pressable
@@ -1924,16 +1935,16 @@ export function PushedHeader({
               // Hidden from screen readers even when shown: it repeats the page's hero heading.
               second={
                 <View accessibilityElementsHidden importantForAccessibility="no-hide-descendants">
-                  <T v="label" numberOfLines={1} center>{title}</T>
+                  <T v="label" numberOfLines={titleLines} center>{title}</T>
                 </View>
               }
             />
           ) : title && titleRef ? (
             <View ref={titleRef} accessible accessibilityRole="header" accessibilityLabel={title}>
-              <T v="label" numberOfLines={1}>{title}</T>
+              <T v="label" numberOfLines={titleLines}>{title}</T>
             </View>
           ) : title ? (
-            <T v="label" accessibilityRole="header" numberOfLines={1}>{title}</T>
+            <T v="label" accessibilityRole="header" numberOfLines={titleLines}>{title}</T>
           ) : null)}
       </View>
       {/* At least the back button's 44pt (so a title stays centred), wider when its content needs it
@@ -2114,7 +2125,7 @@ export function Segmented<V extends string | number>({
                 <Unit color={on ? c.ink : c.ink2}>{o.label}</Unit>
               </>
             ) : (
-              <T v="caption" color={on ? c.ink : c.ink2}>{o.label}</T>
+              <T v="chip" color={on ? c.ink : c.ink2}>{o.label}</T>
             )}
           </Pressable>
         );

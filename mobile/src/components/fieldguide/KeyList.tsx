@@ -53,7 +53,7 @@ function KeyRow({ item, n, first }: { item: KeyItem; n: number | null; first: bo
   const body = (
     <>
       {press.layer}
-      {n !== null && <FieldText v="keyNo" style={{ width: 22 }}>{String(n)}</FieldText>}
+      {n !== null && <FieldText v="keyNo" style={{ minWidth: 22 }}>{String(n)}</FieldText>}
       <View style={{ flex: 1, minWidth: 0 }}>
         {item.kicker ? <T v="caption" color={c.accentText}>{item.kicker}</T> : null}
         <View style={{ flexDirection: large ? 'column' : 'row', alignItems: large ? 'flex-start' : 'center' }}>

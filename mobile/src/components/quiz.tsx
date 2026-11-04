@@ -31,7 +31,7 @@
  *              AnswerMore).
  */
 import { useEffect, useRef, useState, type ReactNode, type Ref, type RefObject } from 'react';
-import { Platform, Pressable, Text, useWindowDimensions, View, type LayoutChangeEvent } from 'react-native';
+import { Platform, Pressable, useWindowDimensions, View, type LayoutChangeEvent } from 'react-native';
 import Animated, { useAnimatedStyle, useSharedValue, withDelay } from 'react-native-reanimated';
 import Svg, { Defs, LinearGradient, Rect, Stop } from 'react-native-svg';
 import type { Letter } from '../content/types';
@@ -43,7 +43,7 @@ import { moveFocus } from '../lib/a11y';
 import { afterSheet } from '../lib/sheetWait';
 import { haptic } from '../lib/haptics';
 import { shortReference } from '../lib/format';
-import { badgeLetter, LARGE_TEXT, motion, optionText, radius, space } from '../theme/tokens';
+import { LARGE_TEXT, motion, radius, space } from '../theme/tokens';
 import { useTheme } from '../theme/useTheme';
 import { LeafBig, LeafSmall, VerdictLeaf } from './glyphs';
 import { FieldText, Plate } from './fieldguide';
@@ -175,27 +175,27 @@ export function OptionCard({
       >
         {/* ✓ / ✗ mark correct/wrong by shape, not colour alone; with mark="letter" the row's tag words do. */}
         {mark === 'letter' && tinted ? (
-          <T v="caption" color={look.badgeText} style={badgeLetter}>{letter}</T>
+          <T v="badgeLetter" color={look.badgeText}>{letter}</T>
         ) : state === 'correct' ? (
           <Check size={16} color={look.badgeText} strokeWidth={2.5} />
         ) : state === 'wrong' ? (
           <X size={16} color={look.badgeText} strokeWidth={2.5} />
         ) : (
-          <T v="caption" color={look.badgeText} style={badgeLetter}>{letter}</T>
+          <T v="badgeLetter" color={look.badgeText}>{letter}</T>
         )}
         {choosable && (
           <>
             {/* The ink fill fades in; the paper letter flips on at half-way, so it never vanishes mid-fade. */}
             <StateLayer on={selected} style={[badgeOn, { borderRadius: badge / 2, backgroundColor: c.ink }]} />
             <StateLayer on={selected} step style={badgeOn}>
-              <T v="caption" color={c.bg} style={badgeLetter}>{letter}</T>
+              <T v="badgeLetter" color={c.bg}>{letter}</T>
             </StateLayer>
           </>
         )}
       </View>
       <View style={{ flex: 1 }}>
         {tag && <T v="caption" color={tagColor} style={{ marginBottom: 2 }}>{tag}</T>}
-        <T v="body" color={look.text} style={optionText}>{text}</T>
+        <T v="body" color={look.text}>{text}</T>
         {note && <T v="small" style={{ marginTop: 6 }}>{note}</T>}
       </View>
     </>
@@ -302,11 +302,8 @@ export function Verdict({
           <T v="hero" color={color} style={{ flexShrink: 1 }}>{correct ? 'Correct' : 'Not quite'}</T>
         )}
       </Row>
-      {field ? (
-        <FieldText v="sub" style={{ marginTop: space.xs, marginLeft: indent }}>{coach}</FieldText>
-      ) : (
-        <T v="meta" style={{ marginTop: space.xs, marginLeft: indent }}>{coach}</T>
-      )}
+      {/* The coach's line is `aside` (Fraunces italic 16/22) in practice, mocks and lessons alike. */}
+      <FieldText v="sub" style={{ marginTop: space.xs, marginLeft: indent }}>{coach}</FieldText>
     </View>
   );
 }
@@ -395,7 +392,10 @@ export function AnswerPlate({ pick, best, delay = 0 }: { pick?: PlateRow; best: 
 
 function AnswerPlateRow({ kind, row, missed }: { kind: 'pick' | 'best'; row: PlateRow; missed: boolean }) {
   const { c } = useTheme();
-  const discAbove = useFontScale() >= DISC_ABOVE_FROM;
+  const fontScale = useFontScale();
+  const discAbove = fontScale >= DISC_ABOVE_FROM;
+  // The disc grows with its letter, as the option row's badge does (TYPE_SCALE.md exception E4).
+  const disc = DISC * Math.min(Math.max(fontScale, 1), 1.6);
   const isPick = kind === 'pick';
   const tone = isPick ? c.wrong : c.correct;
   const key = isPick ? '✗ Your pick' : '✓ Best answer';
@@ -415,9 +415,9 @@ function AnswerPlateRow({ kind, row, missed }: { kind: 'pick' | 'best'; row: Pla
       {/* Your pick: an outlined disc in `wrong`. Best answer: a filled `correct` disc, the letter in paper. */}
       <View
         style={{
-          width: DISC,
-          height: DISC,
-          borderRadius: DISC / 2,
+          minWidth: disc,
+          minHeight: disc,
+          borderRadius: disc / 2,
           borderWidth: 1.5,
           borderColor: tone,
           backgroundColor: isPick ? 'transparent' : tone,
@@ -425,7 +425,7 @@ function AnswerPlateRow({ kind, row, missed }: { kind: 'pick' | 'best'; row: Pla
           justifyContent: 'center',
         }}
       >
-        <Text maxFontSizeMultiplier={1.3} style={[badgeLetter, { color: isPick ? tone : c.bg }]}>{row.letter}</Text>
+        <T v="badgeLetter" color={isPick ? tone : c.bg}>{row.letter}</T>
       </View>
       <View style={{ flex: discAbove ? undefined : 1, alignSelf: 'stretch' }}>
         <FieldText v="head" color={tone} style={{ marginBottom: 2 }}>{key}</FieldText>

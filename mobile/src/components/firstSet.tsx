@@ -264,7 +264,7 @@ function TimeChip({ time, onPress, disabled, ref }: { time: string; onPress: () 
       ]}
     >
       {press.layer}
-      <T v="label" style={{ fontVariant: ['tabular-nums'], flexShrink: 1 }}>{time}</T>
+      <T v="label" num style={{ flexShrink: 1 }}>{time}</T>
       <ChevronDown size={ICON_SIZE.inline} color={c.ink2} strokeWidth={ICON_STROKE} />
     </AnimatedPressable>
   );

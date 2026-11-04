@@ -9,7 +9,7 @@ import { Children, type ReactNode } from 'react';
 import { View, type StyleProp, type ViewStyle } from 'react-native';
 import { LARGE_TEXT, space } from '../../theme/tokens';
 import { useTheme } from '../../theme/useTheme';
-import { BigNum, groveTile, useFontScale, type Roll } from '../ui';
+import { BigNum, groveTile, T, useFontScale, type Roll } from '../ui';
 import { FieldText } from './FieldText';
 
 export function SpecimenLabel({ children, style, testID }: { children: ReactNode; style?: StyleProp<ViewStyle>; testID?: string }) {
@@ -67,11 +67,11 @@ export function SpecimenRow({
         <FieldText v="head" style={{ flexShrink: 1 }}>{label}</FieldText>
         <View style={{ flexDirection: 'row', alignItems: 'baseline', flexWrap: 'wrap', justifyContent: large ? 'flex-start' : 'flex-end', columnGap: 6, flexShrink: 1 }}>
           {word !== undefined ? (
-            <FieldText v="value" color={color} maxScale={2}>{word}</FieldText>
+            <FieldText v="value" color={color}>{word}</FieldText>
           ) : (
             <BigNum value={value ?? ''} pct={pct} size={22} color={color} roll={roll} />
           )}
-          {unit ? <FieldText v="small">{unit}</FieldText> : null}
+          {unit ? <T v="meta">{unit}</T> : null}
         </View>
       </View>
       {note ? <FieldText v="small" style={{ marginTop: 2, textAlign: large ? 'left' : 'right' }}>{note}</FieldText> : null}

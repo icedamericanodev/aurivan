@@ -11,7 +11,7 @@
 import { readyLine, REVIEW_ORDER } from '../engine/srs';
 import { gameTitle } from '../engine/games/registry';
 import { useEffect, useState, type ReactNode } from 'react';
-import { Text, useWindowDimensions, View, type ViewStyle } from 'react-native';
+import { useWindowDimensions, View, type ViewStyle } from 'react-native';
 import { domainColor } from '../content/certifications';
 import type { Certification } from '../content/types';
 import { biggestGrowth, clearingTitle, dayAccuracy, isOptional, itemMinutes, type DayPlan } from '../engine/dayPlan';
@@ -20,7 +20,8 @@ import { SMALL_SAMPLE } from '../engine/resultsCopy';
 import type { Readiness } from '../engine/readiness';
 import { RANGE_MIN_ANSWERS, rangeSpoken, type ReadinessRange } from '../engine/readinessRange';
 import { haptic } from '../lib/haptics';
-import { grewLine, LARGE_TEXT, motion, radius, space } from '../theme/tokens';
+import { rangeStep } from '../theme/grove';
+import { LARGE_TEXT, motion, radius, space } from '../theme/tokens';
 import { useTheme } from '../theme/useTheme';
 import { GrowthRings, MiniStem, PlanLeaf } from './glyphs';
 import { Check, ICON_STROKE, Pinwheel, Play, RotateCcw, Target, Timer } from './icons';
@@ -365,10 +366,16 @@ export function PlanChecklist({
 
 // ── Readiness number: "62 to 70" or "Not enough data yet" ─────────────
 
-export function ReadinessFigure({ range, size = 52, growth }: { range: ReadinessRange; size?: 52 | 38 | 34 | 30 | 24; growth?: Growth }) {
+/**
+ * The range on the range step (TYPE_SCALE.md section 2.1): 38, stepping to 30 and 22 only when
+ * space runs out (large text, a narrow phone). `report`: the readiness report, where "Not enough
+ * data yet" is the page's hero line; elsewhere it is a headline.
+ */
+export function ReadinessFigure({ range, report = false, growth }: { range: ReadinessRange; report?: boolean; growth?: Growth }) {
   const { c } = useTheme();
+  const size = rangeStep(useFontScale(), useWindowDimensions().width);
   if (!range.enough) {
-    return <T v={size === 52 ? 'hero' : 'headline'} color={c.ink}>Not enough data yet</T>;
+    return <T v={report ? 'hero' : 'headline'} color={c.ink}>Not enough data yet</T>;
   }
   // Rolls on the first view of the day, or up from what you last saw. "62 to 70", as on You (Grove: no dashes).
   return <RangeNum low={range.low} high={range.high} size={size} growth={growth} />;
@@ -441,9 +448,9 @@ export function ReadinessRow({
   const spoken = `${range.enough ? `Estimated readiness ${rangeSpoken(range)}.` : `Not enough data yet. ${meta}.`}${stage ? ` ${stage.replace(' · ', ', ')}.` : ''}`;
   const words = (
     <View style={{ flex: stacked ? undefined : 1, minWidth: 0, alignSelf: stacked ? 'stretch' : undefined }}>
-      <ReadinessFigure range={range} size={range.enough ? 38 : 30} growth={rangeGrowth} />
+      <ReadinessFigure range={range} growth={rangeGrowth} />
       <T v="meta" style={{ marginTop: space.xs }}>{meta}</T>
-      {stage ? <T v="stage" color={c.accentText} style={{ marginTop: space.xs }}>{stage}</T> : null}
+      {stage ? <T v="quote" color={c.accentText} style={{ marginTop: space.xs }}>{stage}</T> : null}
     </View>
   );
   const ringArt = rings && (
@@ -467,7 +474,7 @@ export function ReadinessRow({
         </View>
         {/* Today names its tick (UX review: the 80 is the app's study bar, not a pass mark). */}
         <ScaleBar range={range} growth={rangeGrowth} accessible={false} markLabel="study bar" style={{ marginTop: space.xs }} />
-        {stage ? <T v="stage" color={c.accentText} style={{ marginTop: space.xs }}>{stage}</T> : null}
+        {stage ? <T v="quote" color={c.accentText} style={{ marginTop: space.xs }}>{stage}</T> : null}
       </View>
     );
     return onPress ? (
@@ -613,9 +620,9 @@ export function DomainRings({
                 {isWord ? (
                   <T v="label" color={c.ink}>{value}</T>
                 ) : value.endsWith('%') ? (
-                  <BigNum value={value.slice(0, -1)} pct size={17} />
+                  <BigNum value={value.slice(0, -1)} pct size={20} />
                 ) : (
-                  <BigNum value={value} size={17} />
+                  <BigNum value={value} size={20} />
                 )}
               </View>
             </Row>
@@ -727,7 +734,7 @@ export function ClearingBody({
         <MiniStem score={readiness.score} from={plan.start.score} play={full} run={run} delay={ringAt} color={c.sap} soil={c.forestTrack} />
         {/* Keyed by the celebration, so its words wait for their beat (a tap shows them at once). */}
         <FadeIn key={run} delay={full ? wordsAt : 0} rise={false} style={{ flex: 1 }}>
-          <Text maxFontSizeMultiplier={2} style={[grewLine, { color: c.onForest }]}>{line}</Text>
+          <T v="aside" color={c.onForest}>{line}</T>
           {/* No "↑10" before the first range exists: a delta reads as a score on the day Today says
               "Not enough data yet" (UX review S4). Premium round 2 (item 11): the old ring wording is gone,
               a gain is "↑3" as everywhere in the Field Guide, said "up 3 points". */}

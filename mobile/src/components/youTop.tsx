@@ -29,7 +29,7 @@ export const SETTINGS_ROW_NOTE = 'Name, exam date, dark mode, your data, help an
 /** The sentence:"4 study days this week. Readiness 63 to 73, a study estimate. Focus next: **Protection**, …". */
 export const YouSummaryLine = memo(function YouSummaryLine({ summary }: { summary: YouSummary }) {
   return (
-    <T v="stem" accessibilityLabel={summary.spoken} style={{ marginTop: space.lg }}>
+    <T v="read" accessibilityLabel={summary.spoken} style={{ marginTop: space.lg }}>
       {summary.lead}
       {/* The focus area, a weight heavier (the web's bold). The words carry it too ("Focus next:"). */}
       {summary.focus ? <Text style={groveEmphasis}>{summary.focus}</Text> : null}

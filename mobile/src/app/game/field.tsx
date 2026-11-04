@@ -260,7 +260,7 @@ function FieldGuide() {
           )
         }
       >
-        <T v="caption" color={c.accentText}>{`Board ${b + 1} of ${round.boards.length}`}</T>
+        <T v="caption" num color={c.accentText}>{`Board ${b + 1} of ${round.boards.length}`}</T>
         {topicName ? <T v="meta" style={{ marginTop: space.xs }}>{`One topic: ${topicName}`}</T> : null}
         <Gap h={space.md} />
         {/* Side by side when it fits; stacked (terms first) at large text or with a long word. */}
@@ -318,7 +318,7 @@ function FieldGuide() {
         )
       }
     >
-      <T v="caption" color={c.accentText}>{`Board ${b + 1} of ${round.boards.length} · meaning ${k + 1} of ${n}`}</T>
+      <T v="caption" num color={c.accentText}>{`Board ${b + 1} of ${round.boards.length} · meaning ${k + 1} of ${n}`}</T>
       <Gap h={space.sm} />
       <Stem>{term.definition}</Stem>
       <Gap h={space.lg} />

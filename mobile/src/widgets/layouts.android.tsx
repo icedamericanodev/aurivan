@@ -313,8 +313,8 @@ function topRow(x: X, text: string, right: El, rightW: number): JSX.Element {
 }
 
 /** An italic note for the right of the top row ("step 2 of 3"). */
-const asideEl = (x: X, text: string, color = x.c.ink2) => txt(text, F.serifItalic, sz(12.5, x.scale, 1.3), color, { ml: 8 });
-const asideW = (x: X, text: string) => Math.ceil(text.length * sz(12.5, x.scale, 1.3) * 0.5) + 10;
+const asideEl = (x: X, text: string, color = x.c.ink2) => txt(text, F.serifItalic, Math.max(SERIF_MIN, sz(12.5, x.scale, 1.3)), color, { ml: 8 });
+const asideW = (x: X, text: string) => Math.ceil(text.length * Math.max(SERIF_MIN, sz(12.5, x.scale, 1.3)) * 0.5) + 10;
 
 /** A big serif figure and its italic unit beside it ("12 questions", "3 study days"). */
 function figure(x: X, value: string, unit: string | undefined, px: number, unitPx: number, unitColor: string, unitLines = 2, width = x.iw): JSX.Element {
@@ -820,7 +820,7 @@ function card(x: X): El {
       <FlexWidget style={{ flex: 1, flexDirection: 'column', justifyContent: 'center', width: 'match_parent' }}>
         {block ? null : txt(termText, F.serif, termPx, c.ink, { lines: termLines })}
         {txt(m.text, F.sans, m.px, c.ink, { lines: m.lines, mt: block ? 0 : 4 })}
-        {line2Ok ? txt(face.line2 as string, F.serifItalic, sz(12, scale, 1.3), c.ink2, { mt: 4 }) : null}
+        {line2Ok ? txt(face.line2 as string, F.serifItalic, Math.max(SERIF_MIN, sz(12, scale, 1.3)), c.ink2, { mt: 4 }) : null}
       </FlexWidget>
     );
   } else {
@@ -866,7 +866,7 @@ function card(x: X): El {
         {fit ? txt(heroFull, font, fit.px, c.ink, { lines: fit.lines }) : heroText(heroFull, face.short, font, heroMax, SERIF_MIN, iw, room - subH, c.ink)}
         {face.sub && hidden ? txt(face.sub, F.serifItalic, subPx, c.ink2, { lines: 2 }) : null}
         {body ? txt(body.text, F.sans, body.px, c.ink2, { lines: body.lines, mt: 4 }) : null}
-        {line2Ok ? txt(face.line2 as string, F.serifItalic, sz(12, scale, 1.3), c.ink2, { mt: 4 }) : null}
+        {line2Ok ? txt(face.line2 as string, F.serifItalic, Math.max(SERIF_MIN, sz(12, scale, 1.3)), c.ink2, { mt: 4 }) : null}
       </FlexWidget>
     );
   }

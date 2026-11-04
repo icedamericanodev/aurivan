@@ -26,12 +26,13 @@
  * At 200% text the numeral and its words stack; the bar keeps its labels at ×1.3.
  */
 import { useLayoutEffect, useRef, useState } from 'react';
-import { Text, View, type StyleProp, type ViewStyle } from 'react-native';
+import { useWindowDimensions, View, type StyleProp, type ViewStyle } from 'react-native';
 import Animated, { useAnimatedStyle, useSharedValue, withDelay, withSequence } from 'react-native-reanimated';
 import Svg, { Path, Rect } from 'react-native-svg';
 import { READY_LOW } from '../../engine/examReady';
 import { RANGE_MIN_ANSWERS, type ReadinessRange } from '../../engine/readinessRange';
-import { LARGE_TEXT, motion, percentSup, space } from '../../theme/tokens';
+import { rangeStep } from '../../theme/grove';
+import { LARGE_TEXT, motion, space } from '../../theme/tokens';
 import { useTheme } from '../../theme/useTheme';
 import { ease, FadeIn, snap, tween, useMotion, type Growth } from '../motion';
 import { BigNum, T, useFontScale } from '../ui';
@@ -48,22 +49,23 @@ export const ESTIMATE_WORDS = 'a study estimate, not a prediction';
 export const rangeWords = (r: { low: number; high: number }) => `${r.low} to ${r.high}`;
 
 /**
- * The range as a figure: "68 to 78", two serif numbers with a small, muted "to"
- * between them (the website's You card: no % sign, no dash). Each number rolls
+ * The range as a figure: "68 to 78", two serif numbers on the range step with a
+ * muted Figtree "to" (the `meta` role, TYPE_SCALE.md section 2.1) between them
+ * (the website's You card: no % sign, no dash). Each number rolls
  * up from where it was last seen with `growth`; on a count-up from blank the
  * "to" fades in with the first digits, so it never waits there alone.
  * It says nothing to a screen reader itself: its group says "68 to 78 percent".
  */
-export function RangeNum({ low, high, size, growth }: { low: number; high: number; size: 38 | 34 | 30 | 24 | 52; growth?: Growth }) {
+export function RangeNum({ low, high, size, growth }: { low: number; high: number; size: 38 | 30 | 22; growth?: Growth }) {
   const { c } = useTheme();
   const { reduced } = useMotion();
   // Each number rolls from its own last-seen value (the pair, when there is one).
   const roll = (i: 0 | 1) => (growth ? { play: growth.play, from: growth.from.length === 2 ? String(growth.from[i]) : null, run: growth.run } : undefined);
-  // The small serif "to": the type the % sign had (tokens.percentSup), in muted ink, like the website's "to".
+  // The "to" is a unit beside the numerals: Figtree `meta` in muted ink, like the website's "to".
   const word = (
-    <Text maxFontSizeMultiplier={1.3} style={[percentSup(size), { color: c.ink2, marginHorizontal: Math.round(size * 0.15) }]}>
+    <T v="meta" color={c.ink2} style={{ marginHorizontal: Math.round(size * 0.15) }}>
       to
-    </Text>
+    </T>
   );
   const countUp = Boolean(growth?.play) && !reduced && growth?.from.length !== 2;
   return (
@@ -134,7 +136,7 @@ export function ScaleBar({
   range,
   mark = READY_LOW,
   markLabel,
-  size = 38,
+  size,
   growth,
   accessible = true,
   style,
@@ -144,7 +146,8 @@ export function ScaleBar({
   mark?: number;
   /** The tick's words, set under its number ("study bar": Today reads "80 / study bar"). Left out (You), the number alone. */
   markLabel?: string;
-  size?: 38 | 34 | 30;
+  /** The range's numeral step; left out, 38 stepping down to 30 and 22 when space runs out (grove.ts rangeStep). */
+  size?: 38 | 30 | 22;
   /** The range rolls, and the bar draws in, on the day's first view or when it changed. */
   growth?: Growth;
   /** false inside a button that already says `scaleSpoken`. */
@@ -153,7 +156,10 @@ export function ScaleBar({
 }) {
   const { c } = useTheme();
   const { reduced } = useMotion();
-  const large = useFontScale() >= LARGE_TEXT;
+  const fontScale = useFontScale();
+  const large = fontScale >= LARGE_TEXT;
+  const { width } = useWindowDimensions();
+  const step = size ?? rangeStep(fontScale, width);
   const [w, setW] = useState(0);
   const x0 = 8;
   const x1 = Math.max(x0 + 10, w - 14);
@@ -223,11 +229,11 @@ export function ScaleBar({
       testID="scale-bar"
     >
       <View style={{ flexDirection: large ? 'column' : 'row', alignItems: large ? 'flex-start' : 'center', columnGap: space.md, rowGap: space.xs }}>
-        {range.enough ? <RangeNum low={range.low} high={range.high} size={size} growth={growth} /> : <T v="headline">Not enough data yet</T>}
+        {range.enough ? <RangeNum low={range.low} high={range.high} size={step} growth={growth} /> : <T v="headline">Not enough data yet</T>}
         {range.enough ? (
           <FieldText v="sub" style={{ flexShrink: 1 }}>{ESTIMATE_WORDS}</FieldText>
         ) : (
-          <T v="meta" style={{ flexShrink: 1 }}>{`${RANGE_MIN_ANSWERS - range.needed} of ${RANGE_MIN_ANSWERS} for your first range`}</T>
+          <T v="meta" num style={{ flexShrink: 1 }}>{`${RANGE_MIN_ANSWERS - range.needed} of ${RANGE_MIN_ANSWERS} for your first range`}</T>
         )}
       </View>
       <View

@@ -16,7 +16,7 @@
  *   with a hairline under it, and it wraps at 200% text.
  */
 import { memo, type Ref } from 'react';
-import { View } from 'react-native';
+import { Text, View } from 'react-native';
 import Svg, { Path } from 'react-native-svg';
 import { PROFILE_ADD_NAME, type ProfileLines } from '../engine/studyProfile';
 import { LARGE_TEXT, radius, serifNumeral, space } from '../theme/tokens';
@@ -43,9 +43,9 @@ export function LeafAvatar({ initial, size = 56 }: { initial: string; size?: num
       {named ? (
         // Text inside a fixed-size picture does not grow with the phone's text size (the block's label says it all).
         // Fraunces 500 at every size (UX review P4: the small leaf on the import sheet fell back to Figtree).
-        <T v="body" color={c.onForest} maxFontSizeMultiplier={1} style={[serifNumeral(size >= 48 ? 30 : 17), { marginTop: size * 0.04 }]}>
+        <Text maxFontSizeMultiplier={1} style={[serifNumeral(size >= 48 ? 30 : 17), { color: c.onForest, marginTop: size * 0.04 }]}>
           {initial}
-        </T>
+        </Text>
       ) : (
         // In a View, so the glyph is drawn over the leaf on the web too (a bare svg sits under an absolute one).
         <View>
@@ -96,7 +96,7 @@ export const StudyProfile = memo(function StudyProfile({
       {press.layer}
       <LeafAvatar initial={initial} />
       <View style={large ? { alignSelf: 'stretch' } : { flex: 1, minWidth: 0 }}>
-        <T v="headline">{lines.title}</T>
+        <T v="display">{lines.title}</T>
         <T v="body" style={{ marginTop: 2 }}>{lines.since}</T>
         {lines.plan && <T v="meta" style={{ marginTop: 2 }}>{lines.plan}</T>}
         {lines.started && <T v="meta" style={{ marginTop: 2 }}>{lines.started}</T>}

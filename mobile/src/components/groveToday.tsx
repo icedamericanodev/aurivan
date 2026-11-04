@@ -14,11 +14,11 @@
  * The ring and the twig are drawings: what they show is always said in words too.
  */
 import { useState, type ReactNode } from 'react';
-import { Pressable, View } from 'react-native';
+import { Pressable, useWindowDimensions, View } from 'react-native';
 import Svg, { Circle, Ellipse, G, Line, Path } from 'react-native-svg';
 import { RANGE_MIN_ANSWERS } from '../engine/readinessRange';
 import { RING_STUDY_BAR, rangeTicks, TWIG_LETTERS, type AccuracyTile, type RingCaption, type RingMode, type TickState, type TwigDay } from '../engine/groveToday';
-import { groveRadius, heroHighlight, heroInk, heroInset, heroPanel } from '../theme/grove';
+import { groveRadius, heroHighlight, heroInk, heroInset, heroPanel, numRole, rangeStep } from '../theme/grove';
 import { LARGE_TEXT, space } from '../theme/tokens';
 import { useTheme } from '../theme/useTheme';
 import { FieldText } from './fieldguide';
@@ -164,13 +164,26 @@ export function RingTap({ label, onPress, children }: { label: string; onPress: 
 /** The caption under the ring: "10 of 40 answers / until your first readiness range", or "63 to 73 estimated range / A study estimate, not a prediction." */
 export function RingCaptionText({ caption }: { caption: RingCaption }) {
   const { c } = useTheme();
+  // The range ("63 to 73") is the range numeral step, 38, stepping down only when space runs out;
+  // its "to" is a Figtree unit (TYPE_SCALE.md section 2.1). A count ("10" of 40) is a value numeral.
+  const step = numRole[rangeStep(useFontScale(), useWindowDimensions().width)];
+  const ends = caption.big?.split(' to ') ?? [];
+  const serif = (text: string) => (
+    <T v={ends.length === 2 ? 'numRange' : 'numValue'} num color={c.onForest} style={ends.length === 2 ? step.style : undefined}>
+      {text}
+    </T>
+  );
   return (
     <View style={{ alignItems: 'center' }}>
       <View style={{ flexDirection: 'row', flexWrap: 'wrap', alignItems: 'baseline', justifyContent: 'center', columnGap: 6 }}>
-        {caption.big ? (
-          <FieldText v="value" color={c.onForest} center>
-            {caption.big}
-          </FieldText>
+        {ends.length === 2 ? (
+          <View style={{ flexDirection: 'row', alignItems: 'baseline', columnGap: 6 }}>
+            {serif(ends[0])}
+            <T v="meta" color={c.onForest2}>to</T>
+            {serif(ends[1])}
+          </View>
+        ) : caption.big ? (
+          serif(caption.big)
         ) : null}
         <T v="body" color={c.onForest2} center>
           {caption.rest}
@@ -209,9 +222,9 @@ export function AccuracyHeroTile({ tile }: { tile: AccuracyTile }) {
   return (
     <HeroTile k="Accuracy" spoken={tile.spoken} testID="today-accuracy">
       {tile.num ? (
-        <FieldText v="value" color={c.onForest}>
+        <T v="numValue" num color={c.onForest}>
           {tile.shown}
-        </FieldText>
+        </T>
       ) : (
         <T v="label" color={c.onForest}>
           {tile.shown}
@@ -280,10 +293,12 @@ export function PlanSteps({ steps }: { steps: readonly PlanStep[] }) {
     <View testID="plan-steps" style={{ gap: space.md }}>
       {steps.map((s) => (
         <View key={s.key} accessible accessibilityLabel={s.spoken} style={{ flexDirection: 'row', alignItems: 'flex-start', gap: space.md }}>
+          {/* The square grows with its number at large text (the number is `aside`, to x2). */}
           <View
             style={{
-              width: STEP,
-              height: STEP,
+              minWidth: STEP,
+              minHeight: STEP,
+              padding: 2,
               borderRadius: groveRadius.step,
               alignItems: 'center',
               justifyContent: 'center',
@@ -296,7 +311,7 @@ export function PlanSteps({ steps }: { steps: readonly PlanStep[] }) {
             {s.state === 'done' ? (
               <Check size={16} color={c.bg} strokeWidth={3} />
             ) : (
-              <FieldText v="keyNo" color={s.state === 'now' ? c.sap : c.ink2} maxScale={1.3}>
+              <FieldText v="keyNo" color={s.state === 'now' ? c.sap : c.ink2}>
                 {s.n}
               </FieldText>
             )}
@@ -379,7 +394,7 @@ export function WeekTwig({ week, streak, spoken, studied }: { week: readonly Twi
         {week.map((d) => (
           <View key={d.i} style={{ flex: 1, alignItems: 'center' }}>
             {d.today ? (
-              <T v="tab" color={c.ink}>
+              <T v="tab" color={c.ink} maxFontSizeMultiplier={1.3}>
                 {TWIG_LETTERS[d.i]}
               </T>
             ) : (

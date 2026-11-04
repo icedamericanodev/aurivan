@@ -195,7 +195,7 @@ function SteppingStones() {
 
   const header = (
     <>
-      <T v="caption" color={c.accentText}>{`Process ${i + 1} of ${round.items.length}`}</T>
+      <T v="caption" num color={c.accentText}>{`Process ${i + 1} of ${round.items.length}`}</T>
       <T v="headline" accessibilityRole="header" style={{ marginTop: space.xs }}>{seq.title}</T>
     </>
   );

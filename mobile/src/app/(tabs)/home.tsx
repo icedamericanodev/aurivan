@@ -648,6 +648,11 @@ export default function Today() {
   // ── Grove Today (the kit's order, ring first): the hero, the plan, the week's twig. ──
   // Presentation only: every number below is one the app already works out (engine/groveToday.ts).
   const { width } = useWindowDimensions();
+  // The greeting is `display`; it steps to `hero` when it would wrap to a third line, or on a phone
+  // under 360pt (TYPE_SCALE.md rule R3). Remembered per title, so a new name is measured afresh
+  // and the step never flips back and forth.
+  const [longTitle, setLongTitle] = useState<string | null>(null);
+  const titleStep = width < 360 || longTitle === titleText ? 'hero' : 'display';
   // The hero is Today's one forest card. The clearing (a finished day) and the exam-ready panel are
   // forest moments of their own, so on those days they take its place, as before.
   const heroShown = !allDone && !showReady;
@@ -733,9 +738,18 @@ export default function Today() {
         {/* Grove Phase 1: the head shows the day only (said in full). No book label, and no gear: Settings
             is on You (its header button), and the exam date is one tap away in the hero's Exam date tile. */}
         <RunningHead section={headDay.shown} sectionLabel={headDay.spoken} />
-        {/* One header stop that reads the whole title. A long name wraps (24 characters at most) and, at the
-            largest text sizes, stops at three lines with an ellipsis instead of pushing the plan off the screen. */}
-        <T v="display" accessibilityRole="header" accessibilityLabel={titleText} numberOfLines={4} style={{ marginTop: space.lg }}>
+        {/* One header stop that reads the whole title. A long name steps the title down to hero (above);
+            four lines is only a safety stop at the largest text sizes, never how a long name is handled. */}
+        <T
+          v={titleStep}
+          accessibilityRole="header"
+          accessibilityLabel={titleText}
+          numberOfLines={4}
+          onTextLayout={(e) => {
+            if (titleStep === 'display' && e.nativeEvent.lines.length > 2) setLongTitle(titleText);
+          }}
+          style={{ marginTop: space.lg }}
+        >
           {titleText}
         </T>
         {/* The exam's day and this week's study days on one quiet line (the streak itself is on the twig). */}
@@ -792,7 +806,7 @@ export default function Today() {
                 style={{ flexDirection: 'row', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'space-between', columnGap: space.md, minHeight: plantView.plant ? 48 : 32, marginVertical: plantView.plant ? -space.sm : 0 }}
               >
                 <FieldText v="sub" color={c.onForest}>{stageName}</FieldText>
-                <T v="meta" color={c.onForest2}>{`Stage ${growth} of ${HERO_STAGES}`}</T>
+                <T v="meta" num color={c.onForest2}>{`Stage ${growth} of ${HERO_STAGES}`}</T>
               </Pressable>
               {/* The ring and its caption are one button to the readiness report, said in words. */}
               <RingTap label={caption.spoken} onPress={() => router.push('/readiness')}>
@@ -824,7 +838,7 @@ export default function Today() {
             <View>
               <Plate fig={{ title: j.daysLeft !== null && j.daysLeft < 0 ? 'Exam done' : 'Plan' }} testID="today-plate">
                 <View style={[groveTile(c, true), { padding: space.md }]}>
-                  <FieldText v="value" maxScale={2} accessibilityRole="header">How did it go?</FieldText>
+                  <FieldText v="value" accessibilityRole="header">How did it go?</FieldText>
                   <T v="meta" style={{ marginTop: space.xs }}>Set a new date to plan what’s next.</T>
                 </View>
               </Plate>

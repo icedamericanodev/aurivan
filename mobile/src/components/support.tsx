@@ -231,7 +231,7 @@ function SheetFrame({ visible, onClose, children }: { visible: boolean; onClose:
 /** A visible group name over a set of controls ("What's wrong?"). */
 function GroupLabel({ children }: { children: string }) {
   return (
-    <T v="caption" accessibilityRole="header" style={{ marginTop: space.xl, marginBottom: space.sm }}>
+    <T v="headline" accessibilityRole="header" style={{ marginTop: space.xl, marginBottom: space.sm }}>
       {children}
     </T>
   );
@@ -393,7 +393,7 @@ export function ReportSheet({ visible, certId, target, reportedAt, onClose, onOp
     <SheetFrame visible={visible} onClose={() => onClose(panel !== null)}>
       {/* The first stop is the title, not the Close button (mobile 1.24): focus moves here as the sheet opens. */}
       <View ref={titleRef} accessible accessibilityRole="header" accessibilityLabel={REPORT_LABEL}>
-        <T v="display">{REPORT_LABEL}</T>
+        <T v="hero">{REPORT_LABEL}</T>
       </View>
       <T v="meta" style={{ marginTop: space.xs }}>{sheetMeta(target)}</T>
       {reportedAt !== undefined && !panel && (
@@ -675,7 +675,7 @@ function FeedbackSheet({
   return (
     <SheetFrame visible={visible} onClose={() => onClose(panel !== null)}>
       {/* "Suggest an idea" opens this sheet with "An idea" chosen: the title says so. */}
-      <T v="display" accessibilityRole="header">{initialKind === 'idea' ? 'Suggest an idea' : initialKind === 'confused' ? 'What confused you?' : 'Send feedback'}</T>
+      <T v="hero" accessibilityRole="header">{initialKind === 'idea' ? 'Suggest an idea' : initialKind === 'confused' ? 'What confused you?' : 'Send feedback'}</T>
       <T v="body" color={c.ink2} style={{ marginTop: space.sm }}>
         Tell us what helps, what’s missing, or what feels off. It goes to the people who build KaiSip.
       </T>
@@ -752,7 +752,7 @@ function SupportSheet({
     });
   return (
     <SheetFrame visible={visible} onClose={() => onClose(panel !== null)}>
-      <T v="display" accessibilityRole="header">Contact support</T>
+      <T v="hero" accessibilityRole="header">Contact support</T>
       <T v="body" color={c.ink2} style={{ marginTop: space.sm }}>We’re a small independent team. We read every message.</T>
       {panel ? (
         <FallbackPanel email={panel.email} why={panel.why} onRetry={() => setPanel(null)} onClose={() => onClose(true)} />

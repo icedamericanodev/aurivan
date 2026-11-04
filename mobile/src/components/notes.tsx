@@ -637,7 +637,7 @@ export function Movement({ n, title, ref }: { n: number; title: string; ref?: Re
       accessibilityLabel={title}
       style={{ marginTop: space.xxxl, flexDirection: 'row', alignItems: 'center', gap: space.sm }}
     >
-      <BigNum value={String(n)} size={17} color={c.accentText} />
+      <BigNum value={String(n)} size={20} color={c.accentText} />
       <T v="caption" color={c.ink2}>{title}</T>
       <View style={{ flex: 1, height: 1, backgroundColor: c.line, marginLeft: space.xs }} />
     </View>
@@ -684,7 +684,7 @@ export function OnThisPage({ items }: { items: { title: string; ref: { current: 
             stacked && i > 0 && { borderTopWidth: 1, borderTopColor: c.line },
           ]}
         >
-          <BigNum value={String(i + 1)} size={17} color={c.accentText} />
+          <T v="aside" color={c.accentText}>{String(i + 1)}</T>
           <T v="meta" color={c.ink} style={{ flexShrink: 1 }}>{it.title}</T>
         </Pressable>
       ))}

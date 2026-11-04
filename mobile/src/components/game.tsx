@@ -19,7 +19,7 @@ import { createRng } from '../engine/random';
 import { makePermutation, type Permutation } from '../engine/shuffle';
 import { lastScores, reviewLine, runningScore, scoreSpoken, scoreText, trendSpoken, type RecapMiss } from '../engine/games/recap';
 import { useProgress, type GameId } from '../store/progress';
-import { LARGE_TEXT, maxScale, motion, optionText, radius, space, type } from '../theme/tokens';
+import { LARGE_TEXT, maxScale, motion, radius, space, type } from '../theme/tokens';
 import { useTheme } from '../theme/useTheme';
 import { ScenarioBlock, StickyFooter } from './quiz';
 import { useReportFlow } from './support';
@@ -668,7 +668,7 @@ export function MatchTile({
           {lead}
         </T>
       ) : null}
-      <T v="body" color={look.fg} style={[optionText, { flex: 1 }]}>
+      <T v="body" color={look.fg} style={{ flex: 1 }}>
         {text}
       </T>
       {mark ? (

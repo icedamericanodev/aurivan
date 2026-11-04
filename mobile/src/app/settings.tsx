@@ -984,7 +984,7 @@ export default function Settings() {
           <KaisipLockup height={28} />
         </View>
         {/* Mobile 1.39: the same lead as the welcome screen, one CISA story (no platform tagline). */}
-        <T v="caption" color={c.accentText} accessibilityRole="header" style={{ marginTop: space.lg }}>The KaiSip way</T>
+        <T v="headline" accessibilityRole="header" style={{ marginTop: space.lg }}>The KaiSip way</T>
         <T v="hero" style={{ marginTop: space.xs }}>{WELCOME_HEADLINE}</T>
         <T v="quote" color={c.ink2} style={{ marginTop: space.xs }}>{WELCOME_LINE}</T>
         <Gap h={space.lg} />

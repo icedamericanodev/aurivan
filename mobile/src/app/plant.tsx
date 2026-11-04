@@ -197,7 +197,7 @@ export default function YourPlant() {
         </View>
         <T v="display" center accessibilityRole="header" style={{ marginTop: space.md }}>{plantCallName(p)}</T>
         {/* Mobile 1.50: the form is a NAME under the plant's name, never a second number beside the growth. */}
-        {view.forms && !reveal ? <T v="stage" center color={c.ink2} style={{ marginTop: space.xs }}>{`The ${view.formName}`}</T> : null}
+        {view.forms && !reveal ? <T v="quote" center color={c.ink2} style={{ marginTop: space.xs }}>{`The ${view.formName}`}</T> : null}
         {/* With forms on: "Your oak · Crown", the growth by name only (no count near a form, UX review H2). */}
         <T v="meta" center style={{ marginTop: space.xs }}>
           {view.forms ? formGrowthLine(p.species, p.growth) : `${p.name ? `Your ${SPECIES_INFO[p.species].lower} · ` : ''}${growthShort(p.growth)}`}
