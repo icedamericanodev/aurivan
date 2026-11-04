@@ -142,6 +142,10 @@ All entries: **Verified** 30 Oct 2026 against
 https://nvlpubs.nist.gov/nistpubs/ai/NIST.AI.100-2e2025.pdf (table of contents and section text).
 - NIST AI 100-2e2025 Section 2.2 (Evasion Attacks and Mitigations)
 - NIST AI 100-2e2025 Section 2.3 (Poisoning Attacks and Mitigations)
+- NIST AI 100-2e2025 Section 2.3.2 (Targeted Poisoning)
+  - Verified 4 Nov 2026: "2.3.2. Targeted Poisoning" in the table of contents and as the section heading [NISTAML.024]; targeted attacks "induce a change in the ML model's prediction on a small number of targeted samples", and its mitigations name access controls, data sanitization and validation, and dataset provenance and integrity attestation.
+- NIST AI 100-2e2025 Section 2.3.3 (Backdoor Poisoning)
+  - Verified 4 Nov 2026: "2.3.3. Backdoor Poisoning" in the table of contents and as the section heading [NISTAML.021, NISTAML.023]; these attacks "cause the targeted model to misclassify samples containing a particular backdoor pattern or trigger".
 - NIST AI 100-2e2025 Section 2.4 (Privacy Attacks and Mitigations)
 - NIST AI 100-2e2025 Section 2.4.2 (Membership Inference)
   - Verified 31 Oct 2026: "2.4.2. Membership Inference" in the table of contents and as the section heading [NISTAML.033]; the attacker's goal is to determine whether a particular record was part of the training dataset.
@@ -163,6 +167,8 @@ https://raw.githubusercontent.com/mitre-atlas/atlas-data/main/dist/ATLAS.yaml
 - MITRE ATLAS AML.T0010 (AI Supply Chain Compromise)
 - MITRE ATLAS AML.T0015 (Evade AI Model)
 - MITRE ATLAS AML.T0018 (Manipulate AI Model)
+- MITRE ATLAS AML.T0018.000 (Poison AI Model)
+  - Sub-technique of AML.T0018; Verified 4 Nov 2026 in ATLAS data v5.6.0: poisoning a model by manipulating its weights, training it on poisoned data or further fine-tuning it.
 - MITRE ATLAS AML.T0020 (Poison Training Data)
 - MITRE ATLAS AML.T0024 (Exfiltration via AI Inference API)
 - MITRE ATLAS AML.T0024.002 (Extract AI Model)
@@ -198,6 +204,8 @@ The fit to each item is judged in review.
 - NIST SP 800-53 Rev. 5 CM-4 (Impact Analyses)
 - NIST SP 800-53 Rev. 5 CM-6 (Configuration Settings)
 - NIST SP 800-53 Rev. 5 CM-8 (System Component Inventory)
+- NIST SP 800-53 Rev. 5 CM-11 (User-Installed Software)
+  - Verified 4 Nov 2026: "CM-11 USER-INSTALLED SOFTWARE" in the control text: establish policies governing software installation by users, enforce them and monitor compliance; enhancement (2) allows user installation only with explicit privileged status.
 - NIST SP 800-53 Rev. 5 IR-4 (Incident Handling)
 - NIST SP 800-53 Rev. 5 IR-6 (Incident Reporting)
 - NIST SP 800-53 Rev. 5 IR-8 (Incident Response Plan)
