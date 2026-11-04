@@ -1636,7 +1636,7 @@ header {
   background: var(--surface); border: 2px solid var(--border2);
   border-radius: var(--radius); padding: 24px; box-shadow: var(--shadow);
 }
-.ws-title { font: var(--t-display); letter-spacing: var(--tr-display); margin-bottom: 20px; }
+.ws-title { font: var(--t-hero); letter-spacing: var(--tr-hero); overflow-wrap: anywhere; margin: 0 0 20px; }
 .ws-row { display: flex; align-items: center; gap: 14px; margin-bottom: 14px; }
 .ws-label { font: var(--t-meta); width: 80px; flex-shrink: 0; }
 .ws-track { flex: 1; height: 10px; background: var(--border2); border-radius: var(--r-5); overflow: hidden; }
@@ -1645,15 +1645,16 @@ header {
 .ws-rec {
   background: var(--surface2); border: 2px solid var(--border);
   border-radius: var(--r-12); padding: 14px 18px; margin-bottom: 8px;
-  display: flex; align-items: center; gap: 14px;
+  display: flex; flex-wrap: wrap; align-items: center; gap: 8px 14px;
 }
+.ws-rec > div { flex: 1 1 12em; min-width: 0; overflow-wrap: anywhere; }
 .ws-rec-title { font: var(--t-label); margin-bottom: 2px; }
-.ws-rec-sub { font: var(--t-meta); color: var(--muted); }
+.ws-rec-sub { font: var(--t-meta); color: var(--text2); }
 .ws-prac-btn {
   margin-left: auto; background: transparent; border: 2px solid var(--accent);
   border-radius: var(--r-sm); padding: 7px 14px; color: var(--accent);
   font: var(--t-label);
-  cursor: pointer; transition: var(--tr); flex-shrink: 0;
+  cursor: pointer; transition: var(--tr); flex-shrink: 1; max-width: 100%; white-space: normal;
 }
 .ws-prac-btn:hover { background: var(--btn); color: var(--on-btn); }
 
@@ -3519,6 +3520,7 @@ header {
   border-radius:var(--radius);padding:32px;max-width:520px;width:92%;
   max-height:80vh;overflow-y:auto;box-shadow:var(--shadow-lg);
   animation:slideUp 0.3s ease both;
+  overflow-wrap:break-word;
 }
 .cl-title {
   font: var(--t-hero); letter-spacing: var(--tr-hero);
@@ -3644,11 +3646,12 @@ header {
   cursor:pointer;user-select:none;
 }
 .fb-checkrow input { cursor:pointer;accent-color:var(--accent); }
-.fb-actions { display:flex;gap:10px;margin-top:8px; }
+.fb-actions { display:flex;flex-wrap:wrap;gap:10px;margin-top:8px; }
 .fb-btn {
   flex:1;padding:12px;border-radius:var(--r-10);border:none;
   font: var(--t-label);
   cursor:pointer;transition:var(--tr);
+  min-width:min-content;max-width:100%;white-space:normal;
 }
 .fb-btn.cancel { background:transparent;border:2px solid var(--border2);color:var(--muted); }
 .fb-btn.cancel:hover { border-color:var(--text);color:var(--text); }
@@ -3876,7 +3879,7 @@ header {
 }
 .bk-drill-btn:hover { background: var(--accent); transform: translateY(-1px); }
 .bk-tag-select {
-  margin-left: auto; flex-shrink: 0;
+  margin-left: auto; flex-shrink: 0; max-width: 100%; min-width: 0;
   padding: 5px 10px; border: 1.5px solid var(--border2); border-radius: var(--r-sm);
   background: var(--surface2); color: var(--text2);
   font: var(--t-body); letter-spacing: normal;
@@ -3890,7 +3893,7 @@ header {
      narrow screens. Wrap it to its own full-width row below the text, and pad
      it to a >=44px tap target. */
   .bk-item { flex-wrap: wrap; }
-  .bk-tag-select { flex-basis: 100%; margin-left: 0; margin-top: 8px; padding: 11px 12px; }
+  .bk-tag-select { flex-basis: 100%; width: 100%; margin-left: 0; margin-top: 8px; padding: 11px 12px; }
 }
 
 /* ── PACING FEEDBACK ── */
@@ -3905,7 +3908,7 @@ header {
 .pacing-icon { font-size: 18px; flex-shrink: 0; }
 .pacing-info { flex: 1; }
 .pacing-info strong { display: block; font: var(--t-caption); letter-spacing: var(--tr-caption); color: var(--text); }
-.pacing-info span { font: var(--t-meta); color: var(--muted); }
+.pacing-info span { font: var(--t-meta); color: var(--text2); }
 .pacing-badge {
   font: var(--t-caption); letter-spacing: var(--tr-caption);
   padding: 3px 10px; border-radius: var(--r-pill);
@@ -4687,7 +4690,11 @@ header {
 .gt-seg-btn[aria-selected="true"] { background: var(--surface); border-color: var(--text); color: var(--text); box-shadow: var(--shadow); }
 .gt-seg-name { font: var(--t-chip); margin-left: 6px; }
 .gt-seg-btn[aria-selected="true"] .gt-seg-name { color: var(--text2); }
-@media (max-width: 600px) {
+/* The switcher follows its own width in rem units, not the window: the five
+   columns need about 34em, so a narrow main column or 200% text keeps the
+   scrolling strip with whole names. */
+.gt-seg-cq { container: gtseg / inline-size; font-size: 1rem; }
+@container gtseg (max-width: 33.9375em) {
   .gt-seg-wrap::after { content: ''; position: absolute; top: 0; right: 0; bottom: 0; width: 15%; pointer-events: none; background: linear-gradient(to right, transparent, var(--bg)); }
   .gt-seg { background: transparent; padding: 0; gap: 8px; padding-right: 15%; }
   .gt-seg-btn { flex: 0 0 auto; min-height: 44px; border: 1.5px solid var(--control); border-radius: var(--r-pill); }
@@ -4736,6 +4743,7 @@ header {
 
 /* Shared captions, buttons */
 .gt-cap, .gt-cap-inline { font: var(--t-caption); letter-spacing: var(--tr-caption); color: var(--text2); margin: 0 0 6px; }
+.gt-sec-def > .gt-cap { color: var(--accent-text); }
 .gt-btn-ghost {
   display: inline-flex; align-items: center; gap: 4px; min-height: 44px; padding: 0 4px; background: none; border: 0; cursor: pointer;
   color: var(--accent-text); font: var(--t-label);
@@ -5026,12 +5034,12 @@ button.principle-link { background: none; border: 0; border-bottom: 1px dashed c
   body[data-tab="about"] .mindset-strip, body[data-tab="about"] .stats-row, body[data-tab="about"] #studyRecCard,
   body[data-tab="about"] #readinessCard, body[data-tab="about"] .pwa-banner, body[data-tab="about"] #welcome-banner { display: none !important; }
 }
-/* Domain switcher: all five fit on desktop (number above name). */
+/* Domain switcher: all five fit when it is wide enough (number above name). */
 .gt-seg-top { display: inline-flex; align-items: center; }
-@media (min-width: 601px) {
+@container gtseg (min-width: 34em) {
   .gt-seg { overflow: visible; }
   .gt-seg-btn { flex: 1 1 0; min-width: 0; flex-direction: column; gap: 0; min-height: 56px; padding: 6px 8px; }
-  .gt-seg-name { margin-left: 0; max-width: 100%; white-space: normal; overflow: visible; text-overflow: clip; overflow-wrap: anywhere; hyphens: auto; text-wrap: balance; text-align: center; }
+  .gt-seg-name { margin-left: 0; max-width: 100%; white-space: normal; overflow: visible; text-overflow: clip; overflow-wrap: break-word; text-wrap: balance; text-align: center; }
 }
 /* Mock results: the score header is the screen's one forest panel. */
 body[data-mock-results="1"] #readinessCard { display: none; }
@@ -6478,6 +6486,11 @@ body[data-tab="practice"][data-pview="focus"] #subNav { display: none; }
 .mk-type-m { font: var(--t-small); color: var(--text2); margin: var(--sp-xs) 0 var(--sp-xl); flex: 1; }
 .mk-type .rs-btn { width: 100%; }
 .mk-weights, .mk-past { margin-top: var(--sp-md); }
+/* At large text the date and count move under the name instead of pushing the row past the screen. */
+.mk-weights li, .mk-past li { flex-wrap: wrap; }
+.mk-weights .td-dname, .mk-past .td-dname { flex: 1 1 auto; }
+.mk-weights .td-dval, .mk-past .td-dval { margin-left: auto; }
+.fg-large .mk-weights .rs-dcount, .fg-large .mk-past .rs-dcount { order: 3; flex-basis: 100%; }
 .mk-foot { font: var(--t-meta); color: var(--text2); margin: var(--sp-2xl) 0 0; max-width: 62ch; }
 
 /* Mock question: the practice strip, with the exam clock and Flag. */
@@ -11223,7 +11236,9 @@ function gtItemBody(raw, d, q, id, underPart) {
 }
 function gtCap(label) { return gtHead(5, 'gt-cap', escapeHtml(label)); }
 function gtSection(label, inner, cls) {
-  return inner ? '<section class="gt-sec' + (cls ? ' ' + cls : '') + '">' + (label ? gtCap(label) : '') + inner + '</section>' : '';
+  // "In one line" is a small label above the definition (as on the phone), not a heading.
+  var cap = !label ? '' : cls === 'gt-sec-def' ? '<p class="gt-cap gt-cap-label">' + escapeHtml(label) + '</p>' : gtCap(label);
+  return inner ? '<section class="gt-sec' + (cls ? ' ' + cls : '') + '">' + cap + inner + '</section>' : '';
 }
 function gtList(arr, t) {
   if (!Array.isArray(arr) || !arr.length) return '';
@@ -11620,7 +11635,7 @@ function renderTopics() {
     + '<p class="gt-sub">Plain-language study notes for every exam topic.</p></div>';
 
   // ── Domain switcher (segmented control; chip scroller on phones) ──
-  var tabsHtml = '<div class="gt-seg-wrap"><div class="gt-seg" role="tablist" aria-label="Domain">'
+  var tabsHtml = '<div class="gt-seg-cq"><div class="gt-seg-wrap"><div class="gt-seg" role="tablist" aria-label="Domain">'
     + data.domains.map(function(dom) {
         var inf = DI[String(dom.domain_id)];
         var on = dom.domain_id === d;
@@ -11628,7 +11643,7 @@ function renderTopics() {
           + '<span class="gt-seg-top"><span class="dom-dot" style="background:' + inf.color + '"></span>'
           + '<span class="gt-seg-num">D' + dom.domain_id + '</span></span><span class="gt-seg-name">' + escapeHtml(inf.short) + '</span></button>';
       }).join('')
-    + '</div></div>';
+    + '</div></div></div>';
 
   // ── Domain panel: the screen's one forest panel ──
   var panelHtml = '<section class="gt-panel" aria-labelledby="gtPanelTitle">'
@@ -15639,7 +15654,12 @@ function pgToggleTable(id) {
 
 // ── Charts: static inline SVG in Grove tokens (decorative to screen readers:
 // the sentence above and the table below carry the numbers) ──
-function pgChartBox(w, h) { return { w: w, h: h, l: 40, r: 16, t: 14, b: 26 }; }
+// The axis labels are in rem, so the margins grow with the text setting (up to 2x).
+function pgChartBox(w, h) {
+  var k = Math.min(2, (parseFloat(getComputedStyle(document.documentElement).fontSize) || 16) / 16);
+  if (!(k >= 1)) k = 1;
+  return { w: w, h: h, l: Math.ceil(40 * k), r: 16, t: 14, b: Math.ceil(26 * k), k: k };
+}
 function pgLeafAt(x, y) {
   // The app's leaf (todayLeafSvg's shape), 18px, its stem end on the point.
   var k = 18 / 26, ox = x - 3.9 * k, oy = y - 22.1 * k;
@@ -15652,7 +15672,7 @@ function pgAxes(b, lo, hi, ticks, xl, n) {
   var x = function (i) { return b.l + (n > 1 ? iw * i / (n - 1) : iw / 2); };
   ticks.forEach(function (v) {
     g += '<line class="pg-grid" x1="' + b.l + '" x2="' + (b.w - b.r) + '" y1="' + y(v).toFixed(1) + '" y2="' + y(v).toFixed(1) + '"/>'
-      + '<text class="pg-axt" x="' + (b.l - 8) + '" y="' + (y(v) + 4).toFixed(1) + '" text-anchor="end">' + Math.round(v) + '%</text>';
+      + '<text class="pg-axt" x="' + (b.l - 8) + '" y="' + (y(v) + 4 * (b.k || 1)).toFixed(1) + '" text-anchor="end">' + Math.round(v) + '%</text>';
   });
   xl.forEach(function (p) {
     var anchor = p[0] === 0 && n > 1 ? 'start' : p[0] === n - 1 && n > 1 ? 'end' : 'middle';
@@ -20411,7 +20431,7 @@ function renderWeakSpots() {
     : (anyRead ? '<div class="ws-quiet">No domain is below the ' + DOMAIN_TARGET_PCT + '% target. Keep building coverage across all five.</div>' : wsEarlySignHtml(rows));
 
   area.innerHTML = WS_TITLE_HTML + '<button class="train-ws-btn" onclick="startWeakSpotsDrill()">Train my weak spots <span class="train-ws-badge">20 questions</span></button>'
-    + '<div class="ws-panel"><div class="ws-title">Domain performance</div>'
+    + '<div class="ws-panel"><h2 class="ws-title">Domain performance</h2>'
     + '<p class="ws-quiet">From your practice answers: an estimate, not a prediction. Building is under ' + DOMAIN_TARGET_PCT + ', Steady ' + DOMAIN_TARGET_PCT + ' to 79, Strong 80 and up. A domain is measured from ' + DOMAIN_READ_MIN + ' answers.</p>'
     + rowsHtml
     + '<div class="ws-sub-label">Where to focus</div>'
@@ -26559,7 +26579,7 @@ function showFeedback() {
   FEEDBACK_STATE.type = 'general';
   modal.innerHTML = '<div class="changelog-overlay" onclick="closeFeedback(event)">'
     + '<div class="changelog-modal" onclick="event.stopPropagation()" role="dialog" aria-labelledby="fbTitle">'
-    + '<div class="cl-title" id="fbTitle">Send Feedback</div>'
+    + '<div class="cl-title" id="fbTitle">Send feedback</div>'
     + '<div class="ty-small" style="margin-bottom:20px">'
     + 'Tell us what you love, what feels off, or what you wish this app did. '
     + 'Sent privately to <strong>' + escapeHtml(FEEDBACK_EMAIL) + '</strong>.'
@@ -26585,7 +26605,7 @@ function showFeedback() {
     + '<div id="fbStatus" class="fb-helper" style="display:none"></div>'
     + '<div class="fb-actions">'
     + '<button type="button" class="fb-btn cancel" onclick="closeFeedback()">Cancel</button>'
-    + '<button type="button" class="fb-btn send" id="fbSendBtn" onclick="sendFeedback()">Send Feedback</button>'
+    + '<button type="button" class="fb-btn send" id="fbSendBtn" onclick="sendFeedback()">Send feedback</button>'
     + '</div>'
     + '<div class="fb-helper" style="margin-top:14px;text-align:center">Prefer your own email? '
     + '<a href="#" id="fbMailtoLink" onclick="sendFeedbackViaMailto();return false;">Open mail app instead</a>.</div>'
@@ -26653,7 +26673,7 @@ function sendFeedback() {
       showToast('Sent. Thank you for the feedback.', 'success', 2600);
     }
   }).catch(function(err){
-    if (btn) { btn.disabled = false; btn.textContent = 'Send Feedback'; }
+    if (btn) { btn.disabled = false; btn.textContent = 'Send feedback'; }
     if (status) {
       status.style.display = 'block';
       status.style.color = 'var(--wrong)';
