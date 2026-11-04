@@ -2613,7 +2613,7 @@
       },
       "correct": "B",
       "key_concept": "Risk to an objective can be rated only once the objective has a measure, which its owner defines with the practitioner's help.",
-      "pre_read": "Ask what the risk ratings would be measured against.",
+      "pre_read": "Read what the sponsor's objective says, and what it leaves out.",
       "correct_explanation": "Risk is rated by its effect on an objective, and 'faster' gives nothing to measure that effect against, so ratings would be guesses. Helping the sponsor define the measure, such as days to resolve a request, lets each IT risk be rated by how far it could set that target back. A target taken from IT's current response times is the runner-up: measurable, but it records what IT achieves today, not what residents need.",
       "wrong_explanations": {
         "A": "Severity scores rate technical flaws, not their effect on resident services; without a measure for the objective, risks cannot be ranked by business impact.",
@@ -2631,7 +2631,7 @@
         "Business-aligned risk",
         "Objective owner"
       ],
-      "_provenance": "Authored from concept: notes 1A1.1 (Risk in Service of Business Objectives: start from measurable objectives and express each risk by its effect on them) and 1A1.2 (an objective's owner gives it a measure so risk to it can be rated). Round 4, 4 Nov 2026: original scenario (a city council objective of faster resident services with no target) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used.",
+      "_provenance": "Authored from concept: notes 1A1.1 (Risk in Service of Business Objectives: start from measurable objectives and express each risk by its effect on them) and 1A1.2 (an objective's owner gives it a measure so risk to it can be rated). Round 4, 4 Nov 2026: original scenario (a city council objective of faster resident services with no target) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Cross-domain fixes 4 Nov 2026 (round 4): pre_read no longer echoes the key ('measured against'); it now points to the stem's facts. Key B and all other fields unchanged.",
       "style_version": 2
     },
     {
@@ -2645,22 +2645,22 @@
       "options": {
         "A": "Running the risk function and reporting the risk profile",
         "B": "Approving the enterprise risk appetite for the board",
-        "C": "Accepting the risks that no business manager will own",
-        "D": "Owning the bank's cyber risks on behalf of IT"
+        "C": "Giving independent assurance on risk management",
+        "D": "Running the bank's security operations for the CIO"
       },
       "correct": "A",
-      "key_concept": "The CRO runs the risk function and reports the profile; the board sets appetite with senior management, and business managers own the risks.",
+      "key_concept": "The CRO runs the second-line risk function and reports the profile; the board sets appetite with senior management, and internal audit gives independent assurance.",
       "pre_read": "For each option, ask which role or body normally holds that decision.",
       "correct_explanation": "The CRO heads the second-line risk function: keeping the framework working, challenging ratings and reporting the risk profile to senior management and the board. Approving appetite is the runner-up because CROs draft and explain it, but appetite expresses how much risk the enterprise chooses to take, so the board, with senior management, sets and approves it; the CRO then monitors against it.",
       "wrong_explanations": {
         "B": "The CRO proposes and monitors appetite. Setting it reflects strategy and stakeholder expectations, which the board, with senior management, decides.",
-        "C": "Taking unowned risks into the risk function hides the gap. Senior management assigns them to business managers with authority over the affected objectives.",
-        "D": "Cyber risk affects business objectives and is owned by the business managers accountable for them, not by the risk function or IT."
+        "C": "Independent assurance over risk management is internal audit's role. The CRO runs the risk function, so the CRO cannot give an independent view of it.",
+        "D": "Security operations is first-line IT work under the CIO or CISO; a CRO running it could no longer challenge it."
       },
       "tips": [
-        "Eliminate: C and D give the risk function ownership of risks that belong to business managers, which the second line oversees but does not own.",
+        "Eliminate: C is internal audit's third-line assurance role, and D is first-line security work the risk function should challenge, not run.",
         "Final two: A beats B because the CRO runs the risk function and reports; approving appetite is the board's decision, with senior management, on the CRO's analysis.",
-        "Exam cue: the CRO proposes, monitors and reports; the board sets appetite and business managers own the risks."
+        "Exam cue: the CRO proposes, monitors and reports; the board sets appetite, business managers own the risks and internal audit assures."
       ],
       "framework_ref": "NIST CSF 2.0 GV.RR-02 (roles, responsibilities and authorities related to cybersecurity risk management are established, communicated, understood and enforced); ISACA Glossary (risk appetite)",
       "related_concepts": [
@@ -2668,7 +2668,7 @@
         "Risk appetite",
         "Risk ownership"
       ],
-      "_provenance": "Authored from concept: notes 1A2.1 (Board, Senior Management and the Risk Committee: the CRO runs the risk function and reports the profile; trap, the CRO approves appetite). Round 4, 4 Nov 2026: original scenario (the role of a bank's chief risk officer) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Review fixes 4 Nov 2026 (standards audit and concept review): stem reworded to a plain 'Which of the following' form; key and explanations unchanged.",
+      "_provenance": "Authored from concept: notes 1A2.1 (Board, Senior Management and the Risk Committee: the CRO runs the risk function and reports the profile; trap, the CRO approves appetite). Round 4, 4 Nov 2026: original scenario (the role of a bank's chief risk officer) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Review fixes 4 Nov 2026 (standards audit and concept review): stem reworded to a plain 'Which of the following' form; key and explanations unchanged. Cross-domain fixes 4 Nov 2026 (round 4): options C and D replaced with CRO-specific confusions (internal audit's independent assurance; first-line security operations), because the old C and D mirrored crisc_d1_023's committee distractors one for one; key_concept, wrong explanations C and D, and the Eliminate and Exam cue tips rewritten to match. The gate's option C was shortened from 'Giving the board independent assurance on risk management' so the key stays the sole longest option (by 4 characters): without it D1 would fall below the 15% key-longest minimum (a reverse tell). Key A, runner-up B and the explanation unchanged. Neighbours checked: crisc_d1_023, crisc_d1_078, CISA d2_059 and d2_187.",
       "style_version": 2
     },
     {
@@ -2900,7 +2900,7 @@
       "principle_id": "evidence-before-credit",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "Preparing a hospital's quarterly risk profile, the risk analyst finds that 40% of its clinical-system ratings were set before last year's move of those systems to the cloud. What should the analyst do FIRST?",
+      "question": "Preparing a hospital's quarterly risk profile, due in three weeks, the risk analyst finds 40% of its clinical-system ratings predate last year's move of those systems to the cloud. What should the analyst do FIRST?",
       "options": {
         "A": "Update those ratings with their owners before reporting",
         "B": "Send the profile with a note on the ratings' age",
@@ -2910,15 +2910,15 @@
       "correct": "A",
       "key_concept": "A risk profile is only as current as the ratings behind it; refresh ratings that predate a major change before reporting.",
       "pre_read": "Notice what changed after the ratings were set.",
-      "correct_explanation": "The profile is the leaders' decision view, so the ratings behind it must describe the enterprise as it is. Ratings set before a major change such as the cloud move may now be wrong in either direction, so they are refreshed with their owners before the profile goes out. Reporting with a note on their age is the runner-up: it is honest, but leaders would still decide on figures that may not describe today's risk.",
+      "correct_explanation": "The profile is the leaders' decision view, so its ratings must describe the enterprise as it is. Ratings set before the cloud move may now be wrong in either direction, and with three weeks until the profile is due there is time to refresh them with their owners. Reporting with a note on their age is the runner-up: honest, but leaders would still decide on figures that may not describe today's risk.",
       "wrong_explanations": {
-        "B": "A caveat is honest, but it leaves leaders deciding on ratings that may no longer describe the clinical systems' risk.",
+        "B": "A caveat suits a gap that cannot be closed before reporting; with three weeks left, these ratings can be refreshed, while a note leaves leaders deciding on stale figures.",
         "C": "The cloud move may have changed risk either way; lowering ratings without evidence credits controls no one has assessed.",
         "D": "Dropping the risks hides 40% of the exposure from leaders; telling the owners does not put it back in the profile."
       },
       "tips": [
         "Eliminate: C credits the cloud with lower risk before anyone has assessed it, and D removes a large share of exposure from the leaders' view.",
-        "Final two: A beats B because a profile is only as good as the ratings behind it; a caveat flags stale figures but still asks leaders to decide on them.",
+        "Final two: A beats B because there is time to refresh the ratings before the profile is due; a caveat suits gaps that cannot be closed in time.",
         "Exam cue: before reporting a profile, check that the ratings behind it are current, especially after a major change."
       ],
       "framework_ref": "COBIT 2019 APO12.03 (Maintain a Risk Profile); NIST SP 800-30 Rev. 1 Section 3.4 (Maintaining the Risk Assessment)",
@@ -2927,7 +2927,7 @@
         "Rating currency",
         "Major change"
       ],
-      "_provenance": "Authored from concept: notes 1B3.1 (Risk Register Versus Risk Profile: the profile shows current risk; ratings that predate a major change are refreshed with their owners before reporting). Round 4, 4 Nov 2026: original scenario (a hospital profile built on ratings older than a cloud migration) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Review fixes 4 Nov 2026 (standards audit and concept review): stem now says the stale ratings are the clinical-system ratings for the systems that moved, the fact the explanation and wrong explanation B rely on.",
+      "_provenance": "Authored from concept: notes 1B3.1 (Risk Register Versus Risk Profile: the profile shows current risk; ratings that predate a major change are refreshed with their owners before reporting). Round 4, 4 Nov 2026: original scenario (a hospital profile built on ratings older than a cloud migration) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Review fixes 4 Nov 2026 (standards audit and concept review): stem now says the stale ratings are the clinical-system ratings for the systems that moved, the fact the explanation and wrong explanation B rely on. Cross-domain fixes 4 Nov 2026 (round 4): the stem now says the profile is due in three weeks, the fact that separates this item from crisc_d3_041 (report on time with the limitation stated when the deadline is tomorrow); explanation, wrong explanation B and Final two tip now use it. 'were set before' became 'predate' to keep the stem within 35 words, and the gate's explanation and wrong explanation B were shortened to the 75- and 30-word limits. Key A and options unchanged.",
       "style_version": 2
     },
     {
@@ -3418,7 +3418,7 @@
       "principle_id": "match-decision-to-role",
       "difficulty": "foundational",
       "bloom_level": "Foundational",
-      "question": "Which of the following BEST shows the risk practitioner that ownership of a newly recorded risk has been established?",
+      "question": "Which of the following BEST shows the risk practitioner that ownership of a newly recorded risk, with no response yet decided, has been established?",
       "options": {
         "A": "The owner's name in the risk register entry",
         "B": "The risk team's proposal naming the owner",
@@ -3428,7 +3428,7 @@
       "correct": "D",
       "key_concept": "Ownership is established when the named owner acknowledges the risk, for example by signing off its register entry.",
       "pre_read": "For each option, ask who produced that evidence.",
-      "correct_explanation": "Ownership is established when the named person knows the risk is theirs and takes it on. The owner's signed acknowledgment of the entry shows exactly that, and lets the practitioner validate the ownership they proposed. A name in the register is the runner-up: it records who should own the risk, but a name entered by someone else does not show the owner has accepted the role.",
+      "correct_explanation": "Ownership is established when the named person knows the risk is theirs and takes it on. The owner's signed acknowledgment of the entry shows that, letting the practitioner validate the ownership they proposed; once responses are due, the owner's recorded decisions show the role in action. A name in the register is the runner-up: it records who should own the risk, but a name entered by others does not show acceptance.",
       "wrong_explanations": {
         "A": "A name entered by someone else records who should own the risk, not that the person knows it is theirs.",
         "B": "The risk team proposes owners, but a proposal is only the start: senior management confirms it, and the owner then takes the risk on.",
@@ -3445,7 +3445,7 @@
         "Validating ownership",
         "Risk register"
       ],
-      "_provenance": "Authored from concept: notes 1A2.2 (Risk Owner, Control Owner and Risk Practitioner: the practitioner proposes and validates owners; ownership holds once senior management confirms it and the owner acknowledges the risk). Round 4, 4 Nov 2026: original scenario (evidence that a newly recorded risk has an owner) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Review fixes 4 Nov 2026 (standards audit and concept review): key is now the owner's signed acknowledgment of the entry, since ownership does not require agreeing with the rating (owners can dispute a rating, as in crisc_d1_094); explanation, wrong explanation A, key concept and Final two tip aligned; 'it proposed' became 'they proposed'.",
+      "_provenance": "Authored from concept: notes 1A2.2 (Risk Owner, Control Owner and Risk Practitioner: the practitioner proposes and validates owners; ownership holds once senior management confirms it and the owner acknowledges the risk). Round 4, 4 Nov 2026: original scenario (evidence that a newly recorded risk has an owner) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Review fixes 4 Nov 2026 (standards audit and concept review): key is now the owner's signed acknowledgment of the entry, since ownership does not require agreeing with the rating (owners can dispute a rating, as in crisc_d1_094); explanation, wrong explanation A, key concept and Final two tip aligned; 'it proposed' became 'they proposed'. Cross-domain fixes 4 Nov 2026 (round 4): stem now says no response has yet been decided, and the explanation adds that recorded response decisions show the role in action once responses are due (the gate's wording shortened to the 75-word limit), so the item agrees with crisc_d3_022 (ownership validated by recorded decisions). Key D, options, wrong explanations and tips unchanged.",
       "style_version": 2
     },
     {
@@ -3495,31 +3495,31 @@
       "question": "A payments firm has twice learned of new IT rules from its regulator only after they took effect, each time rushing costly fixes. What should the risk practitioner recommend as BEST?",
       "options": {
         "A": "Assess the gaps left once the two new rules took effect",
-        "B": "Assess each new rule's impact before it takes effect",
+        "B": "Monitor the regulator's draft and upcoming rules",
         "C": "Ask the regulator to give the firm earlier notice",
         "D": "Fund a reserve for future rushed compliance fixes"
       },
       "correct": "B",
-      "key_concept": "Regulatory change is monitored and each new rule is assessed before it takes effect, so obligations become planned risks.",
+      "key_concept": "Repeated late compliance is a process gap: monitor draft and upcoming rules so each one is assessed and planned before it takes effect.",
       "pre_read": "Note when the firm learned of each rule.",
-      "correct_explanation": "Both rushed fixes have the same cause: the firm learns of rules too late to plan for them. Monitoring regulatory change and assessing each new rule's impact before it takes effect turns obligations into risks that owners can plan and fund in time. Assessing the gaps the two rules left is the runner-up: it is needed now, but it treats the last two cases and leaves the next rule to arrive the same way.",
+      "correct_explanation": "Both rushed fixes have the same cause: the firm has no watch on rules before they apply. Monitoring the regulator's draft and upcoming rules, with someone named to do it, lets each new rule be assessed and planned in time to fund the work. Assessing the gaps the two rules left is the runner-up: it is needed now, but it treats the last two cases and leaves the next rule unseen.",
       "wrong_explanations": {
         "A": "Assessing the remaining gaps is needed, but it treats the last two rules; the next one would again arrive unnoticed.",
-        "C": "Regulators publish rules ahead of their dates; keeping track of them is the firm's responsibility, not the regulator's.",
+        "C": "Regulators publish drafts and effective dates ahead of time; tracking them is the firm's responsibility, not the regulator's.",
         "D": "A reserve pays for rushed fixes; it does not prevent them, and late compliance still risks breaching the rules."
       },
       "tips": [
         "Eliminate: C hands the firm's own monitoring duty to the regulator, and D funds the rushed fixes instead of preventing them.",
-        "Final two: B beats A because the cause is learning of rules too late; assessing two rules' gaps treats the symptoms and leaves the next rule unseen.",
-        "Exam cue: compliance obligations are risk sources; monitor changes and assess each one before it takes effect."
+        "Final two: B beats A because the cause is having no watch on upcoming rules; assessing two rules' gaps treats the symptoms and leaves the next rule unseen.",
+        "Exam cue: when compliance surprises repeat, fix the watch: monitor draft and upcoming rules so each is assessed before it takes effect."
       ],
       "framework_ref": "NIST CSF 2.0 GV.OC-03 (legal, regulatory and contractual requirements, including privacy obligations, are understood and managed); COBIT 2019 MEA03 (Managed Compliance With External Requirements)",
       "related_concepts": [
-        "Regulatory change",
+        "Regulatory change monitoring",
         "Compliance risk",
         "Root cause"
       ],
-      "_provenance": "Authored from concept: notes 1B5.2 (Compliance Obligations as a Source of Risk: regulatory change is monitored, and new rules trigger an impact assessment before their effective date). Round 4, 4 Nov 2026: original scenario (a payments firm that twice found new rules only after they applied) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Review fixes 4 Nov 2026 (standards audit and concept review): pre_read no longer frames the one-off versus root-cause choice.",
+      "_provenance": "Authored from concept: notes 1B5.2 (Compliance Obligations as a Source of Risk: regulatory change is monitored, and new rules trigger an impact assessment before their effective date). Round 4, 4 Nov 2026: original scenario (a payments firm that twice found new rules only after they applied) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Review fixes 4 Nov 2026 (standards audit and concept review): pre_read no longer frames the one-off versus root-cause choice. Cross-domain fixes 4 Nov 2026 (round 4): re-keyed in meaning to monitoring the regulator's draft and upcoming rules (notes 1B5.2), because the old key restated crisc_d1_045's 'assess a new rule's impact before it takes effect'; key_concept, explanation, wrong explanation C, Final two and Exam cue tips and the first related concept rewritten to match; principle_id (root cause over symptom) and framework_ref (GV.OC-03, MEA03) still fit. The gate's explanation was shortened to the 75-word limit. Key letter B unchanged; the key is not the longest option. Neighbours checked: crisc_d1_045, CISA d2_165 (same rule, fix the regulatory watch, from the IS auditor's side, with different distractors; no contradiction).",
       "style_version": 2
     }
   ]
