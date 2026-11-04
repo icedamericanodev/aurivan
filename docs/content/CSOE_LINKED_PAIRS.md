@@ -186,22 +186,21 @@ Rule for the form builder: Draw no two items of a pair into the same form. Keep 
 | csoe_d5_013 | csoe_d5_073 | 073's WC and Final two say ERM is more than a longer risk list, which rules out held-out 013's option B (as 013/032 does) |
 | csoe_d5_007 | csoe_d5_078 | 078's stem and explanation put fraud risk in the risk assessment, d5_007's key |
 | csoe_d5_005 | csoe_d5_065 | contrasting severity yardsticks; 065's added sentence states 005's key (SEC filers grade severity in the SEC's terms) |
-| csoe_d5_038 | csoe_d5_099 | d5_038 wrong explanation B and exam cue state d5_105's key |
+| csoe_d5_038 | csoe_d5_099 | d5_038 wrong explanation B and exam cue state d5_099's key |
 | csoe_d5_045 | csoe_d5_088 | proposed by the D5 batch 5 author |
 | csoe_d5_010 | csoe_d5_085 | proposed by the D5 batch 5 author |
 | csoe_d5_023 | csoe_d5_086 | proposed by the D5 batch 5 author |
 | csoe_d5_002 | csoe_d5_087 | proposed by the D5 batch 5 author |
 | csoe_d5_002 | csoe_d5_090 | proposed by the D5 batch 5 author |
-| csoe_d4_088 | csoe_d4_089 | proposed by the D4 batch 5 author |
-| csoe_d4_089 | csoe_d4_093 | proposed by the D4 batch 5 author |
-| csoe_d4_061 | csoe_d4_091 | proposed by the D4 batch 5 author |
-| csoe_d4_086 | csoe_d4_087 | proposed by the D4 batch 5 author |
-| csoe_d4_103 | csoe_d4_104 | proposed by the D4 batch 5 author |
-| csoe_d4_104 | csoe_d4_105 | proposed by the D4 batch 5 author |
-| csoe_d4_062 | csoe_d4_102 | proposed by the D4 batch 5 author |
-| csoe_d4_094 | csoe_d4_099 | proposed by the D4 batch 5 author |
-| csoe_d4_097 | csoe_d4_098 | proposed by the D4 batch 5 author |
-| csoe_d2_031 | csoe_d4_097 | d2_031's explanation names d4_097's three factors |
+| csoe_d4_085 | csoe_d4_086 | two angles on the Section 13(b) books-and-records and internal-control provisions (D4 batch 5) |
+| csoe_d4_085 | csoe_d4_096 | the three Section 13(b) angles; 096 tests the 13(b)(6) good-faith rule |
+| csoe_d4_086 | csoe_d4_096 | the three Section 13(b) angles |
+| csoe_d4_092 | csoe_d4_093 | two angles on the Title XI tampering and obstruction crimes |
+| csoe_d4_093 | csoe_d4_094 | two angles on the Title XI tampering and obstruction crimes |
+| csoe_d4_092 | csoe_d4_094 | two angles on the Title XI tampering and obstruction crimes |
+| csoe_d4_008 | csoe_d4_092 | the proceeding need not be pending, under Section 1519 and Section 1512(c) |
+| csoe_d4_051 | csoe_d4_095 | the three Section 32(a) penalty angles |
+| csoe_d4_052 | csoe_d4_095 | the three Section 32(a) penalty angles |
 | csoe_d5_002 | csoe_d5_088 | both test the scope of the COSO definition |
 | csoe_d5_038 | csoe_d5_100 | SOC 1 use by user auditors |
 | csoe_d5_039 | csoe_d5_100 | SOC 1 use by user auditors |
