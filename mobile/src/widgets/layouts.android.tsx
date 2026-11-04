@@ -599,9 +599,13 @@ function week(x: X): El {
     const d = narrow ? 12 : Math.max(11, Math.min(iw < 320 ? 22 : 26, ih - (letters ? lettersH(scale) : 0)));
     const room = iw - leavesW(d) - 10;
     const unit = number ? (one ? 'day' : 'days') : undefined;
-    // On a 2×1 the figure steps down (not under 22) until its unit fits beside it at 12 sp or more.
+    // On a 2×1 the figure steps down (not under 20) until its unit fits beside it at SERIF_MIN (13 sp), the
+    // same floor figure() measures the unit at, so the unit stays on the figure's line.
     let fpx = figPx(narrow ? 34 : 44, x, ih, 20);
-    while (narrow && unit && fpx > 22 && room - Math.ceil(count.length * fpx * 0.62) - 6 < unit.length * 12 * 0.55) fpx -= 1;
+    const besideRoom = (px: number) => room - Math.ceil(count.length * px * 0.62) - 6;
+    while (narrow && unit && fpx > 20 && besideRoom(fpx) < unit.length * SERIF_MIN * 0.55) fpx -= 1;
+    // If the unit still cannot sit beside it, figure() puts it under the figure: shrink the figure so both lines fit the strip's height.
+    if (narrow && unit && besideRoom(fpx) < unit.length * SERIF_MIN * 0.55) fpx = Math.max(10, Math.min(fpx, Math.floor((ih - Math.ceil(SERIF_MIN * LH)) / LH)));
     const left = number ? figure(x, count, unit, fpx, sz(narrow ? 13 : 15, scale, SMALL_TITLE_CAP), c.ink2, 1, room) : heroText(face.title, face.short, F.serif, sz(17, scale, 1.3), SERIF_MIN, room, ih, c.ink);
     return (
       <FlexWidget style={{ width: 'match_parent', height: 'match_parent', flexDirection: 'row', alignItems: 'center' }}>
