@@ -2496,7 +2496,7 @@
       "question": "The risk practitioner's aggregation shows an airport operator's 12 supplier risks, each within its own tolerance, together exceed the board's appetite for supplier risk. What should the practitioner do FIRST?",
       "options": {
         "A": "Escalate the combined exposure to the board",
-        "B": "Leave the risks as reported, each within tolerance",
+        "B": "Have each owner accept their own risk on record",
         "C": "Ask each owner to cut their risk by an equal share",
         "D": "Hold the finding for the next yearly profile review"
       },
@@ -2505,12 +2505,12 @@
       "pre_read": "Separate the limits that apply to single risks from the limit that applies to the total.",
       "correct_explanation": "Tolerances limit each risk, but appetite limits the total, so exposure can breach appetite while every risk stays inside its own limit. A breach of the board's appetite goes to the board, which can direct treatment, accept the position for a time or revisit the limit. Asking each owner to cut an equal share is the runner-up: owners may well act, but the practitioner would be choosing the response to a board-level breach.",
       "wrong_explanations": {
-        "B": "Tolerances limit each risk; appetite limits the total. Combined exposure above appetite is a breach even when each risk sits inside its own tolerance.",
+        "B": "Each owner could accept a risk within its own tolerance, but together the risks exceed the board's appetite, and no single owner can accept that breach.",
         "C": "An equal cut is a response chosen by the practitioner. The board that set the appetite decides how the breach is handled, and cuts should follow the risk.",
         "D": "A breach of appetite is a governance event. Waiting for the yearly review leaves the board unaware of exposure above its limit."
       },
       "tips": [
-        "Eliminate: B reads individual tolerances as if they capped the total, and D holds a breach until a scheduled review.",
+        "Eliminate: B has each owner accept their own risk when the breach is of the board's limit on the total, and D holds a breach until a scheduled review.",
         "Final two: A beats C because a breach of the board's appetite goes to the board; the practitioner does not choose the response on its behalf.",
         "Exam cue: aggregate exposure can breach appetite even when each risk is within tolerance; escalate to whoever set the limit that was breached."
       ],
@@ -2520,7 +2520,7 @@
         "Risk appetite",
         "Escalation path"
       ],
-      "_provenance": "Authored from concept: notes 1B3.2 (Aggregation and Keeping the Profile Current: aggregate related risks, report against appetite) and 1B4.3 (a breach is escalated to the risk owner and the level that set the limit). Round 3, 4 Nov 2026: original scenario of an airport operator's supplier risks breaching appetite only in combination written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used.",
+      "_provenance": "Authored from concept: notes 1B3.2 (Aggregation and Keeping the Profile Current: aggregate related risks, report against appetite) and 1B4.3 (a breach is escalated to the risk owner and the level that set the limit). Round 3, 4 Nov 2026: original scenario of an airport operator's supplier risks breaching appetite only in combination written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Cross-domain fixes 4 Nov 2026 (round 6): option B is now owner acceptance on record of risks each within tolerance, a stated reason acceptance is wrong (the total breaches the board's appetite), as a counter-example to the within-appetite acceptance cue; why-B and the Eliminate tip follow (cross-domain gate).",
       "style_version": 2
     },
     {
@@ -3520,6 +3520,302 @@
         "Root cause"
       ],
       "_provenance": "Authored from concept: notes 1B5.2 (Compliance Obligations as a Source of Risk: regulatory change is monitored, and new rules trigger an impact assessment before their effective date). Round 4, 4 Nov 2026: original scenario (a payments firm that twice found new rules only after they applied) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Review fixes 4 Nov 2026 (standards audit and concept review): pre_read no longer frames the one-off versus root-cause choice. Cross-domain fixes 4 Nov 2026 (round 4): re-keyed in meaning to monitoring the regulator's draft and upcoming rules (notes 1B5.2), because the old key restated crisc_d1_045's 'assess a new rule's impact before it takes effect'; key_concept, explanation, wrong explanation C, Final two and Exam cue tips and the first related concept rewritten to match; principle_id (root cause over symptom) and framework_ref (GV.OC-03, MEA03) still fit. The gate's explanation was shortened to the 75-word limit. Key letter B unchanged; the key is not the longest option. Neighbours checked: crisc_d1_045, CISA d2_165 (same rule, fix the regulatory watch, from the IS auditor's side, with different distractors; no contradiction).",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d1_096",
+      "domain": 1,
+      "subtopic": "1A1 Strategy, goals and objectives. Delay asked for an AI launch",
+      "principle_id": "appetite-drives-response",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An airline's customer director owns a strategic AI rebooking assistant whose tested risk is within appetite, but the security lead wants six more months of repeat tests. What is the risk practitioner's BEST recommendation?",
+      "options": {
+        "A": "Ask the director to delay launch for the extra tests",
+        "B": "Insure the airline against losses from the assistant",
+        "C": "Have the director accept the rated risk for launch",
+        "D": "Log the security lead's objection in the risk register"
+      },
+      "correct": "C",
+      "key_concept": "Within appetite, the owner accepts and monitors a strategic risk; delaying the objective for extra treatment has a cost of its own.",
+      "pre_read": "Note what the assistant is for and what the testing showed.",
+      "correct_explanation": "The assistant serves a strategic objective, and its tested risk already sits within appetite, so its owner, the customer director, can accept the risk and launch, with the acceptance recorded and monitored. A six-month delay is the runner-up: it gives up half a year of the objective's benefit to reduce a risk that needs no further treatment. A delayed opportunity is also an effect on objectives.",
+      "wrong_explanations": {
+        "A": "Delay feels like the cautious choice, but the risk is already within appetite; six months of extra tests would cost the strategic objective more than they reduce.",
+        "B": "Insurance shifts part of a loss when a risk needs treatment; this one is already within appetite, so the premium buys nothing the owner needs.",
+        "D": "Logging the objection records a view but decides nothing; the owner still has to accept the risk before the assistant can launch."
+      },
+      "tips": [
+        "Eliminate: B transfers a risk that is already within appetite, and D records the security lead's view without anyone deciding.",
+        "Final two: C beats A because a risk within appetite is accepted by its owner and monitored; delaying a strategic launch for more tests gives up the objective for no needed reduction.",
+        "Exam cue: within appetite, the owner accepts and monitors; a delay or extra treatment has a cost to the objective too."
+      ],
+      "framework_ref": "ISACA Glossary (risk acceptance); NIST AI 100-1 (AI RMF 1.0) MANAGE 1.1 (a determination is made as to whether the AI system achieves its intended purposes and whether its development or deployment should proceed); NIST CSF 2.0 GV.RM-07 (strategic opportunities or positive risks are characterized and are included in organizational cybersecurity risk discussions)",
+      "related_concepts": [
+        "Risk acceptance",
+        "Upside risk",
+        "AI strategy"
+      ],
+      "_provenance": "Authored from concept: notes 1A1.1 (Risk in Service of Business Objectives: upside risk counts, so a missed or delayed opportunity also affects objectives), with the acceptance rule in 1B4.3 and 1A1.2 (AI initiatives need a risk owner and appetite fit). Round 6, 4 Nov 2026: original scenario (an airline's AI rebooking assistant, tested within appetite, with a security lead asking for a six-month delay) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Acceptance keyed under the round 6 plan: the owner accepts within appetite, recorded and monitored; the practitioner recommends. Neighbours checked: crisc_d3_002 (within appetite, an extra monitoring tool; same rule, but here the proposal is a delay that costs a strategic objective, and no wrong-owner acceptance distractor is reused), CISA d1_194 (controls until residual risk reaches zero), crisc_d3_003 and crisc_d3_087 (avoid or mitigate when above appetite), crisc_d1_039 (exposure well below appetite), crisc_d1_083 (timing of input to an AI strategy), crisc_d4_005 (launch-date pressure on acceptance testing). Review fixes 4 Nov 2026 (round 6 audit, concept review and blind test): stem says 'repeat tests', so the security lead's request reads as more of the same testing, not a gap in the tested rating (concept review observation).",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d1_097",
+      "domain": 1,
+      "subtopic": "1A3 Organizational culture and ethics. Reports that seem to go nowhere",
+      "principle_id": "root-cause-over-symptom",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "Staff concern reports at a hotel chain have halved in a year; each is investigated, but a survey finds staff think reports go nowhere. What should the risk practitioner recommend as BEST?",
+      "options": {
+        "A": "Tell reporters what came of the concern they raised",
+        "B": "Run a campaign reminding staff how to report concerns",
+        "C": "Add an anonymous option to the reporting route",
+        "D": "Make raising a concern a duty in the code of conduct"
+      },
+      "correct": "A",
+      "key_concept": "People keep raising concerns when they see what comes of them; feedback to each reporter closes the loop.",
+      "pre_read": "Note what happens to each report and what staff believe happens.",
+      "correct_explanation": "Every report is investigated, yet staff think reports go nowhere, so the fall comes from reporters never hearing back. Telling each reporter what came of their concern closes the loop and shows that speaking up is worth the effort. A campaign on how to report is the runner-up: reports are still arriving, so staff know the route, and a reminder does not answer their belief that nothing happens.",
+      "wrong_explanations": {
+        "B": "A campaign is tempting, but reports are still arriving, so staff know how to report; it leaves their belief that nothing happens untouched.",
+        "C": "Anonymity helps when people fear reprisal; here staff doubt that anything happens, and an anonymous report makes feedback to the reporter harder.",
+        "D": "A duty to report changes the rules, not what staff see; reporters would still hear nothing back, so the fall would continue."
+      },
+      "tips": [
+        "Eliminate: C answers a fear of reprisal the survey does not show, and D adds a duty without changing what staff see happen.",
+        "Final two: A beats B because the cause is missing feedback, not an unknown route; telling reporters what came of their concern rebuilds the habit.",
+        "Exam cue: when reporting falls, ask what reporters experience next; closing the loop with feedback keeps people speaking up."
+      ],
+      "framework_ref": "ISACA Glossary (risk culture); NIST CSF 2.0 GV.RR-01 (organizational leadership is responsible and accountable for cybersecurity risk and fosters a culture that is risk-aware, ethical and continually improving)",
+      "related_concepts": [
+        "Speaking up",
+        "Risk culture",
+        "Feedback to reporters"
+      ],
+      "_provenance": "Authored from concept: notes 1A3.2 (Incentives, Speaking Up and Escalation: reported concerns are logged, assessed and closed with feedback to the reporter; without feedback, people decide reporting is pointless). Round 6, 4 Nov 2026: original scenario (a hotel chain whose concern reports halved although each is investigated) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Neighbours checked: crisc_d1_024 (near-miss reports fell once they counted against the reporter: the cause there is a penalty, here missing feedback), crisc_d1_084 (one channel through a dismissive shift manager: a channel fix, offered here as a wrong option only for fear the stem does not show), crisc_d1_046 (gauging culture), CISA d1_028 (fear of retaliation as the culture finding). No CC or AAIA item on feedback to reporters.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d1_098",
+      "domain": 1,
+      "subtopic": "1A4 Policies and standards. Stricter local rule",
+      "principle_id": "answer-from-the-stem",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A retailer's standard requires deleting customer records within five years; one country unit's standard sets three, as local law requires, and the CIO wants one five-year rule. What should the risk practitioner advise as BEST?",
+      "options": {
+        "A": "Apply the five-year rule in the country unit as well",
+        "B": "Report the unit as breaching the group's standard",
+        "C": "Request a group exception for the unit's local rule",
+        "D": "Keep the unit's stricter standard alongside the group's"
+      },
+      "correct": "D",
+      "key_concept": "A lower layer may tighten a higher one but not relax it; a stricter local rule that meets the group rule needs no exception.",
+      "pre_read": "Read the group rule's limit closely, then compare the unit's rule with it.",
+      "correct_explanation": "Deleting after three years still meets a group rule that says within five, so the unit's standard tightens the group's without relaxing it, and it meets local law. A lower layer may be stricter than a higher one, so it can stand alongside the group standard. An exception is the runner-up: exceptions record an owner's acceptance of not meeting a requirement, and here the requirement is met.",
+      "wrong_explanations": {
+        "A": "Replacing the unit's rule with the group's would let records stay up to five years, past the three years local law allows; the group rule sets an outer limit.",
+        "B": "Deleting at three years is inside the group's five-year limit, so the unit meets the standard; a stricter rule is not a breach.",
+        "C": "An exception covers a requirement that is not met and the risk an owner accepts; the unit meets the group rule, so there is nothing to except."
+      },
+      "tips": [
+        "Eliminate: A would push the unit past its local law, and B calls a stricter rule a breach when it meets the group limit.",
+        "Final two: D beats C because a lower layer may tighten a higher one; an exception is only for a requirement that is not met.",
+        "Exam cue: a local rule can be stricter than the group's, never looser; check whether the higher rule is actually broken before raising an exception."
+      ],
+      "framework_ref": "ISACA Glossary (policy); NIST CSF 2.0 GV.PO-01 (policy for managing cybersecurity risks is established based on organizational context, cybersecurity strategy and priorities and is communicated and enforced); NIST CSF 2.0 GV.OC-03 (legal, regulatory and contractual requirements, including privacy obligations, are understood and managed)",
+      "related_concepts": [
+        "Policy hierarchy",
+        "Local standards",
+        "Policy exceptions"
+      ],
+      "_provenance": "Authored from concept: notes 1A4.1 (The Policy Hierarchy: a lower layer may tighten a higher one but not relax it). Round 6, 4 Nov 2026: original scenario (a retailer whose country unit deletes customer records after three years under a group rule of within five) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. The law is context only; the key rests on the hierarchy principle. Neighbours checked: crisc_d1_085 (an acquired insurer on a weaker policy is brought under the group policy: the mirror case, looser rather than stricter), crisc_d1_050 (a procedure cannot relax its standard), crisc_d3_007 and crisc_d3_028 (exception versus exemption for a rule that is not met), CISA d2_182 (a group clause that conflicts with local law gets an approved local addendum: there the group rule is broken, here it is met), CISA d5_058 (global baseline with local overlays). Review fixes 4 Nov 2026 (round 6 audit, concept review and blind test): wrong explanation A now says the group rule would let records stay past the local limit (it is a maximum, not a keeping period); notes 1A4.1 bullet 6 reworded (concept review).",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d1_099",
+      "domain": 1,
+      "subtopic": "1A5 Business processes and resilience. Recovery slower than the target",
+      "principle_id": "proportionate-response",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An exercise restored a distributor's invoicing in three days, against the process owner's one-day target; meeting it would cost $400,000 a year, and three days is within appetite. What is the risk practitioner's BEST recommendation?",
+      "options": {
+        "A": "Fund the upgrade that meets the one-day target",
+        "B": "Have the owner accept the three-day recovery on record",
+        "C": "Have IT reset the recovery target to three days",
+        "D": "Log the gap for the owner's next yearly plan review"
+      },
+      "correct": "B",
+      "key_concept": "A tested recovery slower than the target but within appetite may be accepted by the process owner on record, instead of funding a costly fix.",
+      "pre_read": "Compare the tested recovery with the target, then with appetite.",
+      "correct_explanation": "The exercise shows recovery takes three days, not one, but three days is within appetite, so no further treatment is needed. The recovery target is the process owner's, so the owner accepts three days on record, and the RTO and plan are updated to match. Having IT reset the target is the runner-up: it brings the plan in line with the test, but changing a business recovery target is the owner's decision, not IT's.",
+      "wrong_explanations": {
+        "A": "The upgrade meets the one-day target, but three days is already within appetite, so $400,000 a year buys a reduction the business does not need.",
+        "C": "IT can report the tested recovery time, but the target comes from the business; resetting it without the owner's acceptance moves a decision that is the owner's.",
+        "D": "Waiting a year leaves the plan promising one day while recovery takes three; the owner can decide now, while the exercise result is fresh."
+      },
+      "tips": [
+        "Eliminate: A spends $400,000 a year on a risk already within appetite, and D leaves the plan promising a recovery the exercise showed it cannot deliver.",
+        "Final two: B beats C because the recovery target belongs to the process owner; IT can report the tested time, but only the owner can accept three days and have the RTO changed.",
+        "Exam cue: a gap found in testing is not always treated; within appetite, the owner can accept it on record and the RTO and plan are updated to match."
+      ],
+      "framework_ref": "ISACA Glossary (recovery time objective); ISACA Glossary (risk acceptance); COBIT 2019 DSS04 (Managed Continuity)",
+      "related_concepts": [
+        "Recovery time objective",
+        "Risk acceptance",
+        "Continuity exercise"
+      ],
+      "_provenance": "Authored from concept: notes 1A5.1 (Process Ownership and Critical Processes: process owners set recovery needs, and a tested recovery slower than the target but within appetite can be accepted by the process owner on record, with the plan updated to match). Round 6, 4 Nov 2026: original scenario (a distributor's invoicing restored in three days against a one-day target, with a $400,000-a-year fix) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Acceptance keyed under the round 6 plan: within appetite, the process owner accepts, recorded and reviewed; the practitioner recommends. Neighbours checked: CISA d4_322 (five days against a two-day impact tolerance gets a funded plan: the opposite case, outside tolerance), CC cc_d2_008 (a hot site for an archive with a three-week RTO: compare cost with the target, not acceptance of a tested gap), crisc_d1_029 (a process gap after a test goes to the owner), crisc_d1_063 (an approved fix with an interim workaround), crisc_d3_002 and CISA d1_194 (more controls on a risk within appetite). Review fixes 4 Nov 2026 (round 6 audit, concept review and blind test): explanation and Exam cue say the RTO itself is updated with the plan once the owner accepts three days (concept review); notes 1A5.1 matched. Keep apart from crisc_d4_076 in practice sets (same accept-instead-of-costly-fix shape). Cross-domain fixes 4 Nov 2026 (round 6): re-angled to 1A5 governance: the final two is now the process owner against IT on who sets the recovery target (runner-up C), and funding the upgrade falls to topic knowledge, so the item no longer repeats crisc_d4_076's cost-against-fix lesson; options, key B and Exam cue unchanged (cross-domain gate).",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d1_100",
+      "domain": 1,
+      "subtopic": "1B1 Enterprise risk management (ERM). Sign a framework is not working",
+      "principle_id": "evidence-before-credit",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "Which of the following would BEST show the risk practitioner that an insurer's risk management framework is not working as intended?",
+      "options": {
+        "A": "Major losses from risks that no assessment had identified",
+        "B": "A rise in the number of risks recorded in the register",
+        "C": "Units taking longer than planned to finish their assessments",
+        "D": "Several units reporting risks above appetite this year"
+      },
+      "correct": "A",
+      "key_concept": "A risk management framework is judged by its outcomes: major losses from risks it never identified show it is not working.",
+      "pre_read": "Ask what a framework is for, then which option tests that.",
+      "correct_explanation": "A framework exists to help the enterprise find and manage the risks to its objectives, so major losses from risks no assessment identified show it failing at its purpose and needing review. Units reporting risks above appetite is the runner-up: it can look like failure, but finding exposure and sending it for decisions is what a working framework does; the failure sign is loss from risks it never found.",
+      "wrong_explanations": {
+        "B": "More recorded risks can mean better identification, not failure; a count alone does not show whether the framework protects objectives.",
+        "C": "Slow assessments point to effort or resourcing; the framework can still find and manage the right risks when units finish late.",
+        "D": "Risks reported above appetite show the framework finding exposure and sending it for decisions; that is the framework working, not failing."
+      },
+      "tips": [
+        "Eliminate: B counts recorded risks, which can rise as identification improves, and C measures how fast units work, not whether the right risks are found.",
+        "Final two: A beats D because a framework is judged by its outcomes; risks reported above appetite show it finding exposure, while losses from unidentified risks show it missing them.",
+        "Exam cue: use of a framework shows it is embedded; outcomes show whether it works. Exposure it surfaces is success; losses it never saw are failure."
+      ],
+      "framework_ref": "NIST CSF 2.0 GV.OV-02 (the cybersecurity risk management strategy is reviewed and adjusted to ensure coverage of organizational requirements and risks); COBIT 2019 EDM03 (Ensured Risk Optimization)",
+      "related_concepts": [
+        "Risk management framework",
+        "Framework effectiveness",
+        "Risk identification"
+      ],
+      "_provenance": "Authored from concept: notes 1B1.3 (The Risk Management Framework and Its Approval: effectiveness is judged by outcomes, such as major losses from risks it never identified). Round 6, 4 Nov 2026: original item (signs that an insurer's framework is not working) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Neighbours checked: crisc_d1_034 (BEST evidence a framework is embedded is units using its methods: use, not effectiveness; the Exam cue names the difference), crisc_d1_061 (review after major change checks scope and roles), crisc_d1_078 (internal audit's independent assurance over the process), CISA d2_091 (a true program versus periodic exercises). No CC or AAIA item on framework effectiveness signals. Review fixes 4 Nov 2026 (round 6 audit, concept review and blind test): runner-up D replaced (a newer framework edition was a strawman) with units reporting risks above appetite, a real misreading of success as failure; explanation and tips follow (audit and concept review, one reconciled version). Keep apart from crisc_d1_034.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d1_101",
+      "domain": 1,
+      "subtopic": "1B3 Risk profile. Appetite lowered under current ratings",
+      "principle_id": "appetite-drives-response",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "After a bank's board lowered its appetite for customer data risk, the risk analyst finds that four risks rated last month, once within appetite, now exceed it. What should the analyst do FIRST?",
+      "options": {
+        "A": "Have the owners re-rate the four risks for the new appetite",
+        "B": "Keep showing the four as within appetite until the yearly refresh",
+        "C": "Ask the board to phase in its new appetite over a year",
+        "D": "Tell the four risks' owners they are now above appetite"
+      },
+      "correct": "D",
+      "key_concept": "A changed appetite moves the comparison, not the ratings; risks newly above it go first to their owners for a response.",
+      "pre_read": "Ask what the board changed and what it did not change.",
+      "correct_explanation": "Appetite is the line ratings are compared with, not part of the rating: the four risks were rated last month, and lowering the line changed only how they compare with it. They now exceed appetite, so their owners must learn of it first and choose a response. Having owners re-rate them is the runner-up: it repeats an analysis that is current and delays the decision the new appetite requires.",
+      "wrong_explanations": {
+        "A": "The ratings are a month old and still current; appetite is the line they are compared with, so re-rating them only delays the owners' response.",
+        "B": "The profile compares current risk with today's appetite; showing these risks as within a limit the board has lowered would mislead leaders until the refresh.",
+        "C": "The board sets appetite; the analyst can explain what the change means, but asking to phase it in second-guesses a decision that is the board's."
+      },
+      "tips": [
+        "Eliminate: B measures the profile against an appetite the board has replaced, and C asks the board to soften a limit only it sets.",
+        "Final two: D beats A because a new appetite moves the comparison, not the ratings; owners of risks now above it need to know first so they can respond.",
+        "Exam cue: when appetite or tolerance changes, compare the current ratings with the new line and take any new breaches to their owners."
+      ],
+      "framework_ref": "ISACA Glossary (risk appetite); NIST CSF 2.0 GV.RM-02 (risk appetite and risk tolerance statements are established, communicated and maintained); NIST IR 8286 Rev. 1 Section 4.1 (Applying the Enterprise Risk Register and Developing the Enterprise Risk Profile)",
+      "related_concepts": [
+        "Risk profile",
+        "Risk appetite change",
+        "Risk owner"
+      ],
+      "_provenance": "Authored from concept: notes 1B3.1 (Risk Register Versus Risk Profile: the profile sets current risk against today's appetite; a changed appetite moves that comparison, not the ratings). Round 6, 4 Nov 2026: original scenario (a bank board lowers its appetite for customer data risk and four current ratings now exceed it) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. A FIRST item whose key is not an assessment; the reassess option is the trap. Neighbours checked: crisc_d1_067 (lowered appetite with old KRI thresholds: propose new thresholds; here the comparison of current ratings), crisc_d1_079 (ratings older than a major change are refreshed with owners first: there the ratings are stale, here they are a month old), crisc_d1_037 (a credited control that failed: re-rate without it), crisc_d1_091 (capacity falls below appetite), crisc_d1_018 (KRI breach escalated to the owner). Review fixes 4 Nov 2026 (round 6 audit, concept review and blind test): no content change; keep apart from crisc_d1_067 in practice sets (both a lowered appetite meeting existing settings).",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d1_102",
+      "domain": 1,
+      "subtopic": "1B2 Lines of defense. Evidence that challenge works",
+      "principle_id": "lines-of-defense",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "Which of the following BEST shows the risk practitioner that a telecom's second-line challenge of business units' risk ratings is effective?",
+      "options": {
+        "A": "Minutes of the team's monthly meetings with each unit",
+        "B": "The team's sign-off on each unit's ratings before reporting",
+        "C": "Ratings units revised after the team questioned them",
+        "D": "Business units' high satisfaction with the team's reviews"
+      },
+      "correct": "C",
+      "key_concept": "Second-line challenge is shown to work by the outcomes it changes, such as ratings units revised after questioning, not by meetings or sign-offs.",
+      "pre_read": "Ask which record would look different if the challenge were weak.",
+      "correct_explanation": "Challenge works when it changes outcomes: ratings that units revised after the team questioned them show the second line tested the units' views and moved them where the basis was weak. A sign-off before reporting is the runner-up: it shows the team saw each rating, but a signature looks the same whether the team probed the basis or passed it unread.",
+      "wrong_explanations": {
+        "A": "Meeting minutes show contact, not challenge; the team can meet every month and still pass ratings on unquestioned.",
+        "B": "A sign-off shows the team saw each rating, but approval looks the same whether the basis was tested or not.",
+        "D": "Satisfied units may simply mean the team rarely pushes back; comfort with the second line is not evidence that its challenge works."
+      },
+      "tips": [
+        "Eliminate: A shows that meetings took place, not what they changed, and D measures how comfortable units are, which weak challenge can raise.",
+        "Final two: C beats B because effective challenge shows in ratings that moved; a sign-off proves review happened, not that it tested anything.",
+        "Exam cue: evidence that oversight works is a changed outcome traceable to it; meetings, signatures and satisfaction show activity only."
+      ],
+      "framework_ref": "ISACA Journal 2018 Volume 4 (Roles of Three Lines of Defense for Information Security and Governance); COBIT 2019 APO12 (Managed Risk)",
+      "related_concepts": [
+        "Second line of defense",
+        "Effective challenge",
+        "Risk self-assessment"
+      ],
+      "_provenance": "Authored from concept: notes 1B2.1 (The Three Lines and Their Jobs: the second line monitors and challenges, and challenge shows it works when ratings or plans change because of it). Round 6, 4 Nov 2026: original item (what shows a telecom's second-line challenge of unit ratings is effective) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Neighbours checked: crisc_d1_065 (the risk team passes self-assessed ratings on unchanged: do challenge; here, how to show it works), crisc_d1_094 (disagreement after challenge goes to the committee), crisc_d1_093 (a signed acknowledgment shows ownership was taken on; here a sign-off cannot show challenge, a different purpose), crisc_d1_036 and crisc_d1_089 (threats to second-line objectivity), CISA d2_002 and d2_071 (which line is which), AAIA aaia_d2_014 and aaia_d2_079 (validators who challenge a model).",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d1_103",
+      "domain": 1,
+      "subtopic": "1B5 Risk frameworks, legal, regulatory and contractual requirements. Insurance condition not met",
+      "principle_id": "evidence-before-credit",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "A freight firm's ransomware risk is rated within appetite, relying on a cyber policy that pays only if remote access uses MFA, which 15% of remote accounts lack. What should the risk analyst do FIRST?",
+      "options": {
+        "A": "Have IT add MFA to the remote accounts at risk",
+        "B": "Reassess the risk as if the policy would not pay",
+        "C": "Ask the insurer to reassess the policy condition at renewal",
+        "D": "Have the owner accept the risk as rated within appetite"
+      },
+      "correct": "B",
+      "key_concept": "An insurance condition the firm does not meet can void the cover, so the risk is reassessed without the transfer before a response is chosen.",
+      "pre_read": "Note what the rating depends on and whether that still holds.",
+      "correct_explanation": "The rating counts on insurance, but the policy pays only if remote access uses MFA, and 15% of accounts lack it, so the insurer may refuse a ransomware claim while the condition is unmet. The risk is first reassessed as if the policy would not pay, then taken to its owner if it now exceeds appetite. Adding MFA is the runner-up: it may be the right fix, but the owner chooses it after the analysis.",
+      "wrong_explanations": {
+        "A": "Closing the MFA gap may well follow, but acting before the risk is reassessed skips the analysis the owner needs to choose a response.",
+        "C": "Asking the insurer to revisit the policy condition at renewal may fail, and it leaves today's rating resting on cover that may not pay.",
+        "D": "Acceptance is the owner's call only on a sound rating; this one counts on cover the insurer may refuse while the condition is unmet."
+      },
+      "tips": [
+        "Eliminate: C hopes the insurer changes its terms later, and D accepts a within-appetite rating that rests on cover that may not pay.",
+        "Final two: B beats A because the rating rested on a transfer that may fail; reassess first, then the owner picks the fix.",
+        "Exam cue: a contract or policy condition the firm does not meet can void a transfer; rate the risk without the cover before choosing a response."
+      ],
+      "framework_ref": "ISACA Glossary (risk transfer); ISACA Glossary (current risk); NIST CSF 2.0 GV.OC-03 (legal, regulatory and contractual requirements, including privacy obligations, are understood and managed)",
+      "related_concepts": [
+        "Risk transfer",
+        "Insurance conditions",
+        "Contractual requirements"
+      ],
+      "_provenance": "Authored from concept: notes 1B5.3 (Contractual Requirements and Service Level Agreements: an unmet insurance condition can void cover, so rate the risk without it). Round 6, 4 Nov 2026: original scenario (a freight firm's ransomware rating relies on a cyber policy that requires MFA on remote access, which 15% of accounts lack) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Neighbours checked: crisc_d1_037 (a credited control that has stopped is re-rated without credit: the same move, here for a transfer voided by a contract condition, a 1B5 lesson), crisc_d1_081 (a liability cap leaves residual risk), crisc_d3_001 and crisc_d3_086 (what insurance shifts), CISA d2_133 (insurance limits sized to exposure), CISA d4_093 (insurance does not restore operations), CISA d5_172 (insurer approval during an incident). No CC or AAIA item on an unmet insurance condition. Review fixes 4 Nov 2026 (round 6 audit, concept review and blind test): option D is now an acceptance distractor, so the item is a counter-example to 'within appetite plus an accept option means accept' (blind test); C names the policy so the stem's 'policy' is not echoed by the key alone; explanation and wrong explanation D say the insurer may refuse the claim while the condition is unmet (concept review). Keep apart from crisc_d1_037 (same reassess-without-credit move, same key letter).",
       "style_version": 2
     }
   ]

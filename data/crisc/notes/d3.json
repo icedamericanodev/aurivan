@@ -133,12 +133,13 @@
           "legacy_ids": [],
           "practice_ids": [
             "crisc_d3_002",
-            "crisc_d3_010"
+            "crisc_d3_010",
+            "crisc_d3_116"
           ],
           "definition": "Response selection is choosing the option expected to bring risk within appetite at a cost proportionate to the loss it prevents, while still supporting business objectives.",
           "why_it_matters": "Spending more on a control than the loss it prevents destroys value, and so does treating a risk already within appetite. Proportion keeps the budget on the risks that matter most.",
           "how_it_works": [
-            "Start with the current rating against appetite and tolerance; a risk already within appetite usually needs acceptance and monitoring, not new spending.",
+            "Start with the current rating against appetite and tolerance; a risk within them, even at its worst plausible loss, usually needs acceptance and monitoring, not new spending or insurance.",
             "Estimate each option's cost over its life: purchase, staff time, training, maintenance and any slowdown to the business.",
             "Estimate each option's benefit as the reduction in expected loss, plus any legal or contractual requirement it meets.",
             "Prefer the option that meets appetite at the lowest total cost, unless a law or contract demands a specific control.",
@@ -260,13 +261,14 @@
             "crisc_d3_022",
             "crisc_d3_023",
             "crisc_d3_052",
-            "crisc_d3_090"
+            "crisc_d3_090",
+            "crisc_d3_117"
           ],
           "definition": "A risk owner is the person given the authority and accountability to make decisions about a risk, and who answers for the loss if it happens.",
           "why_it_matters": "A risk without a capable owner drifts: nobody decides its response, funds the controls or answers when it happens. Ownership at the wrong level gives the decision to people who cannot act on it.",
           "how_it_works": [
             "Assign the owner by business accountability: the manager whose objectives, process or budget the risk affects.",
-            "Match authority to size: the owner must be able to fund treatment and accept residual risk at that rating.",
+            "Match authority to size and reach: the owner must fund treatment and accept residual risk at that rating, across every unit the risk spans.",
             "Name one accountable person, not a committee or a department; others, such as IT delivering the treatment, contribute as action owners, stakeholders or control owners.",
             "Revalidate ownership regularly and after reorganizations, departures or process changes.",
             "IT usually owns technology controls, while the business owns the business risk those controls protect.",
@@ -537,13 +539,14 @@
           "legacy_ids": [],
           "practice_ids": [
             "crisc_d3_027",
-            "crisc_d3_056"
+            "crisc_d3_056",
+            "crisc_d3_118"
           ],
           "definition": "AI supply chain risk is the risk from third-party models, training data, AI services and tools, which can change, fail or behave unexpectedly outside the organization's control.",
           "why_it_matters": "A vendor can retrain or swap the model behind a service without notice, and its training data may be unknown. The business still owns any harm the AI output causes.",
           "how_it_works": [
             "Ask what model and data sit behind the service, how the vendor tests them and how it announces changes.",
-            "Put AI terms in the contract: change notice, performance commitments, data use limits and incident reporting.",
+            "Put AI terms in the contract: change notice, performance commitments, data use limits and incident reporting; rate any gap like other vendor risk, which the business owner may accept.",
             "Monitor the vendor's model in production as part of your own monitoring, especially after vendor updates.",
             "Plan contingency for a high-risk AI service failing, including a manual or non-AI fallback.",
             "Treat downloaded pre-trained models as untrusted components until their source and integrity are checked.",
@@ -656,7 +659,8 @@
             "crisc_d3_028",
             "crisc_d3_030",
             "crisc_d3_058",
-            "crisc_d3_093"
+            "crisc_d3_093",
+            "crisc_d3_119"
           ],
           "definition": "An exception is a temporary, approved deviation from a policy or standard; an exemption is an approved exclusion from a requirement that does not apply or cannot apply.",
           "why_it_matters": "Business sometimes cannot meet a requirement on time. A managed deviation keeps that risk visible, compensated and time-bound; an unmanaged one becomes a permanent, hidden gap.",
@@ -665,7 +669,7 @@
             "The practitioner assesses the risk and proposes compensating controls to keep it within appetite.",
             "The risk owner approves, at a level that matches the risk; policy may require senior management for high ratings.",
             "Exceptions carry an expiry date and a plan to comply; exemptions are reviewed periodically to confirm they still apply.",
-            "All deviations sit in one register, reported in aggregate so their combined risk is visible.",
+            "Keep all deviations in one register and report them in aggregate, so combined risk shows and repeated requests point to a cause to fix.",
             "An exemption rests on facts about its scope; when the system or its data changes, reassess whether it still applies without waiting for the scheduled review."
           ],
           "compare": {
@@ -910,14 +914,15 @@
           "legacy_ids": [],
           "practice_ids": [
             "crisc_d3_060",
-            "crisc_d3_061"
+            "crisc_d3_061",
+            "crisc_d3_120"
           ],
           "definition": "Control frameworks are published models and catalogs, such as COBIT 2019, NIST SP 800-53 Rev. 5 and NIST CSF 2.0, that organizations tailor into their own control set.",
           "why_it_matters": "A framework gives a tested starting point and a common language with auditors and regulators. Adopting it whole, without tailoring, spends money on controls that do not fit the risks.",
           "how_it_works": [
             "COBIT 2019 sets out governance and management objectives for enterprise IT, such as managed risk and managed vendors.",
             "NIST SP 800-53 Rev. 5 is a catalog of security and privacy controls; its starting baselines are published separately in SP 800-53B.",
-            "CSF 2.0 lists outcomes under six functions: Govern, Identify, Protect, Detect, Respond and Recover.",
+            "CSF 2.0 lists outcomes under six functions: Govern, Identify, Protect, Detect, Respond and Recover; it does not prescribe the controls that achieve them.",
             "Tailor by scoping out what does not apply, setting parameters and adding controls for risks the baseline misses.",
             "Map internal controls to every framework and regulation that applies, so one control can meet several requirements."
           ],
@@ -975,13 +980,14 @@
           "practice_ids": [
             "crisc_d3_009",
             "crisc_d3_062",
-            "crisc_d3_098"
+            "crisc_d3_098",
+            "crisc_d3_121"
           ],
           "definition": "Control selection is choosing controls that address the cause of a risk, fit the size of the risk and cost less than the loss they prevent.",
           "why_it_matters": "Controls aimed at symptoms leave the cause in place, so the risk comes back. Controls out of proportion to the risk use budget that other risks need.",
           "how_it_works": [
             "Start from the analyzed risk scenario and its root cause, not from a product or a peer's control list.",
-            "List candidate controls with their effect on likelihood or impact and their full cost.",
+            "List candidate controls with their effect on likelihood or impact and their full cost; favor those acting on the factor that drives the rating.",
             "Prefer controls that fix the cause; use detective or compensating controls where the cause cannot yet be removed.",
             "Check fit with the business process, so the control does not stop the work it protects.",
             "For AI systems, scale input validation, output checks and human review to the impact of a wrong output.",
@@ -1213,7 +1219,8 @@
           "practice_ids": [
             "crisc_d3_036",
             "crisc_d3_066",
-            "crisc_d3_102"
+            "crisc_d3_102",
+            "crisc_d3_122"
           ],
           "definition": "Design testing asks whether a control could meet its objective as built; operating testing asks whether it actually worked consistently over a period, usually by sampling.",
           "why_it_matters": "A well-designed control can still be skipped in practice. Reporting a design test as proof of operation overstates assurance and leaves the risk owner relying on a control that may not run.",
@@ -1368,12 +1375,13 @@
             "crisc_d3_038",
             "crisc_d3_039",
             "crisc_d3_070",
-            "crisc_d3_104"
+            "crisc_d3_104",
+            "crisc_d3_123"
           ],
           "definition": "A risk action plan sets out how a chosen response will be carried out: the actions, an owner for each, resources, milestones, target dates and the target risk at completion.",
           "why_it_matters": "A response without a plan stays an intention. Owners, dates and resources turn it into work that can be tracked, funded and escalated when it slips.",
           "how_it_works": [
-            "Each action has one owner, a target date and the resources it needs, agreed with the risk owner.",
+            "Each action has one owner, a target date and the resources it needs, agreed with the risk owner; a resource conflict goes back to that owner.",
             "Milestones break long work into checkpoints, so slippage shows early.",
             "The plan states the target risk expected at completion, so success can be measured.",
             "Interim measures reduce the exposure while long actions are under way.",
@@ -1485,7 +1493,8 @@
           "legacy_ids": [],
           "practice_ids": [
             "crisc_d3_071",
-            "crisc_d3_072"
+            "crisc_d3_072",
+            "crisc_d3_124"
           ],
           "definition": "Risk data collection is gathering the facts behind ratings and reports, such as incidents, losses, test results and metrics, from defined and trusted sources.",
           "why_it_matters": "Ratings are only as good as their inputs. Data from inconsistent or unknown sources leads owners to fund the wrong risks and miss the right ones.",
@@ -1493,7 +1502,8 @@
             "Define each data element, its source, owner, frequency and format before collecting it.",
             "Prefer system-generated data over hand-kept spreadsheets where possible, and record where each figure came from.",
             "Combine internal data, such as incidents and test results, with external data, such as threat reports and industry losses.",
-            "Collect at a frequency that matches how fast the risk changes."
+            "Collect at a frequency that matches how fast the risk changes.",
+            "To check that a KRI warns early, compare its past values with when related incidents or losses occurred."
           ],
           "example": "A grocery chain's monthly risk report takes store incident counts from emails sent by store managers. Isabela, a risk analyst, finds that some stores report only serious incidents. They propose taking counts directly from the incident ticketing system, with one shared definition of an incident and a named data owner, before the next quarterly report to the operations committee.",
           "audit_focus": {
@@ -1804,14 +1814,15 @@
             "crisc_d3_017",
             "crisc_d3_044",
             "crisc_d3_107",
-            "crisc_d3_109"
+            "crisc_d3_109",
+            "crisc_d3_125"
           ],
           "definition": "KRI thresholds are preset limits, linked to risk appetite and tolerance, that trigger review, escalation or action when an indicator crosses them.",
           "why_it_matters": "Without thresholds, a climbing KRI is just a number. Limits tied to tolerance tell the owner when to act and who must be told.",
           "how_it_works": [
             "Set thresholds from tolerance: green within appetite, amber approaching tolerance, red at or beyond it.",
             "Define the action and escalation for each level before any breach happens.",
-            "Review thresholds when appetite, the business or the risk changes.",
+            "When appetite, tolerance, the business or the risk changes, the practitioner proposes revised thresholds and the risk owner approves them.",
             "For AI systems, track drift, error rates, override rates and complaints, with limits set by the model's business owner.",
             "A breach, or a proposal to move a threshold, goes to the risk owner and, through the agreed escalation path, to the level that set it.",
             "For human review of AI outputs, KCIs such as override rates and time spent per review warn when reviewers start approving by habit."
@@ -1876,7 +1887,8 @@
             "crisc_d3_046",
             "crisc_d3_078",
             "crisc_d3_110",
-            "crisc_d3_111"
+            "crisc_d3_111",
+            "crisc_d3_126"
           ],
           "definition": "Continuous monitoring is keeping ongoing awareness of security, vulnerabilities and threats to support risk decisions, using automated feeds and assessments at a frequency set by risk.",
           "why_it_matters": "Yearly reviews miss what changes between them. Ongoing monitoring catches control failures and new exposure while there is still time to respond, provided someone acts on the alerts.",
@@ -1884,7 +1896,7 @@
             "Write a monitoring strategy: what to monitor, how often and who receives the results.",
             "Automate where it helps, such as configuration checks, vulnerability scans and control health checks.",
             "Set frequency by risk and by how fast the item changes; continuous does not mean every second.",
-            "Route every alert to an owner with a response time, and track alerts to closure.",
+            "Route every alert to an owner with a response time, track it to closure and measure the share resolved in time.",
             "Analyze results against tolerance and feed them into the register and reports.",
             "Roll monitoring out in priority order, starting with the controls behind the highest risks; switching on every check at once floods owners with alerts."
           ],
@@ -2107,7 +2119,8 @@
             "crisc_d3_048",
             "crisc_d3_081",
             "crisc_d3_082",
-            "crisc_d3_113"
+            "crisc_d3_113",
+            "crisc_d3_127"
           ],
           "definition": "Audience-based reporting gives each stakeholder what they need for their own decisions: the board sees the risk profile against appetite, and owners see their risks and actions.",
           "why_it_matters": "A report the reader cannot act on is noise. Technical detail swamps the board, and summary colors starve the people who must fix things.",
@@ -2173,7 +2186,8 @@
           "practice_ids": [
             "crisc_d3_050",
             "crisc_d3_083",
-            "crisc_d3_115"
+            "crisc_d3_115",
+            "crisc_d3_128"
           ],
           "definition": "Horizon scanning is the regular search for new or changing risks from technology, regulation, markets, threats and society, before they are well understood or measurable.",
           "why_it_matters": "Emerging risks give the least warning and the most surprise. Spotting them early leaves time to study them, prepare and take up any opportunity they bring.",

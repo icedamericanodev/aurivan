@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "comment": "Original CRISC practice questions for Domain 4 (Technology and Security), written to the CRISC exam content outline effective 2025. Every item is authored from public concepts and KaiSip's own CRISC study notes (data/crisc/notes/d4.json), with no reference to the CRISC Review Manual, ISACA's QAE database, ISACA's practice quiz or any prior question bank. Schema: docs/content/QUESTION_SCHEMA.md; writing rules: docs/content/EXAM_STYLE_V2.md and .claude/agents/crisc-standards-auditor.md. Not affiliated with or endorsed by ISACA®. CRISC® is a registered trademark of ISACA. Pilot batch crisc_d4_001 to crisc_d4_020, 30 Oct 2026. Round 2 crisc_d4_021 to crisc_d4_045, 31 Oct 2026. Round 3 crisc_d4_046 to crisc_d4_065, 4 Nov 2026. Round 5 crisc_d4_066 to crisc_d4_075, 4 Nov 2026.",
+    "comment": "Original CRISC practice questions for Domain 4 (Technology and Security), written to the CRISC exam content outline effective 2025. Every item is authored from public concepts and KaiSip's own CRISC study notes (data/crisc/notes/d4.json), with no reference to the CRISC Review Manual, ISACA's QAE database, ISACA's practice quiz or any prior question bank. Schema: docs/content/QUESTION_SCHEMA.md; writing rules: docs/content/EXAM_STYLE_V2.md and .claude/agents/crisc-standards-auditor.md. Not affiliated with or endorsed by ISACA®. CRISC® is a registered trademark of ISACA. Pilot batch crisc_d4_001 to crisc_d4_020, 30 Oct 2026. Round 2 crisc_d4_021 to crisc_d4_045, 31 Oct 2026. Round 3 crisc_d4_046 to crisc_d4_065, 4 Nov 2026. Round 5 crisc_d4_066 to crisc_d4_075, 4 Nov 2026. Round 6 crisc_d4_076 to crisc_d4_079, 4 Nov 2026.",
     "schema_version": 1
   },
   "domain": 4,
@@ -347,7 +347,7 @@
       "principle_id": "escalate-to-the-limit-setter",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "A pension fund's scrum team has rated the risk of a weak access control that will remain after go-live and marked it accepted in its project risk log. What should the risk practitioner do FIRST?",
+      "question": "A pension fund's scrum team rated the risk from a weak access control lasting past go-live as within appetite and marked it accepted in its project risk log. What should the risk practitioner do FIRST?",
       "options": {
         "A": "Ask the scrum team to fix the access control next sprint",
         "B": "Record the team's acceptance in the register and monitor it",
@@ -357,16 +357,16 @@
       "correct": "C",
       "key_concept": "A delivery team cannot accept a risk it does not own; a weakness lasting past go-live goes to the accountable business risk owner to decide.",
       "pre_read": "Notice who marked the entry accepted and how long the weakness will last.",
-      "correct_explanation": "A risk that will outlive the project becomes an operational risk, so a scrum team cannot accept it on the enterprise's behalf. Taking the decision to the accountable business risk owner, with the risk raised in the enterprise register, puts it with someone who can accept it within appetite or require treatment. Asking the team to fix it may be the eventual answer, but choosing the response first skips the owner's decision.",
+      "correct_explanation": "A risk that outlives the project becomes an operational risk, so a scrum team cannot accept it, even when it rates the risk within appetite. Taking the decision to the accountable business risk owner, with the risk raised in the enterprise register, puts it with someone who can accept it within appetite or require treatment. Asking the team to fix it may be the eventual answer, but choosing the response first skips the owner's decision.",
       "wrong_explanations": {
         "A": "Closest choice: fixing the weakness may be right. But the team would be choosing the response; the owner first decides whether to fix, compensate or accept.",
-        "B": "Tempting because recording keeps the risk visible. But logging the team's acceptance treats a delivery team as the risk owner; risk that reaches operations needs the accountable owner's decision.",
+        "B": "Tempting because the risk is rated within appetite and recording keeps it visible. But a delivery team is not the risk owner and cannot accept a risk that reaches operations.",
         "D": "Tempting because it keeps the weakness out of production. But a product owner runs the backlog, not operational risk; holding the release picks a response before the risk owner decides."
       },
       "tips": [
         "Eliminate: B lets a delivery team accept an operational risk, and D has the product owner hold the release, a response chosen before the risk owner decides.",
         "Final two: C beats A because the owner decides the response first; asking the team to fix it picks a treatment before the right person has weighed the risk.",
-        "Exam cue: when a project team marks a lasting risk as accepted, take the decision to the accountable risk owner; teams record risks, they do not accept them."
+        "Exam cue: when a project team marks a lasting risk as accepted, even within appetite, take the decision to the accountable risk owner; teams record risks, they do not accept them."
       ],
       "framework_ref": "NIST CSF 2.0 GV.RM-03 (cybersecurity risk management activities and outcomes are included in enterprise risk management processes); NIST CSF 2.0 GV.RR-02 (roles, responsibilities and authorities related to cybersecurity risk management are established, communicated, understood and enforced)",
       "related_concepts": [
@@ -374,7 +374,7 @@
         "Risk acceptance",
         "Enterprise risk register"
       ],
-      "_provenance": "Authored from concept: notes 4A5.2 Project Risk and Agile Delivery (exam trap: project risk log kept apart from the enterprise register). Original pension fund Agile scenario written for KaiSip; no ISACA Review Manual, QAE or prep-bank text used. CRISC D4 pilot batch, 30 Oct 2026. Review fixes 30 Oct 2026 (blind test and standards audit): C reworded (raise with the owner); 'register' added to B and 'owner' to D as lens-word de-cues; why-D and tip 1 updated; neutral subtopic; pre_read non-revealing; A and B lengths evened. Cross-domain fix 30 Oct 2026: 'business' added to distractor D so the lens word is not key-only. Quality pass 31 Oct 2026 (ISACA authenticity audit and concept review): stem now says the team rated the weakness (the risk is already analyzed), so FIRST keys a single non-assess action: take the acceptance decision to the accountable risk owner; 'business' removed from the key and D, so no lens word is key-only; B and D explanations credit what is partly right. Round 2 gate 31 Oct 2026: key concept and exam cue now teach who may accept a lasting project risk, split from crisc_d4_032 (risks do not close with the project).",
+      "_provenance": "Authored from concept: notes 4A5.2 Project Risk and Agile Delivery (exam trap: project risk log kept apart from the enterprise register). Original pension fund Agile scenario written for KaiSip; no ISACA Review Manual, QAE or prep-bank text used. CRISC D4 pilot batch, 30 Oct 2026. Review fixes 30 Oct 2026 (blind test and standards audit): C reworded (raise with the owner); 'register' added to B and 'owner' to D as lens-word de-cues; why-D and tip 1 updated; neutral subtopic; pre_read non-revealing; A and B lengths evened. Cross-domain fix 30 Oct 2026: 'business' added to distractor D so the lens word is not key-only. Quality pass 31 Oct 2026 (ISACA authenticity audit and concept review): stem now says the team rated the weakness (the risk is already analyzed), so FIRST keys a single non-assess action: take the acceptance decision to the accountable risk owner; 'business' removed from the key and D, so no lens word is key-only; B and D explanations credit what is partly right. Round 2 gate 31 Oct 2026: key concept and exam cue now teach who may accept a lasting project risk, split from crisc_d4_032 (risks do not close with the project). Cross-domain fixes 4 Nov 2026 (round 6): stem now says the team rated the risk within appetite, so recording its acceptance (B) is a counter-example to the within-appetite acceptance cue: acceptance is wrong because a delivery team has no authority to accept; explanation, why-B and Exam cue follow; options and key C unchanged (cross-domain gate).",
       "style_version": 2
     },
     {
@@ -2780,6 +2780,154 @@
         "Purpose limitation"
       ],
       "_provenance": "Authored from concept: notes 4B3.3 (Personal Data in AI and Cross-Border Transfers: contracts with AI providers set whether the provider trains its models on the organization's data; the organization remains accountable for personal data it shares). Round 5, 4 Nov 2026: original scenario (a bank's complaints team sending customer emails with names and account numbers to a vendor's AI tool whose terms allow training on inputs) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Neighbours checked: crisc_d4_057 (shadow AI after a block), crisc_d4_019 (purpose for health inferences), crisc_d4_045 and crisc_d4_047 (CRISC); CC cc_d2_026 (an analyst who spots changed vendor terms reports them to security); AAIA aaia_d1_041 (a copilot sending full account records: minimization); CISA d3_074. Judged distinct: cc_d2_026 keys reporting a terms change mid-use and aaia_d1_041 keys minimization, while this keys contract terms before adoption with minimization as the runner-up. Review fixes 4 Nov 2026 (standards audit and concept review): re-set from a bank to a utility to move away from crisc_d3_004 (a bank's generative AI drafting replies to customers); the explanation and key_concept no longer rely on what customers agreed to, which the stem does not state, and argue from accountability and the vendor's reuse beyond the purpose of sharing. Neighbours checked: crisc_d3_004 (staff review of AI drafts for wrong-advice risk) judged distinct after re-setting: this keys the vendor's secondary use; keep apart in practice sets. Cross-domain fixes 4 Nov 2026 (round 5): Exam cue reconciles with crisc_d3_004 (a term that prevents reuse vs a clause that moves cost).",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d4_076",
+      "domain": 4,
+      "subtopic": "4A6 Technology resilience and disaster response/recovery. Standby vendor for an AI service",
+      "principle_id": "proportionate-response",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "A clinic's medical director adopted an AI scribe saving doctors an hour daily; typing covers outages costing $10,000 yearly, within appetite; a standby vendor costs $90,000 a year. What is the risk practitioner's BEST recommendation?",
+      "options": {
+        "A": "A standby contract with a second AI scribe vendor",
+        "B": "The medical director's recorded acceptance of the risk",
+        "C": "Removal of the outage risk entry from the register",
+        "D": "The medical director's withdrawal of the AI scribe tool"
+      },
+      "correct": "B",
+      "key_concept": "When the risk is within appetite and more recovery capacity costs more than the loss it prevents, the owner accepts on record and monitors.",
+      "pre_read": "Weigh the figures in the stem before reading the options.",
+      "correct_explanation": "The standby vendor would cost $90,000 a year to prevent $10,000 of loss that is within appetite and limited by typing, so more treatment does not pay. The proportionate response is acceptance by the medical director, who adopted the scribe, recorded with a review date and monitored in case outages grow. Withdrawing the scribe is the runner-up; it ends the outage risk but gives up an hour a day per doctor for a small loss.",
+      "wrong_explanations": {
+        "A": "A standby vendor would cost $90,000 a year to prevent about $10,000 of loss; spending nine times the benefit is not a proportionate treatment.",
+        "C": "An accepted risk stays in the register with its owner and is monitored; removing it means nobody would notice if the vendor's outages grew.",
+        "D": "Withdrawal ends the outage risk, but it gives up an hour a day per doctor to avoid a small loss that the typing fallback already limits."
+      },
+      "tips": [
+        "Eliminate: A spends $90,000 a year to prevent $10,000 of loss, and C drops a risk from the register although accepted risks stay recorded and monitored.",
+        "Final two: B beats D because the scribe earns its keep and the loss is small; avoidance gives up that benefit, while acceptance keeps it.",
+        "Exam cue: within appetite, when treatment costs more than the loss it prevents and the technology earns its keep, expect the owner's recorded acceptance, with monitoring."
+      ],
+      "framework_ref": "NIST AI 100-1 (AI RMF 1.0) MANAGE 2.1 (resources required to manage AI risks are taken into account along with viable non-AI alternative systems, approaches or methods); NIST SP 800-39 Section 3.3 Task 3-2 (Evaluation of Alternatives: effectiveness, feasibility and cost); ISACA Glossary (risk acceptance)",
+      "related_concepts": [
+        "Risk acceptance",
+        "Cost-benefit analysis",
+        "AI service resilience"
+      ],
+      "_provenance": "Authored from concept: notes 4A6.1 (Recovery Strategies and Alternate Sites: the strategy meets RTO and RPO at a cost the owner accepts; too much capability wastes money; the business owner accepts the cost and residual risk within appetite). Round 6, 4 Nov 2026: original scenario (a clinic's AI scribe with typing as the fallback, where a standby second vendor would cost nine times the expected outage loss) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Round 6 priority: owner acceptance keyed, on the cost-exceeds-benefit case; the practitioner recommends and the medical director, who adopted the tool, accepts. Neighbours checked: crisc_d3_087 (avoid a little-used donation page whose fix costs more than it is worth), crisc_d3_002 (within appetite, the director accepts instead of an IT manager's extra tool), crisc_d3_021 and crisc_d3_110 (review date and monitoring of an accepted risk), crisc_d3_086 (insure the financial tail), crisc_d3_010, crisc_d4_011, crisc_d4_033 and crisc_d4_056 (CRISC); CC cc_d2_076 (a fallback for a provider's AI model) and cc_d2_008 (hot site against a three-week RTO); AAIA aaia_d2_089 (rehearse a manual fallback for a model); CISA d4_255 (formal acceptance for an isolated unsupported system) and d4_299. Judged distinct: this keys acceptance where the technology earns its keep and a fallback exists, with avoidance (d3_087's key, for a tool that adds little) as the runner-up and d3_002's IT-manager trap absent; keep apart from d3_087 and d3_002 in practice sets. Review fixes 4 Nov 2026 (round 6 audit, concept review and blind test): stem now states the loss is within appetite and the vendor's cost is $90,000 a year (one reconciled version of the audit and concept-review stems, two sentences, 35 words, with 'typing covers outages' in place of 'with typing as fallback' to fit); key_concept, explanation and Exam cue anchor acceptance to appetite as well as cost (concept review). Keep apart from crisc_d1_099 and crisc_d3_087.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d4_077",
+      "domain": 4,
+      "subtopic": "4A2 Operations management. Workstations that differ from the baseline",
+      "principle_id": "advise-dont-decide",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A broadcaster's drift scans flag 20 editing workstations with USB storage on, against the baseline, because editors load camera cards; the analyzed risk is within appetite. What should the risk practitioner recommend as BEST?",
+      "options": {
+        "A": "USB storage blocked again on the 20 workstations",
+        "B": "Exclusion of the editors' workstations from drift scans",
+        "C": "Removal of the USB rule from the company-wide baseline",
+        "D": "A recorded deviation approved by the editors' manager"
+      },
+      "correct": "D",
+      "key_concept": "A baseline deviation the business needs, with risk within appetite, is approved by its business owner, recorded and reviewed.",
+      "pre_read": "Note why the workstations differ from the baseline before judging the options.",
+      "correct_explanation": "The editors need USB storage for camera cards, and the analyzed risk is within appetite, so the deviation is accepted. On the practitioner's advice, the editors' manager, as business owner, approves it, recorded with a reason and review date, and scans keep reporting it. A lasting, limited need is reviewed periodically like an exemption, not given an exception's expiry. Excluding the machines from scans is the runner-up: it silences alerts but hides an unapproved deviation.",
+      "wrong_explanations": {
+        "A": "Blocking USB storage again stops editors loading camera cards, a treatment the analyzed risk, already within appetite, does not call for.",
+        "B": "Excluding the workstations silences the alerts, but nobody approves the deviation, and later changes on those machines would go unseen.",
+        "C": "Changing the company-wide baseline opens USB storage on machines with no need for it, widening the deviation far beyond the editing team."
+      },
+      "tips": [
+        "Eliminate: A treats a risk already within appetite and stops the editors' work, and C turns one team's need into a change for the whole company.",
+        "Final two: D beats B because an approved, recorded deviation is a visible acceptance decision; dropping the machines from scans removes the deviation from view instead.",
+        "Exam cue: a needed deviation within appetite is approved by the business owner, recorded and kept in monitoring, not taken out of the scans."
+      ],
+      "framework_ref": "NIST SP 800-53 Rev. 5 CM-6 (Configuration Settings); NIST CSF 2.0 ID.RA-07 (changes and exceptions are managed, assessed for risk impact, recorded and tracked); NIST IR 8286B-upd1 Section 2.3.1 (Risk Acceptance: exposure within risk tolerance is still reported, monitored and managed)",
+      "related_concepts": [
+        "Configuration baseline",
+        "Approved deviation",
+        "Risk acceptance"
+      ],
+      "_provenance": "Authored from concept: notes 4A2.1 (Change and Configuration Management: comparing live settings with the baseline finds unauthorized changes; a needed deviation becomes a recorded exception its business owner approves). Round 6, 4 Nov 2026: original scenario (a broadcaster's editing workstations kept off the USB baseline so editors can load camera cards, with the analyzed risk within appetite) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Round 6 priority: owner acceptance keyed, on the within-appetite case; the practitioner advises and the editors' manager approves the exception. Neighbours checked: crisc_d4_003, crisc_d4_024 and crisc_d4_025 (4A2), crisc_d3_002 (within appetite: the owner accepts instead of an extra tool), crisc_d3_060 and crisc_d3_061 (control baselines) (CRISC); CC cc_d5_082 (tailor a benchmark and record each deviation), cc_d5_040 (update the baseline after an approved change for every server) and cc_d2_003 (screen lock restored to its baseline); CISA d4_057 (a baseline per server class with compensated exceptions), d4_312 (drift alerts closed with no change record) and d4_255 (formal acceptance for an isolated unsupported system); AAIA aaia_d2_065. Judged distinct: those key building a baseline, restoring it or tracing alerts; this keys who accepts a needed deviation and how, with silent scan exclusion as the runner-up and a company-wide baseline change (cc_d5_040's key, where the need covered every server) as a trap. Review fixes 4 Nov 2026 (round 6 audit, concept review and blind test): a standing need is no longer called an 'exception', which the bank teaches is temporary (notes 3A4.2, crisc_d3_007, crisc_d3_028); option D, key_concept, explanation and tips say 'deviation' (Exam cue reworded so it does not read 'a deviation becomes a deviation'), and notes 4A2.1 matched (concept review). Cross-domain fixes 4 Nov 2026 (round 6): explanation links the lasting, reviewed deviation to the exemption vocabulary of notes 3A4 (reviewed periodically, no exception's expiry), compressed to fit the 75-word limit; option D and key D unchanged (cross-domain gate).",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d4_078",
+      "domain": 4,
+      "subtopic": "4A4 Data lifecycle management. Archive tied to a retiring system",
+      "principle_id": "objectives-first",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "Law requires a pension fund to keep member records for 60 years; it plans to retire its document system, the only software that reads the archive's format. What should the risk practitioner recommend as BEST?",
+      "options": {
+        "A": "Conversion of the archive to a widely supported format",
+        "B": "A retained copy of the document system for look-ups",
+        "C": "Yearly integrity checks on the archive in its current format",
+        "D": "A shorter retention period agreed with the records' owner"
+      },
+      "correct": "A",
+      "key_concept": "Archived data must stay readable for its retention period, so records are converted to a supported format before the only software that reads them retires.",
+      "pre_read": "Note the legal requirement and the planned change before reading the options.",
+      "correct_explanation": "The law sets a 60-year retention period, so the fund must still read each record long after the only software that reads the archive retires. Converting the archive to a widely supported format before retirement, and checking converted records against the originals, keeps them usable for the full period. A retained copy of the old system is the runner-up; it delays the problem but keeps retired software that must keep working for decades.",
+      "wrong_explanations": {
+        "B": "A retained copy keeps the retiring system alive just to read the archive, and it would have to keep working for decades; the records stay locked to it.",
+        "C": "Integrity checks show the files are unchanged, not that anything can still read them once the document system retires.",
+        "D": "The law sets the 60-year period; the records' owner sets retention within legal limits and cannot shorten a legal minimum."
+      },
+      "tips": [
+        "Eliminate: C proves the files are unchanged but not that they can be read, and D tries to shorten a retention period that the law sets.",
+        "Final two: A beats B because conversion frees the records from one system; a kept copy of retired software must somehow keep running for decades.",
+        "Exam cue: retention means records stay usable, not just stored; before the last tool that reads a format retires, move the data to one that lasts."
+      ],
+      "framework_ref": "NIST SP 800-53 Rev. 5 SI-12 (Information Management and Retention); NIST SP 800-53 Rev. 5 SA-22 (Unsupported System Components)",
+      "related_concepts": [
+        "Data archiving",
+        "Retention schedule",
+        "System retirement"
+      ],
+      "_provenance": "Authored from concept: notes 4A4.2 (Retention and Sanitization: a retention schedule sets periods from legal and business needs; archives stay readable for the whole retention period, so records move to a supported format before the software that reads them retires). Round 6, 4 Nov 2026: original scenario (a pension fund with a 60-year legal retention period retiring the only document system that reads its archive) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Neighbours checked: crisc_d4_068 (a retirement phase after a database was left running), crisc_d4_008 (deletion never set up), crisc_d4_022 (delayed legacy retirement), crisc_d4_037 (vendor data in its own format: exit terms) and crisc_d4_058 (CRISC); CISA d3_114 (reconcile and archive legacy data before shutdown), d4_249 and d5_069 (archives unreadable after key loss), d4_254 (a legacy ERP kept for interfaces) and d2_209; CC cc_d5_021 (legal hold during destruction) and cc_d4_060 (key destruction at cloud exit); AAIA aaia_d1_174 (keeping records of past model decisions) and aaia_d2_029. Judged distinct: those key archiving or deleting at retirement, or key recovery; this keys keeping archived records readable for a legal retention period after the only software that reads them retires; keep apart from d4_068 in practice sets.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d4_079",
+      "domain": 4,
+      "subtopic": "4A5 Portfolio and project management. Scope of a project risk log",
+      "principle_id": "analyze-before-acting",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "A city council's parking-permit app is in design, and its project risk log lists only budget, schedule and staffing risks. Which of the following should concern the risk practitioner MOST?",
+      "options": {
+        "A": "Key project staff leaving before the build ends",
+        "B": "The app's launch slipping past its planned date",
+        "C": "Unidentified risks the app will bring into operation",
+        "D": "Project risks kept apart from the enterprise risk register"
+      },
+      "correct": "C",
+      "key_concept": "Project risk covers delivery and the risks the finished system brings into operation; both are identified early, while design can still address them.",
+      "pre_read": "Note what kind of risks the log holds and the project's stage.",
+      "correct_explanation": "Budget, schedule and staffing are delivery risks, which end when the project closes. Nothing in the log covers what the app could do once in use, such as exposing data or failing in use, and design is when controls for those risks are cheapest to build in. Keeping project risks apart from the enterprise register is the runner-up; delivery risks may stay in a project log, so separation is not the gap.",
+      "wrong_explanations": {
+        "A": "Staff leaving is a staffing risk the log already tracks, and it ends with the build, unlike the risks the app carries into operation.",
+        "B": "A late launch is a schedule risk the log already covers; it ends at closure and says nothing about the app's risks in use.",
+        "D": "Delivery risks that end at closure can stay in a project log; the larger gap is that the app's operating risks are not identified at all."
+      },
+      "tips": [
+        "Eliminate: A and B are delivery risks of the kinds the log already holds, and both end when the project closes.",
+        "Final two: C beats D because separation is fine for delivery risks; the app's operating risks are missing entirely, so there is nothing yet to hand on.",
+        "Exam cue: a project risk log covers two kinds of risk, to delivery and from the finished system; budget, schedule and staffing alone miss the second."
+      ],
+      "framework_ref": "NIST SP 800-37 Rev. 2 Task P-14 (Risk Assessment for the System: conduct a system-level risk assessment from initiation and update it on an ongoing basis); NIST SP 800-53 Rev. 5 SA-3 (System Development Life Cycle)",
+      "related_concepts": [
+        "Project risk",
+        "System risk assessment",
+        "Enterprise risk register"
+      ],
+      "_provenance": "Authored from concept: notes 4A5.2 (Project Risk and Agile Delivery: project risk covers delivery risks and those the finished system brings into operation; delivery risks that end at closure stay in the project log). Round 6, 4 Nov 2026: original scenario (a city council's parking-permit app in design whose project risk log holds only budget, schedule and staffing risks) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Neighbours checked: crisc_d4_070 (which risk stays only in the project log), crisc_d4_032 (open risks handed over at closure), crisc_d4_010 (a team accepting a lasting risk), crisc_d4_028 (update the risk assessment after a scope change) and crisc_d4_051 (CRISC); CISA d3_005 (escalating a project risk to the sponsor) and d3_002 (coding before requirements); CC and AAIA have no item on what a project risk log covers. Judged distinct: this keys the missing operating risks of the product, with the project log's separation from the enterprise register (d4_070's lesson, read the other way) as the runner-up; keep apart from d4_070 in practice sets.",
       "style_version": 2
     }
   ]
