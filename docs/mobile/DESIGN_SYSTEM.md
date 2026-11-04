@@ -2162,3 +2162,15 @@ Recorded in `design-notes/grove/DECISIONS.md` 12. The phone keeps its own Settin
   - *Chart keys:* every "No stem yet" line ends "The stem and score show at 30." (You, Your progress, set and mock results), as Q2 reads.
   - *One next area in You's list:* the list marks the area You's Focus next names: while today's set is unfinished and is not the focus, the set's row says "today's set" and no row says "where you'll gain most"; otherwise the focus row says "where you'll gain most".
   - *Forced colours:* the plant chip's chevron and its "Your plant" and stage words are ButtonText (the on-forest tints read 1.46:1 on a light Canvas).
+
+### 21.12 Confirmations: say it at the row (web, 4 Nov 2026; for the phone too)
+
+One rule for every action that changes saved data (Back up, Restore and its failures, Reset reading progress, Start fresh, Today's backup card and its "Not now"):
+
+1. **Say it where it was done.** A status line directly under the row (or inside the card) that was acted on: "Backup saved: 4 Nov", "Restored: 112 answers", "Reading progress reset. Every note shows as not read.", "Progress cleared. You're starting fresh.", "Reminder in two weeks". A failure says why in `--wrong-strong` and in words ("Your progress hasn't changed."), never colour alone.
+2. **Seen without scrolling.** The row and its line are scrolled fully into view, above the tab bar and under any fixed header, no further than keeps the row's top on screen (smooth only when motion is allowed). After a restore's reload focus goes to the Restore row, so the line is on the first screen at 320x568, 375x667, 390 at 200% text and 768.
+3. **Heard once.** The same words go to the page's polite live region (`#setSay` on Settings, `#tdSay` on Today, the sheet's own line in the Your data sheet), emptied first so a repeat is heard.
+4. **One status at a time.** A new action (another restore, a reset, a backup) clears or replaces the last status on the page, so an error never sits beside an old "Restored".
+5. **A toast only when the row cannot be seen** (another page, or a sheet open over it). A toast never covers a control on a page that can say it at the row, and never takes a tap.
+
+The phone follows the same rule: a status line under the row, scrolled into view, an accessibility announcement, and a toast only off that screen.

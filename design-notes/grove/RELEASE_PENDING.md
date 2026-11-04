@@ -26,6 +26,8 @@ Batched for the end of the uplift (web v13, mobile 2.0.0; DECISIONS 8). Write th
 - Saving your name, exam date or a backup, and restoring one, now confirm right where you made the change, without a message covering the page.
 - Practice summary now fits every area's score on small screens and at larger text sizes.
 - The You page now names one area to study next, the same as Today.
+- Backing up, restoring, resetting and Today's backup reminder now confirm right under what you tapped, on any screen size, and never cover another button.
+- Today's next step now labels your own score, and the Practice summary fits small screens at larger text sizes.
 
 ## Follow-ups to do at the release
 - `mobile/src/engine/plantLooks.ts` `howToOpen` says "in the Herbarium": change to "in Badges" and rebuild `assets/kaisip-plant.js` in the same commit.
