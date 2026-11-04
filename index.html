@@ -8032,6 +8032,10 @@ var S_DEFAULTS = {
   streak: 0,
   qn: 0,
   bookmarks: [],
+  // v12.50: saved questions from the full course (not loaded on the website),
+  // kept as stubs and written back with the bookmarks; never shown.
+  bookmarksLocked: [],
+  missedLocked: [],
   current: null,
   queues: {"1":[],"2":[],"3":[],"4":[],"5":[],"all":[]},
   qIdx: {"1":0,"2":0,"3":0,"4":0,"5":0,"all":0},
@@ -8203,9 +8207,13 @@ function savedQuestionTag(q) {
 // v12.50: the website loads the free sample, so a saved question from the
 // full course is not in a loaded bank and is skipped like a gone one. `drops`
 // (optional) collects the skipped ids for this visit, so an emptied Saved
-// list can say the rest is in the full course.
+// list can say the rest is in the full course. `locked` (optional) collects a
+// small { id, domain, tag } stub for each skipped one: the stubs are kept in
+// S.bookmarksLocked / S.missedLocked and written back by saveState, so a
+// full-course question the learner saved is never deleted from their
+// progress (it comes back once the full course is unlocked).
 var savedBookmarksSkipped = {};
-function rehydrateSavedQuestions(list, drops) {
+function rehydrateSavedQuestions(list, drops, locked) {
   if (!Array.isArray(list)) return [];
   var seen = {};
   var out = [];
@@ -8226,11 +8234,35 @@ function rehydrateSavedQuestions(list, drops) {
       if (tag) stub.tag = tag;
       out.push(stub);
       seen[id] = true;
-    } else if (drops) {
-      drops[id] = true;
+    } else {
+      if (drops) drops[id] = true;
+      if (locked) {
+        var lockedStub = { id: id, domain: d };
+        if (tag) lockedStub.tag = tag;
+        locked.push(lockedStub);
+      }
+      seen[id] = true;
     }
   });
   return out;
+}
+// The saved list as it is written to storage: what is on screen plus the
+// locked stubs, without repeats (an id already in `list` wins).
+function mergeSavedWithLocked(list, locked) {
+  var out = Array.isArray(list) ? list.slice() : [];
+  var seen = {};
+  out.forEach(function(q) { if (q && q.id) seen[q.id] = true; });
+  (Array.isArray(locked) ? locked : []).forEach(function(q) {
+    var d = q ? savedQuestionDomain(q.id) : null;
+    if (d && !seen[q.id]) {
+      var stub = { id: q.id, domain: d };
+      var tag = savedQuestionTag(q);
+      if (tag) stub.tag = tag;
+      out.push(stub);
+      seen[q.id] = true;
+    }
+  });
+  return out.slice(0, SAVED_MAX);
 }
 // The saved questions that can be shown now: each looked up in its loaded
 // bank (a stub whose bank is still loading is skipped).
@@ -8246,8 +8278,11 @@ document.addEventListener('qb:domain-loaded', function() {
   try {
     if (typeof S === 'undefined' || !S) return;
     var before = (S.bookmarks || []).length;
-    S.bookmarks = rehydrateSavedQuestions(S.bookmarks, savedBookmarksSkipped);
-    S.missedQuestions = rehydrateSavedQuestions(S.missedQuestions);
+    var lockedBk = [], lockedMissed = [];
+    S.bookmarks = rehydrateSavedQuestions(S.bookmarks, savedBookmarksSkipped, lockedBk);
+    S.missedQuestions = rehydrateSavedQuestions(S.missedQuestions, null, lockedMissed);
+    S.bookmarksLocked = mergeSavedWithLocked(S.bookmarksLocked, lockedBk);
+    S.missedLocked = mergeSavedWithLocked(S.missedLocked, lockedMissed);
     if (S.activeTab === 'bookmarks' && typeof bkRefreshRows === 'function') bkRefreshRows(S.bookmarks.length !== before);
   } catch (e) {}
 });
@@ -8283,7 +8318,7 @@ var MOCK_TYPES = {
   mini: { total: MOCK_MINI_TOTAL, minutes: Math.round(240 * MOCK_MINI_TOTAL / MOCK_TOTAL), name: 'Mini mock' }
 };
 // Where "the full course" lives for now: the Android beta page on this site.
-var FULL_COURSE_URL = '/beta';
+var FULL_COURSE_URL = 'beta.html';
 var FULL_COURSE_ROW = 'More practice on this is in the full course.';
 // Anything that is not 'mini' (older saves have no type) is the full mock.
 function mockTypeOf(t) { return t === 'mini' ? 'mini' : 'full'; }
@@ -9018,7 +9053,7 @@ function sanitizeMockHistory(list) {
 function normalizeImportedState(state) {
   if (!state || typeof state !== 'object') return null;
   var clean = {};
-  var fields = ["score","ds","streak","bookmarks","answeredIds","missedQuestions",
+  var fields = ["score","ds","streak","bookmarks","bookmarksLocked","answeredIds","missedQuestions","missedLocked",
                 "confidenceLog","sessionHistory","selectedDomain","diff",
                 "timerEnabled","timerSeconds","qIdx","mindsetIdx","glossMastered","topicReviewed","topicViewed",
                 "current","qn","activeTab","review","topicTicksSchema",
@@ -9058,8 +9093,11 @@ function normalizeImportedState(state) {
   clean.stuckAt = sanitizeStuckAt(clean.stuckAt);
   // Final review week: saves from before it have none and load as empty.
   clean.finalWeekDone = sanitizeFinalWeekDone(clean.finalWeekDone);
-  clean.bookmarks = rehydrateSavedQuestions(clean.bookmarks);
-  clean.missedQuestions = rehydrateSavedQuestions(clean.missedQuestions);
+  var cleanLockedBk = [], cleanLockedMissed = [];
+  clean.bookmarks = rehydrateSavedQuestions(mergeSavedWithLocked(clean.bookmarks, clean.bookmarksLocked), null, cleanLockedBk);
+  clean.missedQuestions = rehydrateSavedQuestions(mergeSavedWithLocked(clean.missedQuestions, clean.missedLocked), null, cleanLockedMissed);
+  clean.bookmarksLocked = cleanLockedBk;
+  clean.missedLocked = cleanLockedMissed;
   clean.review = sanitizeReviewMap(clean.review);
   clean.current = clean.current && clean.current.id ? findQuestionById(clean.current.id) : null;
   // The older fields, in the shapes the app writes (v12.28: they were kept as
@@ -9265,8 +9303,8 @@ function saveState() {
     mockBefore: S.mockBefore || null
   } : null);
   var persist = {
-    score: S.score, ds: S.ds, streak: S.streak, bookmarks: S.bookmarks,
-    answeredIds: S.answeredIds, missedQuestions: S.missedQuestions,
+    score: S.score, ds: S.ds, streak: S.streak, bookmarks: mergeSavedWithLocked(S.bookmarks, S.bookmarksLocked),
+    answeredIds: S.answeredIds, missedQuestions: mergeSavedWithLocked(S.missedQuestions, S.missedLocked),
     confidenceLog: S.confidenceLog, sessionHistory: S.sessionHistory,
     review: S.review,
     answerLog: S.answerLog, mistakeLog: S.mistakeLog,
@@ -9316,7 +9354,7 @@ function loadState() {
   var profiles = getProfiles();
   if (!profiles[id] || !profiles[id].state) { S.topicTicksSchema = 2; return; }
   var saved = normalizeImportedState(profiles[id].state) || {};
-  var fields = ["score","ds","streak","bookmarks","answeredIds","missedQuestions",
+  var fields = ["score","ds","streak","bookmarks","bookmarksLocked","answeredIds","missedQuestions","missedLocked",
                 "confidenceLog","sessionHistory","review","selectedDomain","diff",
                 "timerEnabled","timerSeconds","qIdx","mindsetIdx","glossMastered","topicReviewed","topicViewed","topicTicksSchema",
                 "current","qn","activeTab",
@@ -10247,8 +10285,8 @@ function renderItemBody(raw, domainId, searchQ, itemId) {
 
 // v12.50: one calm row where a list of practice questions has none in the
 // free set on the website (the ids name questions in the full course).
-function fullCourseRowHtml(cls) {
-  return '<div class="fc-row' + (cls ? ' ' + cls : '') + '"><p class="fc-row-t">' + FULL_COURSE_ROW + '</p>'
+function fullCourseRowHtml(cls, text) {
+  return '<div class="fc-row' + (cls ? ' ' + cls : '') + '"><p class="fc-row-t">' + (text || FULL_COURSE_ROW) + '</p>'
     + '<a class="sr-link fc-row-a" href="' + escapeHtml(FULL_COURSE_URL) + '">Get the full course in the Android beta' + ico('arrow-right', 18) + '</a></div>';
 }
 
@@ -16508,7 +16546,7 @@ function nextQ() {
     if (activeSubtopic || S.diff !== "any") {
       showFilterComplete();
     } else if (S.selectedDomain === "all") {
-      document.getElementById('qArea').innerHTML = '<div class="empty"><div class="empty-icon">Done</div><div class="empty-title">Free questions complete</div><div class="empty-sub">You have answered every free question on the website. Your review keeps going here, and the full course is in the KaiSip Android beta.</div><div style="margin-top:20px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap"><button class="act-btn primary" onclick="resetAllDomains()" style="background:var(--btn);border-color:var(--btn);color:var(--on-btn)">Reset all and restart</button><button class="act-btn secondary" onclick="showSessionSummary()">View summary</button></div></div>';
+      document.getElementById('qArea').innerHTML = '<div class="empty"><div class="empty-icon">Done</div><div class="empty-title">Free questions complete</div><div class="empty-sub">You have answered every free question on the website. Your review keeps going here, and the full course is in the KaiSip Android beta.</div><div style="margin-top:20px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap"><button class="act-btn primary" onclick="resetAllDomains()" style="background:var(--btn);border-color:var(--btn);color:var(--on-btn)">Reset all and restart</button><button class="act-btn secondary" onclick="showSessionSummary()">View summary</button><a class="act-btn secondary" href="' + escapeHtml(FULL_COURSE_URL) + '">Get the full course</a></div></div>';
     } else {
       showDomainComplete(S.selectedDomain);
     }
@@ -19366,7 +19404,9 @@ function doResetProgress() {
   S.ds = {"1":{t:0,c:0},"2":{t:0,c:0},"3":{t:0,c:0},"4":{t:0,c:0},"5":{t:0,c:0}};
   S.streak = 0;
   S.bookmarks = [];
+  S.bookmarksLocked = [];
   S.missedQuestions = [];
+  S.missedLocked = [];
   S.confidenceLog = [];
   S.sessionHistory = [];
   S.review = {};
@@ -21480,9 +21520,10 @@ function renderBookmarks() {
   var area = document.getElementById('bkList');
   if (!area) return;
   var bks = S.bookmarks || [];
-  if (!bks.length && Object.keys(savedBookmarksSkipped).length) {
+  if (!bks.length && ((S.bookmarksLocked || []).length || Object.keys(savedBookmarksSkipped).length)) {
     // v12.50: what was saved is in the full course (not loaded on the website).
-    area.innerHTML = fullCourseRowHtml('bk-fc');
+    // The saves are kept (S.bookmarksLocked) and come back once it is unlocked.
+    area.innerHTML = fullCourseRowHtml('bk-fc', 'The questions you saved from the full course are kept. They come back when you unlock it.');
     return;
   }
   if (!bks.length) {
@@ -22195,7 +22236,7 @@ function showDomainComplete(d) {
     + '<div class="empty-title" style="color:var(--correct)">Domain ' + d + ' complete</div>'
     + '<div class="empty-sub">You have answered every free question in ' + info.name + '</div>'
     + '<div style="margin-top:16px;font-family:var(--f-serif);font-size:48px;font-weight:500;color:' + pctColor + '">' + pct + '%</div>'
-    + '<div style="font-family:var(--f-sans);font-size:13px;color:var(--muted);margin-bottom:20px">' + st.c + ' of ' + st.t + ' correct</div>'
+    + '<div style="margin-bottom:20px"></div>'
     + missedListHtml
     + '<div style="margin-top:24px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap">'
     + '<button class="act-btn primary" onclick="restartAndShowBtn(\x27' + d + '\x27)" style="background:var(--btn);border-color:var(--btn);color:var(--on-btn)">Restart domain</button>'
