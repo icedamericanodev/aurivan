@@ -398,9 +398,10 @@ version bump today.
   auditor performing, signing, approving or accepting something, tag
   `auditor-assesses-never-owns-ai`. If it relies on validation, data, test
   results, ratings or tools that the builders or the auditee control, tag
-  `independence-of-ai-assurance`. aaia_d1_029 stays on
-  `auditor-assesses-never-owns-ai`: its trap is audit signing off the
-  builders' tests.
+  `independence-of-ai-assurance`. aaia_d1_029 was tagged
+  `auditor-assesses-never-owns-ai` while its trap was audit signing off the
+  builders' tests; batch 3 re-angled it to validation coverage, so it moved to
+  `test-the-ai-as-used` (see Batch 3).
 - **Independence vs `ai-in-audit-stays-yours`.** Whether an audit AI tool is
   validated, approved for audit use, disclosed or owned as a conclusion →
   `ai-in-audit-stays-yours`. Who controls the tool, its training labels or its
@@ -428,10 +429,10 @@ version bump today.
 ### Results
 | Domain | Questions | Tagged | Untagged |
 |---|---|---|---|
-| D1 | 50 | 43 | 7 |
-| D2 | 50 | 48 | 2 |
+| D1 | 80 | 63 | 17 |
+| D2 | 92 | 84 | 8 |
 | D3 | 50 | 47 | 3 |
-| All | 150 | 138 | 12 |
+| All | 222 | 194 | 28 |
 
 New principle `independence-of-ai-assurance` (role family): seeds and tags
 aaia_d2_014, aaia_d3_024 and aaia_d3_043, moved from
@@ -460,5 +461,49 @@ turns on whether the test data represents current students.
 - aaia_d3_002: the auditor's own scoping; no AAIA principle covers it.
 - aaia_d3_009: turns on a control operating over the period (CISA `proven-not-configured`), which no AAIA principle covers.
 - aaia_d3_030: sampling mechanics (a stratum just above the cut-off).
+
+### Batch 3 (31 October 2026)
+aaia_d1_051-080, aaia_d2_051-092 and the re-angled aaia_d1_029 and
+aaia_d1_030 were read against the rule above. Changed: aaia_d1_057 tagged
+`population-includes-misses` (like aaia_d3_001, the asset register has the
+same blind spot as the survey); aaia_d1_075 tagged `test-the-ai-as-used`
+(the vendor's audit covers its own test data, not these customers);
+aaia_d2_088 moved to `fix-the-control-not-the-model` (the runner-up also
+re-rates by harm; the scale is the gap); four tags removed (below).
+
+**Seed moved (4 Nov 2026):** after the re-angle, aaia_d1_029's Final two
+turns on testing the new population at the deployed threshold, so it is
+tagged `test-the-ai-as-used` and seeds that card (1B.2 added to its
+subtopics). `auditor-assesses-never-owns-ai` keeps two seeds (aaia_d3_012,
+aaia_d3_046) and needs a D1 item whose runner-up has the IS auditor signing
+or approving, in batch 4. aaia_d1_068
+keeps `independence-of-ai-assurance` (high: a vendor-computed report is not
+independent), so the lint warns that the principle's domains omit D1.
+
+**Untagged new items (low confidence):**
+- aaia_d1_053: unsupervised-learning knowledge (a cluster's name is untested).
+- aaia_d1_054: shortcut-learning knowledge; the Final two weighs breadth, not harm.
+- aaia_d1_067: concentration-risk knowledge (vendors sharing one model).
+- aaia_d1_070: data-licence knowledge (a trained model keeps what it learned).
+- aaia_d1_071: privacy knowledge (synthetic data can reproduce real people).
+- aaia_d1_072: privacy knowledge (inferred scores are personal data).
+- aaia_d1_073: retention knowledge (index copies outlive the originals).
+- aaia_d1_078: was `ai-output-is-a-lead`; the runner-up also treats the marks as leads, and policy versus operating control is CISA `proven-not-configured` (as aaia_d3_009).
+- aaia_d1_079: framework knowledge (the NIST Generative AI Profile).
+- aaia_d1_080: framework status knowledge (no NIST AI RMF certification).
+- aaia_d2_059: fine-tuning knowledge (a tuned model inherits its base model).
+- aaia_d2_074: explanation knowledge (local versus global reasons).
+- aaia_d2_078: was `accuracy-is-not-assurance`; the runner-up is a group-level conclusion too, so sample sufficiency decides (sampling mechanics).
+- aaia_d2_081: attack knowledge (poisoning versus evasion).
+- aaia_d2_082: was `fix-the-control-not-the-model`; decided by knowing model cost follows tokens, not a symptom fix.
+- aaia_d2_084: was `limits-outside-the-model`; both options are system-enforced access, so indirect-injection knowledge decides (as aaia_d2_016).
+
+**Medium confidence (new tags, review first):** aaia_d1_051 aaia_d1_052
+aaia_d1_055 aaia_d1_057 aaia_d1_058 aaia_d1_061 aaia_d1_062 aaia_d1_064
+aaia_d1_066 aaia_d1_069 aaia_d1_074 aaia_d1_075 aaia_d1_077 aaia_d2_051
+aaia_d2_052 aaia_d2_053 aaia_d2_056 aaia_d2_057 aaia_d2_058 aaia_d2_060
+aaia_d2_061 aaia_d2_066 aaia_d2_067 aaia_d2_068 aaia_d2_071 aaia_d2_076
+aaia_d2_080 aaia_d2_083 aaia_d2_087 aaia_d2_088 aaia_d2_089 aaia_d2_090
+aaia_d2_092.
 
 Seed moved (31 Oct 2026): aaia_d3_035 now seeds reproducible-ai-evidence; contain-and-preserve-ai has 2 seeds (aaia_d2_019, aaia_d2_049) and needs a new incident item for a third.
