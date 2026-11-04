@@ -20,6 +20,11 @@
 #   SMOKE_ONLY=W3,M4    run only these paths (prefix match)
 #   SMOKE_SKIP_CHECK=1  skip `npm run check` (the unit gates)
 #   SMOKE_SLOW_MS=5000  phone: a screen slower than this to show content fails M7
+#   SMOKE_WEB_SITE=1    web: build the public site (scripts/build_site.sh → _site/)
+#                       and serve _site/ instead of the repo root, so only what
+#                       kaisip.com publishes is there (the free question sample,
+#                       not data/domain*.json). Since web v12.50 this is the real
+#                       learner setup; the grading checks then read data/free/.
 #
 # Read-only on the apps. The one write inside the repo is the content-pack
 # rebuild the screenshot harness also does (mobile/scripts/build-content.mjs);
@@ -78,10 +83,18 @@ fi
 
 # ── Web ──────────────────────────────────────────────────────────────────────
 if [ "$WHAT" != mobile ]; then
-  echo "· web: serving $REPO on :$WEB_PORT"
-  python3 -m http.server "$WEB_PORT" --bind 127.0.0.1 --directory "$REPO" > "$OUT/web-server.log" 2>&1 & PIDS+=($!)
+  WEB_ROOT="$REPO"
+  if [ "${SMOKE_WEB_SITE:-}" = 1 ]; then
+    echo "· web: building the public site (scripts/build_site.sh)"
+    ( cd "$REPO" && bash scripts/build_site.sh ) > "$OUT/build-site.log" 2>&1 || { echo "build_site.sh failed: see $OUT/build-site.log" >&2; exit 1; }
+    # Serve a private copy: another build of _site/ during the run (it starts
+    # with rm -rf) would otherwise show up as 404s.
+    cp -R "$REPO/_site" "$TMP/site"; WEB_ROOT="$TMP/site"
+  fi
+  echo "· web: serving $WEB_ROOT on :$WEB_PORT"
+  python3 -m http.server "$WEB_PORT" --bind 127.0.0.1 --directory "$WEB_ROOT" > "$OUT/web-server.log" 2>&1 & PIDS+=($!)
   wait_port "$WEB_PORT"
-  node "$HERE/web.mjs" "$REPO" "$OUT" "http://127.0.0.1:$WEB_PORT" 2>&1 | tee "$OUT/web.log" || STATUS=1
+  node "$HERE/web.mjs" "$WEB_ROOT" "$OUT" "http://127.0.0.1:$WEB_PORT" "$REPO" 2>&1 | tee "$OUT/web.log" || STATUS=1
 fi
 
 # ── Phone ────────────────────────────────────────────────────────────────────

@@ -20,10 +20,14 @@
 #       assets/kaisip-plant.js (the plant companion) and
 #       assets/kaisip-cloud.js (the accounts client and sync engine; loaded
 #       only when an account is used). No other .js file is allowed.
-#     - the data the web app really loads (index.html fetches
-#       data/domain1..5.json, data/cisa_notes.json,
+#     - the data the web app really loads (index.html fetches the FREE
+#       question sample data/free/cisa_d1..5.json, data/cisa_notes.json,
 #       data/mindset/principles.json and the two data/exam/ files, the exam
-#       guide and the final review week; nothing else in data/)
+#       guide and the final review week; nothing else in data/).
+#       The full bank (data/domain1..5.json) is NOT published since web
+#       v12.50 (owner, 4 Nov 2026): it stays in the repo for the phone app.
+#       A guard below stops the build if any question outside the free
+#       sample appears anywhere in _site/.
 #     - _headers (security and cache headers) and _redirects
 #     - favicon.ico at the top level (browsers ask for /favicon.ico by
 #       themselves)
@@ -40,7 +44,7 @@ cd "$(dirname "$0")/.."
 OUT="_site"
 
 PAGES=(index.html privacy.html terms.html support.html beta.html)
-DATA=(data/domain1.json data/domain2.json data/domain3.json data/domain4.json data/domain5.json data/cisa_notes.json data/mindset/principles.json data/exam/cisa_exam_guide.json data/exam/final_review_week.json)
+DATA=(data/free/cisa_d1.json data/free/cisa_d2.json data/free/cisa_d3.json data/free/cisa_d4.json data/free/cisa_d5.json data/cisa_notes.json data/mindset/principles.json data/exam/cisa_exam_guide.json data/exam/final_review_week.json)
 SITE_CONFIG=(_headers _redirects)
 # File types allowed inside assets/ (lower case).
 ASSET_TYPES='png|ico|svg|webp|jpg|jpeg|woff2|woff|css'
@@ -104,12 +108,66 @@ print("sha256-"+base64.b64encode(hashlib.sha256(m.group(1).encode()).digest()).d
   fi
 done
 
+# The full question bank must never be published (web v12.50). For every
+# question outside the free sample, its stem, explanations and tips (any text
+# of 40+ characters that no free question also uses) are looked for in every
+# published file, as written and with HTML entities and JSON or JS escapes
+# undone, so a copy under any name or inside a page is caught too.
+python3 - "$OUT" <<'PY' || fail "a question outside the free sample is in the site (see above)"
+import html, json, os, re, sys
+out = sys.argv[1]
+free = set(json.load(open("data/free/cisa_sample_ids.json"))["ids"])
+
+def texts(q):
+    yield q.get("question", "")
+    yield q.get("correct_explanation", "")
+    we = q.get("wrong_explanations") or {}
+    yield from (we.values() if isinstance(we, dict) else we)
+    yield from (q.get("tips") or [])
+
+free_texts, paid = set(), []
+for d in range(1, 6):
+    for q in json.load(open(f"data/domain{d}.json"))["questions"]:
+        bucket = [t for t in texts(q) if isinstance(t, str) and len(t) >= 40]
+        if q["id"] in free:
+            free_texts.update(bucket)
+        else:
+            paid.append((q["id"], bucket))
+
+needles = [(qid, t) for qid, bucket in paid for t in bucket if t not in free_texts]
+
+def plain(raw):
+    """One cleaned copy of a file: HTML entities and JSON or JS escapes undone."""
+    t = html.unescape(raw)
+    t = re.sub(r"\\u([0-9a-fA-F]{4})", lambda m: chr(int(m.group(1), 16)), t)
+    for a, b in (('\\"', '"'), ("\\'", "'"), ("\\/", "/"), ("\\n", "\n")):
+        t = t.replace(a, b)
+    return t
+
+bad = []
+for root, _, names in os.walk(out):
+    for name in names:
+        path = os.path.join(root, name)
+        try:
+            raw = open(path, encoding="utf-8").read()
+        except (UnicodeDecodeError, OSError):
+            continue
+        hay = raw + "\n" + plain(raw)
+        for qid, needle in needles:
+            if needle in hay:
+                bad.append(f"{os.path.relpath(path, out)}: {qid}")
+                break
+if bad:
+    print("build_site: paid questions found in the site:\n  " + "\n  ".join(bad[:20]), file=sys.stderr)
+    sys.exit(1)
+PY
+
 # Final guard: nothing outside the list may be in _site/.
 while IFS= read -r -d '' f; do
   rel="${f#"$OUT"/}"
   case "$rel" in
     index.html|privacy.html|terms.html|support.html|beta.html|_headers|_redirects|favicon.ico) ;;
-    data/domain[1-5].json|data/cisa_notes.json|data/mindset/principles.json) ;;
+    data/free/cisa_d[1-5].json|data/cisa_notes.json|data/mindset/principles.json) ;;
     data/exam/cisa_exam_guide.json|data/exam/final_review_week.json) ;;
     assets/*) ;;
     *) fail "unexpected file in the site: $rel" ;;
