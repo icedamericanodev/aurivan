@@ -343,6 +343,9 @@
      the "not yet" outline there is one lighter sage (3.3:1 at the panel's
      lightest top, 4.8:1 on the ring's ground). */
   --hero-leaf-line: #8FAE98;
+  /* The readiness range's gold on a paper card (You's ring and key): 3.1:1
+     on white; dark uses the hero's gold. */
+  --range-gold: #B98A2E;
   --badge-clay: #F6E7DC;    /* the weakest area's badge (clay on clay) */
 }
 
@@ -406,6 +409,7 @@
   --soil: #6B5844;
   --leaf-empty: #39443C;
   --leaf-line: #6A776D;   /* 3.3:1 on cards, 3.9:1 on the page */
+  --range-gold: #E9C46A;
   --card-shadow: 0 0 0 1px var(--border);
   --rail-bg: #0E1310;
   --hero-disc: #1A3324;
@@ -5703,6 +5707,10 @@ button.pg-cd:hover { background: var(--surface2); }
 /* Toast: neutral, and above the phone tab bar */
 .toast { opacity: 0; visibility: hidden; transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.2s ease, visibility 0s linear 0.35s; }
 .toast.show { opacity: 1; visibility: visible; transition-delay: 0s; }
+/* While a sheet or dialog is open the toast steps aside, so it never covers
+   the sheet's buttons or catches a tap meant for them (the sheets say their
+   own news inside, as Back up first does). */
+body:has([aria-modal="true"]) .toast.show { opacity: 0; pointer-events: none; }
 @media (max-width: 600px) {
   .toast { bottom: calc(84px + env(safe-area-inset-bottom)); white-space: normal; text-align: center; width: max-content; max-width: calc(100vw - 32px); border-radius: var(--r-md); }
 }
@@ -5805,7 +5813,6 @@ header.app-header .brand-lockup { height: 28px; }
 /* You: rows on the paper with hairlines (DESIGN_SYSTEM §6, Settings group and row) */
 .you { max-width: 720px; }
 .you-title { font: var(--t-display); letter-spacing: var(--tr-display); color: var(--text); margin: 4px 0 0; }
-.you-group { margin-top: 32px; }
 /* Your study profile (v12.37): on the paper, no card; the leaf mark is decorative */
 .you-prof { display: flex; align-items: flex-start; gap: var(--sp-lg); margin-top: var(--sp-xl); padding-bottom: var(--sp-xl); border-bottom: 1px solid var(--border); }
 .you-prof:empty { display: none; }
@@ -5822,7 +5829,6 @@ header.app-header .brand-lockup { height: 28px; }
 .you-prof-l { margin: 2px 0 0; font: var(--t-body); color: var(--text); }
 .you-prof-m { margin: 2px 0 0; font: var(--t-meta); color: var(--text2); }
 .you-prof .you-prof-add { min-height: 48px; }
-.you-head { font: var(--t-headline); color: var(--text); margin: 0 0 4px; }
 .you-list { list-style: none; margin: 0; padding: 0; }
 .you-row {
   display: flex; align-items: center; gap: 12px; width: 100%; min-height: 64px; padding: 12px 0;
@@ -6838,23 +6844,6 @@ html { scroll-padding-bottom: calc(104px + var(--consent-h, 0px)); }
 .you-plant .plnt-plant-btn { width: auto; display: inline-flex; }
 /* The rail: the 200 stage, the words centred under it */
 .study-rail .plnt-who { text-align: center; }
-/* Inline (below 1180px): a compact row near the top of You, the plant beside
-   its words; the rules and the look behind one disclosure */
-.plnt-row { display: flex; align-items: center; gap: var(--sp-lg); }
-.plnt-row .plnt-hero { flex-shrink: 0; width: 112px; }
-.plnt-row .plnt-who { flex: 1; min-width: 0; }
-.plnt-row .plnt-name { margin-top: 0; text-align: left; }
-.plnt-more { margin-top: var(--sp-md); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
-.plnt-more-s {
-  display: flex; align-items: center; justify-content: space-between; gap: var(--sp-md); min-height: 48px; padding: var(--sp-sm) 0;
-  cursor: pointer; list-style: none; font: var(--t-label); color: var(--text);
-}
-.plnt-more-s::-webkit-details-marker { display: none; }
-.plnt-more-s .ico { flex-shrink: 0; color: var(--muted); }
-.plnt-more[open] .plnt-more-s .ico { transform: rotate(180deg); }
-.plnt-more-s:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; border-radius: var(--r-sm); }
-.plnt-more > .plnt-sub:first-of-type { margin-top: var(--sp-sm); }
-.plnt-more .plnt-acts { margin-bottom: var(--sp-xs); }
 /* The dialog: plant yours, change plant, rename, change its look */
 .plnt-modal { max-width: 600px; }
 .plnt-modal .cl-title { margin-bottom: var(--sp-md); }
@@ -7102,7 +7091,6 @@ html { scroll-padding-bottom: calc(104px + var(--consent-h, 0px)); }
 /* You: the stats wait for 10 answers; a word ("Building") is not a numeral. */
 .you-stats-wait { margin: var(--sp-md) 0 var(--sp-lg); font: var(--t-meta); color: var(--text2); }
 .you-stats-wait[hidden], .you-stats[hidden] { display: none; }
-.you-stats .stat-num.stat-word { font: 500 20px/26px var(--f-serif); letter-spacing: 0; }
 
 /* Today: before the first readiness range, one quiet line instead of the empty rings. */
 .td-plate.td-plate-quiet { --td-paper: var(--bg); background: none; padding: 0; }
@@ -7260,7 +7248,6 @@ html { scroll-padding-bottom: calc(104px + var(--consent-h, 0px)); }
 }
 .you-set-btn:hover { color: var(--text); }
 .you-set-btn:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
-#youSettingsH { scroll-margin-top: var(--sp-xxl); }
 /* ── GROVE UPLIFT, PHASE 3: You and Settings (C2, 31 Oct 2026) ─────────────
    scratchpad you-c2/final/SPEC.md. You is one scroll in the phone's order;
    from 1240px (the frame spans both tracks there) its two column groups sit
@@ -7299,10 +7286,11 @@ html { scroll-padding-bottom: calc(104px + var(--consent-h, 0px)); }
 .you-chip > .ico { flex: none; color: var(--on-forest2); }
 .you-chip-art { flex: none; display: flex; align-items: center; justify-content: center; width: 34px; height: 34px; border-radius: var(--r-round); background: rgba(255,255,255,.08); }
 .you-chip-t { min-width: 0; }
-.you-chip-k { display: block; font: 600 0.625rem/1.3 var(--f-sans); letter-spacing: .1em; text-transform: uppercase; color: var(--on-forest2); }
+.you-chip-k { display: block; font: 600 0.6875rem/1.273 var(--f-sans); letter-spacing: .1em; text-transform: uppercase; color: var(--on-forest2); }
 .you-chip-s { font-weight: 500; color: var(--on-forest2); }
-/* The chip sits on the paper: its ring is the page's focus ring (a CSS check
-   keeps it so: see the grove-check comment below), never the forest's. */
+@media (min-width: 1240px) { .you-chip.you-chip-dup { display: none; } }
+/* The chip sits on the paper: its ring is the page's --focus-ring (the
+   grove-check line below records the rule), never the forest's. */
 .you-go:focus-visible, .you-chip:focus-visible, .you-set-btn:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
 /* grove-check: .you-chip:focus-visible outline-color is var(--focus-ring) */
 .you-chip:focus-visible { outline-color: var(--focus-ring); }
@@ -7365,11 +7353,8 @@ html { scroll-padding-bottom: calc(104px + var(--consent-h, 0px)); }
 
 /* Estimated readiness: Today's ring without the disc, on the paper card */
 .you-ready { display: flex; flex-direction: column; gap: 10px; padding: 14px 16px; }
-.you-ready {
-  --hero-tick-on: var(--forest); --hero-tick-off: var(--border2); --hero-tick-rng: #B98A2E; --hero-tick-mark: var(--clay);
-  --leaf-line: #86806F;
-}
-[data-theme="dark"] .you-ready { --hero-tick-on: var(--sap); --hero-tick-off: var(--forest-track); --hero-tick-rng: #E9C46A; --leaf-line: #8A978D; }
+.you-ready { --hero-tick-on: var(--forest); --hero-tick-off: var(--border2); --hero-tick-rng: var(--range-gold); --hero-tick-mark: var(--clay); }
+[data-theme="dark"] .you-ready { --hero-tick-on: var(--sap); --hero-tick-off: var(--forest-track); }
 .you-ready-top { display: flex; flex-wrap: wrap; align-items: center; gap: 14px; }
 .you-ring { flex: none; line-height: 0; }
 .you-ready .td-ring { width: 84px; height: 84px; font-size: inherit; aspect-ratio: auto; }
@@ -7387,6 +7372,11 @@ html { scroll-padding-bottom: calc(104px + var(--consent-h, 0px)); }
 .you-k-rng { fill: none; stroke: var(--hero-tick-rng); stroke-width: 2.5; stroke-linecap: round; }
 .you-k-mark { fill: none; stroke: var(--clay); stroke-width: 3; stroke-linecap: round; }
 .you-k-dash { fill: none; stroke: var(--text2); stroke-width: 1.2; stroke-dasharray: 3 3; }
+/* The straight scale bar under the ring (expert decision Q5): its 80 in clay, as the ring's mark. */
+.you-scale .fg-sb { max-width: 420px; margin-top: 0; }
+.you-scale .fg-sb-t.fg-sb-mark { font-weight: 600; color: var(--clay); }
+.you-scale .fg-sb-tick { stroke: var(--clay); }
+.you-low { text-wrap: pretty; }
 
 /* Five areas */
 .you-areas { display: flex; flex-direction: column; gap: 6px; padding: 16px 12px 14px; container-type: inline-size; }
@@ -7468,7 +7458,7 @@ html { scroll-padding-bottom: calc(104px + var(--consent-h, 0px)); }
 /* Settings */
 .set-head { display: flex; flex-direction: column; gap: 4px; }
 .set-head .you-title { margin: 0; font: var(--t-hero); font-size: 1.875rem; line-height: 1.133; }
-.set-head .you-title:focus { outline: none; }
+.set-head .you-title:focus, .you-prof .you-title:focus { outline: none; }
 .set-sub { margin: 0; font: 400 0.875rem/1.429 var(--f-sans); color: var(--text2); }
 .set .you-name-edit { padding: 4px 16px 14px 66px; border-bottom: 0; }
 .set-reset-h { padding: 14px 16px 2px; }
@@ -7479,11 +7469,23 @@ html { scroll-padding-bottom: calc(104px + var(--consent-h, 0px)); }
 .set-card .you-sw-w::before { content: 'Off'; }
 .set-card .you-row[aria-checked="true"] .you-sw-w::before { content: 'On'; }
 .set-card .you-switch { width: 48px; height: 28px; border: 0; background: var(--control); }
-.set-card .you-switch::after { top: 3px; left: 3px; width: 22px; height: 22px; background: #FFFFFF; }
-[data-theme="dark"] .set-card .you-switch::after { background: var(--text); }
+.set-card .you-switch::after { top: 3px; left: 3px; width: 22px; height: 22px; background: var(--surface); }
+/* Dark, off: the thumb is ink2 (DESIGN_SYSTEM, switches in dark mode). */
+[data-theme="dark"] .set-card .you-switch::after { background: var(--text2); }
 .set-card .you-row[aria-checked="true"] .you-switch { background: var(--btn); }
 .set-card .you-row[aria-checked="true"] .you-switch::after { transform: translateX(20px); background: var(--on-btn); }
 #setOthersLi[hidden] { display: none; }
+/* Forced colours (Windows contrast themes) drop fills and shadows: the
+   switch keeps a visible track and thumb, its on state in Highlight, and the
+   You buttons and cards keep an edge. */
+@media (forced-colors: active) {
+  .set-card .you-switch, .set-card .you-switch::after { forced-color-adjust: none; }
+  .set-card .you-switch { border: 1.5px solid CanvasText; background: Canvas; }
+  .set-card .you-switch::after { top: 1.5px; left: 1.5px; background: CanvasText; }
+  .set-card .you-row[aria-checked="true"] .you-switch { border-color: Highlight; background: Highlight; }
+  .set-card .you-row[aria-checked="true"] .you-switch::after { background: HighlightText; }
+  .you-go, .you-chip, .you-card, .you-stat, .you-streak, .you-plant, .you-set-btn { border: 1px solid CanvasText; }
+}
 
 /* The Start fresh sheet: the safe choice first and filled, Back up first as a
    quiet text button, Clear progress outlined in clay and last. */
@@ -7646,9 +7648,9 @@ html { scroll-padding-bottom: calc(104px + var(--consent-h, 0px)); }
   .td-ring.td-grew .td-art-old { display: block; position: absolute; left: 50%; bottom: 0; transform: translateX(-50%); animation: tdFadeOut .45s ease-out both; }
   .td-ring.td-grew .td-art-new > svg { animation: tdLeafIn .45s ease-out both; }
   /* Held at its start until the ring is on screen (todayRingWatch). */
-  .td-ring.td-wait .td-tk, .td-ring.td-wait .td-dot, .td-ring.td-wait .td-dots-out, .td-ring.td-wait .td-tks,
-  .td-ring.td-wait .td-tk-mark, .td-ring.td-wait .td-art-old, .td-ring.td-wait .td-art-new > svg,
-  .td-fig:has(.td-ring.td-wait) .td-cap-in { animation-play-state: paused; }
+  .td-ring.td-ring-wait .td-tk, .td-ring.td-ring-wait .td-dot, .td-ring.td-ring-wait .td-dots-out, .td-ring.td-ring-wait .td-tks,
+  .td-ring.td-ring-wait .td-tk-mark, .td-ring.td-ring-wait .td-art-old, .td-ring.td-ring-wait .td-art-new > svg,
+  .td-fig:has(.td-ring.td-ring-wait) .td-cap-in { animation-play-state: paused; }
   .td-twig.grow .td-tw-leaf.on { animation: tdLeafIn .3s ease-out both; animation-delay: calc(var(--i, 0) * 40ms); }
 }
 
@@ -8235,7 +8237,7 @@ html { scroll-padding-bottom: calc(104px + var(--consent-h, 0px)); }
       <!-- Your study profile (v12.37): the name as the page title (or "You"
            and "Add your name"), the first study day and the exam date.
            Filled by renderYouProfile; it asks for nothing. -->
-      <div class="you-prof" id="youProfile"><h1 class="you-title" id="youTitle">You</h1></div>
+      <div class="you-prof" id="youProfile"><h1 class="you-title" id="youTitle" tabindex="-1">You</h1></div>
       <a class="you-set-btn" href="#settings" aria-label="Settings" onclick="return youGoSettings(event)"><svg class="ico" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915"/><circle cx="12" cy="12" r="3"/></svg></a>
     </div>
     <section class="you-sum" id="youSummary" aria-labelledby="youSumH"><h2 class="sr-only" id="youSumH">This week</h2></section>
@@ -8279,7 +8281,7 @@ html { scroll-padding-bottom: calc(104px + var(--consent-h, 0px)); }
       </div>
     </div>
     <div class="you-card you-setrow">
-      <ul class="you-list"><li><a class="you-row" href="#settings" onclick="return navTo(event,'settings')" aria-labelledby="youSetT" aria-describedby="youSetM"><span class="you-ico" aria-hidden="true"><svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915"/><circle cx="12" cy="12" r="3"/></svg></span><span class="you-text"><span class="you-t" id="youSetT">Settings</span><span class="you-m" id="youSetM">Name, exam date, dark mode, your data, help and about</span></span><span class="you-chev" aria-hidden="true"><svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m9 6 6 6-6 6"/></svg></span></a></li></ul>
+      <ul class="you-list"><li><a class="you-row" href="#settings" onclick="return youGoSettings(event)" aria-labelledby="youSetT" aria-describedby="youSetM"><span class="you-ico" aria-hidden="true"><svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915"/><circle cx="12" cy="12" r="3"/></svg></span><span class="you-text"><span class="you-t" id="youSetT">Settings</span><span class="you-m" id="youSetM">Name, exam date, dark mode, your data, help and about</span></span><span class="you-chev" aria-hidden="true"><svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m9 6 6 6-6 6"/></svg></span></a></li></ul>
     </div>
     <p class="you-foot">Not affiliated with or endorsed by ISACA&reg;. CISA&reg; is a registered trademark of ISACA.</p>
   </div>
@@ -8305,7 +8307,7 @@ html { scroll-padding-bottom: calc(104px + var(--consent-h, 0px)); }
           <div class="you-name-edit" id="youNameEdit" hidden>
             <label class="ph-field" for="youNameInput">Name or nickname</label>
             <input type="text" class="you-name-input" id="youNameInput" maxlength="24" autocomplete="nickname" autocapitalize="words" spellcheck="false" aria-describedby="youNameHint" onkeydown="if(event.key==='Enter'){event.preventDefault();saveDisplayName();}else if(event.key==='Escape'){event.preventDefault();toggleNameEdit(false);}">
-            <p class="ph-hint" id="youNameHint" aria-live="polite">Kept in this browser only. It just helps us say hello.</p>
+            <p class="ph-hint" id="youNameHint" aria-live="polite">It just helps us say hello.</p>
             <div class="you-name-acts"><button type="button" class="ph-done you-name-save" onclick="saveDisplayName()">Save</button><button type="button" class="ph-done" onclick="toggleNameEdit(false)">Cancel</button></div>
           </div></li>
             <!-- Exam date (v12.30): the one place to set or change it, as on mobile Settings. -->
@@ -8316,8 +8318,8 @@ html { scroll-padding-bottom: calc(104px + var(--consent-h, 0px)); }
         </section>
         <section class="you-card set-card" aria-labelledby="youDataH">
           <h2 class="you-card-h" id="youDataH">Your data</h2>
-          <p class="you-card-sub">Your progress is kept in this browser only. Keep a backup.</p>
-          <ul class="you-list"><li><button type="button" class="you-row" id="setBackup" onclick="exportProgress()" aria-labelledby="setBackupT" aria-describedby="setBackupM"><span class="you-ico" aria-hidden="true"><svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 3.5v11M7.5 10l4.5 4.5 4.5-4.5"/><path d="M4.5 17v2.5a1 1 0 0 0 1 1h13a1 1 0 0 0 1-1V17"/></svg></span><span class="you-text"><span class="you-t" id="setBackupT">Back up</span><span class="you-m" id="setBackupM">Save a file of your progress</span></span><span class="you-chev" aria-hidden="true"><svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m9 6 6 6-6 6"/></svg></span></button></li><li><button type="button" class="you-row" id="setRestore" onclick="youRestore()" aria-labelledby="setRestoreT" aria-describedby="setRestoreM"><span class="you-ico" aria-hidden="true"><svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 15.5v-11M7.5 9 12 4.5 16.5 9"/><path d="M4.5 17v2.5a1 1 0 0 0 1 1h13a1 1 0 0 0 1-1V17"/></svg></span><span class="you-text"><span class="you-t" id="setRestoreT">Restore</span><span class="you-m" id="setRestoreM">Load a backup file</span></span><span class="you-chev" aria-hidden="true"><svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m9 6 6 6-6 6"/></svg></span></button></li>
+          <p class="you-card-sub">Keep a backup file, in case this browser clears its data.</p>
+          <ul class="you-list"><li><button type="button" class="you-row" id="setBackup" onclick="backupSave()" aria-labelledby="setBackupT" aria-describedby="setBackupM setBackupL"><span class="you-ico" aria-hidden="true"><svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 3.5v11M7.5 10l4.5 4.5 4.5-4.5"/><path d="M4.5 17v2.5a1 1 0 0 0 1 1h13a1 1 0 0 0 1-1V17"/></svg></span><span class="you-text"><span class="you-t" id="setBackupT">Back up</span><span class="you-m" id="setBackupM">Save a file of your progress</span><span class="you-m" id="setBackupL" hidden></span></span><span class="you-chev" aria-hidden="true"><svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m9 6 6 6-6 6"/></svg></span></button></li><li><button type="button" class="you-row" id="setRestore" onclick="youRestore()" aria-labelledby="setRestoreT" aria-describedby="setRestoreM"><span class="you-ico" aria-hidden="true"><svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 15.5v-11M7.5 9 12 4.5 16.5 9"/><path d="M4.5 17v2.5a1 1 0 0 0 1 1h13a1 1 0 0 0 1-1V17"/></svg></span><span class="you-text"><span class="you-t" id="setRestoreT">Restore</span><span class="you-m" id="setRestoreM">Load a backup file</span></span><span class="you-chev" aria-hidden="true"><svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m9 6 6 6-6 6"/></svg></span></button></li>
             <li id="setOthersLi" hidden><button type="button" class="you-row" id="setOthers" aria-haspopup="dialog" onclick="showYourData()" aria-labelledby="setOthersT" aria-describedby="setOthersM"><span class="you-ico" aria-hidden="true"><svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="4" y="4" width="16" height="6" rx="1.5"/><rect x="4" y="14" width="16" height="6" rx="1.5"/></svg></span><span class="you-text"><span class="you-t" id="setOthersT">Other saved progress</span><span class="you-m" id="setOthersM">Earlier progress records in this browser</span></span><span class="you-chev" aria-hidden="true"><svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m9 6 6 6-6 6"/></svg></span></button></li>
           </ul>
           <!-- The one file input for a restore (Settings and the Your data sheet both use it). -->
@@ -10329,7 +10331,9 @@ function exportProgress(otherId) {
   var profile = id ? getProfiles()[id] : null;
   if (!profile) { showToast('Nothing to export yet.', 'info', 2400); return false; }
   // The marker below is the file's original name, kept so older exports still import.
-  var out = {cisaMindsetExport: true, version: 1, profile: profile};
+  // savedAt (Grove P3, a new field beside the old ones): when the file was
+  // made, so a restore can say "saved 3 Nov". Older readers ignore it.
+  var out = {cisaMindsetExport: true, version: 1, profile: profile, savedAt: Date.now()};
   // v12.34.1: the exam date travels too, so the app can use it. It is kept per
   // browser (not per record), so only the progress in use carries it. A new
   // field beside the old ones: older readers ignore it, older files lack it.
@@ -10348,7 +10352,9 @@ function exportProgress(otherId) {
   var a = document.createElement('a');
   a.href = url;
   var slug = otherId ? '-' + (String(profile.name || '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '') || id.toLowerCase()) : '';
-  a.download = 'kaisip-web-progress' + slug + '.json';
+  // The progress in use is dated (kaisip-web-progress-2026-11-04.json), so
+  // backups sort by day and never overwrite each other.
+  a.download = 'kaisip-web-progress' + (otherId ? slug : '-' + isoLocalDate(new Date())) + '.json';
   document.body.appendChild(a);
   a.click();
   if (!otherId) { try { localStorage.setItem(BACKUP_SAVED_KEY, String(Date.now())); } catch (e) {} }
@@ -10380,10 +10386,23 @@ function importProgress(file) {
       // and cleaned by the one name rule. The record label is never a name.
       var fileName = typeof data.displayName === 'string' && data.displayName.length <= 256 ? cleanDisplayName(data.displayName) : '';
       var addName = fileName && !getDisplayName() ? fileName : '';
+      // Grove P3: the exam date in the file comes back too when this browser
+      // has none (the same add-only rule as the name). A real calendar day only.
+      var fileExam = typeof data.examDate === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(data.examDate) && examDateWords(data.examDate) ? data.examDate : '';
+      var addExam = fileExam && !savedExamDate() ? fileExam : '';
+      // What the file holds: its answers (each question once, as You counts
+      // them) and the day it was saved (savedAt, or the record's last use).
+      var fileN = importAnsweredCount(state);
+      var fileAt = Number(data.savedAt) || Number(data.profile.lastActive) || 0;
+      var fileDay = fileAt > 0 && fileAt <= Date.now() + 86400000 ? profileDateWords(isoLocalDate(new Date(fileAt))) : '';
       ksConfirm({
         title: 'Restore this file?',
-        body: 'The progress in this browser is replaced with the progress in the file.'
-          + (addName ? ' Today will also greet you as ' + addName + ', the name in the file. Change or clear it any time in Settings.' : ''),
+        body: 'This file: ' + fileN + (fileN === 1 ? ' answer' : ' answers') + (fileDay ? ', saved ' + fileDay : '') + '. '
+          + 'The progress in this browser is replaced with the progress in the file.'
+          + (addName ? ' Today will also greet you as ' + addName + ', the name in the file. Change or clear it any time in Settings.' : '')
+          + (addExam ? ' Your exam date in the file, ' + examDateWords(addExam) + ', is added too.' : ''),
+        cancelLabel: 'Keep my progress',
+        extra: { label: 'Back up first', icon: 'install', onClick: function () { return backupSaveQuiet(); }, done: 'Backup saved.', failed: 'Backup failed.' },
         confirmLabel: 'Replace my progress',
         danger: true,
         onConfirm: function () {
@@ -10400,6 +10419,11 @@ function importProgress(file) {
               localStorage.setItem(NAME_ASK_KEY, 'saved');
             } catch (e3) {}
           }
+          if (addExam && !savedExamDate()) {
+            try { localStorage.setItem('aurivan_exam_date', addExam); } catch (e4) {}
+          }
+          // After the reload a toast says "Restored: N answers" (this tab only).
+          try { sessionStorage.setItem(RESTORED_NOTE_KEY, String(fileN)); } catch (e5) {}
           leavingForReload = true;
           location.reload();
         }
@@ -10409,6 +10433,50 @@ function importProgress(file) {
     }
   };
   reader.readAsText(file);
+}
+
+// A file's answers, counted as You counts them: each question once (the
+// answer log, plus older answers kept only as ids).
+function importAnsweredCount(state) {
+  var seen = {};
+  var log = isPlainObj(state.answerLog) ? state.answerLog : {};
+  Object.keys(log).forEach(function (id) { if (log[id]) seen[id] = true; });
+  var ids = isPlainObj(state.answeredIds) ? state.answeredIds : {};
+  Object.keys(ids).forEach(function (d) {
+    if (!isPlainObj(ids[d])) return;
+    Object.keys(ids[d]).forEach(function (id) { if (ids[d][id]) seen[id] = true; });
+  });
+  return Object.keys(seen).length;
+}
+// The restore's note for after its reload: a session-only marker, read once.
+var RESTORED_NOTE_KEY = 'kaisip_restored_note';
+function restoredNoteShow() {
+  var n = null;
+  try { n = sessionStorage.getItem(RESTORED_NOTE_KEY); sessionStorage.removeItem(RESTORED_NOTE_KEY); } catch (e) { n = null; }
+  if (n === null || !/^\d{1,7}$/.test(n)) return;
+  var k = Number(n);
+  setTimeout(function () { showToast('Restored: ' + k + (k === 1 ? ' answer' : ' answers'), 'success', 3200); }, 400);
+}
+// Settings, Back up: the file, then a toast and the "Last backup" line.
+// backupSaveQuiet is the same without the toast (inside a sheet, which says
+// it there).
+function backupSaveQuiet() {
+  var ok = exportProgress() !== false;
+  try { backupLastSync(); } catch (e) {}
+  return ok;
+}
+function backupSave() {
+  if (backupSaveQuiet()) showToast('Backup saved', 'success', 2600);
+}
+// "Last backup: 3 Nov" under Back up, from aurivan_backup_saved_at.
+function backupLastSync() {
+  var el = document.getElementById('setBackupL');
+  if (!el) return;
+  var at = 0;
+  try { at = Number(localStorage.getItem(BACKUP_SAVED_KEY)) || 0; } catch (e) { at = 0; }
+  var day = at > 0 ? profileDateWords(isoLocalDate(new Date(at))) : '';
+  el.textContent = day ? 'Last backup: ' + day : '';
+  el.hidden = !day;
 }
 
 // Records left over from the old profile switcher. They are never deleted:
@@ -10474,7 +10542,7 @@ function showYourData() {
     + '<div class="cl-title">Your data</div>'
     + '<p class="yd-text">Your progress is saved in this browser, on this device only. There is no account, so clearing your browser data removes it. Export a file to keep a copy or move it to another browser.</p>'
     + '<div class="yd-actions">'
-    + '<button type="button" class="act-btn" onclick="exportProgress()">Export progress</button>'
+    + '<button type="button" class="act-btn" onclick="backupSaveQuiet()">Export progress</button>'
     + '<button type="button" class="act-btn" onclick="youRestore()">Import progress</button>'
     + '</div>'
     + othersHtml
@@ -12013,6 +12081,17 @@ function youGoSettings(e) {
   }
   return r;
 }
+// The Back link from Settings (and You's other pages) lands focus on the
+// You page's title (tabindex -1), so a keyboard or screen reader user starts
+// at the top of You, as the cog does for Settings.
+function youGoBack(e) {
+  var r = navTo(e || null, 'you');
+  if (r === false) {
+    var h = document.getElementById('youTitle');
+    if (h) { try { h.focus({ preventScroll: true }); } catch (ex) {} }
+  }
+  return r;
+}
 function cpScrollTo(el) {
   if (!el) return;
   var top = el.getBoundingClientRect().top + (window.pageYOffset || document.documentElement.scrollTop) - 20;
@@ -12552,7 +12631,7 @@ function syncNav(t) {
     } else if (sec === 'you' && t !== 'you') {
       sub.setAttribute('aria-label', 'Back');
       sub.className = 'sub-nav sub-nav-back';
-      html = '<a href="#you" onclick="return navTo(event,\'you\')">' + ico('chevron', 18, 'ico ico-back') + 'You</a>';
+      html = '<a href="#you" onclick="return youGoBack(event)">' + ico('chevron', 18, 'ico ico-back') + 'You</a>';
     }
     sub.innerHTML = html;
     sub.hidden = !html;
@@ -12623,9 +12702,11 @@ function subNavFade(sub) {
 // The Settings page's rows show the saved choices (and You's profile).
 function syncYouSettings() {
   try { syncThemeSwitch(); syncExamModeBtn(); syncNameRow(); renderYouExamDate(); youOthersSync(); } catch (e) {}
+  try { backupLastSync(); } catch (e) {}
 }
 // You → Your name: the row shows the saved name; it opens a small field.
-var NAME_HELPER = 'Kept in this browser only. It just helps us say hello.';
+// "Kept in this browser only" is said once on Settings, in its subtitle.
+var NAME_HELPER = 'It just helps us say hello.';
 function syncNameRow() {
   var m = document.getElementById('youNameM');
   if (m) m.textContent = (getDisplayName() || 'Optional') + ' \u00b7 for the greeting on Today';
@@ -12675,7 +12756,9 @@ window.addEventListener('hashchange', function () {
     if (S.activeTab === 'principles') { if (principlesState.selectedId) showPrinciplesList(); return; }
     principlesState.selectedId = null;
   }
-  if (r.tab !== S.activeTab) switchTab(r.tab);
+  // An address opened directly (typed, pasted or followed) starts at the top
+  // of its page, as a first load does, not at the running head 56px down.
+  if (r.tab !== S.activeTab) { switchTab(r.tab, { noScroll: true }); window.scrollTo(0, 0); }
   if (r.action) navRunAction(r.action);
 });
 
@@ -13057,7 +13140,7 @@ function renderYouProfile() {
   // Grove C2: the name is the page's title (h1), or "You" with "Add your name".
   el.innerHTML = profileLeafSvg(initial)
     + '<div class="you-prof-t" id="youProfH">'
-    + '<h1 class="you-title you-prof-n" id="youTitle">' + (name ? escapeHtml(name) : 'You') + '</h1>'
+    + '<h1 class="you-title you-prof-n" id="youTitle" tabindex="-1">' + (name ? escapeHtml(name) : 'You') + '</h1>'
     + (since ? '<p class="you-prof-l">Studying for ' + escapeHtml(ACTIVE.name) + ' since ' + escapeHtml(since) + '</p>' : '')
     + (exam ? '<p class="you-prof-m">Exam ' + escapeHtml(exam) + '</p>' : '')
     + (name ? '' : '<button type="button" class="plnt-ghost you-prof-add" onclick="youProfileAddName()">Add your name</button>')
@@ -13079,7 +13162,7 @@ function youProfileAddName() {
 // Presentation only: every number comes from the engines Today uses
 // (computeTodayReadiness, todayReadinessRange, studyDayStreak), so You and
 // Today cannot disagree. Focus next is r.focusId, Today's own.
-var youRingGrown = false;   // the ring's marks light up once per visit, as on Today
+var youRingGrown = false;   // the ring's marks light up once per page load, as on Today
 var youRingIo = null;
 var youChipKey = '';
 function renderYou() {
@@ -13153,7 +13236,9 @@ function youChipHtml() {
   var text = p
     ? escapeHtml(K.plant.plantCallName(p)) + ' <span class="you-chip-s">&middot; ' + escapeHtml(K.plant.GROWTH_NAMES[g]) + ', stage ' + g + ' of ' + K.plant.MAX_GROWTH + '</span>'
     : 'Pick your plant';
-  return '<button type="button" class="you-chip" id="youChip" onclick="youChipGo()"><span class="you-chip-art" aria-hidden="true">' + youStageSvg(g, 22, 26) + '</span>'
+  // From 1240px the plant card is in the first view, so the chip steps aside
+  // when there is a plant (expert decision Q4); "Pick your plant" stays.
+  return '<button type="button" class="you-chip' + (p ? ' you-chip-dup' : '') + '" id="youChip" onclick="youChipGo()"><span class="you-chip-art" aria-hidden="true">' + youStageSvg(g, 22, 26) + '</span>'
     + '<span class="you-chip-t"><span class="you-chip-k">Your plant</span> ' + text + '</span>' + ico('chevron', 16) + '</button>';
 }
 function youChipSync() {
@@ -13176,29 +13261,38 @@ function youChipGo() {
 }
 // Estimated readiness: Today's ring without its disc (seed dots before the
 // first range, then ticks, the gold range and the clay study bar), the range
-// in words and a key that says what the marks mean.
+// in words, then (once a range exists) the straight scale bar with its 0, 50,
+// 80 and 100 (expert decision Q5; aria-hidden, its own sentence carries the
+// facts, and it prints "a study estimate, not a prediction", so the card's
+// own caption steps aside), a key that says what the marks mean and one
+// sentence that defines the low end (Q1). Numbers come from the range and
+// the study bar.
 function youReadyHtml(r, range, grow) {
   var ring = '<div class="you-ring">' + todayRingHtml(range, { exam: false }, { plant: false }, { grow: grow, disc: false }) + '</div>';
   var so = todayRingSoFar(range);
   var words = range.enough
-    ? '<p class="you-ready-n">' + range.low + '<span class="you-to"> to </span>' + range.high + '</p><p class="you-cap">' + TODAY_EST_LINE + '</p>'
+    ? '<p class="you-ready-n">' + range.low + '<span class="you-to"> to </span>' + range.high + '</p>'
     : '<p class="you-ready-n">' + so + '<span class="you-to"> of ' + RD_RANGE_MIN_ANSWERS + ' answers</span></p><p class="you-cap">until your first readiness range</p>';
   var html = '<div class="you-ready-top">' + ring + '<div class="you-ready-t"><h2 class="you-kick" id="youReadyH">Estimated readiness</h2>' + words + '</div></div>';
   if (!range.enough) return html;
   var gap = FG_STUDY_BAR - range.low;
-  return html + '<ul class="you-key you-rkey" aria-label="Ring key">'
-    + '<li><svg width="14" height="16" viewBox="0 0 14 16" aria-hidden="true" focusable="false"><path class="you-k-rng" d="M4 2v12M10 2v12"/></svg><span><b>Gold ticks:</b> your range.</span></li>'
+  return html + '<div class="you-scale">' + fgScaleBar(range, { number: false }) + '</div>'
+    + '<ul class="you-key you-rkey" aria-label="Ring key">'
+    + '<li><svg width="14" height="16" viewBox="0 0 14 16" aria-hidden="true" focusable="false"><path class="you-k-rng" d="M4 2v12M10 2v12"/></svg><span><b>Gold ticks:</b> your range, ' + range.low + ' to ' + range.high + '.</span></li>'
     + '<li><svg width="14" height="16" viewBox="0 0 14 16" aria-hidden="true" focusable="false"><path class="you-k-mark" d="M7 1v14"/></svg><span><b>Clay mark:</b> ' + FG_STUDY_BAR
-    + ', this app&rsquo;s own study bar for your low end. ' + (gap > 0 ? 'Your low end, ' + range.low + ', is ' + gap + ' under it.' : 'Your low end, ' + range.low + ', is at or above it.') + '</span></li></ul>';
+    + ', this app&rsquo;s study bar.</span></li></ul>'
+    + '<p class="you-cap you-low">Your low end, ' + range.low + ', is the cautious end of your range: we&rsquo;re fairly sure you&rsquo;re at or above it. '
+    + 'The study bar asks for a low end of ' + FG_STUDY_BAR + ', a goal to study toward, not an exam score. '
+    + (gap > 0 ? 'Yours is ' + gap + ' under it.' : 'Yours is at or above it.') + '</p>';
 }
 function youRingWatch() {
   if (youRingIo) { youRingIo.disconnect(); youRingIo = null; }
-  var ring = document.querySelector('#youReady .td-ring.td-wait');
+  var ring = document.querySelector('#youReady .td-ring.td-ring-wait');
   if (!ring) return;
   youRingIo = new IntersectionObserver(function (entries) {
     entries.forEach(function (e) {
       if (!e.isIntersecting) return;
-      e.target.classList.remove('td-wait');
+      e.target.classList.remove('td-ring-wait');
       if (youRingIo) { youRingIo.disconnect(); youRingIo = null; }
     });
   }, { threshold: 0.3, rootMargin: '0px 0px -80px 0px' });
@@ -13215,8 +13309,9 @@ function youAreasHtml(r) {
     var val, note = [];
     if (n <= 0) { val = 'Not started'; said.push(nm + ', not started.'); }
     else if (n < DOMAIN_READ_MIN) {
-      val = n + ' of ' + DOMAIN_READ_MIN; note.push('answers, still a seed');
-      said.push(nm + ', ' + n + ' of ' + DOMAIN_READ_MIN + ' answers, still a seed.');
+      // Expert decision Q2: "seed" means the plant only; an area this new is "too few yet".
+      val = n + ' of ' + DOMAIN_READ_MIN; note.push('answers, too few yet for a score');
+      said.push(nm + ', ' + n + ' of ' + DOMAIN_READ_MIN + ' answers, too few yet for a score.');
     } else {
       val = pct + '%';
       if (pct < DOMAIN_TARGET_PCT) note.push('<span class="you-clay">below ' + DOMAIN_TARGET_PCT + '</span>');
@@ -13232,12 +13327,12 @@ function youAreasHtml(r) {
   var seed = '<svg width="18" height="16" viewBox="0 0 18 16" aria-hidden="true" focusable="false"><ellipse class="fg-st-seed" cx="9" cy="9" rx="6.5" ry="4.2"/></svg>';
   return '<div class="you-areas-h"><h2 class="you-fig" id="youAreasH">Five areas, one scale</h2><p class="you-cap">Built from your answers in this app.</p></div>'
     + '<div class="you-stems" role="img" aria-label="' + escapeHtml('Five areas on one scale, with a dashed line at ' + DOMAIN_TARGET_PCT + '. ' + said.join(' ')) + '">'
-    + fgStemChart(areas, { label: 'Each area' }) + '</div>'
+    + fgStemChart(areas, { label: 'Each area', lineInKey: true }) + '</div>'
     + '<ul class="you-areal" aria-label="Each area">' + items.join('') + '</ul>'
     + '<ul class="you-key" aria-label="Chart key">'
-    + '<li>' + dash + '<span><b>Dashed line:</b> ' + DOMAIN_TARGET_PCT + ', the target for each area. (The study bar, ' + FG_STUDY_BAR + ', is for your overall low end.)</span></li>'
+    + '<li>' + dash + '<span><b>Dashed line:</b> ' + DOMAIN_TARGET_PCT + ', the target for each area.</span></li>'
     + '<li>' + tip + '<span><b>Clay tip and &ldquo;below ' + DOMAIN_TARGET_PCT + '&rdquo;:</b> that area sits under the line.</span></li>'
-    + '<li>' + seed + '<span><b>Seed:</b> fewer than ' + DOMAIN_READ_MIN + ' answers. It grows a stem at ' + DOMAIN_READ_MIN + '.</span></li></ul>';
+    + '<li>' + seed + '<span><b>No stem yet:</b> fewer than ' + DOMAIN_READ_MIN + ' answers, too few yet for a score. The stem and score show at ' + DOMAIN_READ_MIN + '.</span></li></ul>';
 }
 // Mock exams: the newest three (mockPastRowsHtml: name, date, right of
 // asked, percent; no Review, past answers are not kept) and a link to all of
@@ -13517,24 +13612,12 @@ function todayPractice() {
 // ── TODAY'S PLAN (v12.33; mobile engine/planner.ts, in brief) ──
 // One plan with its time: the questions to revisit first (at most
 // REVIEW_DAILY_PLAN, most overdue first), then one practice set in the
-// domain that most needs it: one not started yet (outline order), else the
-// one with the most points left on the table. Never the domain of the set
-// just finished when another will do. Nothing new is saved.
-function lastSetDomain() {
-  try {
-    var j = JSON.parse(localStorage.getItem('aurivan_last_session') || 'null');
-    return j && DI[String(j.domain)] ? String(j.domain) : null;
-  } catch (e) { return null; }
-}
-function todayPlanDomain(r, last) {
-  if (last === undefined) last = lastSetDomain();
-  var fresh = r.domains.filter(function (x) { return x.answered === 0 && x.id !== last; });
-  if (fresh.length) return { d: fresh[0].id, why: 'new' };
-  var order = r.domains.slice().sort(function (a, b) {
-    return (1 - b.mastery) * DI[b.id].weight - (1 - a.mastery) * DI[a.id].weight;
-  });
-  var pick = order.filter(function (x) { return x.id !== last; })[0] || order[0];
-  return { d: pick.id, why: 'gain' };
+// area where you'll gain most (Today's readiness focus, the same as the
+// phone planner). Nothing new is saved.
+function todayPlanDomain(r) {
+  // Today's readiness focus: the same area the hero, You and the phone name.
+  var x = r.domains.filter(function (y) { return y.id === r.focusId; })[0] || r.domains[0];
+  return { d: x.id, why: x.answered === 0 ? 'new' : 'gain' };
 }
 function todayPlanSetLength() { return practiceLen > 0 ? practiceLen : 10; }
 // Plan modes (web Today redesign; mobile planner.ts re-entry and taper):
@@ -13553,6 +13636,7 @@ var TODAY_EXAM_WEEK_REVIEW = 4;
 var TODAY_EXAM_WEEK_QUESTIONS = 9;
 var TODAY_WARM_UP = 5;
 function todayPlanMinutes(n) { return Math.max(1, Math.round(n * MINUTES_PER_PRACTICE_Q)); }
+// last: no longer used (the set is Today's readiness focus); kept so the callers stay as they are.
 function todayPlan(r, last, mode) {
   r = r || computeTodayReadiness();
   var due = 0;
@@ -13565,13 +13649,14 @@ function todayPlan(r, last, mode) {
   }
   var week = mode === 'examweek';
   var review = Math.min(due, week ? TODAY_EXAM_WEEK_REVIEW : REVIEW_DAILY_PLAN);
-  var set = todayPlanDomain(r, last);
+  var set = todayPlanDomain(r);
   var n = week ? TODAY_EXAM_WEEK_QUESTIONS - review : todayPlanSetLength();
   return todayPlanBuild(mode || 'normal', review, set.d, n, set.why, due);
 }
 // The plan's items and minutes from its counts (todayPlan, and the plan
 // saved for the day: todayPlanFromSnap). review: questions to revisit; d and
-// n: the set ('all' for a mixed one); why: 'new' (not started) or 'gain'.
+// n: the set ('all' for a mixed one); why: 'new' (no answers there yet:
+// "your first set here", which stays true as the set is answered) or 'gain'.
 function todayPlanBuild(mode, review, d, n, why, due) {
   var items = [];
   if (mode === 'back' || mode === 'examday') {
@@ -13594,7 +13679,7 @@ function todayPlanBuild(mode, review, d, n, why, due) {
   }
   // One name for the weak area across Today: "where you'll gain most".
   if (d && DI[d] && n > 0) {
-    items.push({ title: escapeHtml(DI[d].short), meta: n + ' questions &middot; ' + (why === 'new' ? 'not started' : week ? 'one short set' : 'where you&rsquo;ll gain most') });
+    items.push({ title: escapeHtml(DI[d].short), meta: n + ' questions &middot; ' + (why === 'new' ? 'your first set here' : week ? 'one short set' : 'where you&rsquo;ll gain most') });
   } else { d = null; n = 0; }
   return { mode: mode, review: review, due: due, d: d, n: n, why: why, items: items, minutes: todayPlanMinutes(review + n) };
 }
@@ -14019,7 +14104,7 @@ function todayReadyHtml(r, range, st) {
   // One name for the weak area, its full name once (from DI). Not on a
   // Welcome back day (owner default).
   if (!st.back && r.focusId && DI[r.focusId]) {
-    html += '<p class="td-gain">Where you&rsquo;ll gain most</p><p class="td-gain-d">' + escapeHtml(DI[r.focusId].name) + '</p>';
+    html += '<p class="td-gain">Where you&rsquo;ll gain most</p><p class="td-gain-d">' + escapeHtml(DI[r.focusId].short) + '</p>';
   }
   var banded = false;
   if (!st.exam) {
@@ -14289,19 +14374,19 @@ var todayRingGrown = false;     // the marks light up once per visit
 var todayRingWasEnough = null;  // the range state last drawn this visit (the hand-off at answer 40)
 var todayGrewFaded = false;     // the plant's grow-up fade plays once per visit
 var todaySaidOnce = '';         // what the hero last announced this visit
-// The light-up waits (td-wait holds it at its start) until a third of the
+// The light-up waits (td-ring-wait holds it at its start) until a third of the
 // ring is on screen above the tab bar's zone (the page can open scrolled, or
 // on a very short screen). It plays once. Reduced motion has no
 // light-up: the marks show lit.
 var todayRingIo = null;
 function todayRingWatch() {
   if (todayRingIo) { todayRingIo.disconnect(); todayRingIo = null; }
-  var ring = document.querySelector('#tdFig .td-ring.td-wait');
+  var ring = document.querySelector('#tdFig .td-ring.td-ring-wait');
   if (!ring) return;
   todayRingIo = new IntersectionObserver(function (entries) {
     entries.forEach(function (e) {
       if (!e.isIntersecting) return;
-      e.target.classList.remove('td-wait');
+      e.target.classList.remove('td-ring-wait');
       if (todayRingIo) { todayRingIo.disconnect(); todayRingIo = null; }
     });
   }, { threshold: 0.3, rootMargin: '0px 0px -80px 0px' });
@@ -14366,7 +14451,7 @@ function todayRingHtml(range, st, shoot, o) {
   if (!art && disc) art = todaySeedSvg();
   var wait = (o.grow || o.handoff || o.fade) && typeof IntersectionObserver === 'function';
   return '<div class="td-ring' + (st.exam ? ' td-ring-bare' : '') + (disc ? '' : ' td-ring-nodisc') + (o.grow ? ' grow' : '') + (o.handoff ? ' td-ho' : '')
-    + (o.fade ? ' td-grew' : '') + (wait ? ' td-wait' : '') + '">'
+    + (o.fade ? ' td-grew' : '') + (wait ? ' td-ring-wait' : '') + '">'
     + '<svg class="td-ring-svg" viewBox="0 0 200 200" focusable="false"' + (label ? ' role="img" aria-label="' + escapeHtml(label) + '"' : ' aria-hidden="true"') + '>'
     + dots + ticks + mark
     + (disc ? '<circle class="td-ring-disc" cx="100" cy="100" r="70"/>' : '') + '</svg>'
@@ -14807,10 +14892,10 @@ function fgScaleBar(range, o) {
   for (var i = 0; i < 10; i++) g += '<rect class="' + (i % 2 ? 'fg-sb-b' : 'fg-sb-a') + '" x="' + (i * 10) + '" y="7" width="10" height="5"/>';
   var lab = '';
   if (on) {
-    var rw = Math.max(1, hi - lo), mid = Math.min(94, Math.max(6, lo + rw / 2));
+    var rw = Math.max(1, hi - lo), mid = Math.min(90, Math.max(10, lo + rw / 2));   // "67 to 79" is wider than a dash: kept inside the bar
     g += '<rect class="fg-sb-r" x="' + lo + '" y="7" width="' + rw + '" height="5"/>'
       + '<path class="fg-sb-br" d="M' + lo + ' 5V1H' + (lo + rw) + 'V5"/>';
-    lab += '<span class="fg-sb-rt" style="left:' + mid + '%">' + lo + '&ndash;' + hi + '</span>';
+    lab += '<span class="fg-sb-rt" style="left:' + mid + '%">' + lo + ' to ' + hi + '</span>';
   }
   g += '<path class="fg-sb-tick" d="M' + FG_STUDY_BAR + ' 13V19"/>';
   [0, 50, FG_STUDY_BAR, 100].forEach(function (p) {
@@ -14828,7 +14913,7 @@ function fgScaleBar(range, o) {
     var words = '<span class="fg-scale-w">' + FG_ESTIMATE + '<span class="sr-only">. The tick marks this app&rsquo;s ' + FG_STUDY_BAR + ' percent study bar.</span></span>';
     fig = o.number === false
       ? '<p class="fg-scale-fig">' + said + words + '</p>'
-      : '<p class="fg-scale-fig"><span class="fg-scale-n">' + said + '<span aria-hidden="true">' + lo + '&ndash;' + hi + '<sup>%</sup></span></span>' + words + '</p>';
+      : '<p class="fg-scale-fig"><span class="fg-scale-n">' + said + '<span aria-hidden="true">' + lo + ' to ' + hi + '<sup>%</sup></span></span>' + words + '</p>';
   }
   return '<div class="fg-scale">' + fig + bar + '</div>';
 }
@@ -14854,14 +14939,35 @@ function fgStemFacts(a) {
     lines: [extra, a.note ? String(a.note) : ''].filter(Boolean)
   };
 }
+// The lines under an area's word in one drawing. a.noteShort: the phone
+// drawing's shorter note ("6 of 9" for "6 of 9 this mock"). In the phone
+// drawing a line wider than its column wraps at a space ("12" over
+// "answered"), so the labels of neighbouring areas never run together.
+// The width is an estimate for the 11px chart type (about 6.2px a character).
+function fgStemLines(a, f, wide, col) {
+  var lines = (!wide && a.noteShort && a.note) ? f.lines.slice(0, -1).concat([String(a.noteShort)]) : f.lines;
+  var out = [];
+  lines.forEach(function (t, k) {
+    var c = f.below && k === 0;
+    if (wide || String(t).length * 6.2 <= col - 8) { out.push({ t: t, c: c }); return; }
+    var cur = '';
+    String(t).split(' ').forEach(function (word) {
+      var next = cur ? cur + ' ' + word : word;
+      if (cur && next.length * 6.2 > col - 8) { out.push({ t: cur, c: c }); cur = word; } else cur = next;
+    });
+    if (cur) out.push({ t: cur, c: c });
+  });
+  return out;
+}
 function fgStemSvg(areas, wide, o) {
   var n = Math.max(1, areas.length);
-  var extras = Math.max.apply(null, [0].concat(areas.map(function (a) { return fgStemFacts(a).lines.length; })));
   var w = wide ? 600 : (o.w || 340), T = 34, plotH = wide ? 230 : 170, soil = T + plotH;
+  var L = 26, gap = (w - L) / n, g = '';
+  var wrapped = areas.map(function (a) { return fgStemLines(a, fgStemFacts(a), wide, gap); });
+  var extras = Math.max.apply(null, [0].concat(wrapped.map(function (l) { return l.length; })));
   var step = wide ? 18 : 15, first = wide ? 58 : 62;
-  var h = soil + (wide ? 44 : 52) + extras * step + 4, L = 26;
+  var h = soil + (wide ? 44 : 52) + extras * step + 4;
   var y = function (p) { return soil - (p / 100) * plotH; };
-  var gap = (w - L) / n, g = '';
   var trace = o.ink ? ' fg-trace' : '', len = o.ink ? ' pathLength="1"' : '', settle = o.ink ? ' fg-settle' : '';
   [0, 50, DOMAIN_TARGET_PCT, 100].forEach(function (p) {
     g += '<text class="fg-st-t" x="0" y="' + (y(p) + 4).toFixed(1) + '">' + p + '</text><path class="fg-st-ax" d="M20 ' + y(p).toFixed(1) + 'h5"/>';
@@ -14869,15 +14975,17 @@ function fgStemSvg(areas, wide, o) {
   g += '<path class="fg-st-ax" d="M24 ' + soil + 'V' + T + '"/>'
     + '<path class="fg-st-70" d="M26 ' + y(DOMAIN_TARGET_PCT).toFixed(1) + 'H' + w + '"/>'
     + '<path class="fg-st-ax" d="M26 ' + soil + 'H' + w + '"/>'
-    // o.lineInKey: the phone drawing leaves the line unlabelled (the KEY caption names it).
-    + (o.lineInKey && !wide ? '' : '<text class="fg-st-line" x="' + w + '" y="' + (y(DOMAIN_TARGET_PCT) + 13).toFixed(1) + '" text-anchor="end">' + DOMAIN_TARGET_PCT + ' line</text>');
+    // o.lineInKey: the line is unlabelled in both drawings, so its label never
+    // sits on a stem (the key under the chart names it at every width).
+    + (o.lineInKey ? '' : '<text class="fg-st-line" x="' + w + '" y="' + (y(DOMAIN_TARGET_PCT) + 13).toFixed(1) + '" text-anchor="end">' + DOMAIN_TARGET_PCT + ' line</text>');
   areas.forEach(function (a, i) {
     var f = fgStemFacts(a), pct = f.pct, delta = f.delta;
     var xs = (L + gap * i + gap / 2).toFixed(1);
     if (f.few) {
+      // A seed, and a faint dotted sprout once it has answers (no number, and
+      // no unlabelled mark above it: the words under the seed say why).
       g += '<ellipse class="fg-st-seed" cx="' + xs + '" cy="' + (soil - 4) + '" rx="7" ry="4.5"/>'
-        + (f.none ? '' : '<path class="fg-st-ghost" d="M' + xs + ' ' + (soil - 9) + 'v-18"/>'
-          + '<text class="fg-st-n" x="' + xs + '" y="' + (soil - 34) + '" text-anchor="middle">&ndash;</text>');
+        + (f.none ? '' : '<path class="fg-st-ghost" d="M' + xs + ' ' + (soil - 9) + 'v-18"/>');
     } else {
       var base = delta > 0 ? pct - delta : pct;
       g += '<path class="fg-st-stem' + trace + '"' + len + ' d="M' + xs + ' ' + soil + 'V' + y(base).toFixed(1) + '"/>';
@@ -14891,10 +14999,8 @@ function fgStemSvg(areas, wide, o) {
     }
     var nm = String(a.short || a.name || ''), parts = nm.split(' ');
     // The lines under the word: "18 answered" (grey) or "below 70" (clay), then the set's note.
-    // a.noteShort: the phone drawing's shorter note ("6 of 9" for "6 of 9 this mock").
-    var lines = (!wide && a.noteShort && a.note) ? f.lines.slice(0, -1).concat([String(a.noteShort)]) : f.lines;
-    var extra = lines.map(function (t, k) {
-      return '<text class="fg-st-x' + (f.below && k === 0 ? ' c' : '') + '" x="' + xs + '" y="' + (soil + first + k * step) + '" text-anchor="middle">' + escapeHtml(t) + '</text>';
+    var extra = wrapped[i].map(function (l, k) {
+      return '<text class="fg-st-x' + (l.c ? ' c' : '') + '" x="' + xs + '" y="' + (soil + first + k * step) + '" text-anchor="middle">' + escapeHtml(l.t) + '</text>';
     }).join('');
     if (wide) {
       g += '<text class="fg-st-l2" x="' + xs + '" y="' + (soil + 19) + '" text-anchor="middle">' + escapeHtml(nm) + '</text>'
@@ -15155,7 +15261,7 @@ function pgStandHtml(r, range, days) {
   var measured = r.domains.filter(function (x) { return x.answered >= DOMAIN_READ_MIN; }).length;
   var rows = [{
     k: 'Readiness',
-    vHtml: range.enough ? '<span aria-hidden="true">' + range.low + '&ndash;' + pgSup(range.high) + '</span>' : '',
+    vHtml: range.enough ? '<span aria-hidden="true">' + range.low + ' to ' + pgSup(range.high) + '</span>' : '',
     xHtml: fgScaleBar(range, { number: false })
   }];
   if (range.enough) rows.push({ k: 'Low end', vHtml: range.low + '<sup>%</sup><small>the cautious read</small>' });
@@ -17276,8 +17382,7 @@ function railAlign(aside, page) {
   var main = document.getElementById('main');
   var a = page === 'hub' ? null
     : page === 'q' ? document.getElementById('qArea')
-    : page === 'mock' ? document.querySelector('#mkResume:not(:empty), #mockArea .ph-sec')
-    : page === 'you' ? document.querySelector('#screen-you .you-group') : null;
+    : page === 'mock' ? document.querySelector('#mkResume:not(:empty), #mockArea .ph-sec') : null;
   var lead = 0;
   if (a && main && a.getClientRects().length) {
     var pad = parseFloat(getComputedStyle(main).paddingTop) || 0;
@@ -17862,9 +17967,9 @@ function plantOpenYou() {
 function plantYouHtml(where) {
   var K = plantApi();
   if (!K) return '';
+  // You draws its own card; the rest of this is the study rail's plant.
   if (where !== 'rail') return plantYouCardHtml(K);
-  var hid = where === 'rail' ? 'plRailH' : 'plYouH';
-  var head = '<h2 class="' + (where === 'rail' ? 'plnt-cap' : 'you-head') + '" id="' + hid + '">Your plant</h2>';
+  var head = '<h2 class="plnt-cap" id="plRailH">Your plant</h2>';
   var now = Date.now();
   plantSync(now);
   var p = S.plant;
@@ -17877,15 +17982,11 @@ function plantYouHtml(where) {
   }
   var v = plantView(now);
   var info = K.plant.SPECIES_INFO[p.species];
-  var rail = where === 'rail';
-  // The rail draws the shared 200 stage (growth reads from one size to the
-  // next); inline, near the top of You, a compact row (the plant framed tight).
+  // The rail draws the shared 200 stage (growth reads from one size to the next).
   var who = '<p class="plnt-name">' + escapeHtml(K.plant.plantCallName(p)) + '</p>'
     + '<p class="plnt-meta">' + escapeHtml((p.name ? 'Your ' + info.lower + ' \u00b7 ' : '') + K.plant.growthShort(p.growth)) + '</p>'
     + '<p class="plnt-look-line">' + escapeHtml(K.plant.GROWTH_LOOKS[p.growth]) + '</p>';
-  var html = head + (rail
-    ? '<div class="plnt-hero">' + plantDraw(v, 'you', 200, { fit: false, label: v.label, breathe: plantBreathe(where) }) + '</div><div class="plnt-who">' + who + '</div>'
-    : '<div class="plnt-row"><div class="plnt-hero">' + plantDraw(v, 'you', 112, { fit: true, label: v.label, breathe: plantBreathe(where) }) + '</div><div class="plnt-who">' + who + '</div></div>');
+  var html = head + '<div class="plnt-hero">' + plantDraw(v, 'you', 200, { fit: false, label: v.label, breathe: plantBreathe(where) }) + '</div><div class="plnt-who">' + who + '</div>';
   // The back-fill line, once (kept for this visit); then the rest line.
   if (p.backfill && !p.backfill.seen) {
     plantBackfillShown = { at: p.backfill.at, line: K.plant.backfillLine(p, p.backfill.growth) };
@@ -17901,9 +18002,6 @@ function plantYouHtml(where) {
   });
   var f = plantFactsNow(now);
   var next = f ? K.plant.nextGrowthSteps(p.growth, f) : null;
-  // Inline, the rules and the look sit behind one disclosure, so You still
-  // leads with progress on a phone.
-  if (!rail) html += '<details class="plnt-more"' + (plantMoreOpen ? ' open' : '') + ' ontoggle="plantMoreOpen=this.open"><summary class="plnt-more-s"><span>What grows it next, and its look</span>' + ico('chevron-down', 18) + '</summary>';
   html += '<h3 class="plnt-sub">What grows it next' + (next ? '<span class="plnt-sub-m">' + K.plant.GROWTH_NAMES[next.growth] + '</span>' : '') + '</h3>';
   if (!f) {
     html += '<p class="plnt-meta">Working it out from your progress&hellip;</p>';
@@ -17930,7 +18028,6 @@ function plantYouHtml(where) {
     + row('plActSpecies', "plantOpen('species','you')", 'Change plant', 'Same growth, new look.')
     + row('plActName', "plantOpen('name','you')", 'Rename', p.name ? 'Now: ' + escapeHtml(p.name) : 'No name yet')
     + '</ul>';
-  if (!rail) html += '</details>';
   return html;
 }
 // Grove C2: You's plant card, a forest panel at every width (You has no
@@ -19081,8 +19178,8 @@ function firstFiveEndHtml(deb, total, missed, fact) {
   var r = computeTodayReadiness();
   var range = todayReadinessRange(r);
   var toward = range.enough ? '' : (RD_RANGE_MIN_ANSWERS - range.needed) + ' of ' + RD_RANGE_MIN_ANSWERS + ' for your first readiness range';
-  var dom = /^[0-9]+$/.test(String(deb.domain)) ? String(deb.domain) : null;
-  var next = todayPlanDomain(r, dom);
+  // Tomorrow's set is Today's readiness focus, as the plan picks it.
+  var next = todayPlanDomain(r);
   var n = todayPlanSetLength();
   var plan = n + ' questions in ' + escapeHtml(DI[next.d].short) + ', about ' + Math.max(1, Math.round(n * MINUTES_PER_PRACTICE_Q)) + ' min.';
   var back = missed.length === 0 ? '' : missed.length === 1 ? 'The one you missed comes back then.' : 'The ' + missed.length + ' you missed come back then.';
@@ -21206,7 +21303,7 @@ function confirmResetProgress() {
     title: 'Start fresh?',
     body: 'Every answer, score and note in this browser is cleared. Only a backup file can bring them back.',
     cancelLabel: 'Keep my progress',
-    extra: { label: 'Back up first', icon: 'install', onClick: function () { return exportProgress(); }, done: 'Backup saved.', failed: 'Backup failed.' },
+    extra: { label: 'Back up first', icon: 'install', onClick: function () { return backupSaveQuiet(); }, done: 'Backup saved.', failed: 'Backup failed.' },
     confirmLabel: 'Clear progress',
     danger: true,
     onConfirm: doResetProgress
@@ -23814,6 +23911,9 @@ if (bootNav) S.activeTab = bootNav.tab;
 // v12.33: a returning visitor opens on Today, not the page used last (an
 // unfinished mock keeps its page, so its Resume is the first thing seen).
 else if (!mockResumePending) S.activeTab = 'home';
+// A load or reload opens at the top of its page (switchTab's noScroll below),
+// so the browser does not put back an old scroll position over it.
+try { if ('scrollRestoration' in history) history.scrollRestoration = 'manual'; } catch (e) {}
 try { renderYouExamDate(); } catch (e) {}
 (function syncHeaderVersion(){
   var pill = document.getElementById('versionPill');
@@ -23848,6 +23948,8 @@ if (bootNav && bootNav.action) setTimeout(function () { navRunAction(bootNav.act
 
 // First visit: the welcome (onboarding) opens after a short pause.
 checkOnboarding();
+// Just restored from a file: say how many answers came back.
+try { restoredNoteShow(); } catch (e) {}
 
 // FTUE Decision 4 (Approach A — Instant question): if practice tab is the
 // active screen, no exam is in progress, no resume is pending, and the user

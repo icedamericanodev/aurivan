@@ -41,4 +41,25 @@ Source: the review of commit ec4a41c (rules, UX and accessibility, first-time le
 
 **Q5 Scale numbers (unanimous).** On You only, once a range exists, add the straight scale bar (`fgScaleBar(range, { number: false })`: 0, 50, 80 in clay, 100, with the range bracket) under the ring and before the key. Drop the card's own "A study estimate, not a prediction." caption when the bar shows (the bar prints it). The bar is aria-hidden; the sr sentence carries the facts. Before 40 answers no bar. The bar's range label reads "67 to 79" (fixes Your progress too; same on the phone ScaleBar). Today: no change.
 
-**Q6 Today and You disagree on what to study next.** Re-decided in the next round (the panel's answer was lost in a container restart). See section below once written.
+**Q6 Today and You agree on what to study next (two of three panels, 4 Nov 2026).** Re-decided after the first panel's answer was lost in a container restart.
+
+- **Cause.** Two rules picked the next area. You's "Focus next" and its Practice button, Today's "Where you'll gain most" and the Practice hub read `r.focusId` (the area with the largest (1 - mastery) x weight gap; the first area when nothing is answered). Today's plan used `todayPlanDomain`, which took the first area with no answers in outline order (often IS Audit), and only then the gap sort, skipping the last set's area. So the plan named one area while the hero and You named another. The phone already plans on the readiness focus (`mobile/src/lib/useJourney.ts`, `planner.ts` focusPractice). On top of that, the plan's reason is saved once a day but its count is live, so the card could read "10 questions · not started · 3 of 10 answered".
+- **Decision.** The plan's set is always `r.focusId`; the skip-the-last-set rule goes. One area name on Today's hero, Today's plan card, You's Focus next and its button, the Practice hub, Read next and the first five's "Tomorrow" line, the same as the phone. The 'new' label becomes "your first set here" (on screen "10 questions · your first set here", mid-set "... · 3 of 10 answered"), which describes the set, not the area, so it stays true next to the live count all day. Plans already saved with 'new' pick up the new words at once (no migration); a plan saved earlier today keeps its area until midnight.
+- **Rejected.** Making You follow the saved plan (Today's hero would still disagree with Today's plan, and You would call an area "where you'll gain most" when it is not). Relabelling only (honest, but two "next" areas remain). The other majority version (keep the skip, add a third reason and a sanitizer change): more change, and the surfaces still split whenever the focus area was the set just finished.
+- **Given up.** Variety from not repeating yesterday's area. The review queue already mixes areas, and an area's gap shrinks as its mastery grows, so the focus moves on by itself. Untouched areas still come up (no answers counts the full exam weight as gap), now heaviest first instead of in outline order.
+- **Unchanged.** Readiness maths, `r.focusId`, You's summary, the hero, the Practice hub, the plan's minutes, the shape of `S.todayPlanV1`, its sanitizer, export and import, the `aurivan_last_session` key (Resume still uses it) and the mobile app.
+- **Release.** The panel asked for a PATCH (v12.49.1) with a What's New line under Fixed: "Today's plan and the You page now point you to the same area to study next." This round's brief batches the bump and What's New for the end of the uplift (DECISIONS 8), so the line waits in `RELEASE_PENDING.md`.
+- **Follow-up, not now.** The saved plan is frozen for the day while `r.focusId` is recomputed on every render, so in a rare case the two can drift apart during the day. If that is ever seen, You's Focus next could follow `S.todayPlanV1.d` while the plan's set is unfinished.
+
+## Built (4 Nov 2026)
+
+Every fix list item and Q1 to Q6 is in `index.html` on `feature/grove-ui`; DECISIONS 13 and 14 record them. Notes on how:
+
+- Item 1: the phone drawing wraps a label wider than its column at a space ("12" over "answered"); at 130% text and up, or a column under 300px, the visible list replaces the chart as before.
+- Item 2: `lineInKey` now drops the "70 line" label in both drawings (You and a mock's areas; both keys name the line at every width).
+- Item 3: the floating dash is gone; the dotted sprout over a seed with answers stays (the words under it say "too few yet").
+- Item 7: the file carries a new `savedAt` field beside the old ones, which the restore sheet reads ("saved 4 Nov"; a file without it uses the record's last use).
+- Item 9: an address opened in a page already loaded (typed, pasted or followed) opens at the top, and a load or reload no longer puts back an old scroll position.
+- Item 10: Today, You, Your progress and the scale bar read "64 to 74". The set results line ("Readiness is 68" and a dash) stays for the web and phone dash sweep in `RELEASE_PENDING.md`.
+- Q3: You already used the DI short names; Today's "Where you'll gain most" line now does too (it showed the full domain name).
+
