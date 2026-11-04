@@ -50,6 +50,7 @@ MCP stores its own apply-time version, not the file's. Before any `supabase db p
 | `20261027000000_beta_board_paused.sql` | `20261028045341` | `af1be1f0a0904ba010f7a4039f1bea68` |
 | `20261027000100_beta_no_passwords.sql` | `20261028045402` | `3a676a49c8ea05a88f0a0678f1dee3a0` |
 | `20261104000000_beta_desk.sql` (Beta Desk, applied 4 Nov 2026; `docs/beta/BETA_DESK.md`) | `20261104141549` | `ff5c70bc6ceef2bd3d0b3f50c9ed2794` |
+| `20261104010000_beta_desk_feedback_route.sql` (14 days OR feedback, applied 4 Nov 2026) | `20261104144423` | `833e6d09bdd293ca59970677d80568e8` |
 
 Checks after the apply:
 - 22 tables in `public` and `private`, every one with RLS on.
