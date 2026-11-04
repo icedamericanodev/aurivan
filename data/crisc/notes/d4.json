@@ -228,7 +228,7 @@
             "Each change has a request, an impact assessment, an approval suited to its risk, a test result and a back-out plan.",
             "Emergency changes may bypass the normal approval path, usually through an emergency approver, but are documented and reviewed after the fact as soon as practical.",
             "A configuration management database (CMDB) records configuration items and dependencies; assets missing from it sit outside patching, change and backup, so differing counts from other tools are reconciled.",
-            "Comparing live settings with the baseline finds unauthorized changes, which are investigated, not quietly reversed.",
+            "Comparing live settings with the baseline finds unauthorized changes, which are investigated, not quietly reversed; a needed deviation becomes a recorded exception its business owner approves.",
             "Low-risk, repeatable changes can be pre-approved, so review effort follows risk.",
             "A growing share of emergency changes is analyzed for its cause, such as slow normal approvals or poor planning, before more approval steps are added."
           ],
@@ -706,7 +706,8 @@
             "At the end of the period, data is disposed of unless a legal hold requires it to be kept.",
             "Deleting a file usually removes only the pointer to it; the data can often still be recovered.",
             "NIST SP 800-88 describes three sanitization methods, chosen by data sensitivity and media type.",
-            "Sanitization is verified and recorded, including when a vendor handles disposal."
+            "Sanitization is verified and recorded, including when a vendor handles disposal.",
+            "Archives stay readable for the whole retention period: before the last software that reads a format retires, records move to a supported format and are checked."
           ],
           "types": [
             {
@@ -892,7 +893,7 @@
           "why_it_matters": "Project risks often become operational IT risks after go-live. Tracked only inside the project, or dropped to meet a date, they leave exposure no one approved.",
           "how_it_works": [
             "Project risks are logged with owners; those that may outlast the project or threaten enterprise objectives join the enterprise register, and other delivery risks stay in the project log.",
-            "In Agile, risk items and security tasks sit in the backlog and are prioritized alongside features.",
+            "Project risk covers delivery and the finished system's operating risks; Agile keeps both in the backlog.",
             "The definition of done includes security, privacy and control criteria, so work is not finished without them.",
             "Sprint reviews update risk status; growing deferred security work is an early warning.",
             "Agile reduces heavy documents, not risk records: decisions and accepted risks are still recorded.",
