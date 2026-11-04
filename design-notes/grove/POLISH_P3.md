@@ -1,0 +1,44 @@
+# You and Settings polish (Phase 3, web): fixes and expert decisions
+
+Source: the review of commit ec4a41c (rules, UX and accessibility, first-time learner) and an expert panel (product manager, behavioral scientist, UX reviewer, first-time candidate) on 31 Oct 2026. Q1 to Q5 were unanimous. The phone follows the same decisions.
+
+## Fix list (all required)
+
+1. At 390 the area chart's "N answered" labels run together. Make them wrap or stack legibly at 320 to 768 and at 200% text.
+2. The chart's own "70 line" label overlaps a stem: on You use `fgStemChart(areas, { label: 'Each area', lineInKey: true })` (the key explains the line).
+3. Remove the unlabeled dash that floats at about 20 on low-data areas, or label it if it carries meaning.
+4. The Settings row near the bottom of You uses `youGoSettings(event)` so focus lands on the Settings h1 like the cog. The Back link from Settings to You moves focus to the You h1 (tabindex -1).
+5. Forced colors: a visible switch (`.set-card .you-switch` border 1.5px solid CanvasText, thumb CanvasText, on state Highlight); `.you-go`, `.you-chip` and the You cards get a 1px CanvasText border.
+6. Restore brings back the exam date when this browser has none (the same add-only rule as the name). The "Restore this file?" sheet says what the file holds ("This file: N answers, saved D Mon") and offers "Back up first". After the restore reload, a toast "Restored: N answers".
+7. Back up gives feedback: a toast "Backup saved", a dated file name `kaisip-web-progress-YYYY-MM-DD.json`, and "Last backup: D Mon" under the Back up row, read from the existing `aurivan_backup_saved_at` key (never renamed).
+8. Toasts never cover buttons in sheets or dialogs: hide or lift the toast while one is open.
+9. Loading `index.html#you` directly opens at the top, not 56px down.
+10. The readiness range reads "64 to 74" everywhere (Today, You, Your progress, the scale bar), with no en dash.
+11. Tokens: replace hard-coded hex in `.you-ready` (`--hero-tick-rng`, `--leaf-line` overrides) and the switch thumb `#FFFFFF` with root tokens; the dark off thumb uses ink2 (DESIGN_SYSTEM.md). SVG plant art may keep its hex.
+12. The chip kicker "YOUR PLANT" goes from 0.625rem to 0.6875rem.
+13. "Kept in this browser only" appears once on Settings, in the page subtitle.
+14. Dead code: prune `railAlign`'s `#screen-you .you-group` query, the unreachable `plantYouHtml` non-rail branch, and CSS that no longer matches anything on You (`.you-stats .stat-num.stat-word`, `.you-group`, `.you-head`, `#youSettingsH` scroll-margin), after checking with grep. The `youRingGrown` comment says once per page load.
+15. Rename the ring wrapper state class `td-wait` to `td-ring-wait` (You and Today).
+16. DECISIONS.md 12 records the departures already made (1240px column break, Back nav label, tab bar bottom 16px, `--focus-ring` instead of `--focus`); the grove-check comment says `--focus-ring`.
+
+## Expert decisions
+
+**Q1 Readiness words (unanimous).** Keep "study bar" and "low end"; define the low end once.
+- Ring key (only once a range exists): "**Gold ticks:** your range, 67 to 79." and "**Clay mark:** 80, this app's study bar."
+- One sentence under the key: "Your low end, 67, is the cautious end of your range: we're fairly sure you're at or above it. The study bar asks for a low end of 80, a goal to study toward, not an exam score. Yours is 13 under it." (at or above 80: "... Yours is at or above it.") Numbers come from the range and the study bar.
+- Area key, first item: "**Dashed line:** 70, the target for each area." (the parenthesis about the study bar is removed).
+- The ring's spoken label stays. Phone: the same low-end sentence under its scale bar, before its study-bar line.
+
+**Q2 "Seed" means the plant only (unanimous).** The low-data area state says "too few yet".
+- Area list row, 1 to 29 answers: value "22 of 30", note "answers, too few yet for a score" (with focus: "answers, too few yet for a score, where you'll gain most").
+- Spoken: "IT Governance, 22 of 30 answers, too few yet for a score."
+- Chart key: "**No stem yet:** fewer than 30 answers, too few yet for a score. The stem and score show at 30."
+- The plant stays "Seed · stage 1 of 6". Phone: its chart says "too few yet" (replace the "seed" label added in 26b037f).
+
+**Q3 Area names (unanimous).** Use the DI short names everywhere ("IS Audit", "IT Governance", "IS Acquisition", "IS Operations", "Info Protection"); the button reads "Practice Info Protection".
+
+**Q4 Plant chip and plant card (unanimous).** The chip shows on phones and below 1240px (owner decision 2 holds). From 1240px, where the plant card is in the first view, the chip is hidden only when the learner has a plant (`you-chip-dup`, `@media (min-width:1240px){.you-chip.you-chip-dup{display:none}}`); "Pick your plant" stays at every width. Record beside owner decision 2: "The plant stays on You's first view at every width: as the chip on phones and narrower screens, and as the plant card itself from 1240px." Follow-up, optional: a quieter chip style so it is not a second solid button.
+
+**Q5 Scale numbers (unanimous).** On You only, once a range exists, add the straight scale bar (`fgScaleBar(range, { number: false })`: 0, 50, 80 in clay, 100, with the range bracket) under the ring and before the key. Drop the card's own "A study estimate, not a prediction." caption when the bar shows (the bar prints it). The bar is aria-hidden; the sr sentence carries the facts. Before 40 answers no bar. The bar's range label reads "67 to 79" (fixes Your progress too; same on the phone ScaleBar). Today: no change.
+
+**Q6 Today and You disagree on what to study next.** Re-decided in the next round (the panel's answer was lost in a container restart). See section below once written.
