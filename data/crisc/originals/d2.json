@@ -1681,32 +1681,32 @@
       "bloom_level": "Analysis",
       "question": "A credit union's operational loss database records only IT events that caused a loss above $10,000. Which of the following is the GREATEST weakness for the risk analyst using it to rate IT risk scenarios?",
       "options": {
-        "A": "It omits near misses and small losses that show frequency",
+        "A": "It omits near misses and losses under the threshold",
         "B": "It values each loss in money, not on the rating scale",
         "C": "It leaves out loss events suffered by peer credit unions",
-        "D": "It keeps losses from incidents that are already closed"
+        "D": "It keeps losses from incidents closed several years ago"
       },
       "correct": "A",
       "key_concept": "Event data that records only larger realized losses understates likelihood, because near misses and small losses show how often threats get through.",
-      "pre_read": "Notice which events the recording rule keeps and which it drops.",
+      "pre_read": "Notice the rule that decides what goes into the database.",
       "correct_explanation": "Near misses and small losses are the most frequent evidence of how often threats reach the credit union's assets, so a $10,000 threshold makes its scenarios look less likely than they are. Peer losses are the runner-up: they add useful outside evidence, but they are a separate source to add and adjust for local exposure, not a flaw in what the internal database captures.",
       "wrong_explanations": {
         "B": "Money values suit quantitative analysis and can be mapped to the rating scale; recording losses in money does not hide any events.",
         "C": "External events are a useful extra source, adjusted for local exposure; their absence is not a defect of an internal database that records the credit union's own history.",
-        "D": "Closed incidents still show how the scenario played out, so keeping their losses is correct; closing a ticket does not close the risk."
+        "D": "Older losses still show how often and how badly the scenario has played out; they are adjusted for changes since, not dropped."
       },
       "tips": [
-        "Eliminate: B confuses the unit of measure with missing data, and D treats closed incidents as no longer useful, though closing a ticket does not close the risk.",
+        "Eliminate: B confuses the unit of measure with missing data, and D treats older closed incidents as useless, though they still show frequency and impact.",
         "Final two: A beats C because the threshold strips the internal record of its most frequent evidence, while peer data is a separate source to add, not a gap in this one.",
         "Exam cue: when event data counts only realized or large losses, expect likelihood to be understated; near misses are evidence too."
       ],
-      "framework_ref": "ISACA Glossary (loss event); COBIT 2019 APO12.01 (Collect Data)",
+      "framework_ref": "ISACA Glossary (loss event); ISACA Glossary (threat event); COBIT 2019 APO12.01 (Collect Data)",
       "related_concepts": [
         "Near miss",
         "Loss event",
         "Likelihood evidence"
       ],
-      "_provenance": "Authored from concept: notes 2A1.1 (Loss Events, Incidents and Near Misses). Round 3, 4 Nov 2026: original scenario of a credit union's loss database that records only IT losses above $10,000 written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used; checked against the CRISC, CISA, CC and AAIA banks for mirrored scenarios.",
+      "_provenance": "Authored from concept: notes 2A1.1 (Loss Events, Incidents and Near Misses). Round 3, 4 Nov 2026: original scenario of a credit union's loss database that records only IT losses above $10,000 written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used; checked against the CRISC, CISA, CC and AAIA banks for mirrored scenarios. Review fixes 4 Nov 2026 (standards audit and concept review): option A no longer carries its own reason or echoes the stem's $10,000; D re-aimed from keeping closed incidents (a strawman) to keeping losses from incidents closed years ago, with its explanation and Eliminate tip; pre_read no longer points at the key; ISACA Glossary (threat event) added.",
       "style_version": 2
     },
     {
@@ -1762,7 +1762,7 @@
       },
       "correct": "C",
       "key_concept": "An event stopped by a control before any loss is a near miss and is recorded as evidence against its risk scenario.",
-      "pre_read": "Check whether any loss actually happened, and why not.",
+      "pre_read": "Check what the event cost before deciding how to record it.",
       "correct_explanation": "The wrong payment was stopped by a control before any money left, so this is a near miss: no loss, but proof the error can happen and that the second approval was the last barrier. A control test result is the runner-up; the event does show the approval working, but its main value is as likelihood evidence for the scenario, and one catch is not a planned test.",
       "wrong_explanations": {
         "A": "No money was paid, so there is no loss to record; $40,500 is what the error could have cost, not a realized loss.",
@@ -1774,50 +1774,50 @@
         "Final two: C beats D because the event's main value is as likelihood evidence for the scenario; one catch is not a planned test of the approval.",
         "Exam cue: stopped before harm, by a control, chance or timing, means near miss; record it against the scenario it supports."
       ],
-      "framework_ref": "ISACA Glossary (loss event); COBIT 2019 APO12.01 (Collect Data)",
+      "framework_ref": "ISACA Glossary (loss event); ISACA Glossary (threat event); COBIT 2019 APO12.01 (Collect Data)",
       "related_concepts": [
         "Near miss",
         "Loss event",
         "Risk event data"
       ],
-      "_provenance": "Authored from concept: notes 2A1.1 (Loss Events, Incidents and Near Misses). Round 3, 4 Nov 2026: original scenario of a publishing house's mistyped supplier payment stopped by a second approver written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used; checked against the CRISC, CISA, CC and AAIA banks for mirrored scenarios.",
+      "_provenance": "Authored from concept: notes 2A1.1 (Loss Events, Incidents and Near Misses). Round 3, 4 Nov 2026: original scenario of a publishing house's mistyped supplier payment stopped by a second approver written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used; checked against the CRISC, CISA, CC and AAIA banks for mirrored scenarios. Review fixes 4 Nov 2026 (standards audit and concept review): pre_read no longer assumes no loss happened; ISACA Glossary (threat event) added.",
       "style_version": 2
     },
     {
       "id": "crisc_d2_049",
       "domain": 2,
       "subtopic": "2A2 Threat modeling and threat landscape. Attack tree result",
-      "principle_id": "evidence-before-credit",
+      "principle_id": "analyze-before-acting",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "An attack tree for a coffee chain's gift-card platform shows one admin console's multifactor sign-in blocks four of six paths to card fraud. What is the risk practitioner's BEST use of this result?",
+      "question": "An attack tree for a coffee chain's gift-card platform shows six fraud paths: an admin console's multifactor sign-in blocks four, and two have no control. What is the risk practitioner's BEST use of this result?",
       "options": {
-        "A": "Focus the fraud rating on the two paths left open",
-        "B": "Ask the platform owner to add controls on the four paths",
-        "C": "Treat the console sign-in as a key control to test",
+        "A": "Map the six paths to MITRE ATT&CK techniques",
+        "B": "Ask the platform owner to add controls on the open paths",
+        "C": "Analyze the two open paths with the platform owner",
         "D": "Lower the fraud scenario's likelihood rating to low"
       },
       "correct": "C",
-      "key_concept": "A control that blocks several attack paths is a key control; its effectiveness must be shown before the risk rating relies on it.",
-      "pre_read": "Ask what the rating would depend on if this result were used.",
-      "correct_explanation": "Four of six attack paths depend on one control, so the scenario's rating leans on it: if the sign-in fails or is bypassed, four paths open at once. That makes it a key control whose design and operation should be tested before the rating credits it. Focusing on the two open paths is the runner-up; it is useful, but it assumes the blocking control works without evidence.",
+      "key_concept": "An attack tree's uncontrolled paths show where a scenario's exposure sits; they are analyzed with the owner before controls are chosen.",
+      "pre_read": "Notice what each branch of the tree shows.",
+      "correct_explanation": "The tree's value is in showing where the fraud scenario is exposed: two paths reach card fraud with nothing in the way. Analyzing their likelihood and impact with the platform owner turns the result into a rating the owner can act on. Asking the owner to add controls is the runner-up: those paths may need controls, but choosing them before the exposure is analyzed skips the step that sizes the response.",
       "wrong_explanations": {
-        "A": "The open paths need analysis, but rating only them assumes the console sign-in works, and no evidence yet shows it does.",
-        "B": "Adding controls to paths already blocked spends money before the existing control's strength is known; the tree shows reliance, not a gap.",
-        "D": "Lowering likelihood credits the sign-in before anyone has tested it, and two paths remain open in any case."
+        "A": "ATT&CK adds context on how credible each technique is, but relabeling the paths does not analyze the exposure the open paths create.",
+        "B": "Controls may be needed, but picking them before the two open paths are analyzed sizes the response without knowing the risk.",
+        "D": "Four blocked paths do not make fraud unlikely while two paths have no control; lowering the rating hides the open exposure."
       },
       "tips": [
-        "Eliminate: B adds controls where the tree shows paths already blocked, and D credits the sign-in in the rating before any evidence shows it works.",
-        "Final two: C beats A because the rating depends on the one control blocking four paths; test it before relying on it, then analyze what remains.",
-        "Exam cue: when one control carries most of a scenario's protection, treat it as a key control and get evidence that it works."
+        "Eliminate: A relabels the paths without analyzing them, and D lowers the rating although two paths still have no control.",
+        "Final two: C beats B because the open paths are analyzed with the owner first; controls are chosen once the exposure is known.",
+        "Exam cue: an attack tree's uncontrolled paths are where the scenario's exposure sits; analyze them with the owner before choosing controls."
       ],
-      "framework_ref": "NIST IR 8286A Rev. 1 Section 2.2.2 (Determination of Potential Threats); NIST SP 800-53 Rev. 5 CA-2 (Control Assessments)",
+      "framework_ref": "NIST IR 8286A Rev. 1 Section 2.2.2 (Determination of Potential Threats)",
       "related_concepts": [
         "Attack tree",
-        "Key control",
-        "Control effectiveness"
+        "Attack path",
+        "Risk analysis"
       ],
-      "_provenance": "Authored from concept: notes 2A2.2 (Threat Intelligence and Threat Modeling). Round 3, 4 Nov 2026: original scenario of an attack tree for a coffee chain's gift-card platform in which one sign-in control blocks most paths written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used; checked against the CRISC, CISA, CC and AAIA banks for mirrored scenarios.",
+      "_provenance": "Authored from concept: notes 2A2.2 (Threat Intelligence and Threat Modeling). Round 3, 4 Nov 2026: original scenario of an attack tree for a coffee chain's gift-card platform in which one sign-in control blocks most paths written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used; checked against the CRISC, CISA, CC and AAIA banks for mirrored scenarios. Review fixes 4 Nov 2026 (standards audit and concept review): reworked off crisc_d2_044's key-control lesson onto the tree's two uncontrolled paths, analyzed with the owner before controls are chosen; the stem now states the two uncontrolled paths, so no option rests on an unstated fact; principle analyze-before-acting; NIST SP 800-53 Rev. 5 CA-2 dropped; key stays C.",
       "style_version": 2
     },
     {
@@ -1860,29 +1860,29 @@
     {
       "id": "crisc_d2_051",
       "domain": 2,
-      "subtopic": "2A3 Vulnerability management. Flaw in a shared library",
+      "subtopic": "2A3 Vulnerability management. Flaw in a shared component",
       "principle_id": "analyze-before-acting",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "A critical flaw is announced in an open-source library used across an engineering consultancy's in-house and vendor applications. What should the risk practitioner do FIRST?",
+      "question": "An engineering consultancy learns from a national cyber agency alert that a file-compression component built into many commercial and in-house applications has a critical flaw. What should the risk practitioner do FIRST?",
       "options": {
         "A": "Rate the business exposure on the flaw's 10.0 Base score",
         "B": "Ask IT to patch servers in order of their CVSS scores",
-        "C": "Wait for each vendor to confirm whether its product is affected",
-        "D": "Find which business services run software with the library"
+        "C": "Wait for each vendor to confirm its use of the component",
+        "D": "Find which business services rely on the component"
       },
       "correct": "D",
       "key_concept": "For a new flaw in a shared component, the first step is to identify where it runs and which business services depend on it.",
       "pre_read": "Check what must be known before exposure can be rated.",
-      "correct_explanation": "Exposure cannot be rated until the consultancy knows where the library runs and which business services depend on it, so the first step is to identify the affected assets from software inventories and component lists. Waiting for vendors is the runner-up: their notices help, but they cover only vendor products, and the in-house applications using the library have no vendor to report.",
+      "correct_explanation": "Exposure cannot be rated until the consultancy knows where the component runs and which business services depend on it, so the first step is to identify the affected assets from software inventories and component lists. Waiting for vendors is the runner-up: their notices help, but they cover only commercial products, and the in-house applications using the component have no vendor to report.",
       "wrong_explanations": {
-        "A": "The Base score describes the flaw's severity, not the consultancy's exposure; until it is known where the library runs, the score cannot become a risk rating.",
-        "B": "Patching by score, before the affected systems are known, may fix servers that lack the library and miss services that matter most.",
-        "C": "Vendor notices cover only vendor products and may be slow; the in-house applications using the library have no vendor to confirm exposure."
+        "A": "The Base score describes the flaw's severity, not the consultancy's exposure; until it is known where the component runs, the score cannot become a risk rating.",
+        "B": "Patching by score, before the affected systems are known, may fix servers that lack the component and miss services that matter most.",
+        "C": "Vendor notices cover only commercial products and may be slow; the in-house applications using the component have no vendor to confirm exposure."
       },
       "tips": [
-        "Eliminate: A treats a severity score as the risk rating, and B patches by score before anyone knows which systems run the library.",
-        "Final two: D beats C because vendor notices cannot cover in-house software; the firm's own inventories show where the flaw sits and what it supports.",
+        "Eliminate: A treats a severity score as the risk rating, and B patches by score before anyone knows which systems run the component.",
+        "Final two: D beats C because vendor notices cannot cover in-house software; the firm's own inventories show where the component sits and what it supports.",
         "Exam cue: for a newly disclosed flaw, first establish where it exists and which business services depend on it; rating and fixing follow."
       ],
       "framework_ref": "NIST CSF 2.0 ID.AM-02 (inventories of software, services and systems managed by the organization are maintained); NIST CSF 2.0 ID.RA-01 (vulnerabilities in assets are identified, validated and recorded); NIST IR 8286A Rev. 1 Section 2.2.3 (Vulnerability Identification)",
@@ -1891,7 +1891,7 @@
         "Software bill of materials (SBOM)",
         "Risk-based remediation"
       ],
-      "_provenance": "Authored from concept: notes 2A3.3 (Risk-Based Remediation Priority). Round 3, 4 Nov 2026: original scenario of a critical flaw in an open-source library used across an engineering consultancy's in-house and vendor software written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used; checked against the CRISC, CISA, CC and AAIA banks for mirrored scenarios.",
+      "_provenance": "Authored from concept: notes 2A3.3 (Risk-Based Remediation Priority). Round 3, 4 Nov 2026: original scenario of a national cyber agency alert on a file-compression component built into an engineering consultancy's commercial and in-house applications written for KaiSip (re-aimed 4 Nov 2026 away from CISA d5_353); no ISACA Review Manual, QAE, practice quiz or prep-bank text used; checked against the CRISC, CISA, CC and AAIA banks for mirrored scenarios. Review fixes 4 Nov 2026 (standards audit and concept review): stem re-aimed away from CISA d5_353's opening (an alert on a built-in component, not an announced open-source library flaw); C and D reworded so the stem's key noun appears in both; explanations, tips and subtopic label follow; key stays D.",
       "style_version": 2
     },
     {
@@ -1903,38 +1903,38 @@
       "bloom_level": "Application",
       "question": "Which of the following is the BEST source for the risk practitioner to identify control weaknesses in a pharmaceutical wholesaler's supplier-payment approval process?",
       "options": {
-        "A": "An authenticated vulnerability scan of the payment system",
-        "B": "A penetration test of the payment system's web interface",
-        "C": "A walkthrough of each approval step with process staff",
-        "D": "The CVSS scores of the payment system's open findings"
+        "A": "A review of the documented approval procedure",
+        "B": "A self-assessment questionnaire completed by the approvers",
+        "C": "A walkthrough of each step with the payment staff",
+        "D": "An authenticated vulnerability scan of the payment system"
       },
       "correct": "C",
-      "key_concept": "Process and people weaknesses are found by walking through the process with those who perform it, not by technical scanning.",
+      "key_concept": "Process weaknesses are best found by walking through the process with the people who perform it, not from documents or self-reports.",
       "pre_read": "Notice what kind of weakness the question asks about.",
-      "correct_explanation": "The weaknesses asked about sit in a business process: missing approvals, weak segregation of duties, steps that can be skipped. A walkthrough with the people who perform each step shows how approval actually works and where it can fail. A penetration test is the runner-up; it shows what an attacker could reach through the system, but it does not examine how staff approve payments.",
+      "correct_explanation": "The weaknesses asked about sit in how payments are approved: missing approvals, weak segregation of duties, steps that can be skipped. Walking through each step with the staff who perform it shows how approval actually works and where it can fail. Reviewing the documented procedure is the runner-up: it shows how approval is meant to run, but weaknesses in practice, such as a skipped check, do not appear on paper.",
       "wrong_explanations": {
-        "A": "A vulnerability scan finds known technical flaws in software and configuration; it cannot see a missing approval or a step staff skip.",
-        "B": "A penetration test shows what an attacker could reach through the system; it does not examine who approves payments or how.",
-        "D": "CVSS scores rate the severity of technical flaws already found; they add nothing about weaknesses in the approval steps."
+        "A": "The procedure shows the intended design; it cannot show steps staff skip or approvals that happen out of order.",
+        "B": "A questionnaire the approvers fill in about their own process is a useful input, but self-reported answers can miss the weaknesses the approvers work around.",
+        "D": "A vulnerability scan finds technical flaws in software and configuration; it cannot see a missing approval or a step staff skip."
       },
       "tips": [
-        "Eliminate: A and D look only at technical flaws in the software, while the stem asks about weaknesses in an approval process.",
-        "Final two: C beats B because process weaknesses show up in how people perform each step; a penetration test probes the system's technical exposure.",
-        "Exam cue: match the source to the kind of weakness: scanners and tests for technology, walkthroughs and interviews for process and people."
+        "Eliminate: D looks only at technical flaws in the software, and B relies on approvers rating their own process.",
+        "Final two: C beats A because a walkthrough shows how approval runs in practice; a documented procedure shows only how it should run.",
+        "Exam cue: for process weaknesses, prefer evidence of how the process actually runs over how it is documented or self-reported."
       ],
       "framework_ref": "ISACA Glossary (walk-through); NIST IR 8286A Rev. 1 Section 2.2.3 (Vulnerability Identification); NIST SP 800-53A Rev. 5 Section 2.4.2 (Assessment Methods: examine, interview and test, with depth and coverage)",
       "related_concepts": [
         "Walk-through",
         "Process vulnerability",
-        "Vulnerability identification"
+        "Control self-assessment"
       ],
-      "_provenance": "Authored from concept: notes 2A3.1 (Vulnerabilities in People, Process and Technology). Round 3, 4 Nov 2026: original scenario of finding control weaknesses in a pharmaceutical wholesaler's supplier-payment approval process written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used; checked against the CRISC, CISA, CC and AAIA banks for mirrored scenarios.",
+      "_provenance": "Authored from concept: notes 2A3.1 (Vulnerabilities in People, Process and Technology). Round 3, 4 Nov 2026: original scenario of finding control weaknesses in a pharmaceutical wholesaler's supplier-payment approval process written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used; checked against the CRISC, CISA, CC and AAIA banks for mirrored scenarios. Review fixes 4 Nov 2026 (standards audit and concept review): reworked off crisc_d2_026's scans-versus-process lesson: three options are now process evidence (documented procedure, approvers' self-assessment questionnaire, walkthrough) against one technical scan, so the key is no longer the odd one out and no longer the only option echoing the stem; the penetration-test strawman is gone; key stays C.",
       "style_version": 2
     },
     {
       "id": "crisc_d2_053",
       "domain": 2,
-      "subtopic": "2A4 Risk scenario development and evaluation. Gaps after a top-down workshop",
+      "subtopic": "2A4 Risk scenario development and evaluation. Gaps after executive workshops",
       "principle_id": "root-cause-over-symptom",
       "difficulty": "application",
       "bloom_level": "Application",
@@ -1965,19 +1965,19 @@
         "Risk scenario",
         "Vulnerability data"
       ],
-      "_provenance": "Authored from concept: notes 2A4.2 (Top-Down and Bottom-Up Scenario Development). Round 3, 4 Nov 2026: original scenario of a freight railway whose workshop-built scenarios miss weaknesses found in IT's vulnerability data written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used; checked against the CRISC, CISA, CC and AAIA banks for mirrored scenarios.",
+      "_provenance": "Authored from concept: notes 2A4.2 (Top-Down and Bottom-Up Scenario Development). Round 3, 4 Nov 2026: original scenario of a freight railway whose workshop-built scenarios miss weaknesses found in IT's vulnerability data written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used; checked against the CRISC, CISA, CC and AAIA banks for mirrored scenarios. Review fixes 4 Nov 2026 (standards audit and concept review): subtopic label no longer names the top-down method, which leaked the bottom-up key.",
       "style_version": 2
     },
     {
       "id": "crisc_d2_054",
       "domain": 2,
       "subtopic": "2A4 Risk scenario development and evaluation. Completing a draft scenario",
-      "principle_id": "rate-on-common-terms",
+      "principle_id": "objectives-first",
       "difficulty": "foundational",
       "bloom_level": "Foundational",
       "question": "A risk analyst drafts this scenario: 'Ransomware encrypts a medical supplies distributor's warehouse management system.' Which addition would MOST improve the scenario for rating?",
       "options": {
-        "A": "The ransomware groups most active in the sector this year",
+        "A": "The ransomware groups active in the sector this year",
         "B": "The endpoint protection tools installed on its servers",
         "C": "The CVSS score of the system's most severe open flaw",
         "D": "The effect on hospital deliveries of a two-day shutdown"
@@ -1985,15 +1985,15 @@
       "correct": "D",
       "key_concept": "A risk scenario becomes ratable when it states the business consequence and timing, not only the event and the asset.",
       "pre_read": "List which parts of a scenario the draft already has.",
-      "correct_explanation": "The draft names an event and an asset but not the time or the consequence, so owners cannot judge impact and would rate it very differently. Adding what a two-day shutdown would do to hospital deliveries states the business harm and its timing, which makes the scenario ratable. Naming active ransomware groups is the runner-up: it sharpens the threat, but the missing impact is the bigger gap.",
+      "correct_explanation": "The draft names an event and an asset but not the actor, the time or the consequence, so owners cannot judge impact and would rate it very differently. Adding what a two-day shutdown would do to hospital deliveries states the business harm and its timing, which makes the scenario ratable. Naming active ransomware groups is the runner-up: it fills in the actor, but the missing time and consequence are the bigger gap for rating.",
       "wrong_explanations": {
-        "A": "Active groups refine the threat side, which the word ransomware already implies; without a consequence, owners still cannot rate impact.",
+        "A": "Naming active groups fills in the actor, which sharpens likelihood; but with no duration or business consequence, owners still cannot rate impact.",
         "B": "Installed tools are existing controls, recorded beside the scenario's rating; they do not describe what happens or what it costs.",
         "C": "A CVSS score rates one technical flaw's severity; it says nothing about the business harm the scenario would cause."
       },
       "tips": [
         "Eliminate: B lists existing controls and C a flaw's severity; neither describes what the event would do to the business.",
-        "Final two: D beats A because the draft's largest gap is the consequence and its timing; the threat is already implied by the word ransomware.",
+        "Final two: D beats A because it adds two missing elements, the time and the business consequence, that owners need to rate impact; the actor refines likelihood but leaves impact unratable.",
         "Exam cue: a ratable scenario names actor, event, asset, time and business consequence; look for the missing piece."
       ],
       "framework_ref": "ISACA Glossary (risk scenario); NIST IR 8286A Rev. 1 Section 2.2.5 (Recording Identified Risks: risk scenarios in cause-and-effect form)",
@@ -2002,7 +2002,7 @@
         "Business impact",
         "Scenario elements"
       ],
-      "_provenance": "Authored from concept: notes 2A4.1 (Anatomy of a Risk Scenario). Round 3, 4 Nov 2026: original scenario of a draft ransomware scenario for a medical supplies distributor that lacks timing and consequence written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used; checked against the CRISC, CISA, CC and AAIA banks for mirrored scenarios.",
+      "_provenance": "Authored from concept: notes 2A4.1 (Anatomy of a Risk Scenario). Round 3, 4 Nov 2026: original scenario of a draft ransomware scenario for a medical supplies distributor that lacks timing and consequence written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used; checked against the CRISC, CISA, CC and AAIA banks for mirrored scenarios. Review fixes 4 Nov 2026 (standards audit and concept review): ransomware is now treated as the threat event, not the actor: option A's explanation, the runner-up sentence and the Final two tip say naming active groups fills in the actor; principle changed to objectives-first; option A trimmed ('most' dropped), so the key is now naturally the longest option.",
       "style_version": 2
     },
     {
@@ -2015,22 +2015,22 @@
       "question": "An insurer's risk team drafted 15 risk scenarios for a new claims platform in a workshop attended only by IT staff. What should the risk practitioner do FIRST?",
       "options": {
         "A": "Ask internal audit to verify the scenarios are complete",
-        "B": "Rate the scenarios and share the ratings with the owners",
+        "B": "Rate the scenarios and share them with the claims owners",
         "C": "Benchmark the scenarios against a vendor scenario library",
-        "D": "Have the claims process owners confirm each draft scenario"
+        "D": "Have the claims process owners confirm each scenario"
       },
       "correct": "D",
       "key_concept": "Risk scenarios are validated by the business owners of the processes they affect before they are rated.",
       "pre_read": "Notice who was in the room when the scenarios were drafted.",
-      "correct_explanation": "Scenarios must be confirmed by the people who own the business impact before they are rated; here no claims manager has seen them, so their events, impacts and existing controls are unvalidated. Asking internal audit is the runner-up: independent review sounds rigorous, but audit is the third line and gives assurance later; it cannot supply the claims owners' knowledge of what each scenario would mean for the business.",
+      "correct_explanation": "Scenarios must be confirmed by the people who own the business impact before they are rated; here no claims manager has seen them, so their events, impacts and existing controls are unvalidated. Rating them and sharing them with the claims owners is the runner-up: the owners do see the work, but only after ratings are built on scenarios they never confirmed.",
       "wrong_explanations": {
         "A": "Internal audit gives independent assurance on the process later; it does not replace the claims owners, who know the business impact.",
-        "B": "Rating before validation builds ratings on unconfirmed scenarios; sharing them afterwards informs the owners instead of drawing on what they know.",
+        "B": "Rating before validation builds ratings on unconfirmed scenarios; sharing them with the claims owners afterwards informs them instead of drawing on what they know.",
         "C": "A vendor library is a useful starting point for drafting, but it cannot confirm that these scenarios fit this insurer's claims business."
       },
       "tips": [
-        "Eliminate: B rates before anyone from the business has checked the scenarios, and C compares them with a generic library that cannot speak for this business.",
-        "Final two: D beats A because the first line, which owns the business impact, validates scenarios; internal audit's independent assurance comes later.",
+        "Eliminate: A hands validation to internal audit, whose independent assurance comes later, and C compares the drafts with a generic library that cannot speak for this insurer.",
+        "Final two: D beats B because owners validate scenarios before they are rated; showing them finished ratings informs them without drawing on what they know.",
         "Exam cue: scenarios drafted without the business are validated by the business process owners before they are rated."
       ],
       "framework_ref": "ISACA Glossary (risk scenario); ISACA Journal 2018 Volume 4 (Roles of Three Lines of Defense for Information Security and Governance)",
@@ -2039,7 +2039,7 @@
         "Lines of defense",
         "Process owner"
       ],
-      "_provenance": "Authored from concept: notes 2A4.3 (Validating Scenarios and Tabletop Exercises). Round 3, 4 Nov 2026: original scenario of an insurer's claims platform scenarios drafted in an IT-only workshop written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used; checked against the CRISC, CISA, CC and AAIA banks for mirrored scenarios.",
+      "_provenance": "Authored from concept: notes 2A4.3 (Validating Scenarios and Tabletop Exercises). Round 3, 4 Nov 2026: original scenario of an insurer's claims platform scenarios drafted in an IT-only workshop written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used; checked against the CRISC, CISA, CC and AAIA banks for mirrored scenarios. Review fixes 4 Nov 2026 (standards audit and concept review): B and D reworded so 'claims' appears in both and 'draft' in neither; the runner-up is now B (rate first, then share), with the explanation and tips matched.",
       "style_version": 2
     },
     {
@@ -2051,7 +2051,7 @@
       "bloom_level": "Foundational",
       "question": "A risk analyst at a city transit agency is rating how likely a hacktivist group is to deface the agency's journey-planner website. Which of the following should MOST inform the likelihood rating?",
       "options": {
-        "A": "The group's capability, intent and choice of targets",
+        "A": "The attackers' capability, intent and choice of targets",
         "B": "The agency's own count of past website defacement incidents",
         "C": "The cost to the agency of a day of defaced journey pages",
         "D": "The CVSS score of the website platform's worst open flaw"
@@ -2076,7 +2076,7 @@
         "Threat source",
         "Adversarial threat"
       ],
-      "_provenance": "Authored from concept: notes 2B1.1 (Likelihood, Impact and Risk). Round 3, 4 Nov 2026: original scenario of a city transit agency rating a hacktivist defacement of its journey planner written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used; checked against the CRISC, CISA, CC and AAIA banks for mirrored scenarios.",
+      "_provenance": "Authored from concept: notes 2B1.1 (Likelihood, Impact and Risk). Round 3, 4 Nov 2026: original scenario of a city transit agency rating a hacktivist defacement of its journey planner written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used; checked against the CRISC, CISA, CC and AAIA banks for mirrored scenarios. Review fixes 4 Nov 2026 (standards audit and concept review): option A no longer echoes the stem's 'group'.",
       "style_version": 2
     },
     {
@@ -2126,7 +2126,7 @@
       "question": "A risk analyst has rated a grocery chain's loyalty-data theft scenario as high on the agreed scales. What should the analyst do FIRST?",
       "options": {
         "A": "Recommend controls to bring the scenario's rating down",
-        "B": "Compare the rating with the agreed risk criteria and appetite",
+        "B": "Compare the rating with the risk criteria and appetite",
         "C": "Report the scenario to the board as above appetite",
         "D": "Ask the loyalty program owner to choose a response"
       },
@@ -2150,7 +2150,7 @@
         "Risk criteria",
         "Risk appetite"
       ],
-      "_provenance": "Authored from concept: notes 2B1.2 (The Risk Assessment Process and Scope). Round 3, 4 Nov 2026: original scenario of a grocery chain's newly rated loyalty-data theft scenario awaiting evaluation written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used; checked against the CRISC, CISA, CC and AAIA banks for mirrored scenarios.",
+      "_provenance": "Authored from concept: notes 2B1.2 (The Risk Assessment Process and Scope). Round 3, 4 Nov 2026: original scenario of a grocery chain's newly rated loyalty-data theft scenario awaiting evaluation written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used; checked against the CRISC, CISA, CC and AAIA banks for mirrored scenarios. Review fixes 4 Nov 2026 (standards audit and concept review): option B no longer echoes the stem's 'agreed' and is no longer the longest option.",
       "style_version": 2
     },
     {
@@ -2163,14 +2163,14 @@
       "question": "Which of the following BEST shows the risk practitioner when a social security agency's benefit payment process becomes critical during an outage?",
       "options": {
         "A": "Impact estimates at set intervals of outage time",
-        "B": "The largest single-day loss the process could suffer",
+        "B": "The process's worst-case loss for one day of outage",
         "C": "IT's tested restore time for the payment system",
         "D": "The yearly likelihood of a payment system outage"
       },
       "correct": "A",
       "key_concept": "A BIA shows when a process becomes critical by measuring how its impact grows over intervals of outage time.",
       "pre_read": "Notice exactly what the practitioner wants to learn.",
-      "correct_explanation": "A BIA shows how harm grows as an outage lengthens, by asking process owners what happens after one hour, one day, one week and so on; the point where impact turns severe shows when the process becomes critical and informs its MTO. The largest single-day loss is the runner-up; it shows size, but one figure cannot show when harm becomes intolerable.",
+      "correct_explanation": "A BIA shows how harm grows as an outage lengthens, by asking process owners what happens after one hour, one day, one week and so on; the point where impact turns severe shows when the process becomes critical and informs its MTO. The worst-case loss for one day of outage is the runner-up; it shows size, but one figure cannot show when harm becomes intolerable.",
       "wrong_explanations": {
         "B": "A single worst-day figure gives the size of the loss but not its timing; criticality depends on when harm becomes intolerable.",
         "C": "A restore time shows what IT can deliver, not when the business can no longer cope; it is checked against the BIA, not used to set it.",
@@ -2178,7 +2178,7 @@
       },
       "tips": [
         "Eliminate: C measures IT's recovery capability rather than business harm, and D brings in likelihood, which a BIA does not estimate.",
-        "Final two: A beats B because criticality depends on how impact grows over time; a single largest loss shows size but not timing.",
+        "Final two: A beats B because criticality depends on how impact grows over time; a one-day worst-case loss shows size but not timing.",
         "Exam cue: in a BIA, look for impact over time from the business; that is what sets MTO and recovery priorities."
       ],
       "framework_ref": "ISACA Glossary (business impact analysis); NIST SP 800-34 Rev. 1 Section 3.2.1 (Determine Business Processes and Recovery Criticality: MTD, RTO and RPO)",
@@ -2187,7 +2187,7 @@
         "Impact over time",
         "Maximum tolerable outage (MTO)"
       ],
-      "_provenance": "Authored from concept: notes 2B2.1 (BIA Purpose, Dependencies and AI Systems). Round 3, 4 Nov 2026: original scenario of a social security agency's BIA for benefit payments written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used; checked against the CRISC, CISA, CC and AAIA banks for mirrored scenarios.",
+      "_provenance": "Authored from concept: notes 2B2.1 (BIA Purpose, Dependencies and AI Systems). Round 3, 4 Nov 2026: original scenario of a social security agency's BIA for benefit payments written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used; checked against the CRISC, CISA, CC and AAIA banks for mirrored scenarios. Review fixes 4 Nov 2026 (standards audit and concept review): option B is no longer hedged ('could suffer') against a flat key; explanation and Final two tip matched.",
       "style_version": 2
     },
     {
@@ -2234,17 +2234,17 @@
       "principle_id": "emerging-and-ai-risk-owned",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "A hotel group's AI room-pricing tool went live last month with no loss history, and its vendor discloses little. Which of the following MOST belongs in the risk practitioner's new register entry?",
+      "question": "A hotel group's AI room-pricing tool went live last month with no loss history; its vendor shares only launch test results. Which of the following MOST belongs in the risk practitioner's new register entry?",
       "options": {
-        "A": "An ALE estimate built from vendor benchmark data",
+        "A": "An ALE estimate built from industry benchmark data",
         "B": "A stated level of uncertainty in its rating",
         "C": "The accuracy score from the vendor's launch testing",
         "D": "A low rating until a first loss event is recorded"
       },
       "correct": "B",
       "key_concept": "A new AI risk with little data is recorded early with its uncertainty stated, so the rating is not mistaken for precise knowledge.",
-      "pre_read": "Weigh how much is actually known about this system.",
-      "correct_explanation": "With no loss history and little vendor information, any rating of the new tool is a judgment with wide uncertainty. Stating that uncertainty tells the owner how much weight the rating can bear and supports an early review as production evidence arrives. The vendor's launch accuracy score is the runner-up: it is real evidence, but it measures performance in testing, not exposure in the hotel group's pricing.",
+      "pre_read": "Notice what the entry can be built from.",
+      "correct_explanation": "With no loss history and only the vendor's launch test results, any rating of the new tool is a judgment with wide uncertainty. Stating that uncertainty tells the owner how much weight the rating can bear and supports an early review as production evidence arrives. The vendor's launch accuracy score is the runner-up: it is real evidence, but it measures performance in testing, not exposure in the hotel group's pricing.",
       "wrong_explanations": {
         "A": "Benchmarks from other firms turned into one ALE figure suggest precision the data cannot support for a newly launched system.",
         "C": "Launch accuracy shows how the model did in testing, not how wrong prices would affect revenue or guests in production.",
@@ -2261,7 +2261,7 @@
         "Uncertainty",
         "AI system in the register"
       ],
-      "_provenance": "Authored from concept: notes 2B3.2 (Keeping the Register Current). Round 3, 4 Nov 2026: original scenario of a hotel group's newly launched AI room-pricing tool with no loss history written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used; checked against the CRISC, CISA, CC and AAIA banks for mirrored scenarios.",
+      "_provenance": "Authored from concept: notes 2B3.2 (Keeping the Register Current). Round 3, 4 Nov 2026: original scenario of a hotel group's newly launched AI room-pricing tool with no loss history written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used; checked against the CRISC, CISA, CC and AAIA banks for mirrored scenarios. Review fixes 4 Nov 2026 (standards audit and concept review): stem now says the vendor shares only its launch test results, so option C is available evidence rather than a contradiction; option A's benchmark data is now industry data, so it is not ruled out by the stem; pre_read no longer points at the uncertainty key.",
       "style_version": 2
     },
     {
@@ -2275,7 +2275,7 @@
       "options": {
         "A": "The current rating, with the controls in place today",
         "B": "The target rating each planned response is set to reach",
-        "C": "The inherent rating, before any controls are counted",
+        "C": "The inherent rating, before controls are counted",
         "D": "The status of each action plan against its due date"
       },
       "correct": "B",
@@ -2298,7 +2298,7 @@
         "Future residual risk",
         "Current risk"
       ],
-      "_provenance": "Authored from concept: notes 2B3.1 (Register Fields and Ownership). Round 3, 4 Nov 2026: original scenario of city council members asking whether register treatment plans will be enough written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used; checked against the CRISC, CISA, CC and AAIA banks for mirrored scenarios.",
+      "_provenance": "Authored from concept: notes 2B3.1 (Register Fields and Ownership). Round 3, 4 Nov 2026: original scenario of city council members asking whether register treatment plans will be enough written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used; checked against the CRISC, CISA, CC and AAIA banks for mirrored scenarios. Review fixes 4 Nov 2026 (standards audit and concept review): absolute word 'any' removed from option C.",
       "style_version": 2
     },
     {
@@ -2317,7 +2317,7 @@
       },
       "correct": "B",
       "key_concept": "A control that operates as designed but does not address the scenario's cause is ineffective in design and earns little residual credit.",
-      "pre_read": "Compare what the review checks with where the losses arise.",
+      "pre_read": "Judge the review's design and its operation separately.",
       "correct_explanation": "The logs show the review runs as intended, so it operates effectively, but its $5,000 threshold leaves out the small refunds where most fraud losses arise, so its design does not address the scenario's cause. It should earn little credit in the residual rating. Waiting for an operating test is the runner-up: a test adds assurance on operation, but no test result can fix a design that misses the losses.",
       "wrong_explanations": {
         "A": "The review runs daily, but it looks only at refunds over $5,000 while most fraud losses come from refunds under $500.",
@@ -2335,7 +2335,7 @@
         "Operating effectiveness",
         "Residual risk"
       ],
-      "_provenance": "Authored from concept: notes 2B5.2 (Control Effectiveness and the Residual Gap). Round 3, 4 Nov 2026: original scenario of an electronics retailer's refund review whose threshold misses where fraud losses arise written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used; checked against the CRISC, CISA, CC and AAIA banks for mirrored scenarios.",
+      "_provenance": "Authored from concept: notes 2B5.2 (Control Effectiveness and the Residual Gap). Round 3, 4 Nov 2026: original scenario of an electronics retailer's refund review whose threshold misses where fraud losses arise written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used; checked against the CRISC, CISA, CC and AAIA banks for mirrored scenarios. Review fixes 4 Nov 2026 (standards audit and concept review): pre_read no longer hands over the design gap.",
       "style_version": 2
     },
     {
@@ -2347,14 +2347,14 @@
       "bloom_level": "Application",
       "question": "After a car rental company tokenized the card numbers it stores, the payments manager asks the risk analyst to record the card-data theft scenario's residual risk as zero. What is the analyst's BEST response?",
       "options": {
-        "A": "Rate the residual risk that tokenization still leaves",
+        "A": "Rate the residual risk that the change still leaves",
         "B": "Record zero residual risk with the manager's sign-off",
         "C": "Close the scenario and keep its entry as history",
         "D": "Ask internal audit to confirm the risk is eliminated"
       },
       "correct": "A",
       "key_concept": "Residual risk is never zero; after a strong response the practitioner rates what remains rather than recording or closing it as gone.",
-      "pre_read": "Ask what could still go wrong after the change.",
+      "pre_read": "Notice what the manager is asking the analyst to record.",
       "correct_explanation": "Tokenization cuts the exposure of stored card numbers, but some risk remains, such as card data captured at the point of entry or misuse of the token system. Residual risk is never zero, so the analyst rates what is left on the usual scales for the owner to weigh against appetite. Asking internal audit is the runner-up: assurance may follow, but no review can confirm a zero that does not exist.",
       "wrong_explanations": {
         "B": "A sign-off cannot make residual risk zero; recording it would hide the exposure that remains from the owner and the risk profile.",
@@ -2369,10 +2369,10 @@
       "framework_ref": "ISACA Glossary (residual risk); NIST IR 8286 Rev. 1 Section 3.5.2 (Responding to Residual Risk)",
       "related_concepts": [
         "Residual risk",
-        "Tokenization",
+        "Payment card tokenization",
         "Risk monitoring"
       ],
-      "_provenance": "Authored from concept: notes 2B5.1 (Inherent, Current and Residual Risk). Round 3, 4 Nov 2026: original scenario of a car rental company's payments manager asking for zero residual risk after tokenization written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used; checked against the CRISC, CISA, CC and AAIA banks for mirrored scenarios.",
+      "_provenance": "Authored from concept: notes 2B5.1 (Inherent, Current and Residual Risk). Round 3, 4 Nov 2026: original scenario of a car rental company's payments manager asking for zero residual risk after tokenization written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used; checked against the CRISC, CISA, CC and AAIA banks for mirrored scenarios. Review fixes 4 Nov 2026 (standards audit and concept review): option A no longer echoes the stem's 'tokenized'; pre_read no longer gives away the residual risk; related concept renamed.",
       "style_version": 2
     },
     {
@@ -2382,21 +2382,21 @@
       "principle_id": "appetite-drives-response",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "A mining company's risk analyst finds that one business unit rates inherent risk on the enterprise scale but residual risk with a vendor tool's own 0–100 scores. Which of the following is the GREATEST concern?",
+      "question": "A mining company's unit rates inherent risk on the enterprise scale, on which the board sets accepted risk levels, but residual risk on a vendor tool's 0–100 scores. What is the risk analyst's GREATEST concern?",
       "options": {
         "A": "The enterprise scale is less precise than the tool's scores",
         "B": "The tool's 0–100 scores are hard to show on a heat map",
         "C": "The inherent-to-residual gap no longer shows control effect",
-        "D": "Residual ratings cannot be set against the risk appetite"
+        "D": "Residual ratings cannot be compared directly with risk appetite"
       },
       "correct": "D",
       "key_concept": "Inherent and residual risk use the enterprise's common scale, so residual risk can be compared with appetite and the controls' effect seen.",
-      "pre_read": "Ask which decision depends on the unit's residual ratings.",
-      "correct_explanation": "Appetite is expressed on the enterprise's common scale, so residual scores on a vendor's private 0–100 scale cannot show whether the unit's risks are within appetite, and owners cannot decide whether to accept or treat them. The lost inherent-to-residual gap is the runner-up: it hides how much the controls reduce risk, but the decision that rests on residual risk is the comparison with appetite.",
+      "pre_read": "Notice which of the unit's ratings left the enterprise scale.",
+      "correct_explanation": "The board states its appetite on the enterprise scale, so residual scores on a vendor's private 0–100 scale cannot be compared directly with it: nobody can show whether the unit's risks are within appetite, and owners cannot decide whether to accept or treat them. The lost inherent-to-residual gap is the runner-up: it hides how much the controls reduce risk, but the decision that rests on residual risk is the comparison with appetite.",
       "wrong_explanations": {
         "A": "Finer-grained scores are not more correct; the enterprise scale, with defined levels, is the common term every unit's ratings must use.",
         "B": "Any scale can be binned onto a heat map; display is a minor issue beside the decisions the ratings must support.",
-        "C": "The lost gap hides how much the controls reduce risk, but the owner's accept-or-treat decision rests on comparing residual risk with appetite."
+        "C": "The lost gap hides how much the controls reduce risk, but the owner's accept-or-treat decision rests on comparing residual risk directly with appetite."
       },
       "tips": [
         "Eliminate: A treats finer vendor scores as better than defined enterprise levels, and B is a display issue, since any scale can be binned onto a map.",
@@ -2409,7 +2409,7 @@
         "Normalization",
         "Risk appetite"
       ],
-      "_provenance": "Authored from concept: notes 2B5.1 (Inherent, Current and Residual Risk). Round 3, 4 Nov 2026: original scenario of a mining company unit that rates inherent and residual risk on different scales written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used; checked against the CRISC, CISA, CC and AAIA banks for mirrored scenarios.",
+      "_provenance": "Authored from concept: notes 2B5.1 (Inherent, Current and Residual Risk). Round 3, 4 Nov 2026: original scenario of a mining company unit that rates inherent and residual risk on different scales written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used; checked against the CRISC, CISA, CC and AAIA banks for mirrored scenarios. Review fixes 4 Nov 2026 (standards audit and concept review): stem now states that the board sets appetite on the enterprise scale (described, not named, so 'appetite' is not a stem word echoed only in the key); option D reworded to 'compared directly', with option C's explanation matched; pre_read no longer points at the key.",
       "style_version": 2
     }
   ]

@@ -214,6 +214,8 @@ published 18 Dec 2025). Cite the Rev. 1 forms below in every CRISC domain.
   - New, round 3. Verified, 4 Nov 2026, same page: "The process of comparing estimated risk against given risk criteria to determine the significance of the risk" (credited there to ISO/IEC Guide 73:2002). Used in crisc_d2_058; taught in notes 2B1.2.
 - ISACA Glossary (design effectiveness)
   - New, round 3. Verified, 4 Nov 2026, same page: "In audit, refers to whether the control objectives is met by effectively preventing or detecting errors". Used in crisc_d2_063; taught in notes 2B5.2.
+- ISACA Glossary (threat event)
+  - New, round 3 review fixes. Verified, 4 Nov 2026, isaca.org/resources/glossary fetched with `curl -sS -L` and the entry read: "Any event during which a threat element/actor acts against an asset in a manner that has the potential to directly result in harm". Paired with ISACA Glossary (loss event) in crisc_d2_046 and crisc_d2_048: a near miss is a threat event that did not become a loss event.
 
 ### COBIT 2019
 - COBIT 2019 APO12.01 (Collect Data)
@@ -283,7 +285,7 @@ published 18 Dec 2025). Cite the Rev. 1 forms below in every CRISC domain.
 - NIST IR 8286A Rev. 1 Section 2.3.1 (Selecting Risk Analysis Methodologies)
   - New. Verified, 30 Oct 2026: quotes IEC 31010:2019 that the main criteria for choosing qualitative or quantitative techniques are the output most useful to stakeholders and the availability and reliability of data; quantitative techniques generally need high-quality data. Used in crisc_d2_017, crisc_d2_040, crisc_d2_041.
 - NIST IR 8286A Rev. 1 Section 2.2.2 (Determination of Potential Threats)
-  - New. Verified, 30 Oct 2026: threat enumeration combines data-driven threat awareness with business judgment; lists ISACs, technical threat models and MITRE ATT&CK as inputs. Supports notes 2A2.2; not keyed in the pilot.
+  - New. Verified, 30 Oct 2026: threat enumeration combines data-driven threat awareness with business judgment; lists ISACs, technical threat models and MITRE ATT&CK as inputs. Supports notes 2A2.2; not keyed in the pilot. Used in crisc_d2_049 (attack tree result, reworked in the round 3 review fixes, 4 Nov 2026).
 
 ### CSF 2.0 (NIST CSWP 29, Feb 2024)
 - NIST CSF 2.0 ID.RA-01 (vulnerabilities in assets are identified, validated and recorded)

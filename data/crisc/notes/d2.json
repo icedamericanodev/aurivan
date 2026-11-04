@@ -296,7 +296,7 @@
             "Intelligence comes from vendors, information sharing groups, government alerts and the enterprise's own security monitoring.",
             "Intelligence is filtered for relevance: does the actor target this sector, and does the enterprise use the targeted technology?",
             "STRIDE prompts six threat types against a design: spoofing, tampering, repudiation, information disclosure, denial of service and elevation of privilege.",
-            "Attack trees break an attacker's goal into the paths that could reach it; a control that blocks several paths is a key control, tested before the rating relies on it.",
+            "Attack trees break an attacker's goal into the paths that reach it; uncontrolled paths show where a scenario's exposure sits, and a control blocking several paths is a key control.",
             "MITRE ATT&CK catalogs real adversary tactics and techniques, giving context for which attack paths are credible.",
             "Modeling results feed risk scenarios, where likelihood and impact are rated with the risk owner."
           ],
@@ -462,7 +462,7 @@
             "Technology weaknesses include unpatched software, misconfigurations, default passwords and unsupported systems.",
             "A control deficiency found in testing or audit is a vulnerability, because it weakens protection against a scenario.",
             "Predisposing conditions, such as a flood-prone site, change likelihood even when nothing is broken.",
-            "Process and people weaknesses are found by walkthroughs, interviews and control testing with the staff involved; scanners see only technical flaws."
+            "Process and people weaknesses are found by walkthroughs, interviews and control testing with the staff involved; documents and self-assessments show intent, and scanners see only technical flaws."
           ],
           "compare": {
             "columns": [
@@ -595,7 +595,7 @@
             "Add exploitability: public exploit code, active attacks or a listing in a known-exploited vulnerabilities catalog.",
             "Set fix time frames by risk tier in a policy approved by management, so teams do not negotiate each fix.",
             "When a fix cannot meet its time frame, raise an exception with compensating controls for the risk owner to accept or reject.",
-            "For a newly disclosed flaw in a shared component, first find where it runs, using software inventories and component lists for in-house and vendor software."
+            "For a new flaw in a shared component, first find where it runs and which business services rely on it, from inventories and component lists for in-house and commercial software."
           ],
           "example": "A city transit agency has 1,200 open findings and patches them in the order they arrive. Marcus Bell, the risk lead, groups them by the service each asset supports, flags the internet-facing fare payment servers that have public exploits, and drafts risk tiers with fix deadlines for management approval.",
           "audit_focus": {
@@ -906,10 +906,10 @@
           "how_it_works": [
             "Prepare: set the purpose, scope, assumptions and constraints (including missing information), information sources, risk model and analytic approach.",
             "Conduct: identify threat sources and events, vulnerabilities and predisposing conditions, then determine likelihood, impact and risk.",
-            "Evaluation (ISO 31000's term, also in the ISACA Glossary) then compares each rating with the agreed risk criteria and appetite to decide whether a response is needed.",
             "Communicate: give results to decision makers in a form they can act on, such as a briefing, report or dashboard.",
             "Maintain: monitor risk factors and update the assessment when systems, threats or the business change.",
-            "ISO 31000 and ISO/IEC 27005 describe a similar flow that starts with scope, context and risk criteria."
+            "ISO 31000 and ISO/IEC 27005 describe a similar flow that starts with scope, context and risk criteria.",
+            "In that flow and the ISACA Glossary, risk evaluation compares each rating with the risk criteria and appetite; NIST SP 800-30 leaves this to decision makers choosing a response."
           ],
           "example": "A hotel group's CIO asks for a cloud migration risk assessment by Friday. Before collecting threats, Isabel Duarte, the risk practitioner, agrees the scope with the CIO: the booking platform and payment data only, a three-year horizon, the group's five-point rating scales and the decisions the results must support. Isabel then plans who will receive the results.",
           "audit_focus": {
