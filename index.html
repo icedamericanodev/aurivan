@@ -5471,17 +5471,17 @@ button.pg-cd:hover { background: var(--surface2); }
 /* The bar's box and label rows are in rem, so they grow with the labels at
    large text; 80 sits on the same baseline as 0, 50 and 100 (the tick ends
    above them), as on You. */
-.fg-sb-in { position: relative; height: 3.5rem; }
-.fg-sb-svg { position: absolute; left: 0; top: 1rem; width: 100%; height: 20px; overflow: visible; }
+.fg-sb-in { position: relative; height: 3.625rem; }
+.fg-sb-svg { position: absolute; left: 0; top: 1.125rem; width: 100%; height: 20px; overflow: visible; }
 .fg-sb-svg rect, .fg-sb-svg path { vector-effect: non-scaling-stroke; }
 .fg-sb-a { fill: var(--text2); stroke: var(--text2); stroke-width: .8; }
 .fg-sb-b { fill: var(--raised); stroke: var(--text2); stroke-width: .8; }
 .fg-sb-r { fill: var(--accent); stroke: var(--accent); stroke-width: .8; }
 .fg-sb-br { fill: none; stroke: var(--accent); stroke-width: 2; }
 .fg-sb-tick { fill: none; stroke: var(--text); stroke-width: 1.4; }
-.fg-sb-t, .fg-sb-rt { position: absolute; transform: translateX(-50%); white-space: nowrap; font: var(--t-fg-tiny); font-variant-numeric: tabular-nums; }
-.fg-sb-t { top: 2.375rem; color: var(--text2); }
-.fg-sb-rt { top: 0; font-weight: 600; color: var(--accent-text); }
+.fg-sb-t, .fg-sb-rt { position: absolute; transform: translateX(-50%); white-space: nowrap; font: var(--t-fg-small); font-variant-numeric: tabular-nums; }
+.fg-sb-t { top: 2.5rem; color: var(--text2); }
+.fg-sb-rt { top: 0; color: var(--accent-text); }
 /* Stem chart: one stem per area on one scale. The list below it is the same
    data: read by screen readers, and shown instead of the chart at large text
    (the phone's LARGE_TEXT, font scale 1.3+) or in a column under 300px. */
@@ -7236,7 +7236,7 @@ html { scroll-padding-bottom: calc(104px + var(--consent-h, 0px)); }
 .you-chip-art { flex: none; display: flex; align-items: center; justify-content: center; width: 34px; height: 34px; border-radius: var(--r-round); background: rgba(255,255,255,.08); }
 .you-chip-t { min-width: 0; }
 .you-chip-k { display: block; font: var(--t-kicker); letter-spacing: var(--tr-kicker); text-transform: uppercase; color: var(--on-forest2); }
-.you-chip-s { font-weight: 500; color: var(--on-forest2); }
+.you-chip-s { font: var(--t-meta); color: var(--on-forest2); }
 @media (min-width: 77.5em) { .you-chip.you-chip-dup { display: none; } }
 /* The chip sits on the paper: its ring is the page's --focus-ring (the
    grove-check line below records the rule), never the forest's. */
@@ -7327,9 +7327,8 @@ html { scroll-padding-bottom: calc(104px + var(--consent-h, 0px)); }
 .you-k-dash { fill: none; stroke: var(--text2); stroke-width: 1.2; stroke-dasharray: 3 3; }
 /* The straight scale bar under the ring (expert decision Q5): its 80 in clay, as the ring's mark. */
 .you-scale .fg-sb { max-width: 420px; margin-top: 0; }
-.you-scale .fg-sb-t.fg-sb-mark { font-weight: 600; color: var(--clay); }
+.you-scale .fg-sb-t.fg-sb-mark { color: var(--clay); }
 .you-scale .fg-sb-tick { stroke: var(--clay); }
-.you-scale .fg-sb-t, .you-scale .fg-sb-rt { font: var(--t-fg-tiny); font-variant-numeric: tabular-nums; }
 .you-low { text-wrap: pretty; }
 
 /* Five areas */
@@ -7959,9 +7958,11 @@ h1, h2, h3, h4 { overflow-wrap: break-word; }
    everywhere: no ring after a click or tap; for a keyboard user a tidy ring
    that hugs the words, because the heading is only as wide as its text. */
 :where(h1, h2, h3, h4)[tabindex="-1"] { width: fit-content; max-width: 100%; }
-:where(h1, h2, h3, h4)[tabindex="-1"]:focus { outline: none; }
-:where(h1, h2, h3, h4)[tabindex="-1"]:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 4px; border-radius: var(--r-xs); }
-:where(.you-plant, .vision-panel, .gt-panel, .readiness-card) :where(h1, h2, h3, h4)[tabindex="-1"]:focus-visible { outline-color: var(--on-forest); }
+:where(h1, h2, h3, h4)[tabindex="-1"]:focus, :where(h1, h2, h3, h4)[tabindex="-1"]:focus-visible { outline: none; }
+/* A direct link focuses the title before any input, which Chromium counts as
+   focus-visible: the ring waits until the learner has used the keyboard. */
+html[data-kbd] :where(h1, h2, h3, h4)[tabindex="-1"]:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 4px; border-radius: var(--r-xs); }
+html[data-kbd] :where(.you-plant, .vision-panel, .gt-panel, .readiness-card) :where(h1, h2, h3, h4)[tabindex="-1"]:focus-visible { outline-color: var(--on-forest); }
 </style>
 </head>
 <body>
@@ -12322,6 +12323,13 @@ function youGoBack(e) {
 // A page still loading its file (Study notes, the exam guide) draws its
 // title a moment later, and a page may draw itself again: focus waits for
 // the title (up to 4 s) unless the learner has moved focus on meanwhile.
+// Input modality for the title ring: set by a key press (not a shortcut
+// chord), cleared by a pointer press. Read only by CSS.
+(function () {
+  var de = document.documentElement;
+  document.addEventListener('keydown', function (e) { if (!e.metaKey && !e.ctrlKey && !e.altKey) de.setAttribute('data-kbd', ''); }, true);
+  document.addEventListener('pointerdown', function () { de.removeAttribute('data-kbd'); }, true);
+})();
 var navFocusWait = null;
 function navFocusTitle() {
   if (navFocusWait) { navFocusWait.disconnect(); navFocusWait = null; }
