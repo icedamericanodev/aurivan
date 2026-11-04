@@ -229,7 +229,14 @@ var BD = (function () {
     function find(tests) { for (var t = 0; t < tests.length; t++) for (var i = 0; i < h.length; i++) if (tests[t].test(h[i])) return i; return -1; }
     return {
       email: find([/(google\s*play|play\s*store|gmail|google account).*(e-?mail|address|account)/, /e-?mail.*(google\s*play|play|gmail)/, /^e-?mail( address)?$/, /e-?mail/]),
-      name: find([/^full\s*name$/, /^name$/, /(your|full|first).*name/, /name/]),
+      // The live form asks "Name or handle to show." after a yes/no question that also says
+      // "your name" ("Would you like your name in the app's … screen?"), so questions are skipped.
+      name: (function () {
+        var tests = [/^full\s*name$/, /^name$/, /name or handle/, /(your|full|first)\s+name\s*$/, /name/];
+        for (var t = 0; t < tests.length; t++) for (var i = 0; i < h.length; i++)
+          if (tests[t].test(h[i]) && !/^(would|do|did|are|is|can)\b|\?\s*$/.test(h[i])) return i;
+        return -1;
+      })(),
       last: find([/last\s*name|surname|family\s*name/]),
       eligible: find([/do you have an android/, /android device.*google play|google play access/]),
       device: (function () { for (var i = 0; i < h.length; i++) if (/device|phone|model/.test(h[i]) && !/^do you have/.test(h[i])) return i; return -1; })(),
