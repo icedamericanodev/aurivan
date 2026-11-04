@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "comment": "Original CRISC practice questions for Domain 2 (Risk Assessment), written to the CRISC exam content outline effective 2025. Every item is authored from public concepts and KaiSip's own CRISC study notes (data/crisc/notes/d2.json), with no reference to the CRISC Review Manual, ISACA's QAE database, ISACA's practice quiz or any prior question bank. Schema: docs/content/QUESTION_SCHEMA.md; writing rules: docs/content/EXAM_STYLE_V2.md and .claude/agents/crisc-standards-auditor.md. Not affiliated with or endorsed by ISACA®. CRISC® is a registered trademark of ISACA. Pilot batch crisc_d2_001 to crisc_d2_020, 30 Oct 2026. Review fixes 30 Oct 2026 (blind test and standards audit). Quality pass 31 Oct 2026 (ISACA authenticity audit and concept review). Repair round 1, 31 Oct 2026 (independent verification). Round 3 crisc_d2_046 to crisc_d2_065, 4 Nov 2026.",
+    "comment": "Original CRISC practice questions for Domain 2 (Risk Assessment), written to the CRISC exam content outline effective 2025. Every item is authored from public concepts and KaiSip's own CRISC study notes (data/crisc/notes/d2.json), with no reference to the CRISC Review Manual, ISACA's QAE database, ISACA's practice quiz or any prior question bank. Schema: docs/content/QUESTION_SCHEMA.md; writing rules: docs/content/EXAM_STYLE_V2.md and .claude/agents/crisc-standards-auditor.md. Not affiliated with or endorsed by ISACA®. CRISC® is a registered trademark of ISACA. Pilot batch crisc_d2_001 to crisc_d2_020, 30 Oct 2026. Review fixes 30 Oct 2026 (blind test and standards audit). Quality pass 31 Oct 2026 (ISACA authenticity audit and concept review). Repair round 1, 31 Oct 2026 (independent verification). Round 3 crisc_d2_046 to crisc_d2_065, 4 Nov 2026. Round 7 crisc_d2_091 to crisc_d2_094, 4 Nov 2026.",
     "schema_version": 1
   },
   "domain": 2,
@@ -3349,19 +3349,19 @@
         "A": "As a $50,000 loss, net of the $450,000 repaid",
         "B": "As a $500,000 loss, with the $450,000 recovery shown",
         "C": "As an incident, with the amounts left to the finance team",
-        "D": "As the insurer's loss event, not the credit union's"
+        "D": "As a near miss with most of the cost insured"
       },
       "correct": "B",
       "key_concept": "An event's loss is recorded before insurance, with the recovery shown beside it; the insurance is a response, credited once, in the rating.",
-      "pre_read": "Check what the scenario's current rating already counts before choosing a figure.",
+      "pre_read": "Ask what the loss record will be used for before choosing a figure.",
       "correct_explanation": "A loss event records what the event cost the enterprise: here $500,000. The insurer's payment is the transfer response at work, sharing part of the financial consequence afterward, and the scenario's current rating already credits it. Recording the net $50,000 is the runner-up: it shows what the credit union bore this time, but it would credit the insurance a second time and hide what an uninsured attack would cost.",
       "wrong_explanations": {
         "A": "What the credit union bore is real, but the rating already credits the policy; a net figure counts the insurance twice and understates the attack's impact.",
         "C": "Event data holds each event's impact so its scenario can be re-rated; leaving the figures to finance strips out the fact the rating needs.",
-        "D": "The attack hit the credit union's systems and spent its money; the insurer's payment settles a contract and does not make the event the insurer's."
+        "D": "A near miss is an event that caused no loss; the credit union lost $500,000 and still bore $50,000 after the payout, so this is a loss event."
       },
       "tips": [
-        "Eliminate: C leaves the event's impact out of the event data, and D hands the credit union's own loss event to its insurer.",
+        "Eliminate: C leaves the event's impact out of the event data, and D calls an insured loss a near miss.",
         "Final two: B beats A because the rating already credits the policy; recording the net loss would count the insurance twice and hide the attack's full cost.",
         "Exam cue: record an event's loss before insurance, with the recovery beside it; insurance is part of the response, credited once in the rating."
       ],
@@ -3371,7 +3371,7 @@
         "Risk transfer",
         "Event data"
       ],
-      "_provenance": "Authored from concept: notes 2A1.2 (Internal and External Event Sources). Round 7, 4 Nov 2026: original scenario (a credit union's ransomware loss, most of it repaid by its cyber insurer, while the scenario's rating already credits the policy) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Neighbours checked: crisc_d2_087 (losses missing from an event record; this item is the reverse, a recovery that must not be netted off), crisc_d2_088 (a supplier outage is the firm's own loss event), crisc_d2_048 (a near miss), crisc_d3_001 (insurance shifts part of the financial loss), crisc_d1_103 (a rating resting on cover that may not pay), CC cc_d1_008 (insurance does not move accountability), CISA d5_172 (containment not paused for the insurer); no CISA, CC or AAIA item asks how to record a loss that insurance repaid. Keep apart from crisc_d2_087 in practice sets.",
+      "_provenance": "Authored from concept: notes 2A1.2 (Internal and External Event Sources). Round 7, 4 Nov 2026: original scenario (a credit union's ransomware loss, most of it repaid by its cyber insurer, while the scenario's rating already credits the policy) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Neighbours checked: crisc_d2_087 (losses missing from an event record; this item is the reverse, a recovery that must not be netted off), crisc_d2_088 (a supplier outage is the firm's own loss event), crisc_d2_048 (a near miss), crisc_d3_001 (insurance shifts part of the financial loss), crisc_d1_103 (a rating resting on cover that may not pay), CC cc_d1_008 (insurance does not move accountability), CISA d5_172 (containment not paused for the insurer); no CISA, CC or AAIA item asks how to record a loss that insurance repaid. Keep apart from crisc_d2_087 in practice sets. Review fixes 4 Nov 2026 (round 7 audit and concept review): option D changed from 'the insurer's loss event' (close to a strawman) to a near miss with most of the cost insured; pre_read no longer points at the double-count argument (audit).",
       "style_version": 2
     },
     {
@@ -3381,7 +3381,7 @@
       "principle_id": "analyze-before-acting",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "After a retailer added multifactor sign-in to its website, online account takeovers fell 80% and the risk was re-rated within appetite, while call-center resets handing impostors accounts tripled. What should the risk analyst do FIRST?",
+      "question": "After a retailer added multifactor sign-in to its website, takeovers there fell 80% and the risk was re-rated within appetite, but impostors taking accounts through call-center resets tripled. What should the risk analyst do FIRST?",
       "options": {
         "A": "Have the owner accept the re-rated takeover risk",
         "B": "Ask the call-center manager to add caller checks",
@@ -3408,7 +3408,7 @@
         "Threat landscape",
         "Risk acceptance"
       ],
-      "_provenance": "Authored from concept: notes 2A2.1 (Threat Sources and Threat Events). Round 7, 4 Nov 2026: original scenario (a retailer's website takeovers fall after multifactor sign-in while impostors take accounts through call-center resets) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Round 7 acceptance counter-example: the stem gives a within-appetite rating and the accept option is wrong because the rating leaves out the path the attackers moved to. Neighbours checked: crisc_d2_085 (an AI fraud filter's side effect on genuine orders; this item is the same attackers reaching the same harm by another path, not a new consequence of the control), crisc_d2_049 (attack tree open paths), crisc_d2_066 (threat sources named), crisc_d1_103 and crisc_d4_010 (other acceptance counter-examples), crisc_d4_080 (a stale within-appetite acceptance, renewed after a redesign), CC cc_d3_028 (a stricter fingerprint reader turns away genuine crews), CISA d5_234 (a detective control for service-desk MFA reset fraud), AAIA aaia_d2_036 (attackers change tactics around an AI detection model; its lesson is monitoring outcomes); no item keys re-rating a scenario across the paths attackers shift to. Keep apart from crisc_d2_085 in practice sets.",
+      "_provenance": "Authored from concept: notes 2A2.1 (Threat Sources and Threat Events). Round 7, 4 Nov 2026: original scenario (a retailer's website takeovers fall after multifactor sign-in while impostors take accounts through call-center resets) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Round 7 acceptance counter-example: the stem gives a within-appetite rating and the accept option is wrong because the rating leaves out the path the attackers moved to. Neighbours checked: crisc_d2_085 (an AI fraud filter's side effect on genuine orders; this item is the same attackers reaching the same harm by another path, not a new consequence of the control), crisc_d2_049 (attack tree open paths), crisc_d2_066 (threat sources named), crisc_d1_103 and crisc_d4_010 (other acceptance counter-examples), crisc_d4_080 (a stale within-appetite acceptance, renewed after a redesign), CC cc_d3_028 (a stricter fingerprint reader turns away genuine crews), CISA d5_234 (a detective control for service-desk MFA reset fraud), AAIA aaia_d2_036 (attackers change tactics around an AI detection model; its lesson is monitoring outcomes); no item keys re-rating a scenario across the paths attackers shift to. Keep apart from crisc_d2_085 in practice sets. Review fixes 4 Nov 2026 (round 7 audit and concept review): stem reworded to remove a hard-to-parse clause (audit).",
       "style_version": 2
     },
     {
@@ -3426,9 +3426,9 @@
         "D": "The patch team now faces five times the work"
       },
       "correct": "A",
-      "key_concept": "Vulnerability data is only as complete as its method; scans without credentials miss flaws inside systems, so ratings built on them understate exposure.",
+      "key_concept": "Vulnerability data is only as complete as its method; scans without credentials miss many flaws inside systems, so ratings built on them understate exposure.",
       "pre_read": "Ask what each kind of scan can see on a server.",
-      "correct_explanation": "A scan without credentials sees a server only from the network, so it misses flaws in installed software that a signed-in scan can read; NIST notes that privileged access allows more thorough scanning. The fivefold gap shows that ratings built on the monthly scans understate exposure. The trial's size is the runner-up: the multiple across 400 servers is uncertain, but the gap comes from how the scans work, not from which servers were tried.",
+      "correct_explanation": "A scan without credentials sees a server only from the network, so it misses many flaws in installed software that a signed-in scan can read; NIST notes that privileged access allows more thorough scanning. The fivefold gap shows that ratings built on the monthly scans understate exposure. The trial's size is the runner-up: the multiple across 400 servers is uncertain, but the gap comes from how the scans work, not from which servers were tried.",
       "wrong_explanations": {
         "B": "The multiple across all 400 servers is uncertain, but the shortfall comes from what an uncredentialed scan can see, so a larger trial would change its size, not its direction.",
         "C": "Scan load can be scheduled around clinical hours; it is a practical detail for IT, while the ratings already in use misstate the risk.",
@@ -3445,7 +3445,7 @@
         "Vulnerability identification",
         "Data quality"
       ],
-      "_provenance": "Authored from concept: notes 2A3.1 (Vulnerabilities in People, Process and Technology). Round 7, 4 Nov 2026: original scenario (a hospital's scenario ratings rest on monthly scans run without credentials, and a credentialed trial finds five times as many missing patches) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Neighbours checked: crisc_d2_026 (clean scans miss people and process weaknesses), crisc_d2_046 (loss data that leaves out near misses), crisc_d2_052 (a walkthrough, with an authenticated scan as a wrong source for process weaknesses), crisc_d4_025 (servers no team claims), CISA d5_129 and d5_348 (scanners that cover only hosts in the asset register) and d5_297 (a black-box test cited as insider assurance); none tests how scan credentials limit the data behind risk ratings.",
+      "_provenance": "Authored from concept: notes 2A3.1 (Vulnerabilities in People, Process and Technology). Round 7, 4 Nov 2026: original scenario (a hospital's scenario ratings rest on monthly scans run without credentials, and a credentialed trial finds five times as many missing patches) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Neighbours checked: crisc_d2_026 (clean scans miss people and process weaknesses), crisc_d2_046 (loss data that leaves out near misses), crisc_d2_052 (a walkthrough, with an authenticated scan as a wrong source for process weaknesses), crisc_d4_025 (servers no team claims), CISA d5_129 and d5_348 (scanners that cover only hosts in the asset register) and d5_297 (a black-box test cited as insider assurance); none tests how scan credentials limit the data behind risk ratings. Review fixes 4 Nov 2026 (round 7 audit and concept review): key_concept and explanation say scans without credentials miss many flaws inside systems, not all, since they still find flaws in network-exposed services (audit); notes 2A3.1 matched.",
       "style_version": 2
     },
     {
@@ -3465,7 +3465,7 @@
       "correct": "D",
       "key_concept": "A register entry states a risk, an event and its harm; one worded as a missing control presumes the response and cannot be rated.",
       "pre_read": "Read the example entry closely before weighing the options.",
-      "correct_explanation": "A register entry states a risk: an event and its effect on objectives. 'No data loss prevention tool' names one fix, so it presumes the response and leaves nothing to rate, weigh against appetite or combine in the profile. Restated as customer data leaked by email and the fines that follow, the owner can compare responses. Costing each tool is the runner-up, but a benefit is a fall in a risk the entry never states.",
+      "correct_explanation": "A register entry states a risk: an event and its effect on objectives. 'No data loss prevention tool' names a fix, presuming the response and leaving nothing to rate against appetite or combine in the profile. Restated with its owner as, say, customer data leaked by email and resulting fines, it lets the owner compare responses. Costing each tool is the runner-up, but a benefit is a fall in a risk the entry never states.",
       "wrong_explanations": {
         "A": "Cost-benefit measures a fix against the risk it reduces; an entry that names only the tool gives the benefit nothing to be measured against.",
         "B": "A profile shows exposure against appetite; entries naming missing tools say neither what could happen nor how badly, so they would mislead its readers.",
@@ -3482,7 +3482,7 @@
         "Risk description",
         "Enterprise risk profile"
       ],
-      "_provenance": "Authored from concept: notes 2B3.3 (From Register to Enterprise Risk Profile). Round 7, 4 Nov 2026: original scenario (a logistics firm's IT register entries worded as missing tools, found while the analyst prepares the risk profile) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Neighbours checked: crisc_d2_007 (a generic 'cyberattack' entry split into specific scenarios; this item's flaw is an entry that names a fix, and its runner-up is cost-benefit, not a tabletop), crisc_d2_006 (a control test finding recorded as a vulnerability), crisc_d2_054 (a draft scenario missing its consequence), crisc_d2_013 (an entry closed when a tool was approved), crisc_d1_033 and crisc_d1_056 (the IT register and the enterprise profile), CISA d3_120 (a workaround reported as a control gap) and d1_196 (an audit finding missing its business harm). Keep apart from crisc_d2_007 in practice sets.",
+      "_provenance": "Authored from concept: notes 2B3.3 (From Register to Enterprise Risk Profile). Round 7, 4 Nov 2026: original scenario (a logistics firm's IT register entries worded as missing tools, found while the analyst prepares the risk profile) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Neighbours checked: crisc_d2_007 (a generic 'cyberattack' entry split into specific scenarios; this item's flaw is an entry that names a fix, and its runner-up is cost-benefit, not a tabletop), crisc_d2_006 (a control test finding recorded as a vulnerability), crisc_d2_054 (a draft scenario missing its consequence), crisc_d2_013 (an entry closed when a tool was approved), crisc_d1_033 and crisc_d1_056 (the IT register and the enterprise profile), CISA d3_120 (a workaround reported as a control gap) and d1_196 (an audit finding missing its business harm). Keep apart from crisc_d2_007 in practice sets. Review fixes 4 Nov 2026 (round 7 audit and concept review): explanation shows the entries restated with each entry's owner (audit).",
       "style_version": 2
     }
   ]

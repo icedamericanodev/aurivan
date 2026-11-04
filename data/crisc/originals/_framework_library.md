@@ -64,7 +64,7 @@ Each bullet was opened on 30 Oct 2026 unless marked Likely.
 
 ### ISACA Risk IT
 - ISACA Risk IT Framework 2nd Edition (2020)
-  - Verified (title), 30 Oct 2026: ISACA press release "ISACA's Risk IT Framework Offers a Structured Methodology" (2020), https://www.isaca.org/about-us/newsroom/press-releases/2020/isacas-risk-it-framework-offers-a-structured-methodology, names Risk IT Framework, 2nd Edition and Risk IT Practitioner Guide, 2nd Edition. Paid publication; the full text was not opened. Cited only at the title level, for the general principle that IT risk is business risk managed inside ERM.
+  - Verified (title), 30 Oct 2026: ISACA press release "ISACA's Risk IT Framework Offers a Structured Methodology" (2020), https://www.isaca.org/about-us/newsroom/press-releases/2020/isacas-risk-it-framework-offers-a-structured-methodology, names Risk IT Framework, 2nd Edition and Risk IT Practitioner Guide, 2nd Edition. Paid publication; the full text was not opened. Cited only at the title level, for the general principle that IT risk is business risk managed inside ERM and, from 4 Nov 2026 (crisc_d1_106), for its three IT risk categories (benefit/value enablement, program and project delivery, operations and service delivery), whose wording is checked against the ISACA Now Blog post of 23 September 2019 and the ISACA Journal 2014 article under "Round 7 additions" below.
 
 ### ISACA Journal
 - ISACA Journal 2018 Volume 4 (Roles of Three Lines of Defense for Information Security and Governance)

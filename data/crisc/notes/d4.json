@@ -47,7 +47,8 @@
           "practice_ids": [
             "crisc_d4_021",
             "crisc_d4_046",
-            "crisc_d4_066"
+            "crisc_d4_066",
+            "crisc_d4_080"
           ],
           "definition": "Enterprise architecture (EA) is the documented model of how business processes, data, applications and technology fit together to deliver the organization's strategy.",
           "why_it_matters": "EA shows where a new system, vendor or AI service touches critical data and processes, so risk can be judged before money is committed. Without it, risk decisions are made one project at a time.",
@@ -57,7 +58,7 @@
             "Security and privacy requirements are built into the architecture, so each new system inherits them instead of reinventing them.",
             "AI services are architecture components too: their data flows, model hosting and integrations belong in the EA.",
             "Deviations from the architecture are recorded as exceptions with an owner, a reason and an expiry date.",
-            "A major architecture change, such as a cloud move or new integrations, voids earlier ratings, so affected risks are reassessed before any acceptance is renewed."
+            "A major architecture change, such as a cloud move or new integrations, leaves earlier ratings out of date, so affected risks are reassessed before any acceptance is renewed."
           ],
           "example": "A regional utility plans to connect a vendor's AI chatbot directly to its customer billing database. Mateo, the IT risk analyst, compares the design with the enterprise architecture and finds the chatbot would bypass the approved integration layer that logs and filters customer data. Mateo documents the deviation and its risk, and takes it to the architecture review board with options.",
           "audit_focus": {
@@ -222,16 +223,17 @@
             "crisc_d4_003",
             "crisc_d4_024",
             "crisc_d4_025",
-            "crisc_d4_077"
+            "crisc_d4_077",
+            "crisc_d4_082"
           ],
           "definition": "Change management is the controlled process for requesting, assessing, approving, testing, implementing and reviewing changes, with configuration management keeping an accurate record of approved settings.",
-          "why_it_matters": "Many outages and security incidents follow a change. Controlled change keeps risk within appetite by making sure someone judged the impact, can undo the change and knows what the system should look like.",
+          "why_it_matters": "Many outages and incidents follow a change. Controlled change keeps risk within appetite: someone has judged the impact, can undo the change and knows what the system should look like.",
           "how_it_works": [
             "Each change has a request, an impact assessment, an approval suited to its risk, a test result and a back-out plan.",
             "Emergency changes may bypass the normal approval path, usually through an emergency approver, but are documented and reviewed after the fact as soon as practical.",
             "A configuration management database (CMDB) records configuration items and dependencies; assets missing from it sit outside patching, change and backup, so differing counts from other tools are reconciled.",
             "Comparing live settings with the baseline finds unauthorized changes, which are investigated, not quietly reversed; a needed deviation is approved by its business owner, recorded and reviewed.",
-            "Low-risk, repeatable changes can be pre-approved, so review effort follows risk.",
+            "Low-risk, repeatable changes with a proven record can be pre-approved as standard changes, still tested and recorded, so review effort follows risk.",
             "A growing share of emergency changes is analyzed for its cause, such as slow normal approvals or poor planning, before more approval steps are added."
           ],
           "types": [
@@ -248,7 +250,7 @@
               "meaning": "Made fast to restore service or stop harm through an expedited approval, then documented and reviewed after the fact."
             }
           ],
-          "example": "At a city council, Ines, a risk analyst, reviews the month's changes and finds that a third were marked emergency, including routine firewall updates. Several have no after-the-fact review. Ines reports the pattern to the head of IT operations, with the risk that the emergency route is being used to avoid assessment.",
+          "example": "At a city council, Ines, a risk analyst, finds that a third of the month's changes were marked emergency, including routine firewall updates, and several have no after-the-fact review. Ines reports the pattern to the head of IT operations, with the risk that the emergency route avoids assessment.",
           "audit_focus": {
             "review": [
               "Sample emergency tickets and measure days until after-the-fact sign-off",
@@ -261,11 +263,11 @@
             "recommend": "Have the change manager analyze why emergency changes are rising, then set emergency-change criteria and report volume and overdue reviews monthly.",
             "decides": "The change authority approves changes; the risk owner accepts any remaining change risk"
           },
-          "isaca_rule": "The risk view of change asks: was the impact assessed, approved by the right authority and reversible? Emergency changes are allowed, but each gets a timely retrospective review. Growing emergency volume is a risk signal: report it and find out why the normal path is being avoided.",
+          "isaca_rule": "The risk view of change asks: was the impact assessed, approved by the right authority and reversible? Emergency changes are allowed, but each gets a timely retrospective review. Growing emergency volume is a risk signal: report it and find out why the normal path is avoided.",
           "exam_traps": [
             {
               "trap": "Accepting an emergency change as complete once service is restored.",
-              "why": "Skipping approval is allowed only because a review follows. Without it, untested or unauthorized changes stay in production and the control quietly fails."
+              "why": "Skipping approval is allowed only because a review follows. Without it, untested or unauthorized changes stay live and the control quietly fails."
             }
           ],
           "key_terms": [
@@ -771,7 +773,8 @@
           "legacy_ids": [],
           "practice_ids": [
             "crisc_d4_029",
-            "crisc_d4_058"
+            "crisc_d4_058",
+            "crisc_d4_085"
           ],
           "definition": "AI training data management applies the data lifecycle to data used to train, test and tune models, from sourcing and labeling through retention and deletion.",
           "why_it_matters": "A model reflects its data. Poor, biased, poisoned or unlawfully sourced training data becomes poor or unlawful decisions, and personal data inside a model can be hard to remove later.",
@@ -891,7 +894,8 @@
             "crisc_d4_032",
             "crisc_d4_061",
             "crisc_d4_070",
-            "crisc_d4_079"
+            "crisc_d4_079",
+            "crisc_d4_084"
           ],
           "definition": "Project risk is uncertainty that can affect a project's scope, time, cost or quality; in Agile delivery it is managed in short, repeated cycles.",
           "why_it_matters": "Project risks often become operational IT risks after go-live. Tracked only inside the project, or dropped to meet a date, they leave exposure no one approved.",
@@ -1203,12 +1207,13 @@
             "crisc_d4_037",
             "crisc_d4_055",
             "crisc_d4_063",
-            "crisc_d4_072"
+            "crisc_d4_072",
+            "crisc_d4_083"
           ],
           "definition": "Evaluating emerging technology means assessing a new technology's threats, vulnerabilities and opportunities for the business before and during adoption.",
           "why_it_matters": "New technology can create advantage, new exposure or both. The ISACA Glossary's enterprise risk management exploits risk as well as controlling it, to increase stakeholder value, so leaders weigh both instead of banning by reflex or adopting blind.",
           "how_it_works": [
-            "Start from the business objective the technology would serve and the value it could add.",
+            "Start from the objective it serves; known benefits belong in the business case, uncertain ones in the register as opportunities.",
             "Identify new threats and vulnerabilities, such as weak integrations, vendor-inherited flaws and irreversible harms like stolen biometric data.",
             "Check vendor claims through evidence, pilots and independent assessments, not marketing material.",
             "Apps staff build on low-code platforms are inventoried with owners and data, not banned or ignored.",
@@ -1233,7 +1238,7 @@
               "meaning": "Future computing power that could break today's public-key encryption, so cryptography inventories and migration plans matter."
             }
           ],
-          "example": "A farm cooperative's operations head wants soil sensors linked to a cloud dashboard to cut fertilizer costs, while some board members want to block the idea over security fears. Luca, the risk analyst, assesses both the savings and the risks, such as default device passwords and vendor lock-in, and proposes a limited pilot with conditions for the board to consider.",
+          "example": "A farm cooperative's operations head wants soil sensors linked to a cloud dashboard to cut fertilizer costs, while some board members want it blocked over security fears. Luca, the risk analyst, assesses both the savings and the risks, such as default device passwords and vendor lock-in, and proposes a limited pilot with conditions for the board.",
           "audit_focus": {
             "review": [
               "Compare the technology's business case with its risk assessment",
@@ -1246,7 +1251,7 @@
             "recommend": "Have the sponsoring executive approve adoption conditions, such as pilot scope and exit terms, before scaling.",
             "decides": "Senior management decides adoption within the approved risk appetite"
           },
-          "isaca_rule": "Emerging technology is neither banned nor adopted on faith. The practitioner assesses threats, vulnerabilities and opportunities against the business objective and appetite, then recommends conditions; senior management decides whether to adopt.",
+          "isaca_rule": "Emerging technology is neither banned nor adopted on faith. The practitioner assesses threats, vulnerabilities and opportunities against the objective and appetite, then recommends conditions; senior management decides whether to adopt.",
           "exam_traps": [
             {
               "trap": "Recommending a ban on a new technology because its risks are not yet understood.",
@@ -1739,7 +1744,8 @@
           "legacy_ids": [],
           "practice_ids": [
             "crisc_d4_020",
-            "crisc_d4_043"
+            "crisc_d4_043",
+            "crisc_d4_081"
           ],
           "definition": "Privacy by design builds privacy protections into systems from the start, and a privacy impact assessment (PIA) analyzes how a system handles personal data and the risks involved.",
           "why_it_matters": "Privacy fixes after launch are costly and may come after people are harmed. A PIA at the design stage finds problems while they are cheap to fix and gives owners a documented basis for decisions.",
