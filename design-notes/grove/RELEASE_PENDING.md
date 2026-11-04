@@ -23,6 +23,9 @@ Batched for the end of the uplift (web v13, mobile 2.0.0; DECISIONS 8). Write th
 - Practice summary now says plainly that it covers all your practice so far.
 - Restoring a backup into a new browser is now a plain restore, in short lines.
 - Older What's New entries read more clearly.
+- Saving your name, exam date or a backup, and restoring one, now confirm right where you made the change, without a message covering the page.
+- Practice summary now fits every area's score on small screens and at larger text sizes.
+- The You page now names one area to study next, the same as Today.
 
 ## Follow-ups to do at the release
 - `mobile/src/engine/plantLooks.ts` `howToOpen` says "in the Herbarium": change to "in Badges" and rebuild `assets/kaisip-plant.js` in the same commit.

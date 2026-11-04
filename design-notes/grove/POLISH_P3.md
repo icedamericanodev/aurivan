@@ -111,3 +111,16 @@ Every blocking finding is fixed in `index.html`; none needed an owner decision c
 - Not started: Today's readiness list says "Not started" for 0 answers; You's focus row says "where you'll gain most" when it is not started.
 - Restore: short lines; in a browser with no answers, "Cancel" and a plain "Restore".
 - Back up on Settings: the row says "Backup saved: 4 Nov" (a status line for screen readers), so no toast covers the rows below it.
+
+
+## Round 4 after the strict review (4 Nov 2026)
+
+Every blocking finding is fixed in `index.html`; no owner decision changed. One recorded rule moved: DECISIONS 14's follow-up kept You's area list on `r.focusId`, which named a second area beside Focus next while today's set was unfinished. The list now follows Focus next (DECISIONS 14 updated). In short:
+
+- Q2 as written: You's key line reads "No stem yet: fewer than 30 answers, too few yet for a score. The stem and score show at 30." again (round 3 had cut the second sentence without recording it), and Your progress, set and mock results keys end with the same sentence.
+- Q6 again: You's "Five areas, one scale" list marks the area You's Focus next names. While today's set is unfinished and is not the focus, that row says "today's set" and no row says "where you'll gain most"; after the set, the focus row again.
+- Practice summary rows: the name gives way first and the bar and score drop under it together when they do not fit, so at 320px and at 200% text every score is inside the sheet and every bar is full width (no sideways scroll at 320, 390 or 768).
+- No toast over rows: saving a name or an exam date on Settings, "Restored: N answers" after a restore, "Questions to revisit" with nothing due on You, and Today's "Download backup" say it in their own row or card, with a status line for a screen reader. The toast stays where none of these rows is on screen.
+- Forced colours: the plant chip's chevron and words are ButtonText.
+- Dashes: "Opening your mail app. Finish sending from there."
+
