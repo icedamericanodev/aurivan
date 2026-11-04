@@ -34,7 +34,7 @@
 </script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="KaiSip is CISA exam prep, free during the beta: practice questions across all five domains, mock exams and plain-language study notes that teach you to reason like an IS auditor.">
+<meta name="description" content="KaiSip is CISA exam prep: free practice questions from every study topic, a mini mock exam and plain-language study notes that teach you to reason like an IS auditor.">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="KaiSip">
 <meta property="og:title" content="KaiSip: CISA exam prep that teaches the auditor’s mindset">
@@ -5833,6 +5833,18 @@ body[data-app-cta-card="shown"][data-section="today"] .app-cta-line { display: n
 .td-app-badge img { display: block; height: 40px; width: auto; }
 .td-app-acts .gt-btn-secondary { min-height: 44px; padding: 0 var(--sp-lg); text-decoration: none; }
 .td-app-hide { margin-right: -4px; }
+/* v12.50: "You've worked through the free questions" (Today, between sessions). */
+.td-fs { margin: var(--sp-2xl) 0 0; padding: var(--sp-lg); background: var(--raised2); border-radius: var(--r-lg); }
+.td-fs-t { margin: 0; font: var(--t-headline); color: var(--text); }
+.td-fs-m { margin: var(--sp-xs) 0 0; font: var(--t-small); color: var(--text2); max-width: 60ch; }
+.td-fs .gt-btn-secondary { min-height: 44px; padding: 0 var(--sp-lg); text-decoration: none; }
+.td-fs-hide { margin-right: -4px; }
+/* v12.50: a mock in the full course, and the calm "in the full course" row. */
+.mk-type-cap { font: var(--t-caption); color: var(--text2); margin: var(--sp-md) 0 0; }
+.mk-type-locked .mk-type-m { margin-bottom: var(--sp-sm); }
+.mk-course-link, .fc-row-a { margin-top: 0; }
+.fc-row { margin-top: var(--sp-lg); }
+.fc-row-t { margin: 0; font: var(--t-small); color: var(--text2); }
 
 /* Today on a computer, live mode with the QR (appCtaQrOk): a "Get KaiSip for
    Android" plate under the readiness and plant. With it, the plate and the
@@ -7247,7 +7259,7 @@ html { scroll-padding-bottom: calc(104px + var(--consent-h, 0px)); }
     <h2 class="vision-title" id="aboutVisionT">Think like an IS auditor.</h2>
     <p class="vision-line">CISA exam prep, taught the way the exam thinks.</p>
   </section>
-  <p class="about-version">KaiSip web <span class="bank-pill" id="versionPill">v12.49.10</span></p>
+  <p class="about-version">KaiSip web <span class="bank-pill" id="versionPill">v12.50</span></p>
   <section class="vision-body" aria-label="What KaiSip stands for">
     <!-- The provenance line (owner, 22 Oct 2026): the same words in the hero, the disclaimer and the FAQ. -->
     <p class="vision-desc">Original questions and notes, written with AI assistance and checked against ISACA’s published exam outline and standards.</p>
@@ -7435,7 +7447,7 @@ html { scroll-padding-bottom: calc(104px + var(--consent-h, 0px)); }
 <script id="faqData" type="application/json">[
 {"cat":"Using the app","q":"How do I start practicing?","a":"Open Practice from the bottom navigation, choose a domain (or 'All domains'), and answer questions one at a time. Your first question loads automatically — read the explanation after every answer, right or wrong."},
 {"cat":"Using the app","q":"What does Exam-day rehearsal change?","a":"Turn on Exam-day rehearsal under You to practice the way exam day feels: the scenario sits inside the question, and the tips and coaching after you answer are hidden. The questions are the same exam-style questions either way. Turn it off to see the full scenario, tips and coaching again."},
-{"cat":"Using the app","q":"How does the Mock Exam work?","a":"Choose a full mock (150 questions, 4 hours) or a mini mock (50 questions, 80 minutes). Both follow the real CISA blueprint: the same domain mix and a realistic spread of difficulty. Like the real exam, you see no right or wrong while you answer. Your score, a breakdown by domain and every explanation come at the end."},
+{"cat":"Using the app","q":"How does the Mock Exam work?","a":"On the website you can take the mini mock (50 questions, 80 minutes). The full mock (150 questions, 4 hours) is part of the full course in the KaiSip Android app. Both follow the real CISA blueprint: the same domain mix and a realistic spread of difficulty. Like the real exam, you see no right or wrong while you answer. Your score, a breakdown by domain and every explanation come at the end."},
 {"cat":"Using the app","q":"What are Questions to revisit?","a":"Questions you miss come back the next day, then at widening intervals as you get them right, until they retire. A right answer you marked Unsure or Guessing comes back too. Today's plan starts with them, a few at a time, oldest first."},
 {"cat":"Using the app","q":"How do I save a question for later?","a":"Use the bookmark control on a question to save it. Saved questions live under Practice, then Saved, where you can revisit them any time."},
 {"cat":"Using the app","q":"What does the Weak Spots tab show?","a":"Weak Spots shows how each of the five domains is going and lets you start a drill on the ones that need work. Until a domain has 30 answers it shows Building, Steady or Strong instead of a number, so a few answers never read as a verdict."},
@@ -7459,6 +7471,7 @@ html { scroll-padding-bottom: calc(104px + var(--consent-h, 0px)); }
 {"cat":"About & your data","q":"Is this app affiliated with ISACA?","a":"No. It is an independent study resource. CISA is a registered trademark of ISACA; this app is for educational use only and is not a substitute for official ISACA materials."},
 {"cat":"About & your data","q":"Where do the questions and notes come from?","a":"Original questions and notes, written with AI assistance and checked against ISACA’s published exam outline and standards."},
 {"cat":"About & your data","q":"Does the app cost anything?","a":"Not during the beta. KaiSip is free during the beta, with no account and no ads. If paid features come later, we'll say so here first, and everything you've saved stays yours."},
+{"cat":"About & your data","q":"Is everything free on the website?","a":"The website has a free set of practice questions from every topic, plus all the study notes, the glossary and lessons, and review of what you've answered. The full course, with every practice question and full mock exams, is in the KaiSip Android app (in beta now)."},
 {"cat":"About & your data","q":"Is my data private?","a":"Yes. Your progress is stored only in your own browser and never leaves your device. There is no sign-up, and your answers are not sent to any server."},
 {"cat":"About & your data","q":"Where is my progress saved?","a":"All progress is saved locally in your browser. Clearing your browser data or using a different device or browser will start you fresh. Open You, then Your data, to export a copy, import one, or reset."},
 {"cat":"About & your data","q":"How do I report a problem or suggest a feature?","a":"Open You, then Send feedback — it goes straight to the team."}
@@ -7562,7 +7575,11 @@ const CERTS = {
     mockDifficultyMix: { analysis: 0.30, application: 0.55, foundational: 0.15 },
     // Path-builder for a domain's question bank — a function so a future
     // data/{certId}/ relocation is a one-line descriptor change.
-    dataPath: function(d){ return 'data/domain' + d + '.json'; }
+    // Since v12.50 the website loads only the free sample (data/free/, the
+    // same shape as data/domain{N}.json); the full course is in the Android
+    // app. Saved progress can name questions that are not loaded: every list
+    // looks each id up in QB and skips the ones that are not there.
+    dataPath: function(d){ return 'data/free/cisa_d' + d + '.json'; }
   }
 };
 const ACTIVE_CERT = 'cisa';
@@ -7584,7 +7601,7 @@ const MOCK_TIER_LABEL = { analysis: 'Harder', application: 'Middle', foundationa
 // Single source of truth for the app version. The header pill renders this
 // value, and the LATEST entry in the What's New modal must match it. Bumping
 // the version here is the only place to change it.
-const APP_VERSION = 'v12.49.10';
+const APP_VERSION = 'v12.50';
 const FEEDBACK_EMAIL = 'certprep.support@gmail.com';
 
 // Feedback is delivered via a Google Form whose responses land in the
@@ -8183,7 +8200,12 @@ function savedQuestionTag(q) {
 // Every saved copy is rebuilt from the bank. Until its bank has loaded, only a
 // small { id, domain, tag } stub is kept (never the saved object itself); the
 // screens look each one up in the bank before they show it.
-function rehydrateSavedQuestions(list) {
+// v12.50: the website loads the free sample, so a saved question from the
+// full course is not in a loaded bank and is skipped like a gone one. `drops`
+// (optional) collects the skipped ids for this visit, so an emptied Saved
+// list can say the rest is in the full course.
+var savedBookmarksSkipped = {};
+function rehydrateSavedQuestions(list, drops) {
   if (!Array.isArray(list)) return [];
   var seen = {};
   var out = [];
@@ -8204,6 +8226,8 @@ function rehydrateSavedQuestions(list) {
       if (tag) stub.tag = tag;
       out.push(stub);
       seen[id] = true;
+    } else if (drops) {
+      drops[id] = true;
     }
   });
   return out;
@@ -8222,7 +8246,7 @@ document.addEventListener('qb:domain-loaded', function() {
   try {
     if (typeof S === 'undefined' || !S) return;
     var before = (S.bookmarks || []).length;
-    S.bookmarks = rehydrateSavedQuestions(S.bookmarks);
+    S.bookmarks = rehydrateSavedQuestions(S.bookmarks, savedBookmarksSkipped);
     S.missedQuestions = rehydrateSavedQuestions(S.missedQuestions);
     if (S.activeTab === 'bookmarks' && typeof bkRefreshRows === 'function') bkRefreshRows(S.bookmarks.length !== before);
   } catch (e) {}
@@ -8251,10 +8275,16 @@ var MOCK_SECONDS_TOTAL = 240 * 60;
 // mini mock is a third of it (mobile: exam questions / 3) with the same
 // domain weights and the same pace, so its clock is scaled to match.
 var MOCK_MINI_TOTAL = Math.round(MOCK_TOTAL / 3);
+// v12.50 (owner, 4 Nov 2026): the website has the free sample, so the full
+// mock is part of the full course (locked: the setup page shows it calmly
+// with a link to the Android beta and it cannot start); the mini mock is open.
 var MOCK_TYPES = {
-  full: { total: MOCK_TOTAL, minutes: 240, name: 'Full mock' },
+  full: { total: MOCK_TOTAL, minutes: 240, name: 'Full mock', locked: true },
   mini: { total: MOCK_MINI_TOTAL, minutes: Math.round(240 * MOCK_MINI_TOTAL / MOCK_TOTAL), name: 'Mini mock' }
 };
+// Where "the full course" lives for now: the Android beta page on this site.
+var FULL_COURSE_URL = '/beta';
+var FULL_COURSE_ROW = 'More practice on this is in the full course.';
 // Anything that is not 'mini' (older saves have no type) is the full mock.
 function mockTypeOf(t) { return t === 'mini' ? 'mini' : 'full'; }
 function mockSecondsFor(t) { return MOCK_TYPES[mockTypeOf(t)].minutes * 60; }
@@ -8383,6 +8413,11 @@ function tryResumeSavedMock() {
   }
   var byId = {};
   Object.keys(QB).forEach(function(d) { (QB[d] || []).forEach(function(q) { byId[q.id] = q; }); });
+  // v12.50: a saved mock that names questions not loaded here (drawn from
+  // the full bank) cannot be finished as it was drawn: it is let go quietly.
+  for (var g = 0; g < p.mockQueueIds.length; g++) {
+    if (!byId[p.mockQueueIds[g]]) { mockResumePending = null; saveState(); return; }
+  }
   var queue = [], answers = [];
   p.mockQueueIds.forEach(function(id, k) {
     var q = byId[id];
@@ -10210,6 +10245,13 @@ function renderItemBody(raw, domainId, searchQ, itemId) {
   return html + gtFooter(itemId || raw.id || '', domainId, gtPracticeBlock(raw, itemId || raw.id || '', domainId));
 }
 
+// v12.50: one calm row where a list of practice questions has none in the
+// free set on the website (the ids name questions in the full course).
+function fullCourseRowHtml(cls) {
+  return '<div class="fc-row' + (cls ? ' ' + cls : '') + '"><p class="fc-row-t">' + FULL_COURSE_ROW + '</p>'
+    + '<a class="sr-link fc-row-a" href="' + escapeHtml(FULL_COURSE_URL) + '">Get the full course in the Android beta' + ico('arrow-right', 18) + '</a></div>';
+}
+
 // ── "Practice this concept" (practice_ids on a subtopic) ──
 // The ids name questions in the subtopic's own domain. Unknown ids are
 // skipped, so a stale id never breaks the set; no ids left = no button.
@@ -10233,12 +10275,16 @@ function gtPracticeBlock(raw, itemId, domainId) {
   var n = isQBReady(domainId)
     ? conceptPracticeQuestions(raw, domainId).length
     : conceptPracticeIds(raw).filter(function(id) { return id.indexOf('d' + domainId + '_') === 0; }).length;
+  // v12.50: the note lists questions, but none is in the free set here.
+  if (!n && isQBReady(domainId) && conceptPracticeIds(raw).length) return fullCourseRowHtml('gt-practice');
   if (!n) return '';
   var idE = escapeHtml(itemId);
   return '<div class="gt-practice">'
     + '<button type="button" class="gt-practice-btn" aria-describedby="gtps-' + idE + '" data-id="' + idE + '" onclick="event.stopPropagation();startConceptPractice(this.dataset.id)">'
     + ico('play', 16) + '<span>Practice this concept</span></button>'
-    + '<p class="gt-practice-sub" id="gtps-' + idE + '">' + n + (n === 1 ? ' question that tests' : ' questions that test') + ' this concept. Answers count toward your progress.</p>'
+    // While the bank loads the ids can name questions that are not in the
+    // free set, so the line holds no number until it is here.
+    + '<p class="gt-practice-sub" id="gtps-' + idE + '">' + (isQBReady(domainId) ? n + (n === 1 ? ' question that tests' : ' questions that test') : 'Questions that test') + ' this concept. Answers count toward your progress.</p>'
     + '</div>';
 }
 
@@ -12806,8 +12852,9 @@ function renderHome() {
   // first; the name waits). Showing it counts, for today only.
   var appCard = appCtaTodayHtml();
   var finalWeek = todayFinalWeekHtml(days);
+  var freeDone = todayFreeDoneHtml();
   var todayKey = parityDayKey(now.getTime());
-  var askName = !todayNameNote && nameAskDue(st, todayKey, !!(backup || appCard || finalWeek || plantInviteDue()));
+  var askName = !todayNameNote && nameAskDue(st, todayKey, !!(backup || appCard || finalWeek || freeDone || plantInviteDue()));
   if (askName && nameAskRead() === '') { try { localStorage.setItem(NAME_ASK_KEY, 'shown:' + todayKey); } catch (e) {} }
   // Only ask when the "shown" day sticks; otherwise a browser that can't save
   // would ask on every visit.
@@ -12848,7 +12895,7 @@ function renderHome() {
     + '</div>'
     // Phones read it top to bottom: the plan, what else, then the column.
     + appCard
-    + hero + nameCard + finalWeek + next + todayMindSlotHtml(st) + backup
+    + hero + freeDone + nameCard + finalWeek + next + todayMindSlotHtml(st) + backup
     + '</div>'
     + todaySideHtml(plate)
     + (apps.length ? '<p class="td-apps">Get the app: ' + apps.join(' &middot; ') + '</p>' : '')
@@ -16461,7 +16508,7 @@ function nextQ() {
     if (activeSubtopic || S.diff !== "any") {
       showFilterComplete();
     } else if (S.selectedDomain === "all") {
-      document.getElementById('qArea').innerHTML = '<div class="empty"><div class="empty-icon">Done</div><div class="empty-title">Bank complete</div><div class="empty-sub">You have answered every question in the bank.</div><div style="margin-top:20px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap"><button class="act-btn primary" onclick="resetAllDomains()" style="background:var(--btn);border-color:var(--btn);color:var(--on-btn)">Reset all and restart</button><button class="act-btn secondary" onclick="showSessionSummary()">View summary</button></div></div>';
+      document.getElementById('qArea').innerHTML = '<div class="empty"><div class="empty-icon">Done</div><div class="empty-title">Free questions complete</div><div class="empty-sub">You have answered every free question on the website. Your review keeps going here, and the full course is in the KaiSip Android beta.</div><div style="margin-top:20px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap"><button class="act-btn primary" onclick="resetAllDomains()" style="background:var(--btn);border-color:var(--btn);color:var(--on-btn)">Reset all and restart</button><button class="act-btn secondary" onclick="showSessionSummary()">View summary</button></div></div>';
     } else {
       showDomainComplete(S.selectedDomain);
     }
@@ -18301,6 +18348,25 @@ function mockBuildQueue(total, outline, rnd) {
   return shuffle(queue);
 }
 
+// v12.50: the website draws from the free sample. Should a draw come up
+// short of `total` (a thin domain or tier), it is filled from the other
+// loaded questions, each once, so a mock never fails to start; with nothing
+// more to add it runs with the questions it has.
+function mockTopUpQueue(queue, total) {
+  var out = Array.isArray(queue) ? queue.filter(Boolean) : [];
+  if (out.length >= total) return out;
+  var have = {};
+  out.forEach(function (q) { have[q.id] = true; });
+  var rest = [];
+  Object.keys(DI).forEach(function (d) {
+    (QB[d] || []).forEach(function (q) { if (q && q.id && !have[q.id]) rest.push(q); });
+  });
+  if (!rest.length) return out;
+  rest = mockShuffled(rest, Math.random);
+  while (out.length < total && rest.length) out.push(rest.pop());
+  return mockShuffled(out, Math.random);
+}
+
 // ── MOCK EXAM (Grove Desk step 5; mobile app/mock-start.tsx) ──
 // Setup: a calm page with the two mocks as cards you choose between (the
 // full mock, and a 50-question mini mock with the same domain weights and
@@ -18381,15 +18447,29 @@ function renderMockSetup() {
       + '<button type="button" class="rs-btn' + (primary ? ' primary' : '') + ' ' + btnCls + '" aria-describedby="mkN-' + type + '" onclick="showMockConfirm(\'' + type + '\')">Start ' + t.name.toLowerCase() + ico('arrow-right', 18) + '</button>'
       + '</div>';
   };
+  // v12.50: a mock in the full course (the full mock on the website) shows
+  // calmly: what it is, one line and the way to the full course. No button.
+  var lockedCard = function (type, t) {
+    return '<div class="mk-type mk-type-locked">'
+      + '<h3 class="mk-type-t" id="mkT-' + type + '">' + t.name + '</h3>'
+      + '<p class="mk-type-n" id="mkN-' + type + '">' + t.total + ' questions &middot; ' + mockMinutesWords(t.minutes) + '</p>'
+      + '<p class="mk-type-cap">Part of the full course</p>'
+      + '<p class="mk-type-m">The real exam&rsquo;s length and pace, in the KaiSip Android app.</p>'
+      + '<a class="sr-link mk-course-link" href="' + escapeHtml(FULL_COURSE_URL) + '">Get the full course in the Android beta' + ico('arrow-right', 18) + '</a>'
+      + '</div>';
+  };
   // One solid action per screen: with a mock unfinished, Resume (the forest
-  // panel) is it, and both start buttons are outlined.
+  // panel) is it, and both start buttons are outlined. With the full mock in
+  // the full course, the mini mock's start is the solid one.
   // v12.46: the two mocks are this page's plate (Fig. 7 in the register),
   // with the closed-tab promise as its NOTE caption.
+  var fullOpen = !full.locked;
+  var fullCard = fullOpen ? card('full', full, 'The real exam&rsquo;s length and pace.', 'mock-start', !isMockInProgress()) : lockedCard('full', full);
+  var miniCard = card('mini', mini, 'A third of the exam: the same domain weights and pace.', 'mock-start-mini', !fullOpen && !isMockInProgress());
   var types = '<section class="ph-sec mk-pick" aria-labelledby="mkPickH">'
     + (isMockInProgress() ? '<h2 class="ph-h" id="mkPickH">Or start a new mock</h2>' : '')
     + fgPlate(isMockInProgress() ? '' : 'Fig. 7 · Two mocks, one pace', '<div class="mk-types">'
-      + card('full', full, 'The real exam&rsquo;s length and pace.', 'mock-start', !isMockInProgress())
-      + card('mini', mini, 'A third of the exam: the same domain weights and pace.', 'mock-start-mini', false)
+      + (fullOpen ? fullCard + miniCard : miniCard + fullCard)
       + '</div>', 'mk-plate', 2).replace('<h2 class="fg-fig">', '<h2 class="fg-fig" id="mkPickH">')
     + fgCaption('Note', 'Close the tab and your answers stay saved; the exam clock pauses until you come back.')
     + '</section>';
@@ -18426,6 +18506,8 @@ function renderMockSetup() {
 
 function showMockConfirm(type) {
   type = mockTypeOf(type);
+  // A mock in the full course never starts here: the setup page shows it.
+  if (MOCK_TYPES[type].locked) { renderMockSetup(); return; }
   var t = MOCK_TYPES[type];
   var counts = mockPlanCounts(t.total);
   var actualQ = Object.keys(counts).reduce(function (s, d) { return s + counts[d]; }, 0);
@@ -18489,6 +18571,7 @@ function startMock(type, notesWaited) {
     return;
   }
   type = mockTypeOf(type);
+  if (MOCK_TYPES[type].locked) { renderMockSetup(); return; }
   // The topic spread needs the study notes: wait for them (once, at most
   // 3 s); if they cannot load, the mock starts with the old random pick.
   if (!notesWaited && !CISA_NOTES_RAW && !conceptsLoadFailed) {
@@ -18523,7 +18606,14 @@ function startMock(type, notesWaited) {
   // each domain spread across its outline topics when the notes are here.
   var outline = null;
   try { outline = mockOutline(); } catch (e) { outline = null; }
-  S.mockQueue = mockBuildQueue(MOCK_TYPES[type].total, outline);
+  S.mockQueue = mockTopUpQueue(mockBuildQueue(MOCK_TYPES[type].total, outline), MOCK_TYPES[type].total);
+  if (!S.mockQueue.length) {
+    // Nothing loaded to draw from (a bank that failed): no empty exam.
+    S.mockId = null;
+    try { showToast('The questions could not load. Check your connection, then reload the page.', 'info', 4000); } catch (e) {}
+    renderMockSetup();
+    return;
+  }
 
   // One clock for the whole exam: 4 hours for the full mock, the same pace
   // scaled for the mini mock.
@@ -19813,6 +19903,8 @@ function principlePracticeBlock(p) {
   // While the banks load, the curated ids keep the block in place.
   var n = principleBanksReady() ? principlePracticeQuestions(p).length
     : principlePracticeIds(p).filter(function (id) { var m = /^d(\d+)_/.exec(id); return !!(m && DI[m[1]]); }).length;
+  // v12.50: questions listed, none in the free set here.
+  if (!n && principleBanksReady() && Array.isArray(p.practice_ids) && p.practice_ids.length) return plSection('Practice this', fullCourseRowHtml(''));
   if (!n) return '';
   return plSection('Practice this', '<div class="gt-practice">'
     + '<button type="button" class="gt-practice-btn" aria-describedby="plPracSub" data-pid="' + p.id + '" onclick="startPrinciplePractice(this.dataset.pid)">'
@@ -20454,7 +20546,8 @@ function fwActionFor(a) {
     return d ? { kind: 'practice', arg: d, label: 'Practice ' + DI[d].short } : null;
   }
   if (a.kind === 'mock_mini' || a.kind === 'mock_full') {
-    var mt = a.kind === 'mock_mini' ? 'mini' : 'full';
+    // The full mock is in the full course on the website: offer the mini mock.
+    var mt = (a.kind === 'mock_mini' || MOCK_TYPES.full.locked) ? 'mini' : 'full';
     return { kind: 'mock', arg: mt, label: 'Start a ' + MOCK_TYPES[mt].name.toLowerCase() };
   }
   if (a.kind === 'mistakes') {
@@ -21387,6 +21480,11 @@ function renderBookmarks() {
   var area = document.getElementById('bkList');
   if (!area) return;
   var bks = S.bookmarks || [];
+  if (!bks.length && Object.keys(savedBookmarksSkipped).length) {
+    // v12.50: what was saved is in the full course (not loaded on the website).
+    area.innerHTML = fullCourseRowHtml('bk-fc');
+    return;
+  }
   if (!bks.length) {
     // Decision 7 (f) — Bookmarks empty
     area.innerHTML = emptyState({
@@ -21746,6 +21844,69 @@ function appCtaNotNow() {
   showToast('Hidden for 14 days. The app link stays in About.', 'info', 2600);
 }
 
+// ── "You've worked through the free questions" (web v12.50) ──
+// Today only, between sessions (never with a set left open or a mock
+// unfinished): once every loaded question has been answered at least once,
+// one calm card points to the full course. "Not now" puts it away for 7 days
+// (a NEW device-only key, epoch ms). No counts anywhere.
+var FREE_DONE_HIDE_KEY = 'aurivan_free_sample_done_hidden_until';
+var FREE_DONE_HIDE_MS = 7 * 86400000;
+function freeSampleAllAnswered() {
+  if (Object.keys(window.QB_LOADING || {}).length) return false;
+  var seen = S.answeredIds || {}, log = S.answerLog || {}, any = false;
+  var keys = Object.keys(DI);
+  for (var i = 0; i < keys.length; i++) {
+    var d = keys[i], list = QB[d] || [];
+    if (window.QB_LOAD_ERROR && window.QB_LOAD_ERROR[d]) return false;
+    if (!list.length) return false;
+    for (var j = 0; j < list.length; j++) {
+      var id = list[j] && list[j].id;
+      if (!id) continue;
+      if (!((seen[d] && seen[d][id]) || log[id])) return false;
+      any = true;
+    }
+  }
+  return any;
+}
+function todayFreeDoneDue() {
+  try {
+    if (isMockInProgress() || mockResumePending) return false;
+    if (practicePrimary().resume) return false;
+    var until = 0;
+    try { until = Number(localStorage.getItem(FREE_DONE_HIDE_KEY)) || 0; } catch (e) { until = 0; }
+    if (until > Date.now()) return false;
+    return freeSampleAllAnswered();
+  } catch (e) { return false; }
+}
+function todayFreeDoneHtml() {
+  if (!todayFreeDoneDue()) return '';
+  return '<section class="td-fs" id="tdFs" aria-labelledby="tdFsT">'
+    + '<h2 class="td-fs-t" id="tdFsT">You&rsquo;ve worked through the free questions</h2>'
+    + '<p class="td-fs-m">Your review keeps going here for free. The full course, with every practice question and full mock exams, is in the KaiSip Android beta.</p>'
+    + '<div class="td-app-acts">'
+    + '<a class="gt-btn-secondary" href="' + escapeHtml(FULL_COURSE_URL) + '">Join the Android beta</a>'
+    + '<button type="button" class="gt-btn-ghost td-fs-hide" onclick="todayFreeDoneNotNow()">Not now</button>'
+    + '</div></section>';
+}
+function todayFreeDoneNotNow() {
+  try { localStorage.setItem(FREE_DONE_HIDE_KEY, String(Date.now() + FREE_DONE_HIDE_MS)); } catch (e) {}
+  var card = document.getElementById('tdFs');
+  if (card && card.parentNode) card.parentNode.removeChild(card);
+  var next = document.getElementById('tdGo') || document.getElementById('tdTitle');
+  if (next) { try { next.focus({ preventScroll: true }); } catch (e) {} }
+  showToast('Hidden for 7 days.', 'info', 2200);
+}
+// The banks arrive after Today's first paint: add the card then (only the
+// card, so nothing moves under the learner's focus).
+document.addEventListener('qb:domain-loaded', function () {
+  try {
+    if (S.activeTab !== 'home' || document.getElementById('tdFs')) return;
+    var hero = document.querySelector('#homeArea .td-hero');
+    var html = hero ? todayFreeDoneHtml() : '';
+    if (html) hero.insertAdjacentHTML('afterend', html);
+  } catch (e) {}
+});
+
 // Desktop rail: the panel takes the room under the nav and no more. It tries
 // the full panel (QR, caption, badge), then the badge or button alone, then
 // the rail's top spacing pulled in, then the title kept for screen readers
@@ -22032,7 +22193,7 @@ function showDomainComplete(d) {
   document.getElementById('qArea').innerHTML = '<div class="empty" style="background:var(--correct-light);border:2px solid var(--correct-light);border-radius:var(--radius);padding:36px 28px">'
     + '<div class="empty-icon"></div>'
     + '<div class="empty-title" style="color:var(--correct)">Domain ' + d + ' complete</div>'
-    + '<div class="empty-sub">You have answered every question in ' + info.name + '</div>'
+    + '<div class="empty-sub">You have answered every free question in ' + info.name + '</div>'
     + '<div style="margin-top:16px;font-family:var(--f-serif);font-size:48px;font-weight:500;color:' + pctColor + '">' + pct + '%</div>'
     + '<div style="font-family:var(--f-sans);font-size:13px;color:var(--muted);margin-bottom:20px">' + st.c + ' of ' + st.t + ' correct</div>'
     + missedListHtml
@@ -22693,6 +22854,13 @@ function toggleMockDetail(i) {
 const CHANGELOG = [
   {
     version: APP_VERSION,
+    title: 'A free set of questions from every topic',
+    items: [
+      { cat: 'new', text: 'The website now has a free set of practice questions from every study topic, plus the Mini mock. The full course, with full mock exams, is in the KaiSip Android beta.' },
+    ],
+  },
+  {
+    version: 'v12.49.10',
     title: 'More questions linked to exam principles',
     items: [
       { cat: 'improved', text: 'A few more practice questions now show the exam principle they test.' },
