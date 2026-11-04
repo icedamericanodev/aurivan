@@ -122,13 +122,22 @@ describe('Settings, mobile 1.46: one page, clear groups', () => {
     expect(hosts((n) => n.props.accessibilityLabel === THEME_GROUP)).toHaveLength(1);
   });
 
-  it('one-colour marks on the card titles and the doors only (soft circle, accentText), never on rows', () => {
+  // Type pass (TYPE_SCALE.md row 1, the web's Settings page): the page opens with its own display title.
+  it('the page title is "Settings" in display, a header, under the bar', () => {
+    render();
+    const title = hosts((n) => n.props.accessibilityRole === 'header' && n.children.includes('Settings'));
+    expect(title.length).toBeGreaterThan(0);
+    expect(StyleSheet.flatten(title[0].props.style).fontSize).toBe(36);
+  });
+
+  // Type pass: a card's title is its headline alone (TYPE_SCALE.md R4, the web's Settings); the marks stay on the doors.
+  it('one-colour marks on the doors only (soft circle, accentText), never on card titles or rows', () => {
     render();
     const marks = hosts((n) => {
       const st = StyleSheet.flatten(n.props.style ?? {});
       return st.backgroundColor === light.soft && st.borderRadius === 999;
     });
-    expect(marks).toHaveLength(GROUPS.length + DOORS.length);
+    expect(marks).toHaveLength(DOORS.length);
     for (const m of marks) expect(m.props.importantForAccessibility).toBe('no-hide-descendants');
   });
 

@@ -22,6 +22,7 @@
 import { memo, useCallback, useContext, useEffect, useState, type ReactNode } from 'react';
 import { AccessibilityInfo, Keyboard, Platform, View, type LayoutChangeEvent, type ViewStyle } from 'react-native';
 import type { BottomTabBarProps } from 'expo-router/tabs';
+import Svg, { Defs, LinearGradient, Rect, Stop } from 'react-native-svg';
 import { grovePlate, groveRadius, navShadow } from '../theme/grove';
 import { space } from '../theme/tokens';
 import { useTheme } from '../theme/useTheme';
@@ -52,6 +53,14 @@ export const TAB_BAR = {
 export const tabBarBottom = (insetBottom: number) => Math.max(TAB_BAR.floor, insetBottom + TAB_BAR.lift);
 /** What the bar covers at the bottom of the screen: its height and the space under it. */
 export const tabBarSpace = (insetBottom: number, height: number = TAB_BAR.height) => height + tabBarBottom(insetBottom);
+/**
+ * The paper fade just above the bar (type pass, You's first view): content scrolling toward the
+ * bar dissolves over this many points into the page, so no line of text ever sits hard against
+ * the bar's top edge (a label at the fold, "68 to 78", crowded it). Each tab screen's end padding
+ * (the bar's footprint plus 24, TabSpaceContext) is at least this tall, so at the scroll's end the
+ * fade lies on empty paper. Decorative: hidden from screen readers and never takes a touch.
+ */
+export const TAB_FADE = 24;
 
 
 /**
@@ -180,6 +189,24 @@ export function FloatingTabBar({ state, descriptors, emitter, navigateToTab, ins
       pointerEvents="box-none"
       style={{ position: 'absolute', left: TAB_BAR.side + insets.left, right: TAB_BAR.side + insets.right, bottom: tabBarBottom(insets.bottom), alignItems: 'center' }}
     >
+      {/* The paper fade above the bar, edge to edge (TAB_FADE). */}
+      <View
+        testID="tab-fade"
+        pointerEvents="none"
+        accessibilityElementsHidden
+        importantForAccessibility="no-hide-descendants"
+        style={{ position: 'absolute', left: -(TAB_BAR.side + insets.left), right: -(TAB_BAR.side + insets.right), bottom: '100%', height: TAB_FADE }}
+      >
+        <Svg width="100%" height="100%" preserveAspectRatio="none">
+          <Defs>
+            <LinearGradient id="tabFade" x1="0" y1="0" x2="0" y2="1">
+              <Stop offset="0" stopColor={c.bg} stopOpacity={0} />
+              <Stop offset="1" stopColor={c.bg} stopOpacity={0.9} />
+            </LinearGradient>
+          </Defs>
+          <Rect x="0" y="0" width="100%" height="100%" fill="url(#tabFade)" />
+        </Svg>
+      </View>
       <View
         testID="tab-bar"
         role="tablist"

@@ -725,6 +725,12 @@ export default function SessionScreen() {
   // never labels topics. It appears only after the reveal, in the "Read the note" row, and
   // never in a mock (a mock has no answer screen).
   const metaLine = [domain?.short, `${active.index + 1} of ${total}`].filter(Boolean).join(' · ');
+  // Type pass (TYPE_SCALE.md row 15, kicker = running heads): practice and review show ONE header
+  // before and after the answer, the running head "Practice · IS Audit" over "Question 1 of 3", so
+  // it no longer changes style when the answer opens. Still only the domain and the place, never
+  // the subtopic (1.39). A mock keeps its quiet domain tag: it has no answer screen to match.
+  const headSection = [active.mode === 'review' ? 'Review' : 'Practice', domain?.short].filter(Boolean).join(' · ');
+  const headAside = `Question ${active.index + 1} of ${total}`;
 
   // The vine draws itself the first time it scrolls into view: on each
   // scroll we ask where it sits on screen (measureInWindow works on phones
@@ -837,17 +843,22 @@ export default function SessionScreen() {
               {/* Question */}
               {/* Large text: the row wraps, the domain tag takes the full width and
                   "Flagged" / the reason tag drop under it (UX review P3). */}
-              <Row gap={space.sm} style={{ marginTop: space.md, alignItems: 'flex-start', flexWrap: largeText ? 'wrap' : 'nowrap' }}>
-                <View style={largeText ? { flexBasis: '100%' } : { flex: 1 }}>
-                  {domain ? <Tag label={metaLine} domain={domain} /> : <T v="meta">{metaLine}</T>}
-                </View>
-                {flagged && <T v="caption" color={c.tip}>Flagged</T>}
-                {reason && (
-                  <T v="caption" color={c.accentText} accessibilityLabel={`Why this question: ${REASON_LABEL[reason]}`}>
-                    {REASON_LABEL[reason]}
-                  </T>
-                )}
-              </Row>
+              {!isMock && <RunningHead section={headSection} aside={headAside} style={{ marginTop: space.sm }} />}
+              {(isMock || flagged || reason) && (
+                <Row gap={space.sm} style={{ marginTop: isMock ? space.md : space.sm, alignItems: 'flex-start', flexWrap: largeText || !isMock ? 'wrap' : 'nowrap' }}>
+                  {isMock && (
+                    <View style={largeText ? { flexBasis: '100%' } : { flex: 1 }}>
+                      {domain ? <Tag label={metaLine} domain={domain} /> : <T v="meta">{metaLine}</T>}
+                    </View>
+                  )}
+                  {flagged && <T v="caption" color={c.tip}>Flagged</T>}
+                  {reason && (
+                    <T v="caption" color={c.accentText} accessibilityLabel={`Why this question: ${REASON_LABEL[reason]}`}>
+                      {REASON_LABEL[reason]}
+                    </T>
+                  )}
+                </Row>
+              )}
               {q.scenario && (
                 <>
                   <Gap h={space.md} />
@@ -928,11 +939,7 @@ export default function SessionScreen() {
                     Eliminate / Final two; after a right answer: Why → Key idea + Exam cue → Eliminate / Final two
                     on the vine) → source */}
                 {/* Where you are: "Practice · IS Audit" and "Question 4 of 10" (the set's own length, never the bank's). */}
-                <RunningHead
-                  section={[active.mode === 'review' ? 'Review' : 'Practice', domain?.short].filter(Boolean).join(' · ')}
-                  aside={`Question ${active.index + 1} of ${total}`}
-                  style={{ marginTop: space.sm }}
-                />
+                <RunningHead section={headSection} aside={headAside} style={{ marginTop: space.sm }} />
                 {/* Mobile 1.49 (premium pass §2.1): the question in two lines, with "Show question". */}
                 <StemRecap key={qid} stem={q.stem} scenario={q.scenario} field />
                 <View onLayout={(e) => (verdictBottom.current = e.nativeEvent.layout.y + e.nativeEvent.layout.height)}>

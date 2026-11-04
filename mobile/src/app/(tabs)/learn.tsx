@@ -200,8 +200,10 @@ export default function Learn() {
             Fig. 2 in the guide's register; the forest fill is kept for the one plate button under it. */}
         {upNext && upDomain ? (
           <>
-            <Plate fig={{ n: 2, title: 'Next lesson' }} testID="learn-plate">
-              <FieldText v="head" accessibilityLabel={`Up next, ${upDomain.short}`}>{`Up next · ${upDomain.short}`}</FieldText>
+            {/* Type pass (TYPE_SCALE.md R4, a card on a tab home: an optional kicker over its title): ONE
+                label line, the italic "Next lesson" caption and the "Up next" kicker merged into it. */}
+            <Plate testID="learn-plate">
+              <FieldText v="head" accessibilityRole="header" accessibilityLabel={`Next lesson, ${upDomain.short}`}>{`Next lesson · ${upDomain.short}`}</FieldText>
               <T v="hero" accessibilityRole="header" style={{ marginTop: space.xs }}>{upNext.title}</T>
               {/* Why this one (ui.md L3), on the same line as its length. */}
               {hero && <T v="meta" accessibilityLabel={hero.spoken} style={{ marginTop: space.xs }}>{hero.meta}</T>}
@@ -219,8 +221,9 @@ export default function Learn() {
           // Mobile 1.45 (PM story 3): lessons start each topic, so the next step is practice, with the
           // notes for what it turns up; the plate says so and its one action goes to Practice.
           <>
-            <Plate fig={{ n: 2, title: 'All caught up' }} testID="learn-plate">
-              <T v="hero" accessibilityRole="header">Every lesson done</T>
+            <Plate testID="learn-plate">
+              <FieldText v="head" accessibilityRole="header">All caught up</FieldText>
+              <T v="hero" accessibilityRole="header" style={{ marginTop: space.xs }}>Every lesson done</T>
               <T v="meta" style={{ marginTop: space.xs }}>
                 {showNotes ? 'Keep practicing, and open the study notes for any topic that trips you up.' : 'Keep practicing to make it stick.'}
               </T>

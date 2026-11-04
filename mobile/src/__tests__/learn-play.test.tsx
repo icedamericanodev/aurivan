@@ -427,7 +427,7 @@ describe('Learn', () => {
     mount(<Learn />);
     // Mobile 1.21: the cover's one meta line, its length and its place on the trail (the caption names the domain).
     expect(allText()).toMatch(/\d+ min · lesson 2 of \d+/);
-    expect(allText()).toContain('Up next · IS Audit');
+    expect(allText()).toContain('Next lesson · IS Audit');
     expect(root().findAllByType(DomainRing).length).toBe(getCertification('cisa')!.domains.length);
     const rows = root()
       .findAll((n) => typeof n.props.onPress === 'function' && /^IS Audit lesson \d+:/.test(String(n.props.accessibilityLabel)))
@@ -435,8 +435,10 @@ describe('Learn', () => {
     expect(rows[0]).toMatch(/, done$/);
     expect(rows[1]).toMatch(/, up next$/);
     expect(rows[2]).toMatch(/, \d+ min$/);
-    // Mobile 1.24: "Up next" is said once, on the cover. The trail row has no caption and no card.
-    expect(allText().match(/Up next/g)).toHaveLength(1);
+    // Mobile 1.24: the next lesson is named once, on the cover (type pass: its one label line, "Next
+    // lesson · IS Audit"). The trail row has no caption and no card.
+    expect(allText().match(/Next lesson/g)).toHaveLength(1);
+    expect(allText()).not.toMatch(/Up next/);
     // …and its row is not a raised card that bleeds past the page gutter (no negative margin, no fill).
     const upRow = root().findAll((n) => n.props.accessibilityRole === 'button' && /, up next$/.test(String(n.props.accessibilityLabel)))[0];
     const flat = StyleSheet.flatten(upRow.props.style) ?? {};

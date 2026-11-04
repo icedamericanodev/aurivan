@@ -164,13 +164,12 @@ export function SettingsGroup({
   title,
   intro,
   children,
-  cat,
   headRef,
 }: {
   title: string;
   intro?: string;
   children: ReactNode;
-  /** Which category it is (its mark). */
+  /** Which category it is. Its mark is drawn on the door rows only since the type pass (heads are words alone). */
   cat?: SettingsCat;
   /** Mobile 1.47: a link that opens Settings at this group moves screen-reader focus to its title. */
   headRef?: Ref<View>;
@@ -187,8 +186,9 @@ export function SettingsGroup({
     );
   return (
     <SettingsCard>
+      {/* Type pass (TYPE_SCALE.md R4): a section head on Settings is the headline alone, as on the web's
+          Settings page; the category marks stay on the door rows, which are rows, not heads. */}
       <View ref={headRef} accessible accessibilityRole="header" accessibilityLabel={title} style={[styles.cardHead, { borderBottomColor: c.line }]}>
-        {cat ? <SettingsMark cat={cat} size={28} /> : null}
         <T v="headline" style={{ flexShrink: 1 }}>{title}</T>
       </View>
       {intro ? <T v="meta" style={{ marginTop: space.sm }}>{intro}</T> : null}

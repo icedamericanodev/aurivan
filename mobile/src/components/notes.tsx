@@ -660,6 +660,8 @@ export function OnThisPage({ items }: { items: { title: string; ref: { current: 
   const column = useColumnWidth();
   // Stacks at large text, AND whenever one line would not fit (between ×1.1 and ×1.3 it overflowed).
   const stacked = scale >= LARGE_TEXT || !onThisPageFits(items.map((x) => x.title), column, scale);
+  // Wide enough for any one digit of the 16pt italic numeral, grown with it (aside stops at x2).
+  const numCol = Math.ceil(11 * Math.min(Math.max(1, scale), 2));
   if (!scroll || items.length < 2) return null;
   return (
     <View
@@ -685,7 +687,12 @@ export function OnThisPage({ items }: { items: { title: string; ref: { current: 
             stacked && i > 0 && { borderTopWidth: 1, borderTopColor: c.line },
           ]}
         >
-          <T v="aside" color={c.accentText}>{String(i + 1)}</T>
+          {/* Stacked, a fixed-width number column (type pass): an italic "1" is narrower than "2" or
+              "3", so each title starts at the same place. It grows with the number (aside, to x2). On
+              one line each number keeps its own width (the fit estimate above counts it so). */}
+          <View testID="on-this-page-no" style={stacked ? { width: numCol } : undefined}>
+            <T v="aside" color={c.accentText}>{String(i + 1)}</T>
+          </View>
           <T v="meta" color={c.ink} style={{ flexShrink: 1 }}>{it.title}</T>
         </Pressable>
       ))}

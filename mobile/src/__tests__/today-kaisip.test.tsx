@@ -387,7 +387,7 @@ describe('Today: states with little data', () => {
     expect(allText()).toContain('5 of 40 answers');
     expect(allText()).toContain('until your first readiness range');
     expect(allText()).toContain('Too few yet');
-    expect(allText()).toContain('Shows at 30 answers');
+    expect(allText()).toMatch(/Shows at 30\sanswers/); // "30 answers" kept together by a no-break space
     expect(allText()).not.toMatch(/Stage \d ·/);
     expect(stops()).toContain('5 of 40 answers toward your first readiness range.');
     expect(byTestID('ring-dots')).toHaveLength(1);

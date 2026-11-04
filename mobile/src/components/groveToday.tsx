@@ -24,7 +24,7 @@ import { useTheme } from '../theme/useTheme';
 import { FieldText } from './fieldguide';
 import { Check } from './icons';
 import { FadeIn, useMotion, type Growth } from './motion';
-import { ForestLight, groveCard, T, useFontScale } from './ui';
+import { BigNum, ForestLight, groveCard, T, useFontScale } from './ui';
 
 // ── The hero card ──────────────────────────────────────────────────────
 
@@ -222,17 +222,19 @@ export function AccuracyHeroTile({ tile }: { tile: AccuracyTile }) {
   const { c } = useTheme();
   return (
     <HeroTile k="Accuracy" spoken={tile.spoken} testID="today-accuracy">
+      {/* Type pass: the % is the raised % (section 2.1), as on You; a value in words is `title`, the
+          serif of the date beside it (the stat-in-words rule, TYPE_SCALE.md row 207). */}
       {tile.num ? (
-        <T v="numValue" num color={c.onForest}>
-          {tile.shown}
-        </T>
+        <BigNum value={tile.shown.replace(/%$/, '')} pct={tile.shown.endsWith('%')} size={22} color={c.onForest} />
       ) : (
-        <T v="label" color={c.onForest}>
+        <T v="title" color={c.onForest}>
           {tile.shown}
         </T>
       )}
       {/* TYPE_SCALE row 61: the hint is meta (14/20), as the web's tile hint. It is not a chart label. */}
-      {tile.hint ? <T v="meta" color={c.onForest2}>{tile.hint}</T> : null}
+      {/* "30 answers" is kept together (a no-break space), so a narrow tile breaks it as "Shows at" over
+          "30 answers", never with "answers" alone on a line. */}
+      {tile.hint ? <T v="meta" color={c.onForest2}>{tile.hint.replace(/(\d+) /, '$1\u00a0')}</T> : null}
     </HeroTile>
   );
 }

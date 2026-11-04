@@ -42,7 +42,7 @@ import { useWindowDimensions, View } from 'react-native';
 import Animated, { useAnimatedStyle, useSharedValue, withDelay } from 'react-native-reanimated';
 import Svg, { Ellipse, G, Path } from 'react-native-svg';
 import { THIN_WORDS, thinFigure, type Stem } from '../../engine/fieldGuide';
-import { grovePlate } from '../../theme/grove';
+import { chartLabel, grovePlate } from '../../theme/grove';
 import { fieldInk, LARGE_TEXT, motion, plate, space } from '../../theme/tokens';
 import { useTheme } from '../../theme/useTheme';
 import { ease, tween, useMotion } from '../motion';
@@ -66,7 +66,12 @@ export function stemLines(s: Stem, line: number): string[] {
   return [s.thin ? `${s.answered} answered` : null, !s.thin && s.pct !== null && s.below ? `below ${line}` : null, s.note ?? null].filter((x): x is string => Boolean(x));
 }
 
-const GUTTER = 24;
+/**
+ * The left strip that holds the scale's numbers. Type pass: the numbers are the 13pt chart label
+ * now (was 11), so the strip is wide enough for "100" at that size, and grows with the text up to
+ * x1.3 (where the list takes over): 32pt at 1x.
+ */
+export const gutterFor = (fs: number) => 12 + Math.ceil(20 * fs);
 const TOP = 40;
 const PLOT = 150;
 
@@ -86,13 +91,15 @@ export function lineLabelSpot({ lastPct, line, gap, fs }: { /** The last column'
 } {
   const y = (p: number) => TOP + PLOT - (Math.max(0, Math.min(100, p)) / 100) * PLOT;
   const below = y(line) + 2;
-  const band = Math.ceil(14 * fs);
+  // The words' line height (the chart label's 17, grown with the text).
+  const band = Math.ceil(chartLabel.lineHeight * fs);
   if (lastPct === null) return { beside: false, top: below };
   const top = y(lastPct);
   const near = top >= y(line) - 2 && top - 11 <= below + band;
   if (!near) return { beside: false, top: below };
   // The number above a stem ends about 12pt over its top: the words start under it.
-  return { beside: true, top: Math.max(below, top - 10), width: Math.max(0, gap / 2 - 8) };
+  // Never narrower than "line" at the chart label's size, so the word is never broken.
+  return { beside: true, top: Math.max(below, top - 10), width: Math.max(0, gap / 2 - 8, Math.ceil(22 * fs)) };
 }
 /** A column narrower than this hands over to the list (the longest names need it at 11pt). */
 export const MIN_COLUMN = 58;
@@ -144,7 +151,7 @@ export function StemChart({
   // A first guess before layout (the phone's width less the gutters and a tight plate's edge and padding), so the first frame is drawn.
   const { width: screen } = useWindowDimensions();
   const [w, setW] = useState(() => chartFirstWidth(screen));
-  const gap = stems.length ? (w - GUTTER) / stems.length : 0;
+  const gap = stems.length ? (w - gutterFor(fs)) / stems.length : 0;
   const list = large || (w > 0 && gap < MIN_COLUMN * fs);
   return (
     <View testID={testID} onLayout={(e) => setW(e.nativeEvent.layout.width)}>
@@ -160,6 +167,7 @@ function Chart({ stems, line, play, run, delay, w, fs }: { stems: readonly Stem[
   // trace: every stem from the soil; growth: only the stems that grew, from where they stood.
   const moving = (play === true || play === 'trace') && !reduced;
   const growing = play === 'growth' && !reduced ? growingStems(stems) : [];
+  const GUTTER = gutterFor(fs);
   const gap = (w - GUTTER) / stems.length;
   const soil = TOP + PLOT;
   const y = (p: number) => soil - (Math.max(0, Math.min(100, p)) / 100) * PLOT;
@@ -181,8 +189,8 @@ function Chart({ stems, line, play, run, delay, w, fs }: { stems: readonly Stem[
   }, [moving, settle, stems.length]);
   const settleStyle = useAnimatedStyle(() => ({ opacity: settle.value }));
   const scaleLabel = (p: number) => (
-    <View key={`s${p}`} style={{ position: 'absolute', left: 0, width: GUTTER - 6, top: y(p) - 7, alignItems: 'flex-end' }}>
-      <FieldText v="tiny" color={c.ink2}>{String(p)}</FieldText>
+    <View key={`s${p}`} style={{ position: 'absolute', left: 0, width: GUTTER - 6, top: y(p) - Math.round((chartLabel.lineHeight * fs) / 2), alignItems: 'flex-end' }}>
+      <FieldText v="tiny" color={c.ink2} style={chartLabel}>{String(p)}</FieldText>
     </View>
   );
   return (
@@ -205,11 +213,11 @@ function Chart({ stems, line, play, run, delay, w, fs }: { stems: readonly Stem[
             end instead when the last stem's top would sit under it (lineLabelSpot). */}
         {spot.beside ? (
           <View testID="line-label" style={{ position: 'absolute', right: 0, top: spot.top, width: spot.width, alignItems: 'flex-end' }}>
-            <FieldText v="tiny" color={c.ink2} style={{ textAlign: 'right' }}>{`${line}\nline`}</FieldText>
+            <FieldText v="tiny" color={c.ink2} style={[chartLabel, { textAlign: 'right' }]}>{`${line}\nline`}</FieldText>
           </View>
         ) : (
           <View testID="line-label" style={{ position: 'absolute', right: 0, top: spot.top, backgroundColor: c.raised2, paddingLeft: 3 }}>
-            <FieldText v="tiny" color={c.ink2}>{`${line} line`}</FieldText>
+            <FieldText v="tiny" color={c.ink2} style={chartLabel}>{`${line} line`}</FieldText>
           </View>
         )}
         <Animated.View style={[{ position: 'absolute', left: 0, top: 0, width: w, height: h }, settleStyle]} pointerEvents="none">
@@ -248,7 +256,9 @@ function Chart({ stems, line, play, run, delay, w, fs }: { stems: readonly Stem[
           const red = !s.thin && s.pct !== null && s.below;
           return (
             <View key={s.key} style={{ position: 'absolute', left: GUTTER + gap * i - 4, width: gap + 8, top: soil + 8, alignItems: 'center' }}>
-              <FieldText v="tiny" color={c.ink} center numberOfLines={2}>{s.name.replace(' ', '\n')}</FieldText>
+              {/* The name takes the column's full width and wraps only when it must ("IS Audit" on one
+                  line when it fits; "Info" over "Protection" when it does not). */}
+              <FieldText v="tiny" color={c.ink} center numberOfLines={2} style={{ alignSelf: 'stretch' }}>{s.name}</FieldText>
               <FieldText v="figSm" color={red ? c.clay : c.ink2} center>{chartWord(s)}</FieldText>
               {lines.map((l) => (
                 <FieldText key={l} v="tiny" color={red && l.startsWith('below') ? c.clay : c.ink2} center>{l}</FieldText>

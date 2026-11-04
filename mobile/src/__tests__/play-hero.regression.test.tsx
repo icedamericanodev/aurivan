@@ -113,9 +113,9 @@ describe('the tab hero renders its content (Android blank-hero regression)', () 
     const [content] = byTestId('practice-plate');
     expect(content).toBeDefined();
     const text = textOf(content);
-    // The figure caption and the path's title are the plate's two headers.
+    // The one label line (type pass: "Next set · Your path") and the path's title are the plate's two headers.
     const header = content.findAll((n) => n.props.accessibilityRole === 'header' && typeof n.type === 'string');
-    expect(header.map((h) => h.props.accessibilityLabel ?? textOf(h))).toContain('Your next set');
+    expect(header.map((h) => h.props.accessibilityLabel ?? textOf(h))).toContain('Next set, your path');
     expect(header.length).toBe(2);
     expect(text).toMatch(/min/); // the meta carries the honest length
     // The plate is never a button: the Start button sits under it.

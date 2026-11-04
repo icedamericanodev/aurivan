@@ -25,6 +25,7 @@ import { moreRowLabels } from '../../jest/answerMore';
 import SessionScreen from '../app/session';
 import { OptionCard } from '../components/quiz';
 import { Tag } from '../components/ui';
+import { RunningHead } from '../components/fieldguide';
 import { StyleSheet } from 'react-native';
 import Results from '../app/results';
 import { centreScene } from '../app/lesson/[id]';
@@ -94,8 +95,14 @@ const withNote = getAllQuestions('cisa').filter((q) => {
 });
 const ids = withNote.slice(0, 3).map((q) => q.id);
 
-/** The label above the stem, and the subtopic of the question on screen. */
-const metaTag = () => String(root().findAllByType(Tag)[0]?.props.label ?? '');
+/**
+ * The label above the stem, and the subtopic of the question on screen. Practice and review show
+ * the running head (the same one as the answer screen, type pass); a mock keeps its domain tag.
+ */
+const metaTag = () => {
+  const head = root().findAllByType(RunningHead)[0];
+  return head ? `${head.props.section} · ${head.props.aside}` : String(root().findAllByType(Tag)[0]?.props.label ?? '');
+};
 const subtopicOnScreen = () => {
   const s = useSession.getState().active!;
   return shortSubtopic(findQuestion('cisa', s.questionIds[s.index])!.subtopic);
@@ -115,7 +122,7 @@ describe('#5 the label above a question', () => {
     startFromIds('cisa', ids, 'T');
     mount(<SessionScreen />);
     const sub = subtopicOnScreen();
-    expect(metaTag()).toMatch(/^[^·]+ · 1 of 3$/);
+    expect(metaTag()).toMatch(/^Practice · [^·]+ · Question 1 of 3$/);
     expect(metaTag()).not.toContain(sub);
     pickWrong();
     press('Check answer');
@@ -133,7 +140,7 @@ describe('#5 the label above a question', () => {
     expect(startReview('cisa')).toBeTruthy();
     mount(<SessionScreen />);
     expect(useSession.getState().active!.mode).toBe('review');
-    expect(metaTag()).toMatch(/^[^·]+ · 1 of \d+$/);
+    expect(metaTag()).toMatch(/^Review · [^·]+ · Question 1 of \d+$/);
     expect(metaTag()).not.toContain(subtopicOnScreen());
   });
 

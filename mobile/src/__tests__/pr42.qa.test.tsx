@@ -401,7 +401,7 @@ describe('Journey 3: Learn list states', () => {
     const r0 = rows();
     expect(r0[0]).toMatch(/, up next$/);
     expect(r0.slice(1).every((x) => /, \d+ min$/.test(x))).toBe(true);
-    expect(allText()).toContain(`Up next · IS Audit`);
+    expect(allText()).toContain(`Next lesson · IS Audit`);
     expect(allText()).toContain('0 of');
   });
 
@@ -427,7 +427,7 @@ describe('Journey 3: Learn list states', () => {
     const allDone = new Set(root().findAll((n) => typeof n.props.accessibilityLabel === 'string' && /lessons?, all done$/i.test(n.props.accessibilityLabel)).map((n) => n.props.accessibilityLabel));
     expect([...allDone]).toHaveLength(1);
     expect([...allDone][0]).toMatch(/^Information System Auditing Process, /);
-    expect(allText()).not.toContain('Up next · IS Audit');
+    expect(allText()).not.toContain('Next lesson · IS Audit');
   });
 
   it('finishing a lesson buzzes once (Lesson complete); back on Learn its ✓ draws without a second buzz', () => {

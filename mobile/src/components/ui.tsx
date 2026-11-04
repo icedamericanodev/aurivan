@@ -66,7 +66,7 @@ import {
   type TypeVariant,
   type Palette,
 } from '../theme/tokens';
-import { groveEmphasis, groveRadius, grovePlate, heroPanel, numRole, percentFor, role, type HeroGradient, type NumStep, type RoleName } from '../theme/grove';
+import { groveEmphasis, groveEmphasisSans, groveRadius, grovePlate, heroPanel, numRole, percentFor, role, type HeroGradient, type NumStep, type RoleName } from '../theme/grove';
 import { useTheme } from '../theme/useTheme';
 import { Botany, botanySize, EmptyArt, type BotanyKind, type EmptyArtKind } from './glyphs';
 import { Check, ChevronLeft, ChevronRight, ICON_STROKE, Minus, Plus, Search, Settings as SettingsIcon, X } from './icons';
@@ -434,7 +434,14 @@ export function Button({
   ref,
   follow,
   shape = 'plate',
+  inline,
 }: {
+  /**
+   * A ghost button that sits inside a sentence (type pass, TYPE_SCALE.md row 13: a link inside running
+   * text inherits its sentence's role and size): its words take that role ("meta" beside a meta line),
+   * one weight up so it still reads as a link. The 48pt touch target stays.
+   */
+  inline?: 'meta' | 'small' | 'body';
   /**
    * Premium round 2 (Field Guide foundation, spec §21.2): every button is the guide's `plate`
    * button by default, 54 tall with 16pt corners (Grove Phase 1, theme/grove.ts `grovePlate`), in every kind but ghost
@@ -498,7 +505,10 @@ export function Button({
       ]}
     >
       {iconLeading && icon?.(look.fg)}
-      <Text maxFontSizeMultiplier={isForest || isGhost ? maxScale.label : role.button.max} style={[isForest || isGhost ? type.label : role.button.style, { color: look.fg, flexShrink: 1, textAlign: 'center' }]}>
+      <Text
+        maxFontSizeMultiplier={isGhost && inline ? maxScale[inline] : isForest || isGhost ? maxScale.label : role.button.max}
+        style={[isGhost && inline ? [type[inline], groveEmphasisSans] : isForest || isGhost ? type.label : role.button.style, { color: look.fg, flexShrink: 1, textAlign: 'center' }]}
+      >
         {label}
       </Text>
       {!iconLeading && icon?.(look.fg)}
@@ -1460,6 +1470,24 @@ export function Chip({
   );
 }
 
+/**
+ * The switch's inks, the website's Settings switch tokens (index.html `.set-card .you-switch`):
+ * off, a `control` track with a `raised` thumb (dark: `ink2`, UX review O6); on, a `btn` track with
+ * an `onBtn` thumb. One difference, by platform: iOS draws the thumb INSIDE the track, as the
+ * website does, but Android and the web build draw a thumb larger than the track, so half of it
+ * sits on the card. In dark the `onBtn` thumb (near black) then vanished into the dark card, so
+ * there the on thumb is `ink` (light on the dark card, the dark-mode type pass). Pure, for tests.
+ */
+export function toggleInk(c: Palette, isDark: boolean, os: string): { onTrack: string; offTrack: string; onThumb: string; offThumb: string } {
+  const overhang = os !== 'ios';
+  return {
+    onTrack: c.btn,
+    offTrack: c.control,
+    onThumb: isDark && overhang ? c.ink : c.onBtn,
+    offThumb: isDark ? c.ink2 : c.raised,
+  };
+}
+
 // ── Toggle: an on/off switch in our colours ──────────────────────────
 // Wraps the platform Switch so its thumb never falls back to a stock
 // teal/blue. On the web build the "on" thumb needs `activeThumbColor`.
@@ -1477,10 +1505,8 @@ export function Toggle({
   accessibilityLabel: string;
 }) {
   const { c, isDark } = useTheme();
-  const webOnly = Platform.OS === 'web' ? ({ activeThumbColor: c.onBtn } as object) : {};
-  // Dark mode, off: the dark `onBtn` thumb sank into the grey track, so it takes
-  // the light secondary ink instead (UX review O6). On, it stays `onBtn` on `btn`.
-  const offThumb = isDark ? c.ink2 : c.onBtn;
+  const t = toggleInk(c, isDark, Platform.OS);
+  const webOnly = Platform.OS === 'web' ? ({ activeThumbColor: t.onThumb } as object) : {};
   return (
     <Switch
       ref={ref}
@@ -1488,9 +1514,9 @@ export function Toggle({
       value={value}
       disabled={disabled}
       onValueChange={onValueChange}
-      thumbColor={value ? c.onBtn : offThumb}
-      trackColor={{ true: c.btn, false: c.muted }}
-      ios_backgroundColor={c.muted}
+      thumbColor={value ? t.onThumb : t.offThumb}
+      trackColor={{ true: t.onTrack, false: t.offTrack }}
+      ios_backgroundColor={t.offTrack}
       {...webOnly}
     />
   );
@@ -1851,9 +1877,11 @@ export function Trail({ value, unit, color }: { value: string; unit: string; col
 
 /** Lead numeral for mock rows: the 22 value step over a unit ("50 / questions"; was 26, off the scale). */
 export function Lead({ value, unit }: { value: string; unit: string }) {
+  // Type pass (TYPE_SCALE.md section 2.1): a serif numeral's % is always the raised %, never typed inline.
+  const pct = value.endsWith('%');
   return (
     <View style={{ minWidth: 52 }}>
-      <BigNum value={value} size={22} />
+      <BigNum value={pct ? value.slice(0, -1) : value} pct={pct} size={22} />
       <Unit>{unit}</Unit>
     </View>
   );

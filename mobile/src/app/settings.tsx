@@ -169,6 +169,11 @@ export default function Settings() {
   const lastHelpRow = updates.available ? 'updates' : config.termsUrl !== '' ? 'terms' : config.privacyUrl !== '' ? 'privacy' : 'about';
   // "Badges are on again…": shown for this visit, right under the switch.
   const [badgesLine, setBadgesLine] = useState<string | null>(null);
+  // Type pass (TYPE_SCALE.md row 1, as the web's Settings page): the whole page opens with its own
+  // display title "Settings" under the bar; the bar's small title fades in only once that title has
+  // scrolled under it (the reading pages' collapse). A door's screen keeps its name in the bar.
+  const [titleUnder, setTitleUnder] = useState(false);
+  const titleBottom = useRef(0);
 
   // Deep links: open the calendar, or start at the plant's group.
   const params = useLocalSearchParams<{ open?: string; section?: string; category?: string }>();
@@ -786,16 +791,33 @@ export default function Settings() {
   );
 
   return (
-    <Screen edges={['top', 'bottom']} scrollRef={scrollRef}>
+    <Screen
+      edges={['top', 'bottom']}
+      scrollRef={scrollRef}
+      onScroll={
+        subCategory
+          ? undefined
+          : (y) => {
+              const edge = titleBottom.current;
+              // 8pt of hysteresis, so a scroll resting on the edge never flickers the bar's title.
+              const under = edge > 0 && (titleUnder ? y > edge - 8 : y > edge);
+              if (under !== titleUnder) setTitleUnder(under);
+            }
+      }
+      header={subCategory ? undefined : <PushedHeader title="Settings" showTitle={titleUnder} onBack={() => router.back()} />}
+    >
       <SettingsSubScreen.Provider value={subCategory !== undefined}>
-        {/* Same pushed header as Saved and Mistakes: the title lives in the bar. A door's screen: its name
-            is the bar's title, and screen-reader focus starts there. */}
-        <PushedHeader title={subCategory ? subCategory.title : 'Settings'} titleRef={subCategory ? subHeadRef : undefined} onBack={() => router.back()} />
+        {/* A door's screen: its name is the bar's title, and screen-reader focus starts there. */}
+        {subCategory ? <PushedHeader title={subCategory.title} titleRef={subHeadRef} onBack={() => router.back()} /> : null}
 
         {subCategory ? (
           subCategory.draw()
         ) : (
           <>
+            {/* The page's title, then the section heads (headline) inside each card: the web's Settings page. */}
+            <View onLayout={(e) => (titleBottom.current = space.lg + e.nativeEvent.layout.y + e.nativeEvent.layout.height)}>
+              <T v="display" accessibilityRole="header" style={{ marginTop: space.xs }}>Settings</T>
+            </View>
             {categories.filter((x) => !DOOR_CATS.includes(x.cat)).map((x) => x.draw())}
             {/* The doors (Your data, Help and about; Account and Feedback board in a cloud build), in one last card. */}
             <SettingsCard title="Data and help">{doorCats.map((x, i) => door(x, i === doorCats.length - 1))}</SettingsCard>

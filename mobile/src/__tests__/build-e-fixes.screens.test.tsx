@@ -25,6 +25,7 @@ import Results from '../app/results';
 import SessionScreen from '../app/session';
 import { OptionCard } from '../components/quiz';
 import { Tag } from '../components/ui';
+import { RunningHead } from '../components/fieldguide';
 import { getNotes } from '../content/notes';
 import { rumorStatements, type Statement } from '../engine/games/rootOrRumor';
 import { finishSession } from '../lib/finishSession';
@@ -246,20 +247,22 @@ describe('Session: the reason-tag row at large text', () => {
     });
   };
   afterEach(() => setScale(1));
-  /** The View holding the domain Tag, and the row around it. */
-  const tagBox = () => root().findAllByType(Tag)[0].parent!;
+  /** The reason tag, and the row around it. */
+  const reasonTag = () => root().findAll((n) => typeof n.props.accessibilityLabel === 'string' && n.props.accessibilityLabel.startsWith('Why this question: '));
   const flat = (st: unknown) => Object.assign({}, ...[st].flat(3).filter(Boolean)) as Record<string, unknown>;
 
-  it('wraps at large text, with the domain tag on its own full-width line; one line at 100%', () => {
+  it('practice: the running head over a wrapping reason row, at large text and at 100%', () => {
     startStudy('cisa', { mode: 'smart', count: 10 });
     expect(Object.keys(useSession.getState().active!.reasons ?? {}).length).toBeGreaterThan(0);
-    setScale(2);
-    mount(<SessionScreen />);
-    expect(flat(tagBox().props.style)).toMatchObject({ flexBasis: '100%' });
-    expect(root().findAll((n) => typeof n.props.accessibilityLabel === 'string' && n.props.accessibilityLabel.startsWith('Why this question: ')).length).toBeGreaterThan(0);
-    setScale(1);
-    mount(<SessionScreen />);
-    expect(flat(tagBox().props.style)).toMatchObject({ flex: 1 });
+    for (const scale of [2, 1]) {
+      setScale(scale);
+      mount(<SessionScreen />);
+      // Type pass: the domain and place are the running head (the answer screen's), not a tag.
+      expect(root().findAllByType(RunningHead)).toHaveLength(1);
+      expect(root().findAllByType(Tag)).toHaveLength(0);
+      expect(reasonTag().length).toBeGreaterThan(0);
+      expect(flat(reasonTag()[0].parent!.props.style)).toMatchObject({ flexWrap: 'wrap' });
+    }
   });
 });
 

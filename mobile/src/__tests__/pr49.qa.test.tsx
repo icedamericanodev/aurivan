@@ -565,7 +565,8 @@ describe('G. Deep links into Settings', () => {
     const sv = root().findAll((n) => n.instance && typeof n.instance.scrollTo === 'function')[0];
     const scrollTo = jest.mocked(sv.instance.scrollTo as jest.Mock);
       const holder = root().findAll((n) => typeof n.type === 'string' && typeof n.props.onLayout === 'function' && n.findAll((x) => x.children.includes('Badges and your plant')).length > 0);
-    const target = holder[0];
+    // The group's own holder, not the scroll view (it measures itself for the title's collapse).
+    const target = holder.find((n) => typeof n.props.onScroll !== 'function')!;
     act(() => target.props.onLayout({ nativeEvent: { layout: { x: 0, y: 1200, width: 393, height: 300 } } }));
     expect(scrollTo).toHaveBeenCalledTimes(1);
     expect(scrollTo.mock.calls[0][0].y).toBeGreaterThan(1100);

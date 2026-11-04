@@ -263,8 +263,10 @@ export default function Practice() {
           // Once, for those who played on the old Play tab: where the games went (no modal, no toast).
           <View testID="drills-moved" style={{ flexDirection: 'row', flexWrap: 'wrap', alignItems: 'center', columnGap: space.sm, marginTop: space.xs }}>
             <T v="meta">The games are here now, as Drills.</T>
+            {/* The link is the sentence's size (meta), not a larger button label (type pass). */}
             <Button
               kind="ghost"
+              inline="meta"
               label="Go to Drills"
               accessibilityHint="Scrolls to Drills on this page"
               onPress={() => {
@@ -281,8 +283,10 @@ export default function Practice() {
         {/* Premium round 2 (Field Guide foundation): the white shadowed seal hero became Practice's
             plate, Fig. 2 in the guide's register (Learn or Practice, §21.1; 4 is the answer); the forest fill is kept for the plate button under it.
             The mode, domain and length live in the summary row below (O2: said once). */}
-        <Plate fig={{ n: 2, title: 'Your next set' }} testID="practice-plate">
-          <FieldText v="head" accessibilityLabel="Your path">Your path</FieldText>
+        {/* Type pass (TYPE_SCALE.md R4): ONE label line in the kicker role, the italic "Your next set"
+            caption and the "Your path" kicker merged into it (as Learn's "Next lesson · IS Audit"). */}
+        <Plate testID="practice-plate">
+          <FieldText v="head" accessibilityRole="header" accessibilityLabel="Next set, your path">Next set · Your path</FieldText>
           {/* Mobile 1.21: the title names the path, never a count (the count goes to the meta). */}
           <T v="hero" accessibilityRole="header" style={{ marginTop: space.xs }}>
             {mode === 'guided'

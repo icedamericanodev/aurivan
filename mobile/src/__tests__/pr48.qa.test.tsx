@@ -371,9 +371,9 @@ describe('answering, then switching tabs: every tab shows fresh numbers', () => 
       expect(stem.spoken.startsWith(stem.thin ? `${short}, ` : `${short}: `)).toBe(true);
       expect(joined('you')).toContain(`[${stem.spoken}`);
     }
-    // Learn's "Up next" follows the focus domain.
+    // Learn's "Next lesson" follows the focus domain.
     const focus = cert.domains.find((d) => d.id === rd.focusDomainId)!;
-    expect(joined('learn')).toContain(`Up next · ${focus.short}`);
+    expect(joined('learn')).toContain(`Next lesson · ${focus.short}`);
     // Today's plan: the session ticked it.
     const plan = useProgress.getState().days.cisa;
     const doneN = plan.done.filter(Boolean).length;

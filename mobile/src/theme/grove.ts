@@ -112,6 +112,12 @@ export const heroInk: { light: HeroInk; dark: HeroInk } = {
  * sentence's own variant: only the weight steps up (TYPE_SCALE.md row 197).
  */
 export const groveEmphasis = { fontFamily: font.serif500 } as const;
+/**
+ * The sans twin: a link inside a Figtree sentence ("Go to Drills" after a meta line) keeps the
+ * sentence's size and line and steps up to Figtree 600 only, so it reads as a link (TYPE_SCALE.md
+ * row 13 and R2).
+ */
+export const groveEmphasisSans = { fontFamily: font.sans600 } as const;
 
 // ── The type scale's extra roles (design-notes/grove/TYPE_SCALE.md section 3) ──────────────────
 //
@@ -160,6 +166,14 @@ export const role = {
   numInline: { style: serifNumeral(20), max: 1.3 },
 } as const satisfies Record<string, TypeRole>;
 export type RoleName = keyof typeof role;
+
+/**
+ * A chart's scale and line labels (TYPE_SCALE.md exception E1, `fg label`, row 176a): Figtree 500
+ * 13/17, the size the web's charts use, at every width. The axis numbers (0, 50, 70, 100) and the
+ * "70 line" words use it, so they no longer look tiny beside the chart's other words. It is a
+ * style for `FieldText v="tiny"`, which keeps the chart's x1.3 cap (its list takes over after).
+ */
+export const chartLabel = { fontFamily: font.sans500, fontSize: 13, lineHeight: 17 } as const satisfies TextStyle;
 
 /** The five numeral steps, by size (52 score, 38 range, 30 stat, 22 value, 20 inline). Nothing else. */
 export type NumStep = 52 | 38 | 30 | 22 | 20;
