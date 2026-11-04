@@ -155,9 +155,10 @@ describe('You: bands below 30 answers, numbers from 30', () => {
   it('each area is one spoken stop with its word, and its thin data said as thin', () => {
     seedDomain('1', 10, 9);
     mount(<You />);
-    const row = root().findAll((n) => typeof n.type === 'string' && typeof n.props.accessibilityLabel === 'string' && n.props.accessibilityLabel.startsWith('IS Audit: '))[0];
+    const row = root().findAll((n) => typeof n.type === 'string' && typeof n.props.accessibilityLabel === 'string' && n.props.accessibilityLabel.startsWith('IS Audit, '))[0];
     // Mobile 1.51 (Field Guide): it says what it shows, "too few yet", never a band word for 10 answers.
-    expect(row.props.accessibilityLabel).toBe('IS Audit: too few yet, 10 answered');
+    // Grove panel Q2: said like the website's row.
+    expect(row.props.accessibilityLabel).toBe('IS Audit, 10 of 30 answers, too few yet for a score.');
     expect(row.props.accessibilityLabel).not.toContain('90');
   });
 

@@ -8,8 +8,9 @@
  *   "Estimated readiness 68 to 78 percent, a study estimate, not a
  *   prediction. The tick marks this app's 80 percent study bar."
  * - `AreaRows`: the areas as one line of growth each, on ONE scale with the
- *   dashed 70 line (StemChart): the percent only from 30 answers; a seed
- *   and "too few yet · 18 answered" below that; "below 70" in words and
+ *   dashed 70 line (StemChart): the percent only from 30 answers; below
+ *   that a dashed shoot and "too few yet" (the list: "18 of 30", "answers,
+ *   too few yet for a score"); "below 70" in words and
  *   `clay` for an area under its line; "↑3" for what went up since the
  *   learner last looked. From ×1.3 text the chart becomes its list.
  *
@@ -31,6 +32,19 @@ import type { Growth } from './motion';
 /** "Estimated readiness 68 to 78 percent, a study estimate…", or the countdown to the first range. */
 export function readinessSpoken(range: ReadinessRange): string {
   return scaleSpoken(range, READY_LOW);
+}
+
+/**
+ * The low end, said once under the scale bar (Grove panel Q1, the website's
+ * same sentence): what the low end is, what the study bar asks of it, and how
+ * far off it is. The numbers come from the range and the app's study bar
+ * (READY_LOW), never a written-in 80. Presentation only: no maths changes.
+ */
+export function lowEndLine(low: number, bar = READY_LOW): string {
+  const gap = bar - low;
+  return `Your low end, ${low}, is the cautious end of your range: we’re fairly sure you’re at or above it. The study bar asks for a low end of ${bar}, a goal to study toward, not an exam score. ${
+    gap > 0 ? `Yours is ${gap} under it.` : 'Yours is at or above it.'
+  }`;
 }
 
 /** The range on its scale bar, with the study bar's tick. */

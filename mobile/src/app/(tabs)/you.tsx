@@ -67,7 +67,7 @@ import { router, useFocusEffect } from 'expo-router';
 import { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { View } from 'react-native';
 import { ringsChangeLine } from '../../components/journey';
-import { AreaRows, ReadinessBlock } from '../../components/youReadiness';
+import { AreaRows, lowEndLine, ReadinessBlock } from '../../components/youReadiness';
 import { FieldText, headDate, KeyList, RunningHead, SpecimenLabel, SpecimenRow } from '../../components/fieldguide';
 import { HerbariumEntry } from '../../components/herbarium';
 import { lastPressed } from '../../engine/fieldGuide';
@@ -374,6 +374,8 @@ export default function You() {
         {/* Mobile 1.51 (Field Guide): the range on a scale bar with a tick at the study bar and its words
             built in, the study-bar line, then the areas on one scale in a plate (components/youReadiness.tsx). */}
         <ReadinessBlock range={range} growth={rangeGrowth} />
+        {/* Grove panel Q1: once there is a range, the low end is defined once, before the study-bar line. */}
+        {range.enough && <T v="meta" color={c.ink} style={{ marginTop: space.md }}>{lowEndLine(range.low)}</T>}
         <T v="meta" style={{ marginTop: space.md }}>{STUDY_BAR_LINE}</T>
         <View style={{ marginTop: space.xl }}>
           <AreaRows cert={cert} readiness={readiness} ups={sinceLook ? ups : undefined} play={sinceLook ? 'growth' : rings.play} run={rings.run} />

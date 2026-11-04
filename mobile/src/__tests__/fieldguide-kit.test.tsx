@@ -105,8 +105,10 @@ describe('StemChart', () => {
     // Below the line: the word in clay AND the words "below 70" (never colour alone).
     expect(t).toContain('below 70');
     expect(t).toContain('↑3');
-    // Too few yet: the word "seed" where the number will grow, never a dash (Grove).
-    expect(t).toContain('seed');
+    // Too few yet: the words "too few yet" where the number will grow, never a dash, and never "seed"
+    // (Grove panel Q2: that word is the plant's). Once over the seed, once under the soil.
+    expect(t.match(/too few yet/g)?.length).toBe(2 * STEMS.filter((s) => s.thin).length);
+    expect(t).not.toMatch(/\bseed\b/i);
     expect(t).not.toMatch(/[\u2013\u2014]/);
     expect(list()).toHaveLength(0);
   }));
@@ -128,10 +130,13 @@ describe('StemChart', () => {
       layout(240);
       expect(list()).toHaveLength(1);
     });
-    // The list's too-few-yet bar is an outline with no fill; its figure is words, as on the website, never a dash.
-    expect(allText()).toContain('Too few yet');
-    expect(allText()).toContain('not measured yet');
+    // The list's too-few-yet bar is an outline with no fill; its figure and words read like the website's
+    // rows (Grove panel Q2): "18 of 30" and "answers, too few yet for a score", never a dash or "seed".
+    expect(allText()).toMatch(/18 of 30\s+answers, too few yet for a score/);
+    expect(allText()).not.toContain('18 answered');
+    expect(allText()).not.toContain('not measured yet');
     expect(allText()).toContain('Not started');
+    expect(allText()).not.toMatch(/\bseed\b/i);
     expect(allText()).not.toMatch(/[\u2013\u2014]/);
   });
 

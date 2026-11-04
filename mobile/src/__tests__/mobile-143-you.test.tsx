@@ -18,7 +18,9 @@ import { getCertification } from '../content/certifications';
 import { computeReadiness } from '../engine/readiness';
 import You from '../app/(tabs)/you';
 import { DomainRings } from '../components/journey';
-import { AreaRows, ReadinessBlock, readinessSpoken } from '../components/youReadiness';
+import { AreaRows, lowEndLine, ReadinessBlock, readinessSpoken } from '../components/youReadiness';
+import { READY_LOW } from '../engine/examReady';
+import { readinessRange } from '../engine/readinessRange';
 import { ScaleBar } from '../components/fieldguide';
 import { light } from '../theme/tokens';
 
@@ -97,6 +99,22 @@ describe('the area words (engine/domainBand.ts)', () => {
   });
 });
 
+describe('the low end, said once (Grove panel Q1)', () => {
+  it('names the low end, what the study bar asks, and how far off it is, from the study bar constant', () => {
+    expect(lowEndLine(67)).toBe(
+      `Your low end, 67, is the cautious end of your range: we’re fairly sure you’re at or above it. The study bar asks for a low end of ${READY_LOW}, a goal to study toward, not an exam score. Yours is ${READY_LOW - 67} under it.`,
+    );
+    expect(lowEndLine(READY_LOW)).toMatch(/Yours is at or above it\.$/);
+    expect(lowEndLine(READY_LOW + 4)).toMatch(/Yours is at or above it\.$/);
+    expect(lowEndLine(70, 75)).toContain('a low end of 75');
+    // Grove copy rules: no dashes, none of the banned words.
+    for (const line of [lowEndLine(40), lowEndLine(90)]) {
+      expect(line).not.toMatch(/[\u2013\u2014]/);
+      expect(line).not.toMatch(/\bpass|guarantee|official|you['’]re ready|evolve|runner-up/i);
+    }
+  });
+});
+
 describe('the You screen (Field Guide since mobile 1.51)', () => {
   it('one scale bar, spoken with the range and its words; no rings; the areas plate; Plant, the Herbarium and Study tools stay', () => {
     seedDomain('1', 40, 34);
@@ -111,6 +129,13 @@ describe('the You screen (Field Guide since mobile 1.51)', () => {
     expect(block[0].props.accessibilityRole).toBe('image');
     const t = allText();
     expect(t).toContain(STUDY_BAR_LINE);
+    // Grove panel Q1: the low-end sentence, from the same range, sits before the study-bar line.
+    const range = readinessRange(cisa, computeReadiness(cisa, selectCert(useProgress.getState(), 'cisa').answers));
+    expect(range.enough).toBe(true);
+    if (range.enough) {
+      expect(t).toContain(lowEndLine(range.low));
+      expect(t.indexOf(lowEndLine(range.low))).toBeLessThan(t.indexOf(STUDY_BAR_LINE));
+    }
     expect(t).toContain(AREAS_CAPTION);
     expect(t).toContain('Five areas, one scale');
     expect(t).not.toMatch(/inner ring|Thicker rings|notch/);
@@ -127,13 +152,16 @@ describe('the You screen (Field Guide since mobile 1.51)', () => {
     expect(t).not.toContain('Herbarium');
   });
 
-  it('thin data: "Too few yet", "not measured yet · N answered", an outline, and no number', () => {
+  it('thin data: "12 of 30", "answers, too few yet for a score", an outline, and no number', () => {
     seedDomain('2', 12, 9);
     act(() => {
       r = create(<AreaRows cert={cisa} readiness={computeReadiness(cisa, selectCert(useProgress.getState(), 'cisa').answers)} />);
     });
-    // The website's list words (Grove: no dash for a missing number).
-    expect(allText()).toMatch(/IT Governance\s+Too few yet\s+not measured yet\s+· 12 answered/);
+    // The website's row words (Grove panel Q2: no dash for a missing number, and "seed" is the plant's word only).
+    expect(allText()).toMatch(/IT Governance\s+12 of 30\s+answers, too few yet for a score/);
+    expect(allText()).not.toMatch(/\bseed\b/i);
+    const row = root().findAll((n) => typeof n.type === 'string' && typeof n.props.accessibilityLabel === 'string' && n.props.accessibilityLabel.startsWith('IT Governance'))[0];
+    expect(row.props.accessibilityLabel).toBe('IT Governance, 12 of 30 answers, too few yet for a score.');
     // The ruler is an outline with no fill (dashed), never a lighter bar with a height it hasn't earned.
     const outline = root().findAll((n) => typeof n.type === 'string' && StyleSheet.flatten(n.props.style ?? {}).borderStyle === 'dashed' && StyleSheet.flatten(n.props.style ?? {}).height === 8);
     expect(outline).toHaveLength(1);

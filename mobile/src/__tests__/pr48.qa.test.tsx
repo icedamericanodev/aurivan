@@ -367,7 +367,8 @@ describe('answering, then switching tabs: every tab shows fresh numbers', () => 
       // Mobile 1.43: each area row says its word, its percent from 30 answers, and its line (engine/domainBand.ts areaFigure).
       // Mobile 1.51 (Field Guide): each area's line of growth says what it shows (engine/fieldGuide.ts areaStems).
       const stem = areaStems(cert.domains, rd.domains).find((x) => x.key === d.domainId)!;
-      expect(stem.spoken.startsWith(`${short}: `)).toBe(true);
+      // Grove panel Q2: a thin area reads like the website's row ("IT Governance, 22 of 30 answers, ...").
+      expect(stem.spoken.startsWith(stem.thin ? `${short}, ` : `${short}: `)).toBe(true);
       expect(joined('you')).toContain(`[${stem.spoken}`);
     }
     // Learn's "Up next" follows the focus domain.

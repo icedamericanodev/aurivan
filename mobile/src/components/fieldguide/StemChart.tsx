@@ -7,8 +7,8 @@
  * - A measured stem (30 answers or more) is drawn to its percent, with the
  *   number above it.
  * - Too few yet (1 to 29 answers): a seed in the soil with a dashed outline
- *   of a shoot, the word "seed" above it (no number, and no dash: Grove) and the
- *   words "too few yet · 18 answered". It
+ *   of a shoot, the words "too few yet" above it (no number, and no dash; "seed"
+ *   names the plant only: Grove panel Q2) and "too few yet · 18 answered" under it. It
  *   never claims a height the data hasn't earned (the web draws the same).
  * - Not started: the seed alone and the words "not started".
  * - Below the line: the status word in `clay` AND the words "below 70" (clay
@@ -40,7 +40,7 @@ import { useEffect, useState } from 'react';
 import { useWindowDimensions, View } from 'react-native';
 import Animated, { useAnimatedStyle, useSharedValue, withDelay } from 'react-native-reanimated';
 import Svg, { Ellipse, G, Path } from 'react-native-svg';
-import type { Stem } from '../../engine/fieldGuide';
+import { THIN_WORDS, thinFigure, type Stem } from '../../engine/fieldGuide';
 import { grovePlate } from '../../theme/grove';
 import { fieldInk, LARGE_TEXT, motion, plate, space } from '../../theme/tokens';
 import { useTheme } from '../../theme/useTheme';
@@ -208,7 +208,8 @@ function Chart({ stems, line, play, run, delay, w, fs }: { stems: readonly Stem[
         <Animated.View style={[{ position: 'absolute', left: 0, top: 0, width: w, height: h }, settleStyle]} pointerEvents="none">
           {stems.map((s, i) => {
             const cx = GUTTER + gap * i + gap / 2;
-            const top = s.pct !== null ? y(s.pct) - 34 : s.thin ? soil - 54 : null;
+            // A thin stem's two small lines sit just over its dashed shoot (which ends 27 above the soil), grown with the text.
+            const top = s.pct !== null ? y(s.pct) - 34 : s.thin ? soil - 30 - Math.ceil(28 * fs) : null;
             // A growing stem's number rides its tip (GrowNumber, below).
             if (growing.includes(s.key)) return null;
             return top === null ? null : (
@@ -221,9 +222,9 @@ function Chart({ stems, line, play, run, delay, w, fs }: { stems: readonly Stem[
                     {s.down ? <T v="caption" color={c.ink2} style={{ marginLeft: 2, marginTop: 6 }}>{`↓${Math.round(s.down)}`}</T> : null}
                   </View>
                 ) : (
-                  // Too few yet: a word where the number will grow (Grove has no dashes), naming the seed drawn below.
+                  // Too few yet: words where the number will grow (Grove has no dashes; "seed" is the plant's word only).
                   <View style={{ backgroundColor: c.raised2, paddingHorizontal: 3 }}>
-                    <FieldText v="chart" color={c.ink2}>seed</FieldText>
+                    <FieldText v="tiny" color={c.ink2} center>{'too few\nyet'}</FieldText>
                   </View>
                 )}
               </View>
@@ -419,12 +420,15 @@ function GrowNumber({ s, cx, top, drop, order, run, delay }: { s: Stem; cx: numb
 }
 
 /**
- * The list's figure and words, as the website's list writes them (fgStemChart): before 30 answers the
- * figure is words ("Not started", "Too few yet"), never a dash, and the line under it says "not measured
- * yet" (or nothing before any answer), so the state is never said twice in one row.
+ * The list's figure and words, as the website's area rows write them (Grove panel Q2): before any answer
+ * "Not started"; from 1 to 29 answers the figure is "22 of 30" and the line under it "answers, too few yet
+ * for a score" (never a dash, never "seed": that word is the plant's). The count is in the figure, so the
+ * "22 answered" line is left out of a thin row.
  */
-export const listFigure = (s: Stem) => (s.answered <= 0 ? 'Not started' : 'Too few yet');
-export const listWord = (s: Stem) => (s.answered <= 0 ? null : s.thin ? 'not measured yet' : stemWord(s));
+export const listFigure = (s: Stem) => (s.answered <= 0 ? 'Not started' : thinFigure(s.answered));
+export const listWord = (s: Stem) => (s.answered <= 0 ? null : s.thin ? THIN_WORDS : stemWord(s));
+/** A row's extra lines: a thin row's count is already its figure. */
+const listLines = (s: Stem, line: number) => stemLines(s, line).filter((l) => !(s.thin && l === `${s.answered} answered`));
 
 /** The list (large text, narrow screens): one row per area, a ruler bar with the line, the word and the figure. */
 export function StemList({ stems, line = 70 }: { stems: readonly Stem[]; line?: number }) {
@@ -433,7 +437,7 @@ export function StemList({ stems, line = 70 }: { stems: readonly Stem[]; line?: 
     <View testID="stem-list">
       {stems.map((s, i) => {
         const red = !s.thin && s.pct !== null && s.below;
-        const extra = stemLines(s, line);
+        const extra = listLines(s, line);
         const word = listWord(s);
         return (
           <View

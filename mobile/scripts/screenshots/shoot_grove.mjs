@@ -2,7 +2,7 @@
 // 10 answers, past the first range), You (the Settings button), Settings (the Grove cards) and the
 // floating tab bar, in light and dark (THEMES=light,dark by default). FONT_SCALE=2 approximates 200%
 // text (the tab bar's own words stay capped at x1.2, as in the app). GROVE_ONLY=today,you,settings,bar narrows it.
-// Grove You C2: You also as you-mid, you-mid2 (scrolled), you-before40 (34 answers) and you-new (a new learner).
+// Grove You C2: You also as you-mid, you-mid2 (scrolled), you-thin (one area under 30 answers), you-lowend (the scale bar and the low-end sentence), you-before40 and you-before40-areas (34 answers) and you-new (a new learner).
 import { createRequire } from 'module';
 import fs from 'fs';
 const require = createRequire(process.env.PLAYWRIGHT_REQUIRE_FROM || import.meta.url);
@@ -124,6 +124,27 @@ for (const theme of THEMES) {
     await shot('settings');
   }
   if (want('you')) {
+    // Grove panel Q2: a range, and one area under 30 answers (IT Governance kept to 22): the chart's
+    // "too few yet" over its seed, and at 200% text the list's "22 of 30" / "answers, too few yet for a score".
+    await edit(
+      P,
+      `const cp = v.state.byCert.cisa; let n = 0; for (const k of Object.keys(cp.answers)) if (/^d2/.test(k) && ++n > 22) delete cp.answers[k];
+       delete cp.mastery; delete cp.moments;`,
+    );
+    await edit('aurivan.session.v1', `v.state.active = null;`);
+    await go('/you');
+    // Zoom first (at 200% the page grows), then bring the areas plate to the top.
+    if (FONT_SCALE) {
+      await zoomText();
+      await wait(400);
+    }
+    await page.evaluate(() => document.querySelector('[data-testid="areas-plate"]')?.scrollIntoView({ block: 'start' }));
+    await scrollBy(-200);
+    await shot('you-thin');
+    // Grove panel Q1: the scale bar, then the low-end sentence before the study-bar line.
+    await page.evaluate(() => document.querySelector('[data-testid="scale-bar"]')?.scrollIntoView({ block: 'start' }));
+    await scrollBy(-120);
+    await shot('you-lowend');
     // Grove You C2, before 40 answers: "34 of 40 answers toward your first readiness range" in the summary,
     // the seed count in the readiness block, and the streak words that follow Today. The plant stays.
     await edit(
@@ -134,6 +155,9 @@ for (const theme of THEMES) {
     await edit('aurivan.session.v1', `v.state.active = null;`);
     await go('/you');
     await shot('you-before40');
+    // Grove panel Q2: the areas with fewer than 30 answers ("too few yet"; the list at 200% text: "12 of 30").
+    await scrollBy(H - 160);
+    await shot('you-before40-areas');
   }
   if (want('today')) {
     // 10 answers, no plant yet: the seed dots and "Too few yet".
