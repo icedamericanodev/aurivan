@@ -2,7 +2,7 @@
   "domain_number": 5,
   "domain_name": "Internal control frameworks and SOX scope",
   "exam_weight": "27%",
-  "source": "Original KaiSip notes written from the public law: the Sarbanes-Oxley Act, SEC rules, releases and staff guidance, and the public summaries published by COSO and the AICPA, all opened 31 Oct 2026. Not affiliated with or endorsed by SOXCPA. COSO framework text is not reproduced; principles are named only. COSO is a trademark of the Committee of Sponsoring Organizations of the Treadway Commission.",
+  "source": "Original KaiSip notes written from the public law: the Sarbanes-Oxley Act, SEC rules, releases and staff guidance, and the public summaries published by COSO and the AICPA, all opened 31 Oct 2026, and PCAOB AS 2201 from an owner-supplied copy of the pcaobus.org page saved 4 Nov 2026. Not affiliated with or endorsed by SOXCPA. COSO framework text is not reproduced; principles are named only. COSO is a trademark of the Committee of Sponsoring Organizations of the Treadway Commission.",
   "overview": "This domain covers the yardsticks companies use to judge internal control and what falls inside a Section 404 assessment. It starts with COSO's internal control framework, the 1992 original and the 2013 update, contrasts it with COSO's enterprise risk management frameworks of 2004 and 2017, and ends with scope: software, spreadsheets and outsourced service organizations.",
   "analogy": "Think of a building inspection. The building code is the framework: owner and inspector measure against it, and a new edition replaces the old one. A wider city plan covers zoning and growth, much as ERM covers strategy and enterprise risk, but the inspection still uses the code. Everything that holds the building up gets inspected, whether bought ready-made, built on site or maintained by a contractor, and hiring a contractor never moves the owner's duty to pass inspection.",
   "parts": [
@@ -183,7 +183,8 @@
           "practice_ids": [
             "csoe_d5_003",
             "csoe_d5_051",
-            "csoe_d5_063"
+            "csoe_d5_063",
+            "csoe_d5_101"
           ],
           "definition": "SEC rules require management to evaluate ICFR against a suitable, recognized framework set through due process; the SEC accepted COSO as one such framework without mandating it.",
           "why_it_matters": "Management's report must name its framework. Knowing that COSO is accepted but not compulsory, and why a home-made checklist fails, answers framework-choice questions.",
@@ -191,11 +192,11 @@
             "The Treadway Commission, formed in 1985, urged its sponsors in 1987 to build a common internal control reference point; COSO answered in 1992 (Release No. 33-8238, opened 31 Oct 2026).",
             "Rule 13a-15(c): the framework must be suitable and recognized, set by a body that followed due process, including broad distribution for public comment.",
             "Suitable means free from bias, allowing reasonably consistent measurements, sufficiently complete and relevant to evaluating ICFR (Release No. 33-8238, Section II.B.3.a; opened 31 Oct 2026).",
-            "Release No. 33-8238 (2003): COSO satisfies the SEC's criteria, but the SEC does not mandate any framework, since others exist or may be developed.",
+            "Release No. 33-8238: COSO meets the SEC's criteria, but none is mandated. Release No. 33-8810 (2007) guides the evaluation without replacing the framework.",
             "Item 308(a): the report names its framework and says whether ICFR is effective, even under a home framework that asks for no such statement (Release No. 33-8238, footnote 68).",
-            "The SEC's 2007 guidance (Release No. 33-8810) explains one way to evaluate ICFR; it does not replace the framework."
+            "AS 2201.05: the auditor uses that same framework; footnote 7 names COSO as one example (owner-supplied copy saved 4 Nov 2026)."
           ],
-          "example": "A software company's new chief accounting officer wants to swap COSO for a checklist the team wrote over a weekend. The general counsel notes that the rule needs a recognized framework built through public due process. The officer keeps COSO and uses the checklist only as an internal testing aid.",
+          "example": "A software company's new chief accounting officer wants to swap COSO for a checklist the team wrote. The general counsel notes that the rule needs a recognized framework built through due process. The officer keeps COSO and uses the checklist as a testing aid.",
           "audit_focus": {
             "review": [
               "Confirm the framework named in management's report is suitable and recognized",
@@ -208,7 +209,7 @@
             "recommend": "Have management name the framework it used and keep internal checklists as testing aids only.",
             "decides": "Management selects the framework; SEC rules set the suitability test"
           },
-          "isaca_rule": "Rule 13a-15(c): a suitable, recognized framework from a due-process body. COSO qualifies, but the SEC does not require it. Item 308(a)(2): the report names it.",
+          "isaca_rule": "Rule 13a-15(c): a suitable, recognized framework from a due-process body. COSO qualifies but is not required. Item 308(a)(2): the report names it. AS 2201.05: the auditor uses it too.",
           "exam_traps": [
             {
               "trap": "SEC rules require every issuer to use the COSO framework.",
@@ -1506,7 +1507,7 @@
     {
       "topic_id": "5C1",
       "topic_name": "Software and spreadsheets",
-      "overview": "SOX scope follows financial reporting risk, not the type of tool. Purchased software, in-house systems and spreadsheets are in scope when a control that addresses a financial reporting risk depends on them, and so are the IT general controls those controls rely on.",
+      "overview": "SOX scope follows financial reporting risk, not the type of tool. Purchased software, in-house systems and spreadsheets are in scope when a control that addresses a financial reporting risk depends on them, and so are the IT general controls those controls rely on. The auditor's standard, AS 2201, adds benchmarking for unchanged automated controls.",
       "can_do": [
         "Decide whether a system or spreadsheet is in scope from the risk it supports",
         "Name the IT general control areas and evaluate only the ones that matter",
@@ -1779,13 +1780,66 @@
             }
           ],
           "memory_aid": "Stop it or spot it; write the procedure; check the data."
+        },
+        {
+          "id": "5C1.6",
+          "name": "Benchmarking Automated Controls in the Auditor's ICFR Audit",
+          "legacy_ids": [],
+          "practice_ids": [
+            "csoe_d5_105",
+            "csoe_d5_106"
+          ],
+          "definition": "Under PCAOB AS 2201, the auditor may carry forward an earlier test of an entirely automated control, called benchmarking, if general controls stay effective and the control is unchanged.",
+          "why_it_matters": "AS 2201 lets the auditor rely on an earlier test of an unchanged automated control, but only on stated conditions, and the baseline must be retested in time.",
+          "how_it_works": [
+            "Entirely automated application controls are generally not subject to breakdowns from human failure, which is what allows benchmarking (AS 2201.B28, owner-supplied copy saved 4 Nov 2026).",
+            "Conditions: general controls over program changes, access to programs and computer operations are effective and still tested, and the auditor verifies the control is unchanged since its baseline (.B29).",
+            "A control can depend on related files, tables, data and parameters, such as a rate table behind an interest calculation (.B30).",
+            "Benchmarking suits stable programs with reliable compilation-date reports, and especially purchased software whose code the vendor does not let anyone change (.B31-.B32).",
+            "The baseline is reestablished after a period; factors include program changes, the consequences of errors and changed business factors the control assumes (.B33)."
+          ],
+          "example": "A freight carrier's auditor tested the automated fuel-surcharge calculation two years ago. Change and access testing is clean and the program has not been recompiled since, so the earlier result carries forward. When the carrier adds a new surcharge table, the auditor plans a fresh test.",
+          "audit_focus": {
+            "review": [
+              "Compare the program's compilation date with the baseline test date",
+              "Inspect change and access control results for the system running the control"
+            ],
+            "evidence": [
+              "Report of compilation dates for programs placed in production",
+              "Workpaper of the baseline test and its date"
+            ],
+            "recommend": "Have management keep reliable program change records so its auditor can confirm automated controls are unchanged.",
+            "decides": "Management owns the control; the registered firm judges benchmarking under AS 2201"
+          },
+          "isaca_rule": "AS 2201.B29: an unchanged, entirely automated control can rest on its baseline test if general controls over changes, access and operations stay effective and tested. AS 2201.B33: reestablish the baseline after a period or when business factors it assumes change.",
+          "exam_traps": [
+            {
+              "trap": "Once an automated control is tested, the auditor never needs to test it again.",
+              "why": "AS 2201.B33 says the baseline must be reestablished after a period, weighing program changes, error consequences and changed business factors."
+            },
+            {
+              "trap": "Purchased software is enough on its own to justify benchmarking.",
+              "why": "AS 2201.B32 says purchased software suits benchmarking, but the .B29 conditions still apply."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Benchmarking",
+              "definition": "Relying on an earlier baseline test of an unchanged, entirely automated application control instead of repeating it (AS 2201.B28-.B29)."
+            },
+            {
+              "term": "Baseline",
+              "definition": "The auditor's last test of an automated application control, against which later changes are checked."
+            }
+          ],
+          "memory_aid": "Benchmark: working general controls plus no change; retest when time passes or the business shifts."
         }
       ]
     },
     {
       "topic_id": "5C2",
       "topic_name": "Service organizations: from SAS 70 to SSAE 18",
-      "overview": "Companies outsource processes that feed their financial statements, but they keep responsibility for ICFR. A service auditor's SOC 1 report, formerly a SAS 70 report, gives evidence about the provider's controls; management still controls what flows to and from the provider.",
+      "overview": "Companies outsource processes that feed their financial statements, but they keep responsibility for ICFR. A service auditor's SOC 1 report, formerly a SAS 70 report, gives evidence about the provider's controls; management still controls what flows to and from the provider. AS 2201 sets how the issuer's auditor uses that evidence.",
       "can_do": [
         "Explain who stays responsible for ICFR when a process is outsourced",
         "Tell a Type 1 report from a Type 2 report and pick the one a scenario needs",
@@ -2140,6 +2194,60 @@
             }
           ],
           "memory_aid": "Issuer: PCAOB. Nonissuer: AU-C. Service auditor: SSAE No. 18."
+        },
+        {
+          "id": "5C2.7",
+          "name": "Service Organizations in the Auditor's ICFR Audit",
+          "legacy_ids": [],
+          "practice_ids": [
+            "csoe_d5_102",
+            "csoe_d5_103",
+            "csoe_d5_104"
+          ],
+          "definition": "AS 2201 Appendix B sets how the auditor treats outsourced services in the company's information system: which evidence counts and what the opinion says.",
+          "why_it_matters": "The auditor's side of outsourcing comes from AS 2201: where outsourced processing sits, which report shows controls worked, and what the opinion says.",
+          "how_it_works": [
+            "Services in the company's information system belong to the information and communication component, and the auditor includes them when judging evidence (AS 2201.B18, owner-supplied copy saved 4 Nov 2026).",
+            "Evidence routes: a service auditor's report with tests of operating effectiveness, tests of the company's own controls over the provider, or tests at the provider (.B20).",
+            "A report on controls placed in operation, without tests of controls, results and an opinion on operating effectiveness, gives no evidence of operating effectiveness (.B20, note).",
+            "A long gap between the report's test period and the assessment date calls for added procedures, starting with inquiries of management about changes (.B24-.B25).",
+            "The auditor does not refer to the service auditor's report in the ICFR opinion (.B27); Appendix C reference is to another firm's audit of a business unit (.C8)."
+          ],
+          "example": "A regional insurer's claims processor sends a tested report covering January to September; the insurer's year ends in December. Its auditor evaluates the tests, asks management about changes at the processor since September, and issues an opinion that does not mention the service auditor.",
+          "audit_focus": {
+            "review": [
+              "Agree the report's test window to the issuer's fiscal year-end",
+              "Read the service auditor's opinion to see which report type was issued"
+            ],
+            "evidence": [
+              "Service auditor's report listing tested controls and exceptions",
+              "Management's log of provider changes after the test window"
+            ],
+            "recommend": "Have management obtain the provider's report early and track changes at the provider after its test period.",
+            "decides": "Management owns ICFR; the registered firm forms its own opinion on it"
+          },
+          "isaca_rule": "AS 2201 Appendix B: outsourced services in the information system sit in information and communication. Only a report with tests shows controls worked. Bridge a period gap with added procedures. Do not refer to the service auditor's report in the opinion.",
+          "exam_traps": [
+            {
+              "trap": "A report on controls placed in operation shows that the provider's controls worked.",
+              "why": "AS 2201.B20's note: without tests, results and an opinion on operating effectiveness, it is no evidence that controls worked."
+            },
+            {
+              "trap": "The ICFR opinion refers to the service auditor's report to share responsibility.",
+              "why": "AS 2201.B27 says not to refer to it. Appendix C reference, under AS 1206, is to another firm that audited part of the company."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Report on controls placed in operation",
+              "definition": "A service auditor's report without tests of operating effectiveness, like a SOC 1 Type 1 report."
+            },
+            {
+              "term": "Information and communication",
+              "definition": "The COSO component that includes the information system; outsourced processing in that system belongs here (AS 2201.B18)."
+            }
+          ],
+          "memory_aid": "Tests or no proof; the opinion never names the service auditor."
         }
       ]
     }
@@ -2320,6 +2428,11 @@
       "title": "AICPA & CIMA: SOC 3 topic page",
       "url": "https://www.aicpa-cima.com/topic/audit-assurance/audit-and-assurance-greater-than-soc-3",
       "checked": "2026-10-31: SOC 3 reports are general-use reports on trust services criteria that can be freely distributed"
+    },
+    {
+      "title": "PCAOB AS 2201: An Audit of Internal Control Over Financial Reporting That Is Integrated with An Audit of Financial Statements (owner-supplied copy of the pcaobus.org page)",
+      "url": "https://pcaobus.org/oversight/standards/auditing-standards/details/AS2201",
+      "checked": "2026-11-04: paragraphs .05 (footnote 7), .36, .B17-.B33 and .C8 read in the owner-supplied copy saved that day; amendments to .09 and a new .99 take effect 15 Dec 2026 and do not touch these paragraphs"
     }
   ]
 }
