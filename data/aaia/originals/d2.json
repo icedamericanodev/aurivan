@@ -2047,7 +2047,7 @@
       "principle_id": "accuracy-is-not-assurance",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "A Serbian insurance broker picked a language model to review policy wording for its 91% score on public Serbian policy-review exercises, with model answers, posted online since 2019. What is the IS auditor's GREATEST concern?",
+      "question": "A Serbian insurance broker picked a language model to review policy wording for its 91% score on public Serbian policy-review exercises, with answer keys, posted online since 2019. What is the IS auditor's GREATEST concern?",
       "options": {
         "A": "The model may have seen the exercises and answers during training",
         "B": "The public exercises may not match the broker's own policy wording",
@@ -2068,13 +2068,13 @@
         "Final two: A beats B because exercises already in the training data may make the score invalid; a wording mismatch only narrows a valid result.",
         "Exam cue: a high score on a long-public benchmark may reflect memorization; ask for tests on fresh, unpublished cases from real use."
       ],
-      "framework_ref": "NIST AI 100-1 MEASURE 2.1 (Test sets, metrics and TEVV tools documented); NIST AI 100-1 MEASURE 2.13 (Effectiveness of TEVV metrics and processes evaluated)",
+      "framework_ref": "NIST AI 600-1 MS-2.11-001 (Document benchmark assumptions and limitations including possible training/test data cross contamination); NIST AI 100-1 MEASURE 2.13 (Effectiveness of TEVV metrics and processes evaluated)",
       "related_concepts": [
         "Benchmark contamination",
         "Data leakage",
         "Generative AI evaluation"
       ],
-      "_provenance": "Authored from concept: notes 2A.3 Training, Validation and Test Separation (public benchmarks can leak into a large model's training data). Review round 1, 31 Oct 2026: benchmark now matches the task (policy-review exercises with answers), so contamination is the only deciding fact; citation moved off MEASURE 2.3. Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 3, 31 Oct 2026.",
+      "_provenance": "Authored from concept: notes 2A.3 Training, Validation and Test Separation (public benchmarks can leak into a large model's training data). Review round 1, 31 Oct 2026: benchmark now matches the task (policy-review exercises with answers), so contamination is the only deciding fact; citation moved off MEASURE 2.3. Completeness fix, 4 Nov 2026: citation restored to MEASURE 2.1 and 2.13. Review round 2, 4 Nov 2026: 'model answers' changed to 'answer keys' to avoid misreading. Re-audit, 4 Nov 2026: citation set to NIST AI 600-1 MS-2.11-001 and MEASURE 2.13 once MS-2.11-001 was added to the library. Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 3, 31 Oct 2026.",
       "style_version": 2
     },
     {
@@ -2823,24 +2823,24 @@
       "principle_id": "accuracy-is-not-assurance",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "A Greek supermarket chain's self-checkout theft model flags men and women, and younger and older shoppers, at similar rates, yet women aged over 70 file most complaints. Which result should the IS auditor request FIRST?",
+      "question": "A Greek mobile operator's SIM-swap fraud model flags men and women, and younger and older customers, at similar rates, yet women aged over 70 file most complaints. Which result should the IS auditor request FIRST?",
       "options": {
-        "A": "Flag rates for women and for over-70s, each on this year's data",
-        "B": "Overall accuracy on recent confirmed theft cases",
-        "C": "The vendor's fairness benchmark for self-checkout theft detection",
+        "A": "Wrongful-flag rates for women and for those aged over 70, separately",
+        "B": "Overall accuracy on recent confirmed fraud cases",
+        "C": "The vendor's fairness benchmark for SIM-swap fraud detection",
         "D": "Wrongful-flag rates for combined groups such as older women"
       },
       "correct": "D",
       "key_concept": "Fairness by single attributes can hide gaps in combined groups, such as older women; test the intersections that the evidence points to.",
       "pre_read": "Ask whether groups tested one attribute at a time could hide a smaller group where they overlap.",
-      "correct_explanation": "Similar flag rates by sex and by age can hide a gap where the two meet: a model can treat women, and older shoppers, fairly on average while wrongly flagging older women far more often. The complaints point to that combined group, so wrongful-flag rates for intersections such as older women are the result that can confirm or rule out the gap. Recalculating each attribute alone repeats the averaging that hides it.",
+      "correct_explanation": "Similar flag rates by sex and by age can hide a gap where the two meet: a model can treat women, and older customers, fairly on average while wrongly flagging older women far more often. The complaints point to that combined group, so wrongful-flag rates for intersections such as older women can confirm or rule out the gap. Wrongful-flag rates by sex and by age alone still average older women in with everyone else.",
       "wrong_explanations": {
-        "A": "Tempting because it targets the complaining groups. But rates for women alone and for over-70s alone average over older women, so the gap stays hidden.",
+        "A": "Tempting because it counts wrongful flags for both complaining groups. But each rate alone averages over older women, so the gap stays hidden.",
         "B": "Tempting because accuracy on confirmed cases matters. But an overall figure says nothing about how any one group is treated, least of all a small combined group.",
-        "C": "Tempting because benchmarks are ready-made. But a vendor benchmark uses other data and shoppers; it cannot show how this chain's older female shoppers are treated."
+        "C": "Tempting because benchmarks are ready-made. But a vendor benchmark uses other operators' data and customers; it cannot show how this operator's older female customers are treated."
       },
       "tips": [
-        "Eliminate: B gives one overall figure, and C borrows a benchmark built on other data and other shoppers.",
+        "Eliminate: B gives one overall figure, and C borrows a benchmark built on other operators' data and customers.",
         "Final two: D beats A because gaps can sit where groups combine; rates for each attribute alone average them away.",
         "Exam cue: fair results for each attribute alone do not prove fairness for combined groups; test the intersections the evidence points to."
       ],
@@ -2850,14 +2850,13 @@
         "Fairness testing",
         "Group error rates"
       ],
-      "_provenance": "Authored from concept: notes 2E.2 Fairness Testing Across Groups (fairness for combined groups is tested, not inferred from single attributes). Review round 1, 31 Oct 2026: setting moved from meter tampering (aaia_d3_030); A now names the complaining groups too; 'aged over 70'; neutral label. Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 3, 31 Oct 2026.",
+      "_provenance": "Authored from concept: notes 2E.2 Fairness Testing Across Groups (fairness for combined groups is tested, not inferred from single attributes). Review round 1, 31 Oct 2026: setting moved from meter tampering (aaia_d3_030); A now names the complaining groups too; 'aged over 70'; neutral label. Completeness fix, 4 Nov 2026: setting moved from a supermarket self-checkout theft model (repeated CISA d2_084's retailer loss-prevention setting) to a mobile operator's SIM-swap fraud model; lesson, key and letter unchanged. Review round 2, 4 Nov 2026: A made parallel to D (wrongful flags, no period), so only the intersection decides. Re-audit, 4 Nov 2026: correct_explanation's last sentence now matches A (wrongful-flag rates by single attribute). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 3, 31 Oct 2026.",
       "style_version": 2
     },
     {
       "id": "aaia_d2_078",
       "domain": 2,
       "subtopic": "2E AI testing. Fall-risk group results",
-      "principle_id": "accuracy-is-not-assurance",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
       "question": "A Maltese health service's fall-risk model misses falls among wheelchair users no more often than among others, but the test held 25 wheelchair users among 40,000 patients. What is the IS auditor's BEST conclusion?",
@@ -3004,7 +3003,6 @@
       "id": "aaia_d2_082",
       "domain": 2,
       "subtopic": "2F AI threats. Exhausting AI service",
-      "principle_id": "fix-the-control-not-the-model",
       "difficulty": "application",
       "bloom_level": "Application",
       "question": "A Senegalese recipe site's chatbot allows users 30 prompts an hour; overnight, a few accounts filled their quotas with pasted whole cookbooks, exhausting the monthly model budget. What should the IS auditor recommend as BEST?",
@@ -3078,7 +3076,6 @@
       "id": "aaia_d2_084",
       "domain": 2,
       "subtopic": "2F AI threats. Editable sources",
-      "principle_id": "limits-outside-the-model",
       "difficulty": "application",
       "bloom_level": "Application",
       "question": "An Austrian ski resort's public guest chatbot answers from an internal wiki that all 900 seasonal staff can edit. What should the IS auditor recommend as BEST?",
@@ -3118,19 +3115,19 @@
       "principle_id": "ai-changes-are-changes",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "A South Korean comics platform's moderation service loads whichever model its registry tags 'production'; code releases need approval, and 60 data scientists have registry write access. What should the IS auditor recommend as BEST?",
+      "question": "A South Korean comics platform's translation service loads whichever model its registry tags 'production'; code releases need approval, and 60 data scientists have registry write access. What should the IS auditor recommend as BEST?",
       "options": {
         "A": "Log every production tag move for review each month",
         "B": "Encrypt the registry's stored model files at rest",
-        "C": "Confirm that every code release to the moderation service is approved",
+        "C": "Confirm that every code release to the translation service is approved",
         "D": "Let only the approved release process move the production tag"
       },
       "correct": "D",
       "key_concept": "A model registry tag can deploy a model without any code release, so only the approved release process may move it.",
       "pre_read": "Ask what actually decides which model runs in production, and who can change it.",
-      "correct_explanation": "Moving the tag swaps the model that makes moderation decisions without any code release, so in practice the tag is the deployment and registry write access is the power to deploy. With 60 people able to move it, a mistaken or deliberate switch reaches production untested and unapproved. Letting only the approved release process move the tag brings model deployment under change control. Monthly log review finds a harmful switch weeks after it went live.",
+      "correct_explanation": "Moving the tag swaps the translation model without any code release, so in practice the tag is the deployment and registry write access is the power to deploy. With 60 people able to move it, a mistaken or deliberate switch reaches production untested and unapproved. Letting only the approved release process move the tag brings model deployment under change control. Monthly log review finds a harmful switch weeks after it went live.",
       "wrong_explanations": {
-        "A": "Tempting because logs create accountability. But review a month later finds a harmful switch after it has shaped moderation decisions.",
+        "A": "Tempting because logs create accountability. But review a month later finds a harmful switch after its translations have reached readers.",
         "B": "Tempting because encryption protects stored files. But it does not limit who can move the production tag, which is what deploys a model.",
         "C": "Tempting because code change control is the usual release gate. But moving the tag swaps the model with no code release, so approved code releases never cover it."
       },
@@ -3145,7 +3142,7 @@
         "Prompt store",
         "Least privilege"
       ],
-      "_provenance": "Authored from concept: notes 2F.3 Excessive Agency and Access Management for AI (write access to model files and prompts is the power to change AI behavior). Review round 1, 31 Oct 2026: AI-specific deciding fact added (a registry tag deploys a model with no code release); 'South Korean'. Review round 2, 31 Oct 2026: blind-tested as answerable from general change-control sense; stem no longer says the scientists 'can move the tag'; C now the AI trap of relying on code-release approval; A echoes 'production tag move' so the key is not the only stem echo. Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 3, 31 Oct 2026.",
+      "_provenance": "Authored from concept: notes 2F.3 Excessive Agency and Access Management for AI (write access to model files and prompts is the power to change AI behavior). Review round 1, 31 Oct 2026: AI-specific deciding fact added (a registry tag deploys a model with no code release); 'South Korean'. Review round 2, 31 Oct 2026: blind-tested as answerable from general change-control sense; stem no longer says the scientists 'can move the tag'; C now the AI trap of relying on code-release approval; A echoes 'production tag move' so the key is not the only stem echo. Completeness fix, 4 Nov 2026: AI use moved from content moderation (repeated a principles.json example) to comic translation; lesson, key and letter unchanged. Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 3, 31 Oct 2026.",
       "style_version": 2
     },
     {
@@ -3226,7 +3223,7 @@
       "id": "aaia_d2_088",
       "domain": 2,
       "subtopic": "2G AI incident response. Severity scales",
-      "principle_id": "triage-by-harm-close-on-cause",
+      "principle_id": "fix-the-control-not-the-model",
       "difficulty": "application",
       "bloom_level": "Application",
       "question": "A Czech poison-information center rates AI incidents by users affected and downtime, so a chatbot telling 12 callers a cleaning-product mix was safe was rated low. What should the IS auditor recommend as BEST?",
@@ -3276,7 +3273,7 @@
       "correct": "D",
       "key_concept": "Disengagement needs a rehearsed fallback that does not depend on the model or its feeds; an older version on the same inputs can fail alike.",
       "pre_read": "Ask what takes over when the model is switched off, and whether it shares the model's weak points.",
-      "correct_explanation": "The kill switch hands the gates to the previous version, which reads the same sensor feeds, so a feed fault or a flaw both versions share would leave no safe way to run the gates. A rehearsed manual procedure gives a fallback that does not depend on any model, which makes disengagement a real option. Monthly kill-switch tests keep the handover working, but add nothing that works when both versions fail.",
+      "correct_explanation": "The kill switch hands the gates to the previous version, which reads the same sensor feeds, so a feed fault or a shared flaw would leave no safe way to run them. A rehearsed manual procedure is a fallback that depends on no model, which makes disengagement a real option. Relying on the previous version, option C, is the runner-up: the handover is tested, but that version fails whenever the shared feeds do.",
       "wrong_explanations": {
         "A": "Tempting because tested switches are reliable. But a switch that hands control to a version on the same feeds still leaves no fallback if both fail.",
         "B": "Tempting because a vendor attestation sounds like assurance. But it is a claim, not a fallback; if the shared feeds fail, nothing safe takes over the gates.",

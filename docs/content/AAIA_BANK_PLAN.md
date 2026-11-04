@@ -230,6 +230,7 @@ the notice is part of the description.
 |---|---|---|---|---|
 | Pilot (30 Oct 2026) | 20 | 20 | 20 | 60 |
 | Batch 2 (31 Oct 2026) | +30 | +30 | +30 | 150 |
+| Batch 3 (31 Oct – 4 Nov 2026) | +30 | +42 | — | 222 |
 
 Pilot review, 30 Oct 2026:
 - **Blind tests:** 60/60 picks matched the keys on the first pass. After the
@@ -272,6 +273,29 @@ keys but can be answered from general governance knowledge. Keep them for now;
 in batch 3, re-angle 030 around an AI-specific owner power (pause or override
 the model, approve a retrain) and 029 toward what validation must test, checked
 against `aaia_d2_014` so the two do not duplicate.
+
+Batch 3 review, 31 Oct – 4 Nov 2026 (D1 and D2 only; one weekly usage-limit stop, resumed from saved results):
+- **Authors:** two new items per notes subtopic in D1 (30) and D2 (42), each on an angle the subtopic's
+  older items do not use, with a new setting; D1 029 and 030 re-angled as planned (029 now tests what
+  validation must cover for a new population, so it moved to `test-the-ai-as-used`; 030 turns on who
+  accepts a retrained model for use).
+- **Five reviewers per domain:** first blind pass 74/74. Two HARD ERRORs, both fixed without changing a key:
+  D2 056 had a second defensible answer (the benchmark did not match the task, so the item now uses a
+  matching benchmark and turns on contamination alone; three reviewers flagged it); D1 054 stated drift as
+  always gradual. The D1 author also replaced one draft that copied a CISA scenario before review.
+- **Fix loops:** three rounds per domain; every changed item re-tested blind and re-audited, and every
+  re-test matched its key (including a final blind re-test of D1 029, 054 and 061, 3/3).
+- **Cross-domain gate:** 11 PRECISION fixes (a notes example mirrored by an item, reused settings,
+  near-duplicate lessons), applied and re-tested.
+- **Tags and citations:** the mindset coach re-checked every new tag (194 of 222 tagged; untagged
+  knowledge items listed in `PRINCIPLE_TAGGING.md`). One citation added after checking the source
+  (NIST AI 600-1 MS-2.11-001).
+- **Completeness critic:** 8 gaps (three reused settings, a notes mirror, the 029 tag, a provenance trail,
+  the D1 length tell), all closed. D1 length tell 18.1%, D2 20.1%.
+
+**Carried to batch 4:** `auditor-assesses-never-owns-ai` has two seeds, both in D3: add a D1 item whose
+runner-up has the IS auditor signing or approving. `contain-and-preserve-ai` still needs a third seed.
+Next round: D2 and D3 (D3 has had no new items since batch 2).
 
 ## 10. Follow-ups outside this plan's scope
 

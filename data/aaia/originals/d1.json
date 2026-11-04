@@ -1045,6 +1045,7 @@
       "id": "aaia_d1_029",
       "domain": 1,
       "subtopic": "1B AI governance. Requests to internal audit",
+      "principle_id": "test-the-ai-as-used",
       "difficulty": "foundational",
       "bloom_level": "Foundational",
       "question": "A stock exchange's surveillance model, validated on equity trades only, will also watch bond trades, and its AI governance committee asks IS audit what validation must add before launch. What is the BEST advice?",
@@ -1074,7 +1075,7 @@
         "Pooled metrics",
         "Deployment threshold"
       ],
-      "_provenance": "Authored from concept: notes 1B.2 Ownership, Roles and the AI Governance Committee (internal audit may advise the committee on the evidence a launch decision needs; validation covers only the population and settings tested, so a new population needs its own results at the deployed threshold). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 2, 31 Oct 2026. Round 1 review: validation-coverage angle, pooled results as runner-up. Batch 3 re-angle, 31 Oct 2026.",
+      "_provenance": "Authored from concept: notes 1B.2 Ownership, Roles and the AI Governance Committee (internal audit may advise the committee on the evidence a launch decision needs; validation covers only the population and settings tested, so a new population needs its own results at the deployed threshold). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 2, 31 Oct 2026. Runner-up re-angled in review so the final two turn on independent model validation, 31 Oct 2026. Round 1 review: validation-coverage angle, pooled results as runner-up. Batch 3 re-angle, 31 Oct 2026. Principle tag moved to test-the-ai-as-used, 4 Nov 2026.",
       "style_version": 2
     },
     {
@@ -1932,9 +1933,9 @@
       "question": "An Indian state's building-permit office uses a model that groups applications into clusters without labeled outcomes; staff named one cluster 'high fraud risk'. What should the IS auditor be MOST concerned about?",
       "options": {
         "A": "The model cannot explain why each application joined its cluster",
-        "B": "The named cluster may shift between runs on new applications",
+        "B": "The named fraud cluster may shift between runs on new applications",
         "C": "The model's settings and number of clusters were not documented",
-        "D": "Nothing shows the named cluster holds more fraud than the others"
+        "D": "No evidence shows the named cluster holds more fraud than the others"
       },
       "correct": "D",
       "key_concept": "Unsupervised models group similar records without learning outcomes; any name given to a cluster is a hypothesis to test against confirmed cases.",
@@ -1956,7 +1957,7 @@
         "Clustering",
         "Model validity"
       ],
-      "_provenance": "Authored from concept: notes 1A.2 How Models Learn and Where They Fail (unsupervised models group similar records without labels; any name people give a group is a hypothesis to check against real outcomes). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 3, 31 Oct 2026.",
+      "_provenance": "Authored from concept: notes 1A.2 How Models Learn and Where They Fail (unsupervised models group similar records without labels; any name people give a group is a hypothesis to check against real outcomes). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 3, 31 Oct 2026. Completeness fix, 4 Nov 2026: key reworded to end a length tie. Round 2 fix, 4 Nov 2026: B repeats 'fraud' to drop the stem echo.",
       "style_version": 2
     },
     {
@@ -1965,25 +1966,25 @@
       "subtopic": "1A AI models and requirements. Where training examples came from",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "A Thai motor insurer's claim-photo fraud model scored 96% in validation; its fraud examples were all investigations-archive scans, its genuine ones live claim photos. What should the IS auditor be MOST concerned about?",
+      "question": "A Thai customs department's parcel X-ray model scored 96% in validation; every contraband image came from its seizure-archive scanner, every clean one from live airport scanners. What should the IS auditor be MOST concerned about?",
       "options": {
-        "A": "The model may have learned archive image quirks, not signs of fraud",
-        "B": "The 96% may fall slowly as fraud patterns drift over time",
+        "A": "The model may have learned imaging quirks, not signs of contraband",
+        "B": "The 96% may fall slowly as ways of hiding contraband change",
         "C": "The validation set may be too small to support a 96% figure",
-        "D": "The archive may reflect investigators' bias against some groups of drivers"
+        "D": "Seized parcels may reflect officers' bias in choosing which senders to search"
       },
       "correct": "A",
-      "key_concept": "A model can learn a shortcut, such as how one class of examples was scanned, and score well in validation yet fail on live data.",
-      "pre_read": "Ask what every fraud example has in common besides fraud, and whether live claims share it.",
-      "correct_explanation": "Every fraud example shares a trait no genuine one has: it was scanned for the archive. A model can score 96% by learning that difference, a shortcut, instead of anything about fraud, and validation drawn from the same data cannot reveal it, so live fraud may go unflagged. Investigator bias, option D, is the runner-up: it may skew which claims became examples, but the shortcut can void the 96% for every live claim.",
+      "key_concept": "A model can learn a shortcut, such as which scanner produced one class of examples, and score well in validation yet fail on live data.",
+      "pre_read": "Ask what every contraband image has in common besides contraband, and whether live parcels share it.",
+      "correct_explanation": "Every contraband image came from the archive scanner, a trait no clean image has. A model can score 96% by learning that scanner's look, a shortcut, instead of anything about contraband, and validation on the same images cannot reveal it. Officer bias, option D, is the runner-up: it may skew which parcels became examples, but the stated scanner split makes the shortcut near certain, and it voids the 96% for every live parcel.",
       "wrong_explanations": {
-        "B": "Tempting because fraud patterns do change. But drift develops after launch; a shortcut learned from scanning differences fails on live photos from the first day.",
-        "C": "Tempting because small samples give unstable figures. But a larger validation set drawn the same way would carry the same scanning difference.",
-        "D": "Tempting because investigators choose which claims to examine. But that skew matters less than a shortcut that could make the 96% meaningless for live claims."
+        "B": "Tempting because ways of hiding contraband do change. But drift develops after launch; a shortcut learned from scanner differences fails on live airport images from the first day.",
+        "C": "Tempting because small samples give unstable figures. But a larger validation set drawn the same way would carry the same scanner difference.",
+        "D": "Tempting because officers' choice of parcels can single out some senders. But the stated scanner split makes the shortcut likelier, and it voids the 96% for every live parcel."
       },
       "tips": [
-        "Eliminate: B treats the flaw as later drift, though it exists from day one, and C blames sample size, though a larger set drawn the same way shares the scanning difference.",
-        "Final two: A beats D because a shortcut tied to how fraud examples were scanned can void the 96% for every live claim; investigator bias is a real but narrower concern.",
+        "Eliminate: B treats the flaw as later drift, though it exists from day one, and C blames sample size, though a larger set drawn the same way shares the scanner difference.",
+        "Final two: A beats D because the stated scanner split makes the shortcut near certain, and it can void the 96% for every live parcel; officer bias is less likely and narrower.",
         "Exam cue: when one class of training examples comes from a different source, check whether the model learned the source instead of the outcome."
       ],
       "framework_ref": "NIST AI 100-1 MEASURE 2.3 (Performance measured in conditions similar to deployment); NIST AI 100-1 MEASURE 2.5 (System shown to be valid and reliable, limits documented)",
@@ -1992,7 +1993,7 @@
         "Training data",
         "Validation"
       ],
-      "_provenance": "Authored from concept: notes 1A.2 How Models Learn and Where They Fail (features are the inputs a model uses; a feature known only after the outcome inflates validation and is missing in production). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 3, 31 Oct 2026. Cross-domain gate fix, 31 Oct 2026: shortcut learning from how one class of examples was collected. Round 2 fix, 31 Oct 2026: key reworded to drop the stem echo. Round 3 fix, 31 Oct 2026: stem states where genuine examples came from; explanation and Eliminate tip tightened.",
+      "_provenance": "Authored from concept: notes 1A.2 How Models Learn and Where They Fail (models learn any pattern in the data, even a shortcut such as how one class of examples was collected, and then fail on live data). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 3, 31 Oct 2026. Cross-domain gate fix, 31 Oct 2026: shortcut learning from how one class of examples was collected. Round 2 fix, 31 Oct 2026: key reworded to drop the stem echo. Round 3 fix, 31 Oct 2026: stem states where genuine examples came from; explanation and Eliminate tip tightened. Completeness fix, 4 Nov 2026: moved to a new setting (customs parcel X-ray screening), as the claim-photo insurer setting was already used; runner-up is officer selection bias. Round 2 fix, 4 Nov 2026: B repeats 'contraband' to drop the stem echo.",
       "style_version": 2
     },
     {
@@ -2073,6 +2074,7 @@
       "id": "aaia_d1_057",
       "domain": 1,
       "subtopic": "1B AI governance. Testing inventory completeness",
+      "principle_id": "population-includes-misses",
       "difficulty": "foundational",
       "bloom_level": "Foundational",
       "question": "A Kuwaiti petrochemical company's AI inventory lists the AI products department heads said they bought, though its engineers also build their own models. Which source would BEST help the IS auditor find missing AI?",
@@ -2151,7 +2153,7 @@
       "bloom_level": "Application",
       "question": "A Mozambican ministry's AI governance committee (two IT managers, one data science lead) approved a model ranking patients for scarce dialysis places; the lead, its builder, abstained. What should concern the IS auditor MOST?",
       "options": {
-        "A": "No one accountable for dialysis allocation took part in approving it",
+        "A": "No one accountable for dialysis allocation took any part in approving it",
         "B": "The committee may meet too rarely to approve dialysis models quickly",
         "C": "The IT managers may lack training in machine-learning methods",
         "D": "No IS auditor sat on the committee as a voting member"
@@ -2176,7 +2178,7 @@
         "Accountability",
         "High-impact AI"
       ],
-      "_provenance": "Authored from concept: notes 1B.2 Ownership, Roles and the AI Governance Committee (data scientists and IT do not own business decisions by default; high-impact uses need approval by those who answer for the decision). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 3, 31 Oct 2026. Round 3 review: committee membership put in parentheses.",
+      "_provenance": "Authored from concept: notes 1B.2 Ownership, Roles and the AI Governance Committee (data scientists and IT do not own business decisions by default; high-impact uses need approval by those who answer for the decision). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 3, 31 Oct 2026. Round 3 review: committee membership put in parentheses. Completeness fix, 4 Nov 2026: key reworded to end a length tie.",
       "style_version": 2
     },
     {
@@ -2223,26 +2225,26 @@
       "principle_id": "accuracy-is-not-assurance",
       "difficulty": "foundational",
       "bloom_level": "Foundational",
-      "question": "A Qatari investment group's quarterly AI program report to its board shows models deployed and AI spending against budget. Which added metric should the IS auditor recommend as BEST evidence that AI governance works?",
+      "question": "A Qatari investment group's board AI scorecard shows a model green if it passes most of ten equal checks; two high-impact models are green but overdue for validation. What is the IS auditor's BEST recommendation?",
       "options": {
-        "A": "Average accuracy of deployed models at their latest validation",
-        "B": "Average monthly response time of the group's AI services",
-        "C": "Share of high-impact models overdue for scheduled validation",
-        "D": "Number of new AI use cases that business units proposed"
+        "A": "Add live monitoring accuracy for each model with overdue validation",
+        "B": "Have owners of overdue high-impact models attest to their status",
+        "C": "Show any high-impact model red once its validation is overdue",
+        "D": "Have IS audit approve each scorecard before the board sees it"
       },
       "correct": "C",
-      "key_concept": "AI program metrics show whether governance operates, such as overdue validations of high-impact models, not adoption, spending or average model accuracy.",
-      "pre_read": "For each metric, ask whether it could look good while the riskiest models go unchecked.",
-      "correct_explanation": "Governance works when its controls operate: models have owners, and risk reviews and validations happen on schedule. The share of high-impact models overdue for validation shows directly whether the program keeps its riskiest AI under review. Average accuracy at the latest validation, option A, is the runner-up: it sounds like assurance, but an average can look good while the riskiest models go unvalidated, and accuracy measures models, not governance.",
+      "key_concept": "AI program metrics must show whether controls over high-impact models operate; equal checks can show a model green while its validation is overdue.",
+      "pre_read": "Ask which single check could fail on a high-impact model without turning the scorecard red.",
+      "correct_explanation": "Ten equal checks let a high-impact model stay green with its validation overdue, though validation is the check that shows whether a model still performs as data and use change. Showing any high-impact model red once validation is overdue lets the board see whether governance keeps its riskiest AI under review. Live accuracy, option A, is the runner-up: it looks current, but one overall score skips the group-level errors and documented limits validation tests.",
       "wrong_explanations": {
-        "A": "Tempting because accuracy sounds like assurance. But an average across models can look good while high-impact models sit unvalidated; it measures models, not whether governance controls operate.",
-        "B": "Tempting because service speed matters to users. But response time is a performance measure, not evidence that governance controls operate.",
-        "D": "Tempting because it shows the program's reach. But proposals count adoption, which can grow whether or not AI is governed."
+        "A": "Tempting because live accuracy looks current. But it is one overall score, not the group-level errors and documented limits that validation tests, and the two models would still show green.",
+        "B": "Tempting because attestation adds accountability. But owners would attest to the same equal-check status, which still shows the two overdue models green.",
+        "D": "Tempting because audit adds independence. But approving management's scorecard would make IS audit part of a control it must later assess; audit recommends and reports, never approves."
       },
       "tips": [
-        "Eliminate: D counts adoption, which grows whether or not AI is governed, and B measures service speed, a performance metric.",
-        "Final two: C beats A because overdue validations show whether controls over the riskiest models operate; an average accuracy can look good while those models go unchecked.",
-        "Exam cue: AI program metrics should show whether governance controls operate, such as overdue reviews, missing owners and incidents."
+        "Eliminate: D has IS audit approve a report it must later assess, and B has owners attest to a status that still shows the overdue models green.",
+        "Final two: C beats A because live accuracy is one overall score that skips what validation tests; turning overdue models red shows whether controls over the riskiest AI operate.",
+        "Exam cue: when an AI scorecard weights every check or model equally, ask what it hides about high-impact models; their overdue reviews should show plainly."
       ],
       "framework_ref": "NIST AI 100-1 GOVERN 1.5 (Ongoing monitoring and periodic review of the risk management process); NIST AI 100-1 MEASURE 1.2 (Metrics and control effectiveness regularly assessed)",
       "related_concepts": [
@@ -2250,7 +2252,7 @@
         "Board reporting",
         "Validation coverage"
       ],
-      "_provenance": "Authored from concept: notes 1B.3 Program Metrics, Awareness and Workforce Impact (program metrics track whether governance works, such as overdue reviews, owners and incidents, not adoption or attendance). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 3, 31 Oct 2026.",
+      "_provenance": "Authored from concept: notes 1B.3 Program Metrics, Awareness and Workforce Impact (program metrics track whether governance works, such as overdue reviews, owners and incidents, not adoption or attendance). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 3, 31 Oct 2026. Completeness fix, 4 Nov 2026: re-angled away from the notes 1B.3 example (an equal-check board scorecard that hides overdue validations of high-impact models). Round 2 fix, 4 Nov 2026: distractors share the stem's terms; runner-up is live accuracy used in place of validation. Round 3 fix, 4 Nov 2026: option A names the overdue validation so the key is not the only option echoing it.",
       "style_version": 2
     },
     {
@@ -2733,6 +2735,7 @@
       "id": "aaia_d1_075",
       "domain": 1,
       "subtopic": "1E Ethics, regulations and standards. Testing a fairness criterion",
+      "principle_id": "test-the-ai-as-used",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
       "question": "A French broadband provider's fairness criterion covers ethnic groups, but privacy rules bar collecting ethnicity, so its purchased credit-check model has never been tested against it. What should the IS auditor recommend as BEST?",
@@ -2843,7 +2846,6 @@
       "id": "aaia_d1_078",
       "domain": 1,
       "subtopic": "1E Ethics, regulations and standards. Evidence of AI compliance",
-      "principle_id": "ai-output-is-a-lead",
       "difficulty": "foundational",
       "bloom_level": "Foundational",
       "question": "A Czech agricultural-drone maker's compliance tool has a language model read its policies and mark each applicable AI duty as met. Which evidence would BEST support the IS auditor's conclusion on compliance?",
