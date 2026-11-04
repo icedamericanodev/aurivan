@@ -194,3 +194,13 @@ Rule for the form builder: Draw no two items of a pair into the same form. Keep 
 | csoe_d5_002 | csoe_d5_090 | proposed by the D5 batch 5 author |
 | csoe_d5_092 | csoe_d5_093 | proposed by the D5 batch 5 author |
 | csoe_d5_097 | csoe_d5_098 | proposed by the D5 batch 5 author |
+| csoe_d4_088 | csoe_d4_089 | proposed by the D4 batch 5 author |
+| csoe_d4_089 | csoe_d4_093 | proposed by the D4 batch 5 author |
+| csoe_d4_061 | csoe_d4_091 | proposed by the D4 batch 5 author |
+| csoe_d4_086 | csoe_d4_087 | proposed by the D4 batch 5 author |
+| csoe_d4_103 | csoe_d4_104 | proposed by the D4 batch 5 author |
+| csoe_d4_104 | csoe_d4_105 | proposed by the D4 batch 5 author |
+| csoe_d4_062 | csoe_d4_102 | proposed by the D4 batch 5 author |
+| csoe_d4_094 | csoe_d4_099 | proposed by the D4 batch 5 author |
+| csoe_d4_097 | csoe_d4_098 | proposed by the D4 batch 5 author |
+| csoe_d2_031 | csoe_d4_097 | d2_031's explanation names d4_097's three factors |
