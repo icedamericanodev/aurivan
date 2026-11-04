@@ -1963,7 +1963,7 @@
         "Engagement scope",
         "Document control"
       ],
-      "_provenance": "Authored from concept: notes 3A.2 Scoping an AI Audit Engagement (scope covers data and components the organization controls, not vendor weights it cannot see; RAG answers come from the organization's own sources). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 4, 4 Nov 2026. Option A and the stem's revision cycle changed at the batch 4 cross-domain gate (option A repeated aaia_d3_002's vendor-pretraining distractor).",
+      "_provenance": "Authored from concept: notes 3A.2 Scoping an AI Audit Engagement (scope covers data and components the organization controls, not vendor weights it cannot see; RAG answers come from the organization's own sources). Option A and the stem's revision cycle changed at the batch 4 cross-domain gate (option A repeated aaia_d3_002's vendor-pretraining distractor). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 4, 4 Nov 2026.",
       "style_version": 2
     },
     {
@@ -1973,17 +1973,17 @@
       "principle_id": "real-human-oversight",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "For an audit of a Kosovo car-sharing firm's model that bans members for reckless driving, the sponsor asks to exclude appeals, members' only human review, run by member services. What is the auditor's BEST response?",
+      "question": "An IS auditor scoping a Kosovo car-sharing firm's reckless-driving ban model is asked by the sponsor to exclude appeals, the only human review of a ban, as outside the model. What is the BEST response?",
       "options": {
         "A": "Exclude appeals and record the exclusion and its reason in the plan",
-        "B": "Keep appeals in scope as part of the model's decision process",
+        "B": "Keep appeals in the audit as part of the AI decision process",
         "C": "Leave appeals to a later audit of the member services function",
         "D": "Include appeals if complaint volumes pass an agreed threshold"
       },
       "correct": "B",
-      "key_concept": "An AI audit's scope covers the decision process around the model, including appeals, whichever unit runs them.",
+      "key_concept": "An AI audit's scope covers the decision process around the model, including appeals, even when they sit outside the model.",
       "pre_read": "Ask what protects a member the model bans wrongly, and who tests it.",
-      "correct_explanation": "Appeals are part of the AI decision process: they are how a member wrongly banned for reckless driving gets a person to review the decision. Which unit runs them does not move them out of scope. Recording an exclusion fits a limitation the auditor cannot avoid, but this one removes the only human review, so the auditor keeps appeals in scope and escalates to the audit committee if the sponsor insists.",
+      "correct_explanation": "Appeals are part of the AI decision process: they are how a member wrongly banned for reckless driving gets a person to review the decision. Sitting outside the model does not move them out of scope. Recording an exclusion fits a limitation the auditor cannot avoid, but this one removes the only human review, so the auditor keeps appeals in scope and escalates to the audit committee if the sponsor insists.",
       "wrong_explanations": {
         "A": "Tempting because documenting exclusions is good practice. But an AI audit that skips the appeal route cannot conclude on oversight of decisions that ban members from the service.",
         "C": "Tempting because member services has its own audits. But a later audit separates the safeguard from the model it protects, leaving this conclusion incomplete.",
@@ -1991,8 +1991,8 @@
       },
       "tips": [
         "Eliminate: C splits the safeguard from the model it protects, and D lets complaint volume decide scope instead of the decision process.",
-        "Final two: B beats A because the appeal route is part of the model's decision process; documenting its exclusion still leaves oversight of bans untested.",
-        "Exam cue: scope an AI decision end to end, including review, override and appeal. Who runs a step does not move it out of the AI audit."
+        "Final two: B beats A because the appeal route is part of the AI decision process; documenting its exclusion still leaves oversight of bans untested.",
+        "Exam cue: scope an AI decision end to end, including review, override and appeal. A step outside the model is still inside the AI audit."
       ],
       "framework_ref": "ISACA IT Audit Standard 1203 (Engagement Planning); NIST AI 100-1 MEASURE 3.3 (Feedback and appeal processes for end users and affected communities)",
       "related_concepts": [
@@ -2000,7 +2000,7 @@
         "Engagement scope",
         "Human oversight"
       ],
-      "_provenance": "Authored from concept: notes 3A.2 Scoping an AI Audit Engagement (include the decision process around the model: who acts on outputs, how they override and how affected people appeal). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 4, 4 Nov 2026. Setting changed at the batch 4 cross-domain gate (a hospital sponsor narrowing the scope mirrored the 3A.2 notes example; an insurer fraud-cancellation setting was rejected because it repeats CISA d2_117).",
+      "_provenance": "Authored from concept: notes 3A.2 Scoping an AI Audit Engagement (include the decision process around the model: who acts on outputs, how they override and how affected people appeal). Setting changed at the batch 4 cross-domain gate (a hospital sponsor narrowing the scope mirrored the 3A.2 notes example; an insurer fraud-cancellation setting was rejected because it repeats CISA d2_117). Stem reworded in batch 4 round 2: the sponsor's reason is now that appeals sit outside the model (the model-only scoping trap), and the stem names the IS auditor. Option B and tip 2 reworded in batch 4 round 3 so the key no longer echoes the stem's \"model\" and \"scoping\". Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 4, 4 Nov 2026.",
       "style_version": 2
     },
     {
@@ -2192,7 +2192,7 @@
       "id": "aaia_d3_060",
       "domain": 3,
       "subtopic": "3B Testing and sampling. A model switch-off control",
-      "principle_id": "real-human-oversight",
+      "principle_id": "test-the-ai-as-used",
       "difficulty": "application",
       "bloom_level": "Application",
       "question": "A Togolese social security fund's procedure lets its benefits manager switch off the family-allowance model and route applications to staff. Which evidence BEST shows the IS auditor that this control operates?",
@@ -2231,25 +2231,25 @@
       "subtopic": "3B Testing and sampling. Adding a stratum",
       "difficulty": "foundational",
       "bloom_level": "Foundational",
-      "question": "An IS auditor's sample of a Montenegrin hotel chain's room-rate decisions is stratified by guest nationality; revenue managers hand-override about 4% of the model's rates. Which added stratum BEST helps find the model's errors?",
+      "question": "An IS auditor's sample of a Montenegrin probation service's supervision-level decisions is stratified by home region; officers override about 4% of the model's levels. Which added stratum BEST helps find the model's errors?",
       "options": {
-        "A": "Rates set during the chain's busiest weeks of the year",
-        "B": "Rates the managers chose not to override, drawn at random",
-        "C": "Rates for guests who later complained about the price",
-        "D": "Rates the managers overrode, with the model's original rate"
+        "A": "Levels set in the months when caseloads peaked last year",
+        "B": "Levels the officers chose not to override, drawn at random",
+        "C": "Levels for people who later complained about their level",
+        "D": "Levels the officers overrode, with the model's original level"
       },
       "correct": "D",
       "key_concept": "Human overrides mark where people judged an AI decision wrong, so an overrides stratum focuses testing on likely errors.",
       "pre_read": "Ask where in the records the model's errors are most likely to show.",
-      "correct_explanation": "Overrides mark the rates a revenue manager judged wrong, so they gather the model's likely errors; comparing each with the model's original rate shows what it missed. An overrides stratum lets the auditor test those decisions directly, and check that the overrides themselves treat nationalities consistently. Complaints also point at errors, but only from guests who chose to complain; most wrongly priced guests never do.",
+      "correct_explanation": "Overrides mark the levels a probation officer judged wrong, so they gather the model's likely errors; comparing each with the model's original level shows what it missed. An overrides stratum lets the auditor test those decisions directly, and check that the overrides themselves treat regions consistently. Complaints also point at errors, but only from people who chose to complain, and nobody complains about a level set too low.",
       "wrong_explanations": {
-        "A": "Tempting because busy weeks stress pricing. But peaks raise volume, not the share of wrong rates; nothing points the model's errors there.",
-        "B": "Tempting because it widens coverage. But the stratified sample already draws from these rates; a random extra stratum adds no focus on errors.",
-        "C": "Tempting because complaints signal wrong prices. But complainers are a self-selected few; overrides cover every rate a manager judged wrong."
+        "A": "Tempting because caseload peaks stress the service. But peaks raise volume, not the share of wrong levels; nothing points the model's errors there.",
+        "B": "Tempting because it widens coverage. But the stratified sample already draws from these levels; a random extra stratum adds no focus on errors.",
+        "C": "Tempting because complaints signal wrong levels. But complainers are a self-selected few, and none object to a level set too low; overrides cover both."
       },
       "tips": [
-        "Eliminate: A adds peak weeks, which raise volume rather than errors, and B adds a random draw of rates the main sample already covers.",
-        "Final two: D beats C because overrides record every rate a manager judged wrong; complaints come only from the few guests who speak up.",
+        "Eliminate: A adds caseload peaks, which raise volume rather than errors, and B adds a random draw of levels the main sample already covers.",
+        "Final two: D beats C because overrides record every level an officer judged wrong; complaints come only from people who speak up, never about levels set too low.",
         "Exam cue: when sampling AI decisions, add strata where errors gather, such as human overrides, low-confidence scores and recent model versions."
       ],
       "framework_ref": "ISACA ITAF Guideline 2208 (Information Technology Audit Sampling); NIST AI 100-1 MANAGE 4.1 (Post-deployment monitoring including appeal, override, incident response and change management)",
@@ -2258,7 +2258,7 @@
         "Human overrides",
         "Error-prone strata"
       ],
-      "_provenance": "Authored from concept: notes 3B.2 Sampling AI Decisions (add strata for low-confidence scores, human overrides and recent model versions, where errors tend to gather). Re-angled at the batch 4 cross-domain gate: the earlier version (production decisions stratified by group, not training records) repeated aaia_d3_005. Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 4, 4 Nov 2026.",
+      "_provenance": "Authored from concept: notes 3B.2 Sampling AI Decisions (add strata for low-confidence scores, human overrides and recent model versions, where errors tend to gather). Re-angled at the batch 4 cross-domain gate: the earlier version (production decisions stratified by group, not training records) repeated aaia_d3_005. Setting changed in batch 4 completeness round 1: a hotel chain's room-rate model repeated crisc_d2_061's AI room-pricing setting; now a probation service's supervision-level model stratified by home region, angle and key unchanged. Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 4, 4 Nov 2026.",
       "style_version": 2
     },
     {
@@ -2305,17 +2305,17 @@
       "principle_id": "reproducible-ai-evidence",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "To reperform a Bruneian motor insurer's renewal-premium decisions, the IS auditor plans to pull sampled policyholders' features from the feature store and score them with the archived version that decided. What is the GREATEST concern?",
+      "question": "To reperform a Bruneian buy-now-pay-later provider's spending-limit renewals, the IS auditor plans to pull sampled customers' features from the feature store and score them with the archived version that decided. What is the GREATEST concern?",
       "options": {
         "A": "The store may hold today's values, not those used when deciding",
         "B": "The archived version may not read the store's current feature format",
-        "C": "The sample may hold too few large increases to compare groups",
+        "C": "The sample may hold too few large limit cuts to compare groups",
         "D": "The archived version differs from the model now in production"
       },
       "correct": "A",
       "key_concept": "Reperformance needs the deciding model version and the inputs as they were at decision time; current feature values change the case.",
       "pre_read": "Ask whether each input to the rerun is what the model saw on the day it decided.",
-      "correct_explanation": "Reperforming a decision needs the model version that made it and the inputs as they were then. A feature store often keeps each customer's latest values, such as claims history and annual mileage, so today's features would have the archived version score a different case. The rerun could then disagree, or agree, for the wrong reason, with nothing to warn the auditor. A format mismatch fails visibly and can be fixed.",
+      "correct_explanation": "Reperforming a decision needs the model version that made it and the inputs as they were then. A feature store often keeps each customer's latest values, such as missed repayments and monthly spending, so today's features would have the archived version score a different case. The rerun could then disagree, or agree, for the wrong reason, with nothing to warn the auditor. A format mismatch fails visibly and can be fixed.",
       "wrong_explanations": {
         "B": "Tempting because feature formats change over time. But a format mismatch fails visibly and can be fixed; stale inputs fail silently and corrupt every comparison.",
         "C": "Tempting because group comparisons need enough cases. But the objective is reperforming decisions, not fairness; sample design does not fix wrong inputs.",
@@ -2332,7 +2332,7 @@
         "Feature store",
         "Point-in-time data"
       ],
-      "_provenance": "Authored from concept: notes 3B.3 Reperformance and Full-Population Testing (a logged decision can be reproduced only if the same model version and the same inputs are still available). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 4, 4 Nov 2026.",
+      "_provenance": "Authored from concept: notes 3B.3 Reperformance and Full-Population Testing (a logged decision can be reproduced only if the same model version and the same inputs are still available). Setting changed in batch 4 completeness round 1: a motor insurer's renewal-premium model repeated crisc_d2_025's insurer ML pricing setting; now a buy-now-pay-later provider's spending-limit renewals, angle and key unchanged. Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 4, 4 Nov 2026.",
       "style_version": 2
     },
     {
@@ -2378,24 +2378,24 @@
       "subtopic": "3C Evidence collection. Evidence of a threshold change",
       "difficulty": "foundational",
       "bloom_level": "Foundational",
-      "question": "A Sierra Leonean university's admission offers fell sharply in June, and its scoring model's version log shows no release since January. Which evidence BEST shows the IS auditor whether, and by whom, the cut-off changed?",
+      "question": "A Sierra Leonean energy agency's solar-rebate approvals halved in June; its screening model's version log shows no release since January. Which evidence BEST shows the IS auditor whether, and by whom, the cut-off was altered?",
       "options": {
-        "A": "The model card's stated cut-off score for admission offers",
+        "A": "The model card's stated cut-off score for rebate approvals",
         "B": "June's decision log showing each applicant's score and outcome",
-        "C": "The scoring platform's change history for the cut-off setting",
-        "D": "The validation report approving the January release's cut-off"
+        "C": "The scoring platform's settings history for the cut-off value",
+        "D": "The model version log naming who approved each release"
       },
       "correct": "C",
       "key_concept": "AI thresholds are configuration that can change without a new model version; settings history, not the version log, shows such changes.",
       "pre_read": "Separate what the trained model holds from what is set around it.",
-      "correct_explanation": "A cut-off is usually a platform setting rather than part of the trained model, so it can change without a new model version. The platform's change history for that setting shows whether, when and by whom the cut-off moved. June's decision log lets the auditor infer an effective cut-off from scores and outcomes, but cannot prove the setting changed, or show who changed it.",
+      "correct_explanation": "A cut-off is usually a platform setting rather than part of the trained model, so it can be altered without a new model version. The platform's settings history for that value shows whether, when and by whom the cut-off moved. June's decision log lets the auditor infer an effective cut-off from scores and outcomes, but cannot prove the setting was altered, or show who altered it.",
       "wrong_explanations": {
         "A": "Tempting because it states the cut-off. But a model card is the builders' description and may never have been updated after a settings change.",
         "B": "Tempting because scores and outcomes reveal the effective cut-off. But inference shows a pattern, not the change itself, when it happened or who made it.",
-        "D": "Tempting because it records an approved cut-off. But it shows the value in January; a later settings change would not appear there."
+        "D": "Tempting because it records approvers and shows no release since January. But a cut-off set on the platform can move without a new version, so this log cannot show it."
       },
       "tips": [
-        "Eliminate: A is the builders' description of the model, and D shows the cut-off as approved in January, before June.",
+        "Eliminate: A is the builders' description, which may predate any change, and D records model releases, while a platform cut-off can move without one.",
         "Final two: C beats B because the settings history records the change itself; decision logs only let the auditor infer one.",
         "Exam cue: a model's threshold can change without a new version. Ask for the configuration history, not just the model version log."
       ],
@@ -2405,15 +2405,14 @@
         "Model threshold",
         "Model version"
       ],
-      "_provenance": "Authored from concept: notes 3C.1 Sources of AI Evidence (decision, override and prompt logs, with model version and configuration history, show what happened in production; match the evidence to the question). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 4, 4 Nov 2026.",
+      "_provenance": "Authored from concept: notes 3C.1 Sources of AI Evidence (decision, override and prompt logs, with model version and configuration history, show what happened in production; match the evidence to the question). Setting changed in batch 4 completeness round 1: a university's admissions scoring model repeated crisc_d1_004's admissions setting; the aid agency's cash-transfer eligibility model that replaced it repeated aaia_d2_034's aid-agency entitlement setting; a fisheries ministry was proposed but aaia_d1_055 already uses one, so now an energy agency's solar-rebate screening model, angle and key unchanged. Stem says 'altered' and option C says 'settings history' so the key no longer echoes the stem's wording. Principle moved from ai-changes-are-changes (domains omit D3) to reproducible-ai-evidence: the settings history is the exact-settings record, the decision log only an inference. Option D changed in the batch 4 re-audit from the January validation report to the model version log naming approvers, so the key is no longer the only option that names who acted and the stem's version-log fact becomes a live trap. Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 4, 4 Nov 2026.",
       "style_version": 2,
-      "principle_id": "ai-changes-are-changes"
+      "principle_id": "reproducible-ai-evidence"
     },
     {
       "id": "aaia_d3_066",
       "domain": 3,
       "subtopic": "3C Evidence collection. Use beyond validated limits",
-      "principle_id": "test-the-ai-as-used",
       "difficulty": "application",
       "bloom_level": "Application",
       "question": "A Quebec dental chain's cavity-detection model card says it was validated on adult X-rays only. Which evidence BEST shows the IS auditor whether the model is used beyond that limit?",
@@ -2450,7 +2449,7 @@
       "id": "aaia_d3_067",
       "domain": 3,
       "subtopic": "3C Evidence collection. Evidence of retraining approval",
-      "principle_id": "ai-changes-are-changes",
+      "principle_id": "independence-of-ai-assurance",
       "difficulty": "application",
       "bloom_level": "Application",
       "question": "A Djiboutian bank's trade-finance fraud model can be retrained and promoted to production automatically by its pipeline. Which evidence BEST shows the IS auditor that every retrained version was approved before use?",
@@ -2461,7 +2460,7 @@
         "D": "The model registry's version history, matched to approvals"
       },
       "correct": "D",
-      "key_concept": "Pipelines can promote retrained models with no human sign-off; match the registry's version history to approvals, since a passed test gate is not approval.",
+      "key_concept": "Pipelines can promote retrained models with no human sign-off; match the registry's version history to approvals, since passing the builders' test gate is not approval.",
       "pre_read": "Separate a pipeline checking metrics from a person approving a model.",
       "correct_explanation": "When a pipeline can promote models by itself, the question is whether someone with authority approved each version before it went live. The model registry is where the pipeline records each version it promotes, so matching its history to approval records tests the whole period. A validation gate shows the pipeline checks builders' metrics; passing those tests is not the owner's approval, and the gate's design says nothing about versions already promoted.",
       "wrong_explanations": {
@@ -2480,7 +2479,7 @@
         "Automated retraining",
         "Approval versus testing"
       ],
-      "_provenance": "Authored from concept: notes 3C.2 Sufficiency, Reliability and Preservation of AI Evidence (evidence must cover the whole period under audit; a builders' test gate is not approval of a retrained version). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 4, 4 Nov 2026.",
+      "_provenance": "Authored from concept: notes 3C.2 Sufficiency, Reliability and Preservation of AI Evidence (evidence must cover the whole period under audit; a builders' test gate is not approval of a retrained version). Principle moved in batch 4 completeness round 1 from ai-changes-are-changes (domains omit D3) to independence-of-ai-assurance: the runner-up is the builders' own validation gate offered as approval. Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 4, 4 Nov 2026.",
       "style_version": 2
     },
     {
@@ -2638,9 +2637,9 @@
       "principle_id": "ai-output-is-a-lead",
       "difficulty": "foundational",
       "bloom_level": "Foundational",
-      "question": "An IS auditor's approved AI assistant wrote the query extracting a Belizean tourism board's tour-guide licensing decisions, then queried the source system for a total, which matched. What should the auditor do FIRST?",
+      "question": "An IS auditor's approved AI assistant wrote the query extracting a Belizean tourism board's tour-guide licensing decisions; the assistant then queried the source system for a total, which matched. What should the auditor do FIRST?",
       "options": {
-        "A": "Compare the extract to a total the assistant did not produce",
+        "A": "Compare the extract to a total from the system's own reports",
         "B": "Rely on the match, since the total came from the source system",
         "C": "Accept the extract, since the assistant is approved for audit use",
         "D": "Ask the assistant to explain what each of its queries does"
@@ -2665,7 +2664,7 @@
         "Control total",
         "AI-assisted extraction"
       ],
-      "_provenance": "Authored from concept: notes 3D.1 Completeness and Accuracy of Audit Data (an extract is a copy; queries, joins and date ranges can drop records without any error message; reconcile counts and totals to the source). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 4, 4 Nov 2026. Re-angled at the batch 4 cross-domain gate: the earlier key (reconcile to the source) was answerable from CISA alone; the deciding fact is now that a source total the same assistant queried is not independent.",
+      "_provenance": "Authored from concept: notes 3D.1 Completeness and Accuracy of Audit Data (an extract is a copy; queries, joins and date ranges can drop records without any error message; reconcile counts and totals to the source). Re-angled at the batch 4 cross-domain gate: the earlier key (reconcile to the source) was answerable from CISA alone; the deciding fact is now that a source total the same assistant queried is not independent. Option A reworded in batch 4 round 2 so the key is not the only negated option. Stem reworded in batch 4 round 3 to make explicit that the assistant, not the auditor, queried the total. Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 4, 4 Nov 2026.",
       "style_version": 2
     },
     {
@@ -2746,7 +2745,7 @@
       "id": "aaia_d3_075",
       "domain": 3,
       "subtopic": "3D Data quality and analytics. Tuning on work papers",
-      "principle_id": "ai-in-audit-stays-yours",
+      "principle_id": "rank-ai-risk-by-harm",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
       "question": "A North Macedonian state railway's audit function plans to fine-tune its approved language model on five years of work papers, including staff disciplinary records, to draft findings in house style. What is the GREATEST concern?",
@@ -2930,7 +2929,6 @@
       "id": "aaia_d3_080",
       "domain": 3,
       "subtopic": "3E Outputs and reports. A fix that removes a field",
-      "principle_id": "accuracy-is-not-assurance",
       "difficulty": "application",
       "bloom_level": "Application",
       "question": "An Angolan mobile-money lender's loan model declined rural applicants far more often; management removed the home-province field and asks to close the finding. What is the IS auditor's GREATEST concern?",

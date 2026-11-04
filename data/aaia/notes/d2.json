@@ -584,6 +584,7 @@
             "Version pinning, choosing a specific model version, keeps behavior stable until the customer decides to move.",
             "Contracts can require advance notice, release notes, a test window and the right to stay on a version for a set period.",
             "Before adopting an update, the model owner reruns regression tests, a fixed set of cases with known expected results.",
+            "When one model serves several uses, the owner of each use tests an update on that use's own work and accepts it.",
             "Monitoring output patterns, such as approval or flag rates, detects silent changes the contract did not prevent."
           ],
           "example": "A Mexican freight company's contract gives 30 days' notice and a test window before its vendor moves the hosted language model that reads shipping invoices to a new version. The model owner skips the regression tests because the release notes report better accuracy. After the switch, invoice dates arrive in a new format and downstream payments fail. The IS auditor reports that the notice term worked but the owner never tested the update on the company's own invoices.",

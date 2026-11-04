@@ -430,9 +430,9 @@ version bump today.
 | Domain | Questions | Tagged | Untagged |
 |---|---|---|---|
 | D1 | 80 | 63 | 17 |
-| D2 | 92 | 84 | 8 |
-| D3 | 50 | 47 | 3 |
-| All | 222 | 194 | 28 |
+| D2 | 134 | 119 | 15 |
+| D3 | 82 | 74 | 8 |
+| All | 296 | 256 | 40 |
 
 New principle `independence-of-ai-assurance` (role family): seeds and tags
 aaia_d2_014, aaia_d3_024 and aaia_d3_043, moved from
@@ -507,3 +507,48 @@ aaia_d2_080 aaia_d2_083 aaia_d2_087 aaia_d2_088 aaia_d2_089 aaia_d2_090
 aaia_d2_092.
 
 Seed moved (31 Oct 2026): aaia_d3_035 now seeds reproducible-ai-evidence; contain-and-preserve-ai has 2 seeds (aaia_d2_019, aaia_d2_049) and needs a new incident item for a third.
+
+### Batch 4 (4 November 2026)
+aaia_d2_093-134 and aaia_d3_051-082 were read against the rule above; none
+is a seed. Changed: aaia_d2_110 moved from `named-human-owner` to
+`test-the-ai-as-used` (after the re-angle, its runner-up loses because IT's
+standard prompts are not how the teams use the model); aaia_d3_060 moved from
+`real-human-oversight` to `test-the-ai-as-used` (both options show a stop;
+only the production one shows the live fallback); aaia_d3_075 moved from
+`ai-in-audit-stays-yours` to `rank-ai-risk-by-harm` (the runner-up,
+validation before reliance, is that principle's own rule; the Final two
+weighs a disclosure no review can recall). Newly tagged: aaia_d2_103
+`test-the-ai-as-used` (validation at the time does not cover today's
+rosters), aaia_d2_104 `ai-governance-before-tooling` (access control cannot
+make collection with no purpose acceptable), aaia_d2_124
+`ai-changes-are-changes` (a pinned, reviewed data version against monitoring
+after retraining) and aaia_d2_130 `triage-by-harm-close-on-cause` (one
+account's query burst is a suspected attack, not a capacity issue). Two tags
+removed (below). aaia_d3_080 had already lost its tag in the review loop; it
+stays untagged.
+
+**Untagged new items (low confidence):**
+- aaia_d2_095: data-preparation knowledge (a cleaning rule deleted real hauls); `fix-the-control-not-the-model` favors a detecting check, which is the runner-up.
+- aaia_d2_099: was `accuracy-is-not-assurance`; the runner-up also tests recent data against limits, so continuous monitoring versus a 30-day snapshot decides (monitoring design).
+- aaia_d2_101: data-documentation knowledge (a datasheet); the runner-up, accuracy by fleece type, is the accuracy principle's own move.
+- aaia_d2_108: release-monitoring knowledge (AI fails silently, so rollback watches outputs).
+- aaia_d2_113: monitoring knowledge (input and prediction drift when outcomes arrive late).
+- aaia_d2_120: fairness-test technique knowledge (paired, counterfactual runs of generated text).
+- aaia_d2_126: decided by knowing prompt injection is plain text that a malware scan passes (as aaia_d2_016).
+- aaia_d3_053: the auditor's own scoping (as aaia_d3_002); retrieval-library knowledge decides, and `ai-changes-are-changes` is close but its domains omit D3.
+- aaia_d3_061: sampling design (an overrides stratum targets likely errors; the key is itself a surfaced subset, so `population-includes-misses` does not separate it).
+- aaia_d3_066: was `test-the-ai-as-used`; the Final two is a record of use against a control's design (CISA `proven-not-configured`, as aaia_d3_009).
+- aaia_d3_077: metric knowledge (precision versus recall).
+- aaia_d3_080: proxy-variable knowledge (as aaia_d1_047); the runner-up is the owner's accuracy trade-off.
+
+**Medium confidence (tagged, review first):** aaia_d2_093 aaia_d2_094
+aaia_d2_097 aaia_d2_098 aaia_d2_102 aaia_d2_103 aaia_d2_104 aaia_d2_107
+aaia_d2_109 aaia_d2_110 aaia_d2_114 aaia_d2_115 aaia_d2_122 aaia_d2_123
+aaia_d2_124 aaia_d2_128 aaia_d2_129 aaia_d2_130 aaia_d3_051 aaia_d3_052
+aaia_d3_054 aaia_d3_058 aaia_d3_059 aaia_d3_060 aaia_d3_065 aaia_d3_067
+aaia_d3_069 aaia_d3_071 aaia_d3_072 aaia_d3_073 aaia_d3_074 aaia_d3_075
+aaia_d3_078 aaia_d3_079.
+
+**Seed gap still open:** aaia_d3_055 and aaia_d3_082 carry
+`auditor-assesses-never-owns-ai`, but both are D3, so the card still has no
+D1 item whose runner-up has the IS auditor signing or approving.

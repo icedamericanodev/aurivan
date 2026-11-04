@@ -3629,7 +3629,6 @@
       "id": "aaia_d2_099",
       "domain": 2,
       "subtopic": "2B AI lifecycle. Monitoring plan at the deployment gate",
-      "principle_id": "accuracy-is-not-assurance",
       "difficulty": "foundational",
       "bloom_level": "Foundational",
       "question": "A Belizean shrimp farm's feed-ration models pass validation each sprint, but its deployment gate never asks who will monitor each model, or against what limits. What should the IS auditor recommend as BEST?",
@@ -3769,13 +3768,14 @@
         "Known limitations",
         "Usage rules"
       ],
-      "_provenance": "Authored from concept: notes 2B.2 Model Documentation and Build, Buy or Tune (documentation must state the limits validation found, so users know when not to rely on the model). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 4, 4 Nov 2026. Setting changed at the batch 4 cross-domain gate (road-defect detection with a weather gap repeated the test-the-ai-as-used principle check).",
+      "_provenance": "Authored from concept: notes 2B.2 Model Documentation and Build, Buy or Tune (documentation must state the limits validation found, so users know when not to rely on the model). Setting changed at the batch 4 cross-domain gate (road-defect detection with a weather gap repeated the test-the-ai-as-used principle check). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 4, 4 Nov 2026.",
       "style_version": 2
     },
     {
       "id": "aaia_d2_103",
       "domain": 2,
       "subtopic": "2B AI lifecycle. Scores left behind",
+      "principle_id": "test-the-ai-as-used",
       "difficulty": "application",
       "bloom_level": "Application",
       "question": "A Tajik railway retired its driver-fatigue model last quarter, but each driver's roster record still shows the model's last fatigue score, which planners keep consulting. What should the IS auditor recommend as BEST?",
@@ -3812,6 +3812,7 @@
       "id": "aaia_d2_104",
       "domain": 2,
       "subtopic": "2B AI lifecycle. Pipelines after retirement",
+      "principle_id": "ai-governance-before-tooling",
       "difficulty": "application",
       "bloom_level": "Application",
       "question": "A Gambian football league retired its ticket-demand model, but the model's monthly retraining job still copies fans' purchase records, with contact details, into its training store. What should the IS auditor recommend as BEST?",
@@ -3998,25 +3999,25 @@
       "principle_id": "test-the-ai-as-used",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "A Salvadoran remittance firm's ID-document reader passed regression tests on the vendor's model update, but the test set predates the redesigned national ID card most customers now carry. What should the IS auditor recommend FIRST?",
+      "question": "A Salvadoran remittance firm's ID-document reader reliably reads the redesigned national ID card most customers carry, but the vendor's model update passed regression tests only on older cards. What should the IS auditor recommend FIRST?",
       "options": {
         "A": "Adopt the update, since it passed every regression test",
         "B": "Ask the vendor to confirm the update reads the new cards",
-        "C": "Add new ID cards to the regression set and retest",
-        "D": "Adopt the update and monitor rejections of the new cards"
+        "C": "Add new cards to the regression set and retest",
+        "D": "Adopt the update, since the current model reads the new cards"
       },
       "correct": "C",
       "key_concept": "A regression pass covers only the cases in the set; refresh the set with current inputs before trusting a vendor update.",
       "pre_read": "Ask what the regression set contains compared with what customers now present.",
-      "correct_explanation": "A regression set shows only how an update handles the cases it holds. This set predates the redesigned card most customers now carry, so the update's reading of that card is untested. Adding new cards and retesting before adoption shows whether customers would be wrongly rejected. Monitoring rejections after adoption would find a problem only once customers carrying the new card were being turned away.",
+      "correct_explanation": "A regression set shows only how an update handles the cases it holds. This set holds only older cards, so the update's reading of the card most customers now carry is untested. Adding new cards and retesting before adoption shows whether customers would be wrongly rejected. A vendor's confirmation targets the right gap, but it is the vendor's claim, not evidence from the firm's own cases.",
       "wrong_explanations": {
         "A": "Tempting because the update passed. But the set lacks the card most customers carry, so the pass says nothing about reading it.",
         "B": "Tempting because the vendor knows its model. But a vendor's confirmation is a claim; only the firm's own tests show how the update reads these cards.",
-        "D": "Tempting because monitoring catches shifts. But it finds the problem only after customers with the new card are rejected; testing first prevents that."
+        "D": "Tempting because the current model already reads the new card. But the update is a different model, and its reading of that card is untested."
       },
       "tips": [
-        "Eliminate: A trusts a pass on a set that lacks the card most customers carry, and B accepts a vendor claim in place of the firm's own test.",
-        "Final two: C beats D because testing new cards before adoption prevents wrongful rejections; monitoring after adoption finds them only once customers are turned away.",
+        "Eliminate: A trusts a pass on a set that lacks the card most customers carry, and D assumes the update reads the new card because the current model does.",
+        "Final two: C beats B because only the firm's own retest shows how the update reads the new card; a vendor's confirmation is a claim, not evidence.",
         "Exam cue: a regression set is only as good as its cases; before adopting a vendor update, check that the set reflects what the model now sees."
       ],
       "framework_ref": "NIST AI 100-1 MANAGE 3.2 (Pre-trained models monitored as part of regular maintenance); NIST SP 800-53 Rev. 5 CM-4 (Impact Analyses)",
@@ -4032,28 +4033,28 @@
       "id": "aaia_d2_110",
       "domain": 2,
       "subtopic": "2C AI change management. One model, three uses",
-      "principle_id": "named-human-owner",
+      "principle_id": "test-the-ai-as-used",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "A Kenyan geothermal utility's engineering, billing and legal teams use one hosted model; IT approved the vendor's new version for all three after testing only engineering summaries. What should the IS auditor recommend as BEST?",
+      "question": "A Kenyan geothermal utility's engineering, billing and legal teams use one vendor model for different tasks; IT approved the update after testing only engineering summaries. What should the IS auditor recommend as BEST?",
       "options": {
-        "A": "Have the owner of each use test the version on its tasks",
-        "B": "Have IT test billing and legal tasks before approving",
-        "C": "Ask the vendor to confirm the version suits each team's use",
+        "A": "Have the owner of each use test the update on its tasks",
+        "B": "Have IT run its standard test prompts on billing and legal tasks",
+        "C": "Ask the vendor to confirm the update suits each team's use",
         "D": "Keep the approval, as the three teams share one model"
       },
       "correct": "A",
       "key_concept": "A shared model's update is tested and accepted separately for each use, by the owner who knows what correct output means there.",
       "pre_read": "Ask who knows whether the new version still works for billing and legal.",
-      "correct_explanation": "One hosted model serving three uses is three systems to test: a version that summarizes engineering reports well may draft billing letters or legal text worse. The owner of each use knows what correct output looks like for that task and is accountable for accepting the change. IT testing the other tasks widens coverage, but leaves IT judging work it does not own and approving on the owners' behalf.",
+      "correct_explanation": "One shared model serving three uses is three systems to test: a version that summarizes engineering reports well may draft billing letters or legal text worse. The owner of each use tests on that team's real work, knows what correct output looks like there and is accountable for accepting the change. IT's standard prompts reach every task, but not as the teams use the model, and IT cannot accept for them.",
       "wrong_explanations": {
-        "B": "Tempting because it covers all three tasks. But IT cannot judge billing or legal output as well as their owners, who must accept the change.",
+        "B": "Tempting because it covers the untested tasks. But standard prompts are not the teams' real work, and IT cannot judge or accept billing and legal outputs.",
         "C": "Tempting because the vendor knows its model. But a vendor's assurance is a claim and cannot reflect how each team uses it.",
         "D": "Tempting because the model is the same. But the same version can work well for engineering summaries and poorly for legal drafting."
       },
       "tips": [
         "Eliminate: C relies on a vendor claim about uses it never tested, and D assumes one model behaves the same for every task.",
-        "Final two: A beats B because the owner of each use judges and accepts the change for that task; IT testing others' tasks leaves acceptance with the wrong party.",
+        "Final two: A beats B because each use's owner tests on real work and accepts the change; IT's standard prompts are not how the teams use the model.",
         "Exam cue: when one model serves several uses, each use needs its own owner's tests and acceptance before an update applies."
       ],
       "framework_ref": "NIST AI 100-1 MANAGE 3.2 (Pre-trained models monitored as part of regular maintenance); NIST AI 100-1 MEASURE 2.3 (Performance measured in conditions similar to deployment)",
@@ -4209,7 +4210,7 @@
         "Error tolerance",
         "Aggregate metrics"
       ],
-      "_provenance": "Authored from concept: notes 2D.2 Monitoring Drift, Performance and Impacts (aggregate metrics can hide a failing segment, so monitoring breaks results out). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 4, 4 Nov 2026. Setting changed at the batch 4 cross-domain gate (a revenue authority's risk model repeated aaia_d1_065's setting).",
+      "_provenance": "Authored from concept: notes 2D.2 Monitoring Drift, Performance and Impacts (aggregate metrics can hide a failing segment, so monitoring breaks results out). Setting changed at the batch 4 cross-domain gate (a revenue authority's risk model repeated aaia_d1_065's setting). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 4, 4 Nov 2026.",
       "style_version": 2
     },
     {
@@ -4535,7 +4536,7 @@
         "Final two: B beats C because unseen training data from a contractor can hide a backdoor that normal tests never trigger; evasion needs no training access and nothing here points to it.",
         "Exam cue: a model trained on data you cannot inspect may carry a backdoor; high scores on your own tests do not rule it out."
       ],
-      "framework_ref": "NIST AI 100-2e2025 Section 2.3 (Poisoning Attacks and Mitigations); MITRE ATLAS AML.T0010 (AI Supply Chain Compromise)",
+      "framework_ref": "NIST AI 100-2e2025 Section 2.3.3 (Backdoor Poisoning); MITRE ATLAS AML.T0010 (AI Supply Chain Compromise)",
       "related_concepts": [
         "Backdoor poisoning",
         "AI supply chain",
@@ -4548,6 +4549,7 @@
       "id": "aaia_d2_124",
       "domain": 2,
       "subtopic": "2F AI threats. A dataset fetched by name",
+      "principle_id": "ai-changes-are-changes",
       "difficulty": "application",
       "bloom_level": "Application",
       "question": "A Palauan marine institute retrains its coral-bleaching model monthly on a public hub dataset fetched by name, whose uploader can replace its files at any time. What should the IS auditor recommend as BEST?",
@@ -4571,7 +4573,7 @@
         "Final two: D beats C because pinning and hash checks stop altered data before training; accuracy monitoring may never see targeted poisoning.",
         "Exam cue: treat public datasets and models as supply-chain inputs: pin a reviewed version and verify integrity before every use."
       ],
-      "framework_ref": "NIST AI 100-2e2025 Section 2.3 (Poisoning Attacks and Mitigations); NIST SP 800-53 Rev. 5 SI-7 (Software, Firmware, and Information Integrity)",
+      "framework_ref": "NIST AI 100-2e2025 Section 2.3.2 (Targeted Poisoning); NIST SP 800-53 Rev. 5 SI-7 (Software, Firmware, and Information Integrity)",
       "related_concepts": [
         "Data poisoning",
         "AI supply chain",
@@ -4681,7 +4683,7 @@
         "Final two: B beats A because an approved tool list limits what the agent can do; a malware scan passes clean tools the task never needed.",
         "Exam cue: an agent should never choose its own powers; look for an approved tool list enforced outside the model."
       ],
-      "framework_ref": "OWASP Top 10 for LLM Applications 2025 LLM06 (Excessive Agency); NIST SP 800-53 Rev. 5 AC-6 (Least Privilege)",
+      "framework_ref": "OWASP Top 10 for LLM Applications 2025 LLM06 (Excessive Agency); NIST SP 800-53 Rev. 5 CM-11 (User-Installed Software)",
       "related_concepts": [
         "Excessive agency",
         "Tool allowlists",
@@ -4768,6 +4770,7 @@
       "id": "aaia_d2_130",
       "domain": 2,
       "subtopic": "2G AI incident response. Unusual query volumes",
+      "principle_id": "triage-by-harm-close-on-cause",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
       "question": "A dealer account sent an Angolan diamond trader's valuation API two million slightly varied queries over a weekend, then stopped; IT logged it as a capacity issue. What should the IS auditor recommend FIRST?",
@@ -4846,7 +4849,7 @@
       "bloom_level": "Analysis",
       "question": "A Solomon Islands hospital's supply agent placed duplicate medicine orders; staff closed its chat window, but its scheduled order jobs keep running under its service account. What should the IS auditor recommend FIRST?",
       "options": {
-        "A": "Roll back the model its scheduled jobs use to the previous version",
+        "A": "Roll back the model behind the service account's scheduled jobs",
         "B": "Cancel the duplicate orders with each medicine supplier",
         "C": "Suspend the agent's service account and scheduled jobs",
         "D": "Add a prompt rule forbidding repeat orders to one supplier"
@@ -4856,7 +4859,7 @@
       "pre_read": "Ask what still lets the agent act after its chat window closed.",
       "correct_explanation": "Closing the chat window hid the agent from staff but left it acting: its scheduled jobs still place orders with its own credentials. Suspending the service account and jobs stops every action path while keeping them intact as evidence. Canceling duplicate orders is needed, but done first it chases a growing list, because new orders keep arriving until the agent's ability to act is cut off.",
       "wrong_explanations": {
-        "A": "Tempting because rollback is a standard containment step. But the older version would run the same jobs under the same account; rollback changes the model, not its reach.",
+        "A": "Tempting because rollback is a standard containment step. But nothing shows an update caused this, and an older model would still act through the same jobs and account.",
         "B": "Tempting because suppliers need correcting. But new orders keep arriving while the jobs run; stop the source first, then cancel.",
         "D": "Tempting because it targets the behavior. But a prompt rule is an instruction, not a block, and scheduled jobs may never consult it."
       },
