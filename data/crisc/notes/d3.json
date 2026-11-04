@@ -263,7 +263,7 @@
           "how_it_works": [
             "Assign the owner by business accountability: the manager whose objectives, process or budget the risk affects.",
             "Match authority to size: the owner must be able to fund treatment and accept residual risk at that rating.",
-            "Name one accountable person, not a committee or a department; others contribute as stakeholders or control owners.",
+            "Name one accountable person, not a committee or a department; others, such as IT delivering the treatment, contribute as action owners, stakeholders or control owners.",
             "Revalidate ownership regularly and after reorganizations, departures or process changes.",
             "IT usually owns technology controls, while the business owns the business risk those controls protect.",
             "Validate an owner by what they have done, such as response choices, acceptances and plan approvals they signed, not by their name in the register."
@@ -418,7 +418,8 @@
             "Scale due diligence to the tier: questionnaires for low tiers; assurance reports, site reviews and financial checks for critical ones.",
             "Write requirements into the contract: security controls, breach notice times, service level agreements, right to audit and subcontractor approval.",
             "Plan exit before signing: data return or destruction, transition help and access removal at the end.",
-            "Record the vendor risk in the register under the business owner who uses the service."
+            "Record the vendor risk in the register under the business owner who uses the service.",
+            "When the business cannot wait, limit the vendor to test data until due diligence ends."
           ],
           "example": "A school district plans to move student records to a cloud learning platform. Grace, the district's risk analyst, rates the vendor critical because it will hold minors' personal data. Before the contract is signed, they ask for the vendor's assurance report, breach-notice terms and a data-return clause, and flag to the curriculum director that the draft contract has no right to audit.",
           "audit_focus": {
@@ -824,7 +825,8 @@
             "Category and function combine: a badge reader is physical and preventive; a camera is physical and detective.",
             "Automated controls run the same way every time and suit high volumes, but a wrong setting fails every time.",
             "Manual controls handle judgment and unusual cases but vary with people, workload and attention.",
-            "Administrative controls direct behavior and set accountability, and most technical controls depend on them for configuration and review."
+            "Administrative controls direct behavior and set accountability, and most technical controls depend on them for configuration and review.",
+            "Review automated control settings after upgrades and other system changes, since one wrong value repeats on every transaction until someone notices."
           ],
           "compare": {
             "columns": [
@@ -969,7 +971,8 @@
             "List candidate controls with their effect on likelihood or impact and their full cost.",
             "Prefer controls that fix the cause; use detective or compensating controls where the cause cannot yet be removed.",
             "Check fit with the business process, so the control does not stop the work it protects.",
-            "For AI systems, scale input validation, output checks and human review to the impact of a wrong output."
+            "For AI systems, scale input validation, output checks and human review to the impact of a wrong output.",
+            "Where an AI output states facts that can be checked, such as amounts or reference numbers, check them automatically against the source before use."
           ],
           "example": "A hospital finds that dosing errors keep reaching patients because nurses retype orders from the electronic record into infusion pumps. Farah, the clinical risk analyst, notes that more training targets the symptom. They recommend to the nursing director a direct interface between the record and the pumps, with a pharmacist check on doses above a set limit, and attach the cost-benefit comparison.",
           "audit_focus": {
@@ -1202,7 +1205,8 @@
             "Test operation over a defined period, with a sample sized to the control's frequency and risk.",
             "Draw the sample from the complete population, ideally system-generated, with the tester choosing the items.",
             "Evaluate each failure: find its cause and decide whether the control can still be relied on.",
-            "Tests by the control owner alone are self-assessment: useful for monitoring, but weaker than independent testing."
+            "Tests by the control owner alone are self-assessment: useful for monitoring, but weaker than independent testing.",
+            "Start from recent internal audit results on a control: they are independent evidence, and their exceptions shape any further testing rather than being repeated."
           ],
           "compare": {
             "columns": [
@@ -1355,7 +1359,8 @@
             "Milestones break long work into checkpoints, so slippage shows early.",
             "The plan states the target risk expected at completion, so success can be measured.",
             "Interim measures reduce the exposure while long actions are under way.",
-            "The plan links to its risk register entry, so progress updates the risk picture."
+            "The plan links to its risk register entry, so progress updates the risk picture.",
+            "When a planned control or its cost changes, re-estimate the target risk and the cost-benefit before the risk owner agrees the change."
           ],
           "example": "A media company decides to mitigate the risk of an unsupported content system by migrating off it. Zainab, the risk analyst, works with the digital director, who owns the risk, to build the plan: three milestones, a named migration lead, budget for contractors, a June target date and an interim firewall restriction. Zainab links the plan to the register entry.",
           "audit_focus": {
@@ -1566,7 +1571,7 @@
           "why_it_matters": "A wrong figure in a board report can drive the wrong decision and damages trust in the whole risk function. Checking before reporting costs far less than correcting afterward.",
           "how_it_works": [
             "Completeness: every unit and system expected in the data is present.",
-            "Accuracy: a sample reconciles to the source records.",
+            "Accuracy: a sample reconciles to the source records, whether a person, a spreadsheet or an AI tool produced the figures.",
             "Currency: the data dates match the reporting period.",
             "Consistency: definitions and scales match across sources and over time.",
             "Known limitations are stated in the report rather than left out.",
@@ -1784,7 +1789,7 @@
             "Define the action and escalation for each level before any breach happens.",
             "Review thresholds when appetite, the business or the risk changes.",
             "For AI systems, track drift, error rates, override rates and complaints, with limits set by the model's business owner.",
-            "A breach goes to the risk owner and, through the agreed escalation path, to the level that set the threshold.",
+            "A breach, or a proposal to move a threshold, goes to the risk owner and, through the agreed escalation path, to the level that set it.",
             "For human review of AI outputs, KCIs such as override rates and time spent per review warn when reviewers start approving by habit."
           ],
           "example": "An insurer's claims-triage model flags claims for fast payment. Aisha, the risk analyst, proposes indicators for it: the share of fast-tracked claims later found invalid, the rate of staff overrides and weekly drift in the input data. Each gets amber and red limits agreed with the claims director; red means claims return to manual triage until the model is reviewed.",
@@ -2083,7 +2088,8 @@
             "Risk owners: their risks, indicator status, overdue actions and acceptances due for review.",
             "Control owners and operations: control failures, test results and specific remediation tasks.",
             "Send each report to someone with authority to decide on what it shows, and state the decision requested.",
-            "Escalate outside the cycle when a tolerance breach or a critical risk needs a decision now."
+            "Escalate outside the cycle when a tolerance breach or a critical risk needs a decision now.",
+            "Share the risk profile with internal audit so its independently set plan can cover the top risks; audit still decides its own plan."
           ],
           "example": "A national charity's IT risk report to its board lists 140 vulnerability findings by server name. Samir, the risk analyst, rewrites it for the board as the three risks outside appetite, their trend and the funding decision needed for one of them. They send the server-level detail to the infrastructure manager as an action list.",
           "audit_focus": {
@@ -2197,7 +2203,8 @@
             "Use ranges or alternative scenarios rather than single scores while uncertainty is high.",
             "Set short review dates, and refine the rating as evidence arrives.",
             "Report emerging risks in their own section: what is known, what is not, and what is being done to learn more.",
-            "Move the risk into the main profile once it is understood well enough to rate normally."
+            "Move the risk into the main profile once it is understood well enough to rate normally.",
+            "Respond to emerging risk in stages: low-cost steps to learn more, options prepared, and agreed triggers for larger spending as evidence grows."
           ],
           "example": "A logistics firm's operations team begins trials of driverless yard trucks. Mateo, the risk analyst, records a safety and liability risk with low confidence, a range of possible impacts and a two-month review date, with the yard operations director confirmed as owner. In the quarterly report, they list it under emerging risks and state what the trials should reveal.",
           "audit_focus": {
