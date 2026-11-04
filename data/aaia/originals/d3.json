@@ -1946,15 +1946,15 @@
       "correct": "D",
       "key_concept": "A retrieval-based assistant answers from its document library, so scope covers how those documents are approved, updated and retired.",
       "pre_read": "Find where the assistant's answers come from before deciding what the scope misses.",
-      "correct_explanation": "The assistant answers from retrieved documents, so a superseded or unapproved notice in the library produces a confident, wrong tariff answer however good the model is. Scoping how notices are approved, updated and retired covers where much of this risk sits. Citations help agents trace an answer, but a cited notice can itself be superseded, so citing it cannot keep the library current.",
+      "correct_explanation": "The assistant answers from retrieved documents, so a superseded or unapproved notice in the library produces a confident, wrong tariff answer however good the model is. Scoping how notices are approved, updated and retired covers where much of this risk sits. A cited notice and its date help agents trace an answer, but a date cannot show that the notice has since been superseded, so citing it cannot keep the library current.",
       "wrong_explanations": {
         "A": "Tempting because public web pages attract attacks. But hosting is already in scope, and a penetration test says nothing about whether answers rest on current notices.",
         "B": "Tempting because a disclaimer warns agents to check. But it shifts the check onto agents and does nothing to keep the library's notices current.",
-        "C": "Tempting because a citation lets agents trace each answer. But a cited notice can itself be superseded; citing it does not keep the library current."
+        "C": "Tempting because a notice and its date let agents trace each answer. But a date shows when a notice was issued, not whether it has since been superseded."
       },
       "tips": [
         "Eliminate: A tests the web page's security, which says nothing about the notices behind each answer, and B treats a disclaimer as if it controlled the answers.",
-        "Final two: D beats C because a citation only shows which notice an answer used; if that notice is superseded, the cited answer is still wrong.",
+        "Final two: D beats C because a citation and date show which notice an answer used, not whether it is still current.",
         "Exam cue: for a retrieval-based assistant, scope how the source library is approved and updated. Stale or unapproved documents produce confident wrong answers."
       ],
       "framework_ref": "ISACA IT Audit Standard 1203 (Engagement Planning); NIST AI 100-1 MAP 4.2 (Internal risk controls for components identified)",
