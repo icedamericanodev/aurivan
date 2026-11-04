@@ -56,7 +56,8 @@
             "An architecture review board checks proposed solutions against approved principles, standards and the target architecture before funding.",
             "Security and privacy requirements are built into the architecture, so each new system inherits them instead of reinventing them.",
             "AI services are architecture components too: their data flows, model hosting and integrations belong in the EA.",
-            "Deviations from the architecture are recorded as exceptions with an owner, a reason and an expiry date."
+            "Deviations from the architecture are recorded as exceptions with an owner, a reason and an expiry date.",
+            "A major architecture change, such as a cloud move or new integrations, voids earlier ratings, so affected risks are reassessed before any acceptance is renewed."
           ],
           "example": "A regional utility plans to connect a vendor's AI chatbot directly to its customer billing database. Mateo, the IT risk analyst, compares the design with the enterprise architecture and finds the chatbot would bypass the approved integration layer that logs and filters customer data. Mateo documents the deviation and its risk, and takes it to the architecture review board with options.",
           "audit_focus": {
@@ -775,7 +776,7 @@
           "definition": "AI training data management applies the data lifecycle to data used to train, test and tune models, from sourcing and labeling through retention and deletion.",
           "why_it_matters": "A model reflects its data. Poor, biased, poisoned or unlawfully sourced training data becomes poor or unlawful decisions, and personal data inside a model can be hard to remove later.",
           "how_it_works": [
-            "Sourcing: record where data came from, the right to use it and whether it contains personal data.",
+            "Sourcing: record where data came from, whether its license or terms allow training, and whether it contains personal data.",
             "Preparation: check quality, labeling accuracy and coverage of real cases before training.",
             "Protection: restrict access to training sets and watch for tampering, which can poison the model.",
             "Lineage: link each model version to the exact data version used to train it.",
@@ -1747,7 +1748,8 @@
             "It maps data flows, assesses risks to individuals and the organization, and proposes mitigations.",
             "Privacy by design sets protective defaults, such as minimal collection and short retention.",
             "The PIA is updated when the system, purpose or data changes.",
-            "The NIST Privacy Framework helps organize privacy risk work alongside cybersecurity risk."
+            "The NIST Privacy Framework helps organize privacy risk work alongside cybersecurity risk.",
+            "PIA mitigations become requirements with owners; a check before go-live confirms each is built, or the gap goes to the owner as a risk to treat or accept."
           ],
           "example": "A public library plans self-checkout kiosks with face recognition to speed lending. Tomas, the risk analyst, recommends a privacy impact assessment before the vendor is chosen. The assessment shows a card-and-PIN option meets the goal without biometric data, and Tomas presents both options with their risks to the library director.",
           "audit_focus": {

@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "comment": "Original CRISC practice questions for Domain 4 (Technology and Security), written to the CRISC exam content outline effective 2025. Every item is authored from public concepts and KaiSip's own CRISC study notes (data/crisc/notes/d4.json), with no reference to the CRISC Review Manual, ISACA's QAE database, ISACA's practice quiz or any prior question bank. Schema: docs/content/QUESTION_SCHEMA.md; writing rules: docs/content/EXAM_STYLE_V2.md and .claude/agents/crisc-standards-auditor.md. Not affiliated with or endorsed by ISACA®. CRISC® is a registered trademark of ISACA. Pilot batch crisc_d4_001 to crisc_d4_020, 30 Oct 2026. Round 2 crisc_d4_021 to crisc_d4_045, 31 Oct 2026. Round 3 crisc_d4_046 to crisc_d4_065, 4 Nov 2026. Round 5 crisc_d4_066 to crisc_d4_075, 4 Nov 2026. Round 6 crisc_d4_076 to crisc_d4_079, 4 Nov 2026.",
+    "comment": "Original CRISC practice questions for Domain 4 (Technology and Security), written to the CRISC exam content outline effective 2025. Every item is authored from public concepts and KaiSip's own CRISC study notes (data/crisc/notes/d4.json), with no reference to the CRISC Review Manual, ISACA's QAE database, ISACA's practice quiz or any prior question bank. Schema: docs/content/QUESTION_SCHEMA.md; writing rules: docs/content/EXAM_STYLE_V2.md and .claude/agents/crisc-standards-auditor.md. Not affiliated with or endorsed by ISACA®. CRISC® is a registered trademark of ISACA. Pilot batch crisc_d4_001 to crisc_d4_020, 30 Oct 2026. Round 2 crisc_d4_021 to crisc_d4_045, 31 Oct 2026. Round 3 crisc_d4_046 to crisc_d4_065, 4 Nov 2026. Round 5 crisc_d4_066 to crisc_d4_075, 4 Nov 2026. Round 6 crisc_d4_076 to crisc_d4_079, 4 Nov 2026. Round 7 crisc_d4_080 to crisc_d4_085, 4 Nov 2026.",
     "schema_version": 1
   },
   "domain": 4,
@@ -2928,6 +2928,228 @@
         "Enterprise risk register"
       ],
       "_provenance": "Authored from concept: notes 4A5.2 (Project Risk and Agile Delivery: project risk covers delivery risks and those the finished system brings into operation; delivery risks that end at closure stay in the project log). Round 6, 4 Nov 2026: original scenario (a city council's parking-permit app in design whose project risk log holds only budget, schedule and staffing risks) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Neighbours checked: crisc_d4_070 (which risk stays only in the project log), crisc_d4_032 (open risks handed over at closure), crisc_d4_010 (a team accepting a lasting risk), crisc_d4_028 (update the risk assessment after a scope change) and crisc_d4_051 (CRISC); CISA d3_005 (escalating a project risk to the sponsor) and d3_002 (coding before requirements); CC and AAIA have no item on what a project risk log covers. Judged distinct: this keys the missing operating risks of the product, with the project log's separation from the enterprise register (d4_070's lesson, read the other way) as the runner-up; keep apart from d4_070 in practice sets.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d4_080",
+      "domain": 4,
+      "subtopic": "4A1 Technology roadmaps and enterprise architecture (EA). Acceptance renewal after a platform move",
+      "principle_id": "analyze-before-acting",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "A distributor's portal owner wants to renew a 2023 acceptance of breach risk rated within appetite before the portal moved to cloud hosting and added 12 partner APIs. What should the risk practitioner recommend FIRST?",
+      "options": {
+        "A": "Reassess the portal's risk on its current design",
+        "B": "Renew the owner's acceptance at the 2023 risk rating",
+        "C": "Test the 12 partner APIs for flaws before the renewal",
+        "D": "Assess the cloud provider's own controls over the portal"
+      },
+      "correct": "A",
+      "key_concept": "An acceptance covers the risk as rated; after a major architecture change, such as a cloud move, reassess before the acceptance is renewed.",
+      "pre_read": "Note the dates and events in the stem before weighing the options.",
+      "correct_explanation": "The 2023 rating described a portal in the distributor's own hosting with no partner links. Cloud hosting and 12 APIs change its threats and controls, so the old rating no longer shows the risk being accepted. A reassessment on the current design comes first; the owner then accepts or treats the result. Renewing at the old rating is the runner-up: it is the owner's call, but it would accept a risk nobody has rated.",
+      "wrong_explanations": {
+        "B": "Acceptance is the owner's decision, but within appetite holds only for the risk that was rated, and this rating predates the cloud move and the APIs.",
+        "C": "Testing the APIs is one useful input, but it covers one part of the change and does not rate the portal's breach risk as a whole.",
+        "D": "The provider secures its own layers; the distributor still owns its settings, data and partner links, so the provider's controls cannot rate the portal's risk."
+      },
+      "tips": [
+        "Eliminate: C tests only the partner links, and D looks only at the provider's side, leaving the distributor's own settings and data unrated.",
+        "Final two: A beats B because within appetite holds only for the risk that was rated; the 2023 rating predates the cloud move and the APIs.",
+        "Exam cue: an acceptance rests on its rating; when a major technology change follows the rating, reassess before the acceptance is renewed."
+      ],
+      "framework_ref": "NIST CSF 2.0 ID.RA-07 (changes and exceptions are managed, assessed for risk impact, recorded and tracked); NIST SP 800-37 Rev. 2 Task P-14 (Risk Assessment for the System: conduct a system-level risk assessment from initiation and update it on an ongoing basis); ISACA Glossary (risk acceptance)",
+      "related_concepts": [
+        "Risk acceptance",
+        "Risk reassessment",
+        "Architecture change"
+      ],
+      "_provenance": "Authored from concept: notes 4A1.1 (Enterprise Architecture and Architecture Review: a major architecture change, such as a cloud move or new integrations, voids earlier ratings, so risks are reassessed before an acceptance is renewed). Round 7, 4 Nov 2026: original scenario (a distributor's portal owner renewing a 2023 within-appetite acceptance of breach risk after the portal moved to cloud hosting and added 12 partner APIs) written for KaiSip as a within-appetite acceptance counter-example; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Counter-example reason not used before in the bank: the rating predates a major technology change (earlier reasons: cover that may not pay, crisc_d1_103; a combined breach of the board's total, crisc_d1_068; a project team without authority, crisc_d4_010). Neighbours checked: crisc_d3_058 (whether a standard's exemption still applies after a device update), crisc_d4_072 (a pilot's approval does not cover a wider rollout), crisc_d4_022 (re-rating after a retirement slip), crisc_d1_037 and crisc_d1_103 (within-appetite ratings resting on a failed control or on insurance), crisc_d1_101 (a lowered appetite), crisc_d3_076 (reassessment triggers beside scheduled reviews), crisc_d2_057 (a vendor that withholds its audit report), crisc_d4_076 and crisc_d4_077 (keyed acceptances); AAIA aaia_d1_034 (a model assessed for adults offered to teens); CISA and CC have no item on renewing an acceptance after a platform move. Judged distinct: this keys reassessing before an acceptance is renewed, with the renewal itself as the runner-up; keep apart from d3_058 and d4_072 in practice sets.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d4_081",
+      "domain": 4,
+      "subtopic": "4B3 Data privacy and data protection principles. Assessment mitigations at launch",
+      "principle_id": "evidence-before-credit",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "Across an insurer's last five launches, the risk practitioner finds every privacy impact assessment was approved, yet a third of their mitigations were never built. What should the practitioner recommend to BEST prevent a repeat?",
+      "options": {
+        "A": "Privacy officer sign-off on each assessment before build",
+        "B": "A fuller assessment template with more privacy questions",
+        "C": "A go-live check confirming each mitigation is in place",
+        "D": "A yearly privacy audit of each launch's mitigations"
+      },
+      "correct": "C",
+      "key_concept": "A privacy impact assessment reduces risk only when its mitigations are built, so a check before go-live confirms each one is in place.",
+      "pre_read": "Note what went right and what went wrong across the five launches.",
+      "correct_explanation": "The assessments did their job: they found the privacy risks and named mitigations. The failure came later, when a third of those mitigations were never built, so the residual privacy risk each owner approved was not the risk that went live. A go-live check that each mitigation is in place closes that gap before personal data is exposed. A yearly privacy audit is the runner-up; it gives assurance, but finds the gap after launch.",
+      "wrong_explanations": {
+        "A": "The assessments were already approved; another sign-off before build adds review where the process was working, not where the mitigations went missing.",
+        "B": "The assessments found the risks and named mitigations; more questions improve analysis that was not the gap, and unbuilt mitigations would still go live.",
+        "D": "An audit gives independent assurance, but a yearly check finds missing mitigations months after launch, once people's data has already been exposed."
+      },
+      "tips": [
+        "Eliminate: A and B strengthen the assessment itself, which was approved and named the mitigations; the gap opened between approval and launch.",
+        "Final two: C beats D because a check before go-live stops a launch without its mitigations; a yearly audit finds them missing after the exposure.",
+        "Exam cue: a privacy impact assessment helps only through mitigations that get built; look for a control between approval and launch, not a better assessment."
+      ],
+      "framework_ref": "NIST SP 800-53 Rev. 5 RA-8 (Privacy Impact Assessments); NIST SP 800-37 Rev. 2 Task I-1 (Control Implementation: implement the controls in the security and privacy plans)",
+      "related_concepts": [
+        "Privacy impact assessment",
+        "Phase gate",
+        "Residual risk"
+      ],
+      "_provenance": "Authored from concept: notes 4B3.2 (Privacy by Design and Privacy Impact Assessment: PIA mitigations become requirements with owners, and a check before go-live confirms each is built; the notes' review focus compares PIA mitigations with the controls actually implemented). Round 7, 4 Nov 2026: original scenario (an insurer whose five approved privacy impact assessments named mitigations, a third of which were never built) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. 4B3 angle: every fresh privacy idea mirrored an existing item, so this takes the angle the 4B3.2 notes teach (audit_focus.review 'Compare PIA mitigations with the controls actually implemented') that no item keyed. Neighbours checked: crisc_d4_020 (update the PIA when sharing changes), crisc_d4_043 (evidence of privacy by design), crisc_d4_031 (security criteria in the definition of done), crisc_d4_068 (a retirement phase), crisc_d3_069 (plan complete but above target); AAIA aaia_d1_042 (PIA scope limited to security) and aaia_d1_016 (PIA update for re-identification); CISA d2_084 (a DPIA first), d2_223 (undisclosed processing), d3_078 (privacy checks at sprint planning), d3_120 (a PIR finds a missing approval workflow) and d3_102 (PIR recommendations without owners); CC has no PIA item. Judged distinct: this keys a launch check on PIA mitigations, with a yearly privacy audit as the runner-up.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d4_082",
+      "domain": 4,
+      "subtopic": "4A2 Operations management. Change board workload",
+      "principle_id": "proportionate-response",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A bank's change board spends each weekly meeting on 120 changes, mostly certificate renewals that have never failed; two outages came from complex changes it passed quickly. What should the risk practitioner recommend as BEST?",
+      "options": {
+        "A": "A separate weekly board meeting for certificate renewals",
+        "B": "Pre-approval of these renewals as standard changes",
+        "C": "A longer checklist for the changes the board reviews",
+        "D": "Board approval waived for changes by senior engineers"
+      },
+      "correct": "B",
+      "key_concept": "Low-risk, repeatable changes with a proven record can be pre-approved as standard changes, so the change board's review time goes to riskier changes.",
+      "pre_read": "Note what the board reviews and what caused the outages.",
+      "correct_explanation": "Most of the board's time goes to renewals that have never failed, while the complex changes that caused both outages get little scrutiny. Pre-approving the renewals as standard changes, run by a tested procedure and still recorded, frees the board's attention for the risky changes. A separate meeting for renewals is the runner-up; it shortens the main meeting, but still spends review effort where the risk is lowest.",
+      "wrong_explanations": {
+        "A": "A separate meeting still spends reviewers' time on changes that have never failed, time that pre-approval would give to the complex changes.",
+        "C": "A longer checklist adds work to each review, renewals included, without giving the complex changes more of the board's attention.",
+        "D": "Seniority is not a measure of risk; waiving approval by who makes a change would let complex, risky changes skip review."
+      },
+      "tips": [
+        "Eliminate: C adds work to each review without moving time to the complex changes, and D waives approval by seniority, not by risk.",
+        "Final two: B beats A because pre-approval stops the board reviewing renewals that have never failed; a separate meeting still spends review time on them.",
+        "Exam cue: when a change board is swamped, match review effort to risk; low-risk, repeatable changes with a proven record become pre-approved standard changes."
+      ],
+      "framework_ref": "NIST SP 800-128 Section 3.1.1 (Planning at the Organizational Level: define the types of changes that are preapproved and need not go to the configuration control board; preapproved changes are still tested and documented); NIST SP 800-53 Rev. 5 CM-3 (Configuration Change Control)",
+      "related_concepts": [
+        "Standard change",
+        "Change advisory board (CAB)",
+        "Risk-based review"
+      ],
+      "_provenance": "Authored from concept: notes 4A2.1 (Change and Configuration Management: low-risk, repeatable changes can be pre-approved, so review effort follows risk). Round 7, 4 Nov 2026: original scenario (a bank's change board spending its weekly meeting on certificate renewals that have never failed, while complex changes it passed quickly caused two outages) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Neighbours checked: crisc_d4_003 (standard changes without board review are not the concern), crisc_d4_024 (rising emergency changes), crisc_d4_059 (a change called too small still has its impact assessed: pre-approval follows a proven low-risk record, not size), crisc_d4_077 (a baseline deviation), crisc_d3_035 (targets set by risk); AAIA aaia_d2_007 (prompt edits wrongly logged as pre-approved standard changes, consistent: only proven low-risk changes qualify); CC cc_d5_084 (which change fits the standard type); CISA d3_013 (a board that checks only description and timing), d4_185 (emergency fixes) and d4_271 (testing approved change records). Judged distinct: this keys moving board time to risky changes through pre-approval, with a separate meeting for renewals as the runner-up.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d4_083",
+      "domain": 4,
+      "subtopic": "4A7 Emerging technologies. Recording upside",
+      "principle_id": "objectives-first",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "A risk analyst is drafting register entries for a supermarket chain's planned electronic shelf labels. Which of the following is BEST recorded as an opportunity?",
+      "options": {
+        "A": "The contracted saving from no longer printing the paper labels",
+        "B": "Price-update checks that block unsigned changes to labels",
+        "C": "Shoppers buying more than forecast as offers change faster",
+        "D": "Wrong prices shown if attackers alter the label network"
+      },
+      "correct": "C",
+      "key_concept": "An opportunity is an uncertain event that would help objectives; certain, planned benefits belong in the business case, not the risk register.",
+      "pre_read": "Recall the ISACA meaning of opportunity before reading the options.",
+      "correct_explanation": "In ISACA's terms, an opportunity is an uncertain event that may help meet objectives. Shoppers responding to faster offers may or may not buy more than forecast, so the event is uncertain and positive, and it belongs in the register with an owner. The contracted saving is the runner-up; it helps objectives too, but a saving fixed by contract carries little uncertainty and belongs in the business case.",
+      "wrong_explanations": {
+        "A": "A saving fixed by contract is a planned benefit, not an uncertain event; it belongs in the business case rather than the risk register.",
+        "B": "Checks that block unsigned price updates are a control that treats a threat; they are recorded as a response, not as a risk.",
+        "D": "Attackers altering prices is an uncertain event that would harm objectives, which makes it a threat, the downside of risk."
+      },
+      "tips": [
+        "Eliminate: B is a control, not an event, and D is a threat because it would harm the chain's objectives.",
+        "Final two: C beats A because an opportunity must be uncertain; a saving fixed by contract is a planned benefit, not a risk.",
+        "Exam cue: risk covers uncertain upside as well as downside; an opportunity is an event that may happen and would help objectives."
+      ],
+      "framework_ref": "ISACA Glossary (opportunity); NIST CSF 2.0 GV.RM-07 (strategic opportunities or positive risks are characterized and are included in organizational cybersecurity risk discussions)",
+      "related_concepts": [
+        "Opportunity (positive risk)",
+        "Risk register",
+        "Business case"
+      ],
+      "_provenance": "Authored from concept: notes 4A7.1 (Evaluating Emerging Technologies: key term opportunity, a possible future event that would help the enterprise meet its objectives if it happened; the practitioner assesses threats and opportunities). Round 7, 4 Nov 2026: original scenario (register entries for a supermarket chain's planned electronic shelf labels) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Neighbours checked: crisc_d3_050 (presenting an AI fuel saving to senior management as an opportunity with its risks), crisc_d4_013 (assessing an emerging platform's risks and benefits), crisc_d1_039 (a profile far below appetite) and crisc_d4_037 (exit terms); no CISA, CC or AAIA item asks what counts as an opportunity. Judged distinct: this keys the ISACA meaning (an uncertain positive event), with a contracted saving as the runner-up.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d4_084",
+      "domain": 4,
+      "subtopic": "4A5 Portfolio and project management. Risk decisions in sprint reviews",
+      "principle_id": "advise-dont-decide",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "A bank's payments director, who owns the app's risks, accepts security flaws in sprint reviews, and the Agile team writes none of the decisions down. Which of the following should concern the risk practitioner MOST?",
+      "options": {
+        "A": "A director accepting flaws the team understands better",
+        "B": "Risk decisions made in sprint reviews, not a committee",
+        "C": "Security flaws accepted at release rather than fixed",
+        "D": "Acceptances with no record of reason or review date"
+      },
+      "correct": "D",
+      "key_concept": "Agile reduces documents, not risk records: each accepted risk is still recorded with its owner, reason and review date.",
+      "pre_read": "Note who decides, where the decisions are made and what is kept.",
+      "correct_explanation": "The director owns the risks, so the acceptances are theirs to make, and a sprint review is a fair place to make them. With nothing recorded, though, no one can show what was accepted, why, or when to look again, and the flaws cannot be reported or tracked. Agile trims documents, not risk records. Accepting rather than fixing is the runner-up; acceptance by the owner is a valid response once it is recorded.",
+      "wrong_explanations": {
+        "A": "The team can advise on each flaw, but acceptance belongs to the risk owner, so the director deciding is the right arrangement.",
+        "B": "Agile ceremonies are a sound place for risk decisions; what matters is who decides and whether the decision is recorded.",
+        "C": "Accepting a flaw is a valid response for the risk owner to choose; the gap is that these acceptances leave no record."
+      },
+      "tips": [
+        "Eliminate: A would move acceptance from the risk owner to the team, and B objects to the forum, though sprint reviews can host risk decisions.",
+        "Final two: D beats C because the owner may accept flaws; what cannot be skipped is a record of what was accepted, why and until when.",
+        "Exam cue: Agile cuts heavy documents, not risk records; an accepted risk still needs a record with its reason and a review date."
+      ],
+      "framework_ref": "ISACA Glossary (risk acceptance); NIST CSF 2.0 ID.RA-07 (changes and exceptions are managed, assessed for risk impact, recorded and tracked)",
+      "related_concepts": [
+        "Risk acceptance",
+        "Agile delivery",
+        "Risk register"
+      ],
+      "_provenance": "Authored from concept: notes 4A5.2 (Project Risk and Agile Delivery: Agile reduces heavy documents, not risk records; decisions and accepted risks are still recorded). Round 7, 4 Nov 2026: original scenario (a bank's payments director accepting security flaws in sprint reviews with no decision recorded) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Neighbours checked: crisc_d4_010 (a scrum team accepting a lasting risk without authority; here the acceptor has authority and the gap is the record), crisc_d3_021 (the most important field to record with an acceptance), crisc_d4_031 (security criteria in the definition of done), crisc_d4_061 (deferred security backlog items), crisc_d4_070 and crisc_d4_079 (what the project log holds); CISA d3_017 (Scrum on a regulated platform) and d3_126 (retrospectives dropped); CC and AAIA have no item on unrecorded Agile risk decisions. Judged distinct: this keys the missing record of valid acceptances, with accepting rather than fixing as the runner-up; keep apart from d4_010 and d3_021 in practice sets.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d4_085",
+      "domain": 4,
+      "subtopic": "4A4 Data lifecycle management. Third-party articles as AI training data",
+      "principle_id": "analyze-before-acting",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A publisher's data science team plans to train a commercial writing assistant on 40,000 news articles licensed from an agency for display on the publisher's website. What should the risk practitioner recommend FIRST?",
+      "options": {
+        "A": "Confirmation that the license allows training the model",
+        "B": "Removal of reporters' names from the article text",
+        "C": "A record linking the model to each licensed article",
+        "D": "Access to training data limited to data scientists"
+      },
+      "correct": "A",
+      "key_concept": "Holding data is not the right to train on it; the license terms are checked before third-party data trains a model.",
+      "pre_read": "Note the source of the training data before weighing the options.",
+      "correct_explanation": "The agency licensed the articles for display on the publisher's website, and training a commercial model is a different use the license may not cover. The AI RMF expects the legal risks of third-party data, including infringing others' rights, to be mapped before use, so the license is confirmed first, with legal counsel where its terms are unclear. The lineage record is the runner-up; it shows the source, not the right to use it.",
+      "wrong_explanations": {
+        "B": "The question is the agency's rights, not personal data; removing names leaves the licensed text in use beyond its terms.",
+        "C": "Lineage records where the training data came from, which helps later, but it does not show that the license permits training.",
+        "D": "Limiting access protects the articles from other staff; it does nothing about the publisher's own use beyond the license."
+      },
+      "tips": [
+        "Eliminate: B treats a rights question as a privacy one, and D controls who reads the articles, not whether training is allowed.",
+        "Final two: A beats C because a lineage record shows where the data came from; only the license terms show whether training is allowed.",
+        "Exam cue: before data trains a model, ask whether the organization has the right to use it that way, not only whether it holds the data."
+      ],
+      "framework_ref": "NIST AI 100-1 (AI RMF 1.0) MAP 4.1 (approaches for mapping the legal risks of AI components, including third-party data, are in place and documented, as are risks of infringing a third party's intellectual property or other rights); NIST AI 100-1 (AI RMF 1.0) GOVERN 6.1 (policies and procedures address AI risks from third-party entities, including infringement of a third party's intellectual property or other rights)",
+      "related_concepts": [
+        "Training data sourcing",
+        "Data lineage",
+        "Third-party data rights"
+      ],
+      "_provenance": "Authored from concept: notes 4A4.3 (AI Training Data Through the Lifecycle: at sourcing, record where data came from, whether its license or terms allow training and whether it contains personal data). Round 7, 4 Nov 2026: original scenario (a publisher planning to train a commercial writing assistant on news articles an agency licensed for display on its website) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Neighbours checked: crisc_d4_029 (no record linking model versions to training data), crisc_d4_058 (training copies under the retention schedule), crisc_d4_075 (a vendor training on customer emails), crisc_d3_118 (a vendor training on the toolmaker's manuals, the reverse direction); AAIA aaia_d1_013 (lawful use of scraped personal data for training), aaia_d2_124 (a public dataset its uploader can replace) and aaia_d2_059 (an undocumented base model); CISA d2_218 (a core component license in due diligence) and d2_155 (license tracking in an SBOM); CC has no item on the right to train on third-party data. Judged distinct: this keys the right to use licensed data for training, with lineage as the runner-up.",
       "style_version": 2
     }
   ]
