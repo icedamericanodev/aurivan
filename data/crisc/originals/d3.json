@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "comment": "Original CRISC practice questions for Domain 3 (Risk Response and Reporting), written to the CRISC exam content outline effective 2025. Every item is authored from public concepts and KaiSip's own CRISC study notes (data/crisc/notes/d3.json), with no reference to the CRISC Review Manual, ISACA's QAE database, ISACA's practice quiz or any prior question bank. Schema: docs/content/QUESTION_SCHEMA.md; writing rules: docs/content/EXAM_STYLE_V2.md and .claude/agents/crisc-standards-auditor.md. Not affiliated with or endorsed by ISACA®. CRISC® is a registered trademark of ISACA. Pilot batch crisc_d3_001 to crisc_d3_020, 30 Oct 2026. Round 2 crisc_d3_021 to crisc_d3_050, 31 Oct 2026. Round 3 crisc_d3_051 to crisc_d3_085, 4 Nov 2026.",
+    "comment": "Original CRISC practice questions for Domain 3 (Risk Response and Reporting), written to the CRISC exam content outline effective 2025. Every item is authored from public concepts and KaiSip's own CRISC study notes (data/crisc/notes/d3.json), with no reference to the CRISC Review Manual, ISACA's QAE database, ISACA's practice quiz or any prior question bank. Schema: docs/content/QUESTION_SCHEMA.md; writing rules: docs/content/EXAM_STYLE_V2.md and .claude/agents/crisc-standards-auditor.md. Not affiliated with or endorsed by ISACA®. CRISC® is a registered trademark of ISACA. Pilot batch crisc_d3_001 to crisc_d3_020, 30 Oct 2026. Round 2 crisc_d3_021 to crisc_d3_050, 31 Oct 2026. Round 3 crisc_d3_051 to crisc_d3_085, 4 Nov 2026. Round 7 crisc_d3_129 to crisc_d3_136, 4 Nov 2026.",
     "schema_version": 1
   },
   "domain": 3,
@@ -4343,26 +4343,26 @@
       "principle_id": "appetite-drives-response",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "A toolmaker's AI translation vendor may train its models on the published manuals it translates unless the toolmaker pays $30,000 a year more; the risk is within appetite. What is the risk practitioner's BEST recommendation?",
+      "question": "An AI translation vendor may train on a toolmaker's published manuals unless the toolmaker pays $30,000 a year extra; assessed on those terms, the risk is within appetite. What should the risk practitioner recommend FIRST?",
       "options": {
         "A": "Ask the business owner to fund the no-training tier",
-        "B": "Move the work to a vendor that bars model training",
+        "B": "Reassess the risk with the vendor's training terms",
         "C": "Add a clause shifting misuse risk to the vendor",
         "D": "Have the business owner accept the risk as rated"
       },
       "correct": "D",
       "key_concept": "A vendor finding, AI or not, is rated against appetite; within appetite, the business owner accepts it on record and reviews it at renewal.",
       "pre_read": "Check what the vendor would receive and how the risk compares with appetite.",
-      "correct_explanation": "The manuals are already public, and the risk is within appetite, so no further treatment is justified. The business owner of the service accepts it on record, with the vendor's terms checked again at renewal. Funding the no-training tier is the runner-up: it removes the concern, but it spends $30,000 a year on a risk the business has already judged acceptable.",
+      "correct_explanation": "The manuals are the toolmaker's own and already public, and the risk, assessed on the vendor's terms, is within appetite, so nothing is left to analyze and no treatment is justified. The first step is the business owner's decision: accept on record, with the terms checked again at renewal. Reassessing is the runner-up: it comes first after a change, but nothing has changed since this assessment.",
       "wrong_explanations": {
         "A": "The tier removes the concern, but $30,000 a year buys little against a risk within appetite on content that is already public.",
-        "B": "Switching vendors costs effort and delay to avoid a risk the analysis has already found acceptable.",
+        "B": "Reassessing comes first when something has changed, but nothing has: the risk was assessed on these training terms, so a new assessment repeats work and delays the owner's decision.",
         "C": "A liability clause shifts some cost after misuse and is hard to enforce; it treats a risk that needs no treatment."
       },
       "tips": [
-        "Eliminate: B drops a vendor over an acceptable risk, and C adds a clause that only shifts cost after harm.",
-        "Final two: D beats A because the risk is within appetite; paying $30,000 a year for the tier treats a risk the owner can accept.",
-        "Exam cue: an AI vendor's terms are rated like any vendor risk; within appetite, the business owner accepts and reviews at renewal."
+        "Eliminate: A pays $30,000 a year to treat a risk already within appetite, and C adds a clause that shifts cost only after harm.",
+        "Final two: D beats B because the risk was already assessed on these terms; with nothing changed, the owner's decision comes before another assessment.",
+        "Exam cue: FIRST does not always mean assess; when a current assessment already covers the facts in the stem and the risk is within appetite, the owner's acceptance comes first."
       ],
       "framework_ref": "NIST CSF 2.0 GV.SC-07 (the risks posed by a supplier, their products and services and other third parties are understood, recorded, prioritized, assessed, responded to and monitored); NIST IR 8286B-upd1 Section 2.3.1 (Risk Acceptance: exposure within risk tolerance is still reported, monitored and managed); ISACA Glossary (risk acceptance)",
       "related_concepts": [
@@ -4370,7 +4370,7 @@
         "Vendor risk",
         "AI vendor terms"
       ],
-      "_provenance": "Authored from concept: notes 3A3.3 (AI Vendors and the Model Supply Chain; bullet 2 extended: rate any gap in AI terms like other vendor risk, which the business owner may accept) and 3A3.2 (decides: the business owner accepts, remediates or exits). Round 6, 4 Nov 2026: original scenario (an AI translation vendor that may train on a toolmaker's published manuals unless it pays $30,000 a year more, with the risk within appetite), written for KaiSip in our own words; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D3 round 6 (crisc_d3_116 to 128). Round 6 priority: owner acceptance within appetite keyed (AI item). Neighbours checked: crisc_d3_002 (within appetite, extra tool), crisc_d3_027 (AI vendor service credits), crisc_d3_054 (contract terms before signing), CC cc_d1_004 (chatbot transcripts kept for training), AAIA aaia_d3_015 (approved AI service barring training on audit data) and aaia_d1_038 (vendor sending client data to another model); those keep sensitive data out of training, while here the content is public and the risk within appetite. Review fixes 4 Nov 2026 (round 6 audit, concept review and blind test): key reworded without 'on record' to remove a bank-level cue (audit); the explanation still records the acceptance. Keep apart from crisc_d3_002 and crisc_d3_116 in practice sets.",
+      "_provenance": "Authored from concept: notes 3A3.3 (AI Vendors and the Model Supply Chain; bullet 2 extended: rate any gap in AI terms like other vendor risk, which the business owner may accept) and 3A3.2 (decides: the business owner accepts, remediates or exits). Round 6, 4 Nov 2026: original scenario (an AI translation vendor that may train on a toolmaker's published manuals unless it pays $30,000 a year more, with the risk within appetite), written for KaiSip in our own words; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D3 round 6 (crisc_d3_116 to 128). Round 6 priority: owner acceptance within appetite keyed (AI item). Neighbours checked: crisc_d3_002 (within appetite, extra tool), crisc_d3_027 (AI vendor service credits), crisc_d3_054 (contract terms before signing), CC cc_d1_004 (chatbot transcripts kept for training), AAIA aaia_d3_015 (approved AI service barring training on audit data) and aaia_d1_038 (vendor sending client data to another model); those keep sensitive data out of training, while here the content is public and the risk within appetite. Review fixes 4 Nov 2026 (round 6 audit, concept review and blind test): key reworded without 'on record' to remove a bank-level cue (audit); the explanation still records the acceptance. Keep apart from crisc_d3_002 and crisc_d3_116 in practice sets. Review fixes 4 Nov 2026 (round 7 audit and concept review): option B changed from moving to another vendor to a reassess distractor, so a reassess option beside an accept option is no longer always the key across the bank's within-appetite items (round 7 audit, bank-level cue). No second defensible answer: the stem's within-appetite rating is of the training risk itself, so reassessing adds no new fact. Re-blind fix 4 Nov 2026: stem states the rating was made on the vendor's terms, so the reassess distractor is clearly wrong. Cross-domain fixes 4 Nov 2026 (round 7): recast as a FIRST stem so FIRST plus an accept option no longer always means do not accept; reassess is now the runner-up.",
       "style_version": 2
     },
     {
@@ -4741,6 +4741,303 @@
         "Front-line signals"
       ],
       "_provenance": "Authored from concept: notes 3C6.1 (Horizon Scanning and Emerging Risk Sources: use many sources, including front-line staff). Round 6, 4 Nov 2026: original scenario (a water utility's horizon scan that caught scam texts using its name only after a press story, though call-center staff had heard of them for months), written for KaiSip in our own words; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D3 round 6 (crisc_d3_116 to 128). Neighbours checked: crisc_d3_083 (screen 300 signals for relevance), crisc_d3_020 (record a regulatory signal as emerging), crisc_d2_055 (IT-only scenario workshop; process owners confirm scenarios), crisc_d2_053 (objective-based scenarios missing IT's vulnerability data), CISA d4_012 (finding shadow IT).",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d3_129",
+      "domain": 3,
+      "subtopic": "3A2 Risk and control ownership. New control at plan closure",
+      "principle_id": "match-decision-to-role",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A university's privileged-access vault passed its operating test; its action plan closes as the project team running the monthly checks disbands and IT operations takes them over. What is the risk practitioner's BEST recommendation?",
+      "options": {
+        "A": "Propose an IT operations manager to own the control",
+        "B": "Write the vault's checks into IT operations' procedures",
+        "C": "Close the plan as scheduled, with the test results filed",
+        "D": "Have internal audit run the vault's monthly checks"
+      },
+      "correct": "A",
+      "key_concept": "A control a project delivers needs a named control owner, usually the manager whose team runs it, before the project closes.",
+      "pre_read": "Note what changes for the vault when the project team leaves.",
+      "correct_explanation": "Once its builders leave, a control with no owner decays: nobody answers for the checks running, keeps their evidence or reports when they fail. The practitioner proposes the IT operations manager whose team will run them, for the risk owner to confirm, before the plan closes. Writing the checks into procedures is the runner-up: it says what should happen, but a procedure cannot be held to account when a check is skipped.",
+      "wrong_explanations": {
+        "B": "A procedure describes the checks, but no one would answer for them running or for acting when they fail.",
+        "C": "A passed test shows the vault works today; closing with no owner leaves nobody to keep the checks running once the team has gone.",
+        "D": "Internal audit gives independent assurance; running the checks itself would leave nothing independent to audit, and operations would still have no owner."
+      },
+      "tips": [
+        "Eliminate: C closes the plan with nobody to keep the checks running, and D puts internal audit in charge of a control it should assure.",
+        "Final two: A beats B because a control needs a person who answers for it; a procedure says what to do but cannot be held to account.",
+        "Exam cue: when a project delivers a control, a named control owner takes it over before the project ends."
+      ],
+      "framework_ref": "ISACA Glossary (control owner); NIST CSF 2.0 GV.RR-02 (roles, responsibilities and authorities related to cybersecurity risk management are established, communicated, understood and enforced)",
+      "related_concepts": [
+        "Control owner",
+        "Action plan closure",
+        "Handover to operations"
+      ],
+      "_provenance": "Authored from concept: notes 3A2.2 (Control Owners and Validating Ownership: each key control gets one named owner; ownership transfers formally, including when a project hands over a control it built). Round 7, 4 Nov 2026: original scenario (a university's tested privileged-access vault whose action plan closes as the project team that runs its monthly checks disbands), written for KaiSip in our own words; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D3 round 7 (crisc_d3_129 to 136). Neighbours checked: crisc_d3_053 (retiring control owner: formal handover), crisc_d3_090 (IT as action owner, the director keeps the risk), crisc_d3_089 (one control, several risk owners), crisc_d3_005 (control owner for a recovery control), crisc_d3_013 and crisc_d3_068 (evidence before closing a plan), crisc_d4_010 (scrum team accepting a lasting risk), CISA d5_033 (service accounts with no named owner), CC cc_d3_021 (owner for an AI agent's account). None keys a control owner named before a project closes. Review fixes 4 Nov 2026 (round 7 audit and concept review): stem now says IT operations takes the checks over, the fact the explanation uses (audit); key widened from owning the checks to owning the control (concept review observation; worded 'to own the control' rather than 'as control owner' so the lens word 'owner' is not key-only).",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d3_130",
+      "domain": 3,
+      "subtopic": "3C1 Risk action plans. Rating that counts a planned review",
+      "principle_id": "residual-counts-working-controls",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "An insurer's AI claim-summary errors are rated within appetite only by crediting human review starting in four months; the risk owner proposes accepting them and closing the plan. What is the risk analyst's BEST recommendation?",
+      "options": {
+        "A": "Have the owner accept the risk and close the plan",
+        "B": "Have claims staff start the review next week",
+        "C": "Close the plan and track the review as a project",
+        "D": "Keep the plan open until the review is running"
+      },
+      "correct": "D",
+      "key_concept": "Acceptance rests on current risk, counting only controls already working; a rating that credits a planned control shows target risk.",
+      "pre_read": "Read the owner's proposal and the rating side by side.",
+      "correct_explanation": "Acceptance must rest on current risk, which counts only actions already taken. The within-appetite rating credits human review that has not started, so it is the plan's target, not today's position. Keeping the plan open until the review runs, with the register showing today's level, keeps both the treatment and the rating honest. Accepting as rated is the runner-up: the owner has the authority, but would be accepting a level not yet reached.",
+      "wrong_explanations": {
+        "A": "The owner may accept risk within appetite, but this rating credits a review not yet running, so the acceptance would rest on target risk, not current risk.",
+        "B": "When the review starts is the owner's resourcing decision; bringing it forward does not answer a proposal to close the plan now.",
+        "C": "Moving the review to a project log takes it out of the risk plan, so nothing ties the rating to the review actually starting."
+      },
+      "tips": [
+        "Eliminate: B changes the review's start date instead of answering the proposal, and C closes the plan while the rating still depends on it.",
+        "Final two: D beats A because acceptance rests on current risk; a rating that credits a review not yet running shows the plan's target.",
+        "Exam cue: a within-appetite rating that counts planned controls is a target; keep the plan open until those controls work."
+      ],
+      "framework_ref": "ISACA Glossary (current risk); ISACA Glossary (risk acceptance); NIST SP 800-53 Rev. 5 CA-5 (Plan of Action and Milestones)",
+      "related_concepts": [
+        "Current risk",
+        "Target risk",
+        "Risk acceptance",
+        "Human review of AI output"
+      ],
+      "_provenance": "Authored from concept: notes 3C1.2 (Validating Execution and Tracking to Closure: close the plan only when the risk reaches the expected level or a decision is recorded on today's rating, not the plan's target). Round 7, 4 Nov 2026: original scenario (an insurer's AI claim-summary errors rated within appetite only by crediting human review that starts in four months, with the risk owner proposing acceptance and closure), written for KaiSip in our own words; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D3 round 7 (crisc_d3_129 to 136). Acceptance counter-example: the risk reads as within appetite and an accept option is present, but the rating credits a response not yet implemented (target, not current, risk), a reason no earlier counter-example uses. Neighbours checked: crisc_d2_018 (current risk is what is compared with appetite), crisc_d2_062 (target ratings answer whether plans will be enough), crisc_d1_037 and crisc_d1_103 (reassess without credit for a failed control or uncertain cover; this key keeps the plan open instead), crisc_d2_019, crisc_d3_013, crisc_d3_069 (plan complete but short of target), crisc_d3_004 and crisc_d3_062 (human review of AI drafts), crisc_d3_116 and crisc_d3_118 (within-appetite acceptance keys), CISA and CC banks (no item keys a plan kept open because a rating credits planned controls). Review fixes 4 Nov 2026 (round 7 audit and concept review): stem says the rating is within appetite only by crediting the planned review; pre_read no longer names the deciding check (audit). Further neighbour: crisc_d2_013 (a planned tool not credited; the entry stays in treatment, rated on controls in place today; keep apart in practice sets).",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d3_131",
+      "domain": 3,
+      "subtopic": "3B1 Control frameworks, types and standards. Framework revised",
+      "principle_id": "analyze-before-acting",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A port operator mapped its controls to NIST CSF 1.1 in 2022; CSF 2.0 has since added a Govern Function and moved some 1.1 outcomes. What should the risk practitioner recommend as BEST?",
+      "options": {
+        "A": "Keep the 1.1 mapping until the next yearly audit",
+        "B": "Rebuild the operator's controls from CSF 2.0",
+        "C": "Update the control mapping to CSF 2.0's outcomes",
+        "D": "Add new controls to meet the Govern outcomes"
+      },
+      "correct": "C",
+      "key_concept": "When a framework is revised, update the mapping of existing controls to the new version to find the real gaps before adding or rebuilding controls.",
+      "pre_read": "Note what the revision changed and what the operator already has in place.",
+      "correct_explanation": "CSF 2.0 lists outcomes, not controls, and many of its Govern outcomes, such as roles, policy and supplier oversight, may already be met by the operator's existing practices. Updating the mapping to the revised outcomes shows which are covered and which are real gaps for an action plan. Adding controls for the Govern outcomes is the runner-up: it looks thorough, but it builds controls the operator may already have.",
+      "wrong_explanations": {
+        "A": "A mapping to the earlier version hides any gap the revision exposes, and waiting a year for an audit leaves those gaps unseen.",
+        "B": "CSF 2.0 does not prescribe controls, and rebuilding throws away working controls that already meet many of its outcomes.",
+        "D": "Adding controls skips the mapping; some Govern outcomes are already met, so new controls would duplicate what exists."
+      },
+      "tips": [
+        "Eliminate: A keeps a mapping to the earlier version for a year, and B rebuilds working controls from a framework that prescribes none.",
+        "Final two: C beats D because the mapping shows which new outcomes are already met; adding controls first duplicates what exists.",
+        "Exam cue: when a framework is revised, update the control mapping to the new version and act on the gaps it shows."
+      ],
+      "framework_ref": "NIST CSF 2.0 Appendix A (CSF Core: gaps in Subcategory numbering mark CSF 1.1 Subcategories relocated in CSF 2.0); NIST CSF 2.0 Section 3.1 (Organizational Profiles step 4: analyze the gaps between the Current and Target Profiles and develop a prioritized action plan); NIST CSF 2.0 Section 1 (CSF Overview: the Core is a taxonomy of high-level outcomes and does not prescribe how they are achieved)",
+      "related_concepts": [
+        "Control framework mapping",
+        "NIST CSF 2.0",
+        "Govern Function"
+      ],
+      "_provenance": "Authored from concept: notes 3B1.3 (Control Frameworks and Tailoring: map controls to each framework that applies and re-map when one is revised). Round 7, 4 Nov 2026: original scenario (a port operator whose 2022 control mapping is to CSF 1.1, after CSF 2.0 added the Govern Function and relocated some Subcategories), written for KaiSip in our own words; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D3 round 7 (crisc_d3_129 to 136). Neighbours checked: CC cc_d1_060 (which CSF 2.0 Function board work fits), crisc_d1_044 (how a small firm adopts CSF 2.0), crisc_d1_034 (crosswalk as a distractor), crisc_d4_016 (meeting a target profile does not lower ratings), crisc_d3_060 and crisc_d3_061 (baselines and tailoring), crisc_d3_120 (SP 800-53 as the catalog), CISA d1_135 and d5_204 (one control set mapped to several frameworks; an auditor's compliance test, not a framework revision). No item keys re-mapping after a framework revision.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d3_132",
+      "domain": 3,
+      "subtopic": "3C6 Monitoring and reporting of emerging risks. Entry too vague to rate",
+      "principle_id": "objectives-first",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "A credit union using AI for loan decisions has an emerging-risk entry reading 'new AI laws may affect us', with an owner and review date. Which addition by the risk analyst is MOST important?",
+      "options": {
+        "A": "A single score for the entry on the usual scale",
+        "B": "A scenario of the laws' effect on its objectives",
+        "C": "A list of the AI bills relevant to its objectives",
+        "D": "An IT lead to watch the laws alongside the owner"
+      },
+      "correct": "B",
+      "key_concept": "An emerging-risk entry needs a scenario of how the change would affect objectives, so it can be rated, watched and answered.",
+      "pre_read": "Ask what the entry would need before anyone could rate or watch it.",
+      "correct_explanation": "An entry saying only that laws may affect the credit union cannot be rated, watched or answered. A scenario sets out what could change, such as rules on explaining AI loan decisions, and how that would affect its objectives, so it can carry a rating range and triggers. A list of relevant bills is the runner-up: useful input, but it does not say what the bills would do.",
+      "wrong_explanations": {
+        "A": "A single score claims a precision the entry cannot support; emerging risk is rated with a range and a stated confidence.",
+        "C": "Relevant bills feed the scenario, but a list alone does not say how they would affect lending, so the entry still cannot be rated.",
+        "D": "The entry already has an owner; adding an IT lead splits the watch and treats a business risk as IT's to follow."
+      },
+      "tips": [
+        "Eliminate: A gives a single score the evidence cannot support, and D adds an IT lead to a business risk that already has an owner.",
+        "Final two: B beats C because a scenario shows how the change would affect objectives; a list of bills is input to it, not the risk.",
+        "Exam cue: record an emerging risk as a scenario tied to objectives, even while its rating is still a wide range."
+      ],
+      "framework_ref": "ISACA Glossary (risk scenario); NIST AI 100-1 (AI RMF 1.0) GOVERN 1.1 (legal and regulatory requirements involving AI are understood, managed and documented)",
+      "related_concepts": [
+        "Emerging risk",
+        "Risk scenario",
+        "AI regulation"
+      ],
+      "_provenance": "Authored from concept: notes 3C6.2 (Recording and Reporting Emerging Risk: record the risk as a scenario of how it would affect objectives, with a confidence level and the assumptions behind any rating). Round 7, 4 Nov 2026: original scenario (a credit union using AI for loan decisions whose emerging-risk entry on AI laws has an owner and review date but no scenario), written for KaiSip in our own words; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D3 round 7 (crisc_d3_129 to 136). Neighbours checked: crisc_d3_020 (record a regulatory consultation as an emerging risk), crisc_d3_049 (rate with a range and stated confidence), crisc_d3_083 (screen signals for relevance), crisc_d3_084, crisc_d3_085 (business owner for an emerging AI risk), crisc_d3_114, crisc_d3_115, crisc_d1_038 (AI risks mapped to objectives for senior management), AAIA aaia_d1_019 and aaia_d1_077 (an AI law's risk tier; auditor's first step). None keys turning a vague entry into a scenario. Review fixes 4 Nov 2026 (round 7 audit and concept review): option A says 'the entry', not 'the scenario', which assumed what the entry lacks (audit).",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d3_133",
+      "domain": 3,
+      "subtopic": "3C2 Data collection, aggregation, analysis and validation. Counts from regions of different size",
+      "principle_id": "rate-on-common-terms",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "A telecom's dashboard ranks regions by complaints about its AI chat assistant: North had 300 from 600,000 chats, and South 90 from 30,000. What is the risk analyst's BEST recommendation for the ranking?",
+      "options": {
+        "A": "Rank the regions by how many complaints each had",
+        "B": "Map each region's count onto the 1-to-5 impact scale",
+        "C": "Pool both regions' complaints and chats into one rate",
+        "D": "Compare complaints per 1,000 chats in each region"
+      },
+      "correct": "D",
+      "key_concept": "Compare units on rates against a common base, such as complaints per 1,000 chats, because raw counts mostly reflect volume.",
+      "pre_read": "Note the size of each region's figures before ranking them.",
+      "correct_explanation": "Raw counts reflect how much each region uses the assistant as much as how well it works. Per 1,000 chats, North has 0.5 complaints and South 3, so the assistant performs worst in South, the reverse of the ranking. Mapping counts onto the impact scale is the runner-up: it looks like normalizing, but it carries the size difference onto the scale, so North still ranks higher.",
+      "wrong_explanations": {
+        "A": "North's 300 complaints come from twenty times as many chats, so ranking by count points at the wrong region.",
+        "B": "A common scale aligns different rating methods, not different volumes; North's larger count would still map to the higher score.",
+        "C": "Pooling gives one rate for the assistant but hides the region where it performs worst, which is what the ranking is for."
+      },
+      "tips": [
+        "Eliminate: A ranks raw counts from regions of very different size, and C pools both regions into one rate, which cannot rank them.",
+        "Final two: D beats B because a common scale aligns rating methods; only a rate per 1,000 chats removes the volume difference.",
+        "Exam cue: before comparing units, turn counts into rates on the same base, such as per 1,000 transactions."
+      ],
+      "framework_ref": "NIST SP 800-55v1 Section 3.1.5 Table 3 (Data cleaning methods for reducing uncertainty: normalization converts information into consistent representations and categorizations); NIST AI 100-1 (AI RMF 1.0) MEASURE 2.4 (the functionality and behavior of the AI system are monitored when in production)",
+      "related_concepts": [
+        "Normalization",
+        "Rates and counts",
+        "AI complaint monitoring"
+      ],
+      "_provenance": "Authored from concept: notes 3C2.2 (Aggregating and Normalizing Risk Data: to compare units, turn counts into rates on a common base; a common scale aligns ratings, not volumes). Round 7, 4 Nov 2026: original scenario (a telecom ranking regions by complaint counts about its AI chat assistant, where the region with fewer complaints has a rate six times higher), written for KaiSip in our own words; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D3 round 7 (crisc_d3_129 to 136). Neighbours checked: crisc_d3_014 (map different rating scales onto one scale; this item's runner-up), crisc_d3_073, crisc_d3_105, crisc_d3_017 and crisc_d3_044 (AI indicators), crisc_d1_090 (a fall in the count of high risks misread), AAIA aaia_d1_010 (report a wrongful-fine rate with thresholds), CISA d3_014 (defect density per thousand lines), CISA d2_193 (cost per user against a benchmark), CISA d5_200 (an overall rate masks concentrated gaps), CC cc_d2_062 (a metric against a raw measure). None keys converting unit counts to rates before ranking.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d3_134",
+      "domain": 3,
+      "subtopic": "3B3 Control testing methodologies. Records made after the fact",
+      "principle_id": "evidence-before-credit",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "Testing a hospital's monthly access review, the risk analyst finds all 12 sign-off records were created last week, the day after the test was announced. What should the analyst do FIRST?",
+      "options": {
+        "A": "Seek system records made when each review ran",
+        "B": "Rate the review ineffective for the past year",
+        "C": "Rely on the sign-off records the owner provided",
+        "D": "Observe the review when it runs next month"
+      },
+      "correct": "A",
+      "key_concept": "Records created after a test is announced are not evidence the control ran; seek records made at the time before concluding.",
+      "pre_read": "Note when the records were made compared with the period they cover.",
+      "correct_explanation": "Records made after the test was announced show that paperwork exists now, not that the reviews ran each month. Before concluding, the analyst seeks evidence made at the time, such as the review tool's dated logs, access lists sent to managers or removal tickets the reviews raised. Rating the review ineffective is the runner-up: it may be the outcome, but the reviews may have run and been written up late.",
+      "wrong_explanations": {
+        "B": "Late paperwork does not prove the reviews never ran; concluding before looking for evidence made at the time could misstate the control.",
+        "C": "A signature on records made last week shows who prepared them, not that each month's review happened when the records say.",
+        "D": "Watching next month's run says nothing about the past 12 months, and people act differently when they know they are observed."
+      },
+      "tips": [
+        "Eliminate: C relies on records made for the test, and D observes a future run that cannot show what happened last year.",
+        "Final two: A beats B because the reviews may have run and been written up late; look for evidence from the period before concluding.",
+        "Exam cue: inspection is only as good as the records; when they were made after the fact, look for system evidence from the period."
+      ],
+      "framework_ref": "NIST SP 800-53A Rev. 5 Section 2.3 (Building an Effective Assurance Case: operational evidence includes records of remediation actions, incident reporting and continuous monitoring results); NIST SP 800-53A Rev. 5 Section 2.4.2 (Assessment Methods: examine, interview and test, with depth and coverage)",
+      "related_concepts": [
+        "Inspection",
+        "Evidence reliability",
+        "Operating effectiveness"
+      ],
+      "_provenance": "Authored from concept: notes 3B3.1 (Testing Techniques and Evidence Strength: inspection shows a control ran only if the records are complete and genuine; records made after the fact need system evidence from the period). Round 7, 4 Nov 2026: original scenario (a hospital's 12 monthly access-review sign-offs all created the day after the test was announced), written for KaiSip in our own words; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D3 round 7 (crisc_d3_129 to 136). Neighbours checked: crisc_d3_012 (sample across the period, chosen by the tester), crisc_d3_036 (find why sampled checks failed), crisc_d3_066 (what a walkthrough shows), crisc_d3_102 (check an owner-supplied population against a system log; keep apart, as both lean on system records), crisc_d3_122 (design failure needs no operating test), CISA d4_294 (back-dated ledger sales), CISA d1_163 (self-assessment missed failures). None keys evidence created after a test was announced. Review fixes 4 Nov 2026 (round 7 audit and concept review): evidence examples changed, since access-change logs show only reviews that removed access (concept review).",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d3_135",
+      "domain": 3,
+      "subtopic": "3A3 Vendor/supply chain risk management. Provider sold to a new owner",
+      "principle_id": "analyze-before-acting",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A water utility's payroll provider was bought by a firm that will move processing abroad next quarter; the yearly vendor review is nine months away. What should the risk practitioner recommend FIRST?",
+      "options": {
+        "A": "Hold the reassessment for the yearly vendor review",
+        "B": "Ask the provider for its latest SOC 2 report",
+        "C": "Reassess the provider before the move takes effect",
+        "D": "End the contract before the move abroad"
+      },
+      "correct": "C",
+      "key_concept": "A vendor event such as a sale or a move of processing triggers reassessment of the vendor's risk before the change takes effect.",
+      "pre_read": "Note what has changed about the provider since it was last assessed.",
+      "correct_explanation": "A new owner and a move abroad change who controls the payroll data, where it sits and which laws reach it, so the earlier due diligence no longer describes the risk. Reassessing before the move gives the business owner time to seek contract changes or plan an exit. The latest SOC 2 report is the runner-up: it is independent evidence, but it covers the provider before the sale, not the new arrangement.",
+      "wrong_explanations": {
+        "A": "A sale and a move abroad are triggers for reassessment; nine months of waiting would let processing move before anyone weighs the change.",
+        "B": "The report covers past operations under the old owner and location, so it cannot show the risk of the new arrangement.",
+        "D": "Ending the contract may prove right, but deciding before the change is assessed skips the analysis and the business owner's decision."
+      },
+      "tips": [
+        "Eliminate: A waits nine months for a scheduled review, and D ends the contract before anyone knows whether the change matters.",
+        "Final two: C beats B because the report describes the provider before the sale; only a reassessment covers the new owner and location.",
+        "Exam cue: after a vendor event such as a sale or a move, earlier due diligence and assurance reports describe the old arrangement; reassess before the change takes effect."
+      ],
+      "framework_ref": "NIST CSF 2.0 GV.SC-07 (the risks posed by a supplier, their products and services and other third parties are understood, recorded, prioritized, assessed, responded to and monitored); NIST SP 800-53 Rev. 5 SR-6 (Supplier Assessments and Reviews)",
+      "related_concepts": [
+        "Vendor reassessment trigger",
+        "Ongoing vendor monitoring",
+        "Assurance report period"
+      ],
+      "_provenance": "Authored from concept: notes 3A3.2 (Ongoing Vendor Monitoring and Assurance Reports: trigger reassessment on events such as a breach, a sale or merger, missed SLAs or a new subcontractor). Round 7, 4 Nov 2026: original scenario (a city council's payroll provider bought by a firm that will move processing abroad, nine months before the yearly vendor review), written for KaiSip in our own words; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D3 round 7 (crisc_d3_129 to 136). Neighbours checked: crisc_d3_006 (a report that excludes a subcontractor), crisc_d3_025 (refused right to audit), crisc_d3_026 (customer controls in a SOC 2 report), crisc_d3_054, crisc_d3_091, crisc_d1_016 (the enterprise's own acquisition updates its profile), CISA d1_106 (an acquisition updates the audit risk assessment), CISA d2_166 (vendor events handled separately). None keys a vendor's sale as a reassessment trigger. Review fixes 4 Nov 2026 (round 7 audit and concept review): setting changed from a city council to a water utility, to keep apart from crisc_d3_026, whose lesson is this item's runner-up (audit). Cross-domain fixes 4 Nov 2026 (round 7): Exam cue reworded and subtopic heading aligned; neighbour crisc_d2_010 (vendor change, reassess now; different key and runner-up; keep apart).",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d3_136",
+      "domain": 3,
+      "subtopic": "3A4 Issues, findings, exceptions and exemptions management. Issues that came back",
+      "principle_id": "evidence-before-credit",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "Internal audit finds 7 of 25 control-test issues an airport operator closed last year have recurred; each was closed on its owner's email saying it was fixed. What is the risk practitioner's BEST recommendation?",
+      "options": {
+        "A": "Reopen the seven issues and have them fixed again",
+        "B": "Require evidence that each fix works before closing",
+        "C": "Have internal audit approve each issue's closure",
+        "D": "Take owners' signed forms as evidence of each fix"
+      },
+      "correct": "B",
+      "key_concept": "Close an issue only on evidence that its fix works; owner statements, emailed or signed, let unfixed issues return.",
+      "pre_read": "Note what each closure rested on.",
+      "correct_explanation": "Seven of 25 issues came back because closure rested on the owner's word: an email says a fix was made, not that it works. Requiring evidence, such as a retest or a sample, before closing removes the cause of the repeats. Reopening the seven is the runner-up: they do need fixing, but under the same closure rule the next set of issues would come back too.",
+      "wrong_explanations": {
+        "A": "The seven need work, but the closure rule that let them through stays the same, so other issues would come back the same way.",
+        "C": "Internal audit gives independent assurance; approving each closure would put it inside the process it is meant to review.",
+        "D": "A signed form is still the owner's statement; it records who vouches for the fix, not whether the fix works."
+      },
+      "tips": [
+        "Eliminate: C puts internal audit inside the closure process it should assure, and D swaps an email for a signed form, still the owner's word.",
+        "Final two: B beats A because the closure rule caused the repeats; reopening the seven treats the symptom and keeps the rule.",
+        "Exam cue: an issue closes on evidence that the fix works, not on the owner's statement in any form."
+      ],
+      "framework_ref": "NIST SP 800-53 Rev. 5 CA-2 (Control Assessments); NIST SP 800-53 Rev. 5 CA-5 (Plan of Action and Milestones)",
+      "related_concepts": [
+        "Issue closure",
+        "Validation evidence",
+        "Recurring issues"
+      ],
+      "_provenance": "Authored from concept: notes 3A4.1 (Tracking Issues and Findings to Closure: close an issue only after evidence shows the fix works, not on the owner's statement). Round 7, 4 Nov 2026: original scenario (an airport operator where internal audit finds 7 of 25 closed control-test issues have come back, each closed on the owner's email), written for KaiSip in our own words; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D3 round 7 (crisc_d3_129 to 136). Neighbours checked: crisc_d3_013 (one plan reported complete: obtain evidence; this item fixes the closure rule after repeats), crisc_d3_068 (milestone evidence), crisc_d3_094 (one issue log), crisc_d3_119 (repeated exceptions with one cause), crisc_d3_101 (internal audit results as evidence), crisc_d1_065 (risk team challenges self-assessed ratings), CISA d1_169 (a finding recurring for three cycles), CISA d4_016 (reopened tickets as a metric), CISA d2_042 (recurring SLA breaches). None keys changing the closure rule after closed issues recur.",
       "style_version": 2
     }
   ]

@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "comment": "Original CRISC practice questions for Domain 1 (Governance), written to the CRISC exam content outline effective 2025 (delivered since 3 Nov 2025). Every item is authored from public concepts and KaiSip's own CRISC study notes (data/crisc/notes/d1.json), with no reference to the CRISC Review Manual, ISACA's QAE database, ISACA's practice quiz or any prep bank. Schema: docs/content/QUESTION_SCHEMA.md; writing rules: docs/content/EXAM_STYLE_V2.md and .claude/agents/crisc-standards-auditor.md. Not affiliated with or endorsed by ISACA®. CRISC® is a registered trademark of ISACA. Pilot batch crisc_d1_001 to crisc_d1_020, 30 Oct 2026.",
+    "comment": "Original CRISC practice questions for Domain 1 (Governance), written to the CRISC exam content outline effective 2025 (delivered since 3 Nov 2025). Every item is authored from public concepts and KaiSip's own CRISC study notes (data/crisc/notes/d1.json), with no reference to the CRISC Review Manual, ISACA's QAE database, ISACA's practice quiz or any prep bank. Schema: docs/content/QUESTION_SCHEMA.md; writing rules: docs/content/EXAM_STYLE_V2.md and .claude/agents/crisc-standards-auditor.md. Not affiliated with or endorsed by ISACA®. CRISC® is a registered trademark of ISACA. Pilot batch crisc_d1_001 to crisc_d1_020, 30 Oct 2026. Round 7 crisc_d1_104 to crisc_d1_110, 4 Nov 2026.",
     "schema_version": 1
   },
   "domain": 1,
@@ -3816,6 +3816,265 @@
         "Contractual requirements"
       ],
       "_provenance": "Authored from concept: notes 1B5.3 (Contractual Requirements and Service Level Agreements: an unmet insurance condition can void cover, so rate the risk without it). Round 6, 4 Nov 2026: original scenario (a freight firm's ransomware rating relies on a cyber policy that requires MFA on remote access, which 15% of accounts lack) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Neighbours checked: crisc_d1_037 (a credited control that has stopped is re-rated without credit: the same move, here for a transfer voided by a contract condition, a 1B5 lesson), crisc_d1_081 (a liability cap leaves residual risk), crisc_d3_001 and crisc_d3_086 (what insurance shifts), CISA d2_133 (insurance limits sized to exposure), CISA d4_093 (insurance does not restore operations), CISA d5_172 (insurer approval during an incident). No CC or AAIA item on an unmet insurance condition. Review fixes 4 Nov 2026 (round 6 audit, concept review and blind test): option D is now an acceptance distractor, so the item is a counter-example to 'within appetite plus an accept option means accept' (blind test); C names the policy so the stem's 'policy' is not echoed by the key alone; explanation and wrong explanation D say the insurer may refuse the claim while the condition is unmet (concept review). Keep apart from crisc_d1_037 (same reassess-without-credit move, same key letter).",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d1_104",
+      "domain": 1,
+      "subtopic": "1A1 Strategy, goals and objectives. Assumption behind a strategy",
+      "principle_id": "report-for-the-decision",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A bank's small-business strategy assumes an instant-payment scheme opens next spring; the scheme is delayed 18 months, and the risk practitioner finds the first-year client target will be missed. What should the practitioner do FIRST?",
+      "options": {
+        "A": "Revise the first-year client target to match",
+        "B": "Rate the scheme's platform risk after launch",
+        "C": "Tell the strategy's owner of the expected shortfall",
+        "D": "Hold it for the owner's annual strategy review"
+      },
+      "correct": "C",
+      "key_concept": "When a key assumption behind a strategy fails, the practitioner takes its effect on the objective to the strategy's owner, who decides what changes.",
+      "pre_read": "Note what the strategy depended on and who answers for its targets.",
+      "correct_explanation": "The strategy rested on an assumption that no longer holds, and the practitioner has already found the effect: the first-year target will be missed. The owner needs that now, while there is time to choose a response, such as another payment route, a later target or a changed plan. Revising the target is the runner-up: it matches the plan to the facts, but targets belong to the owner, whose decision the practitioner informs.",
+      "wrong_explanations": {
+        "A": "Tempting because the target no longer fits the facts. But a strategic target is the owner's to set; changing it takes a business decision away from the owner.",
+        "B": "The scheme's own outage or security risk matters once it launches; the risk to the objective today comes from the delay, not the platform.",
+        "D": "A failed assumption is a trigger to look again now; holding it for the annual review leaves the owner months behind a shortfall already in view."
+      },
+      "tips": [
+        "Eliminate: B rates a platform that has not launched, and D waits for the annual review after a key assumption has already failed.",
+        "Final two: C beats A because targets belong to the strategy's owner; the practitioner brings the finding, and the owner decides what changes.",
+        "Exam cue: when evidence breaks an assumption a strategy relies on, take its effect on the objective to the objective's owner without waiting for the next cycle."
+      ],
+      "framework_ref": "COBIT 2019 APO02 (Managed Strategy); COBIT 2019 EDM03 (Ensured Risk Optimization); ISACA Glossary (risk owner)",
+      "related_concepts": [
+        "Strategic assumptions",
+        "Risk to objectives",
+        "Objective owner"
+      ],
+      "_provenance": "Authored from concept: notes 1A1.2 (The Goals Cascade and Strategic Change: a failed key assumption behind a strategy triggers a fresh look at the risks to each affected goal). Round 7, 4 Nov 2026: original scenario (a bank's small-business strategy relies on an instant-payment scheme that is delayed 18 months, so the first-year client target will be missed) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Neighbours checked: crisc_d1_021 (a new strategy starts with identifying the risks to its objectives), crisc_d1_071 (the owner defines an objective's measure), crisc_d1_047 (a late IT goal reported through the enterprise goal), crisc_d1_101 (owners told their risks are now above appetite: a changed appetite, not a failed assumption), crisc_d4_054 (a technology roadmap left unchanged after a strategy change), CISA d3_073 (an auditor tests a business case's adoption assumption for sensitivity, a different move). No CC or AAIA item on a failed strategic assumption. Key form: report to the owner (not an acceptance key).",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d1_105",
+      "domain": 1,
+      "subtopic": "1A4 Policies and standards. Exception request for AI decline reviews",
+      "principle_id": "answer-from-the-stem",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "A lender's standard, following its country's lending law, requires officer review of every AI-declined loan; the risk owner seeks an exception below $2,000, with wrong declines there rated within appetite. What is the BEST advice?",
+      "options": {
+        "A": "Keep the review of each small-loan decline",
+        "B": "Let the risk owner accept the risk on record",
+        "C": "Review a 10% sample of small-loan declines",
+        "D": "Ask the vendor to confirm the model's accuracy"
+      },
+      "correct": "A",
+      "key_concept": "An exception can relax a rule the enterprise set for itself, not a legal requirement the rule carries; a within-appetite rating does not change that.",
+      "pre_read": "Note where the rule comes from as well as how the risk is rated.",
+      "correct_explanation": "Within appetite, the owner would normally accept. But the lending law requires this review, and the standard carries that duty. An exception can relax a rule the lender set, not one the law sets, and the rating covers wrong declines, not the breach that skipping reviews would be. Accepting on record is the runner-up: it is the usual answer within appetite, but here it would have the lender knowingly break the law.",
+      "wrong_explanations": {
+        "B": "Tempting because the owner decides within appetite, but acceptance covers risk the lender may choose to carry; the law makes this review a duty no rating can waive.",
+        "C": "Sampling suits a rule the lender sets for itself, but the law requires review of each decline; a one-in-ten sample still leaves nine in ten unreviewed.",
+        "D": "Vendor evidence on accuracy speaks to how often declines are wrong, which the rating already covers; it does not change the legal duty to review each one."
+      },
+      "tips": [
+        "Eliminate: C reviews a tenth of the declines the law requires reviewed one by one, and D checks accuracy when the issue is a legal duty, not the rating.",
+        "Final two: A beats B because acceptance works on risk within appetite, but a legal requirement is not the owner's to waive, whatever the rating.",
+        "Exam cue: when a standard carries a legal requirement, a within-appetite rating does not open the way to an exception or acceptance; the requirement is still met."
+      ],
+      "framework_ref": "NIST AI 100-1 (AI RMF 1.0) GOVERN 1.1 (legal and regulatory requirements involving AI are understood, managed and documented); NIST CSF 2.0 GV.OC-03 (legal, regulatory and contractual requirements, including privacy obligations, are understood and managed); NIST CSF 2.0 ID.RA-07 (changes and exceptions are managed, assessed for risk impact, recorded and tracked)",
+      "related_concepts": [
+        "Policy exceptions",
+        "Legal and regulatory requirements",
+        "Human review of AI decisions"
+      ],
+      "_provenance": "Authored from concept: notes 1A4.2 (Policy Exceptions: an exception can relax an internal rule, not a legal requirement the rule carries). Round 7, 4 Nov 2026: original scenario (a lender's standard and the lending law require an officer to review every loan its AI model declines; the risk owner seeks an exception for loans under $2,000 that the analyst rates within appetite) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Round 7 acceptance counter-example: the stem says the risk is rated within appetite and an 'accept on record' option is present, but acceptance is wrong because the stated legal requirement cannot be waived by an exception (a reason not used before; the earlier counter-examples are crisc_d1_103 cover that may not pay, crisc_d1_068 a combined breach of the board's total, crisc_d4_010 a project team without authority). Neighbours checked: crisc_d1_025 (expired exceptions: the owner decides again), crisc_d1_098 (a stricter local rule that law requires needs no exception), crisc_d3_062 (human review scaled to the impact of a wrong output, which holds where the enterprise sets the rule; here the law sets it), crisc_d3_004 and crisc_d3_044 (staff review of AI output as a response and its KCI), CC cc_d1_015 (heritage law forbids a control the standard requires: compensating controls), CISA d4_198 (a binding directive's own extension process), AAIA aaia_d3_006 (testing that policy-required reviews happen) and aaia_d2_010 (review as a rubber stamp). None keys an exception refused because a law, not the enterprise, set the rule. Review fixes 4 Nov 2026 (round 7 audit and concept review): stem now says the standard follows the country's lending law and that the within-appetite rating covers wrong declines below $2,000, the fact the explanation uses against the runner-up (audit and concept review).",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d1_106",
+      "domain": 1,
+      "subtopic": "1B1 Enterprise risk management (ERM). Categories of IT risk",
+      "principle_id": "objectives-first",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "A risk analyst is checking that an airline's enterprise risk register covers the three Risk IT categories. Which of the following entries BEST illustrates IT benefit or value enablement risk?",
+      "options": {
+        "A": "Check-in system outages that delay flights",
+        "B": "Revenue missed by not adopting dynamic pricing",
+        "C": "A crew-scheduling rollout a year behind plan",
+        "D": "A breach of passenger data at a booking agent"
+      },
+      "correct": "B",
+      "key_concept": "Risk IT has three IT risk categories: benefit or value enablement (missed chances to use technology), program and project delivery, and operations and service delivery.",
+      "pre_read": "Recall the three Risk IT categories and what sets each apart.",
+      "correct_explanation": "Value enablement risk is the risk of missing chances to use technology to make processes more efficient or to enable new business, so revenue missed by not adopting dynamic pricing is the example. A register of failures alone misses this upside, which ERM exists to weigh. The late crew-scheduling rollout is the runner-up: it also concerns value not yet delivered, but a project that slips is program and project delivery risk.",
+      "wrong_explanations": {
+        "A": "Outages of a live system are operations and service delivery risk, the most familiar category, not value enablement.",
+        "C": "A rollout a year late is program and project delivery risk: IT's contribution to a new solution is at risk, not a chance left unused.",
+        "D": "A breach at a partner is operations and service delivery risk reached through a third party, not a missed opportunity."
+      },
+      "tips": [
+        "Eliminate: A and D are failures of live systems and services, which is operations and service delivery risk.",
+        "Final two: B beats C because value enablement is about chances not taken; a late rollout is a project that is not delivering.",
+        "Exam cue: IT risk is wider than failure; on CRISC items, an opportunity the enterprise misses through technology is IT risk too and belongs in the register."
+      ],
+      "framework_ref": "ISACA Risk IT Framework 2nd Edition (2020); ISACA Now Blog 23 September 2019 (IT risk has three categories: benefit/value enablement, program and project delivery, and operations and service delivery); ISACA Glossary (enterprise risk management)",
+      "related_concepts": [
+        "Risk IT categories",
+        "Value enablement risk",
+        "Upside risk"
+      ],
+      "_provenance": "Authored from concept: notes 1B1.1 (IT Risk Within Enterprise Risk: IT risk is wider than failure; Risk IT's categories are benefit or value enablement, program and project delivery, and operations and service delivery). Round 7, 4 Nov 2026: original scenario (an airline's register checked for the three Risk IT categories; fuel savings missed by not adopting route tools) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Neighbours checked: crisc_d1_039 (exposure far below appetite may mean missed opportunity), crisc_d3_050 (horizon scanning reports opportunities as well as threats), crisc_d4_013 (positive risks in cybersecurity risk discussions), crisc_d1_033 (IT risks in the enterprise categories), crisc_d4_070 and crisc_d4_079 (project logs and the enterprise register). No CISA, CC or AAIA item keys the Risk IT categories. Key form: a definition (foundational). Review fixes 4 Nov 2026 (round 7 audit and concept review): key example changed from fuel savings by route tools to revenue missed by not adopting dynamic pricing, to keep apart from crisc_d3_050's AI fuel saving; Risk IT Framework 2nd Edition added to framework_ref, since the stem names the Risk IT categories and the blog post does not (audit).",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d1_107",
+      "domain": 1,
+      "subtopic": "1A5 Business processes and resilience. Paper payments in a continuity exercise",
+      "principle_id": "analyze-before-acting",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "In an exercise simulating a three-day finance system outage, a university's payments clerks issued paper checks with no second approval to keep suppliers paid. What should the risk practitioner do FIRST?",
+      "options": {
+        "A": "Assess how fast the finance system can recover",
+        "B": "Add a second approver to paper payments",
+        "C": "Drop paper checks from the continuity plan",
+        "D": "Assess the payment risk the workaround adds"
+      },
+      "correct": "D",
+      "key_concept": "A continuity workaround can add risk of its own, such as a dropped approval; assess it with the process owner before relying on the plan.",
+      "pre_read": "Weigh what the exercise proved against what the workaround changed.",
+      "correct_explanation": "The exercise proved the process can continue, but the workaround drops the second approval, so for three days payments could go out wrong or to a fraudster unchecked. A response can bring new risk, so the practitioner first assesses it with the process owner, who then chooses a check, a cap or acceptance. Adding a second approver is the runner-up: it may be the fix, but choosing it before analysis skips the owner's decision.",
+      "wrong_explanations": {
+        "A": "Recovery speed is the disaster recovery plan's question; the exercise showed the business could carry on, and the new exposure lies in unchecked payments.",
+        "B": "A second approver may well be the fix, but choosing it before the risk is analyzed decides the response for the process owner.",
+        "C": "Dropping the workaround removes the risk only by leaving suppliers unpaid in an outage, which defeats the plan the exercise has just shown works."
+      },
+      "tips": [
+        "Eliminate: A goes back to system recovery when the process already kept running, and C removes the workaround that kept suppliers paid.",
+        "Final two: D beats B because the workaround's risk is not yet analyzed; assess it with the process owner, who then chooses the fix.",
+        "Exam cue: a continuity workaround is a risk response too; check which control it drops and assess that risk before the plan relies on it."
+      ],
+      "framework_ref": "NIST IR 8286 Rev. 1 Section 3.5 (Plan and Execute Risk Response Strategies: risk responses themselves may introduce new risks); NIST SP 800-34 Rev. 1 Section 3.5 (Plan Testing, Training, and Exercises); COBIT 2019 DSS04 (Managed Continuity)",
+      "related_concepts": [
+        "Continuity workarounds",
+        "Risk introduced by a response",
+        "Process owner"
+      ],
+      "_provenance": "Authored from concept: notes 1A5.1 (Process Ownership and Critical Processes: a workaround that drops a control keeps the process going but adds risk, assessed with the process owner before the plan relies on it). Round 7, 4 Nov 2026: original scenario (a university's continuity exercise keeps suppliers paid with paper checks issued with no second approval) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Neighbours checked: crisc_d1_063 (a tested interim workaround while a fix is built), crisc_d1_075 (a workaround must carry the service level at the scale the plan assumes), crisc_d1_029 (a recovery test passes only if the process continues), crisc_d1_010 (realistic exercises with the process owner), crisc_d3_056 (a tested manual process for an AI outage), CISA d4_089 (one engineer leading parallel recoveries). No CISA, CC or AAIA item on a workaround that drops a control. Key form: analyze before acting (the round's only one). Review fixes 4 Nov 2026 (round 7 audit and concept review): stem reworded so the checks are plainly part of a simulated outage, not real payments to review (audit). Further neighbour: crisc_d2_085 (an AI fraud filter's new lost-sales risk: the same lesson that a response adds risk, keyed the same way; keep apart in practice sets); crisc_d2_092 is a third sibling. Cross-domain fixes 4 Nov 2026 (round 7): 'finance owner' renamed 'process owner' to match the bank's role names.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d1_108",
+      "domain": 1,
+      "subtopic": "1B3 Risk profile. Reporting by risk category",
+      "principle_id": "escalate-to-the-limit-setter",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "A retailer's board sets appetite per risk category, and the risk analyst's draft profile shows supplier risk 30% over its category appetite but total exposure within appetite. How should the analyst BEST report this?",
+      "options": {
+        "A": "As a total within the board's overall appetite",
+        "B": "As a supplier variance within tolerance",
+        "C": "As supplier excess above its category appetite",
+        "D": "As one score averaged across the categories"
+      },
+      "correct": "C",
+      "key_concept": "Where the board sets appetite per category, each is reported against its own limit; headroom in one category does not offset an excess in another.",
+      "pre_read": "Note the level at which the board set its limits.",
+      "correct_explanation": "The board set an appetite per category, so each is a limit in its own right. Supplier risk is 30% over its limit whatever the others show: headroom elsewhere cannot absorb risk with its own causes and owners. The profile reports the excess for the board to decide on. Reporting the total as within appetite is the runner-up: the sum is accurate, but netting hides the excess the category limit exists to catch.",
+      "wrong_explanations": {
+        "A": "The total is accurate, which makes it tempting, but the board set limits per category; netting them presents one limit's excess as a position within appetite.",
+        "B": "Tolerance is a deviation leaders set in advance; the stem sets none for supplier risk, so calling a 30% excess a variance within tolerance relabels it as allowed.",
+        "D": "Averaging blends the supplier excess into the other categories, so what the board's category limit should catch drops out of view."
+      },
+      "tips": [
+        "Eliminate: B renames an excess as a tolerance no one set, and D averages the categories so it drops out of view.",
+        "Final two: C beats A because the board's limit is per category; a total within appetite does not cancel one category's excess over its own limit.",
+        "Exam cue: report each risk against the level where its limit was set; headroom in one category does not pay for an excess in another."
+      ],
+      "framework_ref": "ISACA Glossary (risk appetite); ISACA Glossary (risk aggregation); NIST IR 8286 Rev. 1 Section 4.1 (Applying the Enterprise Risk Register and Developing the Enterprise Risk Profile)",
+      "related_concepts": [
+        "Risk profile",
+        "Category appetite",
+        "Risk aggregation"
+      ],
+      "_provenance": "Authored from concept: notes 1B3.1 (Risk Register Versus Risk Profile: where appetite is set per category, each category is compared with its own limit). Round 7, 4 Nov 2026: original scenario (a retailer's draft profile shows supplier risk 30% over its category appetite while total exposure is within appetite) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Neighbours checked: crisc_d1_068 (the mirror case: each risk within tolerance, together over the board's appetite; keep apart), crisc_d1_090 (counting high-rated risks does not measure exposure), crisc_d1_101 (a lowered appetite moves the comparison, not the ratings), crisc_d1_080 (separate appetite statements per category), crisc_d3_079 (averaging heat-map scores misleads). No CISA, CC or AAIA item on netting one category's breach against another's headroom. Also a counter-pattern to the within-appetite cue: the stem says the total is within appetite, yet the key reports a breach. Review fixes 4 Nov 2026 (round 7 audit and concept review): key and explanations say 'excess over its category appetite' instead of 'breach', since the bank keeps 'breach' for tolerance and option B names tolerance (audit). The audit's key wording 'As supplier risk above its category appetite' was adjusted to 'As supplier excess above its category appetite' so that 'risk', a stem word, is not echoed only by the key.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d1_109",
+      "domain": 1,
+      "subtopic": "1A3 Organizational culture and ethics. Consequences for limit breaches",
+      "principle_id": "root-cause-over-symptom",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "At a brokerage, junior traders who breach dealing limits lose their bonus; the top earner has breached them four times with verbal warnings only. What should the risk practitioner recommend as BEST for risk culture?",
+      "options": {
+        "A": "Apply the same consequences at every level",
+        "B": "Block limit breaches in the trading system",
+        "C": "Retrain the top trader on the dealing limits",
+        "D": "Raise the top trader's limits to fit results"
+      },
+      "correct": "A",
+      "key_concept": "Culture follows the consequences people see: when a top performer's breaches go unpunished, staff learn the rule is optional, so consequences apply at every level.",
+      "pre_read": "Ask what staff learn from how each breach was handled.",
+      "correct_explanation": "Staff watch what happens after a breach. Juniors lose their bonus while the top earner gets warnings, so everyone learns that the limits bind only those who earn less. The fix is for leaders to apply the same consequences at every level. Blocking breaches in the trading system is the runner-up: it stops these breaches, but the lesson that rules bend for top earners stays and spreads to controls no system can enforce.",
+      "wrong_explanations": {
+        "B": "A hard block is a useful control for dealing limits, but it treats the symptom; staff still see that a top earner's breaches went unpunished.",
+        "C": "The trader knows the limits and has breached them four times; training answers a gap in knowledge, not consequences applied unevenly.",
+        "D": "Dealing limits come from the firm's appetite, not a trader's results; raising them rewards the breaches and confirms the double standard."
+      },
+      "tips": [
+        "Eliminate: C trains a trader who already knows the limits, and D raises limits set from appetite to reward the breaches.",
+        "Final two: A beats B because the culture problem is the lesson staff draw from uneven consequences; a system block stops one breach type but leaves that lesson.",
+        "Exam cue: when a culture question shows rules enforced by rank, look for the answer that makes consequences consistent, not a new control or more training."
+      ],
+      "framework_ref": "ISACA Glossary (risk culture); NIST SP 800-39 Section 2.7 (Organizational Culture)",
+      "related_concepts": [
+        "Risk culture",
+        "Consistent consequences",
+        "Tone at the top"
+      ],
+      "_provenance": "Authored from concept: notes 1A3.1 (Risk Culture and Tone at the Top: consequences apply equally at every level; unpunished breaches by a top performer teach staff the rule is optional). Round 7, 4 Nov 2026: original scenario (a brokerage docks junior traders' bonuses for dealing-limit breaches while its top earner gets verbal warnings) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Neighbours checked: crisc_d1_006 (incentives that reward skipping checks are rebalanced), crisc_d1_055 (a CEO's praise for a skipped review: the leader restates the rule), crisc_d1_024 (near-miss reports counted against staff), crisc_d1_046 (culture shows in whether managers follow up), CISA d5_104 (penalizing phishing clicks cut reporting). No CC or AAIA item on consequences enforced by rank. Key form: a leadership action on the cause.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d1_110",
+      "domain": 1,
+      "subtopic": "1A6 Organizational asset management. What the inventory records",
+      "principle_id": "emerging-and-ai-risk-owned",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A clinic group learned from a supplier, not its inventory, that 40 imaging workstations lose updates in six months. Which of the following should the risk analyst propose as the BEST addition to the inventory?",
+      "options": {
+        "A": "Each asset's purchase price and age",
+        "B": "Each asset's vendor support end date",
+        "C": "Each asset's last security update date",
+        "D": "Each asset's room and serial number"
+      },
+      "correct": "B",
+      "key_concept": "An inventory that records when vendor support ends lets owners plan replacement or treatment before assets fall out of support.",
+      "pre_read": "Ask what the inventory is meant to help the owners do.",
+      "correct_explanation": "The group heard from a supplier, so its inventory could not show that 40 workstations were about to lose updates. Recording each asset's vendor support end date lets the practitioner see the date coming, raise the risk with the asset's owner and leave time to replace, isolate or accept it. The last security update date is the runner-up: it shows how current an asset is today, but not when its updates will stop.",
+      "wrong_explanations": {
+        "A": "Price and age describe what an asset cost and how old it is; a recent model can lose support early, so neither shows when updates end.",
+        "C": "The last update date looks back; an asset patched last week can still lose support next month, which this field would not show.",
+        "D": "Room and serial number help find and count devices, but say nothing about when they stop being supported."
+      },
+      "tips": [
+        "Eliminate: A uses price and age, which do not set when support ends, and D records where a device sits, not its risk.",
+        "Final two: B beats C because the support end date looks forward; the last update date shows only where the asset stands today.",
+        "Exam cue: an inventory is a risk input; on CRISC items, the BEST field is the one that shows a risk before it arrives, not one that only describes the asset."
+      ],
+      "framework_ref": "NIST CSF 2.0 ID.AM-08 (systems, hardware, software, services and data are managed throughout their life cycles); COBIT 2019 BAI09 (Managed Assets)",
+      "related_concepts": [
+        "Asset inventory",
+        "Asset lifecycle",
+        "End of vendor support"
+      ],
+      "_provenance": "Authored from concept: notes 1A6.1 (Asset Inventory and Ownership: lifecycle dates, such as when vendor support ends, let owners plan replacement or treatment in time). Round 7, 4 Nov 2026: original scenario (a clinic group learns from a supplier, not its inventory, that 40 imaging workstations lose updates in six months) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Neighbours checked: crisc_d4_002 and crisc_d4_022 (unsupported software risk in the register and its rating), crisc_d1_064 (the inventory kept current through purchasing), crisc_d1_030 (value by business impact, not price), crisc_d1_011 (an AI model's owner is the field that matters most), CISA d4_043 (unsupported hardware as an audit priority), CISA d4_038 (servers losing support: compare options), CC cc_d5_081 (an exception for an unsupported PC) and cc_d2_020 (a KRI for unsupported servers). None keys the inventory recording when support ends. Key form: a record that shows risk early. Review fixes 4 Nov 2026 (round 7 audit and concept review): pre_read no longer points at the forward-looking key (audit).",
       "style_version": 2
     }
   ]
