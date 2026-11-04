@@ -18,12 +18,17 @@ Batched for the end of the uplift (web v13, mobile 2.0.0; DECISIONS 8). Write th
 - At larger browser text sizes, your plant card on You grows with the rest of the page.
 - Restoring a backup in a browser with no progress no longer offers to back up an empty file.
 - FAQ answers and a few messages read more clearly.
+- Weak spots and Saved questions drills now stay on their own questions.
+- Area chart scores no longer run together on phones.
+- Practice summary now says plainly that it covers all your practice so far.
+- Restoring a backup into a new browser is now a plain restore, in short lines.
+- Older What's New entries read more clearly.
 
 ## Follow-ups to do at the release
 - `mobile/src/engine/plantLooks.ts` `howToOpen` says "in the Herbarium": change to "in Badges" and rebuild `assets/kaisip-plant.js` in the same commit.
 - Old What's New entries (v12.44, v12.49) mention "field guide": release history, leave unless Sky says otherwise.
 - Q1, Q2, Q5 on the phone (DECISIONS 13): the low-end sentence under its scale bar, "too few yet" instead of "seed" in its chart, and the ScaleBar range label "67 to 79".
-- Dash sweep, web and phone together (on the web the Results line, What's New headings, About KaiSip, the FAQ, the toasts, the filter-complete line, the auditor alert, the glossary intro and the empty values on Weak spots, the Practice hub and a mock's Pace are done; old What's New entries are release history): `app/results.tsx` "Readiness is 68–78%", `session.tsx` em dash, `game/sprint.tsx` "—", `board.tsx` "–", `shareCard.ts`, `widgets.ts`, and the bundled `readinessRange.ts`, `domainBand.ts`, `readinessReport.tallyText` (need the bundle rebuild).
+- Dash sweep, web and phone together (on the web the Results line, What's New headings and old entries (round 3), About KaiSip, the FAQ, the toasts, the filter-complete line, the auditor alert, the glossary intro and the empty values on Weak spots, the Practice hub and a mock's Pace are done): `app/results.tsx` "Readiness is 68 to 78%" (an en dash today), the em dashes in `session.tsx` and `game/sprint.tsx`, the en dash in `board.tsx`, `shareCard.ts`, `widgets.ts`, and the bundled `readinessRange.ts`, `domainBand.ts`, `readinessReport.tallyText` (need the bundle rebuild).
 - The phone Badges row has no 4th "next" slot (never existed); not added.
 - Web seed dots use CSS `r` (older Safari falls back to r=4.6): harmless.
 - `todayPlanProgress` counts the day's answers before the plan was saved toward the set step: check in Phase 5 QA.

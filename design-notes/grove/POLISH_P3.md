@@ -93,3 +93,21 @@ Every blocking finding is fixed in `index.html`; none needed an owner decision c
 - The readiness key has a third line for the scale bar: "Bracket on the bar: the same range on a straight scale, in blocks of 10." The bar itself is the Grove scale bar (its alternating blocks are its steps of 10) and is unchanged.
 - Restore: "Back up first" shows only when this browser has answers (an empty browser says "This browser has no answers yet, so there is nothing here to back up."), and its done line gives the count ("Backup saved: 213 answers."). Start fresh keeps its button.
 - Dashes: the FAQ answers, the "Question banks still loading" and "Bookmark drill" toasts, the filter-complete line, the auditor-vs-implementer alert and the glossary intro use a colon, a semicolon or a full stop; Weak spots and the Practice hub's By domain leave the value empty under 30 answers (the row already says "too few yet"), and a mock's Pace reads "none" with no answers.
+
+
+## Round 3 after the strict review (4 Nov 2026)
+
+Every blocking finding is fixed in `index.html`; none needed an owner decision changed. In short:
+
+- Drills: Weak spots, Saved questions and a single saved question mark their scope as picked before Practice opens, and a started set puts its own scope back, so the hub's "Picked for you" never swaps the drill's questions for another area's. Checked: the current question is in the drill's pool, scope 'all'.
+- Chart scores: two passes. A score beside its tip that would come within 8px of the next score moves to the left of its stem (moving the one before it left first when that frees the room), or drops a whole line under the next score, still under the line. With 75/60/68/55/70 the scores keep 27px or more at 375, 390, 414 and 768 (it was about 2px), 36px or more in the wide drawing.
+- Chart names: where labels would clash, each odd area's block starts one step below the deepest line of its neighbours (no shared or near rows), measured with all-strong, mixed and few-answer data at 390, 414 and 768.
+- "70 line": Your progress and set results pass `lineInKey`, as You and the mock do.
+- Browser Back and Forward land focus on the new page's title.
+- Practice summary (was Session summary): the words match the numbers ("All your practice so far"), "Close", "Educated guess", confidence cards only with marks (and a line saying what they are), sentence case, DI short names, "too few yet" under the name.
+- Readiness key: "Green ticks: up to your low end" added; the bracket line names its colour ("Green bracket on the bar"). The bar is unchanged (round 2 kept the Grove ScaleBar look).
+- What's New: every old entry without dashes, question ids or domain numbers; `verify_repo.sh` now fails on a dash or a question id in the changelog. `CHANGELOG.md` keeps its history as written.
+- First-time You: one line explains 10, 30 and 40; no empty axes before any area has a score (the list instead); the key only names marks the chart draws.
+- Not started: Today's readiness list says "Not started" for 0 answers; You's focus row says "where you'll gain most" when it is not started.
+- Restore: short lines; in a browser with no answers, "Cancel" and a plain "Restore".
+- Back up on Settings: the row says "Backup saved: 4 Nov" (a status line for screen readers), so no toast covers the rows below it.

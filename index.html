@@ -3378,9 +3378,12 @@ header {
   display:flex;align-items:center;gap:12px;margin-bottom:10px;
 }
 .summary-domain-label {
-  font-family:var(--f-sans);font-size:13px;width:80px;
-  flex-shrink:0;font-weight:500;
+  font-family:var(--f-sans);font-size:13px;width:9.75rem;
+  flex-shrink:0;font-weight:500;display:flex;flex-direction:column;gap:2px;min-width:0;
 }
+.summary-domain-nm { display:flex;align-items:center; }
+.summary-domain-few { font-size:13px;font-weight:400;color:var(--text2); }
+.summary-conf-note { font-size:13px;color:var(--text2);line-height:1.5;margin:0 0 10px; }
 .summary-domain-track {
   flex:1;height:8px;background:var(--border2);border-radius:var(--r-xs);overflow:hidden;
 }
@@ -6954,6 +6957,8 @@ html { scroll-padding-bottom: calc(104px + var(--consent-h, 0px)); }
 /* A small sheet (the reset confirms and the exam-date choice): Grove raised2,
    rising from the bottom edge on phones, centred on wide screens. */
 .ks-sheet-sub { margin: 0 0 var(--sp-lg); font: var(--t-body); color: var(--text2); }
+.ks-sheet-lines p { margin: 0; }
+.ks-sheet-lines p + p { margin-top: var(--sp-sm); }
 /* A sheet is modal. The cookie bar is put away while one is open (v12.42),
    so the two never stack; the z-index keeps the sheet on top regardless. */
 .mock-confirm-overlay.ks-sheet-overlay { z-index: 300; }
@@ -7375,6 +7380,7 @@ html { scroll-padding-bottom: calc(104px + var(--consent-h, 0px)); }
 .you-key svg { flex: none; margin-top: 2px; }
 .you-key b { font-weight: 600; color: var(--text); }
 .you-k-rng { fill: none; stroke: var(--hero-tick-rng); stroke-width: 2.5; stroke-linecap: round; }
+.you-k-low { fill: none; stroke: var(--hero-tick-on); stroke-width: 2.5; stroke-linecap: round; }
 .you-k-br { fill: none; stroke: var(--accent); stroke-width: 2; }
 .you-k-mark { fill: none; stroke: var(--clay); stroke-width: 3; stroke-linecap: round; }
 .you-k-dash { fill: none; stroke: var(--text2); stroke-width: 1.2; stroke-dasharray: 3 3; }
@@ -7404,7 +7410,7 @@ html { scroll-padding-bottom: calc(104px + var(--consent-h, 0px)); }
    gets its one line instead. */
 .you-key-list { display: none; margin: 4px 4px 0; padding: 10px 0 0; border-top: 1px solid var(--border); font: 400 0.8125rem/1.462 var(--f-sans); color: var(--text2); }
 .fg-large .you-areas .you-key { display: none; }
-.fg-large .you-key-list { display: block; }
+.fg-large .you-key-list, .you-key-list.you-key-only { display: block; }
 @container (max-width: 299px) { .you-areas .you-key { display: none; } .you-key-list { display: block; } }
 .you-areal { list-style: none; margin: 0; padding: 4px 4px 6px; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(12rem, 100%), 1fr)); gap: 4px 16px; }
 .you-areal li { display: flex; flex-wrap: wrap; align-items: baseline; column-gap: 8px; min-width: 0; padding: 6px 0; border-bottom: 1px solid var(--border); }
@@ -8322,7 +8328,7 @@ html { scroll-padding-bottom: calc(104px + var(--consent-h, 0px)); }
         </section>
         <section class="you-card" aria-labelledby="youMoreH">
           <h2 class="you-card-h" id="youMoreH">In more detail</h2>
-          <ul class="you-list"><li><a class="you-row" href="#progress" onclick="return navGoFocus(event,'progress')" aria-labelledby="youProgT" aria-describedby="youProgM"><span class="you-ico" aria-hidden="true"><svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1"/></svg></span><span class="you-text"><span class="you-t" id="youProgT">Your progress</span><span class="you-m" id="youProgM">Your range in detail, charts and study days</span></span><span class="you-chev" aria-hidden="true"><svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m9 6 6 6-6 6"/></svg></span></a></li><li><a class="you-row" href="#weak-spots" onclick="return navGoFocus(event,'weakspots')" aria-labelledby="youWeakT" aria-describedby="youWeakM"><span class="you-ico" aria-hidden="true"><svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3.5 20.5h17"/><path d="M7 17v-5M12 17V6M17 17v-8"/></svg></span><span class="you-text"><span class="you-t" id="youWeakT">Weak spots</span><span class="you-m" id="youWeakM">Each area&rsquo;s score, and a drill for the low ones</span></span><span class="you-chev" aria-hidden="true"><svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m9 6 6 6-6 6"/></svg></span></a></li><li><button type="button" class="you-row" aria-haspopup="dialog" onclick="showSessionSummary()" aria-labelledby="youSessT" aria-describedby="youSessM"><span class="you-ico" aria-hidden="true"><svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3 12h4l3-7.5 4 15 3-7.5h4"/></svg></span><span class="you-text"><span class="you-t" id="youSessT">Session summary</span><span class="you-m" id="youSessM">What you did this session</span></span><span class="you-chev" aria-hidden="true"><svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m9 6 6 6-6 6"/></svg></span></button></li></ul>
+          <ul class="you-list"><li><a class="you-row" href="#progress" onclick="return navGoFocus(event,'progress')" aria-labelledby="youProgT" aria-describedby="youProgM"><span class="you-ico" aria-hidden="true"><svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1"/></svg></span><span class="you-text"><span class="you-t" id="youProgT">Your progress</span><span class="you-m" id="youProgM">Your range in detail, charts and study days</span></span><span class="you-chev" aria-hidden="true"><svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m9 6 6 6-6 6"/></svg></span></a></li><li><a class="you-row" href="#weak-spots" onclick="return navGoFocus(event,'weakspots')" aria-labelledby="youWeakT" aria-describedby="youWeakM"><span class="you-ico" aria-hidden="true"><svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3.5 20.5h17"/><path d="M7 17v-5M12 17V6M17 17v-8"/></svg></span><span class="you-text"><span class="you-t" id="youWeakT">Weak spots</span><span class="you-m" id="youWeakM">Each area&rsquo;s score, and a drill for the low ones</span></span><span class="you-chev" aria-hidden="true"><svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m9 6 6 6-6 6"/></svg></span></a></li><li><button type="button" class="you-row" aria-haspopup="dialog" onclick="showSessionSummary()" aria-labelledby="youSessT" aria-describedby="youSessM"><span class="you-ico" aria-hidden="true"><svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3 12h4l3-7.5 4 15 3-7.5h4"/></svg></span><span class="you-text"><span class="you-t" id="youSessT">Practice summary</span><span class="you-m" id="youSessM">All your practice so far</span></span><span class="you-chev" aria-hidden="true"><svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m9 6 6 6-6 6"/></svg></span></button></li></ul>
         </section>
       </div>
     </div>
@@ -8365,7 +8371,7 @@ html { scroll-padding-bottom: calc(104px + var(--consent-h, 0px)); }
         <section class="you-card set-card" aria-labelledby="youDataH">
           <h2 class="you-card-h" id="youDataH">Your data</h2>
           <p class="you-card-sub">Keep a backup file, in case this browser clears its data.</p>
-          <ul class="you-list"><li><button type="button" class="you-row" id="setBackup" onclick="backupSave()" aria-labelledby="setBackupT" aria-describedby="setBackupM setBackupL"><span class="you-ico" aria-hidden="true"><svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 3.5v11M7.5 10l4.5 4.5 4.5-4.5"/><path d="M4.5 17v2.5a1 1 0 0 0 1 1h13a1 1 0 0 0 1-1V17"/></svg></span><span class="you-text"><span class="you-t" id="setBackupT">Back up</span><span class="you-m" id="setBackupM">Save a file of your progress</span><span class="you-m" id="setBackupL" hidden></span></span><span class="you-chev" aria-hidden="true"><svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m9 6 6 6-6 6"/></svg></span></button></li><li><button type="button" class="you-row" id="setRestore" onclick="youRestore()" aria-labelledby="setRestoreT" aria-describedby="setRestoreM"><span class="you-ico" aria-hidden="true"><svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 15.5v-11M7.5 9 12 4.5 16.5 9"/><path d="M4.5 17v2.5a1 1 0 0 0 1 1h13a1 1 0 0 0 1-1V17"/></svg></span><span class="you-text"><span class="you-t" id="setRestoreT">Restore</span><span class="you-m" id="setRestoreM">Load a backup file</span></span><span class="you-chev" aria-hidden="true"><svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m9 6 6 6-6 6"/></svg></span></button></li>
+          <ul class="you-list"><li><button type="button" class="you-row" id="setBackup" onclick="backupSave()" aria-labelledby="setBackupT" aria-describedby="setBackupM setBackupL"><span class="you-ico" aria-hidden="true"><svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 3.5v11M7.5 10l4.5 4.5 4.5-4.5"/><path d="M4.5 17v2.5a1 1 0 0 0 1 1h13a1 1 0 0 0 1-1V17"/></svg></span><span class="you-text"><span class="you-t" id="setBackupT">Back up</span><span class="you-m" id="setBackupM">Save a file of your progress</span><span class="you-m" id="setBackupL" hidden></span></span><span class="you-chev" aria-hidden="true"><svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m9 6 6 6-6 6"/></svg></span></button><span class="sr-only" id="setBackupSay" role="status" aria-live="polite"></span></li><li><button type="button" class="you-row" id="setRestore" onclick="youRestore()" aria-labelledby="setRestoreT" aria-describedby="setRestoreM"><span class="you-ico" aria-hidden="true"><svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 15.5v-11M7.5 9 12 4.5 16.5 9"/><path d="M4.5 17v2.5a1 1 0 0 0 1 1h13a1 1 0 0 0 1-1V17"/></svg></span><span class="you-text"><span class="you-t" id="setRestoreT">Restore</span><span class="you-m" id="setRestoreM">Load a backup file</span></span><span class="you-chev" aria-hidden="true"><svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m9 6 6 6-6 6"/></svg></span></button></li>
             <li id="setOthersLi" hidden><button type="button" class="you-row" id="setOthers" aria-haspopup="dialog" onclick="showYourData()" aria-labelledby="setOthersT" aria-describedby="setOthersM"><span class="you-ico" aria-hidden="true"><svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="4" y="4" width="16" height="6" rx="1.5"/><rect x="4" y="14" width="16" height="6" rx="1.5"/></svg></span><span class="you-text"><span class="you-t" id="setOthersT">Other saved progress</span><span class="you-m" id="setOthersM">Earlier progress records in this browser</span></span><span class="you-chev" aria-hidden="true"><svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m9 6 6 6-6 6"/></svg></span></button></li>
           </ul>
           <!-- The one file input for a restore (Settings and the Your data sheet both use it). -->
@@ -10486,19 +10492,24 @@ function importProgress(file) {
       // "Back up first" only when this browser has answers to lose, so an
       // empty browser never writes an empty file under the real file's name.
       var hereN = backupAnswersHere();
+      // Short lines, not one paragraph: what the file holds, what else comes
+      // back, then the replace warning only when there is progress to replace.
+      // With no answers here the sheet is a plain restore, not a red replace.
+      var also = [];
+      if (addName) also.push('your name ' + addName);
+      if (addExam) also.push('exam date ' + examDateWords(addExam));
+      prefs.add.forEach(function (x) { also.push(x.words); });
+      var lines = ['This file: ' + fileN + (fileN === 1 ? ' answer' : ' answers') + (fileDay ? ', saved ' + fileDay : '') + '.'];
+      if (also.length) lines.push('Also comes back: ' + also.join(', ') + '. Change any of it in Settings.');
+      if (prefs.kept) lines.push('Settings already chosen in this browser stay as they are.');
+      if (hereN > 0) lines.push('The ' + hereN + (hereN === 1 ? ' answer' : ' answers') + ' in this browser are replaced with the file.');
       ksConfirm({
         title: 'Restore this file?',
-        body: 'This file: ' + fileN + (fileN === 1 ? ' answer' : ' answers') + (fileDay ? ', saved ' + fileDay : '') + '. '
-          + 'The progress in this browser is replaced with the progress in the file.'
-          + (addName ? ' Today will also greet you as ' + addName + ', the name in the file. Change or clear it any time in Settings.' : '')
-          + (addExam ? ' Your exam date in the file, ' + examDateWords(addExam) + ', is added too.' : '')
-          + (prefs.add.length ? ' It also brings back your settings from the file: ' + prefs.add.map(function (x) { return x.words; }).join(', ') + '.' : '')
-          + (prefs.kept ? ' Settings already chosen in this browser stay as they are.' : '')
-          + (hereN > 0 ? '' : ' This browser has no answers yet, so there is nothing here to back up.'),
-        cancelLabel: 'Keep my progress',
+        lines: lines,
+        cancelLabel: hereN > 0 ? 'Keep my progress' : 'Cancel',
         extra: backupFirstExtra(hereN),
-        confirmLabel: 'Replace my progress',
-        danger: true,
+        confirmLabel: hereN > 0 ? 'Replace my progress' : 'Restore',
+        danger: hereN > 0,
         onConfirm: function () {
           var id = getActiveProfileId();
           var profiles = getProfiles();
@@ -10579,8 +10590,18 @@ function backupSaveQuiet() {
   try { backupLastSync(); } catch (e) {}
   return ok;
 }
+// On Settings the row itself says so ("Backup saved: 4 Nov" under Back up,
+// and a status line for a screen reader), so no toast covers the rows below.
+var backupSayTimer = null;
 function backupSave() {
-  if (backupSaveQuiet()) showToast('Backup saved', 'success', 2600);
+  if (!backupSaveQuiet()) return;
+  var el = document.getElementById('setBackupL'), say = document.getElementById('setBackupSay');
+  if (!el || !say || !el.getClientRects().length) { showToast('Backup saved', 'success', 2600); return; }
+  el.textContent = 'Backup saved: ' + profileDateWords(isoLocalDate(new Date()));
+  say.textContent = '';
+  setTimeout(function () { say.textContent = 'Backup saved'; }, 60);
+  clearTimeout(backupSayTimer);
+  backupSayTimer = setTimeout(function () { try { backupLastSync(); } catch (e) {} }, 6000);
 }
 // "Last backup: 3 Nov" under Back up, from aurivan_backup_saved_at.
 function backupLastSync() {
@@ -12896,7 +12917,9 @@ window.addEventListener('hashchange', function () {
   }
   // An address opened directly (typed, pasted or followed) starts at the top
   // of its page, as a first load does, not at the running head 56px down.
-  if (r.tab !== S.activeTab) { switchTab(r.tab, { noScroll: true }); window.scrollTo(0, 0); }
+  // Browser Back and Forward too: focus lands on the new page's title, never
+  // on an element left behind in the page that just hid.
+  if (r.tab !== S.activeTab) { switchTab(r.tab, { noScroll: true }); window.scrollTo(0, 0); navFocusTitle(); }
   if (r.action) navRunAction(r.action);
 });
 
@@ -13416,16 +13439,23 @@ function youReadyHtml(r, range, grow) {
     ? '<p class="you-ready-n">' + range.low + '<span class="you-to"> to </span>' + range.high + '</p>'
     : '<p class="you-ready-n">' + so + '<span class="you-to"> of ' + RD_RANGE_MIN_ANSWERS + ' answers</span></p><p class="you-cap">until your first readiness range</p>';
   var html = '<div class="you-ready-top">' + ring + '<div class="you-ready-t"><h2 class="you-kick" id="youReadyH">Estimated readiness</h2>' + words + '</div></div>';
-  if (!range.enough) return html;
+  // Before the first range, the three thresholds on this page in one line,
+  // so 10, 30 and 40 read as one plan, not three rules.
+  if (!range.enough) return html + '<p class="you-cap you-thr">Your numbers show at ' + YOU_STATS_MIN + ' answers, an area&rsquo;s score at ' + DOMAIN_READ_MIN
+    + ' answers in that area, and your range at ' + RD_RANGE_MIN_ANSWERS + ' answers in total.</p>';
   var gap = FG_STUDY_BAR - range.low;
   return html + '<div class="you-scale">' + fgScaleBar(range, { number: false }) + '</div>'
     + '<ul class="you-key you-rkey" aria-label="Readiness key">'
+    // Each mark has one meaning on the card: the ring's green ticks
+    // run up to the low end, its gold ticks are the range, and the bar's
+    // green bracket is that same range again (Today's "Up to your low end").
+    + '<li><svg width="14" height="16" viewBox="0 0 14 16" aria-hidden="true" focusable="false"><path class="you-k-low" d="M4 2v12M10 2v12"/></svg><span><b>Green ticks:</b> up to your low end, ' + range.low + '.</span></li>'
     + '<li><svg width="14" height="16" viewBox="0 0 14 16" aria-hidden="true" focusable="false"><path class="you-k-rng" d="M4 2v12M10 2v12"/></svg><span><b>Gold ticks:</b> your range, ' + range.low + ' to ' + range.high + '.</span></li>'
     + '<li><svg width="14" height="16" viewBox="0 0 14 16" aria-hidden="true" focusable="false"><path class="you-k-mark" d="M7 1v14"/></svg><span><b>Clay mark:</b> ' + FG_STUDY_BAR
     + ', this app&rsquo;s study bar.</span></li>'
     // The bar above the key: its bracket is the same range, and its blocks
     // are steps of 10 (a map-style scale), so the key says both.
-    + '<li><svg width="14" height="16" viewBox="0 0 14 16" aria-hidden="true" focusable="false"><path class="you-k-br" d="M2 11V5h10v6"/></svg><span><b>Bracket on the bar:</b> the same range on a straight scale, in blocks of 10.</span></li></ul>'
+    + '<li><svg width="14" height="16" viewBox="0 0 14 16" aria-hidden="true" focusable="false"><path class="you-k-br" d="M2 11V5h10v6"/></svg><span><b>Green bracket on the bar:</b> the same range, ' + range.low + ' to ' + range.high + ', on a straight scale in blocks of 10.</span></li></ul>'
     + '<p class="you-cap you-low">Your low end, ' + range.low + ', is the cautious end of your range: we&rsquo;re fairly sure you&rsquo;re at or above it. '
     + 'The study bar asks for a low end of ' + FG_STUDY_BAR + ', a goal to study toward, not an exam score. '
     + (gap > 0 ? 'Yours is ' + gap + ' under it.' : 'Yours is at or above it.') + '</p>';
@@ -13450,7 +13480,9 @@ function youAreasHtml(r) {
   var said = [], items = [];
   var areas = r.domains.map(function (x) {
     var pct = pgPct(x), n = x.answered, nm = DI[x.id].short;
-    var gain = n > 0 && r.answered > 0 && x.id === r.focusId;
+    // The focus area is marked in the list as in the sentence above it, an
+    // area not started yet included.
+    var gain = r.answered > 0 && x.id === r.focusId;
     var val, note = [];
     if (n <= 0) { val = 'Not started'; said.push(nm + ', not started.'); }
     else if (n < DOMAIN_READ_MIN) {
@@ -13470,17 +13502,23 @@ function youAreasHtml(r) {
   var dash = '<svg width="18" height="16" viewBox="0 0 18 16" aria-hidden="true" focusable="false"><path class="you-k-dash" d="M1 8h16"/></svg>';
   var tip = '<svg width="18" height="16" viewBox="0 0 18 16" aria-hidden="true" focusable="false"><ellipse class="fg-st-leaf c" cx="9" cy="8" rx="3.4" ry="5.6"/></svg>';
   var seed = '<svg width="18" height="16" viewBox="0 0 18 16" aria-hidden="true" focusable="false"><ellipse class="fg-st-seed" cx="9" cy="9" rx="6.5" ry="4.2"/></svg>';
+  // Until an area has a score the chart would be empty axes: the list
+  // alone, with its one line. The key names only marks the chart draws.
+  var measured = areas.filter(function (a) { return a.answered >= DOMAIN_READ_MIN; });
+  var anyBelow = measured.some(function (a) { return a.pct < DOMAIN_TARGET_PCT; });
+  var anyFew = measured.length < areas.length;
   return '<div class="you-areas-h"><h2 class="you-fig" id="youAreasH">Five areas, one scale</h2><p class="you-cap">Built from your answers in this app.</p></div>'
-    + '<div class="you-stems" role="img" aria-label="' + escapeHtml('Five areas on one scale, with a dashed line at ' + DOMAIN_TARGET_PCT + '. ' + said.join(' ')) + '">'
-    + fgStemChart(areas, { label: 'Each area', lineInKey: true }) + '</div>'
+    + (measured.length ? '<div class="you-stems" role="img" aria-label="' + escapeHtml('Five areas on one scale, with a dashed line at ' + DOMAIN_TARGET_PCT + '. ' + said.join(' ')) + '">'
+      + fgStemChart(areas, { label: 'Each area', lineInKey: true }) + '</div>' : '')
     + '<ul class="you-areal" aria-label="Each area">' + items.join('') + '</ul>'
-    + '<ul class="you-key" aria-label="Chart key">'
-    + '<li>' + dash + '<span><b>Dashed line:</b> ' + DOMAIN_TARGET_PCT + ', the target for each area.</span></li>'
-    + '<li>' + tip + '<span><b>Clay tip and &ldquo;below ' + DOMAIN_TARGET_PCT + '&rdquo;:</b> that area sits under the line.</span></li>'
-    + '<li>' + seed + '<span><b>No stem yet:</b> fewer than ' + DOMAIN_READ_MIN + ' answers, too few yet for a score. The stem and score show at ' + DOMAIN_READ_MIN + '.</span></li></ul>'
-    // When the list replaces the chart (large text, a narrow column), the
-    // key's marks are not on screen: one line for the list instead.
-    + '<p class="you-key-list">Target for each area: ' + DOMAIN_TARGET_PCT + '. Scores show from ' + DOMAIN_READ_MIN + ' answers.</p>';
+    + (measured.length ? '<ul class="you-key" aria-label="Chart key">'
+      + '<li>' + dash + '<span><b>Dashed line:</b> ' + DOMAIN_TARGET_PCT + ', the target for each area.</span></li>'
+      + (anyBelow ? '<li>' + tip + '<span><b>Clay tip and &ldquo;below ' + DOMAIN_TARGET_PCT + '&rdquo;:</b> that area sits under the line.</span></li>' : '')
+      + (anyFew ? '<li>' + seed + '<span><b>No stem yet:</b> fewer than ' + DOMAIN_READ_MIN + ' answers, too few yet for a score.</span></li>' : '') + '</ul>' : '')
+    // When the list replaces the chart (large text, a narrow column, or no
+    // area with a score yet), the key's marks are not on screen: one line
+    // for the list instead.
+    + '<p class="you-key-list' + (measured.length ? '' : ' you-key-only') + '">Target for each area: ' + DOMAIN_TARGET_PCT + '. Scores show from ' + DOMAIN_READ_MIN + ' answers.</p>';
 }
 // Mock exams: the newest three (mockPastRowsHtml: name, date, right of
 // asked, percent; no Review, past answers are not kept) and a link to all of
@@ -14287,10 +14325,11 @@ function todayReadyHtml(r, range, st) {
   if (!st.exam) {
     html += '<ul class="td-doms">' + r.domains.map(function (x) {
       var pct = Math.round(x.mastery * 100);
-      var few = x.answered < DOMAIN_READ_MIN;
+      var few = x.answered < DOMAIN_READ_MIN, none = x.answered <= 0;
       if (few && x.answered > 0) banded = true;
-      var shown = few ? x.answered + ' of ' + DOMAIN_READ_MIN : pct + '%';
-      var spoken = few ? x.answered + ' of ' + DOMAIN_READ_MIN + ' answers, too few yet for a score' : domainFigure(x.answered, pct).spoken;
+      // No answers: "Not started", as You's list and chart say.
+      var shown = none ? 'Not started' : few ? x.answered + ' of ' + DOMAIN_READ_MIN : pct + '%';
+      var spoken = none ? 'not started' : few ? x.answered + ' of ' + DOMAIN_READ_MIN + ' answers, too few yet for a score' : domainFigure(x.answered, pct).spoken;
       return '<li><span class="dom-dot" style="background:' + DI[x.id].color + '" aria-hidden="true"></span>'
         + '<span class="td-dname">' + escapeHtml(DI[x.id].short) + '</span>'
         + '<span class="sr-only">: ' + spoken + '</span><span class="td-dval' + (few ? '' : ' td-dnum') + '" aria-hidden="true">' + shown + '</span></li>';
@@ -15169,8 +15208,9 @@ function fgStemSvg(areas, wide, o) {
   // Neighbouring labels must keep 8px between them. The width is an estimate
   // for the chart type (about 6.2px a character at 11px, 7.8 at 14px). Where
   // two labels on the same row would come closer, every other area's labels
-  // drop by whole rows (the least that clears them), so neighbouring areas
-  // never share a baseline and never read as one phrase.
+  // drop clear of their neighbours' blocks: each odd area's first line starts
+  // one step below the deepest line of the areas beside it, so no rows are
+  // shared or nearly shared and the labels never read across as one phrase.
   var est = function (t) { return String(t).length * (wide ? 7.8 : 6.2); };
   var rowH = wide ? 16 : 13;
   var clash = function (dy) {
@@ -15188,9 +15228,12 @@ function fgStemSvg(areas, wide, o) {
     return false;
   };
   var dy = 0;
-  if (blocks.length > 1) {
-    var deepest = Math.max.apply(null, blocks.map(function (b) { return b[b.length - 1].y; }));
-    while (dy < deepest && clash(dy)) dy += step;
+  if (blocks.length > 1 && clash(0)) {
+    for (var oi = 1; oi < blocks.length; oi += 2) {
+      var deep = 0;
+      [oi - 1, oi + 1].forEach(function (j) { if (blocks[j]) deep = Math.max(deep, blocks[j][blocks[j].length - 1].y); });
+      dy = Math.max(dy, deep + step - blocks[oi][0].y);
+    }
   }
   var h = soil + (wide ? 44 : 52) + extras * step + 4 + dy;
   var y = function (p) { return soil - (p / 100) * plotH; };
@@ -15206,6 +15249,56 @@ function fgStemSvg(areas, wide, o) {
     // Where it is drawn, the line's label sits just above the line at the
     // right edge, so a score set beside the last tip (under the line) is clear of it.
     + (o.lineInKey ? '' : '<text class="fg-st-line" x="' + w + '" y="' + (y(DOMAIN_TARGET_PCT) - 5).toFixed(1) + '" text-anchor="end">' + DOMAIN_TARGET_PCT + ' line</text>');
+  // The scores in two passes. First each measured area's place and an
+  // estimated box (digits and % at the score's size: about 10.1px a digit and
+  // 8.5 for the % in the phone drawing, 13.4 and 11 in the wide one). A score
+  // over its tip leaf is centred on the stem. A score under 70 that would
+  // reach the dashed line moves beside its tip, under the line, so it never
+  // sits on the line or reads as on target.
+  var cap = wide ? 17 : 13, yl = y(DOMAIN_TARGET_PCT), SEP = 8;
+  var scores = areas.map(function (a, i) {
+    var f = fgStemFacts(a);
+    if (f.few) return null;
+    var pct = f.pct, delta = f.delta, xs = L + gap * i + gap / 2;
+    var yTop = pct < DOMAIN_TARGET_PCT ? Math.max(y(pct), yl + 3) : y(pct);
+    var sc = { xs: xs, yTop: yTop, tipY: yTop + 5.6, nx: xs, ny: yTop - (wide ? 10 : 8), anchor: 'middle', beside: false };
+    var wd = String(pct).length * (wide ? 13.4 : 10.1) + (wide ? 11 : 8.5);
+    // A change in points sits inline after a centred score (" ↑5" at the 11px
+    // or 13px type); beside a tip it goes on its own line under the score.
+    sc.w = wd; sc.wIn = wd + (delta ? (String(Math.abs(delta)).length + 2) * (wide ? 7.6 : 6.4) : 0);
+    if (pct < DOMAIN_TARGET_PCT && sc.ny - cap - 4 <= yl) {
+      sc.beside = true; sc.anchor = 'start'; sc.nx = xs + 14;
+      sc.ny = Math.max(sc.tipY + cap / 2, yl + cap + 5);
+    }
+    return sc;
+  });
+  var box = function (sc) {
+    var wd = sc.beside ? sc.w : sc.wIn;
+    var l = sc.anchor === 'middle' ? sc.nx - wd / 2 : sc.anchor === 'end' ? sc.nx - wd : sc.nx;
+    return { l: l, r: l + wd, y: sc.ny };
+  };
+  // Second pass: a score beside its tip keeps 8px from the next area's score
+  // on its row. Where it would come closer, it moves to the left of its own
+  // stem when the area before leaves room (moving that area's beside score to
+  // its own left first, when that frees the room), or else drops a whole line
+  // under the next score, still under the dashed line, so two scores never
+  // read as one phrase. A row is the score's full line box (lineH).
+  var lineH = wide ? 30 : 24;
+  var near = function (A, B) { return Math.abs(A.y - B.y) < lineH && A.l < B.r + SEP && B.l < A.r + SEP; };
+  var toLeft = function (sc) { return { xs: sc.xs, nx: sc.xs - 14, ny: sc.ny, anchor: 'end', beside: true, w: sc.w, wIn: sc.wIn }; };
+  var fits = function (cand, other) { return !other || !near(box(cand), box(other)); };
+  scores.forEach(function (sc, i) {
+    if (!sc || !sc.beside) return;
+    var nb = scores[i + 1], pv = scores[i - 1];
+    if (!nb || !near(box(sc), box(nb))) return;
+    var left = toLeft(sc);
+    if (fits(left, pv)) { sc.nx = left.nx; sc.anchor = 'end'; return; }
+    if (pv && pv.beside && pv.anchor === 'start') {
+      var pl = toLeft(pv);
+      if (fits(pl, scores[i - 2]) && fits(left, pl)) { pv.nx = pl.nx; pv.anchor = 'end'; sc.nx = left.nx; sc.anchor = 'end'; return; }
+    }
+    sc.ny = Math.max(sc.tipY + cap + 6, nb.ny + lineH);
+  });
   areas.forEach(function (a, i) {
     var f = fgStemFacts(a), pct = f.pct, delta = f.delta;
     var xs = (L + gap * i + gap / 2).toFixed(1);
@@ -15215,36 +15308,21 @@ function fgStemSvg(areas, wide, o) {
       g += '<ellipse class="fg-st-seed" cx="' + xs + '" cy="' + (soil - 4) + '" rx="7" ry="4.5"/>'
         + (f.none ? '' : '<path class="fg-st-ghost" d="M' + xs + ' ' + (soil - 9) + 'v-18"/>');
     } else {
-      var base = delta > 0 ? pct - delta : pct;
+      var base = delta > 0 ? pct - delta : pct, sc = scores[i];
       // The top of the stem and of its tip leaf is the score itself, never
       // above it; under 70 the whole tip stays at least 3px under the dashed
       // line, so an area below the target never touches it.
-      var yl = y(DOMAIN_TARGET_PCT);
-      var yTop = pct < DOMAIN_TARGET_PCT ? Math.max(y(pct), yl + 3) : y(pct);
+      var yTop = sc.yTop;
       var yBase = delta > 0 ? Math.max(y(base), yTop) : yTop;
       g += '<path class="fg-st-stem' + trace + '"' + len + ' d="M' + xs + ' ' + soil + 'V' + yBase.toFixed(1) + '"/>';
       for (var k = 1; k * 9 < base; k++) {
         g += '<ellipse class="fg-st-leaf' + settle + '" cx="0" cy="-6" rx="3.2" ry="6.4" transform="translate(' + xs + ' ' + y(k * 9).toFixed(1) + ') rotate(' + (k % 2 ? -58 : 58) + ')"/>';
       }
       if (delta > 0) g += '<path class="fg-st-grow' + trace + '"' + len + ' d="M' + xs + ' ' + yBase.toFixed(1) + 'V' + yTop.toFixed(1) + '"/>';
-      // The score sits over the tip leaf with a clear gap (its digits end 8px
-      // above the leaf). A score under 70 always sits under the dashed line:
-      // where it would reach the line, it moves beside the tip, below the
-      // line, so it never sits on the line or reads as on target. Beside: to
-      // the right, just clear of the stem's leaves (they reach 10.5 out) and
-      // short of the next stem's; a change in points then goes on its own
-      // line under the score, so the label stays narrow.
-      var cap = wide ? 17 : 13, tipY = yTop + 5.6;
-      var nx = xs, ny = yTop - (wide ? 10 : 8), anchor = 'middle', beside = false;
-      if (pct < DOMAIN_TARGET_PCT && ny - cap - 4 <= yl) {
-        beside = true;
-        nx = (parseFloat(xs) + 14).toFixed(1);
-        anchor = 'start';
-        ny = Math.max(tipY + cap / 2, yl + cap + 5);
-      }
-      g += '<ellipse class="fg-st-leaf' + (f.below || delta > 0 ? ' c' : '') + settle + '" cx="' + xs + '" cy="' + tipY.toFixed(1) + '" rx="3" ry="5.6"/>'
-        + '<text class="fg-st-n' + settle + '" x="' + nx + '" y="' + ny.toFixed(1) + '" text-anchor="' + anchor + '">' + pct + '<tspan class="u" dy="-6">%</tspan>'
-        + (delta ? '<tspan class="' + (delta > 0 ? 'fg-st-up' : 'fg-st-dn') + '"' + (beside ? ' x="' + nx + '" dy="' + (wide ? 22 : 20) + '"' : ' dy="6"') + '>' + (beside ? '' : ' ') + (delta > 0 ? '&uarr;' : '&darr;') + Math.abs(delta) + '</tspan>' : '') + '</text>';
+      var nx = sc.nx.toFixed(1);
+      g += '<ellipse class="fg-st-leaf' + (f.below || delta > 0 ? ' c' : '') + settle + '" cx="' + xs + '" cy="' + sc.tipY.toFixed(1) + '" rx="3" ry="5.6"/>'
+        + '<text class="fg-st-n' + settle + '" x="' + nx + '" y="' + sc.ny.toFixed(1) + '" text-anchor="' + sc.anchor + '">' + pct + '<tspan class="u" dy="-6">%</tspan>'
+        + (delta ? '<tspan class="' + (delta > 0 ? 'fg-st-up' : 'fg-st-dn') + '"' + (sc.beside ? ' x="' + nx + '" dy="' + (wide ? 22 : 20) + '"' : ' dy="6"') + '>' + (sc.beside ? '' : ' ') + (delta > 0 ? '&uarr;' : '&darr;') + Math.abs(delta) + '</tspan>' : '') + '</text>';
     }
     // The name, the word, then "18 answered" (grey) or "below 70" (clay) and the set's note.
     var off = i % 2 ? dy : 0;
@@ -15529,7 +15607,7 @@ function pgDomainsHtml(r) {
   var key = 'One line of growth per domain, on one scale. Dashed: the ' + DOMAIN_TARGET_PCT + ' line. Clay and “below ' + DOMAIN_TARGET_PCT + '”: under it, still building.'
     + (few ? ' No stem yet: fewer than ' + DOMAIN_READ_MIN + ' answers, too few yet for a score.' : '');
   return '<section class="pg-sec" aria-labelledby="pgDomH"><h2 class="pg-h2" id="pgDomH">By domain</h2>'
-    + fgPlate('Five areas, one scale', fgStemChart(areas, { label: 'Each domain, in exam order' }))
+    + fgPlate('Five areas, one scale', fgStemChart(areas, { label: 'Each domain, in exam order', lineInKey: true }))
     + fgCaption('Key', key, 'fg-chart-key')
     + (numbered ? '<p class="pg-note">Percentages count your latest try at each question.</p>' : '') + '</section>';
 }
@@ -19200,11 +19278,15 @@ function startSession(n, domain, label) {
   S.domainTimerPaused = false;
   S.domainTimerElapsed = 0;
   sessionDomain = domain || 'all';
+  // A started set is its scope on purpose. The hub's "Picked for you" may
+  // have swapped the domain while a drill's queue was preloaded under 'all',
+  // so 'all' is put back too (the queue itself is left as it is).
+  phDomainPicked = true;
   if (sessionDomain !== 'all') {
     S.selectedDomain = sessionDomain;
     saveState();
     renderDomainGrid();
-  }
+  } else S.selectedDomain = 'all';
   hideSessionStart();
   // Trigger first question
   try { nextQ(); } catch (e) {}
@@ -19351,7 +19433,7 @@ function rsGrowthPlate(byDomain, before) {
   });
   var key = 'Dashed: the ' + DOMAIN_TARGET_PCT + ' line. Clay: growth from this set (with ↑), or a domain below it (with “below ' + DOMAIN_TARGET_PCT + '”).';
   if (areas.length > 1) {
-    return fgPlate('Your domains after this set', fgStemChart(areas, { ink: true, label: 'Each domain in this set' }))
+    return fgPlate('Your domains after this set', fgStemChart(areas, { ink: true, label: 'Each domain in this set', lineInKey: true }))
       + fgCaption('Key', key + ' No stem yet: fewer than ' + DOMAIN_READ_MIN + ' answers, too few yet for a score.', 'fg-chart-key');
   }
   var a = areas[0], f = fgStemFacts(a), nm = escapeHtml(a.short), big, line;
@@ -21517,7 +21599,10 @@ function ksConfirm(o) {
     + '<div class="mock-confirm-modal ks-sheet' + (x ? ' ks-stack' : '') + '" role="dialog" aria-modal="true" aria-labelledby="ksConfH" aria-describedby="ksConfB">'
     + '<h2 class="mock-confirm-head" id="ksConfH">' + escapeHtml(o.title) + '</h2>'
     + '<div class="mock-confirm-body">'
-    + '<p class="ks-sheet-sub" id="ksConfB">' + escapeHtml(o.body) + '</p>'
+    // o.lines: short plain lines in place of one body paragraph (each escaped).
+    + (Array.isArray(o.lines)
+      ? '<div class="ks-sheet-sub ks-sheet-lines" id="ksConfB">' + o.lines.map(function (l) { return '<p>' + escapeHtml(l) + '</p>'; }).join('') + '</div>'
+      : '<p class="ks-sheet-sub" id="ksConfB">' + escapeHtml(o.body) + '</p>')
     + '<div class="mock-confirm-btns">'
     + '<button type="button" class="mock-confirm-btn cancel" onclick="closeFlagModal()">' + escapeHtml(o.cancelLabel || 'Cancel') + '</button>'
     + (x ? '<button type="button" class="mock-confirm-btn ks-extra" id="ksConfExtra" onclick="runKsExtra()">' + (x.icon ? ico(x.icon, 18) : '') + escapeHtml(x.label) + '</button>' : '')
@@ -23615,6 +23700,8 @@ function startWeakSpotsDrill() {
   var pool = getTrainWeakSpotsPool();
   if (!pool.length) { showToast('Answer a few questions first. Weak spots show up after that.', 'info', 2600); return; }
   clearAllTimers();
+  // The drill is the scope on purpose: the Practice hub must not swap in its own pick.
+  phDomainPicked = true;
   S.selectedDomain = 'all';
   S.queues['all'] = pool;
   S.qIdx['all'] = 0;
@@ -23761,6 +23848,7 @@ function startBookmarkDrill(tagFilter) {
     return;
   }
   clearAllTimers();
+  phDomainPicked = true;
   S.selectedDomain = 'all';
   S.queues['all'] = fullQs.sort(function(){ return Math.random()-0.5; });
   S.qIdx['all'] = 0;
@@ -23803,6 +23891,7 @@ function drillSingleBookmark(qId) {
     return;
   }
   clearAllTimers();
+  phDomainPicked = true;
   S.selectedDomain = d;
   S.queues[d] = [found];
   S.qIdx[d] = 0;
@@ -24608,10 +24697,14 @@ function showSessionSummary() {
     var rd = domainRead(st);
     if (!rd.enough) allRead = false;
     else if (dp < DOMAIN_TARGET_PCT) allOnTarget = false;
+    // The DI short name alone, as on You; under 30 answers the words sit
+    // under the name ("too few yet · 12 answered"), not in the value column.
+    var few = !rd.enough, said = few ? (st.t > 0 ? 'too few yet &middot; ' + st.t + ' answered' : 'not started') : '';
     domainHtml += '<div class="summary-domain-row">'
-      + '<span class="summary-domain-label">' + '<span class="dom-dot" style="background:' + info.color + '"></span>' + 'D' + d + ' ' + info.short + '</span>'
-      + '<div class="summary-domain-track"><div class="summary-domain-fill" style="width:' + readBarWidth(rd) + '%;background:' + bc + '"></div></div>'
-      + '<span class="summary-domain-pct" style="color:var(--text)">' + domainReadLabel(rd) + '</span>'
+      + '<span class="summary-domain-label"><span class="summary-domain-nm"><span class="dom-dot" style="background:' + info.color + '"></span>' + escapeHtml(info.short) + '</span>'
+      + (few ? '<span class="summary-domain-few">' + said + '</span>' : '') + '</span>'
+      + '<div class="summary-domain-track" aria-hidden="true"><div class="summary-domain-fill" style="width:' + readBarWidth(rd) + '%;background:' + bc + '"></div></div>'
+      + '<span class="summary-domain-pct" style="color:var(--text)">' + (few ? '' : domainReadLabel(rd)) + '</span>'
       + '</div>';
   });
 
@@ -24646,10 +24739,13 @@ function showSessionSummary() {
       + '<span class="summary-focus-text"><strong>' + S.missedQuestions.length + ' incorrect answers</strong> in your review queue for spaced repetition.</span></div>';
   }
 
-  var confCards = '<div class="summary-conf-row">'
+  // Shown only once an answer has a confidence mark, with one line saying what it is.
+  var confAny = confSure + confEdu + confGuess > 0;
+  var confCards = '<p class="summary-conf-note">How sure you said you were before you checked, and how often you were right.</p>'
+    + '<div class="summary-conf-row">'
     + '<div class="summary-conf-card"><span class="summary-conf-num">' + confSure + '</span><span class="summary-conf-label">Sure</span>'
     + (confSure > 0 ? '<div style="font-size:13px;color:var(--muted);margin-top:4px">' + Math.round((confSureCorrect/confSure)*100) + '% correct</div>' : '') + '</div>'
-    + '<div class="summary-conf-card"><span class="summary-conf-num">' + confEdu + '</span><span class="summary-conf-label">Edu. Guess</span>'
+    + '<div class="summary-conf-card"><span class="summary-conf-num">' + confEdu + '</span><span class="summary-conf-label">Educated guess</span>'
     + (confEdu > 0 ? '<div style="font-size:13px;color:var(--muted);margin-top:4px">' + Math.round((confEduCorrect/confEdu)*100) + '% correct</div>' : '') + '</div>'
     + '<div class="summary-conf-card"><span class="summary-conf-num">' + confGuess + '</span><span class="summary-conf-label">Guessing</span>'
     + (confGuess > 0 ? '<div style="font-size:13px;color:var(--muted);margin-top:4px">' + Math.round((confGuessCorrect/confGuess)*100) + '% correct</div>' : '') + '</div>'
@@ -24658,8 +24754,8 @@ function showSessionSummary() {
   var modal = document.getElementById("changelogModal");
   modal.innerHTML = '<div class="summary-overlay" onclick="closeSummary(event)">'
     + '<div class="summary-modal" onclick="event.stopPropagation()">'
-    + '<div class="summary-title">Session Summary</div>'
-    + '<div class="summary-sub">Your practice session so far</div>'
+    + '<div class="summary-title">Practice summary</div>'
+    + '<div class="summary-sub">All your practice so far</div>'
     + '<div class="summary-big-score" style="color:' + pctColor + '">' + domainReadLabel(domainRead(S.score)) + '</div>'
     + '<div class="summary-score-label">' + escapeHtml(String(c)) + ' of ' + escapeHtml(String(t)) + ' correct</div>'
     + '<div class="summary-grid">'
@@ -24669,16 +24765,15 @@ function showSessionSummary() {
       ? '<div class="summary-stat"><span class="summary-stat-num">' + escapeHtml(String(S.streak)) + '</span><span class="summary-stat-label">In a row</span></div>'
       : '<div class="summary-stat"><span class="summary-stat-num">' + escapeHtml(String(studyDaysThisWeek())) + '</span><span class="summary-stat-label">Study days this week</span></div>')
     + '</div>'
-    + '<div class="summary-section-label">Confidence Breakdown</div>'
-    + confCards
-    + '<div class="summary-section-label">Domain Performance</div>'
+    + (confAny ? '<div class="summary-section-label">How sure you were</div>' + confCards : '')
+    + '<div class="summary-section-label">Each area</div>'
     + domainHtml
-    + '<div class="summary-section-label">Recommendations</div>'
+    + '<div class="summary-section-label">What to do next</div>'
     + focusHtml
     + confInsight
     + missedHtml
     + renderPacingFeedbackHtml()
-    + '<button class="summary-close" onclick="closeSummary()">Back to Practice</button>'
+    + '<button class="summary-close" onclick="closeSummary()">Close</button>'
     + '</div></div>';
 }
 
@@ -25703,7 +25798,7 @@ const CHANGELOG = [
     version: 'v10.45.2',
     title: 'Clearer tips when answers are shuffled',
     items: [
-      { cat: 'fixed', text: 'Tips now keep their wording intact when answer options are shuffled — only real references to an answer letter change, so sentences no longer read oddly.' }
+      { cat: 'fixed', text: 'Tips now keep their wording intact when answer options are shuffled: only real references to an answer letter change, so sentences no longer read oddly.' }
     ]
   },
   {
@@ -25717,7 +25812,7 @@ const CHANGELOG = [
     version: 'v10.45',
     title: 'Your privacy, clearly explained',
     items: [
-      { cat: 'new', text: 'KaiSip now asks before using analytics — a clear cookie choice on your first visit. Decline and nothing is stored; accept and it stays anonymous. You can change your choice any time from the footer.' },
+      { cat: 'new', text: 'KaiSip now asks before using analytics: a clear cookie choice on your first visit. Decline and nothing is stored; accept and it stays anonymous. You can change your choice any time from the footer.' },
       { cat: 'new', text: 'A full Privacy Policy and Terms of Use are now published and linked from the footer, so it is easy to see exactly how the app works and how your data is handled.' }
     ]
   },
@@ -25725,14 +25820,14 @@ const CHANGELOG = [
     version: 'v10.44',
     title: 'Easier to support KaiSip',
     items: [
-      { cat: 'new', text: 'The web practice app is free, with no ads. If it is helping your prep, you can now chip in more easily — there is a Support option in the More menu, a support card on the Home screen, and a gentle thank-you prompt after you finish a mock exam.' }
+      { cat: 'new', text: 'The web practice app is free, with no ads. If it is helping your prep, you can now chip in more easily: there is a Support option in the More menu, a support card on the Home screen, and a gentle thank-you prompt after you finish a mock exam.' }
     ]
   },
   {
     version: 'v10.43',
     title: 'A dedicated About page',
     items: [
-      { cat: 'improved', text: 'KaiSip now has its own About page — open it from the More menu to read what KaiSip stands for, its vision and mission, and the wider roadmap, all in one place.' }
+      { cat: 'improved', text: 'KaiSip now has its own About page: open it from the More menu to read what KaiSip stands for, its vision and mission, and the wider roadmap, all in one place.' }
     ]
   },
   {
@@ -25740,28 +25835,28 @@ const CHANGELOG = [
     title: 'A sharper KaiSip brand',
     items: [
       { cat: 'improved', text: 'The header logo, name, and slogan have been refined into one clean, balanced lockup that reads as a finished brand.' },
-      { cat: 'new', text: 'A new Vision & Mission card explains what KaiSip stands for — free, honest CISA preparation that teaches you to reason like an IS auditor.' }
+      { cat: 'new', text: 'A new Vision & Mission card explains what KaiSip stands for: free, honest CISA preparation that teaches you to reason like an IS auditor.' }
     ]
   },
   {
     version: 'v10.41',
     title: 'Refreshed section banners',
     items: [
-      { cat: 'improved', text: 'The banners at the top of the Glossary and FAQ pages have been restyled to match the rest of the app — a clean, light KaiSip card instead of the old dark panel.' }
+      { cat: 'improved', text: 'The banners at the top of the Glossary and FAQ pages have been restyled to match the rest of the app: a clean, light KaiSip card instead of the old dark panel.' }
     ]
   },
   {
     version: 'v10.40',
     title: 'New FAQ & Help section',
     items: [
-      { cat: 'new', text: 'A searchable FAQ is now built in — open it from the More menu for clear answers on using the app, how the CISA exam is structured, and how to study effectively.' }
+      { cat: 'new', text: 'A searchable FAQ is now built in: open it from the More menu for clear answers on using the app, how the CISA exam is structured, and how to study effectively.' }
     ]
   },
   {
     version: 'v10.39',
     title: 'Adaptive review queue',
     items: [
-      { cat: 'new', text: 'Questions you answer incorrectly now come back on a spaced schedule — soon at first, then at widening intervals as you get them right, until they are retired. The Home screen shows how many are due and lets you start a focused review session in one tap.' }
+      { cat: 'new', text: 'Questions you answer incorrectly now come back on a spaced schedule: soon at first, then at widening intervals as you get them right, until they are retired. The Home screen shows how many are due and lets you start a focused review session in one tap.' }
     ]
   },
   {
@@ -25775,14 +25870,14 @@ const CHANGELOG = [
     version: 'v10.37',
     title: 'Clearer answer explanations',
     items: [
-      { cat: 'improved', text: 'After you answer, the option-by-option breakdown now makes the correct answer stand out at a glance, and every explanation is set in slightly larger, easier-to-read text — so it is clearer why the right answer wins and why each other option falls short.' }
+      { cat: 'improved', text: 'After you answer, the option-by-option breakdown now makes the correct answer stand out at a glance, and every explanation is set in slightly larger, easier-to-read text, so it is clearer why the right answer wins and why each other option falls short.' }
     ]
   },
   {
     version: 'v10.36',
     title: 'Smoother section switching on phones',
     items: [
-      { cat: 'fixed', text: 'On phones, the old row of tabs at the top is gone — the bottom navigation bar is now the single way to move around, so there is no more side-scrolling strip.' },
+      { cat: 'fixed', text: 'On phones, the old row of tabs at the top is gone: the bottom navigation bar is now the single way to move around, so there is no more side-scrolling strip.' },
       { cat: 'fixed', text: 'Opening a section now takes you straight to the top of it, instead of leaving you scrolled partway down the previous screen.' }
     ]
   },
@@ -25790,7 +25885,7 @@ const CHANGELOG = [
     version: 'v10.35',
     title: 'A new Home screen and easier navigation on phones',
     items: [
-      { cat: 'new', text: 'On a phone, the app now has a bottom navigation bar — Home, Practice, Mock, Topics, and More — always within thumb’s reach, so every section is one tap away instead of hidden behind a side-scroll.' },
+      { cat: 'new', text: 'On a phone, the app now has a bottom navigation bar (Home, Practice, Mock, Topics, and More) always within thumb’s reach, so every section is one tap away instead of hidden behind a side-scroll.' },
       { cat: 'new', text: 'A new Home screen greets you with a quick way to resume studying, a countdown to your exam date, and your progress in each of the five domains.' }
     ]
   },
@@ -25798,63 +25893,63 @@ const CHANGELOG = [
     version: 'v10.34',
     title: 'Audit Evidence & Reporting are now full study pages',
     items: [
-      { cat: 'new', text: 'The Audit Evidence Collection and Reporting and Communication topics now read as full study pages — with this, every topic in the Auditing Process domain is a complete study resource.' }
+      { cat: 'new', text: 'The Audit Evidence Collection and Reporting and Communication topics now read as full study pages. With this, every topic in the Auditing Process domain is a complete study resource.' }
     ]
   },
   {
     version: 'v10.33',
     title: 'Every Topics page is now a full study resource',
     items: [
-      { cat: 'new', text: 'The last topics in Protection of Information Assets — security frameworks and baselines, physical and environmental controls, and data loss prevention — now read as full study pages. With this, every topic across all five domains has clear diagrams, an in-depth plain-language explanation, and the common mistakes to watch for.' }
+      { cat: 'new', text: 'The last topics in Protection of Information Assets (security frameworks and baselines, physical and environmental controls, and data loss prevention) now read as full study pages. With this, every topic across all five domains has clear diagrams, an in-depth plain-language explanation, and the common mistakes to watch for.' }
     ]
   },
   {
     version: 'v10.32',
     title: 'The IT Operations & Resilience domain is now fully built out',
     items: [
-      { cat: 'new', text: 'The remaining topics in Information Systems Operations and Business Resilience — networking, system availability and capacity, log management, database management, business impact analysis, data backup, and business continuity planning — now read as full study pages with clear diagrams, in-depth explanations in plain language, and the common mistakes to watch for.' }
+      { cat: 'new', text: 'The remaining topics in Information Systems Operations and Business Resilience (networking, system availability and capacity, log management, database management, business impact analysis, data backup, and business continuity planning) now read as full study pages with clear diagrams, in-depth explanations in plain language, and the common mistakes to watch for.' }
     ]
   },
   {
     version: 'v10.31',
     title: 'The Systems Development domain is now fully built out',
     items: [
-      { cat: 'new', text: 'The remaining topics in Information Systems Acquisition, Development and Implementation — project governance, application controls, system testing and implementation, and the post-implementation review — now read as full study pages with clear diagrams, in-depth explanations in plain language, and the common mistakes to watch for.' }
+      { cat: 'new', text: 'The remaining topics in Information Systems Acquisition, Development and Implementation (project governance, application controls, system testing and implementation, and the post-implementation review) now read as full study pages with clear diagrams, in-depth explanations in plain language, and the common mistakes to watch for.' }
     ]
   },
   {
     version: 'v10.30',
     title: 'More Governance & Management of IT topics are now full study pages',
     items: [
-      { cat: 'new', text: 'Several more topics in Governance and Management of IT — IT policies and standards, enterprise risk management, data privacy, IT resource management, third-party and cloud governance, and performance monitoring — now read as full study pages with clear diagrams, in-depth explanations in plain language, and the common mistakes to watch for.' }
+      { cat: 'new', text: 'Several more topics in Governance and Management of IT (IT policies and standards, enterprise risk management, data privacy, IT resource management, third-party and cloud governance, and performance monitoring) now read as full study pages with clear diagrams, in-depth explanations in plain language, and the common mistakes to watch for.' }
     ]
   },
   {
     version: 'v10.29',
     title: 'IT Governance & Structure is now a full study page',
     items: [
-      { cat: 'new', text: 'The Organizational Structure, IT Governance and IT Strategy topic now reads as a full study page — clear diagrams, an in-depth explanation in plain language, and the common mistakes to watch for.' }
+      { cat: 'new', text: 'The Organizational Structure, IT Governance and IT Strategy topic now reads as a full study page: clear diagrams, an in-depth explanation in plain language, and the common mistakes to watch for.' }
     ]
   },
   {
     version: 'v10.28',
     title: 'Audit Project Management is now a full study page',
     items: [
-      { cat: 'new', text: 'The Audit Project Management topic now reads as a full study page — clear diagrams, an in-depth explanation in plain language, and the common mistakes to watch for. Domain 1 is now fully built out.' }
+      { cat: 'new', text: 'The Audit Project Management topic now reads as a full study page: clear diagrams, an in-depth explanation in plain language, and the common mistakes to watch for. Every IS Audit topic is now a full study page.' }
     ]
   },
   {
     version: 'v10.27',
     title: 'Audit Standards & Ethics is now a full study page',
     items: [
-      { cat: 'new', text: 'The IS Audit Standards, Guidelines, Functions and Codes of Ethics topic now reads as a full study page — clear diagrams, an in-depth explanation in plain language, and the common mistakes to watch for.' }
+      { cat: 'new', text: 'The IS Audit Standards, Guidelines, Functions and Codes of Ethics topic now reads as a full study page: clear diagrams, an in-depth explanation in plain language, and the common mistakes to watch for.' }
     ]
   },
   {
     version: 'v10.26',
     title: 'Types of Audits is now a full study page',
     items: [
-      { cat: 'new', text: 'The Types of Audits, Assessments and Reviews topic now reads as a full study page — clear diagrams, an in-depth explanation in plain language, and the common mistakes to watch for.' }
+      { cat: 'new', text: 'The Types of Audits, Assessments and Reviews topic now reads as a full study page: clear diagrams, an in-depth explanation in plain language, and the common mistakes to watch for.' }
     ]
   },
   {
@@ -25868,7 +25963,7 @@ const CHANGELOG = [
     version: 'v10.24',
     title: 'Audit Data Analytics is now a full study page',
     items: [
-      { cat: 'new', text: 'The Audit Data Analytics topic now reads as a full study page — clear diagrams, an in-depth explanation in plain language, and the common mistakes to watch for.' }
+      { cat: 'new', text: 'The Audit Data Analytics topic now reads as a full study page: clear diagrams, an in-depth explanation in plain language, and the common mistakes to watch for.' }
     ]
   },
   {
@@ -25882,77 +25977,77 @@ const CHANGELOG = [
     version: 'v10.22',
     title: 'Risk-Based Audit Planning is now a full study page',
     items: [
-      { cat: 'new', text: 'The Risk-Based Audit Planning topic now reads as a full study page — clear diagrams, an in-depth explanation in plain language, and the common mistakes to watch for.' }
+      { cat: 'new', text: 'The Risk-Based Audit Planning topic now reads as a full study page: clear diagrams, an in-depth explanation in plain language, and the common mistakes to watch for.' }
     ]
   },
   {
     version: 'v10.21',
     title: 'Audit Testing & Sampling is now a full study page',
     items: [
-      { cat: 'new', text: 'The Audit Testing and Sampling topic now reads as a full study page — clear diagrams, an in-depth explanation in plain language, and the common mistakes to watch for.' }
+      { cat: 'new', text: 'The Audit Testing and Sampling topic now reads as a full study page: clear diagrams, an in-depth explanation in plain language, and the common mistakes to watch for.' }
     ]
   },
   {
     version: 'v10.20',
     title: 'Types of Controls is now a full study page',
     items: [
-      { cat: 'new', text: 'The Types of Controls topic now reads as a full study page — clear diagrams, an in-depth explanation in plain language, and the common mistakes to watch for.' }
+      { cat: 'new', text: 'The Types of Controls topic now reads as a full study page: clear diagrams, an in-depth explanation in plain language, and the common mistakes to watch for.' }
     ]
   },
   {
     version: 'v10.19',
     title: 'Incident & Change Management are now full study pages',
     items: [
-      { cat: 'new', text: 'The Incident Management and Change & Patch Management topics now read as full study pages — clear diagrams, in-depth explanations in plain language, and the common mistakes to watch for.' }
+      { cat: 'new', text: 'The Incident Management and Change & Patch Management topics now read as full study pages: clear diagrams, in-depth explanations in plain language, and the common mistakes to watch for.' }
     ]
   },
   {
     version: 'v10.18',
     title: 'System Development (SDLC) is now a full study page',
     items: [
-      { cat: 'new', text: 'The System Development (SDLC) topic now reads as a full study page — clear diagrams, an in-depth explanation in plain language, and the common mistakes to watch for.' }
+      { cat: 'new', text: 'The System Development (SDLC) topic now reads as a full study page: clear diagrams, an in-depth explanation in plain language, and the common mistakes to watch for.' }
     ]
   },
   {
     version: 'v10.17',
     title: 'Cloud & Virtualization is now a full study page',
     items: [
-      { cat: 'new', text: 'The Cloud and Virtualization topic now reads as a full study page — clear diagrams, an in-depth explanation in plain language, and the common mistakes to watch for.' }
+      { cat: 'new', text: 'The Cloud and Virtualization topic now reads as a full study page: clear diagrams, an in-depth explanation in plain language, and the common mistakes to watch for.' }
     ]
   },
   {
     version: 'v10.16',
     title: 'Network & Endpoint Security is now a full study page',
     items: [
-      { cat: 'new', text: 'The Network and Endpoint Security topic now reads as a full study page — clear diagrams, an in-depth explanation in plain language, and the common mistakes to watch for.' }
+      { cat: 'new', text: 'The Network and Endpoint Security topic now reads as a full study page: clear diagrams, an in-depth explanation in plain language, and the common mistakes to watch for.' }
     ]
   },
   {
     version: 'v10.15',
     title: 'Identity & Access Management is now a full study page',
     items: [
-      { cat: 'new', text: 'The Identity and Access Management topic now reads as a full study page — clear diagrams, an in-depth explanation in plain language, and the common mistakes to watch for.' }
+      { cat: 'new', text: 'The Identity and Access Management topic now reads as a full study page: clear diagrams, an in-depth explanation in plain language, and the common mistakes to watch for.' }
     ]
   },
   {
     version: 'v10.14',
     title: 'New study topic: Public Key Infrastructure (PKI)',
     items: [
-      { cat: 'new', text: 'Public Key Infrastructure (PKI) is now a full study page — clear diagrams of how digital certificates and the chain of trust work, an in-depth plain-language explanation, and the common mistakes to watch for.' }
+      { cat: 'new', text: 'Public Key Infrastructure (PKI) is now a full study page: clear diagrams of how digital certificates and the chain of trust work, an in-depth plain-language explanation, and the common mistakes to watch for.' }
     ]
   },
   {
     version: 'v10.13',
     title: 'Data Encryption is now a full study page',
     items: [
-      { cat: 'new', text: 'The Data Encryption topic now reads as a full study page — clear diagrams of how the keys flow, an in-depth plain-language explanation, worked examples, and the common mistakes to watch for.' }
+      { cat: 'new', text: 'The Data Encryption topic now reads as a full study page: clear diagrams of how the keys flow, an in-depth plain-language explanation, worked examples, and the common mistakes to watch for.' }
     ]
   },
   {
     version: 'v10.12',
     title: 'Topic pages are becoming full study resources',
     items: [
-      { cat: 'new', text: 'Topic pages are becoming full study resources — clear diagrams, in-depth explanations in plain language, worked examples, and common-mistakes call-outs, instead of short definitions.' },
+      { cat: 'new', text: 'Topic pages are becoming full study resources: clear diagrams, in-depth explanations in plain language, worked examples, and common-mistakes call-outs, instead of short definitions.' },
       { cat: 'new', text: 'The first one is the OSI model: a labelled 7-layer diagram with a plain-language walkthrough. Find it any time under the Topics tab.' }
     ]
   },
@@ -25967,37 +26062,37 @@ const CHANGELOG = [
     version: 'v10.10',
     title: 'Exam mode: practice questions in a format close to the real exam',
     items: [
-      { cat: 'new', text: 'Added an Exam / Study toggle in the header. STUDY mode (default) shows dense scenario blocks plus post-answer tips, mindset coaching, and triplet-companion chips so you internalize audit reasoning. EXAM mode merges the scenario into the question stem as one paragraph and hides every pedagogical add-on so the surface is close to the real exam — just the question, four options, and a clean explanation after answering.' },
+      { cat: 'new', text: 'Added an Exam / Study toggle in the header. STUDY mode (default) shows dense scenario blocks plus post-answer tips, mindset coaching, and triplet-companion chips so you internalize audit reasoning. EXAM mode merges the scenario into the question stem as one paragraph and hides every pedagogical add-on so the surface is close to the real exam: just the question, four options, and a clean explanation after answering.' },
       { cat: 'new', text: 'Your preference persists across sessions. Toggle mid-question and the current question re-renders in the new mode immediately.' },
     ]
   },
   {
     version: 'v10.9',
-    title: 'Parity hotfix: three Domain 5 wrong-answer options trimmed too short',
+    title: 'Parity hotfix: three Info Protection wrong-answer options trimmed too short',
     items: [
-      { cat: 'fixed', text: 'In the v10.7 Domain 5 wrong-answer rewrites, three questions (d5_075 on PCI DSS data protection, d5_237 on DLP quarantine governance, d5_238 on KMS key-policy compromise) ended up with wrong answers noticeably shorter than the correct answer — which lets candidates eliminate the long option without reasoning. Extended each wrong answer with the audit rationale that justifies the (incorrect) approach, so all four options now sit at similar lengths and have to be evaluated on their merits.' }
+      { cat: 'fixed', text: 'In the v10.7 Info Protection wrong-answer rewrites, three questions on PCI DSS data protection, DLP quarantine governance and KMS key-policy compromise ended up with wrong answers noticeably shorter than the correct answer, which lets candidates eliminate the long option without reasoning. Extended each wrong answer with the audit rationale that justifies the (incorrect) approach, so all four options now sit at similar lengths and have to be evaluated on their merits.' }
     ]
   },
   {
     version: 'v10.8',
-    title: 'Final authenticity sweep: D2 wrong-answer parity + long-scenario trims',
+    title: 'Final authenticity sweep: IT Governance wrong-answer parity + long-scenario trims',
     items: [
-      { cat: 'improved', text: 'Rewrote wrong-answer options on Domain 2 governance questions where the correct option was a multi-step compound list while the wrong options were single-concept partial approaches. The previous releases fixed this pattern in Domains 4 and 5; this pass closes the same gap in Domain 2. Every question in the bank with a compound correct answer now has compound wrong answers in matching format.' },
+      { cat: 'improved', text: 'Rewrote wrong-answer options on IT Governance questions where the correct option was a multi-step compound list while the wrong options were single-concept partial approaches. The previous releases fixed this pattern in IS Operations and Info Protection; this round closes the same gap in IT Governance. Every question in the bank with a compound correct answer now has compound wrong answers in matching format.' },
     ]
   },
   {
     version: 'v10.7',
-    title: 'Authenticity pass complete: D5 wrong-answer options now require real reasoning',
+    title: 'Authenticity review complete: Info Protection wrong-answer options now require real reasoning',
     items: [
-      { cat: 'improved', text: 'Rewrote wrong-answer options on Domain 5 questions where the correct option was a multi-step compound list while the wrong options were single-concept partial approaches. Combined with the Domain 4 questions fixed in the previous release, every question in the bank where the correct answer used a compound format now has all three wrong answers in the same compound format — eliminating the last structural giveaway in the bank.' },
-      { cat: 'improved', text: 'Each rewritten Domain 5 wrong answer fails for a specific teachable reason: containment-first violations, evidence-preservation gaps, regulator-clock ignorance, defense-in-depth shortcuts, least-privilege violations, harvest-now-decrypt-later misframings, or scope inversions. The wrong-answer explanations name the failure mode (such as "PERIMETER-TRUST INVERSION", "ECB-AS-ACCEPTABLE", "NOTIFY-FIRST when CONTAINMENT-FIRST is the principle") so candidates learn the audit pattern, not the format.' },
+      { cat: 'improved', text: 'Rewrote wrong-answer options on Info Protection questions where the correct option was a multi-step compound list while the wrong options were single-concept partial approaches. Combined with the IS Operations questions fixed in the previous release, every question in the bank where the correct answer used a compound format now has all three wrong answers in the same compound format: eliminating the last structural giveaway in the bank.' },
+      { cat: 'improved', text: 'Each rewritten Info Protection wrong answer fails for a specific teachable reason: containment-first violations, evidence-preservation gaps, regulator-clock ignorance, defense-in-depth shortcuts, least-privilege violations, harvest-now-decrypt-later misframings, or scope inversions. The wrong-answer explanations name the failure mode (such as "PERIMETER-TRUST INVERSION", "ECB-AS-ACCEPTABLE", "NOTIFY-FIRST when CONTAINMENT-FIRST is the principle") so candidates learn the audit pattern, not the format.' },
     ]
   },
   {
     version: 'v10.6',
-    title: 'Authenticity pass: D4 wrong-answer options now require real reasoning',
+    title: 'Authenticity review: IS Operations wrong-answer options now require real reasoning',
     items: [
-      { cat: 'improved', text: 'Rewrote wrong-answer options on Domain 4 questions where the correct option was a multi-step compound list while the wrong options were single-concept partial approaches. A test-savvy candidate could pick the correct answer by format alone. Every wrong option now uses the same compound format and fails for a specific teachable reason (wrong priority order, missing critical element, wrong framing, harmful inclusion, wrong scope) so the question requires genuine audit reasoning to answer.' },
+      { cat: 'improved', text: 'Rewrote wrong-answer options on IS Operations questions where the correct option was a multi-step compound list while the wrong options were single-concept partial approaches. A test-savvy candidate could pick the correct answer by format alone. Every wrong option now uses the same compound format and fails for a specific teachable reason (wrong priority order, missing critical element, wrong framing, harmful inclusion, wrong scope) so the question requires genuine audit reasoning to answer.' },
     ]
   },
   {
@@ -26005,11 +26100,11 @@ const CHANGELOG = [
     title: 'Polish release: cleaner citations, smaller What\'s New, sharper recall tips',
     items: [
       { cat: 'new', text: 'When you answer a question that appears in a precision-word triplet (FIRST → BEST → PRIMARY/MOST IMPORTANT), the explanation now shows the companion question IDs so you can compare how the precision word changed the correct answer on the same scenario. 31 triplet scenarios are surfaced this way.' },
-      { cat: 'improved', text: 'The What\'s New modal now keeps the latest three releases expanded and collapses older versions into an "Older versions" expandable section — easier to scan recent changes without scrolling through a year of history.' },
-      { cat: 'improved', text: '12 recall-question tips and four distractor options sharpened. Tips are tighter (no more forced backronyms or capitalized stage directions), and a few definitional questions had their always-fake distractors replaced with realistic candidate confusions — same correct answer, harder fakes.' },
+      { cat: 'improved', text: 'The What\'s New modal now keeps the latest three releases expanded and collapses older versions into an "Older versions" expandable section: easier to scan recent changes without scrolling through a year of history.' },
+      { cat: 'improved', text: '12 recall-question tips and four distractor options sharpened. Tips are tighter (no more forced backronyms or capitalized stage directions), and a few definitional questions had their always-fake distractors replaced with realistic candidate confusions: same correct answer, harder fakes.' },
       { cat: 'improved', text: 'Search boxes (glossary, exam date prompt) bumped to 16px font-size so iOS Safari no longer zooms in when you tap them.' },
       { cat: 'improved', text: 'Bookmark, flag, and dark-mode buttons now carry screen-reader labels; the difficulty help icon is keyboard-accessible.' },
-      { cat: 'fixed', text: 'Domain 3 chip color now matches the canonical D3 amber token instead of an older orange. Theme transitions limited to surface colors to remove a redundant universal-selector rule.' },
+      { cat: 'fixed', text: 'The IS Acquisition chip color now matches its amber instead of an older orange. Theme transitions limited to surface colors to remove a redundant universal-selector rule.' },
       { cat: 'fixed', text: 'Question card on mobile (375px) padding tightened so the submit button stays above the fold on questions with the longest compound options.' }
     ]
   },
@@ -26018,28 +26113,28 @@ const CHANGELOG = [
     title: 'Pre-launch polish: new recall questions + accessibility fixes',
     items: [
       { cat: 'new', text: 'New foundational recall questions added across all 5 domains. The bank had been heavily weighted toward scenario-and-analysis questions; the new recall items cover ITAF standards, IIA Standards, SOC reports, CAATs, COBIT 2019, ISO/IEC 38500, ITIL 4, the Three Lines Model, KPI vs KRI, SDLC, Scrum, CI/CD, UAT, change types, source-code escrow, RTO/RPO, BIA, hot sites, RAID 1, the CIA triad, AAA, authentication factors, cryptography, access-control models, and Zero Trust. Each ships with mnemonic, disambiguation, and exam-shortcut tips.' },
-      { cat: 'fixed', text: 'Accessibility fixes for color contrast in light mode. The confidence-rating buttons after answering (Sure / Educated / Guessing), the wrong-answer tip-type labels (TRAP / MINDSET / EXAM-DAY), and the mock-exam-in-progress warning banner now meet WCAG AA (4.5:1) instead of the previous 1.93–3.34:1.' },
+      { cat: 'fixed', text: 'Accessibility fixes for color contrast in light mode. The confidence-rating buttons after answering (Sure / Educated / Guessing), the wrong-answer tip-type labels (TRAP / MINDSET / EXAM-DAY), and the mock-exam-in-progress warning banner now meet WCAG AA (4.5:1) instead of the previous 1.93 to 3.34:1.' },
       { cat: 'fixed', text: 'Mobile tap targets on the header hamburger menu, session-start chips, control buttons, and study-recommendation dismiss are now at least 44×44 pixels at 375px width, matching the 44px target for one-handed use.' },
       { cat: 'fixed', text: 'Changelog category chip colors no longer leak reserved tones (pink for Fixed, purple for New in dark mode). Fixed is now red; New in dark mode is now light blue.' },
-      { cat: 'improved', text: 'First-time users on the Practice tab now land directly on Q1 instead of an explainer card. The locked design decision was always "instant question" — this restores it. Keyboard shortcuts and the start button remain available for users who prefer them.' }
+      { cat: 'improved', text: 'First-time users on the Practice tab now land directly on Q1 instead of an explainer card. The locked design decision was always "instant question": this restores it. Keyboard shortcuts and the start button remain available for users who prefer them.' }
     ]
   },
   {
     version: 'v10.3',
     title: 'Quality pass: 28 question touch-ups from specialist review',
     items: [
-      { cat: 'fixed', text: 'A Domain 2 supply-chain incident question (d2_172) had a wrong-answer explanation that critiqued a deadline that was not actually in the option text. The explanation now addresses what the option actually says — that an "updated vendor-vetting checklist" is administrative compensation, not systemic prevention against the next compromised dependency.' },
-      { cat: 'improved', text: 'Four wait-passive wrong-answer options across D1 and D2 (audit-committee escalation, trading-floor surveillance, privacy operationalization, mid-cycle risk treatment) no longer use the over-recycled "Wait for the next meeting" framing — they now describe a plausible deferral with stated justification, which still fails the urgency principle but no longer telegraphs the trap with a single word.' },
-      { cat: 'improved', text: 'Some Domain 4 questions had wrong-answer options that contained multiple literal "skip X" tokens while correct options had zero — a counting tell introduced by the previous polish pass. The affected options now state lesser substitutes as the asserted approach ("dashboard as baseline" instead of "skip baseline metrics") so candidates have to evaluate the reasoning rather than count.' },
-      { cat: 'improved', text: 'Twelve Domain 5 BEST/PRIMARY companions (d5_261-270, d5_275, d5_276) had a generic tip-2 phrase repeated across the set. Each tip-2 now anchors to the scenario-specific dominant clock or principle (encryption clock for ransomware, irreversible-loss clock for BEC, parallel-track notification clocks for SaaS B2B, build-time-vs-runtime confusion for container escape) so candidates learn what makes THIS scenario distinctive, not a phrase to memorize.' },
-      { cat: 'fixed', text: 'A GDPR breach-notification question (d3_096) had the correct option presume Article 33(1) notification was required without acknowledging the risk-based exemption gate. The option now explicitly conducts the risk assessment first and notifies only if the breach is likely to risk data subjects.' }
+      { cat: 'fixed', text: 'An IT Governance supply-chain incident question had a wrong-answer explanation that critiqued a deadline that was not actually in the option text. The explanation now addresses what the option actually says: that an "updated vendor-vetting checklist" is administrative compensation, not systemic prevention against the next compromised dependency.' },
+      { cat: 'improved', text: 'Four wait-passive wrong-answer options across IS Audit and IT Governance (audit-committee escalation, trading-floor surveillance, privacy operationalization, mid-cycle risk treatment) no longer use the over-recycled "Wait for the next meeting" framing; they now describe a plausible deferral with stated justification, which still fails the urgency principle but no longer telegraphs the trap with a single word.' },
+      { cat: 'improved', text: 'Some IS Operations questions had wrong-answer options that contained multiple literal "skip X" tokens while correct options had zero: a counting tell introduced by the previous polish round. The affected options now state lesser substitutes as the asserted approach ("dashboard as baseline" instead of "skip baseline metrics") so candidates have to evaluate the reasoning rather than count.' },
+      { cat: 'improved', text: 'Twelve Info Protection BEST/PRIMARY companions had a generic tip-2 phrase repeated across the set. Each tip-2 now anchors to the scenario-specific dominant clock or principle (encryption clock for ransomware, irreversible-loss clock for BEC, parallel-track notification clocks for SaaS B2B, build-time-vs-runtime confusion for container escape) so candidates learn what makes THIS scenario distinctive, not a phrase to memorize.' },
+      { cat: 'fixed', text: 'A GDPR breach-notification question had the correct option presume Article 33(1) notification was required without acknowledging the risk-based exemption gate. The option now explicitly conducts the risk assessment first and notifies only if the breach is likely to risk data subjects.' }
     ]
   },
   {
     version: 'v10.2',
     title: 'Sharper wrong-answer options',
     items: [
-      { cat: 'improved', text: 'Replaced over-recycled wrong-answer phrasing on options in D1, D2, D3, and D4. Wrong options that used to read like "Endorse the CIO\'s position" or "Trust the vendor\'s report" — phrasings learners eventually spot on sight — now describe realistic-looking-but-still-wrong audit positions with compensating elements like documented legal sign-off, scheduled re-review, or SOC reliance. The wrong answer is still wrong; you just have to evaluate the reasoning instead of spotting a forbidden word.' },
+      { cat: 'improved', text: 'Replaced over-recycled wrong-answer phrasing on options in IS Audit, IT Governance, IS Acquisition and IS Operations. Wrong options that used to read like "Endorse the CIO\'s position" or "Trust the vendor\'s report" (phrasings learners eventually spot on sight) now describe realistic-looking-but-still-wrong audit positions with compensating elements like documented legal sign-off, scheduled re-review, or SOC reliance. The wrong answer is still wrong; you just have to evaluate the reasoning instead of spotting a forbidden word.' },
       { cat: 'improved', text: 'Wrong-answer explanations for these 50 options were rewritten to name the actual failure mode (audit independence, evidence sufficiency, root-cause priority, business-risk anchoring, structured evaluation) so you learn the principle being tested rather than the cue word that gives the trap away.' }
     ]
   },
@@ -26047,8 +26142,8 @@ const CHANGELOG = [
     version: 'v10.1',
     title: 'Precision-word triplets: same scenario, three different correct answers',
     items: [
-      { cat: 'new', text: 'New questions extend the FIRST/BEST pairs shipped in v10.0 into complete triplets. For each scenario, candidates now see how a third precision word — PRIMARY or MOST IMPORTANT — produces a third, different correct answer. The triplet teaches that the precision word is the entire discriminator, not the scenario.' },
-      { cat: 'new', text: 'PRIMARY questions ask the dominant audit consideration or lens (e.g., ransomware PRIMARY = encryption-progress clock; insider exfiltration PRIMARY = fiduciary duty to clients). MOST IMPORTANT questions ask the non-negotiable factor — the one element that, if absent, makes the entire response moot (e.g., phishing-credential MOST IMPORTANT = verified revocation completeness; SaaS B2B breach MOST IMPORTANT = own-regulator clock satisfied).' },
+      { cat: 'new', text: 'New questions extend the FIRST/BEST pairs shipped in v10.0 into complete triplets. For each scenario, candidates now see how a third precision word (PRIMARY or MOST IMPORTANT) produces a third, different correct answer. The triplet teaches that the precision word is the entire discriminator, not the scenario.' },
+      { cat: 'new', text: 'PRIMARY questions ask the dominant audit consideration or lens (e.g., ransomware PRIMARY = encryption-progress clock; insider exfiltration PRIMARY = fiduciary duty to clients). MOST IMPORTANT questions ask the non-negotiable factor: the one element that, if absent, makes the entire response moot (e.g., phishing-credential MOST IMPORTANT = verified revocation completeness; SaaS B2B breach MOST IMPORTANT = own-regulator clock satisfied).' },
       { cat: 'improved', text: 'Every triplet member explicitly names its two companions in the explanation, so a candidate who saw the same scenario three times across the bank can compare exactly how the precision word changed the correct answer each time.' }
     ]
   },
@@ -26056,79 +26151,79 @@ const CHANGELOG = [
     version: 'v10.0',
     title: 'New: paired precision-word questions teach FIRST vs BEST as judgment, not memorization',
     items: [
-      { cat: 'new', text: 'New companion questions added across Domains 2 and 5. Each pairs an existing FIRST-action question with a BEST-overall-response counterpart using the same scenario. The correct answer is different by design — FIRST is a single containment action, BEST is the full well-sequenced response — so candidates learn that the precision word is the actual discriminator, not a tip-following shortcut.' },
+      { cat: 'new', text: 'New companion questions added across IT Governance and Info Protection. Each pairs an existing FIRST-action question with a BEST-overall-response counterpart using the same scenario. The correct answer is different by design (FIRST is a single containment action, BEST is the full well-sequenced response) so candidates learn that the precision word is the actual discriminator, not a tip-following shortcut.' },
       { cat: 'new', text: 'Pair examples: ransomware detection (FIRST = isolate via EDR; BEST = isolate + forensic + threat-hunt + notify + restore + harden), insider exfiltration (FIRST = revoke access; BEST = revoke + forensic + legal hold + investigate + client notify), and multi-jurisdiction privacy governance (FIRST = baseline; BEST = baseline + Privacy Governance Council + board KPIs + regulatory-triggered review).' },
       { cat: 'improved', text: 'Each BEST companion explicitly names its FIRST counterpart in the explanation, so a candidate who answered the FIRST version one way and the BEST version differently can see exactly what the precision word changed.' }
     ]
   },
   {
     version: 'v9.9',
-    title: 'Harder distractors, round 2 — another 80 structural giveaways eliminated',
+    title: 'Harder distractors, round 2: another 80 structural giveaways eliminated',
     items: [
-      { cat: 'improved', text: 'Rewrote distractors for more Domain 2, 4, and 5 questions where the correct answer was the only compound multi-step option and every wrong answer was a single-concept partial approach. Across the two passes, these questions now have genuinely challenging wrong options.' },
-      { cat: 'improved', text: 'Each rewritten distractor matches the correct option’s compound format and fails for a specific teachable reason — wrong priority order, missing critical element, wrong scope, wrong framing, or including a harmful element — so candidates must reason about content rather than pattern-match on format.' },
+      { cat: 'improved', text: 'Rewrote distractors for more IT Governance, IS Operations and Info Protection questions where the correct answer was the only compound multi-step option and every wrong answer was a single-concept partial approach. Across the two rounds, these questions now have genuinely challenging wrong options.' },
+      { cat: 'improved', text: 'Each rewritten distractor matches the correct option’s compound format and fails for a specific teachable reason (wrong priority order, missing critical element, wrong scope, wrong framing, or including a harmful element) so candidates must reason about content rather than pattern-match on format.' },
       { cat: 'improved', text: 'Wrong-answer explanations for these 240 new options name the failure mode and tie it back to core audit principles (independence, evidence over assumption, prevention over correction, root cause over symptoms, business risk over compliance).' }
     ]
   },
   {
     version: 'v9.8',
-    title: 'Harder distractors — 80 structural giveaways eliminated across D2, D4, D5',
+    title: 'Harder distractors: 80 structural giveaways eliminated across three domains',
     items: [
-      { cat: 'improved', text: 'Rewrote all three distractors for Domain 4 and Domain 5 questions where the correct answer was the only compound multi-step option and every wrong answer was a single-concept partial approach. Each distractor is now a plausible compound alternative that fails for a specific, teachable reason — wrong priority, missing a critical element, wrong framing, or wrong scope.' },
-      { cat: 'improved', text: 'Three Domain 2 governance-scenario distractors received the same treatment. Each wrong option now describes a coherent but flawed multi-element approach rather than a single-dimension oversimplification.' },
-      { cat: 'improved', text: 'Wrong-answer explanations for all 240 rewritten options now explain the specific failure mode — why the compound-looking distractor is still wrong — rather than just dismissing a simplistic option.' }
+      { cat: 'improved', text: 'Rewrote all three distractors for IS Operations and Info Protection questions where the correct answer was the only compound multi-step option and every wrong answer was a single-concept partial approach. Each distractor is now a plausible compound alternative that fails for a specific, teachable reason: wrong priority, missing a critical element, wrong framing, or wrong scope.' },
+      { cat: 'improved', text: 'Three IT Governance scenario distractors received the same treatment. Each wrong option now describes a coherent but flawed multi-element approach rather than a single-dimension oversimplification.' },
+      { cat: 'improved', text: 'Wrong-answer explanations for all 240 rewritten options now explain the specific failure mode (why the compound-looking distractor is still wrong) rather than just dismissing a simplistic option.' }
     ]
   },
   {
     version: 'v9.7',
-    title: 'Domain 5 audit pass — clearer security checklists and stronger principle teaching',
+    title: 'Info Protection review: clearer security checklists and stronger principle teaching',
     items: [
-      { cat: 'fixed', text: 'Repaired 49 mis-grouped parentheses across 36 Domain 5 security explanations. Numbered checklists (incident response, IAM lifecycle, forensic procedure) now read cleanly instead of running adjacent items together.' },
-      { cat: 'improved', text: 'Removed bank-internal vocabulary from five Domain 5 explanations (phrases like "introduced in D5-12" or "15th D5 single-focus principle"). Each question now reads as a standalone item.' },
-      { cat: 'improved', text: 'Added closing audit-mindset sentences to 15 Domain 5 security scenarios so the principle being tested (independence in disclosure decisions, prevention over correction in threat modeling, root cause in access recertification) is named, not just demonstrated.' },
+      { cat: 'fixed', text: 'Repaired 49 mis-grouped parentheses across 36 Info Protection security explanations. Numbered checklists (incident response, IAM lifecycle, forensic procedure) now read cleanly instead of running adjacent items together.' },
+      { cat: 'improved', text: 'Removed bank-internal vocabulary from five Info Protection explanations. Each question now reads as a standalone item.' },
+      { cat: 'improved', text: 'Added closing audit-mindset sentences to 15 Info Protection security scenarios so the principle being tested (independence in disclosure decisions, prevention over correction in threat modeling, root cause in access recertification) is named, not just demonstrated.' },
       { cat: 'improved', text: 'Trimmed a stray meta-callout from one foundational question that exposed the answer’s structure.' }
     ]
   },
   {
     version: 'v9.6',
-    title: 'Domain 4 audit pass — accuracy fixes and clearer explanation lists',
+    title: 'IS Operations review: accuracy fixes and clearer explanation lists',
     items: [
-      { cat: 'fixed', text: 'One Domain 4 question on offsite-recovery validation had its keyed answer pointed at the wrong option after a prior shuffle. The keyed answer, the wrong-answer explanations, and the trap-naming tip now all point at the right option.' },
-      { cat: 'fixed', text: 'Six Domain 4 explanations referenced the wrong option letter when describing the trap (for example, the explanation said "Option A (refuse)" when the "refuse" option was actually C). All six now name the option they describe.' },
-      { cat: 'fixed', text: 'Some Domain 4 questions had garbled wording where "IT\'s" or "it\'s been" was rendered as "It is" by an earlier prose pass. The original meaning has been restored.' },
-      { cat: 'fixed', text: 'Repaired 41 mis-grouped parentheses across 29 Domain 4 explanation lists. Numbered governance and recovery checklists now read cleanly instead of running adjacent items together.' },
-      { cat: 'improved', text: 'Added closing audit-mindset sentences to six Domain 4 incident-and-resilience scenarios so the principle being tested (compensating controls, business alignment, evidence over assumptions) is named, not just demonstrated.' }
+      { cat: 'fixed', text: 'One IS Operations question on offsite-recovery validation had its keyed answer pointed at the wrong option after a prior shuffle. The keyed answer, the wrong-answer explanations, and the trap-naming tip now all point at the right option.' },
+      { cat: 'fixed', text: 'Six IS Operations explanations referenced the wrong option letter when describing the trap (for example, the explanation said "Option A (refuse)" when the "refuse" option was actually C). All six now name the option they describe.' },
+      { cat: 'fixed', text: 'Some IS Operations questions had garbled wording where "IT\'s" or "it\'s been" was rendered as "It is" by an earlier prose edit. The original meaning has been restored.' },
+      { cat: 'fixed', text: 'Repaired 41 mis-grouped parentheses across 29 IS Operations explanation lists. Numbered governance and recovery checklists now read cleanly instead of running adjacent items together.' },
+      { cat: 'improved', text: 'Added closing audit-mindset sentences to six IS Operations incident-and-resilience scenarios so the principle being tested (compensating controls, business alignment, evidence over assumptions) is named, not just demonstrated.' }
     ]
   },
   {
     version: 'v9.5',
-    title: 'Domain 2 audit pass — distinct answer options and sharper governance teaching',
+    title: 'IT Governance review: distinct answer options and sharper governance teaching',
     items: [
-      { cat: 'fixed', text: 'Some Domain 2 governance-scenario questions had two answer options that described almost the same approach. Each option now represents a genuinely distinct choice, so the keyed answer is clearly the best one.' },
-      { cat: 'fixed', text: 'Fixed a typography slip where the COSO Internal Control framework name was rendered with a semicolon instead of a dash in one Domain 2 stem.' },
-      { cat: 'improved', text: 'Added closing audit-mindset sentences to Domain 2 governance questions so the principle being tested (independence, governance over operations, business alignment) is named, not just demonstrated.' },
-      { cat: 'improved', text: 'Trimmed three Domain 2 correct-answer options that were noticeably longer than their distractors so the right answer is no longer detectable by length alone.' }
+      { cat: 'fixed', text: 'Some IT Governance scenario questions had two answer options that described almost the same approach. Each option now represents a genuinely distinct choice, so the keyed answer is clearly the best one.' },
+      { cat: 'fixed', text: 'Fixed a typography slip where the COSO Internal Control framework name was rendered with a semicolon instead of a dash in one IT Governance stem.' },
+      { cat: 'improved', text: 'Added closing audit-mindset sentences to IT Governance questions so the principle being tested (independence, governance over operations, business alignment) is named, not just demonstrated.' },
+      { cat: 'improved', text: 'Trimmed three IT Governance correct-answer options that were noticeably longer than their distractors so the right answer is no longer detectable by length alone.' }
     ]
   },
   {
     version: 'v9.4',
-    title: 'Domain 1 audit pass — explanation accuracy and cleaner citations',
+    title: 'IS Audit review: explanation accuracy and cleaner citations',
     items: [
-      { cat: 'fixed', text: 'Fixed 12 Domain 1 explanations where the parenthetical letter pointed to the wrong option (for example, the explanation said "(C)" but described option B). Each finding now references the option it actually describes.' },
-      { cat: 'fixed', text: 'Removed a doubled "(Audit Sampling)" parenthetical from 10 Domain 1 citations of AICPA AU-C 530, and normalized "1207 (Irregularity..." to "1207 (Irregularities and Illegal Acts)" so the same standard is named consistently across the bank.' },
-      { cat: 'improved', text: 'Added closing audit-mindset sentences to 16 Domain 1 definitional explanations so the principle each concept enforces (independence, evidence sufficiency, business-risk prioritization) is named, not just inferred.' },
-      { cat: 'improved', text: 'Tightened two Domain 1 stems that lacked an exam-style precision word, and trimmed four correct-answer options that were noticeably longer than their distractors.' }
+      { cat: 'fixed', text: 'Fixed 12 IS Audit explanations where the parenthetical letter pointed to the wrong option (for example, the explanation said "(C)" but described option B). Each finding now references the option it actually describes.' },
+      { cat: 'fixed', text: 'Removed a doubled "(Audit Sampling)" parenthetical from 10 IS Audit citations of AICPA AU-C 530, and normalized "1207 (Irregularity..." to "1207 (Irregularities and Illegal Acts)" so the same standard is named consistently across the bank.' },
+      { cat: 'improved', text: 'Added closing audit-mindset sentences to 16 IS Audit definitional explanations so the principle each concept enforces (independence, evidence sufficiency, business-risk prioritization) is named, not just inferred.' },
+      { cat: 'improved', text: 'Tightened two IS Audit stems that lacked an exam-style precision word, and trimmed four correct-answer options that were noticeably longer than their distractors.' }
     ]
   },
   {
     version: 'v9.3',
-    title: 'Domain 3 audit pass — clearer questions, sharper teaching',
+    title: 'IS Acquisition review: clearer questions, sharper teaching',
     items: [
-      { cat: 'improved', text: 'Tightened question stems across Domain 3 to remove redundant qualifier words, so the exam-style precision word does the work it is supposed to do.' },
-      { cat: 'improved', text: 'Added closing audit-mindset sentences to several Domain 3 explanations so the principle being tested is named, not just inferred.' },
-      { cat: 'improved', text: 'Strengthened wrong-answer explanations on Domain 3 questions where the trap was being dismissed instead of taught.' },
-      { cat: 'fixed', text: 'Domain 3 D3-124 explanation no longer cites OCC mergers-and-acquisitions guidance for a certification-and-accreditation question.' },
-      { cat: 'fixed', text: 'Updated Domain 3 third-party-risk citations to reflect that OCC Bulletin 2013-29 was superseded in June 2023 by the Interagency Guidance on Third-Party Relationships.' }
+      { cat: 'improved', text: 'Tightened question stems across IS Acquisition to remove redundant qualifier words, so the exam-style precision word does the work it is supposed to do.' },
+      { cat: 'improved', text: 'Added closing audit-mindset sentences to several IS Acquisition explanations so the principle being tested is named, not just inferred.' },
+      { cat: 'improved', text: 'Strengthened wrong-answer explanations on IS Acquisition questions where the trap was being dismissed instead of taught.' },
+      { cat: 'fixed', text: 'An IS Acquisition explanation no longer cites OCC mergers-and-acquisitions guidance for a certification-and-accreditation question.' },
+      { cat: 'fixed', text: 'Updated IS Acquisition third-party-risk citations to reflect that OCC Bulletin 2013-29 was superseded in June 2023 by the Interagency Guidance on Third-Party Relationships.' }
     ]
   },
   {
@@ -26143,13 +26238,13 @@ const CHANGELOG = [
     version: 'v9.1',
     title: 'Brand refresh and a wider canvas',
     items: [
-      { cat: 'new', text: 'A new brand-aligned hero section anchors the app around the KaiSip slogan — Master Modern Risk — with the four guiding pillars: Navigate, Master, Adapt, Lead.' },
+      { cat: 'new', text: 'A new brand-aligned hero section anchors the app around the KaiSip slogan (Master Modern Risk) with the four guiding pillars: Navigate, Master, Adapt, Lead.' },
       { cat: 'new', text: 'Coverage roadmap chips show what is live (CISA) and what is on the way (CRISC, CISM, Cloud Audit, AI Governance).' },
       { cat: 'new', text: 'A tip jar lets supporters chip in. Optional, no account.' },
       { cat: 'new', text: 'A new Tip button in the header makes supporting the project a one-click action.' },
-      { cat: 'improved', text: 'The app now uses more of your screen on larger displays so dashboards, stats, and panels breathe — while question text stays in a comfortable reading width.' },
+      { cat: 'improved', text: 'The app now uses more of your screen on larger displays so dashboards, stats, and panels breathe, while question text stays in a comfortable reading width.' },
       { cat: 'improved', text: 'Grammar pass across all five domains: cleaner sentences, corrected article and verb errors, and clearer wording in scenarios and explanations.' },
-      { cat: 'fixed', text: 'Seven question explanations across Domain 1 and Domain 4 mistakenly listed the correct letter inside the wrong-answer group. They now list the right distractors.' }
+      { cat: 'fixed', text: 'Seven question explanations across IS Audit and IS Operations mistakenly listed the correct letter inside the wrong-answer group. They now list the right distractors.' }
     ]
   },
   {
@@ -26157,9 +26252,9 @@ const CHANGELOG = [
     title: 'Rebuilt from source',
     items: [
       { cat: 'new', text: 'Original questions across all five domains, written from public framework and standards concepts (ITAF, NIST, ISO). No exam-bank citations in the chain. Every question traces to a primary source document.' },
-      { cat: 'new', text: 'Analysis-tier questions now include scenario context — an 80–160 word incident brief rendered before the question stem, formatted to separate context → question → options as distinct reading phases.' },
-      { cat: 'new', text: '3 tips per question — revealed after you answer: the trap (what the distractors exploit), the mindset (the underlying principle), and the exam-day shortcut (the pattern to memorize). Unlock in sequence or skip entirely.' },
-      { cat: 'new', text: 'Principles Library — 15 single-focus auditor-mindset principles with definitions, trigger conditions, and links to every question that tests them. New tab between Topics and Glossary.' },
+      { cat: 'new', text: 'Analysis-tier questions now include scenario context: an incident brief of 80 to 160 words rendered before the question stem, formatted to separate context → question → options as distinct reading phases.' },
+      { cat: 'new', text: '3 tips per question, revealed after you answer: the trap (what the distractors exploit), the mindset (the underlying principle), and the exam-day shortcut (the pattern to memorize). Unlock in sequence or skip entirely.' },
+      { cat: 'new', text: 'Principles Library: 15 single-focus auditor-mindset principles with definitions, trigger conditions, and links to every question that tests them. New tab between Topics and Glossary.' },
       { cat: 'improved', text: 'Still free, still no account. Nothing changed about that.' }
     ]
   },
@@ -26181,14 +26276,14 @@ const CHANGELOG = [
     version: 'v8.6',
     title: 'Accurate exam blueprint weights',
     items: [
-      { cat: 'improved', text: 'Domain weights now match the current ISACA blueprint everywhere — D1 18%, D2 18%, D3 12%, D4 26%, D5 26%.' }
+      { cat: 'improved', text: 'Domain weights now match the current ISACA blueprint everywhere: IS Audit 18%, IT Governance 18%, IS Acquisition 12%, IS Operations 26%, Info Protection 26%.' }
     ]
   },
   {
     version: 'v8.5',
     title: 'Send feedback in one click',
     items: [
-      { cat: 'new', text: 'Send feedback right from the app — no need to leave for your mail client.' },
+      { cat: 'new', text: 'Send feedback right from the app: no need to leave for your mail client.' },
       { cat: 'improved', text: '"Open mail app instead" remains as a one-click fallback for those who prefer their own email.' }
     ]
   },
@@ -26205,8 +26300,8 @@ const CHANGELOG = [
     version: 'v8.3',
     title: 'Tips for every question + mock exam fixes',
     items: [
-      { cat: 'new', text: 'Every question across all 5 domains now includes pattern-recognition tips — trap-naming, mindset/principle, and exam-day shortcut.' },
-      { cat: 'improved', text: 'Subtopic categories tightened in D4 and D5 for sharper drill-down filtering.' },
+      { cat: 'new', text: 'Every question across all 5 domains now includes pattern-recognition tips: trap-naming, mindset/principle, and exam-day shortcut.' },
+      { cat: 'improved', text: 'Subtopic categories tightened in IS Operations and Info Protection for sharper drill-down filtering.' },
       { cat: 'fixed', text: 'Mock exam answer buttons are responsive again.' },
       { cat: 'fixed', text: 'Mock exam timer stays continuous between questions.' }
     ]
@@ -26223,7 +26318,7 @@ const CHANGELOG = [
     version: 'v8.1',
     title: 'Dark mode + visual refresh',
     items: [
-      { cat: 'new', text: 'Dark mode (defaults on) with a sun/moon toggle in the header — preference saves across sessions.' },
+      { cat: 'new', text: 'Dark mode (defaults on) with a sun/moon toggle in the header; the preference saves across sessions.' },
       { cat: 'improved', text: 'New color system across the app for a more focused study feel.' },
       { cat: 'fixed', text: 'Several text-readability issues on dark banners.' }
     ]
@@ -26233,7 +26328,7 @@ const CHANGELOG = [
     title: 'Daily plan + auditor mindset',
     items: [
       { cat: 'new', text: 'Personalized 3-step daily study plan on the dashboard, driven by your domain scores and exam date.' },
-      { cat: 'new', text: 'Auditor-vs-implementer coaching — when you pick the implementer answer, a callout explains the difference inline.' },
+      { cat: 'new', text: 'Auditor-vs-implementer coaching: when you pick the implementer answer, a callout explains the difference inline.' },
       { cat: 'improved', text: 'Each topic now shows an estimated reading time.' }
     ]
   },
@@ -26242,7 +26337,7 @@ const CHANGELOG = [
     title: 'Exam date',
     items: [
       { cat: 'new', text: 'Set your exam date and see a countdown.' },
-      { cat: 'new', text: 'Train My Weak Spots — one-tap 20-question drill from your weakest domains.' },
+      { cat: 'new', text: 'Train My Weak Spots: one-tap 20-question drill from your weakest domains.' },
       { cat: 'new', text: 'Bookmark tagging and bookmark drill mode.' },
       { cat: 'improved', text: 'Pacing feedback during sessions and auto-save during mock exams.' }
     ]
@@ -26253,7 +26348,7 @@ const CHANGELOG = [
     items: [
       { cat: 'new', text: 'Rate your confidence before answering, for smarter spaced repetition.' },
       { cat: 'new', text: 'Drill into specific sub-topics within each domain.' },
-      { cat: 'improved', text: 'High-impact domain badges (D4/D5) and a mock exam confirmation step before you begin.' }
+      { cat: 'improved', text: 'High-impact domain badges (IS Operations and Info Protection) and a mock exam confirmation step before you begin.' }
     ]
   },
   {

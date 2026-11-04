@@ -398,14 +398,16 @@ for (const [view, scheme] of [['phone', 'light'], ['desktop', 'dark']]) {
     await clearAsks(page);
     const empty = await ev(page, () => S.score.t);
     c.check(empty === 0, `after clearing storage the app still shows ${empty} answers`);
-    c.step('Settings → Your data → Restore → the exported file → Replace my progress');
+    c.step('Settings → Your data → Restore → the exported file → Restore (this browser has no answers, so the sheet is a plain restore)');
     await go(page, 'you', 'settings');
     const chooser = page.waitForEvent('filechooser');
     await page.locator('#setRestore').click();
     await (await chooser).setFiles(file);
-    await page.getByRole('button', { name: 'Replace my progress' }).waitFor({ timeout: 5000 });
+    // The sheet's confirm (the Settings row behind it is also named Restore).
+    const restoreBtn = page.getByRole('dialog').getByRole('button', { name: 'Restore', exact: true });
+    await restoreBtn.waitFor({ timeout: 5000 });
     await c.shot(`w6-import-confirm-${tag}`);
-    await Promise.all([page.waitForEvent('load'), page.getByRole('button', { name: 'Replace my progress' }).click()]);
+    await Promise.all([page.waitForEvent('load'), restoreBtn.click()]);
     await page.waitForLoadState('networkidle'); await sleep(800); await clearAsks(page);
     const after = await ev(page, () => ({ t: S.score.t, c: S.score.c, mocks: (S.mockHistory || []).length, read: Object.keys(getTopicReviewedSet()).length,
       answered: Object.values(S.answeredIds || {}).reduce((n, o) => n + Object.keys(o || {}).length, 0) }));
