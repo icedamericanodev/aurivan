@@ -18,7 +18,7 @@ import { getCertification } from '../content/certifications';
 import { computeReadiness } from '../engine/readiness';
 import You from '../app/(tabs)/you';
 import { DomainRings } from '../components/journey';
-import { AreaRows, lowEndLine, ReadinessBlock, readinessSpoken } from '../components/youReadiness';
+import { AREA_LINE_ONLY, AreaRows, lowEndLine, ReadinessBlock, readinessSpoken } from '../components/youReadiness';
 import { READY_LOW } from '../engine/examReady';
 import { readinessRange } from '../engine/readinessRange';
 import { ScaleBar } from '../components/fieldguide';
@@ -128,13 +128,16 @@ describe('the You screen (Field Guide since mobile 1.51)', () => {
     expect(block).toHaveLength(1);
     expect(block[0].props.accessibilityRole).toBe('image');
     const t = allText();
-    expect(t).toContain(STUDY_BAR_LINE);
-    // Grove panel Q1: the low-end sentence, from the same range, sits before the study-bar line.
+    // Grove panel Q1: the low-end sentence, from the same range, then only the area line (the sentence
+    // already names the study bar and says it is not an exam score, so the full line would repeat it).
+    expect(t).not.toContain(STUDY_BAR_LINE);
+    expect(t).toContain(AREA_LINE_ONLY);
+    expect(AREA_LINE_ONLY).toBe('Each area has its own 70% line.');
     const range = readinessRange(cisa, computeReadiness(cisa, selectCert(useProgress.getState(), 'cisa').answers));
     expect(range.enough).toBe(true);
     if (range.enough) {
       expect(t).toContain(lowEndLine(range.low));
-      expect(t.indexOf(lowEndLine(range.low))).toBeLessThan(t.indexOf(STUDY_BAR_LINE));
+      expect(t.indexOf(lowEndLine(range.low))).toBeLessThan(t.indexOf(AREA_LINE_ONLY));
     }
     expect(t).toContain(AREAS_CAPTION);
     expect(t).toContain('Five areas, one scale');
@@ -165,6 +168,16 @@ describe('the You screen (Field Guide since mobile 1.51)', () => {
     // The ruler is an outline with no fill (dashed), never a lighter bar with a height it hasn't earned.
     const outline = root().findAll((n) => typeof n.type === 'string' && StyleSheet.flatten(n.props.style ?? {}).borderStyle === 'dashed' && StyleSheet.flatten(n.props.style ?? {}).height === 8);
     expect(outline).toHaveLength(1);
+  });
+
+  it('before the first range: no low-end sentence, and the full study-bar line stays', () => {
+    seedDomain('1', 34, 30);
+    act(() => {
+      r = create(<You />);
+    });
+    const t = allText();
+    expect(t).toContain(STUDY_BAR_LINE);
+    expect(t).not.toContain('Your low end,');
   });
 
   it('not enough data: the bar with no bracket, and the countdown', () => {

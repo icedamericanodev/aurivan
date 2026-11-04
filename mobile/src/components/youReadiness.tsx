@@ -47,6 +47,13 @@ export function lowEndLine(low: number, bar = READY_LOW): string {
   }`;
 }
 
+/**
+ * The study-bar line once the low-end sentence shows: that sentence already names the study bar and says
+ * it is not an exam score, so only the area line is left to say. Before a range (and anywhere without the
+ * sentence) the full STUDY_BAR_LINE stays.
+ */
+export const AREA_LINE_ONLY = `Each area has its own ${STEADY_FROM}% line.`;
+
 /** The range on its scale bar, with the study bar's tick. */
 export function ReadinessBlock({ range, growth }: { range: ReadinessRange; growth?: Growth }) {
   return <ScaleBar range={range} mark={READY_LOW} growth={growth} />;

@@ -99,15 +99,17 @@ describe('StemChart', () => {
     const t = allText().replace(/\n/g, ' ');
     expect(allText()).toContain('not\nstarted');
     expect(t).toContain('too few yet');
-    expect(t).toContain('18 answered');
+    // A thin column under the soil reads like the list rows: "18 of 30" over "answers".
+    expect(allText()).toMatch(/18 of 30\s+answers/);
+    expect(t).not.toContain('18 answered');
     expect(t).toContain('not started');
     expect(t).toContain('70 line');
     // Below the line: the word in clay AND the words "below 70" (never colour alone).
     expect(t).toContain('below 70');
     expect(t).toContain('↑3');
     // Too few yet: the words "too few yet" where the number will grow, never a dash, and never "seed"
-    // (Grove panel Q2: that word is the plant's). Once over the seed, once under the soil.
-    expect(t.match(/too few yet/g)?.length).toBe(2 * STEMS.filter((s) => s.thin).length);
+    // (Grove panel Q2: that word is the plant's). Said once per thin column, over its seed.
+    expect(t.match(/too few yet/g)?.length).toBe(STEMS.filter((s) => s.thin).length);
     expect(t).not.toMatch(/\bseed\b/i);
     expect(t).not.toMatch(/[\u2013\u2014]/);
     expect(list()).toHaveLength(0);

@@ -8,7 +8,8 @@
  *   number above it.
  * - Too few yet (1 to 29 answers): a seed in the soil with a dashed outline
  *   of a shoot, the words "too few yet" above it (no number, and no dash; "seed"
- *   names the plant only: Grove panel Q2) and "too few yet · 18 answered" under it. It
+ *   names the plant only: Grove panel Q2) and "18 of 30" over "answers" under the soil,
+ *   as the list rows say it, so "too few yet" is said once. It
  *   never claims a height the data hasn't earned (the web draws the same).
  * - Not started: the seed alone and the words "not started".
  * - Below the line: the status word in `clay` AND the words "below 70" (clay
@@ -52,8 +53,14 @@ export type { Stem };
 
 /** "too few yet", "not started", or the word, as written under a stem. */
 export const stemWord = (s: Stem) => (s.answered <= 0 ? 'not started' : s.thin ? 'too few yet' : s.word.toLowerCase());
-/** The chart's form: the two-word states on two lines, like the names, so five "not started" never run into one line. */
-const chartWord = (s: Stem) => (s.answered <= 0 ? 'not\nstarted' : s.thin ? 'too few\nyet' : stemWord(s));
+/**
+ * The chart's form: "not started" on two lines, like the names, so five never run into one line. A thin
+ * area reads like the list rows, "22 of 30" over "answers" (chartLines), so "too few yet" is said once,
+ * over its seed.
+ */
+const chartWord = (s: Stem) => (s.answered <= 0 ? 'not\nstarted' : s.thin ? thinFigure(s.answered) : stemWord(s));
+/** The lines under a chart column's word: a thin column's count is its word, so "answers" takes its line. */
+const chartLines = (s: Stem, line: number) => stemLines(s, line).map((l) => (s.thin && l === `${s.answered} answered` ? 'answers' : l));
 /** The extra lines under a stem's word. */
 export function stemLines(s: Stem, line: number): string[] {
   return [s.thin ? `${s.answered} answered` : null, !s.thin && s.pct !== null && s.below ? `below ${line}` : null, s.note ?? null].filter((x): x is string => Boolean(x));
@@ -156,12 +163,12 @@ function Chart({ stems, line, play, run, delay, w, fs }: { stems: readonly Stem[
   const gap = (w - GUTTER) / stems.length;
   const soil = TOP + PLOT;
   const y = (p: number) => soil - (Math.max(0, Math.min(100, p)) / 100) * PLOT;
-  const extras = Math.max(0, ...stems.map((s) => stemLines(s, line).length));
+  const extras = Math.max(0, ...stems.map((s) => chartLines(s, line).length));
   const last = stems[stems.length - 1];
   const spot = lineLabelSpot({ lastPct: last && !last.thin ? last.pct : null, line, gap, fs });
-  // The words under the soil: a two-line name, the word (two lines for not started and too few yet) and its
+  // The words under the soil: a two-line name, the word (two lines for not started) and its
   // extra lines, grown with the text size.
-  const twoLineWord = stems.some((s) => s.answered <= 0 || s.thin) ? 16 : 0;
+  const twoLineWord = stems.some((s) => s.answered <= 0) ? 16 : 0;
   const h = soil + 10 + Math.ceil((30 + 16 + twoLineWord + extras * 14) * fs);
   const settle = useSharedValue(moving ? 0 : 1);
   useEffect(() => {
@@ -237,7 +244,7 @@ function Chart({ stems, line, play, run, delay, w, fs }: { stems: readonly Stem[
           ) : null,
         )}
         {stems.map((s, i) => {
-          const lines = stemLines(s, line);
+          const lines = chartLines(s, line);
           const red = !s.thin && s.pct !== null && s.below;
           return (
             <View key={s.key} style={{ position: 'absolute', left: GUTTER + gap * i - 4, width: gap + 8, top: soil + 8, alignItems: 'center' }}>

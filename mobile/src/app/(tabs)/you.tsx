@@ -67,7 +67,7 @@ import { router, useFocusEffect } from 'expo-router';
 import { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { View } from 'react-native';
 import { ringsChangeLine } from '../../components/journey';
-import { AreaRows, lowEndLine, ReadinessBlock } from '../../components/youReadiness';
+import { AREA_LINE_ONLY, AreaRows, lowEndLine, ReadinessBlock } from '../../components/youReadiness';
 import { FieldText, headDate, KeyList, RunningHead, SpecimenLabel, SpecimenRow } from '../../components/fieldguide';
 import { HerbariumEntry } from '../../components/herbarium';
 import { lastPressed } from '../../engine/fieldGuide';
@@ -376,7 +376,8 @@ export default function You() {
         <ReadinessBlock range={range} growth={rangeGrowth} />
         {/* Grove panel Q1: once there is a range, the low end is defined once, before the study-bar line. */}
         {range.enough && <T v="meta" color={c.ink} style={{ marginTop: space.md }}>{lowEndLine(range.low)}</T>}
-        <T v="meta" style={{ marginTop: space.md }}>{STUDY_BAR_LINE}</T>
+        {/* With the low-end sentence the study bar is already said: only the area line is left. */}
+        <T v="meta" style={{ marginTop: space.md }}>{range.enough ? AREA_LINE_ONLY : STUDY_BAR_LINE}</T>
         <View style={{ marginTop: space.xl }}>
           <AreaRows cert={cert} readiness={readiness} ups={sinceLook ? ups : undefined} play={sinceLook ? 'growth' : rings.play} run={rings.run} />
         </View>

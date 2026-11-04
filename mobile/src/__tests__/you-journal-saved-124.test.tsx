@@ -117,14 +117,15 @@ afterEach(() => {
 });
 
 describe('You: bands below 30 answers, numbers from 30', () => {
-  it('10 answers in a domain show "too few yet" and "10 answered", never a number (mobile 1.51: thin data looks thin)', () => {
+  it('10 answers in a domain show "too few yet" and "10 of 30" answers, never a number (mobile 1.51: thin data looks thin)', () => {
     seedDomain('1', 10, 9);
     mount(<You />);
     const t = allText();
     // 9 of 10 right: words under its line of growth, never "90" (the chart's own spoken stop is checked below).
     // (The chart sets it on two lines, like the names: "too few" / "yet".)
     expect(t.replace(/\n/g, ' ')).toContain('too few yet');
-    expect(t).toContain('10 answered');
+    // Grove panel Q2: under the soil, "10 of 30" over "answers", as the list rows say it.
+    expect(t).toMatch(/10 of 30\s+answers/);
     expect(t.slice(t.indexOf('Five areas, one scale'), t.indexOf('KEY'))).not.toMatch(/\b90\b/);
     expect(t).toMatch(/Building is under 70, Steady 70 to 79, Strong 80 and up/);
   });
