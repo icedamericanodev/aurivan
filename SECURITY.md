@@ -4,9 +4,9 @@
 
 KaiSip is a **fully client-side, single-file HTML application**. It has:
 
-- No backend server
-- No database
-- No user accounts or authentication
+- No backend server in use today (accounts, sync and a feedback board are built but switched off in every released build, so nothing is sent to a server)
+- No database in use today
+- No user accounts or authentication today
 - No personally identifiable information collected or stored
 - No cookies set by the app itself; a Google Analytics cookie is set **only if you accept** it on the in-app cookie banner
 

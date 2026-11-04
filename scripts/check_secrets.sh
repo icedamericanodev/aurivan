@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 # Guard G1 (Uplift Phase 6, docs/mobile/ARCHITECTURE.md "Cloud (built OFF)"):
-# no secrets in any file git tracks. The repo is public.
+# no secrets in any file git tracks. The repo was public in the past and its
+# history may have been copied, so treat anything ever committed as known.
 #
 # Usage (from anywhere): bash scripts/check_secrets.sh
 # CI: .github/workflows/verify.yml runs it on every pull request.

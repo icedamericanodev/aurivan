@@ -546,7 +546,7 @@ PHASE6_8 (§1–2).
   `expo-crypto`. `@supabase/supabase-js` and the three native modules above
   arrive at Phase 9, each justified then, in the cloud build only.
 - **Guards** (CI): G1 `scripts/check_secrets.sh` runs on EVERY pull
-  request (`verify.yml`; the repo is public): the secret shapes in
+  request (`verify.yml`; the repo was public once, so its history counts as known): the secret shapes in
   `scripts/secret_patterns.txt` in every tracked file but `data/`, the
   app-only words in `scripts/secret_patterns_app.txt` under `mobile/`, a
   narrow `path:pattern` allowlist (`scripts/secret_allowlist.txt`), and no
