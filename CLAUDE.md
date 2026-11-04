@@ -215,6 +215,7 @@ kill %1
   Notes and web: `cisa-notes-curator` (notes structure and rewrites), `learner-reader`
   (first-time candidate read-through), `web-app-engineer` (index.html),
   `notes-application-tester` (do the notes let a learner answer the bank?),
+  `beta-desk-engineer` (any Beta Desk problem or change: reproduce, fix, test, ship, confirm live, admin runbook),
   `isaca-language-reviewer` (ISACA terminology and exam phrasing).
 
 ## Branching + GitHub
