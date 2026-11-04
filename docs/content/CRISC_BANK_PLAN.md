@@ -1,6 +1,6 @@
 # CRISC course plan: from the pilot to a sellable pack
 
-**Status:** plan, 30 Oct 2026; round 4 done 4 Nov 2026 (bank 340). CRISC is a **paid course** learners buy in the
+**Status:** plan, 30 Oct 2026; round 5 done 4 Nov 2026 (bank 375). CRISC is a **paid course** learners buy in the
 app (6-month access, one payment, never renews; see
 `docs/business/monetization/RECOMMENDATION.md`). Outline and sources:
 `docs/content/CRISC_BLUEPRINT.md`. Item standard:
@@ -20,7 +20,7 @@ it can be sold:
 |---|---|---|---|
 | Blueprint | `docs/content/CRISC_BLUEPRINT.md` | cert-blueprint-researcher | Done, 30 Oct 2026 |
 | Study notes | `data/crisc/notes/d{1..4}.json` + `_course.json` (strategy tips, cross-domain connections) | crisc-d{N}-domain-expert | All 43 outline sub-areas, 115 subtopics, Practice this concept links (`data/crisc/tools/sync_practice_ids.py`) |
-| Questions | `data/crisc/originals/d{1..4}.json` | crisc-d{N}-domain-expert | 340 reviewed (95 / 65 / 115 / 65) after round 4: a full 150-item mock and a short 50-item mock without repeats |
+| Questions | `data/crisc/originals/d{1..4}.json` | crisc-d{N}-domain-expert | 375 reviewed (95 / 90 / 115 / 75) after round 5: a full 150-item mock and a short 50-item mock without repeats |
 | Citation library | `data/crisc/originals/_framework_library.md` | domain experts | Started with the pilot |
 | Principles (mindset cards) | `data/crisc/mindset/principles.json` (schema `docs/content/PRINCIPLES_SCHEMA.md`) | isaca-mindset-coach | 19 principles; every item tagged |
 | Exam guide and final-review week | `data/crisc/exam/` (schema `docs/content/EXAM_GUIDE_SCHEMA.md`) | isaca-mindset-coach | Both done and reviewed |
@@ -245,6 +245,27 @@ Round 4 added 25 D1 items (`crisc_d1_071`–`095`) and 30 D3 items
 - Key internal audit's assurance role in one D4 item (D2 and D4 have none).
 - D4 is a little light on analysis (26%).
 - Keep apart in practice sets: d3_100/d3_064, d3_112/d3_047/d3_080, d3_114/d3_084, d3_103/d3_104, d3_109/d3_018, d1_091/d1_041, d1_081/d1_070, d1_090/d3_079, d1_088/d3_014, d1_089/d1_036, d3_087/d3_003, d3_093/d3_028, d1_075/d1_063, d1_076/d4_008/d4_058.
+
+### Round 5 (4 Nov 2026): 35 items, bank 375
+
+Round 5 added 25 D2 items (`crisc_d2_066`–`090`) and 10 D4 items
+(`crisc_d4_066`–`075`).
+
+| Stage | Result |
+|---|---|
+| Blind test | 35/35 picks matched the keys |
+| Standards audit and concept review | 1 HARD ERROR, fixed: crisc_d2_087 called lost sales and staff time "secondary losses" (they are primary losses in FAIR; NIST IR 8286 Rev. 1 Section 3.3.2's secondary-loss examples are lost customers and penalties). D4 had no hard error and no second defensible answer. Mirrors re-angled: d2_073 (CISA d4_253), d2_089 (crisc_d2_029), d2_090 (crisc_d2_038), d4_069 (crisc_d4_007 setting), d4_074 (CISA d5_199), d4_075 (crisc_d3_004). d2_077 lost a distractor that came close to a second answer |
+| Re-blind of changed items | D2 13/13, D4 5/5 (then 074's runner-up moved from the course proof to the liability clause) |
+| Cross-domain gate | 0 HARD ERRORS, 5 PRECISION: notes 4A5.2 trap contradicted d4_070 (project log vs register); d2_088 and d1_081 used "not the risk" for the bank's "not the accountability"; d4_075's cue reconciled with d3_004; d4_074 C and d4_072 role wording |
+| Firsts | Internal audit keyed in its assurance role in D4 (d4_067); D4 analysis share up to 28% |
+| Gates | All lints 0 errors; originality 0 too close; practice links in sync; app pack dry run 0 problems; `verify_repo.sh` passes |
+
+**Next round (round 6):**
+- Against the 26/22/32/20 weights at 375: D1 −2.5, D2 +7.5, D3 −5, D4 0. Add no D2 items. A 25-item round: D1 +8, D3 +13, D4 +4.
+- Key owner acceptance within appetite in about 2 D1, 2 D3 and 2 D4 items (acceptance options are keyed in only 5 of 61 cases, so "never accept" is becoming a cue).
+- Keep "Which of the following" stems at 25–30% (round 5 slices were 40%).
+- D2 analysis keys skew to D (A7/B7/C3/D10): vary them when D2 resumes.
+- Keep apart in practice sets: d4_067/d1_078/d3_101, d4_067/d3_012/d3_066, d4_069/d1_031/d4_007/d4_058, d4_070/d4_032/d4_010, d4_072/d4_036, d4_075/d3_004, d4_073/d4_053, d2_086/d1_037, d2_088/d1_070, d2_089/d2_029, d2_083/d2_017, d2_090/d3_083, d2_066/d2_003.
 
 **Open items:**
 - The `TO VERIFY` comment on the CRISC entry in `mobile/src/content/certifications.ts`
