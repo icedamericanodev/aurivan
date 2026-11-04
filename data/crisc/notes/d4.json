@@ -446,12 +446,12 @@
           "definition": "The system development life cycle (SDLC) is the sequence of phases from initiation through design, build, testing, implementation, operation and disposal, each with its own risk activities.",
           "why_it_matters": "A flaw found in design costs little to fix; the same flaw found after go-live costs far more and may already have caused harm. Risk activities in every phase keep the project within appetite.",
           "how_it_works": [
-            "Initiation: confirm the business case, owner, data sensitivity and an initial risk assessment, and update that assessment whenever the scope or data changes.",
+            "Initiation: confirm the business case, owner, data sensitivity and initial risk assessment, and update it whenever scope or data change.",
             "Requirements and design: define security, privacy and control requirements alongside functional ones; for a purchased system, put them in the selection criteria and contract.",
             "Build and test: verify requirements are met; business users, not developers, sign off acceptance testing.",
             "Implementation: confirm the owner accepts residual risk within appetite, or orders more treatment, before go-live.",
             "Post-implementation review: check whether benefits arrived and risks stayed within appetite.",
-            "Disposal: as a planned step, the old system's data is archived or securely destroyed as the data owner decides, and its servers and access are retired and confirmed."
+            "Disposal is planned: the data owner has old data archived or securely destroyed, and servers and access are retired and confirmed."
           ],
           "example": "A retailer is rebuilding its loyalty app, and the project plan schedules the only security review two weeks before launch. Teo, the risk analyst, shows the sponsor that a late finding could force a costly redesign or a launch with open risk, and proposes adding security and privacy requirements to the design phase gate.",
           "audit_focus": {
@@ -891,7 +891,7 @@
             "The definition of done includes security, privacy and control criteria, so work is not finished without them.",
             "Sprint reviews update risk status; growing deferred security work is an early warning.",
             "Agile reduces heavy documents, not risk records: decisions and accepted risks are still recorded.",
-            "At project closure, open risks that continue into operation move to the enterprise register with an operational owner; they do not close with the project."
+            "At closure, open risks continuing into operation move to the enterprise register with an operational owner."
           ],
           "example": "A bank's mobile team works in two-week sprints and has postponed its fraud-control stories for four sprints to hit a launch date. Zara, the IT risk analyst, raises the deferred stories as a project risk that will become an operational fraud risk at launch, and asks the product owner to review it with the business sponsor.",
           "audit_focus": {
@@ -1054,11 +1054,11 @@
           "why_it_matters": "Backups are often the last control against ransomware and destructive attacks. If attackers can reach or encrypt them, or restores fail, the organization faces long outages or pressure to pay.",
           "how_it_works": [
             "A common rule of thumb keeps at least three copies, on two kinds of media, with one offsite or offline.",
-            "Immutable or offline copies resist change or deletion by an attacker with administrator access; retention should outlast how long intruders may stay unnoticed, so a clean copy remains.",
+            "Immutable or offline copies resist an attacker with administrator access; retention should outlast how long intruders may stay unnoticed.",
             "Backup frequency is set by the RPO; restore speed must support the RTO.",
             "In ransomware recovery, contain the attack first, then verify backups are clean before restoring.",
             "Restores are tested regularly, because a backup that was never restored is an untested assumption.",
-            "A useful key control indicator for backups is the share of test restores that meet the RTO and RPO, not the share of backup jobs completed."
+            "A useful key control indicator for backups is the share of test restores meeting the RTO and RPO, not of backup jobs completed."
           ],
           "example": "A logistics firm's backups run nightly and the console shows green every day. Sam, the IT risk analyst, asks when a full restore was last tested; the answer is never. Sam records the risk that the RTO for the dispatch system is unproven and proposes a scheduled restore test to the infrastructure manager.",
           "audit_focus": {
@@ -1198,8 +1198,8 @@
             "Start from the business objective the technology would serve and the value it could add.",
             "Identify new threats and vulnerabilities, such as weak integrations, vendor-inherited flaws and irreversible harms like stolen biometric data.",
             "Check vendor claims through evidence, pilots and independent assessments, not marketing material.",
-            "Apps staff build on low-code and similar platforms are inventoried with owners and data, not banned or ignored.",
-            "Weigh exposure against appetite, propose conditions such as a pilot or exit terms, and reassess as the technology matures or its use scales up.",
+            "Apps staff build on low-code platforms are inventoried with owners and data, not banned or ignored.",
+            "Weigh exposure against appetite, propose conditions such as a pilot or exit terms, and reassess when the technology matures or use scales.",
             "With little data, record the risk early as an emerging risk with stated uncertainty, a proposed owner and a review date, rather than waiting for losses."
           ],
           "types": [
