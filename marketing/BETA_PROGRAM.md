@@ -1,4 +1,4 @@
-> **Owner decisions (22 Oct 2026).** Reward: 6 months of KaiSip Premium free once paid features exist, plus opt-in thanks and credit in the app. Platforms: Android beta via the Play closed test; iPhone users use kaisip.com and join a waitlist. Inbox: certprep.support@gmail.com owns the Google Form and Sheet. **Decided 4 Nov 2026:** accounts ship no later than Premium (Play promo codes cap at 90 days), and tester grants use the `entitlements` table (`source = 'manual'`). The qualifying rule in section 2 is approved as written. The sign-up page is kaisip.com/beta (`beta.html`). **4 Nov 2026:** the owner revised the Google Form to Android only (no phone-type branching and no iPhone waitlist box), so the page no longer mentions iPhone; the iPhone waitlist in section 1 is paused. **Still open (decide before Premium):** choose one way to check Premium across web and stores (`marketing/monetization-plan.md` vs `docs/mobile/ARCHITECTURE.md`).
+> **Owner decisions (22 Oct 2026).** Reward: 6 months of KaiSip Premium free once paid features exist (narrowed to **CISA Premium only, other certifications not included**, owner decision 4 Nov 2026), plus opt-in thanks and credit in the app. Platforms: Android beta via the Play closed test; iPhone users use kaisip.com and join a waitlist. Inbox: certprep.support@gmail.com owns the Google Form and Sheet. **Decided 4 Nov 2026:** accounts ship no later than Premium (Play promo codes cap at 90 days), and tester grants use the `entitlements` table (`source = 'manual'`). The qualifying rule in section 2 is approved as written. The sign-up page is kaisip.com/beta (`beta.html`). **4 Nov 2026:** the owner revised the Google Form to Android only (no phone-type branching and no iPhone waitlist box), so the page no longer mentions iPhone; the iPhone waitlist in section 1 is paused. **Still open (decide before Premium):** choose one way to check Premium across web and stores (`marketing/monetization-plan.md` vs `docs/mobile/ARCHITECTURE.md`).
 
 # KaiSip beta-tester program (spec v1)
 
@@ -32,7 +32,7 @@ The strongest reason: there is no public Play launch without this.
 - Never mention how many questions the app has.
 
 **Form intro (top of the form):**
-> Help test KaiSip, a free CISA exam-prep app, before it launches on Google Play. Testers get early access, a thank-you in the app if they want one, and 6 months of KaiSip Premium free once paid features launch (details below). KaiSip is independent and not affiliated with ISACA.
+> Help test KaiSip, a free CISA exam-prep app, before it launches on Google Play. Testers get early access, a thank-you in the app if they want one, and 6 months of KaiSip's CISA Premium free once paid features launch (other certifications not included; details below). KaiSip is independent and not affiliated with ISACA.
 
 **Fields:**
 
@@ -61,8 +61,9 @@ The strongest reason: there is no public Play launch without this.
 **Privacy notice (short version, shown on the form):**
 > **What we collect:** the answers on this form.
 > **Why:** to add you to the Google Play test, email you about the beta, credit you if you asked, and give you the tester reward.
-> **Where it's kept:** in the KaiSip maintainer's Google account (Google Forms and Sheets). Android testers' emails are also added to Google Play Console's tester list.
-> **How long:** until your reward has been given and has ended, or until we confirm there won't be paid features. Then we delete it within 3 months.
+> **Where it's kept:** in the KaiSip maintainer's Google account (Google Forms and Sheets), and in a private tester tracker in KaiSip's database (Supabase, Singapore) that only the maintainer can open. Android testers' emails are also added to Google Play Console's tester list.
+> **How long:** until your reward has been given and has ended, or until we confirm there won't be paid features or that you won't qualify. Then we delete it within 3 months.
+> **Full details:** kaisip.com/privacy#s3e
 > **To leave:** email certprep.support@gmail.com, or leave the test in Google Play. Leaving takes you off the list, and we can't give the reward to someone who isn't on it.
 > We never sell it or use it for marketing.
 
@@ -110,7 +111,28 @@ Also add one row, "Google Forms and Sheets: beta sign-up and surveys", to the th
 - **Qualifies (Y/N)**
 - Grant date, grant end date, date they left
 
-**Who qualifies (approved 4 Nov 2026; say it plainly on the page, the form and the welcome email):**
+**The live form is the source of truth (checked 4 Nov 2026).** The Google Form
+"KaiSip Android Beta: Tester Registration", as sent to people, says:
+- Who can join: 18 or older, an Android phone with Google Play.
+- Who qualifies: join the Android closed test before the public Google Play
+  launch, stay opted in for at least **14 consecutive days**, and try the CISA
+  content and app features. Midpoint and final feedback are encouraged, never
+  required. A technical problem that blocks testing does not disqualify.
+  **Earlier registrants keep the eligibility conditions offered when they
+  registered** (for some, "14 days, or at least one piece of feedback").
+- Reward: **6 months of CISA premium content and mobile app study features
+  only** (CC, CRISC, CSOE, AAIA and others excluded), starting **when CISA
+  access is activated** after the 14 days. No card, no renewal.
+- Records: Google Forms and linked Sheets, and Play Console. Routine records
+  deleted within 90 days after the beta ends; a minimal reward record (email,
+  eligibility and activation) kept until 3 months after the reward ends.
+- The Beta Desk tracker (Supabase, Singapore) is described in the privacy
+  policy section 3e; the form does not mention it, so tell earlier registrants
+  in one line by email.
+
+The sections below are the earlier plan; where they differ, the form wins.
+
+**Who qualifies (earlier plan, approved 4 Nov 2026; superseded by the live form above):**
 - joined the Android closed test before the public Play launch and stayed in it for 14 days, **or**
 - sent at least one genuine piece of feedback during the beta from the app or the website. This keeps iPhone and website-only testers eligible.
 
@@ -151,7 +173,7 @@ Never make it depend on reviews or star ratings.
 
 ## 4. Wording guardrails (use these sentences word for word)
 
-- **Reward:** "As thanks for testing, every beta tester gets 6 months of KaiSip Premium free once paid features launch. Your 6 months start on the day Premium launches, not the day you sign up. We'll email you when it's ready. No card needed, and nothing renews."
+- **Reward:** "As thanks for testing, every beta tester gets 6 months of KaiSip's CISA Premium free once paid features launch (other certifications not included). Your 6 months start on the day Premium launches, not the day you sign up. We'll email you when it's ready. No card needed, and nothing renews."
 - **Not for reviews:** "This reward is for testing and feedback only. It never depends on rating or reviewing KaiSip, and what you say never changes it."
   - Don't ask testers for Play reviews during the beta.
   - After launch, any review prompt goes to everyone equally and is never linked to the reward. Google's policy bans offering anything in exchange for ratings or reviews.

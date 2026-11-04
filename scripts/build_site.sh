@@ -11,7 +11,11 @@
 #
 #   The list:
 #     - the pages: index.html, privacy.html, terms.html, support.html,
-#       beta.html (the beta-tester sign-up page, kaisip.com/beta)
+#       beta.html (the beta-tester sign-up page, kaisip.com/beta), and
+#       beta-desk.html (the private Beta Desk, kaisip.com/beta-desk: the page
+#       holds no tester data; rows load only after an admin's two-step
+#       sign-in, and the database checks it). The desk is published only at
+#       the top of the site, never inside the preview folder.
 #     - assets/ (icons, the self-hosted fonts and og-kaisip.png, the
 #       link-preview card that index.html names in og:image). Only image,
 #       font and stylesheet files: anything else in assets/ stops the build.
@@ -19,7 +23,9 @@
 #       app's TypeScript by mobile/scripts/build-web-plant.mjs:
 #       assets/kaisip-plant.js (the plant companion) and
 #       assets/kaisip-cloud.js (the accounts client and sync engine; loaded
-#       only when an account is used). No other .js file is allowed.
+#       only when an account is used). A third, assets/beta-desk.js, is
+#       hand-written: the Beta Desk page's code (top level only). No other .js
+#       file is allowed.
 #     - the data the web app really loads (index.html fetches the FREE
 #       question sample data/free/cisa_d1..5.json, data/cisa_notes.json,
 #       data/mindset/principles.json and the two data/exam/ files, the exam
@@ -91,6 +97,14 @@ for f in "${PAGES[@]}" "${SITE_CONFIG[@]}"; do
   cp "$f" "$OUT/$f"
 done
 
+# The Beta Desk: top level only (the preview build sets SITE_OUT), so its own
+# strict rules in _headers (no-store, noindex, CSP) always apply to it.
+DESK=""
+if [ -z "${SITE_OUT:-}" ]; then
+  DESK=1
+  cp beta-desk.html "$OUT/beta-desk.html"
+fi
+
 if [ "$SITE_MODE" = "landing" ]; then
   # The landing page is the home page; the web app and its data stay unpublished.
   cp beta.html "$OUT/index.html"
@@ -117,6 +131,7 @@ while IFS= read -r -d '' f; do
   case "$f" in assets/fonts/OFL-*.txt) mkdir -p "$OUT/$(dirname "$f")"; cp "$f" "$OUT/$f"; continue;; esac
   # The two scripts on the list: the plant companion and the accounts client.
   case "$f" in assets/kaisip-plant.js|assets/kaisip-cloud.js) cp "$f" "$OUT/$f"; continue;; esac
+  case "$f" in assets/beta-desk.js) [ -n "$DESK" ] && cp "$f" "$OUT/$f"; continue;; esac
   printf '%s' "$ext" | grep -Eqx "$ASSET_TYPES" || fail "$f: .$ext files are not allowed in assets/ (allowed: ${ASSET_TYPES//|/, })"
   mkdir -p "$OUT/$(dirname "$f")"
   cp "$f" "$OUT/$f"
@@ -135,7 +150,7 @@ fi
 
 # The legal pages' inline theme script is allowed in _headers by its sha256
 # hash. If the script is edited, the hash must change too, or browsers block it.
-for page in privacy.html terms.html support.html beta.html; do
+for page in privacy.html terms.html support.html beta.html beta-desk.html; do
   hash="$(python3 -c 'import re,sys,hashlib,base64
 s=open(sys.argv[1]).read(); m=re.search(r"<script>(.*?)</script>",s,re.S)
 print("sha256-"+base64.b64encode(hashlib.sha256(m.group(1).encode()).digest()).decode() if m else "")' "$page")"
@@ -198,11 +213,40 @@ if bad:
     sys.exit(1)
 PY
 
+# The Beta Desk keeps exactly one inline script (the theme one, hashed above)
+# and its noindex tag; its rule in _headers must keep noindex, no-store and
+# that hash, and the page may load only assets/beta-desk.js.
+n_inline="$(grep -c '<script>' beta-desk.html || true)"
+[ "$n_inline" = "1" ] || fail "beta-desk.html: expected 1 inline <script>, found $n_inline (put code in assets/beta-desk.js)"
+grep -q '<meta name="robots" content="noindex' beta-desk.html || fail "beta-desk.html lost its noindex meta tag"
+python3 - <<'PYCHK' || fail "beta-desk: _headers /beta-desk rules need noindex, no-store and the inline script hash; the page may load only assets/beta-desk.js"
+import re, hashlib, base64
+rules = {}
+cur = None
+for line in open('_headers'):
+    if line.strip().startswith('#') or not line.strip():
+        continue
+    if not line[0].isspace():
+        cur = line.strip(); rules[cur] = []
+    elif cur:
+        rules[cur].append(line.strip())
+page = open('beta-desk.html').read()
+inline = re.findall(r'<script>(.*?)</script>', page, re.S)
+srcs = re.findall(r'<script[^>]*\ssrc="([^"]+)"', page)
+assert srcs == ['assets/beta-desk.js'], srcs
+hashes = ["'sha256-" + base64.b64encode(hashlib.sha256(x.encode()).digest()).decode() + "'" for x in inline]
+for path in ('/beta-desk', '/beta-desk.html'):
+    h = ' '.join(rules.get(path, []))
+    assert 'X-Robots-Tag: noindex' in h and 'Cache-Control: no-store' in h, path
+    assert all(x in h for x in hashes), path + ': inline script hash missing from its own rule'
+PYCHK
+
 # Final guard: nothing outside the list may be in _site/.
 while IFS= read -r -d '' f; do
   rel="${f#"$OUT"/}"
   case "$rel" in
     index.html|privacy.html|terms.html|support.html|beta.html|_headers|_redirects|favicon.ico) ;;
+    beta-desk.html) [ -n "$DESK" ] || fail "the Beta Desk must not be in the preview folder" ;;
     data/free/cisa_d[1-5].json|data/cisa_notes.json|data/mindset/principles.json) ;;
     data/exam/cisa_exam_guide.json|data/exam/final_review_week.json) ;;
     assets/*) ;;

@@ -28,6 +28,11 @@
 #   Fonts are self-hosted. Connections: this site, the Google Forms used for
 #   feedback and flags, Google Analytics, Cloudflare Web Analytics. No
 #   plugins, no <base>, no framing.
+#   Beta Desk (4 Nov 2026): the Supabase project (connect) and Cloudflare
+#   Turnstile (script + frame, the sign-in check). They are here, and not
+#   only in the /beta-desk rule, because Cloudflare JOINS this policy with
+#   every page's own and the browser enforces both: a host missing here is
+#   blocked everywhere. The web app's accounts need the same two hosts.
 /*
   Strict-Transport-Security: max-age=31536000; includeSubDomains
   X-Content-Type-Options: nosniff
@@ -35,7 +40,7 @@
   X-Frame-Options: DENY
   Cross-Origin-Opener-Policy: same-origin
   Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=()
-  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com/gtag/js https://static.cloudflareinsights.com; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: https://*.google-analytics.com https://*.googletagmanager.com; connect-src 'self' https://docs.google.com https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com https://cloudflareinsights.com; frame-src https://docs.google.com; form-action https://docs.google.com; object-src 'none'; base-uri 'none'; frame-ancestors 'none'
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com/gtag/js https://static.cloudflareinsights.com https://challenges.cloudflare.com; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: https://*.google-analytics.com https://*.googletagmanager.com; connect-src 'self' https://docs.google.com https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com https://cloudflareinsights.com https://ziadnvepttlgcowvqvom.supabase.co; frame-src https://docs.google.com https://challenges.cloudflare.com; form-action https://docs.google.com; object-src 'none'; base-uri 'none'; frame-ancestors 'none'
 
 # The web app: its policy comes from the /* rule above (one policy, so
 # nothing to join here).
@@ -69,6 +74,20 @@
   Cache-Control: public, max-age=0, must-revalidate
   Content-Security-Policy: default-src 'none'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; script-src 'sha256-nbMPt7DJNCogX1hWKTLNy0Fg4H3+bU/3Jfci1NXG084=' https://static.cloudflareinsights.com; connect-src 'self' https://cloudflareinsights.com; base-uri 'none'; form-action 'none'; frame-ancestors 'none'
 
+# The Beta Desk (private admin tracker). Never indexed, never cached (it
+# shows tester details once an admin signs in), and a strict policy of its
+# own: this site's code and fonts, the one theme script (by hash), the
+# Supabase project, and Cloudflare Turnstile for the sign-in check.
+# scripts/build_site.sh fails if noindex or no-store goes missing here.
+/beta-desk
+  Cache-Control: no-store
+  X-Robots-Tag: noindex, nofollow, noarchive
+  Content-Security-Policy: default-src 'none'; script-src 'self' 'sha256-nbMPt7DJNCogX1hWKTLNy0Fg4H3+bU/3Jfci1NXG084=' https://challenges.cloudflare.com; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data:; connect-src https://ziadnvepttlgcowvqvom.supabase.co; frame-src https://challenges.cloudflare.com; base-uri 'none'; form-action 'none'; frame-ancestors 'none'
+/beta-desk.html
+  Cache-Control: no-store
+  X-Robots-Tag: noindex, nofollow, noarchive
+  Content-Security-Policy: default-src 'none'; script-src 'self' 'sha256-nbMPt7DJNCogX1hWKTLNy0Fg4H3+bU/3Jfci1NXG084=' https://challenges.cloudflare.com; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data:; connect-src https://ziadnvepttlgcowvqvom.supabase.co; frame-src https://challenges.cloudflare.com; base-uri 'none'; form-action 'none'; frame-ancestors 'none'
+
 # The beta-tester sign-up page (kaisip.com/beta): the same strict policy as
 # the legal pages (it shares their theme script, so the same hash). Its
 # "Sign up to test" buttons are plain links to the Google Form, so nothing
@@ -99,3 +118,9 @@
 /assets/*
   Cache-Control: public, max-age=86400
   Content-Security-Policy: default-src 'none'; style-src 'unsafe-inline'; frame-ancestors 'none'
+
+# The Beta Desk's code: always re-checked, so the page and its code never
+# drift apart (joined with the /assets/* rule above: no-cache wins).
+/assets/beta-desk.js
+  Cache-Control: no-cache
+  X-Robots-Tag: noindex
