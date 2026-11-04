@@ -573,16 +573,19 @@ async function boot() {
   }
 }
 /**
- * Supabase sends the QR code as "data:image/svg+xml;utf-8,<svg …>" with the
- * SVG not URL-encoded. Browsers refuse that (a "#" in a colour ends the URL),
- * so the SVG part is encoded here. An already-encoded or base64 one is kept.
+ * The QR code arrives as SVG markup: from the Auth API as bare "<?xml …><svg …>",
+ * or (via supabase-js) as "data:image/svg+xml;utf-8,<svg …>" not URL-encoded.
+ * Either way it is turned into an encoded data: URL here (a raw "#" or "<" would
+ * break the image). An already-encoded or base64 one is kept.
  */
 function qrSrc(raw) {
   var s = String(raw || '');
   if (!s) return '';
   var m = /^data:image\/svg\+xml(;[^,]*)?,([\s\S]*)$/.exec(s);
   if (m && /</.test(m[2]) && !/;base64/i.test(m[1] || '')) return 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(m[2]);
-  if (/^\s*<svg/i.test(s)) return 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(s);
+  // The Auth API itself returns the bare SVG ("<?xml …?><svg …>"); supabase-js adds the
+  // data: prefix in the browser, and this page talks to the API directly.
+  if (/<svg[\s>]/i.test(s)) return 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(s.replace(/^\s+/, ''));
   return s;
 }
 async function startMfa() {
