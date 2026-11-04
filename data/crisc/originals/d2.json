@@ -3132,16 +3132,16 @@
       "correct": "B",
       "key_concept": "A response can create new risk, such as genuine customers blocked by an AI control; rate it before judging the response a success.",
       "pre_read": "Weigh what the filter changed for the business.",
-      "correct_explanation": "The filter worked on fraud, but declining genuine orders is a new risk the response created: lost sales and customers who shop elsewhere. NIST notes that risk responses can introduce new risks, so this one is rated against appetite before the filter is judged a success. Asking the owner to lower its sensitivity is the runner-up: tuning may follow, but it trades fraud for sales before anyone knows the size of the new risk.",
+      "correct_explanation": "The filter worked on fraud, but declining genuine orders is a new risk the response created: lost sales and customers who shop elsewhere. NIST notes that responses can introduce new risks, so this one is rated as its own risk against appetite. Raising the fraud scenario's residual rating is the runner-up: it records that something went wrong, but fraud residual risk is within appetite, and blending in lost sales hides both.",
       "wrong_explanations": {
         "A": "The fraud rating is within appetite, but reporting only that leaves out the lost-sales risk the filter created, so owners get an incomplete picture.",
         "C": "Tuning the filter may help, but asking for it before the new risk is rated trades fraud losses for lost sales without knowing the size of the lost-sales risk.",
-        "D": "Fraud residual risk really is within appetite; the declined orders are a different consequence that needs its own rating, not a higher fraud score."
+        "D": "Tempting because the filter caused harm, but fraud residual risk is within appetite; lost sales are a different consequence that needs its own rating, not a higher fraud score."
       },
       "tips": [
-        "Eliminate: A reports only the fraud result, and D folds a different consequence into a fraud rating that is within appetite.",
-        "Final two: B beats C because the new risk must be sized before tuning trades fraud losses against lost sales.",
-        "Exam cue: a response can introduce new risk; rate it before calling the response a success or changing the control."
+        "Eliminate: A reports only the fraud result, and C tunes the filter before anyone knows the size of the lost-sales risk.",
+        "Final two: B beats D because lost sales are a new risk with their own cause; folding them into the fraud rating misstates a residual risk within appetite.",
+        "Exam cue: a response can introduce new risk; rate it as a risk of its own, not as a higher residual rating for the risk the response treated."
       ],
       "framework_ref": "NIST IR 8286 Rev. 1 Section 3.5 (Plan and Execute Risk Response Strategies: risk responses themselves may introduce new risks); NIST AI 100-1 (AI RMF 1.0) MEASURE 2.4 (the functionality and behavior of the AI system are monitored when in production)",
       "related_concepts": [
@@ -3149,7 +3149,7 @@
         "Secondary risk",
         "AI fraud detection"
       ],
-      "_provenance": "Authored from concept: notes 2B5.3 (Residual Risk Against Appetite and Tolerance). Round 5, 4 Nov 2026: original scenario (an online grocer's AI fraud filter that also declines genuine orders) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Neighbours checked: crisc_d2_044 (reliance on one bot-detection control), crisc_d3_063 (a control that halts operations is reworked with its owner; here the new risk's size is unknown, so it is rated first), AAIA aaia_d3_045 (a voice model locking out some customers, a fairness lesson); none tests a response creating a new risk. Review fixes 4 Nov 2026 (standards audit and concept review): C explanation no longer says neither risk's size is known (the stem says fraud is within appetite); subtopic no longer names the key; pre_read no longer nudges toward it.",
+      "_provenance": "Authored from concept: notes 2B5.3 (Residual Risk Against Appetite and Tolerance). Round 5, 4 Nov 2026: original scenario (an online grocer's AI fraud filter that also declines genuine orders) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Neighbours checked: crisc_d2_044 (reliance on one bot-detection control), crisc_d3_063 (a control that halts operations is reworked with its owner; here the new risk's size is unknown, so it is rated first), AAIA aaia_d3_045 (a voice model locking out some customers, a fairness lesson); none tests a response creating a new risk. Review fixes 4 Nov 2026 (standards audit and concept review): C explanation no longer says neither risk's size is known (the stem says fraud is within appetite); subtopic no longer names the key; pre_read no longer nudges toward it. Cross-domain fixes 4 Nov 2026 (round 7): runner-up moved to D (residual rating) so the final two no longer duplicates crisc_d1_107.",
       "style_version": 2
     },
     {
