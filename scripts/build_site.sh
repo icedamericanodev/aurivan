@@ -108,28 +108,53 @@ print("sha256-"+base64.b64encode(hashlib.sha256(m.group(1).encode()).digest()).d
   fi
 done
 
-# The full question bank must never be published (web v12.50). Every question
-# that is not in the free sample is looked for in every published file, by its
-# stem text, so a copy under any name or inside a page is caught too.
+# The full question bank must never be published (web v12.50). For every
+# question outside the free sample, its stem, explanations and tips (any text
+# of 40+ characters that no free question also uses) are looked for in every
+# published file, as written and with HTML entities and JSON or JS escapes
+# undone, so a copy under any name or inside a page is caught too.
 python3 - "$OUT" <<'PY' || fail "a question outside the free sample is in the site (see above)"
-import json, os, sys
+import html, json, os, re, sys
 out = sys.argv[1]
 free = set(json.load(open("data/free/cisa_sample_ids.json"))["ids"])
-stems = []
+
+def texts(q):
+    yield q.get("question", "")
+    yield q.get("correct_explanation", "")
+    we = q.get("wrong_explanations") or {}
+    yield from (we.values() if isinstance(we, dict) else we)
+    yield from (q.get("tips") or [])
+
+free_texts, paid = set(), []
 for d in range(1, 6):
     for q in json.load(open(f"data/domain{d}.json"))["questions"]:
-        if q["id"] not in free and len(q.get("question", "")) >= 40:
-            stems.append((q["id"], q["question"]))
+        bucket = [t for t in texts(q) if isinstance(t, str) and len(t) >= 40]
+        if q["id"] in free:
+            free_texts.update(bucket)
+        else:
+            paid.append((q["id"], bucket))
+
+needles = [(qid, t) for qid, bucket in paid for t in bucket if t not in free_texts]
+
+def plain(raw):
+    """One cleaned copy of a file: HTML entities and JSON or JS escapes undone."""
+    t = html.unescape(raw)
+    t = re.sub(r"\\u([0-9a-fA-F]{4})", lambda m: chr(int(m.group(1), 16)), t)
+    for a, b in (('\\"', '"'), ("\\'", "'"), ("\\/", "/"), ("\\n", "\n")):
+        t = t.replace(a, b)
+    return t
+
 bad = []
 for root, _, names in os.walk(out):
     for name in names:
         path = os.path.join(root, name)
         try:
-            text = open(path, encoding="utf-8").read()
+            raw = open(path, encoding="utf-8").read()
         except (UnicodeDecodeError, OSError):
             continue
-        for qid, stem in stems:
-            if stem in text or json.dumps(stem)[1:-1] in text:
+        hay = raw + "\n" + plain(raw)
+        for qid, needle in needles:
+            if needle in hay:
                 bad.append(f"{os.path.relpath(path, out)}: {qid}")
                 break
 if bad:

@@ -8330,6 +8330,11 @@ var MOCK_MAX_ITEMS = 1000;
 // above). saveState writes it back as it is, so a save made before the banks
 // arrive never drops the mock.
 var mockResumePending = null;
+// v12.50: an unfinished mock drawn from the full bank (before the website
+// loaded only the free sample) cannot be resumed here. It is parked: kept in
+// storage as it was (saveState writes it back) so it is not lost, but never
+// resumed on the website. Starting a new mock replaces it, as before.
+var mockParked = null;
 // Set just before a reload that has already written new progress (import,
 // switching records): the leave-save must not write the old state over it.
 var leavingForReload = false;
@@ -8449,9 +8454,15 @@ function tryResumeSavedMock() {
   var byId = {};
   Object.keys(QB).forEach(function(d) { (QB[d] || []).forEach(function(q) { byId[q.id] = q; }); });
   // v12.50: a saved mock that names questions not loaded here (drawn from
-  // the full bank) cannot be finished as it was drawn: it is let go quietly.
+  // the full bank) cannot be finished as it was drawn. It is parked, not
+  // deleted, and the learner is told once per visit.
   for (var g = 0; g < p.mockQueueIds.length; g++) {
-    if (!byId[p.mockQueueIds[g]]) { mockResumePending = null; saveState(); return; }
+    if (!byId[p.mockQueueIds[g]]) {
+      mockParked = p;
+      mockResumePending = null;
+      try { showToast('Your unfinished full mock is kept for the full course. Starting a new mock here replaces it.', 'info', 6000); } catch (e) {}
+      return;
+    }
   }
   var queue = [], answers = [];
   p.mockQueueIds.forEach(function(id, k) {
@@ -9292,7 +9303,7 @@ function saveState() {
   // Save mock exam progress as IDs only (avoids bloating localStorage with full
   // question objects). A saved mock whose banks are still loading is written
   // back as it is (see MOCK RESUME).
-  var mockSave = mockResumePending || (isMockInProgress() ? {
+  var mockSave = mockResumePending || mockParked || (isMockInProgress() ? {
     mockQueueIds: S.mockQueue.map(function(q){ return q.id; }),
     mockAnswers: (S.mockAnswers || []).map(slimMockAnswer),
     mockCurrent: S.mockCurrent,
@@ -9366,6 +9377,7 @@ function loadState() {
   });
   // The unfinished mock (if any) is rebuilt from its saved ids once its banks
   // have loaded; see MOCK RESUME and tryResumeSavedMock at the end.
+  mockParked = null;
   mockResumePending = sanitizeSavedMock(saved);
   ensureAnsweredBuckets();
   ensureParityFields();
@@ -18608,6 +18620,12 @@ function startMock(type, notesWaited) {
     renderMockSetup();
     return;
   }
+  // A bank that failed to load would leave a domain out and skew the mix.
+  if (Object.keys(window.QB_LOAD_ERROR || {}).length > 0) {
+    showToast && showToast('Some questions didn\u2019t load. Reload the page and try again.', 'info', 3200);
+    renderMockSetup();
+    return;
+  }
   type = mockTypeOf(type);
   if (MOCK_TYPES[type].locked) { renderMockSetup(); return; }
   // The topic spread needs the study notes: wait for them (once, at most
@@ -18628,8 +18646,10 @@ function startMock(type, notesWaited) {
 
   clearAllTimers();
   if (S.mockTotalTimerInt) { clearInterval(S.mockTotalTimerInt); S.mockTotalTimerInt = null; }
-  // A new exam replaces any unfinished one, saved or still waiting to load.
+  // A new exam replaces any unfinished one, saved or still waiting to load
+  // (or parked from the full bank, v12.50).
   mockResumePending = null;
+  mockParked = null;
   S.mockQueue = [];
   S.mockAnswers = [];
   S.mockCurrent = 0;
@@ -19436,6 +19456,7 @@ function doResetProgress() {
   // An unfinished mock goes too.
   if (S.mockTotalTimerInt) { clearInterval(S.mockTotalTimerInt); S.mockTotalTimerInt = null; }
   mockResumePending = null;
+  mockParked = null;
   S.mockQueue = [];
   S.mockAnswers = [];
   S.mockCurrent = 0;
@@ -21941,7 +21962,8 @@ function todayFreeDoneNotNow() {
 // card, so nothing moves under the learner's focus).
 document.addEventListener('qb:domain-loaded', function () {
   try {
-    if (S.activeTab !== 'home' || document.getElementById('tdFs')) return;
+    // One card at a time: not while Today is asking for a name.
+    if (S.activeTab !== 'home' || document.getElementById('tdFs') || document.querySelector('#homeArea .td-name')) return;
     var hero = document.querySelector('#homeArea .td-hero');
     var html = hero ? todayFreeDoneHtml() : '';
     if (html) hero.insertAdjacentHTML('afterend', html);

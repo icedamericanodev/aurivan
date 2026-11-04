@@ -35,6 +35,7 @@ OUTPUT
 import hashlib
 import json
 import math
+import subprocess
 import sys
 from pathlib import Path
 
@@ -79,12 +80,34 @@ def pick_balanced(candidates, chosen, by_id):
     return min(candidates, key=lambda q: (need(q), rank(q)))
 
 
+def published_ids():
+    """Free ids already published on main (or, failing that, in HEAD).
+
+    The working-tree file can be edited or deleted, so the "only grows" rule
+    is also checked against git history. Returns an empty set when git or
+    the file is not available (for example the very first commit of it).
+    """
+    rel = IDS_FILE.relative_to(ROOT).as_posix()
+    for ref in ("origin/main", "HEAD"):
+        try:
+            out = subprocess.run(["git", "show", f"{ref}:{rel}"], cwd=ROOT,
+                                 capture_output=True, text=True, timeout=20)
+        except (OSError, subprocess.SubprocessError):
+            return set()
+        if out.returncode == 0:
+            try:
+                return set(json.loads(out.stdout).get("ids", []))
+            except ValueError:
+                return set()
+    return set()
+
+
 def build():
     share = FREE_SHARE.get(CERT, DEFAULT_SHARE)
     notes = load_json(ROOT / "data" / "cisa_notes.json")
-    previous = set()
+    previous = published_ids()
     if IDS_FILE.exists():
-        previous = set(load_json(IDS_FILE).get("ids", []))
+        previous |= set(load_json(IDS_FILE).get("ids", []))
 
     all_ids = set()
     chosen_all = []
