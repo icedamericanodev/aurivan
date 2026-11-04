@@ -133,6 +133,8 @@ https://nvlpubs.nist.gov/nistpubs/ai/NIST.AI.600-1.pdf (Section 2, the twelve ri
 - NIST AI 600-1 Section 2.9 (Information Security)
 - NIST AI 600-1 Section 2.10 (Intellectual Property)
 - NIST AI 600-1 Section 2.12 (Value Chain and Component Integration)
+- NIST AI 600-1 MS-2.11-001 (Document benchmark assumptions and limitations including possible training/test data cross contamination)
+  - Verified 31 Oct 2026: suggested action MS-2.11-001 in the MEASURE 2.11 table (Section 3) says "Document assumptions and limitations of benchmarks, including any actual or possible training/test data cross contamination, relative to in-context deployment environment."
 
 ## NIST AI 100-2e2025, Adversarial Machine Learning: A Taxonomy and Terminology of Attacks and Mitigations, Mar 2025
 
