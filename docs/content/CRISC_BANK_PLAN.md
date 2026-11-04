@@ -1,6 +1,6 @@
 # CRISC course plan: from the pilot to a sellable pack
 
-**Status:** plan, 30 Oct 2026; round 3 done 4 Nov 2026 (bank 285). CRISC is a **paid course** learners buy in the
+**Status:** plan, 30 Oct 2026; round 4 done 4 Nov 2026 (bank 340). CRISC is a **paid course** learners buy in the
 app (6-month access, one payment, never renews; see
 `docs/business/monetization/RECOMMENDATION.md`). Outline and sources:
 `docs/content/CRISC_BLUEPRINT.md`. Item standard:
@@ -20,7 +20,7 @@ it can be sold:
 |---|---|---|---|
 | Blueprint | `docs/content/CRISC_BLUEPRINT.md` | cert-blueprint-researcher | Done, 30 Oct 2026 |
 | Study notes | `data/crisc/notes/d{1..4}.json` + `_course.json` (strategy tips, cross-domain connections) | crisc-d{N}-domain-expert | All 43 outline sub-areas, 115 subtopics, Practice this concept links (`data/crisc/tools/sync_practice_ids.py`) |
-| Questions | `data/crisc/originals/d{1..4}.json` | crisc-d{N}-domain-expert | 285 reviewed (70 / 65 / 85 / 65) after round 3: a full 150-item mock and a short 50-item mock without repeats |
+| Questions | `data/crisc/originals/d{1..4}.json` | crisc-d{N}-domain-expert | 340 reviewed (95 / 65 / 115 / 65) after round 4: a full 150-item mock and a short 50-item mock without repeats |
 | Citation library | `data/crisc/originals/_framework_library.md` | domain experts | Started with the pilot |
 | Principles (mindset cards) | `data/crisc/mindset/principles.json` (schema `docs/content/PRINCIPLES_SCHEMA.md`) | isaca-mindset-coach | 19 principles; every item tagged |
 | Exam guide and final-review week | `data/crisc/exam/` (schema `docs/content/EXAM_GUIDE_SCHEMA.md`) | isaca-mindset-coach | Both done and reviewed |
@@ -225,6 +225,26 @@ items, and every notes subtopic has at least one.
 - Tag more items with `escalate-to-the-limit-setter` (7, target 10).
 - Add a few short "Which of the following" stems in D3.
 - Keep d3_075 and d3_076 apart in practice sets (they test opposite errors on one rule).
+
+### Round 4 (4 Nov 2026): 55 items, bank 340
+
+Round 4 added 25 D1 items (`crisc_d1_071`–`095`) and 30 D3 items
+(`crisc_d3_086`–`115`), with 2–3 per sub-area.
+
+| Stage | Result |
+|---|---|
+| Blind test | 55/55 picks matched the keys |
+| Standards audit and concept review | 2 HARD ERRORS, both fixed: crisc_d1_073 (checking the model's other ratings was a second answer) and crisc_d3_091 (the test-data pilot did not meet a go-live-next-week need). Mirrors re-angled: d1_074 (CISA d5_205), d3_103 (CISA d3_046), d3_106 (AAIA aaia_d3_011), d3_109 (CISA d4_200). Terms: d1_081 now uses the Glossary's residual risk, not "retained risk"; d3_104 no longer calls push approvals phishing-resistant |
+| Re-blind of changed items | D1 14/14, D3 23/23 |
+| Cross-domain gate | 0 HARD ERRORS, 10 PRECISION: d3_107 had a director setting tolerance; d3_099 had the practitioner designing controls; d1_072, d1_095, d3_103 and d3_105 shared lessons or distractors with older items; d1_093 and d1_079 needed the fact that reconciles them with d3_022 and d3_041; seven pre_reads pointed at the key |
+| Round 4 priorities | Internal audit is now keyed in its assurance role in d1_078, d3_101 and d3_113; "scale it by risk" and "owner decides" are no longer key cues; `escalate-to-the-limit-setter` has 10 items |
+| Gates | All lints 0 errors; originality 0 too close; practice links in sync; app pack dry run 0 problems; `verify_repo.sh` passes |
+
+**Next round (round 5):**
+- Domain 2 only, plus a few Domain 4: against the 26/22/32/20 weights, D1 is +7, D2 −10, D3 +6, D4 −3. Add about 25 D2 and 10 D4 items, and none to D1 or D3 until the others catch up.
+- Key internal audit's assurance role in one D4 item (D2 and D4 have none).
+- D4 is a little light on analysis (26%).
+- Keep apart in practice sets: d3_100/d3_064, d3_112/d3_047/d3_080, d3_114/d3_084, d3_103/d3_104, d3_109/d3_018, d1_091/d1_041, d1_081/d1_070, d1_090/d3_079, d1_088/d3_014, d1_089/d1_036, d3_087/d3_003, d3_093/d3_028, d1_075/d1_063, d1_076/d4_008/d4_058.
 
 **Open items:**
 - The `TO VERIFY` comment on the CRISC entry in `mobile/src/content/certifications.ts`
