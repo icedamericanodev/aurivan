@@ -1305,6 +1305,7 @@ header {
 .q-text {
   font: var(--t-stem); letter-spacing: var(--tr-stem);
   color: var(--text); margin-bottom: 24px;
+  overflow-wrap: anywhere; hyphens: auto; hyphenate-limit-chars: 10 4 4;
 }
 
 /* â”€â”€ OPTIONS â”€â”€ */
@@ -3615,7 +3616,7 @@ header {
 }
 .fb-types { display:flex;gap:8px;flex-wrap:wrap; }
 .fb-type {
-  flex:1;min-width:90px;padding:10px 12px;border-radius:var(--r-10);
+  flex: 1 1 auto; min-width: max(90px, min-content); padding: 0.625em 0.75em; border-radius: var(--r-10);
   border:2px solid var(--border2);background:var(--surface2);
   font: var(--t-chip);
   color:var(--muted);cursor:pointer;transition:var(--tr);
@@ -4537,7 +4538,7 @@ header {
 .q-num { font: var(--t-meta); color: var(--muted); }
 .bk-btn, .fl-btn { min-width: 44px; min-height: 44px; border-radius: var(--r-round); background: transparent; border: 1.5px solid var(--control); color: var(--text); }
 .q-body { padding: 20px 0 8px; }
-.q-text { font: var(--t-stem); letter-spacing: var(--tr-stem); color: var(--text); margin-bottom: 20px; }
+.q-text { font: var(--t-stem); letter-spacing: var(--tr-stem); color: var(--text); margin-bottom: 20px; overflow-wrap: anywhere; hyphens: auto; hyphenate-limit-chars: 10 4 4; }
 .scenario-block { background: transparent; border: 0; border-left: 3px solid var(--accent); border-radius: 0; padding: 2px 0 2px 16px; }
 .sc-label { font: var(--t-caption); letter-spacing: var(--tr-caption); color: var(--accent-text); }
 .sc-text { font: var(--t-body); color: var(--text2); }
@@ -4546,6 +4547,7 @@ header {
   background: var(--surface); border: 1.5px solid var(--raised-outline); box-shadow: var(--shadow);
   border-radius: var(--r-md); padding: 15px 16px; gap: 12px; align-items: flex-start;
   font: var(--t-body); color: var(--text); min-height: 56px;
+  overflow-wrap: anywhere; hyphens: auto; hyphenate-limit-chars: 10 4 4;
 }
 .opt:hover:not(:disabled) { transform: none; background: var(--surface); border-color: var(--control); color: var(--text); }
 .opt-letter {
@@ -4876,7 +4878,7 @@ summary.gt-icon-btn::-webkit-details-marker { display: none; }
 /* Subtopic body sections (fixed order) */
 .gt-sec { margin-top: 18px; max-width: 68ch; }
 .gt-sec:first-child { margin-top: 4px; }
-.gt-oneline { font: var(--t-stem); letter-spacing: var(--tr-stem); color: var(--text); }
+.gt-oneline { font: var(--t-stem); letter-spacing: var(--tr-stem); color: var(--text); overflow-wrap: anywhere; hyphens: auto; hyphenate-limit-chars: 10 4 4; }
 .gt-p { font: var(--t-body); color: var(--text); }
 .gt-p + .gt-p { margin-top: 10px; }
 .gt-muted { color: var(--text2); font: var(--t-meta); }
