@@ -91,7 +91,7 @@ async function go(page, section, hash) {
   }
   await clearAsks(page);
 }
-const ev = (page, fn) => page.evaluate(fn);
+const ev = (page, fn, arg) => page.evaluate(fn, arg);
 
 // The Practice page itself (the Practice section can reopen its last page, e.g. Mock exam).
 async function goPracticeHub(page) {
@@ -413,7 +413,11 @@ for (const [view, scheme] of [['phone', 'light'], ['desktop', 'dark']]) {
     c.check(ids.includes(id), `the free saved question ${id} is gone after seeding a full-course one`);
     c.check(!ids.includes(paid.id), `the full-course question ${paid.id} still shows in Saved`);
     // It must be kept in storage (not deleted), so it comes back with the full course.
-    const kept1 = await ev(page, (pid) => Object.keys(localStorage).some((k) => (localStorage.getItem(k) || '').includes(`"${pid}"`)), paid.id);
+    const savedState = () => ev(page, (pid) => ({ shown: S.bookmarks.map((b) => b.id), kept: (S.bookmarksLocked || []).map((b) => b.id),
+      stored: Object.keys(localStorage).some((k) => (localStorage.getItem(k) || '').includes(pid)) }), paid.id);
+    let st = await savedState();
+    c.note(`after reload: shown ${JSON.stringify(st.shown)}, kept ${JSON.stringify(st.kept)}, in storage ${st.stored}`);
+    const kept1 = st.stored;
     c.check(kept1, `the saved full-course question ${paid.id} was deleted from storage after a reload`);
     const list2 = norm(await page.locator('#bkList').innerText());
     c.check(list2.includes(stem) && !list2.includes(norm(paid.question).slice(0, 50)), 'Saved shows the wrong questions after seeding');
@@ -422,13 +426,17 @@ for (const [view, scheme] of [['phone', 'light'], ['desktop', 'dark']]) {
     await ev(page, (pq) => { S.bookmarks = [pq]; saveState(); }, paid);
     await page.reload({ waitUntil: 'networkidle' }); await sleep(800); await clearAsks(page);
     await go(page, 'practice', 'saved'); await sleep(500);
+    st = await savedState();
+    c.note(`after reload: shown ${JSON.stringify(st.shown)}, kept ${JSON.stringify(st.kept)}, in storage ${st.stored}`);
     const fc = await visible(page.locator('#bkList .fc-row'));
     c.check(fc, 'with only a full-course question saved, Saved does not show the "full course" row');
     if (fc) c.note(`Saved says: "${norm(await page.locator('#bkList .fc-row').innerText())}"`);
     await c.shot(`w9-saved-full-course-row-${tag}`);
     c.step('one more reload: the full-course save is still in storage');
     await page.reload({ waitUntil: 'networkidle' }); await sleep(800); await clearAsks(page);
-    const kept2 = await ev(page, (pid) => Object.keys(localStorage).some((k) => (localStorage.getItem(k) || '').includes(`"${pid}"`)), paid.id);
+    st = await savedState();
+    c.note(`after reload: shown ${JSON.stringify(st.shown)}, kept ${JSON.stringify(st.kept)}, in storage ${st.stored}`);
+    const kept2 = st.stored;
     c.check(kept2, `the saved full-course question ${paid.id} was deleted from storage after reloads`);
     // Leave Saved empty for W6 (the backup compares the counts before/after).
     await ev(page, () => { S.bookmarks = []; if (S.bookmarksLocked) S.bookmarksLocked = []; saveState(); });
