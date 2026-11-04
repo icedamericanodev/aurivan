@@ -186,14 +186,12 @@ Rule for the form builder: Draw no two items of a pair into the same form. Keep 
 | csoe_d5_013 | csoe_d5_073 | 073's WC and Final two say ERM is more than a longer risk list, which rules out held-out 013's option B (as 013/032 does) |
 | csoe_d5_007 | csoe_d5_078 | 078's stem and explanation put fraud risk in the risk assessment, d5_007's key |
 | csoe_d5_005 | csoe_d5_065 | contrasting severity yardsticks; 065's added sentence states 005's key (SEC filers grade severity in the SEC's terms) |
-| csoe_d5_038 | csoe_d5_105 | d5_038 wrong explanation B and exam cue state d5_105's key |
+| csoe_d5_038 | csoe_d5_099 | d5_038 wrong explanation B and exam cue state d5_105's key |
 | csoe_d5_045 | csoe_d5_088 | proposed by the D5 batch 5 author |
 | csoe_d5_010 | csoe_d5_085 | proposed by the D5 batch 5 author |
 | csoe_d5_023 | csoe_d5_086 | proposed by the D5 batch 5 author |
 | csoe_d5_002 | csoe_d5_087 | proposed by the D5 batch 5 author |
 | csoe_d5_002 | csoe_d5_090 | proposed by the D5 batch 5 author |
-| csoe_d5_092 | csoe_d5_093 | proposed by the D5 batch 5 author |
-| csoe_d5_097 | csoe_d5_098 | proposed by the D5 batch 5 author |
 | csoe_d4_088 | csoe_d4_089 | proposed by the D4 batch 5 author |
 | csoe_d4_089 | csoe_d4_093 | proposed by the D4 batch 5 author |
 | csoe_d4_061 | csoe_d4_091 | proposed by the D4 batch 5 author |
@@ -204,3 +202,17 @@ Rule for the form builder: Draw no two items of a pair into the same form. Keep 
 | csoe_d4_094 | csoe_d4_099 | proposed by the D4 batch 5 author |
 | csoe_d4_097 | csoe_d4_098 | proposed by the D4 batch 5 author |
 | csoe_d2_031 | csoe_d4_097 | d2_031's explanation names d4_097's three factors |
+| csoe_d5_002 | csoe_d5_088 | both test the scope of the COSO definition |
+| csoe_d5_038 | csoe_d5_100 | SOC 1 use by user auditors |
+| csoe_d5_039 | csoe_d5_100 | SOC 1 use by user auditors |
+| csoe_d5_082 | csoe_d5_100 | SOC 1 report users |
+| csoe_d5_057 | csoe_d5_089 | COSO is not documents or rule-following |
+| csoe_d5_061 | csoe_d5_089 | COSO is not documents or rule-following |
+| csoe_d5_065 | csoe_d5_095 | monitoring and reporting lines |
+| csoe_d5_067 | csoe_d5_095 | monitoring and reporting lines |
+| csoe_d5_068 | csoe_d5_091 | who the board is and what it does |
+| csoe_d5_074 | csoe_d5_097 | ERM 2017 reasonable expectation |
+| csoe_d5_070 | csoe_d5_097 | reasonable expectation, not results |
+| csoe_d5_022 | csoe_d5_085 | Release 33-8238 ICFR definition (d5_022 is held out) |
+| csoe_d5_001 | csoe_d5_097 | reasonable assurance vs reasonable expectation (d5_001 is held out) |
+| csoe_d3_034 | csoe_d5_096 | evidential matter supporting management's assessment |
