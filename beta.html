@@ -41,7 +41,7 @@
     --forest: #1E4A34; --on-forest: #F3F1EA; --on-forest2: #C9DACD;
     --tip: #7A5100; --tip-bg: #F3EAD3;
     --tn-needle: #1E4A34; --tn-ring: #2B6E4A; --tn-word: #17231B;
-    --frame: #17231B; /* the phone frame around the hero screenshot */
+    --frame: var(--ink); /* the phone frame around the hero screenshot */
     --f-serif: Fraunces, Georgia, 'Times New Roman', serif;
     --f-sans: Figtree, system-ui, -apple-system, 'Segoe UI', sans-serif;
   }
@@ -116,6 +116,8 @@
     box-shadow: 0 4px 14px rgba(43, 110, 74, 0.28); }
   .cta:hover { filter: brightness(1.06); }
   .cta svg { flex: none; }
+  .founder { font-size: 15px; font-weight: 600; color: var(--ink2); margin: -12px auto 24px; }
+  @media (min-width: 860px) { .founder { margin-left: 0; } }
   .cta-note { font-size: 14px; color: var(--ink2); margin: 12px 0 0; }
   @media (max-width: 480px) { .hero .cta { width: 100%; } }
 
@@ -182,6 +184,7 @@
       <p class="pill">Android beta · CISA exam prep</p>
       <h1>Help test KaiSip before it launches</h1>
       <p class="lead">KaiSip is a CISA exam-prep app, free during the beta. Join the beta on Google Play, study with it for two weeks, and tell us what to fix before everyone else gets it.</p>
+      <p class="founder">Built by a CISA-certified IT auditor in the Philippines.</p>
       <a class="cta" href="https://docs.google.com/forms/d/e/1FAIpQLSd_HP5ljzZUzkDmbimZmXBdwDb5VlHcCh3BqowUn-kfRcjb9w/viewform" target="_blank" rel="noopener">
         Sign up to test
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
@@ -234,7 +237,7 @@
           <p>As thanks for testing, every beta tester gets 6 months of KaiSip Premium free once paid features launch.</p>
         </li>
       </ul>
-      <p class="fine">Your 6 months start on the day Premium launches, not the day you sign up. We'll email you when it's ready. No card needed, and nothing renews. This reward is for testing and feedback only. It never depends on rating or reviewing KaiSip, and what you say never changes it.</p>
+      <p class="fine">Your 6 months start on the day Premium launches, not the day you sign up. We'll email you when it's ready. No card needed, and nothing renews. To qualify, stay in the Android test for 14 days, or send us at least one piece of feedback during the beta (iPhone and website testers can qualify this way). This reward is for testing and feedback only. It never depends on rating or reviewing KaiSip, and what you say never changes it.</p>
     </section>
 
     <section aria-labelledby="iphone">
@@ -273,7 +276,7 @@
         </details>
         <details>
           <summary>How do I leave the test?</summary>
-          <p>Leave the test in Google Play, or email <a href="mailto:certprep.support@gmail.com">certprep.support@gmail.com</a> and we'll take you off the list. If you can, please stay until we email you that the test is finished. It's what lets KaiSip launch on Google Play.</p>
+          <p>Leave the test in Google Play, or email <a href="mailto:certprep.support@gmail.com">certprep.support@gmail.com</a> and we'll take you off the list. If you can, please stay until we email you that the test is finished. It's what lets KaiSip launch on Google Play. If you leave before you qualify, we can't give you the tester reward.</p>
         </details>
       </div>
     </section>
