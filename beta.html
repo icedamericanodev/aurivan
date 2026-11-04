@@ -36,8 +36,9 @@
     color-scheme: light;
     --bg: #F3F1EA; --card: #FFFFFF; --soft: #E9E6DC; --line: #DFDCD1;
     --ink: #17231B; --ink2: #465349;
-    --accent: #2B6E4A; --accent-text: #24603F; --on-accent: #FFFFFF;
-    --forest: #1E4A34; --on-forest: #F3F1EA; --on-forest2: #C9D8CD;
+    --accent: #2B6E4A; --accent-text: #24603F;
+    --btn: #1E4A34; --on-btn: #F7F5EF; --pill: #F3F1EA; --on-pill: #17231B;
+    --forest: #1E4A34; --on-forest: #F3F1EA; --on-forest2: #C9DACD;
     --tip: #7A5100; --tip-bg: #F3EAD3;
     --tn-needle: #1E4A34; --tn-ring: #2B6E4A; --tn-word: #17231B;
     --f-serif: Fraunces, Georgia, 'Times New Roman', serif;
@@ -48,8 +49,9 @@
       color-scheme: dark;
       --bg: #111613; --card: #1A211C; --soft: #202A23; --line: #29322B;
       --ink: #ECEFE8; --ink2: #B4BFB6;
-      --accent: #7FC39C; --accent-text: #93CFAA; --on-accent: #111613;
-      --forest: #1D2A22; --on-forest: #ECEFE8; --on-forest2: #B4BFB6;
+      --accent: #7FC39C; --accent-text: #93CFAA;
+      --btn: #A9D9BA; --on-btn: #0F1F16; --pill: #EEF2EA; --on-pill: #0F1F16;
+      --forest: #21432F; --on-forest: #EEF2EA; --on-forest2: #BCD2C2;
       --tip: #E9C46A; --tip-bg: #2B2418;
       --tn-needle: #F3F1EA; --tn-ring: #A9D9BA; --tn-word: #F3F1EA;
     }
@@ -58,8 +60,9 @@
     color-scheme: dark;
     --bg: #111613; --card: #1A211C; --soft: #202A23; --line: #29322B;
     --ink: #ECEFE8; --ink2: #B4BFB6;
-    --accent: #7FC39C; --accent-text: #93CFAA; --on-accent: #111613;
-    --forest: #1D2A22; --on-forest: #ECEFE8; --on-forest2: #B4BFB6;
+    --accent: #7FC39C; --accent-text: #93CFAA;
+    --btn: #A9D9BA; --on-btn: #0F1F16; --pill: #EEF2EA; --on-pill: #0F1F16;
+    --forest: #21432F; --on-forest: #EEF2EA; --on-forest2: #BCD2C2;
     --tip: #E9C46A; --tip-bg: #2B2418;
     --tn-needle: #F3F1EA; --tn-ring: #A9D9BA; --tn-word: #F3F1EA;
   }
@@ -71,7 +74,7 @@
 
   * { box-sizing: border-box; }
   /* Read by screen readers, hidden on screen. */
-  .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+  .sr-only { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; border: 0; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
   body {
     margin: 0; background: var(--bg); color: var(--ink);
     font-family: var(--f-sans);
@@ -83,7 +86,7 @@
 
   /* Top bar: the logo, and a quiet way into the web app. */
   .top { display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 48px; }
-  .brand { display: inline-flex; color: var(--ink); text-decoration: none; }
+  .brand { display: inline-flex; align-items: center; min-height: 44px; color: var(--ink); text-decoration: none; }
   .brand .brand-logo { height: 36px; width: auto; display: block; }
   .top-link { display: inline-flex; align-items: center; min-height: 44px; font-size: 15px; font-weight: 600; white-space: nowrap; }
 
@@ -99,7 +102,7 @@
   /* The one main action. Big, easy to tap, the same on every screen size. */
   .cta { display: inline-flex; align-items: center; justify-content: center; gap: 10px;
     min-height: 56px; padding: 14px 28px; border-radius: 999px;
-    background: var(--accent); color: var(--on-accent);
+    background: var(--btn); color: var(--on-btn);
     font-size: 18px; font-weight: 700; text-decoration: none;
     box-shadow: 0 4px 14px rgba(43, 110, 74, 0.28); }
   .cta:hover { filter: brightness(1.06); }
@@ -119,7 +122,7 @@
   @media (min-width: 760px) { .steps { grid-template-columns: repeat(3, 1fr); } }
   .step-num { display: inline-flex; align-items: center; justify-content: center;
     width: 36px; height: 36px; border-radius: 50%; margin-bottom: 12px;
-    background: var(--accent); color: var(--on-accent); font-weight: 700; }
+    background: var(--btn); color: var(--on-btn); font-weight: 700; }
 
   /* What testers get */
   .perks { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; }
@@ -129,7 +132,7 @@
 
   /* iPhone note */
   .callout { background: var(--tip-bg); border: 1px solid var(--line); border-radius: 20px; padding: 18px 20px; }
-  .callout h3 { color: var(--tip); }
+  .callout h2 { font: 700 17px/1.4 var(--f-sans); text-align: left; margin: 0 0 6px; color: var(--tip); }
   .callout p { margin: 0; }
 
   /* Common questions: native open/close, no script needed. */
@@ -146,9 +149,9 @@
   .band { background: var(--forest); color: var(--on-forest); border-radius: 24px; padding: 36px 22px; text-align: center; }
   .band h2 { color: var(--on-forest); margin-bottom: 8px; }
   .band p { color: var(--on-forest2); margin: 0 auto 22px; max-width: 30em; }
-  .band .cta { background: var(--on-forest); color: #17231B; box-shadow: none; }
-  :root[data-theme="dark"] .band .cta { background: var(--accent); color: var(--on-accent); }
-  @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .band .cta { background: var(--accent); color: var(--on-accent); } }
+  .band .cta { background: var(--pill); color: var(--on-pill); box-shadow: none; }
+  /* The page's green focus ring disappears on forest, so use the light one here. */
+  .band a:focus-visible { outline-color: var(--on-forest); }
 
   footer { margin-top: 40px; border-top: 1px solid var(--line); padding-top: 18px; font-size: 14px; color: var(--ink2); }
   .foot-links { display: flex; flex-wrap: wrap; gap: 4px 18px; margin-bottom: 10px; }
@@ -223,7 +226,7 @@
 
     <section aria-labelledby="iphone">
       <div class="callout">
-        <h3 id="iphone">On iPhone?</h3>
+        <h2 id="iphone">On iPhone?</h2>
         <p>The iPhone app isn't ready yet. You can still sign up with the same form: you'll join the iPhone waitlist and be among the first to know. Meanwhile, KaiSip works in your phone's browser at <a href="/">kaisip.com</a>.</p>
       </div>
     </section>
@@ -233,7 +236,7 @@
       <div class="faq">
         <details>
           <summary>Is it really free?</summary>
-          <p>Yes. KaiSip is free today. If paid features never launch, there's nothing to unlock: you keep using the free app like everyone else, and you're still credited.</p>
+          <p>Yes. KaiSip is free today. If paid features never launch, there's nothing to unlock: you keep using the free app like everyone else, and your name stays on the thank-you screen if you asked for it.</p>
         </details>
         <details>
           <summary>Why 14 days?</summary>
