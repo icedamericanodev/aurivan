@@ -314,6 +314,37 @@ published 18 Dec 2025). Cite the Rev. 1 forms below in every CRISC domain.
 - FIRST Common Vulnerability Scoring System (CVSS) v4.0 Specification Document Section 1 (Introduction)
   - Same form as the CC library. Verified again 30 Oct 2026, first.org/cvss/v4-0/specification-document (Document Version 1.2): CVSS communicates characteristics and severity; consumers enrich Base with Threat and Environmental metrics for "a more comprehensive input to risk assessment"; vulnerability management also weighs factors outside CVSS (regulation, customers affected, monetary loss, safety, reputation). Used in crisc_d2_005.
 
+### Round 5 additions (crisc_d2_066 to 090, 4 Nov 2026)
+Each source was fetched again on 4 Nov 2026 with `curl -sS -L` from nvlpubs.nist.gov or first.org and read in a text copy (`pdftotext -layout` for the PDFs).
+- NIST IR 8286A Rev. 1 Section 2.2.2.2 (Reducing Unwanted Bias in Threat Considerations: consider a broad array of threat sources and avoid dismissing threats prematurely)
+  - Verified, 4 Nov 2026, nvlpubs.nist.gov/nistpubs/ir/2025/NIST.IR.8286Ar1.pdf: "it is important that all risk practitioners consider a broad array of threat sources and events"; "risk managers should avoid dismissing threats prematurely"; an intentional approach "helps to avoid complacency before an incident". Used in crisc_d2_066 (a threat list naming only outside attackers) and crisc_d2_074 (scenarios drawn only from past incidents).
+- NIST IR 8286A Rev. 1 Section 2.2.2.2 Table 4 (Example bias issues to avoid in risk management: individual input and the Delphi technique counter group think)
+  - Verified, 4 Nov 2026, same PDF: Table 4 lists Group Think ("a group member may not want to be the only one to express concern") with the countermeasure "use of individual input and subject matter expert judgement (e.g., Delphi Technique)". Used in crisc_d2_067.
+- NIST SP 800-30 Rev. 1 Section 2.3.1 (Risk Models: overall likelihood combines the likelihood of initiation or occurrence and the likelihood of resulting in adverse impact)
+  - Verified, 4 Nov 2026, nvlpubs.nist.gov/nistpubs/Legacy/SP/nistspecialpublication800-30r1.pdf: under Likelihood, organizations assess the likelihood that threat events will be initiated or will occur, then the likelihood that, once initiated or occurring, they "will result in adverse impacts or harm", and "assess the overall likelihood as a combination" of the two. Used in crisc_d2_069.
+- FIRST Common Vulnerability Scoring System (CVSS) v4.0 Specification Document Section 3 (Threat Metrics: Exploit Maturity reflects exploit code availability and active exploitation)
+  - Verified, 4 Nov 2026, first.org/cvss/v4-0/specification-document (Document Version 1.2; sections in order Introduction, Base, Threat, Environmental, Supplemental): "The Threat metrics measure the current state of exploit techniques or code availability for a vulnerability"; Exploit Maturity is populated by the consumer from threat intelligence; Base metrics are "constant over time and across user environments"; "Supplemental metrics do not modify the final score". Used in crisc_d2_070.
+- NIST SP 800-30 Rev. 1 Appendix H Table H-2 (Examples of Adverse Impacts: harm to operations, assets, individuals, other organizations and the Nation)
+  - Verified, 4 Nov 2026, same SP 800-30 PDF: Table H-2 lists harm to individuals ("injury or loss of life", "physical or psychological mistreatment") beside harm to operations and assets, including direct financial costs. Used in crisc_d2_078.
+- NIST SP 800-30 Rev. 1 Section 3.2 Task 2-5 (Determine Impact: assess the maximum impact associated with the affected assets)
+  - Verified, 4 Nov 2026, same PDF: the Task 2-5 key activities include "Assess the maximum impact associated with the affected assets". Used in crisc_d2_078 (the most severe harm sets the impact level).
+- NIST SP 800-30 Rev. 1 Section 3.1 Task 1-4 (Identify Information Sources: impact information can come from business impact analyses)
+  - Verified, 4 Nov 2026, same PDF: under Task 1-4, "sources of impact information can include, for example, mission/business impact analyses". Used in crisc_d2_081.
+- NIST IR 8286A Rev. 1 Section 2.3.2.4 (Monte Carlo Simulation: randomly sampled values from estimated ranges identify a range of possible results)
+  - Verified, 4 Nov 2026, IR 8286A Rev. 1 PDF: simulation supplements expert judgment; parameters are modeled repeatedly and "randomly sampled probabilities can help identify a range of possible values", for example between a low and a high loss estimate. Used in crisc_d2_083.
+- NIST IR 8286A Rev. 1 Section 2.3.2.2 (Three-Point Estimation: optimistic, most likely and pessimistic estimates from subject matter experts)
+  - Verified, 4 Nov 2026, same PDF: the estimator polls an SME for the most optimistic, the most likely and the pessimistic estimate; a footnote adds that, "to eliminate bias", the estimator should poll several SMEs and average their individual estimates. Used in crisc_d2_083.
+- NIST SP 800-30 Rev. 1 Section 2.3 (Key Risk Concepts: a rationale for the assessed values of risk factors increases reproducibility and repeatability)
+  - Verified, 4 Nov 2026, same SP 800-30 PDF: "By making explicit the risk model, the assessment approach, and the analysis approach employed, and requiring as part of the assessment process, a rationale for the assessed values of risk factors, organizations can increase the reproducibility and repeatability of risk assessments." Used in crisc_d2_084.
+- NIST IR 8286 Rev. 1 Section 3.5 (Plan and Execute Risk Response Strategies: risk responses themselves may introduce new risks)
+  - Verified, 4 Nov 2026, nvlpubs.nist.gov/nistpubs/ir/2025/NIST.IR.8286r1.pdf: "Risk responses themselves may introduce new risks", with the example of multifactor authentication introducing a risk of decreased productivity. Used in crisc_d2_085.
+- NIST IR 8286 Rev. 1 Section 3.3.2 (Techniques for Estimating Likelihood and Impact of Consequences: secondary losses are captured with primary losses to show total impact)
+  - Verified, 4 Nov 2026, same PDF: "Secondary loss events should be captured with primary loss events to represent the total impact and cost of a risk scenario. The omission of secondary losses ... would underestimate the total impact, thereby misinforming risk response selection and prioritization." Used in crisc_d2_087.
+- NIST SP 800-30 Rev. 1 Section 3.2 Task 2-2 (Identify Threat Events: general threat event descriptions are tailored to show how each could harm the organization)
+  - Verified, 4 Nov 2026, same SP 800-30 PDF: under Task 2-2, "organizations tailor the general descriptions of threat events in Tables E-2 and E-3 to identify how each event could potentially harm organizational operations". Used in crisc_d2_068 (a generic scenario library tailored before use).
+- NIST AI 100-2 E2025 Section 3.3 (Direct Prompting Attacks and Mitigations)
+  - Verified, 4 Nov 2026, nvlpubs.nist.gov/nistpubs/ai/NIST.AI.100-2e2025.pdf: direct prompting attacks arise "when the attacker is the primary user of the system"; goals include enabling misuse (jailbreaks) and invading privacy by revealing "private information that was provided to the model in context". Used in crisc_d2_076 (a customer chatbot that answers from account data).
+
 ## Domain 3 Risk Response and Reporting (pilot crisc_d3_001 to 020, 30 Oct 2026)
 
 
