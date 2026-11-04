@@ -220,7 +220,8 @@
           "practice_ids": [
             "crisc_d4_003",
             "crisc_d4_024",
-            "crisc_d4_025"
+            "crisc_d4_025",
+            "crisc_d4_077"
           ],
           "definition": "Change management is the controlled process for requesting, assessing, approving, testing, implementing and reviewing changes, with configuration management keeping an accurate record of approved settings.",
           "why_it_matters": "Many outages and security incidents follow a change. Controlled change keeps risk within appetite by making sure someone judged the impact, can undo the change and knows what the system should look like.",
@@ -228,7 +229,7 @@
             "Each change has a request, an impact assessment, an approval suited to its risk, a test result and a back-out plan.",
             "Emergency changes may bypass the normal approval path, usually through an emergency approver, but are documented and reviewed after the fact as soon as practical.",
             "A configuration management database (CMDB) records configuration items and dependencies; assets missing from it sit outside patching, change and backup, so differing counts from other tools are reconciled.",
-            "Comparing live settings with the baseline finds unauthorized changes, which are investigated, not quietly reversed; a needed deviation becomes a recorded exception its business owner approves.",
+            "Comparing live settings with the baseline finds unauthorized changes, which are investigated, not quietly reversed; a needed deviation is approved by its business owner, recorded and reviewed.",
             "Low-risk, repeatable changes can be pre-approved, so review effort follows risk.",
             "A growing share of emergency changes is analyzed for its cause, such as slow normal approvals or poor planning, before more approval steps are added."
           ],
@@ -697,7 +698,8 @@
           "name": "Retention and Sanitization",
           "legacy_ids": [],
           "practice_ids": [
-            "crisc_d4_008"
+            "crisc_d4_008",
+            "crisc_d4_078"
           ],
           "definition": "Retention sets how long each type of data is kept, and sanitization makes data on storage media unrecoverable once it is no longer needed.",
           "why_it_matters": "Data kept past its purpose adds breach impact, legal exposure and cost with no business value. Data removed the wrong way may still be recoverable when equipment is reused, sold or discarded.",
@@ -887,13 +889,14 @@
             "crisc_d4_031",
             "crisc_d4_032",
             "crisc_d4_061",
-            "crisc_d4_070"
+            "crisc_d4_070",
+            "crisc_d4_079"
           ],
           "definition": "Project risk is uncertainty that can affect a project's scope, time, cost or quality; in Agile delivery it is managed in short, repeated cycles.",
           "why_it_matters": "Project risks often become operational IT risks after go-live. Tracked only inside the project, or dropped to meet a date, they leave exposure no one approved.",
           "how_it_works": [
             "Project risks are logged with owners; those that may outlast the project or threaten enterprise objectives join the enterprise register, and other delivery risks stay in the project log.",
-            "Project risk covers delivery and the finished system's operating risks; Agile keeps both in the backlog.",
+            "Project risk covers delivery and the finished system's operating risks; Agile backlogs prioritize work on both.",
             "The definition of done includes security, privacy and control criteria, so work is not finished without them.",
             "Sprint reviews update risk status; growing deferred security work is an early warning.",
             "Agile reduces heavy documents, not risk records: decisions and accepted risks are still recorded.",
@@ -957,7 +960,8 @@
           "legacy_ids": [],
           "practice_ids": [
             "crisc_d4_011",
-            "crisc_d4_033"
+            "crisc_d4_033",
+            "crisc_d4_076"
           ],
           "definition": "Recovery strategies are planned ways to restore systems after a disruption, such as hot, warm or cold sites or cloud failover, chosen to meet recovery objectives.",
           "why_it_matters": "The strategy decides whether the business recovers within its tolerance for downtime and data loss. Too little capability breaches tolerance; too much wastes money.",

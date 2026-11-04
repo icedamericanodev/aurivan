@@ -48,7 +48,8 @@
           "practice_ids": [
             "crisc_d1_001",
             "crisc_d1_057",
-            "crisc_d1_071"
+            "crisc_d1_071",
+            "crisc_d1_096"
           ],
           "definition": "Business-aligned risk management treats risk as the effect of uncertainty on business objectives, so each risk is described, rated and treated by what it does to them.",
           "why_it_matters": "A program built from technical findings alone ranks issues by severity score, not business harm. Linking each risk to an objective shows leaders which risks threaten what they promised stakeholders.",
@@ -450,7 +451,8 @@
           "practice_ids": [
             "crisc_d1_006",
             "crisc_d1_024",
-            "crisc_d1_084"
+            "crisc_d1_084",
+            "crisc_d1_097"
           ],
           "definition": "Incentives are the rewards and pressures that shape risk-taking; speaking up means staff raise concerns without fear, through open channels and protected whistleblowing routes.",
           "why_it_matters": "Pay and targets that reward volume or speed alone push people to take risks outside appetite. If reporting brings blame, issues stay hidden until they become losses.",
@@ -570,7 +572,8 @@
             "crisc_d1_008",
             "crisc_d1_026",
             "crisc_d1_050",
-            "crisc_d1_074"
+            "crisc_d1_074",
+            "crisc_d1_098"
           ],
           "definition": "The policy hierarchy runs from policies (management intent) to standards (mandatory specifics), procedures (step-by-step tasks) and guidelines (advisory good practice).",
           "why_it_matters": "Each layer has a different approver and force. Confusing them leads to treating advice as a rule, or to IT approving what only senior management can.",
@@ -580,7 +583,7 @@
             "Procedures give the steps to meet a standard and are owned by the teams that perform them.",
             "Guidelines recommend good practice; people may depart from them for a sound reason.",
             "Every layer should trace back to risk appetite, so rules are as strict as the risk requires.",
-            "A lower layer may tighten a higher one but not relax it; a team may change its own procedure, but what a standard requires is for the standard's owner."
+            "A lower layer may tighten a higher one, still meeting every higher requirement, but not relax it; a team owns its procedure, but changing a standard is its owner's decision."
           ],
           "compare": {
             "columns": [
@@ -779,7 +782,8 @@
           "legacy_ids": [],
           "practice_ids": [
             "crisc_d1_028",
-            "crisc_d1_053"
+            "crisc_d1_053",
+            "crisc_d1_099"
           ],
           "definition": "A business process is a set of activities that produces a business outcome; its process owner is accountable for its performance, risks and controls from end to end.",
           "why_it_matters": "Risk lands on processes, not on servers. Knowing which processes are critical, and who owns them, shows where disruption hurts most and who decides on resilience spending.",
@@ -788,7 +792,7 @@
             "Critical processes are those whose failure most harms objectives, customers, safety or compliance; the business impact analysis (BIA, see 2B2) ranks them.",
             "Processes depend on people, suppliers, data and systems; mapping those dependencies shows single points of failure.",
             "Process owners set recovery needs; IT and suppliers design the capability to meet them.",
-            "A tested recovery slower than the target but within appetite can be accepted by the process owner on record, with the plan updated to match."
+            "A tested recovery slower than the target but within appetite can be accepted by the process owner on record, with the RTO and the plan updated to match."
           ],
           "example": "A water utility's billing runs across customer service, finance and IT, and each team says another owns outages. Kofi, the risk analyst, maps the billing process and its dependencies, finds no one accountable from end to end, and asks the chief operating officer to name a process owner who can set recovery needs for billing.",
           "audit_focus": {
@@ -1210,7 +1214,8 @@
             "crisc_d1_013",
             "crisc_d1_034",
             "crisc_d1_061",
-            "crisc_d1_077"
+            "crisc_d1_077",
+            "crisc_d1_100"
           ],
           "definition": "A risk management framework sets the enterprise's risk principles, roles, process, methods and reporting; senior management approves it and the board oversees it.",
           "why_it_matters": "The framework makes risk work consistent and authoritative. Without senior approval, units can ignore it, and a framework signed off only by the team that wrote it carries no weight with the business.",
@@ -1271,7 +1276,8 @@
           "practice_ids": [
             "crisc_d1_014",
             "crisc_d1_065",
-            "crisc_d1_078"
+            "crisc_d1_078",
+            "crisc_d1_102"
           ],
           "definition": "The lines of defense model separates who owns and manages risk (first line), who oversees and challenges it (second line) and who gives independent assurance (third line).",
           "why_it_matters": "Clear lines prevent gaps and overlaps. When audit designs controls or the risk function owns business risk, independence and accountability are both lost.",
@@ -1433,7 +1439,8 @@
             "crisc_d1_038",
             "crisc_d1_039",
             "crisc_d1_056",
-            "crisc_d1_079"
+            "crisc_d1_079",
+            "crisc_d1_101"
           ],
           "definition": "The risk register records individual risks with owners, ratings and responses; the risk profile is the aggregated, current picture of enterprise risk built from it for leaders.",
           "why_it_matters": "Leaders need a portfolio view to decide where to act, not hundreds of register lines. Treating the register as the profile buries the few risks that matter most.",
@@ -1930,17 +1937,18 @@
             "crisc_d1_043",
             "crisc_d1_059",
             "crisc_d1_070",
-            "crisc_d1_081"
+            "crisc_d1_081",
+            "crisc_d1_103"
           ],
           "definition": "Contractual requirements are obligations the enterprise accepts in agreements with customers and suppliers, such as security clauses, audit rights and service level agreements (SLAs).",
           "why_it_matters": "Contracts both create risk and help manage it. A broken customer commitment brings penalties and lost trust, while weak supplier terms leave the enterprise without remedies when a provider fails.",
           "how_it_works": [
             "Customer contracts can require specific controls, breach notice times or data locations, which become obligations with owners.",
-            "Supplier contracts set SLAs, security, right-to-audit, incident notice and exit terms; an unmet insurance condition can void cover, so rate the risk without it.",
+            "Supplier contracts set SLAs, security requirements, right-to-audit clauses, incident notice and exit terms.",
             "SLA targets should reflect business recovery needs and appetite, not just the provider's standard offer.",
             "Handing a task to a supplier does not hand over accountability; the enterprise still owns the risk to its objectives.",
             "The business owner, legal and risk review contract terms before signing and at renewal.",
-            "A liability cap limits what a supplier repays, not the loss; what the cap leaves stays with the enterprise as residual risk for its owner to weigh."
+            "A liability cap limits what a supplier repays, not the loss, and an unmet insurance condition can void cover; rate residual risk on what each contract will really pay."
           ],
           "example": "A city council's parking app runs on a supplier platform whose contract promises 99% monthly uptime, which allows about seven hours of outage. The parking services manager can accept no more than one hour of outage at peak times. Kwame, the risk practitioner, documents the gap between the SLA and the business need and recommends the manager raise it at renewal.",
           "audit_focus": {
