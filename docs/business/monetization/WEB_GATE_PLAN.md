@@ -32,6 +32,12 @@ Google Play, because the Android app launches first.
    RevenueCat). The same account then unlocks the website too. No web
    checkout at launch; revisit only if many iPhone or desktop-only people ask.
 
+5. **Later the same day: the website is closed to a landing page** until the
+   phone app is in the stores (`SITE_MODE=landing` in
+   `scripts/build_site.sh`; how to reopen: `docs/WEBSITE_DEPLOY.md`). The free
+   sample, the locked Full mock and Phase 2 below apply once the web app
+   reopens.
+
 Also decided earlier the same day (marketing/BETA_PROGRAM.md): accounts ship
 no later than Premium, and beta testers' 6 months are `source = 'manual'`
 rows in `public.entitlements`.

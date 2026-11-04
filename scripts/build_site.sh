@@ -41,8 +41,28 @@
 set -euo pipefail
 
 cd "$(dirname "$0")/.."
-OUT="_site"
+OUT="${SITE_OUT:-_site}"
 
+# SITE_MODE (owner, 4 Nov 2026): the website is CLOSED to a landing page
+# until the phone app is in the stores.
+#   landing (the default, what Cloudflare publishes): kaisip.com shows the beta
+#     landing page (beta.html, also at /beta) plus Privacy, Terms and Help. The
+#     web study app and every data file are not published; any other address
+#     shows the landing page (Cloudflare's single-page fallback serves
+#     index.html, which is the landing page here).
+#   app: the full web study app as before (index.html + the free sample).
+#     CI and the smoke tester build this too, so the app stays deployable.
+# To reopen the web app at launch: change "landing" to "app" on the next line.
+SITE_MODE="${SITE_MODE:-landing}"
+# While the site is closed, the web study app is still built into this
+# unlisted folder, so the owner can preview it at https://kaisip.com/<folder>/
+# (free sample only, never the full bank; marked noindex in _headers). Keep the
+# name in step with its rule in _headers. Remove the preview at launch.
+PREVIEW_DIR="preview-u63raxyfxc"
+case "$SITE_MODE" in
+  landing|app) ;;
+  *) echo "build_site: SITE_MODE must be landing or app (got: $SITE_MODE)" >&2; exit 1 ;;
+esac
 PAGES=(index.html privacy.html terms.html support.html beta.html)
 DATA=(data/free/cisa_d1.json data/free/cisa_d2.json data/free/cisa_d3.json data/free/cisa_d4.json data/free/cisa_d5.json data/cisa_notes.json data/mindset/principles.json data/exam/cisa_exam_guide.json data/exam/final_review_week.json)
 SITE_CONFIG=(_headers _redirects)
@@ -71,7 +91,14 @@ for f in "${PAGES[@]}" "${SITE_CONFIG[@]}"; do
   cp "$f" "$OUT/$f"
 done
 
-for f in "${DATA[@]}"; do
+if [ "$SITE_MODE" = "landing" ]; then
+  # The landing page is the home page; the web app and its data stay unpublished.
+  cp beta.html "$OUT/index.html"
+  DATA=()
+  rmdir "$OUT/data"
+fi
+
+for f in ${DATA[@]+"${DATA[@]}"}; do
   [ -f "$f" ] || fail "missing $f"
   # Catch a broken data file here, not in a learner's browser.
   valid_json "$f" || fail "$f is not valid JSON"
@@ -96,6 +123,15 @@ while IFS= read -r -d '' f; do
 done < <(find assets -type f -print0)
 
 [ -f assets/favicon.ico ] && cp assets/favicon.ico "$OUT/favicon.ico"
+
+# Landing mode: build the web app (app mode, with all its own checks) into the
+# unlisted preview folder. Its _headers/_redirects are dropped: Cloudflare
+# reads only the ones at the top of the site.
+if [ "$SITE_MODE" = "landing" ] && [ -z "${SITE_NO_PREVIEW:-}" ]; then
+  grep -qxF "/$PREVIEW_DIR/*" _headers || fail "_headers has no rule for /$PREVIEW_DIR/* (noindex)"
+  SITE_MODE=app SITE_OUT="$OUT/$PREVIEW_DIR" bash "$0" > /dev/null || fail "the preview build (web app mode) failed"
+  rm -f "$OUT/$PREVIEW_DIR/_headers" "$OUT/$PREVIEW_DIR/_redirects"
+fi
 
 # The legal pages' inline theme script is allowed in _headers by its sha256
 # hash. If the script is edited, the hash must change too, or browsers block it.
@@ -170,11 +206,12 @@ while IFS= read -r -d '' f; do
     data/free/cisa_d[1-5].json|data/cisa_notes.json|data/mindset/principles.json) ;;
     data/exam/cisa_exam_guide.json|data/exam/final_review_week.json) ;;
     assets/*) ;;
+    "$PREVIEW_DIR"/*) [ "$SITE_MODE" = "landing" ] || fail "unexpected file in the site: $rel" ;;
     *) fail "unexpected file in the site: $rel" ;;
   esac
 done < <(find "$OUT" -type f -print0)
 
 count="$(find "$OUT" -type f | wc -l | tr -d ' ')"
 size="$(du -sh "$OUT" | cut -f1)"
-echo "build_site: $count files ($size) in $OUT/"
+echo "build_site: $count files ($size) in $OUT/ (SITE_MODE=$SITE_MODE)"
 find "$OUT" -type f | sed "s|^$OUT/|  |" | sort

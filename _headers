@@ -80,6 +80,13 @@
   Cache-Control: public, max-age=0, must-revalidate
   Content-Security-Policy: default-src 'none'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; script-src 'sha256-nbMPt7DJNCogX1hWKTLNy0Fg4H3+bU/3Jfci1NXG084=' https://static.cloudflareinsights.com; connect-src 'self' https://cloudflareinsights.com; base-uri 'none'; form-action 'none'; frame-ancestors 'none'
 
+# The unlisted preview of the web study app while the site is closed to a
+# landing page (scripts/build_site.sh, PREVIEW_DIR). Not for search engines,
+# and always fresh. Remove this rule when the web app reopens at launch.
+/preview-u63raxyfxc/*
+  X-Robots-Tag: noindex, nofollow
+  Cache-Control: public, max-age=0, must-revalidate
+
 # Question banks and notes change with releases: short cache, then revalidate.
 # Opened directly in a browser they may do nothing (no scripts, no framing).
 /data/*
