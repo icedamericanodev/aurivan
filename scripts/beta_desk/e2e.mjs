@@ -371,7 +371,21 @@ const bd = await page.evaluate(() => {
     fb3: B.actions({ registered_on: '2026-10-01', invited_on: '2026-10-02', terms_offered: EARLY, last_feedback_on: '2026-10-05', participation: 'unchecked', completion: 'pending' }, '2026-10-06')[0].key,
     fb5: B.canApprove({ registered_on: '2026-10-01', terms_offered: NEWT, last_feedback_on: '2026-10-05', participation: 'unchecked' }, '2026-10-06'),
     fb6: B.actions({ registered_on: '2026-10-01', invited_on: '2026-10-02', terms_offered: NEWT, last_feedback_on: '2026-10-05', participation: 'unchecked', completion: 'pending' }, '2026-10-06').map((a) => a.key).join(','),
-    elig: (() => { const rows = B.parseCSV('Timestamp,Email Address,Do you have an Android device with access to Google Play?,Name or handle to show.\n2026/11/04 1:00:00 PM GMT+8,a@test.invalid,Android,Ann\n2026/11/04 1:05:00 PM GMT+8,b@test.invalid,No eligible Android device / no Google Play access,'); const map = B.guessColumns(rows[0]); const plan = B.planImport(rows, map, {}, { order: 'mdy', keepOther: false, today: '2026-11-04' }); return [plan.counts.add, plan.counts.ineligible, map.device, plan.rows[0].full_name].join(','); })(),
+    // The live form's exact column titles (checked 4 Nov 2026), including the yes/no credit question that also says "your name".
+    elig: (() => {
+      const H = ['Timestamp', 'Email Address', 'Do you have an Android device with access to Google Play?', 'Which country are you in? ', 'When is your CISA exam? ',
+        'Which other certifications interest you? (Optional; separate paid content, not included in this beta or reward.)', 'How did you find us? ', 'Testing commitment',
+        'Would you like your name in the app\'s "Thank you, beta testers" screen? ', 'Name or handle to show.\n(Max 24 characters. No links, emails or rude words. We check every name before adding it. Leave blank if you chose anonymous.) ', 'Please confirm. '];
+      const q = (v) => '"' + String(v).replace(/"/g, '""') + '"';
+      const rows = [H,
+        ['2026/11/02 9:15:03 PM GMT+8', 'ana@test.invalid', 'Android', 'Philippines', '1–3 months', 'CISM;CRISC', 'Reddit', 'I plan…', 'Yes, show my name or handle', 'Ann', "I'm 18 or older."],
+        ['2026/11/04 10:01:44 AM GMT+8', 'ben@test.invalid', 'No eligible Android device / no Google Play access', 'Singapore', '', '', '', '', '', '', ''],
+        ['2026/11/04 11:30:00 AM GMT+8', 'carla@test.invalid', 'Android', 'UAE', '', '', '', '', 'No, keep me anonymous', '', '']];
+      const parsed = B.parseCSV(rows.map((r) => r.map(q).join(',')).join('\r\n'));
+      const map = B.guessColumns(parsed[0]);
+      const plan = B.planImport(parsed, map, {}, { order: 'mdy', keepOther: false, today: '2026-11-04' });
+      return [plan.counts.add, plan.counts.ineligible, map.device, plan.rows[0].full_name, plan.rows[2].full_name, plan.rows[0].registered_on, map.email, map.name].join(',');
+    })(),
     fb4: B.stage({ registered_on: '2026-10-01', participation: 'interrupted', last_feedback_on: '2026-10-03', completion: 'pending' }, '2026-10-06'),
     del2: B.actions({ registered_on: '2026-01-01', participation: 'interrupted', completion: 'pending' }, '2026-02-01').map((a) => a.key).join(',')
   };
@@ -393,7 +407,7 @@ check('earlier sign-ups whose terms allow it: one piece of feedback qualifies wi
 check('feedback route: a tester with feedback gets "approve" as their next step', bd.fb3 === 'approve', bd.fb3);
 check('feedback route: a tester who left early but sent feedback is not closed', bd.fb4 !== 'closed', bd.fb4);
 check('new testers (the live form terms): feedback alone does not qualify, and the desk never suggests it', bd.fb5 === false && !bd.fb6.includes('approve'), bd.fb5 + ' / ' + bd.fb6);
-check('form import: a "No eligible Android device" answer is skipped, the credit handle is the name, no fake device', bd.elig === '1,1,-1,Ann', bd.elig);
+check('live form CSV: email, timestamp and the credit handle land in the right fields; no-Android rows skipped; the yes/no credit answer is never used as a name', bd.elig === '2,1,-1,Ann,,2026-11-02,1,9', bd.elig);
 check('date order is read from the whole file: day-first, month-first, or ask', bd.o1 === 'dmy' && bd.o2 === 'mdy' && bd.o3 === '' && bd.o4 === 'mdy', [bd.o1, bd.o2, bd.o3, bd.o4].join(','));
 check('a Google Forms timestamp (2026/11/04 2:03:22 PM GMT+8) reads as 4 Nov 2026', bd.g1 === '2026-11-04', bd.g1);
 check('the database calculates the same dates', pgDates === '2027-02-28|2028-02-29|2026-11-08', pgDates);
