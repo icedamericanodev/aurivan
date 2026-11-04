@@ -143,7 +143,12 @@ var BD = (function () {
   }
   function canApprove(t, today, onDate) {
     var r = routes(t, today, onDate);
-    return r.terms && (r.days || r.feedback);
+    return r.terms && (r.days || (r.feedback && termsAllowFeedback(t)));
+  }
+  /** Earlier sign-ups were offered "14 days, or feedback"; the live form's terms are 14 days only. */
+  function termsAllowFeedback(t) {
+    var s = String(t.terms_offered || '').toLowerCase();
+    return /\bor\b[^.]*\bfeedback\b/.test(s) && !/feedback[^.]*(encouraged|not required|never required)/.test(s);
   }
   function qualifiesBy(t, today, onDate) {
     var r = routes(t, today, onDate);
@@ -188,7 +193,7 @@ var BD = (function () {
       if (left <= 14) add('ending', 'Reward ends ' + fmt(ends), left + ' day' + (left === 1 ? '' : 's') + ' left. A good moment for a thank-you.', true, addDays(ends, -14));
     }
     if ((s === 'registered' || s === 'invited' || s === 'testing' || (s === 'review' && t.participation === 'interrupted'))
-        && t.completion === 'pending' && t.last_feedback_on && canApprove(t, today)) {
+        && t.completion === 'pending' && t.last_feedback_on && termsAllowFeedback(t) && canApprove(t, today)) {
       out = out.filter(function (a) { return a.key !== 'feedback'; });
       out.unshift({ key: 'approve', label: 'Approve completion (qualifies by feedback)', why: 'Feedback received on ' + fmt(t.last_feedback_on) + '. One piece of feedback qualifies, even without the 14 days.', attn: true, due: t.last_feedback_on });
     }
@@ -226,7 +231,8 @@ var BD = (function () {
       email: find([/(google\s*play|play\s*store|gmail|google account).*(e-?mail|address|account)/, /e-?mail.*(google\s*play|play|gmail)/, /^e-?mail( address)?$/, /e-?mail/]),
       name: find([/^full\s*name$/, /^name$/, /(your|full|first).*name/, /name/]),
       last: find([/last\s*name|surname|family\s*name/]),
-      device: find([/device|phone|model/, /android/]),
+      eligible: find([/do you have an android/, /android device.*google play|google play access/]),
+      device: (function () { for (var i = 0; i < h.length; i++) if (/device|phone|model/.test(h[i]) && !/^do you have/.test(h[i])) return i; return -1; })(),
       registered: find([/^timestamp$/, /timestamp|submitted|submission/, /^date$/])
     };
   }
@@ -268,7 +274,7 @@ var BD = (function () {
   function planImport(rows, map, existingKeys, opts) {
     var header = rows[0] || [], body = rows.slice(1);
     var seen = Object.create(null), out = [];
-    var counts = { total: body.length, add: 0, existing: 0, repeated: 0, invalid: 0, badDate: 0 };
+    var counts = { total: body.length, add: 0, existing: 0, repeated: 0, invalid: 0, ineligible: 0, badDate: 0 };
     body.forEach(function (r, idx) {
       var email = map.email >= 0 ? String(r[map.email] || '').trim() : '';
       var key = inboxKey(email);
@@ -277,7 +283,9 @@ var BD = (function () {
       var device = map.device >= 0 ? String(r[map.device] || '').trim() : '';
       var reg = map.registered >= 0 ? parseFormDate(r[map.registered], opts.order) : null;
       var status = 'add';
+      var elig = map.eligible >= 0 ? String(r[map.eligible] || '').trim().toLowerCase() : '';
       if (!validEmail(email)) status = 'invalid';
+      else if (elig && /^no\b/.test(elig)) status = 'ineligible';
       else if (existingKeys[key]) status = 'existing';
       else if (seen[key]) status = 'repeated';
       if (status === 'add') {
@@ -287,7 +295,7 @@ var BD = (function () {
       counts[status === 'add' ? 'add' : status]++;
       var extra = '';
       if (opts.keepOther) {
-        var used = [map.email, map.name, map.last, map.device, map.registered];
+        var used = [map.email, map.name, map.last, map.device, map.registered, map.eligible];
         extra = header.map(function (hd, i) {
           if (used.indexOf(i) !== -1) return '';
           var val = String(r[i] || '').trim();
@@ -312,7 +320,7 @@ var BD = (function () {
   }
   return { todayISO: todayISO, isISO: isISO, addDays: addDays, addMonths: addMonths, daysBetween: daysBetween, fmt: fmt,
     reviewDue: reviewDue, rewardEnds: rewardEnds, emailKey: emailKey, inboxKey: inboxKey, validEmail: validEmail, stage: stage, STAGES: STAGES,
-    approvalChecks: approvalChecks, canApprove: canApprove, qualifiesBy: qualifiesBy, actions: actions, needsAttention: needsAttention,
+    approvalChecks: approvalChecks, canApprove: canApprove, qualifiesBy: qualifiesBy, termsAllowFeedback: termsAllowFeedback, actions: actions, needsAttention: needsAttention,
     parseCSV: parseCSV, guessColumns: guessColumns, parseFormDate: parseFormDate, dateOrder: dateOrder,
     planImport: planImport, csvCell: csvCell, initials: initials, REVIEW_DAYS: REVIEW_DAYS, REWARD_MONTHS: REWARD_MONTHS };
 })();
@@ -1026,6 +1034,7 @@ function refreshDrawer() {
   // Approval checklist
   var checks = BD.approvalChecks(t, today, t.approved_on || today);
   var by = BD.qualifiesBy(t, today, t.approved_on || today);
+  var fbAllowed = BD.termsAllowFeedback(t);
   var li = function (c) {
     return '<li class="' + (c.ok ? 'ok' : 'no') + '"><span class="mk" aria-hidden="true">' + (c.ok ? '✓' : '·') + '</span><span>' + esc(c.text) + '<span class="sr-only">' + (c.ok ? ' (done)' : ' (not yet)') + '</span></span></li>';
   };
@@ -1033,8 +1042,10 @@ function refreshDrawer() {
   $('checks').innerHTML = checks.filter(function (c) { return c.group === 'both'; }).map(li).join('') +
     head('Then <b>either</b> 14 days in the Android test' + (by === 'days' || by === 'both' ? ' <span class="chip green">met</span>' : '')) +
     checks.filter(function (c) { return c.group === 'days'; }).map(li).join('') +
-    head('<b>or</b> at least one piece of feedback' + (by === 'feedback' || by === 'both' ? ' <span class="chip green">met</span>' : '')) +
-    checks.filter(function (c) { return c.group === 'feedback'; }).map(li).join('');
+    (fbAllowed
+      ? head('<b>or</b> at least one piece of feedback (their terms allow it)' + (by === 'feedback' || by === 'both' ? ' <span class="chip green">met</span>' : '')) +
+        checks.filter(function (c) { return c.group === 'feedback'; }).map(li).join('')
+      : head('Feedback is encouraged but does not qualify on these terms. Earlier sign-ups keep the terms they were offered.'));
   var sel = $('dForm').elements.completion;
   var okToApprove = BD.canApprove(t, today, t.approved_on || today);
   sel.querySelector('option[value="approved"]').disabled = !okToApprove && t.completion !== 'approved';
@@ -1233,10 +1244,10 @@ function renderImport() {
     '<div class="s"><span class="num">' + c.add + '</span><span>new testers</span></div>' +
     '<div class="s"><span class="num">' + c.existing + '</span><span>already on the roster</span></div>' +
     '<div class="s"><span class="num">' + c.repeated + '</span><span>repeated in the file</span></div>' +
-    '<div class="s"><span class="num">' + c.invalid + '</span><span>no valid email</span></div>' +
+    '<div class="s"><span class="num">' + (c.invalid + c.ineligible) + '</span><span>no valid email or no Android device</span></div>' +
     (c.badDate ? '<p class="notice tip" style="grid-column:1/-1;margin:0">' + c.badDate + ' timestamp' + (c.badDate === 1 ? '' : 's') + ' could not be read, so ' + (c.badDate === 1 ? 'it uses' : 'they use') + ' today’s date. You can fix them after the import.</p>' : '');
   var shown = plan.rows.slice(0, 8);
-  var label = { add: 'Add', existing: 'Already added', repeated: 'Repeat', invalid: 'No email' };
+  var label = { add: 'Add', existing: 'Already added', repeated: 'Repeat', invalid: 'No email', ineligible: 'No Android device' };
   $('impPreview').innerHTML = '<thead><tr><th>Row</th><th>Result</th><th>Name</th><th>Email</th><th>Registered</th></tr></thead><tbody>' +
     shown.map(function (r) { return '<tr class="' + (r.status === 'add' ? '' : 'skip') + '"><td>' + r.line + '</td><td>' + label[r.status] + '</td><td>' + esc(r.full_name || '—') + '</td><td>' + esc(r.email || '—') + '</td><td>' + esc(BD.fmt(r.registered_on)) + '</td></tr>'; }).join('') +
     (plan.rows.length > shown.length ? '<tr><td colspan="5" class="meta">…and ' + (plan.rows.length - shown.length) + ' more rows</td></tr>' : '') + '</tbody>';

@@ -111,7 +111,28 @@ Also add one row, "Google Forms and Sheets: beta sign-up and surveys", to the th
 - **Qualifies (Y/N)**
 - Grant date, grant end date, date they left
 
-**Who qualifies (approved 4 Nov 2026; say it plainly on the page, the form and the welcome email):**
+**The live form is the source of truth (checked 4 Nov 2026).** The Google Form
+"KaiSip Android Beta: Tester Registration", as sent to people, says:
+- Who can join: 18 or older, an Android phone with Google Play.
+- Who qualifies: join the Android closed test before the public Google Play
+  launch, stay opted in for at least **14 consecutive days**, and try the CISA
+  content and app features. Midpoint and final feedback are encouraged, never
+  required. A technical problem that blocks testing does not disqualify.
+  **Earlier registrants keep the eligibility conditions offered when they
+  registered** (for some, "14 days, or at least one piece of feedback").
+- Reward: **6 months of CISA premium content and mobile app study features
+  only** (CC, CRISC, CSOE, AAIA and others excluded), starting **when CISA
+  access is activated** after the 14 days. No card, no renewal.
+- Records: Google Forms and linked Sheets, and Play Console. Routine records
+  deleted within 90 days after the beta ends; a minimal reward record (email,
+  eligibility and activation) kept until 3 months after the reward ends.
+- The Beta Desk tracker (Supabase, Singapore) is described in the privacy
+  policy section 3e; the form does not mention it, so tell earlier registrants
+  in one line by email.
+
+The sections below are the earlier plan; where they differ, the form wins.
+
+**Who qualifies (earlier plan, approved 4 Nov 2026; superseded by the live form above):**
 - joined the Android closed test before the public Play launch and stayed in it for 14 days, **or**
 - sent at least one genuine piece of feedback during the beta from the app or the website. This keeps iPhone and website-only testers eligible.
 

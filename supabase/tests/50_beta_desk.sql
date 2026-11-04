@@ -215,8 +215,9 @@ select throws_ok($$ update public.beta_testers set terms_offered = '' where emai
   '23514', null, 'the feedback route still needs the terms on record');
 update public.beta_testers set completion = 'pending', approved_on = null where email_key = 'ben@test.invalid';
 reset role;
-select ok((select terms_offered like '%14 days, or send at least one genuine piece of feedback%' and terms_offered like '%CISA Premium%'
-           from public.beta_desk_settings), 'the default terms say "14 days, or feedback" and CISA Premium');
+select ok((select terms_offered like '%14 consecutive days%' and terms_offered like '%CISA premium%'
+                  and terms_offered like '%activated%' and terms_offered not like '%or send%'
+           from public.beta_desk_settings), 'the default terms are the live form''s: 14 consecutive days, CISA only, from activation');
 set local role authenticated;
 set local request.jwt.claims to '{"sub":"00000000-0000-0000-0000-0000000000d1","role":"authenticated","aal":"aal2"}';
 

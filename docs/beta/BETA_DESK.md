@@ -66,10 +66,37 @@ They sign in again and are asked to set up the authenticator.
 - Gmail ignores dots and anything after `+`, so `j.o.e+beta@gmail.com` and
   `joe@gmail.com` are caught as the same tester.
 
+## Terms: new testers and earlier sign-ups
+
+Every tester record keeps the exact terms that person was offered (the live
+form: "earlier registrants retain the eligibility conditions offered when they
+registered"). The desk's default (Settings) is the live form's terms:
+
+> Join the Android closed test before the public Google Play launch, stay opted in for at least 14 consecutive days and try the CISA content and app features. A technical problem that blocks testing does not disqualify you. Reward: 6 months of CISA premium content and mobile app study features, starting when your CISA access is activated. Other certifications are excluded.
+
+Earlier sign-ups were offered more. Before importing their rows, set Settings
+to the terms they saw, import, then set it back:
+
+> Stay in the Android test for 14 days, or send at least one piece of feedback during the beta. Reward: 6 months of KaiSip Premium free once paid features launch.
+
+The desk suggests approving "by feedback" only for testers whose terms say
+feedback qualifies (their terms mention "or" and "feedback"). The database
+accepts either route; you decide, by the terms on record.
+
 ## Deleting records on time
 
-The privacy policy (section 3e) promises deletion within 3 months after a
-tester's reward ends, and for testers who are not eligible. The desk shows a
+The privacy policy (section 3e) and the form promise: routine beta records
+are deleted within 90 days after the beta ends; for a tester still owed or
+using the reward, only the minimum is kept (email, eligibility and activation
+dates), deleted within 3 months after the reward ends. Within 90 days of the
+beta ending, trim rewarded testers to that minimum (Supabase SQL editor):
+
+```sql
+update public.beta_testers
+   set device = '', feedback_summary = '', technical_issues = '', notes = '',
+       follow_up_on = null, follow_up_note = ''
+ where completion = 'approved';
+``` The desk shows a
 **Delete their record** step for them, and the **Due for deletion** filter
 lists them. Delete one by opening the tester → Delete. To clear every record
 whose reward ended more than 3 months ago in one go (Supabase SQL editor):
