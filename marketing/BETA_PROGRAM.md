@@ -1,4 +1,4 @@
-> **Owner decisions (22 Oct 2026).** Reward: 6 months of KaiSip Premium free once paid features exist, plus opt-in thanks and credit in the app. Platforms: Android beta via the Play closed test; iPhone users use kaisip.com and join a waitlist. Inbox: certprep.support@gmail.com owns the Google Form and Sheet. **Still open (decide before Premium):** ship accounts no later than Premium (Play promo codes cap at 90 days), and choose one way to check Premium across web and stores (`marketing/monetization-plan.md` vs `docs/mobile/ARCHITECTURE.md`).
+> **Owner decisions (22 Oct 2026).** Reward: 6 months of KaiSip Premium free once paid features exist, plus opt-in thanks and credit in the app. Platforms: Android beta via the Play closed test; iPhone users use kaisip.com and join a waitlist. Inbox: certprep.support@gmail.com owns the Google Form and Sheet. **Decided 4 Nov 2026:** accounts ship no later than Premium (Play promo codes cap at 90 days), and tester grants use the `entitlements` table (`source = 'manual'`). The qualifying rule in section 2 is approved as written. The sign-up page is kaisip.com/beta (`beta.html`). **4 Nov 2026:** the owner revised the Google Form to Android only (no phone-type branching and no iPhone waitlist box), so the page no longer mentions iPhone; the iPhone waitlist in section 1 is paused. **Still open (decide before Premium):** choose one way to check Premium across web and stores (`marketing/monetization-plan.md` vs `docs/mobile/ARCHITECTURE.md`).
 
 # KaiSip beta-tester program (spec v1)
 
@@ -110,7 +110,7 @@ Also add one row, "Google Forms and Sheets: beta sign-up and surveys", to the th
 - **Qualifies (Y/N)**
 - Grant date, grant end date, date they left
 
-**Who qualifies (recommended rule, say it plainly on the form and in the welcome email):**
+**Who qualifies (approved 4 Nov 2026; say it plainly on the page, the form and the welcome email):**
 - joined the Android closed test before the public Play launch and stayed in it for 14 days, **or**
 - sent at least one genuine piece of feedback during the beta from the app or the website. This keeps iPhone and website-only testers eligible.
 

@@ -10,6 +10,8 @@ Never put the bank size in learner copy.
 
 ## 1. Targets
 
+**Bank finalised at 384 reviewed items (D1 56, D2 64, D3 68, D4 96, D5 100), 4 Nov 2026,** under the owner's "quality before count" and the padding guard below. The batch 5 audits found that D4 and D5 items past these counts were general securities law or COSO publication trivia, and that the in-scope public sources are used up. The 400 target is withdrawn (`product-manager`, 4 Nov 2026). New items enter only when a newly opened primary source adds an uncovered outline line, within the domain's weight; never from extra angles or D1-D3 overflow. Free sample unchanged: at least 100.
+
 **Owner decision, 31 Oct 2026: a bank of 400.** `product-manager` and
 `behavioral-scientist`, asked separately, had both proposed about 300 (range
 250–350); the owner raised it to 400 so the course offers more practice at
@@ -17,7 +19,7 @@ launch and covers more of SOXCPA's 1,022 slides, side topics included.
 
 | | Value |
 |---|---|
-| Full bank | **400** (owner, 31 Oct 2026) |
+| Full bank | **384**, finalised 4 Nov 2026 (the owner's 400 of 31 Oct 2026 was conditional on the padding guard; see above) |
 | Pilot | 20 per domain, IDs `csoe_dN_001`–`020`, every course part touched at least once |
 | Held-out mock items | about 70 (two 35-item forms), never served in practice |
 | Mix per domain | about 30% foundational (recall), 55% application, 15% analysis |
@@ -27,7 +29,7 @@ Per-domain targets (blueprint "Question targets"): D1 56 · D2 64 · D3 64 ·
 D4 108 · D5 108, from each domain's share of the topic lines in SOXCPA's
 course synopsis (KaiSip's reading, not SOXCPA's). Adjusted 31 Oct 2026: D3
 holds 68 (4 held-out core items written for the mock forms), so D4 and D5
-target 106 each to keep the bank at 400. If the bank grows again,
+target 106 each to keep the bank at 400. Final (4 Nov 2026): D4 96, D5 100; see the paragraph at the top of this section. If the bank grows again,
 scale every domain by its weight.
 
 **Guarding against padding at 400** (the experts' concern above 350): the
@@ -138,7 +140,7 @@ Decided 31 Oct 2026 by `product-manager`:
   one-page "where to look" sheet (section, who, what, deadline, consequence)
   for the open-book exam.
 - **Free sample (owner decision, 31 Oct 2026): at least 100 questions**, the
-  shared rule unchanged. On the 400-item bank that is 25%. Plus the
+  shared rule unchanged. On the 384-item bank that is 26%. Plus the
   diagnostic and one short timed mock (the shared rule; a free full 35-item
   mock is not part of the decision). Chosen by domain and course part,
   best-reviewed items only, every domain represented, never from the
@@ -156,7 +158,7 @@ The same pieces as the CISA course, each in `data/csoe/`:
 | Principles ("how CSOE questions think") | `mindset/principles.json` (`docs/content/PRINCIPLES_SCHEMA.md`, CRISC-style deviations) | Written, audited and fixed (31 Oct 2026) |
 | About the exam | `exam/csoe_exam_guide.json` (`docs/content/EXAM_GUIDE_SCHEMA.md`) | Written, audited and fixed (31 Oct 2026) |
 | Final review week | `exam/final_review_week.json` | Written, audited and fixed (31 Oct 2026) |
-| Practice | `originals/d{1..5}.json` | 356 reviewed; growing to 400 |
+| Practice | `originals/d{1..5}.json` | 384 reviewed (final, 4 Nov 2026) |
 | Mock exam | the app's mock engine reads the bank; the held-out forms go in `exam/mock_forms.json` (two 35-item forms, never served in practice) | Two held-out forms drawn 31 Oct 2026 (`exam/mock_forms.json`, 70 items); the forward-only mode and excluding held-out items from practice are app tasks (section 4). Release gate: the final review week asks for a 35-question, 90-minute mock, so it must exist before the course ships |
 | Lessons | `lessons.json` (`docs/content/LESSONS_SCHEMA.md`) | After the bank |
 | Game decks | `mobile/src/content/games/csoe/` | App task, when CSOE is wired in |
@@ -246,7 +248,7 @@ Decided by the owner on 31 Oct 2026:
    recalled, never the questions themselves, which SOXCPA does not release)
    will be the best check of KaiSip's coverage.
 2. **Free sample: at least 100 questions** (section 5).
-3. **Bank: 400 questions** (section 1).
+3. **Bank: 400 questions** (section 1). Finalised at 384 on 4 Nov 2026 under "quality before count": the extra items would have been padding (section 1).
 4. **Timing: finish CSOE now**, so KaiSip has it to offer at launch and adds
    certifications after. (`product-manager` had suggested building it after
    Phase E payments go live for CRISC and AAIA; the owner chose otherwise.)
@@ -267,6 +269,7 @@ Still settled by policy, not open:
 | Batch 2, 20 items per domain plus notes (31 Oct 2026) | 40 | 40 | 40 | 40 | 40 | 200 |
 | Batch 3, D1-D3 to target, D4 and D5 +20 (31 Oct 2026) | 56 | 64 | 64 | 60 | 60 | 304 |
 | Batch 4, D4 and D5 +24, plus 4 held-out D3 core items (31 Oct 2026) | 56 | 64 | 68 | 84 | 84 | 356 |
+| Batch 5, D4 +12 and D5 +16 after cuts; bank final (4 Nov 2026) | 56 | 64 | 68 | 96 | 100 | 384 |
 
 Pilot reviews (31 Oct 2026):
 - **Blind test:** 100/100 picks matched the keys (testers saw no keys,
@@ -378,6 +381,34 @@ Batch 4 reviews (31 Oct 2026):
     "Release No." form in two held-out stems.
 - **Bank total:** D3 is at 68 because of the held-out core items. To keep the
   bank at the owner's 400, D4 and D5 now target 106 each (22 more each).
+
+Batch 5 reviews (4 Nov 2026):
+- **Drafted:** 22 items each for D4 and D5 (to 106).
+- **Blind test:** 44/44 picks matched the keys. Every changed item was
+  re-tested blind and matched: D4 9/9, D5 7/7.
+- **Standards audits:** both found padding past the in-scope sources.
+  - D4: 11 items cut (investor resale law, a bidder's tender-offer duty,
+    general rulemaking and agency law, bare-number and repeated lessons). One near-leak toward a
+    held-out key was closed. A new Section 13(b)(6) item was written; it
+    passed its blind test and an audit.
+  - D5: 6 items cut as padding (COSO publication facts and repeated
+    angles); no strong in-scope replacement was found.
+- **Rules currency:** 49 D4 facts and every D5 fact checked; none wrong.
+  The 5 U.S.C. 553 library line now records the (d) exceptions. Rules-watch
+  row added for Fischer v. United States (18 U.S.C. 1512(c)(2)).
+- **Bank final at 384** (`product-manager`, section 1). The IDs are
+  consecutive again after the cuts; linked pairs use the new IDs.
+- **Cross-domain review (384 items):** FIX THEN SHIP, with no wrong keys, no
+  contradictions across domains and no held-out leaks.
+  - 17 hints fixed: pre-read lines and sub-topic labels that pointed at the
+    key. The blind copy leaves both fields out, so blind tests cannot catch
+    them; read them at audit.
+  - The Section 1102 tampering items and their note moved from 4B3 to 4B1
+    (note 4B1.4); a SOC 1 note line was moved off the auditor's test plan.
+  - Six linked pairs recorded. "Section 404 covers ICFR, not ERM" now has
+    three angles (d5_010, 073, 085): add no fourth.
+  - Two stems keep "Section 1512 of title 18": the shared style lint counts
+    the periods in "U.S.C." as sentence breaks.
 
 Lessons for batch 5 (D4 and D5 only, 22 items each to go):
 - **Closed:** all the batch 4 closures, plus settlements, subpoenas and

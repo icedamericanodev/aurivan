@@ -10,7 +10,8 @@
 #   the list below. A file that is not on the list is never published.
 #
 #   The list:
-#     - the pages: index.html, privacy.html, terms.html, support.html, and
+#     - the pages: index.html, privacy.html, terms.html, support.html,
+#       beta.html (the beta-tester sign-up page, kaisip.com/beta), and
 #       beta-desk.html (the private Beta Desk: the page holds no tester data;
 #       rows load only after an admin signs in, and the database checks it)
 #     - assets/ (icons, the self-hosted fonts and og-kaisip.png, the
@@ -41,7 +42,7 @@ set -euo pipefail
 cd "$(dirname "$0")/.."
 OUT="_site"
 
-PAGES=(index.html privacy.html terms.html support.html beta-desk.html)
+PAGES=(index.html privacy.html terms.html support.html beta.html beta-desk.html)
 DATA=(data/domain1.json data/domain2.json data/domain3.json data/domain4.json data/domain5.json data/cisa_notes.json data/mindset/principles.json data/exam/cisa_exam_guide.json data/exam/final_review_week.json)
 SITE_CONFIG=(_headers _redirects)
 # File types allowed inside assets/ (lower case).
@@ -98,7 +99,7 @@ done < <(find assets -type f -print0)
 
 # The legal pages' inline theme script is allowed in _headers by its sha256
 # hash. If the script is edited, the hash must change too, or browsers block it.
-for page in privacy.html terms.html support.html beta-desk.html; do
+for page in privacy.html terms.html support.html beta.html beta-desk.html; do
   hash="$(python3 -c 'import re,sys,hashlib,base64
 s=open(sys.argv[1]).read(); m=re.search(r"<script>(.*?)</script>",s,re.S)
 print("sha256-"+base64.b64encode(hashlib.sha256(m.group(1).encode()).digest()).decode() if m else "")' "$page")"
@@ -139,7 +140,7 @@ PYCHK
 while IFS= read -r -d '' f; do
   rel="${f#"$OUT"/}"
   case "$rel" in
-    index.html|privacy.html|terms.html|support.html|beta-desk.html|_headers|_redirects|favicon.ico) ;;
+    index.html|privacy.html|terms.html|support.html|beta.html|beta-desk.html|_headers|_redirects|favicon.ico) ;;
     data/domain[1-5].json|data/cisa_notes.json|data/mindset/principles.json) ;;
     data/exam/cisa_exam_guide.json|data/exam/final_review_week.json) ;;
     assets/*) ;;

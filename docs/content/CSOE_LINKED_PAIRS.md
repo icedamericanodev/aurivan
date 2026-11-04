@@ -186,3 +186,38 @@ Rule for the form builder: Draw no two items of a pair into the same form. Keep 
 | csoe_d5_013 | csoe_d5_073 | 073's WC and Final two say ERM is more than a longer risk list, which rules out held-out 013's option B (as 013/032 does) |
 | csoe_d5_007 | csoe_d5_078 | 078's stem and explanation put fraud risk in the risk assessment, d5_007's key |
 | csoe_d5_005 | csoe_d5_065 | contrasting severity yardsticks; 065's added sentence states 005's key (SEC filers grade severity in the SEC's terms) |
+| csoe_d5_038 | csoe_d5_099 | d5_038 wrong explanation B and exam cue state d5_099's key |
+| csoe_d5_045 | csoe_d5_088 | proposed by the D5 batch 5 author |
+| csoe_d5_010 | csoe_d5_085 | proposed by the D5 batch 5 author |
+| csoe_d5_023 | csoe_d5_086 | proposed by the D5 batch 5 author |
+| csoe_d5_002 | csoe_d5_087 | proposed by the D5 batch 5 author |
+| csoe_d5_002 | csoe_d5_090 | proposed by the D5 batch 5 author |
+| csoe_d4_085 | csoe_d4_086 | two angles on the Section 13(b) books-and-records and internal-control provisions (D4 batch 5) |
+| csoe_d4_085 | csoe_d4_096 | the three Section 13(b) angles; 096 tests the 13(b)(6) good-faith rule |
+| csoe_d4_086 | csoe_d4_096 | the three Section 13(b) angles |
+| csoe_d4_092 | csoe_d4_093 | two angles on the Title XI tampering and obstruction crimes |
+| csoe_d4_093 | csoe_d4_094 | two angles on the Title XI tampering and obstruction crimes |
+| csoe_d4_092 | csoe_d4_094 | two angles on the Title XI tampering and obstruction crimes |
+| csoe_d4_008 | csoe_d4_092 | the proceeding need not be pending, under Section 1519 and Section 1512(c) |
+| csoe_d4_051 | csoe_d4_095 | the three Section 32(a) penalty angles |
+| csoe_d4_052 | csoe_d4_095 | the three Section 32(a) penalty angles |
+| csoe_d1_024 | csoe_d4_085 | same Section 12 or 15(d) reach angle on a bond-only issuer; each exam cue settles the other's final two |
+| csoe_d4_068 | csoe_d4_085 | d4_068's explanation states the Section 12 or 15(d) issuer test that decides d4_085 |
+| csoe_d4_042 | csoe_d4_088 | both on Section 17(a)'s reach; d4_088's WA, tip 2 and note 4A1.4 say 17(a) covers offers and sales (d4_042 is held out; a link, not a leak) |
+| csoe_d5_022 | csoe_d5_086 | d5_086's WA and tip 1: ICFR leaves out COSO's operations objectives, part of held-out d5_022's lesson (does not decide it) |
+| csoe_d5_090 | csoe_d5_093 | contrasting angles on COSO's three objective categories (note 5A2.6) |
+| csoe_d1_019 | csoe_d4_008 | both key 18 U.S.C. 1519 reaching anyone (actor angle against timing and the 1520 look-alike) |
+| csoe_d5_002 | csoe_d5_088 | both test the scope of the COSO definition |
+| csoe_d5_038 | csoe_d5_100 | SOC 1 use by user auditors |
+| csoe_d5_039 | csoe_d5_100 | SOC 1 use by user auditors |
+| csoe_d5_082 | csoe_d5_100 | SOC 1 report users |
+| csoe_d5_057 | csoe_d5_089 | COSO is not documents or rule-following |
+| csoe_d5_061 | csoe_d5_089 | COSO is not documents or rule-following |
+| csoe_d5_065 | csoe_d5_095 | monitoring and reporting lines |
+| csoe_d5_067 | csoe_d5_095 | monitoring and reporting lines |
+| csoe_d5_068 | csoe_d5_091 | who the board is and what it does |
+| csoe_d5_074 | csoe_d5_097 | ERM 2017 reasonable expectation |
+| csoe_d5_070 | csoe_d5_097 | reasonable expectation, not results |
+| csoe_d5_022 | csoe_d5_085 | Release 33-8238 ICFR definition (d5_022 is held out) |
+| csoe_d5_001 | csoe_d5_097 | reasonable assurance vs reasonable expectation (d5_001 is held out) |
+| csoe_d3_034 | csoe_d5_096 | evidential matter supporting management's assessment |
