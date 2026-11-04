@@ -239,18 +239,20 @@ and 1B2 are added once their sources open):
 
 ## Question targets
 
-Bank size: **400**, the owner's decision on 31 Oct 2026 (`product-manager`
-and `behavioral-scientist` had each proposed about 300). Per-domain targets
-scale it by the weights above.
+Bank size: **384**, finalised 4 Nov 2026. The owner set 400 on 31 Oct 2026
+(`product-manager` and `behavioral-scientist` had each proposed about 300),
+with the padding guard in the bank plan; the batch 5 audits found the public
+in-scope sources used up past 384, so the bank stops there (bank plan
+section 1). "Target" below is the weight-scaled 400; "Final" is what shipped.
 
-| Domain | Weight | Target | Pilot |
-|---|---|---|---|
-| D1 Scope and reach of the Act | 14% | 56 | 20 |
-| D2 The PCAOB and auditor independence | 16% | 64 | 20 |
-| D3 Corporate responsibility and financial disclosure | 16% | 64 | 20 |
-| D4 The SEC, enforcement and Dodd-Frank | 27% | 108 | 20 |
-| D5 Internal control frameworks and SOX scope | 27% | 108 | 20 |
-| Total | | **400** | **100** |
+| Domain | Weight | Target | Final | Pilot |
+|---|---|---|---|---|
+| D1 Scope and reach of the Act | 14% | 56 | 56 | 20 |
+| D2 The PCAOB and auditor independence | 16% | 64 | 64 | 20 |
+| D3 Corporate responsibility and financial disclosure | 16% | 64 | 68 | 20 |
+| D4 The SEC, enforcement and Dodd-Frank | 27% | 108 | 96 | 20 |
+| D5 Internal control frameworks and SOX scope | 27% | 108 | 100 | 20 |
+| Total | | **400** | **384** | **100** |
 
 - Mix per domain: about 30% foundational (recall), 55% application, 15%
   analysis (6 / 11 / 3 in a pilot of 20).
