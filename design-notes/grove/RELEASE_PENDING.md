@@ -39,3 +39,10 @@ Batched for the end of the uplift (web v13, mobile 2.0.0; DECISIONS 8). Write th
 - `todayPlanProgress` counts the day's answers before the plan was saved toward the set step: check in Phase 5 QA.
 - Phone tab bar labels are px-based and do not grow at 200% text (pre-existing).
 - Phone: the same Q6 follow-up (follow today's unfinished set) if the phone shows the same day-one drift; `mobile/` was not touched.
+
+## Small nits to carry into the next web push (from the confirmations review)
+- After a restore reload, screen readers may hear "Restored: N answers" twice (focus on #setRestore, whose description includes the line, plus #setSay). Announce once.
+- Today's "Download backup" announcement repeats "Backup saved". Announce it once.
+- The long wrong-file message sits inside the Restore button; move failure text to a sibling line linked by aria-describedby so the button stays one row.
+- Phone Badges row says "Your badges and field notes": check against DECISIONS 8 at the release sweep.
+- Footer wording differs: Today "KaiSip is independent and not affiliated with ISACA." vs You and Settings "Not affiliated with or endorsed by ISACA®..."; pick one at the release.
