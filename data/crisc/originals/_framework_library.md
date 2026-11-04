@@ -92,7 +92,7 @@ Each bullet was opened on 30 Oct 2026 unless marked Likely.
 
 ### NIST SP 800-34 Rev. 1
 - NIST SP 800-34 Rev. 1 Section 3.5 (Plan Testing, Training, and Exercises)
-  - Verified, 30 Oct 2026, against the SP 800-34 Rev. 1 PDF (CSRC page https://csrc.nist.gov/pubs/sp/800/34/r1/upd1/final). 2.2.1: the BCP sustains mission/business processes; 2.2.6: the DRP is information system-focused. 3.5: test, training and exercise events periodically and after changes; tests as close to the operating environment as possible. The Section 2.2 string (same as the CC library) is in the not-yet-used list below.
+  - Verified, 30 Oct 2026, against the SP 800-34 Rev. 1 PDF (CSRC page https://csrc.nist.gov/pubs/sp/800/34/r1/upd1/final). 2.2.1: the BCP sustains mission/business processes; 2.2.6: the DRP is information system-focused. 3.5: test, training and exercise events periodically and after changes; tests as close to the operating environment as possible. The Section 2.2 string (same as the CC library) is a bullet in the Round 2 additions below.
 
 ### NIST AI 100-1 (AI RMF 1.0, January 2023)
 - NIST AI 100-1 (AI RMF 1.0) GOVERN 1.6 (mechanisms are in place to inventory AI systems)
@@ -138,26 +138,16 @@ Each bullet was opened on 30 Oct 2026 unless marked Likely.
 - NIST CSF 2.0 Section 1 (CSF Overview: the CSF is used in conjunction with other resources such as frameworks, standards and guidelines to manage cybersecurity risks)
   - Verified, 4 Nov 2026, against https://nvlpubs.nist.gov/nistpubs/CSWP/NIST.CSWP.29.pdf (re-downloaded). Section 1 says the CSF should be used in conjunction with other resources (frameworks, standards, guidelines, leading practices) to manage cybersecurity risks and inform enterprise-level ICT risk management; Section 4 describes Informative References that map the Core to other standards. Used by crisc_d1_092 (COBIT 2019 and CSF 2.0 combined, not chosen between).
   - Note: other round 4 parts reuse bullets already in this library: ISACA Glossary (risk appetite), (risk capacity), (risk aggregation), (risk owner), (risk culture), (risk transfer), (data owner), (business continuity plan) and (service delivery objective); ISACA Code of Professional Ethics (both D1 bullets); COBIT 2019 APO02, APO12.03 and MEA03; ISACA Journal 2018 Volume 4; NIST CSF 2.0 GV.OC-01, GV.OC-03, GV.PO-01, GV.PO-02, GV.RM-02, GV.RM-03, GV.RR-01, GV.RR-02, GV.SC-05, GV.SC-07 and ID.AM-07; NIST IR 8286 Rev. 1 Sections 3.8 and 4.1; NIST IR 8286B-upd1 Section 2.4.3; NIST IR 8286C Rev. 1 Section 2.2; NIST SP 800-30 Rev. 1 Section 3.4; NIST SP 800-34 Rev. 1 Section 2.2; NIST AI 100-1 GOVERN 2.1 and GOVERN 2.3.
+  - Review fixes 4 Nov 2026 (standards audit and concept review): crisc_d1_081 now also cites ISACA Glossary (residual risk), an existing bullet in the Domain 2 section (Verified: the risk that remains after management has implemented a risk response). The ISACA Glossary has no "retained risk" entry, so the item now records the loss a supplier's liability cap leaves as residual risk for its owner. Existing bullet; no new citation added.
 
 ### Named in notes as context only (not keyed, hosts blocked)
 ISO 31000:2018, COSO ERM (2017), the IIA Three Lines Model (2020) and the EU AI Act (Regulation (EU) 2024/1689) are named in the notes as context only. Not added as bullets.
 
 ### Opened and checked, not yet used by an item (add as bullets when a later D1 batch cites them)
-  - `ISACA Glossary (risk capacity)`
-  - `ISACA Glossary (risk aggregation)`
-  - `ISACA Glossary (current risk)`, `ISACA Glossary (residual risk)`, `ISACA Glossary (risk response)`, `ISACA Glossary (maximum tolerable outage)`, `ISACA Glossary (acceptable interruption window)`, `ISACA Glossary (recovery time objective)`: opened 31 Oct 2026 for the D1 notes (current risk counts actions already taken, not proposed ones; residual risk remains after a response is implemented; the risk response entry calls the planned level "future residual risk"; MTO is the longest a critical business function or IT system can be disrupted before significant harm; AIW is the longest a system can be unavailable before business objectives are compromised; RTO is the time allowed to recover a business function or resource). The Glossary has no MTD entry.
-  - `ISACA Glossary (guideline)`
-  - `ISACA Glossary (business continuity plan)`
+  - `ISACA Glossary (risk response)`, `ISACA Glossary (maximum tolerable outage)`, `ISACA Glossary (acceptable interruption window)`: opened 31 Oct 2026 for the D1 notes (the risk response entry calls the planned level "future residual risk"; MTO is the longest a critical business function or IT system can be disrupted before significant harm; AIW is the longest a system can be unavailable before business objectives are compromised). The Glossary has no MTD entry.
   - `ISACA Glossary (asset inventory)`
-  - `ISACA Glossary (enterprise risk management)`
-  - `NIST CSF 2.0 GV.RM-03 (cybersecurity risk management activities and outcomes are included in enterprise risk management processes)`
-  - `NIST CSF 2.0 GV.RR-01 (organizational leadership is responsible and accountable for cybersecurity risk and fosters a culture that is risk-aware, ethical and continually improving)`
-  - `NIST CSF 2.0 ID.AM-02 (inventories of software, services and systems managed by the organization are maintained)`
-  - `NIST CSF 2.0 ID.AM-05 (assets are prioritized based on classification, criticality, resources and impact on the mission)`
   - `NIST IR 8286 Rev. 1 Section 2.2 (The Gap Between CSRM Output and ERM Input)`
-  - `NIST SP 800-34 Rev. 1 Section 2.2 (Types of Plans: Business Continuity Plan and Disaster Recovery Plan)`
-  - `NIST AI 100-1 (AI RMF 1.0) GOVERN 1.1 (legal and regulatory requirements involving AI are understood, managed and documented)`
-  - `NIST AI 100-1 (AI RMF 1.0) GOVERN 2.3 (executive leadership takes responsibility for decisions about risks of AI system development and deployment)`
+  - Pruned 4 Nov 2026 (round 4 review fixes): entries now cited by D1 items were removed from this list. ISACA Glossary (risk capacity), (risk aggregation), (current risk), (residual risk), (recovery time objective), (guideline), (business continuity plan) and (enterprise risk management); NIST CSF 2.0 GV.RM-03, GV.RR-01, ID.AM-02 and ID.AM-05; NIST SP 800-34 Rev. 1 Section 2.2; and NIST AI 100-1 GOVERN 1.1 and GOVERN 2.3 are each cited by at least one D1 item, under a bullet elsewhere in this library.
 
 ## Domain 2 Risk Assessment (pilot crisc_d2_001 to 020, 30 Oct 2026)
 
