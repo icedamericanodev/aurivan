@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "comment": "Original CRISC practice questions for Domain 2 (Risk Assessment), written to the CRISC exam content outline effective 2025. Every item is authored from public concepts and KaiSip's own CRISC study notes (data/crisc/notes/d2.json), with no reference to the CRISC Review Manual, ISACA's QAE database, ISACA's practice quiz or any prior question bank. Schema: docs/content/QUESTION_SCHEMA.md; writing rules: docs/content/EXAM_STYLE_V2.md and .claude/agents/crisc-standards-auditor.md. Not affiliated with or endorsed by ISACA®. CRISC® is a registered trademark of ISACA. Pilot batch crisc_d2_001 to crisc_d2_020, 30 Oct 2026. Review fixes 30 Oct 2026 (blind test and standards audit). Quality pass 31 Oct 2026 (ISACA authenticity audit and concept review). Repair round 1, 31 Oct 2026 (independent verification).",
+    "comment": "Original CRISC practice questions for Domain 2 (Risk Assessment), written to the CRISC exam content outline effective 2025. Every item is authored from public concepts and KaiSip's own CRISC study notes (data/crisc/notes/d2.json), with no reference to the CRISC Review Manual, ISACA's QAE database, ISACA's practice quiz or any prior question bank. Schema: docs/content/QUESTION_SCHEMA.md; writing rules: docs/content/EXAM_STYLE_V2.md and .claude/agents/crisc-standards-auditor.md. Not affiliated with or endorsed by ISACA®. CRISC® is a registered trademark of ISACA. Pilot batch crisc_d2_001 to crisc_d2_020, 30 Oct 2026. Review fixes 30 Oct 2026 (blind test and standards audit). Quality pass 31 Oct 2026 (ISACA authenticity audit and concept review). Repair round 1, 31 Oct 2026 (independent verification). Round 3 crisc_d2_046 to crisc_d2_065, 4 Nov 2026.",
     "schema_version": 1
   },
   "domain": 2,
@@ -1670,6 +1670,746 @@
         "Reporting for acceptance decisions"
       ],
       "_provenance": "Authored from concept: notes 2B5.3 Residual Risk Against Appetite and Tolerance. Round 2, 31 Oct 2026: authored from notes 2B5.3 (owners accept within tolerance; acceptance beyond it goes to the limit-setter); original pension fund member-data exposure scenario written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used; checked against the CRISC, CISA and CC banks for mirrored scenarios. Review fixes 31 Oct 2026 (standards audit): re-angled from escalation to the committee paper; the first version duplicated crisc_d1_042.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d2_046",
+      "domain": 2,
+      "subtopic": "2A1 Risk events. Loss threshold in event data",
+      "principle_id": "priority-word-decides",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "A credit union's operational loss database records only IT events that caused a loss above $10,000. Which of the following is the GREATEST weakness for the risk analyst using it to rate IT risk scenarios?",
+      "options": {
+        "A": "It omits near misses and small losses that show frequency",
+        "B": "It values each loss in money, not on the rating scale",
+        "C": "It leaves out loss events suffered by peer credit unions",
+        "D": "It keeps losses from incidents that are already closed"
+      },
+      "correct": "A",
+      "key_concept": "Event data that records only larger realized losses understates likelihood, because near misses and small losses show how often threats get through.",
+      "pre_read": "Notice which events the recording rule keeps and which it drops.",
+      "correct_explanation": "Near misses and small losses are the most frequent evidence of how often threats reach the credit union's assets, so a $10,000 threshold makes its scenarios look less likely than they are. Peer losses are the runner-up: they add useful outside evidence, but they are a separate source to add and adjust for local exposure, not a flaw in what the internal database captures.",
+      "wrong_explanations": {
+        "B": "Money values suit quantitative analysis and can be mapped to the rating scale; recording losses in money does not hide any events.",
+        "C": "External events are a useful extra source, adjusted for local exposure; their absence is not a defect of an internal database that records the credit union's own history.",
+        "D": "Closed incidents still show how the scenario played out, so keeping their losses is correct; closing a ticket does not close the risk."
+      },
+      "tips": [
+        "Eliminate: B confuses the unit of measure with missing data, and D treats closed incidents as no longer useful, though closing a ticket does not close the risk.",
+        "Final two: A beats C because the threshold strips the internal record of its most frequent evidence, while peer data is a separate source to add, not a gap in this one.",
+        "Exam cue: when event data counts only realized or large losses, expect likelihood to be understated; near misses are evidence too."
+      ],
+      "framework_ref": "ISACA Glossary (loss event); COBIT 2019 APO12.01 (Collect Data)",
+      "related_concepts": [
+        "Near miss",
+        "Loss event",
+        "Likelihood evidence"
+      ],
+      "_provenance": "Authored from concept: notes 2A1.1 (Loss Events, Incidents and Near Misses). Round 3, 4 Nov 2026: original scenario of a credit union's loss database that records only IT losses above $10,000 written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used; checked against the CRISC, CISA, CC and AAIA banks for mirrored scenarios.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d2_047",
+      "domain": 2,
+      "subtopic": "2A1 Risk events. Event records across offices",
+      "principle_id": "rate-on-common-terms",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "Three regional offices of a freight forwarder log IT risk events in separate spreadsheets, each with its own columns and categories. What should the risk practitioner recommend as BEST?",
+      "options": {
+        "A": "Quarterly merging of the three spreadsheets by the risk team",
+        "B": "A monthly total of losses per scenario from each office",
+        "C": "Central ownership of the three event logs by the IT team",
+        "D": "A common event record naming cause, impact and scenario"
+      },
+      "correct": "D",
+      "key_concept": "Risk event data is useful only when every unit records the same details in the same categories, linked to a risk scenario.",
+      "pre_read": "Look at what differs between the offices' records.",
+      "correct_explanation": "Event data can be compared, trended and linked to scenarios only if every office records the same details in the same categories: date, cause, impact, source and the scenario affected. Merging the spreadsheets is the runner-up: it gathers the data in one place, but records built on different columns and categories still cannot be compared or added up.",
+      "wrong_explanations": {
+        "A": "Merging puts the records in one file, but entries built on different columns and categories still cannot be compared or trended.",
+        "B": "Monthly loss totals keep only realized losses and drop near misses and causes, so they show less than the logs do now.",
+        "C": "Moving the logs to IT changes who holds them, not what they record; the offices' different categories would remain."
+      },
+      "tips": [
+        "Eliminate: B keeps only realized losses, dropping near misses and causes, and C moves custody of the logs without changing what they record.",
+        "Final two: D beats A because a common record fixes the data where it is created; merging inconsistent spreadsheets only collects records that still cannot be compared.",
+        "Exam cue: when units record risk data differently, the fix is a common format and taxonomy, not a new place to store the data."
+      ],
+      "framework_ref": "COBIT 2019 APO12.01 (Collect Data); NIST CSF 2.0 GV.RM-06 (a standardized method for calculating, documenting, categorizing and prioritizing cybersecurity risks is established and communicated)",
+      "related_concepts": [
+        "Risk event data",
+        "Risk taxonomy",
+        "Trend analysis"
+      ],
+      "_provenance": "Authored from concept: notes 2A1.2 (Internal and External Event Sources). Round 3, 4 Nov 2026: original scenario of a freight forwarder whose three offices log risk events in differently structured spreadsheets written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used; checked against the CRISC, CISA, CC and AAIA banks for mirrored scenarios.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d2_048",
+      "domain": 2,
+      "subtopic": "2A1 Risk events. Payment caught by a second approver",
+      "principle_id": "answer-from-the-stem",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "A publishing house's accounts payable clerk keys a $45,000 supplier payment that should have been $4,500, and the second approver catches it before release. How should the risk analyst BEST record this event?",
+      "options": {
+        "A": "A $40,500 loss event against the payment error scenario",
+        "B": "A corrected error that needs no entry in risk records",
+        "C": "A near miss against the payment error scenario",
+        "D": "A control test result for the second approval step"
+      },
+      "correct": "C",
+      "key_concept": "An event stopped by a control before any loss is a near miss and is recorded as evidence against its risk scenario.",
+      "pre_read": "Check whether any loss actually happened, and why not.",
+      "correct_explanation": "The wrong payment was stopped by a control before any money left, so this is a near miss: no loss, but proof the error can happen and that the second approval was the last barrier. A control test result is the runner-up; the event does show the approval working, but its main value is as likelihood evidence for the scenario, and one catch is not a planned test.",
+      "wrong_explanations": {
+        "A": "No money was paid, so there is no loss to record; $40,500 is what the error could have cost, not a realized loss.",
+        "B": "Correcting the payment closes the error, not the risk; an uncounted near miss leaves the scenario's likelihood understated.",
+        "D": "A control test is planned and sampled; one catch shows the approval held this time but does not test how it runs over time."
+      },
+      "tips": [
+        "Eliminate: A counts a loss that never happened, and B treats a corrected error as closed, losing evidence about how often the error occurs.",
+        "Final two: C beats D because the event's main value is as likelihood evidence for the scenario; one catch is not a planned test of the approval.",
+        "Exam cue: stopped before harm, by a control, chance or timing, means near miss; record it against the scenario it supports."
+      ],
+      "framework_ref": "ISACA Glossary (loss event); COBIT 2019 APO12.01 (Collect Data)",
+      "related_concepts": [
+        "Near miss",
+        "Loss event",
+        "Risk event data"
+      ],
+      "_provenance": "Authored from concept: notes 2A1.1 (Loss Events, Incidents and Near Misses). Round 3, 4 Nov 2026: original scenario of a publishing house's mistyped supplier payment stopped by a second approver written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used; checked against the CRISC, CISA, CC and AAIA banks for mirrored scenarios.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d2_049",
+      "domain": 2,
+      "subtopic": "2A2 Threat modeling and threat landscape. Attack tree result",
+      "principle_id": "evidence-before-credit",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "An attack tree for a coffee chain's gift-card platform shows one admin console's multifactor sign-in blocks four of six paths to card fraud. What is the risk practitioner's BEST use of this result?",
+      "options": {
+        "A": "Focus the fraud rating on the two paths left open",
+        "B": "Ask the platform owner to add controls on the four paths",
+        "C": "Treat the console sign-in as a key control to test",
+        "D": "Lower the fraud scenario's likelihood rating to low"
+      },
+      "correct": "C",
+      "key_concept": "A control that blocks several attack paths is a key control; its effectiveness must be shown before the risk rating relies on it.",
+      "pre_read": "Ask what the rating would depend on if this result were used.",
+      "correct_explanation": "Four of six attack paths depend on one control, so the scenario's rating leans on it: if the sign-in fails or is bypassed, four paths open at once. That makes it a key control whose design and operation should be tested before the rating credits it. Focusing on the two open paths is the runner-up; it is useful, but it assumes the blocking control works without evidence.",
+      "wrong_explanations": {
+        "A": "The open paths need analysis, but rating only them assumes the console sign-in works, and no evidence yet shows it does.",
+        "B": "Adding controls to paths already blocked spends money before the existing control's strength is known; the tree shows reliance, not a gap.",
+        "D": "Lowering likelihood credits the sign-in before anyone has tested it, and two paths remain open in any case."
+      },
+      "tips": [
+        "Eliminate: B adds controls where the tree shows paths already blocked, and D credits the sign-in in the rating before any evidence shows it works.",
+        "Final two: C beats A because the rating depends on the one control blocking four paths; test it before relying on it, then analyze what remains.",
+        "Exam cue: when one control carries most of a scenario's protection, treat it as a key control and get evidence that it works."
+      ],
+      "framework_ref": "NIST IR 8286A Rev. 1 Section 2.2.2 (Determination of Potential Threats); NIST SP 800-53 Rev. 5 CA-2 (Control Assessments)",
+      "related_concepts": [
+        "Attack tree",
+        "Key control",
+        "Control effectiveness"
+      ],
+      "_provenance": "Authored from concept: notes 2A2.2 (Threat Intelligence and Threat Modeling). Round 3, 4 Nov 2026: original scenario of an attack tree for a coffee chain's gift-card platform in which one sign-in control blocks most paths written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used; checked against the CRISC, CISA, CC and AAIA banks for mirrored scenarios.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d2_050",
+      "domain": 2,
+      "subtopic": "2A2 Threat modeling and threat landscape. Openly editable training data",
+      "principle_id": "emerging-and-ai-risk-owned",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A ride-hailing company plans to retrain its fare-pricing model weekly on a public traffic dataset that any user can edit. What should the risk practitioner do FIRST?",
+      "options": {
+        "A": "Ask the pricing owner to license a vendor traffic feed",
+        "B": "Rely on the weekly accuracy check to catch bad inputs",
+        "C": "Assess the data poisoning risk with the pricing owner",
+        "D": "Assess prompt injection as the model's main threat"
+      },
+      "correct": "C",
+      "key_concept": "Training data that outsiders can edit exposes a model to data poisoning, which is assessed with the business owner before controls are chosen.",
+      "pre_read": "Notice who can change the data the model learns from.",
+      "correct_explanation": "An openly editable dataset lets anyone plant records the model will learn from, which is data poisoning. The risk should be analyzed with the business owner of pricing before anyone picks a control. Relying on the accuracy check is the runner-up: targeted poisoning can skew prices for chosen routes or times while overall accuracy looks normal, so the check may not see it.",
+      "wrong_explanations": {
+        "A": "A licensed feed may be the right control, but choosing it before the poisoning risk is analyzed skips the assessment the owner needs to decide.",
+        "B": "An overall accuracy check can miss targeted poisoning, which shifts outputs for a small set of inputs while average accuracy stays normal.",
+        "D": "Prompt injection targets models that read instructions in text; the threat this design creates is poisoned training data."
+      },
+      "tips": [
+        "Eliminate: A picks a control before the risk is analyzed, and D names an attack on a language model's inputs, not on the training data this model learns from.",
+        "Final two: C beats B because targeted poisoning can pass an overall accuracy check; the exposure must be analyzed before any existing check is relied on.",
+        "Exam cue: when an AI model learns from data outsiders can change, think data poisoning and assess it with the business owner first."
+      ],
+      "framework_ref": "NIST AI 100-2 E2025 Section 2.3 (Poisoning Attacks and Mitigations: targeted and backdoor poisoning affect a small set of target samples); NIST AI 100-1 (AI RMF 1.0) MANAGE 3.1 (AI risks and benefits from third-party resources are regularly monitored and risk controls are applied and documented)",
+      "related_concepts": [
+        "Data poisoning",
+        "Training data",
+        "AI risk scenario"
+      ],
+      "_provenance": "Authored from concept: notes 2A2.3 (AI-Specific Threats). Round 3, 4 Nov 2026: original scenario of a ride-hailing company retraining its fare-pricing model on a publicly editable traffic dataset written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used; checked against the CRISC, CISA, CC and AAIA banks for mirrored scenarios.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d2_051",
+      "domain": 2,
+      "subtopic": "2A3 Vulnerability management. Flaw in a shared library",
+      "principle_id": "analyze-before-acting",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A critical flaw is announced in an open-source library used across an engineering consultancy's in-house and vendor applications. What should the risk practitioner do FIRST?",
+      "options": {
+        "A": "Rate the business exposure on the flaw's 10.0 Base score",
+        "B": "Ask IT to patch servers in order of their CVSS scores",
+        "C": "Wait for each vendor to confirm whether its product is affected",
+        "D": "Find which business services run software with the library"
+      },
+      "correct": "D",
+      "key_concept": "For a new flaw in a shared component, the first step is to identify where it runs and which business services depend on it.",
+      "pre_read": "Check what must be known before exposure can be rated.",
+      "correct_explanation": "Exposure cannot be rated until the consultancy knows where the library runs and which business services depend on it, so the first step is to identify the affected assets from software inventories and component lists. Waiting for vendors is the runner-up: their notices help, but they cover only vendor products, and the in-house applications using the library have no vendor to report.",
+      "wrong_explanations": {
+        "A": "The Base score describes the flaw's severity, not the consultancy's exposure; until it is known where the library runs, the score cannot become a risk rating.",
+        "B": "Patching by score, before the affected systems are known, may fix servers that lack the library and miss services that matter most.",
+        "C": "Vendor notices cover only vendor products and may be slow; the in-house applications using the library have no vendor to confirm exposure."
+      },
+      "tips": [
+        "Eliminate: A treats a severity score as the risk rating, and B patches by score before anyone knows which systems run the library.",
+        "Final two: D beats C because vendor notices cannot cover in-house software; the firm's own inventories show where the flaw sits and what it supports.",
+        "Exam cue: for a newly disclosed flaw, first establish where it exists and which business services depend on it; rating and fixing follow."
+      ],
+      "framework_ref": "NIST CSF 2.0 ID.AM-02 (inventories of software, services and systems managed by the organization are maintained); NIST CSF 2.0 ID.RA-01 (vulnerabilities in assets are identified, validated and recorded); NIST IR 8286A Rev. 1 Section 2.2.3 (Vulnerability Identification)",
+      "related_concepts": [
+        "Asset inventory",
+        "Software bill of materials (SBOM)",
+        "Risk-based remediation"
+      ],
+      "_provenance": "Authored from concept: notes 2A3.3 (Risk-Based Remediation Priority). Round 3, 4 Nov 2026: original scenario of a critical flaw in an open-source library used across an engineering consultancy's in-house and vendor software written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used; checked against the CRISC, CISA, CC and AAIA banks for mirrored scenarios.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d2_052",
+      "domain": 2,
+      "subtopic": "2A3 Vulnerability management. Weaknesses in an approval process",
+      "principle_id": "answer-from-the-stem",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "Which of the following is the BEST source for the risk practitioner to identify control weaknesses in a pharmaceutical wholesaler's supplier-payment approval process?",
+      "options": {
+        "A": "An authenticated vulnerability scan of the payment system",
+        "B": "A penetration test of the payment system's web interface",
+        "C": "A walkthrough of each approval step with process staff",
+        "D": "The CVSS scores of the payment system's open findings"
+      },
+      "correct": "C",
+      "key_concept": "Process and people weaknesses are found by walking through the process with those who perform it, not by technical scanning.",
+      "pre_read": "Notice what kind of weakness the question asks about.",
+      "correct_explanation": "The weaknesses asked about sit in a business process: missing approvals, weak segregation of duties, steps that can be skipped. A walkthrough with the people who perform each step shows how approval actually works and where it can fail. A penetration test is the runner-up; it shows what an attacker could reach through the system, but it does not examine how staff approve payments.",
+      "wrong_explanations": {
+        "A": "A vulnerability scan finds known technical flaws in software and configuration; it cannot see a missing approval or a step staff skip.",
+        "B": "A penetration test shows what an attacker could reach through the system; it does not examine who approves payments or how.",
+        "D": "CVSS scores rate the severity of technical flaws already found; they add nothing about weaknesses in the approval steps."
+      },
+      "tips": [
+        "Eliminate: A and D look only at technical flaws in the software, while the stem asks about weaknesses in an approval process.",
+        "Final two: C beats B because process weaknesses show up in how people perform each step; a penetration test probes the system's technical exposure.",
+        "Exam cue: match the source to the kind of weakness: scanners and tests for technology, walkthroughs and interviews for process and people."
+      ],
+      "framework_ref": "ISACA Glossary (walk-through); NIST IR 8286A Rev. 1 Section 2.2.3 (Vulnerability Identification); NIST SP 800-53A Rev. 5 Section 2.4.2 (Assessment Methods: examine, interview and test, with depth and coverage)",
+      "related_concepts": [
+        "Walk-through",
+        "Process vulnerability",
+        "Vulnerability identification"
+      ],
+      "_provenance": "Authored from concept: notes 2A3.1 (Vulnerabilities in People, Process and Technology). Round 3, 4 Nov 2026: original scenario of finding control weaknesses in a pharmaceutical wholesaler's supplier-payment approval process written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used; checked against the CRISC, CISA, CC and AAIA banks for mirrored scenarios.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d2_053",
+      "domain": 2,
+      "subtopic": "2A4 Risk scenario development and evaluation. Gaps after a top-down workshop",
+      "principle_id": "root-cause-over-symptom",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A freight railway built its IT risk scenarios from business objectives in executive workshops, but IT's vulnerability data shows three critical weaknesses no scenario covers. What should the risk practitioner recommend as BEST?",
+      "options": {
+        "A": "Add three scenarios covering the weaknesses IT found",
+        "B": "Add a bottom-up review using asset and threat data",
+        "C": "Have the executives re-rank their workshop scenarios",
+        "D": "Log the three weaknesses in IT's operational issue list"
+      },
+      "correct": "B",
+      "key_concept": "Scenario development combines top-down work from objectives with bottom-up work from assets, threats and vulnerabilities, so neither view's blind spots remain.",
+      "pre_read": "Look at how the scenario set was built.",
+      "correct_explanation": "Three critical weaknesses slipped past a purely top-down method, which suggests others did too. Adding a bottom-up review from asset, threat and vulnerability data fixes the gap in the method, so the scenario set reflects both what matters to objectives and what could actually go wrong. Adding three scenarios is the runner-up: it covers what IT happened to find, not what the method still misses.",
+      "wrong_explanations": {
+        "A": "Three new scenarios cover these weaknesses, but the method that missed them stays unchanged, so other gaps remain unfound.",
+        "C": "Re-ranking reorders the same top-down scenarios; it cannot add risks that the workshops never identified.",
+        "D": "An IT issue list treats the weaknesses as technical tasks, outside the scenarios the business rates and owns."
+      },
+      "tips": [
+        "Eliminate: C repeats the top-down method that missed the weaknesses, and D treats them as IT tasks, outside the business's risk scenarios.",
+        "Final two: B beats A because the gap is in the method; three new scenarios cover what IT found, not what a one-direction approach still misses.",
+        "Exam cue: when scenarios miss real threats, combine top-down and bottom-up; fix the method, not just the instance."
+      ],
+      "framework_ref": "NIST SP 800-30 Rev. 1 Section 2.3.3 (Analysis Approaches: threat-oriented, asset/impact-oriented and vulnerability-oriented); NIST IR 8286A Rev. 1 Section 2.2.5 (Recording Identified Risks: risk scenarios in cause-and-effect form)",
+      "related_concepts": [
+        "Top-down and bottom-up approach",
+        "Risk scenario",
+        "Vulnerability data"
+      ],
+      "_provenance": "Authored from concept: notes 2A4.2 (Top-Down and Bottom-Up Scenario Development). Round 3, 4 Nov 2026: original scenario of a freight railway whose workshop-built scenarios miss weaknesses found in IT's vulnerability data written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used; checked against the CRISC, CISA, CC and AAIA banks for mirrored scenarios.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d2_054",
+      "domain": 2,
+      "subtopic": "2A4 Risk scenario development and evaluation. Completing a draft scenario",
+      "principle_id": "rate-on-common-terms",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "A risk analyst drafts this scenario: 'Ransomware encrypts a medical supplies distributor's warehouse management system.' Which addition would MOST improve the scenario for rating?",
+      "options": {
+        "A": "The ransomware groups most active in the sector this year",
+        "B": "The endpoint protection tools installed on its servers",
+        "C": "The CVSS score of the system's most severe open flaw",
+        "D": "The effect on hospital deliveries of a two-day shutdown"
+      },
+      "correct": "D",
+      "key_concept": "A risk scenario becomes ratable when it states the business consequence and timing, not only the event and the asset.",
+      "pre_read": "List which parts of a scenario the draft already has.",
+      "correct_explanation": "The draft names an event and an asset but not the time or the consequence, so owners cannot judge impact and would rate it very differently. Adding what a two-day shutdown would do to hospital deliveries states the business harm and its timing, which makes the scenario ratable. Naming active ransomware groups is the runner-up: it sharpens the threat, but the missing impact is the bigger gap.",
+      "wrong_explanations": {
+        "A": "Active groups refine the threat side, which the word ransomware already implies; without a consequence, owners still cannot rate impact.",
+        "B": "Installed tools are existing controls, recorded beside the scenario's rating; they do not describe what happens or what it costs.",
+        "C": "A CVSS score rates one technical flaw's severity; it says nothing about the business harm the scenario would cause."
+      },
+      "tips": [
+        "Eliminate: B lists existing controls and C a flaw's severity; neither describes what the event would do to the business.",
+        "Final two: D beats A because the draft's largest gap is the consequence and its timing; the threat is already implied by the word ransomware.",
+        "Exam cue: a ratable scenario names actor, event, asset, time and business consequence; look for the missing piece."
+      ],
+      "framework_ref": "ISACA Glossary (risk scenario); NIST IR 8286A Rev. 1 Section 2.2.5 (Recording Identified Risks: risk scenarios in cause-and-effect form)",
+      "related_concepts": [
+        "Risk scenario",
+        "Business impact",
+        "Scenario elements"
+      ],
+      "_provenance": "Authored from concept: notes 2A4.1 (Anatomy of a Risk Scenario). Round 3, 4 Nov 2026: original scenario of a draft ransomware scenario for a medical supplies distributor that lacks timing and consequence written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used; checked against the CRISC, CISA, CC and AAIA banks for mirrored scenarios.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d2_055",
+      "domain": 2,
+      "subtopic": "2A4 Risk scenario development and evaluation. Scenarios drafted by IT",
+      "principle_id": "lines-of-defense",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An insurer's risk team drafted 15 risk scenarios for a new claims platform in a workshop attended only by IT staff. What should the risk practitioner do FIRST?",
+      "options": {
+        "A": "Ask internal audit to verify the scenarios are complete",
+        "B": "Rate the scenarios and share the ratings with the owners",
+        "C": "Benchmark the scenarios against a vendor scenario library",
+        "D": "Have the claims process owners confirm each draft scenario"
+      },
+      "correct": "D",
+      "key_concept": "Risk scenarios are validated by the business owners of the processes they affect before they are rated.",
+      "pre_read": "Notice who was in the room when the scenarios were drafted.",
+      "correct_explanation": "Scenarios must be confirmed by the people who own the business impact before they are rated; here no claims manager has seen them, so their events, impacts and existing controls are unvalidated. Asking internal audit is the runner-up: independent review sounds rigorous, but audit is the third line and gives assurance later; it cannot supply the claims owners' knowledge of what each scenario would mean for the business.",
+      "wrong_explanations": {
+        "A": "Internal audit gives independent assurance on the process later; it does not replace the claims owners, who know the business impact.",
+        "B": "Rating before validation builds ratings on unconfirmed scenarios; sharing them afterwards informs the owners instead of drawing on what they know.",
+        "C": "A vendor library is a useful starting point for drafting, but it cannot confirm that these scenarios fit this insurer's claims business."
+      },
+      "tips": [
+        "Eliminate: B rates before anyone from the business has checked the scenarios, and C compares them with a generic library that cannot speak for this business.",
+        "Final two: D beats A because the first line, which owns the business impact, validates scenarios; internal audit's independent assurance comes later.",
+        "Exam cue: scenarios drafted without the business are validated by the business process owners before they are rated."
+      ],
+      "framework_ref": "ISACA Glossary (risk scenario); ISACA Journal 2018 Volume 4 (Roles of Three Lines of Defense for Information Security and Governance)",
+      "related_concepts": [
+        "Scenario validation",
+        "Lines of defense",
+        "Process owner"
+      ],
+      "_provenance": "Authored from concept: notes 2A4.3 (Validating Scenarios and Tabletop Exercises). Round 3, 4 Nov 2026: original scenario of an insurer's claims platform scenarios drafted in an IT-only workshop written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used; checked against the CRISC, CISA, CC and AAIA banks for mirrored scenarios.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d2_056",
+      "domain": 2,
+      "subtopic": "2B1 Risk assessment concepts and standards. Likelihood of an adversarial threat",
+      "principle_id": "priority-word-decides",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "A risk analyst at a city transit agency is rating how likely a hacktivist group is to deface the agency's journey-planner website. Which of the following should MOST inform the likelihood rating?",
+      "options": {
+        "A": "The group's capability, intent and choice of targets",
+        "B": "The agency's own count of past website defacement incidents",
+        "C": "The cost to the agency of a day of defaced journey pages",
+        "D": "The CVSS score of the website platform's worst open flaw"
+      },
+      "correct": "A",
+      "key_concept": "The likelihood of an adversarial threat event rests on the adversary's capability, intent and targeting, not mainly on past incidents.",
+      "pre_read": "Identify what kind of threat source the scenario involves.",
+      "correct_explanation": "For an adversarial threat, likelihood rests on the adversary: whether the group can carry out the attack, whether it wants to, and whether it is choosing targets like this agency. The agency's own defacement history is the runner-up; history is the main input for accidental, structural and environmental threats, but an adversary's past absence says little about its intent now.",
+      "wrong_explanations": {
+        "B": "History suits non-adversarial threats; an agency never defaced before can still be chosen next by a group with the intent and capability.",
+        "C": "The cost of defaced pages is impact, the other half of risk; it does not tell the analyst how likely the attack is.",
+        "D": "The flaw's severity score describes the weakness, not whether this group will try to use it, and is not a likelihood rating."
+      },
+      "tips": [
+        "Eliminate: C measures impact rather than likelihood, and D rates a flaw's technical severity, not the group's chance of acting.",
+        "Final two: A beats B because adversarial likelihood turns on the actor's capability, intent and targeting; history fits accidental and natural threats better.",
+        "Exam cue: for a deliberate attacker, rate likelihood from capability, intent and targeting; for other threat sources, use history and data."
+      ],
+      "framework_ref": "NIST SP 800-30 Rev. 1 Section 2.3.1 (Risk Models: adversarial likelihood is based on intent, capability and targeting)",
+      "related_concepts": [
+        "Likelihood",
+        "Threat source",
+        "Adversarial threat"
+      ],
+      "_provenance": "Authored from concept: notes 2B1.1 (Likelihood, Impact and Risk). Round 3, 4 Nov 2026: original scenario of a city transit agency rating a hacktivist defacement of its journey planner written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used; checked against the CRISC, CISA, CC and AAIA banks for mirrored scenarios.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d2_057",
+      "domain": 2,
+      "subtopic": "2B1 Risk assessment concepts and standards. Missing vendor evidence",
+      "principle_id": "report-for-the-decision",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "During a payroll outsourcing risk assessment at a fitness club chain, the vendor refuses to share its control audit report; signing is due next month. What is the risk practitioner's BEST action?",
+      "options": {
+        "A": "Report the missing evidence and how it limits the rating",
+        "B": "Rate the vendor's controls as effective pending evidence",
+        "C": "Pause the assessment until the vendor shares its report",
+        "D": "Accept the vendor's verbal assurance about its controls"
+      },
+      "correct": "A",
+      "key_concept": "When an assessment cannot obtain key information, it states the constraint and its effect on confidence so the decision maker knows the gap.",
+      "pre_read": "Notice when the decision will be made and what is unknown.",
+      "correct_explanation": "The owner must decide on the contract within a month, so the assessment should go ahead with the gap stated: what could not be verified and how much that lowers confidence in the vendor's rating. The owner can then sign, require the report or look elsewhere. Pausing is the runner-up: it avoids an unsupported rating, but it leaves the owner deciding with no assessment at all.",
+      "wrong_explanations": {
+        "B": "Crediting controls nobody has seen evidence for overstates their effect; an unverified control earns little or no credit in the rating.",
+        "C": "The vendor has already refused, so the pause may never end, and signing goes ahead next month without the assessment the owner needs.",
+        "D": "A verbal assurance is not evidence that controls operate; relying on it hides the gap from the owner who must decide."
+      },
+      "tips": [
+        "Eliminate: B and D credit controls nobody has seen evidence for, which overstates their effect on the rating.",
+        "Final two: A beats C because the decision will be made next month either way; a stated limitation informs it, while a paused assessment leaves the owner nothing.",
+        "Exam cue: when information is missing, state the constraint and its effect on confidence; decision makers need the gap, not silence."
+      ],
+      "framework_ref": "NIST SP 800-30 Rev. 1 Section 3.1 Task 1-3 (Identify Assumptions and Constraints: uncertainty in assumptions and information is considered); NIST SP 800-30 Rev. 1 Section 3.3 (Communicating and Sharing Risk Assessment Information)",
+      "related_concepts": [
+        "Assumptions and constraints",
+        "Uncertainty",
+        "Third-party risk"
+      ],
+      "_provenance": "Authored from concept: notes 2B1.2 (The Risk Assessment Process and Scope). Round 3, 4 Nov 2026: original scenario of a fitness club chain's payroll outsourcing assessment in which the vendor withholds its control audit report written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used; checked against the CRISC, CISA, CC and AAIA banks for mirrored scenarios.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d2_058",
+      "domain": 2,
+      "subtopic": "2B1 Risk assessment concepts and standards. Step after rating",
+      "principle_id": "final-two",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A risk analyst has rated a grocery chain's loyalty-data theft scenario as high on the agreed scales. What should the analyst do FIRST?",
+      "options": {
+        "A": "Recommend controls to bring the scenario's rating down",
+        "B": "Compare the rating with the agreed risk criteria and appetite",
+        "C": "Report the scenario to the board as above appetite",
+        "D": "Ask the loyalty program owner to choose a response"
+      },
+      "correct": "B",
+      "key_concept": "After analysis, risk evaluation compares the rating with agreed criteria and appetite to decide whether a response is needed.",
+      "pre_read": "Place the analyst's work in the assessment sequence.",
+      "correct_explanation": "Analysis gives a rating; evaluation then sets it against the agreed risk criteria and appetite to decide whether the risk is acceptable, needs a response and how urgently. Asking the owner to choose a response is the runner-up; the owner does decide, but until evaluation shows whether a response is needed and how urgent it is, the owner has nothing to decide on.",
+      "wrong_explanations": {
+        "A": "Recommending controls jumps to treatment before evaluation has shown whether the rating is beyond what the chain accepts.",
+        "C": "Nothing yet shows the risk is above appetite; reporting it to the board before evaluation could misstate it and bypasses the owner.",
+        "D": "The owner decides the response, but only after evaluation shows whether one is needed and how urgently."
+      },
+      "tips": [
+        "Eliminate: A recommends treatment and C reports a breach before the rating has been compared with criteria and appetite.",
+        "Final two: B beats D because evaluation comes first and informs the owner's choice; without it the owner does not know whether a response is needed.",
+        "Exam cue: identify, analyze, evaluate, then respond; when a rating is new, compare it with criteria and appetite before anyone treats it."
+      ],
+      "framework_ref": "ISACA Glossary (risk evaluation); NIST IR 8286 Rev. 1 Section 2.1 (Overview of ERM: risk appetite and risk tolerance)",
+      "related_concepts": [
+        "Risk evaluation",
+        "Risk criteria",
+        "Risk appetite"
+      ],
+      "_provenance": "Authored from concept: notes 2B1.2 (The Risk Assessment Process and Scope). Round 3, 4 Nov 2026: original scenario of a grocery chain's newly rated loyalty-data theft scenario awaiting evaluation written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used; checked against the CRISC, CISA, CC and AAIA banks for mirrored scenarios.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d2_059",
+      "domain": 2,
+      "subtopic": "2B2 Business impact analysis (BIA). When a process becomes critical",
+      "principle_id": "objectives-first",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "Which of the following BEST shows the risk practitioner when a social security agency's benefit payment process becomes critical during an outage?",
+      "options": {
+        "A": "Impact estimates at set intervals of outage time",
+        "B": "The largest single-day loss the process could suffer",
+        "C": "IT's tested restore time for the payment system",
+        "D": "The yearly likelihood of a payment system outage"
+      },
+      "correct": "A",
+      "key_concept": "A BIA shows when a process becomes critical by measuring how its impact grows over intervals of outage time.",
+      "pre_read": "Notice exactly what the practitioner wants to learn.",
+      "correct_explanation": "A BIA shows how harm grows as an outage lengthens, by asking process owners what happens after one hour, one day, one week and so on; the point where impact turns severe shows when the process becomes critical and informs its MTO. The largest single-day loss is the runner-up; it shows size, but one figure cannot show when harm becomes intolerable.",
+      "wrong_explanations": {
+        "B": "A single worst-day figure gives the size of the loss but not its timing; criticality depends on when harm becomes intolerable.",
+        "C": "A restore time shows what IT can deliver, not when the business can no longer cope; it is checked against the BIA, not used to set it.",
+        "D": "A BIA assumes the outage happens; likelihood belongs in the risk assessment, not in judging when the process becomes critical."
+      },
+      "tips": [
+        "Eliminate: C measures IT's recovery capability rather than business harm, and D brings in likelihood, which a BIA does not estimate.",
+        "Final two: A beats B because criticality depends on how impact grows over time; a single largest loss shows size but not timing.",
+        "Exam cue: in a BIA, look for impact over time from the business; that is what sets MTO and recovery priorities."
+      ],
+      "framework_ref": "ISACA Glossary (business impact analysis); NIST SP 800-34 Rev. 1 Section 3.2.1 (Determine Business Processes and Recovery Criticality: MTD, RTO and RPO)",
+      "related_concepts": [
+        "Business impact analysis (BIA)",
+        "Impact over time",
+        "Maximum tolerable outage (MTO)"
+      ],
+      "_provenance": "Authored from concept: notes 2B2.1 (BIA Purpose, Dependencies and AI Systems). Round 3, 4 Nov 2026: original scenario of a social security agency's BIA for benefit payments written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used; checked against the CRISC, CISA, CC and AAIA banks for mirrored scenarios.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d2_060",
+      "domain": 2,
+      "subtopic": "2B3 Risk register. Owner field held by IT",
+      "principle_id": "match-decision-to-role",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A SaaS provider's IT security team maintains its risk register and is named as risk owner on all 60 entries, including customer churn after outages. What should the risk practitioner recommend as BEST?",
+      "options": {
+        "A": "Keep IT security as owner while it maintains the register",
+        "B": "Split the entries among IT team leads by business area",
+        "C": "Propose business owners for senior management to assign",
+        "D": "Move ownership of the entries to the risk function"
+      },
+      "correct": "C",
+      "key_concept": "Register entries need accountable business owners, proposed by the risk function and assigned by senior management, not IT or the risk team.",
+      "pre_read": "Ask who carries the losses the entries describe.",
+      "correct_explanation": "A risk owner must be an accountable business manager with authority over the response and the losses, such as whoever answers for customer retention. The risk function proposes suitable owners and senior management assigns them. Moving ownership to the risk function is the runner-up: it takes risk away from IT, but the second line maintains the register and challenges; it cannot own the business's risks.",
+      "wrong_explanations": {
+        "A": "Maintaining the register is an administrative role; it gives IT security no authority over business losses such as customer churn.",
+        "B": "IT team leads may own controls, but they cannot decide responses for business losses outside their authority.",
+        "D": "The risk function facilitates and challenges as the second line; owning the entries would leave it deciding responses it should only advise on."
+      },
+      "tips": [
+        "Eliminate: A confuses maintaining the register with owning risk, and B gives business losses to IT leads, who own controls rather than those outcomes.",
+        "Final two: C beats D because the second line advises and maintains the register; owners come from the business, assigned by senior management.",
+        "Exam cue: a risk owner is the business manager who carries the loss and can fund the response; IT and the risk function support."
+      ],
+      "framework_ref": "ISACA Glossary (risk owner); NIST IR 8286 Rev. 1 Section 3 Table 1 (Descriptions of notional cybersecurity risk register template elements); NIST CSF 2.0 GV.RR-02 (roles, responsibilities and authorities related to cybersecurity risk management are established, communicated, understood and enforced)",
+      "related_concepts": [
+        "Risk owner",
+        "Risk register",
+        "Lines of defense"
+      ],
+      "_provenance": "Authored from concept: notes 2B3.1 (Register Fields and Ownership). Round 3, 4 Nov 2026: original scenario of a SaaS provider whose IT security team is named risk owner on every register entry written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used; checked against the CRISC, CISA, CC and AAIA banks for mirrored scenarios.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d2_061",
+      "domain": 2,
+      "subtopic": "2B3 Risk register. Entry for a new AI system",
+      "principle_id": "emerging-and-ai-risk-owned",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A hotel group's AI room-pricing tool went live last month with no loss history, and its vendor discloses little. Which of the following MOST belongs in the risk practitioner's new register entry?",
+      "options": {
+        "A": "An ALE estimate built from vendor benchmark data",
+        "B": "A stated level of uncertainty in its rating",
+        "C": "The accuracy score from the vendor's launch testing",
+        "D": "A low rating until a first loss event is recorded"
+      },
+      "correct": "B",
+      "key_concept": "A new AI risk with little data is recorded early with its uncertainty stated, so the rating is not mistaken for precise knowledge.",
+      "pre_read": "Weigh how much is actually known about this system.",
+      "correct_explanation": "With no loss history and little vendor information, any rating of the new tool is a judgment with wide uncertainty. Stating that uncertainty tells the owner how much weight the rating can bear and supports an early review as production evidence arrives. The vendor's launch accuracy score is the runner-up: it is real evidence, but it measures performance in testing, not exposure in the hotel group's pricing.",
+      "wrong_explanations": {
+        "A": "Benchmarks from other firms turned into one ALE figure suggest precision the data cannot support for a newly launched system.",
+        "C": "Launch accuracy shows how the model did in testing, not how wrong prices would affect revenue or guests in production.",
+        "D": "Waiting for a first loss leaves the exposure already present unrated and treats missing history as low likelihood."
+      },
+      "tips": [
+        "Eliminate: A gives a precise figure the data cannot support, and D treats missing loss history as evidence that the risk is low.",
+        "Final two: B beats C because the rating is a judgment with wide uncertainty that must be stated; launch accuracy is test evidence, not business exposure.",
+        "Exam cue: for a new or emerging risk, record it early with stated uncertainty and an owner, and review it soon."
+      ],
+      "framework_ref": "ISACA Glossary (risk register); NIST SP 800-30 Rev. 1 Section 2.3.1 (Risk Models: uncertainty can be communicated by giving ranges of values rather than single values); NIST AI 100-1 (AI RMF 1.0) MEASURE 2.4 (the functionality and behavior of the AI system are monitored when in production)",
+      "related_concepts": [
+        "Emerging risk",
+        "Uncertainty",
+        "AI system in the register"
+      ],
+      "_provenance": "Authored from concept: notes 2B3.2 (Keeping the Register Current). Round 3, 4 Nov 2026: original scenario of a hotel group's newly launched AI room-pricing tool with no loss history written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used; checked against the CRISC, CISA, CC and AAIA banks for mirrored scenarios.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d2_062",
+      "domain": 2,
+      "subtopic": "2B3 Risk register. Ratings that judge a plan",
+      "principle_id": "report-for-the-decision",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "City council members ask whether the treatment plans in the IT risk register will bring each risk within appetite once completed. Which register field should the risk practitioner use to BEST answer them?",
+      "options": {
+        "A": "The current rating, with the controls in place today",
+        "B": "The target rating each planned response is set to reach",
+        "C": "The inherent rating, before any controls are counted",
+        "D": "The status of each action plan against its due date"
+      },
+      "correct": "B",
+      "key_concept": "Whether a treatment plan is enough is judged on its target risk, the Glossary's future residual risk, compared with appetite.",
+      "pre_read": "Notice the point in time the members are asking about.",
+      "correct_explanation": "The members want to know where each risk will land when its plan is done, which is the target, or future residual, risk the plan is designed to reach. Comparing that rating with appetite shows whether each plan is enough. The current rating is the runner-up: it is the right figure for today's position against appetite, but it cannot show where a plan will take the risk.",
+      "wrong_explanations": {
+        "A": "Current risk shows today's exposure and is compared with appetite now; it does not show where a completed plan would leave each risk.",
+        "C": "Inherent risk ignores all controls and responses, so it cannot show the effect of any treatment plan.",
+        "D": "Action status shows progress against dates, not the level of risk the finished plan will leave."
+      },
+      "tips": [
+        "Eliminate: C leaves out every response by definition, so it cannot show a plan's effect, and D tracks progress dates rather than any risk level.",
+        "Final two: B beats A because the question is about the plans once complete; current risk answers where the risk stands today.",
+        "Exam cue: today's position against appetite is current risk; whether a plan is enough is judged on its target, or future residual, risk."
+      ],
+      "framework_ref": "ISACA Glossary (risk response); NIST IR 8286 Rev. 1 Section 3 Table 1 (Descriptions of notional cybersecurity risk register template elements)",
+      "related_concepts": [
+        "Target risk",
+        "Future residual risk",
+        "Current risk"
+      ],
+      "_provenance": "Authored from concept: notes 2B3.1 (Register Fields and Ownership). Round 3, 4 Nov 2026: original scenario of city council members asking whether register treatment plans will be enough written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used; checked against the CRISC, CISA, CC and AAIA banks for mirrored scenarios.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d2_063",
+      "domain": 2,
+      "subtopic": "2B5 Inherent and residual risk. Review threshold and fraud losses",
+      "principle_id": "residual-counts-working-controls",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "An electronics retailer's fraud team reviews every refund over $5,000 each day, as logs confirm, but most refund fraud losses come from refunds under $500. How should the risk practitioner BEST assess the review?",
+      "options": {
+        "A": "Effective in both design and operation",
+        "B": "Effective in operation but not in design",
+        "C": "Effective in design but not in operation",
+        "D": "Not ratable until its operation is tested"
+      },
+      "correct": "B",
+      "key_concept": "A control that operates as designed but does not address the scenario's cause is ineffective in design and earns little residual credit.",
+      "pre_read": "Compare what the review checks with where the losses arise.",
+      "correct_explanation": "The logs show the review runs as intended, so it operates effectively, but its $5,000 threshold leaves out the small refunds where most fraud losses arise, so its design does not address the scenario's cause. It should earn little credit in the residual rating. Waiting for an operating test is the runner-up: a test adds assurance on operation, but no test result can fix a design that misses the losses.",
+      "wrong_explanations": {
+        "A": "The review runs daily, but it looks only at refunds over $5,000 while most fraud losses come from refunds under $500.",
+        "C": "The logs show the review is performed each day; its weakness is what it was designed to look at, not how it runs.",
+        "D": "Operating evidence already exists in the logs; more testing would not change that the threshold misses most losses."
+      },
+      "tips": [
+        "Eliminate: A overlooks the threshold that misses most losses, and C reverses the finding, since the logs show the review runs as designed.",
+        "Final two: B beats D because design is judged first; an operating test of a control aimed at the wrong refunds cannot earn it credit.",
+        "Exam cue: check design before operation; a control that runs perfectly against the wrong cause earns little credit in residual risk."
+      ],
+      "framework_ref": "ISACA Glossary (design effectiveness); ISACA Glossary (residual risk); COBIT 2019 APO12.02 (Analyze Risk)",
+      "related_concepts": [
+        "Design effectiveness",
+        "Operating effectiveness",
+        "Residual risk"
+      ],
+      "_provenance": "Authored from concept: notes 2B5.2 (Control Effectiveness and the Residual Gap). Round 3, 4 Nov 2026: original scenario of an electronics retailer's refund review whose threshold misses where fraud losses arise written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used; checked against the CRISC, CISA, CC and AAIA banks for mirrored scenarios.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d2_064",
+      "domain": 2,
+      "subtopic": "2B5 Inherent and residual risk. Request for zero residual risk",
+      "principle_id": "residual-counts-working-controls",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "After a car rental company tokenized the card numbers it stores, the payments manager asks the risk analyst to record the card-data theft scenario's residual risk as zero. What is the analyst's BEST response?",
+      "options": {
+        "A": "Rate the residual risk that tokenization still leaves",
+        "B": "Record zero residual risk with the manager's sign-off",
+        "C": "Close the scenario and keep its entry as history",
+        "D": "Ask internal audit to confirm the risk is eliminated"
+      },
+      "correct": "A",
+      "key_concept": "Residual risk is never zero; after a strong response the practitioner rates what remains rather than recording or closing it as gone.",
+      "pre_read": "Ask what could still go wrong after the change.",
+      "correct_explanation": "Tokenization cuts the exposure of stored card numbers, but some risk remains, such as card data captured at the point of entry or misuse of the token system. Residual risk is never zero, so the analyst rates what is left on the usual scales for the owner to weigh against appetite. Asking internal audit is the runner-up: assurance may follow, but no review can confirm a zero that does not exist.",
+      "wrong_explanations": {
+        "B": "A sign-off cannot make residual risk zero; recording it would hide the exposure that remains from the owner and the risk profile.",
+        "C": "Closing the scenario treats the risk as gone; it remains live at a lower level and still needs rating and monitoring.",
+        "D": "Audit gives independent assurance later; it cannot confirm that a risk has been removed when some residual risk always remains."
+      },
+      "tips": [
+        "Eliminate: B and C both treat the risk as gone, one by recording zero and one by closing the scenario; residual risk is never zero.",
+        "Final two: A beats D because the analyst's job is to rate what remains; independent assurance cannot confirm a zero that cannot exist.",
+        "Exam cue: after any response, expect some residual risk; rate it and compare it with appetite rather than closing the risk."
+      ],
+      "framework_ref": "ISACA Glossary (residual risk); NIST IR 8286 Rev. 1 Section 3.5.2 (Responding to Residual Risk)",
+      "related_concepts": [
+        "Residual risk",
+        "Tokenization",
+        "Risk monitoring"
+      ],
+      "_provenance": "Authored from concept: notes 2B5.1 (Inherent, Current and Residual Risk). Round 3, 4 Nov 2026: original scenario of a car rental company's payments manager asking for zero residual risk after tokenization written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used; checked against the CRISC, CISA, CC and AAIA banks for mirrored scenarios.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d2_065",
+      "domain": 2,
+      "subtopic": "2B5 Inherent and residual risk. Two scales in one unit",
+      "principle_id": "appetite-drives-response",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "A mining company's risk analyst finds that one business unit rates inherent risk on the enterprise scale but residual risk with a vendor tool's own 0–100 scores. Which of the following is the GREATEST concern?",
+      "options": {
+        "A": "The enterprise scale is less precise than the tool's scores",
+        "B": "The tool's 0–100 scores are hard to show on a heat map",
+        "C": "The inherent-to-residual gap no longer shows control effect",
+        "D": "Residual ratings cannot be set against the risk appetite"
+      },
+      "correct": "D",
+      "key_concept": "Inherent and residual risk use the enterprise's common scale, so residual risk can be compared with appetite and the controls' effect seen.",
+      "pre_read": "Ask which decision depends on the unit's residual ratings.",
+      "correct_explanation": "Appetite is expressed on the enterprise's common scale, so residual scores on a vendor's private 0–100 scale cannot show whether the unit's risks are within appetite, and owners cannot decide whether to accept or treat them. The lost inherent-to-residual gap is the runner-up: it hides how much the controls reduce risk, but the decision that rests on residual risk is the comparison with appetite.",
+      "wrong_explanations": {
+        "A": "Finer-grained scores are not more correct; the enterprise scale, with defined levels, is the common term every unit's ratings must use.",
+        "B": "Any scale can be binned onto a heat map; display is a minor issue beside the decisions the ratings must support.",
+        "C": "The lost gap hides how much the controls reduce risk, but the owner's accept-or-treat decision rests on comparing residual risk with appetite."
+      },
+      "tips": [
+        "Eliminate: A treats finer vendor scores as better than defined enterprise levels, and B is a display issue, since any scale can be binned onto a map.",
+        "Final two: D beats C because the accept-or-treat decision rests on residual risk against appetite; the lost gap matters less than that lost comparison.",
+        "Exam cue: inherent and residual risk must use the enterprise's common scale; otherwise residual risk cannot be compared with appetite."
+      ],
+      "framework_ref": "NIST IR 8286C Rev. 1 Section 2.2 (Normalization of Cybersecurity Risk Registers: the same rating criteria enable comparison and tracking); NIST SP 800-30 Rev. 1 Section 2.3.2 (Assessment Approaches: semi-quantitative bins and scales have meaning only within the assessment); NIST IR 8286 Rev. 1 Section 2.1 (Overview of ERM: risk appetite and risk tolerance)",
+      "related_concepts": [
+        "Residual risk",
+        "Normalization",
+        "Risk appetite"
+      ],
+      "_provenance": "Authored from concept: notes 2B5.1 (Inherent, Current and Residual Risk). Round 3, 4 Nov 2026: original scenario of a mining company unit that rates inherent and residual risk on different scales written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used; checked against the CRISC, CISA, CC and AAIA banks for mirrored scenarios.",
       "style_version": 2
     }
   ]

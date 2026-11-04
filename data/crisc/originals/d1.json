@@ -1671,6 +1671,931 @@
       ],
       "_provenance": "Authored from concept: Round 2, 31 Oct 2026: authored from notes 1B5.2 (Compliance Obligations as a Source of Risk: new rules trigger an impact assessment before their effective date; trap, relying on the AI vendor's statement); original staffing agency AI applicant screening under a new law scenario written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D1 round 2. Parity finish 31 Oct 2026: priority word changed from FIRST to BEST (stem trimmed to fit), since the key does not rest on sequence (no option is a right later step), keeping the domain's assess-type FIRST keys within about 60%; key B, options, explanations and tips unchanged and re-read for fit. Close 31 Oct 2026: US spelling 'Canceling' in explanation D; key B, options, other explanations and tips unchanged.",
       "style_version": 2
+    },
+    {
+      "id": "crisc_d1_046",
+      "domain": 1,
+      "subtopic": "1A3 Organizational culture and ethics. Gauging risk culture",
+      "principle_id": "evidence-before-credit",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "Which of the following would give the risk practitioner the BEST insight into a freight forwarder's risk culture?",
+      "options": {
+        "A": "The share of staff who completed this year's awareness course",
+        "B": "The number of risk policies senior management approved this year",
+        "C": "How managers respond when staff report control failures",
+        "D": "The share of staff who signed the code of conduct"
+      },
+      "correct": "C",
+      "key_concept": "Risk culture shows in behavior, especially how leaders react when problems are reported, not in counts of training or policies.",
+      "pre_read": "Ask which option shows how people behave when risk comes to the surface.",
+      "correct_explanation": "Risk culture is the behavior that shared beliefs about risk produce, so the best sign is what people do when risk surfaces. How managers respond to reported control failures, with thanks and follow-up or with blame, shows whether staff will keep raising issues. Course completion is the runner-up: it shows that people sat the training, not whether they speak up or are heard when they do.",
+      "wrong_explanations": {
+        "A": "Completion shows attendance, not behavior. Staff can finish the course and still hide problems if raising them is punished.",
+        "B": "A count of approved policies measures paperwork. Culture shows in how people act on risk, which policies alone do not change.",
+        "D": "A signature shows acknowledgment, not conduct. Staff can sign the code and still stay silent about failures."
+      },
+      "tips": [
+        "Eliminate: B and D measure documents and signatures, which show that rules exist, not how people behave around risk.",
+        "Final two: C beats A because how managers treat reported failures shows the culture in action, while course completion only shows attendance.",
+        "Exam cue: to judge risk culture, look for behavior when risk surfaces, such as reporting and how leaders react, over counts of courses or policies."
+      ],
+      "framework_ref": "ISACA Glossary (risk culture); NIST SP 800-39 Section 2.7 (Organizational Culture)",
+      "related_concepts": [
+        "Risk culture",
+        "Culture assessment",
+        "Speaking up"
+      ],
+      "_provenance": "Authored from concept: notes 1A3.1 (Risk Culture and Tone at the Top: culture is assessed through reporting behavior and how leaders respond; trap, awareness training as the main lever). Round 3, 4 Nov 2026: original scenario of gauging a freight forwarder's risk culture written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d1_047",
+      "domain": 1,
+      "subtopic": "1A1 Strategy, goals and objectives. New IT goal",
+      "principle_id": "objectives-first",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "A university's IT department has made rollout of a new identity platform its top goal for the year. Which of the following should the risk practitioner establish FIRST when assessing risk to this goal?",
+      "options": {
+        "A": "The security goals the new platform is designed to meet",
+        "B": "The enterprise goals the new platform is meant to serve",
+        "C": "The project budget and timeline approved for the rollout",
+        "D": "The systems that will connect to the new platform"
+      },
+      "correct": "B",
+      "key_concept": "IT goals are means: assess risk to an IT goal through the enterprise goal it serves in the goals cascade.",
+      "pre_read": "Read the priority word, then ask which piece of information every later step of the analysis depends on.",
+      "correct_explanation": "In the COBIT 2019 goals cascade, IT goals serve enterprise goals, so risk to an IT goal matters through its effect on the business goal above it. Knowing those enterprise goals, such as student access or research data protection, tells the practitioner what a late or failed rollout would harm. The platform's security goals are the runner-up: they are IT-level means and cannot be weighed until the business goals they support are known.",
+      "wrong_explanations": {
+        "A": "Security goals are IT-level means. Without the enterprise goals above them, there is no basis to judge how much a shortfall would matter.",
+        "C": "Budget and timeline matter for project risk, but they are judged against what the rollout must deliver for the university.",
+        "D": "The connected systems define technical scope. They enter the analysis once the business goals at stake are known."
+      },
+      "tips": [
+        "Eliminate: C and D are project and technical details that the analysis uses later, once it knows what the rollout must achieve.",
+        "Final two: B beats A because security goals are IT means in the goals cascade; their risk is judged by the enterprise goals they serve.",
+        "Exam cue: when an IT goal or project appears, trace it up to the enterprise goal first; risk is reported through that goal."
+      ],
+      "framework_ref": "COBIT 2019 APO02 (Managed Strategy); NIST CSF 2.0 GV.OC-01 (the organizational mission is understood and informs cybersecurity risk management)",
+      "related_concepts": [
+        "Goals cascade",
+        "Enterprise goal",
+        "Alignment goal"
+      ],
+      "_provenance": "Authored from concept: notes 1A1.2 (The Goals Cascade and Strategic Change: IT goals are means, assessed and reported through the enterprise goals they serve; trap, IT goals pursued for their own sake). Round 3, 4 Nov 2026: original scenario of a university IT department's identity platform goal written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d1_048",
+      "domain": 1,
+      "subtopic": "1A6 Organizational asset management. Unrecorded AI training data",
+      "principle_id": "emerging-and-ai-risk-owned",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A retailer's data science team built a three-year sales dataset to train the pricing department's AI model, but it is missing from the asset inventory. What should the risk practitioner do FIRST?",
+      "options": {
+        "A": "Assess the dataset's exposure where it is stored",
+        "B": "Record the data science team as the dataset's owner",
+        "C": "Encrypt the storage that holds the dataset",
+        "D": "Identify a business owner for the dataset"
+      },
+      "correct": "D",
+      "key_concept": "AI training datasets are assets: give each a business owner first, since classification and risk decisions depend on ownership.",
+      "pre_read": "Sort the options into steps, then find the one the other steps rely on.",
+      "correct_explanation": "Classification, valuation and risk acceptance all depend on who owns an asset, so the first step for an unrecorded dataset is to identify its business owner, likely in the pricing department the model serves. With an owner, the dataset can be classified, recorded and assessed. Assessing exposure is the runner-up: without an owner to set the data's classification, there is no agreed basis for rating the exposure and no one to decide on it.",
+      "wrong_explanations": {
+        "A": "Exposure can be rated once the dataset is classified, and its owner is the one who classifies it and decides on the risk.",
+        "B": "Building a dataset makes the data science team its developer or custodian, not its owner. Ownership sits with the business that relies on it.",
+        "C": "Encryption is a control chosen before the data is classified or its risk analyzed, so it may not fit what the data needs."
+      },
+      "tips": [
+        "Eliminate: B confuses the team that built the dataset with its business owner, and C picks a control before the data is classified or analyzed.",
+        "Final two: D beats A because the owner classifies the dataset and decides on its risk; rating the exposure needs that basis first.",
+        "Exam cue: for an asset missing from the inventory, AI datasets included, establish the business owner first; classification and risk rating follow."
+      ],
+      "framework_ref": "NIST CSF 2.0 ID.AM-07 (inventories of data and corresponding metadata for designated data types are maintained); NIST AI 100-1 (AI RMF 1.0) GOVERN 1.6 (mechanisms are in place to inventory AI systems)",
+      "related_concepts": [
+        "Training data",
+        "Asset owner",
+        "AI asset inventory"
+      ],
+      "_provenance": "Authored from concept: notes 1A6.3 (Cloud, SaaS and AI Assets in the Inventory: datasets used to train AI are assets with a classification and an owner, and getting them into the inventory comes before assessing their risk) and 1A6.1 (ownership comes first). Round 3, 4 Nov 2026: original scenario of a retailer's unrecorded AI pricing dataset written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d1_049",
+      "domain": 1,
+      "subtopic": "1B2 Lines of defense. Blocked risk reporting",
+      "principle_id": "lines-of-defense",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "At a retailer, the CRO reports to the CFO, who has twice cut high-rated finance system risks from reports bound for the board. What is the BEST structural change for the risk practitioner to recommend?",
+      "options": {
+        "A": "Move the risk function under internal audit",
+        "B": "Give the CRO direct access to the board risk committee",
+        "C": "Have the CFO sign off each report's risk ratings",
+        "D": "Have internal audit vet each report before the board"
+      },
+      "correct": "B",
+      "key_concept": "The second line sits within management but needs an escalation route to the board that executives cannot block.",
+      "pre_read": "Notice who controls the risk function's reporting line today.",
+      "correct_explanation": "The second line sits within management but needs an escalation route that management cannot block. Direct access from the CRO to the board risk committee lets significant risks reach the board even when a senior executive objects, which removes the cause of the omissions. Having internal audit vet each report is the runner-up: it adds a check, but approving management's reports is a management duty that would weaken audit's independence.",
+      "wrong_explanations": {
+        "A": "Placing the risk function under internal audit merges the second and third lines, so audit would be assuring work it runs.",
+        "C": "A CFO sign-off makes official the very filter that removed the risks, giving the CFO more control over what the board sees.",
+        "D": "Vetting management's risk reports is a management duty. Audit would lose independence, and the CRO would still have no route of its own."
+      },
+      "tips": [
+        "Eliminate: A merges the second line into internal audit, and C makes the CFO's filter official instead of removing it.",
+        "Final two: B beats D because the second line needs its own escalation route to the board; vetting reports pulls internal audit into management work.",
+        "Exam cue: when management can block the second line's reporting, look for a direct escalation path to the board, not another approval step."
+      ],
+      "framework_ref": "ISACA Journal 2018 Volume 4 (Roles of Three Lines of Defense for Information Security and Governance); NIST CSF 2.0 GV.RR-02 (roles, responsibilities and authorities related to cybersecurity risk management are established, communicated, understood and enforced)",
+      "related_concepts": [
+        "Escalation right",
+        "Functional reporting",
+        "Second line"
+      ],
+      "_provenance": "Authored from concept: notes 1B2.2 (Independence, Challenge and Coordination Across Lines: the second line sits within management with its own reporting line to the CRO and access to the board; independence is the third line's defining need). Round 3, 4 Nov 2026: original scenario of a retailer's CFO filtering board risk reports written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d1_050",
+      "domain": 1,
+      "subtopic": "1A4 Policies and standards. Procedure change against a standard",
+      "principle_id": "advise-dont-decide",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "At a bank, the access control standard requires quarterly access reviews, and the team that owns the review procedure wants to rewrite it to run the reviews yearly. What is the risk practitioner's BEST advice?",
+      "options": {
+        "A": "Accept a yearly cycle if the team logs an exception",
+        "B": "Let the procedure's owner set the review frequency",
+        "C": "Move the review frequency into a guideline",
+        "D": "Refer the change to the standard's owner to decide"
+      },
+      "correct": "D",
+      "key_concept": "A procedure carries out a standard and cannot relax it; changing a mandatory requirement is a decision for the standard's owner.",
+      "pre_read": "Place each document in the policy hierarchy before reading the options.",
+      "correct_explanation": "A procedure sets out the steps for meeting a standard, so it cannot relax what the standard requires. Moving from quarterly to yearly reviews changes the standard itself, which its owner decides, informed by the practitioner's analysis of what a longer cycle would add to risk. Letting the procedure's owner set the frequency is the runner-up: the team owns its steps, but not the mandatory requirement those steps exist to meet.",
+      "wrong_explanations": {
+        "A": "An exception covers a specific, time-limited gap approved by the risk owner. It is not a way to rewrite a requirement, and the practitioner does not accept it.",
+        "B": "Procedure owners control how the steps are done, not the mandatory requirement. A yearly cycle would quietly override the standard.",
+        "C": "Guidelines are advisory. Moving the frequency there would turn a mandatory control into a suggestion without anyone deciding on the risk."
+      },
+      "tips": [
+        "Eliminate: A uses an exception to make a permanent change, and C turns a mandatory requirement into advisory guidance.",
+        "Final two: D beats B because procedures must conform to standards; a team can change its steps but not the requirement they meet.",
+        "Exam cue: a lower layer of the policy hierarchy cannot override a higher one; a change to a requirement goes to the owner of that layer."
+      ],
+      "framework_ref": "ISACA Glossary (procedure); NIST CSF 2.0 GV.PO-01 (policy for managing cybersecurity risks is established based on organizational context, cybersecurity strategy and priorities and is communicated and enforced)",
+      "related_concepts": [
+        "Policy hierarchy",
+        "Standard",
+        "Procedure"
+      ],
+      "_provenance": "Authored from concept: notes 1A4.1 (The Policy Hierarchy: standards make policy measurable and are mandatory, procedures give the steps to meet a standard and are owned by the teams that perform them; trap, guidelines treated as mandatory). Round 3, 4 Nov 2026: original scenario of a bank team rewriting its access review procedure written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d1_051",
+      "domain": 1,
+      "subtopic": "1B1 Enterprise risk management (ERM). Same risk in two categories",
+      "principle_id": "rate-on-common-terms",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "At a retail group, one unit files card-data theft under technology risk and another under compliance, so the profile splits the exposure. Which of the following should the risk practitioner recommend as the BEST fix?",
+      "options": {
+        "A": "Merge the units' entries by hand at each quarterly roll-up",
+        "B": "Have IT own the card-data risks filed under technology",
+        "C": "Report each unit's categories to the board as filed",
+        "D": "Propose one group taxonomy for senior management approval"
+      },
+      "correct": "D",
+      "key_concept": "A shared risk taxonomy, approved by senior management, lets units record the same risk the same way so it rolls up whole.",
+      "pre_read": "Ask why the exposure splits, not only how to repair this one case.",
+      "correct_explanation": "The exposure splits because units sort the same risk into different categories, so the cause is a missing shared taxonomy. A group taxonomy, approved by senior management as part of the risk framework, lets every unit file the risk the same way and the profile show its full size. Merging entries by hand is the runner-up: it repairs this one risk at each roll-up but leaves the cause, and the next mismatch, in place.",
+      "wrong_explanations": {
+        "A": "A manual merge treats the symptom. Each roll-up depends on someone spotting mismatches, and other risks split the same way go unnoticed.",
+        "B": "Ownership follows the affected objective, not a category label. Card-data theft hits business and compliance objectives, so IT is not its natural owner.",
+        "C": "Reporting categories as filed passes the split to the board, which then sees the exposure understated in each category."
+      },
+      "tips": [
+        "Eliminate: B lets a category label decide ownership, and C passes the inconsistent categories straight to the board.",
+        "Final two: D beats A because a shared taxonomy removes the cause of the split; merging by hand repairs it one roll-up at a time.",
+        "Exam cue: when units' risks cannot be combined or compared, look for a common taxonomy or scale approved by senior management."
+      ],
+      "framework_ref": "NIST CSF 2.0 GV.RM-06 (a standardized method for calculating, documenting, categorizing and prioritizing cybersecurity risks is established and communicated); NIST IR 8286 Rev. 1 Section 3.8 (Creating and Maintaining an Enterprise-Level Cybersecurity Risk Register)",
+      "related_concepts": [
+        "Risk taxonomy",
+        "Aggregation",
+        "Enterprise risk register"
+      ],
+      "_provenance": "Authored from concept: notes 1B1.2 (Common Taxonomy and Rating Scales: the enterprise defines shared categories, approved by senior management as part of the framework, before risks are rolled up). Round 3, 4 Nov 2026: original scenario of a retail group's card-data risk filed under two categories written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d1_052",
+      "domain": 1,
+      "subtopic": "1A2 Organizational structure, roles and responsibilities. Two accountable names",
+      "principle_id": "match-decision-to-role",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A university's RACI chart lists both the CIO and the registrar as accountable for the risk of exam results being released in error. What is the risk practitioner's BEST recommendation?",
+      "options": {
+        "A": "Keep the CIO and the registrar jointly accountable",
+        "B": "Name the registrar accountable and the CIO responsible",
+        "C": "Name the CIO accountable and the registrar consulted",
+        "D": "Make the academic board accountable for the risk"
+      },
+      "correct": "B",
+      "key_concept": "A RACI chart has one accountable person per activity: the business manager whose objective is at risk, with IT responsible.",
+      "pre_read": "Recall how many people a RACI chart allows to be accountable for one activity.",
+      "correct_explanation": "A RACI chart has one accountable person per activity, and accountability for a risk sits with the business manager whose objective it affects. Releasing correct results is the registrar's objective, so the registrar is accountable, while the CIO is responsible for the system controls that support it. Making the CIO accountable is the runner-up: IT runs the platform, but running a system does not make IT the owner of the business risk.",
+      "wrong_explanations": {
+        "A": "Joint accountability blurs who decides. When two people are accountable, each can assume the other will act.",
+        "C": "The CIO runs the platform but does not own the outcome. The risk falls on the registrar's objective of releasing correct results.",
+        "D": "A board or committee oversees but cannot be the single accountable person. Accountability needs one named manager with authority."
+      },
+      "tips": [
+        "Eliminate: A keeps two accountable people, and D gives accountability to a body; a RACI chart needs one named accountable person.",
+        "Final two: B beats C because the risk hits the registrar's objective; the CIO is responsible for the platform's controls, not accountable for the outcome.",
+        "Exam cue: one activity, one accountable person, and it is the business manager whose objective is at risk; IT is usually responsible."
+      ],
+      "framework_ref": "NIST CSF 2.0 GV.RR-02 (roles, responsibilities and authorities related to cybersecurity risk management are established, communicated, understood and enforced); ISACA Glossary (risk owner)",
+      "related_concepts": [
+        "RACI chart",
+        "Accountability",
+        "Risk owner"
+      ],
+      "_provenance": "Authored from concept: notes 1A2.3 (RACI and Accountability: many can be responsible, exactly one is accountable, usually a business manager; trap, a committee made accountable). Round 3, 4 Nov 2026: original scenario of a university RACI chart naming two accountable people for exam results written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d1_053",
+      "domain": 1,
+      "subtopic": "1A5 Business processes and resilience. Process spanning three teams",
+      "principle_id": "match-decision-to-role",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An online pharmacy's order fulfillment runs through customer service, IT and the warehouse, and each team's continuity plan covers only its own steps. What should the risk practitioner recommend as the BEST improvement?",
+      "options": {
+        "A": "Have IT merge the three plans into one document",
+        "B": "Test the three teams' plans together once a year",
+        "C": "Have each team's plan owner review the other plans",
+        "D": "Name one owner for the end-to-end fulfillment process"
+      },
+      "correct": "D",
+      "key_concept": "A critical process that spans teams needs one end-to-end owner accountable for its recovery needs and plans.",
+      "pre_read": "Notice what no single team in the stem answers for.",
+      "correct_explanation": "Each team plans for its own steps, so no one answers for orders getting through from end to end, and gaps at the handoffs go unowned. Naming one process owner gives fulfillment someone accountable for its recovery needs and for a plan that joins the steps up. A joint test is the runner-up: it could expose handoff gaps, but without a process owner no one is accountable for setting the requirement or closing them.",
+      "wrong_explanations": {
+        "A": "Merging documents is clerical work by IT. A single file with no process owner still leaves the handoffs between teams unowned.",
+        "B": "A joint test may reveal gaps, but someone must own the process to set recovery needs and fix what the test finds.",
+        "C": "Peer review spreads the work across the same three silos. It adds checks but no one accountable for the whole process."
+      },
+      "tips": [
+        "Eliminate: A treats the gap as a document task for IT, and C keeps three separate plan owners checking one another.",
+        "Final two: D beats B because a test can only find gaps; a process owner is needed to set recovery needs and close them.",
+        "Exam cue: when a critical process spans teams and each plans alone, look for one accountable process owner before more testing or paperwork."
+      ],
+      "framework_ref": "COBIT 2019 DSS04 (Managed Continuity); NIST SP 800-34 Rev. 1 Section 2.2 (Types of Plans: Business Continuity Plan and Disaster Recovery Plan)",
+      "related_concepts": [
+        "Process owner",
+        "Business continuity plan (BCP)",
+        "Dependency map"
+      ],
+      "_provenance": "Authored from concept: notes 1A5.1 (Process Ownership and Critical Processes: each critical process has one owner who answers for its outcome across departments, and process owners set recovery needs). Round 3, 4 Nov 2026: original scenario of an online pharmacy's fulfillment process split across three continuity plans written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d1_054",
+      "domain": 1,
+      "subtopic": "1B4 Risk appetite and risk tolerance. Appetite for AI uses",
+      "principle_id": "appetite-drives-response",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "A bank's board has a low appetite for customer harm, and units want generative AI in customer services. Which of the following should the risk practitioner propose to BEST apply that appetite to AI?",
+      "options": {
+        "A": "Allowed, review-needed and prohibited tiers of AI use",
+        "B": "A minimum accuracy level for each AI model the bank uses",
+        "C": "A ban on customer-facing AI until regulators publish rules",
+        "D": "CISO approval of each AI use case before launch"
+      },
+      "correct": "A",
+      "key_concept": "AI appetite becomes usable when it sorts uses into allowed, review-needed and prohibited tiers that owners can apply.",
+      "pre_read": "Ask what a business owner would need in hand when the next AI request arrives.",
+      "correct_explanation": "A broad appetite statement guides AI decisions once it says which uses fit. Tiers of allowed, review-needed and prohibited uses turn a low appetite for customer harm into a rule owners can apply to each new use case, with closer review where harm is likelier. A minimum accuracy level is the runner-up: it is measurable, but accuracy is one property of a model and says nothing about which customer uses the bank will accept.",
+      "wrong_explanations": {
+        "B": "Accuracy is one measure of a model, not an expression of appetite. A highly accurate model can still be used where harm is unacceptable.",
+        "C": "Low appetite is not zero appetite. A ban chooses avoidance for every use before its risk is analyzed, including low-harm uses.",
+        "D": "The CISO covers security, while customer-harm decisions sit with business owners within the board's appetite. One technical approver does not express appetite."
+      },
+      "tips": [
+        "Eliminate: C treats low appetite as zero and bans every use, and D gives customer-harm decisions to a security approver.",
+        "Final two: A beats B because tiers say which AI uses the bank accepts; an accuracy level measures a model, not the bank's appetite for harm.",
+        "Exam cue: to make appetite usable, look for statements that tell owners which activities fit, need extra review or are out of bounds."
+      ],
+      "framework_ref": "NIST CSF 2.0 GV.RM-02 (risk appetite and risk tolerance statements are established, communicated and maintained); NIST AI 100-1 (AI RMF 1.0) GOVERN 1.3 (processes, procedures and practices are in place to determine the needed level of risk management activities based on the organization's risk tolerance)",
+      "related_concepts": [
+        "Risk appetite statement",
+        "AI use policy",
+        "Customer harm"
+      ],
+      "_provenance": "Authored from concept: notes 1B4.2 (Setting and Expressing Risk Appetite: for AI, appetite states which uses are acceptable, which need extra review and which are out of bounds; the practitioner informs, leaders set). Round 3, 4 Nov 2026: original scenario of a bank applying a low customer-harm appetite to generative AI uses written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d1_055",
+      "domain": 1,
+      "subtopic": "1A3 Organizational culture and ethics. Praise for a skipped review",
+      "principle_id": "root-cause-over-symptom",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "A fintech's CEO publicly praised a team that launched on time by skipping the required security review, and two more teams now want to skip it. What is the risk practitioner's MOST effective recommendation?",
+      "options": {
+        "A": "Retrain product teams on the security review process",
+        "B": "Ask the CEO to restate support for the review",
+        "C": "Make skipping the review a disciplinary offense",
+        "D": "Have the security team review the launched product"
+      },
+      "correct": "B",
+      "key_concept": "Tone at the top drives behavior: when a leader rewards a skipped control, the fix starts with that leader restating the rule.",
+      "pre_read": "Look for what is driving the other teams' requests.",
+      "correct_explanation": "Staff take their cue from what leaders reward, and the CEO's praise told teams that skipping the review pays. The trend stops when the same leader restates that the review is required, which changes the signal at its source. Retraining is the runner-up: the teams already know the review exists, since they are asking to skip it, so more training cannot outweigh a public reward from the CEO.",
+      "wrong_explanations": {
+        "A": "The teams know the review is required; they asked to skip it. Training cannot outweigh a reward signal from the top.",
+        "C": "A sanction contradicts the CEO's own praise, so staff see mixed messages, and a stricter rule alone rarely fixes a culture signal.",
+        "D": "Reviewing the launched product deals with one product's risk but leaves the signal that is driving the other teams' requests."
+      },
+      "tips": [
+        "Eliminate: C relies on a stricter rule to fix a leadership signal, and D treats one product's risk while the trend continues.",
+        "Final two: B beats A because the teams already know the rule; the CEO's praise is the cause, so the fix starts with the same leader.",
+        "Exam cue: when behavior follows what leaders reward, the most effective fix changes the leadership signal; training and rules support it."
+      ],
+      "framework_ref": "NIST CSF 2.0 GV.RR-01 (organizational leadership is responsible and accountable for cybersecurity risk and fosters a culture that is risk-aware, ethical and continually improving); NIST SP 800-39 Section 2.7 (Organizational Culture)",
+      "related_concepts": [
+        "Tone at the top",
+        "Risk culture",
+        "Incentives"
+      ],
+      "_provenance": "Authored from concept: notes 1A3.1 (Risk Culture and Tone at the Top: leaders signal priorities through what they reward; changing culture takes leadership action, with training in support; trap, a strict new policy fixes culture). Round 3, 4 Nov 2026: original scenario of a fintech CEO praising a team that skipped a security review written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d1_056",
+      "domain": 1,
+      "subtopic": "1B3 Risk profile. Request to send the full register",
+      "principle_id": "report-for-the-decision",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A shipping company's CIO proposes sending the board the full IT risk register of 240 entries in place of the risk profile, so nothing is hidden. What is the risk practitioner's BEST response?",
+      "options": {
+        "A": "Send the full register, ranked from highest rating down",
+        "B": "Keep the profile, traceable to the register entries",
+        "C": "Send the register's high-rated entries in its place",
+        "D": "Send the profile and the full register each quarter"
+      },
+      "correct": "B",
+      "key_concept": "The board decides from the aggregated risk profile; keeping it traceable to the register answers the worry that detail is hidden.",
+      "pre_read": "Ask what the board needs in order to decide, and what the risk team needs in order to manage.",
+      "correct_explanation": "The register is the detailed working record; the profile aggregates and prioritizes it into the view leaders need to decide, set against appetite. Keeping the profile, with each item traceable to the register entries behind it, gives the board focus and a way to drill down, so nothing is hidden. Sending both documents is the runner-up: it adds 240 entries to every board pack and buries the few decisions the board must make.",
+      "wrong_explanations": {
+        "A": "A ranked register of 240 entries is detail for owners and the risk team. The board needs aggregated exposure against appetite to decide.",
+        "C": "High-rated entries alone are a filtered register, not a profile. They miss combined exposure and how each category sits against appetite.",
+        "D": "Adding the full register to each pack buries the decisions. Traceability lets the board ask for any detail without receiving all of it."
+      },
+      "tips": [
+        "Eliminate: A and C both send register entries, ranked or filtered, which lack the aggregated view against appetite that the board needs.",
+        "Final two: B beats D because a traceable profile keeps the board's pack focused while still letting it drill into any entry.",
+        "Exam cue: boards decide from the risk profile against appetite; the register is the working record behind it, available on request."
+      ],
+      "framework_ref": "NIST IR 8286 Rev. 1 Section 4.1 (Applying the Enterprise Risk Register and Developing the Enterprise Risk Profile); ISACA Glossary (IT risk profile)",
+      "related_concepts": [
+        "Risk profile",
+        "Risk register",
+        "Board reporting"
+      ],
+      "_provenance": "Authored from concept: notes 1B3.1 (Risk Register Versus Risk Profile: the register is the practitioner's working record, the profile the leaders' decision view, kept traceable to the register; trap, send the board the full register so nothing is left out). Round 3, 4 Nov 2026: original scenario of a shipping company CIO asking to replace the board's risk profile with the full register written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d1_057",
+      "domain": 1,
+      "subtopic": "1A1 Strategy, goals and objectives. Growth goal against a control",
+      "principle_id": "advise-dont-decide",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "A digital bank's retail director, who owns account opening, wants two-minute sign-ups to meet a growth goal, but the fastest design drops a manual ID check. What is the risk practitioner's BEST approach?",
+      "options": {
+        "A": "Recommend keeping the manual check for compliance",
+        "B": "Support the fastest design to meet the bank's growth goal",
+        "C": "Ask compliance to set the appetite for ID checks",
+        "D": "Give the director each design's risk against appetite"
+      },
+      "correct": "D",
+      "key_concept": "When objectives pull against a control, the practitioner analyzes each option's risk against appetite and the owner of the objective decides.",
+      "pre_read": "Notice who owns the process and which goals are pulling against each other.",
+      "correct_explanation": "Growth and control goals can pull against each other, and the trade-off belongs to the director who owns account opening, within the appetite leaders have set. Giving the director each design's fraud and compliance risk against appetite lets them choose with the risk in view. Recommending the manual check is the runner-up: it may prove right, but it settles the trade-off for the owner before each design's risk is analyzed.",
+      "wrong_explanations": {
+        "A": "Keeping the check may be the outcome, but recommending it before analysis decides the trade-off for the owner and may give up the growth goal needlessly.",
+        "B": "Backing the fastest design favors one goal before its fraud and compliance risk is known, and the choice is the director's to make.",
+        "C": "Appetite is set by the board and senior management, not by compliance. Compliance is consulted on the obligations a design must meet."
+      },
+      "tips": [
+        "Eliminate: B backs the growth goal before any analysis, and C gives compliance an appetite-setting role that belongs to leadership.",
+        "Final two: D beats A because the owner makes the trade-off; the practitioner shows each design's risk against appetite instead of picking one.",
+        "Exam cue: when a business goal and a control conflict, analyze each option against appetite and take it to the owner of the objective."
+      ],
+      "framework_ref": "COBIT 2019 EDM03 (Ensured Risk Optimization); ISACA Glossary (risk owner)",
+      "related_concepts": [
+        "Business objective",
+        "Risk owner",
+        "Trade-off analysis"
+      ],
+      "_provenance": "Authored from concept: notes 1A1.1 (Risk in Service of Business Objectives: risk is the effect of uncertainty on objectives, and the executive accountable for the affected goal chooses the treatment) and 1A2.2 (the practitioner brings options with cost and benefit to the owner). Round 3, 4 Nov 2026: original scenario of a digital bank's fast sign-up goal against a manual ID check written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d1_058",
+      "domain": 1,
+      "subtopic": "1A6 Organizational asset management. IT named as owner",
+      "principle_id": "match-decision-to-role",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "An engineering firm's asset inventory names the IT infrastructure team as owner of the 40 project file shares it administers. Which of the following is the risk practitioner's BEST recommendation?",
+      "options": {
+        "A": "Keep IT as owner of the shares it administers",
+        "B": "Have IT classify each share by its business use",
+        "C": "Name a business owner for each share's data",
+        "D": "Move ownership of the shares to the risk team"
+      },
+      "correct": "C",
+      "key_concept": "IT that administers an asset is its custodian; a named business owner answers for it and sets its classification.",
+      "pre_read": "Separate who looks after an asset day to day from who answers for it.",
+      "correct_explanation": "IT administers the shares, which makes it the custodian; the owner is the business manager accountable for the data's use and protection, such as each project's director. Naming business owners comes first because classification, valuation and risk acceptance all depend on them. Having IT classify the shares is the runner-up: classification is needed, but the owner sets it, since the business knows what the data is worth and how sensitive it is.",
+      "wrong_explanations": {
+        "A": "Administering a share makes IT its custodian. Ownership sits with the business that relies on the data and decides how it is used.",
+        "B": "The owner classifies data, because the business knows its sensitivity and value. IT then applies the protection the class calls for.",
+        "D": "The risk team oversees and challenges; owning assets would make it the first-line manager of what it monitors."
+      },
+      "tips": [
+        "Eliminate: A treats the custodian as the owner, and D gives second-line staff a first-line ownership role.",
+        "Final two: C beats B because classification is the owner's call; the business owner must be named before the data can be classified.",
+        "Exam cue: IT is usually the custodian; when an inventory names IT as owner, look for the business owner who answers for the data."
+      ],
+      "framework_ref": "ISACA Glossary (data owner); COBIT 2019 BAI09 (Managed Assets)",
+      "related_concepts": [
+        "Asset owner",
+        "Custodian",
+        "Classification"
+      ],
+      "_provenance": "Authored from concept: notes 1A6.1 (Asset Inventory and Ownership: owners are business roles that answer for an asset's use and protection, custodians such as IT look after it; trap, IT owns all it manages) and 1A6.2 (the owner classifies). Round 3, 4 Nov 2026: original scenario of an engineering firm's file shares recorded as owned by IT written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d1_059",
+      "domain": 1,
+      "subtopic": "1B5 Risk frameworks, legal, regulatory and contractual requirements. Client notice term",
+      "principle_id": "answer-from-the-stem",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A payroll software provider has signed a bank client's contract requiring breach notice within 24 hours, but its incident procedure allows 72 hours. What should the risk practitioner recommend as the BEST action?",
+      "options": {
+        "A": "Have the procedure's owner meet the 24-hour term",
+        "B": "Ask the bank to accept the 72-hour procedure instead",
+        "C": "Note the gap for the owner's next yearly review",
+        "D": "Rely on cyber insurance to cover late-notice penalties"
+      },
+      "correct": "A",
+      "key_concept": "A signed customer contract term is an obligation in force; internal procedures must be aligned so it can be met.",
+      "pre_read": "Notice whether the contract is proposed or already in force.",
+      "correct_explanation": "A signed contract term is an obligation the provider has already accepted, so its incident procedure must be able to meet it. Having the procedure's owner bring notice within 24 hours closes the gap before a breach tests it. Asking the bank to accept 72 hours is the runner-up: renegotiation is possible, but the term binds from signing, so any breach handled before a change is agreed would put the provider in default.",
+      "wrong_explanations": {
+        "B": "The term binds from signing. Until the bank agrees a change, a breach handled under the 72-hour procedure would breach the contract.",
+        "C": "The obligation applies now. Waiting for a yearly review leaves months in which any breach would be reported late.",
+        "D": "Insurance may cover some costs, but it does not meet the term or protect the client relationship. Accountability stays with the provider."
+      },
+      "tips": [
+        "Eliminate: C waits for a scheduled review while the term already applies, and D treats insurance as if it moved the obligation.",
+        "Final two: A beats B because the signed term binds now; aligning the procedure meets it, while renegotiating leaves the gap open meanwhile.",
+        "Exam cue: commitments in customer contracts become obligations with owners; close gaps between contract terms and internal procedures."
+      ],
+      "framework_ref": "NIST CSF 2.0 GV.OC-03 (legal, regulatory and contractual requirements, including privacy obligations, are understood and managed); COBIT 2019 MEA03 (Managed Compliance With External Requirements)",
+      "related_concepts": [
+        "Contractual requirements",
+        "Breach notification",
+        "Compliance obligation"
+      ],
+      "_provenance": "Authored from concept: notes 1B5.3 (Contractual Requirements and Service Level Agreements: customer contracts can require breach notice times, which become obligations with owners). Round 3, 4 Nov 2026: original scenario of a payroll software provider whose procedure misses a client's breach notice term written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d1_060",
+      "domain": 1,
+      "subtopic": "1A2 Organizational structure, roles and responsibilities. Owner asks the analyst to choose",
+      "principle_id": "advise-dont-decide",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A distributor's operations director, who owns the warehouse robot outage risk, asks the risk analyst to pick whichever of three treatment options the analyst thinks best. What is the analyst's BEST response?",
+      "options": {
+        "A": "Choose the option that cuts the risk the most",
+        "B": "Ask the risk committee to choose an option",
+        "C": "Recommend one option with its cost and benefit",
+        "D": "Choose the cheapest option that meets appetite"
+      },
+      "correct": "C",
+      "key_concept": "The practitioner recommends with costs and benefits; the risk owner decides the response, even when asked to hand it over.",
+      "pre_read": "Notice who owns the risk, and who is being asked to decide.",
+      "correct_explanation": "The owner decides the response, even when they would rather not. The analyst's job is to recommend, so presenting a preferred option with its cost, benefit and resulting risk lets the director make an informed choice and record it. Asking the risk committee to choose is the runner-up: a committee oversees and challenges, but handing it the choice moves the decision away from the director who is accountable for the risk.",
+      "wrong_explanations": {
+        "A": "Picking the strongest option makes the analyst the decision-maker and may spend more than the risk warrants. The choice belongs to the owner.",
+        "B": "A committee oversees and may challenge, but choosing the response for an owned risk shifts accountability away from the director.",
+        "D": "Even within appetite, choosing and recording the response is the owner's act. The analyst recommends; the director decides."
+      },
+      "tips": [
+        "Eliminate: A and D have the analyst choose the response, which is the risk owner's decision however the choice is made.",
+        "Final two: C beats B because the director owns the risk; the analyst recommends to the owner instead of moving the decision to a committee.",
+        "Exam cue: when an owner asks the practitioner to decide, recommend with costs and benefits and leave the decision with the owner."
+      ],
+      "framework_ref": "ISACA Glossary (risk owner); COBIT 2019 APO12 (Managed Risk)",
+      "related_concepts": [
+        "Risk owner",
+        "Risk response",
+        "Recommendation"
+      ],
+      "_provenance": "Authored from concept: notes 1A2.2 (Risk Owner, Control Owner and Risk Practitioner: the owner accepts, mitigates, transfers or avoids; the practitioner brings options with cost and benefit to the owner). Round 3, 4 Nov 2026: original scenario of a distributor's operations director asking the analyst to pick a treatment for warehouse robot outages written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d1_061",
+      "domain": 1,
+      "subtopic": "1B1 Enterprise risk management (ERM). Framework after major change",
+      "principle_id": "final-two",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A media group's risk management framework was approved four years ago, and the group has since moved most systems to the cloud and bought two firms. What is the risk practitioner's BEST recommendation?",
+      "options": {
+        "A": "Keep the framework until the board asks for a review",
+        "B": "Have internal audit rewrite the framework for the group",
+        "C": "Revise the framework and roll it out across the group",
+        "D": "Submit a revised framework to senior management"
+      },
+      "correct": "D",
+      "key_concept": "Major change triggers a framework review; the practitioner drafts the revision and senior management approves it.",
+      "pre_read": "Notice what has changed since the framework was approved.",
+      "correct_explanation": "A framework is reviewed on a schedule and after major change, and cloud adoption plus two acquisitions change its scope, roles and methods. The practitioner can draft the revision, but senior management approves it, which gives it authority over the acquired firms too. Revising and rolling it out is the runner-up: the content may be right, but without approval it lacks the authority to bind the business units.",
+      "wrong_explanations": {
+        "A": "Major change triggers a review in its own right. Waiting for the board leaves the acquired firms and cloud services outside the framework.",
+        "B": "Internal audit assesses the framework independently; writing it would mean auditing its own work.",
+        "C": "Drafting the revision is the practitioner's work, but rolling it out without approval gives it no authority over the business."
+      },
+      "tips": [
+        "Eliminate: A waits for a request though major change already calls for review, and B has internal audit write what it later assures.",
+        "Final two: D beats C because a revised framework needs senior management approval to bind the business; the practitioner drafts, leaders approve.",
+        "Exam cue: after major business change, expect a framework review; the practitioner drafts and maintains it, senior management approves."
+      ],
+      "framework_ref": "COBIT 2019 EDM01 (Ensured Governance Framework Setting and Maintenance); NIST CSF 2.0 GV.OV-02 (the cybersecurity risk management strategy is reviewed and adjusted to ensure coverage of organizational requirements and risks)",
+      "related_concepts": [
+        "Risk management framework",
+        "Framework review",
+        "Trigger event"
+      ],
+      "_provenance": "Authored from concept: notes 1B1.3 (The Risk Management Framework and Its Approval: reviewed periodically and after major change; the risk function drafts, senior management approves, the board oversees). Round 3, 4 Nov 2026: original scenario of a media group's framework after cloud moves and two acquisitions written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d1_062",
+      "domain": 1,
+      "subtopic": "1A3 Organizational culture and ethics. Request for loss figures",
+      "principle_id": "priority-word-decides",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An industry peer group asks a bank's risk analyst for the bank's ransomware loss figures to build a sector benchmark. What should the analyst do FIRST?",
+      "options": {
+        "A": "Share the figures under the group's confidentiality promise",
+        "B": "Share the figures once system names are removed",
+        "C": "Decline to take part in the sector benchmark",
+        "D": "Seek the bank's approval before sharing the figures"
+      },
+      "correct": "D",
+      "key_concept": "Information gained at work is released only with the organization's approval or under legal authority, so ask before sharing it.",
+      "pre_read": "Ask who has the right to decide what happens to the figures.",
+      "correct_explanation": "The ISACA Code of Professional Ethics asks members to keep information gained in their work confidential and not release it to inappropriate parties. The loss figures belong to the bank, so the first step is to seek approval from whoever can authorize their release, who may agree, set conditions or refuse. Declining is the runner-up: it protects the data, but it makes the bank's decision for it and may give up a useful benchmark.",
+      "wrong_explanations": {
+        "A": "A peer group's promise does not authorize release. The figures are the bank's information, and only the bank can decide who receives them.",
+        "B": "Removing system names may reduce harm, but the loss figures are still the bank's confidential information, released without its approval.",
+        "C": "Declining protects the data but decides for the bank, which may choose to share approved figures if the benchmark serves it."
+      },
+      "tips": [
+        "Eliminate: A treats an outsider's promise as permission, and B assumes that removing names makes the bank's data the analyst's to release.",
+        "Final two: D beats C because release is the bank's decision; the analyst seeks approval instead of refusing on the bank's behalf.",
+        "Exam cue: information gained at work stays confidential unless its owner, or the law, authorizes release; ask before sharing."
+      ],
+      "framework_ref": "ISACA Code of Professional Ethics (privacy and confidentiality of information obtained in the course of their activities)",
+      "related_concepts": [
+        "Confidentiality",
+        "ISACA Code of Professional Ethics",
+        "Information sharing"
+      ],
+      "_provenance": "Authored from concept: notes 1A3.3 (Professional Ethics and Ethical AI Use: keep information confidential unless the law requires disclosure, and never use it for personal benefit). Round 3, 4 Nov 2026: original scenario of a peer group asking a bank's risk analyst for ransomware loss figures written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d1_063",
+      "domain": 1,
+      "subtopic": "1A5 Business processes and resilience. Exercise gap reported to facilities",
+      "principle_id": "analyze-before-acting",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A broadcaster's continuity exercise found staff could not reach the backup studio's playout systems remotely, but the report went only to facilities. What should the risk practitioner recommend as the BEST action?",
+      "options": {
+        "A": "Raise the gap as a risk with the head of playout",
+        "B": "Have IT fix the remote access risk at the backup studio",
+        "C": "Rerun the playout exercise once facilities closes the finding",
+        "D": "Report the playout exercise as passed with one finding"
+      },
+      "correct": "A",
+      "key_concept": "Continuity exercise gaps become risks for the process owner to treat, not just findings for the team that ran the test.",
+      "pre_read": "Notice who has seen the exercise result so far, and who has not.",
+      "correct_explanation": "An exercise gap shows a critical process may not continue, so it belongs with that process's business owner, recorded as a risk with an action plan. Raising it with the head of playout puts the decision with the person accountable for staying on air. Having IT fix the remote access is the runner-up: it may be the fix, but choosing it before the owner sees the gap skips the decision on how to treat it.",
+      "wrong_explanations": {
+        "B": "IT's fix may be the right one, but it is chosen before the process owner has seen the gap or agreed how to treat it.",
+        "C": "Facilities does not own the playout process. Rerunning the test after its fix leaves the business owner unaware of the gap.",
+        "D": "A failed recovery step is a real gap. Calling the exercise passed hides it from the people who rely on the plan."
+      },
+      "tips": [
+        "Eliminate: C leaves the gap with facilities, which does not own the process, and D reports a failed recovery step as a pass.",
+        "Final two: A beats B because exercise gaps go to the process owner as risks to treat; IT's fix is one option for the owner to decide on.",
+        "Exam cue: continuity test findings feed the risk register under the process owner, not just the team that ran the test."
+      ],
+      "framework_ref": "NIST SP 800-34 Rev. 1 Section 3.5 (Plan Testing, Training, and Exercises); NIST CSF 2.0 ID.IM-02 (improvements are identified from security tests and exercises, including those done in coordination with suppliers and relevant third parties)",
+      "related_concepts": [
+        "Continuity exercise",
+        "Process owner",
+        "Risk register"
+      ],
+      "_provenance": "Authored from concept: notes 1A5.2 (Continuity and Recovery Plans as Risk Responses: test results feed the risk register, and gaps become risks with owners and action plans). Round 3, 4 Nov 2026: original scenario of a broadcaster's continuity exercise gap reported only to facilities written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d1_064",
+      "domain": 1,
+      "subtopic": "1A6 Organizational asset management. Tools found at each count",
+      "principle_id": "root-cause-over-symptom",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "Each yearly asset count at an architecture firm finds cloud tools bought on staff expense cards that no one listed. Which of the following is the BEST fix for the risk practitioner to recommend?",
+      "options": {
+        "A": "Run the asset count each quarter instead of yearly",
+        "B": "Record new tools at expense and purchase approval",
+        "C": "Have IT scan the network each month for new devices",
+        "D": "Have IT block new cloud sign-ups from company laptops"
+      },
+      "correct": "B",
+      "key_concept": "Keep the inventory current by linking it to purchasing and change processes, not by more frequent clean-up counts.",
+      "pre_read": "Ask how these tools enter the firm without being recorded.",
+      "correct_explanation": "The tools are missed because they enter through expense claims, a route the inventory process does not watch, so the cause is a process gap. Recording each new tool when its expense or purchase is approved captures it, with an owner, as it arrives. A quarterly count is the runner-up: it finds the tools sooner, but it still relies on clean-up after the fact instead of recording them when they are bought.",
+      "wrong_explanations": {
+        "A": "A more frequent count shortens the gap but keeps the same cause. Tools still arrive unrecorded and are found only later.",
+        "C": "Network scans find devices on the firm's network. Cloud subscriptions bought on cards run on the provider's systems and are easily missed.",
+        "D": "Blocking sign-ups stops tools staff may need and is a control chosen before the risk is analyzed; it does not fix how tools are recorded."
+      },
+      "tips": [
+        "Eliminate: C looks for devices when the missing assets are cloud subscriptions, and D blocks tools instead of fixing how they are recorded.",
+        "Final two: B beats A because recording tools at purchase removes the cause; counting more often only finds them sooner.",
+        "Exam cue: when an inventory keeps missing the same kind of asset, fix the process that lets it in unrecorded, not how often it is counted."
+      ],
+      "framework_ref": "NIST CSF 2.0 ID.AM-02 (inventories of software, services and systems managed by the organization are maintained); COBIT 2019 BAI09 (Managed Assets)",
+      "related_concepts": [
+        "Asset inventory",
+        "Asset discovery",
+        "Shadow IT"
+      ],
+      "_provenance": "Authored from concept: notes 1A6.1 (Asset Inventory and Ownership: the inventory is updated through change, purchasing and offboarding processes, not by a yearly clean-up alone). Round 3, 4 Nov 2026: original scenario of an architecture firm's yearly count finding expensed cloud tools written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d1_065",
+      "domain": 1,
+      "subtopic": "1B2 Lines of defense. Unchallenged self-assessments",
+      "principle_id": "lines-of-defense",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "Business units at an insurer rate their own controls in yearly self-assessments, and the risk team passes the ratings to the board unchanged. What should the risk practitioner recommend as the BEST change?",
+      "options": {
+        "A": "Have internal audit check each self-assessment first",
+        "B": "Have business units rate one another's controls",
+        "C": "Have the risk team challenge ratings before reporting them",
+        "D": "Replace the self-assessments with the risk team's ratings"
+      },
+      "correct": "C",
+      "key_concept": "The second line reviews and challenges first-line self-assessments before they are reported; internal audit assures independently.",
+      "pre_read": "Match each option to the line of defense it would put to work.",
+      "correct_explanation": "Self-assessment by the first line is a sound start, but the second line's job is to review and challenge it before it reaches the board. Having the risk team test the ratings against evidence, and question those that look optimistic, gives the board ratings it can rely on. Having internal audit check each one is the runner-up: audit gives periodic independent assurance, but routine challenge of first-line ratings is second-line work.",
+      "wrong_explanations": {
+        "A": "Internal audit assures on a risk-based plan; checking each unit's self-assessment every year does the second line's routine oversight for it.",
+        "B": "Peer rating still leaves first-line managers marking first-line work. It adds no independent oversight or challenge.",
+        "D": "Replacing the units' ratings takes risk and control ownership away from the first line, which must own and assess its own controls."
+      },
+      "tips": [
+        "Eliminate: B keeps the rating inside the first line, and D has the second line take over ratings that the first line owns.",
+        "Final two: C beats A because challenging first-line ratings is the second line's routine role; internal audit gives periodic independent assurance.",
+        "Exam cue: the first line self-assesses, the second line challenges, the third line assures; match each fix to the line whose job it is."
+      ],
+      "framework_ref": "ISACA Journal 2018 Volume 4 (Roles of Three Lines of Defense for Information Security and Governance)",
+      "related_concepts": [
+        "Challenge",
+        "Control self-assessment",
+        "Lines of defense"
+      ],
+      "_provenance": "Authored from concept: notes 1B2.1 (The Three Lines and Their Jobs: first line owns and runs controls, second line monitors, challenges and reports, third line gives independent assurance; trap, the second line owns the risks it monitors). Round 3, 4 Nov 2026: original scenario of an insurer's control self-assessments passed to the board unchallenged written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d1_066",
+      "domain": 1,
+      "subtopic": "1A1 Strategy, goals and objectives. Approving AI pilots",
+      "principle_id": "objectives-first",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "Several departments at a hotel group want to start generative AI pilots. Which of the following should the risk practitioner propose as the MOST important criterion for approving each pilot?",
+      "options": {
+        "A": "The accuracy objective the tool met in vendor tests",
+        "B": "The business savings the vendor projects for it",
+        "C": "The business objective the pilot is meant to serve",
+        "D": "The data science team's capacity to support the pilot"
+      },
+      "correct": "C",
+      "key_concept": "AI initiatives start from a business objective, which gives value, risk and ownership something to be judged against.",
+      "pre_read": "Ask which criterion the other criteria would be measured against.",
+      "correct_explanation": "AI initiatives start from a business purpose: without a defined objective there is nothing to measure benefit or risk against, and no clear owner. Requiring each pilot to name the objective it serves lets the hotel group judge its value and risk through that objective and assign the manager who owns it. Vendor-projected savings are the runner-up: they look like business value, but they are the vendor's claim, not a goal the group has set.",
+      "wrong_explanations": {
+        "A": "Vendor test accuracy describes the tool, not why the group needs it. A precise tool can still serve no goal worth its risk.",
+        "B": "Projected savings are the vendor's estimate, not a business goal. They can be judged only against an objective the group has set.",
+        "D": "Support capacity matters for delivery, but it ranks pilots by what the team can handle, not by what the business needs."
+      },
+      "tips": [
+        "Eliminate: A judges the tool's technical quality, and D ranks pilots by team capacity; neither says why the business needs the pilot.",
+        "Final two: C beats B because savings claimed by a vendor are judged against an objective the group sets; the objective comes first.",
+        "Exam cue: for new technology, AI included, the first gate is the business objective it serves; value, risk and ownership follow from it."
+      ],
+      "framework_ref": "NIST AI 100-1 (AI RMF 1.0) MAP 1.3 (the organization's mission and relevant goals for AI technology are understood and documented); COBIT 2019 APO02 (Managed Strategy)",
+      "related_concepts": [
+        "AI use case",
+        "Business objective",
+        "Strategic alignment"
+      ],
+      "_provenance": "Authored from concept: notes 1A1.2 (The Goals Cascade and Strategic Change: AI initiatives start from a business purpose, with a risk owner and appetite fit agreed before they scale; trap, a new AI tool is only a technology project). Round 3, 4 Nov 2026: original scenario of a hotel group setting a gate for generative AI pilots written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d1_067",
+      "domain": 1,
+      "subtopic": "1B1 Enterprise risk management (ERM). Appetite change and IT thresholds",
+      "principle_id": "appetite-drives-response",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A telecom's executive committee lowered its appetite for customer data risk, but IT's thresholds for the related KRIs still reflect the old level. What is the risk practitioner's BEST recommendation?",
+      "options": {
+        "A": "Keep IT's thresholds until the yearly KRI review",
+        "B": "Have the executive committee set each IT KRI threshold",
+        "C": "Propose thresholds that match the new appetite",
+        "D": "Have the IT owners accept the gap to the new appetite"
+      },
+      "correct": "C",
+      "key_concept": "Enterprise appetite decisions flow down: KRI thresholds are recalibrated to a changed appetite, proposed by the practitioner.",
+      "pre_read": "Trace how a decision at the top reaches the indicators IT watches.",
+      "correct_explanation": "Appetite set at the top only works when it flows down into the limits that trigger action. Proposing KRI thresholds that match the lower appetite, for the risk owners to agree, means IT warnings fire at the level leaders now accept. Asking the executive committee to set each threshold is the runner-up: the committee sets appetite, but turning appetite into detailed operating thresholds is management's work, with the practitioner proposing them.",
+      "wrong_explanations": {
+        "A": "A change in appetite is a reason to recalibrate now. Old thresholds let exposure the committee no longer accepts pass without warning.",
+        "B": "The committee sets appetite; translating it into detailed KRI thresholds is management's work, with the practitioner proposing them.",
+        "D": "Accepting exposure above appetite is beyond an IT owner's authority and goes against the committee's decision to lower appetite."
+      },
+      "tips": [
+        "Eliminate: A leaves thresholds at a level leaders no longer accept, and D has owners accept exposure above the new appetite.",
+        "Final two: C beats B because leaders set appetite and management turns it into thresholds; the practitioner proposes them for owners to agree.",
+        "Exam cue: when appetite changes, expect the thresholds, KRIs and policies below it to be recalibrated; decisions at the top flow down."
+      ],
+      "framework_ref": "NIST CSF 2.0 GV.RM-02 (risk appetite and risk tolerance statements are established, communicated and maintained); NIST IR 8286C Rev. 1 Section 5.1 (Key CSRM Mechanisms: risk tolerance is translated into security controls, KPIs and KRIs)",
+      "related_concepts": [
+        "Key risk indicator (KRI)",
+        "Threshold",
+        "Risk appetite"
+      ],
+      "_provenance": "Authored from concept: notes 1B1.1 (IT Risk Within Enterprise Risk: enterprise leaders set appetite, and decisions on IT risk flow back down as guidance so local teams act within enterprise appetite) and 1B4.2 (appetite is built into KRI thresholds). Round 3, 4 Nov 2026: original scenario of a telecom lowering appetite while IT KRI thresholds lag written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d1_068",
+      "domain": 1,
+      "subtopic": "1B3 Risk profile. Combined exposure above appetite",
+      "principle_id": "escalate-to-the-limit-setter",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "The risk practitioner's aggregation shows an airport operator's 12 supplier risks, each within its own tolerance, together exceed the board's appetite for supplier risk. What should the practitioner do FIRST?",
+      "options": {
+        "A": "Escalate the combined exposure to the board",
+        "B": "Leave the risks as reported, each within tolerance",
+        "C": "Ask each owner to cut their risk by an equal share",
+        "D": "Hold the finding for the next yearly profile review"
+      },
+      "correct": "A",
+      "key_concept": "Combined exposure can breach appetite while each risk is within tolerance; escalate the breach to the level that set appetite.",
+      "pre_read": "Separate the limits that apply to single risks from the limit that applies to the total.",
+      "correct_explanation": "Tolerances limit each risk, but appetite limits the total, so exposure can breach appetite while every risk stays inside its own limit. A breach of the board's appetite goes to the board, which can direct treatment, accept the position for a time or revisit the limit. Asking each owner to cut an equal share is the runner-up: owners may well act, but the practitioner would be choosing the response to a board-level breach.",
+      "wrong_explanations": {
+        "B": "Tolerances limit each risk; appetite limits the total. Combined exposure above appetite is a breach even when each risk sits inside its own tolerance.",
+        "C": "An equal cut is a response chosen by the practitioner. The board that set the appetite decides how the breach is handled, and cuts should follow the risk.",
+        "D": "A breach of appetite is a governance event. Waiting for the yearly review leaves the board unaware of exposure above its limit."
+      },
+      "tips": [
+        "Eliminate: B reads individual tolerances as if they capped the total, and D holds a breach until a scheduled review.",
+        "Final two: A beats C because a breach of the board's appetite goes to the board; the practitioner does not choose the response on its behalf.",
+        "Exam cue: aggregate exposure can breach appetite even when each risk is within tolerance; escalate to whoever set the limit that was breached."
+      ],
+      "framework_ref": "NIST SP 800-30 Rev. 1 Section 3.2 Task 2-6 (Determine Risk: several moderate-level risks can aggregate to a higher level of risk); ISACA Glossary (risk aggregation); ISACA Glossary (risk appetite)",
+      "related_concepts": [
+        "Risk aggregation",
+        "Risk appetite",
+        "Escalation path"
+      ],
+      "_provenance": "Authored from concept: notes 1B3.2 (Aggregation and Keeping the Profile Current: aggregate related risks, report against appetite) and 1B4.3 (a breach is escalated to the risk owner and the level that set the limit). Round 3, 4 Nov 2026: original scenario of an airport operator's supplier risks breaching appetite only in combination written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d1_069",
+      "domain": 1,
+      "subtopic": "1A4 Policies and standards. Policy behind a business change",
+      "principle_id": "final-two",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A manufacturer's device policy, due for review in 18 months, predates letting staff read work email on personal phones, a risk the risk analyst rates above appetite. What is the analyst's BEST recommendation?",
+      "options": {
+        "A": "Ask the policy owner to review the policy now",
+        "B": "Keep the policy until the owner's scheduled review",
+        "C": "Issue staff a guideline on using personal phones",
+        "D": "Have IT publish a personal phone standard"
+      },
+      "correct": "A",
+      "key_concept": "Significant change triggers a policy review through the policy owner; the standards beneath the policy then follow it.",
+      "pre_read": "Notice what changed and whether the policy has kept up.",
+      "correct_explanation": "Policies are reviewed on schedule and after significant change, and allowing personal phones, with a risk above appetite, is such a change. Asking the policy owner to review now starts the route by which the policy is updated and approved by senior management, so the standards beneath it can follow. Having IT publish a phone standard is the runner-up: a standard may well be needed, but without the policy behind it, it lacks management's direction.",
+      "wrong_explanations": {
+        "B": "Scheduled reviews are a minimum. Significant change triggers a review in its own right, especially when the risk is above appetite.",
+        "C": "A guideline is advisory, so staff may set it aside. It cannot bring a risk above appetite back within limits.",
+        "D": "Standards carry out policy. An IT standard issued ahead of the policy lacks management's direction and may not fit the business decision."
+      },
+      "tips": [
+        "Eliminate: B waits for the schedule despite a significant change, and C answers a risk above appetite with advisory guidance.",
+        "Final two: A beats D because the policy states management's intent and comes first; the standards beneath it then follow that direction.",
+        "Exam cue: when new technology or a business decision outpaces policy, go through the policy owner for an event-driven review."
+      ],
+      "framework_ref": "NIST CSF 2.0 GV.PO-02 (policy for managing cybersecurity risks is reviewed, updated, communicated and enforced to reflect changes); ISACA Glossary (policy)",
+      "related_concepts": [
+        "Policy review cycle",
+        "Policy owner",
+        "Bring your own device"
+      ],
+      "_provenance": "Authored from concept: notes 1A4.3 (Policy Review and AI Acceptable Use: each policy has an owner and a review cycle plus a review after major change; gaps go to the policy owner, who proposes changes for senior management approval). Round 3, 4 Nov 2026: original scenario of a manufacturer allowing work email on personal phones ahead of its policy written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d1_070",
+      "domain": 1,
+      "subtopic": "1B5 Risk frameworks, legal, regulatory and contractual requirements. Risk handed to a provider",
+      "principle_id": "transfer-keeps-accountability",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "A charity's HR director, who owns payroll outage risk, wants it deleted from the register now that a provider with a strong SLA runs payroll. What is the risk practitioner's BEST response?",
+      "options": {
+        "A": "Keep the risk in the register under the HR director",
+        "B": "Delete the risk and track the provider's SLA reports",
+        "C": "Name the provider's account manager as the risk's owner",
+        "D": "Close the risk and log the SLA in the contract register"
+      },
+      "correct": "A",
+      "key_concept": "Outsourcing and SLAs move work, not accountability: the risk stays in the register with an internal owner, re-rated for the SLA.",
+      "pre_read": "Ask who would feel the impact if the provider failed.",
+      "correct_explanation": "Outsourcing moves the work, not the accountability: if payroll fails, the charity's staff go unpaid whatever the contract says. Keeping the risk in the register under the HR director keeps it owned and visible, re-rated for the SLA and monitored through the provider's reports. Deleting the risk and tracking SLA reports is the runner-up: monitoring is right, but without a register entry no one owns the remaining risk or decides when SLA misses matter.",
+      "wrong_explanations": {
+        "B": "SLA reports are useful monitoring, but deleting the risk leaves no owner for the outage exposure that stays with the charity.",
+        "C": "An outside account manager cannot own the charity's risk. Accountability for the effect on staff stays with the charity's HR director.",
+        "D": "An SLA is a response that may lower the risk, not remove it. Closing the entry hides the exposure that remains with the charity."
+      },
+      "tips": [
+        "Eliminate: C gives the charity's risk to an outside party, and D closes the risk as if the SLA had removed it.",
+        "Final two: A beats B because the remaining risk still needs an owner in the register; SLA reports monitor it but do not own it.",
+        "Exam cue: contracts and SLAs move work or cost, never accountability; the risk stays in the register with an internal owner."
+      ],
+      "framework_ref": "NIST CSF 2.0 GV.SC-07 (the risks posed by a supplier, their products and services and other third parties are understood, recorded, prioritized, assessed, responded to and monitored); ISACA Glossary (risk transfer)",
+      "related_concepts": [
+        "Outsourcing",
+        "Service level agreement (SLA)",
+        "Risk transfer"
+      ],
+      "_provenance": "Authored from concept: notes 1B5.3 (Contractual Requirements and Service Level Agreements: handing a task to a supplier does not hand over accountability; trap, once a supplier signs an SLA the risk of its outages is transferred to it). Round 3, 4 Nov 2026: original scenario of a charity HR director asking to delete payroll outage risk after outsourcing written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used.",
+      "style_version": 2
     }
   ]
 }

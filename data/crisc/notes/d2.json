@@ -296,7 +296,7 @@
             "Intelligence comes from vendors, information sharing groups, government alerts and the enterprise's own security monitoring.",
             "Intelligence is filtered for relevance: does the actor target this sector, and does the enterprise use the targeted technology?",
             "STRIDE prompts six threat types against a design: spoofing, tampering, repudiation, information disclosure, denial of service and elevation of privilege.",
-            "Attack trees break an attacker's goal into the paths that could reach it, showing where one control blocks several paths.",
+            "Attack trees break an attacker's goal into the paths that could reach it; a control that blocks several paths is a key control, tested before the rating relies on it.",
             "MITRE ATT&CK catalogs real adversary tactics and techniques, giving context for which attack paths are credible.",
             "Modeling results feed risk scenarios, where likelihood and impact are rated with the risk owner."
           ],
@@ -379,7 +379,8 @@
             "Indirect prompt injection is mounted by a third party who plants instructions in content the model later reads, such as an email or web page.",
             "Poisoning can enter through third-party datasets and pre-trained models, so the AI supply chain is part of the threat surface.",
             "Extraction and inversion attacks need only query access, so a public interface is enough to attempt them.",
-            "NIST AI 100-2 E2025 names and classifies these attacks; the practitioner turns the relevant ones into scenarios with a business owner."
+            "NIST AI 100-2 E2025 names and classifies these attacks; the practitioner turns the relevant ones into scenarios with a business owner.",
+            "Targeted and backdoor poisoning change outputs for a small set of inputs, so an overall accuracy check can look normal while chosen results are skewed."
           ],
           "types": [
             {
@@ -460,7 +461,8 @@
             "Process weaknesses include missing approvals, poor segregation of duties, untested recovery plans and undocumented procedures.",
             "Technology weaknesses include unpatched software, misconfigurations, default passwords and unsupported systems.",
             "A control deficiency found in testing or audit is a vulnerability, because it weakens protection against a scenario.",
-            "Predisposing conditions, such as a flood-prone site, change likelihood even when nothing is broken."
+            "Predisposing conditions, such as a flood-prone site, change likelihood even when nothing is broken.",
+            "Process and people weaknesses are found by walkthroughs, interviews and control testing with the staff involved; scanners see only technical flaws."
           ],
           "compare": {
             "columns": [
@@ -592,7 +594,8 @@
             "Add reachability: internet-facing, reachable from partners, or isolated behind strong segmentation.",
             "Add exploitability: public exploit code, active attacks or a listing in a known-exploited vulnerabilities catalog.",
             "Set fix time frames by risk tier in a policy approved by management, so teams do not negotiate each fix.",
-            "When a fix cannot meet its time frame, raise an exception with compensating controls for the risk owner to accept or reject."
+            "When a fix cannot meet its time frame, raise an exception with compensating controls for the risk owner to accept or reject.",
+            "For a newly disclosed flaw in a shared component, first find where it runs, using software inventories and component lists for in-house and vendor software."
           ],
           "example": "A city transit agency has 1,200 open findings and patches them in the order they arrive. Marcus Bell, the risk lead, groups them by the service each asset supports, flags the internet-facing fare payment servers that have public exploits, and drafts risk tiers with fix deadlines for management approval.",
           "audit_focus": {
@@ -783,7 +786,8 @@
             "A tabletop exercise is a facilitated, discussion-based walkthrough; no systems are touched.",
             "Participants include business owners, control owners, IT, communications and key suppliers; the exercise tests decisions, so the owners who would make them must take part.",
             "Injects, new facts added during play, test decisions such as escalation, customer notice and recovery order.",
-            "Findings become actions: new or revised scenarios, register updates and control changes, each with an owner and a date."
+            "Findings become actions: new or revised scenarios, register updates and control changes, each with an owner and a date.",
+            "Internal audit may later give independent assurance on how scenarios were built, but it does not replace validation by the business owners."
           ],
           "example": "A credit union runs a tabletop exercise on its online banking outage scenario. Midway, the facilitator adds an inject: the backup data center uses the same network provider as the primary one. Nobody had considered it. Fatima Zahra, the risk lead, records a new shared-supplier scenario and an action for the IT director to assess the dependency.",
           "audit_focus": {
@@ -900,8 +904,9 @@
           "definition": "A risk assessment identifies, estimates and prioritizes risk. NIST SP 800-30 runs it in four steps: prepare, conduct, communicate the results and maintain the assessment.",
           "why_it_matters": "Skipping preparation means assessing the wrong things against the wrong criteria. Skipping communication or maintenance means decisions rest on results nobody saw or that are out of date.",
           "how_it_works": [
-            "Prepare: set the purpose, scope, assumptions and constraints, information sources, risk model and analytic approach.",
+            "Prepare: set the purpose, scope, assumptions and constraints (including missing information), information sources, risk model and analytic approach.",
             "Conduct: identify threat sources and events, vulnerabilities and predisposing conditions, then determine likelihood, impact and risk.",
+            "Evaluation (ISO 31000's term, also in the ISACA Glossary) then compares each rating with the agreed risk criteria and appetite to decide whether a response is needed.",
             "Communicate: give results to decision makers in a form they can act on, such as a briefing, report or dashboard.",
             "Maintain: monitor risk factors and update the assessment when systems, threats or the business change.",
             "ISO 31000 and ISO/IEC 27005 describe a similar flow that starts with scope, context and risk criteria."
@@ -1209,7 +1214,8 @@
             "Status follows evidence: an entry moves to treated only when the response is implemented and working, not when it is planned.",
             "Current and residual ratings credit a control only after it is implemented and tested, not on the day it is approved.",
             "Each owner reviews their entries on a set cycle, and KRIs flag when an earlier review is needed.",
-            "Closing an entry needs a reason, such as the asset being retired or the risk avoided, and the owner's approval; closed entries stay in the register as history."
+            "Closing an entry needs a reason, such as the asset being retired or the risk avoided, and the owner's approval; closed entries stay in the register as history.",
+            "A new or emerging risk, such as a newly launched AI system, is entered early with its rating's uncertainty stated and an early review date."
           ],
           "example": "A pension fund's register shows member portal account takeover as treated because multifactor sign-in was approved in March. In September, Elif Yilmaz, the risk analyst, finds the rollout covers only 20% of members. Elif moves the status back to in treatment, re-scores the current risk on the control as it stands, and flags the gap to the member services director.",
           "audit_focus": {
@@ -1615,7 +1621,8 @@
             "Operating effectiveness asks whether it actually ran as designed over the period, shown by testing or monitoring.",
             "Evidence includes control test results, key control indicators (KCIs), audit findings and incident history.",
             "An untested or failed control earns little or no reduction in the residual rating.",
-            "When test results change, residual risk is re-rated and the owner is told."
+            "When test results change, residual risk is re-rated and the owner is told.",
+            "Design is judged first: a control that runs perfectly but does not address the scenario's cause earns little credit, whatever its operating record."
           ],
           "example": "A broadband provider's register rates staff export of customer data as low residual risk because a data loss prevention tool is installed. Kwame Asante, the risk analyst, asks for its results: it has run in monitor-only mode for a year and blocked nothing. Kwame re-rates the residual risk without credit for blocking and sends the evidence to the customer data owner.",
           "audit_focus": {

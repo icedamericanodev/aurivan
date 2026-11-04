@@ -114,6 +114,18 @@ Each bullet was opened on 30 Oct 2026 unless marked Likely.
   - Verified, 31 Oct 2026, against https://nvlpubs.nist.gov/nistpubs/ai/NIST.AI.100-1.pdf, Table 1 (GOVERN subcategories). Used by crisc_d1_038 (senior management sees AI exposure in the risk profile to decide on it).
   - Note: other round 2 parts reuse bullets already in this library: ISACA Glossary (recovery time objective), (current risk) and (risk owner); NIST CSF 2.0 GV.RM-03, GV.RR-01, ID.RA-07 and Section 3.1; NIST AI 100-1 GOVERN 1.1 and MANAGE 3.1; NIST IR 8286B-upd1 Section 2.4.3 (CSRC page re-opened 31 Oct 2026: published February 2025, no withdrawal notice).
 
+### Round 3 additions (crisc_d1_046 to 070, 4 Nov 2026)
+- ISACA Glossary (procedure)
+  - Verified, 4 Nov 2026: https://www.isaca.org/resources/glossary opened with curl and the entry read. A procedure is a document describing the steps to perform specific operations in conformance with applicable standards. Used by crisc_d1_050 (a team's procedure cannot relax the standard it carries out). Note the Glossary's "standard" entry means an external standards body's specification, so it is not cited for an internal standard.
+- NIST AI 100-1 (AI RMF 1.0) GOVERN 1.3 (processes, procedures and practices are in place to determine the needed level of risk management activities based on the organization's risk tolerance)
+- NIST AI 100-1 (AI RMF 1.0) MAP 1.3 (the organization's mission and relevant goals for AI technology are understood and documented)
+  - Both Verified, 4 Nov 2026, against https://nvlpubs.nist.gov/nistpubs/ai/NIST.AI.100-1.pdf (re-downloaded): GOVERN 1.3 in Table 1 (GOVERN subcategories), MAP 1.3 in Table 2 (MAP subcategories), wording paraphrased. GOVERN 1.3 supports crisc_d1_054 (appetite turned into tiers of AI use that set how much review each use needs); MAP 1.3 supports crisc_d1_066 (an AI pilot is judged first by the goal it serves).
+- NIST CSF 2.0 GV.OV-02 (the cybersecurity risk management strategy is reviewed and adjusted to ensure coverage of organizational requirements and risks)
+  - Verified, 4 Nov 2026, against https://nvlpubs.nist.gov/nistpubs/CSWP/NIST.CSWP.29.pdf (re-downloaded; GV.OV-02 read in the Oversight category). Used by crisc_d1_061 (framework reviewed after cloud adoption and two acquisitions).
+- ISACA Code of Professional Ethics (privacy and confidentiality of information obtained in the course of their activities)
+  - Verified, 4 Nov 2026: https://www.isaca.org/code-of-professional-ethics opened with curl; standard 4 says members maintain the privacy and confidentiality of information obtained in the course of their activities unless disclosure is required by legal authority, and do not release it to inappropriate parties. Used by crisc_d1_062 (peer benchmark request for a bank's loss figures).
+  - Note: other round 3 parts reuse bullets already in this library: ISACA Glossary (data owner), (risk aggregation), (risk culture), (IT risk profile), (policy), (risk owner) and (risk appetite); NIST CSF 2.0 ID.AM-02, ID.AM-07, ID.IM-02, GV.RR-01 and GV.RR-02; NIST IR 8286C Rev. 1 Section 5.1; NIST SP 800-30 Rev. 1 Section 3.2 Task 2-6.
+
 ### Named in notes as context only (not keyed, hosts blocked)
 ISO 31000:2018, COSO ERM (2017), the IIA Three Lines Model (2020) and the EU AI Act (Regulation (EU) 2024/1689) are named in the notes as context only. Not added as bullets.
 
@@ -196,6 +208,12 @@ published 18 Dec 2025). Cite the Rev. 1 forms below in every CRISC domain.
   - Verified, 31 Oct 2026, same page opened again: "A study to prioritize the criticality of information resources for the enterprise based on the costs (or consequences) of adverse events. In an impact analysis, threats to assets are identified and potential business losses are determined for different time periods." Not keyed. Because of this entry, crisc_d2_011 (repair round 1) no longer says a BIA never looks at threats; its key rests on likelihood, which neither this entry nor the BIA entry says is estimated.
 - ISACA Glossary (key control indicator)
   - Verified, 31 Oct 2026, same page: "A measure of the effectiveness of controls to indicate a failure or weakness which may result in the increased likelihood or impact of risk events". Defined in notes 2B5.2 (repair round 1, replacing KPI-style "how well a control is performing" wording); not keyed in Domain 2.
+- ISACA Glossary (walk-through)
+  - New, round 3. Verified, 4 Nov 2026, isaca.org/resources/glossary fetched with `curl -sS -L` and the entry read: "A thorough demonstration or explanation that details each step of a process". Used in crisc_d2_052.
+- ISACA Glossary (risk evaluation)
+  - New, round 3. Verified, 4 Nov 2026, same page: "The process of comparing estimated risk against given risk criteria to determine the significance of the risk" (credited there to ISO/IEC Guide 73:2002). Used in crisc_d2_058; taught in notes 2B1.2.
+- ISACA Glossary (design effectiveness)
+  - New, round 3. Verified, 4 Nov 2026, same page: "In audit, refers to whether the control objectives is met by effectively preventing or detecting errors". Used in crisc_d2_063; taught in notes 2B5.2.
 
 ### COBIT 2019
 - COBIT 2019 APO12.01 (Collect Data)
@@ -216,6 +234,8 @@ published 18 Dec 2025). Cite the Rev. 1 forms below in every CRISC domain.
   - Same form as the CC library. Verified again 30 Oct 2026, nvlpubs PDF: risk is a function of adverse impact and likelihood; threat scenarios show how a threat source's events exploit vulnerabilities. Used in crisc_d2_005.
 - NIST SP 800-30 Rev. 1 Section 2.3.1 (Risk Models: likelihood is assessed with respect to a specific time frame)
   - New, round 2. Verified, 31 Oct 2026, nvlpubs.nist.gov/nistpubs/Legacy/SP/nistspecialpublication800-30r1.pdf re-opened: under Likelihood, "the likelihood that a threat event will be initiated or will occur is assessed with respect to a specific time frame (e.g., the next six months, the next year, or the period until a specified milestone is reached)". Used in crisc_d2_032.
+- NIST SP 800-30 Rev. 1 Section 2.3.1 (Risk Models: adversarial likelihood is based on intent, capability and targeting)
+  - New, round 3. Verified, 4 Nov 2026, nvlpubs.nist.gov/nistpubs/Legacy/SP/nistspecialpublication800-30r1.pdf fetched and read: under Likelihood, "For adversarial threats, an assessment of likelihood of occurrence is typically based on: (i) adversary intent; (ii) adversary capability; and (iii) adversary targeting. For other than adversarial threat events, the likelihood of occurrence is estimated using historical evidence, empirical data, or other factors." Used in crisc_d2_056.
 - NIST SP 800-30 Rev. 1 Section 2.3.1 (Risk Models: predisposing conditions such as a flood-prone location affect likelihood)
   - New, round 2. Verified, 31 Oct 2026, same PDF: a predisposing condition "affects (i.e., increases or decreases) the likelihood that threat events, once initiated, result in adverse impacts"; examples include "the location of a facility in a hurricane- or flood-prone region". Used in crisc_d2_028.
 - NIST SP 800-30 Rev. 1 Section 2.3.2 (Assessment Approaches: quantitative assessments support cost-benefit analysis of risk responses)
@@ -228,6 +248,8 @@ published 18 Dec 2025). Cite the Rev. 1 forms below in every CRISC domain.
   - New. Verified, 30 Oct 2026: differences in the starting point can bias results so some risks are not identified; adding a second orientation improves rigor. Fits an exercise that exposes a missed business dependency. Used in crisc_d2_008.
 - NIST SP 800-30 Rev. 1 Section 3.1 (Preparing for the Risk Assessment: purpose, scope, assumptions, information sources and risk model)
   - New. Verified, 30 Oct 2026: Step 1 tasks 1-1 to 1-5 (purpose; scope; assumptions and constraints; sources of threat, vulnerability and impact information; risk model and analytic approach). Used in crisc_d2_009.
+- NIST SP 800-30 Rev. 1 Section 3.1 Task 1-3 (Identify Assumptions and Constraints: uncertainty in assumptions and information is considered)
+  - New, round 3. Verified, 4 Nov 2026, same PDF: Task 1-3 makes assumptions and constraints explicit; "organizations consider the uncertainty with regard to assumptions made or other information used in the risk assessment", and "assumptions based on a lack of specific or credible information may reduce an organization's risk tolerance". Used in crisc_d2_057.
 - NIST SP 800-30 Rev. 1 Section 3.3 (Communicating and Sharing Risk Assessment Information)
   - New. Verified, 30 Oct 2026: Task 3-1 communicates results to organizational decision makers to support risk responses; Task 3-2 shares risk-related information. Used in crisc_d2_010.
 - NIST SP 800-30 Rev. 1 Section 3.4 (Maintaining the Risk Assessment)
@@ -264,6 +286,8 @@ published 18 Dec 2025). Cite the Rev. 1 forms below in every CRISC domain.
   - New. Verified, 30 Oct 2026: threat enumeration combines data-driven threat awareness with business judgment; lists ISACs, technical threat models and MITRE ATT&CK as inputs. Supports notes 2A2.2; not keyed in the pilot.
 
 ### CSF 2.0 (NIST CSWP 29, Feb 2024)
+- NIST CSF 2.0 ID.RA-01 (vulnerabilities in assets are identified, validated and recorded)
+  - New, round 3. Verified, 4 Nov 2026, nvlpubs.nist.gov/nistpubs/CSWP/NIST.CSWP.29.pdf fetched and read: "ID.RA-01: Vulnerabilities in assets are identified, validated, and recorded". Used in crisc_d2_051 (with ID.AM-02 from the Domain 4 block).
 - NIST CSF 2.0 ID.RA-02 (cyber threat intelligence is received from information sharing forums and sources)
   - New. Verified, 30 Oct 2026, nvlpubs NIST.CSWP.29.pdf. Used in crisc_d2_004.
 - NIST CSF 2.0 ID.RA-05 (threats, vulnerabilities, likelihoods and impacts are used to understand inherent risk and inform risk response prioritization)
@@ -276,6 +300,8 @@ published 18 Dec 2025). Cite the Rev. 1 forms below in every CRISC domain.
   - Same form as the CC library. Verified again 30 Oct 2026, nvlpubs NIST.AI.100-1.pdf. Used in crisc_d2_002.
 - NIST AI 100-2 E2025 Section 3.4 (Indirect Prompt Injection Attacks and Mitigations)
   - New. Verified, 30 Oct 2026, nvlpubs NIST.AI.100-2e2025.pdf: attackers manipulate resources the model interacts with (agents, retrieval-augmented generation) to inject prompts without interacting with the application; mounted by a third party rather than the primary user. Used in crisc_d2_004.
+- NIST AI 100-2 E2025 Section 2.3 (Poisoning Attacks and Mitigations: targeted and backdoor poisoning affect a small set of target samples)
+  - New, round 3. Verified, 4 Nov 2026, nvlpubs.nist.gov/nistpubs/ai/NIST.AI.100-2e2025.pdf fetched and read: poisoning attacks occur "during the training stage"; "availability poisoning attacks typically cause indiscriminate degradation of the ML model on all samples, while targeted and backdoor poisoning attacks induce integrity violations on a small set of target samples"; poisoning can be orchestrated at scale so that an adversary with limited resources could control a fraction of the public datasets used for training. Used in crisc_d2_050.
 - NIST AI 100-2 E2025 Section 2.4.4 (Model Extraction)
   - New. Verified, 30 Oct 2026: an attacker queries a model to extract its architecture and parameters; a functionally equivalent model can be rebuilt. Supports notes 2A2.3; not keyed in the pilot. (Model inversion is covered in Section 2.4.1 Data Reconstruction.)
 
@@ -514,6 +540,21 @@ Every source below was opened on 31 Oct 2026 in this session: the ISACA Glossary
   - Verified, 31 Oct 2026 (isaca.org glossary page fetched with `curl -sS -L`, entry read): "An uncertain event that may positively impact meeting objectives." Used in crisc_d4_037 (an evaluation of new technology that lists only threats) until the round 2 gate, 31 Oct 2026, when that item moved to exit terms and vendor lock-in (GV.SC-05 and GV.SC-07); no item cites it now, kept for later batches.
 - ISACA Glossary (anonymization)
   - Verified, 31 Oct 2026 (same fetch): "Irreversible severance of a data set from the identity of the data contributor to prevent any future reidentification, even by the organization collecting the data under any condition." Used in crisc_d4_044 (trip records with a stable code per card are pseudonymized, not anonymized).
+
+### Round 3 additions (crisc_d4_046 to 065, 4 Nov 2026)
+Each source below was opened on 4 Nov 2026: the NIST PDFs were downloaded from nvlpubs.nist.gov with `curl -sS -L`, converted with pdftotext and the control or section read; the csrc.nist.gov pages for SP 800-218 (Feb 2022) and SP 800-63B-4 (July 2025, supersedes SP 800-63B) were checked for status. Round 3 also reuses the ISACA Glossary (opportunity) bullet above (crisc_d4_048).
+- NIST SP 800-218 Version 1.1 RV.3 (Analyze Vulnerabilities to Identify Their Root Causes: analyze root causes over time and update the SDLC process so they do not recur)
+  - Verified, 4 Nov 2026: RV.3 "Help reduce the frequency of vulnerabilities in the future"; RV.3.2 "Analyze the root causes over time to identify patterns, such as a particular secure coding practice not being followed consistently"; RV.3.4 "Review the SDLC process, and update it if appropriate to prevent (or reduce the likelihood of) the root cause recurring". Used in crisc_d4_052.
+- NIST SP 800-53 Rev. 5 CA-3 (Information Exchange)
+  - Verified, 4 Nov 2026: approve and manage information exchange using agreements (information exchange security agreements, memoranda of understanding, user agreements, nondisclosure agreements and others) that document security and privacy requirements, controls and responsibilities; the discussion names exchanges of files by email. Used in crisc_d4_047.
+- NIST SP 800-53 Rev. 5 PL-8(1) (Security and Privacy Architectures | Defense in Depth)
+  - Verified, 4 Nov 2026: design the architecture "using a defense-in-depth approach"; the discussion says adversaries "must overcome multiple controls to achieve their objective", which raises their work factor and "the likelihood of detection". Used in crisc_d4_053.
+- NIST SP 800-53 Rev. 5 PM-5(1) (System Inventory | Inventory of Personally Identifiable Information)
+  - Verified, 4 Nov 2026: establish, maintain and update an inventory of all systems, applications and projects that process PII; the discussion says it supports mapping data actions and limiting processing to authorized purposes. Used in crisc_d4_060.
+- NIST SP 800-63B-4 Section 3.2.3 (Use of Biometrics: biometric characteristics are not secrets, ways to revoke them are limited, and central storage raises privacy concerns)
+  - Verified, 4 Nov 2026 (July 2025 PDF): template protection schemes offer a way to revoke biometric characteristics but "the availability of such solutions is limited"; biometric characteristics "do not constitute secrets"; their use, "especially when stored for central verification, introduces new privacy concerns"; biometric data "SHALL be treated and secured as sensitive personal information". Used in crisc_d4_063.
+- NIST CSF 2.0 PR.AT-02 (individuals in specialized roles are provided with awareness and training so that they possess the knowledge and skills to perform relevant tasks with cybersecurity risks in mind)
+  - Verified, 4 Nov 2026, against the CSWP 29 PDF (nvlpubs.nist.gov/nistpubs/CSWP/NIST.CSWP.29.pdf, re-downloaded): Appendix A, Awareness and Training (PR.AT), read beside PR.AT-01. Used in crisc_d4_065 (role-based training for a board's oversight duty).
 
 ### Opened for the notes only (not used as framework_ref)
   - NIST SP 800-218 (SSDF Version 1.1, Feb 2022): practice groups PO, PS, PW, RV and practice titles PO.1, PW.1, PW.8, RV.3 read; Section 1 says secure practices are integrated into any SDLC model, including Agile and DevOps. Checked again 31 Oct 2026: v1.1 is still the final edition; SP 800-218 Rev. 1 (SSDF Version 1.2) is an initial public draft published 17 Dec 2025 (comments closed 30 Jan 2026), so the notes cite v1.1 and name the draft.

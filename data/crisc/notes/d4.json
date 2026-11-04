@@ -103,6 +103,7 @@
           "why_it_matters": "A roadmap lets risk be planned: end-of-support dates, skills and funding are known years ahead. Technology bought outside it often arrives with no risk review, no support model and no owner.",
           "how_it_works": [
             "The roadmap links each technology change to a business objective and a target date.",
+            "When business strategy changes, the roadmap is reviewed against the new objectives, because investments planned for the old goals may no longer serve them.",
             "It flags known risk events in advance, such as vendor end of support or contract renewals.",
             "Business-led purchases outside the roadmap still need a risk assessment and a named owner.",
             "Each roadmap milestone should carry a risk assessment, not just a budget line.",
@@ -375,7 +376,8 @@
             "Separation of duties is kept by requiring a second person to review and approve code before merge.",
             "Pipeline accounts, secrets and build tools are protected, because whoever controls the pipeline controls production.",
             "Infrastructure as code puts server and network settings under the same review and version control as software.",
-            "Pipeline logs record every change, which supports both monitoring and audit."
+            "Pipeline logs record every change, which supports both monitoring and audit.",
+            "Engineering, as the first line, owns and runs the pipeline's gates; the risk function monitors gate results and exceptions rather than approving releases itself."
           ],
           "example": "Hana, a risk analyst at a payments start-up, learns that any of the five engineers can merge their own code and deploy it, and the pipeline's deployment key is shared in a chat channel. Hana maps the risk to the fraud-loss scenario in the register and works with the engineering lead, as control owner, on peer review and secret storage options.",
           "audit_focus": {
@@ -493,7 +495,7 @@
             "Security requirements are defined early and checked through threat modeling, code review and testing.",
             "Testing combines static analysis, dynamic testing and, for high-risk systems, penetration testing.",
             "Third-party and open-source components are tracked and checked for known vulnerabilities.",
-            "When a vulnerability is found, its root cause is analyzed so the process improves, not just the code."
+            "When a vulnerability is found, its root cause is analyzed so the process improves, not just the code; a flaw that recurs across releases signals a process gap."
           ],
           "example": "A health insurer's developers keep fixing the same input-validation flaw in different apps after each penetration test. Wei, the IT risk analyst, notes the repeat findings in the risk register and asks the head of development, as control owner, to treat the cause: secure coding standards, training and an automated check in the build.",
           "audit_focus": {
@@ -611,7 +613,7 @@
             "The data custodian, often IT, applies the owner's rules through storage, backup and access controls.",
             "Classification levels set handling rules, such as encryption, sharing limits and retention.",
             "A data inventory shows where each class of data lives, including copies in test and analytics systems.",
-            "Each stage has controls: input checks at creation, access control in use, agreements when shared.",
+            "Each stage has controls: input checks at creation, access control in use, and owner-approved agreements that set a partner's permitted use when data is shared.",
             "Data that no business unit claims is reported so senior management can assign an owner; IT protects it as custodian in the meantime."
           ],
           "compare": {
@@ -872,7 +874,7 @@
             "Project risks are logged with owners and linked to the enterprise risk register when they could outlast the project.",
             "In Agile, risk items and security tasks sit in the backlog and are prioritized alongside features.",
             "The definition of done includes security, privacy and control criteria, so work is not finished without them.",
-            "Sprint reviews and retrospectives are natural points to update risk status.",
+            "Sprint reviews update risk status; growing deferred security work is an early warning.",
             "Agile reduces heavy documents, not risk records: decisions and accepted risks are still recorded.",
             "At project closure, open risks that continue into operation move to the enterprise register with an operational owner; they do not close with the project."
           ],
@@ -1175,10 +1177,10 @@
           "why_it_matters": "New technology can create advantage, new exposure or both. The ISACA Glossary's enterprise risk management exploits risk as well as controlling it, to increase stakeholder value, so leaders weigh both instead of banning by reflex or adopting blind.",
           "how_it_works": [
             "Start from the business objective the technology would serve and the value it could add.",
-            "Identify new threats and vulnerabilities, including those inherited from vendors and integrations.",
+            "Identify new threats, including vendor-inherited ones and harms that cannot be undone, such as stolen face templates.",
             "Check vendor claims through evidence, pilots and independent assessments, not marketing material.",
-            "Compare the risk with appetite and propose conditions, such as a limited pilot, extra controls or exit terms.",
-            "Track the technology as an emerging risk and revisit the assessment as it matures.",
+            "Apps staff build on low-code and similar platforms are inventoried with owners and data, not banned or ignored.",
+            "Weigh exposure against appetite, propose conditions such as a pilot or exit terms, and revisit them as the technology matures.",
             "With little data, record the risk early as an emerging risk with stated uncertainty, a proposed owner and a review date, rather than waiting for losses."
           ],
           "types": [
@@ -1495,9 +1497,9 @@
           "definition": "A risk-aware culture is one where people at every level understand the risks in their work, speak up about them and act within appetite, supported by targeted training.",
           "why_it_matters": "Most controls depend on people. Where staff fear blame or see risk as someone else's job, problems stay hidden until they become incidents; where they speak up, risk is found early.",
           "how_it_works": [
-            "Leaders set the tone by discussing risk openly and rewarding early reporting.",
-            "Awareness reaches everyone; role-based training gives deeper skills to people with specific risk duties.",
-            "Training content follows the risk profile, such as payment fraud for finance staff or secure coding for developers.",
+            "Leaders set the tone by following the same controls as staff, discussing risk openly and rewarding early reporting.",
+            "Awareness reaches everyone with access, contractors included; role-based training gives deeper skills to people with specific risk duties.",
+            "Training content follows the risk profile, such as payment fraud for finance staff, secure coding for developers or risk oversight for directors.",
             "Reporting channels are easy and safe, and reports get visible follow-up.",
             "Mistakes lead to process fixes first; discipline is for willful or repeated misconduct."
           ],
@@ -1617,6 +1619,7 @@
             "Only the data the purpose needs is collected and kept.",
             "People are told what happens to their data, and the organization has a valid basis, such as consent.",
             "People can access, correct or delete their data, depending on the law that applies.",
+            "Rights requests are met only when the organization knows every system holding a person's data, including analytics copies and vendor tools.",
             "Security protects data from unauthorized access; privacy also governs authorized use."
           ],
           "compare": {

@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "comment": "Original CRISC practice questions for Domain 4 (Technology and Security), written to the CRISC exam content outline effective 2025. Every item is authored from public concepts and KaiSip's own CRISC study notes (data/crisc/notes/d4.json), with no reference to the CRISC Review Manual, ISACA's QAE database, ISACA's practice quiz or any prior question bank. Schema: docs/content/QUESTION_SCHEMA.md; writing rules: docs/content/EXAM_STYLE_V2.md and .claude/agents/crisc-standards-auditor.md. Not affiliated with or endorsed by ISACA®. CRISC® is a registered trademark of ISACA. Pilot batch crisc_d4_001 to crisc_d4_020, 30 Oct 2026. Round 2 crisc_d4_021 to crisc_d4_045, 31 Oct 2026.",
+    "comment": "Original CRISC practice questions for Domain 4 (Technology and Security), written to the CRISC exam content outline effective 2025. Every item is authored from public concepts and KaiSip's own CRISC study notes (data/crisc/notes/d4.json), with no reference to the CRISC Review Manual, ISACA's QAE database, ISACA's practice quiz or any prior question bank. Schema: docs/content/QUESTION_SCHEMA.md; writing rules: docs/content/EXAM_STYLE_V2.md and .claude/agents/crisc-standards-auditor.md. Not affiliated with or endorsed by ISACA®. CRISC® is a registered trademark of ISACA. Pilot batch crisc_d4_001 to crisc_d4_020, 30 Oct 2026. Round 2 crisc_d4_021 to crisc_d4_045, 31 Oct 2026. Round 3 crisc_d4_046 to crisc_d4_065, 4 Nov 2026.",
     "schema_version": 1
   },
   "domain": 4,
@@ -1670,6 +1670,746 @@
         "Legal basis"
       ],
       "_provenance": "Authored from concept: notes 4B3.3 Personal Data in AI and Cross-Border Transfers. Round 2, 31 Oct 2026: authored from notes 4B3.3 (personal data keeps its legal protection across borders, so the transfer is confirmed lawful before it moves); original engineering firm employee records abroad scenario written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used; checked against the CRISC, CISA and CC banks for mirrored scenarios.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d4_046",
+      "domain": 4,
+      "subtopic": "4A1 Technology roadmaps and enterprise architecture (EA). Judging an integration's impact",
+      "principle_id": "priority-word-decides",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "Which of the following BEST helps a risk practitioner judge the business impact of connecting a new claims platform to an insurer's existing systems?",
+      "options": {
+        "A": "The vendor's security architecture document for the platform",
+        "B": "The network diagram of the platform's planned connections",
+        "C": "The enterprise architecture's links among processes and data",
+        "D": "The project's integration test plan for the new platform"
+      },
+      "correct": "C",
+      "key_concept": "Enterprise architecture links business processes, data, applications and technology, so it shows what a change touches and its business impact.",
+      "pre_read": "Notice what the practitioner must judge, then ask which source connects technology to the business.",
+      "correct_explanation": "Business impact depends on which processes and data the new platform would touch, and the enterprise architecture is the model that links business processes, data, applications and technology. The network diagram is the runner-up: it shows the planned technical connections, but not which claims processes or data sets would suffer if a connection failed or was breached.",
+      "wrong_explanations": {
+        "A": "A vendor's architecture document describes the product's own design; it does not show which of the insurer's processes and data the connection would touch.",
+        "B": "A network diagram shows how systems connect at the technical layer; it does not show which business processes and data depend on those connections.",
+        "D": "An integration test plan checks that the connections work before go-live; it does not show what the business would lose if they failed."
+      },
+      "tips": [
+        "Eliminate: A describes only the vendor's product, and D checks that the build works; neither maps the insurer's processes and data.",
+        "Final two: C beats B because business impact needs the link from systems to processes and data; a network diagram stops at the technical layer.",
+        "Exam cue: when an item asks for the business impact of a technology change, choose the source that ties technology to business processes."
+      ],
+      "framework_ref": "ISACA Glossary (enterprise architecture); NIST SP 800-53 Rev. 5 PM-7 (Enterprise Architecture)",
+      "related_concepts": [
+        "Enterprise architecture",
+        "Business impact",
+        "Architecture review"
+      ],
+      "_provenance": "Authored from concept: notes 4A1.1 (Enterprise Architecture and Architecture Review: EA shows where a new system touches critical data and processes, so risk can be judged before money is committed). Round 3, 4 Nov 2026: original scenario (insurer connecting a new claims platform) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used; checked against the CRISC, CISA, CC and AAIA banks for mirrored scenarios.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d4_047",
+      "domain": 4,
+      "subtopic": "4A4 Data lifecycle management. Extracts sent to a research partner",
+      "principle_id": "advise-dont-decide",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An electricity distributor's analytics team emails monthly smart-meter usage extracts to a university research partner, with nothing in writing on how the data may be used. What should the risk practitioner do FIRST?",
+      "options": {
+        "A": "Encrypt the extracts before each monthly email is sent",
+        "B": "Remove customer names from the extracts before sharing",
+        "C": "Stop the sharing until internal audit reviews it",
+        "D": "Ask the data owner to set terms for the partner's use"
+      },
+      "correct": "D",
+      "key_concept": "The data owner decides whether, why and how data is shared, and an agreement records the partner's permitted use and safeguards.",
+      "pre_read": "Notice which lifecycle stage this is, then ask who decides how data is used at that stage.",
+      "correct_explanation": "Sharing is a lifecycle stage the data owner controls: the owner decides whether a partner may use the data, for what purpose and with which safeguards, and an agreement records those terms. Removing names is the runner-up; it is a safeguard the owner may require, but household meter readings can still point to homes, and the partner's use stays undefined.",
+      "wrong_explanations": {
+        "A": "Encryption protects the extracts in transit; it does not limit what the partner may do with the data once it arrives.",
+        "B": "De-identification may become one of the terms; however, meter readings can still point to households, and the partner's permitted use stays undefined.",
+        "C": "A halt pending audit puts an assurance function in charge of a business decision; whether and how sharing continues is the data owner's call."
+      },
+      "tips": [
+        "Eliminate: A protects the email but not the partner's use, and C hands a business decision to internal audit.",
+        "Final two: D beats B because the owner sets the sharing terms first; removing names is one safeguard the owner may choose, not a substitute.",
+        "Exam cue: when data leaves the organization, the data owner sets the terms of use in an agreement before safeguards are chosen."
+      ],
+      "framework_ref": "NIST SP 800-53 Rev. 5 CA-3 (Information Exchange); ISACA Glossary (data owner)",
+      "related_concepts": [
+        "Data owner",
+        "Data sharing agreement",
+        "Data lifecycle"
+      ],
+      "_provenance": "Authored from concept: notes 4A4.1 (Data Lifecycle, Classification and Ownership: the data owner decides access and use, and sharing is a lifecycle stage controlled by owner-approved agreements). Round 3, 4 Nov 2026: original scenario (electricity distributor emailing smart-meter extracts to a university) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used; checked against the CRISC, CISA, CC and AAIA banks for mirrored scenarios.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d4_048",
+      "domain": 4,
+      "subtopic": "4A7 Emerging technologies. AI maintenance decision",
+      "principle_id": "objectives-first",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A manufacturer's leaders will decide next month whether to adopt AI-based predictive maintenance, and the risk practitioner's draft assessment lists only its threats. What is MOST important to add before they decide?",
+      "options": {
+        "A": "A recommendation to wait until the technology matures",
+        "B": "The expected gain in plant uptime from the new tools",
+        "C": "The vendor's certification of its model's accuracy",
+        "D": "Controls that would bring each threat within appetite"
+      },
+      "correct": "B",
+      "key_concept": "Risk includes opportunity: an emerging technology assessment shows the value to objectives as well as the threats, so leaders can weigh both.",
+      "pre_read": "Notice what decision the leaders face, then ask what the draft leaves out of it.",
+      "correct_explanation": "Risk is the effect of uncertainty on objectives, and that includes the upside. Leaders cannot weigh adoption without the value the tools could bring, such as fewer breakdowns and more uptime. Controls for each threat are the runner-up; they matter once leaders lean toward adopting, but a downside-only assessment tilts the decision against a technology that may serve the plant's objectives.",
+      "wrong_explanations": {
+        "A": "Waiting is one decision leaders may reach; recommending it before the upside is weighed treats a new technology as a threat by default.",
+        "C": "A vendor's accuracy claim is one input to test, not proof, and it still says nothing about the value to the plant.",
+        "D": "Treatment options follow once leaders lean toward adopting; listing controls first still leaves the decision without its upside."
+      },
+      "tips": [
+        "Eliminate: A recommends waiting before the benefits are known, and C rests on a vendor claim that still needs testing.",
+        "Final two: B beats D because adoption weighs value against risk; controls answer how to adopt, not whether to adopt.",
+        "Exam cue: for an emerging technology decision, the assessment shows opportunity as well as threat, tied to a business objective."
+      ],
+      "framework_ref": "ISACA Glossary (opportunity); NIST CSF 2.0 GV.RM-07 (strategic opportunities or positive risks are characterized and are included in organizational cybersecurity risk discussions)",
+      "related_concepts": [
+        "Opportunity (positive risk)",
+        "Emerging technology",
+        "AI adoption"
+      ],
+      "_provenance": "Authored from concept: notes 4A7.1 (Evaluating Emerging Technologies: start from the business objective and the value a technology could add, and assess threats and opportunities together). Round 3, 4 Nov 2026: original scenario (manufacturer deciding on AI predictive maintenance) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used; checked against the CRISC, CISA, CC and AAIA banks for mirrored scenarios.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d4_049",
+      "domain": 4,
+      "subtopic": "4B2 Security/risk awareness and training. Executives exempt from a control",
+      "principle_id": "root-cause-over-symptom",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "In a property developer's staff survey, most respondents say security rules feel optional because senior executives were exempted from the new sign-in checks. What should the risk practitioner recommend as BEST?",
+      "options": {
+        "A": "A refresher security course for the whole staff",
+        "B": "Executives using the same sign-in checks as their staff",
+        "C": "Disciplinary action for staff who bypass the sign-in checks",
+        "D": "A message from the CEO on why security rules matter"
+      },
+      "correct": "B",
+      "key_concept": "Tone at the top is set by leaders' actions; leaders exempt from a control signal that the control does not matter.",
+      "pre_read": "Notice why staff say the rules feel optional, then ask which option removes that reason.",
+      "correct_explanation": "Staff are reading the exemption as the real message: if leaders skip a control, the control must not matter. Culture follows what leaders do, so the fix is for executives to use the same checks. A message from the CEO is the runner-up; it sets the right words, but while the exemption stands, staff will believe the behavior rather than the message.",
+      "wrong_explanations": {
+        "A": "Staff already know the rules; the survey says they doubt them because of the exemption, which more training does not change.",
+        "C": "Punishing staff treats a culture signal as misconduct and leaves in place the exemption that caused the doubt.",
+        "D": "A CEO message supports the right tone; however, staff weigh it against the executives' exemption, which keeps saying the opposite."
+      },
+      "tips": [
+        "Eliminate: A retrains staff who already know the rules, and C punishes staff for a doubt that leaders created.",
+        "Final two: B beats D because tone at the top is set by what leaders do; a message cannot outweigh a visible exemption.",
+        "Exam cue: when a culture problem traces to leaders' own behavior, the BEST fix changes that behavior rather than training staff."
+      ],
+      "framework_ref": "NIST CSF 2.0 GV.RR-01 (organizational leadership is responsible and accountable for cybersecurity risk and fosters a culture that is risk-aware, ethical and continually improving); ISACA Glossary (risk culture)",
+      "related_concepts": [
+        "Tone at the top",
+        "Risk culture",
+        "Leadership accountability"
+      ],
+      "_provenance": "Authored from concept: notes 4B2.1 (Risk-Aware Culture and Role-Based Training: leaders set the tone by following the same controls as staff, and culture is a control). Round 3, 4 Nov 2026: original scenario (property developer whose executives were exempted from new sign-in checks) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used; checked against the CRISC, CISA, CC and AAIA banks for mirrored scenarios.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d4_050",
+      "domain": 4,
+      "subtopic": "4A2 Operations management. Approving pipeline releases",
+      "principle_id": "lines-of-defense",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "To show tighter control, a fintech's CTO proposes that the risk analyst approve every production release in the CI/CD pipeline, which already enforces peer review and automated tests. What is the analyst's BEST response?",
+      "options": {
+        "A": "Accept the role and approve each release within agreed hours",
+        "B": "Keep approval in engineering and monitor the gate results",
+        "C": "Ask internal audit to approve each production release",
+        "D": "Have the change board approve each production release"
+      },
+      "correct": "B",
+      "key_concept": "In DevOps, engineering owns release controls in the pipeline; the risk function monitors and challenges them rather than approving releases.",
+      "pre_read": "Notice who is asked to approve releases, then ask which line of defense should run that control.",
+      "correct_explanation": "Release approval is a first-line control: engineering runs it through the pipeline's peer review and tests, and the engineering lead is accountable for it working. The analyst, in the second line, monitors whether the gates work and reports exceptions. Taking the approval is the runner-up; it looks like tighter control, but the analyst would then operate a control they are meant to challenge.",
+      "wrong_explanations": {
+        "A": "Approving releases makes the second line operate a first-line control, so the analyst would later be checking their own work.",
+        "C": "Internal audit gives independent assurance; approving releases would make it part of the control it later audits.",
+        "D": "A change board vote on each release repeats checks the pipeline already enforces, adding delay without improving oversight of the gates."
+      },
+      "tips": [
+        "Eliminate: C puts the third line inside a control it audits, and D adds a manual vote on top of gates that already enforce review.",
+        "Final two: B beats A because the second line monitors and challenges first-line controls; approving releases would make it operate one.",
+        "Exam cue: when asked to run or approve an operational control, the practitioner leaves it with the first line and monitors it."
+      ],
+      "framework_ref": "ISACA Journal 2018 Volume 4 (Roles of Three Lines of Defense for Information Security and Governance); NIST CSF 2.0 GV.RR-02 (roles, responsibilities and authorities related to cybersecurity risk management are established, communicated, understood and enforced)",
+      "related_concepts": [
+        "Lines of defense",
+        "CI/CD pipeline",
+        "Separation of duties"
+      ],
+      "_provenance": "Authored from concept: notes 4A2.3 (DevOps and Pipeline Controls: controls move into the pipeline, engineering as the first line runs its gates, and the risk function monitors them). Round 3, 4 Nov 2026: original scenario (fintech CTO asking the risk analyst to approve pipeline releases) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used; checked against the CRISC, CISA, CC and AAIA banks for mirrored scenarios.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d4_051",
+      "domain": 4,
+      "subtopic": "4A5 Portfolio and project management. Delay in a shared dependency",
+      "principle_id": "analyze-before-acting",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "A regional bank's network upgrade has slipped nine months, yet three projects that need it before launch still report green status to the portfolio board. What should the risk practitioner recommend as BEST?",
+      "options": {
+        "A": "Ask the network project to recover its original date",
+        "B": "Have each project manager assess the slip in their own log",
+        "C": "Pause the three dependent projects until the upgrade ends",
+        "D": "Reassess the three projects' risk with the delay included"
+      },
+      "correct": "D",
+      "key_concept": "Project dependencies carry risk across a portfolio; a delay is reassessed in every dependent project so the portfolio board decides on a true picture.",
+      "pre_read": "Notice what links the four projects, then ask what the board's green status is missing.",
+      "correct_explanation": "One project's delay pushes risk into every project that depends on it, and green status shows the board has not seen it. Reassessing the three projects with the slip included gives the portfolio board a true picture to decide on. Pausing them is the runner-up; it may prove the right outcome, but it is the board's decision, made after the risk is analyzed.",
+      "wrong_explanations": {
+        "A": "Pressing for the original date targets the schedule, not the exposure; a rushed upgrade can add risk, and the dependent projects stay misreported.",
+        "B": "Separate project logs leave the board reading green status; a dependency risk needs one picture across the portfolio.",
+        "C": "Pausing may be justified; however, it is the portfolio board's call, and making it before the risk is analyzed skips that decision."
+      },
+      "tips": [
+        "Eliminate: A chases the date instead of the exposure, and B keeps the risk in separate logs the portfolio board never reads.",
+        "Final two: D beats C because the board needs the analyzed risk before choosing to pause; pausing first decides for it.",
+        "Exam cue: when one project's delay affects others, look across the portfolio and analyze before anyone changes the plan."
+      ],
+      "framework_ref": "NIST SP 800-30 Rev. 1 Section 3.4 (Maintaining the Risk Assessment); NIST CSF 2.0 GV.RM-03 (cybersecurity risk management activities and outcomes are included in enterprise risk management processes)",
+      "related_concepts": [
+        "Project dependencies",
+        "Portfolio management",
+        "Risk reassessment"
+      ],
+      "_provenance": "Authored from concept: notes 4A5.1 (Portfolio Management by Value and Risk: the portfolio is reviewed as value and risk change, and dependencies are tracked because one delay can push risk into others). Round 3, 4 Nov 2026: original scenario (regional bank network upgrade slip with three dependent projects) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used; checked against the CRISC, CISA, CC and AAIA banks for mirrored scenarios.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d4_052",
+      "domain": 4,
+      "subtopic": "4A3 System development life cycle (SDLC). Same flaw in every release",
+      "principle_id": "root-cause-over-symptom",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "For the fourth release in a row, penetration tests of an insurer's quote portal find the same kind of injection flaw, fixed each time before launch. What should the risk practitioner recommend as BEST?",
+      "options": {
+        "A": "A penetration test before each minor release as well",
+        "B": "A web application firewall in front of the quote portal",
+        "C": "Analysis of why the same flaw keeps entering the code",
+        "D": "A faster fix process that closes flaws within a day"
+      },
+      "correct": "C",
+      "key_concept": "Recurring vulnerabilities of one kind point to a gap in the development process; root cause analysis changes the process so the flaw stops recurring.",
+      "pre_read": "Notice how often the flaw appears, then ask what that pattern says about where it comes from.",
+      "correct_explanation": "A flaw that returns in four releases points to a gap in how the code is written, such as a secure coding practice that is not followed or not taught. Analyzing that root cause lets the development process change so the flaw stops entering the code. A web application firewall is the runner-up; it can reduce exposure, but the same flaws keep being written behind it.",
+      "wrong_explanations": {
+        "A": "More testing finds the flaw more often; it does not stop developers writing it, so the find-and-fix cycle continues each release.",
+        "B": "A firewall can block some attacks as a compensating layer; however, the code keeps producing the same flaw, which the process should stop.",
+        "D": "Faster fixes shorten each exposure but treat every finding as new, leaving the cause of the repeats in place."
+      },
+      "tips": [
+        "Eliminate: A and D speed up finding and fixing each flaw, so both treat symptoms while the same flaw keeps being written.",
+        "Final two: C beats B because a repeat flaw signals a process gap; a firewall shields the portal but leaves the cause.",
+        "Exam cue: when the same finding recurs, the BEST recommendation targets its root cause in the process that produces it."
+      ],
+      "framework_ref": "NIST SP 800-218 Version 1.1 RV.3 (Analyze Vulnerabilities to Identify Their Root Causes: analyze root causes over time and update the SDLC process so they do not recur)",
+      "related_concepts": [
+        "Root cause analysis",
+        "Secure Software Development Framework (SSDF)",
+        "Penetration test"
+      ],
+      "_provenance": "Authored from concept: notes 4A3.2 (Secure Development and Testing: testing finds flaws while a secure development process prevents them, and a flaw that recurs across releases signals a process gap). Round 3, 4 Nov 2026: original scenario (insurer quote portal with the same injection flaw four releases running) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used; checked against the CRISC, CISA, CC and AAIA banks for mirrored scenarios.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d4_053",
+      "domain": 4,
+      "subtopic": "4B1 Security concepts, frameworks and standards. Removing layers around customer data",
+      "principle_id": "priority-word-decides",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "A retailer's IT director proposes dropping database encryption and activity monitoring for customer records, since a recent test found the network segmentation around them strong. What is the risk practitioner's GREATEST concern?",
+      "options": {
+        "A": "Reliance on a single test of the segmentation's strength",
+        "B": "Higher cost of adding the controls back at a later date",
+        "C": "Customer records left behind one control with no detection",
+        "D": "Loss of the audit trail that later investigations would need"
+      },
+      "correct": "C",
+      "key_concept": "Defense in depth keeps several independent controls on critical assets, so one failure does not expose them unseen.",
+      "pre_read": "Notice how many controls would remain around the records, then ask what happens if that one fails.",
+      "correct_explanation": "Defense in depth means an attacker must defeat several controls, and each layer can catch what another misses. Without encryption and monitoring, any segmentation failure, such as a misconfigured rule or a stolen administrator login, would expose customer records with nothing to stop or reveal it. Reliance on one test is the runner-up; it weakens the evidence, but even proven segmentation stays a single layer.",
+      "wrong_explanations": {
+        "A": "One test is thin evidence of lasting strength; however, even segmentation tested every week would still leave the records behind a single layer.",
+        "B": "The cost of reinstating controls is a budget question; the larger issue is the exposure while only one control stands.",
+        "D": "Losing activity logs hampers later investigations; the greater concern is that a breach would be neither stopped nor noticed while it happens."
+      },
+      "tips": [
+        "Eliminate: B weighs a future budget cost, and D looks at investigations after the fact instead of the exposure itself.",
+        "Final two: C beats A because no single control is enough for critical data; even proven segmentation can fail.",
+        "Exam cue: when a proposal removes layers because one control tests strong, the GREATEST concern is the single point of failure left behind."
+      ],
+      "framework_ref": "NIST SP 800-53 Rev. 5 PL-8(1) (Security and Privacy Architectures | Defense in Depth)",
+      "related_concepts": [
+        "Defense in depth",
+        "Network segmentation",
+        "Single point of failure"
+      ],
+      "_provenance": "Authored from concept: notes 4B1.1 (Core Security Principles: no single control is enough for a critical asset, so layered, independent controls mean one failure does not expose it). Round 3, 4 Nov 2026: original scenario (retailer proposing to drop encryption and monitoring behind strong segmentation) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used; checked against the CRISC, CISA, CC and AAIA banks for mirrored scenarios.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d4_054",
+      "domain": 4,
+      "subtopic": "4A1 Technology roadmaps and enterprise architecture (EA). Strategy change and an old roadmap",
+      "principle_id": "objectives-first",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "A furniture retailer's board approved a strategy to make online sales half of revenue in three years, but the technology roadmap is unchanged since 2024. What is the GREATEST risk the risk practitioner should raise?",
+      "options": {
+        "A": "Technology investments that no longer serve the new strategy",
+        "B": "Rising technical debt in the systems the roadmap retains",
+        "C": "Vendor contracts renewing before the roadmap is revised",
+        "D": "Higher project costs when online systems are added late"
+      },
+      "correct": "A",
+      "key_concept": "A technology roadmap serves business strategy; when strategy changes, an unchanged roadmap puts the new objectives at risk.",
+      "pre_read": "Notice what changed and what did not, then ask what the roadmap is for.",
+      "correct_explanation": "A roadmap exists to schedule technology change in support of business objectives. When the strategy moves to online sales and the roadmap does not, money and effort keep flowing to plans made for the old goals, and the systems the new strategy needs may arrive late or not at all. Rising technical debt is the runner-up; it may grow, but it is one effect of the larger misalignment.",
+      "wrong_explanations": {
+        "B": "Technical debt may build in the systems the roadmap keeps; it is a narrower effect of a roadmap that no longer matches the strategy.",
+        "C": "Renewals may lock in old choices; that is one narrow effect of the stale roadmap, and the stem gives no renewal dates to weigh.",
+        "D": "Late additions may cost more; that is a consequence of the misalignment rather than the risk to the strategy itself."
+      },
+      "tips": [
+        "Eliminate: C and D are narrow cost effects of the stale roadmap, not the risk to what the board wants to achieve.",
+        "Final two: A beats B because the roadmap's job is to serve strategy; misalignment threatens the objective, while debt is one symptom.",
+        "Exam cue: when strategy changes and the plans beneath it do not, the GREATEST risk is to the new business objectives."
+      ],
+      "framework_ref": "COBIT 2019 APO02 (Managed Strategy)",
+      "related_concepts": [
+        "Technology roadmap",
+        "Business strategy",
+        "Strategic alignment"
+      ],
+      "_provenance": "Authored from concept: notes 4A1.2 (Technology Roadmaps and Off-Roadmap Technology: the roadmap links each technology change to a business objective and is reviewed when strategy changes). Round 3, 4 Nov 2026: original scenario (furniture retailer moving to online sales with a 2024 roadmap) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used; checked against the CRISC, CISA, CC and AAIA banks for mirrored scenarios.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d4_055",
+      "domain": 4,
+      "subtopic": "4A7 Emerging technologies. Apps built on a low-code platform",
+      "principle_id": "emerging-and-ai-risk-owned",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "Operations staff at an insurer have built 40 workflow apps on a newly licensed low-code platform, and some move claims payment data. What should the risk practitioner do FIRST?",
+      "options": {
+        "A": "Have the platform owner suspend it until apps are rebuilt",
+        "B": "Rely on the platform vendor's security certification",
+        "C": "Inventory the apps with their owners and the data they use",
+        "D": "Assess the platform's security settings with the vendor"
+      },
+      "correct": "C",
+      "key_concept": "Apps that business staff build on emerging platforms are inventoried with owners and data before their risk can be assessed.",
+      "pre_read": "Notice what staff have built and what data it moves, then ask what the practitioner needs to know first.",
+      "correct_explanation": "The risk sits in what staff have built: 40 apps, some moving payment data, with no record yet of who owns each one. An inventory naming each app's owner and data is what any assessment starts from. Reviewing the platform's settings with the vendor is the runner-up; it matters, but it shows nothing about which apps handle payments or who is accountable for them.",
+      "wrong_explanations": {
+        "A": "Suspending the platform halts useful work before the risk is known, and pushes staff toward spreadsheets and other unmanaged tools.",
+        "B": "A vendor certificate covers the vendor's platform, not the apps staff built on it or the payment data those apps move.",
+        "D": "Platform settings matter; however, without knowing which apps exist and what data each uses, the review cannot tell where the risk is."
+      },
+      "tips": [
+        "Eliminate: A halts the platform before any risk is known, and B relies on a vendor certificate that does not cover staff-built apps.",
+        "Final two: C beats D because the risk sits in the apps and their data; the inventory comes before any platform review.",
+        "Exam cue: when business users adopt a new technology widely, FIRST find what exists, who owns it and what data it touches."
+      ],
+      "framework_ref": "NIST CSF 2.0 ID.AM-02 (inventories of software, services and systems managed by the organization are maintained); ISACA Glossary (shadow IT)",
+      "related_concepts": [
+        "Low-code platform",
+        "Shadow IT",
+        "Inventory"
+      ],
+      "_provenance": "Authored from concept: notes 4A7.1 (Evaluating Emerging Technologies: emerging technology is neither banned nor adopted on faith, and apps staff build on low-code platforms are inventoried with owners and data). Round 3, 4 Nov 2026: original scenario (insurer operations staff building 40 low-code workflow apps) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used; checked against the CRISC, CISA, CC and AAIA banks for mirrored scenarios.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d4_056",
+      "domain": 4,
+      "subtopic": "4A6 Technology resilience and disaster response/recovery. First test of a new plan",
+      "principle_id": "final-two",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "A frozen-food wholesaler's new disaster recovery plan for its warehouse system has never been tested, and the IT director wants a full interruption test next month. What should the risk practitioner recommend as BEST?",
+      "options": {
+        "A": "Run the full interruption test on the date the director set",
+        "B": "Run the full interruption test in a quiet trading week",
+        "C": "Start with a tabletop exercise and build toward live tests",
+        "D": "Hold testing until internal audit has reviewed the plan"
+      },
+      "correct": "C",
+      "key_concept": "Recovery testing builds from low-disruption methods, such as tabletop exercises, to full interruption tests as a plan proves itself.",
+      "pre_read": "Notice how mature the plan is, then ask which kind of test suits that stage.",
+      "correct_explanation": "Recovery tests build from low-disruption methods to live ones as a plan proves itself. A plan that has never been tested may have gaps that a full interruption test would turn into a real outage of the warehouse system. A quiet week is the runner-up; it lowers the business impact if the test fails, but it still starts with the riskiest test on an unproven plan.",
+      "wrong_explanations": {
+        "A": "A full interruption test of an untested plan can turn its first gaps into a real outage of the warehouse system.",
+        "B": "A quiet week limits the damage if the test fails; however, it still starts an unproven plan with the most disruptive kind of test.",
+        "D": "Audit review can add assurance later; holding testing for it leaves the plan unproven and the recovery risk unknown."
+      },
+      "tips": [
+        "Eliminate: A risks a real outage on an unproven plan, and D leaves recovery untested while waiting for an audit.",
+        "Final two: C beats B because tests build up as a plan matures; picking a quiet week still starts with the riskiest method.",
+        "Exam cue: for a new or untested plan, the BEST first test is a low-disruption one, building toward live tests as gaps close."
+      ],
+      "framework_ref": "NIST SP 800-53 Rev. 5 CP-4 (Contingency Plan Testing); NIST SP 800-34 Rev. 1 Section 3.5.3 (Exercises: tabletop exercises are discussion-based and examine roles, responsibilities, coordination and decision making)",
+      "related_concepts": [
+        "Tabletop exercise",
+        "Full interruption test",
+        "Disaster recovery plan (DRP)"
+      ],
+      "_provenance": "Authored from concept: notes 4A6.3 (Testing Recovery Capability: tests are chosen by risk and plan maturity, starting with low-disruption methods and building to realistic ones). Round 3, 4 Nov 2026: original scenario (frozen-food wholesaler with an unexercised warehouse recovery plan) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used; checked against the CRISC, CISA, CC and AAIA banks for mirrored scenarios.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d4_057",
+      "domain": 4,
+      "subtopic": "4B2 Security/risk awareness and training. Use after a block on AI sites",
+      "principle_id": "proportionate-response",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "After an accounting firm blocked public AI chat sites on its network, a staff survey shows many now paste client figures into them from personal phones. What should the risk practitioner recommend as BEST?",
+      "options": {
+        "A": "Extend the block to personal phones on the guest Wi-Fi",
+        "B": "Discipline staff who admit using personal phones for work",
+        "C": "Add the AI chat risk to the yearly awareness course",
+        "D": "Offer an approved AI tool with clear rules on client data"
+      },
+      "correct": "D",
+      "key_concept": "Shadow AI is reduced by pairing clear guidance with an approved tool; bans without an alternative push use out of sight.",
+      "pre_read": "Notice what happened after the block, then ask why staff keep using the tools.",
+      "correct_explanation": "Staff still need what the tools give them, so the block moved the use onto devices the firm cannot see. An approved tool with clear rules on client data meets that need inside controls the firm can monitor. Awareness training is the runner-up; staff should know the rules, but guidance without an approved alternative leaves them choosing between the rule and the work.",
+      "wrong_explanations": {
+        "A": "Blocking more networks pushes use further out of sight, because phones on mobile data bypass any Wi-Fi block.",
+        "B": "Punishing staff who admit the habit discourages honest answers and leaves unmet the need that drives the use.",
+        "C": "Awareness is part of the answer; however, a yearly course without an approved tool leaves staff with the same need and the same workaround."
+      },
+      "tips": [
+        "Eliminate: A pushes use further out of sight, and B discourages the honest reporting the survey depended on.",
+        "Final two: D beats C because guidance works when paired with an approved alternative; training alone leaves the need unmet.",
+        "Exam cue: when a ban drives use underground, the BEST answer meets the business need through an approved, controlled option."
+      ],
+      "framework_ref": "NIST CSF 2.0 PR.AT-01 (personnel are provided with awareness and training so that they possess the knowledge and skills to perform general tasks with cybersecurity risks in mind); ISACA Glossary (shadow IT)",
+      "related_concepts": [
+        "Shadow AI",
+        "Security awareness program",
+        "Acceptable use policy (AUP)"
+      ],
+      "_provenance": "Authored from concept: notes 4B2.2 (Measuring Awareness, Phishing Simulations and Shadow AI: shadow AI is an awareness topic, and awareness works best paired with an approved alternative because bans push use underground). Round 3, 4 Nov 2026: original scenario (accounting firm whose block on public AI sites moved use to personal phones) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used; checked against the CRISC, CISA, CC and AAIA banks for mirrored scenarios.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d4_058",
+      "domain": 4,
+      "subtopic": "4A4 Data lifecycle management. Training copies with no end date",
+      "principle_id": "match-decision-to-role",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A telecom's retention schedule deletes customer chat logs after one year, but its data science team keeps full copies in a model training set with no end date. What should the risk practitioner recommend FIRST?",
+      "options": {
+        "A": "Have the data owner set retention for the training copies",
+        "B": "Remove customer names from the copies and keep using them",
+        "C": "Delete the trained models along with the log copies",
+        "D": "Make the data science team owner of the training copies"
+      },
+      "correct": "A",
+      "key_concept": "AI training sets are copies of business data, so the data owner's retention rules apply to them as well.",
+      "pre_read": "Notice where the copies sit and who decided how long to keep them.",
+      "correct_explanation": "Training copies are still customer data, so the data owner decides, with legal advice, how long they may be kept and whether model training justifies a different period. Removing names is the runner-up; it lowers some exposure, but chat text can still identify people, and it leaves the copies kept with no end date that anyone accountable has approved.",
+      "wrong_explanations": {
+        "B": "Removing names lowers some exposure; however, chat content can still identify customers, and keeping the copies with no end date still bypasses the owner's decision.",
+        "C": "Deleting the models goes beyond the problem; the owner may allow training for a set period, and models can be retrained if needed.",
+        "D": "The data science team uses the copies; ownership of customer data stays with the business manager accountable for it."
+      },
+      "tips": [
+        "Eliminate: C destroys models before the owner has decided anything, and D hands ownership to the team that uses the data.",
+        "Final two: A beats B because retention is the data owner's decision; removing names still leaves identifiable chat text kept with no end date.",
+        "Exam cue: copies made for AI training follow the same owner and retention rules as the source data."
+      ],
+      "framework_ref": "NIST SP 800-53 Rev. 5 SI-12 (Information Management and Retention); ISACA Glossary (data owner)",
+      "related_concepts": [
+        "Training data",
+        "Retention schedule",
+        "Data owner"
+      ],
+      "_provenance": "Authored from concept: notes 4A4.3 (AI Training Data Through the Lifecycle: training data is data that needs an owner and a retention period, and the retention schedule applies to training sets). Round 3, 4 Nov 2026: original scenario (telecom data science team keeping chat-log copies in a training set) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used; checked against the CRISC, CISA, CC and AAIA banks for mirrored scenarios.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d4_059",
+      "domain": 4,
+      "subtopic": "4A3 System development life cycle (SDLC). A change called too small to review",
+      "principle_id": "analyze-before-acting",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A developer at a staffing agency says a new button that exports full payroll records to spreadsheets is too small a change to need risk review. What should the risk practitioner do FIRST?",
+      "options": {
+        "A": "Treat the export as a pre-approved standard change",
+        "B": "Assess what the export exposes before it is approved",
+        "C": "Assess the export button once it is in production",
+        "D": "Ask the payroll owner to sign acceptance of the export's risk"
+      },
+      "correct": "B",
+      "key_concept": "Change risk depends on the data and processes a change touches, not its size; impact is assessed before approval.",
+      "pre_read": "Notice what the button would let users do, then ask whether its size decides its risk.",
+      "correct_explanation": "The size of the code change says little about risk: one button would let anyone with access take full payroll records out of the system. The change's impact is analyzed before approval, so the owner and change authority decide on the facts. Asking the payroll owner to accept the risk is the runner-up; the owner does decide, but acceptance before analysis is acceptance of an unknown.",
+      "wrong_explanations": {
+        "A": "Pre-approval suits low-risk, repeatable changes; an export of full payroll records has not been shown to be low risk.",
+        "C": "Assessing in production finds the exposure after payroll data may already have left the system.",
+        "D": "The owner does accept change risk; however, asking before the exposure is analyzed asks them to accept something no one has measured."
+      },
+      "tips": [
+        "Eliminate: A pre-approves a change no one has shown to be low risk, and C looks at the risk only after release.",
+        "Final two: B beats D because acceptance follows analysis; the owner cannot accept an exposure that has not been assessed.",
+        "Exam cue: judge a change by the data and process it touches, not by how much code it takes."
+      ],
+      "framework_ref": "NIST SP 800-53 Rev. 5 CM-4 (Impact Analyses); NIST CSF 2.0 ID.RA-07 (changes and exceptions are managed, assessed for risk impact, recorded and tracked)",
+      "related_concepts": [
+        "Impact analysis",
+        "Change management",
+        "Standard change"
+      ],
+      "_provenance": "Authored from concept: notes 4A3.1 (Risk Across the SDLC Phases: risk is assessed at every phase, and treating a small change as too minor to assess is a trap). Round 3, 4 Nov 2026: original scenario (staffing agency payroll export button called too small to review) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used; checked against the CRISC, CISA, CC and AAIA banks for mirrored scenarios.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d4_060",
+      "domain": 4,
+      "subtopic": "4B3 Data privacy and data protection principles. Deletion requests that miss copies",
+      "principle_id": "answer-from-the-stem",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "Sampling 20 of a meal-kit company's completed deletion requests, the risk analyst finds every customer's details still held in its analytics warehouse and email marketing tool. What should the analyst recommend as BEST?",
+      "options": {
+        "A": "Delete the sampled customers' details from both systems",
+        "B": "Encrypt the customer details held in both systems",
+        "C": "Have customers send deletion requests to each team",
+        "D": "Add each system holding customer data to the deletion process"
+      },
+      "correct": "D",
+      "key_concept": "Individual rights requests can be met only when the organization knows every system holding the person's data.",
+      "pre_read": "Notice how many sampled requests failed and where, then ask what that pattern points to.",
+      "correct_explanation": "Every sampled request missed the same two systems, so the deletion process reaches only part of where customer data lives. Bringing each system that holds customer data into the process makes every request reach every copy. Deleting the sampled customers' details is the runner-up; it fixes those 20 cases, but every other completed request would still have left the same copies behind.",
+      "wrong_explanations": {
+        "A": "Clearing the sampled records fixes 20 cases; the process would still miss the same systems for every other request, past and future.",
+        "B": "Encryption protects the copies from outsiders; it does not meet the customers' requests to have their data deleted.",
+        "C": "Customers cannot know which internal teams hold their data; the company must find and delete every copy itself."
+      },
+      "tips": [
+        "Eliminate: B protects data customers asked to have deleted, and C pushes onto customers a duty only the company can meet.",
+        "Final two: D beats A because every sampled request failed the same way; fixing the process reaches all requests, not just the sample.",
+        "Exam cue: when a sample shows the same failure in every case, the BEST recommendation fixes the process that produced it."
+      ],
+      "framework_ref": "NIST SP 800-53 Rev. 5 PM-5(1) (System Inventory | Inventory of Personally Identifiable Information); NIST CSF 2.0 ID.AM-07 (inventories of data and corresponding metadata for designated data types are maintained)",
+      "related_concepts": [
+        "Individual rights",
+        "Data inventory",
+        "Personal data"
+      ],
+      "_provenance": "Authored from concept: notes 4B3.1 (Privacy Principles: people can access, correct or delete their data, and requests are met only when every system holding the data is known). Round 3, 4 Nov 2026: original scenario (meal-kit company whose deletion requests miss two systems) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used; checked against the CRISC, CISA, CC and AAIA banks for mirrored scenarios.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d4_061",
+      "domain": 4,
+      "subtopic": "4A5 Portfolio and project management. Indicator for an Agile program",
+      "principle_id": "kris-that-predict",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "Which of the following should a risk practitioner propose as the BEST key risk indicator of security risk building up in a bank's Agile delivery program?",
+      "options": {
+        "A": "Number of sprints the teams complete each quarter",
+        "B": "Count of security backlog items deferred across sprints",
+        "C": "Number of security flaws found in production each quarter",
+        "D": "Share of team members who finished secure coding training"
+      },
+      "correct": "B",
+      "key_concept": "A leading KRI for Agile delivery tracks deferred security work across sprints, warning before flaws reach production.",
+      "pre_read": "Notice the words building up, then ask what each measure would show and when.",
+      "correct_explanation": "A key risk indicator should warn before the loss, and deferred security work is risk the program is choosing to carry into later releases. A rising count across sprints signals exposure building before it reaches customers. Flaws found in production are the runner-up; they are relevant, but they count damage already shipped, so they report the risk after it has arrived.",
+      "wrong_explanations": {
+        "A": "Sprint completion measures delivery pace; it is a performance indicator and can rise while security work is pushed aside.",
+        "C": "Production flaws are a lagging measure; they show the risk only after it has reached live systems and customers.",
+        "D": "Training completion shows attendance, not whether security work is being done or deferred in the backlog."
+      },
+      "tips": [
+        "Eliminate: A measures delivery speed, and D measures course attendance; neither tracks security risk in the work.",
+        "Final two: B beats C because a KRI should lead; deferred items show risk building, while production flaws count it after release.",
+        "Exam cue: the BEST KRI is a leading measure tied to the risk, such as a growing backlog of deferred controls."
+      ],
+      "framework_ref": "NIST SP 800-55v1 Section 4.4 (Evaluating Methods for Supporting Continuous Improvement: leading and lagging indicators); NIST SP 800-218 Version 1.1 PO.4.1 (define criteria for software security checks, such as adding them to the Definition of Done in agile methodologies)",
+      "related_concepts": [
+        "Key risk indicator (KRI)",
+        "Leading indicator",
+        "Backlog"
+      ],
+      "_provenance": "Authored from concept: notes 4A5.2 (Project Risk and Agile Delivery: risk items sit in the backlog, and growing deferred security work is an early warning that risk is building). Round 3, 4 Nov 2026: original scenario (bank Agile program choosing a security KRI) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used; checked against the CRISC, CISA, CC and AAIA banks for mirrored scenarios.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d4_062",
+      "domain": 4,
+      "subtopic": "4B1 Security concepts, frameworks and standards. Choosing the first Zero Trust process",
+      "principle_id": "advise-dont-decide",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A state lottery operator's CIO asks the risk practitioner to decide which business process moves to Zero Trust access first, as this year's budget covers one process. What is the practitioner's BEST response?",
+      "options": {
+        "A": "Rank the processes by risk for the CIO to choose from",
+        "B": "Pick the highest-risk process and set its move date",
+        "C": "Wait until funds cover moving the whole estate together",
+        "D": "Start with the process that the product vendor suggests"
+      },
+      "correct": "A",
+      "key_concept": "Zero Trust is adopted in phases; the practitioner ranks processes by risk, and management chooses the order and funds it.",
+      "pre_read": "Notice what the CIO asks the practitioner to do, then ask whose decision that is.",
+      "correct_explanation": "Sequencing a Zero Trust rollout is a funding and business decision for the CIO and the process owners; the practitioner's part is to show which processes carry the most risk and what each move would reduce. Picking the highest-risk process is the runner-up; it is a sensible rule, but the choice also weighs readiness and cost, and it belongs to those accountable for it.",
+      "wrong_explanations": {
+        "B": "Picking the process and date makes the practitioner the decision maker; the CIO asked, but accountability for the choice stays with management.",
+        "C": "Waiting to move everything together is the wholesale replacement Zero Trust guidance advises against, and it delays any risk reduction.",
+        "D": "A vendor's suggestion may suit its product rather than the operator's risks; the order should follow the operator's own risk ranking."
+      },
+      "tips": [
+        "Eliminate: C waits for a wholesale move instead of an incremental path, and D lets the product vendor set the operator's priorities.",
+        "Final two: A beats B because the practitioner informs the choice with risk; the CIO and process owners make it.",
+        "Exam cue: when asked to decide for management, the practitioner supplies the analysis and leaves the decision with the accountable role."
+      ],
+      "framework_ref": "NIST SP 800-207 Section 7 (Migrating to a Zero Trust Architecture: an incremental journey rather than a wholesale replacement)",
+      "related_concepts": [
+        "Zero Trust",
+        "Phased adoption",
+        "Risk-based prioritization"
+      ],
+      "_provenance": "Authored from concept: notes 4B1.2 (Zero Trust Architecture: adoption is incremental, and the practitioner recommends a phased, risk-prioritized path while owners fund and sequence it). Round 3, 4 Nov 2026: original scenario (state lottery operator CIO asking which process moves to Zero Trust first) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used; checked against the CRISC, CISA, CC and AAIA banks for mirrored scenarios.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d4_063",
+      "domain": 4,
+      "subtopic": "4A7 Emerging technologies. Face recognition entry",
+      "principle_id": "answer-from-the-stem",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "A co-working company plans to replace key cards with face recognition at its 30 sites, storing members' face templates in one central database. What is the GREATEST risk the risk practitioner should raise?",
+      "options": {
+        "A": "Stolen face templates that members cannot replace like a card",
+        "B": "Recognition errors that lock members out at busy times",
+        "C": "Members letting guests follow them through the doors",
+        "D": "Reliance on one vendor's face recognition service"
+      },
+      "correct": "A",
+      "key_concept": "Biometric data cannot be reissued like a password or card, so centrally stored templates create lasting, high-impact exposure.",
+      "pre_read": "Notice what is new about this way of entering, then rank each harm by its impact on members.",
+      "correct_explanation": "A face cannot be reissued the way a key card can, and ways to revoke a stolen template are still limited. Keeping every member's template in one database means a single breach could expose all of them for good. Recognition errors are the runner-up; they would frustrate members, but a fallback such as a card or desk check can absorb them, while a stolen template cannot be undone.",
+      "wrong_explanations": {
+        "B": "Lockouts are a real service risk; however, a fallback entry method can absorb them, while stolen biometric data stays compromised.",
+        "C": "Tailgating happens with key cards too, so it is not a risk the new technology adds.",
+        "D": "Vendor dependence is a commercial risk worth managing; it does not carry the lasting harm to members of stolen face data."
+      },
+      "tips": [
+        "Eliminate: C exists with key cards too, and D is a commercial risk; neither is a new harm the face templates bring.",
+        "Final two: A beats B because a stolen face template cannot be changed; lockouts have a fallback, lasting compromise does not.",
+        "Exam cue: for biometric technology, weigh what cannot be reissued; irreversible, central exposure outranks service friction."
+      ],
+      "framework_ref": "NIST SP 800-63B-4 Section 3.2.3 (Use of Biometrics: biometric characteristics are not secrets, ways to revoke them are limited, and central storage raises privacy concerns)",
+      "related_concepts": [
+        "Biometrics",
+        "Emerging technology",
+        "Personal data"
+      ],
+      "_provenance": "Authored from concept: notes 4A7.1 (Evaluating Emerging Technologies: identify new threats, including harms that cannot be undone such as stolen face templates). Round 3, 4 Nov 2026: original scenario (co-working company replacing key cards with face recognition) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used; checked against the CRISC, CISA, CC and AAIA banks for mirrored scenarios.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d4_064",
+      "domain": 4,
+      "subtopic": "4A1 Technology roadmaps and enterprise architecture (EA). Technical debt deferred again",
+      "principle_id": "escalate-to-the-limit-setter",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "A SaaS provider's CTO, who owns the billing platform's technical-debt risk, defers its fix a third year while the risk stays above the appetite the executive committee approved. What is the risk practitioner's BEST action?",
+      "options": {
+        "A": "Take the deferral and its exposure to the executive committee",
+        "B": "Record the CTO's signed acceptance of the risk in the register",
+        "C": "Lower the rating to reflect years without a failure",
+        "D": "Have engineering clear the debt in spare sprint capacity"
+      },
+      "correct": "A",
+      "key_concept": "Technical debt above appetite cannot be accepted by its owner alone; it goes to the level that set the appetite.",
+      "pre_read": "Notice where the risk sits against appetite, then ask who set that limit.",
+      "correct_explanation": "The CTO owns the risk, but the executive committee set the appetite it exceeds, and a third deferral is acceptance above that limit. Only the level that set the limit can accept or reject that, so the practitioner takes the deferral and the exposure to it. Recording the CTO's acceptance is the runner-up; it documents the decision, but the decision is beyond the CTO's authority.",
+      "wrong_explanations": {
+        "B": "Recording keeps the register accurate; however, it treats an acceptance above appetite as valid when only the executive committee can make it.",
+        "C": "Years without a failure do not make technical debt less likely to cause loss; the debt keeps growing while the fix is deferred.",
+        "D": "Directing engineering's work is a treatment decision for the owner; the practitioner cannot assign the fix."
+      },
+      "tips": [
+        "Eliminate: C treats a clean record as low risk, and D has the practitioner assign a fix that is the owner's to decide.",
+        "Final two: A beats B because risk above appetite goes to the level that set the limit; recording the CTO's acceptance treats it as settled.",
+        "Exam cue: when an owner keeps risk above appetite, escalate to whoever set the appetite rather than recording the acceptance."
+      ],
+      "framework_ref": "NIST IR 8286B-upd1 Section 2.4.3 (Risk Owner: risk escalation and elevation); NIST CSF 2.0 PR.PS-02 (software is maintained, replaced and removed commensurate with risk)",
+      "related_concepts": [
+        "Technical debt",
+        "Risk escalation",
+        "Risk appetite"
+      ],
+      "_provenance": "Authored from concept: notes 4A1.3 (Technical Debt and Legacy Systems: the owner may accept residual risk within appetite for a defined period, escalating anything beyond appetite to the level that set it). Round 3, 4 Nov 2026: original scenario (SaaS provider CTO deferring billing platform technical debt a third year) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used; checked against the CRISC, CISA, CC and AAIA banks for mirrored scenarios.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d4_065",
+      "domain": 4,
+      "subtopic": "4B2 Security/risk awareness and training. Training for directors",
+      "principle_id": "report-for-the-decision",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A credit union's board asks the risk practitioner to arrange security training for its directors, who now take the same online course as all staff. What should the practitioner recommend as BEST?",
+      "options": {
+        "A": "A phishing simulation aimed at each director's own inbox",
+        "B": "The staff course again, with a certificate on completion",
+        "C": "Hands-on training on the credit union's own security tooling",
+        "D": "Briefings on top cyber risks and the board's oversight duty"
+      },
+      "correct": "D",
+      "key_concept": "Role-based training follows each role's risk duties; for directors that means understanding the top risks and overseeing them.",
+      "pre_read": "Notice who the training is for, then ask what duties that group holds that staff do not.",
+      "correct_explanation": "Directors share staff risks as users, which the existing course covers, but their distinct duty is oversight: approving appetite, questioning risk reports and holding management to account for cyber risk. Role-based training for them covers the top cyber risks and how to oversee them. A phishing simulation is the runner-up; directors are prime targets, but it tests a user skill rather than the board's own role.",
+      "wrong_explanations": {
+        "A": "Directors are frequent phishing targets; however, a simulation tests a user skill the staff course already covers, not their oversight duty.",
+        "B": "Repeating the general course adds a record of completion but nothing for the duties only directors hold.",
+        "C": "Tool training builds operator skills; directors oversee risk and do not run the security controls themselves."
+      },
+      "tips": [
+        "Eliminate: B repeats the general course, and C trains directors to run tools that management operates.",
+        "Final two: D beats A because role-based training targets the role's own duty; for directors that is oversight, not inbox skills.",
+        "Exam cue: role-based training follows the duties a role holds; for a board, that means understanding and overseeing the top risks."
+      ],
+      "framework_ref": "NIST CSF 2.0 PR.AT-02 (individuals in specialized roles are provided with awareness and training so that they possess the knowledge and skills to perform relevant tasks with cybersecurity risks in mind); NIST CSF 2.0 GV.RR-01 (organizational leadership is responsible and accountable for cybersecurity risk and fosters a culture that is risk-aware, ethical and continually improving)",
+      "related_concepts": [
+        "Role-based training",
+        "Board of directors",
+        "Risk oversight"
+      ],
+      "_provenance": "Authored from concept: notes 4B2.1 (Risk-Aware Culture and Role-Based Training: role-based training gives deeper skills to people with specific risk duties, and content follows each role's risks and duties). Round 3, 4 Nov 2026: original scenario (credit union board asking for director security training) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used; checked against the CRISC, CISA, CC and AAIA banks for mirrored scenarios.",
       "style_version": 2
     }
   ]
