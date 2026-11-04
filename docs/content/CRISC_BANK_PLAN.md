@@ -1,6 +1,6 @@
 # CRISC course plan: from the pilot to a sellable pack
 
-**Status:** plan, 30 Oct 2026; round 6 done 4 Nov 2026 (bank 400, on the outline weights). CRISC is a **paid course** learners buy in the
+**Status:** plan, 30 Oct 2026; round 7 done 4 Nov 2026 (bank 425, on the outline weights). CRISC is a **paid course** learners buy in the
 app (6-month access, one payment, never renews; see
 `docs/business/monetization/RECOMMENDATION.md`). Outline and sources:
 `docs/content/CRISC_BLUEPRINT.md`. Item standard:
@@ -20,7 +20,7 @@ it can be sold:
 |---|---|---|---|
 | Blueprint | `docs/content/CRISC_BLUEPRINT.md` | cert-blueprint-researcher | Done, 30 Oct 2026 |
 | Study notes | `data/crisc/notes/d{1..4}.json` + `_course.json` (strategy tips, cross-domain connections) | crisc-d{N}-domain-expert | All 43 outline sub-areas, 115 subtopics, Practice this concept links (`data/crisc/tools/sync_practice_ids.py`) |
-| Questions | `data/crisc/originals/d{1..4}.json` | crisc-d{N}-domain-expert | 400 reviewed (103 / 90 / 128 / 79) after round 6, each domain within 0.5 points of its weight: a full 150-item mock and a short 50-item mock without repeats |
+| Questions | `data/crisc/originals/d{1..4}.json` | crisc-d{N}-domain-expert | 425 reviewed (110 / 94 / 136 / 85) after round 7, each domain on its weight: a full 150-item mock and a short 50-item mock without repeats |
 | Citation library | `data/crisc/originals/_framework_library.md` | domain experts | Started with the pilot |
 | Principles (mindset cards) | `data/crisc/mindset/principles.json` (schema `docs/content/PRINCIPLES_SCHEMA.md`) | isaca-mindset-coach | 19 principles; every item tagged |
 | Exam guide and final-review week | `data/crisc/exam/` (schema `docs/content/EXAM_GUIDE_SCHEMA.md`) | isaca-mindset-coach | Both done and reviewed |
@@ -287,6 +287,28 @@ been keyed in only 5 of 61 cases.
 - No new "within appetite, so accept" keys; add 2–3 acceptance counter-examples (reserve edit for d2_019 in the round 6 gate file).
 - D1: analysis keys on A, C or D; one foundational item keyed B. D2: analysis keys on C. D3: analysis keys on D, at least 2 AI items, at most 2 "Which …" stems, fill 3A2, 3B1, 3C1, 3C2, 3C6. D4: fill 4B3 first; one foundational keyed C.
 - Keep apart in practice sets: d1_096/d3_002, d1_099/d4_076, d1_103/d1_037, d3_116/d3_002/d3_118, d3_121/d3_086, d3_122/d3_012, d3_125/d1_067/d3_016/d3_107, d3_127/d1_018, d4_076/d3_087, d4_077/d3_002, d4_078/d4_068, d4_079/d4_070.
+
+### Round 7 (4 Nov 2026): 25 items, bank 425
+
+Round 7 added 7 D1 (`crisc_d1_104`–`110`), 4 D2 (`crisc_d2_091`–`094`),
+8 D3 (`crisc_d3_129`–`136`) and 6 D4 (`crisc_d4_080`–`085`) items. Its theme
+was acceptance counter-examples, each with a new reason why a within-appetite
+rating does not justify acceptance: a legal requirement (d1_105), threat
+shifting to a path the rating left out (d2_092), credit for a response not yet
+in place (d3_130), and a rating that predates a cloud move (d4_080).
+
+| Stage | Result |
+|---|---|
+| Blind test | 25/25 picks matched the keys |
+| Standards audit and concept review | 0 HARD ERRORS; about 20 PRECISION fixes (stems stating the deciding fact, target vs residual risk in d4_081, "excess" not "breach" for category appetite in d1_108, "threat" used in the Glossary sense in d4_083) |
+| Re-blind of changed items | 14/14 (d3_118's premise then stated in the stem) |
+| Cross-domain gate | 0 HARD ERRORS, 2 PRECISION. Within appetite, acceptance is now keyed in 6 stems and not keyed in 9, so that cue is balanced, but FIRST stems never keyed acceptance. d3_118 is now a FIRST stem keyed on acceptance (nothing changed since the assessment). d2_085's runner-up moved so it no longer shares d1_107's final two |
+| Gates | All lints 0 errors; originality 0 too close; practice links in sync; app pack dry run 0 problems; `verify_repo.sh` passes |
+
+**Next round (round 8, +25 to 450):** D1 +7, D2 +5, D3 +8, D4 +5 (117/99/144/90).
+- Acceptance: add one more FIRST-stem acceptance key (D1 or D4) and one BEST counter-example; key "reassess beside accept" only when the stem reports a change after the rating.
+- D1: analysis keys on A, C or D; one foundational keyed B. D2: fill 2A3, 2B1–2B4; analysis keys on C; at least one AI item. D3: fill 3A2, 3B1, 3C1, 3C2, 3C4–3C6; analysis keys on D; at most one "Which …" stem. D4: fill 4A3, 4A6, 4B1–4B3; one foundational keyed C, application keys on D.
+- Keep apart in practice sets: d1_105/d3_062, d1_107/d1_063/d1_075/d2_085, d1_108/d1_068, d1_110/d4_022, d2_091/d2_087, d2_092/d2_085, d2_094/d2_007, d3_130/d2_018/d2_013, d3_133/d3_014, d3_134/d3_102, d3_135/d2_010, d4_080/d3_058/d4_072, d4_084/d4_010/d3_021, d4_085/d4_075/d3_118.
 
 **Open items:**
 - The `TO VERIFY` comment on the CRISC entry in `mobile/src/content/certifications.ts`
