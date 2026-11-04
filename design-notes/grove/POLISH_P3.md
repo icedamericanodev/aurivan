@@ -60,6 +60,21 @@ Every fix list item and Q1 to Q6 is in `index.html` on `feature/grove-ui`; DECIS
 - Item 3: the floating dash is gone; the dotted sprout over a seed with answers stays (the words under it say "too few yet").
 - Item 7: the file carries a new `savedAt` field beside the old ones, which the restore sheet reads ("saved 4 Nov"; a file without it uses the record's last use).
 - Item 9: an address opened in a page already loaded (typed, pasted or followed) opens at the top, and a load or reload no longer puts back an old scroll position.
-- Item 10: Today, You, Your progress and the scale bar read "64 to 74". The set results line ("Readiness is 68" and a dash) stays for the web and phone dash sweep in `RELEASE_PENDING.md`.
+- Item 10: Today, You, Your progress, the scale bar and the set results line ("Readiness is 68 to 78%: a study estimate, not a prediction.") read "64 to 74".
 - Q3: You already used the DI short names; Today's "Where you'll gain most" line now does too (it showed the full domain name).
 
+
+## Round 1 after the strict review (4 Nov 2026)
+
+Every blocking finding is fixed in `index.html`; DECISIONS 13 and 14 record the rule changes. In short:
+
+- Item 8 again: a toast moves to the top edge while a sheet is open (hiding it made "That file isn't a KaiSip progress file" and "Nothing to export yet." silent), and no toast takes a tap anywhere (the "Backup saved" toast sat over Start fresh).
+- Item 5 again: the dark off thumb is CanvasText in forced colours (the dark theme rule out-ranked it). Today's Start and every filled Grove button keep a ButtonText edge, and Today's cards a CanvasText edge.
+- Q2 for every area chart (Your progress, set and mock results say "No stem yet"), and Today's figure says "Nothing planted yet" when no plant is picked.
+- Q5 again: You's scale bar numbers and caption grow with text size (rem); Study tools' values drop under their titles at 200% text (the narrow-card query now follows the root size).
+- The chart: each score keeps a clear gap over its tip leaf, and a score under 70 never sits on or above the dashed line (beside the tip, under the line, when it would reach it). When the list replaces the chart, the key gives way to one line for the list.
+- The plant chip scrolls the whole plant card into view, so its edge and the heading's focus ring stay on screen.
+- Q6 follow-up built (DECISIONS 14): while today's set is unfinished, You, the readiness card and Read next name the set's area, labelled "today's set" where it is not the focus. "Your weakest area" became "Where you'll gain most".
+- Focus lands on the page title from Today's avatar, You's detail rows, Settings' FAQ and About rows and after a restore; Help and About opened from Settings go back to Settings.
+- Restore brings back dark mode, Exam-day rehearsal and the set length where this browser has none (new `prefs` field in the file).
+- What's New headings ("v12.49: title") and About KaiSip have no dashes.
