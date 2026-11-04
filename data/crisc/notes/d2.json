@@ -45,7 +45,9 @@
           "name": "Loss Events, Incidents and Near Misses",
           "legacy_ids": [],
           "practice_ids": [
-            "crisc_d2_001"
+            "crisc_d2_001",
+            "crisc_d2_046",
+            "crisc_d2_048"
           ],
           "definition": "A risk event is something that happened, or nearly happened, that shows a risk scenario can occur. Loss events cause harm; near misses stop just short of it.",
           "why_it_matters": "Events are the best evidence a practitioner has about real likelihood and impact. Counting only losses hides how often controls were nearly beaten, so the register understates risk.",
@@ -101,7 +103,8 @@
           "name": "Internal and External Event Sources",
           "legacy_ids": [],
           "practice_ids": [
-            "crisc_d2_021"
+            "crisc_d2_021",
+            "crisc_d2_047"
           ],
           "definition": "Event sources are where risk event data comes from: inside the enterprise, such as incident logs and audit findings, and outside it, such as peers, regulators and insurers.",
           "why_it_matters": "Internal data shows the enterprise's own controls and history; external data covers events too rare to have happened here yet. Relying on one source alone distorts likelihood.",
@@ -288,7 +291,8 @@
           "name": "Threat Intelligence and Threat Modeling",
           "legacy_ids": [],
           "practice_ids": [
-            "crisc_d2_024"
+            "crisc_d2_024",
+            "crisc_d2_049"
           ],
           "definition": "Threat intelligence is analyzed information about threat actors and their methods; threat modeling is a structured way to work out how a system could be attacked or fail.",
           "why_it_matters": "Intelligence shows what is happening outside; modeling shows whether it matters to this enterprise's assets. A feed nobody analyzes creates noise, not risk insight.",
@@ -296,7 +300,7 @@
             "Intelligence comes from vendors, information sharing groups, government alerts and the enterprise's own security monitoring.",
             "Intelligence is filtered for relevance: does the actor target this sector, and does the enterprise use the targeted technology?",
             "STRIDE prompts six threat types against a design: spoofing, tampering, repudiation, information disclosure, denial of service and elevation of privilege.",
-            "Attack trees break an attacker's goal into the paths that could reach it, showing where one control blocks several paths.",
+            "Attack trees break an attacker's goal into the paths that reach it; uncontrolled paths show where a scenario's exposure sits, and a control blocking several paths is a key control.",
             "MITRE ATT&CK catalogs real adversary tactics and techniques, giving context for which attack paths are credible.",
             "Modeling results feed risk scenarios, where likelihood and impact are rated with the risk owner."
           ],
@@ -370,7 +374,8 @@
           "legacy_ids": [],
           "practice_ids": [
             "crisc_d2_004",
-            "crisc_d2_025"
+            "crisc_d2_025",
+            "crisc_d2_050"
           ],
           "definition": "AI-specific threats attack the parts unique to AI systems: the prompts they accept, the data they learn from and the trained model itself.",
           "why_it_matters": "Firewalls and malware tools do not see a malicious instruction hidden in a document an AI assistant reads. Missing these threats leaves AI scenarios out of the register.",
@@ -379,7 +384,8 @@
             "Indirect prompt injection is mounted by a third party who plants instructions in content the model later reads, such as an email or web page.",
             "Poisoning can enter through third-party datasets and pre-trained models, so the AI supply chain is part of the threat surface.",
             "Extraction and inversion attacks need only query access, so a public interface is enough to attempt them.",
-            "NIST AI 100-2 E2025 names and classifies these attacks; the practitioner turns the relevant ones into scenarios with a business owner."
+            "NIST AI 100-2 E2025 names and classifies these attacks; the practitioner turns the relevant ones into scenarios with a business owner.",
+            "Targeted and backdoor poisoning change outputs for a small set of inputs, so an overall accuracy check can look normal while chosen results are skewed."
           ],
           "types": [
             {
@@ -451,7 +457,8 @@
           "practice_ids": [
             "crisc_d2_006",
             "crisc_d2_026",
-            "crisc_d2_028"
+            "crisc_d2_028",
+            "crisc_d2_052"
           ],
           "definition": "A vulnerability is a weakness in the design, implementation, operation or internal control of a process or system that a threat could exploit.",
           "why_it_matters": "Most serious losses combine a technical flaw with a process gap or a human error. Looking only at scanner output leaves the process and people weaknesses unmanaged.",
@@ -460,7 +467,8 @@
             "Process weaknesses include missing approvals, poor segregation of duties, untested recovery plans and undocumented procedures.",
             "Technology weaknesses include unpatched software, misconfigurations, default passwords and unsupported systems.",
             "A control deficiency found in testing or audit is a vulnerability, because it weakens protection against a scenario.",
-            "Predisposing conditions, such as a flood-prone site, change likelihood even when nothing is broken."
+            "Predisposing conditions, such as a flood-prone site, change likelihood even when nothing is broken.",
+            "Process and people weaknesses are found by walkthroughs, interviews and control testing with the staff involved; documents and self-assessments show intent, and scanners see only technical flaws."
           ],
           "compare": {
             "columns": [
@@ -583,7 +591,8 @@
           "name": "Risk-Based Remediation Priority",
           "legacy_ids": [],
           "practice_ids": [
-            "crisc_d2_027"
+            "crisc_d2_027",
+            "crisc_d2_051"
           ],
           "definition": "Risk-based remediation ranks vulnerability fixes by business impact and likelihood of exploitation, not by severity score or discovery date alone.",
           "why_it_matters": "No enterprise can fix everything at once. Ranking by business risk spends limited patching effort where a successful exploit would hurt objectives most.",
@@ -592,7 +601,8 @@
             "Add reachability: internet-facing, reachable from partners, or isolated behind strong segmentation.",
             "Add exploitability: public exploit code, active attacks or a listing in a known-exploited vulnerabilities catalog.",
             "Set fix time frames by risk tier in a policy approved by management, so teams do not negotiate each fix.",
-            "When a fix cannot meet its time frame, raise an exception with compensating controls for the risk owner to accept or reject."
+            "When a fix cannot meet its time frame, raise an exception with compensating controls for the risk owner to accept or reject.",
+            "For a new flaw in a shared component, first find where it runs and which business services rely on it, from inventories and component lists for in-house and commercial software."
           ],
           "example": "A city transit agency has 1,200 open findings and patches them in the order they arrive. Marcus Bell, the risk lead, groups them by the service each asset supports, flags the internet-facing fare payment servers that have public exploits, and drafts risk tiers with fix deadlines for management approval.",
           "audit_focus": {
@@ -647,7 +657,8 @@
           "name": "Anatomy of a Risk Scenario",
           "legacy_ids": [],
           "practice_ids": [
-            "crisc_d2_007"
+            "crisc_d2_007",
+            "crisc_d2_054"
           ],
           "definition": "A risk scenario is a specific, assessable description of how a threat could cause an event that affects an asset and harms business objectives.",
           "why_it_matters": "A vague entry such as 'cyberattack' cannot be rated, owned or treated. A specific scenario shows which controls matter and lets the owner compare it with appetite.",
@@ -696,7 +707,8 @@
           "name": "Top-Down and Bottom-Up Scenario Development",
           "legacy_ids": [],
           "practice_ids": [
-            "crisc_d2_031"
+            "crisc_d2_031",
+            "crisc_d2_053"
           ],
           "definition": "Top-down development starts from business objectives and asks what could stop them; bottom-up development starts from assets, threats and vulnerabilities and asks where they could lead.",
           "why_it_matters": "Each approach misses what the other catches. Using both keeps the scenario set tied to objectives without missing technical threats, and keeps it small enough to manage.",
@@ -774,7 +786,8 @@
           "practice_ids": [
             "crisc_d2_008",
             "crisc_d2_029",
-            "crisc_d2_030"
+            "crisc_d2_030",
+            "crisc_d2_055"
           ],
           "definition": "Validation confirms with business owners that a scenario is realistic and its impact is right; a tabletop exercise walks a team through a scenario to test plans and find gaps.",
           "why_it_matters": "Scenarios written by the risk team alone often misjudge business impact. Tabletop exercises reveal missing scenarios, unclear roles and weak responses before a real event does.",
@@ -783,7 +796,8 @@
             "A tabletop exercise is a facilitated, discussion-based walkthrough; no systems are touched.",
             "Participants include business owners, control owners, IT, communications and key suppliers; the exercise tests decisions, so the owners who would make them must take part.",
             "Injects, new facts added during play, test decisions such as escalation, customer notice and recovery order.",
-            "Findings become actions: new or revised scenarios, register updates and control changes, each with an owner and a date."
+            "Findings become actions: new or revised scenarios, register updates and control changes, each with an owner and a date.",
+            "Internal audit may later give independent assurance on how scenarios were built, but it does not replace validation by the business owners."
           ],
           "example": "A credit union runs a tabletop exercise on its online banking outage scenario. Midway, the facilitator adds an inject: the backup data center uses the same network provider as the primary one. Nobody had considered it. Fatima Zahra, the risk lead, records a new shared-supplier scenario and an action for the IT director to assess the dependency.",
           "audit_focus": {
@@ -838,7 +852,8 @@
           "name": "Likelihood, Impact and Risk",
           "legacy_ids": [],
           "practice_ids": [
-            "crisc_d2_032"
+            "crisc_d2_032",
+            "crisc_d2_056"
           ],
           "definition": "Risk is the chance that an event happens, weighed with how much it would affect objectives; the ISACA Glossary frames it as likelihood combined with impact.",
           "why_it_matters": "Rating only impact makes every disaster look urgent; rating only likelihood ignores rare but severe events. Both together let owners compare risks fairly against appetite.",
@@ -895,16 +910,19 @@
           "practice_ids": [
             "crisc_d2_009",
             "crisc_d2_010",
-            "crisc_d2_033"
+            "crisc_d2_033",
+            "crisc_d2_057",
+            "crisc_d2_058"
           ],
           "definition": "A risk assessment identifies, estimates and prioritizes risk. NIST SP 800-30 runs it in four steps: prepare, conduct, communicate the results and maintain the assessment.",
           "why_it_matters": "Skipping preparation means assessing the wrong things against the wrong criteria. Skipping communication or maintenance means decisions rest on results nobody saw or that are out of date.",
           "how_it_works": [
-            "Prepare: set the purpose, scope, assumptions and constraints, information sources, risk model and analytic approach.",
+            "Prepare: set the purpose, scope, assumptions and constraints (including missing information), information sources, risk model and analytic approach.",
             "Conduct: identify threat sources and events, vulnerabilities and predisposing conditions, then determine likelihood, impact and risk.",
             "Communicate: give results to decision makers in a form they can act on, such as a briefing, report or dashboard.",
             "Maintain: monitor risk factors and update the assessment when systems, threats or the business change.",
-            "ISO 31000 and ISO/IEC 27005 describe a similar flow that starts with scope, context and risk criteria."
+            "ISO 31000 and ISO/IEC 27005 describe a similar flow that starts with scope, context and risk criteria.",
+            "In that flow and the ISACA Glossary, risk evaluation compares each rating with the risk criteria and appetite; NIST SP 800-30 leaves this to decision makers choosing a response."
           ],
           "example": "A hotel group's CIO asks for a cloud migration risk assessment by Friday. Before collecting threats, Isabel Duarte, the risk practitioner, agrees the scope with the CIO: the booking platform and payment data only, a three-year horizon, the group's five-point rating scales and the decisions the results must support. Isabel then plans who will receive the results.",
           "audit_focus": {
@@ -965,7 +983,8 @@
           "legacy_ids": [],
           "practice_ids": [
             "crisc_d2_011",
-            "crisc_d2_036"
+            "crisc_d2_036",
+            "crisc_d2_059"
           ],
           "definition": "A business impact analysis (BIA) finds the critical business processes, how their impact grows over time when disrupted, and the resources and dependencies they need to recover.",
           "why_it_matters": "Recovery money and effort are limited. The BIA tells the enterprise what to restore first, and it gives risk assessments the impact data they need.",
@@ -1145,6 +1164,10 @@
           "id": "2B3.1",
           "name": "Register Fields and Ownership",
           "legacy_ids": [],
+          "practice_ids": [
+            "crisc_d2_060",
+            "crisc_d2_062"
+          ],
           "definition": "A risk register is the working record of risk scenarios, with the owner, ratings, controls, chosen response and status for each one.",
           "why_it_matters": "The register is how risk is tracked and decided on. An entry with no owner has nobody to accept, treat or monitor it, so it drifts.",
           "how_it_works": [
@@ -1200,7 +1223,8 @@
           "practice_ids": [
             "crisc_d2_013",
             "crisc_d2_038",
-            "crisc_d2_039"
+            "crisc_d2_039",
+            "crisc_d2_061"
           ],
           "definition": "Keeping the register current means updating ratings, controls, responses and status whenever events, assessments, control tests or business changes alter a risk.",
           "why_it_matters": "Decisions are only as good as the register behind them. A stale register reports risks as treated that are not, and hides risks that have grown.",
@@ -1209,7 +1233,8 @@
             "Status follows evidence: an entry moves to treated only when the response is implemented and working, not when it is planned.",
             "Current and residual ratings credit a control only after it is implemented and tested, not on the day it is approved.",
             "Each owner reviews their entries on a set cycle, and KRIs flag when an earlier review is needed.",
-            "Closing an entry needs a reason, such as the asset being retired or the risk avoided, and the owner's approval; closed entries stay in the register as history."
+            "Closing an entry needs a reason, such as the asset being retired or the risk avoided, and the owner's approval; closed entries stay in the register as history.",
+            "A new or emerging risk, such as a newly launched AI system, is entered early with its rating's uncertainty stated and an early review date."
           ],
           "example": "A pension fund's register shows member portal account takeover as treated because multifactor sign-in was approved in March. In September, Elif Yilmaz, the risk analyst, finds the rollout covers only 20% of members. Elif moves the status back to in treatment, re-scores the current risk on the control as it stands, and flags the gap to the member services director.",
           "audit_focus": {
@@ -1523,7 +1548,9 @@
           "legacy_ids": [],
           "practice_ids": [
             "crisc_d2_018",
-            "crisc_d2_044"
+            "crisc_d2_044",
+            "crisc_d2_064",
+            "crisc_d2_065"
           ],
           "definition": "Inherent risk is risk before any management action; current risk reflects controls already in place; residual risk is what remains after the chosen risk response is implemented.",
           "why_it_matters": "Comparing inherent risk with appetite overstates the need for new controls; counting planned controls as working understates real exposure.",
@@ -1582,7 +1609,7 @@
               "why": "Inherent risk ignores all management action. The decision compares the risk that exists now, counting only implemented, working controls, with appetite."
             },
             {
-              "trap": "Residual risk is never the figure to compare with appetite.",
+              "trap": "Only 'current risk' can be compared with appetite, so an implemented response's residual rating should be ignored.",
               "why": "Once a response is implemented, the risk it leaves is today's current risk; exam items may call it residual risk. Reject it as today's position if it credits planned or untested controls; check a plan's future residual risk against appetite."
             }
           ],
@@ -1606,7 +1633,8 @@
           "name": "Control Effectiveness and the Residual Gap",
           "legacy_ids": [],
           "practice_ids": [
-            "crisc_d2_019"
+            "crisc_d2_019",
+            "crisc_d2_063"
           ],
           "definition": "Control effectiveness is how well a control actually reduces a risk's likelihood or impact; it sets the gap between inherent and residual risk.",
           "why_it_matters": "A residual rating that assumes controls work, without evidence, can hide a risk far above appetite. Effectiveness must be shown, not assumed.",
@@ -1615,7 +1643,8 @@
             "Operating effectiveness asks whether it actually ran as designed over the period, shown by testing or monitoring.",
             "Evidence includes control test results, key control indicators (KCIs), audit findings and incident history.",
             "An untested or failed control earns little or no reduction in the residual rating.",
-            "When test results change, residual risk is re-rated and the owner is told."
+            "When test results change, residual risk is re-rated and the owner is told.",
+            "Design is judged first: a control that runs perfectly but does not address the scenario's cause earns little credit, whatever its operating record."
           ],
           "example": "A broadband provider's register rates staff export of customer data as low residual risk because a data loss prevention tool is installed. Kwame Asante, the risk analyst, asks for its results: it has run in monitor-only mode for a year and blocked nothing. Kwame re-rates the residual risk without credit for blocking and sends the evidence to the customer data owner.",
           "audit_focus": {

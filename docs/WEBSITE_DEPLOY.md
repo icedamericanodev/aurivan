@@ -6,6 +6,25 @@ is in `docs/ARCHITECTURE_E2E.md` (sections 2, 4 and 5).
 
 ## Current setup (16 Oct 2026)
 
+- **Closed to a landing page (owner, 4 Nov 2026)** until the phone app is in
+  the stores. `scripts/build_site.sh` defaults to `SITE_MODE=landing`:
+  kaisip.com shows the beta landing page (`beta.html`, also at `/beta`) and
+  any other address shows it too; Privacy, Terms and Help stay public (the
+  phone app and the store listings link to them). The web study app and every
+  data file are not published. **To reopen the web app at launch:** change
+  `landing` to `app` on the `SITE_MODE=` line in `scripts/build_site.sh` (CI
+  already builds the app mode on every pull request, so it stays ready), add
+  the "Open the web app" links back to `beta.html`, and check
+  `https://kaisip.com/` shows the app.
+- **Preview of the web app while closed:** https://kaisip.com/preview-u63raxyfxc/
+  (unlisted, `noindex`, free sample only, rebuilt on every merge; the folder
+  name is `PREVIEW_DIR` in `scripts/build_site.sh` and has its own rule in
+  `_headers`). Same address as the live site, so progress saved there stays
+  when the app reopens. Optional lock: Cloudflare Zero Trust → Access →
+  Applications → Add (Self-hosted), domain `kaisip.com`, path
+  `preview-u63raxyfxc`, policy "Allow" with the owner's email (one-time PIN).
+  At launch, delete the folder setting, its `_headers` rule and any Access app.
+
 - **Live addresses:** https://kaisip.com and https://www.kaisip.com (custom
   domains on the Cloudflare Worker `kaisip`), plus the test address
   https://kaisip.certprep-support.workers.dev.
@@ -31,7 +50,7 @@ Cloudflare publishes `_site/`:
 |---|---|
 | `index.html`, `privacy.html`, `terms.html`, `support.html`, `beta.html` | The pages (`beta.html` is the beta-tester sign-up page at `/beta`; `/testers`, `/tester` and `/join` redirect to it) |
 | `assets/` (images, icons, fonts, stylesheets, plus one named script: `assets/kaisip-plant.js`) | Icons and fonts the pages use, and the plant companion (generated from the mobile app by `mobile/scripts/build-web-plant.mjs`) |
-| `data/domain1.json` … `data/domain5.json`, `data/cisa_notes.json`, `data/mindset/principles.json` | The data the web app loads |
+| `data/free/cisa_d1.json` … `cisa_d5.json` (the free question sample, from `scripts/build_free_sample.py`), `data/cisa_notes.json`, `data/mindset/principles.json`, the two `data/exam/` files | The data the web app loads. The full bank `data/domain*.json` is **not** published since web v12.50; the build fails if any question outside the sample appears in `_site/` |
 | `_headers`, `_redirects` | Security headers and friendly redirects |
 | `favicon.ico` | Browsers ask for it at the top level |
 
@@ -50,9 +69,11 @@ To try it on your computer: `bash scripts/build_site.sh`, then
 it its own two rules in `_headers` (`/delete-account` and
 `/delete-account.html`), copied from the privacy page's rules.
 
-**Owner decision still open:** everything published is public, including the
-full question bank in `data/domain*.json`. If the bank should stay private,
-the web practice needs a sample pack instead (see the A2 report).
+**Decided 4 Nov 2026:** the website publishes only the free sample, never the
+full bank (`docs/business/monetization/WEB_GATE_PLAN.md`). After each deploy
+that touches data, check that `https://kaisip.com/data/domain1.json` returns
+the app page and not JSON (look at the body: the single-page fallback
+answers 200).
 
 ## Security headers (`_headers`)
 
@@ -111,7 +132,7 @@ the web practice needs a sample pack instead (see the A2 report).
    - **Branch control → Preview branches:** *None* (or *Custom branches*,
      include `claude/*`, if you want a preview link for each pull request).
    - **Build watch paths → Include paths:** `index.html`, `privacy.html`,
-     `terms.html`, `support.html`, `beta.html`, `assets/*`, `data/domain*.json`,
+     `terms.html`, `support.html`, `beta.html`, `assets/*`, `data/free/*`,
      `data/cisa_notes.json`, `data/mindset/principles.json`, `_headers`,
      `_redirects`, `scripts/build_site.sh`.
      Changes to the mobile app or the docs then don't start a website build.

@@ -10,7 +10,7 @@ Never put the bank size in learner copy.
 
 ## 1. Targets
 
-**Bank finalised at 384 reviewed items (D1 56, D2 64, D3 68, D4 96, D5 100), 4 Nov 2026,** under the owner's "quality before count" and the padding guard below. The batch 5 audits found that D4 and D5 items past these counts were general securities law or COSO publication trivia, and that the in-scope public sources are used up. The 400 target is withdrawn (`product-manager`, 4 Nov 2026). New items enter only when a newly opened primary source adds an uncovered outline line, within the domain's weight; never from extra angles or D1-D3 overflow. Free sample unchanged: at least 100.
+**Bank finalised at 384 reviewed items (D1 56, D2 64, D3 68, D4 96, D5 100), 4 Nov 2026, now 390 (D5 106) after batch 6 added six items from PCAOB AS 2201, the newly opened source the padding guard allows,** under the owner's "quality before count" and the padding guard below. The batch 5 audits found that D4 and D5 items past these counts were general securities law or COSO publication trivia, and that the in-scope public sources are used up. The 400 target is withdrawn (`product-manager`, 4 Nov 2026). New items enter only when a newly opened primary source adds an uncovered outline line, within the domain's weight; never from extra angles or D1-D3 overflow. Free sample unchanged: at least 100.
 
 **Owner decision, 31 Oct 2026: a bank of 400.** `product-manager` and
 `behavioral-scientist`, asked separately, had both proposed about 300 (range
@@ -19,7 +19,7 @@ launch and covers more of SOXCPA's 1,022 slides, side topics included.
 
 | | Value |
 |---|---|
-| Full bank | **384**, finalised 4 Nov 2026 (the owner's 400 of 31 Oct 2026 was conditional on the padding guard; see above) |
+| Full bank | **390** (384 finalised 4 Nov 2026, plus six batch 6 items from PCAOB AS 2201; the owner's 400 of 31 Oct 2026 was conditional on the padding guard; see above) |
 | Pilot | 20 per domain, IDs `csoe_dN_001`–`020`, every course part touched at least once |
 | Held-out mock items | about 70 (two 35-item forms), never served in practice |
 | Mix per domain | about 30% foundational (recall), 55% application, 15% analysis |
@@ -29,7 +29,7 @@ Per-domain targets (blueprint "Question targets"): D1 56 · D2 64 · D3 64 ·
 D4 108 · D5 108, from each domain's share of the topic lines in SOXCPA's
 course synopsis (KaiSip's reading, not SOXCPA's). Adjusted 31 Oct 2026: D3
 holds 68 (4 held-out core items written for the mock forms), so D4 and D5
-target 106 each to keep the bank at 400. Final (4 Nov 2026): D4 96, D5 100; see the paragraph at the top of this section. If the bank grows again,
+target 106 each to keep the bank at 400. Final (4 Nov 2026): D4 96, D5 100 (106 after batch 6); see the paragraph at the top of this section. If the bank grows again,
 scale every domain by its weight.
 
 **Guarding against padding at 400** (the experts' concern above 350): the
@@ -140,7 +140,7 @@ Decided 31 Oct 2026 by `product-manager`:
   one-page "where to look" sheet (section, who, what, deadline, consequence)
   for the open-book exam.
 - **Free sample (owner decision, 31 Oct 2026): at least 100 questions**, the
-  shared rule unchanged. On the 384-item bank that is 26%. Plus the
+  shared rule unchanged. On the 390-item bank that is 26%. Plus the
   diagnostic and one short timed mock (the shared rule; a free full 35-item
   mock is not part of the decision). Chosen by domain and course part,
   best-reviewed items only, every domain represented, never from the
@@ -158,7 +158,7 @@ The same pieces as the CISA course, each in `data/csoe/`:
 | Principles ("how CSOE questions think") | `mindset/principles.json` (`docs/content/PRINCIPLES_SCHEMA.md`, CRISC-style deviations) | Written, audited and fixed (31 Oct 2026) |
 | About the exam | `exam/csoe_exam_guide.json` (`docs/content/EXAM_GUIDE_SCHEMA.md`) | Written, audited and fixed (31 Oct 2026) |
 | Final review week | `exam/final_review_week.json` | Written, audited and fixed (31 Oct 2026) |
-| Practice | `originals/d{1..5}.json` | 384 reviewed (final, 4 Nov 2026) |
+| Practice | `originals/d{1..5}.json` | 390 reviewed (4 Nov 2026) |
 | Mock exam | the app's mock engine reads the bank; the held-out forms go in `exam/mock_forms.json` (two 35-item forms, never served in practice) | Two held-out forms drawn 31 Oct 2026 (`exam/mock_forms.json`, 70 items); the forward-only mode and excluding held-out items from practice are app tasks (section 4). Release gate: the final review week asks for a 35-question, 90-minute mock, so it must exist before the course ships |
 | Lessons | `lessons.json` (`docs/content/LESSONS_SCHEMA.md`) | After the bank |
 | Game decks | `mobile/src/content/games/csoe/` | App task, when CSOE is wired in |
@@ -248,7 +248,7 @@ Decided by the owner on 31 Oct 2026:
    recalled, never the questions themselves, which SOXCPA does not release)
    will be the best check of KaiSip's coverage.
 2. **Free sample: at least 100 questions** (section 5).
-3. **Bank: 400 questions** (section 1). Finalised at 384 on 4 Nov 2026 under "quality before count": the extra items would have been padding (section 1).
+3. **Bank: 400 questions** (section 1). Finalised at 384 on 4 Nov 2026 under "quality before count": the extra items would have been padding (section 1). Six more from PCAOB AS 2201, once the owner supplied it, bring it to 390.
 4. **Timing: finish CSOE now**, so KaiSip has it to offer at launch and adds
    certifications after. (`product-manager` had suggested building it after
    Phase E payments go live for CRISC and AAIA; the owner chose otherwise.)
@@ -270,6 +270,7 @@ Still settled by policy, not open:
 | Batch 3, D1-D3 to target, D4 and D5 +20 (31 Oct 2026) | 56 | 64 | 64 | 60 | 60 | 304 |
 | Batch 4, D4 and D5 +24, plus 4 held-out D3 core items (31 Oct 2026) | 56 | 64 | 68 | 84 | 84 | 356 |
 | Batch 5, D4 +12 and D5 +16 after cuts; bank final (4 Nov 2026) | 56 | 64 | 68 | 96 | 100 | 384 |
+| Batch 6, D5 +6 from PCAOB AS 2201 (owner-supplied copy, 4 Nov 2026) | 56 | 64 | 68 | 96 | 106 | 390 |
 
 Pilot reviews (31 Oct 2026):
 - **Blind test:** 100/100 picks matched the keys (testers saw no keys,
@@ -409,6 +410,33 @@ Batch 5 reviews (4 Nov 2026):
     three angles (d5_010, 073, 085): add no fourth.
   - Two stems keep "Section 1512 of title 18": the shared style lint counts
     the periods in "U.S.C." as sentence breaks.
+
+Batch 6 reviews (4 Nov 2026), D5 101-106 from PCAOB AS 2201:
+- **Source:** the owner saved the AS 2201 and AS 1305 pages from pcaobus.org
+  (its bot challenge blocks KaiSip's tools). The library's PCAOB section records
+  the copy and its SHA-256. AS 1305 had no D5 use.
+- **Scope:** six new rules: the auditor uses management's framework (.05),
+  outsourced processing in information and communication (.B18), a report
+  without tests gives no evidence of operating effectiveness (.B20 note), no
+  reference to the service auditor (.B27), and benchmarking conditions and
+  baseline reset (.B29, .B33). Skipped as repeats or held-out cues: .36, .47,
+  .B22, .B23, .B24-.B25.
+- **Blind test:** 6/6 matched the keys; the 3 items whose stems changed were
+  re-tested blind.
+- **Standards audit:** FIX THEN SHIP, no hard errors. Fixed: a stem word echoed
+  only in the key, an audit-procedure framing ("the auditor's BEST step"),
+  "must" where the standard says "should", a stem scenario that cued held-out
+  d5_036, and two note rules.
+- **Rules currency:** 27 of 30 facts verified, none wrong. The 15 Dec 2026 AS
+  2201 amendments touch only .09 and .99. Three rules-watch rows added.
+- **Cross-domain review:** FIX THEN SHIP, no hard errors, no contradictions
+  and no held-out leaks. Fixed: a stem word echoed in the key, the CEO and CFO
+  named for Section 302, role names in note audit lines, a note line that read
+  like held-out d5_049's runner-up, and an exam cue that taught d5_083's rule.
+  Note 3B2.2 now bridges the statute's "attests to management's assessment"
+  and AS 2201.03's opinion on ICFR. Three more linked pairs recorded.
+- **Next angles:** add no further .B18 angle (103 is thin), no third Type 1
+  angle, and nothing on .B24-.B25 (held-out d5_049's key).
 
 Lessons for batch 5 (D4 and D5 only, 22 items each to go):
 - **Closed:** all the batch 4 closures, plus settlements, subpoenas and

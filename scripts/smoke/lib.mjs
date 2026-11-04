@@ -109,14 +109,18 @@ export class Recorder {
   }
 }
 
-// The question bank as the apps serve it (data/domain{1..5}.json), read
-// straight from disk so grading checks do not trust the app's own state.
-export function loadBank(repo) {
+// The question bank as the apps serve it, read straight from disk so grading
+// checks do not trust the app's own state. A repo checkout has the full bank
+// (data/domain{1..5}.json); the published site (_site/, web v12.50+) has only
+// the free sample (data/free/cisa_d{1..5}.json), which is what the web loads.
+export function loadBank(root) {
   const bank = {};
+  const site = !fs.existsSync(path.join(root, 'data', 'domain1.json'));
   for (let d = 1; d <= 5; d++) {
-    const f = path.join(repo, 'data', `domain${d}.json`);
+    const f = site ? path.join(root, 'data', 'free', `cisa_d${d}.json`) : path.join(root, 'data', `domain${d}.json`);
     const j = JSON.parse(fs.readFileSync(f, 'utf8'));
     for (const q of (j.questions || j)) bank[q.id] = q;
   }
+  Object.defineProperty(bank, '__site', { value: site, enumerable: false });
   return bank;
 }

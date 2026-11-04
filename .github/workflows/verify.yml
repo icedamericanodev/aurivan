@@ -52,3 +52,8 @@ jobs:
       # so a missing page or a stray file fails here, before it can deploy.
       - name: Website build (allowlist only)
         run: bash scripts/build_site.sh
+      # The web study app is closed to a landing page until the store launch
+      # (SITE_MODE=landing is the default). Build the app mode too, so it is
+      # always ready to reopen.
+      - name: Website build, web app mode (kept ready for launch)
+        run: SITE_MODE=app bash scripts/build_site.sh
