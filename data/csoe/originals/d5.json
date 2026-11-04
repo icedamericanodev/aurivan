@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "comment": "Original KaiSip CSOE questions for Domain 5 (Internal control frameworks and SOX scope), written from the public law (the Sarbanes-Oxley Act, SEC rules, releases and staff guidance), COSO's and the AICPA's public summaries, and KaiSip's own notes (data/csoe/notes/d5.json). No SOXCPA material, uploads of it, or prep-bank content was used. Not affiliated with or endorsed by SOXCPA. Schema: docs/content/QUESTION_SCHEMA.md; writing rules: docs/content/EXAM_STYLE_V2.md and .claude/agents/csoe-standards-auditor.md. Pilot csoe_d5_001 to csoe_d5_020, 31 Oct 2026; batch 2 csoe_d5_021 to csoe_d5_040, 31 Oct 2026; batch 3 csoe_d5_041 to csoe_d5_060, 31 Oct 2026; batch 4 csoe_d5_061 to csoe_d5_084, 31 Oct 2026; batch 5 csoe_d5_085 to csoe_d5_100, 4 Nov 2026; batch 6 csoe_d5_101 to csoe_d5_106, 4 Nov 2026, from PCAOB AS 2201 (owner-supplied copy of the pcaobus.org page).",
+    "comment": "Original KaiSip CSOE questions for Domain 5 (Internal control frameworks and SOX scope), written from the public law (the Sarbanes-Oxley Act, SEC rules, releases and staff guidance), COSO's and the AICPA's public summaries, and KaiSip's own notes (data/csoe/notes/d5.json). No SOXCPA material, uploads of it, or prep-bank content was used. Not affiliated with or endorsed by SOXCPA. Schema: docs/content/QUESTION_SCHEMA.md; writing rules: docs/content/EXAM_STYLE_V2.md and .claude/agents/csoe-standards-auditor.md. Pilot csoe_d5_001 to csoe_d5_020, 31 Oct 2026; batch 2 csoe_d5_021 to csoe_d5_040, 31 Oct 2026; batch 3 csoe_d5_041 to csoe_d5_060, 31 Oct 2026; batch 4 csoe_d5_061 to csoe_d5_084, 31 Oct 2026; batch 5 csoe_d5_085 to csoe_d5_100, 4 Nov 2026; batch 6 csoe_d5_101 to csoe_d5_106, 4 Nov 2026, from PCAOB AS 2201 (owner-supplied copy of the pcaobus.org page); batch 7 csoe_d5_107 to csoe_d5_108, 4 Nov 2026, from PCAOB AS 2601 (owner-supplied copy of the pcaobus.org page).",
     "schema_version": 1
   },
   "domain": 5,
@@ -3695,7 +3695,7 @@
       "correct": "C",
       "key_concept": "AS 2201 treats a service organization's services that are part of the company's information system as part of the information and communication component.",
       "pre_read": "Recall how AS 2201 links outsourced processing to the five components of internal control.",
-      "correct_explanation": "AS 2201.B18 says that when a service organization's services are part of a company's information system, they are part of the information and communication component of its ICFR, and the auditor includes them when deciding what evidence the opinion needs. Pay calculated, recorded and posted to the ledger is the issuer's own transaction processing. Option A is close because processing involves controls, but the standard places the services in information and communication.",
+      "correct_explanation": "AS 2201.B18 places a service organization's services that are part of a company's information system in the information and communication component of its ICFR. AS 2601.03 counts services that affect how transactions are recorded and processed, or the related accounting records, as part of that system; pay calculated, recorded and posted to the ledger does both. Option A is close because processing involves controls, but the standard places the services in information and communication.",
       "wrong_explanations": {
         "A": "Closest choice: the provider does run controls over its processing, but AS 2201.B18 places services that form part of the information system in information and communication.",
         "B": "Tempting because outsourcing changes risks, which risk assessment identifies. But that component covers analyzing risk; it is not where the provider's processing sits.",
@@ -3706,13 +3706,13 @@
         "Final two: C beats A because AS 2201.B18 places services that are part of the information system in the information and communication component.",
         "Exam cue: ask what the outsourced service does; processing that records the company's transactions is part of its information system, which AS 2201 files under information and communication."
       ],
-      "framework_ref": "PCAOB AS 2201.B18 (Service organization services in the information system); COSO Internal Control—Integrated Framework (2013) Executive Summary (Components of internal control)",
+      "framework_ref": "PCAOB AS 2201.B18 (Service organization services in the information system); PCAOB AS 2601.03 (Services that are part of the information system); COSO Internal Control—Integrated Framework (2013) Executive Summary (Components of internal control)",
       "related_concepts": [
         "Information and communication",
         "Service organization",
         "Information system"
       ],
-      "_provenance": "Authored from concept: KaiSip notes 5C2.7 and PCAOB AS 2201.B18, owner-supplied copy saved 4 Nov 2026, CSOE batch 6 csoe_d5_101-106. Original scenario written for KaiSip; no SOXCPA material or prep-bank text used.",
+      "_provenance": "Authored from concept: KaiSip notes 5C2.7 and PCAOB AS 2201.B18 (AS 2601.03 added in CSOE batch 7), owner-supplied copy saved 4 Nov 2026, CSOE batch 6 csoe_d5_101-106. Original scenario written for KaiSip; no SOXCPA material or prep-bank text used.",
       "style_version": 2
     },
     {
@@ -3821,6 +3821,78 @@
         "Automated application control"
       ],
       "_provenance": "Authored from concept: KaiSip notes 5C1.6 and PCAOB AS 2201.B33, owner-supplied copy saved 4 Nov 2026, CSOE batch 6 csoe_d5_101-106. Original scenario written for KaiSip; no SOXCPA material or prep-bank text used.",
+      "style_version": 2
+    },
+    {
+      "id": "csoe_d5_107",
+      "domain": 5,
+      "subtopic": "5C2 Service organizations: from SAS 70 to SSAE 18. Controls a provider's report lists for users",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An issuer's payroll processor obtains a service auditor's report whose description of controls lists complementary user organization controls. Under PCAOB AS 2601, those controls MOST accurately:",
+      "options": {
+        "A": "are each user company's to run, untested by the service auditor",
+        "B": "were tested by the service auditor at a sample of user companies",
+        "C": "become the processor's own controls once listed in its description",
+        "D": "fall outside each user company's ICFR once the opinion is clean"
+      },
+      "correct": "A",
+      "key_concept": "Under AS 2601, controls a service organization's system assumes at user organizations are listed in its description but stay with each user to apply.",
+      "pre_read": "Recall what AS 2601 says a service auditor's report covers and what it leaves to others.",
+      "correct_explanation": "AS 2601.31 has the service auditor list controls the provider's system assumes at user organizations in the description and, where they are needed to meet the control objectives, condition the opinion on users applying them. A report with tests also states that no procedures were performed at user organizations (.44). Those controls are the user company's to run and to cover in its own ICFR. Option C is close because the description lists them.",
+      "wrong_explanations": {
+        "B": "Tempting because the report names user controls. But the service auditor reports on the provider and, under AS 2601.44, states it performed no procedures at user organizations.",
+        "C": "Closest choice: the provider's description does list these controls, but AS 2601.31 lists them because users must apply them; listing does not shift them to the provider.",
+        "D": "Tempting because the opinion is clean. But it can hold only if users apply their controls, and outsourcing never moves the user company's ICFR responsibility to the provider."
+      },
+      "tips": [
+        "Eliminate: B and D. The service auditor examines the provider, not its users, and a clean opinion never takes a user company's own controls out of its ICFR.",
+        "Final two: A beats C because AS 2601.31 has the description list controls the users must apply; being listed does not make them the provider's.",
+        "Exam cue: when a service auditor's opinion depends on what user organizations do, those controls belong to each user company to run and evaluate."
+      ],
+      "framework_ref": "PCAOB AS 2601.31 (Complementary user organization controls); PCAOB AS 2601.44 (Contents of a report with tests of operating effectiveness)",
+      "related_concepts": [
+        "Complementary user organization controls",
+        "Service auditor's report",
+        "User organization"
+      ],
+      "_provenance": "Authored from concept: KaiSip notes 5C2.8 and PCAOB AS 2601.31 and .44, owner-supplied copy saved 4 Nov 2026, CSOE batch 7 csoe_d5_107-108. Original scenario written for KaiSip; no SOXCPA material or prep-bank text used.",
+      "style_version": 2
+    },
+    {
+      "id": "csoe_d5_108",
+      "domain": 5,
+      "subtopic": "5C2 Service organizations: from SAS 70 to SSAE 18. The description of controls",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "A claims processor has its service auditor draft the description of controls and control objectives attached to the service auditor's report. Under PCAOB AS 2601, that description's representations are MOST accurately the responsibility of:",
+      "options": {
+        "A": "the service auditor, since its staff drafted the description",
+        "B": "each user organization's management, which relies on it",
+        "C": "the user auditors, who evaluate it before using the report",
+        "D": "the service organization, which provides the processing"
+      },
+      "correct": "D",
+      "key_concept": "Under AS 2601, the service organization stays responsible for the representations in its description of controls, even when the service auditor prepares it.",
+      "pre_read": "Recall which party AS 2601 holds to each part of a service auditor's report package.",
+      "correct_explanation": "AS 2601.33 lets the service organization prepare the description of controls and control objectives, and says that if the service auditor prepares it, the representations in it remain the service organization's responsibility. The service auditor answers for the representations in its own report (.22). Option A is close because the service auditor did the drafting, but drafting does not move responsibility for what the description claims.",
+      "wrong_explanations": {
+        "A": "Closest choice: the service auditor drafted the text and answers for its own report under AS 2601.22, but .33 keeps the description's representations with the service organization.",
+        "B": "Tempting because user companies rely on the description for ICFR. But they answer for their own controls; the description is the provider's account of its controls.",
+        "C": "Tempting because user auditors weigh the report as evidence. Evaluating that evidence is their job; it does not make them answer for the provider's description."
+      },
+      "tips": [
+        "Eliminate: B and C. User companies and their auditors rely on and evaluate the description; neither answers for what the provider says about its own controls.",
+        "Final two: D beats A because AS 2601.33 keeps the description's representations with the service organization even when the service auditor drafts it.",
+        "Exam cue: the description is the provider's statement and the opinion is the service auditor's; whoever holds the pen, each answers for its own part."
+      ],
+      "framework_ref": "PCAOB AS 2601.33 (Description of controls remains the service organization's responsibility); PCAOB AS 2601.22 (Responsibilities of service auditors)",
+      "related_concepts": [
+        "Description of controls",
+        "Service organization",
+        "Service auditor's report"
+      ],
+      "_provenance": "Authored from concept: KaiSip notes 5C2.8 and PCAOB AS 2601.33 and .22, owner-supplied copy saved 4 Nov 2026, CSOE batch 7 csoe_d5_107-108. Original scenario written for KaiSip; no SOXCPA material or prep-bank text used.",
       "style_version": 2
     }
   ]

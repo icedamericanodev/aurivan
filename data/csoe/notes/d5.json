@@ -2,7 +2,7 @@
   "domain_number": 5,
   "domain_name": "Internal control frameworks and SOX scope",
   "exam_weight": "27%",
-  "source": "Original KaiSip notes written from the public law: the Sarbanes-Oxley Act, SEC rules, releases and staff guidance, and the public summaries published by COSO and the AICPA, all opened 31 Oct 2026, and PCAOB AS 2201 from an owner-supplied copy of the pcaobus.org page saved 4 Nov 2026. Not affiliated with or endorsed by SOXCPA. COSO framework text is not reproduced; principles are named only. COSO is a trademark of the Committee of Sponsoring Organizations of the Treadway Commission.",
+  "source": "Original KaiSip notes written from the public law: the Sarbanes-Oxley Act, SEC rules, releases and staff guidance, and the public summaries published by COSO and the AICPA, all opened 31 Oct 2026, and PCAOB AS 2201 and AS 2601 from owner-supplied copies of the pcaobus.org pages saved 4 Nov 2026. Not affiliated with or endorsed by SOXCPA. COSO framework text is not reproduced; principles are named only. COSO is a trademark of the Committee of Sponsoring Organizations of the Treadway Commission.",
   "overview": "This domain covers the yardsticks companies use to judge internal control and what falls inside a Section 404 assessment. It starts with COSO's internal control framework, the 1992 original and the 2013 update, contrasts it with COSO's enterprise risk management frameworks of 2004 and 2017, and ends with scope: software, spreadsheets and outsourced service organizations.",
   "analogy": "Think of a building inspection. The building code is the framework: owner and inspector measure against it, and a new edition replaces the old one. A wider city plan covers zoning and growth, much as ERM covers strategy and enterprise risk, but the inspection still uses the code. Everything that holds the building up gets inspected, whether bought ready-made, built on site or maintained by a contractor, and hiring a contractor never moves the owner's duty to pass inspection.",
   "parts": [
@@ -1839,7 +1839,7 @@
     {
       "topic_id": "5C2",
       "topic_name": "Service organizations: from SAS 70 to SSAE 18",
-      "overview": "Companies outsource processes that feed their financial statements, but they keep responsibility for ICFR. A service auditor's SOC 1 report, formerly a SAS 70 report, gives evidence about the provider's controls; management still controls what flows to and from the provider. AS 2201 sets how the issuer's auditor uses that evidence.",
+      "overview": "Companies outsource processes that feed their financial statements, but they keep responsibility for ICFR. A service auditor's SOC 1 report, formerly a SAS 70 report, gives evidence about the provider's controls; management still controls what flows to and from the provider. AS 2201 and AS 2601 set how auditors use that evidence.",
       "can_do": [
         "Explain who stays responsible for ICFR when a process is outsourced",
         "Tell a Type 1 report from a Type 2 report and pick the one a scenario needs",
@@ -1908,10 +1908,10 @@
             "csoe_d5_019"
           ],
           "definition": "A Type 2 service auditor's report adds tests of whether controls operated effectively over a period; a Type 1 report speaks as of a date, without those tests.",
-          "why_it_matters": "Management needs evidence that outsourced controls worked during the year. Only a Type 2 report tests operating effectiveness, and SOC 1 is the report aimed at user entities' financial reporting.",
+          "why_it_matters": "Management needs proof that outsourced controls worked: only a Type 2 report tests that, and SOC 1 aims at user entities' financial reporting.",
           "how_it_works": [
             "Type 2: controls described, suitably designed, placed in operation, and tested for operating effectiveness during a period (SEC staff ICFR FAQ, footnote 3; Release No. 33-8810, footnote 54).",
-            "Type 1: speaks as of a date, without the tests of operating effectiveness over a period that define a Type 2 report.",
+            "Type 1: as of a date. PCAOB AS 2601.24 calls it a report on controls placed in operation; Type 2 is the report that adds tests of operating effectiveness.",
             "SOC 1 examines a service organization's controls likely to be relevant to user entities' ICFR (AICPA SOC 1 page).",
             "SOC 1 reports were formerly known as SAS 70 reports; service auditors now examine under SSAE No. 18 (AICPA).",
             "SOC 2 reports address trust services criteria such as security and availability, not ICFR (AICPA SOC suite page)."
@@ -2099,12 +2099,13 @@
             "csoe_d5_084"
           ],
           "definition": "SOC 1 reports serve user entities and their auditors; an outsourced process matters for ICFR when it handles financial transactions; report gaps fall back to the user.",
-          "why_it_matters": "Distractors treat SOC 1 as a public report, put every outsourced service in ICFR scope or rely on a report that skips a risk. Each has a clear answer in the AICPA, SEC staff or COSO text.",
+          "why_it_matters": "Distractors treat SOC 1 as a public report, put every outsourced service in ICFR scope or rely on a report that skips a risk. Each has a clear answer in the public text.",
           "how_it_works": [
             "SOC 1 reports are intended for user entities and the CPAs who audit their financial statements (AICPA SOC 1 page, opened 31 Oct 2026).",
             "SOC 3 reports address trust services criteria in less detail and are general-use reports that can be freely distributed (AICPA SOC 3 page, opened 31 Oct 2026).",
             "An outsourced activity matters for ICFR when it affects initiating, authorizing, recording, processing or reporting transactions, as payroll does (SEC staff ICFR FAQ, Question 8).",
-            "Management keeps outsourced-control responsibility (SEC staff FAQ Q8); if service auditor reports skip cyber controls, it should take steps to understand them (COSO in the Cyber Age, 2015)."
+            "Management keeps outsourced-control responsibility (SEC staff FAQ Q8); if service auditor reports skip cyber controls, it should take steps to understand them (COSO in the Cyber Age, 2015).",
+            "AS 2601.03 excludes a bank or broker that only executes transactions the client specifically authorized."
           ],
           "example": "A listed clinic operator uses one firm to process patient billing and another to host its donor newsletter. The finance team obtains the billing firm's SOC 1 report for its auditors, leaves the newsletter host out of ICFR scope, and asks the billing firm about cyber controls the report omits.",
           "audit_focus": {
@@ -2248,6 +2249,58 @@
             }
           ],
           "memory_aid": "Tests or no proof; the opinion never names the service auditor."
+        },
+        {
+          "id": "5C2.8",
+          "name": "Inside a Service Auditor's Report",
+          "legacy_ids": [],
+          "practice_ids": [
+            "csoe_d5_107",
+            "csoe_d5_108"
+          ],
+          "definition": "PCAOB AS 2601 names the parties around an outsourced process and sets what a service auditor's report covers, who answers for each part, and what it leaves to users.",
+          "why_it_matters": "A SOC 1 report joins the provider's description to the service auditor's opinion, and may rest on controls only users run. Know whose statement each part is.",
+          "how_it_works": [
+            "User organization: the company using the provider; user auditor: its financial statement auditor; service auditor: reports on the provider's relevant controls (AS 2601.02, owner-supplied copy saved 4 Nov 2026).",
+            "Services are part of a company's information system when they affect its significant transactions, how they are recorded and processed, the related records or its reporting process (.03).",
+            "The service organization answers for its description of controls, even if the service auditor drafts it; the service auditor answers for its own report (.22, .33).",
+            "Controls the system assumes users will apply are listed in the description, and the opinion holds only if users apply them (.31); no procedures are performed at user organizations (.44)."
+          ],
+          "example": "A listed hotel group outsources loyalty-points accounting. The provider's SOC 1 report says its objectives are met only if each client reconciles the files it sends, so the group's SOX lead adds that reconciliation to the group's own key controls and tests it.",
+          "audit_focus": {
+            "review": [
+              "Trace each condition in the opinion paragraph to an owned control",
+              "Read who prepared the description attached to the report"
+            ],
+            "evidence": [
+              "Mapping of complementary user organization controls to owned company controls",
+              "Test results for the company's own complementary controls"
+            ],
+            "recommend": "Have the SOX lead give each user control the report assumes a named owner and a test plan.",
+            "decides": "User-company management names who runs each listed control"
+          },
+          "isaca_rule": "Under AS 2601, the service organization answers for its description and the service auditor for its report. Controls the system assumes at users stay with each user company, outside the service auditor's work, and referring to the report never divides the user auditor's responsibility.",
+          "exam_traps": [
+            {
+              "trap": "A service auditor that drafts the description of controls answers for what it says.",
+              "why": "AS 2601.33 keeps the description's representations with the service organization; the service auditor answers for its own report (.22)."
+            },
+            {
+              "trap": "Controls a report says users must apply become the provider's once its description lists them.",
+              "why": "AS 2601.31 lists them so users apply them; the service auditor performs no procedures at user organizations (.44)."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Complementary user organization controls",
+              "definition": "Controls a service organization's system assumes each user organization will apply, listed in the description of controls (AS 2601.31)."
+            },
+            {
+              "term": "Service auditor",
+              "definition": "The auditor who reports on a service organization's controls that may be relevant to its users' financial statement audits (AS 2601.02)."
+            }
+          ],
+          "memory_aid": "Provider owns the description, service auditor the opinion, each user its own controls."
         }
       ]
     }
@@ -2433,6 +2486,11 @@
       "title": "PCAOB AS 2201: An Audit of Internal Control Over Financial Reporting That Is Integrated with An Audit of Financial Statements (owner-supplied copy of the pcaobus.org page)",
       "url": "https://pcaobus.org/oversight/standards/auditing-standards/details/AS2201",
       "checked": "2026-11-04: paragraphs .05 (footnote 7), .36, .B17-.B33 and .C8 read in the owner-supplied copy saved that day; amendments to .09 and a new .99 take effect 15 Dec 2026 and do not touch these paragraphs"
+    },
+    {
+      "title": "PCAOB AS 2601: Consideration of an Entity's Use of a Service Organization (owner-supplied copy of the pcaobus.org page)",
+      "url": "https://pcaobus.org/oversight/standards/auditing-standards/details/AS2601",
+      "checked": "2026-11-04: paragraphs .02, .03, .12, .14, .21, .22, .24, .31, .33, .44 and .46 read in the owner-supplied copy saved that day; the standard does not use the labels Type 1 and Type 2"
     }
   ]
 }
