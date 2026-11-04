@@ -207,6 +207,17 @@ Rule for the form builder: Draw no two items of a pair into the same form. Keep 
 | csoe_d5_022 | csoe_d5_086 | d5_086's WA and tip 1: ICFR leaves out COSO's operations objectives, part of held-out d5_022's lesson (does not decide it) |
 | csoe_d5_090 | csoe_d5_093 | contrasting angles on COSO's three objective categories (note 5A2.6) |
 | csoe_d1_019 | csoe_d4_008 | both key 18 U.S.C. 1519 reaching anyone (actor angle against timing and the 1520 look-alike) |
+| csoe_d5_003 | csoe_d5_101 | 101's explanation and WA/WB say COSO is not required and frameworks come from due-process bodies, d5_003's key (batch 6) |
+| csoe_d5_019 | csoe_d5_104 | the Type 1 / Type 2 rule from management's side (019) and the auditor's side under AS 2201.B20 (104) |
+| csoe_d5_083 | csoe_d5_103 | 103's stem and exam cue put ledger-posting outsourced processing inside ICFR, d5_083's key |
+| csoe_d5_083 | csoe_d5_102 | 102's WC and tip 1 say information-system services stay within ICFR, d5_083's key |
+| csoe_d5_083 | csoe_d5_104 | 104's WC and tip 1 say information-system services stay within ICFR, d5_083's key |
+| csoe_d5_099 | csoe_d5_102 | 102's stem has an issuer's auditor using a SOC 1 report under PCAOB AS 2201, d5_099's key |
+| csoe_d5_099 | csoe_d5_104 | 104's stem has an issuer's auditor using a SOC 1 report under PCAOB AS 2201, d5_099's key |
+| csoe_d5_105 | csoe_d5_106 | 106's option A and WA state the AS 2201.B29 benchmarking conditions, 105's key |
+| csoe_d5_018 | csoe_d5_102 | 102's WD and tip 1: outsourcing never moves management's responsibility to the provider, d5_018's key (batch 6) |
+| csoe_d5_099 | csoe_d5_103 | 103's stem has an issuer's auditor treating a payroll provider's services under PCAOB AS 2201, d5_099's key (batch 6) |
+| csoe_d5_016 | csoe_d5_105 | 105's WB and tip 2: purchased software still rests on effective, tested general controls, close to d5_016's key (batch 6) |
 | csoe_d5_002 | csoe_d5_088 | both test the scope of the COSO definition |
 | csoe_d5_038 | csoe_d5_100 | SOC 1 use by user auditors |
 | csoe_d5_039 | csoe_d5_100 | SOC 1 use by user auditors |
