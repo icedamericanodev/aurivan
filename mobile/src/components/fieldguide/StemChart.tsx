@@ -42,7 +42,7 @@ import { useWindowDimensions, View } from 'react-native';
 import Animated, { useAnimatedStyle, useSharedValue, withDelay } from 'react-native-reanimated';
 import Svg, { Ellipse, G, Path } from 'react-native-svg';
 import { THIN_WORDS, thinFigure, type Stem } from '../../engine/fieldGuide';
-import { chartLabel, grovePlate } from '../../theme/grove';
+import { chartLabel, chartName, grovePlate } from '../../theme/grove';
 import { fieldInk, LARGE_TEXT, motion, plate, space } from '../../theme/tokens';
 import { useTheme } from '../../theme/useTheme';
 import { ease, tween, useMotion } from '../motion';
@@ -101,8 +101,11 @@ export function lineLabelSpot({ lastPct, line, gap, fs }: { /** The last column'
   // Never narrower than "line" at the chart label's size, so the word is never broken.
   return { beside: true, top: Math.max(below, top - 10), width: Math.max(0, gap / 2 - 8, Math.ceil(22 * fs)) };
 }
-/** A column narrower than this hands over to the list (the longest names need it at 11pt). */
-export const MIN_COLUMN = 58;
+/**
+ * A column narrower than this hands over to the list. The longest name word, "Governance", is about
+ * 72pt in fg name (600 13pt); a name's box is its column less 4 (so two names never meet), plus 2 to spare.
+ */
+export const MIN_COLUMN = 78;
 
 /** Five stems on one scale, or the list at large text. */
 /** How a chart arrives: `true` / `'trace'` from the soil, `'growth'` only what grew, `false` still. */
@@ -174,10 +177,10 @@ function Chart({ stems, line, play, run, delay, w, fs }: { stems: readonly Stem[
   const extras = Math.max(0, ...stems.map((s) => chartLines(s, line).length));
   const last = stems[stems.length - 1];
   const spot = lineLabelSpot({ lastPct: last && !last.thin ? last.pct : null, line, gap, fs });
-  // The words under the soil: a two-line name, the word (two lines for not started) and its
-  // extra lines, grown with the text size.
+  // The words under the soil: a two-line name and the extra lines on the chart's 13/17 labels,
+  // the word (two lines for not started) in figSm, grown with the text size.
   const twoLineWord = stems.some((s) => s.answered <= 0) ? 16 : 0;
-  const h = soil + 10 + Math.ceil((30 + 16 + twoLineWord + extras * 14) * fs);
+  const h = soil + 10 + Math.ceil((2 * chartName.lineHeight + 2 + 16 + twoLineWord + extras * chartLabel.lineHeight) * fs);
   const settle = useSharedValue(moving ? 0 : 1);
   useEffect(() => {
     if (!moving) {
@@ -224,7 +227,7 @@ function Chart({ stems, line, play, run, delay, w, fs }: { stems: readonly Stem[
           {stems.map((s, i) => {
             const cx = GUTTER + gap * i + gap / 2;
             // A thin stem's two small lines sit just over its dashed shoot (which ends 27 above the soil), grown with the text.
-            const top = s.pct !== null ? y(s.pct) - 34 : s.thin ? soil - 30 - Math.ceil(28 * fs) : null;
+            const top = s.pct !== null ? y(s.pct) - 34 : s.thin ? soil - 30 - Math.ceil(2 * chartLabel.lineHeight * fs) : null;
             // A growing stem's number rides its tip (GrowNumber, below).
             if (growing.includes(s.key)) return null;
             return top === null ? null : (
@@ -239,7 +242,7 @@ function Chart({ stems, line, play, run, delay, w, fs }: { stems: readonly Stem[
                 ) : (
                   // Too few yet: words where the number will grow (Grove has no dashes; "seed" is the plant's word only).
                   <View style={{ backgroundColor: c.raised2, paddingHorizontal: 3 }}>
-                    <FieldText v="tiny" color={c.ink2} center>{'too few\nyet'}</FieldText>
+                    <FieldText v="tiny" color={c.ink2} center style={chartLabel}>{'too few\nyet'}</FieldText>
                   </View>
                 )}
               </View>
@@ -256,12 +259,12 @@ function Chart({ stems, line, play, run, delay, w, fs }: { stems: readonly Stem[
           const red = !s.thin && s.pct !== null && s.below;
           return (
             <View key={s.key} style={{ position: 'absolute', left: GUTTER + gap * i - 4, width: gap + 8, top: soil + 8, alignItems: 'center' }}>
-              {/* The name takes the column's full width and wraps only when it must ("IS Audit" on one
-                  line when it fits; "Info" over "Protection" when it does not). */}
-              <FieldText v="tiny" color={c.ink} center numberOfLines={2} style={{ alignSelf: 'stretch' }}>{s.name}</FieldText>
+              {/* The name wraps only when it must ("IS Audit" on one line when it fits; "Info" over
+                  "Protection" when it does not), in its column less 4, so two neighbours' names never meet. */}
+              <FieldText v="tiny" color={c.ink} center numberOfLines={2} style={[chartName, { width: Math.max(0, gap - 4) }]}>{s.name}</FieldText>
               <FieldText v="figSm" color={red ? c.clay : c.ink2} center>{chartWord(s)}</FieldText>
               {lines.map((l) => (
-                <FieldText key={l} v="tiny" color={red && l.startsWith('below') ? c.clay : c.ink2} center>{l}</FieldText>
+                <FieldText key={l} v="tiny" color={red && l.startsWith('below') ? c.clay : c.ink2} center style={chartLabel}>{l}</FieldText>
               ))}
             </View>
           );

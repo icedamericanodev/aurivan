@@ -174,6 +174,8 @@ export type RoleName = keyof typeof role;
  * style for `FieldText v="tiny"`, which keeps the chart's x1.3 cap (its list takes over after).
  */
 export const chartLabel = { fontFamily: font.sans500, fontSize: 13, lineHeight: 17 } as const satisfies TextStyle;
+/** The area name under a chart column: fg name, Figtree 600 13/17 (TYPE_SCALE.md row 176a, E1). */
+export const chartName = { fontFamily: font.sans600, fontSize: 13, lineHeight: 17 } as const satisfies TextStyle;
 
 /** The five numeral steps, by size (52 score, 38 range, 30 stat, 22 value, 20 inline). Nothing else. */
 export type NumStep = 52 | 38 | 30 | 22 | 20;

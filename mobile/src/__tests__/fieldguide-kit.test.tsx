@@ -93,7 +93,7 @@ describe('StemChart', () => {
     act(() => {
       r = create(<StemChart stems={STEMS} />);
     });
-    layout(340);
+    layout(440); // (440 - 32) / 5 = 81pt a column, over MIN_COLUMN 78 at 13pt
     expect(labels()).toEqual(STEMS.map((s) => s.spoken));
     // The chart sets "not started" and "too few yet" on two lines, like the names.
     const t = allText().replace(/\n/g, ' ');
@@ -147,7 +147,7 @@ describe('StemChart', () => {
     act(() => {
       r = create(<StemChart stems={STEMS} />);
     });
-    layout(340);
+    layout(440); // (440 - 32) / 5 = 81pt a column, over MIN_COLUMN 78 at 13pt
     const drawing = root().find((n) => typeof n.type === 'string' && n.props.accessibilityElementsHidden === true);
     const kids = drawing.children.filter((k): k is ReactTestInstance => typeof k !== 'string');
     const lastStem = kids.map((k) => (typeof k.type === 'function' && k.type.name === 'StemColumn' ? 1 : 0)).lastIndexOf(1);
@@ -173,7 +173,7 @@ describe('StemChart', () => {
       act(() => {
         r = create(<StemChart stems={near} />);
       });
-      layout(340);
+      layout(440); // (440 - 32) / 5 = 81pt a column, over MIN_COLUMN 78 at 13pt
       const label = root().find((n) => n.props.testID === 'line-label' && typeof n.type === 'string');
       expect(textOf(label)).toBe('70\nline');
       expect(StyleSheet.flatten(label.props.style).backgroundColor).toBeUndefined();
@@ -189,7 +189,7 @@ describe('StemChart', () => {
       act(() => {
         r = create(<StemChart stems={STEMS} />);
       });
-      layout(340);
+      layout(440); // (440 - 32) / 5 = 81pt a column, over MIN_COLUMN 78 at 13pt
       base = height();
     });
     act(() => r?.unmount());
@@ -197,7 +197,7 @@ describe('StemChart', () => {
       act(() => {
         r = create(<StemChart stems={STEMS} />);
       });
-      // (340 - 24) / 5 = 63pt a column, under 58 × 1.2: the list, never truncated names.
+      // (340 - 36) / 5 = 60pt a column, under 78 × 1.2: the list, never truncated names.
       layout(340);
       expect(list()).toHaveLength(1);
     });
@@ -206,7 +206,7 @@ describe('StemChart', () => {
       act(() => {
         r = create(<StemChart stems={STEMS} />);
       });
-      layout(420);
+      layout(520); // (520 - 36) / 5 = 96pt, over 78 × 1.2
       expect(list()).toHaveLength(0);
       expect(height()).toBeGreaterThan(base);
     });

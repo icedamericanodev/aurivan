@@ -14,7 +14,8 @@ const FONT_SCALE = Number(process.env.FONT_SCALE) || 0;
 const THEMES = (process.env.THEMES || 'light,dark').split(',').filter(Boolean);
 const ONLY = (process.env.GROVE_ONLY || '').split(',').filter(Boolean);
 const want = (k) => ONLY.length === 0 || ONLY.includes(k);
-const W = 390;
+// GROVE_W=480 (or wider) for a wide phone, where You draws the five-area chart instead of its list.
+const W = Number(process.env.GROVE_W) || 390;
 const H = 844;
 const P = 'aurivan.progress.v1';
 const S = 'aurivan.settings.v1';

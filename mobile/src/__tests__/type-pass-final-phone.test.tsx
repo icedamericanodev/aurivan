@@ -3,6 +3,8 @@
  * the screenshot pass, each pinned so it does not drift back.
  *  - The chart's scale and "70 line" words are the chart label (E1 fg label, 13/17), the area
  *    name is never split by force, and the scale's strip is wide enough for "100".
+ *    Verify round 1: every other chart label ("too few yet", the lines under a stem) is the chart
+ *    label too and the name is fg name (600 13/17), so one chart has one size (row 176a).
  *  - "Go to Drills" is the size of its meta sentence; "Change" is the size of its row title.
  *  - The switch uses the website's Settings switch tokens, with a visible on thumb in dark where
  *    the platform draws the thumb outside the track.
@@ -12,12 +14,12 @@
  */
 import { Dimensions, StyleSheet, Text } from 'react-native';
 import { act, create, type ReactTestInstance, type ReactTestRenderer } from 'react-test-renderer';
-import { gutterFor, lineLabelSpot, StemChart, type Stem } from '../components/fieldguide/StemChart';
+import { gutterFor, lineLabelSpot, MIN_COLUMN, StemChart, type Stem } from '../components/fieldguide/StemChart';
 import { AccuracyHeroTile } from '../components/groveToday';
 import { DisclosureRow } from '../components/pathChooser';
 import { Button, toggleInk } from '../components/ui';
 import { accuracyTile } from '../engine/groveToday';
-import { chartLabel, role } from '../theme/grove';
+import { chartLabel, chartName, role } from '../theme/grove';
 import { dark, light, type } from '../theme/tokens';
 
 jest.mock('@react-native-async-storage/async-storage', () =>
@@ -65,6 +67,27 @@ describe('the stem chart (item 2)', () => {
     // "IS Audit" is one string: it wraps only when its column is too narrow, never by a forced break.
     expect(textStyle('IS Audit')).toBeDefined();
     expect(root().findAll((n) => n.type === Text && textOf(n) === 'IS\nAudit')).toHaveLength(0);
+  });
+
+  it('one size in the chart: the name is fg name, "too few yet" and the lines under a stem are the chart label', () => {
+    const w = Dimensions.get('window');
+    act(() => Dimensions.set({ window: { ...w, fontScale: 1 }, screen: { ...w, fontScale: 1 } }));
+    const five: Stem[] = [
+      { key: '1', name: 'IS Audit', pct: 84, answered: 60, word: 'Strong', below: false, thin: false, spoken: 'IS Audit: Strong' },
+      { key: '2', name: 'IT Governance', pct: 74, answered: 44, word: 'Steady', below: false, thin: false, spoken: 'IT Governance: Steady' },
+      { key: '3', name: 'IS Acquisition', pct: null, answered: 18, word: 'Building', below: true, thin: true, spoken: 'IS Acquisition: Building' },
+      { key: '4', name: 'IS Operations', pct: 61, answered: 70, word: 'Building', below: true, thin: false, spoken: 'IS Operations: Building' },
+      { key: '5', name: 'Info Protection', pct: null, answered: 0, word: 'Not started', below: false, thin: false, spoken: 'Info Protection: not started' },
+    ];
+    mount(<StemChart stems={five} />);
+    // (440 - 32) / 5 = 81pt a column: the chart, not the list.
+    layout(440);
+    for (const words of ['IS Audit', 'IT Governance', 'Info Protection']) expect([words, textStyle(words).fontFamily, textStyle(words).fontSize, textStyle(words).lineHeight]).toEqual([words, chartName.fontFamily, 13, 17]);
+    for (const words of ['too few\nyet', 'below 70']) expect([words, textStyle(words).fontSize, textStyle(words).lineHeight]).toEqual([words, chartLabel.fontSize, chartLabel.lineHeight]);
+    // A name's box is its column less 4, so two names never meet ("IS Acquisition" ran into "IS Operations"),
+    // and the longest name word ("Governance", about 72pt at 600 13pt) fits it at the floor.
+    expect(textStyle('IT Governance').width).toBe((440 - 32) / 5 - 4);
+    expect(MIN_COLUMN).toBe(78);
   });
 
   it('the scale strip holds "100" at the label size, grown with the text to x1.3', () => {
