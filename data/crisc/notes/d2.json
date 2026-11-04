@@ -116,7 +116,7 @@
             "Internal sources include incident and problem records, audit and control test findings, customer complaints, operational losses and staff reports.",
             "External sources include industry loss databases, sector information sharing groups, regulator notices, insurer data and public breach reports.",
             "External events are adjusted for differences in size, controls and exposure before they inform the enterprise's own ratings.",
-            "Event data is recorded the same way each time, with date, scenario, cause, impact and source, so trends can be compared.",
+            "Event data is recorded the same way each time, with date, scenario, cause, source and impact before insurance, any recovery shown separately, so trends can be compared.",
             "Underreporting is a known weakness; a blame-free reporting culture raises the number of near misses staff report.",
             "A supplier outage that harms the enterprise, such as fees it must repay to staff, is its own loss event, recorded against its own scenario, not an external peer event."
           ],
@@ -237,7 +237,8 @@
             "For adversaries, likelihood weighs capability, intent and targeting; for other sources, it uses history and empirical data.",
             "One threat source can cause many threat events, and one event can come from several sources.",
             "A threat acts on a vulnerability: the threat is the actor or force, the vulnerability is the weakness it uses.",
-            "Each scenario names its threat source and threat event, so the right likelihood evidence can be gathered."
+            "Each scenario names its threat source and threat event, so the right likelihood evidence can be gathered.",
+            "Adversaries shift target, timing, method or path when a control blocks them, so a control's effect is rated across every path."
           ],
           "types": [
             {
@@ -477,7 +478,7 @@
             "Technology weaknesses include unpatched software, misconfigurations, default passwords, unsupported systems and over-broad access, which an AI assistant searching with users' rights makes easy to reach.",
             "A control deficiency found in testing or audit is a vulnerability, because it weakens protection against a scenario.",
             "Predisposing conditions, such as a flood-prone site, change likelihood even when nothing is broken.",
-            "Process and people weaknesses are found by walkthroughs, interviews and control testing with the staff involved; documents and self-assessments show intent, and scanners see only technical flaws."
+            "Walkthroughs and control tests with staff find process and people weaknesses; documents and self-assessments show intent; scanners find technical flaws, but without credentials miss flaws in installed software."
           ],
           "compare": {
             "columns": [
@@ -1307,7 +1308,8 @@
             "Normalization corrects for units rating the same kind of risk differently.",
             "Similar risks across units are aggregated, which can reveal a risk that is small locally but large in total.",
             "The IT risk register feeds the enterprise risk register and risk profile, as NIST IR 8286 Rev. 1 describes.",
-            "The profile is compared with the appetite set by senior management and the board."
+            "The profile is compared with the appetite set by senior management and the board.",
+            "An entry states a risk, an event and its effect on objectives, not a missing control, so it can be rated, weighed against appetite and combined."
           ],
           "example": "Five plants of a car-parts maker each rate unsupported controller software as low. When Hana Sato, the enterprise risk analyst, rolls up the registers, they find all five share the same controller vendor and patch gap. Hana normalizes the plants' scales, aggregates the five entries into one enterprise scenario, and reports the combined exposure in the quarterly risk profile.",
           "audit_focus": {
