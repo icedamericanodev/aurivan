@@ -113,16 +113,16 @@
             "crisc_d1_083"
           ],
           "definition": "The COBIT 2019 goals cascade links stakeholder needs to enterprise goals, then to alignment goals for information and technology, so every technology goal serves a business goal.",
-          "why_it_matters": "IT goals set on their own let technology spend drift from business needs. Strategic change, such as a new AI initiative, also changes the risk profile and must be assessed early.",
+          "why_it_matters": "IT goals set on their own let technology spend drift from business needs. Strategic change also changes the risk profile and must be assessed early.",
           "how_it_works": [
             "Stakeholder needs and drivers shape enterprise goals, such as customer trust or compliance with laws.",
             "Enterprise goals cascade to alignment goals for information and technology (I&T), which point to the governance and management objectives that deliver them.",
             "Risk to an alignment goal is reported by its effect on the enterprise goal above it.",
-            "A new strategy, merger, market or technology triggers a fresh look at the risks to each affected goal.",
+            "A new strategy, merger, market or technology, or a failed key assumption behind a strategy, triggers a fresh look at the risks to each affected goal.",
             "AI initiatives start from a business purpose, with a risk owner and appetite fit agreed before they scale.",
             "Risk input counts most while leaders compare strategic options; each chosen objective then needs a measure, set by its owner, before risk to it is rated."
           ],
-          "example": "A university plans to grow online enrollment by 20%. The IT director proposes moving every system to the cloud by year end. Kenji, the risk practitioner, maps the cloud goal to the enrollment goal, shows that only the student portal and learning platform support it, and asks the provost's office to confirm priorities before assessing the risks of a full migration.",
+          "example": "A university plans to grow online enrollment by 20%. The IT director proposes moving every system to the cloud by year end. Kenji, the risk practitioner, maps the cloud goal to the enrollment goal, shows that only the student portal and learning platform support it, and asks the provost's office to confirm priorities before assessing a full migration's risks.",
           "audit_focus": {
             "review": [
               "Map each major IT goal to the enterprise goal it supports",
@@ -403,7 +403,8 @@
             "A healthy risk culture shows in early reporting of near misses and honest discussion of losses.",
             "A weak culture shows in hidden issues, repeated exceptions and blame after incidents.",
             "Culture is assessed with surveys, interviews, incident reporting rates and the way exceptions are handled.",
-            "Changing culture takes leadership action, aligned incentives and consequences, supported by training and communication."
+            "Changing culture takes leadership action, aligned incentives and consequences, supported by training and communication.",
+            "Consequences apply equally at every level: when a top performer's breaches go unpunished, staff learn the rule is optional."
           ],
           "example": "At a manufacturer, findings on unsafe changes to plant safety systems keep recurring after two rounds of training. Omar, the risk practitioner, reviews exception logs and finds plant managers routinely approve skipped checks to meet output targets, with no follow-up from executives. They report the pattern to the operations executive as a culture issue tied to targets and propose leadership actions, not another course.",
           "audit_focus": {
@@ -670,7 +671,7 @@
           "how_it_works": [
             "The requester states what they cannot meet, why, and for how long.",
             "The risk practitioner analyzes the risk of the gap and any compensating control.",
-            "The risk owner, at the authority level the risk requires, approves or rejects the exception.",
+            "The risk owner, at the authority level the risk requires, approves or rejects the exception; an exception can relax an internal rule, not a legal requirement the rule carries.",
             "Each exception has an expiry date and is logged in an exception register linked to the risk register.",
             "Exception volumes are monitored; many exceptions to one rule suggest the rule or the process needs review.",
             "When an exception expires, it does not roll over: the risk owner decides again, renewing it on a fresh analysis or ending it and restoring compliance."
@@ -792,7 +793,8 @@
             "Critical processes are those whose failure most harms objectives, customers, safety or compliance; the business impact analysis (BIA, see 2B2) ranks them.",
             "Processes depend on people, suppliers, data and systems; mapping those dependencies shows single points of failure.",
             "Process owners set recovery needs; IT and suppliers design the capability to meet them.",
-            "A tested recovery slower than the target but within appetite can be accepted by the process owner on record, with the RTO and the plan updated to match."
+            "A tested recovery slower than the target but within appetite can be accepted by the process owner on record, with the RTO and the plan updated to match.",
+            "A workaround that drops a control, such as an approval step, keeps the process going but adds risk; assess it with the process owner before relying on it."
           ],
           "example": "A water utility's billing runs across customer service, finance and IT, and each team says another owns outages. Kofi, the risk analyst, maps the billing process and its dependencies, finds no one accountable from end to end, and asks the chief operating officer to name a process owner who can set recovery needs for billing.",
           "audit_focus": {
@@ -950,7 +952,8 @@
             "Owners are business roles that answer for the asset's use and protection; custodians such as IT look after it day to day.",
             "Discovery tools, purchasing records and cloud billing help find assets the inventory misses.",
             "The inventory is updated through change, purchasing and offboarding processes, not by a yearly clean-up alone.",
-            "Custodians decide how to meet the owner's requirements, such as when backups run, but not the asset's class, retention or who may receive it."
+            "Custodians decide how to meet the owner's requirements, such as when backups run, but not the asset's class, retention or who may receive it.",
+            "Lifecycle dates, such as when vendor support ends, let owners plan replacement or treatment before support runs out."
           ],
           "example": "A freight company's inventory lists 2,000 devices, but half show IT as owner and no business process. Yusuf, the risk analyst, explains that without business owners the asset values and risk ratings cannot be set, and proposes the operations managers who rely on the warehouse and fleet systems as their owners, for senior management to confirm.",
           "audit_focus": {
@@ -1120,7 +1123,8 @@
             "System and business unit risk registers roll up into enterprise-level registers through aggregation and normalization.",
             "IT risk is expressed by its effect on enterprise objectives: strategic, operations, reporting and compliance.",
             "Decisions on IT risk flow back down as guidance, so local teams act within enterprise appetite.",
-            "ERM covers upside as well as loss: exploiting a well-judged risk to pursue an opportunity is part of increasing value."
+            "ERM covers upside as well as loss: exploiting a well-judged risk to pursue an opportunity is part of increasing value.",
+            "IT risk is wider than failure: Risk IT's categories are benefit or value enablement (missed chances to use technology), program and project delivery, and operations and service delivery."
           ],
           "example": "A grocery chain's IT team keeps a detailed risk spreadsheet that never reaches the enterprise risk committee, which tracks only financial and supplier risks. Tomas, the IT risk lead, maps the top IT risks to the chain's enterprise categories, restates their impact in revenue and service terms, and submits them through the enterprise risk officer for the next committee review.",
           "audit_focus": {
@@ -1448,7 +1452,7 @@
             "The register is detailed and operational: one entry per risk scenario, with owner, rating, response and status.",
             "The profile selects, combines and prioritizes register risks into a view of overall exposure by objective or category.",
             "The profile sets current risk, counting only responses already in place, against today's appetite, showing exposure too high or too low; a changed appetite moves the comparison, not the ratings.",
-            "In NIST terms, the enterprise risk profile is a prioritized subset of the enterprise risk register.",
+            "In NIST terms, the profile is a prioritized subset of the enterprise risk register; with a limit per category, headroom in one does not offset another's breach.",
             "AI use enters the profile through register entries mapped to the objectives and risk categories it affects, not as a count of tools or models.",
             "Before reporting, check that the ratings behind the profile are current; ratings set before a major change are refreshed with their owners first."
           ],
