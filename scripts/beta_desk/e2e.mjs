@@ -134,7 +134,7 @@ async function handle(route) {
     const m = /^\/auth\/v1\/factors(?:\/([^/]+))?(?:\/(challenge|verify))?$/.exec(u.pathname);
     if (!m[1] && method === 'POST') {
       const f = { id: crypto.randomUUID(), factor_type: 'totp', status: 'unverified' }; list.push(f);
-      return send(200, { id: f.id, type: 'totp', totp: { qr_code: 'data:image/svg+xml;utf-8,<svg xmlns="http://www.w3.org/2000/svg" width="180" height="180"><rect width="180" height="180" fill="black"/></svg>', secret: 'JBSWY3DPEHPK3PXP', uri: 'otpauth://totp/x' } });
+      return send(200, { id: f.id, type: 'totp', totp: { qr_code: 'data:image/svg+xml;utf-8,<?xml version="1.0" encoding="UTF-8"?><svg xmlns="http://www.w3.org/2000/svg" width="180" height="180" viewBox="0 0 180 180"><rect width="180" height="180" fill="#ffffff"/><path d="M10 10h40v40H10z M130 10h40v40h-40z M10 130h40v40H10z" fill="#000000"/></svg>', secret: 'JBSWY3DPEHPK3PXP', uri: 'otpauth://totp/x' } });
     }
     const f = list.find((x) => x.id === m[1]);
     if (!f) return send(404, { error_code: 'mfa_factor_not_found' });
@@ -251,7 +251,9 @@ const { ctx, page } = await newPage();
 await signIn(page, ADMIN);
 await page.waitForSelector('#mfaForm:not([hidden])');
 check('an admin is asked for the second step after the email code', await page.isHidden('#app') && await page.isVisible('#mfaSetup'));
+await page.waitForFunction(() => document.getElementById('mfaQr').complete);
 check('first time: the authenticator set-up shows a QR code and a key', (await page.getAttribute('#mfaQr', 'src')).startsWith('data:image/svg+xml') && (await page.textContent('#mfaSecret')).includes('JBSW'));
+check('the QR picture really draws (Supabase sends an unencoded SVG with # colours)', await page.$eval('#mfaQr', (i) => i.naturalWidth > 0));
 const aal1 = await page.evaluate(() => JSON.parse(sessionStorage.getItem('kaisip_desk_session_v1')).access_token);
 const aal1Read = rest(uuidFor(ADMIN), 'GET', SUPA + '/rest/v1/beta_desk_settings?select=*', {}, null, 'aal1');
 check('with only the email code (aal1), the database shows the admin nothing', aal1Read.status === 200 && aal1Read.body.length === 0 && aal1.length > 0);
