@@ -10,7 +10,9 @@
 #   the list below. A file that is not on the list is never published.
 #
 #   The list:
-#     - the pages: index.html, privacy.html, terms.html, support.html
+#     - the pages: index.html, privacy.html, terms.html, support.html, and
+#       beta-desk.html (the private Beta Desk: the page holds no tester data;
+#       rows load only after an admin signs in, and the database checks it)
 #     - assets/ (icons, the self-hosted fonts and og-kaisip.png, the
 #       link-preview card that index.html names in og:image). Only image,
 #       font and stylesheet files: anything else in assets/ stops the build.
@@ -18,7 +20,8 @@
 #       app's TypeScript by mobile/scripts/build-web-plant.mjs:
 #       assets/kaisip-plant.js (the plant companion) and
 #       assets/kaisip-cloud.js (the accounts client and sync engine; loaded
-#       only when an account is used). No other .js file is allowed.
+#       only when an account is used). A third, assets/beta-desk.js, is
+#       hand-written: the Beta Desk page's code. No other .js file is allowed.
 #     - the data the web app really loads (index.html fetches
 #       data/domain1..5.json, data/cisa_notes.json,
 #       data/mindset/principles.json and the two data/exam/ files, the exam
@@ -38,7 +41,7 @@ set -euo pipefail
 cd "$(dirname "$0")/.."
 OUT="_site"
 
-PAGES=(index.html privacy.html terms.html support.html)
+PAGES=(index.html privacy.html terms.html support.html beta-desk.html)
 DATA=(data/domain1.json data/domain2.json data/domain3.json data/domain4.json data/domain5.json data/cisa_notes.json data/mindset/principles.json data/exam/cisa_exam_guide.json data/exam/final_review_week.json)
 SITE_CONFIG=(_headers _redirects)
 # File types allowed inside assets/ (lower case).
@@ -83,8 +86,9 @@ while IFS= read -r -d '' f; do
   case "$name" in .*) fail "hidden file $f is not allowed in assets/";; esac
   # Font licences must travel with the fonts (the SIL Open Font Licence asks for it).
   case "$f" in assets/fonts/OFL-*.txt) mkdir -p "$OUT/$(dirname "$f")"; cp "$f" "$OUT/$f"; continue;; esac
-  # The two scripts on the list: the plant companion and the accounts client.
-  case "$f" in assets/kaisip-plant.js|assets/kaisip-cloud.js) cp "$f" "$OUT/$f"; continue;; esac
+  # The three scripts on the list: the plant companion, the accounts client
+  # and the Beta Desk.
+  case "$f" in assets/kaisip-plant.js|assets/kaisip-cloud.js|assets/beta-desk.js) cp "$f" "$OUT/$f"; continue;; esac
   printf '%s' "$ext" | grep -Eqx "$ASSET_TYPES" || fail "$f: .$ext files are not allowed in assets/ (allowed: ${ASSET_TYPES//|/, })"
   mkdir -p "$OUT/$(dirname "$f")"
   cp "$f" "$OUT/$f"
@@ -94,7 +98,7 @@ done < <(find assets -type f -print0)
 
 # The legal pages' inline theme script is allowed in _headers by its sha256
 # hash. If the script is edited, the hash must change too, or browsers block it.
-for page in privacy.html terms.html support.html; do
+for page in privacy.html terms.html support.html beta-desk.html; do
   hash="$(python3 -c 'import re,sys,hashlib,base64
 s=open(sys.argv[1]).read(); m=re.search(r"<script>(.*?)</script>",s,re.S)
 print("sha256-"+base64.b64encode(hashlib.sha256(m.group(1).encode()).digest()).decode() if m else "")' "$page")"
@@ -103,11 +107,32 @@ print("sha256-"+base64.b64encode(hashlib.sha256(m.group(1).encode()).digest()).d
   fi
 done
 
+# The Beta Desk keeps exactly one inline script (the theme one, hashed above)
+# and its noindex tag; its rule in _headers must keep noindex and no-store.
+n_inline="$(grep -c '<script>' beta-desk.html || true)"
+[ "$n_inline" = "1" ] || fail "beta-desk.html: expected 1 inline <script>, found $n_inline (put code in assets/beta-desk.js)"
+grep -q '<meta name="robots" content="noindex' beta-desk.html || fail "beta-desk.html lost its noindex meta tag"
+python3 - <<'PYCHK' || fail "_headers: the /beta-desk rules must send X-Robots-Tag noindex and Cache-Control no-store"
+import re
+rules = {}
+cur = None
+for line in open('_headers'):
+    if line.strip().startswith('#') or not line.strip():
+        continue
+    if not line[0].isspace():
+        cur = line.strip(); rules[cur] = []
+    elif cur:
+        rules[cur].append(line.strip())
+for path in ('/beta-desk', '/beta-desk.html'):
+    h = ' '.join(rules.get(path, []))
+    assert 'X-Robots-Tag: noindex' in h and 'Cache-Control: no-store' in h, path
+PYCHK
+
 # Final guard: nothing outside the list may be in _site/.
 while IFS= read -r -d '' f; do
   rel="${f#"$OUT"/}"
   case "$rel" in
-    index.html|privacy.html|terms.html|support.html|_headers|_redirects|favicon.ico) ;;
+    index.html|privacy.html|terms.html|support.html|beta-desk.html|_headers|_redirects|favicon.ico) ;;
     data/domain[1-5].json|data/cisa_notes.json|data/mindset/principles.json) ;;
     data/exam/cisa_exam_guide.json|data/exam/final_review_week.json) ;;
     assets/*) ;;
