@@ -231,6 +231,7 @@ the notice is part of the description.
 | Pilot (30 Oct 2026) | 20 | 20 | 20 | 60 |
 | Batch 2 (31 Oct 2026) | +30 | +30 | +30 | 150 |
 | Batch 3 (31 Oct – 4 Nov 2026) | +30 | +42 | — | 222 |
+| Batch 4 (4 Nov 2026) | — | +42 | +32 | 296 |
 
 Pilot review, 30 Oct 2026:
 - **Blind tests:** 60/60 picks matched the keys on the first pass. After the
@@ -296,6 +297,24 @@ Batch 3 review, 31 Oct – 4 Nov 2026 (D1 and D2 only; one weekly usage-limit st
 **Carried to batch 4:** `auditor-assesses-never-owns-ai` has two seeds, both in D3: add a D1 item whose
 runner-up has the IS auditor signing or approving. `contain-and-preserve-ai` still needs a third seed.
 Next round: D2 and D3 (D3 has had no new items since batch 2).
+
+Batch 4 review, 4 Nov 2026 (D2 and D3 only):
+- **Authors:** two new items per notes subtopic in D2 (42) and D3 (32). 11 of D3's 32 are on using AI inside
+  the audit. The two carried seeds exist: aaia_d2_131 (`contain-and-preserve-ai`) and aaia_d3_055
+  (`auditor-assesses-never-owns-ai`), so both cards have three practice questions.
+- **Five reviewers per domain:** first blind pass 74/74. Two HARD ERRORs, fixed without changing a key: D2 105
+  reused a KaiSip CISA item almost word for word (rewritten), and D2 120 claimed paired tests isolate one
+  signal although generated text varies run to run.
+- **Fix loops, cross-domain gate (10 PRECISION fixes) and completeness critic (7 gaps: three settings that
+  repeated CRISC items, two tag moves, two provenance trails), all closed.** A last fix round cleared the
+  remaining wording findings (stem words echoed only in a key, claims the stem did not support, one item
+  whose deciding fact was general audit sense); every changed item was re-tested blind and matched its key.
+- **Citations:** four added after checking the opened texts (NIST AI 100-2e2025 Sections 2.3.2 and 2.3.3,
+  MITRE ATLAS AML.T0018.000, SP 800-53 CM-11).
+- Length tell: D2 19.4%, D3 21.3%. Tags: 256 of 296.
+
+**Carried to batch 5:** `auditor-assesses-never-owns-ai` still has no D1 seed; spell "cutoff" (US English, as the
+CISA bank) across all AAIA files in one spelling-only change. Next round: D1 and D2.
 
 ## 10. Follow-ups outside this plan's scope
 

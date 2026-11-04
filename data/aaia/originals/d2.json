@@ -3966,21 +3966,21 @@
       "options": {
         "A": "Add server capacity so new pricing models cause fewer timeouts",
         "B": "Have the IS auditor approve each pricing model release",
-        "C": "Pilot each model in a few stores under the current triggers",
+        "C": "Pilot each model in a few stores under current rollback triggers",
         "D": "Add rollback triggers on unusual prices or margins"
       },
       "correct": "D",
       "key_concept": "AI models often fail silently: rollback triggers must watch output quality, such as unusual results, not only service errors.",
       "pre_read": "Ask what a faulty pricing model would look like to the rollback triggers.",
-      "correct_explanation": "A faulty pricing model fails silently: it returns prices on time, just wrong ones, so rollback triggers on service errors never fire. Triggers on pricing results, such as unusual prices or margins, catch what service checks miss and roll back a bad model wherever it runs. A pilot limits early exposure, but watched only for service errors it gives no signal that prices are wrong, so the fault still reaches every store.",
+      "correct_explanation": "A faulty pricing model can fail silently: it returns prices on time, just wrong ones, so rollback triggers on service errors never fire. Triggers on pricing results, such as unusual prices or margins, catch what service checks miss and roll back a bad model wherever it runs. A pilot limits early exposure, but watched only for service errors it gives no automatic signal that prices are wrong, so the fault can still reach every store.",
       "wrong_explanations": {
         "A": "Tempting because timeouts trigger rollbacks. But capacity fixes service failures; a wrong price arrives on time and sets off no trigger.",
         "B": "Tempting because independent sign-off sounds safer. But approving releases is management's job, and the IS auditor would later audit their own approval.",
-        "C": "Tempting because a pilot limits exposure. But under the current triggers, a wrong price raises no service error, so the fault passes the pilot and reaches every store."
+        "C": "Tempting because a pilot limits exposure. But under the current triggers, a wrong price raises no service error, so the fault can pass the pilot unseen and reach every store."
       },
       "tips": [
         "Eliminate: A fixes service capacity, which cannot catch a wrong price delivered on time, and B gives the IS auditor a release approval that management owns.",
-        "Final two: D beats C because AI faults show in outputs, not service errors; a pilot under service-only rollback still lets a wrong-price fault spread unseen.",
+        "Final two: D beats C because the deciding gap is detecting wrong prices; a pilot under service-only rollback still gives no automatic signal when prices are wrong.",
         "Exam cue: for AI releases, look for rollback triggers on model results, not just system health; staging helps only if something watches the results."
       ],
       "framework_ref": "NIST AI 100-1 MEASURE 2.4 (Functionality and behavior monitored in production); NIST AI 100-1 MANAGE 2.4 (Mechanisms and responsibilities to supersede, disengage or deactivate AI)",
@@ -3995,30 +3995,30 @@
     {
       "id": "aaia_d2_109",
       "domain": 2,
-      "subtopic": "2C AI change management. A stale regression set",
+      "subtopic": "2C AI change management. A redesigned input document",
       "principle_id": "test-the-ai-as-used",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "A Salvadoran remittance firm's ID-document reader reliably reads the redesigned national ID card most customers carry, but the vendor's model update passed regression tests only on older cards. What should the IS auditor recommend FIRST?",
+      "question": "A Salvadoran remittance firm's ID-reading model reads the redesigned card most customers carry; a vendor update retrained it without code changes; regression tests used only older cards. What should the IS auditor recommend FIRST?",
       "options": {
         "A": "Adopt the update, since it passed every regression test",
         "B": "Ask the vendor to confirm the update reads the new cards",
         "C": "Add new cards to the regression set and retest",
-        "D": "Adopt the update, since the current model reads the new cards"
+        "D": "Adopt the update, since the vendor changed no code"
       },
       "correct": "C",
       "key_concept": "A regression pass covers only the cases in the set; refresh the set with current inputs before trusting a vendor update.",
       "pre_read": "Ask what the regression set contains compared with what customers now present.",
-      "correct_explanation": "A regression set shows only how an update handles the cases it holds. This set holds only older cards, so the update's reading of the card most customers now carry is untested. Adding new cards and retesting before adoption shows whether customers would be wrongly rejected. A vendor's confirmation targets the right gap, but it is the vendor's claim, not evidence from the firm's own cases.",
+      "correct_explanation": "A retrain changes what the model learned even when no code changes, so the update can read inputs differently, the new card included. The regression set holds only older cards, so the update's reading of the card most customers carry is untested. Adding new cards and retesting before adoption shows whether it still reads them. A vendor confirmation targets the right gap, but it is a claim, not evidence from the firm's own cases.",
       "wrong_explanations": {
         "A": "Tempting because the update passed. But the set lacks the card most customers carry, so the pass says nothing about reading it.",
         "B": "Tempting because the vendor knows its model. But a vendor's confirmation is a claim; only the firm's own tests show how the update reads these cards.",
-        "D": "Tempting because the current model already reads the new card. But the update is a different model, and its reading of that card is untested."
+        "D": "Tempting because no code changed. But a retrain changes what the model learned, so its reading of any input, the new card included, can shift."
       },
       "tips": [
-        "Eliminate: A trusts a pass on a set that lacks the card most customers carry, and D assumes the update reads the new card because the current model does.",
+        "Eliminate: A trusts a pass on a set that lacks the card most customers carry, and D treats a retrain without code changes as no change.",
         "Final two: C beats B because only the firm's own retest shows how the update reads the new card; a vendor's confirmation is a claim, not evidence.",
-        "Exam cue: a regression set is only as good as its cases; before adopting a vendor update, check that the set reflects what the model now sees."
+        "Exam cue: a retrained model is a changed model even with no code changes; before adopting it, check that the regression set reflects what the model now sees."
       ],
       "framework_ref": "NIST AI 100-1 MANAGE 3.2 (Pre-trained models monitored as part of regular maintenance); NIST SP 800-53 Rev. 5 CM-4 (Impact Analyses)",
       "related_concepts": [
@@ -4026,7 +4026,7 @@
         "Vendor model updates",
         "Test set currency"
       ],
-      "_provenance": "Authored from concept: notes 2C.3 Vendor Model Updates (before adopting an update, the model owner reruns regression tests, which show the effect only for the organization's own use). Re-angled at the batch 4 cross-domain gate: the earlier version (test the successor before a pinned version retires) repeated crisc_d4_006, aaia_d2_033, the 2C.3 notes example and the ai-changes-are-changes principle example. Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 4, 4 Nov 2026.",
+      "_provenance": "Authored from concept: notes 2C.3 Vendor Model Updates (before adopting an update, the model owner reruns regression tests, which show the effect only for the organization's own use). Re-angled at the batch 4 cross-domain gate: the earlier version (test the successor before a pinned version retires) repeated crisc_d4_006, aaia_d2_033, the 2C.3 notes example and the ai-changes-are-changes principle example. Final fix, 4 Nov 2026: the update is a retrain without code changes and option D treats that as no change, so the deciding fact is AI-specific. Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 4, 4 Nov 2026.",
       "style_version": 2
     },
     {
@@ -4036,7 +4036,7 @@
       "principle_id": "test-the-ai-as-used",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "A Kenyan geothermal utility's engineering, billing and legal teams use one vendor model for different tasks; IT approved the update after testing only engineering summaries. What should the IS auditor recommend as BEST?",
+      "question": "A Kenyan geothermal utility's engineering, billing and legal teams use one vendor language model to draft text; IT approved its latest update after testing only engineering summaries. What should the IS auditor recommend as BEST?",
       "options": {
         "A": "Have the owner of each use test the update on its tasks",
         "B": "Have IT run its standard test prompts on billing and legal tasks",
@@ -4046,14 +4046,14 @@
       "correct": "A",
       "key_concept": "A shared model's update is tested and accepted separately for each use, by the owner who knows what correct output means there.",
       "pre_read": "Ask who knows whether the new version still works for billing and legal.",
-      "correct_explanation": "One shared model serving three uses is three systems to test: a version that summarizes engineering reports well may draft billing letters or legal text worse. The owner of each use tests on that team's real work, knows what correct output looks like there and is accountable for accepting the change. IT's standard prompts reach every task, but not as the teams use the model, and IT cannot accept for them.",
+      "correct_explanation": "One shared model serving three uses is three systems to test: a version that summarizes engineering reports well may draft billing letters or legal text worse. Generated text has no single expected answer, so the owner of each use, who knows the work, tests on real tasks and accepts the change. IT's standard prompts reach every task, but not as the teams use the model, and IT cannot accept for them.",
       "wrong_explanations": {
         "B": "Tempting because it covers the untested tasks. But standard prompts are not the teams' real work, and IT cannot judge or accept billing and legal outputs.",
         "C": "Tempting because the vendor knows its model. But a vendor's assurance is a claim and cannot reflect how each team uses it.",
         "D": "Tempting because the model is the same. But the same version can work well for engineering summaries and poorly for legal drafting."
       },
       "tips": [
-        "Eliminate: C relies on a vendor claim about uses it never tested, and D assumes one model behaves the same for every task.",
+        "Eliminate: C relies on a vendor claim that cannot show how each team uses the model, and D assumes one model behaves the same for every task.",
         "Final two: A beats B because each use's owner tests on real work and accepts the change; IT's standard prompts are not how the teams use the model.",
         "Exam cue: when one model serves several uses, each use needs its own owner's tests and acceptance before an update applies."
       ],
@@ -4368,7 +4368,7 @@
       "principle_id": "accuracy-is-not-assurance",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "A North Macedonian energy supplier charges deposits to customers whose model score passes one cut-off; the model ranks equally well in every region. What should the IS auditor recommend as BEST?",
+      "question": "A North Macedonian equipment-hire firm charges deposits to customers whose model risk score is above one cut-off; the model ranks equally well in every region. What should the IS auditor recommend as BEST?",
       "options": {
         "A": "Recheck ranking accuracy by region on a fresh sample",
         "B": "Accept equal ranking accuracy as proof that deposits are fair",
@@ -4378,7 +4378,7 @@
       "correct": "D",
       "key_concept": "Equal ranking accuracy across groups does not mean equal outcomes; fairness is tested on the decisions made at the cut-off in use.",
       "pre_read": "Ask where the score becomes a decision, and test fairness there.",
-      "correct_explanation": "Ranking accuracy measures how well scores order customers, not who pays a deposit. Deposits follow one cut-off, and if scores are spread differently across regions, that cut-off can wrongly charge far more creditworthy customers in one region. Comparing wrongful deposit rates by region at the cut-off tests the decision customers face. Rechecking ranking accuracy on fresh data repeats the wrong measure.",
+      "correct_explanation": "Ranking accuracy measures how well scores order customers, not who pays a deposit. Deposits follow one cut-off, and if scores are spread differently across regions, that cut-off can wrongly charge far more low-risk customers in one region. Comparing wrongful deposit rates by region at the cut-off tests the decision customers face. Rechecking ranking accuracy on fresh data repeats the wrong measure.",
       "wrong_explanations": {
         "A": "Tempting because fresh data avoids stale results. But it measures ranking again, not which customers the cut-off wrongly charges.",
         "B": "Tempting because equal accuracy sounds fair. But one cut-off can still charge one region's customers far more wrongful deposits.",
@@ -4395,7 +4395,7 @@
         "Decision thresholds",
         "Ranking accuracy"
       ],
-      "_provenance": "Authored from concept: notes 2E.2 Fairness Testing Across Groups (results by group for the decisions the model drives: approval rates, false positives and false negatives). Re-angled at the batch 4 cross-domain gate: the earlier version (no ethnicity data, so test outcomes by a lawful method) repeated aaia_d1_075. Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 4, 4 Nov 2026.",
+      "_provenance": "Authored from concept: notes 2E.2 Fairness Testing Across Groups (results by group for the decisions the model drives: approval rates, false positives and false negatives). Re-angled at the batch 4 cross-domain gate: the earlier version (no ethnicity data, so test outcomes by a lawful method) repeated aaia_d1_075. Setting moved from an energy supplier to an equipment-hire firm at the final fix round (energy bill-risk models were already in aaia_d2_019 and aaia_d2_055). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 4, 4 Nov 2026.",
       "style_version": 2
     },
     {
@@ -4480,7 +4480,7 @@
       "bloom_level": "Application",
       "question": "A Mauritian vehicle-licensing office's public chatbot answers in English, French and Mauritian Creole; its red team tried jailbreaks and harmful requests in English only. What should the IS auditor recommend as BEST?",
       "options": {
-        "A": "Extend red-team tests to French and Creole prompts",
+        "A": "Repeat the same attack tests using French and Creole prompts",
         "B": "Translate the English-tested safety filters into French and Creole",
         "C": "Limit the chatbot to English until the vendor certifies it",
         "D": "Add a harmful-content disclaimer in each of the three languages"
@@ -4488,9 +4488,9 @@
       "correct": "A",
       "key_concept": "Generative AI safeguards can be weaker in some languages, so red teaming covers every language the system serves, not just English.",
       "pre_read": "Ask whether a jailbreak refused in English would be refused in Creole.",
-      "correct_explanation": "Safety training and filters often work less well in languages with less training data, so a jailbreak refused in English may succeed in French or Creole. A red team that tested only English says nothing about two of the chatbot's three languages. Extending tests to them finds those gaps. Translating the English filters assumes the gaps are the same in every language, which only testing can show.",
+      "correct_explanation": "Safety training and filters can work differently across languages, and often less well in those with little training data, such as Creole, so a jailbreak refused in English may succeed in another. A red team that tested only English says nothing about two of the chatbot's three languages. Extending tests to them finds those gaps. Translating the English filters assumes the gaps are the same in every language, which only testing can show.",
       "wrong_explanations": {
-        "B": "Tempting because the filters already work in English. But a model's safeguards behave differently by language; a translated filter stays untested, so Creole gaps remain unknown.",
+        "B": "Tempting because the filters were tested in English. But safeguards can behave differently by language; a translated filter is still untested in French and Creole.",
         "C": "Tempting because it limits exposure. But a vendor certificate is a claim, not the office's own test of how its chatbot behaves.",
         "D": "Tempting because it warns users. But a disclaimer does not stop harmful answers in untested languages."
       },
