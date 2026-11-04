@@ -215,6 +215,9 @@ Rule for the form builder: Draw no two items of a pair into the same form. Keep 
 | csoe_d5_099 | csoe_d5_102 | 102's stem has an issuer's auditor using a SOC 1 report under PCAOB AS 2201, d5_099's key |
 | csoe_d5_099 | csoe_d5_104 | 104's stem has an issuer's auditor using a SOC 1 report under PCAOB AS 2201, d5_099's key |
 | csoe_d5_105 | csoe_d5_106 | 106's option A and WA state the AS 2201.B29 benchmarking conditions, 105's key |
+| csoe_d5_018 | csoe_d5_102 | 102's WD and tip 1: outsourcing never moves management's responsibility to the provider, d5_018's key (batch 6) |
+| csoe_d5_099 | csoe_d5_103 | 103's stem has an issuer's auditor treating a payroll provider's services under PCAOB AS 2201, d5_099's key (batch 6) |
+| csoe_d5_016 | csoe_d5_105 | 105's WB and tip 2: purchased software still rests on effective, tested general controls, close to d5_016's key (batch 6) |
 | csoe_d5_002 | csoe_d5_088 | both test the scope of the COSO definition |
 | csoe_d5_038 | csoe_d5_100 | SOC 1 use by user auditors |
 | csoe_d5_039 | csoe_d5_100 | SOC 1 use by user auditors |

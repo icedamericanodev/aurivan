@@ -429,6 +429,12 @@ Batch 6 reviews (4 Nov 2026), D5 101-106 from PCAOB AS 2201:
   d5_036, and two note rules.
 - **Rules currency:** 27 of 30 facts verified, none wrong. The 15 Dec 2026 AS
   2201 amendments touch only .09 and .99. Three rules-watch rows added.
+- **Cross-domain review:** FIX THEN SHIP, no hard errors, no contradictions
+  and no held-out leaks. Fixed: a stem word echoed in the key, the CEO and CFO
+  named for Section 302, role names in note audit lines, a note line that read
+  like held-out d5_049's runner-up, and an exam cue that taught d5_083's rule.
+  Note 3B2.2 now bridges the statute's "attests to management's assessment"
+  and AS 2201.03's opinion on ICFR. Three more linked pairs recorded.
 - **Next angles:** add no further .B18 angle (103 is thin), no third Type 1
   angle, and nothing on .B24-.B25 (held-out d5_049's key).
 

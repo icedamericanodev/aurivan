@@ -891,6 +891,8 @@ open the page. The page notes amendments to .09 and a new .99 effective
 date moved by SEC Release No. 34-103803); none of the paragraphs below is among
 them. Change each status to "Verified (opened, DATE)" once pcaobus.org opens.
 
+- PCAOB AS 2201.03 (The auditor's objective: an opinion on the effectiveness of ICFR)
+  - Verified (owner-supplied copy of the pcaobus.org page, saved 4 Nov 2026): https://pcaobus.org/oversight/standards/auditing-standards/details/AS2201; checked .01 and .03: the standard applies to an audit of management's assessment of the effectiveness of ICFR integrated with the financial statement audit (.01); the auditor's objective is to express an opinion on the effectiveness of the company's ICFR, obtaining reasonable assurance about whether material weaknesses exist as of the date of management's assessment (.03).
 - PCAOB AS 2201.05 (Same control framework as management)
   - Verified (owner-supplied copy of the pcaobus.org page, saved 4 Nov 2026): https://pcaobus.org/oversight/standards/auditing-standards/details/AS2201; checked .05 and footnote 7: the auditor uses the same suitable, recognized control framework for the ICFR audit as management uses for its annual evaluation; footnote 7 points to Exchange Act Rules 13a-15(c) and 15d-15(c) and gives the COSO report and the Financial Reporting Council's Turnbull guidance (October 2005) as examples of such frameworks.
 - PCAOB AS 2201.B18 (Service organization services in the information system)
