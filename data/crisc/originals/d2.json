@@ -1712,38 +1712,38 @@
     {
       "id": "crisc_d2_047",
       "domain": 2,
-      "subtopic": "2A1 Risk events. Event records across offices",
-      "principle_id": "rate-on-common-terms",
+      "subtopic": "2A1 Risk events. Event log entries with date and loss only",
+      "principle_id": "evidence-before-credit",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "Three regional offices of a freight forwarder log IT risk events in separate spreadsheets, each with its own columns and categories. What should the risk practitioner recommend as BEST?",
+      "question": "Three regional offices of a freight forwarder enter IT risk events in one shared log, but most entries give only the date and the amount lost. What should the risk practitioner recommend as BEST?",
       "options": {
-        "A": "Quarterly merging of the three spreadsheets by the risk team",
-        "B": "A monthly total of losses per scenario from each office",
-        "C": "Central ownership of the three event logs by the IT team",
-        "D": "A common event record naming cause, impact and scenario"
+        "A": "Quarterly loss totals from each office for the risk team",
+        "B": "A loss threshold below which offices need not log events",
+        "C": "Central ownership of the event log by the IT team",
+        "D": "An event record that names cause, impact and scenario"
       },
       "correct": "D",
-      "key_concept": "Risk event data is useful only when every unit records the same details in the same categories, linked to a risk scenario.",
-      "pre_read": "Look at what differs between the offices' records.",
-      "correct_explanation": "Event data can be compared, trended and linked to scenarios only if every office records the same details in the same categories: date, cause, impact, source and the scenario affected. Merging the spreadsheets is the runner-up: it gathers the data in one place, but records built on different columns and categories still cannot be compared or added up.",
+      "key_concept": "Risk event data is useful only when each record names its cause, impact and the scenario it affects, not just the date and the loss.",
+      "pre_read": "Look at what each entry leaves out.",
+      "correct_explanation": "A date and a loss amount show that something went wrong, not why or which risk it bears on. Requiring each record to name the cause, the impact and the scenario affected lets events be linked to scenarios, trended by cause and used as likelihood evidence. Quarterly loss totals are the runner-up: they summarize the money lost, but totals still cannot show cause or tie losses to scenarios.",
       "wrong_explanations": {
-        "A": "Merging puts the records in one file, but entries built on different columns and categories still cannot be compared or trended.",
-        "B": "Monthly loss totals keep only realized losses and drop near misses and causes, so they show less than the logs do now.",
-        "C": "Moving the logs to IT changes who holds them, not what they record; the offices' different categories would remain."
+        "A": "Totals summarize what was lost but carry no cause or scenario, so they cannot show which risks the events bear on.",
+        "B": "A threshold drops near misses and small losses, the most frequent evidence of how often threats get through, so the log would hold less than now.",
+        "C": "Moving the log to IT changes who holds it, not what each entry records; the missing details would remain."
       },
       "tips": [
-        "Eliminate: B keeps only realized losses, dropping near misses and causes, and C moves custody of the logs without changing what they record.",
-        "Final two: D beats A because a common record fixes the data where it is created; merging inconsistent spreadsheets only collects records that still cannot be compared.",
-        "Exam cue: when units record risk data differently, the fix is a common format and taxonomy, not a new place to store the data."
+        "Eliminate: B drops near misses and small losses, and C moves custody of the log without changing what it records.",
+        "Final two: D beats A because each event must carry its cause and scenario to count as evidence; totals only add up the losses.",
+        "Exam cue: an event record is risk evidence only when it ties cause and impact to a scenario; dates and amounts alone are bookkeeping."
       ],
-      "framework_ref": "COBIT 2019 APO12.01 (Collect Data); NIST CSF 2.0 GV.RM-06 (a standardized method for calculating, documenting, categorizing and prioritizing cybersecurity risks is established and communicated)",
+      "framework_ref": "COBIT 2019 APO12.01 (Collect Data)",
       "related_concepts": [
         "Risk event data",
-        "Risk taxonomy",
-        "Trend analysis"
+        "Root cause",
+        "Risk scenario"
       ],
-      "_provenance": "Authored from concept: notes 2A1.2 (Internal and External Event Sources). Round 3, 4 Nov 2026: original scenario of a freight forwarder whose three offices log risk events in differently structured spreadsheets written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used; checked against the CRISC, CISA, CC and AAIA banks for mirrored scenarios.",
+      "_provenance": "Authored from concept: notes 2A1.2 (Internal and External Event Sources: event data is recorded the same way each time, with date, scenario, cause, impact and source, so trends can be compared). Round 3, 4 Nov 2026: original scenario of a freight forwarder whose three offices log risk events with only the date and the amount lost written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used; checked against the CRISC, CISA, CC and AAIA banks for mirrored scenarios. Cross-domain fixes 4 Nov 2026: re-angled from 'separate spreadsheets with their own columns' to 'entries missing cause and scenario' because the old version duplicated crisc_d1_051 (same lesson, key D, runner-up, principle, citation and cue); principle moved from rate-on-common-terms to evidence-before-credit; no longer cites NIST CSF 2.0 GV.RM-06. Subtopic label written as 'Event log entries with date and loss only' rather than the gate's 'Event records missing cause and scenario', which named the key's content. Checked against crisc_d2_046 (loss threshold as the key lesson, here an eliminated distractor) and the CISA, CC and AAIA banks. Stem says offices 'enter' events, so 'record' is not a stem word only the key repeats. ID and key letter unchanged (D).",
       "style_version": 2
     },
     {
@@ -2239,7 +2239,7 @@
         "A": "An ALE estimate built from industry benchmark data",
         "B": "A stated level of uncertainty in its rating",
         "C": "The accuracy score from the vendor's launch testing",
-        "D": "A low rating until a first loss event is recorded"
+        "D": "No rating until a quarter of live pricing data exists"
       },
       "correct": "B",
       "key_concept": "A new AI risk with little data is recorded early with its uncertainty stated, so the rating is not mistaken for precise knowledge.",
@@ -2248,10 +2248,10 @@
       "wrong_explanations": {
         "A": "Benchmarks from other firms turned into one ALE figure suggest precision the data cannot support for a newly launched system.",
         "C": "Launch accuracy shows how the model did in testing, not how wrong prices would affect revenue or guests in production.",
-        "D": "Waiting for a first loss leaves the exposure already present unrated and treats missing history as low likelihood."
+        "D": "Leaving the entry unrated while live data builds keeps a risk the hotel group already carries out of the profile; it is recorded now, with its uncertainty stated."
       },
       "tips": [
-        "Eliminate: A gives a precise figure the data cannot support, and D treats missing loss history as evidence that the risk is low.",
+        "Eliminate: A gives a precise figure the data cannot support, and D leaves a live risk unrated while data builds.",
         "Final two: B beats C because the rating is a judgment with wide uncertainty that must be stated; launch accuracy is test evidence, not business exposure.",
         "Exam cue: for a new or emerging risk, record it early with stated uncertainty and an owner, and review it soon."
       ],
@@ -2261,7 +2261,7 @@
         "Uncertainty",
         "AI system in the register"
       ],
-      "_provenance": "Authored from concept: notes 2B3.2 (Keeping the Register Current). Round 3, 4 Nov 2026: original scenario of a hotel group's newly launched AI room-pricing tool with no loss history written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used; checked against the CRISC, CISA, CC and AAIA banks for mirrored scenarios. Review fixes 4 Nov 2026 (standards audit and concept review): stem now says the vendor shares only its launch test results, so option C is available evidence rather than a contradiction; option A's benchmark data is now industry data, so it is not ruled out by the stem; pre_read no longer points at the uncertainty key.",
+      "_provenance": "Authored from concept: notes 2B3.2 (Keeping the Register Current). Round 3, 4 Nov 2026: original scenario of a hotel group's newly launched AI room-pricing tool with no loss history written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used; checked against the CRISC, CISA, CC and AAIA banks for mirrored scenarios. Review fixes 4 Nov 2026 (standards audit and concept review): stem now says the vendor shares only its launch test results, so option C is available evidence rather than a contradiction; option A's benchmark data is now industry data, so it is not ruled out by the stem; pre_read no longer points at the uncertainty key. Cross-domain fixes 4 Nov 2026: option D is now 'no rating until a quarter of live pricing data exists', so it no longer mirrors crisc_d3_049 C ('a low rating until a working attack is shown'); wrong D and the Eliminate tip updated. Key unchanged (B).",
       "style_version": 2
     },
     {

@@ -285,7 +285,7 @@
       "pre_read": "Notice what the data owner has already decided and why the recordings are still held.",
       "correct_explanation": "The data owner has already set the period: three years. Every recording kept beyond it adds breach and legal-discovery exposure nobody accepted, and the cause is a deletion step never built. Having IT, as custodian, set up the scheduled deletions, excluding legal holds and logging each run, removes the excess and stops it returning. Limiting replay is the runner-up: it lowers misuse, but the recordings still exist to be breached or disclosed.",
       "wrong_explanations": {
-        "A": "Tempting because practice would then match the schedule. But it bends the owner's decision to fit a failed process; the period reflects business and legal needs, not what is stored.",
+        "A": "Tempting, as practice would match the schedule. But no business need for the recordings has been raised; extending retention to fit them bends the owner's decision to a failed process.",
         "C": "Closest choice, since fewer people can replay old calls. But the recordings still exist, so a breach or discovery request still reaches them; the schedule says they should be gone.",
         "D": "Tempting because archiving cuts storage cost. But archived recordings are still held and still exposed; moving them changes the bill, not the risk."
       },
@@ -300,7 +300,7 @@
         "Retention schedule",
         "Data custodian"
       ],
-      "_provenance": "Authored from concept: notes 4A4.2 Retention and Sanitization (at the end of the period data is disposed of unless a legal hold applies; keeping everything just in case raises risk). Original bank contact-center scenario written for KaiSip; no ISACA Review Manual, QAE or prep-bank text used. Re-audit 31 Oct 2026: replaces the school-laptop SSD sanitization item, which mirrored CC cc_d5_002 (scenario, key, runner-up, citation and exam cue) and reused CISA d4_121's stem wording; checked against data/originals and data/cc/originals (no call-recording retention scenario). Repair round 3, 31 Oct 2026 (independent verification, gate 2): re-angled from 'who sets retention' (a twin of crisc_d4_007's data-owner lesson and exam cue) to a retention schedule the owner already set but that never runs; key B has IT, as custodian, set up logged scheduled deletions; principle moved from match-decision-to-role to root-cause-over-symptom; ID, key letter and difficulty kept.",
+      "_provenance": "Authored from concept: notes 4A4.2 Retention and Sanitization (at the end of the period data is disposed of unless a legal hold applies; keeping everything just in case raises risk). Original bank contact-center scenario written for KaiSip; no ISACA Review Manual, QAE or prep-bank text used. Re-audit 31 Oct 2026: replaces the school-laptop SSD sanitization item, which mirrored CC cc_d5_002 (scenario, key, runner-up, citation and exam cue) and reused CISA d4_121's stem wording; checked against data/originals and data/cc/originals (no call-recording retention scenario). Repair round 3, 31 Oct 2026 (independent verification, gate 2): re-angled from 'who sets retention' (a twin of crisc_d4_007's data-owner lesson and exam cue) to a retention schedule the owner already set but that never runs; key B has IT, as custodian, set up logged scheduled deletions; principle moved from match-decision-to-role to root-cause-over-symptom; ID, key letter and difficulty kept. Cross-domain fixes 4 Nov 2026: wrong A now says no business need for the old recordings has been raised, so it reads apart from crisc_d4_058 (a new use the owner must rule on). Gate text shortened to the 30-word limit.",
       "style_version": 2
     },
     {
@@ -1713,74 +1713,74 @@
       "id": "crisc_d4_047",
       "domain": 4,
       "subtopic": "4A4 Data lifecycle management. Extracts sent to a research partner",
-      "principle_id": "advise-dont-decide",
+      "principle_id": "root-cause-over-symptom",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "An electricity distributor emails a university partner monthly smart-meter extracts holding customers' names, addresses and usage, with nothing in writing on how they may be used. What should the risk practitioner do FIRST?",
+      "question": "An electricity distributor's data owner signed an agreement letting a university partner study household energy use, and the monthly smart-meter extracts include customers' names and street addresses. What should the risk practitioner recommend as BEST?",
       "options": {
         "A": "Encrypt the extracts before each monthly email is sent",
-        "B": "Remove customer names from the extracts before sharing",
-        "C": "Stop sharing with the partner until internal audit reviews it",
-        "D": "Ask the data owner to set terms for the partner's use"
+        "B": "Add a confidentiality clause to the sharing agreement",
+        "C": "Stop the sharing until the partner passes a security audit",
+        "D": "Remove the identifiers the agreed research does not need"
       },
       "correct": "D",
-      "key_concept": "The data owner decides whether, why and how data is shared, and an agreement records the partner's permitted use and safeguards.",
-      "pre_read": "Notice which lifecycle stage this is, then ask who decides how data is used at that stage.",
-      "correct_explanation": "Sharing is a lifecycle stage the data owner controls: the owner decides whether a partner may use the data, for what purpose and with which safeguards, and an agreement records those terms. Removing names is the runner-up; it is a safeguard the owner may require, but addresses and usage can still point to households, and the partner's use stays undefined.",
+      "key_concept": "At the sharing stage, send only what the agreed purpose needs; clauses and encryption do not reduce the exposure of data that need not leave.",
+      "pre_read": "Compare the purpose the owner approved with what each extract contains.",
+      "correct_explanation": "The data owner has set the purpose, a study of household energy use, and names and street addresses are not needed for it. Removing the identifiers the study does not need, before each extract leaves, cuts the exposure at its source: data never sent cannot be misused or breached at the partner. A confidentiality clause is the runner-up: it limits what the partner may do, but full identities would still leave the distributor every month.",
       "wrong_explanations": {
-        "A": "Encryption protects the extracts in transit; it does not limit what the partner may do with the data once it arrives.",
-        "B": "De-identification may become one of the terms; however, addresses and usage can still point to households, and the partner's permitted use stays undefined.",
-        "C": "A halt pending audit puts an assurance function in charge of a business decision; whether and how sharing continues is the data owner's call."
+        "A": "Encryption protects the extracts in transit only; once the partner opens them, every name and address is still there.",
+        "B": "A clause binds the partner's use, but the distributor still sends identities the study does not need, so a breach or misuse at the partner exposes them.",
+        "C": "An audit checks the partner's safeguards but does not reduce the personal data sent, and halting a sharing the owner approved is not the practitioner's call."
       },
       "tips": [
-        "Eliminate: A protects the email but not the partner's use, and C hands a business decision to internal audit.",
-        "Final two: D beats B because the owner sets the sharing terms first; removing names is one safeguard the owner may choose, not a substitute.",
-        "Exam cue: when data leaves the organization, the data owner sets the terms of use in an agreement before safeguards are chosen."
+        "Eliminate: A protects the email but not the data at the partner, and C audits the partner while the excess data keeps flowing.",
+        "Final two: D beats B because data that is never sent cannot be misused; a clause limits use but still ships every identity.",
+        "Exam cue: when data is shared for an agreed purpose, the strongest control is not sending what that purpose does not need; clauses and audits govern only what is sent."
       ],
-      "framework_ref": "NIST SP 800-53 Rev. 5 CA-3 (Information Exchange); ISACA Glossary (data owner)",
+      "framework_ref": "NIST SP 800-53 Rev. 5 SA-8(33) (Security and Privacy Engineering Principles | Minimization); NIST SP 800-53 Rev. 5 CA-3 (Information Exchange)",
       "related_concepts": [
-        "Data owner",
+        "Data minimization",
         "Data sharing agreement",
         "Data lifecycle"
       ],
-      "_provenance": "Authored from concept: notes 4A4.1 (Data Lifecycle, Classification and Ownership: the data owner decides access and use, and sharing is a lifecycle stage controlled by owner-approved agreements). Round 3, 4 Nov 2026: original scenario (electricity distributor emailing smart-meter extracts to a university) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used; checked against the CRISC, CISA, CC and AAIA banks for mirrored scenarios. Review fixes 4 Nov 2026 (standards audit and concept review): the stem now states that the extracts hold names, addresses and usage, so the explanation's case against removing names rests on stem facts; option C names the partner so the key is not the only option echoing it.",
+      "_provenance": "Authored from concept: notes 4A4.1 (Data Lifecycle, Classification and Ownership: sharing is a lifecycle stage controlled by owner-approved agreements, and classification sets sharing limits) and 4B3.1 (only the data the purpose needs is collected and kept). Round 3, 4 Nov 2026: original scenario (electricity distributor whose owner-approved smart-meter extracts to a university partner include customers' names and street addresses) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used; checked against the CRISC, CISA, CC and AAIA banks for mirrored scenarios. Review fixes 4 Nov 2026 (standards audit and concept review): the stem now states that the extracts hold names, addresses and usage, so the explanation's case against removing names rests on stem facts; option C names the partner so the key is not the only option echoing it. Cross-domain fixes 4 Nov 2026: re-angled from 'data owner sets terms' (duplicated crisc_d4_007; 'owner' sat only in the key) to minimization at the sharing stage; internal audit is no longer a filler distractor. Principle moved from advise-dont-decide to root-cause-over-symptom; now cites NIST SP 800-53 Rev. 5 SA-8(33) (re-opened and Verified 4 Nov 2026) with CA-3, no longer ISACA Glossary (data owner). 'still' dropped from the gate's stem to meet the 35-word limit; key_concept and correct_explanation trimmed to the length limits; key says 'agreed research' rather than the gate's 'agreed study', so no stem word sits only in the key; pre_read reworded so it shares no word with the key; exam cue worded apart from aaia_d1_041 (prompt minimization, a different scenario). Checked against crisc_d4_043 (privacy by design at collection; different stage and question). Key unchanged (D).",
       "style_version": 2
     },
     {
       "id": "crisc_d4_048",
       "domain": 4,
-      "subtopic": "4A7 Emerging technologies. AI maintenance decision",
-      "principle_id": "objectives-first",
+      "subtopic": "4A7 Emerging technologies. AI agent acting on its own",
+      "principle_id": "proportionate-response",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "A manufacturer's leaders will decide next month whether to adopt AI-based predictive maintenance, and the risk practitioner's draft assessment lists only what could go wrong. What is MOST important to add before they decide?",
+      "question": "A manufacturer plans to let an AI maintenance agent order spare parts and schedule line shutdowns on its own. What is MOST important for the risk practitioner to have agreed before go-live?",
       "options": {
-        "A": "A recommendation to wait until the technology matures",
-        "B": "The expected gain in plant uptime from the new tools",
-        "C": "The vendor's certification of its model's accuracy",
-        "D": "Worst-case loss figures for each listed threat"
+        "A": "A contract making the vendor liable for wrong orders",
+        "B": "Limits on what the agent may do without approval",
+        "C": "The vendor's certification of its model's security",
+        "D": "A KRI tracking the value of parts the agent orders"
       },
       "correct": "B",
-      "key_concept": "Risk includes opportunity: an emerging technology assessment shows the value to objectives as well as the threats, so leaders can weigh both.",
-      "pre_read": "Notice what decision the leaders face, then ask what the draft leaves out of it.",
-      "correct_explanation": "Risk is the effect of uncertainty on objectives, and that includes the upside. Leaders cannot weigh adoption without the value the tools could bring, such as fewer breakdowns and more uptime. Worst-case loss figures are the runner-up; they make the threats clearer, but they add more downside to a draft that is already downside-only, so the decision still tilts against a technology that may serve the plant's objectives.",
+      "key_concept": "An AI agent that acts on its own needs limits on what it may do without human approval, set by the impact of its actions.",
+      "pre_read": "Notice what the agent will do, not only what it will predict.",
+      "correct_explanation": "Ordering parts and stopping production lines are business decisions with real cost; an agent that takes them unaided turns any wrong prediction into an immediate loss. Limits agreed first, such as spending caps and human approval before any line shutdown, sized to each action's impact, keep the agent within appetite. A KRI on parts ordered is the runner-up: it shows problems, but only after the agent has acted.",
       "wrong_explanations": {
-        "A": "Waiting is one decision leaders may reach; recommending it before the upside is weighed treats a new technology as a threat by default.",
-        "C": "A vendor's accuracy claim is one input to test, not proof, and it still says nothing about the value to the plant.",
-        "D": "Worst-case figures sharpen the threat picture; however, the draft already covers the downside, and leaders still cannot see what the plant would gain."
+        "A": "A liability clause shifts some of the cost of a wrong order, not the lost production or the plant's accountability for what the agent does.",
+        "C": "A security certificate speaks to the vendor's controls, not to what the agent is allowed to do in the plant.",
+        "D": "A KRI warns when ordering climbs, but only after orders and shutdowns have happened; it does not stop a costly action before it is taken."
       },
       "tips": [
-        "Eliminate: A recommends waiting before the benefits are known, and C rests on a vendor claim that still needs testing.",
-        "Final two: B beats D because adoption weighs value against risk; more detail on losses still leaves the decision one-sided.",
-        "Exam cue: for an emerging technology decision, the assessment shows opportunity as well as threat, tied to a business objective."
+        "Eliminate: A shifts some cost to the vendor but not the lost production, and C answers a security question rather than what the agent may do.",
+        "Final two: B beats D because limits stop a costly action before it happens; a KRI warns only after the agent has acted.",
+        "Exam cue: when AI can act, not just advise, size what it may do alone to the impact of each action; contracts and indicators come second."
       ],
-      "framework_ref": "ISACA Glossary (opportunity); NIST CSF 2.0 GV.RM-07 (strategic opportunities or positive risks are characterized and are included in organizational cybersecurity risk discussions)",
+      "framework_ref": "NIST AI 100-1 (AI RMF 1.0) GOVERN 3.2 (roles and responsibilities for human-AI configurations and oversight of AI systems are defined); NIST AI 100-1 (AI RMF 1.0) Appendix C (AI Risk Management and Human-AI Interaction: some AI systems may not require human oversight while others specifically require it)",
       "related_concepts": [
-        "Opportunity (positive risk)",
-        "Emerging technology",
-        "AI adoption"
+        "AI agent",
+        "Human oversight",
+        "Action limits"
       ],
-      "_provenance": "Authored from concept: notes 4A7.1 (Evaluating Emerging Technologies: start from the business objective and the value a technology could add, and assess threats and opportunities together). Round 3, 4 Nov 2026: original scenario (manufacturer deciding on AI predictive maintenance) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used; checked against the CRISC, CISA, CC and AAIA banks for mirrored scenarios. Review fixes 4 Nov 2026 (standards audit and concept review): HARD ERROR fixed: option D (controls to bring each threat within appetite) was a second defensible answer and is now worst-case loss figures, which add only more downside; stem hardened to 'lists only what could go wrong' (blind test).",
+      "_provenance": "Authored from concept: notes 4A7.2 (AI and Machine Learning Adoption: each AI use is assessed against appetite before go-live, and higher-impact uses keep a human in the loop) and 4A7.1 (weigh exposure against appetite and propose conditions). Round 3, 4 Nov 2026: original scenario (manufacturer about to let an AI maintenance agent order parts and schedule line shutdowns on its own) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used; checked against the CRISC, CISA, CC and AAIA banks for mirrored scenarios. Review fixes 4 Nov 2026 (standards audit and concept review): HARD ERROR fixed: option D (controls to bring each threat within appetite) was a second defensible answer and is now worst-case loss figures, which add only more downside; stem hardened to 'lists only what could go wrong' (blind test). Cross-domain fixes 4 Nov 2026: re-angled from the opportunity side of AI adoption (duplicated crisc_d3_050 and crisc_d4_013) to limits on an autonomous AI agent before go-live; distinct from crisc_d3_062 (how much human review of AI outputs). Principle moved from objectives-first to proportionate-response; now cites NIST AI 100-1 GOVERN 3.2 and Appendix C (re-opened and Verified 4 Nov 2026), no longer ISACA Glossary (opportunity) or NIST CSF 2.0 GV.RM-07. The gate's options A (vendor trial accuracy) and D (a monthly report of parts ordered) mirrored aaia_d1_004 (public benchmarks, monthly sample check), aaia_d3_022 and cc_d3_019, so A is now a vendor liability clause (transfer moves cost, not accountability) and D a KRI on order value; ', based on sensor readings' dropped and the question shortened to meet the 35-word limit; correct_explanation shortened to 68 words; the exam cue worded apart from the AAIA one. AI count unchanged. ID and key letter unchanged (B).",
       "style_version": 2
     },
     {
@@ -1804,7 +1804,7 @@
       "wrong_explanations": {
         "A": "Staff already know the rules; the survey says they doubt them because of the exemption, which more training does not change.",
         "C": "Punishing staff treats a culture signal as misconduct and leaves in place the exemption that caused the doubt.",
-        "D": "A CEO message supports the right tone; however, staff weigh it against the executives' exemption, which keeps saying the opposite."
+        "D": "A CEO message answers a signal that was sent in words; here the signal is an exemption, and staff will weigh any message against what the executives visibly do."
       },
       "tips": [
         "Eliminate: A retrains staff who already know the rules, and C punishes staff for a doubt that leaders created.",
@@ -1817,7 +1817,7 @@
         "Risk culture",
         "Leadership accountability"
       ],
-      "_provenance": "Authored from concept: notes 4B2.1 (Risk-Aware Culture and Role-Based Training: leaders set the tone by following the same controls as staff, and culture is a control). Round 3, 4 Nov 2026: original scenario (property developer whose executives were exempted from new sign-in checks) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used; checked against the CRISC, CISA, CC and AAIA banks for mirrored scenarios.",
+      "_provenance": "Authored from concept: notes 4B2.1 (Risk-Aware Culture and Role-Based Training: leaders set the tone by following the same controls as staff, and culture is a control). Round 3, 4 Nov 2026: original scenario (property developer whose executives were exempted from new sign-in checks) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used; checked against the CRISC, CISA, CC and AAIA banks for mirrored scenarios. Cross-domain fixes 4 Nov 2026: wrong D now says why a CEO message fails here (the signal was an exemption, not words), so it reads apart from crisc_d1_055, where the CEO restating support is the key.",
       "style_version": 2
     },
     {
@@ -2133,7 +2133,7 @@
       "correct": "A",
       "key_concept": "AI training sets are copies of business data, so the source's retention schedule covers them, and only the data owner can approve keeping them longer.",
       "pre_read": "Notice where the copies sit and who decided how long to keep them.",
-      "correct_explanation": "Training copies are still customer chat logs, so the one-year schedule covers them; keeping them longer for model training is a new use that only the data owner, with legal advice, can approve. Restricting access is the runner-up; it lowers misuse risk, but the copies would still be kept past the schedule with no one accountable approving it.",
+      "correct_explanation": "Training copies are still customer chat logs, so the one-year schedule covers them. Keeping them longer for training is a new use only the data owner, with legal advice, can approve; until the owner rules, the copies are due for deletion like any data past its period. Restricting access is the runner-up: it lowers misuse risk, but the copies would still be kept past the schedule with no one accountable approving it.",
       "wrong_explanations": {
         "B": "Tighter access lowers misuse risk; however, the copies are still kept with no end date the data owner has approved, past the one-year schedule for the source logs.",
         "C": "Deleting the models goes beyond the problem; the owner may allow training for a set period, and models can be retrained if needed.",
@@ -2142,7 +2142,7 @@
       "tips": [
         "Eliminate: C destroys models before the owner has decided anything, and D hands ownership to the team that uses the data.",
         "Final two: A beats B because keeping data past the schedule is the data owner's decision; tighter access still leaves the copies kept with no end date.",
-        "Exam cue: copies made for AI training fall under the source data's owner and schedule; any longer retention is the owner's call, not the user team's."
+        "Exam cue: copies made for AI training fall under the source data's owner and schedule; a new business need to keep data longer goes to the owner, and data nobody needs is deleted on schedule."
       ],
       "framework_ref": "NIST SP 800-53 Rev. 5 SI-12 (Information Management and Retention); ISACA Glossary (data owner)",
       "related_concepts": [
@@ -2150,7 +2150,7 @@
         "Retention schedule",
         "Data owner"
       ],
-      "_provenance": "Authored from concept: notes 4A4.3 (AI Training Data Through the Lifecycle: training data is data that needs an owner and a retention period, and the retention schedule applies to training sets). Round 3, 4 Nov 2026: original scenario (telecom data science team keeping chat-log copies in a training set) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used; checked against the CRISC, CISA, CC and AAIA banks for mirrored scenarios. Review fixes 4 Nov 2026 (standards audit and concept review): key now has the data owner rule on keeping the copies past the source schedule (a new use, so no clash with crisc_d4_008, where no new use exists and the schedule is simply enforced); runner-up B is now restricted access, so it no longer twins crisc_d4_047's 'remove names' runner-up. Key worded without 'one year' so it does not echo the stem alone, and lengthened slightly so the batch keeps its share of naturally longest keys.",
+      "_provenance": "Authored from concept: notes 4A4.3 (AI Training Data Through the Lifecycle: training data is data that needs an owner and a retention period, and the retention schedule applies to training sets). Round 3, 4 Nov 2026: original scenario (telecom data science team keeping chat-log copies in a training set) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used; checked against the CRISC, CISA, CC and AAIA banks for mirrored scenarios. Review fixes 4 Nov 2026 (standards audit and concept review): key now has the data owner rule on keeping the copies past the source schedule (a new use, so no clash with crisc_d4_008, where no new use exists and the schedule is simply enforced); runner-up B is now restricted access, so it no longer twins crisc_d4_047's 'remove names' runner-up. Key worded without 'one year' so it does not echo the stem alone, and lengthened slightly so the batch keeps its share of naturally longest keys. Cross-domain fixes 4 Nov 2026: the explanation and exam cue now state the line against crisc_d4_008: a new business need to keep data longer goes to the data owner, while data no one needs is deleted on schedule. The gate's correct_explanation was shortened ('for model training' to 'for training', 'the schedule applies and' dropped) to stay within 75 words.",
       "style_version": 2
     },
     {
@@ -2349,7 +2349,7 @@
       "options": {
         "A": "Restate the debt as the yearly business losses it could cause",
         "B": "Report the debt's growth in story points to the committee",
-        "C": "Ask internal audit to review the CTO's deferral requests",
+        "C": "Ask the CTO to resubmit with a fuller effort and cost estimate",
         "D": "Have engineering clear the debt in spare sprint capacity"
       },
       "correct": "A",
@@ -2358,11 +2358,11 @@
       "correct_explanation": "Each request speaks engineering, and code complexity and effort cannot be weighed against other uses of the money. Restating the debt as the billing losses it could cause, such as missed invoices and delayed revenue each year, lets the committee compare the fix with its appetite and its other investments. Reporting story points is the runner-up; it shows the debt growing, but still in terms the committee cannot weigh.",
       "wrong_explanations": {
         "B": "Story points size the debt for engineers; a rising count still does not tell the committee what the business stands to lose.",
-        "C": "Internal audit gives assurance on how decisions are made; it does not supply the business impact the committee needs to decide.",
+        "C": "A fuller estimate gives the committee more engineering detail, still not the business loss it needs to weigh the fix against other uses of the money.",
         "D": "Directing engineering's work is a treatment decision for the CTO and the committee; spare capacity also leaves the fix unfunded and unplanned."
       },
       "tips": [
-        "Eliminate: C hands the problem to internal audit, and D has the practitioner assign a fix that management must fund and plan.",
+        "Eliminate: C adds engineering detail the committee already cannot weigh, and D has the practitioner assign a fix that management must fund and plan.",
         "Final two: A beats B because the committee decides in business terms; story points measure the debt, not the loss it could cause.",
         "Exam cue: when decision makers keep deferring a technical fix, translate the risk into business impact they can weigh against appetite."
       ],
@@ -2372,7 +2372,7 @@
         "Business impact",
         "Risk reporting"
       ],
-      "_provenance": "Authored from concept: notes 4A1.3 (Technical Debt and Legacy Systems: technical debt is reported as business impact, such as expected annual loss to the process it supports, so funding decisions can weigh it against other investments). Round 3, 4 Nov 2026: original scenario (SaaS provider whose executive committee keeps deferring funding for billing platform technical debt described only in engineering terms) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used; checked against the CRISC, CISA, CC and AAIA banks for mirrored scenarios. Review fixes 4 Nov 2026 (standards audit and concept review): re-angled because the first version (CTO accepting technical-debt risk above appetite, escalate to the committee) nearly duplicated crisc_d3_024, with two shared distractors and a key-only echo of 'executive committee'; the item now tests reporting technical debt as business impact. No longer cites NIST IR 8286B-upd1 Section 2.4.3. Key letter unchanged (A).",
+      "_provenance": "Authored from concept: notes 4A1.3 (Technical Debt and Legacy Systems: technical debt is reported as business impact, such as expected annual loss to the process it supports, so funding decisions can weigh it against other investments). Round 3, 4 Nov 2026: original scenario (SaaS provider whose executive committee keeps deferring funding for billing platform technical debt described only in engineering terms) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used; checked against the CRISC, CISA, CC and AAIA banks for mirrored scenarios. Review fixes 4 Nov 2026 (standards audit and concept review): re-angled because the first version (CTO accepting technical-debt risk above appetite, escalate to the committee) nearly duplicated crisc_d3_024, with two shared distractors and a key-only echo of 'executive committee'; the item now tests reporting technical debt as business impact. No longer cites NIST IR 8286B-upd1 Section 2.4.3. Key letter unchanged (A). Cross-domain fixes 4 Nov 2026: option C (internal audit as a filler distractor) replaced by a fuller effort and cost estimate from the CTO; wrong C and the Eliminate tip updated. Key unchanged (A).",
       "style_version": 2
     },
     {

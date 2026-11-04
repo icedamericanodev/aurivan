@@ -2384,15 +2384,15 @@
       "bloom_level": "Analysis",
       "question": "A risk analyst has two weeks to test 30 controls at an insurer, from claims-payment approval limits rated critical to a clean-desk check rated low. Which of the following approaches is BEST?",
       "options": {
-        "A": "Test depth set by the risk each control addresses",
+        "A": "Stronger tests for high-rated controls, lighter for the rest",
         "B": "One inquiry-and-inspection test used across the 30 controls",
         "C": "Reperformance used as the test for the 30 controls",
-        "D": "Testing of the critical controls now and the rest next year"
+        "D": "Testing of the high-risk controls now and the rest next year"
       },
       "correct": "A",
       "key_concept": "Testing depth follows risk: critical controls get the strongest techniques and lower-risk ones lighter tests, so assurance is spent where it matters.",
       "pre_read": "Read the time limit and the range of control ratings together before judging any approach.",
-      "correct_explanation": "The assurance a test must give depends on the risk the control addresses. Critical payment limits warrant strong techniques such as reperformance on a larger sample; a low-rated clean-desk check can rest on inquiry and a short inspection. That covers all 30 controls in two weeks. Testing the critical ones now and the rest next year leaves the lower-rated controls untested for a cycle when lighter tests would cover them now.",
+      "correct_explanation": "The assurance a test must give depends on the risk the control addresses. Critical payment limits warrant strong techniques such as reperformance on a larger sample; a low-rated clean-desk check can rest on inquiry and a short inspection. That covers all 30 controls in two weeks. Testing the high-risk ones now and the rest next year leaves the lower-rated controls untested for a cycle when lighter tests would cover them now.",
       "wrong_explanations": {
         "B": "A single light test gives weak assurance over the critical payment controls, where a failure would matter most.",
         "C": "Reperforming every control spends the strongest technique on low-risk checks and is unlikely to fit in two weeks.",
@@ -2409,44 +2409,44 @@
         "Reperformance",
         "Risk-based testing"
       ],
-      "_provenance": "Authored from concept: notes 3B3.1 (Testing Techniques and Evidence Strength: choose the technique that matches the assurance the risk needs; depth and coverage rise with the assurance required). Round 3, 4 Nov 2026: original scenario of an insurer's risk analyst with two weeks to test 30 controls ranging from critical claims-payment approval limits to a low-rated clean-desk check, written for KaiSip in our own words; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D3 round 3 (crisc_d3_051 to 085). Review fixes 4 Nov 2026 (standards audit and concept review): 'every' removed from distractors B and C; pre_read no longer nearly gives the key.",
+      "_provenance": "Authored from concept: notes 3B3.1 (Testing Techniques and Evidence Strength: choose the technique that matches the assurance the risk needs; depth and coverage rise with the assurance required). Round 3, 4 Nov 2026: original scenario of an insurer's risk analyst with two weeks to test 30 controls ranging from critical claims-payment approval limits to a low-rated clean-desk check, written for KaiSip in our own words; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D3 round 3 (crisc_d3_051 to 085). Review fixes 4 Nov 2026 (standards audit and concept review): 'every' removed from distractors B and C; pre_read no longer nearly gives the key. Cross-domain fixes 4 Nov 2026: key A reworded ('stronger tests for high-rated controls, lighter for the rest'; the gate's 'critical' would have been a stem word only the key repeats) and option D now says high-risk controls, so risk-scaling wording is no longer key-only across D3 (the gate found 'by risk' keyed in eight items with no wrong option using it); the runner-up sentence names high-risk controls to match D. Key unchanged (A).",
       "style_version": 2
     },
     {
       "id": "crisc_d3_066",
       "domain": 3,
-      "subtopic": "3B3 Control testing methodologies. One change walked through",
+      "subtopic": "3B3 Control testing methodologies. What a walkthrough shows",
       "principle_id": "evidence-before-credit",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "An online bank's change manager walked the risk analyst through one approved change and asks that change control be rated effective for the year. What is the analyst's BEST next step?",
+      "question": "An online bank's change manager walked the risk analyst through one approved change, from request to deployment. Which conclusion does this walkthrough BEST support?",
       "options": {
-        "A": "Rate change control effective for the year on the walkthrough",
-        "B": "Test a sample the analyst draws from the year's changes",
-        "C": "Ask the manager for three more examples of approved changes",
-        "D": "Redesign change control before any further testing"
+        "A": "Change control worked as intended over the year",
+        "B": "The control's design is in place as described",
+        "C": "Change control is mature enough to rely on",
+        "D": "No unapproved change reached production this year"
       },
       "correct": "B",
-      "key_concept": "A walkthrough confirms design; operating effectiveness needs a sample the tester selects from the full period's population.",
+      "key_concept": "A walkthrough shows a control is designed and in place; operation over a period needs a sample from it, and maturity needs evidence over time.",
       "pre_read": "Ask what one traced change can show, and what it cannot show about the rest of the year.",
-      "correct_explanation": "A walkthrough of one change shows how the control is designed and that it exists; it says nothing about whether it worked all year. Operating effectiveness needs a sample the analyst selects from the complete population of the year's changes. Asking the manager for three more examples feels like more evidence, but items chosen by the control's own manager can all be ones that went well.",
+      "correct_explanation": "Tracing one change from request to deployment shows how the control is meant to work and that its steps exist, so it supports a conclusion on design and implementation. It cannot show that the control worked for the rest of the year. Concluding it worked as intended over the year is the runner-up: that is what the manager wants, but it needs a sample the analyst draws from the year's changes.",
       "wrong_explanations": {
-        "A": "A walkthrough supports design, not operation over a period; rating the whole year effective on one example overstates the evidence.",
-        "C": "Examples chosen by the control's own manager are not a fair sample; the tester must select from the full population.",
-        "D": "The walkthrough gave no sign of a design flaw; redesigning before testing operation acts without evidence of a problem."
+        "A": "One traced change says nothing about the other changes made this year; operating effectiveness needs a sample from the full period.",
+        "C": "Maturity rests on whether the practice is defined, followed and measured over time; one walkthrough cannot show that.",
+        "D": "A walkthrough follows a change that went through the process; it cannot show whether other changes bypassed it."
       },
       "tips": [
-        "Eliminate: A treats a walkthrough as proof of a year's operation, and D redesigns a control whose design showed no flaw.",
-        "Final two: B beats C because the tester must choose the sample from the full population; examples the manager picks can all be clean.",
-        "Exam cue: a walkthrough shows design; operation over a period needs a sample the tester draws from the whole population."
+        "Eliminate: C claims maturity from a single example, and D draws a conclusion about changes the walkthrough never looked at.",
+        "Final two: B beats A because a walkthrough shows design and implementation; a year of operation needs a sample the tester draws.",
+        "Exam cue: walkthrough shows design and implementation; a sample over the period shows operation; evidence over time shows maturity."
       ],
       "framework_ref": "NIST SP 800-53A Rev. 5 Section 2.4.2 (Assessment Methods: examine, interview and test, with depth and coverage); NIST SP 800-53 Rev. 5 CA-2 (Control Assessments)",
       "related_concepts": [
         "Walkthrough",
-        "Operating effectiveness",
-        "Sampling"
+        "Design effectiveness",
+        "Operating effectiveness"
       ],
-      "_provenance": "Authored from concept: notes 3B3.2 (Design and Operating Effectiveness Testing: a walkthrough supports design; test operation over a period with a sample the tester draws from the complete population). Round 3, 4 Nov 2026: original scenario of an online bank's change manager walking the risk analyst through one approved change and asking for change control to be rated effective for the year, written for KaiSip in our own words; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D3 round 3 (crisc_d3_051 to 085).",
+      "_provenance": "Authored from concept: notes 3B3.2 (Design and Operating Effectiveness Testing: a walkthrough supports design; test operation over a period with a sample the tester draws from the complete population). Round 3, 4 Nov 2026: original scenario of an online bank's change manager walking the risk analyst through one approved change, from request to deployment, written for KaiSip in our own words; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D3 round 3 (crisc_d3_051 to 085). Cross-domain fixes 4 Nov 2026: re-angled from 'best next step' to 'what the walkthrough supports' because the old version duplicated crisc_d3_012 (same subtopic, key letter and lesson); it now also separates design from operating effectiveness and maturity (crisc_d3_037, crisc_d3_067). Option A says 'over the year' rather than the gate's 'all year', so no absolute word marks a wrong option; key_concept shortened to the 25-word limit. Checked against CISA d1_214 (what further step shows a guard check operated all year; different question). ID and key letter unchanged (B).",
       "style_version": 2
     },
     {
@@ -2530,34 +2530,34 @@
       "principle_id": "advise-dont-decide",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "All actions in a retailer's risk action plan are complete and tested as working, but the re-rated risk remains above the target risk the plan set. What is the risk practitioner's BEST action?",
+      "question": "All actions in a retailer's risk action plan are complete and tested as working; the re-rated risk is within appetite but above the target risk the plan set. What is the risk practitioner's BEST action?",
       "options": {
-        "A": "Close the plan with every action delivered",
+        "A": "Close the plan and record the risk as within appetite",
         "B": "Lower the plan's target risk to match the new rating",
         "C": "Take the shortfall to the risk owner for a decision",
         "D": "Ask the action owners to add a further control"
       },
       "correct": "C",
-      "key_concept": "A plan closes when the risk reaches its target or the risk owner records a new decision; a shortfall goes back to the risk owner.",
+      "key_concept": "A plan is judged against its own target; if risk ends above it, even within appetite, the risk owner decides whether to accept the gap.",
       "pre_read": "Separate whether the actions were done from whether the plan achieved what it promised.",
-      "correct_explanation": "The plan delivered its actions, but its purpose was to bring the risk to the target. The practitioner reports the shortfall, with the validated rating, to the risk owner, who decides whether to add treatment, accept the remaining risk within their authority, or elevate it. Asking action owners to add another control sounds proactive, but choosing further treatment is the risk owner's decision, not the action owners' or the practitioner's.",
+      "correct_explanation": "The plan delivered its actions, but its purpose was to bring the risk to the target the owner set. Within appetite the gap could be accepted, but that is the risk owner's decision, so the practitioner reports the shortfall with the validated rating. Closing the plan because the risk is within appetite is the runner-up: acceptance may be right, but it is the owner's call, not an automatic close.",
       "wrong_explanations": {
-        "A": "Delivered actions do not make a plan successful; closing it hides that the risk is still above the level the plan promised.",
+        "A": "Being within appetite makes acceptance possible, but the plan promised a lower target; closing it without the owner's decision skips the person who set that target.",
         "B": "Moving the target to fit the result reverses the logic; the target was set with the risk owner within appetite, not from what the plan happened to achieve.",
         "D": "More control may be the answer, but deciding further treatment belongs to the risk owner; action owners carry out the tasks they are given."
       },
       "tips": [
-        "Eliminate: A closes the plan on delivered actions rather than its outcome, and B moves the target to fit the result.",
-        "Final two: C beats D because the risk owner chooses further treatment or acceptance; the practitioner reports, and action owners carry out tasks.",
-        "Exam cue: when a completed plan falls short of its target, the next move is the risk owner's decision, not more action by others."
+        "Eliminate: B moves the target to fit the result, and D has action owners choose treatment that is the risk owner's call.",
+        "Final two: C beats A because the owner set the target; being within appetite makes acceptance possible, but the owner decides whether to accept the gap.",
+        "Exam cue: a plan is judged against its own target; when it falls short, even within appetite, the risk owner decides what happens next."
       ],
       "framework_ref": "NIST IR 8286 Rev. 1 Section 3.5.2 (Responding to Residual Risk); NIST CSF 2.0 ID.RA-06 (risk responses are chosen, prioritized, planned, tracked and communicated)",
       "related_concepts": [
         "Target risk",
-        "Residual risk",
+        "Risk appetite",
         "Plan closure"
       ],
-      "_provenance": "Authored from concept: notes 3C1.2 (Validating Execution and Tracking to Closure: re-rate after validation and compare with the target the plan set; close the plan only when the risk reaches that level or a new decision is recorded). Round 3, 4 Nov 2026: original scenario of a retailer's risk action plan whose actions are complete and tested, while the re-rated risk stays above the plan's target risk, written for KaiSip in our own words; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D3 round 3 (crisc_d3_051 to 085). Review fixes 4 Nov 2026 (standards audit and concept review): B's explanation now says the target was set with the risk owner within appetite.",
+      "_provenance": "Authored from concept: notes 3C1.2 (Validating Execution and Tracking to Closure: re-rate after validation and compare with the target the plan set; close the plan only when the risk reaches that level or a new decision is recorded). Round 3, 4 Nov 2026: original scenario of a retailer's risk action plan whose actions are complete and tested, while the re-rated risk is within appetite but stays above the plan's target risk, written for KaiSip in our own words; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D3 round 3 (crisc_d3_051 to 085). Review fixes 4 Nov 2026 (standards audit and concept review): B's explanation now says the target was set with the risk owner within appetite. Cross-domain fixes 4 Nov 2026: re-angled so the re-rated risk is within appetite but above the plan's target, because the old version mirrored crisc_d2_020 (treatment delivered, risk above the level wanted, back to the risk owner, with the same two distractor families); runner-up is now closing the plan as within appetite (A), with B and D eliminated. 'now' and 'still' dropped from the gate's stem to meet the 35-word limit; option A worded 'and record the risk as within appetite' rather than 'as the risk is now within appetite', so it carries no reason of its own; key_concept and correct_explanation shortened to the length limits. Wrong B and D unchanged. Key unchanged (C).",
       "style_version": 2
     },
     {
@@ -2754,8 +2754,8 @@
       "bloom_level": "Application",
       "question": "Over the past year, an insurer made three major system changes and had two serious incidents, yet its risk ratings changed only at the annual review. What should the risk practitioner recommend as BEST?",
       "options": {
-        "A": "Move the register review from yearly to quarterly",
-        "B": "Ask internal audit to assess the ratings each year",
+        "A": "Reassess the register quarterly instead of yearly",
+        "B": "Add a KRI tracking open incidents and changes monthly",
         "C": "Link change and incident processes to reassessment",
         "D": "Add staff to the risk team for the annual review"
       },
@@ -2765,11 +2765,11 @@
       "correct_explanation": "Major changes and serious incidents are triggers: each can shift likelihood or impact the day it happens. Linking change management and incident processes to the risk function makes each trigger start a reassessment, so ratings move when risk moves. Moving to quarterly reviews narrows the gap, but a change made the week after a review still waits up to three months, and the review stays tied to the calendar rather than the event.",
       "wrong_explanations": {
         "A": "Quarterly reviews narrow the gap, but ratings still wait for the calendar rather than moving when a change or incident happens.",
-        "B": "Internal audit gives independent assurance on the process; it does not maintain ratings, and a yearly review keeps the same delay.",
+        "B": "A KRI shows how many incidents and changes there are, but it re-rates none of the scenarios they affect, so ratings still wait for the annual review.",
         "D": "More staff make the annual review thorough, but ratings still go a year without reflecting changes and incidents."
       },
       "tips": [
-        "Eliminate: B hands rating work that belongs to management and the risk function to internal audit, and D strengthens the annual review without shortening the delay.",
+        "Eliminate: B adds an indicator but re-rates nothing, and D strengthens the annual review without shortening the delay.",
         "Final two: C beats A because triggers move ratings when risk moves; a quarterly calendar is still a calendar.",
         "Exam cue: material change, serious incidents and threshold breaches trigger reassessment; look for options tied to the event, not the date."
       ],
@@ -2779,7 +2779,7 @@
         "Change management",
         "Incident management"
       ],
-      "_provenance": "Authored from concept: notes 3C4.3 (Triggers for Reassessment: link change management and incident processes to the risk function, so a trigger starts a reassessment). Round 3, 4 Nov 2026: original scenario of an insurer whose risk ratings changed only at the annual review despite three major system changes and two serious incidents in the year, written for KaiSip in our own words; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D3 round 3 (crisc_d3_051 to 085).",
+      "_provenance": "Authored from concept: notes 3C4.3 (Triggers for Reassessment: link change management and incident processes to the risk function, so a trigger starts a reassessment). Round 3, 4 Nov 2026: original scenario of an insurer whose risk ratings changed only at the annual review despite three major system changes and two serious incidents in the year, written for KaiSip in our own words; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D3 round 3 (crisc_d3_051 to 085). Cross-domain fixes 4 Nov 2026: option B (internal audit as a filler distractor) replaced by a monthly KRI on incidents and changes; wrong B and the Eliminate tip updated. Option A now reads 'Reassess the register quarterly instead of yearly', since the old B was the only wrong option with an 'assess' word and the key would otherwise hold it alone. Key unchanged (C).",
       "style_version": 2
     },
     {
@@ -2792,7 +2792,7 @@
       "question": "An airport operator now starts a risk reassessment on every major change, incident and threshold breach, and its CIO proposes ending scheduled risk reviews. What is the risk practitioner's BEST response?",
       "options": {
         "A": "End the scheduled reviews and rely on the triggers",
-        "B": "Pass the scheduled reviews to internal audit",
+        "B": "Replace scheduled reviews with a monthly KRI summary",
         "C": "Keep scheduled reviews alongside the triggers",
         "D": "Keep scheduled reviews for the ten highest risks"
       },
@@ -2802,11 +2802,11 @@
       "correct_explanation": "Triggers fire only when someone records a change, incident or breach; drift, unreported changes and slow shifts in threats pass them by. Scheduled reviews remain the backstop, with frequency set by each risk's rating. Keeping them for the ten highest risks saves effort, but it leaves every other risk without a backstop, even though an unreported change can turn a low-rated risk into a serious one.",
       "wrong_explanations": {
         "A": "Triggers depend on someone recording the event; without scheduled reviews, unreported change and gradual drift are never picked up.",
-        "B": "Internal audit gives independent assurance; running the risk function's reviews would compromise that independence and take them away from the function that maintains the ratings.",
+        "B": "A KRI summary shows indicator movement, but risks without KRIs, and changes no indicator tracks, would go unreviewed.",
         "D": "Limiting reviews to the top ten leaves lower-rated risks with no backstop, though unreported change can raise them."
       },
       "tips": [
-        "Eliminate: A assumes triggers catch every change, and B hands a risk-function task to internal audit, whose role is independent assurance.",
+        "Eliminate: A assumes triggers catch every change, and B assumes indicators cover every risk.",
         "Final two: C beats D because unreported change can affect any risk; keep a backstop for all of them, with frequency set by rating.",
         "Exam cue: event triggers and scheduled reviews work together; an option that drops either one is the trap."
       ],
@@ -2816,7 +2816,7 @@
         "Scheduled review",
         "Monitoring strategy"
       ],
-      "_provenance": "Authored from concept: notes 3C4.3 (Triggers for Reassessment: keep scheduled reviews as a backstop, since not every change is announced). Round 3, 4 Nov 2026: original scenario of an airport operator whose CIO proposes ending scheduled risk reviews now that major changes, incidents and threshold breaches start reassessments, written for KaiSip in our own words; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D3 round 3 (crisc_d3_051 to 085). Review fixes 4 Nov 2026 (standards audit and concept review): citation moved from SP 800-137 Section 3.1 (triggers for reviewing the ISCM strategy itself) to Section 3.2.2, whose Event-Driven Assessments subsection covers incidents, new threats and significant changes beside set frequencies; B's explanation clarified.",
+      "_provenance": "Authored from concept: notes 3C4.3 (Triggers for Reassessment: keep scheduled reviews as a backstop, since not every change is announced). Round 3, 4 Nov 2026: original scenario of an airport operator whose CIO proposes ending scheduled risk reviews now that major changes, incidents and threshold breaches start reassessments, written for KaiSip in our own words; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D3 round 3 (crisc_d3_051 to 085). Review fixes 4 Nov 2026 (standards audit and concept review): citation moved from SP 800-137 Section 3.1 (triggers for reviewing the ISCM strategy itself) to Section 3.2.2, whose Event-Driven Assessments subsection covers incidents, new threats and significant changes beside set frequencies; B's explanation clarified. Cross-domain fixes 4 Nov 2026: option B (internal audit as a filler distractor) replaced by a monthly KRI summary in place of scheduled reviews; wrong B and the Eliminate tip updated. Key unchanged (C).",
       "style_version": 2
     },
     {
@@ -2867,7 +2867,7 @@
       "options": {
         "A": "Turn on the 600 checks now and tune out noise later",
         "B": "Route the alerts to the CISO's team for review",
-        "C": "Enable the checks the platform vendor marks as critical",
+        "C": "Enable the checks the vendor rates as highest risk",
         "D": "Start with checks on controls over the top risks"
       },
       "correct": "D",
@@ -2877,10 +2877,10 @@
       "wrong_explanations": {
         "A": "Full coverage on day one buries the important alerts in noise; alert fatigue sets in before tuning reaches the checks that matter.",
         "B": "One team receiving every alert becomes a bottleneck; alerts should reach the owners who can act on each control.",
-        "C": "The vendor's critical label reflects generic threats, not which controls guard this maker's top risks."
+        "C": "The vendor's risk rating reflects generic threats, not which controls guard this maker's top risks."
       },
       "tips": [
-        "Eliminate: B funnels the alerts to one team instead of the owners who act, and C lets the vendor's labels, not the maker's risks, decide what to monitor.",
+        "Eliminate: B funnels the alerts to one team instead of the owners who act, and C lets the vendor's risk ratings, not the maker's own risks, decide what to monitor.",
         "Final two: D beats A because a risk-based start keeps alerts actionable; switching everything on and tuning later invites alert fatigue.",
         "Exam cue: monitoring follows a strategy: controls behind the top risks first, an owner for each alert, frequency set by risk."
       ],
@@ -2890,7 +2890,7 @@
         "Monitoring strategy",
         "Alert fatigue"
       ],
-      "_provenance": "Authored from concept: notes 3C4.1 (Continuous Monitoring and Automated Alerts: write a monitoring strategy covering what to monitor, how often and who receives the results; set frequency by risk; give every alert an owner). Round 3, 4 Nov 2026: original scenario of a medical device maker's IT team planning to switch on all 600 ready-made checks of a newly bought continuous monitoring platform at once, written for KaiSip in our own words; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D3 round 3 (crisc_d3_051 to 085). Review fixes 4 Nov 2026 (standards audit and concept review): SP 800-137 Section 3.1 summary corrected to what the source says; 'every' removed from distractor B; the internal-audit distractor swapped for the vendor's 'critical' labels, so internal audit is not an always-wrong option; C's explanation and the Eliminate tip follow.",
+      "_provenance": "Authored from concept: notes 3C4.1 (Continuous Monitoring and Automated Alerts: write a monitoring strategy covering what to monitor, how often and who receives the results; set frequency by risk; give every alert an owner). Round 3, 4 Nov 2026: original scenario of a medical device maker's IT team planning to switch on all 600 ready-made checks of a newly bought continuous monitoring platform at once, written for KaiSip in our own words; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D3 round 3 (crisc_d3_051 to 085). Review fixes 4 Nov 2026 (standards audit and concept review): SP 800-137 Section 3.1 summary corrected to what the source says; 'every' removed from distractor B; the internal-audit distractor swapped for the vendor's 'critical' labels, so internal audit is not an always-wrong option; C's explanation and the Eliminate tip follow. Cross-domain fixes 4 Nov 2026: option C now uses risk wording (the vendor's highest-risk checks), so risk-scaling wording is not key-only; wrong C and the Eliminate tip say 'risk rating(s)' to match. Key unchanged (D).",
       "style_version": 2
     },
     {
