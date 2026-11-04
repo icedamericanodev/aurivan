@@ -1858,7 +1858,7 @@
       "bloom_level": "Application",
       "question": "A Uruguayan sports federation's member chatbot, inventoried as a low-risk question-answering tool, can now cancel athlete registrations and waive license fees through federation systems. What should the IS auditor recommend FIRST?",
       "options": {
-        "A": "Have the owner require staff approval for fee waivers above a limit",
+        "A": "Have the owner log each cancellation and fee waiver the chatbot makes",
         "B": "Have the owner retrain the chatbot to refuse risky requests",
         "C": "Have the owner reclassify it as agentic and reassess its risk tier",
         "D": "Have IT security test the chatbot's links to federation systems"
@@ -1866,16 +1866,16 @@
       "correct": "C",
       "key_concept": "An AI system that calls tools to change records is agentic; its classification and risk tier, not its underlying model, decide the controls it needs.",
       "pre_read": "Note what the system can now do, compared with what its inventory entry assumes, before judging any single control.",
-      "correct_explanation": "Once the chatbot can cancel registrations and waive fees, it is agentic: it acts in federation systems instead of only answering. Its tier was set for a question-answering tool, so the owner must reclassify it and reassess its risk, which then decides the limits, approvals and oversight it needs. Approval for large fee waivers, option A, is the runner-up: it is a sound control, but it covers one action and leaves cancellations unchecked.",
+      "correct_explanation": "Once the chatbot can cancel registrations and waive fees, it is agentic: it acts in federation systems instead of only answering. Its tier was set for a question-answering tool, so the owner must reclassify it and reassess its risk, which then decides the limits, approvals and oversight it needs. Logging every action, option A, is the runner-up: it records what the chatbot did, but only after registrations are cancelled or fees waived.",
       "wrong_explanations": {
-        "A": "Tempting because approval limits suit agentic AI. But one limit on fee waivers leaves registration cancellations unchecked; the reassessed tier should decide which limits and approvals apply.",
+        "A": "Tempting because logs make an agent's actions traceable. But logging detects after the fact; the reassessed tier decides which preventive limits and approvals the chatbot needs.",
         "B": "Tempting because a better-trained model errs less. But training cannot guarantee refusals; the reassessed tier must first decide which limits outside the model the chatbot needs.",
         "D": "Tempting because new system connections raise security risk. But security testing shows whether the links can be attacked, not what the chatbot may decide to do through them."
       },
       "tips": [
         "Eliminate: B relies on retraining, which cannot guarantee refusals, and D tests security, which says nothing about what the chatbot decides to change.",
-        "Final two: C beats A because the reassessed tier decides which limits and approvals apply; one approval rule covers fee waivers but leaves registration cancellations unchecked.",
-        "Exam cue: when an AI system gains the ability to act, reclassify it and reassess its risk before choosing individual controls."
+        "Final two: C beats A because logs record actions after they happen; the reassessed tier decides which limits and approvals must stop wrong ones first.",
+        "Exam cue: when an AI system's inventory entry no longer matches what it can do, reclassify it and reassess its risk; the new tier sets its limits and approvals."
       ],
       "framework_ref": "NIST AI 100-1 MAP 2.1 (Tasks and methods the AI system supports are defined); NIST AI 100-1 GOVERN 1.6 (Mechanisms to inventory AI systems)",
       "related_concepts": [
@@ -1883,7 +1883,7 @@
         "AI inventory",
         "Risk tiering"
       ],
-      "_provenance": "Authored from concept: notes 1A.1 Kinds of AI Systems (agentic AI plans steps and calls tools to act; the kind of AI decides which risks and evidence matter). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 3, 31 Oct 2026.",
+      "_provenance": "Authored from concept: notes 1A.1 Kinds of AI Systems (agentic AI plans steps and calls tools to act; the kind of AI decides which risks and evidence matter). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 3, 31 Oct 2026. Cross-domain gate fix, 31 Oct 2026: runner-up changed from an approval limit (the key of aaia_d1_004) to logging. Round 2 fix, 31 Oct 2026: exam cue names the stale inventory tier.",
       "style_version": 2
     },
     {
@@ -1962,37 +1962,37 @@
     {
       "id": "aaia_d1_054",
       "domain": 1,
-      "subtopic": "1A AI models and requirements. Features and validation results",
+      "subtopic": "1A AI models and requirements. Where training examples came from",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "A Thai motor insurer's claim-fraud model, which scores claims at intake, reached 98% validation accuracy; its strongest feature records whether investigators later opened a case. What should the IS auditor be MOST concerned about?",
+      "question": "A Thai motor insurer's claim-photo fraud model scored 96% in validation; its fraud examples were all investigations-archive scans, its genuine ones live claim photos. What should the IS auditor be MOST concerned about?",
       "options": {
-        "A": "The feature is not yet known when the model makes each prediction",
-        "B": "The 98% may fall slowly as fraud patterns drift over time",
-        "C": "The validation set may be too small to support a 98% figure",
-        "D": "The feature may carry investigators' bias against some groups of drivers"
+        "A": "The model may have learned archive image quirks, not signs of fraud",
+        "B": "The 96% may fall slowly as fraud patterns drift over time",
+        "C": "The validation set may be too small to support a 96% figure",
+        "D": "The archive may reflect investigators' bias against some groups of drivers"
       },
       "correct": "A",
-      "key_concept": "A feature recorded after the outcome leaks the answer into validation; the model scores high in testing but meets real claims without that clue.",
-      "pre_read": "Compare when the model makes its prediction with when each feature it uses becomes known.",
-      "correct_explanation": "The model was validated with a feature that records what happened after intake, a form of target leakage: at intake, no investigator has opened a case yet. The 98% is inflated, and real claims will be scored without that clue, at an accuracy nobody measured. Investigator bias, option D, is the runner-up: it is a real fairness concern, but the leaked feature makes the whole validation result unreliable first.",
+      "key_concept": "A model can learn a shortcut, such as how one class of examples was scanned, and score well in validation yet fail on live data.",
+      "pre_read": "Ask what every fraud example has in common besides fraud, and whether live claims share it.",
+      "correct_explanation": "Every fraud example shares a trait no genuine one has: it was scanned for the archive. A model can score 96% by learning that difference, a shortcut, instead of anything about fraud, and validation drawn from the same data cannot reveal it, so live fraud may go unflagged. Investigator bias, option D, is the runner-up: it may skew which claims became examples, but the shortcut can void the 96% for every live claim.",
       "wrong_explanations": {
-        "B": "Tempting because fraud patterns do change. But drift develops after launch; here the feature is missing from the first day, so the 98% never applied to live claims.",
-        "C": "Tempting because small samples give unstable figures. But a larger validation set would still contain the leaked feature, so the figure would stay inflated.",
-        "D": "Tempting because investigators' choices can carry bias. But the larger flaw comes first: the feature does not exist at intake, so the 98% says little about the deployed model."
+        "B": "Tempting because fraud patterns do change. But drift develops after launch; a shortcut learned from scanning differences fails on live photos from the first day.",
+        "C": "Tempting because small samples give unstable figures. But a larger validation set drawn the same way would carry the same scanning difference.",
+        "D": "Tempting because investigators choose which claims to examine. But that skew matters less than a shortcut that could make the 96% meaningless for live claims."
       },
       "tips": [
-        "Eliminate: B treats the problem as slow drift, though the feature is missing from day one, and C questions sample size, which cannot fix a feature that leaks the outcome.",
-        "Final two: A beats D because a feature unknown when the model predicts makes the 98% meaningless for every claim; investigator bias is a real but narrower concern.",
-        "Exam cue: check that every feature a model uses exists at the moment it predicts; if not, validation results are inflated."
+        "Eliminate: B treats the flaw as later drift, though it exists from day one, and C blames sample size, though a larger set drawn the same way shares the scanning difference.",
+        "Final two: A beats D because a shortcut tied to how fraud examples were scanned can void the 96% for every live claim; investigator bias is a real but narrower concern.",
+        "Exam cue: when one class of training examples comes from a different source, check whether the model learned the source instead of the outcome."
       ],
       "framework_ref": "NIST AI 100-1 MEASURE 2.3 (Performance measured in conditions similar to deployment); NIST AI 100-1 MEASURE 2.5 (System shown to be valid and reliable, limits documented)",
       "related_concepts": [
-        "Features",
-        "Target leakage",
+        "Shortcut learning",
+        "Training data",
         "Validation"
       ],
-      "_provenance": "Authored from concept: notes 1A.2 How Models Learn and Where They Fail (features are the inputs a model uses; a feature known only after the outcome inflates validation and is missing in production). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 3, 31 Oct 2026.",
+      "_provenance": "Authored from concept: notes 1A.2 How Models Learn and Where They Fail (features are the inputs a model uses; a feature known only after the outcome inflates validation and is missing in production). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 3, 31 Oct 2026. Cross-domain gate fix, 31 Oct 2026: shortcut learning from how one class of examples was collected. Round 2 fix, 31 Oct 2026: key reworded to drop the stem echo. Round 3 fix, 31 Oct 2026: stem states where genuine examples came from; explanation and Eliminate tip tightened.",
       "style_version": 2
     },
     {
@@ -2256,38 +2256,38 @@
     {
       "id": "aaia_d1_062",
       "domain": 1,
-      "subtopic": "1B AI governance. Measuring AI-assisted work",
-      "principle_id": "real-human-oversight",
+      "subtopic": "1B AI governance. What program metrics count",
+      "principle_id": "test-the-ai-as-used",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "A Serbian gas utility reports, as its AI program's main success measure, that 96% of AI-drafted replies to billing disputes are sent without edits. What should the IS auditor consider MOST important?",
+      "question": "A Serbian gas utility reports 100% of its AI models validated; for 14 vendor models, validation meant reading each vendor's accuracy report on its own test data. What should the IS auditor consider MOST important?",
       "options": {
-        "A": "A high no-edit rate may reflect unchecked drafts, not good ones",
-        "B": "Customers may not know that a model drafted their replies",
-        "C": "Reviewers' edits may not be logged reliably for every reply",
-        "D": "The measure leaves out the staff hours the drafts save"
+        "A": "The metric may not reflect accuracy on the utility's own data",
+        "B": "The 14 vendor models may lack published model cards",
+        "C": "The vendor reports may lack independent attestation",
+        "D": "The metric may count models retrained since validation"
       },
       "correct": "A",
-      "key_concept": "A high rate of AI output accepted unchanged can signal automation bias; program metrics need direct quality checks, not acceptance rates.",
-      "pre_read": "Ask what else, besides good drafts, could make reviewers send most replies unchanged.",
-      "correct_explanation": "A reply sent unedited may mean the draft was right, or that reviewers stopped checking: automation bias looks the same in this metric. Treating the rate as success rewards rubber-stamping, so the program needs a direct measure of quality, such as sampled replies checked for errors. Unreliable edit logging, option C, is the runner-up: data quality matters, but even perfectly logged, the rate cannot tell good drafts from unchecked ones.",
+      "key_concept": "A model's accuracy holds only for data like its test data; counting vendors' tests on their own data as validations overstates assurance.",
+      "pre_read": "Ask whose data each counted validation was run on, and whether it looks like the utility's own data and use.",
+      "correct_explanation": "A model's accuracy holds only for data like the data it was tested on. Each vendor tested on its own data, not the utility's meters, customers or use, so counting those reports as validations overstates assurance for 14 models. Independent attestation, option C, is the runner-up: the reports are vendors' own claims, but an attested test on vendor data would still not show how the models perform at the utility.",
       "wrong_explanations": {
-        "B": "Tempting because disclosure matters for trust. But it does not change what the success measure shows about the quality of replies.",
-        "C": "Tempting because a metric is only as good as its data. But even perfectly logged, a no-edit rate cannot separate correct drafts from drafts nobody checked.",
-        "D": "Tempting because programs should show value. But adding hours saved measures efficiency; it says nothing about whether the replies are right."
+        "B": "Tempting because model cards document a model's limits. But a card is the vendor's own description; publishing one would not show how the model performs on the utility's data.",
+        "C": "Tempting because self-reported tests lack independence. But an attested test run on the vendor's data still says nothing about accuracy on the utility's own data and use.",
+        "D": "Tempting because a retrained model is a changed model that needs revalidation. But nothing shows any was retrained, while 14 vendor-data results are already counted."
       },
       "tips": [
-        "Eliminate: D asks for an efficiency measure, which says nothing about quality, and B concerns disclosure to customers, not what the success measure shows.",
-        "Final two: A beats C because even perfectly recorded, a no-edit rate cannot separate correct drafts from unchecked ones; the measure itself is the problem.",
-        "Exam cue: treat high acceptance of AI output as a possible sign of automation bias until sampled quality checks show the output is right."
+        "Eliminate: B relies on model cards, the vendors' own documents, and D assumes retraining that nothing in the facts shows.",
+        "Final two: A beats C because attesting a vendor's test does not change its data; accuracy shown on vendor data does not carry over to the utility's own use.",
+        "Exam cue: an AI model's accuracy belongs to the data it was tested on; a 'validated' figure needs testing on the organization's own data and use."
       ],
-      "framework_ref": "NIST AI 100-1 MEASURE 1.2 (Metrics and control effectiveness regularly assessed); NIST AI 600-1 Section 2.7 (Human-AI Configuration)",
+      "framework_ref": "NIST AI 100-1 MEASURE 1.2 (Metrics and control effectiveness regularly assessed); NIST AI 100-1 MEASURE 2.3 (Performance measured in conditions similar to deployment)",
       "related_concepts": [
-        "Automation bias",
         "Program metrics",
-        "Human review"
+        "Vendor evidence",
+        "Deployment-context validation"
       ],
-      "_provenance": "Authored from concept: notes 1B.3 Program Metrics, Awareness and Workforce Impact (metrics must show whether the program works as intended; acceptance of AI output can reflect automation bias rather than quality). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 3, 31 Oct 2026.",
+      "_provenance": "Authored from concept: notes 1B.3 Program Metrics, Awareness and Workforce Impact (metrics must show whether the program works as intended; acceptance of AI output can reflect automation bias rather than quality). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 3, 31 Oct 2026. Cross-domain gate fix, 31 Oct 2026: a program metric that counts vendors' own test reports as validations. Round 2 fix, 31 Oct 2026: AI-specific runner-up (retraining) and model-card distractor. Round 3 fix, 31 Oct 2026: AI-specific deciding fact (vendor accuracy measured on vendor data), attestation distractor as the CISA trap, key hedged to match.",
       "style_version": 2
     },
     {
@@ -2330,74 +2330,75 @@
     {
       "id": "aaia_d1_064",
       "domain": 1,
-      "subtopic": "1C AI risk management. Rating rare AI errors",
-      "principle_id": "rank-ai-risk-by-harm",
+      "subtopic": "1C AI risk management. Benchmarks in risk ratings",
+      "principle_id": "test-the-ai-as-used",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "A Swiss canton's model translates flood warnings into eight languages; its risk register rates the risk low on error frequency alone, citing 99.5% benchmark accuracy. Which question should the IS auditor raise as MOST important?",
+      "question": "A Swiss canton's model translates flood warnings into eight languages; its risk register rates wrong warnings unlikely, citing the vendor's 99.5% benchmark on news articles. Which question should the IS auditor raise as MOST important?",
       "options": {
         "A": "Whether the translation vendor holds a current security certification",
         "B": "Whether the 99.5% was measured on the model version now in use",
         "C": "Whether residents are told that a model translated the warnings",
-        "D": "Whether the harm one wrong warning could cause was weighed"
+        "D": "Whether error rates were measured on warnings like those it sends"
       },
       "correct": "D",
-      "key_concept": "AI risk ratings combine likelihood and impact on people; a rare error can still make a high risk when its consequence is severe.",
-      "pre_read": "Ask what the rating left out, and what one wrong flood warning would mean for a resident.",
-      "correct_explanation": "Benchmark accuracy speaks only to how often errors occur, which is half of a rating. A machine-translated warning often reads fluently even when wrong, so residents have no reason to doubt it, and one wrong flood instruction can cost lives. The rating must weigh that impact on people too. Whether the 99.5% reflects the model version in use, option B, is the runner-up: it firms up likelihood but leaves impact unweighed.",
+      "key_concept": "Likelihood in an AI risk rating needs evidence from the actual use; a vendor benchmark on other text can understate how often errors occur.",
+      "pre_read": "Ask what text the benchmark was measured on, and whether it resembles the warnings the canton sends.",
+      "correct_explanation": "A benchmark on news articles says little about flood warnings, which use specialized terms such as evacuation routes and water levels, in languages a news benchmark may barely cover. The likelihood in the register needs error rates measured on the canton's own warning texts. Whether the 99.5% reflects the model version in use, option B, is the runner-up: a current figure on news articles still misses this use.",
       "wrong_explanations": {
-        "A": "Tempting because vendors handle the translations. But security certification says nothing about how severe a mistranslated warning would be.",
-        "B": "Tempting because a model update can change its accuracy. But a current figure only firms up likelihood; the rating would still ignore what one wrong warning could cost residents.",
-        "C": "Tempting because disclosure supports trust. But telling residents a model translated the warning does not change how harmful a wrong instruction could be."
+        "A": "Tempting because vendors handle the translations. But security certification says nothing about how often warnings are mistranslated.",
+        "B": "Tempting because a model update can change its accuracy. But a current figure measured on news articles still says little about flood warnings.",
+        "C": "Tempting because disclosure supports trust. But telling residents a model translated the warning does not show how often warnings are wrong."
       },
       "tips": [
-        "Eliminate: A treats the risk as a security question and C concerns disclosure; neither affects how severe a mistranslated warning could be.",
-        "Final two: D beats B because benchmark accuracy speaks to likelihood alone; tying it to the current model version still leaves the harm of one wrong warning unweighed.",
-        "Exam cue: an AI risk rated low on high accuracy is incomplete; fluent AI errors go unnoticed, so rate likelihood and impact on the people affected together."
+        "Eliminate: A treats the risk as a security question and C concerns disclosure; neither shows how often warnings are mistranslated.",
+        "Final two: D beats B because a current benchmark on news articles is still not evidence about warnings; the likelihood needs errors measured on this use.",
+        "Exam cue: a likelihood rating built on a vendor benchmark needs evidence from the actual use; measure errors on the organization's own texts and cases."
       ],
       "framework_ref": "NIST AI 100-1 MAP 5.1 (Likelihood and magnitude of impacts characterized); NIST AI 100-1 MANAGE 1.2 (Treatment prioritized by impact, likelihood and resources)",
       "related_concepts": [
-        "Likelihood and impact",
-        "Harm to people",
+        "Likelihood",
+        "Benchmarks",
         "Risk rating"
       ],
-      "_provenance": "Authored from concept: notes 1C.1 Identifying and Assessing AI Risk (AI risk is rated by likelihood and impact on people; a rare error can still be a high risk when its harm is severe). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 3, 31 Oct 2026. Round 3 review: stem states the rating rests on likelihood alone.",
+      "_provenance": "Authored from concept: notes 1C.1 Identifying and Assessing AI Risk (AI risk is rated by likelihood and impact on people; a rare error can still be a high risk when its harm is severe). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 3, 31 Oct 2026. Round 3 review: stem states the rating rests on likelihood alone. Cross-domain gate fix, 31 Oct 2026: likelihood evidence from a vendor benchmark on other text. Round 2 fix, 31 Oct 2026: key reworded to drop the stem echo.",
       "style_version": 2
     },
     {
       "id": "aaia_d1_065",
       "domain": 1,
-      "subtopic": "1C AI risk management. Indicators for refund holds",
+      "subtopic": "1C AI risk management. Model confidence as an indicator",
+      "principle_id": "ai-output-is-a-lead",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "A Tanzanian revenue authority's model holds suspected fraudulent VAT refunds; wrongful holds surface only after two-month reviews. Which key risk indicator (KRI) should the IS auditor recommend as BEST early warning of a tolerance breach?",
+      "question": "A Tanzanian revenue authority's model holds suspected fraudulent VAT refunds; its early-warning key risk indicator, the model's average confidence, stayed above 90% after new tax rules reshaped claims. What is the IS auditor's GREATEST concern?",
       "options": {
-        "A": "Monthly value of fraud losses that the model prevented",
-        "B": "Weekly uptime of the service that runs the fraud model",
-        "C": "Weekly drift in refund claims from the model's training data",
-        "D": "Number of refund holds that reviews overturned in each quarter"
+        "A": "An average can hide low-confidence holds that need review",
+        "B": "Confidence is a technical figure the board may not understand",
+        "C": "The model can stay confident while more of its holds are wrong",
+        "D": "Fraud losses prevented would show the model's value more clearly"
       },
       "correct": "C",
-      "key_concept": "A KRI must warn before tolerance breaks; when AI errors surface late, input drift from the training data can serve as a leading indicator.",
-      "pre_read": "Note how long it takes to learn a hold was wrong, then ask which measure moves earlier.",
-      "correct_explanation": "Wrongful holds are confirmed only after two-month reviews, so a KRI built on them warns after businesses have waited. Drift in refund claims away from the model's training data moves first, signaling that errors may be rising, so management can act before the tolerance breaks; overturned holds later confirm it. Option D, overturned holds, is the runner-up: it measures the right harm, but too late to warn.",
+      "key_concept": "A model's confidence scores are its own estimates and can stay high under drift, so they make a weak key risk indicator for its errors.",
+      "pre_read": "Ask who produces the indicator's number, and whether it could stay steady while errors rise.",
+      "correct_explanation": "A model's confidence is its own estimate, learned from its training data. After the new rules reshaped refund claims, it can keep scoring holds with high confidence while more of them are wrongful, so a steady figure cannot warn of a tolerance breach. Low-confidence holds hidden by the average, option A, is the runner-up: they matter for review, but each hold's confidence has the same blind spot.",
       "wrong_explanations": {
-        "A": "Tempting because it shows the model's value. But fraud prevented is a performance indicator; it can rise while wrongful holds climb.",
-        "B": "Tempting because uptime is easy to track. But availability says nothing about whether the model is holding the wrong refunds.",
-        "D": "Tempting because it counts wrongful holds directly. But reviews take two months, so the indicator reports a breach after businesses have already waited for their money."
+        "A": "Tempting because averages hide outliers. But each hold's own confidence is still the model judging itself; it can be high on holds that are wrong.",
+        "B": "Tempting because a KRI must be usable by decision makers. But plainer reporting would not make the figure warn of wrongful holds.",
+        "D": "Tempting because value matters to management. But fraud prevented is a performance measure; it can rise while wrongful holds climb."
       },
       "tips": [
-        "Eliminate: B tracks availability, which says nothing about wrong holds, and A is a key performance indicator (KPI) of value, not a risk indicator.",
-        "Final two: C beats D because drift warns before errors are confirmed; overturned holds measure the harm itself but arrive two months late.",
-        "Exam cue: when an AI's errors are confirmed late, pair lagging measures with a leading KRI, such as input drift, that warns before tolerance breaks."
+        "Eliminate: B is about how the figure is presented, not what it measures, and D swaps the risk indicator for a performance measure.",
+        "Final two: C beats A because confidence, averaged or not, is the model rating itself; after the new rules it can stay high while holds go wrong.",
+        "Exam cue: a model's confidence is not an independent risk signal; prefer indicators drawn from data or outcomes the model does not control."
       ],
       "framework_ref": "NIST AI 100-1 MEASURE 2.4 (Functionality and behavior monitored in production); NIST AI 100-1 MAP 1.5 (Organizational risk tolerances determined and documented)",
       "related_concepts": [
         "Key risk indicators",
-        "Leading indicators",
+        "Model confidence",
         "Drift"
       ],
-      "_provenance": "Authored from concept: notes 1C.2 Risk Appetite, Tolerance and AI Key Risk Indicators (KRIs show when risk is climbing toward tolerance; when AI errors surface late, a leading indicator must warn first). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 3, 31 Oct 2026.",
+      "_provenance": "Authored from concept: notes 1C.2 Risk Appetite, Tolerance and AI Key Risk Indicators (KRIs show when risk is climbing toward tolerance; when AI errors surface late, a leading indicator must warn first). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 3, 31 Oct 2026. Cross-domain gate fix, 31 Oct 2026: model confidence as a weak key risk indicator. Round 2 fix, 31 Oct 2026: key sharpened after a blind ambiguity flag. Round 3 fix, 31 Oct 2026: stem adds the tax rule change that shifted claims, so the deciding fact is drift the confidence figure cannot show.",
       "style_version": 2
     },
     {
@@ -2694,37 +2695,38 @@
     {
       "id": "aaia_d1_074",
       "domain": 1,
-      "subtopic": "1D Privacy and data governance. Retiring fine-tuned models",
+      "subtopic": "1D Privacy and data governance. Reusing fine-tuned models",
+      "principle_id": "ai-governance-before-tooling",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "A Lebanese bank retired a chatbot fine-tuned on customer chats and deleted the chat training set, but the fine-tuned model files remain on a shared research drive. What should the IS auditor recommend as BEST?",
+      "question": "A Lebanese bank's marketing team wants to build its campaign-writing model on a retired chatbot that was fine-tuned on customer service chats. What should the IS auditor recommend FIRST?",
       "options": {
-        "A": "Encrypt the shared research drive that stores the model files",
-        "B": "Confirm that the chat training set was securely deleted from every system",
-        "C": "Keep the model files for reuse in the bank's next chatbot",
-        "D": "Handle the model files under the same rules as the customer chats"
+        "A": "Encrypt the retired model's files before marketing copies them",
+        "B": "Confirm the chat training set was securely deleted from every system",
+        "C": "Test the retired model's writing on sample marketing campaigns",
+        "D": "Have the data owner decide whether the chats may serve marketing"
       },
       "correct": "D",
-      "key_concept": "A model fine-tuned on personal data may memorize it, so retiring the system means disposing of or restricting the model files, not only the data.",
-      "pre_read": "Ask what the model files contain after training, not just what was deleted.",
-      "correct_explanation": "A model fine-tuned on customer chats can memorize and reproduce them, so its files can hold the same personal data as the deleted training set. Leaving them on a shared drive undoes the deletion; they need the same disposal or access rules as the chats. Confirming the training set's deletion, option B, is the runner-up: it checks the source data, but the model files still carry what was learned from it.",
+      "key_concept": "A model can memorize its training data, so reusing a model trained on personal data for a new purpose needs a data owner's decision.",
+      "pre_read": "Ask what the retired model still carries from its training data, and what that data was collected for.",
+      "correct_explanation": "A model fine-tuned on customer chats can memorize and reproduce them, so building on it carries the chats into a new purpose, marketing. Whether that reuse is allowed is the data owner's decision, with privacy advice, and it applies to the model as much as to the chats. Confirming the chat set was deleted, option B, is the runner-up: deletion removes the source, not what the model learned from it.",
       "wrong_explanations": {
-        "A": "Tempting because encryption protects stored files. But staff with drive access could still load the model and draw out memorized chat details.",
-        "B": "Tempting because complete deletion of source data is a sound check. But the model files still carry what the model memorized from those chats.",
-        "C": "Tempting because reuse saves building costs. But reuse would carry memorized customer chats into a new system without a fresh basis."
+        "A": "Tempting because model files deserve protection. But encryption controls who can read the files, not whether the chats inside the model may serve marketing.",
+        "B": "Tempting because deleting source data is a sound retirement step. But the model still carries what it memorized, so the reuse question remains.",
+        "C": "Tempting because a new use needs a fitness check. But good campaign copy does not settle whether customers' chats may be reused for marketing."
       },
       "tips": [
-        "Eliminate: C would carry memorized chats into a new chatbot, and A protects the drive from outsiders but not from staff who can load and query the model.",
-        "Final two: D beats B because deleting the training set leaves what the model memorized; the model files need the same rules as the chats.",
-        "Exam cue: when an AI system is retired, dispose of trained models like the personal data they learned from, while keeping records needed to explain past decisions."
+        "Eliminate: A protects the files without settling whether the reuse is allowed, and C tests writing quality, not whether customers' chats may serve marketing.",
+        "Final two: D beats B because the model keeps what it memorized after the chats are deleted; reusing it for marketing needs the data owner's decision.",
+        "Exam cue: a model trained on personal data carries that data's purpose limits; reusing the model needs the same decision as reusing the data."
       ],
-      "framework_ref": "NIST AI 100-1 GOVERN 1.7 (Decommissioning AI systems safely); NIST AI 100-2e2025 Section 3.3.2 (Information Extraction)",
+      "framework_ref": "NIST SP 800-53 Rev. 5 PT-3 (Personally Identifiable Information Processing Purposes); NIST AI 100-2e2025 Section 3.3.2 (Information Extraction)",
       "related_concepts": [
         "Memorization",
-        "Decommissioning",
-        "Model disposal"
+        "Purpose limitation",
+        "Model reuse"
       ],
-      "_provenance": "Authored from concept: notes 1D.3 Retention, Deletion and Model Memorization (models can memorize training examples, so retired models and their files are disposed of like the personal data they learned from). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 3, 31 Oct 2026.",
+      "_provenance": "Authored from concept: notes 1D.3 Retention, Deletion and Model Memorization (models can memorize training examples, so retired models and their files are disposed of like the personal data they learned from). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 3, 31 Oct 2026. Cross-domain gate fix, 31 Oct 2026: reusing a model fine-tuned on personal data for a new purpose.",
       "style_version": 2
     },
     {

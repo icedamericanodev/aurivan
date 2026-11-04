@@ -2121,34 +2121,34 @@
       "principle_id": "test-the-ai-as-used",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "A Namibian mining company will use a vendor's hosted haul-truck maintenance model; the project lead says the vendor's lifecycle gates make the company's own gates unnecessary. What should the IS auditor recommend as BEST?",
+      "question": "A Namibian mining company's vendor-hosted ore-sorting model passed the vendor's lifecycle gates; the company set its own reject threshold and connected the model to its conveyor diverters. What should the IS auditor recommend as BEST?",
       "options": {
-        "A": "Accept the vendor's gates and file its release notes as evidence",
-        "B": "Have the IS auditor validate the model before the contract is signed",
-        "C": "Run the company's own gates, using vendor evidence as one input",
-        "D": "Obtain an independent certification of the vendor's development process"
+        "A": "Accept the vendor's gate results as covering the deployed system",
+        "B": "Have the IS auditor test the threshold before the system goes live",
+        "C": "Put the company's threshold and integration through its own gates",
+        "D": "Ask the vendor to rerun its gates using the company's reject threshold"
       },
       "correct": "C",
-      "key_concept": "A vendor's lifecycle does not replace the buyer's: the organization's gates test fitness for its own use, with vendor evidence as one input.",
-      "pre_read": "Ask whose purpose and data each set of gates was designed to test.",
-      "correct_explanation": "The vendor's gates test the model against the vendor's purposes and data, not this company's trucks, sites and tolerance for missed failures. The company stays accountable, so its own gates must check fitness for its use, drawing on vendor evidence where useful. A certification of the vendor's process is useful input, but it shows the process is followed, not that the model suits the company's fleet.",
+      "key_concept": "A vendor's gates cover the vendor's model; the buyer's threshold, integration and use form a deployed system that the buyer's own gates must test.",
+      "pre_read": "Ask which parts of the deployed system existed when the vendor's gates were run.",
+      "correct_explanation": "The vendor's gates tested its model against the vendor's criteria, before the company chose a reject threshold and wired the model to its diverters. Those choices decide how much ore is wrongly rejected or passed, so the deployed system has parts no gate has tested. Having the vendor rerun its gates with the threshold, option D, is the runner-up: it adds the threshold, but judges it by the vendor's criteria, not the company's.",
       "wrong_explanations": {
-        "A": "Tempting because the vendor knows its model. But release notes are vendor claims about the vendor's purposes; they do not test fitness for this company's use.",
-        "B": "Tempting because the IS auditor is independent. But validating the model is management's control; the IS auditor assesses whether the gates work.",
-        "D": "Tempting because certification adds independence. But it confirms the vendor follows its process, not that the model fits this company's trucks and sites."
+        "A": "Tempting because the vendor's gates were passed. But they ran before the company set its threshold and integration, which change what the system does.",
+        "B": "Tempting because the IS auditor is independent. But testing the threshold is management's control; the IS auditor assesses whether the gates work.",
+        "D": "Tempting because the vendor knows its model. But its gates judge against the vendor's criteria and cannot test the company's diverter integration."
       },
       "tips": [
-        "Eliminate: A treats vendor claims as assurance, and B makes the IS auditor perform validation that belongs to management.",
-        "Final two: C beats D because only the company's own gates test fitness for its use; a process certificate covers the vendor's process.",
-        "Exam cue: buying a model does not buy out the lifecycle; the organization's gates still apply, with vendor evidence as input."
+        "Eliminate: A treats gates passed before the company's own choices as covering them, and B makes the IS auditor perform testing that belongs to management.",
+        "Final two: C beats D because only the company's gates judge its threshold and integration against its own criteria; a vendor rerun keeps the vendor's criteria.",
+        "Exam cue: a bought model plus the buyer's own settings and integration is a new system; the buyer's gates must cover what the buyer added."
       ],
       "framework_ref": "NIST AI 100-1 GOVERN 6.1 (Policies address third-party AI risks including intellectual property); NIST SP 800-53 Rev. 5 SA-4 (Acquisition Process)",
       "related_concepts": [
         "Third-party AI",
         "Stage gates",
-        "Vendor evidence"
+        "Deployed configuration"
       ],
-      "_provenance": "Authored from concept: notes 2B.1 The AI Lifecycle and Stage Gates (a vendor's lifecycle does not replace the buyer's gates). Review round 1, 31 Oct 2026: role named in WE B. Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 3, 31 Oct 2026.",
+      "_provenance": "Authored from concept: notes 2B.1 The AI Lifecycle and Stage Gates (a vendor's lifecycle does not replace the buyer's gates). Review round 1, 31 Oct 2026: role named in WE B. Cross-domain gate fix, 31 Oct 2026: the buyer's threshold and integration need the buyer's own gates; ore-sorting setting replaces a third vendor maintenance model. Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 3, 31 Oct 2026.",
       "style_version": 2
     },
     {
@@ -2194,25 +2194,25 @@
       "principle_id": "ai-changes-are-changes",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "A Mozambican cashew processor has retrained its kernel-grading model eight times, but the model card describes the launch version; the team says updating it would slow sprints. What should the IS auditor recommend as BEST?",
+      "question": "A Mozambican bank has retrained its ATM cash-demand model eight times, but the model card describes the launch version; the team says updating it would slow sprints. What should the IS auditor recommend as BEST?",
       "options": {
         "A": "Make an updated model card a condition of each release",
         "B": "Fully rewrite the model card at each annual model review",
-        "C": "Keep the launch card, since the model's code has not changed",
+        "C": "Record each retraining in a change ticket linked to the model card",
         "D": "Have the IS auditor maintain the model card between releases"
       },
       "correct": "A",
-      "key_concept": "Every retrained version needs current documentation; tying the model card to each release keeps it accurate without slowing delivery.",
+      "key_concept": "Every retrained version needs current documentation; making an updated model card part of each release keeps it in step with the model in use.",
       "pre_read": "Ask which version the documentation describes, and which version is running.",
-      "correct_explanation": "Each retraining produces a new model whose performance, data and limits may differ, so a card describing the launch version misleads graders, validators and auditors about the model in use. Making an updated card part of each release keeps documentation in step with the model at little cost. An annual rewrite is better than nothing, but for most of the year people would rely on a card that describes an older model.",
+      "correct_explanation": "Each retraining produces a new model whose data, performance and limits may differ, so a card describing the launch version misleads users, validators and auditors about the model in use. Making an updated card part of each release keeps documentation in step. A linked change ticket records that the model changed, but the card would still describe the launch version.",
       "wrong_explanations": {
         "B": "Tempting because it is less work for the team. But between reviews, users rely on a card describing an older model that may behave differently.",
-        "C": "Tempting because the code is stable. But a retrained model is a new model; its data, results and limits change even when the code does not.",
+        "C": "Tempting because a linked ticket records each retraining next to the card. But the card itself would still describe the launch version's data, performance and limits.",
         "D": "Tempting because the IS auditor values documentation. But maintaining it is the team's job; the IS auditor assesses documentation and does not write it."
       },
       "tips": [
-        "Eliminate: C treats the model as code alone, and D gives the IS auditor a documentation task the model team owns.",
-        "Final two: A beats B because every retraining is a new model; documentation tied to each release stays accurate, while an annual rewrite lags.",
+        "Eliminate: B leaves the card describing an older model for most of the year, and D gives the IS auditor a documentation task the model team owns.",
+        "Final two: A beats C because a linked change ticket records that the model changed, while the card still describes the launch version; only an updated card tells users what is running.",
         "Exam cue: agile does not mean undocumented; expect documentation updates built into each model release."
       ],
       "framework_ref": "NIST AI 100-1 MEASURE 2.9 (Model explained, validated and documented, output interpreted in context); NIST AI 100-1 MANAGE 4.2 (Continual improvement integrated into AI system updates)",
@@ -2221,7 +2221,7 @@
         "Retraining",
         "Release management"
       ],
-      "_provenance": "Authored from concept: notes 2B.2 Model Documentation and Build, Buy or Tune (documentation is updated with every retrained version). Review round 1, 31 Oct 2026: neutral label; role named in WE D. Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 3, 31 Oct 2026.",
+      "_provenance": "Authored from concept: notes 2B.2 Model Documentation and Build, Buy or Tune (documentation is updated with every retrained version). Review round 1, 31 Oct 2026: neutral label; role named in WE D. Cross-domain gate fix, 31 Oct 2026: setting changed to an ATM cash-demand model to avoid a third produce-grading model. Batch 3 fix round 2, 31 Oct 2026: C now a change-ticket option (change record is not model documentation) after a blind test found the item answerable from general documentation sense. Batch 3 fix round 3, 31 Oct 2026: C reworded to a ticket linked to the card so it no longer names its own flaw; explanation and key concept no longer claim facts the stem does not give. Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 3, 31 Oct 2026.",
       "style_version": 2
     },
     {
@@ -2342,34 +2342,34 @@
       "principle_id": "accuracy-is-not-assurance",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "A Honduran rental agency's change advisory board approved a retrained tenant-screening model because its overall accuracy rose two points; no other results were presented. What is the IS auditor's GREATEST concern?",
+      "question": "A Honduran rental agency's model owner approved a retrained tenant-screening model citing only a two-point overall accuracy gain, though it changes the decision for 9% of applicants. What is the IS auditor's GREATEST concern?",
       "options": {
-        "A": "Higher accuracy may hide worse errors for some groups of applicants",
+        "A": "No one reviewed the changed outcomes for errors and group patterns",
         "B": "A two-point gain is too small to justify a new release",
         "C": "Accuracy may decline later as applicants' circumstances change",
-        "D": "The approvers did not compare the model with a vendor benchmark"
+        "D": "The owner did not compare the new model with a vendor's benchmark"
       },
       "correct": "A",
-      "key_concept": "Approving an AI change on overall accuracy alone can hide worse errors for some groups; approval evidence needs error types and group results.",
-      "pre_read": "Ask what the single number averages over, and who could be worse off inside it.",
-      "correct_explanation": "Overall accuracy averages across everyone and every type of error, so a two-point gain can coexist with more wrongful rejections for women, self-employed or older applicants. Approving on that number alone means nobody checked the errors that matter or results by group. Later decline as circumstances change is a real risk, but it is a monitoring question; the approval itself rests on evidence that cannot show the model is fit.",
+      "key_concept": "A retrained model's net accuracy gain can hide many changed decisions; approval evidence reviews those changes for errors and group patterns.",
+      "pre_read": "Ask what a net gain of two points could hide among the 9% of decisions that changed.",
+      "correct_explanation": "A two-point net gain can hide large movement underneath: the new version may now wrongly reject some applicants the old one approved, offset by others it gets right, and those newly rejected may share a group or circumstance. Approval needs a review of the changed cases showing whether each change is right and whether errors cluster in a group. Later decline as circumstances change is a monitoring question, not approval evidence.",
       "wrong_explanations": {
-        "B": "Tempting because small gains may not be worth the risk. But size is not the issue; even a large gain in overall accuracy could hide group harm.",
+        "B": "Tempting because small gains may not be worth the risk. But size is not the issue; even a large net gain could hide many applicants newly and wrongly rejected.",
         "C": "Tempting because models drift. But that is for production monitoring; the concern now is that the approval evidence cannot show the model is fit.",
-        "D": "Tempting because benchmarks add context. But a vendor benchmark is another overall score; it does not show errors by group or type."
+        "D": "Tempting because benchmarks add context. But a vendor benchmark is another overall score; it does not show whether the changed outcomes are right."
       },
       "tips": [
-        "Eliminate: B debates the size of a gain in a metric that cannot show fitness, and D swaps one overall score for another.",
-        "Final two: A beats C because the approval itself rests on an average that can hide group harm; later drift is a monitoring concern.",
-        "Exam cue: a change approved on overall accuracy alone is weakly evidenced; expect error types and group results before approval."
+        "Eliminate: B debates the size of a net gain, and D swaps one overall score for another; neither checks whether the changed outcomes are right.",
+        "Final two: A beats C because the approval itself rests on a net figure that hides 9% changed decisions; later drift is a monitoring concern.",
+        "Exam cue: before a retrained model replaces the current one, expect a review of the cases whose outcomes change, not just a net accuracy gain."
       ],
       "framework_ref": "NIST SP 800-53 Rev. 5 CM-4 (Impact Analyses); NIST AI 100-1 MEASURE 2.11 (Fairness and bias evaluated and documented)",
       "related_concepts": [
         "Change approval",
-        "Fairness",
+        "Version comparison",
         "Error analysis"
       ],
-      "_provenance": "Authored from concept: notes 2C.1 What Counts as an AI Change (an AI change approved on overall accuracy alone is weakly evidenced). Review round 1, 31 Oct 2026: setting moved from a microlender's loan model (notes D1 example); 'change advisory board'; D no longer says 'the board'. Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 3, 31 Oct 2026.",
+      "_provenance": "Authored from concept: notes 2C.1 What Counts as an AI Change (an AI change approved on overall accuracy alone is weakly evidenced). Review round 1, 31 Oct 2026: setting moved from a microlender's loan model (notes D1 example); 'change advisory board'; D no longer says 'the board'. Cross-domain gate fix, 31 Oct 2026: case-by-case comparison of changed decisions before approving a retrained model; approver changed to the model owner. Batch 3 fix round 2, 31 Oct 2026: key reworded to reviewing the changed outcomes (the 9% figure shows they were already identified); stem echo 'decision' removed from the key. Batch 3 fix round 3, 31 Oct 2026: stem says accuracy was the only evidence cited, so the key follows from the stem. Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 3, 31 Oct 2026.",
       "style_version": 2
     },
     {
@@ -2416,7 +2416,7 @@
       "principle_id": "test-the-ai-as-used",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "A Pakistani surgical-instrument maker's polish-defect model has a documented rollback to version 7, but its feature pipeline no longer produces two inputs that version 7 needs. What should the IS auditor recommend as BEST?",
+      "question": "A Pakistani environment agency's smog-alert model has a documented rollback to version 7, but its feature pipeline no longer produces two inputs that version 7 needs. What should the IS auditor recommend as BEST?",
       "options": {
         "A": "Keep version 7's documentation ready for use in a rollback",
         "B": "Rehearse the version 7 rollback now and fix what fails",
@@ -2426,10 +2426,10 @@
       "correct": "B",
       "key_concept": "A rollback counts only once rehearsed on the current pipeline; the older version must still run with the features and settings it needs.",
       "pre_read": "Ask whether the older version could actually run today, not just whether a rollback is written down.",
-      "correct_explanation": "A rollback restores a previous model with the inputs and settings it depends on, and version 7 cannot run on today's pipeline. Rehearsing the rollback now forces the two missing inputs to be restored and shows whether anything else fails, so the rollback is proven before an incident. Rebuilding the inputs only when a rollback is needed puts untested engineering on the critical path while defective instruments may be passing inspection.",
+      "correct_explanation": "A rollback restores a previous model with the inputs and settings it depends on, and version 7 cannot run on today's pipeline. Rehearsing the rollback now forces the two missing inputs to be restored and shows whether anything else fails, so the rollback is proven before an incident. Rebuilding the inputs only when a rollback is needed puts untested engineering on the critical path while residents may miss smog alerts.",
       "wrong_explanations": {
         "A": "Tempting because documented rollbacks look ready. But documentation does not make version 7 runnable without the inputs it needs.",
-        "C": "Tempting because the inputs can be rebuilt. But doing it under incident pressure is slow and untested, while defective instruments may pass inspection.",
+        "C": "Tempting because the inputs can be rebuilt. But doing it under incident pressure is slow and untested, while smog alerts may be missed.",
         "D": "Tempting because retraining fixes behavior. But a rushed retrain is an untested change; rollback exists to restore a known approved state."
       },
       "tips": [
@@ -2443,7 +2443,7 @@
         "Feature versioning",
         "Model registry"
       ],
-      "_provenance": "Authored from concept: notes 2C.2 Model Versioning, Configuration Baselines and Rollback (rollback restores a model with the features and settings it needs, tested in advance). Review round 1, 31 Oct 2026: key now tests rehearsal, the angle aaia_d2_031 does not cover; 'when trouble strikes' removed. Review round 2, 31 Oct 2026: principle retagged to test-the-ai-as-used (key and runner-up differ on rehearsal, not on change approval). Review round 3, 31 Oct 2026: explanation and tip 2 now say rehearsal restores the known missing inputs and proves the rollback; 'misgraded' replaced. Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 3, 31 Oct 2026.",
+      "_provenance": "Authored from concept: notes 2C.2 Model Versioning, Configuration Baselines and Rollback (rollback restores a model with the features and settings it needs, tested in advance). Review round 1, 31 Oct 2026: key now tests rehearsal, the angle aaia_d2_031 does not cover; 'when trouble strikes' removed. Review round 2, 31 Oct 2026: principle retagged to test-the-ai-as-used (key and runner-up differ on rehearsal, not on change approval). Review round 3, 31 Oct 2026: explanation and tip 2 now say rehearsal restores the known missing inputs and proves the rollback; 'misgraded' replaced. Cross-domain gate fix, 31 Oct 2026: setting changed to a smog-alert model to avoid repeating manufacturing defect models in 2C.2. Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 3, 31 Oct 2026.",
       "style_version": 2
     },
     {
@@ -2638,34 +2638,34 @@
       "principle_id": "population-includes-misses",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "An Iraqi freight platform's carrier-vetting model rejects 30% of trucking firms' applications; its monitoring tracks cargo theft only among carriers it approved. What is the IS auditor's GREATEST concern?",
+      "question": "An Iraqi freight platform's carrier-vetting model rejects 30% of trucking firms' applications; its monitoring tracks cargo theft only among carriers it approved. What should the IS auditor recommend as BEST?",
       "options": {
-        "A": "Theft by approved carriers may take many months to come to light",
-        "B": "Shippers may report theft by approved carriers inconsistently",
-        "C": "Wrongful rejections never appear in the data being monitored",
-        "D": "A 30% rejection rate is too high for a vetting model"
+        "A": "Have shippers report theft by approved carriers within a week",
+        "B": "Lower the model's threshold so it rejects fewer trucking firms",
+        "C": "Have experts review a sample of the rejected firms",
+        "D": "Compare the 30% rejection rate with other freight platforms' rates"
       },
       "correct": "C",
       "key_concept": "Monitoring that observes outcomes only for approved cases cannot see wrongful rejections; the screened-out population needs its own checks.",
       "pre_read": "Ask whose outcomes the monitoring can ever observe, and whose it never can.",
-      "correct_explanation": "The model's outcomes are observed only for carriers it let through, so the rejected 30% are invisible: an honest firm wrongly turned away never produces a record showing the model was wrong. Monitoring can look healthy while wrongful rejections, possibly concentrated in some regions or groups, go unseen. Slow theft reports delay the signal, but it still arrives for approved carriers; for rejected applicants it never arrives.",
+      "correct_explanation": "The model's outcomes are observed only for carriers it let through, so an honest firm wrongly turned away never produces a record showing the model was wrong, and monitoring can look healthy while wrongful rejections go unseen. Having experts review a sample of the rejected firms gives the screened-out population its own check. Faster theft reports, option A, are the runner-up: they speed the signal, but only for approved carriers.",
       "wrong_explanations": {
-        "A": "Tempting because lagging outcomes slow monitoring. But the signal does arrive for approved carriers; for rejected applicants it never arrives.",
-        "B": "Tempting because reports can be uneven. But the stem gives no sign of it, and better reports would still say nothing about rejected applicants.",
-        "D": "Tempting because the rate looks high. But a high rejection rate may suit the risk; the concern is that rejection errors are never measured."
+        "A": "Tempting because lagging outcomes slow monitoring. But faster reports still cover approved carriers only; rejected applicants never produce an outcome to report.",
+        "B": "Tempting because fewer rejections sound fairer. But nothing yet shows the rejections are wrong; changing the threshold before checking them is guesswork.",
+        "D": "Tempting because peer rates give context. But another platform's rejection rate says nothing about whether these rejections were wrong."
       },
       "tips": [
-        "Eliminate: B rests on reporting problems the stem never mentions, and D judges the rejection rate without any basis.",
-        "Final two: C beats A because slow theft reports still arrive for approved carriers; for rejected applicants no outcome is ever observed.",
-        "Exam cue: if outcomes are seen only for cases the model approved, monitoring cannot see its wrongful rejections; look for ways to test them."
+        "Eliminate: B changes the threshold before anyone knows the rejections are wrong, and D compares rates that cannot show whether any rejection was wrong.",
+        "Final two: C beats A because faster theft reports still cover approved carriers only; rejected applicants need their own check.",
+        "Exam cue: when outcomes are seen only for cases a model approves, look for a separate check on the cases it screens out."
       ],
       "framework_ref": "NIST AI 100-1 MEASURE 2.4 (Functionality and behavior monitored in production); NIST AI 100-1 MEASURE 2.11 (Fairness and bias evaluated and documented)",
       "related_concepts": [
         "Selection bias",
         "Outcome monitoring",
-        "False negatives"
+        "Rejected-case review"
       ],
-      "_provenance": "Authored from concept: notes 2D.2 Monitoring Drift, Performance and Impacts (monitoring that sees outcomes only for approved cases misses wrongful rejections). Review round 1, 31 Oct 2026: setting moved from a marketplace's seller vetting (aaia_d3_007); neutral label. Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 3, 31 Oct 2026.",
+      "_provenance": "Authored from concept: notes 2D.2 Monitoring Drift, Performance and Impacts (monitoring that sees outcomes only for approved cases misses wrongful rejections). Review round 1, 31 Oct 2026: setting moved from a marketplace's seller vetting (aaia_d3_007); neutral label. Cross-domain gate fix, 31 Oct 2026: recommendation: a separate check on screened-out cases, distinct from aaia_d3_031. Batch 3 fix round 2, 31 Oct 2026: key no longer echoes the stem's 'applications'. Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 3, 31 Oct 2026.",
       "style_version": 2
     },
     {
@@ -2936,23 +2936,23 @@
       "bloom_level": "Application",
       "question": "An Armenian robo-advice firm's investment assistant was red-teamed only by security engineers, who tested data theft and system-prompt leaks. What should the IS auditor recommend as BEST before launch?",
       "options": {
-        "A": "Repeat the same security red team after each model update",
+        "A": "Have the security engineers add jailbreak attempts to their tests",
         "B": "Rely on the vendor's filter to block harmful replies to customers",
         "C": "Have the IS auditor red-team the assistant before it launches",
-        "D": "Add unsuitable-advice scenarios, judged by investment specialists"
+        "D": "Add unsuitable-product scenarios, judged by financial planners"
       },
       "correct": "D",
       "key_concept": "Red teaming covers harmful outputs to the system's own users, judged by domain specialists, not only data theft by attackers.",
       "pre_read": "Ask how the assistant could hurt the customers who use it exactly as intended.",
-      "correct_explanation": "Security engineers test whether attackers can steal data, but for an investment assistant a likely harm is advice that is wrong or unsuitable for the customer, such as pushing risky products on a retiree. Red teaming should include those harmful-output scenarios, judged by specialists who know what suitable advice looks like. Repeating the security-only red team after updates keeps it current but still never tests the harm customers are most exposed to.",
+      "correct_explanation": "Security engineers test whether attackers can steal data, but for an investment assistant a likely harm is advice that is wrong or unsuitable for the customer, such as pushing risky products on a retiree. Red teaming should include those harmful-output scenarios, judged by specialists who know what suitable advice looks like. Adding jailbreak attempts widens the security tests, but engineers would still not judge whether fluent advice suits the customer.",
       "wrong_explanations": {
-        "A": "Tempting because retesting after change is good practice. But it repeats tests that never covered harmful advice, so the main customer harm stays untested.",
+        "A": "Tempting because jailbreaks can unlock harmful replies. But security engineers would still judge attacks, not whether polite, fluent advice suits the customer.",
         "B": "Tempting because filters block harmful text. But a filter tuned for offensive content will not spot advice that is polite, fluent and unsuitable.",
         "C": "Tempting because the IS auditor is independent. But red teaming is a test the owner commissions; the IS auditor assesses its scope and results."
       },
       "tips": [
         "Eliminate: B trusts a content filter to judge suitability, and C makes the IS auditor perform testing that the owner commissions.",
-        "Final two: D beats A because the untested harm is unsuitable advice to customers; repeating security-only tests keeps that gap open.",
+        "Final two: D beats A because more attack types still leave unsuitable advice unjudged; financial planners must judge what customers are told.",
         "Exam cue: red teaming covers how a system can harm its own users, judged by people who know the domain, not only attacks by outsiders."
       ],
       "framework_ref": "NIST AI 100-1 MEASURE 2.6 (Evaluated regularly for safety risks, fails safely); NIST AI 100-1 MEASURE 4.1 (Measurement connected to deployment context with domain experts)",
@@ -2961,7 +2961,7 @@
         "Harmful output",
         "Domain experts"
       ],
-      "_provenance": "Authored from concept: notes 2E.3 Independent Validation, Robustness and Red Teaming (red teaming covers harm to the system's own users, not only attacks). Review round 1, 31 Oct 2026: setting moved from a digital bank (aaia_d1_034); role named in WE C. Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 3, 31 Oct 2026.",
+      "_provenance": "Authored from concept: notes 2E.3 Independent Validation, Robustness and Red Teaming (red teaming covers harm to the system's own users, not only attacks). Review round 1, 31 Oct 2026: setting moved from a digital bank (aaia_d1_034); role named in WE C. Cross-domain gate fix, 31 Oct 2026: runner-up now a jailbreak extension, no longer sharing aaia_d2_041's repeat-the-tests distractor. Batch 3 fix round 2, 31 Oct 2026: key no longer echoes the stem's 'advice' and 'investment'. Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 3, 31 Oct 2026.",
       "style_version": 2
     },
     {
@@ -3159,21 +3159,21 @@
       "options": {
         "A": "Tell the agent in its prompt to ask staff before unlocking doors",
         "B": "Grant task-scoped rights and require approval for high-impact actions",
-        "C": "Review a monthly log of the agent's door, contract and repair activity",
+        "C": "Remove the agent's door-unlocking right as its highest-risk permission",
         "D": "Limit who can send requests to the agent to facility managers"
       },
       "correct": "B",
       "key_concept": "AI agents get task-scoped rights and system-enforced approval for high-impact actions; usefulness does not justify broad standing permissions.",
       "pre_read": "List what the agent's account could do right now if something steered it wrongly.",
-      "correct_explanation": "Rights the agent always holds mean anything that steers it, such as an instruction hidden in a supplier email or a plain mistake, can unlock members' doors, order repairs or rewrite contracts at once. Scoping rights to each task and requiring a person's approval, enforced by the systems, for high-impact actions bounds the damage. A monthly log review shows what happened, but only after a door has opened.",
+      "correct_explanation": "Rights the agent always holds mean anything that steers it, such as an instruction hidden in a supplier email or a plain mistake, can unlock members' doors, order repairs or rewrite contracts at once. Scoping rights to each task and requiring a person's approval, enforced by the systems, for high-impact actions bounds the damage. Removing the door right first looks risk-based but leaves repairs and contracts open to the same steering.",
       "wrong_explanations": {
         "A": "Tempting because it states the rule clearly. But prompt instructions can be overridden by injected text or errors; permissions hold where instructions do not.",
-        "C": "Tempting because logs show what the agent did. But review weeks later cannot undo an opened door or a changed contract.",
+        "C": "Tempting because removing the riskiest right first looks risk-based. But the agent could still order repairs and edit contracts on injected or mistaken instructions.",
         "D": "Tempting because it narrows access. But the agent also acts on supplier emails, so injected text can still steer it; the agent's own rights are what need bounding."
       },
       "tips": [
         "Eliminate: A relies on a prompt instruction that injected text can override, and D limits who can message the agent while injected emails still reach it.",
-        "Final two: B beats C because scoped rights and approvals prevent high-impact actions; monthly log review only finds them afterward.",
+        "Final two: B beats C because removing one right leaves repairs and contracts open; every right needs scoping, with approval for high-impact actions.",
         "Exam cue: 'more useful' is no reason for standing rights; judge an agent by what its account can do, not what it is told."
       ],
       "framework_ref": "OWASP Top 10 for LLM Applications 2025 LLM06 (Excessive Agency); NIST SP 800-53 Rev. 5 AC-6 (Least Privilege)",
@@ -3182,7 +3182,7 @@
         "Least privilege",
         "Human approval"
       ],
-      "_provenance": "Authored from concept: notes 2F.3 Excessive Agency and Access Management for AI (usefulness does not justify an agent's broad standing permissions). Review round 1, 31 Oct 2026: prompt-rule distractor now restrictive. Review round 2, 31 Oct 2026: blind-tested as answerable from general least-privilege sense; stem adds supplier emails (indirect prompt injection); vendor-certificate option replaced by limiting who can message the agent, a least-privilege move that misses injected content. Review round 3, 31 Oct 2026: invoices replaced by repairs (no overlap with aaia_d2_046; stem no longer echoes the key's 'rights' and 'approve'); C now longer than the key. Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 3, 31 Oct 2026.",
+      "_provenance": "Authored from concept: notes 2F.3 Excessive Agency and Access Management for AI (usefulness does not justify an agent's broad standing permissions). Review round 1, 31 Oct 2026: prompt-rule distractor now restrictive. Review round 2, 31 Oct 2026: blind-tested as answerable from general least-privilege sense; stem adds supplier emails (indirect prompt injection); vendor-certificate option replaced by limiting who can message the agent, a least-privilege move that misses injected content. Review round 3, 31 Oct 2026: invoices replaced by repairs (no overlap with aaia_d2_046; stem no longer echoes the key's 'rights' and 'approve'); C now longer than the key. Cross-domain gate fix, 31 Oct 2026: runner-up now removing one right only, replacing a third monthly-log-review runner-up in 2F.3. Batch 3 fix round 2, 31 Oct 2026: runner-up reframed as removing the highest-risk right first, so it no longer names its own flaw. Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 3, 31 Oct 2026.",
       "style_version": 2
     },
     {
@@ -3315,12 +3315,12 @@
       "pre_read": "Ask who was affected before the rollback, and how the auction would find them.",
       "correct_explanation": "Rolling back stopped new wrong grades, but bales graded during those two days still carry wrong grades, and growers may already have been paid on them. The decision logs show which bales the faulty version graded, so they can be regraded and growers' payments corrected. Root cause analysis must follow, but it fixes the model for the future; it does nothing for growers already harmed by wrong grades.",
       "wrong_explanations": {
-        "A": "Tempting because ordinary incidents can close once service is confirmed. But growers already paid on wrong grades are unremedied; finding and correcting them comes before closure.",
+        "A": "Tempting because an ordinary incident closes once service is confirmed. But service is not fully restored while grades from the faulty days still set growers' pay.",
         "C": "Tempting because it uses corrected data. But it is an untested change made before the cause is known, and it does not fix grades already issued.",
         "D": "Tempting because root cause prevents recurrence. But it serves future sales; growers already harmed need their grades corrected first."
       },
       "tips": [
-        "Eliminate: A treats rollback as the end of the incident, and C makes an untested change before the cause is known.",
+        "Eliminate: A treats normal new grades as full recovery, though wrong grades from the faulty days still set pay, and C makes an untested change before the cause is known.",
         "Final two: B beats D because bales already carry wrong grades that growers are paid on; finding and remedying them comes before diagnosing the model.",
         "Exam cue: after containment, use decision logs to identify the people affected and remedy their harm."
       ],
@@ -3330,7 +3330,7 @@
         "Affected people",
         "Decision logs"
       ],
-      "_provenance": "Authored from concept: notes 2G.2 Containment: Disengage, Roll Back and Preserve Evidence (after containment, decision logs identify the people affected so harm can be remedied). Review round 1, 31 Oct 2026: setting moved from exam marking (notes 2G.3 example); harm to growers explicit in the stem; WE A squares the close-once-service-confirmed rule. Review round 2, 31 Oct 2026: blind ambiguity with root cause resolved: stem states the payments stand uncorrected and asks FIRST; WE A no longer argues service is unrestored. Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 3, 31 Oct 2026.",
+      "_provenance": "Authored from concept: notes 2G.2 Containment: Disengage, Roll Back and Preserve Evidence (after containment, decision logs identify the people affected so harm can be remedied). Review round 1, 31 Oct 2026: setting moved from exam marking (notes 2G.3 example); harm to growers explicit in the stem; WE A squares the close-once-service-confirmed rule. Review round 2, 31 Oct 2026: blind ambiguity with root cause resolved: stem states the payments stand uncorrected and asks FIRST; WE A no longer argues service is unrestored. Cross-domain gate fix, 31 Oct 2026: closure wording aligned with the binding incident-closure rule. Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 3, 31 Oct 2026.",
       "style_version": 2
     },
     {

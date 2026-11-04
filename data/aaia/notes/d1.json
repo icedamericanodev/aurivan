@@ -129,10 +129,10 @@
           "how_it_works": [
             "Training data supplies examples, features are inputs and labels the answers; a feature recorded after the outcome leaks the answer, inflating validation.",
             "Models trained without labels only group similar records; any name given to a group is a hypothesis to test.",
-            "The objective tells the model what to optimize; a poorly chosen objective yields a model that is accurate at the wrong thing.",
-            "Models generalize from past data, so they weaken when real conditions drift away from the training data.",
-            "With rare events, a model that always predicts the common outcome still scores high accuracy while missing every case that matters.",
-            "Errors carry different costs, such as a missed defect versus a wrongly rejected batch, so the business must say which matters more."
+            "The objective tells the model what to optimize; a poor objective yields a model accurate at the wrong thing.",
+            "Models learn any pattern in the data, even a shortcut such as how one class was collected, and weaken when live data drifts or differs.",
+            "With rare events, always predicting the common outcome still scores high accuracy while missing every case that matters.",
+            "Errors carry different costs, such as a missed defect versus a rejected good batch; the business says which matters more."
           ],
           "example": "A Brazilian seed producer's model ranks seed lots for sale by predicted germination, trained only on lab results. Data scientist Ana reports strong validation scores. Auditor Kofi finds that customer refunds come from lots that fail in hot, dry fields, conditions the lab data never covered. Kofi reports that the objective and data do not match the business purpose and recommends field-based acceptance criteria.",
           "audit_focus": {
@@ -526,7 +526,7 @@
             "Appetite is usually proposed by management and approved by the board; senior management then sets tolerances within it for each high-impact use.",
             "Tolerances are measurable, such as a maximum rate of wrongful denials or a minimum share of outputs reviewed by people.",
             "Key performance indicators (KPIs) show whether AI delivers value; KRIs show whether risk is climbing toward tolerance.",
-            "Each KRI needs a reliable source, warning levels and a route that takes breaches to the committee and the board.",
+            "Each KRI needs a reliable source other than the model's own confidence, warning levels and an escalation route to the committee and board.",
             "A breach is escalated to senior management, which decides the response with the owner; quiet model tuning is not a response."
           ],
           "example": "A Ghanaian microfinance lender's senior management caps loan applications its AI credit model wrongly declines at 2%, within the board's appetite. Auditor Kwame finds the indicator breached that limit twice last quarter, and each time the data team quietly retuned the model without telling the owner. Kwame reports that breaches never reached the owner or senior management, and recommends a documented escalation route.",
