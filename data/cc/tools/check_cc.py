@@ -14,7 +14,10 @@ Runs the gates every CC batch must pass before review, in one place:
     reverse "pick the shortest" rate (12-30%), the stored key order (repeat
     rate at lags 1-4 within 15-35% and no run over 3, so letters were not
     rotated by hand; data/cc/tools/key_sequence.py makes one), and the key at most 8
-    characters longer than the longest distractor; --new N shows both rates
+    characters longer than the longest distractor, and opener tells (an
+    option's first word, such as "Refer" or "Agree", winning far more or
+    less often than chance across the whole bank, checked when all five
+    domains run); --new N shows both rates
     for one batch alone
   - coverage: notes sub-topics with no question
   - lens: CC notes' rule and "In practice" fields never speak as an auditor
@@ -47,6 +50,48 @@ BLOOM = {"foundational": "Foundational", "application": "Application", "analysis
 MIN_RATE, MAX_RATE = 0.15, 0.24
 SHORT_MIN, SHORT_MAX = 0.12, 0.30  # "pick the shortest" must not become the reverse tell
 LAG_MIN, LAG_MAX, MAX_RUN = 0.15, 0.35, 3  # stored key order must look random (chance is 25%)
+OPENER_MIN_ITEMS, OPENER_P = 5, 0.01  # an option's first word must not predict the key
+OPENER_SAME = {"agreed": "agree", "disagreed": "disagree"}
+
+
+def opener(text):
+    m = re.match(r"[A-Za-z']+", text)
+    w = m.group(0).lower() if m else ""
+    return OPENER_SAME.get(w, w)
+
+
+def _tail(n, k, p, upper):
+    """Chance of k or more (upper) or k or fewer (lower) wins in n tries."""
+    from math import comb
+    ks = range(k, n + 1) if upper else range(0, k + 1)
+    return sum(comb(n, i) * p ** i * (1 - p) ** (n - i) for i in ks)
+
+
+def opener_tells(qs):
+    """First words whose options win far more or less often than chance.
+
+    Chance for an opener is the share of options that carry it in the items
+    where it appears. Measured over the whole bank, because a learner studies
+    every domain; flagged when the result would happen by chance under 1%.
+    A test-wise learner can learn "pick the Refer option" or "never pick Agree"."""
+    used, won, chance = Counter(), Counter(), Counter()
+    for q in qs:
+        words = [opener(t) for t in q["options"].values()]
+        for w in set(words):
+            used[w] += 1
+            chance[w] += words.count(w) / 4
+            if opener(q["options"][q["correct"]]) == w:
+                won[w] += 1
+    out = []
+    for w, n in used.items():
+        if n < OPENER_MIN_ITEMS:
+            continue
+        p = chance[w] / n
+        k = won[w]
+        tail = _tail(n, k, p, upper=k > n * p)
+        if tail < OPENER_P:
+            out.append((w, n, k, p))
+    return sorted(out)
 
 
 def key_order(keys):
@@ -252,6 +297,12 @@ def main(argv):
             print(f"   key longest: {', '.join(tops)}")
         if show_cov and uncovered:
             print(f"   uncovered: {', '.join(uncovered)}")
+    if doms == [1, 2, 3, 4, 5]:
+        bank = [q for d in doms for q in json.loads((CC / "originals" / f"d{d}.json").read_text(encoding="utf-8"))["questions"]]
+        for w, n, k, exp in opener_tells(bank):
+            print(f"ERROR bank: options starting '{w}' win {k} of {n} items (chance about {exp:.0%}); "
+                  "reword some openers so the first word does not predict the key")
+            errors += 1
     if "--similarity" in argv:
         similarity()
     sys.exit(1 if errors else 0)
