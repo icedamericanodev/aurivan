@@ -1,6 +1,6 @@
 # CRISC course plan: from the pilot to a sellable pack
 
-**Status:** plan, 30 Oct 2026. CRISC is a **paid course** learners buy in the
+**Status:** plan, 30 Oct 2026; round 3 done 4 Nov 2026 (bank 285). CRISC is a **paid course** learners buy in the
 app (6-month access, one payment, never renews; see
 `docs/business/monetization/RECOMMENDATION.md`). Outline and sources:
 `docs/content/CRISC_BLUEPRINT.md`. Item standard:
@@ -20,7 +20,7 @@ it can be sold:
 |---|---|---|---|
 | Blueprint | `docs/content/CRISC_BLUEPRINT.md` | cert-blueprint-researcher | Done, 30 Oct 2026 |
 | Study notes | `data/crisc/notes/d{1..4}.json` + `_course.json` (strategy tips, cross-domain connections) | crisc-d{N}-domain-expert | All 43 outline sub-areas, 115 subtopics, Practice this concept links (`data/crisc/tools/sync_practice_ids.py`) |
-| Questions | `data/crisc/originals/d{1..4}.json` | crisc-d{N}-domain-expert | 185 reviewed (45 / 45 / 50 / 45): enough for one full 150-item mock without repeats |
+| Questions | `data/crisc/originals/d{1..4}.json` | crisc-d{N}-domain-expert | 285 reviewed (70 / 65 / 85 / 65) after round 3: a full 150-item mock and a short 50-item mock without repeats |
 | Citation library | `data/crisc/originals/_framework_library.md` | domain experts | Started with the pilot |
 | Principles (mindset cards) | `data/crisc/mindset/principles.json` (schema `docs/content/PRINCIPLES_SCHEMA.md`) | isaca-mindset-coach | 19 principles; every item tagged |
 | Exam guide and final-review week | `data/crisc/exam/` (schema `docs/content/EXAM_GUIDE_SCHEMA.md`) | isaca-mindset-coach | Both done and reviewed |
@@ -89,8 +89,8 @@ Same order as CC. Don't skip a step to go faster.
 
 1. **Author** with `crisc-d{N}-domain-expert` from a notes subtopic.
 2. **Self-check:** `python3 scripts/lint_exam_style_v2.py --file data/crisc/originals/dN.json`
-   with 0 errors (its "stem names no actor" warning looks for CISA actors;
-   every stem must still name who acts). Every `framework_ref` part matches a
+   with 0 errors (its "stem names no actor" check knows the risk
+   practitioner and risk analyst; every stem must name who acts). Every `framework_ref` part matches a
    library bullet exactly.
 3. **Blind test** with `qa-question-tester` on a copy that has only id, stem
    and options. Compare picks with keys afterwards.
@@ -202,12 +202,34 @@ obligations). Areas with only one item: 1A5, 1A6, 1B3, 1B5, 3A2, 3A3, 3A4,
 32% share, and keep healthcare to about 1 in 8 stems. Then principles, the exam
 guide and lessons once round 2 is merged.
 
+### Round 3 (4 Nov 2026): 100 items, bank 285
+
+Round 3 added 25 / 20 / 35 / 20 items (`crisc_d1_046`–`070`, `crisc_d2_046`–`065`,
+`crisc_d3_051`–`085`, `crisc_d4_046`–`065`). Every sub-area now has at least 6
+items, and every notes subtopic has at least one.
+
+| Stage | Result |
+|---|---|
+| Blind test | 100/100 picks matched the keys |
+| Standards audit and concept review | 4 HARD ERRORS, all second defensible answers, fixed: crisc_d1_057 (a legally required ID check), crisc_d3_053 (naming the successor vs handing over), crisc_d4_048 (upside vs controls), crisc_d4_051 (each manager's own assessment). Near-duplicates and mirrors re-angled: d1_047, d1_061, d1_063, d2_049, d2_051 (CISA d5_353), d2_052, d3_072 (CISA d1_206), d3_074 (CISA d2_153), d4_056 (CC cc_d2_010), d4_064. About 90 PRECISION fixes, mostly stem words echoed only in the key, pre_read giveaways and options carrying their own reasons |
+| ISACA task 5 | The outline says the practitioner "assigns and validates" ownership; absolute "the practitioner does not assign owners" lines were softened. The bank's convention stays: the practitioner proposes, senior management or the risk owner confirms |
+| Re-blind of changed items | D1 12/12, D2 13/13, D3 17/17, D4 13/13 |
+| Cross-domain gate | 0 HARD ERRORS, 13 PRECISION: 7 near-duplicates across domains re-angled (d1_058, d1_063, d2_047, d3_066, d3_069, d4_047, d4_048); two apparent contradictions explained in the items (retention: a new business use goes to the data owner, unneeded data is deleted on schedule; tone at the top: words answer praise, actions answer an exemption); the D3 "scale it by risk" key cue and internal-audit filler distractors reduced; notes 3C6.1 ownership wording |
+| Gates | All exam-style and notes lints 0 errors; originality 0 too close; practice links in sync; app pack dry run 0 problems; `verify_repo.sh` passes |
+
+**Next round (round 4):**
+- Weight toward D3 (about 6 under its 32% share) and D1 (about 4 under); D4 is 8 over.
+- D4 a little light on analysis items (26%).
+- Key internal audit's proper role (independent assurance) in 2–3 items, so it stops being an always-wrong option.
+- Vary the "scale it by risk" and "owner decides" key forms.
+- Tag more items with `escalate-to-the-limit-setter` (7, target 10).
+- Add a few short "Which of the following" stems in D3.
+- Keep d3_075 and d3_076 apart in practice sets (they test opposite errors on one rule).
+
 **Open items:**
 - The `TO VERIFY` comment on the CRISC entry in `mobile/src/content/certifications.ts`
   can now be removed (weights and titles are verified in the blueprint). That file
   is bundled into `assets/kaisip-cloud.js`, so change it together with
   `npm run web-plant` in a session with the mobile packages installed.
-- `scripts/lint_exam_style_v2.py` warns "stem names no actor" on CRISC stems
-  that name the risk practitioner or analyst; teach it the CRISC actors.
 - `notes-application-tester` and `isaca-concept-reviewer` passes on the notes
   after round 2.
