@@ -201,6 +201,14 @@ else
   printf "  ${OK} reported (errors=%s warnings=%s; new batches should use --batch --strict)\n" "$errors_count" "$warnings_count"
 fi
 
+# 5z. Free sample (web v12.50) -----------------------------------------------
+# kaisip.com publishes only the free sample in data/free/. It must match the
+# bank, cover every notes topic, and never lose an id (the list only grows).
+printf "\nFree sample (data/free, published on the website):\n"
+if ! python3 scripts/build_free_sample.py --check; then
+  status=1
+fi
+
 # 6a. Longest-option tell ----------------------------------------------------
 # Per domain, how often "always pick the longest option" (ties shared) would
 # win. Chance is 25%; the target is about 20%. Outside 15–24% fails.
