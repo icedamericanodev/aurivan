@@ -177,7 +177,7 @@ for the merge. A red run means a check failed and nothing was sent.
 To go back to approving each update by hand: tick **Required reviewers**,
 add yourself, leave **Prevent self-review** off, and save. Each run then
 waits for **Review deployments → tick `ota` → Approve and deploy.**
-(Approvals are free on a public repository; a private one needs GitHub Pro.)
+(Approvals are free on a public repository; a private one needs GitHub Pro. The repo went private on 4 Nov 2026, so on the Free plan environments, their secrets and these approvals are not enforced. See `docs/mobile/ACCOUNTS_BETA_PLAN.md` go-live gate 4.)
 
 ### 2. iPhone updates (later, once an iOS build exists)
 

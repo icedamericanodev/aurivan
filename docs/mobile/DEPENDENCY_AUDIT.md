@@ -2,6 +2,8 @@
 
 Date: 2026-10-20. Scope: `mobile/` (expo 57.0.26 installed, `~57.0.26` declared).
 
+Updated 2026-11-04: glob and minimatch advisories added (section before "Overall risk statement").
+
 Updated 2026-10-30 for PR #149: node-forge and zod are now fixed with npm `overrides`; zod, deepmerge and a second decode-uri-component advisory (GHSA-qr28-fpjm-wq7f) are added to the table.
 
 **Updated 2026-10-30 for the Expo SDK 58 upgrade (mobile 1.54, expo 58.0.21, React Native 0.88.1).** In short:
@@ -91,6 +93,28 @@ After applying:
 
 ## Side observation (outside this ticket)
 - `mobile/app.json` enables expo-updates (`updates.url` = u.expo.dev, `checkAutomatically: ON_LOAD`) but has no `codeSigningCertificate`. OTA bundles are trusted on HTTPS + Expo account security alone, with no end-to-end signature. That is the Expo default and acceptable for a content app with no accounts. Consider EAS Update code signing before Phase 3 accounts/sync ship, because OTA could then change auth flows. (Low)
+
+## glob and minimatch (Dependabot, 4 Nov 2026): accept and dismiss
+
+Two new moderate advisories, both denial of service only (a slow build or test run):
+
+- glob **GHSA-3g3m-2fjr-6pw4** (CVSS 6.3): affects 9.0.0 to 14.0.1, fixed in 14.0.2.
+- minimatch **GHSA-g3hv-75wg-m249** (CVSS 6.9): affects everything before 11.0.1.
+
+| Package (installed) | Pulled in by | Affected? |
+|---|---|---|
+| glob 13.0.6 | @expo/config, config-plugins, fingerprint, metro-config, expo-updates, @expo/cli (build tooling) | Yes |
+| glob 10.5.0 | Jest family (dev only) | Yes |
+| glob 7.2.3 | test-exclude (dev only) | No (below 9.0.0) |
+| minimatch 10.2.6 | @expo/fingerprint, @typescript-eslint | Yes |
+| minimatch 9.0.9 | Jest globs (dev only) | Yes |
+| minimatch 3.1.5 | ESLint family (dev only) | Yes |
+
+- **Why Dependabot cannot fix it:** the fixes exist only in new major versions (glob 14, minimatch 11), and the parent packages ask for older ranges. `dependabot.yml` also blocks Expo majors on purpose. No in-range fix exists.
+- **Shipped app:** no app source imports either package (`mobile/src`, `mobile/scripts`). They run in Expo's build tools, Jest and ESLint, on a developer or CI machine, with patterns from our own config. The Hermes source-map check used above has not been run for these two yet, so "not in the bundle" is very likely, not proven.
+- **Decision (accept):** no cross-major `overrides`. Jest's test-exclude and Expo's CLI call the older APIs, so forcing glob 14 or minimatch 11 can break coverage, config plugins or builds. Dismiss both alerts in GitHub with reason "Risk is tolerable".
+- **Re-check:** at the next Expo SDK upgrade, or when @expo/*, Jest or ESLint publish versions that accept glob 14 or minimatch 11.
+- **If we ever override anyway:** in a scratch copy run `npm install --package-lock-only`, then `npm ci`, `npm run check`, an Expo export with the source-map comparison, then an EAS preview build and a phone smoke test.
 
 ## Overall risk statement
 **SDK 58 (mobile 1.54):** the only advisory left is deepmerge (low, build and test tools only, 0 modules in the bundle, no fix published). Nothing bundled in the app is flagged. Overrides kept: node-forge 1.4.2 and zod 4.6.6. Re-audit when deepmerge > 4.3.1 or an @expo/cli on zod 4 is published, and at SDK 59.

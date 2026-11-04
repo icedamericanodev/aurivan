@@ -105,7 +105,11 @@ if it words them differently.
   Android email-code flow sends a Turnstile token (through the
   `kaisip.com/human-check` page, §2.1).
 - [ ] 4. **"Require review from Code Owners"** on `main` (Settings →
-  Branches → main), so `.github/CODEOWNERS` takes effect.
+  Branches → main), so `.github/CODEOWNERS` takes effect. **Since the repo
+  went private (4 Nov 2026) this needs GitHub Pro**: on the Free plan branch
+  protection, code owner review and environments (with their secrets) are
+  not enforced. Also recreate the `ota` and `db-backup` environments
+  (deployment branch `main` only) and move their secrets back into them.
 - [ ] 5. `list_edge_functions` shows only `delete-account` and
   `export-my-data` (no board function deployed).
 - [ ] 6. `DELETION_PEPPER` set (40 random characters, Function secret)
@@ -155,7 +159,7 @@ if it words them differently.
    `encoding` server-owned (no client grant), so a client can't pick a
    format another client can't read.
 7. **Public backup logs.** §6 said the backup job prints the account and
-   session counts. The repo is public, so its Actions logs are too: the job
+   session counts. The repo was public, and logs can be shared, so: the job
    prints only the database size and largest tables; the counts go inside
    the encrypted file.
 8. **`supabase db dump` needs the repo's `config.toml`** to pick the
