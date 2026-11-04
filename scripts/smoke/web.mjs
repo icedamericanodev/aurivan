@@ -93,6 +93,29 @@ async function go(page, section, hash) {
 }
 const ev = (page, fn) => page.evaluate(fn);
 
+// The Practice page itself (the Practice section can reopen its last page, e.g. Mock exam).
+async function goPracticeHub(page) {
+  await go(page, 'practice');
+  if (!(await visible(page.locator('#screen-practice .ph-go')))) {
+    const sub = page.locator('a[data-tab="practice"]:visible');
+    if (await visible(sub)) { await sub.first().click(); await sleep(600); }
+  }
+  await page.locator('#screen-practice .ph-go:visible').first().waitFor({ timeout: 10000 });
+}
+
+// Open study note `id` (topic group first, if it is closed), leaving it expanded.
+async function openNote(page, id) {
+  const row = page.locator(`[id="ni-${id}"]`);
+  if (!(await visible(row.locator('.gt-row-btn')))) {
+    await page.locator('#topicsArea button', { hasText: 'Types of Audits' }).first().click();
+    await sleep(500);
+  }
+  const btn = row.locator('.gt-row-btn');
+  await btn.waitFor({ timeout: 10000 });
+  if ((await btn.getAttribute('aria-expanded')) !== 'true') { await btn.click(); await sleep(800); }
+  return row;
+}
+
 // The option button whose text is `text` (smart quotes ignored).
 async function optionByText(page, scope, text) {
   const btns = page.locator(`${scope} .opt`);
@@ -320,15 +343,17 @@ for (const [view, scheme] of [['phone', 'light'], ['desktop', 'dark']]) {
   await rec.run(`W8-${tag}`, `Study note → Practice this concept: answer, verdict, explanation (${tag})`, page, async (c) => {
     await go(page, 'learn', 'notes');
     await page.locator('#topicsArea button', { hasText: 'Types of Audits' }).first().waitFor({ timeout: 10000 });
-    await page.locator('#topicsArea button', { hasText: 'Types of Audits' }).first().click();
-    await sleep(500);
-    const row = page.locator('[id="ni-1A2.1"]');
-    if (!/open|true/.test((await row.locator('.gt-row-btn').getAttribute('aria-expanded')) || '')) { await row.locator('.gt-row-btn').click(); await sleep(800); }
-    const btn = row.locator('.gt-practice-btn');
-    c.check(await visible(btn), 'note 1A2.1 has no "Practice this concept" button');
+    const row = await openNote(page, '1A2.1');
+    // Below the notes rail the button sits in the note; with the rail (desktop)
+    // the note's own block is hidden and the rail's "Practice this note" starts it.
+    const inNote = row.locator('.gt-practice-btn:visible');
+    const inRail = page.locator('button[onclick^="railPracticeNote"]:visible');
+    const btn = (await visible(inNote)) ? inNote.first() : inRail.first();
+    c.check(await visible(btn), 'note 1A2.1 has no visible "Practice this concept" / "Practice this note" button');
     if (!(await visible(btn))) { await c.shot(`w8-note-${tag}`); return; }
+    c.note(`button: "${norm(await btn.innerText())}"`);
     const sub = norm(await row.locator('.gt-practice-sub').innerText().catch(() => ''));
-    c.note(`button caption: "${sub}"`);
+    if (sub) c.note(`button caption: "${sub}"`);
     await btn.scrollIntoViewIfNeeded();
     await c.shot(`w8-note-button-${tag}`);
     await btn.click();
@@ -357,7 +382,7 @@ for (const [view, scheme] of [['phone', 'light'], ['desktop', 'dark']]) {
 
   // ── W9 Saved ─────────────────────────────────────────────────────
   await rec.run(`W9-${tag}`, `Saved: bookmark a question, it lists and survives a reload; a full-course saved question is skipped calmly (${tag})`, page, async (c) => {
-    await go(page, 'practice');
+    await goPracticeHub(page);
     await page.locator('#screen-practice .ph-go:visible').first().click();
     await page.locator('#qArea .opt').first().waitFor({ timeout: 10000 });
     const id = await ev(page, () => S.current.id);
@@ -387,6 +412,9 @@ for (const [view, scheme] of [['phone', 'light'], ['desktop', 'dark']]) {
     const ids = await ev(page, () => S.bookmarks.map((b) => b.id));
     c.check(ids.includes(id), `the free saved question ${id} is gone after seeding a full-course one`);
     c.check(!ids.includes(paid.id), `the full-course question ${paid.id} still shows in Saved`);
+    // It must be kept in storage (not deleted), so it comes back with the full course.
+    const kept1 = await ev(page, (pid) => Object.keys(localStorage).some((k) => (localStorage.getItem(k) || '').includes(`"${pid}"`)), paid.id);
+    c.check(kept1, `the saved full-course question ${paid.id} was deleted from storage after a reload`);
     const list2 = norm(await page.locator('#bkList').innerText());
     c.check(list2.includes(stem) && !list2.includes(norm(paid.question).slice(0, 50)), 'Saved shows the wrong questions after seeding');
     await c.shot(`w9-saved-with-paid-${tag}`);
@@ -396,9 +424,14 @@ for (const [view, scheme] of [['phone', 'light'], ['desktop', 'dark']]) {
     await go(page, 'practice', 'saved'); await sleep(500);
     const fc = await visible(page.locator('#bkList .fc-row'));
     c.check(fc, 'with only a full-course question saved, Saved does not show the "full course" row');
+    if (fc) c.note(`Saved says: "${norm(await page.locator('#bkList .fc-row').innerText())}"`);
     await c.shot(`w9-saved-full-course-row-${tag}`);
+    c.step('one more reload: the full-course save is still in storage');
+    await page.reload({ waitUntil: 'networkidle' }); await sleep(800); await clearAsks(page);
+    const kept2 = await ev(page, (pid) => Object.keys(localStorage).some((k) => (localStorage.getItem(k) || '').includes(`"${pid}"`)), paid.id);
+    c.check(kept2, `the saved full-course question ${paid.id} was deleted from storage after reloads`);
     // Leave Saved empty for W6 (the backup compares the counts before/after).
-    await ev(page, () => { S.bookmarks = []; saveState(); });
+    await ev(page, () => { S.bookmarks = []; if (S.bookmarksLocked) S.bookmarksLocked = []; saveState(); });
   });
 
   // ── W4 Topics ────────────────────────────────────────────────────
@@ -406,11 +439,7 @@ for (const [view, scheme] of [['phone', 'light'], ['desktop', 'dark']]) {
     await go(page, 'learn', 'notes');
     await page.locator('#topicsArea .gt-row-btn, #topicsArea button').first().waitFor({ timeout: 10000 });
     c.step('open topic "Types of Audits, Assessments, and Reviews"');
-    await page.locator('#topicsArea button', { hasText: 'Types of Audits' }).first().click();
-    await sleep(500);
-    const row = page.locator('[id="ni-1A2.1"]');
-    await row.locator('.gt-row-btn').click();
-    await sleep(800);
+    const row = await openNote(page, '1A2.1');
     const body = norm(await row.innerText());
     c.check(body.length > 300, `note 1A2.1 opened with only ${body.length} characters`);
     c.check(!/coming soon/i.test(body), 'note 1A2.1 says "coming soon"');
@@ -592,11 +621,22 @@ for (const [view, scheme] of [['phone', 'light'], ['desktop', 'dark']]) {
     const until = await ev(page, () => Number(localStorage.getItem('aurivan_free_sample_done_hidden_until')) - Date.now());
     c.check(until > 6 * 86400000, `"Not now" hides it for ${(until / 86400000).toFixed(1)} days, expected 7`);
     await c.shot(`w10-after-not-now-${tag}`);
-    c.step('practice still works with everything answered');
-    await go(page, 'practice');
+    c.step('Practice with everything answered: a question, or the "domain complete" card and Restart');
+    await goPracticeHub(page);
     await page.locator('#screen-practice .ph-go:visible').first().click();
-    await page.locator('#qArea .opt').first().waitFor({ timeout: 10000 });
+    await sleep(1200);
     await c.shot(`w10-practice-after-all-${tag}`);
+    if (!(await visible(page.locator('#qArea .opt')))) {
+      const restart = page.getByRole('button', { name: /Restart/ });
+      const done = norm(await page.locator('#screen-practice').innerText());
+      c.note(`practice shows: "${done.slice(0, 120)}"`);
+      c.check(await visible(restart), 'with every free question answered, Practice shows neither a question nor a Restart button');
+      if (await visible(restart)) {
+        await restart.first().click();
+        await page.locator('#qArea .opt').first().waitFor({ timeout: 10000 });
+        await c.shot(`w10-practice-restarted-${tag}`);
+      }
+    }
   });
   await ctx.close();
 }

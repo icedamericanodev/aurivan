@@ -87,7 +87,9 @@ if [ "$WHAT" != mobile ]; then
   if [ "${SMOKE_WEB_SITE:-}" = 1 ]; then
     echo "· web: building the public site (scripts/build_site.sh)"
     ( cd "$REPO" && bash scripts/build_site.sh ) > "$OUT/build-site.log" 2>&1 || { echo "build_site.sh failed: see $OUT/build-site.log" >&2; exit 1; }
-    WEB_ROOT="$REPO/_site"
+    # Serve a private copy: another build of _site/ during the run (it starts
+    # with rm -rf) would otherwise show up as 404s.
+    cp -R "$REPO/_site" "$TMP/site"; WEB_ROOT="$TMP/site"
   fi
   echo "· web: serving $WEB_ROOT on :$WEB_PORT"
   python3 -m http.server "$WEB_PORT" --bind 127.0.0.1 --directory "$WEB_ROOT" > "$OUT/web-server.log" 2>&1 & PIDS+=($!)
