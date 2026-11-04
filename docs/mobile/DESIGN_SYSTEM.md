@@ -80,6 +80,12 @@ Implementation rules
 
 ## 2. Type scale (the only 13 styles allowed)
 
+> **Superseded for type (4 Nov 2026):** `design-notes/grove/TYPE_SCALE.md` is the
+> type source of truth for web and phone: 15 roles, 5 numeral steps, the allowed
+> exceptions, rem sizes on the web and the text-size limits. The website follows
+> it from feature/grove-ui (one type scale across the website); the table below
+> is kept for history until the phone round folds that file into this section.
+
 | Token | Family / weight | Size / line | Tracking | Use |
 |---|---|---|---|---|
 | `number` | Fraunces 500 | **52 / 52** | −1.4 | Readiness % on Today, results score. `%` at 0.48em raised (superscript), not baseline |

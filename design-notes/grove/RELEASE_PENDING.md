@@ -28,6 +28,7 @@ Batched for the end of the uplift (web v13, mobile 2.0.0; DECISIONS 8). Write th
 - The You page now names one area to study next, the same as Today.
 - Backing up, restoring, resetting and Today's backup reminder now confirm right under what you tapped, on any screen size, and never cover another button.
 - Today's next step now labels your own score, and the Practice summary fits small screens at larger text sizes.
+- Text sizes and styles are now consistent across every screen, and all text grows with your browser's text size.
 
 ## Follow-ups to do at the release
 - `mobile/src/engine/plantLooks.ts` `howToOpen` says "in the Herbarium": change to "in Badges" and rebuild `assets/kaisip-plant.js` in the same commit.
