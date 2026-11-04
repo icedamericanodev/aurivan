@@ -44,8 +44,8 @@
 --  * The helper private.beta_desk_is_admin is security definer with
 --    search_path '' and lives in schema private; authenticated may EXECUTE it
 --    (a policy calls it by id, so no USAGE on schema private is needed).
---  * The page checks "am I an admin?" by reading the settings row: RLS shows it
---    to admins only, so a non-admin simply reads nothing.
+--  * After the second step the page reads the settings row: RLS shows it only
+--    to admins with MFA, so anyone else simply reads nothing.
 --  * Duplicate emails are impossible: email_key (the email trimmed and in lower
 --    case) is UNIQUE. The CSV import asks the database to skip a duplicate
 --    instead of failing (on_conflict=email_key, ignore-duplicates).
