@@ -57,7 +57,10 @@
           "practice_ids": [
             "crisc_d3_001",
             "crisc_d3_003",
-            "crisc_d3_004"
+            "crisc_d3_004",
+            "crisc_d3_086",
+            "crisc_d3_087",
+            "crisc_d3_088"
           ],
           "definition": "Risk responses are the four ways an organization deals with an analyzed risk: accept it, mitigate it with controls, transfer or share it, or avoid the activity causing it.",
           "why_it_matters": "The response decides how much risk is left and what that costs. The wrong choice wastes money on a risk already within appetite, or leaves a risk above appetite untreated.",
@@ -182,7 +185,8 @@
           "legacy_ids": [],
           "practice_ids": [
             "crisc_d3_021",
-            "crisc_d3_024"
+            "crisc_d3_024",
+            "crisc_d3_110"
           ],
           "definition": "Residual risk is the risk left after a response is in place; risk acceptance is the risk owner's documented decision to keep what remains.",
           "why_it_matters": "No response removes all risk. Unless someone with authority formally accepts what is left, the organization carries exposure nobody agreed to and nobody watches.",
@@ -256,7 +260,8 @@
           "practice_ids": [
             "crisc_d3_022",
             "crisc_d3_023",
-            "crisc_d3_052"
+            "crisc_d3_052",
+            "crisc_d3_090"
           ],
           "definition": "A risk owner is the person given the authority and accountability to make decisions about a risk, and who answers for the loss if it happens.",
           "why_it_matters": "A risk without a capable owner drifts: nobody decides its response, funds the controls or answers when it happens. Ownership at the wrong level gives the decision to people who cannot act on it.",
@@ -312,7 +317,8 @@
           "practice_ids": [
             "crisc_d3_005",
             "crisc_d3_051",
-            "crisc_d3_053"
+            "crisc_d3_053",
+            "crisc_d3_089"
           ],
           "definition": "A control owner is accountable for a control being in place and working, often as the manager whose team runs it; validation confirms owners perform the role.",
           "why_it_matters": "A control that nobody owns decays quietly: reviews stop, settings drift and evidence disappears. Validating ownership finds these gaps before a test or an incident does.",
@@ -409,19 +415,21 @@
           "practice_ids": [
             "crisc_d3_025",
             "crisc_d3_054",
-            "crisc_d3_055"
+            "crisc_d3_055",
+            "crisc_d3_091",
+            "crisc_d3_092"
           ],
-          "definition": "Vendor due diligence is assessing a supplier's risk before signing, then writing the controls you need into the contract, such as security duties, audit rights and exit terms.",
-          "why_it_matters": "After signing, leverage drops sharply. Terms left out of the contract, such as breach notice or the right to audit, are hard to add later, and the organization still answers for the outcome.",
+          "definition": "Vendor due diligence is assessing a supplier's risk before signing, then writing needed controls into the contract, such as security duties, audit rights and exit terms.",
+          "why_it_matters": "After signing, leverage drops. Terms left out, such as breach notice or audit rights, are hard to add later, and the organization still answers for the outcome.",
           "how_it_works": [
             "Tier vendors by criticality: the data they hold, the processes they support and how hard they are to replace.",
             "Scale due diligence to the tier: questionnaires for low tiers; assurance reports, site reviews and financial checks for critical ones.",
             "Write requirements into the contract: security controls, breach notice times, service level agreements, right to audit and subcontractor approval.",
             "Plan exit before signing: data return or destruction, transition help and access removal at the end.",
             "Record the vendor risk in the register under the business owner who uses the service.",
-            "When the business cannot wait, limit the vendor to test data until due diligence ends."
+            "When the business wants to start before due diligence ends, propose test data only, with no long-term contract, until it ends; the business owner agrees."
           ],
-          "example": "A school district plans to move student records to a cloud learning platform. Grace, the district's risk analyst, rates the vendor critical because it will hold minors' personal data. Before the contract is signed, they ask for the vendor's assurance report, breach-notice terms and a data-return clause, and flag to the curriculum director that the draft contract has no right to audit.",
+          "example": "A school district plans to move student records to a cloud learning platform. Grace, its risk analyst, rates the vendor critical because it will hold minors' data. Before signing, they ask for its assurance report, breach-notice terms and a data-return clause, and tell the curriculum director the draft has no right to audit.",
           "audit_focus": {
             "review": [
               "Compare due diligence depth with each vendor's criticality tier",
@@ -436,11 +444,11 @@
             "recommend": "Have procurement and the business owner complete risk-based due diligence and required clauses before any critical contract is signed.",
             "decides": "The manager who uses the service accepts the vendor risk before contract award"
           },
-          "isaca_rule": "Assess before you sign, in proportion to criticality, and put what you need into the contract. Accountability for the outcome stays with the organization; the business owner of the service owns the vendor risk.",
+          "isaca_rule": "Assess before you sign, in proportion to criticality, and put what you need into the contract. Accountability stays with the organization; the business owner of the service owns the vendor risk.",
           "exam_traps": [
             {
               "trap": "Outsourcing the service also outsources the risk.",
-              "why": "The ISACA Glossary lists outsourcing as a way to transfer risk, but what moves is part of the operational and financial consequence. The organization still answers to its customers and regulators, so accountability and the business impact stay."
+              "why": "The ISACA Glossary lists outsourcing as risk transfer, but only part of the consequence moves; the organization still answers to customers and regulators, so accountability and the business impact stay."
             },
             {
               "trap": "A vendor's own questionnaire answers can stand in for a refused right to audit.",
@@ -454,7 +462,7 @@
             },
             {
               "term": "Service level agreement (SLA)",
-              "definition": "An agreement that sets the service levels a provider must meet, how they are measured and the remedy when one is missed."
+              "definition": "An agreement setting the service levels a provider must meet, how they are measured and the remedy for a miss."
             },
             {
               "term": "Vendor criticality tier",
@@ -593,7 +601,9 @@
           "legacy_ids": [],
           "practice_ids": [
             "crisc_d3_029",
-            "crisc_d3_057"
+            "crisc_d3_057",
+            "crisc_d3_094",
+            "crisc_d3_095"
           ],
           "definition": "Issue management is logging each control weakness, audit finding or incident lesson with an owner, an action and a due date, then tracking it until closure is validated.",
           "why_it_matters": "Findings that are logged but never really fixed leave the same risk open while reports show progress. Overdue items are often where the next incident comes from.",
@@ -646,7 +656,8 @@
             "crisc_d3_007",
             "crisc_d3_028",
             "crisc_d3_030",
-            "crisc_d3_058"
+            "crisc_d3_058",
+            "crisc_d3_093"
           ],
           "definition": "An exception is a temporary, approved deviation from a policy or standard; an exemption is an approved exclusion from a requirement that does not apply or cannot apply.",
           "why_it_matters": "Business sometimes cannot meet a requirement on time. A managed deviation keeps that risk visible, compensated and time-bound; an unmanaged one becomes a permanent, hidden gap.",
@@ -744,7 +755,8 @@
           "practice_ids": [
             "crisc_d3_008",
             "crisc_d3_031",
-            "crisc_d3_032"
+            "crisc_d3_032",
+            "crisc_d3_096"
           ],
           "definition": "Control types by function describe what a control does about a risk event: stop it, discourage it, find it, fix it, or stand in for a missing control.",
           "why_it_matters": "Calling a detective control preventive overstates protection and understates residual risk. Knowing the function shows which part of the risk a control actually reduces.",
@@ -817,7 +829,8 @@
           "name": "Control Categories by Nature",
           "legacy_ids": [],
           "practice_ids": [
-            "crisc_d3_059"
+            "crisc_d3_059",
+            "crisc_d3_097"
           ],
           "definition": "Control categories describe how a control is delivered: administrative (policies, procedures, training), technical (built into systems) or physical (barriers, locks and environmental protection).",
           "why_it_matters": "Relying on one category leaves gaps: a firewall cannot stop someone carrying paper records out of a building, and a policy cannot block a malicious sign-in. Mixing categories gives depth.",
@@ -962,7 +975,8 @@
           "legacy_ids": [],
           "practice_ids": [
             "crisc_d3_009",
-            "crisc_d3_062"
+            "crisc_d3_062",
+            "crisc_d3_098"
           ],
           "definition": "Control selection is choosing controls that address the cause of a risk, fit the size of the risk and cost less than the loss they prevent.",
           "why_it_matters": "Controls aimed at symptoms leave the cause in place, so the risk comes back. Controls out of proportion to the risk use budget that other risks need.",
@@ -1015,7 +1029,8 @@
           "legacy_ids": [],
           "practice_ids": [
             "crisc_d3_011",
-            "crisc_d3_063"
+            "crisc_d3_063",
+            "crisc_d3_099"
           ],
           "definition": "Control implementation is putting a selected control into operation with its owner, procedure, evidence and success measures agreed before it goes live.",
           "why_it_matters": "A well-designed control rolled out without an owner, procedure or evidence trail fails quietly. Agreeing these with the control owner up front makes the control testable and lasting.",
@@ -1065,7 +1080,8 @@
           "practice_ids": [
             "crisc_d3_033",
             "crisc_d3_034",
-            "crisc_d3_064"
+            "crisc_d3_064",
+            "crisc_d3_100"
           ],
           "definition": "Control gap analysis compares the current controls on a risk with the controls needed to bring it within appetite, judging both how they are designed and how they operate.",
           "why_it_matters": "Gaps show where residual risk is higher than the register claims. Finding them before an incident lets the risk owner fund the most important fixes first.",
@@ -1130,7 +1146,8 @@
           "legacy_ids": [],
           "practice_ids": [
             "crisc_d3_012",
-            "crisc_d3_065"
+            "crisc_d3_065",
+            "crisc_d3_101"
           ],
           "definition": "Control testing techniques are the ways evidence about a control is gathered: asking people, watching it run, inspecting records, or performing it again independently.",
           "why_it_matters": "Techniques give very different assurance. A control rated effective on interviews alone may never actually run, and the rating then hides real exposure from the risk owner.",
@@ -1196,7 +1213,8 @@
           "legacy_ids": [],
           "practice_ids": [
             "crisc_d3_036",
-            "crisc_d3_066"
+            "crisc_d3_066",
+            "crisc_d3_102"
           ],
           "definition": "Design testing asks whether a control could meet its objective as built; operating testing asks whether it actually worked consistently over a period, usually by sampling.",
           "why_it_matters": "A well-designed control can still be skipped in practice. Reporting a design test as proof of operation overstates assurance and leaves the risk owner relying on a control that may not run.",
@@ -1206,7 +1224,7 @@
             "Draw the sample from the complete population, ideally system-generated, with the tester choosing the items.",
             "Evaluate each failure: find its cause and decide whether the control can still be relied on.",
             "Tests by the control owner alone are self-assessment: useful for monitoring, but weaker than independent testing.",
-            "Start from recent internal audit results on a control: they are independent evidence, and their exceptions shape any further testing rather than being repeated."
+            "Start from recent internal audit results as independent evidence: check their scope and date fit, then aim further testing at their exceptions rather than repeating audit's work."
           ],
           "compare": {
             "columns": [
@@ -1350,7 +1368,8 @@
           "practice_ids": [
             "crisc_d3_038",
             "crisc_d3_039",
-            "crisc_d3_070"
+            "crisc_d3_070",
+            "crisc_d3_104"
           ],
           "definition": "A risk action plan sets out how a chosen response will be carried out: the actions, an owner for each, resources, milestones, target dates and the target risk at completion.",
           "why_it_matters": "A response without a plan stays an intention. Owners, dates and resources turn it into work that can be tracked, funded and escalated when it slips.",
@@ -1404,7 +1423,8 @@
           "practice_ids": [
             "crisc_d3_013",
             "crisc_d3_068",
-            "crisc_d3_069"
+            "crisc_d3_069",
+            "crisc_d3_103"
           ],
           "definition": "Validating execution is confirming, with evidence, that the actions in a risk plan were carried out as agreed and reduced the risk as expected.",
           "why_it_matters": "Status reports often say done when a control is installed but untested. Validation stops the register from showing a lower risk than really exists.",
@@ -1513,7 +1533,8 @@
           "legacy_ids": [],
           "practice_ids": [
             "crisc_d3_014",
-            "crisc_d3_073"
+            "crisc_d3_073",
+            "crisc_d3_105"
           ],
           "definition": "Risk aggregation combines risks from many units or systems into one enterprise view, after normalizing them to the same rating criteria so they can be compared.",
           "why_it_matters": "Senior management needs one picture of enterprise risk. Adding ratings from different scales, or averaging away a severe local risk, gives a picture that looks precise but is wrong.",
@@ -1565,7 +1586,8 @@
           "legacy_ids": [],
           "practice_ids": [
             "crisc_d3_040",
-            "crisc_d3_041"
+            "crisc_d3_041",
+            "crisc_d3_106"
           ],
           "definition": "Data validation is checking that risk and control data are complete, accurate, current and consistent before they are analyzed or reported to decision makers.",
           "why_it_matters": "A wrong figure in a board report can drive the wrong decision and damages trust in the whole risk function. Checking before reporting costs far less than correcting afterward.",
@@ -1717,7 +1739,8 @@
           "name": "Selecting Effective KRIs",
           "legacy_ids": [],
           "practice_ids": [
-            "crisc_d3_074"
+            "crisc_d3_074",
+            "crisc_d3_108"
           ],
           "definition": "An effective KRI is relevant to a specific risk, reliably measurable, predictive of change, set against thresholds and owned by someone who acts on it.",
           "why_it_matters": "Too many indicators drown the signal, and lagging ones warn only after the loss. A few well-chosen leading KRIs give owners time to act.",
@@ -1780,7 +1803,9 @@
           "practice_ids": [
             "crisc_d3_016",
             "crisc_d3_017",
-            "crisc_d3_044"
+            "crisc_d3_044",
+            "crisc_d3_107",
+            "crisc_d3_109"
           ],
           "definition": "KRI thresholds are preset limits, linked to risk appetite and tolerance, that trigger review, escalation or action when an indicator crosses them.",
           "why_it_matters": "Without thresholds, a climbing KRI is just a number. Limits tied to tolerance tell the owner when to act and who must be told.",
@@ -1850,7 +1875,8 @@
           "practice_ids": [
             "crisc_d3_018",
             "crisc_d3_046",
-            "crisc_d3_078"
+            "crisc_d3_078",
+            "crisc_d3_111"
           ],
           "definition": "Continuous monitoring is keeping ongoing awareness of security, vulnerabilities and threats to support risk decisions, using automated feeds and assessments at a frequency set by risk.",
           "why_it_matters": "Yearly reviews miss what changes between them. Ongoing monitoring catches control failures and new exposure while there is still time to respond, provided someone acts on the alerts.",
@@ -2016,7 +2042,8 @@
           "practice_ids": [
             "crisc_d3_047",
             "crisc_d3_079",
-            "crisc_d3_080"
+            "crisc_d3_080",
+            "crisc_d3_112"
           ],
           "definition": "Risk reporting formats present risk and control information visually: heat maps plot likelihood against impact, scorecards rate results against targets, and dashboards combine indicators.",
           "why_it_matters": "The format shapes the decision. A good visual shows what needs attention at a glance; a poor one hides trends, ranges and risks sitting just outside the red cells.",
@@ -2079,7 +2106,8 @@
             "crisc_d3_019",
             "crisc_d3_048",
             "crisc_d3_081",
-            "crisc_d3_082"
+            "crisc_d3_082",
+            "crisc_d3_113"
           ],
           "definition": "Audience-based reporting gives each stakeholder what they need for their own decisions: the board sees the risk profile against appetite, and owners see their risks and actions.",
           "why_it_matters": "A report the reader cannot act on is noise. Technical detail swamps the board, and summary colors starve the people who must fix things.",
@@ -2089,7 +2117,7 @@
             "Control owners and operations: control failures, test results and specific remediation tasks.",
             "Send each report to someone with authority to decide on what it shows, and state the decision requested.",
             "Escalate outside the cycle when a tolerance breach or a critical risk needs a decision now.",
-            "Share the risk profile with internal audit so its independently set plan can cover the top risks; audit still decides its own plan."
+            "Share the risk profile with internal audit so its plan can cover the top risks; internal audit still sets its own plan, approved by the audit committee."
           ],
           "example": "A national charity's IT risk report to its board lists 140 vulnerability findings by server name. Samir, the risk analyst, rewrites it for the board as the three risks outside appetite, their trend and the funding decision needed for one of them. They send the server-level detail to the infrastructure manager as an action list.",
           "audit_focus": {
@@ -2144,7 +2172,8 @@
           "legacy_ids": [],
           "practice_ids": [
             "crisc_d3_050",
-            "crisc_d3_083"
+            "crisc_d3_083",
+            "crisc_d3_115"
           ],
           "definition": "Horizon scanning is the regular search for new or changing risks from technology, regulation, markets, threats and society, before they are well understood or measurable.",
           "why_it_matters": "Emerging risks give the least warning and the most surprise. Spotting them early leaves time to study them, prepare and take up any opportunity they bring.",
@@ -2194,7 +2223,8 @@
             "crisc_d3_020",
             "crisc_d3_049",
             "crisc_d3_084",
-            "crisc_d3_085"
+            "crisc_d3_085",
+            "crisc_d3_114"
           ],
           "definition": "Recording emerging risk means entering it in the register with its uncertainty stated, an owner and a review date, then reporting it so leaders can prepare without overreacting.",
           "why_it_matters": "Leaders need early sight of what may change the risk profile. Presenting an uncertain risk as certain wastes money, and leaving it out leaves them unprepared.",
