@@ -284,6 +284,7 @@ Learned from two blind tests and two standards audits of the pilot.
 | Batch 2, D2, D3 and D5 (30 Oct 2026) | | +25 | +25 | | +25 | 225 |
 | Batch 3, all domains (31 Oct 2026) | +30 | +20 | +25 | +25 | +20 | 345 |
 | Batch 4, all domains (4 Nov 2026) | +35 | +25 | +30 | +30 | +25 | 490 |
+| Batch 5, all domains (4 Nov 2026) | +40 | +25 | +30 | +30 | +25 | 640 |
 
 Batch 2: the first blind test matched the keys 25/25 in every domain, and
 re-tests of every changed item all matched. The audits found 7 hard errors
@@ -359,6 +360,28 @@ Batch 5 guidance from this round:
 - When the stem names the owner, give a distractor the owner too, so the key
   is not the only option that mentions them.
 - D1 is still furthest from its target (240; 110 now).
+
+**Batch 5 (4 Nov 2026).** 150 new items on random key letters; the first blind
+test matched every key (150/150) and the audits found no HARD errors. The
+cross-domain gate found a new kind of tell: an option's first word predicting
+the key across the bank ("Report", "Refer" and "An" won far more often than
+chance; "Delete", "Accept" and "Agree" never won, because every "a colleague
+claims X" item had a wrong claimant). `check_cc.py` now fails any opener whose
+win rate would happen by chance less than 1% of the time, measured over the
+whole bank. The fix kept meanings and keys: other openers on some keys, and
+honest counter-examples (a correct Delete, Accept and Agree; Report and Refer
+options that lose because the procedure assigns the task or names another
+owner).
+
+Batch 6 guidance from this round:
+- Write one or two in-role "Delete" keys (an expired firewall rule, a stale
+  bucket, data at the end of its retention period) and a "risk owner accepts
+  within tolerance" key, and keep some "a colleague claims X" items where the
+  colleague is right.
+- Vary key openers: not every escalation key should start "Report".
+- Role names: use "IT manager", not "IT lead"; "security analyst" for the
+  generic D1/D2/D5 practitioner.
+- D1 is still furthest from its target (240; 150 now).
 
 ## 7. Follow-ups outside this plan's scope
 
