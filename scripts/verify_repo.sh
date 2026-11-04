@@ -84,6 +84,34 @@ else
   status=1
 fi
 
+# 4a. What's New text has no em or en dashes ----------------------------------
+# Every title and item in the in-app changelog (const CHANGELOG in index.html)
+# is learner text: a colon, semicolon, full stop or "to" instead of a dash,
+# and no question ids (d5_075). Fails on any.
+printf "\nWhat's New text (no dashes, no question ids):\n"
+if ! python3 - <<'PY'
+import re, sys
+s = open('index.html', encoding='utf-8').read()
+a = s.find('const CHANGELOG = [')
+b = s.find('function showChangelog()')
+if a < 0 or b < a:
+    print("  \u2717 could not find the CHANGELOG list in index.html"); sys.exit(1)
+seg = s[a:b]
+bad = []
+for m in re.finditer(r"(title|text):\s*'((?:[^'\\]|\\.)*)'", seg):
+    t = m.group(2)
+    if re.search('[\u2013\u2014]', t) or re.search(r'\bd[1-5]_\d{3}\b', t):
+        bad.append(t[:90])
+if bad:
+    print(f"  \u2717 {len(bad)} entries have a dash or a question id, for example:")
+    for t in bad[:5]: print("    " + t)
+    sys.exit(1)
+print("  \u2713 clean")
+PY
+then
+  status=1
+fi
+
 # 4b. The website's plant (assets/kaisip-plant.js) ---------------------------
 # A GENERATED copy of the mobile app's plant engine and art
 # (mobile/scripts/build-web-plant.mjs). Always checked here without npm: the

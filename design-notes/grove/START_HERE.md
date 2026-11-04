@@ -4,6 +4,8 @@ Paste this into Claude Code from the root of the KaiSip repo, after copying this
 
 ---
 
+> **No book labels on screen (31 Oct 2026).** Never show or say "Field guide", "Field record", "Plate", "Plates", "Herbarium" or "Fig. N". Captions are plain words. See `DECISIONS.md` 8 and `docs/mobile/DESIGN_SYSTEM.md` §21.9. The kit follows this.
+
 We are giving KaiSip a visual uplift called Grove. kaisip.com and the Android app share this codebase, so one change updates both.
 
 1. Read `design-notes/grove/GROVE_HANDOFF.md` from top to bottom. It is the source of truth.
