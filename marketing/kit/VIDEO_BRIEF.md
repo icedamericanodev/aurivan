@@ -33,7 +33,7 @@ You are my creative director, scriptwriter and video producer. I'm launching a *
 - **Pronunciation of KaiSip:** "Kai-Sip" (two beats: KAI, then SIP). Write it as "Kai-Sip" in the voiceover script so text-to-speech says it right.
 
 ## The offer and call to action
-- **Offer (decided):** "Beta testers get **6 months of KaiSip Premium free** once paid plans launch, and every tester is **thanked and credited** in the app (with their permission)."
+- **Offer (decided):** "Beta testers get **6 months of KaiSip's CISA Premium free** (other certifications not included) once paid plans launch, and every tester is **thanked and credited** in the app (with their permission)."
   - KaiSip is **free to use during the beta**. Say exactly that. Never say "free app", "free forever" or "completely free", because paid plans are coming.
   - The 6 months **start on the day paid plans launch**, not on sign-up day. No card is needed, and nothing renews or charges.
   - Testers qualify by staying in the Android test for 14 days, or by sending at least one genuine piece of feedback. iPhone and website testers count too.

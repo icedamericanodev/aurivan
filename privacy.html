@@ -132,11 +132,11 @@
   endorsed by, or sponsored by ISACA.</p>
 
   <h2 id="s2">2. Our privacy approach</h2>
-  <p>The website runs entirely in your browser. It has no backend server and no
-  database that we control. Because of this, the large majority of your
-  activity — every question you answer, your scores, bookmarks and settings —
-  is stored only on your own device and is never transmitted
-  to us or anyone else.</p>
+  <p>The website runs entirely in your browser. Your studying never goes to a
+  server: every question you answer, your scores, bookmarks and settings are
+  stored only on your own device and are never transmitted to us or anyone
+  else. If you sign up to test KaiSip, your tester details are also kept in
+  KaiSip's own database, as section 3e explains.</p>
 
   <h2 id="s3">3. Information involved</h2>
 
@@ -189,18 +189,29 @@
   tester list. If you ask to be credited, the name you chose is shown to
   everyone in the mobile app's "Thank you, beta testers" screen; ask us at any
   time and it is removed in the next app update.</p>
-  <p>To run the beta, the maintainer also keeps a private tracker of testers:
-  your name, email address and phone type, the dates you signed up, were
-  invited, joined the Google Play test and sent feedback, a short summary of
-  your feedback and any technical problems, whether you completed the 14 days,
-  and your reward dates. It is stored in KaiSip's database on Supabase (in
-  Singapore). Only the maintainer can see it, after a two-step sign-in. Other
-  answers from the sign-up form are copied into it only when needed to run
-  the beta.</p>
+  <p>To run the beta, the maintainer also keeps a private tracker of testers.
+  It holds the name you gave us (if any), your email address and phone type,
+  the dates you signed up, were invited, joined the Google Play test and sent
+  feedback, a short summary of your feedback and any technical problems, the
+  reward terms you were offered, whether you qualified for the reward, your
+  reward dates, and short notes the maintainer writes about your testing (for
+  example, why a missed day was accepted). Other answers from the sign-up form
+  are copied into it only when needed to run the beta.</p>
+  <p>The tracker is stored in KaiSip's database on Supabase, in Singapore.
+  Only the maintainer can open it, after a two-step sign-in. We use it only to
+  run the test you signed up for and to give you the reward you were offered,
+  never for marketing. The maintainer decides who qualifies; nothing is
+  decided automatically. If you live in the EU or UK, our legal basis is
+  running the test and reward you signed up for (contract), and the beta
+  emails rely on the consent you gave on the form, which you can withdraw at
+  any time.</p>
   <p>We keep sign-up data, the tracker included, until your reward has been
-  given and has ended, or until we confirm there will be no paid features (or
-  you are not eligible for the reward), then delete it within 3 months. To
-  leave or ask anything, email certprep.support@gmail.com.</p>
+  given and has ended, or until we confirm there will be no paid features or
+  that you won't qualify, then delete it within 3 months. If you ask us to
+  delete it sooner, we will (we then can't give you the reward). Encrypted
+  backups of the database are deleted after 30 days, so a deleted record is
+  gone from them within 30 days. To see, correct or delete your record, to
+  leave, or to ask anything, email certprep.support@gmail.com.</p>
 
   <h2 id="s4">4. Cookies and consent</h2>
   <p>The App itself sets no cookies. The only cookie scenario is Google
@@ -219,8 +230,9 @@
     <tr><td>Gmail (Google)</td><td>Our support inbox, for emails you choose to send us</td><td>Only when you email us</td></tr>
     <tr><td>Google Forms and Sheets</td><td>Beta tester sign-up and short surveys</td><td>Only if you sign up to test</td></tr>
     <tr><td>Google Play Console</td><td>The Android test tester list</td><td>Only if you join the Android test</td></tr>
-    <tr><td>Supabase</td><td>The private beta tester tracker (seen only by the maintainer)</td><td>Only if you sign up to test</td></tr>
-    <tr><td>Cloudflare</td><td>Website hosting</td><td>Every visit (technical logs)</td></tr>
+    <tr><td>Supabase</td><td>Stores the private beta tester tracker, in Singapore (only the maintainer can open it)</td><td>Only if you sign up to test</td></tr>
+    <tr><td>GitHub</td><td>Runs the nightly job that makes encrypted backups of KaiSip's database</td><td>Only if you sign up to test</td></tr>
+    <tr><td>Cloudflare</td><td>Website hosting, and keeping those encrypted backups for 30 days</td><td>Every visit (technical logs); backups hold your details only if you sign up to test</td></tr>
     <tr><td>Expo (EAS Update)</td><td>Delivering updates to test versions of the mobile app</td><td>Each time a test version of the mobile app opens (never the Google Play version)</td></tr>
     <tr><td>Ko-fi</td><td>Optional donations</td><td>Only if you follow a "Support on Ko-fi" link (website only; never in the mobile app)</td></tr>
   </table>
@@ -305,6 +317,10 @@
   data in your browser. In the mobile app, reset your progress in Settings or
   delete the app. For anything else — including requests relating to
   feedback messages — contact us using section 11.</p>
+  <p>If you signed up to test, email us to get a copy of your tester record,
+  or to correct or delete it (section 3e). We answer within 30 days. You can
+  also complain to the data protection authority where you live; in the
+  Philippines, that is the National Privacy Commission (privacy.gov.ph).</p>
   <p>We do not sell personal information, and we do not use your data for
   targeted advertising.</p>
 
@@ -312,7 +328,10 @@
   <p>KaiSip is used by candidates worldwide. The third-party services above
   may process data in countries other than yours. By using the App with
   analytics accepted, you understand that anonymous usage data may be
-  processed by Google in that manner.</p>
+  processed by Google in that manner. If you sign up to test, your details are
+  kept by Google and, for the tester tracker, by Supabase in Singapore, with
+  encrypted backups made on GitHub and kept by Cloudflare. We stay
+  responsible for your details wherever they are processed.</p>
 
   <h2 id="s9">9. Children's privacy</h2>
   <p>KaiSip is a professional certification study tool intended for adults

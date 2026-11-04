@@ -362,6 +362,10 @@ const bd = await page.evaluate(() => {
     c2: B.csvCell(' =1+1'), c3: B.csvCell('\n=1'), c4: B.csvCell('\uFF1D1'), c5: B.csvCell('-5 days'),
     ik: [B.inboxKey('J.O.H.N+beta@Gmail.com'), B.inboxKey('john@googlemail.com'), B.inboxKey('a.b+x@test.invalid')].join(' '),
     del1: B.actions({ registered_on: '2026-01-01', invited_on: '2026-01-02', opted_in_on: '2026-01-03', completion: 'approved', approved_on: '2026-01-20', participation: 'continuous', reward_activated_on: '2026-01-20' }, '2026-07-21').map((a) => a.key).join(','),
+    fb1: B.canApprove({ registered_on: '2026-10-01', terms_offered: 'T', last_feedback_on: '2026-10-05', participation: 'unchecked' }, '2026-10-06'),
+    fb2: B.canApprove({ registered_on: '2026-10-01', terms_offered: 'T', last_feedback_on: '2026-10-05', participation: 'unchecked' }, '2026-10-06', '2026-10-04'),
+    fb3: B.actions({ registered_on: '2026-10-01', invited_on: '2026-10-02', terms_offered: 'T', last_feedback_on: '2026-10-05', participation: 'unchecked', completion: 'pending' }, '2026-10-06')[0].key,
+    fb4: B.stage({ registered_on: '2026-10-01', participation: 'interrupted', last_feedback_on: '2026-10-03', completion: 'pending' }, '2026-10-06'),
     del2: B.actions({ registered_on: '2026-01-01', participation: 'interrupted', completion: 'pending' }, '2026-02-01').map((a) => a.key).join(',')
   };
 });
@@ -378,6 +382,9 @@ const pgDates = psql(`select (date '2026-08-31' + interval '6 months')::date, (d
 check('CSV export also neutralises formulas after spaces, line breaks and full-width signs', [bd.c2, bd.c3, bd.c4, bd.c5].every((c) => c.startsWith('"\'')), [bd.c2, bd.c3, bd.c4, bd.c5].join(' '));
 check('Gmail dots and "+tags" reach the same inbox', bd.ik === 'john@gmail.com john@gmail.com a.b@test.invalid', bd.ik);
 check('after the reward ends, and for testers who are not eligible, the desk says "delete their record"', bd.del1 === 'delete' && bd.del2 === 'delete', bd.del1 + ' / ' + bd.del2);
+check('feedback route: one piece of feedback qualifies without the 14 days, but not before the feedback date', bd.fb1 === true && bd.fb2 === false, bd.fb1 + ' ' + bd.fb2);
+check('feedback route: a tester with feedback gets "approve" as their next step', bd.fb3 === 'approve', bd.fb3);
+check('feedback route: a tester who left early but sent feedback is not closed', bd.fb4 !== 'closed', bd.fb4);
 check('date order is read from the whole file: day-first, month-first, or ask', bd.o1 === 'dmy' && bd.o2 === 'mdy' && bd.o3 === '' && bd.o4 === 'mdy', [bd.o1, bd.o2, bd.o3, bd.o4].join(','));
 check('a Google Forms timestamp (2026/11/04 2:03:22 PM GMT+8) reads as 4 Nov 2026', bd.g1 === '2026-11-04', bd.g1);
 check('the database calculates the same dates', pgDates === '2027-02-28|2028-02-29|2026-11-08', pgDates);

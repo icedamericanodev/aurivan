@@ -89,7 +89,7 @@ var BD = (function () {
    * or closed (not eligible / interrupted).
    */
   function stage(t, today) {
-    if (t.completion === 'not_eligible' || t.participation === 'interrupted') return 'closed';
+    if (t.completion === 'not_eligible' || (t.participation === 'interrupted' && !t.last_feedback_on)) return 'closed';
     if (t.completion === 'approved') {
       if (t.reward_activated_on && t.reward_activated_on <= today) {
         var ends = t.reward_ends_on || rewardEnds(t);
@@ -116,19 +116,38 @@ var BD = (function () {
   };
 
   /** What approval needs, and whether each is met (the database enforces the first four). */
-  function approvalChecks(t, today, onDate) {
+  /**
+   * Who qualifies (the published promise): the terms on record, and EITHER
+   * route 1, 14 days in the Android test (opt-in, day 14, participation
+   * passed), OR route 2, at least one piece of feedback (recorded on or
+   * before the approval date). The database enforces the same rule.
+   */
+  function routes(t, today, onDate) {
     var due = t.opted_in_on ? addDays(t.opted_in_on, REVIEW_DAYS) : null;
     var when = onDate || today;
+    var partOk = t.participation === 'continuous' || t.participation === 'interrupted_technical';
+    var days = !!due && when >= due && partOk;
+    var feedback = !!t.last_feedback_on && when >= t.last_feedback_on;
+    var terms = String(t.terms_offered || '').trim().length > 0;
+    return { days: days, feedback: feedback, terms: terms, due: due, when: when, partOk: partOk };
+  }
+  function approvalChecks(t, today, onDate) {
+    var r = routes(t, today, onDate);
     return [
-      { key: 'optin', ok: !!t.opted_in_on, req: true, text: t.opted_in_on ? 'Google Play opt-in recorded (' + fmt(t.opted_in_on) + ')' : 'Record the Google Play opt-in date' },
-      { key: 'days', ok: !!due && when >= due, req: true, text: due ? (when >= due ? '14 days reached on ' + fmt(due) : '14 days reached on ' + fmt(due) + ' (' + daysBetween(when, due) + ' to go)') : '14 days counted from the opt-in' },
-      { key: 'part', ok: t.participation === 'continuous' || t.participation === 'interrupted_technical', req: true, text: t.participation === 'continuous' ? 'Continuous participation checked' : t.participation === 'interrupted_technical' ? 'Technical gap checked and accepted' : t.participation === 'interrupted' ? 'Participation was interrupted' : 'Check continuous participation' },
-      { key: 'terms', ok: String(t.terms_offered || '').trim().length > 0, req: true, text: 'Eligibility terms on record' },
-      { key: 'feedback', ok: !!t.last_feedback_on, req: false, text: t.last_feedback_on ? 'Feedback received (' + fmt(t.last_feedback_on) + ')' : 'No feedback recorded yet (recommended)' }
+      { key: 'terms', group: 'both', ok: r.terms, req: true, text: 'Eligibility terms on record' },
+      { key: 'optin', group: 'days', ok: !!t.opted_in_on, text: t.opted_in_on ? 'Google Play opt-in recorded (' + fmt(t.opted_in_on) + ')' : 'Record the Google Play opt-in date' },
+      { key: 'days', group: 'days', ok: !!r.due && r.when >= r.due, text: r.due ? (r.when >= r.due ? '14 days reached on ' + fmt(r.due) : '14 days reached on ' + fmt(r.due) + ' (' + daysBetween(r.when, r.due) + ' to go)') : '14 days counted from the opt-in' },
+      { key: 'part', group: 'days', ok: r.partOk, text: t.participation === 'continuous' ? 'Continuous participation checked' : t.participation === 'interrupted_technical' ? 'Technical gap checked and accepted' : t.participation === 'interrupted' ? 'Participation was interrupted' : 'Check continuous participation' },
+      { key: 'feedback', group: 'feedback', ok: r.feedback, text: t.last_feedback_on ? 'Feedback received (' + fmt(t.last_feedback_on) + ')' : 'No feedback recorded yet' }
     ];
   }
   function canApprove(t, today, onDate) {
-    return approvalChecks(t, today, onDate).every(function (c) { return c.ok || !c.req; });
+    var r = routes(t, today, onDate);
+    return r.terms && (r.days || r.feedback);
+  }
+  function qualifiesBy(t, today, onDate) {
+    var r = routes(t, today, onDate);
+    return r.days && r.feedback ? 'both' : r.days ? 'days' : r.feedback ? 'feedback' : '';
   }
 
   /**
@@ -167,6 +186,11 @@ var BD = (function () {
       var ends = t.reward_ends_on || rewardEnds(t);
       var left = daysBetween(today, ends);
       if (left <= 14) add('ending', 'Reward ends ' + fmt(ends), left + ' day' + (left === 1 ? '' : 's') + ' left. A good moment for a thank-you.', true, addDays(ends, -14));
+    }
+    if ((s === 'registered' || s === 'invited' || s === 'testing' || (s === 'review' && t.participation === 'interrupted'))
+        && t.completion === 'pending' && t.last_feedback_on && canApprove(t, today)) {
+      out = out.filter(function (a) { return a.key !== 'feedback'; });
+      out.unshift({ key: 'approve', label: 'Approve completion (qualifies by feedback)', why: 'Feedback received on ' + fmt(t.last_feedback_on) + '. One piece of feedback qualifies, even without the 14 days.', attn: true, due: t.last_feedback_on });
     }
     if (t.follow_up_on && t.follow_up_on <= today) add('follow', 'Follow up' + (t.follow_up_note ? ': ' + t.follow_up_note : ''), 'Follow-up date ' + fmt(t.follow_up_on) + '.', true, t.follow_up_on);
     return out;
@@ -288,7 +312,7 @@ var BD = (function () {
   }
   return { todayISO: todayISO, isISO: isISO, addDays: addDays, addMonths: addMonths, daysBetween: daysBetween, fmt: fmt,
     reviewDue: reviewDue, rewardEnds: rewardEnds, emailKey: emailKey, inboxKey: inboxKey, validEmail: validEmail, stage: stage, STAGES: STAGES,
-    approvalChecks: approvalChecks, canApprove: canApprove, actions: actions, needsAttention: needsAttention,
+    approvalChecks: approvalChecks, canApprove: canApprove, qualifiesBy: qualifiesBy, actions: actions, needsAttention: needsAttention,
     parseCSV: parseCSV, guessColumns: guessColumns, parseFormDate: parseFormDate, dateOrder: dateOrder,
     planImport: planImport, csvCell: csvCell, initials: initials, REVIEW_DAYS: REVIEW_DAYS, REWARD_MONTHS: REWARD_MONTHS };
 })();
@@ -1001,10 +1025,16 @@ function refreshDrawer() {
   } else rw.innerHTML = '<div class="calc"><span class="tag auto">Auto</span><span class="meta">The end date appears when you record the activation.</span></div>';
   // Approval checklist
   var checks = BD.approvalChecks(t, today, t.approved_on || today);
-  $('checks').innerHTML = checks.map(function (c) {
-    var cls = c.ok ? 'ok' : c.req ? 'no' : 'warn';
-    return '<li class="' + cls + '"><span class="mk" aria-hidden="true">' + (c.ok ? '✓' : c.req ? '·' : '!') + '</span><span>' + esc(c.text) + (c.req ? '' : '') + '<span class="sr-only">' + (c.ok ? ' (done)' : c.req ? ' (required)' : ' (recommended)') + '</span></span></li>';
-  }).join('');
+  var by = BD.qualifiesBy(t, today, t.approved_on || today);
+  var li = function (c) {
+    return '<li class="' + (c.ok ? 'ok' : 'no') + '"><span class="mk" aria-hidden="true">' + (c.ok ? '✓' : '·') + '</span><span>' + esc(c.text) + '<span class="sr-only">' + (c.ok ? ' (done)' : ' (not yet)') + '</span></span></li>';
+  };
+  var head = function (txt) { return '<li class="route-head">' + txt + '</li>'; };
+  $('checks').innerHTML = checks.filter(function (c) { return c.group === 'both'; }).map(li).join('') +
+    head('Then <b>either</b> 14 days in the Android test' + (by === 'days' || by === 'both' ? ' <span class="chip green">met</span>' : '')) +
+    checks.filter(function (c) { return c.group === 'days'; }).map(li).join('') +
+    head('<b>or</b> at least one piece of feedback' + (by === 'feedback' || by === 'both' ? ' <span class="chip green">met</span>' : '')) +
+    checks.filter(function (c) { return c.group === 'feedback'; }).map(li).join('');
   var sel = $('dForm').elements.completion;
   var okToApprove = BD.canApprove(t, today, t.approved_on || today);
   sel.querySelector('option[value="approved"]').disabled = !okToApprove && t.completion !== 'approved';

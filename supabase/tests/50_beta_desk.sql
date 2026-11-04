@@ -13,13 +13,14 @@
 --  4. Dates: the 14-day review counts from the Google Play opt-in (never from
 --     registration); the reward ends six calendar months after activation
 --     (month ends and leap years included); nobody can write either one.
---  5. Rules: approval needs an opt-in, day 14, a passed participation check
---     and the terms on record; a technical gap needs its note; a reward needs
---     an approval first.
+--  5. Rules: approval needs the terms on record and either the 14-day route
+--     (opt-in, day 14, a passed participation check) or the feedback route
+--     (feedback recorded, approval on or after it); a technical gap needs its
+--     note; a reward needs an approval first.
 --
 -- Run: supabase test db   (CI: .github/workflows/supabase.yml)
 begin;
-select plan(62);
+select plan(67);
 
 -- Accounts: an admin, a learner, and listed accounts that must NOT count.
 insert into auth.users (id, email, email_confirmed_at) values
@@ -200,6 +201,24 @@ select is((select reward_ends_on from public.beta_testers where email_key = 'ana
 update public.beta_testers set reward_activated_on = '2026-11-10', approved_on = '2026-11-09' where email_key = 'ana@test.invalid';
 select is((select reward_ends_on from public.beta_testers where email_key = 'ana@test.invalid'), '2027-05-10'::date,
   'six months from 10 Nov 2026 ends on 10 May 2027');
+
+-- The feedback route (20261104010000): one piece of feedback qualifies, without the 14 days.
+update public.beta_testers set terms_offered = 'T' where email_key = 'ben@test.invalid';
+select throws_ok($$ update public.beta_testers set completion = 'approved', approved_on = current_date where email_key = 'ben@test.invalid' $$,
+  '23514', null, 'no opt-in and no feedback: approval is refused');
+update public.beta_testers set last_feedback_on = current_date - 2 where email_key = 'ben@test.invalid';
+select throws_ok($$ update public.beta_testers set completion = 'approved', approved_on = current_date - 3 where email_key = 'ben@test.invalid' $$,
+  '23514', null, 'approval cannot come before the feedback it relies on');
+select lives_ok($$ update public.beta_testers set completion = 'approved', approved_on = current_date where email_key = 'ben@test.invalid' $$,
+  'one piece of feedback qualifies a tester who never reached 14 days');
+select throws_ok($$ update public.beta_testers set terms_offered = '' where email_key = 'ben@test.invalid' $$,
+  '23514', null, 'the feedback route still needs the terms on record');
+update public.beta_testers set completion = 'pending', approved_on = null where email_key = 'ben@test.invalid';
+reset role;
+select ok((select terms_offered like '%14 days, or send at least one genuine piece of feedback%' and terms_offered like '%CISA Premium%'
+           from public.beta_desk_settings), 'the default terms say "14 days, or feedback" and CISA Premium');
+set local role authenticated;
+set local request.jwt.claims to '{"sub":"00000000-0000-0000-0000-0000000000d1","role":"authenticated","aal":"aal2"}';
 
 -- An admin deletes a record.
 select lives_ok($$ delete from public.beta_testers where email_key = 'ben@test.invalid' $$, 'an admin deletes a tester record');

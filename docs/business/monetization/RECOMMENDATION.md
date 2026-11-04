@@ -22,7 +22,7 @@
   - The learner sees at most one paywall they didn't ask for in any 7 days.
   - Copy never mentions streaks, the plant, loss, countdowns or struck-through prices.
   - It shows the store's localised price, "one payment · 6 months · never renews", Restore, Terms, Privacy and the not-affiliated line.
-- **Beta testers' 6 months free.** A RevenueCat promotional entitlement tied to the signed-in account, running from Premium launch day plus 6 months and covering every course live in that window.
+- **Beta testers' 6 months free.** A RevenueCat promotional entitlement tied to the signed-in account, running from Premium launch day plus 6 months. **Owner decision 4 Nov 2026: CISA Premium only** (other certifications not included); it was "every course live in that window". Who qualifies: 14 days in the Android test, or at least one piece of feedback. Tracked in the Beta Desk (`docs/beta/BETA_DESK.md`).
   - No promo codes, no trials, and no code-entry box.
 - **Fairness.**
   - A 14-day refund with no questions asked, handled through support.

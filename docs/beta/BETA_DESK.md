@@ -75,8 +75,27 @@ lists them. Delete one by opening the tester → Delete. To clear every record
 whose reward ended more than 3 months ago in one go (Supabase SQL editor):
 
 ```sql
+-- Reward ended more than 3 months ago
 delete from public.beta_testers where reward_ends_on < current_date - interval '3 months';
+-- Not eligible or interrupted, decided more than 3 months ago
+delete from public.beta_testers
+ where (completion = 'not_eligible' or participation = 'interrupted')
+   and coalesce(participation_checked_on, registered_on) < current_date - interval '3 months';
 ```
+
+- When the test ends, mark anyone who never joined as **Not eligible**, so
+  they show under **Due for deletion**.
+- When you delete a record, also delete that tester's row in the Google Sheet
+  and any CSV you exported. Remove them from the Play Console list only after
+  the test is over.
+- Testers can ask for a copy of their record, notes included. Write notes as
+  plain facts about the testing (dates, what broke, what you agreed). Never
+  write health, family, religion or money reasons for a gap, even if the
+  tester tells you; write "personal reason, accepted".
+- Encrypted nightly backups keep a deleted record for up to 30 days (the
+  privacy policy says so).
+- If you ever add a second admin, update privacy.html section 3e first ("Only
+  the maintainer can open it").
 
 ## Automatic vs. manual
 
