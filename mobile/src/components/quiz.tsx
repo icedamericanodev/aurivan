@@ -428,7 +428,8 @@ function AnswerPlateRow({ kind, row, missed }: { kind: 'pick' | 'best'; row: Pla
         <T v="badgeLetter" color={isPick ? tone : c.bg}>{row.letter}</T>
       </View>
       <View style={{ flex: discAbove ? undefined : 1, alignSelf: 'stretch' }}>
-        <FieldText v="head" color={tone} style={{ marginBottom: 2 }}>{key}</FieldText>
+        {/* TYPE_SCALE row 14: a sentence-case caption, as the web's answer tag (uppercase is for kickers only). */}
+        <T v="caption" color={tone} style={{ marginBottom: 2 }}>{key}</T>
         <FieldText v={isPick ? 'option' : 'best'}>{row.text}</FieldText>
         {isPick && row.why ? (
           <FieldText v="why" style={{ marginTop: space.sm }}>{`Why not ${row.letter}: ${row.why}`}</FieldText>
@@ -442,7 +443,7 @@ function AnswerPlateRow({ kind, row, missed }: { kind: 'pick' | 'best'; row: Pla
 /**
  * Premium round 2 (REPORT spec 2.6–2.7), under Fig. 4 after any answer:
  *
- * - KEY IDEA: a tracked head over the key idea set as a quotation (`type.quote`) in `ink`. The vine
+ * - KEY IDEA: a sentence-case caption over the key idea set as a quotation (`type.quote`) in `ink`. The vine
  *   rule (the stem down its left) is gone here; Eliminate two and Final two keep their vine inside
  *   the "Read more" fold below.
  * - EXAM CUE: a label (`raised`, 1pt `line` edge, 3pt corners) with the `clay` key
@@ -467,7 +468,8 @@ export function KeyIdeaCue({ keyIdea, cues, visible }: { keyIdea?: string; /** T
   const wide = width >= WIDE_MARGIN && !largeText && Boolean(keyIdea) && cues.length > 0;
   const idea = keyIdea ? (
     <View accessible accessibilityLabel={`Key idea: ${keyIdea}`} style={wide ? { flex: 1 } : undefined}>
-      <FieldText v="head">Key idea</FieldText>
+      {/* A caption in the accent text colour, as the web's Key idea label. */}
+      <T v="caption" color={c.accentText}>Key idea</T>
       <T v="quote" color={c.ink} style={{ marginTop: space.xs }}>{keyIdea}</T>
     </View>
   ) : null;
@@ -481,7 +483,7 @@ export function KeyIdeaCue({ keyIdea, cues, visible }: { keyIdea?: string; /** T
         testID="exam-cue-label"
         style={[groveTile(c), { paddingVertical: space.md, paddingHorizontal: space.lg, marginTop: wide ? 0 : space.lg }]}
       >
-        <FieldText v="head" color={c.clay}>{key}</FieldText>
+        <T v="caption" color={c.clay}>{key}</T>
         <T v="body" color={c.ink} style={{ marginTop: space.xs }}>{cue.body}</T>
       </View>
     );
@@ -706,8 +708,8 @@ export function StemRecap({
   scenario?: string;
   caption?: string;
   /**
-   * Premium round 2 (the Field Guide answer screen): the caption is the guide's tracked head
-   * ("QUESTION") and the stem is set in Fraunces 17/24 `ink2`, still cut to two lines. Left out
+   * Premium round 2 (the Field Guide answer screen): the caption is a sentence-case caption
+   * ("Question") and the stem is set in Fraunces 17/24 `ink2`, still cut to two lines. Left out
    * (a lesson's quick check), the 1.49 look.
    */
   field?: boolean;
@@ -725,7 +727,8 @@ export function StemRecap({
   return (
     <View style={{ marginTop: space.md }}>
       <View accessible accessibilityLabel={`${caption}: ${whole}`}>
-        {field ? <FieldText v="head">{caption}</FieldText> : <T v="caption" color={c.ink2}>{caption}</T>}
+        {/* One caption for both looks, so the same "Question" label never changes role. */}
+        <T v="caption" color={c.ink2}>{caption}</T>
         {scenario ? <Collapse open={open}>{words(scenario)}</Collapse> : null}
         {words(stem, canOpen && !open ? 2 : undefined)}
       </View>

@@ -69,7 +69,9 @@ export function SpecimenRow({
           {word !== undefined ? (
             <FieldText v="value" color={color}>{word}</FieldText>
           ) : (
-            <BigNum value={value ?? ''} pct={pct} size={22} color={color} roll={roll} />
+            // TYPE_SCALE row 202: You's and Results' stats are the 30 stat step, as the web's stat numerals.
+            // The row stacks from x1.3 text (`large`), so 30 x 1.3 still fits.
+            <BigNum value={value ?? ''} pct={pct} size={30} color={color} roll={roll} />
           )}
           {unit ? <T v="meta">{unit}</T> : null}
         </View>

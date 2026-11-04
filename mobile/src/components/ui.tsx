@@ -1913,7 +1913,11 @@ export function PushedHeader({
   const { c } = useTheme();
   const Icon = icon === 'back' ? ChevronLeft : X;
   // Row 214: from x1.3 text the bar's title takes a second line instead of being cut.
-  const titleLines = useFontScale() >= LARGE_TEXT ? 2 : 1;
+  const fontScale = useFontScale();
+  const titleLines = fontScale >= LARGE_TEXT ? 2 : 1;
+  // The cross-faded title sits in an absolute layer (motion.tsx CrossFade), so its box must be
+  // tall enough to hold every line it may show, or the title spills out of the bar.
+  const titleBox = Math.max(44, Math.ceil(titleLines * (type.label.lineHeight ?? 22) * Math.min(fontScale, maxScale.label)));
   return (
     <View style={styles.pushed}>
       <Pressable
@@ -1931,7 +1935,7 @@ export function PushedHeader({
           (title && showTitle !== undefined ? (
             <CrossFade
               showSecond={showTitle}
-              style={{ alignSelf: 'stretch', minHeight: 44 }}
+              style={{ alignSelf: 'stretch', minHeight: titleBox }}
               // Hidden from screen readers even when shown: it repeats the page's hero heading.
               second={
                 <View accessibilityElementsHidden importantForAccessibility="no-hide-descendants">

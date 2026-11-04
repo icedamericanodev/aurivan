@@ -596,9 +596,9 @@ the literal with the role's token (no visual change).
 | 199 | `components/ui.tsx:1799, 1805` BigNum 34; `app/readiness.tsx:290`; `components/fieldguide/ScaleBar.tsx:57` | serifNumeral(34) 34/37 | num.range 38/41 |
 | 200 | `theme/tokens.ts:249` `type.stat` | 34/34, never used | retire at the next bundle rebuild |
 | 201 | Today range and its step-downs 38 / 34 / 30 / 24 | four sizes | 38, then 30, then 22 (section 2.1) |
-| 202 | Stat component and clearing stats | serifNumeral(30) | num.stat 30/32 (no change) |
+| 202 | Stat component, clearing stats, and You's and Results' stat rows (`SpecimenLabel.tsx:72`, BigNum size 30) | serifNumeral(30) | num.stat 30/32 (no change) |
 | 203 | serifNumeral 17, 24, 26 callers (Trail, Lead), `components/ui.tsx:1799 to 1847` | 17, 24, 26 | num.value 22 (24, 26). serifNumeral(17): step and list numbers (`notes.tsx:687`, `noteFigures.tsx:241`, `lesson.tsx:362, 382, 414`) become aside (`fieldType.keyNo`), as web rows 82 and 83; counts (`journey.tsx:616, 618`, `StemChart.tsx:459`, `notes.tsx:640` if it is a section number) become num.inline 20. Before the number grows, `lesson.tsx:382`'s fixed `width: 32, height: 32` disc becomes `minWidth: 32, minHeight: 32, padding: 2` (as `noteFigures.tsx:240`) |
-| 203a | serifNumeral(22) and BigNum size 22 callers: `ui.tsx:1837`, `lesson.tsx:523`, `learn.tsx:601`, `SpecimenLabel.tsx:72` | 22/24 | num.value 22/26 (`role.numValue`) |
+| 203a | serifNumeral(22) and BigNum size 22 callers: `ui.tsx:1837`, `lesson.tsx:523`, `learn.tsx:601` | 22/24 | num.value 22/26 (`role.numValue`) |
 | 204 | `components/ui.tsx:1818` Percent; callers `journey.tsx:616`, `StemChart.tsx:459` (17, gives 8pt), `StemChart.tsx:227, 420` (20, gives 10pt) | 8 to 10pt | `percentSup(Math.max(size, 23))`, 11pt floor |
 | 205 | `theme/tokens.ts:308` numeralUnit 12/16, `310` statUnit 15/20 | two unit styles | meta 14/20 (units beside numbers) |
 | 206 | `theme/tokens.ts:254` stage 19/25; `329` grewLine 17/22; fieldType sub, keyNo 16/22, why 15/21; share-card skill 16/22 (`319`) | five italic sizes | quote (stage), aside (grewLine, sub, keyNo, why); skill stays inside the share card (E5). keyNo moves to aside's 2.0 limit only after `KeyList.tsx:56` changes `width: 22` to `minWidth: 22` (and `groveToday.tsx:299`'s forced 1.3 goes) |

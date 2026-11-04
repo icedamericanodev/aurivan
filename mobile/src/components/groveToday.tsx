@@ -185,12 +185,13 @@ export function RingCaptionText({ caption }: { caption: RingCaption }) {
         ) : caption.big ? (
           serif(caption.big)
         ) : null}
-        <T v="body" color={c.onForest2} center>
+        {/* Section 2.1: words beside or under a serif numeral are meta, as the web's ring caption. */}
+        <T v="meta" color={c.onForest2} center>
           {caption.rest}
         </T>
       </View>
       {caption.line2 ? (
-        <T v="body" color={c.onForest2} center>
+        <T v="meta" color={c.onForest2} center>
           {caption.line2}
         </T>
       ) : null}
@@ -241,9 +242,10 @@ export function ExamDateHeroTile({ shown, spoken, onSet }: { shown: string | nul
   if (shown) {
     return (
       <HeroTile k="Exam date" spoken={`Exam date, ${spoken ?? shown}`} testID="today-exam-date">
-        <FieldText v="value" color={c.onForest}>
+        {/* The same numeral step as the Accuracy tile beside it, so the two grow together. */}
+        <T v="numValue" num color={c.onForest}>
           {shown}
-        </FieldText>
+        </T>
       </HeroTile>
     );
   }

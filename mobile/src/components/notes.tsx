@@ -621,8 +621,8 @@ export function ExamTraps({ traps }: { traps: NoteSubtopic['examTraps'] }) {
 }
 
 /**
- * One of the page's three movements: the serif numeral (17, accentText), a
- * caption kicker in ink2, then a hairline to the edge, with 48 above it (the
+ * One of the page's three movements: the serif numeral (20, accentText), a
+ * headline (R4: a reading page's section heads are headline), then a hairline to the edge, with 48 above it (the
  * rhythm rule's "between page movements"). One screen-reader heading, so a
  * screen-reader user can jump between them, and the "On this page" row can
  * move focus here.
@@ -638,7 +638,8 @@ export function Movement({ n, title, ref }: { n: number; title: string; ref?: Re
       style={{ marginTop: space.xxxl, flexDirection: 'row', alignItems: 'center', gap: space.sm }}
     >
       <BigNum value={String(n)} size={20} color={c.accentText} />
-      <T v="caption" color={c.ink2}>{title}</T>
+      {/* Shrinks so a long head wraps at large text instead of pushing past the edge. */}
+      <T v="headline" style={{ flexShrink: 1 }}>{title}</T>
       <View style={{ flex: 1, height: 1, backgroundColor: c.line, marginLeft: space.xs }} />
     </View>
   );
