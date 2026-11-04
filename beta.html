@@ -4,14 +4,14 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="robots" content="index, follow">
-<title>Join the KaiSip beta — free CISA exam prep</title>
-<meta name="description" content="Help test KaiSip, a free CISA exam-prep app, before it launches on Google Play. Sign up in about 2 minutes.">
+<title>Join the KaiSip beta: CISA exam prep, free during the beta</title>
+<meta name="description" content="Help test KaiSip, a CISA exam-prep app that's free during the beta, before it launches on Google Play. Sign up in about 2 minutes.">
 <link rel="canonical" href="https://kaisip.com/beta">
 <!-- Link previews (Messenger, Facebook, LinkedIn, Threads). Same card as the home page. -->
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="KaiSip">
-<meta property="og:title" content="Help test KaiSip before it launches">
-<meta property="og:description" content="A free CISA exam-prep app. Join the Android beta on Google Play, study with it for two weeks, and tell us what to fix.">
+<meta property="og:title" content="Test KaiSip, a CISA exam-prep app, before it launches">
+<meta property="og:description" content="A CISA exam-prep app, free during the beta. Join the Android beta on Google Play, study with it for two weeks, and tell us what to fix. Not affiliated with ISACA.">
 <meta property="og:url" content="https://kaisip.com/beta">
 <meta property="og:image" content="https://kaisip.com/assets/og-kaisip.png">
 <meta property="og:image:type" content="image/png">
@@ -41,6 +41,7 @@
     --forest: #1E4A34; --on-forest: #F3F1EA; --on-forest2: #C9DACD;
     --tip: #7A5100; --tip-bg: #F3EAD3;
     --tn-needle: #1E4A34; --tn-ring: #2B6E4A; --tn-word: #17231B;
+    --frame: #17231B; /* the phone frame around the hero screenshot */
     --f-serif: Fraunces, Georgia, 'Times New Roman', serif;
     --f-sans: Figtree, system-ui, -apple-system, 'Segoe UI', sans-serif;
   }
@@ -53,7 +54,7 @@
       --btn: #A9D9BA; --on-btn: #0F1F16; --pill: #EEF2EA; --on-pill: #0F1F16;
       --forest: #21432F; --on-forest: #EEF2EA; --on-forest2: #BCD2C2;
       --tip: #E9C46A; --tip-bg: #2B2418;
-      --tn-needle: #F3F1EA; --tn-ring: #A9D9BA; --tn-word: #F3F1EA;
+      --tn-needle: #F3F1EA; --tn-ring: #A9D9BA; --tn-word: #F3F1EA; --frame: #33433A;
     }
   }
   :root[data-theme="dark"] {
@@ -64,7 +65,7 @@
     --btn: #A9D9BA; --on-btn: #0F1F16; --pill: #EEF2EA; --on-pill: #0F1F16;
     --forest: #21432F; --on-forest: #EEF2EA; --on-forest2: #BCD2C2;
     --tip: #E9C46A; --tip-bg: #2B2418;
-    --tn-needle: #F3F1EA; --tn-ring: #A9D9BA; --tn-word: #F3F1EA;
+    --tn-needle: #F3F1EA; --tn-ring: #A9D9BA; --tn-word: #F3F1EA; --frame: #33433A;
   }
   /* Fraunces + Figtree, served from this site (no request to a font service). */
   @font-face { font-family: 'Fraunces'; font-style: normal; font-weight: 400 500; font-display: swap; src: url('assets/fonts/Fraunces_500Medium.woff2') format('woff2'); }
@@ -92,8 +93,16 @@
 
   /* Hero */
   .hero { text-align: center; padding: 40px 0 8px; }
-  .hero-icon { width: 88px; height: 88px; border-radius: 22px; display: block; margin: 0 auto 20px;
-    box-shadow: 0 6px 20px rgba(23, 35, 27, 0.18); }
+  /* The real answer screen from the store listing, in a simple phone frame. */
+  .hero-shot { margin: 32px auto 0; width: min(260px, 72vw); }
+  .hero-shot img { display: block; width: 100%; height: auto; border-radius: 28px;
+    border: 7px solid var(--frame); background: var(--card);
+    box-shadow: 0 14px 36px rgba(23, 35, 27, 0.20); }
+  @media (min-width: 860px) {
+    .hero { display: grid; grid-template-columns: 1fr 280px; gap: 48px; align-items: center; text-align: left; padding-top: 48px; }
+    .hero h1, .hero .lead { margin-left: 0; }
+    .hero-shot { margin: 0; width: 280px; }
+  }
   .pill { display: inline-block; background: var(--soft); color: var(--accent-text);
     font-size: 13px; font-weight: 700; letter-spacing: 0.02em; padding: 6px 12px; border-radius: 999px; margin: 0 0 14px; }
   h1 { font: 500 clamp(32px, 7vw, 48px)/1.12 var(--f-serif); margin: 0 auto 14px; max-width: 16ch; color: var(--ink); }
@@ -169,16 +178,20 @@
 
   <main>
     <div class="hero">
-      <img class="hero-icon" src="assets/icon.svg" alt="" width="88" height="88">
-      <p class="pill">Android beta · Free</p>
+      <div class="hero-text">
+      <p class="pill">Android beta · CISA exam prep</p>
       <h1>Help test KaiSip before it launches</h1>
-      <p class="lead">KaiSip is a free CISA exam-prep app. Join the beta on Google Play, study with it for two weeks, and tell us what to fix before everyone else gets it.</p>
+      <p class="lead">KaiSip is a CISA exam-prep app, free during the beta. Join the beta on Google Play, study with it for two weeks, and tell us what to fix before everyone else gets it.</p>
       <a class="cta" href="https://docs.google.com/forms/d/e/1FAIpQLSd_HP5ljzZUzkDmbimZmXBdwDb5VlHcCh3BqowUn-kfRcjb9w/viewform" target="_blank" rel="noopener">
         Sign up to test
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
         <span class="sr-only">(opens a Google Form in a new tab)</span>
       </a>
-      <p class="cta-note">A short Google Form. It takes about 2 minutes.</p>
+      <p class="cta-note">A short Google Form for anyone 18 or older. It takes about 2 minutes. <a href="#iphone">On iPhone?</a> Sign up too.</p>
+      </div>
+      <figure class="hero-shot">
+        <img src="assets/beta-answer.webp" width="540" height="960" alt="KaiSip on a phone: after a correct answer, the app shows the key idea, which two options to eliminate, the final two, and an exam cue.">
+      </figure>
     </div>
 
     <section aria-labelledby="how">
@@ -192,12 +205,12 @@
         <li class="card">
           <span class="step-num" aria-hidden="true">2</span>
           <h3>Get your test link</h3>
-          <p>Within 2 days you'll get an email with your link. Tap <strong>Become a tester</strong>, then install KaiSip from Google Play.</p>
+          <p>Once the test is open, you'll get an email with your link, usually within 2 days. Tap <strong>Become a tester</strong>, then install KaiSip from Google Play. Open the link in a browser signed in to that same Google account.</p>
         </li>
         <li class="card">
           <span class="step-num" aria-hidden="true">3</span>
-          <h3>Study and tell us</h3>
-          <p>Use it for at least 14 days. Tell us anything confusing, and especially any answer you think is wrong.</p>
+          <h3>Stay in and study</h3>
+          <p>Stay in the test until we email you that it's finished (usually 2 to 3 weeks). Study when you can; you don't need to open it every day. Tell us anything confusing, and any answer or explanation that doesn't look right.</p>
         </li>
       </ol>
     </section>
@@ -227,7 +240,7 @@
     <section aria-labelledby="iphone">
       <div class="callout">
         <h2 id="iphone">On iPhone?</h2>
-        <p>The iPhone app isn't ready yet. You can still sign up with the same form: you'll join the iPhone waitlist and be among the first to know. Meanwhile, KaiSip works in your phone's browser at <a href="/">kaisip.com</a>.</p>
+        <p>The iPhone app isn't ready yet. You can still sign up with the same form: choose iPhone and tick &ldquo;Email me when the iPhone app is ready&rdquo; to be among the first to know. Meanwhile, KaiSip works in your phone's browser at <a href="/">kaisip.com</a>.</p>
       </div>
     </section>
 
@@ -236,15 +249,19 @@
       <div class="faq">
         <details>
           <summary>Is it really free?</summary>
-          <p>Yes. KaiSip is free today. If paid features never launch, there's nothing to unlock: you keep using the free app like everyone else, and your name stays on the thank-you screen if you asked for it.</p>
+          <p>Yes. Testing costs nothing and you never enter a card. KaiSip is free today. If paid features never launch, there's nothing to unlock: you keep using the free app like everyone else, and you're still credited.</p>
         </details>
         <details>
           <summary>Why 14 days?</summary>
-          <p>Google asks new apps to be tested by real people for 14 days in a row before they can go public on Google Play. Staying in the test for the full two weeks is the biggest help you can give.</p>
+          <p>Google asks new apps to keep at least 12 real testers in the test for 14 days in a row before they can go public on Google Play. That means staying in, not studying every day: missing a day is fine. Please keep KaiSip installed and stay in until we email you that the test is done. If testers leave early, the launch can be delayed. Staying in is the biggest help you can give.</p>
         </details>
         <details>
           <summary>What do I need to do as a tester?</summary>
-          <p>Just study the way you normally would. If something is confusing, broken, or an answer looks wrong, tap <strong>Report a problem</strong> under it in the app, or reply to our email. A few short questions may show up in the app now and then; answering is optional.</p>
+          <p>Just study the way you normally would. After you install, go to <strong>You</strong>, then <strong>Get help or send feedback</strong>, and turn on <strong>I'm a beta tester</strong>: on some days a short question shows on Today, and answering is optional. We'll also email you two short surveys, around day 7 and day 14. If something is confusing, broken, or an answer looks wrong, tap <strong>&middot;&middot;&middot;</strong> on the answer screen and choose <strong>Report a problem with this question</strong>, or reply to our email.</p>
+        </details>
+        <details>
+          <summary>Will I keep my progress after the beta?</summary>
+          <p>Yes. When KaiSip goes public, it updates on your phone like any app and your progress stays.</p>
         </details>
         <details>
           <summary>Will KaiSip help me pass?</summary>
@@ -252,11 +269,11 @@
         </details>
         <details>
           <summary>What happens to my details?</summary>
-          <p>We use your answers on the form only to add you to the Google Play test, email you about the beta, credit you if you asked, and give you the tester reward. We never sell them. The <a href="privacy#s3e">Privacy Policy</a> (section 3e) has the details.</p>
+          <p>We use your answers on the form to add you to the Google Play test, email you about the beta, credit you if you asked, give you the tester reward, and learn which certifications to add next. We never sell them. The <a href="privacy#s3e">Privacy Policy</a> (section 3e) has the details.</p>
         </details>
         <details>
           <summary>How do I leave the test?</summary>
-          <p>Leave the test in Google Play, or email <a href="mailto:certprep.support@gmail.com">certprep.support@gmail.com</a> and we'll take you off the list.</p>
+          <p>Leave the test in Google Play, or email <a href="mailto:certprep.support@gmail.com">certprep.support@gmail.com</a> and we'll take you off the list. If you can, please stay until we email you that the test is finished. It's what lets KaiSip launch on Google Play.</p>
         </details>
       </div>
     </section>
@@ -264,7 +281,7 @@
     <section aria-labelledby="ready">
       <div class="band">
         <h2 id="ready">Ready to help?</h2>
-        <p>Two minutes to sign up. Two weeks of studying. A better app for every CISA candidate.</p>
+        <p>Two minutes to sign up. A couple of weeks of studying. A better app for every CISA candidate.</p>
         <a class="cta" href="https://docs.google.com/forms/d/e/1FAIpQLSd_HP5ljzZUzkDmbimZmXBdwDb5VlHcCh3BqowUn-kfRcjb9w/viewform" target="_blank" rel="noopener">
           Sign up to test
           <span class="sr-only">(opens a Google Form in a new tab)</span>
