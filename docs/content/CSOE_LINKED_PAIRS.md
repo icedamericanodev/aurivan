@@ -130,3 +130,59 @@ Rule for the form builder: Draw no two items of a pair into the same form. Keep 
 | csoe_d5_004 | csoe_d5_053 | d5_053 KC and option A: the 2013 update's 17 principles (part of d5_004's key) |
 | csoe_d5_045 | csoe_d5_046 | both test cube faces; d5_046 WD and d5_045's exam cue: the third face is the entity's structure |
 | csoe_d3_057 | csoe_d3_058 | d3_057 WB: Regulation G covers calls as well as releases, which rules out d3_058's option C (partial) |
+| csoe_d1_025 | csoe_d4_057 | d4_057 CE: an SRC under $100 million revenue is not an accelerated filer (decides d1_025) |
+| csoe_d1_028 | csoe_d1_029 | d1_029's stem gives the 30 June test date (d1_028's key) |
+| csoe_d1_052 | csoe_d3_001 | both Rule 10A-3(b)(1) fee test; d1_052 option A states it |
+| csoe_d3_029 | csoe_d3_051 | same Section 307 internal-ladder rule; d3_029 WC and tip 1 eliminate d3_051 B |
+| csoe_d3_039 | csoe_d3_059 | both Item 406 |
+| csoe_d4_015 | csoe_d4_034 | d4_015 CE: the Treasury Secretary chairs the FSOC (d4_034's key) |
+| csoe_d4_015 | csoe_d4_035 | d4_015 CE and WA: the Insurance Office monitors and advises as a nonvoting member |
+| csoe_d5_001 | csoe_d5_002 | d5_001 CE: operations, reporting and compliance (d5_002's key) |
+| csoe_d5_001 | csoe_d5_021 | d5_001 CE: 'process carried out by the board, management and other personnel' (d5_021's key) |
+| csoe_d5_004 | csoe_d5_025 | d5_004 tip 2: points of focus are optional aids (d5_025's key) |
+| csoe_d5_013 | csoe_d5_032 | d5_013 B, WB and tip 2: ERM is more than a risk list (d5_032's final two) |
+| csoe_d5_021 | csoe_d5_058 | shared 'board, management and other personnel' wording |
+| csoe_d3_017 | csoe_d3_065 | same deficiency definitions; d3_065 wrong explanation D states d3_017's key |
+| csoe_d3_005 | csoe_d3_068 | the same 18 U.S.C. 1350(c) tiers from opposite sides |
+| csoe_d3_025 | csoe_d3_067 | d3_067 says the disclosure committee only advises |
+| csoe_d3_006 | csoe_d3_066 | d3_066 says the 404(a) report is annual (d3_006's key) |
+| csoe_d3_006 | csoe_d3_067 | d3_067 says the 404(a) report is annual (d3_006's key) |
+| csoe_d5_021 | csoe_d5_061 | proposed by the D5 batch 4 author (process definition) |
+| csoe_d5_053 | csoe_d5_068 | proposed by the D5 batch 4 author |
+| csoe_d5_019 | csoe_d5_082 | proposed by the D5 batch 4 author (SOC report users) |
+| csoe_d5_018 | csoe_d5_083 | proposed by the D5 batch 4 author (outsourced activity in ICFR) |
+| csoe_d4_005 | csoe_d4_065 | d4_065's stem implies subpoenas come with a formal order |
+| csoe_d4_023 | csoe_d4_064 | related rules on disclosing an investigation (d4_023 is held out) |
+| csoe_d4_027 | csoe_d4_069 | related limitations rules (d4_027 is held out) |
+| csoe_d4_057 | csoe_d4_083 | 083's explanation and tips name the SEC's Section 989G(b) study (d4_057 is held out) |
+| csoe_d4_022 | csoe_d4_062 | notice and comment for explanatory guidance (d4_022 is held out) |
+| csoe_d4_012 | csoe_d4_073 | Section 21F(c)(2) award bars |
+| csoe_d4_039 | csoe_d4_073 | award bars (d4_039 is held out) |
+| csoe_d4_010 | csoe_d4_072 | 072 wrong explanation D: Section 806 complaints go to Labor |
+| csoe_d4_010 | csoe_d4_074 | 074 wrong explanation D and tip 1: the same fact |
+| csoe_d4_008 | csoe_d4_070 | 070 wrong explanation D: Section 1519 turns on obstructing a federal matter |
+| csoe_d1_019 | csoe_d4_070 | the same Section 1519 statement |
+| csoe_d2_008 | csoe_d4_070 | 070's stem: Rule 2-06 runs longer than five years |
+| csoe_d4_028 | csoe_d4_068 | both on 18 U.S.C. 1348 |
+| csoe_d4_017 | csoe_d4_080 | 080's exam cue: the auditor is registered with the PCAOB |
+| csoe_d4_017 | csoe_d4_081 | 081's stem: the PCAOB investigates broker-dealer audits |
+| csoe_d4_035 | csoe_d4_075 | 075 wrong explanation B: the insurance office's role |
+| csoe_d4_035 | csoe_d4_079 | both on the insurance office's powers |
+| csoe_d4_047 | csoe_d4_065 | the SEC acts through a federal court |
+| csoe_d4_053 | csoe_d4_077 | Title II; 077 names the FDIC's recommending role (d4_053 is held out) |
+| csoe_d5_042 | csoe_d5_068 | d5_068's explanation and exam cue give the management-accountable, board-oversees split (held-out d5_042) |
+| csoe_d5_038 | csoe_d5_082 | d5_038's stem states d5_082's key (SOC 1 for user entities) |
+| csoe_d5_018 | csoe_d5_084 | d5_084 wrong explanation C and tip 1: monitoring outsourced controls is management's work |
+| csoe_d5_001 | csoe_d5_062 | both test reasonable assurance |
+| csoe_d5_001 | csoe_d5_070 | d5_070 teaches that effective control cannot guarantee results |
+| csoe_d5_064 | csoe_d5_077 | both Release 33-8810 II.A.2.b monitoring evidence |
+| csoe_d5_033 | csoe_d5_071 | entity-wide view vs portfolio view |
+| csoe_d5_010 | csoe_d5_073 | ERM is broader than internal control |
+| csoe_d5_032 | csoe_d5_073 | the 2017 misconceptions box |
+| csoe_d5_032 | csoe_d5_074 | the 2017 misconceptions box |
+| csoe_d4_061 | csoe_d4_066 | both rest on Section 13(d); d4_066's stem gives away d4_061's answer |
+| csoe_d5_055 | csoe_d5_084 | 084's framework_ref cites the Cyber Age section 'Control Environment and Monitoring Activities', the wording of 055's key; both rest on that section (055 is held out) |
+| csoe_d5_066 | csoe_d5_067 | contrasting angles on the monitoring component; 067's WA and exam cue tie principle 16 to the evaluations 066 keys |
+| csoe_d5_013 | csoe_d5_073 | 073's WC and Final two say ERM is more than a longer risk list, which rules out held-out 013's option B (as 013/032 does) |
+| csoe_d5_007 | csoe_d5_078 | 078's stem and explanation put fraud risk in the risk assessment, d5_007's key |
+| csoe_d5_005 | csoe_d5_065 | contrasting severity yardsticks; 065's added sentence states 005's key (SEC filers grade severity in the SEC's terms) |

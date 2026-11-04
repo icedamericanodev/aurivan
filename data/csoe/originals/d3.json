@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "comment": "Original KaiSip CSOE practice questions for Domain 3 (Corporate responsibility and financial disclosure), written from the public law (the Sarbanes-Oxley Act, the U.S. Code and SEC rules and releases) and KaiSip's own notes (data/csoe/notes/d3.json). No SOXCPA material was used. Not affiliated with or endorsed by the Sarbanes Oxley Compliance Professionals Association (SOXCPA). Schema: docs/content/QUESTION_SCHEMA.md; writing rules: docs/content/EXAM_STYLE_V2.md and .claude/agents/csoe-standards-auditor.md. Pilot csoe_d3_001 to csoe_d3_020, 31 Oct 2026. Batch 2 csoe_d3_021 to csoe_d3_040, 31 Oct 2026. Batch 3 csoe_d3_041 to csoe_d3_064, 31 Oct 2026.",
+    "comment": "Original KaiSip CSOE practice questions for Domain 3 (Corporate responsibility and financial disclosure), written from the public law (the Sarbanes-Oxley Act, the U.S. Code and SEC rules and releases) and KaiSip's own notes (data/csoe/notes/d3.json). No SOXCPA material was used. Not affiliated with or endorsed by the Sarbanes Oxley Compliance Professionals Association (SOXCPA). Schema: docs/content/QUESTION_SCHEMA.md; writing rules: docs/content/EXAM_STYLE_V2.md and .claude/agents/csoe-standards-auditor.md. Pilot csoe_d3_001 to csoe_d3_020, 31 Oct 2026. Batch 2 csoe_d3_021 to csoe_d3_040, 31 Oct 2026. Batch 3 csoe_d3_041 to csoe_d3_064, 31 Oct 2026. Held-out mock items csoe_d3_065 to csoe_d3_068 (never served in practice), 31 Oct 2026.",
     "schema_version": 1
   },
   "domain": 3,
@@ -1237,7 +1237,7 @@
       "subtopic": "3B2 Management's assessment of internal control. Mid-year system change",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "In its third fiscal quarter, an accelerated filer's finance team moves billing to a new system, materially changing its revenue controls. Under Item 308(c), what must its third-quarter Form 10-Q disclose about the change?",
+      "question": "In its third fiscal quarter, an issuer's finance team moves billing to a new system, materially changing its revenue controls. Under Item 308(c), what must its third-quarter Form 10-Q disclose about the change?",
       "options": {
         "A": "Management's assessment of ICFR effectiveness as of the quarter-end",
         "B": "The change in internal control that materially affected its ICFR",
@@ -2309,6 +2309,150 @@
         "Earnings release"
       ],
       "_provenance": "Authored from concept: KaiSip notes 3B3.4 and Form 8-K General Instruction B.2 and Item 2.02, opened 31 Oct 2026, CSOE batch 3. Original scenario written for KaiSip from the public law; no SOXCPA material.",
+      "style_version": 2
+    },
+    {
+      "id": "csoe_d3_065",
+      "domain": 3,
+      "subtopic": "3B2 Management's assessment of internal control. Skipped inventory reconciliation",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "Northgate Tools skipped its monthly inventory reconciliation all year, on balances many times materiality; its other check, a quarterly review, flags variances above three times materiality. Under Rule 12b-2, management should classify the deficiency as:",
+      "options": {
+        "A": "a significant deficiency, as the quarterly review compensates for it",
+        "B": "whatever severity the independent auditor assigns to it in the audit",
+        "C": "a material weakness, as the review is too imprecise to compensate",
+        "D": "a significant deficiency until an actual misstatement is found"
+      },
+      "correct": "C",
+      "key_concept": "A compensating control lowers severity only if it is precise enough to prevent or detect a misstatement that could be material.",
+      "pre_read": "Compare what the backup check is built to catch with what would matter to the financial statements.",
+      "correct_explanation": "Under Rule 12b-2, a material weakness exists when there is a reasonable possibility that a material misstatement will not be prevented or detected on a timely basis. Release No. 33-8810 credits a compensating control only if it is precise enough to catch a misstatement that could be material. A review that flags only variances above three times materiality is not, so the skipped reconciliation leaves that possibility open.",
+      "wrong_explanations": {
+        "A": "Closest choice: compensating controls do count. But Release No. 33-8810 credits one only if it is precise enough to catch a misstatement that could be material; this review is not.",
+        "B": "Tempting because the auditor also evaluates deficiencies. But management classifies severity itself, under the SEC's definitions, for its own Section 404(a) report.",
+        "D": "Tempting because actual errors are strong evidence. But severity rests on whether a material misstatement could go uncaught, not on whether one has been found."
+      },
+      "tips": [
+        "Eliminate: B and D. Management rates severity itself under the SEC's definitions, and severity turns on what could go uncaught, not on errors found so far.",
+        "Final two: C beats A because a compensating control lowers severity only if precise enough to catch a misstatement that could be material; a three-times-materiality threshold is not.",
+        "Exam cue: when a stem offers a backup control, compare its threshold with materiality; a backup too coarse to catch a material error does not lower severity."
+      ],
+      "framework_ref": "17 CFR 240.12b-2 (Definition of material weakness); 17 CFR 210.1-02(a)(4) (Definitions of terms related to internal control over financial reporting); SEC Release No. 33-8810 Section II.B.1 (Evaluation of control deficiencies)",
+      "related_concepts": [
+        "Material weakness",
+        "Compensating controls",
+        "Precision of a control"
+      ],
+      "_provenance": "Authored from concept: KaiSip notes 3B2.3 and 17 CFR 240.12b-2, 17 CFR 210.1-02(a)(4) and SEC Release No. 33-8810 Section II.B.1 (page 36 and footnote 49), opened 31 Oct 2026, CSOE held-out mock item (form 1). Original scenario written for KaiSip from the public law; no SOXCPA material.",
+      "style_version": 2
+    },
+    {
+      "id": "csoe_d3_066",
+      "domain": 3,
+      "subtopic": "3A2 Officer certifications: Sections 302 and 906. A group with subsidiaries",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "Most of Halvern Group's revenue comes from consolidated subsidiaries that run their own finance teams. Under Section 302(a), what do its CEO and CFO certify in each Form 10-Q about the controls behind the report?",
+      "options": {
+        "A": "They designed them so material information from subsidiaries reaches them",
+        "B": "They answer for parent controls, while subsidiary heads certify the rest",
+        "C": "The independent auditor has tested the subsidiaries' controls this quarter",
+        "D": "They assessed each subsidiary's controls as effective at fiscal year-end"
+      },
+      "correct": "A",
+      "key_concept": "Section 302 officers certify they designed the controls behind each report so material information about the issuer and its consolidated subsidiaries reaches them.",
+      "pre_read": "Notice where the revenue is earned, then recall what the certification says the officers' controls must do.",
+      "correct_explanation": "Section 302(a)(4)(B) has the signing officers certify that they designed the issuer's internal controls so that material information about the issuer and its consolidated subsidiaries is made known to them by others in those entities, particularly while the report is being prepared. Subsidiary finance teams feed that flow; they do not share the certification. Option B fails because no rule splits it between the parent's officers and subsidiary heads.",
+      "wrong_explanations": {
+        "B": "Closest choice: many groups collect sign-offs from subsidiary heads. But Section 302(a)(4) has the issuer's own officers certify controls that reach its consolidated subsidiaries.",
+        "C": "Tempting because the auditor reviews quarterly figures. But the certification is the officers' own statement about controls, not a report of auditor testing.",
+        "D": "Tempting because subsidiary controls feed the annual ICFR assessment. But that is management's Section 404(a) report as of year-end, not a quarterly certification."
+      },
+      "tips": [
+        "Eliminate: C and D. The certification is the officers' own statement rather than a report of auditor testing, and the year-end effectiveness assessment belongs to Section 404(a).",
+        "Final two: A beats B because Section 302(a)(4)(B) reaches material information about consolidated subsidiaries; subsidiary sign-offs support the officers but do not replace their certification.",
+        "Exam cue: Section 302 signers certify that their controls carry material information from the whole consolidated group up to them while each report is prepared."
+      ],
+      "framework_ref": "Sarbanes-Oxley Act of 2002 Section 302(a) (Corporate responsibility for financial reports); 15 U.S.C. 7241(a) (Corporate responsibility for financial reports); 17 CFR 240.13a-14(a) (Certification of disclosure in annual and quarterly reports)",
+      "related_concepts": [
+        "Section 302 certification",
+        "Consolidated subsidiaries",
+        "Information flow to the signing officers"
+      ],
+      "_provenance": "Authored from concept: KaiSip notes 3A2.1 and Sarbanes-Oxley Act of 2002 Section 302(a)(4)(A)-(B) (15 U.S.C. 7241(a)(4)) and 17 CFR 240.13a-14(a), opened 31 Oct 2026, CSOE held-out mock item (form 2). Original scenario written for KaiSip from the public law; no SOXCPA material.",
+      "style_version": 2
+    },
+    {
+      "id": "csoe_d3_067",
+      "domain": 3,
+      "subtopic": "3A2 Officer certifications: Sections 302 and 906. The fair presentation statement",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A CFO certifying a Form 10-Q argues the Section 302 fair presentation statement covers the financial statements and footnotes but not management's discussion and analysis (MD&A). Under Section 302(a)(3), is the CFO right?",
+      "options": {
+        "A": "Yes, because fair presentation is measured by conformity with GAAP",
+        "B": "Yes, because the disclosure committee signs off on the MD&A instead",
+        "C": "No, because the Section 404(a) report covers the MD&A each quarter",
+        "D": "No, because it covers other financial information, such as the MD&A"
+      },
+      "correct": "D",
+      "key_concept": "Section 302(a)(3) covers the financial statements and other financial information in the report, such as MD&A, and is not limited to GAAP.",
+      "pre_read": "Note which part of the report the CFO wants to leave out, then check the exact subject of the fair presentation paragraph.",
+      "correct_explanation": "Section 302(a)(3) has each signing officer certify that, based on their knowledge, the financial statements and other financial information in the report fairly present the financial condition and results of operations. Release No. 33-8124 places MD&A within that financial disclosure and says the statement is not limited to GAAP conformity. Option A fails because fair presentation is a broader standard of overall material accuracy.",
+      "wrong_explanations": {
+        "A": "Closest choice: GAAP governs the financial statements. But Release No. 33-8124 says the fair presentation statement is not limited to GAAP and reaches MD&A too.",
+        "B": "Tempting because a disclosure committee often reviews the MD&A. But it only advises the signing officers; it cannot remove any part of the report from their certification.",
+        "C": "Tempting because 404(a) concerns financial reporting. But management's 404(a) report is an annual assessment of internal control, not a quarterly statement about the MD&A."
+      },
+      "tips": [
+        "Eliminate: B and C. Disclosure committees advise the officers without taking over any part of their certification, and the 404(a) report is an annual control assessment.",
+        "Final two: D beats A because Section 302(a)(3) names the financial statements and other financial information, and the SEC said fair presentation is not limited to GAAP.",
+        "Exam cue: the 302 fair presentation statement reaches the financial information across the report, MD&A included, and is judged by overall material accuracy, not GAAP alone."
+      ],
+      "framework_ref": "Sarbanes-Oxley Act of 2002 Section 302(a) (Corporate responsibility for financial reports); SEC Release No. 33-8124 Section II.B.3 (Content of certification); 17 CFR 240.13a-14(a) (Certification of disclosure in annual and quarterly reports)",
+      "related_concepts": [
+        "Section 302 certification",
+        "Fair presentation",
+        "Other financial information"
+      ],
+      "_provenance": "Authored from concept: KaiSip notes 3A2.1 and Sarbanes-Oxley Act of 2002 Section 302(a)(3) (15 U.S.C. 7241(a)(3)), SEC Release No. 33-8124 Section II.B.3 and 17 CFR 240.13a-14(a), opened 31 Oct 2026, CSOE held-out mock item (form 1). Original scenario written for KaiSip from the public law; no SOXCPA material.",
+      "style_version": 2
+    },
+    {
+      "id": "csoe_d3_068",
+      "domain": 3,
+      "subtopic": "3A2 Officer certifications: Sections 302 and 906. A concealed overstatement",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "A subordinate hid an overstatement that left a Form 10-Q noncompliant, and the CFO signed its Section 906 statement unaware of it. Under the criminal penalties Section 906 added, the CFO faces:",
+      "options": {
+        "A": "the knowing tier, since the report the CFO certified did not comply",
+        "B": "neither tier, as each requires knowing the report does not comply",
+        "C": "the willful tier, since the hidden overstatement was material",
+        "D": "an SEC civil money penalty in place of any criminal fine"
+      },
+      "correct": "B",
+      "key_concept": "Both Section 906 penalty tiers require certifying while knowing the report does not comply; willfulness then decides the higher tier.",
+      "pre_read": "Read what each penalty paragraph requires the signer to know, then compare it with what this CFO knew.",
+      "correct_explanation": "18 U.S.C. 1350(c), added by Section 906, has two tiers, and both apply only to an officer who certifies knowing the periodic report does not comport with the statute's requirements. The willful tier adds willfulness on top of that knowledge. A CFO deceived by a subordinate's concealment lacks the knowledge either tier needs. Option A treats signing a noncompliant report as enough, which the statute does not.",
+      "wrong_explanations": {
+        "A": "Closest choice: the lower tier is the knowing tier. But it also requires knowing the report does not comport; signing a noncompliant report while unaware does not meet it.",
+        "C": "Tempting because the error was material. But the tiers turn on the signer's state of mind, not the size of the misstatement, and this CFO did not know.",
+        "D": "Tempting because certification failures can draw SEC action. But 1350(c) sets criminal fines and prison only; it contains no civil money penalty."
+      },
+      "tips": [
+        "Eliminate: C and D. The tiers turn on the signer's state of mind rather than the size of the error, and 1350(c) sets criminal fines and prison, not civil penalties.",
+        "Final two: B beats A because both 1350(c) tiers require knowing the report does not comport; a CFO deceived by a subordinate meets neither.",
+        "Exam cue: for Section 906 penalties, first ask whether the signer knew the report was noncompliant; only then ask whether they acted willfully."
+      ],
+      "framework_ref": "18 U.S.C. 1350(c) (Criminal penalties)",
+      "related_concepts": [
+        "Section 906 certification",
+        "Knowing versus willful",
+        "Criminal penalties"
+      ],
+      "_provenance": "Authored from concept: KaiSip notes 3A2.2 and 18 U.S.C. 1350(c)(1)-(2), opened 31 Oct 2026, CSOE held-out mock item (form 2). Original scenario written for KaiSip from the public law; no SOXCPA material.",
       "style_version": 2
     }
   ]
