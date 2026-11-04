@@ -155,9 +155,10 @@
             "Risk grows over time: fewer patches, fewer people who understand the system and harder integrations.",
             "Each legacy system needs a risk entry naming its business process, owner, weaknesses and compensating controls.",
             "Options include upgrade, replace, isolate with compensating controls, or accept for a defined period.",
-            "A dated retirement plan turns open-ended debt into managed risk; until it is done, the register keeps the current rating, not the planned one."
+            "A dated retirement plan turns open-ended debt into managed risk; until it is done, the register keeps the current rating, not the planned one.",
+            "Report technical debt as business impact, such as expected annual loss, so leaders can weigh its funding."
           ],
-          "example": "A hospital's pharmacy system runs on an operating system that lost vendor support two years ago. Staff say it is reliable, so no one has raised it. Nour, the IT risk analyst, records the risk with the pharmacy director proposed as owner, rates it against the hospital's appetite and sets out options: segment the system, buy extended support or fund replacement.",
+          "example": "A hospital's pharmacy system has run on an unsupported operating system for two years, and staff call it reliable. Nour, the IT risk analyst, records the risk with the pharmacy director proposed as owner, rates it against appetite and sets out options: segment the system, buy extended support or fund replacement.",
           "audit_focus": {
             "review": [
               "Compare the system inventory with vendor end-of-support dates",
@@ -1095,6 +1096,7 @@
           "why_it_matters": "An untested plan is an assumption. Tests show whether RTO and RPO are met, whether people know their roles and where the gaps are, so owners can decide on fixes before a real event.",
           "how_it_works": [
             "Tests are chosen by risk and plan maturity, starting with low-disruption methods and building to realistic ones.",
+            "A test that could disrupt operations is a business decision: the owner of the affected process accepts or limits the disruption, informed by what a failed test could cost.",
             "Each test has objectives tied to RTO, RPO and the scenarios in the risk register.",
             "Observers record what worked, what failed and how long recovery actually took.",
             "Findings go into a corrective action plan with owners and dates, and the plan is retested."
@@ -1177,7 +1179,7 @@
           "why_it_matters": "New technology can create advantage, new exposure or both. The ISACA Glossary's enterprise risk management exploits risk as well as controlling it, to increase stakeholder value, so leaders weigh both instead of banning by reflex or adopting blind.",
           "how_it_works": [
             "Start from the business objective the technology would serve and the value it could add.",
-            "Identify new threats, including vendor-inherited ones and harms that cannot be undone, such as stolen face templates.",
+            "Identify new threats and vulnerabilities, such as weak integrations, vendor-inherited flaws and irreversible harms like stolen biometric data.",
             "Check vendor claims through evidence, pilots and independent assessments, not marketing material.",
             "Apps staff build on low-code and similar platforms are inventoried with owners and data, not banned or ignored.",
             "Weigh exposure against appetite, propose conditions such as a pilot or exit terms, and revisit them as the technology matures.",
