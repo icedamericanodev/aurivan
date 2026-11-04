@@ -43,7 +43,7 @@
         "Tell which Act governs an offering and which governs trading and reporting",
         "Name the Act that created the SEC",
         "Explain how a SOX violation is enforced through the Exchange Act",
-        "Match broker registration, Section 12 registration, proxy solicitations and exempt offerings to the right rule"
+        "Match exempt offerings, broker and Section 12 registration, proxies, buyer fraud and SEC registration revocations to the right rule"
       ],
       "subtopics": [
         {
@@ -52,14 +52,15 @@
           "legacy_ids": [],
           "practice_ids": [
             "csoe_d4_001",
-            "csoe_d4_040"
+            "csoe_d4_040",
+            "csoe_d4_089"
           ],
           "definition": "The Securities Act of 1933 is the federal law that governs offers and sales of securities, requiring registration and disclosure and banning fraud in sales.",
           "why_it_matters": "It is the entry gate to U.S. public markets: before a company sells securities to the public, investors must get the facts. Mixing it up with the 1934 Act is a classic exam trap.",
           "how_it_works": [
             "The SEC calls it the 'truth in securities' law, with two aims: give investors key facts about offered securities and ban fraud in their sale.",
             "Section 5 (15 U.S.C. 77e) bars offering or selling a security through the mails or interstate commerce unless a registration statement is filed or in effect.",
-            "Registration forms describe the business, the security, management and financial statements certified by independent accountants.",
+            "Schedule A requires independently certified financial statements; the named accountant's written consent is filed (Section 7(a)(1)).",
             "Exempt offerings include private, limited-size and intrastate offerings and government securities (SEC Statutes page).",
             "The SEC requires accurate disclosure but does not guarantee it or judge whether a security is a good investment.",
             "An exemption lifts only Section 5's registration duty; Section 17(a)'s fraud ban still applies (15 U.S.C. 77d, 77q)."
@@ -241,6 +242,208 @@
             }
           ],
           "memory_aid": "Trades, votes and takeovers after issue: the 1934 Act."
+        },
+        {
+          "id": "4A1.4",
+          "name": "Antifraud Reach: Rule 10b-5 and Section 17(a)",
+          "legacy_ids": [],
+          "practice_ids": [
+            "csoe_d4_088"
+          ],
+          "definition": "Rule 10b-5 bars any person's fraud in connection with the purchase or sale of a security; Section 17(a) of the 1933 Act bars fraud in the offer or sale.",
+          "why_it_matters": "Items often ask which fraud ban fits a deal. The answer turns on whether the wrongdoer was offering, selling or buying.",
+          "how_it_works": [
+            "Rule 10b-5 bars any person's fraud in connection with the purchase or sale of any security, registered on an exchange or not (opened 4 Nov 2026).",
+            "Section 17(a) of the 1933 Act speaks of fraud in the offer or sale of securities (15 U.S.C. 77q(a)).",
+            "Rule 10b-5 covers schemes to defraud, untrue statements or misleading omissions of material fact, and fraudulent acts or practices (17 CFR 240.10b-5).",
+            "Both bans reach any person, so traders, buyers and outsiders are covered as well as issuers and their officers."
+          ],
+          "compare": {
+            "columns": [
+              "Rule 10b-5",
+              "Section 17(a)"
+            ],
+            "rows": [
+              {
+                "label": "Covers",
+                "cells": [
+                  "Purchases and sales",
+                  "Offers and sales"
+                ]
+              }
+            ]
+          },
+          "example": "Dunmore Foods' investor relations lead, Ilse, drafts a results press release in a quarter when the company sells no shares. The CFO asks whether the fraud rules matter when nothing is being offered. Ilse explains that Rule 10b-5 reaches misstatements in connection with investors' trades, not only the company's own sales, and sends the draft to the disclosure committee.",
+          "audit_focus": {
+            "review": [
+              "Trace each figure in a public statement to its supporting records",
+              "Inspect private share deal files for representations later found false"
+            ],
+            "evidence": [
+              "Signed disclosure checklists tying each released figure to the ledger",
+              "Signed representations in private share purchase agreements"
+            ],
+            "recommend": "Have the disclosure committee review every public statement and deal representation for misleading content before release.",
+            "decides": "The disclosure committee approves releases; counsel advises on antifraud exposure"
+          },
+          "isaca_rule": "Fraud by a buyer, or in trading after issue, points to Rule 10b-5; Section 17(a) is the 1933 Act's ban on fraud in offering or selling.",
+          "exam_traps": [
+            {
+              "trap": "Only sellers can commit securities fraud.",
+              "why": "Rule 10b-5 covers fraud in connection with a purchase as well as a sale, so a buyer who lies to a seller is reached."
+            },
+            {
+              "trap": "Antifraud rules apply only when the issuer itself is selling securities.",
+              "why": "Rule 10b-5 bans fraud by any person in connection with any purchase or sale, so statements that move investors' trades are covered."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Scheme to defraud",
+              "definition": "A plan meant to deceive others out of money or property, the first conduct Rule 10b-5 bans."
+            },
+            {
+              "term": "Misleading omission",
+              "definition": "Leaving out a material fact needed to keep what was said from misleading."
+            }
+          ],
+          "memory_aid": "Offers and sales: Section 17(a). Purchases too: Rule 10b-5."
+        },
+        {
+          "id": "4A1.5",
+          "name": "Books, Records and Internal Accounting Controls",
+          "legacy_ids": [],
+          "practice_ids": [
+            "csoe_d4_085",
+            "csoe_d4_086",
+            "csoe_d4_096"
+          ],
+          "definition": "Exchange Act Section 13(b)(2) makes every reporting issuer keep accurate books and maintain internal accounting controls; Section 13(b)(5) bars any person from knowingly evading them.",
+          "why_it_matters": "These duties sit beneath the SOX internal control rules and apply to every reporting issuer, whatever its size.",
+          "how_it_works": [
+            "Section 13(b)(2) binds every issuer with a Section 12 class and every issuer reporting under Section 15(d) (opened 4 Nov 2026).",
+            "Books, records and accounts must, in reasonable detail, accurately and fairly reflect transactions and dispositions of assets (Section 13(b)(2)(A)).",
+            "Internal accounting controls must give reasonable assurance on authorization, recording, access to assets and checking records against assets (Section 13(b)(2)(B)).",
+            "Section 13(b)(5) bars any person from knowingly evading those controls or falsifying records; Rule 13b2-1 bars falsifying them at all (opened 4 Nov 2026).",
+            "An issuer holding 50 percent or less of a firm's vote must use its influence in good faith toward that firm's controls (Section 13(b)(6), opened 4 Nov 2026).",
+            "Criminal liability for a Section 13(b)(2) failure arises only through the knowing conduct in Section 13(b)(5) (Section 13(b)(4))."
+          ],
+          "example": "At Pellham Logistics, a non-accelerated filer, warehouse supervisor Dara edits receiving logs to hide missing stock. A reconciliation flags the edits. The controller explains that the company must keep accurate records and working controls, and that Dara's knowing falsification breaches the Exchange Act personally, then refers the case to the audit committee.",
+          "audit_focus": {
+            "review": [
+              "Compare journal entry approvals with the authorization matrix",
+              "Reperform the periodic asset count against recorded balances",
+              "Inspect override logs for entries edited after approval"
+            ],
+            "evidence": [
+              "System log of control overrides and backdated entries",
+              "Signed reconciliations of physical counts to the ledger"
+            ],
+            "recommend": "Have the controller investigate every override and falsified record and report the results to the audit committee.",
+            "decides": "Management maintains the controls; the audit committee oversees investigations"
+          },
+          "isaca_rule": "The issuer keeps the books and controls (Section 13(b)(2)), whether it reports under Section 12 or 15(d). Any person who knowingly evades the controls or falsifies records breaches Section 13(b)(5) and Rule 13b2-1.",
+          "exam_traps": [
+            {
+              "trap": "The books-and-records duties apply only to listed companies.",
+              "why": "Section 13(b)(2) also names issuers that report only under Section 15(d), such as companies with registered bonds."
+            },
+            {
+              "trap": "Only the issuer can breach the internal accounting control rules.",
+              "why": "Section 13(b)(5) and Rule 13b2-1 reach any person who knowingly evades controls or falsifies records."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Internal accounting controls",
+              "definition": "Procedures giving reasonable assurance that transactions are authorized and recorded and that assets are protected."
+            },
+            {
+              "term": "Circumvention",
+              "definition": "Knowingly getting around a control, such as skipping a required approval."
+            }
+          ],
+          "memory_aid": "The company keeps the books; each person keeps their hands off them."
+        },
+        {
+          "id": "4A1.6",
+          "name": "Trading Suspensions and Registration Revocations",
+          "legacy_ids": [],
+          "practice_ids": [
+            "csoe_d4_087"
+          ],
+          "definition": "The SEC can briefly halt trading in a security, or suspend or revoke a security's registration when its issuer breaks the Exchange Act.",
+          "why_it_matters": "These are the SEC's own orders over registered securities. Items test which tool fits, who uses it and what process comes first.",
+          "how_it_works": [
+            "The SEC may summarily suspend trading in a security for up to 10 business days when the public interest requires (Section 12(k), opened 4 Nov 2026).",
+            "A market-wide suspension of up to 90 calendar days takes effect only if the President does not disapprove (Section 12(k)(1)(B), opened 4 Nov 2026).",
+            "After notice and a hearing opportunity, the SEC may suspend for up to 12 months, or revoke, a rule-breaking issuer's security registration (Section 12(j), opened 4 Nov 2026).",
+            "Brokers and dealers may not trade a security whose registration is suspended or revoked under Section 12(j) (15 U.S.C. 78l(j))."
+          ],
+          "compare": {
+            "columns": [
+              "Section 12(k) suspension",
+              "Section 12(j) revocation"
+            ],
+            "rows": [
+              {
+                "label": "Process",
+                "cells": [
+                  "Summary order, with no prior hearing",
+                  "Findings on the record after notice and a hearing opportunity"
+                ]
+              },
+              {
+                "label": "Length",
+                "cells": [
+                  "Up to 10 business days per order",
+                  "Suspension up to 12 months, or revocation"
+                ]
+              },
+              {
+                "label": "Effect",
+                "cells": [
+                  "Trading in the security halts",
+                  "Registration ends; brokers may not trade it"
+                ]
+              }
+            ]
+          },
+          "example": "After social media posts tout Halvard Mining's thinly traded shares, the SEC finds the claims about the company unreliable and summarily suspends trading. Investor relations lead Tova tells staff that the order needed no hearing and lasts no more than 10 business days, and the team prepares accurate disclosure before trading resumes.",
+          "audit_focus": {
+            "review": [
+              "Trace each SEC order on the company's securities to its response",
+              "Compare the filing calendar with any missed or late periodic reports"
+            ],
+            "evidence": [
+              "EDGAR record of every periodic report and its filing date",
+              "Copies of SEC orders and notices received, with response dates"
+            ],
+            "recommend": "Have the general counsel track every SEC order and missed filing and report the response plan to the board.",
+            "decides": "The Commission issues the orders; the board directs the company's response"
+          },
+          "isaca_rule": "Doubts about trading draw a short summary suspension under Section 12(k); an issuer that breaks the Act, such as by missing periodic reports, risks Section 12(j) suspension or revocation after notice and a hearing opportunity.",
+          "exam_traps": [
+            {
+              "trap": "An SEC trading suspension lasts until the company fixes its disclosure.",
+              "why": "Each Section 12(k)(1)(A) order lasts no more than 10 business days."
+            },
+            {
+              "trap": "The SEC can revoke a delinquent filer's registration by summary order.",
+              "why": "Section 12(j) requires findings on the record after notice and an opportunity for hearing."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Summary order",
+              "definition": "An order issued at once, without a hearing beforehand."
+            },
+            {
+              "term": "Delinquent filer",
+              "definition": "An issuer that has not filed the periodic reports the Exchange Act requires of it."
+            }
+          ],
+          "memory_aid": "Pause the trading for days; revoke the registration only after a hearing."
         }
       ]
     },
@@ -252,7 +455,7 @@
         "Put the steps of notice-and-comment rulemaking in order",
         "Tell what binds: a proposed or final rule, a Commission interpretation or a staff FAQ",
         "Find the SEC rule behind a SOX section, such as Rule 2-06 behind Section 802",
-        "Explain what a petition, an exchange rule filing and a SOX listing mandate each do"
+        "Explain what petitions, exchange rule filings, listing mandates and concept releases each do"
       ],
       "subtopics": [
         {
@@ -465,6 +668,59 @@
             }
           ],
           "memory_aid": "Rule binds, release explains, staff FAQ advises."
+        },
+        {
+          "id": "4A2.5",
+          "name": "From Concept Release to Compliance Date",
+          "legacy_ids": [],
+          "practice_ids": [
+            "csoe_d4_090",
+            "csoe_d4_091"
+          ],
+          "definition": "SEC rules move in stages: a concept release may ask whether to act, a proposal offers rule text, and a final rule sets effective and compliance dates.",
+          "why_it_matters": "Compliance teams must know when a rule binds them. A rule can be in force before companies must comply.",
+          "how_it_works": [
+            "A concept release seeks views on whether and how to change rules, without rule text, as Release No. 33-11376 (2025) did (opened 4 Nov 2026).",
+            "A proposing release sets out rule text for comment; only a final rule changes anyone's duties (5 U.S.C. 553).",
+            "A substantive rule waits 30 days after publication, unless it grants an exemption, relieves a restriction or the agency publishes good cause (5 U.S.C. 553(d)).",
+            "Release No. 33-8238 took effect on 14 Aug 2003 but set later compliance dates for management's ICFR report (opened 31 Oct 2026).",
+            "Release No. 33-8392 extended those dates, kept the 14 Aug 2003 effective date, and took effect on 1 Mar 2004 as relief with good cause (opened 4 Nov 2026)."
+          ],
+          "example": "Lindqvist Freight's compliance lead, Noor, keeps a rule calendar. A new SEC concept release goes in as watch only. A final rule shows an effective date in 60 days and a compliance date at the start of the next fiscal year. Noor schedules the policy changes for the compliance date.",
+          "audit_focus": {
+            "review": [
+              "Trace each tracked release on the calendar to its Federal Register publication",
+              "Sample policy updates and compare their dates with the rule's compliance date"
+            ],
+            "evidence": [
+              "Federal Register pages showing each final rule's dates section",
+              "Policy change log with approval dates and rule references"
+            ],
+            "recommend": "Have the compliance lead record effective and compliance dates separately and plan each change to the compliance date.",
+            "decides": "The Commission sets the dates; management plans compliance"
+          },
+          "isaca_rule": "Ask what stage a release is at and which date applies: a concept release changes nothing, a proposal binds no one, and a final rule is in force from its effective date, with duties starting on its compliance dates.",
+          "exam_traps": [
+            {
+              "trap": "A concept release is a proposed rule.",
+              "why": "It asks whether and how to act and offers no rule text; a proposing release sets out the text for comment."
+            },
+            {
+              "trap": "A rule's effective date is always the day companies must comply.",
+              "why": "Releases often set later compliance dates; Release No. 33-8392 moved them while the effective date stayed the same."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Concept release",
+              "definition": "An SEC release seeking public views on whether and how to change rules, before any rule text."
+            },
+            {
+              "term": "Compliance date",
+              "definition": "The date by which a company must first meet a new rule's requirements."
+            }
+          ],
+          "memory_aid": "Ask, propose, adopt; then the effective date, then the compliance date."
         }
       ]
     },
@@ -1076,6 +1332,61 @@
             }
           ],
           "memory_aid": "803 survives, 804 two-or-five, 807 twenty-five."
+        },
+        {
+          "id": "4B1.4",
+          "name": "Tampering with Records for an Official Proceeding",
+          "legacy_ids": [],
+          "practice_ids": [
+            "csoe_d4_092",
+            "csoe_d4_093",
+            "csoe_d4_094"
+          ],
+          "definition": "Section 1102 added 18 U.S.C. 1512(c), a crime for anyone who corruptly destroys or conceals records, or tries to, to keep them from an official proceeding.",
+          "why_it_matters": "It reaches anyone, not only auditors or officers, and protects proceedings not yet begun. Items test its intent element and what counts as a proceeding.",
+          "how_it_works": [
+            "Whoever corruptly destroys, alters or conceals a record, or tries to, to impair its use in an official proceeding faces up to 20 years (1512(c), opened 4 Nov 2026).",
+            "Official proceedings include federal court and grand jury, congressional and authorized federal agency proceedings (18 U.S.C. 1515(a)(1), opened 4 Nov 2026).",
+            "The proceeding need not be pending or about to be instituted when the record is destroyed (1512(f)(1)).",
+            "The record need not be admissible in evidence or free of a privilege claim (1512(f)(2)).",
+            "Corrupt intent to impair the record's use is required; routine deletion with no such intent falls outside the crime (1512(c)(1)).",
+            "It sits beside Section 802's 18 U.S.C. 1519, on destroying records to obstruct federal matters."
+          ],
+          "example": "Wexford Dairy's records team purges old invoices each March under a written schedule. This year a federal antitrust case is pending against the company, so the general counsel, Lior, suspends the purge for pricing records, since destroying them to keep them from the court could be corrupt tampering. The team logs the hold beside the case filing date.",
+          "audit_focus": {
+            "review": [
+              "Compare scheduled record purges with open legal holds before deletion",
+              "Trace each legal hold notice to the record sets it covers"
+            ],
+            "evidence": [
+              "Deletion logs showing dates, record types and approvers",
+              "Legal hold register with issue and release dates"
+            ],
+            "recommend": "Have the general counsel suspend routine purges of any records tied to a pending or expected proceeding.",
+            "decides": "Anyone handling records answers for corrupt destruction; the general counsel issues legal holds"
+          },
+          "isaca_rule": "Section 1102's tampering crime needs corrupt intent to impair a record's use in an official proceeding, even a future one, and covers any record, privileged or not. Anyone can commit it; the maximum is 20 years (1512(c), opened 4 Nov 2026).",
+          "exam_traps": [
+            {
+              "trap": "Destroying records is a crime only once a proceeding has started.",
+              "why": "Section 1512(f)(1) says the official proceeding need not be pending or about to be instituted."
+            },
+            {
+              "trap": "Privileged documents may be destroyed freely, since they could never be evidence.",
+              "why": "Section 1512(f)(2) says the record need not be admissible or free of a privilege claim."
+            }
+          ],
+          "key_terms": [
+            {
+              "term": "Official proceeding",
+              "definition": "A federal court, grand jury, congressional or authorized federal agency proceeding, as 18 U.S.C. 1515(a)(1) defines it."
+            },
+            {
+              "term": "Corruptly",
+              "definition": "Acting with an improper purpose; here, intending to impair a record's use in a proceeding."
+            }
+          ],
+          "memory_aid": "Corrupt purpose, any proceeding, even a future one; any record, even a privileged one."
         }
       ]
     },
@@ -1401,7 +1712,7 @@
     {
       "topic_id": "4B3",
       "topic_name": "White-collar penalty enhancements",
-      "overview": "Title IX of SOX, the White-Collar Crime Penalty Enhancement Act of 2002, raised maximum penalties for fraud, made attempts and conspiracies as punishable as the finished crime, and told the Sentencing Commission to toughen its guidelines. Title XI's Section 1106 raised the Exchange Act's own criminal penalties. Section 906 is taught with the officer certifications in Domain 3.",
+      "overview": "Title IX of SOX, the White-Collar Crime Penalty Enhancement Act of 2002, raised maximum penalties for fraud, made attempts and conspiracies as punishable as the finished crime, and told the Sentencing Commission to toughen its guidelines. Title XI added a records tampering crime (Section 1102) and raised the Exchange Act's own criminal penalties (Section 1106); Section 906 is taught with the officer certifications in Domain 3.",
       "can_do": [
         "Apply the same-penalty rule to attempts and conspiracies",
         "Give the before-and-after maximums for mail and wire fraud",
@@ -1522,7 +1833,8 @@
           "legacy_ids": [],
           "practice_ids": [
             "csoe_d4_051",
-            "csoe_d4_052"
+            "csoe_d4_052",
+            "csoe_d4_095"
           ],
           "definition": "Section 1106, in Title XI (Corporate Fraud Accountability), not Title IX, raised Exchange Act Section 32(a)'s penalties for willful violations and willfully false statements in filings.",
           "why_it_matters": "Section 32(a) reaches anyone who willfully breaks the Exchange Act or files false statements, not only the officers who certify, so it often decides who is criminally exposed.",
@@ -2406,7 +2718,9 @@
     "Basel III": "The Basel Committee's 2010 bank capital framework, applied to U.S. banks through the agencies' capital rules such as Regulation Q.",
     "Bureau of Consumer Financial Protection": "The Title X bureau in the Federal Reserve System that regulates consumer financial products and services.",
     "Aiding and abetting": "Knowingly or recklessly giving substantial assistance to another's violation; in SEC actions, liable to the same extent.",
-    "Staff guidance": "Views of SEC staff, such as FAQs, that are not Commission rules or statements."
+    "Staff guidance": "Views of SEC staff, such as FAQs, that are not Commission rules or statements.",
+    "Concept release": "An SEC release asking the public whether and how to change rules, before any rule text is proposed.",
+    "Official proceeding": "A federal court, grand jury, congressional or authorized federal agency proceeding protected by 18 U.S.C. 1512(c)."
   },
   "references": [
     {
@@ -2573,6 +2887,41 @@
       "title": "17 CFR 229.601(b)(97) (recovery policy exhibit)",
       "url": "https://www.law.cornell.edu/cfr/text/17/229.601",
       "checked": "2026-10-31"
+    },
+    {
+      "title": "15 U.S.C. 77g and 77aa (registration statement content, accountants' consents and Schedule A)",
+      "url": "https://www.law.cornell.edu/uscode/text/15/77g",
+      "checked": "2026-11-04"
+    },
+    {
+      "title": "15 U.S.C. 78j(b) and 17 CFR 240.10b-5 (manipulative and deceptive devices)",
+      "url": "https://www.law.cornell.edu/cfr/text/17/240.10b-5",
+      "checked": "2026-11-04"
+    },
+    {
+      "title": "15 U.S.C. 78l(j) and (k) (revocation of registration; trading suspensions)",
+      "url": "https://www.law.cornell.edu/uscode/text/15/78l",
+      "checked": "2026-11-04"
+    },
+    {
+      "title": "15 U.S.C. 78m(b) and 17 CFR 240.13b2-1 (books, records and internal accounting controls)",
+      "url": "https://www.law.cornell.edu/uscode/text/15/78m",
+      "checked": "2026-11-04"
+    },
+    {
+      "title": "18 U.S.C. 1512 and 1515 (tampering with a record; definition of official proceeding)",
+      "url": "https://www.law.cornell.edu/uscode/text/18/1512",
+      "checked": "2026-11-04"
+    },
+    {
+      "title": "SEC Release No. 33-11376, Concept Release on Foreign Private Issuer Eligibility (2025)",
+      "url": "https://www.sec.gov/files/rules/concept/2025/33-11376.pdf",
+      "checked": "2026-11-04"
+    },
+    {
+      "title": "SEC Release No. 33-8392, extension of the ICFR compliance dates (2004)",
+      "url": "https://www.sec.gov/rules/final/33-8392.htm",
+      "checked": "2026-11-04"
     }
   ]
 }

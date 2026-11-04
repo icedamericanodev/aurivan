@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "comment": "Original KaiSip CSOE practice questions for Domain 4 (The SEC, enforcement and Dodd-Frank), written from the public law (the Sarbanes-Oxley Act, the Dodd-Frank Act, the U.S. Code, SEC rules and SEC publications) and KaiSip's own notes (data/csoe/notes/d4.json). No SOXCPA presentations, exam material or prep-bank text used. Not affiliated with or endorsed by the Sarbanes Oxley Compliance Professionals Association (SOXCPA). Schema: docs/content/QUESTION_SCHEMA.md; standard: .claude/agents/csoe-standards-auditor.md. Pilot csoe_d4_001 to csoe_d4_020, 31 Oct 2026; batch 2 csoe_d4_021 to csoe_d4_040, 31 Oct 2026; batch 3 csoe_d4_041 to csoe_d4_060, 31 Oct 2026.",
+    "comment": "Original KaiSip CSOE practice questions for Domain 4 (The SEC, enforcement and Dodd-Frank), written from the public law (the Sarbanes-Oxley Act, the Dodd-Frank Act, the U.S. Code, SEC rules and SEC publications) and KaiSip's own notes (data/csoe/notes/d4.json). No SOXCPA presentations, exam material or prep-bank text used. Not affiliated with or endorsed by the Sarbanes Oxley Compliance Professionals Association (SOXCPA). Schema: docs/content/QUESTION_SCHEMA.md; standard: .claude/agents/csoe-standards-auditor.md. Pilot csoe_d4_001 to csoe_d4_020, 31 Oct 2026; batch 2 csoe_d4_021 to csoe_d4_040, 31 Oct 2026; batch 3 csoe_d4_041 to csoe_d4_060, 31 Oct 2026; batch 4 csoe_d4_061 to csoe_d4_084, 31 Oct 2026; batch 5 csoe_d4_085 to csoe_d4_096, 4 Nov 2026.",
     "schema_version": 1
   },
   "domain": 4,
@@ -3029,6 +3029,438 @@
         "Recovery policy"
       ],
       "_provenance": "Authored from concept: KaiSip notes 4C3.3 and 17 CFR 229.601(b)(97), 31 Oct 2026, CSOE batch 4. Original scenario written for KaiSip from the public law; no SOXCPA material or prep-bank text used.",
+      "style_version": 2
+    },
+    {
+      "id": "csoe_d4_085",
+      "domain": 4,
+      "subtopic": "4A1 The Securities Act and the Exchange Act. A bond-only issuer and Section 13(b)(2)",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "A non-accelerated filer's CFO notes it reports only under Section 15(d), after a registered bond offering, and has no Section 12 class. Does Exchange Act Section 13(b)(2), on books and internal accounting controls, apply?",
+      "options": {
+        "A": "Yes; it covers Section 15(d) filers and Section 12 registrants alike",
+        "B": "No; it covers issuers with a Section 12 class, which it lacks",
+        "C": "No; Section 404(c) lifts those duties for non-accelerated filers",
+        "D": "Yes; though the independent auditor, not the issuer, must meet it"
+      },
+      "correct": "A",
+      "key_concept": "Exchange Act Section 13(b)(2) binds every issuer with a Section 12 class and every issuer reporting under Section 15(d), whatever its filer category.",
+      "pre_read": "Check which issuers Section 13(b)(2) names, then ask whether any filer-status relief reaches it.",
+      "correct_explanation": "Section 13(b)(2) requires every issuer with a class registered under Section 12 and every issuer required to report under Section 15(d) to keep books, records and accounts that accurately and fairly reflect its transactions in reasonable detail, and to devise and maintain a system of internal accounting controls. A bond issuer reporting under Section 15(d) is covered. Option B is close but leaves out the Section 15(d) filers the provision names.",
+      "wrong_explanations": {
+        "B": "Closest choice: Section 12 registrants are covered. But Section 13(b)(2) also names issuers required to report under Section 15(d), so this bond issuer is covered too.",
+        "C": "Tempting because non-accelerated filers get some relief under Section 404. But Section 13(b)(2) has no filer-size exception; it names every Section 12 and Section 15(d) issuer.",
+        "D": "Tempting because the independent auditor tests internal control. But Section 13(b)(2) places the duty on the issuer itself; no auditor takes it over."
+      },
+      "tips": [
+        "Eliminate: C, because Section 13(b)(2) has no filer-size exception, and D, because the duty falls on the issuer, not its auditor.",
+        "Final two: A beats B because Section 13(b)(2) names Section 15(d) filers as well as issuers with a Section 12 class.",
+        "Exam cue: books-and-records and internal accounting control duties follow reporting status (Section 12 or 15(d)), not filer size or listing."
+      ],
+      "framework_ref": "15 U.S.C. 78m(b)(2) (Books, records and internal accounting controls)",
+      "related_concepts": [
+        "Exchange Act Section 13(b)(2)",
+        "Section 15(d) filers",
+        "Internal accounting controls"
+      ],
+      "_provenance": "Authored from concept: KaiSip notes 4A1.5 and 15 U.S.C. 78m(b)(2), opened 4 Nov 2026, CSOE batch 5. Original scenario written for KaiSip from the public law; no SOXCPA material or prep-bank text used.",
+      "style_version": 2
+    },
+    {
+      "id": "csoe_d4_086",
+      "domain": 4,
+      "subtopic": "4A1 The Securities Act and the Exchange Act. An employee who bypasses a control",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "At a listed manufacturer, a regional sales director knowingly bypasses the required credit approval to book sales to a blocked customer, then backdates the approval record. Which provision MOST directly reaches the director's own conduct?",
+      "options": {
+        "A": "Section 302, the officers' certification covering disclosure controls",
+        "B": "Exchange Act Section 13(b)(2)(B), the issuer's duty to keep accounting controls",
+        "C": "Section 404(b), the independent auditor's report on the company's controls",
+        "D": "Exchange Act Section 13(b)(5), barring anyone from circumventing controls"
+      },
+      "correct": "D",
+      "key_concept": "Exchange Act Section 13(b)(5) bars any person from knowingly circumventing internal accounting controls or knowingly falsifying books and records.",
+      "pre_read": "Ask whose conduct each listed provision governs, then match it to the director's own acts.",
+      "correct_explanation": "Exchange Act Section 13(b)(5) says no person shall knowingly circumvent or knowingly fail to implement a system of internal accounting controls, or knowingly falsify any book, record or account; Rule 13b2-1 also bars anyone from falsifying such records. The director's bypass and backdating fit. Option B is close, but Section 13(b)(2)(B) places the duty to devise and maintain controls on the issuer.",
+      "wrong_explanations": {
+        "A": "Tempting because Section 302 certifications cover controls. But they bind the CEO and CFO who sign each periodic report, not a sales director who signs nothing.",
+        "B": "Closest choice: Section 13(b)(2)(B) requires the controls. But that duty falls on the issuer; Section 13(b)(5) is the provision aimed at a person who evades them.",
+        "C": "Tempting because the independent auditor reports on internal control. But Section 404(b) governs the auditor's attestation, not an employee's misconduct."
+      },
+      "tips": [
+        "Eliminate: A, because Section 302 binds the certifying officers, and C, because Section 404(b) governs the independent auditor's attestation.",
+        "Final two: D beats B because Section 13(b)(2)(B) is the issuer's duty to keep controls; Section 13(b)(5) reaches any person who knowingly evades them.",
+        "Exam cue: the issuer keeps the books and controls under Section 13(b)(2); a person who knowingly evades or falsifies them breaches Section 13(b)(5)."
+      ],
+      "framework_ref": "15 U.S.C. 78m(b)(5) (Knowing circumvention of internal accounting controls); 17 CFR 240.13b2-1 (Falsification of accounting records); 15 U.S.C. 78m(b)(2) (Books, records and internal accounting controls)",
+      "related_concepts": [
+        "Exchange Act Section 13(b)(5)",
+        "Rule 13b2-1",
+        "Circumventing controls"
+      ],
+      "_provenance": "Authored from concept: KaiSip notes 4A1.5 and 15 U.S.C. 78m(b)(2) and (b)(5) and 17 CFR 240.13b2-1, opened 4 Nov 2026, CSOE batch 5. Original scenario written for KaiSip from the public law; no SOXCPA material or prep-bank text used.",
+      "style_version": 2
+    },
+    {
+      "id": "csoe_d4_087",
+      "domain": 4,
+      "subtopic": "4A1 The Securities Act and the Exchange Act. A delinquent filer's registration",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A listed issuer's finance team has filed no annual or quarterly reports for three years. Under Exchange Act Section 12(j), what may the SEC do about the registration of the issuer's shares?",
+      "options": {
+        "A": "Revoke it by order, after notice and an opportunity for a hearing",
+        "B": "Revoke it at once by summary order, with no hearing offered",
+        "C": "Nothing itself, since delisting is left for the exchange to decide",
+        "D": "Seek a court order revoking it, since the SEC cannot act alone"
+      },
+      "correct": "A",
+      "key_concept": "Under Section 12(j), the SEC may suspend or revoke a security's registration by its own order after notice and an opportunity for hearing.",
+      "pre_read": "Ask who holds the power over a security's registration under Section 12(j), and how the section says that power is used.",
+      "correct_explanation": "Section 12(j) authorizes the Commission, by order, to deny, suspend or revoke the registration of a security if it finds, on the record after notice and opportunity for hearing, that the issuer failed to comply with the Act or its rules. Missing three years of periodic reports is such a failure, and brokers may not then trade the security. Option B is close but skips the hearing step the section requires.",
+      "wrong_explanations": {
+        "B": "Closest choice: the SEC itself may revoke, but only after notice and a hearing opportunity. A Section 12(k) trading suspension is the summary tool, capped at 10 business days.",
+        "C": "Tempting because exchanges set listing standards. But Section 12(j) gives the Commission its own power to suspend or revoke a security's registration.",
+        "D": "Tempting because the SEC sues in federal court for other relief. But Section 12(j) lets the Commission act by its own order."
+      },
+      "tips": [
+        "Eliminate: C, because Section 12(j) gives the Commission its own power over registration, and D, because the Commission acts by order without a court.",
+        "Final two: A beats B because Section 12(j) requires notice and an opportunity for hearing before the Commission revokes.",
+        "Exam cue: revoking a security's registration for breaking the Act needs notice and a hearing opportunity; look for that step in the option."
+      ],
+      "framework_ref": "15 U.S.C. 78l(j) (Denial, suspension, or revocation of registration)",
+      "related_concepts": [
+        "Exchange Act Section 12(j)",
+        "Delinquent filers",
+        "Revocation of registration"
+      ],
+      "_provenance": "Authored from concept: KaiSip notes 4A1.6 and 15 U.S.C. 78l(j), opened 4 Nov 2026, CSOE batch 5. Original scenario written for KaiSip from the public law; no SOXCPA material or prep-bank text used.",
+      "style_version": 2
+    },
+    {
+      "id": "csoe_d4_088",
+      "domain": 4,
+      "subtopic": "4A1 The Securities Act and the Exchange Act. Fraud by a buyer of shares",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "A private equity firm's partner lies to a startup's founder about the company's prospects to buy the founder's shares cheaply. Which antifraud provision MOST directly reaches the partner's lies as the buyer?",
+      "options": {
+        "A": "Securities Act Section 17(a), on fraud in offers or sales of securities",
+        "B": "Exchange Act Section 14(e), on fraud in connection with any tender offer",
+        "C": "Rule 10b-5 under Section 10(b), on fraud in purchases or sales",
+        "D": "Section 906, on the officers' statements filed with periodic reports"
+      },
+      "correct": "C",
+      "key_concept": "Rule 10b-5 reaches any person's fraud in connection with buying or selling a security, so it covers a lying buyer as well as a seller.",
+      "pre_read": "Note which side of the trade lied, and compare the words each provision uses for the transaction.",
+      "correct_explanation": "Rule 10b-5, adopted under Exchange Act Section 10(b), makes it unlawful for any person to make an untrue statement of a material fact in connection with the purchase or sale of any security. A buyer's lies to a seller fit. Option A is close, but Section 17(a) speaks of the offer or sale; Rule 10b-5's text adds purchases.",
+      "wrong_explanations": {
+        "A": "Closest choice: Section 17(a) bans fraud too. But its text covers the offer or sale of securities; Rule 10b-5 also reaches purchases, which fits a lying buyer.",
+        "B": "Tempting because Section 14(e) is also an Exchange Act fraud ban. But it governs tender offers, and buying one founder's shares privately is not one.",
+        "D": "Tempting because Section 906 targets false statements. But it covers the certifying officers' statements that accompany periodic reports; the partner certified nothing."
+      },
+      "tips": [
+        "Eliminate: B, because Section 14(e) is limited to tender offers, and D, because Section 906 covers certifying officers' statements, and the partner certified nothing.",
+        "Final two: C beats A because Rule 10b-5 covers fraud in a purchase as well as a sale; Section 17(a) speaks of offers and sales.",
+        "Exam cue: for fraud by a buyer, or in trading after issue, look first to Rule 10b-5; Section 17(a) is the 1933 Act's ban on fraud in selling."
+      ],
+      "framework_ref": "17 CFR 240.10b-5 (Employment of manipulative and deceptive devices); 15 U.S.C. 78j(b) (Manipulative and deceptive devices); 15 U.S.C. 77q(a) (Use of interstate commerce for purpose of fraud or deceit)",
+      "related_concepts": [
+        "Rule 10b-5",
+        "Securities Act Section 17(a)",
+        "Fraud in purchases"
+      ],
+      "_provenance": "Authored from concept: KaiSip notes 4A1.4 and 17 CFR 240.10b-5, 15 U.S.C. 78j(b) and 77q(a), opened 31 Oct and 4 Nov 2026, CSOE batch 5. Original scenario written for KaiSip from the public law; no SOXCPA material or prep-bank text used.",
+      "style_version": 2
+    },
+    {
+      "id": "csoe_d4_089",
+      "domain": 4,
+      "subtopic": "4A1 The Securities Act and the Exchange Act. An auditor's report in a registration statement",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "Under Securities Act Section 7(a)(1), when a registration statement names the independent auditor as having certified its financial statements, the filing must also include:",
+      "options": {
+        "A": "the auditor's attestation report on internal control under Section 404(b)",
+        "B": "the written consent of the auditor, filed along with the statement",
+        "C": "the CEO's and CFO's Section 906 statements on those financial statements",
+        "D": "the PCAOB's approval of the audit before the SEC reviews it"
+      },
+      "correct": "B",
+      "key_concept": "Section 7(a)(1) requires the written consent of any accountant named as having prepared or certified part of a registration statement.",
+      "pre_read": "Think about what the 1933 Act asks of an expert whose work a registration statement relies on.",
+      "correct_explanation": "Section 7(a)(1) requires a registration statement to contain what Schedule A lists, which includes financial statements certified by an independent public or certified accountant. It adds that if any accountant is named as having prepared or certified any part of the statement, that person's written consent must be filed with it. Option A is close, but the internal control attestation belongs to annual reports, not this section.",
+      "wrong_explanations": {
+        "A": "Closest choice: the independent auditor does attest to internal control. But Section 404(b) and Item 308(b) attach that report to annual reports; Section 7(a)(1) asks for the auditor's consent.",
+        "C": "Tempting because Section 906 statements accompany financial statements. But they go with periodic reports, such as the Form 10-K, not with a 1933 Act registration statement.",
+        "D": "Tempting because the PCAOB oversees audit firms. But it does not approve individual audits for filings; Section 7(a)(1) asks for the accountant's own consent."
+      },
+      "tips": [
+        "Eliminate: C, because Section 906 statements go with periodic reports, and D, because the PCAOB does not approve individual audits for filings.",
+        "Final two: B beats A because Section 7(a)(1) requires the named accountant's written consent; the internal control attestation belongs to annual reports.",
+        "Exam cue: when a 1933 Act filing names an expert, such as an auditor, as having certified part of it, the expert's written consent is filed too."
+      ],
+      "framework_ref": "15 U.S.C. 77g(a)(1) (Information required in registration statement); 15 U.S.C. 77aa (Schedule of information required in registration statement)",
+      "related_concepts": [
+        "Auditor's consent",
+        "Securities Act Section 7",
+        "Schedule A"
+      ],
+      "_provenance": "Authored from concept: KaiSip notes 4A1.1 and 15 U.S.C. 77g(a)(1) and 77aa (Schedule A items 25 and 26), opened 4 Nov 2026, CSOE batch 5. Original scenario written for KaiSip from the public law; no SOXCPA material or prep-bank text used.",
+      "style_version": 2
+    },
+    {
+      "id": "csoe_d4_090",
+      "domain": 4,
+      "subtopic": "4A2 SEC rulemaking. A 2025 release on foreign private issuers",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "A foreign private issuer's CFO reads the SEC's 2025 concept release on who should qualify as a foreign private issuer. Which statement BEST describes what that release does?",
+      "options": {
+        "A": "It changes the definition as soon as the comment period closes",
+        "B": "It sets out proposed rule text for comment before adoption",
+        "C": "It is staff guidance on how the current definition applies",
+        "D": "It asks the public whether and how to revise the definition"
+      },
+      "correct": "D",
+      "key_concept": "A concept release asks the public whether and how the SEC should change a rule; it proposes no rule text and changes no duty.",
+      "pre_read": "Place the release on the path to a binding rule, and ask who issued it.",
+      "correct_explanation": "Release No. 33-11376, the SEC's concept release on foreign private issuer eligibility, solicits comments on whether and how the current definition might be revised, describes possible regulatory responses and asks questions; it contains no rule text. The Commission itself issued it. Option B describes a proposing release, which sets out rule text for comment before any final rule.",
+      "wrong_explanations": {
+        "A": "Tempting because comment periods often lead to rules. But a concept release changes nothing; only a later proposal and final rule could change the definition.",
+        "B": "Closest choice: a proposing release also invites comment. But it sets out rule text; this concept release asks whether and how to change the definition, with no rule text.",
+        "C": "Tempting because it discusses the current definition. But the Commission issued it to seek comment; it is not staff guidance on how the rule applies."
+      },
+      "tips": [
+        "Eliminate: A, because a concept release changes no rule, and C, because it is a Commission request for comment, not staff guidance.",
+        "Final two: D beats B because a concept release asks whether and how to act, while a proposing release sets out rule text.",
+        "Exam cue: a concept release asks, a proposed rule offers text, and only a final rule binds."
+      ],
+      "framework_ref": "SEC Release No. 33-11376 (Concept release on foreign private issuer eligibility)",
+      "related_concepts": [
+        "Concept release",
+        "Proposing release",
+        "Rulemaking stages"
+      ],
+      "_provenance": "Authored from concept: KaiSip notes 4A2.5 and SEC Release No. 33-11376, opened 4 Nov 2026, CSOE batch 5. Original scenario written for KaiSip from the public law; no SOXCPA material or prep-bank text used.",
+      "style_version": 2
+    },
+    {
+      "id": "csoe_d4_091",
+      "domain": 4,
+      "subtopic": "4A2 SEC rulemaking. Effective dates and compliance dates",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "What did Release No. 33-8392, issued in early 2004, change for an accelerated filer's controller preparing management's first internal control report under the SEC's 2003 rules?",
+      "options": {
+        "A": "It moved the effective date; the compliance dates stayed the same",
+        "B": "It suspended the rules; they waited for the PCAOB's own standard",
+        "C": "It extended the compliance dates; the effective date stayed the same",
+        "D": "It exempted smaller filers; management's report stopped applying to them"
+      },
+      "correct": "C",
+      "key_concept": "An SEC release can delay when companies must first comply while leaving the rules' effective date unchanged.",
+      "pre_read": "Separate the date a rule takes effect from the date each company must first comply with it.",
+      "correct_explanation": "Release No. 33-8392 extended the compliance dates that Release No. 33-8238 had set for management's internal control report and related rules: accelerated filers would begin with fiscal years ending on or after November 15, 2004, not June 15, 2004. Its dates section says the effective date remains August 14, 2003. Option A is close but confuses the two dates.",
+      "wrong_explanations": {
+        "A": "Closest choice: the release did change dates. But it left the August 14, 2003 effective date in place and pushed back only the compliance dates.",
+        "B": "Tempting because the release mentions the PCAOB's pending standard. But it set new compliance dates; the rules stayed in force, and other internal control rules were unaffected.",
+        "D": "Tempting because smaller companies got more time. But the release only moved start dates; it exempted no group of filers from management's report."
+      },
+      "tips": [
+        "Eliminate: B, because the release set new dates rather than suspending the rules, and D, because it exempted no group of filers from management's report.",
+        "Final two: C beats A because Release No. 33-8392 kept the August 14, 2003 effective date and moved only the compliance dates.",
+        "Exam cue: a rule's effective date and its compliance dates can differ; a release can move one and leave the other."
+      ],
+      "framework_ref": "SEC Release No. 33-8392 Dates (Compliance dates extended, effective date unchanged); SEC Release No. 33-8238 Dates (Effective date and compliance dates)",
+      "related_concepts": [
+        "Compliance date",
+        "Effective date",
+        "Release No. 33-8392"
+      ],
+      "_provenance": "Authored from concept: KaiSip notes 4A2.5 and SEC Release Nos. 33-8392 and 33-8238 (Dates sections), opened 31 Oct and 4 Nov 2026, CSOE batch 5. Original scenario written for KaiSip from the public law; no SOXCPA material or prep-bank text used.",
+      "style_version": 2
+    },
+    {
+      "id": "csoe_d4_092",
+      "domain": 4,
+      "subtopic": "4B1 Records and securities fraud penalties. What the tampering crime protects",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "Section 1102 added 18 U.S.C. 1512(c)(1), which punishes anyone who corruptly destroys or conceals a record, or tries to, intending to impair its availability for use in:",
+      "options": {
+        "A": "an official proceeding, even one not pending or about to be instituted",
+        "B": "an official proceeding, but only one that was already pending by then",
+        "C": "an internal investigation that the company's audit committee ordered",
+        "D": "the independent auditor's audit of the year-end financial statements"
+      },
+      "correct": "A",
+      "key_concept": "Section 1102's 18 U.S.C. 1512(c)(1) protects records' use in an official proceeding, and the proceeding need not yet be pending.",
+      "pre_read": "Ask what kind of proceeding the statute protects and whether it must exist when the record is destroyed.",
+      "correct_explanation": "Section 1102 added 18 U.S.C. 1512(c): whoever corruptly destroys, alters, mutilates or conceals a record, or attempts to, with intent to impair its integrity or availability for use in an official proceeding faces up to 20 years. Section 1515(a)(1) lists official proceedings, including federal court, grand jury, congressional and authorized federal agency proceedings. Option B is close, but Section 1512(f)(1) says none need be pending.",
+      "wrong_explanations": {
+        "B": "Closest choice: the statute does protect official proceedings. But Section 1512(f)(1) says the proceeding need not be pending or about to be instituted when the record is destroyed.",
+        "C": "Tempting because an audit committee investigation can uncover fraud. But it is the company's own process, not an official proceeding as Section 1515(a)(1) defines it.",
+        "D": "Tempting because auditors rely on records. But an audit is not an official proceeding under Section 1515(a)(1); other rules address misleading the independent auditor."
+      },
+      "tips": [
+        "Eliminate: C and D, because neither an internal investigation nor the independent auditor's audit is an official proceeding as Section 1515(a)(1) defines it.",
+        "Final two: A beats B because Section 1512(f)(1) says the official proceeding need not be pending or about to begin.",
+        "Exam cue: Section 1102's tampering crime protects official proceedings, such as federal courts and grand juries, even ones not yet begun, when the person acts corruptly to impair one."
+      ],
+      "framework_ref": "Sarbanes-Oxley Act of 2002 Section 1102 (Tampering with a record or otherwise impeding an official proceeding); 18 U.S.C. 1512(c) (Tampering with a record to impair its use in an official proceeding); 18 U.S.C. 1512(f) (Proceeding need not be pending and record need not be admissible); 18 U.S.C. 1515(a)(1) (Definition of official proceeding)",
+      "related_concepts": [
+        "Section 1102",
+        "Official proceeding",
+        "Records tampering"
+      ],
+      "_provenance": "Authored from concept: KaiSip notes 4B1.4 and Sarbanes-Oxley Act Section 1102 and 18 U.S.C. 1512(c), 1512(f) and 1515(a)(1), opened 31 Oct and 4 Nov 2026, CSOE batch 5. Original scenario written for KaiSip from the public law; no SOXCPA material or prep-bank text used.",
+      "style_version": 2
+    },
+    {
+      "id": "csoe_d4_093",
+      "domain": 4,
+      "subtopic": "4B1 Records and securities fraud penalties. Privileged records and the tampering crime",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "Expecting a federal grand jury subpoena, an in-house legal manager corruptly shreds privileged memos, arguing they could never be used as evidence anyway. Under Section 1512(f)(2) of title 18, does that argument help?",
+      "options": {
+        "A": "Yes; records protected by legal privilege fall outside the statute",
+        "B": "Yes; the statute is limited to the records that auditors must retain",
+        "C": "No; once a subpoena is expected, privilege no longer covers the memos",
+        "D": "No; the record need not be admissible or free of privilege claims"
+      },
+      "correct": "D",
+      "key_concept": "Under 18 U.S.C. 1512(f)(2), a record destroyed to impair an official proceeding need not be admissible or free of a privilege claim.",
+      "pre_read": "Ask whether the statute cares if the destroyed record could ever have been used in court.",
+      "correct_explanation": "Section 1512(f)(2) says that for this section the testimony, record, document or other object need not be admissible in evidence or free of a claim of privilege. So the memos' privilege does not take the shredding outside Section 1512(c)(1), which punishes corruptly destroying a record with intent to impair its availability for use in an official proceeding, such as a federal grand jury. Option A states the argument the statute rejects.",
+      "wrong_explanations": {
+        "A": "Closest choice: privilege can keep a record out of evidence. But Section 1512(f)(2) says the record need not be free of a privilege claim, so the shredding is still covered.",
+        "B": "Tempting because auditors' workpapers have their own retention crime. But Section 1512(c)(1) reaches whoever corruptly destroys any record to impair an official proceeding.",
+        "C": "Tempting because the subpoena changes the stakes. But expecting one does not end privilege; the argument fails because Section 1512(f)(2) makes privilege irrelevant to the crime."
+      },
+      "tips": [
+        "Eliminate: B, because Section 1512(c)(1) reaches whoever destroys a record, and C, because an expected subpoena does not strip privilege; the statute simply does not turn on it.",
+        "Final two: D beats A because Section 1512(f)(2) says a record need not be admissible or free of a privilege claim.",
+        "Exam cue: in Section 1512 cases, 'it could never be used in court' is no defense; intent to impair the proceeding is what counts."
+      ],
+      "framework_ref": "18 U.S.C. 1512(f) (Proceeding need not be pending and record need not be admissible); 18 U.S.C. 1512(c) (Tampering with a record to impair its use in an official proceeding)",
+      "related_concepts": [
+        "Privilege",
+        "Section 1512(f)",
+        "Records tampering"
+      ],
+      "_provenance": "Authored from concept: KaiSip notes 4B1.4 and 18 U.S.C. 1512(c) and 1512(f)(2), opened 4 Nov 2026, CSOE batch 5. Original scenario written for KaiSip from the public law; no SOXCPA material or prep-bank text used.",
+      "style_version": 2
+    },
+    {
+      "id": "csoe_d4_094",
+      "domain": 4,
+      "subtopic": "4B1 Records and securities fraud penalties. Routine deletion under a retention schedule",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "Following its written retention schedule, a company's records team deletes old purchase files on the usual date, unaware of any investigation or court case. Does Section 1512(c)(1) of title 18 reach the deletion?",
+      "options": {
+        "A": "Yes; destroying any record a court later seeks is a crime",
+        "B": "No; it needs corrupt intent to impair the record's use in proceedings",
+        "C": "Yes; the Act bars destroying business records until a set period passes",
+        "D": "No; it reaches only auditors and the audit workpapers they keep"
+      },
+      "correct": "B",
+      "key_concept": "Section 1512(c)(1) needs corrupt intent to impair a record's use in an official proceeding; routine deletion with no such intent falls outside it.",
+      "pre_read": "Check who the statute reaches and every element it requires, then test the records team's deletion against each.",
+      "correct_explanation": "Section 1512(c)(1) punishes whoever corruptly alters, destroys, mutilates or conceals a record, or attempts to, with the intent to impair its integrity or availability for use in an official proceeding. A team deleting files on a routine schedule, unaware of any investigation or case, lacks that intent, so the statute does not reach it. Option D gets the outcome right for the wrong reason: the statute covers whoever acts corruptly.",
+      "wrong_explanations": {
+        "A": "Tempting because courts punish destroying evidence. But Section 1512(c)(1) requires corrupt intent to impair a record's use in an official proceeding, not merely a later request.",
+        "C": "Tempting because retention rules exist for some records. But Section 1512(c)(1) sets no retention period; it punishes corrupt destruction aimed at an official proceeding.",
+        "D": "Closest choice: the deletion is outside the statute. But not because of who acted: Section 1512(c)(1) reaches whoever acts corruptly, auditor or not."
+      },
+      "tips": [
+        "Eliminate: A, because Section 1512(c)(1) requires corrupt intent, and C, because it sets no retention period for business records.",
+        "Final two: B beats D because the deletion falls outside the statute for lack of corrupt intent, not because only auditors are covered.",
+        "Exam cue: tampering crimes turn on intent; a routine, policy-based deletion with no proceeding in view is not corrupt destruction."
+      ],
+      "framework_ref": "18 U.S.C. 1512(c) (Tampering with a record to impair its use in an official proceeding); Sarbanes-Oxley Act of 2002 Section 1102 (Tampering with a record or otherwise impeding an official proceeding)",
+      "related_concepts": [
+        "Corrupt intent",
+        "Retention schedules",
+        "Section 1102"
+      ],
+      "_provenance": "Authored from concept: KaiSip notes 4B1.4 and 18 U.S.C. 1512(c)(1) and Sarbanes-Oxley Act Section 1102, opened 31 Oct and 4 Nov 2026, CSOE batch 5. Original scenario written for KaiSip from the public law; no SOXCPA material or prep-bank text used.",
+      "style_version": 2
+    },
+    {
+      "id": "csoe_d4_095",
+      "domain": 4,
+      "subtopic": "4B3 White-collar penalty enhancements. Not knowing the rule that was broken",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "An issuer's assistant controller willfully skipped a step an SEC rule under the Exchange Act requires, then proved at trial they never knew of the rule. Under Section 32(a), what may the court impose?",
+      "options": {
+        "A": "Nothing; not knowing the rule is a complete defense to the charge",
+        "B": "Prison and a fine, since ignorance of a rule is no defense",
+        "C": "A fine, but no prison term, for violating that rule",
+        "D": "A civil penalty, since rule breaches are not crimes under Section 32(a)"
+      },
+      "correct": "C",
+      "key_concept": "Section 32(a) bars prison, but not a fine, for a rule violation when the defendant proves they had no knowledge of the rule.",
+      "pre_read": "Read Section 32(a) to the end, and check what its last clause says about a defendant who did not know the rule.",
+      "correct_explanation": "Section 32(a) makes willful violations of the Exchange Act or its rules crimes, punishable by a fine, prison or both, but ends with a proviso: no person is imprisoned under the section for violating a rule or regulation if they prove they had no knowledge of it. The assistant controller's proof removes prison for the rule violation, not the fine. Option A turns a limit on prison into a full defense.",
+      "wrong_explanations": {
+        "A": "Closest choice: the proof does help the assistant controller. But Section 32(a)'s proviso bars only imprisonment; a fine can still be imposed for the willful rule violation.",
+        "B": "Tempting because ignorance of the law is usually no excuse. But Section 32(a)'s proviso bars prison for a rule violation when the defendant proves no knowledge of the rule.",
+        "D": "Tempting because the SEC brings civil cases. But Section 32(a) is the Exchange Act's criminal provision, and willful rule violations fall within it."
+      },
+      "tips": [
+        "Eliminate: B, because the proviso bars prison for a proven lack of knowledge of the rule, and D, because Section 32(a) makes willful rule violations crimes.",
+        "Final two: C beats A because the proviso removes only the prison term; a fine for the willful violation remains possible.",
+        "Exam cue: under Section 32(a), proof of not knowing the rule saves a defendant from prison, but not from a fine."
+      ],
+      "framework_ref": "15 U.S.C. 78ff(a) (Willful violations and false and misleading statements); Sarbanes-Oxley Act of 2002 Section 1106 (Increased criminal penalties under the Securities Exchange Act of 1934)",
+      "related_concepts": [
+        "Exchange Act Section 32(a)",
+        "Knowledge of the rule",
+        "Criminal penalties"
+      ],
+      "_provenance": "Authored from concept: KaiSip notes 4B3.3 and 15 U.S.C. 78ff(a) and Sarbanes-Oxley Act Section 1106, opened 31 Oct and 4 Nov 2026, CSOE batch 5. Original scenario written for KaiSip from the public law; no SOXCPA material or prep-bank text used.",
+      "style_version": 2
+    },
+    {
+      "id": "csoe_d4_096",
+      "domain": 4,
+      "subtopic": "4A1 The Securities Act and the Exchange Act. A venture the issuer does not control",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A reporting issuer holds 40 percent of the voting power in a joint venture abroad and does not control it. Under Exchange Act Section 13(b)(6), for the venture's internal accounting controls, the issuer must:",
+      "options": {
+        "A": "devise and maintain them itself, just as it would for a subsidiary",
+        "B": "use its influence in good faith, as far as reasonable, toward them",
+        "C": "do nothing, since Section 13(b)(2) stops at the firms it controls",
+        "D": "have its independent auditor attest to them in every annual report"
+      },
+      "correct": "B",
+      "key_concept": "Under Section 13(b)(6), an issuer with 50 percent or less of a firm's vote must use its influence in good faith toward the firm's controls.",
+      "pre_read": "Note how much of the venture's vote the issuer holds, then check whether Section 13(b) treats a minority holding as it treats a subsidiary.",
+      "correct_explanation": "Section 13(b)(6) says that when a reporting issuer holds 50 percent or less of a firm's voting power, Section 13(b)(2) requires only that it proceed in good faith to use its influence, to the extent reasonable, to cause the firm to maintain internal accounting controls consistent with Section 13(b)(2). An issuer that demonstrates good-faith efforts is conclusively presumed to have complied. Option C is close but drops that remaining duty.",
+      "wrong_explanations": {
+        "A": "Tempting because the issuer's own controls must meet Section 13(b)(2). But where it holds 50 percent or less of a firm's vote, Section 13(b)(6) asks only good-faith use of influence.",
+        "C": "Closest choice: the issuer does not control the venture. But Section 13(b)(6) still requires it to use its influence in good faith, as far as reasonable, toward the venture's controls.",
+        "D": "Tempting because the auditor attests to internal control. But Section 404(b) covers the issuer's own ICFR, and Section 13(b)(6) asks nothing of the auditor; it sets the issuer's good-faith duty."
+      },
+      "tips": [
+        "Eliminate: A, because Section 13(b)(6) limits the duty for a firm the issuer holds 50 percent or less of, and D, because the provision asks nothing of the auditor.",
+        "Final two: B beats C because Section 13(b)(6) keeps a duty: good-faith use of the issuer's influence, as far as reasonable in its circumstances.",
+        "Exam cue: at 50 percent or less of the vote, the accounting-control duty becomes a good-faith influence duty, and an issuer that shows good-faith efforts is conclusively presumed to comply."
+      ],
+      "framework_ref": "15 U.S.C. 78m(b)(6) (Issuers holding 50 percent or less of a firm's voting power)",
+      "related_concepts": [
+        "Exchange Act Section 13(b)(6)",
+        "Minority-owned ventures",
+        "Internal accounting controls"
+      ],
+      "_provenance": "Authored from concept: KaiSip notes 4A1.5 and 15 U.S.C. 78m(b)(6), opened 4 Nov 2026, CSOE batch 5. Original scenario written for KaiSip from the public law; no SOXCPA material or prep-bank text used.",
       "style_version": 2
     }
   ]
