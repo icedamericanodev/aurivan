@@ -383,7 +383,7 @@
             "Separation of duties is kept by requiring a second person to review and approve code before merge.",
             "Pipeline accounts, secrets and build tools are protected, because whoever controls the pipeline controls production.",
             "Infrastructure as code puts server and network settings under the same review and version control as software.",
-            "Pipeline logs record every change, which supports both monitoring and audit.",
+            "Pipeline logs record every change; a gate is shown to work by testing real releases, as internal audit may do with a sample, since a setting shows design only.",
             "Engineering, as the first line, owns and runs the pipeline's gates; the risk function monitors gate results and exceptions rather than approving releases itself."
           ],
           "example": "Hana, a risk analyst at a payments start-up, learns that any of the five engineers can merge their own code and deploy it, and the pipeline's deployment key is shared in a chat channel. Hana maps the risk to the fraud-loss scenario in the register and works with the engineering lead, as control owner, on peer review and secret storage options.",
@@ -451,7 +451,7 @@
             "Build and test: verify requirements are met; business users, not developers, sign off acceptance testing.",
             "Implementation: confirm the owner accepts residual risk within appetite, or orders more treatment, before go-live.",
             "Post-implementation review: check whether benefits arrived and risks stayed within appetite.",
-            "Disposal: retire data and components securely."
+            "Disposal: plan and confirm retiring the old system's data, servers and access, so nothing keeps running unowned."
           ],
           "example": "A retailer is rebuilding its loyalty app, and the project plan schedules the only security review two weeks before launch. Teo, the risk analyst, shows the sponsor that a late finding could force a costly redesign or a launch with open risk, and proposes adding security and privacy requirements to the design phase gate.",
           "audit_focus": {
@@ -623,7 +623,7 @@
           "how_it_works": [
             "The data owner, a business manager, classifies data and decides who may access it and for how long.",
             "The data custodian, often IT, applies the owner's rules through storage, backup and access controls.",
-            "Classification levels set handling rules, such as encryption, sharing limits and retention.",
+            "Classification levels set handling rules, such as encryption, sharing limits and retention; joined data sets are classified for what they reveal together, which can exceed each source.",
             "A data inventory shows where each class of data lives, including copies in test and analytics systems.",
             "Each stage has controls: input checks at creation, access control in use, and owner-approved agreements that set a partner's permitted use when data is shared.",
             "Data that no business unit claims is reported so senior management can assign an owner; IT protects it as custodian in the meantime."
@@ -886,7 +886,7 @@
           "definition": "Project risk is uncertainty that can affect a project's scope, time, cost or quality; in Agile delivery it is managed in short, repeated cycles.",
           "why_it_matters": "Project risks often become operational IT risks after go-live. If they are tracked only inside the project, or dropped to meet a date, the enterprise inherits exposure no one approved.",
           "how_it_works": [
-            "Project risks are logged with owners and linked to the enterprise risk register when they could outlast the project.",
+            "Risks that may outlast the project join the enterprise register; delivery risks ending at closure stay in the project log.",
             "In Agile, risk items and security tasks sit in the backlog and are prioritized alongside features.",
             "The definition of done includes security, privacy and control criteria, so work is not finished without them.",
             "Sprint reviews update risk status; growing deferred security work is an early warning.",
@@ -1054,7 +1054,7 @@
           "why_it_matters": "Backups are often the last control against ransomware and destructive attacks. If attackers can reach or encrypt them, or restores fail, the organization faces long outages or pressure to pay.",
           "how_it_works": [
             "A common rule of thumb keeps at least three copies, on two kinds of media, with one offsite or offline.",
-            "Immutable or offline copies cannot be changed or deleted by an attacker who gains administrator access.",
+            "Immutable or offline copies resist a stolen admin login; retention must outlast how long intruders stay unnoticed.",
             "Backup frequency is set by the RPO; restore speed must support the RTO.",
             "In ransomware recovery, contain the attack first, then verify backups are clean before restoring.",
             "Restores are tested regularly, because a backup that was never restored is an untested assumption.",
@@ -1199,7 +1199,7 @@
             "Identify new threats and vulnerabilities, such as weak integrations, vendor-inherited flaws and irreversible harms like stolen biometric data.",
             "Check vendor claims through evidence, pilots and independent assessments, not marketing material.",
             "Apps staff build on low-code and similar platforms are inventoried with owners and data, not banned or ignored.",
-            "Weigh exposure against appetite, propose conditions such as a pilot or exit terms, and revisit them as the technology matures.",
+            "Weigh exposure against appetite, propose conditions such as a pilot or exit terms, and reassess as it matures or scales.",
             "With little data, record the risk early as an emerging risk with stated uncertainty, a proposed owner and a review date, rather than waiting for losses."
           ],
           "types": [
@@ -1340,7 +1340,8 @@
             "Layered controls of different kinds mean one failure does not expose the asset.",
             "Each user and system gets only the access its role needs, for only as long as needed.",
             "Critical tasks are split so no one person can complete and hide a harmful action.",
-            "Where duties cannot be split, compensating controls such as independent review reduce the risk."
+            "Where duties cannot be split, compensating controls such as independent review reduce the risk.",
+            "Layers that share a vendor, design or rule set can fail together, so they add less depth than their number suggests."
           ],
           "example": "A credit union protects its member database mainly with a strong perimeter firewall; inside, every staff account can read all records. Farah, the IT risk analyst, explains to the chief operating officer that one phished account would expose everything, and proposes layered controls: role-based access, database monitoring and multifactor authentication.",
           "audit_focus": {
@@ -1525,7 +1526,8 @@
             "Awareness reaches everyone with access, contractors included; role-based training gives deeper skills to people with specific risk duties.",
             "Training content follows the risk profile, such as payment fraud for finance staff, secure coding for developers or risk oversight for directors.",
             "Reporting channels are easy and safe, and reports get visible follow-up.",
-            "Mistakes lead to process fixes first; discipline is for willful or repeated misconduct."
+            "Mistakes lead to process fixes first; discipline is for willful or repeated misconduct.",
+            "A supplier's general course does not teach the organization's own policies, systems and reporting routes, so contractors with access join its program."
           ],
           "example": "At a pharmaceutical distributor, help desk staff know that password resets skip identity checks at busy times, but they stopped reporting it after past reports led to blame for the shift. Rosa, the risk analyst, raises this with the service desk director as a culture risk and proposes a no-blame reporting channel with visible fixes.",
           "audit_focus": {
