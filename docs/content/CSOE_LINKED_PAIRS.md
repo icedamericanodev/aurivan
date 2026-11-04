@@ -186,3 +186,11 @@ Rule for the form builder: Draw no two items of a pair into the same form. Keep 
 | csoe_d5_013 | csoe_d5_073 | 073's WC and Final two say ERM is more than a longer risk list, which rules out held-out 013's option B (as 013/032 does) |
 | csoe_d5_007 | csoe_d5_078 | 078's stem and explanation put fraud risk in the risk assessment, d5_007's key |
 | csoe_d5_005 | csoe_d5_065 | contrasting severity yardsticks; 065's added sentence states 005's key (SEC filers grade severity in the SEC's terms) |
+| csoe_d5_038 | csoe_d5_105 | d5_038 wrong explanation B and exam cue state d5_105's key |
+| csoe_d5_045 | csoe_d5_088 | proposed by the D5 batch 5 author |
+| csoe_d5_010 | csoe_d5_085 | proposed by the D5 batch 5 author |
+| csoe_d5_023 | csoe_d5_086 | proposed by the D5 batch 5 author |
+| csoe_d5_002 | csoe_d5_087 | proposed by the D5 batch 5 author |
+| csoe_d5_002 | csoe_d5_090 | proposed by the D5 batch 5 author |
+| csoe_d5_092 | csoe_d5_093 | proposed by the D5 batch 5 author |
+| csoe_d5_097 | csoe_d5_098 | proposed by the D5 batch 5 author |

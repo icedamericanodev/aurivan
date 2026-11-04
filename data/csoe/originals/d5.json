@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "comment": "Original KaiSip CSOE questions for Domain 5 (Internal control frameworks and SOX scope), written from the public law (the Sarbanes-Oxley Act, SEC rules, releases and staff guidance), COSO's and the AICPA's public summaries, and KaiSip's own notes (data/csoe/notes/d5.json). No SOXCPA material, uploads of it, or prep-bank content was used. Not affiliated with or endorsed by SOXCPA. Schema: docs/content/QUESTION_SCHEMA.md; writing rules: docs/content/EXAM_STYLE_V2.md and .claude/agents/csoe-standards-auditor.md. Pilot csoe_d5_001 to csoe_d5_020, 31 Oct 2026; batch 2 csoe_d5_021 to csoe_d5_040, 31 Oct 2026; batch 3 csoe_d5_041 to csoe_d5_060, 31 Oct 2026; batch 4 csoe_d5_061 to csoe_d5_084, 31 Oct 2026.",
+    "comment": "Original KaiSip CSOE questions for Domain 5 (Internal control frameworks and SOX scope), written from the public law (the Sarbanes-Oxley Act, SEC rules, releases and staff guidance), COSO's and the AICPA's public summaries, and KaiSip's own notes (data/csoe/notes/d5.json). No SOXCPA material, uploads of it, or prep-bank content was used. Not affiliated with or endorsed by SOXCPA. Schema: docs/content/QUESTION_SCHEMA.md; writing rules: docs/content/EXAM_STYLE_V2.md and .claude/agents/csoe-standards-auditor.md. Pilot csoe_d5_001 to csoe_d5_020, 31 Oct 2026; batch 2 csoe_d5_021 to csoe_d5_040, 31 Oct 2026; batch 3 csoe_d5_041 to csoe_d5_060, 31 Oct 2026; batch 4 csoe_d5_061 to csoe_d5_084, 31 Oct 2026; batch 5 csoe_d5_085 to csoe_d5_106, 31 Oct 2026.",
     "schema_version": 1
   },
   "domain": 5,
@@ -3029,6 +3029,798 @@
         "Service auditor reports"
       ],
       "_provenance": "Authored from concept: KaiSip notes 5C2.5 and COSO's thought paper COSO in the Cyber Age (2015) (opened 31 Oct 2026). Original KaiSip scenario written from the public law and public summaries; no SOXCPA presentation, upload or prep-bank material used. 31 Oct 2026, CSOE batch 4 csoe_d5_061-084.",
+      "style_version": 2
+    },
+    {
+      "id": "csoe_d5_085",
+      "domain": 5,
+      "subtopic": "5A1 The original framework (1992). A broader definition declined",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "Under Release No. 33-8238, what was the MOST important reason the SEC declined commenters' 2003 requests to widen its ICFR definition to enterprise risk management and governance objectives?",
+      "options": {
+        "A": "COSO had not yet published an enterprise risk management framework",
+        "B": "Section 404 focuses on internal control over financial reporting",
+        "C": "Auditors had long attested to controls beyond financial reporting",
+        "D": "The FCPA already made issuers adopt enterprise risk management"
+      },
+      "correct": "B",
+      "key_concept": "Release No. 33-8238 kept ICFR focused on financial reporting, chiefly because Section 404 addresses the internal control that relates to financial reporting.",
+      "pre_read": "Recall how the SEC answered commenters who wanted a broader definition of internal control in its 2003 rules.",
+      "correct_explanation": "Release No. 33-8238 records that a few commenters wanted the definition to reach enterprise risk management and corporate governance objectives. The SEC agreed those objectives matter but kept the focus on financial reporting. Its most important reason was that Section 404 focuses on the part of internal control that relates to financial reporting; it added the cost burden and the boundary auditors had traditionally kept.",
+      "wrong_explanations": {
+        "A": "Closest choice: COSO's ERM framework did appear only in 2004, but the release rests the decision on Section 404's focus, not on a missing framework.",
+        "C": "Tempting because auditors test controls. But the release says the reverse: independent accountants traditionally had not attested to controls outside financial reporting.",
+        "D": "Tempting because the FCPA shapes ICFR's wording. But its accounting provisions require books, records and internal accounting controls, not enterprise risk management."
+      },
+      "tips": [
+        "Eliminate: C and D. The release says auditors had not traditionally attested beyond financial reporting, and the FCPA's accounting provisions do not require ERM.",
+        "Final two: B beats A because the release names Section 404's focus on financial reporting as its most important reason; the timing of COSO's ERM work played no part.",
+        "Exam cue: when asked why the SEC's control rules stay narrow, answer from Section 404 itself: it is about internal control over financial reporting."
+      ],
+      "framework_ref": "SEC Release No. 33-8238 Section II.A.2 (Comments on the proposed definition of internal control); Sarbanes-Oxley Act of 2002 Section 404(a) (Management assessment of internal controls)",
+      "related_concepts": [
+        "ICFR definition",
+        "Enterprise risk management",
+        "Section 404 scope"
+      ],
+      "_provenance": "Authored from concept: KaiSip notes 5A1.7 and SEC Release No. 33-8238 Section II.A.2 (opened 31 Oct 2026). Original KaiSip scenario written from the public law and public summaries; no SOXCPA presentation, upload or prep-bank material used. 31 Oct 2026, CSOE batch 5 csoe_d5_085-106.",
+      "style_version": 2
+    },
+    {
+      "id": "csoe_d5_086",
+      "domain": 5,
+      "subtopic": "5A1 The original framework (1992). Why safeguarding was written in",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A SOX team lead explains why Rule 13a-15(f) names safeguarding of assets in the ICFR definition. Under Release No. 33-8238, the SEC included it MOST directly to:",
+      "options": {
+        "A": "fold COSO's operations objectives into ICFR as well",
+        "B": "require a separate management report on safeguarding controls",
+        "C": "cover physical security over every asset, material or not",
+        "D": "settle its place in ICFR, in line with COSO's 1994 addendum"
+      },
+      "correct": "D",
+      "key_concept": "The SEC wrote safeguarding into its ICFR definition to settle that it belongs there, in line with COSO's 1994 addendum to its 1992 report.",
+      "pre_read": "Look for the reason the release itself gives for clause (3) of the ICFR definition.",
+      "correct_explanation": "Release No. 33-8238 says clause (3) of the definition was included to make clear that safeguarding of assets is an element of ICFR, addressing COSO's supplement to its 1992 report: the 1994 addendum on controls over unauthorized acquisition, use or disposition of assets. Without the clause, scope could be read differently. The SEC added that Section 404 companies are also subject to the FCPA.",
+      "wrong_explanations": {
+        "A": "Tempting because COSO placed safeguarding mainly among operations objectives. But the SEC's definition does not take in operations objectives; it adds safeguarding that could materially affect the statements.",
+        "B": "Tempting because the clause stands out. But the release puts safeguarding inside management's ICFR report; it creates no separate report.",
+        "C": "Closest choice: safeguarding is in ICFR, but clause (3) reaches only unauthorized acquisition, use or disposition that could have a material effect on the statements."
+      },
+      "tips": [
+        "Eliminate: A and B. The SEC kept operations objectives outside ICFR and asked for no extra report on safeguarding.",
+        "Final two: D beats C because the release says the clause makes safeguarding's place in ICFR clear, following COSO's 1994 addendum, and limits it to material effects.",
+        "Exam cue: safeguarding in ICFR traces to COSO's 1994 addendum, and it stops at assets whose loss could materially affect the statements."
+      ],
+      "framework_ref": "SEC Release No. 33-8238 Section II.A.3 (Safeguarding of assets in the definition of ICFR); 17 CFR 240.13a-15(f) (Definition of internal control over financial reporting)",
+      "related_concepts": [
+        "Safeguarding of assets",
+        "COSO 1994 addendum",
+        "ICFR definition"
+      ],
+      "_provenance": "Authored from concept: KaiSip notes 5A1.7 and SEC Release No. 33-8238 Section II.A.3 (opened 31 Oct 2026). Original KaiSip scenario written from the public law and public summaries; no SOXCPA presentation, upload or prep-bank material used. 31 Oct 2026, CSOE batch 5 csoe_d5_085-106.",
+      "style_version": 2
+    },
+    {
+      "id": "csoe_d5_087",
+      "domain": 5,
+      "subtopic": "5A1 The original framework (1992). A profit target",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "A CFO maps a target profit margin of 12% to COSO's objective categories. Under both the 1992 framework and the 2013 update, which category MOST accurately fits?",
+      "options": {
+        "A": "Operations, which takes in financial performance goals",
+        "B": "Reporting, since the margin is shown in the statements",
+        "C": "Compliance, since the board formally approved the target",
+        "D": "Strategic, a fourth internal control category"
+      },
+      "correct": "A",
+      "key_concept": "In COSO's internal control framework, performance and profitability goals are operations objectives, not reporting objectives.",
+      "pre_read": "Recall what COSO puts inside operations objectives, in the 1992 text the SEC quotes and in the 2013 summary.",
+      "correct_explanation": "COSO's 2013 summary says operations objectives cover the effectiveness and efficiency of operations, including operational and financial performance goals. Release No. 33-8238 quotes the 1992 report the same way: operations objectives include performance and profitability goals. A margin target is a goal to achieve, so it is an operations objective; reporting objectives concern the reliability of the reports that later show the result.",
+      "wrong_explanations": {
+        "B": "Closest choice: the margin will appear in the statements, but reporting objectives concern reliable reports, not the performance goal those reports describe.",
+        "C": "Tempting because the board approves targets. But compliance objectives concern adherence to laws and regulations, and board approval does not turn a goal into a legal duty.",
+        "D": "Tempting because COSO's 2004 ERM framework has a strategic category. The internal control framework has none; strategic objectives belong to ERM."
+      },
+      "tips": [
+        "Eliminate: C and D. Board approval does not make a goal a compliance matter, and the internal control framework has no strategic category.",
+        "Final two: A beats B because COSO places performance and profitability goals in operations; reporting covers the reliability of the reports.",
+        "Exam cue: a goal to achieve (margin, output, quality) is operations; making the report about it reliable is reporting."
+      ],
+      "framework_ref": "COSO Internal Control—Integrated Framework (2013) Executive Summary (Objectives); SEC Release No. 33-8238 Section II.A.3 (The 1992 COSO Report's operations objectives)",
+      "related_concepts": [
+        "Objective categories",
+        "Operations objectives",
+        "Reporting objectives"
+      ],
+      "_provenance": "Authored from concept: KaiSip notes 5A1.8 and COSO's 2013 Executive Summary and SEC Release No. 33-8238 Section II.A.3 (opened 31 Oct 2026). Original KaiSip scenario written from the public law and public summaries; no SOXCPA presentation, upload or prep-bank material used. 31 Oct 2026, CSOE batch 5 csoe_d5_085-106.",
+      "style_version": 2
+    },
+    {
+      "id": "csoe_d5_088",
+      "domain": 5,
+      "subtopic": "5A1 The original framework (1992). Where the definition applies",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "A SOX lead explains the reach of COSO's definition of internal control, which the 2013 update kept. As COSO MOST accurately describes it, internal control is adaptable to:",
+      "options": {
+        "A": "the consolidated group as a whole, not any single part of it",
+        "B": "financial reporting processes, apart from operations and compliance",
+        "C": "the whole entity or a single subsidiary, division, unit or process",
+        "D": "companies with an SEC reporting duty under the Exchange Act"
+      },
+      "correct": "C",
+      "key_concept": "COSO's definition makes internal control adaptable to the entity structure: the whole entity, or one subsidiary, division, operating unit or business process.",
+      "pre_read": "Recall the concepts COSO lists after its definition of internal control, including the one about entity structure.",
+      "correct_explanation": "COSO's 2013 summary, explaining the definition that the update kept, says internal control is adaptable to the entity structure: flexible in application for the entire entity or for a particular subsidiary, division, operating unit or business process. A company may therefore scope a review to one unit. The definition is not limited to financial reporting processes, and it does not depend on SEC registration.",
+      "wrong_explanations": {
+        "A": "Closest choice: COSO can be applied to the whole entity, but its definition also lets it be applied to one subsidiary, division, operating unit or process.",
+        "B": "Tempting because SOX work centers on financial reporting. But COSO's definition is not limited to reporting; the SEC's ICFR is the narrower concept.",
+        "D": "Tempting because SEC filers use COSO for Section 404. But COSO applies to any entity, listed or not; SEC registration is a SOX scope question."
+      },
+      "tips": [
+        "Eliminate: B and D. COSO's definition is not limited to financial reporting, and it does not depend on an SEC reporting duty.",
+        "Final two: C beats A because COSO calls internal control adaptable to the entity structure, from the whole entity down to one process.",
+        "Exam cue: COSO can be applied to the whole entity or to any part of it; the scope follows the structure management chooses."
+      ],
+      "framework_ref": "COSO Internal Control—Integrated Framework (2013) Executive Summary (Defining internal control)",
+      "related_concepts": [
+        "Definition of internal control",
+        "Entity structure",
+        "Scope of application"
+      ],
+      "_provenance": "Authored from concept: KaiSip notes 5A1.8 and COSO's 2013 Executive Summary, Defining Internal Control (opened 31 Oct 2026). Original KaiSip scenario written from the public law and public summaries; no SOXCPA presentation, upload or prep-bank material used. 31 Oct 2026, CSOE batch 5 csoe_d5_085-106.",
+      "style_version": 2
+    },
+    {
+      "id": "csoe_d5_089",
+      "domain": 5,
+      "subtopic": "5A1 The original framework (1992). Judgment in internal control",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A new controller tells the SOX team that, under COSO, effective internal control means following every written policy and procedure exactly. Which correction is MOST accurate?",
+      "options": {
+        "A": "Judgment belongs to the independent auditor when it tests controls",
+        "B": "Judgment applies to operations controls, not to reporting controls",
+        "C": "Adherence also needs the board to approve each procedure yearly",
+        "D": "It also takes judgment, including on how much control is enough"
+      },
+      "correct": "D",
+      "key_concept": "COSO says effective internal control needs more than following policies and procedures: it takes judgment, including on how much control is enough.",
+      "pre_read": "Recall what COSO's 2013 summary says effective internal control demands beyond policies and procedures.",
+      "correct_explanation": "COSO's 2013 summary says an effective system demands more than rigorous adherence to policies and procedures: it requires judgment. Management and the board judge how much control is enough, staff use judgment in selecting and deploying controls, and management and internal auditors use it in monitoring. COSO's FAQ says the update kept the 1992 framework's emphasis on management judgment.",
+      "wrong_explanations": {
+        "A": "Tempting because the auditor exercises judgment. But COSO puts that judgment inside the entity, with the people who design, run and monitor controls, not just with outside testers.",
+        "B": "Tempting because reporting follows set rules. But COSO's judgment applies across all objectives, within the limits set by laws, rules, regulations and standards.",
+        "C": "Closest choice: the board oversees internal control, but COSO's point is judgment, such as how much control is enough, not yearly board approval of every procedure."
+      },
+      "tips": [
+        "Eliminate: A and B. COSO places judgment inside the entity and across every objective category, not with the auditor or with one category.",
+        "Final two: D beats C because COSO says effectiveness needs judgment beyond adherence; board oversight does not mean approving every procedure.",
+        "Exam cue: COSO is principles-based; when an option treats rule-following alone as effective control, look for judgment instead."
+      ],
+      "framework_ref": "COSO Internal Control—Integrated Framework (2013) Executive Summary (Effective internal control); COSO Internal Control—Integrated Framework FAQ (May 2013) Question 1 (What the update kept and changed)",
+      "related_concepts": [
+        "Management judgment",
+        "Principles-based framework",
+        "Effective internal control"
+      ],
+      "_provenance": "Authored from concept: KaiSip notes 5A1.8 and COSO's 2013 Executive Summary and FAQ Question 1 (opened 31 Oct 2026). Original KaiSip scenario written from the public law and public summaries; no SOXCPA presentation, upload or prep-bank material used. 31 Oct 2026, CSOE batch 5 csoe_d5_085-106.",
+      "style_version": 2
+    },
+    {
+      "id": "csoe_d5_090",
+      "domain": 5,
+      "subtopic": "5A2 The 2013 update. Which objectives the principles serve",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "A SOX lead tells the compliance team that COSO 2013's principle on considering fraud matters only for financial reporting. Under COSO's executive summary, the 17 principles MOST accurately apply to:",
+      "options": {
+        "A": "external financial reporting, where Section 404 applies",
+        "B": "all three objective categories, not reporting alone",
+        "C": "reporting objectives, with operations left to the ERM framework",
+        "D": "whichever objective categories the board selects each year"
+      },
+      "correct": "B",
+      "key_concept": "All 17 principles of COSO 2013 apply to every category of objectives, not only to financial reporting.",
+      "pre_read": "Recall what COSO's 2013 summary says about the reach of its principles across the objective categories.",
+      "correct_explanation": "COSO's 2013 summary says the 17 principles represent the fundamental concepts of each component and that all principles apply to all three categories of objectives. The fraud principle therefore covers fraud that could defeat an operations goal or a compliance duty, as well as fraudulent reporting. Section 404 uses only the financial reporting slice, but the principles themselves are not cut down to it.",
+      "wrong_explanations": {
+        "A": "Closest choice: SOX work applies the principles to external financial reporting, but COSO says every principle applies to all three objective categories.",
+        "C": "Tempting because ERM is broader. But COSO's internal control framework itself covers operations objectives, and its principles apply to them.",
+        "D": "Tempting because management specifies objectives. But COSO fixes the principles' reach: all of them apply to every category of objectives."
+      },
+      "tips": [
+        "Eliminate: C and D. The internal control framework covers operations itself, and no board vote narrows where its principles apply.",
+        "Final two: B beats A because COSO's summary says all principles apply to all three categories of objectives; Section 404 uses only part of that reach.",
+        "Exam cue: COSO's principles are not reporting-only; Section 404 is what narrows the lens to financial reporting."
+      ],
+      "framework_ref": "COSO Internal Control—Integrated Framework (2013) Executive Summary (Components and principles); COSO Internal Control—Integrated Framework (2013) Principle 8 (Considers the potential for fraud)",
+      "related_concepts": [
+        "17 principles",
+        "Objective categories",
+        "Fraud risk"
+      ],
+      "_provenance": "Authored from concept: KaiSip notes 5A2.6 and COSO's 2013 Executive Summary, Components and Principles (opened 31 Oct 2026). Original KaiSip scenario written from the public law and public summaries; no SOXCPA presentation, upload or prep-bank material used. 31 Oct 2026, CSOE batch 5 csoe_d5_085-106.",
+      "style_version": 2
+    },
+    {
+      "id": "csoe_d5_091",
+      "domain": 5,
+      "subtopic": "5A2 The 2013 update. A board by another name",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A nonprofit university run by a board of trustees applies COSO 2013 to its grant reporting. Where the framework refers to the board of directors, whom does it MOST accurately mean here?",
+      "options": {
+        "A": "The board of trustees, as the university's governing body",
+        "B": "Senior management, since the university has no directors",
+        "C": "The grant agency, as the body overseeing how funds are spent",
+        "D": "The independent auditor, as the overseer from outside"
+      },
+      "correct": "A",
+      "key_concept": "COSO's term 'board of directors' covers whatever governing body an entity has: a board, trustees, general partners, an owner or a supervisory board.",
+      "pre_read": "Look at how COSO's 2013 summary defines the term 'board of directors' in its first footnote.",
+      "correct_explanation": "A footnote to COSO's 2013 summary says the framework's term 'board of directors' encompasses the governing body, including a board of trustees, general partners, an owner or a supervisory board. The trustees govern the university, so the framework's board principles, such as independence from management and oversight of internal control, apply to them. COSO's 2017 ERM summary uses the same definition.",
+      "wrong_explanations": {
+        "B": "Closest choice: senior management runs internal control, but COSO reads 'board' as the governing body, here the trustees, who oversee management.",
+        "C": "Tempting because the agency monitors the grant. But it is an outside party; COSO's board is the entity's own governing body.",
+        "D": "Tempting because the auditor gives outside assurance. But the auditor is not part of the entity's governance and cannot be its board."
+      },
+      "tips": [
+        "Eliminate: C and D. The grant agency and the independent auditor are outside parties, never the entity's governing body.",
+        "Final two: A beats B because COSO defines 'board of directors' as the governing body, trustees included; management is what the board oversees.",
+        "Exam cue: in COSO, 'board' means whoever governs: directors, trustees, general partners, an owner or a supervisory board."
+      ],
+      "framework_ref": "COSO Internal Control—Integrated Framework (2013) Executive Summary footnote 1 (Board of directors as the governing body)",
+      "related_concepts": [
+        "Board of directors",
+        "Governing body",
+        "Board oversight"
+      ],
+      "_provenance": "Authored from concept: KaiSip notes 5A2.7 and COSO's 2013 Executive Summary, footnote 1 (opened 31 Oct 2026). Original KaiSip scenario written from the public law and public summaries; no SOXCPA presentation, upload or prep-bank material used. 31 Oct 2026, CSOE batch 5 csoe_d5_085-106.",
+      "style_version": 2
+    },
+    {
+      "id": "csoe_d5_092",
+      "domain": 5,
+      "subtopic": "5A2 The 2013 update. One control, several principles",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "In judging whether principle 10 on control activities is present and functioning, a SOX lead wants to count a management review documented under the monitoring component. Under COSO's FAQ, which view is MOST accurate?",
+      "options": {
+        "A": "No; a control counts solely for the principle it is filed under",
+        "B": "Yes, once the independent auditor has approved the mapping",
+        "C": "Yes; a control may support any principle it actually affects",
+        "D": "No; a review is monitoring by nature, not a control activity"
+      },
+      "correct": "C",
+      "key_concept": "COSO's FAQ lets management count a control toward any component or principle it affects, whatever component it is documented under.",
+      "pre_read": "Recall what COSO's FAQ says about controls that affect a principle they are not mapped to.",
+      "correct_explanation": "COSO's FAQ (Question 4) says that in deciding whether a component or relevant principle is present and functioning, management can consider controls that affect it, whether or not they are associated with that component or principle. It can also consider controls to effect other principles when judging a gap. What counts is the control's actual effect, backed by persuasive evidence, not where it is filed.",
+      "wrong_explanations": {
+        "A": "Closest choice: mapping helps documentation, but COSO's FAQ lets management consider any control that affects a principle, whether or not it is associated with it.",
+        "B": "Tempting because the auditor reviews mappings. But the FAQ leaves this to management's assessment; no auditor approval is a condition.",
+        "D": "Tempting because reviews often sit in monitoring. But reviews can also be control activities, and COSO looks at what a control affects, not its label."
+      },
+      "tips": [
+        "Eliminate: B and D. COSO sets no auditor-approval condition, and a review can serve as a control activity as well as monitoring.",
+        "Final two: C beats A because COSO's FAQ lets management consider controls that affect a principle whether or not they are associated with it.",
+        "Exam cue: in COSO 2013, judge a principle by every control that affects it, not by the matrix column a control sits in."
+      ],
+      "framework_ref": "COSO Internal Control—Integrated Framework FAQ (May 2013) Question 4 (Points of focus and controls to effect principles); COSO Internal Control—Integrated Framework (2013) Principle 10 (Selects and develops control activities)",
+      "related_concepts": [
+        "Controls to effect principles",
+        "Present and functioning",
+        "Persuasive evidence"
+      ],
+      "_provenance": "Authored from concept: KaiSip notes 5A2.6 and COSO's 2013 FAQ Question 4 (opened 31 Oct 2026). Original KaiSip scenario written from the public law and public summaries; no SOXCPA presentation, upload or prep-bank material used. 31 Oct 2026, CSOE batch 5 csoe_d5_085-106.",
+      "style_version": 2
+    },
+    {
+      "id": "csoe_d5_093",
+      "domain": 5,
+      "subtopic": "5A2 The 2013 update. Less duplicated effort",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A group's operations, reporting and compliance teams each assess the same supplier risks separately and describe controls in their own terms. Under COSO's FAQ, which change MOST directly improves efficiency?",
+      "options": {
+        "A": "Add a further control layer for each team's own objectives",
+        "B": "Move compliance controls out of internal control to legal staff",
+        "C": "Keep each team's terms, but compare risk lists once a year",
+        "D": "Assess shared risks together and use one common control language"
+      },
+      "correct": "D",
+      "key_concept": "COSO's FAQ names coordinated risk assessment across objectives and one common control language among the ways the framework can make internal control efficient.",
+      "pre_read": "Recall the efficiency examples COSO's 2013 FAQ gives for designing and conducting internal control.",
+      "correct_explanation": "COSO's FAQ (Question 7) says the framework can contribute to efficiency: coordinating risk identification and assessment across multiple objectives may reduce the number of discrete risks assessed, and applying one common language across all objective categories may lessen the number of languages used to describe internal control. Both answer the group's duplicated supplier-risk work.",
+      "wrong_explanations": {
+        "A": "Tempting because more controls feel safer. But the FAQ ties efficiency to fewer discrete, layered-on efforts, not to added layers for each objective.",
+        "B": "Tempting because compliance has its own experts. But compliance objectives are part of COSO's internal control; moving them out does not coordinate the work.",
+        "C": "Closest choice: comparing lists helps, but the FAQ's efficiency gain comes from assessing shared risks together and using one common language."
+      },
+      "tips": [
+        "Eliminate: A and B. Extra layers add effort, and compliance stays within COSO's internal control rather than moving out of it.",
+        "Final two: D beats C because COSO's FAQ names joint risk assessment across objectives and one common control language as sources of efficiency.",
+        "Exam cue: COSO efficiency comes from doing shared work once, across objectives and in one language, not from adding layers."
+      ],
+      "framework_ref": "COSO Internal Control—Integrated Framework FAQ (May 2013) Question 7 (Efficiency in designing and conducting internal control)",
+      "related_concepts": [
+        "Efficiency",
+        "Common control language",
+        "Risk assessment across objectives"
+      ],
+      "_provenance": "Authored from concept: KaiSip notes 5A2.6 and COSO's 2013 FAQ Question 7 (opened 31 Oct 2026). Original KaiSip scenario written from the public law and public summaries; no SOXCPA presentation, upload or prep-bank material used. 31 Oct 2026, CSOE batch 5 csoe_d5_085-106.",
+      "style_version": 2
+    },
+    {
+      "id": "csoe_d5_094",
+      "domain": 5,
+      "subtopic": "5A2 The 2013 update. Effective for one objective, not another",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "A privately held food processor's management, applying COSO 2013, finds a major deficiency in its food-safety compliance controls that has no bearing on its reporting objectives. Which conclusion is MOST accurate?",
+      "options": {
+        "A": "Control can be effective for reporting yet not for compliance",
+        "B": "The whole system is ineffective for every objective category",
+        "C": "The deficiency matters for COSO once it affects reporting too",
+        "D": "COSO 2013 does not reach compliance objectives like food safety"
+      },
+      "correct": "A",
+      "key_concept": "COSO judges effectiveness for specified objectives: a system may be effective for one, two or all three categories, and severity judgments may vary by category.",
+      "pre_read": "Recall how COSO's 2013 summary and FAQ tie effectiveness and severity to the categories of objectives.",
+      "correct_explanation": "COSO's 2013 summary says an effective system reduces, to an acceptable level, the risk of not achieving an objective, and may relate to one, two or all three categories. Its FAQ adds that severity judgments may vary with the category of objectives. The major deficiency defeats effectiveness for compliance, but with no bearing on reporting, control can still be effective for reporting objectives.",
+      "wrong_explanations": {
+        "B": "Closest choice: a major deficiency does defeat effectiveness, but COSO ties that conclusion to the objectives affected; effectiveness may relate to one, two or all three categories.",
+        "C": "Tempting because SOX work centers on reporting. But COSO judges compliance objectives on their own terms; a deficiency there need not touch reporting.",
+        "D": "Tempting because food safety sounds operational. But COSO's compliance objectives cover adherence to the laws and regulations an entity is subject to."
+      },
+      "tips": [
+        "Eliminate: C and D. COSO judges compliance objectives in their own right, and compliance with laws is one of its three categories.",
+        "Final two: A beats B because COSO's effectiveness test applies to specified objectives and may cover one, two or all three categories.",
+        "Exam cue: in COSO 2013, ask 'effective for which objectives?' before concluding about the whole system."
+      ],
+      "framework_ref": "COSO Internal Control—Integrated Framework (2013) Executive Summary (Effective internal control); COSO Internal Control—Integrated Framework FAQ (May 2013) Question 3 (Requirements for effective internal control)",
+      "related_concepts": [
+        "Effective internal control",
+        "Objective categories",
+        "Major deficiency"
+      ],
+      "_provenance": "Authored from concept: KaiSip notes 5A2.6 and COSO's 2013 Executive Summary and FAQ Question 3 (opened 31 Oct 2026). Original KaiSip scenario written from the public law and public summaries; no SOXCPA presentation, upload or prep-bank material used. 31 Oct 2026, CSOE batch 5 csoe_d5_085-106.",
+      "style_version": 2
+    },
+    {
+      "id": "csoe_d5_095",
+      "domain": 5,
+      "subtopic": "5A2 The 2013 update. External communication",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "A compliance team lead drafts a COSO 2013 training slide on the information and communication component. As the framework MOST accurately describes it, external communication covers:",
+      "options": {
+        "A": "reports the entity sends to regulators, investors and lenders",
+        "B": "relevant outside information coming in and information sent out",
+        "C": "messages from senior management to staff about control duties",
+        "D": "information the entity's own systems generate and keep on file"
+      },
+      "correct": "B",
+      "key_concept": "COSO 2013 calls external communication twofold: bringing relevant outside information in and providing information to outside parties.",
+      "pre_read": "Recall how COSO's 2013 summary splits communication into internal and external, and what each covers.",
+      "correct_explanation": "COSO's 2013 summary describes communication as the continual, iterative process of providing, sharing and obtaining information. Internal communication flows up, down and across the entity. External communication is twofold: it lets relevant external information come in, and it provides information to outside parties in response to requirements and expectations. A slide limited to outbound reports misses the inbound half.",
+      "wrong_explanations": {
+        "A": "Closest choice: outbound reports are part of external communication, but COSO also counts relevant information coming in from outside, such as a regulator's new rule.",
+        "C": "Tempting because it is communication about controls. But messages from senior management to staff are internal communication, flowing within the entity.",
+        "D": "Tempting because information is half the component. But information an entity generates and keeps is not yet communication; communication is how it is shared."
+      },
+      "tips": [
+        "Eliminate: C and D. Staff messages are internal communication, and stored information is not yet its exchange with outsiders.",
+        "Final two: B beats A because COSO calls external communication twofold: relevant information coming in and information going out.",
+        "Exam cue: in COSO 2013, external communication runs both ways; internal communication flows up, down and across."
+      ],
+      "framework_ref": "COSO Internal Control—Integrated Framework (2013) Executive Summary (Components of internal control)",
+      "related_concepts": [
+        "Information and communication",
+        "External communication",
+        "Internal communication"
+      ],
+      "_provenance": "Authored from concept: KaiSip notes 5A2.7 and COSO's 2013 Executive Summary, Components of Internal Control (opened 31 Oct 2026). Original KaiSip scenario written from the public law and public summaries; no SOXCPA presentation, upload or prep-bank material used. 31 Oct 2026, CSOE batch 5 csoe_d5_085-106.",
+      "style_version": 2
+    },
+    {
+      "id": "csoe_d5_096",
+      "domain": 5,
+      "subtopic": "5A2 The 2013 update. Components that depend on each other",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "A logistics firm's internal auditors find control deficiencies but cannot tell who should receive them, because the firm never set reporting lines or responsibilities. Under COSO's FAQ, what does this MOST clearly show?",
+      "options": {
+        "A": "Monitoring has failed on its own and should be fixed there",
+        "B": "The deficiencies are minor, since internal audit found them",
+        "C": "Monitoring relies on structures set in the control environment",
+        "D": "Risk assessment must be redone before deficiencies are routed"
+      },
+      "correct": "C",
+      "key_concept": "COSO's components are interdependent: reporting deficiencies under monitoring needs the structures and reporting lines set in the control environment.",
+      "pre_read": "Recall COSO's FAQ examples of components operating together, especially how deficiencies reach those who act.",
+      "correct_explanation": "COSO's FAQ (Question 3) gives examples of components operating together. One is that communicating deficiencies to those responsible for corrective action, part of monitoring, requires a full understanding of the entity's structures, reporting lines, authorities and responsibilities, set in the control environment and communicated through information and communication. Here the monitoring gap traces to missing control environment structures.",
+      "wrong_explanations": {
+        "A": "Closest choice: the deficiencies reached no one, but the cause lies in missing structures and reporting lines, which belong to the control environment.",
+        "B": "Tempting because finding deficiencies shows monitoring ran. But who found a deficiency says nothing about its severity, and none can be fixed until it is routed.",
+        "D": "Tempting because risks may need review. But the gap here is about routing findings, which depends on structures and reporting lines, not on reassessing risk."
+      },
+      "tips": [
+        "Eliminate: B and D. Finding a deficiency says nothing about its severity, and the routing gap is not a risk assessment problem.",
+        "Final two: C beats A because COSO's FAQ says routing deficiencies depends on structures and reporting lines set in the control environment.",
+        "Exam cue: when one component's failure traces to another, COSO's 'operating together' test is the lens; look for the dependency."
+      ],
+      "framework_ref": "COSO Internal Control—Integrated Framework FAQ (May 2013) Question 3 (Requirements for effective internal control)",
+      "related_concepts": [
+        "Operating together",
+        "Control environment",
+        "Monitoring activities"
+      ],
+      "_provenance": "Authored from concept: KaiSip notes 5A2.7 and COSO's 2013 FAQ Question 3 (opened 31 Oct 2026). Original KaiSip scenario written from the public law and public summaries; no SOXCPA presentation, upload or prep-bank material used. 31 Oct 2026, CSOE batch 5 csoe_d5_085-106.",
+      "style_version": 2
+    },
+    {
+      "id": "csoe_d5_097",
+      "domain": 5,
+      "subtopic": "5A2 The 2013 update. When companion guidance differs",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A SOX team finds that an example in COSO's compendium on internal control over external financial reporting seems to allow what the 2013 framework's text does not. Under COSO's executive summary, which MOST clearly governs?",
+      "options": {
+        "A": "The framework, since no other guidance takes precedence over it",
+        "B": "The compendium, as the more specific guide for external reporting",
+        "C": "Whichever document the independent auditor prefers for 404(b)",
+        "D": "The 1992 framework, which the compendium was written to apply"
+      },
+      "correct": "A",
+      "key_concept": "COSO says neither its external reporting compendium nor any other past or future guidance takes precedence over the 2013 framework.",
+      "pre_read": "Recall what COSO's 2013 summary says about the standing of its companion publications.",
+      "correct_explanation": "COSO's 2013 summary says the Internal Control over External Financial Reporting compendium illustrates how the framework's components and principles can be applied in preparing external financial statements, but that neither it nor any other past or future guidance takes precedence over the framework. Where an example seems to differ from the framework's text, the framework governs, and management applies it.",
+      "wrong_explanations": {
+        "B": "Closest choice: the compendium is the external reporting guide, but COSO says no past or future guidance, the compendium included, takes precedence over the framework.",
+        "C": "Tempting because the auditor attests under Section 404(b). But management chooses and applies the framework; an auditor's preference does not rank COSO's documents.",
+        "D": "Tempting because older guidance existed. But the compendium was issued with the 2013 framework to show how its components and principles apply."
+      },
+      "tips": [
+        "Eliminate: C and D. An auditor's preference does not rank COSO's publications, and the compendium applies the 2013 framework, not the 1992 one.",
+        "Final two: A beats B because COSO's summary says no guidance, the compendium included, takes precedence over the framework.",
+        "Exam cue: COSO's companion guides illustrate the framework; when they seem to differ, the framework itself governs."
+      ],
+      "framework_ref": "COSO Internal Control—Integrated Framework (2013) Executive Summary (Introduction: related publications and precedence); COSO Internal Control—Integrated Framework FAQ (May 2013) Question 2 (Illustrative Tools and the ICEFR Compendium)",
+      "related_concepts": [
+        "ICEFR Compendium",
+        "Framework precedence",
+        "COSO publications"
+      ],
+      "_provenance": "Authored from concept: KaiSip notes 5A2.8 and COSO's 2013 Executive Summary introduction and FAQ Question 2 (opened 31 Oct 2026). Original KaiSip scenario written from the public law and public summaries; no SOXCPA presentation, upload or prep-bank material used. 31 Oct 2026, CSOE batch 5 csoe_d5_085-106.",
+      "style_version": 2
+    },
+    {
+      "id": "csoe_d5_098",
+      "domain": 5,
+      "subtopic": "5A2 The 2013 update. Assessment templates",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A SOX lead plans to file COSO's Illustrative Tools templates, unchanged, as the company's complete record of its internal control assessment. Under COSO's FAQ, which view is MOST accurate?",
+      "options": {
+        "A": "Sound, since the templates are part of the framework itself",
+        "B": "Not enough; the templates must first be approved by the SEC",
+        "C": "Sound, since the templates list the controls each principle needs",
+        "D": "Not enough; they summarize results and may need tailoring"
+      },
+      "correct": "D",
+      "key_concept": "COSO's Illustrative Tools are summary templates, not part of the framework; management may tailor them, and they may not cover every matter.",
+      "pre_read": "Recall how COSO's 2013 FAQ describes the Illustrative Tools and their limits.",
+      "correct_explanation": "COSO's FAQ (Question 2) says the Illustrative Tools templates focus on components and principles, not the underlying controls, and present only a summary of assessment results. They are not an integral part of the framework, may not address every matter an assessment needs, and can be modified by management for its own facts. Filing them unchanged as the full record overstates what they do.",
+      "wrong_explanations": {
+        "A": "Closest choice: the tools were issued with the framework, but COSO's FAQ says the templates are not an integral part of it and give only a summary.",
+        "B": "Tempting because SEC filers use COSO. But COSO's FAQ sets no SEC approval step; it lets management modify the templates to fit its facts.",
+        "C": "Tempting because templates look like control lists. But COSO's FAQ says they focus on components and principles, not the underlying controls."
+      },
+      "tips": [
+        "Eliminate: B and C. COSO sets no SEC approval step for its templates, and they address components and principles rather than listing controls.",
+        "Final two: D beats A because COSO's FAQ calls the templates a summary that is not an integral part of the framework and that management may modify.",
+        "Exam cue: COSO's Illustrative Tools help present an assessment; they are not the framework and not, by themselves, the evidence."
+      ],
+      "framework_ref": "COSO Internal Control—Integrated Framework FAQ (May 2013) Question 2 (Illustrative Tools and the ICEFR Compendium)",
+      "related_concepts": [
+        "Illustrative Tools",
+        "Assessment documentation",
+        "COSO publications"
+      ],
+      "_provenance": "Authored from concept: KaiSip notes 5A2.8 and COSO's 2013 FAQ Question 2 (opened 31 Oct 2026). Original KaiSip scenario written from the public law and public summaries; no SOXCPA presentation, upload or prep-bank material used. 31 Oct 2026, CSOE batch 5 csoe_d5_085-106.",
+      "style_version": 2
+    },
+    {
+      "id": "csoe_d5_099",
+      "domain": 5,
+      "subtopic": "5A2 The 2013 update. The 2009 monitoring guidance",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "The SOX team's controller asks about COSO's 2009 Guidance on Monitoring Internal Control Systems now that the 2013 framework is in force. According to COSO's FAQ, that guidance MOST accurately:",
+      "options": {
+        "A": "was superseded by the external reporting compendium after 2014",
+        "B": "remains a reference, its guidance built into the framework",
+        "C": "was discontinued in 2014, like COSO's derivatives guidance",
+        "D": "now forms the monitoring principles of the 2017 ERM framework"
+      },
+      "correct": "B",
+      "key_concept": "COSO's 2013 framework incorporates its 2009 monitoring guidance, which stays available as a reference document for management.",
+      "pre_read": "Recall what COSO's FAQ and its internal control page say about the status of each earlier publication.",
+      "correct_explanation": "COSO's FAQ (Question 15) says the 2013 framework incorporates the guidance in its 2009 Guidance on Monitoring Internal Control Systems, which continues as a reference document for management, and COSO's summary says it has similar applicability to the updated framework. By contrast, COSO's page says the compendium superseded the 2006 smaller public company guidance and the 1996 derivatives guidance was discontinued.",
+      "wrong_explanations": {
+        "A": "Closest choice: that was the fate of COSO's 2006 guidance for smaller public companies, which the compendium superseded; the monitoring guidance stayed in use.",
+        "C": "Tempting because COSO retired some guidance in 2014. Its page says that was the 1996 derivatives guidance; the monitoring guidance continues.",
+        "D": "Tempting because ERM 2017 also reviews performance. But the 2009 guidance supports the internal control framework's monitoring component, not ERM's principles."
+      },
+      "tips": [
+        "Eliminate: C and D. The discontinued guidance was on derivatives, and the 2009 guidance supports internal control monitoring, not ERM.",
+        "Final two: B beats A because COSO's FAQ keeps the 2009 guidance as a reference, built into the framework; the compendium replaced the 2006 guidance.",
+        "Exam cue: for an older COSO paper, check its status first: superseded, discontinued or still a reference."
+      ],
+      "framework_ref": "COSO Internal Control—Integrated Framework FAQ (May 2013) Question 15 (The 2009 Guidance on Monitoring Internal Control Systems); COSO Internal Control Guidance Page (Status of earlier COSO internal control publications)",
+      "related_concepts": [
+        "Guidance on monitoring",
+        "Superseded guidance",
+        "COSO publications"
+      ],
+      "_provenance": "Authored from concept: KaiSip notes 5A2.8 and COSO's 2013 FAQ Question 15 and COSO's internal control guidance page (opened 31 Oct 2026). Original KaiSip scenario written from the public law and public summaries; no SOXCPA presentation, upload or prep-bank material used. 31 Oct 2026, CSOE batch 5 csoe_d5_085-106.",
+      "style_version": 2
+    },
+    {
+      "id": "csoe_d5_100",
+      "domain": 5,
+      "subtopic": "5A2 The 2013 update. Who took part in the update",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "A compliance team trainer describes how COSO's 2013 internal control update was developed. In that project, the SEC and the PCAOB MOST accurately took part as:",
+      "options": {
+        "A": "sponsoring organizations that jointly fund COSO's work",
+        "B": "authors who drafted the updated framework and principles",
+        "C": "observers in Advisory Council meetings who gave input",
+        "D": "approving bodies whose vote put the update into force"
+      },
+      "correct": "C",
+      "key_concept": "COSO is a private-sector body; in its 2013 update the SEC and the PCAOB took part as observers who gave input.",
+      "pre_read": "Recall who sponsors COSO, who wrote the 2013 update and what role regulators played, per COSO's FAQ.",
+      "correct_explanation": "COSO's FAQ (Question 10) says the FDIC, GAO, IFAC, PCAOB and SEC participated as observers in all Advisory Council meetings and gave input throughout the project. COSO is a private-sector initiative sponsored and funded by five professional bodies, and PwC wrote the update under the COSO Board's direction (Question 9). Regulators observed; they did not sponsor, write or approve it.",
+      "wrong_explanations": {
+        "A": "Closest choice: COSO does have sponsoring organizations, but they are five professional bodies, such as the AICPA and the IIA, not the SEC or the PCAOB.",
+        "B": "Tempting because both write rules. But PwC wrote the update under the COSO Board's direction; the regulators observed and commented.",
+        "D": "Tempting because the SEC accepts frameworks for Section 404. But COSO issues its own framework; no regulator's vote put the update into force."
+      },
+      "tips": [
+        "Eliminate: B and D. PwC drafted the update for the COSO Board, and no regulator's vote made it effective.",
+        "Final two: C beats A because COSO's sponsors are five professional bodies; the SEC and the PCAOB sat in as observers.",
+        "Exam cue: COSO is private-sector: professional bodies sponsor it, a firm drafts, and regulators observe."
+      ],
+      "framework_ref": "COSO Internal Control—Integrated Framework FAQ (May 2013) Question 10 (Regulators as observers); COSO Internal Control—Integrated Framework FAQ (May 2013) Question 9 (Who was involved in the project); COSO Internal Control—Integrated Framework (2013) Executive Summary (Front matter: COSO's sponsoring organizations)",
+      "related_concepts": [
+        "COSO's sponsors",
+        "Advisory Council",
+        "Regulators as observers"
+      ],
+      "_provenance": "Authored from concept: KaiSip notes 5A2.8 and COSO's 2013 FAQ Questions 9 and 10 (opened 31 Oct 2026). Original KaiSip scenario written from the public law and public summaries; no SOXCPA presentation, upload or prep-bank material used. 31 Oct 2026, CSOE batch 5 csoe_d5_085-106.",
+      "style_version": 2
+    },
+    {
+      "id": "csoe_d5_101",
+      "domain": 5,
+      "subtopic": "5A2 The 2013 update. Sustainability reporting controls",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "A sustainability team asks what COSO's 2023 guidance on internal control over sustainability reporting is built on. According to COSO, which answer is MOST accurate?",
+      "options": {
+        "A": "The internal control framework, applied to sustainability data",
+        "B": "The 2017 ERM framework, as in COSO's ESG risk guidance",
+        "C": "A sixth component COSO added for sustainability reporting",
+        "D": "A stand-alone sustainability framework replacing the principles"
+      },
+      "correct": "A",
+      "key_concept": "COSO's 2023 guidance on internal control over sustainability reporting applies the Internal Control—Integrated Framework; it adds no new framework or component.",
+      "pre_read": "Recall which COSO framework the 2023 sustainability reporting guidance uses, per COSO's internal control page.",
+      "correct_explanation": "COSO's internal control page says that in 2023 it issued supplemental guidance to help organizations achieve effective internal control over sustainability reporting using the Internal Control—Integrated Framework. The guidance applies the existing framework to sustainability information rather than creating a new one. COSO's separate 2018 ESG guidance, listed among its ERM documents, applies enterprise risk management to ESG-related risks.",
+      "wrong_explanations": {
+        "B": "Closest choice: COSO's 2018 ESG guidance applies ERM to ESG-related risks, but the 2023 reporting guidance builds on the internal control framework.",
+        "C": "Tempting because sustainability is new ground. But COSO added no component; the guidance applies the existing internal control framework.",
+        "D": "Tempting because the topic is specialized. But COSO calls it supplemental guidance that uses the internal control framework, not a replacement for it."
+      },
+      "tips": [
+        "Eliminate: C and D. COSO's 2023 guidance adds no component and replaces nothing; it is supplemental guidance.",
+        "Final two: A beats B because the 2023 reporting guidance uses the internal control framework; ERM is the base of COSO's 2018 ESG risk guidance.",
+        "Exam cue: control over a kind of reporting points to the internal control framework; managing a kind of risk points to ERM."
+      ],
+      "framework_ref": "COSO Internal Control Guidance Page (2023 guidance on internal control over sustainability reporting); COSO Enterprise Risk Management Guidance Page (2018 guidance applying ERM to ESG-related risks)",
+      "related_concepts": [
+        "Sustainability reporting",
+        "Internal Control—Integrated Framework",
+        "Supplemental guidance"
+      ],
+      "_provenance": "Authored from concept: KaiSip notes 5A2.8 and COSO's internal control and ERM guidance pages (opened 31 Oct 2026). Original KaiSip scenario written from the public law and public summaries; no SOXCPA presentation, upload or prep-bank material used. 31 Oct 2026, CSOE batch 5 csoe_d5_085-106.",
+      "style_version": 2
+    },
+    {
+      "id": "csoe_d5_102",
+      "domain": 5,
+      "subtopic": "5B2 ERM (2017): strategy and performance. What the principles provide",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A director tells the board that applying all 20 principles of COSO's 2017 ERM framework ensures the strategy hits its targets. Per the executive summary, what do the principles MOST accurately provide?",
+      "options": {
+        "A": "Assurance that results will stay within the board's risk appetite",
+        "B": "A reasonable expectation the entity understands and strives to manage risks",
+        "C": "An opinion the independent auditor can attest to under Section 404(b)",
+        "D": "A formula that picks the best strategy for management"
+      },
+      "correct": "B",
+      "key_concept": "COSO's 2017 summary says adhering to the principles gives a reasonable expectation that the organization understands and strives to manage its strategy's risks.",
+      "pre_read": "Recall what COSO's 2017 executive summary says adhering to the 20 principles gives management and the board.",
+      "correct_explanation": "COSO's 2017 executive summary says adhering to the principles can provide management and the board with a reasonable expectation that the organization understands and strives to manage the risks associated with its strategy and business objectives. That is a statement about understanding and managing risk, not a promise that targets will be hit or that results will always fall within appetite.",
+      "wrong_explanations": {
+        "A": "Closest choice: ERM works with risk appetite, but the summary promises an expectation of understanding and managing risk, not that results stay within appetite.",
+        "C": "Tempting because auditors attest under SOX. But Section 404(b) covers ICFR; COSO's ERM principles create no attestation subject.",
+        "D": "Tempting because ERM informs strategy choices. But the principles describe practices; management and the board still choose the strategy."
+      },
+      "tips": [
+        "Eliminate: C and D. Section 404(b) attestation covers ICFR, and ERM principles inform strategy choices rather than make them.",
+        "Final two: B beats A because the summary offers a reasonable expectation that risks are understood and managed, not a guarantee about results.",
+        "Exam cue: ERM 2017's principles promise understanding and striving to manage risk; an option promising outcomes overstates them."
+      ],
+      "framework_ref": "COSO Enterprise Risk Management—Integrating with Strategy and Performance (2017) Executive Summary (Five components and 20 principles)",
+      "related_concepts": [
+        "20 principles",
+        "Reasonable expectation",
+        "Risk appetite"
+      ],
+      "_provenance": "Authored from concept: KaiSip notes 5B2.6 and COSO's ERM 2017 Executive Summary (opened 31 Oct 2026). Original KaiSip scenario written from the public law and public summaries; no SOXCPA presentation, upload or prep-bank material used. 31 Oct 2026, CSOE batch 5 csoe_d5_085-106.",
+      "style_version": 2
+    },
+    {
+      "id": "csoe_d5_103",
+      "domain": 5,
+      "subtopic": "5B2 ERM (2017): strategy and performance. Risk tied to performance",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A manufacturer's risk team holds a yearly risk workshop whose results never reach the managers who set sales and margin targets. Under COSO's 2017 ERM executive summary, which change BEST reflects the update?",
+      "options": {
+        "A": "Hold the same workshop each quarter rather than each year",
+        "B": "Add every workshop risk to the SOX control matrix",
+        "C": "Hand the workshop to internal audit for independence",
+        "D": "Tie risk to performance, including when targets are set"
+      },
+      "correct": "D",
+      "key_concept": "COSO's 2017 update positions risk in the context of performance, including the setting of performance targets, rather than as an isolated exercise.",
+      "pre_read": "Recall how COSO's 2017 foreword and summary describe the link between risk and performance.",
+      "correct_explanation": "COSO's 2017 executive summary says the update positions risk in the context of an organization's performance rather than as the subject of an isolated exercise, and its foreword says it enhances alignment between performance and ERM to improve the setting of performance targets. A workshop cut off from target setting is the isolated exercise the update moves away from.",
+      "wrong_explanations": {
+        "A": "Closest choice: more frequent workshops help, but a quarterly session still sits apart from target setting; the update ties risk to performance.",
+        "B": "Tempting because the SOX matrix is familiar. But ICFR controls address financial reporting risk, not the link between risk and performance targets.",
+        "C": "Tempting because internal audit is independent. But the gap is that risk never informs targets; changing who runs the workshop does not close it."
+      },
+      "tips": [
+        "Eliminate: B and C. The SOX matrix covers financial reporting risk, and a new workshop owner does not link risk to targets.",
+        "Final two: D beats A because COSO's update positions risk within performance, including target setting; frequency alone keeps the exercise isolated.",
+        "Exam cue: in ERM 2017, risk belongs inside strategy and performance decisions, not in a side exercise."
+      ],
+      "framework_ref": "COSO Enterprise Risk Management—Integrating with Strategy and Performance (2017) Executive Summary (Foreword: what the update does); COSO Enterprise Risk Management—Integrating with Strategy and Performance (2017) Executive Summary (What enterprise risk management has achieved)",
+      "related_concepts": [
+        "Risk and performance",
+        "Performance targets",
+        "ERM 2017 update"
+      ],
+      "_provenance": "Authored from concept: KaiSip notes 5B2.6 and COSO's ERM 2017 Executive Summary and foreword (opened 31 Oct 2026). Original KaiSip scenario written from the public law and public summaries; no SOXCPA presentation, upload or prep-bank material used. 31 Oct 2026, CSOE batch 5 csoe_d5_085-106.",
+      "style_version": 2
+    },
+    {
+      "id": "csoe_d5_104",
+      "domain": 5,
+      "subtopic": "5B2 ERM (2017): strategy and performance. One approach across countries",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A group's management lets each of its 30 country units build its own, unrelated ERM approach. Under the foreword to COSO's 2017 ERM framework, which approach does the update MOST directly support?",
+      "options": {
+        "A": "Identical procedures in every country, so results compare directly",
+        "B": "Separate frameworks per country, chosen by local managers",
+        "C": "A common approach across geographies, tailored to each one",
+        "D": "ERM run at headquarters, with country units kept out of it"
+      },
+      "correct": "C",
+      "key_concept": "COSO's 2017 ERM update recognizes globalization and the need for a common, albeit tailored, approach across geographies.",
+      "pre_read": "Recall what COSO's 2017 foreword lists among the things the update does for organizations operating globally.",
+      "correct_explanation": "The foreword to COSO's 2017 ERM framework lists what the update does, including recognizing the globalization of markets and operations and the need to apply a common, albeit tailored, approach across geographies. Unrelated country approaches lack the common base, and identical procedures everywhere would leave out the tailoring the foreword expects.",
+      "wrong_explanations": {
+        "A": "Closest choice: a common base is right, but COSO calls for an approach tailored to each geography, not identical procedures everywhere.",
+        "B": "Tempting because local managers know local risks. But separate frameworks per country are the fragmented approach the foreword moves away from.",
+        "D": "Tempting because headquarters sets strategy. But an approach applied across geographies includes the country units; leaving them out is not tailoring."
+      },
+      "tips": [
+        "Eliminate: B and D. Separate country frameworks fragment ERM, and leaving units out defeats an approach applied across geographies.",
+        "Final two: C beats A because the foreword asks for a common approach that is tailored, not identical procedures in every country.",
+        "Exam cue: for a global group under ERM 2017, think one common approach, tailored locally."
+      ],
+      "framework_ref": "COSO Enterprise Risk Management—Integrating with Strategy and Performance (2017) Executive Summary (Foreword: what the update does)",
+      "related_concepts": [
+        "Globalization",
+        "Common approach",
+        "ERM 2017 update"
+      ],
+      "_provenance": "Authored from concept: KaiSip notes 5B2.6 and COSO's ERM 2017 Executive Summary foreword (opened 31 Oct 2026). Original KaiSip scenario written from the public law and public summaries; no SOXCPA presentation, upload or prep-bank material used. 31 Oct 2026, CSOE batch 5 csoe_d5_085-106.",
+      "style_version": 2
+    },
+    {
+      "id": "csoe_d5_105",
+      "domain": 5,
+      "subtopic": "5C2 Service organizations: from SAS 70 to SSAE 18. The user auditor's standards",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A listed manufacturer that files Form 10-K uses a payroll service organization, and its independent auditor plans to use the provider's SOC 1 Type 2 report. Which standards MOST accurately govern that auditor's work?",
+      "options": {
+        "A": "AU-C section 402, the AICPA standard on service organizations",
+        "B": "PCAOB standards, since the auditor's client is an issuer",
+        "C": "SSAE No. 18, the standard the service auditor followed",
+        "D": "COSO 2013, the framework management used for its assessment"
+      },
+      "correct": "B",
+      "key_concept": "An issuer's auditor works under PCAOB standards (Section 103); the AICPA's AU-C sections, AU-C 402 among them, apply to audits of nonissuers.",
+      "pre_read": "Recall who sets auditing standards for issuer audits and where the AICPA says its own auditing standards apply.",
+      "correct_explanation": "Section 103(a)(1) has the PCAOB establish the auditing and related attestation standards that registered public accounting firms use in preparing and issuing audit reports. The AICPA says its Statements on Auditing Standards, the AU-C sections that include AU-C 402, apply to audits of nonissuers, meaning entities that are not issuers under the Act. A Form 10-K filer's auditor therefore follows PCAOB standards.",
+      "wrong_explanations": {
+        "A": "Closest choice: AU-C section 402 does address audits of entities using service organizations, but the AICPA applies its auditing standards to nonissuers.",
+        "C": "Tempting because the report was prepared under SSAE No. 18. But that standard governs the service auditor's examination, not the user auditor's audit.",
+        "D": "Tempting because COSO guides management. But COSO is management's control framework, not a standard for performing an audit."
+      },
+      "tips": [
+        "Eliminate: C and D. SSAE No. 18 governs the service auditor, and COSO is management's framework, not an auditing standard.",
+        "Final two: B beats A because the client is an issuer, and the AICPA's AU-C sections apply to nonissuers.",
+        "Exam cue: issuer audit, PCAOB standards; nonissuer audit, AICPA AU-C sections; the service auditor, SSAE No. 18."
+      ],
+      "framework_ref": "Sarbanes-Oxley Act of 2002 Section 103(a)(1) (Auditing, quality control, and ethics standards); AICPA SASs Currently Effective Page (Statements on Auditing Standards apply to nonissuers); AICPA Employee Benefit Plan SOC 1 Resource Center (Use of SOC 1 reports by plan auditors)",
+      "related_concepts": [
+        "User auditor",
+        "PCAOB standards",
+        "AU-C section 402"
+      ],
+      "_provenance": "Authored from concept: KaiSip notes 5C2.6 and Sarbanes-Oxley Act Section 103(a)(1) and the AICPA's SASs page (opened 31 Oct 2026). Original KaiSip scenario written from the public law and public summaries; no SOXCPA presentation, upload or prep-bank material used. 31 Oct 2026, CSOE batch 5 csoe_d5_085-106.",
+      "style_version": 2
+    },
+    {
+      "id": "csoe_d5_106",
+      "domain": 5,
+      "subtopic": "5C2 Service organizations: from SAS 70 to SSAE 18. Using a SOC 1 report",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An employee benefit plan's independent auditor obtains the trustee bank's SOC 1 Type 2 report. According to the AICPA, how does the auditor MOST directly use such a report?",
+      "options": {
+        "A": "To understand the bank's controls and possibly cut substantive tests",
+        "B": "To drop the bank's processing of plan transactions from the audit",
+        "C": "To give the plan's participants a public report on the bank",
+        "D": "To issue the auditor's own opinion on the bank's controls"
+      },
+      "correct": "A",
+      "key_concept": "User auditors use SOC 1 reports to understand a service organization's controls and, potentially, to reduce the substantive testing they need.",
+      "pre_read": "Recall what the AICPA's employee benefit plan resource page says auditors do with SOC 1 reports.",
+      "correct_explanation": "The AICPA notes that most employee benefit plans use service organizations, such as bank trustees, and that SOC 1 reports, formerly known as SAS 70 reports, are often obtained and used by the auditor to understand the controls at the service organization and potentially reduce the amount of substantive testing required. The report informs the audit; it does not remove the bank's processing from it.",
+      "wrong_explanations": {
+        "B": "Closest choice: the report can cut the testing needed, but the AICPA speaks of reducing substantive testing, not dropping the bank's processing from the audit.",
+        "C": "Tempting because participants have an interest. But a report meant for public sharing is a SOC 3; a SOC 1 report addresses controls relevant to financial reporting.",
+        "D": "Tempting because the report contains an opinion. But that opinion is the service auditor's, given under SSAE No. 18; the plan's auditor uses it."
+      },
+      "tips": [
+        "Eliminate: C and D. Any report for public sharing is a SOC 3, and the opinion on the bank's controls is the service auditor's own.",
+        "Final two: A beats B because the AICPA says the report helps the auditor understand the bank's controls and may reduce substantive testing, not end it.",
+        "Exam cue: a SOC 1 report is evidence the user auditor weighs; it can trim testing, but it does not take the process out of scope."
+      ],
+      "framework_ref": "AICPA Employee Benefit Plan SOC 1 Resource Center (Use of SOC 1 reports by plan auditors); AICPA SOC 1 Topic Page (SOC 1 examinations of controls relevant to user entities' ICFR)",
+      "related_concepts": [
+        "SOC 1 report",
+        "User auditor",
+        "Substantive testing"
+      ],
+      "_provenance": "Authored from concept: KaiSip notes 5C2.6 and the AICPA's employee benefit plan SOC 1 resource page (opened 31 Oct 2026). Original KaiSip scenario written from the public law and public summaries; no SOXCPA presentation, upload or prep-bank material used. 31 Oct 2026, CSOE batch 5 csoe_d5_085-106.",
       "style_version": 2
     }
   ]
