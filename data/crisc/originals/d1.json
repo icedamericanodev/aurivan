@@ -2496,7 +2496,7 @@
       "question": "The risk practitioner's aggregation shows an airport operator's 12 supplier risks, each within its own tolerance, together exceed the board's appetite for supplier risk. What should the practitioner do FIRST?",
       "options": {
         "A": "Escalate the combined exposure to the board",
-        "B": "Leave the risks as reported, each within tolerance",
+        "B": "Have each owner accept their own risk on record",
         "C": "Ask each owner to cut their risk by an equal share",
         "D": "Hold the finding for the next yearly profile review"
       },
@@ -2505,12 +2505,12 @@
       "pre_read": "Separate the limits that apply to single risks from the limit that applies to the total.",
       "correct_explanation": "Tolerances limit each risk, but appetite limits the total, so exposure can breach appetite while every risk stays inside its own limit. A breach of the board's appetite goes to the board, which can direct treatment, accept the position for a time or revisit the limit. Asking each owner to cut an equal share is the runner-up: owners may well act, but the practitioner would be choosing the response to a board-level breach.",
       "wrong_explanations": {
-        "B": "Tolerances limit each risk; appetite limits the total. Combined exposure above appetite is a breach even when each risk sits inside its own tolerance.",
+        "B": "Each owner could accept a risk within its own tolerance, but together the risks exceed the board's appetite, and no single owner can accept that breach.",
         "C": "An equal cut is a response chosen by the practitioner. The board that set the appetite decides how the breach is handled, and cuts should follow the risk.",
         "D": "A breach of appetite is a governance event. Waiting for the yearly review leaves the board unaware of exposure above its limit."
       },
       "tips": [
-        "Eliminate: B reads individual tolerances as if they capped the total, and D holds a breach until a scheduled review.",
+        "Eliminate: B has each owner accept their own risk when the breach is of the board's limit on the total, and D holds a breach until a scheduled review.",
         "Final two: A beats C because a breach of the board's appetite goes to the board; the practitioner does not choose the response on its behalf.",
         "Exam cue: aggregate exposure can breach appetite even when each risk is within tolerance; escalate to whoever set the limit that was breached."
       ],
@@ -2520,7 +2520,7 @@
         "Risk appetite",
         "Escalation path"
       ],
-      "_provenance": "Authored from concept: notes 1B3.2 (Aggregation and Keeping the Profile Current: aggregate related risks, report against appetite) and 1B4.3 (a breach is escalated to the risk owner and the level that set the limit). Round 3, 4 Nov 2026: original scenario of an airport operator's supplier risks breaching appetite only in combination written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used.",
+      "_provenance": "Authored from concept: notes 1B3.2 (Aggregation and Keeping the Profile Current: aggregate related risks, report against appetite) and 1B4.3 (a breach is escalated to the risk owner and the level that set the limit). Round 3, 4 Nov 2026: original scenario of an airport operator's supplier risks breaching appetite only in combination written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Cross-domain fixes 4 Nov 2026 (round 6): option B is now owner acceptance on record of risks each within tolerance, a stated reason acceptance is wrong (the total breaches the board's appetite), as a counter-example to the within-appetite acceptance cue; why-B and the Eliminate tip follow (cross-domain gate).",
       "style_version": 2
     },
     {
@@ -3650,15 +3650,15 @@
       "correct": "B",
       "key_concept": "A tested recovery slower than the target but within appetite may be accepted by the process owner on record, instead of funding a costly fix.",
       "pre_read": "Compare the tested recovery with the target, then with appetite.",
-      "correct_explanation": "The exercise shows recovery takes three days, not one, but three days is within appetite. A risk within appetite needs no further treatment, so the owner, who set the target, may accept three days on record, and the RTO and plan are updated to match. Funding the upgrade is the runner-up: it meets the old target, but spends $400,000 a year on a risk that is already acceptable.",
+      "correct_explanation": "The exercise shows recovery takes three days, not one, but three days is within appetite, so no further treatment is needed. The recovery target is the process owner's, so the owner accepts three days on record, and the RTO and plan are updated to match. Having IT reset the target is the runner-up: it brings the plan in line with the test, but changing a business recovery target is the owner's decision, not IT's.",
       "wrong_explanations": {
         "A": "The upgrade meets the one-day target, but three days is already within appetite, so $400,000 a year buys a reduction the business does not need.",
-        "C": "Recovery targets come from the business and IT delivers against them; changing the target to fit the result is the owner's decision, not IT's.",
+        "C": "IT can report the tested recovery time, but the target comes from the business; resetting it without the owner's acceptance moves a decision that is the owner's.",
         "D": "Waiting a year leaves the plan promising one day while recovery takes three; the owner can decide now, while the exercise result is fresh."
       },
       "tips": [
-        "Eliminate: C lets IT move a target the business owns, and D leaves the plan promising a recovery the exercise showed it cannot deliver.",
-        "Final two: B beats A because three days is within appetite; the owner may accept it on record rather than fund a fix the risk does not need.",
+        "Eliminate: A spends $400,000 a year on a risk already within appetite, and D leaves the plan promising a recovery the exercise showed it cannot deliver.",
+        "Final two: B beats C because the recovery target belongs to the process owner; IT can report the tested time, but only the owner can accept three days and have the RTO changed.",
         "Exam cue: a gap found in testing is not always treated; within appetite, the owner can accept it on record and the RTO and plan are updated to match."
       ],
       "framework_ref": "ISACA Glossary (recovery time objective); ISACA Glossary (risk acceptance); COBIT 2019 DSS04 (Managed Continuity)",
@@ -3667,7 +3667,7 @@
         "Risk acceptance",
         "Continuity exercise"
       ],
-      "_provenance": "Authored from concept: notes 1A5.1 (Process Ownership and Critical Processes: process owners set recovery needs, and a tested recovery slower than the target but within appetite can be accepted by the process owner on record, with the plan updated to match). Round 6, 4 Nov 2026: original scenario (a distributor's invoicing restored in three days against a one-day target, with a $400,000-a-year fix) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Acceptance keyed under the round 6 plan: within appetite, the process owner accepts, recorded and reviewed; the practitioner recommends. Neighbours checked: CISA d4_322 (five days against a two-day impact tolerance gets a funded plan: the opposite case, outside tolerance), CC cc_d2_008 (a hot site for an archive with a three-week RTO: compare cost with the target, not acceptance of a tested gap), crisc_d1_029 (a process gap after a test goes to the owner), crisc_d1_063 (an approved fix with an interim workaround), crisc_d3_002 and CISA d1_194 (more controls on a risk within appetite). Review fixes 4 Nov 2026 (round 6 audit, concept review and blind test): explanation and Exam cue say the RTO itself is updated with the plan once the owner accepts three days (concept review); notes 1A5.1 matched. Keep apart from crisc_d4_076 in practice sets (same accept-instead-of-costly-fix shape).",
+      "_provenance": "Authored from concept: notes 1A5.1 (Process Ownership and Critical Processes: process owners set recovery needs, and a tested recovery slower than the target but within appetite can be accepted by the process owner on record, with the plan updated to match). Round 6, 4 Nov 2026: original scenario (a distributor's invoicing restored in three days against a one-day target, with a $400,000-a-year fix) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Acceptance keyed under the round 6 plan: within appetite, the process owner accepts, recorded and reviewed; the practitioner recommends. Neighbours checked: CISA d4_322 (five days against a two-day impact tolerance gets a funded plan: the opposite case, outside tolerance), CC cc_d2_008 (a hot site for an archive with a three-week RTO: compare cost with the target, not acceptance of a tested gap), crisc_d1_029 (a process gap after a test goes to the owner), crisc_d1_063 (an approved fix with an interim workaround), crisc_d3_002 and CISA d1_194 (more controls on a risk within appetite). Review fixes 4 Nov 2026 (round 6 audit, concept review and blind test): explanation and Exam cue say the RTO itself is updated with the plan once the owner accepts three days (concept review); notes 1A5.1 matched. Keep apart from crisc_d4_076 in practice sets (same accept-instead-of-costly-fix shape). Cross-domain fixes 4 Nov 2026 (round 6): re-angled to 1A5 governance: the final two is now the process owner against IT on who sets the recovery target (runner-up C), and funding the upgrade falls to topic knowledge, so the item no longer repeats crisc_d4_076's cost-against-fix lesson; options, key B and Exam cue unchanged (cross-domain gate).",
       "style_version": 2
     },
     {

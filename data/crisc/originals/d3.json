@@ -4020,15 +4020,15 @@
       "correct": "D",
       "key_concept": "Thresholds work only when the action and the person who takes it are agreed for each level before any breach.",
       "pre_read": "Ask what was missing when the red reading arrived.",
-      "correct_explanation": "The KRI did its job: it turned red. The delay came from not knowing who acts and what they do, so each level needs an agreed response and responder in advance, with escalation for red. A lower red threshold is the runner-up: it would warn earlier, but an earlier warning with no agreed response just starts the same wait sooner.",
+      "correct_explanation": "The KRI did its job: it turned red. The delay came from not knowing who acts and what they do, so each level needs an agreed response and responder in advance, with escalation for red. A lower red threshold is the runner-up: it would fire sooner, but red should mark the tolerance, and an earlier alarm with no agreed response just starts the same wait sooner.",
       "wrong_explanations": {
-        "A": "An earlier warning helps only if someone knows what to do; with no agreed response the same wait would start sooner.",
+        "A": "A lower red level fires sooner but no longer marks the tolerance; with no agreed response the same wait would simply start earlier.",
         "B": "Board reporting adds visibility at the top but still names nobody to act when a KRI turns red.",
         "C": "More indicators add readings that nobody is set to act on; the gap was the response, not the measurement."
       },
       "tips": [
         "Eliminate: B reports red KRIs upward without naming who acts, and C adds measurements when the gap was the response.",
-        "Final two: D beats A because an earlier warning with no agreed action only starts the wait sooner.",
+        "Final two: D beats A because an earlier alarm with no agreed action only starts the wait sooner.",
         "Exam cue: thresholds turn metrics into decisions only when each level's action and actor are set before the breach."
       ],
       "framework_ref": "NIST IR 8286C Rev. 1 Section 5.1 (Key CSRM Mechanisms: risk tolerance is translated into security controls, KPIs and KRIs); NIST SP 800-137 Section 3.5 (Respond to Findings)",
@@ -4037,7 +4037,7 @@
         "Escalation path",
         "Risk response"
       ],
-      "_provenance": "Authored from concept: notes 3C3.3 (Thresholds and AI Model Indicators: define the action and escalation for each level before any breach happens). Round 4, 4 Nov 2026: original scenario (an energy retailer whose billing-server patching KRI turned red while three managers spent two weeks debating who should act), written for KaiSip in our own words; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D3 round 4 (crisc_d3_086 to 115). Review fixes 4 Nov 2026 (standards audit and concept review): the stem no longer has teams debating for a set time, moving it away from CISA d4_200; the explanations and Final two tip follow the new wording. Neighbours checked: CISA d4_200, crisc_d3_018 (alert routing; keep apart in practice sets).",
+      "_provenance": "Authored from concept: notes 3C3.3 (Thresholds and AI Model Indicators: define the action and escalation for each level before any breach happens). Round 4, 4 Nov 2026: original scenario (an energy retailer whose billing-server patching KRI turned red while three managers spent two weeks debating who should act), written for KaiSip in our own words; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D3 round 4 (crisc_d3_086 to 115). Review fixes 4 Nov 2026 (standards audit and concept review): the stem no longer has teams debating for a set time, moving it away from CISA d4_200; the explanations and Final two tip follow the new wording. Neighbours checked: CISA d4_200, crisc_d3_018 (alert routing; keep apart in practice sets). Cross-domain fixes 4 Nov 2026 (round 6): explanation and why-A say red marks the tolerance, so a lower red level is not an earlier warning, matching crisc_d3_125 and notes 3C3; Final two says 'alarm' to match; options and key D unchanged (cross-domain gate).",
       "style_version": 2
     },
     {
@@ -4277,18 +4277,18 @@
         "D": "Put the uninsured exposure on record for the board"
       },
       "correct": "C",
-      "key_concept": "Insurance is for losses the business cannot absorb; when even the worst plausible loss is within appetite, the owner accepts on record and monitors.",
+      "key_concept": "Insurance is for financial losses the business cannot absorb; when even the worst plausible loss is within appetite, the owner accepts on record and monitors.",
       "pre_read": "Read the loss figures against appetite before weighing any response.",
       "correct_explanation": "Even the worst plausible loss, $150,000, sits within appetite, so the retailer can absorb it. Insurance earns its premium when a loss could exceed what the business can bear; here it would cost $45,000 a year to offset an expected $20,000. Buying the cover is the runner-up: it feels prudent, but it pays more than it saves on a risk the owner can accept and monitor.",
       "wrong_explanations": {
-        "A": "Transfer suits losses the business cannot absorb; paying $45,000 a year to offset an expected $20,000, when even the worst case is within appetite, costs more than it saves.",
+        "A": "Transfer suits financial losses the business cannot absorb; paying $45,000 a year to offset an expected $20,000, when even the worst case is within appetite, costs more than it saves.",
         "B": "A standby host would mitigate a risk that is already within appetite, adding cost the analysis does not justify.",
         "D": "The board sets appetite and does not decide individual risks inside it; a risk within appetite is its owner's decision."
       },
       "tips": [
         "Eliminate: B mitigates a risk already within appetite, and D sends a decision inside appetite up to the board.",
         "Final two: C beats A because even the worst plausible loss is within appetite, so there is no loss the business cannot absorb for the cover to take.",
-        "Exam cue: insurance is for losses the business cannot absorb; within appetite, the owner accepts and monitors."
+        "Exam cue: insurance is for financial losses the business cannot absorb; within appetite on a sound rating, the owner accepts and monitors."
       ],
       "framework_ref": "NIST IR 8286B-upd1 Section 2.3.1 (Risk Acceptance: exposure within risk tolerance is still reported, monitored and managed); NIST IR 8286B-upd1 Section 2.3.3 (Risk Transfer: considered when a risk cannot be accepted or fully avoided, most often through insurance); NIST IR 8286B-upd1 Section 2.4.1 (Risk Response Cost: the cost of a response is compared with the risk exposure to support a cost-benefit analysis)",
       "related_concepts": [
@@ -4296,7 +4296,7 @@
         "Risk transfer",
         "Cost-benefit analysis"
       ],
-      "_provenance": "Authored from concept: notes 3A1.2 (Choosing a Response by Appetite and Cost-Benefit; bullet 1 extended: a risk within appetite, even at its worst plausible loss, needs acceptance and monitoring, not new spending or insurance) and 3A1.3 (Residual Risk and Risk Acceptance: acceptance recorded by an owner with authority). Round 6, 4 Nov 2026: original scenario (a retailer offered $45,000-a-year outage cover for a risk whose worst plausible loss, $150,000, is within appetite and whose expected loss is $20,000), written for KaiSip in our own words; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D3 round 6 (crisc_d3_116 to 128). Round 6 priority: owner acceptance within appetite keyed. Neighbours checked: crisc_d3_002 (within appetite, extra monitoring tool; same rule, here the trap is transfer, not mitigation), crisc_d3_086 (insurance keyed when only the financial impact is above appetite; keep apart), crisc_d3_001 (what insurance shifts), crisc_d2_016 (ALE cost-benefit), CISA d1_194 (controls until zero residual), CISA d2_133 (insurance limits sized to exposure). Review fixes 4 Nov 2026 (round 6 audit, concept review and blind test): key_concept and Final two rest on the worst case being absorbable, not on the premium exceeding the expected loss, which is true of most cover (concept review); option D now puts the exposure 'on record' for the board, so 'on record' is no longer a key-only cue (audit). Keep apart from crisc_d3_002 and crisc_d3_118 in practice sets.",
+      "_provenance": "Authored from concept: notes 3A1.2 (Choosing a Response by Appetite and Cost-Benefit; bullet 1 extended: a risk within appetite, even at its worst plausible loss, needs acceptance and monitoring, not new spending or insurance) and 3A1.3 (Residual Risk and Risk Acceptance: acceptance recorded by an owner with authority). Round 6, 4 Nov 2026: original scenario (a retailer offered $45,000-a-year outage cover for a risk whose worst plausible loss, $150,000, is within appetite and whose expected loss is $20,000), written for KaiSip in our own words; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D3 round 6 (crisc_d3_116 to 128). Round 6 priority: owner acceptance within appetite keyed. Neighbours checked: crisc_d3_002 (within appetite, extra monitoring tool; same rule, here the trap is transfer, not mitigation), crisc_d3_086 (insurance keyed when only the financial impact is above appetite; keep apart), crisc_d3_001 (what insurance shifts), crisc_d2_016 (ALE cost-benefit), CISA d1_194 (controls until zero residual), CISA d2_133 (insurance limits sized to exposure). Review fixes 4 Nov 2026 (round 6 audit, concept review and blind test): key_concept and Final two rest on the worst case being absorbable, not on the premium exceeding the expected loss, which is true of most cover (concept review); option D now puts the exposure 'on record' for the board, so 'on record' is no longer a key-only cue (audit). Keep apart from crisc_d3_002 and crisc_d3_118 in practice sets. Cross-domain fixes 4 Nov 2026 (round 6): key_concept, why-A and Exam cue say insurance is for financial losses the business cannot absorb, so the rule agrees with crisc_d3_121 (standby site over insurance for a loss money cannot repay) and crisc_d3_086; Exam cue adds 'on a sound rating' (cross-domain gate).",
       "style_version": 2
     },
     {
@@ -4316,7 +4316,7 @@
       "correct": "A",
       "key_concept": "A risk aggregated across units needs one owner whose authority spans those units; unit heads keep ownership of their own entries.",
       "pre_read": "Think about what changed when the entries became one risk.",
-      "correct_explanation": "Merging the entries creates one enterprise risk that no single brand head can fund or accept for the other 13. Ownership follows authority, so it sits with a group executive over the 14 brands, while each brand head keeps their own entry. Joint ownership by the brand heads is the runner-up: it looks inclusive, but shared owners leave no one accountable for the enterprise decision.",
+      "correct_explanation": "Merging the entries creates one enterprise risk that no single brand head can fund or accept for the other 13. Ownership follows authority, so the analyst proposes a group executive over the 14 brands, for senior management to confirm, while each brand head keeps their own entry. Joint ownership by the brand heads is the runner-up: it looks inclusive, but shared owners leave no one accountable for the enterprise decision.",
       "wrong_explanations": {
         "B": "With 14 joint owners, no single person can decide the enterprise response or accept its residual risk; each head stays owner of their brand's entry.",
         "C": "The CIO's team runs the checkout systems and may own controls on them, but refund fraud is a business risk to the group's sales and margins.",
@@ -4333,7 +4333,7 @@
         "Risk aggregation",
         "Enterprise risk"
       ],
-      "_provenance": "Authored from concept: notes 3A2.1 (Assigning Risk Owners; bullet 2 extended: authority must cover every unit the risk spans) with 3C2.2 (merging unit entries into a representative risk). Round 6, 4 Nov 2026: original scenario (a retail group merging 14 store brands' refund-fraud entries into one enterprise risk and proposing its owner), written for KaiSip in our own words; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D3 round 6 (crisc_d3_116 to 128). Neighbours checked: crisc_d3_105 (how to show merged entries; this item asks who owns the result), crisc_d1_052 (two joint accountable roles in a RACI; here the lesson is authority across units), crisc_d3_089 (one control serving four risk owners), crisc_d3_023 (owner by who runs the process), crisc_d2_060 (IT security team named on every entry).",
+      "_provenance": "Authored from concept: notes 3A2.1 (Assigning Risk Owners; bullet 2 extended: authority must cover every unit the risk spans) with 3C2.2 (merging unit entries into a representative risk). Round 6, 4 Nov 2026: original scenario (a retail group merging 14 store brands' refund-fraud entries into one enterprise risk and proposing its owner), written for KaiSip in our own words; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D3 round 6 (crisc_d3_116 to 128). Neighbours checked: crisc_d3_105 (how to show merged entries; this item asks who owns the result), crisc_d1_052 (two joint accountable roles in a RACI; here the lesson is authority across units), crisc_d3_089 (one control serving four risk owners), crisc_d3_023 (owner by who runs the process), crisc_d2_060 (IT security team named on every entry). Cross-domain fixes 4 Nov 2026 (round 6): explanation says the analyst proposes the owner for senior management to confirm, matching notes 2B3.1 (cross-domain gate observation).",
       "style_version": 2
     },
     {
@@ -4686,15 +4686,15 @@
       "correct": "C",
       "key_concept": "A confirmed tolerance breach goes to the risk owner and the level that set the limit when it happens, not at the next scheduled report.",
       "pre_read": "Decide what a confirmed tolerance breach needs before reading the options.",
-      "correct_explanation": "A confirmed tolerance breach needs a decision from the risk owner and, through the escalation path, the executive committee that set the limit. Waiting 11 weeks for the next report leaves the breach unmanaged, so it is escalated outside the cycle. Having the control owner finish the patching first is the runner-up: the fix is needed, but the owner and the committee must learn of the breach and decide on it.",
+      "correct_explanation": "A confirmed tolerance breach needs a decision from the risk owner and, through the escalation path, the executive committee that set the limit. Waiting 11 weeks for the next report leaves the breach unmanaged, so it is escalated outside the cycle. Flagging it on the live dashboard is the runner-up: it shows the breach at once, but a dashboard waits for someone to look, while escalation asks the people who must decide.",
       "wrong_explanations": {
         "A": "Holding a confirmed breach for 11 weeks leaves the risk above tolerance with no decision; scheduled reports do not replace escalation.",
         "B": "The fix matters, but the control owner's patching does not tell the risk owner or the committee that their limit was breached.",
         "D": "A dashboard makes the breach visible to anyone who looks, but nobody is asked to decide; a tolerance breach needs an escalation that requests one."
       },
       "tips": [
-        "Eliminate: A waits 11 weeks with a breach unreported, and D shows the breach on a dashboard without asking anyone to decide.",
-        "Final two: C beats B because a tolerance breach needs the owner's and the limit-setter's decision, not only a technical fix.",
+        "Eliminate: A waits 11 weeks with a breach unreported, and B has the control owner patch first while the risk owner and the committee stay unaware that their limit was breached.",
+        "Final two: C beats D because a tolerance breach needs a decision, and escalation asks for one; a dashboard shows the breach only to whoever happens to look.",
         "Exam cue: a confirmed tolerance breach is escalated when it happens; the reporting calendar never delays it."
       ],
       "framework_ref": "NIST IR 8286B-upd1 Section 2.4.3 (Risk Owner: risk escalation and elevation); NIST SP 800-137 Section 3.4 (Analyze Data and Report Findings: recipients, content, format and frequency of reports)",
@@ -4703,7 +4703,7 @@
         "Risk tolerance",
         "Risk reporting"
       ],
-      "_provenance": "Authored from concept: notes 3C5.2 (Reporting for the Audience and the Decision: escalate outside the cycle when a tolerance breach needs a decision now). Round 6, 4 Nov 2026: original scenario (a university's unpatched student-records servers confirmed in breach of the executive committee's tolerance days after the quarterly report, with the next one 11 weeks away), written for KaiSip in our own words; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D3 round 6 (crisc_d3_116 to 128). Neighbours checked: crisc_d3_107 (threshold change needs its approver), crisc_d3_095 (policy escalation of a late finding), crisc_d3_041 (report on time with gaps stated), crisc_d1_042 (who approves running above tolerance), CISA d2_108 (record a mid-cycle risk at once). Review fixes 4 Nov 2026 (round 6 audit, concept review and blind test): REWORK: re-angled to a university's unpatched student-records servers, with a live-dashboard distractor in place of raising the tolerance (the auditor's replacement), because the earlier logistics backup breach near-duplicated crisc_d1_018 option for option; key letter C kept; 'that' dropped from the auditor's stem to fit 35 words. Keep apart from crisc_d1_018.",
+      "_provenance": "Authored from concept: notes 3C5.2 (Reporting for the Audience and the Decision: escalate outside the cycle when a tolerance breach needs a decision now). Round 6, 4 Nov 2026: original scenario (a university's unpatched student-records servers confirmed in breach of the executive committee's tolerance days after the quarterly report, with the next one 11 weeks away), written for KaiSip in our own words; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D3 round 6 (crisc_d3_116 to 128). Neighbours checked: crisc_d3_107 (threshold change needs its approver), crisc_d3_095 (policy escalation of a late finding), crisc_d3_041 (report on time with gaps stated), crisc_d1_042 (who approves running above tolerance), CISA d2_108 (record a mid-cycle risk at once). Review fixes 4 Nov 2026 (round 6 audit, concept review and blind test): REWORK: re-angled to a university's unpatched student-records servers, with a live-dashboard distractor in place of raising the tolerance (the auditor's replacement), because the earlier logistics backup breach near-duplicated crisc_d1_018 option for option; key letter C kept; 'that' dropped from the auditor's stem to fit 35 words. Keep apart from crisc_d1_018. Cross-domain fixes 4 Nov 2026 (round 6): the runner-up is now the live dashboard (D), so the item teaches that visibility is not escalation and no longer shares crisc_d1_018's 'fix first' runner-up; explanation and the Eliminate and Final two tips follow; options and key C unchanged (cross-domain gate).",
       "style_version": 2
     },
     {
