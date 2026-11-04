@@ -2428,8 +2428,8 @@
       },
       "correct": "B",
       "key_concept": "Security requirements set in the enterprise architecture are inherited by every new design, so a gap shared by many teams is fixed at that level.",
-      "pre_read": "Notice how many teams are involved, then ask where the cause of the gaps sits.",
-      "correct_explanation": "Logging differs by team because nothing above the teams sets what must be logged, so each new app can repeat the gaps. A logging standard set in the enterprise architecture defines the events every design records, and teams build it in from the start. A go-live logging check is the runner-up; it catches some gaps, but late, one app at a time, after each design is fixed.",
+      "pre_read": "Read both findings of the incident reviews before weighing the options.",
+      "correct_explanation": "Logging differs by team because nothing above the teams sets what must be logged, so new apps can repeat the gaps. A logging standard in the enterprise architecture defines the events every design records, so teams build it in and the two apps are brought up to it. A go-live check is the runner-up; it needs a standard to check against and catches gaps late, one app at a time, after each design is settled.",
       "wrong_explanations": {
         "A": "Adding sign-in logs fixes the two apps found so far; the other teams keep designing their own logging, so new gaps keep appearing.",
         "C": "A go-live check finds gaps when they are costliest to fix and still lets 30 teams design logging their own way.",
@@ -2446,7 +2446,7 @@
         "Security requirements",
         "Event logging"
       ],
-      "_provenance": "Authored from concept: notes 4A1.1 (Enterprise Architecture and Architecture Review: security and privacy requirements are built into the architecture, so each new system inherits them instead of reinventing them). Round 5, 4 Nov 2026: original scenario (a telecom's 30 product teams each designing their own logging, two customer apps with no sign-in records) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Neighbours checked: crisc_d4_021, crisc_d4_046 and crisc_d4_052 (CRISC D4); CISA d2_090, d2_152, d2_162 and d4_309; CC cc_d4_009; AAIA none on logging standards. Judged distinct: none keys an architecture-level requirement for a gap shared by many teams (d4_052 fixes one team's process across releases).",
+      "_provenance": "Authored from concept: notes 4A1.1 (Enterprise Architecture and Architecture Review: security and privacy requirements are built into the architecture, so each new system inherits them instead of reinventing them). Round 5, 4 Nov 2026: original scenario (a telecom's 30 product teams each designing their own logging, two customer apps with no sign-in records) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Neighbours checked: crisc_d4_021, crisc_d4_046 and crisc_d4_052 (CRISC D4); CISA d2_090, d2_152, d2_162 and d4_309; CC cc_d4_009; AAIA none on logging standards. Judged distinct: none keys an architecture-level requirement for a gap shared by many teams (d4_052 fixes one team's process across releases). Review fixes 4 Nov 2026 (standards audit and concept review): the explanation now says the two apps are brought up to the standard and that a go-live check needs a standard to check against ('settled' replaces 'fixed', which could read as 'repaired'); pre_read made neutral.",
       "style_version": 2
     },
     {
@@ -2502,7 +2502,7 @@
       },
       "correct": "A",
       "key_concept": "The SDLC ends with disposal: a replacement project retires the old data, servers and access as a planned step, so nothing keeps running unowned.",
-      "pre_read": "Notice the question asks about preventing a repeat, not cleaning up this case.",
+      "pre_read": "Note the goal the question sets for the recommendation.",
       "correct_explanation": "The database outlived the system it served, which shows retiring old components was not a planned step, so the next replacement can leave the same gap. A retirement phase in each such project names who removes or archives the old data, servers and access, and confirms it is done. A quarterly scan is the runner-up; it would find leftovers, but only after they have sat exposed and unpatched.",
       "wrong_explanations": {
         "B": "A scan finds leftover servers after they have sat exposed and unpatched; it detects the gap rather than closing it in each project.",
@@ -2520,7 +2520,7 @@
         "SDLC phases",
         "Decommissioning"
       ],
-      "_provenance": "Authored from concept: notes 4A3.1 (Risk Across the SDLC Phases: disposal is planned as a project step, so the old system's data, servers and access are retired or archived and confirmed). Round 5, 4 Nov 2026: original scenario (a theater chain's replaced ticketing system leaving its database on an unpatched cloud server with 900,000 customer records) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Neighbours checked: crisc_d4_030 (unclaimed records), crisc_d4_032 (open risks at project closure), crisc_d4_008 and crisc_d4_052 (CRISC); CISA d3_114 (what to confirm before shutting a legacy system), d4_254 and d1_174; CC cc_d4_060. Judged distinct: none keys a disposal phase in the SDLC as the fix for systems left running after a replacement.",
+      "_provenance": "Authored from concept: notes 4A3.1 (Risk Across the SDLC Phases: disposal is planned as a project step, so the old system's data, servers and access are retired or archived and confirmed). Round 5, 4 Nov 2026: original scenario (a theater chain's replaced ticketing system leaving its database on an unpatched cloud server with 900,000 customer records) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Neighbours checked: crisc_d4_030 (unclaimed records), crisc_d4_032 (open risks at project closure), crisc_d4_008 and crisc_d4_052 (CRISC); CISA d3_114 (what to confirm before shutting a legacy system), d4_254 and d1_174; CC cc_d4_060. Judged distinct: none keys a disposal phase in the SDLC as the fix for systems left running after a replacement. Review fixes 4 Nov 2026 (standards audit and concept review): pre_read made neutral (it no longer rules out the clean-up option before the options are read); notes 4A3.1 disposal bullet now says the old data is archived or securely destroyed as the data owner decides.",
       "style_version": 2
     },
     {
@@ -2530,17 +2530,17 @@
       "principle_id": "analyze-before-acting",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "A retailer's analytics team joined loyalty purchase records with store Wi-Fi logs, each classified internal, into one data set showing when named customers visit each store. What should the risk practitioner recommend FIRST?",
+      "question": "A retailer's analytics team joined online order records with store Wi-Fi logs, each classified internal, into one data set showing when named customers visit each store. What should the risk practitioner recommend FIRST?",
       "options": {
-        "A": "The internal class the source data owners already set",
+        "A": "Reuse of the internal class each source's data owner set",
         "B": "Access to the joined data limited to the analytics team",
-        "C": "A classification set for what the joined data reveals",
+        "C": "The data owner's class for what the joined data reveals",
         "D": "Removal of customer names from the joined data set"
       },
       "correct": "C",
-      "key_concept": "Combined data can reveal more than any source, so the joined set is classified for what it shows together, which may be above every source.",
-      "pre_read": "Notice the question asks what comes FIRST, then ask which decision the others depend on.",
-      "correct_explanation": "Each source alone is internal, but together they show where and when named people go, which is more sensitive than either. A classification for what the joined set reveals comes first, because the class sets every handling rule: access, sharing, retention and protection. Limiting access is the runner-up; it is one of those rules, but chosen before the class it leaves sharing, retention and protection at the internal level.",
+      "key_concept": "Combined data can reveal more than any source, so the data owner classifies the joined set for what it shows together, even above each source.",
+      "pre_read": "Notice what the joined data shows that neither source showed alone.",
+      "correct_explanation": "Each source alone is internal, but together they show where and when named people go, more sensitive than either. A class for what the joined set reveals, set by the accountable data owner on the practitioner's advice, comes first, because the class sets every handling rule: access, sharing, retention and protection. Limiting access is the runner-up; chosen before the class, it is one rule and leaves sharing, retention and protection at the internal level.",
       "wrong_explanations": {
         "A": "The source classes describe each data set alone; the joined set shows customers' movements, which neither source did, so it needs its own class.",
         "B": "Limiting access is one handling rule; set before the class, it leaves sharing, retention and protection at the internal level.",
@@ -2548,8 +2548,8 @@
       },
       "tips": [
         "Eliminate: A keeps classes that describe each source alone, and D removes names that times and places can still restore.",
-        "Final two: C beats B because the class sets every handling rule; limiting access first picks one control and leaves the rest at the old level.",
-        "Exam cue: when data sets are combined, classify the result for what it reveals together; the sources' classes are not a ceiling."
+        "Final two: C beats B because the owner's class sets every handling rule; limiting access first picks one control and leaves the rest at the old level.",
+        "Exam cue: when data sets are combined, the data owner classifies the result for what it reveals together; the sources' classes are not a ceiling."
       ],
       "framework_ref": "NIST SP 800-122 Section 3.2.3 (Data Field Sensitivity: combinations of data fields can be more sensitive than each field alone); ISACA Glossary (data owner)",
       "related_concepts": [
@@ -2557,7 +2557,7 @@
         "Data aggregation",
         "Data owner"
       ],
-      "_provenance": "Authored from concept: notes 4A4.1 (Data Lifecycle, Classification and Ownership: classification levels set handling rules; joined data sets are classified for what they reveal together, which can exceed each source; the data owner classifies). Round 5, 4 Nov 2026: original scenario (a retailer's analytics team joining loyalty purchase records with store Wi-Fi logs into a data set that shows named customers' store visits) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Neighbours checked: crisc_d1_031 (classification reviewed after new data is added), crisc_d1_058 (over-classification), crisc_d4_044, crisc_d4_047 and crisc_d4_030 (CRISC); CISA d5_040 and d2_126; AAIA aaia_d1_016. Judged distinct: none tests a joined data set whose sensitivity exceeds both sources, with limiting access as the runner-up.",
+      "_provenance": "Authored from concept: notes 4A4.1 (Data Lifecycle, Classification and Ownership: classification levels set handling rules; joined data sets are classified for what they reveal together, which can exceed each source; the data owner classifies). Round 5, 4 Nov 2026: original scenario (a retailer's analytics team joining loyalty purchase records with store Wi-Fi logs into a data set that shows named customers' store visits) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Neighbours checked: crisc_d1_031 (classification reviewed after new data is added), crisc_d1_058 (over-classification), crisc_d4_044, crisc_d4_047 and crisc_d4_030 (CRISC); CISA d5_040 and d2_126; AAIA aaia_d1_016. Judged distinct: none tests a joined data set whose sensitivity exceeds both sources, with limiting access as the runner-up. Review fixes 4 Nov 2026 (standards audit and concept review): re-set from loyalty purchase records to online order records, to move away from crisc_d4_007 (same subtopic, a grocer's analytics team and loyalty records); the key, explanation, key_concept and tips now say the accountable data owner sets the joined set's class on the practitioner's advice; option A reworded as a recommendation; pre_read made neutral. Neighbours checked: crisc_d4_007 (approver for a new use of loyalty records) judged distinct after re-setting; crisc_d1_031 (classification reviewed after new data is added) teaches the same classification-first lesson from a different trigger; keep apart from d1_031 in practice sets.",
       "style_version": 2
     },
     {
@@ -2575,9 +2575,9 @@
         "D": "The hosting vendor may miss its uptime target after launch"
       },
       "correct": "A",
-      "key_concept": "A project log holds delivery risks that end with the project; risks whose effects continue into operation go to the enterprise register.",
+      "key_concept": "A project log holds delivery risks that end with the project; risks that continue into operation, or threaten enterprise objectives, go to the enterprise register.",
       "pre_read": "Picture each risk happening, then note who would feel its effect and when.",
-      "correct_explanation": "A project log holds risks to delivery, which end when the project closes; developers leaving threatens the schedule and cost, then stops mattering. Risks whose effects continue in operation go to the enterprise register with an operational owner. Errors in migrated records are the runner-up; migration happens in the project, but wrong pay would keep reaching staff after go-live, so that risk outlasts the project.",
+      "correct_explanation": "A project log holds risks to delivery, which end when the project closes; developers leaving threatens the schedule and cost, then stops mattering. Risks whose effects continue in operation, or that threaten enterprise objectives, go to the enterprise register with an owner. Errors in migrated records are the runner-up; migration happens in the project, but wrong pay would keep reaching staff after go-live, so that risk outlasts the project.",
       "wrong_explanations": {
         "B": "A weak access control remains after go-live, so the risk outlasts the project and belongs with an operational owner in the enterprise register.",
         "C": "Migration happens during the project, but bad records would keep producing wrong pay after launch, so the risk reaches operations.",
@@ -2586,7 +2586,7 @@
       "tips": [
         "Eliminate: B and D describe the system in use after launch, so both risks outlast the project and need an operational owner.",
         "Final two: A beats C because developer turnover ends with delivery; migration errors start in the project but keep affecting pay afterward.",
-        "Exam cue: ask whether a risk's effect ends at project closure; if it continues into operation, it belongs in the enterprise register."
+        "Exam cue: ask whether a risk's effect ends at project closure; if it continues into operation, or could threaten enterprise objectives, it belongs in the enterprise register."
       ],
       "framework_ref": "NIST CSF 2.0 GV.RM-03 (cybersecurity risk management activities and outcomes are included in enterprise risk management processes); NIST IR 8286 Rev. 1 Section 3.8 (Creating and Maintaining an Enterprise-Level Cybersecurity Risk Register)",
       "related_concepts": [
@@ -2594,7 +2594,7 @@
         "Enterprise risk register",
         "Data migration"
       ],
-      "_provenance": "Authored from concept: notes 4A5.2 (Project Risk and Agile Delivery: project risks are linked to the enterprise risk register when they could outlast the project; delivery risks that end at closure stay in the project log). Round 5, 4 Nov 2026: original scenario (a hotel group's payroll upgrade project log holding delivery and operational risks side by side) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Neighbours checked: crisc_d4_010 (a team accepting a risk that lasts past go-live), crisc_d4_032 (open risks handed over at closure), crisc_d4_051 and crisc_d4_061 (CRISC); CISA, CC and AAIA have no item on sorting project and enterprise risks. Judged distinct: this asks which risk stays in the project log, the reverse view of d4_010 and d4_032.",
+      "_provenance": "Authored from concept: notes 4A5.2 (Project Risk and Agile Delivery: project risks are linked to the enterprise risk register when they could outlast the project; delivery risks that end at closure stay in the project log). Round 5, 4 Nov 2026: original scenario (a hotel group's payroll upgrade project log holding delivery and operational risks side by side) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Neighbours checked: crisc_d4_010 (a team accepting a risk that lasts past go-live), crisc_d4_032 (open risks handed over at closure), crisc_d4_051 and crisc_d4_061 (CRISC); CISA, CC and AAIA have no item on sorting project and enterprise risks. Judged distinct: this asks which risk stays in the project log, the reverse view of d4_010 and d4_032. Review fixes 4 Nov 2026 (standards audit and concept review): the explanation, key_concept, Exam cue tip and notes 4A5.2 now add that a delivery risk threatening enterprise objectives is also escalated (Risk IT counts programme and project delivery among IT risk categories), so the rule is not 'ends at closure' alone; the stem shows no enterprise-level stakes, so the key holds.",
       "style_version": 2
     },
     {
@@ -2604,7 +2604,7 @@
       "principle_id": "answer-from-the-stem",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "A county council keeps 14 days of immutable backups, and its incident team says intruders in the public sector stay unnoticed for 40 days before launching ransomware. What should the risk practitioner recommend as BEST?",
+      "question": "A county council keeps 14 days of immutable backups, and its incident team says intruders can stay unnoticed for up to 40 days before launching ransomware. What should the risk practitioner recommend as BEST?",
       "options": {
         "A": "More frequent backups within the same 14-day window",
         "B": "Encryption that stops intruders reading the backups",
@@ -2612,18 +2612,18 @@
         "D": "Restore points kept longer than intruders remain hidden"
       },
       "correct": "D",
-      "key_concept": "Backups count only if a clean restore point exists when an attack is found, so retention must outlast how long intruders can stay hidden.",
+      "key_concept": "Backups count only if a clean restore point exists when an attack is found, so retention should cover how long intruders may stay hidden.",
       "pre_read": "Note each number in the stem and what it measures.",
-      "correct_explanation": "Immutable copies stop attackers changing backups, but every copy here is under 14 days old, while the incident team expects intruders to stay hidden for 40. When ransomware is found, each restore point may already hold the intruders' access. Keeping restore points beyond that hidden period leaves a clean copy to recover from. A second immutable copy is the runner-up; it guards against losing a site, not against every copy postdating the break-in.",
+      "correct_explanation": "Immutable copies stop attackers changing backups, but every copy here is under 14 days old, while intruders may stay hidden for up to 40. When ransomware is found, each restore point may hold the intruders' foothold, such as planted accounts or tools. Keeping restore points beyond that period leaves a clean copy. A second immutable copy is the runner-up; it guards against losing a site, not against every copy postdating the break-in.",
       "wrong_explanations": {
-        "A": "More frequent backups reduce data loss, but every copy would still be under 14 days old and could hold the intruders' access.",
+        "A": "More frequent backups reduce data loss, but every copy would still be under 14 days old and could hold the intruders' foothold.",
         "B": "Encryption keeps backup data confidential; it does nothing about copies made after the intruders got in.",
         "C": "A copy at another site protects against losing one site; kept for the same 14 days, it holds the same suspect restore points."
       },
       "tips": [
         "Eliminate: A changes the backup schedule, not how far back copies go, and B protects confidentiality rather than recovery.",
         "Final two: D beats C because recovery needs a copy older than the break-in; a second site holds the same 14 days of restore points.",
-        "Exam cue: judge backup retention against how long an attack can go unnoticed; immutable copies of a compromised system restore the compromise."
+        "Exam cue: judge backup retention against how long an attack can go unnoticed; restore points taken after the break-in can bring the intruders back."
       ],
       "framework_ref": "NIST CSF 2.0 PR.DS-11 (backups of data are created, protected, maintained and tested); NIST CSF 2.0 RC.RP-03 (the integrity of backups and other restoration assets is verified before using them for restoration)",
       "related_concepts": [
@@ -2631,7 +2631,7 @@
         "Immutable backups",
         "Ransomware recovery"
       ],
-      "_provenance": "Authored from concept: notes 4A6.2 (Backups and Ransomware Recovery: immutable or offline copies resist an attacker with administrator access; retention must also outlast how long intruders may stay unnoticed, so a clean copy remains). Round 5, 4 Nov 2026: original scenario (a county council with 14 days of immutable backups against an expected 40-day hidden intrusion before ransomware) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Neighbours checked: crisc_d4_012 (contain before restoring), crisc_d4_034 (a test that never loses the online backups) and crisc_d4_035 (KCI for backups) (CRISC); CISA d4_063 (3-2-1 copies all on site), d4_162, d5_261 and d5_344 (log retention for investigations); CC cc_d2_055 (backups the domain administrators can delete). Judged distinct: none weighs backup retention against how long intruders stay hidden.",
+      "_provenance": "Authored from concept: notes 4A6.2 (Backups and Ransomware Recovery: immutable or offline copies resist an attacker with administrator access; retention must also outlast how long intruders may stay unnoticed, so a clean copy remains). Round 5, 4 Nov 2026: original scenario (a county council with 14 days of immutable backups against an expected 40-day hidden intrusion before ransomware) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Neighbours checked: crisc_d4_012 (contain before restoring), crisc_d4_034 (a test that never loses the online backups) and crisc_d4_035 (KCI for backups) (CRISC); CISA d4_063 (3-2-1 copies all on site), d4_162, d5_261 and d5_344 (log retention for investigations); CC cc_d2_055 (backups the domain administrators can delete). Judged distinct: none weighs backup retention against how long intruders stay hidden. Review fixes 4 Nov 2026 (standards audit and concept review): the stem gives the incident team's estimate as an upper range ('up to 40 days'; 'in the public sector' dropped to stay within the 35-word stem limit); the explanation names the intruders' foothold (planted accounts or tools) rather than their access; key_concept and the Exam cue no longer state an absolute; notes 4A6.2 reworded. Neighbours checked: CISA d5_261 (establish when the attacker first entered before restoring) is a related dwell-time lesson at incident time rather than in retention design; judged distinct.",
       "style_version": 2
     },
     {
@@ -2680,23 +2680,23 @@
       "bloom_level": "Analysis",
       "question": "A port authority guards its crane control network with two firewalls in series, both from one vendor and running a copied rule set. Which of the following is the risk practitioner's GREATEST concern?",
       "options": {
-        "A": "One flaw or rule error that defeats the two firewalls",
+        "A": "One flaw or rule error that defeats both firewalls",
         "B": "Rule changes made on one firewall but missed on the other",
         "C": "Slower crane traffic from passing through two firewalls",
-        "D": "Support costs for keeping two firewalls under contract"
+        "D": "Support costs for keeping both firewalls under contract"
       },
       "correct": "A",
       "key_concept": "Defense in depth needs layers that fail independently; two firewalls from one vendor with copied rules can be defeated by one flaw or error.",
       "pre_read": "Read what the stem says about the two firewalls before the options.",
-      "correct_explanation": "Two firewalls add depth only if they can fail independently. With one vendor and copied rules, a product flaw or a mistaken rule lets traffic through both together, so the second firewall adds little protection. Different products or rule designs are what make layers independent. Rules drifting between the two copies is the runner-up; it is an operational error worth watching, but it does not undo the layering.",
+      "correct_explanation": "Two firewalls add depth only if they can fail independently. With one vendor and copied rules, a product flaw or a mistaken rule lets traffic through both together. A different product or rule design for one layer adds independence, but also management work and room for mistakes, so it is weighed against the risk. Rule drift is the runner-up; in series, a change missed on one firewall mostly blocks traffic rather than opening the network.",
       "wrong_explanations": {
-        "B": "Drift between the copies is an error to watch; it is smaller than a shared flaw that opens both firewalls together.",
+        "B": "In series, traffic must pass both firewalls, so a change missed on one leaves the other's rule in force or blocks wanted traffic; a shared flaw opens both together.",
         "C": "Inspection by two firewalls can add delay, which is a performance matter to tune, not the gap in protection here.",
         "D": "Support costs are a budget question; they do not change how exposed the crane network is."
       },
       "tips": [
         "Eliminate: C is a performance matter and D a budget one; neither describes how the crane network could be exposed.",
-        "Final two: A beats B because identical layers share one weakness; drift between the copies is a smaller, operational error.",
+        "Final two: A beats B because identical layers share one weakness; in series, drift between the copies mostly blocks traffic rather than opening the network.",
         "Exam cue: count layers by how independently they fail; two copies of one control with the same rules are close to one layer."
       ],
       "framework_ref": "NIST SP 800-53 Rev. 5 SC-29 (Heterogeneity); NIST SP 800-53 Rev. 5 PL-8(2) (Security and Privacy Architectures | Supplier Diversity)",
@@ -2705,7 +2705,7 @@
         "Common mode failure",
         "Supplier diversity"
       ],
-      "_provenance": "Authored from concept: notes 4B1.1 (Core Security Principles: layered controls of different kinds mean one failure does not expose the asset; layers that share a vendor, design or rule set can fail together). Round 5, 4 Nov 2026: original scenario (a port authority's crane control network behind two same-vendor firewalls in series with a copied rule set) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Neighbours checked: crisc_d4_053 (removing layers around customer records) and crisc_d4_015 (CRISC); CISA d5_325 (one unified appliance without a spare); CC cc_d4_009 and cc_d4_052. Judged distinct: none tests layers that share a single point of failure through the same product and rules.",
+      "_provenance": "Authored from concept: notes 4B1.1 (Core Security Principles: layered controls of different kinds mean one failure does not expose the asset; layers that share a vendor, design or rule set can fail together). Round 5, 4 Nov 2026: original scenario (a port authority's crane control network behind two same-vendor firewalls in series with a copied rule set) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Neighbours checked: crisc_d4_053 (removing layers around customer records) and crisc_d4_015 (CRISC); CISA d5_325 (one unified appliance without a spare); CC cc_d4_009 and cc_d4_052. Judged distinct: none tests layers that share a single point of failure through the same product and rules. Review fixes 4 Nov 2026 (standards audit and concept review): the explanation now carries SC-29's own trade-off (more diversity adds complexity and management overhead that can lead to mistakes) and says why drift is the weaker concern (in series, a missed change mostly blocks traffic); options A and D read 'both firewalls'; notes 4B1.1 bullet adds the trade-off.",
       "style_version": 2
     },
     {
@@ -2715,34 +2715,34 @@
       "principle_id": "transfer-keeps-accountability",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "An insurer's awareness program covers employees only, though 200 IT contractors from a staffing firm hold administrator rights to claims systems and take the firm's general course. What should the risk practitioner recommend as BEST?",
+      "question": "An insurer's awareness program covers only employees; its 200 staffing-firm contractors with administrator rights take the firm's general course, which omits the insurer's policies and incident reporting. What should the risk practitioner recommend as BEST?",
       "options": {
         "A": "Yearly proof the contractors finished the firm's awareness course",
         "B": "A contract clause making the staffing firm liable to the insurer",
         "C": "The claims owner's acceptance of the contractors' training gap",
-        "D": "The insurer's own awareness training for the contractors"
+        "D": "The insurer's own security training for the contractors"
       },
       "correct": "D",
       "key_concept": "Awareness reaches everyone with access, contractors included; a supplier's general course does not teach the organization's own policies, systems and reporting routes.",
-      "pre_read": "Notice who has access to the claims systems and what training each group gets.",
-      "correct_explanation": "The contractors hold administrator rights to the insurer's claims systems, so the insurer stays accountable for how they handle them. Its own awareness training covers what a general course cannot: the insurer's policies, its systems and how to report a suspected incident there. Proof of the staffing firm's course is the runner-up; it shows a course was taken, but the insurer's own rules and reporting routes would still be untaught.",
+      "pre_read": "Notice which groups hold access and what training each one gets.",
+      "correct_explanation": "The contractors hold administrator rights, so the insurer stays accountable for how they use its systems. Its own security training covers what the firm's course omits: its policies and how to report a suspected incident there, plus the duties administrator rights carry. Proof of the staffing firm's course is the runner-up; it shows a course was taken, but the insurer's rules and reporting routes would still be untaught.",
       "wrong_explanations": {
-        "A": "Proof of the firm's course shows training happened, but a general course does not teach the insurer's policies, systems or reporting routes.",
+        "A": "Proof of the firm's course shows training happened, but that course omits the insurer's policies and incident reporting, which the contractors still need.",
         "B": "A liability clause may recover some losses; it does not change how the contractors behave, and the insurer stays accountable for its systems.",
         "C": "Accepting the gap leaves 200 administrators untaught in the insurer's rules, a gap the insurer can close by training them."
       },
       "tips": [
         "Eliminate: B moves some cost to the staffing firm but not accountability, and C accepts a gap the insurer can readily close.",
-        "Final two: D beats A because the insurer's own training covers its policies and systems; proof of a general course shows only that one was taken.",
-        "Exam cue: awareness covers everyone with access, contractors included; a supplier's generic course does not replace the organization's own rules."
+        "Final two: D beats A because the insurer's own training covers its policies and incident reporting; proof of the firm's course shows only that a course was taken.",
+        "Exam cue: training covers everyone with access, contractors included, and privileged users learn their extra duties; a supplier's generic course does not replace the organization's own rules."
       ],
-      "framework_ref": "NIST SP 800-53 Rev. 5 AT-2 (Literacy Training and Awareness); NIST CSF 2.0 PR.AT-01 (personnel are provided with awareness and training so that they possess the knowledge and skills to perform general tasks with cybersecurity risks in mind)",
+      "framework_ref": "NIST SP 800-53 Rev. 5 AT-2 (Literacy Training and Awareness); NIST CSF 2.0 PR.AT-01 (personnel are provided with awareness and training so that they possess the knowledge and skills to perform general tasks with cybersecurity risks in mind); NIST CSF 2.0 PR.AT-02 (individuals in specialized roles are provided with awareness and training so that they possess the knowledge and skills to perform relevant tasks with cybersecurity risks in mind)",
       "related_concepts": [
         "Security awareness",
         "Contractors",
         "Third-party personnel"
       ],
-      "_provenance": "Authored from concept: notes 4B2.1 (Risk-Aware Culture and Role-Based Training: awareness reaches everyone with access, contractors included; a supplier's general course does not teach the organization's own policies, systems and reporting routes). Round 5, 4 Nov 2026: original scenario (an insurer's employee-only awareness program while 200 staffing-firm IT contractors hold administrator rights to claims systems) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Neighbours checked: crisc_d4_017 (seasonal workers' onboarding training), crisc_d4_065 (director training), crisc_d4_049 and crisc_d3_055 (a contractor's leftover access) (CRISC); CISA d2_101 and d5_101; CC and AAIA have no item on contractors outside an awareness program. Judged distinct: none keys bringing a supplier's staff into the organization's own awareness program.",
+      "_provenance": "Authored from concept: notes 4B2.1 (Risk-Aware Culture and Role-Based Training: awareness reaches everyone with access, contractors included; a supplier's general course does not teach the organization's own policies, systems and reporting routes). Round 5, 4 Nov 2026: original scenario (an insurer's employee-only awareness program while 200 staffing-firm IT contractors hold administrator rights to claims systems) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Neighbours checked: crisc_d4_017 (seasonal workers' onboarding training), crisc_d4_065 (director training), crisc_d4_049 and crisc_d3_055 (a contractor's leftover access) (CRISC); CISA d2_101 and d5_101; CC and AAIA have no item on contractors outside an awareness program. Judged distinct: none keys bringing a supplier's staff into the organization's own awareness program. Review fixes 4 Nov 2026 (standards audit and concept review): the stem now states that the firm's course omits the insurer's policies and incident reporting, the fact the explanation uses against the runner-up ('to claims systems' dropped to stay within 35 words); the key is the insurer's own security training, which also covers the duties administrator rights carry, and the item now also cites NIST CSF 2.0 PR.AT-02 (specialized roles); pre_read reworded. Neighbours checked: CISA d5_199 (contractors outside onboarding; policy acknowledgment as a condition of access) judged distinct: this keys the content only the insurer can teach, with proof of the supplier's course as the runner-up.",
       "style_version": 2
     },
     {
@@ -2752,7 +2752,7 @@
       "principle_id": "transfer-keeps-accountability",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "A bank's complaints team wants a vendor's AI tool to draft replies from customer emails holding names and account numbers; the vendor's terms let it train on inputs. What should the risk practitioner recommend FIRST?",
+      "question": "A utility's complaints team wants a vendor's AI tool to draft replies from customer emails holding names and account numbers; the vendor's terms let it train on inputs. What should the risk practitioner recommend FIRST?",
       "options": {
         "A": "Removal of customer names from each email before use",
         "B": "Encryption of the emails as they travel to the vendor",
@@ -2760,9 +2760,9 @@
         "D": "Staff trained to check each AI-drafted reply before sending"
       },
       "correct": "C",
-      "key_concept": "Sharing personal data with an AI vendor keeps the organization accountable; contract terms must stop uses, such as model training, that customers never agreed to.",
+      "key_concept": "Sharing personal data with an AI vendor keeps the organization accountable; contract terms must stop uses, such as model training, beyond the purpose of sharing.",
       "pre_read": "Note what the stem says the vendor may do with the data.",
-      "correct_explanation": "Under the vendor's terms, customers' names, account numbers and complaints would feed a model the bank does not control, a use customers never agreed to. The bank stays accountable for that data, so a contract barring training on it comes first. Removing names is the runner-up; it cuts some exposure, but account numbers and complaint details still identify people, and the vendor could still reuse them.",
+      "correct_explanation": "The emails are shared to draft replies, but the vendor's terms would also let their names, account numbers and complaints train a model the utility does not control. That use goes beyond the purpose of sharing, and the utility stays accountable, so a contract barring training comes first. Removing names is the runner-up; account numbers and complaint details still identify people, and the vendor could still reuse them.",
       "wrong_explanations": {
         "A": "Removing names leaves account numbers and complaint details that still identify customers, and the vendor's terms would still let it train on them.",
         "B": "Encryption protects the emails on the way; once they arrive, the vendor's terms still allow it to train on what they contain.",
@@ -2779,7 +2779,7 @@
         "Vendor terms",
         "Purpose limitation"
       ],
-      "_provenance": "Authored from concept: notes 4B3.3 (Personal Data in AI and Cross-Border Transfers: contracts with AI providers set whether the provider trains its models on the organization's data; the organization remains accountable for personal data it shares). Round 5, 4 Nov 2026: original scenario (a bank's complaints team sending customer emails with names and account numbers to a vendor's AI tool whose terms allow training on inputs) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Neighbours checked: crisc_d4_057 (shadow AI after a block), crisc_d4_019 (purpose for health inferences), crisc_d4_045 and crisc_d4_047 (CRISC); CC cc_d2_026 (an analyst who spots changed vendor terms reports them to security); AAIA aaia_d1_041 (a copilot sending full account records: minimization); CISA d3_074. Judged distinct: cc_d2_026 keys reporting a terms change mid-use and aaia_d1_041 keys minimization, while this keys contract terms before adoption with minimization as the runner-up.",
+      "_provenance": "Authored from concept: notes 4B3.3 (Personal Data in AI and Cross-Border Transfers: contracts with AI providers set whether the provider trains its models on the organization's data; the organization remains accountable for personal data it shares). Round 5, 4 Nov 2026: original scenario (a bank's complaints team sending customer emails with names and account numbers to a vendor's AI tool whose terms allow training on inputs) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Neighbours checked: crisc_d4_057 (shadow AI after a block), crisc_d4_019 (purpose for health inferences), crisc_d4_045 and crisc_d4_047 (CRISC); CC cc_d2_026 (an analyst who spots changed vendor terms reports them to security); AAIA aaia_d1_041 (a copilot sending full account records: minimization); CISA d3_074. Judged distinct: cc_d2_026 keys reporting a terms change mid-use and aaia_d1_041 keys minimization, while this keys contract terms before adoption with minimization as the runner-up. Review fixes 4 Nov 2026 (standards audit and concept review): re-set from a bank to a utility to move away from crisc_d3_004 (a bank's generative AI drafting replies to customers); the explanation and key_concept no longer rely on what customers agreed to, which the stem does not state, and argue from accountability and the vendor's reuse beyond the purpose of sharing. Neighbours checked: crisc_d3_004 (staff review of AI drafts for wrong-advice risk) judged distinct after re-setting: this keys the vendor's secondary use; keep apart in practice sets.",
       "style_version": 2
     }
   ]
