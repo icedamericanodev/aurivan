@@ -58,6 +58,7 @@ export function SpecimenRow({
   /** Anything drawn under the row (the readiness scale bar). */
   children?: ReactNode;
 }) {
+  const { c } = useTheme();
   const large = useFontScale() >= LARGE_TEXT;
   const said = spoken ?? (word ?? `${value ?? ''}${pct ? ' percent' : ''}${unit ? ` ${unit}` : ''}`);
   return (
@@ -76,7 +77,8 @@ export function SpecimenRow({
           {unit ? <T v="meta">{unit}</T> : null}
         </View>
       </View>
-      {note ? <FieldText v="small" style={{ marginTop: 2, textAlign: large ? 'left' : 'right' }}>{note}</FieldText> : null}
+      {/* TYPE_SCALE 2.1: the line under a stat is meta (14/20), as the Stat component and the web's You hint. */}
+      {note ? <T v="meta" color={c.ink2} style={{ marginTop: 2, textAlign: large ? 'left' : 'right' }}>{note}</T> : null}
       {children}
     </View>
   );

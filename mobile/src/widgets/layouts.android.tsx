@@ -318,11 +318,11 @@ const asideW = (x: X, text: string) => Math.ceil(text.length * Math.max(SERIF_MI
 
 /** A big serif figure and its italic unit beside it ("12 questions", "3 study days"). */
 function figure(x: X, value: string, unit: string | undefined, px: number, unitPx: number, unitColor: string, unitLines = 2, width = x.iw): JSX.Element {
-  // The unit beside the figure shrinks (to 12 sp) before a word would break; if it still can't fit, it goes under the figure.
+  // The unit beside the figure shrinks (to SERIF_MIN, 13 sp) before a word would break; if it still can't fit, it goes under the figure.
   const room = width - Math.ceil(value.length * px * 0.62) - 6;
   const longest = Math.max(0, ...(unit ?? '').split(' ').map((w) => w.length));
-  let upx = unitPx;
-  while (unit && upx > 12 && longest * upx * 0.55 > room) upx -= 0.5;
+  let upx = Math.max(SERIF_MIN, unitPx);
+  while (unit && upx > SERIF_MIN && longest * upx * 0.55 > room) upx -= 0.5;
   const stack = Boolean(unit) && longest * upx * 0.55 > room;
   return (
     <FlexWidget style={{ flexDirection: stack ? 'column' : 'row', alignItems: stack ? 'flex-start' : 'flex-end', width: 'match_parent' }}>

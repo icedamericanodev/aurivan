@@ -368,7 +368,9 @@ export default function Results() {
           </Plate>
         )}
         {range.enough && (
-          <KeyCaption label="NOTE">{`Readiness is ${range.low}–${range.high}%: a study estimate, not a prediction.`}</KeyCaption>
+          // TYPE_SCALE 2.1: a range reads "68 to 78", never a dash (matches the web; a screen reader may say a dash as "minus").
+          // The caps come from the head cut's textTransform.
+          <KeyCaption label="Note">{`Readiness is ${range.low} to ${range.high}%: a study estimate, not a prediction.`}</KeyCaption>
         )}
       </Enter>
 

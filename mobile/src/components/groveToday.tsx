@@ -231,7 +231,8 @@ export function AccuracyHeroTile({ tile }: { tile: AccuracyTile }) {
           {tile.shown}
         </T>
       )}
-      {tile.hint ? <FieldText v="small" color={c.onForest2}>{tile.hint}</FieldText> : null}
+      {/* TYPE_SCALE row 61: the hint is meta (14/20), as the web's tile hint. It is not a chart label. */}
+      {tile.hint ? <T v="meta" color={c.onForest2}>{tile.hint}</T> : null}
     </HeroTile>
   );
 }
