@@ -12735,6 +12735,9 @@ function switchTab(t, opts) {
   if (t !== 'examguide') egState.pending = null;
   // Help or About opened from Settings: their Back link returns to Settings.
   if (t !== S.activeTab) navBackSettings = (t === 'faq' || t === 'about') && S.activeTab === 'settings';
+  // Leaving Settings clears its status lines, so a "Progress cleared" or an
+  // old "Restored" never waits there after the learner has moved on.
+  if (S.activeTab === 'settings' && t !== 'settings') { try { rowSayClear(); } catch (e) {} }
   S.activeTab = t;
   saveStateSoon(); // the click paints first (see SAVE SOON)
   // Lets CSS drop the shared dashboard above Topics on phones.
