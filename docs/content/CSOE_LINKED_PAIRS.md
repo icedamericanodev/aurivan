@@ -201,6 +201,12 @@ Rule for the form builder: Draw no two items of a pair into the same form. Keep 
 | csoe_d4_008 | csoe_d4_092 | the proceeding need not be pending, under Section 1519 and Section 1512(c) |
 | csoe_d4_051 | csoe_d4_095 | the three Section 32(a) penalty angles |
 | csoe_d4_052 | csoe_d4_095 | the three Section 32(a) penalty angles |
+| csoe_d1_024 | csoe_d4_085 | same Section 12 or 15(d) reach angle on a bond-only issuer; each exam cue settles the other's final two |
+| csoe_d4_068 | csoe_d4_085 | d4_068's explanation states the Section 12 or 15(d) issuer test that decides d4_085 |
+| csoe_d4_042 | csoe_d4_088 | both on Section 17(a)'s reach; d4_088's WA, tip 2 and note 4A1.4 say 17(a) covers offers and sales (d4_042 is held out; a link, not a leak) |
+| csoe_d5_022 | csoe_d5_086 | d5_086's WA and tip 1: ICFR leaves out COSO's operations objectives, part of held-out d5_022's lesson (does not decide it) |
+| csoe_d5_090 | csoe_d5_093 | contrasting angles on COSO's three objective categories (note 5A2.6) |
+| csoe_d1_019 | csoe_d4_008 | both key 18 U.S.C. 1519 reaching anyone (actor angle against timing and the 1520 look-alike) |
 | csoe_d5_002 | csoe_d5_088 | both test the scope of the COSO definition |
 | csoe_d5_038 | csoe_d5_100 | SOC 1 use by user auditors |
 | csoe_d5_039 | csoe_d5_100 | SOC 1 use by user auditors |

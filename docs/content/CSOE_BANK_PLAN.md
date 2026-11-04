@@ -398,7 +398,17 @@ Batch 5 reviews (4 Nov 2026):
   row added for Fischer v. United States (18 U.S.C. 1512(c)(2)).
 - **Bank final at 384** (`product-manager`, section 1). The IDs are
   consecutive again after the cuts; linked pairs use the new IDs.
-- **Cross-domain review (384 items):** XD_RESULT
+- **Cross-domain review (384 items):** FIX THEN SHIP, with no wrong keys, no
+  contradictions across domains and no held-out leaks.
+  - 17 hints fixed: pre-read lines and sub-topic labels that pointed at the
+    key. The blind copy leaves both fields out, so blind tests cannot catch
+    them; read them at audit.
+  - The Section 1102 tampering items and their note moved from 4B3 to 4B1
+    (note 4B1.4); a SOC 1 note line was moved off the auditor's test plan.
+  - Six linked pairs recorded. "Section 404 covers ICFR, not ERM" now has
+    three angles (d5_010, 073, 085): add no fourth.
+  - Two stems keep "Section 1512 of title 18": the shared style lint counts
+    the periods in "U.S.C." as sentence breaks.
 
 Lessons for batch 5 (D4 and D5 only, 22 items each to go):
 - **Closed:** all the batch 4 closures, plus settlements, subpoenas and
