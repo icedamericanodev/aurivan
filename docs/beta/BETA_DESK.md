@@ -13,29 +13,70 @@ it from the site.
 | The page | `beta-desk.html` | Layout and styles (Grove). Holds no tester data and no secret |
 | The page's code | `assets/beta-desk.js` | Sign-in, roster, editor, CSV import/export, date logic |
 | The database | `supabase/migrations/20261104000000_beta_desk.sql` | `public.beta_testers`, `public.beta_desk_settings`, the admin list `private.beta_desk_admins`, the row rules |
-| Database tests | `supabase/tests/50_beta_desk.sql` | Access, saving, duplicates, dates, approval rules (CI runs them) |
+| Database tests | `supabase/tests/50_beta_desk.sql` | Access (incl. MFA and unusual accounts), saving, duplicates, dates, approval rules (CI runs them) |
 | Browser test | `scripts/beta_desk/e2e.mjs` | The real page against a real local Postgres (`scripts/beta_desk/pg_local.sh`) |
 | Headers | `_headers` (`/beta-desk`) | No search indexing, no caching, a strict security policy |
+
+## Signing in (two steps)
+
+1. Your email → an 8-digit code arrives by email.
+2. A 6-digit code from an authenticator app (Google Authenticator, Microsoft
+   Authenticator, 1Password…). The first time, the desk shows a QR code to scan
+   once; after that it just asks for the code.
+
+Tester details are personal data, so a stolen everyday KaiSip sign-in (from
+the phone or the website) is not enough to open the desk: the database itself
+refuses tester rows unless the sign-in included the authenticator step.
+
+The sign-in lives in that browser tab only. Closing the tab signs you out
+there. On a shared computer, still press **Sign out** when you finish.
+
+## Adding an admin
+
+Admins are listed by account, not by email. The person signs in at
+`kaisip.com/beta-desk` once (they will see "No access"); then, in the
+Supabase SQL editor:
+
+```sql
+insert into private.beta_desk_admins (user_id)
+  select id from auth.users where email = 'someone@example.com' and email_confirmed_at is not null;
+-- remove:
+delete from private.beta_desk_admins
+  where user_id = (select id from auth.users where email = 'someone@example.com');
+```
+
+They sign in again and are asked to set up the authenticator.
 
 ## How privacy works
 
 - The page is public, but it is an empty shell. Tester rows come from the
-  database only after you sign in with an emailed code, and the database's row
-  rules check **on every request** that your confirmed email is on the admin
-  list. Someone who isn't an admin sees "No access" and reads nothing.
-- The admin list is in `private.beta_desk_admins`, which no app user can read.
-  It is filled in the Supabase SQL editor, never in a committed file, so no
-  personal email sits in the repository:
-  ```sql
-  insert into private.beta_desk_admins (email) values ('someone@example.com');
-  delete from private.beta_desk_admins where email = 'someone@example.com';
-  ```
+  database only after an admin's two-step sign-in, and the database's row
+  rules check it **on every request**. Someone who isn't an admin sees "No
+  access" and reads nothing (and is never asked to set up an authenticator).
+- The admin list (`private.beta_desk_admins`) can't be read by any app user and
+  is never in a committed file, so no personal email sits in the repository.
+  Anonymous, SSO, banned or deleted accounts never count, even if listed.
 - Being a Desk admin gives no power on the feedback board, and board staff see
   no tester.
-- The sign-in stays in the browser tab unless you tick "Keep me signed in on
-  this device". Use that only on your own devices.
+- The CSV import copies only name, email, device and the signup date. The
+  form's other answers go into notes only if you tick that box.
 - An exported CSV holds names and emails. Keep it private and delete it after
-  use. Formulas in names (`=…`) are neutralised so a spreadsheet won't run them.
+  use. Formulas (`=…`, also after spaces) are neutralised so a spreadsheet
+  won't run them.
+- Gmail ignores dots and anything after `+`, so `j.o.e+beta@gmail.com` and
+  `joe@gmail.com` are caught as the same tester.
+
+## Deleting records on time
+
+The privacy policy (section 3e) promises deletion within 3 months after a
+tester's reward ends, and for testers who are not eligible. The desk shows a
+**Delete their record** step for them, and the **Due for deletion** filter
+lists them. Delete one by opening the tester → Delete. To clear every record
+whose reward ended more than 3 months ago in one go (Supabase SQL editor):
+
+```sql
+delete from public.beta_testers where reward_ends_on < current_date - interval '3 months';
+```
 
 ## Automatic vs. manual
 
@@ -74,6 +115,15 @@ The first needs local Postgres server binaries and pgTAP
 (`apt-get install postgresql-16-pgtap`). The second uses the preinstalled
 Playwright and writes screenshots to the folder you give it. Neither touches
 the hosted project.
+
+## Later improvements (noted by the security audit)
+
+- Serve the desk from its own address (for example `desk.kaisip.com`), so no
+  other page of kaisip.com shares its browser storage.
+- Turn on Supabase's session time limit or inactivity timeout when the plan
+  allows it.
+- Cloudflare Web Analytics is blocked on this page on purpose (its policy
+  allows no analytics).
 
 ## If the sign-in check (captcha) is switched on
 

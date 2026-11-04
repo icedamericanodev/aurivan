@@ -18,15 +18,25 @@
 --  * The reward is six months of CISA premium content and app features. Other
 --    certifications are not part of it; the page says so beside every reward.
 --
--- Security model:
+-- Security model (security audit, 4 Nov 2026, before the first apply):
 --  * Only Beta Desk admins see or change anything. Admins are listed in
---    private.beta_desk_admins by email (lower case). A signed-in account is an
---    admin when its CONFIRMED email in auth.users is on that list. Sign-in is
---    an emailed code or Google (no passwords: 20261027000100), so holding the
---    inbox is what proves it. The list is not readable by any app role and is
---    filled by the owner in the SQL editor (never in a committed file, so no
---    personal email sits in the repository):
---        insert into private.beta_desk_admins (email) values ('owner@example.com');
+--    private.beta_desk_admins by ACCOUNT ID (like private.staff), never by
+--    email: an email match would depend on Auth settings staying right
+--    forever ("Confirm email" on, no SSO, no provider with unverified email).
+--    The account must be a normal, confirmed, not banned, not deleted, not
+--    anonymous and not SSO user. The list is not readable by any app role and
+--    is filled by the owner in the SQL editor AFTER that account has signed
+--    in once (never in a committed file, so no personal email is in the repo):
+--        insert into private.beta_desk_admins (user_id)
+--          select id from auth.users where email = 'owner@example.com' and email_confirmed_at is not null;
+--  * Admin access needs a two-step sign-in (MFA, `aal2` in the token), like
+--    the board's staff actions. So a stolen everyday KaiSip session (aal1,
+--    from the phone or the website) can't open the desk: it also needs the
+--    code from the owner's authenticator app.
+--  * The page asks "am I on the list?" before the second step by reading
+--    public.beta_desk_gate (one empty row, visible only to listed accounts),
+--    so a learner who wanders in is told "No access" and is never asked to
+--    set up an authenticator.
 --  * This list is separate from private.staff on purpose: a Desk admin gets no
 --    power on the feedback board, and a board moderator sees no tester.
 --  * RLS is ON for every table here. Policies are per command, `to
@@ -45,23 +55,36 @@
 
 -- ── Who may use the Beta Desk ───────────────────────────────────────
 create table private.beta_desk_admins (
-  email text primary key check (email = lower(btrim(email)) and length(email) between 3 and 254 and email like '%_@_%'),
+  user_id uuid primary key references auth.users (id) on delete cascade,
   added_at timestamptz not null default now()
 );
 alter table private.beta_desk_admins enable row level security;   -- no policies: deny all but the owner and service_role
 revoke all on private.beta_desk_admins from public, anon, authenticated;
 grant select, insert, delete on private.beta_desk_admins to service_role;
 
--- Is the signed-in account a Beta Desk admin? (policy helper: authenticated only)
-create function private.beta_desk_is_admin() returns boolean
+-- Is the signed-in account on the admin list? (first step: no MFA needed yet)
+create function private.beta_desk_is_listed() returns boolean
 language sql stable security definer set search_path = '' as
 $$ select exists (
      select 1
-     from auth.users u
-     join private.beta_desk_admins a on a.email = lower(btrim(u.email))
-     where u.id = (select auth.uid())
+     from private.beta_desk_admins a
+     join auth.users u on u.id = a.user_id
+     where a.user_id = (select auth.uid())
        and u.email_confirmed_at is not null
+       and not coalesce(u.is_anonymous, false)
+       and not coalesce(u.is_sso_user, false)
+       and u.deleted_at is null
+       and (u.banned_until is null or u.banned_until < now())
    ) $$;
+revoke all on function private.beta_desk_is_listed() from public, anon;
+grant execute on function private.beta_desk_is_listed() to authenticated, service_role;
+
+-- Is the signed-in account a Beta Desk admin right now? On the list AND
+-- signed in with the second step (MFA). Every tester policy uses this one.
+create function private.beta_desk_is_admin() returns boolean
+language sql stable security definer set search_path = '' as
+$$ select (select private.beta_desk_is_listed())
+          and coalesce((select auth.jwt()) ->> 'aal', '') = 'aal2' $$;
 revoke all on function private.beta_desk_is_admin() from public, anon;
 grant execute on function private.beta_desk_is_admin() to authenticated, service_role;
 
@@ -73,6 +96,17 @@ $$ begin
      return new;
    end $$;
 revoke all on function private.beta_desk_touch() from public, anon, authenticated;
+
+-- ── The gate: "am I on the list?" (one empty row; listed accounts see it) ──
+create table public.beta_desk_gate (
+  id boolean primary key default true check (id)
+);
+insert into public.beta_desk_gate default values;
+alter table public.beta_desk_gate enable row level security;
+revoke all on public.beta_desk_gate from public, anon, authenticated;
+grant select on public.beta_desk_gate to authenticated;
+create policy beta_desk_gate_select on public.beta_desk_gate for select to authenticated
+  using ((select private.beta_desk_is_listed()));
 
 -- ── Settings (a singleton) ──────────────────────────────────────────
 create table public.beta_desk_settings (

@@ -112,7 +112,7 @@ done
 n_inline="$(grep -c '<script>' beta-desk.html || true)"
 [ "$n_inline" = "1" ] || fail "beta-desk.html: expected 1 inline <script>, found $n_inline (put code in assets/beta-desk.js)"
 grep -q '<meta name="robots" content="noindex' beta-desk.html || fail "beta-desk.html lost its noindex meta tag"
-python3 - <<'PYCHK' || fail "_headers: the /beta-desk rules must send X-Robots-Tag noindex and Cache-Control no-store"
+python3 - <<'PYCHK' || fail "beta-desk: _headers /beta-desk rules need noindex, no-store and the inline script hash; the page may load only assets/beta-desk.js"
 import re
 rules = {}
 cur = None
@@ -123,9 +123,16 @@ for line in open('_headers'):
         cur = line.strip(); rules[cur] = []
     elif cur:
         rules[cur].append(line.strip())
+import hashlib, base64
+page = open('beta-desk.html').read()
+inline = re.findall(r'<script>(.*?)</script>', page, re.S)
+srcs = re.findall(r'<script[^>]*\ssrc="([^"]+)"', page)
+assert srcs == ['assets/beta-desk.js'], srcs
+hashes = ["'sha256-" + base64.b64encode(hashlib.sha256(x.encode()).digest()).decode() + "'" for x in inline]
 for path in ('/beta-desk', '/beta-desk.html'):
     h = ' '.join(rules.get(path, []))
     assert 'X-Robots-Tag: noindex' in h and 'Cache-Control: no-store' in h, path
+    assert all(x in h for x in hashes), path + ': inline script hash missing from its own rule'
 PYCHK
 
 # Final guard: nothing outside the list may be in _site/.

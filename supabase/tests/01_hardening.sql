@@ -36,9 +36,9 @@ create temporary view our_tables as
 --                             helper by its id, which needs only EXECUTE. Every other
 --                             private helper, private.is_blocked_by included, is
 --                             revoked from public (Phase 8 addendum).
---                             Beta Desk (4 Nov 2026): private.beta_desk_is_admin,
---                             the one helper its RLS calls (admins only see
---                             testers); same rule, EXECUTE only.
+--                             Beta Desk (4 Nov 2026): private.beta_desk_is_admin
+--                             and private.beta_desk_is_listed, the two helpers
+--                             its RLS calls; same rule, EXECUTE only.
 --  anon may read (tables):    the board's public-read tables (Phase 8), column by
 --                             column; their anon policies return rows only when
 --                             read_scope is 'everyone'.
@@ -55,6 +55,7 @@ insert into allow values
   ('auth_exec', 'private.is_staff'),
   ('auth_exec', 'private.is_active_member'),
   ('auth_exec', 'private.beta_desk_is_admin'),
+  ('auth_exec', 'private.beta_desk_is_listed'),
   ('anon_read', 'public.board_settings'),
   ('anon_read', 'public.board_members'),
   ('anon_read', 'public.board_posts'),

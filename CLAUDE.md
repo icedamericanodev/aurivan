@@ -34,7 +34,7 @@ work without rediscovering the layout.
 | `mobile/` | **Expo (React Native) iOS + Android app.** Own `package.json`, tests and `mobile/CLAUDE.md`. Reads questions from `data/domain*.json` via `mobile/scripts/build-content.mjs` |
 | `docs/mobile/ARCHITECTURE.md` | Mobile tech-stack decision, architecture, roadmap, store-launch plan |
 | `supabase/migrations/` | Phase 3 database schema (accounts + sync). Written, not yet applied |
-| `beta-desk.html` + `assets/beta-desk.js` | **Beta Desk**: the private admin tracker for Android beta testers (kaisip.com/beta-desk, noindex). Data in `public.beta_testers` (migration `20261104000000_beta_desk.sql`), admin-only by RLS; admins are emails in `private.beta_desk_admins` (added in the SQL editor, never committed). Guide: `docs/beta/BETA_DESK.md`; tests: `supabase/tests/50_beta_desk.sql` and `scripts/beta_desk/e2e.mjs` (real page + real local Postgres via `scripts/beta_desk/pg_local.sh`). Admin-only, so no `APP_VERSION` bump |
+| `beta-desk.html` + `assets/beta-desk.js` | **Beta Desk**: the private admin tracker for Android beta testers (kaisip.com/beta-desk, noindex). Data in `public.beta_testers` (migration `20261104000000_beta_desk.sql`), admin-only by RLS and only with a two-step (aal2) sign-in; admins are account ids in `private.beta_desk_admins` (added in the SQL editor after their first sign-in, never committed). Guide: `docs/beta/BETA_DESK.md`; tests: `supabase/tests/50_beta_desk.sql` and `scripts/beta_desk/e2e.mjs` (real page + real local Postgres via `scripts/beta_desk/pg_local.sh`). Admin-only, so no `APP_VERSION` bump |
 | `archive/` | Retired files kept for history (not used by the apps, CI or scripts). One line per item in `archive/README.md` |
 
 ## Hard rules

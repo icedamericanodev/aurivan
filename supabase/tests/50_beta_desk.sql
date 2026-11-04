@@ -1,11 +1,15 @@
 -- Beta Desk (20261104000000_beta_desk.sql): the private tester tracker.
 -- Proves, on the applied database:
---  1. Access: anon sees nothing; a signed-in learner who is not an admin sees
---     and changes nothing; an admin whose email is not confirmed is not an
---     admin; a confirmed admin reads and writes; the admin list is unreadable.
---  2. Saving: a tester saves with defaults; updated_at has its trigger.
---  3. Duplicates: the same email in any case or spacing is refused, and the
---     CSV import's "skip duplicates" (on conflict do nothing) keeps one row.
+--  1. Access: anon sees nothing; a learner who is not an admin sees and
+--     changes nothing; an admin without the second sign-in step (aal1) sees
+--     no tester; unconfirmed, anonymous, SSO, banned and deleted accounts on
+--     the list are not admins; a listed account reads only the empty gate row
+--     before MFA; a confirmed admin with MFA (aal2) reads and writes; the admin
+--     list and the helpers are out of reach.
+--  2. Saving: defaults; protected columns can't be written; updated_at trigger.
+--  3. Duplicates: the same email in any case or spacing is refused, the CSV
+--     import's "skip duplicates" keeps one row, and a learner can't use it to
+--     test whether an email exists.
 --  4. Dates: the 14-day review counts from the Google Play opt-in (never from
 --     registration); the reward ends six calendar months after activation
 --     (month ends and leap years included); nobody can write either one.
@@ -15,53 +19,85 @@
 --
 -- Run: supabase test db   (CI: .github/workflows/supabase.yml)
 begin;
-select plan(44);
+select plan(62);
 
--- Accounts used below: an admin (confirmed), a learner (not an admin), and an
--- admin address whose account never confirmed its email.
+-- Accounts: an admin, a learner, and listed accounts that must NOT count.
 insert into auth.users (id, email, email_confirmed_at) values
-  ('00000000-0000-0000-0000-0000000000d1', 'Owner@Test.invalid', now()),
+  ('00000000-0000-0000-0000-0000000000d1', 'owner@test.invalid', now()),
   ('00000000-0000-0000-0000-0000000000d2', 'learner@test.invalid', now()),
   ('00000000-0000-0000-0000-0000000000d3', 'unconfirmed@test.invalid', null);
-insert into private.beta_desk_admins (email) values ('owner@test.invalid'), ('unconfirmed@test.invalid');
+insert into auth.users (id, email, email_confirmed_at, is_anonymous) values
+  ('00000000-0000-0000-0000-0000000000d4', null, now(), true);
+insert into auth.users (id, email, email_confirmed_at, is_sso_user) values
+  ('00000000-0000-0000-0000-0000000000d5', 'sso@test.invalid', now(), true);
+insert into auth.users (id, email, email_confirmed_at, banned_until) values
+  ('00000000-0000-0000-0000-0000000000d6', 'banned@test.invalid', now(), now() + interval '1 day');
+insert into auth.users (id, email, email_confirmed_at, deleted_at) values
+  ('00000000-0000-0000-0000-0000000000d7', 'deleted@test.invalid', now(), now());
+insert into private.beta_desk_admins (user_id) values
+  ('00000000-0000-0000-0000-0000000000d1'), ('00000000-0000-0000-0000-0000000000d3'),
+  ('00000000-0000-0000-0000-0000000000d4'), ('00000000-0000-0000-0000-0000000000d5'),
+  ('00000000-0000-0000-0000-0000000000d6'), ('00000000-0000-0000-0000-0000000000d7');
 
 -- ── 1. Access ───────────────────────────────────────────────────────
 select is((select count(*)::int from public.beta_desk_settings), 1, 'the settings row exists (a singleton)');
-select throws_ok($$ insert into private.beta_desk_admins (email) values ('Mixed@Case.invalid') $$, '23514', null,
-  'admin emails are stored trimmed and in lower case');
+select throws_ok($$ insert into private.beta_desk_admins (user_id) values ('00000000-0000-0000-0000-00000000dead') $$, '23503', null,
+  'the admin list holds only real accounts (by id)');
+select ok(not exists (select 1 from pg_publication_tables where tablename in ('beta_testers', 'beta_desk_settings', 'beta_desk_gate')),
+  'no Beta Desk table is in any publication (no realtime copies of tester data)');
+select ok(not has_function_privilege('authenticated', 'private.beta_desk_touch()', 'execute')
+          and not has_function_privilege('anon', 'private.beta_desk_is_admin()', 'execute')
+          and not has_function_privilege('anon', 'private.beta_desk_is_listed()', 'execute'),
+  'anon runs no Beta Desk helper; nobody calls the touch trigger');
 
 -- anon
 set local role anon;
 set local request.jwt.claims to '{"role":"anon"}';
 select throws_ok($$ select count(*) from public.beta_testers $$, '42501', null, 'anon cannot read testers');
 select throws_ok($$ select count(*) from public.beta_desk_settings $$, '42501', null, 'anon cannot read the settings');
+select throws_ok($$ select count(*) from public.beta_desk_gate $$, '42501', null, 'anon cannot read the gate');
 select throws_ok($$ insert into public.beta_testers (email) values ('x@test.invalid') $$, '42501', null, 'anon cannot add a tester');
 select throws_ok($$ select private.beta_desk_is_admin() $$, '42501', null, 'anon cannot call the admin check');
 reset role;
 
--- The admin adds a tester (used by the learner checks next).
+-- The admin, before the second step (aal1): on the list, but no tester data.
 set local role authenticated;
-set local request.jwt.claims to '{"sub":"00000000-0000-0000-0000-0000000000d1","role":"authenticated"}';
-select is((select count(*)::int from public.beta_desk_settings), 1,
-  'a confirmed account on the admin list is an admin: it reads the settings (email matched in any case)');
-select lives_ok($$ insert into public.beta_testers (full_name, email, device) values ('Ana Reyes', 'ana@test.invalid', 'Pixel 8') $$,
-  'an admin adds a tester');
+set local request.jwt.claims to '{"sub":"00000000-0000-0000-0000-0000000000d1","role":"authenticated","aal":"aal1"}';
+select is((select count(*)::int from public.beta_desk_gate), 1, 'a listed admin sees the gate row before MFA (so the page asks for the code)');
+select is((select count(*)::int from public.beta_desk_settings), 0, 'an admin without MFA (aal1) reads no settings');
+select throws_ok($$ insert into public.beta_testers (email) values ('aal1@test.invalid') $$, '42501', null,
+  'an admin without MFA (aal1) cannot add a tester');
 reset role;
 
--- a signed-in learner who is not an admin
+-- The admin with MFA adds a tester (used by the checks below).
 set local role authenticated;
-set local request.jwt.claims to '{"sub":"00000000-0000-0000-0000-0000000000d2","role":"authenticated"}';
+set local request.jwt.claims to '{"sub":"00000000-0000-0000-0000-0000000000d1","role":"authenticated","aal":"aal2"}';
+select is((select count(*)::int from public.beta_desk_settings), 1, 'a confirmed admin with MFA (aal2) reads the settings');
+select lives_ok($$ insert into public.beta_testers (full_name, email, device) values ('Ana Reyes', 'ana@test.invalid', 'Pixel 8') $$,
+  'an admin with MFA adds a tester');
+reset role;
+set local role authenticated;
+set local request.jwt.claims to '{"sub":"00000000-0000-0000-0000-0000000000d1","role":"authenticated","aal":"aal1"}';
+select is((select count(*)::int from public.beta_testers), 0, 'the same admin without MFA reads no tester');
+reset role;
+
+-- A signed-in learner who is not an admin (even with MFA).
+set local role authenticated;
+set local request.jwt.claims to '{"sub":"00000000-0000-0000-0000-0000000000d2","role":"authenticated","aal":"aal2"}';
 select throws_ok($$ select private.beta_desk_is_admin() $$, '42501', null,
   'a learner cannot call the helper by name (no usage on schema private; only the policies call it)');
+select is((select count(*)::int from public.beta_desk_gate), 0, 'a learner does not see the gate row (the page says "No access")');
 select is((select count(*)::int from public.beta_testers), 0, 'a learner reads no tester');
-select is((select count(*)::int from public.beta_desk_settings), 0, 'a learner reads no settings (this is how the page knows "not an admin")');
+select is((select count(*)::int from public.beta_desk_settings), 0, 'a learner reads no settings');
 select throws_ok($$ insert into public.beta_testers (email) values ('mallory@test.invalid') $$, '42501', null,
   'a learner cannot add a tester');
+select throws_ok($$ insert into public.beta_testers (email) values ('ana@test.invalid') on conflict (email_key) do nothing $$, '42501', null,
+  'a learner gets the same refusal for an email that exists (no way to test who is a tester)');
 update public.beta_testers set notes = 'changed by learner';
 delete from public.beta_testers;
 update public.beta_desk_settings set registration_target = 1;
-select throws_ok($$ select email from private.beta_desk_admins $$, '42501', null, 'a learner cannot read the admin list');
-select throws_ok($$ insert into private.beta_desk_admins (email) values ('learner@test.invalid') $$, '42501', null,
+select throws_ok($$ select user_id from private.beta_desk_admins $$, '42501', null, 'a learner cannot read the admin list');
+select throws_ok($$ insert into private.beta_desk_admins (user_id) values ('00000000-0000-0000-0000-0000000000d2') $$, '42501', null,
   'a learner cannot add themselves to the admin list');
 reset role;
 select is((select notes from public.beta_testers where email_key = 'ana@test.invalid'), '',
@@ -69,26 +105,48 @@ select is((select notes from public.beta_testers where email_key = 'ana@test.inv
 select is((select count(*)::int from public.beta_testers), 1, 'a learner''s delete removed nothing');
 select is((select registration_target from public.beta_desk_settings), 50, 'a learner cannot change the settings');
 
--- an admin address whose email was never confirmed
+-- Listed accounts that must not count, each with MFA claims.
 set local role authenticated;
-set local request.jwt.claims to '{"sub":"00000000-0000-0000-0000-0000000000d3","role":"authenticated"}';
-select is((select count(*)::int from public.beta_desk_settings), 0, 'an unconfirmed email on the admin list is not an admin');
-select is((select count(*)::int from public.beta_testers), 0, 'an unconfirmed account reads no tester');
+set local request.jwt.claims to '{"sub":"00000000-0000-0000-0000-0000000000d3","role":"authenticated","aal":"aal2"}';
+select is((select count(*)::int from public.beta_testers), 0, 'an unconfirmed account on the list reads no tester');
+select is((select count(*)::int from public.beta_desk_gate), 0, 'an unconfirmed account on the list does not pass the gate');
+reset role;
+set local role authenticated;
+set local request.jwt.claims to '{"sub":"00000000-0000-0000-0000-0000000000d4","role":"authenticated","aal":"aal2"}';
+select is((select count(*)::int from public.beta_testers), 0, 'an anonymous account on the list reads no tester');
+reset role;
+set local role authenticated;
+set local request.jwt.claims to '{"sub":"00000000-0000-0000-0000-0000000000d5","role":"authenticated","aal":"aal2"}';
+select is((select count(*)::int from public.beta_testers), 0, 'an SSO account on the list reads no tester');
+reset role;
+set local role authenticated;
+set local request.jwt.claims to '{"sub":"00000000-0000-0000-0000-0000000000d6","role":"authenticated","aal":"aal2"}';
+select is((select count(*)::int from public.beta_testers), 0, 'a banned account on the list reads no tester');
+reset role;
+set local role authenticated;
+set local request.jwt.claims to '{"sub":"00000000-0000-0000-0000-0000000000d7","role":"authenticated","aal":"aal2"}';
+select is((select count(*)::int from public.beta_testers), 0, 'a deleted account on the list reads no tester');
 reset role;
 
--- ── 2. Saving (as the admin from here on) ───────────────────────────
+-- ── 2. Saving (as the admin with MFA from here on) ──────────────────
 set local role authenticated;
-set local request.jwt.claims to '{"sub":"00000000-0000-0000-0000-0000000000d1","role":"authenticated"}';
+set local request.jwt.claims to '{"sub":"00000000-0000-0000-0000-0000000000d1","role":"authenticated","aal":"aal2"}';
 select is((select registered_on from public.beta_testers where email_key = 'ana@test.invalid'), current_date,
   'registered_on defaults to today');
 select is((select (participation, completion, source) from public.beta_testers where email_key = 'ana@test.invalid'),
   row('unchecked'::text, 'pending'::text, 'manual'::text), 'a new tester starts unchecked, pending, added by hand');
+select throws_ok($$ update public.beta_testers set id = gen_random_uuid() $$, '42501', null, 'an admin cannot change a record''s id');
+select throws_ok($$ update public.beta_testers set source = 'form_csv' $$, '42501', null, 'an admin cannot change where a record came from');
+select throws_ok($$ update public.beta_testers set created_at = now() - interval '1 year' $$, '42501', null, 'an admin cannot back-date created_at');
+select throws_ok($$ update public.beta_testers set updated_at = now() - interval '1 year' $$, '42501', null, 'an admin cannot set updated_at');
+select throws_ok($$ update public.beta_testers set email_key = 'x' $$, '428C9', null, 'nobody writes the email key');
 select lives_ok($$ update public.beta_desk_settings set registration_target = 60, signup_form_url = 'https://forms.gle/example' $$,
   'an admin changes the settings');
 select throws_ok($$ update public.beta_desk_settings set signup_form_url = 'javascript:alert(1)' $$, '23514', null,
   'the signup form link must be https');
 select throws_ok($$ insert into public.beta_testers (email) values ('not-an-email') $$, '23514', null,
   'an email must look like an email');
+select has_trigger('public', 'beta_testers', 'beta_testers_touch', 'updated_at is refreshed on every change (trigger)');
 
 -- ── 3. Duplicates ───────────────────────────────────────────────────
 select throws_ok($$ insert into public.beta_testers (email) values ('  ANA@test.INVALID ') $$, '23505', null,
@@ -142,7 +200,6 @@ select is((select reward_ends_on from public.beta_testers where email_key = 'ana
 update public.beta_testers set reward_activated_on = '2026-11-10', approved_on = '2026-11-09' where email_key = 'ana@test.invalid';
 select is((select reward_ends_on from public.beta_testers where email_key = 'ana@test.invalid'), '2027-05-10'::date,
   'six months from 10 Nov 2026 ends on 10 May 2027');
-select has_trigger('public', 'beta_testers', 'beta_testers_touch', 'updated_at is refreshed on every change (trigger)');
 
 -- An admin deletes a record.
 select lives_ok($$ delete from public.beta_testers where email_key = 'ben@test.invalid' $$, 'an admin deletes a tester record');

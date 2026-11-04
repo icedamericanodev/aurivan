@@ -73,6 +73,14 @@ var BD = (function () {
   function reviewDue(t) { return t.opted_in_on ? addDays(t.opted_in_on, REVIEW_DAYS) : null; }
   function rewardEnds(t) { return t.reward_activated_on ? addMonths(t.reward_activated_on, REWARD_MONTHS) : null; }
   function emailKey(e) { return String(e || '').trim().toLowerCase(); }
+  /** The inbox an address reaches: Gmail ignores dots and "+anything"; other providers ignore "+anything". */
+  function inboxKey(e) {
+    var k = emailKey(e), at = k.lastIndexOf('@');
+    if (at < 1) return k;
+    var local = k.slice(0, at).split('+')[0], dom = k.slice(at + 1);
+    if (dom === 'gmail.com' || dom === 'googlemail.com') { local = local.replace(/\./g, ''); dom = 'gmail.com'; }
+    return local + '@' + dom;
+  }
   function validEmail(e) { var s = String(e || '').trim(); return s.length >= 3 && s.length <= 254 && EMAIL.test(s); }
 
   /**
@@ -102,7 +110,7 @@ var BD = (function () {
     testing:      { label: 'Testing',           tone: 'green' },
     review:       { label: 'Ready for review',  tone: 'clay' },
     approved:     { label: 'Approved',          tone: 'green' },
-    rewarded:     { label: 'CISA reward active', tone: 'forest' },
+    rewarded:     { label: 'CISA reward active', tone: 'green' },
     reward_ended: { label: 'Reward ended',      tone: '' },
     closed:       { label: 'Not eligible',      tone: 'red' }
   };
@@ -150,6 +158,11 @@ var BD = (function () {
     } else if (s === 'approved') {
       if (t.reward_activated_on) add('scheduled', 'Reward starts ' + fmt(t.reward_activated_on), 'Recorded as switched on from that day.', false, t.reward_activated_on);
       else add('reward', 'Switch on 6 months of CISA', 'Approved on ' + fmt(t.approved_on) + '. Turn on CISA premium for them in the app, then record the date.', true, t.approved_on);
+    } else if (s === 'reward_ended') {
+      var ended = t.reward_ends_on || rewardEnds(t);
+      add('delete', 'Delete their record by ' + fmt(addMonths(ended, 3)), 'The reward ended on ' + fmt(ended) + '. The privacy policy promises deletion within 3 months. Export first if you need a copy.', true, ended);
+    } else if (s === 'closed') {
+      add('delete', 'Delete their record', 'Not eligible, so the beta no longer needs their details (privacy policy: delete within 3 months).', true, t.participation_checked_on || t.registered_on);
     } else if (s === 'rewarded') {
       var ends = t.reward_ends_on || rewardEnds(t);
       var left = daysBetween(today, ends);
@@ -234,7 +247,7 @@ var BD = (function () {
     var counts = { total: body.length, add: 0, existing: 0, repeated: 0, invalid: 0, badDate: 0 };
     body.forEach(function (r, idx) {
       var email = map.email >= 0 ? String(r[map.email] || '').trim() : '';
-      var key = emailKey(email);
+      var key = inboxKey(email);
       var name = map.name >= 0 ? String(r[map.name] || '').trim() : '';
       if (map.last >= 0 && map.last !== map.name) name = (name + ' ' + String(r[map.last] || '').trim()).trim();
       var device = map.device >= 0 ? String(r[map.device] || '').trim() : '';
@@ -265,7 +278,7 @@ var BD = (function () {
   /** One CSV cell, quoted, with spreadsheet formulas neutralised (=, +, -, @ at the start). */
   function csvCell(v) {
     var s = v === null || v === undefined ? '' : String(v);
-    if (/^[=+\-@\t\r]/.test(s)) s = "'" + s;
+    if (/^[\s\u3000]*[=+\-@\uFF1D\uFF0B\uFF0D\uFF20]/.test(s) || /^[\t\r\n]/.test(s)) s = "'" + s;
     return '"' + s.replace(/"/g, '""') + '"';
   }
   function initials(name, email) {
@@ -274,7 +287,7 @@ var BD = (function () {
     return ((w[0] || '?')[0] + (w.length > 1 ? w[w.length - 1][0] : (w[0] || '')[1] || '')).toUpperCase();
   }
   return { todayISO: todayISO, isISO: isISO, addDays: addDays, addMonths: addMonths, daysBetween: daysBetween, fmt: fmt,
-    reviewDue: reviewDue, rewardEnds: rewardEnds, emailKey: emailKey, validEmail: validEmail, stage: stage, STAGES: STAGES,
+    reviewDue: reviewDue, rewardEnds: rewardEnds, emailKey: emailKey, inboxKey: inboxKey, validEmail: validEmail, stage: stage, STAGES: STAGES,
     approvalChecks: approvalChecks, canApprove: canApprove, actions: actions, needsAttention: needsAttention,
     parseCSV: parseCSV, guessColumns: guessColumns, parseFormDate: parseFormDate, dateOrder: dateOrder,
     planImport: planImport, csvCell: csvCell, initials: initials, REVIEW_DAYS: REVIEW_DAYS, REWARD_MONTHS: REWARD_MONTHS };
@@ -300,33 +313,39 @@ function storageGet(store, k) { try { return store.getItem(k); } catch (e) { ret
 function storageSet(store, k, v) { try { store.setItem(k, v); } catch (e) { /* storage blocked */ } }
 function storageDel(store, k) { try { store.removeItem(k); } catch (e) { /* storage blocked */ } }
 
-/* ── Sign-in (Supabase Auth: emailed code; the session stays in this browser) ── */
+/* ── Sign-in (Supabase Auth: emailed code, then the authenticator app) ──
+   The session is kept in THIS TAB only (sessionStorage): closing the tab
+   signs you out here, and no other page of kaisip.com can read it later. */
 var Auth = (function () {
   var session = null, refreshing = null;
   function load() {
-    var raw = storageGet(sessionStorage, SESSION_KEY) || storageGet(localStorage, SESSION_KEY);
+    storageDel(localStorage, SESSION_KEY);  // an older build could keep it here; never again
+    var raw = storageGet(sessionStorage, SESSION_KEY);
     try { session = raw ? JSON.parse(raw) : null; } catch (e) { session = null; }
     if (session && (typeof session.access_token !== 'string' || typeof session.refresh_token !== 'string')) session = null;
     return session;
   }
-  function save(s, keep) {
-    session = s;
-    var json = JSON.stringify(s);
-    if (keep) { storageSet(localStorage, SESSION_KEY, json); storageDel(sessionStorage, SESSION_KEY); }
-    else { storageSet(sessionStorage, SESSION_KEY, json); storageDel(localStorage, SESSION_KEY); }
-  }
-  function kept() { return storageGet(localStorage, SESSION_KEY) !== null; }
+  function save(s) { session = s; storageSet(sessionStorage, SESSION_KEY, JSON.stringify(s)); }
   function clear() { session = null; storageDel(sessionStorage, SESSION_KEY); storageDel(localStorage, SESSION_KEY); }
+  /** The token's "aal": aal1 after the email code, aal2 after the authenticator code. */
+  function aal(s) {
+    try {
+      var part = String((s || session || {}).access_token || '').split('.')[1] || '';
+      var json = atob(part.replace(/-/g, '+').replace(/_/g, '/') + '==='.slice((part.length + 3) % 4));
+      return JSON.parse(json).aal || 'aal1';
+    } catch (e) { return 'aal1'; }
+  }
   function fromBody(b) {
     if (!b || typeof b.access_token !== 'string' || typeof b.refresh_token !== 'string' || !b.user) return null;
     var exp = typeof b.expires_at === 'number' ? b.expires_at * 1000 : Date.now() + (b.expires_in || 3600) * 1000;
     return { access_token: b.access_token, refresh_token: b.refresh_token, expires_at: exp, email: b.user.email || '', user_id: b.user.id };
   }
-  async function call(path, body, token) {
-    var headers = { apikey: PUBLISHABLE_KEY, 'content-type': 'application/json' };
+  async function call(path, body, token, method) {
+    var headers = { apikey: PUBLISHABLE_KEY };
+    if (body !== undefined) headers['content-type'] = 'application/json';
     if (token) headers.authorization = 'Bearer ' + token;
     var res;
-    try { res = await fetch(SUPABASE_URL + path, { method: 'POST', headers: headers, body: JSON.stringify(body || {}) }); }
+    try { res = await fetch(SUPABASE_URL + path, { method: method || 'POST', headers: headers, body: body === undefined ? undefined : JSON.stringify(body) }); }
     catch (e) { var off = new Error('You seem to be offline. Check your connection and try again.'); off.status = 0; throw off; }
     var text = await res.text(); var data = null;
     try { data = text ? JSON.parse(text) : null; } catch (e) { data = null; }
@@ -341,20 +360,43 @@ var Auth = (function () {
   }
   function authMessage(status, code, msg) {
     if (/captcha/i.test(code + ' ' + msg)) return 'Please complete the check below, then try again.';
-    if (status === 429 || /rate.?limit/i.test(code)) return 'Too many codes asked for. Wait a few minutes, then try again.';
+    if (status === 429 || /rate.?limit/i.test(code)) return 'Too many tries. Wait a few minutes, then try again.';
+    if (/mfa_verification_failed|invalid totp|mfa/i.test(code + ' ' + msg)) return 'That authenticator code didn’t match. Check the time on your phone and try the newest code.';
     if (/otp_expired|expired|invalid/i.test(code + ' ' + msg)) return 'That code is wrong or has expired. Ask for a new one.';
     if (status === 0) return 'You seem to be offline.';
-    return 'Sign-in failed (' + status + '). Try again in a moment.';
+    return 'Sign-in failed (code ' + status + '). Try again in a moment.';
   }
   async function sendCode(email, captchaToken) {
     var body = { email: email, create_user: true };
     if (captchaToken) body.gotrue_meta_security = { captcha_token: captchaToken };
     await call('/auth/v1/otp', body);
   }
-  async function verify(email, code, keep) {
+  async function verify(email, code) {
     var s = fromBody(await call('/auth/v1/verify', { type: 'email', email: email, token: code }));
     if (!s) throw new Error('Sign-in failed. Ask for a new code.');
-    save(s, keep);
+    save(s);
+    return s;
+  }
+  /* The second step (TOTP from an authenticator app). */
+  async function factors() {
+    var u = await call('/auth/v1/user', undefined, await token(), 'GET');
+    return (u && Array.isArray(u.factors) ? u.factors : []).filter(function (f) { return f.factor_type === 'totp'; });
+  }
+  async function enroll() {
+    var tok = await token();
+    // An unfinished set-up from before would block a new one: remove it first.
+    var old = await factors();
+    for (var i = 0; i < old.length; i++) {
+      if (old[i].status !== 'verified') { try { await call('/auth/v1/factors/' + encodeURIComponent(old[i].id), undefined, tok, 'DELETE'); } catch (e) { /* ignore */ } }
+    }
+    return call('/auth/v1/factors', { factor_type: 'totp', friendly_name: 'KaiSip Beta Desk ' + new Date().toISOString().slice(0, 16) }, tok);
+  }
+  async function verifyFactor(factorId, code) {
+    var tok = await token();
+    var ch = await call('/auth/v1/factors/' + encodeURIComponent(factorId) + '/challenge', {}, tok);
+    var s = fromBody(await call('/auth/v1/factors/' + encodeURIComponent(factorId) + '/verify', { challenge_id: ch.id, code: code }, tok));
+    if (!s) throw new Error('That didn’t work. Try the newest code.');
+    save(s);
     return s;
   }
   async function doRefresh() {
@@ -363,17 +405,16 @@ var Auth = (function () {
     var fresh;
     try { fresh = fromBody(await call('/auth/v1/token?grant_type=refresh_token', { refresh_token: s.refresh_token })); }
     catch (e) {
-      // Another tab may have refreshed first (a refresh token works once): use its session.
-      var other = load();
+      var other = load();  // another tab of this window may have refreshed first
       if (other && other.refresh_token !== s.refresh_token) return other;
       if (e.status && e.status >= 400 && e.status < 500) clear();
       throw e;
     }
     if (!fresh) { clear(); throw Object.assign(new Error('Signed out'), { status: 401 }); }
-    save(fresh, kept());
+    save(fresh);
     return fresh;
   }
-  /** One refresh at a time, across tabs where the browser supports locks. */
+  /** One refresh at a time, where the browser supports locks. */
   function refresh() {
     if (!refreshing) {
       var run = function () { return doRefresh(); };
@@ -393,7 +434,8 @@ var Auth = (function () {
     clear();
     if (s) { try { await fetch(SUPABASE_URL + '/auth/v1/logout?scope=local', { method: 'POST', headers: { apikey: PUBLISHABLE_KEY, authorization: 'Bearer ' + s.access_token } }); } catch (e) { /* offline: forgotten here anyway */ } }
   }
-  return { load: load, sendCode: sendCode, verify: verify, token: token, refresh: refresh, signOut: signOut, clear: clear, current: function () { return session || load(); } };
+  return { load: load, sendCode: sendCode, verify: verify, factors: factors, enroll: enroll, verifyFactor: verifyFactor, aal: aal,
+    token: token, refresh: refresh, signOut: signOut, clear: clear, current: function () { return session || load(); } };
 })();
 
 /* ── The database (PostgREST); RLS decides what comes back ───────────── */
@@ -417,8 +459,8 @@ function dbMessage(status, body) {
   if (code === '23505') return FRIENDLY.beta_testers_email_unique;
   if (code === '23514') return 'One of the fields isn’t allowed (too long, or a rule isn’t met).';
   if (code === '42501' || status === 403) return 'This account isn’t allowed to do that.';
-  if (status === 0) return 'You seem to be offline. Nothing was saved.';
-  return 'The database said no (' + status + '). Nothing was changed.';
+  if (status === 0) return 'You seem to be offline. Check your connection and try again.';
+  return 'Something went wrong on the server (code ' + status + '). Nothing was changed.';
 }
 async function db(path, opts) {
   opts = opts || {};
@@ -443,22 +485,23 @@ async function db(path, opts) {
 }
 
 /* ── State ─────────────────────────────────────────────────────────── */
-var S = { testers: [], settings: null, loading: true, view: 'testers', filter: 'all', q: '', sort: 'next', editing: null, today: BD.todayISO() };
+var S = { testers: [], settings: null, loading: true, loadError: '', view: 'testers', filter: 'all', q: '', sort: 'next', editing: null, today: BD.todayISO() };
 var EDITABLE = ['full_name', 'email', 'device', 'registered_on', 'invited_on', 'opted_in_on', 'last_feedback_on', 'feedback_summary',
   'participation', 'participation_checked_on', 'technical_issues', 'terms_offered', 'completion', 'approved_on',
   'reward_activated_on', 'follow_up_on', 'follow_up_note', 'notes'];
 
 /* ── Gate: who is signed in, and are they an admin? ───────────────── */
-var gateEmail = '';
+var gateEmail = '', mfa = { factorId: null };
 function showGate(mode, err) {
-  $('app').hidden = true; $('gate').hidden = false;
+  $('booting').hidden = true; $('app').hidden = true; $('gate').hidden = false;
   $('emailForm').hidden = mode !== 'email';
   $('codeForm').hidden = mode !== 'code';
+  $('mfaForm').hidden = mode !== 'mfa';
   $('notAdmin').hidden = mode !== 'notadmin';
-  $('gateTitle').textContent = mode === 'notadmin' ? 'No access to Beta Desk' : 'Sign in to Beta Desk';
-  $('gateLead').hidden = mode === 'notadmin';
+  $('gateTitle').textContent = mode === 'notadmin' ? 'No access to Beta Desk' : mode === 'mfa' ? 'One more step' : 'Sign in to Beta Desk';
+  $('gateLead').hidden = mode !== 'email' && mode !== 'code';
   setGateError(err || '');
-  var focusEl = mode === 'email' ? $('emailInput') : mode === 'code' ? $('codeInput') : null;
+  var focusEl = mode === 'email' ? $('emailInput') : mode === 'code' ? $('codeInput') : mode === 'mfa' ? $('mfaInput') : null;
   if (focusEl) setTimeout(function () { focusEl.focus(); }, 30);
 }
 function setGateError(msg) { $('gateError').hidden = !msg; $('gateError').textContent = msg; }
@@ -468,26 +511,52 @@ function signedOut(msg) {
   showGate('email', msg || '');
 }
 
+/**
+ * 1. Signed in?  2. On the admin list? (the gate row: listed accounts only)
+ * 3. Second step done (aal2)? If not, ask for the authenticator code, or set
+ *    one up the first time.  4. Load the desk.
+ */
 async function boot() {
   var s = Auth.load();
   if (!s) { showGate('email'); return; }
   try {
-    var r = await db('beta_desk_settings?select=*');
-    if (!Array.isArray(r.data) || r.data.length === 0) {
+    var g = await db('beta_desk_gate?select=id');
+    if (!Array.isArray(g.data) || g.data.length === 0) {
       $('notAdminWho').textContent = 'Signed in as ' + maskEmail(s.email) + '.';
       showGate('notadmin');
       return;
     }
+    if (Auth.aal() !== 'aal2') { await startMfa(); return; }
+    var r = await db('beta_desk_settings?select=*');
+    if (!Array.isArray(r.data) || r.data.length === 0) { await startMfa(); return; }
     S.settings = r.data[0];
-    $('gate').hidden = true; $('app').hidden = false;
+    $('booting').hidden = true; $('gate').hidden = true; $('app').hidden = false;
     $('whoEmail').textContent = maskEmail(s.email);
     renderSettings();
     renderAll();
     await loadTesters();
   } catch (e) {
-    if (!$('gate').hidden) return;  // already showing the sign-in after a lost session
+    if (!$('gate').hidden && $('emailForm').hidden === false) return;  // already back at sign-in after a lost session
     showGate('email', e.message);
   }
+}
+async function startMfa() {
+  $('mfaInput').value = '';
+  var list = await Auth.factors();
+  var ready = list.filter(function (f) { return f.status === 'verified'; })[0];
+  if (ready) {
+    mfa.factorId = ready.id;
+    $('mfaSetup').hidden = true;
+    $('mfaLead').textContent = 'Open your authenticator app and enter the 6-digit code for KaiSip.';
+  } else {
+    var f = await Auth.enroll();
+    mfa.factorId = f.id;
+    $('mfaSetup').hidden = false;
+    $('mfaQr').src = f.totp && f.totp.qr_code ? f.totp.qr_code : '';
+    $('mfaSecret').textContent = f.totp && f.totp.secret ? f.totp.secret.replace(/(.{4})/g, '$1 ').trim() : '';
+    $('mfaLead').textContent = 'Tester details are personal data, so the desk asks for a second code from an authenticator app (Google Authenticator, Microsoft Authenticator, 1Password…). This is set up once.';
+  }
+  showGate('mfa');
 }
 
 var captcha = { needed: false, token: '', widget: null };
@@ -535,12 +604,24 @@ $('codeForm').addEventListener('submit', async function (ev) {
   if (!/^\d{6,10}$/.test(code)) { setGateError('Enter the code from the email (numbers only).'); return; }
   var btn = $('verifyBtn'); btn.disabled = true; btn.textContent = 'Checking…'; setGateError('');
   try {
-    await Auth.verify(gateEmail, code, $('keepSignedIn').checked);
+    await Auth.verify(gateEmail, code);
     await boot();
   } catch (e) { setGateError(e.message); }
-  finally { btn.disabled = false; btn.textContent = 'Sign in'; }
+  finally { btn.disabled = false; btn.textContent = 'Continue'; }
+});
+$('mfaForm').addEventListener('submit', async function (ev) {
+  ev.preventDefault();
+  var code = $('mfaInput').value.replace(/\s+/g, '');
+  if (!/^\d{6}$/.test(code)) { setGateError('Enter the 6-digit code from your authenticator app.'); return; }
+  var btn = $('mfaBtn'); btn.disabled = true; btn.textContent = 'Checking…'; setGateError('');
+  try {
+    await Auth.verifyFactor(mfa.factorId, code);
+    await boot();
+  } catch (e) { setGateError(e.message); }
+  finally { btn.disabled = false; btn.textContent = 'Open Beta Desk'; }
 });
 $('backToEmail').addEventListener('click', function () { showGate('email'); });
+$('mfaSignOut').addEventListener('click', async function () { await Auth.signOut(); showGate('email'); });
 $('notAdminSignOut').addEventListener('click', async function () { await Auth.signOut(); showGate('email'); });
 $('signOutBtn').addEventListener('click', async function () { await Auth.signOut(); signedOut(''); toast('Signed out.'); });
 
@@ -557,10 +638,11 @@ async function loadTesters() {
       if (page.length < size) break;
       from += size;
     }
-    S.testers = all;
-  } catch (e) { toast(e.message, true); }
+    S.testers = all; S.loadError = '';
+  } catch (e) { S.loadError = e.message; toast(e.message, true); }
   S.loading = false; S.today = BD.todayISO();
   renderAll();
+  return !S.loadError;
 }
 function upsertLocal(row) {
   var i = S.testers.findIndex(function (t) { return t.id === row.id; });
@@ -577,6 +659,8 @@ function counts() {
 }
 function renderStats() {
   var c = counts(), total = S.testers.length, target = S.settings ? S.settings.registration_target : 50;
+  $('stats').setAttribute('aria-busy', String(S.loading));
+  if (S.loading && !total) { ['stReg', 'stTesting', 'stAttn', 'stRewards'].forEach(function (id) { $(id).textContent = '—'; }); $('stTarget').textContent = target; return; }
   $('stReg').textContent = total; $('stTarget').textContent = target;
   $('stRegBar').style.width = Math.min(100, Math.round(total / target * 100)) + '%';
   $('stTesting').textContent = c.testing + c.review;
@@ -609,6 +693,7 @@ function matches(t) {
   var st = BD.stage(t, S.today), f = S.filter;
   if (f === 'attention' && !BD.needsAttention(t, S.today)) return false;
   if (f === 'followup' && !t.follow_up_on) return false;
+  if (f === 'deletion' && st !== 'reward_ended' && st !== 'closed') return false;
   if (['registered', 'invited', 'testing', 'review', 'approved', 'rewarded', 'reward_ended', 'closed'].indexOf(f) !== -1 && st !== f) return false;
   if (S.q) {
     var hay = [t.full_name, t.email, t.device, t.notes, t.feedback_summary, t.follow_up_note, t.technical_issues].join(' ').toLowerCase();
@@ -642,7 +727,7 @@ function progressCell(t) {
   var st = BD.stage(t, S.today);
   if (st === 'testing' || st === 'review') {
     var d = Math.max(0, Math.min(14, BD.daysBetween(t.opted_in_on, S.today)));
-    return '<span class="num">' + d + '</span> <span class="meta">of 14 days</span><div class="bar" aria-hidden="true"><i style="width:' + Math.round(d / 14 * 100) + '%"></i></div>';
+    return '<span style="font-variant-numeric:tabular-nums;font-weight:600">' + d + '</span> <span class="meta">of 14 days</span><div class="bar" aria-hidden="true"><i style="width:' + Math.round(d / 14 * 100) + '%"></i></div>';
   }
   if (st === 'rewarded') {
     var ends = t.reward_ends_on || BD.rewardEnds(t);
@@ -659,13 +744,17 @@ function renderRoster() {
   var body = $('rosterBody');
   $('rosterCount').textContent = S.testers.length;
   if (S.loading && S.testers.length === 0) {
-    body.innerHTML = '<div style="padding:28px;display:grid;gap:14px">' + [1, 2, 3, 4].map(function () { return '<div class="skel" style="width:' + (50 + Math.random() * 40) + '%"></div>'; }).join('') + '</div>';
+    body.innerHTML = '<div style="padding:28px;display:grid;gap:14px" aria-busy="true"><span class="sr-only" role="status">Loading testers…</span>' + [1, 2, 3, 4].map(function () { return '<div class="skel" style="width:' + (50 + Math.random() * 40) + '%"></div>'; }).join('') + '</div>';
+    return;
+  }
+  if (S.testers.length === 0 && S.loadError) {
+    body.innerHTML = '<div class="empty" role="alert"><h3>The roster didn\u2019t load.</h3><p>Check your connection, then try again. Your testers are safe in the database.</p><button class="btn btn-primary" type="button" data-act="retry">Try again</button></div>';
     return;
   }
   if (S.testers.length === 0) {
     body.innerHTML = '<div class="empty"><div class="glyph">' + icon('spark') + '</div><h3>Your first cohort starts here.</h3>' +
       '<p>Import your Google Forms responses or add a tester by hand. No sample people have been added.</p>' +
-      '<div class="hero-actions" style="justify-content:center"><button class="btn" type="button" data-act="import">Import CSV</button><button class="btn btn-primary" type="button" data-act="add">Add your first tester</button></div></div>';
+      '<div class="hero-actions" style="justify-content:center"><button class="btn" type="button" data-act="import">Import CSV</button><button class="btn" type="button" data-act="add">Add your first tester</button></div></div>';
     return;
   }
   var list = sorted(S.testers.filter(matches));
@@ -677,8 +766,8 @@ function renderRoster() {
     list.map(function (t) {
       var acts = BD.actions(t, S.today), first = acts[0], attn = acts.some(function (a) { return a.attn; });
       var next = first ? '<div class="what">' + (first.key === 'wait' ? '<span class="tag auto">Auto</span>' : '<span class="tag you">You</span>') + '<span>' + esc(first.label) + '</span></div>' : '<span class="meta">Nothing to do</span>';
-      return '<tr data-id="' + esc(t.id) + '" class="' + (attn ? 'row-attn' : '') + '" tabindex="0" aria-label="Open ' + esc(t.full_name || t.email) + '">' +
-        '<td><div class="person"><div class="avatar" aria-hidden="true">' + esc(BD.initials(t.full_name, t.email)) + '</div><div><b>' + esc(t.full_name || 'No name') + '</b><span>' + esc(t.email) + '</span></div></div></td>' +
+      return '<tr data-id="' + esc(t.id) + '" class="' + (attn ? 'row-attn' : '') + '">' +
+        '<td><div class="person"><div class="avatar" aria-hidden="true">' + esc(BD.initials(t.full_name, t.email)) + '</div><div><button type="button" class="row-open" data-id="' + esc(t.id) + '">' + esc(t.full_name || 'No name') + (attn ? '<span class="sr-only">, needs attention</span>' : '') + '</button><span>' + esc(t.email) + '</span></div></div></td>' +
         '<td data-label="Stage">' + stageChip(t) + '</td>' +
         '<td class="progress-cell" data-label="Progress">' + progressCell(t) + '</td>' +
         '<td class="next-cell" data-label="Next">' + next + '</td>' +
@@ -690,14 +779,11 @@ $('rosterBody').addEventListener('click', function (ev) {
   if (act) {
     if (act.dataset.act === 'add') openDrawer(null);
     if (act.dataset.act === 'import') openImport();
+    if (act.dataset.act === 'retry') loadTesters();
     if (act.dataset.act === 'clear') { S.q = ''; $('q').value = ''; S.filter = 'all'; $('filter').value = 'all'; renderPipeline(); renderRoster(); }
     return;
   }
   var tr = ev.target.closest('tr[data-id]'); if (tr) openDrawer(tr.dataset.id);
-});
-$('rosterBody').addEventListener('keydown', function (ev) {
-  if (ev.key !== 'Enter' && ev.key !== ' ') return;
-  var tr = ev.target.closest('tr[data-id]'); if (tr) { ev.preventDefault(); openDrawer(tr.dataset.id); }
 });
 
 function renderActions() {
@@ -707,13 +793,15 @@ function renderActions() {
   var soon = items.filter(function (x) { return !x.a.attn; }).sort(function (x, y) { return String(x.a.due).localeCompare(String(y.a.due)); });
   function card(x, calm) {
     return '<article class="card action"><div class="ico' + (calm ? ' calm' : '') + '">' + icon(calm ? 'clock' : 'bell') + '</div>' +
-      '<div><h4>' + esc(x.a.label) + ' <span class="tag ' + (calm ? 'auto' : 'you') + '">' + (calm ? 'Auto' : 'You') + '</span></h4><p><b>' + esc(x.t.full_name || x.t.email) + '</b> · ' + esc(x.a.why) + '</p></div>' +
+      '<div><h3>' + esc(x.a.label) + ' <span class="tag ' + (calm ? 'auto' : 'you') + '">' + (calm ? 'Auto' : 'You') + '</span></h3><p><b>' + esc(x.t.full_name || x.t.email) + '</b> · ' + esc(x.a.why) + '</p></div>' +
       '<button class="btn btn-sm" type="button" data-id="' + esc(x.t.id) + '">Open</button></article>';
   }
   var html = '';
   if (!S.testers.length) html = '<div class="card empty"><h3>Nothing to do yet.</h3><p>Add or import testers and their next steps appear here.</p></div>';
   else {
-    html += '<h2 class="section-title" style="margin-top:0">Needs you now · ' + now.length + '</h2>';
+    var people = {}; now.forEach(function (x) { people[x.t.id] = true; });
+    var np = Object.keys(people).length;
+    html += '<h2 class="section-title" style="margin-top:0">Needs you now · ' + now.length + ' step' + (now.length === 1 ? '' : 's') + (np ? ' for ' + np + ' tester' + (np === 1 ? '' : 's') : '') + '</h2>';
     html += now.length ? '<div class="actions-list">' + now.map(function (x) { return card(x, false); }).join('') + '</div>' : '<div class="card" style="padding:22px 24px"><p class="meta" style="margin:0">All caught up. Nothing needs you today.</p></div>';
     if (soon.length) html += '<h2 class="section-title">Coming up</h2><div class="actions-list">' + soon.map(function (x) { return card(x, true); }).join('') + '</div>';
   }
@@ -743,13 +831,16 @@ $('addBtn').addEventListener('click', function () { openDrawer(null); });
 $('q').addEventListener('input', function () { S.q = this.value.trim(); renderRoster(); });
 $('filter').addEventListener('change', function () { S.filter = this.value; renderPipeline(); renderRoster(); });
 $('sort').addEventListener('change', function () { S.sort = this.value; renderRoster(); });
-$('refreshBtn').addEventListener('click', function () { loadTesters().then(function () { toast('Roster refreshed.'); }); });
+$('refreshBtn').addEventListener('click', function () {
+  var b = this; b.disabled = true;
+  loadTesters().then(function (ok) { if (ok) toast('Roster refreshed.'); }).finally(function () { b.disabled = false; });
+});
 document.addEventListener('keydown', function (ev) {
   if (ev.key === '/' && !/INPUT|TEXTAREA|SELECT/.test(document.activeElement.tagName) && !$('app').hidden && $('drawer').hidden) { ev.preventDefault(); setView('testers'); $('q').focus(); }
   if (ev.key === 'Escape') {
     if (!$('confirmDialog').hidden) closeDialog('confirmDialog');
     else if (!$('importDialog').hidden) closeDialog('importDialog');
-    else if (!$('drawer').hidden) closeDrawer();
+    else if (!$('drawer').hidden) closeDrawerAsk();
   }
 });
 // A new day while the desk is open: recount stages and reminders.
@@ -768,17 +859,24 @@ $('settingsForm').addEventListener('submit', async function (ev) {
   if (!(target >= 1 && target <= 100000)) { toast('The target must be a whole number from 1.', true); return; }
   if (url && !/^https:\/\//i.test(url)) { toast(FRIENDLY.beta_desk_settings_signup_form_url_check, true); return; }
   if (!terms) { toast('Add the eligibility terms.', true); return; }
-  var btn = $('saveSettings'); btn.disabled = true;
+  var btn = $('saveSettings'); btn.disabled = true; btn.textContent = 'Saving…';
   try {
     var r = await db('beta_desk_settings?id=eq.true', { method: 'PATCH', headers: { prefer: 'return=representation' }, body: { registration_target: target, signup_form_url: url || null, terms_offered: terms } });
     if (!r.data || !r.data.length) throw new Error('Nothing was saved. Is this account still an admin?');
     S.settings = r.data[0]; renderSettings(); renderAll(); toast('Settings saved.');
   } catch (e) { toast(e.message, true); }
-  finally { btn.disabled = false; }
+  finally { btn.disabled = false; btn.textContent = 'Save settings'; }
 });
 
 /* ── The tester drawer (add, edit, delete) ─────────────────────────── */
-var lastFocus = null;
+var lastFocus = null, lastFocusId = null;
+/** Keep keyboard focus inside the open drawer or dialog (everything behind is inert). */
+function setInert() {
+  var drawerOpen = !$('drawer').hidden, importOpen = !$('importDialog').hidden, confirmOpen = !$('confirmDialog').hidden;
+  $('app').inert = drawerOpen || importOpen || confirmOpen;
+  $('drawer').inert = confirmOpen;
+  $('importDialog').inert = confirmOpen;
+}
 function openScrim() { var s = $('scrim'); s.hidden = false; requestAnimationFrame(function () { s.classList.add('on'); }); }
 function closeScrim() {
   if (!$('drawer').hidden || !$('importDialog').hidden || !$('confirmDialog').hidden) return;
@@ -786,14 +884,15 @@ function closeScrim() {
 }
 $('scrim').addEventListener('click', function () {
   if (!$('confirmDialog').hidden) return;
-  if (!$('importDialog').hidden) closeDialog('importDialog'); else closeDrawer();
+  if (!$('importDialog').hidden) closeDialog('importDialog'); else closeDrawerAsk();
 });
 
 function dateField(name, label, val, opts) {
   opts = opts || {};
-  return '<label class="field"><span>' + label + (opts.tag ? ' <span class="tag ' + opts.tag + '">' + (opts.tag === 'you' ? 'You' : 'Auto') + '</span>' : '') + '</span>' +
-    '<span class="date-row"><input class="input" type="date" name="' + name + '" value="' + esc(val || '') + '"' + (opts.required ? ' required' : '') + '>' +
-    '<button class="btn btn-sm" type="button" data-today="' + name + '">Today</button></span></label>';
+  var id = 'f_' + name;
+  return '<div class="field"><label for="' + id + '" style="font-size:13px;font-weight:600;color:var(--ink2)">' + label + '</label>' +
+    '<span class="date-row"><input class="input" type="date" id="' + id + '" name="' + name + '" value="' + esc(val || '') + '"' + (opts.required ? ' required' : '') + '>' +
+    '<button class="btn btn-sm" type="button" data-today="' + name + '" aria-label="Set ' + esc(label.toLowerCase()) + ' to today">Today</button></span></div>';
 }
 function ring(pct) {
   var r = 18, c = 2 * Math.PI * r, off = c * (1 - Math.max(0, Math.min(1, pct)));
@@ -811,7 +910,8 @@ function openDrawer(id) {
   var t = id ? S.testers.find(function (x) { return x.id === id; }) : null;
   if (id && !t) { toast('That tester is no longer on the roster.', true); return; }
   S.editing = t ? Object.assign({}, t) : null;
-  lastFocus = document.activeElement;
+  lastFocus = document.activeElement; lastFocusId = id;
+  $('dError').hidden = true;
   var isNew = !t;
   t = t || { full_name: '', email: '', device: '', registered_on: S.today, participation: 'unchecked', completion: 'pending', terms_offered: S.settings ? S.settings.terms_offered : '' };
   $('dDelete').hidden = isNew;
@@ -868,8 +968,9 @@ function openDrawer(id) {
       (isNew ? '' : '<p class="meta" style="margin-top:12px">Added ' + esc(new Date(t.created_at).toLocaleString()) + ' · last saved ' + esc(new Date(t.updated_at).toLocaleString()) + (t.source === 'form_csv' ? ' · from the signup form CSV' : '') + '</p>') +
     '</div>';
   refreshDrawer();
-  var d = $('drawer'); d.hidden = false; openScrim();
+  var d = $('drawer'); d.hidden = false; openScrim(); setInert();
   requestAnimationFrame(function () { d.classList.add('on'); });
+  S.drawerStart = JSON.stringify(draft());
   setTimeout(function () { (isNew ? f.elements.full_name : $('dClose')).focus(); }, 60);
 }
 function radio(v, title, sub, cur) {
@@ -914,7 +1015,7 @@ function refreshDrawer() {
     var k = el.dataset.step; el.classList.toggle('done', !!flags[k]); el.classList.toggle('now', k === current);
   });
 }
-$('dForm').addEventListener('input', refreshDrawer);
+$('dForm').addEventListener('input', function () { $('dError').hidden = true; refreshDrawer(); });
 $('dForm').addEventListener('change', function (ev) {
   var f = $('dForm');
   // Helpful defaults: picking a result fills its date with today.
@@ -934,8 +1035,11 @@ $('dForm').addEventListener('click', function (ev) {
 /** The same rules as the database, checked first so the message is clear. */
 function validate(t) {
   if (!BD.validEmail(t.email)) return 'Add a valid email address.';
-  var key = BD.emailKey(t.email);
-  if (S.testers.some(function (x) { return x.email_key === key && (!S.editing || x.id !== S.editing.id); })) return FRIENDLY.beta_testers_email_unique;
+  var key = BD.emailKey(t.email), inbox = BD.inboxKey(t.email);
+  var others = S.testers.filter(function (x) { return !S.editing || x.id !== S.editing.id; });
+  if (others.some(function (x) { return x.email_key === key; })) return FRIENDLY.beta_testers_email_unique;
+  var twin = others.filter(function (x) { return BD.inboxKey(x.email) === inbox; })[0];
+  if (twin) return 'This reaches the same inbox as ' + twin.email + ' (Gmail ignores dots and anything after +), so it\u2019s the same tester.';
   if (!t.registered_on) return 'Add the registration date.';
   if (t.opted_in_on && t.invited_on && t.opted_in_on < t.invited_on) return FRIENDLY.beta_testers_optin_after_invite;
   if (t.participation !== 'unchecked' && !t.participation_checked_on) return FRIENDLY.beta_testers_participation_dated;
@@ -952,7 +1056,8 @@ $('dForm').addEventListener('submit', async function (ev) {
   var t = draft();
   if (t.completion !== 'approved') t.approved_on = null;
   var problem = validate(t);
-  if (problem) { toast(problem, true); return; }
+  if (problem) { showDrawerError(problem); return; }
+  $('dError').hidden = true;
   var body = {};
   EDITABLE.forEach(function (k) {
     var v = t[k] === undefined ? null : t[k];
@@ -961,7 +1066,7 @@ $('dForm').addEventListener('submit', async function (ev) {
     if (k === 'email' && typeof v === 'string') v = v.trim();
     body[k] = v;
   });
-  var btn = $('dSave'); btn.disabled = true;
+  var btn = $('dSave'), label = btn.textContent; btn.disabled = true; btn.textContent = 'Saving…';
   try {
     var r;
     if (!S.editing) {
@@ -982,17 +1087,30 @@ $('dForm').addEventListener('submit', async function (ev) {
     upsertLocal(r.data[0]);
     renderAll(); closeDrawer();
     toast(S.editing ? 'Saved.' : 'Tester added.');
-  } catch (e) { toast(e.message, true); }
-  finally { btn.disabled = false; }
+  } catch (e) { showDrawerError(e.message); }
+  finally { btn.disabled = false; btn.textContent = label; }
 });
+function showDrawerError(msg) { var el = $('dError'); el.textContent = msg; el.hidden = false; }
 function closeDrawer(instant) {
   var d = $('drawer'); if (d.hidden) return;
   d.classList.remove('on');
-  var done = function () { d.hidden = true; S.editing = null; closeScrim(); if (lastFocus && lastFocus.focus) lastFocus.focus(); };
+  var done = function () {
+    d.hidden = true; S.editing = null; setInert(); closeScrim();
+    var back = lastFocusId ? document.querySelector('.row-open[data-id="' + CSS.escape(lastFocusId) + '"]') : null;
+    back = back || (lastFocus && document.contains(lastFocus) ? lastFocus : $('main'));
+    if (back && back.focus) back.focus();
+  };
   if (instant) done(); else setTimeout(done, 240);
 }
-$('dClose').addEventListener('click', function () { closeDrawer(); });
-$('dCancel').addEventListener('click', function () { closeDrawer(); });
+/** Close the drawer, but ask first if something typed would be lost. */
+function closeDrawerAsk() {
+  if ($('drawer').hidden) return;
+  if (S.drawerStart && JSON.stringify(draft()) !== S.drawerStart) {
+    confirmBox('Discard your changes?', 'You changed this tester but haven\u2019t saved. Close without saving?', function () { closeDrawer(); }, 'Discard changes');
+  } else closeDrawer();
+}
+$('dClose').addEventListener('click', closeDrawerAsk);
+$('dCancel').addEventListener('click', closeDrawerAsk);
 $('dDelete').addEventListener('click', function () {
   var t = S.editing; if (!t) return;
   confirmBox('Delete this tester?', 'This permanently deletes ' + (t.full_name || 'this tester') + ' (' + t.email + ') and every date and note on the record. It can’t be undone. Export a CSV first if you need a copy.', async function () {
@@ -1009,18 +1127,19 @@ $('dDelete').addEventListener('click', function () {
 var dialogFocus = {};
 function openDialog(id) {
   dialogFocus[id] = document.activeElement;
-  var d = $(id); d.hidden = false; openScrim();
+  var d = $(id); d.hidden = false; openScrim(); setInert();
   requestAnimationFrame(function () { d.classList.add('on'); });
 }
 function closeDialog(id) {
   var d = $(id); if (d.hidden) return;
   d.classList.remove('on');
-  setTimeout(function () { d.hidden = true; closeScrim(); var f = dialogFocus[id]; if (f && f.focus) f.focus(); }, 200);
+  setTimeout(function () { d.hidden = true; setInert(); closeScrim(); var f = dialogFocus[id]; if (f && f.focus && document.contains(f)) f.focus(); }, 200);
 }
 document.querySelectorAll('[data-close]').forEach(function (b) { b.addEventListener('click', function () { closeDialog(b.closest('.dialog').id); }); });
 var confirmAction = null;
-function confirmBox(title, text, onYes) {
+function confirmBox(title, text, onYes, yesLabel) {
   $('cfTitle').textContent = title; $('cfText').textContent = text; confirmAction = onYes;
+  $('cfYes').textContent = yesLabel || 'Delete';
   openDialog('confirmDialog'); setTimeout(function () { $('cfNo').focus(); }, 40);
 }
 $('cfNo').addEventListener('click', function () { closeDialog('confirmDialog'); });
@@ -1034,6 +1153,7 @@ function openImport() {
   IMP = null; $('impFile').value = ''; $('impStep2').hidden = true; $('impGo').disabled = true; $('impGo').textContent = 'Import';
   $('drop').hidden = false;
   openDialog('importDialog');
+  setTimeout(function () { $('impFile').focus(); }, 40);
 }
 $('importBtn').addEventListener('click', openImport);
 $('importBtnHero').addEventListener('click', openImport);
@@ -1048,10 +1168,11 @@ function readImport(file) {
     var rows = BD.parseCSV(reader.result);
     if (rows.length < 2) { toast('That file has no responses in it.', true); return; }
     var map = BD.guessColumns(rows[0]);
-    IMP = { rows: rows, map: map, keepOther: true, name: file.name };
+    IMP = { rows: rows, map: map, keepOther: false, name: file.name };
     detectOrder();
     $('drop').hidden = true; $('impStep2').hidden = false;
     renderImport();
+    var first = $('impMapping').querySelector('select'); if (first) first.focus();
   };
   reader.onerror = function () { toast('That file could not be read.', true); };
   reader.readAsText(file);
@@ -1069,12 +1190,12 @@ function colSelect(key, label, required) {
     '<option value="-1">' + (required ? 'Choose a column' : 'Not in this file') + '</option>' +
     headers.map(function (h, i) { return '<option value="' + i + '"' + (IMP.map[key] === i ? ' selected' : '') + '>' + esc(String(h).trim() || 'Column ' + (i + 1)) + '</option>'; }).join('') + '</select></label>';
 }
-function existingKeys() { var k = Object.create(null); S.testers.forEach(function (t) { k[t.email_key] = true; }); return k; }
+function existingKeys() { var k = Object.create(null); S.testers.forEach(function (t) { k[BD.inboxKey(t.email)] = true; }); return k; }
 function renderImport() {
   $('impMapping').innerHTML = colSelect('email', 'Email (Google Play account)', true) + colSelect('name', 'Name') + colSelect('last', 'Last name (if separate)') +
     colSelect('device', 'Device') + colSelect('registered', 'Registered on (form timestamp)') +
     (IMP.ambiguous ? '<label class="field"><span>Dates in this file are</span><select class="input" id="impOrder"><option value="mdy"' + (IMP.order === 'mdy' ? ' selected' : '') + '>Month / Day / Year</option><option value="dmy"' + (IMP.order === 'dmy' ? ' selected' : '') + '>Day / Month / Year</option></select></label>' : '') +
-    '<label class="check" style="grid-column:1/-1"><input type="checkbox" id="impKeep"' + (IMP.keepOther ? ' checked' : '') + '> <span>Keep the other answers in each tester’s notes</span></label>';
+    '<label class="check" style="grid-column:1/-1"><input type="checkbox" id="impKeep"' + (IMP.keepOther ? ' checked' : '') + '> <span>Also copy the form\u2019s other answers into each tester\u2019s notes (off: keep only what the beta needs)</span></label>';
   var plan = BD.planImport(IMP.rows, IMP.map, existingKeys(), { order: IMP.order, keepOther: IMP.keepOther, today: S.today });
   IMP.plan = plan;
   var c = plan.counts;
@@ -1124,13 +1245,14 @@ $('impGo').addEventListener('click', async function () {
 });
 
 /* ── CSV export ────────────────────────────────────────────────────── */
+var PART_LABEL = { unchecked: 'Not checked yet', continuous: 'Continuous', interrupted_technical: 'Technical gap, accepted', interrupted: 'Interrupted' };
 $('exportBtn').addEventListener('click', function () {
   if (!S.testers.length) { toast('There is nobody to export yet.'); return; }
   var cols = [
-    ['Name', 'full_name'], ['Email', 'email'], ['Device', 'device'], ['Source', 'source'], ['Stage', function (t) { return BD.STAGES[BD.stage(t, S.today)].label; }],
+    ['Name', 'full_name'], ['Email', 'email'], ['Device', 'device'], ['Source', function (t) { return t.source === 'form_csv' ? 'Signup form CSV' : 'Added by hand'; }], ['Stage', function (t) { return BD.STAGES[BD.stage(t, S.today)].label; }],
     ['Registered on', 'registered_on'], ['Invited on', 'invited_on'], ['Google Play opt-in', 'opted_in_on'], ['Review due (auto: opt-in + 14 days)', 'review_due_on'],
-    ['Last feedback on', 'last_feedback_on'], ['Feedback', 'feedback_summary'], ['Participation', 'participation'], ['Participation checked on', 'participation_checked_on'],
-    ['Technical issues', 'technical_issues'], ['Terms offered', 'terms_offered'], ['Completion', 'completion'], ['Approved on', 'approved_on'],
+    ['Last feedback on', 'last_feedback_on'], ['Feedback', 'feedback_summary'], ['Participation', function (t) { return PART_LABEL[t.participation] || t.participation; }], ['Participation checked on', 'participation_checked_on'],
+    ['Technical issues', 'technical_issues'], ['Terms offered', 'terms_offered'], ['Completion', function (t) { return { pending: 'Pending', approved: 'Approved', not_eligible: 'Not eligible' }[t.completion] || t.completion; }], ['Approved on', 'approved_on'],
     ['CISA reward activated on', 'reward_activated_on'], ['CISA reward ends (auto: activation + 6 months)', 'reward_ends_on'],
     ['Follow-up on', 'follow_up_on'], ['Follow-up note', 'follow_up_note'], ['Next step', function (t) { var a = BD.actions(t, S.today)[0]; return a ? a.label : ''; }],
     ['Notes', 'notes'], ['Added', 'created_at'], ['Last saved', 'updated_at']

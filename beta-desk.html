@@ -36,7 +36,8 @@
     --shadow-lg: 0 24px 60px -20px rgba(23, 35, 27, .35);
     --f-serif: Fraunces, Georgia, 'Times New Roman', serif;
     --f-sans: Figtree, system-ui, -apple-system, 'Segoe UI', sans-serif;
-    --r-sm: 10px; --r-md: 14px; --r-lg: 20px; --r-pill: 999px;
+    --r-sm: 8px; --r-md: 16px; --r-lg: 24px; --r-pill: 999px;
+    --on-sap: #0F1F16;
   }
   @media (prefers-color-scheme: dark) {
     :root:not([data-theme="light"]) {
@@ -91,6 +92,9 @@
   a { color: var(--accent-text); }
   button, input, select, textarea { font: inherit; color: inherit; }
   :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .side :focus-visible { outline-color: var(--on-forest); }
+  .pipeline button:focus-visible, .nav button:focus-visible { outline-offset: -3px; }
+  .drop:focus-within { outline: 2px solid var(--accent); outline-offset: 2px; }
   .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
   .serif { font-family: var(--f-serif); }
   .eyebrow { font-size: 12px; font-weight: 600; letter-spacing: .16em; text-transform: uppercase; color: var(--accent-text); margin: 0; }
@@ -111,7 +115,7 @@
   .btn-primary { background: var(--btn); border-color: var(--btn); color: var(--on-btn); }
   .btn-primary:hover { filter: brightness(1.08); border-color: var(--btn); }
   .btn-danger { color: var(--wrong); border-color: color-mix(in srgb, var(--wrong) 35%, var(--line)); }
-  .btn-danger.solid { background: var(--wrong); border-color: var(--wrong); color: #fff; }
+  .btn-danger.solid { background: var(--wrong-bg); border-color: var(--wrong); color: var(--wrong); }
   .btn-ghost { background: transparent; border-color: transparent; }
   .btn-ghost:hover { background: var(--soft); border-color: transparent; }
   .btn-sm { min-height: 34px; padding: 0 12px; font-size: 13px; border-radius: 8px; }
@@ -121,11 +125,12 @@
   .field .hint { font-size: 12px; color: var(--muted); font-weight: 400; }
   .input, select.input, textarea.input {
     width: 100%; min-height: 44px; padding: 10px 14px; border-radius: var(--r-sm);
-    border: 1px solid var(--line); background: var(--raised); color: var(--ink);
+    border: 1.5px solid var(--control); background: var(--raised); color: var(--ink);
   }
   textarea.input { min-height: 84px; resize: vertical; line-height: 1.45; }
   .input:hover { border-color: var(--control); }
-  .input:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 22%, transparent); }
+  .input:focus { outline: none; border-color: var(--ink); box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 22%, transparent); }
+  .input[aria-invalid="true"] { border-color: var(--wrong); }
   .chip {
     display: inline-flex; align-items: center; gap: 6px; padding: 3px 10px; border-radius: var(--r-pill);
     font-size: 12px; font-weight: 600; white-space: nowrap; background: var(--soft); color: var(--ink2);
@@ -137,7 +142,7 @@
   .chip.tip { background: var(--tip-bg); color: var(--tip); }
   .chip.forest { background: var(--btn); color: var(--on-btn); }
   /* "Auto" (calculated) vs "You" (a manual step). Used everywhere a date or action shows. */
-  .tag { display: inline-flex; align-items: center; gap: 4px; font-size: 10.5px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; padding: 2px 7px; border-radius: 6px; vertical-align: middle; }
+  .tag { display: inline-flex; align-items: center; gap: 4px; font-size: 11.5px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; padding: 2px 7px; border-radius: 6px; vertical-align: middle; }
   .tag.auto { color: var(--accent-text); background: color-mix(in srgb, var(--accent) 14%, transparent); }
   .tag.you { color: var(--clay); background: var(--clay-bg); }
 
@@ -163,6 +168,9 @@
   .notice.ok { background: var(--correct-bg); color: var(--correct); }
   .notice.tip { background: var(--tip-bg); color: var(--tip); }
   .code-input { letter-spacing: .4em; font-family: var(--f-serif); font-size: 22px; text-align: center; }
+  .mfa-steps { margin: 4px 0 14px; padding-left: 20px; color: var(--ink2); font-size: 14px; display: grid; gap: 4px; }
+  .mfa-qr { display: grid; place-items: center; padding: 14px; background: #FFFFFF; border-radius: var(--r-md); border: 1px solid var(--line); width: max-content; margin: 0 auto; }
+  .mfa-secret { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 13px; color: var(--ink); word-break: break-all; }
   .lock-row { display: flex; gap: 10px; align-items: center; margin-top: 28px; padding-top: 20px; border-top: 1px solid var(--line); color: var(--muted); font-size: 13px; }
   .lock-row svg { width: 16px; height: 16px; flex: none; }
 
@@ -193,7 +201,7 @@
   .nav button svg { width: 18px; height: 18px; flex: none; opacity: .9; }
   .nav button:hover { background: rgba(255, 255, 255, .06); color: var(--on-forest); }
   .nav button[aria-current="page"] { background: rgba(255, 255, 255, .1); color: var(--on-forest); box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .08); }
-  .nav .count { margin-left: auto; min-width: 24px; padding: 1px 8px; border-radius: var(--r-pill); background: var(--sap); color: #0F1F16; font-size: 12px; font-weight: 700; text-align: center; }
+  .nav .count { margin-left: auto; min-width: 24px; padding: 1px 8px; border-radius: var(--r-pill); background: var(--sap); color: var(--on-sap); font-size: 12px; font-weight: 700; text-align: center; }
   .side-foot { margin-top: auto; position: relative; display: grid; gap: 18px; }
   .side-foot .program { display: flex; gap: 10px; align-items: center; font-size: 14px; color: var(--on-forest); }
   .side-foot .program .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--sap); box-shadow: 0 0 0 4px rgba(169, 217, 186, .15); }
@@ -247,8 +255,8 @@
   .pipeline button { position: relative; text-align: left; border: 0; background: transparent; padding: 16px 18px; cursor: pointer; border-right: 1px solid var(--line); }
   .pipeline button:last-child { border-right: 0; }
   .pipeline button:hover { background: var(--raised2); }
-  .pipeline button[aria-pressed="true"] { background: color-mix(in srgb, var(--accent) 9%, var(--raised)); }
-  .pipeline button[aria-pressed="true"]::after { content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 3px; background: var(--accent); }
+  .pipeline button[aria-pressed="true"] { background: var(--raised2); }
+  .pipeline button[aria-pressed="true"]::after { content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 3px; background: var(--ink); }
   .pipeline .n { font-family: var(--f-serif); font-size: 28px; line-height: 1; display: block; }
   .pipeline .l { display: block; margin-top: 6px; font-size: 12.5px; font-weight: 600; color: var(--ink2); }
   .pipeline .s { display: block; margin-top: 2px; font-size: 11.5px; color: var(--muted); }
@@ -275,7 +283,9 @@
   table.roster tbody tr:last-child td { border-bottom: 0; }
   .person { display: flex; gap: 12px; align-items: center; min-width: 220px; }
   .avatar { width: 38px; height: 38px; border-radius: 50%; display: grid; place-items: center; font-size: 13px; font-weight: 700; flex: none; background: var(--soft); color: var(--ink2); }
-  .person b { display: block; font-weight: 600; }
+  .person b, .row-open { display: block; font-weight: 600; }
+  .row-open { background: none; border: 0; padding: 0; color: var(--ink); font-size: 14px; text-align: left; cursor: pointer; }
+  table.roster tbody tr:focus-within { background: var(--raised2); }
   .person span { display: block; font-size: 13px; color: var(--ink2); word-break: break-all; }
   .progress-cell { min-width: 140px; }
   .progress-cell .bar { margin-top: 6px; width: 120px; }
@@ -289,6 +299,8 @@
   .empty p { margin: 0 auto 26px; color: var(--ink2); max-width: 44ch; }
   .foot-note { text-align: center; margin: 28px 0 0; font-size: 13px; color: var(--muted); }
 
+  /* Opening the desk (before we know who you are) */
+  .booting { min-height: 100vh; display: grid; place-items: center; color: var(--ink2); }
   /* Skeleton loading */
   .skel { height: 14px; border-radius: 6px; background: linear-gradient(90deg, var(--soft), var(--raised2), var(--soft)); background-size: 200% 100%; animation: shimmer 1.2s linear infinite; }
   @keyframes shimmer { to { background-position: -200% 0; } }
@@ -299,7 +311,7 @@
   .action .ico { width: 40px; height: 40px; border-radius: 12px; display: grid; place-items: center; background: var(--clay-bg); color: var(--clay); }
   .action .ico.calm { background: color-mix(in srgb, var(--accent) 12%, var(--raised2)); color: var(--accent-text); }
   .action .ico svg { width: 18px; height: 18px; }
-  .action h4 { margin: 0; font-size: 15px; font-weight: 600; }
+  .action h3 { margin: 0; font-size: 15px; font-weight: 600; }
   .action p { margin: 2px 0 0; font-size: 13.5px; color: var(--ink2); }
   .section-title { font-family: var(--f-serif); font-weight: 500; font-size: 22px; margin: 34px 0 14px; }
 
@@ -308,12 +320,12 @@
   .step { display: grid; grid-template-columns: 56px minmax(0, 1fr); gap: 18px; padding: 22px 24px; }
   .step .k { counter-increment: step; width: 44px; height: 44px; border-radius: 50%; display: grid; place-items: center; font-family: var(--f-serif); font-size: 20px; background: var(--btn); color: var(--on-btn); }
   .step .k::before { content: counter(step); }
-  .step h4 { margin: 2px 0 6px; font-size: 16px; font-weight: 700; display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+  .step h3 { margin: 2px 0 6px; font-size: 16px; font-weight: 700; display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
   .step p, .step li { margin: 0; color: var(--ink2); font-size: 14.5px; }
   .step ul { margin: 8px 0 0; padding-left: 18px; display: grid; gap: 4px; }
   .split { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
   .split .card { padding: 22px 24px; }
-  .split h4 { margin: 0 0 10px; display: flex; align-items: center; gap: 8px; }
+  .split h3 { margin: 0 0 10px; display: flex; align-items: center; gap: 8px; }
   .split ul { margin: 0; padding-left: 18px; display: grid; gap: 6px; color: var(--ink2); font-size: 14.5px; }
 
   /* Settings */
@@ -343,7 +355,7 @@
   .tl { position: relative; padding-left: 40px; margin-top: 22px; }
   .tl::before { content: ''; position: absolute; left: 15px; top: 34px; bottom: -22px; width: 2px; background: var(--line); }
   .tl:last-child::before { display: none; }
-  .tl .node { position: absolute; left: 4px; top: 2px; width: 24px; height: 24px; border-radius: 50%; display: grid; place-items: center; background: var(--raised); border: 2px solid var(--control); color: var(--on-btn); }
+  .tl .node { position: absolute; left: 4px; top: 2px; width: 24px; height: 24px; border-radius: 50%; display: grid; place-items: center; background: var(--raised); border: 2px solid var(--track); color: var(--on-btn); }
   .tl.done .node { background: var(--accent); border-color: var(--accent); }
   .tl.done .node::after { content: ''; width: 9px; height: 5px; border-left: 2px solid var(--on-btn); border-bottom: 2px solid var(--on-btn); transform: rotate(-45deg) translate(1px, -1px); }
   .tl.now .node { border-color: var(--accent); box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent) 20%, transparent); }
@@ -360,7 +372,7 @@
   .radio input { margin-top: 3px; accent-color: var(--btn); width: 17px; height: 17px; flex: none; }
   .radio b { display: block; font-size: 14px; }
   .radio span { display: block; font-size: 12.5px; color: var(--ink2); }
-  .radio:has(input:checked) { border-color: var(--accent); box-shadow: inset 0 0 0 1px var(--accent); }
+  .radio:has(input:checked) { border-color: var(--ink); box-shadow: inset 0 0 0 1px var(--ink); }
   .checklist { list-style: none; padding: 0; margin: 0 0 12px; display: grid; gap: 6px; }
   .checklist li { display: flex; gap: 10px; align-items: flex-start; font-size: 13.5px; }
   .checklist .mk { width: 18px; height: 18px; border-radius: 50%; flex: none; display: grid; place-items: center; font-size: 11px; font-weight: 700; margin-top: 1px; }
@@ -397,8 +409,9 @@
 
   /* Toasts */
   .toasts { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); z-index: 80; display: grid; gap: 8px; width: min(440px, calc(100vw - 32px)); }
+  body:has(.drawer.on) .toasts { bottom: 96px; }
   .toast { background: var(--ink); color: var(--bg); padding: 12px 16px; border-radius: 12px; box-shadow: var(--shadow-lg); font-size: 14px; display: flex; gap: 10px; align-items: center; animation: rise .22s ease; }
-  .toast.err { background: var(--wrong); color: #fff; }
+  .toast.err { background: var(--wrong-bg); color: var(--wrong); border: 1px solid var(--wrong); }
   @keyframes rise { from { transform: translateY(8px); opacity: 0; } }
 
   /* ── Smaller screens ─────────────────────────────────────────────── */
@@ -418,6 +431,7 @@
     .nav button { min-height: 40px; padding: 0 12px; font-size: 14px; }
     .side-foot { margin-top: 12px; gap: 10px; }
     .side-foot .rule { display: none; }
+    .search kbd { display: none; }
     .gate { grid-template-columns: 1fr; }
     .gate-art { padding: 32px 24px; min-height: 220px; }
     .gate-art .lines { width: 320px; height: 320px; }
@@ -425,6 +439,9 @@
   }
   @media (max-width: 640px) {
     body { font-size: 15px; }
+    .btn-sm, .nav button, .side-foot a, .side-foot .linkbtn, .stat .foot button { min-height: 44px; }
+    .icon-btn { width: 44px; height: 44px; }
+    .nav { grid-auto-flow: row; grid-template-columns: 1fr 1fr; overflow: visible; }
     .main { padding: 20px 16px 48px; }
     .hero { margin: 28px 0 22px; }
     .hero-actions { width: 100%; }
@@ -454,7 +471,7 @@
     .action { grid-template-columns: auto minmax(0, 1fr); }
     .action .btn { grid-column: 1 / -1; }
     .step { grid-template-columns: 1fr; gap: 10px; }
-    .dialog { top: auto; bottom: 0; left: 0; right: 0; width: 100%; transform: translateY(16px); border-radius: var(--r-lg) var(--r-lg) 0 0; max-height: 92vh; }
+    .dialog { top: auto; bottom: 0; left: 0; right: 0; width: 100%; transform: translateY(16px); border-radius: var(--r-lg) var(--r-lg) 0 0; max-height: 92vh; max-height: 92dvh; }
     .dialog.on { transform: none; }
     .dialog.small { width: 100%; }
   }
@@ -491,6 +508,8 @@
 </svg>
 
 <!-- ── Sign-in (shown until a Beta Desk admin is signed in) ───────── -->
+<p id="booting" class="booting" role="status">Opening Beta Desk…</p>
+
 <div id="gate" class="gate" hidden>
   <section class="gate-art" aria-hidden="true">
     <svg class="lines" style="color:var(--forest-line)"><use href="#i-lines"/></svg>
@@ -507,13 +526,12 @@
     <div class="gate-card">
       <p class="eyebrow">Private workspace</p>
       <h1 id="gateTitle">Sign in to Beta Desk</h1>
-      <p class="meta" id="gateLead">Admins only. We email you a one-time code; there is no password.</p>
+      <p class="meta" id="gateLead">Admins only. Two steps: a one-time code by email, then a code from your authenticator app. There is no password.</p>
 
       <form id="emailForm" novalidate>
         <label class="field"><span>Email</span>
           <input class="input" id="emailInput" type="email" autocomplete="email" inputmode="email" required maxlength="254" placeholder="you@example.com">
         </label>
-        <label class="check"><input type="checkbox" id="keepSignedIn"> <span>Keep me signed in on this device. Leave it off on a shared computer: closing the tab signs you out.</span></label>
         <div id="captchaBox" hidden></div>
         <button class="btn btn-primary" type="submit" id="sendCodeBtn">Email me a code</button>
       </form>
@@ -523,12 +541,30 @@
         <label class="field"><span>The code from the email</span>
           <input class="input code-input" id="codeInput" inputmode="numeric" autocomplete="one-time-code" pattern="[0-9]*" maxlength="10" required>
         </label>
-        <button class="btn btn-primary" type="submit" id="verifyBtn">Sign in</button>
+        <button class="btn btn-primary" type="submit" id="verifyBtn">Continue</button>
         <button class="btn btn-ghost" type="button" id="backToEmail">Use a different email</button>
       </form>
 
+      <form id="mfaForm" novalidate hidden>
+        <p class="meta" id="mfaLead" style="margin:0"></p>
+        <div id="mfaSetup" hidden>
+          <ol class="mfa-steps">
+            <li>Open your authenticator app and add an account.</li>
+            <li>Scan this code, or type the key under it.</li>
+            <li>Enter the 6-digit code the app shows.</li>
+          </ol>
+          <div class="mfa-qr"><img id="mfaQr" alt="QR code to add KaiSip Beta Desk to your authenticator app" width="180" height="180"></div>
+          <p class="meta" style="margin:8px 0 0;text-align:center">Key: <code id="mfaSecret" class="mfa-secret"></code></p>
+        </div>
+        <label class="field"><span>6-digit code from the app</span>
+          <input class="input code-input" id="mfaInput" inputmode="numeric" autocomplete="one-time-code" pattern="[0-9]*" maxlength="6" required>
+        </label>
+        <button class="btn btn-primary" type="submit" id="mfaBtn">Open Beta Desk</button>
+        <button class="btn btn-ghost" type="button" id="mfaSignOut">Sign out</button>
+      </form>
+
       <div id="notAdmin" hidden>
-        <p class="notice tip">This account is signed in but is not a Beta Desk admin, so no tester details are shown. If it should be, add its email to the admin list in Supabase.</p>
+        <p class="notice tip">This account is signed in but is not a Beta Desk admin, so no tester details are shown. If it should be, add it to the admin list (docs/beta/BETA_DESK.md, "Adding an admin"), then sign in again.</p>
         <p class="meta" id="notAdminWho"></p>
         <button class="btn" type="button" id="notAdminSignOut" style="margin-top:12px">Sign out</button>
       </div>
@@ -585,7 +621,8 @@
         </div>
       </div>
 
-      <div class="stats">
+      <h2 class="sr-only">Summary</h2>
+      <div class="stats" id="stats">
         <article class="stat">
           <h3>Registrations</h3>
           <div class="big"><span id="stReg">0</span><small>/ <span id="stTarget">50</span> target</small></div>
@@ -646,15 +683,16 @@
               <option value="reward_ended">Reward ended</option>
               <option value="followup">Follow-up set</option>
               <option value="closed">Not eligible or left</option>
+              <option value="deletion">Due for deletion</option>
             </select>
           </label>
           <label><span class="sr-only">Sort</span>
             <select class="input" id="sort">
-              <option value="next">Sort: next step first</option>
-              <option value="newest">Sort: newest signup</option>
-              <option value="oldest">Sort: oldest signup</option>
-              <option value="name">Sort: name A–Z</option>
-              <option value="review">Sort: review date</option>
+              <option value="next">Next step first</option>
+              <option value="newest">Newest signup</option>
+              <option value="oldest">Oldest signup</option>
+              <option value="name">Name A–Z</option>
+              <option value="review">Review date</option>
             </select>
           </label>
           <button class="btn refresh" type="button" id="refreshBtn"><svg aria-hidden="true"><use href="#i-refresh"/></svg>Refresh</button>
@@ -687,39 +725,39 @@
       </div>
       <div class="steps">
         <article class="card step"><div class="k" aria-hidden="true"></div><div>
-          <h4>Registration <span class="tag you">You</span></h4>
+          <h3>Registration <span class="tag you">You</span></h3>
           <p>Import your Google Forms responses (Responses → Download CSV) or add a tester by hand. The same email is never added twice, whatever its capital letters or spaces.</p></div></article>
         <article class="card step"><div class="k" aria-hidden="true"></div><div>
-          <h4>Invitation <span class="tag you">You</span></h4>
+          <h3>Invitation <span class="tag you">You</span></h3>
           <p>Add their Google account to the closed test's tester list in Play Console and send the opt-in link. Then record the invite date.</p></div></article>
         <article class="card step"><div class="k" aria-hidden="true"></div><div>
-          <h4>Google Play opt-in <span class="tag you">You</span> then <span class="tag auto">Auto</span></h4>
+          <h3>Google Play opt-in <span class="tag you">You</span> then <span class="tag auto">Auto</span></h3>
           <p>When the tester has actually opted in and installed from Google Play, record that date. The 14-day review date is then worked out from the opt-in, never from the signup.</p></div></article>
         <article class="card step"><div class="k" aria-hidden="true"></div><div>
-          <h4>Feedback <span class="tag you">You</span></h4>
+          <h3>Feedback <span class="tag you">You</span></h3>
           <p>Record when feedback arrives and a short summary. The desk nudges you from day 10 if none has come in.</p></div></article>
         <article class="card step"><div class="k" aria-hidden="true"></div><div>
-          <h4>Participation check <span class="tag you">You</span></h4>
+          <h3>Participation check <span class="tag you">You</span></h3>
           <p>On or after the review date, check they stayed opted in every day. Choose one:</p>
           <ul><li><b>Continuous</b>: opted in every day.</li><li><b>Technical gap, accepted</b>: a break caused by a technical issue (describe it); you decide it still counts.</li><li><b>Interrupted</b>: they left or paused for another reason, so they are not eligible.</li></ul>
           <p style="margin-top:8px">Also confirm the eligibility terms they were offered, which are saved on their record.</p></div></article>
         <article class="card step"><div class="k" aria-hidden="true"></div><div>
-          <h4>Completion approval <span class="tag you">You</span></h4>
+          <h3>Completion approval <span class="tag you">You</span></h3>
           <p>Approve only when every check passes. The database refuses an approval before day 14, without an opt-in date, without a passed participation check or without the terms on record.</p></div></article>
         <article class="card step"><div class="k" aria-hidden="true"></div><div>
-          <h4>CISA reward <span class="tag you">You</span> then <span class="tag auto">Auto</span></h4>
+          <h3>CISA reward <span class="tag you">You</span> then <span class="tag auto">Auto</span></h3>
           <p>Switch on six months of CISA premium content and app features for them yourself, then record the day you did it. The end date is worked out from that day. Other certifications are not included.</p></div></article>
       </div>
 
       <h2 class="section-title">What's automatic, and what isn't</h2>
       <div class="split">
-        <div class="card"><h4><span class="tag auto">Auto</span> The desk works out</h4><ul>
+        <div class="card"><h3><span class="tag auto">Auto</span> The desk works out</h3><ul>
           <li>The review date: Google Play opt-in + 14 days</li>
           <li>The reward end date: activation + 6 months</li>
           <li>Each tester's stage and next step</li>
           <li>Who needs attention, and follow-ups that are due</li>
           <li>Duplicate emails, skipped on import and refused on save</li></ul></div>
-        <div class="card"><h4><span class="tag you">You</span> You do by hand</h4><ul>
+        <div class="card"><h3><span class="tag you">You</span> You do by hand</h3><ul>
           <li>Download responses from Google Forms and import them</li>
           <li>Send Play invites and confirm each opt-in in Play Console</li>
           <li>Check continuous participation and technical issues</li>
@@ -780,6 +818,7 @@
     <button class="icon-btn" type="button" id="dClose" aria-label="Close"><svg aria-hidden="true"><use href="#i-x"/></svg></button>
   </div>
   <form class="drawer-body" id="dForm" novalidate></form>
+  <p class="notice err" id="dError" role="alert" hidden style="margin:0;border-radius:0"></p>
   <div class="drawer-foot">
     <button class="btn btn-danger" type="button" id="dDelete">Delete</button>
     <span class="spacer"></span>

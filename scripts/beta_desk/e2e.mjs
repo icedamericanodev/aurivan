@@ -1,7 +1,8 @@
 // Beta Desk end-to-end test: the real page in headless Chromium, talking to a
 // REAL local Postgres (supabase/migrations + scripts/beta_desk/shim.sql), so
 // every row rule (RLS), duplicate guard and calculated date is the database's
-// own, not a copy. Only Supabase Auth's emailed code is faked (code 12345678).
+// own, not a copy. Only Supabase Auth is faked: the emailed code is 12345678
+// and the authenticator (TOTP) code is 123456; tokens carry aal1 or aal2.
 //
 //   bash scripts/beta_desk/pg_local.sh          # fresh database "t"
 //   node scripts/beta_desk/e2e.mjs [out_dir]    # screenshots + results
@@ -24,6 +25,7 @@ const PGHOST = process.env.PGDIR || '/var/tmp/kpg';
 const PGPORT = process.env.PGPORT_LOCAL || '55432';
 const SUPA = 'https://ziadnvepttlgcowvqvom.supabase.co';
 const CODE = '12345678';
+const TOTP = '123456';
 const ADMIN = 'owner@test.invalid';
 const LEARNER = 'learner@test.invalid';
 
@@ -40,17 +42,17 @@ function psql(sql, vars = {}) {
   }
 }
 const uuidFor = (email) => { const h = crypto.createHash('md5').update(email).digest('hex'); return `${h.slice(0, 8)}-${h.slice(8, 12)}-4${h.slice(13, 16)}-8${h.slice(17, 20)}-${h.slice(20, 32)}`; };
-function asUser(uid, sql, vars) {
-  const claims = JSON.stringify({ sub: uid, role: 'authenticated' });
+function asUser(uid, sql, vars, aal = 'aal2') {
+  const claims = JSON.stringify({ sub: uid, role: 'authenticated', aal });
   return psql(`begin;\nset local role authenticated;\nset local request.jwt.claims to '${claims}';\n${sql}\ncommit;`, vars);
 }
 const COL = /^[a-z_]+$/;
 function cols(obj) { const k = Object.keys(obj); if (!k.every((c) => COL.test(c))) throw new Error('bad column'); return k; }
 
-function rest(uid, method, url, headers, bodyText) {
+function rest(uid, method, url, headers, bodyText, aal = 'aal2') {
   const u = new URL(url);
   const table = u.pathname.replace('/rest/v1/', '');
-  if (!['beta_testers', 'beta_desk_settings'].includes(table)) return { status: 404, body: { code: 'PGRST205', message: 'not found' } };
+  if (!['beta_testers', 'beta_desk_settings', 'beta_desk_gate'].includes(table)) return { status: 404, body: { code: 'PGRST205', message: 'not found' } };
   const body = bodyText ? JSON.parse(bodyText) : null;
   const prefer = headers.prefer || '';
   let r;
@@ -59,12 +61,12 @@ function rest(uid, method, url, headers, bodyText) {
     const range = /^(\d+)-(\d+)$/.exec(headers.range || '');
     if (range) { off = +range[1]; lim = +range[2] - off + 1; }
     const order = table === 'beta_testers' ? 'order by registered_on desc, created_at desc' : '';
-    r = asUser(uid, `select coalesce(json_agg(t), '[]') from (select * from public.${table} ${order} offset ${off} limit ${lim}) t;`);
+    r = asUser(uid, `select coalesce(json_agg(t), '[]') from (select * from public.${table} ${order} offset ${off} limit ${lim}) t;`, {}, aal);
   } else if (method === 'POST') {
     const rows = Array.isArray(body) ? body : [body];
     const c = cols(rows[0]).join(', ');
     const conflict = u.searchParams.get('on_conflict') === 'email_key' && /ignore-duplicates/.test(prefer) ? 'on conflict (email_key) do nothing' : '';
-    r = asUser(uid, `with i as (insert into public.${table} (${c}) select ${c} from json_populate_recordset(null::public.${table}, :'body'::json) ${conflict} returning *) select coalesce(json_agg(i), '[]') from i;`, { body: JSON.stringify(rows) });
+    r = asUser(uid, `with i as (insert into public.${table} (${c}) select ${c} from json_populate_recordset(null::public.${table}, :'body'::json) ${conflict} returning *) select coalesce(json_agg(i), '[]') from i;`, { body: JSON.stringify(rows) }, aal);
   } else if (method === 'PATCH' || method === 'DELETE') {
     const where = [];
     const vars = {};
@@ -76,9 +78,9 @@ function rest(uid, method, url, headers, bodyText) {
     if (method === 'PATCH') {
       const c = cols(body).join(', ');
       vars.body = JSON.stringify(body);
-      r = asUser(uid, `with u as (update public.${table} b set (${c}) = (select ${c} from json_populate_record(null::public.${table}, :'body'::json)) where ${where.join(' and ') || 'true'} returning b.*) select coalesce(json_agg(u), '[]') from u;`, vars);
+      r = asUser(uid, `with u as (update public.${table} b set (${c}) = (select ${c} from json_populate_record(null::public.${table}, :'body'::json)) where ${where.join(' and ') || 'true'} returning b.*) select coalesce(json_agg(u), '[]') from u;`, vars, aal);
     } else {
-      r = asUser(uid, `with d as (delete from public.${table} where ${where.join(' and ') || 'true'} returning *) select coalesce(json_agg(d), '[]') from d;`, vars);
+      r = asUser(uid, `with d as (delete from public.${table} where ${where.join(' and ') || 'true'} returning *) select coalesce(json_agg(d), '[]') from d;`, vars, aal);
     }
   } else return { status: 405, body: {} };
   if (!r.ok) return { status: r.code === '42501' ? 403 : r.code === '23505' ? 409 : 400, body: { code: r.code, message: r.message } };
@@ -86,13 +88,16 @@ function rest(uid, method, url, headers, bodyText) {
   return { status: method === 'POST' ? 201 : 200, body: data };
 }
 
-// ── Fake Supabase Auth (emailed code only) ───────────────────────────
-const tokens = new Map(); // access token → user id
+// ── Fake Supabase Auth (emailed code, then TOTP) ─────────────────────
+const tokens = new Map(); // access token → { uid, email, aal }
 const refreshTokens = new Map();
-function session(email) {
+const factorsBy = new Map(); // uid → [{ id, factor_type, status }]
+const b64u = (o) => Buffer.from(JSON.stringify(o)).toString('base64url');
+function session(email, aal = 'aal1') {
   const uid = uuidFor(email);
-  const at = 'at-' + crypto.randomUUID(), rt = 'rt-' + crypto.randomUUID();
-  tokens.set(at, uid); refreshTokens.set(rt, email);
+  const at = `${b64u({ alg: 'none' })}.${b64u({ sub: uid, role: 'authenticated', aal, n: crypto.randomUUID() })}.sig`;
+  const rt = 'rt-' + crypto.randomUUID();
+  tokens.set(at, { uid, email, aal }); refreshTokens.set(rt, { email, aal });
   return { access_token: at, refresh_token: rt, expires_in: 3600, token_type: 'bearer', user: { id: uid, email } };
 }
 const calls = [];
@@ -113,15 +118,36 @@ async function handle(route) {
     return send(200, session(b.email));
   }
   if (u.pathname === '/auth/v1/token') {
-    const b = JSON.parse(text); const email = refreshTokens.get(b.refresh_token);
-    if (!email) return send(400, { error_code: 'refresh_token_not_found' });
-    refreshTokens.delete(b.refresh_token); return send(200, session(email));
+    const b = JSON.parse(text); const rt = refreshTokens.get(b.refresh_token);
+    if (!rt) return send(400, { error_code: 'refresh_token_not_found' });
+    refreshTokens.delete(b.refresh_token); return send(200, session(rt.email, rt.aal));
   }
   if (u.pathname === '/auth/v1/logout') return send(204);
+  const who = tokens.get((h.authorization || '').replace(/^Bearer /, ''));
+  if (u.pathname === '/auth/v1/user') {
+    if (!who) return send(401, {});
+    return send(200, { id: who.uid, email: who.email, factors: factorsBy.get(who.uid) || [] });
+  }
+  if (u.pathname.startsWith('/auth/v1/factors')) {
+    if (!who) return send(401, {});
+    const list = factorsBy.get(who.uid) || []; factorsBy.set(who.uid, list);
+    const m = /^\/auth\/v1\/factors(?:\/([^/]+))?(?:\/(challenge|verify))?$/.exec(u.pathname);
+    if (!m[1] && method === 'POST') {
+      const f = { id: crypto.randomUUID(), factor_type: 'totp', status: 'unverified' }; list.push(f);
+      return send(200, { id: f.id, type: 'totp', totp: { qr_code: 'data:image/svg+xml;utf-8,<svg xmlns="http://www.w3.org/2000/svg" width="180" height="180"><rect width="180" height="180" fill="black"/></svg>', secret: 'JBSWY3DPEHPK3PXP', uri: 'otpauth://totp/x' } });
+    }
+    const f = list.find((x) => x.id === m[1]);
+    if (!f) return send(404, { error_code: 'mfa_factor_not_found' });
+    if (method === 'DELETE') { list.splice(list.indexOf(f), 1); return send(200, { id: f.id }); }
+    if (m[2] === 'challenge') return send(200, { id: 'ch-' + crypto.randomUUID() });
+    if (m[2] === 'verify') {
+      if (JSON.parse(text).code !== TOTP) return send(422, { error_code: 'mfa_verification_failed', msg: 'Invalid TOTP code entered' });
+      f.status = 'verified'; return send(200, session(who.email, 'aal2'));
+    }
+  }
   if (u.pathname.startsWith('/rest/v1/')) {
-    const uid = tokens.get((h.authorization || '').replace(/^Bearer /, ''));
-    if (!uid) return send(401, { code: 'PGRST301', message: 'JWT invalid' });
-    const r = rest(uid, method, url, h, text);
+    if (!who) return send(401, { code: 'PGRST301', message: 'JWT invalid' });
+    const r = rest(who.uid, method, url, h, text, who.aal);
     return send(r.status, r.body);
   }
   return send(404, {});
@@ -131,7 +157,7 @@ async function handle(route) {
 const TYPES = { '.html': 'text/html', '.js': 'text/javascript', '.css': 'text/css', '.svg': 'image/svg+xml', '.woff2': 'font/woff2', '.png': 'image/png', '.ico': 'image/x-icon' };
 const server = http.createServer((req, res) => {
   const p = path.join(ROOT, decodeURIComponent(new URL(req.url, 'http://x').pathname));
-  if (!p.startsWith(ROOT) || !fs.existsSync(p) || fs.statSync(p).isDirectory()) { res.writeHead(404); return res.end(); }
+  if (!(p === ROOT || p.startsWith(ROOT + path.sep)) || !fs.existsSync(p) || fs.statSync(p).isDirectory()) { res.writeHead(404); return res.end(); }
   res.writeHead(200, { 'content-type': TYPES[path.extname(p)] || 'application/octet-stream' });
   fs.createReadStream(p).pipe(res);
 });
@@ -149,7 +175,8 @@ const TODAY = iso(new Date());
 
 // Fresh data: the admin list (as the owner would fill it) and an empty roster.
 psql(`delete from public.beta_testers; delete from private.beta_desk_admins; delete from auth.users;
-      insert into private.beta_desk_admins (email) values ('${ADMIN}');
+      insert into auth.users (id, email, email_confirmed_at) values ('${uuidFor(ADMIN)}', '${ADMIN}', now());
+      insert into private.beta_desk_admins (user_id) values ('${uuidFor(ADMIN)}');
       update public.beta_desk_settings set registration_target = 50, signup_form_url = null;`);
 
 const browser = await launch();
@@ -163,14 +190,21 @@ async function newPage(opts = {}) {
   page.on('console', (m) => { if (m.type() === 'error' && !/Failed to load resource/.test(m.text())) consoleErrors.push(m.text()); });
   return { ctx, page };
 }
-async function signIn(page, email, keep = false) {
+async function signIn(page, email, totp = null) {
   await page.goto(BASE);
   await page.fill('#emailInput', email);
-  if (keep) await page.check('#keepSignedIn');
   await page.click('#sendCodeBtn');
   await page.waitForSelector('#codeForm:not([hidden])');
   await page.fill('#codeInput', CODE);
   await page.click('#verifyBtn');
+  if (totp) {
+    await page.waitForSelector('#mfaForm:not([hidden])');
+    const setupShown = await page.isVisible('#mfaSetup');
+    await page.fill('#mfaInput', totp);
+    await page.click('#mfaBtn');
+    return setupShown;
+  }
+  return null;
 }
 const toastText = (page) => page.$$eval('.toast', (els) => els.map((e) => e.textContent).join(' | '));
 
@@ -193,14 +227,13 @@ const toastText = (page) => page.$$eval('.toast', (els) => els.map((e) => e.text
   await ctx.close();
 }
 // Seed one tester as the admin, straight in the database, to prove a learner can't see it.
-asUser(uuidFor(ADMIN), `select 1;`);
-psql(`insert into auth.users (id, email, email_confirmed_at) values ('${uuidFor(ADMIN)}', '${ADMIN}', now()) on conflict do nothing;`);
 asUser(uuidFor(ADMIN), `insert into public.beta_testers (full_name, email) values ('Seed Person', 'seed@test.invalid');`);
 {
   const { ctx, page } = await newPage();
   await signIn(page, LEARNER);
   await page.waitForSelector('#notAdmin:not([hidden])');
   check('a learner (not an admin) gets "No access"', await page.isHidden('#app'));
+  check('a learner is never asked to set up an authenticator', await page.isHidden('#mfaForm'));
   check('the learner page holds no tester details', !(await page.content()).includes('seed@test.invalid'));
   const direct = rest(uuidFor(LEARNER), 'GET', SUPA + '/rest/v1/beta_testers?select=*', {}, null);
   check('a learner calling the database directly reads 0 testers (RLS)', direct.status === 200 && direct.body.length === 0, `got ${direct.body.length}`);
@@ -216,6 +249,17 @@ asUser(uuidFor(ADMIN), `delete from public.beta_testers;`);
 // 2. Admin: empty state, add, persist, duplicates
 const { ctx, page } = await newPage();
 await signIn(page, ADMIN);
+await page.waitForSelector('#mfaForm:not([hidden])');
+check('an admin is asked for the second step after the email code', await page.isHidden('#app') && await page.isVisible('#mfaSetup'));
+check('first time: the authenticator set-up shows a QR code and a key', (await page.getAttribute('#mfaQr', 'src')).startsWith('data:image/svg+xml') && (await page.textContent('#mfaSecret')).includes('JBSW'));
+const aal1 = await page.evaluate(() => JSON.parse(sessionStorage.getItem('kaisip_desk_session_v1')).access_token);
+const aal1Read = rest(uuidFor(ADMIN), 'GET', SUPA + '/rest/v1/beta_desk_settings?select=*', {}, null, 'aal1');
+check('with only the email code (aal1), the database shows the admin nothing', aal1Read.status === 200 && aal1Read.body.length === 0 && aal1.length > 0);
+await page.screenshot({ path: path.join(OUT, '01b-mfa-setup.png') });
+await page.fill('#mfaInput', '000000'); await page.click('#mfaBtn');
+await page.waitForSelector('#gateError:not([hidden])');
+check('a wrong authenticator code is refused', /didn.t match/.test(await page.textContent('#gateError')));
+await page.fill('#mfaInput', TOTP); await page.click('#mfaBtn');
 await page.waitForSelector('#app:not([hidden])');
 await page.waitForSelector('.empty h3');
 check('the admin sees the desk and an empty roster', (await page.textContent('.empty h3')).includes('first cohort'));
@@ -237,9 +281,18 @@ check('it is saved in the database (email key in lower case)', dbRow.email_key =
 
 await page.waitForSelector('#drawer', { state: 'hidden' });
 await addTester('Duplicate', '  ANA.REYES@test.invalid ', '');
-await page.waitForSelector('.toast.err');
-check('the same email in other case and spacing is refused on save', /already on the roster/.test(await toastText(page)));
-await page.click('#dCancel'); await page.waitForSelector('#drawer', { state: 'hidden' });
+await page.waitForSelector('#dError:not([hidden])');
+check('the same email in other case and spacing is refused on save (shown in the editor)', /already on the roster/.test(await page.textContent('#dError')));
+check('while the editor is open, the page behind it is out of keyboard reach', await page.evaluate(() => document.getElementById('app').inert === true));
+await page.fill('#dForm [name=email]', 'ana.reyes+beta@test.invalid');
+await page.click('#dSave');
+await page.waitForFunction(() => /same inbox/.test(document.getElementById('dError').textContent));
+check('a "+tag" alias of an existing email is caught as the same tester', true);
+await page.click('#dCancel');
+await page.waitForSelector('#confirmDialog.on');
+check('closing with unsaved typing asks first', (await page.textContent('#cfTitle')).includes('Discard'));
+await page.click('#cfYes'); await page.waitForSelector('#drawer', { state: 'hidden' });
+check('after closing, the page is reachable again', await page.evaluate(() => document.getElementById('app').inert === false));
 // Prove the database refuses it too (not just the page).
 const dup = rest(uuidFor(ADMIN), 'POST', SUPA + '/rest/v1/beta_testers', {}, JSON.stringify({ email: 'ANA.reyes@TEST.invalid ' }));
 check('the database refuses the duplicate as well', dup.status === 409, `status ${dup.status}`);
@@ -263,6 +316,8 @@ await page.click('#importBtn');
 await page.waitForSelector('#importDialog.on');
 await page.setInputFiles('#impFile', csvPath);
 await page.waitForSelector('#impStep2:not([hidden])');
+check('import keeps only what the beta needs by default (other answers off)', !(await page.isChecked('#impKeep')));
+await page.check('#impKeep');
 const sum = await page.$$eval('#impSummary .s .num', (els) => els.map((e) => +e.textContent));
 check('import preview: 2 new, 1 already on the roster, 1 repeated, 1 invalid', JSON.stringify(sum) === '[2,1,1,1]', JSON.stringify(sum));
 check('the columns were detected automatically', (await page.$eval('[data-map=email]', (s) => s.selectedOptions[0].textContent)) === 'Email Address'
@@ -303,7 +358,11 @@ const bd = await page.evaluate(() => {
     onTime: B.canApprove({ opted_in_on: '2026-10-25', participation: 'continuous', terms_offered: 'T' }, '2026-11-08'),
     cell: B.csvCell('=HYPERLINK("x")'), cellPlain: B.csvCell('Ana "A" Reyes'),
     o1: B.dateOrder(['03/11/2026 09:00', '28/10/2026']), o2: B.dateOrder(['11/03/2026', '10/28/2026']), o3: B.dateOrder(['03/11/2026', '04/11/2026']), o4: B.dateOrder(['2026/11/04 2:03:22 PM GMT+8']),
-    g1: B.parseFormDate('2026/11/04 2:03:22 PM GMT+8', 'mdy')
+    g1: B.parseFormDate('2026/11/04 2:03:22 PM GMT+8', 'mdy'),
+    c2: B.csvCell(' =1+1'), c3: B.csvCell('\n=1'), c4: B.csvCell('\uFF1D1'), c5: B.csvCell('-5 days'),
+    ik: [B.inboxKey('J.O.H.N+beta@Gmail.com'), B.inboxKey('john@googlemail.com'), B.inboxKey('a.b+x@test.invalid')].join(' '),
+    del1: B.actions({ registered_on: '2026-01-01', invited_on: '2026-01-02', opted_in_on: '2026-01-03', completion: 'approved', approved_on: '2026-01-20', participation: 'continuous', reward_activated_on: '2026-01-20' }, '2026-07-21').map((a) => a.key).join(','),
+    del2: B.actions({ registered_on: '2026-01-01', participation: 'interrupted', completion: 'pending' }, '2026-02-01').map((a) => a.key).join(',')
   };
 });
 check('6 months from 31 Aug 2026 = 28 Feb 2027 (page)', bd.m1 === '2027-02-28', bd.m1);
@@ -316,6 +375,9 @@ check('approval is not allowed before day 14, allowed on day 14', bd.early === f
 check('CSV export neutralises spreadsheet formulas and quotes', bd.cell === '"\'=HYPERLINK(""x"")"' && bd.cellPlain === '"Ana ""A"" Reyes"');
 // The page and the database agree on the dates.
 const pgDates = psql(`select (date '2026-08-31' + interval '6 months')::date, (date '2027-08-31' + interval '6 months')::date, date '2026-10-25' + 14;`).out;
+check('CSV export also neutralises formulas after spaces, line breaks and full-width signs', [bd.c2, bd.c3, bd.c4, bd.c5].every((c) => c.startsWith('"\'')), [bd.c2, bd.c3, bd.c4, bd.c5].join(' '));
+check('Gmail dots and "+tags" reach the same inbox', bd.ik === 'john@gmail.com john@gmail.com a.b@test.invalid', bd.ik);
+check('after the reward ends, and for testers who are not eligible, the desk says "delete their record"', bd.del1 === 'delete' && bd.del2 === 'delete', bd.del1 + ' / ' + bd.del2);
 check('date order is read from the whole file: day-first, month-first, or ask', bd.o1 === 'dmy' && bd.o2 === 'mdy' && bd.o3 === '' && bd.o4 === 'mdy', [bd.o1, bd.o2, bd.o3, bd.o4].join(','));
 check('a Google Forms timestamp (2026/11/04 2:03:22 PM GMT+8) reads as 4 Nov 2026', bd.g1 === '2026-11-04', bd.g1);
 check('the database calculates the same dates', pgDates === '2027-02-28|2028-02-29|2026-11-08', pgDates);
@@ -411,10 +473,22 @@ await page.click('#cfYes');
 await page.waitForFunction(() => document.querySelectorAll('tr[data-id]').length === 2);
 check('delete: the record is gone from the roster and the database', psql(`select count(*) from public.beta_testers where id = '${newOne.id}';`).out === '0');
 
+// 9b. A failed load never pretends the roster is empty
+await page.route(SUPA + '/rest/v1/beta_testers*', (r) => (r.request().method() === 'GET' ? r.abort('failed') : r.fallback()));
+await page.reload();
+await page.waitForSelector('#rosterBody [role=alert]');
+const errText = await page.textContent('#rosterBody');
+check('a failed load says so and offers "Try again" (never "first cohort")', errText.includes('load') && errText.includes('Try again') && !errText.includes('first cohort'));
+await page.screenshot({ path: path.join(OUT, '11-load-error.png') });
+await page.unroute(SUPA + '/rest/v1/beta_testers*');
+await page.click('[data-act=retry]');
+await page.waitForSelector('tr[data-id]');
+check('"Try again" loads the roster', (await page.$$('tr[data-id]')).length === 2);
+
 // 10. Screens: desktop light/dark, phone
 await page.screenshot({ path: path.join(OUT, '08-roster-light.png'), fullPage: true });
 const sessionKept = await page.evaluate(() => [sessionStorage.getItem('kaisip_desk_session_v1') !== null, localStorage.getItem('kaisip_desk_session_v1') === null]);
-check('without "Keep me signed in" the session lives in this tab only', sessionKept[0] && sessionKept[1]);
+check('the session lives in this tab only (never in storage other pages can read later)', sessionKept[0] && sessionKept[1]);
 await page.click('#signOutBtn');
 await page.waitForSelector('#gate:not([hidden])');
 check('sign out clears the session and the roster', await page.evaluate(() => sessionStorage.getItem('kaisip_desk_session_v1') === null) && !(await page.content()).includes('ana.reyes'));
@@ -422,7 +496,7 @@ await ctx.close();
 
 for (const v of [{ name: 'dark', dark: true, viewport: { width: 1440, height: 900 } }, { name: 'phone-light', viewport: { width: 390, height: 844 } }, { name: 'phone-dark', dark: true, viewport: { width: 390, height: 844 } }]) {
   const p = await newPage({ ...v, dsf: 2 });
-  await signIn(p.page, ADMIN, true);
+  const setupShown = await signIn(p.page, ADMIN, TOTP);
   await p.page.waitForSelector('tr[data-id]');
   await p.page.screenshot({ path: path.join(OUT, `09-roster-${v.name}.png`), fullPage: true });
   const overflow = await p.page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth);
@@ -430,7 +504,7 @@ for (const v of [{ name: 'dark', dark: true, viewport: { width: 1440, height: 90
   await p.page.click('tr[data-id]:has-text("Ana Reyes")');
   await p.page.waitForSelector('#drawer.on'); await p.page.waitForTimeout(350);
   await p.page.screenshot({ path: path.join(OUT, `10-drawer-${v.name}.png`) });
-  if (v.name === 'phone-light') check('"Keep me signed in" keeps the session on this device', await p.page.evaluate(() => localStorage.getItem('kaisip_desk_session_v1') !== null));
+  if (v.name === 'dark') check('next sign-in: only the authenticator code, no set-up again', setupShown === false);
   await p.ctx.close();
 }
 
