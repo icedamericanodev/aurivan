@@ -594,7 +594,8 @@
             "Give each issue one owner, an agreed action and a realistic due date.",
             "Escalate overdue or slipping items to the risk owner and, past a set point, to senior management.",
             "Close an issue only after evidence shows the fix works, not on the owner's statement.",
-            "Re-rate the related risk once the fix is validated, so the register reflects the change."
+            "Re-rate the related risk once the fix is validated, so the register reflects the change.",
+            "When teams dispute who should fix an issue, the owner of the affected risk names one action owner; the practitioner escalates the dispute rather than assigning the work."
           ],
           "example": "An internal audit at a manufacturer finds that terminated contractors keep plant-system access for weeks. The plant manager marks the finding closed after a new offboarding checklist is issued. Ravi, the risk analyst, samples ten recent departures and finds three accounts still active. They reopen the item, record the evidence and report it to the plant manager with a revised date.",
           "audit_focus": {
@@ -645,7 +646,8 @@
             "The practitioner assesses the risk and proposes compensating controls to keep it within appetite.",
             "The risk owner approves, at a level that matches the risk; policy may require senior management for high ratings.",
             "Exceptions carry an expiry date and a plan to comply; exemptions are reviewed periodically to confirm they still apply.",
-            "All deviations sit in one register, reported in aggregate so their combined risk is visible."
+            "All deviations sit in one register, reported in aggregate so their combined risk is visible.",
+            "An exemption rests on facts about its scope; when the system or its data changes, reassess whether it still applies without waiting for the scheduled review."
           ],
           "compare": {
             "columns": [
@@ -1002,7 +1004,8 @@
             "Document the procedure so someone else could run it during absence or turnover.",
             "Implement through change management, with testing before go-live and a rollback plan.",
             "Define a key control indicator so the owner can see when the control starts to fail.",
-            "After go-live, confirm it works as designed before reporting the risk as reduced."
+            "After go-live, confirm it works as designed before reporting the risk as reduced.",
+            "After go-live, check with the control owner that the control fits the work it protects; if it stalls the business, rework the design by risk rather than remove it."
           ],
           "example": "A retailer adds a weekly review of privileged access to its payment system. Diego, the IT risk lead, meets the infrastructure manager who will own it. Together they set the review steps, the sign-off record, an indicator for overdue reviews and a backup reviewer. Diego follows the first two cycles before updating the residual risk rating.",
           "audit_focus": {
@@ -1264,7 +1267,7 @@
             "Use one published scale consistently, such as the COBIT 2019 capability levels from 0 to 5.",
             "Rate against evidence: documented procedures, consistent records, metrics and improvement actions.",
             "Agree a target level with the risk owner based on the risk; not every control needs the top level.",
-            "Feed the gap between current and target maturity into the improvement plan.",
+            "Feed the gap into an improvement plan that builds each level in turn, defined procedures before measurement; a new tool does not raise maturity by itself.",
             "Read assessment results for adequacy (the right controls), effectiveness (working) and maturity (sustainable) together.",
             "A control can pass every test yet sit at low maturity, for example when it depends on one person and nothing is written down."
           ],
@@ -1381,7 +1384,8 @@
             "Confirm the control is implemented, then that it operates, before treating the action as complete.",
             "Re-rate the risk after validation; that residual rating is compared with the target the plan set.",
             "Escalate slipping or blocked actions to the risk owner, and past agreed limits to senior management.",
-            "Close the plan only when the risk reaches the expected level or a new decision is recorded."
+            "Close the plan only when the risk reaches the expected level or a new decision is recorded.",
+            "If validated actions leave the risk above target, report the shortfall to the risk owner, who decides on further treatment, acceptance within their authority or elevation."
           ],
           "example": "A port operator's plan to separate its crane-control network from the office network is reported complete. Arjun, the risk analyst, asks the network team for a connection test from an office laptop, which still reaches two cranes. They mark the action incomplete, record the test result and inform the operations director with a proposed new date.",
           "audit_focus": {
@@ -1817,7 +1821,8 @@
             "Automate where it helps, such as configuration checks, vulnerability scans and control health checks.",
             "Set frequency by risk and by how fast the item changes; continuous does not mean every second.",
             "Route every alert to an owner with a response time, and track alerts to closure.",
-            "Analyze results against tolerance and feed them into the register and reports."
+            "Analyze results against tolerance and feed them into the register and reports.",
+            "Roll monitoring out in priority order, starting with the controls behind the highest risks; switching on every check at once floods owners with alerts."
           ],
           "example": "A payments startup turns on automated checks that flag any cloud storage made public. After a month, Ji-ho, the risk analyst, finds 60 alerts sitting in a shared mailbox and none acted on. They propose routing alerts to the platform team lead with a four-hour response target, and a weekly count of open alerts reported to the chief technology officer.",
           "audit_focus": {
@@ -2228,7 +2233,7 @@
     {
       "title": "ISACA Interactive Glossary (risk owner, control owner, risk response, risk transfer, risk acceptance, risk aggregation, current risk, residual risk, risk tolerance, KRI, KCI, risk map, control types)",
       "url": "https://www.isaca.org/resources/glossary",
-      "checked": "2026-10-30: entries read this session; 2026-10-31: control owner, current risk, residual risk, risk response and risk tolerance re-read for the quality pass; 2026-10-31: key control indicator, preventive control, risk acceptance and residual risk re-read for round 2"
+      "checked": "2026-10-30: entries read this session; 2026-10-31: control owner, current risk, residual risk, risk response and risk tolerance re-read for the quality pass; 2026-10-31: key control indicator, preventive control, risk acceptance and residual risk re-read for round 2; 2026-11-04: control risk self-assessment, risk map, Capability Maturity Model and maturity read for round 3"
     },
     {
       "title": "ISACA Risk IT Framework, 2nd Edition",
@@ -2268,12 +2273,12 @@
     {
       "title": "NIST SP 800-53B, Control Baselines for Information Systems and Organizations (Sep 2020)",
       "url": "https://csrc.nist.gov/pubs/sp/800/53/b/upd1/final",
-      "checked": "2026-10-30: title and date confirmed on csrc.nist.gov"
+      "checked": "2026-10-30: title and date confirmed on csrc.nist.gov; 2026-11-04: Section 2.4 (Tailoring Control Baselines, including supplementing baselines) read in the PDF for round 3"
     },
     {
       "title": "NIST SP 800-137, Information Security Continuous Monitoring (ISCM) for Federal Information Systems and Organizations (Sep 2011)",
       "url": "https://csrc.nist.gov/pubs/sp/800/137/final",
-      "checked": "2026-10-30: Sections 3.4 and 3.5 read in the PDF; 2026-10-31: Section 3.2.2 (monitoring and assessment frequencies) read in the PDF for round 2"
+      "checked": "2026-10-30: Sections 3.4 and 3.5 read in the PDF; 2026-10-31: Section 3.2.2 (monitoring and assessment frequencies) read in the PDF for round 2; 2026-11-04: Section 3.1 (Define ISCM Strategy: trigger criteria in addition to a preestablished frequency) read in the PDF for round 3"
     },
     {
       "title": "NIST SP 800-161 Rev. 1, Cybersecurity Supply Chain Risk Management Practices for Systems and Organizations (May 2022, updated Nov 2024)",
@@ -2283,17 +2288,17 @@
     {
       "title": "NIST SP 800-55 Vol. 1, Measurement Guide for Information Security: Identifying and Selecting Measures (Dec 2024)",
       "url": "https://csrc.nist.gov/pubs/sp/800/55/v1/final",
-      "checked": "2026-10-30: Sections 2.4 and 4.4 read in the PDF; 2026-10-31: Section 3.1.4 (Data Quality) read in the PDF for round 2"
+      "checked": "2026-10-30: Sections 2.4 and 4.4 read in the PDF; 2026-10-31: Section 3.1.4 (Data Quality) read in the PDF for round 2; 2026-11-04: Sections 3.1.1 (Measures Documentation) and 3.1.2 (Measurement Reporting) read in the PDF for round 3"
     },
     {
       "title": "NIST CSWP 29, The NIST Cybersecurity Framework (CSF) 2.0 (Feb 2024)",
       "url": "https://csrc.nist.gov/pubs/cswp/29/the-nist-cybersecurity-framework-csf-20/final",
-      "checked": "2026-10-30: GV.OV, GV.RM, GV.RR, GV.SC and ID.RA subcategories read in the PDF; 2026-10-31: Sections 3.1 and 3.2 (Profiles and Tiers) and GV.SC-05 to GV.SC-10 read for round 2"
+      "checked": "2026-10-30: GV.OV, GV.RM, GV.RR, GV.SC and ID.RA subcategories read in the PDF; 2026-10-31: Sections 3.1 and 3.2 (Profiles and Tiers) and GV.SC-05 to GV.SC-10 read for round 2; 2026-11-04: GV.SC-10 re-read for round 3"
     },
     {
       "title": "NIST AI 100-1, Artificial Intelligence Risk Management Framework (AI RMF 1.0) (Jan 2023)",
       "url": "https://www.nist.gov/itl/ai-risk-management-framework",
-      "checked": "2026-10-30: GOVERN 1.1, GOVERN 3.2, MEASURE 2.4, MANAGE 1.3 and MANAGE 4.1 read in the PDF from nvlpubs.nist.gov; 2026-10-31: MANAGE 3.1 and GOVERN 6.1 to 6.2 read for round 2"
+      "checked": "2026-10-30: GOVERN 1.1, GOVERN 3.2, MEASURE 2.4, MANAGE 1.3 and MANAGE 4.1 read in the PDF from nvlpubs.nist.gov; 2026-10-31: MANAGE 3.1 and GOVERN 6.1 to 6.2 read for round 2; 2026-11-04: GOVERN 6.2 and Appendix C (Human-AI Interaction) re-read for round 3"
     },
     {
       "title": "AICPA SOC 2 reporting; ISO 31000:2018; ISO/IEC 27005:2022; COSO ERM (2017); IIA Three Lines Model (2020)",
