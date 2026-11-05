@@ -54,7 +54,7 @@
       "question": "Over six months, a bank's loan-triage AI model has gradually routed more sound applications to manual review, raising handling costs, but no incident was logged. What should the risk practitioner do FIRST?",
       "options": {
         "A": "Monitor the scenario's manual review rate with a new KRI",
-        "B": "Have the data science team retrain the model on recent loans",
+        "B": "Update the model by retraining it on recent loans",
         "C": "Log the drift as a tuning task for data scientists to assess",
         "D": "Record the drift as a risk event against the AI scenario"
       },
@@ -78,7 +78,7 @@
         "AI risk events",
         "Business ownership of AI risk"
       ],
-      "_provenance": "Authored from concept: notes 2A1.3 AI Risk Events: Bias and Model Drift (drift builds gradually, is logged against an AI scenario with a business owner, and is assessed before retraining). Original bank loan-triage scenario written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D2 pilot batch, 30 Oct 2026. Review fixes 30 Oct 2026 (blind test and standards audit): strawman 'wait for a loss' replaced by a KRI distractor; lens words 'scenario' and 'assess' added to distractors; re-lettered (key B to D); candidate renamed risk practitioner; neutral pre_read. Cross-domain gate 31 Oct 2026: setting moved from an insurer to a bank so it no longer mirrors crisc_d3_017's insurer drift item. Quality pass 31 Oct 2026 (ISACA authenticity audit and concept review): key made a single action ('Record the drift as a risk event against the AI scenario'; reassessment now in the explanation); C reworded in parallel form; control owner named as the data science lead (ISACA Glossary: accountable for the control, finding X1); 'often' removed from explanation B; tips updated. Repair round 1, 31 Oct 2026 (independent verification): runner-up moved from B (retrain) to A (new KRI), as all three blind rounds read it; tips 1 and 2, the explanation and wrong explanations A and B rewritten to match; pre_read no longer points at the recording options. Repair round 2, 31 Oct 2026 (independent verification): wrong explanation A now names the reassessment itself before the KRI thresholds, so it no longer points back to an earlier mention that the learner has not read.",
+      "_provenance": "Authored from concept: notes 2A1.3 AI Risk Events: Bias and Model Drift (drift builds gradually, is logged against an AI scenario with a business owner, and is assessed before retraining). Original bank loan-triage scenario written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D2 pilot batch, 30 Oct 2026. Review fixes 30 Oct 2026 (blind test and standards audit): strawman 'wait for a loss' replaced by a KRI distractor; lens words 'scenario' and 'assess' added to distractors; re-lettered (key B to D); candidate renamed risk practitioner; neutral pre_read. Cross-domain gate 31 Oct 2026: setting moved from an insurer to a bank so it no longer mirrors crisc_d3_017's insurer drift item. Quality pass 31 Oct 2026 (ISACA authenticity audit and concept review): key made a single action ('Record the drift as a risk event against the AI scenario'; reassessment now in the explanation); C reworded in parallel form; control owner named as the data science lead (ISACA Glossary: accountable for the control, finding X1); 'often' removed from explanation B; tips updated. Repair round 1, 31 Oct 2026 (independent verification): runner-up moved from B (retrain) to A (new KRI), as all three blind rounds read it; tips 1 and 2, the explanation and wrong explanations A and B rewritten to match; pre_read no longer points at the recording options. Repair round 2, 31 Oct 2026 (independent verification): wrong explanation A now names the reassessment itself before the KRI thresholds, so it no longer points back to an earlier mention that the learner has not read. Cue pass 2, 5 Nov 2026: B reworded (was 'Have the data science team retrain'): a wrong option now opens 'Update', so that opening no longer points to the key.",
       "style_version": 2
     },
     {
@@ -648,7 +648,7 @@
         "A": "Current risk, crediting only controls implemented and working",
         "B": "Residual risk projected once next year's planned controls go live",
         "C": "Inherent risk, before the utility's controls are counted",
-        "D": "Current risk reported by peer utilities in a sector benchmark"
+        "D": "Current risk that other water utilities report for this scenario"
       },
       "correct": "A",
       "key_concept": "Today's exposure is current risk, crediting only implemented, working controls; future residual (target) risk, projected for planned responses, judges the plan, not today's position.",
@@ -657,10 +657,10 @@
       "wrong_explanations": {
         "B": "Closest choice, since the plan matters. But planned controls reduce nothing yet; projected residual risk shows whether the plan is enough, not whether the utility is within appetite today.",
         "C": "Tempting because inherent risk shows the full threat. But it leaves out controls already working, so comparing it with appetite overstates the need for treatment.",
-        "D": "Tempting because peers face similar threats. But appetite is compared with this utility's own exposure; a peer figure reflects other controls and assets, not the utility's current risk."
+        "D": "Tempting because other utilities face similar threats. But appetite is compared with this utility's own exposure; their figures reflect other controls and assets, not its current risk."
       },
       "tips": [
-        "Eliminate: C leaves out controls that already work, overstating the need for treatment, and D swaps the utility's own exposure for a peer benchmark.",
+        "Eliminate: C leaves out controls that already work, overstating the need for treatment, and D swaps the utility's own exposure for other utilities' figures.",
         "Final two: A beats B because only implemented, working controls count today; a projection with planned controls is future residual risk, used to judge the plan.",
         "Exam cue: compare today's risk, counting only implemented, working controls, with appetite; ISACA may call it current or residual risk. A projection with planned controls judges the plan; inherent risk ranks where controls matter most."
       ],
@@ -670,7 +670,7 @@
         "Future residual risk",
         "Inherent risk"
       ],
-      "_provenance": "Authored from concept: notes 2B5.1 Inherent, Current and Residual Risk (compare residual, not inherent, risk with appetite; count only controls in place and working). Original water utility control system scenario written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D2 pilot batch, 30 Oct 2026. Review fixes 30 Oct 2026 (blind test and standards audit): HARD ERROR fix paired with notes 2B5.1: explanation now bridges ISACA residual and current risk and calls a projection a target; ID.RA-05 replaced by IR 8286 Rev. 1 Section 3.5.2; stem no longer has the practitioner deciding; reason tail removed from D; re-lettered (key B to A); neutral pre_read. Quality pass 31 Oct 2026 (ISACA authenticity audit and concept review): HARD ERROR fix (concept review D2-1): the planned-controls projection is what the ISACA Glossary's risk response entry calls future residual risk, so the stem now asks about appetite today and the key is current risk; options, key_concept, explanation, wrong explanation B and tips per the concept review; 'any of' removed from distractor C; stem in 'Which of the following' form; ISACA Glossary (risk response) cited (new Verified library bullet); notes 2B5.1 rule aligned. pre_read matched to the new stem. Repair round 1, 31 Oct 2026 (independent verification): D ('whichever is higher') always equalled C, so it is replaced by a peer-benchmark distractor; wrong explanation D and tip 1 updated; the exam cue now bridges current and residual risk (once a response is implemented its residual risk is today's current risk), paired with notes 2B5 overview, 2B5.1 and 2B5.3. Round 2 gate 31 Oct 2026: key concept now names the planned level future residual (target) risk, matching its own explanation, calibration rule 11, the glossary and notes 2B5.1.",
+      "_provenance": "Authored from concept: notes 2B5.1 Inherent, Current and Residual Risk (compare residual, not inherent, risk with appetite; count only controls in place and working). Original water utility control system scenario written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D2 pilot batch, 30 Oct 2026. Review fixes 30 Oct 2026 (blind test and standards audit): HARD ERROR fix paired with notes 2B5.1: explanation now bridges ISACA residual and current risk and calls a projection a target; ID.RA-05 replaced by IR 8286 Rev. 1 Section 3.5.2; stem no longer has the practitioner deciding; reason tail removed from D; re-lettered (key B to A); neutral pre_read. Quality pass 31 Oct 2026 (ISACA authenticity audit and concept review): HARD ERROR fix (concept review D2-1): the planned-controls projection is what the ISACA Glossary's risk response entry calls future residual risk, so the stem now asks about appetite today and the key is current risk; options, key_concept, explanation, wrong explanation B and tips per the concept review; 'any of' removed from distractor C; stem in 'Which of the following' form; ISACA Glossary (risk response) cited (new Verified library bullet); notes 2B5.1 rule aligned. pre_read matched to the new stem. Repair round 1, 31 Oct 2026 (independent verification): D ('whichever is higher') always equalled C, so it is replaced by a peer-benchmark distractor; wrong explanation D and tip 1 updated; the exam cue now bridges current and residual risk (once a response is implemented its residual risk is today's current risk), paired with notes 2B5 overview, 2B5.1 and 2B5.3. Round 2 gate 31 Oct 2026: key concept now names the planned level future residual (target) risk, matching its own explanation, calibration rule 11, the glossary and notes 2B5.1. Cue pass 2, 5 Nov 2026: D reworded off the outside-data words (peer, vendor, industry, survey, external), which were almost never keyed; still wrong for the same reason.",
       "style_version": 2
     },
     {
@@ -1055,7 +1055,7 @@
         "A": "Owners of the processes the attack would halt",
         "B": "Control owners responsible for backup and recovery",
         "C": "Internal auditors who will assess the exercise results",
-        "D": "An external negotiator experienced in ransom demands"
+        "D": "A hired negotiator experienced in ransom demands"
       },
       "correct": "A",
       "key_concept": "A tabletop exercise tests a scenario and its responses with the people who make the business decisions, so the affected process owners must take part.",
@@ -1077,7 +1077,7 @@
         "Process owner",
         "Decision rights"
       ],
-      "_provenance": "Authored from concept: notes 2A4.3 Validating Scenarios and Tabletop Exercises. Round 2, 31 Oct 2026: authored from notes 2A4.3 (the exercise tests decisions, so the owners who make them take part); original food distributor ransomware tabletop scenario written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used; checked against the CRISC, CISA and CC banks for mirrored scenarios.",
+      "_provenance": "Authored from concept: notes 2A4.3 Validating Scenarios and Tabletop Exercises. Round 2, 31 Oct 2026: authored from notes 2A4.3 (the exercise tests decisions, so the owners who make them take part); original food distributor ransomware tabletop scenario written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used; checked against the CRISC, CISA and CC banks for mirrored scenarios. Cue pass 2, 5 Nov 2026: D reworded off the outside-data words (peer, vendor, industry, survey, external), which were almost never keyed; still wrong for the same reason.",
       "style_version": 2
     },
     {
@@ -1091,7 +1091,7 @@
       "options": {
         "A": "Note the finding in the report for next year's exercise",
         "B": "Name the security operations lead as the decision owner",
-        "C": "Rerun the exercise until the team agrees on an approver",
+        "C": "Rerun the exercise until process owners agree on an approver",
         "D": "Log a tracked action with an owner and a due date"
       },
       "correct": "D",
@@ -1101,7 +1101,7 @@
       "wrong_explanations": {
         "A": "Recording the finding preserves it; however, with no owner or date, the bank could face a real attack with the same gap for a year.",
         "B": "Decision rights over a payments shutdown are set by the business and senior management; the practitioner does not assign them to the security team.",
-        "C": "Repeating the exercise tests the same gap again; agreement under exercise pressure is not a defined, approved decision right."
+        "C": "Repeating the exercise tests the same gap again; owners agreeing under exercise pressure is not a defined, approved decision right."
       },
       "tips": [
         "Eliminate: B has the practitioner assign a business decision right, and C repeats the exercise instead of fixing what it found.",
@@ -1114,7 +1114,7 @@
         "Action tracking",
         "Decision rights"
       ],
-      "_provenance": "Authored from concept: notes 2A4.3 Validating Scenarios and Tabletop Exercises. Round 2, 31 Oct 2026: authored from notes 2A4.3 (every gap an exercise reveals becomes a tracked, owned action); original bank instant-payments tabletop scenario written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used; checked against the CRISC, CISA and CC banks for mirrored scenarios.",
+      "_provenance": "Authored from concept: notes 2A4.3 Validating Scenarios and Tabletop Exercises. Round 2, 31 Oct 2026: authored from notes 2A4.3 (every gap an exercise reveals becomes a tracked, owned action); original bank instant-payments tabletop scenario written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used; checked against the CRISC, CISA and CC banks for mirrored scenarios. Cue pass 2, 5 Nov 2026: C now reruns the exercise until process owners agree, an owner in an easy distractor, so the owner options no longer point to the key.",
       "style_version": 2
     },
     {
@@ -1126,7 +1126,7 @@
       "bloom_level": "Application",
       "question": "An energy retailer's risk team has logged 210 IT risk scenarios, and risk owners say they cannot review them before the annual rating cycle. What should the risk practitioner recommend as BEST?",
       "options": {
-        "A": "Have IT rate the scenarios it ranks as most severe",
+        "A": "Update the ratings of the scenarios IT ranks most severe",
         "B": "Merge overlapping scenarios under the company's objectives",
         "C": "Review the 210 against objectives over two cycles",
         "D": "Replace them with the twelve scenarios in a vendor library"
@@ -1136,7 +1136,7 @@
       "pre_read": "Notice why the owners cannot cope with the set as it stands.",
       "correct_explanation": "Two hundred scenarios cannot be reviewed meaningfully, and many will overlap. Anchoring the set on business objectives and merging technical scenarios beneath them keeps every real exposure visible in a number owners can rate. Swapping in a vendor library is the runner-up: it shrinks the list quickly, but generic scenarios are not tailored to the retailer's own processes and would drop risks the team has already identified.",
       "wrong_explanations": {
-        "A": "Letting IT pick the scenarios ranks risk by technical judgment alone; the business owners who bear the impact would never see the rest.",
+        "A": "Rating just the scenarios IT picks ranks risk by technical judgment alone; the business owners who bear the impact would never see the rest.",
         "C": "Stretching reviews over two cycles leaves half the scenarios unreviewed for a year and does nothing about overlap in the set.",
         "D": "A library is a useful starting point; however, replacing the retailer's own scenarios with generic ones loses the risks specific to its business."
       },
@@ -1151,7 +1151,7 @@
         "Top-down scenarios",
         "Scenario library"
       ],
-      "_provenance": "Authored from concept: notes 2A4.2 Top-Down and Bottom-Up Scenario Development. Round 2, 31 Oct 2026: authored from notes 2A4.2 (merge overlapping scenarios under objectives so the set stays manageable); original energy retailer scenario overload scenario written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used; checked against the CRISC, CISA and CC banks for mirrored scenarios. Review fixes 31 Oct 2026: pre_read no longer names the final-two discriminator.",
+      "_provenance": "Authored from concept: notes 2A4.2 Top-Down and Bottom-Up Scenario Development. Round 2, 31 Oct 2026: authored from notes 2A4.2 (merge overlapping scenarios under objectives so the set stays manageable); original energy retailer scenario overload scenario written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used; checked against the CRISC, CISA and CC banks for mirrored scenarios. Review fixes 31 Oct 2026: pre_read no longer names the final-two discriminator. Cue pass 2, 5 Nov 2026: A reworded (was 'Have IT rate the scenarios'): a wrong option now opens 'Update', so that opening no longer points to the key.",
       "style_version": 2
     },
     {
@@ -1277,7 +1277,7 @@
         "A": "Extend the order process's MTO to 36 hours in the BIA",
         "B": "Report the gap to the owner of order processing",
         "C": "Ask the recovery control owner to buy a faster service",
-        "D": "Record the RTO as 36 hours to match IT's capability"
+        "D": "Record the owner's RTO as 36 hours to match IT's capability"
       },
       "correct": "B",
       "key_concept": "An RTO must fit inside the maximum tolerable outage; when recovery cannot meet it, the process owner decides how to close the gap.",
@@ -1286,7 +1286,7 @@
       "wrong_explanations": {
         "A": "The MTO reflects how long the business can survive the outage; stretching it to match IT's recovery time hides the harm instead of reducing it.",
         "C": "A faster service may close the gap; however, the owner should weigh its cost against the BIA impact before anyone commits the spend.",
-        "D": "Recovery objectives come from business tolerance, not from what IT can deliver today; recording 36 hours accepts a gap the business never agreed to."
+        "D": "Recovery objectives come from business tolerance, not from what IT can deliver today; recording 36 hours as the owner's RTO accepts a gap the business never agreed to."
       },
       "tips": [
         "Eliminate: A bends the business tolerance to fit IT, and D sets the RTO from IT's capability instead of the BIA.",
@@ -1299,7 +1299,7 @@
         "Recovery time objective (RTO)",
         "Recovery gap"
       ],
-      "_provenance": "Authored from concept: notes 2B2.2 MTO, RTO and RPO. Round 2, 31 Oct 2026: authored from notes 2B2.2 (the RTO fits inside the MTO; a recovery gap goes to the process owner); original distributor order-processing recovery scenario written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used; checked against the CRISC, CISA and CC banks for mirrored scenarios.",
+      "_provenance": "Authored from concept: notes 2B2.2 MTO, RTO and RPO. Round 2, 31 Oct 2026: authored from notes 2B2.2 (the RTO fits inside the MTO; a recovery gap goes to the process owner); original distributor order-processing recovery scenario written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used; checked against the CRISC, CISA and CC banks for mirrored scenarios. Cue pass 2, 5 Nov 2026: D now records the owner's RTO at IT's capability, an owner in an easy distractor, so the owner options no longer point to the key.",
       "style_version": 2
     },
     {
@@ -1829,10 +1829,10 @@
       "bloom_level": "Application",
       "question": "A ride-hailing company plans to retrain its fare-pricing model weekly on a public traffic dataset that any user can edit. What should the risk practitioner do FIRST?",
       "options": {
-        "A": "Ask the pricing owner to license a vendor traffic feed",
+        "A": "Ask the pricing owner to license a paid traffic feed",
         "B": "Rely on the weekly accuracy check to catch bad inputs",
         "C": "Assess the data poisoning risk with the pricing owner",
-        "D": "Assess prompt injection as the model's main threat"
+        "D": "Assess prompt injection risk with the pricing owner"
       },
       "correct": "C",
       "key_concept": "Training data that outsiders can edit exposes a model to data poisoning, which is assessed with the business owner before controls are chosen.",
@@ -1841,7 +1841,7 @@
       "wrong_explanations": {
         "A": "A licensed feed may be the right control, but choosing it before the poisoning risk is analyzed skips the assessment the owner needs to decide.",
         "B": "An overall accuracy check can miss targeted poisoning, which shifts outputs for a small set of inputs while average accuracy stays normal.",
-        "D": "Prompt injection targets models that read instructions in text; the threat this design creates is poisoned training data."
+        "D": "Prompt injection targets models that read instructions in text; the threat this design creates is poisoned training data, so the owner would assess the wrong risk."
       },
       "tips": [
         "Eliminate: A picks a control before the risk is analyzed, and D names an attack on a language model's inputs, not on the training data this model learns from.",
@@ -1854,7 +1854,7 @@
         "Training data",
         "AI risk scenario"
       ],
-      "_provenance": "Authored from concept: notes 2A2.3 (AI-Specific Threats). Round 3, 4 Nov 2026: original scenario of a ride-hailing company retraining its fare-pricing model on a publicly editable traffic dataset written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used; checked against the CRISC, CISA, CC and AAIA banks for mirrored scenarios.",
+      "_provenance": "Authored from concept: notes 2A2.3 (AI-Specific Threats). Round 3, 4 Nov 2026: original scenario of a ride-hailing company retraining its fare-pricing model on a publicly editable traffic dataset written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used; checked against the CRISC, CISA, CC and AAIA banks for mirrored scenarios. Cue pass 2, 5 Nov 2026: D now assesses prompt injection with the pricing owner, an owner in an easy distractor, so the owner options no longer point to the key; A's feed is 'paid' (was 'vendor'), off the outside-data wording.",
       "style_version": 2
     },
     {
@@ -1942,7 +1942,7 @@
       "options": {
         "A": "Add three scenarios covering the weaknesses IT found",
         "B": "Add a bottom-up review using asset and threat data",
-        "C": "Have the executives re-rank their workshop scenarios",
+        "C": "Propose that executives re-rank the workshop scenarios",
         "D": "Log the three weaknesses in IT's operational issue list"
       },
       "correct": "B",
@@ -1965,7 +1965,7 @@
         "Risk scenario",
         "Vulnerability data"
       ],
-      "_provenance": "Authored from concept: notes 2A4.2 (Top-Down and Bottom-Up Scenario Development). Round 3, 4 Nov 2026: original scenario of a freight railway whose workshop-built scenarios miss weaknesses found in IT's vulnerability data written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used; checked against the CRISC, CISA, CC and AAIA banks for mirrored scenarios. Review fixes 4 Nov 2026 (standards audit and concept review): subtopic label no longer names the top-down method, which leaked the bottom-up key.",
+      "_provenance": "Authored from concept: notes 2A4.2 (Top-Down and Bottom-Up Scenario Development). Round 3, 4 Nov 2026: original scenario of a freight railway whose workshop-built scenarios miss weaknesses found in IT's vulnerability data written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used; checked against the CRISC, CISA, CC and AAIA banks for mirrored scenarios. Review fixes 4 Nov 2026 (standards audit and concept review): subtopic label no longer names the top-down method, which leaked the bottom-up key. Cue pass 2, 5 Nov 2026: C reworded (was 'Have the executives re-rank'): a wrong option now opens 'Propose', so that opening no longer points to the key.",
       "style_version": 2
     },
     {
@@ -2236,7 +2236,7 @@
       "bloom_level": "Application",
       "question": "A hotel group's AI room-pricing tool went live last month with no loss history; its vendor shares only launch test results. Which of the following MOST belongs in the risk practitioner's new register entry?",
       "options": {
-        "A": "An ALE estimate built from industry benchmark data",
+        "A": "An ALE estimate built from other hotel groups' losses",
         "B": "A stated level of uncertainty in its rating",
         "C": "The accuracy score from the vendor's launch testing",
         "D": "No rating until a quarter of live pricing data exists"
@@ -2246,7 +2246,7 @@
       "pre_read": "Notice what the entry can be built from.",
       "correct_explanation": "With no loss history and only the vendor's launch test results, any rating of the new tool is a judgment with wide uncertainty. Stating that uncertainty tells the owner how much weight the rating can bear and supports an early review as production evidence arrives. The vendor's launch accuracy score is the runner-up: it is real evidence, but it measures performance in testing, not exposure in the hotel group's pricing.",
       "wrong_explanations": {
-        "A": "Benchmarks from other firms turned into one ALE figure suggest precision the data cannot support for a newly launched system.",
+        "A": "Other groups' losses turned into one ALE figure suggest precision the data cannot support for a newly launched system.",
         "C": "Launch accuracy shows how the model did in testing, not how wrong prices would affect revenue or guests in production.",
         "D": "Leaving the entry unrated while live data builds keeps a risk the hotel group already carries out of the profile; it is recorded now, with its uncertainty stated."
       },
@@ -2261,7 +2261,7 @@
         "Uncertainty",
         "AI system in the register"
       ],
-      "_provenance": "Authored from concept: notes 2B3.2 (Keeping the Register Current). Round 3, 4 Nov 2026: original scenario of a hotel group's newly launched AI room-pricing tool with no loss history written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used; checked against the CRISC, CISA, CC and AAIA banks for mirrored scenarios. Review fixes 4 Nov 2026 (standards audit and concept review): stem now says the vendor shares only its launch test results, so option C is available evidence rather than a contradiction; option A's benchmark data is now industry data, so it is not ruled out by the stem; pre_read no longer points at the uncertainty key. Cross-domain fixes 4 Nov 2026: option D is now 'no rating until a quarter of live pricing data exists', so it no longer mirrors crisc_d3_049 C ('a low rating until a working attack is shown'); wrong D and the Eliminate tip updated. Key unchanged (B).",
+      "_provenance": "Authored from concept: notes 2B3.2 (Keeping the Register Current). Round 3, 4 Nov 2026: original scenario of a hotel group's newly launched AI room-pricing tool with no loss history written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used; checked against the CRISC, CISA, CC and AAIA banks for mirrored scenarios. Review fixes 4 Nov 2026 (standards audit and concept review): stem now says the vendor shares only its launch test results, so option C is available evidence rather than a contradiction; option A's benchmark data is now industry data, so it is not ruled out by the stem; pre_read no longer points at the uncertainty key. Cross-domain fixes 4 Nov 2026: option D is now 'no rating until a quarter of live pricing data exists', so it no longer mirrors crisc_d3_049 C ('a low rating until a working attack is shown'); wrong D and the Eliminate tip updated. Key unchanged (B). Cue pass 2, 5 Nov 2026: A reworded off the outside-data words (peer, vendor, industry, survey, external), which were almost never keyed; still wrong for the same reason.",
       "style_version": 2
     },
     {
@@ -2461,7 +2461,7 @@
         "A": "Private estimates from each manager before discussion",
         "B": "One group figure agreed after the director gives a view",
         "C": "Best-guess estimates each manager gives in the meeting",
-        "D": "The vendor's published uptime figure for the system"
+        "D": "The uptime figure the system's maker advertises"
       },
       "correct": "A",
       "key_concept": "Expert estimates are gathered from each person independently before group discussion, so no early or senior voice anchors the rest.",
@@ -2470,10 +2470,10 @@
       "wrong_explanations": {
         "B": "Discussion can sharpen estimates, but agreeing after the director speaks invites anchoring and group think, so quieter managers' knowledge is lost.",
         "C": "Estimates given aloud in the meeting are open to the same anchoring as a group figure, and single best guesses hide each manager's uncertainty.",
-        "D": "A vendor figure describes the product in general, not this firm's warehouses, and it replaces the managers' knowledge instead of reducing bias in it."
+        "D": "The maker's figure describes the product in general, not this firm's warehouses, and it replaces the managers' knowledge instead of reducing bias in it."
       },
       "tips": [
-        "Eliminate: C takes estimates spoken in the meeting, still open to anchoring, and D swaps local knowledge for a vendor's generic figure.",
+        "Eliminate: C takes estimates spoken in the meeting, still open to anchoring, and D swaps local knowledge for the maker's generic figure.",
         "Final two: A beats B because estimates given privately first are not anchored by the director; discussion can come after, not before.",
         "Exam cue: to reduce bias in expert estimates, collect them independently before the group meets, then discuss the differences."
       ],
@@ -2483,7 +2483,7 @@
         "Expert judgment",
         "Anchoring bias"
       ],
-      "_provenance": "Authored from concept: notes 2B4.3 (Choosing a Method: Data, Decisions, FAIR and Monte Carlo). Round 5, 4 Nov 2026: original scenario (a logistics firm gathering outage estimates from six warehouse managers) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Neighbours checked: crisc_d2_017 (a loss range from expert estimates), crisc_d2_032 (ratings made over different time frames), crisc_d1_094 (owner and risk team disagree after weighing evidence), CISA d3_046 (independent cost estimate); none tests how estimates are gathered. Review fixes 4 Nov 2026 (standards audit and concept review): option C reworded to best-guess estimates each manager gives in the meeting (it keeps 'estimates' and 'manager', so no stem word appears only in the key), so it no longer reads like the private individual input that IR 8286A Table 4 recommends; 'more managers' was not used, since polling several SMEs reduces bias and would be a second answer.",
+      "_provenance": "Authored from concept: notes 2B4.3 (Choosing a Method: Data, Decisions, FAIR and Monte Carlo). Round 5, 4 Nov 2026: original scenario (a logistics firm gathering outage estimates from six warehouse managers) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Neighbours checked: crisc_d2_017 (a loss range from expert estimates), crisc_d2_032 (ratings made over different time frames), crisc_d1_094 (owner and risk team disagree after weighing evidence), CISA d3_046 (independent cost estimate); none tests how estimates are gathered. Review fixes 4 Nov 2026 (standards audit and concept review): option C reworded to best-guess estimates each manager gives in the meeting (it keeps 'estimates' and 'manager', so no stem word appears only in the key), so it no longer reads like the private individual input that IR 8286A Table 4 recommends; 'more managers' was not used, since polling several SMEs reduces bias and would be a second answer. Cue pass 2, 5 Nov 2026: D reworded off the outside-data words (peer, vendor, industry, survey, external), which were almost never keyed; still wrong for the same reason.",
       "style_version": 2
     },
     {
@@ -2681,7 +2681,7 @@
       "question": "A car maker's BIA ranks its parts-labeling system as low priority because only four staff use it, yet the assembly line stops within an hour without labels. What should the risk practitioner recommend as BEST?",
       "options": {
         "A": "Keep the low rank the user count gives it",
-        "B": "Have IT set the system's recovery time",
+        "B": "Update its recovery time to IT's capability",
         "C": "Rank the system by the outage impact it causes",
         "D": "Rank the system by the cost of replacing it"
       },
@@ -2705,7 +2705,7 @@
         "Dependency",
         "Recovery priority"
       ],
-      "_provenance": "Authored from concept: notes 2B2.1 (BIA Purpose, Dependencies and AI Systems). Round 5, 4 Nov 2026: original scenario (a car maker's labeling system ranked low on revenue though the line stops without it) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Neighbours checked: crisc_d2_036 (a dependency missing from the BIA), crisc_d1_030 (asset value from business impact), CISA d4_083 (map RTOs to BIA tiers); none tests a supporting system inheriting a process's criticality. Review fixes 4 Nov 2026 (standards audit and concept review): the ranking basis changed from revenue to user count, because the revenue version mirrored CISA d4_253 (a BIA ranking a process low because it earns no revenue); stem, option A, its explanation, key_concept, explanation and subtopic matched. Neighbour added: CISA d4_253.",
+      "_provenance": "Authored from concept: notes 2B2.1 (BIA Purpose, Dependencies and AI Systems). Round 5, 4 Nov 2026: original scenario (a car maker's labeling system ranked low on revenue though the line stops without it) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Neighbours checked: crisc_d2_036 (a dependency missing from the BIA), crisc_d1_030 (asset value from business impact), CISA d4_083 (map RTOs to BIA tiers); none tests a supporting system inheriting a process's criticality. Review fixes 4 Nov 2026 (standards audit and concept review): the ranking basis changed from revenue to user count, because the revenue version mirrored CISA d4_253 (a BIA ranking a process low because it earns no revenue); stem, option A, its explanation, key_concept, explanation and subtopic matched. Neighbour added: CISA d4_253. Cue pass 2, 5 Nov 2026: B reworded (was 'Have IT set the system's recovery time'): a wrong option now opens 'Update', so that opening no longer points to the key.",
       "style_version": 2
     },
     {
@@ -2756,7 +2756,7 @@
       "options": {
         "A": "An internal audit review of the entries each year",
         "B": "Owner reviews of their own entries on a set cycle",
-        "C": "Monthly updates by the risk team, not quarterly ones",
+        "C": "Monthly updates by the risk team on owners' behalf",
         "D": "A yearly summary of changes sent to each owner"
       },
       "correct": "B",
@@ -2765,7 +2765,7 @@
       "correct_explanation": "An entry is only as current as its owner's knowledge of the business: changes in volumes, suppliers or plans that the risk team cannot see. Owners reviewing their own entries on a set cycle, with the risk team facilitating and challenging, keeps ratings grounded and keeps owners accountable for the decisions. A yearly internal audit review is the runner-up: it gives independent assurance on the register, but it does not replace the owners' own review.",
       "wrong_explanations": {
         "A": "Internal audit can give assurance that the register is maintained well, but a yearly audit review cannot supply the owners' business knowledge or accountability.",
-        "C": "Updating more often from the same view keeps the owners out; the gap is who reviews the entries, not how often the risk team does.",
+        "C": "Updating more often on the owners' behalf still keeps them out; the gap is who reviews the entries, not how often the risk team does.",
         "D": "A summary informs owners after the fact; it does not ask them to review or confirm the entries they are accountable for."
       },
       "tips": [
@@ -2779,7 +2779,7 @@
         "Risk owner",
         "Register review"
       ],
-      "_provenance": "Authored from concept: notes 2B3.2 (Keeping the Register Current). Round 5, 4 Nov 2026: original scenario (a freight broker's risk team updating every entry while named owners never review them) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Neighbours checked: crisc_d2_060 (IT security named as owner on every entry), crisc_d3_022 (ownership shown by recorded decisions), crisc_d3_077 (control self-assessment facilitated by the risk function), CISA d2_112 (a register tool with owners and an audit trail); internal audit is wrong here because assurance does not replace the owners' review.",
+      "_provenance": "Authored from concept: notes 2B3.2 (Keeping the Register Current). Round 5, 4 Nov 2026: original scenario (a freight broker's risk team updating every entry while named owners never review them) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Neighbours checked: crisc_d2_060 (IT security named as owner on every entry), crisc_d3_022 (ownership shown by recorded decisions), crisc_d3_077 (control self-assessment facilitated by the risk function), CISA d2_112 (a register tool with owners and an audit trail); internal audit is wrong here because assurance does not replace the owners' review. Cue pass 2, 5 Nov 2026: C now has the risk team update monthly on owners' behalf, an owner in an easy distractor, so the owner options no longer point to the key.",
       "style_version": 2
     },
     {
@@ -2794,7 +2794,7 @@
         "A": "Rely on STRIDE's tampering and disclosure categories",
         "B": "Add an output filter before the chatbot goes live",
         "C": "Add AI attack classes such as prompt injection",
-        "D": "Replace the threat model with a vendor penetration test"
+        "D": "Replace the threat model with a penetration test"
       },
       "correct": "C",
       "key_concept": "Threat models for AI systems add AI attack classes, such as prompt injection, that general methods like STRIDE do not prompt.",
@@ -2816,7 +2816,7 @@
         "STRIDE",
         "Prompt injection"
       ],
-      "_provenance": "Authored from concept: notes 2A2.3 (AI-Specific Threats). Round 5, 4 Nov 2026: original scenario (a building society's STRIDE-only threat model for a chatbot that reads account data) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Neighbours checked: crisc_d2_024 (a threat feed offered as the threat analysis), crisc_d2_004 (prompt injection through resumes), CC cc_d5_064 (where web pages enter a chatbot) and cc_d5_042 (a STRIDE category), CISA d5_131 (when to apply STRIDE) and d1_119 (prompt-injection controls), AAIA aaia_d2_016 (most significant assistant threat); none tests a threat model's method missing AI attack classes. Review fixes 4 Nov 2026 (standards audit and concept review): 'building society' (a UK term) changed to 'savings bank' for a globally recognisable setting.",
+      "_provenance": "Authored from concept: notes 2A2.3 (AI-Specific Threats). Round 5, 4 Nov 2026: original scenario (a building society's STRIDE-only threat model for a chatbot that reads account data) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Neighbours checked: crisc_d2_024 (a threat feed offered as the threat analysis), crisc_d2_004 (prompt injection through resumes), CC cc_d5_064 (where web pages enter a chatbot) and cc_d5_042 (a STRIDE category), CISA d5_131 (when to apply STRIDE) and d1_119 (prompt-injection controls), AAIA aaia_d2_016 (most significant assistant threat); none tests a threat model's method missing AI attack classes. Review fixes 4 Nov 2026 (standards audit and concept review): 'building society' (a UK term) changed to 'savings bank' for a globally recognisable setting. Cue pass 2, 5 Nov 2026: D reworded off the outside-data words (peer, vendor, industry, survey, external), which were almost never keyed; still wrong for the same reason.",
       "style_version": 2
     },
     {
