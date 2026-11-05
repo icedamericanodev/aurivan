@@ -38,9 +38,17 @@ Batched for the end of the uplift (web v13, mobile 2.0.0; DECISIONS 8). Write th
 - In high contrast mode, your picked answer, confidence and filters now stand out clearly, and every button keeps its edge.
 - Study notes titles no longer run into their read counts on small phones, and large text settings now apply on every page from the moment it opens.
 - Each study note now opens as its own reading page, with a way back to the list and the next note one tap away.
+- After you answer, Show question and options brings back all four choices, so every tip is easy to follow.
+- In exam week, Today still shows how many answers you have toward your first readiness range.
+- On phones, the glossary shows its first terms right away, with filters and A to Z in tidy scrolling rows.
 - After a wrong answer, all three tips now stay open; only a long explanation folds under Read more.
 - Learn's tiles sit two by two on phones, and the answer screen shows the note, the principle, the terms and your note on every screen size.
 - Screen readers now hear which practice answer you picked, and the glossary letters are easier to tap.
+- Today, Learn, Practice, You and Settings now say things in fewer, shorter words.
+- Study notes topics are easier to scan: each name in plain type, with one line for progress and reading time.
+- On wide screens, Check yourself beside a note now matches the note's own Practice this concept button.
+- After you answer, the other choices sit right under your answer, so the tips are easy to follow.
+- Screen readers now move through study notes by heading in a clear order.
 
 ## Follow-ups to do at the release
 - `mobile/src/engine/plantLooks.ts` `howToOpen` says "in the Herbarium": change to "in Badges" and rebuild `assets/kaisip-plant.js` in the same commit.
@@ -62,6 +70,7 @@ Batched for the end of the uplift (web v13, mobile 2.0.0; DECISIONS 8). Write th
 
 ## Carry into the next push (from the type leftovers review)
 - Glossary letter buttons are 28px tall on phones: bring them to the 44px target block. (Web done in Phase 4 review round 3: 44px wide and tall at every width.)
+- Phone, to match web 4c review round 3: after an answer, list the options the answer rows have not shown as muted rows under an "Other options" caption (not in exam mode), so every letter the tips name is visible (`PHASE4.md` 4.2 step 2).
 - Phone, same release as the web O1 build: stop calling `splitMissTips` in `app/session.tsx` so all three tips are open after a miss (PHASE4.md 7.10).
 - Source titles in `framework_ref` with spaced en or em dashes (52 questions): the web shows them as a colon; fix the originals in a content pass and show the same on the phone.
 - Glossary letter grid at 200% text leaves an orphan letter (5,5,5,5,5 then Z): even rows.

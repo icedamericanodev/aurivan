@@ -172,21 +172,18 @@ The kit has no answer screen; four experts (behavioural scientist, product manag
 - **Option B, 4 of 4:** one order for a right answer, a miss and Time's up, on web and phone at every width: verdict and coach line; one answer card (your pick with its Why not note, the best answer; no tinted fills); Key idea; "How to think about it" with Eliminate two, Final two and Exam cue in that order; Why; Go deeper; the source row with a visible "Report a problem"; a sticky Next question.
 - **Tips always open, 3 of 4.** Only a long Why folds after a miss ("Read more", screen readers hear it all). This reverses the mobile 1.43 fold of Eliminate two and Final two, so it waits for Sky (`PHASE4.md` O1); until then the fallback in section 4.6 keeps the fold and never folds the tip the coach line names.
 - **Tie (2 to 2) on tips before or after the Why:** tips first, the split rule's "least change" (today's order after a miss).
+- **Amended, 4c-web review round 3:** the web answer card also lists the other options, muted, under the best answer, so every letter a tip names is on screen beside the tips (`PHASE4.md` 4.2 step 2); the phone mirrors it in its next pass.
 - **Also:** "Time's up" in the miss tone, never clay; tips stay in the main column from 1240px (the margin card and its skip link go); no automatic hyphenation; focus to the verdict after 400ms with one spoken label. Display letters on screen; `data-l` and the letter mapping are untouched.
 
 Why: explained feedback in one predictable place helps learners carry the reasoning to new questions; folding the tips hid the part the coach line points to.
 
 ## 17. Sky's Phase 4 answers and short interface text (owner, Sky, 5 Nov 2026)
 
-Sky answered the Phase 4 questions in chat (`phase4b/p4-owner-answers.md`; the O table in `PHASE4.md` section 2 now has an answer column).
+Sky answered the Phase 4 questions in chat (`phase4b/p4-owner-answers.md`; every answer is in `PHASE4.md` section 2):
 
-- **O1, yes:** after a miss all three tips (Eliminate two, Final two, Exam cue) are open; only a long Why folds under Read more. Same on web and phone. This replaces the mobile 1.43 fold and settles DECISIONS 16.
-- **O2, yes:** a read-only phone Glossary (search, area chips, A to Z rows, each meaning and "Read the note") and its Learn tile. No flashcards or mastered mark this round; the mark comes with backup, sync and the web import in the bundle-rebuild release.
-- **O3 and O4, yes (web):** a `#learn` hub in the kit's order, and notes as their own reading page with a back link.
-- **O7, yes:** the phone shows the Mindset strip with the website's list. The phone's content build reads the `MINDSET` list from `index.html` (one source, word for word), so the two apps cannot drift.
-- **O8, yes:** the phone gets the Weak spots drill row with the website's `startWeakSpotsDrill` rule.
-- **Defaults kept, not asked:** O5 and O6 later; O9 "The score needed is 450"; O15 one word, "Mastered"; O16 "Saved questions" on both.
-- **Sky's three web fixes:** Learn tiles 2 by 2 at 390 (one column only from 1.3x text or under 360px; an odd last tile spans the width); a web-only Learn subtitle; the Eliminate tip shown after a miss.
-- **Short interface text:** "dont make it too wordy consider users attention span." Every interface line on Today, Learn, Practice, You, Settings, the plant, badges and drills is one short idea: sublines about 6 words, notes one short sentence (about 12 words), nothing explained twice on one screen. Cut, never hide meaning; honesty lines stay. Course content (questions, options, explanations, tips, notes, glossary, lessons, principles, the exam guide, Final review week) stays word for word. Phone examples: Today's line under the title is the exam date only (the twig says the study days); You's sentence is "Focus next: {area}, where you'll gain most · 38 days to go." (the tiles and readiness card say the days and the range); the low end is three short sentences; the Practice pace offer adds only "It pauses while you read each explanation." Words in files compiled into the website bundles wait for the bundle-rebuild release.
+- **Yes to O1, O2, O3, O4, O7 and O8.** After a miss all three tips are open and only a long Why folds (web and phone; replaces the mobile 1.43 fold). The phone gets a read-only Glossary, the Mindset strip and the Weak spots drill row. The website Learn is its own hub at `#learn` in the kit order, and each web note is its own reading page with a back link.
+- **Defaults kept:** O5 and O6 (drills and the question bank on the web) later; O9 "The score needed is 450"; O15 one word, "Mastered"; O16 "Saved questions" on both builds.
+- **Sky's own fixes to the first web build:** Learn tiles 2 by 2 at normal text (one column only from 1.3x text or under 360px; an odd last tile spans), a web Learn line with no lessons wording, and the Eliminate tip always shown after a miss.
+- **Short interface text:** one idea per line, sublines about 6 words, notes one short sentence, nothing said twice on a screen; cut, never hide meaning, and keep honesty lines. Interface text only: course content (questions, options, explanations, tips, notes, glossary, lessons, principles, exam guide, final review week) stays word for word. The web pass is listed in `PHASE4.md` section 12; the phone mirrors it in its own pass, and the 4b designs follow the same rule.
 
-Why: Sky's answers turn the panel's recommendations into the build, and short lines respect a tired learner's attention without dropping anything they need.
+Why: Sky's answers settle the open navigation and answer-screen questions, and shorter interface text respects a learner's attention without losing anything they need.
