@@ -5289,8 +5289,8 @@
       "bloom_level": "Application",
       "question": "An Estonian executive-search firm's recruiters all use a language model fine-tuned on every candidate file, though many files are restricted to named recruiters. What should the IS auditor recommend FIRST?",
       "options": {
-        "A": "Add an output filter that hides restricted candidates' names",
-        "B": "Delete the restricted files from the firm's document store",
+        "A": "Add an output filter hiding restricted candidates' names from recruiters",
+        "B": "Remove every restricted file from the model's tuning dataset",
         "C": "Limit use of the model to recruiters cleared for every file",
         "D": "Retrain the model without restricted files at the next cycle"
       },
@@ -5300,11 +5300,11 @@
       "correct_explanation": "A tuned model can reveal details from any file it learned to anyone who queries it, so it is as sensitive as its most restricted training file. Until restricted content is removed, only recruiters cleared for every file should use it. Retraining without the restricted files is the lasting fix, but until the next cycle ends every recruiter can still draw out restricted candidates' details.",
       "wrong_explanations": {
         "A": "Tempting because names are the obvious leak. But reworded questions can draw out a restricted candidate's salary or situation without a name, so exposure continues.",
-        "B": "Tempting because it removes the restricted source. But the model already learned from those files, so deleting them leaves the exposure and loses the firm's records.",
+        "B": "Tempting because it removes the restricted source. But the model has already learned from those files, so removing them from the tuning set changes nothing until a retrain.",
         "D": "Tempting because it removes restricted content for good. But every recruiter can draw it out until the next cycle ends; use must be limited now."
       },
       "tips": [
-        "Eliminate: A filters names only, but reworded questions still draw out restricted details, and B deletes source files the tuned model has already learned from.",
+        "Eliminate: A filters names only, but reworded questions still draw out restricted details, and B cleans a tuning set the model has already learned from.",
         "Final two: C beats D because the model already holds every file's content; retraining is the lasting fix, but exposure continues until it is done.",
         "Exam cue: a tuned model is as sensitive as the most restricted data it learned; limit who uses it until that content is removed by rebuilding."
       ],
@@ -5323,10 +5323,10 @@
       "subtopic": "2B AI lifecycle. Retiring a scheduling agent",
       "difficulty": "foundational",
       "bloom_level": "Foundational",
-      "question": "A Chilean architecture firm retired its meeting-scheduling agent by deleting its service account; each staff member had granted it access to their mailbox. What should the IS auditor recommend FIRST?",
+      "question": "A Chilean architecture firm retired its meeting-scheduling agent by deleting its service account; staff had each authorized the agent's app to read their mailbox. What should the IS auditor recommend FIRST?",
       "options": {
         "A": "Confirm the account deletion in the next access review",
-        "B": "Revoke the access each user delegated to the agent",
+        "B": "Revoke the access users delegated to the agent",
         "C": "Revoke the agent's API key with its model vendor",
         "D": "Update the AI inventory to show the agent as retired"
       },
@@ -6063,20 +6063,20 @@
       "options": {
         "A": "A small targeted share can still lift that seller's ranking",
         "B": "Overall ranking accuracy may fall below the team's tolerance",
-        "C": "Removing the bot clicks may leave too little data to retrain",
-        "D": "Bot clicks may inflate the site's reported engagement figures"
+        "C": "The bot accounts may be copying the ranking model through queries",
+        "D": "Bot clicks may inflate that seller's reported engagement figures"
       },
       "correct": "A",
       "key_concept": "Targeted poisoning can shift outcomes for chosen items with a tiny share of training data while overall accuracy stays normal.",
-      "pre_read": "Compare the bot clicks with the clicks for that seller's searches, not with all clicks.",
+      "pre_read": "When a figure is offered as reassurance, ask what it measures and what it leaves out.",
       "correct_explanation": "Targeted poisoning does not need a large share of the data. Clicks concentrated on one seller can move that seller's ranking for the queries attacked, while the model's overall accuracy barely changes. That is why a falling overall score is the wrong thing to watch. The team's 0.04% figure measures the attack against all clicks, not against the clicks for the queries it targets.",
       "wrong_explanations": {
         "B": "Tempting because accuracy is the usual health check. But targeted poisoning leaves overall accuracy almost unchanged while shifting results for chosen items.",
-        "C": "Tempting because cleaning shrinks a data set. But dropping 2,000 of 5 million clicks barely dents it; the risk is what the model already learned from them.",
-        "D": "Tempting because bot traffic distorts site statistics. But inflated engagement figures do not move rankings; the risk is the seller the poisoned clicks lift."
+        "C": "Tempting because bots that query a model can help copy it. But these clicks were fed into training; the risk is what the model learned from them.",
+        "D": "Tempting because bot traffic distorts the seller's listing statistics. But reported engagement figures do not move rankings; the risk is the ranking lift the poisoned training clicks give."
       },
       "tips": [
-        "Eliminate: C fears a data shortfall, though dropping 2,000 of 5 million clicks leaves ample data, and D worries about engagement reports, which do not set rankings.",
+        "Eliminate: C mistakes the attack for model copying, though these clicks fed the model's training, and D worries about engagement reports, which do not set rankings.",
         "Final two: A beats B because targeted poisoning moves chosen results while overall accuracy stays normal; a small share can be decisive for one seller.",
         "Exam cue: judge poisoning by its share of the targeted slice, not of the whole dataset; overall metrics can hide it."
       ],

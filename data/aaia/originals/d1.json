@@ -2956,7 +2956,7 @@
       "subtopic": "1A AI models and requirements. Generative models making decisions",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "A Chilean gadget insurer's pilot ran each of 2,000 test claims once through a general-purpose generative model deciding coverage from the policy wording; it matched adjusters on 94%. What should concern the IS auditor MOST?",
+      "question": "A Chilean gadget insurer's pilot put each of 2,000 test claims once through a general-purpose generative model deciding coverage from the policy wording; it matched adjusters on 94%. What should concern the IS auditor MOST?",
       "options": {
         "A": "Adjusters' own decisions may be a flawed benchmark",
         "B": "The provider may have retrained the model during the pilot",
@@ -3149,7 +3149,7 @@
       },
       "correct": "C",
       "key_concept": "A model is not finished at launch: the data it meets keep changing, so building one needs funded owners who monitor, revalidate and retrain it.",
-      "pre_read": "Ask what keeps the model working the day after launch, not just how well it starts.",
+      "pre_read": "Note what the business case pays for and what it does not, then rank each risk by realistic harm to the people relying on it.",
       "correct_explanation": "Unlike fixed software, a model's accuracy depends on the data it meets, and a volcano's seismic patterns can shift over time. With nothing funded after launch, no one is paid to monitor or retrain the model, so accuracy could fade unnoticed in a life-safety system. Accuracy against vendor products, option B, matters at selection, but even the best model at launch needs upkeep.",
       "wrong_explanations": {
         "A": "Tempting because AI methods change fast. But looking dated is about novelty, not harm; the risk that matters is warnings degrading while nobody watches.",
@@ -3800,25 +3800,25 @@
       "subtopic": "1D Privacy and data governance. Fine-tuning at a provider",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "A Kazakh airline fine-tuned a complaint-reply model on passenger emails at its provider's tuning service; the IS auditor is testing whether emails are deleted when their retention period ends. Which evidence is BEST?",
+      "question": "A Kazakh airline fine-tuned a special-assistance planning model on passengers' request forms at its provider's tuning service; the IS auditor is testing whether forms are deleted when retention ends. Which evidence is BEST?",
       "options": {
-        "A": "Logs showing the airline's own email copies erased on schedule",
-        "B": "The provider's terms barring use of the emails for other models",
+        "A": "Logs showing the airline's own form copies deleted on schedule",
+        "B": "The provider's terms barring use of the forms for other models",
         "C": "Provider deletion records for the uploaded files and the tuned model",
-        "D": "Test results showing the tuned model does not repeat passengers' emails"
+        "D": "Test results showing the tuned model does not repeat passengers' details"
       },
       "correct": "C",
       "key_concept": "Retention and deletion must cover every copy an AI service creates: training files uploaded to a provider and the tuned model built from them.",
-      "pre_read": "List every place the emails went during tuning, then ask which records could show each was dealt with.",
-      "correct_explanation": "Fine-tuning at a provider's service uploads training files and creates a custom model there, both holding passengers' email content. Only the provider's records can show whether those uploads were deleted and what became of the tuned model when the emails expired. Logs of the airline's own erasures, option A, are real evidence, but they cover only the copies the airline holds, not those the tuning service created.",
+      "pre_read": "List every place the forms went during tuning, then ask which records could show each was dealt with.",
+      "correct_explanation": "Fine-tuning at a provider's service uploads training files and creates a custom model from them there, both copies the retention rule must reach. Only the provider's records can show whether those copies were deleted when the forms expired. A memorization test, option D, is real evidence about leakage, but a model that repeats no passenger details still exists at the provider, built from them; it does not show deletion.",
       "wrong_explanations": {
         "A": "Tempting because they show the routine ran on time. But they cover only the airline's own copies; the uploads and the tuned model at the provider fall outside them.",
-        "B": "Tempting because providers may reuse customer data. But terms on reuse say nothing about whether the uploaded emails were deleted when their retention period ended.",
-        "D": "Tempting because memorization is a real privacy risk. But a model that repeats no emails may still sit at the provider, built from them; that test says nothing about deletion."
+        "B": "Tempting because providers may reuse customer data. But terms on reuse say nothing about whether the uploaded forms were deleted when their retention period ended.",
+        "D": "Tempting because memorization tests are key evidence for trained models. But they show leakage, not deletion; a model that repeats nothing still sits at the provider, built from the forms."
       },
       "tips": [
-        "Eliminate: B concerns reuse, not deletion, and D tests what the model repeats, not whether the uploads and the model itself were deleted at the provider.",
-        "Final two: C beats A because the tuning service made copies the airline's logs never see; only the provider's records show what happened to them.",
+        "Eliminate: A covers only the airline's own copies, though the tuning service holds uploads and a tuned model, and B concerns reuse, not deletion.",
+        "Final two: C beats D because a memorization test shows leakage, not deletion; a model that repeats nothing still sits at the provider, built from the forms.",
         "Exam cue: map every copy an AI service creates, including uploads and tuned models at the provider, before accepting that data was deleted."
       ],
       "framework_ref": "NIST SP 800-53 Rev. 5 SI-12 (Information Management and Retention); NIST AI 600-1 Section 2.4 (Data Privacy)",
@@ -3827,7 +3827,7 @@
         "Fine-tuning services",
         "Deletion scope"
       ],
-      "_provenance": "Authored from concept: notes 1D.3 Retention, Deletion and Model Memorization (retention and deletion must reach every copy an AI service makes, including uploaded training files and the tuned model). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 5, 5 Nov 2026.",
+      "_provenance": "Authored from concept: notes 1D.3 Retention, Deletion and Model Memorization (retention and deletion must reach every copy an AI service makes, including uploaded training files and the tuned model). Final fix, 5 Nov 2026: setting changed to special-assistance request forms so it no longer reuses aaia_d1_043's email fine-tuning frame. Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 5, 5 Nov 2026.",
       "style_version": 2
     },
     {
@@ -3984,28 +3984,28 @@
       "subtopic": "1E Ethics, regulations and standards. Planning with the NIST AI RMF",
       "difficulty": "foundational",
       "bloom_level": "Foundational",
-      "question": "An Argentine provincial road-safety agency wants to use the NIST AI RMF to plan improvements across its twelve AI uses. Which approach should the IS auditor consider BEST aligned with the framework?",
+      "question": "An Argentine provincial road-safety agency will use the NIST AI RMF to plan improvements across its twelve AI uses, seven of them generative. Which approach should the IS auditor consider BEST aligned with the framework?",
       "options": {
-        "A": "Apply the Generative AI Profile's actions to each of the twelve uses",
+        "A": "Apply the Generative AI Profile's actions to the seven generative uses",
         "B": "Compare current and target profiles, then plan to close the gaps",
         "C": "Adopt the framework as mandatory regulation for its twelve AI uses",
-        "D": "Seek NIST certification once the four functions are in place"
+        "D": "Plan improvements for the newest AI uses before older ones"
       },
       "correct": "B",
       "key_concept": "The NIST AI RMF uses profiles: comparing a current profile with a target profile shows gaps, and closing them is prioritized by risk.",
       "pre_read": "Recall how the framework describes planning: where the organization is now, where it wants to be, and what comes first.",
-      "correct_explanation": "The AI RMF describes current and target profiles: a current profile shows how AI risk is managed today, a target profile the outcomes needed, and comparing them reveals gaps for action plans prioritized by risk and resources. Applying the Generative AI Profile to each of the twelve uses, option A, confuses NIST's cross-sectoral profile for generative AI with the current and target profiles that show this agency's own gaps.",
+      "correct_explanation": "The AI RMF describes current and target profiles: a current profile shows how AI risk is managed today, a target profile the outcomes needed, and comparing them reveals gaps for action plans prioritized by risk and resources. Applying the Generative AI Profile to the seven generative uses, option A, confuses NIST's cross-sectoral profile for generative AI with the current and target profiles that show this agency's own gaps.",
       "wrong_explanations": {
-        "A": "Tempting because NIST AI 600-1 is also a profile. But it profiles generative AI risks across sectors; it shows neither where these uses stand nor which gaps come first.",
+        "A": "Tempting because NIST AI 600-1 profiles generative AI. But it lists cross-sector risks and actions; it shows neither where these uses stand nor which gaps come first.",
         "C": "Tempting because frameworks feel authoritative. But the NIST AI RMF is voluntary; the agency may adopt it, but that does not make it regulation.",
-        "D": "Tempting because some standards certify. But NIST offers no AI RMF certification; the framework is guidance for managing risk, not a scheme to certify against."
+        "D": "Tempting because new AI uses feel riskiest. But the framework orders gaps by risk and resources; novelty alone shows neither where harm is likely nor current gaps."
       },
       "tips": [
-        "Eliminate: D seeks a certification NIST does not offer, and C treats a voluntary framework as regulation.",
-        "Final two: B beats A because current and target profiles show this agency's gaps to close by priority; the Generative AI Profile is a catalog of generative risks, not a gap analysis.",
+        "Eliminate: D orders the work by novelty rather than risk, and C treats a voluntary framework as regulation.",
+        "Final two: B beats A because current and target profiles show this agency's own gaps to close by priority; the Generative AI Profile lists generative AI risks and suggested actions, not a gap analysis.",
         "Exam cue: in the NIST AI RMF, current and target profiles turn the framework into a prioritized, risk-based plan."
       ],
-      "framework_ref": "NIST AI 100-1 Executive Summary (Framework intended to be voluntary and use-case agnostic); NIST AI 100-1 MANAGE 1.2 (Treatment prioritized by impact, likelihood and resources)",
+      "framework_ref": "NIST AI 100-1 Section 6 (AI RMF Profiles); NIST AI 100-1 MANAGE 1.2 (Treatment prioritized by impact, likelihood and resources)",
       "related_concepts": [
         "NIST AI RMF",
         "Profiles",
@@ -4024,24 +4024,24 @@
       "options": {
         "A": "Have management treat Govern as complete, since policies were approved",
         "B": "Have the IS auditor refresh the AI policy every year",
-        "C": "Run the Map function again for each model each year",
+        "C": "Have model owners update risk tolerances when mapping each model",
         "D": "Have senior management review Govern outcomes as AI uses change"
       },
       "correct": "D",
       "key_concept": "In the NIST AI RMF, Govern is cross-cutting and ongoing: its policies, roles and tolerances need periodic review as AI uses change.",
       "pre_read": "Ask whether governance set two years ago still fits the models adopted since.",
-      "correct_explanation": "The AI RMF calls Govern cross-cutting, infused throughout the other functions, and calls attention to governance a continual requirement over an AI system's lifespan. Policies, roles and tolerances set in 2024 may not fit models adopted since, so senior management should review Govern outcomes as uses change. Rerunning Map for each model, option C, refreshes each model's context but leaves the governance it is judged against unreviewed.",
+      "correct_explanation": "The AI RMF calls Govern cross-cutting, infused throughout the other functions, and calls attention to governance a continual requirement over an AI system's lifespan. Policies, roles and tolerances set in 2024 may not fit models adopted since, so senior management should review Govern outcomes as uses change. Having model owners update tolerances while mapping each model, option C, hands senior management's tolerances to owners and leaves the 2024 policies and roles unreviewed.",
       "wrong_explanations": {
         "A": "Tempting because the policies were approved. But Govern is cross-cutting and ongoing; policies set in 2024 need review as new AI uses arrive.",
         "B": "Tempting because audit sees where governance falls short. But writing policy is management's job; audit assesses the policy and would lose independence by maintaining it.",
-        "C": "Tempting because Map sets each model's context. But it judges each model against 2024 governance, leaving roles and tolerances unreviewed as uses change."
+        "C": "Tempting because the Map function documents risk tolerances. But senior management sets them; owners adjusting tolerances model by model leave the 2024 policies and roles unreviewed."
       },
       "tips": [
         "Eliminate: A treats Govern as a one-time project, and B has the IS auditor maintain policy that audit must assess.",
-        "Final two: D beats C because Govern is ongoing; rerunning Map per model still measures against governance nobody has reviewed since 2024.",
+        "Final two: D beats C because Govern is ongoing and tolerances are senior management's; owners adjusting them model by model leave the 2024 policies and roles unreviewed.",
         "Exam cue: in the NIST AI RMF, Govern is cross-cutting and continuing; look for periodic review of policies, roles and tolerances, not a finished project."
       ],
-      "framework_ref": "NIST AI 100-1 GOVERN 1.5 (Ongoing monitoring and periodic review of the risk management process); NIST AI 100-1 GOVERN 2.3 (Executive leadership takes responsibility for AI risk decisions)",
+      "framework_ref": "NIST AI 100-1 Section 5.1 (Govern is a cross-cutting function infused throughout the others); NIST AI 100-1 GOVERN 1.5 (Ongoing monitoring and periodic review of the risk management process)",
       "related_concepts": [
         "NIST AI RMF",
         "Govern function",

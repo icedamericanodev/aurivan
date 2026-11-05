@@ -812,7 +812,7 @@
           "how_it_works": [
             "Retention schedules cover training sets, prompt and output logs, model versions and the records needed to explain past decisions.",
             "Copies in retrieval indexes, embeddings, caches and a provider's tuning service, including uploaded files and tuned models, fall under the same retention and deletion rules as originals.",
-            "Models can memorize rare or repeated training examples; keeping personal data in a retrieval index rather than model weights lets deletion take effect at once.",
+            "Models can memorize rare or repeated examples; memorization tests show leakage, not deletion. Data kept in a retrieval index, not model weights, can be deleted at once.",
             "When personal data must be erased, the owner assesses affected models: retrain, filter outputs or document low risk, with the privacy officer confirming the choice meets the legal duty.",
             "Prompt and output logs often hold personal data and need their own retention limits and access controls.",
             "Retired models and their data are disposed of securely, while decision logs that must be kept are preserved."
