@@ -1,6 +1,6 @@
 # CRISC course plan: from the pilot to a sellable pack
 
-**Status:** plan, 30 Oct 2026; round 8 done 5 Nov 2026 (bank 450, on the outline weights). CRISC is a **paid course** learners buy in the
+**Status:** plan, 30 Oct 2026; round 9 done 5 Nov 2026 (bank 475, on the outline weights). CRISC is a **paid course** learners buy in the
 app (6-month access, one payment, never renews; see
 `docs/business/monetization/RECOMMENDATION.md`). Outline and sources:
 `docs/content/CRISC_BLUEPRINT.md`. Item standard:
@@ -20,7 +20,7 @@ it can be sold:
 |---|---|---|---|
 | Blueprint | `docs/content/CRISC_BLUEPRINT.md` | cert-blueprint-researcher | Done, 30 Oct 2026 |
 | Study notes | `data/crisc/notes/d{1..4}.json` + `_course.json` (strategy tips, cross-domain connections) | crisc-d{N}-domain-expert | All 43 outline sub-areas, 115 subtopics, Practice this concept links (`data/crisc/tools/sync_practice_ids.py`) |
-| Questions | `data/crisc/originals/d{1..4}.json` | crisc-d{N}-domain-expert | 450 reviewed (117 / 99 / 144 / 90) after round 8, each domain on its weight: a full 150-item mock and a short 50-item mock without repeats |
+| Questions | `data/crisc/originals/d{1..4}.json` | crisc-d{N}-domain-expert | 475 reviewed (124 / 104 / 152 / 95) after round 9, each domain on its weight: a full 150-item mock and a short 50-item mock without repeats |
 | Citation library | `data/crisc/originals/_framework_library.md` | domain experts | Started with the pilot |
 | Principles (mindset cards) | `data/crisc/mindset/principles.json` (schema `docs/content/PRINCIPLES_SCHEMA.md`) | isaca-mindset-coach | 19 principles; every item tagged |
 | Exam guide and final-review week | `data/crisc/exam/` (schema `docs/content/EXAM_GUIDE_SCHEMA.md`) | isaca-mindset-coach | Both done and reviewed |
@@ -411,6 +411,41 @@ go back to the level that approved both (d1_115), and FAIR secondary loss (d2_09
 - Keys and settings: D1 needs D keys, D4 needs B keys; plan file order so no three keys repeat. Bank or retailer settings at most twice.
 - Near-duplicate scan against CISA `data/originals` as well as AAIA and CC; list every neighbour checked in `_provenance`.
 - Keep apart in practice sets: d1_114/d3_118/d4_086, d3_138/d1_050, d3_144/d2_014/aaia_d1_067, d3_142/d3_027/d4_014, d3_137/cc_d2_020, d1_116/d2_013/d3_130, d2_096/d2_056, d2_098/d2_044/d2_065, d3_141/d3_047, d4_089/aaia_d1_012, d1_113/d2_002/d1_105.
+
+### Round 9 (5 Nov 2026): 25 items, bank 475
+
+Round 9 added 7 D1 (`crisc_d1_118`–`124`), 5 D2 (`crisc_d2_100`–`104`),
+8 D3 (`crisc_d3_145`–`152`) and 5 D4 (`crisc_d4_091`–`095`) items. Its theme
+was breaking answer patterns: two deferral keys where waiting for the scheduled
+review is right (d1_123, d3_146), four outside-data keys (d1_124, d2_101,
+d2_103, d3_152), a referral of acceptance above the owner's money authority
+(d4_091), an inherent-risk key (d2_104) and escalate/refer/agree distractors
+that stay wrong.
+
+| Stage | Result |
+|---|---|
+| Blind test | 25/25 picks matched the keys |
+| Standards audit and concept review | 0 HARD ERRORS; about 15 PRECISION fixes (d4_091 moved to money limits with tolerance stated; the ambulance fallback drill is a simulation; d3_148 framed as a risk report; subtopic labels that hinted at keys; notes 2A1.1 and 2B5.1 trimmed under 380 words) |
+| Re-blind of changed items | 11/11 (d2_103 then states the ten-year area records) |
+| Cross-domain gate | 0 HARD ERRORS, 6 PRECISION: d1_118 re-angled onto the reporting route, new runners-up for d1_122 and d1_124, d3_152's copied option pattern replaced, d3_148 reframed as the board's question, d2_018's tip no longer says inherent risk "only" shows reliance |
+| Gates | All lints 0 errors; originality 0 too close; practice links in sync; app pack dry run 0 problems; `verify_repo.sh` passes; no run of three identical keys |
+
+**Bank-wide answer cues (found by the round 9 blind test).** When two or more
+options mention an owner, the key is among them in 70 of 72 items (97%, chance
+53%); a lone owner option is the key in 2 of 59. Options opening "Refer" are
+keyed 6 of 10, "Assess" 14 of 28, and an imperative "Accept" 0 of 19. Root
+cause: calibration rule 1 is almost always met with exactly one owner decoy.
+**Next step before round 10: a cue-rebalancing pass** (about 48 distractor-only
+edits, keys untouched; plan in the round 9 cross-domain findings), then a
+blind re-test of a sample. Rule 1 is amended so new items also put an owner into
+a second distractor when the key names none.
+
+**Next round (round 10, +25 to 500):** D1 +6, D2 +6, D3 +8, D4 +5 (130/110/160/100).
+- Owner cue: at least 8 items where two distractors name an owner and the key does not (keys that validate data, compare with history, record or analyze).
+- Settings: no health, airline or airport, energy or utility, dairy or cooperative. Bank and retailer at most 2. Use charity, school district, rail, mining, research lab, government agency, insurer, publisher, sports club, museum or water transport (each at most once). No third "faulty vendor update".
+- No new acceptance-condition items (7 now) and no new "record the emerging risk now" keys. D4 slots go to 4A3, 4A6, 4B1–4B3 and give D4 its missing A key. One outside-figure counter-example in D2 or D3, where a peer or industry figure is the wrong basis because the firm's exposure differs.
+- Near-duplicate scan: compare options as well as stems (same outline code), and the option-type skeleton of same-code FIRST items.
+- Keep apart in practice sets: d1_118/d1_029/d1_099, d1_124/d1_044/cc_d1_093, d1_122/d1_006, d3_152/d3_020/d3_084, d3_148/aaia_d3_029, d3_149/CISA d4_307, d4_091/d3_024/d1_114/d3_118/d4_086, d1_123/d3_127/d3_045/d1_069, d3_146/d3_058/d1_025, d2_103/d3_152/d2_096, d2_101/d2_049/d2_090, d2_104/d2_018/d2_098/d2_071, d1_121/d1_065, d4_092/d1_063.
 
 **Open items:**
 - The `TO VERIFY` comment on the CRISC entry in `mobile/src/content/certifications.ts`

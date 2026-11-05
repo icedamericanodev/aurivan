@@ -63,6 +63,7 @@ Read first:
 Apply before any batch goes to review; audit against them. Full list and
 reasons: `docs/content/CRISC_BANK_PLAN.md` section 6.
 - Lens words (owner, assess, appetite, tolerance, scenario, objectives, evidence, register) also appear in a wrong option; at most 3 items per domain where one is key-only.
+- Owner balance (added 5 Nov 2026, round 9 cue check): when the key names an owner, put an owner in two distractors, not one; in about a third of items whose key names no owner, put an owner in two distractors too. One owner decoy beside an owner key made "pick among the owner options" right 97% of the time.
 - No option carries its own reason ("since", "because", "so that"); pre_read never reveals the key; the stem holds every fact the explanation uses against the runner-up.
 - Keys balanced and in mixed file order; options parallel in length and form.
 - The candidate is "the risk practitioner" or "the risk analyst"; money as `$600,000`; subtopic heading in sentence case.
