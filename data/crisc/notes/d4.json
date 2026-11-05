@@ -1078,14 +1078,14 @@
           "definition": "Backups are protected copies of data and systems kept so they can be restored after loss, corruption or attack, including ransomware.",
           "why_it_matters": "Backups are often the last control against ransomware and destructive attacks. If attackers can reach or encrypt them, or restores fail, the organization faces long outages or pressure to pay.",
           "how_it_works": [
-            "A common rule keeps at least three copies on two kinds of media, one offsite or offline, with decryption keys stored apart from the main site but reachable.",
+            "A common rule keeps three copies on two kinds of media, one offsite or offline, with decryption keys kept apart from the main site but reachable.",
             "Immutable or offline copies resist an attacker with administrator access; retention should outlast how long intruders may stay unnoticed.",
             "Backup frequency is set by the RPO; restore speed must support the RTO.",
             "In ransomware recovery, contain the attack first, then verify backups are clean before restoring.",
             "Restores are tested regularly, because a backup that was never restored is an untested assumption.",
             "A useful key control indicator for backups is the share of test restores meeting the RTO and RPO, not of backup jobs completed."
           ],
-          "example": "A logistics firm's backups run nightly and the console shows green every day. Sam, the IT risk analyst, asks when a full restore was last tested; the answer is never. Sam records the risk that the RTO for the dispatch system is unproven and proposes a scheduled restore test to the infrastructure manager.",
+          "example": "A logistics firm's backups run nightly and the console shows green every day. Sam, the IT risk analyst, asks when a full restore was last tested: never. Sam records the dispatch system's RTO as unproven and proposes a restore test to the infrastructure manager.",
           "audit_focus": {
             "review": [
               "Inspect backup architecture for offline or immutable copies",
