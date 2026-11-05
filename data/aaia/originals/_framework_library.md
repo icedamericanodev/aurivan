@@ -153,6 +153,8 @@ https://nvlpubs.nist.gov/nistpubs/ai/NIST.AI.100-2e2025.pdf (table of contents a
 - NIST AI 100-2e2025 Section 2.3.3 (Backdoor Poisoning)
   - Verified 4 Nov 2026: "2.3.3. Backdoor Poisoning" in the table of contents and as the section heading [NISTAML.021, NISTAML.023]; these attacks "cause the targeted model to misclassify samples containing a particular backdoor pattern or trigger".
 - NIST AI 100-2e2025 Section 2.4 (Privacy Attacks and Mitigations)
+- NIST AI 100-2e2025 Section 2.4.1 (Data Reconstruction)
+  - Verified 5 Nov 2026: "2.4.1. Data Reconstruction" in the table of contents (page 28) and as the section heading [NISTAML.032]; it covers recovering an individual's data from released aggregate information, model inversion of classifiers, and reconstructing training samples from a model, linked to memorization. It does not discuss embeddings, so do not use it alone for embedding inversion.
 - NIST AI 100-2e2025 Section 2.4.2 (Membership Inference)
   - Verified 31 Oct 2026: "2.4.2. Membership Inference" in the table of contents and as the section heading [NISTAML.033]; the attacker's goal is to determine whether a particular record was part of the training dataset.
 - NIST AI 100-2e2025 Section 2.4.4 (Model Extraction)
@@ -191,6 +193,8 @@ https://raw.githubusercontent.com/mitre-atlas/atlas-data/main/dist/ATLAS.yaml
 - MITRE ATLAS AML.T0070 (RAG Poisoning)
 - MITRE ATLAS AML.T0077 (LLM Response Rendering)
   - Verified 5 Nov 2026 in ATLAS data v5.6.0 (id AML.T0077, name "LLM Response Rendering", Exfiltration tactic AML.TA0010): the LLM is made to respond with private information hidden from the user, which is exfiltrated when the client renders the response, for example an image whose URL carries the data to an adversary-controlled server.
+- MITRE ATLAS AML.T0088 (Generate Deepfakes)
+  - Verified 5 Nov 2026 in ATLAS data v5.6.0 (id AML.T0088, name "Generate Deepfakes", AI Attack Staging tactic AML.TA0001): adversaries use GenAI to create synthetic imagery, video, audio or text that appears authentic, for impersonation in phishing or to evade AI applications such as biometric identity verification (cross-referenced to AML.T0015 Evade AI Model, whose text also names deepfakes evading AI-based biometric authentication).
 
 ## NIST SP 800-53 Rev. 5, Security and Privacy Controls (Sep 2020, updated Dec 2020)
 
