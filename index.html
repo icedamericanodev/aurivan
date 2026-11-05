@@ -1319,9 +1319,11 @@ header {
   color: var(--text2);
   text-align: left; width: 100%;
 }
-.opt:hover:not(:disabled) {
-  border-color: var(--accent); background: var(--surface2);
-  transform: translateX(4px); color: var(--text);
+@media (hover: hover) {
+  .opt:not(.picked):not(.selected):not(.mock-selected):hover:not(:disabled) {
+    border-color: var(--accent); background: var(--surface2);
+    transform: translateX(4px); color: var(--text);
+  }
 }
 .opt:disabled { cursor: default; }
 .opt-letter {
@@ -4294,8 +4296,10 @@ body {
   background: var(--tip-bg);
   border-color: var(--warning);
 }
-[data-theme="dark"] .opt:hover:not(:disabled) {
-  background: var(--surface2); border-color: var(--accent);
+@media (hover: hover) {
+  [data-theme="dark"] .opt:not(.picked):not(.selected):not(.mock-selected):hover:not(:disabled) {
+    background: var(--surface2); border-color: var(--accent);
+  }
 }
 [data-theme="dark"] .profile-card.active-profile { background: var(--surface2); }
 [data-theme="dark"] .flashcard.flipped { background: var(--surface2); }
@@ -4521,7 +4525,11 @@ header {
   font: var(--t-body); color: var(--text); min-height: 56px;
   overflow-wrap: anywhere; hyphens: manual;
 }
-.opt:hover:not(:disabled) { transform: none; background: var(--surface2); border-color: var(--control); color: var(--text); }
+/* Hover is for a mouse only, and never changes a picked option (PHASE4 section 5). */
+@media (hover: hover) {
+  .opt:not(.picked):not(.selected):not(.mock-selected):hover:not(:disabled),
+  [data-theme="dark"] .opt:not(.picked):not(.selected):not(.mock-selected):hover:not(:disabled) { transform: none; background: var(--surface2); border-color: var(--text2); color: var(--text); }
+}
 .opt-letter {
   width: 2.1429em; height: 2.1429em; border-radius: var(--r-round); background: transparent; border: 1.5px solid var(--control);
   font: var(--t-badge); min-width: 2.1429em; min-height: 2.1429em; color: var(--text2); margin-top: -3px;
@@ -4667,7 +4675,7 @@ header {
 .gt-seg-btn {
   flex: 1 0 auto; display: inline-flex; align-items: center; justify-content: center; gap: 2px;
   min-height: 44px; padding: 0 12px; border-radius: var(--r-19); cursor: pointer;
-  background: transparent; border: 1.5px solid transparent; color: var(--text2);
+  background: transparent; border: 2px solid transparent; color: var(--text2);
   font: var(--t-chip); white-space: nowrap;
 }
 .gt-seg-btn:hover { color: var(--text); }
@@ -4797,18 +4805,33 @@ summary.gt-icon-btn::-webkit-details-marker { display: none; }
 .gt-group, .gt-extra { border-bottom: 1px solid var(--border); }
 .gt-extra { margin-top: 0; }
 .gt-extra:first-of-type { margin-top: 24px; }
-.gt-group-h { margin: 0; }
-.gt-group-btn {
-  width: 100%; display: flex; align-items: center; gap: 12px; min-height: 64px; padding: 12px 0;
-  background: none; border: 0; cursor: pointer; text-align: left; color: var(--text);
+/* A group's head (Grove Phase 4, 7.2): the title is the heading, in the
+   kicker role (a list screen, R4); the meta, the count, the mark and the
+   chevron sit beside it, outside the heading. The button's ::after covers
+   the whole head, so the row is still one target with one focus ring. */
+.gt-group-hd {
+  position: relative; display: grid; grid-template-columns: minmax(0, 1fr) auto auto auto;
+  grid-template-areas: "t c k v" "s c k v"; align-items: center; column-gap: 12px; row-gap: 2px;
+  min-height: 64px; padding: 12px 0;
 }
-.gt-group-text { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
-.gt-group-title { font: var(--t-headline); letter-spacing: var(--tr-headline); color: var(--text); }
+.gt-group-h { grid-area: t; margin: 0; }
+.gt-group-hd > .gt-group-meta { grid-area: s; margin: 0; }
+.gt-group-hd > .gt-group-count { grid-area: c; }
+.gt-group-hd > .gt-mark { grid-area: k; margin-left: -2px; }
+.gt-group-hd > .gt-chev { grid-area: v; }
+.gt-group-btn {
+  display: inline; padding: 0; margin: 0; background: none; border: 0; cursor: pointer; text-align: left; color: var(--text); font: inherit;
+}
+.gt-group-btn::after { content: ""; position: absolute; inset: 0; border-radius: var(--r-tile); }
+.gt-group-btn:focus-visible { outline: none; }
+.gt-group-btn:focus-visible::after { outline: 2px solid var(--focus-ring); outline-offset: -2px; }
+@media (hover: hover) { .gt-group-hd:hover .gt-chev { color: var(--text); } }
+.gt-group-title { font: var(--t-kicker); letter-spacing: var(--tr-kicker); text-transform: uppercase; color: var(--text2); overflow-wrap: break-word; }
 .gt-group-meta { font: var(--t-meta); color: var(--text2); }
 .gt-group-count { flex-shrink: 0; text-align: right; font: var(--t-meta); color: var(--text2); white-space: nowrap; }
 .gt-group-count .gt-num { font: var(--t-num-value); letter-spacing: var(--tr-num-value); color: var(--text2); }
 .gt-chev { color: var(--muted); transition: transform .2s ease; flex-shrink: 0; }
-.gt-group.open > .gt-group-h .gt-chev, .gt-extra.open > .gt-group-h .gt-chev, .gt-row.open .gt-chev { transform: rotate(180deg); }
+.gt-group.open > .gt-group-hd .gt-chev, .gt-extra.open > .gt-group-hd .gt-chev, .gt-row.open .gt-chev { transform: rotate(180deg); }
 .gt-group-body:empty { display: none; }
 .gt-group-body { padding-bottom: 12px; }
 .gt-group-about { font: var(--t-small); color: var(--text2); max-width: 68ch; margin: 0 0 12px; }
@@ -4836,7 +4859,6 @@ summary.gt-icon-btn::-webkit-details-marker { display: none; }
   .gt-mark .gt-mark-pie { transition: none !important; }
   .gt-mark.gt-mark-fade .gt-mark-pie { animation: gtMarkFade 120ms linear 1 both !important; }
 }
-.gt-group-btn .gt-mark { margin-left: -2px; }
 /* Narrow phones: the "N of M read" count says it; the title gets the room. */
 
 .gt-row-h { flex: 1; min-width: 0; margin: 0; }
@@ -4846,6 +4868,8 @@ summary.gt-icon-btn::-webkit-details-marker { display: none; }
 }
 .gt-row-text { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
 .gt-row-title { font: var(--t-label); color: var(--text); }
+/* O4 fallback (7.2): the open note's title reads as its heading. */
+.gt-row.open .gt-row-title { font: var(--t-headline); letter-spacing: var(--tr-headline); color: var(--text); }
 .gt-row-meta { font: var(--t-meta); color: var(--text2); }
 .gt-row-snippet { font: var(--t-meta); color: var(--text2); margin-top: 2px; }
 .gt-row.open .gt-row-snippet { display: none; }
@@ -5731,6 +5755,25 @@ header.app-header .brand-lockup { height: 28px; }
   .sub-nav.sn-fade-r:has(a:focus-visible), .sub-nav.sn-fade-l:has(a:focus-visible) { -webkit-mask-image: none; mask-image: none; }
 }
 .sub-nav.sub-nav-back a { padding: 0 12px 0 0; color: var(--accent-text); }
+/* Learn pages: the way back to the hub stays at the bar's left edge while the
+   page links scroll under it (PHASE4 7.1), so it is never off-screen on a
+   phone. The left fade would hide it, so these bars fade the right edge only. */
+.sub-nav a.sub-nav-hub {
+  position: sticky; left: 0; z-index: 1; gap: 2px; padding: 0 var(--sp-md) 0 0; margin-right: 4px;
+  background: var(--bg); color: var(--accent-text); border-right: 1px solid var(--border);
+}
+/* The page's own grain, anchored to the viewport, so the link sits on the same paper. */
+.sub-nav a.sub-nav-hub::before {
+  content: ''; position: absolute; inset: 0; z-index: -1; pointer-events: none;
+  background-image: var(--grain-img); background-attachment: fixed; opacity: var(--grain-op);
+}
+.sub-nav:has(> .sub-nav-hub).sn-fade-l { -webkit-mask-image: none; mask-image: none; }
+.sub-nav:has(> .sub-nav-hub).sn-fade-l.sn-fade-r { -webkit-mask-image: linear-gradient(to right, #000 calc(100% - 40px), transparent); mask-image: linear-gradient(to right, #000 calc(100% - 40px), transparent); }
+@media (max-width: 600px) {
+  .sub-nav:has(> .sub-nav-hub).sn-fade-l.sn-fade-r { -webkit-mask-image: linear-gradient(to right, #000 calc(100% - 64px), rgba(0,0,0,.15)); mask-image: linear-gradient(to right, #000 calc(100% - 64px), rgba(0,0,0,.15)); }
+  .sub-nav:has(> .sub-nav-hub).sn-fade-r:has(a:focus-visible) { -webkit-mask-image: none; mask-image: none; }
+}
+@media (forced-colors: active) { .sub-nav a.sub-nav-hub { background: Canvas; border-right-color: CanvasText; } }
 .ico-back { transform: rotate(180deg); }
 
 /* You: rows on the paper with hairlines (DESIGN_SYSTEM §6, Settings group and row) */
@@ -6208,7 +6251,7 @@ body[data-app-cta-card="shown"][data-section="today"] .app-cta-line { display: n
 /* The Mindset tip: a card row (compass badge, "Mindset." then the tip). */
 .ph-mind { display: flex; align-items: flex-start; gap: 12px; padding: 14px 16px; }
 .ph-mind-p { margin: 0; align-self: center; font: var(--t-small); color: var(--text); text-wrap: pretty; }
-.ph-mind-k { font-weight: 600; }
+.ph-mind-k { font: var(--t-label); }
 .ph-mind-t { color: var(--text2); }
 @media (prefers-reduced-motion: no-preference) { .ph-mind-t { transition: opacity .4s ease; } }
 
@@ -6227,7 +6270,7 @@ body[data-app-cta-card="shown"][data-section="today"] .app-cta-line { display: n
 .p4-rows .you-row:focus-visible, .p4-card .ph-dom:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: -2px; border-radius: var(--r-tile); }
 .p4-rows-top { padding: 0; }
 .p4-count {
-  flex: none; display: inline-flex; align-items: center; justify-content: center; min-width: 32px; height: 28px; padding: 0 8px;
+  flex: none; display: inline-flex; align-items: center; justify-content: center; min-width: 32px; min-height: 1.75rem; height: auto; padding: 2px 8px; line-height: 1.25;
   border-radius: var(--r-10); background: var(--surface2); color: var(--accent-text); font: var(--t-label); font-variant-numeric: tabular-nums;
 }
 [data-theme="dark"] .p4-count { background: var(--forest-track); color: var(--sap); }
@@ -6252,8 +6295,11 @@ body[data-app-cta-card="shown"][data-section="today"] .app-cta-line { display: n
 .ph-dom-v sup { font-size: var(--t-num-sup); line-height: 0; vertical-align: .9em; letter-spacing: 0; }
 .ph-dom-w { font: var(--t-meta); color: var(--text2); }
 .ph-dom-w.c { padding: 1px 8px; border-radius: var(--r-pill); background: var(--badge-clay); color: var(--clay); }
+/* Status at the right: in a narrow card a long band ("Building · below 70")
+   goes on two lines inside its badge, so the area name keeps the room. */
+@container phdom (max-width: 30em) { .ph-dom-w.c { width: min-content; border-radius: var(--r-10); } }
 /* Narrow or large text: the status goes under the name. */
-@container phdom (max-width: 22em) {
+@container phdom (max-width: 19em) {
   .ph-dom { grid-template-columns: 1.25em minmax(0, 1fr) 18px; row-gap: 4px; }
   .ph-dom-s { grid-column: 2; grid-row: 2; align-items: flex-start; flex-direction: row; flex-wrap: wrap; gap: 4px 8px; text-align: left; }
   .ph-dom .you-chev { grid-column: 3; grid-row: 1 / span 2; }
@@ -6518,6 +6564,23 @@ body[data-app-cta-card="shown"][data-section="today"] .app-cta-line { display: n
 .lh-dom-n { min-width: 1ch; font: var(--t-meta); color: var(--text2); font-variant-numeric: tabular-nums; }
 #lhDomH { font: var(--t-title); letter-spacing: var(--tr-title); text-transform: none; color: var(--text); }
 .lh-dom-c { flex: none; font: var(--t-meta); color: var(--text2); font-variant-numeric: tabular-nums; }
+/* When a row has no room (a narrow card, or large text), the count goes on a
+   second line under the name, which keeps its width (PHASE4 7.1). */
+.lh-doms .p4-rows { container: lhdom / inline-size; }
+@container lhdom (max-width: 19em) {
+  .lh-dom { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; column-gap: 12px; row-gap: 2px; }
+  .lh-dom .lh-dom-mark { grid-column: 1; grid-row: 1 / span 2; }
+  .lh-dom .you-text { grid-column: 2; grid-row: 1; }
+  .lh-dom .lh-dom-c { grid-column: 2; grid-row: 2; }
+  .lh-dom .you-chev { grid-column: 3; grid-row: 1 / span 2; }
+}
+/* Large text: the mark and number on their own line, so the name has the
+   row's full width and wraps only between words. */
+.fg-large .lh-dom { display: grid; grid-template-columns: minmax(0, 1fr) auto; column-gap: 8px; row-gap: 2px; }
+.fg-large .lh-dom .lh-dom-mark { grid-column: 1; grid-row: 1; }
+.fg-large .lh-dom .you-text { grid-column: 1; grid-row: 2; }
+.fg-large .lh-dom .lh-dom-c { grid-column: 1; grid-row: 3; }
+.fg-large .lh-dom .you-chev { grid-column: 2; grid-row: 1 / span 3; }
 .lh-foot { padding: 0 4px; font: var(--t-meta); color: var(--text2); max-width: 62ch; }
 @media (forced-colors: active) { .lh-tile, .lh-row, .lh-search { border: 1px solid CanvasText; } }
 /* Mock results (7.13): Where to look next, Review answers and the signs as cards. */
@@ -6528,8 +6591,16 @@ body[data-app-cta-card="shown"][data-section="today"] .app-cta-line { display: n
 /* Set results (7.11): the stats as Today's clearing tiles, caption labels. */
 .rs-tiles { margin: var(--sp-lg) 0 0; }
 .rs-tiles .td-clear-k { font: var(--t-caption); letter-spacing: var(--tr-caption); text-transform: none; }
+/* On paper at every width: Today's forest colours for these tiles (from 48em) never apply here. */
+.rs-tiles .td-clear-t { background: var(--surface2); }
+.rs-tiles .td-clear-k, .rs-tiles .td-clear-of { color: var(--text2); }
+.rs-tiles .td-clear-v { color: var(--text); }
 .rs-tiles .td-clear-v sup { font-size: var(--t-num-sup); line-height: 0; vertical-align: .9em; letter-spacing: 0; }
 .rs-set .rs-tiles + .rs-acts { margin-top: var(--sp-lg); }
+/* From 1240px the set's actions sit in the margin, in view (railSetActsSection). */
+body[data-rs-acts] .rs-set > .rs-acts { display: none; }
+.sr-set-acts .sr-acts { flex-direction: column; align-items: stretch; margin: 0; }
+.sr-set-acts .sr-acts .rs-btn { width: 100%; justify-content: center; }
 /* Focus next and Today's principle as cards (in the page, or the margin from 1240px). */
 .p4-card.sr-card { padding: 16px 0 6px; }
 .sr-card > .sr-cap { margin: 0 0 6px; padding: 0 var(--card-pad); }
@@ -6718,6 +6789,14 @@ body[data-tab="practice"][data-pview="focus"] #subNav { display: none; }
 .mr-seg-b:hover { color: var(--text); }
 .mr-seg-b.on { background: var(--surface); color: var(--text); box-shadow: inset 0 0 0 2px var(--text); }
 .mr-seg-b:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
+/* Forced colours drop the inset edge these selected looks use, so the choice
+   gets a Highlight outline inside the box (PHASE4 section 5). Focus keeps its
+   own outline outside it. */
+@media (forced-colors: active) {
+  .conf-seg .conf-btn.picked, .mr-seg-b.on, .gt-seg-btn[aria-selected="true"] { outline: 2px solid Highlight; outline-offset: -2px; }
+  .conf-seg .conf-btn.picked, .mr-seg-b.on, .gt-seg-btn[aria-selected="true"] { border-color: Highlight; }
+  .conf-seg .conf-btn.picked:focus-visible, .mr-seg-b.on:focus-visible, .gt-seg-btn[aria-selected="true"]:focus-visible { outline: 2px solid CanvasText; outline-offset: 2px; }
+}
 .mr-list { list-style: none; margin: var(--sp-sm) 0 0; padding: 0; }
 .mr-item[hidden] { display: none; }
 .mr-item:not([hidden]) ~ .mr-item:not([hidden]) { border-top: 1px solid var(--border); }
@@ -6945,6 +7024,7 @@ html { scroll-padding-bottom: calc(104px + var(--consent-h, 0px)); }
 .sr-mocks { margin-top: 0; border-top: 0; }
 /* Terms in this question: tap a term for its definition. */
 .sr-terms { list-style: none; margin: 0; padding: 0; }
+.sr-sub-sep { margin-top: var(--sp-lg); padding-top: var(--sp-lg); border-top: 1px solid var(--border); }
 .sr-term summary {
   display: flex; align-items: center; justify-content: space-between; gap: var(--sp-md); min-height: 44px; padding: var(--sp-sm) 0;
   border-bottom: 1px solid var(--border); cursor: pointer; list-style: none; font: var(--t-small); color: var(--text);
@@ -8253,6 +8333,8 @@ html { scroll-padding-bottom: calc(104px + var(--consent-h, 0px)); }
 .gt-sec:not(.gt-sec-def) > .gt-cap, .gt-audit-h, h3.gt-cap.eg-sub, #egTocH, #fwTocH,
 #youSettingsH, #youDataH, #setResetH, #youHelpH,
 #pgStandH, #rsMissH { font: var(--t-headline); letter-spacing: var(--tr-headline); text-transform: none; color: var(--text); }
+/* Terms in this question: a caption over the second group in Go deeper (4.2). */
+.sr-sub-g #srhTerms { margin: 0 0 var(--sp-sm); font: var(--t-caption); letter-spacing: var(--tr-caption); color: var(--text2); }
 .rs-missed-h { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 2px 12px; margin-bottom: var(--sp-xs); }
 .rs-missed-h #rsMissH { margin: 0; }
 .rs-missed-n { font: var(--t-meta); font-variant-numeric: tabular-nums; color: var(--text2); }
@@ -11973,26 +12055,15 @@ var LH_INLINE = 5;              // inline search results before "See all results
 var lhSearchQ = '';
 var lhSayTimer = null;
 var LH_DANDELION = '<svg viewBox="0 0 64 64" width="48" height="48" aria-hidden="true" focusable="false"><path d="M32 29 V60" stroke="currentColor" stroke-width="1.3" fill="none"/><path d="M32 26 L32 6 M32 26 L46 12 M32 26 L52 26 M32 26 L46 40 M32 26 L18 12 M32 26 L12 26 M32 26 L18 40 M32 26 L40 7 M32 26 L24 7" stroke="currentColor" stroke-width=".9" fill="none"/><g fill="currentColor"><circle cx="32" cy="6" r="1.8"/><circle cx="46" cy="12" r="1.8"/><circle cx="52" cy="26" r="1.8"/><circle cx="46" cy="40" r="1.8"/><circle cx="18" cy="12" r="1.8"/><circle cx="12" cy="26" r="1.8"/><circle cx="18" cy="40" r="1.8"/></g><circle cx="32" cy="26" r="3" fill="#E9A07A"/></svg>';
-// The note to read next: Continue reading first, then the first unread note
-// in the area to study next (todayNextArea), then the other areas.
+// The note to read next: Today's own picker (todayReadNextHit), so Today and
+// Learn always name the same note.
 function learnReadNext(r) {
-  if (!CISA_NOTES_RAW) return null;
-  var started = todayStartedNote();
-  if (started) return { hit: started, kicker: 'Continue reading', why: 'pick up where you left off' };
-  var next = todayNextArea(r);
-  var keys = Object.keys(DI);
-  var order = next.id ? [next.id].concat(keys.filter(function (d) { return d !== next.id; })) : keys;
-  for (var i = 0; i < order.length; i++) {
-    var hit = todayNoteIn(order[i], 'none');
-    if (hit) {
-      var why = i > 0 || !next.id ? 'next in the exam outline' : next.plan ? 'the area of today&rsquo;s set' : 'picked where you can gain the most';
-      return { hit: hit, kicker: 'Read next', why: why };
-    }
-  }
-  return null;
+  return todayReadNextHit(r);
 }
-// An area's mark: the ring outline in --leaf-line, the arc in the area
-// colour, a filled ring with a tick when every note is read.
+// An area's mark: the area colour's dot inside the ring outline in
+// --leaf-line, the arc in the area colour, a filled ring with a tick when
+// every note is read. The dot is always there, so a new account still shows
+// each area's colour (PHASE4 section 6).
 function lhRingSvg(color, done, total) {
   var pct = total ? done / total : 0, c = 2 * Math.PI * 6.5;
   if (total && done >= total) {
@@ -12000,6 +12071,7 @@ function lhRingSvg(color, done, total) {
       + '<path d="M4.8 8.3l2.1 2.1 4.3-4.6" fill="none" stroke="var(--surface)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>';
   }
   return '<svg class="lh-ring" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><circle cx="8" cy="8" r="6.5" fill="none" stroke="var(--leaf-line)" stroke-width="1.5"/>'
+    + '<circle cx="8" cy="8" r="2.5" style="fill:' + color + '"/>'
     + (pct > 0 ? '<circle cx="8" cy="8" r="6.5" fill="none" style="stroke:' + color + '" stroke-width="2.2" stroke-linecap="round" stroke-dasharray="' + (c * pct).toFixed(2) + ' ' + c.toFixed(2) + '" transform="rotate(-90 8 8)"/>' : '')
     + '</svg>';
 }
@@ -12036,7 +12108,7 @@ function renderLearnHub() {
     var it = nx.hit.item, dd = nx.hit.domain, mins = 0;
     try { mins = estimateReadMinutes(it.raw); } catch (e) { mins = 0; }
     hero = heroOpen('<span class="dom-dot" style="background:' + DI[dd].color + '" aria-hidden="true"></span>' + nx.kicker + ' &middot; ' + escapeHtml(DI[dd].short),
-      escapeHtml(it.name), (mins ? mins + ' min read &middot; ' : '') + nx.why,
+      escapeHtml(it.name), (mins ? mins + ' min read' : '') + (mins && nx.why ? ' &middot; ' : '') + nx.why,
       '<button type="button" class="p4-go" data-d="' + escapeHtml(dd) + '" data-id="' + escapeHtml(String(it.id)) + '" onclick="todayOpenNote(this.dataset.d,this.dataset.id)">' + ico('topics', 18) + 'Read note</button>');
   } else if (ready) {
     // Every note read: never an empty forest card.
@@ -12311,12 +12383,15 @@ function renderTopics() {
       }
       lastPart = part;
       return partHtml + '<section class="gt-group' + (isOpen ? ' open' : '') + '" id="ng-' + escapeHtml(gKey) + '">'
-        + '<' + gh + ' class="gt-group-h"><button class="gt-group-btn" aria-expanded="' + isOpen + '" aria-controls="ngb-' + escapeHtml(gKey) + '" aria-labelledby="ngt-' + escapeHtml(gKey) + '" aria-describedby="ngm-' + escapeHtml(gKey) + ' ngc-' + escapeHtml(gKey) + '" data-id="' + escapeHtml(gKey) + '" onclick="toggleNotesGroup(this.dataset.id)">'
-        + '<span class="gt-group-text"><span class="gt-group-title" id="ngt-' + escapeHtml(gKey) + '">' + escapeHtml(g.group_title) + '</span>'
-        + '<span class="gt-group-meta" id="ngm-' + escapeHtml(gKey) + '">' + gTotal + ' notes &middot; about ' + readMin + ' min</span></span>'
+        // The head (7.2): the title alone is the heading, in the kicker role;
+        // "7 notes · about 17 min" is meta outside it. The button covers the
+        // whole row (its ::after), so the row is still one target.
+        + '<div class="gt-group-hd"><' + gh + ' class="gt-group-h"><button class="gt-group-btn" aria-expanded="' + isOpen + '" aria-controls="ngb-' + escapeHtml(gKey) + '" aria-describedby="ngm-' + escapeHtml(gKey) + ' ngc-' + escapeHtml(gKey) + '" data-id="' + escapeHtml(gKey) + '" onclick="toggleNotesGroup(this.dataset.id)">'
+        + '<span class="gt-group-title" id="ngt-' + escapeHtml(gKey) + '">' + escapeHtml(g.group_title) + '</span></button></' + gh + '>'
+        + '<p class="gt-group-meta" id="ngm-' + escapeHtml(gKey) + '">' + gTotal + ' notes &middot; about ' + readMin + ' min</p>'
         + '<span class="gt-group-count" id="ngc-' + escapeHtml(gKey) + '" data-gcount="' + escapeHtml(gKey) + '"><span class="gt-num">' + gDone + '</span><span class="gt-of"> of ' + gTotal + ' read</span></span>'
         + gtMarkSvg(gtGroupState(g.items), '', ' data-gmark="' + escapeHtml(gKey) + '"')
-        + ico('chevron-down', 20, 'ico gt-chev') + '</button></' + gh + '>'
+        + ico('chevron-down', 20, 'ico gt-chev') + '</div>'
         + '<div class="gt-group-body" id="ngb-' + escapeHtml(gKey) + '">' + bodyHtml + '</div>'
         + '</section>';
     }).join('') + (cardOpen ? '</div>' : '');
@@ -12358,9 +12433,10 @@ function renderDomainGlossary(domainData) {
     body = gtDl(shown.map(function(term) { return [term, highlightText(terms[term], tk)]; }), tk);
   }
   return '<section class="gt-extra' + (isOpen ? ' open' : '') + '" id="glossaryCard">'
-    + '<h3 class="gt-group-h"><button class="gt-group-btn" aria-expanded="' + isOpen + '" aria-labelledby="gtGlossT" aria-describedby="gtGlossM" onclick="toggleDomainGlossary()">'
-    + '<span class="gt-group-text"><span class="gt-group-title" id="gtGlossT">Key terms for this domain</span><span class="gt-group-meta" id="gtGlossM">' + (tk.length ? shown.length + ' of ' + allTerms.length + ' terms match' : allTerms.length + ' terms') + '</span></span>'
-    + ico('chevron-down', 20, 'ico gt-chev') + '</button></h3>'
+    + '<div class="gt-group-hd"><h3 class="gt-group-h"><button class="gt-group-btn" aria-expanded="' + isOpen + '" aria-describedby="gtGlossM" onclick="toggleDomainGlossary()">'
+    + '<span class="gt-group-title" id="gtGlossT">Key terms for this domain</span></button></h3>'
+    + '<p class="gt-group-meta" id="gtGlossM">' + (tk.length ? shown.length + ' of ' + allTerms.length + ' terms match' : allTerms.length + ' terms') + '</p>'
+    + ico('chevron-down', 20, 'ico gt-chev') + '</div>'
     + '<div class="gt-group-body">' + body + '</div></section>';
 }
 
@@ -12390,9 +12466,10 @@ function renderMasterTips() {
     }
   }
   return '<section class="gt-extra' + (isOpen ? ' open' : '') + '" id="masterTipsCard">'
-    + '<h3 class="gt-group-h"><button class="gt-group-btn" aria-expanded="' + isOpen + '" aria-labelledby="gtTipsT" aria-describedby="gtTipsM" onclick="toggleMasterTips()">'
-    + '<span class="gt-group-text"><span class="gt-group-title" id="gtTipsT">Exam strategy across all domains</span><span class="gt-group-meta" id="gtTipsM">How the domains connect, and how to think on exam day</span></span>'
-    + ico('chevron-down', 20, 'ico gt-chev') + '</button></h3>'
+    + '<div class="gt-group-hd"><h3 class="gt-group-h"><button class="gt-group-btn" aria-expanded="' + isOpen + '" aria-describedby="gtTipsM" onclick="toggleMasterTips()">'
+    + '<span class="gt-group-title" id="gtTipsT">Exam strategy across all domains</span></button></h3>'
+    + '<p class="gt-group-meta" id="gtTipsM">How the domains connect, and how to think on exam day</p>'
+    + ico('chevron-down', 20, 'ico gt-chev') + '</div>'
     + '<div class="gt-group-body">' + body + '</div></section>';
 }
 
@@ -13434,7 +13511,9 @@ function syncNav(t) {
   var sec = NAV_SECTION[t] || 'today';
   // Screen readers announce the new title, so a page change is not silent.
   document.title = NAV_TITLE[t] ? NAV_TITLE[t] + ' · KaiSip' : 'KaiSip: CISA exam prep that teaches the auditor’s mindset';
-  if (NAV_PAGES[sec] && t !== NAV_HOME[sec]) navLastPage[sec] = t;
+  // Learn's tab always opens its hub, so the hub is never recorded as Learn's
+  // last page. Practice still reopens the page last shown, its hub included.
+  if (NAV_PAGES[sec] && !(sec === 'learn' && t === NAV_HOME[sec])) navLastPage[sec] = t;
   document.body.setAttribute('data-section', sec);
   document.querySelectorAll('.sn-item, .bnav-item').forEach(function (x) {
     if (x.getAttribute('data-sec') !== sec) { x.removeAttribute('aria-current'); return; }
@@ -13480,7 +13559,9 @@ function syncNav(t) {
     var cur = html && sub.querySelector('[aria-current="page"]');
     if (cur) {
       var curX = cur.getBoundingClientRect().left - sub.getBoundingClientRect().left + sub.scrollLeft;
-      sub.scrollLeft = Math.max(0, curX - 16);
+      // The sticky Learn link covers the bar's left edge: keep the current link clear of it.
+      var hub = sub.querySelector('.sub-nav-hub');
+      sub.scrollLeft = Math.max(0, curX - 16 - (hub ? hub.offsetWidth : 0));
     }
     if (!sub.onscroll) {
       sub.onscroll = function () { subNavFade(sub); };
@@ -14368,13 +14449,47 @@ function todayStartedNote() {
   });
   return best;
 }
+// Today's plan already starts with the questions to revisit (unless it is a
+// "Where you left off" panel).
+function todayPlanLeads() {
+  try { return !practicePrimary().resume; } catch (e) { return false; }
+}
+// The note Read next names, one answer for Today's next step and the Learn
+// hero (PHASE4 7.1): Continue reading first; then the first unread note in
+// the area to study next (todayNextArea), then the other areas, in exam
+// order while today's plan leads, else by points left on the table (mobile's
+// focus rule, biggest first; exam order before the first answer). why is the
+// short reason the Learn hero shows, or '' when there is none to give.
+function todayReadNextHit(r, inPlan) {
+  if (!CISA_NOTES_RAW) return null;
+  var started = todayStartedNote();
+  if (started) return { hit: started, kicker: 'Continue reading', why: '' };
+  if (inPlan === undefined) inPlan = todayPlanLeads();
+  var keys = Object.keys(DI), order = keys;
+  if (!inPlan && r.answered > 0) {
+    order = r.domains.slice().sort(function (a, b) {
+      return (1 - b.mastery) * DI[b.id].weight - (1 - a.mastery) * DI[a.id].weight;
+    }).map(function (x) { return x.id; });
+  }
+  var next = { id: null, plan: false };
+  try { next = todayNextArea(r); } catch (e) {}
+  if (next.id) order = [next.id].concat(order.filter(function (d) { return d !== next.id; }));
+  for (var i = 0; i < order.length; i++) {
+    var hit = todayNoteIn(order[i], 'none');
+    if (hit) {
+      var why = r.answered === 0 ? 'a good place to start'
+        : (i === 0 && next.id && !next.plan) ? 'picked where you can gain the most' : '';
+      return { hit: hit, kicker: 'Read next', why: why };
+    }
+  }
+  return null;
+}
 function todayNextStep(r, range) {
   var due = 0;
   try { due = getDueReview().length; } catch (e) {}
   // Today's plan already starts with the questions to revisit (unless it is
   // a "Where you left off" panel), so the next step never repeats them.
-  var inPlan = false;
-  try { inPlan = !practicePrimary().resume; } catch (e) {}
+  var inPlan = todayPlanLeads();
   if (due > 0 && !inPlan) {
     // The set's own size, never the queue total (premium pass 1.4).
     return { icon: 'review', kicker: 'Ready today', title: 'Questions to revisit', meta: Math.min(due, REVIEW_SESSION_CAP) + ' ready to revisit &middot; oldest first', go: { step: 'review' } };
@@ -14388,28 +14503,11 @@ function todayNextStep(r, range) {
       go: { step: 'note', d: hit.domain, id: String(hit.item.id) }
     };
   };
-  var started = todayStartedNote();
-  if (started) return note(started, 'Continue reading');
-  if (inPlan) {
-    var planD = null;
-    try { planD = todayNextArea(r).id; } catch (e) { planD = null; }
-    var keys = Object.keys(DI);
-    var reading = planD ? [planD].concat(keys.filter(function (d) { return d !== planD; })) : keys;
-    for (var k = 0; k < reading.length; k++) {
-      var unread = todayNoteIn(reading[k], 'none');
-      if (unread) return note(unread, 'Read next');
-    }
-    return null;
-  }
-  // Domains by points left on the table (mobile's focus rule), biggest first.
-  var order = r.domains.slice().sort(function (a, b) {
-    return (1 - b.mastery) * DI[b.id].weight - (1 - a.mastery) * DI[a.id].weight;
-  }).map(function (x) { return x.id; });
-  if (r.answered === 0) order = Object.keys(DI);
-  // The area to study next comes first, so Read next names the same area as
-  // the plan and You (todayNextArea: today's unfinished set, else the focus).
-  var nextId = todayNextArea(r).id;
-  if (nextId) order = [nextId].concat(order.filter(function (d) { return d !== nextId; }));
+  // The note comes from the shared picker, so the Learn hero names the same
+  // one. Continue reading, and any note while the plan leads, comes first.
+  var rn = todayReadNextHit(r, inPlan);
+  if (rn && (inPlan || rn.kicker === 'Continue reading')) return note(rn.hit, rn.kicker);
+  if (inPlan) return null;
   var weak = range.enough ? r.domains.filter(function (x) { return x.id === r.focusId; })[0] : null;
   var practiceWeak = function () {
     var f = domainFigure(weak.answered, Math.round(weak.mastery * 100));
@@ -14421,10 +14519,7 @@ function todayNextStep(r, range) {
     };
   };
   if (weak && weak.mastery < DOMAIN_TARGET_PCT / 100) return practiceWeak();
-  for (var i = 0; i < order.length; i++) {
-    var hit = todayNoteIn(order[i], 'none');
-    if (hit) return note(hit, 'Read next');
-  }
+  if (rn) return note(rn.hit, rn.kicker);
   return weak ? practiceWeak() : null;
 }
 // The next-step row's button carries what it opens in data- attributes.
@@ -15985,7 +16080,8 @@ function fgStemSvg(areas, wide, o) {
     var wd = String(pct).length * (wide ? 13.4 : 10.1) + (wide ? 11 : 8.5);
     // A change in points sits inline after a centred score (" ↑5" at the 11px
     // or 13px type); beside a tip it goes on its own line under the score.
-    sc.w = wd; sc.wIn = wd + (delta ? (String(Math.abs(delta)).length + 2) * (wide ? 7.6 : 6.4) : 0);
+    // Growth reads "↑ up 5" (PHASE4 7.11), so it is never carried by the arrow alone.
+    sc.w = wd; sc.wIn = wd + (delta ? (String(Math.abs(delta)).length + (delta > 0 ? 5 : 2)) * (wide ? 7.6 : 6.4) : 0);
     if (pct < DOMAIN_TARGET_PCT && sc.ny - cap - 4 <= yl) {
       sc.beside = true; sc.anchor = 'start'; sc.nx = xs + 14;
       sc.ny = Math.max(sc.tipY + cap / 2, yl + cap + 5);
@@ -16042,7 +16138,7 @@ function fgStemSvg(areas, wide, o) {
       var nx = sc.nx.toFixed(1);
       g += '<ellipse class="fg-st-leaf' + (f.below || delta > 0 ? ' c' : '') + settle + '" cx="' + xs + '" cy="' + sc.tipY.toFixed(1) + '" rx="3" ry="5.6"/>'
         + '<text class="fg-st-n' + settle + '" x="' + nx + '" y="' + sc.ny.toFixed(1) + '" text-anchor="' + sc.anchor + '">' + pct + '<tspan class="u" dy="-6">%</tspan>'
-        + (delta ? '<tspan class="' + (delta > 0 ? 'fg-st-up' : 'fg-st-dn') + '"' + (sc.beside ? ' x="' + nx + '" dy="' + (wide ? 22 : 20) + '"' : ' dy="6"') + '>' + (sc.beside ? '' : ' ') + (delta > 0 ? '&uarr;' : '&darr;') + Math.abs(delta) + '</tspan>' : '') + '</text>';
+        + (delta ? '<tspan class="' + (delta > 0 ? 'fg-st-up' : 'fg-st-dn') + '"' + (sc.beside ? ' x="' + nx + '" dy="' + (wide ? 22 : 20) + '"' : ' dy="6"') + '>' + (sc.beside ? '' : ' ') + (delta > 0 ? '&uarr; up ' : '&darr;') + Math.abs(delta) + '</tspan>' : '') + '</text>';
     }
     // The name, the word, then "18 answered" (grey) or "below 70" (clay) and the set's note.
     var off = i % 2 ? dy : 0;
@@ -17349,6 +17445,10 @@ function updateFocusStrip() {
   var mid = document.getElementById('pfMid');
   if (!mid) return;
   var pr = focusProgress();
+  // A finished set's results are on screen: the strip says only how many
+  // were answered, since the running head names the set (PHASE4.md 7.11).
+  var rsSet = document.querySelector('#qArea .rs-set[data-answered]');
+  if (rsSet) pr = { pos: 0, total: 0, done: parseInt(rsSet.getAttribute('data-answered'), 10) || 0, results: true };
   var html;
   // A set with a length is a progress bar to assistive tech too; a set
   // without one is plain text (its name and how many answered).
@@ -17375,7 +17475,7 @@ function updateFocusStrip() {
   } else {
     // A finished set's results name the set in their running head, so the
     // strip says only how many were answered (PHASE4.md 7.11).
-    html = pendingDebrief ? '<span class="pf-label">' + pr.done + ' answered</span>'
+    html = pr.results ? '<span class="pf-label">' + pr.done + ' answered</span>'
       : '<span class="pf-label">' + escapeHtml(focusSetName())
       + (pr.done ? '<span class="pf-label-n"> &middot; ' + pr.done + ' answered</span>' : '') + '</span>';
   }
@@ -17439,6 +17539,7 @@ function exitPracticeFocus() {
   if (deb) {
     var area = document.getElementById('sessionBoundaryArea');
     if (area) area.innerHTML = debriefHtml(deb, true);
+    try { railSync(); } catch (e) {}
     maybeAskExamDate(deb);
   }
 }
@@ -17699,7 +17800,7 @@ function renderDomainGrid() {
     var load = isQBLoading(d) ? 'loading' : (window.QB_LOAD_ERROR && window.QB_LOAD_ERROR[d]) ? 'could not load' : '';
     var status = none ? '<span class="ph-dom-w">Not started</span>'
       : few ? '<span class="ph-dom-w">Too few yet</span>'
-      : '<span class="ph-dom-v">' + pct + '<sup>%</sup></span><span class="ph-dom-w' + (below ? ' c' : '') + '">' + band + (below ? ' &middot; below ' + DOMAIN_TARGET_PCT : '') + '</span>';
+      : '<span class="ph-dom-v">' + pct + '<sup>%</sup></span><span class="ph-dom-w' + (below ? ' c' : '') + '">' + band + (below ? '&nbsp;&middot; below&nbsp;' + DOMAIN_TARGET_PCT : '') + '</span>';
     var said = 'Domain ' + (i + 1) + ', ' + info.short + ', ' + info.weight + ' percent of the exam, ' + n + ' seen, '
       + (none ? 'not started' : few ? 'too few yet' : pct + ' percent, ' + band + (below ? ', below ' + DOMAIN_TARGET_PCT : ''))
       + (load ? ', ' + load : '') + '. Starts a set.';
@@ -18402,11 +18503,13 @@ function railQSections() {
     deeper = railNoteCardHtml(res, exam, false);
   }
   if (pl) deeper += railPrincipleLinkHtml(pl);
-  if (deeper) secs.push({ id: 'deeper', key: 'deeper:' + q.id + ':' + res.state + ':' + (res.note ? res.note.id + gtNoteState(res.note.id) : '') + ':' + (pl ? pl.id : ''),
+  // The margin holds two cards (4.2): Go deeper and Your note. The terms in
+  // this question are a second group inside Go deeper, under a caption.
+  var terms = railQuestionTerms(q);
+  if (terms.length) deeper += '<div class="sr-sub-g' + (deeper ? ' sr-sub-sep' : '') + '"><h3 class="sr-cap" id="srhTerms">Terms in this question</h3>' + railTermsHtml(terms) + '</div>';
+  if (deeper) secs.push({ id: 'deeper', key: 'deeper:' + q.id + ':' + res.state + ':' + (res.note ? res.note.id + gtNoteState(res.note.id) : '') + ':' + (pl ? pl.id : '') + ':' + terms.length,
     cls: 'sr-sec-deeper p4-card sr-card-pad', html: '<h2 class="sr-cap" id="srhDeeper">Go deeper</h2>' + deeper });
   if (!(firstFiveRun && sessionLabel === FIRST_FIVE_LABEL)) secs.push({ id: 'mine', key: railMineKey(q.id), cls: 'p4-card sr-card-pad', html: '<h2 class="sr-cap" id="srhMine">Your note on this question</h2>' + railMineHtml(q.id, 'sr', 'srhMine') });
-  var terms = railQuestionTerms(q);
-  if (terms.length) secs.push({ id: 'terms', key: 'terms:' + q.id, cls: 'p4-card sr-card-pad', html: '<h2 class="sr-cap" id="srhTerms">Terms in this question</h2>' + railTermsHtml(terms) });
   return secs;
 }
 // The Learn hub's margin (Grove Phase 4, 7.1): "Look up a term" (as Study
@@ -18518,6 +18621,12 @@ function railSync() {
   if (page === 'mock' && wide) secs = railMockSections();
   if (page === 'results') { railResultsInline(!wide); if (wide) secs = railResultsSections(); }
   else railResultsInline(false);
+  // A practice set's results (7.11): from 1240px the actions sit in the
+  // margin, in view; below that they stay under the stats.
+  var setActs = wide && (page === 'q' || page === 'hub') ? railSetActsSection(page) : null;
+  if (setActs) secs = [setActs].concat(secs);
+  if (setActs) document.body.setAttribute('data-rs-acts', 'rail');
+  else document.body.removeAttribute('data-rs-acts');
   // You (Grove C2): the plant card is in the page at every width, never in the margin.
   if (page === 'you') plantSafe(function () { plantYouInline(true); });
   else plantSafe(function () { plantYouInline(false); });
@@ -19536,7 +19645,22 @@ function discardResumeQuestion() {
 }
 
 // â”€â”€ NEXT PRACTICE QUESTION â”€â”€
+// After Next question the old answer screen (and its Next button) is gone, so
+// focus would fall to the page. Move it to the new question's stem, as Start
+// does, when focus was on the question area or already lost.
+function nqHadFocus() {
+  var a = document.activeElement, area = document.getElementById('qArea');
+  return !a || a === document.body || !!(area && area.contains(a));
+}
+function nqFocusStem(had) {
+  if (!had) return;
+  var st = document.getElementById('qStem');
+  if (!st) return;
+  st.setAttribute('tabindex', '-1');
+  try { st.focus({ preventScroll: true }); } catch (e) {}
+}
 function nextQ() {
+  var nqHad = nqHadFocus();
   clearQuestionTimers();
   bookmarkReviewMode = false;
   reviewEndShown = false;
@@ -19552,22 +19676,26 @@ function nextQ() {
     var dh = document.getElementById('sdTitle');
     if (dh) { try { dh.focus({ preventScroll: true }); } catch (e) {} }
     try { window.scrollTo(0, 0); } catch (e) {}
+    try { railSync(); } catch (e) {}
     maybeAskExamDate(deb);
     return;
   }
   if (reviewQueueMode) {
     reviewQueueIndex++;
     showNextReview();
+    nqFocusStem(nqHad);
     return;
   }
   if (missedReviewMode) {
     missedReviewIndex++;
     showNextMissed();
+    nqFocusStem(nqHad);
     return;
   }
   if (conceptPracticeMode) {
     conceptPracticeIndex++;
     showNextConcept();
+    nqFocusStem(nqHad);
     return;
   }
   // If the selected domain is still being fetched and its queue is empty,
@@ -19599,6 +19727,7 @@ function nextQ() {
   S.qn++;
   saveState();
   renderQuestion(q);
+  nqFocusStem(nqHad);
   if (S.timerEnabled && !S.domainTimerActive) startDomainTimer();
 }
 
@@ -20268,7 +20397,7 @@ function debriefHtml(deb, inHub) {
     : (RD_RANGE_MIN_ANSWERS - range.needed) + ' of ' + RD_RANGE_MIN_ANSWERS + ' questions for your first readiness range.';
   var t = resultsTime(deb.ms), pct = total > 0 ? Math.round((deb.correct / total) * 100) : 0;
   fgLargeText();
-  return '<section class="session-debrief rs rs-set rs-fg" role="region" aria-labelledby="sdKick sdTitle">'
+  return '<section class="session-debrief rs rs-set rs-fg" role="region" aria-labelledby="sdKick sdTitle" data-answered="' + total + '">'
     + '<div class="fg-rh"><span id="sdKick">Set complete &middot; ' + escapeHtml(name) + '</span><span>' + fgDateHtml(Date.now()) + '</span></div>'
     + '<h2 class="rs-title" id="sdTitle" tabindex="-1">' + resultsHeadline(deb.correct, total) + '</h2>'
     + '<p class="fg-sub">' + rsSetLine(total, deb.ms) + '</p>'
@@ -20339,6 +20468,7 @@ function reviewSetMistakes() {
 }
 function closeSetResults() {
   hideSessionStart();
+  try { railSync(); } catch (e) {}
   var t = document.getElementById('phTitle');
   if (t) { try { t.focus({ preventScroll: true }); } catch (e) {} }
 }
@@ -22130,6 +22260,15 @@ function mockSignsHtml(pre) {
     + fgKeyList(items, '', 'mr-signs')
     + fgCaption('Note', res.line + (res.isacaLine ? ' ' + res.isacaLine : ''))
     + '<a class="sr-link" href="#progress" onclick="return navTo(event,\'progress\')">Your progress' + ico('arrow-right', 16) + '</a>';
+}
+// The set results' actions, copied into the margin (the page's own copy is
+// hidden while the margin shows them, so each action is reachable once).
+function railSetActsSection(page) {
+  var box = document.getElementById(page === 'q' ? 'qArea' : 'sessionBoundaryArea');
+  var acts = box && box.querySelector('.rs-set[data-answered] > .rs-acts');
+  if (!acts) return null;
+  var html = acts.innerHTML;
+  return { id: 'setacts', key: 'setacts:' + html, cls: 'p4-card sr-card-pad sr-set-acts', labelId: 'sdKick', html: '<div class="rs-acts sr-acts">' + html + '</div>' };
 }
 function railResultsSections() {
   var html = mockSignsHtml('srh');
@@ -23998,6 +24137,9 @@ function clearGlossFilters() {
   glossState.domain = 'all';
   glossState.showMastered = 'all';
   renderGlossary();
+  // The Clear or Reset button is gone after the redraw: focus the search.
+  var f = document.getElementById('glossSearch') || document.getElementById('glD-all');
+  if (f) { try { f.focus({ preventScroll: true }); } catch (e) {} }
 }
 
 // The term sheet (7.3): a managed dialog (glossDetailModal is one of the
@@ -24563,12 +24705,30 @@ function setBkTag(qId, tag) {
     if (S.bookmarks[i].id === qId) { S.bookmarks[i].tag = tag || null; break; }
   }
   saveState();
-  renderBookmarks();
+  bkRedrawKeepFocus();
 }
 
 function setBkTagFilter(t) {
   bkActiveTagFilter = t;
+  bkRedrawKeepFocus();
+}
+
+// A tag change or a filter chip redraws the whole list, so put focus back on
+// the same select or chip (or the first chip when that one is gone), as
+// bkRefreshRows does, instead of letting it fall to the page.
+function bkRedrawKeepFocus() {
+  var area = document.getElementById('bkList');
+  var a = document.activeElement;
+  var inList = !!(area && a && area.contains(a));
+  var cls = !inList ? '' : a.classList.contains('bk-tag-select') ? 'bk-tag-select'
+    : a.classList.contains('bk-tag-chip') ? 'bk-tag-chip' : a.classList.contains('bk-open') ? 'bk-open' : '';
+  var key = cls === 'bk-tag-chip' ? a.getAttribute('data-filter') : cls ? a.getAttribute('data-qid') : null;
   renderBookmarks();
+  if (!inList || !area) return;
+  var attr = cls === 'bk-tag-chip' ? 'data-filter' : 'data-qid';
+  var back = cls ? Array.prototype.filter.call(area.querySelectorAll('.' + cls), function (el) { return el.getAttribute(attr) === key; })[0] : null;
+  if (!back) back = area.querySelector('.bk-tag-chip[aria-pressed="true"]') || area.querySelector('.bk-tag-chip') || area.querySelector('button');
+  if (back) { try { back.focus({ preventScroll: true }); } catch (e) {} }
 }
 
 // Why a saved question cannot be opened yet (its bank is loading or failed),
@@ -27348,9 +27508,9 @@ function showFeedback() {
     + '<div class="fb-row">'
     + '<span class="fb-label">What kind of feedback?</span>'
     + '<div class="fb-types" id="fbTypes">'
-    + '<button type="button" class="fb-type active" data-type="general" onclick="setFeedbackType(\'general\')">General</button>'
-    + '<button type="button" class="fb-type" data-type="feature" onclick="setFeedbackType(\'feature\')">Feature</button>'
-    + '<button type="button" class="fb-type" data-type="bug" onclick="setFeedbackType(\'bug\')">Bug</button>'
+    + '<button type="button" class="fb-type active" data-type="general" aria-pressed="true" onclick="setFeedbackType(\'general\')">General</button>'
+    + '<button type="button" class="fb-type" data-type="feature" aria-pressed="false" onclick="setFeedbackType(\'feature\')">Feature</button>'
+    + '<button type="button" class="fb-type" data-type="bug" aria-pressed="false" onclick="setFeedbackType(\'bug\')">Bug</button>'
     + '</div>'
     + '</div>'
     + '<div class="fb-row">'
@@ -27381,6 +27541,7 @@ function setFeedbackType(t) {
   FEEDBACK_STATE.type = t;
   document.querySelectorAll('#fbTypes .fb-type').forEach(function(b){
     b.classList.toggle('active', b.dataset.type === t);
+    b.setAttribute('aria-pressed', String(b.dataset.type === t));
   });
 }
 // Reads the current modal state and returns { type, msg, diag } or null if

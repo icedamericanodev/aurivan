@@ -33,6 +33,7 @@ Batched for the end of the uplift (web v13, mobile 2.0.0; DECISIONS 8). Write th
 - Learn now opens on its own page, with the note to read next, a search across every domain's notes and a quick way into each part of Learn.
 - Practice shows your set as clear tiles you can change in place, and both mock exam sizes are one tap away.
 - The glossary lets you mark a term as mastered right from the list.
+- Keyboard and screen reader users now land on the new question after Next question, and keep their place when they tag or filter Saved questions or clear glossary filters.
 
 ## Follow-ups to do at the release
 - `mobile/src/engine/plantLooks.ts` `howToOpen` says "in the Herbarium": change to "in Badges" and rebuild `assets/kaisip-plant.js` in the same commit.

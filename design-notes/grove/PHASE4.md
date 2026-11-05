@@ -283,6 +283,7 @@ From 77.5em (1240px, the rule already used at 5267) the rail holds the "Look up 
 - The read mark (empty `--leaf-line` circle, filled accent with a tick, words in the label) shows at every width, not only 1280.
 - Keep filters All / To review / Read, Expand all, "Think of it this way", the domain overview, the forest domain panel and "Practice Domain N".
 - **Note page (O4):** `#note/<id>` opens the note as a reading page: a back link "Study notes" (page bar style), the title in `hero`, the note body as today, Previous and Next notes in one card. Fallback while O4 is open: the in-list note stays, its body inside the group card, its open title promoted to `headline`.
+  - Build status (web, review round 1, 5 Nov 2026): the fallback is what is built. The `#note/<id>` reading page is a new route and page (back link, Previous and Next), so it goes to Sky with the Phase 4 screenshots as O4 before it is built; until then O4 is treated as open.
 
 **Phone (`app/notes/index.tsx`, `[domain].tsx`, `subtopic/[id].tsx`):**
 - A display title "Study notes" on the page (copy `settings.tsx:807`: `PushedHeader` with `showTitle` after scroll plus `T v="display"` with `accessibilityRole="header"`, screen-reader focus starting on it via `titleRef`, `settings.tsx:807` to `812`). Same on Principles, Question bank, Saved and Mock start (titles per O16).
