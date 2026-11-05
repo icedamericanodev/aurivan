@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "comment": "Original CRISC practice questions for Domain 4 (Technology and Security), written to the CRISC exam content outline effective 2025. Every item is authored from public concepts and KaiSip's own CRISC study notes (data/crisc/notes/d4.json), with no reference to the CRISC Review Manual, ISACA's QAE database, ISACA's practice quiz or any prior question bank. Schema: docs/content/QUESTION_SCHEMA.md; writing rules: docs/content/EXAM_STYLE_V2.md and .claude/agents/crisc-standards-auditor.md. Not affiliated with or endorsed by ISACA®. CRISC® is a registered trademark of ISACA. Pilot batch crisc_d4_001 to crisc_d4_020, 30 Oct 2026. Round 2 crisc_d4_021 to crisc_d4_045, 31 Oct 2026. Round 3 crisc_d4_046 to crisc_d4_065, 4 Nov 2026. Round 5 crisc_d4_066 to crisc_d4_075, 4 Nov 2026. Round 6 crisc_d4_076 to crisc_d4_079, 4 Nov 2026. Round 7 crisc_d4_080 to crisc_d4_085, 4 Nov 2026. Round 8 crisc_d4_086 to crisc_d4_090, 5 Nov 2026. Round 9 crisc_d4_091 to crisc_d4_095, 5 Nov 2026.",
+    "comment": "Original CRISC practice questions for Domain 4 (Technology and Security), written to the CRISC exam content outline effective 2025. Every item is authored from public concepts and KaiSip's own CRISC study notes (data/crisc/notes/d4.json), with no reference to the CRISC Review Manual, ISACA's QAE database, ISACA's practice quiz or any prior question bank. Schema: docs/content/QUESTION_SCHEMA.md; writing rules: docs/content/EXAM_STYLE_V2.md and .claude/agents/crisc-standards-auditor.md. Not affiliated with or endorsed by ISACA®. CRISC® is a registered trademark of ISACA. Pilot batch crisc_d4_001 to crisc_d4_020, 30 Oct 2026. Round 2 crisc_d4_021 to crisc_d4_045, 31 Oct 2026. Round 3 crisc_d4_046 to crisc_d4_065, 4 Nov 2026. Round 5 crisc_d4_066 to crisc_d4_075, 4 Nov 2026. Round 6 crisc_d4_076 to crisc_d4_079, 4 Nov 2026. Round 7 crisc_d4_080 to crisc_d4_085, 4 Nov 2026. Round 8 crisc_d4_086 to crisc_d4_090, 5 Nov 2026. Round 9 crisc_d4_091 to crisc_d4_095, 5 Nov 2026. Round 10 crisc_d4_096 to crisc_d4_100, 5 Nov 2026.",
     "schema_version": 1
   },
   "domain": 4,
@@ -3520,6 +3520,191 @@
         "Safety impact"
       ],
       "_provenance": "Authored from concept: notes 4A7.1 (Evaluating Emerging Technologies: identify new threats, including cloud paths to physical controls, and weigh them against the objective). Round 9, 5 Nov 2026: original short stem (a dairy's digital twin of its pasteurizing line on a start-up's cloud platform that can change heating settings) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Neighbours checked: crisc_d4_037 (exit terms for a drone start-up; its key is this item's runner-up), crisc_d4_063 (central face templates), crisc_d4_072 (private 5G across 14 plants), crisc_d4_036 (pause conditions for a headset pilot), crisc_d4_048 (an AI agent scheduling line shutdowns), crisc_d4_013 (vendor claims for blockchain), crisc_d2_078 (rating a treatment-plant failure by safety impact), crisc_d2_018 (a water utility's control system intrusion scenario); CISA d1_129 (vendor remote access to SCADA), d4_192 (SCADA lines in continuity planning) and d4_199 (ransomware on a chemical plant's SCADA); CC cc_d3_039 (operators able to change chlorine dosing). No bank holds a digital twin item. Judged distinct: this ranks a new cloud-to-process control path above vendor failure for an emerging technology before adoption; the setting moved from a water utility to a dairy to stay apart from crisc_d2_078.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d4_096",
+      "domain": 4,
+      "subtopic": "4A3 System development life cycle (SDLC). Requirements reused from an earlier product",
+      "principle_id": "analyze-before-acting",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "A game studio's team for its first online multiplayer title, now in design, has copied the security requirements of its last game, which ran offline. What should the risk practitioner recommend as BEST?",
+      "options": {
+        "A": "Requirements set from the new game's own risk assessment",
+        "B": "The product owner's sign-off on the copied requirements",
+        "C": "Requirements taken from the studio's secure coding checklist",
+        "D": "A security assessment the game's owner orders after beta"
+      },
+      "correct": "A",
+      "key_concept": "Security requirements come from a risk assessment of the system being built; requirements copied from a different system miss its own threats.",
+      "pre_read": "Compare where each option gets its requirements and at what stage it acts.",
+      "correct_explanation": "Security requirements should come from the risks of the system being built. An online multiplayer game faces threats an offline game never did, such as account takeover, cheating, payment fraud and attacks on its servers, so its own risk assessment, done now in design, sets them. The secure coding checklist is the runner-up: it is a sound baseline against common coding flaws, but it is generic and cannot name this game's threats.",
+      "wrong_explanations": {
+        "B": "Sign-off approves the list but does not make it fit; requirements written for an offline game still miss the online game's threats.",
+        "C": "A secure coding checklist is a useful baseline, but it covers common flaws in code, not the threats specific to an online multiplayer game.",
+        "D": "An assessment after beta finds gaps once the design is built, when fixes cost most; requirements belong in design, before the build."
+      },
+      "tips": [
+        "Eliminate: B has the owner approve requirements written for a different product, and D assesses after beta, once the design is built and fixes cost most.",
+        "Final two: A beats C because a generic coding checklist is only a baseline, while the game's own risk assessment finds threats an offline game never faced.",
+        "Exam cue: when a project reuses another system's requirements or controls, ask what is new about this system; its requirements follow its own assessed risk."
+      ],
+      "framework_ref": "NIST SP 800-218 Version 1.1 PW.1.1 (use forms of risk modeling, such as threat modeling, attack modeling or attack surface mapping, to help assess the security risk for the software); NIST SP 800-37 Rev. 2 Task P-14 (Risk Assessment for the System: conduct a system-level risk assessment from initiation and update it on an ongoing basis)",
+      "related_concepts": [
+        "Security requirements",
+        "Threat modeling",
+        "SDLC design phase"
+      ],
+      "_provenance": "Authored from concept: notes 4A3.2 (Secure Development and Testing: security requirements are defined early from the new system's own risk assessment or threat model). Round 10, 5 Nov 2026: original scenario (a game studio's first online multiplayer title, in design, using security requirements copied from its last offline game) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Neighbours checked: crisc_d4_027 (requirements set after a vendor is chosen; its penetration-test distractor was kept out of this item), crisc_d4_028 (card storage added during design), crisc_d4_052 (the same flaw in every release), crisc_d4_059 (a change called too small to review), crisc_d4_005 (developers running acceptance tests), crisc_d2_076 (a chatbot threat model using STRIDE alone); CISA d5_006 (legal requirements before choosing a framework), d3_023 (a vendor's SBOM) and d3_052 (dependency scanning); CC cc_d5_042 and cc_d5_113 (STRIDE categories) and cc_d5_089 (a threat left unfixed); AAIA aaia_d2_043 (verifying a hub model's source, the reason an earlier AI-provenance angle for this slot was dropped). Judged distinct: no bank item keys the basis of a new product's security requirements against requirements copied from another product or a generic checklist.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d4_097",
+      "domain": 4,
+      "subtopic": "4A6 Technology resilience and disaster response/recovery. Where backup keys are kept",
+      "principle_id": "answer-from-the-stem",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "A stadium operator encrypts the backups it sends offsite, and the only copy of the decryption keys sits in a key vault at its main data center. What is the risk practitioner's GREATEST concern?",
+      "options": {
+        "A": "An intruder at the main site using the keys to read backups",
+        "B": "Restores slowed by decrypting backups at the recovery site",
+        "C": "Offsite backups left unreadable if the main site is lost",
+        "D": "Staff at the offsite store reading the backup media"
+      },
+      "correct": "C",
+      "key_concept": "Offsite backups must survive the loss of the main site, so the keys that decrypt them are kept apart from it but reachable in recovery.",
+      "pre_read": "For each option, picture the event that would cause it and what it would cost.",
+      "correct_explanation": "Offsite backups exist for the day the main site is lost. With the only decryption keys in a vault at that site, the fire, flood or ransomware attack that takes the data center also locks every offsite copy, and recovery fails. Keys belong apart from the site yet reachable. An intruder reading backups is the runner-up: someone inside the main site can already reach the live data, so the backups add little exposure.",
+      "wrong_explanations": {
+        "A": "An intruder inside the main site can already reach the live data; reading the backups adds little beside losing every backup in a disaster.",
+        "B": "Decryption adds some restore time, but that is a performance cost; once the keys are gone, the backups cannot be restored at all.",
+        "D": "Encryption with the keys held elsewhere is what stops offsite staff reading the media; this is the design's strength, not its gap."
+      },
+      "tips": [
+        "Eliminate: B is a small performance cost rather than a recovery gap, and D is the risk the encryption already handles, since the offsite store never holds the keys.",
+        "Final two: C beats A because an intruder at the main site can already reach the live data, while losing that site would leave every offsite backup unreadable.",
+        "Exam cue: test a recovery design against the loss of the main site; anything recovery needs, such as keys, credentials or runbooks, must not exist only there."
+      ],
+      "framework_ref": "NIST SP 800-34 Rev. 1 Section 5.1.2 (Maintenance of Data Security, Integrity, and Backup: key management keeps encrypted backups available, with keys stored separate from, but accessible to, the backup data); NIST SP 800-53 Rev. 5 SC-12(1) (Cryptographic Key Establishment and Management | Availability)",
+      "related_concepts": [
+        "Backup encryption keys",
+        "Single point of failure",
+        "Offsite backups"
+      ],
+      "_provenance": "Authored from concept: notes 4A6.2 (Backups and Ransomware Recovery: offsite copies with decryption keys stored apart from the main site but reachable). Round 10, 5 Nov 2026: original scenario (a stadium operator whose offsite backups can be decrypted only with keys held in a vault at its main data center) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Neighbours checked: crisc_d4_011 (a recovery site sharing the main site's carrier; a FIRST stem keyed on assessing the RTO breach), crisc_d4_033 (a SaaS contract that excludes user-deleted records), crisc_d4_071 (backup retention shorter than intruders stay hidden), crisc_d4_088 (restore tests against the ransomware playbook), crisc_d4_034 (a failover test that skips the top scenario); CISA d5_069 (a retired key destroyed while backups are retained), d5_080 (ransomware deleting backup keys from a vault), d4_161 (a backup catalog kept only on the server it describes) and d4_173 (an offsite vault 3 km away); CC cc_d1_065 (encrypting backup drives sent by courier), cc_d2_055 (backups deletable by domain administrators) and cc_d2_097 (replication that copies corruption, the reason an earlier replication angle for this slot was dropped). Judged distinct: the final two sets recoverability against confidentiality for keys held only at the main site; d4_161 shares the idea that recovery needs must sit offsite but tests a catalog, as a control choice.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d4_098",
+      "domain": 4,
+      "subtopic": "4B1 Security concepts, frameworks and standards. What Zero Trust access changes",
+      "principle_id": "priority-word-decides",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A courier firm's depot applications now sit behind tested Zero Trust access that checks the user and device in each session. Which register scenario's rating should the risk practitioner expect to fall MOST?",
+      "options": {
+        "A": "An intruder using one stolen login to reach other systems",
+        "B": "A driver misusing customer addresses they may view for work",
+        "C": "A cloud outage taking the depot applications offline",
+        "D": "Depot staff mistyping parcel details that misroute deliveries"
+      },
+      "correct": "A",
+      "key_concept": "Zero Trust removes trust based on network location, so its largest effect is on lateral movement from a compromised account or device.",
+      "pre_read": "Match each scenario to the kind of control that would change its likelihood or impact.",
+      "correct_explanation": "Zero Trust grants no trust for network location and checks the user and device for each session and resource, so a stolen login no longer opens the systems beyond the first one; NIST SP 800-207 names stopping lateral movement as a main benefit. A driver misusing permitted addresses is the runner-up: the checks confirm a valid driver on a valid device, so access the job grants is still allowed.",
+      "wrong_explanations": {
+        "B": "Per-session checks confirm a valid driver on a valid device; misuse of addresses the job allows passes them, so this rating moves little.",
+        "C": "Zero Trust governs who may connect, not whether the cloud service runs; its policy service can even add a dependency for availability.",
+        "D": "Typing errors by authorized staff happen inside permitted access; input checks, not access decisions, change this rating."
+      },
+      "tips": [
+        "Eliminate: C is an availability event that access checks cannot prevent, and D is an error by authorized staff that input controls, not access decisions, address.",
+        "Final two: A beats B because a valid driver on a valid device passes every check, while a stolen login can no longer move from system to system.",
+        "Exam cue: Zero Trust cuts the reach of a compromised account or device; it does little against outages, honest errors or misuse within granted access."
+      ],
+      "framework_ref": "NIST SP 800-207 Section 2.1 (Tenets of Zero Trust: network location alone does not imply trust, and access to each enterprise resource is granted per session); NIST SP 800-207 Section 5.3 (Stolen Credentials/Insider Threat: Zero Trust stops compromised accounts or assets from moving laterally, but a valid account can still reach the resources it is granted)",
+      "related_concepts": [
+        "Zero Trust",
+        "Lateral movement",
+        "Insider threat"
+      ],
+      "_provenance": "Authored from concept: notes 4B1.2 (Zero Trust Architecture: network location grants no trust and access is granted per session, so one stolen login does not open other systems). Round 10, 5 Nov 2026: original short stem (a courier firm's depot applications behind tested Zero Trust access, and which register scenario's rating falls most) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Neighbours checked: crisc_d4_040 (rating a partial Zero Trust rollout), crisc_d4_062 (ranking processes for the first Zero Trust move), crisc_d4_073 (two firewalls with copied rules), crisc_d4_053 (removing layers around customer data), crisc_d4_087 (an AI assistant's edit access); CISA d5_050 (VPN users reaching every application), d5_336 (the ZTNA feature that limits a compromised laptop), d5_306 (unauthenticated calls to a network controller) and d5_046 (personal devices admitted on credentials alone); CC cc_d4_012 (a per-session access decision for a teacher) and cc_d4_089 (what a posture check examines). Two earlier angles for this slot (implicit trust on depot networks, device state for drivers' phones) were dropped as too close to cc_d4_012 and CISA d5_046. Judged distinct: the item asks which register scenario a working Zero Trust control changes most, with insider misuse inside granted access as the runner-up.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d4_099",
+      "domain": 4,
+      "subtopic": "4B2 Security/risk awareness and training. Staff reading of an AI-use rule",
+      "principle_id": "root-cause-over-symptom",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "At a print works, staff may use AI image tools for non-confidential work, but a survey shows most treat unreleased customer artwork as non-confidential. What should the risk practitioner recommend as BEST?",
+      "options": {
+        "A": "The policy owner's reminder that AI is for non-confidential work",
+        "B": "AI-use training with examples of confidential customer files",
+        "C": "The data owner's approval before customer files reach AI tools",
+        "D": "A block on AI image tools across the print works network"
+      },
+      "correct": "B",
+      "key_concept": "Awareness must show what a rule means in practice; staff apply a rule like 'non-confidential only' through their own idea of confidential.",
+      "pre_read": "Find what the survey says staff misunderstand before weighing the options.",
+      "correct_explanation": "Staff already know the rule; they misjudge what it covers, treating unreleased artwork as safe to upload. Training with concrete examples of confidential customer files, such as unreleased designs, corrects that belief where the decision is made. A policy reminder is the runner-up: it repeats the rule, but staff who think unreleased artwork is non-confidential will read the reminder the same way and keep uploading it.",
+      "wrong_explanations": {
+        "A": "Repeating the rule leaves its meaning unchanged; staff who think unreleased artwork is non-confidential will keep uploading it while following the reminder.",
+        "C": "An approval for every file adds a bottleneck to allowed work and still leaves staff misjudging which files count as confidential.",
+        "D": "A ban ends an approved use and tends to push staff to personal devices, without teaching what counts as confidential."
+      },
+      "tips": [
+        "Eliminate: C puts an approval on every file instead of fixing staff's judgment, and D bans an approved use, which tends to drive it onto personal devices.",
+        "Final two: B beats A because staff already know the rule; a reminder repeats words they misread, while examples change what they think the rule covers.",
+        "Exam cue: when staff break a rule they know, find what they misunderstand; awareness built on concrete examples beats repeating the policy."
+      ],
+      "framework_ref": "NIST CSF 2.0 PR.AT-01 (personnel are provided with awareness and training so that they possess the knowledge and skills to perform general tasks with cybersecurity risks in mind); NIST SP 800-53 Rev. 5 AT-2 (Literacy Training and Awareness)",
+      "related_concepts": [
+        "Security awareness",
+        "Data classification in practice",
+        "Generative AI use"
+      ],
+      "_provenance": "Authored from concept: notes 4B2.2 (Measuring Awareness, Phishing Simulations and Shadow AI: awareness names concrete examples of restricted data, because staff apply a rule by their own idea of confidential). Round 10, 5 Nov 2026: original scenario (a print works whose staff may use AI image tools for non-confidential work but treat unreleased customer artwork as non-confidential) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Neighbours checked: crisc_d4_057 (a block on AI chat sites pushing use to personal phones), crisc_d4_018 (a measure for AI-use training), crisc_d4_017 (role-based onboarding for seasonal workers), crisc_d4_042 (an error blamed on one clerk), crisc_d4_090 (choosing awareness topics), crisc_d4_093 (when data is classified); CISA d4_315 (measuring shadow IT from proxy logs), d3_074 (rules for an AI coding assistant) and d5_104 (discipline for clicking simulated phishing); CC cc_d2_004 (a free AI email extension) and cc_d2_015 (naming staff who click simulations). An earlier phishing-simulation angle for this slot was dropped as a mirror of CISA d5_104 and CC cc_d2_015. Judged distinct: staff know an approved AI-use rule but misjudge which data it covers, and the final two is concrete examples against a policy reminder.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d4_100",
+      "domain": 4,
+      "subtopic": "4B3 Data privacy and data protection principles. Order histories for a partner's AI model",
+      "principle_id": "final-two",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A food-delivery platform's app will take orders only from customers who agree that their order histories may train a partner's AI advertising model. What should the risk practitioner recommend as BEST?",
+      "options": {
+        "A": "A clearer privacy notice that the data owner signs off",
+        "B": "The data owner's review of the partner's security controls",
+        "C": "A contract making the AI partner liable for data misuse",
+        "D": "Separate, optional consent for the AI model training"
+      },
+      "correct": "D",
+      "key_concept": "Consent is valid only as a real choice; tying an unrelated use, such as AI training, to the core service leaves customers none.",
+      "pre_read": "Decide what privacy problem the stem describes before reading the options.",
+      "correct_explanation": "Ordering food does not need a partner's AI advertising model, yet customers must accept that use to order at all, so their agreement is not a real choice. Making consent to the training separate and optional lets customers order and still decline it. A clearer notice is the runner-up: it tells customers plainly what happens, but they still cannot order without agreeing, so the consent stays forced.",
+      "wrong_explanations": {
+        "A": "Plain wording informs customers, but agreement is still a condition of ordering; telling people more does not give them a choice.",
+        "B": "A security review protects the shared data from others; it does not change whether customers freely agreed to the training use.",
+        "C": "Liability shifts some cost to the partner after misuse; customers must still accept the training use to place an order."
+      },
+      "tips": [
+        "Eliminate: B treats a privacy problem as a security one, and C moves the cost of misuse; neither changes what customers must accept to order.",
+        "Final two: D beats A because a clearer notice explains the training use but keeps it a condition of ordering; only separating it gives customers a choice.",
+        "Exam cue: when an extra use of personal data is tied to the core service, the privacy answer unbundles it so people can refuse and still be served."
+      ],
+      "framework_ref": "NIST SP 800-53 Rev. 5 PT-4(1) (Consent | Tailored Consent); NIST SP 800-53 Rev. 5 PT-3 (Personally Identifiable Information Processing Purposes)",
+      "related_concepts": [
+        "Consent",
+        "Purpose limitation",
+        "Personal data in AI"
+      ],
+      "_provenance": "Authored from concept: notes 4B3.1 (Privacy Principles: consent counts only if people can refuse an unrelated use and still be served). Round 10, 5 Nov 2026: original scenario (a food-delivery app that takes orders only from customers who agree their order histories may train a partner's AI advertising model) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Neighbours checked: crisc_d4_019 (inferring health conditions from loyalty data), crisc_d4_020 (sharing workout data with an insurer after a PIA), crisc_d4_075 (a vendor training on customer emails), crisc_d4_043 (evidence of privacy by design), crisc_d4_060 (deletion requests that miss copies); CISA d5_028 (a pre-ticked consent box), d5_029 (extra fields collected in case analytics needs them), d2_040 (choosing a GDPR lawful basis) and d2_210 (keeping former customers' histories); AAIA aaia_d2_024 (a food-delivery app's ranking model) and aaia_d1_034 (a model offered to teens); CC cc_d3_113 (a sign-in vendor's browsing-history feed). Judged distinct: no bank item keys consent made a condition of the core service; the final two is unbundled consent against a clearer notice.",
       "style_version": 2
     }
   ]

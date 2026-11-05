@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "comment": "Original CRISC practice questions for Domain 3 (Risk Response and Reporting), written to the CRISC exam content outline effective 2025. Every item is authored from public concepts and KaiSip's own CRISC study notes (data/crisc/notes/d3.json), with no reference to the CRISC Review Manual, ISACA's QAE database, ISACA's practice quiz or any prior question bank. Schema: docs/content/QUESTION_SCHEMA.md; writing rules: docs/content/EXAM_STYLE_V2.md and .claude/agents/crisc-standards-auditor.md. Not affiliated with or endorsed by ISACA®. CRISC® is a registered trademark of ISACA. Pilot batch crisc_d3_001 to crisc_d3_020, 30 Oct 2026. Round 2 crisc_d3_021 to crisc_d3_050, 31 Oct 2026. Round 3 crisc_d3_051 to crisc_d3_085, 4 Nov 2026. Round 7 crisc_d3_129 to crisc_d3_136, 4 Nov 2026. Round 8 crisc_d3_137 to crisc_d3_144, 5 Nov 2026. Round 9 crisc_d3_145 to crisc_d3_152, 5 Nov 2026.",
+    "comment": "Original CRISC practice questions for Domain 3 (Risk Response and Reporting), written to the CRISC exam content outline effective 2025. Every item is authored from public concepts and KaiSip's own CRISC study notes (data/crisc/notes/d3.json), with no reference to the CRISC Review Manual, ISACA's QAE database, ISACA's practice quiz or any prior question bank. Schema: docs/content/QUESTION_SCHEMA.md; writing rules: docs/content/EXAM_STYLE_V2.md and .claude/agents/crisc-standards-auditor.md. Not affiliated with or endorsed by ISACA®. CRISC® is a registered trademark of ISACA. Pilot batch crisc_d3_001 to crisc_d3_020, 30 Oct 2026. Round 2 crisc_d3_021 to crisc_d3_050, 31 Oct 2026. Round 3 crisc_d3_051 to crisc_d3_085, 4 Nov 2026. Round 7 crisc_d3_129 to crisc_d3_136, 4 Nov 2026. Round 8 crisc_d3_137 to crisc_d3_144, 5 Nov 2026. Round 9 crisc_d3_145 to crisc_d3_152, 5 Nov 2026. Round 10 crisc_d3_153 to crisc_d3_160, 5 Nov 2026.",
     "schema_version": 1
   },
   "domain": 3,
@@ -5631,6 +5631,302 @@
         "Supply chain updates"
       ],
       "_provenance": "Authored from concept: notes 3C6.1 (Horizon Scanning and Emerging Risk Sources: a peer's incident on the same technology, or an industry report, is valid evidence to record an emerging risk; do not wait for an in-house event). Round 9, 5 Nov 2026: original scenario (a solar-farm operator whose peer went offline after the shared inverter maker pushed a faulty remote update), written for KaiSip in our own words; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D3 round 9 (crisc_d3_145 to 152). Angle: the round 9 outside-data key; options that take a value from peers had been keyed 0 of 27 across the bank. Here the peer's incident is the basis of the key, and 'wait for our own data at the yearly assessment' is the runner-up. Neighbours checked: crisc_d3_020 (regulators' consultation recorded as an emerging risk; the trigger there is a rule change, not another firm's event), crisc_d3_049 (a peer's rating as a wrong basis), crisc_d3_084 (peer losses among solid data), crisc_d3_114 (report once a peer has a loss, wrong), crisc_d3_115 (staged response to GPS spoofing), crisc_d3_128 (front-line reports), crisc_d3_143 (watch signs), crisc_d2_004 (a sharing group's warning assessed first), crisc_d3_144 (concentration risk), aaia_d1_011 and aaia_d1_027 (vendor model updates), cc_d2_064 (wind farm report figures). None keys recording an emerging risk on a peer's incident. Keep apart in practice sets from crisc_d2_103 and crisc_d2_096 (same own-data runner-up). Review fixes 5 Nov 2026 (round 9 standards audit, concept review and blind test): keep-apart list widened (no text change).",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d3_153",
+      "domain": 3,
+      "subtopic": "3A2 Risk and control ownership. Requests the departments ignore",
+      "principle_id": "match-decision-to-role",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A government agency's register names a junior IT officer as owner of the quarterly contractor-access review, but department heads ignore the officer, leaving 40% of reviews unanswered. What should the risk analyst recommend as BEST?",
+      "options": {
+        "A": "Have the risk owner remind department heads each quarter",
+        "B": "Name a senior manager over those departments as its owner",
+        "C": "Keep the officer as control owner, with more time to chase replies",
+        "D": "Escalate each unanswered review to the risk committee"
+      },
+      "correct": "B",
+      "key_concept": "A control owner needs authority over the people the control depends on; an owner they can ignore leaves the control failing.",
+      "pre_read": "Ask why the review keeps failing before choosing who should act.",
+      "correct_explanation": "A control owner answers for the control working, so they need authority over the people it depends on. Department heads ignore a junior officer, so 40% of reviews fail; a senior manager over those departments can hold them to it, while the officer still runs the work. Reminders from the risk owner are the runner-up: they may lift one quarter's replies, but the review still rests with someone the departments can ignore.",
+      "wrong_explanations": {
+        "A": "Reminders may lift this quarter's replies, but the review's own owner still lacks authority, so each quarter depends on outside pressure.",
+        "C": "More time gives the officer no authority over department heads; replies still depend on goodwill, and late ones leave contractor access unchecked longer.",
+        "D": "Sending each missed reply to a committee treats every gap as a one-off and floods it; it does not change who answers for the review."
+      },
+      "tips": [
+        "Eliminate: C leaves the review with an owner who has no authority over the departments, and D sends each missed reply to a committee without fixing who owns the review.",
+        "Final two: B beats A because reminders lift one quarter's replies; an owner with authority over the departments makes the review work every quarter.",
+        "Exam cue: a control owner needs authority over the people the control depends on; when a control fails because its owner is ignored, fix the ownership."
+      ],
+      "framework_ref": "ISACA Glossary (control owner); NIST CSF 2.0 GV.RR-02 (roles, responsibilities and authorities related to cybersecurity risk management are established, communicated, understood and enforced)",
+      "related_concepts": [
+        "Control owner",
+        "Authority",
+        "Access review"
+      ],
+      "_provenance": "Authored from concept: notes 3A2.2 (Control Owners and Validating Ownership: a control owner needs authority over the people and resources the control depends on). Round 10, 5 Nov 2026: original scenario (a government agency whose junior IT officer owns a contractor-access review that department heads ignore), written for KaiSip in our own words; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D3 round 10 (crisc_d3_153 to 160). Angle: the 'owner with no authority' trap applied to a control owner, not a risk owner. Owner pattern: the key names an owner and two distractors name one too (the risk owner's reminders; the officer kept as control owner); 'Escalate' stays wrong. Neighbours checked (stems and options): crisc_d3_023 (risk owner without budget authority), crisc_d3_005, crisc_d3_129 and crisc_d1_022 (who should own a control), crisc_d3_052 (owner moved after a reorganization; its distractor 'Name the portal's IT manager as the risk's new owner' shares the key's opening, different idea), crisc_d3_053 (control owner retiring), crisc_d3_089 (one control for four risks), crisc_d3_057 (finding with no action owner), crisc_d1_052 (two accountable in a RACI), crisc_d3_064 (recertification skipped), cc_d3_121 (named owners confirm account access), CISA d2_049 and d5_158. None keys giving a control to a manager with authority over the people it depends on.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d3_154",
+      "domain": 3,
+      "subtopic": "3A3 Vendor and supply chain risk management. Assurance report at the yearly review",
+      "principle_id": "evidence-before-credit",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "A logistics park's gate vendor sent a clean, full-year SOC 2 Type 2 report on the service and host; the park runs the user controls it lists. What should the risk analyst recommend as BEST?",
+      "options": {
+        "A": "Have vendor control owners sign off the report's controls",
+        "B": "Have the gate system's business owner fund an on-site audit",
+        "C": "Repeat the full onboarding due diligence on the vendor",
+        "D": "Rely on the report in this year's review of the vendor"
+      },
+      "correct": "D",
+      "key_concept": "An independent report covering the service, its subcontractors and the period, with the customer's user controls running, can be relied on.",
+      "pre_read": "Check the report's scope, period, subcontractors and user controls before deciding what more is needed.",
+      "correct_explanation": "The report is independent, tested evidence over a full year, it covers both the service and the host behind it, it shows no exceptions, and the park runs the user controls it depends on. Nothing is left open, so relying on it is sound ongoing monitoring. An on-site audit is the runner-up: it sounds thorough, but it repeats a year of independent testing at the business's cost with no gap to target.",
+      "wrong_explanations": {
+        "A": "A sign-off by the vendor's own staff is self-reported; it is weaker evidence than the independent, tested report already in hand.",
+        "B": "A site audit repeats a full year of independent testing with no gap or exception to target, so it adds cost without adding assurance.",
+        "C": "Onboarding due diligence suits a new vendor; for a live one, current assurance reports are the ongoing check, and this one leaves nothing open."
+      },
+      "tips": [
+        "Eliminate: A swaps tested evidence for the vendor's own word, and C repeats onboarding checks on a vendor a current report already covers.",
+        "Final two: D beats B because the report covers the service, host and year with no exceptions; a site audit would repeat that testing with no gap to target.",
+        "Exam cue: an assurance report counts for what it covers; when scope, period, subcontractors and user controls all check out, rely on it."
+      ],
+      "framework_ref": "NIST SP 800-53 Rev. 5 SR-6 (Supplier Assessments and Reviews); NIST CSF 2.0 GV.SC-07 (the risks posed by a supplier, their products and services and other third parties are understood, recorded, prioritized, assessed, responded to and monitored)",
+      "related_concepts": [
+        "SOC 2 Type 2 report",
+        "Complementary user entity controls",
+        "Fourth party"
+      ],
+      "_provenance": "Authored from concept: notes 3A3.2 (Ongoing Vendor Monitoring and Assurance Reports: when a report's scope, period and subcontractors fit and no exceptions or user controls are open, rely on it rather than repeat its tests). Round 10, 5 Nov 2026: original scenario (a logistics park's gate vendor with a clean, full-year SOC 2 Type 2 report on the service and its host), written for KaiSip in our own words; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D3 round 10 (crisc_d3_153 to 160). Angle: the counter-example to crisc_d3_006 (scope gap) and crisc_d3_026 (user controls to check): here nothing is open, so the key opens 'Rely' (keyed 0 of 6 in D3 before this round) and an on-site audit is the runner-up. Owner pattern: the key names no owner; two distractors name one. Neighbours checked (stems and options): crisc_d3_006, crisc_d3_025 (right to audit refused), crisc_d3_026, crisc_d3_054 (contract terms before signing), crisc_d3_091 (due diligence behind schedule), crisc_d3_118, crisc_d3_135 (provider sold), crisc_d1_105, CISA d4_109 (owners confirming ratings in writing, reworded away) and d5_198, cc_d4_126. None keys relying on a report whose scope, host, period and user controls all check out. Keep apart in practice sets from crisc_d3_006 and crisc_d3_026.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d3_155",
+      "domain": 3,
+      "subtopic": "3B1 Control frameworks, types and standards. Firewall rule set to log",
+      "principle_id": "residual-counts-working-controls",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A school district rates its finance-system risk crediting a firewall rule as preventive, but the rule only logs student-network traffic to the system for weekly review. What should the risk analyst do FIRST?",
+      "options": {
+        "A": "Correct the rating to count the rule as a detective control",
+        "B": "Ask the control owner to switch the rule to blocking",
+        "C": "Keep the rating while the control owner reviews the logs weekly",
+        "D": "Leave the rating until the rule's next scheduled control test"
+      },
+      "correct": "A",
+      "key_concept": "A control earns credit only for what it does; a firewall rule that only logs traffic detects, so it is not rated as preventive.",
+      "pre_read": "Ask what the control actually does at the moment the risk event happens.",
+      "correct_explanation": "The rating credits prevention the rule does not give: it records the traffic, and someone reads the records up to a week later, which is detection. The analyst should first correct the rating to the control's real function, so the risk owner sees the true position against appetite. Switching the rule to blocking is the runner-up: it may well be the fix, but it picks a control before the corrected rating is known.",
+      "wrong_explanations": {
+        "B": "Blocking may be the eventual fix, but it chooses a control before the corrected rating is known; the risk owner decides any treatment from that rating.",
+        "C": "A weekly log review finds traffic after it has happened, so it detects; keeping the preventive credit overstates how well the risk is controlled.",
+        "D": "The mismatch is already known; waiting for the next test leaves a wrong rating in place for everyone who relies on it."
+      },
+      "tips": [
+        "Eliminate: C keeps preventive credit for a weekly log review, which detects, and D leaves a known rating error in place until the next test.",
+        "Final two: A beats B because the rating must reflect what the rule really does before anyone chooses a fix; blocking may follow once the owner sees it.",
+        "Exam cue: classify a control by what it does to the risk event, not by the tool's name; a firewall rule that logs and does not block is detective."
+      ],
+      "framework_ref": "ISACA Glossary (detective control); NIST IR 8286B-upd1 Section 2.3.4 (Risk Mitigation: preventive, deterrent, detective, corrective and compensating controls)",
+      "related_concepts": [
+        "Detective control",
+        "Preventive control",
+        "Residual risk"
+      ],
+      "_provenance": "Authored from concept: notes 3B1.1 (Control Types by Function: credit a control in the rating only for the function it performs; a firewall rule set to log detects, it does not prevent). Round 10, 5 Nov 2026: original scenario (a school district whose finance-system rating credits a log-only firewall rule as preventive), written for KaiSip in our own words; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D3 round 10 (crisc_d3_153 to 160). Angle: the first FIRST item in 3B1; option skeleton: correct the rating (key), the control owner changes the control first (runner-up), keep the rating with the owner's weekly review, wait for the next test. Owner pattern: the key names no owner; two distractors name one. Neighbours checked (stems and options): crisc_d3_008 (weekly change comparison classified detective), crisc_d3_096 (corrective classification), crisc_d3_031 (compensating supervisor check), crisc_d3_032 (detection after the loss), crisc_d3_122 and crisc_d3_045 ('Ask the control owner' distractors), crisc_d1_037 (reassess without credit for a control that stopped), CISA d5_085 (web firewall left in monitor mode, an audit concern), cc_d4_065 (IPS started alert-only), cc_d2_095, cc_d5_041. None keys correcting a rating that credits a log-only control as preventive.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d3_156",
+      "domain": 3,
+      "subtopic": "3B2 Control design, selection, implementation and analysis. Weld photos a model misreads",
+      "principle_id": "root-cause-over-symptom",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A car maker's AI model grades body-line weld photos; tests show it passes faulty welds when spatter or poor light blurs a photo. Which control is MOST effective for the risk analyst to recommend?",
+      "options": {
+        "A": "Inspector review of a random 2% of graded welds",
+        "B": "Retraining the model on new weld photos every quarter",
+        "C": "A photo-quality check sending blurred photos to inspectors",
+        "D": "A monthly report of weld faults found in later tests"
+      },
+      "correct": "C",
+      "key_concept": "An AI input check catches the inputs a model is known to misjudge and sends them to a person before a wrong output is used.",
+      "pre_read": "Find exactly when the model fails, then look for the control aimed at those cases.",
+      "correct_explanation": "The model fails on a known kind of input, blurred photos, so the most effective control checks each photo's quality before the grade is trusted and sends blurred ones to an inspector. That catches the cases where faulty welds pass, at the point of use. A random 2% inspector sample is the runner-up: it adds human review, but it reaches few of the blurred photos, so most hidden faults still pass.",
+      "wrong_explanations": {
+        "A": "A random sample picks 2% of welds without regard to photo quality, so most blurred photos, where the faults hide, never reach a person.",
+        "B": "A blurred photo lacks the detail to judge a weld; retraining cannot recover it, and faulty welds keep passing in the meantime.",
+        "D": "A monthly report finds faults after the cars have moved on; it measures the problem rather than stopping faulty welds from passing."
+      },
+      "tips": [
+        "Eliminate: B retrains a model on photos that lack the detail to judge, and D reports faults a month later rather than stopping them.",
+        "Final two: C beats A because it targets exactly the photos where the model fails; a random sample reaches too few of them.",
+        "Exam cue: when an AI model fails on a known kind of input, check inputs before use and route the ones it cannot judge to a person."
+      ],
+      "framework_ref": "NIST AI 100-1 (AI RMF 1.0) MEASURE 2.5 (the AI system is demonstrated to be valid and reliable, and limits of generalizability beyond the conditions it was developed in are documented); NIST AI 100-1 (AI RMF 1.0) MANAGE 2.4 (mechanisms are in place to supersede, disengage or deactivate AI systems whose performance or outcomes are inconsistent with intended use)",
+      "related_concepts": [
+        "Input validation",
+        "Human review",
+        "AI model limits"
+      ],
+      "_provenance": "Authored from concept: notes 3B2.1 (Selecting Controls by Root Cause and Cost-Benefit: for AI systems, scale input checks to impact and route inputs the model cannot judge, such as blurred photos, to a person). Round 10, 5 Nov 2026: original scenario (a car maker's AI model that passes faulty welds when spatter or poor light blurs the photo), written for KaiSip in our own words; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D3 round 10 (crisc_d3_153 to 160). AI item. Angle: an input check at the point of use, where crisc_d3_098 keyed an output check and crisc_d3_062 the basis for human review. Owner pattern: no option names an owner. Neighbours checked (stems and options): crisc_d3_009 (retyped readings), crisc_d3_044 (review KCI), crisc_d3_062, crisc_d3_098, crisc_d3_142 (ending an interim manual review), crisc_d3_149, crisc_d4_050, aaia_d2_032 (lens-defect model after a library patch), aaia_d2_053, aaia_d2_111 (camera-trap model and rainy-season footage), aaia_d2_117 (compressed model not retested), CISA d3_070 and d2_159. None keys an input-quality check that routes inputs the model cannot judge to a person.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d3_157",
+      "domain": 3,
+      "subtopic": "3C1 Risk action plans. Account plan at its end date",
+      "principle_id": "answer-from-the-stem",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A rail operator's named-account plan for signal engineers is done: the risk team's operating test passed, and the risk owner signed the re-rated risk, now at target. What is the risk analyst's BEST action?",
+      "options": {
+        "A": "Wait for internal audit's review before closing the plan",
+        "B": "Ask the control owner to repeat the operating test",
+        "C": "Leave the plan open until the risk owner meets next quarter",
+        "D": "Close the completed action plan in the risk register"
+      },
+      "correct": "D",
+      "key_concept": "An action plan closes once evidence shows the control works and the risk owner signs the re-rated risk at its target.",
+      "pre_read": "List what closing a plan needs, then check which of those the stem already gives.",
+      "correct_explanation": "Every closure condition is met: the risk team's operating test showed the named accounts work, the risk was re-rated, and the risk owner signed the new rating at the plan's target. Closing the plan keeps the register accurate, and the risk moves to routine monitoring. Waiting for internal audit is the runner-up: audit gives independent assurance on its own plan, but a validated, signed-off action plan does not wait for it.",
+      "wrong_explanations": {
+        "A": "Internal audit reviews on its own plan and cycle; a validated action plan with the owner's sign-off does not need its review to close.",
+        "B": "The control already passed an operating test run by the risk team; repeating it adds no new evidence.",
+        "C": "The risk owner has already signed the re-rated risk; holding the plan for another meeting leaves the register showing finished work as open."
+      },
+      "tips": [
+        "Eliminate: B repeats an operating test that already passed, and C waits for a meeting to approve what the risk owner has already signed.",
+        "Final two: D beats A because the target is met, shown by evidence and the owner's sign-off; internal audit's review is not a gate for closing the plan.",
+        "Exam cue: keep a plan open until evidence shows the target is met; once it is, with the owner's sign-off, close it and monitor the risk."
+      ],
+      "framework_ref": "NIST SP 800-53 Rev. 5 CA-5 (Plan of Action and Milestones); NIST CSF 2.0 ID.RA-06 (risk responses are chosen, prioritized, planned, tracked and communicated)",
+      "related_concepts": [
+        "Risk action plan",
+        "Plan closure",
+        "Operating effectiveness"
+      ],
+      "_provenance": "Authored from concept: notes 3C1.2 (Validating Execution and Tracking to Closure: close the plan once evidence and the owner's sign-off show the risk at its target). Round 10, 5 Nov 2026: original scenario (a rail operator's plan to give signal engineers named accounts, tested and signed off at target), written for KaiSip in our own words; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D3 round 10 (crisc_d3_153 to 160). Angle: the closure counter-example; crisc_d3_013, crisc_d3_069, crisc_d3_130 and crisc_d3_142 keep plans open, but here every condition is met, so the key opens 'Close' (keyed 0 of 13 in D3 before this round) and waiting for internal audit is the runner-up. Owner pattern: the key names no owner; two distractors name one. Neighbours checked (stems and options): crisc_d3_013, crisc_d3_068, crisc_d3_069, crisc_d3_070, crisc_d3_123, crisc_d3_129 (a 'Close the plan as scheduled' distractor), crisc_d3_130, crisc_d3_142, crisc_d1_018 (hold for the owner's quarterly review, reworded away), crisc_d2_038 (close retired-app entries), crisc_d4_005, crisc_d3_029 and crisc_d3_057 (shared accounts as findings), crisc_d2_110 (offline backups credited after restore tests: a rating item written in parallel this round; this item was moved off backups to keep the two apart), cc_d1_123, CISA d4_220 and d1_194. None keys closing a validated, signed-off plan. Keep apart in practice sets from crisc_d3_069 and crisc_d3_129.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d3_158",
+      "domain": 3,
+      "subtopic": "3C2 Data collection, aggregation, analysis and validation. Twelve regional outage risks",
+      "principle_id": "rate-on-common-terms",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "An insurer's risk analyst is rolling 12 regional data-center outage risks into one enterprise line; 11 rate medium, and the region hosting the main claims system rates critical. What is the analyst's BEST approach?",
+      "options": {
+        "A": "Show the claims region's outage as its own enterprise risk",
+        "B": "Rate the combined line at the worst region's level",
+        "C": "Have the regional risk owners agree one enterprise rating",
+        "D": "Leave the claims region's risk with its regional owner"
+      },
+      "correct": "A",
+      "key_concept": "Aggregation must keep a severe single risk visible; one combined line, averaged or set to the worst rating, misstates where exposure sits.",
+      "pre_read": "Before combining ratings, check whether one of them stands far apart from the rest.",
+      "correct_explanation": "One combined line would either hide the critical region inside a middle rating or call all twelve critical. Showing the claims region's outage as its own enterprise risk keeps the severe exposure visible where it sits, while the eleven similar risks roll up together. Rating the whole line at the worst level is the runner-up: it keeps the severity, but it overstates eleven regions and hides which one needs treatment.",
+      "wrong_explanations": {
+        "B": "Taking the worst rating keeps the severity but labels eleven medium risks critical and hides which region drives it, so treatment may go to the wrong places.",
+        "C": "Agreeing one enterprise rating blends a critical risk with eleven medium ones; the result hides the severe exposure the enterprise needs to see.",
+        "D": "A critical risk to the main claims system matters to the whole insurer; keeping it at regional level hides it from enterprise decisions."
+      },
+      "tips": [
+        "Eliminate: C blends a critical rating into an agreed middle, and D keeps a critical risk to the main claims system out of the enterprise view.",
+        "Final two: A beats B because a separate entry shows where the critical exposure sits; one line at the worst rating overstates eleven regions.",
+        "Exam cue: when combining risks, keep a severe single risk visible as its own line; neither averaging nor taking the worst rating shows it."
+      ],
+      "framework_ref": "ISACA Glossary (risk aggregation); NIST IR 8286C Rev. 1 Section 2.3 (Analysis of Cybersecurity Risk Registers: aggregated summarization should not impede managers' review of specific risk decisions)",
+      "related_concepts": [
+        "Risk aggregation",
+        "Enterprise risk profile",
+        "Data center outage"
+      ],
+      "_provenance": "Authored from concept: notes 3C2.2 (Aggregating and Normalizing Risk Data: keep severe single risks visible as their own lines; do not average them away or lift a whole group to the worst rating). Round 10, 5 Nov 2026: original scenario (an insurer rolling 12 regional data-center outage risks, one of them critical, into one enterprise line), written for KaiSip in our own words; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D3 round 10 (crisc_d3_153 to 160). Angle: aggregation where the runner-up is the worst-rating rule rather than averaging. Owner pattern: the key names no owner; two distractors name one. Neighbours checked (stems and options): crisc_d3_014 (mixed scales), crisc_d3_030 (combined exceptions), crisc_d3_073 (one office rates higher with the same controls: find out why; here the stem gives the reason), crisc_d3_079 (one averaged score for the board), crisc_d3_081, crisc_d3_105 (its distractor 'the highest-rated unit entry' is this item's runner-up idea), crisc_d3_133, crisc_d2_028 (flood zone in an outage scenario), crisc_d1_033, crisc_d4_046, cc_d1_055. None keys keeping one critical risk as its own enterprise line. Keep apart in practice sets from crisc_d3_105.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d3_159",
+      "domain": 3,
+      "subtopic": "3C3 Risk and control metrics. Indicator for an AI screening tool",
+      "principle_id": "kris-that-predict",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "Which of the following should the risk analyst propose as the BEST key risk indicator that a recruitment agency's AI CV-screening tool is unfairly rejecting candidates?",
+      "options": {
+        "A": "Upheld discrimination complaints from rejected candidates",
+        "B": "Monthly gap in pass rates between candidate groups",
+        "C": "Screening accuracy reported by the tool's vendor",
+        "D": "Share of CVs screened within an hour of arrival"
+      },
+      "correct": "B",
+      "key_concept": "A KRI for unfair AI decisions compares outcomes across groups on the organization's own data; overall accuracy can hide the gap.",
+      "pre_read": "Ask how the named harm would first show up in the data, then match each measure to it.",
+      "correct_explanation": "Unfair rejection first shows as a gap between groups' pass rates, so tracking that gap monthly warns while the agency can still correct the tool, before complaints or regulators act. The vendor's reported accuracy is the runner-up: it sounds like the model's own risk measure, but overall accuracy can stay high while one group is rejected far more often, and it reflects the vendor's tests, not the agency's candidates.",
+      "wrong_explanations": {
+        "A": "Upheld complaints count harm already done and confirmed months later; this lagging measure explains a loss rather than warning of one.",
+        "C": "Overall accuracy can stay high while one group is rejected far more often, and the vendor's figure comes from its own tests, not these candidates.",
+        "D": "Screening speed is a performance measure for the process; it can look excellent while the tool rejects some groups unfairly."
+      },
+      "tips": [
+        "Eliminate: A counts complaints upheld after the harm, a lagging measure, and D measures screening speed, a KPI that need not move with fairness.",
+        "Final two: B beats C because unfair rejection shows as a gap between groups; one overall accuracy figure from the vendor's tests can hide it.",
+        "Exam cue: for AI fairness risk, pick an indicator that compares outcomes across groups on your own data, not one overall accuracy figure."
+      ],
+      "framework_ref": "ISACA Glossary (key risk indicator); NIST AI 100-1 (AI RMF 1.0) MEASURE 2.11 (fairness and bias as identified in the MAP function are evaluated and results are documented)",
+      "related_concepts": [
+        "Key risk indicator",
+        "AI fairness",
+        "Leading indicator"
+      ],
+      "_provenance": "Authored from concept: notes 3C3.3 (Thresholds and AI Model Indicators: for AI systems, track drift, error rates, outcome gaps between groups, override rates and complaints). Round 10, 5 Nov 2026: original scenario (a recruitment agency's AI CV-screening tool and unfair rejection), written for KaiSip in our own words; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D3 round 10 (crisc_d3_153 to 160). AI item. Angle: a short 'Which of the following' KRI stem whose runner-up is the vendor's overall accuracy figure, so the option-type skeleton differs from crisc_d3_150 (leading, control indicator, lagging, training) and crisc_d3_015. Owner pattern: no option names an owner. Neighbours checked (stems and options): crisc_d3_015, crisc_d3_017, crisc_d3_042, crisc_d3_044, crisc_d3_150, crisc_d3_062 (vendor accuracy as a basis for human review, reworded away), crisc_d1_105, crisc_d4_035, crisc_d4_061, crisc_d1_045 and crisc_d2_004 (staffing and recruitment AI), cc_d2_090 (drift KRI), cc_d1_061 (age gap in AI screening: legal concern), CISA d2_225 (who runs the age check), aaia_d1_077. None asks for the KRI of unfair AI rejection.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d3_160",
+      "domain": 3,
+      "subtopic": "3C5 Risk and control reporting techniques. Indicator shown as a rolling average",
+      "principle_id": "report-for-the-decision",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A ferry operator's executive dashboard shows its booking-fraud KRI as a 12-month rolling average, green all year, though two single months passed the red threshold. Which change should the risk analyst recommend as MOST important?",
+      "options": {
+        "A": "Shorten the rolling average to the most recent quarter",
+        "B": "Let each KRI's owner choose its averaging period",
+        "C": "Plot each month's value against the KRI's thresholds",
+        "D": "Replace the KRI with yearly fraud losses against a threshold"
+      },
+      "correct": "C",
+      "key_concept": "Show each period's KRI value against the thresholds set for it; a rolling average can hide single breaches from decision-makers.",
+      "pre_read": "Check whether the figure shown is the same measure the threshold was set for.",
+      "correct_explanation": "The thresholds apply to each month's value, and a 12-month average dilutes a single bad month until it vanishes, so the executives never saw two red months. Plotting each month against the thresholds shows a breach when it happens, and the average can stay as a trend line. A three-month average is the runner-up: it reacts faster, but it still blends a red month with two calmer ones.",
+      "wrong_explanations": {
+        "A": "A shorter average reacts faster but still blends a red month with two others, so a single breach can still show amber or green.",
+        "B": "Letting each owner pick a smoothing period gives inconsistent views and can still hide breaches; the dashboard needs values shown against the thresholds.",
+        "D": "A yearly loss total arrives after the fraud has happened; checking it against a limit swaps an early warning for a lagging count of losses."
+      },
+      "tips": [
+        "Eliminate: B lets each owner pick a smoothing period, which still blends breaches into calmer months, and D swaps an early warning for a yearly loss count.",
+        "Final two: C beats A because any average blends a red month with calmer ones; each month's value shows a breach when it happens.",
+        "Exam cue: compare a KRI with the threshold on the values it was set for; a dashboard that smooths data can hide the breaches it exists to show."
+      ],
+      "framework_ref": "NIST SP 800-55v1 Section 3.1.2 (Measurement Reporting: context such as the risk indicated, fit with risk appetite and the decision needed); NIST SP 800-55v1 Appendix C.3 (Time Series Analysis: shows the level, trend, seasonality or noise within a series of data points)",
+      "related_concepts": [
+        "Dashboard",
+        "KRI threshold",
+        "Trend"
+      ],
+      "_provenance": "Authored from concept: notes 3C5.1 (Heat Maps, Scorecards and Dashboards: show each period's KRI value against its thresholds; a rolling average smooths single breaches away). Round 10, 5 Nov 2026: original scenario (a ferry operator's booking-fraud KRI shown as a 12-month rolling average), written for KaiSip in our own words; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D3 round 10 (crisc_d3_153 to 160). Angle: no item covered smoothing that hides breaches; runner-up is a shorter average. Owner pattern: the key names no owner; one distractor names one. Neighbours checked (stems and options): crisc_d3_047 (trend arrows), crisc_d3_080 (bare numbers: thresholds and trend), crisc_d3_082, crisc_d3_109 (no agreed action for red), crisc_d3_112 (figures of different ages), crisc_d3_141 (default color bands), crisc_d2_070, crisc_d1_123, CISA d2_190. None keys showing per-period values where an average hid breaches.",
       "style_version": 2
     }
   ]

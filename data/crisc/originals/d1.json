@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "comment": "Original CRISC practice questions for Domain 1 (Governance), written to the CRISC exam content outline effective 2025 (delivered since 3 Nov 2025). Every item is authored from public concepts and KaiSip's own CRISC study notes (data/crisc/notes/d1.json), with no reference to the CRISC Review Manual, ISACA's QAE database, ISACA's practice quiz or any prep bank. Schema: docs/content/QUESTION_SCHEMA.md; writing rules: docs/content/EXAM_STYLE_V2.md and .claude/agents/crisc-standards-auditor.md. Not affiliated with or endorsed by ISACA®. CRISC® is a registered trademark of ISACA. Pilot batch crisc_d1_001 to crisc_d1_020, 30 Oct 2026. Round 7 crisc_d1_104 to crisc_d1_110, 4 Nov 2026. Round 8 crisc_d1_111 to crisc_d1_117, 5 Nov 2026. Round 9 crisc_d1_118 to crisc_d1_124, 5 Nov 2026.",
+    "comment": "Original CRISC practice questions for Domain 1 (Governance), written to the CRISC exam content outline effective 2025 (delivered since 3 Nov 2025). Every item is authored from public concepts and KaiSip's own CRISC study notes (data/crisc/notes/d1.json), with no reference to the CRISC Review Manual, ISACA's QAE database, ISACA's practice quiz or any prep bank. Schema: docs/content/QUESTION_SCHEMA.md; writing rules: docs/content/EXAM_STYLE_V2.md and .claude/agents/crisc-standards-auditor.md. Not affiliated with or endorsed by ISACA®. CRISC® is a registered trademark of ISACA. Pilot batch crisc_d1_001 to crisc_d1_020, 30 Oct 2026. Round 7 crisc_d1_104 to crisc_d1_110, 4 Nov 2026. Round 8 crisc_d1_111 to crisc_d1_117, 5 Nov 2026. Round 9 crisc_d1_118 to crisc_d1_124, 5 Nov 2026. Round 10 crisc_d1_125 to crisc_d1_130, 5 Nov 2026.",
     "schema_version": 1
   },
   "domain": 1,
@@ -4593,6 +4593,228 @@
         "Community Profile"
       ],
       "_provenance": "Authored from concept: notes 1B5.1 (Choosing and Tailoring a Framework: in NIST CSF 2.0, tailoring runs through Organizational Profiles). NIST CSWP 29 Section 3.1 says an organization can use a Community Profile as the basis for its own Target Profile. Round 9, 5 Nov 2026: original scenario (a water utility adopting NIST CSF 2.0 weighs how to use a sector Community Profile) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. The key takes a starting point from outside the organization, which the bank had never keyed (plan, round 9: options that take a value from peers, benchmarks or vendors were keyed 0 of 27 times); the runner-up is adopting it as published. Neighbours checked: crisc_d1_044 (tailoring CSF 2.0 for a small firm: keep apart in practice sets), crisc_d1_092 (COBIT 2019 and CSF 2.0 combined), crisc_d4_038 (the value of mapping practices to CSF 2.0), crisc_d4_016 (meeting the target profile does not lower ratings), CC cc_d1_093 (current and target profiles defined), cc_d2_069 (CSF 2.0 chosen for a partner's reporting), CISA d5_175 (ranking profile gaps by business impact). None asks how to use a Community Profile. Key form: a shared baseline as the starting point, then tailor.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d1_125",
+      "domain": 1,
+      "subtopic": "1A1 Strategy, goals and objectives. Cloud move turned down",
+      "principle_id": "objectives-first",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "A sports club's IT committee rejected a cloud ticketing move on data risk alone; the current platform hit full load, and the club plans 30% more members. What is the risk analyst's BEST advice?",
+      "options": {
+        "A": "Rate the current platform's risk to the membership goal",
+        "B": "Reassess the cloud move's data risk for the committee",
+        "C": "Ask the ticketing owner to add capacity to the platform",
+        "D": "Ask the plan's owner to lower the membership target"
+      },
+      "correct": "A",
+      "key_concept": "Keeping the current state carries risk too; it is rated against the objective so leaders can compare it with the risk of change.",
+      "pre_read": "Note what the committee's decision was based on.",
+      "correct_explanation": "The committee weighed only the risk of moving; staying on a platform already at full load is also a risk, here to the club's plan for 30% more members. Rating that risk gives decision makers both sides against the objective. Reassessing the move's data risk is the runner-up: it refines the half the committee already saw and still leaves the risk of standing still unmeasured.",
+      "wrong_explanations": {
+        "B": "This refines the half of the picture the committee already weighed; the risk that the current platform poses to the membership plan stays unrated.",
+        "C": "Adding capacity is a response chosen before the risk is rated, and whether it beats the cloud move is not yet known.",
+        "D": "Cutting the objective to fit a one-sided risk view reverses the order; objectives come first and risk is judged against them."
+      },
+      "tips": [
+        "Eliminate: C picks a fix before the platform's risk is rated, and D bends the club's objective to fit a decision made on half the picture.",
+        "Final two: A beats B because the missing view is the risk of standing still; reassessing the move refines only what the committee already saw.",
+        "Exam cue: not changing is a choice with its own risk; rate the status quo against the objective as well as the proposed change."
+      ],
+      "framework_ref": "NIST IR 8286 Rev. 1 Section 2.2 (The Gap Between CSRM Output and ERM Input: practitioners consider how cybersecurity risks influence the enterprise's strategic, operations, reporting and compliance objectives); NIST IR 8286B-upd1 Section 2.2.4 (Considerations of Positive Risks as an Input to ERM); COBIT 2019 EDM03 (Ensured Risk Optimization)",
+      "related_concepts": [
+        "Risk of inaction",
+        "Business objectives",
+        "Opportunity risk"
+      ],
+      "_provenance": "Authored from concept: notes 1A1.1 (Risk in Service of Business Objectives: a missed or delayed opportunity, and a status quo that cannot meet an objective, also affect objectives; bullet extended in round 10). NIST IR 8286 Rev. 1 Section 2.2 asks practitioners to consider how cybersecurity risks influence strategic, operations, reporting and compliance objectives. Round 10, 5 Nov 2026: original scenario (a sports club's IT committee turns down a cloud ticketing move on its data risk alone, while the current platform has hit full load and the club plans 30% more members) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Round 10 asks covered: owner balance (the key names no owner; two distractors name an owner, the ticketing owner and the plan's owner, and stay wrong); setting sports club; key opening 'Rate'. Neighbours checked: crisc_d1_096 (AI launch delayed for more tests: within-appetite acceptance), crisc_d1_039 (exposure well below appetite reported), crisc_d1_021 (risks to a new strategy), crisc_d1_104 (failed strategy assumption), crisc_d1_057 (growth goal against a control), crisc_d3_069 (option 'Lower the plan's target risk', different code, wording overlap 0.43 with D), crisc_d3_067, crisc_d2_062, CISA d5_303 and d2_142 (cloud move options), CISA d4_188, CC cc_d2_111 and cc_d1_127. None keys rating the risk of keeping the current state against the objective. Key form: rate the status quo's risk to the objective; the runner-up refines the half of the picture already weighed.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d1_126",
+      "domain": 1,
+      "subtopic": "1A4 Policies and standards. Flag for skipping a template",
+      "principle_id": "answer-from-the-stem",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A compliance check flagged a map publisher's cartographers for skipping the AI prompt guideline's template, which does not fit map labels; they meet the AI use standard. What is the risk analyst's BEST advice?",
+      "options": {
+        "A": "Report the cartographers' departure as a policy breach",
+        "B": "Have their risk owner log an exception to the guideline",
+        "C": "Close the finding raised against the cartographers",
+        "D": "Ask the guideline's owner to make the template mandatory"
+      },
+      "correct": "C",
+      "key_concept": "Guidelines are advisory; compliance is judged against the mandatory layers, so a reasoned departure from a guideline is not a finding.",
+      "pre_read": "Identify which layer of the policy hierarchy the check applied.",
+      "correct_explanation": "A guideline recommends good practice and allows departures for a sound reason; compliance is judged against the mandatory layers, and the cartographers meet the AI use standard. With a template that does not fit map labels, the finding should be closed. Making the template mandatory is the runner-up: it would turn advice into a rule, but nothing in the case shows a risk that the rule would reduce.",
+      "wrong_explanations": {
+        "A": "A guideline is advisory, so departing from it for a sound reason is not a policy breach; the mandatory standard is met.",
+        "B": "Exceptions are for mandatory rules people cannot meet; departing from an advisory guideline needs no exception, owner or expiry.",
+        "D": "A guideline becomes a rule only when a risk calls for it; here the standard is met and the template does not fit map work."
+      },
+      "tips": [
+        "Eliminate: A treats an advisory guideline as policy, and B raises an exception, which is meant for a mandatory rule, against advice.",
+        "Final two: C beats D because nothing shows a risk that a mandatory template would reduce; the team already meets the standard that is mandatory.",
+        "Exam cue: judge compliance against policies, standards and procedures; a guideline departure with a sound reason is not a finding."
+      ],
+      "framework_ref": "ISACA Glossary (guideline); NIST CSF 2.0 GV.PO-01 (policy for managing cybersecurity risks is established based on organizational context, cybersecurity strategy and priorities and is communicated and enforced)",
+      "related_concepts": [
+        "Policy hierarchy",
+        "Guidelines",
+        "AI use standard"
+      ],
+      "_provenance": "Authored from concept: notes 1A4.1 (The Policy Hierarchy: guidelines recommend good practice, people may depart from them for a sound reason, and compliance is judged against the mandatory layers; bullet extended in round 10). The ISACA Glossary defines a guideline as less prescriptive than a procedure. Round 10, 5 Nov 2026: original scenario (a compliance check flags a map publisher's cartographers for skipping an AI prompt guideline's template that does not fit map labels, while they meet the AI use standard) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. AI item for the batch. Round 10 asks covered: owner balance (the key names no owner; two distractors name an owner, the cartographers' risk owner and the guideline's owner, and stay wrong); key opening 'Close' (keyed once before in the bank); setting publisher of maps. Neighbours checked: crisc_d1_074 (a needed control moved from a guideline into a standard: opposite facts, keep apart in practice sets), crisc_d1_050, crisc_d1_008, crisc_d1_115, crisc_d1_025, crisc_d1_069, crisc_d4_001 (option 'Report the marketing team's policy breach', different code, overlap 0.57 with A), crisc_d3_029 (option 'Close the finding and log a new one'), crisc_d3_007, crisc_d3_099, CISA d5_205 (password rules moved from a guideline into a standard: opposite facts), CISA d2_124 (technical settings moved from a policy into standards), CISA d2_092, CC cc_d2_047. A first draft that moved an AI tool list from the policy into a standard was dropped because it mirrored CISA d2_124. None keys closing a finding for a reasoned departure from a guideline. Key form: no finding; the runner-up turns advice into a rule without a risk reason. Keep apart in practice sets from crisc_d1_074 and CISA d5_205.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d1_127",
+      "domain": 1,
+      "subtopic": "1B1 Enterprise risk management (ERM). Unit declines the rating method",
+      "principle_id": "match-decision-to-role",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "A law firm's litigation group, its largest unit, still refuses the approved framework's rating method after the risk analyst's walk-through, saying its partners know their risks. What is the analyst's BEST next step?",
+      "options": {
+        "A": "Allow the group's risk owners to rate by partner judgment",
+        "B": "Raise the refusal with the framework's executive sponsor",
+        "C": "Rate the group's risks for it on the firm's own scale",
+        "D": "Have the group's risk owners retrain on the rating method"
+      },
+      "correct": "B",
+      "key_concept": "An approved framework binds every unit; a unit that refuses its methods goes to the senior leaders behind it, through the executive sponsor.",
+      "pre_read": "Read what the analyst has already done before choosing a next step.",
+      "correct_explanation": "Senior management approved the framework, and the leaders behind it decide how much freedom any unit has over its methods; a unit that still refuses after explanation is a governance issue for them, raised through the framework's executive sponsor. Rating the group's risks on its behalf is the runner-up: it fills the enterprise view, but it takes the assessment from the first line and leaves the refusal unresolved.",
+      "wrong_explanations": {
+        "A": "A unit's freedom to depart from an approved framework is set by the leaders who approved it, not by the unit's own risk owners.",
+        "C": "Second-line staff rating a unit's risks for it take the assessment from the people who own them and leave the unit outside the method.",
+        "D": "The group has had the method explained and still refuses; more training builds skill but does not change a decision not to follow an approved framework."
+      },
+      "tips": [
+        "Eliminate: A lets the unit's own owners allow a departure only the approving leaders can grant, and D answers a refusal with training the group has already had.",
+        "Final two: B beats C because rating the group's risks for it moves the assessment to the second line; the refusal itself needs the framework's sponsor.",
+        "Exam cue: when a unit will not follow an approved framework, take it to the authority behind the framework rather than working around it."
+      ],
+      "framework_ref": "NIST SP 800-39 Section 2.3.2 (Risk Executive Function: senior leaders specify the degree of autonomy subordinate organizations have in framing, assessing, responding to and monitoring risk); COBIT 2019 EDM01 (Ensured Governance Framework Setting and Maintenance); NIST CSF 2.0 GV.RR-02 (roles, responsibilities and authorities related to cybersecurity risk management are established, communicated, understood and enforced)",
+      "related_concepts": [
+        "Risk management framework",
+        "Executive sponsor",
+        "Unit autonomy"
+      ],
+      "_provenance": "Authored from concept: notes 1B1.3 (The Risk Management Framework and Its Approval: approval by senior management binds every unit; a unit's freedom to depart from the methods is set by the leaders who approved it; bullet added in round 10). NIST SP 800-39 Section 2.3.2 says the risk executive function works with senior leaders to specify the degree of autonomy subordinate organizations have in framing, assessing, responding to and monitoring risk. Round 10, 5 Nov 2026: original scenario (a law firm's largest practice group still refuses the approved framework's rating method after a walk-through, saying its partners know their risks) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Round 10 asks covered: owner balance (the key names the executive sponsor, an accountable role, and two distractors name the group's risk owners and stay wrong); setting law firm; key opening 'Raise'. Neighbours checked: crisc_d1_034 (framework embedded: evidence), crisc_d1_061 (framework after major change), crisc_d1_013 (who approves the framework), crisc_d1_100, crisc_d1_101, crisc_d1_094, crisc_d3_024, crisc_d3_077 (risk team asked to complete a division's self-assessment: a similar distractor idea, different code; keep apart in practice sets), CISA d5_038 and d5_228, CC cc_d1_017. None keys taking a unit's refusal of the approved method to the framework's sponsor. Key form: route the refusal to the authority behind the framework; the runner-up works around it by rating for the unit.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d1_128",
+      "domain": 1,
+      "subtopic": "1B2 Lines of defense. Audit relying on second-line tests",
+      "principle_id": "lines-of-defense",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "Internal audit at a theatre company plans to rely on the risk team's yearly tests of 20 ticketing controls. What should the risk analyst provide as the BEST basis for that reliance?",
+      "options": {
+        "A": "A summary of the test conclusions signed by the CRO",
+        "B": "Control owners' written statements that each control works",
+        "C": "Records of each test's samples, steps and results",
+        "D": "Risk owners' approval of the ratings that followed the tests"
+      },
+      "correct": "C",
+      "key_concept": "Internal audit can rely on second-line testing only after judging its quality, so the second line supplies documented samples, steps and results.",
+      "pre_read": "Ask what internal audit must be able to do before it relies on someone else's work.",
+      "correct_explanation": "To rely on another line's work, internal audit must judge its quality for itself, so it needs what was tested, how and with what results: samples, steps and outcomes for each control. A CRO-signed summary is the runner-up: it carries authority, but it gives only conclusions, which audit would have to take on trust instead of evaluating.",
+      "wrong_explanations": {
+        "A": "A signed summary gives conclusions without the work behind them; audit cannot judge the quality of tests it cannot see, whoever signs.",
+        "B": "Owners' statements are first-line assertions about their own controls; they are not evidence of the second-line testing that audit plans to rely on.",
+        "D": "Risk owners approve ratings and responses; their approval says nothing about how well the controls were tested."
+      },
+      "tips": [
+        "Eliminate: B offers first-line assertions in place of test evidence, and D gives risk owners' rating approvals, which say nothing about how the tests were done.",
+        "Final two: C beats A because audit relies only on work it can evaluate; a signed summary of conclusions still has to be taken on trust.",
+        "Exam cue: when one line relies on another's work, the basis is the work itself, documented well enough to be reviewed or re-performed."
+      ],
+      "framework_ref": "COBIT 2019 MEA04 (Managed Assurance); ISACA Journal 2018 Volume 4 (Roles of Three Lines of Defense for Information Security and Governance); NIST IR 8286 Rev. 1 Section 3.1.1 (Notional Risk Management Roles: the auditor provides independent and formal verification of the achievement of enterprise objectives and the application of ERM processes)",
+      "related_concepts": [
+        "Combined assurance",
+        "Reliance on others' work",
+        "Second-line testing"
+      ],
+      "_provenance": "Authored from concept: notes 1B2.2 (Independence, Challenge and Coordination Across Lines: combined assurance lets lines rely on each other's work, and audit relies on another line's tests only after reviewing their records; bullet extended in round 10). Round 10, 5 Nov 2026: original scenario (a theatre company's internal audit plans to rely on the risk team's yearly tests of 20 ticketing controls) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Round 10 asks covered: owner balance (the key names no owner; two distractors name control owners and risk owners and stay wrong); setting theatre company; short stem with noun-phrase options. Neighbours checked: crisc_d1_035 (combined assurance map agreed with audit), crisc_d1_078 (who assures the risk process), crisc_d1_121, crisc_d1_065, crisc_d3_101 (the risk analyst starts from audit's recent results: the reverse direction; keep apart in practice sets), crisc_d3_113 (the risk profile shared with audit for planning), crisc_d3_136, crisc_d2_075, crisc_d3_026, CISA d1_172 (an auditor relying on a system report), CISA d3_003 and d5_289. A first draft keyed sharing the risk profile with audit and was dropped because crisc_d3_113 keys that. None asks what the second line gives audit so it can rely on its tests. Key form: documented work audit can evaluate; the runner-up is a signed summary of conclusions.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d1_129",
+      "domain": 1,
+      "subtopic": "1B3 Risk profile. Board question on a security program",
+      "principle_id": "report-for-the-decision",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "A zoo's board asks whether last year's $800,000 security program lowered its risk exposure. Which of the following should the risk analyst use as the BEST basis for the answer?",
+      "options": {
+        "A": "The program owner's report of spending against budget",
+        "B": "The number of new controls the program delivered on time",
+        "C": "Risk owners' views on whether their own risks have fallen",
+        "D": "Current ratings of the targeted risks beside last year's"
+      },
+      "correct": "D",
+      "key_concept": "A program's effect on exposure is shown by comparing the targeted risks' ratings over time, not by its spending or output.",
+      "pre_read": "Separate what the program did from what the board asked about.",
+      "correct_explanation": "Whether exposure fell is answered by the risk profile over time: the current ratings of the risks the program targeted, set beside last year's, show the change the board asked about. The count of controls delivered on time is the runner-up: it shows the program did its work, but output is not outcome, and new controls may not have moved the ratings.",
+      "wrong_explanations": {
+        "A": "Spending against budget shows financial control of the program, not whether the risks it targeted are any lower.",
+        "B": "Controls delivered on time measure the program's output; exposure falls only if those controls work against the risks they were meant to reduce.",
+        "C": "Owners' impressions are opinions without the rating method behind them; the board's question needs ratings compared over time, not views."
+      },
+      "tips": [
+        "Eliminate: A reports the program's spending, not its effect on risk, and C collects owners' opinions in place of ratings made by the agreed method.",
+        "Final two: D beats B because the board asked about exposure; delivered controls are output, and only the ratings over time show the outcome.",
+        "Exam cue: to show whether risk changed, compare the same risks' ratings across periods; activity, spend and opinions describe effort, not exposure."
+      ],
+      "framework_ref": "NIST IR 8286 Rev. 1 Section 4.2 (Translating the Risk Profile to Inform Leadership Decisions: the notional enterprise portfolio view sets each risk profile's current period beside the previous period); NIST IR 8286 Rev. 1 Section 4.3 (Information and Decision Flows in Support of ERM: enterprise risk officers and committees maintain a risk profile that includes recent trends); COBIT 2019 APO12.03 (Maintain a Risk Profile)",
+      "related_concepts": [
+        "Risk profile",
+        "Trend reporting",
+        "Outcome versus output"
+      ],
+      "_provenance": "Authored from concept: notes 1B3.2 (Aggregation and Keeping the Profile Current: report changes and trends, not just the current position). NIST IR 8286 Rev. 1 Section 4.2 sets each risk profile's current period beside the previous period, and Section 4.3 has the profile kept with recent trends. Round 10, 5 Nov 2026: original scenario (a zoo's board asks whether last year's $800,000 security program lowered its risk exposure) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Round 10 asks covered: owner balance (the key names no owner and compares with history; two distractors name the program owner and risk owners and stay wrong); setting zoo; short stem with noun-phrase options. Neighbours checked: crisc_d3_047 (trend arrows for a heat-map cell that hides a worsening KRI; a first draft about a score rising inside one band was dropped as a mirror of it), crisc_d1_090 (counting high-rated risks), crisc_d1_101, crisc_d3_074, crisc_d3_111, crisc_d3_116, crisc_d4_090, CISA d2_144 and d1_158 (option on spending against budget), CC cc_d2_066 and cc_d2_047. None asks for the basis to judge whether a program lowered exposure. Key form: the same risks' ratings compared across periods; the runner-up is program output.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d1_130",
+      "domain": 1,
+      "subtopic": "1A6 Organizational asset management. Inventory behind a planned assessment",
+      "principle_id": "evidence-before-credit",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "A museum's risk analyst will rate risks to its collection systems from an asset inventory last updated 14 months ago, before a year of digitization projects. What should the analyst do FIRST?",
+      "options": {
+        "A": "Reconcile the inventory with purchase and sign-on records",
+        "B": "Ask each asset owner to rate risks to their listed assets",
+        "C": "Have asset owners confirm each listed asset's classification",
+        "D": "Add the digitization projects' systems to the inventory"
+      },
+      "correct": "A",
+      "key_concept": "Before rating risks from an asset inventory, the practitioner checks it is complete and current, not just for the changes already known.",
+      "pre_read": "Look at the dates in the stem before choosing a first step.",
+      "correct_explanation": "Ratings are only as complete as the asset list behind them, and this inventory is 14 months old. Reconciling it with purchase and sign-on records finds the projects' systems and any other services bought, moved or retired since, before rating starts. Adding the projects' systems is the runner-up: it fixes the change the analyst knows about but leaves the rest of those 14 months unchecked.",
+      "wrong_explanations": {
+        "B": "Rating from an inventory known to be 14 months out of date leaves out whatever it misses; completeness comes before owners rate.",
+        "C": "Confirming classifications checks entries already listed; it cannot reveal services or other assets the inventory misses.",
+        "D": "This fixes the one known change, but 14 months of other purchases, moves and retirements may also be missing from the list."
+      },
+      "tips": [
+        "Eliminate: B rates from a list known to be out of date, and C checks the classes of listed entries but cannot find assets that are missing.",
+        "Final two: A beats D because the projects are only the change the analyst knows about; reconciling finds every gap from the last 14 months.",
+        "Exam cue: before rating from an inventory, register or dataset, check it is complete and current; ratings inherit every gap in it."
+      ],
+      "framework_ref": "NIST CSF 2.0 ID.AM-02 (inventories of software, services and systems managed by the organization are maintained); NIST CSF 2.0 ID.AM-08 (systems, hardware, software, services and data are managed throughout their life cycles); COBIT 2019 BAI09 (Managed Assets)",
+      "related_concepts": [
+        "Asset inventory",
+        "Data validation",
+        "Inventory completeness"
+      ],
+      "_provenance": "Authored from concept: notes 1A6.1 (Asset Inventory and Ownership: the inventory is kept current through change, purchasing and offboarding, and a stale one is reconciled before it feeds a risk assessment; bullet extended in round 10). Round 10, 5 Nov 2026: original scenario (a museum's risk analyst is about to rate risks to its collection systems from an asset inventory last updated 14 months ago, before a year of digitization projects) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Round 10 asks covered: owner balance (the key validates data and names no owner; two distractors name asset owners and stay wrong); setting museum; FIRST key that validates data, not assess or record. Neighbours checked: crisc_d1_079 (ratings older than a cloud move updated before reporting; a first draft triggered by a cloud move was changed to avoid it), crisc_d1_064, crisc_d1_087, crisc_d1_110, crisc_d1_048, crisc_d1_025, crisc_d1_101, crisc_d3_134, crisc_d3_136, crisc_d2_055, CISA d5_338 (completeness of a cryptographic inventory: discovery scan against owner confirmation; the runner-up here is a partial fix instead, so the final two differ), CISA d2_096 (data inventory drift), CC cc_d5_038, AAIA aaia_d3_001 (an AI audit universe built from one registry). None keys reconciling an aged inventory before a risk rating. Key form: check completeness first; the runner-up fixes only the change already known.",
       "style_version": 2
     }
   ]
