@@ -53,7 +53,7 @@ import {
   type GrowthLevel,
 } from '../engine/plant';
 import { lookItem, skillLine } from '../engine/plantLooks';
-import { FORM_START, formMoment, formName, formsIntroLine, newFormLine, seeNewFormLabel, type FormMoment, type FormNumber } from '../engine/plantForms';
+import { delayedRecalls, FORM_START, formMoment, formName, formsIntroLine, newFormLine, seeNewFormLabel, type FormMoment, type FormNumber } from '../engine/plantForms';
 import { dayKey } from '../engine/streak';
 import { shortDate } from '../lib/format';
 import { haptic } from '../lib/haptics';
@@ -227,7 +227,7 @@ export default function YourPlant() {
       keepsakes.push({ id, name: item.name, badgeName, line: skillLine(item), at });
     }
   }
-  const rows = stemRows({ plant: p, forms: view.forms, final: view.final, keepsakes });
+  const rows = stemRows({ plant: p, forms: view.forms, final: view.final, keepsakes, recalled: delayedRecalls(progress.milestones?.longIds) });
   const { earlier, open } = foldStem(rows, p.growth);
   const nowIdx = open.findIndex((r) => r.kind === 'growth' && r.state === 'now');
   const past = open.slice(0, nowIdx + 1);

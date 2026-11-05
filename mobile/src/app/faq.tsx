@@ -10,12 +10,13 @@
  * made" opens `how-made`). An unknown id opens nothing, like a plain visit.
  */
 import { router, useLocalSearchParams } from 'expo-router';
-import { useState } from 'react';
-import { View } from 'react-native';
+import { useRef, useState } from 'react';
+import { ScrollView, View, type LayoutChangeEvent } from 'react-native';
 import { DisclosureRow } from '../components/pathChooser';
 import { useContactFlow } from '../components/support';
 import { Button, PushedHeader, Screen, T } from '../components/ui';
 import { FAQ } from '../content/support';
+import { moveFocus } from '../lib/a11y';
 import { useActiveCert } from '../lib/useActiveCert';
 import { space } from '../theme/tokens';
 import { useTheme } from '../theme/useTheme';
@@ -26,9 +27,21 @@ export default function Faq() {
   const contact = useContactFlow(cert.id);
   const params = useLocalSearchParams<{ open?: string }>();
   // Only a real entry id opens one; anything else starts with every answer closed.
-  const [openId, setOpenId] = useState<string | null>(() => (FAQ.some((f) => f.id === params.open) ? params.open! : null));
+  const [deepId] = useState<string | null>(() => (FAQ.some((f) => f.id === params.open) ? params.open! : null));
+  const [openId, setOpenId] = useState<string | null>(deepId);
+  // Release bug hunt round 1: the entry a link opened is often below the fold (the last of ten). Once
+  // it is laid out, scroll it into view and move the screen reader to it, one time only.
+  const scrollRef = useRef<ScrollView>(null);
+  const deepRowRef = useRef<View>(null);
+  const shownDeep = useRef(false);
+  const onDeepLayout = (e: LayoutChangeEvent) => {
+    if (shownDeep.current) return;
+    shownDeep.current = true;
+    scrollRef.current?.scrollTo({ y: Math.max(0, e.nativeEvent.layout.y - space.md), animated: false });
+    moveFocus(deepRowRef, 300);
+  };
   return (
-    <Screen edges={['top', 'bottom']}>
+    <Screen edges={['top', 'bottom']} scrollRef={scrollRef}>
       <PushedHeader title="Common questions" onBack={() => (router.canGoBack() ? router.back() : router.replace('/you'))} />
       <T v="meta" style={{ marginTop: space.sm, marginBottom: space.md }}>Tap a question to read the answer.</T>
       {FAQ.map((f, i) => {
@@ -36,8 +49,14 @@ export default function Faq() {
         const last = i === FAQ.length - 1;
         const from = `Common questions: ${f.question}`;
         return (
-          <View key={f.id}>
-            <DisclosureRow title={f.question} expanded={open} onPress={() => setOpenId(open ? null : f.id)} last={last} />
+          <View key={f.id} onLayout={f.id === deepId ? onDeepLayout : undefined}>
+            <DisclosureRow
+              ref={f.id === deepId ? deepRowRef : undefined}
+              title={f.question}
+              expanded={open}
+              onPress={() => setOpenId(open ? null : f.id)}
+              last={last}
+            />
             {open && (
               <View style={{ paddingBottom: space.md, borderBottomWidth: last ? 0 : 1, borderBottomColor: c.line }}>
                 {f.answer.map((p) => (

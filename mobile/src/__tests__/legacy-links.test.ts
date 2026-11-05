@@ -22,7 +22,16 @@ describe('old links', () => {
     expect(redirectSystemPath({ path, initial: false })).toBe('/help');
   });
 
-  it.each(['/', '/help', 'kaisip://help?open=idea', '/whats-new', 'kaisip://whats-new', '/notes/subtopic/1A2.4', '/lesson/cisa-l-d1-charter'])(
+  it.each([
+    ['kaisip://progress', '/you'],
+    ['/progress', '/you'],
+    ['kaisip://mock', '/practice'],
+    ['exp://192.168.1.2:8081/--/mock?from=email', '/practice'],
+  ])('%s (a removed tab) opens %s', (path, to) => {
+    expect(redirectSystemPath({ path, initial: true })).toBe(to);
+  });
+
+  it.each(['/', '/help', '/mock-start', 'kaisip://help?open=idea', '/whats-new', 'kaisip://whats-new', '/notes/subtopic/1A2.4', '/lesson/cisa-l-d1-charter'])(
     '%s passes through unchanged',
     (path) => {
       expect(redirectSystemPath({ path, initial: false })).toBe(path);

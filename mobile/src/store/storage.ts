@@ -79,11 +79,47 @@ function write(name: string, value: StorageValue<unknown>): Promise<void> {
   return entry.done;
 }
 
+/**
+ * Saves held back while a burst of changes runs (batchSaves below): per key,
+ * only the newest state asked for. Release bug hunt round 1: submitting a
+ * 150-question mock made about 200 changes to the progress store in one go,
+ * and each was a full save (about 54 MB of JSON on a large save). Now the
+ * burst saves each store ONCE, with its final state.
+ */
+let batchDepth = 0;
+const held = new Map<string, StorageValue<unknown>>();
+
+/**
+ * Run `fn` (synchronous) and save each store once at the end, with its final
+ * state, instead of after every change inside it. The rules above still hold:
+ * the end save goes through setItem, so it is skipped when nothing changed,
+ * shares an identical write in flight, and is retried if it fails. A save is
+ * never dropped: an error inside `fn` still saves what changed.
+ */
+export function batchSaves<T>(fn: () => T): T {
+  batchDepth++;
+  try {
+    return fn();
+  } finally {
+    batchDepth--;
+    if (batchDepth === 0 && held.size > 0) {
+      const toSave = [...held];
+      held.clear();
+      for (const [name, value] of toSave) {
+        // As zustand does with a save's result: not awaited (a failure retries inside setItem).
+        void Promise.resolve(persistStorage.setItem(name, value)).catch(() => undefined);
+      }
+    }
+  }
+}
+
 export const persistStorage: PersistStorage<any> = {
   // A read (launch, or a rehydrate after a restore) forgets what was written,
   // both when it starts and when it ends: the next save always goes through,
   // whatever the file now holds.
   getItem: (name) => {
+    // The file is the truth now: a held (older) save must not write over it.
+    held.delete(name);
     supersede(name);
     const read = json.getItem(name);
     if (read instanceof Promise) {
@@ -94,6 +130,11 @@ export const persistStorage: PersistStorage<any> = {
     return read;
   },
   setItem: (name, value) => {
+    if (batchDepth > 0) {
+      // Inside a burst: keep only the newest state; batchSaves saves it once at the end.
+      held.set(name, value);
+      return;
+    }
     const ask = (asked.get(name) ?? 0) + 1;
     asked.set(name, ask);
     const inFlight = pending.get(name);
@@ -109,6 +150,7 @@ export const persistStorage: PersistStorage<any> = {
     return write(name, value);
   },
   removeItem: (name) => {
+    held.delete(name);
     supersede(name);
     return json.removeItem(name);
   },
@@ -119,4 +161,5 @@ export function resetSavedForTest() {
   saved.clear();
   pending.clear();
   asked.clear();
+  held.clear();
 }

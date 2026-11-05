@@ -158,7 +158,7 @@ export function MilestoneMomentView({
     };
   }, [skipRef, skip]);
   const link = onSee ? (
-    <Button kind="ghost" label="See it in your badges ›" onPress={onSee} style={{ alignSelf: 'flex-start', marginLeft: -space.sm }} />
+    <Button kind="ghost" label="See it in your badges ›" accessibilityLabel="See it in your badges" onPress={onSee} style={{ alignSelf: 'flex-start', marginLeft: -space.sm }} />
   ) : null;
 
   if (quiet) {

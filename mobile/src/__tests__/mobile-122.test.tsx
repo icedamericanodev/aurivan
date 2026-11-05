@@ -338,6 +338,27 @@ describe('answer screen after a miss', () => {
     expect(root().findAll((n) => n.props.accessibilityLabel === 'Not quite. Best answer D').length).toBeGreaterThan(0);
   });
 
+  // Release bug hunt round 1: on a narrow phone (or a 390dp phone at ×1.15) the long form was cut to
+  // "Not quite · Best ans…", hiding the letter. The short form now shows whenever the bar is too narrow.
+  it.each([
+    [360, 1, 'Not quite · D'],
+    [320, 1, 'Not quite · D'],
+    [390, 1.15, 'Not quite · D'],
+    [390, 1, 'Not quite · Best answer D'],
+    [412, 1.15, 'Not quite · Best answer D'],
+  ])('a %sdp window at ×%s text: "%s", the spoken label keeps every word', (width, fontScale, text) => {
+    const w = Dimensions.get('window');
+    act(() => {
+      Dimensions.set({ window: { ...w, width, fontScale }, screen: { ...w, width, fontScale } });
+    });
+    mount(<AnswerRecap correct={false} letter="D" />);
+    expect(allText()).toBe(text);
+    expect(root().findAll((n) => n.props.accessibilityLabel === 'Not quite. Best answer D').length).toBeGreaterThan(0);
+    act(() => {
+      Dimensions.set({ window: w, screen: w });
+    });
+  });
+
   it('the hidden half of a cross-fade is hidden from screen readers', () => {
     mount(<CrossFade showSecond={false} first={<View testID="a" />} second={<View testID="b" />} />);
     const layer = (id: string) => {

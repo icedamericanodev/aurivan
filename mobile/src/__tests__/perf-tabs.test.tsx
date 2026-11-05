@@ -386,7 +386,7 @@ describe('budgets with the heavy save', () => {
     // every focus, Today rendered again (+236).
     const renderedOnEvents = Object.fromEntries(Object.entries(l.events).filter(([, n]) => n > 0));
     expect(renderedOnEvents).toEqual({});
-    expect(l.renders).toBeLessThan(1600); // 1.15.0: 6,112 (now ~1,230)
+    expect(l.renders).toBeLessThan(1600); // 1.15.0: 6,112; Grove phase 1: ~1,550; the ring built once (bug hunt round 1): ~1,440
     expect(l.saves).toBe(0); // 1.15.0: 7 saves of the whole store (~310 KB on each Today tap)
     expect(l.setParams).toBe(0); // 1.15.0: 1 (leaving Learn set params on the next tab)
   });

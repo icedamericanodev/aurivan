@@ -8,7 +8,7 @@
  * Decorative art is hidden from screen readers; each option is one stop
  * with its name, state and line.
  */
-import { type ReactNode } from 'react';
+import { isValidElement, memo, type ReactNode } from 'react';
 import { StyleSheet, View } from 'react-native';
 import Svg, { Circle, Path } from 'react-native-svg';
 import { radius, space } from '../../theme/tokens';
@@ -42,7 +42,12 @@ export interface LookOptionProps {
   multi?: boolean;
   /** Keepsakes: three are shown already, so this one waits until one is put away. */
   full?: boolean;
-  onPress: () => void;
+  /** The tap. Or, for a row that should skip redrawing, `id` and a stable `onChoose(id)` (below). */
+  onPress?: () => void;
+  /** With `onChoose`: what the tap passes back (release bug hunt round 1). */
+  id?: string;
+  /** A stable callback (the same function every render), so the memoised row can skip redrawing. */
+  onChoose?: (id: string) => void;
   testID?: string;
   /** Not the last row of its group: a 1px divider under it, inset past the thumbnail. */
   divider?: boolean;
@@ -58,10 +63,11 @@ export const LOOK_THUMB = 48;
  * shows a dashed mount instead of its art, is disabled and says how to open it. With three keepsakes
  * on show, the others are disabled and keep just their line; the hint says "Put one away to show this".
  */
-export function LookOption({ name, line, art, selected, locked, multi = false, full = false, onPress, testID, divider = false }: LookOptionProps) {
+export const LookOption = memo(function LookOption({ name, line, art, selected, locked, multi = false, full = false, onPress: press0, id, onChoose, testID, divider = false }: LookOptionProps) {
   const { c, g } = useTheme();
   const waiting = multi && full && !selected && !locked;
   const disabled = locked || waiting;
+  const onPress = press0 ?? (() => (id !== undefined ? onChoose?.(id) : undefined));
   const press = usePressScale({ scale: 1, tint: disabled ? undefined : c.soft, tintRadius: radius.md });
   const state = locked ? 'Not open yet.' : '';
   return (
@@ -116,6 +122,40 @@ export function LookOption({ name, line, art, selected, locked, multi = false, f
       {divider ? <View style={{ position: 'absolute', left: LOOK_THUMB + space.md, right: 0, bottom: 0, height: 1, backgroundColor: c.line }} /> : null}
     </AnimatedPressable>
   );
+}, sameOption);
+
+// ── Skipping rows that did not change (release bug hunt round 1) ───────────
+// A tap on one look redrew every row's SVG thumbnail (about 3,000 components). The screen builds
+// each row's art as a new element every render, so the row compares the art by what it draws:
+// the same component with equal props (objects and lists compared one level down).
+
+const sameList = (a: readonly unknown[], b: readonly unknown[]) => a.length === b.length && a.every((x, i) => Object.is(x, b[i]));
+const isPlain = (x: unknown): x is Record<string, unknown> => typeof x === 'object' && x !== null && !Array.isArray(x) && !isValidElement(x);
+/** Equal, or lists / plain objects whose entries are equal (lists inside them compared item by item). */
+function sameValue(a: unknown, b: unknown, depth = 0): boolean {
+  if (Object.is(a, b)) return true;
+  if (Array.isArray(a) && Array.isArray(b)) return sameList(a, b);
+  if (depth < 1 && isPlain(a) && isPlain(b)) {
+    const ka = Object.keys(a);
+    return ka.length === Object.keys(b).length && ka.every((k) => k in b && sameValue(a[k], b[k], depth + 1));
+  }
+  return false;
+}
+/** Two art elements draw the same: same component and key, props equal. */
+export function sameArt(a: ReactNode, b: ReactNode): boolean {
+  if (Object.is(a, b)) return true;
+  if (!isValidElement(a) || !isValidElement(b) || a.type !== b.type || a.key !== b.key) return false;
+  const pa = a.props as Record<string, unknown>;
+  const pb = b.props as Record<string, unknown>;
+  const ka = Object.keys(pa);
+  return ka.length === Object.keys(pb).length && ka.every((k) => k in pb && sameValue(pa[k], pb[k]));
+}
+function sameOption(a: LookOptionProps, b: LookOptionProps): boolean {
+  const keys = new Set([...Object.keys(a), ...Object.keys(b)] as (keyof LookOptionProps)[]);
+  for (const k of keys) {
+    if (k === 'art' ? !sameArt(a.art, b.art) : !Object.is(a[k], b[k])) return false;
+  }
+  return true;
 }
 
 const styles = StyleSheet.create({

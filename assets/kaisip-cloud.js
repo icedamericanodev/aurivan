@@ -1387,7 +1387,7 @@ function examWeekText(id, exam) {
         case 'booking':
             return 'Confirm your exam date, time and place, or your online-exam setup.';
         case 'guide':
-            return 'Read the official candidate guide for ID and test-day rules.';
+            return 'Read the candidate guide for ID and test-day rules.';
         case 'online':
             return 'Taking it online? Run the system check, and plan a clear desk and a quiet room.';
         case 'centre':
@@ -10502,7 +10502,7 @@ function decodeUtf8(bytes) {
   var api = {};
   api["browser"] = load("src/webcloud/browser.ts");
   api["config"] = load("src/webcloud/config.ts");
-  api.sourceHash = "0ddcda6d9c929d89";
+  api.sourceHash = "4baef9f04851a369";
   var cloud = load("src/webcloud/index.ts");
   var liveVersion = "1.48.0";
   var liveStoreVersions = {"progress":2,"settings":1};

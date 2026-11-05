@@ -294,7 +294,7 @@ export const WHATS_NEW: readonly WhatsNewEntry[] = [
     version: '1.28.0',
     date: '2026-10-19',
     new: [
-      'About the CISA exam: registration and fees, test center or online, exam day, results and how to become certified, with links to the official sources.',
+      'About the CISA exam: registration and fees, test center or online, exam day, results and how to become certified, with links to the sources.',
       'Final review week: a calm seven-day plan for your last week, with one-tap tasks, a must-remember sheet you can quiz yourself on, and an exam-day routine.',
     ],
     improved: ['Exam week now follows the seven-day plan, and keeps the checklist you already started.'],

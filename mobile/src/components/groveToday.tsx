@@ -13,7 +13,7 @@
  * Every number comes from values the app already works out (engine/groveToday.ts says how).
  * The ring and the twig are drawings: what they show is always said in words too.
  */
-import { useState, type ReactNode } from 'react';
+import { useMemo, useState, type ReactNode } from 'react';
 import { Pressable, useWindowDimensions, View } from 'react-native';
 import Svg, { Circle, Ellipse, G, Line, Path } from 'react-native-svg';
 import { RANGE_MIN_ANSWERS } from '../engine/readinessRange';
@@ -84,28 +84,27 @@ const at = (deg: number, r: number) => {
 export function ReadinessRing({ mode, on, low, high, size, growth, children }: { mode: RingMode; on: number; low: number; high: number; size: number; growth?: Growth; children: ReactNode }) {
   const { isDark } = useTheme();
   const { reduced } = useMotion();
-  const ink = heroInk[isDark ? 'dark' : 'light'];
-  const ticks = mode === 'ticks' ? rangeTicks(low, high) : [];
-  const tick = (t: TickState, i: number) => (
-    <Line
-      key={i}
-      x1={100}
-      y1={7}
-      x2={100}
-      y2={21}
-      stroke={t === 'on' ? ink.tickOn : t === 'range' ? ink.tickRange : ink.tickOff}
-      strokeWidth={2.6}
-      strokeLinecap="round"
-      transform={`rotate(${((i * 360) / ticks.length).toFixed(2)} 100 100)`}
-    />
-  );
-  const layer = { position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 } as const;
-  const grows = Boolean(growth?.play) && !reduced;
-  return (
-    <View testID="today-ring" style={{ width: size, height: size, alignSelf: 'center' }}>
-      {/* The base: unlit ticks (or every seed dot) and the disc. */}
-      <Svg width={size} height={size} viewBox="0 0 200 200" accessible={false} importantForAccessibility="no-hide-descendants">
-        {mode === 'dots' && (
+  // Release bug hunt round 1: the marks (50 ticks or 40 dots) are built once per look, not on every
+  // render. Today redraws when it gains or loses focus; the ring's marks are then skipped.
+  const marks = useMemo(() => {
+    const ink = heroInk[isDark ? 'dark' : 'light'];
+    const ticks = mode === 'ticks' ? rangeTicks(low, high) : [];
+    const tick = (t: TickState, i: number) => (
+      <Line
+        key={i}
+        x1={100}
+        y1={7}
+        x2={100}
+        y2={21}
+        stroke={t === 'on' ? ink.tickOn : t === 'range' ? ink.tickRange : ink.tickOff}
+        strokeWidth={2.6}
+        strokeLinecap="round"
+        transform={`rotate(${((i * 360) / ticks.length).toFixed(2)} 100 100)`}
+      />
+    );
+    return {
+      dots:
+        mode === 'dots' ? (
           <G testID="ring-dots">
             {Array.from({ length: RANGE_MIN_ANSWERS }, (_, i) => {
               const p = at((i * 360) / RANGE_MIN_ANSWERS, 88);
@@ -116,16 +115,33 @@ export function ReadinessRing({ mode, on, low, high, size, growth, children }: {
               );
             })}
           </G>
-        )}
-        {mode === 'ticks' && <G>{ticks.map((t, i) => (t === 'off' ? tick(t, i) : null))}</G>}
-        <Circle cx={100} cy={100} r={70} fill={ink.disc} stroke={ink.tickOff} strokeWidth={1} />
+        ) : null,
+      unlit: mode === 'ticks' ? <G>{ticks.map((t, i) => (t === 'off' ? tick(t, i) : null))}</G> : null,
+      disc: <Circle cx={100} cy={100} r={70} fill={ink.disc} stroke={ink.tickOff} strokeWidth={1} />,
+      lit:
+        mode === 'ticks' ? (
+          <>
+            <G testID="ring-ticks">{ticks.map((t, i) => (t === 'off' ? null : tick(t, i)))}</G>
+            <Line testID="ring-study-bar" x1={100} y1={3} x2={100} y2={27} stroke={ink.mark} strokeWidth={3.4} strokeLinecap="round" transform={`rotate(${RING_STUDY_BAR * 3.6} 100 100)`} />
+          </>
+        ) : null,
+    };
+  }, [mode, on, low, high, isDark]);
+  const layer = { position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 } as const;
+  const grows = Boolean(growth?.play) && !reduced;
+  return (
+    <View testID="today-ring" style={{ width: size, height: size, alignSelf: 'center' }}>
+      {/* The base: unlit ticks (or every seed dot) and the disc. */}
+      <Svg width={size} height={size} viewBox="0 0 200 200" accessible={false} importantForAccessibility="no-hide-descendants">
+        {marks.dots}
+        {marks.unlit}
+        {marks.disc}
       </Svg>
       {/* The lit ticks, the range and the clay mark: their own layer, so they can light up once. */}
       {mode === 'ticks' && (
         <FadeIn key={growth?.run ?? 0} rise={false} dur="grow" play={grows} style={layer}>
           <Svg width={size} height={size} viewBox="0 0 200 200" accessible={false} importantForAccessibility="no-hide-descendants">
-            <G testID="ring-ticks">{ticks.map((t, i) => (t === 'off' ? null : tick(t, i)))}</G>
-            <Line testID="ring-study-bar" x1={100} y1={3} x2={100} y2={27} stroke={ink.mark} strokeWidth={3.4} strokeLinecap="round" transform={`rotate(${RING_STUDY_BAR * 3.6} 100 100)`} />
+            {marks.lit}
           </Svg>
         </FadeIn>
       )}

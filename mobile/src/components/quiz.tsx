@@ -522,6 +522,15 @@ export function TipsCard({
 }
 
 /**
+ * The room the recap's words get in the answer screen's header (session.tsx): the window less the
+ * 20pt gutters, the 12pt gaps, the close (36), bookmark (48) and ⋯ (36) buttons, and the 18pt disc
+ * with its 8pt gap. 222pt in all.
+ */
+export const recapRoom = (windowWidth: number) => windowWidth - 222;
+/** "Not quite · Best answer D" at 1.0 text, in the meta face (Figtree 14): about 161pt. */
+export const RECAP_LONG_W = 161;
+
+/**
  * Mobile 1.22 (design spec §6.4): the answer screen's outcome, kept in the
  * header once the verdict has scrolled away: an 18pt disc (`wrong` with an
  * ✗, or `correct` with a ✓) and one `meta` line, "Not quite · Best answer
@@ -529,8 +538,12 @@ export function TipsCard({
  */
 export function AnswerRecap({ correct, letter }: { correct: boolean; letter: Letter }) {
   const { c } = useTheme();
+  const scale = useFontScale();
+  const { width } = useWindowDimensions();
   // Large text (×1.3+): the short form fits the bar ("Not quite · D"); the spoken label keeps every word.
-  const short = useFontScale() >= LARGE_TEXT;
+  // Release bug hunt round 1: also when the bar is too narrow for the long form, so the letter always
+  // shows (360dp, 320dp, or a 390dp phone at ×1.15 cut it to "Not quite · Best ans…").
+  const short = scale >= LARGE_TEXT || recapRoom(width) < RECAP_LONG_W * Math.min(scale, 1.3);
   const words = `${correct ? 'Correct' : 'Not quite'} · ${short ? '' : 'Best answer '}${letter}`;
   return (
     <View accessible accessibilityLabel={`${correct ? 'Correct' : 'Not quite'}. Best answer ${letter}`} style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: space.sm }}>

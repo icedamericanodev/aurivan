@@ -108,7 +108,8 @@ import {
 } from '../engine/resultsCopy';
 import { moveFocus, sayLater } from '../lib/a11y';
 import { displayToOriginal, originalToDisplay, renderText } from '../engine/shuffle';
-import { aboutMin, COACHING, coachingTag, practicePace, spokenMin, timeStat, TIMING_LABEL } from '../engine/pace';
+import { aboutMin, coachingTag, practicePace, spokenMin, timeStat, TIMING_LABEL } from '../engine/pace';
+import { coachingLine } from '../lib/coachingCopy';
 import { msUsed, scoreSession, sessionPacing } from '../lib/finishSession';
 import { trapTip } from '../engine/games/trapSpotter';
 import { badgeNextLine } from '../lib/badges';
@@ -549,7 +550,7 @@ export default function Results() {
         const coaching = r ? coachingTag(r.correct, r.ms) : null;
         // ONE quiet line instead of a row of tags (mobile 1.24): the hint and the pace note, together.
         // Each on its own line, so "You used a hint." never reads as the cause of the pace advice (UX review nit).
-        const quietLines = [assisted ? 'You used a hint.' : null, coaching ? COACHING[coaching].line : null].filter((x): x is string => Boolean(x));
+        const quietLines = [assisted ? 'You used a hint.' : null, coaching ? coachingLine(coaching) : null].filter((x): x is string => Boolean(x));
         const quiet = quietLines.join(' ');
         const color = !r ? c.muted : r.correct ? c.correct : c.wrong;
         const open = openId === id;

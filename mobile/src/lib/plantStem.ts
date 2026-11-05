@@ -14,7 +14,7 @@
  * Nothing is saved here, and nothing changes the growth rules.
  */
 import { FORM_FACTS, GROWTH_IDS, GROWTH_NAMES, MAX_GROWTH, type CertPlant, type GrowthLevel } from '../engine/plant';
-import { FORM_START, formName, formOf } from '../engine/plantForms';
+import { FORM_START, formName, formOf, RECALL_FORM_III, RECALL_FORM_IV } from '../engine/plantForms';
 import { GREW_FACTS } from './plantCopy';
 import { shortDate, spokenShortDate } from './format';
 
@@ -69,6 +69,12 @@ export interface StemInput {
   /** The Form IV final drawn at Elder. */
   final?: unknown;
   keepsakes?: readonly StemKeepsake[];
+  /**
+   * Questions right a week or more after last seen (plantForms.ts delayedRecalls of milestones.longIds).
+   * Bough and Elder state a recall count as a fact; a plant that grew before 1.50 (no recall gate then),
+   * or restored without it, may not have it. Left out: counted as 0, so no recall claim is made.
+   */
+  recalled?: number;
 }
 
 /** More leaves than this and the older ones fold under "Earlier growth" (PHASE4B 4.1 item 6). */
@@ -87,6 +93,7 @@ const startsForm = (g: GrowthLevel) => FORM_START[formOf(g)] === g;
 /** Every row of the stem, in order (growths, with the keepsakes on show between them). */
 export function stemRows(i: StemInput): StemRow[] {
   const { plant, forms } = i;
+  const recalled = i.recalled ?? 0;
   const rows: StemRow[] = [];
   for (let n = 1; n <= MAX_GROWTH; n++) {
     const g = n as GrowthLevel;
@@ -100,7 +107,10 @@ export function stemRows(i: StemInput): StemRow[] {
     }
     // Seed: no date on the row (the head says "Planted"), no fact.
     const at = g === 1 ? undefined : reachedAt(plant, g);
-    const fact = g === 1 ? undefined : g === 3 || g === 4 || g === 6 ? (forms ? FORM_FACTS[g] : undefined) : GREW_FACTS[g];
+    // Release bug hunt round 1: Bough's and Elder's facts name a recall count, so they show only when it is
+    // true for this learner now (recalls only go up). Otherwise the row keeps its date and form, no fact.
+    const recallTrue = g === 4 ? recalled >= RECALL_FORM_III : g === 6 ? recalled >= RECALL_FORM_IV : true;
+    const fact = g === 1 ? undefined : g === 3 || g === 4 || g === 6 ? (forms && recallTrue ? FORM_FACTS[g] : undefined) : GREW_FACTS[g];
     const parts: string[] = [];
     const said: string[] = [];
     if (at !== undefined) {

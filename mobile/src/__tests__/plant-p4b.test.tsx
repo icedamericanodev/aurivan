@@ -23,6 +23,7 @@ import { plantArtSize } from '../components/plant/PlantPage';
 import { buildPlant, type GNode } from '../components/plant/art';
 import { withoutDisc } from '../components/plant/LivePlant';
 import { CROWN_MOCK, FORM_FACTS, GROWTH_IDS, plantNew, SPROUT_ANSWERS, type CertPlant, type GrowthLevel } from '../engine/plant';
+import { RECALL_FORM_III, RECALL_FORM_IV } from '../engine/plantForms';
 import { lookItem } from '../engine/plantLooks';
 import { dayKey } from '../engine/streak';
 import { shortDate } from '../lib/format';
@@ -154,7 +155,7 @@ describe('the stem: How it has grown (PHASE4B 4.1 item 6)', () => {
   });
 
   it('the facts word for word: FORM_FACTS where a form starts, the website lines for Sprout and Crown, none for Seed', () => {
-    const rows = stemRows({ plant: grown(6), forms: true });
+    const rows = stemRows({ plant: grown(6), forms: true, recalled: RECALL_FORM_IV });
     const row = (g: number) => rows.find((x) => x.kind === 'growth' && x.growth === g) as StemGrowthRow;
     expect(row(2).fact).toBe(`It grew from your first ${SPROUT_ANSWERS} answers.`);
     expect(row(3).fact).toBe(FORM_FACTS[3]);
@@ -164,6 +165,25 @@ describe('the stem: How it has grown (PHASE4B 4.1 item 6)', () => {
     expect(GREW_FACTS[2]).toBe('It grew from your first 20 answers.');
     // Spoken as one stop: name, date, form, fact.
     expect(row(3).spoken).toBe(`Shoot, reached ${new Date(T0 + 3 * DAY).getDate()} ${['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'][new Date(T0 + 3 * DAY).getMonth()]}, grew into the Whip Oak. ${FORM_FACTS[3]}`);
+  });
+
+  it('release bug hunt round 1: Bough and Elder claim the recalls only when this learner has them', () => {
+    const fact = (recalled: number | undefined, plant: ReturnType<typeof grown>, g: number) =>
+      (stemRows({ plant, forms: true, ...(recalled === undefined ? {} : { recalled }) }).find((x) => x.kind === 'growth' && x.growth === g) as StemGrowthRow);
+    // A plant that grew before 1.50 (no recall gate then): Bough reached, Crown now.
+    for (const r of [undefined, 0, RECALL_FORM_III - 1]) {
+      const bough = fact(r, grown(5), 4);
+      expect(bough.fact).toBeUndefined();
+      expect(bough.spoken).not.toMatch(/questions right .*later/);
+      // The row keeps its date and form.
+      expect(bough.meta).toBe(`reached ${shortDate(T0 + 4 * DAY)} · grew into the Standard Oak`);
+    }
+    expect(fact(RECALL_FORM_III, grown(5), 4).fact).toBe(FORM_FACTS[4]);
+    // Elder: the 30-recall line only with 30.
+    for (const r of [undefined, 0, RECALL_FORM_III, RECALL_FORM_IV - 1]) expect(fact(r, grown(6), 6).fact).toBeUndefined();
+    expect(fact(RECALL_FORM_IV, grown(6), 6).fact).toBe(FORM_FACTS[6]);
+    // Shoot names no recall: always shown.
+    expect(fact(0, grown(5), 3).fact).toBe(FORM_FACTS[3]);
   });
 
   it('with forms off: no form names, and no FORM_FACTS on Shoot, Bough or Elder', () => {

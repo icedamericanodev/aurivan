@@ -38,8 +38,8 @@
  */
 import { router } from 'expo-router';
 import { backOr } from '../lib/actions';
-import { useMemo, useState } from 'react';
-import { Modal, ScrollView, View } from 'react-native';
+import { memo, useCallback, useMemo, useState } from 'react';
+import { FlatList, Modal, ScrollView, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { EmptyScreen } from '../components/emptyScreen';
 import { StickyFooter } from '../components/quiz';
@@ -57,7 +57,7 @@ import { useActiveCert } from '../lib/useActiveCert';
 import { GAMES } from '../engine/games/registry';
 import { canPlay } from '../lib/games';
 import { slipCoach, type SlipInput } from '../engine/slipCoach';
-import { useProgress, type ThinkingSlip } from '../store/progress';
+import { useProgress, type MistakeEntry, type ThinkingSlip } from '../store/progress';
 import { space } from '../theme/tokens';
 import { useTheme } from '../theme/useTheme';
 
@@ -110,9 +110,121 @@ function SlipTagsSheet({ visible, onClose }: { visible: boolean; onClose: () => 
   );
 }
 
+const keyOf = ([id]: [string, MistakeEntry]) => id;
+
+/**
+ * One mistake (release bug hunt round 1: memoised). It gets plain values and stable callbacks,
+ * so tapping "Tag why you slipped" or a tag redraws only this card. tagMistake swaps only the
+ * tagged mistake's object, so every other card keeps its `m` and is skipped.
+ */
+const MistakeCard = memo(function MistakeCard({
+  id,
+  m,
+  certId,
+  isTagging,
+  onToggleTag,
+  onPickTag,
+  onOpenTags,
+}: {
+  id: string;
+  m: MistakeEntry;
+  certId: string;
+  isTagging: boolean;
+  onToggleTag: (id: string) => void;
+  onPickTag: (id: string, slip: ThinkingSlip) => void;
+  onOpenTags: () => void;
+}) {
+  const { c } = useTheme();
+  const q = useMemo(() => findQuestion(certId, id), [certId, id]);
+  // The study note behind this question (open mistakes only).
+  const note = useMemo(() => {
+    const noteId = m.resolved ? undefined : subtopicOfQuestion(certId, id);
+    return noteId ? findNote(certId, noteId) : undefined;
+  }, [certId, id, m.resolved]);
+  const target = useMemo(() => (q ? questionTarget(certId, q, 'Mistake journal', undefined, m.picked) : null), [certId, q, m.picked]);
+  if (!q || !target) return null;
+  return (
+    <View style={{ paddingVertical: space.lg, borderBottomWidth: 1, borderBottomColor: c.line }}>
+      <T v="caption" num>{`${m.resolved ? 'Fixed · ' : ''}${shortDate(m.at)}`}</T>
+      <Gap h={space.xs} />
+      <T v="body">{q.stem}</T>
+      <Gap h={space.md} />
+      {m.picked && (
+        <>
+          <T v="caption" color={c.wrong}>Your pick</T>
+          <T v="small">{q.options[m.picked]}</T>
+          <Gap h={space.sm} />
+        </>
+      )}
+      <T v="caption" color={c.correct}>Best answer</T>
+      <T v="small">{q.options[q.correct]}</T>
+      {note && (
+        // The ghost pads 8pt each side: pulled left so its icon lines up with the text above.
+        <Button
+          kind="ghost"
+          label="Read the note"
+          accessibilityLabel={`Read the note: ${note.name}`}
+          accessibilityHint="Opens the study note on the idea this question tests"
+          icon={(col) => <BookOpen size={ICON_SIZE.inline} color={col} strokeWidth={ICON_STROKE} />}
+          iconLeading
+          onPress={() => router.push(`/notes/subtopic/${encodeURIComponent(note.id)}`)}
+          style={{ alignSelf: 'flex-start', marginLeft: -space.sm, marginTop: space.xs }}
+        />
+      )}
+      {/* No letters here, so the report names the pick by its ORIGINAL letter only.
+          Just the link (UX review O8): a meta block on every card was clutter. */}
+      <ReportLink certId={certId} target={target} />
+      {!m.resolved && (
+        <>
+          <Gap h={space.md} />
+          {isTagging ? (
+            <>
+              <Row gap={space.xs} style={{ flexWrap: 'wrap', justifyContent: 'space-between' }}>
+                <T v="meta">Why did you slip?</T>
+                <Button kind="ghost" label="What do these mean?" accessibilityHint="Shows one example for each tag" onPress={onOpenTags} style={{ marginRight: -space.sm }} />
+              </Row>
+              {/* One group with a name, so a screen reader says which question the six tags are for. */}
+              <View
+                accessibilityRole="radiogroup"
+                accessibilityLabel={`Why you slipped on this question: ${q.stem.split(/\s+/).slice(0, 6).join(' ')}`}
+                style={{ flexDirection: 'row', flexWrap: 'wrap', gap: space.sm }}
+              >
+                {SLIPS.map((s) => (
+                  <Chip
+                    key={s.id}
+                    label={s.label}
+                    accessibilityLabel={`Tag: ${s.label}`}
+                    accessibilityHint={`For example: ${s.example}`}
+                    selected={m.slip === s.id}
+                    onPress={() => onPickTag(id, s.id)}
+                  />
+                ))}
+              </View>
+            </>
+          ) : m.slip ? (
+            <Row gap={space.xs} style={{ flexWrap: 'wrap', justifyContent: 'space-between' }}>
+              <T v="meta" color={c.ink} style={{ flexShrink: 1 }}>{`Why you slipped: ${SLIPS.find((x) => x.id === m.slip)?.label ?? ''}`}</T>
+              <Button kind="ghost" label="Change" accessibilityHint="Shows the tags again" onPress={() => onToggleTag(id)} style={{ marginRight: -space.sm }} />
+            </Row>
+          ) : (
+            <Button
+              kind="ghost"
+              label="Tag why you slipped"
+              accessibilityHint="Shows the tags to pick from"
+              onPress={() => onToggleTag(id)}
+              style={{ alignSelf: 'flex-start', marginLeft: -space.sm }}
+            />
+          )}
+        </>
+      )}
+    </View>
+  );
+});
+
 export default function Mistakes() {
   const { c } = useTheme();
   const { cert, progress } = useActiveCert();
+  const certId = cert.id;
   const tagMistake = useProgress((s) => s.tagMistake);
   const [showFixed, setShowFixed] = useState(false);
   const [footerH, setFooterH] = useState(120);
@@ -136,6 +248,8 @@ export default function Mistakes() {
   const pattern = useMemo(() => {
     const inputs: SlipInput[] = [];
     for (const [id, m] of Object.entries(progress.mistakes)) {
+      // slipCoach counts tagged mistakes only: an untagged one needs no question lookup.
+      if (!m.slip) continue;
       const q = findQuestion(cert.id, id);
       if (q) inputs.push({ slip: m.slip, picked: m.picked, confidence: m.confidence, correct: q.correct, tips: q.tips, stem: q.stem });
     }
@@ -143,6 +257,23 @@ export default function Mistakes() {
   }, [cert.id, progress.mistakes]);
   // The principle that coaches this pattern (none for a content gap, or a cert without principles).
   const patternPrinciple = pattern.ready ? principleForSlip(cert.id, pattern.pattern) : undefined;
+
+  // Stable callbacks, so a memoised card redraws only when its own values change.
+  const onToggleTag = useCallback((id: string) => setTagging((t) => [...t, id]), []);
+  const onPickTag = useCallback(
+    (id: string, slip: ThinkingSlip) => {
+      tagMistake(certId, id, slip);
+      setTagging((t) => t.filter((x) => x !== id));
+    },
+    [certId, tagMistake],
+  );
+  const onOpenTags = useCallback(() => setTagsOpen(true), []);
+  const renderItem = useCallback(
+    ({ item: [id, m] }: { item: [string, MistakeEntry] }) => (
+      <MistakeCard id={id} m={m} certId={certId} isTagging={tagging.includes(id)} onToggleTag={onToggleTag} onPickTag={onPickTag} onOpenTags={onOpenTags} />
+    ),
+    [certId, tagging, onToggleTag, onPickTag, onOpenTags],
+  );
 
   if (entries.length === 0) {
     return (
@@ -161,149 +292,78 @@ export default function Mistakes() {
     );
   }
 
+  const header = (
+    <View>
+      <PushedHeader title="Mistake journal" onBack={() => backOr('/you')} />
+      <T v="meta" style={{ marginTop: space.sm }}>Tag why you slipped. Find your pattern.</T>
+
+      {pattern.ready ? (
+        // Not a card: a green left rule, like the key idea (spec §5).
+        <View style={{ marginTop: space.xl, borderLeftWidth: 3, borderLeftColor: c.accent, paddingLeft: space.md }}>
+          <T v="caption" color={c.accentText}>Your pattern</T>
+          <T v="headline" accessibilityRole="header" style={{ marginTop: 2 }}>{pattern.title}</T>
+          <T v="small" color={c.ink}>{pattern.coach}</T>
+          <T v="meta" num style={{ marginTop: space.xs }}>{`Seen in ${pattern.count} of ${pattern.tagged} tagged mistakes`}</T>
+          {patternPrinciple && (
+            // The thinking rule behind this slip. The ghost pads 8pt each side: pulled left so its icon lines up with the text.
+            <Button
+              kind="ghost"
+              label="Read the principle"
+              accessibilityLabel={`Read the principle: ${patternPrinciple.title}`}
+              accessibilityHint="Opens the exam-mindset principle that fixes this slip"
+              icon={(col) => <Compass size={ICON_SIZE.inline} color={col} strokeWidth={ICON_STROKE} />}
+              iconLeading
+              onPress={() => router.push({ pathname: '/principles/[id]', params: { id: patternPrinciple.id } })}
+              style={{ alignSelf: 'flex-start', marginLeft: -space.sm, marginTop: space.xs }}
+            />
+          )}
+          <Gap h={space.md} />
+          {/* "Drill it" only when that game can be played for this exam (registry minPool). */}
+          {pattern.game && canPlay(cert.id, pattern.game) ? (
+            <Button
+              kind="secondary"
+              label={`Drill it: ${GAMES[pattern.game].name}`}
+              accessibilityHint="Opens the mini-game that trains this slip"
+              onPress={() => router.push(`/game/${pattern.game}`)}
+            />
+          ) : (
+            open.length > 0 && <Button
+              kind="secondary"
+              label="Review these mistakes"
+              onPress={() => guardedStart(() => startFromIds(cert.id, open.slice(0, 20).map(([id]) => id), 'Mistake journal'), openSession)}
+            />
+          )}
+        </View>
+      ) : (
+        <T v="meta" style={{ marginTop: space.lg }}>
+          {`Tag ${pattern.needed} more ${pattern.needed === 1 ? 'mistake' : 'mistakes'} to see your pattern.`}
+        </T>
+      )}
+
+      <Section title={showFixed ? 'All mistakes' : `${open.length} open`} />
+      {fixedCount > 0 && (
+        <View style={{ alignSelf: 'flex-start', marginTop: space.sm }}>
+          <Chip label={showFixed ? 'Hide fixed' : `Show ${fixedCount} fixed`} selected={showFixed} onPress={() => setShowFixed(!showFixed)} />
+        </View>
+      )}
+    </View>
+  );
+
   return (
     <SafeAreaView edges={['top', 'bottom']} style={{ flex: 1, backgroundColor: c.bg }}>
-      <ScrollView contentContainerStyle={{ paddingHorizontal: space.gutter, paddingBottom: footerH + space.xl }}>
-        <PushedHeader title="Mistake journal" onBack={() => backOr('/you')} />
-        <T v="meta" style={{ marginTop: space.sm }}>Tag why you slipped. Find your pattern.</T>
-
-        {pattern.ready ? (
-          // Not a card: a green left rule, like the key idea (spec §5).
-          <View style={{ marginTop: space.xl, borderLeftWidth: 3, borderLeftColor: c.accent, paddingLeft: space.md }}>
-            <T v="caption" color={c.accentText}>Your pattern</T>
-            <T v="headline" accessibilityRole="header" style={{ marginTop: 2 }}>{pattern.title}</T>
-            <T v="small" color={c.ink}>{pattern.coach}</T>
-            <T v="meta" num style={{ marginTop: space.xs }}>{`Seen in ${pattern.count} of ${pattern.tagged} tagged mistakes`}</T>
-            {patternPrinciple && (
-              // The thinking rule behind this slip. The ghost pads 8pt each side: pulled left so its icon lines up with the text.
-              <Button
-                kind="ghost"
-                label="Read the principle"
-                accessibilityLabel={`Read the principle: ${patternPrinciple.title}`}
-                accessibilityHint="Opens the exam-mindset principle that fixes this slip"
-                icon={(col) => <Compass size={ICON_SIZE.inline} color={col} strokeWidth={ICON_STROKE} />}
-                iconLeading
-                onPress={() => router.push({ pathname: '/principles/[id]', params: { id: patternPrinciple.id } })}
-                style={{ alignSelf: 'flex-start', marginLeft: -space.sm, marginTop: space.xs }}
-              />
-            )}
-            <Gap h={space.md} />
-            {/* "Drill it" only when that game can be played for this exam (registry minPool). */}
-            {pattern.game && canPlay(cert.id, pattern.game) ? (
-              <Button
-                kind="secondary"
-                label={`Drill it: ${GAMES[pattern.game].name}`}
-                accessibilityHint="Opens the mini-game that trains this slip"
-                onPress={() => router.push(`/game/${pattern.game}`)}
-              />
-            ) : (
-              open.length > 0 && <Button
-                kind="secondary"
-                label="Review these mistakes"
-                onPress={() => guardedStart(() => startFromIds(cert.id, open.slice(0, 20).map(([id]) => id), 'Mistake journal'), openSession)}
-              />
-            )}
-          </View>
-        ) : (
-          <T v="meta" style={{ marginTop: space.lg }}>
-            {`Tag ${pattern.needed} more ${pattern.needed === 1 ? 'mistake' : 'mistakes'} to see your pattern.`}
-          </T>
-        )}
-
-        <Section title={showFixed ? 'All mistakes' : `${open.length} open`} />
-        {fixedCount > 0 && (
-          <View style={{ alignSelf: 'flex-start', marginTop: space.sm }}>
-            <Chip label={showFixed ? 'Hide fixed' : `Show ${fixedCount} fixed`} selected={showFixed} onPress={() => setShowFixed(!showFixed)} />
-          </View>
-        )}
-
-        {entries.map(([id, m]) => {
-          const q = findQuestion(cert.id, id);
-          if (!q) return null;
-          // The study note behind this question (open mistakes only).
-          const noteId = m.resolved ? undefined : subtopicOfQuestion(cert.id, id);
-          const note = noteId ? findNote(cert.id, noteId) : undefined;
-          return (
-            <View key={id} style={{ paddingVertical: space.lg, borderBottomWidth: 1, borderBottomColor: c.line }}>
-              <T v="caption" num>{`${m.resolved ? 'Fixed · ' : ''}${shortDate(m.at)}`}</T>
-              <Gap h={space.xs} />
-              <T v="body">{q.stem}</T>
-              <Gap h={space.md} />
-              {m.picked && (
-                <>
-                  <T v="caption" color={c.wrong}>Your pick</T>
-                  <T v="small">{q.options[m.picked]}</T>
-                  <Gap h={space.sm} />
-                </>
-              )}
-              <T v="caption" color={c.correct}>Best answer</T>
-              <T v="small">{q.options[q.correct]}</T>
-              {note && (
-                // The ghost pads 8pt each side: pulled left so its icon lines up with the text above.
-                <Button
-                  kind="ghost"
-                  label="Read the note"
-                  accessibilityLabel={`Read the note: ${note.name}`}
-                  accessibilityHint="Opens the study note on the idea this question tests"
-                  icon={(col) => <BookOpen size={ICON_SIZE.inline} color={col} strokeWidth={ICON_STROKE} />}
-                  iconLeading
-                  onPress={() => router.push(`/notes/subtopic/${encodeURIComponent(note.id)}`)}
-                  style={{ alignSelf: 'flex-start', marginLeft: -space.sm, marginTop: space.xs }}
-                />
-              )}
-              {/* No letters here, so the report names the pick by its ORIGINAL letter only.
-                  Just the link (UX review O8): a meta block on every card was clutter. */}
-              <ReportLink certId={cert.id} target={questionTarget(cert.id, q, 'Mistake journal', undefined, m.picked)} />
-              {!m.resolved && (
-                <>
-                  <Gap h={space.md} />
-                  {tagging.includes(id) ? (
-                    <>
-                      <Row gap={space.xs} style={{ flexWrap: 'wrap', justifyContent: 'space-between' }}>
-                        <T v="meta">Why did you slip?</T>
-                        <Button kind="ghost" label="What do these mean?" accessibilityHint="Shows one example for each tag" onPress={() => setTagsOpen(true)} style={{ marginRight: -space.sm }} />
-                      </Row>
-                      {/* One group with a name, so a screen reader says which question the six tags are for. */}
-                      <View
-                        accessibilityRole="radiogroup"
-                        accessibilityLabel={`Why you slipped on this question: ${q.stem.split(/\s+/).slice(0, 6).join(' ')}`}
-                        style={{ flexDirection: 'row', flexWrap: 'wrap', gap: space.sm }}
-                      >
-                        {SLIPS.map((s) => (
-                          <Chip
-                            key={s.id}
-                            label={s.label}
-                            accessibilityLabel={`Tag: ${s.label}`}
-                            accessibilityHint={`For example: ${s.example}`}
-                            selected={m.slip === s.id}
-                            onPress={() => {
-                              tagMistake(cert.id, id, s.id);
-                              setTagging((t) => t.filter((x) => x !== id));
-                            }}
-                          />
-                        ))}
-                      </View>
-                    </>
-                  ) : m.slip ? (
-                    <Row gap={space.xs} style={{ flexWrap: 'wrap', justifyContent: 'space-between' }}>
-                      <T v="meta" color={c.ink} style={{ flexShrink: 1 }}>{`Why you slipped: ${SLIPS.find((x) => x.id === m.slip)?.label ?? ''}`}</T>
-                      <Button kind="ghost" label="Change" accessibilityHint="Shows the tags again" onPress={() => setTagging((t) => [...t, id])} style={{ marginRight: -space.sm }} />
-                    </Row>
-                  ) : (
-                    <Button
-                      kind="ghost"
-                      label="Tag why you slipped"
-                      accessibilityHint="Shows the tags to pick from"
-                      onPress={() => setTagging((t) => [...t, id])}
-                      style={{ alignSelf: 'flex-start', marginLeft: -space.sm }}
-                    />
-                  )}
-                </>
-              )}
-            </View>
-          );
-        })}
-      </ScrollView>
+      {/* Release bug hunt round 1: a FlatList draws only the cards near the screen (a large save had
+          hundreds open, about 13,800 components at once), and each card is memoised, so a tag tap
+          redraws only its own card. */}
+      <FlatList
+        data={entries}
+        keyExtractor={keyOf}
+        renderItem={renderItem}
+        extraData={tagging}
+        ListHeaderComponent={header}
+        contentContainerStyle={{ paddingHorizontal: space.gutter, paddingBottom: footerH + space.xl }}
+        initialNumToRender={8}
+        windowSize={5}
+      />
       {open.length > 0 && (
         <StickyFooter onHeight={setFooterH}>
           <Button

@@ -47,7 +47,7 @@ import { useCallback, useEffect, useRef, useState, type ReactNode, type RefObjec
 import * as ExpoRouter from 'expo-router';
 import { router, useLocalSearchParams } from 'expo-router';
 import { backOr } from '../lib/actions';
-import { Alert, Linking, Platform, View, type ScrollView } from 'react-native';
+import { Alert, AppState, Linking, Platform, View, type ScrollView } from 'react-native';
 import { aboutLine, AccountSettingsGroup } from '../components/account';
 import { BoardSettingsGroup } from '../components/board';
 import { useSyncing } from '../lib/sync';
@@ -85,6 +85,7 @@ import { DAILY_MINUTES, examFocusedOf, FAMILIARITIES, FAMILIARITY_INFO, KEEP_TOD
 import { MODE_INFO, STUDY_MODES, type StudyMode } from '../engine/studyModes';
 import { AI_DISCLAIMER_LINE, CERT_SCOPE_LINE, HOW_MADE_TITLE, PROVENANCE_LINE, WELCOME_HEADLINE, WELCOME_LINE } from '../content/brand';
 import { CERTIFICATIONS, combinedTrademarkNotice, selectableCertifications } from '../content/certifications';
+import { effectiveCertId } from '../lib/activeCert';
 import { hasContent } from '../content/loader';
 import { hasNotes } from '../content/notes';
 import { examDateLabel } from '../engine/examDay';
@@ -95,7 +96,7 @@ import { clearJustRead } from '../lib/noteNews';
 import { config, HOW_MADE_URL } from '../lib/config';
 import { DAY_CHIPS, localHour, localTime, MINUTE_STEP, reminderDays, reminderSummary, stepTime, toggleDay, type ReminderPrefs } from '../engine/reminders';
 import { cancelReminders, ensurePermission, remindersSupported } from '../lib/reminders';
-import { refreshReminders } from '../lib/reminderSync';
+import { notificationsBlocked, refreshReminders } from '../lib/reminderSync';
 import { runningUpdateLine, useUpdateCheck } from '../lib/updates';
 import { UPDATE_WORDS } from '../engine/updates';
 import { useActiveCert } from '../lib/useActiveCert';
@@ -163,6 +164,31 @@ export default function Settings() {
   const plantOn = plantSettings?.showPlant !== false;
   const clearSession = useSession((x) => x.clear);
   const [busy, setBusy] = useState(false);
+  // Release bug hunt round 1: notifications can be turned off for KaiSip in the phone's settings at any
+  // time, and the app is not told. Read it (never ask) when Settings opens and each time the app comes
+  // back to the front, so the switch never claims reminders that can't arrive. The saved choice is
+  // never changed here: reminders come back on their own once notifications are allowed again.
+  const remindOn = s.reminder.enabled;
+  const [blocked, setBlocked] = useState(false);
+  useEffect(() => {
+    if (!remindersSupported || !remindOn) return;
+    let live = true;
+    const check = () => {
+      // Never throws (lib/reminderSync.ts): if the check can't run, nothing changes on screen.
+      notificationsBlocked().then((b) => {
+        if (live) setBlocked(b);
+      });
+    };
+    check();
+    const sub = AppState.addEventListener('change', (st) => {
+      if (st === 'active') check();
+    });
+    return () => {
+      live = false;
+      sub.remove();
+    };
+  }, [remindOn]);
+  const remindBlocked = remindersSupported && remindOn && blocked;
   // Mobile 1.19: "Check for updates" (one tap = one check; nothing runs on its own).
   const updates = useUpdateCheck();
   const updateWords = UPDATE_WORDS[updates.phase];
@@ -314,6 +340,7 @@ export default function Settings() {
           Alert.alert('Notifications are off', 'Turn them on for KaiSip in your phone settings.');
           return;
         }
+        setBlocked(false);
         // Read the CURRENT choice after the permission prompt, not the one
         // captured when the switch was tapped (the learner may have changed it).
         useSettings.getState().setReminder({ ...useSettings.getState().reminder, enabled: true });
@@ -465,8 +492,8 @@ export default function Settings() {
         title="Exam date"
         value={examDate ? examDateLabel(examDate) : 'Not set'}
         spokenValue={examDate ? spokenDate(examDate) : 'not set'}
-        // Mobile 1.43: how far away it is ("In 36 days"; "Date passed" once it has gone), from the screen's "now".
-        subtitle={examDate ? (untilLabel(examDate, dayKey(now)) ?? 'Date passed') : undefined}
+        // Mobile 1.43: how far away it is ("In 36 days"; "Date has gone by" once it has gone), from the screen's "now".
+        subtitle={examDate ? (untilLabel(examDate, dayKey(now)) ?? 'Date has gone by') : undefined}
         accessibilityHint="Opens a calendar"
         onPress={open('date')}
         last
@@ -537,12 +564,22 @@ export default function Settings() {
     <>
       <ToggleRow
         title="Study reminder"
-        subtitle={remindersSupported ? 'At most one a day. Turn it off any time.' : 'Available in the installed app, not Expo Go on Android.'}
-        value={remindersSupported && s.reminder.enabled}
+        subtitle={
+          !remindersSupported
+            ? 'Available in the installed app, not Expo Go on Android.'
+            : remindBlocked
+              ? 'Notifications are off for KaiSip on this phone.'
+              : 'At most one a day. Turn it off any time.'
+        }
+        // Blocked in the phone's settings: shown off (nothing will arrive), though the choice is kept.
+        value={remindersSupported && s.reminder.enabled && !remindBlocked}
         disabled={busy || !remindersSupported}
         onValueChange={toggleReminder}
         last={!remindersSupported}
       />
+      {remindBlocked && (
+        <SettingsRow title="Open phone settings" accessibilityHint="Opens KaiSip in your phone's settings, to allow notifications" onPress={() => Linking.openSettings().catch(() => {})} chevron={false} />
+      )}
       {remindersSupported && (
         // You can set these before turning reminders on; nothing is asked until then.
         <SettingsRow ref={remindRow} title="Time and days" subtitle={reminderSummary(s.reminder)} onPress={open('remind')} last />
@@ -876,7 +913,7 @@ export default function Settings() {
           title: x.name,
           subtitle: x.fullName,
         }))}
-        value={s.activeCertId}
+        value={effectiveCertId(s.activeCertId)}
         onChange={(id) => s.setActiveCert(id)}
         after={<T v="meta" style={{ marginTop: space.md }}>{CERT_SCOPE_LINE}</T>}
       />

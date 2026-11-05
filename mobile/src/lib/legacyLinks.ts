@@ -20,6 +20,9 @@
 const MOVED: Record<string, string> = {
   'whats-next': '/help',
   play: '/practice?section=drills',
+  // The old Progress and Mock tabs (removed with the four-tab menu): their pages live in You and Practice now.
+  progress: '/you',
+  mock: '/practice',
 };
 
 /**

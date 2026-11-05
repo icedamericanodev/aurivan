@@ -372,7 +372,7 @@ export default function Badges() {
       <View key={id} testID={`shelf-${id}`} onLayout={id === jumpTo ? (e) => setJumpY(e.nativeEvent.layout.y) : undefined}>
         <ShelfHeader set={s} line={setCountLine(s)} quiet={quiet} grown={after ? undefined : grownFor(s)} planter={planterFor(s)}>
           {id === 'fieldNotes' && (
-            <Button kind="ghost" label="See game levels ›" onPress={() => router.push('/field-notes')} style={{ alignSelf: 'flex-start', marginLeft: -space.sm, marginTop: -space.sm }} />
+            <Button kind="ghost" label="See game levels ›" accessibilityLabel="See game levels" onPress={() => router.push('/field-notes')} style={{ alignSelf: 'flex-start', marginLeft: -space.sm, marginTop: -space.sm }} />
           )}
           {items.length > 0 ? (
             renderMarks(items, false)

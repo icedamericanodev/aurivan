@@ -34,6 +34,7 @@ import { Stack, usePathname } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
 import { useEffect, useState } from 'react';
+import { AppState } from 'react-native';
 import { CLOUD } from '../cloud/flag';
 import { initAccount } from '../lib/account';
 import { initSync, setRoute } from '../lib/sync';
@@ -114,6 +115,16 @@ export default function RootLayout() {
     else cancelReminders().catch(() => {});
     // An "Undo restore" snapshot older than 7 days is dropped once, at launch.
     pruneUndo();
+  }, [hydrated]);
+  // Release bug hunt round 1: back in the app, re-plan the reminders. Notifications turned back on in
+  // the phone's settings then bring them back without touching the switch (and turned off, they are
+  // cleared: refreshReminders never schedules while they are blocked). Never asks for permission.
+  useEffect(() => {
+    if (!hydrated) return;
+    const sub = AppState.addEventListener('change', (st) => {
+      if (st === 'active' && useSettings.getState().reminder.enabled) refreshReminders().catch(() => {});
+    });
+    return () => sub.remove();
   }, [hydrated]);
 
   // Mobile 1.47, home-screen widgets (Android): once saved data has loaded, keep the widget snapshot

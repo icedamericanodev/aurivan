@@ -75,6 +75,23 @@ export async function ensurePermission(): Promise<boolean> {
 }
 
 /**
+ * Release bug hunt round 1: may KaiSip show notifications right now? READ ONLY: it never asks.
+ * The learner can block them in the phone's settings at any time, and the app is not told, so
+ * Settings and the launch refresh check this. Null when it can't be known (Expo Go on Android,
+ * or the check failed): callers then carry on as before.
+ */
+export async function notificationsAllowed(): Promise<boolean | null> {
+  const N = notifications();
+  if (!N) return null;
+  try {
+    await ensureAndroidChannel(N);
+    return (await N.getPermissionsAsync()).granted;
+  } catch {
+    return null;
+  }
+}
+
+/**
  * One change at a time. Every schedule/cancel joins this queue, so two
  * quick taps (or a tap and the off switch) can't interleave their
  * list → cancel → schedule steps. Without it both calls could list the same
@@ -117,6 +134,12 @@ export interface ScheduleOptions {
    * reminder can name it ("The 2 you missed are back"). Unset = the plain words.
    */
   waitingFor?: (at: number) => WaitingReviews;
+  /**
+   * Release bug hunt round 1: first read (never ask) whether notifications are allowed. Blocked in the
+   * phone's settings: schedule nothing and clear ours (the phone would never show them). The app's
+   * refresh (lib/reminderSync.ts) sets it; a check that fails carries on as before.
+   */
+  onlyIfAllowed?: boolean;
 }
 
 /**
@@ -133,6 +156,15 @@ export async function scheduleReminders(prefs: ReminderPrefs, certName: string, 
 async function replaceOurs(N: NotificationsModule, prefs: ReminderPrefs, certName: string, opts: ScheduleOptions) {
   await ensureAndroidChannel(N);
   await cancelOurs(N);
+  if (opts.onlyIfAllowed) {
+    let blocked = false;
+    try {
+      blocked = (await N.getPermissionsAsync()).granted === false;
+    } catch {
+      blocked = false;
+    }
+    if (blocked) return;
+  }
   const plan = rollingPlan(prefs, opts.now ?? Date.now(), { skipToday: opts.skipToday });
   // Mobile 1.41: each reminder has its own words (engine/reminders.ts slotCopy). Same count, same ids.
   const words = rollingCopy(plan, certName, opts.waitingFor);

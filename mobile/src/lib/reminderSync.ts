@@ -23,7 +23,7 @@ import { ownOf, useProgress } from '../store/progress';
 import { dailyMinutesOf, useSettings } from '../store/settings';
 import { effectiveCertId } from './activeCert';
 import { questionExists } from './outline';
-import { scheduleReminders } from './reminders';
+import { notificationsAllowed, scheduleReminders } from './reminders';
 
 export function refreshReminders(now = Date.now()): Promise<void> {
   const settings = useSettings.getState();
@@ -40,8 +40,27 @@ export function refreshReminders(now = Date.now()): Promise<void> {
   const waitingFor = cp ? (at: number) => waitingAt(cp.review, cp.answers, at, questionExists(activeCertId)) : undefined;
   const cleared = Boolean(plan && plan.day === dayKey(now) && planComplete(plan));
   const certName = getCertification(activeCertId)?.name ?? 'your exam';
-  return Promise.resolve(scheduleReminders(reminder, certName, { now, skipToday: cleared, minutes: dailyMinutesOf(settings), waitingFor })).then(
+  // Release bug hunt round 1 (onlyIfAllowed): notifications blocked in the phone's settings schedule
+  // nothing (ours are cleared instead), and the saved choice stays on, so the next refresh (at launch,
+  // or back in the app, app/_layout.tsx) schedules again once they are allowed. Never asks.
+  return Promise.resolve(scheduleReminders(reminder, certName, { now, skipToday: cleared, minutes: dailyMinutesOf(settings), waitingFor, onlyIfAllowed: true })).then(
     () => undefined,
     () => undefined,
   );
+}
+
+/**
+ * Release bug hunt round 1: true only when the phone says notifications are blocked for KaiSip
+ * (Settings shows it). Read only (never asks), and it never throws: if the check can't run, it
+ * answers false and the screen stays as it was.
+ */
+export function notificationsBlocked(): Promise<boolean> {
+  try {
+    return Promise.resolve(notificationsAllowed()).then(
+      (allowed) => allowed === false,
+      () => false,
+    );
+  } catch {
+    return Promise.resolve(false);
+  }
 }

@@ -571,14 +571,29 @@ const PracticeHero = memo(function PracticeHero({
 });
 
 /**
+ * Do three hero tiles fit side by side? Each tile's inner width is the window less the 20pt gutters,
+ * the hero card's 16pt padding and the two 8pt gaps, split in three, less the tile's 12pt padding
+ * each side. The widest key, "DOMAINS" (11pt caps, letter-spaced), needs about 60pt at 1.0 text,
+ * and its spacing grows with the text size on Android.
+ */
+export function heroTilesFit(windowWidth: number, fontScale: number): boolean {
+  const inner = (windowWidth - 2 * 20 - 2 * 16 - 2 * 8) / 3 - 2 * 12;
+  return inner >= 60 * fontScale;
+}
+
+/**
  * The hero's three tiles in a row, or a column from text scale 1.3. With `domainsAlone` (one area
  * picked), the first tile (Domains) takes a full row and the others share the row under it, so a long
  * area name is never broken mid-word. The font never shrinks to make it fit (the label stays 16).
  */
-function HeroTileRow({ children, domainsAlone = false }: { children: ReactNode; domainsAlone?: boolean }) {
-  const large = useFontScale() >= LARGE_TEXT;
+export function HeroTileRow({ children, domainsAlone = false }: { children: ReactNode; domainsAlone?: boolean }) {
+  const scale = useFontScale();
+  const { width } = useWindowDimensions();
+  const large = scale >= LARGE_TEXT;
   if (large) return <View style={{ flexDirection: 'column', gap: space.sm }}>{children}</View>;
-  if (!domainsAlone) return <View style={{ flexDirection: 'row', gap: space.sm }}>{children}</View>;
+  // Release bug hunt round 1: on a narrow phone (or at the next text size up) three tiles side by side
+  // broke the tracked "DOMAINS" key mid-word ("DOMAIN / S"). Then Domains takes its own row too.
+  if (!domainsAlone && heroTilesFit(width, scale)) return <View style={{ flexDirection: 'row', gap: space.sm }}>{children}</View>;
   const [first, ...rest] = Children.toArray(children);
   return (
     <View style={{ gap: space.sm }}>

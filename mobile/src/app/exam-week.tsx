@@ -7,7 +7,7 @@
  *   moving the date starts a fresh list.
  * - Calm on purpose: no notification, no red, no "overdue", no count of what
  *   is left. "Taking it online?" and "At a test centre?" are one choice
- *   ("Tick the one that fits you."), one slot in "2 of 5 done". Generic, true wording ("the official candidate guide"): never a
+ *   ("Tick the one that fits you."), one slot in "2 of 5 done". Generic, true wording ("the candidate guide"): never a
  *   claim about what an exam body says, no links that imply affiliation.
  * - No exam date: nothing to tick against, so the screen asks for one first.
  *

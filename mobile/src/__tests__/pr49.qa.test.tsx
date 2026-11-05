@@ -342,7 +342,7 @@ describe('C. Older saves load and keep their date', () => {
     expect(useSettings.getState().examDates.cisa).toBe('2026-03-01');
     expect(useSettings.getState().theme).toBe('dark');
     mount(<Settings />);
-    expect(row('Exam date').props.accessibilityLabel).toBe('Exam date, Sunday 1 March 2026, Date passed');
+    expect(row('Exam date').props.accessibilityLabel).toBe('Exam date, Sunday 1 March 2026, Date has gone by');
     expect(allText()).toContain('1 Mar 2026');
     openRow('Exam date');
     // Opens on today's month (the past month can't be shown); no quick choice lit; no "In N days".
@@ -350,9 +350,9 @@ describe('C. Older saves load and keep their date', () => {
     for (const p of ['In 1 month', 'In 2 months', 'In 3 months', 'Not sure yet']) expect(byLabel(p)[0].props.accessibilityState).toMatchObject({ selected: false });
     // Fix round (UX P6, QA nit 2): the line says the date has passed, shown and spoken, with no stray ". ".
     // (This test used to pin the bare "Sun 1 Mar 2026" with nothing after it.)
-    expect(allText()).toContain('Sun 1 Mar 2026 · Date passed');
+    expect(allText()).toContain('Sun 1 Mar 2026 · Date has gone by');
     expect(allText()).not.toMatch(/In -?\d+ days/);
-    const line = root().findAll((n) => typeof n.type === 'string' && n.props.accessibilityLabel === 'Chosen: Sunday 1 March 2026. Date passed');
+    const line = root().findAll((n) => typeof n.type === 'string' && n.props.accessibilityLabel === 'Chosen: Sunday 1 March 2026. Date has gone by');
     expect(line.length).toBeGreaterThan(0);
     press('Save');
     expect(useSettings.getState().examDates.cisa).toBe('2026-03-01');

@@ -23,7 +23,7 @@
  * and not sticky, so text never sits under it (UX P9). Never on question, mock, lesson or game screens.
  */
 import { router } from 'expo-router';
-import { useState, type ReactNode } from 'react';
+import { useCallback, useLayoutEffect, useRef, useState, type ReactNode } from 'react';
 import { Pressable, ScrollView, useWindowDimensions, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { EmptyScreen } from '../components/emptyScreen';
@@ -77,6 +77,16 @@ export default function PlantLook() {
   const [today] = useState(() => dayKey(Date.now()));
   const p = view.plant;
   const look = view.look;
+  // Release bug hunt round 1: each row is memoised (LookOption), so its tap must be the same function
+  // every render. The rows pass "group|id" to one stable `runHandler`, which runs that row's newest
+  // handler: this render fills `rowHandlers`, and the effect hands it over once the render is on screen
+  // (before any tap can reach it), so a tap always acts on the current look.
+  const handlers = useRef(new Map<string, () => void>());
+  const runHandler = useCallback((key: string) => handlers.current.get(key)?.(), []);
+  const rowHandlers = new Map<string, () => void>();
+  useLayoutEffect(() => {
+    handlers.current = rowHandlers;
+  });
 
   if (!view.shown) {
     return (
@@ -131,6 +141,9 @@ export default function PlantLook() {
     <View accessibilityRole={multi ? undefined : 'radiogroup'} accessibilityLabel={label} style={{ marginTop: space.xs }}>
       {items.map((x, i) => {
         const locked = !open(x);
+        const key = `${label}|${x.id}`;
+        // The newest handler for this row (read only when it is tapped, never while drawing).
+        rowHandlers.set(key, () => onPress(x));
         return (
           <LookOption
             key={x.id}
@@ -143,7 +156,8 @@ export default function PlantLook() {
             multi={multi}
             full={opts.full}
             divider={i < items.length - 1}
-            onPress={() => onPress(x)}
+            id={key}
+            onChoose={runHandler}
           />
         );
       })}

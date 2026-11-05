@@ -8,7 +8,7 @@
  * - P4 the welcome screen: the short line, directly above the not-affiliated line;
  * - P5 the Report a problem sheet: the report line on content reports, not on app-bug reports.
  */
-import { Linking } from 'react-native';
+import { Linking, ScrollView } from 'react-native';
 import { act, create, type ReactTestInstance, type ReactTestRenderer } from 'react-test-renderer';
 import { router } from 'expo-router';
 import {
@@ -24,6 +24,7 @@ import { FAQ } from '../content/support';
 import { HOW_MADE_URL } from '../lib/config';
 import { ReportSheet } from '../components/support';
 import Faq from '../app/faq';
+import * as a11y from '../lib/a11y';
 import Onboarding from '../app/onboarding';
 import Settings from '../app/settings';
 import { useSettings } from '../store/settings';
@@ -129,6 +130,32 @@ describe('P3 Help → Common questions', () => {
     mockParams.current = { open: 'nope' };
     mount(<Faq />);
     expect(allText()).not.toContain(AI_LONG_DISCLAIMER_PARAGRAPHS[0]);
+  });
+
+  // Release bug hunt round 1: the opened entry is the last of ten, below the fold on a small phone.
+  it('faq?open=how-made scrolls that entry into view and moves the screen reader to it, once; a plain visit does neither', () => {
+    const scroll = jest.spyOn(ScrollView.prototype, 'scrollTo').mockImplementation(() => {});
+    const focus = jest.spyOn(a11y, 'moveFocus').mockImplementation(() => {});
+    const question = FAQ.find((f) => f.id === 'how-made')!.question;
+    const laidOut = () => r!.root.findAll((n) => typeof n.props.onLayout === 'function' && n.findAll((x) => x.props.title === question).length > 0);
+    mockParams.current = { open: 'how-made' };
+    mount(<Faq />);
+    const layout = { nativeEvent: { layout: { x: 0, y: 653, width: 390, height: 60 } } };
+    act(() => laidOut()[0].props.onLayout(layout));
+    act(() => laidOut()[0].props.onLayout(layout)); // a second layout (the answer opening) does not scroll again
+    expect(scroll).toHaveBeenCalledTimes(1);
+    expect((scroll.mock.calls[0][0] as { y: number }).y).toBeGreaterThan(0);
+    expect(focus).toHaveBeenCalledTimes(1);
+    act(() => r!.unmount());
+    scroll.mockClear();
+    focus.mockClear();
+    mockParams.current = {};
+    mount(<Faq />);
+    expect(laidOut()).toHaveLength(0);
+    expect(scroll).not.toHaveBeenCalled();
+    expect(focus).not.toHaveBeenCalled();
+    scroll.mockRestore();
+    focus.mockRestore();
   });
 });
 

@@ -282,9 +282,9 @@ describe('Results: pace line and coaching lines', () => {
     expect(text).not.toContain('Quick pick');
     expect(text).not.toContain('Took its time');
     expect(text).toContain('Slow down on the question.');
-    expect(text).toContain('You knew it; trust the first pass.');
+    expect(text).toContain('You knew it; trust your first read.');
     const rows = root().findAll((n) => typeof n.props.accessibilityLabel === 'string' && n.props.accessibilityLabel.startsWith('Question 3,'));
-    expect(rows[0].props.accessibilityLabel).not.toMatch(/Slow down|trust the first pass/);
+    expect(rows[0].props.accessibilityLabel).not.toMatch(/Slow down|trust your first read/);
     // One full stop between sentences, never two (O2).
     const q1 = root().findAll((n) => typeof n.props.accessibilityLabel === 'string' && n.props.accessibilityLabel.startsWith('Question 1,'))[0];
     expect(q1.props.accessibilityLabel).toBe('Question 1, Missed. Slow down on the question. Tap to expand');

@@ -22,7 +22,7 @@ import * as DocumentPicker from 'expo-document-picker';
 import { Directory, File, Paths } from 'expo-file-system';
 import * as Sharing from 'expo-sharing';
 import { Platform } from 'react-native';
-import { CERTIFICATIONS, getCertification } from '../content/certifications';
+import { CERTIFICATIONS, DEFAULT_CERT_ID, getCertification } from '../content/certifications';
 import { lessonsIncludingRetired } from '../content/lessons';
 import { getAllQuestionsIncludingRetired, hasContent } from '../content/loader';
 import { noteSubtopics } from '../content/notes';
@@ -46,6 +46,7 @@ import {
   type BackupSettings,
   type BackupSummary,
   type KnownIds,
+  type SummaryInput,
   type UndoSnapshot,
 } from '../engine/backup';
 import { useBackup } from '../store/backup';
@@ -53,6 +54,7 @@ import { completeCert, useProgress } from '../store/progress';
 import { useSeen } from '../store/seen';
 import { useSession } from '../store/session';
 import { useSettings } from '../store/settings';
+import { effectiveCertId } from './activeCert';
 import { ensureCatalog, syncPlanters } from './milestones';
 import { carryPlantIdentity, plantSubtopics } from './plant';
 import { cancelReminders, ensurePermission, remindersSupported } from './reminders';
@@ -90,7 +92,14 @@ const _certBack = (c: BackupProgress['byCert'][string]): Partial<CertData> => c;
 const _progressBack = (p: Omit<BackupProgress, 'byCert'>): Partial<Omit<ProgressData, 'byCert'>> => p;
 void [_settingsFits, _progressFits, _settingsBack, _certBack, _progressBack];
 
-const certName = (id: string) => getCertification(id)?.name ?? id;
+/** A course's name; never a raw id (a parked course's "cc" must not reach the screen). */
+const certName = (id: string) => getCertification(id)?.name ?? getCertification(DEFAULT_CERT_ID)!.name;
+/**
+ * The data as the app will study it (release bug hunt round 1): a parked or unknown chosen exam
+ * (CRISC, AAIA, CC, CSOE) is studied as CISA after a restore (effectiveCertId), so the preview
+ * names, dates, counts and compares THAT exam. The stored choice itself is never changed.
+ */
+const asStudied = <T extends SummaryInput>(d: T): T => ({ ...d, settings: { ...d.settings, activeCertId: effectiveCertId(d.settings.activeCertId) } });
 /**
  * This app's version, or undefined when the build doesn't say (the web build
  * has no expoConfig version). Unknown means "don't compare": the "made by a
@@ -138,12 +147,12 @@ export function currentBackup(now = Date.now()): BackupFile {
 
 /** The preview facts for the data on this phone now. */
 export function currentSummary(): BackupSummary {
-  return summarize({ settings: settingsData(), progress: progressData() }, certName);
+  return summarize(asStudied({ settings: settingsData(), progress: progressData() }), certName);
 }
 
 /** The preview facts for a backup that was read. */
 export function backupSummary(data: BackupData): BackupSummary {
-  return summarize(data, certName);
+  return summarize(asStudied(data), certName);
 }
 
 // ── Old backup files in the cache ────────────────────────────────────────
@@ -248,7 +257,7 @@ export function checkBackupText(text: string): { kind: 'error'; code: BackupErro
       now: currentSummary(),
       backup: backupSummary(data),
       fresh: isFresh(phone),
-      behind: isBehind(phone, data),
+      behind: isBehind(asStudied(phone), asStudied(data)),
       pausedSession: hasPausedSession(),
     };
   } catch (e) {
