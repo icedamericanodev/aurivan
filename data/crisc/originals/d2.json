@@ -3048,7 +3048,7 @@
       "principle_id": "rate-on-common-terms",
       "difficulty": "foundational",
       "bloom_level": "Foundational",
-      "question": "A risk analyst plans a Monte Carlo simulation of a retailer's yearly card-fraud losses. Which input does the analyst MOST need from the fraud experts?",
+      "question": "A risk analyst plans a Monte Carlo simulation of a retailer's yearly card-fraud losses. Which of the following inputs does the analyst MOST need from the fraud experts?",
       "options": {
         "A": "A single best-guess value for frequency and loss",
         "B": "A high, medium or low rating for each factor",
@@ -3901,7 +3901,7 @@
       "bloom_level": "Application",
       "question": "A theater group sells 60% of its tickets in the six weeks before the holidays, but its BIA rated box office outage impact from July sales. What is the risk practitioner's BEST recommendation?",
       "options": {
-        "A": "Add the likelihood of a holiday outage to the BIA rating",
+        "A": "Have the risk owner add holiday outage likelihood to the BIA",
         "B": "Have the box office owner rate impact for the peak season",
         "C": "Have the finance director rate impact on yearly average sales",
         "D": "Have the system owner set the box office RTO from restore tests"
@@ -3981,16 +3981,16 @@
         "D": "Merge them into one entry under a single agreed owner"
       },
       "correct": "D",
-      "key_concept": "Before registers roll up, a scenario recorded twice is merged into one entry and one owner, so its harm is counted once.",
+      "key_concept": "Before registers roll up, a scenario recorded twice is merged into one entry and one owner, linked to both sources, so its harm counts once.",
       "pre_read": "Ask whether the two entries describe separate exposures or the same one.",
-      "correct_explanation": "A risk profile counts each risk once, on the common scale, with one accountable owner. These entries record the same scenario and the same harm, so merging them under a single agreed owner removes the duplicate without changing the rating. Combining the impacts is the runner-up: aggregation suits the same weakness in separate units, but here it would count one harm twice and inflate the rating.",
+      "correct_explanation": "A risk profile counts each risk once, on the common scale, with one accountable owner. These entries record the same scenario and the same harm, so merging them under a single agreed owner, with both registers linked to the merged entry, removes the duplicate without changing the rating. Combining the impacts is the runner-up: aggregation suits the same weakness in separate units, but here it would count one harm twice.",
       "wrong_explanations": {
         "A": "Two entries for one risk count the same harm twice and leave two owners answerable for it; duplicates are merged before the registers roll up.",
         "B": "Aggregation adds distinct exposures, such as one weakness in separate units; these entries record one harm, so combining them would count it twice.",
-        "C": "Vessel tracking serves operations, so its outage harms the business, not only IT; closing the operations entry drops the business owner's view."
+        "C": "Picking IT unilaterally drops the operations register's view; with the scenario recorded in both, the single owner must be agreed, not assigned to IT by default."
       },
       "tips": [
-        "Eliminate: A shows one risk twice under two owners, and C hands a business-impact scenario to IT and drops the operations view.",
+        "Eliminate: A shows one risk twice under two owners, and C hands the scenario to IT by default and drops the operations register's view.",
         "Final two: D beats B because the entries record one harm; aggregation adds separate exposures, while a duplicate is merged so the harm counts once.",
         "Exam cue: before rolling up registers, merge duplicates into one entry and one owner; combine only exposures that are genuinely separate."
       ],
@@ -4066,7 +4066,7 @@
       "tips": [
         "Eliminate: A waits for a set review when the evidence has already changed, and D asks the owner to accept a rating that leaves out a working control.",
         "Final two: B beats C because current risk counts controls shown to work; four passed restore tests are that evidence, so a fifth only delays the credit.",
-        "Exam cue: evidence cuts both ways; withhold credit from an untested control, and give it promptly once tests show the control works."
+        "Exam cue: a rating follows the evidence; once tests show a control works, credit it promptly instead of waiting for a review or one more test."
       ],
       "framework_ref": "ISACA Glossary (current risk); NIST SP 800-30 Rev. 1 Section 3.4 (Maintaining the Risk Assessment)",
       "related_concepts": [
