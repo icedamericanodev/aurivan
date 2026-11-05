@@ -1793,22 +1793,22 @@
       "question": "In a property developer's staff survey, most respondents say security rules feel optional because senior executives were exempted from the new sign-in checks. What should the risk practitioner recommend as BEST?",
       "options": {
         "A": "A refresher security course for the whole staff",
-        "B": "Executives using the same sign-in checks as their staff",
-        "C": "Disciplinary action for staff who bypass the sign-in checks",
+        "B": "Disciplinary action for staff who bypass the sign-in checks",
+        "C": "Executives using the same sign-in checks as their staff",
         "D": "A message from the CEO on why security rules matter"
       },
-      "correct": "B",
+      "correct": "C",
       "key_concept": "Tone at the top is set by leaders' actions; leaders exempt from a control signal that the control does not matter.",
       "pre_read": "Notice why staff say the rules feel optional, then ask which option removes that reason.",
       "correct_explanation": "Staff are reading the exemption as the real message: if leaders skip a control, the control must not matter. Culture follows what leaders do, so the fix is for executives to use the same checks. A message from the CEO is the runner-up; it sets the right words, but while the exemption stands, staff will believe the behavior rather than the message.",
       "wrong_explanations": {
         "A": "Staff already know the rules; the survey says they doubt them because of the exemption, which more training does not change.",
-        "C": "Punishing staff treats a culture signal as misconduct and leaves in place the exemption that caused the doubt.",
+        "B": "Punishing staff treats a culture signal as misconduct and leaves in place the exemption that caused the doubt.",
         "D": "A CEO message answers a signal that was sent in words; here the signal is an exemption, and staff will weigh any message against what the executives visibly do."
       },
       "tips": [
-        "Eliminate: A retrains staff who already know the rules, and C punishes staff for a doubt that leaders created.",
-        "Final two: B beats D because tone at the top is set by what leaders do; a message cannot outweigh a visible exemption.",
+        "Eliminate: A retrains staff who already know the rules, and B punishes staff for a doubt that leaders created.",
+        "Final two: C beats D because tone at the top is set by what leaders do; a message cannot outweigh a visible exemption.",
         "Exam cue: when a culture problem traces to leaders' own behavior, the BEST fix changes that behavior rather than training staff."
       ],
       "framework_ref": "NIST CSF 2.0 GV.RR-01 (organizational leadership is responsible and accountable for cybersecurity risk and fosters a culture that is risk-aware, ethical and continually improving); ISACA Glossary (risk culture)",
@@ -2310,23 +2310,23 @@
       "bloom_level": "Analysis",
       "question": "A co-working company plans to replace key cards with face recognition at its 30 sites, storing members' face templates in one central database. Which of the following is the risk practitioner's GREATEST concern?",
       "options": {
-        "A": "A breach exposing members' stored face templates",
-        "B": "Recognition errors that lock members out at busy times",
+        "A": "Recognition errors that lock members out at busy times",
+        "B": "A breach exposing members' stored face templates",
         "C": "Members letting guests follow them through the doors",
         "D": "Reliance on one vendor to hold the face templates"
       },
-      "correct": "A",
+      "correct": "B",
       "key_concept": "Biometric data cannot be reissued like a password or card, so centrally stored templates create lasting, high-impact exposure.",
       "pre_read": "Notice what is new about this way of entering, then rank each harm by its impact on members.",
       "correct_explanation": "A face cannot be reissued the way a key card can, and ways to revoke a stolen template are still limited. Keeping every member's template in one database means a single breach could expose all of them for good. Recognition errors are the runner-up; they would frustrate members, but a fallback such as a card or desk check can absorb them, while a stolen template cannot be undone.",
       "wrong_explanations": {
-        "B": "Lockouts are a real service risk; however, a fallback entry method can absorb them, while stolen biometric data stays compromised.",
+        "A": "Lockouts are a real service risk; however, a fallback entry method can absorb them, while stolen biometric data stays compromised.",
         "C": "Tailgating happens with key cards too, so it is not a risk the new technology adds.",
         "D": "Vendor dependence is a commercial risk worth managing; who hosts the templates matters less than the lasting harm to members if they are stolen."
       },
       "tips": [
         "Eliminate: C exists with key cards too, and D is a commercial risk; neither is a new harm the face data brings.",
-        "Final two: A beats B because a stolen face template cannot be changed; lockouts have a fallback, lasting compromise does not.",
+        "Final two: B beats A because a stolen face template cannot be changed; lockouts have a fallback, lasting compromise does not.",
         "Exam cue: for biometric technology, weigh what cannot be reissued; irreversible, central exposure outranks service friction."
       ],
       "framework_ref": "NIST SP 800-63B-4 Section 3.2.3 (Use of Biometrics: biometric characteristics are not secrets, ways to revoke them are limited, and central storage raises privacy concerns)",

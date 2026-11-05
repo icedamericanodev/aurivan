@@ -1239,7 +1239,7 @@
       "options": {
         "A": "Close the quick gaps first, then plan the rest",
         "B": "Close the gaps in the order the framework lists them",
-        "C": "Let each control owner set the order for their gaps",
+        "C": "Have each control owner set the order for their gaps",
         "D": "Rank the gaps by the risk each one leaves open"
       },
       "correct": "D",
@@ -2458,23 +2458,23 @@
       "bloom_level": "Application",
       "question": "An airline's IT director plans to lift incident management from maturity level 2 to the agreed level 4 by buying a ticketing tool with built-in dashboards. What should the risk practitioner recommend as BEST?",
       "options": {
-        "A": "Buy the tool and use its dashboards as the level 4 measures",
-        "B": "Plan each level's steps, starting with defined procedures",
+        "A": "Plan each level's steps, starting with defined procedures",
+        "B": "Buy the tool and use its dashboards as the level 4 measures",
         "C": "Lower the target to level 3 within this year's budget",
         "D": "Reassess maturity once the tool has run for a year"
       },
-      "correct": "B",
+      "correct": "A",
       "key_concept": "Maturity rises through defined, consistently followed and then measured practice; a tool can support that path but cannot replace its steps.",
       "pre_read": "Ask what a process must have in place before its performance can be measured.",
       "correct_explanation": "Maturity levels build on each other: a process is defined and documented, followed consistently, then measured and improved. Planning those steps, starting with defined procedures, closes the gap the target set. Using the tool's dashboards as the measures looks like a shortcut, but dashboards over an undefined, inconsistent process measure noise, and the higher rating would not hold up against evidence.",
       "wrong_explanations": {
-        "A": "Dashboards can support measurement, but measuring an undefined, inconsistent process does not reach a higher level; the earlier steps are still missing.",
+        "B": "Dashboards can support measurement, but measuring an undefined, inconsistent process does not reach a higher level; the earlier steps are still missing.",
         "C": "Targets are set by risk with the owner; cutting the target to fit a budget changes the decision without addressing the risk it reflected.",
         "D": "Waiting a year to reassess spends the money first and finds out later whether maturity improved, with no plan to close the gap."
       },
       "tips": [
         "Eliminate: C changes a risk-based target to fit a budget, and D spends first and checks a year later without a plan for the gap.",
-        "Final two: B beats A because measurement needs a defined, consistent process first; a tool's dashboards cannot supply the earlier steps.",
+        "Final two: A beats B because measurement needs a defined, consistent process first; a tool's dashboards cannot supply the earlier steps.",
         "Exam cue: maturity is built step by step and rated on evidence; a purchase alone rarely moves a process up a level."
       ],
       "framework_ref": "ISACA Glossary (Capability Maturity Model); ISACA Glossary (maturity)",
@@ -5235,22 +5235,22 @@
       "question": "A university's AI tool flagging false expense claims, the action plan's permanent control, went live Monday; finance wants to end the interim manual review of claims over $500. What is the risk practitioner's BEST recommendation?",
       "options": {
         "A": "End the manual review of expense claims over $500",
-        "B": "Keep the manual review running beside the tool until it is proven",
-        "C": "End the manual review once the vendor confirms the tool's accuracy",
+        "B": "End the manual review when its results prove the tool works",
+        "C": "End the manual review after a quiet month with the tool",
         "D": "Keep the manual review as a standing second layer of control"
       },
       "correct": "B",
-      "key_concept": "An interim measure stays until the permanent control is shown to work on the organization's own data; go-live and vendor figures are not proof.",
+      "key_concept": "An interim measure runs until the permanent control is proven on the organization's own data, then ends; go-live alone is not proof.",
       "pre_read": "Note what has been shown about the new control so far.",
-      "correct_explanation": "Go-live shows the AI tool is running, not that it catches the university's false claims. Keeping the manual review beside it for a period lets reviewers' findings be compared with its flags on the same claims; once it is shown to work, the interim step can end. Ending the review on the vendor's accuracy figure is the runner-up: that figure comes from the vendor's tests, not the university's claims.",
+      "correct_explanation": "Go-live shows the AI tool is running, not that it catches the university's false claims. Keeping the manual review until its results prove the tool works compares reviewers' findings with the tool's flags on the same claims; then the interim step ends. Keeping the review for good is the runner-up: it feels safer, but the plan made the tool the permanent control, so after proof both would treat one risk.",
       "wrong_explanations": {
         "A": "A control that has just gone live is unproven; ending the interim review now leaves false claims uncaught if the tool misses them.",
-        "C": "The vendor's figure comes from its own tests, not the university's claims; the university's own comparison shows whether the tool works here.",
+        "C": "A quiet month means no one reported a problem, not that the tool caught the false claims; only comparing its flags with reviewers' findings shows that.",
         "D": "Interim measures cover exposure until the permanent control is proven; keeping both afterward pays twice to treat the same risk."
       },
       "tips": [
-        "Eliminate: A treats go-live as proof the tool works, and D keeps a stopgap after the permanent control is proven, paying twice for one risk.",
-        "Final two: B beats C because the vendor's accuracy figure comes from its own tests; comparing flags with reviewers' findings shows the tool works on the university's claims.",
+        "Eliminate: A treats go-live as proof the tool works, and C takes a quiet month as proof without checking the tool's flags.",
+        "Final two: B beats D because the plan made the tool the permanent control; the manual review runs only until its results prove the tool, then ends.",
         "Exam cue: an interim measure stays until the permanent control is shown to work in your own setting, then it can end."
       ],
       "framework_ref": "NIST AI 100-1 (AI RMF 1.0) MEASURE 2.3 (AI system performance or assurance criteria are measured and demonstrated for conditions similar to deployment settings); NIST CSF 2.0 ID.RA-06 (risk responses are chosen, prioritized, planned, tracked and communicated)",
@@ -5271,7 +5271,7 @@
       "bloom_level": "Analysis",
       "question": "Each six-monthly review of a holiday-rental platform's emerging risk of AI-generated fake listings asks its owner only if anything has changed; the last three answers were no. What should the risk practitioner recommend as BEST?",
       "options": {
-        "A": "Have the owner review the entry each quarter, not twice a year",
+        "A": "Agree with the owner to review the entry each quarter",
         "B": "Rate the risk on the usual scale in the main profile",
         "C": "Close the entry until the first AI-made fake listing is found",
         "D": "Agree with the owner the signs that would show it growing"
@@ -5302,30 +5302,30 @@
     {
       "id": "crisc_d3_144",
       "domain": 3,
-      "subtopic": "3A3 Vendor/supply chain risk management. Vendors rated one by one",
+      "subtopic": "3A3 Vendor/supply chain risk management. Supplier risk terms",
       "principle_id": "rate-on-common-terms",
       "difficulty": "foundational",
       "bloom_level": "Foundational",
-      "question": "A bank rates each of its critical vendors alone, on its controls, finances and service record. Which of the following would BEST show the risk practitioner the bank's concentration risk across those vendors?",
+      "question": "A risk practitioner is explaining supplier risks to a university's new procurement head. Which of the following BEST describes concentration risk?",
       "options": {
-        "A": "A security questionnaire score for each vendor",
-        "B": "A financial health rating for each vendor",
-        "C": "The providers and regions that each vendor relies on",
-        "D": "The results of each vendor's own continuity tests"
+        "A": "One supplier's controls failing its yearly security review",
+        "B": "A supplier passing customer data on to its subcontractors",
+        "C": "Reliance on a few suppliers whose failure stops many services",
+        "D": "The cost and effort of moving off a supplier's platform"
       },
       "correct": "C",
-      "key_concept": "Concentration risk: critical services that rely on one provider or region can fail together, a combined exposure no single vendor rating shows.",
-      "pre_read": "Note how the vendors were rated.",
-      "correct_explanation": "Concentration risk is reliance on a few suppliers, and it can sit one layer down: several vendors can run on the same cloud provider or region. Only a list of the providers and regions each critical vendor depends on shows where one failure would stop several services at once. Each vendor's continuity test results are the runner-up: they show each vendor can recover on its own, not that several share one point of failure.",
+      "key_concept": "Concentration risk is reliance on a few suppliers whose failure would stop many services at once, judged across suppliers rather than one at a time.",
+      "pre_read": "Note what each option measures before matching it to the term.",
+      "correct_explanation": "The ISACA Glossary describes concentration risk as reliance on a small number of suppliers: when one of them fails, every service built on it fails together. It is judged across suppliers, by what depends on each, not one supplier at a time. Lock-in is the runner-up: it also comes from depending on a supplier, but it is the cost of leaving one, not the harm when one fails.",
       "wrong_explanations": {
-        "A": "A questionnaire score rates one vendor's own controls; scoring each vendor alone cannot show that several depend on the same provider or region.",
-        "B": "A financial rating shows whether one vendor may fail as a business; it says nothing about which providers or regions several vendors share.",
-        "D": "Continuity tests show each vendor can recover from its own disruptions, not that several rely on one provider whose outage would hit them all together."
+        "A": "A failed review is one supplier's control weakness, rated on its own; concentration is about how many services depend on the same few suppliers.",
+        "B": "Onward sharing with subcontractors is a fourth-party data risk; it concerns where data goes, not how many services stop if one supplier fails.",
+        "D": "Lock-in is the cost and effort of leaving a supplier; it can deepen dependence, but it measures the exit, not the services a failure would stop."
       },
       "tips": [
-        "Eliminate: A and B rate each vendor alone, and a one-by-one rating cannot show dependencies that several vendors share.",
-        "Final two: C beats D because continuity tests prove each vendor recovers alone; only the vendors' own providers and regions reveal a failure they share.",
-        "Exam cue: concentration hides in fourth parties; look across vendors at what they all depend on, not at each vendor's own score."
+        "Eliminate: A rates one supplier's own controls, and B is about data passing to subcontractors; neither shows how much depends on a few suppliers.",
+        "Final two: C beats D because concentration is the harm when a relied-on supplier fails; lock-in is the cost of leaving one.",
+        "Exam cue: concentration risk is judged across suppliers by what depends on each; one supplier's score or exit cost does not show it."
       ],
       "framework_ref": "ISACA Glossary (concentration risk); NIST SP 800-161 Rev. 1 SR-3(1) (Diverse Supply Base: identify single points of failure and risk among primes and lower-level entities in the supply chain)",
       "related_concepts": [

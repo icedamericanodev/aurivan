@@ -1793,22 +1793,22 @@
       "question": "An attack tree for a coffee chain's gift-card platform shows six fraud paths: an admin console's multifactor sign-in blocks four, and two have no control. What is the risk practitioner's BEST use of this result?",
       "options": {
         "A": "Map the six paths to MITRE ATT&CK techniques",
-        "B": "Ask the platform owner to add controls on the open paths",
-        "C": "Analyze the two open paths with the platform owner",
+        "B": "Analyze the two open paths with the platform owner",
+        "C": "Ask the platform owner to add controls on the open paths",
         "D": "Lower the fraud scenario's likelihood rating to low"
       },
-      "correct": "C",
+      "correct": "B",
       "key_concept": "An attack tree's uncontrolled paths show where a scenario's exposure sits; they are analyzed with the owner before controls are chosen.",
       "pre_read": "Notice what each branch of the tree shows.",
       "correct_explanation": "The tree's value is in showing where the fraud scenario is exposed: two paths reach card fraud with nothing in the way. Analyzing their likelihood and impact with the platform owner turns the result into a rating the owner can act on. Asking the owner to add controls is the runner-up: those paths may need controls, but choosing them before the exposure is analyzed skips the step that sizes the response.",
       "wrong_explanations": {
         "A": "ATT&CK adds context on how credible each technique is, but relabeling the paths does not analyze the exposure the open paths create.",
-        "B": "Controls may be needed, but picking them before the two open paths are analyzed sizes the response without knowing the risk.",
+        "C": "Controls may be needed, but picking them before the two open paths are analyzed sizes the response without knowing the risk.",
         "D": "Four blocked paths do not make fraud unlikely while two paths have no control; lowering the rating hides the open exposure."
       },
       "tips": [
         "Eliminate: A relabels the paths without analyzing them, and D lowers the rating although two paths still have no control.",
-        "Final two: C beats B because the open paths are analyzed with the owner first; controls are chosen once the exposure is known.",
+        "Final two: B beats C because the open paths are analyzed with the owner first; controls are chosen once the exposure is known.",
         "Exam cue: an attack tree's uncontrolled paths are where the scenario's exposure sits; analyze them with the owner before choosing controls."
       ],
       "framework_ref": "NIST IR 8286A Rev. 1 Section 2.2.2 (Determination of Potential Threats)",
@@ -2273,23 +2273,23 @@
       "bloom_level": "Analysis",
       "question": "City council members ask whether the treatment plans in the IT risk register will bring each risk within appetite once completed. Which register field should the risk practitioner use to BEST answer them?",
       "options": {
-        "A": "The current rating, with the controls in place today",
-        "B": "The target rating each planned response is set to reach",
+        "A": "The target rating each planned response is set to reach",
+        "B": "The current rating, with the controls in place today",
         "C": "The inherent rating, before controls are counted",
         "D": "The status of each action plan against its due date"
       },
-      "correct": "B",
+      "correct": "A",
       "key_concept": "Whether a treatment plan is enough is judged on its target risk, the Glossary's future residual risk, compared with appetite.",
       "pre_read": "Notice the point in time the members are asking about.",
       "correct_explanation": "The members want to know where each risk will land when its plan is done, which is the target, or future residual, risk the plan is designed to reach. Comparing that rating with appetite shows whether each plan is enough. The current rating is the runner-up: it is the right figure for today's position against appetite, but it cannot show where a plan will take the risk.",
       "wrong_explanations": {
-        "A": "Current risk shows today's exposure and is compared with appetite now; it does not show where a completed plan would leave each risk.",
+        "B": "Current risk shows today's exposure and is compared with appetite now; it does not show where a completed plan would leave each risk.",
         "C": "Inherent risk ignores all controls and responses, so it cannot show the effect of any treatment plan.",
         "D": "Action status shows progress against dates, not the level of risk the finished plan will leave."
       },
       "tips": [
         "Eliminate: C leaves out every response by definition, so it cannot show a plan's effect, and D tracks progress dates rather than any risk level.",
-        "Final two: B beats A because the question is about the plans once complete; current risk answers where the risk stands today.",
+        "Final two: A beats B because the question is about the plans once complete; current risk answers where the risk stands today.",
         "Exam cue: today's position against appetite is current risk; whether a plan is enough is judged on its target, or future residual, risk."
       ],
       "framework_ref": "ISACA Glossary (risk response); NIST IR 8286 Rev. 1 Section 3 Table 1 (Descriptions of notional cybersecurity risk register template elements)",
