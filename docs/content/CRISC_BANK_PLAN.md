@@ -1,6 +1,6 @@
 # CRISC course plan: from the pilot to a sellable pack
 
-**Status:** plan, 30 Oct 2026; round 11 done 5 Nov 2026 (bank 525, on the outline weights). CRISC is a **paid course** learners buy in the
+**Status:** plan, 30 Oct 2026; round 12 done 5 Nov 2026 (bank 550, on the outline weights). CRISC is a **paid course** learners buy in the
 app (6-month access, one payment, never renews; see
 `docs/business/monetization/RECOMMENDATION.md`). Outline and sources:
 `docs/content/CRISC_BLUEPRINT.md`. Item standard:
@@ -20,7 +20,7 @@ it can be sold:
 |---|---|---|---|
 | Blueprint | `docs/content/CRISC_BLUEPRINT.md` | cert-blueprint-researcher | Done, 30 Oct 2026 |
 | Study notes | `data/crisc/notes/d{1..4}.json` + `_course.json` (strategy tips, cross-domain connections) | crisc-d{N}-domain-expert | All 43 outline sub-areas, 115 subtopics, Practice this concept links (`data/crisc/tools/sync_practice_ids.py`) |
-| Questions | `data/crisc/originals/d{1..4}.json` | crisc-d{N}-domain-expert | 525 reviewed (137 / 115 / 168 / 105) after round 11, each domain on its weight: a full 150-item mock and a short 50-item mock without repeats |
+| Questions | `data/crisc/originals/d{1..4}.json` | crisc-d{N}-domain-expert | 550 reviewed (143 / 121 / 176 / 110) after round 12, each domain on its weight: a full 150-item mock and a short 50-item mock without repeats |
 | Citation library | `data/crisc/originals/_framework_library.md` | domain experts | Started with the pilot |
 | Principles (mindset cards) | `data/crisc/mindset/principles.json` (schema `docs/content/PRINCIPLES_SCHEMA.md`) | isaca-mindset-coach | 19 principles; every item tagged |
 | Exam guide and final-review week | `data/crisc/exam/` (schema `docs/content/EXAM_GUIDE_SCHEMA.md`) | isaca-mindset-coach | Both done and reviewed |
@@ -529,6 +529,36 @@ item (d4_105), and "Have"/"Ask" keys (d1_131, d1_133, d2_115, d3_167).
 - Let 2–3 keys per domain be naturally the longest option (D1, D3, D4 sit at 16–17%). One AI item in D4. Settings not yet used: port authority, water bottler, shipyard, cooperative bank (non-retail), seed or agritech (second use), housing association (second use); no reuse of court service, accounting firm, newspaper, toy maker, call-center outsourcer or bus operator.
 - Near-duplicate scan: compare the option skeleton of same-code items, not only stems (it caught d4_103/d4_058 and d3_162/d3_153).
 - Keep apart in practice sets: d4_091/d3_024, d3_161/d3_115/d3_146, d3_162/d3_153/d1_070, d3_164/CISA d5_204/d1_092, d3_166/d3_144/d1_068, d3_168/d1_007/CISA d1_129, d4_103/d4_058, d4_104/CISA d3_046, d1_132/d1_018, d1_136/d1_013, d2_113/d2_106, d2_115/d2_017.
+
+### Round 12 (5 Nov 2026): 25 items, bank 550
+
+Round 12 added 6 D1 (`crisc_d1_138`–`143`), 6 D2 (`crisc_d2_116`–`121`),
+8 D3 (`crisc_d3_169`–`176`) and 5 D4 (`crisc_d4_106`–`110`) items. Highlights:
+counter-examples to "never" patterns (d1_139 waits for the yearly exercise
+after a minor responder change; d3_175 re-sets a KRI threshold on documented
+evidence with the risk owner and tolerance approver), keyed lone-owner options
+(d1_141, d3_176), a finding closed on the risk owner's recorded acceptance
+(d3_171), a trained AI model as a recovery asset (d4_107) and SLE beside ALE for
+a rare severe event (d2_120).
+
+| Stage | Result |
+|---|---|
+| Blind test | 25/25 picks matched the keys |
+| Standards audit and concept review | 0 HARD ERRORS; about 30 fixes. Internal audit, not the risk owner, closes a finding (d3_171); the analyst prepares the cost-benefit (d3_174); doubled volume is more total exposure even at an unchanged rate (d3_175); encryption at rest mainly serves confidentiality (d4_108, notes 4B1.1). Four option edits broke the batch's over-used "three owners, key the one without" shape |
+| Re-blind of changed items | 17/17, all sure |
+| Cross-domain gate | 0 HARD ERRORS, 5 PRECISION. Older tips that the new keys would contradict were scoped (d3_107, d3_136, notes 3A4.1); d3_174 C re-angled off d3_103/d3_069; 14 distractor-only edits in older items brought the three-owner shape to chance (75%) and keyed lone owners to the rule 21 target (25%); eight opener swaps took Bring, Agree, Tell, Ratings, Identify and Link back under 60% |
+| Gates | All lints 0 errors; originality 0 too close; practice links in sync; app pack dry run 0 problems; `verify_repo.sh` passes; no run of three identical keys |
+
+New calibration rule 21: a keyed lone owner option is counted apart from rule
+1's cap on lens words that appear only in the key.
+
+**Next round (round 13, +25 to 575):** D1 +7, D2 +5, D3 +8, D4 +5 (150/126/184/115).
+- Owner shapes per batch: key 1–2 lone owner options and leave no unkeyed lone owner option; 2 three-owner items with the key among the owners and 2 with the key as the lone non-owner; keep two-owner key-in at or below half.
+- Stock tells: key one legitimate threshold raise (the board raises a tolerance after an approved strategy change and the practitioner proposes matching KRI thresholds for the owner); write no new "raise the threshold", "accept as it stands", "wait for the yearly review", "sign the acceptance" or "IT accepts" distractors. Write one item where a "Current risk …" option is wrong (the question asks for target risk).
+- Lesson saturation: 3C1 already keys "take the changed facts to the risk owner" four times; key a different move there. The near-duplicate scan compares the keyed action and the decoy family across same-code items.
+- At least one AI item per domain (D2 had none in round 12). Settings to avoid: payroll provider, freight forwarder, port authority, insurance broker, housing association. Unused: title insurer, mortgage servicer, fund administrator, debt collector, credit bureau.
+- Let 2 keys per domain be naturally the longest (D1 and D4 sit near 16%). Decide "KRI owner" against "risk owner" (d3_074, d3_137, d3_160).
+- Keep apart in practice sets: d1_143/d3_160, d1_142/d1_134, the four 3C1 "take it to the risk owner" items (d3_069, d3_103, d3_123, d3_174), d3_040/d3_175, d1_139/d1_028/d1_123/d3_146, d1_141/d1_121/d2_060, d3_171/d3_136.
 
 **Open items:**
 - The `TO VERIFY` comment on the CRISC entry in `mobile/src/content/certifications.ts`

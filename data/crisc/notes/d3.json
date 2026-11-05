@@ -62,16 +62,17 @@
             "crisc_d3_087",
             "crisc_d3_088",
             "crisc_d3_145",
-            "crisc_d3_161"
+            "crisc_d3_161",
+            "crisc_d3_169"
           ],
           "definition": "Risk responses are the four ways an organization deals with an analyzed risk: accept it, mitigate it with controls, transfer or share it, or avoid the activity causing it.",
           "why_it_matters": "The response decides how much risk is left and what that costs. The wrong choice wastes money on a risk within appetite or leaves one above appetite untreated.",
           "how_it_works": [
             "Every response starts from an analyzed risk compared with appetite and tolerance, not a favorite tool; if service is restored and a root-cause review is near, wait.",
-            "Responses can be combined: reduce the likelihood with controls, then insure part of the remaining financial impact.",
-            "Transfer moves money, not accountability: a breach at an insured or outsourced service still harms the organization's customers and reputation.",
-            "Insurance cuts neither likelihood nor harm to operations; it repays part of the financial loss.",
-            "Avoidance also gives up the benefit, so it fits when the activity is not needed for objectives or nothing else brings the risk within appetite."
+            "Responses combine: controls reduce likelihood, then insurance covers part of the remaining financial impact.",
+            "Transfer moves money, not accountability: insurance repays part of a loss, but an insured or outsourced breach still harms customers and reputation.",
+            "Avoidance gives up the benefit, so it fits when the activity is not needed for objectives or nothing else brings the risk within appetite.",
+            "A response can bring new risks, such as reliance on one provider; weigh them before it proceeds."
           ],
           "types": [
             {
@@ -425,12 +426,13 @@
             "crisc_d3_054",
             "crisc_d3_055",
             "crisc_d3_091",
-            "crisc_d3_092"
+            "crisc_d3_092",
+            "crisc_d3_170"
           ],
           "definition": "Vendor due diligence is assessing a supplier's risk before signing, then writing needed controls into the contract, such as security duties, audit rights and exit terms.",
           "why_it_matters": "After signing, leverage drops. Terms left out, such as breach notice or audit rights, are hard to add later, and the organization still answers for the outcome.",
           "how_it_works": [
-            "Tier vendors by criticality: the data they hold, the processes they support and how hard they are to replace.",
+            "Tier vendors by criticality, not spend: data held, processes supported and how hard they are to replace.",
             "Scale due diligence to the tier: questionnaires for low tiers; assurance reports, site reviews and financial checks for critical ones.",
             "Write requirements into the contract: security controls, breach notice times, service level agreements, right to audit and subcontractor approval.",
             "Plan exit before signing: data return or destruction, transition help and access removal at the end.",
@@ -617,7 +619,8 @@
             "crisc_d3_094",
             "crisc_d3_095",
             "crisc_d3_136",
-            "crisc_d3_163"
+            "crisc_d3_163",
+            "crisc_d3_171"
           ],
           "definition": "Issue management is logging each control weakness, audit finding or incident lesson with an owner, an action and a due date, then tracking it until closure is validated.",
           "why_it_matters": "Findings that are logged but never really fixed leave the same risk open while reports show progress. Overdue items are often where the next incident comes from.",
@@ -625,7 +628,7 @@
             "Log every issue in one tracker, linked to the risk it affects and ranked by that risk's rating, since audits, regulators and reviews each rate on their own scale.",
             "Give each issue one owner, an agreed action and a realistic due date.",
             "Escalate overdue or slipping items to the risk owner and, past a set point, to senior management.",
-            "Close an issue only after evidence shows the fix works, not on the owner's statement.",
+            "Close an issue on evidence that the fix works, not the owner's word, or, where the risk is within appetite, on the risk owner's recorded acceptance.",
             "Re-rate the related risk once the fix is validated, so the register reflects the change.",
             "When teams dispute who should fix an issue, the owner of the affected risk names one action owner; the practitioner escalates to that owner rather than choosing a team."
           ],
@@ -644,7 +647,7 @@
             "recommend": "Have issue owners provide closure evidence, and have the risk function validate it before any item is closed.",
             "decides": "The risk owner agrees the action plan and any extension of the due date"
           },
-          "isaca_rule": "An issue is closed when evidence shows the risk is treated, not when the owner says so. Track every issue to an owner and date, escalate overdue items, and update the risk rating after validated closure.",
+          "isaca_rule": "An issue reported as fixed closes on evidence that the fix works, not the owner's word; one whose risk is within appetite may also close on the risk owner's recorded acceptance. Track every issue to an owner and date, escalate overdue items, and update the rating after validated closure.",
           "exam_traps": [
             {
               "trap": "Close the finding once the owner confirms the fix.",
@@ -1106,13 +1109,14 @@
             "crisc_d3_033",
             "crisc_d3_034",
             "crisc_d3_064",
-            "crisc_d3_100"
+            "crisc_d3_100",
+            "crisc_d3_172"
           ],
           "definition": "Control gap analysis compares the current controls on a risk with the controls needed to bring it within appetite, judging both how they are designed and how they operate.",
           "why_it_matters": "Gaps show where residual risk is higher than the register claims. Finding them before an incident lets the risk owner fund the most important fixes first.",
           "how_it_works": [
             "Define the desired state from appetite, policy, regulation or a framework profile.",
-            "Describe the current state from control assessment results, not assumptions or old ratings.",
+            "Describe the current state from control test results, not policies, owners' statements or old ratings.",
             "Separate design gaps (the control could not work as built) from operating gaps (built right but not performed).",
             "Rank gaps by the risk they leave open, not by how easy they are to fix.",
             "Turn agreed gaps into action plans with owners and dates."
@@ -1174,17 +1178,18 @@
             "crisc_d3_065",
             "crisc_d3_101",
             "crisc_d3_134",
-            "crisc_d3_149"
+            "crisc_d3_149",
+            "crisc_d3_173"
           ],
           "definition": "Control testing techniques are the ways evidence about a control is gathered: asking people, watching it run, inspecting records, or performing it again independently.",
           "why_it_matters": "Techniques give very different assurance. A control rated effective on interviews alone may never actually run, and the rating then hides real exposure from the risk owner.",
           "how_it_works": [
-            "Inquiry is weakest on its own; combine it with another technique for any key control.",
-            "Observation shows the control at one moment, and people may act differently while watched.",
+            "Inquiry is weakest on its own, and observation shows one moment when people may act differently; combine either with another technique for key controls.",
             "Inspection of records shows the control ran over time, if the records are complete and genuine; records made after the fact need system evidence from the period.",
             "Reperformance gives the strongest evidence, because the tester reaches the result independently.",
             "NIST SP 800-53A groups methods as examine, interview and test, with depth and coverage set by the assurance needed.",
-            "Job logs and sign-offs show a step ran, not that its result was right; recalculating a sample shows whether it was."
+            "Job logs and sign-offs show a step ran, not that its result was right; recalculating a sample shows whether it was.",
+            "When an automated control had nothing to act on in the period, inspect its live setting and change log; no exceptions proves nothing."
           ],
           "types": [
             {
@@ -1401,7 +1406,8 @@
             "crisc_d3_070",
             "crisc_d3_104",
             "crisc_d3_123",
-            "crisc_d3_142"
+            "crisc_d3_142",
+            "crisc_d3_174"
           ],
           "definition": "A risk action plan sets out how a chosen response will be carried out: the actions, an owner for each, resources, milestones, target dates and the target risk at completion.",
           "why_it_matters": "A response without a plan stays an intention. Owners, dates and resources turn it into work that can be tracked, funded and escalated when it slips.",
@@ -1411,7 +1417,7 @@
             "The plan states the target risk expected at completion, so success can be measured.",
             "Interim measures reduce the exposure while long actions are under way, and stay until the permanent control is shown to work.",
             "The plan links to its risk register entry, so progress updates the risk picture.",
-            "When a planned control or its cost changes, re-estimate the target risk and the cost-benefit before the risk owner agrees the change."
+            "When a planned control, its cost or the risk changes, such as the target being met early, re-estimate the cost-benefit before the risk owner agrees any change."
           ],
           "example": "A media company decides to mitigate the risk of an unsupported content system by migrating off it. Zainab, the risk analyst, works with the digital director, who owns the risk, to build the plan: three milestones, a named migration lead, budget for contractors, a June target date and an interim firewall restriction. Zainab links the plan to the register entry.",
           "audit_focus": {
@@ -1851,14 +1857,15 @@
             "crisc_d3_107",
             "crisc_d3_109",
             "crisc_d3_125",
-            "crisc_d3_159"
+            "crisc_d3_159",
+            "crisc_d3_175"
           ],
           "definition": "KRI thresholds are preset limits, linked to risk appetite and tolerance, that trigger review, escalation or action when an indicator crosses them.",
           "why_it_matters": "Without thresholds, a climbing KRI is just a number. Limits tied to tolerance tell the owner when to act and who must be told.",
           "how_it_works": [
             "Set thresholds from tolerance: green within appetite, amber approaching tolerance, red at or beyond it.",
             "Define the action and escalation for each level before any breach happens.",
-            "When appetite, tolerance, the business or the risk changes, the practitioner proposes revised thresholds and the risk owner approves them.",
+            "When appetite, tolerance, the business or the risk changes, such as volume doubling while the rate holds, the practitioner proposes revised thresholds for the risk owner and tolerance approver.",
             "For AI systems, track drift, error rates, outcome gaps between groups, override rates and complaints, with limits set by the model's business owner.",
             "A breach, or a proposal to move a threshold, goes to the risk owner and, through the agreed escalation path, to the level that set it.",
             "For human review of AI outputs, KCIs such as override rates and time spent per review warn when reviewers start approving by habit."
@@ -2287,7 +2294,8 @@
             "crisc_d3_085",
             "crisc_d3_114",
             "crisc_d3_132",
-            "crisc_d3_143"
+            "crisc_d3_143",
+            "crisc_d3_176"
           ],
           "definition": "Recording emerging risk means entering it in the register with its uncertainty stated, an owner and a review date, then reporting it so leaders can prepare without overreacting.",
           "why_it_matters": "Leaders need early sight of what may change the risk profile. Presenting an uncertain risk as certain wastes money, and leaving it out leaves them unprepared.",
@@ -2297,7 +2305,7 @@
             "Set short review dates and agree with the owner the signs that would show the risk growing, so each review checks evidence and refines the rating.",
             "Report emerging risks in their own section: what is known, what is not, and what is being done to learn more.",
             "Move the risk into the main profile once it is understood well enough to rate normally.",
-            "Respond to emerging risk in stages: low-cost steps to learn more, options prepared, and agreed triggers for larger spending as evidence grows."
+            "Respond to emerging risk in stages: low-cost steps to learn more, options prepared and agreed triggers for larger spending; when one is reached, the risk owner decides on the spending."
           ],
           "example": "A logistics firm's operations team begins trials of driverless yard trucks. Mateo, the risk analyst, records a safety and liability risk with low confidence, a range of possible impacts and a two-month review date, with the yard operations director confirmed as owner. In the quarterly report, they list it under emerging risks and state what the trials should reveal.",
           "audit_focus": {

@@ -510,12 +510,13 @@
           "legacy_ids": [],
           "practice_ids": [
             "crisc_d4_052",
-            "crisc_d4_096"
+            "crisc_d4_096",
+            "crisc_d4_106"
           ],
           "definition": "Secure development builds security into how software is designed, coded, tested and maintained, following a framework such as the NIST Secure Software Development Framework (SSDF).",
           "why_it_matters": "Most exploitable flaws start as design or coding mistakes. A secure process lowers the number of vulnerabilities released and shows owners, customers and regulators that software risk is managed.",
           "how_it_works": [
-            "The SSDF groups practices into four areas: prepare the organization, protect the software, produce well-secured software and respond to vulnerabilities.",
+            "The SSDF's four practice areas are prepare, protect, produce and respond; responding includes a disclosure policy and a public route for outside flaw reports.",
             "Security requirements are defined early and checked through threat modeling, code review and testing.",
             "Testing combines static analysis, dynamic testing and, for high-risk systems, penetration testing.",
             "Third-party and open-source components are tracked and checked for known vulnerabilities.",
@@ -979,16 +980,17 @@
             "crisc_d4_011",
             "crisc_d4_033",
             "crisc_d4_076",
-            "crisc_d4_088"
+            "crisc_d4_088",
+            "crisc_d4_107"
           ],
           "definition": "Recovery strategies are planned ways to restore systems after a disruption, such as hot, warm or cold sites or cloud failover, chosen to meet recovery objectives.",
-          "why_it_matters": "The strategy decides whether the business recovers within its tolerance for downtime and data loss. Too little capability breaches tolerance; too much wastes money.",
+          "why_it_matters": "The strategy decides whether the business recovers within its tolerance for downtime and data loss. Too little breaches tolerance; too much wastes money.",
           "how_it_works": [
             "Through the business impact analysis, process owners set each critical process's MTO, an RTO within it, and an RPO from the data loss they can tolerate.",
             "The strategy must meet RTO and RPO by design, at a cost the owner accepts.",
-            "An alternate site is placed so the same event cannot disable both sites.",
-            "Shared dependencies, such as one network carrier, identity service or power feed, are single points of failure.",
-            "Cloud recovery is a shared responsibility: the contract sets who restores what, often the platform but not data the customer's users delete; the customer stays accountable for its data."
+            "An alternate site must share no hazard or dependency, such as one network carrier, identity service or power feed, that one event could disable.",
+            "Cloud recovery is shared: the contract sets who restores what, often the platform but not data the customer's users delete; the customer stays accountable.",
+            "Trained AI models are recovery assets too: retraining takes far longer than a restore, so released model versions are kept offsite."
           ],
           "compare": {
             "columns": [
@@ -1031,7 +1033,7 @@
               }
             ]
           },
-          "example": "A food distributor's recovery site is across the street from its data center, on the same substation and flood plain. Dara, the risk analyst, maps both sites to the flood scenario and shows the operations director that one flood would take out both, breaching order processing's four-hour RTO.",
+          "example": "A food distributor's recovery site shares its data center's substation and flood plain. Dara, the risk analyst, shows the operations director that one flood would take out both, breaching order processing's four-hour RTO.",
           "audit_focus": {
             "review": [
               "Walk through the recovery timeline for one critical process against its RTO and RPO",
@@ -1044,11 +1046,11 @@
             "recommend": "Have the business continuity manager remove shared dependencies or present the residual gap to process owners.",
             "decides": "The process owner signs off the chosen strategy and its cost"
           },
-          "isaca_rule": "A recovery strategy is judged by whether it meets the RTO and RPO under the scenarios that matter. The practitioner finds shared single points of failure and reports the gap; the business owner chooses the strategy and accepts its cost and residual risk within appetite.",
+          "isaca_rule": "A strategy is judged by whether it meets the RTO and RPO under the scenarios that matter. The practitioner finds shared single points of failure and reports the gap; the business owner chooses the strategy and accepts its cost and residual risk within appetite.",
           "exam_traps": [
             {
               "trap": "Counting a recovery site as adequate because it exists and is equipped.",
-              "why": "A site exposed to the same hazard, network or supplier as the primary fails with it; independence matters as much as equipment."
+              "why": "A site exposed to the primary's hazard, network or supplier fails with it; independence matters as much as equipment."
             }
           ],
           "key_terms": [
@@ -1058,7 +1060,7 @@
             },
             {
               "term": "Recovery point objective (RPO)",
-              "definition": "How far back in time recovered data may be after a disruption, set by the data loss the business accepts; it drives backup frequency."
+              "definition": "How far back recovered data may be after a disruption, set by the data loss the business accepts; it drives backup frequency."
             },
             {
               "term": "Maximum tolerable outage (MTO)",
@@ -1368,17 +1370,18 @@
             "crisc_d4_039",
             "crisc_d4_053",
             "crisc_d4_073",
-            "crisc_d4_087"
+            "crisc_d4_087",
+            "crisc_d4_108"
           ],
           "definition": "Core security principles are the design rules behind controls: protect confidentiality, integrity and availability, layer defenses, grant least privilege and separate duties.",
           "why_it_matters": "These principles let a practitioner judge whether a control set is sound without knowing every product. Gaps against them, such as one control guarding everything, point to concentrated risk.",
           "how_it_works": [
-            "Confidentiality, integrity and availability (CIA) name what an event harms, which shapes the impact rating.",
+            "CIA (confidentiality, integrity, availability) names what an event harms, shaping the impact rating; encryption mainly guards confidentiality, not integrity, which includes non-repudiation.",
             "Layered controls of different kinds mean one failure does not expose the asset.",
-            "Each user, system and AI tool gets only the access its task needs, for only as long as needed.",
+            "Each user, system and AI tool gets only the access its task needs, and only while needed.",
             "Critical tasks are split so no one person can complete and hide a harmful action.",
             "Where duties cannot be split, compensating controls such as independent review reduce the risk.",
-            "Layers sharing a vendor, design or rule set can fail together, adding less depth than their number suggests; diversity adds management work, so it is weighed against the risk."
+            "Layers sharing a vendor, design or rule set can fail together, adding less depth than their number suggests; diversity adds work, so it is weighed against the risk."
           ],
           "example": "A credit union protects its member database mainly with a strong perimeter firewall; inside, every staff account can read all records. Farah, the IT risk analyst, explains to the chief operating officer that one phished account would expose everything, and proposes layered controls: role-based access, database monitoring and multifactor authentication.",
           "audit_focus": {
@@ -1611,12 +1614,13 @@
           "practice_ids": [
             "crisc_d4_018",
             "crisc_d4_057",
-            "crisc_d4_099"
+            "crisc_d4_099",
+            "crisc_d4_109"
           ],
           "definition": "Measuring awareness means tracking whether behavior changes after training, using measures such as reporting rates and simulation results, not just course completion.",
           "why_it_matters": "Completion rates show who clicked through a course, not who acts safely. Behavior measures show whether training reduces risk and where to focus, including new risks such as staff pasting data into public AI tools.",
           "how_it_works": [
-            "Outcome measures include phishing report rates, repeat-click rates, policy exceptions and incidents caused by error.",
+            "Outcome measures include phishing report rates, repeat-click rates, policy exceptions, incidents caused by error and the share of independently detected mistakes that staff reported themselves.",
             "Fair simulations are announced as a program, avoid cruel lures, coach rather than shame and report trends, not names.",
             "Results are compared over time and by role to target follow-up training.",
             "Shadow AI, staff using unapproved AI tools, is an awareness topic: what data may go where and which tools are approved.",
@@ -1769,14 +1773,15 @@
             "crisc_d4_020",
             "crisc_d4_043",
             "crisc_d4_081",
-            "crisc_d4_089"
+            "crisc_d4_089",
+            "crisc_d4_110"
           ],
           "definition": "Privacy by design builds privacy protections into systems from the start, and a privacy impact assessment (PIA) analyzes how a system handles personal data and the risks involved.",
           "why_it_matters": "Privacy fixes after launch are costly and may come after people are harmed. A PIA at the design stage finds problems while they are cheap to fix and gives owners a documented basis for decisions.",
           "how_it_works": [
             "A PIA is run before building or buying technology that processes personal data, or starting a new collection.",
             "It maps data flows, rates the problems the processing could cause individuals and the organizational impacts that follow, and proposes mitigations.",
-            "Privacy by design sets protective defaults, such as minimal collection and short retention.",
+            "Privacy by design sets protective defaults, such as minimal collection and short retention; data needed only in the moment is processed on the device, not collected.",
             "The PIA is updated when the system, purpose or data changes.",
             "The NIST Privacy Framework helps organize privacy risk work alongside cybersecurity risk.",
             "PIA mitigations become requirements with owners; a check before go-live confirms each is built, or the gap goes to the owner as a risk to treat or accept."
