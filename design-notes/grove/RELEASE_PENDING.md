@@ -52,8 +52,10 @@ Batched for the end of the uplift (web v13, mobile 2.0.0; DECISIONS 8). Write th
 - Your plant has its own page, showing how it has grown and the form it grows into. (Phase 4b, PHASE4B.md section 12.)
 - Your plant's look is now chosen right on its page, and Today and You open it in one tap.
 - The badges space on You and Your progress is clearer about where badges are earned.
+- New page, How questions are made: how KaiSip's questions are written with AI help and checked, with a reminder that AI can make mistakes and how to report one. (Transparency, TRANSPARENCY.md.)
 
 ## Follow-ups to do at the release
+- Transparency owner decisions (TRANSPARENCY.md section 5): the older What's New lines about independent and expert review, the beta FAQ title, "Reviewed" in the source row, support.html's "small team" and "Flag" wording, and confirming the founder's CISA is current before the page goes live.
 - `mobile/src/engine/plantLooks.ts` `howToOpen` says "in the Herbarium": change to "in Badges" and rebuild `assets/kaisip-plant.js` in the same commit.
 - Old What's New entries (v12.44, v12.49) mention "field guide": release history, leave unless Sky says otherwise.
 - Q1, Q2, Q5 on the phone (DECISIONS 13): the low-end sentence under its scale bar, "too few yet" instead of "seed" in its chart, and the ScaleBar range label "67 to 79".
@@ -94,3 +96,11 @@ Runs right after Phase 4, web and phone, presentation only, nothing removed:
 - Drills (games): every drill screen (Snare Spotter, Signpost, Call It First and the six that open after 50 answers), the round header, recap, level-up and the 3-then-unlock rule. Restyle to Grove and TYPE_SCALE.md; behaviour unchanged.
 - Web: the plant on Today and You, the web plant page, and the website's badges message.
 - Final QA (Phase 5) walks all three on both platforms.
+
+## After the beta: signature pass (Sky approved 5 Nov 2026)
+Goal: make the look unmistakably KaiSip and less like a generic AI-made design. Not before the beta .aab.
+- Custom icon set drawn in the plant's line style (replace stock icons on tabs, rows and tiles).
+- Fewer UPPERCASE kicker labels; sentence-case headings where a kicker only repeats the title.
+- Fewer stacked cards: more open lists and whitespace on Practice, You and Learn.
+- The plant and botanical drawings as the main visual signature (heroes, empty states, onboarding).
+- Run with super-lens-critic, premium-mobile-designer, premium-web-designer and brand-logo-designer, using beta tester feedback; mockups to Sky before building. Web and phone together.
