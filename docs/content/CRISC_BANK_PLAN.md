@@ -1,6 +1,6 @@
 # CRISC course plan: from the pilot to a sellable pack
 
-**Status:** plan, 30 Oct 2026; round 9 done 5 Nov 2026 (bank 475, on the outline weights). CRISC is a **paid course** learners buy in the
+**Status:** plan, 30 Oct 2026; round 10 done 5 Nov 2026 (bank 500, on the outline weights). CRISC is a **paid course** learners buy in the
 app (6-month access, one payment, never renews; see
 `docs/business/monetization/RECOMMENDATION.md`). Outline and sources:
 `docs/content/CRISC_BLUEPRINT.md`. Item standard:
@@ -20,7 +20,7 @@ it can be sold:
 |---|---|---|---|
 | Blueprint | `docs/content/CRISC_BLUEPRINT.md` | cert-blueprint-researcher | Done, 30 Oct 2026 |
 | Study notes | `data/crisc/notes/d{1..4}.json` + `_course.json` (strategy tips, cross-domain connections) | crisc-d{N}-domain-expert | All 43 outline sub-areas, 115 subtopics, Practice this concept links (`data/crisc/tools/sync_practice_ids.py`) |
-| Questions | `data/crisc/originals/d{1..4}.json` | crisc-d{N}-domain-expert | 475 reviewed (124 / 104 / 152 / 95) after round 9, each domain on its weight: a full 150-item mock and a short 50-item mock without repeats |
+| Questions | `data/crisc/originals/d{1..4}.json` | crisc-d{N}-domain-expert | 500 reviewed (130 / 110 / 160 / 100) after round 10, each domain on its weight: a full 150-item mock and a short 50-item mock without repeats |
 | Citation library | `data/crisc/originals/_framework_library.md` | domain experts | Started with the pilot |
 | Principles (mindset cards) | `data/crisc/mindset/principles.json` (schema `docs/content/PRINCIPLES_SCHEMA.md`) | isaca-mindset-coach | 19 principles; every item tagged |
 | Exam guide and final-review week | `data/crisc/exam/` (schema `docs/content/EXAM_GUIDE_SCHEMA.md`) | isaca-mindset-coach | Both done and reviewed |
@@ -456,6 +456,43 @@ openings "Update" 7/8, "Propose" 10/14, "Rely" 0/14, "Lower" 0/11,
 - No new acceptance-condition items (7 now) and no new "record the emerging risk now" keys. D4 slots go to 4A3, 4A6, 4B1–4B3 and give D4 its missing A key. One outside-figure counter-example in D2 or D3, where a peer or industry figure is the wrong basis because the firm's exposure differs.
 - Near-duplicate scan: compare options as well as stems (same outline code), and the option-type skeleton of same-code FIRST items.
 - Keep apart in practice sets: d1_118/d1_029/d1_099, d1_124/d1_044/cc_d1_093, d1_122/d1_006, d3_152/d3_020/d3_084, d3_148/aaia_d3_029, d3_149/CISA d4_307, d4_091/d3_024/d1_114/d3_118/d4_086, d1_123/d3_127/d3_045/d1_069, d3_146/d3_058/d1_025, d2_103/d3_152/d2_096, d2_101/d2_049/d2_090, d2_104/d2_018/d2_098/d2_071, d1_121/d1_065, d4_092/d1_063.
+
+### Round 10 (5 Nov 2026): 25 items, bank 500
+
+Round 10 added 6 D1 (`crisc_d1_125`–`130`), 6 D2 (`crisc_d2_105`–`110`),
+8 D3 (`crisc_d3_153`–`160`) and 5 D4 (`crisc_d4_096`–`100`) items, the first
+written under the owner-balance rule. Highlights: the risk of standing still
+(d1_125), an outside-figure counter-example (d2_107: scale an industry rate to
+the studio's own exposure), keys that open "Close", "Lower" and "Rely" on
+genuine facts (d1_126, d2_110, d3_154, d3_157), deepfakes defeating a credited
+control (d2_109) and separate consent for AI training (d4_100).
+
+| Stage | Result |
+|---|---|
+| Blind test | 25/25 picks matched the keys |
+| Standards audit and concept review | 0 HARD ERRORS; about 30 PRECISION fixes (Zero Trust stops lateral movement but not entitled access; audit reliance needs the testers' competence and objectivity; stems state the deciding facts in d4_099, d2_110, d3_157) |
+| Re-blind of changed items | 17/17 |
+| Cross-domain gate | 0 HARD ERRORS, 11 PRECISION. The batch over-applied rule 18 (owner options were mostly the easy eliminations: the key was among them in 3 of 18, and "pick the non-owner of the final two" won 10 to 3); options-only edits on 8 items brought it to 4 of 12 and 3 to 4. d1_126 re-angled off CISA d2_092. Merging duplicate register entries now keeps a link to both sources (matches d3_105). Five stems converted to short "Which" form (D3 25%) |
+| Gates | All lints 0 errors; originality 0 too close; practice links in sync; app pack dry run 0 problems; `verify_repo.sh` passes; no run of three identical keys |
+
+**Owner balance is a batch property, not only an item rule.** Rule 18 is now
+read with the round 10 lesson: of the items in a batch where two or more
+options name an owner, about half should key one of them, and the final-two
+count (only the key names an owner vs only the runner-up does) should be even.
+Never leave a lone owner option unless it is the key. Check a batch on its own
+with the cue counter before review.
+
+**Next step before round 11: a second cue pass** on older items (distractor-only
+edits, keys untouched, blind re-test): add an owner to an easy distractor in
+about 14 of the 60 older items that key an owner with only one owner
+distractor; reduce the "Update" (7/8) and "Propose" (10/14) key openings and the
+"Have"/"Ask" (38/256) and outside-data (7/108) never-keyed patterns.
+
+**Next round (round 11, +25 to 525):** D1 +7, D2 +5, D3 +8, D4 +5 (137/115/168/105).
+- Owner balance per batch as above; key at least one "wait/defer" option and one "Have/Ask" option; no new "Update" or "Propose" keys; key adjusted outside data sometimes.
+- Stem form: at least 3 D3 and 2 D2 items as genuinely short "Which of the following … MOST/BEST" stems (under 20 words, noun-phrase options).
+- Settings: at most 2 leisure or culture settings and no health settings (veterinary included). Unused so far: packaging, chemical distribution, textiles, seed or agritech, accounting firm, tax authority, court service, housing association (each once).
+- Keep apart in practice sets: d1_126/CISA d2_092/d1_074, d1_127/d3_077, d1_128/d3_101/d3_113, d1_129/d3_047, d1_130/d1_079/CISA d5_338, d2_105/cc_d5_114, d2_107/d2_021, d2_108/d2_014/d3_105, d2_110/d3_155/d2_019, d3_154/d3_006/d3_026, d3_157/d3_069/d3_129, d3_158/d3_105.
 
 **Open items:**
 - The `TO VERIFY` comment on the CRISC entry in `mobile/src/content/certifications.ts`

@@ -302,7 +302,8 @@
             "crisc_d2_024",
             "crisc_d2_049",
             "crisc_d2_090",
-            "crisc_d2_101"
+            "crisc_d2_101",
+            "crisc_d2_109"
           ],
           "definition": "Threat intelligence is analyzed information about threat actors and their methods; threat modeling is a structured way to work out how a system could be attacked or fail.",
           "why_it_matters": "Intelligence shows what is happening outside; modeling shows whether it matters to this enterprise's assets. A feed nobody analyzes creates noise, not risk insight.",
@@ -312,7 +313,7 @@
             "STRIDE prompts six threat types against a design: spoofing, tampering, repudiation, information disclosure, denial of service and elevation of privilege; AI systems also need AI attack classes added.",
             "Attack trees break an attacker's goal into the paths that reach it; uncontrolled paths show where a scenario's exposure sits, and a control blocking several paths is a key control.",
             "MITRE ATT&CK catalogs tactics and techniques seen in real attacks; those used by groups that target the sector show which attack paths are credible.",
-            "Modeling results feed risk scenarios, where likelihood and impact are rated with the risk owner."
+            "Modeling results feed risk scenarios, rated with the risk owner; a new technique that beats a credited control, such as live deepfake video, means re-rating the existing scenario."
           ],
           "compare": {
             "columns": [
@@ -607,12 +608,13 @@
           "legacy_ids": [],
           "practice_ids": [
             "crisc_d2_027",
-            "crisc_d2_051"
+            "crisc_d2_051",
+            "crisc_d2_105"
           ],
           "definition": "Risk-based remediation ranks vulnerability fixes by business impact and likelihood of exploitation, not by severity score or discovery date alone.",
           "why_it_matters": "No enterprise can fix everything at once. Ranking by business risk spends limited patching effort where a successful exploit would hurt objectives most.",
           "how_it_works": [
-            "Start from asset criticality: which business process the asset supports and what a compromise would cost.",
+            "First confirm findings are real, verifying a sample when a vendor disputes them; then start from asset criticality: which business process the asset supports and what compromise would cost.",
             "Add reachability: internet-facing, reachable from partners, or isolated behind strong segmentation.",
             "Add exploitability: public exploit code, active attacks or a listing in a known-exploited vulnerabilities catalog.",
             "Set fix time frames by risk tier in a policy approved by management, so teams do not negotiate each fix.",
@@ -1013,13 +1015,14 @@
             "crisc_d2_059",
             "crisc_d2_073",
             "crisc_d2_081",
-            "crisc_d2_097"
+            "crisc_d2_097",
+            "crisc_d2_106"
           ],
           "definition": "A business impact analysis (BIA) finds the critical business processes, how their impact grows over time when disrupted, and the resources and dependencies they need to recover.",
           "why_it_matters": "Recovery money and effort are limited. The BIA tells the enterprise what to restore first, and it gives risk assessments the impact data they need.",
           "how_it_works": [
             "Process owners describe each process, its outputs and the harm of losing it at intervals such as one hour, one day and one week.",
-            "Impact includes lost revenue, regulatory breaches, safety, contract penalties and reputation, and rises as an outage lengthens.",
+            "Impact includes lost revenue, regulatory breaches, safety, contract penalties and reputation; it rises as an outage lengthens and is rated for the process's peak period, not an average.",
             "Dependencies are traced: systems, data, people, facilities, suppliers and other processes, including cloud and AI services.",
             "A BIA assumes the disruption happens and skips likelihood, so it is not a risk assessment; its recovery ranks reflect outage harm, not leaks or tampering.",
             "Results set recovery priorities and feed continuity plans and scenario impact ratings; a scenario takes the figure for the outage length it names, and cumulative figures are not added together.",
@@ -1309,13 +1312,14 @@
           "legacy_ids": [],
           "practice_ids": [
             "crisc_d2_014",
-            "crisc_d2_094"
+            "crisc_d2_094",
+            "crisc_d2_108"
           ],
           "definition": "The enterprise risk profile is the combined view of an enterprise's significant risks, built by normalizing and aggregating unit and IT risk registers for senior management and the board.",
           "why_it_matters": "Leaders cannot read hundreds of entries. Consistent registers that roll up show which risks threaten enterprise objectives and where appetite is exceeded.",
           "how_it_works": [
             "Units use common categories, scales and time frames, so entries can be compared and combined.",
-            "Normalization corrects for units rating the same kind of risk differently.",
+            "Normalization puts every unit on one scale; a scenario recorded in two registers is merged into one entry and owner, linked to both sources, not added up.",
             "Similar risks across units are aggregated, which can reveal a risk that is small locally but large in total.",
             "The IT risk register feeds the enterprise risk register and risk profile, as NIST IR 8286 Rev. 1 describes.",
             "The profile is compared with the appetite set by senior management and the board.",
@@ -1458,7 +1462,8 @@
           "practice_ids": [
             "crisc_d2_015",
             "crisc_d2_016",
-            "crisc_d2_043"
+            "crisc_d2_043",
+            "crisc_d2_107"
           ],
           "definition": "Quantitative analysis expresses risk in money and probability. The classic method multiplies single loss expectancy (SLE) by annual rate of occurrence (ARO) to get annualized loss expectancy (ALE).",
           "why_it_matters": "Money values let owners weigh a control's cost against the loss it avoids, which supports cost-benefit decisions that word scales cannot.",
@@ -1468,7 +1473,7 @@
             "ALE equals SLE times ARO: the expected yearly loss from the scenario.",
             "Worked example: an $800,000 asset with a 25% exposure factor has an SLE of $200,000; at an ARO of 0.5, ALE is $100,000.",
             "A control is cost-justified when the yearly drop in ALE, ALE before minus ALE after, exceeds the control's yearly cost.",
-            "Results are only as good as the inputs, so state each figure's source and uncertainty."
+            "Results are only as good as the inputs: scale an outside rate to the enterprise's own exposure, and state each figure's source and uncertainty."
           ],
           "example": "Each crane control outage at a port terminal loses about $300,000 in handling revenue, and history shows two outages in five years, an ARO of 0.4, so the ALE is $120,000. A redundant controller priced at $50,000 annually would lower the ARO to 0.1, giving $30,000. Mei Tanaka, the risk analyst, shows the terminal manager a $90,000 yearly reduction against $50,000 spent.",
           "audit_focus": {
@@ -1483,7 +1488,7 @@
             "recommend": "Have the risk owner present ALE with its data sources and uncertainty when requesting control funding.",
             "decides": "The risk owner decides whether the control's cost is justified"
           },
-          "isaca_rule": "ALE equals SLE times ARO. Compare the yearly reduction in ALE with the control's yearly cost; a control costing more than the loss it avoids is not justified on cost grounds alone. Always show where the numbers came from.",
+          "isaca_rule": "ALE equals SLE times ARO. Compare the yearly reduction in ALE with the control's yearly cost; a control costing more than the loss it avoids is not justified on cost grounds alone. Show each number's source.",
           "exam_traps": [
             {
               "trap": "Compare the control's yearly cost with the SLE to decide whether it is worth buying.",
@@ -1679,7 +1684,8 @@
           "practice_ids": [
             "crisc_d2_019",
             "crisc_d2_063",
-            "crisc_d2_086"
+            "crisc_d2_086",
+            "crisc_d2_110"
           ],
           "definition": "Control effectiveness is how well a control actually reduces a risk's likelihood or impact; it sets the gap between inherent and residual risk.",
           "why_it_matters": "A residual rating that assumes controls work, without evidence, can hide a risk far above appetite. Effectiveness must be shown, not assumed.",
@@ -1687,7 +1693,7 @@
             "Design effectiveness asks whether the control, run as intended, would address the scenario's cause.",
             "Operating effectiveness asks whether it actually ran as designed over the period, shown by testing or monitoring.",
             "Evidence includes control test results, key control indicators (KCIs), audit findings and incident history.",
-            "An untested or failed control earns little or no reduction in the residual rating.",
+            "An untested or failed control earns little or no reduction in the current rating; one that repeated tests show working earns its credit without waiting for a review.",
             "When test results or a control's scope change, such as a system replaced after the test, residual risk is re-rated and the risk owner is told.",
             "Design is judged first: a control that runs perfectly but does not address the scenario's cause earns little credit, whatever its operating record."
           ],

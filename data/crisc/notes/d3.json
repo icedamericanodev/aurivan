@@ -322,7 +322,8 @@
             "crisc_d3_053",
             "crisc_d3_089",
             "crisc_d3_129",
-            "crisc_d3_138"
+            "crisc_d3_138",
+            "crisc_d3_153"
           ],
           "definition": "A control owner is accountable for a control being in place and working, often as the manager whose team runs it; validation confirms owners perform the role.",
           "why_it_matters": "A control that nobody owns decays quietly: reviews stop, settings drift and evidence disappears. Validating ownership finds these gaps before a test or an incident does.",
@@ -331,7 +332,8 @@
             "One control can protect several risks, so its owner may serve several risk owners.",
             "Risk owners rely on control owners to keep residual risk at the level they accepted, so a change that weakens a control goes to the risk owner first.",
             "Validate by asking the owner to describe the control and show recent evidence, not just by reading the register.",
-            "When a control owner changes jobs, or a project hands over a control it built, ownership transfers formally, with a handover of procedures and evidence."
+            "When a control owner changes jobs, or a project hands over a control it built, ownership transfers formally, with a handover of procedures and evidence.",
+            "A control owner needs authority over the people and resources the control depends on; if they can ignore the owner, the control fails."
           ],
           "compare": {
             "columns": [
@@ -482,18 +484,19 @@
             "crisc_d3_006",
             "crisc_d3_026",
             "crisc_d3_135",
-            "crisc_d3_144"
+            "crisc_d3_144",
+            "crisc_d3_154"
           ],
           "definition": "Ongoing vendor monitoring is reviewing a supplier's performance, controls and risk throughout the relationship, using assurance reports, SLA results, incidents and changes in its own suppliers.",
           "why_it_matters": "A vendor that was sound at onboarding can change owners, cut staff, add subcontractors or suffer a breach. Monitoring catches drift while there is still time to respond.",
           "how_it_works": [
             "Read assurance reports for scope and period: which services, locations and controls were tested, and over what dates.",
-            "Act on exceptions in the report and on complementary user entity controls, the duties the customer must perform itself.",
+            "Act on report exceptions and complementary user entity controls, the customer's own duties; when scope fits and neither is open, rely on the report rather than repeat its tests.",
             "Track fourth parties: the vendor's own subcontractors, especially those that host or process your data.",
             "Watch concentration: many critical services on one provider or region create a single point of failure.",
             "Trigger reassessment on events such as a breach, a sale or merger, missed SLAs or a new subcontractor."
           ],
-          "example": "A mid-size insurer relies on a claims-processing vendor whose new SOC 2 Type 2 report covers its main data center but not the overseas site that now handles the insurer's claims. Chen, a risk analyst, notices the scope gap and two exceptions in access reviews. They update the vendor risk entry and ask the claims director to request coverage of the overseas site.",
+          "example": "An insurer relies on a claims vendor whose SOC 2 Type 2 report covers its main data center but not the overseas site now handling the insurer's claims. Chen, a risk analyst, notices the scope gap and two access-review exceptions. They update the vendor entry and ask the claims director to seek coverage of that site.",
           "audit_focus": {
             "review": [
               "Compare each report's scope and period with the services actually used",
@@ -511,7 +514,7 @@
           "isaca_rule": "Vendor risk is monitored for the life of the relationship, not just at onboarding. An assurance report counts only for the services, locations and period it covers, and its exceptions and user controls need follow-up.",
           "exam_traps": [
             {
-              "trap": "A clean SOC 2 report means the vendor is covered.",
+              "trap": "Any clean SOC 2 report fully covers the vendor.",
               "why": "A report covers only the scope and period stated. Services, sites or subcontractors outside it, and the customer's own required controls, still need assurance."
             },
             {
@@ -766,7 +769,8 @@
             "crisc_d3_008",
             "crisc_d3_031",
             "crisc_d3_032",
-            "crisc_d3_096"
+            "crisc_d3_096",
+            "crisc_d3_155"
           ],
           "definition": "Control types by function describe what a control does about a risk event: stop it, discourage it, find it, fix it, or stand in for a missing control.",
           "why_it_matters": "Calling a detective control preventive overstates protection and understates residual risk. Knowing the function shows which part of the risk a control actually reduces.",
@@ -775,7 +779,8 @@
             "Detective controls reduce impact only if someone acts on what they find, quickly enough to matter.",
             "A layered set mixes functions, so a failure of one control is caught or contained by another.",
             "Name the function by what the control does in this process, not by the tool: a log review detects, an enforced approval prevents.",
-            "A compensating control is an alternative or interim measure; the gap it covers stays recorded and reviewed."
+            "A compensating control is an alternative or interim measure; the gap it covers stays recorded and reviewed.",
+            "Credit a control in the rating only for the function it performs: a firewall rule set to log traffic detects; it does not prevent."
           ],
           "types": [
             {
@@ -991,19 +996,20 @@
             "crisc_d3_062",
             "crisc_d3_098",
             "crisc_d3_121",
-            "crisc_d3_147"
+            "crisc_d3_147",
+            "crisc_d3_156"
           ],
           "definition": "Control selection is choosing controls that address the cause of a risk, fit the size of the risk and cost less than the loss they prevent.",
           "why_it_matters": "Controls aimed at symptoms leave the cause in place, so the risk comes back. Controls out of proportion to the risk use budget that other risks need.",
           "how_it_works": [
-            "Start from the analyzed risk scenario and its root cause, not from a product or a peer's control list.",
-            "List candidate controls with their effect on likelihood or impact and their full cost; favor those acting on the factor that drives the rating.",
+            "Start from the analyzed risk scenario and its root cause, not a product or a peer's control list.",
+            "List candidate controls with their effect on likelihood or impact and full cost; favor those acting on what drives the rating.",
             "Prefer controls that fix the cause; use detective or compensating controls where the cause cannot yet be removed.",
             "Check that the control fits the work it protects and weigh the risks it brings, such as one faulty update stopping every device.",
-            "For AI systems, scale input validation, output checks and human review to the impact of a wrong output.",
+            "For AI systems, scale input checks, output checks and human review to a wrong output's impact; route inputs the model cannot judge, such as blurred photos, to a person.",
             "Where an AI output states facts that can be checked, such as amounts or reference numbers, check them automatically against the source before use."
           ],
-          "example": "A hospital finds that dosing errors keep reaching patients because nurses retype orders from the electronic record into infusion pumps. Farah, the clinical risk analyst, notes that more training targets the symptom. They recommend to the nursing director a direct interface between the record and the pumps, with a pharmacist check on doses above a set limit, and attach the cost-benefit comparison.",
+          "example": "A hospital finds dosing errors keep reaching patients because nurses retype orders from the electronic record into infusion pumps. Farah, the clinical risk analyst, notes that more training targets the symptom. They recommend to the nursing director a direct record-to-pump interface, with a pharmacist check on doses above a set limit, and attach the cost-benefit comparison.",
           "audit_focus": {
             "review": [
               "Follow each new control back to the scenario it was chosen for",
@@ -1447,7 +1453,8 @@
             "crisc_d3_068",
             "crisc_d3_069",
             "crisc_d3_103",
-            "crisc_d3_130"
+            "crisc_d3_130",
+            "crisc_d3_157"
           ],
           "definition": "Validating execution is confirming, with evidence, that the actions in a risk plan were carried out as agreed and reduced the risk as expected.",
           "why_it_matters": "Status reports often say done when a control is installed but untested. Validation stops the register from showing a lower risk than really exists.",
@@ -1456,7 +1463,7 @@
             "Confirm the control is implemented, then that it operates, before treating the action as complete.",
             "Re-rate the risk after validation; that residual rating is compared with the target the plan set.",
             "Escalate slipping or blocked actions to the risk owner, and past agreed limits to senior management.",
-            "Close the plan only when the risk reaches the expected level or a new decision is recorded on today's rating, not the plan's target.",
+            "Close the plan once evidence and the owner's sign-off show the risk at target, or the owner records a new decision on the current rating, not the target.",
             "If validated actions leave the risk above target, report the shortfall to the risk owner, who decides on further treatment, acceptance within their authority or elevation."
           ],
           "example": "A port operator's plan to separate its crane-control network from the office network is reported complete. Arjun, the risk analyst, asks the network team for a connection test from an office laptop, which still reaches two cranes. They mark the action incomplete, record the test result and inform the operations director with a proposed new date.",
@@ -1560,7 +1567,8 @@
             "crisc_d3_014",
             "crisc_d3_073",
             "crisc_d3_105",
-            "crisc_d3_133"
+            "crisc_d3_133",
+            "crisc_d3_158"
           ],
           "definition": "Risk aggregation combines risks from many units or systems into one enterprise view, after normalizing them to the same rating criteria so they can be compared.",
           "why_it_matters": "Senior management needs one picture of enterprise risk. Adding ratings from different scales, or averaging away a severe local risk, gives a picture that looks precise but is wrong.",
@@ -1568,7 +1576,7 @@
             "Convert unit ratings to one enterprise scale for likelihood and impact before combining them.",
             "Merge duplicate or similar risks into a representative risk, keeping a link back to each source entry.",
             "Look for the same risk treated differently by different units, and find out why.",
-            "Keep severe single risks visible; aggregation must not average them into a moderate total.",
+            "Keep severe single risks visible as their own lines; aggregation must not average them into a moderate total or lift a whole group to the worst rating.",
             "Watch for correlated risks, such as several units relying on one vendor, that add up to a larger exposure.",
             "To compare units, turn counts into rates on a common base, such as complaints per 1,000 chats; a common scale aligns ratings, not volumes."
           ],
@@ -1836,7 +1844,8 @@
             "crisc_d3_044",
             "crisc_d3_107",
             "crisc_d3_109",
-            "crisc_d3_125"
+            "crisc_d3_125",
+            "crisc_d3_159"
           ],
           "definition": "KRI thresholds are preset limits, linked to risk appetite and tolerance, that trigger review, escalation or action when an indicator crosses them.",
           "why_it_matters": "Without thresholds, a climbing KRI is just a number. Limits tied to tolerance tell the owner when to act and who must be told.",
@@ -1844,7 +1853,7 @@
             "Set thresholds from tolerance: green within appetite, amber approaching tolerance, red at or beyond it.",
             "Define the action and escalation for each level before any breach happens.",
             "When appetite, tolerance, the business or the risk changes, the practitioner proposes revised thresholds and the risk owner approves them.",
-            "For AI systems, track drift, error rates, override rates and complaints, with limits set by the model's business owner.",
+            "For AI systems, track drift, error rates, outcome gaps between groups, override rates and complaints, with limits set by the model's business owner.",
             "A breach, or a proposal to move a threshold, goes to the risk owner and, through the agreed escalation path, to the level that set it.",
             "For human review of AI outputs, KCIs such as override rates and time spent per review warn when reviewers start approving by habit."
           ],
@@ -2080,7 +2089,8 @@
             "crisc_d3_079",
             "crisc_d3_080",
             "crisc_d3_112",
-            "crisc_d3_141"
+            "crisc_d3_141",
+            "crisc_d3_160"
           ],
           "definition": "Risk reporting formats present risk and control information visually: heat maps plot likelihood against impact, scorecards rate results against targets, and dashboards combine indicators.",
           "why_it_matters": "The format shapes the decision. A good visual shows what needs attention at a glance; a poor one hides trends, ranges and risks sitting just outside the red cells.",
@@ -2089,7 +2099,8 @@
             "Heat-map scores are ordinal, so cells cannot be added or averaged meaningfully.",
             "Scorecards and dashboards show indicators against thresholds and trend, not raw counts alone.",
             "Every visual needs a date, a data source and a note of known limitations.",
-            "Draw heat-map color bands from the approved appetite and tolerance, not a tool's default scoring, so a risk's color shows where it stands against appetite."
+            "Draw heat-map color bands from the approved appetite and tolerance, not a tool's default scoring, so a risk's color shows where it stands against appetite.",
+            "Show each period's KRI value against its thresholds; a rolling average smooths single-period breaches away, so keep it as a trend line."
           ],
           "types": [
             {
