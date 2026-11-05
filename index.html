@@ -5493,6 +5493,7 @@ button.pg-cd:hover { background: var(--surface2); }
 .fg-st-stem { fill: none; stroke: var(--fg-stem); stroke-width: 2; stroke-linecap: round; }
 .fg-st-leaf { fill: var(--fg-leaf); stroke: var(--accent); stroke-width: .9; }
 .fg-st-leaf.c { fill: none; stroke: var(--clay); stroke-width: 1.3; }
+.fg-st-leaf.g { fill: none; stroke: var(--accent); stroke-width: 1.3; }
 .fg-st-grow { fill: none; stroke: var(--accent); stroke-width: 2.6; stroke-linecap: round; }
 .fg-st-seed { fill: var(--fg-seed); stroke: var(--fg-stem); stroke-width: 1; }
 .fg-st-ghost { fill: none; stroke: var(--control); stroke-width: 1; stroke-dasharray: 2 3; }
@@ -6048,16 +6049,13 @@ body[data-app-cta-card="shown"][data-section="today"] .app-cta-line { display: n
 }
 .vr-readmore:hover .vr-rm-t { text-decoration: underline; }
 .vr-readmore:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; border-radius: var(--r-sm); }
-/* The folded tip rows, right after Read more (mobile 1.43, PHASE4.md 4.6). */
-.vr-why-more[hidden] { display: none; }
-.vr-why-more > .vine { margin-top: var(--sp-sm); }
 @media (prefers-reduced-motion: no-preference) {
-  .vr-why-more:not([hidden]), .vr-recap-t.open { animation: flagFadeIn .12s ease-out both; }
+  .vr-recap-t.open { animation: flagFadeIn .12s ease-out both; }
 }
 
 /* Go deeper: the row in one card. */
 .vr-study:empty { display: none; }
-.vr-study { margin-top: var(--sp-xl); padding: 0 var(--card-pad); background: var(--surface); border-radius: var(--r-card); box-shadow: var(--card-shadow); }
+.vr-study { margin-top: var(--sp-xl); display: flex; flex-direction: column; gap: var(--sp-md); }
 .vr-deeper {
   display: flex; align-items: center; gap: var(--sp-md); min-height: 64px; padding: var(--sp-md) 0;
   color: var(--text); text-decoration: none;
@@ -6128,7 +6126,7 @@ body[data-app-cta-card="shown"][data-section="today"] .app-cta-line { display: n
 /* The margin's cards on the answer screen (Go deeper, your note, terms). */
 .sr-card-pad { padding: var(--card-pad); }
 .study-rail .p4-card + .p4-card { margin-top: 16px; }
-@media (forced-colors: active) { .vr-card, .vr-tips, .vr-study { border: 1px solid CanvasText; } }
+@media (forced-colors: active) { .vr-card, .vr-tips, .vr-study-sec { border: 1px solid CanvasText; } }
 
 @media (prefers-reduced-motion: no-preference) {
   .conf-seg .conf-btn { transition: background-color .12s ease, color .12s ease; }
@@ -6417,12 +6415,14 @@ body[data-app-cta-card="shown"][data-section="today"] .app-cta-line { display: n
 .gl .gloss-count-clear { min-height: 44px; padding: 0 14px; border: 1.5px solid var(--control); border-radius: var(--r-pill); color: var(--text); font: var(--t-chip); }
 .gl .gloss-count-clear:hover { background: var(--surface2); }
 .gl .gloss-count-clear:focus-visible, .gl .gloss-letter:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
-/* A to Z: 44px targets, even rows at every width (26, 13, then 9 by 3). */
-.gl .gloss-letter-index { margin: 0; padding: 6px; border: 0; background: var(--surface); box-shadow: var(--card-shadow); border-radius: var(--r-tile); }
-.gl .gloss-letter-grid { gap: var(--sp-xs); grid-template-columns: repeat(7, minmax(0, 1fr)); }
-@container (min-width: 22rem) { .gl .gloss-letter-grid { grid-template-columns: repeat(9, minmax(0, 1fr)); } }
-@container (min-width: 36rem) { .gl .gloss-letter-grid { grid-template-columns: repeat(13, minmax(0, 1fr)); } }
-@container (min-width: 72rem) { .gl .gloss-letter-grid { grid-template-columns: repeat(26, minmax(0, 1fr)); } }
+/* A to Z: at least 44px wide and tall at every width and text size. Rows of
+   6 on phones (6, 6, 6, 6, 2: no lone Z), then 9 by 3, 13 by 2 and one row
+   of 26, each step only once every cell can stay 44px wide. */
+.gl .gloss-letter-index { margin: 0; padding: var(--sp-xs) 0; border: 0; background: var(--surface); box-shadow: var(--card-shadow); border-radius: var(--r-tile); }
+.gl .gloss-letter-grid { gap: 2px; grid-template-columns: repeat(6, minmax(0, 1fr)); }
+@container (min-width: 27.5rem) { .gl .gloss-letter-grid { gap: var(--sp-xs); grid-template-columns: repeat(9, minmax(0, 1fr)); } }
+@container (min-width: 39rem) { .gl .gloss-letter-grid { gap: var(--sp-xs); grid-template-columns: repeat(13, minmax(0, 1fr)); } }
+@container (min-width: 78rem) { .gl .gloss-letter-grid { gap: var(--sp-xs); grid-template-columns: repeat(26, minmax(0, 1fr)); } }
 .gl .gloss-letter { min-height: 44px; padding: 0; border-radius: var(--r-10); font: var(--t-chip); color: var(--muted); }
 .gl .gloss-letter.has { color: var(--text); }
 .gl .gloss-letter.has:hover { background: var(--surface2); color: var(--text); }
@@ -6498,6 +6498,18 @@ body[data-app-cta-card="shown"][data-section="today"] .app-cta-line { display: n
 .pl-pn-btn + .pl-pn-btn { border-top: 1px solid var(--border); }
 .pl-pn-btn:hover .pl-pn-t { text-decoration: underline; text-underline-offset: 3px; }
 @media (forced-colors: active) { .pl-rows, .pl-pn { border: 1px solid CanvasText; } }
+/* A note's reading page (O4, PHASE4.md 7.2): the area and topic in caption,
+   the title in hero, the note as in the list, then Previous and Next. */
+.np-head { padding-bottom: var(--sp-lg); border-bottom: 1px solid var(--border); }
+.np-cap { margin: 0 0 var(--sp-xs); font: var(--t-caption); letter-spacing: var(--tr-caption); color: var(--text2); }
+.np-cap .dom-dot { display: inline-block; margin: 0 8px 0 0; vertical-align: 1px; }
+.np-title { margin: 0; font: var(--t-hero); letter-spacing: var(--tr-hero); color: var(--text); overflow-wrap: break-word; }
+.np-title:focus { outline: none; }
+.np-title:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 4px; border-radius: var(--r-sm); }
+.np-meta { margin: var(--sp-xs) 0 0; font: var(--t-meta); color: var(--text2); }
+.gt-row.np-note { border: 0; margin-top: var(--sp-xl); }
+.np-note > .gt-body { padding-bottom: 0; }
+.np-pn { margin-top: var(--sp-2xl); }
 /* About the exam and Final review week (Grove Phase 4, 7.5 and 7.6): one
    display title, section heads in headline; the facts at a glance, the days
    and the cheat sheet each in one card. */
@@ -6539,13 +6551,15 @@ body[data-app-cta-card="shown"][data-section="today"] .app-cta-line { display: n
 .lh-none { display: flex; flex-direction: column; gap: 4px; }
 .lh-none-t { margin: 0; font: var(--t-label); color: var(--text); }
 .lh-none-m { margin: 0; font: var(--t-small); color: var(--text2); }
-/* Tiles: one column, 2 by 2 from 37.5em, a row of four from 64em. They
-   follow their own width (a container), so 200% text reflows them. */
-.lh-tiles { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: minmax(0, 1fr); gap: 8px; container: lhtiles / inline-size; }
+/* Tiles: one column under 22.5em (360px), 2 by 2 from 22.5em, a row of
+   four from 64em. The em queries follow the browser text size, so at 1.3x
+   text 390px is one column; .fg-large keeps one column at large text too.
+   An odd last tile spans the width (PHASE4 7.1). */
+.lh-tiles { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: minmax(0, 1fr); gap: 8px; }
 .lh-tiles > li { display: flex; min-width: 0; }
-@container lhtiles (min-width: 30em) { .lh-tiles { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
-@media (min-width: 37.5em) { .lh-tiles { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (min-width: 22.5em) { .lh-tiles { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 @media (min-width: 64em) { .lh-tiles { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+.lh-tiles > li:last-child:nth-child(odd) { grid-column: 1 / -1; }
 .fg-large .lh-tiles { grid-template-columns: minmax(0, 1fr); }
 .lh-tile {
   flex: 1; display: flex; flex-direction: column; align-items: flex-start; gap: 2px; min-height: 48px; padding: 16px;
@@ -6556,14 +6570,14 @@ body[data-app-cta-card="shown"][data-section="today"] .app-cta-line { display: n
 .lh-tile-m { font: var(--t-meta); color: var(--text2); }
 .lh-tile:hover, .lh-row:hover { background: var(--surface2); }
 .lh-tile:focus-visible, .lh-row:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
-/* Below 37.5em (one column) a tile reads as a row: badge, words. */
-@media (max-width: 37.4375em) {
-  .lh-tile { flex-direction: row; align-items: center; gap: 12px; padding: 12px 16px; }
-  .lh-tile .p4-badge { margin: 0; }
-  .lh-tile-t { flex: none; }
-  .lh-tile { display: grid; grid-template-columns: auto minmax(0, 1fr); grid-template-rows: auto auto; column-gap: 12px; row-gap: 2px; }
-  .lh-tile .p4-badge { grid-row: 1 / span 2; }
+/* In one column (under 22.5em, or large text) a tile reads as a row:
+   badge, words. */
+@media (max-width: 22.4375em) {
+  .lh-tile { display: grid; grid-template-columns: auto minmax(0, 1fr); grid-template-rows: auto auto; align-items: center; column-gap: 12px; row-gap: 2px; padding: 12px 16px; }
+  .lh-tile .p4-badge { margin: 0; grid-row: 1 / span 2; }
 }
+.fg-large .lh-tile { display: grid; grid-template-columns: auto minmax(0, 1fr); grid-template-rows: auto auto; align-items: center; column-gap: 12px; row-gap: 2px; padding: 12px 16px; }
+.fg-large .lh-tile .p4-badge { margin: 0; grid-row: 1 / span 2; }
 .lh-row { display: flex; align-items: center; gap: 12px; min-height: 56px; padding: 12px 16px; border-radius: var(--r-tile); color: var(--text); text-decoration: none; }
 .lh-row-text { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
 .lh-dom-mark { flex: none; display: inline-flex; align-items: center; gap: 10px; }
@@ -6747,6 +6761,9 @@ body[data-tab="practice"][data-pview="focus"] #subNav { display: none; }
 .rs-btn:hover { background: var(--surface2); color: var(--text); transform: none; box-shadow: none; }
 .rs-btn.primary, .rs-btn.primary:hover { background: var(--btn); border-color: var(--btn); color: var(--on-btn); }
 .rs-btn.primary:hover { opacity: .92; }
+/* A solid button uses the button role (17/22, TYPE_SCALE R6); outline and
+   ghost buttons stay at label 16. */
+.rs-btn.primary { font: var(--t-button); }
 .rs-btn.ghost { border-color: transparent; padding: 0 var(--sp-md); }
 .rs-btn:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
 .rs-mock .mock-advisory { margin-top: var(--sp-2xl); padding: 0; background: none; border: 0; border-radius: 0; }
@@ -7422,6 +7439,12 @@ html { scroll-padding-bottom: calc(104px + var(--consent-h, 0px)); }
 }
 /* The cookie bar, when showing, lifts the footers above it (--consent-h). */
 .q-check-foot, .vr-foot { bottom: var(--consent-h, 0px); }
+/* Forced colours drop the paper fade, so the footers paint a solid system
+   background; otherwise page text shows through around the button. */
+@media (forced-colors: active) {
+  .vr-foot, .q-check-foot { background: Canvas; }
+  .vr-foot::before, .q-check-foot::before { display: none; }
+}
 @media (max-width: 47.9375em) {
   .vr-foot { bottom: calc(88px + var(--consent-h, 0px) + env(safe-area-inset-bottom)); }
   .q-check-foot { bottom: calc(88px + var(--consent-h, 0px) + env(safe-area-inset-bottom)); }
@@ -8347,12 +8370,12 @@ html { scroll-padding-bottom: calc(104px + var(--consent-h, 0px)); }
 /* ── Type scale by page (design-notes/grove/TYPE_SCALE.md R4) ──
    Tab homes and their lists head sections with a kicker; reading pages,
    results, Settings and sheets use the headline. */
-#phDomH, #phMoreH, #phMockH, #mkPickH, #mkWH, #mkPastH, #srhMocks,
+#phDomH, #phMoreH, #phMockH, #srhMocks,
 #srhPrin, #phmPrin, #srhFocus, #phmFocus { font: var(--t-kicker); letter-spacing: var(--tr-kicker); text-transform: uppercase; color: var(--text2); }
 #srhCheck, #srhToc, #srhLook, #srhDeeper, #srhTerms, #srhMine, #srhSigns, #mrmSigns,
 .gt-sec:not(.gt-sec-def) > .gt-cap, .gt-audit-h, h3.gt-cap.eg-sub, #egTocH, #fwTocH,
 #youSettingsH, #youDataH, #setResetH, #youHelpH,
-#pgStandH, #rsMissH { font: var(--t-headline); letter-spacing: var(--tr-headline); text-transform: none; color: var(--text); }
+#pgStandH, #rsMissH, #mkPickH, #mkWH, #mkPastH { font: var(--t-headline); letter-spacing: var(--tr-headline); text-transform: none; color: var(--text); }
 /* Terms in this question: a caption over the second group in Go deeper (4.2). */
 .sr-sub-g #srhTerms { margin: 0 0 var(--sp-sm); font: var(--t-caption); letter-spacing: var(--tr-caption); color: var(--text2); }
 .rs-missed-h { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 2px 12px; margin-bottom: var(--sp-xs); }
@@ -11289,7 +11312,7 @@ var conceptsLoading = false;    // true during fetch
 
 // UI state for the Topics tab — which domain is selected, what search/filter is active,
 // which groups/items are open, etc.
-var topicState = { domain: "1", search: "", openGroups: {}, openItems: {}, filter: "all" };
+var topicState = { domain: "1", search: "", openGroups: {}, openItems: {}, filter: "all", page: null, pushed: false };
 // Read-state tracking for this visit only (see READ-STATE TRACKING); the
 // saved state is S.topicReviewed (read) and S.topicViewed (started).
 var GT_STARTED_MS = 10000;
@@ -11690,8 +11713,9 @@ function gtHead(level, cls, inner) {
     : '<div class="' + cls + '" role="heading" aria-level="' + l + '">' + inner + '</div>';
 }
 // renderItemBody with the shift for a note under a part heading.
+// A number is the shift itself (the note page: -3, so its sections are h2).
 function gtItemBody(raw, d, q, id, underPart) {
-  gtHeadShift = underPart ? 1 : 0;
+  gtHeadShift = typeof underPart === 'number' ? underPart : underPart ? 1 : 0;
   try { return renderItemBody(raw, d, q, id); } finally { gtHeadShift = 0; }
 }
 function gtCap(label) { return gtHead(5, 'gt-cap', escapeHtml(label)); }
@@ -12029,27 +12053,25 @@ function gtItemRow(it, d, tokens, opts) {
   opts = opts || {};
   var state = gtNoteState(it.id);
   var isDone = state === 'read';
-  var isOpen = !!topicState.openItems[it.id];
   var idE = escapeHtml(it.id);
   var rh = opts.underPart ? 'h5' : 'h4';
-  var body = isOpen ? gtItemBody(it.raw, String(d), topicState.search, it.id, opts.underPart) : '';
   // Just read this session and not yet seen: draw the old state, and let
   // gtWatchJustRead sweep it to full once the row is on screen.
   var shown = (isDone && gtJustRead[it.id]) ? gtJustRead[it.id] : state;
-  return '<div class="gt-row' + (isOpen ? ' open' : '') + (isDone ? ' done' : '') + '" id="ni-' + idE + '">'
+  return '<div class="gt-row' + (isDone ? ' done' : '') + '" id="ni-' + idE + '">'
     + '<div class="gt-row-head">'
-    // The mark only SHOWS read status; the whole row opens the note. A note
-    // is marked read from inside it ("Mark as read" at its end), as on mobile.
-    + '<' + rh + ' class="gt-row-h"><button class="gt-row-btn" aria-expanded="' + isOpen + '" aria-controls="nb-' + idE + '" data-id="' + idE + '" onclick="toggleNotesItem(this.dataset.id)">'
+    // The mark only SHOWS read status; the whole row opens the note as its
+    // own reading page (O4, PHASE4.md 7.2), as on mobile. A note is marked
+    // read from inside it ("Mark as read" at its end).
+    + '<' + rh + ' class="gt-row-h"><button type="button" class="gt-row-btn" data-id="' + idE + '" onclick="openNotePage(this.dataset.id,{fromList:true})">'
     + '<span class="gt-row-text"><span class="gt-row-title">' + highlightText(it.name, tokens) + '</span>'
     + '<span class="sr-only gt-row-state">' + GT_STATE_SR[state] + '</span>'
     + '<span class="gt-row-meta"><span class="gt-row-status" aria-hidden="true">' + GT_STATE_WORD[state] + '</span>'
     + (opts.meta ? '<span aria-hidden="true"> &middot; </span>' + opts.meta : '') + '</span>'
     + (opts.snippet ? '<span class="gt-row-snippet">' + highlightText(opts.snippet, tokens) + '</span>' : '')
     + '</span>' + gtMarkSvg(shown, '', shown !== state ? ' data-gtjust="' + idE + '"' : '')
-    + ico('chevron-down', 20, 'ico gt-chev') + '</button></' + rh + '>'
+    + ico('chevron', 20, 'ico gt-chev') + '</button></' + rh + '>'
     + '</div>'
-    + '<div class="gt-body" id="nb-' + idE + '"' + (isOpen ? ' data-rendered="1"' : '') + '>' + body + '</div>'
     + '</div>';
 }
 
@@ -12184,7 +12206,7 @@ function renderLearnHub() {
 
   var keep = document.activeElement && document.activeElement.id === 'lhSearch';
   area.innerHTML = '<div class="lh">'
-    + '<div class="ph-head"><h1 class="ph-title" id="lhTitle" tabindex="-1">Learn</h1><p class="ph-sub">Lessons start each topic. Notes go deeper.</p></div>'
+    + '<div class="ph-head"><h1 class="ph-title" id="lhTitle" tabindex="-1">Learn</h1><p class="ph-sub">Notes, terms and principles, by topic.</p></div>'
     + hero + search + tiles + fw + doms + foot + '</div>';
   if (keep) { var inp = document.getElementById('lhSearch'); if (inp) { try { inp.focus({ preventScroll: true }); inp.setSelectionRange(inp.value.length, inp.value.length); } catch (e) {} } }
   if (lhSearchQ) lhRenderResults(false);
@@ -12252,6 +12274,20 @@ function renderTopics() {
     area.innerHTML = '<div class="gt-loading" role="status">Loading study notes&hellip;</div>';
     loadConceptsData(function() { renderTopics(); });
     return;
+  }
+
+  // A note's own reading page (#note/<id>, O4).
+  if (topicState.page) {
+    var hit = noteFind(topicState.page);
+    if (hit) {
+      area.innerHTML = notePageHtml(hit);
+      try { document.title = hit.it.name + ' \u00b7 KaiSip'; } catch (e) {}
+      gtAfterRender();
+      return;
+    }
+    notePageLeave();
+    try { syncNav('topics'); } catch (e) {}
+    showToast('That note was not found. Here are the study notes.', 'info', 2600);
   }
 
   var data = buildConceptsData();
@@ -12534,31 +12570,135 @@ function toggleDomainSummary() {
   if (b) { b.textContent = topicState.introOpen ? 'Show less' : 'Read the domain overview'; b.setAttribute('aria-expanded', String(topicState.introOpen)); }
 }
 
-function jumpToSubtopic(itemId) {
-  var data = buildConceptsData();
-  var d = parseInt(topicState.domain) || 1;
-  var dom = data.domains.find(function(x){ return x.domain_id === d; });
-  if (!dom) return;
-  var groupKey = null;
-  dom.groups.forEach(function(g) {
-    if (g.items.some(function(it){ return it.id === itemId; })) groupKey = d + '-g-' + g.group_id;
-  });
-  if (!groupKey) return;
-  topicState.search = '';
-  // A filter that hides this note would make the jump do nothing.
-  var isRead = !!getTopicReviewedSet()[itemId];
-  if ((topicState.filter === 'reviewed' && !isRead) || (topicState.filter === 'unreviewed' && isRead)) topicState.filter = 'all';
-  topicState.openGroups[groupKey] = true;
-  topicState.openItems[itemId] = true;
-  renderTopics();
-  setTimeout(function() {
-    var el = document.getElementById('ni-' + itemId);
-    if (el) {
-      el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      el.classList.add('flash-highlight');
-      setTimeout(function(){ el.classList.remove('flash-highlight'); }, 1500);
+// Every way into one note (Continue reading, the rail, a practice set's way
+// back, the glossary) opens its reading page.
+function jumpToSubtopic(itemId) { openNotePage(itemId); }
+
+// ── NOTE PAGE (Grove Phase 4, O4; PHASE4.md 7.2) ──
+// #note/<id> opens one note as its own reading page, like the phone: the page
+// bar's way back ("Study notes"), the note's area and topic, its title in
+// hero, the note itself (unchanged, "Mark as read" at its end), then Previous
+// and Next as two rows in one card. The note is "open" while its page shows,
+// so started and read are tracked as in the list. Opening it from the list
+// adds a history entry (Back returns to the list); everything else replaces.
+function noteFind(itemId) {
+  if (!CISA_NOTES_RAW || !itemId) return null;
+  var want = String(itemId).toLowerCase();
+  var m = /^([1-5])/.exec(want);
+  var doms = buildConceptsData().domains || [];
+  var hit = null;
+  doms.some(function(dom) {
+    if (m && String(dom.domain_id) !== m[1]) return false;
+    var flat = [];
+    dom.groups.forEach(function(g) { g.items.forEach(function(it) { flat.push({ it: it, g: g }); }); });
+    for (var i = 0; i < flat.length; i++) {
+      if (String(flat[i].it.id).toLowerCase() === want) {
+        hit = { d: dom.domain_id, dom: dom, g: flat[i].g, it: flat[i].it, prev: flat[i - 1] || null, next: flat[i + 1] || null };
+        return true;
+      }
     }
-  }, 50);
+    return false;
+  });
+  return hit;
+}
+function notePageHtml(hit) {
+  var it = hit.it, d = hit.d, inf = DI[String(d)] || {};
+  var idE = escapeHtml(it.id), gKey = d + '-g-' + hit.g.group_id;
+  var state = gtNoteState(it.id);
+  var pnRow = function(x, next) {
+    if (!x) return '';
+    return '<button type="button" class="pl-pn-btn' + (next ? ' pl-pn-next' : ' pl-pn-prev') + '" data-id="' + escapeHtml(x.it.id) + '" onclick="openNotePage(this.dataset.id)">'
+      + '<span class="pl-pn-cap">' + (next ? 'Next' + ico('chevron', 14) : ico('chevron', 14, 'ico ico-back') + 'Previous') + '</span>'
+      + '<span class="pl-pn-t">' + escapeHtml(x.it.name) + '</span></button>';
+  };
+  return '<div class="gt np">'
+    + '<div class="np-head">'
+    + '<p class="np-cap"><span class="dom-dot" style="background:' + (inf.color || 'var(--accent)') + '" aria-hidden="true"></span>'
+    + escapeHtml(inf.short || ('Domain ' + d)) + ' &middot; ' + escapeHtml(hit.g.group_title || '') + '</p>'
+    + '<h1 class="np-title" id="npTitle" tabindex="-1">' + escapeHtml(it.name) + '</h1>'
+    + '<p class="np-meta" id="npMeta"><span class="gt-row-status">' + GT_STATE_WORD[state] + '</span> &middot; about&nbsp;' + noteMinutes(it.raw) + '&nbsp;min</p>'
+    + '</div>'
+    + '<div class="gt-row open np-note" id="ni-' + idE + '" data-group="' + escapeHtml(gKey) + '">'
+    + '<div class="gt-body" id="nb-' + idE + '" data-rendered="1">' + gtItemBody(it.raw, String(d), '', it.id, -3) + '</div></div>'
+    + (hit.prev || hit.next ? '<nav class="pl-pn np-pn" aria-label="Previous and next note">' + pnRow(hit.prev, false) + pnRow(hit.next, true) + '</nav>' : '')
+    + '</div>';
+}
+// opts.fromList: opened from the Study notes list (gets a history entry).
+function openNotePage(itemId, opts) {
+  if (!itemId) return;
+  opts = opts || {};
+  var id = String(itemId);
+  var hit = noteFind(id);
+  if (hit) id = hit.it.id;
+  var push = !!(opts.fromList && S.activeTab === 'topics' && !topicState.page);
+  notePageLeave();
+  var m = /^([1-5])/.exec(id);
+  if (m) topicState.domain = m[1];
+  topicState.page = id;
+  topicState.openItems[id] = true;
+  gtAutoFired[id] = false; // a new opening may auto-read once
+  if (hit) {
+    if (!S.lastOpenedSubtopic) S.lastOpenedSubtopic = {};
+    S.lastOpenedSubtopic[hit.d] = { id: id, name: hit.it.name, ts: Date.now() };
+    saveStateSoon();
+  }
+  if (S.activeTab !== 'topics') {
+    switchTab('topics');
+  } else {
+    if (push) {
+      try { if (window.history && history.pushState) { history.pushState(history.state, '', '#note/' + encodeURIComponent(id)); topicState.pushed = true; } } catch (e) {}
+    }
+    syncNav('topics');
+    renderTopics();
+    try { railSync(); } catch (e) {}
+    plScrollTop('screen-topics');
+  }
+  var t = document.getElementById('npTitle');
+  if (t) { try { t.focus({ preventScroll: true }); } catch (e) {} }
+  else navFocusTitle();
+}
+// The page goes (another page, the list): the note stops counting as open.
+function notePageLeave() {
+  var id = topicState.page;
+  if (!id) return;
+  delete topicState.openItems[id];
+  topicState.page = null;
+  topicState.pushed = false;
+}
+// The page bar's "Study notes" (and the sidebar's, while a note is open).
+function noteBackToList(e) {
+  if (e && (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || (e.button && e.button !== 0))) return true;
+  if (e && e.preventDefault) e.preventDefault();
+  if (topicState.pushed && /^#note\//i.test(location.hash) && window.history) {
+    topicState.pushed = false;
+    history.back();   // the hashchange listener shows the list
+    return false;
+  }
+  closeNotePage();
+  return false;
+}
+// Back to the list, with focus on the note's own row (its topic opened when
+// the list would not show it).
+function closeNotePage() {
+  var id = topicState.page;
+  notePageLeave();
+  syncNav('topics');
+  renderTopics();
+  var row = id && document.getElementById('ni-' + id);
+  if (id && !row) {
+    var hit = noteFind(id);
+    if (hit) {
+      topicState.search = '';
+      topicState.filter = 'all';
+      topicState.openGroups[hit.d + '-g-' + hit.g.group_id] = true;
+      renderTopics();
+      row = document.getElementById('ni-' + id);
+    }
+  }
+  var btn = row && row.querySelector('.gt-row-btn');
+  if (btn) {
+    try { btn.focus({ preventScroll: true }); btn.scrollIntoView({ block: 'center' }); } catch (e) {}
+  } else { plScrollTop('screen-topics'); navFocusTitle(); }
 }
 
 function dismissContinueReading() {
@@ -12593,33 +12733,8 @@ function findTopicItem(itemId) {
   return found;
 }
 
-function toggleNotesItem(itemId) {
-  topicState.openItems[itemId] = !topicState.openItems[itemId];
-  var el = document.getElementById('ni-' + itemId);
-  if (!el) return;
-  var isOpen = !!topicState.openItems[itemId];
-  el.classList.toggle('open', isOpen);
-  var btn = el.querySelector('.gt-row-btn');
-  if (btn) btn.setAttribute('aria-expanded', String(isOpen));
-  var body = document.getElementById('nb-' + itemId);
-  if (body && isOpen && !body.dataset.rendered) {
-    var found = findTopicItem(itemId);
-    if (found) {
-      var rowH = el.querySelector('.gt-row-h');
-      body.innerHTML = gtItemBody(found.raw, String(parseInt(topicState.domain) || 1), topicState.search, itemId, !!(rowH && rowH.tagName === 'H5'));
-      body.dataset.rendered = '1';
-    }
-  }
-  if (isOpen) {
-    var dom2 = parseInt(topicState.domain) || 1;
-    if (!S.lastOpenedSubtopic) S.lastOpenedSubtopic = {};
-    var it = findTopicItem(itemId);
-    S.lastOpenedSubtopic[dom2] = { id: itemId, name: it ? it.name : itemId, ts: Date.now() };
-    saveStateSoon();
-    gtAutoFired[itemId] = false; // a new opening may auto-read once
-  }
-  gtAfterRender();
-}
+// A note row opens the note's reading page (O4); the old name stays.
+function toggleNotesItem(itemId) { openNotePage(itemId, { fromList: true }); }
 
 // Backward-compat
 function toggleTopicOpen(id) { toggleNotesItem(id); }
@@ -12806,6 +12921,8 @@ function gtUpdateRow(id) {
   if (st) st.textContent = GT_STATE_SR[state];
   var w = el.querySelector('.gt-row-status');
   if (w) w.textContent = GT_STATE_WORD[state];
+  var npw = topicState.page === id && document.querySelector('#npMeta .gt-row-status');
+  if (npw) npw.textContent = GT_STATE_WORD[state];
   var mark = el.querySelector('.gt-row-btn .gt-mark');
   if (!mark) return;
   if (isDone && gtJustRead[id]) {
@@ -13187,12 +13304,8 @@ function backToConceptTopic() {
   if (ctx.principleId) { selectPrinciple(ctx.principleId); return; }  // a principle's set
   if (ctx.mixed) { backToPractice(); return; }  // a weak-spot mix has no topic
   topicState.domain = ctx.domain;
-  switchTab('topics');
-  jumpToSubtopic(ctx.itemId);
-  // Focus the subtopic's row so keyboard users land where they left off.
-  var row = document.getElementById('ni-' + ctx.itemId);
-  var rowBtn = row && row.querySelector('.gt-row-btn');
-  if (rowBtn) rowBtn.focus({ preventScroll: true });
+  // The note's own page, focus on its title.
+  openNotePage(ctx.itemId);
 }
 
 // Leaving the set (tab switch, profile switch, reset): drop the mode flag.
@@ -13356,6 +13469,8 @@ function getNextQ(domainStr, diff) {
 function switchTab(t, opts) {
   // A stale or unknown page name (an older save, a typo'd link) opens Today.
   if (!NAV_SECTION[t]) t = 'home';
+  // Leaving Study notes closes an open note page (it reopens on the list).
+  if (t !== 'topics') notePageLeave();
   // Leaving a set mid-way pauses its clock (Continue picks it up again).
   if (S.activeTab === 'practice' && S.domainTimerActive && practiceLeftOpen()) S.domainTimerPaused = true;
   clearAllTimers(); // always clear timers when switching tabs
@@ -13492,6 +13607,8 @@ function navTo(e, target) {
   var t = navResolve(target);
   // Principles while a principle is open: back to the list.
   if (t === 'principles' && S.activeTab === 'principles' && principlesState.selectedId) { principlesBackToList(); return false; }
+  // Study notes while a note is open: back to the list.
+  if (t === 'topics' && S.activeTab === 'topics' && topicState.page) { noteBackToList(); return false; }
   switchTab(t);
   return false;
 }
@@ -13506,6 +13623,13 @@ function navFromHash(hash) {
     try { pid = decodeURIComponent(pid); } catch (e) {}
     return { tab: 'principles', action: 'principle:' + pid };
   }
+  // #note/<id>: one study note's reading page (ids keep their case).
+  var nm = /^note\/(.+)$/i.exec(String(hash || '').replace(/^#\/?/, ''));
+  if (nm) {
+    var nid = nm[1];
+    try { nid = decodeURIComponent(nid); } catch (e) {}
+    return { tab: 'topics', action: 'note:' + nid };
+  }
   // #exam-guide/<section id>: one section of About the CISA exam.
   var gm = /^exam-guide\/([a-z0-9-]{1,48})$/.exec(key);
   if (gm) return { tab: 'examguide', action: 'guide:' + gm[1] };
@@ -13519,6 +13643,7 @@ function navRunAction(action) {
   if (action === 'data' && typeof showYourData === 'function') showYourData();
   if (action.indexOf('principle:') === 0) openPrinciple(action.slice(10));
   if (action.indexOf('guide:') === 0) egOpenSection(action.slice(6));
+  if (action.indexOf('note:') === 0) openNotePage(action.slice(5));
 }
 // Marks the current section and page in the rail and the bottom bar, draws
 // the section's page links (phones) or the way back to You, and keeps the
@@ -13553,6 +13678,11 @@ function syncNav(t) {
     if (sec === 'learn' && t === 'learn') {
       // The Learn hub: its tiles are the way into each page.
       html = '';
+    } else if (t === 'topics' && topicState.page) {
+      // A note's reading page (O4): the way back to the list, as on You's pages.
+      sub.setAttribute('aria-label', 'Back');
+      sub.className = 'sub-nav sub-nav-back';
+      html = '<a href="#notes" onclick="return noteBackToList(event)">' + ico('chevron', 18, 'ico ico-back') + 'Study notes</a>';
     } else if (NAV_PAGES[sec]) {
       sub.setAttribute('aria-label', sec === 'learn' ? 'Learn pages' : 'Practice pages');
       sub.className = 'sub-nav sub-nav-pages';
@@ -13595,6 +13725,7 @@ function syncNav(t) {
   updateHeaderCountdown();
   try {
     var want = '#' + (NAV_HASH[t] || 'today');
+    if (t === 'topics' && topicState.page) want = '#note/' + encodeURIComponent(topicState.page);
     if (location.hash !== want && window.history && history.replaceState) {
       history.replaceState(history.state, '', want);
     }
@@ -13700,6 +13831,8 @@ window.addEventListener('hashchange', function () {
     if (S.activeTab === 'principles') { if (principlesState.selectedId) showPrinciplesList(); return; }
     principlesState.selectedId = null;
   }
+  // Plain #notes (Back from a note opened from the list): the list.
+  if (r.tab === 'topics' && !r.action && S.activeTab === 'topics' && topicState.page) { closeNotePage(); return; }
   // An address opened directly (typed, pasted or followed) starts at the top
   // of its page, as a first load does, not at the running head 56px down.
   // Browser Back and Forward too: focus lands on the new page's title, never
@@ -14608,13 +14741,10 @@ function refreshTodayNext() {
   }
   if (focused) { var b = td.querySelector('.td-next .you-row'); if (b) { try { b.focus({ preventScroll: true }); } catch (e) {} } }
 }
+// Today's Read next, the Learn hero and Learn's search: the note's page.
 function todayOpenNote(domainId, itemId) {
   topicState.domain = String(domainId);
-  switchTab('topics');
-  jumpToSubtopic(itemId);
-  var row = document.getElementById('ni-' + itemId);
-  var btn = row && row.querySelector('.gt-row-btn');
-  if (btn) { try { btn.focus({ preventScroll: true }); } catch (e) {} }
+  openNotePage(itemId);
 }
 function todayPracticeDomain(d) {
   switchTab('practice', { noScroll: true });
@@ -16158,7 +16288,9 @@ function fgStemSvg(areas, wide, o) {
       }
       if (delta > 0) g += '<path class="fg-st-grow' + trace + '"' + len + ' d="M' + xs + ' ' + yBase.toFixed(1) + 'V' + yTop.toFixed(1) + '"/>';
       var nx = sc.nx.toFixed(1);
-      g += '<ellipse class="fg-st-leaf' + (f.below || delta > 0 ? ' c' : '') + settle + '" cx="' + xs + '" cy="' + sc.tipY.toFixed(1) + '" rx="3" ry="5.6"/>'
+      // Clay only for an area below 70 (the key says so); a bud that grew
+      // and sits at or above 70 is drawn in accent, like its growth stem.
+      g += '<ellipse class="fg-st-leaf' + (f.below ? ' c' : delta > 0 ? ' g' : '') + settle + '" cx="' + xs + '" cy="' + sc.tipY.toFixed(1) + '" rx="3" ry="5.6"/>'
         + '<text class="fg-st-n' + settle + '" x="' + nx + '" y="' + sc.ny.toFixed(1) + '" text-anchor="' + sc.anchor + '">' + pct + '<tspan class="u" dy="-6">%</tspan>'
         + (delta ? '<tspan class="' + (delta > 0 ? 'fg-st-up' : 'fg-st-dn') + '"' + (sc.beside ? ' x="' + nx + '" dy="' + (wide ? 22 : 20) + '"' : ' dy="6"') + '>' + (sc.beside ? '' : ' ') + (delta > 0 ? '&uarr; up ' : '&darr;') + Math.abs(delta) + '</tspan>' : '') + '</text>';
     }
@@ -18206,11 +18338,7 @@ function railOpenNote(e, id, d) {
   railNoteFlush();
   railStat('note_open');
   topicState.domain = String(d);
-  switchTab('topics');
-  jumpToSubtopic(id);
-  var row = document.getElementById('ni-' + id);
-  var btn = row && row.querySelector('.gt-row-btn');
-  if (btn) { try { btn.focus({ preventScroll: true }); } catch (ex) {} }
+  openNotePage(id);
   return false;
 }
 // The note card. `exam`: exam-style questions keep the link but no coaching.
@@ -18220,7 +18348,7 @@ function railNoteCardHtml(res, exam, inline) {
   }
   var n = res.note;
   var st = gtNoteState(n.id);
-  var link = '<a class="sr-link" href="#notes" onclick="return railOpenNote(event,\'' + escapeHtml(n.id) + '\',\'' + escapeHtml(n.domain) + '\')">Open the note' + ico('arrow-right', 16) + '</a>';
+  var link = '<a class="sr-link" href="#note/' + escapeHtml(encodeURIComponent(n.id)) + '" onclick="return railOpenNote(event,\'' + escapeHtml(n.id) + '\',\'' + escapeHtml(n.domain) + '\')">Open the note' + ico('arrow-right', 16) + '</a>';
   if (inline) {
     return '<div class="vr-nl"><p class="vine-cap">From your study notes</p>'
       + '<p class="vr-nl-t">' + escapeHtml(n.name) + '</p>'
@@ -18468,7 +18596,8 @@ function railNotesInView() {
   };
   var note = pick(area.querySelectorAll('.gt-row.open'));
   var group = note ? note.closest('.gt-group') : pick(area.querySelectorAll('.gt-group.open'));
-  return { note: note ? note.id.replace(/^ni-/, '') : null, group: group ? group.id.replace(/^ng-/, '') : null };
+  var gid = group ? group.id.replace(/^ng-/, '') : note ? note.getAttribute('data-group') : null;
+  return { note: note ? note.id.replace(/^ni-/, '') : null, group: gid || null };
 }
 function railNotesSections() {
   var secs = [];
@@ -18503,12 +18632,7 @@ function railNotesSections() {
   return secs;
 }
 function railPracticeNote(id) { railStat('start_note'); startConceptPractice(id); }
-function railJumpNote(id) {
-  jumpToSubtopic(id);
-  var row = document.getElementById('ni-' + id);
-  var btn = row && row.querySelector('.gt-row-btn');
-  if (btn) { try { btn.focus({ preventScroll: true }); } catch (e) {} }
-}
+function railJumpNote(id) { openNotePage(id); }
 
 // ── Sections per page ──
 // The Practice hub's margin (v12.49; premium round 2, 5.3): "Ready today"
@@ -18541,15 +18665,19 @@ function railQSections() {
   var deeper = '';
   if (res.state === 'found') {
     var n = res.note, nst = gtNoteState(n.id);
-    deeper = vrDeeperRowHtml({
-      href: '#notes', data: ' data-id="' + escapeHtml(n.id) + '" data-d="' + escapeHtml(n.domain) + '"',
+    deeper = '<div class="vr-deeper-wrap">' + vrDeeperRowHtml({
+      href: '#note/' + escapeHtml(encodeURIComponent(n.id)), data: ' data-id="' + escapeHtml(n.id) + '" data-d="' + escapeHtml(n.domain) + '"',
       onclick: 'return railOpenNote(event,this.dataset.id,this.dataset.d)', icon: 'topics',
       kicker: 'Read the note', title: escapeHtml(n.name),
-      meta: escapeHtml(DI[n.domain] ? DI[n.domain].short : '') + ' &middot; ' + GT_STATE_WORD[nst] + ' &middot; about&nbsp;' + n.mins + '&nbsp;min' });
+      meta: escapeHtml(DI[n.domain] ? DI[n.domain].short : '') + ' &middot; ' + GT_STATE_WORD[nst] + ' &middot; about&nbsp;' + n.mins + '&nbsp;min' }) + '</div>';
   } else if (res.state === 'loading') {
     deeper = railNoteCardHtml(res, exam, false);
   }
-  if (pl) deeper += railPrincipleLinkHtml(pl);
+  // The principle as a row like the note's (36px badge, label over meta, 4.2 step 6).
+  if (pl) deeper += '<div class="vr-deeper-wrap">' + vrDeeperRowHtml({
+    href: '#principles/' + escapeHtml(pl.id), data: ' data-pid="' + escapeHtml(pl.id) + '"',
+    onclick: 'return railOpenPrinciples(event,this.dataset.pid)', icon: 'principles',
+    kicker: 'Read the principle', title: escapeHtml(pl.title), meta: 'How to think it through' }) + '</div>';
   // The margin holds two cards (4.2): Go deeper and Your note. The terms in
   // this question are a second group inside Go deeper, under a caption.
   var terms = railQuestionTerms(q);
@@ -18592,10 +18720,8 @@ function railHubInline(show) {
     if (slot.innerHTML !== html) slot.innerHTML = html;
   });
 }
-// The answer screen's one "Go deeper" row (premium pass 2.2): the study note
-// this question practises, else its principle; never more than one. The
-// rest (both, your note, Report a problem) is in the header's More sheet.
-// Patched in place like the rail, so a row in focus survives a redraw.
+// A Go deeper row (the note or the principle): a 36px badge, the kicker,
+// the title and a meta line, as one link.
 function vrDeeperRowHtml(o) {
   return '<a class="vr-deeper" href="' + o.href + '"' + o.data + ' onclick="' + o.onclick + '">'
     + '<span class="vr-deeper-ico" aria-hidden="true">' + ico(o.icon, 20) + '</span>'
@@ -18603,32 +18729,29 @@ function vrDeeperRowHtml(o) {
     + '<span class="vr-deeper-t">' + o.title + '</span><span class="vr-deeper-m">' + o.meta + '</span></span>'
     + '<span class="vr-deeper-chev" aria-hidden="true">' + ico('chevron', 18) + '</span></a>';
 }
+// Below 1240px the answer screen shows the margin's own cards in the page
+// (PHASE4.md 4.2 step 6): Go deeper (the note row, the principle row, the
+// terms in this question) and then Your note. The rail and this slot are
+// never drawn together, so the ids are shared. The headings step down one
+// level (h3, under the verdict's h2). Patched in place like the rail, so a
+// row in focus or a note being typed survives a redraw. More still lists
+// them all.
 function railQInline(show) {
   var slot = document.getElementById('vrStudy');
   if (!slot) return;
   var parts = [];
   if (show && railQAnswered()) {
-    var q = S.current;
-    var res = railNoteFor(q.id);
-    var pl = res.state === 'found' ? null : railPrincipleFor(q);
-    if (res.state === 'found') {
-      var n = res.note;
-      parts.push({ id: 'deeper', key: 'note:' + q.id + ':' + n.id, html: vrDeeperRowHtml({
-        href: '#notes', data: ' data-id="' + escapeHtml(n.id) + '" data-d="' + escapeHtml(n.domain) + '"',
-        onclick: 'return railOpenNote(event,this.dataset.id,this.dataset.d)', icon: 'topics',
-        kicker: 'Go deeper &middot; read the note', title: escapeHtml(n.name),
-        meta: 'About ' + n.mins + ' min &middot; the idea this question tests' }) });
-    } else if (pl && res.state === 'none') {
-      parts.push({ id: 'deeper', key: 'pl:' + q.id + ':' + pl.id, html: vrDeeperRowHtml({
-        href: '#principles/' + escapeHtml(pl.id), data: ' data-pid="' + escapeHtml(pl.id) + '"',
-        onclick: 'return railOpenPrinciples(event,this.dataset.pid)', icon: 'principles',
-        kicker: 'Go deeper &middot; read the principle', title: escapeHtml(pl.title),
-        meta: 'How to think it through' }) });
-    }
+    parts = railQSections().map(function (s) {
+      var html = s.html.replace(/<h3 class="sr-cap" id="srhTerms">([\s\S]*?)<\/h3>/, '<h4 class="sr-cap" id="srhTerms">$1</h4>')
+        .replace(/^<h2 class="sr-cap" id="([^"]+)">([\s\S]*?)<\/h2>/, '<h3 class="sr-cap" id="$1">$2</h3>');
+      return { id: s.id, key: s.key, cls: s.cls, html: html };
+    });
   }
   railPatch(slot, parts, function (s) {
-    var el = document.createElement('div');
-    el.className = 'vr-deeper-wrap';
+    var el = document.createElement('section');
+    el.className = 'vr-study-sec' + (s.cls ? ' ' + s.cls : '');
+    var h = /^<h3[^>]* id="([^"]+)"/.exec(s.html);
+    if (h) el.setAttribute('aria-labelledby', h[1]);
     el.innerHTML = s.html;
     return el;
   });
@@ -20557,7 +20680,7 @@ function renderQuestion(q) {
   // Per Decision 5: User picks option → confidence revealed → submit enabled.
   var optsHtml = DISPLAY_LETTERS.map(function(displayL, idx){
     var origL = shuffle[idx];
-    return '<button class="opt" data-l="' + displayL + '" onclick="pickAnswer(\'' + displayL + '\')">'
+    return '<button type="button" class="opt" data-l="' + displayL + '" aria-pressed="false" onclick="pickAnswer(\'' + displayL + '\')">'
       + '<span class="opt-letter">' + displayL + '</span>'
       + '<span>' + escapeHtml(smartQuotes(q.options[origL])) + '</span>'
       + '</button>';
@@ -20644,10 +20767,12 @@ function renderQuestion(q) {
 function pickAnswer(chosen) {
   if (!S.current) return;
   pendingAnswer = chosen;
-  // Visually mark the picked option (without grading)
+  // Mark the picked option (without grading): the ink edge and filled
+  // letter for the eye, aria-pressed for screen readers (PHASE4 section 5).
   document.querySelectorAll('.opt').forEach(function(b){
-    if (b.dataset.l === chosen) b.classList.add('picked');
-    else b.classList.remove('picked');
+    var on = b.dataset.l === chosen;
+    b.classList.toggle('picked', on);
+    b.setAttribute('aria-pressed', on ? 'true' : 'false');
   });
   // Reveal confidence stage
   var stage = document.getElementById('confStage');
@@ -20957,14 +21082,12 @@ function showResult(chosen, correct, timeout, info) {
   // 4. How to think about it: one card, a row per tip in a fixed order
   //    (Eliminate two, Final two, Exam cue; older or extra tips after them),
   //    each its label over the tip. The pick chip names the learner's pick
-  //    on the row that rules it out or puts it in the final two. While O1 is
-  //    open (PHASE4.md 4.6) a miss keeps the mobile 1.43 fold: the Exam cue
-  //    and the row the coach line names are open; the rest open with Read
-  //    more, after the Why.
+  //    on the row that rules it out or puts it in the final two. Every tip
+  //    is open in every state (O1, Sky 5 Nov 2026; PHASE4.md 4.2): after a
+  //    miss only a long Why folds.
   var expRaw = String(q.correct_explanation || '');
   var longWhy = expRaw.length > WHY_FOLD_CHARS;
-  var pk = !ok && !timeout ? pickCoachKind(q, chosenOrig) : null;
-  var tipOpen = [], tipFold = [], foldLabels = [];
+  var tipOpen = [];
   if (!inExamMode) {
     var order = { 'Eliminate two': 0, 'Final two': 1, 'Exam cue': 2 };
     var tips = (q.tips || []).filter(function (t) { return t && String(t).trim(); }).map(function (t, i) {
@@ -20995,37 +21118,32 @@ function showResult(chosen, correct, timeout, info) {
       var html = '<li class="vine-node vine-' + tone + '">' + vineLeafSvg(false)
         + '<p class="vine-cap">' + escapeHtml(label) + (chip ? '<span class="sr-only">, </span>' + chip : '') + '<span class="sr-only">: </span></p>'
         + '<p class="vine-tip">' + body + '</p></li>';
-      var open = ok || tone === 'cue' || (pk === 'elim' && tone === 'elim') || (pk === 'final' && tone === 'final');
-      if (open) tipOpen.push(html);
-      else { tipFold.push(html); foldLabels.push(label); }
+      tipOpen.push(html);
     });
   }
   var tipsOf = function (list, id) {
     return list.length ? '<ul class="vine vr-tips" id="' + id + '" style="--vine-n:' + list.length + '">'
       + list.map(function (h, i) { return h.replace('<li class="vine-node', '<li style="--i:' + i + '" class="vine-node'); }).join('') + '</ul>' : '';
   };
-  var howHtml = tipOpen.length || tipFold.length
+  var howHtml = tipOpen.length
     ? '<h3 class="vr-how">How to think about it</h3>' + tipsOf(tipOpen, 'vrVine') : '';
 
   // 5. Why D: in full after a right answer; after a miss or Time's up, a
-  //    long one shows two lines and Read more (the full text is always there
-  //    for a screen reader; the clamp is visual only). Read more's name lists
-  //    what it opens; the folded tip rows come straight after it.
+  //    long one shows two lines and Read more, which folds this paragraph
+  //    and nothing else (the full text is always there for a screen reader;
+  //    the clamp is visual only).
   var foldWhy = !ok && !inExamMode && longWhy;
   var whyHtml = '<h3 class="vr-why">Why ' + correct + '</h3>'
     + '<p class="vr-exp' + (foldWhy ? ' vr-fold' : '') + '" id="vrExp">' + escapeHtml(smartQuotes(mapLettersInText(expRaw, shuffle))) + '</p>';
-  if (!ok && !inExamMode && (foldWhy || tipFold.length)) {
-    var foldNames = (foldWhy ? ['the full explanation'] : []).concat(foldLabels);
-    var what = foldNames.length > 1 ? foldNames.slice(0, -1).join(', ') + ' and ' + foldNames[foldNames.length - 1] : foldNames[0];
-    whyHtml += '<button type="button" class="vr-readmore' + (foldWhy ? '' : ' vr-rm-tips') + '" id="vrReadMore" aria-expanded="false" aria-controls="vrExp' + (tipFold.length ? ' vrWhyMore' : '') + '"'
-      + ' data-what="' + escapeHtml(what) + '" onclick="toggleWhyFold(this)"><span class="vr-rm-t">Read more</span><span class="sr-only vr-rm-sr">: ' + escapeHtml(what) + '</span></button>'
-      + (tipFold.length ? '<div class="vr-why-more" id="vrWhyMore" hidden>' + tipsOf(tipFold, 'vrVine2') + '</div>' : '');
+  if (foldWhy) {
+    whyHtml += '<button type="button" class="vr-readmore" id="vrReadMore" aria-expanded="false" aria-controls="vrExp" onclick="toggleWhyFold(this)">'
+      + '<span class="vr-rm-t">Read more</span><span class="sr-only"> of the explanation</span></button>';
   }
 
   // 7. Source row (mobile TrustLine): "Original · Reviewed Oct 2026", the
   //    main source (the first one listed, its bracketed parts dropped, as
   //    mobile shortReference), and Report a problem (also in More).
-  var ref = q.framework_ref ? String(q.framework_ref).split(';')[0].replace(/\s*\([^)]*\)/g, '').trim() : '';
+  var ref = q.framework_ref ? refNoDash(String(q.framework_ref).split(';')[0].replace(/\s*\([^)]*\)/g, '').trim()) : '';
   var srcHtml = '<div class="vr-src"><div class="vr-src-t">'
     + '<span class="vr-src-ref">Original &middot; Reviewed ' + CONTENT_REVIEWED + '</span>'
     + (ref ? '<p class="vr-src-sub">' + escapeHtml(ref) + '</p>' : '')
@@ -21055,7 +21173,6 @@ function showResult(chosen, correct, timeout, info) {
   // The stem draws once as it scrolls into view (motion allowed only); the
   // folded one draws when "Read more" shows it.
   armVine(document.getElementById('vrVine'));
-  armVine(document.getElementById('vrVine2'));
   vrRecapWatch();
   // The margin starts teaching now: the three moves, the note, your note.
   try { railSync(); } catch (e) {}
@@ -21114,22 +21231,23 @@ function toggleStemRecap(btn) {
   if (l) l.textContent = open ? 'Show less' : 'Show question';
 }
 
-// "Read more" under a folded Why (after a miss).
-// "Read more" opens the folded Why and Eliminate two / Final two with it;
-// "Show less" folds all of it again. The toggle keeps its place, so focus
-// stays on it and the tips it opened come next in reading order.
+// "Read more" under a folded Why (after a miss): it opens the rest of the
+// explanation and nothing else; "Show less" folds it again. The toggle keeps
+// its place, so focus stays on it. Its name is "Read more of the
+// explanation" (or "Show less of the explanation").
+// Some source titles join their parts with a spaced en or em dash. Learner
+// text shows no dashes, so on screen that join reads as a colon.
+function refNoDash(ref) {
+  return String(ref || '').replace(/\s+[\u2013\u2014]\s+/g, ': ');
+}
 function toggleWhyFold(btn) {
   var exp = document.getElementById('vrExp');
   if (!exp || !btn) return;
   var open = btn.getAttribute('aria-expanded') !== 'true';
   btn.setAttribute('aria-expanded', open ? 'true' : 'false');
   exp.classList.toggle('open', open);
-  var more = document.getElementById('vrWhyMore');
-  if (more) more.hidden = !open;
   var t = btn.querySelector('.vr-rm-t');
   if (t) t.textContent = open ? 'Show less' : 'Read more';
-  var sr = btn.querySelector('.vr-rm-sr');
-  if (sr) sr.textContent = (open ? ': hides ' : ': ') + (btn.getAttribute('data-what') || '');
 }
 
 // Vine motion (DESIGN_SYSTEM §10.2): the stem draws down and each leaf pops
@@ -23297,10 +23415,10 @@ function principlesBackToList() {
   showPrinciplesList();
 }
 // Same landing as switchTab: the section's page bar on phones, else the screen.
-function plScrollTop() {
+function plScrollTop(screenId) {
   try {
     var sub = document.getElementById('subNav');
-    var sc = (sub && !sub.hidden && sub.offsetParent !== null) ? sub : document.getElementById('screen-principles');
+    var sc = (sub && !sub.hidden && sub.offsetParent !== null) ? sub : document.getElementById(screenId || 'screen-principles');
     if (sc && sc.scrollIntoView) sc.scrollIntoView({ block: 'start' });
   } catch (e) {}
 }
@@ -24073,7 +24191,7 @@ function renderGlossary() {
   var hero = '<div class="gl-head"><div class="gl-head-t">'
     + '<h1 class="gloss-title" tabindex="-1">Glossary</h1>'
     + '<p class="gl-sub">Key terms in plain words, with search and flashcards.</p>'
-    + '<p class="gl-prog"><span class="gloss-progress-pct">' + masteredCount + ' learned &middot; ' + pct + '%</span></p>'
+    + '<p class="gl-prog"><span class="gloss-progress-pct">' + masteredCount + ' mastered &middot; ' + pct + '%</span></p>'
     + '</div>' + glPlantHtml() + '</div>';
 
   var dom = glossState.domain, st = glossState.showMastered;
@@ -24325,7 +24443,7 @@ function renderFlashcardArea() {
 
   var html = '<div class="flashcard-area">'
     + '<div class="flashcard-progress">Card ' + (glossState.fcIndex + 1) + ' of ' + deck.length
-    +   ' &nbsp;&middot;&nbsp; ' + Object.keys(getMasteredSet()).length + ' learned'
+    +   ' &nbsp;&middot;&nbsp; ' + Object.keys(getMasteredSet()).length + ' mastered'
     + '</div>'
     + '<div class="flashcard' + (flipped ? ' flipped' : '') + '" onclick="flipFlashcard()">'
     +   '<span class="flashcard-side-label">' + (flipped ? 'Definition' : 'Term') + '</span>'
@@ -26166,7 +26284,7 @@ function buildMockAnswerKey(answers, queue) {
         + '<p class="mr-exp">' + escapeHtml(smartQuotes(mapLettersInText(q.correct_explanation, shuffle))) + '</p>';
     }
     if (q.framework_ref) {
-      html += '<p class="mr-ref">' + escapeHtml(q.framework_ref) + '</p>';
+      html += '<p class="mr-ref">' + escapeHtml(refNoDash(q.framework_ref)) + '</p>';
     }
     // The learner's own note on this question (written in practice).
     html += qNoteBlockHtml(q.id, 'q-note mr-note');

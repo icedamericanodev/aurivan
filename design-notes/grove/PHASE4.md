@@ -15,14 +15,12 @@ Status, updated 5 Nov 2026 (web review round 2): Phase 4 is built on both branch
 - **Website:** Practice, the answer screen, Learn (its own hub at `#learn`), Study notes, Glossary, Principles, About the exam, Final review week, set results, mock setup and mock results are on `feature/grove-ui` (c35f566, 6d61e22, 5cf31fb, a22f4d9, 5cae884, then review round 2).
 - **Phone:** the Learn, Practice and You tabs rebuilt to the 02, 03 and 04 boards, the answer screen and the inside pages (notes, principles, final review week, results) are on `grove-phone-p1` (3e8500a, 5562638, 5ee33e0, d04d620).
 
-Sky answered the open items on 5 Nov (`phase4b/p4-owner-answers.md`): yes to O1, O2, O3, O4, O7 and O8. O3 is built. These are approved and are the next build step, not built yet:
+Sky answered the open items on 5 Nov (`phase4b/p4-owner-answers.md`): yes to O1, O2, O3, O4, O7 and O8. O3 is built. Web review round 3 (5 Nov) built the website side of O1 and O4 and Sky's own checks of the web build (Learn tiles 2 by 2 at 390, the web Learn line without lessons, the Eliminate tip shown after a miss). Approved and still the next build step, all on the phone (`grove-phone-p1`):
 
-1. **O1, all three tips open after a miss** on both builds (only the long Why folds under Read more). Both builds still show the 4.6 fallback.
+1. **O1 on the phone:** stop calling `splitMissTips` (`app/session.tsx`) so all three tips are open after a miss, in the same release as the web.
 2. **O2, the phone Glossary screen** (read-only: search, area chips, A to Z rows, each meaning and "Read the note") and its Learn tile.
-3. **O4, the website note reading pages** (`#note/<id>` with a back link, like the phone). The website still opens a note in the list, restyled.
-4. **O7, the phone Mindset strip** with the website's tips added to the phone content pack (the strip is built and hidden until then).
-5. **O8, the phone Weak spots drill row**, with the website's rule.
-6. Sky's own checks of the first web build: Learn tiles 2 by 2 at 390 (one column only at large text or under 360px, an odd last tile spanning the width); the web Learn subtitle reworded (no lessons on the web); the Eliminate tip shown after a miss.
+3. **O7, the phone Mindset strip** with the website's tips added to the phone content pack (the strip is built and hidden until then).
+4. **O8, the phone Weak spots drill row**, with the website's rule.
 
 Planned for later, not part of Phase 4: **O5 Drills and O6 Question bank on the website**, as their own feature after device sync. Phase 4b (the plant, badges and drills restyle) runs next on both builds.
 
@@ -289,7 +287,7 @@ From 77.5em (1240px, the rule already used at 5267) the rail holds the "Look up 
 - The read mark (empty `--leaf-line` circle, filled accent with a tick, words in the label) shows at every width, not only 1280.
 - Keep filters All / To review / Read, Expand all, "Think of it this way", the domain overview, the forest domain panel and "Practice Domain N".
 - **Note page (O4):** `#note/<id>` opens the note as a reading page: a back link "Study notes" (page bar style), the title in `hero`, the note body as today, Previous and Next notes in one card. Fallback while O4 is open: the in-list note stays, its body inside the group card, its open title promoted to `headline`.
-  - Build status (web, review round 1, 5 Nov 2026): the fallback is what is built. The `#note/<id>` reading page is a new route and page (back link, Previous and Next), so it goes to Sky with the Phase 4 screenshots as O4 before it is built; until then O4 is treated as open.
+  - Build status (web, review round 3, 5 Nov 2026): O4 is built. Every way into a note (the list, the Learn hero and search, Today's Read next, Go deeper, Continue reading, the margin) opens `#note/<id>`; filters, Expand all and the read marks stay on the list.
 
 **Phone (`app/notes/index.tsx`, `[domain].tsx`, `subtopic/[id].tsx`):**
 - A display title "Study notes" on the page (copy `settings.tsx:807`: `PushedHeader` with `showTitle` after scroll plus `T v="display"` with `accessibilityRole="header"`, screen-reader focus starting on it via `titleRef`, `settings.tsx:807` to `812`). Same on Principles, Question bank, Saved and Mock start (titles per O16).
