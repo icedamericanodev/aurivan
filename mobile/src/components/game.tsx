@@ -4,7 +4,7 @@
  * Games stay full-screen and calm.
  */
 import { router } from 'expo-router';
-import { openTab } from '../lib/actions';
+import { backOr, DRILLS_HREF, openTab } from '../lib/actions';
 import { useEffect, useMemo, useRef, useState, type ReactNode, type Ref } from 'react';
 import { AccessibilityInfo, Pressable, ScrollView, View } from 'react-native';
 import Animated, { FadeIn, ReduceMotion } from 'react-native-reanimated';
@@ -136,7 +136,7 @@ export function GameFrame({
       <View style={{ paddingHorizontal: space.gutter }}>
         <PushedHeader
           icon="close"
-          onBack={() => router.back()}
+          onBack={() => backOr(DRILLS_HREF)}
           center={
             mode === 'twig' ? (
               <Twig total={total} results={done} index={index} />
@@ -454,7 +454,7 @@ export function RoundEnd({
           {/* Play again (solid) and Done (ghost), side by side; one above the other from text scale 1.3. */}
           <View style={{ flexDirection: large ? 'column' : 'row', gap: space.sm }}>
             <Button label="Play again" onPress={onAgain} style={large ? undefined : { flex: 1 }} />
-            <Button kind="ghost" label="Done" onPress={() => router.back()} style={large ? undefined : { flex: 1 }} />
+            <Button kind="ghost" label="Done" onPress={() => backOr(DRILLS_HREF)} style={large ? undefined : { flex: 1 }} />
           </View>
         </StickyFooter>
       </View>
@@ -616,7 +616,7 @@ export function GameIntro<V extends string>({
   return (
     <SafeAreaView edges={['top', 'bottom']} style={{ flex: 1, backgroundColor: c.bg }}>
       <View style={{ paddingHorizontal: space.gutter }}>
-        <PushedHeader backLabel="Practice" onBack={() => router.back()} />
+        <PushedHeader backLabel="Practice" onBack={() => backOr(DRILLS_HREF)} />
       </View>
       <View style={{ flex: 1 }}>
         <ScrollView contentContainerStyle={{ paddingHorizontal: space.gutter, paddingTop: space.sm, paddingBottom: footerH + space.xl }}>
@@ -866,6 +866,7 @@ export function GameUnavailable({ game }: { game: GameId }) {
   return (
     <EmptyScreen
       header={drillName(game)}
+      fallback={DRILLS_HREF}
       title="This game is on the way"
       body="It needs more practice questions for this exam first. Practice is ready in the meantime."
       primary={{ label: 'Go to Practice', onPress: () => openTab('/practice') }}

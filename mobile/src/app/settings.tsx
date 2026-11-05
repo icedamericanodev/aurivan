@@ -46,6 +46,7 @@ import Constants from 'expo-constants';
 import { useCallback, useEffect, useRef, useState, type ReactNode, type RefObject } from 'react';
 import * as ExpoRouter from 'expo-router';
 import { router, useLocalSearchParams } from 'expo-router';
+import { backOr } from '../lib/actions';
 import { Alert, Linking, Platform, View, type ScrollView } from 'react-native';
 import { aboutLine, AccountSettingsGroup } from '../components/account';
 import { BoardSettingsGroup } from '../components/board';
@@ -804,11 +805,11 @@ export default function Settings() {
               if (under !== titleUnder) setTitleUnder(under);
             }
       }
-      header={subCategory ? undefined : <PushedHeader title="Settings" showTitle={titleUnder} onBack={() => router.back()} />}
+      header={subCategory ? undefined : <PushedHeader title="Settings" showTitle={titleUnder} onBack={() => backOr('/you')} />}
     >
       <SettingsSubScreen.Provider value={subCategory !== undefined}>
         {/* A door's screen: its name is the bar's title, and screen-reader focus starts there. */}
-        {subCategory ? <PushedHeader title={subCategory.title} titleRef={subHeadRef} onBack={() => router.back()} /> : null}
+        {subCategory ? <PushedHeader title={subCategory.title} titleRef={subHeadRef} onBack={() => backOr('/you')} /> : null}
 
         {subCategory ? (
           subCategory.draw()

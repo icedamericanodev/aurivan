@@ -14,6 +14,7 @@
  *   Sapling. Heartwood not reached."). How a level grows is said once, above the card.
  */
 import { router } from 'expo-router';
+import { backOr } from '../lib/actions';
 import { useMemo } from 'react';
 import { ScrollView, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -50,7 +51,7 @@ export default function FieldNotes() {
   return (
     <SafeAreaView edges={['top', 'bottom']} style={{ flex: 1, backgroundColor: c.bg }}>
       <ScrollView contentContainerStyle={{ paddingHorizontal: space.gutter, paddingBottom: space.xxl }}>
-        <PushedHeader backLabel="You" onBack={() => router.back()} />
+        <PushedHeader backLabel="You" onBack={() => backOr('/you')} />
         <T v="display" accessibilityRole="header" style={{ marginTop: space.sm }}>Field notes</T>
         {/* How a level grows, said once for every game (it is the same rule for each). */}
         <T v="small" color={c.ink2} style={{ marginTop: space.md }}>Two rounds in a row at 80% or more, at your level, grow it.</T>

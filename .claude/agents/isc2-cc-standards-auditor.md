@@ -22,8 +22,8 @@ Read first:
   - stay within their role and authority.
 - **When a stem asks FIRST, BEST or MOST:** governance, policy and process come before a technical fix. This is a teachable pattern, not an ISC2 rule; tips must never claim ISC2 says it.
 - **ISC2 Code of Ethics, four canons:**
-  1. Protect society, the common good, public trust and the infrastructure.
-  2. Act honourably, honestly, justly, responsibly and legally.
+  1. Protect society, the common good, necessary public trust and confidence, and the infrastructure.
+  2. Act honorably, honestly, justly, responsibly, and legally.
   3. Provide diligent and competent service to principals.
   4. Advance and protect the profession.
 
@@ -68,7 +68,7 @@ Read first:
    - Each item carries a `_provenance` note describing how it was authored.
 10. **Inclusive and global.** Neutral names, globally recognisable settings (hospital, school, city council, logistics firm, small business), US spelling and they/them for people.
 
-11. **Canonical role names.** Use these in items and notes so the bank reads as one course: help desk (analyst or technician), security manager, security team, incident response lead, risk owner, policy owner, data owner, system owner, continuity coordinator, awareness lead, system administrator, network technician. Risk acceptance follows one rule everywhere: the risk owner accepts within tolerance, senior management decides beyond it (treat further or accept).
+11. **Canonical role names.** Use these in items and notes so the bank reads as one course: help desk (analyst or technician), access analyst (the identity and access practitioner in Domain 3 items), security manager, security team, incident response lead, risk owner, policy owner, data owner, system owner, continuity coordinator, awareness lead, system administrator, network technician. Risk acceptance follows one rule everywhere: the risk owner accepts within tolerance, senior management decides beyond it (treat further or accept).
 
 ## Tiered findings when auditing
 - **HARD ERROR:** wrong or disputed key; a second defensible answer; a factual error; an outdated source; a CISA auditor lens; copied text; a trademark misuse ("CC®" and "ISC2®" go in notices only, and never imply endorsement).

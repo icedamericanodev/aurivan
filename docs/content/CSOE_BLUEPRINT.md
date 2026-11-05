@@ -239,18 +239,20 @@ and 1B2 are added once their sources open):
 
 ## Question targets
 
-Bank size: **400**, the owner's decision on 31 Oct 2026 (`product-manager`
-and `behavioral-scientist` had each proposed about 300). Per-domain targets
-scale it by the weights above.
+Bank size: **392** (384 finalised 4 Nov 2026, plus eight D5 items from PCAOB AS 2201 and AS 2601 in batches 6 and 7). The owner set 400 on 31 Oct 2026
+(`product-manager` and `behavioral-scientist` had each proposed about 300),
+with the padding guard in the bank plan; the batch 5 audits found the public
+in-scope sources used up past 384, so the bank stops there (bank plan
+section 1). "Target" below is the weight-scaled 400; "Final" is what shipped.
 
-| Domain | Weight | Target | Pilot |
-|---|---|---|---|
-| D1 Scope and reach of the Act | 14% | 56 | 20 |
-| D2 The PCAOB and auditor independence | 16% | 64 | 20 |
-| D3 Corporate responsibility and financial disclosure | 16% | 64 | 20 |
-| D4 The SEC, enforcement and Dodd-Frank | 27% | 108 | 20 |
-| D5 Internal control frameworks and SOX scope | 27% | 108 | 20 |
-| Total | | **400** | **100** |
+| Domain | Weight | Target | Final | Pilot |
+|---|---|---|---|---|
+| D1 Scope and reach of the Act | 14% | 56 | 56 | 20 |
+| D2 The PCAOB and auditor independence | 16% | 64 | 64 | 20 |
+| D3 Corporate responsibility and financial disclosure | 16% | 64 | 68 | 20 |
+| D4 The SEC, enforcement and Dodd-Frank | 27% | 108 | 96 | 20 |
+| D5 Internal control frameworks and SOX scope | 27% | 108 | 108 | 20 |
+| Total | | **400** | **392** | **100** |
 
 - Mix per domain: about 30% foundational (recall), 55% application, 15%
   analysis (6 / 11 / 3 in a pilot of 20).
@@ -292,10 +294,10 @@ then pick the best of the rest.
 
 1. **PCAOB standards.** pcaobus.org answers automated requests with a
    Cloudflare challenge (not a network-policy block), so AS 2201 and the other
-   standards cannot be opened. Until then, PCAOB items key on the Act
-   (Title I) and SEC rules only, never on an AS paragraph. If the owner
-   downloads the current AS 2201 (and AS 1305) PDFs and attaches them, they
-   can be checked and cited.
+   standards cannot be opened by KaiSip's tools. The owner saved AS 2201,
+   AS 1305 and AS 2601 on 4 Nov 2026; those copies are cited (library, PCAOB
+   section), D5 101-106 key on AS 2201 and 107-108 on AS 2601. Other standards
+   stay uncited until the owner saves them too.
 2. **E-SOX and J-SOX (1B).** Need eur-lex.europa.eu without its bot challenge
    (or another official EU host such as op.europa.eu or finance.ec.europa.eu)
    and www.fsa.go.jp or www.japaneselawtranslation.go.jp.
@@ -315,3 +317,21 @@ then pick the best of the rest.
    enrol for now (CSOE_BANK_PLAN.md section 8); public exam-taker feedback
    was searched and holds nothing about the questions.
 6. **Domain experts** for each domain: `.claude/agents/csoe-d{1..5}-domain-expert.md`.
+
+7. **Sources running out (31 Oct 2026, batch 4).**
+   - **5B1 (COSO ERM 2004):** the 2004 framework itself is not public. The COSO
+     papers that report its content are used up for items, and items may not
+     key on a commissioned paper's own advice. Add no more 5B1 items unless the
+     owner supplies the 2004 framework.
+   - **5C2 (service organizations):** every opened angle is used, including
+     the last one (an issuer's user auditor works under PCAOB standards,
+     Section 103; csoe_d5_099, batch 5). Batch 6 added three from AS 2201
+     Appendix B (102-104) and batch 7 two from AS 2601 (107-108). D5 is at its
+     weight-scaled target (108); add no more 5C2 items.
+   - **5A1 and 5A2 (COSO internal control, batch 5, 4 Nov 2026):** take no more
+     COSO publication facts (dates, document names, template details). New
+     items need a framework concept or SEC text not yet keyed.
+   - **D4 (batch 5):** general securities and agency law past the Act's own
+     reach (resales, tender offers, rulemaking procedure) is out of scope.
+   - **Basel II pillars:** bis.org is unreachable.
+8. **Where SEC 404 guidance items go.** 5A1 holds items keyed on Release No. 33-8810 (d5_062-064, 077, 078) where the release ties to COSO concepts. From batch 5, items on how management evaluates ICFR (evidence, risk identification, deficiencies) go to 3B2; 5A1 takes only the framework itself and the SEC's account of it.

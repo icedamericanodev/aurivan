@@ -25,6 +25,7 @@
  */
 import { PageTitle } from '../components/groveHub';
 import { router } from 'expo-router';
+import { backOr } from '../lib/actions';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Pressable, ScrollView, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -110,6 +111,7 @@ export default function Saved() {
     return (
       <EmptyScreen
         header="Saved questions"
+        fallback="/you"
         art="bookmark"
         title="Nothing saved yet"
         body="Tap the bookmark on any question to build your own revision set."
@@ -123,7 +125,7 @@ export default function Saved() {
   return (
     <SafeAreaView edges={['top', 'bottom']} style={{ flex: 1, backgroundColor: c.bg }}>
       <ScrollView contentContainerStyle={{ paddingHorizontal: space.gutter, paddingBottom: footerH + space.xl }}>
-        <PushedHeader title="Saved questions" showTitle={false} onBack={() => router.back()} />
+        <PushedHeader title="Saved questions" showTitle={false} onBack={() => backOr('/you')} />
         <PageTitle title="Saved questions" />
         {/* Notes but nothing saved: say how to save, then the notes below. */}
         {saved.length === 0 && <T v="meta" style={{ marginTop: space.sm }}>Nothing saved yet. Tap the bookmark on any question to build your own revision set.</T>}

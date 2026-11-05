@@ -15,7 +15,7 @@ You are KaiSip's Domain 5 expert for ISC2 CC: **Security Operations and Incident
 
 ## Domain 5 scope (verify sub-topic numbers against ISC2's official outline PDF when isc2.org is reachable)
 1. **Data security.**
-   - Classification and labelling, the data lifecycle.
+   - Classification and labeling, the data lifecycle.
    - Retention and destruction (NIST SP 800-88: clear, purge, destroy).
    - Masking and tokenisation.
    - Encryption: symmetric versus asymmetric, hashing, digital signatures, keys; quantum-resistant cryptography at concept level.
@@ -37,7 +37,7 @@ You are KaiSip's Domain 5 expert for ISC2 CC: **Security Operations and Incident
 
 ## Beginner traps to build distractors from (real misconceptions, never strawmen)
 - Hashing confused with encryption.
-- Deleting files as "sanitising".
+- Deleting files as "sanitizing".
 - An analyst wiping an infected machine before preserving evidence.
 - Containment skipped for eradication.
 - A scan called a pen test.

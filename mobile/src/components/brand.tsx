@@ -131,8 +131,8 @@ export function KaisipLockup({ tone = 'auto', height = 32, decorative = false }:
 
 // ── Pillar glyphs (welcome + Settings → About), 24-unit grid ───────────
 /**
- * One small drawing per brand pillar: See the path (compass leaf), Grow deep
- * roots, Grow with the seasons (two turning arcs), Stand tall (a tree).
+ * One small drawing per brand pillar: See the path (compass leaf), Know why
+ * the best answer wins (roots), Grow with the seasons (two turning arcs), Stand tall (a tree).
  * Decorative: the pillar's title next to it says the same thing.
  */
 export function PillarGlyph({ kind, size = 24, isDark }: { kind: PillarGlyphKind; size?: number; isDark: boolean }) {

@@ -94,6 +94,7 @@ export default function NoteSubtopicScreen() {
     return (
       <EmptyScreen
         header="Study notes"
+        fallback="/learn"
         title="Note not found"
         body="It may have moved in a content update."
         primary={{ label: 'All study notes', onPress: () => router.replace('/notes') }}

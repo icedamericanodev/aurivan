@@ -38,6 +38,7 @@
  *   Every badge, its meaning, tiers and gating are unchanged.
  */
 import { router, useFocusEffect, useLocalSearchParams } from 'expo-router';
+import { backOr } from '../lib/actions';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Platform, ScrollView, useWindowDimensions, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -395,7 +396,7 @@ export default function Badges() {
     <SafeAreaView edges={['top', 'bottom']} style={{ flex: 1, backgroundColor: c.bg }}>
       <ScrollView ref={scroll} contentContainerStyle={{ paddingHorizontal: space.gutter, paddingBottom: space.xxl }}>
         {/* Grove 4b (F2, 5.1 item 1): the back row named for where it goes, then the page's one display title. */}
-        <PushedHeader backLabel="You" onBack={() => (router.canGoBack() ? router.back() : router.replace('/you'))} />
+        <PushedHeader backLabel="You" onBack={() => backOr('/you')} />
         <T v="display" accessibilityRole="header" style={{ marginTop: space.sm }}>Badges</T>
         {/* Short text (Sky, 5 Nov): the italic line, then the one promise, each said once. */}
         <T v="aside" color={c.ink2} style={{ marginTop: 2 }}>Every set counts on its own.</T>

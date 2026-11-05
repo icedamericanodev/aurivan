@@ -24,7 +24,7 @@ name: Database backup
 #      the run turns red after the upload, so GitHub emails the owner.
 # (docs/mobile/ACCOUNTS_BETA_PLAN.md §6; restore runbook in docs/mobile/SCALING.md.)
 #
-# The log of a public repository is public, so the job prints only the
+# A log can be shared or copied (and this repo was public once), so the job prints only the
 # database size and the sizes of our own tables (schemas public and private;
 # security audit L3). The account and session counts go into the encrypted
 # file (stats.txt), not the log. The password inside SUPABASE_DB_URL is

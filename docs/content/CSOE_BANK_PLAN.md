@@ -10,6 +10,8 @@ Never put the bank size in learner copy.
 
 ## 1. Targets
 
+**Bank finalised at 384 reviewed items (D1 56, D2 64, D3 68, D4 96, D5 100), 4 Nov 2026, now 392 (D5 108) after batches 6 and 7 added eight items from PCAOB AS 2201 and AS 2601, the newly opened sources the padding guard allows,** under the owner's "quality before count" and the padding guard below. The batch 5 audits found that D4 and D5 items past these counts were general securities law or COSO publication trivia, and that the in-scope public sources are used up. The 400 target is withdrawn (`product-manager`, 4 Nov 2026). New items enter only when a newly opened primary source adds an uncovered outline line, within the domain's weight; never from extra angles or D1-D3 overflow. Free sample unchanged: at least 100.
+
 **Owner decision, 31 Oct 2026: a bank of 400.** `product-manager` and
 `behavioral-scientist`, asked separately, had both proposed about 300 (range
 250–350); the owner raised it to 400 so the course offers more practice at
@@ -17,7 +19,7 @@ launch and covers more of SOXCPA's 1,022 slides, side topics included.
 
 | | Value |
 |---|---|
-| Full bank | **400** (owner, 31 Oct 2026) |
+| Full bank | **392** (384 finalised 4 Nov 2026, plus eight batch 6 and 7 items from PCAOB AS 2201 and AS 2601; the owner's 400 of 31 Oct 2026 was conditional on the padding guard; see above) |
 | Pilot | 20 per domain, IDs `csoe_dN_001`–`020`, every course part touched at least once |
 | Held-out mock items | about 70 (two 35-item forms), never served in practice |
 | Mix per domain | about 30% foundational (recall), 55% application, 15% analysis |
@@ -25,7 +27,9 @@ launch and covers more of SOXCPA's 1,022 slides, side topics included.
 
 Per-domain targets (blueprint "Question targets"): D1 56 · D2 64 · D3 64 ·
 D4 108 · D5 108, from each domain's share of the topic lines in SOXCPA's
-course synopsis (KaiSip's reading, not SOXCPA's). If the bank grows again,
+course synopsis (KaiSip's reading, not SOXCPA's). Adjusted 31 Oct 2026: D3
+holds 68 (4 held-out core items written for the mock forms), so D4 and D5
+target 106 each to keep the bank at 400. Final (4 Nov 2026): D4 96, D5 100 (108 after batches 6 and 7); see the paragraph at the top of this section. If the bank grows again,
 scale every domain by its weight.
 
 **Guarding against padding at 400** (the experts' concern above 350): the
@@ -110,6 +114,20 @@ a step.
 
 Linked pairs: never draw both items of a pair listed in `docs/content/CSOE_LINKED_PAIRS.md` into the same form, and keep the hub items it names in practice.
 
+Forms drawn 31 Oct 2026 at 304 items: `data/csoe/exam/mock_forms.json`, two
+35-item forms (D1 5, D2 6, D3 6, D4 9, D5 9 each), 70 items held out.
+- Drawn by `data/csoe/tools/draw_mock_forms.py --draw` (seeded). Check them
+  after every batch with `--check`.
+- No linked pair sits anywhere in the held-out set. No hub, and no item a
+  principle card links to, is held out.
+- Each form is at the 30/55/15 mix, with keys spread across A–D and 31–32
+  outline codes.
+- `sync_practice_ids.py` leaves held-out items out of the notes' "Practice this
+  concept" lists.
+- When CSOE is wired into the apps, the content build must also leave them out
+  of practice and the free sample, and serve them only as these forms
+  (`mobile-app-engineer`).
+
 ## 5. Pack: paid, lowest price tier
 
 Decided 31 Oct 2026 by `product-manager`:
@@ -122,7 +140,7 @@ Decided 31 Oct 2026 by `product-manager`:
   one-page "where to look" sheet (section, who, what, deadline, consequence)
   for the open-book exam.
 - **Free sample (owner decision, 31 Oct 2026): at least 100 questions**, the
-  shared rule unchanged. On the 400-item bank that is 25%. Plus the
+  shared rule unchanged. On the 392-item bank that is 26%. Plus the
   diagnostic and one short timed mock (the shared rule; a free full 35-item
   mock is not part of the decision). Chosen by domain and course part,
   best-reviewed items only, every domain represented, never from the
@@ -140,8 +158,8 @@ The same pieces as the CISA course, each in `data/csoe/`:
 | Principles ("how CSOE questions think") | `mindset/principles.json` (`docs/content/PRINCIPLES_SCHEMA.md`, CRISC-style deviations) | Written, audited and fixed (31 Oct 2026) |
 | About the exam | `exam/csoe_exam_guide.json` (`docs/content/EXAM_GUIDE_SCHEMA.md`) | Written, audited and fixed (31 Oct 2026) |
 | Final review week | `exam/final_review_week.json` | Written, audited and fixed (31 Oct 2026) |
-| Practice | `originals/d{1..5}.json` | 200 reviewed; growing to 400 |
-| Mock exam | the app's mock engine reads the bank; the held-out forms go in `exam/mock_forms.json` (two 35-item forms, never served in practice) | Forms drawn once the bank passes about 300; the forward-only mode is an app task (section 4). Release gate: the final review week asks for a 35-question, 90-minute mock, so it must exist before the course ships |
+| Practice | `originals/d{1..5}.json` | 392 reviewed (4 Nov 2026) |
+| Mock exam | the app's mock engine reads the bank; the held-out forms go in `exam/mock_forms.json` (two 35-item forms, never served in practice) | Two held-out forms drawn 31 Oct 2026 (`exam/mock_forms.json`, 70 items); the forward-only mode and excluding held-out items from practice are app tasks (section 4). Release gate: the final review week asks for a 35-question, 90-minute mock, so it must exist before the course ships |
 | Lessons | `lessons.json` (`docs/content/LESSONS_SCHEMA.md`) | After the bank |
 | Game decks | `mobile/src/content/games/csoe/` | App task, when CSOE is wired in |
 
@@ -230,7 +248,7 @@ Decided by the owner on 31 Oct 2026:
    recalled, never the questions themselves, which SOXCPA does not release)
    will be the best check of KaiSip's coverage.
 2. **Free sample: at least 100 questions** (section 5).
-3. **Bank: 400 questions** (section 1).
+3. **Bank: 400 questions** (section 1). Finalised at 384 on 4 Nov 2026 under "quality before count": the extra items would have been padding (section 1). Eight more from PCAOB AS 2201 and AS 2601, once the owner supplied them, bring it to 392.
 4. **Timing: finish CSOE now**, so KaiSip has it to offer at launch and adds
    certifications after. (`product-manager` had suggested building it after
    Phase E payments go live for CRISC and AAIA; the owner chose otherwise.)
@@ -249,6 +267,11 @@ Still settled by policy, not open:
 | Groundwork (31 Oct 2026) | — | — | — | — | — | 0 |
 | Pilot, notes plus 20 items per domain (31 Oct 2026) | 20 | 20 | 20 | 20 | 20 | 100 |
 | Batch 2, 20 items per domain plus notes (31 Oct 2026) | 40 | 40 | 40 | 40 | 40 | 200 |
+| Batch 3, D1-D3 to target, D4 and D5 +20 (31 Oct 2026) | 56 | 64 | 64 | 60 | 60 | 304 |
+| Batch 4, D4 and D5 +24, plus 4 held-out D3 core items (31 Oct 2026) | 56 | 64 | 68 | 84 | 84 | 356 |
+| Batch 5, D4 +12 and D5 +16 after cuts; bank final (4 Nov 2026) | 56 | 64 | 68 | 96 | 100 | 384 |
+| Batch 6, D5 +6 from PCAOB AS 2201 (owner-supplied copy, 4 Nov 2026) | 56 | 64 | 68 | 96 | 106 | 390 |
+| Batch 7, D5 +2 from PCAOB AS 2601 (owner-supplied copy, 4 Nov 2026) | 56 | 64 | 68 | 96 | 108 | 392 |
 
 Pilot reviews (31 Oct 2026):
 - **Blind test:** 100/100 picks matched the keys (testers saw no keys,
@@ -307,6 +330,168 @@ Batch 2 reviews (31 Oct 2026):
 - **Principles, exam guide and final week:** audited FIX THEN SHIP; 4 hard
   errors fixed (the mock described as forward-only when the app allows going
   back, in three places; only one of SOXCPA's two retake-wait versions).
+
+Batch 3 reviews (31 Oct 2026):
+- **Blind test:** 104/104 picks matched the keys. Every changed item was
+  re-tested blind and matched (D1 10, D2 13, D3 10, D4 12, D5 11, then 3
+  more after the cross-domain fixes).
+- **Standards audits:** FIX THEN SHIP in every domain, with no wrong key.
+  - Three items were replaced:
+    - two D2 items on Exchange Act Section 10A(b), a 1995 rule outside the course;
+    - one D4 item on general administrative law.
+  - One D1 item was reworked because it tested bare number recall.
+  - One hard error was fixed: a D4 explanation that narrowed Section 1103.
+- **Rules currency:** about 237 facts checked at the primary source. Nothing
+  keyed was wrong. Fixed: a Wells-process note (rejected submissions generally
+  do not reach the Commission), a release page locator, and several notes
+  lines. The rules watch gained rows for Volcker, the proxy proposals, the
+  COSO ERM update and Basel.
+- **Cross-domain review (304 items):** FIX THEN SHIP, no wrong keys, every
+  number stated twice matches. 30 edits:
+  - one near-duplicate re-angled (D4-049);
+  - explanation leaks closed;
+  - names standardized: "Exchange Act Section 19(b)", "engagement quality
+    reviewer", "emerging growth company", "Release No.".
+  - `CSOE_LINKED_PAIRS.md` now holds 123 linked pairs and 7 practice-only hubs.
+- **Library:** the batch's staged citations merged, one label per citation.
+
+Batch 4 reviews (31 Oct 2026):
+- **Mock forms:**
+  - Two held-out 35-item forms drawn from 304 items.
+  - A standards audit swapped 16 items, for practice leaks, a key that could
+    flip under a pending proposal, and rules tested twice.
+  - Four core items were written for the forms (csoe_d3_065-068, on material
+    weakness severity, Section 302 content and the Section 906 knowledge
+    tiers). They passed a blind test 4/4 and an audit.
+  - The same audit caught a practice item (D1-021) teaching that Section 906
+    needs no knowledge. It was fixed.
+- **Blind test:** 48/48 picks matched the keys. Every changed item was
+  re-tested blind and matched: D4 11/11, D5 17/17, then 3 and 5 more.
+- **Standards audits:** FIX THEN SHIP. Six D5 items keyed on COSO
+  commissioned papers' own advice, and were replaced with framework or SEC
+  text. One D4 item that went too deep was replaced. The D4 award-bar
+  overstatement was fixed.
+- **Rules currency:** about 90 facts checked; none that an item keys on was
+  wrong. Rules-watch rows added: the FPI concept release, the SOC 2 criteria
+  exposure drafts, and the repeal of the no-deny policy.
+- **Cross-domain review (356 items):** FIX THEN SHIP, with no wrong keys and
+  no held-out leaks.
+  - 44 edits made: one near-duplicate narrowed, near-leaks toward held-out
+    keys closed, two items anchored in SEC text, and naming fixed.
+  - Three edits were skipped because they needed a change to the shared
+    `scripts/lint_exam_style_v2.py`, which this work does not touch: the
+    "Release No." form in two held-out stems.
+- **Bank total:** D3 is at 68 because of the held-out core items. To keep the
+  bank at the owner's 400, D4 and D5 now target 106 each (22 more each).
+
+Batch 5 reviews (4 Nov 2026):
+- **Drafted:** 22 items each for D4 and D5 (to 106).
+- **Blind test:** 44/44 picks matched the keys. Every changed item was
+  re-tested blind and matched: D4 9/9, D5 7/7.
+- **Standards audits:** both found padding past the in-scope sources.
+  - D4: 11 items cut (investor resale law, a bidder's tender-offer duty,
+    general rulemaking and agency law, bare-number and repeated lessons). One near-leak toward a
+    held-out key was closed. A new Section 13(b)(6) item was written; it
+    passed its blind test and an audit.
+  - D5: 6 items cut as padding (COSO publication facts and repeated
+    angles); no strong in-scope replacement was found.
+- **Rules currency:** 49 D4 facts and every D5 fact checked; none wrong.
+  The 5 U.S.C. 553 library line now records the (d) exceptions. Rules-watch
+  row added for Fischer v. United States (18 U.S.C. 1512(c)(2)).
+- **Bank final at 384** (`product-manager`, section 1). The IDs are
+  consecutive again after the cuts; linked pairs use the new IDs.
+- **Cross-domain review (384 items):** FIX THEN SHIP, with no wrong keys, no
+  contradictions across domains and no held-out leaks.
+  - 17 hints fixed: pre-read lines and sub-topic labels that pointed at the
+    key. The blind copy leaves both fields out, so blind tests cannot catch
+    them; read them at audit.
+  - The Section 1102 tampering items and their note moved from 4B3 to 4B1
+    (note 4B1.4); a SOC 1 note line was moved off the auditor's test plan.
+  - Six linked pairs recorded. "Section 404 covers ICFR, not ERM" now has
+    three angles (d5_010, 073, 085): add no fourth.
+  - Two stems keep "Section 1512 of title 18": the shared style lint counts
+    the periods in "U.S.C." as sentence breaks.
+
+Batch 7 reviews (4 Nov 2026), D5 107-108 from PCAOB AS 2601:
+- **Source:** the owner saved the AS 2601 page; the library's PCAOB section
+  records it (SAS 70 lineage; AS 2601 does not use "Type 1" and "Type 2").
+- **Verified:** d5_103's reading of .03 (now cited) and the bank's Type 1 /
+  Type 2 mapping to .24's report names; every use in data/csoe/ is consistent.
+- **New rules:** complementary user organization controls stay with users and
+  the service auditor does not evaluate them (.31, .44); the service
+  organization answers for its description even if the service auditor
+  prepares it (.33). Rejected as repeats, recall or audit planning: .02, .03
+  exclusion, .10-.19, .21, .22, .23, .24, .53.
+- **Reviews:** blind 2/2 and re-blind after the stem changes; standards audit
+  FIX THEN SHIP (one HARD in note 5C2.8's rule, which implied the user auditor
+  may refer to the report; fixed); rules currency 16 of 18 facts verified, one
+  note statement wrong (the same rule line, fixed), nothing pending at the SEC.
+- **Never key:** "the service auditor follows only SSAE 18" in an issuer setting
+  (AS 2601.22 names PCAOB standards), and no third Type 1 / Type 2 angle.
+
+Batch 6 reviews (4 Nov 2026), D5 101-106 from PCAOB AS 2201:
+- **Source:** the owner saved the AS 2201 and AS 1305 pages from pcaobus.org
+  (its bot challenge blocks KaiSip's tools). The library's PCAOB section records
+  the copy and its SHA-256. AS 1305 had no D5 use.
+- **Scope:** six new rules: the auditor uses management's framework (.05),
+  outsourced processing in information and communication (.B18), a report
+  without tests gives no evidence of operating effectiveness (.B20 note), no
+  reference to the service auditor (.B27), and benchmarking conditions and
+  baseline reset (.B29, .B33). Skipped as repeats or held-out cues: .36, .47,
+  .B22, .B23, .B24-.B25.
+- **Blind test:** 6/6 matched the keys; the 3 items whose stems changed were
+  re-tested blind.
+- **Standards audit:** FIX THEN SHIP, no hard errors. Fixed: a stem word echoed
+  only in the key, an audit-procedure framing ("the auditor's BEST step"),
+  "must" where the standard says "should", a stem scenario that cued held-out
+  d5_036, and two note rules.
+- **Rules currency:** 27 of 30 facts verified, none wrong. The 15 Dec 2026 AS
+  2201 amendments touch only .09 and .99. Three rules-watch rows added.
+- **Cross-domain review:** FIX THEN SHIP, no hard errors, no contradictions
+  and no held-out leaks. Fixed: a stem word echoed in the key, the CEO and CFO
+  named for Section 302, role names in note audit lines, a note line that read
+  like held-out d5_049's runner-up, and an exam cue that taught d5_083's rule.
+  Note 3B2.2 now bridges the statute's "attests to management's assessment"
+  and AS 2201.03's opinion on ICFR. Three more linked pairs recorded.
+- **Next angles:** add no further .B18 angle (103 is thin), no third Type 1
+  angle, and nothing on .B24-.B25 (held-out d5_049's key).
+
+Lessons for batch 5 (D4 and D5 only, 22 items each to go):
+- **Closed:** all the batch 4 closures, plus settlements, subpoenas and
+  formal orders, orderly liquidation, the Rule 10D-1 package, Rule 2-06, PCAOB
+  and broker-dealers, the Federal Insurance Office, Comptroller General
+  studies, award bars, Section 806, SEC staff FAQ Q8, ERM 2017 benefits and
+  misconceptions, and the COSO 2013 "which principle" format.
+- **Sources:** never key on a COSO commissioned paper's own advice. Such
+  papers may only report framework content.
+- **Where items go:** remaining D4 items go to 4A1, 4A2 and 4B3. D5 items on
+  SEC 404 evaluation guidance (Release No. 33-8810) go under 3B2-style
+  evaluation lines, not 5A1. 5B1 and 5C2 are source-limited (blueprint open
+  items).
+- **Checks:** check every new explanation against the held-out set in
+  `data/csoe/exam/mock_forms.json`. A practice item may not state a held-out
+  key.
+
+Lessons for batch 4 (D4 and D5 only, 48 items each to go):
+- **Closed rules:** no new items on Item 406, Form 8-K/Section 409, Part 205,
+  Section 402, Section 306(a), Section 304, cooling-off, Section 204/Rule
+  2-07, Section 107(b), preapproval, Section 106 production, Section 207,
+  partner rotation, Rule 12g3-2(b), Form F-6, the Release 33-8810 IT
+  guidance, 5C1 IT scope, ERM 2017 "which principle or component", or
+  Volcker.
+- **Scope test:** a rule enters the bank only if it is in the Act, Dodd-Frank,
+  the SEC's rules carrying them out, or the COSO frameworks. Older
+  securities law that SOX only renamed (such as Section 10A(b)) and general
+  agency law are out.
+- **Recall:** no bare number or year recall; test the lesson the number
+  supports.
+- **Company names:** fictional companies must not point to a country that an
+  SEC order or rule treats specially; check the stem against the facts it
+  sets.
+- **Length tell:** by word count the key is the longest option in about 30% of
+  items in D1-D3. Balance word length as well as character length.
+- **Explanations:** check every new explanation against the linked-pairs file
+  for sentences that state another item's key.
 
 Lessons for batch 3:
 - D1 writes 6 of 20 as incomplete statements (batch 2 had 4).

@@ -15,7 +15,7 @@ You coach the ISC2 CC mindset for KaiSip. Read `.claude/agents/isc2-cc-standards
   - **governance:** policy before technology; the owner accepts risk.
   - **ethics:** the four canons; due care and due diligence.
   - **response:** contain before you clean; preserve evidence; report.
-- **A CC exam guide and final-review week** (`data/cc/exam/`, same schemas as `data/exam/`). Cover CAT behaviour honestly:
+- **A CC exam guide and final-review week** (`data/cc/exam/`, same schemas as `data/exam/`). Cover CAT behavior honestly:
   - no going back;
   - 100–125 items, 25 of them unscored;
   - 2 hours;

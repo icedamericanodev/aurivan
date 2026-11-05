@@ -2,7 +2,7 @@
 
 Two items are linked when one item's explanation or key gives away the other's answer, or both test the same rule from contrasting angles. A held-out mock form must never contain both items of a pair. Source: the batch 2 cross-domain review (31 Oct 2026); extend it at every cross-domain gate.
 
-Rule for the form builder: Draw no two items of a pair into the same form. Keep the hubs csoe_d3_038 and csoe_d4_029 in practice, not in the held-out set: their facts recur too often to test cleanly.
+Rule for the form builder: Draw no two items of a pair into the same form. Keep the hubs csoe_d3_038, csoe_d4_029, csoe_d4_001, csoe_d2_012, csoe_d2_014, csoe_d5_045 and csoe_d5_056 in practice, not in the held-out set: their facts recur too often to test cleanly.
 
 | Item A | Item B | Why linked |
 |---|---|---|
@@ -50,3 +50,187 @@ Rule for the form builder: Draw no two items of a pair into the same form. Keep 
 | csoe_d5_016 | csoe_d5_035 | parallel keys, both A ('...and the [IT/general] controls behind them') |
 | csoe_d5_018 | csoe_d5_039 | d5_039 CE: management keeps the responsibility and may rely on a Type 2 report |
 | csoe_d1_024 | csoe_d1_038 | only if XD-01 is not applied |
+| csoe_d5_020 | csoe_d5_043 | d5_020's exam cue gives the acquired-business-only exception; 043's wrong explanation C and tip 1 give d5_020's runner-up |
+| csoe_d5_040 | csoe_d5_049 | both rest on SEC staff ICFR FAQ Question 8 |
+| csoe_d5_003 | csoe_d5_051 | 051's stem and explanation say a home-country framework may be used |
+| csoe_d5_004 | csoe_d5_054 | d5_004's explanation says the 17 principles were drawn from the components |
+| csoe_d5_002 | csoe_d5_046 | d5_002's explanation names the cube's other faces |
+| csoe_d5_002 | csoe_d5_045 | d5_002 wrong explanation D: entity levels are the cube's third dimension (045's key) |
+| csoe_d5_028 | csoe_d5_045 | 045 wrong explanation C: accept, reduce, share and avoid are options in risk response (028's key) |
+| csoe_d5_009 | csoe_d5_045 | d5_009 lists the eight 2004 components; 045 option B is three of them |
+| csoe_d5_007 | csoe_d5_044 | d5_007 exam cue: oversight is control environment (044's key) |
+| csoe_d5_030 | csoe_d5_044 | d5_030: board oversight is principle 2 in control environment |
+| csoe_d5_031 | csoe_d5_056 | 056 wrong explanation B: strategy and objective-setting sets risk appetite (031's key) |
+| csoe_d5_047 | csoe_d5_056 | 047 wrong explanation D: principle 16 sits in review and revision (056's key) |
+| csoe_d5_052 | csoe_d5_056 | 052 wrong explanation A: review and revision handles change once strategy is set |
+| csoe_d5_033 | csoe_d5_052 | shared option wording; d5_033 wrong explanation A explains principle 15 |
+| csoe_d5_057 | csoe_d5_060 | 060 wrong explanation C: the internal control framework suits entities of any size |
+| csoe_d5_003 | csoe_d5_048 | 048 tests a non-COSO framework's suitability, implying COSO is not mandated |
+| csoe_d3_042 | csoe_d3_043 | d3_042 explanation and exam cue state notice to the exchange (d3_043's key) |
+| csoe_d3_011 | csoe_d3_053 | d3_053 says fair-fund money goes to victims; d3_011 calls fair funds an exception to the Treasury rule |
+| csoe_d3_046 | csoe_d4_019 | d4_019 wrong explanations: Section 304 turns on misconduct and reaches only the CEO and CFO |
+| csoe_d3_032 | csoe_d3_058 | same rule (Regulation G Rule 100); each names the other's key |
+| csoe_d3_007 | csoe_d3_045 | d3_045 explanation: Rule 13b2-2(b) carries out Section 303 (d3_007's key) |
+| csoe_d3_051 | csoe_d3_052 | the Section 307 duty runs inside the client; each settles the other's final two |
+| csoe_d3_019 | csoe_d3_060 | d3_019 explanation: the website route works when the annual report announced it |
+| csoe_d1_039 | csoe_d3_054 | d3_054 explanation: Section 402 bars loans to directors and executive officers (d1_039's basis) |
+| csoe_d1_039 | csoe_d3_012 | same reason (d3_012 explanation) |
+| csoe_d3_008 | csoe_d3_046 | d3_046's stem states Section 304's 12-month window (part of d3_008's key) |
+| csoe_d2_019 | csoe_d2_060 | d2_060 explanation: a former team member in an oversight role in the look-back bars the firm |
+| csoe_d2_019 | csoe_d2_061 | d2_061 explanation: a former team member in an oversight role leaves the firm not independent |
+| csoe_d2_060 | csoe_d2_061 | d2_060 exam cue names the role test that d2_061 keys |
+| csoe_d2_014 | csoe_d2_055 | d2_055 explanation: permitted non-audit services need audit committee preapproval |
+| csoe_d2_015 | csoe_d2_055 | d2_055 wrong explanation A and tips: the de minimis waiver |
+| csoe_d2_011 | csoe_d2_051 | d2_051 explanation: FASB writes U.S. accounting standards |
+| csoe_d2_011 | csoe_d2_050 | d2_050 explanation: the SEC recognizes a qualifying private standard setter |
+| csoe_d2_020 | csoe_d2_062 | d2_062 explanation: Section 207 ordered only a study of firm rotation |
+| csoe_d2_033 | csoe_d2_052 | contrasting angles on who changes Board rules |
+| csoe_d2_004 | csoe_d2_043 | d2_043 explanation: Board sanctions are open to SEC review |
+| csoe_d2_006 | csoe_d2_047 | same Section 106 production duty, contrasting angles |
+| csoe_d2_012 | csoe_d2_054 | contrasting angles on Section 107(b) processing of Board rules |
+| csoe_d2_054 | csoe_d4_045 | both key the Exchange Act Section 19(b) process (PCAOB vs exchange) |
+| csoe_d2_012 | csoe_d4_045 | d2_012 explanation: the SEC publishes notice, takes comment and approves |
+| csoe_d2_049 | csoe_d4_059 | both rest on 929F-amended PCAOB discipline provisions |
+| csoe_d2_047 | csoe_d4_037 | foreign counterpart regulators: production through them vs Board sharing with them |
+| csoe_d2_048 | csoe_d3_015 | 404(b) attestation in the audit vs the Section 103 audit-report content |
+| csoe_d2_007 | csoe_d2_057 | look-alike three-year cycles: firm inspection vs special engagement review |
+| csoe_d2_057 | csoe_d2_063 | d2_057 exam cue contrasts the two small-firm exemptions |
+| csoe_d2_058 | csoe_d2_059 | two angles on the audit-partner definition |
+| csoe_d2_017 | csoe_d2_059 | d2_059 tips: the lead partner and reviewer have the five-year limit |
+| csoe_d4_014 | csoe_d4_049 | both key 18 U.S.C. 1349 |
+| csoe_d4_055 | csoe_d4_056 | d4_056: the U.S. buffer comes from Basel III through the agencies' rule |
+| csoe_d4_038 | csoe_d4_058 | d4_038: independent directors decide the Rule 10D-1 cost exception |
+| csoe_d4_019 | csoe_d4_058 | d4_058's wrong explanation D and its tips: recovery does not turn on the officer's role (no-fault) |
+| csoe_d4_051 | csoe_d4_052 | both Exchange Act Section 32(a) as raised by Section 1106 |
+| csoe_d4_032 | csoe_d4_052 | mirror individual-versus-entity penalty items |
+| csoe_d1_054 | csoe_d4_047 | both Section 1103; each explanation states the other's key |
+| csoe_d2_003 | csoe_d4_060 | Section 109 fee allocation, contrasting measures |
+| csoe_d4_018 | csoe_d4_057 | d4_057: the 989G(b) study touched only 404(b); 404(a) stays |
+| csoe_d3_043 | csoe_d4_046 | d3_043's exam cue: audit committee rules are listing conditions |
+| csoe_d1_008 | csoe_d4_057 | d4_057 explanation states the 2020 Rule 12b-2 revenue test (d1_008's key) |
+| csoe_d1_048 | csoe_d1_053 | parallel signer lists; d1_048 states d1_053's key |
+| csoe_d1_047 | csoe_d1_048 | d1_048 wrong explanation B: Form F-6 holds no company financials |
+| csoe_d1_010 | csoe_d1_047 | d1_010 wrong explanation C: Form F-6 covers only the deposit terms |
+| csoe_d1_017 | csoe_d1_047 | d1_017 wrong explanation C: Form F-6 registers only the deposit terms |
+| csoe_d1_012 | csoe_d1_052 | d1_052 option B describes the 10A-3(c)(3) board-of-auditors exemption |
+| csoe_d1_044 | csoe_d1_045 | d1_044 tip 2: Title VII only ordered a study |
+| csoe_d1_022 | csoe_d1_045 | d1_022 exam cue: Title VII ordered studies |
+| csoe_d1_018 | csoe_d1_051 | d1_051 exam cue: the ADR level decides whether the company reports at all |
+
+| csoe_d2_037 | csoe_d2_056 | d2_037 CE: Section 204 sends 'other material written communications' to the audit committee (d2_056's key) |
+| csoe_d2_018 | csoe_d2_056 | d2_018 CE: the report covers critical policies, alternatives 'and other material written communications' (d2_056's key) |
+| csoe_d2_026 | csoe_d2_047 | d2_026 CE, WA and tip 2: Section 106(f) lets staff accept production through foreign counterparts (d2_047's key) |
+| csoe_d5_012 | csoe_d5_045 | d5_045 WD: the 2017 update has five components and 20 principles (d5_012's key); drop if the WD edit is applied |
+| csoe_d5_031 | csoe_d5_052 | d5_031 CE places analyzing business context in strategy and objective-setting (d5_052's key) |
+| csoe_d5_020 | csoe_d5_051 | d5_020 CE and exam cue: management's report must always state whether ICFR is effective (d5_051's key) |
+| csoe_d1_041 | csoe_d4_021 | d1_041 WB and tip 1: Item 308(a) carries out Section 404(a)'s rules (d4_021's key); d4_021's exam cue teaches d1_041's statute-versus-rule test |
+| csoe_d1_042 | csoe_d2_043 | d1_042 CE and WB: the SEC reviews Board sanctions under Section 107(c), half of d2_043's key |
+| csoe_d2_017 | csoe_d2_058 | d2_058 WB: the five-year limit binds the partners who lead or review the audit (d2_017's key) |
+| csoe_d4_045 | csoe_d4_046 | d4_046 CE: exchange listing rules went to the SEC under Exchange Act Section 19(b) (d4_045's process) |
+| csoe_d5_004 | csoe_d5_053 | d5_053 KC and option A: the 2013 update's 17 principles (part of d5_004's key) |
+| csoe_d5_045 | csoe_d5_046 | both test cube faces; d5_046 WD and d5_045's exam cue: the third face is the entity's structure |
+| csoe_d3_057 | csoe_d3_058 | d3_057 WB: Regulation G covers calls as well as releases, which rules out d3_058's option C (partial) |
+| csoe_d1_025 | csoe_d4_057 | d4_057 CE: an SRC under $100 million revenue is not an accelerated filer (decides d1_025) |
+| csoe_d1_028 | csoe_d1_029 | d1_029's stem gives the 30 June test date (d1_028's key) |
+| csoe_d1_052 | csoe_d3_001 | both Rule 10A-3(b)(1) fee test; d1_052 option A states it |
+| csoe_d3_029 | csoe_d3_051 | same Section 307 internal-ladder rule; d3_029 WC and tip 1 eliminate d3_051 B |
+| csoe_d3_039 | csoe_d3_059 | both Item 406 |
+| csoe_d4_015 | csoe_d4_034 | d4_015 CE: the Treasury Secretary chairs the FSOC (d4_034's key) |
+| csoe_d4_015 | csoe_d4_035 | d4_015 CE and WA: the Insurance Office monitors and advises as a nonvoting member |
+| csoe_d5_001 | csoe_d5_002 | d5_001 CE: operations, reporting and compliance (d5_002's key) |
+| csoe_d5_001 | csoe_d5_021 | d5_001 CE: 'process carried out by the board, management and other personnel' (d5_021's key) |
+| csoe_d5_004 | csoe_d5_025 | d5_004 tip 2: points of focus are optional aids (d5_025's key) |
+| csoe_d5_013 | csoe_d5_032 | d5_013 B, WB and tip 2: ERM is more than a risk list (d5_032's final two) |
+| csoe_d5_021 | csoe_d5_058 | shared 'board, management and other personnel' wording |
+| csoe_d3_017 | csoe_d3_065 | same deficiency definitions; d3_065 wrong explanation D states d3_017's key |
+| csoe_d3_005 | csoe_d3_068 | the same 18 U.S.C. 1350(c) tiers from opposite sides |
+| csoe_d3_025 | csoe_d3_067 | d3_067 says the disclosure committee only advises |
+| csoe_d3_006 | csoe_d3_066 | d3_066 says the 404(a) report is annual (d3_006's key) |
+| csoe_d3_006 | csoe_d3_067 | d3_067 says the 404(a) report is annual (d3_006's key) |
+| csoe_d5_021 | csoe_d5_061 | proposed by the D5 batch 4 author (process definition) |
+| csoe_d5_053 | csoe_d5_068 | proposed by the D5 batch 4 author |
+| csoe_d5_019 | csoe_d5_082 | proposed by the D5 batch 4 author (SOC report users) |
+| csoe_d5_018 | csoe_d5_083 | proposed by the D5 batch 4 author (outsourced activity in ICFR) |
+| csoe_d4_005 | csoe_d4_065 | d4_065's stem implies subpoenas come with a formal order |
+| csoe_d4_023 | csoe_d4_064 | related rules on disclosing an investigation (d4_023 is held out) |
+| csoe_d4_027 | csoe_d4_069 | related limitations rules (d4_027 is held out) |
+| csoe_d4_057 | csoe_d4_083 | 083's explanation and tips name the SEC's Section 989G(b) study (d4_057 is held out) |
+| csoe_d4_022 | csoe_d4_062 | notice and comment for explanatory guidance (d4_022 is held out) |
+| csoe_d4_012 | csoe_d4_073 | Section 21F(c)(2) award bars |
+| csoe_d4_039 | csoe_d4_073 | award bars (d4_039 is held out) |
+| csoe_d4_010 | csoe_d4_072 | 072 wrong explanation D: Section 806 complaints go to Labor |
+| csoe_d4_010 | csoe_d4_074 | 074 wrong explanation D and tip 1: the same fact |
+| csoe_d4_008 | csoe_d4_070 | 070 wrong explanation D: Section 1519 turns on obstructing a federal matter |
+| csoe_d1_019 | csoe_d4_070 | the same Section 1519 statement |
+| csoe_d2_008 | csoe_d4_070 | 070's stem: Rule 2-06 runs longer than five years |
+| csoe_d4_028 | csoe_d4_068 | both on 18 U.S.C. 1348 |
+| csoe_d4_017 | csoe_d4_080 | 080's exam cue: the auditor is registered with the PCAOB |
+| csoe_d4_017 | csoe_d4_081 | 081's stem: the PCAOB investigates broker-dealer audits |
+| csoe_d4_035 | csoe_d4_075 | 075 wrong explanation B: the insurance office's role |
+| csoe_d4_035 | csoe_d4_079 | both on the insurance office's powers |
+| csoe_d4_047 | csoe_d4_065 | the SEC acts through a federal court |
+| csoe_d4_053 | csoe_d4_077 | Title II; 077 names the FDIC's recommending role (d4_053 is held out) |
+| csoe_d5_042 | csoe_d5_068 | d5_068's explanation and exam cue give the management-accountable, board-oversees split (held-out d5_042) |
+| csoe_d5_038 | csoe_d5_082 | d5_038's stem states d5_082's key (SOC 1 for user entities) |
+| csoe_d5_018 | csoe_d5_084 | d5_084 wrong explanation C and tip 1: monitoring outsourced controls is management's work |
+| csoe_d5_001 | csoe_d5_062 | both test reasonable assurance |
+| csoe_d5_001 | csoe_d5_070 | d5_070 teaches that effective control cannot guarantee results |
+| csoe_d5_064 | csoe_d5_077 | both Release 33-8810 II.A.2.b monitoring evidence |
+| csoe_d5_033 | csoe_d5_071 | entity-wide view vs portfolio view |
+| csoe_d5_010 | csoe_d5_073 | ERM is broader than internal control |
+| csoe_d5_032 | csoe_d5_073 | the 2017 misconceptions box |
+| csoe_d5_032 | csoe_d5_074 | the 2017 misconceptions box |
+| csoe_d4_061 | csoe_d4_066 | both rest on Section 13(d); d4_066's stem gives away d4_061's answer |
+| csoe_d5_055 | csoe_d5_084 | 084's framework_ref cites the Cyber Age section 'Control Environment and Monitoring Activities', the wording of 055's key; both rest on that section (055 is held out) |
+| csoe_d5_066 | csoe_d5_067 | contrasting angles on the monitoring component; 067's WA and exam cue tie principle 16 to the evaluations 066 keys |
+| csoe_d5_013 | csoe_d5_073 | 073's WC and Final two say ERM is more than a longer risk list, which rules out held-out 013's option B (as 013/032 does) |
+| csoe_d5_007 | csoe_d5_078 | 078's stem and explanation put fraud risk in the risk assessment, d5_007's key |
+| csoe_d5_005 | csoe_d5_065 | contrasting severity yardsticks; 065's added sentence states 005's key (SEC filers grade severity in the SEC's terms) |
+| csoe_d5_038 | csoe_d5_099 | d5_038 wrong explanation B and exam cue state d5_099's key |
+| csoe_d5_045 | csoe_d5_088 | proposed by the D5 batch 5 author |
+| csoe_d5_010 | csoe_d5_085 | proposed by the D5 batch 5 author |
+| csoe_d5_023 | csoe_d5_086 | proposed by the D5 batch 5 author |
+| csoe_d5_002 | csoe_d5_087 | proposed by the D5 batch 5 author |
+| csoe_d5_002 | csoe_d5_090 | proposed by the D5 batch 5 author |
+| csoe_d4_085 | csoe_d4_086 | two angles on the Section 13(b) books-and-records and internal-control provisions (D4 batch 5) |
+| csoe_d4_085 | csoe_d4_096 | the three Section 13(b) angles; 096 tests the 13(b)(6) good-faith rule |
+| csoe_d4_086 | csoe_d4_096 | the three Section 13(b) angles |
+| csoe_d4_092 | csoe_d4_093 | two angles on the Title XI tampering and obstruction crimes |
+| csoe_d4_093 | csoe_d4_094 | two angles on the Title XI tampering and obstruction crimes |
+| csoe_d4_092 | csoe_d4_094 | two angles on the Title XI tampering and obstruction crimes |
+| csoe_d4_008 | csoe_d4_092 | the proceeding need not be pending, under Section 1519 and Section 1512(c) |
+| csoe_d4_051 | csoe_d4_095 | the three Section 32(a) penalty angles |
+| csoe_d4_052 | csoe_d4_095 | the three Section 32(a) penalty angles |
+| csoe_d1_024 | csoe_d4_085 | same Section 12 or 15(d) reach angle on a bond-only issuer; each exam cue settles the other's final two |
+| csoe_d4_068 | csoe_d4_085 | d4_068's explanation states the Section 12 or 15(d) issuer test that decides d4_085 |
+| csoe_d4_042 | csoe_d4_088 | both on Section 17(a)'s reach; d4_088's WA, tip 2 and note 4A1.4 say 17(a) covers offers and sales (d4_042 is held out; a link, not a leak) |
+| csoe_d5_022 | csoe_d5_086 | d5_086's WA and tip 1: ICFR leaves out COSO's operations objectives, part of held-out d5_022's lesson (does not decide it) |
+| csoe_d5_090 | csoe_d5_093 | contrasting angles on COSO's three objective categories (note 5A2.6) |
+| csoe_d1_019 | csoe_d4_008 | both key 18 U.S.C. 1519 reaching anyone (actor angle against timing and the 1520 look-alike) |
+| csoe_d5_003 | csoe_d5_101 | 101's explanation and WA/WB say COSO is not required and frameworks come from due-process bodies, d5_003's key (batch 6) |
+| csoe_d5_019 | csoe_d5_104 | the Type 1 / Type 2 rule from management's side (019) and the auditor's side under AS 2201.B20 (104) |
+| csoe_d5_083 | csoe_d5_103 | 103's stem and exam cue put ledger-posting outsourced processing inside ICFR, d5_083's key |
+| csoe_d5_083 | csoe_d5_102 | 102's WC and tip 1 say information-system services stay within ICFR, d5_083's key |
+| csoe_d5_083 | csoe_d5_104 | 104's WC and tip 1 say information-system services stay within ICFR, d5_083's key |
+| csoe_d5_099 | csoe_d5_102 | 102's stem has an issuer's auditor using a SOC 1 report under PCAOB AS 2201, d5_099's key |
+| csoe_d5_099 | csoe_d5_104 | 104's stem has an issuer's auditor using a SOC 1 report under PCAOB AS 2201, d5_099's key |
+| csoe_d5_105 | csoe_d5_106 | 106's option A and WA state the AS 2201.B29 benchmarking conditions, 105's key |
+| csoe_d5_018 | csoe_d5_102 | 102's WD and tip 1: outsourcing never moves management's responsibility to the provider, d5_018's key (batch 6) |
+| csoe_d5_099 | csoe_d5_103 | 103's stem has an issuer's auditor treating a payroll provider's services under PCAOB AS 2201, d5_099's key (batch 6) |
+| csoe_d5_016 | csoe_d5_105 | 105's WB and tip 2: purchased software still rests on effective, tested general controls, close to d5_016's key (batch 6) |
+| csoe_d5_039 | csoe_d5_107 | 107's key, WD and exam cue keep the user company's own controls with the user, next to 039's key (batch 7) |
+| csoe_d5_018 | csoe_d5_107 | 107's WD and tip 1 say outsourcing never moves the user company's ICFR responsibility, d5_018's key |
+| csoe_d5_002 | csoe_d5_088 | both test the scope of the COSO definition |
+| csoe_d5_038 | csoe_d5_100 | SOC 1 use by user auditors |
+| csoe_d5_039 | csoe_d5_100 | SOC 1 use by user auditors |
+| csoe_d5_082 | csoe_d5_100 | SOC 1 report users |
+| csoe_d5_057 | csoe_d5_089 | COSO is not documents or rule-following |
+| csoe_d5_061 | csoe_d5_089 | COSO is not documents or rule-following |
+| csoe_d5_065 | csoe_d5_095 | monitoring and reporting lines |
+| csoe_d5_067 | csoe_d5_095 | monitoring and reporting lines |
+| csoe_d5_068 | csoe_d5_091 | who the board is and what it does |
+| csoe_d5_074 | csoe_d5_097 | ERM 2017 reasonable expectation |
+| csoe_d5_070 | csoe_d5_097 | reasonable expectation, not results |
+| csoe_d5_022 | csoe_d5_085 | Release 33-8238 ICFR definition (d5_022 is held out) |
+| csoe_d5_001 | csoe_d5_097 | reasonable assurance vs reasonable expectation (d5_001 is held out) |
+| csoe_d3_034 | csoe_d5_096 | evidential matter supporting management's assessment |

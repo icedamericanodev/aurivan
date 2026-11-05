@@ -130,16 +130,21 @@ section 6, which also apply.
 
 ## 5. The course pack (what learners buy)
 
-A pack carries six kinds of content (`mobile/src/content/packs/types.ts`). This
-PR ships the first two; the rest are planned here so the course launches
-complete.
+A pack carries six kinds of content (`mobile/src/content/packs/types.ts`).
+Questions, notes, glossary, principles, exam guide and final-review week exist
+and are app-ready but not switched on (owner decision, 31 Oct 2026: AAIA stays
+hidden until the paywall). Lessons and game decks are still planned.
+`node scripts/aaia_pack_dry_run.cjs` (run by `verify_repo.sh`) feeds these files
+to the phone app's own pack builders and draws a full and a short mock, so a
+broken file fails the repo check before AAIA is ever switched on.
 
 | Part | Source file (planned path) | Schema | Owner agents | Status |
 |---|---|---|---|---|
-| Questions, one file per domain | `data/aaia/originals/d{1..3}.json` (served copies generated at Stage 2.7) | `QUESTION_SCHEMA.md`, `EXAM_STYLE_V2.md` | `aaia-dN-domain-expert`, `aaia-standards-auditor` | Pilot 60, reviewed |
+| Questions, one file per domain | `data/aaia/originals/d{1..3}.json` (served copies generated at Stage 2.7) | `QUESTION_SCHEMA.md`, `EXAM_STYLE_V2.md` | `aaia-dN-domain-expert`, `aaia-standards-auditor` | Pilot + batch 2, reviewed |
 | Notes | `data/aaia/notes/d{1..3}.json` | `NOTES_SCHEMA_V2.md` | domain experts, `cisa-notes-curator` (structure), `learner-reader` | 52 subtopics, reviewed |
-| Principles | `data/aaia/principles.json` | `PRINCIPLES_SCHEMA.md` | `isaca-mindset-coach` (AAIA section) | Plan: 12–15 principles that extend CISA's families (role, priorities, assurance, remedies, response, reading) with AI cases: named owner, retrain is a change, accuracy is not assurance, real oversight, AI in the audit stays the auditor's call. Tag items with `principle_id` once it exists |
-| Exam guide and final-review week | `data/aaia/exam_guide.json`, `data/aaia/final_review_week.json` | `EXAM_GUIDE_SCHEMA.md` | `isaca-mindset-coach`, `cert-blueprint-researcher` | Plan: 90 items in 150 minutes (100 seconds each), the prerequisite list, scaled 200–800 with 450 to pass, the June 2025 outline; practice scores are not scaled scores |
+| Glossary | `data/aaia/glossary.json` (same fields as the web `glossData`) | checked by `scripts/check_aaia_bank.py` | domain experts, `isaca-concept-reviewer` | Built and reviewed, 31 Oct 2026; definitions agree with the notes |
+| Principles | `data/aaia/principles.json` | `PRINCIPLES_SCHEMA.md`, `PRINCIPLE_TAGGING.md` (AAIA section) · `scripts/lint_principles.py --cert aaia` | `isaca-mindset-coach` (AAIA section) | Built and reviewed, 31 Oct 2026: 19 principles in CISA's six families with AI cases (named owner, AI changes are changes, accuracy is not assurance, independence of AI assurance, AI in the audit stays yours). Questions carry `principle_id` tags |
+| Exam guide and final-review week | `data/aaia/exam_guide.json`, `data/aaia/final_review_week.json` | `EXAM_GUIDE_SCHEMA.md` | `isaca-mindset-coach`, `cert-blueprint-researcher` · `scripts/lint_exam_guide.py --cert aaia` | Built and reviewed, 31 Oct 2026: 90 items in 150 minutes (target pace 90 seconds, keeping 15 minutes to review), who can take it, scaled 200–800 with 450 to pass, the June 2025 outline; practice scores are not scaled scores. Facts re-checked on isaca.org |
 | Lessons | `data/aaia/lessons.json` | `LESSONS_SCHEMA.md` | `learning-game-designer`, domain experts | Plan: one decision lesson per area (17), starting with the five lens lessons: owner, change, evidence, oversight, AI in the audit |
 | Game decks | `mobile/src/content/games/aaia/{roles,sequences,flows}.json` | as the CISA decks | `learning-game-designer` | Plan: roles (who decides: board, owner, committee, validator, auditor), sequences (AI lifecycle, incident steps), flows (finding writing) |
 
@@ -164,7 +169,8 @@ payment, never renews). Notes, lessons, principles and games stay free.
   both halves of Domain 3.
 - **Diagnostic:** 30 items from the sample, 10 per domain weighted 10 / 14 / 6
   inside it… rounded to 10 / 13 / 7, one per area at least.
-- **Short mock:** 30 items, 45 minutes (the exam's 100 seconds per item), drawn
+- **Short mock:** 30 items, 45 minutes (the app's target pace of 90 seconds per
+  item; the exam itself allows 100), drawn
   from the sample, never from the paid bank.
 - The sample is fixed per release (a `free: true` flag on each item at Stage
   2.7), and changes only with a new reviewed release.
@@ -224,6 +230,10 @@ the notice is part of the description.
 |---|---|---|---|---|
 | Pilot (30 Oct 2026) | 20 | 20 | 20 | 60 |
 | Batch 2 (31 Oct 2026) | +30 | +30 | +30 | 150 |
+| Batch 3 (31 Oct – 4 Nov 2026) | +30 | +42 | — | 222 |
+| Batch 4 (4 Nov 2026) | — | +42 | +32 | 296 |
+| Batch 5 (5 Nov 2026) | +30 | +42 | — | 368 |
+| Batch 6 (5 Nov 2026) | — | +42 | +32 | 442 |
 
 Pilot review, 30 Oct 2026:
 - **Blind tests:** 60/60 picks matched the keys on the first pass. After the
@@ -266,6 +276,79 @@ keys but can be answered from general governance knowledge. Keep them for now;
 in batch 3, re-angle 030 around an AI-specific owner power (pause or override
 the model, approve a retrain) and 029 toward what validation must test, checked
 against `aaia_d2_014` so the two do not duplicate.
+
+Batch 3 review, 31 Oct – 4 Nov 2026 (D1 and D2 only; one weekly usage-limit stop, resumed from saved results):
+- **Authors:** two new items per notes subtopic in D1 (30) and D2 (42), each on an angle the subtopic's
+  older items do not use, with a new setting; D1 029 and 030 re-angled as planned (029 now tests what
+  validation must cover for a new population, so it moved to `test-the-ai-as-used`; 030 turns on who
+  accepts a retrained model for use).
+- **Five reviewers per domain:** first blind pass 74/74. Two HARD ERRORs, both fixed without changing a key:
+  D2 056 had a second defensible answer (the benchmark did not match the task, so the item now uses a
+  matching benchmark and turns on contamination alone; three reviewers flagged it); D1 054 stated drift as
+  always gradual. The D1 author also replaced one draft that copied a CISA scenario before review.
+- **Fix loops:** three rounds per domain; every changed item re-tested blind and re-audited, and every
+  re-test matched its key (including a final blind re-test of D1 029, 054 and 061, 3/3).
+- **Cross-domain gate:** 11 PRECISION fixes (a notes example mirrored by an item, reused settings,
+  near-duplicate lessons), applied and re-tested.
+- **Tags and citations:** the mindset coach re-checked every new tag (194 of 222 tagged; untagged
+  knowledge items listed in `PRINCIPLE_TAGGING.md`). One citation added after checking the source
+  (NIST AI 600-1 MS-2.11-001).
+- **Completeness critic:** 8 gaps (three reused settings, a notes mirror, the 029 tag, a provenance trail,
+  the D1 length tell), all closed. D1 length tell 18.1%, D2 20.1%.
+
+**Carried to batch 4:** `auditor-assesses-never-owns-ai` has two seeds, both in D3: add a D1 item whose
+runner-up has the IS auditor signing or approving. `contain-and-preserve-ai` still needs a third seed.
+Next round: D2 and D3 (D3 has had no new items since batch 2).
+
+Batch 4 review, 4 Nov 2026 (D2 and D3 only):
+- **Authors:** two new items per notes subtopic in D2 (42) and D3 (32). 11 of D3's 32 are on using AI inside
+  the audit. The two carried seeds exist: aaia_d2_131 (`contain-and-preserve-ai`) and aaia_d3_055
+  (`auditor-assesses-never-owns-ai`), so both cards have three practice questions.
+- **Five reviewers per domain:** first blind pass 74/74. Two HARD ERRORs, fixed without changing a key: D2 105
+  reused a KaiSip CISA item almost word for word (rewritten), and D2 120 claimed paired tests isolate one
+  signal although generated text varies run to run.
+- **Fix loops, cross-domain gate (10 PRECISION fixes) and completeness critic (7 gaps: three settings that
+  repeated CRISC items, two tag moves, two provenance trails), all closed.** A last fix round cleared the
+  remaining wording findings (stem words echoed only in a key, claims the stem did not support, one item
+  whose deciding fact was general audit sense); every changed item was re-tested blind and matched its key.
+- **Citations:** four added after checking the opened texts (NIST AI 100-2e2025 Sections 2.3.2 and 2.3.3,
+  MITRE ATLAS AML.T0018.000, SP 800-53 CM-11).
+- Length tell: D2 19.4%, D3 21.3%. Tags: 256 of 296.
+
+**Carried to batch 5:** `auditor-assesses-never-owns-ai` still has no D1 seed; spell "cutoff" (US English, as the
+CISA bank) across all AAIA files in one spelling-only change. Next round: D1 and D2.
+
+Batch 5 review, 5 Nov 2026 (D1 and D2 only):
+- **Spelling:** "cutoff" is now one word in every AAIA file (42 changes, spelling only).
+- **Authors:** two new items per notes subtopic in D1 (30) and D2 (42), each on an angle and setting the
+  subtopic did not use. The carried seed exists: aaia_d1_089 is the first D1 item for
+  `auditor-assesses-never-owns-ai`.
+- **Five reviewers per domain:** first blind pass 72/72. Two HARD ERRORs (one per domain, from the second
+  domain expert), fixed without changing a key.
+- **Fix loops, cross-domain gate (10 PRECISION fixes) and completeness critic (2 gaps: a tagging-record count
+  and the library question below), all closed; a final fix round cleared the remaining wording findings,
+  with every changed item re-tested blind.**
+- **Citations:** four added by the citation librarian after checking the opened texts (NIST AI 100-1
+  Sections 3.6, 5.1 and 6; MITRE ATLAS AML.T0077). Authors still may not edit the library; the librarian may.
+- Length tell: D1 18.6%, D2 19.0% (both inside the 15–24% band).
+
+**Next round:** D2 and D3 (D3 is furthest from its target share after D1).
+
+Batch 6 review, 5 Nov 2026 (D2 and D3 only):
+- **Authors:** two new items per notes subtopic in D2 (42) and D3 (32), with the batch 3–5 lessons in the brief
+  (AI fact must decide; no stem echo, leading pre_read or reused frame). 11 of D3's 32 are on using AI inside
+  the audit.
+- **Five reviewers per domain:** first blind pass 74/74 and no HARD ERROR from any reviewer, the first batch
+  with none. PRECISION findings went through three fix rounds, the cross-domain gate (6) and the completeness
+  critic (4 gaps: two reused frames, a library question and a soft length-tell target).
+- **One disputed item:** aaia_d2_187 split the blind tester three times (the direct fix against the per-use
+  inventory key). The domain expert's fix kept the key and added the deciding fact (most models are shared
+  across lines); the runner-up is now a model-level rule, so the per-use fact decides. Re-tested blind.
+- **Citations:** two added by the citation librarian and checked by hand against the opened texts (NIST AI
+  100-2e2025 Section 2.4.1; MITRE ATLAS AML.T0088).
+- Length tell: D2 19.7%, D3 19.7%. Tags: 373 of 442.
+
+**Next round:** D1 and D2.
 
 ## 10. Follow-ups outside this plan's scope
 

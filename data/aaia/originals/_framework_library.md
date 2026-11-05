@@ -116,10 +116,16 @@ The bracket is a short paraphrase of the subcategory statement.
   - Verified 30 Oct 2026: the seven characteristics (valid and reliable; safe; secure and resilient; accountable and transparent; explainable and interpretable; privacy-enhanced; fair with harmful bias managed).
 - NIST AI 100-1 Section 3.4 (Accountable and Transparent)
 - NIST AI 100-1 Section 3.5 (Explainable and Interpretable)
+- NIST AI 100-1 Section 3.6 (Privacy-Enhanced)
+  - Verified 5 Nov 2026: "3.6 Privacy-Enhanced" in the table of contents and as the section heading (page 17); it says privacy-related risks "come with tradeoffs with these other characteristics" and that, under conditions such as data sparsity, privacy-enhancing techniques "can result in a loss in accuracy, affecting decisions about fairness".
 - NIST AI 100-1 Section 3.7 (Fair with Harmful Bias Managed)
   - Section numbers 3.4, 3.5 and 3.7 Verified 30 Oct 2026 against the table of contents.
+- NIST AI 100-1 Section 5.1 (Govern is a cross-cutting function infused throughout the others)
+  - Verified 5 Nov 2026: Section 5.1 is "Govern" in the table of contents; its text says "GOVERN is a cross-cutting function that is infused throughout AI risk management and enables the other functions" and that attention to governance "is a continual and intrinsic requirement" over an AI system's lifespan. Section 5 adds that most users start with MAP after instituting the outcomes in GOVERN.
 - NIST AI 100-1 Section 5.2 (Map outcomes are the basis for Measure and Manage)
   - Verified 31 Oct 2026: Section 5.2 is "Map" in the table of contents; its text says "Outcomes in the MAP function are the basis for the MEASURE and MANAGE functions", and Section 5 says most users start with MAP and continue to MEASURE or MANAGE.
+- NIST AI 100-1 Section 6 (AI RMF Profiles)
+  - Verified 5 Nov 2026: "6 AI RMF Profiles" in the table of contents (page 33); the text says a Current Profile "indicates how AI is currently being managed", a Target Profile "indicates the outcomes needed", "Comparing Current and Target Profiles likely reveals gaps to be addressed", and "Prioritization of gap mitigation is driven by the user's needs and risk management processes".
 
 ## NIST AI 600-1, AI RMF Generative Artificial Intelligence Profile, Jul 2024
 
@@ -133,6 +139,8 @@ https://nvlpubs.nist.gov/nistpubs/ai/NIST.AI.600-1.pdf (Section 2, the twelve ri
 - NIST AI 600-1 Section 2.9 (Information Security)
 - NIST AI 600-1 Section 2.10 (Intellectual Property)
 - NIST AI 600-1 Section 2.12 (Value Chain and Component Integration)
+- NIST AI 600-1 MS-2.11-001 (Document benchmark assumptions and limitations including possible training/test data cross contamination)
+  - Verified 31 Oct 2026: suggested action MS-2.11-001 in the MEASURE 2.11 table (Section 3) says "Document assumptions and limitations of benchmarks, including any actual or possible training/test data cross contamination, relative to in-context deployment environment."
 
 ## NIST AI 100-2e2025, Adversarial Machine Learning: A Taxonomy and Terminology of Attacks and Mitigations, Mar 2025
 
@@ -140,7 +148,13 @@ All entries: **Verified** 30 Oct 2026 against
 https://nvlpubs.nist.gov/nistpubs/ai/NIST.AI.100-2e2025.pdf (table of contents and section text).
 - NIST AI 100-2e2025 Section 2.2 (Evasion Attacks and Mitigations)
 - NIST AI 100-2e2025 Section 2.3 (Poisoning Attacks and Mitigations)
+- NIST AI 100-2e2025 Section 2.3.2 (Targeted Poisoning)
+  - Verified 4 Nov 2026: "2.3.2. Targeted Poisoning" in the table of contents and as the section heading [NISTAML.024]; targeted attacks "induce a change in the ML model's prediction on a small number of targeted samples", and its mitigations name access controls, data sanitization and validation, and dataset provenance and integrity attestation.
+- NIST AI 100-2e2025 Section 2.3.3 (Backdoor Poisoning)
+  - Verified 4 Nov 2026: "2.3.3. Backdoor Poisoning" in the table of contents and as the section heading [NISTAML.021, NISTAML.023]; these attacks "cause the targeted model to misclassify samples containing a particular backdoor pattern or trigger".
 - NIST AI 100-2e2025 Section 2.4 (Privacy Attacks and Mitigations)
+- NIST AI 100-2e2025 Section 2.4.1 (Data Reconstruction)
+  - Verified 5 Nov 2026: "2.4.1. Data Reconstruction" in the table of contents (page 28) and as the section heading [NISTAML.032]; it covers recovering an individual's data from released aggregate information, model inversion of classifiers, and reconstructing training samples from a model, linked to memorization. It does not discuss embeddings, so do not use it alone for embedding inversion.
 - NIST AI 100-2e2025 Section 2.4.2 (Membership Inference)
   - Verified 31 Oct 2026: "2.4.2. Membership Inference" in the table of contents and as the section heading [NISTAML.033]; the attacker's goal is to determine whether a particular record was part of the training dataset.
 - NIST AI 100-2e2025 Section 2.4.4 (Model Extraction)
@@ -161,6 +175,8 @@ https://raw.githubusercontent.com/mitre-atlas/atlas-data/main/dist/ATLAS.yaml
 - MITRE ATLAS AML.T0010 (AI Supply Chain Compromise)
 - MITRE ATLAS AML.T0015 (Evade AI Model)
 - MITRE ATLAS AML.T0018 (Manipulate AI Model)
+- MITRE ATLAS AML.T0018.000 (Poison AI Model)
+  - Sub-technique of AML.T0018; Verified 4 Nov 2026 in ATLAS data v5.6.0: poisoning a model by manipulating its weights, training it on poisoned data or further fine-tuning it.
 - MITRE ATLAS AML.T0020 (Poison Training Data)
 - MITRE ATLAS AML.T0024 (Exfiltration via AI Inference API)
 - MITRE ATLAS AML.T0024.002 (Extract AI Model)
@@ -175,6 +191,10 @@ https://raw.githubusercontent.com/mitre-atlas/atlas-data/main/dist/ATLAS.yaml
 - MITRE ATLAS AML.T0056 (Extract LLM System Prompt)
 - MITRE ATLAS AML.T0057 (LLM Data Leakage)
 - MITRE ATLAS AML.T0070 (RAG Poisoning)
+- MITRE ATLAS AML.T0077 (LLM Response Rendering)
+  - Verified 5 Nov 2026 in ATLAS data v5.6.0 (id AML.T0077, name "LLM Response Rendering", Exfiltration tactic AML.TA0010): the LLM is made to respond with private information hidden from the user, which is exfiltrated when the client renders the response, for example an image whose URL carries the data to an adversary-controlled server.
+- MITRE ATLAS AML.T0088 (Generate Deepfakes)
+  - Verified 5 Nov 2026 in ATLAS data v5.6.0 (id AML.T0088, name "Generate Deepfakes", AI Attack Staging tactic AML.TA0001): adversaries use GenAI to create synthetic imagery, video, audio or text that appears authentic, for impersonation in phishing or to evade AI applications such as biometric identity verification (cross-referenced to AML.T0015 Evade AI Model, whose text also names deepfakes evading AI-based biometric authentication).
 
 ## NIST SP 800-53 Rev. 5, Security and Privacy Controls (Sep 2020, updated Dec 2020)
 
@@ -196,6 +216,8 @@ The fit to each item is judged in review.
 - NIST SP 800-53 Rev. 5 CM-4 (Impact Analyses)
 - NIST SP 800-53 Rev. 5 CM-6 (Configuration Settings)
 - NIST SP 800-53 Rev. 5 CM-8 (System Component Inventory)
+- NIST SP 800-53 Rev. 5 CM-11 (User-Installed Software)
+  - Verified 4 Nov 2026: "CM-11 USER-INSTALLED SOFTWARE" in the control text: establish policies governing software installation by users, enforce them and monitor compliance; enhancement (2) allows user installation only with explicit privileged status.
 - NIST SP 800-53 Rev. 5 IR-4 (Incident Handling)
 - NIST SP 800-53 Rev. 5 IR-6 (Incident Reporting)
 - NIST SP 800-53 Rev. 5 IR-8 (Incident Response Plan)

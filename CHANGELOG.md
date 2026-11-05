@@ -4,6 +4,16 @@ All notable user-facing changes to this app. The in-app **What's New** modal mir
 
 For internal/technical history, see git log and PR descriptions.
 
+## [v12.50.1] A clearer promise on the About page
+
+### Improved
+- The About page now says plainly what KaiSip teaches you: know why the best answer wins.
+
+## [v12.50] — A free set of questions from every topic
+
+### New
+- The website now has a free set of practice questions from every study topic, plus the Mini mock. The full course, with full mock exams, is in the KaiSip Android beta.
+
 ## [v12.49.10] — More questions linked to exam principles
 
 ### Improved

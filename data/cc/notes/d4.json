@@ -45,7 +45,11 @@
           "name": "Network Building Blocks",
           "legacy_ids": [],
           "practice_ids": [
-            "cc_d4_021"
+            "cc_d4_021",
+            "cc_d4_046",
+            "cc_d4_071",
+            "cc_d4_101",
+            "cc_d4_131"
           ],
           "definition": "A network is a set of connected devices, called nodes, that exchange data by shared rules; switches link devices within a site and routers link networks.",
           "why_it_matters": "You cannot protect traffic you cannot picture. Knowing which device forwards what, and by which address, shows where a control belongs.",
@@ -66,7 +70,7 @@
               "Switch port list showing which device sits on each port"
             ],
             "recommend": "Report unknown devices or changed DHCP and DNS settings to the network team lead.",
-            "decides": "The network owner decides how core services are configured"
+            "decides": "The network's system owner decides how core services are configured"
           },
           "isaca_rule": "Switches read MAC addresses inside a local network; routers read IP addresses between networks. If DHCP or DNS looks tampered with, record the facts and escalate; never quietly reconfigure it.",
           "exam_traps": [
@@ -97,7 +101,11 @@
           "legacy_ids": [],
           "practice_ids": [
             "cc_d4_001",
-            "cc_d4_032"
+            "cc_d4_032",
+            "cc_d4_064",
+            "cc_d4_072",
+            "cc_d4_132",
+            "cc_d4_133"
           ],
           "definition": "The Open Systems Interconnection (OSI) model is a seven-layer reference model that splits network communication into separate jobs, from physical signals to applications.",
           "why_it_matters": "Name the layer where a device works or an attack lands, and you can pick a control that operates there.",
@@ -153,7 +161,11 @@
           "name": "The TCP/IP Model, TCP and UDP",
           "legacy_ids": [],
           "practice_ids": [
-            "cc_d4_022"
+            "cc_d4_022",
+            "cc_d4_047",
+            "cc_d4_073",
+            "cc_d4_102",
+            "cc_d4_134"
           ],
           "definition": "Named after the Transmission Control Protocol (TCP) and the Internet Protocol (IP), the TCP/IP model is the four-layer model the internet runs on.",
           "why_it_matters": "Real traffic follows TCP/IP, so tools, logs and firewall rules use its terms, including which transport protocol a service needs.",
@@ -161,6 +173,7 @@
             "Its four layers line up with the seven Open Systems Interconnection (OSI) layers, as the diagram shows.",
             "TCP opens a connection with a three-way handshake, then numbers and acknowledges data so it arrives complete and in order.",
             "The User Datagram Protocol (UDP) sends each datagram alone, with no delivery check, which suits name lookups, voice and video.",
+            "Some services use both: the Domain Name System (DNS) answers most lookups over UDP port 53 and retries large answers over TCP port 53.",
             "Port numbers at the transport layer identify the receiving service, so firewalls filter on protocol and port."
           ],
           "compare": {
@@ -214,7 +227,7 @@
               "Firewall logs showing dropped TCP or UDP traffic"
             ],
             "recommend": "Submit port needs to the network team through a change request instead of editing rules yourself.",
-            "decides": "The network owner approves which ports and protocols are allowed"
+            "decides": "The network's system owner approves which ports and protocols are allowed"
           },
           "isaca_rule": "Use TCP/IP terms for real traffic and OSI terms for layers. Before a port is opened, confirm whether the service uses TCP, UDP or both.",
           "exam_traps": [
@@ -244,7 +257,11 @@
           "name": "IPv4 and IPv6",
           "legacy_ids": [],
           "practice_ids": [
-            "cc_d4_023"
+            "cc_d4_023",
+            "cc_d4_048",
+            "cc_d4_074",
+            "cc_d4_103",
+            "cc_d4_135"
           ],
           "definition": "IPv4 and IPv6 are the two versions of the Internet Protocol (IP): IPv4 uses 32-bit addresses, and IPv6 uses 128-bit addresses.",
           "why_it_matters": "Most networks run both at once, and an IPv6 path nobody filters lets traffic slip around IPv4-only controls.",
@@ -298,7 +315,7 @@
               }
             ]
           },
-          "example": "A logistics firm blocks remote desktop in its IPv4 firewall rules. Weeks later, Amara, a junior analyst, sees remote desktop sessions reaching a warehouse server over IPv6, which has no rules. Amara escalates the log entries to the network security lead rather than switching IPv6 off.",
+          "example": "A logistics firm blocks remote desktop in its IPv4 firewall rules. Weeks later, Amara, a junior analyst, sees remote desktop sessions reaching a warehouse server over IPv6, which has no rules. Amara escalates the log entries to the network lead rather than switching IPv6 off.",
           "audit_focus": {
             "review": [
               "Check IPv6 rules match the IPv4 ones, even where nobody turned IPv6 on",
@@ -308,8 +325,8 @@
               "Exported firewall rules for each address version",
               "Monitoring settings showing IPv6 sources are collected"
             ],
-            "recommend": "Escalate uncovered address paths to the network security lead, attaching the sessions you found.",
-            "decides": "The network owner decides whether IPv6 is filtered or turned off"
+            "recommend": "Escalate uncovered address paths to the network lead, attaching the sessions you found.",
+            "decides": "The network's system owner decides whether IPv6 is filtered or turned off"
           },
           "isaca_rule": "Treat IPv4 and IPv6 as two doors into the same room: every rule, log and alert should cover both. Newer is not safer; configuration decides.",
           "exam_traps": [
@@ -340,7 +357,13 @@
           "legacy_ids": [],
           "practice_ids": [
             "cc_d4_002",
-            "cc_d4_033"
+            "cc_d4_033",
+            "cc_d4_061",
+            "cc_d4_075",
+            "cc_d4_099",
+            "cc_d4_104",
+            "cc_d4_136",
+            "cc_d4_137"
           ],
           "definition": "A port is a number from 0 to 65535 that tells a host which service receives traffic; a protocol is the set of rules that service speaks.",
           "why_it_matters": "Cleartext (unencrypted) protocols send passwords and data as plain readable text, so anyone on the path can read them.",
@@ -446,11 +469,15 @@
           "key_terms": [
             {
               "term": "Transport Layer Security (TLS)",
-              "definition": "Encrypts and authenticates connections such as HTTPS; use version 1.2 or 1.3, never the retired Secure Sockets Layer (SSL)."
+              "definition": "Encrypts and authenticates connections, such as HTTPS (secure web browsing); use version 1.2 or 1.3, never the retired Secure Sockets Layer (SSL)."
             },
             {
               "term": "Simple Network Management Protocol (SNMP)",
               "definition": "Manages network devices on port 161; versions 1 and 2c are cleartext, and version 3 encrypts."
+            },
+            {
+              "term": "Cleartext",
+              "definition": "Data sent or stored unencrypted, so anyone who intercepts it can read it."
             }
           ],
           "memory_aid": "SSH 22 replaces Telnet 23; HTTPS 443 replaces HTTP 80."
@@ -460,7 +487,11 @@
           "name": "Virtual Private Networks (VPNs)",
           "legacy_ids": [],
           "practice_ids": [
-            "cc_d4_003"
+            "cc_d4_003",
+            "cc_d4_049",
+            "cc_d4_076",
+            "cc_d4_105",
+            "cc_d4_138"
           ],
           "definition": "A virtual private network (VPN) creates an encrypted tunnel across an untrusted network, such as the internet, so traffic cannot be read or changed on the way.",
           "why_it_matters": "A VPN protects remote traffic in transit, but it also extends the internal network to whatever device sits at the far end.",
@@ -520,8 +551,8 @@
               "Gateway settings showing MFA enforcement",
               "VPN connection logs with user, device and time"
             ],
-            "recommend": "Report unpatched gateways, accounts without MFA or suspect devices to the security lead promptly.",
-            "decides": "The network owner decides between full and split tunneling"
+            "recommend": "Report unpatched gateways, accounts without MFA or suspect devices to the security manager promptly.",
+            "decides": "The network's system owner decides between full and split tunneling"
           },
           "isaca_rule": "A VPN protects the path, not the device at either end. Treat each connection as a door into the internal network: require MFA, patch the gateway and check device health.",
           "exam_traps": [
@@ -552,13 +583,20 @@
           "legacy_ids": [],
           "practice_ids": [
             "cc_d4_024",
-            "cc_d4_025"
+            "cc_d4_025",
+            "cc_d4_062",
+            "cc_d4_077",
+            "cc_d4_100",
+            "cc_d4_106",
+            "cc_d4_139",
+            "cc_d4_140"
           ],
           "definition": "A firewall is a device or software that allows or blocks traffic between networks or hosts by rules on addresses, ports, connection state or application.",
           "why_it_matters": "Firewalls enforce which traffic may cross a boundary, and a rule set that allows too much quietly undoes that protection.",
           "how_it_works": [
             "Rules are read from the top and the first match wins, so specific rules go first.",
             "A sound rule set ends by denying everything not allowed: implicit deny.",
+            "A temporary rule carries its end time, because rules opened for one event are easily forgotten.",
             "Port-based rules allow a service by number, such as 443, but cannot see which application uses it.",
             "Application-aware firewalls recognize the application itself, so they can block a file-sharing app hiding on port 443.",
             "Host-based firewalls run on each computer and keep protecting laptops away from the office."
@@ -609,7 +647,7 @@
               }
             ]
           },
-          "example": "A dental group's practice software stops reaching its vendor after a firewall update. Hana, a junior network technician, finds a broad blocking rule now sits above the rule allowing the vendor's server. Hana documents the rule-order problem and submits it through change management, rather than editing the live firewall.",
+          "example": "A county's building inspectors file reports over shared Wi-Fi at site offices, beyond the office firewall's reach. When another device on that Wi-Fi probes an inspector's laptop for open remote desktop ports, the laptop's host-based firewall drops the unrequested connections. Lina, a junior security analyst, sees the blocked attempts in the endpoint logs and notes them in the shift log.",
           "audit_focus": {
             "review": [
               "Give every rule you request a named requester, purpose and review date",
@@ -619,8 +657,8 @@
               "Exported rule base with hit counts",
               "Approved change tickets for each recent rule change"
             ],
-            "recommend": "Raise conflicting or overly broad rules with the firewall owner as a change request.",
-            "decides": "The firewall owner signs off additions, edits and removals"
+            "recommend": "Remove expired rules if the procedure allows, and record each removal; raise other broad or conflicting rules with the firewall owner as change requests.",
+            "decides": "The firewall owner signs off new and changed rules; a procedure can pre-approve removing expired ones"
           },
           "isaca_rule": "Allow only what the business needs with the narrowest rule, deny the rest, and change rules only through change management.",
           "exam_traps": [
@@ -651,7 +689,11 @@
           "legacy_ids": [],
           "practice_ids": [
             "cc_d4_004",
-            "cc_d4_034"
+            "cc_d4_034",
+            "cc_d4_065",
+            "cc_d4_078",
+            "cc_d4_107",
+            "cc_d4_141"
           ],
           "definition": "An intrusion detection system (IDS) alerts on suspicious traffic or host activity; an intrusion prevention system (IPS) sits in the traffic path and can also block it.",
           "why_it_matters": "Firewalls decide what may pass, but allowed traffic can still carry attacks; detection spots them, and prevention can stop them.",
@@ -743,7 +785,7 @@
             },
             {
               "term": "Network tap",
-              "definition": "Copies traffic from a link to a monitoring tool without sitting in the path."
+              "definition": "A device placed on a link that passes traffic through unchanged and sends a copy to a monitoring tool; it cannot block anything."
             }
           ],
           "memory_aid": "IDS is a smoke alarm; IPS is a sprinkler."
@@ -754,7 +796,12 @@
           "legacy_ids": [],
           "practice_ids": [
             "cc_d4_005",
-            "cc_d4_035"
+            "cc_d4_035",
+            "cc_d4_063",
+            "cc_d4_079",
+            "cc_d4_108",
+            "cc_d4_142",
+            "cc_d4_143"
           ],
           "definition": "AI-assisted network defense uses artificial intelligence (AI), mainly machine learning, to learn normal traffic and flag or block unusual behavior that fixed rules miss.",
           "why_it_matters": "Machine learning surfaces the few events that matter among millions, but its mistakes need the same human oversight as any control.",
@@ -797,7 +844,7 @@
             },
             {
               "term": "Model drift",
-              "definition": "A drop in a model's accuracy as real conditions move away from the data it learned from."
+              "definition": "A gradual decline in an AI model's accuracy as real-world conditions change."
             }
           ],
           "memory_aid": "AI spots the odd one out; a person decides what happens next."
@@ -808,7 +855,11 @@
           "legacy_ids": [],
           "practice_ids": [
             "cc_d4_006",
-            "cc_d4_036"
+            "cc_d4_036",
+            "cc_d4_066",
+            "cc_d4_080",
+            "cc_d4_109",
+            "cc_d4_144"
           ],
           "definition": "Wireless security protects data sent by radio, over Wi-Fi and Bluetooth, where anyone within range can pick up the signal.",
           "why_it_matters": "Radio passes through walls, so without strong encryption and sign-in, anyone nearby can listen in or join.",
@@ -877,7 +928,7 @@
               "Wireless scan results showing nearby and rogue networks"
             ],
             "recommend": "Escalate weak encryption, rogue access points or open guest access to the network lead.",
-            "decides": "The network owner decides wireless standards and guest access"
+            "decides": "The network's system owner decides wireless standards and guest access"
           },
           "isaca_rule": "Pick the strongest protection the devices support: WPA3 first, WPA2 with AES only where needed, never WEP or WPA. Keep guests on their own segment.",
           "exam_traps": [
@@ -911,7 +962,11 @@
           "name": "Embedded Systems and Industrial Control Systems",
           "legacy_ids": [],
           "practice_ids": [
-            "cc_d4_007"
+            "cc_d4_007",
+            "cc_d4_050",
+            "cc_d4_081",
+            "cc_d4_110",
+            "cc_d4_145"
           ],
           "definition": "An embedded system is a computer built into a device to do one job; industrial control systems (ICS) use them to run physical processes like power and water.",
           "why_it_matters": "An ICS attack can cause blackouts, floods or injuries, not just lost data, so safety and availability come first.",
@@ -1012,7 +1067,11 @@
           "name": "Internet of Things (IoT) Security",
           "legacy_ids": [],
           "practice_ids": [
-            "cc_d4_008"
+            "cc_d4_008",
+            "cc_d4_051",
+            "cc_d4_082",
+            "cc_d4_111",
+            "cc_d4_112"
           ],
           "definition": "The Internet of Things (IoT) is the mass of everyday connected devices, such as cameras, smart televisions and sensors, that collect data or act with little human input.",
           "why_it_matters": "IoT devices are many, often unmanaged and rarely updated, so weak ones get hijacked into botnets or used as a foothold.",
@@ -1023,7 +1082,7 @@
             "Buy devices with secure updates, unique passwords and a stated support period, as the National Institute of Standards and Technology (NIST) urges makers.",
             "Change default passwords at installation, and replace devices the maker no longer supports."
           ],
-          "example": "A hotel adds smart televisions to every room. Olu, a junior IT technician, finds them on the same network as the front-desk payment terminals, all with the installer's default admin password. Olu adds each television to the device inventory and raises a change request for a separate segment and new passwords.",
+          "example": "A hotel adds smart televisions to every room. Olu, a junior IT technician, finds them already in service on the same network as the front-desk payment terminals, all with the installer's default admin password. Olu adds each one to the device inventory and, because the televisions are already live, raises a change request for a separate segment and new passwords.",
           "audit_focus": {
             "review": [
               "Match devices found by a discovery tool to registered owners",
@@ -1050,7 +1109,7 @@
           "key_terms": [
             {
               "term": "Botnet",
-              "definition": "A network of hijacked devices controlled remotely, often used to flood targets with traffic."
+              "definition": "Hijacked devices, called bots, that an attacker controls remotely, often to flood targets with traffic or send spam."
             },
             {
               "term": "Firmware",
@@ -1077,12 +1136,17 @@
           "name": "Network Segmentation",
           "legacy_ids": [],
           "practice_ids": [
-            "cc_d4_026"
+            "cc_d4_026",
+            "cc_d4_052",
+            "cc_d4_083",
+            "cc_d4_113",
+            "cc_d4_146"
           ],
           "definition": "Network segmentation divides a network into smaller parts, with controls on the traffic between them, so a problem in one part cannot spread freely.",
           "why_it_matters": "On a flat network, one infected laptop can reach every server; segmentation contains attacks and shields the most sensitive systems.",
           "how_it_works": [
             "Systems are grouped by trust level and purpose, such as staff devices, payment systems and guests.",
+            "Backup servers get their own segment that accepts only backup traffic, so a breach of the systems they copy cannot reach the backups too.",
             "Boundaries are enforced by firewalls, network access control lists (ACLs) or software policy that allow only needed traffic.",
             "Segments can be physical, with separate switches, or logical, sharing hardware but kept apart by configuration.",
             "Traffic between internal segments is east-west; traffic into and out of the network is north-south."
@@ -1098,7 +1162,7 @@
               "Results of approved connection tests across segments"
             ],
             "recommend": "Report segments with open traffic between them to the network lead, naming the systems exposed.",
-            "decides": "The network owner and system owners agree segment rules"
+            "decides": "The network's system owner and each system's owner agree segment rules"
           },
           "isaca_rule": "Assume something inside will be compromised, then limit how far it can reach. Where sensitive systems share a network with general devices, segment and filter.",
           "exam_traps": [
@@ -1129,7 +1193,10 @@
           "legacy_ids": [],
           "practice_ids": [
             "cc_d4_009",
-            "cc_d4_037"
+            "cc_d4_037",
+            "cc_d4_084",
+            "cc_d4_114",
+            "cc_d4_147"
           ],
           "definition": "A firewall zone groups networks of equal trust; a screened subnet, often called a demilitarized zone (DMZ), holds public-facing servers between the internet and internal networks.",
           "why_it_matters": "Public-facing servers are the most attacked systems; in their own zone, a breached web server does not open the internal network.",
@@ -1172,7 +1239,7 @@
               "External scan showing which services answer from the internet"
             ],
             "recommend": "Escalate any public-facing server outside the screened subnet, or sensitive data inside it, to the network lead.",
-            "decides": "The network owner decides zone placement with the system owner"
+            "decides": "The network's system owner decides zone placement with each server's system owner"
           },
           "isaca_rule": "Place each system by who must reach it: anything the public touches goes in the screened subnet, and sensitive data stays deeper inside.",
           "exam_traps": [
@@ -1203,7 +1270,10 @@
           "legacy_ids": [],
           "practice_ids": [
             "cc_d4_010",
-            "cc_d4_038"
+            "cc_d4_038",
+            "cc_d4_085",
+            "cc_d4_115",
+            "cc_d4_148"
           ],
           "definition": "A virtual local area network (VLAN) splits one physical switched network into separate logical networks, so devices in different VLANs cannot talk directly at layer 2.",
           "why_it_matters": "VLANs separate staff, guests and smart devices without extra switches, but they protect only if traffic between them is filtered.",
@@ -1211,7 +1281,8 @@
             "Each switch port belongs to a VLAN; trunk links between switches carry several VLANs, tagging each frame (the 802.1Q standard).",
             "Traffic between VLANs passes a router or layer 3 switch, where network access control lists (ACLs) or a firewall filter it.",
             "Typical VLANs are staff, guests and voice, plus a management VLAN for network staff only.",
-            "Unused ports are disabled or put in an empty VLAN."
+            "Unused ports are disabled or put in an empty VLAN.",
+            "VLANs share switch hardware, so NIST's operational technology guide suggests physically separate switches for high-criticality devices, such as safety systems."
           ],
           "example": "A primary school has student tablets, teacher laptops and the office finance computer on one network. Ines, the new IT assistant, designs separate VLANs for students, staff and finance, giving students internet access only. Ines sends the design to the school's IT provider for approval and scheduling, rather than changing the switch during lessons.",
           "audit_focus": {
@@ -1224,7 +1295,7 @@
               "Rules on the device that routes between VLANs"
             ],
             "recommend": "Send unfiltered VLAN paths or active unused ports to the network team as a change request.",
-            "decides": "The network owner approves VLAN design and changes"
+            "decides": "The network's system owner approves VLAN design and changes"
           },
           "isaca_rule": "A VLAN separates; a filter between VLANs protects. Group devices by trust, lock down management access and allow only needed traffic between VLANs.",
           "exam_traps": [
@@ -1255,7 +1326,10 @@
           "legacy_ids": [],
           "practice_ids": [
             "cc_d4_011",
-            "cc_d4_039"
+            "cc_d4_039",
+            "cc_d4_086",
+            "cc_d4_116",
+            "cc_d4_149"
           ],
           "definition": "Micro-segmentation applies security policy to individual workloads, such as single servers, virtual machines or containers, so each talks only to the systems it needs.",
           "why_it_matters": "Ordinary segments allow free movement inside each one; micro-segmentation shrinks the boundary to one workload, sharply limiting lateral movement.",
@@ -1347,7 +1421,11 @@
           "name": "Defense in Depth",
           "legacy_ids": [],
           "practice_ids": [
-            "cc_d4_027"
+            "cc_d4_027",
+            "cc_d4_053",
+            "cc_d4_087",
+            "cc_d4_117",
+            "cc_d4_150"
           ],
           "definition": "Defense in depth layers independent physical, technical and administrative controls, so that if one fails or is bypassed, others still protect the asset.",
           "why_it_matters": "Every control fails sometimes; layers buy time to detect and respond before one failure becomes a breach.",
@@ -1361,7 +1439,7 @@
             "svg": "<svg viewBox='0 0 480 270' xmlns='http://www.w3.org/2000/svg' role='img' aria-label='Nested layers from the outside in: policies, procedures and training; physical security; network perimeter; internal segmentation; endpoints and hosts; applications; and data at the center'><rect x='10' y='10' width='460' height='250' rx='6' fill='var(--surface)' stroke='var(--border2)' stroke-width='1'/><text x='240' y='25' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='10' font-weight='700' fill='var(--text)'>Policies, procedures and training</text><rect x='36' y='32' width='408' height='220' rx='6' fill='var(--surface)' stroke='var(--border2)' stroke-width='1'/><text x='240' y='47' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='10' font-weight='700' fill='var(--text)'>Physical security</text><rect x='62' y='54' width='356' height='190' rx='6' fill='var(--surface)' stroke='var(--border2)' stroke-width='1'/><text x='240' y='69' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='10' font-weight='700' fill='var(--text)'>Network perimeter</text><rect x='88' y='76' width='304' height='160' rx='6' fill='var(--surface)' stroke='var(--border2)' stroke-width='1'/><text x='240' y='91' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='10' font-weight='700' fill='var(--text)'>Internal segmentation</text><rect x='114' y='98' width='252' height='130' rx='6' fill='var(--surface)' stroke='var(--border2)' stroke-width='1'/><text x='240' y='113' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='10' font-weight='700' fill='var(--text)'>Endpoints and hosts</text><rect x='140' y='120' width='200' height='100' rx='6' fill='var(--surface)' stroke='var(--border2)' stroke-width='1'/><text x='240' y='135' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='10' font-weight='700' fill='var(--text)'>Applications</text><rect x='166' y='142' width='148' height='70' rx='4' fill='var(--accent-fill)'/><text x='240' y='181.32' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='12' font-weight='700' fill='#ffffff'>Data</text></svg>",
             "caption": "Layers from the outside in. An attacker who gets past one layer still meets the next, and the data sits at the center."
           },
-          "example": "Ana, a bank teller, clicks a convincing phishing link. Email filtering missed it, but endpoint protection blocks the download, and multifactor authentication (MFA) stops the stolen password from working. Luca, a junior security analyst, reviews the alerts, records the near miss in the incident log and suggests the security lead review the email filter.",
+          "example": "Ana, a bank teller, clicks a convincing phishing link. Email filtering missed it, but endpoint protection blocks the download, and multifactor authentication (MFA) stops the stolen password from working. Luca, a junior security analyst, reviews the alerts, records the near miss in the incident log and suggests the security manager review the email filter.",
           "audit_focus": {
             "review": [
               "Map the layers protecting a key asset from outside in",
@@ -1371,7 +1449,7 @@
               "Alert and incident records showing which layer caught what",
               "Backup restore test results"
             ],
-            "recommend": "Report any asset relying on one control, or layers sharing one weakness, to the security lead.",
+            "recommend": "Report any asset relying on one control, or layers sharing one weakness, to the security manager.",
             "decides": "Management decides which added layers to fund"
           },
           "isaca_rule": "Never rely on a single control. When one layer fails, add or strengthen an independent layer, or add detection and recovery, rather than trusting the failed control harder.",
@@ -1387,8 +1465,8 @@
           ],
           "key_terms": [
             {
-              "term": "Single point of failure",
-              "definition": "One component whose failure defeats the whole protection or service."
+              "term": "Single point of failure (SPOF)",
+              "definition": "One component whose failure stops the whole service or protection, such as a lone server."
             },
             {
               "term": "Layered security",
@@ -1403,7 +1481,10 @@
           "legacy_ids": [],
           "practice_ids": [
             "cc_d4_012",
-            "cc_d4_040"
+            "cc_d4_040",
+            "cc_d4_070",
+            "cc_d4_118",
+            "cc_d4_151"
           ],
           "definition": "Zero Trust is a security approach that grants no trust for network location alone and checks every request to every resource, every time.",
           "why_it_matters": "Remote work, cloud services and stolen credentials have erased the safe inside network; Zero Trust limits what an intruder can do.",
@@ -1460,7 +1541,7 @@
               "Access policies on sensitive resources, with the checks each one makes",
               "Access reviews signed by resource owners"
             ],
-            "recommend": "Report location-based trust and broad access to the security lead as Zero Trust gaps.",
+            "recommend": "Report location-based trust and broad access to the security manager as Zero Trust gaps.",
             "decides": "Resource owners and the policy owner approve access rules"
           },
           "isaca_rule": "Verify explicitly, grant least privilege, assume breach. Replace any access granted for being internal with a check of identity, device and need on every request.",
@@ -1491,7 +1572,11 @@
           "name": "Zero Trust Architecture Components",
           "legacy_ids": [],
           "practice_ids": [
-            "cc_d4_028"
+            "cc_d4_028",
+            "cc_d4_054",
+            "cc_d4_088",
+            "cc_d4_119",
+            "cc_d4_152"
           ],
           "definition": "A Zero Trust architecture separates deciding from enforcing: a decision point judges each access request, and enforcement points carry out the decision.",
           "why_it_matters": "A resource with no enforcement point in front of it sits outside the policy's protection.",
@@ -1532,7 +1617,7 @@
               "Decision logs from the policy engine with reasons",
               "Exception register with approver and expiry date"
             ],
-            "recommend": "Send exception requests to the policy owner and report unguarded resources to the security lead.",
+            "recommend": "Send exception requests to the policy owner and report unguarded resources to the security manager.",
             "decides": "The policy owner approves, records and time-limits any exception"
           },
           "isaca_rule": "Deciding and enforcing are separate jobs, and every protected resource needs an enforcement point. Exceptions go to the policy owner, recorded and time-limited, never around the policy.",
@@ -1563,7 +1648,11 @@
           "name": "Network Access Control (NAC)",
           "legacy_ids": [],
           "practice_ids": [
-            "cc_d4_013"
+            "cc_d4_013",
+            "cc_d4_055",
+            "cc_d4_089",
+            "cc_d4_120",
+            "cc_d4_153"
           ],
           "definition": "Network access control (NAC) checks who and what is connecting, and whether the device meets security requirements, before granting the right level of access.",
           "why_it_matters": "Anyone can plug into a meeting-room port; NAC keeps unknown or unhealthy devices away from sensitive systems.",
@@ -1614,7 +1703,12 @@
           "name": "Segmenting AI Development Environments",
           "legacy_ids": [],
           "practice_ids": [
-            "cc_d4_014"
+            "cc_d4_014",
+            "cc_d4_056",
+            "cc_d4_090",
+            "cc_d4_121",
+            "cc_d4_154",
+            "cc_d4_155"
           ],
           "definition": "Segmenting artificial intelligence (AI) development environments keeps model building, training and testing on separate, controlled segments, away from production systems and their data.",
           "why_it_matters": "Experiments are less locked down than production, so without isolation a weak test server can expose real customer data or a live model.",
@@ -1635,7 +1729,7 @@
               "Signed approvals for each dataset in use",
               "Outbound traffic logs from AI servers"
             ],
-            "recommend": "Escalate real sensitive data or open internet access in AI environments to the data owner and security lead.",
+            "recommend": "Escalate real sensitive data or open internet access in AI environments to the data owner and security manager.",
             "decides": "The data owner decides which data AI teams may use"
           },
           "isaca_rule": "AI experiments belong in their own segment, using the least sensitive data that will do the job, with outbound traffic restricted.",
@@ -1680,7 +1774,10 @@
           "legacy_ids": [],
           "practice_ids": [
             "cc_d4_015",
-            "cc_d4_041"
+            "cc_d4_041",
+            "cc_d4_091",
+            "cc_d4_122",
+            "cc_d4_156"
           ],
           "definition": "Cloud computing is using computing resources, such as servers, storage and software, from a shared pool over a network, scaling as needed and paying for use.",
           "why_it_matters": "Self-service and elasticity speed things up, but they also let anyone with an account create, expose or delete resources in minutes.",
@@ -1753,13 +1850,18 @@
           "name": "Virtualization and Containers in the Cloud",
           "legacy_ids": [],
           "practice_ids": [
-            "cc_d4_029"
+            "cc_d4_029",
+            "cc_d4_057",
+            "cc_d4_092",
+            "cc_d4_123",
+            "cc_d4_157"
           ],
           "definition": "Virtualization uses a hypervisor to run many isolated virtual machines on one physical server; containers share one operating system kernel but keep applications apart.",
           "why_it_matters": "Cloud pooling depends on this isolation, and one badly built image can be copied into hundreds of running workloads.",
           "how_it_works": [
             "A Type 1 hypervisor runs directly on the hardware, as in cloud data centers; a Type 2 hypervisor runs on an ordinary operating system.",
             "Workloads start from images, so one hardened image protects every copy, and one flawed image spreads the flaw everywhere.",
+            "Hand patches inside running containers do not last, because each replacement container starts again from the image.",
             "Serverless computing runs small pieces of code on demand; the provider manages the servers underneath.",
             "The provider secures the hypervisor and physical hosts; the customer secures what runs inside, as the service model sets."
           ],
@@ -1838,13 +1940,18 @@
           "legacy_ids": [],
           "practice_ids": [
             "cc_d4_016",
-            "cc_d4_042"
+            "cc_d4_042",
+            "cc_d4_067",
+            "cc_d4_093",
+            "cc_d4_124",
+            "cc_d4_158"
           ],
           "definition": "Cloud service models describe what the provider delivers: infrastructure as a service (IaaS), platform as a service (PaaS) or software as a service (SaaS).",
           "why_it_matters": "The service model decides how much the customer must secure; misreading it leaves layers nobody patches.",
           "how_it_works": [
             "IaaS rents out virtual servers, storage and networks; the customer manages the operating system and everything above it.",
             "PaaS offers a managed runtime, database or development platform; the customer secures its own code and settings.",
+            "PaaS providers patch each runtime version while they support it; the customer picks the version its app uses and moves to a supported one before support ends.",
             "SaaS delivers a finished application; the customer manages users, settings and the data it puts in.",
             "Specialist offerings, such as artificial intelligence (AI) services, usually behave like PaaS or SaaS for who secures what."
           ],
@@ -1930,7 +2037,11 @@
           "name": "Cloud Deployment Models",
           "legacy_ids": [],
           "practice_ids": [
-            "cc_d4_018"
+            "cc_d4_018",
+            "cc_d4_058",
+            "cc_d4_094",
+            "cc_d4_125",
+            "cc_d4_159"
           ],
           "definition": "Cloud deployment models describe who the cloud infrastructure is built for and shared with: public, private, community or hybrid.",
           "why_it_matters": "The model shapes control, cost and risk, and regulated data may need more control than a public cloud gives by default.",
@@ -2028,7 +2139,11 @@
           "legacy_ids": [],
           "practice_ids": [
             "cc_d4_017",
-            "cc_d4_043"
+            "cc_d4_043",
+            "cc_d4_068",
+            "cc_d4_095",
+            "cc_d4_126",
+            "cc_d4_160"
           ],
           "definition": "The shared responsibility model divides cloud security duties: the provider secures the cloud itself, and the customer secures what it puts in the cloud.",
           "why_it_matters": "Many cloud breaches come from customers assuming the provider handles something it does not, such as access settings.",
@@ -2092,7 +2207,7 @@
             "svg": "<svg viewBox='0 0 500 262' xmlns='http://www.w3.org/2000/svg' role='img' aria-label='Shared responsibility by service model. In IaaS the customer secures data and access, the application and the operating system; in PaaS, data and access and the application; in SaaS, data and access only. The provider secures the rest, including virtualization and the physical data center in every model'><text x='226' y='22' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='11' font-weight='700' fill='var(--text)'>IaaS</text><text x='334' y='22' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='11' font-weight='700' fill='var(--text)'>PaaS</text><text x='442' y='22' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='11' font-weight='700' fill='var(--text)'>SaaS</text><text x='166' y='53' text-anchor='end' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='10' font-weight='400' fill='var(--text)'>Data, accounts, access</text><rect x='176' y='32' width='100' height='34' rx='4' fill='var(--accent-fill)'/><text x='226' y='52.6' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='10' font-weight='700' fill='#ffffff'>Customer</text><rect x='284' y='32' width='100' height='34' rx='4' fill='var(--accent-fill)'/><text x='334' y='52.6' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='10' font-weight='700' fill='#ffffff'>Customer</text><rect x='392' y='32' width='100' height='34' rx='4' fill='var(--accent-fill)'/><text x='442' y='52.6' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='10' font-weight='700' fill='#ffffff'>Customer</text><text x='166' y='93' text-anchor='end' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='10' font-weight='400' fill='var(--text)'>Application</text><rect x='176' y='72' width='100' height='34' rx='4' fill='var(--accent-fill)'/><text x='226' y='92.6' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='10' font-weight='700' fill='#ffffff'>Customer</text><rect x='284' y='72' width='100' height='34' rx='4' fill='var(--accent-fill)'/><text x='334' y='92.6' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='10' font-weight='700' fill='#ffffff'>Customer</text><rect x='392' y='72' width='100' height='34' rx='4' fill='var(--surface)' stroke='var(--border2)' stroke-width='1'/><text x='442' y='92.6' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='10' font-weight='700' fill='var(--text)'>Provider</text><text x='166' y='133' text-anchor='end' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='10' font-weight='400' fill='var(--text)'>OS and runtime</text><rect x='176' y='112' width='100' height='34' rx='4' fill='var(--accent-fill)'/><text x='226' y='132.6' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='10' font-weight='700' fill='#ffffff'>Customer</text><rect x='284' y='112' width='100' height='34' rx='4' fill='var(--surface)' stroke='var(--border2)' stroke-width='1'/><text x='334' y='132.6' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='10' font-weight='700' fill='var(--text)'>Provider</text><rect x='392' y='112' width='100' height='34' rx='4' fill='var(--surface)' stroke='var(--border2)' stroke-width='1'/><text x='442' y='132.6' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='10' font-weight='700' fill='var(--text)'>Provider</text><text x='166' y='173' text-anchor='end' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='10' font-weight='400' fill='var(--text)'>Virtualization, network</text><rect x='176' y='152' width='100' height='34' rx='4' fill='var(--surface)' stroke='var(--border2)' stroke-width='1'/><text x='226' y='172.6' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='10' font-weight='700' fill='var(--text)'>Provider</text><rect x='284' y='152' width='100' height='34' rx='4' fill='var(--surface)' stroke='var(--border2)' stroke-width='1'/><text x='334' y='172.6' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='10' font-weight='700' fill='var(--text)'>Provider</text><rect x='392' y='152' width='100' height='34' rx='4' fill='var(--surface)' stroke='var(--border2)' stroke-width='1'/><text x='442' y='172.6' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='10' font-weight='700' fill='var(--text)'>Provider</text><text x='166' y='213' text-anchor='end' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='10' font-weight='400' fill='var(--text)'>Physical data center</text><rect x='176' y='192' width='100' height='34' rx='4' fill='var(--surface)' stroke='var(--border2)' stroke-width='1'/><text x='226' y='212.6' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='10' font-weight='700' fill='var(--text)'>Provider</text><rect x='284' y='192' width='100' height='34' rx='4' fill='var(--surface)' stroke='var(--border2)' stroke-width='1'/><text x='334' y='212.6' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='10' font-weight='700' fill='var(--text)'>Provider</text><rect x='392' y='192' width='100' height='34' rx='4' fill='var(--surface)' stroke='var(--border2)' stroke-width='1'/><text x='442' y='212.6' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='10' font-weight='700' fill='var(--text)'>Provider</text><rect x='176' y='238' width='14' height='14' rx='3' fill='var(--accent-fill)'/><text x='196' y='249' text-anchor='start' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='10' font-weight='400' fill='var(--text)'>Customer secures</text><rect x='320' y='238' width='14' height='14' rx='3' fill='var(--surface)' stroke='var(--border2)' stroke-width='1'/><text x='340' y='249' text-anchor='start' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='10' font-weight='400' fill='var(--text)'>Provider secures</text></svg>",
             "caption": "Who secures each layer under each model. The customer's share shrinks toward SaaS, but data, accounts and access stay with the customer every time. In SaaS, the customer still sets the application's configuration."
           },
-          "example": "A nonprofit runs its donor database on rented IaaS virtual machines. When a critical operating system flaw is announced, a volunteer assumes the provider will patch it. Chloe, a junior IT administrator, checks the provider's responsibility guide and schedules the patch through change management with the system owner.",
+          "example": "A nonprofit's volunteers assume their software as a service (SaaS) donor system keeps sign-in records for a year. Chloe, a junior IT administrator, checks the provider's responsibility guide: the service keeps 90 days, and longer retention is the customer's to arrange by exporting the logs. Chloe records the gap and reports it to the system owner, who assigns the export task.",
           "audit_focus": {
             "review": [
               "Match each security task to its owner using the provider's matrix",
@@ -2102,7 +2217,7 @@
               "Published duty split for each subscribed cloud product",
               "Patch reports for customer-managed operating systems"
             ],
-            "recommend": "Report any security task with no clear owner to the cloud platform owner for assignment.",
+            "recommend": "Report any security task with no clear owner to the system owner for assignment.",
             "decides": "Management assigns owners; the data owner stays accountable for the data"
           },
           "isaca_rule": "The provider owns security of the cloud; the customer owns security in the cloud. Data, identities, access and configuration stay with the customer in every model.",
@@ -2119,7 +2234,7 @@
           "key_terms": [
             {
               "term": "Accountability",
-              "definition": "Remaining answerable for an outcome even when someone else does the work."
+              "definition": "Answering for actions and outcomes, traced by unique IDs and logs; it stays with the owner even when work is delegated or outsourced."
             },
             {
               "term": "Responsibility matrix",
@@ -2133,7 +2248,11 @@
           "name": "Cloud Roles and Agreements",
           "legacy_ids": [],
           "practice_ids": [
-            "cc_d4_030"
+            "cc_d4_030",
+            "cc_d4_059",
+            "cc_d4_096",
+            "cc_d4_127",
+            "cc_d4_161"
           ],
           "definition": "Cloud roles name the parties in a cloud service, such as consumer, provider, broker, carrier and auditor; agreements set out what each must do.",
           "why_it_matters": "Shared duties work only when written down and checked, or the customer cannot know which risks are still its own.",
@@ -2176,7 +2295,7 @@
               "Exit plan for retrieving and deleting records"
             ],
             "recommend": "Pass contract gaps and outdated assurance reports to the business owner before signing or renewal.",
-            "decides": "The business owner who signs decides whether to accept gaps"
+            "decides": "The risk owner accepts contract gaps within tolerance; senior management decides beyond it"
           },
           "isaca_rule": "Get it in writing and get evidence: the agreement says who does what, and independent reports show the provider does its part.",
           "exam_traps": [
@@ -2196,7 +2315,7 @@
             },
             {
               "term": "SOC 2 report",
-              "definition": "An independent auditor's report on a service organization's controls, such as security and availability."
+              "definition": "System and Organization Controls (SOC) 2: an independent auditor's report on a provider's security controls, plus chosen extras such as availability."
             }
           ],
           "memory_aid": "Write it down, then prove it."
@@ -2206,7 +2325,11 @@
           "name": "Protecting Data in the Cloud",
           "legacy_ids": [],
           "practice_ids": [
-            "cc_d4_031"
+            "cc_d4_031",
+            "cc_d4_060",
+            "cc_d4_097",
+            "cc_d4_128",
+            "cc_d4_162"
           ],
           "definition": "Protecting cloud data means classifying it, encrypting it in transit and at rest, controlling the keys, and making sure it can be recovered and fully deleted.",
           "why_it_matters": "The data stays the customer's responsibility in every model, and well-controlled encryption limits the damage if storage is exposed.",
@@ -2268,7 +2391,7 @@
               "Encryption settings for storage and databases",
               "Backup restore test results for cloud data"
             ],
-            "recommend": "Report unencrypted sensitive data or missing backups to the data owner and the service owner.",
+            "recommend": "Fix unencrypted data or missing backups your procedure assigns you, recording the change; report other gaps to the data owner and the service owner.",
             "decides": "The data owner decides classification and key control"
           },
           "isaca_rule": "Classify, encrypt, control the keys and back up: the data is the customer's job in every model. Lose keys only you hold, and the data is gone.",
@@ -2284,8 +2407,8 @@
           ],
           "key_terms": [
             {
-              "term": "Crypto-shredding",
-              "definition": "Making data unreadable by securely destroying the keys that encrypt it; the National Institute of Standards and Technology (NIST) calls this cryptographic erase."
+              "term": "Cryptographic erase (crypto-shredding)",
+              "definition": "Destroying the keys to encrypted data so only unreadable ciphertext remains; often the only purge option in the cloud."
             },
             {
               "term": "Key management service (KMS)",
@@ -2300,7 +2423,10 @@
           "legacy_ids": [],
           "practice_ids": [
             "cc_d4_019",
-            "cc_d4_044"
+            "cc_d4_044",
+            "cc_d4_098",
+            "cc_d4_129",
+            "cc_d4_163"
           ],
           "definition": "A cloud misconfiguration is a setting that leaves resources more exposed than intended, such as public storage, open ports or excessive permissions.",
           "why_it_matters": "Misconfiguration is among the commonest causes of cloud data exposure, because self-service lets anyone create resources quickly.",
@@ -2339,7 +2465,7 @@
               }
             ]
           },
-          "example": "A research group makes a cloud storage bucket public to share survey files with a partner, and the university's CSPM tool flags it within an hour. Wen, a junior cloud security analyst, confirms it holds student names, notifies the bucket owner and security lead under the incident procedure, and records when exposure began.",
+          "example": "A research group makes a cloud storage bucket public to share survey files with a partner, and the university's CSPM tool flags it within an hour. Wen, a junior cloud security analyst, confirms it holds student names, notifies the bucket owner and security manager under the incident procedure, and records when exposure began.",
           "audit_focus": {
             "review": [
               "Check whether your procedure assigns you a finding before acting on it",
@@ -2350,7 +2476,7 @@
               "Cloud activity logs showing who changed a setting"
             ],
             "recommend": "Fix baseline failures your procedure assigns you, recording the change; send others to the resource owner, and escalate exposed sensitive data as an incident.",
-            "decides": "The procedure or resource owner sets who fixes it; only the risk owner accepts the risk"
+            "decides": "The resource owner assigns the fix; the risk owner accepts within tolerance, senior management beyond"
           },
           "isaca_rule": "In the cloud, the likeliest breach is the customer's own setting. Use baselines and continuous checks, fix the drift your procedure assigns you, and report exposed sensitive data fast, because exposure time matters.",
           "exam_traps": [
@@ -2366,11 +2492,11 @@
           "key_terms": [
             {
               "term": "Shadow IT",
-              "definition": "Technology, such as cloud apps, that staff use without IT's knowledge or approval."
+              "definition": "Technology, such as cloud apps, that staff use for work without IT or security approval."
             },
             {
               "term": "Configuration drift",
-              "definition": "Gradual change of settings away from the approved configuration baseline."
+              "definition": "Gradual, often unapproved changes that move a system's settings away from its approved baseline."
             },
             {
               "term": "Infrastructure as code (IaC)",
@@ -2385,7 +2511,11 @@
           "legacy_ids": [],
           "practice_ids": [
             "cc_d4_020",
-            "cc_d4_045"
+            "cc_d4_045",
+            "cc_d4_069",
+            "cc_d4_130",
+            "cc_d4_164",
+            "cc_d4_165"
           ],
           "definition": "Shared responsibility for cloud-hosted artificial intelligence (AI) workloads splits duties: the provider secures the AI platform; the customer secures data, models, access and use.",
           "why_it_matters": "Teams that assume the provider secures everything leave training data, tuned models and access settings exposed.",
@@ -2439,7 +2569,7 @@
               "Role assignments on AI buckets, exported from the console",
               "Contract clauses on prompt retention for each AI vendor"
             ],
-            "recommend": "Report open access to training data or models to the platform owner, and unapproved AI services to the security lead.",
+            "recommend": "Report open access to training data or models to the platform owner, and unapproved AI services to the security manager.",
             "decides": "Senior management approves the AI policy and tools; data owners decide what data may be used"
           },
           "isaca_rule": "An AI service is still a cloud service: the provider secures the platform, and the customer owns its data, models, access and settings.",
@@ -2536,35 +2666,35 @@
     }
   ],
   "key_terminologies": {
-    "OSI model": "A seven-layer reference model that splits network communication into separate jobs, from physical signals to applications.",
-    "TCP/IP model": "The four-layer model the internet runs on: Link, Internet, Transport and Application.",
-    "MAC address": "Media access control address: a hardware ID used to deliver frames within one local network; not the same as mandatory access control (MAC) in Domain 3.",
-    "IP address": "A logical address that routers use to move packets between networks; IPv4 is 32-bit and IPv6 is 128-bit.",
+    "Open Systems Interconnection (OSI) model": "A seven-layer reference model that splits network communication into separate jobs, from physical signals to applications.",
+    "TCP/IP model": "The Transmission Control Protocol/Internet Protocol model the internet runs on, in four layers: Link, Internet, Transport and Application.",
+    "Media access control (MAC) address": "A hardware ID used to deliver frames within one local network; not the same as mandatory access control (MAC) in Domain 3.",
+    "Internet Protocol (IP) address": "A logical address that routers use to move packets between networks; IPv4 is 32-bit and IPv6 is 128-bit.",
     "Port": "A number from 0 to 65535 that tells a host which service should receive traffic.",
-    "TCP": "A connection-based transport protocol that delivers data reliably and in order.",
-    "UDP": "A connectionless transport protocol that is fast but does not guarantee delivery.",
-    "TLS": "Transport Layer Security: encrypts and authenticates connections such as HTTPS.",
-    "SSH": "Secure Shell: an encrypted protocol for remote command-line access and file transfer, replacing Telnet.",
-    "VPN": "Virtual private network: an encrypted tunnel across an untrusted network.",
+    "Transmission Control Protocol (TCP)": "A connection-based transport protocol that delivers data reliably and in order.",
+    "User Datagram Protocol (UDP)": "A connectionless transport protocol that is fast but does not guarantee delivery.",
+    "Transport Layer Security (TLS)": "Encrypts and authenticates connections, such as HTTPS (secure web browsing); use version 1.2 or 1.3, never the retired Secure Sockets Layer (SSL).",
+    "Secure Shell (SSH)": "An encrypted protocol for remote command-line access and file transfer, replacing Telnet.",
+    "Virtual private network (VPN)": "An encrypted tunnel across an untrusted network.",
     "Firewall": "A device or software that allows or blocks traffic between networks or hosts by rules.",
-    "IDS": "Intrusion detection system: watches traffic or hosts and alerts on suspicious activity.",
-    "IPS": "Intrusion prevention system: sits in the traffic path and can block suspicious activity.",
-    "WPA3": "The current Wi-Fi security standard; its sign-in, Simultaneous Authentication of Equals (SAE), resists offline password guessing.",
+    "Intrusion detection system (IDS)": "A tool that watches network traffic or hosts and alerts on signs of attack, without blocking it.",
+    "Intrusion prevention system (IPS)": "Sits in the traffic path and can block suspicious activity.",
+    "Wi-Fi Protected Access 3 (WPA3)": "The current Wi-Fi security standard; its Simultaneous Authentication of Equals (SAE) sign-in resists offline password guessing.",
     "Industrial control system (ICS)": "Embedded and networked computers that run physical processes such as power, water and manufacturing.",
     "Internet of Things (IoT)": "Everyday network-connected devices, such as cameras and sensors, that collect data or act with little human input.",
     "Network segmentation": "Dividing a network into parts with controlled traffic between them.",
-    "Screened subnet (DMZ)": "A zone for public-facing servers between the internet and internal networks.",
-    "VLAN": "Virtual local area network: a logical network carved out of a shared physical switch network.",
+    "Screened subnet (DMZ)": "A zone for public-facing servers between the internet and internal networks; also called a demilitarized zone (DMZ).",
+    "Virtual local area network (VLAN)": "A logical network carved out of a shared physical switch network.",
     "Micro-segmentation": "Security policy applied to individual workloads, limiting each to the connections it needs.",
     "Defense in depth": "Layering independent physical, technical and administrative controls so one failure does not expose the asset.",
     "Zero Trust": "An approach that grants no trust based on network location and checks every request to every resource.",
     "Network access control (NAC)": "Checking a connecting user and device, and the device's health, before granting network access.",
     "Cloud computing": "Using computing resources from a shared pool over a network, taking more or less as needed.",
-    "IaaS, PaaS, SaaS": "Cloud service models: rented infrastructure, a managed platform for code, or a finished application.",
+    "Cloud characteristics": "The five essential traits of cloud computing: on-demand self-service, broad network access, resource pooling, rapid elasticity and measured service.",
+    "IaaS, PaaS, SaaS": "Cloud service models: infrastructure as a service (rented servers), platform as a service (a managed platform for code) and software as a service (a ready app).",
     "Public, private, community, hybrid cloud": "Cloud deployment models, defined by who the infrastructure is built for and shared with.",
-    "Shared responsibility model": "The split of cloud security duties: the provider secures the cloud, the customer secures what it puts in it.",
-    "CASB": "Cloud access security broker: sits between users and cloud services to show use and enforce policy.",
-    "CSPM": "Cloud security posture management: continuously checks cloud settings against a secure baseline.",
-    "Cleartext": "Data sent or stored unencrypted, so anyone who intercepts it can read it."
+    "Shared responsibility model": "Provider secures the cloud itself, the customer what it puts there; the split shifts by service model, but data, identities and access stay the customer's.",
+    "Cloud access security broker (CASB)": "Sits between users and cloud services to show use and enforce policy.",
+    "Cloud security posture management (CSPM)": "Continuously checks cloud settings against a secure baseline."
   }
 }

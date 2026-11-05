@@ -32,7 +32,8 @@ from check_longest_option import pick_longest_rate  # noqa: E402  (one tie-shari
 
 PRIORITY_WORDS = ["BEST", "FIRST", "MOST", "PRIMARY", "GREATEST", "LEAST", "MAIN", "STRONGEST"]
 ACTOR_WORDS = ["auditor", "audit", "management", "board", "organization", "committee", "firm", "owner", "officer", "manager",
-               "director", "ciso", "cio", "cto", "ceo", "cfo", "coo", "cae", "dpo", "team", "lead"]
+               "director", "ciso", "cio", "cto", "ceo", "cfo", "coo", "cae", "dpo", "team", "lead",
+               "practitioner", "analyst"]  # CRISC: the risk practitioner or risk analyst
 LONE_ABSOLUTES = ["always", "never", "all", "in full", "inherently", "per se", "only", "guarantees?"]
 STOP = set("the a an of to and or for in on by with is are be that this which what who its it as at from not".split())
 # Gap-echo (rule 1 + 5): the stem names a missing item ("no owner", "without a baseline")

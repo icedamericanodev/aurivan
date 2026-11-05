@@ -57,6 +57,7 @@ export default function ExamGuideScreen() {
     return (
       <EmptyScreen
         header="About the exam"
+        fallback="/learn"
         art="fieldbook"
         title="Not in the app yet"
         body="A guide to this exam isn't ready yet. Lessons and practice are ready now."
