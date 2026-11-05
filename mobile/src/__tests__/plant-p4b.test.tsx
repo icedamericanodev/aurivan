@@ -4,13 +4,15 @@
  * - the art's size steps; the phone's copy fixes (no "field guide", no "passed", no "Herbarium", no "you're ready");
  * - Your plant on paper: the name block, the state tags, the quiet grew line (one saved mark with Today),
  *   the What grows it next panel and when it hides;
- * - motion end states under Reduce Motion: the stem leaf fill, the Turning's label and leaf, no Elder drift;
+ * - motion end states under Reduce Motion (and with a screen reader on): the stem leaf fill, the Turning's
+ *   label and leaf, no Elder drift (nor after a skip); the resting art has a moon and no disc;
  *   and in full motion the Turning's leaf waits for the name (never fills during the swaps);
  * - Look (the ribbon waits for the exam date), Pick (each mode's title), the widget's soil line.
  */
 import * as Haptics from 'expo-haptics';
 import { act, create, type ReactTestInstance, type ReactTestRenderer } from 'react-test-renderer';
-import { Dimensions, StyleSheet } from 'react-native';
+import { AccessibilityInfo, Dimensions, StyleSheet } from 'react-native';
+import { flushSayLaterForTest, setScreenReaderForTest } from '../lib/a11y';
 import { setMockHoldAnimations, setMockReducedMotion } from '../../jest/reanimated-mock';
 import Today from '../app/(tabs)/home';
 import YourPlant from '../app/plant';
@@ -269,6 +271,27 @@ describe('Your plant on paper (PHASE4B 4.1, 4.7)', () => {
     expect(byTestID('plant-next')).toHaveLength(0);
   });
 
+  it('resting: the small moon on the art and never the dusk disc; exam day never draws the resting look (review round 1)', () => {
+    setPlant(grown(3));
+    useSeen.setState({ plantForms: { cisa: { seen: 2 } } });
+    // Five days without study: the resting look.
+    act(() => {
+      useProgress.getState().updateMilestones('cisa', (prev) => ({ milestones: { earned: {}, ...prev, lastDay: dayKey(Date.now() - 5 * DAY) } }));
+    });
+    mount(<YourPlant />);
+    expect(textOf(byTestID('plant-state-tag')[0])).toBe('Resting');
+    const hero = () => r!.root.find((n) => n.props.testID === 'plant-hero' && typeof n.type !== 'string');
+    // `resting` draws the dusk disc (art.ts); on paper it stays off and the resting MOOD draws the moon.
+    expect(hero().props.resting).toBe(false);
+    expect(hero().props.mood).toBe('resting');
+    unmount();
+    useSettings.setState({ examDates: { cisa: dayKey(Date.now()) } });
+    mount(<YourPlant />);
+    expect(textOf(byTestID('plant-state-tag')[0])).toBe('Exam day');
+    expect(hero().props.resting).toBe(false);
+    expect(hero().props.mood).not.toBe('resting');
+  });
+
   it('hidden and nothing planted: the short lines', () => {
     act(() => {
       useProgress.getState().setPlantSettings({ showPlant: false });
@@ -374,6 +397,54 @@ describe('the Turning on paper (PHASE4B 4.4, 4.5)', () => {
     expect(drift).toHaveLength(1);
     expect(drift[0].props.count ?? 8).toBeLessThanOrEqual(8);
     expect(byTestID('plant-form-reveal-full')[0].findAllByType(LeafFall)).toHaveLength(1);
+  });
+
+  it('at Elder in full motion, a skip followed by the end means no drift (review round 1)', () => {
+    motionOn();
+    setMockHoldAnimations(true);
+    setPlant(grown(6));
+    useSeen.setState({ plantForms: { cisa: { seen: 3 } } });
+    mount(<YourPlant />);
+    expect(byTestID('plant-form-reveal-full')).toHaveLength(1);
+    // A tap skips; the dissolve then runs to its end.
+    setMockHoldAnimations(false);
+    act(() => byTestID('plant-form-reveal')[0].props.onTouchStart());
+    act(() => r!.update(<YourPlant />));
+    expect(byTestID('plant-form-reveal-label')).toHaveLength(1);
+    expect(r!.root.findAllByType(LeafFall)).toHaveLength(0);
+  });
+
+  it('a screen reader on counts like Reduce Motion: no waiting button, the end state at once, one announcement (review round 1)', () => {
+    motionOn();
+    setScreenReaderForTest(true);
+    // Even with the session's moment already spent, nothing waits for a tap.
+    const { claimMoment } = jest.requireActual('../components/motion') as typeof import('../components/motion');
+    claimMoment();
+    const announce = jest.spyOn(AccessibilityInfo, 'announceForAccessibility').mockImplementation(() => {});
+    setPlant(grown(6));
+    useSeen.setState({ plantForms: { cisa: { seen: 3 } } });
+    mount(<YourPlant />);
+    expect(byTestID('plant-form-reveal-reduced')).toHaveLength(1);
+    expect(byTestID('plant-form-reveal-play')).toHaveLength(0);
+    expect(flat(byTestID('plant-form-reveal-name')[0]).opacity).toBe(1);
+    expect(flat(byTestID('plant-form-reveal-rule')[0]).opacity).toBe(1);
+    // The words are never hidden from the screen reader.
+    expect(byTestID('plant-form-reveal-words')[0].props.accessibilityElementsHidden).toBe(false);
+    expect(r!.root.findAllByType(LeafFall)).toHaveLength(0);
+    flushSayLaterForTest();
+    const said = announce.mock.calls.map((c) => c[0]).filter((t) => /new form/.test(t));
+    expect(said).toHaveLength(1);
+  });
+
+  it('a screen reader on never claims the session’s moment', () => {
+    motionOn();
+    setScreenReaderForTest(true);
+    setPlant(grown(3));
+    useSeen.setState({ plantForms: { cisa: { seen: 1 } } });
+    mount(<YourPlant />);
+    expect(byTestID('plant-form-reveal-reduced')).toHaveLength(1);
+    const { claimMoment } = jest.requireActual('../components/motion') as typeof import('../components/motion');
+    expect(claimMoment()).toBe(true);
   });
 
   it('waiting (the session’s moment spent): the solid button and "It plays when you tap."', () => {

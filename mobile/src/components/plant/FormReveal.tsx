@@ -23,8 +23,9 @@
  *   leaving the app, or the screen reader's "activate" dissolves it to the
  *   end in 120 ms: never a hard cut, never a fast replay. Input is never
  *   blocked: it is not a modal.
- * - Reduce Motion: a 120 ms cross-fade and every word at once, with no light
- *   and no motes. The haptic stays.
+ * - Reduce Motion, or a screen reader on (VoiceOver, TalkBack): a 120 ms
+ *   cross-fade and every word at once, with no light and no motes, no waiting
+ *   button, and the session's moment is never claimed. The haptic stays.
  * - Safe for people sensitive to flashing: at most 2.5 changes a second (the
  *   limit is 3), warm gold on paper, never white on dark.
  * - The plant is ONE image stop with the new form's label from the first
@@ -40,7 +41,8 @@
  * - `onName` fires at nameAt (or at the end, under Reduce Motion or a skip), so the screen fills
  *   the matching stem leaf then and never during the swaps;
  * - waiting: the solid button "See Kai's new form" with "It plays when you tap." under it;
- * - at Elder (`drift`), at most 8 leaves drift once down the art's own column after it ends.
+ * - at Elder (`drift`), at most 8 leaves drift once down the art's own column after it ends
+ *   (only when it played to its end; never after a skip).
  *
  * Performance: every layer is a static drawing built once (useMemo); React
  * never re-renders while it plays. One shared clock drives every style on
@@ -69,7 +71,7 @@ import {
   propsMix,
   tierOf,
 } from '../../engine/turnTimeline';
-import { moveFocus, sayLater } from '../../lib/a11y';
+import { moveFocus, sayLater, screenReaderOn, watchScreenReader, whenScreenReaderKnown } from '../../lib/a11y';
 import { haptic } from '../../lib/haptics';
 import { motion, space, turnLook, turnTone } from '../../theme/tokens';
 import { useTheme } from '../../theme/useTheme';
@@ -178,14 +180,35 @@ export function FormReveal({
   // Decided once, before the first paint, in a layout effect (review P3): a render React throws
   // away (a suspended or interrupted one) never spends the session's moment. Reduce Motion is
   // known at once (it spends nothing). A later Reduce Motion change can't restart it.
-  const [mode, setMode] = useState<RevealMode | 'deciding'>(() => (reduced ? 'reduced' : 'deciding'));
+  // Phase 4b review: a screen reader counts like Reduce Motion (PHASE4B 4.4): the end state at once,
+  // no waiting button, and the session's moment is never claimed. Its answer is read synchronously
+  // (lib/a11y.ts keeps it from app start); only if it isn't known yet does the reveal wait for it.
+  const [mode, setMode] = useState<RevealMode | 'deciding'>(() => (reduced || screenReaderOn() === true ? 'reduced' : 'deciding'));
   const decided = useRef(false);
+  const unmounted = useRef(false);
+  useEffect(() => {
+    unmounted.current = false;
+    return () => {
+      unmounted.current = true;
+    };
+  }, []);
   useLayoutEffect(() => {
     // Once per reveal: StrictMode's second effect run keeps the first decision.
     if (decided.current) return;
     decided.current = true;
-    // eslint-disable-next-line react-hooks/set-state-in-effect -- decided before paint, so the first frame is never the wrong mode
-    if (mode === 'deciding') setMode(revealMode(false, claimMoment));
+    if (mode !== 'deciding') return;
+    if (screenReaderOn() !== null) {
+      // Known and off (on was caught above): decided before paint, so the first frame is never the wrong mode.
+      // eslint-disable-next-line react-hooks/set-state-in-effect -- decided before paint
+      setMode(revealMode(false, claimMoment));
+      return;
+    }
+    // Not known yet (the app's first question is still out): stay 'deciding' until the answer comes.
+    watchScreenReader();
+    whenScreenReaderKnown().then((on) => {
+      if (unmounted.current) return;
+      setMode(revealMode(on, claimMoment));
+    });
     // eslint-disable-next-line react-hooks/exhaustive-deps -- decided once
   }, []);
   const [done, setDone] = useState(false);
@@ -289,8 +312,14 @@ export function FormReveal({
   }, [announce, bloom, named, onDone]);
   // The tap that started a waiting reveal (or its quick second tap) is never a skip (review P2a).
   const playedAt = useRef(0);
+  // Phase 4b review: cut short (a tap, a scroll drag, leaving the app). A Turning that was cut short
+  // never drifts its Elder leaves, and a tap or drag during the drift ends it (PHASE4B 8: any tap or
+  // scroll skips a celebration to its end).
+  const [cut, setCut] = useState(false);
   const skip = useCallback(() => {
-    if (mode !== 'full' || finished.current || skipping.current) return;
+    if (mode !== 'full') return;
+    setCut(true);
+    if (finished.current || skipping.current) return;
     skipping.current = true;
     cancelAnimation(clock);
     skipV.set(
@@ -343,19 +372,22 @@ export function FormReveal({
     },
     [full, nameAt],
   );
-  // Leaving the app mid-way skips to the end (it is never left half-turned).
+  // At Elder, a few leaves drift once after a Turning that played to its end (never after a skip).
+  const drifting = drift && done && mode === 'full' && !cut;
+  // Leaving the app mid-way skips to the end (it is never left half-turned), and drops the drift.
+  const listening = playing || drifting;
   useEffect(() => {
-    if (!playing) return;
+    if (!listening) return;
     const sub = AppState.addEventListener('change', (s) => {
       if (s !== 'active') skip();
     });
     return () => sub.remove();
-  }, [playing, skip]);
+  }, [listening, skip]);
 
   const play = () => {
     playedAt.current = Date.now();
-    // Reduce Motion turned on while it waited: the cross-fade, never the full motion (review P2b).
-    setMode(reduced ? 'reduced' : 'full');
+    // Reduce Motion (or a screen reader) turned on while it waited: the cross-fade, never the full motion (review P2b).
+    setMode(reduced || screenReaderOn() === true ? 'reduced' : 'full');
     // The button goes: hand screen-reader focus to the plant (never lost on the page).
     moveFocus(stageRef);
   };
@@ -419,7 +451,7 @@ export function FormReveal({
   // hears text that isn't on screen yet; the one announcement (sayLater) still comes at the end.
   const wordsA11y = { accessibilityElementsHidden: hideWords, importantForAccessibility: hideWords ? ('no-hide-descendants' as const) : ('auto' as const) };
   return (
-    <View testID={testID} style={{ alignSelf: 'stretch' }} onTouchStart={playing ? touchSkip : undefined}>
+    <View testID={testID} style={{ alignSelf: 'stretch' }} onTouchStart={playing || drifting ? touchSkip : undefined}>
       {/* Phase 4b: the fact that earned the form, on screen from the first frame, above the art. */}
       <View testID={testID ? `${testID}-fact` : undefined} style={{ paddingHorizontal: space.md, marginBottom: space.md }} {...wordsA11y}>
         <T v="small" center color={c.ink2}>
@@ -487,8 +519,9 @@ export function FormReveal({
               <TurnMotes species={species} theme={theme} P={P} clock={clock} skip={skipV} u={u} light={layers.light} base={layers.base} tipY={layers.tipY} />
             ) : null}
             {/* Phase 4b (4.5): at Elder, at most 8 leaves drift once down the art's own column (never
-                over words; LeafFall draws nothing under Reduce Motion). */}
-            {drift && done && mode === 'full' ? <LeafFall run colors={[c.accent, c.sap]} width={size} height={size} /> : null}
+                over words; LeafFall draws nothing under Reduce Motion). Only after a Turning that
+                played to its end: never after a skip, and a tap or drag during it ends it. */}
+            {drifting ? <LeafFall run colors={[c.accent, c.sap]} width={size} height={size} /> : null}
           </View>
         </View>
       </View>

@@ -52,7 +52,7 @@ import { MotionRoot, SPLASH_FADE, ThemeFade, useMotion } from '../components/mot
 import { Grain } from '../components/ui';
 import { motion } from '../theme/tokens';
 import { RecoveryScreen } from '../components/recovery';
-import { sayLater } from '../lib/a11y';
+import { sayLater, watchScreenReader } from '../lib/a11y';
 import { useFontsSettled } from '../lib/fontGate';
 import type { ErrorBoundaryProps } from 'expo-router';
 import { useHydration } from '../store/useHydrated';
@@ -98,6 +98,10 @@ export default function RootLayout() {
   useEffect(() => {
     if (ready || recovering) SplashScreen.hideAsync().catch(() => {});
   }, [ready, recovering]);
+
+  // Ask once whether a screen reader is on, and follow it (lib/a11y.ts): a celebration can then
+  // show its end state at once for VoiceOver and TalkBack users, decided before its first paint.
+  useEffect(() => watchScreenReader(), []);
 
   // Once saved settings have loaded: if reminders are on, re-apply them;
   // if they are off, clear any of ours left behind (e.g. an older
