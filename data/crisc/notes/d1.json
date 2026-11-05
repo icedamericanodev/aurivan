@@ -115,17 +115,17 @@
             "crisc_d1_104",
             "crisc_d1_111"
           ],
-          "definition": "The COBIT 2019 goals cascade links stakeholder needs to enterprise goals, then to alignment goals for information and technology, so every technology goal serves a business goal.",
+          "definition": "The COBIT 2019 goals cascade links stakeholder needs to enterprise goals, then to technology alignment goals, so every technology goal serves a business goal.",
           "why_it_matters": "IT goals set on their own let technology spend drift from business needs. Strategic change also changes the risk profile and must be assessed early.",
           "how_it_works": [
             "Stakeholder needs and drivers shape enterprise goals, such as customer trust or compliance with laws.",
             "Enterprise goals cascade to alignment goals for information and technology (I&T), which point to the governance and management objectives that deliver them.",
-            "Risk to an alignment goal is reported by its effect on the enterprise goal above it.",
-            "A new strategy, merger, market, technology or failed key assumption triggers a fresh look at each affected goal's risks and the treatments planned for them.",
+            "Risk to an alignment goal is reported through the enterprise goal above; an IT goal that harms that goal is revisited with the business owners.",
+            "A new strategy, merger, market, technology or failed key assumption triggers a fresh look at each affected goal's risks and planned treatments.",
             "AI initiatives start from a business purpose, with a risk owner and appetite fit agreed before they scale.",
             "Risk input counts most while leaders compare strategic options; each chosen objective then needs a measure, set by its owner, before risk to it is rated."
           ],
-          "example": "A university plans to grow online enrollment by 20%. The IT director proposes moving every system to the cloud by year end. Kenji, the risk practitioner, maps the cloud goal to the enrollment goal, shows that only the student portal and learning platform support it, and asks the provost's office to confirm priorities before assessing a full migration's risks.",
+          "example": "A university plans to grow online enrollment by 20%. The IT director proposes moving every system to the cloud. Kenji, the risk practitioner, maps the cloud goal to the enrollment goal, shows that only the student portal and learning platform support it, and asks the provost's office to confirm priorities before assessing a full migration's risks.",
           "audit_focus": {
             "review": [
               "Map each major IT goal to the enterprise goal it supports",
@@ -146,7 +146,7 @@
             },
             {
               "trap": "A new AI tool is only a technology project, so the IT team owns its risk.",
-              "why": "AI changes how the business meets objectives. Its risk belongs to the business owner of the process it supports, and it enters the risk profile."
+              "why": "AI changes how the business meets objectives, so its risk belongs to the owner of the process it supports and enters the risk profile."
             }
           ],
           "key_terms": [
@@ -863,11 +863,11 @@
             "crisc_d1_118"
           ],
           "definition": "A business continuity plan (BCP) keeps critical business processes running during disruption; a disaster recovery plan (DRP) restores the IT systems those processes depend on.",
-          "why_it_matters": "Both plans reduce the impact of disruptive risk scenarios. A DRP without a BCP restores servers but not the business, and untested plans give false comfort to the leaders relying on them.",
+          "why_it_matters": "Both plans reduce the impact of disruptive risk scenarios. A DRP without a BCP restores servers but not the business, and untested plans give leaders false comfort.",
           "how_it_works": [
             "The BCP is scoped by business processes and owned by the business; the DRP is a supporting, system-focused plan.",
             "Recovery targets in both plans come from business needs agreed by process owners.",
-            "Plans are tested regularly and after major change, as close to real conditions as practical, from tabletop exercises to full failover.",
+            "Plans are tested regularly and after major change, as close to real conditions as practical; a minor, trained staff change waits for the next scheduled exercise.",
             "Test results go to the process owners and feed the register: each gap is rated at its current level; its owner approves a plan or, within appetite, accepts it.",
             "Plans are maintained as people, suppliers and systems change.",
             "A continuity plan mainly cuts a disruption's impact, not its likelihood; a workaround counts only if it carries the service level the owner needs."
@@ -971,7 +971,7 @@
           "how_it_works": [
             "The inventory records each asset, its owner, location or provider, classification and the processes it supports.",
             "Owners are business roles that answer for the asset's use and protection; custodians such as IT look after it day to day.",
-            "Discovery tools, purchasing records and cloud billing help find assets the inventory misses.",
+            "Discovery tools, purchasing records and cloud billing help find assets the inventory misses; plant (OT) controllers on separate networks are listed too, using OT-safe or manual discovery.",
             "The inventory is updated through change, purchasing and offboarding processes, not a yearly clean-up alone; a stale one is reconciled before it feeds a risk assessment.",
             "Custodians decide how to meet the owner's requirements, such as when backups run, but not the asset's class, retention or who may receive it.",
             "Lifecycle dates, such as when vendor support ends, let owners plan replacement or treatment before support runs out."
@@ -1405,11 +1405,11 @@
             "crisc_d1_128"
           ],
           "definition": "Internal audit needs full independence from management; the second line sits within management, independent of the first-line work it oversees, with enough objectivity to challenge it credibly.",
-          "why_it_matters": "Holding the second line to audit-level independence cuts it off from the business it must advise, while too little objectivity turns challenge into rubber-stamping. Coordination avoids duplicate testing and gaps.",
+          "why_it_matters": "Holding the second line to audit-level independence cuts it off from the business it must advise, while too little objectivity turns challenge into rubber-stamping. Coordination avoids duplication and gaps.",
           "how_it_works": [
             "Internal audit reports functionally to the board or audit committee and does not perform management duties.",
             "The second line sits within management and reports to the CRO, with access to the board.",
-            "The second line advises the first line on design and leaves decisions with owners.",
+            "The second line advises on design and leaves decisions with owners, even for AI models it validates.",
             "Combined assurance maps who tests what so lines rely on each other's work; audit relies on another line's tests only after judging the testers' objectivity and records.",
             "Second-line pay and reporting do not depend on the results of the units it challenges.",
             "When an owner and the second line still disagree on a rating after weighing evidence, both views go to the risk committee."
@@ -1445,11 +1445,11 @@
             },
             {
               "term": "Functional reporting",
-              "definition": "The reporting line that governs a function's work and independence, such as internal audit to the audit committee."
+              "definition": "The reporting line that governs a function's independence, such as internal audit to the audit committee."
             },
             {
               "term": "Escalation right",
-              "definition": "The authority to take an unresolved concern directly to senior management or the board."
+              "definition": "The authority to take an unresolved concern to senior management or the board."
             }
           ]
         }
@@ -1569,9 +1569,9 @@
             "Group risks that share a cause, asset, supplier or process, and assess their combined impact.",
             "Do not just add scores or count high-rated risks: a count hides each risk's size, risks overlap, and correlated risks can compound.",
             "Refresh the profile on a schedule and on triggers such as an acquisition, a new market, a major incident or new regulation.",
-            "Report changes and trends, not just the current position, so leaders see the direction of travel.",
+            "Report changes and trends, not just the current position; after a rating-method change, restate the prior period on the new method.",
             "When a control credited in a profile rating stops working, re-rate the affected risks without it and report any change against appetite.",
-            "Tolerance bounds how far each risk may vary; appetite is the broad level accepted overall or per category. Risks within tolerance can together breach appetite: escalate to whoever set it."
+            "Risks each within tolerance can together breach the overall or category appetite: escalate to whoever set it."
           ],
           "example": "An online retailer rates three separate risks as medium: payment outage, warehouse system failure and website downtime. Gabriel, the risk analyst, notices that all three depend on the same cloud region and assesses the combined scenario of losing that region, which would stop sales entirely. They report the aggregated exposure to the chief operating officer.",
           "audit_focus": {
@@ -1639,7 +1639,7 @@
           "how_it_works": [
             "Capacity is the outer limit: the loss the enterprise could survive, bounded by finances, regulation and reputation.",
             "Appetite sits inside capacity and reflects strategy and culture, such as a low appetite for safety risk.",
-            "Tolerance sets measurable limits per objective or metric, such as no more than four hours of outage a month.",
+            "Tolerance sets measurable limits per objective or metric, such as four hours of outage a month, monitored per month: a yearly figure can hide a breach.",
             "Tolerance must never extend past capacity.",
             "Appetite can differ by risk type: an enterprise may welcome product innovation risk but avoid compliance risk."
           ],
@@ -1676,7 +1676,7 @@
               }
             ]
           },
-          "example": "A regional insurer could absorb a claims system outage of about three days before regulators intervene. Its appetite for service disruption is low, and its tolerance for the claims system is eight hours a month. When a business unit proposes a new tolerance of five days, Wei, the risk practitioner, flags to the chief operating officer that it exceeds capacity.",
+          "example": "A regional insurer could absorb a claims outage of about three days before regulators intervene. Its appetite for service disruption is low, and its tolerance for the claims system is eight hours a month. When a unit proposes a five-day tolerance, Wei, the risk practitioner, flags to the chief operating officer that it exceeds capacity.",
           "audit_focus": {
             "review": [
               "Compare each tolerance with the enterprise's documented capacity",
@@ -1689,11 +1689,11 @@
             "recommend": "Have senior management align each tolerance with appetite and confirm none exceeds capacity.",
             "decides": "Directors fix the overall limit; executives fix the metric limits"
           },
-          "isaca_rule": "Capacity is the outer bound. The board and senior management set appetite, the overall level of risk they choose to take on; tolerance turns it into measurable limits on how far a specific risk or metric may move before escalation. Flag any tolerance that would reach or exceed capacity.",
+          "isaca_rule": "Capacity is the outer bound. The board and senior management set appetite, the overall risk they choose to take on; tolerance turns it into measurable limits on how far a risk or metric may move before escalation. Flag any tolerance that reaches capacity.",
           "exam_traps": [
             {
               "trap": "Risk appetite and risk tolerance mean the same thing.",
-              "why": "Appetite is the overall level of risk the enterprise chooses to take on; tolerance is how far one risk or metric may move from that intent before escalation, often a measurable limit."
+              "why": "Appetite is the overall risk the enterprise chooses to take on; tolerance is how far one risk or metric may move before escalation, often a measurable limit."
             },
             {
               "trap": "Set tolerance above capacity to give the business flexibility.",

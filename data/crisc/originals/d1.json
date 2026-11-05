@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "comment": "Original CRISC practice questions for Domain 1 (Governance), written to the CRISC exam content outline effective 2025 (delivered since 3 Nov 2025). Every item is authored from public concepts and KaiSip's own CRISC study notes (data/crisc/notes/d1.json), with no reference to the CRISC Review Manual, ISACA's QAE database, ISACA's practice quiz or any prep bank. Schema: docs/content/QUESTION_SCHEMA.md; writing rules: docs/content/EXAM_STYLE_V2.md and .claude/agents/crisc-standards-auditor.md. Not affiliated with or endorsed by ISACA®. CRISC® is a registered trademark of ISACA. Pilot batch crisc_d1_001 to crisc_d1_020, 30 Oct 2026. Round 7 crisc_d1_104 to crisc_d1_110, 4 Nov 2026. Round 8 crisc_d1_111 to crisc_d1_117, 5 Nov 2026. Round 9 crisc_d1_118 to crisc_d1_124, 5 Nov 2026. Round 10 crisc_d1_125 to crisc_d1_130, 5 Nov 2026.",
+    "comment": "Original CRISC practice questions for Domain 1 (Governance), written to the CRISC exam content outline effective 2025 (delivered since 3 Nov 2025). Every item is authored from public concepts and KaiSip's own CRISC study notes (data/crisc/notes/d1.json), with no reference to the CRISC Review Manual, ISACA's QAE database, ISACA's practice quiz or any prep bank. Schema: docs/content/QUESTION_SCHEMA.md; writing rules: docs/content/EXAM_STYLE_V2.md and .claude/agents/crisc-standards-auditor.md. Not affiliated with or endorsed by ISACA®. CRISC® is a registered trademark of ISACA. Pilot batch crisc_d1_001 to crisc_d1_020, 30 Oct 2026. Round 7 crisc_d1_104 to crisc_d1_110, 4 Nov 2026. Round 8 crisc_d1_111 to crisc_d1_117, 5 Nov 2026. Round 9 crisc_d1_118 to crisc_d1_124, 5 Nov 2026. Round 10 crisc_d1_125 to crisc_d1_130, 5 Nov 2026. Round 12 crisc_d1_138 to crisc_d1_143, 5 Nov 2026.",
     "schema_version": 1
   },
   "domain": 1,
@@ -5074,6 +5074,228 @@
         "Culture indicators"
       ],
       "_provenance": "Authored from concept: notes 1A3.1 (Risk Culture and Tone at the Top: a weak culture shows in hidden issues, and a unit reporting no near misses while similar units report many is a warning sign; bullet extended in round 11). Round 11, 5 Nov 2026: original scenario (over two years a toy maker's design unit has logged no security near misses while three similar units each log about 20 a year) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Round 11 asks covered: owner balance (no option names an owner); MOST likely stem with statement options; setting toy maker. Neighbours checked: crisc_d1_024 (near-miss reports fell once counted against ratings: the cause is given; here it is inferred, and its reporting-target distractor was not reused), crisc_d1_097 (reports halved, staff think they go nowhere), crisc_d1_046 (best insight into culture), crisc_d1_084, crisc_d1_109, crisc_d2_001 and crisc_d2_048 (recording a near miss), crisc_d2_046 (loss data that omits near misses), crisc_d4_018, CISA d1_028 (staff fear retaliation) and d5_170 (blame in post-incident reviews), CC cc_d1_082, plus the nearest by wording, crisc_d3_166 and crisc_d1_098 (unrelated). None asks what a unit's lasting absence of near-miss reports most likely means.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d1_138",
+      "domain": 1,
+      "subtopic": "1A1 Strategy, goals and objectives. Patching goal and lab experiments",
+      "principle_id": "objectives-first",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An engineering college's IT department holds a goal of patching every server within seven days, and twice this term forced reboots ended week-long, grant-funded lab experiments. What is the risk analyst's BEST recommendation?",
+      "options": {
+        "A": "Review the patching goal against research objectives with lab owners",
+        "B": "Exempt lab servers from patching with each lab owner's sign-off",
+        "C": "Add network isolation for the lab servers before the next cycle",
+        "D": "Report patch compliance against IT's objectives to senior management"
+      },
+      "correct": "A",
+      "key_concept": "IT goals serve enterprise goals; when an IT goal starts harming the objective it supports, revisit the goal with the business owners.",
+      "pre_read": "Separate the cause of the clash from its symptoms before choosing.",
+      "correct_explanation": "IT goals exist to serve enterprise goals. A seven-day goal applied to every server is now harming the research it should protect, so the goal itself is revisited with the lab owners, weighing slower patching against lost experiments. Exempting lab servers with sign-off is the runner-up: it stops the reboots, but it drops patching on those servers without analysis and leaves the misaligned goal in place.",
+      "wrong_explanations": {
+        "B": "An exemption stops the reboots but removes patching from the lab servers without analyzing that risk, and the goal that caused the clash stays unchanged.",
+        "C": "Isolation is a control chosen before anyone has weighed the research objective against the patching risk, and it does not stop forced reboots.",
+        "D": "A compliance rate shows IT meeting its own goal, not the harm that goal is doing to the research it is meant to support."
+      },
+      "tips": [
+        "Eliminate: C picks a control before the objective and the risk are weighed, and D reports an IT goal as a success while it harms research.",
+        "Final two: A beats B because an IT goal that harms the enterprise goal is fixed at the goal, with its owners; an exemption drops a control unanalyzed.",
+        "Exam cue: when an IT goal hurts the business it serves, revisit the goal against the enterprise objective instead of carving out exceptions."
+      ],
+      "framework_ref": "COBIT 2019 APO02 (Managed Strategy); NIST IR 8286 Rev. 1 Section 2.2 (The Gap Between CSRM Output and ERM Input: practitioners consider how cybersecurity risks influence the enterprise's strategic, operations, reporting and compliance objectives); NIST CSF 2.0 GV.OC-01 (the organizational mission is understood and informs cybersecurity risk management)",
+      "related_concepts": [
+        "Goals cascade",
+        "Alignment goals",
+        "Business objectives"
+      ],
+      "_provenance": "Authored from concept: notes 1A1.2 (The Goals Cascade and Strategic Change: IT goals are means to enterprise goals; risk to an alignment goal is reported through the enterprise goal above it; bullet extended in round 12: an IT goal harming that goal is revisited with the business owners). Round 12, 5 Nov 2026: original scenario (an engineering college's seven-day patching goal for every server forced reboots that ended two week-long, grant-funded lab experiments) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Round 12 asks covered: owner shape k=2 with the key in the pair (the key and the runner-up name lab owners; the two easy options name none); key opener 'Review' also opens a wrong option in crisc_d1_139; lens word 'objectives' also in wrong D; setting engineering college. Neighbours checked: crisc_d1_001 (pen-test findings: start from objectives), crisc_d1_002 (99.99% availability for every system), crisc_d1_047 (late IT goal expressed through the goals it serves), crisc_d1_057 (growth goal against a control), crisc_d1_066 (AI pilot criterion), crisc_d1_111 (treatment outlasting its objective), crisc_d1_125 (cloud move turned down), crisc_d2_105 (lab sequencer scan findings), CC cc_d2_016 and cc_d2_119 (patch KRIs), cc_d5_107 (failed patch rollback), CISA d4_023 (patch management practice). None keys revisiting an IT goal that harms the enterprise goal it serves.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d1_139",
+      "domain": 1,
+      "subtopic": "1A5 Business processes and resilience. Two new responders before the exercise",
+      "principle_id": "proportionate-response",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "A port authority replaced 2 of its 14 berth-allocation continuity responders, neither a team lead; both were trained, and the plan's yearly exercise is two months away. What is the risk analyst's BEST recommendation?",
+      "options": {
+        "A": "Review the business impact analysis for berth allocation",
+        "B": "Ask the process owner to run an extra exercise this month",
+        "C": "Have the process owner reset the plan's recovery targets",
+        "D": "Have the process owner include both in the yearly exercise"
+      },
+      "correct": "D",
+      "key_concept": "Plans are exercised on a regular cycle and after major change; a small staff change, already trained, is tested at the next scheduled exercise.",
+      "pre_read": "Judge the size of the change before choosing how to test for it.",
+      "correct_explanation": "Plans are exercised on a regular cycle and after major change, and newly appointed responders are trained soon after joining. Two trained responders replacing two others, neither a lead, is routine maintenance with no trigger for testing out of cycle; the yearly exercise two months away tests them in role. An extra exercise this month is the runner-up: it tests the newcomers sooner, but spends exercise effort on a change too small to need one.",
+      "wrong_explanations": {
+        "A": "A business impact analysis ranks processes by the harm their disruption causes; swapping two responders changes neither the process nor that harm.",
+        "B": "Testing after major change is sound, but two trained, non-lead responders are a routine change, and the yearly exercise is only two months away.",
+        "C": "Recovery targets come from the business impact of an outage, which a change of responders does not alter, so there is nothing to reset."
+      },
+      "tips": [
+        "Eliminate: A and C redo the impact analysis and the recovery targets, which follow the process's business impact, not who the responders are.",
+        "Final two: D beats B because a small, trained staff change is no trigger for out-of-cycle testing; the yearly exercise two months away covers it.",
+        "Exam cue: exercise plans on schedule and after major change; routine changes are handled by plan upkeep and the next scheduled exercise."
+      ],
+      "framework_ref": "NIST SP 800-34 Rev. 1 Section 3.5 (Plan Testing, Training, and Exercises); NIST SP 800-34 Rev. 1 Section 3.5.2 (Training: training is provided at least annually, and personnel newly appointed to plan roles are trained shortly thereafter); COBIT 2019 DSS04 (Managed Continuity)",
+      "related_concepts": [
+        "Continuity exercise",
+        "Plan maintenance",
+        "Proportionate testing"
+      ],
+      "_provenance": "Authored from concept: notes 1A5.2 (Continuity and Recovery Plans as Risk Responses: plans are tested regularly and after major change; bullet extended in round 12: new responders are trained promptly, and a minor staff change is tested at the next scheduled exercise). Round 12, 5 Nov 2026: original scenario (a port authority replaced 2 of the 14 responders in its berth-allocation continuity plan, neither a team lead, both trained, with the yearly exercise two months away) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Round 12 asks covered: the item where waiting for the scheduled yearly exercise is genuinely right (a small in-limit change with no trigger), distinct from crisc_d1_123 (an in-limit risk change reported at the committee's scheduled meeting) and crisc_d3_146 (an exception reviewed at its due date): here the question is when to test, not where to escalate; owner shape k=3 with the key among them (key, runner-up and C name the process owner; A names none); setting port authority. Neighbours checked: crisc_d1_010 (plan tested two years ago as a walkthrough), crisc_d1_028 (plan after an outsourcing change), crisc_d1_063 (exercise gap with a planned fix), crisc_d1_107 (paper payments in an exercise), crisc_d1_118 (test results only to IT), crisc_d1_123, crisc_d3_146, crisc_d3_161 (wait for the root-cause review), crisc_d2_113 (a passed restore test versus a BIA revision), CISA d5_005 and d5_166 (exercise types), CC cc_d5 continuity items. None keys absorbing a minor trained staff change into the next scheduled exercise.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d1_140",
+      "domain": 1,
+      "subtopic": "1A6 Organizational asset management. Controllers missing from the inventory",
+      "principle_id": "root-cause-over-symptom",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "A shipyard's asset inventory, built from IT network scans, omits the 60 controllers that run its dry-dock pumps and cranes on a separate plant network. What should the risk analyst recommend as BEST?",
+      "options": {
+        "A": "Name IT as the controllers' owner in the inventory",
+        "B": "Add the plant controllers to the enterprise asset inventory",
+        "C": "Have the dock operations owner keep a separate controller list",
+        "D": "Have each controller's owner rate its risk before listing it"
+      },
+      "correct": "B",
+      "key_concept": "Every asset the enterprise relies on, plant controllers included, belongs in the one inventory that feeds risk assessment.",
+      "pre_read": "Recall what the asset inventory is used for in risk management.",
+      "correct_explanation": "If the enterprise relies on an asset, it belongs in the one inventory that feeds risk assessment, wherever it runs, recorded with its business owner and the process it supports. The controllers are missing only because the scans never reached the plant network. A separate list kept by the dock operations owner is the runner-up: it gives the controllers an owner, but keeps them out of the inventory that enterprise risk assessments draw on.",
+      "wrong_explanations": {
+        "A": "IT is at most a custodian here; the controllers serve dock operations, so a business owner answers for them, not the team that ran the scans.",
+        "C": "A separate list gives the controllers an owner but leaves them outside the inventory that enterprise risk assessments use, so the gap remains.",
+        "D": "Risk assessment draws on the inventory; rating each controller before it is listed reverses that order and leaves the inventory gap open."
+      },
+      "tips": [
+        "Eliminate: A names a custodian as owner, and D rates risks before the assets are in the inventory that assessments draw on.",
+        "Final two: B beats C because one enterprise inventory feeds risk assessment; an owner's side list leaves the controllers outside it.",
+        "Exam cue: plant, cloud and AI assets go in the same inventory as IT assets; a separate list is still a gap."
+      ],
+      "framework_ref": "NIST SP 800-82 Rev. 3 Section 6.1.1 (Asset Management: a complete and accurate OT asset inventory supports risk assessment, and documented roles identify who represents the asset owner); NIST CSF 2.0 ID.AM-01 (inventories of hardware managed by the organization are maintained); COBIT 2019 BAI09 (Managed Assets)",
+      "related_concepts": [
+        "Asset inventory",
+        "Operational technology",
+        "Asset owner"
+      ],
+      "_provenance": "Authored from concept: notes 1A6.1 (Asset Inventory and Ownership: the inventory records each asset with its owner and the processes it supports; bullet extended in round 12: plant (OT) controllers on separate networks are listed too, using OT-safe or manual discovery). Round 12, 5 Nov 2026: original scenario (a shipyard's inventory, built from IT network scans, omits the 60 controllers that run its dry-dock pumps and cranes on a separate plant network) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Round 12 asks covered: owner shape k=3 with the key the one option without an owner (rule 20); key opener 'Add' also opens a wrong option in crisc_d1_138 and crisc_d1_142; setting shipyard. Neighbours checked: crisc_d1_031 (portal now holds passport scans), crisc_d1_048 (unrecorded AI dataset), crisc_d1_064 (cloud tools found at each count), crisc_d1_076 (decisions left to the custodian), crisc_d1_087 (customer data held by a supplier), crisc_d1_110 (lifecycle dates), crisc_d1_130 (stale inventory before an assessment), crisc_d2_024 and crisc_d2_096 (plant and baggage controllers in threat and likelihood analysis), crisc_d4_073 and crisc_d4_101 (OT controls and unsupported controllers), CC cc_d1_052, cc_d4_050, cc_d4_081 and cc_d4_115 (OT security), CISA d4_192 (SCADA in continuity planning). None keys adding unlisted plant controllers to the enterprise inventory.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d1_141",
+      "domain": 1,
+      "subtopic": "1B2 Lines of defense. Validating team asked to own a model's risk",
+      "principle_id": "lines-of-defense",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An insurance broker's claims director wants the second-line risk team, which validates the unit's AI claims-triage model, to own the model's risk. What is the risk analyst's BEST advice?",
+      "options": {
+        "A": "Confirm the claims director as owner of the model's risk",
+        "B": "Have the director and the risk team hold the risk jointly",
+        "C": "Move the model's risk to the risk team that validates it",
+        "D": "Give internal audit the model's risk for independent assurance"
+      },
+      "correct": "A",
+      "key_concept": "The business unit that uses an AI model owns its risk; the second line validates and challenges the model without taking ownership.",
+      "pre_read": "Recall what each line of defense does with a risk.",
+      "correct_explanation": "The first line owns its risks, and the claims unit uses the model to make its decisions, so the claims director stays the risk owner. The second-line team validates and challenges the model, and it keeps its objectivity only if it does not own what it reviews. Holding the risk jointly is the runner-up: it keeps the director involved, but each risk needs one accountable owner, and sharing blurs who decides.",
+      "wrong_explanations": {
+        "B": "Each risk needs one accountable owner; joint holding blurs who decides and puts the reviewing team partly in charge of what it reviews.",
+        "C": "Validation is second-line oversight; owning the risk would have the team judge its own position and take the decision away from the unit using the model.",
+        "D": "Internal audit gives independent assurance and does not take on management's risks; owning this one would compromise its independence."
+      },
+      "tips": [
+        "Eliminate: C hands a first-line risk to the second line that reviews it, and D asks internal audit to own a risk it must assure.",
+        "Final two: A beats B because one accountable owner holds each risk; joint holding with the reviewing team blurs accountability and objectivity.",
+        "Exam cue: the unit that uses an AI model owns its risk; validators and auditors check it, they never own it."
+      ],
+      "framework_ref": "ISACA Glossary (risk owner); NIST AI 100-1 (AI RMF 1.0) GOVERN 2.1 (roles, responsibilities and lines of communication for AI risks are documented and clear); ISACA Journal 2018 Volume 4 (Roles of Three Lines of Defense for Information Security and Governance)",
+      "related_concepts": [
+        "Three lines",
+        "AI model validation",
+        "Risk ownership"
+      ],
+      "_provenance": "Authored from concept: notes 1B2.2 (Independence, Challenge and Coordination Across Lines: the second line advises and leaves decisions with owners; bullet extended in round 12: validating a unit's AI model does not make the second line its risk owner). Round 12, 5 Nov 2026: original scenario (an insurance broker's claims director wants the second-line risk team, which validates the unit's AI claims-triage model, to own the model's risk) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Round 12 asks covered: the batch's AI item; a lone owner option keyed (the key is the only option that names an owner); key opener 'Confirm' also opens a wrong option in crisc_d1_142; setting insurance broker. Neighbours checked: crisc_d1_014 (audit offers to design controls), crisc_d1_015 (second-line independence), crisc_d1_036 (second line running a control), crisc_d1_052 (two accountable roles in a RACI), crisc_d1_089 (second-line pay), crisc_d1_094 (owner and second line disagree), crisc_d1_121 (control team inside IT), crisc_d1_128 (audit reliance on second-line tests), crisc_d2_060 (IT security named owner of all entries; its 'move ownership to the risk function' distractor is consistent with this key), crisc_d3_023 and crisc_d3_117 (choosing an owner), crisc_d3_017 and crisc_d4_006 (AI model monitoring and change), AAIA aaia_d2_121 (auditor asked to validate a model). None asks whether validating an AI model moves its ownership to the second line.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d1_142",
+      "domain": 1,
+      "subtopic": "1B3 Risk profile. Ratings that fell when the bands changed",
+      "principle_id": "rate-on-common-terms",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "After an architecture practice doubled in size, its partners approved wider impact bands; this quarter's profile rates three risks lower, though controls and threats are unchanged. What is the risk analyst's BEST action?",
+      "options": {
+        "A": "Check whether exposure on the three risks has fallen",
+        "B": "Confirm the three lower ratings with their risk owners",
+        "C": "Report both quarters' ratings on the new impact bands",
+        "D": "Have the risk owners re-rate the three risks on the old bands"
+      },
+      "correct": "C",
+      "key_concept": "When a rating method changes, restate the prior period on the new method so the profile compares like with like.",
+      "pre_read": "Ask what actually changed between the two quarters.",
+      "correct_explanation": "The three ratings fell when the bands moved, while controls and threats stayed the same, so the fall reflects the method, not lower exposure. Restating last quarter on the new bands gives partners a like-for-like comparison in which any real change still shows. Checking whether exposure has fallen is the runner-up: it looks like careful validation, but the cause of the fall is already known, and the report would still compare two different scales.",
+      "wrong_explanations": {
+        "A": "Validation is sound practice, but the cause is already known, new bands with controls and threats unchanged, and the report would still mix two scales.",
+        "B": "The ratings are right on the new bands; owners confirming them does not make this quarter comparable with the last.",
+        "D": "The partners approved the new bands for current reporting; rating on retired bands misstates what a loss now means to the larger firm."
+      },
+      "tips": [
+        "Eliminate: B confirms ratings that are not in doubt, and D rates on a scale the partners have retired.",
+        "Final two: C beats A because the cause of the fall is already known, a method change; restating the prior quarter shows partners the true comparison.",
+        "Exam cue: when a rating method changes, restate the earlier period on the new method so trends compare like with like."
+      ],
+      "framework_ref": "NIST IR 8286 Rev. 1 Section 4.2 (Translating the Risk Profile to Inform Leadership Decisions: the notional enterprise portfolio view sets each risk profile's current period beside the previous period); NIST IR 8286 Rev. 1 Section 3.1.2 (Risk Management Strategy: leaders give guidance on risk calculation, including a common scale for assessing levels of risk and the mechanisms and frequency of risk reporting); ISACA Glossary (IT risk profile)",
+      "related_concepts": [
+        "Risk profile",
+        "Impact scale",
+        "Trend reporting"
+      ],
+      "_provenance": "Authored from concept: notes 1B3.2 (Aggregation and Keeping the Profile Current: report changes and trends, not just the current position; bullet extended in round 12: after a rating-method change, restate the prior period on the new method). Round 12, 5 Nov 2026: original scenario (after an architecture practice doubled in size and its partners approved wider impact bands, the quarterly profile rates three risks lower with controls and threats unchanged) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Round 12 asks covered: an investigative verb ('Check whether') on the runner-up; owner shape k=2 with the key outside the pair (the owner pair sits on the two easy options B and D); key opener 'Report' also opens a wrong option in crisc_d1_138; setting architecture practice. Neighbours checked: crisc_d1_134 (setting new impact bands after growth; this item follows on, about reporting across the change), crisc_d1_090 (a count of high-rated risks read as lower exposure), crisc_d1_079 (ratings older than a major change), crisc_d1_037 (credited control failed), crisc_d1_129 (current ratings beside last year's), crisc_d3_079 (one averaged score), crisc_d3_141 (heat-map colors against the board threshold), crisc_d3_047 and crisc_d3_080 (trend on dashboards), crisc_d2_098 (dropping inherent ratings), CC cc_d2_119 (two parks count patch days differently). None asks how to report a profile across a change of impact bands.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d1_143",
+      "domain": 1,
+      "subtopic": "1B4 Risk appetite and risk tolerance. Monthly limit and yearly report",
+      "principle_id": "appetite-drives-response",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A freight forwarder's board set a tolerance of four hours of tracking-system downtime a month, while IT reports only yearly availability, with a 99.5% target. Which of the following is the risk analyst's BEST recommendation?",
+      "options": {
+        "A": "The board's tolerance restated as 99.5% yearly availability",
+        "B": "A monthly downtime measure against the four-hour tolerance",
+        "C": "A tighter yearly availability target of 99.9% for IT",
+        "D": "A KPI for how fast IT restores the tracking system"
+      },
+      "correct": "B",
+      "key_concept": "A tolerance is monitored in its own unit and period; a yearly average can hide a monthly breach.",
+      "pre_read": "Check what each measure could hide before choosing.",
+      "correct_explanation": "A tolerance is a measurable limit on how far a risk may vary, so it is monitored in its own terms. A 99.5% yearly target allows about 44 hours of downtime a year, enough for a month far above four hours to pass unseen. A tighter 99.9% yearly target is the runner-up: it cuts the yearly allowance to under nine hours, but one bad month could still double the tolerance unnoticed.",
+      "wrong_explanations": {
+        "A": "The board sets tolerance to reflect its appetite; rewriting it to fit IT's report changes the limit instead of measuring against it.",
+        "C": "At 99.9% a year, IT may still have one month with over eight hours down, double the tolerance, and the yearly figure would not show it.",
+        "D": "Restore speed is a KPI of IT's recovery process; it does not show total downtime in a month against the board's limit."
+      },
+      "tips": [
+        "Eliminate: A rewrites the board's limit to suit IT's report, and D tracks restore speed, a process KPI, not monthly downtime.",
+        "Final two: B beats C because a yearly target, however tight, can hide a month above four hours; the limit is monitored in its own period.",
+        "Exam cue: monitor a tolerance in the unit and period it is set in; a yearly average can hide a monthly breach."
+      ],
+      "framework_ref": "ISACA Glossary (risk tolerance); NIST CSF 2.0 GV.RM-02 (risk appetite and risk tolerance statements are established, communicated and maintained); NIST IR 8286 Rev. 1 Section 2.1 (Overview of ERM: risk appetite and risk tolerance)",
+      "related_concepts": [
+        "Risk tolerance",
+        "Monitoring against limits",
+        "KPI versus tolerance"
+      ],
+      "_provenance": "Authored from concept: notes 1B4.1 (Appetite, Tolerance and Capacity: tolerance sets measurable limits per objective or metric, such as no more than four hours of outage a month; bullet added in round 12: monitor each tolerance in its own unit and period). Round 12, 5 Nov 2026: original scenario (a freight forwarder's board set a tolerance of four hours of tracking-system downtime a month while IT reports only yearly availability, with a 99.5% target) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Round 12 asks covered: 1B4 item that is not an acceptance-condition item; no option names an owner; short 'Which of the following' stem with noun-phrase options; numeric options in ascending order (99.5% before 99.9%); setting freight forwarder. Neighbours checked: crisc_d1_017 (expressing a tolerance: two hours a month), crisc_d1_018 (KRI above tolerance with a routine ticket), crisc_d1_040 (input for a downtime tolerance), crisc_d1_067 (appetite change and IT thresholds), crisc_d1_132 (recurring breaches), crisc_d3_125 (a yearly four-hour tolerance with no amber level; its monthly-count distractor is consistent with this key), crisc_d2_047 (freight forwarder loss log), CISA d4_143 (provider availability that excludes maintenance: measure over business hours) and d4_059 (contracted 99.99%). None keys monitoring a monthly tolerance that a yearly availability figure hides.",
       "style_version": 2
     }
   ]

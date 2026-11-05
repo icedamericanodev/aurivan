@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "comment": "Original CRISC practice questions for Domain 4 (Technology and Security), written to the CRISC exam content outline effective 2025. Every item is authored from public concepts and KaiSip's own CRISC study notes (data/crisc/notes/d4.json), with no reference to the CRISC Review Manual, ISACA's QAE database, ISACA's practice quiz or any prior question bank. Schema: docs/content/QUESTION_SCHEMA.md; writing rules: docs/content/EXAM_STYLE_V2.md and .claude/agents/crisc-standards-auditor.md. Not affiliated with or endorsed by ISACA®. CRISC® is a registered trademark of ISACA. Pilot batch crisc_d4_001 to crisc_d4_020, 30 Oct 2026. Round 2 crisc_d4_021 to crisc_d4_045, 31 Oct 2026. Round 3 crisc_d4_046 to crisc_d4_065, 4 Nov 2026. Round 5 crisc_d4_066 to crisc_d4_075, 4 Nov 2026. Round 6 crisc_d4_076 to crisc_d4_079, 4 Nov 2026. Round 7 crisc_d4_080 to crisc_d4_085, 4 Nov 2026. Round 8 crisc_d4_086 to crisc_d4_090, 5 Nov 2026. Round 9 crisc_d4_091 to crisc_d4_095, 5 Nov 2026. Round 10 crisc_d4_096 to crisc_d4_100, 5 Nov 2026.",
+    "comment": "Original CRISC practice questions for Domain 4 (Technology and Security), written to the CRISC exam content outline effective 2025. Every item is authored from public concepts and KaiSip's own CRISC study notes (data/crisc/notes/d4.json), with no reference to the CRISC Review Manual, ISACA's QAE database, ISACA's practice quiz or any prior question bank. Schema: docs/content/QUESTION_SCHEMA.md; writing rules: docs/content/EXAM_STYLE_V2.md and .claude/agents/crisc-standards-auditor.md. Not affiliated with or endorsed by ISACA®. CRISC® is a registered trademark of ISACA. Pilot batch crisc_d4_001 to crisc_d4_020, 30 Oct 2026. Round 2 crisc_d4_021 to crisc_d4_045, 31 Oct 2026. Round 3 crisc_d4_046 to crisc_d4_065, 4 Nov 2026. Round 5 crisc_d4_066 to crisc_d4_075, 4 Nov 2026. Round 6 crisc_d4_076 to crisc_d4_079, 4 Nov 2026. Round 7 crisc_d4_080 to crisc_d4_085, 4 Nov 2026. Round 8 crisc_d4_086 to crisc_d4_090, 5 Nov 2026. Round 9 crisc_d4_091 to crisc_d4_095, 5 Nov 2026. Round 10 crisc_d4_096 to crisc_d4_100, 5 Nov 2026. Round 11 crisc_d4_101 to crisc_d4_105, 5 Nov 2026. Round 12 crisc_d4_106 to crisc_d4_110, 5 Nov 2026.",
     "schema_version": 1
   },
   "domain": 4,
@@ -3890,6 +3890,191 @@
         "Personal data"
       ],
       "_provenance": "Authored from concept: notes 4A7.1 (Evaluating Emerging Technologies: new threats include irreversible harms, such as personal data written to a public blockchain, which cannot be erased). Round 11, 5 Nov 2026: original scenario (a parcel-locker network recording each pickup, with the recipient's name and locker location, on a public blockchain) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Neighbours checked: crisc_d4_013 (a blockchain platform adopted on a vendor's tamper-proof claim), crisc_d4_063 (stored face templates that cannot be revoked), crisc_d4_095 (a digital twin with cloud control of heating), crisc_d4_060 (deletion requests that miss copies), crisc_d4_100 (consent tied to AI training); CISA d5_037 (a regulator's inquiry into erasure requests); CC cc_d4_155 (a parcel locker company's model releases). No other blockchain item in the CRISC, CISA, AAIA or CC banks. Judged distinct: the final two is permanent public exposure of personal data against errors kept on the chain, which a later entry can correct. Review fixes 5 Nov 2026 (round 11 audit, concept review and blind test): stem says tamper-evident, not tamper-proof, matching the explanations; pre_read no longer leans toward the key.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d4_106",
+      "domain": 4,
+      "subtopic": "4A3 System development life cycle (SDLC). A flaw report from outside the firm",
+      "principle_id": "root-cause-over-symptom",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A researcher's two emails to a legal-tech start-up's support inbox about a flaw exposing clients' contracts went unanswered, so the researcher published it. What should the risk practitioner recommend to BEST prevent a repeat?",
+      "options": {
+        "A": "Support staff training on flaw reports, set up by the product owner",
+        "B": "Legal action the business owner approves against researchers",
+        "C": "A patch deadline the system owner sets for each critical flaw",
+        "D": "A public route for outside flaw reports, with set reply times"
+      },
+      "correct": "D",
+      "key_concept": "Outsiders will find flaws that no test caught; a public route for their reports, with roles and reply times, turns a warning into a fix.",
+      "pre_read": "Work out where the process broke before weighing the options.",
+      "correct_explanation": "The warning reached a general support inbox where no one handled flaw reports, so the flaw went public unfixed. A public route for flaw reports, with set reply times, brings outside warnings to the people who fix them; NIST's SSDF calls for a disclosure policy with roles and processes. Training support staff is the runner-up: it may catch the next report, but leaves reports in a general inbox with no known route or reply duty.",
+      "wrong_explanations": {
+        "A": "Trained staff may spot the next report, but flaw reports would still land in a general inbox, with no known route for researchers and no reply time.",
+        "B": "Threatening researchers discourages the very reports the start-up needs, and the flaw stays in place; disclosure programs invite reports instead of punishing them.",
+        "C": "A patch deadline starts once the start-up knows about a flaw; this one sat unanswered in a support inbox, so no deadline would ever have started."
+      },
+      "tips": [
+        "Eliminate: B deters the researchers whose reports the start-up needs, and C sets a patch deadline that starts only after someone reads the report.",
+        "Final two: D beats A because training leaves flaw reports in a general inbox with no owner or reply time; a public route gives them both.",
+        "Exam cue: when an outside warning goes unanswered, give warnings a defined route, owner and reply time; training whoever happened to receive one leaves the gap open."
+      ],
+      "framework_ref": "NIST SP 800-218 Version 1.1 RV.1.3 (have a policy that addresses vulnerability disclosure and remediation, and implement the roles, responsibilities and processes needed to support it); NIST SP 800-218 Version 1.1 RV.1.1 (gather information from software acquirers, users and public sources on potential vulnerabilities and investigate all credible reports)",
+      "related_concepts": [
+        "Vulnerability disclosure",
+        "Secure software development (SSDF)",
+        "Root cause"
+      ],
+      "_provenance": "Authored from concept: notes 4A3.2 (Secure Development and Testing: the SSDF's respond-to-vulnerabilities practices include a public route for outside flaw reports, with set reply times). Round 12, 5 Nov 2026: original scenario (a researcher's two unanswered emails to a legal-tech start-up's support inbox about a flaw exposing clients' contracts, which the researcher then published) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Neighbours checked: crisc_d4_052 (the same injection flaw in four releases; a pre-release penetration test distractor), crisc_d4_059 (a change called too small to review), crisc_d4_096 (requirements copied from an earlier product), crisc_d4_027 (requirements for a purchased system), crisc_d2_027 (choosing which CVSS-scored flaw to fix first); CISA d4_242 (a bug-bounty researcher publishing on day 47 of a 90-day fix window), d5_133 (a bug bounty with no test scope), d5_353 (a logging-library flaw procedure), d3_023 (an SBOM to answer customers); CC cc_d1_081 (a researcher's exploit code as a term), cc_d1_018 (a tester asked to leave a flaw out of a report), cc_d5_016 (patch order by CVSS and active attack). Options compared with every 4A3 item; the runner-up was changed from pre-release penetration testing to support staff training to avoid repeating crisc_d4_052's distractor. Judged distinct: no bank item keys a public route for outside flaw reports; CISA d4_242 is management's first response once a flaw is public. Owner pattern: k=3, the key is the one option without an owner; the runner-up A names the product owner and both easy distractors (B, C) name an owner.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d4_107",
+      "domain": 4,
+      "subtopic": "4A6 Technology resilience and disaster response/recovery. A navigation model kept at one site",
+      "principle_id": "answer-from-the-stem",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "A warehouse robotics firm's servers recover within the 8-hour RTO, but the robots' navigation model, stored only at the main site, would take three weeks to retrain. What is the risk practitioner's BEST recommendation?",
+      "options": {
+        "A": "Keep offsite copies of each model version its owner releases",
+        "B": "Test whether the recovery site can restore the model",
+        "C": "Have the model owner sign off each retrained model version",
+        "D": "Ask the operations owner to fund faster retraining hardware"
+      },
+      "correct": "A",
+      "key_concept": "A trained AI model is a recovery asset like data; keep versioned copies offsite, because retraining takes far longer than a restore.",
+      "pre_read": "List what the robots need to work again before reading the options.",
+      "correct_explanation": "The servers return within the RTO, but the robots cannot work without the navigation model, and rebuilding it takes three weeks. A trained model is a recovery asset like data: offsite copies of each released version can be restored within hours. Testing whether the recovery site can restore the model is the runner-up: the model exists only at the main site, so a test would confirm the gap without closing it.",
+      "wrong_explanations": {
+        "B": "A test would only confirm what is already known: the model exists only at the main site, so the recovery site has nothing to restore.",
+        "C": "Sign-off controls which model versions go live; it does nothing to make a released model available if the main site is lost.",
+        "D": "Faster hardware might cut retraining from weeks to days, still far beyond the 8-hour RTO, while a stored copy restores within hours."
+      },
+      "tips": [
+        "Eliminate: C governs which model versions go live, not how one is recovered, and D still rebuilds the model in days when the RTO allows 8 hours.",
+        "Final two: A beats B because the gap is already known: the model sits only at the main site, so a test would confirm the failure, not fix it.",
+        "Exam cue: list everything a process needs to run again, trained AI models included; anything that cannot be restored within the RTO is a gap to close, not to retest."
+      ],
+      "framework_ref": "NIST CSF 2.0 PR.DS-11 (backups of data are created, protected, maintained and tested); NIST SP 800-34 Rev. 1 Section 3.2.1 (Determine Business Processes and Recovery Criticality: MTD, RTO and RPO)",
+      "related_concepts": [
+        "AI model recovery",
+        "Recovery time objective (RTO)",
+        "Backups"
+      ],
+      "_provenance": "Authored from concept: notes 4A6.1 (Recovery Strategies and Alternate Sites: trained AI models are recovery assets too; retraining takes far longer than a restore, so released model versions are kept offsite). Round 12, 5 Nov 2026: original scenario (a warehouse robotics firm whose servers recover within an 8-hour RTO while the robots' navigation model, stored only at the main site, would take three weeks to retrain) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Neighbours checked: crisc_d4_011 (a recovery site sharing one carrier), crisc_d4_033 (SaaS recovery that omits user-deleted records), crisc_d4_088 (restore tests against a ransomware playbook), crisc_d4_097 (backup keys kept only at the main site), crisc_d4_076 (a standby vendor for an AI scribe), crisc_d4_035 (a backup control indicator), crisc_d2_009 (starting a warehouse robotics risk assessment), crisc_d1_011 (what an AI model inventory records); CISA d4_085 (replacement servers with a six-week lead time against a 48-hour RTO); AAIA aaia_d2_009 (registering model artifacts to reproduce a version), aaia_d3_012 (preserving a model version under audit); CC cc_d2_008 (a hot site proposed for a three-week RTO). Judged distinct: no bank item treats a trained AI model as a recovery asset; CISA d4_085 shares the weeks-against-hours shape for hardware, but here the final two is a stored model copy against testing a gap already known. The batch's one AI item. Owner pattern: k=3, the key A names the model's owner, as do both easy distractors (C, D); the runner-up B names no owner.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d4_108",
+      "domain": 4,
+      "subtopic": "4B1 Security concepts, frameworks and standards. Rating an encrypted contract archive",
+      "principle_id": "objectives-first",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "An e-signature provider's register rates its signed-contract archive only on data exposure, since the archive is encrypted; customers rely on the contracts as evidence in disputes. What should the risk practitioner recommend as BEST?",
+      "options": {
+        "A": "Fine estimates added to the archive's exposure ratings",
+        "B": "Availability harm rated with the archive's business owner",
+        "C": "Integrity harm rated with the archive's business owner",
+        "D": "Quarterly tests of the archive's encryption strength"
+      },
+      "correct": "C",
+      "key_concept": "Rate each risk by its harm to confidentiality, integrity and availability; for signed records used as evidence, integrity comes first, and encryption misses it.",
+      "pre_read": "Note what customers use the archive for before reading the options.",
+      "correct_explanation": "Encryption guards against reading the contracts, but the archive's value is that each contract stays exactly as signed; FIPS 199 counts non-repudiation and authenticity under integrity. Since customers use the contracts as evidence, an undetected change is the harm the register misses most. Rating availability harm is the runner-up: an outage delays access, but the contracts survive intact, while an altered contract can lose a customer's dispute.",
+      "wrong_explanations": {
+        "A": "Fine estimates refine the exposure rating, the one harm already rated; the register stays blind to contracts being changed, the harm that matters most for evidence.",
+        "B": "An outage harms customers too, but it delays access and the contracts survive intact; an altered contract can lose a dispute, so integrity comes first.",
+        "D": "Testing encryption strength checks confidentiality, the one harm already rated; it says nothing about whether a signed contract could be changed unnoticed."
+      },
+      "tips": [
+        "Eliminate: A and D both stay on confidentiality, the one harm already rated, and encryption does nothing to show a contract was changed.",
+        "Final two: C beats B because customers use the contracts as evidence; an outage delays access, but an altered contract loses its value.",
+        "Exam cue: rate each scenario by confidentiality, integrity and availability, and weigh most the one the business relies on; encryption speaks only to confidentiality."
+      ],
+      "framework_ref": "NIST FIPS 199 Section 3 (Categorization of Information and Information Systems: impact is rated for confidentiality, integrity and availability, and integrity includes non-repudiation and authenticity); NIST CSF 2.0 PR.DS-01 (the confidentiality, integrity and availability of data-at-rest are protected)",
+      "related_concepts": [
+        "Confidentiality, integrity and availability (CIA)",
+        "Non-repudiation",
+        "Impact rating"
+      ],
+      "_provenance": "Authored from concept: notes 4B1.1 (Core Security Principles: CIA names what an event harms, shaping the impact rating; encryption guards confidentiality, not integrity, which includes non-repudiation). Round 12, 5 Nov 2026: original scenario (an e-signature provider whose register rates its encrypted signed-contract archive only on data exposure, while customers rely on the contracts as evidence in disputes) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Neighbours checked: crisc_d4_015 (conflicting duties), crisc_d4_053 (removing layers around customer data), crisc_d4_016 (lowering ratings after a framework assessment), crisc_d4_073 (two firewalls with copied rules), crisc_d4_078 (an archive tied to a retiring system), crisc_d2_097 (a recovery rank used to rate leak and tampering impact), crisc_d1_119 (an AI model's tampering impact rated at build cost); CISA d4_244 (sealing archived logs kept as evidence); CC cc_d1_112 (encryption said to prove files were not altered), cc_d1_026 (integrity first for published tide tables), cc_d1_156 (shared-key codes and non-repudiation). Options compared with every 4B1 item; an early easy distractor that lowered ratings to credit encryption was replaced, as it repeated crisc_d4_016's lowering pattern. Judged distinct: no CRISC item asks which CIA harm a register misses for an encrypted archive of signed records; CISA d4_244 keys a sealing control, and the CC items name a property, not a register rating. Owner pattern: k=2, the key C and the runner-up B both name the archive's business owner; the easy distractors name none.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d4_109",
+      "domain": 4,
+      "subtopic": "4B2 Security/risk awareness and training. Measuring whether staff report mistakes",
+      "principle_id": "evidence-before-credit",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "Which of the following BEST shows a risk practitioner whether a payroll provider's staff report their own data-handling mistakes?",
+      "options": {
+        "A": "Share of simulated phishing emails that staff report each month",
+        "B": "Share of staff who say in surveys they would report mistakes",
+        "C": "Monthly count of data-handling mistakes staff report themselves",
+        "D": "Share of filter-caught misdirected files that their senders reported"
+      },
+      "correct": "D",
+      "key_concept": "Measure reporting culture by behavior against an independent record: the share of detected mistakes that staff reported themselves, not intent or raw counts.",
+      "pre_read": "Ask which measure could tell more reporting apart from fewer mistakes.",
+      "correct_explanation": "Reporting culture shows in what people do after a mistake. Comparing the misdirected payroll files the email filter catches with those their senders reported gives a share that rises only when more mistakes are reported. A monthly count of self-reported mistakes is the runner-up: it is real behavior, but a fall could mean fewer mistakes or more hidden ones, and the count alone cannot tell which.",
+      "wrong_explanations": {
+        "A": "Reporting a phishing lure costs staff nothing; owning up to their own mistake is a different behavior, and this measure says nothing about it.",
+        "B": "A survey records what staff say they would do; reporting culture is judged by what they do when a real mistake happens.",
+        "C": "Self-reports are real behavior, but with no record of mistakes to compare against, a falling count could mean fewer mistakes or more hidden ones."
+      },
+      "tips": [
+        "Eliminate: A measures reporting of outside lures and B measures stated intent; neither shows whether staff report the mistakes they actually make.",
+        "Final two: D beats C because a share of independently caught mistakes separates reporting from error rates, while a raw count moves with both.",
+        "Exam cue: to measure a behavior, compare what people do with an independent record of what happened; surveys and raw counts alone can mislead."
+      ],
+      "framework_ref": "NIST SP 800-50 Rev. 1 Section 2.4.1.1 (Quantitative Measurements: metrics on incident reporting that show employees can recognize and report potential events, and the ability to recognize and report privacy disclosures)",
+      "related_concepts": [
+        "Risk culture",
+        "Awareness metrics",
+        "Self-reporting"
+      ],
+      "_provenance": "Authored from concept: notes 4B2.2 (Measuring Awareness, Phishing Simulations and Shadow AI: measure behavior, not attendance; outcome measures include the share of independently detected mistakes that staff reported themselves). Round 12, 5 Nov 2026: original scenario (a payroll provider measuring whether staff report their own data-handling mistakes, such as payroll files sent to the wrong client, which its email filter also catches) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Neighbours checked: crisc_d4_018 (tracking whether AI-use training works), crisc_d1_046 (gauging a freight forwarder's risk culture), crisc_d1_024 (near-miss reports that fell once they counted against ratings), crisc_d4_042 (an error blamed on one clerk), crisc_d4_035 (a backup control indicator); CC cc_d2_077 (signs that a culture program works: staff report their own mistakes), cc_d2_089 (bonuses tied to course completion), cc_d2_015 and cc_d2_139 (falling phishing reports), cc_d2_108 (report and click rates with a harder lure); CISA d5_226 (report rate when click rates are flat), d5_227 (observed behavior against completion and quiz scores). Options compared with every 4B2 item; an early completion-rate distractor was replaced, as it repeated crisc_d4_018's. Judged distinct: cc_d2_077 keys self-reporting as a sign of culture; this item's final two is a share of independently detected mistakes against a raw count of self-reports. Owner pattern: no option names an owner.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d4_110",
+      "domain": 4,
+      "subtopic": "4B3 Data privacy and data protection principles. Delivery drones that film each route",
+      "principle_id": "final-two",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A drone delivery operator's drones use camera video only to avoid obstacles, but by default upload video of every route, including people in gardens, to the cloud. What should the risk practitioner recommend as BEST?",
+      "options": {
+        "A": "Uploaded video limited by the data owner to safety staff",
+        "B": "Video processed on board, with none kept or uploaded",
+        "C": "Face blurring before route video is uploaded to the cloud",
+        "D": "A website notice on the filming, approved by the data owner"
+      },
+      "correct": "B",
+      "key_concept": "Privacy by design minimizes at the source: data needed only in the moment is processed on the device, not collected or kept.",
+      "pre_read": "Compare what the video is used for with what the drones send.",
+      "correct_explanation": "The drones need video only in flight, to see obstacles, so uploading every route collects images of people the purpose never required. Processing the video on board and keeping none removes that collection at its source; the NIST Privacy Framework names processing on local devices as a way to limit observability. Face blurring is the runner-up: it hides faces, but video of homes and gardens is still uploaded and kept.",
+      "wrong_explanations": {
+        "A": "Limiting access protects the video from misuse, but the operator would still collect and hold footage of people that obstacle avoidance never needed.",
+        "C": "Blurring hides faces, but uploaded video still shows homes and gardens at known locations, and the operator keeps footage its purpose never required.",
+        "D": "A notice tells residents about the filming, but it does not reduce what is collected, and people filmed in their gardens may never see it."
+      },
+      "tips": [
+        "Eliminate: A restricts who sees the uploads and D announces them, but both leave the operator collecting video of people that obstacle avoidance never needed.",
+        "Final two: B beats C because blurring masks faces in video that is still uploaded and kept, while processing on board never collects it.",
+        "Exam cue: privacy by design asks first whether data needs to be collected or sent at all; minimizing at the source beats protecting or masking data you never needed."
+      ],
+      "framework_ref": "NIST Privacy Framework Version 1.0 CT.DP-P1 (data are processed to limit observability and linkability, for example with data actions taking place on local devices); NIST SP 800-53 Rev. 5 SA-8(33) (Security and Privacy Engineering Principles | Minimization)",
+      "related_concepts": [
+        "Privacy by design",
+        "Data minimization",
+        "Drones and cameras"
+      ],
+      "_provenance": "Authored from concept: notes 4B3.2 (Privacy by Design and Privacy Impact Assessment: privacy by design sets protective defaults; data needed only in the moment is processed on the device, not collected). Round 12, 5 Nov 2026: original scenario (a drone delivery operator whose drones use camera video only to avoid obstacles but by default upload video of every route, including people in gardens, to the cloud) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Neighbours checked: crisc_d4_043 (evidence of privacy by design: defaults that collect only what each feature needs), crisc_d4_044 (de-identified trip records), crisc_d4_019 (a new use of loyalty data), crisc_d4_100 (separate consent for AI training), crisc_d4_037 (a drone delivery platform's exit terms), crisc_d4_063 (stored face templates); CISA d5_029 (fields collected in case analytics needs them), d2_084 (a privacy assessment before facial recognition); CC cc_d1_157 (ceiling cameras that count swimmers), cc_d2_120 (deleting expired video); AAIA aaia_d1_040 (plate-camera records reused for route prediction). Options compared with every 4B3 item; an early encryption distractor was replaced, as encryption already appears as a wrong option in five 4B3 items. Judged distinct: no bank item keys processing on the device so that no data is collected; the final two is minimizing at the source against blurring video that is still uploaded and kept. Owner pattern: k=2, the data owner appears only in the easy distractors (A, D); the key and the runner-up name no owner.",
       "style_version": 2
     }
   ]
