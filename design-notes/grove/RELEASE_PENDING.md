@@ -49,6 +49,8 @@ Batched for the end of the uplift (web v13, mobile 2.0.0; DECISIONS 8). Write th
 - On wide screens, Check yourself beside a note now matches the note's own Practice this concept button.
 - After you answer, the other choices sit right under your answer, so the tips are easy to follow.
 - Screen readers now move through study notes by heading in a clear order.
+- Your plant has its own page, showing how it has grown and the form it grows into. (Phase 4b, PHASE4B.md section 12.)
+- Your plant's look is now chosen right on its page, and Today and You open it in one tap.
 
 ## Follow-ups to do at the release
 - `mobile/src/engine/plantLooks.ts` `howToOpen` says "in the Herbarium": change to "in Badges" and rebuild `assets/kaisip-plant.js` in the same commit.
@@ -60,6 +62,11 @@ Batched for the end of the uplift (web v13, mobile 2.0.0; DECISIONS 8). Write th
 - `todayPlanProgress` counts the day's answers before the plan was saved toward the set step: check in Phase 5 QA.
 - Phone tab bar labels are px-based and do not grow at 200% text (pre-existing).
 - Phone: the same Q6 follow-up (follow today's unfinished set) if the phone shows the same day-one drift; `mobile/` was not touched.
+
+## Phase 4b web build (5 Nov 2026): follow-ups
+- Forms on the web need the plant bundle to expose `engine/plantForms.ts`: add `forms: 'src/engine/plantForms.ts'` to `ENTRIES` in `mobile/scripts/web-plant-bundle.cjs` in the step 1 bundle commit (PHASE4B section 11) and rebuild. Until then the web reads `KaiSipPlant.forms` only when present: no form names, no Turning and no forms note; `S.plantForms` stays unset and is baselined the first time the forms arrive.
+- The engine copy fixes (botanist's sketch, ribbon, "whenever you like", "in Badges", `SPREAD_EXPLAINER`) are mapped on the web by small word overrides beside the plant code, as the phone's `lib/plantCopy.ts` does; they find nothing to change once the bundle carries the new words.
+- The web stem shows no keepsake leaves and no "Earlier growth" fold (at most six leaves on the web, no badge dates).
 
 ## Small nits to carry into the next web push (from the confirmations review)
 - After a restore reload, screen readers may hear "Restored: N answers" twice (focus on #setRestore, whose description includes the line, plus #setSay). Announce once.

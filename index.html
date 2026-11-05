@@ -7139,6 +7139,7 @@ html { scroll-padding-bottom: calc(104px + var(--consent-h, 0px)); }
   body[data-tab="progress"] .fg-frame > main.app,
   body[data-tab="you"] .fg-frame > main.app,
   body[data-tab="settings"] .fg-frame > main.app,
+  body[data-tab="plant"] .fg-frame > main.app,
   body[data-tab="glossary"] .fg-frame > main.app { grid-column: 1 / -1; }
   /* A question before its answer (Grove Phase 4, 7.9): one centred reading
      column, no empty margin; the margin comes with the answer. */
@@ -7239,30 +7240,10 @@ html { scroll-padding-bottom: calc(104px + var(--consent-h, 0px)); }
 /* You: the plant section (rail and inline share it) */
 .you-plant { margin-top: var(--sp-xl); }
 .you-plant[hidden] { display: none; }
-.plnt-cap { display: block; margin: 0 0 var(--sp-md); font: var(--t-caption); letter-spacing: var(--tr-caption); color: var(--text2); }
-.plnt-hero { display: flex; justify-content: center; }
-.plnt-name { margin: var(--sp-md) 0 0; font: var(--t-title); letter-spacing: var(--tr-title); color: var(--text); overflow-wrap: anywhere; }
 .plnt-meta { margin: var(--sp-xs) 0 0; font: var(--t-meta); color: var(--text2); }
-.plnt-center { text-align: center; }
-.plnt-look-line { margin: var(--sp-xs) 0 0; font: var(--t-quote); color: var(--text2); }
 .plnt-note { margin-top: var(--sp-lg); padding: var(--sp-md) var(--sp-lg); border-radius: var(--r-md); background: var(--raised2); }
 .plnt-note-h { margin: 0; font: var(--t-label); color: var(--text); }
 .plnt-note-m { margin: var(--sp-xs) 0 0; font: var(--t-small); color: var(--text2); }
-.plnt-sub { display: flex; align-items: baseline; justify-content: space-between; gap: var(--sp-md); margin: var(--sp-xxl) 0 var(--sp-sm); font: var(--t-label); color: var(--text); }
-.plnt-sub-m { font: var(--t-meta); color: var(--text2); }
-.plnt-steps { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: var(--sp-lg); }
-.plnt-step-row { display: flex; align-items: flex-start; justify-content: space-between; gap: var(--sp-md); }
-.plnt-step-t { flex: 1; min-width: 0; font: var(--t-small); color: var(--text); }
-.plnt-step-v { flex-shrink: 0; font: var(--t-meta); color: var(--text2); font-variant-numeric: tabular-nums; }
-.plnt-step-v.done { color: var(--accent-text); }
-.plnt-bar { margin-top: var(--sp-xs); height: 6px; border-radius: var(--r-pill); background: var(--surface2); overflow: hidden; }
-.plnt-bar span { display: block; height: 100%; border-radius: inherit; background: var(--accent); }
-.plnt-small { margin: var(--sp-md) 0 0; font: var(--t-meta); color: var(--text2); }
-.plnt-acts li:last-child .you-row { border-bottom: 0; }
-.plnt-empty-t { margin: 0; font: var(--t-label); color: var(--text); }
-.you-plant .plnt-plant-btn { width: auto; display: inline-flex; }
-/* The rail: the 200 stage, the words centred under it */
-.study-rail .plnt-who { text-align: center; }
 /* The dialog: plant yours, change plant, rename, change its look */
 .plnt-modal { max-width: 600px; }
 .plnt-modal .cl-title { margin-bottom: var(--sp-md); }
@@ -7303,12 +7284,7 @@ html { scroll-padding-bottom: calc(104px + var(--consent-h, 0px)); }
 .plnt-dlg-acts .act-btn { min-height: 48px; padding: 0 var(--sp-xl); }
 /* The preview stays in view while the choices scroll. */
 .plnt-lk-prev { position: sticky; top: 0; z-index: 1; display: flex; justify-content: center; padding: var(--sp-md); border-radius: var(--r-lg); background: var(--raised2); }
-.plnt-lk { border: 0; margin: var(--sp-xl) 0 0; padding: 0; min-width: 0; }
-.plnt-lk-h { padding: 0; margin: 0 0 var(--sp-sm); font: var(--t-label); color: var(--text); }
-.plnt-lk-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: var(--sp-sm); }
 .plnt-opt { gap: var(--sp-md); min-height: 56px; padding: var(--sp-sm) var(--sp-md); }
-.plnt-opt-art { flex-shrink: 0; width: 36px; height: 36px; }
-.plnt-opt-art-lg { width: 48px; height: 48px; }   /* v12.31: the Style cards draw the plant at 48 */
 .plnt-opt-t { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
 .plnt-opt-n { font: var(--t-label); color: var(--text); }
 .plnt-opt-m { font: var(--t-meta); color: var(--text2); }
@@ -7318,6 +7294,180 @@ html { scroll-padding-bottom: calc(104px + var(--consent-h, 0px)); }
 }
 /* Large text: one plant per row, so long names wrap inside the tile. */
 @media (max-width: 22.5em) { .plnt-grid { grid-template-columns: 1fr; } }
+/* The picker's selected tile (PHASE4 5, F9): the ink edge plus a tick, and
+   "Now" on the planted species in Change plant. */
+.plnt-tick { position: absolute; top: 6px; right: 6px; display: none; width: 22px; height: 22px; border-radius: var(--r-round); background: var(--text); color: var(--surface); align-items: center; justify-content: center; }
+.plnt-tile:has(.plnt-radio:checked) .plnt-tick { display: inline-flex; }
+.plnt-tile-now { display: block; font: var(--t-caption); letter-spacing: var(--tr-caption); color: var(--text2); }
+.plnt-grid { grid-template-columns: repeat(auto-fill, minmax(7.5em, 1fr)); }
+
+/* ── YOUR PLANT (#plant; Grove Phase 4b, PHASE4B 4.12) ──
+   The plant drawn on the page on its soil line, the stem of growths with
+   their saved dates and facts, the page's one forest panel (What grows it
+   next), Your domains and the Look inline. Tokens only: the reached stem
+   is --accent, the stem still to come and empty marks --leaf-line, the
+   ground --soil (decorative: every state is in words too). */
+.pp-page { max-width: none; }
+.pp-cols { display: flex; flex-direction: column; gap: var(--sp-xxl); }
+.pp-bed { display: flex; flex-direction: column; gap: var(--sp-sm); min-width: 0; }
+.pp-main { display: flex; flex-direction: column; gap: var(--sp-xxl); min-width: 0; }
+.pp-title { margin: 0; font: var(--t-display); letter-spacing: var(--tr-display); color: var(--text); overflow-wrap: anywhere; }
+.pp-title.pp-title-sm { font: var(--t-title); letter-spacing: var(--tr-title); }
+.pp-title:focus { outline: none; }
+.pp-title:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; border-radius: var(--r-sm); }
+.pp-kick { margin: 0; font: var(--t-kicker); letter-spacing: var(--tr-kicker); text-transform: uppercase; color: var(--text2); }
+.pp-who { display: flex; flex-direction: column; gap: var(--sp-xs); }
+.pp-form { margin: 0; font: var(--t-quote); color: var(--text); }
+.pp-meta { margin: 0; font: var(--t-meta); color: var(--text2); }
+.pp-small { margin: 0; font: var(--t-small); color: var(--text2); }
+.pp-state { color: var(--text); }
+.pp-aside { margin: 0; font: var(--t-aside); color: var(--text); }
+.pp-empty { display: flex; flex-direction: column; align-items: flex-start; gap: var(--sp-sm); }
+.pp-btn {
+  display: inline-flex; align-items: center; justify-content: center; min-height: 48px; margin-top: var(--sp-sm); padding: 0 var(--sp-xxl);
+  border: 0; border-radius: var(--r-tile); background: var(--btn); color: var(--on-btn); font: var(--t-button); cursor: pointer;
+}
+.pp-btn:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
+/* The plant on the page: no card, no disc, the soil line across the width. */
+.pp-art { position: relative; display: grid; justify-items: center; align-items: start; }
+.pp-soil { position: absolute; left: 0; right: 0; top: var(--pp-base, 85%); height: 2px; border-radius: 1px; background: var(--soil); }
+.pp-layer { grid-area: 1 / 1; position: relative; line-height: 0; }
+.pp-art .plnt-svg { width: min(100%, var(--pp-size, 300px)); height: auto; aspect-ratio: 1; }
+.pp-wash { grid-area: 1 / 1; align-self: stretch; justify-self: stretch; border-radius: 50%; background: radial-gradient(closest-side, var(--surface2), transparent); opacity: 0; pointer-events: none; }
+.pp-tag { align-self: flex-start; margin: 0; padding: 2px var(--sp-sm); border-radius: var(--r-step); background: var(--surface2); font: var(--t-caption); letter-spacing: var(--tr-caption); color: var(--text2); }
+.pp-fact { margin: 0; font: var(--t-small); color: var(--text2); }
+.pp-turn-l { display: flex; flex-direction: column; align-items: center; gap: var(--sp-xs); text-align: center; }
+.pp-rule { display: block; width: 4.5rem; height: 1px; background: var(--text2); transform-origin: left center; }
+.pp-turn-k { margin: var(--sp-xs) 0 0; font: var(--t-kicker); letter-spacing: var(--tr-kicker); text-transform: uppercase; color: var(--text2); }
+.pp-turn-n { margin: 0; font: var(--t-title); letter-spacing: var(--tr-title); color: var(--text); }
+/* Section heads (R4): headline, with its meta beside it, outside the heading. */
+.pp-sec { display: flex; flex-direction: column; gap: var(--sp-md); min-width: 0; }
+.pp-head { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 2px var(--sp-md); }
+.pp-h { margin: 0; font: var(--t-headline); letter-spacing: var(--tr-headline); color: var(--text); }
+.pp-head-m { font: var(--t-meta); color: var(--text2); }
+.pp-card { margin: 0; padding: 0; list-style: none; background: var(--surface); border-radius: var(--r-card); box-shadow: var(--card-shadow); }
+[data-theme="dark"] .pp-card { box-shadow: 0 0 0 1px var(--border); }
+/* The stem: one line on the left, a leaf per growth. Each row draws the line
+   above its leaf (up) and below it (down): solid accent where reached,
+   dashed --leaf-line still to come. */
+.pp-stem { list-style: none; margin: 0; padding: 0; }
+.pp-st { position: relative; display: flex; align-items: flex-start; gap: var(--sp-md); padding: 0 0 var(--sp-xl) 2.5rem; min-height: 44px; }
+/* In rem, so the stem and its leaves grow with the browser's text size. */
+.pp-st::before, .pp-st::after { content: ''; position: absolute; left: calc(.75rem - 1px); width: 2px; }
+.pp-st::before { top: 0; height: .875rem; }
+.pp-st::after { top: .875rem; bottom: 0; }
+.pp-st.pp-up-on::before, .pp-st.pp-dn-on::after { background: var(--accent); }
+.pp-st.pp-up-off::before, .pp-st.pp-dn-off::after { background: repeating-linear-gradient(to bottom, var(--leaf-line) 0 4px, transparent 4px 8px); }
+.pp-st:not(.pp-up-on):not(.pp-up-off)::before, .pp-st:not(.pp-dn-on):not(.pp-dn-off)::after { display: none; }
+.pp-st:last-child { padding-bottom: 0; }
+.pp-leaf { position: absolute; left: 0; top: .125rem; z-index: 1; width: 1.5rem; height: 1.5rem; }
+.pp-lf-bg { fill: var(--bg); }
+.pp-lf-in { fill: var(--accent); transform-box: fill-box; transform-origin: center; }
+.pp-lf-ring { fill: none; stroke: var(--accent); stroke-width: 2; }
+.pp-lf-out { fill: none; stroke: var(--leaf-line); stroke-width: 1.5; stroke-dasharray: 2.5 2; }
+.pp-st-t { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+.pp-st-n { margin: 0; font: var(--t-label); color: var(--text); }
+.pp-st-later .pp-st-n { color: var(--text2); }
+.pp-st-m { margin: 0; font: var(--t-meta); color: var(--text2); }
+.pp-st-f { margin: 2px 0 0; font: var(--t-small); color: var(--text2); }
+.pp-st-tile { flex: none; width: 56px; height: 56px; border-radius: var(--r-tile); background: var(--surface); box-shadow: 0 0 0 1px var(--border); display: flex; align-items: center; justify-content: center; line-height: 0; }
+.pp-st-tile .plnt-svg { width: 48px; height: 48px; }
+/* What grows it next: the page's one forest panel, beside the stem. */
+.pp-next {
+  --text: var(--on-forest); --text2: var(--on-forest2);
+  flex: 1; min-width: 0; display: flex; flex-direction: column; gap: var(--sp-md); padding: var(--card-pad) var(--sp-lg);
+  border-radius: var(--r-card); background: var(--hero-panel); box-shadow: var(--sh-hero); color: var(--on-forest);
+}
+.pp-nx-h { margin: 0; display: flex; flex-direction: column; gap: 2px; }
+.pp-nx-k { font: var(--t-kicker); letter-spacing: var(--tr-kicker); text-transform: uppercase; color: var(--on-forest2); }
+.pp-nx-n { font: var(--t-title); letter-spacing: var(--tr-title); color: var(--on-forest); }
+.pp-gates { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: var(--sp-md); }
+.pp-gate-row { display: flex; align-items: baseline; justify-content: space-between; gap: var(--sp-md); }
+.pp-gate-t { flex: 1; min-width: 0; font: var(--t-small); color: var(--on-forest); }
+.pp-gate-x { flex: none; }
+.pp-gate-v { font: var(--t-num-inline); letter-spacing: var(--tr-num-inline); color: var(--on-forest); font-variant-numeric: tabular-nums; }
+.pp-gate-v sup, .pp-dom-v sup { font-size: var(--t-num-sup); line-height: 0; vertical-align: .8em; letter-spacing: 0; }
+.pp-gate-nv { font: var(--t-meta); color: var(--on-forest2); }
+.pp-bar { margin-top: var(--sp-xs); height: 6px; border-radius: var(--r-pill); background: var(--forest-track); overflow: hidden; }
+.pp-bar span { display: block; height: 100%; border-radius: inherit; background: var(--btn-hero); }
+.pp-nx-f { margin: 0; font: var(--t-small); color: var(--on-forest); }
+.pp-nx-m { margin: 0; font: var(--t-meta); color: var(--on-forest2); }
+/* Your domains */
+.pp-dom { display: flex; flex-wrap: wrap; align-items: center; gap: var(--sp-xs) var(--sp-md); min-height: 56px; padding: 10px 16px; }
+.pp-dom + .pp-dom { border-top: 1px solid var(--border); margin: 0 16px; padding-left: 0; padding-right: 0; }
+.pp-dom .dom-dot { margin: 0; }
+.pp-dom-n { flex: 1 1 8em; min-width: 0; font: var(--t-label); color: var(--text); }
+.pp-dom-x { flex: none; margin-left: auto; }
+.pp-dom-v { font: var(--t-num-inline); letter-spacing: var(--tr-num-inline); color: var(--text); font-variant-numeric: tabular-nums; }
+.pp-dom-w { font: var(--t-meta); color: var(--text2); }
+.pp-pill { display: inline-block; margin-left: var(--sp-xs); padding: 1px var(--sp-sm); border-radius: var(--r-pill); background: var(--btn-hero); color: var(--on-btn-hero); font: var(--t-caption); letter-spacing: var(--tr-caption); vertical-align: 1px; white-space: nowrap; }
+/* Look: rows in one card per group, the radio or tick at the right. */
+.pp-rows .pp-row { min-height: 56px; padding: 10px 14px 10px 16px; border-bottom: 0; }
+.pp-rows li + li { margin: 0 16px; border-top: 1px solid var(--border); }
+.pp-rows li + li .pp-row { padding-left: 0; padding-right: 0; }
+.pp-rows .pp-row:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; border-radius: var(--r-tile); }
+.pp-lk { border: 0; margin: var(--sp-lg) 0 0; padding: 0; min-width: 0; }
+.pp-lk-h { padding: 0; margin: 0 0 var(--sp-sm); font: var(--t-headline); letter-spacing: var(--tr-headline); color: var(--text); }
+.pp-lk-m { margin: var(--sp-sm) 0 0; font: var(--t-meta); color: var(--text2); }
+.pp-lk-mt { margin: 0 0 var(--sp-sm); }
+.pp-lk-rows { display: flex; flex-direction: column; }
+.pp-opt { position: relative; display: flex; align-items: center; gap: var(--sp-md); min-height: 56px; padding: var(--sp-sm) var(--sp-lg); border-radius: var(--r-tile); cursor: pointer; }
+.pp-opt + .pp-opt::before { content: ''; position: absolute; top: 0; left: var(--sp-lg); right: var(--sp-lg); height: 1px; background: var(--border); }
+.pp-opt:has(.plnt-radio:checked) { box-shadow: inset 0 0 0 2px var(--text); }
+.pp-opt:has(.plnt-radio:checked)::before, .pp-opt:has(.plnt-radio:checked) + .pp-opt::before { display: none; }
+.pp-opt:has(.plnt-radio:focus-visible) { outline: 2px solid var(--focus-ring); outline-offset: 2px; z-index: 1; }
+.pp-opt.locked, .pp-opt.locked .plnt-radio { cursor: default; }
+.pp-opt.locked .plnt-opt-n { color: var(--text2); }
+.pp-opt.muted .plnt-opt-n, .pp-opt.muted .pp-opt-art { opacity: .6; }
+.pp-opt-art { flex: none; width: 48px; height: 48px; display: flex; align-items: center; justify-content: center; line-height: 0; }
+.pp-opt-art svg { max-width: 48px; max-height: 48px; }
+.pp-mount { border: 1.5px dashed var(--leaf-line); border-radius: var(--r-tile); }
+.pp-mark { flex: none; width: 22px; height: 22px; display: inline-flex; align-items: center; justify-content: center; color: var(--surface); }
+.pp-mark-radio { border-radius: var(--r-round); box-shadow: inset 0 0 0 1.5px var(--control); }
+.pp-opt:has(.plnt-radio:checked) .pp-mark-radio { box-shadow: inset 0 0 0 1.5px var(--text), inset 0 0 0 6px var(--surface), inset 0 0 0 11px var(--text); }
+.pp-mark-checkbox { border-radius: 6px; box-shadow: inset 0 0 0 1.5px var(--control); }
+.pp-mark-checkbox .ico { visibility: hidden; }
+.pp-opt:has(.plnt-radio:checked) .pp-mark-checkbox { background: var(--text); box-shadow: none; }
+.pp-opt:has(.plnt-radio:checked) .pp-mark-checkbox .ico { visibility: visible; }
+.pp-opt.locked .pp-mark { visibility: hidden; }
+.pp-lk-prev { width: 100%; box-sizing: border-box; margin-top: var(--sp-md); padding: var(--sp-sm); border-radius: var(--r-tile); background: var(--bg); box-shadow: 0 1px 0 var(--border); }
+.pp-lk-prev .plnt-svg { width: 120px; height: 120px; }
+@media (max-height: 39.99em) { .pp-lk-prev { position: static; } }
+/* From 48em: the plant bed on the left (sticky when the window is tall
+   enough, never taller than the window), the stem and Look on the right. */
+@media (min-width: 48em) {
+  .pp-cols { display: grid; grid-template-columns: minmax(15rem, 2fr) minmax(0, 3fr); gap: var(--sp-2xl); align-items: start; }
+  .pp-art .plnt-svg { width: min(100%, var(--pp-size, 300px), 40vh); }
+  .pp-lk-prev { display: none; }
+}
+@media (min-width: 48em) and (min-height: 40em) {
+  .pp-bed { position: sticky; top: var(--sp-lg); max-height: calc(100vh - 2 * var(--sp-lg)); overflow-y: auto; }
+}
+/* The Turning (web, 560 ms, under the 600 ms cap): the fact is there from
+   the start; the light gathers (0 to 140), the old form cross-fades to the
+   new (140 to 320), it settles (320 to 420), the label rule and the form
+   name come in (400 to 520) and the stem leaf fills (420 to 560). Opacity
+   and transform only; none under reduced motion (the end state shows). */
+@keyframes ppWash { 0% { opacity: 0; } 25%, 57% { opacity: 1; } 75%, 100% { opacity: 0; } }
+@keyframes ppOld { 0%, 25% { opacity: 1; } 57%, 100% { opacity: 0; } }
+@keyframes ppNew { 0%, 25% { opacity: 0; transform: scale(.97); } 57% { opacity: 1; transform: scale(.97); } 75%, 100% { opacity: 1; transform: none; } }
+@keyframes ppRule { 0%, 71.4% { transform: scaleX(0); } 92.9%, 100% { transform: none; } }
+@keyframes ppName { 0%, 71.4% { opacity: 0; } 92.9%, 100% { opacity: 1; } }
+@keyframes ppLeafT { 0%, 75% { opacity: 0; transform: scale(.85); } 100% { opacity: 1; transform: none; } }
+@keyframes ppLeaf { from { opacity: 0; transform: scale(.85); } to { opacity: 1; transform: none; } }
+@keyframes ppFadeOut { from { opacity: 1; } to { opacity: 0; } }
+@keyframes ppFadeIn { from { opacity: 0; } to { opacity: 1; } }
+@media (prefers-reduced-motion: no-preference) {
+  .pp-turning .pp-wash { animation: ppWash 560ms linear both; }
+  .pp-turning .pp-old { animation: ppOld 560ms ease-in-out both; }
+  .pp-turning .pp-new { animation: ppNew 560ms ease-out both; }
+  .pp-turning .pp-rule { animation: ppRule 560ms ease-out both; }
+  .pp-turning .pp-turn-k, .pp-turning .pp-turn-n { animation: ppName 560ms ease-out both; }
+  .pp-turning .pp-fill-turn { animation: ppLeafT 560ms ease-out both; }
+  .pp-fill { animation: ppLeaf 200ms ease-out both; }
+  .pp-x-old { animation: ppFadeOut 160ms ease-out both; }
+  .pp-x-new { animation: ppFadeIn 160ms ease-out both; }
+}
 
 /* ── v12.30: FIRST RUN, ANSWER FLOW, SHEETS (pre-beta quality pass) ───────── */
 /* The welcome: a port of the mobile one. The forest header (lockup, "Think
@@ -7830,7 +7980,7 @@ html { scroll-padding-bottom: calc(104px + var(--consent-h, 0px)); }
 
 /* The plant card: the forest panel in both themes */
 .you-plant {
-  --text: var(--on-forest); --text2: var(--on-forest2); --muted: var(--on-forest2); --border: rgba(255,255,255,.12);
+  --text: var(--on-forest); --text2: var(--on-forest2); --muted: var(--on-forest2); --border: rgba(255,255,255,.12); --leaf-line: var(--hero-leaf-line);
   --surface2: var(--hero-inset); --accent: var(--sap); --accent-text: var(--sap); --raised2: var(--hero-inset); --focus-ring: var(--on-forest);
   margin: 0; display: flex; flex-direction: column; gap: 14px; padding: 18px 16px 12px; border-radius: var(--r-card);
   background: var(--hero-panel); box-shadow: var(--sh-hero); color: var(--on-forest); scroll-margin-top: var(--sp-lg);
@@ -7851,9 +8001,17 @@ html { scroll-padding-bottom: calc(104px + var(--consent-h, 0px)); }
 .you-stg-n { font: var(--t-fg-tiny); color: var(--on-forest2); text-align: center; overflow-wrap: anywhere; }
 .you-stg.now .you-stg-t { background: var(--forest-track); box-shadow: inset 0 0 0 1.5px var(--sap); }
 .you-stg.now .you-stg-n { color: var(--on-forest); font-weight: 600; }
-.you-stg.done .you-st-line, .you-stg.done .you-st-fill { stroke: #8FB49B; }
-.you-stg.done .you-st-fill { fill: none; }
-.you-stg.locked .you-st-line, .you-stg.locked .you-st-fill, .you-stg.locked .you-st-seed { stroke: rgba(188,210,194,.6); fill: none; stroke-dasharray: 2 2; }
+.you-stg-t .plnt-svg { width: 76%; height: auto; }
+/* Still to come: a quiet dashed square, never a future form (PHASE4B 4.12). */
+.you-stg.locked .you-stg-t { background: none; box-shadow: inset 0 0 0 1.5px transparent; border: 1.5px dashed var(--leaf-line); box-sizing: border-box; }
+/* The growth count on the card line shows from 1240px, where the chip steps aside. */
+.you-pl-cnt { display: none; }
+@media (min-width: 77.5em) { .you-pl-cnt { display: inline; } }
+.you-pl-f { margin: 0; font: var(--t-aside); color: var(--on-forest); }
+.you-pl-go { text-decoration: none; min-height: 56px; }
+.you-pl-go-t { display: flex; flex-direction: column; gap: 2px; padding: 8px 0; }
+.you-pl-go-n { font: var(--t-label); color: var(--on-forest); }
+.you-pl-go-m { font: var(--t-meta); color: var(--on-forest2); }
 .you-pl-btn {
   display: flex; align-items: center; justify-content: space-between; gap: 8px; width: 100%; min-height: 44px; padding: 0 14px;
   border: 0; border-radius: var(--r-14); background: var(--hero-inset); color: var(--on-forest); font: var(--t-label); cursor: pointer; list-style: none;
@@ -7861,13 +8019,9 @@ html { scroll-padding-bottom: calc(104px + var(--consent-h, 0px)); }
 .you-pl-btn::-webkit-details-marker { display: none; }
 .you-pl-btn:hover { box-shadow: inset 0 0 0 1px var(--forest-line); }
 .you-pl-btn:focus-visible { outline: 2px solid var(--on-forest); outline-offset: 2px; }
-.you-pl-more[open] > .you-pl-btn .ico { transform: rotate(180deg); }
-.you-pl-more > :not(summary) { margin-left: 2px; margin-right: 2px; }
-.you-plant .plnt-look-line { font: var(--t-aside); }
 .you-plant .plnt-note { margin-top: 0; }
 .you-plant .you-row { min-height: 52px; border-bottom-color: rgba(255,255,255,.12); }
 .you-plant .you-row:focus-visible { outline: 2px solid var(--on-forest); outline-offset: -2px; border-radius: var(--r-12); }
-.you-plant .plnt-bar { background: rgba(255,255,255,.12); }
 /* The shared plant and empty-plate rules use px tokens (Today and the rail
    keep them); on You they are in rem, so 200% browser text grows them with
    the rest of the page. */
@@ -8818,6 +8972,14 @@ html[data-kbd] :where(.you-plant, .vision-panel, .gt-panel, .readiness-card) :wh
   </div>
 </div>
 
+<!-- YOUR PLANT (Grove Phase 4b, PHASE4B 4.12): a sub-page of You at #plant.
+     Back is the page bar's "You" link (#subNav). Filled by renderPlantPage();
+     the status line is in the page before its text is set. -->
+<div id="screen-plant" class="screen">
+  <div class="you pp-page" id="plantPage"></div>
+  <p class="sr-only" id="ppSay" role="status" aria-live="polite"></p>
+</div>
+
 <!-- SETTINGS (Grove C2, 31 Oct 2026): its own page under You, so it is easy
      to find without a long scroll (Sky's request; DECISIONS 12). Three ways
      in: the cog on You, the Settings row on You and, on computers, Settings
@@ -9574,6 +9736,10 @@ var S_DEFAULTS = {
   // readinessLog = mobile ReadinessDay[] (the low end, per day) for Elder.
   plant: null,
   plantSettings: {},
+  // Grove 4b (PHASE4B 11.1): which plant forms this browser has shown, the
+  // phone's FormSeen shape ({ seen, note }), so the Turning plays once per
+  // form for life. A new field beside the old ones; null until baselined.
+  plantForms: null,
   cleanLog: {},
   readinessLog: [],
   // Final review week (web): "Mark day done" per day, dayId -> 'YYYY-MM-DD'
@@ -10497,7 +10663,7 @@ function normalizeImportedState(state) {
                 "timerEnabled","timerSeconds","qIdx","mindsetIdx","glossMastered","topicReviewed","topicViewed",
                 "current","qn","activeTab","review","topicTicksSchema",
                 "answerLog","mistakeLog","studyDays","mockHistory","qNotes",
-                "plant","plantSettings","cleanLog","readinessLog","finalWeekDone","lastOpenedSubtopic",
+                "plant","plantSettings","plantForms","cleanLog","readinessLog","finalWeekDone","lastOpenedSubtopic",
                 "dayTally","lowEndLog","stuckAt","todayPlanV1"];
   fields.forEach(function(k) {
     if (state[k] !== undefined) clean[k] = state[k];
@@ -10522,6 +10688,7 @@ function normalizeImportedState(state) {
   // The plant companion: saves from before it have none and load as empty.
   clean.plant = sanitizePlant(clean.plant);
   clean.plantSettings = sanitizePlantSettings(clean.plantSettings);
+  clean.plantForms = sanitizePlantForms(clean.plantForms);
   clean.cleanLog = plantSeedCleanLog(sanitizeCleanLog(clean.cleanLog), clean.answerLog);
   clean.readinessLog = sanitizeReadinessLog(clean.readinessLog);
   // The Progress page's history (v12.41): a save from before it is back-filled
@@ -10752,6 +10919,8 @@ function saveState(opts) {
     studyDays: S.studyDays, mockHistory: S.mockHistory,
     qNotes: S.qNotes || {},
     plant: S.plant || null, plantSettings: S.plantSettings || {},
+    // Grove 4b: the forms already shown (a new field beside the old ones).
+    plantForms: S.plantForms || null,
     cleanLog: S.cleanLog || {}, readinessLog: S.readinessLog || [],
     finalWeekDone: S.finalWeekDone || {},
     // The Progress page's history (v12.41): new fields beside the old ones.
@@ -10802,7 +10971,7 @@ function loadState() {
                 "timerEnabled","timerSeconds","qIdx","mindsetIdx","glossMastered","topicReviewed","topicViewed","topicTicksSchema",
                 "current","qn","activeTab",
                 "answerLog","mistakeLog","studyDays","mockHistory","qNotes",
-                "plant","plantSettings","cleanLog","readinessLog","finalWeekDone","lastOpenedSubtopic",
+                "plant","plantSettings","plantForms","cleanLog","readinessLog","finalWeekDone","lastOpenedSubtopic",
                 "dayTally","lowEndLog","stuckAt","todayPlanV1"];
   fields.forEach(function(k) {
     if (saved[k] !== undefined) S[k] = saved[k];
@@ -10968,6 +11137,9 @@ function importProgress(file) {
       if (!state) { restoreSayFail(IMPORT_MSG_NOT_PROGRESS); return; }
       // The plant never grows past what the file's own progress supports.
       try { plantClampImported(state); } catch (e2) {}
+      // A restored plant never replays a Turning: its forms are forgotten
+      // (the phone's forgetForms), so it gets the quiet line instead.
+      state.plantForms = null;
       // v12.37: a name in the file is added only when this browser has none
       // (add-only: a name already here is kept). Text only, length-checked,
       // and cleaned by the one name rule. The record label is never a name.
@@ -13536,6 +13708,7 @@ function switchTab(t, opts) {
   if (t === 'weakspots') renderWeakSpots();
   if (t === 'progress') renderProgress();
   if (t === 'you') renderYou();
+  if (t === 'plant') renderPlantPage();
   if (t === 'mock') renderMockSetup();
   if (t === 'learn') renderLearnHub();
   if (t === 'topics') renderTopics();
@@ -13583,7 +13756,7 @@ var NAV_SECTION = {
   home: 'today',
   learn: 'learn', topics: 'learn', glossary: 'learn', principles: 'learn', examguide: 'learn', finalweek: 'learn',
   practice: 'practice', mock: 'practice', bookmarks: 'practice',
-  you: 'you', settings: 'you', weakspots: 'you', progress: 'you', faq: 'you', about: 'you'
+  you: 'you', settings: 'you', weakspots: 'you', progress: 'you', faq: 'you', about: 'you', plant: 'you'
 };
 // The page a section opens on (its first page) and its listed sub-pages.
 // Learn opens its hub (Grove Phase 4, PHASE4.md 7.1); the sidebar's and the
@@ -13600,7 +13773,8 @@ var NAV_HASH = {
   home: 'today', learn: 'learn', topics: 'notes', glossary: 'glossary', principles: 'principles',
   examguide: 'exam-guide', finalweek: 'final-week',
   practice: 'practice', mock: 'mock', bookmarks: 'saved',
-  you: 'you', settings: 'settings', weakspots: 'weak-spots', progress: 'progress', faq: 'help', about: 'about'
+  you: 'you', settings: 'settings', weakspots: 'weak-spots', progress: 'progress', faq: 'help', about: 'about',
+  plant: 'plant'
 };
 var NAV_ALIAS = {
   today: 'home', home: 'home',
@@ -13609,7 +13783,7 @@ var NAV_ALIAS = {
   'exam-guide': 'examguide', 'about-the-exam': 'examguide', 'final-week': 'finalweek', 'final-review-week': 'finalweek',
   practice: 'practice', mock: 'mock', 'mock-exam': 'mock',
   saved: 'bookmarks', bookmarks: 'bookmarks',
-  you: 'you', settings: 'settings', more: 'you',
+  you: 'you', settings: 'settings', more: 'you', plant: 'plant', 'your-plant': 'plant',
   weak: 'weakspots', weakspots: 'weakspots', 'weak-spots': 'weakspots',
   progress: 'progress', 'your-progress': 'progress', 'readiness-report': 'progress', readiness: 'progress',
   faq: 'faq', help: 'faq', about: 'about',
@@ -13684,7 +13858,8 @@ var NAV_TITLE = {
   learn: 'Learn', topics: 'Study notes', glossary: 'Glossary', principles: 'Principles',
   examguide: 'About the CISA exam', finalweek: 'Final review week',
   practice: 'Practice', mock: 'Mock exam', bookmarks: 'Saved',
-  you: 'You', settings: 'Settings', weakspots: 'Weak spots', progress: 'Your progress', faq: 'Help', about: 'About'
+  you: 'You', settings: 'Settings', weakspots: 'Weak spots', progress: 'Your progress', faq: 'Help', about: 'About',
+  plant: 'Your plant'
 };
 function syncNav(t) {
   var sec = NAV_SECTION[t] || 'today';
@@ -14343,7 +14518,7 @@ function youChipHtml() {
   if (!K) return '<span id="youChip" hidden></span>';
   var p = S.plant, g = p ? p.growth : 1;
   var text = p
-    ? escapeHtml(K.plant.plantCallName(p)) + ' <span class="you-chip-s">&middot; ' + escapeHtml(K.plant.GROWTH_NAMES[g]) + ', stage ' + g + ' of ' + K.plant.MAX_GROWTH + '</span>'
+    ? escapeHtml(K.plant.plantCallName(p)) + ' <span class="you-chip-s">&middot; ' + escapeHtml(K.plant.GROWTH_NAMES[g]) + ' &middot; growth ' + g + ' of ' + K.plant.MAX_GROWTH + '</span>'
     : 'Pick your plant';
   // From 1240px the plant card is in the first view, so the chip steps aside
   // when there is a plant (expert decision Q4); "Pick your plant" stays.
@@ -15703,21 +15878,21 @@ function todayRingCapHtml(r, range, st, o) {
     + '<span class="td-rcap-l">estimated range</span></p>'
     + '<p class="td-rcap-x">' + (o.first ? 'Your first range. It usually narrows with more answers. ' : '') + TODAY_EST_LINE + '</p></div>';
 }
-// The hero's figure: the stage line (two layouts: "Seed" with "Stage 1 of 6"
-// beside it on phones, "Seed · stage 1 of 6" under the caption from 768px;
+// The hero's figure: the growth line (two layouts: "Seed" with "Growth 1 of 6"
+// beside it on phones, "Seed · growth 1 of 6" under the caption from 768px;
 // only one shows), the ring, its caption, and on phones the Accuracy and
 // Exam date tiles. Its plant line is hidden (the hero shows it at its foot,
 // tdPlateOut) but keys todayShootRefresh. o: as todayRingHtml.
 function todayFigHtml(r, range, st, shoot, o) {
   o = Object.assign({}, o || {});
   var name = shoot.name || 'Seed';
-  var stage = 'Stage ' + shoot.stage + ' of ' + TODAY_STAGES;
+  var stage = 'Growth ' + shoot.stage + ' of ' + TODAY_STAGES;
   // "Seed" names a plant the learner has picked (expert decision Q2): with
   // none yet the line says so, as You does, and shows no stage.
   // (S.plant while the plant script is still loading keeps the old line.)
   var picked = shoot.plant || !!(S && S.plant);
   var top = picked ? fgFigHtml(name, 2) + '<p class="td-fig-stage">' + stage + '</p>' : fgFigHtml('Nothing planted yet', 2);
-  var capFig = picked ? fgFigHtml(name + ' · stage ' + shoot.stage + ' of ' + TODAY_STAGES, 2, '', name + ', stage ' + shoot.stage + ' of ' + TODAY_STAGES) : fgFigHtml('Nothing planted yet', 2);
+  var capFig = picked ? fgFigHtml(name + ' · growth ' + shoot.stage + ' of ' + TODAY_STAGES, 2, '', name + ', growth ' + shoot.stage + ' of ' + TODAY_STAGES) : fgFigHtml('Nothing planted yet', 2);
   o.first = range.enough && todayUnlocked(r) < TODAY_FIRST_RANGE_UNTIL;
   // Accuracy: You's own rule ("Too few yet" until DOMAIN_READ_MIN answers,
   // then the whole percentage of latest tries). Screen readers hear it as one
@@ -16068,7 +16243,7 @@ function syncPageRh() {
 // move between them. No book labels on screen or in what is heard (expert
 // decision, 31 Oct 2026): never "Fig. n", "Plate" or "Field guide".
 // level: one under the section's own. said: what a screen reader hears when
-// it differs from what is shown ("Seed, stage 1 of 6" for "Seed · stage 1 of 6").
+// it differs from what is shown ("Seed, growth 1 of 6" for "Seed · growth 1 of 6").
 function fgFigHtml(fig, level, id, said) {
   var lv = level === 2 ? 2 : 3;
   var inner = said ? '<span aria-hidden="true">' + escapeHtml(fig) + '</span><span class="sr-only">' + escapeHtml(said) + '</span>' : escapeHtml(fig);
@@ -16399,6 +16574,7 @@ function fgSheet(o) {
     + (o.countHtml ? '<span class="fg-sheet-ct">' + o.countHtml + '</span>' : '') + '</h' + lv + '>'
     + (o.purpose ? '<p class="fg-sheet-p">' + escapeHtml(o.purpose) + '</p>' : '') + (o.innerHtml || '') + '</div>';
 }
+
 // Empty plate: the mount with nothing drawn yet ("Nothing here yet").
 function fgEmptyPlate(textHtml, title) {
   return fgPlate('', '<p class="fg-empty-t">' + escapeHtml(title || 'Nothing here yet') + '</p>'
@@ -18949,12 +19125,10 @@ var plantCertMemo = null;
 var plantOutlineMemo = null;
 var plantNotesAsked = false;
 var plantBreathed = {};         // surfaces that took their one breath this visit
-var plantBackfillShown = null;  // { at, line }: the back-fill line, kept for this visit
 var plantGrewShown = null;      // Today's grow-up line, kept for this visit
 var plantGrewTo = null;         // the growth it reached (Today's hero line, premium round G22)
 var plantGrewFrom = null;       // the growth before it, for the hero's one fade
 var plantDlg = null;            // the open plant dialog
-var plantMoreOpen = false;      // You (inline): "What grows it next" opened
 
 // Nothing in the plant may break a page: a render path draws nothing instead.
 function plantSafe(fn) {
@@ -18964,6 +19138,32 @@ function plantSafe(fn) {
 function plantApi() {
   var K = window.KaiSipPlant;
   return K && K.plant && K.art && K.looks ? K : null;
+}
+// The plant's forms (engine/plantForms.ts): read only when the plant bundle
+// exposes them (KaiSipPlant.forms). Without them the web shows no form names
+// and no Turning, never a guess (PHASE4B 11).
+function plantFormsApi() {
+  var K = plantApi();
+  return K && K.forms && typeof K.forms.formName === 'function' && typeof K.forms.formMoment === 'function' ? K.forms : null;
+}
+// Grove 4b interface words (PHASE4B sections 3 and 9), the same as the
+// phone's lib/plantCopy.ts. The engine strings change with the next plant
+// bundle; each fix here then simply finds nothing to replace.
+var PLANT_LOOK_LINE = 'A look is just for you: it never changes your growth.';
+var PLANT_OUTLINE_NOTE = 'Know the outline: topics right without a hint, on two separate days.';
+var PLANT_PROGRESS_NOTE = 'Only real progress grows it, never taps, time, streaks or games. It never shrinks.';
+var PLANT_FULLY_GROWN = 'Fully grown. It keeps all of its growth.';
+function plantRestWords(line) {
+  return line ? String(line).replace('Pick up whenever you\u2019re ready.', 'Pick up whenever you like.').replace("Pick up whenever you're ready.", 'Pick up whenever you like.') : line;
+}
+function plantLookCaption(it) {
+  if (it.id === 'botanical') return 'A fine line drawing, like a botanist\u2019s sketch.';
+  if (it.id === 'ribbon') return 'The ribbon: you got the score you needed.';
+  return it.caption;
+}
+function plantLookHow(K, it) {
+  if (it.unlock && it.unlock.kind === 'passed') return 'Opens when you tell us you got the score you needed.';
+  return K.looks.howToOpen(it, { badgesHidden: true }).replace(' set in the Herbarium.', ' set in Badges.');
 }
 function plantTheme() { return document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'light'; }
 function plantExamMoment() { var d = examDaysLeft(); return d === 1 ? 'eve' : d === 0 ? 'day' : null; }
@@ -19140,6 +19340,13 @@ function sanitizePlantSettings(x) {
   ['showPlant', 'quietLook', 'promptHidden'].forEach(function (k) { if (typeof x[k] === 'boolean') out[k] = x[k]; });
   return out;
 }
+// The forms record (FormSeen): { seen: 1..4, note?: 1..4 }, else none.
+function sanitizePlantForms(x) {
+  if (!x || typeof x !== 'object' || Array.isArray(x)) return null;
+  var ok = function (n) { return typeof n === 'number' && n >= 1 && n <= 4 && Math.round(n) === n; };
+  if (!ok(x.seen)) return null;
+  return ok(x.note) ? { seen: x.seen, note: x.note } : { seen: x.seen };
+}
 function sanitizeCleanLog(m) {
   var out = {};
   if (!m || typeof m !== 'object' || Array.isArray(m)) return out;
@@ -19210,6 +19417,10 @@ function plantSync(now) {
   if (!K || !S.plant) return;
   var p = plantValid(S.plant);
   if (!p) { S.plant = null; saveState(); return; }
+  // The forms record starts from what the plant already is, before it grows
+  // here (PHASE4B 11.1): history is never replayed as a Turning.
+  var KF = plantFormsApi();
+  if (KF && !S.plantForms) { S.plantForms = KF.baselineForms(p.growth); saveState(); }
   var f = plantFactsNow(now);
   if (f) p = K.plant.advance(p, f, now).plant;
   if (p !== S.plant) { S.plant = p; saveState(); }
@@ -19289,6 +19500,7 @@ function plantSvg(o) {
   var base = built.anchors && built.anchors.base ? built.anchors.base.y : 170;
   // The breath: about 2px deep at any size (the app's breathDepth).
   var depth = Math.min(0.02, Math.max(0.012, 2 / o.size));
+  if (o.baseOut) o.baseOut.y = base;
   var kids = function (g) { return g.children.map(plantNodeSvg).join(''); };
   return '<svg class="plnt-svg" width="' + o.size + '" height="' + o.size + '" viewBox="' + plantAttr(o.fit ? built.frame : '0 0 200 200') + '"'
     + (o.label ? ' role="img" aria-label="' + escapeHtml(o.label) + '"' : ' aria-hidden="true" focusable="false"') + '>'
@@ -19348,12 +19560,12 @@ function plantTodayHtml() {
     saveState();
   }
   var v = plantView(now);
-  return '<button type="button" class="td-plant-btn" onclick="plantOpenYou()" aria-label="' + escapeHtml(v.label + ' Opens your plant on You.') + '">'
+  return '<button type="button" class="td-plant-btn" onclick="plantOpenYou()" aria-label="' + escapeHtml(v.label + ' Opens Your plant.') + '">'
     + '<span class="td-plant-art">' + plantDraw(v, 'today', 72, { fit: true, lod: 'small' }) + '</span>'
     + '<span class="you-text"><span class="you-t td-plant-name">' + escapeHtml(K.plant.plantCallName(p)) + '</span>'
     // The hero's plant line says what grows it next, and the grow-up news
     // (premium round, G22), so this row no longer repeats either.
-    + '<span class="you-m">Its look and growth, on You</span></span>'
+    + '<span class="you-m">How it has grown</span></span>'
     + '<span class="you-chev" aria-hidden="true">' + ico('chevron', 18) + '</span></button>';
 }
 // What grows the plant next, from the plant engine's own gates
@@ -19376,84 +19588,28 @@ function plantHidePrompt() {
   var t = document.getElementById('tdTitle');
   if (t) { try { t.focus({ preventScroll: true }); } catch (e) {} }
 }
-function plantOpenYou() {
-  switchTab('you');
-  var h = document.querySelector('#studyRail:not([hidden]) [data-sec="plant"] h2, #youPlant:not([hidden]) h2');
-  if (h) { h.setAttribute('tabindex', '-1'); try { h.focus({ preventScroll: true }); } catch (e) {} }
+// Grove 4b (PHASE4B 4.12): Today's plant row, You's plant card and planting
+// all open Your plant (#plant), with focus on its title.
+function plantOpenYou() { plantGoPage(null); }
+function plantGoPage(e) {
+  var r = navTo(e || null, 'plant');
+  if (r === false) {
+    var h = document.getElementById('ppTitle');
+    if (h) { try { h.focus({ preventScroll: true }); } catch (ex) {} }
+  }
+  return r;
 }
 
-// ── You: the plant, what grows it next and its look ──
-function plantYouHtml(where) {
+// ── You: the plant card (Grove C2; restyled in Phase 4b) ──
+function plantYouHtml() {
   var K = plantApi();
-  if (!K) return '';
-  // You draws its own card; the rest of this is the study rail's plant.
-  if (where !== 'rail') return plantYouCardHtml(K);
-  var head = '<h2 class="plnt-cap" id="plRailH">Your plant</h2>';
-  var now = Date.now();
-  plantSync(now);
-  var p = S.plant;
-  if (!p) {
-    // Not before the first finished set (as Today's invitation).
-    if (!firstSetDone()) return '';
-    return head + '<div class="plnt-empty"><p class="plnt-empty-t">Nothing planted yet</p>'
-      + '<p class="plnt-meta">It grows only from real progress, and never wilts.</p>'
-      + '<button type="button" class="sr-btn plnt-plant-btn" id="plActPlant" onclick="plantOpen(\'new\',\'you\')">' + ico('sprig', 18) + 'Plant yours</button></div>';
-  }
-  var v = plantView(now);
-  var info = K.plant.SPECIES_INFO[p.species];
-  // The rail draws the shared 200 stage (growth reads from one size to the next).
-  var who = '<p class="plnt-name">' + escapeHtml(K.plant.plantCallName(p)) + '</p>'
-    + '<p class="plnt-meta">' + escapeHtml((p.name ? 'Your ' + info.lower + ' \u00b7 ' : '') + K.plant.growthShort(p.growth)) + '</p>'
-    + '<p class="plnt-look-line">' + escapeHtml(K.plant.GROWTH_LOOKS[p.growth]) + '</p>';
-  var html = head + '<div class="plnt-hero">' + plantDraw(v, 'you', 200, { fit: false, label: v.label, breathe: plantBreathe(where) }) + '</div><div class="plnt-who">' + who + '</div>';
-  // The back-fill line, once (kept for this visit); then the rest line.
-  if (p.backfill && !p.backfill.seen) {
-    plantBackfillShown = { at: p.backfill.at, line: K.plant.backfillLine(p, p.backfill.growth) };
-    S.plant = Object.assign({}, p, { backfill: Object.assign({}, p.backfill, { seen: true }) });
-    saveState();
-  }
-  var notes = [];
-  if (plantBackfillShown && p.backfill && plantBackfillShown.at === p.backfill.at) notes.push(['From your study so far', plantBackfillShown.line]);
-  var rest = K.plant.restLine(p, v.lastDay, v.today, v.exam) || (v.resting ? K.plant.plantCallName(p) + ' is resting. Pick up whenever you’re ready.' : null);
-  if (rest) notes.push([v.exam === 'day' ? 'Exam day' : 'Resting', rest]);
-  notes.forEach(function (n) {
-    html += '<div class="plnt-note"><p class="plnt-note-h">' + escapeHtml(n[0]) + '</p><p class="plnt-note-m">' + escapeHtml(n[1]) + '</p></div>';
-  });
-  var f = plantFactsNow(now);
-  var next = f ? K.plant.nextGrowthSteps(p.growth, f) : null;
-  html += '<h3 class="plnt-sub">What grows it next' + (next ? '<span class="plnt-sub-m">' + K.plant.GROWTH_NAMES[next.growth] + '</span>' : '') + '</h3>';
-  if (!f) {
-    html += '<p class="plnt-meta">Working it out from your progress&hellip;</p>';
-  } else if (next) {
-    html += '<ul class="plnt-steps">' + next.steps.map(function (st) {
-      var pc = Math.round(Math.max(0, Math.min(1, st.progress)) * 100);
-      var word = st.progress >= 1 ? 'Done' : st.progress <= 0 ? 'Not yet' : pc + '%';
-      var spoken = st.progress >= 1 ? 'Done' : st.progress <= 0 ? 'Not yet' : pc + ' percent there';
-      return '<li class="plnt-step"><div class="plnt-step-row"><span class="plnt-step-t">' + escapeHtml(st.label) + '<span class="sr-only">. ' + spoken + '.</span></span>'
-        + '<span class="plnt-step-v' + (st.progress >= 1 ? ' done' : '') + '" aria-hidden="true">' + word + '</span></div>'
-        + '<div class="plnt-bar" aria-hidden="true"><span style="width:' + pc + '%"></span></div></li>';
-    }).join('') + '</ul>'
-      + '<p class="plnt-small">“Know the outline” counts: ' + escapeHtml(K.plant.SPREAD_EXPLAINER.charAt(0).toLowerCase() + K.plant.SPREAD_EXPLAINER.slice(1)) + '</p>'
-      + '<p class="plnt-small">Only real progress grows it: never taps, minutes, streaks or games. It never shrinks.</p>';
-  } else {
-    html += '<p class="plnt-meta">Fully grown, and in season. It keeps all of its growth.</p>';
-  }
-  var row = function (id, fn, t, m) {
-    return '<li><button type="button" class="you-row" id="' + id + '" onclick="' + fn + '"><span class="you-text"><span class="you-t">' + t + '</span><span class="you-m">' + m + '</span></span>'
-      + '<span class="you-chev" aria-hidden="true">' + ico('chevron', 18) + '</span></button></li>';
-  };
-  html += '<h3 class="plnt-sub">Look</h3><ul class="you-list plnt-acts">'
-    + row('plActLook', "plantOpen('look','you')", 'Change its look', 'Colour, ground, planter and visitor')
-    + row('plActSpecies', "plantOpen('species','you')", 'Change plant', 'Same growth, new look.')
-    + row('plActName', "plantOpen('name','you')", 'Rename', p.name ? 'Now: ' + escapeHtml(p.name) : 'No name yet')
-    + '</ul>';
-  return html;
+  return K ? plantYouCardHtml(K) : '';
 }
-// Grove C2: You's plant card, a forest panel at every width (You has no
-// plant rail). The plant, its name and stage, the six stages, then one
-// disclosure, "Look, plant and name", with the look, the plant and the name
-// and what grows it next. Before the first finished set there is no card
-// (the chip above opens "Pick a plant" instead).
+// You's plant card, a forest panel at every width: the plant, its name and
+// growth, the six growths (the real art for those reached, a quiet dashed
+// square for the rest, never a future form), then one row to Your plant,
+// where the look, the plant and the name now live. Before the first
+// finished set there is no card (the chip above opens "Pick a plant").
 function plantYouCardHtml(K) {
   var head = '<h2 class="you-pl-h" id="plYouH" tabindex="-1">Your plant</h2>';
   var now = Date.now();
@@ -19468,73 +19624,40 @@ function plantYouCardHtml(K) {
       + '<button type="button" class="you-pl-btn" id="plActPlant" onclick="plantOpen(\'new\',\'you\')">Pick a plant' + ico('chevron', 18) + '</button>';
   }
   var v = plantView(now);
+  var KF = plantFormsApi();
   var info = K.plant.SPECIES_INFO[p.species];
   var g = p.growth, max = K.plant.MAX_GROWTH;
   var kind = (/^[aeiou]/i.test(info.lower) ? 'An ' : 'A ') + info.lower;
+  // The growth count shows once per screen (PHASE4B 4.12): below 1240px the
+  // chip above carries it; from 1240px the chip steps aside and this line
+  // keeps it. A line with a form name never carries a count (3.2).
+  var line = KF
+    ? '<p class="you-pl-s">' + escapeHtml(K.plant.formGrowthLine(p.species, g)) + '</p><p class="you-pl-f">' + escapeHtml('The ' + KF.formName(p.species, g)) + '</p>'
+    : '<p class="you-pl-s">' + escapeHtml(kind + ' · ' + K.plant.GROWTH_NAMES[g]) + '<span class="you-pl-cnt"> · growth ' + g + ' of ' + max + '</span></p>';
   var html = '<div class="you-pl-top"><div class="you-pl-art">' + plantDraw(v, 'you', 96, { fit: true, theme: 'dark', label: v.label, breathe: plantBreathe('inline') }) + '</div>'
     + '<div class="you-pl-t">' + head
-    + '<p class="you-pl-name">' + escapeHtml(K.plant.plantCallName(p)) + '</p>'
-    + '<p class="you-pl-s">' + escapeHtml(kind + ' \u00b7 ' + K.plant.GROWTH_NAMES[g] + ' \u00b7 stage ' + g + ' of ' + max) + '</p>'
+    + '<p class="you-pl-name">' + escapeHtml(K.plant.plantCallName(p)) + '</p>' + line
     + '<p class="you-pl-q">Grows only from real progress, never wilts.</p></div></div>';
   var stages = '';
   for (var i = 1; i <= max; i++) {
     var state = i < g ? 'done' : i === g ? 'now' : 'locked';
-    stages += '<li class="you-stg ' + state + '"' + (i === g ? ' aria-current="step"' : '') + '><span class="you-stg-t">' + youStageSvg(i) + '</span>'
-      + '<span class="you-stg-n">' + escapeHtml(K.plant.GROWTH_NAMES[i]) + '<span class="sr-only">, stage ' + i + ' of ' + max + ', '
+    var art = i <= g ? plantSvg({ species: p.species, stage: i, size: 40, fit: true, quiet: true, theme: 'dark', look: { style: v.style, palette: v.resolved.palette } }) : '';
+    stages += '<li class="you-stg ' + state + '"' + (i === g ? ' aria-current="step"' : '') + '><span class="you-stg-t">' + art + '</span>'
+      + '<span class="you-stg-n">' + escapeHtml(K.plant.GROWTH_NAMES[i]) + '<span class="sr-only">, growth ' + i + ' of ' + max + ', '
       + (state === 'done' ? 'grown' : state === 'now' ? 'now' : 'still to come') + '</span></span></li>';
   }
-  html += '<ol class="you-stages" aria-label="' + escapeHtml('Six stages of your ' + info.lower) + '">' + stages + '</ol>';
-  // The back-fill line, once (kept for this visit); then the rest line.
-  if (p.backfill && !p.backfill.seen) {
-    plantBackfillShown = { at: p.backfill.at, line: K.plant.backfillLine(p, p.backfill.growth) };
-    S.plant = Object.assign({}, p, { backfill: Object.assign({}, p.backfill, { seen: true }) });
-    saveState();
-  }
-  var notes = [];
-  if (plantBackfillShown && p.backfill && plantBackfillShown.at === p.backfill.at) notes.push(['From your study so far', plantBackfillShown.line]);
-  var rest = K.plant.restLine(p, v.lastDay, v.today, v.exam) || (v.resting ? K.plant.plantCallName(p) + ' is resting. Pick up whenever you\u2019re ready.' : null);
-  if (rest) notes.push([v.exam === 'day' ? 'Exam day' : 'Resting', rest]);
-  notes.forEach(function (n) {
-    html += '<div class="plnt-note"><p class="plnt-note-h">' + escapeHtml(n[0]) + '</p><p class="plnt-note-m">' + escapeHtml(n[1]) + '</p></div>';
-  });
-  var row = function (id, fn, t, m) {
-    return '<li><button type="button" class="you-row" id="' + id + '" onclick="' + fn + '"><span class="you-text"><span class="you-t">' + t + '</span><span class="you-m">' + m + '</span></span>'
-      + '<span class="you-chev" aria-hidden="true">' + ico('chevron', 18) + '</span></button></li>';
-  };
-  html += '<details class="you-pl-more"' + (plantMoreOpen ? ' open' : '') + ' ontoggle="plantMoreOpen=this.open"><summary class="you-pl-btn">Look, plant and name' + ico('chevron-down', 18) + '</summary>'
-    + '<p class="plnt-look-line">' + escapeHtml(K.plant.GROWTH_LOOKS[g]) + '</p>'
-    + '<ul class="you-list plnt-acts">'
-    + row('plActLook', "plantOpen('look','you')", 'Change its look', 'Colour, ground, planter and visitor')
-    + row('plActSpecies', "plantOpen('species','you')", 'Change plant', 'Same growth, new look.')
-    + row('plActName', "plantOpen('name','you')", 'Rename', p.name ? 'Now: ' + escapeHtml(p.name) : 'No name yet')
-    + '</ul>';
-  var f = plantFactsNow(now);
-  var next = f ? K.plant.nextGrowthSteps(g, f) : null;
-  html += '<h3 class="plnt-sub">What grows it next' + (next ? '<span class="plnt-sub-m">' + K.plant.GROWTH_NAMES[next.growth] + '</span>' : '') + '</h3>';
-  if (!f) {
-    html += '<p class="plnt-meta">Working it out from your progress&hellip;</p>';
-  } else if (next) {
-    html += '<ul class="plnt-steps">' + next.steps.map(function (st) {
-      var pc = Math.round(Math.max(0, Math.min(1, st.progress)) * 100);
-      var word = st.progress >= 1 ? 'Done' : st.progress <= 0 ? 'Not yet' : pc + '%';
-      var spoken = st.progress >= 1 ? 'Done' : st.progress <= 0 ? 'Not yet' : pc + ' percent there';
-      return '<li class="plnt-step"><div class="plnt-step-row"><span class="plnt-step-t">' + escapeHtml(st.label) + '<span class="sr-only">. ' + spoken + '.</span></span>'
-        + '<span class="plnt-step-v' + (st.progress >= 1 ? ' done' : '') + '" aria-hidden="true">' + word + '</span></div>'
-        + '<div class="plnt-bar" aria-hidden="true"><span style="width:' + pc + '%"></span></div></li>';
-    }).join('') + '</ul>'
-      + '<p class="plnt-small">\u201cKnow the outline\u201d counts: ' + escapeHtml(K.plant.SPREAD_EXPLAINER.charAt(0).toLowerCase() + K.plant.SPREAD_EXPLAINER.slice(1)) + '</p>'
-      + '<p class="plnt-small">Only real progress grows it: never taps, minutes, streaks or games. It never shrinks.</p>';
-  } else {
-    html += '<p class="plnt-meta">Fully grown, and in season. It keeps all of its growth.</p>';
-  }
-  return html + '</details>';
+  html += '<ol class="you-stages" aria-label="' + escapeHtml('Your ' + info.lower + '’s six growths') + '">' + stages + '</ol>';
+  var rest = plantRestWords(K.plant.restLine(p, v.lastDay, v.today, v.exam) || (v.resting ? K.plant.plantCallName(p) + ' is resting. Pick up whenever you like.' : null));
+  if (rest) html += '<div class="plnt-note"><p class="plnt-note-h">' + (v.exam === 'day' ? 'Exam day' : v.exam === 'eve' ? 'Rest day' : 'Resting') + '</p><p class="plnt-note-m">' + escapeHtml(rest) + '</p></div>';
+  return html + '<a class="you-pl-btn you-pl-go" id="plGoPage" href="#plant" onclick="return plantGoPage(event)">'
+    + '<span class="you-pl-go-t"><span class="you-pl-go-n">Your plant</span><span class="you-pl-go-m">How it has grown</span></span>' + ico('chevron', 18) + '</a>';
 }
 // The plant card on You (Grove C2: at every width, no rail). The chip in
 // the summary follows the plant (the plant script can arrive after You).
 function plantYouInline(show) {
   var slot = document.getElementById('youPlant');
   if (!slot) return;
-  var html = show ? plantYouHtml('inline') : '';
+  var html = show ? plantYouHtml() : '';
   var key = html.replace(' plnt-breathe', '');
   if (slot.getAttribute('data-key') !== key) {
     slot.innerHTML = html;
@@ -19543,21 +19666,300 @@ function plantYouInline(show) {
   slot.hidden = !html;
   if (show) youChipSync();
 }
-function plantRailSections() {
-  var html = plantYouHtml('rail');
-  return html ? [{ id: 'plant', key: html.replace(' plnt-breathe', ''), html: html }] : [];
+
+// ── YOUR PLANT (#plant; Grove Phase 4b, PHASE4B 4.12, "Web B, the line") ──
+// A sub-page of You: the plant bed (the art on its soil line, the state tag
+// and the name), How it has grown (the stem: one leaf per growth with its
+// saved date and the fact that earned it), What grows it next (the page's
+// one forest panel, on the stem's next row), Your domains and the Look,
+// inline. Plant yours, Change plant and Rename stay the dialogs. Nothing
+// here is worked out anew: every value is the engine's or a saved field.
+var ppMoment = null;     // this visit's moments: { at, turn, note, grew, backfill, played, said }
+function ppReduced() {
+  try { return !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches); } catch (e) { return false; }
 }
-// Draw every plant surface again (a choice changed, the theme, the notes or the script arrived).
-function plantRefresh() {
+function ppDate(ms) { return typeof ms === 'number' && ms > 0 ? profileDateWords(parityDayKey(ms)) : ''; }
+// The art steps with growth (4.1 item 2): 180 at Seed and Sprout, 240 at Shoot, 300 from Bough.
+function ppArtSize(g) { return g <= 2 ? 180 : g === 3 ? 240 : 300; }
+var PP_LEAF = 'M12 3.2C7.1 6.6 5.4 11.6 7.4 16c1.2 2.6 2.9 3.9 4.6 4.8 1.7-.9 3.4-2.2 4.6-4.8 2-4.4.3-9.4-4.6-12.8z';
+// The stem's leaf marks differ by shape as well as colour: reached a filled
+// leaf, now a filled leaf in a ring, later a dashed outline.
+function ppLeafSvg(kind, fill) {
+  var inner = kind === 'later'
+    ? '<path class="pp-lf-out" d="' + PP_LEAF + '"/>'
+    : kind === 'now'
+      ? '<circle class="pp-lf-ring" cx="12" cy="12" r="10.5"/><path class="pp-lf-in' + (fill || '') + '" d="' + PP_LEAF + '" transform="translate(12 12) scale(.62) translate(-12 -12)"/>'
+      : '<path class="pp-lf-in' + (fill || '') + '" d="' + PP_LEAF + '"/>';
+  return '<svg class="pp-leaf" width="24" height="24" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle class="pp-lf-bg" cx="12" cy="12" r="11.5"/>' + inner + '</svg>';
+}
+// What this visit shows once: the back-fill line, the forms note, the quiet
+// grew line or the Turning. Worked out on the first draw of a visit, saved
+// as seen at once (as the phone does), and kept for the visit so a redraw
+// (a look change, the theme) shows the end state, never a replay.
+function ppMoments(K, KF) {
+  var p = S.plant;
+  if (ppMoment && ppMoment.at === p.plantedAt) return ppMoment;
+  var m = { at: p.plantedAt, played: false, said: false };
+  var g = p.growth, call = K.plant.plantCallName(p), dirty = false;
+  if (p.backfill && !p.backfill.seen) {
+    m.backfill = K.plant.backfillLine(p, p.backfill.growth, KF && p.backfill.growth > 1 ? KF.formName(p.species, p.backfill.growth) : undefined);
+    p = S.plant = Object.assign({}, p, { backfill: Object.assign({}, p.backfill, { seen: true }) });
+    dirty = true;
+  }
+  if (KF && S.plantForms) {
+    var fm = KF.formMoment(g, S.plantForms);
+    if (fm && fm.kind === 'reveal') {
+      var name = KF.formName(p.species, g);
+      m.turn = { from: fm.from, to: fm.to, name: name, fact: K.plant.FORM_FACTS[KF.FORM_START[fm.to]] || '', line: KF.newFormLine(call, name) };
+      S.plantForms = KF.afterReveal(S.plantForms, g);
+      dirty = true;
+    } else if (fm && fm.kind === 'note') {
+      if (!m.backfill) m.note = KF.formsIntroLine(call, KF.formName(p.species, g));
+      S.plantForms = KF.afterNote(S.plantForms);
+      dirty = true;
+    }
+  }
+  // The grow-up mark is shared with Today (4.1 item 5): whichever shows the
+  // growth first uses it up. A Turning or a back-fill owns the visit instead.
+  if (p.pending) {
+    if (!m.turn && !m.backfill) m.grew = { g: p.pending, line: K.plant.grewLabel(p, p.pending) };
+    S.plant = K.plant.clearPending(p);
+    dirty = true;
+  }
+  if (dirty) saveState();
+  ppMoment = m;
+  return m;
+}
+function ppTitleHtml(text, cls) {
+  return '<h1 class="you-title pp-title' + (cls ? ' ' + cls : '') + '" id="ppTitle" tabindex="-1">' + escapeHtml(text) + '</h1>';
+}
+// The plant on its soil line. o: { size, stage (the old form in a Turning), turning }
+function ppArtHtml(K, v, o) {
+  var base = {};
+  var art = plantDraw(v, 'you', o.size, { fit: false, label: v.label, breathe: !o.turning && plantBreathe('plant'), baseOut: base });
+  var old = o.turning ? plantDraw(v, 'you', o.size, { fit: false, stage: o.stage }) : '';
+  var pct = Math.round(((base.y || 170) / 200) * 1000) / 10;
+  return '<div class="pp-art" id="ppArt" style="--pp-size:' + o.size + 'px;--pp-base:' + pct + '%">'
+    + '<span class="pp-soil" aria-hidden="true"></span>'
+    + (o.turning ? '<span class="pp-wash" aria-hidden="true"></span><div class="pp-layer pp-old" aria-hidden="true">' + old + '</div>' : '')
+    + '<div class="pp-layer pp-new" id="ppArtNew">' + art + '</div></div>';
+}
+function ppHtml() {
+  var K = plantApi();
+  if (!K) return '<div class="pp-empty">' + ppTitleHtml('Your plant') + '</div>';
+  // Show my plant off (it can only arrive in a backup on the web): the
+  // growth is kept, nothing is drawn (4.7, without an Open Settings button).
+  if (S.plantSettings && S.plantSettings.showPlant === false) {
+    return '<div class="pp-empty">' + ppTitleHtml('Your plant is hidden', 'pp-title-sm') + '<p class="pp-small">Its growth is kept.</p></div>';
+  }
+  var now = Date.now();
+  plantSync(now);
+  if (!S.plant) {
+    return '<div class="pp-empty">' + ppTitleHtml('Nothing planted yet', 'pp-title-sm')
+      + '<p class="pp-small">It grows only from real progress, and never wilts.</p>'
+      + '<button type="button" class="pp-btn" id="plActPlant" onclick="plantOpen(\'new\',\'plant\')">Plant yours</button></div>';
+  }
+  var KF = plantFormsApi();
+  var mo = ppMoments(K, KF);
+  var v = plantView(now);
+  var p = v.plant, g = p.growth, info = K.plant.SPECIES_INFO[p.species], call = K.plant.plantCallName(p);
+  var reduce = ppReduced();
+  var turning = !!(mo.turn && !mo.played && !reduce);
+  // ── The bed: the fact (in a Turning), the plant, the label, the tag, the name ──
+  var bed = '';
+  if (mo.turn && mo.turn.fact) bed += '<p class="pp-fact">' + escapeHtml(mo.turn.fact) + '</p>';
+  bed += ppArtHtml(K, v, { size: ppArtSize(g), turning: turning, stage: mo.turn ? Math.max(1, KF.FORM_START[mo.turn.to] - 1) : g });
+  if (mo.turn) {
+    bed += '<div class="pp-turn-l"><span class="pp-rule" aria-hidden="true"></span><p class="pp-turn-k">New form</p><p class="pp-turn-n">' + escapeHtml('The ' + mo.turn.name) + '</p></div>';
+  }
+  var tag = v.exam === 'day' ? 'Exam day' : (v.resting && !v.exam ? 'Resting' : '');
+  if (tag) bed += '<p class="pp-tag">' + tag + '</p>';
+  var who = (p.name ? '<p class="pp-kick">' + escapeHtml('Your ' + info.lower) + '</p>' : '') + ppTitleHtml(call);
+  if (KF && !mo.turn) who += '<p class="pp-form">' + escapeHtml('The ' + KF.formName(p.species, g)) + '</p>';
+  else if (!KF) who += '<p class="pp-meta">' + escapeHtml(K.plant.growthShort(g)) + '</p>';
+  who += '<p class="pp-small">' + escapeHtml(KF ? KF.formLook(p.species, g) : K.plant.GROWTH_LOOKS[g]) + '</p>';
+  var rest = plantRestWords(K.plant.restLine(p, v.lastDay, v.today, v.exam) || (v.resting ? call + ' is resting. Pick up whenever you like.' : null));
+  if (rest) who += '<p class="pp-small pp-state">' + escapeHtml(rest) + '</p>';
+  bed = '<div class="pp-bed" id="ppBed">' + bed + '<div class="pp-who">' + who + '</div></div>';
+  // ── The main column ──
+  var main = '';
+  [mo.backfill, mo.note, mo.grew ? mo.grew.line : ''].forEach(function (t) { if (t) main += '<p class="pp-aside">' + escapeHtml(t) + '</p>'; });
+  main += ppStemHtml(K, KF, v, mo, reduce);
+  main += ppDomainsHtml(K, v);
+  main += '<section class="pp-sec pp-look" aria-labelledby="ppLookH"><div class="pp-head"><h2 class="pp-h" id="ppLookH">Look</h2></div>'
+    + '<p class="pp-meta">' + PLANT_LOOK_LINE + '</p>'
+    + '<ul class="pp-card pp-rows">'
+    + ppRowHtml('plActSpecies', "plantOpen('species','plant')", 'Change plant', 'Same growth, new look.')
+    + ppRowHtml('plActName', "plantOpen('name','plant')", 'Rename', p.name ? 'Now: ' + escapeHtml(p.name) : 'No name yet')
+    + '</ul><div id="plLookBody">' + plantLookHtml() + '</div></section>';
+  return '<div class="pp-cols">' + bed + '<div class="pp-main">' + main + '</div></div>';
+}
+function ppRowHtml(id, fn, t, m) {
+  return '<li><button type="button" class="you-row pp-row" id="' + id + '" aria-haspopup="dialog" onclick="' + fn + '"><span class="you-text"><span class="you-t">' + t + '</span><span class="you-m">' + m + '</span></span>'
+    + '<span class="you-chev" aria-hidden="true">' + ico('chevron', 18) + '</span></button></li>';
+}
+// How it has grown: Seed at the top, Elder at the bottom. Dates only from
+// saved fields (none for an older plant without them), never a gap or a
+// "days since". The facts are word for word: FORM_FACTS where a form
+// starts (Shoot, Bough, Elder, when forms are on), Today's grew facts for
+// Sprout and Crown (4.12). What grows it next sits on the stem's next row.
+function ppStemHtml(K, KF, v, mo, reduce) {
+  var p = v.plant, g = p.growth, max = K.plant.MAX_GROWTH;
+  var showNext = g < max && !v.exam;
+  var formAt = { 3: true, 4: true, 6: true };
+  var playing = !mo.played && !reduce;
+  var rows = '';
+  for (var gg = 1; gg <= max; gg++) {
+    var kind = gg < g ? 'reached' : gg === g ? 'now' : 'later';
+    var name = K.plant.GROWTH_NAMES[gg];
+    var cls = 'pp-st pp-st-' + kind + (gg > 1 ? (gg <= g ? ' pp-up-on' : ' pp-up-off') : '') + (gg < max ? (gg < g ? ' pp-dn-on' : ' pp-dn-off') : '');
+    var fill = '';
+    if (playing && mo.turn && gg === g) fill = ' pp-fill-turn';
+    else if (playing && mo.grew && gg === mo.grew.g) fill = ' pp-fill';
+    var body = '<p class="pp-st-n">' + escapeHtml(name) + '</p>';
+    if (gg <= g) {
+      var at = gg > 1 && p.reached ? p.reached[K.plant.growthId(gg)] : null;
+      var meta = [];
+      if (kind === 'now') meta.push('Now');
+      var d = ppDate(at);
+      if (d) meta.push('reached ' + d);
+      if (KF && formAt[gg]) meta.push('grew into the ' + KF.formName(p.species, gg));
+      if (meta.length) body += '<p class="pp-st-m">' + escapeHtml(meta.join(' · ')) + '</p>';
+      var fact = gg === 2 || gg === 5 ? todayGrewFact(K, gg) : (KF && formAt[gg] ? K.plant.FORM_FACTS[gg] : '');
+      if (fact) body += '<p class="pp-st-f">' + escapeHtml(fact) + '</p>';
+      if (gg === max) body += '<p class="pp-st-f">' + PLANT_FULLY_GROWN + '</p>';
+      var tile = KF && formAt[gg] ? '<span class="pp-st-tile" aria-hidden="true">' + plantSvg({ species: p.species, stage: gg, size: 56, fit: true, lod: 'small', quiet: true, look: { style: v.style, palette: v.resolved.palette } }) + '</span>' : '';
+      rows += '<li class="' + cls + '">' + ppLeafSvg(kind, fill) + '<div class="pp-st-t">' + body + '</div>' + tile + '</li>';
+    } else if (gg === g + 1 && showNext) {
+      rows += '<li class="' + cls + ' pp-st-next">' + ppLeafSvg('later') + ppNextHtml(K, KF, v) + '</li>';
+    } else {
+      if (KF && formAt[gg]) body += '<p class="pp-st-m">' + escapeHtml('Grows into the ' + KF.formName(p.species, gg) + ' at ' + name + '.') + '</p>';
+      rows += '<li class="' + cls + '">' + ppLeafSvg('later') + '<div class="pp-st-t">' + body + '</div></li>';
+    }
+  }
+  var planted = ppDate(p.plantedAt);
+  return '<section class="pp-sec" aria-labelledby="ppGrownH"><div class="pp-head"><h2 class="pp-h" id="ppGrownH">How it has grown</h2>'
+    + (planted ? '<span class="pp-head-m">Planted ' + escapeHtml(planted) + '</span>' : '') + '</div>'
+    + '<ol class="pp-stem">' + rows + '</ol></section>';
+}
+// What grows it next: the forest panel. The gates are the engine's own
+// (nextGrowthSteps with forms: "Your study estimate ...", never readiness
+// wording beside a form). Hidden at Elder and on exam eve and exam day.
+function ppNextHtml(K, KF, v) {
+  var p = v.plant, g = p.growth;
+  var f = plantFactsNow(Date.now());
+  var next = f ? K.plant.nextGrowthSteps(g, f, { forms: true }) : null;
+  var html = '<div class="pp-next"><h3 class="pp-nx-h"><span class="sr-only">What grows it next: </span><span class="pp-nx-k" aria-hidden="true">Next</span>'
+    + '<span class="pp-nx-n">' + escapeHtml(K.plant.GROWTH_NAMES[g + 1]) + '</span></h3>';
+  if (!f || !next) return html + '<p class="pp-nx-m">Working it out from your progress&hellip;</p></div>';
+  var outline = false;
+  html += '<ul class="pp-gates">' + next.steps.map(function (st) {
+    if (/outline/i.test(st.label)) outline = true;
+    var pc = Math.round(Math.max(0, Math.min(1, st.progress)) * 100);
+    var word = st.progress >= 1 ? 'Done' : st.progress <= 0 ? '' : String(pc);
+    var spoken = st.progress >= 1 ? 'Done' : st.progress <= 0 ? 'Not yet' : pc + ' percent there';
+    var val = word === '' ? '<span class="pp-gate-nv">Not yet</span>' : word === 'Done' ? '<span class="pp-gate-nv">Done</span>' : '<span class="pp-gate-v">' + word + '<sup>%</sup></span>';
+    return '<li class="pp-gate"><div class="pp-gate-row"><span class="pp-gate-t">' + escapeHtml(st.label) + '<span class="sr-only">. ' + spoken + '.</span></span>'
+      + '<span class="pp-gate-x" aria-hidden="true">' + val + '</span></div>'
+      + '<div class="pp-bar" aria-hidden="true"><span style="width:' + pc + '%"></span></div></li>';
+  }).join('') + '</ul>';
+  var nf = KF ? KF.nextFormAt(g) : null;
+  if (nf && nf.at === g + 1) html += '<p class="pp-nx-f">' + escapeHtml(KF.nextFormLine(p.species, g)) + '</p>';
+  if (outline) html += '<p class="pp-nx-m">' + PLANT_OUTLINE_NOTE + '</p>';
+  return html + '<p class="pp-nx-m">' + PLANT_PROGRESS_NOTE + '</p></div>';
+}
+// Your domains: one part of the plant each, in exam order, with the
+// engine's own words for how full it is; the area it needs next is marked.
+function ppDomainsHtml(K, v) {
+  var r = computeTodayReadiness();
+  var ids = Object.keys(DI);
+  var nextI = K.plant.nextToGrow(ids.map(function (d) { return DI[d].weight; }), r.domains.map(function (x) { return x.mastery; }));
+  var rows = ids.map(function (d, i) {
+    var x = r.domains[i] || { answered: 0, mastery: 0 };
+    var step = K.plant.organStep(x.answered, x.mastery);
+    var pc = Math.round(Math.max(0, Math.min(1, x.mastery)) * 100);
+    var word = K.plant.ORGAN_STEP_WORDS[step];
+    var val = step === 0 ? '<span class="pp-dom-w">' + escapeHtml(word.charAt(0).toUpperCase() + word.slice(1)) + '</span>'
+      : '<span class="pp-dom-v">' + pc + '<sup>%</sup></span><span class="pp-dom-w"> · ' + escapeHtml(word) + '</span>';
+    return '<li class="pp-dom"><span class="dom-dot" style="background:' + escapeHtml(DI[d].color) + '" aria-hidden="true"></span>'
+      + '<span class="pp-dom-n">' + escapeHtml(DI[d].short) + (i === nextI ? ' <span class="pp-pill">Next to grow</span>' : '') + '</span>'
+      + '<span class="pp-dom-x">' + val + '</span></li>';
+  }).join('');
+  return '<section class="pp-sec" aria-labelledby="ppDomH"><div class="pp-head"><h2 class="pp-h" id="ppDomH">Your domains</h2><span class="pp-head-m">One part of the plant each</span></div>'
+    + '<ul class="pp-card pp-doms">' + rows + '</ul></section>';
+}
+// Draws Your plant. A Turning plays on the first draw of the visit only, and
+// any tap, key or scroll skips it to its end. Reduce Motion: the end state.
+function renderPlantPage() {
+  var el = document.getElementById('plantPage');
+  if (!el || typeof S === 'undefined' || !S) return;
+  fgLargeText();
+  var html = plantSafe(ppHtml);
+  el.innerHTML = html || '<div class="pp-empty">' + ppTitleHtml('Your plant') + '</div>';
+  plantSyncKeepsakes();
+  var mo = ppMoment;
+  if (!mo || !S.plant || mo.at !== S.plant.plantedAt) return;
+  var say = document.getElementById('ppSay');
+  if (!mo.said && (mo.turn || mo.grew)) {
+    mo.said = true;
+    var line = mo.turn ? mo.turn.line : mo.grew.line;
+    if (say) setTimeout(function () { say.textContent = line; }, 150);
+  }
+  if (mo.played) return;
+  mo.played = true;
+  if (!mo.turn || ppReduced()) return;
+  el.classList.add('pp-turning');
+  var done = false;
+  var end = function () {
+    if (done) return;
+    done = true;
+    el.classList.remove('pp-turning');
+    Array.prototype.forEach.call(el.querySelectorAll('.pp-old, .pp-wash'), function (n) { n.remove(); });
+    ['pointerdown', 'keydown', 'wheel', 'touchmove'].forEach(function (t) { window.removeEventListener(t, end, true); });
+  };
+  setTimeout(end, 600);
+  ['pointerdown', 'keydown', 'wheel', 'touchmove'].forEach(function (t) { window.addEventListener(t, end, true); });
+}
+// After a look change: the bed's plant again (a 160 ms cross-fade), and the
+// small preview on phones. The page itself is not drawn again.
+function ppArtSync() {
+  var box = document.getElementById('ppArtNew');
+  var K = plantApi();
+  if (!box || !K || !S.plant) return;
+  var v = plantView(Date.now());
+  var tmp = document.createElement('div');
+  tmp.innerHTML = ppArtHtml(K, v, { size: ppArtSize(S.plant.growth) });
+  var fresh = tmp.querySelector('#ppArtNew');
+  if (!fresh) return;
+  var art = document.getElementById('ppArt');
+  var old = box.cloneNode(true);
+  old.removeAttribute('id');
+  old.className = 'pp-layer pp-x-old';
+  old.setAttribute('aria-hidden', 'true');
+  box.innerHTML = fresh.innerHTML;
+  if (!ppReduced() && art) {
+    art.insertBefore(old, box);
+    box.classList.add('pp-x-new');
+    setTimeout(function () { old.remove(); box.classList.remove('pp-x-new'); }, 200);
+  }
+}
+// Draw every plant surface again (a choice changed, the theme, the notes or
+// the script arrived). o.look: a look change on Your plant, which updates
+// its art in place rather than drawing the page again.
+function plantRefresh(o) {
   if (typeof S === 'undefined' || !S) return;
   var slot = document.getElementById('tdPlant');
   if (slot && S.activeTab === 'home') { slot.innerHTML = plantSafe(plantTodayHtml); todayShootRefresh(); }
   // The Progress page reads the same script and notes: draw it again once they are here.
   if (S.activeTab === 'progress') { try { renderProgress(); } catch (e) {} }
+  if (S.activeTab === 'plant') {
+    if (o && o.look) plantSafe(ppArtSync);
+    else { try { renderPlantPage(); } catch (e) {} }
+  }
   try { railSync(); } catch (e) {}
 }
 
-// ── The plant dialog: plant yours, change plant, rename, change its look ──
+// ── The plant dialog: plant yours, change plant, rename (the look is inline on Your plant) ──
 function plantOpen(mode, from) {
   var K = plantApi();
   if (!K) return;
@@ -19565,7 +19967,8 @@ function plantOpen(mode, from) {
   if (!p) mode = 'new';
   plantDlg = { mode: mode, from: from || '', species: p ? p.species : 'oak', pick: Math.random() };
   var modal = document.getElementById('changelogModal');
-  var title = { 'new': 'Choose what you’ll grow', species: 'Change plant', name: 'Rename', look: 'Change its look' }[mode];
+  if (mode !== 'species' && mode !== 'name') mode = 'new';
+  var title = { 'new': 'Choose what you’ll grow', species: 'Change plant', name: 'Rename' }[mode];
   var body = '';
   if (mode === 'new') {
     body += '<p class="plnt-meta">Grows from real progress, never from taps or time.</p>';
@@ -19574,10 +19977,7 @@ function plantOpen(mode, from) {
   if (mode === 'species') body += '<p class="plnt-meta">Same growth, new look. Each is shown at Crown.</p>';
   if (mode === 'new' || mode === 'species') body += plantPickHtml();
   if (mode === 'new' || mode === 'name') body += plantNameHtml(mode === 'name' && p ? p.name : '');
-  if (mode === 'look') body += '<div id="plLookBody">' + plantLookHtml() + '</div>';
-  var acts = mode === 'look'
-    ? '<button type="button" class="act-btn primary" onclick="plantClose()">Done</button>'
-    : '<button type="button" class="act-btn primary" onclick="plantConfirm()">' + (mode === 'new' ? 'Plant it' : mode === 'species' ? 'Use this plant' : 'Save name') + '</button>'
+  var acts = '<button type="button" class="act-btn primary" onclick="plantConfirm()">' + (mode === 'new' ? 'Plant it' : mode === 'species' ? 'Use this plant' : 'Save name') + '</button>'
       + '<button type="button" class="act-btn" onclick="plantCancel()">' + (mode === 'new' ? 'Not now' : 'Cancel') + '</button>';
   modal.innerHTML = '<div class="changelog-overlay" onclick="plantClose(event)">'
     + '<div class="changelog-modal plnt-modal" onclick="event.stopPropagation()">'
@@ -19586,7 +19986,6 @@ function plantOpen(mode, from) {
   if (mode === 'name') {
     setTimeout(function () { var i = document.getElementById('plName'); if (i) { try { i.focus(); } catch (e) {} } }, 0);
   }
-  if (mode === 'look') plantSyncKeepsakes();
 }
 // `ret`: where focus goes once the dialog has gone (an element id, or "none"
 // when the caller moves focus itself); otherwise back to the opener.
@@ -19611,10 +20010,13 @@ function plantPickHtml() {
   var pickStyle = plantDlg.mode === 'species' && S.plant ? K.looks.resolveStyle(S.plant.look, S.plantSettings) : K.looks.NEW_PLANT_STYLE;
   var tiles = K.plant.PLANT_SPECIES.map(function (sp) {
     var info = K.plant.SPECIES_INFO[sp];
+    // Change plant: the planted species says "Now", on screen and aloud (PHASE4B 4.12).
+    var now = plantDlg.mode === 'species' && S.plant && S.plant.species === sp;
     return '<label class="plnt-tile"><input type="radio" class="plnt-radio" name="plSpecies" value="' + sp + '"' + (sp === sel ? ' checked' : '')
       + ' onchange="plantPickSpecies(this.value)">'
+      + '<span class="plnt-tick" aria-hidden="true">' + ico('check', 14) + '</span>'
       + '<span class="plnt-tile-art">' + plantSvg({ species: sp, stage: PLANT_PREVIEW, size: 72, fit: true, lod: 'small', quiet: !K.looks.styleHasFace(pickStyle), look: { style: pickStyle } }) + '</span>'
-      + '<span class="plnt-tile-n">' + escapeHtml(info.name) + '<span class="sr-only">. ' + escapeHtml(info.line) + '</span></span></label>';
+      + '<span class="plnt-tile-n">' + escapeHtml(info.name) + (now ? '<span class="plnt-tile-now">Now</span>' : '') + '<span class="sr-only">. ' + escapeHtml(info.line) + '</span></span></label>';
   }).join('');
   var info = K.plant.SPECIES_INFO[sel];
   return '<fieldset class="plnt-pick"><legend class="sr-only">Choose your plant</legend><div class="plnt-grid">' + tiles + '</div></fieldset>'
@@ -19670,6 +20072,10 @@ function plantConfirm() {
     if (!plantOutline() && plantHasStudy()) { plantWaitForNotes(d); return; }
     var f = plantFactsNow(now);
     S.plant = K.plant.plantNew(d.species, name, now, f ? K.plant.growthFor(f) : 1);
+    // A new plant's forms start as seen: its back-fill line names the form, so no second note.
+    var KF = plantFormsApi();
+    S.plantForms = KF ? { seen: KF.formOf(S.plant.growth) } : null;
+    ppMoment = null;
     if (!S.plantSettings || typeof S.plantSettings !== 'object') S.plantSettings = {};
     S.plantSettings.promptHidden = true;
     saveState();
@@ -19715,48 +20121,53 @@ function plantWaitForNotes(d) {
   })();
   try { loadConceptsData(function () {}); } catch (e) { conceptsLoadFailed = true; }
 }
-// The look: a live preview, then one radio group per slot. A tap applies at once.
+// The look, inline on Your plant (PHASE4B 4.12 with the rows of 4.2): one
+// column of radio rows per slot (Style, Colour, Ground, Planter, Visitor),
+// then the Keepsakes as checkbox rows. A tap applies at once; from 48em the
+// plant bed is the preview, below it a small preview leads the group.
 function plantLookHtml() {
   var K = plantApi(), p = S.plant;
   var unlocked = K.looks.unlockedLooks(p, []);
   var open = function (id) { return unlocked.indexOf(id) >= 0; };
   var style = K.looks.resolveStyle(p.look, S.plantSettings);
   var resolved = K.looks.resolveLook(p.species, p.look, unlocked, K.looks.defaultKeepsakes(p, []), style);
+  var row = function (type, nm, it, on, checked, art, cap, fn) {
+    return '<label class="pp-opt' + (on ? '' : ' locked') + '"><input type="' + type + '" class="plnt-radio" ' + nm + ' value="' + escapeHtml(it.id) + '"'
+      + (checked ? ' checked' : '') + (on ? '' : ' disabled') + ' onchange="' + fn + '">'
+      + (art ? '<span class="pp-opt-art' + (on ? '' : ' pp-mount') + '">' + (on ? art(it) : '') + '</span>' : '')
+      + '<span class="plnt-opt-t"><span class="plnt-opt-n">' + escapeHtml(it.name) + '</span>'
+      + (cap ? '<span class="plnt-opt-m">' + escapeHtml(cap) + '</span>' : '') + '</span>'
+      + '<span class="pp-mark pp-mark-' + type + '" aria-hidden="true">' + (type === 'checkbox' ? ico('check', 14) : '') + '</span></label>';
+  };
   var group = function (slot, legend, items, cur, art, note) {
-    return '<fieldset class="plnt-lk"><legend class="plnt-lk-h">' + legend + '</legend><div class="plnt-lk-grid">'
+    return '<fieldset class="pp-lk"><legend class="pp-lk-h">' + legend + '</legend><div class="pp-card pp-lk-rows">'
       + items.map(function (it) {
         var on = open(it.id);
-        return '<label class="plnt-opt' + (on ? '' : ' locked') + '"><input type="radio" class="plnt-radio" name="plLk-' + slot + '" value="' + it.id + '"'
-          + (it.id === cur ? ' checked' : '') + (on ? '' : ' disabled') + ' onchange="plantSetLook(\'' + slot + '\', this.value)">'
-          + (art ? '<span class="plnt-opt-art' + (slot === 'style' ? ' plnt-opt-art-lg' : '') + '">' + art(it) + '</span>' : '')
-          + '<span class="plnt-opt-t"><span class="plnt-opt-n">' + escapeHtml(it.name) + '</span>'
-          + '<span class="plnt-opt-m">' + escapeHtml(on ? it.caption : K.looks.howToOpen(it, { badgesHidden: true })) + '</span></span></label>';
-      }).join('') + '</div>' + (note ? '<p class="plnt-small">' + note + '</p>' : '') + '</fieldset>';
+        return row('radio', 'name="plLk-' + slot + '"', it, on, it.id === cur, art, on ? plantLookCaption(it) : plantLookHow(K, it), 'plantSetLook(\'' + slot + '\', this.value)');
+      }).join('') + '</div>' + (note ? '<p class="pp-lk-m">' + note + '</p>' : '') + '</fieldset>';
   };
-  var icon = function (b) { return '<svg width="36" height="36" viewBox="' + plantAttr(b.viewBox) + '" aria-hidden="true" focusable="false">' + plantNodeSvg(b.root) + '</svg>'; };
+  var icon = function (b) { return '<svg width="40" height="40" viewBox="' + plantAttr(b.viewBox) + '" aria-hidden="true" focusable="false">' + plantNodeSvg(b.root) + '</svg>'; };
   var cw = function (it) {
-    return plantSvg({ species: p.species, stage: Math.max(3, p.growth), size: 36, fit: true, lod: 'icon', quiet: true, look: { style: style, palette: it.palette } });
+    return plantSvg({ species: p.species, stage: Math.max(3, p.growth), size: 48, fit: true, lod: 'icon', quiet: true, look: { style: style, palette: it.palette } });
   };
-  // Each style card draws THIS plant that way (its growth and colours).
+  // Each style row draws THIS plant that way (its growth and colours).
   var st = function (it) {
     return plantSvg({ species: p.species, stage: Math.max(3, p.growth), size: 48, fit: true, lod: 'small', quiet: !K.looks.styleHasFace(it.id), look: { style: it.id, palette: resolved.palette } });
   };
   var planters = K.looks.plantersFor(p.species).filter(function (it) { return open(it.id); });
   var keeps = K.looks.KEEPSAKE_ITEMS.filter(function (it) { return open(it.id); });
-  return '<div class="plnt-lk-prev" id="plLookPrev">' + plantLookPreview() + '</div>'
+  return '<div class="plnt-lk-prev pp-lk-prev" id="plLookPrev">' + plantLookPreview() + '</div>'
     + group('style', 'Style', K.looks.STYLES, style, st)
     + group('colourway', 'Colour', K.looks.colourwaysFor(p.species), resolved.colourway, cw)
     + group('ground', 'Ground', K.looks.GROUNDS, resolved.ground)
     + group('planter', 'Planter', planters, resolved.planter, function (it) { return icon(K.art.planterIcon(it.id, p.species, plantTheme(), style === 'botanical' ? 'botanical' : 'storybook')); })
     + group('visitor', 'Visitor', K.looks.VISITORS, resolved.visitor, null, 'Shown here. In the KaiSip app it perches on days you clear your plan.')
-    + (keeps.length ? '<fieldset class="plnt-lk" id="plKeeps"><legend class="plnt-lk-h">Keepsakes</legend><div class="plnt-lk-grid">' + keeps.map(function (it) {
-      var on = (resolved.keepsakes || []).indexOf(it.id) >= 0;
-      return '<label class="plnt-opt"><input type="checkbox" class="plnt-radio" value="' + it.id + '"' + (on ? ' checked' : '') + ' onchange="plantToggleKeepsake(this.value)">'
-        + '<span class="plnt-opt-art">' + icon(K.art.keepsakeIcon(it.id, plantTheme())) + '</span>'
-        + '<span class="plnt-opt-t"><span class="plnt-opt-n">' + escapeHtml(it.name) + '</span><span class="plnt-opt-m">' + escapeHtml(K.looks.skillLine(it)) + '</span></span></label>';
-    }).join('') + '</div><p class="plnt-small" id="plKeepsNote"></p></fieldset>' : '');
+    + (keeps.length ? '<fieldset class="pp-lk" id="plKeeps"><legend class="pp-lk-h">Keepsakes</legend><p class="pp-lk-m pp-lk-mt" id="plKeepsNote"></p><div class="pp-card pp-lk-rows">' + keeps.map(function (it) {
+      return row('checkbox', '', it, true, (resolved.keepsakes || []).indexOf(it.id) >= 0, function (x) { return icon(K.art.keepsakeIcon(x.id, plantTheme())); }, K.looks.skillLine(it), 'plantToggleKeepsake(this.value)');
+    }).join('') + '</div></fieldset>' : '');
 }
-// The keepsake boxes follow the engine's list: three on show mutes the rest.
+// The keepsake boxes follow the engine's list: with three on show the rest
+// are disabled until one is put away (the limit is said once, beside the head).
 function plantSyncKeepsakes() {
   var K = plantApi(), box = document.getElementById('plKeeps');
   if (!K || !box || !S.plant) return;
@@ -19765,10 +20176,11 @@ function plantSyncKeepsakes() {
   var full = shown.length >= K.looks.MAX_SHOWN_KEEPSAKES;
   Array.prototype.forEach.call(box.querySelectorAll('input[type="checkbox"]'), function (c) {
     c.checked = shown.indexOf(c.value) >= 0;
+    c.disabled = full && !c.checked;
     c.parentNode.classList.toggle('muted', full && !c.checked);
   });
   var note = document.getElementById('plKeepsNote');
-  if (note) note.textContent = full ? 'Three on show. Tap one that\u2019s on show to put it away, then pick another.' : 'Show up to three.';
+  if (note) note.textContent = full ? 'Three on show' : 'Show up to three';
 }
 function plantLookPreview() {
   var K = plantApi(), p = S.plant;
@@ -19782,8 +20194,12 @@ function plantLookPreview() {
   if (item) parts.push(item.name);
   var pot = K.looks.lookItem(v.resolved.planter);
   if (pot) parts.push(pot.id === 'native' ? 'in its usual home' : 'in a ' + pot.name.charAt(0).toLowerCase() + pot.name.slice(1));
-  return plantSvg({ species: p.species, stage: p.growth, scales: v.scales, look: look, mood: v.mood, quiet: !v.face, size: 140, fit: true, lod: 'small',
+  return plantSvg({ species: p.species, stage: p.growth, scales: v.scales, look: look, mood: v.mood, quiet: !v.face, size: 120, fit: true, lod: 'small',
     label: 'Preview: ' + parts.join(', ') + (look.visitor ? ', with a ' + look.visitor + ' visiting' : '') });
+}
+function plantLookPreviewSync() {
+  var prev = document.getElementById('plLookPrev');
+  if (prev) prev.innerHTML = plantLookPreview();
 }
 function plantSetLook(slot, id) {
   var K = plantApi();
@@ -19794,15 +20210,15 @@ function plantSetLook(slot, id) {
   saveState();
   var body = document.getElementById('plLookBody');
   if (slot === 'style' && body) {
+    // A style redraws every row's art; focus stays on the chosen style.
     body.innerHTML = plantLookHtml();
     plantSyncKeepsakes();
     var picked = body.querySelector('input[name="plLk-style"]:checked');
-    if (picked) { try { picked.focus(); } catch (e) {} }
+    if (picked) { try { picked.focus({ preventScroll: true }); } catch (e) {} }
   } else {
-    var prev = document.getElementById('plLookPrev');
-    if (prev) prev.innerHTML = plantLookPreview();
+    plantLookPreviewSync();
   }
-  plantRefresh();
+  plantRefresh({ look: true });
 }
 function plantToggleKeepsake(id) {
   var K = plantApi();
@@ -19811,10 +20227,9 @@ function plantToggleKeepsake(id) {
   var shown = K.looks.resolveLook(S.plant.species, S.plant.look, unlocked, K.looks.defaultKeepsakes(S.plant, []), K.looks.resolveStyle(S.plant.look, S.plantSettings)).keepsakes;
   S.plant = K.plant.withLook(S.plant, { keepsakes: K.looks.toggleKeepsake(shown, id) });
   saveState();
-  var prev = document.getElementById('plLookPrev');
-  if (prev) prev.innerHTML = plantLookPreview();
+  plantLookPreviewSync();
   plantSyncKeepsakes();
-  plantRefresh();
+  plantRefresh({ look: true });
 }
 
 // End cards drawn into the focused view (Time is up, a finished set, a
@@ -22863,6 +23278,7 @@ function doResetProgress() {
   // The plant goes too: a fresh start plants again from the beginning.
   S.plant = null;
   S.plantSettings = {};
+  S.plantForms = null;
   S.cleanLog = {};
   S.readinessLog = [];
   S.finalWeekDone = {};
@@ -22873,7 +23289,7 @@ function doResetProgress() {
   plantGrewShown = null;
   plantGrewTo = null;
   plantGrewFrom = null;
-  plantBackfillShown = null;
+  ppMoment = null;
   S.mockId = null;
   S.mockType = 'full';
   S.mockFlags = {};
