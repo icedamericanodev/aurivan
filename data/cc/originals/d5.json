@@ -1,6 +1,6 @@
 {
  "_meta": {
-  "comment": "Original KaiSip practice questions for CC Domain 5, Security Operations and Incident Response, organized by the CC exam outline effective 1 Sep 2026. Each item is authored from the reviewed notes (data/cc/notes/d5.json) and public sources (NIST, ISO/IEC, CIS, FIRST, MITRE), with no reference to any prior question bank or ISC2 training text. Not affiliated with or endorsed by ISC2®. CC® is a registered trademark of ISC2, Inc. Schema: docs/content/QUESTION_SCHEMA.md; style: docs/content/EXAM_STYLE_V2.md with the CC lens in .claude/agents/isc2-cc-standards-auditor.md.",
+  "comment": "Original KaiSip practice questions for CC Domain 5, Security Operations and Incident Response, organized by the CC exam outline effective 1 Sep 2026. Each item is authored from the reviewed notes (data/cc/notes/d5.json) and public sources (NIST, ISO/IEC, CIS, FIRST, MITRE), with no reference to any prior question bank or ISC2 training text. Not affiliated with or endorsed by ISC2\u00ae. CC\u00ae is a registered trademark of ISC2, Inc. Schema: docs/content/QUESTION_SCHEMA.md; style: docs/content/EXAM_STYLE_V2.md with the CC lens in .claude/agents/isc2-cc-standards-auditor.md.",
   "schema_version": 1
  },
  "domain": 5,
@@ -34,7 +34,7 @@
     "Final two: A beats C because symmetric encryption is fast enough for bulk data; asymmetric is slower and suits key exchange and signatures.",
     "Exam cue: bulk data at rest or in transit points to symmetric encryption; sharing keys or proving identity points to asymmetric."
    ],
-   "framework_ref": "ISO/IEC 27002:2022 Control 8.24 (Use of cryptography); NIST SP 800-57 Part 1 Rev. 5 (Recommendation for Key Management: Part 1 – General)",
+   "framework_ref": "ISO/IEC 27002:2022 Control 8.24 (Use of cryptography); NIST SP 800-57 Part 1 Rev. 5 (Recommendation for Key Management: Part 1 \u2013 General)",
    "related_concepts": [
     "Symmetric encryption",
     "Asymmetric encryption",
@@ -898,7 +898,7 @@
     "Final two: C beats A because whatever the sender's private key encrypts, their public key opens; secrecy uses the recipient's public key.",
     "Exam cue: for secrecy, encrypt with the recipient's public key. For proof of origin, sign with the sender's private key."
    ],
-   "framework_ref": "NIST SP 800-12 Rev. 1 Section 9.1.1 (Data Encryption); NIST SP 800-57 Part 1 Rev. 5 (Recommendation for Key Management: Part 1 – General)",
+   "framework_ref": "NIST SP 800-12 Rev. 1 Section 9.1.1 (Data Encryption); NIST SP 800-57 Part 1 Rev. 5 (Recommendation for Key Management: Part 1 \u2013 General)",
    "related_concepts": [
     "Public key",
     "Private key",
@@ -2433,9 +2433,9 @@
     "D": "132 keys, one secret key for each direction between two instructors"
    },
    "correct": "C",
-   "key_concept": "Symmetric encryption needs one shared key per pair of people, n(n−1)/2; asymmetric encryption needs one key pair per person, 2n.",
+   "key_concept": "Symmetric encryption needs one shared key per pair of people, n(n\u22121)/2; asymmetric encryption needs one key pair per person, 2n.",
    "pre_read": "Work out who must share a secret with whom, then count.",
-   "correct_explanation": "With symmetric encryption, each pair of people who message privately shares its own secret key. Twelve instructors form 12 × 11 ÷ 2 = 66 pairs, so 66 keys. Twenty-four is the runner-up: it is the count for asymmetric encryption, where each person holds one key pair (2n), which is why asymmetric methods scale better as groups grow.",
+   "correct_explanation": "With symmetric encryption, each pair of people who message privately shares its own secret key. Twelve instructors form 12 \u00d7 11 \u00f7 2 = 66 pairs, so 66 keys. Twenty-four is the runner-up: it is the count for asymmetric encryption, where each person holds one key pair (2n), which is why asymmetric methods scale better as groups grow.",
    "wrong_explanations": {
     "A": "Tempting because one key each sounds tidy. But everyone sending to an instructor would need that same key, so every holder could read the others' messages.",
     "B": "Closest choice: 24 is a real key count, for asymmetric encryption with one key pair per person. The stem allows symmetric only, which needs one shared key per pair.",
@@ -2443,10 +2443,10 @@
    },
    "tips": [
     "Eliminate: A gives each instructor one key that every sender would have to share, and D double-counts, since one shared key covers both directions.",
-    "Final two: C beats B because 24 is the asymmetric count, 2n; symmetric needs one key per pair, n(n−1)/2, which for 12 people is 66.",
-    "Exam cue: symmetric keys grow with pairs, n(n−1)/2; asymmetric keys grow with people, 2n. Check which kind the stem allows before counting."
+    "Final two: C beats B because 24 is the asymmetric count, 2n; symmetric needs one key per pair, n(n\u22121)/2, which for 12 people is 66.",
+    "Exam cue: symmetric keys grow with pairs, n(n\u22121)/2; asymmetric keys grow with people, 2n. Check which kind the stem allows before counting."
    ],
-   "framework_ref": "NIST SP 800-12 Rev. 1 Section 9.1.1 (Data Encryption); NIST SP 800-57 Part 1 Rev. 5 (Recommendation for Key Management: Part 1 – General)",
+   "framework_ref": "NIST SP 800-12 Rev. 1 Section 9.1.1 (Data Encryption); NIST SP 800-57 Part 1 Rev. 5 (Recommendation for Key Management: Part 1 \u2013 General)",
    "related_concepts": [
     "Symmetric encryption",
     "Key management",
@@ -2662,7 +2662,7 @@
     "Final two: B beats A because a replayed message need not be read; encryption hides content, while a one-time challenge makes each sign-in unrepeatable.",
     "Exam cue: a captured message resent later is a replay attack. The fix is freshness: nonces, timestamps or one-time challenges."
    ],
-   "framework_ref": "NIST SP 800-53 Rev. 5 IA-2(8) (Identification and Authentication (Organizational Users) | Access to Accounts — Replay Resistant); NIST SP 800-53 Rev. 5 SC-23 (Session Authenticity)",
+   "framework_ref": "NIST SP 800-53 Rev. 5 IA-2(8) (Identification and Authentication (Organizational Users) | Access to Accounts \u2014 Replay Resistant); NIST SP 800-53 Rev. 5 SC-23 (Session Authenticity)",
    "related_concepts": [
     "Replay attack",
     "Nonce",
@@ -4145,6 +4145,834 @@
     "Defense in depth"
    ],
    "_provenance": "Authored from concept: 'evasion of an AI filter is a finding even when another layer catches the attack' (notes 5.5.6 Testing AI-Integrated Defenses). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D5 batch 5, 4 Nov 2026.",
+   "style_version": 2
+  },
+  {
+   "id": "cc_d5_116",
+   "domain": 5,
+   "subtopic": "5.1 Data security. Retention schedules",
+   "difficulty": "analysis",
+   "bloom_level": "Analysis",
+   "question": "A climbing gym's system administrator must delete rejected applications after a year unless legally held. Having purged an expired, unheld batch from the hiring system, which other item should they MOST clearly delete?",
+   "options": {
+    "A": "A copy of the batch loaded into a test environment",
+    "B": "Applications from an older batch under a legal hold",
+    "C": "A report showing how many applied for each job",
+    "D": "The system's log entry recording the batch deletion"
+   },
+   "correct": "A",
+   "key_concept": "A retention schedule covers every copy of the records, including test copies and exports, not only the copy in the main system.",
+   "pre_read": "Recall what a retention schedule covers and what can pause it.",
+   "correct_explanation": "A retention schedule applies to the records wherever they sit, so a copy of the batch loaded into a test environment is past its end date too, and the administrator's duty covers it. A report of applicant counts is the runner-up: it was built from the applications, but it holds no applicant's details, so it is a separate record, not a copy of the expired ones.",
+   "wrong_explanations": {
+    "B": "Tempting because those applications are even older. But a legal hold pauses the schedule, and deleting held records can destroy evidence a lawsuit needs.",
+    "C": "Closest choice: the report was built from the same applications. But a count per job identifies no applicant, so it is a separate record, not an expired copy.",
+    "D": "Tempting because it names the deleted batch. But the log entry holds no applicant's details; it is the proof the schedule was followed, and deleting it removes that evidence."
+   },
+   "tips": [
+    "Eliminate: B is under a legal hold, which pauses the schedule, and D is the record that proves the deletion happened, which should be kept.",
+    "Final two: A beats C because the test copy holds the same expired applications, while a count per job identifies no one and is a separate record.",
+    "Exam cue: a retention schedule covers every copy, including test copies and exports outside the main system. When retention ends with no legal hold, delete them all and record it."
+   ],
+   "framework_ref": "NIST SP 800-53 Rev. 5 SI-12 (Information Management and Retention); NIST SP 800-122 Section 4.2.1 (Minimizing the Use, Collection, and Retention of PII: destruction follows retention schedules and litigation holds)",
+   "related_concepts": [
+    "Data retention",
+    "Legal hold",
+    "Data copies"
+   ],
+   "_provenance": "Authored from concept: 'a retention schedule covers every copy of the records, including test copies, while a legal hold pauses it' (notes 5.1.2 Data Handling Across the Lifecycle). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D5 batch 6, 5 Nov 2026.",
+   "style_version": 2
+  },
+  {
+   "id": "cc_d5_117",
+   "domain": 5,
+   "subtopic": "5.2 Security operations. Blocked activity",
+   "difficulty": "foundational",
+   "bloom_level": "Foundational",
+   "question": "A theater company's firewall blocked a night-long scan of its closed ports from one internet address, and no other system logged contact from it. Which handling of the alert is BEST for the security analyst?",
+   "options": {
+    "A": "Record it as an incident and page the incident response lead",
+    "B": "Record it as an event and close the alert, noting why",
+    "C": "Delete the alert, as the firewall stopped the scan",
+    "D": "Add a firewall rule that blocks every address in that country"
+   },
+   "correct": "B",
+   "key_concept": "A blocked scan that reached nothing is an event: record it and close the alert with a reason, without declaring an incident.",
+   "pre_read": "Recall how events, alerts and incidents differ.",
+   "correct_explanation": "Systems log huge numbers of events, and a blocked scan that touched nothing is one of them: it neither harmed nor imminently threatened security. The analyst records it and closes the alert with a note, so the decision can be traced later. Recording it as an incident is the runner-up: scans can come before attacks, but treating every blocked probe as an incident floods responders and hides the real ones.",
+   "wrong_explanations": {
+    "A": "Closest choice: scans can precede attacks. But nothing got through or threatened a system, so it is an event; treating every probe as an incident floods the response team.",
+    "C": "Tempting because the firewall did its job. But closing alerts with no record leaves no trail; every closed alert needs a short reason.",
+    "D": "Tempting because it would stop this source. But it is a broad network change outside the analyst's role, and attackers simply switch addresses."
+   },
+   "tips": [
+    "Eliminate: C closes the alert with no record of why, and D makes a broad firewall change that attackers sidestep by switching addresses.",
+    "Final two: B beats A because a blocked scan that touched nothing did not harm or imminently threaten security, so it is an event, not an incident.",
+    "Exam cue: not every alert is an incident. Ask whether security was harmed or imminently threatened; if not, record the event and close it with a reason."
+   ],
+   "framework_ref": "NIST SP 800-61 Rev. 3 Section 1 (Introduction: events, adverse events and incidents); NIST CSF 2.0 DE.AE-08 (incidents are declared when adverse events meet the defined incident criteria)",
+   "related_concepts": [
+    "Events and incidents",
+    "Alert handling",
+    "Incident declaration"
+   ],
+   "_provenance": "Authored from concept: 'a blocked scan that reached nothing is an event to record and close, not an incident' (notes 5.2.1 Events, Alerts and Incidents). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D5 batch 6, 5 Nov 2026.",
+   "style_version": 2
+  },
+  {
+   "id": "cc_d5_118",
+   "domain": 5,
+   "subtopic": "5.2 Security operations. Noisy detection rules",
+   "difficulty": "application",
+   "bloom_level": "Application",
+   "question": "A florist chain's after-hours admin login rule fires 150 times nightly on scheduled backup jobs, and the detection team changes rules only through change requests. What should the security analyst do FIRST?",
+   "options": {
+    "A": "Request a change that switches the rule off overnight",
+    "B": "Close each night's alerts in bulk without reading them",
+    "C": "Request a change that tunes the rule for those jobs",
+    "D": "Edit the rule to ignore the backup account at all times"
+   },
+   "correct": "C",
+   "key_concept": "False positives are fixed by tuning the rule through change management, not by switching it off or closing alerts unread.",
+   "pre_read": "Recall what a false positive is and how detection rules are changed.",
+   "correct_explanation": "Noisy rules are tuned, not silenced. A narrow tune for the scheduled backup jobs, made by change request as the detection team requires, removes the false positives while the rule keeps watching every other admin login at night. Switching the rule off overnight is the runner-up: it follows the change process too, but it blinds the rule during the very hours it exists to watch.",
+   "wrong_explanations": {
+    "A": "Closest choice: it uses the change process. But an after-hours rule switched off overnight stops watching exactly when it matters, so real admin logins would pass unseen.",
+    "B": "Tempting because the alerts look identical. But closing alerts unread can bury a real login among them, and every closure needs a reason.",
+    "D": "Tempting because it would quiet the rule fast. But it bypasses the change process the team requires, and ignoring the account at all hours hides its misuse."
+   },
+   "tips": [
+    "Eliminate: B closes alerts unread, which can bury a real login, and D edits the rule outside the change process the team requires.",
+    "Final two: C beats A because both use a change request, but a narrow tune keeps the rule watching at night; switching it off overnight blinds it.",
+    "Exam cue: for a noisy rule, tune it through the change process. Never switch it off or clear its alerts unread."
+   ],
+   "framework_ref": "NIST SP 800-94 Section 2.2 (Key Functions of IDPS Technologies: a false positive flags benign activity, and altering the configuration to improve detection accuracy is called tuning); NIST SP 800-53 Rev. 5 CM-3 (Configuration Change Control)",
+   "related_concepts": [
+    "Event triage",
+    "False positives",
+    "Detection tuning"
+   ],
+   "_provenance": "Authored from concept: 'a rule that fires on normal activity is tuned through the change process, not switched off or cleared unread' (notes 5.2.3 Event Triage: Use Cases, Prioritization and Correlation). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D5 batch 6, 5 Nov 2026.",
+   "style_version": 2
+  },
+  {
+   "id": "cc_d5_119",
+   "domain": 5,
+   "subtopic": "5.2 Security operations. Actor motives",
+   "difficulty": "foundational",
+   "bloom_level": "Foundational",
+   "question": "Hours after a timber company wins approval to fell an old-growth forest, its website shows protest slogans, with no ransom demand or data taken. Which threat actor should the security analyst suspect MOST?",
+   "options": {
+    "A": "Hacktivists, whose aim is publicity for a cause",
+    "B": "Organized criminals, whose aim is financial gain",
+    "C": "A nation-state group, whose aim is stealing secrets",
+    "D": "An accidental insider, whose aim was a routine site edit"
+   },
+   "correct": "A",
+   "key_concept": "Hacktivists attack to publicize a cause, so public defacements tied to a controversial decision, with no theft or demand, point to them.",
+   "pre_read": "Recall the usual motives of the main threat actor types.",
+   "correct_explanation": "Motive predicts what an actor targets and how. A public defacement with protest slogans, timed to a controversial decision, with nothing stolen or demanded, fits hacktivists, who want attention for a cause. Organized criminals are the runner-up: they also attack websites, but they act for money, so a defacement with no ransom note, theft or fraud does little for them.",
+   "wrong_explanations": {
+    "B": "Closest choice: criminals do attack websites. But they act for money, and this attack demanded nothing and took no data; it only broadcast a message.",
+    "C": "Tempting because nation-states are skilled. But spies want to stay hidden while they take secrets; a public defacement announces them and steals nothing.",
+    "D": "Tempting because insiders cause many incidents by mistake. But a routine edit does not produce protest slogans timed to the company's news."
+   },
+   "tips": [
+    "Eliminate: C fits spies, who stay hidden and take secrets, and D fits a mistake, which does not write protest slogans.",
+    "Final two: A beats B because nothing was demanded or taken; a public message about the company's decision serves a cause, not a profit.",
+    "Exam cue: match the actor to the motive. Money points to criminals, secrets to nation-states, publicity for a cause to hacktivists."
+   ],
+   "framework_ref": "NIST SP 800-30 Rev. 1 Appendix D Table D-2 (Taxonomy of Threat Sources: adversarial, accidental, structural and environmental); NIST CSF 2.0 ID.RA-03 (internal and external threats to the organization are identified and recorded)",
+   "related_concepts": [
+    "Threat actors",
+    "Hacktivism",
+    "Attacker motives"
+   ],
+   "_provenance": "Authored from concept: 'a public defacement with protest slogans and no theft or demand points to hacktivists' (notes 5.2.5 Threat Actors and Motives). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D5 batch 6, 5 Nov 2026.",
+   "style_version": 2
+  },
+  {
+   "id": "cc_d5_120",
+   "domain": 5,
+   "subtopic": "5.2 Security operations. Sharing labels",
+   "difficulty": "foundational",
+   "bloom_level": "Foundational",
+   "question": "A colleague at a ceramics maker wants to quote a sector group's TLP:CLEAR phishing report in the company's public customer newsletter. Which reply should the security analyst give as MOST accurate?",
+   "options": {
+    "A": "Disagree, since any labeled report needs the source's permission",
+    "B": "Disagree, since TLP:CLEAR keeps it within the sector",
+    "C": "Agree, once the sector group's name is removed from the quotes",
+    "D": "Agree, since TLP:CLEAR sets no limit on who may see it"
+   },
+   "correct": "D",
+   "key_concept": "TLP:CLEAR information may be shared with anyone, subject to normal copyright rules; TLP:GREEN stays within the community.",
+   "pre_read": "Recall the four Traffic Light Protocol labels and who may receive each.",
+   "correct_explanation": "TLP:CLEAR marks information with minimal risk of misuse, and recipients may share it with anyone, subject only to normal copyright rules, so quoting it in a public newsletter is fine. Saying it stays within the sector is the runner-up: that describes TLP:GREEN, which allows sharing with peers in the community but not through public channels such as a newsletter.",
+   "wrong_explanations": {
+    "A": "Tempting because RED and AMBER reports do need the source's permission to go wider. But TLP:CLEAR already gives that permission to everyone.",
+    "B": "Closest choice: a community-only limit is a real TLP rule. But it belongs to TLP:GREEN; TLP:CLEAR places no limit on disclosure.",
+    "C": "Tempting because removing names feels cautious. But TLP:CLEAR sets no such condition, and dropping the source can mislead readers about where the warning came from."
+   },
+   "tips": [
+    "Eliminate: A applies the permission rule of the stricter labels to all of them, and C invents a condition TLP:CLEAR does not set.",
+    "Final two: D beats B because sharing within a community but not publicly is TLP:GREEN; TLP:CLEAR may go to anyone.",
+    "Exam cue: read the label before sharing. RED, named recipients; AMBER, the organization and clients who need it; GREEN, the community; CLEAR, anyone."
+   ],
+   "framework_ref": "FIRST Traffic Light Protocol (TLP) v2.0 Section 3d (TLP:CLEAR: recipients can spread this to the world, with no limit on disclosure); FIRST Traffic Light Protocol (TLP) v2.0 Section 3c (TLP:GREEN: recipients may share with peers and partners in their community, but not via publicly accessible channels)",
+   "related_concepts": [
+    "Cyber threat intelligence",
+    "Traffic Light Protocol",
+    "Information sharing"
+   ],
+   "_provenance": "Authored from concept: 'TLP:CLEAR information may be shared with anyone; the community-only limit belongs to TLP:GREEN' (notes 5.2.6 Cyber Threat Intelligence). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D5 batch 6, 5 Nov 2026.",
+   "style_version": 2
+  },
+  {
+   "id": "cc_d5_121",
+   "domain": 5,
+   "subtopic": "5.2 Security operations. Malware types",
+   "difficulty": "foundational",
+   "bloom_level": "Foundational",
+   "question": "A mapmaking firm's help desk analyst finds code that spreads only when staff open an infected spreadsheet, whose macro copies itself into other shared spreadsheets. Which malware type BEST describes it?",
+   "options": {
+    "A": "A worm, which spreads between computers on its own",
+    "B": "A virus, which relies on people running its host files",
+    "C": "A rootkit, which conceals its own presence from the system",
+    "D": "Ransomware, which locks files until a payment is made"
+   },
+   "correct": "B",
+   "key_concept": "A virus spreads by infecting files and needs a person to open or run them; a worm spreads across networks by itself.",
+   "pre_read": "Recall how viruses, worms and Trojans differ in the way they spread.",
+   "correct_explanation": "A virus attaches to a host, here a spreadsheet's macro, and spreads only when a person opens or runs the infected file. That human step is the deciding fact. A worm is the runner-up: it also spreads, but it moves between computers by itself, through network flaws, with no one opening anything, which is not what happens here.",
+   "wrong_explanations": {
+    "A": "Closest choice: the code does spread. But a worm spreads by itself across networks; this code needs a person to open an infected spreadsheet each time.",
+    "C": "Tempting because malware often hides. But a rootkit's defining trait is concealing itself from the system, and nothing here says the code hides.",
+    "D": "Tempting because ransomware is common. But nothing is locked and no payment is demanded; the described behavior is copying into other files."
+   },
+   "tips": [
+    "Eliminate: C names malware defined by hiding itself, and D names malware defined by locking files for payment; neither matches code that copies itself.",
+    "Final two: B beats A because the code spreads only when someone opens an infected file; a worm needs no human action.",
+    "Exam cue: ask how it spreads. Needs a person to open a file: virus. Spreads by itself over the network: worm. Hides inside a useful program: Trojan."
+   ],
+   "framework_ref": "NIST SP 800-83 Rev. 1 Section 2.1 (Forms of Malware: viruses, worms and Trojan horses)",
+   "related_concepts": [
+    "Malware types",
+    "Viruses",
+    "Worms"
+   ],
+   "_provenance": "Authored from concept: 'a virus spreads through infected files that a person opens; a worm spreads by itself' (notes 5.2.8 Malware Basics). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D5 batch 6, 5 Nov 2026.",
+   "style_version": 2
+  },
+  {
+   "id": "cc_d5_122",
+   "domain": 5,
+   "subtopic": "5.3 Incident response. Escalation contacts",
+   "difficulty": "application",
+   "bloom_level": "Application",
+   "question": "A ballet company's security analyst pages the incident response lead about confirmed ransomware on a finance laptop, as the plan requires, but gets no answer in 20 minutes. What should the analyst do FIRST?",
+   "options": {
+    "A": "Keep paging the lead the plan names until they reply",
+    "B": "Restore the laptop from last night's backup to save time",
+    "C": "Contact the next person on the plan's escalation list",
+    "D": "Email the details to the whole IT team and ask for help"
+   },
+   "correct": "C",
+   "key_concept": "Incident plans keep escalation lists, so when the named contact is unreachable, the reporter moves to the next contact instead of waiting or acting alone.",
+   "pre_read": "Recall what an incident response plan's contact lists are for.",
+   "correct_explanation": "A confirmed ransomware case cannot wait on one unreachable person. Incident plans keep current contact and escalation lists, so when the lead does not answer, the analyst moves to the next contact on the list and notes the attempts. Paging the lead again and again is the runner-up: it follows the plan's first step, but it leaves the ransomware without a responder while time passes.",
+   "wrong_explanations": {
+    "A": "Closest choice: the plan does name the lead. But plans list backups because people are unreachable; paging one person indefinitely leaves the incident without a responder.",
+    "B": "Tempting because restoring seems to fix the problem. But it is outside the analyst's role, destroys evidence and skips containment; the response team directs recovery.",
+    "D": "Tempting because more people could help. But the attacker may be reading email, and spreading details beyond the response team breaks need-to-know."
+   },
+   "tips": [
+    "Eliminate: B restores the laptop alone, skipping containment and evidence, and D spreads incident details by email beyond the people who need them.",
+    "Final two: C beats A because plans list escalation contacts for exactly this case; waiting on one unreachable person stalls the response.",
+    "Exam cue: when the named contact cannot be reached, follow the escalation list instead of waiting or acting alone."
+   ],
+   "framework_ref": "NIST SP 800-53 Rev. 5 IR-8 (Incident Response Plan); NIST CSF 2.0 RS.MA-04 (incidents are escalated or elevated as needed)",
+   "related_concepts": [
+    "Incident response plan",
+    "Escalation",
+    "Contact lists"
+   ],
+   "_provenance": "Authored from concept: 'when the plan's named contact cannot be reached, the reporter follows the plan's escalation list' (notes 5.3.1 The Incident Response Plan and Team). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D5 batch 6, 5 Nov 2026.",
+   "style_version": 2
+  },
+  {
+   "id": "cc_d5_123",
+   "domain": 5,
+   "subtopic": "5.3 Incident response. When custody records start",
+   "difficulty": "application",
+   "bloom_level": "Application",
+   "question": "A wallpaper maker's plan names the security analyst evidence collector for a laptop in a suspected leak; a team leader says custody records matter only in police cases. What is the analyst's BEST approach?",
+   "options": {
+    "A": "Keep a custody record from collection, as for any evidence",
+    "B": "Skip the record unless the case is passed to the police",
+    "C": "Open the laptop's files first to judge whether a record is needed",
+    "D": "Give the laptop to the IT manager to hold for now"
+   },
+   "correct": "A",
+   "key_concept": "Chain of custody starts at collection for any evidence that might be used, including internal disciplinary cases, because gaps cannot be repaired later.",
+   "pre_read": "Recall what a chain of custody record shows and when it starts.",
+   "correct_explanation": "Evidence that may support legal or internal disciplinary action needs a clear chain of custody from the moment it is collected, and a suspected leak by staff can become either. Custody cannot be rebuilt later, so the analyst records every handover now. Skipping the record until police are involved is the runner-up: it saves effort, but by then the gap in custody can make the evidence unusable.",
+   "wrong_explanations": {
+    "B": "Closest choice: police cases clearly need custody records. But internal disciplinary and civil cases need them too, and a missing early record cannot be added later.",
+    "C": "Tempting because it shows whether the laptop matters. But opening files changes timestamps and the evidence; trained staff examine a verified copy instead.",
+    "D": "Tempting because the IT manager is senior. But an unrecorded handover breaks the chain of custody, and the plan makes the analyst the collector, not the IT manager."
+   },
+   "tips": [
+    "Eliminate: C changes the evidence by opening its files, and D passes the laptop on with no record, breaking custody.",
+    "Final two: A beats B because internal cases can end in discipline or court, and custody gaps cannot be filled in afterward.",
+    "Exam cue: if evidence might ever be used, preserve it and record every handover from the start. When unsure, preserve."
+   ],
+   "framework_ref": "NIST SP 800-86 Section 3.1.2 (Acquiring the Data: evidence that may support legal or internal disciplinary proceedings follows a clearly defined chain of custody); NIST CSF 2.0 RS.AN-07 (incident data and metadata are collected, and their integrity and provenance are preserved)",
+   "related_concepts": [
+    "Chain of custody",
+    "Evidence handling",
+    "Internal investigations"
+   ],
+   "_provenance": "Authored from concept: 'chain of custody starts at collection for any evidence that might be used, including internal cases' (notes 5.3.4 Evidence Handling and Chain of Custody). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D5 batch 6, 5 Nov 2026.",
+   "style_version": 2
+  },
+  {
+   "id": "cc_d5_124",
+   "domain": 5,
+   "subtopic": "5.3 Incident response. Recording affected data",
+   "difficulty": "foundational",
+   "bloom_level": "Foundational",
+   "question": "During a breach at a language school, the incident response lead asks a security analyst to record the detail that decides whether legal notification duties apply. Which detail is MOST important?",
+   "options": {
+    "A": "The staff member whose click let the attacker in",
+    "B": "The time the team first detected the attack",
+    "C": "The country the attacker's addresses trace back to",
+    "D": "The kinds of personal or payment data exposed"
+   },
+   "correct": "D",
+   "key_concept": "Which types of data a breach exposed, such as personal or payment data, decides whether legal notification duties apply.",
+   "pre_read": "Recall what an incident record should capture during a breach.",
+   "correct_explanation": "Breach notification laws are triggered mainly by what kind of data was exposed, such as personal or payment data, so the record must say which types were affected; legal counsel then decides what is owed. The detection time is the runner-up: it matters, because deadlines often run from discovery, but it sets when duties fall due, not whether they apply.",
+   "wrong_explanations": {
+    "A": "Tempting because it explains how the attack started. But who clicked does not change any legal duty, and blame does not belong in the record.",
+    "B": "Closest choice: the detection time matters, since deadlines often run from discovery. But it sets when duties fall due, not whether they apply.",
+    "C": "Tempting because attribution sounds important. But where the attacker sits rarely changes the duty; what data was exposed, and whose, does."
+   },
+   "tips": [
+    "Eliminate: A records who clicked, which changes no legal duty, and C records the attacker's location, which rarely decides whether notice is owed.",
+    "Final two: D beats B because the type of data exposed decides whether a duty applies; the detection time only sets when it falls due.",
+    "Exam cue: in a breach, record what kinds of data were affected. That drives notification duties, which legal counsel and management decide."
+   ],
+   "framework_ref": "NIST CSF 2.0 GV.OC-03 (legal, regulatory and contractual requirements, including privacy obligations, are understood and managed); NIST SP 800-61 Rev. 3 Table 3 (RS.CO-02: perform notifications in compliance with the incident notification laws and regulations that apply to the organization)",
+   "related_concepts": [
+    "Incident records",
+    "Breach notification",
+    "Data types"
+   ],
+   "_provenance": "Authored from concept: 'the types of data a breach exposed decide whether notification duties apply' (notes 5.3.5 Data Handling During an Incident). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D5 batch 6, 5 Nov 2026.",
+   "style_version": 2
+  },
+  {
+   "id": "cc_d5_125",
+   "domain": 5,
+   "subtopic": "5.3 Incident response. Acting on review findings",
+   "difficulty": "application",
+   "bloom_level": "Application",
+   "question": "After a contained phishing incident at a tour operator, the lessons learned review agreed six fixes, but they sit only in the meeting notes. Which follow-up by the incident response lead is BEST?",
+   "options": {
+    "A": "Send the meeting notes to every attendee as the record",
+    "B": "Make all six fixes personally so that none of them is missed",
+    "C": "File the notes with the plan for responders to read later",
+    "D": "Assign each fix to an owner with a due date and tracking"
+   },
+   "correct": "D",
+   "key_concept": "Lessons learned findings become actions with owners and due dates, tracked to closure; a list of fixes alone changes nothing.",
+   "pre_read": "Recall what a lessons learned review should produce.",
+   "correct_explanation": "A lessons learned review succeeds only when its findings change something, so each fix becomes an action with an owner and a due date, tracked to closure. Sending the notes to attendees is the runner-up: sharing lessons promptly is right, but a shared list with no owners or deadlines tends to stay a list, and the same gaps return in the next incident.",
+   "wrong_explanations": {
+    "A": "Closest choice: sharing what was learned is right. But a list with no owners or deadlines rarely gets done, and the gaps stay open.",
+    "B": "Tempting because it guarantees effort. But the fixes belong to different teams and systems, many outside the lead's authority, and one person becomes a bottleneck.",
+    "C": "Tempting because it keeps the lessons with the plan. But filed notes change nothing until someone acts; improvements need owners now, not readers later."
+   },
+   "tips": [
+    "Eliminate: B has the lead make fixes that belong to other teams, and C files the lessons where they wait to be read instead of acted on.",
+    "Final two: D beats A because sharing a list is not the same as getting it done; owners and due dates turn lessons into changes.",
+    "Exam cue: every lesson learned should end as an action with an owner, a due date and tracking to closure."
+   ],
+   "framework_ref": "NIST SP 800-61 Rev. 3 Section 2.1 (Incident Response Life Cycle Model: lessons learned are shared as soon as they are identified); NIST CSF 2.0 ID.RA-06 (risk responses are chosen, prioritized, planned, tracked and communicated)",
+   "related_concepts": [
+    "Lessons learned",
+    "Continuous improvement",
+    "Action tracking"
+   ],
+   "_provenance": "Authored from concept: 'lessons learned findings become actions with owners and due dates, tracked to closure' (notes 5.3.6 Lessons Learned and Continuous Improvement). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D5 batch 6, 5 Nov 2026.",
+   "style_version": 2
+  },
+  {
+   "id": "cc_d5_126",
+   "domain": 5,
+   "subtopic": "5.3 Incident response. Keeping the plan ready",
+   "difficulty": "application",
+   "bloom_level": "Application",
+   "question": "A board game publisher moved email and files to a cloud provider in June and updated its incident plan; its ransomware tabletop ran in January. What should the incident response lead propose as BEST?",
+   "options": {
+    "A": "Send the updated plan to all responders to read",
+    "B": "Rely on the cloud provider's own incident tests",
+    "C": "Run a full interruption test by switching off the cloud email",
+    "D": "Hold a new tabletop on the updated plan's cloud steps"
+   },
+   "correct": "D",
+   "key_concept": "Incident response exercises repeat after major changes, such as a move to the cloud, because an updated plan is untested until exercised.",
+   "pre_read": "Recall what different kinds of incident response tests and exercises show.",
+   "correct_explanation": "Exercises repeat after major changes, because a plan rewritten for new systems has never been tried. A tabletop on the updated cloud steps checks roles, contacts and decisions, such as who calls the provider, without touching live services. Sending responders the plan is the runner-up: it builds awareness, but reading a plan does not show whether the team can carry it out.",
+   "wrong_explanations": {
+    "A": "Closest choice: responders must know the updated plan. But reading it does not test it; only an exercise shows gaps in roles, contacts and decisions.",
+    "B": "Tempting because the provider runs the services. But its tests cover its own team; they do not show whether the publisher's responders can work with it.",
+    "C": "Tempting because it is the most realistic test. But switching off live email disrupts the business, and a discussion can check the new steps first."
+   },
+   "tips": [
+    "Eliminate: B relies on tests of the provider's team, not the publisher's, and C disrupts live email for a check a discussion can make.",
+    "Final two: D beats A because reading a plan shows nothing about whether the team can carry it out; an exercise does.",
+    "Exam cue: after major changes to systems or the plan, exercise it again. Start with a tabletop before any hands-on test."
+   ],
+   "framework_ref": "NIST SP 800-84 Section 4 (Tabletop Exercises: discussion-based events); NIST CSF 2.0 ID.IM-04 (incident response plans and other cybersecurity plans that affect operations are established, communicated, maintained, and improved)",
+   "related_concepts": [
+    "Incident response exercises",
+    "Tabletop exercises",
+    "Plan maintenance"
+   ],
+   "_provenance": "Authored from concept: 'exercises repeat after major changes, because an updated plan is untested until exercised' (notes 5.3.7 Incident Response Exercises and Tabletops). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D5 batch 6, 5 Nov 2026.",
+   "style_version": 2
+  },
+  {
+   "id": "cc_d5_127",
+   "domain": 5,
+   "subtopic": "5.4 Asset protection. Recording AI model origins",
+   "difficulty": "application",
+   "bloom_level": "Application",
+   "question": "A ski rental chain's demand model is built on an open-source base model downloaded from a public hub. Which inventory detail BEST lets the security analyst act if that base model is later reported poisoned?",
+   "options": {
+    "A": "The tuned model's accuracy score from launch testing",
+    "B": "The cloud region where the demand model runs",
+    "C": "The base model's source and exact version",
+    "D": "The names of staff who downloaded the base model"
+   },
+   "correct": "C",
+   "key_concept": "AI inventory entries record where each model came from and which version is used, so supply-chain and poisoning reports can be matched.",
+   "pre_read": "Recall what an inventory entry for an AI model should record.",
+   "correct_explanation": "Poisoning reports name a specific model and version, so the inventory must record where the base model came from and exactly which version was used; then the team can tell at once whether it is affected. The launch accuracy score is the runner-up: it helps spot later drift, but a backdoored base model can keep normal accuracy, so the score cannot show exposure.",
+   "wrong_explanations": {
+    "A": "Closest choice: a baseline helps spot changes. But backdoored models often keep normal accuracy, and a score cannot show whether the reported version is the one in use.",
+    "B": "Tempting because location matters for data protection. But knowing where the model runs does not show whether it was built on the poisoned version.",
+    "D": "Tempting because those staff know the download. But memories fade and staff leave; the inventory itself should hold the source and version."
+   },
+   "tips": [
+    "Eliminate: B records where the model runs, not what it was built from, and D relies on staff memory instead of the inventory record.",
+    "Final two: C beats A because a poisoning report names a source and version; accuracy can look normal even when a backdoor is present.",
+    "Exam cue: AI assets go in the inventory with their origins. Record each model's source and version so supply-chain alerts can be matched fast."
+   ],
+   "framework_ref": "NIST AI 100-1 (AI RMF 1.0) GOVERN 1.6 (mechanisms are in place to inventory AI systems); NIST AI 100-2 E2025 Section 3.2 (Supply Chain Attacks and Mitigations)",
+   "related_concepts": [
+    "AI asset inventory",
+    "AI supply chain",
+    "Model poisoning"
+   ],
+   "_provenance": "Authored from concept: 'AI inventory entries record each model's source and version so poisoning reports can be matched' (notes 5.4.1 Asset Inventory and Ownership). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D5 batch 6, 5 Nov 2026.",
+   "style_version": 2
+  },
+  {
+   "id": "cc_d5_128",
+   "domain": 5,
+   "subtopic": "5.4 Asset protection. Retirement cleanup",
+   "difficulty": "analysis",
+   "bloom_level": "Analysis",
+   "question": "A glassworks retired its payroll server last year; a scan shows a laptop, later given that server's address, is reachable from the internet. Which retirement step should the network technician conclude was MOST likely missed?",
+   "options": {
+    "A": "Deleting the old server's public DNS record",
+    "B": "Wiping the old server's drives before disposal",
+    "C": "Removing the firewall rules for the old server",
+    "D": "Marking the old server retired in the inventory"
+   },
+   "correct": "C",
+   "key_concept": "Retiring an asset includes removing its firewall rules, because a leftover rule exposes whatever device later gets the old address.",
+   "pre_read": "Recall what the retirement stage of the asset lifecycle includes.",
+   "correct_explanation": "Retirement is not finished until the asset's access paths are removed, including the firewall rules written for it. Here the rule outlived the server, so when its address was reused, the laptop inherited the internet access meant for payroll. Deleting the public DNS record is the runner-up: a stale name is worth removing, but scanners reach addresses directly, and only the firewall rule lets the traffic in.",
+   "wrong_explanations": {
+    "A": "Closest choice: a stale DNS name does point people to the old address. But scanners reach addresses directly; only a firewall rule lets internet traffic through to the laptop.",
+    "B": "Tempting because disposal must protect stored data. But wiping drives protects what the server held; it has nothing to do with traffic reaching its old address.",
+    "D": "Tempting because the inventory should show the server retired. But a record on its own opens or closes no traffic; the firewall rule does."
+   },
+   "tips": [
+    "Eliminate: B protects the old server's stored data, and D is a record change; neither controls traffic to the old address.",
+    "Final two: C beats A because a firewall rule decides what internet traffic reaches an address; a DNS name only helps people find it.",
+    "Exam cue: retiring an asset means removing every access path to it, including firewall rules. A leftover rule waits for whatever device gets the address next."
+   ],
+   "framework_ref": "NIST SP 800-41 Rev. 1 Section 5.5 (Manage: review the firewall policy regularly to find rules no longer needed); NIST CSF 2.0 ID.AM-08 (systems, hardware, software, services, and data are managed throughout their life cycles)",
+   "related_concepts": [
+    "Asset retirement",
+    "Firewall rule cleanup",
+    "Address reuse"
+   ],
+   "_provenance": "Authored from concept: 'retiring an asset includes removing its firewall rules, because a leftover rule follows the reused address' (notes 5.4.2 The Asset Lifecycle). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D5 batch 6, 5 Nov 2026.",
+   "style_version": 2
+  },
+  {
+   "id": "cc_d5_129",
+   "domain": 5,
+   "subtopic": "5.4 Asset protection. Hardening new devices",
+   "difficulty": "application",
+   "bloom_level": "Application",
+   "question": "A wedding photography studio's new network storage device arrives with a default admin password, a guest account and an unneeded media-sharing service. Which step should the system administrator take as BEST before use?",
+   "options": {
+    "A": "Keep the vendor's settings, since the brand is well known",
+    "B": "Change the password and disable the guest account and service",
+    "C": "Change the admin password but keep the guest account on",
+    "D": "Put it on its own segment, keeping each service as shipped"
+   },
+   "correct": "B",
+   "key_concept": "Hardening changes default passwords and removes unneeded accounts and services before a system goes live; network controls add a layer but do not replace it.",
+   "pre_read": "Recall what hardening a new system involves.",
+   "correct_explanation": "Hardening removes what a system does not need and replaces known defaults before go-live: here, the default password, a guest account that lets anyone in, and the unused sharing service. Segmenting the device is the runner-up: limiting who can reach it helps, but every weakness stays inside, open to anyone on that segment, so it adds a layer instead of hardening.",
+   "wrong_explanations": {
+    "A": "Tempting because big vendors test their products. But defaults favor easy setup, and default passwords are published online for anyone to try.",
+    "C": "Tempting because the password is the most obvious risk. But the guest account still lets anyone in, and the unused service widens what an attacker can reach.",
+    "D": "Closest choice: segmenting limits who can reach the device. But the default password, guest account and spare service remain open to anyone on that segment."
+   },
+   "tips": [
+    "Eliminate: A trusts published vendor defaults, and C fixes the password but leaves the guest account and the unused service in place.",
+    "Final two: B beats D because hardening removes the weaknesses themselves; a segment only limits who can reach them.",
+    "Exam cue: harden before go-live by changing defaults and removing unneeded services, ports and accounts. Network controls add layers; they do not replace hardening."
+   ],
+   "framework_ref": "NIST SP 800-53 Rev. 5 CM-7 (Least Functionality); NIST SP 800-53 Rev. 5 CM-2 (Baseline Configuration)",
+   "related_concepts": [
+    "Hardening",
+    "Secure baselines",
+    "Least functionality"
+   ],
+   "_provenance": "Authored from concept: 'hardening changes defaults and removes unneeded accounts and services; segmentation adds a layer but does not replace it' (notes 5.4.4 Configuration Management and Secure Baselines). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D5 batch 6, 5 Nov 2026.",
+   "style_version": 2
+  },
+  {
+   "id": "cc_d5_130",
+   "domain": 5,
+   "subtopic": "5.4 Asset protection. Finding affected systems",
+   "difficulty": "foundational",
+   "bloom_level": "Foundational",
+   "question": "A vendor warns today of a critical flaw in its PDF reader, and an ice cream maker's system administrator must find which systems run the affected versions. Which record should the administrator check FIRST?",
+   "options": {
+    "A": "Last month's vulnerability scan report covering every server",
+    "B": "The software inventory's entries for every system",
+    "C": "The firewall's list of open ports on each system",
+    "D": "The change log of patches installed this past year"
+   },
+   "correct": "B",
+   "key_concept": "A scan checks only for flaws known when it ran; a current software inventory with versions shows which systems a new advisory affects.",
+   "pre_read": "Recall what each of these records can show about installed software.",
+   "correct_explanation": "To know which systems a new advisory affects, the administrator needs a current record of what software, and which versions, each system runs; that is the software inventory. Patch priority then follows exposure and criticality. Last month's scan is the runner-up: scans do show missing patches, but a run made before this flaw was published cannot have checked for it.",
+   "wrong_explanations": {
+    "A": "Closest choice: scans do find unpatched flaws. But last month's run predates today's warning, so it never checked for this flaw.",
+    "C": "Tempting because open ports show what is exposed. But ports do not reveal which programs are installed, or which version each system runs.",
+    "D": "Tempting because it lists what was patched. But it shows past changes, not which systems currently run the affected versions."
+   },
+   "tips": [
+    "Eliminate: C shows open ports, not installed software, and D shows past patches, not what each system runs today.",
+    "Final two: B beats A because a scan from before the warning cannot have tested for the new flaw; the inventory shows which versions run where today.",
+    "Exam cue: when a new advisory lands, the software inventory answers 'are we affected?' at once. An older scan never tested for that flaw."
+   ],
+   "framework_ref": "NIST SP 800-40 Rev. 4 Section 3.2 (Inventory Your Software and Assets: maintain up-to-date software inventories for physical and virtual computing assets); NIST CSF 2.0 ID.AM-02 (inventories of software, services, and systems managed by the organization are maintained)",
+   "related_concepts": [
+    "Patch management",
+    "Software inventory",
+    "Vulnerability advisories"
+   ],
+   "_provenance": "Authored from concept: 'patch management starts from an up-to-date software inventory that shows which systems a new advisory affects' (notes 5.4.5 Patch Management). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D5 batch 6, 5 Nov 2026.",
+   "style_version": 2
+  },
+  {
+   "id": "cc_d5_131",
+   "domain": 5,
+   "subtopic": "5.4 Asset protection. Emergency changes",
+   "difficulty": "analysis",
+   "bloom_level": "Analysis",
+   "question": "On Monday, an actively exploited flaw hits a dance academy's VPN; a settings change fixes it, the change board meets Thursday, and procedure names an on-call emergency approver. What should the system administrator do FIRST?",
+   "options": {
+    "A": "Make the change right away and file the change request afterward",
+    "B": "Hold the change until the change board meets on Thursday",
+    "C": "Ask an on-shift colleague to act as emergency approver",
+    "D": "Get the designated emergency approver's sign-off, then apply it"
+   },
+   "correct": "D",
+   "key_concept": "When procedure names an emergency approver, an urgent change gets that approver's quick sign-off first, then is recorded and reviewed.",
+   "pre_read": "Recall how emergency changes differ from normal ones.",
+   "correct_explanation": "Urgency changes how fast approval happens, not whether it happens. This procedure names an on-call emergency approver, so the change waits only for that quick sign-off, then is made, recorded and reviewed soon after. Making the change at once and filing afterward is the runner-up: it is fast, but it skips the sign-off the procedure requires. Acting first fits only steps a procedure already approves, such as a planned rollback.",
+   "wrong_explanations": {
+    "A": "Closest choice: speed matters and the change will be recorded. But this procedure names an emergency approver to reach first; filing afterward skips that sign-off.",
+    "B": "Tempting because the board normally approves changes. But waiting days leaves an actively exploited flaw open, when an emergency route exists for this.",
+    "C": "Tempting because a second person approves. But the procedure names the emergency approver; a colleague picked on the night has no authority to approve the change."
+   },
+   "tips": [
+    "Eliminate: B leaves an exploited flaw open for days, and C lets a colleague stand in for the approver the procedure names.",
+    "Final two: D beats A because this procedure keeps a quick sign-off for emergencies; making the change first and filing later skips it.",
+    "Exam cue: urgent changes follow the emergency procedure. When it names an approver, get that quick sign-off first, then make, record and review the change."
+   ],
+   "framework_ref": "NIST SP 800-53 Rev. 5 CM-3 (Configuration Change Control); NIST CSF 2.0 ID.RA-07 (changes and exceptions are managed, assessed for risk impact, recorded and tracked)",
+   "related_concepts": [
+    "Change management",
+    "Emergency changes",
+    "Patch urgency"
+   ],
+   "_provenance": "Authored from concept: 'when procedure names an emergency approver, an urgent change gets that quick sign-off first, then is recorded and reviewed' (notes 5.4.6 Change Management). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D5 batch 6, 5 Nov 2026.",
+   "style_version": 2
+  },
+  {
+   "id": "cc_d5_132",
+   "domain": 5,
+   "subtopic": "5.5 Security testing. Unannounced exercises",
+   "difficulty": "foundational",
+   "bloom_level": "Foundational",
+   "question": "A ski lift operator's security manager plans a two-week red team exercise and tells only the white team, not the security operations center (SOC) analysts. Which result can this exercise show BEST?",
+   "options": {
+    "A": "A complete list of every flaw on the operator's servers",
+    "B": "Whether the operator's backups can restore each server",
+    "C": "Whether each SOC rule fires as testers share each step",
+    "D": "How well the SOC detects and handles an unexpected attack"
+   },
+   "correct": "D",
+   "key_concept": "An unannounced red team exercise tests how the blue team detects and responds to an attack it does not expect.",
+   "pre_read": "Recall what red, blue, purple and white teams each do.",
+   "correct_explanation": "Keeping the blue team, here the SOC analysts, unaware means they meet the red team's attack as they would a real one, so the exercise shows how well they detect and respond. Checking each rule as testers share their steps is the runner-up: that is purple teaming, which needs the defenders informed and working alongside the testers, the opposite of this setup.",
+   "wrong_explanations": {
+    "A": "Tempting because red teams do find weaknesses. But they pursue goals along attack paths; a full list of flaws comes from vulnerability scanning.",
+    "B": "Tempting because recovery matters in real attacks. But restore capability is proven by backup and recovery tests, not by an attack simulation.",
+    "C": "Closest choice: tuning detections step by step is valuable. But that is purple teaming, which needs the SOC informed, not kept unaware."
+   },
+   "tips": [
+    "Eliminate: A describes vulnerability scanning, and B describes a restore test; neither is what an attack simulation measures.",
+    "Final two: D beats C because sharing each step live with defenders is purple teaming; an unannounced red team tests real detection and response.",
+    "Exam cue: red team, attack as an adversary; blue team, defend as normal; purple, share in real time; white team, set rules and referee."
+   ],
+   "framework_ref": "NIST SP 800-53 Rev. 5 CA-8(2) (Penetration Testing | Red Team Exercises); NIST CSRC Glossary (White Team: referees an engagement between a red team and a blue team and enforces the exercise rules, per CNSSI 4009-2022)",
+   "related_concepts": [
+    "Red team",
+    "Blue team",
+    "Purple team"
+   ],
+   "_provenance": "Authored from concept: 'an unannounced red team exercise tests how the blue team detects and responds to an attack it does not expect' (notes 5.5.1 Red, Blue and Purple Teams). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D5 batch 6, 5 Nov 2026.",
+   "style_version": 2
+  },
+  {
+   "id": "cc_d5_133",
+   "domain": 5,
+   "subtopic": "5.5 Security testing. Malformed-input testing",
+   "difficulty": "foundational",
+   "bloom_level": "Foundational",
+   "question": "A drone maker's firmware team wants to find inputs that crash its flight-log upload parser by sending a running build thousands of random and malformed files. Which testing approach is this MOST accurately?",
+   "options": {
+    "A": "Fuzz testing, a kind of dynamic analysis",
+    "B": "Static analysis of the parser's source code",
+    "C": "Software composition analysis of its libraries",
+    "D": "Threat modeling of the upload feature's design"
+   },
+   "correct": "A",
+   "key_concept": "Fuzz testing, a kind of dynamic analysis, sends random or malformed input to a running program to find crashes and input-handling flaws.",
+   "pre_read": "Recall which application tests run the software and which read its code.",
+   "correct_explanation": "Fuzz testing feeds large numbers of random or malformed inputs to a running program to find crashes and input-handling flaws, which is exactly this plan; it is a kind of dynamic analysis. Static analysis is the runner-up: it also hunts input-handling bugs, but it reads source code without running it, so it cannot watch the parser crash on real files.",
+   "wrong_explanations": {
+    "B": "Closest choice: static analysis also finds input-handling flaws. But it reads source code without running it; this plan runs the parser and watches for crashes.",
+    "C": "Tempting because parsers often rely on outside libraries. But composition analysis checks components against lists of known flaws; it does not send any input.",
+    "D": "Tempting because it examines how the upload feature could be attacked. But threat modeling studies the design on paper; it runs no tests on a build."
+   },
+   "tips": [
+    "Eliminate: C matches libraries against known flaws without sending input, and D reviews the design on paper; neither runs the parser.",
+    "Final two: A beats B because the plan runs the program with malformed input; static analysis reads code without running it.",
+    "Exam cue: random or malformed input thrown at running software means fuzz testing. Reading code without running it means static analysis."
+   ],
+   "framework_ref": "NIST SP 800-53 Rev. 5 SA-11(8) (Developer Testing and Evaluation | Dynamic Code Analysis); NIST SP 800-53 Rev. 5 SA-11(1) (Developer Testing and Evaluation | Static Code Analysis)",
+   "related_concepts": [
+    "Fuzz testing",
+    "Dynamic analysis",
+    "Static analysis"
+   ],
+   "_provenance": "Authored from concept: 'fuzz testing sends random or malformed input to running software to find crashes' (notes 5.5.3 Static and Dynamic Application Testing). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D5 batch 6, 5 Nov 2026.",
+   "style_version": 2
+  },
+  {
+   "id": "cc_d5_134",
+   "domain": 5,
+   "subtopic": "5.5 Security testing. Danger during a test",
+   "difficulty": "application",
+   "bloom_level": "Application",
+   "question": "During an authorized night-time entry test at a bookbinder's workshop with staff on the late shift, the tester sees smoke pouring from a storage room. What should the tester do FIRST?",
+   "options": {
+    "A": "Phone the client's test contact right away about the smoke",
+    "B": "Sound the fire alarm and stop the test at once",
+    "C": "Photograph the smoke for the report and carry on testing",
+    "D": "Exit quietly so the test is not exposed"
+   },
+   "correct": "B",
+   "key_concept": "When a danger to life appears during a security test, the tester protects people first, raising the alarm and stopping the test.",
+   "pre_read": "Recall the limits a security test works within.",
+   "correct_explanation": "People come before the test. Smoke with staff in the building is a danger to life, so the tester raises the fire alarm, which warns everyone at once, and abandons the test; the client is told afterward. Phoning the test contact is the runner-up: testers normally route issues through that contact, but a call delays the warning while the people inside are at risk.",
+   "wrong_explanations": {
+    "A": "Closest choice: testers normally raise problems through their contact. But a call delays the warning that staff need; with smoke and people inside, sound the alarm first.",
+    "C": "Tempting because evidence makes a strong finding. But this is a danger to people, not a test finding, and carrying on puts the tester and staff at risk.",
+    "D": "Tempting because exposing a test can spoil its results. But no result matters more than people's safety, and leaving silently warns no one."
+   },
+   "tips": [
+    "Eliminate: C treats a fire as a test finding, and D protects the test's secrecy while staff stay unwarned.",
+    "Final two: B beats A because a fire alarm warns everyone at once; calling the contact first delays the warning while people are at risk.",
+    "Exam cue: when life is at risk, protect people first. The test, its secrecy and its findings all come second."
+   ],
+   "framework_ref": "ISC2 Code of Ethics, Canons; NIST SP 800-53 Rev. 5 CA-8 (Penetration Testing)",
+   "related_concepts": [
+    "Physical penetration testing",
+    "Safety first",
+    "Rules of engagement"
+   ],
+   "_provenance": "Authored from concept: 'when a danger to life appears during a test, the tester protects people first and stops the test' (notes 5.5.5 Physical and Social Engineering Penetration Tests). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D5 batch 6, 5 Nov 2026.",
+   "style_version": 2
+  },
+  {
+   "id": "cc_d5_135",
+   "domain": 5,
+   "subtopic": "5.5 Security testing. Chatbot test findings",
+   "difficulty": "analysis",
+   "bloom_level": "Analysis",
+   "question": "In an authorized test, a crafted question makes a garden center's support chatbot reply with script code, which its help page then runs in visitors' browsers. Which fix should the security analyst propose as BEST?",
+   "options": {
+    "A": "Filter visitors' questions for known attack phrases first",
+    "B": "Have staff review a sample of chatbot replies each week",
+    "C": "Have the help page encode every reply before displaying it",
+    "D": "Take the help page offline and send customers to phone support"
+   },
+   "correct": "C",
+   "key_concept": "An AI model's output is untrusted input to whatever uses it, so the application encodes or validates it; filtering prompts cannot catch every request.",
+   "pre_read": "Recall the common weaknesses of web applications that use AI models.",
+   "correct_explanation": "The flaw is in how the page handles the chatbot's output: it runs whatever comes back. Treating model output like any untrusted input, and encoding it before display, stops returned code from running, whatever the question was. Filtering visitors' questions is the runner-up: it may catch some attacks, but crafted questions can be reworded endlessly, and the page would still run any code that gets through.",
+   "wrong_explanations": {
+    "A": "Closest choice: it tries to stop attacks before the model sees them. But crafted questions can be reworded endlessly, and the page would still run any code a reply contains.",
+    "B": "Tempting because reviews catch misuse. But a weekly sample looks back after visitors' browsers have already run the code; it detects, it does not prevent.",
+    "D": "Tempting because it removes the exposure. But it drops a working service to avoid a fixable flaw; the test's purpose is to fix and retest."
+   },
+   "tips": [
+    "Eliminate: B reviews replies after browsers have already run the code, and D removes the service instead of fixing the flaw the test found.",
+    "Final two: C beats A because filtering questions misses reworded attacks; encoding replies on the page stops code running whatever the question was.",
+    "Exam cue: treat AI output like user input and validate or encode it before another system uses it. Fix the point where the output is used, not just the prompt."
+   ],
+   "framework_ref": "OWASP Top 10 for LLM Applications 2025 LLM05 (Improper Output Handling); NIST CSF 2.0 ID.IM-02 (improvements are identified from security tests and exercises, including those done in coordination with suppliers and relevant third parties)",
+   "related_concepts": [
+    "Testing AI defenses",
+    "Improper output handling",
+    "Output encoding"
+   ],
+   "_provenance": "Authored from concept: 'AI output is untrusted input to whatever uses it, so the application encodes or validates it' (notes 5.5.6 Testing AI-Integrated Defenses). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D5 batch 6, 5 Nov 2026.",
+   "style_version": 2
+  },
+  {
+   "id": "cc_d5_136",
+   "domain": 5,
+   "subtopic": "5.1 Data security. Sanitizing for reuse",
+   "difficulty": "application",
+   "bloom_level": "Application",
+   "question": "A museum laptop's hard disk drive held only Internal-level files and will be reissued to a curator on the same team. Which sanitization step is BEST for the IT technician?",
+   "options": {
+    "A": "Delete the old user's files and empty the recycle bin",
+    "B": "Clear the drive by overwriting it, then reissue the laptop",
+    "C": "Degauss the drive with a strong magnet, then reissue the laptop",
+    "D": "Destroy the drive and fit a new one before reissuing it"
+   },
+   "correct": "B",
+   "key_concept": "Clearing overwrites user-addressable storage against normal recovery and keeps the drive usable, fitting internal reuse of lower-sensitivity data.",
+   "pre_read": "Recall the three sanitization methods and when each fits.",
+   "correct_explanation": "Clearing overwrites all user-addressable storage so the data cannot be recovered through the drive's normal interface, and the drive stays usable. For Internal-level data staying inside the organization, that fits. Destroying the drive is the runner-up: it is secure, but it wastes a working drive when the data's level and its destination call only for clearing; destroy suits failed media or the most sensitive data.",
+   "wrong_explanations": {
+    "A": "Tempting because the files disappear from view. But deleting removes only pointers; free tools can recover the data, so deletion is not sanitization.",
+    "C": "Tempting because degaussing erases magnetic media. But it is a purge technique that can leave a hard drive unusable, which defeats the plan to reissue it.",
+    "D": "Closest choice: destroying is certainly secure. But it throws away a working drive when Internal data staying in the team needs only clearing."
+   },
+   "tips": [
+    "Eliminate: A only deletes, which leaves recoverable data, and C degausses, which can leave the drive unusable for the next curator.",
+    "Final two: B beats D because Internal data reused inside the team needs only clearing; destroy is for failed media or data too sensitive to risk.",
+    "Exam cue: match the method to the data and where the media goes. Clear for internal reuse, purge before it leaves your control, destroy when purge cannot work."
+   ],
+   "framework_ref": "NIST SP 800-88 Rev. 2 Section 3.1.1 (Clear Sanitization Method: logical techniques protect against simple, non-invasive recovery through the same interface available to the user); NIST SP 800-88 Rev. 2 Section 4.3.3 (Reuse of Media: whether media is planned for reuse, such as internal transfer, is a key sanitization decision)",
+   "related_concepts": [
+    "Media sanitization",
+    "Clear",
+    "Media reuse"
+   ],
+   "_provenance": "Authored from concept: 'clearing fits internal reuse of lower-sensitivity media and keeps the drive usable' (notes 5.1.4 Media Sanitization: Clear, Purge and Destroy). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D5 batch 6, 5 Nov 2026.",
+   "style_version": 2
+  },
+  {
+   "id": "cc_d5_137",
+   "domain": 5,
+   "subtopic": "5.1 Data security. Encrypting bulk transfers",
+   "difficulty": "application",
+   "bloom_level": "Application",
+   "question": "A film studio must send large video files to a new editing partner daily, encrypted, but the two have never shared a secret key. Which approach should the IT technician set up as BEST?",
+   "options": {
+    "A": "Exchange an AES key with asymmetric encryption, then use AES",
+    "B": "Encrypt every file with RSA using the partner's public key",
+    "C": "Encrypt every file with the studio's own private key",
+    "D": "Hash each file with SHA-256, then send it with its hash"
+   },
+   "correct": "A",
+   "key_concept": "Hybrid encryption uses asymmetric encryption to exchange a symmetric key, then fast symmetric encryption for the bulk data.",
+   "pre_read": "Recall the strengths and weaknesses of symmetric and asymmetric encryption.",
+   "correct_explanation": "Asymmetric encryption solves the key-sharing problem but is slow, while symmetric encryption such as the Advanced Encryption Standard (AES) is fast but needs a shared key. Using asymmetric encryption to deliver an AES key, then AES for the videos, gets both; TLS likewise uses asymmetric methods to set up a shared key. RSA for every file is the runner-up: it keeps files secret but is far too slow for large daily volumes.",
+   "wrong_explanations": {
+    "B": "Closest choice: only the partner's private key could decrypt the files. But asymmetric encryption is far slower, impractical for large videos, so it is used to exchange keys.",
+    "C": "Tempting because the private key is the secret half. But the studio's public key, which anyone may have, opens anything locked with its private key.",
+    "D": "Tempting because SHA-256 is a strong algorithm. But hashing is one-way and keeps nothing secret; the videos would travel readable."
+   },
+   "tips": [
+    "Eliminate: C locks files with the studio's private key, which its public key opens for anyone, and D hashes, which is one-way and gives no confidentiality.",
+    "Final two: A beats B because asymmetric encryption is too slow for bulk data; it should carry a symmetric key, which then encrypts the files.",
+    "Exam cue: bulk data uses symmetric encryption, while asymmetric encryption exchanges the key and proves identity. Real systems combine them."
+   ],
+   "framework_ref": "NIST SP 800-12 Rev. 1 Section 9.1.1 (Data Encryption); NIST SP 800-57 Part 1 Rev. 5 (Recommendation for Key Management: Part 1 \u2013 General)",
+   "related_concepts": [
+    "Symmetric encryption",
+    "Asymmetric encryption",
+    "Hybrid encryption"
+   ],
+   "_provenance": "Authored from concept: 'hybrid encryption uses asymmetric encryption to exchange a symmetric key, then symmetric encryption for bulk data' (notes 5.1.5 Symmetric and Asymmetric Encryption). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D5 batch 6, 5 Nov 2026.",
+   "style_version": 2
+  },
+  {
+   "id": "cc_d5_138",
+   "domain": 5,
+   "subtopic": "5.1 Data security. Public AI privacy settings",
+   "difficulty": "application",
+   "bloom_level": "Application",
+   "question": "A wedding venue's planner says a free public AI chatbot suits Confidential contracts once its opt-out from model training is switched on. Which reply from the security analyst is MOST accurate?",
+   "options": {
+    "A": "Agree, since the opt-out keeps the provider from storing the chats",
+    "B": "Agree, provided the planner also deletes each chat afterward",
+    "C": "Disagree, since the provider still gets and may store the text",
+    "D": "Disagree, since contracts may go in only without client names"
+   },
+   "correct": "C",
+   "key_concept": "A public AI chatbot's training opt-out does not stop the provider receiving and keeping prompts; Confidential data needs a tool approved for that level.",
+   "pre_read": "Recall what happens to text typed into a public AI service.",
+   "correct_explanation": "A training opt-out limits only one use of the text. The chat still goes to an outside provider, which may store, log or review it under terms the organization never agreed to, so Confidential contracts belong only in tools approved for that level. Agreeing because of the opt-out is the runner-up: the setting helps, but it does not stop the provider receiving and keeping the text.",
+   "wrong_explanations": {
+    "A": "Closest choice: the opt-out does limit training on the chats. But the provider still receives the text and may keep logs; no contract binds it to the venue's rules.",
+    "B": "Tempting because deleting seems to undo the sharing. But the provider may already have stored or logged copies; clearing your own history does not clear theirs.",
+    "D": "Tempting because removing names shrinks what is exposed. But prices, terms and other details stay Confidential, and the tool is still unapproved for that level."
+   },
+   "tips": [
+    "Eliminate: B assumes deleting chats removes the provider's copies, and D assumes stripping names makes the rest of a Confidential contract fit for an unapproved tool.",
+    "Final two: C beats A because opting out of training still sends the text to an outside provider that may keep it; only approved tools may hold Confidential data.",
+    "Exam cue: a privacy setting is not an approval. Confidential data goes only into AI tools approved for that level, under contract."
+   ],
+   "framework_ref": "ISO/IEC 27002:2022 Control 5.10 (Acceptable use of information and other associated assets); NIST CSF 2.0 GV.SC-05 (requirements to address cybersecurity risks in supply chains are established, prioritized and integrated into contracts and other agreements with suppliers)",
+   "related_concepts": [
+    "Public AI tools",
+    "Data leakage",
+    "Approved AI services"
+   ],
+   "_provenance": "Authored from concept: 'a public AI chatbot's training opt-out does not stop the provider receiving and keeping what is typed' (notes 5.1.8 Data Leakage into Public AI Services). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D5 batch 6, 5 Nov 2026.",
    "style_version": 2
   }
  ]

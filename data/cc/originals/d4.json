@@ -4686,6 +4686,1266 @@
    ],
    "_provenance": "Authored from concept: 'An AI service is still a cloud service: the provider secures the platform, and the customer owns its data, models, access and settings' (notes 4.3.9 Shared Responsibility for AI Workloads). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 5, 4 Nov 2026.",
    "style_version": 2
+  },
+  {
+   "id": "cc_d4_131",
+   "domain": 4,
+   "subtopic": "4.1 Network security. Network building blocks",
+   "difficulty": "foundational",
+   "bloom_level": "Foundational",
+   "question": "A model railway museum's network technician turns on a switch feature that drops address offers from every device except the approved Dynamic Host Configuration Protocol (DHCP) server. Which risk does this MOST directly reduce?",
+   "options": {
+    "A": "A laptop copying another's MAC address to join the network",
+    "B": "An outsider guessing the Wi-Fi passphrase from the car park",
+    "C": "An insider changing the web server's records on the DNS server",
+    "D": "A rogue server sending devices a fake gateway or DNS server"
+   },
+   "correct": "D",
+   "key_concept": "DHCP gives each device its address, gateway and DNS settings, so a rogue DHCP server can quietly redirect a device's traffic.",
+   "pre_read": "Think about what a device accepts from whoever answers its request for network settings.",
+   "correct_explanation": "DHCP hands each device its IP address plus the gateway and DNS server it should use. A rogue DHCP server can answer first and point devices at an attacker's gateway or DNS, so accepting offers only from the approved server blocks that. Copying a MAC address is the runner-up: it is also a local network trick, but other controls, such as network access control (NAC), deal with it.",
+   "wrong_explanations": {
+    "A": "Closest choice: MAC copying is also a local network trick. But port security or network access control (NAC) handles it, not filtering DHCP offers.",
+    "B": "Tempting because outsiders do attack Wi-Fi. But a guessed passphrase is a wireless encryption problem, and filtering DHCP offers on switches does nothing about it.",
+    "C": "Tempting because a rogue DHCP server can also point devices at a fake DNS server. But editing records on the real DNS server needs access control there."
+   },
+   "tips": [
+    "Eliminate: B is a wireless passphrase problem, and C is about who can edit records on the real DNS server; filtering DHCP offers touches neither.",
+    "Final two: D beats A because the feature blocks unapproved DHCP answers, which is how a rogue server feeds devices a fake gateway or DNS; MAC copying needs NAC or port security.",
+    "Exam cue: DHCP and DNS are trusted plumbing; a control that limits who may answer them protects every device that asks."
+   ],
+   "framework_ref": "NIST SP 800-119 Section 4.7.3 (Security Ramifications: rogue responses from unauthorized DHCP servers can distribute false information and misroute packets); NIST SP 800-81 Rev. 3 Section 1.1 (Domain Name Systems: translating domain names into IP addresses is called name resolution)",
+   "related_concepts": [
+    "DHCP",
+    "Rogue servers",
+    "Network building blocks"
+   ],
+   "_provenance": "Authored from concept: 'Dynamic Host Configuration Protocol (DHCP) hands out IP addresses; the Domain Name System (DNS) turns names into IP addresses' (notes 4.1.1 Network Building Blocks). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 6, 5 Nov 2026.",
+   "style_version": 2
+  },
+  {
+   "id": "cc_d4_132",
+   "domain": 4,
+   "subtopic": "4.1 Network security. OSI layers",
+   "difficulty": "application",
+   "bloom_level": "Application",
+   "question": "A fabric store's card reader has a link light and pings devices on its subnet, but not the payment server on another. Which Open Systems Interconnection (OSI) layer should the IT technician check FIRST?",
+   "options": {
+    "A": "Layer 1, the physical layer",
+    "B": "Layer 2, the data link layer",
+    "C": "Layer 3, the network layer",
+    "D": "Layer 4, the transport layer"
+   },
+   "correct": "C",
+   "key_concept": "Troubleshoot by layer: what already works rules out the layers below it, and reaching another subnet depends on IP routing at layer 3.",
+   "pre_read": "List what already works, then find the first job that fails.",
+   "correct_explanation": "The link light shows layer 1 works, and pinging devices on its own subnet shows frames are delivered locally, so layers 1 and 2 are fine. Reaching another subnet needs routing by IP address, which is layer 3, so the gateway and routes come next. The transport layer is the runner-up, but ping uses ICMP, which has no port numbers, so port rules cannot explain a failed ping.",
+   "wrong_explanations": {
+    "A": "Tempting because cabling faults are common. But the link light is on and local pings succeed, so the physical connection works.",
+    "B": "Tempting because switches deliver local traffic. But local pings succeed, so frames reach neighbors; the failure starts where traffic must leave the subnet.",
+    "D": "Closest choice: firewall port rules often block traffic. But ping uses ICMP, a network layer protocol with no ports, so a transport-layer port rule cannot explain this."
+   },
+   "tips": [
+    "Eliminate: A falls because the link light and local pings prove the cable works, and B because local pings prove frames reach neighbors.",
+    "Final two: C beats D because leaving the subnet depends on IP routing at layer 3, and ping uses ICMP, which has no ports to block at layer 4.",
+    "Exam cue: work up the layers: what already works rules out the layers below it, and the first thing that fails names the layer to check."
+   ],
+   "framework_ref": "NIST SP 800-41 Rev. 1 Section 2 (Overview of Firewall Technologies: the network layer routes packets across networks, and ICMP is a network layer protocol); NIST SP 800-82 Rev. 3 Appendix B Glossary (router)",
+   "related_concepts": [
+    "OSI model",
+    "Troubleshooting by layer",
+    "Routing"
+   ],
+   "_provenance": "Authored from concept: 'Name the layer before the fix' (notes 4.1.2 The OSI Model). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 6, 5 Nov 2026.",
+   "style_version": 2
+  },
+  {
+   "id": "cc_d4_133",
+   "domain": 4,
+   "subtopic": "4.1 Network security. OSI layers",
+   "difficulty": "foundational",
+   "bloom_level": "Foundational",
+   "question": "A canal boat hire firm's office volunteer says its new plain switch works at layer 3 because it connects all the office computers. Which reply from the network technician is MOST accurate?",
+   "options": {
+    "A": "It works at layer 3, since it reads packets' IP addresses",
+    "B": "It works at layer 1, since it repeats signals to every port",
+    "C": "It works at layer 4, since its sockets are numbered ports",
+    "D": "It works at layer 2, since it forwards frames by MAC address"
+   },
+   "correct": "D",
+   "key_concept": "A plain switch forwards frames by MAC address inside one network, at layer 2; routing by IP address between networks is layer 3.",
+   "pre_read": "Ask which address the device reads to decide where data goes.",
+   "correct_explanation": "A plain switch forwards frames inside one local network by their MAC address, which is layer 2, the data link layer. Reading IP addresses to move packets between networks is a router's layer 3 job; only a layer 3 switch adds routing. That is the runner-up: connecting many computers does not make a device a router.",
+   "wrong_explanations": {
+    "A": "Closest choice: layer 3 switches do exist and route by IP address. But a plain switch only forwards frames by MAC address inside one network.",
+    "B": "Tempting because older hubs did this. But repeating every signal out of every port is a layer 1 hub's behavior, not a switch's.",
+    "C": "Tempting because a switch's sockets are called ports. But those are physical connectors; transport-layer port numbers name services inside the traffic."
+   },
+   "tips": [
+    "Eliminate: B describes a hub, which repeats every signal at layer 1, and C confuses a switch's physical sockets with transport-layer port numbers.",
+    "Final two: D beats A because a plain switch forwards frames by MAC address inside one network; reading IP addresses to route between networks is layer 3 work.",
+    "Exam cue: name a device's layer by the address it reads: MAC means layer 2, IP means layer 3, port numbers mean layer 4."
+   ],
+   "framework_ref": "NIST SP 800-41 Rev. 1 Section 2 (Overview of Firewall Technologies: data link layer addresses assigned to network interfaces are MAC addresses); NIST SP 800-82 Rev. 3 Appendix B Glossary (router)",
+   "related_concepts": [
+    "OSI model",
+    "Switches",
+    "MAC addresses"
+   ],
+   "_provenance": "Authored from concept: 'A switch is a layer 3 device because it connects computers' (exam trap, notes 4.1.2 The OSI Model). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 6, 5 Nov 2026.",
+   "style_version": 2
+  },
+  {
+   "id": "cc_d4_134",
+   "domain": 4,
+   "subtopic": "4.1 Network security. TCP and UDP",
+   "difficulty": "application",
+   "bloom_level": "Application",
+   "question": "A salt mine's log server collects device logs over the User Datagram Protocol (UDP), and during busy hours some entries never arrive. What should the system administrator conclude MOST likely explains the gaps?",
+   "options": {
+    "A": "TCP drops log entries that arrive out of order on busy links",
+    "B": "UDP encrypts each entry, and some fail to decrypt in time",
+    "C": "A three-way handshake times out when the server is busy",
+    "D": "UDP sends each entry once, with no delivery check or resend"
+   },
+   "correct": "D",
+   "key_concept": "UDP sends each datagram once with no acknowledgment or resend, so lost data is simply gone; TCP confirms delivery.",
+   "pre_read": "Recall which transport protocol checks that data arrived and which does not.",
+   "correct_explanation": "UDP sends each datagram once, with no handshake, acknowledgment or resend, so when links or the server are busy, lost log entries are simply gone. NIST's log management guide notes this weakness of syslog over UDP and points to TCP for reliable delivery. The handshake answer is the runner-up, but the three-way handshake belongs to TCP; UDP never sets up a connection.",
+   "wrong_explanations": {
+    "A": "Tempting because TCP features appear in many log tools. But these logs travel over UDP, and TCP reorders and resends data rather than dropping it.",
+    "B": "Tempting because secure logging matters. But UDP itself encrypts nothing; encryption comes from a protocol on top, such as TLS.",
+    "C": "Closest choice: busy servers do time out connections. But the three-way handshake belongs to TCP; UDP sends without setting up any connection to time out."
+   },
+   "tips": [
+    "Eliminate: A blames TCP, which these logs do not use and which resends lost data, and B gives UDP encryption, which it does not provide.",
+    "Final two: D beats C because UDP has no handshake to time out; it simply sends each datagram once and never knows whether it arrived.",
+    "Exam cue: missing pieces with no error point to UDP; when every piece must arrive, choose TCP, which acknowledges and resends."
+   ],
+   "framework_ref": "NIST SP 800-92 Section 3.3.2 (Syslog Security: UDP provides no assurance that log entries are received successfully or in the correct sequence); NIST SP 800-41 Rev. 1 Section 2.1.2 (Stateful Inspection: tracking TCP connection state)",
+   "related_concepts": [
+    "UDP",
+    "TCP",
+    "Log delivery"
+   ],
+   "_provenance": "Authored from concept: 'The User Datagram Protocol (UDP) sends each datagram alone, with no delivery check' (notes 4.1.3 The TCP/IP Model, TCP and UDP). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 6, 5 Nov 2026.",
+   "style_version": 2
+  },
+  {
+   "id": "cc_d4_135",
+   "domain": 4,
+   "subtopic": "4.1 Network security. IP versions",
+   "difficulty": "foundational",
+   "bloom_level": "Foundational",
+   "question": "A costume rental shop's network technician reviews a firewall rule allowing the source 192.168.10.0/24 to reach the payroll server. Which addresses does the rule MOST accurately allow?",
+   "options": {
+    "A": "Any address from 192.168.10.0 to 192.168.10.255",
+    "B": "Only the single device at 192.168.10.24",
+    "C": "Any address from 192.168.0.0 to 192.168.255.255",
+    "D": "Any address ending in .24 on any 192.168 subnet"
+   },
+   "correct": "A",
+   "key_concept": "In CIDR notation, the number after the slash counts the network bits; a /24 fixes the first three numbers of an IPv4 address.",
+   "pre_read": "Work out how many of the address's four numbers the slash value fixes.",
+   "correct_explanation": "In Classless Inter-Domain Routing (CIDR) notation, the number after the slash counts the leading bits that name the network. A /24 fixes the first 24 bits, the first three numbers, so the rule covers 192.168.10.0 to 192.168.10.255. The 192.168.0.0 to 192.168.255.255 range is the runner-up, but that is a /16, which fixes only the first two numbers and allows far more devices.",
+   "wrong_explanations": {
+    "B": "Tempting because 24 appears in the rule. But /24 counts network bits, not a host number; a single device would be written /32.",
+    "C": "Closest choice: this is a real private range. But it is 192.168.0.0/16; a /24 fixes three numbers, so only the 192.168.10 addresses match.",
+    "D": "Tempting because the 24 looks like the last number. But the slash value counts leading bits; it never matches addresses by their ending."
+   },
+   "tips": [
+    "Eliminate: B and D both read the 24 as part of an address, but after the slash it counts the leading bits that name the network.",
+    "Final two: A beats C because /24 fixes the first three numbers, 192.168.10; the wider 192.168.0.0 range needs /16.",
+    "Exam cue: in CIDR, a bigger number after the slash means a smaller range; /32 is one address, and each step down doubles it."
+   ],
+   "framework_ref": "NIST SP 800-119 Section 3.1.6 (IPv4 Classless Inter-Domain Routing (CIDR) Addressing: the number after the slash gives how many leading bits form the network address); NIST SP 800-41 Rev. 1 Section 4.1.1 (IP Addresses and Other IP Characteristics: 192.168.0.0 to 192.168.255.255 is 192.168.0.0/16 in CIDR notation)",
+   "related_concepts": [
+    "CIDR notation",
+    "IPv4 addressing",
+    "Firewall rule scope"
+   ],
+   "_provenance": "Authored from concept: 'Classless Inter-Domain Routing (CIDR) notation, as in 10.0.0.0/8, shows how many leading bits name the network' (notes 4.1.4 IPv4 and IPv6). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 6, 5 Nov 2026.",
+   "style_version": 2
+  },
+  {
+   "id": "cc_d4_136",
+   "domain": 4,
+   "subtopic": "4.1 Network security. Secure protocols",
+   "difficulty": "application",
+   "bloom_level": "Application",
+   "question": "A glove maker's public web server offers Secure Sockets Layer (SSL) 3.0 and Transport Layer Security (TLS) 1.0, 1.2 and 1.3, and its owner asks the system administrator which to keep. Which advice is BEST?",
+   "options": {
+    "A": "Only TLS 1.3, since every earlier version is retired",
+    "B": "All four, so every visitor's browser can still connect",
+    "C": "All four, with the oldest two moved to an unusual port",
+    "D": "TLS 1.2 and TLS 1.3, switching every older version off"
+   },
+   "correct": "D",
+   "key_concept": "Servers should offer TLS 1.2 and 1.3 and turn off SSL and early TLS; TLS 1.2 is still current, not retired.",
+   "pre_read": "Sort the four versions into current and retired before choosing.",
+   "correct_explanation": "NIST's TLS guide says public servers must support TLS 1.2 and, since 2024, TLS 1.3, must not allow SSL 3.0, and discourages TLS 1.0; it allows switching 1.2 off only where it is confirmed unneeded. So this server keeps 1.2 and 1.3 and turns the older versions off. TLS 1.3 alone is the runner-up: it is the strongest version, but TLS 1.2 is still current, and many visitors' browsers and devices still rely on it.",
+   "wrong_explanations": {
+    "A": "Closest choice: TLS 1.3 is the strongest version. But TLS 1.2 is not retired; it is still approved, and many visitors' devices need it.",
+    "B": "Tempting because compatibility matters. But keeping SSL 3.0 and TLS 1.0 lets attackers push connections down to weak versions.",
+    "C": "Tempting because fewer scans sounds safer. But scanners find services on any port, and the old versions stay just as weak."
+   },
+   "tips": [
+    "Eliminate: B keeps SSL 3.0 and TLS 1.0, which attackers can force connections down to, and C moves old versions to another port, where scanners still find them and they stay weak.",
+    "Final two: D beats A because TLS 1.2 is still current and approved; only SSL and early TLS should go, so 1.2 and 1.3 both stay.",
+    "Exam cue: for TLS, keep 1.2 and 1.3 and switch off everything older; 'newest only' is not the rule."
+   ],
+   "framework_ref": "NIST SP 800-52 Rev. 2 Section 3.1 (Protocol Version Support: servers shall support TLS 1.2 and TLS 1.3 and shall not allow SSL 2.0 or SSL 3.0); NIST SP 800-53 Rev. 5 CM-7 (Least Functionality)",
+   "related_concepts": [
+    "TLS versions",
+    "Protocol downgrade",
+    "Secure protocols"
+   ],
+   "_provenance": "Authored from concept: 'Transport Layer Security (TLS): use version 1.2 or 1.3, never the retired Secure Sockets Layer (SSL)' (notes 4.1.5 Ports, Protocols and Secure Alternatives). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 6, 5 Nov 2026.",
+   "style_version": 2
+  },
+  {
+   "id": "cc_d4_137",
+   "domain": 4,
+   "subtopic": "4.1 Network security. Secure protocols",
+   "difficulty": "foundational",
+   "bloom_level": "Foundational",
+   "question": "A weather service's network technician is making a training slide that pairs cleartext protocols with their secure replacements. Which pairing is MOST accurate?",
+   "options": {
+    "A": "SNMP version 1 replaced by SNMP version 2c for monitoring",
+    "B": "HTTP replaced by SFTP for secure web page browsing",
+    "C": "Telnet replaced by SSH for remote command logins",
+    "D": "FTP replaced by FTP on an unusual high port number"
+   },
+   "correct": "C",
+   "key_concept": "A secure replacement does the same job with encryption: SSH for Telnet, SFTP for FTP, HTTPS for HTTP and SNMP version 3 for earlier versions.",
+   "pre_read": "For each pair, ask whether the second protocol does the same job and encrypts it.",
+   "correct_explanation": "Telnet sends logins and commands in cleartext; Secure Shell (SSH) does the same remote command-line job inside an encrypted channel, so it is the standard replacement. SNMP version 2c is the runner-up because it is newer than version 1, but it still sends its community strings in cleartext; version 3 is the version that adds encryption.",
+   "wrong_explanations": {
+    "A": "Closest choice: version 2c is newer than version 1. But it still sends its community strings in cleartext; only SNMP version 3 adds encryption.",
+    "B": "Tempting because SFTP is a secure protocol. But SFTP moves files over SSH; secure web browsing uses HTTPS, which wraps HTTP in TLS.",
+    "D": "Tempting because unusual ports draw fewer scans. But changing the port encrypts nothing; FTP is replaced by SFTP or FTPS."
+   },
+   "tips": [
+    "Eliminate: B swaps a web protocol for a file-transfer one, and D only moves FTP to another port, which encrypts nothing.",
+    "Final two: C beats A because SSH encrypts the same remote login job Telnet does in cleartext, while SNMP version 2c still sends its community strings unencrypted.",
+    "Exam cue: a secure replacement does the same job with encryption: SSH for Telnet, SFTP for FTP, HTTPS for HTTP, SNMP version 3 for earlier versions."
+   ],
+   "framework_ref": "NIST SP 800-82 Rev. 3 Section 6.2.10 (Remote Access: SSH is a secure alternative to a telnet application); NIST SP 800-82 Rev. 3 Table 19 (Communication and network configuration vulnerabilities: protocols such as telnet, FTP and HTTP send data in plaintext)",
+   "related_concepts": [
+    "Secure protocols",
+    "Cleartext protocols",
+    "SSH"
+   ],
+   "_provenance": "Authored from concept: 'Choose the encrypted protocol for the same job: SSH over Telnet, SFTP over FTP, HTTPS over HTTP' (notes 4.1.5 Ports, Protocols and Secure Alternatives). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 6, 5 Nov 2026.",
+   "style_version": 2
+  },
+  {
+   "id": "cc_d4_138",
+   "domain": 4,
+   "subtopic": "4.1 Network security. Virtual private networks",
+   "difficulty": "application",
+   "bloom_level": "Application",
+   "question": "A dance company will link its rehearsal studio's network to head office so devices reach servers at the other site, with no software on each device. Which setup should the network technician propose as BEST?",
+   "options": {
+    "A": "A TLS VPN app installed on each studio computer",
+    "B": "An IPsec site-to-site tunnel between the two gateways",
+    "C": "Port forwarding that opens head office servers to the internet",
+    "D": "HTTPS on each server, with no tunnel between the sites"
+   },
+   "correct": "B",
+   "key_concept": "An IPsec site-to-site (gateway-to-gateway) VPN protects all traffic between two networks with no software on each device; client VPNs suit individual remote users.",
+   "pre_read": "Decide whether two whole networks or individual people need connecting.",
+   "correct_explanation": "An IPsec site-to-site VPN joins the two networks at their gateways and encrypts all traffic between the sites at the network layer, so studio devices need no software. A TLS VPN app is the runner-up: it suits remote users, but it means installing and managing a client on every device, which the company wants to avoid.",
+   "wrong_explanations": {
+    "A": "Closest choice: TLS VPNs are common and secure. But they suit individual remote users and need a client on each device, which the company wants to avoid.",
+    "C": "Tempting because it is quick to set up. But it exposes internal servers to everyone on the internet, often without encryption.",
+    "D": "Tempting because HTTPS encrypts. But it protects only web traffic to each server; other traffic between the sites would cross the internet unprotected."
+   },
+   "tips": [
+    "Eliminate: C exposes internal servers to the whole internet, and D protects only web traffic, leaving the rest of the site-to-site traffic unprotected.",
+    "Final two: B beats A because a site-to-site IPsec tunnel protects all traffic between the two networks at their gateways, with no software on each device.",
+    "Exam cue: joining two networks points to an IPsec site-to-site VPN; one remote person on a laptop points to a client or TLS VPN."
+   ],
+   "framework_ref": "NIST SP 800-77 Rev. 1 Section 2.4.1 (Gateway-to-Gateway: a VPN gateway on each network protects the traffic between the two networks); NIST SP 800-77 Rev. 1 Section 2.3 (Virtual Private Networking (VPN))",
+   "related_concepts": [
+    "Site-to-site VPN",
+    "IPsec",
+    "Remote access VPN"
+   ],
+   "_provenance": "Authored from concept: 'IP Security (IPsec) works at the network layer and suits site-to-site links; Transport Layer Security (TLS) VPNs suit remote users' (notes 4.1.6 Virtual Private Networks (VPNs)). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 6, 5 Nov 2026.",
+   "style_version": 2
+  },
+  {
+   "id": "cc_d4_139",
+   "domain": 4,
+   "subtopic": "4.1 Network security. Firewall rule sets",
+   "difficulty": "analysis",
+   "bloom_level": "Analysis",
+   "question": "A spice shop's card terminals stopped taking payments at 14:05, just after a new firewall rule went live at 14:00. Which evidence should the network technician check FIRST to confirm the rule is the cause?",
+   "options": {
+    "A": "Firewall log entries that deny payment traffic after 14:00",
+    "B": "The payment provider's status page for any reported outage",
+    "C": "The firewall's logged processor and memory use since 14:00",
+    "D": "A packet capture taken on a laptop in the shop's back office"
+   },
+   "correct": "A",
+   "key_concept": "When a failure follows a change, confirm the cause from the trace that change would leave, such as firewall entries denying the traffic.",
+   "pre_read": "Think about where the payment traffic passes and what each source can show about it.",
+   "correct_explanation": "A rule that blocks traffic leaves a trace: the firewall logs each connection it denies. Deny entries for payment traffic starting at 14:00 tie the outage to the new rule, so the fix can go through change management with evidence behind it. The provider's status page is the runner-up: it can rule out an outage on the provider's side, but a clear page does not show the rule is to blame.",
+   "wrong_explanations": {
+    "B": "Closest choice: checking the provider rules out one other cause. But a quiet status page proves nothing about the new rule; only the firewall's own records show it blocking payments.",
+    "C": "Tempting because an overloaded firewall can drop traffic. But load figures cannot show a rule denying payments, and one new rule rarely changes them.",
+    "D": "Tempting because captures show real traffic. But on a switched network a back-office laptop normally sees only its own traffic, and a capture cannot show which rule dropped anything."
+   },
+   "tips": [
+    "Eliminate: C looks at firewall load, which cannot show a rule denying traffic, and D captures on a back-office laptop, which on a switched network does not normally see the card terminals' traffic.",
+    "Final two: A beats B because deny entries for payment traffic from 14:00 tie the outage to the new rule; a clear status page only rules out the provider.",
+    "Exam cue: when a failure follows a change, look for the trace the change would leave before deciding the cause."
+   ],
+   "framework_ref": "NIST SP 800-53 Rev. 5 AU-6 (Audit Record Review, Analysis, and Reporting); NIST SP 800-53 Rev. 5 CM-3 (Configuration Change Control)",
+   "related_concepts": [
+    "Firewall logs",
+    "Troubleshooting changes",
+    "Firewall rules"
+   ],
+   "_provenance": "Authored from concept: 'Allow only what the business needs with the narrowest rule, deny the rest, and change rules only through change management' (notes 4.1.7 Firewalls: Ports and Applications). Re-angled in fix-up round 2 because the emergency-rollback lesson repeated cc_d5_107. Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 6, 5 Nov 2026.",
+   "style_version": 2
+  },
+  {
+   "id": "cc_d4_140",
+   "domain": 4,
+   "subtopic": "4.1 Network security. Firewall types",
+   "difficulty": "foundational",
+   "bloom_level": "Foundational",
+   "question": "A coffee roaster wants a firewall that ends each staff web connection and opens its own to the site, inspecting the content between. Which firewall type should the network technician propose as BEST?",
+   "options": {
+    "A": "A stateful inspection firewall that tracks each connection",
+    "B": "A packet-filtering router that checks each packet's addresses and ports",
+    "C": "A network address translation device that swaps addresses",
+    "D": "A proxy firewall that relays each connection through itself"
+   },
+   "correct": "D",
+   "key_concept": "A proxy firewall ends the client's connection and opens its own to the server; a stateful firewall tracks connections it lets pass.",
+   "pre_read": "Ask whether the device lets the original connection pass or replaces it with its own.",
+   "correct_explanation": "A proxy firewall, which NIST calls an application-proxy gateway, never lets the two hosts connect directly: it holds one connection with the client and opens a second to the server, inspecting the content between them. A stateful firewall is the runner-up: it tracks each connection's state, but it passes the original connection through rather than ending and relaying it.",
+   "wrong_explanations": {
+    "A": "Closest choice: stateful firewalls do track every connection. But they let the original connection pass through; they do not end it and open their own.",
+    "B": "Tempting because it is a common first filter. But it judges each packet by address and port alone, without ending connections or reading content.",
+    "C": "Tempting because it sits in the path and rewrites traffic. But address translation only changes addresses; it neither inspects content nor relays connections."
+   },
+   "tips": [
+    "Eliminate: B judges packets only by address and port, and C only rewrites addresses; neither ends connections or reads content.",
+    "Final two: D beats A because a proxy firewall ends the client's connection and opens its own to the server, while a stateful firewall passes the original connection through.",
+    "Exam cue: 'two separate connections with inspection between' means a proxy; 'tracks connection state' means stateful; 'address and port only' means a packet filter."
+   ],
+   "framework_ref": "NIST SP 800-41 Rev. 1 Section 2.1.4 (Application-Proxy Gateways: the proxy creates two separate connections and never allows a direct connection between the hosts); NIST SP 800-41 Rev. 1 Section 2.1.2 (Stateful Inspection: tracking TCP connection state)",
+   "related_concepts": [
+    "Proxy firewalls",
+    "Stateful inspection",
+    "Firewall types"
+   ],
+   "_provenance": "Authored from concept: 'Proxy firewall: ends the client's connection and opens a new one to the server, inspecting the traffic between' (notes 4.1.7 Firewalls: Ports and Applications). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 6, 5 Nov 2026.",
+   "style_version": 2
+  },
+  {
+   "id": "cc_d4_141",
+   "domain": 4,
+   "subtopic": "4.1 Network security. IDS and IPS",
+   "difficulty": "application",
+   "bloom_level": "Application",
+   "question": "A watch parts wholesaler's inline intrusion prevention system (IPS) guards its order servers; the system owner decided orders must keep flowing if it crashes. Which setup should the network technician choose as BEST?",
+   "options": {
+    "A": "Fail closed, blocking all traffic until the IPS is back up",
+    "B": "Put the IPS on a mirror port, where crashes cannot stop orders",
+    "C": "Fail open, passing traffic uninspected until the IPS is back up",
+    "D": "Set the IPS to alert-only, so it logs attacks without blocking"
+   },
+   "correct": "C",
+   "key_concept": "An inline IPS must fail one way: open keeps traffic flowing uninspected, closed keeps protection but stops traffic; the owner's risk decision picks which.",
+   "pre_read": "Ask what happens to traffic passing through an inline device when that device stops working.",
+   "correct_explanation": "An inline IPS sits in the traffic path, so its failure setting decides what happens when it crashes. Fail open lets traffic pass uninspected until it recovers, which matches the owner's decision that orders must keep flowing. Fail closed is the runner-up: it keeps protection, but it stops every order, the outcome the owner ruled out.",
+   "wrong_explanations": {
+    "A": "Closest choice: failing closed keeps unchecked traffic out. But it stops every order during a crash, and the system owner has decided orders must keep flowing.",
+    "B": "Tempting because a mirror-port sensor cannot stop traffic. But it can no longer block attacks either, which gives up prevention all the time to cover rare crashes.",
+    "D": "Tempting because alert-only mode never blocks business traffic. But it also never blocks attacks, so the IPS stops preventing anything, not just during a crash."
+   },
+   "tips": [
+    "Eliminate: B and D both give up blocking for good; a mirror-port sensor or alert-only mode cannot stop any attack, though the owner decided only what happens during a crash.",
+    "Final two: C beats A because the owner chose to keep orders flowing if the IPS fails; failing closed protects more but stops the orders the owner said must continue.",
+    "Exam cue: an inline device fails one of two ways: open keeps the business running unprotected, closed keeps protection and stops the business; the owner's risk decision picks which."
+   ],
+   "framework_ref": "NIST SP 800-53 Rev. 5 SC-24 (Fail in Known State); NIST SP 800-94 Section 4.2.2 (Network Architectures and Sensor Locations: inline versus passive sensors)",
+   "related_concepts": [
+    "Fail open and fail closed",
+    "Inline IPS",
+    "Availability decisions"
+   ],
+   "_provenance": "Authored from concept: 'Traffic may stop, unless it fails open' (notes 4.1.8 Intrusion Detection and Prevention Systems). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 6, 5 Nov 2026.",
+   "style_version": 2
+  },
+  {
+   "id": "cc_d4_142",
+   "domain": 4,
+   "subtopic": "4.1 Network security. AI in traffic monitoring",
+   "difficulty": "application",
+   "bloom_level": "Application",
+   "question": "A surf school's IT manager says a planned artificial intelligence (AI) traffic monitor is pointless, because nearly all its traffic is encrypted. Which reply from the security analyst is MOST accurate?",
+   "options": {
+    "A": "Encrypted traffic leaves the model nothing it can analyze",
+    "B": "It decrypts each session by itself to read the hidden content",
+    "C": "Timing, volume and destinations still show unusual patterns",
+    "D": "Only fixed signature rules can judge encrypted sessions"
+   },
+   "correct": "C",
+   "key_concept": "Encryption hides content, not patterns: AI monitors still learn timing, volume and destinations, and flag unusual behavior in encrypted traffic.",
+   "pre_read": "Separate what encryption hides from what it leaves visible.",
+   "correct_explanation": "Encryption hides what is inside a session, not its pattern. An AI monitor can still learn who talks to whom, when and how much, and flag a laptop suddenly sending large volumes at night to a new destination. The decryption answer is the runner-up: some separate tools inspect encrypted traffic with special setup, but a traffic monitor cannot read encrypted content on its own.",
+   "wrong_explanations": {
+    "A": "Tempting because the content is hidden. But timing, volume and destinations stay visible, and they are what the model scores against its baseline.",
+    "B": "Closest choice: some inspection setups do decrypt traffic. But that needs keys or a proxy; on its own, the monitor works from patterns, not content.",
+    "D": "Tempting because signatures are familiar. But signatures need readable content to match; encrypted traffic is where pattern-based AI adds the most."
+   },
+   "tips": [
+    "Eliminate: A forgets that traffic patterns stay visible, and D credits signatures, which need readable content, with seeing inside encryption.",
+    "Final two: C beats B because the monitor learns patterns from what stays visible; reading content needs keys or a separate inspection setup it does not have.",
+    "Exam cue: encryption hides the message, not the envelope: timing, size and destination still tell a story."
+   ],
+   "framework_ref": "NIST SP 800-94 Section 2.3.2 (Anomaly-Based Detection); NIST SP 800-53 Rev. 5 SI-4(13) (System Monitoring | Analyze Traffic and Event Patterns)",
+   "related_concepts": [
+    "AI traffic monitoring",
+    "Encrypted traffic analysis",
+    "Anomaly detection"
+   ],
+   "_provenance": "Authored from concept: 'AI monitoring sees nothing in encrypted traffic' (exam trap, notes 4.1.9 AI in Traffic Monitoring, IDS and Firewalls). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 6, 5 Nov 2026.",
+   "style_version": 2
+  },
+  {
+   "id": "cc_d4_143",
+   "domain": 4,
+   "subtopic": "4.1 Network security. AI in traffic monitoring",
+   "difficulty": "application",
+   "bloom_level": "Application",
+   "question": "A cable TV company's vendor says its artificial intelligence (AI) firewall would let the company drop night-shift analysts, since the AI blocks attacks itself. Which reply from the security manager is MOST accurate?",
+   "options": {
+    "A": "It will still miss some attacks and flag some safe traffic",
+    "B": "After a month of learning normal traffic, the cut is likely safe",
+    "C": "Weekly vendor updates will keep the model ahead of new attacks",
+    "D": "AI firewalls only alert, so analysts do all the blocking"
+   },
+   "correct": "A",
+   "key_concept": "AI detection is a strong assistant, not a final judge: it still makes false positives and false negatives, and attackers try to evade it.",
+   "pre_read": "Ask what the vendor's claim assumes about how the AI will behave once it is running.",
+   "correct_explanation": "Machine learning still produces false positives and false negatives, and attackers deliberately try to evade it, so AI detection is a strong assistant, not a final judge. People must review its alerts and decide high-impact actions. A month of baseline is the runner-up: learning normal traffic helps accuracy, but no baseline removes misses, false alarms or evasion.",
+   "wrong_explanations": {
+    "B": "Closest choice: a good baseline does improve accuracy. But no amount of learning removes false alarms, misses or attackers' attempts to evade the model.",
+    "C": "Tempting because updates help a model spot new attack patterns. But updates follow attacks after they appear, and no update removes misses, false alarms or evasion.",
+    "D": "Tempting because classic IDS tools only alert. But AI firewalls can block; the point is that their blocks and alerts still need human review."
+   },
+   "tips": [
+    "Eliminate: C trusts weekly updates to stay ahead of attackers, though updates follow new attacks, and D wrongly says AI firewalls cannot block traffic.",
+    "Final two: A beats B because a longer baseline improves accuracy but never removes misses, false alarms or evasion, so people stay in the loop.",
+    "Exam cue: AI in security operations assists analysts; any option that removes human review of its output is the trap."
+   ],
+   "framework_ref": "NIST AI 100-2 E2025 Section 2.2 (Evasion Attacks and Mitigations: adversarial examples change a model's output with only minimal changes to the input); NIST AI 100-1 (AI RMF 1.0) GOVERN 3.2 (roles and responsibilities for human-AI configurations and oversight of AI systems are defined)",
+   "related_concepts": [
+    "AI-assisted defense",
+    "Human oversight",
+    "Evasion"
+   ],
+   "_provenance": "Authored from concept: 'An AI-powered firewall removes the need for analysts' (exam trap, notes 4.1.9 AI in Traffic Monitoring, IDS and Firewalls). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 6, 5 Nov 2026.",
+   "style_version": 2
+  },
+  {
+   "id": "cc_d4_144",
+   "domain": 4,
+   "subtopic": "4.1 Network security. Wi-Fi security",
+   "difficulty": "application",
+   "bloom_level": "Application",
+   "question": "A roller rink's owner wants to keep its old access point on Wired Equivalent Privacy (WEP), using the longest key it allows, to save money. Which reply from the IT technician is MOST accurate?",
+   "options": {
+    "A": "A full 128-bit WEP key is strong enough for a small business",
+    "B": "Changing the WEP key every month will keep attackers out",
+    "C": "Switching to the first WPA on the same device is enough",
+    "D": "WEP is broken at any key length; upgrade to WPA3 or WPA2"
+   },
+   "correct": "D",
+   "key_concept": "WEP is broken by design, whatever its key length; use WPA3, or WPA2 where devices cannot do WPA3.",
+   "pre_read": "Ask whether the weakness lies in the key's size or in the protocol itself.",
+   "correct_explanation": "WEP's design is broken, so attackers can recover its key with free tools whatever the key length; NIST notes it was deprecated in 2004. The access point should move to WPA3, or WPA2 where devices cannot do WPA3. A long 128-bit key is the runner-up because longer keys usually mean stronger encryption, but WEP's flaw is in how it uses the key, not its size.",
+   "wrong_explanations": {
+    "A": "Closest choice: longer keys usually do mean stronger encryption. But WEP's weakness is in its design, so even its longest key is quickly broken.",
+    "B": "Tempting because changing keys often limits exposure. But free tools recover a WEP key from captured traffic in minutes, long before any monthly change.",
+    "C": "Tempting because WPA was built to replace WEP. But the first WPA was a stopgap built on WEP's cipher and is retired too; use WPA3, or WPA2."
+   },
+   "tips": [
+    "Eliminate: B changes a key that free tools recover in minutes, and C moves to the first WPA, a stopgap on WEP's cipher that is retired too.",
+    "Final two: D beats A because WEP is broken by design; a longer key does not fix how it uses the key, so it must be replaced.",
+    "Exam cue: for Wi-Fi, pick the strongest standard the devices support, WPA3 first; never WEP or the first WPA, whatever the key."
+   ],
+   "framework_ref": "NIST SP 800-77 Rev. 1 Section 8.1.1 (WiFi Data Link Protection); NIST SP 800-53 Rev. 5 AC-18(1) (Wireless Access | Authentication and Encryption)",
+   "related_concepts": [
+    "WEP",
+    "Wi-Fi security",
+    "WPA3"
+   ],
+   "_provenance": "Authored from concept: 'Wired Equivalent Privacy (WEP) and the first Wi-Fi Protected Access (WPA) are broken; use WPA3, or WPA2 where devices cannot do WPA3' (notes 4.1.10 Wireless Security: Wi-Fi and Bluetooth). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 6, 5 Nov 2026.",
+   "style_version": 2
+  },
+  {
+   "id": "cc_d4_145",
+   "domain": 4,
+   "subtopic": "4.1 Network security. Embedded and control systems",
+   "difficulty": "analysis",
+   "bloom_level": "Analysis",
+   "question": "A road tunnel operator's IT manager says the ventilation control network needs no malware defenses, because it has no link to the internet. Which reply from the security analyst is MOST accurate?",
+   "options": {
+    "A": "Malware cannot reach a network that has no internet link",
+    "B": "USB drives and vendor laptops still bring in malware by hand",
+    "C": "It needs only a yearly check that no internet link exists",
+    "D": "It needs weekly patching, the same as the office laptops"
+   },
+   "correct": "B",
+   "key_concept": "An air gap narrows the ways in but does not close them: removable media, vendor laptops and forgotten links have carried malware into control networks.",
+   "pre_read": "Test each reply against how isolated control networks have actually been attacked.",
+   "correct_explanation": "Isolation removes the internet path, but people still carry files and devices in: USB drives, vendor maintenance laptops and forgotten links have all brought malware into isolated control networks. NIST's operational technology guide says air gaps alone are not enough and that portable devices should be scanned before they connect. A yearly link check is the runner-up: it keeps the gap honest, but it ignores the drives and laptops that cross it by hand.",
+   "wrong_explanations": {
+    "A": "Tempting because the internet is the usual route in. But malware has reached isolated plants on USB drives and vendor laptops, with no internet link at all.",
+    "C": "Closest choice: checking that the gap still holds is useful. But it covers only internet links, not the drives and laptops people carry across it.",
+    "D": "Tempting because patching protects office laptops. But control system patches are tested and scheduled first, since an untested patch can stop the fans."
+   },
+   "tips": [
+    "Eliminate: A assumes no internet link means no way in, and D puts control systems on the office laptops' patch schedule, which risks stopping the fans.",
+    "Final two: B beats C because a yearly link check keeps the gap intact but misses the USB drives and vendor laptops that people carry across it.",
+    "Exam cue: an air gap is a strong control, not a guarantee; ask what people carry across it."
+   ],
+   "framework_ref": "NIST SP 800-82 Rev. 3 Section 3.2 (Business Case for the OT Cybersecurity Program: relying on traditional measures such as air gaps is not enough); NIST SP 800-82 Rev. 3 Section 6.2.1.2 (Physical Access Controls: scan portable devices such as laptops and USB storage before they connect to OT networks)",
+   "related_concepts": [
+    "Air gaps",
+    "Removable media",
+    "Operational technology"
+   ],
+   "_provenance": "Authored from concept: 'An ICS network with no internet link cannot be attacked' (exam trap, notes 4.1.11 Embedded Systems and Industrial Control Systems). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 6, 5 Nov 2026.",
+   "style_version": 2
+  },
+  {
+   "id": "cc_d4_146",
+   "domain": 4,
+   "subtopic": "4.2 Network security architecture. Segmentation",
+   "difficulty": "application",
+   "bloom_level": "Application",
+   "question": "An intruder who took over a receptionist's computer at a soap maker then signs in to the file server and the backup server. Which placement would BEST have kept the backup server out of reach?",
+   "options": {
+    "A": "In the server segment, next to the file server it backs up",
+    "B": "In the screened subnet (DMZ), apart from the internal network",
+    "C": "On its own VLAN, with routing open to all other segments",
+    "D": "In its own segment, open to backup traffic and nothing else"
+   },
+   "correct": "D",
+   "key_concept": "Keep backups out of reach of the systems they protect: give the backup server its own segment that accepts only backup traffic.",
+   "pre_read": "Trace the intruder's path, then ask what each placement would leave within reach.",
+   "correct_explanation": "A backup exists for the day the systems it copies are compromised, so it must not fall with them. Its own segment, with rules that accept backup traffic and block everything else, keeps sign-ins from desk computers, or from a taken-over file server, away from it. Placing it beside the file server is the runner-up: grouping servers apart from desks is sound, but a shared segment lets whoever reaches one server reach the other.",
+   "wrong_explanations": {
+    "A": "Closest choice: grouping servers apart from desk computers is sound. But the intruder reached the file server too, and a shared segment would let them reach the backups from there.",
+    "B": "Tempting because a screened subnet sits apart from the internal network. But it holds public-facing servers, so it would expose the backups more, not less.",
+    "C": "Tempting because its own VLAN sounds separate. But with routing open to every segment, the intruder could still reach it; only rules on the traffic between segments protect it."
+   },
+   "tips": [
+    "Eliminate: B puts the backups in the screened subnet meant for public-facing servers, and C gives them a VLAN whose open routing lets every segment reach it.",
+    "Final two: D beats A because the intruder also reached the file server; backups sharing its segment would be reachable from there, while a segment open only to backup traffic keeps sign-ins out.",
+    "Exam cue: keep a backup out of reach of the systems it protects; a segment that accepts only the traffic it needs stops one breach from reaching both."
+   ],
+   "framework_ref": "NIST SP 800-53 Rev. 5 SC-7(21) (Boundary Protection | Isolation of System Components); NIST SP 800-215 Section 2.1 (Limitations of Network Perimeter-based Protections: east-west traffic stays within the local network)",
+   "related_concepts": [
+    "Segmentation",
+    "Backup isolation",
+    "East-west traffic"
+   ],
+   "_provenance": "Authored from concept: 'Lateral movement: an attacker moving from a first compromised system to other systems inside the network' (notes 4.2.1 Network Segmentation). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 6, 5 Nov 2026. Re-angled in the batch 6 fix round from an attack-terms quiz (5.2 content) to a segmentation decision; the intrusion is context only. Avoids the lessons of cc_d4_010, cc_d4_026 and cc_d4_052.",
+   "style_version": 2
+  },
+  {
+   "id": "cc_d4_147",
+   "domain": 4,
+   "subtopic": "4.2 Network security architecture. Screened subnet",
+   "difficulty": "application",
+   "bloom_level": "Application",
+   "question": "A comedy club's booking server holds members' card details and must stay on the internal network, yet the public needs its booking pages. Which setup should the network technician propose as BEST?",
+   "options": {
+    "A": "Move the booking server into the screened subnet",
+    "B": "Forward a public port straight to the booking server",
+    "C": "Put a reverse proxy in the screened subnet to relay requests",
+    "D": "Open the inner firewall to all web traffic from the internet"
+   },
+   "correct": "C",
+   "key_concept": "When a system holding sensitive data must stay internal, a relay such as a reverse proxy in the screened subnet faces the public for it.",
+   "pre_read": "Place each part by who must reach it and what data it holds.",
+   "correct_explanation": "A reverse proxy in the screened subnet takes the public's requests and relays only valid ones to the internal booking server, so the internet never connects to it directly and the card data stays deeper inside. Moving the server into the screened subnet is the runner-up: public-facing servers do belong there, but this one holds card details, which must stay internal.",
+   "wrong_explanations": {
+    "A": "Closest choice: public-facing servers usually belong in the screened subnet. But this server holds card details, which must stay on the internal network.",
+    "B": "Tempting because it is quick. But it lets anyone on the internet connect straight to the internal server, which the design must avoid.",
+    "D": "Tempting because only web traffic is opened. But it lets the whole internet reach every internal web service, not just the booking pages."
+   },
+   "tips": [
+    "Eliminate: B lets the internet connect straight to the internal server, and D opens every internal web service to the whole internet.",
+    "Final two: C beats A because the server holding card details stays internal, while a reverse proxy in the screened subnet faces the public for it.",
+    "Exam cue: place each system by who must reach it; when sensitive data must stay inside, put a relay in the screened subnet instead."
+   ],
+   "framework_ref": "NIST SP 800-41 Rev. 1 Section 3.1 (Network Layouts with Firewalls: public-facing servers on the DMZ); NIST SP 800-53 Rev. 5 SC-7 (Boundary Protection)",
+   "related_concepts": [
+    "Screened subnet",
+    "Reverse proxy",
+    "Zone placement"
+   ],
+   "_provenance": "Authored from concept: 'Reverse proxy: a server that receives public requests and passes them to internal servers, hiding those servers' (notes 4.2.2 Firewall Zones and the Screened Subnet (DMZ)). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 6, 5 Nov 2026.",
+   "style_version": 2
+  },
+  {
+   "id": "cc_d4_148",
+   "domain": 4,
+   "subtopic": "4.2 Network security architecture. VLANs",
+   "difficulty": "foundational",
+   "bloom_level": "Foundational",
+   "question": "A science museum's network technician must carry the staff, guest and camera virtual local area networks (VLANs) over the one cable joining two switches. Which setup is BEST?",
+   "options": {
+    "A": "An access port set to the staff VLAN on each switch",
+    "B": "A hub between the switches that repeats all frames",
+    "C": "A trunk link that tags each frame with its VLAN number",
+    "D": "Port mirroring that copies traffic between the switches"
+   },
+   "correct": "C",
+   "key_concept": "A trunk link carries several VLANs over one cable by tagging each frame (802.1Q); an access port carries a single VLAN.",
+   "pre_read": "Ask how the receiving switch can tell which VLAN each frame belongs to.",
+   "correct_explanation": "A trunk link carries several VLANs over one cable by tagging each frame with its VLAN number, the 802.1Q standard, so the receiving switch keeps each VLAN's traffic separate. An access port is the runner-up: it is the normal setting for a device's port, but it belongs to one VLAN, so the guest and camera traffic could not cross.",
+   "wrong_explanations": {
+    "A": "Closest choice: access ports are the usual setting for device ports. But each belongs to one VLAN, so the guest and camera traffic could not cross.",
+    "B": "Tempting because a hub joins cables simply. But it works at layer 1, knows nothing of VLANs and repeats every frame to every port.",
+    "D": "Tempting because it also sends traffic between ports. But mirroring copies traffic to a monitoring tool; it does not carry VLANs between switches."
+   },
+   "tips": [
+    "Eliminate: B uses a layer 1 hub, which knows nothing of VLANs, and D mirrors copies of traffic for monitoring rather than carrying it.",
+    "Final two: C beats A because a trunk tags each frame with its VLAN so several VLANs share one cable; an access port carries only one.",
+    "Exam cue: one VLAN per device port is an access port; several VLANs between switches means a tagged trunk."
+   ],
+   "framework_ref": "NIST SP 800-82 Rev. 3 Appendix E.1.3 (Virtual Local Area Networks (VLANs): switches logically separate traffic based on switch ports); NIST SP 800-119 Section 6.4.1 (Deployment of a Dual Stack Environment: 802.1q tags can be used to divide a network logically)",
+   "related_concepts": [
+    "VLAN trunks",
+    "802.1Q tagging",
+    "Access ports"
+   ],
+   "_provenance": "Authored from concept: 'Each switch port belongs to a VLAN; trunk links between switches carry several VLANs, tagging each frame (the 802.1Q standard)' (notes 4.2.3 Virtual LANs (VLANs)). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 6, 5 Nov 2026.",
+   "style_version": 2
+  },
+  {
+   "id": "cc_d4_149",
+   "domain": 4,
+   "subtopic": "4.2 Network security architecture. Micro-segmentation",
+   "difficulty": "foundational",
+   "bloom_level": "Foundational",
+   "question": "A lens maker's network technician says micro-segmentation is just splitting the data center into many tiny virtual local area networks (VLANs). Which reply from the system administrator is MOST accurate?",
+   "options": {
+    "A": "It applies policy to each workload, even two on the same VLAN",
+    "B": "It puts each server in its own VLAN, behind a router",
+    "C": "It replaces the edge firewall with rules on each server",
+    "D": "It needs a hardware firewall in front of every server"
+   },
+   "correct": "A",
+   "key_concept": "Micro-segmentation applies policy to each workload, often by label, and can separate two machines on the same VLAN; VLANs group switch ports.",
+   "pre_read": "Compare what a VLAN groups with what micro-segmentation protects.",
+   "correct_explanation": "Micro-segmentation applies policy to each workload, such as a server, virtual machine or container, often by its label rather than its address, so it can keep apart even two machines on the same VLAN. Giving each server its own VLAN is the runner-up: it shrinks segments, but VLANs group switch ports and still need filtering between them.",
+   "wrong_explanations": {
+    "B": "Closest choice: tiny VLANs do shrink segments. But VLANs group switch ports, while micro-segmentation sets rules on each workload, even inside one VLAN.",
+    "C": "Tempting because rules move onto each server. But micro-segmentation adds to the edge firewall; defense in depth keeps both.",
+    "D": "Tempting because firewalls enforce the rules. But micro-segmentation is usually enforced in host firewalls, the virtualization platform or cloud security groups, not by a separate box per server."
+   },
+   "tips": [
+    "Eliminate: C treats micro-segmentation as a replacement for the edge firewall, and D thinks it needs a hardware box per server, when host firewalls or the platform enforce it.",
+    "Final two: A beats B because micro-segmentation sets policy on each workload, even inside one VLAN, while VLANs group switch ports.",
+    "Exam cue: VLANs divide switch ports; micro-segmentation wraps each workload in its own rules, which follow it wherever it runs."
+   ],
+   "framework_ref": "NIST SP 800-215 Section 5.1 (Microsegmentation); NIST SP 800-207 Section 3.1.2 (ZTA Using Micro-Segmentation)",
+   "related_concepts": [
+    "Micro-segmentation",
+    "VLANs",
+    "Workload policy"
+   ],
+   "_provenance": "Authored from concept: 'Micro-segmentation is simply smaller VLANs' (exam trap, notes 4.2.4 Micro-Segmentation). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 6, 5 Nov 2026.",
+   "style_version": 2
+  },
+  {
+   "id": "cc_d4_150",
+   "domain": 4,
+   "subtopic": "4.2 Network security architecture. Defense in depth",
+   "difficulty": "analysis",
+   "bloom_level": "Analysis",
+   "question": "A map publisher protects its artificial intelligence (AI) training data with an edge firewall, a separate network segment and multifactor sign-in. Which addition should the security analyst propose as BEST for defense in depth?",
+   "options": {
+    "A": "Give the training data its own segment, behind a second firewall",
+    "B": "Replace the edge firewall with a newer, stronger model",
+    "C": "Make staff change passwords monthly, and log each change",
+    "D": "Encrypt the stored training data, and log each read of it"
+   },
+   "correct": "D",
+   "key_concept": "Defense in depth runs from the outside in to the data itself; when every layer guards the path, add protection on the data.",
+   "pre_read": "Sort the existing controls by where they sit, from the edge inward.",
+   "correct_explanation": "All three current controls guard the paths to the data: the edge, the segment and the sign-in. Defense in depth reaches the data itself, so the next layer belongs there. Encryption keeps stored copies, disks and backups unreadable without the key, and logging each read shows who touched the data, even an account that got past every path. A second firewall is the runner-up: it helps, but it is one more path layer.",
+   "wrong_explanations": {
+    "A": "Closest choice: a tighter segment does make the path harder. But it is another layer on the path, and nothing yet protects the data itself once a path is breached.",
+    "B": "Tempting because newer firewalls catch more. But replacing a layer adds no new one; the edge stays a single layer, just upgraded.",
+    "C": "Tempting because passwords guard sign-in. But forced monthly changes push people toward weaker, predictable passwords, and multifactor sign-in already covers that layer."
+   },
+   "tips": [
+    "Eliminate: B swaps one edge firewall for another, which adds no layer, and C forces monthly password changes, which weaken passwords on a layer multifactor already covers.",
+    "Final two: D beats A because every current control guards the path to the data; a second firewall is one more path layer, while encryption and read logging protect the data itself.",
+    "Exam cue: map the layers from the outside in; if every control guards the way to the data, add one on the data itself."
+   ],
+   "framework_ref": "NIST SP 800-53 Rev. 5 PL-8(1) (Security and Privacy Architectures | Defense in Depth); NIST SP 800-53 Rev. 5 SC-28 (Protection of Information at Rest); NIST SP 800-53 Rev. 5 AU-2 (Event Logging)",
+   "related_concepts": [
+    "Defense in depth",
+    "Data-level controls",
+    "AI training data"
+   ],
+   "_provenance": "Authored from concept: 'Layers run from the outside in, from physical security to the data itself, as the diagram shows' (notes 4.2.5 Defense in Depth). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 6, 5 Nov 2026.",
+   "style_version": 2
+  },
+  {
+   "id": "cc_d4_151",
+   "domain": 4,
+   "subtopic": "4.2 Network security architecture. Zero Trust principles",
+   "difficulty": "foundational",
+   "bloom_level": "Foundational",
+   "question": "At a clock museum adopting Zero Trust, the security team designs logging and access rules as if an attacker were already inside the network. Which principle does this MOST directly apply?",
+   "options": {
+    "A": "Assume breach",
+    "B": "Trust but verify",
+    "C": "Implicit trust",
+    "D": "Security by obscurity"
+   },
+   "correct": "A",
+   "key_concept": "Assume breach means designing defenses as if an attacker is already inside, so access stays narrow and damage is found and limited quickly.",
+   "pre_read": "Match the team's starting assumption to the principle that names it.",
+   "correct_explanation": "Assume breach means designing defenses as if an attacker is already inside, so access stays narrow, activity is logged, and damage is found and limited quickly. NIST's Zero Trust guide says assets should act as if an attacker is present on the enterprise network. Trust but verify is the runner-up: it sounds similar, but it starts from trust, which Zero Trust never grants for location alone.",
+   "wrong_explanations": {
+    "B": "Closest choice: it does include verifying. But it starts by trusting; Zero Trust starts from no trust and assumes an attacker may already be inside.",
+    "C": "Tempting because it sounds like a design choice. But implicit trust means trusting anything inside a zone without checks, which Zero Trust works to remove.",
+    "D": "Tempting because hiding things can slow attackers. But obscurity relies on secrecy, while this design relies on logging and narrow access."
+   },
+   "tips": [
+    "Eliminate: C trusts everything inside a zone, the opposite of Zero Trust, and D relies on hiding things rather than on logging and narrow access.",
+    "Final two: A beats B because designing as if an attacker is already inside is assume breach; trust but verify still begins by trusting.",
+    "Exam cue: Zero Trust in three phrases: verify explicitly, grant least privilege, assume breach."
+   ],
+   "framework_ref": "NIST SP 800-207 Section 2.2 (A Zero Trust View of a Network: assets should always act as if an attacker is present on the enterprise network); NIST SP 800-207 Section 2.1 (Tenets of Zero Trust)",
+   "related_concepts": [
+    "Assume breach",
+    "Zero Trust",
+    "Implicit trust"
+   ],
+   "_provenance": "Authored from concept: 'Verify explicitly, grant least privilege, assume breach' (notes 4.2.6 Zero Trust Principles). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 6, 5 Nov 2026.",
+   "style_version": 2
+  },
+  {
+   "id": "cc_d4_152",
+   "domain": 4,
+   "subtopic": "4.2 Network security architecture. Zero Trust components",
+   "difficulty": "foundational",
+   "bloom_level": "Foundational",
+   "question": "At a shipping insurer, the Zero Trust policy engine approves an artificial intelligence (AI) agent's request. Which component does the security analyst MOST accurately expect to tell the enforcement point to open the session?",
+   "options": {
+    "A": "The policy engine, which made the decision",
+    "B": "The AI agent, which presents its approval",
+    "C": "The policy administrator, which relays the decision",
+    "D": "The resource, which checks the agent's access token itself"
+   },
+   "correct": "C",
+   "key_concept": "In Zero Trust, the policy engine decides, the policy administrator relays the decision, and the enforcement point opens or closes the session.",
+   "pre_read": "Separate the part that decides from the part that sets up the path.",
+   "correct_explanation": "In NIST's Zero Trust model, the policy engine makes and logs the decision, and the policy administrator carries it out by configuring the enforcement point to open, or later close, the session. The policy engine is the runner-up: it decides, but it does not set up the path itself; together the two form the decision point.",
+   "wrong_explanations": {
+    "A": "Closest choice: the policy engine does make the decision. But NIST gives the policy administrator the job of telling the enforcement point to open the session.",
+    "B": "Tempting because the agent asked for access. But the requester never instructs the enforcement point; the decision point's components do.",
+    "D": "Tempting because resources often check tokens. But in Zero Trust the enforcement point guards the resource, acting on the decision point's instructions."
+   },
+   "tips": [
+    "Eliminate: B lets the requester instruct the enforcement point, and D has the resource deciding for itself, which the enforcement point does on instruction.",
+    "Final two: C beats A because the policy engine decides, while the policy administrator relays that decision and configures the enforcement point.",
+    "Exam cue: engine decides, administrator relays, enforcement point acts; a requester, human or AI agent, never instructs the gate."
+   ],
+   "framework_ref": "NIST SP 800-207 Section 3 (Logical Components of Zero Trust Architecture)",
+   "related_concepts": [
+    "Policy administrator",
+    "Policy engine",
+    "AI agents as subjects"
+   ],
+   "_provenance": "Authored from concept: 'Deciding and enforcing are separate jobs, and every protected resource needs an enforcement point' (notes 4.2.7 Zero Trust Architecture Components). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 6, 5 Nov 2026.",
+   "style_version": 2
+  },
+  {
+   "id": "cc_d4_153",
+   "domain": 4,
+   "subtopic": "4.2 Network security architecture. Network access control",
+   "difficulty": "application",
+   "bloom_level": "Application",
+   "question": "A community college's network access control (NAC) policy lists its new badge printers, which cannot do 802.1X sign-in, as approved devices. How should the network technician set up NAC for them as BEST?",
+   "options": {
+    "A": "Identify them by profile and give them printing access only",
+    "B": "Admit them to the staff network, since printers hold no data",
+    "C": "Admit them on the staff network by MAC address alone",
+    "D": "Block them from the network until they support 802.1X"
+   },
+   "correct": "A",
+   "key_concept": "Devices that cannot do 802.1X are identified by profiling and given only the limited access their job needs, not a free pass.",
+   "pre_read": "Think about how NAC can still recognize and box in a device that cannot sign in.",
+   "correct_explanation": "The policy already approves the printers, so the technician sets up how they join: NAC recognizes devices that cannot do 802.1X through profiling, such as device type and behavior, and gives them only the limited access their job requires. MAC-only admission is the runner-up: it is common, but MAC addresses are easy to copy, and putting the printers on the staff network gives a copied address far too much reach.",
+   "wrong_explanations": {
+    "B": "Tempting because printers seem harmless. But badge printers are network computers that attackers can hijack, so they get limited access, not a free pass.",
+    "C": "Closest choice: MAC lists are a common fallback. But MAC addresses are easy to copy, and staff-network access gives a spoofed device far more reach than printing.",
+    "D": "Tempting because it keeps NAC strict. But the policy already approves the printers; NAC designs admit such devices with limited access rather than block them."
+   },
+   "tips": [
+    "Eliminate: B gives printers a free pass because they seem harmless, and D blocks devices the policy approves instead of admitting them with limited access.",
+    "Final two: A beats C because profiling plus printing-only access limits what a spoofed device could reach, while MAC-only staff access is easy to abuse.",
+    "Exam cue: devices that cannot authenticate are still checked and boxed in: identify them, then allow only what their job requires."
+   ],
+   "framework_ref": "NIST SP 800-41 Rev. 1 Section 2.1.7 (Network Access Control: health checks and limited access for remediation); NIST SP 800-53 Rev. 5 AC-4 (Information Flow Enforcement)",
+   "related_concepts": [
+    "Device profiling",
+    "802.1X",
+    "Limited access"
+   ],
+   "_provenance": "Authored from concept: 'Devices that cannot use 802.1X, like printers, are identified by profiling and given limited access, not a free pass' (notes 4.2.8 Network Access Control (NAC)). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 6, 5 Nov 2026.",
+   "style_version": 2
+  },
+  {
+   "id": "cc_d4_154",
+   "domain": 4,
+   "subtopic": "4.2 Network security architecture. AI development environments",
+   "difficulty": "application",
+   "bloom_level": "Application",
+   "question": "A credit bureau's developers must load-test a machine learning pipeline at full volume; the data owner allows no data drawn from real consumers. Which test data should the security analyst propose as BEST?",
+   "options": {
+    "A": "Live records, with names and account numbers masked",
+    "B": "Synthetic records, generated in the number the test needs",
+    "C": "A few dozen made-up records that developers type in by hand",
+    "D": "Public consumer details gathered from open websites"
+   },
+   "correct": "B",
+   "key_concept": "Masked data still comes from real people; synthetic data copies their patterns without anyone's records, fitting a ban on real data.",
+   "pre_read": "Ask where each kind of test data originally came from.",
+   "correct_explanation": "The data owner allows no data drawn from real consumers. Masked records still start as real consumers' records, so they fall outside that rule, while synthetic records are generated to match real volumes and patterns without holding anyone's data. Masking is the runner-up: it hides names and numbers, but the remaining details still belong to real people and can sometimes be linked back to them.",
+   "wrong_explanations": {
+    "A": "Closest choice: masking hides direct identifiers. But masked records still come from real consumers, which the data owner has ruled out.",
+    "C": "Tempting because made-up records hold no one's data. But a few dozen typed-in records cannot load-test a pipeline at full volume.",
+    "D": "Tempting because the details are already public. But they still describe real consumers, which the data owner has ruled out; public does not mean permitted."
+   },
+   "tips": [
+    "Eliminate: C holds no real data but is far too small for a full-volume test, and D still describes real consumers, even if the details are public.",
+    "Final two: B beats A because masked records still come from real consumers, which the data owner ruled out; synthetic records never belonged to anyone.",
+    "Exam cue: masking hides real people's details; synthetic data never had any. Let the data owner's rule decide which one fits."
+   ],
+   "framework_ref": "NIST SP 800-53 Rev. 5 SA-3(2) (System Development Life Cycle | Use of Live or Operational Data); NIST SP 800-53 Rev. 5 SA-8(33) (Security and Privacy Engineering Principles | Minimization)",
+   "related_concepts": [
+    "Synthetic data",
+    "Data masking",
+    "AI development"
+   ],
+   "_provenance": "Authored from concept: 'Development uses masked or synthetic data; real sensitive data enters only with the data owner's approval' (notes 4.2.9 Segmenting AI Development Environments). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 6, 5 Nov 2026.",
+   "style_version": 2
+  },
+  {
+   "id": "cc_d4_155",
+   "domain": 4,
+   "subtopic": "4.2 Network security architecture. AI development environments",
+   "difficulty": "analysis",
+   "bloom_level": "Analysis",
+   "question": "At a parcel locker company, any developer can copy a model from the artificial intelligence (AI) development segment straight onto production servers. Which change should the security analyst propose as BEST?",
+   "options": {
+    "A": "Scan each model file with antivirus before copying it",
+    "B": "Let production pull the newest model from development hourly",
+    "C": "Move models only through a reviewed, logged release step",
+    "D": "Encrypt each model file, and log every copy to production"
+   },
+   "correct": "C",
+   "key_concept": "Trained models are protected assets: they reach production only through a reviewed, logged release, because a tampered model misbehaves while looking normal.",
+   "pre_read": "Ask what each option checks before a model reaches production.",
+   "correct_explanation": "Trained models are protected assets: a tampered or poisoned model behaves wrongly in production while looking normal. A reviewed, logged release step means someone other than the developer checks each model's source, test results and approval before it moves, so only models from the approved pipeline go live, and every move is traceable. Antivirus scanning is the runner-up: it catches known malware, but a poisoned model holds no malware code to find.",
+   "wrong_explanations": {
+    "A": "Closest choice: scanning files is a sensible check. But antivirus looks for known malware, not a model trained to misbehave, so a poisoned model passes.",
+    "B": "Tempting because automation removes manual copying. But it moves every untested change into production automatically, with no review at all.",
+    "D": "Tempting because encryption protects model files. But it guards secrecy, not integrity, and logging copies does not stop a bad model going live."
+   },
+   "tips": [
+    "Eliminate: B automates the unreviewed path into production, and D protects the model's secrecy, not whether it is safe to run.",
+    "Final two: C beats A because a reviewed release confirms where each model came from and how it tested before it goes live; antivirus looks for malware code, which a poisoned model does not contain.",
+    "Exam cue: treat trained models like code: changes reach production only through review, approval and a record."
+   ],
+   "framework_ref": "NIST SP 800-53 Rev. 5 CM-3 (Configuration Change Control); NIST AI 100-2 E2025 Section 2.3.3 (Backdoor Poisoning: a model learns to misclassify inputs containing a trigger pattern); NIST SP 800-53 Rev. 5 CM-5 (Access Restrictions for Change)",
+   "related_concepts": [
+    "Model integrity",
+    "Release control",
+    "AI development"
+   ],
+   "_provenance": "Authored from concept: 'Trained models and their datasets are protected assets, because tampering with either can poison the model' (notes 4.2.9 Segmenting AI Development Environments). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 6, 5 Nov 2026.",
+   "style_version": 2
+  },
+  {
+   "id": "cc_d4_156",
+   "domain": 4,
+   "subtopic": "4.3 Cloud security. Cloud characteristics",
+   "difficulty": "foundational",
+   "bloom_level": "Foundational",
+   "question": "A yogurt maker's IT manager says virtualization is not one of the five essential cloud characteristics but a technology behind one of them. Which response from the security analyst is MOST accurate?",
+   "options": {
+    "A": "Agree; it is a technology that makes resource pooling possible",
+    "B": "Disagree; virtualization is what the term resource pooling means",
+    "C": "Disagree; virtualization was added later as a sixth characteristic",
+    "D": "Agree; and rapid elasticity is not one of the five either"
+   },
+   "correct": "A",
+   "key_concept": "The five characteristics are self-service, broad network access, pooling, elasticity and measured service; virtualization is a technology that enables pooling.",
+   "pre_read": "List the five characteristics before judging the claim.",
+   "correct_explanation": "The five essential characteristics are on-demand self-service, broad network access, resource pooling, rapid elasticity and measured service. Virtualization is not one of them; it is a technology that lets a provider pool hardware among customers. Treating virtualization as resource pooling is the runner-up: the two are closely linked, but pooling is the characteristic, and virtualization is one way to achieve it.",
+   "wrong_explanations": {
+    "B": "Closest choice: virtualization and pooling are closely linked. But pooling is the characteristic; virtualization is one technology that makes it possible.",
+    "C": "Tempting because cloud lists vary between vendors. But the definition still names five characteristics, and virtualization is not among them.",
+    "D": "Tempting because it starts by agreeing correctly. But rapid elasticity is one of the five: capacity that grows and shrinks quickly with demand."
+   },
+   "tips": [
+    "Eliminate: C invents a sixth characteristic, and D wrongly drops rapid elasticity, which is one of the five.",
+    "Final two: A beats B because resource pooling is the characteristic, and virtualization is a technology that makes pooling possible.",
+    "Exam cue: the five are self-service, network access, pooling, elasticity and measured service; a technology such as virtualization is never on the list."
+   ],
+   "framework_ref": "NIST SP 800-145 Section 2 (The NIST Definition of Cloud Computing: essential characteristics)",
+   "related_concepts": [
+    "Essential characteristics",
+    "Resource pooling",
+    "Virtualization"
+   ],
+   "_provenance": "Authored from concept: 'Virtualization is one of the five essential characteristics' (exam trap, notes 4.3.1 The Five Essential Characteristics of Cloud Computing). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 6, 5 Nov 2026.",
+   "style_version": 2
+  },
+  {
+   "id": "cc_d4_157",
+   "domain": 4,
+   "subtopic": "4.3 Cloud security. Virtualization and containers",
+   "difficulty": "application",
+   "bloom_level": "Application",
+   "question": "A phone insurance startup's developer says a public container image with millions of downloads is safe to deploy without review. Which reply from the system administrator is MOST accurate?",
+   "options": {
+    "A": "Popular images are safe, since many users would spot flaws",
+    "B": "Popularity proves nothing; scan it and use trusted sources",
+    "C": "It is safe once run in a container, not a virtual machine",
+    "D": "Its signature proves it is free of flaws and malware"
+   },
+   "correct": "B",
+   "key_concept": "Every public image is outside software: scan it and run only images from trusted, maintained sources; popularity and signatures do not prove it is flaw-free.",
+   "pre_read": "Ask what download counts and signatures actually prove about an image.",
+   "correct_explanation": "Download counts show popularity, not safety: public images can carry outdated libraries, malware or secrets, like any outside software. NIST's container guide says to run only images from a maintained set of trusted images and registries, kept updated as flaws emerge. The signature answer is the runner-up: a valid signature proves who published the image and that it was not altered, not that it is flaw-free.",
+   "wrong_explanations": {
+    "A": "Tempting because crowds seem to vet software. But popular images still ship outdated libraries and have carried malware, and no one is accountable for checking.",
+    "C": "Tempting because containers isolate apps. But containers share the host's kernel, and a flawed or malicious image is just as harmful inside one.",
+    "D": "Closest choice: signatures are a real safeguard. But they prove who published the image and that it is unaltered, not that its contents are free of flaws."
+   },
+   "tips": [
+    "Eliminate: A trusts popularity as proof of safety, and C treats running in a container as a fix for a flawed image.",
+    "Final two: B beats D because a signature proves origin and integrity, not that the image is free of flaws; scanning and trusted sources cover that.",
+    "Exam cue: secure the template, not just the copy: every image is outside software until it is scanned and pulled from a trusted source."
+   ],
+   "framework_ref": "NIST SP 800-190 Section 4.1.5 (Use of untrusted images: maintain a set of trusted images and registries and allow only images from it to run); NIST SP 800-190 Section 3.1.1 (Image vulnerabilities: updates are made upstream in the images, which are then redeployed)",
+   "related_concepts": [
+    "Container images",
+    "Trusted registries",
+    "Image signing"
+   ],
+   "_provenance": "Authored from concept: 'Secure the template, not just the copy: harden and patch images, and pull them only from approved sources' (notes 4.3.2 Virtualization and Containers in the Cloud). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 6, 5 Nov 2026.",
+   "style_version": 2
+  },
+  {
+   "id": "cc_d4_158",
+   "domain": 4,
+   "subtopic": "4.3 Cloud security. Service models",
+   "difficulty": "application",
+   "bloom_level": "Application",
+   "question": "A youth orchestra's app runs on a platform as a service (PaaS), and the provider says the runtime version its developers chose will lose support. Which advice from the system administrator is MOST accurate?",
+   "options": {
+    "A": "The provider will switch the app to a newer runtime version",
+    "B": "The team must move its own app to a supported runtime version",
+    "C": "The app stays safe while the provider patches the platform",
+    "D": "An unsupported runtime needs no action on an isolated platform"
+   },
+   "correct": "B",
+   "key_concept": "In PaaS, the provider patches the runtime versions it supports, but the customer chooses the version its app uses and must move before support ends.",
+   "pre_read": "Ask what the provider does for a runtime version before and after its support ends.",
+   "correct_explanation": "In PaaS, the provider patches the runtime versions it supports, but the team chose this version for its code. Once support ends, the provider stops fixing it, so the team must move its app to a supported version and test that the code still works. The provider switching versions itself is the runner-up: providers do patch runtimes, but a new version can break the team's code, so the move is the team's.",
+   "wrong_explanations": {
+    "A": "Closest choice: the provider patches a runtime while supporting it. But a new version can break the team's code, so the team, which chose it, makes and tests the move.",
+    "C": "Tempting because the provider patches the platform. But once this runtime version loses support, the provider stops patching it, and its new flaws stay open.",
+    "D": "Tempting because PaaS keeps customers' apps apart. But isolation does not fix flaws in the runtime itself; unsupported software must be replaced or covered by an approved exception."
+   },
+   "tips": [
+    "Eliminate: C assumes the provider keeps patching a version it is retiring, and D treats isolation as a fix for flaws in unsupported software.",
+    "Final two: B beats A because the provider patches supported runtimes but does not move the team's code to a new version, which could break it; the team chose the version and makes the move.",
+    "Exam cue: in PaaS the provider patches the platform it supports, but the runtime version an app uses is the customer's choice, so moving off an unsupported one is the customer's job."
+   ],
+   "framework_ref": "NIST SP 800-145 Section 2 (The NIST Definition of Cloud Computing: service models); NIST SP 800-53 Rev. 5 SA-22 (Unsupported System Components)",
+   "related_concepts": [
+    "PaaS",
+    "Unsupported runtimes",
+    "Service models"
+   ],
+   "_provenance": "Authored from concept: 'PaaS customers patch the operating system under their application' (exam trap, notes 4.3.3 Cloud Service Models: IaaS, PaaS and SaaS). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 6, 5 Nov 2026. Re-angled in the batch 6 fix round to runtime end of support, because its PaaS patching split repeated cc_d4_016.",
+   "style_version": 2
+  },
+  {
+   "id": "cc_d4_159",
+   "domain": 4,
+   "subtopic": "4.3 Cloud security. Deployment models",
+   "difficulty": "foundational",
+   "bloom_level": "Foundational",
+   "question": "A cartography firm runs its apps across two public cloud providers, and its system owner calls this a hybrid cloud. Which reply from the security analyst is MOST accurate?",
+   "options": {
+    "A": "It is hybrid, since any mix of two clouds counts as hybrid",
+    "B": "It is multi-cloud, since both of its providers are public",
+    "C": "It is a community cloud, since two public providers share it",
+    "D": "It is private, since only the firm's staff use its apps"
+   },
+   "correct": "B",
+   "key_concept": "Hybrid cloud mixes deployment models, such as private and public; using several public providers is multi-cloud.",
+   "pre_read": "Ask whether the setup mixes kinds of cloud or only counts providers.",
+   "correct_explanation": "Hybrid cloud joins different deployment models, such as a private cloud with a public one. Using several public providers is multi-cloud: it reduces reliance on any one provider but adds separate consoles and settings to secure. The runner-up stretches hybrid to any mix of clouds, but the word refers to mixing models, not counting providers.",
+   "wrong_explanations": {
+    "A": "Closest choice: hybrid does mean a mix. But it mixes deployment models, such as private and public; two public providers make it multi-cloud.",
+    "C": "Tempting because two parties are involved. But a community cloud is shared by organizations with common needs, not split between providers.",
+    "D": "Tempting because only staff use the apps. But private means infrastructure built for one organization; renting public cloud services is not private."
+   },
+   "tips": [
+    "Eliminate: C confuses two providers with a community of organizations, and D calls rented public services private because only staff use them.",
+    "Final two: B beats A because hybrid mixes deployment models, while two public providers is multi-cloud.",
+    "Exam cue: hybrid counts models, multi-cloud counts providers; one setup can be both, but two public clouds alone is only multi-cloud."
+   ],
+   "framework_ref": "NIST SP 800-145 Section 2 (The NIST Definition of Cloud Computing: deployment models)",
+   "related_concepts": [
+    "Multi-cloud",
+    "Hybrid cloud",
+    "Deployment models"
+   ],
+   "_provenance": "Authored from concept: 'Hybrid cloud and multi-cloud mean the same thing' (exam trap, notes 4.3.4 Cloud Deployment Models). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 6, 5 Nov 2026.",
+   "style_version": 2
+  },
+  {
+   "id": "cc_d4_160",
+   "domain": 4,
+   "subtopic": "4.3 Cloud security. Shared responsibility",
+   "difficulty": "application",
+   "bloom_level": "Application",
+   "question": "A distillery is moving payroll from its infrastructure as a service (IaaS) virtual machines to a software as a service (SaaS) product. Which duty can its system administrator MOST clearly drop?",
+   "options": {
+    "A": "Patching the operating system and payroll software",
+    "B": "Deciding which staff accounts may view salary records",
+    "C": "Setting the payroll service's sharing and export options",
+    "D": "Answering to staff if salary records are ever exposed"
+   },
+   "correct": "A",
+   "key_concept": "Moving from IaaS to SaaS shifts patching of the operating system and application to the provider; data, accounts, access and settings stay with the customer.",
+   "pre_read": "Sort each duty into the provider's platform or the customer's own use of it.",
+   "correct_explanation": "Moving from IaaS to SaaS hands the provider every technical layer, including the operating system and the payroll application, so patching them leaves the distillery's list. Configuration stays with the customer in every model, which makes the sharing and export settings the runner-up: the provider supplies the options, but the distillery chooses and maintains them.",
+   "wrong_explanations": {
+    "B": "Tempting because SaaS providers run the service. But deciding who may see salary records is account and access management, which stays with the customer.",
+    "C": "Closest choice: the provider does build the sharing options. But choosing and maintaining the settings stays with the customer in every service model.",
+    "D": "Tempting because the provider runs the service. But accountability for its staff's data stays with the distillery, even when a provider does the work."
+   },
+   "tips": [
+    "Eliminate: B is access management and D is accountability for the data, and both stay with the customer in every model.",
+    "Final two: A beats C because SaaS hands the provider the operating system and application, while service settings remain the customer's to choose.",
+    "Exam cue: moving up from IaaS to SaaS shifts patching to the provider; data, accounts, access and settings never move."
+   ],
+   "framework_ref": "NIST SP 800-145 Section 2 (The NIST Definition of Cloud Computing: service models); NIST SP 800-144 Section 2.3 (Outsourcing and Accountability)",
+   "related_concepts": [
+    "Shared responsibility",
+    "IaaS to SaaS",
+    "Customer duties"
+   ],
+   "_provenance": "Authored from concept: 'The provider owns security of the cloud; the customer owns security in the cloud' (notes 4.3.5 The Shared Responsibility Model). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 6, 5 Nov 2026.",
+   "style_version": 2
+  },
+  {
+   "id": "cc_d4_161",
+   "domain": 4,
+   "subtopic": "4.3 Cloud security. Cloud roles and agreements",
+   "difficulty": "application",
+   "bloom_level": "Application",
+   "question": "A party supplies chain's draft cloud contract says the provider will report breaches affecting the firm's data 'when practical'. Which change should the security analyst propose as BEST?",
+   "options": {
+    "A": "A right to inspect the provider's data centers in person",
+    "B": "A set deadline for the provider to report such breaches",
+    "C": "Monthly uptime reports against the service level agreement",
+    "D": "A clause moving all accountability for breaches to the provider"
+   },
+   "correct": "B",
+   "key_concept": "A cloud contract should set a deadline for the provider to report breaches, so the customer can meet its own notice duties.",
+   "pre_read": "Name the gap in the contract, then find the clause that closes that gap.",
+   "correct_explanation": "The gap is vague breach reporting: 'when practical' could mean weeks. A set deadline lets the firm investigate and meet its own legal notice duties in time. A right to inspect data centers is the runner-up: it adds assurance about controls, but it does nothing about when the firm hears of a breach, and large providers usually offer independent reports instead.",
+   "wrong_explanations": {
+    "A": "Closest choice: inspection rights are a real contract safeguard. But they test controls; they do not fix when the provider must tell the firm about a breach.",
+    "C": "Tempting because SLA reports are the best-known contract term. But uptime reports cover availability, not when the provider must tell the firm about a breach.",
+    "D": "Tempting because the provider holds the data. But accountability for the firm's data stays with the firm, whatever the contract says."
+   },
+   "tips": [
+    "Eliminate: C adds uptime reports, which cover availability rather than breaches, and D tries to move accountability, which stays with the firm whatever the contract says.",
+    "Final two: B beats A because the gap is when the firm hears of a breach; inspection rights test controls but leave reporting as vague as before.",
+    "Exam cue: match the clause to the gap: a reporting deadline for breaches, an SLA for uptime, independent reports for assurance, exit terms for deletion."
+   ],
+   "framework_ref": "NIST CSF 2.0 GV.SC-05 (requirements to address cybersecurity risks in supply chains are established, prioritized and integrated into contracts and other agreements with suppliers); NIST SP 800-144 Section 2.3 (Outsourcing and Accountability)",
+   "related_concepts": [
+    "Cloud contracts",
+    "Breach notification",
+    "Service level agreements"
+   ],
+   "_provenance": "Authored from concept: 'Contracts should set service targets and cover data location, breach notification and deleting data at exit' (notes 4.3.6 Cloud Roles and Agreements). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 6, 5 Nov 2026.",
+   "style_version": 2
+  },
+  {
+   "id": "cc_d4_162",
+   "domain": 4,
+   "subtopic": "4.3 Cloud security. Cloud data protection",
+   "difficulty": "application",
+   "bloom_level": "Application",
+   "question": "A music school will move all its file shares to cloud storage next month, and nobody knows which folders hold student records. What should the system administrator propose FIRST?",
+   "options": {
+    "A": "Encrypt every folder at the strongest level, then move it all",
+    "B": "Move everything now, and let data owners sort it afterward",
+    "C": "Have the data owners classify the folders before anything moves",
+    "D": "Ask the provider to label the sensitive folders as they move"
+   },
+   "correct": "C",
+   "key_concept": "Classify data before it moves to the cloud, so the most sensitive gets the strongest controls or stays out; data owners set the classification.",
+   "pre_read": "Ask what has to be known before anyone can choose the right controls.",
+   "correct_explanation": "Data owners decide classification, and classifying before the move shows which folders hold student records, so each class gets the right controls, such as tighter access and encryption, or stays out of the cloud. Encrypting everything is the runner-up: it protects storage, but without knowing what is sensitive, access rules, sharing settings and the choice of what should move remain guesses.",
+   "wrong_explanations": {
+    "A": "Closest choice: encryption is a sound control for cloud data. But it does not tell anyone which folders need tighter access or should not move at all.",
+    "B": "Tempting because it keeps the project on schedule. But sensitive records would land in the cloud with whatever settings they happen to get.",
+    "D": "Tempting because providers offer labeling tools. But deciding how sensitive the school's data is belongs to the school's data owners, not the provider."
+   },
+   "tips": [
+    "Eliminate: B moves sensitive records before anyone knows where they are, and D hands classification, a customer duty, to the provider.",
+    "Final two: C beats A because classification decides which controls each folder needs, while blanket encryption leaves access and placement decisions unmade.",
+    "Exam cue: in the cloud, the data is always the customer's job, and protecting it starts with knowing what it is: classify before you move."
+   ],
+   "framework_ref": "NIST CSF 2.0 ID.AM-05 (assets are prioritized based on classification, criticality, resources and impact on the mission); NIST SP 800-144 Section 4.7 (Data Protection)",
+   "related_concepts": [
+    "Data classification",
+    "Cloud migration",
+    "Data owners"
+   ],
+   "_provenance": "Authored from concept: 'Classify data before it moves, so the most sensitive gets the strongest controls or stays out' (notes 4.3.7 Protecting Data in the Cloud). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 6, 5 Nov 2026.",
+   "style_version": 2
+  },
+  {
+   "id": "cc_d4_163",
+   "domain": 4,
+   "subtopic": "4.3 Cloud security. Cloud posture management",
+   "difficulty": "application",
+   "bloom_level": "Application",
+   "question": "A bus tour firm's team made a storage bucket of passenger lists public, and it leaked; the data owner blames the cloud provider for allowing public buckets. What is the system administrator's MOST accurate reply?",
+   "options": {
+    "A": "The provider shares the fault, as it should block public buckets",
+    "B": "The provider caused it, since it runs the storage service",
+    "C": "Bucket access is a customer setting, so the firm caused it",
+    "D": "It depends on the service model, which the firm must check"
+   },
+   "correct": "C",
+   "key_concept": "Storage permissions are a customer setting in every service model, so a bucket the customer made public is the customer's misconfiguration to prevent and catch.",
+   "pre_read": "Ask who chose the bucket's access setting.",
+   "correct_explanation": "Storage permissions are a customer setting in every cloud service model. The provider offers public and private options; the firm's team chose public, so the leak came from the firm's misconfiguration, which baselines and posture checks such as CSPM exist to catch. Shared fault is the runner-up: providers do offer safeguards against public buckets, but offering the option does not make the provider responsible for how the firm set it.",
+   "wrong_explanations": {
+    "A": "Closest choice: providers do offer settings that block public buckets. But the firm's team chose the public setting, and that choice is the customer's part.",
+    "B": "Tempting because the provider runs the service. But running the storage is not the same as setting who may read each bucket.",
+    "D": "Tempting because many cloud duties shift with the service model. But who may read stored data is a customer setting in every model, so the answer does not change."
+   },
+   "tips": [
+    "Eliminate: B blames the provider for a setting the firm chose, and D thinks the answer changes with the service model, when storage access is the customer's in every model.",
+    "Final two: C beats A because who may read a bucket is the customer's setting in every model; provider safeguards help, but the firm set it public.",
+    "Exam cue: the provider supplies the settings and the customer chooses them; a public bucket is a customer misconfiguration."
+   ],
+   "framework_ref": "NIST SP 800-144 Section 2.3 (Outsourcing and Accountability); NIST CSF 2.0 PR.PS-01 (configuration management practices are established and applied)",
+   "related_concepts": [
+    "Cloud misconfiguration",
+    "Customer settings",
+    "Shared responsibility"
+   ],
+   "_provenance": "Authored from concept: 'If a storage bucket was public, the provider caused the breach' (exam trap, notes 4.3.8 Cloud Misconfiguration, CSPM and CASB). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 6, 5 Nov 2026.",
+   "style_version": 2
+  },
+  {
+   "id": "cc_d4_164",
+   "domain": 4,
+   "subtopic": "4.3 Cloud security. AI workloads",
+   "difficulty": "analysis",
+   "bloom_level": "Analysis",
+   "question": "A guided-hike company hosts a translation model on infrastructure as a service (IaaS) virtual machines and uses a managed chatbot service; both run the same flawed serving software. Which patching is MOST clearly the company's?",
+   "options": {
+    "A": "Both copies, since the company uses each of them",
+    "B": "Only its own copy, since the company installed it",
+    "C": "Neither copy, since the provider runs the whole cloud",
+    "D": "Only the managed service's, since it faces the internet"
+   },
+   "correct": "B",
+   "key_concept": "AI follows the service model: providers patch managed AI services, but customers patch software they install on IaaS machines.",
+   "pre_read": "Place each copy of the software in the stack, then ask who runs it.",
+   "correct_explanation": "The service model decides who patches. On IaaS the provider's share stops at the hardware and virtualization layer, so serving software the company installed on its virtual machines is the company's to patch. In the managed chatbot service, the provider runs the model and its software and patches that copy. Patching both is the runner-up: the company relies on each copy, but it has no access to the provider's software, or duty to patch it.",
+   "wrong_explanations": {
+    "A": "Closest choice: the company depends on both copies. But in a managed service the provider runs and patches the serving software, which the company cannot reach.",
+    "C": "Tempting because the provider runs the cloud under both. But on IaaS its share stops at the hardware and virtualization layer, below the software the company installed.",
+    "D": "Tempting because internet-facing systems are often patched first. But who patches depends on who runs the software, not on how exposed it is, and the provider runs the managed service."
+   },
+   "tips": [
+    "Eliminate: C hands software the company installed to the provider, whose IaaS share stops at the virtualization layer, and D decides by exposure instead of by who runs the software.",
+    "Final two: B beats A because the managed chatbot's serving software is the provider's to patch; the company patches only the copy it installed on IaaS.",
+    "Exam cue: AI follows the service model: the provider patches a managed AI service, and you patch any model software you install on IaaS."
+   ],
+   "framework_ref": "NIST SP 800-145 Section 2 (The NIST Definition of Cloud Computing: service models)",
+   "related_concepts": [
+    "Self-hosted AI models",
+    "IaaS duties",
+    "Shared responsibility"
+   ],
+   "_provenance": "Authored from concept: 'The split follows the service model; data and access always stay with the customer' (notes 4.3.9 Shared Responsibility for AI Workloads). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 6, 5 Nov 2026. Re-angled in the batch 6 fix round to contrast a managed AI service with a self-hosted model, because the IaaS patching lesson repeated cc_d4_043.",
+   "style_version": 2
+  },
+  {
+   "id": "cc_d4_165",
+   "domain": 4,
+   "subtopic": "4.3 Cloud security. AI workloads",
+   "difficulty": "application",
+   "bloom_level": "Application",
+   "question": "A guitar maker's procedure has the system administrator enable logging on new cloud services; its managed artificial intelligence (AI) service can log prompts and replies, but logging is off. What should the administrator do FIRST?",
+   "options": {
+    "A": "Turn on logging, with read access for named staff only",
+    "B": "Turn on logging for replies only, leaving prompts unrecorded",
+    "C": "Keep logging off, since the provider monitors its platform",
+    "D": "Turn on logging, and give every staff account read access"
+   },
+   "correct": "A",
+   "key_concept": "Watching its own use of a cloud AI service is the customer's job: turn logging on and protect the logs, which can hold sensitive prompts.",
+   "pre_read": "Check what the procedure assigns, then think about what the logs will contain.",
+   "correct_explanation": "The procedure assigns enabling logging to the administrator, and in shared responsibility the customer watches its own use of a cloud service, AI included. Prompts show what staff sent and any misuse, so they are logged too, and because they may hold sensitive details, read access is limited to named staff. Logging replies only is the runner-up: it records less sensitive text, but it hides what staff actually sent.",
+   "wrong_explanations": {
+    "B": "Closest choice: leaving prompts out records less sensitive text. But prompts show what staff sent and any misuse; limiting who reads the logs protects them without leaving them unrecorded.",
+    "C": "Tempting because the provider does monitor its platform. But that covers the provider's systems, not how the company's staff use the service.",
+    "D": "Tempting because it turns logging on as required. But prompts and replies can hold sensitive data, so wide read access creates a new leak."
+   },
+   "tips": [
+    "Eliminate: C leaves the company blind to its own AI use, and D turns logging on but exposes the sensitive log contents to everyone.",
+    "Final two: A beats B because prompts show what staff sent and any misuse; limiting who reads the logs protects them without leaving them unrecorded.",
+    "Exam cue: in any cloud model, watching your own use is your job; turn logging on and protect the logs, since they hold the same data."
+   ],
+   "framework_ref": "NIST SP 800-53 Rev. 5 AU-2 (Event Logging); NIST SP 800-53 Rev. 5 AU-9 (Protection of Audit Information); NIST AI 100-1 (AI RMF 1.0) MEASURE 2.4 (the functionality and behavior of the AI system are monitored when in production)",
+   "related_concepts": [
+    "AI service logging",
+    "Customer duties",
+    "Log protection"
+   ],
+   "_provenance": "Authored from concept: 'Training data and tuned models are customer assets needing access control, encryption and logging' (notes 4.3.9 Shared Responsibility for AI Workloads). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 6, 5 Nov 2026.",
+   "style_version": 2
   }
  ]
 }

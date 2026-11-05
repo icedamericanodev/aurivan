@@ -48,7 +48,8 @@
             "cc_d4_021",
             "cc_d4_046",
             "cc_d4_071",
-            "cc_d4_101"
+            "cc_d4_101",
+            "cc_d4_131"
           ],
           "definition": "A network is a set of connected devices, called nodes, that exchange data by shared rules; switches link devices within a site and routers link networks.",
           "why_it_matters": "You cannot protect traffic you cannot picture. Knowing which device forwards what, and by which address, shows where a control belongs.",
@@ -102,7 +103,9 @@
             "cc_d4_001",
             "cc_d4_032",
             "cc_d4_064",
-            "cc_d4_072"
+            "cc_d4_072",
+            "cc_d4_132",
+            "cc_d4_133"
           ],
           "definition": "The Open Systems Interconnection (OSI) model is a seven-layer reference model that splits network communication into separate jobs, from physical signals to applications.",
           "why_it_matters": "Name the layer where a device works or an attack lands, and you can pick a control that operates there.",
@@ -161,7 +164,8 @@
             "cc_d4_022",
             "cc_d4_047",
             "cc_d4_073",
-            "cc_d4_102"
+            "cc_d4_102",
+            "cc_d4_134"
           ],
           "definition": "Named after the Transmission Control Protocol (TCP) and the Internet Protocol (IP), the TCP/IP model is the four-layer model the internet runs on.",
           "why_it_matters": "Real traffic follows TCP/IP, so tools, logs and firewall rules use its terms, including which transport protocol a service needs.",
@@ -256,7 +260,8 @@
             "cc_d4_023",
             "cc_d4_048",
             "cc_d4_074",
-            "cc_d4_103"
+            "cc_d4_103",
+            "cc_d4_135"
           ],
           "definition": "IPv4 and IPv6 are the two versions of the Internet Protocol (IP): IPv4 uses 32-bit addresses, and IPv6 uses 128-bit addresses.",
           "why_it_matters": "Most networks run both at once, and an IPv6 path nobody filters lets traffic slip around IPv4-only controls.",
@@ -356,7 +361,9 @@
             "cc_d4_061",
             "cc_d4_075",
             "cc_d4_099",
-            "cc_d4_104"
+            "cc_d4_104",
+            "cc_d4_136",
+            "cc_d4_137"
           ],
           "definition": "A port is a number from 0 to 65535 that tells a host which service receives traffic; a protocol is the set of rules that service speaks.",
           "why_it_matters": "Cleartext (unencrypted) protocols send passwords and data as plain readable text, so anyone on the path can read them.",
@@ -483,7 +490,8 @@
             "cc_d4_003",
             "cc_d4_049",
             "cc_d4_076",
-            "cc_d4_105"
+            "cc_d4_105",
+            "cc_d4_138"
           ],
           "definition": "A virtual private network (VPN) creates an encrypted tunnel across an untrusted network, such as the internet, so traffic cannot be read or changed on the way.",
           "why_it_matters": "A VPN protects remote traffic in transit, but it also extends the internal network to whatever device sits at the far end.",
@@ -579,7 +587,9 @@
             "cc_d4_062",
             "cc_d4_077",
             "cc_d4_100",
-            "cc_d4_106"
+            "cc_d4_106",
+            "cc_d4_139",
+            "cc_d4_140"
           ],
           "definition": "A firewall is a device or software that allows or blocks traffic between networks or hosts by rules on addresses, ports, connection state or application.",
           "why_it_matters": "Firewalls enforce which traffic may cross a boundary, and a rule set that allows too much quietly undoes that protection.",
@@ -682,7 +692,8 @@
             "cc_d4_034",
             "cc_d4_065",
             "cc_d4_078",
-            "cc_d4_107"
+            "cc_d4_107",
+            "cc_d4_141"
           ],
           "definition": "An intrusion detection system (IDS) alerts on suspicious traffic or host activity; an intrusion prevention system (IPS) sits in the traffic path and can also block it.",
           "why_it_matters": "Firewalls decide what may pass, but allowed traffic can still carry attacks; detection spots them, and prevention can stop them.",
@@ -788,7 +799,9 @@
             "cc_d4_035",
             "cc_d4_063",
             "cc_d4_079",
-            "cc_d4_108"
+            "cc_d4_108",
+            "cc_d4_142",
+            "cc_d4_143"
           ],
           "definition": "AI-assisted network defense uses artificial intelligence (AI), mainly machine learning, to learn normal traffic and flag or block unusual behavior that fixed rules miss.",
           "why_it_matters": "Machine learning surfaces the few events that matter among millions, but its mistakes need the same human oversight as any control.",
@@ -845,7 +858,8 @@
             "cc_d4_036",
             "cc_d4_066",
             "cc_d4_080",
-            "cc_d4_109"
+            "cc_d4_109",
+            "cc_d4_144"
           ],
           "definition": "Wireless security protects data sent by radio, over Wi-Fi and Bluetooth, where anyone within range can pick up the signal.",
           "why_it_matters": "Radio passes through walls, so without strong encryption and sign-in, anyone nearby can listen in or join.",
@@ -951,7 +965,8 @@
             "cc_d4_007",
             "cc_d4_050",
             "cc_d4_081",
-            "cc_d4_110"
+            "cc_d4_110",
+            "cc_d4_145"
           ],
           "definition": "An embedded system is a computer built into a device to do one job; industrial control systems (ICS) use them to run physical processes like power and water.",
           "why_it_matters": "An ICS attack can cause blackouts, floods or injuries, not just lost data, so safety and availability come first.",
@@ -1124,12 +1139,14 @@
             "cc_d4_026",
             "cc_d4_052",
             "cc_d4_083",
-            "cc_d4_113"
+            "cc_d4_113",
+            "cc_d4_146"
           ],
           "definition": "Network segmentation divides a network into smaller parts, with controls on the traffic between them, so a problem in one part cannot spread freely.",
           "why_it_matters": "On a flat network, one infected laptop can reach every server; segmentation contains attacks and shields the most sensitive systems.",
           "how_it_works": [
             "Systems are grouped by trust level and purpose, such as staff devices, payment systems and guests.",
+            "Backup servers get their own segment that accepts only backup traffic, so a breach of the systems they copy cannot reach the backups too.",
             "Boundaries are enforced by firewalls, network access control lists (ACLs) or software policy that allow only needed traffic.",
             "Segments can be physical, with separate switches, or logical, sharing hardware but kept apart by configuration.",
             "Traffic between internal segments is east-west; traffic into and out of the network is north-south."
@@ -1178,7 +1195,8 @@
             "cc_d4_009",
             "cc_d4_037",
             "cc_d4_084",
-            "cc_d4_114"
+            "cc_d4_114",
+            "cc_d4_147"
           ],
           "definition": "A firewall zone groups networks of equal trust; a screened subnet, often called a demilitarized zone (DMZ), holds public-facing servers between the internet and internal networks.",
           "why_it_matters": "Public-facing servers are the most attacked systems; in their own zone, a breached web server does not open the internal network.",
@@ -1254,7 +1272,8 @@
             "cc_d4_010",
             "cc_d4_038",
             "cc_d4_085",
-            "cc_d4_115"
+            "cc_d4_115",
+            "cc_d4_148"
           ],
           "definition": "A virtual local area network (VLAN) splits one physical switched network into separate logical networks, so devices in different VLANs cannot talk directly at layer 2.",
           "why_it_matters": "VLANs separate staff, guests and smart devices without extra switches, but they protect only if traffic between them is filtered.",
@@ -1309,7 +1328,8 @@
             "cc_d4_011",
             "cc_d4_039",
             "cc_d4_086",
-            "cc_d4_116"
+            "cc_d4_116",
+            "cc_d4_149"
           ],
           "definition": "Micro-segmentation applies security policy to individual workloads, such as single servers, virtual machines or containers, so each talks only to the systems it needs.",
           "why_it_matters": "Ordinary segments allow free movement inside each one; micro-segmentation shrinks the boundary to one workload, sharply limiting lateral movement.",
@@ -1404,7 +1424,8 @@
             "cc_d4_027",
             "cc_d4_053",
             "cc_d4_087",
-            "cc_d4_117"
+            "cc_d4_117",
+            "cc_d4_150"
           ],
           "definition": "Defense in depth layers independent physical, technical and administrative controls, so that if one fails or is bypassed, others still protect the asset.",
           "why_it_matters": "Every control fails sometimes; layers buy time to detect and respond before one failure becomes a breach.",
@@ -1462,7 +1483,8 @@
             "cc_d4_012",
             "cc_d4_040",
             "cc_d4_070",
-            "cc_d4_118"
+            "cc_d4_118",
+            "cc_d4_151"
           ],
           "definition": "Zero Trust is a security approach that grants no trust for network location alone and checks every request to every resource, every time.",
           "why_it_matters": "Remote work, cloud services and stolen credentials have erased the safe inside network; Zero Trust limits what an intruder can do.",
@@ -1553,7 +1575,8 @@
             "cc_d4_028",
             "cc_d4_054",
             "cc_d4_088",
-            "cc_d4_119"
+            "cc_d4_119",
+            "cc_d4_152"
           ],
           "definition": "A Zero Trust architecture separates deciding from enforcing: a decision point judges each access request, and enforcement points carry out the decision.",
           "why_it_matters": "A resource with no enforcement point in front of it sits outside the policy's protection.",
@@ -1628,7 +1651,8 @@
             "cc_d4_013",
             "cc_d4_055",
             "cc_d4_089",
-            "cc_d4_120"
+            "cc_d4_120",
+            "cc_d4_153"
           ],
           "definition": "Network access control (NAC) checks who and what is connecting, and whether the device meets security requirements, before granting the right level of access.",
           "why_it_matters": "Anyone can plug into a meeting-room port; NAC keeps unknown or unhealthy devices away from sensitive systems.",
@@ -1682,7 +1706,9 @@
             "cc_d4_014",
             "cc_d4_056",
             "cc_d4_090",
-            "cc_d4_121"
+            "cc_d4_121",
+            "cc_d4_154",
+            "cc_d4_155"
           ],
           "definition": "Segmenting artificial intelligence (AI) development environments keeps model building, training and testing on separate, controlled segments, away from production systems and their data.",
           "why_it_matters": "Experiments are less locked down than production, so without isolation a weak test server can expose real customer data or a live model.",
@@ -1750,7 +1776,8 @@
             "cc_d4_015",
             "cc_d4_041",
             "cc_d4_091",
-            "cc_d4_122"
+            "cc_d4_122",
+            "cc_d4_156"
           ],
           "definition": "Cloud computing is using computing resources, such as servers, storage and software, from a shared pool over a network, scaling as needed and paying for use.",
           "why_it_matters": "Self-service and elasticity speed things up, but they also let anyone with an account create, expose or delete resources in minutes.",
@@ -1826,7 +1853,8 @@
             "cc_d4_029",
             "cc_d4_057",
             "cc_d4_092",
-            "cc_d4_123"
+            "cc_d4_123",
+            "cc_d4_157"
           ],
           "definition": "Virtualization uses a hypervisor to run many isolated virtual machines on one physical server; containers share one operating system kernel but keep applications apart.",
           "why_it_matters": "Cloud pooling depends on this isolation, and one badly built image can be copied into hundreds of running workloads.",
@@ -1915,13 +1943,15 @@
             "cc_d4_042",
             "cc_d4_067",
             "cc_d4_093",
-            "cc_d4_124"
+            "cc_d4_124",
+            "cc_d4_158"
           ],
           "definition": "Cloud service models describe what the provider delivers: infrastructure as a service (IaaS), platform as a service (PaaS) or software as a service (SaaS).",
           "why_it_matters": "The service model decides how much the customer must secure; misreading it leaves layers nobody patches.",
           "how_it_works": [
             "IaaS rents out virtual servers, storage and networks; the customer manages the operating system and everything above it.",
             "PaaS offers a managed runtime, database or development platform; the customer secures its own code and settings.",
+            "PaaS providers patch each runtime version while they support it; the customer picks the version its app uses and moves to a supported one before support ends.",
             "SaaS delivers a finished application; the customer manages users, settings and the data it puts in.",
             "Specialist offerings, such as artificial intelligence (AI) services, usually behave like PaaS or SaaS for who secures what."
           ],
@@ -2010,7 +2040,8 @@
             "cc_d4_018",
             "cc_d4_058",
             "cc_d4_094",
-            "cc_d4_125"
+            "cc_d4_125",
+            "cc_d4_159"
           ],
           "definition": "Cloud deployment models describe who the cloud infrastructure is built for and shared with: public, private, community or hybrid.",
           "why_it_matters": "The model shapes control, cost and risk, and regulated data may need more control than a public cloud gives by default.",
@@ -2111,7 +2142,8 @@
             "cc_d4_043",
             "cc_d4_068",
             "cc_d4_095",
-            "cc_d4_126"
+            "cc_d4_126",
+            "cc_d4_160"
           ],
           "definition": "The shared responsibility model divides cloud security duties: the provider secures the cloud itself, and the customer secures what it puts in the cloud.",
           "why_it_matters": "Many cloud breaches come from customers assuming the provider handles something it does not, such as access settings.",
@@ -2219,7 +2251,8 @@
             "cc_d4_030",
             "cc_d4_059",
             "cc_d4_096",
-            "cc_d4_127"
+            "cc_d4_127",
+            "cc_d4_161"
           ],
           "definition": "Cloud roles name the parties in a cloud service, such as consumer, provider, broker, carrier and auditor; agreements set out what each must do.",
           "why_it_matters": "Shared duties work only when written down and checked, or the customer cannot know which risks are still its own.",
@@ -2295,7 +2328,8 @@
             "cc_d4_031",
             "cc_d4_060",
             "cc_d4_097",
-            "cc_d4_128"
+            "cc_d4_128",
+            "cc_d4_162"
           ],
           "definition": "Protecting cloud data means classifying it, encrypting it in transit and at rest, controlling the keys, and making sure it can be recovered and fully deleted.",
           "why_it_matters": "The data stays the customer's responsibility in every model, and well-controlled encryption limits the damage if storage is exposed.",
@@ -2391,7 +2425,8 @@
             "cc_d4_019",
             "cc_d4_044",
             "cc_d4_098",
-            "cc_d4_129"
+            "cc_d4_129",
+            "cc_d4_163"
           ],
           "definition": "A cloud misconfiguration is a setting that leaves resources more exposed than intended, such as public storage, open ports or excessive permissions.",
           "why_it_matters": "Misconfiguration is among the commonest causes of cloud data exposure, because self-service lets anyone create resources quickly.",
@@ -2478,7 +2513,9 @@
             "cc_d4_020",
             "cc_d4_045",
             "cc_d4_069",
-            "cc_d4_130"
+            "cc_d4_130",
+            "cc_d4_164",
+            "cc_d4_165"
           ],
           "definition": "Shared responsibility for cloud-hosted artificial intelligence (AI) workloads splits duties: the provider secures the AI platform; the customer secures data, models, access and use.",
           "why_it_matters": "Teams that assume the provider secures everything leave training data, tuned models and access settings exposed.",
