@@ -406,9 +406,10 @@ describe('J2 practice session → Results', () => {
       act(() => scroller().props.onScroll({ nativeEvent: { contentOffset: { x: 0, y: 200 }, layoutMeasurement: { width: 390, height: 700 } } }));
       expect(moment().props.inView).toBe(true);
       expect(useSeen.getState().moments.milestone).toBe(1);
+      // Grove 4b (5.4): in full (the session's one full celebration) the tile is pressed; its one tap at 320 ms.
+      expect(byName('PressedTile').some((p) => p.props.motion === 'moment')).toBe(true);
+      act(() => jest.advanceTimersByTime(320));
       expect(mockSuccess).toHaveBeenCalledTimes(1);
-      // In full (the session's one full celebration): the leaf pops.
-      expect(byName('Pop').some((p) => p.props.trigger === 1)).toBe(true);
       // …and its words are not spoken a second time.
       expect(heard().mock.calls.filter(([t]) => String(t).startsWith('A new badge, Groundwork: First Foothold'))).toHaveLength(1);
     });
@@ -1101,9 +1102,11 @@ describe('Review fixes on the real screens', () => {
     for (const n of r!.root.findAll((x) => typeof x.type === 'string' && typeof x.props.onLayout === 'function')) layout(n.props, { y: 0, height: 900 });
     const cel = () => r!.root.findByType(MilestoneMomentView).findAll((n) => n.props.celebration !== undefined)[0].props.celebration as { mode: string; settled: boolean };
     expect(cel()).toMatchObject({ mode: 'full', settled: false });
-    expect(mockSuccess).toHaveBeenCalledTimes(1); // its one tap, with the motion
+    // Grove 4b (5.4): its one tap comes as the tile is pressed; a drag before then ends it and taps at once.
+    expect(mockSuccess).not.toHaveBeenCalled();
     act(() => scroller.props.onScrollBeginDrag());
     expect(cel().settled).toBe(true);
+    expect(mockSuccess).toHaveBeenCalledTimes(1);
   });
 
   it('Today’s due count and the caught-up line leave out questions the bank no longer has', () => {

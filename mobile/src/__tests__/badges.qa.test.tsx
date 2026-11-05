@@ -426,6 +426,11 @@ describe('2. earning a new badge in a session', () => {
     act(() => {
     screen().props.onScroll(700, 700);
   }); // 1200 < 700 + 700 − 96: in view
+    // Grove 4b (5.4): the one success tap comes as the tile is pressed, 320 ms into the press.
+    expect(mockSuccess).not.toHaveBeenCalled();
+    act(() => {
+      jest.advanceTimersByTime(320);
+    });
     expect(mockSuccess).toHaveBeenCalledTimes(1);
     expect(cel().mode).toBe('full');
     expect(cel().settled).toBe(false);
@@ -772,7 +777,7 @@ describe('4. the case', () => {
     press(/^Badges not yet earned$/);
     expect(allText()).toContain('All earned.');
     press(/^Earned badges$/);
-    expect(allText()).toContain('Nothing pressed on this sheet yet.');
+    expect(allText()).toContain('Nothing pressed in this set yet.');
   });
 
   it('detail sheet, not yet: rule, progress, how to earn it, effort, and Study for this', () => {
@@ -804,10 +809,10 @@ describe('4. the case', () => {
   it('detail sheet, earned: the date and what it means, no How to earn, no Study button', () => {
     midLearner();
     mount(<Badges />);
-    press(/^First Foothold\. Pressed 22 September/);
+    press(/^First Foothold\. Earned 22 September/);
     const sheet = root().findByType(Modal);
     const t = textOf(sheet);
-    expect(t).toContain('Earned 22 Sep');
+    expect(t).toContain('Pressed 22 Sep');
     expect(t).toContain('You’ve mapped where you stand.');
     expect(t).not.toContain('How to earn it');
     expect(sheet.findAll((n) => /^Study for/.test(n.props.accessibilityLabel ?? ''))).toHaveLength(0);
@@ -1186,10 +1191,10 @@ describe('8. regressions', () => {
     expect(existsSync(join(__dirname, '..', 'app', 'milestones.tsx'))).toBe(true);
     expect(readFileSync(join(__dirname, '..', 'app', '_layout.tsx'), 'utf8')).toMatch(/<Stack\.Screen name="milestones"/);
     mount(<Badges />);
-    // Grove You C2: the head is the date, then the title "Badges" (never "Herbarium", labels decision 8).
-    expect(allText()).toMatch(/^\w{3} \d{1,2} \w{3} Badges /);
+    // Grove 4b (F2, 5.1 item 1): the back row "You", then the title "Badges" (never "Herbarium", labels decision 8).
+    expect(allText()).toMatch(/^You Badges Every set counts on its own\. /);
     expect(allText()).not.toMatch(/Herbarium/);
-    expect(allText()).toContain('Earned by what you master. Once earned, a badge stays.');
+    expect(allText()).toContain('Earned by what you’ve mastered. Once earned, a badge stays.');
   });
 
   it('every link to the badges in the app uses /milestones (nothing points at a /badges route that does not exist)', () => {

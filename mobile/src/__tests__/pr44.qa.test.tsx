@@ -376,7 +376,7 @@ describe('J2 earning a badge opens its keepsake', () => {
     });
     earn('long-memory', 'cisa', Date.now() - 2 * DAY);
     mount(<Badges />);
-    press(/^Long Memory · 25 recalls, Clay\. Pressed/);
+    press(/^Long Memory · 25 recalls, Clay\. Earned/);
     expect(allText()).toContain('On your plant: the jay.');
     expect(allText()).not.toMatch(/Unlocked!|\d+ of \d+ collected/i);
     unmount();
@@ -384,7 +384,7 @@ describe('J2 earning a badge opens its keepsake', () => {
       useProgress.getState().setPlantSettings({ showPlant: false });
     });
     mount(<Badges />);
-    press(/^Long Memory · 25 recalls, Clay\. Pressed/);
+    press(/^Long Memory · 25 recalls, Clay\. Earned/);
     expect(allText()).not.toContain('On your plant');
   });
 });

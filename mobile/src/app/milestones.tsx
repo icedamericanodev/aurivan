@@ -23,21 +23,31 @@
  * - Moments shows only once something on it happened (a Fresh Start is a
  *   moment, never a goal). After the exam: no Next panel, no progress, and
  *   no Closest sort (it is a keepsake album).
- * - Large text: two columns at ×1.3, a list at ×1.6.
- * - Mobile 1.51 (Field Guide, DESIGN_SYSTEM.md §21): the case is the HERBARIUM. A running head
- *   (Grove You C2: the date only; it was "Herbarium · Badges"), the title and an italic line ("Every sheet counts on its own; there's no
- *   grand total."); "Still to collect · for your exam" as ruled rows; each set a numbered sheet
- *   ("Sheet I · Groundwork · 2 of 3 pressed") whose badges are pressed specimens on a plate (the
- *   real emblem, tape, a label). Every badge, its meaning, tiers and gating are unchanged.
+ * - Large text: two columns at ×1.3, a list at ×2 (Grove 4b).
+ * - Grove Phase 4b (design-notes/grove/phase4b/PHASE4B.md 5.1 to 5.5), "the pressed paper tile":
+ *   the back row "You", the title, "Every set counts on its own." and the one promise; "Still to
+ *   collect · for your exam" as rows in one card; ONE CARD PER SET ("Groundwork" with "2 of 3
+ *   pressed" beside it, no roman numbers) whose badges are pressed paper tiles (components/
+ *   pressedTile.tsx), 3 across, 2 from text scale 1.3, one column of rows from text scale 2; each
+ *   set ends with its planter line ("Completing Groundwork adds the fieldstone planter to your
+ *   plant's looks."), drawn in the plant's own style, hidden when Show my plant is off.
+ * - After the exam the case is the keepsake album: it opens with the learner's own plant on its
+ *   soil line, wearing the keepsakes on show, its name in `title`; then the sets.
+ * - An earned badge's sheet shows the vignette: the pressed tile beside the plant wearing that
+ *   badge's keepsake, "On your plant: the jay." (only when the keepsake is on show).
+ *   Every badge, its meaning, tiers and gating are unchanged.
  */
 import { router, useFocusEffect, useLocalSearchParams } from 'expo-router';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Platform, ScrollView, useWindowDimensions, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { BadgeCellMemo as BadgeCell, BadgeListRowMemo as BadgeListRow, BadgeSheet, NextPanel, ShelfHeader, StretchHeader } from '../components/badges';
+import { BadgeCellMemo as BadgeCell, BadgeListRowMemo as BadgeListRow, BadgeSheet, caseTileSize, NextPanel, planterLine, ShelfHeader, StretchHeader } from '../components/badges';
 import { useGrowth } from '../components/motion';
-import { Button, Chip, ChipRow, PushedHeader, RadioRow, T, useFontScale } from '../components/ui';
-import { FieldText, headDate, Plate, RunningHead, sheetNo } from '../components/fieldguide';
+import { Plant } from '../components/plant/Plant';
+import { PlanterIcon } from '../components/plant/LookUI';
+import { plantArtSize, SoilBed, soilYFor } from '../components/plant/PlantPage';
+import { PressedTile } from '../components/pressedTile';
+import { Button, Chip, ChipRow, groveCard, PushedHeader, RadioRow, T, useFontScale } from '../components/ui';
 import {
   CASE_SORTS,
   grownLine,
@@ -60,9 +70,11 @@ import { moveFocus } from '../lib/a11y';
 import { caseStage, seeCase, studyFor, weakestDomain } from '../lib/badges';
 import { backfillLine, badgeCase, catalogFillLine, seeBackfill, seeCatalogFill } from '../lib/milestones';
 import { useActiveCert } from '../lib/useActiveCert';
-import { onYourPlantLine } from '../engine/plantLooks';
+import { plantCallName } from '../engine/plant';
+import { keepsakeForBadge, onYourPlantLine } from '../engine/plantLooks';
 import { usePlantView } from '../lib/plant';
 import { useSeen } from '../store/seen';
+import { grovePlate } from '../theme/grove';
 import { LARGE_TEXT, motion, space } from '../theme/tokens';
 import { useTheme } from '../theme/useTheme';
 
@@ -84,7 +96,8 @@ const OPEN_AT_EXAM_DAY = 21;
 const SHEET_GONE_MS = Platform.OS === 'ios' ? 700 : 60;
 
 export default function Badges() {
-  const { c } = useTheme();
+  const { c, isDark } = useTheme();
+  const theme = isDark ? 'dark' : 'light';
   const { cert, progress, readiness, daysLeft, dueCount } = useActiveCert();
   // Mobile 1.14: an earned badge's keepsake line, only when this exam has a
   // plant that shows; "On your plant" only when the keepsake is on show (UX review H1).
@@ -93,7 +106,7 @@ export default function Badges() {
   const shownKeepsakes = plantView.look?.resolved.keepsakes ?? [];
   const params = useLocalSearchParams<{ shelf?: string; open?: string }>();
   const fontScale = useFontScale();
-  const { width: screenW } = useWindowDimensions();
+  const { width: screenW, height: screenH } = useWindowDimensions();
   const full = useMemo(() => badgeCase(cert.id, progress), [cert.id, progress]);
   // Moments only once something on it happened: an unearned Fresh Start is never shown as a goal.
   const marks = useMemo(() => full.marks.filter(onCase), [full.marks]);
@@ -117,7 +130,6 @@ export default function Badges() {
   // (it shows for 14 days from then). Read once per visit; recorded below.
   const [grownSeen] = useState(() => useSeen.getState().values);
   const [visitAt] = useState(() => Date.now());
-  const today = headDate(visitAt);
   const grownKey = (id: SetId) => `badges:grown:${cert.id}:${id}`;
   const grownFor = (s: SetView) => grownLine(s, planters, grownSeen[grownKey(s.info.id)]?.[0], visitAt);
 
@@ -238,13 +250,26 @@ export default function Badges() {
     setOpen(null);
   };
 
-  // A sheet: three specimens across (56pt emblems), two at ×1.3 text, a list at ×1.6. The plate's
-  // mount takes 2 × (1 + 6 + 1 + 12) of the width.
-  const list = fontScale >= 1.6;
+  // A set's card (PHASE4B 5.1 item 5): three tiles across, two from text scale 1.3, one column of
+  // rows from text scale 2. The card's inner width is the screen less the page gutters, its padding
+  // and its 1pt edges (246, 301 and 316pt at 320, 375 and 390 with the built 20pt gutter); a tile is
+  // min(84, cell width - 12), so four across never fits.
+  const list = fontScale >= 2;
   const cols = fontScale >= LARGE_TEXT ? 2 : 3;
-  const inner = Math.min(screenW, 560) - space.gutter * 2 - 40;
+  const inner = Math.min(screenW, 560) - space.gutter * 2 - grovePlate.pad * 2 - grovePlate.edge * 2;
   const cellW = Math.floor((inner - (cols - 1) * space.xs) / cols);
-  const size = cols === 3 ? Math.min(58, cellW - 34) : Math.min(72, cellW - 40);
+  const size = caseTileSize(cellW);
+
+  // The planter line closes each counted set's card, drawn in the plant's own style (5.1 item 5).
+  // Only while the plant shows (Show my plant on): no plant, no line.
+  const planterFor = (s: SetView) => {
+    const p = plantView.plant;
+    if (!p) return null;
+    const complete = s.completeAt !== undefined || planters?.[s.info.id] !== undefined;
+    const pl = planterLine(p.species, s.info.id, complete);
+    if (!pl) return null;
+    return { line: pl.line, art: <PlanterIcon id={pl.id} species={p.species} size={40} theme={theme} style={plantView.style === 'botanical' ? 'botanical' : 'storybook'} /> };
+  };
 
   // Opens at a shelf, once, by set: the one asked for (Field notes), else
   // Exam Day in the final three weeks. Measured on the shelf's outer view,
@@ -261,6 +286,41 @@ export default function Badges() {
     scroll.current?.scrollTo({ y: Math.max(0, jumpY - space.lg), animated: false });
   }, [jumpY, sort, jumpTo]);
 
+  // 5.5: the album's plant (after the exam, while the plant shows). Its look already wears the
+  // keepsakes the learner chose to show; its name in `title`. Show my plant off: the sets come first.
+  const pv = plantView.plant;
+  const albumSize = pv ? Math.min(plantArtSize(pv.growth, fontScale, screenW - space.gutter * 2, screenH), 240) : 0;
+  const albumArt = after ? plantView.look?.art : undefined;
+  // Where the soil line sits (it builds the art once): only for the album, and only when it changes.
+  const albumSoilY = useMemo(() => (pv && after ? soilYFor(pv.species, pv.growth, albumArt, albumSize, theme) : 0), [pv, after, albumArt, albumSize, theme]);
+  const album =
+    pv && after ? (
+      <View testID="album-plant" style={{ marginTop: space.lg }}>
+        <SoilBed size={albumSize} soilY={albumSoilY} bleed={space.gutter}>
+          <Plant species={pv.species} stage={pv.growth} organs={plantView.scales} size={albumSize} fit={false} theme={theme} quietLook={!plantView.face} look={plantView.look?.art} accessibilityLabel={plantView.label} />
+        </SoilBed>
+        <T v="title" style={{ marginTop: space.md }}>{plantCallName(pv)}</T>
+      </View>
+    ) : null;
+
+  // 5.3, the earned-sheet vignette: the pressed tile beside the plant wearing this badge's keepsake.
+  // Only when the badge gives one AND it is on show (the line says "On your plant: the jay.").
+  const vignetteFor = (m: CaseMark) => {
+    const k = keepsakeForBadge(m.badge);
+    if (!pv || !k || !shownKeepsakes.includes(k.id)) return null;
+    const plantSize = 112;
+    return (
+      <View style={{ flexDirection: 'row', alignItems: 'flex-end', justifyContent: 'center', gap: space.lg }} accessibilityElementsHidden importantForAccessibility="no-hide-descendants">
+        <View style={{ paddingBottom: space.sm }}>
+          <PressedTile badge={m.badge} tier={m.tier} emblem={m.domain?.emblem} state="earned" size={64} />
+        </View>
+        <SoilBed size={plantSize} soilY={soilYFor(pv.species, pv.growth, plantView.look?.art, plantSize, theme)} bleed={0}>
+          <Plant species={pv.species} stage={pv.growth} organs={plantView.scales} size={plantSize} fit={false} theme={theme} quietLook={!plantView.face} look={plantView.look?.art} />
+        </SoilBed>
+      </View>
+    );
+  };
+
   const renderMarks = (items: CaseMark[], flat: boolean) =>
     list ? (
       <View>
@@ -276,6 +336,8 @@ export default function Badges() {
             showSet={flat}
             showProgress={!after}
             quiet={quiet}
+            weakest={weakest}
+            onStudy={study}
           />
         ))}
       </View>
@@ -300,7 +362,6 @@ export default function Badges() {
       </View>
     );
 
-  const shelfNo = new Map(sets.filter((x) => x.marks.length > 0).map((x, i) => [x.info.id, sheetNo(i)]));
   const shelf = (s: SetView) => {
     const items = s.marks.filter((m) => !m.stretch && passesFilter(m, filter));
     // The Stretch row: its own caption and small grid under the core marks, after the exam's needs.
@@ -308,25 +369,23 @@ export default function Badges() {
     const id: SetId = s.info.id;
     return (
       <View key={id} testID={`shelf-${id}`} onLayout={id === jumpTo ? (e) => setJumpY(e.nativeEvent.layout.y) : undefined}>
-        <ShelfHeader set={s} no={shelfNo.get(id) ?? ''} line={setCountLine(s)} quiet={quiet} grown={after ? undefined : grownFor(s)}>
+        <ShelfHeader set={s} line={setCountLine(s)} quiet={quiet} grown={after ? undefined : grownFor(s)} planter={planterFor(s)}>
           {id === 'fieldNotes' && (
             <Button kind="ghost" label="See game levels ›" onPress={() => router.push('/field-notes')} style={{ alignSelf: 'flex-start', marginLeft: -space.sm, marginTop: -space.sm }} />
           )}
-          <Plate>
-            {items.length > 0 ? (
-              renderMarks(items, false)
-            ) : (
-              <T v="meta" color={c.ink2}>
-                {filter === 'earned' ? 'Nothing pressed on this sheet yet.' : 'All earned.'}
-              </T>
-            )}
-            {stretch.length > 0 && (
-              <>
-                <StretchHeader set={s} />
-                {renderMarks(stretch, false)}
-              </>
-            )}
-          </Plate>
+          {items.length > 0 ? (
+            renderMarks(items, false)
+          ) : (
+            <T v="meta" color={c.ink2}>
+              {filter === 'earned' ? 'Nothing pressed in this set yet.' : 'All earned.'}
+            </T>
+          )}
+          {stretch.length > 0 && (
+            <>
+              <StretchHeader set={s} />
+              {renderMarks(stretch, false)}
+            </>
+          )}
         </ShelfHeader>
       </View>
     );
@@ -335,24 +394,28 @@ export default function Badges() {
   return (
     <SafeAreaView edges={['top', 'bottom']} style={{ flex: 1, backgroundColor: c.bg }}>
       <ScrollView ref={scroll} contentContainerStyle={{ paddingHorizontal: space.gutter, paddingBottom: space.xxl }}>
-        <PushedHeader onBack={() => router.back()} />
-        {/* Mobile 1.51 (Field Guide): the running head, then the title and its one promise. Grove You C2: the head shows the date only and the title is "Badges", never "Herbarium" (labels decision 8). */}
-        <RunningHead section={today.shown} sectionLabel={today.spoken} />
-        <T v="display" accessibilityRole="header" style={{ marginTop: space.lg }}>Badges</T>
-        {/* Short text (Sky, 5 Nov): one promise under the title, said once (the footer no longer repeats it). */}
-        <FieldText v="sub" style={{ marginTop: 2 }}>Earned by what you master. Once earned, a badge stays.</FieldText>
+        {/* Grove 4b (F2, 5.1 item 1): the back row named for where it goes, then the page's one display title. */}
+        <PushedHeader backLabel="You" onBack={() => (router.canGoBack() ? router.back() : router.replace('/you'))} />
+        <T v="display" accessibilityRole="header" style={{ marginTop: space.sm }}>Badges</T>
+        {/* Short text (Sky, 5 Nov): the italic line, then the one promise, each said once. */}
+        <T v="aside" color={c.ink2} style={{ marginTop: 2 }}>Every set counts on its own.</T>
+        <T v="meta" color={c.ink2} style={{ marginTop: space.xs }}>Earned by what you’ve mastered. Once earned, a badge stays.</T>
+
+        {/* 5.5: after the exam the album opens with the learner's own plant, as it is now, on its soil line. */}
+        {after && album}
 
         {fillSummary && (
-          <View accessible style={{ marginTop: space.lg, borderLeftWidth: 3, borderLeftColor: c.accent, paddingLeft: space.md }}>
+          // 5.1 items 2 and 3: the one-time lines, each once, as a plain card (no accent rule: that is the coach's voice).
+          <View accessible style={[groveCard(c), { marginTop: space.lg, padding: grovePlate.pad }]}>
             <T v="caption" color={c.accentText}>New in your badges</T>
-            <T v="quote" style={{ marginTop: 4 }}>{fillSummary}</T>
+            <T v="body" style={{ marginTop: 4 }}>{fillSummary}</T>
           </View>
         )}
 
         {summary && (
-          <View accessible accessibilityLabel={`${summary} From your study before badges arrived.`} style={{ marginTop: space.lg, borderLeftWidth: 3, borderLeftColor: c.accent, paddingLeft: space.md }}>
+          <View accessible accessibilityLabel={`${summary} From your study before badges arrived.`} style={[groveCard(c), { marginTop: space.lg, padding: grovePlate.pad }]}>
             <T v="caption" color={c.accentText}>From your study so far</T>
-            <T v="quote" style={{ marginTop: 4 }}>{summary}</T>
+            <T v="body" style={{ marginTop: 4 }}>{summary}</T>
           </View>
         )}
 
@@ -400,7 +463,7 @@ export default function Badges() {
         {sort === 'set' ? (
           sets.filter((s) => s.marks.length > 0).map(shelf)
         ) : (
-          <View style={{ marginTop: space.md }}>
+          <View style={[groveCard(c), { marginTop: space.md, padding: grovePlate.pad }]}>
             {(() => {
               const items = sortMarks(marks.filter((m) => passesFilter(m, filter)), sort);
               return items.length ? renderMarks(items, true) : <T v="meta" color={c.ink2}>{filter === 'earned' ? 'Nothing pressed yet. Still to collect shows where to start.' : 'All earned.'}</T>;
@@ -431,6 +494,7 @@ export default function Badges() {
           onStudy={study}
           cert={cert}
           plantLine={plantShown && sheetMark.status === 'earned' ? onYourPlantLine(sheetMark.badge, shownKeepsakes) : null}
+          vignette={sheetMark.status === 'earned' ? vignetteFor(sheetMark) : null}
         />
       )}
     </SafeAreaView>

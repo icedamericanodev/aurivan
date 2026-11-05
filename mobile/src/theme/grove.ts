@@ -43,6 +43,13 @@ export const groveDark: GroveInk = { navFloat: '#1A231D', seed: '#8A6A48', seedE
 export const specimenTape = 'rgba(214,205,182,0.85)';
 
 /**
+ * Grove Phase 4b (PHASE4B F1 and 5.4): the sheet of glassine (thin see-through paper) that lies
+ * over a badge for a moment while it is pressed on Results. Decorative only, the same in both
+ * themes; it never lies over the dark mount alone (the cream tile is already under it).
+ */
+export const glassine = 'rgba(255,255,255,0.55)';
+
+/**
  * Grove Phase 4 (PHASE4.md section 6): the ink on a mint fill (the hero kind button, the "Next" pill).
  * The same dark ink in both themes, because mint is the same in both (#A9D9BA with #17231B, 10.3:1).
  * Never `c.ink`: in dark that is a light colour, which fails on mint.

@@ -994,8 +994,8 @@ describe('Journey 5 · share card', () => {
   function openShare() {
     filled({ earned: { 'long-memory': new Date(2026, 10, 3, 9).getTime() } });
     mount(<Badges />);
-    press(/^Long Memory · 25 recalls, Clay\. Pressed/);
-    press(/^Share Long Memory · 25 recalls$/);
+    press(/^Long Memory · 25 recalls, Clay\. Earned/);
+    press(/^Share this badge: Long Memory · 25 recalls$/);
     expect(root().findAllByType(Modal)).toHaveLength(1);
   }
   const shareButton = () => buttons(/^Share image$|^Share$/).find((b) => typeof b.props.accessibilityHint === 'string' && b.props.accessibilityHint.includes('share sheet'))!;

@@ -203,6 +203,7 @@ describe('You: what went up since the last look', () => {
 
 describe('the milestone moment', () => {
   it('waits until it is on screen to move, its haptic with it; its words do not wait', () => {
+    jest.useFakeTimers({ doNotFake: ['nextTick', 'setImmediate', 'queueMicrotask'] });
     setMockReducedMotion(false);
     const say = jest.spyOn(AccessibilityInfo, 'announceForAccessibility').mockImplementation(() => {});
     const moment = { key: 'rooted:10', kind: 'milestone' as const, label: 'Rooted · 10 days', rule: 'Study on 10 days in all.', set: 'rooted', setName: 'Rooted', unlock: 'Ten study days.', tier: 1 };
@@ -215,6 +216,12 @@ describe('the milestone moment', () => {
       r!.update(<MilestoneMomentView moment={moment as never} once="s1" inView />);
     });
     expect(useSeen.getState().moments.milestone).toBe(1);
+    // Grove 4b (5.4): the success tap comes as the tile is pressed, 320 ms in.
+    expect(mockSuccess).not.toHaveBeenCalled();
+    act(() => {
+      jest.advanceTimersByTime(320);
+    });
     expect(mockSuccess).toHaveBeenCalledTimes(1);
+    jest.useRealTimers();
   });
 });

@@ -12,11 +12,12 @@ import { View } from 'react-native';
 import type { LastPressed } from '../engine/fieldGuide';
 import { shortDate, spokenShortDate } from '../lib/format';
 import { fieldInk, LARGE_TEXT, space } from '../theme/tokens';
-import { groveRadius, specimenTape } from '../theme/grove';
+import { groveRadius } from '../theme/grove';
 import { useTheme } from '../theme/useTheme';
 import { ChevronRight, ICON_STROKE } from './icons';
 import { EmblemArt } from './medallion';
 import { AnimatedPressable, usePressScale } from './motion';
+import { TapeStrips } from './pressedTile';
 import { Row, T, Trail, useFontScale } from './ui';
 
 /** The row's title, shown and said. The code name stays; the words are "Badges" (labels decision 8). */
@@ -99,7 +100,8 @@ export function shelfLine(count: number, last?: LastPressed): string {
 }
 
 /**
- * Grove Phase 4 (PHASE4.md 7.14 item 7, board 04-phone-you): You's badge shelf. Four square tiles,
+ * Grove Phase 4b (PHASE4B 5.6): only the tiles' look changed, to the pressed paper tile (two strips
+ * of tape at opposite corners). Grove Phase 4 (PHASE4.md 7.14 item 7, board 04-phone-you): You's badge shelf. Four square tiles,
  * the newest pressed badges first (each its own pressed art on a quiet tile with its paper tape),
  * then dashed empty slots in `leafEmpty`; under them one line. The shelf and its line are ONE
  * button to the badges screen, spoken as before (count, "new badge", the last one pressed); the
@@ -153,8 +155,8 @@ export const BadgeShelf = memo(function BadgeShelf({
                   // fill was about 1.03:1 on the card and the tile shape was lost.
                   style={{ flex: 1, aspectRatio: 1, minWidth: 48, borderRadius: groveRadius.tile, backgroundColor: g.specimen, alignItems: 'center', justifyContent: 'center' }}
                 >
-                  {/* The pale paper tape that holds a pressed specimen (the kit's strip across the top). */}
-                  <View style={{ position: 'absolute', top: -4, width: 30, height: 10, borderRadius: 2, backgroundColor: specimenTape, transform: [{ rotate: '-4deg' }] }} />
+                  {/* Grove 4b (5.2, 5.6): the pressed paper tile's two strips of tape, at opposite corners. */}
+                  <TapeStrips size={large ? 120 : 72} />
                   {/* The art sits on a light sheet in both themes, so it keeps the light-sheet inks. */}
                   <EmblemArt badge={p.badge} tier={p.tier} emblem={p.emblem} palette={fieldInk.light.pressed} size={large ? 64 : 44} />
                 </View>
