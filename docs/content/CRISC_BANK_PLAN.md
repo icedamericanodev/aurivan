@@ -440,6 +440,16 @@ edits, keys untouched; plan in the round 9 cross-domain findings), then a
 blind re-test of a sample. Rule 1 is amended so new items also put an owner into
 a second distractor when the key names none.
 
+**Cue pass done (5 Nov 2026).** 48 distractors in 47 items were reworded and
+every key letter and key text kept. When two or more options mention an
+owner, the key is now among them in 70 of 103 items (68%, chance 53%; was 97%).
+Options opening "Refer" are now keyed 6 of 15, "Assess" 14 of 33 and "Take" 6 of 12.
+Two blind re-tests (47 items) matched every key. They found five reworded
+distractors that were half-right or unclear (d1_123 C, d2_019 B, d2_032 B,
+d1_105 C, d2_097 D); these were fixed and tested again. Still lopsided, for a later pass if needed:
+openings "Update" 7/8, "Propose" 10/14, "Rely" 0/14, "Lower" 0/11,
+"Move" 0/13, "Close" 1/21.
+
 **Next round (round 10, +25 to 500):** D1 +6, D2 +6, D3 +8, D4 +5 (130/110/160/100).
 - Owner cue: at least 8 items where two distractors name an owner and the key does not (keys that validate data, compare with history, record or analyze).
 - Settings: no health, airline or airport, energy or utility, dairy or cooperative. Bank and retailer at most 2. Use charity, school district, rail, mining, research lab, government agency, insurer, publisher, sports club, museum or water transport (each at most once). No third "faulty vendor update".
