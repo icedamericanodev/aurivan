@@ -31,7 +31,7 @@ import { router, useFocusEffect, useLocalSearchParams } from 'expo-router';
 import { memo, useCallback, useDeferredValue, useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
 import { AccessibilityInfo, useWindowDimensions, View } from 'react-native';
 import { Dandelion, DomainRing } from '../../components/glyphs';
-import { CardDivider, CardHead, GlyphTile, HeroKicker, HubCard, HubTile, MintPill } from '../../components/groveHub';
+import { AreaDot, CardDivider, CardHead, GlyphTile, HeroKicker, HubCard, HubTile, MintPill } from '../../components/groveHub';
 import { HeroCard } from '../../components/groveToday';
 import { BookOpen, CalendarCheck, ChevronDown, Compass, ICON_STROKE, Info, Play } from '../../components/icons';
 import { AnimatedPressable, CheckDraw, Collapse, Turn, usePressScale, useScreenFocus } from '../../components/motion';
@@ -580,6 +580,9 @@ const LessonGroups = memo(function LessonGroups({
               <View style={{ flexDirection: 'row', alignItems: 'center', gap: space.sm }}>
                 {/* L1: the area's status by SHAPE (ring, arc, filled tick) in its colour; the empty ring in leafLine (3:1). */}
                 <DomainRing done={groupDone} total={items.length} tone={tone} track={c.track} outline={g.leafLine} paper={c.raised} size={16} />
+                {/* The kit's 8pt area dot, as on Practice's By domain rows, so each area shows its colour
+                    from the start (the ring alone is grey until a lesson is done). Decorative. */}
+                <AreaDot color={tone} />
                 <T v="meta" num style={{ minWidth: 12 }}>{d.id}</T>
                 <View style={{ flex: 1, minWidth: 0 }}>
                   <T v="label">{d.short}</T>
@@ -592,8 +595,9 @@ const LessonGroups = memo(function LessonGroups({
                 </Turn>
               </View>
               {/* A track only once a lesson here is done: five empty bars read as five failures (L1). */}
+              {/* Lines up under the name: ring 16 + dot 8 + number 12, with three 8pt gaps = 60. */}
               {groupDone > 0 && (
-                <View style={{ marginTop: space.sm, marginLeft: 44 }}>
+                <View style={{ marginTop: space.sm, marginLeft: 60 }}>
                   <ProgressBar value={items.length ? groupDone / items.length : 0} color={tone} height={3} />
                 </View>
               )}

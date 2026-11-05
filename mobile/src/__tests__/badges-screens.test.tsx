@@ -513,3 +513,44 @@ describe('review fixes (PR #40)', () => {
     expect(root().findAll((n) => n.props.from !== undefined && n.props.trigger !== undefined)[0].props.from).toBe(0.4);
   });
 });
+
+describe('You: the badge shelf (Grove PHASE4 7.14 item 7, board 04-phone-you)', () => {
+  const shelf = () => root().findAll((n) => n.props.testID === 'badge-shelf' && typeof n.type === 'string');
+  const hostsWith = (id: string) => root().findAll((n) => n.props.testID === id && typeof n.type === 'string');
+  // The shelf's rows: the views whose own children are the slots.
+  const shelfRows = () =>
+    shelf()[0].findAll((n) => typeof n.type === 'string' && n.children.some((k) => typeof k !== 'string' && /^shelf-/.test(String(k.props.testID))));
+
+  it('four square slots: the pressed badge first, then dashed empty slots; one line; one button besides All badges', () => {
+    earn('first-foothold', T0 - DAY);
+    mount(<You />);
+    const [card] = hostsWith('you-badges');
+    expect(card.findAll((n) => n.props.testID === 'shelf-tile' && typeof n.type === 'string')).toHaveLength(1);
+    expect(card.findAll((n) => n.props.testID === 'shelf-empty' && typeof n.type === 'string')).toHaveLength(3);
+    // The kit's line, led by the kept words.
+    expect(allText()).toContain('Your badges and field notes. 1 pressed · First Foothold, 11 Oct');
+    // Two controls only: All badges and the shelf.
+    expect(card.findAll((n) => n.props.accessibilityRole === 'button' && typeof n.type === 'string')).toHaveLength(2);
+    expect(shelf()).toHaveLength(1);
+    expect(shelf()[0].props.accessibilityLabel).toMatch(/^Badges: your badges and field notes, 1 earned\./);
+    // The tiles are pictures only: hidden from screen readers.
+    expect(shelf()[0].findAll((n) => n.props.importantForAccessibility === 'no-hide-descendants' && typeof n.type === 'string').length).toBeGreaterThan(0);
+    expect(shelfRows()).toHaveLength(1);
+    press(/^Badges: your badges and field notes/);
+    expect(router.push).toHaveBeenCalledWith('/milestones');
+  });
+
+  it('none pressed yet: four empty slots and the line says so', () => {
+    mount(<You />);
+    expect(hostsWith('shelf-empty')).toHaveLength(4);
+    expect(allText()).toContain('Your badges and field notes. None pressed yet');
+  });
+
+  it('from text scale 1.3 the shelf wraps 2 by 2', () => {
+    earn('first-foothold', T0 - DAY);
+    setScale(1.3);
+    mount(<You />);
+    expect(shelfRows()).toHaveLength(2);
+    setScale(1);
+  });
+});

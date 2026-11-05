@@ -192,11 +192,14 @@ describe('Results "Continue" (today\'s plan): openTab, then the next item above 
     expect(s.finishedAt).toBeUndefined();
   });
 
-  it('a review item whose queue was cleared elsewhere: "caught up" on the tabs, no session', async () => {
+  it('a review item whose queue was cleared elsewhere adds no minutes: no "left" line and no Continue (Grove 7.11)', async () => {
+    // The plan's only open step is a review with nothing due now, so there is nothing left to continue
+    // (Today counts it the same way, with the live due count).
     const r = await quickQuestionDone({ kind: 'review', count: 3 });
-    await go(() => fireEvent.press(screen.getByText('Continue')));
-    expect(names(r)).toEqual(['(tabs)', 'caught-up']);
-    expect(useSession.getState().active).toBeNull();
+    expect(names(r)).toEqual(['(tabs)', 'results']);
+    expect(screen.queryByText(/Today’s plan · .* left/)).toBeNull();
+    expect(screen.queryByText('Continue')).toBeNull();
+    expect(screen.queryByText('Done for now')).toBeNull();
   });
 
   it('a lesson item: the lesson on the tabs, Results gone', async () => {

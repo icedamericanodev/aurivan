@@ -3,7 +3,7 @@
  * so Results' growth plate (Fig. 6) can show this set's change honestly.
  */
 import { act, create, type ReactTestInstance, type ReactTestRenderer } from 'react-test-renderer';
-import Results from '../app/results';
+import Results, { resultsKey } from '../app/results';
 import { getAllQuestions } from '../content/loader';
 import { finishSession } from '../lib/finishSession';
 import { startFromIds } from '../lib/sessions';
@@ -77,4 +77,27 @@ it('a set keeps where each area stood as it began, and Results says the set’s 
   expect(t).toContain('10 of 10 this set');
   expect(labels().some((l) => l.startsWith('IS Operations: Building, 68 percent on latest tries, below the 70 line, up 8 points in this set.'))).toBe(true);
   expect(t).not.toMatch(/\bpass\b|you'?re ready/i);
+});
+
+it('Results keys its chart in the website’s words, and the chart never draws a "70 line" label (Grove 7.11)', () => {
+  expect(resultsKey(false)).toBe('Dashed line: 70, the target for each area. ↑: growth from this set. Clay: an area below 70.');
+  expect(resultsKey(true)).toBe('Dashed line: 70, the target for each area. ↑: growth from this mock. Clay: an area below 70.');
+  const ids = d4.slice(0, 10).map((q) => q.id);
+  act(() => {
+    d4.slice(10, 50).forEach((q, i) => useProgress.getState().recordAnswer('cisa', q.id, i < 30, undefined, { at: Date.now() - 3 * 86_400_000 }));
+    startFromIds('cisa', ids, 'Practice · IS Operations');
+    for (const id of ids) {
+      const q = d4.find((x) => x.id === id)!;
+      useSession.getState().answer(id, { display: q.correct, correct: true, ms: 30_000 });
+      useProgress.getState().recordAnswer('cisa', id, true);
+    }
+    finishSession();
+  });
+  act(() => {
+    r = create(<Results />);
+  });
+  const t = textOf(r!.root);
+  expect(t).toContain(resultsKey(false));
+  expect(labels()).toContain(`Key: ${resultsKey(false)}`);
+  expect(t).not.toContain('70 line');
 });

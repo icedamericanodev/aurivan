@@ -72,7 +72,7 @@ import { LeafStrip } from '../components/leafStrip';
 import { OptionCard, PickNote, TrustLine } from '../components/quiz';
 import { QuestionNote } from '../components/questionNote';
 import { useReportFlow } from '../components/support';
-import { todayMinutes } from '../components/journey';
+import { nextStepIndex, todayMinutes } from '../components/journey';
 import { shortenAtWord } from '../engine/textClip';
 import { EmptyPlate, FieldText, KeyCaption, KeyList, Plate, RunningHead, SpecimenLabel, SpecimenRow, StemChart } from '../components/fieldguide';
 import { emptyPlateLine, growthFigure, setStems } from '../engine/fieldGuide';
@@ -87,6 +87,7 @@ import { ICON_STROKE, Sprout } from '../components/icons';
 import { BigNum, Button, Enter, Gap, ICON_SIZE, InviteRow, Row, Screen, Section, T, useScreenScroll } from '../components/ui';
 import { getCertification } from '../content/certifications';
 import { findQuestion } from '../content/loader';
+import { questionExists } from '../lib/outline';
 import { findNote, subtopicOfQuestion } from '../content/notes';
 import { missedNoteGroups } from '../engine/outline';
 import { legacyTitle } from '../engine/planner';
@@ -116,6 +117,7 @@ import { startFromIds } from '../lib/sessions';
 import { openTab, runPlanItem } from '../lib/actions';
 import { currentIndex, planComplete } from '../engine/dayPlan';
 import { dayKey } from '../engine/streak';
+import { dueIds } from '../engine/srs';
 import { selectCert, useProgress } from '../store/progress';
 import { questionTarget, sessionWhere } from '../lib/support';
 import { useSession } from '../store/session';
@@ -125,10 +127,21 @@ import { useTheme } from '../theme/useTheme';
 /** The growth plate's entrance group: its growth waits for this group to land (premium round 2, UX P4). */
 const PLATE_GROUP = 1;
 
+/**
+ * Grove Phase 4 (PHASE4.md 7.11 and 7.13): the key under the results chart, in the website's words, so
+ * the dashed line, the up arrow and the clay colour each say what they mean ("growth from this mock"
+ * after a mock).
+ */
+export function resultsKey(isMock: boolean): string {
+  return `Dashed line: ${STEADY_FROM}, the target for each area. ↑: growth from this ${isMock ? 'mock' : 'set'}. Clay: an area below ${STEADY_FROM}.`;
+}
+
 export default function Results() {
   const { c } = useTheme();
   const active = useSession((s) => s.active);
   const clear = useSession((s) => s.clear);
+  // When Results opened: the "now" for the plan's due count, read once on the first draw (not on every render).
+  const [openedAt] = useState(() => Date.now());
   const [openId, setOpenId] = useState<string | null>(null);
   // Mobile 1.43: "What you missed" → "See answers" jumps to the Review answers heading.
   const reviewHead = useRef<View>(null);
@@ -295,12 +308,19 @@ export default function Results() {
   // Continue or Done for now. Read once (not a live value).
   const oneQuestion = active.title === 'Quick question' || active.title === 'Recall card';
   const todayPlan = oneQuestion && active.mode !== 'mock' && !guidedScope ? useProgress.getState().days[active.certId] : undefined;
-  const planLeft = todayPlan && todayPlan.day === dayKey(active.finishedAt ?? active.startedAt) && !planComplete(todayPlan) ? todayMinutes(todayPlan.items, todayPlan.done) : 0;
+  // Grove Phase 4 (7.11 carry item): the questions due now, read once like the plan, so a review step with
+  // nothing due adds no minutes. Today passes the same count, so both screens give the same total.
+  const dueNow = todayPlan ? dueIds(selectCert(useProgress.getState(), active.certId).review, openedAt, questionExists(active.certId)).length : 0;
+  const planLeft = todayPlan && todayPlan.day === dayKey(active.finishedAt ?? active.startedAt) && !planComplete(todayPlan) ? todayMinutes(todayPlan.items, todayPlan.done, dueNow) : 0;
   const continuePlan = () => {
     const plan = todayPlan;
     clear();
     openTab('/home');
-    if (plan) runPlanItem(plan.items[currentIndex(plan)], cert.id);
+    if (plan) {
+      // The next step with something to do (an empty review step is passed over, as on Today).
+      const next = nextStepIndex(plan, dueNow);
+      runPlanItem(plan.items[next >= 0 ? next : currentIndex(plan)], cert.id);
+    }
   };
 
   const practiseMissed = () => {
@@ -351,7 +371,8 @@ export default function Results() {
         {/* A timed mock that ended on the clock says so first (seen here, spoken by the effect above). */}
         {timedOut && (
           <View accessible accessibilityLabel={`${TIMES_UP_LINE} ${TIMES_UP_DETAIL}`} style={{ marginTop: space.sm }}>
-            <T v="label" color={c.clay}>{TIMES_UP_LINE}</T>
+            {/* The miss tone, never clay (PHASE4 4.1): clay means an area below the line. */}
+            <T v="label" color={c.wrong}>{TIMES_UP_LINE}</T>
             <T v="meta">{TIMES_UP_DETAIL}</T>
           </View>
         )}
@@ -378,6 +399,9 @@ export default function Results() {
             <StemChart stems={stems} line={STEADY_FROM} play={grow ? (active.before ? 'growth' : 'trace') : false} delay={motion.dur.enter + PLATE_GROUP * motion.stagger.group} />
           </Plate>
         )}
+        {/* The chart's key (7.11): the "70 line" label is gone from the chart, so the key says what the dashed line,
+            the up arrow and clay mean, as the website's results do. Only when a chart is drawn. */}
+        {!plateLine && <KeyCaption label="Key">{resultsKey(isMock)}</KeyCaption>}
         {range.enough && (
           // TYPE_SCALE 2.1: a range reads "68 to 78", never a dash (matches the web; a screen reader may say a dash as "minus").
           // The caps come from the head cut's textTransform.

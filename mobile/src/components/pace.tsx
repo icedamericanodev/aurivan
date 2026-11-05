@@ -17,10 +17,11 @@ import Animated, { Easing, ReduceMotion, useAnimatedStyle, useSharedValue, withT
 import type { Certification } from '../content/types';
 import { aboutSeconds, checkpointText, durationSpoken, durationText, durationWords, spokenMin, type MockPacing, type PaceStatus } from '../engine/pace';
 import { LARGE_TEXT, motion, radius, space } from '../theme/tokens';
+import { grovePlate } from '../theme/grove';
 import { useTheme } from '../theme/useTheme';
 import { Clock, Flag, Gauge, ICON_STROKE } from './icons';
 import { ProgressFill, useMotion } from './motion';
-import { ICON_SIZE, Row, Section, T, useFontScale } from './ui';
+import { groveCard, ICON_SIZE, Row, T, useFontScale } from './ui';
 
 /**
  * What the pace line says: a status (gauge icon), a cue to flag (flag icon,
@@ -162,9 +163,11 @@ function PaceBar({ done, used }: { done: number; used: number }) {
 }
 
 /**
- * Results → Pacing (timed mocks). Hairline rows, no card: time used vs
- * allowed, median seconds, each checkpoint, unanswered at the end, the last
- * 10% of the time vs the rest, and the slowest domain.
+ * Results → Pacing (timed mocks): time used vs allowed, median seconds, each
+ * checkpoint, unanswered at the end, the last 10% of the time vs the rest, and
+ * the slowest domain. Grove Phase 4 (PHASE4.md 7.13): one card with label and
+ * value rows like set results, headed by a `headline` (results are not a tab
+ * home, R4). Every row and its spoken words are as before.
  */
 export function PacingPanel({ pacing, cert }: { pacing: MockPacing; cert: Certification }) {
   const { c } = useTheme();
@@ -202,14 +205,15 @@ export function PacingPanel({ pacing, cert }: { pacing: MockPacing; cert: Certif
     }
   }
   return (
-    <View>
-      <Section title="Pacing" />
+    <View testID="pacing-card" style={[groveCard(c), { paddingHorizontal: grovePlate.pad, paddingTop: space.md, paddingBottom: space.xs }]}>
+      <T v="headline" accessibilityRole="header">Pacing</T>
       {rows.map(([k, v, spokenV], i) => (
         <View
           key={k}
           accessible
           accessibilityLabel={`${k}: ${spokenV}`}
-          style={{ paddingVertical: 12, borderBottomWidth: i === rows.length - 1 ? 0 : 1, borderBottomColor: c.line, gap: 2 }}
+          // A hairline between rows only; the first row sits under the heading.
+          style={{ paddingVertical: 12, borderTopWidth: i === 0 ? 0 : 1, borderTopColor: c.line, gap: 2 }}
         >
           <T v="meta">{k}</T>
           <T v="label" num>{v}</T>

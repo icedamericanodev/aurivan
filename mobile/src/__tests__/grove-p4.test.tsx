@@ -6,6 +6,7 @@ import { Dimensions, StyleSheet } from 'react-native';
 import { act, create, type ReactTestInstance, type ReactTestRenderer } from 'react-test-renderer';
 import Learn from '../app/(tabs)/learn';
 import Practice, { domainStatus, heroTitle } from '../app/(tabs)/practice';
+import { AreaDot } from '../components/groveHub';
 import { Button, Chip, Segmented } from '../components/ui';
 import { scaledScoreNote } from '../content/scoreNote';
 import { getCertification } from '../content/certifications';
@@ -155,6 +156,17 @@ describe('Learn (7.1, the 02 board)', () => {
     mount(<Learn />);
     const open = root().findAll((n) => n.props.accessibilityRole === 'button' && typeof n.type === 'string' && n.props.accessibilityState?.expanded === true);
     expect(open.map((n) => n.props.accessibilityLabel)).toEqual([expect.stringMatching(/^Domain 4, IS Operations, 0 of \d+ lessons done, next lesson here$/)]);
+  });
+
+  it('each Lessons area row shows its colour dot from the start, as Practice’s By domain rows do', () => {
+    mount(<Learn />);
+    const cert = getCertification('cisa')!;
+    const rows = root().findAll((n) => n.props.accessibilityRole === 'button' && typeof n.type === 'string' && /^Domain \d, /.test(String(n.props.accessibilityLabel)));
+    expect(rows).toHaveLength(cert.domains.length);
+    for (const row of rows) expect(row.findAllByType(AreaDot)).toHaveLength(1);
+    // Five different colours (at 0 of N the ring alone is grey, so the dot is what tells the areas apart).
+    const colours = rows.map((row) => row.findByType(AreaDot).props.color);
+    expect(new Set(colours).size).toBe(cert.domains.length);
   });
 });
 

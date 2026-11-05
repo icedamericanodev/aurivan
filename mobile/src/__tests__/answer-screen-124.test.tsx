@@ -11,7 +11,8 @@
  *  - Results: headline by sample size, calibration line, no tag soup,
  *    "Time's up", Android Back.
  */
-import { AccessibilityInfo, BackHandler } from 'react-native';
+import { AccessibilityInfo, BackHandler, StyleSheet } from 'react-native';
+import { light } from '../theme/tokens';
 import { act, create, type ReactTestInstance, type ReactTestRenderer } from 'react-test-renderer';
 import { router } from 'expo-router';
 import { getAllQuestions } from '../content/loader';
@@ -392,6 +393,11 @@ describe('Results', () => {
     mount(<Results />);
     expect(allText()).toContain(TIMES_UP_LINE);
     expect(allText()).toContain(TIMES_UP_DETAIL);
+    // Grove PHASE4 4.1 and 7.13: in the miss tone, never clay (clay means an area below the line).
+    const line = root().findAll((n) => typeof n.type === 'string' && n.props.children === TIMES_UP_LINE)[0];
+    const colour = StyleSheet.flatten(line.props.style).color;
+    expect(colour).toBe(light.wrong);
+    expect(colour).not.toBe(light.clay);
     act(() => {
       jest.advanceTimersByTime(1000);
     });

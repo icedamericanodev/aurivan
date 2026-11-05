@@ -69,7 +69,7 @@ import { View } from 'react-native';
 import { ringsChangeLine } from '../../components/journey';
 import { AREA_LINE_ONLY, AreaRows, lowEndLine, ReadinessBlock } from '../../components/youReadiness';
 import { FieldText, headDate, RunningHead } from '../../components/fieldguide';
-import { HERBARIUM, HerbariumEntry } from '../../components/herbarium';
+import { BadgeShelf, HERBARIUM, SHELF_SLOTS } from '../../components/herbarium';
 import { lastPressed } from '../../engine/fieldGuide';
 import { FadeIn, useGrowth, useScreenFocus, type Growth } from '../../components/motion';
 import { creditSubtitle } from '../../components/help';
@@ -156,7 +156,7 @@ export default function You() {
   const badgeCount = caseEarnedCount(progress.milestones?.earned);
   // Mobile 1.51: the herbarium row's newest specimens, from the saved keys alone (worked out again only when they change).
   const earnedKeys = progress.milestones?.earned;
-  const pressed = useMemo(() => lastPressed(earnedKeys, cert.domains), [earnedKeys, cert.domains]);
+  const pressed = useMemo(() => lastPressed(earnedKeys, cert.domains, SHELF_SLOTS), [earnedKeys, cert.domains]);
   const newBadge = useNewBadge();
   const badgesHidden = useSettings((s) => s.badgesHidden);
   // The back-fill line shows ONCE (code review): kept in state for this
@@ -396,7 +396,8 @@ export default function You() {
               </View>
               <Button kind="ghost" label="All badges" accessibilityHint="Opens your badges" onPress={openHerbarium} style={{ marginRight: -space.sm }} />
             </View>
-            <HerbariumEntry pressed={pressed} count={badgeCount} newBadge={newBadge} onPress={openHerbarium} bare />
+            {/* The kit's badge shelf (PHASE4 7.14 item 7): the newest pressed first, then empty slots, and one line. */}
+            <BadgeShelf pressed={pressed} count={badgeCount} newBadge={newBadge} onPress={openHerbarium} />
           </HubCard>
         )}
         {growth.show && (
