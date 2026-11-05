@@ -4,6 +4,11 @@ All notable user-facing changes to this app. The in-app **What's New** modal mir
 
 For internal/technical history, see git log and PR descriptions.
 
+## [v12.50.1] A clearer promise on the About page
+
+### Improved
+- The About page now says plainly what KaiSip teaches you: know why the best answer wins.
+
 ## [v12.50] — A free set of questions from every topic
 
 ### New

@@ -4,7 +4,7 @@
 
 Ready-to-paste copy for App Store Connect and Google Play Console.
 
-**Revised 5 Nov 2026 against mobile 1.54.3** (claim-by-claim check of the app code): the app's own names are used (Drills, Questions to revisit, Mistake journal, Eliminate two); widgets, reminders, study notes, principles, the exam guide, final review week, plant forms and badges are now listed; the brand line is **"Grow the judgment the exam rewards."** (growth-marketer, 5 Nov 2026), which replaces "Think like an IS auditor." because it stays true when other certifications ship (each has its own role lens). The screenshots predate mobile 1.50 to 1.53 and are re-shot in the closed-test build session.
+**Revised 5 Nov 2026 against mobile 1.54.3** (claim-by-claim check of the app code): the app's own names are used (Drills, Questions to revisit, Mistake journal, Eliminate two); widgets, reminders, study notes, principles, the exam guide, final review week, plant forms and badges are now listed; the brand line is **"Know why the best answer wins."** (owner decision after a trademark clearance check, 5 Nov 2026; see `TRADEMARK_CLEARANCE.md`). It replaces "Grow the judgment the exam rewards." (same day) and "Think like an IS auditor.", and it stays true when other certifications ship, because every one is a "choose the best answer" exam. The "GROW DEEP ROOTS" heading is now "REMEMBER WHAT YOU LEARN": "Grow Deep Roots" is a live US education trademark. The screenshots predate mobile 1.50 to 1.53 and are re-shot in the closed-test build session.
 Voice: Grove, warm, calm and credible, like a senior colleague who already passed.
 Brand source: `mobile/src/content/brand.ts`. Compliance source: `docs/mobile/ARCHITECTURE.md` §6.
 
@@ -15,7 +15,8 @@ Brand source: `mobile/src/content/brand.ts`. Compliance source: `docs/mobile/ARC
 - Only CISA is available. Never name other certifications or imply they are available now. If a field needs to say more are planned, use only the owner's line: "Starting with CISA. More certifications later." (as in the app's About).
 - No hype words ("ultimate", "guaranteed", "best", "#1").
 - Use the app's own names for features (Drills, Questions to revisit, Mistake journal, Eliminate two). Recheck the copy against the app before each release; features are renamed.
-- Keep the brand line certification-neutral ("Grow the judgment the exam rewards."). A role line such as "Think like an IS auditor." fits CISA only.
+- Keep the brand line certification-neutral ("Know why the best answer wins."). A role line such as "Think like an IS auditor." fits CISA only. "Best" here is the exam's own instruction, not a claim about the app.
+- Never use "Small sessions. Deep roots." or "Grow deep roots" in any copy or metadata ("deep roots" is crowded in education trademarks; `TRADEMARK_CLEARANCE.md`). The backup line is "Every answer teaches the why."
 
 Character counts below are exact for the short fields (® counts as 1). Long fields are approximate. Check them in the console's counter before you submit.
 
@@ -53,10 +54,10 @@ auditor,cybersecurity,governance,risk,controls,compliance,quiz,certification,stu
 - "isaca" is left out on purpose. Guideline 2.3.7 warns against packing keywords with third-party trademarks. CISA already appears descriptively in the subtitle.
 - If you need room, drop `infosec` and use `itgc` (97/100).
 
-### Description (4000): about 2,822/4000
+### Description (4000): about 2,825/4000
 
 ```
-Grow the judgment the exam rewards.
+Know why the best answer wins.
 
 KaiSip helps IT auditors, security and risk professionals prepare for the CISA® exam in short, calm sessions that fit around work. Every answer teaches the principle behind it, so you learn to choose the best answer, not just one that sounds right. Starting with CISA. More certifications later.
 
@@ -73,7 +74,7 @@ SEE THE PATH
 • An estimated readiness range, so you can see where your points are
 • An exam-date countdown, a final review week and a calm exam-day moment
 
-GROW DEEP ROOTS
+REMEMBER WHAT YOU LEARN
 • Questions to revisit come back before they fade
 • A mistake journal where you tag the slip behind each miss, then get the drill for your most common one
 • Study notes for every topic, short lessons and key terms
@@ -143,15 +144,15 @@ KaiSip: Cyber & IT Audit Prep
 
 Chosen 29 Oct 2026 (owner: "IT Audit" alone is too narrow as KaiSip adds certifications; growth-marketer and app-store-compliance-reviewer agree). "Cyber" is accurate for a CISA-only app because Protection of Information Assets is cybersecurity content; "IT audit" is an exact search phrase KaiSip can win. Conditions: keep CISA® in the short description and the owner's line near the top of the full description until a second certification is live; never add "Certified" or "Cybersecurity Cert" to the title (too close to ISC2's "Certified in Cybersecurity"); check the length of any translated title (29/30 leaves no room); use the same name on the App Store.
 
-### Short description (80): 75/80
+### Short description (80): 78/80
 
 ```
-Calm IT audit and cybersecurity practice for the CISA® exam. Works offline.
+Know why the best answer wins. CISA® exam prep for IT audit and cybersecurity.
 ```
 
-It carries "cybersecurity" (Play does not reliably match "cyber" to it) and the exam the title leaves out. Previous text (22 Oct): "Practice for the CISA® exam: teaching tips, daily plan and spaced review." When ISC2 CC ships in the Play build, switch to "Calm cybersecurity and IT audit practice for the CISA® and ISC2® CC® exams." (75) and update the guardrail, the trademark notice and "all 5 CISA domains" in the same change; have app-store-compliance-reviewer confirm the first listing that names ISC2.
+It opens with the brand line (5 Nov 2026), then carries "CISA® exam" (the high-intent search, used only to name the exam, and never first), "IT audit" and "cybersecurity" (Play does not reliably match "cyber" to it) and the exam the title leaves out. "Works offline" moved to the full description. Previous text (29 Oct to 5 Nov): "Calm IT audit and cybersecurity practice for the CISA® exam. Works offline." Before that (22 Oct): "Practice for the CISA® exam: teaching tips, daily plan and spaced review." When ISC2 CC ships in the Play build, switch to "Calm cybersecurity and IT audit practice for the CISA® and ISC2® CC® exams." (75) and update the guardrail, the trademark notice and "all 5 CISA domains" in the same change; have app-store-compliance-reviewer confirm the first listing that names ISC2.
 
-### Full description (4000): 2,829/4000
+### Full description (4000): 2,832/4000
 
 Its own text for Play (22 Oct 2026, revised 5 Nov 2026). It differs from the App Store text in three places: the beta line "free to use during the beta" (the same words as the beta invitation; never "free app", "completely free" or "free forever", because paid plans may come), home-screen widgets (Android only; the iPhone app has none), and the question-bank line (App Store only). Both descriptions carry the owner's line "Starting with CISA. More certifications later." and the same three drills (Snare Spotter, Signpost, Call It First; the rest open after 50 answers, `todaysDrill.ts`). Play indexes the full description for search, so these phrases already appear naturally: "CISA® exam", "IT auditors", "practice questions", "mock exams", "offline". Do not add keyword lists. Play's metadata policy rejects them.
 
@@ -160,7 +161,7 @@ Its own text for Play (22 Oct 2026, revised 5 Nov 2026). It differs from the App
 When the beta ends, change the beta line (the owner decides the wording then).
 
 ```
-Grow the judgment the exam rewards.
+Know why the best answer wins.
 
 KaiSip helps IT auditors, security and risk professionals prepare for the CISA® exam in short, calm sessions that fit around work. Every answer teaches the principle behind it, so you learn to choose the best answer, not just one that sounds right. Starting with CISA. More certifications later.
 
@@ -179,7 +180,7 @@ SEE THE PATH
 • An estimated readiness range, so you can see where your points are
 • An exam-date countdown, a final review week and a calm exam-day moment
 
-GROW DEEP ROOTS
+REMEMBER WHAT YOU LEARN
 • Questions to revisit come back before they fade
 • A mistake journal where you tag the slip behind each miss, then get the drill for your most common one
 • Study notes for every topic, short lessons and key terms
@@ -219,7 +220,7 @@ CISA® and ISACA® are registered trademarks of ISACA. KaiSip is not affiliated 
 
 Made from `design-notes/brand-kaisip/store/` (re-render with `node design-notes/brand-kaisip/store/render.mjs`):
 - **App icon:** `play-icon-512.png`, 512×512, 32-bit PNG with alpha, under 1 MB.
-- **Feature graphic:** `feature-graphic-1024x500.png`, 1024×500, 24-bit PNG with no alpha. The lockup and "Grow the judgment the exam rewards." on the Grove forest green (5 Nov 2026; was "Think like an IS auditor."). No CISA or ISACA text.
+- **Feature graphic:** `feature-graphic-1024x500.png`, 1024×500, 24-bit PNG with no alpha. The lockup and "Know why the best answer wins." on the Grove forest green (5 Nov 2026; earlier "Grow the judgment the exam rewards." and "Think like an IS auditor."). No CISA or ISACA text.
 - **Phone screenshots:** the six in `screenshots/` (section 3), 1080×1920, 24-bit PNG. **Stale:** taken before mobile 1.50 to 1.53 (4 tabs, Drills inside Practice, the new answer plate). Re-shoot before the closed test.
 
 ### Category
@@ -319,8 +320,8 @@ Apple Product Page Optimization can test screenshots, icon and preview video, bu
 |---|---|---|---|
 | iOS subtitle (change with a version update) | Practice for the CISA® exam (27) | CISA® exam practice, offline (28) | Same as above, measured as conversion before and after |
 | Name (later, only if data supports it) | KaiSip: Cyber & IT Audit Prep (29) | (none planned) | Title chosen 29 Oct 2026 for the multi-certification roadmap; revisit only if store data shows a problem |
-| Screenshot 1 caption | Know what to study next | Grow the judgment the exam rewards. | A concrete benefit first beats the brand line for cold traffic |
-| Feature graphic line | Grow the judgment the exam rewards. (35) | Learn the why behind every answer. (34) | A plain feature promise may convert cold traffic better than a positioning line |
+| Screenshot 1 caption | Know what to study next | Know why the best answer wins. | A concrete benefit first beats the brand line for cold traffic |
+| Feature graphic line | Know why the best answer wins. (30) | Every answer teaches the why. (29) | A plain feature promise may convert cold traffic better than a positioning line |
 
 Success metric: store listing conversion rate (visitors to installs), read at 90% confidence and at least 7 days per test.
 
