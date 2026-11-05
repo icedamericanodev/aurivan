@@ -488,6 +488,15 @@ about 14 of the 60 older items that key an owner with only one owner
 distractor; reduce the "Update" (7/8) and "Propose" (10/14) key openings and the
 "Have"/"Ask" (38/256) and outside-data (7/108) never-keyed patterns.
 
+**Cue pass 2 done (5 Nov 2026).** 53 distractors in 49 older items were
+reworded, keys unchanged. "Update" key openings went from 7/8 to 7/18 and
+"Propose" from 10/16 to about 10/26. An owner was added to an easy distractor
+in 15 items that keyed an owner beside a single owner decoy (bank excess over
+chance from +12 to about +9 points). Outside-data wording was taken off 16
+never-keyed wrong options. Two blind re-tests (49 items) matched every key; ten
+small wording fixes followed. Still lopsided: permissive openers ("Let", "Allow",
+"Leave") are never keyed (0 of 13); key one where ISACA supports it.
+
 **Next round (round 11, +25 to 525):** D1 +7, D2 +5, D3 +8, D4 +5 (137/115/168/105).
 - Owner balance per batch as above; key at least one "wait/defer" option and one "Have/Ask" option; no new "Update" or "Propose" keys; key adjusted outside data sometimes.
 - Stem form: at least 3 D3 and 2 D2 items as genuinely short "Which of the following … MOST/BEST" stems (under 20 words, noun-phrase options).
