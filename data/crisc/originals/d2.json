@@ -3488,21 +3488,21 @@
     {
       "id": "crisc_d2_095",
       "domain": 2,
-      "subtopic": "2A3 Vulnerability management. Weakness from a standard install",
+      "subtopic": "2A3 Vulnerability management. Spot-check findings at stores",
       "principle_id": "root-cause-over-symptom",
       "difficulty": "application",
       "bloom_level": "Application",
       "question": "Checks at 10 of a convenience chain's 240 stores find card-reader passwords left at the vendor default in nine, a setting the chain's standard store install applies. How should the risk analyst BEST record this?",
       "options": {
         "A": "As a weakness at the nine stores where it was found",
-        "B": "As a weakness in every store built on that install",
+        "B": "As a chain-wide weakness from the standard install",
         "C": "As a matter for each store's manager to put right",
         "D": "As closed once the nine stores reset their passwords"
       },
       "correct": "B",
-      "key_concept": "A weakness with a common cause, such as a standard install, is recorded across every asset that shares the cause, not only where found.",
+      "key_concept": "A weakness with a common cause, such as a standard install, is recorded against that cause, not only where a check found it.",
       "pre_read": "Read what the checks covered and how the stores were set up.",
-      "correct_explanation": "Nine failures in ten checks share one cause, the chain's standard store install, so the weakness is recorded wherever that install runs, and the card fraud scenario reflects the whole chain's exposure until checks show otherwise. Recording it at the nine stores alone is the runner-up: it keeps to what was seen, but it treats the 230 unchecked stores, built the same way, as sound.",
+      "correct_explanation": "Nine failures in ten checks share one cause, the chain's standard store install, so the weakness is recorded against that install, and the card fraud scenario reflects the whole chain's exposure until checks show otherwise. Recording it at the nine stores alone is the runner-up: it keeps to what was seen, but it treats the 230 unchecked stores, built the same way, as sound.",
       "wrong_explanations": {
         "A": "Tempting because it records only what the checks saw, but the cause is the standard install every store shares, so the 230 unchecked stores carry it too.",
         "C": "Store managers can reset passwords, but a weakness built into the standard install is a chain-wide exposure; local fixes leave the install, and the next store built from it, unchanged.",
@@ -3510,7 +3510,7 @@
       },
       "tips": [
         "Eliminate: C hands a chain-wide weakness to store managers as local fixes, and D closes the record after fixing only the stores checked.",
-        "Final two: B beats A because the nine failures share a cause, the standard install, so the weakness exists wherever that install runs, checked or not.",
+        "Final two: B beats A because the nine failures share a cause, the standard install, so the weakness is recorded against the install, not only the stores checked.",
         "Exam cue: when a weakness comes from a shared build, template or install, record it across everything built that way, not only where a check found it."
       ],
       "framework_ref": "ISACA Glossary (vulnerability); NIST SP 800-30 Rev. 1 Section 2.4 (Application of Risk Assessments: common threats and vulnerabilities across many systems can be assessed as organization-wide risks)",
@@ -3519,7 +3519,7 @@
         "Root cause",
         "Organization-wide risk"
       ],
-      "_provenance": "Authored from concept: notes 2A3.1 (Vulnerabilities in People, Process and Technology). Round 8, 5 Nov 2026: original scenario (spot checks at a convenience chain find vendor-default card-reader passwords that its standard store install sets) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Neighbours checked: crisc_d2_051 (a newly disclosed flaw in a shared component: find where it runs first; here the weakness is already found and the question is how far it reaches), crisc_d2_014 (four regional ratings of a shared platform aggregated; ratings, not a sampled weakness), crisc_d2_006 (a control test finding recorded as a vulnerability), crisc_d3_105 (unit entries consolidated), crisc_d4_052 (a recurring injection flaw traced to how code is written), CC cc_d4_051 and cc_d3_090 (default passwords changed during device setup: a hardening step, not a recording decision), CISA d3_087 (one template behind two environments) and d4_203 (one engineer able to restore a platform); no mirror in CISA, CC or AAIA. Keep apart from crisc_d2_051 and crisc_d2_014 in practice sets.",
+      "_provenance": "Authored from concept: notes 2A3.1 (Vulnerabilities in People, Process and Technology). Round 8, 5 Nov 2026: original scenario (spot checks at a convenience chain find vendor-default card-reader passwords that its standard store install sets) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Neighbours checked: crisc_d2_051 (a newly disclosed flaw in a shared component: find where it runs first; here the weakness is already found and the question is how far it reaches), crisc_d2_014 (four regional ratings of a shared platform aggregated; ratings, not a sampled weakness), crisc_d2_006 (a control test finding recorded as a vulnerability), crisc_d3_105 (unit entries consolidated), crisc_d4_052 (a recurring injection flaw traced to how code is written), CC cc_d4_051 and cc_d3_090 (default passwords changed during device setup: a hardening step, not a recording decision), CISA d3_087 (one template behind two environments) and d4_203 (one engineer able to restore a platform); no mirror in CISA, CC or AAIA. Keep apart from crisc_d2_051 and crisc_d2_014 in practice sets. Review fixes 5 Nov 2026 (round 8 standards audit, ISACA concept review and blind test): key reworded to a chain-wide weakness from the standard install (the old 'every store' wording took in the tenth store, which passed); key_concept, explanation and Final two tip match; subtopic label made neutral. Key unchanged (B).",
       "style_version": 2
     },
     {
@@ -3529,7 +3529,7 @@
       "principle_id": "answer-from-the-stem",
       "difficulty": "foundational",
       "bloom_level": "Foundational",
-      "question": "A risk analyst is rating how likely an airport's baggage-sorting controllers are to fail in the next year. Which of the following is the BEST basis for the rating?",
+      "question": "A risk analyst is rating how likely an airport's baggage-sorting controllers, in service and maintained for eight years, are to fail next year. Which of the following is the BEST basis for the rating?",
       "options": {
         "A": "The capability and intent of likely attackers",
         "B": "The cost of a day sorting baggage by hand",
@@ -3556,7 +3556,7 @@
         "Threat source",
         "Historical evidence"
       ],
-      "_provenance": "Authored from concept: notes 2B1.1 (Likelihood, Impact and Risk). Round 8, 5 Nov 2026: original scenario (rating how likely an airport's baggage-sorting controllers are to fail next year) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Neighbours checked: crisc_d2_056 (the adversarial half of the same NIST rule, keyed on capability, intent and targeting with incident history as its runner-up; this item's final two is recorded history against one expert's view), crisc_d2_069 (attempts counted as likelihood), crisc_d2_003 (threat source classes), crisc_d2_028 (a flood zone as a predisposing condition), crisc_d2_021 (peer outage reports as rating input), CC cc_d1_055 (qualitative rating with no loss history) and CISA d3_050 (test effort by failure likelihood); no mirror in CISA, CC or AAIA. Keep apart from crisc_d2_056 in practice sets.",
+      "_provenance": "Authored from concept: notes 2B1.1 (Likelihood, Impact and Risk). Round 8, 5 Nov 2026: original scenario (rating how likely an airport's baggage-sorting controllers are to fail next year) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Neighbours checked: crisc_d2_056 (the adversarial half of the same NIST rule, keyed on capability, intent and targeting with incident history as its runner-up; this item's final two is recorded history against one expert's view), crisc_d2_069 (attempts counted as likelihood), crisc_d2_003 (threat source classes), crisc_d2_028 (a flood zone as a predisposing condition), crisc_d2_021 (peer outage reports as rating input), CC cc_d1_055 (qualitative rating with no loss history) and CISA d3_050 (test effort by failure likelihood); no mirror in CISA, CC or AAIA. Keep apart from crisc_d2_056 in practice sets. Review fixes 5 Nov 2026 (round 8 standards audit, ISACA concept review and blind test): stem now says the controllers have eight years of service and maintenance, so the fault history the explanation relies on is in the stem. Key unchanged (D).",
       "style_version": 2
     },
     {
@@ -3576,7 +3576,7 @@
       "correct": "C",
       "key_concept": "A BIA recovery rank measures the harm of losing access to a resource over time, not the harm of its data leaking or being altered.",
       "pre_read": "Note what the BIA measured and what the owner is now rating.",
-      "correct_explanation": "A recovery rank shows how fast harm grows while a resource is unavailable, so a low rank means the business can wait for this data. It says nothing about customers' purchase histories leaking or about tampering that poisons the next model, so those scenarios need their own impact ratings. The BIA's silence on likelihood is the runner-up: true of every BIA, but these ratings are about impact.",
+      "correct_explanation": "The Glossary's BIA weighs criticality and sensitivity, but a recovery rank is its criticality result: it shows how fast harm grows while a resource is unavailable, so a low rank means the business can wait. It says nothing about purchase histories leaking or tampering that poisons the next model, so those scenarios need their own impact ratings. The BIA's silence on likelihood is the runner-up: true of every BIA, but these ratings are about impact.",
       "wrong_explanations": {
         "A": "Proposing impact is the business owner's role, since the business bears the harm; the flaw is the evidence the owner cited, not who cited it.",
         "B": "A BIA leaves out likelihood by design and still gives sound impact figures for outages; the problem is that a leak or tampering is not an outage.",
@@ -3593,7 +3593,7 @@
         "Recovery priority",
         "Data poisoning"
       ],
-      "_provenance": "Authored from concept: notes 2B2.1 (BIA Purpose, Dependencies and AI Systems). Round 8, 5 Nov 2026: original scenario (a retailer's model owner cites a BIA recovery rank to rate leak and tampering of an AI model's training data low) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Neighbours checked: crisc_d2_011 (a BIA ignores likelihood, here the runner-up), crisc_d2_036 (an AI service missing from a BIA), crisc_d2_073 (a supporting system ranked by user count), crisc_d2_012 (an AI service's RTO set by IT), crisc_d2_050 (poisoning through an editable dataset), crisc_d1_030 (asset value from the harm of losing or exposing data), crisc_d4_029 (model versions linked to training data), CC cc_d2_073 and cc_d2_028 (BIA impact from owners), CISA d4_243 (BIA timing), AAIA aaia_d2_023 and aaia_d2_095 (training data quality); no mirror in CISA, CC or AAIA.",
+      "_provenance": "Authored from concept: notes 2B2.1 (BIA Purpose, Dependencies and AI Systems). Round 8, 5 Nov 2026: original scenario (a retailer's model owner cites a BIA recovery rank to rate leak and tampering of an AI model's training data low) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Neighbours checked: crisc_d2_011 (a BIA ignores likelihood, here the runner-up), crisc_d2_036 (an AI service missing from a BIA), crisc_d2_073 (a supporting system ranked by user count), crisc_d2_012 (an AI service's RTO set by IT), crisc_d2_050 (poisoning through an editable dataset), crisc_d1_030 (asset value from the harm of losing or exposing data), crisc_d4_029 (model versions linked to training data), CC cc_d2_073 and cc_d2_028 (BIA impact from owners), CISA d4_243 (BIA timing), AAIA aaia_d2_023 and aaia_d2_095 (training data quality); no mirror in CISA, CC or AAIA. Review fixes 5 Nov 2026 (round 8 standards audit, ISACA concept review and blind test): explanation now acknowledges that the Glossary's BIA covers criticality and sensitivity, and says the recovery rank is its criticality result. Key unchanged (C).",
       "style_version": 2
     },
     {
