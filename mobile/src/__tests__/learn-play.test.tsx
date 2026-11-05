@@ -493,7 +493,7 @@ describe('Play identity', () => {
       </GameFrame>,
     );
     const head = root().find((n) => n.props.accessibilityRole === 'header' && n.props.accessible === true);
-    expect(head.props.accessibilityLabel).toBe('Snare Spotter, 1 of 5');
+    expect(head.props.accessibilityLabel).toBe('Snare Spotter, 1 of 5. Beating distractors');
     expect(root().findAllByType(GameGlyph)).toHaveLength(1);
     act(() => {
       r!.update(

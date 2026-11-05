@@ -21,6 +21,7 @@
  *
  * Gotcha: never `act(() => store.action())` — use braces.
  */
+import { drillName } from '../lib/drillNames';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { act, create, type ReactTestInstance, type ReactTestRenderer } from 'react-test-renderer';
 import { setMockReducedMotion } from '../../jest/reanimated-mock';
@@ -559,7 +560,7 @@ describe('Journey 5: Play', () => {
       mount(SCREENS[id]());
       if (hasButton('Start')) press('Start');
       const head = root().findAll(
-        (n) => n.props.accessible === true && n.props.accessibilityRole === 'header' && typeof n.props.accessibilityLabel === 'string' && n.props.accessibilityLabel.startsWith(`${GAMES[id].name}, 1 of `),
+        (n) => n.props.accessible === true && n.props.accessibilityRole === 'header' && typeof n.props.accessibilityLabel === 'string' && n.props.accessibilityLabel.startsWith(`${drillName(id)}, 1 of `),
       );
       // The game id in the failure message tells which game lost its header.
       expect({ id, hasHeader: head.length > 0 }).toEqual({ id, hasHeader: true });
@@ -788,7 +789,7 @@ describe('Journey 7: an old 1.11 save and a backup restore', () => {
     await loadSave();
     mount(<ForecastScreen />);
     expect(allText()).not.toContain('How scoring works');
-    expect(root().findAll((n) => n.props.accessibilityRole === 'header' && String(n.props.accessibilityLabel) === `Forecast, 1 of ${GAMES.sprint.size}`).length).toBeGreaterThan(0);
+    expect(root().findAll((n) => n.props.accessibilityRole === 'header' && String(n.props.accessibilityLabel).startsWith(`Forecast, 1 of ${GAMES.sprint.size}.`)).length).toBeGreaterThan(0);
     const item = useProgress.getState().days.cisa!.items[0];
     expect(planText(item as Parameters<typeof planText>[0]).title).toBe('Forecast');
     // Learn and notes see the old progress.

@@ -11,8 +11,11 @@
  */
 import { useEffect, useRef, useState } from 'react';
 import { AccessibilityInfo, StyleSheet, View } from 'react-native';
-import { GameFrame, GameIntro, PlayableGate, QuestionHead, RevealCard, RoundEnd, useRound } from '../../components/game';
-import { OptionCard, type OptionState } from '../../components/quiz';
+import { DrillAnswer } from '../../components/drillAnswer';
+import type { ItemResult } from '../../components/drillKit';
+import { GameFrame, GameIntro, PlayableGate, QuestionHead, RoundEnd, useRound } from '../../components/game';
+import { missCoach, oneStepVerdict } from '../../lib/drillVerdict';
+import { OptionCard } from '../../components/quiz';
 import { Button, Gap, ProgressBar, Segmented, T, useFontScale } from '../../components/ui';
 import { getAllQuestions } from '../../content/loader';
 import { LETTERS, type Letter } from '../../content/types';
@@ -223,13 +226,12 @@ function Forecast() {
     }
   };
 
-  const stateFor = (d: Letter): OptionState => {
-    if (!answered) return 'idle';
-    if (displayToOriginal(d, perm) === q.correct) return 'correct';
-    return d === pick ? 'wrong' : 'dimmed';
-  };
   const ok = answered && isCorrect(q, pick!, perm);
   const gained = answered && footing ? points(footing, ok) : 0;
+  // Grove 4b: the twig, one leaf per question (right = a filled leaf).
+  const items: ItemResult[] = results.map((r) => (r.correct ? 'right' : 'missed'));
+  // The points this answer earned, under the verdict ("+2 · Sure"): Forecast's own words.
+  const extra = answered && footing ? `${signed(gained)} · ${PAYOFF[footing].label}` : null;
 
   return (
     <GameFrame
@@ -237,6 +239,7 @@ function Forecast() {
       index={i}
       total={round.length}
       score={score}
+      results={items}
       onInfo={() => {
         if (rulesOpen) closeRules();
         else {
@@ -265,6 +268,8 @@ function Forecast() {
             <Gap h={space.sm} />
             {/* A radio group (one choice, spoken as "radio, checked"); stacks at large text. */}
             <Segmented
+              // PHASE4B 6.3 item 10: Forecast's three segments stack from text scale 1.5.
+              stackAt={1.5}
               accessibilityLabel="How sure are you?"
               value={footing}
               onChange={setFooting}
@@ -279,29 +284,21 @@ function Forecast() {
       }
     >
       {rulesOpen && <ForecastRules onDone={closeRules} focus={rulesFromInfo} />}
-      <QuestionHead q={q} />
-      {letters.map((d) => (
-        <OptionCard
-          key={d}
-          letter={d}
-          text={q.options[displayToOriginal(d, perm)] ?? ''}
-          state={stateFor(d)}
-          disabled={!footing || answered}
-          onPress={() => choose(d)}
+      {answered && footing && pick ? (
+        <DrillAnswer
+          q={q}
+          perm={perm}
+          pick={pick}
+          animate={ok}
+          extra={extra}
+          verdict={oneStepVerdict({ correct: ok, best: originalToDisplay(q.correct, perm), missCoach: missCoach(q, displayToOriginal(pick, perm), perm), extra })}
         />
-      ))}
-      {answered && footing && (
+      ) : (
         <>
-          <Gap h={space.sm} />
-          <RevealCard
-            tone={ok ? 'good' : 'bad'}
-            title={
-              ok
-                ? `${signed(gained)} · ${PAYOFF[footing].label}, and right`
-                : `${signed(gained)} · ${PAYOFF[footing].label} · best answer ${originalToDisplay(q.correct, perm)}`
-            }
-            body={renderText(q.explanation, perm)}
-          />
+          <QuestionHead q={q} />
+          {letters.map((d) => (
+            <OptionCard key={d} letter={d} text={q.options[displayToOriginal(d, perm)] ?? ''} state="idle" disabled={!footing} onPress={() => choose(d)} />
+          ))}
         </>
       )}
     </GameFrame>

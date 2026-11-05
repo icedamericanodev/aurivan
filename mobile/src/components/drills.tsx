@@ -41,6 +41,9 @@ import { playableGames } from '../lib/games';
 import { topSlipPattern } from '../lib/slipPattern';
 import { selectCert, useProgress, type ProgressState } from '../store/progress';
 import { space } from '../theme/tokens';
+import { useTheme } from '../theme/useTheme';
+import { TierLeaf } from './glyphs';
+import { drillName } from '../lib/drillNames';
 
 
 /**
@@ -81,6 +84,7 @@ export const Drills = memo(function Drills({
   /** Its place in the screen's entrance order. */
   enter?: number;
 }) {
+  const { c } = useTheme();
   const certId = useActiveCertId();
   const cert = getCertification(certId) ?? CERTIFICATIONS[0];
   const gameBest = useProgress((s) => selectCert(s, certId).gameBest);
@@ -165,13 +169,17 @@ export const Drills = memo(function Drills({
   const item = (id: GameId, kicker?: string): KeyItem => {
     const g = GAMES[id];
     const b = gameBest[id];
-    const grown = level(id) !== 'seedling' ? ` · ${GAME_TIER_NAME[level(id)]}` : '';
+    const tier = level(id);
+    // Grove 4b (PHASE4B 6.1): once grown, the level's leaf glyph before its word.
+    const grown = tier !== 'seedling' ? { mark: <TierLeaf tier={tier} color={c.accentText} rib={c.raised} size={14} />, text: GAME_TIER_NAME[tier] } : undefined;
+    const name = drillName(id);
     return {
       key: id,
-      title: g.name,
-      kicker: `${kicker ? `${kicker} · ` : ''}${g.plain}${grown}`,
+      title: name,
+      kicker: `${kicker ? `${kicker} · ` : ''}${g.plain}`,
+      kickerTail: grown,
       right: b !== undefined ? `best ${scoreText(b)} · ${g.minutes} min` : `${g.minutes} min`,
-      spoken: `${kicker ? `${kicker}: ` : ''}${g.name}. ${g.plain}. Your level: ${GAME_TIER_NAME[level(id)]}. About ${g.minutes} minutes.${b !== undefined ? ` Best score ${scoreSpoken(b)}.` : ''}`,
+      spoken: `${kicker ? `${kicker}: ` : ''}${name}. ${g.plain}. Your level: ${GAME_TIER_NAME[level(id)]}. About ${g.minutes} minutes.${b !== undefined ? ` Best score ${scoreSpoken(b)}.` : ''}`,
       hint: 'Opens the game',
       onPress: () => router.push(`/game/${id}`),
     };

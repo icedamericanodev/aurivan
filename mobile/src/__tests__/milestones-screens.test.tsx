@@ -190,8 +190,9 @@ describe('Field notes', () => {
   it('lists each game’s level (leaf + name) and links to the skill badges in the case', () => {
     useProgress.setState({ byCert: { cisa: { ...cp(), gameGrowth: { trap: { tier: 'sapling', up: 0, down: 0 } } } } });
     mount(<FieldNotes />);
-    expect(labels()).toContain('Snare Spotter. Level: Sapling. Two rounds in a row at 80% or more, at your level, grow it to Heartwood.');
-    expect(labels()).toContain('Signpost. Level: Seedling. Two rounds in a row at 80% or more, at your level, grow it to Sapling.');
+    // Grove 4b (PHASE4B 6.6): one stop per row, the three markers said in words.
+    expect(labels()).toContain('Snare Spotter. Level: Sapling. Heartwood not reached. Two rounds in a row at 80% or more, at your level, grow it to Heartwood.');
+    expect(labels()).toContain('Signpost. Level: Seedling. Sapling and Heartwood not reached. Two rounds in a row at 80% or more, at your level, grow it to Sapling.');
     expect(labels()).toContain('Your skill badges. None yet. Opens your badges.');
   });
 

@@ -70,7 +70,7 @@ import { groveEmphasis, groveEmphasisSans, groveRadius, grovePlate, heroPanel, m
 import { useTheme } from '../theme/useTheme';
 import { Botany, botanySize, EmptyArt, type BotanyKind, type EmptyArtKind } from './glyphs';
 import { Check, ChevronLeft, ChevronRight, ICON_STROKE, Minus, Plus, Search, Settings as SettingsIcon, X } from './icons';
-import { AnimatedPressable, CrossFade, FadeIn, ProgressFill, RollingText, StateLayer, tween, useMotion, usePressScale } from './motion';
+import { AnimatedPressable, CrossFade, FadeIn, ProgressFill, RollingText, StateLayer, tween, useMotion, usePressScale, type MotionDur } from './motion';
 import { TabSpaceContext } from './tabSpace';
 
 /** Icon sizes: inline with text, in rows/circles, and in the tab bar/header. */
@@ -365,7 +365,21 @@ export function T({
 }
 
 /** A question stem: Fraunces 21/30, stepping down to 20/29 for long stems. */
-export function Stem({ children, color, highlight }: { children: string; color?: string; highlight?: string | null }) {
+export function Stem({
+  children,
+  color,
+  highlight,
+  ink = false,
+}: {
+  children: string;
+  color?: string;
+  highlight?: string | null;
+  /**
+   * Grove Phase 4b (PHASE4B 6.6, Signpost step 2): the marked word underlined in ink, a weight heavier,
+   * with no tip-colour wash (the drill has named the word, so it is marked, not coached).
+   */
+  ink?: boolean;
+}) {
   const { c } = useTheme();
   const { reduced } = useMotion();
   const style = children.length > STEM_LONG_CHARS ? stemLong : undefined;
@@ -393,6 +407,15 @@ export function Stem({ children, color, highlight }: { children: string; color?:
   }
   const before = children.slice(0, at);
   const after = children.slice(at + highlight.length);
+  if (ink) {
+    return (
+      <T v="stem" color={color} style={style}>
+        {before}
+        <Text style={[groveEmphasis, { textDecorationLine: 'underline', color: c.ink }]}>{highlight}</Text>
+        {after}
+      </T>
+    );
+  }
   return (
     <View>
       <T v="stem" color={color} style={style}>
@@ -1790,6 +1813,8 @@ export interface Roll {
   /** Restart key: a new value rolls when this changes. */
   run?: number;
   delay?: number;
+  /** How long the roll takes (default `grow`, 600 ms; a drill's recap score rolls over `fill`, 300 ms). */
+  dur?: MotionDur;
 }
 
 export function BigNum({
@@ -1826,6 +1851,7 @@ export function BigNum({
           play={roll.play}
           run={roll.run}
           delay={roll.delay}
+          dur={roll.dur}
           style={{ ...step.style, ...styles.num }}
           maxScale={step.max}
           color={fg}
@@ -2072,16 +2098,19 @@ export function Segmented<V extends string | number>({
   value,
   onChange,
   accessibilityLabel,
+  stackAt = LARGE_TEXT,
 }: {
   options: { value: V; label: string; numeral?: string; icon?: (color: string) => ReactNode; spoken?: string }[];
   /** null = nothing chosen yet (e.g. Forecast before each answer). */
   value: V | null;
   onChange: (v: V) => void;
   accessibilityLabel: string;
+  /** The text scale from which the segments stack in a column (Grove 4b: Forecast's stack at 1.5). */
+  stackAt?: number;
 }) {
   const { c, isDark } = useTheme();
   const { reduced } = useMotion();
-  const stacked = useFontScale() >= LARGE_TEXT;
+  const stacked = useFontScale() >= stackAt;
   // The thumb (spec §8): ONE selected shape that slides to the new choice
   // (translateX, a settle spring with no visible overshoot). It needs the
   // track's width, so until the first layout, and in a stacked column at

@@ -9,7 +9,7 @@
  * never promises a pass: it describes mastery, weighted like the exam.
  */
 import { readyLine, REVIEW_ORDER } from '../engine/srs';
-import { gameTitle } from '../engine/games/registry';
+import { drillTitle as gameTitle } from '../lib/drillNames';
 import { useEffect, useState, type ReactNode } from 'react';
 import { useWindowDimensions, View, type ViewStyle } from 'react-native';
 import { domainColor } from '../content/certifications';

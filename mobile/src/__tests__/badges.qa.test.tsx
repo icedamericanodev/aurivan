@@ -1179,7 +1179,9 @@ describe('8. regressions', () => {
     mount(<FieldNotes />);
     const t = allText();
     expect(t).toContain('Game levels');
-    for (const name of ['Sapling', 'Seedling']) expect(t.includes(name) || t.includes('Heartwood')).toBe(true);
+    // Grove 4b (PHASE4B 6.6): each row shows its level in words, and says the three markers in one label.
+    expect(t).toContain('Snare Spotter Seedling');
+    expect(labels()).toContain('Snare Spotter. Level: Seedling. Sapling and Heartwood not reached. Two rounds in a row at 80% or more, at your level, grow it to Sapling.');
     const shelf = badgeCase('cisa', cp()).sets.find((s) => s.info.id === 'fieldNotes')!;
     expect(t).toContain(`${shelf.earned} of ${shelf.total} earned, in your badges`);
     press(/^Your skill badges/);

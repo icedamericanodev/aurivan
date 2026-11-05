@@ -23,15 +23,16 @@
  * round's budget, one per question visit. Background time never counts.
  */
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { ScrollView, View } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { router } from 'expo-router';
-import { GameFrame, LevelNote, PlayableGate, QuestionHead, RevealCard, RoundEnd, useRound } from '../../components/game';
-import { GameGlyph, TierLeafMorph } from '../../components/glyphs';
+import { View } from 'react-native';
+import { DrillAnswer } from '../../components/drillAnswer';
+import type { ItemResult } from '../../components/drillKit';
+import { GameFrame, GameIntro, LevelNote, PlayableGate, QuestionHead, RoundEnd, useRound } from '../../components/game';
+import { GameGlyph } from '../../components/glyphs';
 import { ICON_STROKE, Pause, Play } from '../../components/icons';
 import { PaceStrip } from '../../components/pace';
-import { OptionCard, type OptionState } from '../../components/quiz';
-import { Button, Gap, ICON_SIZE, PushedHeader, Row, Section, Segmented, T, useFontScale } from '../../components/ui';
+import { OptionCard } from '../../components/quiz';
+import { Button, groveCard, ICON_SIZE, Row, T, useFontScale } from '../../components/ui';
+import { missCoach, oneStepVerdict } from '../../lib/drillVerdict';
 import { getAllQuestions } from '../../content/loader';
 import { LETTERS, type Letter } from '../../content/types';
 import {
@@ -67,7 +68,6 @@ import {
   type PaceMark,
 } from '../../engine/games/daylight';
 import { clip, pickMiss, type RecapMiss } from '../../engine/games/recap';
-import { GAMES } from '../../engine/games/registry';
 import { durationSpoken, durationText, formatClock, spokenClock, spokenClockCoarse } from '../../engine/pace';
 import { moveFocus, sayLater } from '../../lib/a11y';
 import { createRng } from '../../engine/random';
@@ -185,52 +185,45 @@ function Daylight() {
   };
 
   // ── 1. Pick a light ────────────────────────────────────────────────────
+  // Grove 4b (PHASE4B 6.6): the drills' intro with the three level markers as "Pick your light", the
+  // picked light's seconds and the suggested line ("Suggested: ... from your recent answer times.").
   if (!state) {
     const sec = tierSeconds(chosen, cert.exam);
+    // Each light's radio, spoken with its seconds (and "your level" once the learner has one).
+    const spoken = Object.fromEntries(
+      DAYLIGHT_TIERS.map((t) => [t, `${TIER_NAME[t]}${level === t ? ', your level' : ''}, ${tierSeconds(t, cert.exam)} seconds a question${t === suggested ? ', suggested' : ''}`]),
+    ) as Record<DaylightTier, string>;
     return (
-      <SafeAreaView edges={['top', 'bottom']} style={{ flex: 1, backgroundColor: c.bg }}>
-        <View style={{ paddingHorizontal: space.gutter }}>
-          <PushedHeader icon="close" onBack={() => router.back()} title={GAMES.daylight.name} />
-        </View>
-        <ScrollView contentContainerStyle={{ padding: space.gutter, paddingBottom: space.xxl }}>
-          {/* The sun rises once as the intro opens (motion.md M5; still under Reduce Motion). */}
-          <View style={{ alignItems: 'center' }}>
-            <GameGlyph game="daylight" size={48} color={c.accent} rise />
-          </View>
-          <T v="caption" center color={c.accentText} style={{ marginTop: space.sm }}>{GAMES.daylight.skill}</T>
-          <T v="hero" center accessibilityRole="header" style={{ marginTop: space.xs }}>{GAMES.daylight.tagline}</T>
-          <T v="body" color={c.ink2} style={{ marginTop: space.md }}>
-            {`${items.length} questions share one light. There is no countdown on each question: keep an eye on the pace line, and flag one that's stuck to come back to it. When the light sets, anything unanswered is shown, not marked wrong.`}
-          </T>
-          <Section title="Pick your light" />
-          <Gap h={space.sm} />
-          <Segmented
-            accessibilityLabel="Pick your light"
-            value={chosen}
-            onChange={setTier}
-            options={DAYLIGHT_TIERS.map((t) => ({
-              value: t,
-              label: TIER_NAME[t],
-              spoken: `${TIER_NAME[t]}, ${tierSeconds(t, cert.exam)} seconds a question${t === suggested ? ', suggested' : ''}`,
-            }))}
-          />
-          <Row gap={space.sm} style={{ marginTop: space.sm, justifyContent: 'center', flexWrap: 'wrap' }}>
-            <TierLeafMorph tier={chosen} color={c.accentText} rib={c.bg} />
-            <T v="meta" num center style={{ flexShrink: 1 }}>
+      <GameIntro
+        game="daylight"
+        rules={`${items.length} questions share one light. There is no countdown on each question: keep an eye on the pace line, and flag one that's stuck to come back to it. When the light sets, anything unanswered is shown, not marked wrong.`}
+        tiers={DAYLIGHT_TIERS}
+        tier={chosen}
+        onTier={setTier}
+        tierName={TIER_NAME}
+        tierLine={spoken}
+        spokenTier={spoken}
+        level={level}
+        pickTitle="Pick your light"
+        onStart={begin}
+        below={
+          <>
+            <T v="meta" num center style={{ marginTop: space.sm }}>
               {`${sec} seconds a question · ${durationText(Math.round((items.length * sec) / 60))} of light${tierCanExtend(chosen) ? ' · you can add time' : ''}`}
             </T>
-          </Row>
-          {level ? (
-            <LevelNote level={level} />
-          ) : (
-            <T v="meta" center style={{ marginTop: space.xs }}>{`Suggested: ${TIER_NAME[suggested]}, from your recent answer times.`}</T>
-          )}
-          <Gap h={space.xl} />
-          <Button label="Start" onPress={begin} icon={(col) => <Play size={ICON_SIZE.inline} color={col} strokeWidth={ICON_STROKE} />} />
-        </ScrollView>
-      </SafeAreaView>
+            {level ? (
+              <LevelNote level={level} />
+            ) : (
+              <T v="meta" center style={{ marginTop: space.xs }}>{`Suggested: ${TIER_NAME[suggested]}, from your recent answer times.`}</T>
+            )}
+          </>
+        }
+      />
     );
   }
+
+  // Grove 4b: each answered question, in the order answered, for the twig and the recap's squares.
+  const roundItems: ItemResult[] = Object.values(state.answers).map((a) => (a.correct ? 'right' : 'missed'));
 
   // ── 3. The light has set, or every question is answered ────────────────
   if (state.over && reveal === null) {
@@ -247,11 +240,14 @@ function Daylight() {
         max={daylightMax(state.ids.length)}
         misses={misses}
         news={news}
+        results={roundItems}
         onAgain={() => {
           restart();
           setState(null);
         }}
       >
+        {/* PHASE4B 6.6: "This is where time went" as a headline in a card, as the Last 5 rounds card. */}
+        <View testID="daylight-time" style={[groveCard(c), { padding: 16 }]}>
         <T v="headline" accessibilityRole="header">This is where time went</T>
         <View style={{ marginTop: space.sm, gap: space.xs }}>
           <T
@@ -264,8 +260,9 @@ function Daylight() {
           {avg !== null && <T v="small" num>{`Average ${avg} seconds a question · your light gave ${state.perItemSec} seconds`}</T>}
           {slow && slowQ && <T v="small">{`Slowest: ${slow.seconds} seconds on “${clipStem(slowQ.stem)}”`}</T>}
         </View>
+        </View>
         {state.timedOut.length > 0 && (
-          <View style={{ marginTop: space.lg }}>
+          <View style={[groveCard(c), { marginTop: space.md, padding: 16 }]}>
             <T v="headline" accessibilityRole="header">The light set before these</T>
             <T v="meta" style={{ marginTop: space.xs }}>Shown, not marked wrong. They are in your review.</T>
             {state.timedOut.map((id, k) => {
@@ -286,7 +283,6 @@ function Daylight() {
             })}
           </View>
         )}
-        <Gap h={space.md} />
       </RoundEnd>
     );
   }
@@ -329,12 +325,6 @@ function Daylight() {
     say('Flagged. It comes back at the end if there is light left.');
   };
 
-  const stateFor = (display: Letter): OptionState => {
-    if (reveal === null) return 'idle';
-    if (displayToOriginal(display, perm) === q.correct) return 'correct';
-    return display === reveal.display ? 'wrong' : 'dimmed';
-  };
-
   const lastAnswer = state.answers[q.id];
   const strip = (
     <PaceStrip
@@ -350,7 +340,8 @@ function Daylight() {
             : { text: daylightLine(status, canFlag(state)), tone: status }
       }
       lineShort={!paused && !low && status === 'behind' ? 'Behind pace' : undefined}
-      bar={{ done: answered / state.ids.length, used: used / state.budgetMs }}
+      // The pace bar steps once a second, no tween (PHASE4B 6.3 item 9).
+      bar={{ done: answered / state.ids.length, used: used / state.budgetMs, step: true }}
       onRequest={() => say(`Light left ${spokenClock(remaining)}. ${paused ? 'Paused.' : low ? lowLightLine(state) : daylightLine(status, canFlag(state))}`)}
     />
   );
@@ -361,6 +352,7 @@ function Daylight() {
       index={answered - (reveal !== null ? 1 : 0)}
       total={state.ids.length}
       score={right}
+      results={roundItems}
       strip={strip}
       footer={
         reveal !== null ? (
@@ -422,27 +414,28 @@ function Daylight() {
         </View>
       ) : (
         <>
-          {state.flagged.includes(q.id) && reveal === null && <T v="caption" color={c.tip}>Flagged earlier</T>}
-          <QuestionHead q={q} />
-          {letters.map((d) => (
-            <OptionCard
-              key={d}
-              letter={d}
-              text={q.options[displayToOriginal(d, perm)] ?? ''}
-              state={stateFor(d)}
-              disabled={reveal !== null}
-              onPress={() => pick(d)}
+          {reveal !== null && lastAnswer ? (
+            <DrillAnswer
+              q={q}
+              perm={perm}
+              pick={reveal.display}
+              animate={lastAnswer.correct}
+              extra={`${Math.round(lastAnswer.ms / 1000)} s`}
+              note="The light waits while you read this."
+              verdict={oneStepVerdict({
+                correct: lastAnswer.correct,
+                best: originalToDisplay(q.correct, perm),
+                missCoach: missCoach(q, displayToOriginal(reveal.display, perm), perm),
+                extra: `${Math.round(lastAnswer.ms / 1000)} seconds`,
+              })}
             />
-          ))}
-          {reveal !== null && lastAnswer && (
+          ) : (
             <>
-              <Gap h={space.sm} />
-              <RevealCard
-                tone={lastAnswer.correct ? 'good' : 'bad'}
-                title={lastAnswer.correct ? `Correct · ${Math.round(lastAnswer.ms / 1000)} s` : `Best answer: ${originalToDisplay(q.correct, perm)} · ${Math.round(lastAnswer.ms / 1000)} s`}
-                body={renderText(q.explanation, perm)}
-              />
-              <T v="meta" style={{ marginTop: space.sm }}>The light waits while you read this.</T>
+              {state.flagged.includes(q.id) && <T v="caption" color={c.tip}>Flagged earlier</T>}
+              <QuestionHead q={q} />
+              {letters.map((d) => (
+                <OptionCard key={d} letter={d} text={q.options[displayToOriginal(d, perm)] ?? ''} state="idle" onPress={() => pick(d)} />
+              ))}
             </>
           )}
         </>

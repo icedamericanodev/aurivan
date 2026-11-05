@@ -16,6 +16,7 @@
 import { router } from 'expo-router';
 import { useMemo, useState } from 'react';
 import { View } from 'react-native';
+import type { ItemResult } from '../../components/drillKit';
 import { GameFrame, GameIntro, MatchTile, PlayableGate, RevealCard, RoundEnd, type TileState } from '../../components/game';
 import { Button, Gap, Stem, T } from '../../components/ui';
 import { getRoleDeck } from '../../content/games';
@@ -91,6 +92,8 @@ function CanopyCall() {
   }
 
   const score = canopyScore(answers);
+  // Grove 4b: each decision, right or missed (the twig, and the recap's squares).
+  const results = answers.map((a): ItemResult => (isRightRole(a) ? 'right' : 'missed'));
   if (i >= round.items.length) {
     const misses: RecapMiss[] = answers
       .filter((a) => !isRightRole(a))
@@ -105,7 +108,18 @@ function CanopyCall() {
       }));
     const pairs = confusionPairs(answers, deck);
     return (
-      <RoundEnd certId={cert.id} game="canopy" score={score} max={round.items.length} misses={misses} reviewNote={MISS_LINE} onAgain={start} news={news}>
+      <RoundEnd
+        certId={cert.id}
+        game="canopy"
+        score={score}
+        max={round.items.length}
+        misses={misses}
+        reviewNote={MISS_LINE}
+        onAgain={start}
+        news={news}
+        results={results}
+        tierLines={CANOPY_TIER_LINE}
+      >
         {pairs.length > 0 && (
           <View style={{ marginBottom: space.md }}>
             <T v="headline" accessibilityRole="header">Where your calls went</T>
@@ -116,8 +130,7 @@ function CanopyCall() {
             ))}
           </View>
         )}
-        <T v="small" color={c.ink2}>The auditor reports the gap; the owner decides. Authority sits with whoever is accountable for the outcome.</T>
-        <Gap h={space.md} />
+        <T v="aside" color={c.ink2}>The auditor reports the gap; the owner decides. Authority sits with whoever is accountable for the outcome.</T>
       </RoundEnd>
     );
   }
@@ -155,6 +168,7 @@ function CanopyCall() {
       index={i}
       total={round.items.length}
       score={score}
+      results={results}
       footer={
         answered ? (
           <Button

@@ -51,9 +51,10 @@ export interface PaceStripProps {
   /**
    * Daylight's pace bar: `done` = share of items answered (the fill),
    * `used` = share of the time budget gone (the tick). Fill behind the tick
-   * = behind pace. Both 0..1.
+   * = behind pace. Both 0..1. `step` (Grove 4b, PHASE4B 6.3 item 9): the tick steps once a second
+   * with no tween (Daylight's clock moves it once a second), in place of the 900 ms linear glide.
    */
-  bar?: { done: number; used: number };
+  bar?: { done: number; used: number; step?: boolean };
   /** Daylight: tap the strip to hear the pace again (announced by the screen). */
   onRequest?: () => void;
   /** For moving screen-reader focus to the strip (Daylight, after Resume). */
@@ -92,7 +93,7 @@ export function PaceStrip({ clock, clockUnit, line, lineShort, bar, onRequest, r
           </Row>
         )}
       </View>
-      {bar && <PaceBar done={bar.done} used={bar.used} />}
+      {bar && <PaceBar done={bar.done} used={bar.used} step={bar.step} />}
     </View>
   );
 
@@ -127,18 +128,21 @@ export function PaceStrip({ clock, clockUnit, line, lineShort, bar, onRequest, r
  * and the fill is a ProgressFill, so nothing triggers a layout pass each
  * second (the tick used to animate `left`).
  */
-function PaceBar({ done, used }: { done: number; used: number }) {
+function PaceBar({ done, used, step = false }: { done: number; used: number; step?: boolean }) {
   const { c } = useTheme();
   const { reduced: reduce } = useMotion();
+  // PHASE4B 6.3 item 9 and section 8: a component value that replaces `motion.dur.tick` for this bar
+  // only (theme/tokens.ts is bundled into the website and is not edited). Read, not changed.
+  const glide = !step;
   const clamp = (x: number) => Math.max(0, Math.min(1, x));
   // Reduce Motion: step to the nearest 10% instead of gliding every second.
-  const tickAt = reduce ? Math.floor(clamp(used) * 10) / 10 : clamp(used);
+  const tickAt = reduce && !step ? Math.floor(clamp(used) * 10) / 10 : clamp(used);
   const [width, setWidth] = useState(0);
   const tick = useSharedValue(tickAt);
   useEffect(() => {
     // The clock's own pace: a linear glide over most of each 1 s tick (the one linear motion in the app).
-    tick.set(reduce ? tickAt : withTiming(tickAt, { duration: motion.dur.tick, easing: Easing.linear, reduceMotion: ReduceMotion.Never }));
-  }, [tickAt, reduce, tick]);
+    tick.set(reduce || !glide ? tickAt : withTiming(tickAt, { duration: motion.dur.tick, easing: Easing.linear, reduceMotion: ReduceMotion.Never }));
+  }, [tickAt, reduce, glide, tick]);
   const tickStyle = useAnimatedStyle(() => ({ transform: [{ translateX: tick.value * width }] }));
   return (
     <View

@@ -165,7 +165,8 @@ describe('Root or Rumor: what a screen reader hears, and the note after a missed
     press('Root, a sound principle');
     expect(allText()).toContain('This one is a Rumor: a myth the exam counts on');
     expect(said()).toContain('You said Root, not quite. This one is a Rumor: a myth the exam counts on');
-    press('Read the note');
+    // Grove 4b (PHASE4B 6.6): "Read the note" is the answer screen's Go deeper row, named for the note.
+    press(`Read the note: ${st.subtopicName}`);
     expect(router.push).toHaveBeenCalledWith(`/notes/subtopic/${encodeURIComponent(st.subtopicId)}`);
   });
 
@@ -175,7 +176,7 @@ describe('Root or Rumor: what a screen reader hears, and the note after a missed
     press('Start');
     toRumor();
     press('Rumor, an exam myth');
-    expect(root().findAll((n) => n.props.label === 'Read the note')).toHaveLength(0);
+    expect(root().findAll((n) => n.props.label === 'Read the note' || String(n.props.accessibilityLabel).startsWith('Read the note'))).toHaveLength(0);
   });
 });
 

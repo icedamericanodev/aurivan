@@ -515,7 +515,7 @@ describe('journey 7: Daylight', () => {
     tickSeconds(10 * S);
     tapFirst();
     // 15 s on the first visit + 10 s now.
-    expect(allText()).toMatch(/· 25 s/);
+    expect(allText()).toMatch(/\b25 s\b/);
     press('See results');
     expect(allText()).toContain('Light used: 02:25 of 08:00 · finished in time, +1');
     expect(allText()).toContain('your light gave 96 seconds');

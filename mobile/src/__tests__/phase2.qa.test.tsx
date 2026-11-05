@@ -941,8 +941,9 @@ describe.each([
     tap(answers[0]);
     rerender(<CallItFirst />);
     expect(Object.keys(selectCert(useProgress.getState(), 'cisa').answers)).toHaveLength(1);
+    // Grove 4b (PHASE4B 6.4): the answer screen replaces the options; the best answer is in its card.
+    expect(root().findAll((n) => n.props.testID === 'drill-row-best').length).toBeGreaterThan(0);
     const states = cards().map((c) => c.props.state);
-    expect(states).toContain('correct');
     expect(states).not.toContain('selected');
     for (const c of cards()) {
       for (const l of c.findAllByType(StateLayer)) expect(l.props.on).toBe(false);
