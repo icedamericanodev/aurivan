@@ -254,6 +254,8 @@ export default function RootLayout() {
         {/* The exam guide (Learn, Help) and the final review week's cheat sheet (data/exam/). */}
         <Stack.Screen name="exam-guide" />
         <Stack.Screen name="cheat-sheet" />
+        {/* Grove Phase 4 (O2): the Glossary, read-only (Learn's Glossary tile, Final review week's look-ups). */}
+        <Stack.Screen name="glossary" />
         {/* Mobile 1.13: Your plant, and its picker (plant, change species, rename). */}
         <Stack.Screen name="plant" />
         <Stack.Screen name="plant-pick" options={{ animation: rise }} />

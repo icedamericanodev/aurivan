@@ -102,13 +102,22 @@ if (want('answer')) {
   await page.getByText('Check answer', { exact: true }).click();
   await wait(1500);
   await shot('b1-answer-miss');
-  // The fold: Key idea and Exam cue, then "Why D" folded with Read more.
+  // Owner answer O1: every tip open after a miss (Eliminate two, Final two, Exam cue).
+  await into('How to think about it', 'start');
+  await shot('b1-answer-tips');
+  // Only the long Why folds: "Why D" with Read more under it.
   await into('Read more', 'center');
   await shot('b1-answer-read-more');
   await page.getByText('Read more', { exact: true }).first().click();
   await wait(1200);
-  await into('Eliminate two', 'center');
+  await into('Show less', 'center');
   await shot('b1-answer-open');
+  // More's "Show all options": every option, read-only, the pick and the best marked.
+  await page.getByLabel('More on this question').first().click();
+  await wait(900);
+  await page.getByText('Show all options', { exact: true }).first().click();
+  await wait(1500);
+  await shot('b1-answer-all-options');
 }
 
 // ── Board 2: Results for a 10-question set with two misses ───────────────

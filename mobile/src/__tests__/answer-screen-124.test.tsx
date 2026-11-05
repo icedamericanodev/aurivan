@@ -1,7 +1,7 @@
 /**
  * Mobile 1.24, the answer screen and Results (stream S2):
  *  - after a miss the order is: verdict, your answer, best answer, Key idea,
- *    Exam cue, THEN the folded "Why", then Eliminate two / Final two;
+ *    every tip (Grove Phase 4, owner answer O1), THEN the folded "Why";
  *  - no "Code d1_xxx" in the learner view;
  *  - the coach line is neutral unless a slip was tagged; no "error" buzz;
  *  - a right retest says "Back in your review tomorrow.";
@@ -131,9 +131,11 @@ describe('the answer screen after a miss', () => {
     press('Check answer');
   };
 
-  // Grove Phase 4 (PHASE4.md 4.2, the 4.6 fallback while O1 is open): one order in every state.
-  it('order: Not quite, your answer, best answer, Key idea, How to think about it, Why, then the folded tips after Read more', () => {
+  // Grove Phase 4 (PHASE4.md 4.2, owner answer O1): one order in every state, every tip open before the Why.
+  it('order: Not quite, your answer, best answer, Key idea, How to think about it, every tip, Why, then Read more', () => {
     missRich();
+    // Every tip is open before Read more is touched.
+    for (const label of ['Eliminate two', 'Final two', 'Exam cue']) expect(allText()).toContain(label);
     pressStarting('Read more');
     const t = allText();
     // "Why D" (the heading), not the pick's own "Why not B" note under its row (mobile 1.43).

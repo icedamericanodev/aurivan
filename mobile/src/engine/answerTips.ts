@@ -2,10 +2,13 @@
  * The answer screen's tips, in Grove Phase 4's one order (design-notes/grove/PHASE4.md section 4).
  *
  * Plain English: under "How to think about it" the tips show as rows in the order they were written
- * (Eliminate two, Final two, Exam cue). After a RIGHT answer every row is open. After a MISS, while the
- * owner's decision O1 is still open, the 1.43 fold stays (the fallback in PHASE4.md 4.6): the Exam cue
- * and the row the coach line just talked about are open; the other rows wait under the Why's
- * "Read more" button, so what opens is right after the button that opens it.
+ * (Eliminate two, Final two, Exam cue). Sky answered O1 YES (5 Nov 2026): every row is open in every
+ * state, right, miss or Time's up, and only a long Why folds. The answer screen (app/session.tsx) now
+ * opens every tip and no longer calls `answerTipRows` or `coachedTip`.
+ *
+ * Kept, not used by the screen: the 1.43 split (the fallback in PHASE4.md 4.6), where after a miss
+ * the Exam cue and the row the coach line talked about were open and the others waited under the
+ * Why's "Read more". It stays tested so the fold can come back without a rewrite if Sky reverses O1.
  *
  * Pure: no React, no storage. Labels come from engine/tips.ts `tipParts` (never changed here, because
  * that file is compiled into the website bundle). Letters are never compared here: the caller passes

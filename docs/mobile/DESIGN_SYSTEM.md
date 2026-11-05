@@ -524,8 +524,8 @@ may ever appear twice on one screen.
 
 ### 10.2 Vine reveal — the answer moment
 
-> **Grove Phase 4 (5 Nov 2026, `design-notes/grove/PHASE4.md` section 4, built with the 4.6 fallback while
-> the owner's O1 is open). This replaces the order below.** One order in every state: (1) the verdict, its
+> **Grove Phase 4 (5 Nov 2026, `design-notes/grove/PHASE4.md` section 4; Sky answered O1 YES on 5 Nov, so the
+> 4.6 fallback and the 1.43 tip fold are gone on the phone). This replaces the order below.** One order in every state: (1) the verdict, its
 > word in `hero` in its state colour, the coach line in `aside`; (2) ONE answer card (`raised`, 24 corners,
 > 1pt edge, 18 inside, no tinted fills): "Your answer" (filled `wrong` badge, caption in `wrong`), "Why not B"
 > as its own stop (caption `ink2` over `small` `ink`), a divider, "Best answer" (filled `correct` badge);
@@ -534,12 +534,15 @@ may ever appear twice on one screen.
 > then one card of tip rows in the written order, each its label word (`caption`, `accentText`) over the
 > tip (`small`, `ink`), a small `accent` leaf per row and one stem down the card's left edge (drawn once;
 > at once under Reduce Motion); colour never tells the tips apart, the words do; (5) "Why D" (`headline`)
-> and the explanation. After a right answer every tip is open and nothing folds. After a miss (fallback
-> 4.6) the Exam cue and the tip the coach line named (Final two or Eliminate two) are open; a long Why
-> shows two lines (the screen reader always gets the whole text) and "Read more" (48pt, its name lists
-> what it opens) opens the rest of the Why and the other tip rows, right after the button. (6) Go deeper
-> in one card; (7) the source row with a "Report a problem" text link at its right (still in More);
-> (8) Next question, sticky. The split comes from `engine/answerTips.ts`.
+> and the explanation. Every tip is open in every state (right, miss, Time's up). After a miss a long Why
+> (over 150 characters) shows two lines (the screen reader always gets the whole text) and "Read more"
+> (48pt, spoken "Read more of the explanation", "Show less of the explanation" when open) opens the rest
+> of that paragraph only. (6) Go deeper in one card; (7) the source row with a "Report a problem" text
+> link at its right (still in More); (8) Next question, sticky. More (the header's ⋯) adds "Show all
+> options": every option in display order, read-only, the pick and the best answer marked in colour and
+> words. Motion: the card's rows, then Key idea with the tips, then the Why fade in (opacity only, 200ms,
+> 30ms apart). `engine/answerTips.ts` keeps the old 1.43 split, unused by the screen. The item 3 fold
+> below (Eliminate two and Final two under Read more) is history.
 Order on the feedback screen:
 1. **Verdict row**: leaf-mark (38pt teardrop: a circle with its top-right corner squared, `M35.5 2.5V19A16.5 16.5 0 1 1 19 2.5z`) in `correct`/`wrong`, white ✓/✗ 20 @2.5 stroke, + `hero` "Correct"/"Not quite" in the same colour. Under it a one-line `meta` coach line at left 50: correct → "Clean read."; wrong pick of the runner-up → "You picked the closest wrong choice. That's the trap." (1.51: learner copy never says "runner-up"; the slip pattern reads "You often pick the closest wrong choice"); other wrong → "Check the role in the stem." At ×1.3 text and up (mobile 1.43) the coach line, and the hint / retest lines under it, start at the gutter (left 0) and wrap under the verdict, not in a narrow column beside the leaf.
 2. **Answer rows** (mobile 1.43, §6 "Answer rows"): if wrong, the chosen option in `wrongBg` with a `caption` tag "Your answer" in `wrong` and its letter in a `wrong` badge; under it, its own note as "Why not C" (`PickNote`). Then the correct option in `correctBg` tagged "Best answer", its letter in a `correct` badge. If correct, only the correct row. Other options are hidden (not dimmed) on this screen; the full list stays in review. Every letter is a DISPLAY letter and every note goes through `renderText` (grading stays on original letters).

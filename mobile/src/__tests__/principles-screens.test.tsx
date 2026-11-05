@@ -261,7 +261,7 @@ describe('Principle page', () => {
 });
 
 describe('entry points', () => {
-  it('Learn: Principles is the second tile, after Study notes (no separate section)', () => {
+  it('Learn: Principles is the third tile, after Study notes and Glossary (no separate section)', () => {
     mount(<Learn />);
     const text = allText();
     expect(text).not.toContain('Exam mindset');
@@ -270,7 +270,9 @@ describe('entry points', () => {
     const [lookup] = root().findAll((n) => n.props.testID === 'learn-lookup' && typeof n.type === 'string');
     const order = lookup.findAll((n) => n.props.accessibilityRole === 'button' && typeof n.type === 'string').map((n) => n.props.accessibilityLabel as string);
     expect(order[0]).toMatch(/^Study notes, /);
-    expect(order[1]).toBe('Principles, how the exam thinks');
+    // Grove Phase 4 (O2): the kit's order, Study notes, Glossary, Principles.
+    expect(order[1]).toBe('Glossary, key terms in plain words');
+    expect(order[2]).toBe('Principles, how the exam thinks');
     expect(order[order.length - 1]).toMatch(/^Final review week/);
     expect(text.indexOf('How the exam thinks')).toBeLessThan(text.indexOf('in exam order'));
     press('Principles, how the exam thinks');

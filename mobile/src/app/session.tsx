@@ -82,8 +82,9 @@ import {
 import { CrossFade, PageTurn, Pop, useMotion } from '../components/motion';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { LeafSmall } from '../components/glyphs';
-import { ArrowRight, BookOpen, Bookmark, BookmarkCheck, ChevronLeft, Compass, Flag, ICON_STROKE, LayoutGrid, Lightbulb, PencilLine, Play, X } from '../components/icons';
+import { ArrowRight, BookOpen, Bookmark, BookmarkCheck, ChevronLeft, Compass, Flag, ICON_STROKE, LayoutGrid, Lightbulb, ListChecks, PencilLine, Play, X } from '../components/icons';
 import {
+  AllOptionsSheet,
   AnswerMore,
   AnswerPlate,
   AnswerRecap,
@@ -92,6 +93,7 @@ import {
   ConfidenceRow,
   FEEDBACK_DELAY,
   OptionCard,
+  PLATE_ROW_STAGGER,
   VINE_ARRIVES,
   Rise,
   ScenarioBlock,
@@ -131,7 +133,6 @@ import { missCoachLine } from '../engine/slipCoach';
 import { pickCoachKind, pickCoachLine, tipPickLetter } from '../engine/pickCoach';
 import { RunningHead } from '../components/fieldguide';
 import { eliminateTip, runnerUp, tipParts } from '../engine/tips';
-import { answerTipRows, coachedTip } from '../engine/answerTips';
 import { finishSession } from '../lib/finishSession';
 import { advancePath } from '../lib/sessions';
 import { HINT_AFTER_LINE, HINT_BEFORE_LINE } from '../engine/readiness';
@@ -195,9 +196,8 @@ export default function SessionScreen() {
   // The question whose vine may draw: armed once its entrance has landed (VINE_ARRIVES), never at the
   // tap while it is still invisible (UX H1). Keyed by question, so a new question starts unarmed.
   const vineArmedFor = useRef<string | null>(null);
-  // Mobile 1.24: after a miss the tips come in two parts (Key idea + Exam cue, then
-  // Eliminate / Final two after the folded "Why"); the second part draws on its own.
-  const [vine2Visible, setVine2Visible] = useState(false);
+  // Grove Phase 4: More's "Show all options" sheet (the four options, read-only).
+  const [allOptionsOpen, setAllOptionsOpen] = useState(false);
   // Screen-reader focus lands on the verdict after "Check answer".
   const verdictRef = useRef<View>(null);
   // Coach me: the first line of the hint, and a flag saying "the learner just
@@ -297,7 +297,7 @@ export default function SessionScreen() {
     setCurMs(0);
     setConfidence(undefined);
     setVineVisible(false);
-    setVine2Visible(false);
+    setAllOptionsOpen(false);
   }
   // At the swap (PageTurn calls this before the new page is painted): back to
   // the top, so the jump is never seen, and tell screen readers where they are
@@ -673,8 +673,32 @@ export default function SessionScreen() {
     hint: 'Opens a short form, then your email app',
     run: report.open,
   };
+  // Grove Phase 4 (PHASE4.md 4.2 step 2, 4.5): the answer card shows only the pick and the best answer,
+  // so every option stays one tap away here. Only after the answer is checked (before it, the options
+  // are on screen anyway). Read-only: it never grades.
+  const optionsRow: MoreRow | null =
+    submitted && response
+      ? {
+          key: 'options',
+          icon: (col) => <ListChecks size={ICON_SIZE.row} color={col} strokeWidth={ICON_STROKE} />,
+          title: 'Show all options',
+          subtitle: 'With your pick and the best',
+          label: 'Show all options, with your pick and the best',
+          hint: 'Opens every option for this question.',
+          run: () => setAllOptionsOpen(true),
+        }
+      : null;
+  // The sheet's rows, in DISPLAY order. Each text is looked up by its ORIGINAL letter through the
+  // shuffle (displayToOriginal); the pick and the best are compared on ORIGINAL letters too.
+  const allOptionRows =
+    submitted && response
+      ? displayLetters.map((d) => {
+          const original = displayToOriginal(d, perm);
+          return { letter: d, text: q.options[original] ?? '', pick: original === pickedOriginal, best: original === q.correct };
+        })
+      : [];
   // AnswerMore drops the nulls (the rows that don't apply here), in this order.
-  const moreRows = [noteRow, principleRow, yourNoteRow, reportRow];
+  const moreRows = [optionsRow, noteRow, principleRow, yourNoteRow, reportRow];
   const lowTime = isMock && remaining < LOW_TIME_MS;
   // The shared pace strip (components/pace.tsx): mock clock and pace line.
   const lastCheck = active.checkpoints?.[active.checkpoints.length - 1];
@@ -717,14 +741,11 @@ export default function SessionScreen() {
   const hintTip = eliminateTip(q.tips);
   const hintWord = priorityWord(q.stem);
   const canCoach = !isMock && Boolean(hintTip || hintWord);
-  // Grove Phase 4 (4.6 fallback): every tip open after a right answer; after a miss the Exam cue and
-  // the row the coach line named are open, the rest fold under the Why's "Read more".
-  const coachKind = response && !response.correct ? pickCoachKind(q.tips, q.correct, pickedOriginal) : null;
-  const coachFromPick = Boolean(coachKind) && !(taggedSlip && coachKind !== 'final-two') && pickCoachLine(q.tips, q.correct, pickedOriginal, perm) !== null;
-  const tipRows = answerTipRows(q.tips, {
-    correct: Boolean(response?.correct),
-    coached: coachedTip(coachKind, coachFromPick, Boolean(pickedOriginal && pickedOriginal === runnerUp(q.tips, q.correct))),
-  });
+  // Grove Phase 4, owner answer O1 (5 Nov 2026; PHASE4.md 4.2 step 4): every tip is open in every
+  // state, right, miss or Time's up, in the written order. Only a long Why folds after a miss.
+  // (engine/tips.ts splitMissTips and engine/answerTips.ts answerTipRows, the 1.43 fold, are no
+  // longer called here; tips.ts is bundled into the website, so it stays as it is.)
+  const tipRows = { open: q.tips.map((_, i) => i), folded: [] as number[] };
   // One tip row: its label and words in DISPLAY letters, plus the "Your pick, B" chip when the tip
   // names the learner's pick (PHASE4 4.2 step 4). The chip's rule compares ORIGINAL letters.
   const tipRow = (i: number) => ({ ...tipParts(renderText(q.tips[i], perm), i), pick: tipPickLetter(q.tips[i], q.correct, pickedOriginal, perm) });
@@ -831,6 +852,15 @@ export default function SessionScreen() {
         {!isMock && (
           <View style={{ marginRight: -12 }}>
             <AnswerMore rows={moreRows} buttonRef={moreRef} />
+            {/* More's "Show all options": closing it puts screen-reader focus back on ⋯. */}
+            <AllOptionsSheet
+              visible={allOptionsOpen}
+              rows={allOptionRows}
+              onClose={() => {
+                setAllOptionsOpen(false);
+                moveFocus(moreRef, MORE_FOCUS_BACK_MS);
+              }}
+            />
           </View>
         )}
       </Row>
@@ -961,12 +991,11 @@ export default function SessionScreen() {
                 {response.assisted && response.correct && <T v="meta" style={{ marginTop: space.xs, marginLeft: verdictIndent }}>{HINT_AFTER_LINE}</T>}
                 {/* A right retest (under 4 hours after a miss) is not promoted: say when it is back. */}
                 {response.retest && response.correct && <T v="meta" style={{ marginTop: space.xs, marginLeft: verdictIndent }}>{RETEST_LINE}</T>}
-                {/* Grove Phase 4 (PHASE4.md 4.2, with the 4.6 fallback while O1 is open): one order in every
-                    state. The card (your answer, "Why not B", the best answer), then Key idea, then "How to
-                    think about it" (every tip after a right answer; after a miss the Exam cue and the row the
-                    coach named), then "Why D". After a miss a long Why folds to two lines, and "Read more"
-                    opens the rest of it and the other tips, right after the button. DISPLAY letters on screen
-                    and in every spoken label; the options are looked up by their ORIGINAL letters. */}
+                {/* Grove Phase 4 (PHASE4.md 4.2, owner answer O1): one order in every state. The card (your
+                    answer, "Why not B", the best answer), then Key idea, then "How to think about it" with
+                    every tip open, then "Why D". After a miss a long Why folds to two lines, and "Read more"
+                    opens only the rest of that paragraph. DISPLAY letters on screen and in every spoken
+                    label; the options are looked up by their ORIGINAL letters. */}
                 <AnswerPlate
                   key={`${qid}:plate`}
                   delay={FEEDBACK_DELAY.rows}
@@ -977,35 +1006,26 @@ export default function SessionScreen() {
                   }
                   best={{ letter: correctDisplay, text: q.options[q.correct] ?? '' }}
                 />
-                {/* Key idea and the open tips arrive in reading order, after the card (opacity only). Their
-                    arrival is still the vine's (VINE_ARRIVES): `visible`, the one tick and the stem's draw wait for it. */}
-                <Rise delay={FEEDBACK_DELAY.why}>
+                {/* Key idea and every tip, then the Why, arrive in reading order after the card: opacity only,
+                    200ms each, 30ms apart (PHASE4.md 4.4). Their arrival is still the vine's (VINE_ARRIVES):
+                    `visible`, the one tick and the stem's draw wait for it. */}
+                <Rise delay={FEEDBACK_DELAY.why} rise={false}>
                   <View ref={vineRef} collapsable={false} onLayout={checkVine} testID="feedback-vine">
                     <KeyIdea key={`${qid}:a`} text={q.keyConcept} visible={vineVisible} />
                     {tipRows.open.length > 0 && <TipsHeading />}
                     <TipsCard key={`${qid}:tips`} rows={tipRows.open.map(tipRow)} visible={vineVisible} />
                   </View>
                 </Rise>
-                <Rise delay={FEEDBACK_DELAY.why + motion.stagger.group}>
+                <Rise delay={FEEDBACK_DELAY.why + PLATE_ROW_STAGGER} rise={false}>
+                  {/* O1: the fold holds the long Why paragraph and nothing else ("Read more of the explanation"). */}
                   <WhyBlock
                     key={qid}
                     letter={correctDisplay}
                     text={renderText(q.explanation, perm)}
                     // After a right answer nothing folds (4.2 step 5).
                     fold={!response.correct}
-                    more={tipRows.folded.map((i) => tipParts(q.tips[i], i).label)}
-                    // The tips inside draw as the fold opens (they are on screen right under the toggle).
-                    onOpen={() => setVine2Visible(true)}
-                  >
-                    {tipRows.folded.length > 0 && (
-                      <TipsCard
-                        key={`${qid}:b`}
-                        testID="answer-tips-more"
-                        rows={tipRows.folded.map(tipRow)}
-                        visible={vine2Visible}
-                      />
-                    )}
-                  </WhyBlock>
+                    more={[]}
+                  />
                 </Rise>
                 {/* Mobile 1.49 (premium pass §2.2): ONE "Go deeper" row after a miss, after a hairline.
                     The lesson when it is not done yet (Play = lessons), otherwise the note (BookOpen =

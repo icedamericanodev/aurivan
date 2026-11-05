@@ -348,7 +348,7 @@ export const PLATE_ROW_STAGGER = 30;
  *
  * Colour is never alone: every row has its ✗ / ✓ and its words. Each row is one screen-reader stop
  * ("Your answer, B, not the best: …"; "Why not B: …"; "Best answer, D: …"). DISPLAY letters only.
- * The other options stay one tap away in More ("Show all options") and in review.
+ * The other options stay one tap away in More ("Show all options", AllOptionsSheet below) and in review.
  */
 export function AnswerPlate({ pick, best, delay = 0 }: { pick?: PlateRow; best: PlateRow; delay?: number }) {
   const { c } = useTheme();
@@ -542,10 +542,13 @@ export function AnswerRecap({ correct, letter }: { correct: boolean; letter: Let
   );
 }
 
-/** Entrance wrapper for the answer rows and explanation: fade + 8pt rise over `reveal` (200 ms). */
-export function Rise({ children, delay = 0 }: { children: ReactNode; delay?: number }) {
+/**
+ * Entrance wrapper for the answer rows and explanation: a fade over `reveal` (200 ms), with an 8pt rise
+ * unless `rise` is false. The answer screen's blocks pass `rise={false}` (PHASE4.md 4.4: opacity only).
+ */
+export function Rise({ children, delay = 0, rise = true }: { children: ReactNode; delay?: number; rise?: boolean }) {
   return (
-    <FadeIn dur="reveal" delay={delay}>
+    <FadeIn dur="reveal" delay={delay} rise={rise}>
       {children}
     </FadeIn>
   );
@@ -644,15 +647,16 @@ function spokenList(items: string[]): string {
 }
 
 /**
- * "Why D" and its explanation. After a miss the Key idea and the Exam cue come
- * first, so this long paragraph shows its first two lines and a "Read more".
- * Mobile 1.43 (owner decision): the fold also holds Eliminate two and Final two
- * (`children`, named in `more` for the spoken label), so the first screen keeps
- * the principle and the detail is one tap away. "Read more" opens all of it in
- * place (no height animation; what opens fades in, and the vine inside arrives
- * drawn under Reduce Motion); "Show less" closes all of it. The toggle keeps its
- * place in the tree, so screen-reader focus stays on it. A short explanation
- * with nothing else to hide, or any explanation when `fold` is false, is whole.
+ * "Why D" and its explanation. After a miss the Key idea and every tip come
+ * first, so a long paragraph shows its first two lines and a "Read more"
+ * (PHASE4.md 4.2 step 5). Owner answer O1 (5 Nov 2026): the fold holds this
+ * paragraph and nothing else, so its spoken name is "Read more of the
+ * explanation". The `children` and `more` props are kept for the 1.43 fold
+ * (tips under the fold), which the answer screen no longer uses: when `more`
+ * names anything, the label still lists it. "Read more" opens in place (no
+ * height animation); "Show less" closes it. The toggle keeps its place in the
+ * tree, so screen-reader focus stays on it. A short explanation with nothing
+ * else to hide, or any explanation when `fold` is false, is whole.
  */
 export function WhyBlock({
   letter,
@@ -682,12 +686,13 @@ export function WhyBlock({
     <View>
       <T v="headline" accessibilityRole="header" style={{ marginTop: space.lg }}>{`Why ${letter}`}</T>
       <T v="body" numberOfLines={folded && long ? 2 : undefined} accessibilityLabel={text} style={{ marginTop: space.xs }}>{text}</T>
-      {/* The toggle comes BEFORE what it opens, so a screen reader moves from "Read more" straight on to the
-          Eliminate two and Final two tips it revealed. */}
+      {/* The toggle comes right after the paragraph it opens (and before anything else a fold holds), so a
+          screen reader moves from "Read more" straight on to what it revealed. */}
       {canFold && (
         <Pressable
           accessibilityRole="button"
-          accessibilityLabel={open ? `Show less: hides ${what}` : `Read more: ${what}`}
+          // Only the paragraph folds (O1): the spec's name. A fold that also holds tips lists them.
+          accessibilityLabel={more.length === 0 ? (open ? 'Show less of the explanation' : 'Read more of the explanation') : open ? `Show less: hides ${what}` : `Read more: ${what}`}
           accessibilityState={{ expanded: open }}
           onPress={() => {
             if (!open) onOpen?.();
@@ -899,7 +904,7 @@ export function AnswerMore({ rows: given, buttonRef }: { rows: (MoreRow | null)[
       <IconButton
         ref={buttonRef}
         label="More on this question"
-        hint={rows.length > 1 ? 'Opens the note, the principle, your note and Report a problem' : 'Opens Report a problem'}
+        hint={rows.length > 1 ? 'Opens all the options, the note, the principle, your note and Report a problem' : 'Opens Report a problem'}
         expanded={open}
         icon={(col) => <Ellipsis size={24} color={col} strokeWidth={ICON_STROKE} />}
         onPress={() => setOpen(true)}
@@ -921,6 +926,81 @@ export function AnswerMore({ rows: given, buttonRef }: { rows: (MoreRow | null)[
         ))}
       </Sheet>
     </>
+  );
+}
+
+// ── Show all options: the four options, read-only, after the answer ──
+/** One option in the "Show all options" sheet: its DISPLAY letter, its text, and whether it is the pick or the best. */
+export interface AllOptionsRow {
+  letter: Letter;
+  text: string;
+  pick: boolean;
+  best: boolean;
+}
+
+/**
+ * Grove Phase 4 (PHASE4.md 4.2 step 2 and 4.5): the answer card shows only the pick and the best
+ * answer, so the other options stay one tap away in More as "Show all options". This sheet lists all
+ * of them in DISPLAY order, read-only (nothing here can be tapped or graded). The pick and the best
+ * answer carry their badge colour AND their words ("Your answer", "Best answer"), so colour is never
+ * alone. The caller looks each option up by its ORIGINAL letter through the session's shuffle; this
+ * part only draws what it is given. Each row is one screen-reader stop.
+ */
+export function AllOptionsSheet({ visible, onClose, rows }: { visible: boolean; onClose: () => void; rows: AllOptionsRow[] }) {
+  const { c } = useTheme();
+  const fontScale = useFontScale();
+  const discAbove = fontScale >= DISC_ABOVE_FROM;
+  // The badge grows with its letter, as on the answer card (TYPE_SCALE.md exception E4).
+  const disc = DISC * Math.min(Math.max(fontScale, 1), 1.6);
+  return (
+    <Sheet visible={visible} onClose={onClose} title="All options">
+      <View testID="all-options">
+        {rows.map((r, i) => {
+          // The caption words: the pick, the best, or both at once after a right answer.
+          const caption = r.pick && r.best ? '✓ Your answer · the best' : r.best ? '✓ Best answer' : r.pick ? '✗ Your answer' : null;
+          const tone = r.best ? c.correct : r.pick ? c.wrong : null;
+          const spoken = r.pick && r.best
+            ? `${r.letter}, your answer, the best: ${r.text}`
+            : r.best
+              ? `${r.letter}, best answer: ${r.text}`
+              : r.pick
+                ? `${r.letter}, your answer, not the best: ${r.text}`
+                : `${r.letter}: ${r.text}`;
+          return (
+            <View
+              key={r.letter}
+              accessible
+              accessibilityLabel={spoken}
+              testID={`all-options-${r.letter}`}
+              style={[
+                { flexDirection: discAbove ? 'column' : 'row', alignItems: 'flex-start', gap: discAbove ? space.sm : DISC_GAP, paddingVertical: space.md },
+                i > 0 && { borderTopWidth: 1, borderTopColor: c.line },
+              ]}
+            >
+              {/* The pick and the best: a filled badge in their state colour. The others: an outlined badge. */}
+              <View
+                style={{
+                  minWidth: disc,
+                  minHeight: disc,
+                  borderRadius: groveRadius.step,
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  backgroundColor: tone ?? 'transparent',
+                  borderWidth: tone ? 0 : 1.5,
+                  borderColor: c.control,
+                }}
+              >
+                <T v="badgeLetter" color={tone ? c.bg : c.ink}>{r.letter}</T>
+              </View>
+              <View style={{ flex: discAbove ? undefined : 1, alignSelf: 'stretch' }}>
+                {caption && tone && <T v="caption" color={tone} style={{ marginBottom: 2 }}>{caption}</T>}
+                <FieldText v={r.best ? 'best' : 'option'}>{r.text}</FieldText>
+              </View>
+            </View>
+          );
+        })}
+      </View>
+    </Sheet>
   );
 }
 
@@ -963,8 +1043,8 @@ export function StickyFooter({ children, onHeight, rule }: { children: ReactNode
 // (spec §10.2): the rows start as the verdict leaf settles, "Why" just after.
 export const FEEDBACK_DELAY = { rows: motion.dur.select, why: motion.dur.reveal } as const;
 /**
- * When the vine's entrance has landed (premium round 2, UX H1): the latest vine group rises at
- * `why + stagger.group` over `reveal`. The vine may draw (stem, leaf pops, its one haptic) only from
- * here, never while its group is still invisible. Under Reduce Motion everything is in after `reduced`.
+ * When the vine's entrance has landed (premium round 2, UX H1): the vine's group (Key idea and the tips)
+ * fades in at `why` over `reveal`. Since the owner's O1 answer every tip is in that one group. The
+ * vine may draw (stem, leaf pops, its one haptic) only from here, never while its group is still invisible. Under Reduce Motion everything is in after `reduced`.
  */
-export const VINE_ARRIVES = FEEDBACK_DELAY.why + motion.stagger.group + motion.dur.reveal;
+export const VINE_ARRIVES = FEEDBACK_DELAY.why + motion.dur.reveal;

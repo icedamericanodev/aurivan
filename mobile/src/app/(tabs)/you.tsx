@@ -503,7 +503,7 @@ const YouLists = memo(function YouLists({
       )}
       {/* Study tools (the board's card): each row says what a tap opens; counts sit at the end. */}
       <HubCard testID="study-tools" style={{ marginTop: space.lg }}>
-        <CardHead serif title="Study tools" />
+        <CardHead title="Study tools" />
         <ListRow
           icon={icon(RotateCcw)}
           title="Questions to revisit"
@@ -634,7 +634,7 @@ const ProgressCard = memo(function ProgressCard({ cert, focus, hasAnswers }: { c
 const MocksCard = memo(function MocksCard({ mocks, miniMock, pacingLine }: { mocks: readonly MockResult[]; miniMock: number; pacingLine: string | null }) {
   return (
       <HubCard testID="you-mocks" style={{ marginTop: space.lg, paddingBottom: space.md }}>
-        <CardHead serif title="Mock exams" />
+        <CardHead title="Mock exams" />
         <MockHistory mocks={mocks} miniMock={miniMock} />
         {/* Pacing across timed mocks only (untimed ones are left out). */}
         {pacingLine && <T v="meta" style={{ marginTop: space.md }}>{pacingLine}</T>}

@@ -112,14 +112,15 @@ describe('KeyList as a navigation list', () => {
 
 describe('Learn: the reference tiles (Grove Phase 4, the kit order)', () => {
   const cert = getCertification('cisa')!;
-  const all = { showNotes: true, showPrinciples: true, showGuide: true, showWeek: true };
+  const all = { showNotes: true, showGlossary: true, showPrinciples: true, showGuide: true, showWeek: true };
 
-  it('Study notes, Principles, The CISA exam, then Final review week, each with its kit line', () => {
+  it('Study notes, Glossary, Principles, The CISA exam, then Final review week, each with its kit line', () => {
     const items = lookUpItems(cert, 0, all);
-    expect(items.map((i) => i.title)).toEqual(['Study notes', 'Principles', `The ${cert.name} exam`, 'Final review week']);
-    expect(items.map((i) => i.line)).toEqual(['Every topic, with traps', 'How the exam thinks', 'Booking to results', 'Your last seven days, day by day']);
+    expect(items.map((i) => i.title)).toEqual(['Study notes', 'Glossary', 'Principles', `The ${cert.name} exam`, 'Final review week']);
+    expect(items.map((i) => i.line)).toEqual(['Every topic, with traps', 'Key terms, plain words', 'How the exam thinks', 'Booking to results', 'Your last seven days, day by day']);
     expect(items[0].spoken).toBe('Study notes, Every topic, with traps');
-    expect(items[2].spoken).toBe(`About the ${cert.name} exam, booking to results`);
+    expect(items[1].spoken).toBe('Glossary, key terms in plain words');
+    expect(items[3].spoken).toBe(`About the ${cert.name} exam, booking to results`);
     for (const i of items) expect(i.onPress).toBeDefined();
   });
 

@@ -67,6 +67,9 @@ export { default as BadgeIcon } from 'lucide-react-native/icons/badge';
 export { default as LayoutGrid } from 'lucide-react-native/icons/layout-grid';
 export { default as Leaf } from 'lucide-react-native/icons/leaf';
 export { default as BookA } from 'lucide-react-native/icons/book-a';
+// Grove Phase 4: Learn's Glossary tile (a book with text) and Practice's Weak spots drill row (columns).
+export { default as BookText } from 'lucide-react-native/icons/book-text';
+export { default as ChartColumn } from 'lucide-react-native/icons/chart-column';
 export { default as TreeDeciduous } from 'lucide-react-native/icons/tree-deciduous';
 export { default as Footprints } from 'lucide-react-native/icons/footprints';
 export { default as Timer } from 'lucide-react-native/icons/timer';

@@ -129,7 +129,7 @@ function msToMidnight(ms: number): number {
  * when the app comes back to the foreground and at local midnight, so a
  * Today screen left open overnight rolls over to the new day's plan.
  */
-function useToday(): { key: string; at: number } {
+export function useToday(): { key: string; at: number } {
   const [today, setToday] = useState(() => {
     const at = Date.now();
     return { key: dayKey(at), at };

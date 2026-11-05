@@ -1,7 +1,7 @@
 // Grove Phase 1 and Today on the phone (SHOTS=grove, see run.sh): Today in three states (a new learner,
 // 10 answers, past the first range), You (the Settings button), Settings (the Grove cards) and the
 // floating tab bar, in light and dark (THEMES=light,dark by default). FONT_SCALE=2 approximates 200%
-// text (the tab bar's own words stay capped at x1.2, as in the app). GROVE_ONLY=today,you,learn,practice,settings,bar narrows it.
+// text (the tab bar's own words stay capped at x1.2, as in the app). GROVE_ONLY=today,you,learn,practice,glossary,settings,bar narrows it.
 // Grove You C2: You also as you-mid, you-mid2 (scrolled), you-thin (one area under 30 answers), you-lowend (the scale bar and the low-end sentence), you-before40 and you-before40-areas (34 answers) and you-new (a new learner).
 import { createRequire } from 'module';
 import fs from 'fs';
@@ -138,6 +138,15 @@ for (const theme of THEMES) {
     }
     await scrollEnd();
     await shot('practice-end');
+  }
+  // Grove Phase 4 (O2): the read-only Glossary, its top, further down, and a search (?q=RTO).
+  if (want('glossary')) {
+    await go('/glossary');
+    await shot('glossary');
+    await scrollBy(H - 160);
+    await shot('glossary-mid');
+    await go('/glossary?q=RTO');
+    await shot('glossary-search');
   }
   if (want('settings')) {
     await go('/settings');

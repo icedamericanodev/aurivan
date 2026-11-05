@@ -10,10 +10,10 @@
  *      not a button; Start lesson is its one control. All caught up keeps its own words and
  *      "Go to Practice". A course with no lessons offers its next study note instead.
  *   3. The notes search (inline results, "See all results", the empty state, the spoken count).
- *   4. The tiles: Study notes, Principles and The CISA exam (two columns, or one column of rows
- *      from text scale 1.3 or on a narrow phone; an odd last tile spans the width). The Glossary
- *      tile waits for the owner's yes on the phone Glossary screen (PHASE4.md O2): never a tile
- *      that opens nothing.
+ *   4. The tiles in the kit's order: Study notes, Glossary (O2, Sky's yes on 5 Nov 2026), Principles
+ *      and The CISA exam (two columns, so the kit's 2 by 2 grid, or one column of rows from text
+ *      scale 1.3 or on a narrow phone; an odd last tile spans the width). Each tile shows only when
+ *      the course has its content: never a tile that opens nothing.
  *   5. Final review week, a full-width row.
  *   6. The Lessons card: "Lessons" with "0 of 66 · in exam order · each ends with a check", one
  *      row per area (its ring, number, short name, a mint "Next" on the Up next area, the count
@@ -33,7 +33,7 @@ import { AccessibilityInfo, useWindowDimensions, View } from 'react-native';
 import { Dandelion, DomainRing } from '../../components/glyphs';
 import { AreaDot, CardDivider, CardHead, GlyphTile, HeroKicker, HubCard, HubTile, MintPill } from '../../components/groveHub';
 import { HeroCard } from '../../components/groveToday';
-import { BookOpen, CalendarCheck, ChevronDown, Compass, ICON_STROKE, Info, Play } from '../../components/icons';
+import { BookOpen, BookText, CalendarCheck, ChevronDown, Compass, ICON_STROKE, Info, Play } from '../../components/icons';
 import { AnimatedPressable, CheckDraw, Collapse, Turn, usePressScale, useScreenFocus } from '../../components/motion';
 import { BigNum, Button, EmptyState, Enter, ICON_SIZE, ListRow, ProgressBar, Screen, SearchField, T, useFontScale } from '../../components/ui';
 import { CERTIFICATIONS, domainColor, getCertification } from '../../content/certifications';
@@ -42,6 +42,7 @@ import type { Lesson } from '../../content/lessons/types';
 import { getNotes, hasNotes, noteSubtopics } from '../../content/notes';
 import { hasExamGuide, hasFinalWeek } from '../../content/exam';
 import { hasPrinciples } from '../../content/principles';
+import { hasTerms } from '../../content/terms';
 import type { Certification, DomainInfo } from '../../content/types';
 import { readCount, searchNotes } from '../../engine/notesSearch';
 import { clearFinishedLessons, wasJustFinished } from '../../lib/lessonNews';
@@ -146,10 +147,12 @@ export default function Learn() {
   const showNotes = hasNotes(cert.id);
   // The exam-mindset principles: their own row, hidden when the cert has none.
   const showPrinciples = hasPrinciples(cert.id);
+  // The Glossary (O2): its tile, only when the course has key terms.
+  const showGlossary = hasTerms(cert.id);
   // The exam guide and the final review week: one row each, hidden when the cert has none.
   const showGuide = hasExamGuide(cert.id);
   const showWeek = hasFinalWeek(cert.id);
-  const showLookUp = showNotes || showPrinciples || showGuide || showWeek;
+  const showLookUp = showNotes || showGlossary || showPrinciples || showGuide || showWeek;
   const noteIds = showNotes ? noteSubtopics(cert.id).map((s) => s.id) : [];
   const notesRead = readCount(noteIds, notesReadIds);
   // The cover's one meta line: its length, then why this one. The caption
@@ -183,7 +186,7 @@ export default function Learn() {
       {showLookUp && (
         <Enter i={2}>
           {/* Memoised, with its own query state: typing re-renders only this block, never the hero or the lessons. */}
-          <LookItUp cert={cert} notesRead={notesRead} showNotes={showNotes} showPrinciples={showPrinciples} showGuide={showGuide} showWeek={showWeek} />
+          <LookItUp cert={cert} notesRead={notesRead} showNotes={showNotes} showGlossary={showGlossary} showPrinciples={showPrinciples} showGuide={showGuide} showWeek={showWeek} />
         </Enter>
       )}
 
@@ -315,7 +318,7 @@ export function nextNoteToRead(certId: string, readIds: readonly string[], focus
 
 /** One tile of Learn's grid, as data (the screen draws it). Exported for tests. */
 export interface LookUpItem {
-  key: 'notes' | 'principles' | 'guide' | 'week';
+  key: 'notes' | 'glossary' | 'principles' | 'guide' | 'week';
   title: string;
   line: string;
   spoken: string;
@@ -324,14 +327,14 @@ export interface LookUpItem {
 }
 
 /**
- * Learn's reference tiles in the kit's fixed order (PHASE4.md 7.1 item 4): Study notes, Principles,
- * The {course} exam, then Final review week (drawn as its own full-width row). Each only when this
- * exam has it. The Glossary tile joins after the owner's yes (O2). Exported for tests.
+ * Learn's reference tiles in the kit's fixed order (PHASE4.md 7.1 item 4): Study notes, Glossary,
+ * Principles, The {course} exam, then Final review week (drawn as its own full-width row). Each only
+ * when this exam has it. Exported for tests.
  */
 export function lookUpItems(
   cert: Certification,
   notesRead: number,
-  show: { showNotes: boolean; showPrinciples: boolean; showGuide: boolean; showWeek: boolean },
+  show: { showNotes: boolean; showGlossary?: boolean; showPrinciples: boolean; showGuide: boolean; showWeek: boolean },
 ): LookUpItem[] {
   const items: LookUpItem[] = [];
   if (show.showNotes) {
@@ -339,6 +342,16 @@ export function lookUpItems(
     const line = notesRead === 0 ? 'Every topic, with traps' : `${notesRead} ${notesRead === 1 ? 'note' : 'notes'} read · with traps`;
     items.push({ key: 'notes', title: 'Study notes', line, spoken: `Study notes, ${line.replace(' · ', ', ')}`, hint: 'Opens the notes, by domain', onPress: () => router.push('/notes') });
   }
+  // The key terms in plain words (O2): read-only, with search and area chips.
+  if (show.showGlossary)
+    items.push({
+      key: 'glossary',
+      title: 'Glossary',
+      line: 'Key terms, plain words',
+      spoken: 'Glossary, key terms in plain words',
+      hint: 'Opens the glossary',
+      onPress: () => router.push('/glossary'),
+    });
   // The exam-mindset principles: how to think.
   if (show.showPrinciples)
     items.push({
@@ -372,9 +385,10 @@ export function lookUpItems(
   return items;
 }
 
-/** Each tile's glyph, Lucide at row size (the kit: an open book, a compass, an info mark, a calendar). */
+/** Each tile's glyph, Lucide at row size (the kit: an open book, a book of words, a compass, an info mark, a calendar). */
 const TILE_ICON: Record<LookUpItem['key'], (color: string) => ReactNode> = {
   notes: (col) => <BookOpen size={ICON_SIZE.row} color={col} strokeWidth={ICON_STROKE} />,
+  glossary: (col) => <BookText size={ICON_SIZE.row} color={col} strokeWidth={ICON_STROKE} />,
   principles: (col) => <Compass size={ICON_SIZE.row} color={col} strokeWidth={ICON_STROKE} />,
   guide: (col) => <Info size={ICON_SIZE.row} color={col} strokeWidth={ICON_STROKE} />,
   week: (col) => <CalendarCheck size={ICON_SIZE.row} color={col} strokeWidth={ICON_STROKE} />,
@@ -402,6 +416,7 @@ const LookItUp = memo(function LookItUp({
   cert,
   notesRead,
   showNotes,
+  showGlossary,
   showPrinciples,
   showGuide,
   showWeek,
@@ -409,6 +424,7 @@ const LookItUp = memo(function LookItUp({
   cert: Certification;
   notesRead: number;
   showNotes: boolean;
+  showGlossary: boolean;
   showPrinciples: boolean;
   showGuide: boolean;
   showWeek: boolean;
@@ -425,7 +441,7 @@ const LookItUp = memo(function LookItUp({
     return () => clearTimeout(t);
   }, [searching, found, deferred]);
   const shown = hits.slice(0, SEARCH_INLINE);
-  const all = lookUpItems(cert, notesRead, { showNotes, showPrinciples, showGuide, showWeek });
+  const all = lookUpItems(cert, notesRead, { showNotes, showGlossary, showPrinciples, showGuide, showWeek });
   const week = all.find((i) => i.key === 'week');
   // Two columns while the text is under 1.3 and each tile keeps 160pt; otherwise one column of rows.
   const { width } = useWindowDimensions();

@@ -13,13 +13,15 @@
  * - practice_domain → a 10-question practice set in that domain ("focus" and
  *   "next_focus" from readiness, engine/finalWeek.ts weekFocus).
  * - mock_mini / mock_full → the mock start sheet (timing, hide the clock).
- * - mistakes → the Mistake journal. glossary → Study notes and their search.
+ * - mistakes → the Mistake journal. glossary → the Glossary with its search filled in (Grove
+ *   Phase 4, O2), or Study notes and their search for a course with no key terms.
  */
 import { router } from 'expo-router';
 import type { TaskAction } from '../content/exam/types';
 import { findQuestion } from '../content/loader';
 import { findNote, getNotes, subtopicOfQuestion } from '../content/notes';
 import { findPrinciple, getPrinciples, principleForSlip } from '../content/principles';
+import { hasTerms } from '../content/terms';
 import type { Certification } from '../content/types';
 import { mostMissedSubtopic, resolveAction, weekFocus, type ActionContext, type Destination, type TopSlip } from '../engine/finalWeek';
 import { readinessFor } from '../engine/readiness';
@@ -68,6 +70,7 @@ export function actionContext(cert: Certification, progress: CertProgress): Acti
       return d ? { kind: 'topic', domainId: d.id } : undefined;
     },
     principleKind: (id) => (findPrinciple(cert.id, id) ? 'principle' : principles?.families.some((f) => f.id === id) ? 'family' : undefined),
+    hasGlossary: hasTerms(cert.id),
   };
 }
 
@@ -83,6 +86,8 @@ export function destinationButton(d: Destination, cert: Certification): { label:
       return { label: 'Open the notes', hint: `Opens the ${domain(d.domainId)?.short ?? ''} study notes`.replace('  ', ' ') };
     case 'notes':
       return d.q ? { label: `Look up ${d.q}`, hint: 'Searches the study notes' } : { label: 'Open the notes', hint: 'Opens the study notes and their search' };
+    case 'glossary':
+      return d.q ? { label: `Look up ${d.q}`, hint: 'Searches the glossary' } : { label: 'Open the glossary', hint: 'Opens the glossary and its search' };
     case 'principle': {
       const p = findPrinciple(cert.id, d.id);
       return { label: 'Read the principle', hint: p ? `Opens the principle: ${p.title}` : 'Opens the principle' };
@@ -113,6 +118,8 @@ export function openDestination(d: Destination, cert: Certification): void {
       return router.push({ pathname: '/notes/[domain]', params: { domain: d.domainId } });
     case 'notes':
       return router.push(d.q ? { pathname: '/notes', params: { q: d.q } } : '/notes');
+    case 'glossary':
+      return router.push(d.q ? { pathname: '/glossary', params: { q: d.q } } : '/glossary');
     case 'principle':
       return router.push({ pathname: '/principles/[id]', params: { id: d.id } });
     case 'principles':

@@ -2,7 +2,7 @@
  * Key terms (mobile 1.48): the study notes' domain glossaries, as a small
  * bundled file per certification (scripts/terms-pack.cjs writes
  * generated/<cert>/terms.json). Read by the Key term widget's data
- * (lib/widgetData.ts), never by the widget itself.
+ * (lib/widgetData.ts), never by the widget itself, and by the Glossary screen (app/glossary.tsx).
  */
 import { onClearContentCaches, sourceFor } from './packs';
 
@@ -37,6 +37,12 @@ export function getTerms(certId: string): TermsPack | null {
 export function termsFor(certId: string, domainId: string): KeyTerm[] {
   const d = getTerms(certId)?.domains;
   return d && Object.prototype.hasOwnProperty.call(d, domainId) ? d[domainId] : [];
+}
+
+/** Whether the cert has any key terms (Learn's Glossary tile shows only then, never a tile that opens nothing). */
+export function hasTerms(certId: string): boolean {
+  const d = getTerms(certId)?.domains;
+  return Boolean(d && Object.values(d).some((list) => list.length > 0));
 }
 
 onClearContentCaches(() => cache.clear());

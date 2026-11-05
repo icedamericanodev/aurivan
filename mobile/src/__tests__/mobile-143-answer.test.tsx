@@ -1,9 +1,9 @@
 /**
  * Mobile 1.43, the answer screen (board 1, owner decisions), as rebuilt in Grove Phase 4
- * (PHASE4.md section 4, the 4.6 fallback while O1 is open):
+ * (PHASE4.md section 4; Sky answered O1 YES on 5 Nov 2026):
  *  - one order: verdict, the answer card, Key idea, "How to think about it", then "Why D";
- *  - after a miss the Exam cue and the tip the coach named are open; the others sit in the
- *    "Read more" fold, after the button; nothing is dropped (Final two stays, even after a runner-up pick);
+ *  - every tip is open in every state; after a miss only a long Why folds ("Read more of the
+ *    explanation"); nothing is dropped (Final two stays, even after a runner-up pick);
  *  - the rows carry the DISPLAY letter in their badge and in every spoken label
  *    (premium round 2, the Fig. 4 plate: "Your pick, B, not the best answer: … Why not B: …",
  *    "Best answer, D: …");
@@ -102,46 +102,47 @@ afterEach(() => {
   jest.useRealTimers();
 });
 
-// Grove Phase 4 (PHASE4.md 4.2, with the 4.6 fallback while O1 is open): ONE order in every state.
-// Verdict, the answer card, Key idea, "How to think about it", then "Why D". After a miss the Exam cue
-// and the row the coach line named are open; the other tips wait under "Read more", right after it.
+// Grove Phase 4 (PHASE4.md 4.2, owner answer O1): ONE order in every state. Verdict, the answer card,
+// Key idea, "How to think about it" with every tip open, then "Why D". After a miss only a long Why folds.
 const finalTwoTip = rich.tips.find((t) => t.startsWith('Final two:'))!;
 const eliminateTipText = rich.tips.find((t) => t.startsWith('Eliminate:'))!;
 const runnerUpOf = () => [...finalTwoTip.matchAll(/\{\{([A-D])\}\}/g)].map((m) => m[1]).find((l) => l !== rich.correct)!;
 const ruledOut = () => [...eliminateTipText.matchAll(/\{\{([A-D])\}\}/g)].map((m) => m[1]).find((l) => l !== rich.correct)!;
 
 describe('the answer screen order (Grove Phase 4)', () => {
-  it('a miss on an option to rule out: card, Key idea, the tips the coach named and the Exam cue, then Why; Final two waits under Read more', () => {
+  // Owner answer O1 (5 Nov 2026): after a miss all three tips are open; only a long Why folds.
+  it('a miss on an option to rule out: card, Key idea, every tip in the written order, then Why', () => {
     const { picked, best } = miss(ruledOut());
     const t = allText();
-    const order = ['Not quite', '✗ Your answer', `Why not ${picked}`, '✓ Best answer', 'Key idea', 'How to think about it', 'Eliminate two', 'Exam cue', `Why ${best}`].map((s) => t.indexOf(s));
+    const order = ['Not quite', '✗ Your answer', `Why not ${picked}`, '✓ Best answer', 'Key idea', 'How to think about it', 'Eliminate two', 'Final two', 'Exam cue', `Why ${best}`].map((s) => t.indexOf(s));
     expect(order.every((i) => i >= 0)).toBe(true);
     expect([...order].sort((a, b) => a - b)).toEqual(order);
-    expect(t).not.toContain('Final two');
-    expect(labelled(/^Read more: the full explanation and Final two$/).length).toBeGreaterThan(0);
+    // The fold holds only the paragraph, and says so.
+    expect(labelled(/^Read more of the explanation$/).length).toBeGreaterThan(0);
+    expect(labelled(/^Read more: /)).toHaveLength(0);
   });
 
-  it('a miss on the closest wrong choice: Final two and the Exam cue are open; Eliminate two waits', () => {
+  it('a miss on the closest wrong choice: Eliminate two, Final two and the Exam cue are all open before the Why', () => {
     const { best } = miss(runnerUpOf());
     const t = allText();
-    expect(t.indexOf('How to think about it')).toBeLessThan(t.indexOf('Final two'));
+    expect(t.indexOf('How to think about it')).toBeLessThan(t.indexOf('Eliminate two'));
+    expect(t.indexOf('Eliminate two')).toBeLessThan(t.indexOf('Final two'));
     expect(t.indexOf('Final two')).toBeLessThan(t.indexOf('Exam cue'));
     expect(t.indexOf('Exam cue')).toBeLessThan(t.indexOf(`Why ${best}`));
-    expect(t).not.toContain('Eliminate two');
+    // One tips card, no second card in a fold.
+    expect(root().findAllByType(TipsCard)).toHaveLength(1);
   });
 
-  it('Read more opens the rest after the button, in the written order; Show less closes it', () => {
+  it('Read more opens only the rest of the Why; Show less folds it again; the tips never move', () => {
     miss(runnerUpOf());
-    pressStarting('Read more');
-    const t = allText();
-    expect(t.indexOf('Show less')).toBeLessThan(t.lastIndexOf('Eliminate two'));
+    const before = allText();
+    pressStarting('Read more of the explanation');
     // The whole explanation, no line limit.
     expect(root().findAll((n) => n.props.numberOfLines === 2 && typeof n.props.children === 'string' && n.props.children.length > 150)).toHaveLength(0);
-    // The tips inside the fold draw as it opens (no scroll needed).
-    const more = root().findAllByType(TipsCard).find((n) => n.props.testID === 'answer-tips-more')!;
-    expect(more.props.visible).toBe(true);
-    pressStarting('Show less');
-    expect(allText()).not.toContain('Eliminate two');
+    expect(labelled(/^Show less of the explanation$/).length).toBeGreaterThan(0);
+    pressStarting('Show less of the explanation');
+    expect(allText()).toBe(before);
+    expect(allText()).toContain('Eliminate two');
   });
 
   it('a long Why is cut to two lines on screen only: the screen reader gets the whole text', () => {

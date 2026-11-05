@@ -7,14 +7,14 @@
  *   2. The jump bar: Questions, Drills and Mock exams. Plain buttons that scroll to their section and
  *      move screen-reader focus to its head (never tabs, and never a "selected" one: the bar is not
  *      sticky, so it would almost always say Questions). A column from text scale 1.3.
- *   3. The Mindset strip, hidden while the phone has no mindset tips (O7).
+ *   3. The Mindset strip (O7): one of the website's Mindset tips a day; hidden for a course with none.
  *   4. The forest "Picked for you" card: the set it starts, "10 questions · about 12 min", the leaf
  *      glyph tile, three inset tiles (Domains and Count open the path chooser; Timed IS the switch),
  *      the timed note and the mint Start. "Or 10 mixed questions" and the pace offer stay under it.
  *   5. Focus next: Questions to revisit (with its count) and the focus area ("Where you’ll gain most").
  *   6. By domain: five rows that each start a set in that area.
- *   7. Review and saved: All missed questions, All saved questions, Question bank, Build a set (the
- *      kit's Weak spots drill waits for the owner's yes, O8).
+ *   7. Review and saved: All missed questions, Weak spots drill (O8), All saved questions, Question
+ *      bank, Build a set. The missed and saved lines follow the learner's counts, as on the website.
  *   8. Drills (components/drills.tsx), then Mock exams (two tiles and the scaled score note). For the
  *      Exam-focused plan and the mock and ready stages, Mock exams moves up under the hero.
  * Every row, count, link and option from the earlier Practice is still here; only the look changed.
@@ -30,7 +30,7 @@ import * as Router from 'expo-router';
 import { router } from 'expo-router';
 import { Children, memo, useCallback, useRef, useState, type ReactNode, type RefObject } from 'react';
 import { AccessibilityInfo, Pressable, useWindowDimensions, View } from 'react-native';
-import { ArrowRight, Bookmark, ChevronRight, Compass, Crosshair, ICON_STROKE, Library, RotateCcw, SlidersHorizontal, X } from '../../components/icons';
+import { ArrowRight, Bookmark, ChartColumn, ChevronRight, Compass, Crosshair, ICON_STROKE, Library, RotateCcw, SlidersHorizontal, X } from '../../components/icons';
 import { PracticeLeaf } from '../../components/glyphs';
 import { AreaDot, CardDivider, CardHead, CountChip, GlyphTile, HeroKicker, HubCard } from '../../components/groveHub';
 import { HeroCard, HeroTile } from '../../components/groveToday';
@@ -43,19 +43,20 @@ import { domainColor } from '../../content/certifications';
 import { mindsetTipsFor } from '../../content/mindset';
 import { scaledScoreNote } from '../../content/scoreNote';
 import type { Certification, Difficulty } from '../../content/types';
-import { BAND_MIN_ANSWERS, bandOf } from '../../engine/domainBand';
+import { BAND_MIN_ANSWERS, bandOf, STEADY_FROM } from '../../engine/domainBand';
 import { topicQuestionIds } from '../../engine/outline';
 import { aboutMin, examPaceWords, MINUTES_PER_QUESTION, shouldOfferTimer, spokenMin } from '../../engine/pace';
 import { activeMode, MODE_INFO, scopeKey, SESSION_SIZES, sessionSize, suggestedMode, type StudyMode } from '../../engine/studyModes';
 import { currentGuidedTopic } from '../../engine/studyPath';
 import { guidedStatus, scopeTopics } from '../../lib/outline';
 import { shortTopic } from '../../lib/format';
-import { guardedStart, reviewSubtitle, startBookmarks, startFocusPractice, startPractice, startReview, startStudy } from '../../lib/sessions';
+import { guardedStart, reviewSubtitle, startBookmarks, startFocusPractice, startPractice, startReview, startStudy, startWeakSpotsDrill } from '../../lib/sessions';
+import { weakDrillLine, weakDrillRanked } from '../../engine/weakSpots';
 import { readyToday } from '../../engine/srs';
 import { moveFocus } from '../../lib/a11y';
-import { useJourney } from '../../lib/useJourney';
+import { useJourney, useToday } from '../../lib/useJourney';
 import { useDailyMinutes, useSettings } from '../../store/settings';
-import { useProgress } from '../../store/progress';
+import { selectCert, useProgress } from '../../store/progress';
 import { useSeen } from '../../store/seen';
 import { groveRadius } from '../../theme/grove';
 import { LARGE_TEXT, space } from '../../theme/tokens';
@@ -78,13 +79,20 @@ const DOMAIN_SET = 10;
 
 /**
  * One area's status words on By domain (PHASE4.md 7.8 item 7): "Not started", "Too few yet" under 30
- * answers, then the score with its band word ("72% · Steady"). Exported for tests.
+ * answers, then the score with its band word ("72% · Steady"). Under 70 it adds "below 70", as the
+ * website does ("68% · Building · below 70", renderDomainGrid), and `below` asks the row to draw it in
+ * clay. The words carry the meaning, so colour is never alone. Exported for tests.
  */
-export function domainStatus(answered: number, mastery: number): { text: string; spoken: string } {
-  if (answered <= 0) return { text: 'Not started', spoken: 'not started' };
-  if (answered < BAND_MIN_ANSWERS) return { text: 'Too few yet', spoken: 'too few yet' };
+export function domainStatus(answered: number, mastery: number): { text: string; spoken: string; below: boolean } {
+  if (answered <= 0) return { text: 'Not started', spoken: 'not started', below: false };
+  if (answered < BAND_MIN_ANSWERS) return { text: 'Too few yet', spoken: 'too few yet', below: false };
   const pct = Math.round(mastery * 100);
-  return { text: `${pct}% · ${bandOf(pct)}`, spoken: `${pct} percent, ${bandOf(pct)}` };
+  const below = pct < STEADY_FROM; // 70
+  return {
+    text: `${pct}% · ${bandOf(pct)}${below ? ` · below ${STEADY_FROM}` : ''}`,
+    spoken: `${pct} percent, ${bandOf(pct)}${below ? `, below ${STEADY_FROM}` : ''}`,
+    below,
+  };
 }
 
 /** The hero's title: the set it starts. Smart and Random name the area, or "A mixed set". Exported for tests. */
@@ -315,7 +323,7 @@ export default function Practice() {
       </Enter>
 
       <Enter i={4} style={{ marginTop: space.lg }}>
-        <ReviewSaved cert={cert} timed={timed} />
+        <ReviewSaved cert={cert} timed={timed} weakLine={weakDrillLine(weakDrillRanked(readiness.domains), (id) => cert.domains.find((d) => d.id === id)?.short ?? `Domain ${id}`, readiness.domains.some((d) => d.answered > 0))} />
       </Enter>
 
       {/* The brain games (mobile 1.51: the Play tab moved here). Its own outer view sits right in the page, so
@@ -376,8 +384,12 @@ const JumpBar = memo(function JumpBar({ onJump }: { onJump: (k: JumpKey, scroll:
 /** The Mindset strip (PHASE4.md 7.8 item 3): a compass badge, "Mindset." and one tip. Nothing without tips. */
 export const MindsetStrip = memo(function MindsetStrip({ tips }: { tips: readonly string[] }) {
   const { c } = useTheme();
-  // One tip a day, so it stays put while the learner moves between tabs (the day is read once, on mount).
-  const [day] = useState(() => Math.floor(Date.now() / 86400000));
+  // One tip a day, so it stays put while the learner moves between tabs. The local day (useToday)
+  // rolls over at midnight and when the app comes back, so a Practice tab left open shows the new
+  // day's tip, as every other tab follows the new day.
+  const { key } = useToday();
+  const [y, m, d] = key.split('-').map(Number);
+  const day = Math.round(Date.UTC(y, m - 1, d) / 86400000);
   const tip = tips.length ? tips[day % tips.length] : null;
   if (!tip) return null;
   return (
@@ -666,6 +678,7 @@ const ByDomain = memo(function ByDomain({ cert, figures }: { cert: Certification
               name={d.short}
               line={`${d.weight}% of the exam · ${answered} seen`}
               status={status.text}
+              below={status.below}
               spoken={`Domain ${d.id}, ${d.short}, ${d.weight} percent of the exam, ${answered} seen, ${status.spoken}`}
               certId={cert.id}
               domainId={d.id}
@@ -678,10 +691,14 @@ const ByDomain = memo(function ByDomain({ cert, figures }: { cert: Certification
   );
 });
 
-const DomainRow = memo(function DomainRow({ n, dot, name, line, status, spoken, certId, domainId }: { n: string; dot: string; name: string; line: string; status: string; spoken: string; certId: string; domainId: string }) {
+const DomainRow = memo(function DomainRow({ n, dot, name, line, status, below, spoken, certId, domainId }: { n: string; dot: string; name: string; line: string; status: string; /** Under 70: the status in clay (its words say "below 70" too). */ below: boolean; spoken: string; certId: string; domainId: string }) {
   const onPress = () => guardedStart(() => startPractice(certId, { count: DOMAIN_SET, domainId, title: name }), open);
   const { c } = useTheme();
   const large = useFontScale() >= LARGE_TEXT;
+  // The status sits under the words from text scale 1.3, and always for the long "· below 70" status,
+  // so the area name and its line keep the row's width and never break mid-phrase (as the website moves
+  // a long band under the name in a narrow card).
+  const under = large || below;
   const press = usePressScale({ scale: 1, tint: c.soft, tintRadius: groveRadius.tile });
   return (
     <AnimatedPressable
@@ -701,36 +718,65 @@ const DomainRow = memo(function DomainRow({ n, dot, name, line, status, spoken, 
           <T v="label" style={{ flexShrink: 1 }}>{name}</T>
         </View>
         <T v="meta">{line}</T>
-        {large && <T v="meta" color={c.ink}>{status}</T>}
+        {under && <T v="meta" color={below ? c.clay : c.ink}>{status}</T>}
       </View>
-      {!large && <T v="meta">{status}</T>}
+      {!under && <T v="meta">{status}</T>}
       <RowChevron />
     </AnimatedPressable>
   );
 });
 
 /**
- * Review and saved (PHASE4.md 7.8 item 8): All missed questions, All saved questions, Question bank and
- * Build a set (which opens its choices in place). The kit's Weak spots drill waits for the owner (O8).
+ * The two count lines in Review and saved, the website's rule (index.html, the Practice hub's
+ * `phMore` rows): missed ? "Each one you missed, to try again" : "None yet"; saved ? "{n} saved" :
+ * "Save a question to find it here". Exported for tests.
  */
-const ReviewSaved = memo(function ReviewSaved({ cert, timed }: { cert: Certification; timed: boolean }) {
+export function reviewLines(missed: number, saved: number): { missed: string; saved: string } {
+  return {
+    missed: missed > 0 ? 'Each one you missed, to try again' : 'None yet',
+    saved: saved > 0 ? `${saved} saved` : 'Save a question to find it here',
+  };
+}
+
+/**
+ * Review and saved (PHASE4.md 7.8 item 8), the kit's five rows: All missed questions, Weak spots drill
+ * (O8, the website's rule; `weakLine` names the domains it draws from), All saved questions, Question
+ * bank and Build a set (which opens its choices in place). The missed and saved lines follow the
+ * learner's own counts, as on the website; each row's spoken label is its title and that same line.
+ */
+const ReviewSaved = memo(function ReviewSaved({ cert, timed, weakLine }: { cert: Certification; timed: boolean; weakLine: string }) {
   const { c } = useTheme();
   const [setOpen, setSetOpen] = useState(false);
+  // Primitives from the store, so the card re-renders only when its words change: the missed line
+  // only says whether any are open (an answer that fixes one of several changes nothing here).
+  const anyMissed = useProgress((p) => Object.values(selectCert(p, cert.id).mistakes).some((m) => !m.resolved));
+  const savedCount = useProgress((p) => selectCert(p, cert.id).bookmarks.length);
+  const lines = reviewLines(anyMissed ? 1 : 0, savedCount);
   return (
     <HubCard testID="practice-more">
       <CardHead title="Review and saved" />
       <CardRow
         icon={(col) => <X size={ICON_SIZE.row} color={col} strokeWidth={ICON_STROKE} />}
         title="All missed questions"
-        line="Each one you missed, to try again"
+        line={lines.missed}
         hint="Opens your Mistake journal"
         onPress={() => router.push('/mistakes')}
+      />
+      <RowDivider />
+      {/* Grove Phase 4 (O8): the website's Weak spots drill, the three domains missed most plus open misses. */}
+      <CardRow
+        icon={(col) => <ChartColumn size={ICON_SIZE.row} color={col} strokeWidth={ICON_STROKE} />}
+        title="Weak spots drill"
+        line={weakLine}
+        hint="Starts a set from the domains you miss most"
+        // Nothing to drill (a course with no questions): the usual "Nothing to practice yet" note.
+        onPress={() => guardedStart(() => startWeakSpotsDrill(cert.id), open)}
       />
       <RowDivider />
       <CardRow
         icon={(col) => <Bookmark size={ICON_SIZE.row} color={col} strokeWidth={ICON_STROKE} />}
         title="All saved questions"
-        line="Save a question to find it here"
+        line={lines.saved}
         hint="Starts a set of your saved questions"
         onPress={() => guardedStart(() => startBookmarks(cert.id), open, () => router.push('/saved'))}
       />

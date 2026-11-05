@@ -121,11 +121,10 @@ describe('Learn (7.1, the 02 board)', () => {
   it('top to bottom: title and line, Up next card, tiles, Final review week, Lessons card, footnote', () => {
     mount(<Learn />);
     const t = textOf(root());
-    const order = ['Learn', 'Lessons start each topic. Notes go deeper.', 'Up next ·', 'Start lesson', 'Study notes', 'Principles', 'The CISA exam', 'Final review week', 'Lessons 0 of', 'Prefer a guided path?', 'Short lessons across every domain'].map((s) => t.indexOf(s));
+    // The kit's tile order: Study notes, Glossary (O2, Sky's yes on 5 Nov 2026), Principles, The CISA exam.
+    const order = ['Learn', 'Lessons start each topic. Notes go deeper.', 'Up next ·', 'Start lesson', 'Study notes', 'Glossary', 'Principles', 'The CISA exam', 'Final review week', 'Lessons 0 of', 'Prefer a guided path?', 'Short lessons across every domain'].map((s) => t.indexOf(s));
     expect(order.every((i) => i >= 0)).toBe(true);
     expect([...order].sort((a, b) => a - b)).toEqual(order);
-    // The Glossary tile waits for O2: never a tile that opens nothing.
-    expect(t).not.toContain('Glossary');
   });
 
   it('the Up next card is not a button; Start lesson is its one control; the glyph tile is decorative', () => {
@@ -205,9 +204,11 @@ describe('Practice (7.8, the 03 board)', () => {
   });
 
   it('By domain says each area’s weight, how many seen and its status; the hero names the set', () => {
-    expect(domainStatus(0, 0)).toEqual({ text: 'Not started', spoken: 'not started' });
+    expect(domainStatus(0, 0)).toEqual({ text: 'Not started', spoken: 'not started', below: false });
     expect(domainStatus(12, 0.5).text).toBe('Too few yet');
-    expect(domainStatus(40, 0.72).text).toBe('72% · Steady');
+    expect(domainStatus(40, 0.72)).toEqual({ text: '72% · Steady', spoken: '72 percent, Steady', below: false });
+    // Under 70: the website's words ("68% Building · below 70", renderDomainGrid), and clay on the row.
+    expect(domainStatus(40, 0.68)).toEqual({ text: '68% · Building · below 70', spoken: '68 percent, Building, below 70', below: true });
     expect(heroTitle('random', undefined)).toBe('A mixed set');
     expect(heroTitle('smart', 'IS Operations')).toBe('IS Operations');
     mount(<Practice />);
