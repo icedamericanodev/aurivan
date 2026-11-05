@@ -6760,7 +6760,7 @@
       "principle_id": "test-the-ai-as-used",
       "difficulty": "foundational",
       "bloom_level": "Foundational",
-      "question": "A Croatian national park's visitor-numbers model, piloted at one entrance one summer, now sets ranger shifts at all nine entrances year-round; its code is unchanged since the pilot. What is the IS auditor's GREATEST concern?",
+      "question": "A Croatian national park's visitor-numbers model, piloted at one entrance one summer, now sets ranger shifts at all nine entrances year-round, with no code change or review since. What is the IS auditor's GREATEST concern?",
       "options": {
         "A": "The unchanged code was not retested before the wider rollout",
         "B": "Rangers may stop questioning the shift plans the model produces",
@@ -6770,16 +6770,16 @@
       "correct": "D",
       "key_concept": "A pilot's results cover only the places and seasons it ran in; an unchanged model facing new conditions still has no evidence there.",
       "pre_read": "For each option, ask what it would do to the shift plans rangers actually work.",
-      "correct_explanation": "The model learned visitor patterns from one entrance in one summer; other entrances and the winter months can follow different patterns, so ranger shifts now rest on forecasts nobody has tested. Unchanged code proves nothing here, because the model's behavior comes from its data. A written approval would record the wider rollout, but it would add no evidence that the forecasts hold beyond the pilot.",
+      "correct_explanation": "The pilot showed how the model forecasts at one entrance in one summer; other entrances and the winter months can bring different visitor patterns, so ranger shifts now rest on forecasts nobody has checked. Unchanged code proves nothing here, because a model's behavior depends on the data it meets. A written approval would record the wider rollout, but it would add no evidence that the forecasts hold beyond the pilot.",
       "wrong_explanations": {
-        "A": "Tempting because retesting is a normal release step. But the code is unchanged; what is untested is how the model forecasts in places and seasons its data never covered.",
-        "B": "Tempting because automation bias is a real AI risk. But questioning the plans helps little while the forecasts behind them are untested beyond one summer entrance.",
+        "A": "Tempting because retesting is a normal release step. But the code is unchanged; what nobody has checked is how the model forecasts in places and seasons the pilot never covered.",
+        "B": "Tempting because automation bias is a real AI risk. But nothing shows rangers defer to the plans; the known gap is forecasts never checked beyond one summer entrance.",
         "C": "Tempting because extending an approval is a normal control. But a signature on the wider use adds no evidence that the model forecasts well beyond the pilot."
       },
       "tips": [
-        "Eliminate: A retests code that never changed, and B worries about trust in the plans before asking whether the forecasts behind them hold.",
-        "Final two: D beats C because the shifts rest on forecasts never tested beyond one summer entrance; a written approval records the rollout but adds no evidence.",
-        "Exam cue: an unchanged model in new places or seasons is untested there. Ask which conditions its data and pilot actually covered."
+        "Eliminate: A retests code that never changed, and B worries about deference to the plans when nothing shows rangers defer to them.",
+        "Final two: D beats C because the shifts rest on forecasts never checked beyond one summer entrance; a written approval records the rollout but adds no evidence.",
+        "Exam cue: an unchanged model in new places or seasons is untested there. Ask which conditions its pilot actually covered."
       ],
       "framework_ref": "NIST AI 100-1 MAP 1.1 (Intended purposes, context and laws documented); NIST AI 100-1 MEASURE 2.3 (Performance measured in conditions similar to deployment)",
       "related_concepts": [
@@ -6787,7 +6787,7 @@
         "Deployment scope",
         "Data coverage"
       ],
-      "_provenance": "Authored from concept: notes 2B.1 The AI Lifecycle and Stage Gates (a pilot's evidence covers only the places and seasons it ran in, even with the code unchanged). Completeness round 1, 5 Nov 2026: re-angled from a recommend-the-deployment-gate frame (too close to aaia_d2_026) to the GREATEST concern, where the pilot's data coverage decides. Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 6, 5 Nov 2026.",
+      "_provenance": "Authored from concept: notes 2B.1 The AI Lifecycle and Stage Gates (a pilot's evidence covers only the places and seasons it ran in, even with the code unchanged). Completeness round 1, 5 Nov 2026: re-angled from a recommend-the-deployment-gate frame (too close to aaia_d2_026) to the GREATEST concern, where the pilot's data coverage decides. Completeness round 2, 5 Nov 2026: stem states no review since the pilot; explanations claim only the pilot's coverage, not its training data. Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 6, 5 Nov 2026.",
       "style_version": 2
     },
     {
@@ -6983,7 +6983,7 @@
       "bloom_level": "Application",
       "question": "A Chilean telecom widened its formal-complaint definition and relabeled past emails, under an approved change, to retrain its triage model; the release test set keeps old labels. What is the IS auditor's GREATEST concern?",
       "options": {
-        "A": "Release tests will judge the model against the replaced definition",
+        "A": "Correct routings under the new definition will count as errors",
         "B": "More emails will reach the complaints team than it can handle",
         "C": "Relabeling past emails by hand may introduce labeling errors",
         "D": "The complaints team, not data science, now owns the definition"
@@ -7008,7 +7008,7 @@
         "Release testing",
         "Email triage"
       ],
-      "_provenance": "Authored from concept: notes 2C.1 What Counts as an AI Change (a change to labeling rules changes what the model learns, so its release tests must follow the new labels). Completeness round 1, 5 Nov 2026: re-angled from 'treat the guide change as an AI change' (same frame as aaia_d2_063) to the GREATEST concern when the release test set keeps the old labels. Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 6, 5 Nov 2026.",
+      "_provenance": "Authored from concept: notes 2C.1 What Counts as an AI Change (a change to labeling rules changes what the model learns, so its release tests must follow the new labels). Completeness round 1, 5 Nov 2026: re-angled from 'treat the guide change as an AI change' (same frame as aaia_d2_063) to the GREATEST concern when the release test set keeps the old labels. Completeness round 2, 5 Nov 2026: option A reworded to drop the stem echo 'release'. Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 6, 5 Nov 2026.",
       "style_version": 2
     },
     {
@@ -7868,13 +7868,13 @@
       "options": {
         "A": "Retrain the model on cloned voices before reopening the case",
         "B": "Add a second factor for that customer's future transactions",
-        "C": "Handle it as an attack on the model and check similar verifications",
+        "C": "Treat it as a model attack and review other recent voice matches",
         "D": "Keep the case closed, since the customer was fully refunded"
       },
       "correct": "C",
       "key_concept": "A cloned voice passing verification is an attack on the model, so the incident covers every account the model protects.",
       "pre_read": "Ask what exactly the attacker defeated.",
-      "correct_explanation": "A cloned voice passing verification is an attack on the model itself, and the same technique can be used on any account it protects. Handling it as an AI incident and checking similar recent verifications finds other victims and shows whether the model can be fooled at scale. A second factor protects one customer while the weakness stays open for everyone else.",
+      "correct_explanation": "A cloned voice passing verification is an attack on the model itself, and the same technique can be used on any account it protects. Handling it as an AI incident and reviewing other recent voice matches finds other victims and shows whether the model can be fooled at scale. A second factor protects one customer while the weakness stays open for everyone else.",
       "wrong_explanations": {
         "A": "Tempting because the model needs to resist clones. But retraining before the attack is understood may not fix it, and it delays finding other victims.",
         "B": "Tempting because it stops a repeat for this customer. But the model can be fooled for every account, not just this one.",
@@ -7891,7 +7891,7 @@
         "Voice biometrics",
         "AI incidents"
       ],
-      "_provenance": "Authored from concept: notes 2G.1 Recognizing and Triaging AI Incidents (a cloned voice that fools verification is an incident across every account). Completeness round 1, 5 Nov 2026: framework_ref limited to existing library bullets (AML.T0088 reported as a wanted citation). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 6, 5 Nov 2026.",
+      "_provenance": "Authored from concept: notes 2G.1 Recognizing and Triaging AI Incidents (a cloned voice that fools verification is an incident across every account). Completeness round 1, 5 Nov 2026: framework_ref limited to existing library bullets (AML.T0088 reported as a wanted citation). Completeness round 2, 5 Nov 2026: option C reworded to drop the stem echo 'verification'. Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 6, 5 Nov 2026.",
       "style_version": 2
     },
     {
