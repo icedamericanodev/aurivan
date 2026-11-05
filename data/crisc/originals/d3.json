@@ -53,7 +53,7 @@
       "bloom_level": "Application",
       "question": "A logistics firm's shipment-tracking risk, owned by the operations director, is now within appetite, but the IT manager wants an extra monitoring tool for reassurance. What is the risk analyst's BEST recommendation?",
       "options": {
-        "A": "Have the IT manager buy the proposed monitoring tool",
+        "A": "Update the control set with the proposed monitoring tool",
         "B": "Ask the IT manager to accept the residual risk formally",
         "C": "Run a cost-benefit analysis of the proposed monitoring tool",
         "D": "Have the director accept the residual risk on record"
@@ -63,7 +63,7 @@
       "pre_read": "Find where the risk sits against appetite, and who owns it, before judging the new tool.",
       "correct_explanation": "A risk already within appetite needs acceptance and monitoring, not more treatment. The operations director owns the risk, so they accept the residual risk on record, and the analyst then keeps it under watch. The tool is wanted for reassurance, not to close a gap; a cost-benefit study comes in only if the owner chooses further treatment, so analyzing the tool now answers a question the appetite has already settled.",
       "wrong_explanations": {
-        "A": "Tempting because more monitoring feels safer. Buying a tool for a risk already within appetite takes budget from risks that are still above it.",
+        "A": "Tempting because more monitoring feels safer. Adding a tool for a risk already within appetite takes budget from risks that are still above it.",
         "B": "Tempting because the IT manager proposed the tool. The operations director owns this business risk, so acceptance is theirs, not IT's.",
         "C": "Tempting because cost-benefit is sound practice. It weighs treatments the owner has chosen to consider; a risk already within appetite needs acceptance and monitoring, not new options."
       },
@@ -78,7 +78,7 @@
         "Risk appetite",
         "Monitoring"
       ],
-      "_provenance": "Authored from concept: notes 3A1.2 Choosing a Response by Appetite and Cost-Benefit (a risk within appetite needs monitoring, not new spending) and 3A1.3 Residual Risk and Risk Acceptance (the owner accepts). Public source: NIST IR 8286B-upd1 Section 2.3.1. Original scenario written for KaiSip in our own words; no ISACA Review Manual, QAE, practice-quiz or prep-bank text used. CRISC D3 pilot batch (crisc_d3_001 to 020), 30 Oct 2026. Review fixes 30 Oct 2026 (blind test and standards audit): option A reason tail removed; key D trimmed so it is no longer the longest option. Quality pass 31 Oct 2026 (ISACA authenticity audit and concept review): option A no longer has the analyst approving a purchase 'now' (urgency tell removed; audit text 'Recommend that the IT manager buy the monitoring tool' put in the same 'Have …' form as the other options); key made a single action (the director accepts the residual risk on record), with monitoring kept in the explanation and Exam cue. Re-audit 31 Oct 2026: stem says the IT manager wants the tool for reassurance, so the cost-benefit runner-up has no gap to weigh; explanation, wrong_explanations C and Final two aligned.",
+      "_provenance": "Authored from concept: notes 3A1.2 Choosing a Response by Appetite and Cost-Benefit (a risk within appetite needs monitoring, not new spending) and 3A1.3 Residual Risk and Risk Acceptance (the owner accepts). Public source: NIST IR 8286B-upd1 Section 2.3.1. Original scenario written for KaiSip in our own words; no ISACA Review Manual, QAE, practice-quiz or prep-bank text used. CRISC D3 pilot batch (crisc_d3_001 to 020), 30 Oct 2026. Review fixes 30 Oct 2026 (blind test and standards audit): option A reason tail removed; key D trimmed so it is no longer the longest option. Quality pass 31 Oct 2026 (ISACA authenticity audit and concept review): option A no longer has the analyst approving a purchase 'now' (urgency tell removed; audit text 'Recommend that the IT manager buy the monitoring tool' put in the same 'Have …' form as the other options); key made a single action (the director accepts the residual risk on record), with monitoring kept in the explanation and Exam cue. Re-audit 31 Oct 2026: stem says the IT manager wants the tool for reassurance, so the cost-benefit runner-up has no gap to weigh; explanation, wrong_explanations C and Final two aligned. Cue pass 2, 5 Nov 2026: A reworded (was 'Have the IT manager buy the tool'): a wrong option now opens 'Update', so that opening no longer points to the key.",
       "style_version": 2
     },
     {
@@ -573,7 +573,7 @@
       "options": {
         "A": "Derive the red threshold from the airline's approved outage tolerance",
         "B": "Keep the 8% survey figure as an accepted industry benchmark",
-        "C": "Have IT set the tolerance at the patch level staff can sustain",
+        "C": "Propose a tolerance set by the patch level IT staff can sustain",
         "D": "Replace the KRI with the director's monthly outage count"
       },
       "correct": "A",
@@ -582,11 +582,11 @@
       "correct_explanation": "A red threshold should mark the point where the risk passes the outage tolerance senior management approved, so it is derived from that tolerance and agreed with the commercial director as risk owner. A survey figure reflects other airlines' appetite, exposure and patch practices; it is useful context but says nothing about this business's limit. The practitioner proposes the derivation, and the owner agrees the threshold.",
       "wrong_explanations": {
         "B": "Tempting because benchmarks feel objective. Other firms' figures reflect their own appetite and exposure, not this airline's tolerance for booking outages.",
-        "C": "Tempting because IT knows what is achievable. Letting the control team set its own limit measures workload, not the level of risk the business will tolerate.",
+        "C": "Tempting because IT knows what is achievable. A limit set by what the control team can sustain measures workload, not the level of risk the business will tolerate.",
         "D": "Tempting because outages are what the director cares about. An outage count is lagging; unpatched servers are the leading driver the KRI is meant to watch."
       },
       "tips": [
-        "Eliminate: C lets the team running the control set its own limit, and D swaps a leading driver for a lagging count of outages.",
+        "Eliminate: C sets the limit by what the team running the control can sustain, and D swaps a leading driver for a lagging count of outages.",
         "Final two: A beats B because a threshold must reflect this organization's approved tolerance, agreed with the risk owner; a survey figure is context, not a limit.",
         "Exam cue: when a threshold comes from a benchmark, a vendor default or team capacity, look for the option that ties it to the organization's own tolerance."
       ],
@@ -596,7 +596,7 @@
         "Risk tolerance",
         "Benchmarking"
       ],
-      "_provenance": "Authored from concept: notes 3C3.3 Thresholds and AI Model Indicators (set thresholds from tolerance; exam trap 'set thresholds from industry averages') and 3C3.2 Selecting Effective KRIs (leading versus lagging). Public sources: NIST CSF 2.0 GV.RM-02; NIST SP 800-53 Rev. 5 CA-7(4) (risk monitoring is informed by organizational risk tolerance). Original scenario written for KaiSip in our own words; no ISACA Review Manual, QAE, practice-quiz or prep-bank text used. CRISC D3 pilot batch (crisc_d3_001 to 020), 30 Oct 2026. Review fixes 30 Oct 2026 (blind test and standards audit): option and explanation edits; key re-lettered B to A. Cross-domain fix 30 Oct 2026: re-angled from breach escalation (duplicate of crisc_d1_018) to threshold setting, notes 3C3.3. Final blind re-test 31 Oct 2026: D also names the director, so only the key no longer echoes the risk owner. Quality pass 31 Oct 2026 (ISACA authenticity audit and concept review): key now derives the threshold from the approved tolerance rather than the director's own (concept review D3-3: tolerance is what management is willing to allow; the owner agrees thresholds within it); 'copied from' changed to 'taken from' (planted fact); option D no longer says 'instead'; key_concept, explanation and Final two aligned. Re-audit 31 Oct 2026: priority word FIRST changed to BEST because the options are alternatives, not a sequence.",
+      "_provenance": "Authored from concept: notes 3C3.3 Thresholds and AI Model Indicators (set thresholds from tolerance; exam trap 'set thresholds from industry averages') and 3C3.2 Selecting Effective KRIs (leading versus lagging). Public sources: NIST CSF 2.0 GV.RM-02; NIST SP 800-53 Rev. 5 CA-7(4) (risk monitoring is informed by organizational risk tolerance). Original scenario written for KaiSip in our own words; no ISACA Review Manual, QAE, practice-quiz or prep-bank text used. CRISC D3 pilot batch (crisc_d3_001 to 020), 30 Oct 2026. Review fixes 30 Oct 2026 (blind test and standards audit): option and explanation edits; key re-lettered B to A. Cross-domain fix 30 Oct 2026: re-angled from breach escalation (duplicate of crisc_d1_018) to threshold setting, notes 3C3.3. Final blind re-test 31 Oct 2026: D also names the director, so only the key no longer echoes the risk owner. Quality pass 31 Oct 2026 (ISACA authenticity audit and concept review): key now derives the threshold from the approved tolerance rather than the director's own (concept review D3-3: tolerance is what management is willing to allow; the owner agrees thresholds within it); 'copied from' changed to 'taken from' (planted fact); option D no longer says 'instead'; key_concept, explanation and Final two aligned. Re-audit 31 Oct 2026: priority word FIRST changed to BEST because the options are alternatives, not a sequence. Cue pass 2, 5 Nov 2026: C reworded (was 'Have IT set the tolerance'): a wrong option now opens 'Propose', so that opening no longer points to the key.",
       "style_version": 2
     },
     {
@@ -1054,7 +1054,7 @@
       "options": {
         "A": "Record the action owner's third date in the tracker",
         "B": "Close the finding and log a new one with the new date",
-        "C": "Ask the IT manager to accept the risk until the new date",
+        "C": "Let the action owner accept the risk until the new date",
         "D": "Escalate the repeated slippage to the risk owner"
       },
       "correct": "D",
@@ -1077,7 +1077,7 @@
         "Escalation",
         "Risk owner"
       ],
-      "_provenance": "Authored from concept: Round 2, 31 Oct 2026: authored from notes 3A4.1 (Tracking Issues and Findings to Closure: escalate overdue or slipping items to the risk owner and, past a set point, to senior management); original airline audit finding on shared administrator accounts that has missed two due dates scenario written for KaiSip in our own words; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D3 round 2 (crisc_d3_021 to 050).",
+      "_provenance": "Authored from concept: Round 2, 31 Oct 2026: authored from notes 3A4.1 (Tracking Issues and Findings to Closure: escalate overdue or slipping items to the risk owner and, past a set point, to senior management); original airline audit finding on shared administrator accounts that has missed two due dates scenario written for KaiSip in our own words; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D3 round 2 (crisc_d3_021 to 050). Cue pass 2, 5 Nov 2026: C now lets the action owner accept the risk (was 'Ask the IT manager'), an owner in an easy distractor, so the owner options no longer point to the key.",
       "style_version": 2
     },
     {
@@ -1091,7 +1091,7 @@
       "options": {
         "A": "Assess the combined risk of the exceptions on the gateway",
         "B": "Ask each department head to assess their own exception again",
-        "C": "Have IT revoke the exceptions and enforce multifactor sign-in",
+        "C": "Update the gateway to require multifactor sign-in for contractors",
         "D": "List the gateway exceptions in a summary for the risk committee"
       },
       "correct": "A",
@@ -1100,7 +1100,7 @@
       "correct_explanation": "Each exception was rated alone, but together they open one gateway to 20 departments' contractors without multifactor sign-in. The practitioner first assesses the combined exposure against appetite, then takes the result to the owners who must decide. Asking each head to reassess is the closest alternative: it repeats the one-at-a-time view that produced the low ratings and still misses the aggregate risk.",
       "wrong_explanations": {
         "B": "Each head sees only their own contractors. Assessing each exception again, one by one, repeats the view that rated each one low.",
-        "C": "Revoking approved exceptions is a response chosen before the combined risk is known, and the practitioner does not overturn owners' approvals.",
+        "C": "Enforcing multifactor sign-in revokes approved exceptions, a response chosen before the combined risk is known, and the practitioner does not overturn owners' approvals.",
         "D": "A summary makes the gateway exceptions visible, but without an assessment the committee sees 20 low risks instead of one larger exposure."
       },
       "tips": [
@@ -1114,7 +1114,7 @@
         "Risk aggregation",
         "Risk appetite"
       ],
-      "_provenance": "Authored from concept: Round 2, 31 Oct 2026: authored from notes 3A4.2 (Exceptions and Exemptions: all deviations sit in one register, reported in aggregate so their combined risk is visible); original manufacturer with 20 department-approved exceptions letting contractors use one legacy VPN gateway without multifactor sign-in scenario written for KaiSip in our own words; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D3 round 2 (crisc_d3_021 to 050). Parity finish 31 Oct 2026: \"assess\" and \"gateway\" now also appear in distractors, so neither lens nor stem word is key-only.",
+      "_provenance": "Authored from concept: Round 2, 31 Oct 2026: authored from notes 3A4.2 (Exceptions and Exemptions: all deviations sit in one register, reported in aggregate so their combined risk is visible); original manufacturer with 20 department-approved exceptions letting contractors use one legacy VPN gateway without multifactor sign-in scenario written for KaiSip in our own words; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D3 round 2 (crisc_d3_021 to 050). Parity finish 31 Oct 2026: \"assess\" and \"gateway\" now also appear in distractors, so neither lens nor stem word is key-only. Cue pass 2, 5 Nov 2026: C reworded (was 'Have IT revoke the exceptions'): a wrong option now opens 'Update', so that opening no longer points to the key.",
       "style_version": 2
     },
     {
@@ -1647,7 +1647,7 @@
         "A": "Wait until the KCI crosses its red threshold",
         "B": "Ask the control owner to raise the threshold to 15%",
         "C": "Review the rising trend with the control owner",
-        "D": "Have the risk team approve production changes itself"
+        "D": "Hand the control owner's approvals to the risk team"
       },
       "correct": "C",
       "key_concept": "A worsening KCI trend is raised with the control owner before a threshold breach; the risk function challenges but does not run the control.",
@@ -1656,7 +1656,7 @@
       "wrong_explanations": {
         "A": "Thresholds trigger escalation, but by the time this KCI turns red, more unapproved changes will have reached production.",
         "B": "Raising the threshold to fit current performance hides the decline and breaks the link between the threshold and tolerance.",
-        "D": "The risk team oversees and challenges controls; approving changes itself would make it judge its own work and leave the owner's process unfixed."
+        "D": "The risk team oversees and challenges controls; taking over the owner's approvals would make it judge its own work and leave the owner's process unfixed."
       },
       "tips": [
         "Eliminate: B moves the limit to fit the decline, and D has the second line run a first-line control.",
@@ -1669,7 +1669,7 @@
         "Key control indicator",
         "Lines of defense"
       ],
-      "_provenance": "Authored from concept: Round 2, 31 Oct 2026: authored from notes 3C4.2 (Control Self-Assessment and Trend Analysis: a worsening trend can justify action before a threshold is breached; a worsening KCI goes to the control owner and the risk function does not take over running the control); original insurer KCI for production changes deployed without an approved ticket rising from 2% to 9% against a 10% red threshold scenario written for KaiSip in our own words; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D3 round 2 (crisc_d3_021 to 050). Review fixes 31 Oct 2026 (blind test and standards audit): moved from overdue privileged-access reviews, which restated crisc_d3_042's key and mirrored CISA d2_051, to unapproved production changes.",
+      "_provenance": "Authored from concept: Round 2, 31 Oct 2026: authored from notes 3C4.2 (Control Self-Assessment and Trend Analysis: a worsening trend can justify action before a threshold is breached; a worsening KCI goes to the control owner and the risk function does not take over running the control); original insurer KCI for production changes deployed without an approved ticket rising from 2% to 9% against a 10% red threshold scenario written for KaiSip in our own words; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D3 round 2 (crisc_d3_021 to 050). Review fixes 31 Oct 2026 (blind test and standards audit): moved from overdue privileged-access reviews, which restated crisc_d3_042's key and mirrored CISA d2_051, to unapproved production changes. Cue pass 2, 5 Nov 2026: D now hands the control owner's approvals to the risk team (was 'Have the risk team approve'), an owner in an easy distractor, so the owner options no longer point to the key.",
       "style_version": 2
     },
     {
@@ -1795,7 +1795,7 @@
         "A": "A critical rating until the threat is ruled out",
         "B": "A range of ratings with stated confidence",
         "C": "A low rating until a working attack is shown",
-        "D": "The rating a peer firm gave the same threat"
+        "D": "The rating another firm gave the same threat"
       },
       "correct": "B",
       "key_concept": "Emerging risk is rated with ranges and a stated confidence level, then refined as evidence grows, neither ignored nor overstated.",
@@ -1804,7 +1804,7 @@
       "wrong_explanations": {
         "A": "Rating it critical without evidence overstates the risk and can pull resources from better-understood risks; emerging risk is reported as uncertain, not certain.",
         "C": "Waiting for a working attack treats uncertainty as no risk, yet data encrypted now could be copied today and read later.",
-        "D": "A peer's rating reflects its own data and exposure, and borrows its assumptions without stating them."
+        "D": "Another firm's rating reflects its own data and exposure, and borrows its assumptions without stating them."
       },
       "tips": [
         "Eliminate: A treats an uncertain risk as certain, and D borrows a rating built on another firm's exposure.",
@@ -1817,7 +1817,7 @@
         "Uncertainty",
         "Post-quantum cryptography"
       ],
-      "_provenance": "Authored from concept: Round 2, 31 Oct 2026: authored from notes 3C6.2 (Recording and Reporting Emerging Risk: use ranges or alternative scenarios rather than single scores while uncertainty is high; traps, rate an emerging risk as critical, or wait until it can be measured); original energy retailer and research on future quantum computers breaking the encryption on billing data kept confidential for 15 years scenario written for KaiSip in our own words; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D3 round 2 (crisc_d3_021 to 050). Review fixes 31 Oct 2026 (blind test and standards audit): encryption now protects billing data with a stated confidentiality period, since contracts are signed rather than encrypted, and the setting no longer copies CISA d5_339.",
+      "_provenance": "Authored from concept: Round 2, 31 Oct 2026: authored from notes 3C6.2 (Recording and Reporting Emerging Risk: use ranges or alternative scenarios rather than single scores while uncertainty is high; traps, rate an emerging risk as critical, or wait until it can be measured); original energy retailer and research on future quantum computers breaking the encryption on billing data kept confidential for 15 years scenario written for KaiSip in our own words; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D3 round 2 (crisc_d3_021 to 050). Review fixes 31 Oct 2026 (blind test and standards audit): encryption now protects billing data with a stated confidentiality period, since contracts are signed rather than encrypted, and the setting no longer copies CISA d5_339. Cue pass 2, 5 Nov 2026: D reworded off the outside-data words (peer, vendor, industry, survey, external), which were almost never keyed; still wrong for the same reason.",
       "style_version": 2
     },
     {
@@ -2091,7 +2091,7 @@
         "A": "Escalate the dispute to the owner of the affected risk",
         "B": "Assign the finding jointly to the IT and HR managers",
         "C": "Close the finding and reopen it once an owner is agreed",
-        "D": "Assign the finding to the IT manager who runs the accounts"
+        "D": "Assign the finding to the IT owner of the accounts' system"
       },
       "correct": "A",
       "key_concept": "Each finding needs one action owner; when teams dispute it, the practitioner escalates to the owner of the affected risk, who names the action owner.",
@@ -2113,7 +2113,7 @@
         "Action owner",
         "Escalation"
       ],
-      "_provenance": "Authored from concept: notes 3A4.1 (Tracking Issues and Findings to Closure: give each issue one owner, an agreed action and a due date; escalate stalled items to the risk owner). Round 3, 4 Nov 2026: original scenario of a ticketing firm's finding on shared service accounts left with no action owner for five months while IT and HR each say the other should fix it, written for KaiSip in our own words; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D3 round 3 (crisc_d3_051 to 085). Review fixes 4 Nov 2026 (standards audit and concept review): D is now wrong because the practitioner alone cannot settle a dispute between departments, not because the practitioner never assigns (ISACA task 5); key concept, D explanation and tips 1 and 3 follow; 'until' removed from distractor C.",
+      "_provenance": "Authored from concept: notes 3A4.1 (Tracking Issues and Findings to Closure: give each issue one owner, an agreed action and a due date; escalate stalled items to the risk owner). Round 3, 4 Nov 2026: original scenario of a ticketing firm's finding on shared service accounts left with no action owner for five months while IT and HR each say the other should fix it, written for KaiSip in our own words; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D3 round 3 (crisc_d3_051 to 085). Review fixes 4 Nov 2026 (standards audit and concept review): D is now wrong because the practitioner alone cannot settle a dispute between departments, not because the practitioner never assigns (ISACA task 5); key concept, D explanation and tips 1 and 3 follow; 'until' removed from distractor C. Cue pass 2, 5 Nov 2026: D now assigns the finding to the accounts' system owner in IT, an owner in an easy distractor, so the owner options no longer point to the key.",
       "style_version": 2
     },
     {
@@ -3016,7 +3016,7 @@
         "A": "The decision needed, with options and their target risk",
         "B": "The risk's trend against its KRI thresholds over time",
         "C": "Technical detail of how the fraud attacks are carried out",
-        "D": "A comparison of the firm's fraud losses with its peers"
+        "D": "A comparison of the firm's fraud losses with its rivals"
       },
       "correct": "A",
       "key_concept": "A report that asks for action states the decision requested, the options and what each would leave, so leaders can decide.",
@@ -3025,7 +3025,7 @@
       "wrong_explanations": {
         "B": "Trend against thresholds shows the risk is rising, which the committee already heard; it still does not say what decision is needed.",
         "C": "Attack detail suits the fraud team; executives need the decision and its options, not how the fraud works.",
-        "D": "Peer comparison adds context, but it does not tell the committee what it is being asked to approve."
+        "D": "Comparing with rivals adds context, but it does not tell the committee what it is being asked to approve."
       },
       "tips": [
         "Eliminate: C gives executives technical detail meant for specialists, and D offers context without saying what to decide.",
@@ -3038,7 +3038,7 @@
         "Executive reporting",
         "Response options"
       ],
-      "_provenance": "Authored from concept: notes 3C5.2 (Reporting for the Audience and the Decision: send each report to someone with authority to decide on what it shows, and state the decision requested). Round 3, 4 Nov 2026: original scenario of an e-commerce firm's executive committee asking, after a presentation on rising card-fraud risk, what it is expected to do, written for KaiSip in our own words; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D3 round 3 (crisc_d3_051 to 085). Review fixes 4 Nov 2026 (standards audit and concept review): stem no longer echoes the key (members now note the risk and move on rather than asking what to do), so trend is a real runner-up; pre_read, subtopic, explanation and B's explanation follow.",
+      "_provenance": "Authored from concept: notes 3C5.2 (Reporting for the Audience and the Decision: send each report to someone with authority to decide on what it shows, and state the decision requested). Round 3, 4 Nov 2026: original scenario of an e-commerce firm's executive committee asking, after a presentation on rising card-fraud risk, what it is expected to do, written for KaiSip in our own words; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D3 round 3 (crisc_d3_051 to 085). Review fixes 4 Nov 2026 (standards audit and concept review): stem no longer echoes the key (members now note the risk and move on rather than asking what to do), so trend is a real runner-up; pre_read, subtopic, explanation and B's explanation follow. Cue pass 2, 5 Nov 2026: D reworded off the outside-data words (peer, vendor, industry, survey, external), which were almost never keyed; still wrong for the same reason.",
       "style_version": 2
     },
     {
@@ -3089,7 +3089,7 @@
       "options": {
         "A": "Keep it as emerging with a shorter review date",
         "B": "Close the entry and record the control test results",
-        "C": "Rate it critical from the peer banks' losses",
+        "C": "Rate it critical from other banks' losses",
         "D": "Rate it on the usual scale in the main profile"
       },
       "correct": "D",
@@ -3112,7 +3112,7 @@
         "Deepfake fraud",
         "Risk profile"
       ],
-      "_provenance": "Authored from concept: notes 3C6.2 (Recording and Reporting Emerging Risk: refine the rating as evidence grows, and move the risk into the main profile once it is understood well enough to rate normally). Round 3, 4 Nov 2026: original scenario of a bank's emerging-risk entry for deepfake voice fraud on payment approvals, recorded with a wide rating range, now backed by peer losses and the bank's own control tests, written for KaiSip in our own words; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D3 round 3 (crisc_d3_051 to 085). Review fixes 4 Nov 2026 (standards audit and concept review): options B and C no longer carry their own reasons; the key trimmed to 'in the main profile' so it is not the longest option; the explanation no longer points at 'the stem'; subtopic label neutral; B's explanation follows.",
+      "_provenance": "Authored from concept: notes 3C6.2 (Recording and Reporting Emerging Risk: refine the rating as evidence grows, and move the risk into the main profile once it is understood well enough to rate normally). Round 3, 4 Nov 2026: original scenario of a bank's emerging-risk entry for deepfake voice fraud on payment approvals, recorded with a wide rating range, now backed by peer losses and the bank's own control tests, written for KaiSip in our own words; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D3 round 3 (crisc_d3_051 to 085). Review fixes 4 Nov 2026 (standards audit and concept review): options B and C no longer carry their own reasons; the key trimmed to 'in the main profile' so it is not the longest option; the explanation no longer points at 'the stem'; subtopic label neutral; B's explanation follows. Cue pass 2, 5 Nov 2026: C reworded off the outside-data words (peer, vendor, industry, survey, external), which were almost never keyed; still wrong for the same reason.",
       "style_version": 2
     },
     {
@@ -4086,7 +4086,7 @@
       "bloom_level": "Application",
       "question": "A water utility learns whether its key controls worked only when its external auditors sample them each year. Which of the following should the risk practitioner recommend as BEST?",
       "options": {
-        "A": "The yearly external audit, used as monitoring",
+        "A": "The yearly audit of owners' key controls, used as monitoring",
         "B": "Owner-run KCIs reviewed by the risk team",
         "C": "The risk team running key controls for their owners",
         "D": "A mid-year audit sample of the high-risk controls"
@@ -4096,7 +4096,7 @@
       "pre_read": "Ask how soon a failed control would come to light under each option.",
       "correct_explanation": "Learning about control failures once a year leaves months of exposure unseen. KCIs that control owners run and the risk team reviews show failures as they happen, keeping the first line accountable and the second line challenging. A mid-year audit sample is the runner-up: it halves the gap, but it is still periodic assurance rather than monitoring, and the owners would still watch nothing.",
       "wrong_explanations": {
-        "A": "Audits give periodic assurance on a sample; relying on them as monitoring leaves failures unseen for most of the year.",
+        "A": "Audits give periodic assurance on a sample of owners' controls; relying on them as monitoring leaves failures unseen for most of the year.",
         "C": "If the risk team runs the controls, owners stop owning them and nobody independent can challenge the result.",
         "D": "A mid-year sample of high-risk controls halves their gap but stays periodic assurance; the owners would still not be monitoring their controls."
       },
@@ -4111,7 +4111,7 @@
         "Key control indicator",
         "Lines of defense"
       ],
-      "_provenance": "Authored from concept: notes 3C4.1 (Continuous Monitoring and Automated Alerts: trap 'the audit cycle is often enough to monitor key controls'); 3C4.2 (a worsening KCI goes to the control owner; the risk function challenges and tracks it). Round 4, 4 Nov 2026: original scenario (a water utility that learns whether its key controls worked only from its external auditors' yearly sample), written for KaiSip in our own words; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D3 round 4 (crisc_d3_086 to 115). Review fixes 4 Nov 2026 (standards audit and concept review): option A is now a noun phrase like the other three.",
+      "_provenance": "Authored from concept: notes 3C4.1 (Continuous Monitoring and Automated Alerts: trap 'the audit cycle is often enough to monitor key controls'); 3C4.2 (a worsening KCI goes to the control owner; the risk function challenges and tracks it). Round 4, 4 Nov 2026: original scenario (a water utility that learns whether its key controls worked only from its external auditors' yearly sample), written for KaiSip in our own words; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D3 round 4 (crisc_d3_086 to 115). Review fixes 4 Nov 2026 (standards audit and concept review): option A is now a noun phrase like the other three. Cue pass 2, 5 Nov 2026: A now names the yearly audit of owners' key controls (was 'external audit'), an owner in an easy distractor, so the owner options no longer point to the key.",
       "style_version": 2
     },
     {
@@ -4160,7 +4160,7 @@
       "bloom_level": "Application",
       "question": "A university's internal audit plans next year's audits from its own systems list, and the plan leaves out three of the risk profile's top five risks. What should the risk practitioner recommend as BEST?",
       "options": {
-        "A": "Have the risk team approve the internal audit plan",
+        "A": "Propose risk team approval of the internal audit plan",
         "B": "Have the risk team test controls over the three risks",
         "C": "Share the risk profile with internal audit for planning",
         "D": "Rate the three unaudited risks higher in the profile"
@@ -4185,7 +4185,7 @@
         "Risk profile",
         "Lines of defense"
       ],
-      "_provenance": "Authored from concept: notes 3C5.2 (Reporting for the Audience and the Decision: report to the level that can decide, in its terms; new bullet: share the risk profile with internal audit so its independent plan can cover the top risks). Round 4, 4 Nov 2026: original scenario (a university's internal audit planning from its own systems list while three of the five top risks in the risk profile go uncovered), written for KaiSip in our own words; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D3 round 4 (crisc_d3_086 to 115). Review fixes 4 Nov 2026 (standards audit and concept review): the stem says 'leaves out' instead of 'uncovered', which could read as 'discovered'; option B is reworded to be grammatical, and option D says 'unaudited'. Cross-domain fixes 4 Nov 2026 (round 4): pre_read no longer restates the key; it now points to the stem's facts. Key C and all other fields unchanged.",
+      "_provenance": "Authored from concept: notes 3C5.2 (Reporting for the Audience and the Decision: report to the level that can decide, in its terms; new bullet: share the risk profile with internal audit so its independent plan can cover the top risks). Round 4, 4 Nov 2026: original scenario (a university's internal audit planning from its own systems list while three of the five top risks in the risk profile go uncovered), written for KaiSip in our own words; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D3 round 4 (crisc_d3_086 to 115). Review fixes 4 Nov 2026 (standards audit and concept review): the stem says 'leaves out' instead of 'uncovered', which could read as 'discovered'; option B is reworded to be grammatical, and option D says 'unaudited'. Cross-domain fixes 4 Nov 2026 (round 4): pre_read no longer restates the key; it now points to the stem's facts. Key C and all other fields unchanged. Cue pass 2, 5 Nov 2026: A reworded (was 'Have the risk team approve'): a wrong option now opens 'Propose', so that opening no longer points to the key.",
       "style_version": 2
     },
     {
@@ -4343,9 +4343,9 @@
       "principle_id": "appetite-drives-response",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "An AI translation vendor may train on a toolmaker's published manuals unless the toolmaker pays $30,000 a year extra; assessed on those terms, the risk is within appetite. What should the risk practitioner recommend FIRST?",
+      "question": "An AI translation vendor may train on a toolmaker's published manuals unless the toolmaker pays $30,000 yearly; assessed with that training allowed, the risk is within appetite. What should the risk practitioner recommend FIRST?",
       "options": {
-        "A": "Ask the business owner to fund the no-training tier",
+        "A": "Propose that the business owner fund the no-training tier",
         "B": "Reassess the risk with the vendor's training terms",
         "C": "Add a clause shifting misuse risk to the vendor",
         "D": "Have the business owner accept the risk as rated"
@@ -4370,7 +4370,7 @@
         "Vendor risk",
         "AI vendor terms"
       ],
-      "_provenance": "Authored from concept: notes 3A3.3 (AI Vendors and the Model Supply Chain; bullet 2 extended: rate any gap in AI terms like other vendor risk, which the business owner may accept) and 3A3.2 (decides: the business owner accepts, remediates or exits). Round 6, 4 Nov 2026: original scenario (an AI translation vendor that may train on a toolmaker's published manuals unless it pays $30,000 a year more, with the risk within appetite), written for KaiSip in our own words; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D3 round 6 (crisc_d3_116 to 128). Round 6 priority: owner acceptance within appetite keyed (AI item). Neighbours checked: crisc_d3_002 (within appetite, extra tool), crisc_d3_027 (AI vendor service credits), crisc_d3_054 (contract terms before signing), CC cc_d1_004 (chatbot transcripts kept for training), AAIA aaia_d3_015 (approved AI service barring training on audit data) and aaia_d1_038 (vendor sending client data to another model); those keep sensitive data out of training, while here the content is public and the risk within appetite. Review fixes 4 Nov 2026 (round 6 audit, concept review and blind test): key reworded without 'on record' to remove a bank-level cue (audit); the explanation still records the acceptance. Keep apart from crisc_d3_002 and crisc_d3_116 in practice sets. Review fixes 4 Nov 2026 (round 7 audit and concept review): option B changed from moving to another vendor to a reassess distractor, so a reassess option beside an accept option is no longer always the key across the bank's within-appetite items (round 7 audit, bank-level cue). No second defensible answer: the stem's within-appetite rating is of the training risk itself, so reassessing adds no new fact. Re-blind fix 4 Nov 2026: stem states the rating was made on the vendor's terms, so the reassess distractor is clearly wrong. Cross-domain fixes 4 Nov 2026 (round 7): recast as a FIRST stem so FIRST plus an accept option no longer always means do not accept; reassess is now the runner-up. Review note 5 Nov 2026 (round 8): keep apart from crisc_d1_114 and crisc_d4_086 (the same FIRST-acceptance device) in practice sets.",
+      "_provenance": "Authored from concept: notes 3A3.3 (AI Vendors and the Model Supply Chain; bullet 2 extended: rate any gap in AI terms like other vendor risk, which the business owner may accept) and 3A3.2 (decides: the business owner accepts, remediates or exits). Round 6, 4 Nov 2026: original scenario (an AI translation vendor that may train on a toolmaker's published manuals unless it pays $30,000 a year more, with the risk within appetite), written for KaiSip in our own words; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D3 round 6 (crisc_d3_116 to 128). Round 6 priority: owner acceptance within appetite keyed (AI item). Neighbours checked: crisc_d3_002 (within appetite, extra tool), crisc_d3_027 (AI vendor service credits), crisc_d3_054 (contract terms before signing), CC cc_d1_004 (chatbot transcripts kept for training), AAIA aaia_d3_015 (approved AI service barring training on audit data) and aaia_d1_038 (vendor sending client data to another model); those keep sensitive data out of training, while here the content is public and the risk within appetite. Review fixes 4 Nov 2026 (round 6 audit, concept review and blind test): key reworded without 'on record' to remove a bank-level cue (audit); the explanation still records the acceptance. Keep apart from crisc_d3_002 and crisc_d3_116 in practice sets. Review fixes 4 Nov 2026 (round 7 audit and concept review): option B changed from moving to another vendor to a reassess distractor, so a reassess option beside an accept option is no longer always the key across the bank's within-appetite items (round 7 audit, bank-level cue). No second defensible answer: the stem's within-appetite rating is of the training risk itself, so reassessing adds no new fact. Re-blind fix 4 Nov 2026: stem states the rating was made on the vendor's terms, so the reassess distractor is clearly wrong. Cross-domain fixes 4 Nov 2026 (round 7): recast as a FIRST stem so FIRST plus an accept option no longer always means do not accept; reassess is now the runner-up. Review note 5 Nov 2026 (round 8): keep apart from crisc_d1_114 and crisc_d4_086 (the same FIRST-acceptance device) in practice sets. Cue pass 2, 5 Nov 2026: A reworded (was 'Ask the business owner to fund'): a wrong option now opens 'Propose', so that opening no longer points to the key.",
       "style_version": 2
     },
     {
@@ -4567,17 +4567,17 @@
       "bloom_level": "Analysis",
       "question": "A bank's risk committee asks whether its two-year-old KRI for failed sign-in attempts actually warns of account takeovers. Which of the following analyses should the risk analyst use to BEST answer?",
       "options": {
-        "A": "Compare the KRI's level with peer banks' figures",
+        "A": "Compare the KRI's level with other banks' figures",
         "B": "Line up past KRI rises with incident dates",
         "C": "Reconcile the KRI's data with the sign-in logs",
-        "D": "Survey control owners on the KRI's usefulness"
+        "D": "Poll control owners on the KRI's usefulness"
       },
       "correct": "B",
       "key_concept": "A KRI's predictive value is tested against its history: a leading KRI moves before the incidents it is meant to warn of.",
       "pre_read": "Pin down exactly what the committee is asking about the KRI.",
       "correct_explanation": "A KRI warns only if it moves before the event. Checking two years of values against when account takeovers happened shows whether rises in failed sign-ins came first, which is the committee's question. Reconciling the data with the sign-in logs is the runner-up: it confirms the figures are accurate, but an accurate figure can still fail to predict anything.",
       "wrong_explanations": {
-        "A": "Peer figures show whether the level is high or low, not whether this KRI moves before takeovers at this bank.",
+        "A": "Other banks' figures show whether the level is high or low, not whether this KRI moves before takeovers at this bank.",
         "C": "Reconciling to the logs checks accuracy, which matters, but accurate data says nothing about whether the KRI rises before takeovers.",
         "D": "Control owners' views show whether the KRI is liked or used, not whether its values have predicted takeovers."
       },
@@ -4592,7 +4592,7 @@
         "Data analysis",
         "Key risk indicator"
       ],
-      "_provenance": "Authored from concept: notes 3C2.1 (Collecting Risk and Control Data; new bullet: compare a KRI's past values with when related incidents occurred) and 3C3.2 (Selecting Effective KRIs: predictive). Round 6, 4 Nov 2026: original scenario (a bank's risk committee asking whether a two-year-old failed sign-in KRI warns of account takeovers), written for KaiSip in our own words; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D3 round 6 (crisc_d3_116 to 128). Neighbours checked: crisc_d3_074 (cut a KRI list by how early each warns), crisc_d3_040 (validate a KRI after a data-feed change), crisc_d3_108 (leading KRI for late filings), AAIA aaia_d1_068 (compare a vendor model's predictions with recorded breakdowns; model accuracy, not KRI lead), CC cc_d2_090 (drift KRI for a model).",
+      "_provenance": "Authored from concept: notes 3C2.1 (Collecting Risk and Control Data; new bullet: compare a KRI's past values with when related incidents occurred) and 3C3.2 (Selecting Effective KRIs: predictive). Round 6, 4 Nov 2026: original scenario (a bank's risk committee asking whether a two-year-old failed sign-in KRI warns of account takeovers), written for KaiSip in our own words; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D3 round 6 (crisc_d3_116 to 128). Neighbours checked: crisc_d3_074 (cut a KRI list by how early each warns), crisc_d3_040 (validate a KRI after a data-feed change), crisc_d3_108 (leading KRI for late filings), AAIA aaia_d1_068 (compare a vendor model's predictions with recorded breakdowns; model accuracy, not KRI lead), CC cc_d2_090 (drift KRI for a model). Cue pass 2, 5 Nov 2026: A and D reworded off the outside-data words (peer, vendor, industry, survey, external), which were almost never keyed; still wrong for the same reason.",
       "style_version": 2
     },
     {
