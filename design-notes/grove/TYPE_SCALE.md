@@ -47,7 +47,7 @@ it grows with the text, and the phone keeps pt.
 | 3 | `title` | Fraunces 500 | 1.375rem / 1.625rem (22 / 26) | 22 / 26 | -0.3px | Sentence | Card titles on Today ("Today's plan", "This week's twig", "If you have more time", "Save a backup"); a sheet's name (badge, plant); a label row's value in words; page-level empty-state headings (Saved, Weak spots) |
 | 4 | `stem` | Fraunces 400 | 1.3125rem / 1.875rem (21 / 30); long stem 1.25rem / 1.8125rem (20 / 29) | 21 / 30; long 20 / 29 | -0.1px | As written (exam keywords FIRST, BEST stay caps) | Question stems (long step when the stem is over 200 characters, both builds); lesson scene prose; a note's "In one line" |
 | 5 | `quote` | Fraunces 400 italic (coach); Fraunces 400 roman as `read` | 1.125rem / 1.625rem (18 / 26) | 18 / 26 | 0 | Sentence | Italic: key idea, a principle's quote, the stage line, the welcome subline. Roman (`read`): a question read in place (Today's Mindset check), the You status sentence |
-| 6 | `aside` | Fraunces 400 italic | 1rem / 1.375rem (16 / 22) | 16 / 22 | 0 | Sentence | The verdict's coach line, italic sublines, "Why not B: ...", key-list and plan-step numbers, the "grew to" line. Not for labels or units under a stat: those are `meta` (section 2.1, DESIGN_SYSTEM §10.4); a stat's value in words is `title` (rows 207 and 59c) |
+| 6 | `aside` | Fraunces 400 italic | 1rem / 1.375rem (16 / 22) | 16 / 22 | 0 | Sentence | The verdict's coach line, italic sublines, key-list and plan-step numbers ("Why not B" is a `caption` over its note in `small` since Phase 4, PHASE4.md 4.2), the "grew to" line. Not for labels or units under a stat: those are `meta` (section 2.1, DESIGN_SYSTEM §10.4); a stat's value in words is `title` (rows 207 and 59c) |
 | 7 | `headline` | Figtree 600 | 1.0625rem / 1.5rem (17 / 24) | 17 / 24 | -0.1px | Sentence | Section heads on every page that is not a tab home or a list (see rule R4) |
 | 8 | `button` | Figtree 600 | 1.0625rem / 1.375rem (17 / 22) | 17 / 22 | 0 | Sentence | Solid buttons: primary, secondary, danger ("Check answer", "Next question", "Start fresh") |
 | 9 | `label` | Figtree 600 | 1rem / 1.375rem (16 / 22) | 16 / 22 | 0 | Sentence | Row and list titles, menu items, sidebar section links, plate (forest) buttons and ghost or text buttons, toasts, the pushed-screen bar title |
@@ -440,7 +440,7 @@ the literal with the role's token (no visual change).
 | 77 | `.td-prin-q` Today principle, 8001 | italic 18/1.35 | quote |
 | 78 | `.ob-sub` welcome subline, 6940 | italic 19/26 | quote |
 | 79 | Stage line literal, 5089 | italic 19/25 | quote (stage folds in) |
-| 80 | `.ms-text` 4507 and quote literals | 18/26 by hand | quote (token) |
+| 80 | `.ms-text` 4507 and quote literals | 18/26 by hand | quote (token); Phase 4: the Practice Mindset tip is a card row, `label` "Mindset." then the tip in `small` (PHASE4.md 7.8) |
 | 81 | `.you-streak-q` 7371, `.ph-dom-w` 6315, `.fg-sl-w` 5597, 7640 | italic 15/20 | aside |
 | 82 | `.td-step` plan step number, 7745, 7747 | italic 15/1 | aside |
 | 83 | `.gt-olist li::before` list numbers, 4957 | Fraunces 500 17/24 | aside (key number, as `.fg-key-n`) |

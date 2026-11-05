@@ -1305,7 +1305,7 @@ header {
 .q-text {
   font: var(--t-stem); letter-spacing: var(--tr-stem);
   color: var(--text); margin-bottom: 24px;
-  overflow-wrap: anywhere; hyphens: auto; hyphenate-limit-chars: 10 4 4;
+  overflow-wrap: anywhere; hyphens: manual;
 }
 
 /* â”€â”€ OPTIONS â”€â”€ */
@@ -4510,7 +4510,7 @@ header {
 .q-num { font: var(--t-meta); color: var(--muted); }
 .bk-btn, .fl-btn { min-width: 44px; min-height: 44px; border-radius: var(--r-round); background: transparent; border: 1.5px solid var(--control); color: var(--text); }
 .q-body { padding: 20px 0 8px; }
-.q-text { font: var(--t-stem); letter-spacing: var(--tr-stem); color: var(--text); margin-bottom: 20px; overflow-wrap: anywhere; hyphens: auto; hyphenate-limit-chars: 10 4 4; }
+.q-text { font: var(--t-stem); letter-spacing: var(--tr-stem); color: var(--text); margin-bottom: 20px; overflow-wrap: anywhere; hyphens: manual; }
 .scenario-block { background: transparent; border: 0; border-left: 3px solid var(--accent); border-radius: 0; padding: 2px 0 2px 16px; }
 .sc-label { font: var(--t-caption); letter-spacing: var(--tr-caption); color: var(--accent-text); }
 .sc-text { font: var(--t-body); color: var(--text2); }
@@ -4519,9 +4519,9 @@ header {
   background: var(--surface); border: 1.5px solid var(--raised-outline); box-shadow: var(--shadow);
   border-radius: var(--r-md); padding: 15px 16px; gap: 12px; align-items: flex-start;
   font: var(--t-body); color: var(--text); min-height: 56px;
-  overflow-wrap: anywhere; hyphens: auto; hyphenate-limit-chars: 10 4 4;
+  overflow-wrap: anywhere; hyphens: manual;
 }
-.opt:hover:not(:disabled) { transform: none; background: var(--surface); border-color: var(--control); color: var(--text); }
+.opt:hover:not(:disabled) { transform: none; background: var(--surface2); border-color: var(--control); color: var(--text); }
 .opt-letter {
   width: 2.1429em; height: 2.1429em; border-radius: var(--r-round); background: transparent; border: 1.5px solid var(--control);
   font: var(--t-badge); min-width: 2.1429em; min-height: 2.1429em; color: var(--text2); margin-top: -3px;
@@ -5893,20 +5893,20 @@ body[data-app-cta-card="shown"][data-section="today"] .app-cta-line { display: n
 .conf-stage { margin-top: var(--sp-xxl); padding-top: 0; border-top: 0; }
 .conf-stage[hidden] { display: none; }
 .conf-tip { margin-bottom: var(--sp-lg); }
+.conf-tip button { min-width: 44px; min-height: 44px; top: 0; right: 0; }
 .conf-q { font: var(--t-label); color: var(--text); margin: 0 0 var(--sp-md); }
 .conf-seg {
   display: flex; flex-wrap: wrap; gap: var(--sp-xs); padding: var(--sp-xs); max-width: 520px;
   border-radius: var(--r-lg); background: var(--surface2);
 }
 .conf-seg .conf-btn {
-  position: relative; flex: 1 1 auto; justify-content: center; min-height: 40px; padding: 0 var(--sp-lg);
+  position: relative; flex: 1 1 auto; justify-content: center; min-height: 44px; padding: 0 var(--sp-lg);
   border: 0; border-radius: var(--r-pill); background: transparent; color: var(--text);
   font: var(--t-chip); text-align: center; box-shadow: none; transform: none;
 }
-/* 40px to the eye, 44px to the finger */
-.conf-seg .conf-btn::before { content: ''; position: absolute; left: 0; right: 0; top: -2px; bottom: -2px; }
+
 .conf-seg .conf-btn:hover { background: var(--surface); color: var(--text); transform: none; box-shadow: none; }
-.conf-seg .conf-btn.picked, .conf-seg .conf-btn.picked:hover { background: var(--text); color: var(--bg); }
+.conf-seg .conf-btn.picked, .conf-seg .conf-btn.picked:hover { background: var(--surface); color: var(--text); box-shadow: inset 0 0 0 2px var(--text); }
 .conf-stage .submit-btn { margin-top: var(--sp-lg); letter-spacing: 0; }
 
 /* After checking: the meta line, the stem and the option list step aside;
@@ -5926,97 +5926,104 @@ body[data-app-cta-card="shown"][data-section="today"] .app-cta-line { display: n
 .vr-recap-btn:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; border-radius: var(--r-sm); }
 
 .result-panel.vr-panel { display: block; border-top: 0; padding: var(--sp-sm) 0 0; animation: none; }
+/* ── The answer screen (Grove Phase 4, PHASE4.md section 4, option B with
+   the 4.6 fold while O1 is open): the verdict, one answer card, Key idea,
+   How to think about it, Why, Go deeper, the source row, and Next held at
+   the bottom at every width. No tinted fills: state is on the badge, the
+   caption words and the verdict word. ── */
 .vr-verdict { display: flex; align-items: center; gap: var(--sp-md); }
 .vr-leaf { width: 38px; height: 38px; flex-shrink: 0; overflow: visible; }
 .vr-leaf-fill { fill: var(--correct-fill); }
-.vr-wrong .vr-leaf-fill { fill: var(--wrong-fill); }
-.vr-timeout .vr-leaf-fill { fill: var(--tip-fill); }
+.vr-wrong .vr-leaf-fill, .vr-timeout .vr-leaf-fill { fill: var(--wrong-fill); }
 .vr-leaf-mark { fill: none; stroke: var(--on-fill); stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; }
-/* v12.47: the verdict word is ink; the leaf's fill and mark carry the state
-   (and the word says it), so colour is never doubled or the only signal. */
-.vr-hero { margin: 0; font: var(--t-hero); letter-spacing: var(--tr-hero); color: var(--text); }
-/* The coach's voice: the italic lead, under the word from 700px (leaf 38 + gap 12). */
-.vr-coach { margin: var(--sp-xs) 0 0; font: var(--t-aside); color: var(--text2); }
-@media (min-width: 700px) { .vr-coach { margin-left: 50px; } }
+/* The word in its state colour (Time's up is graded as a miss: the miss tone, never clay). */
+.vr-hero { margin: 0; font: var(--t-hero); letter-spacing: var(--tr-hero); color: var(--correct); }
+.vr-wrong .vr-hero, .vr-timeout .vr-hero { color: var(--wrong); }
+/* The coach's voice (TYPE_SCALE aside), then the review line. */
+.vr-coach { margin: var(--sp-xs) 0 0; font: var(--t-aside); color: var(--text2); text-wrap: pretty; }
+@media (min-width: 37.5em) { .vr-coach { margin-left: 50px; } }
 
-.vr-rows { display: flex; flex-direction: column; gap: var(--sp-lg); margin-top: var(--sp-lg); }
-.vr-row { display: flex; align-items: flex-start; gap: var(--sp-md); padding: var(--sp-lg); border-radius: var(--r-md); }
-.vr-row-wrong { background: var(--wrong-light); }
-.vr-row-right { background: var(--correct-light); }
+.vr-card {
+  display: flex; flex-direction: column; margin-top: var(--sp-lg); padding: 4px var(--card-pad);
+  background: var(--surface); border-radius: var(--r-card); box-shadow: var(--card-shadow);
+}
+.vr-row { display: flex; align-items: flex-start; gap: var(--sp-md); padding: 14px 0; }
+.vr-card > * + .vr-row-best { border-top: 1px solid var(--border); }
 .vr-badge {
   width: 2.1429em; height: 2.1429em; flex-shrink: 0; border-radius: var(--r-round);
-  display: inline-flex; align-items: center; justify-content: center; color: var(--bg);
+  display: inline-flex; align-items: center; justify-content: center; color: var(--on-fill);
   font: var(--t-badge); min-width: 2.1429em; min-height: 2.1429em;
 }
 .vr-row-wrong .vr-badge { background: var(--wrong-fill); }
-.vr-row-right .vr-badge { background: var(--correct-fill); }
-.vr-row-body { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.vr-row-right .vr-badge, .vr-row-best .vr-badge { background: var(--correct-fill); }
+.vr-row-body { display: flex; flex-direction: column; gap: 2px; min-width: 0; padding-top: 2px; }
 .vr-tag { font: var(--t-caption); letter-spacing: var(--tr-caption); }
 .vr-row-wrong .vr-tag { color: var(--wrong); }
-.vr-row-right .vr-tag { color: var(--correct); }
+.vr-row-right .vr-tag, .vr-row-best .vr-tag { color: var(--correct); }
 .vr-opt { font: var(--t-body); color: var(--text); overflow-wrap: anywhere; }
-/* "Why not A." (v12.47): a bold lead-in inside the learner's own row, over a
-   hairline at 22% of the wrong colour. */
-.vr-row-why {
-  display: block; margin-top: var(--sp-md); padding-top: var(--sp-md);
-  border-top: 1px solid var(--border); border-top-color: color-mix(in srgb, var(--wrong) 22%, transparent);
-  font: var(--t-small); color: var(--text); overflow-wrap: anywhere;
-}
-.vr-row-why b { font-weight: 600; }
+.vr-row-wrong .vr-opt { font-weight: 500; }
+.vr-row-best .vr-opt { font-weight: 600; }
+/* "Why not B": a caption over the note, in line with the option text. */
+.vr-whynot { display: flex; flex-direction: column; gap: 2px; margin: -6px 0 0; padding: 0 0 14px calc(2.1429 * 0.875rem + var(--sp-md)); }
+.vr-nl .vine-cap { margin: 0 0 var(--sp-xs); font: var(--t-caption); letter-spacing: var(--tr-caption); color: var(--text2); }
+.vr-whynot-k { font: var(--t-caption); letter-spacing: var(--tr-caption); color: var(--text2); }
+.vr-whynot-t { font: var(--t-small); color: var(--text); overflow-wrap: anywhere; }
 
-.vr-why { margin: var(--sp-2xl) 0 var(--sp-xs); font: var(--t-headline); letter-spacing: var(--tr-headline); color: var(--text); }
+/* Key idea: the coach speaking, so the 3px accent rule. */
+.vr-key { display: flex; flex-direction: column; gap: var(--sp-xs); margin: var(--sp-xl) 0 0; padding-left: var(--sp-lg); border-left: 3px solid var(--accent); }
+.vr-key-k { font: var(--t-caption); letter-spacing: var(--tr-caption); color: var(--accent-text); }
+.vr-key-q { font: var(--t-quote); color: var(--text); }
+
+/* How to think about it: one card, a row per tip, the label words carry the
+   difference (one colour); a small leaf on each row and one stem down the
+   card's left edge. */
+.vr-how, .vr-why { margin: var(--sp-xl) 0 var(--sp-sm); font: var(--t-headline); letter-spacing: var(--tr-headline); color: var(--text); }
+.vine.vr-tips {
+  position: relative; list-style: none; display: flex; flex-direction: column; gap: 0; margin: 0; padding: 4px var(--card-pad) 4px calc(var(--card-pad) + 30px);
+  background: var(--surface); border-radius: var(--r-card); box-shadow: var(--card-shadow);
+}
+.vr-tips .vine-node { position: relative; padding: 14px 0; }
+.vr-tips .vine-node + .vine-node { border-top: 1px solid var(--border); }
+.vr-tips .vine-leaf { position: absolute; left: -30px; top: 14px; width: 18px; height: 18px; color: var(--accent); }
+.vr-tips .vine-node::after {
+  content: ''; position: absolute; left: -21.75px; top: 34px; bottom: -14px; width: 1.5px;
+  background: var(--accent); opacity: .5; transform-origin: top;
+}
+.vr-tips .vine-node:last-child::after { display: none; }
+.vr-tips .vine-cap { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 8px; margin: 0 0 var(--sp-xs); font: var(--t-caption); letter-spacing: var(--tr-caption); color: var(--accent-text); }
+.vr-tips .vine-tip { margin: 0; font: var(--t-small); color: var(--text); overflow-wrap: anywhere; }
+.vr-pick {
+  display: inline-flex; align-items: center; padding: 1px 8px; border-radius: var(--r-pill);
+  box-shadow: inset 0 0 0 1px var(--control); font: var(--t-caption); letter-spacing: var(--tr-caption); color: var(--text); white-space: nowrap;
+}
+
 .vr-exp { margin: 0; font: var(--t-body); color: var(--text); }
 .vr-exp.vr-fold:not(.open) { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; line-clamp: 2; overflow: hidden; }
 .vr-readmore {
-  display: inline-flex; align-items: center; gap: var(--sp-xs); min-height: 48px; padding: 0;
+  display: inline-flex; align-items: center; gap: var(--sp-xs); min-height: 44px; padding: 0;
   background: none; border: 0; cursor: pointer; font: var(--t-label); color: var(--accent-text); text-align: left;
 }
 .vr-readmore:hover .vr-rm-t { text-decoration: underline; }
 .vr-readmore:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; border-radius: var(--r-sm); }
-/* Eliminate two and Final two, folded with the Why after a miss (mobile 1.43). */
+/* The folded tip rows, right after Read more (mobile 1.43, PHASE4.md 4.6). */
 .vr-why-more[hidden] { display: none; }
-.vr-why-more > .vine { margin-top: var(--sp-lg); }
+.vr-why-more > .vine { margin-top: var(--sp-sm); }
 @media (prefers-reduced-motion: no-preference) {
   .vr-why-more:not([hidden]), .vr-recap-t.open { animation: flagFadeIn .12s ease-out both; }
 }
-.vr-src-sub { flex: 1 1 100%; margin: 0 0 var(--sp-sm); font: var(--t-meta); color: var(--text2); overflow-wrap: anywhere; }
 
-/* The vine: one stem with a leaf per node. The stem is drawn in pieces from
-   leaf to leaf with a 2px gap, so it seems to pass behind each leaf without a
-   paper knock-out (that would show as a flat square on the grain).
-   Key idea = filled leaf + italic quote (the coach's voice). */
-.vine { position: relative; display: flex; flex-direction: column; gap: var(--sp-xl); margin-top: var(--sp-xxl); padding-left: 34px; }
-.vine-node { position: relative; }
-.vine-node::after {
-  content: ''; position: absolute; left: -23.75px; top: 22px; bottom: calc(2px - var(--sp-xl)); width: 1.5px;
-  background: var(--accent); opacity: .55; transform-origin: top;
-}
-.vine-node:last-child::after { bottom: 4px; }
-.vine-leaf { position: absolute; left: -34px; top: -2px; width: 22px; height: 22px; color: var(--text2); }
-.vine-cap { margin: 0 0 var(--sp-xs); font: var(--t-caption); letter-spacing: var(--tr-caption); color: var(--text2); }
-.vine-quote { margin: 0; font: var(--t-quote); color: var(--text); }
-.vine-tip { margin: 0; font: var(--t-small); color: var(--text); }
-.vine-key .vine-leaf, .vine-cue .vine-leaf { color: var(--accent); }
-.vine-key .vine-cap, .vine-cue .vine-cap { color: var(--accent-text); }
-.vine-elim .vine-leaf, .vine-elim .vine-cap { color: var(--tip); }
-
-.vr-src {
-  display: flex; flex-wrap: wrap; align-items: center; gap: 0 var(--sp-lg);
-  margin-top: var(--sp-lg); padding-top: var(--sp-md); border-top: 1px solid var(--border);
-}
-.vr-src-ref { flex: 1 1 auto; min-width: 0; font: var(--t-meta); color: var(--text2); overflow-wrap: anywhere; }
-/* The one "Go deeper" row, between two hairlines; the source line follows. */
+/* Go deeper: the row in one card. */
 .vr-study:empty { display: none; }
-.vr-study { margin-top: var(--sp-lg); border-top: 1px solid var(--border); }
-.vr-study:not(:empty) + .vr-src { border-top: 1px solid var(--border); margin-top: 0; }
+.vr-study { margin-top: var(--sp-xl); padding: 0 var(--card-pad); background: var(--surface); border-radius: var(--r-card); box-shadow: var(--card-shadow); }
 .vr-deeper {
   display: flex; align-items: center; gap: var(--sp-md); min-height: 64px; padding: var(--sp-md) 0;
   color: var(--text); text-decoration: none;
 }
 .vr-deeper-ico {
-  width: 40px; height: 40px; flex-shrink: 0; border-radius: var(--r-round); background: var(--surface2);
+  width: 36px; height: 36px; flex-shrink: 0; border-radius: var(--r-badge); background: var(--surface2);
   display: inline-flex; align-items: center; justify-content: center; color: var(--accent-text);
 }
+[data-theme="dark"] .vr-deeper-ico { background: var(--forest); color: var(--sap); }
 .vr-deeper-text { flex: 1; min-width: 0; display: flex; flex-direction: column; }
 .vr-deeper-k { font: var(--t-caption); letter-spacing: var(--tr-caption); color: var(--accent-text); }
 .vr-deeper-t { font: var(--t-label); color: var(--text); overflow-wrap: anywhere; }
@@ -6024,92 +6031,74 @@ body[data-app-cta-card="shown"][data-section="today"] .app-cta-line { display: n
 .vr-deeper-chev { flex-shrink: 0; color: var(--muted); display: inline-flex; }
 .vr-deeper:hover .vr-deeper-t { text-decoration: underline; text-underline-offset: 3px; }
 .vr-deeper:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; border-radius: var(--r-sm); }
+.vr-deeper-wrap + .vr-deeper-wrap { border-top: 1px solid var(--border); }
 
-/* Footer: Save + Next question. On phones it is held at the bottom of the
-   screen while the answer is in view (above the tab bar), over a 24px paper
-   fade; it sits in its own slot at the end, so it never covers the last
-   line. From 768px (v12.45) it stays in the page after the last block, so
-   it never covers a row on a desktop screen. */
+/* The source row: a hairline, the source in meta, Report a problem at the right. */
+.vr-src {
+  display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 0 var(--sp-lg);
+  margin-top: var(--sp-xl); padding-top: var(--sp-sm); border-top: 1px solid var(--border);
+}
+.vr-src-t { flex: 1 1 14em; min-width: 0; }
+.vr-src-ref { display: block; font: var(--t-meta); color: var(--text2); overflow-wrap: anywhere; }
+.vr-src-sub { margin: 0; font: var(--t-meta); color: var(--text2); overflow-wrap: anywhere; }
+.vr-report {
+  flex: none; min-height: 44px; padding: 0 2px; border: 0; background: none; cursor: pointer;
+  font: var(--t-meta); color: var(--accent-text);
+}
+.vr-report:hover { text-decoration: underline; text-underline-offset: 3px; }
+.vr-report:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; border-radius: var(--r-sm); }
+
+/* Next question: one solid button in a footer held at the bottom of the
+   view at every width (above the phone tab bar, which a quiz hides), over a
+   24px paper fade. On a short window (200% text in landscape) it goes back
+   into the flow at the end. */
 .vr-foot {
   position: sticky; bottom: 0; z-index: 5; display: flex; align-items: center; gap: var(--sp-md);
-  margin-top: var(--sp-xl); padding: var(--sp-xxl) 0 var(--sp-lg);
+  margin-top: var(--sp-lg); padding: var(--sp-xxl) 0 var(--sp-lg);
   background: linear-gradient(to bottom, transparent, var(--bg) var(--sp-xxl));
 }
-/* The page's grain, anchored to the viewport like body::before, so the bar
-   never reads as a flat box on the paper. */
 .vr-foot::before {
   content: ''; position: absolute; inset: 0; z-index: -1; pointer-events: none;
   background-image: var(--grain-img); background-attachment: fixed; opacity: var(--grain-op);
   -webkit-mask-image: linear-gradient(to bottom, transparent, black var(--sp-xxl));
   mask-image: linear-gradient(to bottom, transparent, black var(--sp-xxl));
 }
-@media (min-width: 48em) {
-  .vr-foot { position: static; padding-top: var(--sp-sm); background: none; }
-  .vr-foot::before { display: none; }
-}
 @media (max-width: 47.9375em) {
   .vr-foot { bottom: calc(88px + env(safe-area-inset-bottom)); }
 }
+@media (max-height: 30em) {
+  .vr-foot { position: static; padding-top: var(--sp-sm); background: none; }
+  .vr-foot::before { display: none; }
+}
 .vr-next {
   flex: 1 1 auto; display: inline-flex; align-items: center; justify-content: center; gap: var(--sp-sm);
-  min-height: 56px; padding: 0 var(--sp-xxl); border: 0; border-radius: var(--r-pill); cursor: pointer;
+  min-height: 52px; padding: 0 var(--sp-xxl); border: 0; border-radius: var(--r-tile); cursor: pointer;
   background: var(--btn); color: var(--on-btn); font: var(--t-button);
 }
 .vr-next:hover { opacity: .92; }
-/* From 768px Next stays in the page (v12.45) as the kit's 52px plate button. */
-@media (min-width: 48em) {
-  .vr-next { min-height: 52px; border-radius: var(--r-12); }
-}
-
-/* "Three moves for this question": the margin's plate (from 1240px). */
-.vm-plate .fg-fig { margin-bottom: var(--sp-xs); }
-.vm-plate .fg-key { align-items: flex-start; }
-.vm-plate .fg-key-n { padding-top: 0; }
-.vm-plate .fg-key-t { flex: 1 1 auto; display: block; }
-.vm-h { display: flex; flex-wrap: wrap; align-items: center; gap: var(--sp-xs) var(--sp-sm); }
-.vm-t { font: var(--t-label); color: var(--text); }
-.vm-b { display: block; margin-top: 2px; font: var(--t-small); color: var(--text); }
-.vm-tag {
-  display: inline-flex; align-items: center; gap: var(--sp-xs); padding: 1px 6px;
-  border: 1px solid var(--control); border-radius: var(--r-3); font: var(--t-caption); letter-spacing: var(--tr-caption); color: var(--text); white-space: nowrap;
-}
-.vm-tag-x { width: 14px; height: 14px; flex: none; }
-.vm-tag-x circle { fill: var(--wrong-fill); }
-.vm-tag-x path { fill: none; stroke: var(--on-fill); stroke-width: 1.6; stroke-linecap: round; }
-.sr-sec-moves .fg-cap { margin-bottom: 0; }
-/* Nothing said twice: with the plate in the margin the page drops the Exam
-   cue node and the folded Eliminate two and Final two (and a Read more that
-   only held them). */
-body[data-qmoves] .vr-panel .vine-elim,
-body[data-qmoves] .vr-panel .vine-final,
-body[data-qmoves] .vr-panel .vine-cue,
-body[data-qmoves] .vr-panel .vr-why-more,
-body[data-qmoves] .vr-panel .vr-rm-tips { display: none; }
-body[data-qmoves] .vr-panel .vine-key::after { bottom: 4px; }
-.vr-skip-moves { display: none; }
-body[data-qmoves] .vr-skip-moves { display: block; }
 .sr-only-focusable:focus, .sr-only-focusable:focus-visible {
   position: static !important; width: auto; height: auto; margin: var(--sp-lg) 0 0; overflow: visible; clip: auto; white-space: normal;
   display: inline-flex; align-items: center; min-height: 44px; font: var(--t-label); color: var(--accent-text);
   text-decoration: underline; text-underline-offset: 3px; outline: 2px solid var(--focus-ring); outline-offset: 2px; border-radius: var(--r-sm);
 }
-/* Motion: the plate's rows fade in 60ms apart from 120ms after the verdict;
-   the tag settles from .96. Reduce Motion: the finished plate. */
-@keyframes vmRow { from { opacity: 0; } to { opacity: 1; } }
-@keyframes vmTag { from { transform: scale(.96); } to { transform: none; } }
-@media (prefers-reduced-motion: no-preference) {
-  .sr-sec-moves .fg-key { animation: vmRow 200ms ease-out both; animation-delay: 120ms; }
-  .sr-sec-moves .fg-key:nth-child(2) { animation-delay: 180ms; }
-  .sr-sec-moves .fg-key:nth-child(3) { animation-delay: 240ms; }
-  .sr-sec-moves .vm-tag { animation: vmTag 160ms cubic-bezier(.33, 1, .68, 1) 120ms backwards; }
-}
 .vr-next:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
+/* The margin's cards on the answer screen (Go deeper, your note, terms). */
+.sr-card-pad { padding: var(--card-pad); }
+.study-rail .p4-card + .p4-card { margin-top: 16px; }
+@media (forced-colors: active) { .vr-card, .vr-tips, .vr-study { border: 1px solid CanvasText; } }
 
 @media (prefers-reduced-motion: no-preference) {
   .conf-seg .conf-btn { transition: background-color .12s ease, color .12s ease; }
   .vr-panel .vr-leaf { animation: vrLeafIn .42s cubic-bezier(.34, 1.56, .64, 1) both; transform-origin: 50% 50%; }
-  .vr-panel .vr-rows { animation: vrRise .2s ease-out .08s both; }
-  /* The stem draws down over 520ms; each leaf pops as the stem reaches it. */
+  /* The card and blocks fade in reading order, opacity only, 200ms, 30ms apart. */
+  .vr-panel > .vr-coach, .vr-panel > .vr-card, .vr-panel > .vr-key, .vr-panel > .vr-how, .vr-panel > .vr-tips,
+  .vr-panel > .vr-why, .vr-panel > .vr-exp { animation: vrFade .2s ease-out both; }
+  .vr-panel > .vr-coach { animation-delay: 30ms; }
+  .vr-panel > .vr-card { animation-delay: 60ms; }
+  .vr-panel > .vr-key { animation-delay: 90ms; }
+  .vr-panel > .vr-how, .vr-panel > .vr-tips { animation-delay: 120ms; }
+  .vr-panel > .vr-why, .vr-panel > .vr-exp { animation-delay: 150ms; }
+  /* The stem draws down once; each leaf settles as the stem reaches it. */
   .vine.vine-arm .vine-node::after { transform: scaleY(0); }
   .vine.vine-arm .vine-leaf { transform: scale(.4); opacity: 0; }
   .vine.vine-in .vine-node::after {
@@ -6120,6 +6109,7 @@ body[data-qmoves] .vr-skip-moves { display: block; }
   .vr-recap-btn .ico { transition: transform .15s ease; }
 }
 @keyframes vrLeafIn { from { transform: scale(.6); } to { transform: scale(1); } }
+@keyframes vrFade { from { opacity: 0; } to { opacity: 1; } }
 @keyframes vrRise { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
 @keyframes vineDraw { from { transform: scaleY(0); } to { transform: scaleY(1); } }
 @keyframes vineLeaf { from { transform: scale(.4); opacity: 0; } to { transform: scale(1); opacity: 1; } }
@@ -6380,7 +6370,7 @@ body[data-qmoves] .vr-skip-moves { display: block; }
   :is(.ph-chip, .subtopic-chip, .fb-type, .gloss-chip, .bk-tag-chip, .gt-chip):is(.active, .selected, [aria-pressed="true"])::before { forced-color-adjust: none; background: Highlight; }
 }
 /* Focused session */
-.pf { max-width: 640px; margin: 0 auto; }
+.pf { max-width: 42.5em; margin: 0 auto; }
 .pf #qArea { max-width: none; margin: 0; }
 .pf-strip { display: flex; align-items: center; gap: var(--sp-sm); min-height: 56px; margin: 0 0 var(--sp-md); }
 .pf-btn {
@@ -6804,6 +6794,9 @@ html { scroll-padding-bottom: calc(104px + var(--consent-h, 0px)); }
   body[data-tab="you"] .fg-frame > main.app,
   body[data-tab="settings"] .fg-frame > main.app,
   body[data-tab="glossary"] .fg-frame > main.app { grid-column: 1 / -1; }
+  /* A question before its answer (Grove Phase 4, 7.9): one centred reading
+     column, no empty margin; the margin comes with the answer. */
+  body[data-tab="practice"][data-pview="focus"]:not([data-rail]) .fg-frame > main.app { grid-column: 1 / -1; }
   .fg-frame > .fg-margin:not([hidden]) {
     display: block; grid-column: 2; grid-row: 2;
     position: sticky; top: 32px; z-index: 1; max-height: calc(100vh - 64px); overflow-y: auto; overscroll-behavior: contain;
@@ -17990,47 +17983,10 @@ function railHubSections(pre) {
 function railQAnswered() {
   return !!(S.current && document.querySelector('#qArea .q-card.is-answered') && document.getElementById('rPanel'));
 }
-// "Three moves for this question" (web v12.47; premium round 2, 5.2):
-// Eliminate two, Final two and Exam cue as a captioned plate in the margin,
-// in DISPLAY letters. After a miss, the row(s) naming the pick carry a
-// "Your pick, A" tag (real text). None in exam-day rehearsal.
-var VM_ROWS = [['Eliminate', 'Eliminate two'], ['Final two', 'Final two'], ['Exam cue', 'Exam cue']];
-function vrMovesHtml(q) {
-  if (!q || S.examMode) return '';
-  var sh = S.currentShuffle || DISPLAY_LETTERS;
-  var pick = vrPick && vrPick.id === q.id ? vrPick : null;
-  var pickOrig = pick && pick.chosen && pick.chosen !== pick.correct ? displayToOriginal(pick.chosen, sh) : null;
-  var items = [];
-  VM_ROWS.forEach(function (r) {
-    var tip = qTipByLabel(q, r[0]);
-    if (!tip) return;
-    // Map the whole tip, as the page does (the letter after "Eliminate:" is always an option).
-    var body = tipParts(mapLettersInText(tip, sh), 0).body;
-    var names = pickOrig && r[0] !== 'Exam cue' && tipOptionLetters(tip).indexOf(pickOrig) >= 0;
-    var tag = names ? '<span class="vm-tag"><svg class="vm-tag-x" viewBox="0 0 14 14" aria-hidden="true" focusable="false"><circle cx="7" cy="7" r="7"/><path d="M4.6 4.6l4.8 4.8M9.4 4.6l-4.8 4.8"/></svg>Your pick, ' + pick.chosen + '</span><span class="sr-only">.</span>' : '';
-    items.push({ tHtml: '<span class="vm-h"><span class="vm-t">' + r[1] + '</span>' + tag + '</span>'
-      + '<span class="vm-b">' + escapeHtml(smartQuotes(body)) + '</span>' });
-  });
-  if (items.length < 2) return '';
-  // The caption is a script focus target for the page's skip link.
-  return '<div class="fg-plate vm-plate"><div class="fg-plate-in">' + fgFigHtml('Three moves for this question', 2, 'srhMoves').replace(' id="srhMoves"', ' id="srhMoves" tabindex="-1"')
-    + fgKeyList(items) + '</div></div>'
-    + fgCaption('Key', 'Move 3, the Exam cue, works on questions you haven’t seen yet.');
-}
-// The skip link's target is in the margin: focus it there (never a hash
-// change, which is the app's page router).
-function vrSkipToMoves(e) {
-  if (e && e.preventDefault) e.preventDefault();
-  var h = document.getElementById('srhMoves');
-  if (h) { try { h.focus({ preventScroll: true }); h.scrollIntoView({ block: 'nearest' }); } catch (ex) { h.focus(); } }
-  return false;
-}
 function railQSections() {
   if (!railQAnswered()) return [];
   var q = S.current, secs = [];
   var exam = !!S.examMode;
-  var mv = vrMovesHtml(q);
-  if (mv) secs.push({ id: 'moves', key: 'moves:' + q.id + ':' + (vrPick && vrPick.id === q.id ? vrPick.chosen || '' : ''), labelId: 'srhMoves', cls: 'sr-sec-moves', html: mv });
   // Go deeper: the note this question practises (one row), then its principle.
   var res = railNoteFor(q.id);
   var pl = railPrincipleFor(q);
@@ -18047,24 +18003,11 @@ function railQSections() {
   }
   if (pl) deeper += railPrincipleLinkHtml(pl);
   if (deeper) secs.push({ id: 'deeper', key: 'deeper:' + q.id + ':' + res.state + ':' + (res.note ? res.note.id + gtNoteState(res.note.id) : '') + ':' + (pl ? pl.id : ''),
-    cls: 'sr-sec-deeper', html: '<h2 class="sr-cap" id="srhDeeper">Go deeper</h2>' + deeper });
-  if (!(firstFiveRun && sessionLabel === FIRST_FIVE_LABEL)) secs.push({ id: 'mine', key: railMineKey(q.id), html: '<h2 class="sr-cap" id="srhMine">Your note on this question</h2>' + railMineHtml(q.id, 'sr', 'srhMine') });
+    cls: 'sr-sec-deeper p4-card sr-card-pad', html: '<h2 class="sr-cap" id="srhDeeper">Go deeper</h2>' + deeper });
+  if (!(firstFiveRun && sessionLabel === FIRST_FIVE_LABEL)) secs.push({ id: 'mine', key: railMineKey(q.id), cls: 'p4-card sr-card-pad', html: '<h2 class="sr-cap" id="srhMine">Your note on this question</h2>' + railMineHtml(q.id, 'sr', 'srhMine') });
   var terms = railQuestionTerms(q);
-  if (terms.length) secs.push({ id: 'terms', key: 'terms:' + q.id, html: '<h2 class="sr-cap" id="srhTerms">Terms in this question</h2>' + railTermsHtml(terms) });
+  if (terms.length) secs.push({ id: 'terms', key: 'terms:' + q.id, cls: 'p4-card sr-card-pad', html: '<h2 class="sr-cap" id="srhTerms">Terms in this question</h2>' + railTermsHtml(terms) });
   return secs;
-}
-// From 1240px, with the plate in the margin, the page drops what the plate
-// says (the Exam cue node, the folded Eliminate two and Final two): nothing
-// is said twice. Below that the page is unchanged.
-function vrMovesMode(on) {
-  var b = document.body;
-  if (on) b.setAttribute('data-qmoves', 'margin'); else b.removeAttribute('data-qmoves');
-  var btn = document.getElementById('vrReadMore');
-  if (!btn) return;
-  var what = btn.getAttribute(on ? 'data-what-why' : 'data-what-all') || '';
-  btn.setAttribute('data-what', what);
-  var sr = btn.querySelector('.vr-rm-sr');
-  if (sr) sr.textContent = (btn.getAttribute('aria-expanded') === 'true' ? ': hides ' : ': ') + what;
 }
 function railMockSections() {
   var hist = (Array.isArray(S.mockHistory) ? S.mockHistory : []).slice(0, 3);
@@ -18158,7 +18101,6 @@ function railSync() {
   // The question: from 1240px Go deeper is in the margin; below, in the page.
   if (page === 'q') { railQInline(!wide); if (wide) secs = railQSections(); }
   else railQInline(false);
-  vrMovesMode(page === 'q' && wide && secs.some(function (x) { return x.id === 'moves'; }));
   if (page === 'notes' && wide) secs = railNotesSections();
   if (page === 'mock' && wide) secs = railMockSections();
   if (page === 'results') { railResultsInline(!wide); if (wide) secs = railResultsSections(); }
@@ -18166,8 +18108,9 @@ function railSync() {
   // You (Grove C2): the plant card is in the page at every width, never in the margin.
   if (page === 'you') plantSafe(function () { plantYouInline(true); });
   else plantSafe(function () { plantYouInline(false); });
-  // The question view keeps its column before the answer, so nothing moves on Check.
-  var on = wide && (page === 'q' || secs.length > 0);
+  // Grove Phase 4 (7.9): before an answer the question is one centred
+  // reading column; the margin appears with the answer.
+  var on = wide && secs.length > 0;
   if (on) document.body.setAttribute('data-rail', page);
   else document.body.removeAttribute('data-rail');
   railRender(aside, on ? secs : []);
@@ -20054,7 +19997,7 @@ function renderQuestion(q) {
   var confTipHtml = showConfTip
     ? '<div id="conf-tip" class="conf-tip">'
         + '<span>How confident you are decides how soon this question comes back.</span>'
-        + '<button onclick="dismissConfTip()" aria-label="Dismiss">' + ico('x', 18) + '</button>'
+        + '<button type="button" onclick="dismissConfTip()" aria-label="Dismiss">' + ico('x', 18) + '</button>'
       + '</div>'
     : '';
 
@@ -20086,7 +20029,7 @@ function renderQuestion(q) {
     + '<div class="result-panel" id="rPanel"></div>'
     + '</div>'
     + '<p class="q-keys">'
-    + 'Keys: <strong>A&#8211;D</strong> pick &middot; <strong>Enter</strong> check, then next'
+    + 'Keys: <strong>A to D</strong> pick &middot; <strong>Enter</strong> check, then next'
     + '</p>';
   // Reset transient state for fresh question
   pendingAnswer = null;
@@ -20321,20 +20264,24 @@ function vineLeafSvg(key) {
     : '<svg class="vine-leaf" viewBox="0 0 22 22" aria-hidden="true" focusable="false"><path d="M11 3.5C15.5 7.2 15.5 14.8 11 18.5C6.5 14.8 6.5 7.2 11 3.5Z" fill="currentColor" fill-opacity=".18" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><path d="M11 6.5V16" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>';
 }
 
-// Mobile 1.43 rows (premium pass 2.5): the DISPLAY letter sits in a filled
-// badge (no tick or cross disc: the verdict leaf is the screen's one mark),
-// the tag is words alone and screen readers hear the letter after it.
-// v12.47: "Why not A." is a bold lead-in inside the learner's own row, above
-// a hairline (never a heading: the screen has one "Why" heading).
-function vrOptionRow(kind, tag, displayL, text, spoken, whyNot) {
+// The answer card (Grove Phase 4, PHASE4.md 4.2 step 2): one card, no
+// tinted fills. Each row is the DISPLAY letter in a filled badge (state on
+// the badge and the caption words only), the caption, then the option text.
+// Screen readers hear "Your answer, B, not the best: {text}".
+function vrOptionRow(kind, tag, displayL, text, spoken) {
   return '<div class="vr-row vr-row-' + kind + '">'
     + '<span class="vr-badge" aria-hidden="true">' + displayL + '</span>'
     + '<span class="vr-row-body">'
       + '<span class="vr-tag">' + tag + '<span class="sr-only">' + spoken + '</span></span>'
       + '<span class="vr-opt">' + text + '</span>'
-      + (whyNot ? '<span class="vr-row-why"><b>Why not ' + displayL + '.</b> ' + whyNot + '</span>' : '')
     + '</span>'
     + '</div>';
+}
+// "Why not B": a caption over the note, one stop, never a heading (the
+// screen has one "Why" heading).
+function vrWhyNotHtml(displayL, note) {
+  return note ? '<p class="vr-whynot"><span class="vr-whynot-k">Why not ' + displayL + '<span class="sr-only">: </span></span>'
+    + '<span class="vr-whynot-t">' + note + '</span></p>' : '';
 }
 // The stem recap at the top of the answer (premium pass 2.1): "Question",
 // the stem clamped to two lines, and "Show question" to open it in place.
@@ -20377,111 +20324,127 @@ function showResult(chosen, correct, timeout, info) {
     return w ? escapeHtml(smartQuotes(mapLettersInText(w, shuffle, origL))) : '';
   }
 
-  // 1. Verdict: leaf mark + hero, then one coach line (the review-queue
-  //    note folds into it).
+  // 1. Verdict (PHASE4.md 4.2): the leaf mark and the word in its state
+  //    colour, then the coach line and the review line in the coach's
+  //    italic. The heading's one name is built from the word, the best
+  //    answer and the two visible lines (aria-labelledby), so browse mode
+  //    does not read them twice.
   var hero = timeout ? 'Time’s up' : ok ? 'Correct' : 'Not quite';
   var coach = verdictCoachLine(q, ok, timeout, chosenOrig, inExamMode, shuffle);
   // When it comes back (the review rules, updateReviewSchedule).
   var back = info.review === 'missed' ? 'It comes back tomorrow.'
     : info.review === 'retest' ? 'Back in your review tomorrow.'
     : info.review === 'guess' ? 'You weren’t sure, so it comes back tomorrow.' : '';
-  if (back) coach = (coach ? coach + ' ' : '') + back;
+  var named = 'vrHeroW' + (ok ? '' : ' vrHeroBest') + (coach ? ' vrCoach' : '') + (back ? ' vrBack' : '');
   var verdictHtml = '<div class="vr-verdict vr-' + vc + '">'
       + '<svg class="vr-leaf" viewBox="0 0 38 38" aria-hidden="true" focusable="false">'
         + '<path d="' + VR_LEAF_PATH + '" class="vr-leaf-fill"/>'
         + '<path d="' + (ok ? VR_TICK : VR_CROSS) + '" class="vr-leaf-mark"/>'
       + '</svg>'
-      + '<h2 class="vr-hero" id="vrHero" tabindex="-1">' + hero
-        + '<span class="sr-only">. Best answer ' + correct + '. The question recap is above.</span></h2>'
+      + '<h2 class="vr-hero" id="vrHero" tabindex="-1" aria-labelledby="' + named + '"><span id="vrHeroW">' + hero + '</span>'
+        + '<span class="sr-only" id="vrHeroBest">. Best answer ' + correct + '.</span></h2>'
     + '</div>'
-    + (coach ? '<p class="vr-coach">' + escapeHtml(coach) + '</p>' : '');
+    + (coach || back ? '<p class="vr-coach">' + (coach ? '<span id="vrCoach">' + escapeHtml(coach) + '</span>' : '')
+      + (back ? (coach ? ' ' : '') + '<span id="vrBack">' + escapeHtml(back) + '</span>' : '') + '</p>' : '');
 
-  // 2. Answer rows: your answer, then "Why not B" under it, then the best
-  //    answer only after a miss. A timeout has no "your answer". The other
-  //    two options are not shown here (Review shows all four).
+  // 2. The answer card: your answer, "Why not B" under it, then the best
+  //    answer after a miss. A timeout has the best answer only. The other
+  //    two options stay in More ("Why the other options are wrong").
   var rows = '';
   if (chosen && ok) {
-    rows += vrOptionRow('right', 'Your answer &middot; the best', chosen, optText(correctOrig), ', ' + chosen);
+    rows += vrOptionRow('right', 'Your answer &middot; the best', chosen, optText(correctOrig), ', ' + chosen + ', the best: ');
   } else if (chosen) {
-    rows += vrOptionRow('wrong', 'Your answer &middot; not the best', chosen, optText(chosenOrig), ', ' + chosen, wrongNote(chosenOrig));
+    rows += vrOptionRow('wrong', 'Your answer', chosen, optText(chosenOrig), ', ' + chosen + ', not the best: ')
+      + vrWhyNotHtml(chosen, wrongNote(chosenOrig));
   }
-  if (!ok) rows += vrOptionRow('right', 'Best answer', correct, optText(correctOrig), ', ' + correct);
+  if (!ok) rows += vrOptionRow('best', 'Best answer', correct, optText(correctOrig), ', ' + correct + ': ');
 
-  // 3. Why X + the explanation. After a miss it comes after the Key idea and
-  //    the Exam cue, folded to two lines with "Read more" (mobile WhyBlock);
-  //    screen readers hear all of it either way. The fold also holds
-  //    Eliminate two and Final two (mobile 1.43), drawn in after the vine.
+  // 3. Key idea (the coach is speaking: the 3px accent rule). Not a card.
+  var keyHtml = !inExamMode && q.key_concept
+    ? '<p class="vr-key"><span class="vr-key-k">Key idea<span class="sr-only">: </span></span>'
+      + '<span class="vr-key-q">' + escapeHtml(smartQuotes(mapLettersInText(q.key_concept, shuffle))) + '</span></p>' : '';
+
+  // 4. How to think about it: one card, a row per tip in a fixed order
+  //    (Eliminate two, Final two, Exam cue; older or extra tips after them),
+  //    each its label over the tip. The pick chip names the learner's pick
+  //    on the row that rules it out or puts it in the final two. While O1 is
+  //    open (PHASE4.md 4.6) a miss keeps the mobile 1.43 fold: the Exam cue
+  //    and the row the coach line names are open; the rest open with Read
+  //    more, after the Why.
   var expRaw = String(q.correct_explanation || '');
   var longWhy = expRaw.length > WHY_FOLD_CHARS;
-  var whyHtml = '<h3 class="vr-why">Why ' + correct + '</h3>'
-    + '<p class="vr-exp' + (!ok && !inExamMode && longWhy ? ' vr-fold' : '') + '" id="vrExp">' + escapeHtml(smartQuotes(mapLettersInText(expRaw, shuffle))) + '</p>';
-
-  // 4. The vine: Key idea, then the tips as leaves on one stem. After a miss
-  //    (mobile splitMissTips) the Key idea and the Exam cue lead, before the
-  //    Why; Eliminate two and Final two follow it on a second stem.
-  var vineFirst = [], vineRest = [], vineRestLabels = [];
+  var pk = !ok && !timeout ? pickCoachKind(q, chosenOrig) : null;
+  var tipOpen = [], tipFold = [], foldLabels = [];
   if (!inExamMode) {
-    var nodes = [];
-    if (q.key_concept) {
-      nodes.push({ first: true, html: '<div class="vine-node vine-key" style="--i:@I@">' + vineLeafSvg(true)
-        + '<p class="vine-cap">Key idea</p>'
-        + '<p class="vine-quote">' + escapeHtml(smartQuotes(mapLettersInText(q.key_concept, shuffle))) + '</p></div>' });
-    }
-    (q.tips || []).filter(function(t){ return t && t.trim(); }).forEach(function(t, i){
-      var parts = tipParts(mapLettersInText(t, shuffle), i);
-      var tone = parts.label === 'Eliminate two' ? 'elim'
-        : parts.label === 'Final two' ? 'final'
-        : (parts.label === 'Exam cue' || parts.label === 'Exam-day') ? 'cue' : 'plain';
-      var body = escapeHtml(smartQuotes(parts.body));
+    var order = { 'Eliminate two': 0, 'Final two': 1, 'Exam cue': 2 };
+    var tips = (q.tips || []).filter(function (t) { return t && String(t).trim(); }).map(function (t, i) {
+      return { raw: t, parts: tipParts(mapLettersInText(t, shuffle), i), i: i };
+    });
+    tips.sort(function (a, b) {
+      var ra = order.hasOwnProperty(a.parts.label) ? order[a.parts.label] : 3 + a.i;
+      var rb = order.hasOwnProperty(b.parts.label) ? order[b.parts.label] : 3 + b.i;
+      return ra - rb;
+    });
+    tips.forEach(function (t) {
+      var label = t.parts.label;
+      var tone = label === 'Eliminate two' ? 'elim' : label === 'Final two' ? 'final'
+        : (label === 'Exam cue' || label === 'Exam-day') ? 'cue' : 'plain';
+      var body = escapeHtml(smartQuotes(t.parts.body));
       // Older "Mindset" tips name a principle by an old id or label: link it
       // to the Principles page (resolvePrinciple maps it to today's
       // principle). Once the principles are in, words that name none stay text.
-      if (parts.label === 'Mindset') {
+      if (label === 'Mindset') {
         body = body.replace(/\b([A-Z]{3,}(?:-[A-Z]+){1,5})\b/g, function(_, pid){
           if (PRINCIPLES_RAW && !resolvePrinciple(pid)) return pid;
           return '<button type="button" class="principle-link" data-pid="' + pid + '" onclick="openPrinciple(this.dataset.pid)">' + pid + '</button>';
         });
       }
-      if (!ok && tone !== 'cue') vineRestLabels.push(parts.label);
-      nodes.push({ first: tone === 'cue', html: '<div class="vine-node vine-' + tone + '" style="--i:@I@">' + vineLeafSvg(false)
-        + '<p class="vine-cap">' + escapeHtml(parts.label) + '</p>'
-        + '<p class="vine-tip">' + body + '</p></div>' });
+      var letters = chosenOrig && !ok && !timeout && (tone === 'elim' || tone === 'final') ? tipOptionLetters(t.raw) : [];
+      var chip = letters.indexOf(chosenOrig) >= 0 && (tone === 'elim' || letters.indexOf(correctOrig) >= 0)
+        ? '<span class="vr-pick">Your pick, ' + chosen + '</span>' : '';
+      var html = '<li class="vine-node vine-' + tone + '">' + vineLeafSvg(false)
+        + '<p class="vine-cap">' + escapeHtml(label) + (chip ? '<span class="sr-only">, </span>' + chip : '') + '<span class="sr-only">: </span></p>'
+        + '<p class="vine-tip">' + body + '</p></li>';
+      var open = ok || tone === 'cue' || (pk === 'elim' && tone === 'elim') || (pk === 'final' && tone === 'final');
+      if (open) tipOpen.push(html);
+      else { tipFold.push(html); foldLabels.push(label); }
     });
-    nodes.forEach(function (n) { (ok || n.first ? vineFirst : vineRest).push(n.html); });
   }
-  var vineOf = function (list, id) {
-    if (!list.length) return '';
-    return '<div class="vine" id="' + id + '" style="--vine-n:' + list.length + '">'
-      + list.map(function (h, i) { return h.replace('@I@', String(i)); }).join('') + '</div>';
+  var tipsOf = function (list, id) {
+    return list.length ? '<ul class="vine vr-tips" id="' + id + '" style="--vine-n:' + list.length + '">'
+      + list.map(function (h, i) { return h.replace('<li class="vine-node', '<li style="--i:' + i + '" class="vine-node'); }).join('') + '</ul>' : '';
   };
-  var vineA = vineOf(vineFirst, 'vrVine'), vineB = vineOf(vineRest, 'vrVine2');
-  // After a miss: "Read more" opens the long Why and the tips folded with it.
-  if (!ok && !inExamMode && (longWhy || vineB)) {
-    var foldNames = (longWhy ? ['the full explanation'] : []).concat(vineRest.length ? vineRestLabels : []);
+  var howHtml = tipOpen.length || tipFold.length
+    ? '<h3 class="vr-how">How to think about it</h3>' + tipsOf(tipOpen, 'vrVine') : '';
+
+  // 5. Why D: in full after a right answer; after a miss or Time's up, a
+  //    long one shows two lines and Read more (the full text is always there
+  //    for a screen reader; the clamp is visual only). Read more's name lists
+  //    what it opens; the folded tip rows come straight after it.
+  var foldWhy = !ok && !inExamMode && longWhy;
+  var whyHtml = '<h3 class="vr-why">Why ' + correct + '</h3>'
+    + '<p class="vr-exp' + (foldWhy ? ' vr-fold' : '') + '" id="vrExp">' + escapeHtml(smartQuotes(mapLettersInText(expRaw, shuffle))) + '</p>';
+  if (!ok && !inExamMode && (foldWhy || tipFold.length)) {
+    var foldNames = (foldWhy ? ['the full explanation'] : []).concat(foldLabels);
     var what = foldNames.length > 1 ? foldNames.slice(0, -1).join(', ') + ' and ' + foldNames[foldNames.length - 1] : foldNames[0];
-    // From 1240px Eliminate two and Final two are in the margin (vrMovesMode):
-    // then Read more opens the long Why only, and hides when there is none.
-    whyHtml += '<button type="button" class="vr-readmore' + (longWhy ? '' : ' vr-rm-tips') + '" id="vrReadMore" aria-expanded="false" aria-controls="vrExp' + (vineB ? ' vrWhyMore' : '') + '"'
-      + ' data-what="' + escapeHtml(what) + '" data-what-all="' + escapeHtml(what) + '" data-what-why="the full explanation" onclick="toggleWhyFold(this)"><span class="vr-rm-t">Read more</span><span class="sr-only vr-rm-sr">: ' + escapeHtml(what) + '</span></button>'
-      + (vineB ? '<div class="vr-why-more" id="vrWhyMore" hidden>' + vineB + '</div>' : '');
-    vineB = '';
+    whyHtml += '<button type="button" class="vr-readmore' + (foldWhy ? '' : ' vr-rm-tips') + '" id="vrReadMore" aria-expanded="false" aria-controls="vrExp' + (tipFold.length ? ' vrWhyMore' : '') + '"'
+      + ' data-what="' + escapeHtml(what) + '" onclick="toggleWhyFold(this)"><span class="vr-rm-t">Read more</span><span class="sr-only vr-rm-sr">: ' + escapeHtml(what) + '</span></button>'
+      + (tipFold.length ? '<div class="vr-why-more" id="vrWhyMore" hidden>' + tipsOf(tipFold, 'vrVine2') + '</div>' : '');
   }
 
-  // 5. Source row (mobile TrustLine): "Original · Reviewed Oct 2026", then
-  //    the main source (the first one listed, its bracketed parts dropped, as
-  //    mobile shortReference). Report a problem lives in the header's More.
+  // 7. Source row (mobile TrustLine): "Original · Reviewed Oct 2026", the
+  //    main source (the first one listed, its bracketed parts dropped, as
+  //    mobile shortReference), and Report a problem (also in More).
   var ref = q.framework_ref ? String(q.framework_ref).split(';')[0].replace(/\s*\([^)]*\)/g, '').trim() : '';
-  var srcHtml = '<div class="vr-src">'
+  var srcHtml = '<div class="vr-src"><div class="vr-src-t">'
     + '<span class="vr-src-ref">Original &middot; Reviewed ' + CONTENT_REVIEWED + '</span>'
     + (ref ? '<p class="vr-src-sub">' + escapeHtml(ref) + '</p>' : '')
+    + '</div><button type="button" class="vr-report" onclick="showFlagModal()">Report a problem<span class="sr-only"> with this question</span></button>'
     + '</div>';
 
-  // 6. Footer: one full-width Next question (sticky on phones). Save sits in
-  //    the header, beside More (premium pass 2.6).
-  // From 1240px the three moves are only in the margin, after Next in the
-  // reading order: one link to them, shown on keyboard focus (vrMovesMode).
-  var footHtml = '<a class="sr-only sr-only-focusable vr-skip-moves" href="#srhMoves" onclick="return vrSkipToMoves(event)">Three moves for this question, in the margin</a>'
-    + '<div class="vr-foot">'
+  // 8. Footer: one solid Next question, held at the bottom at every width.
+  //    Save sits in the header, beside More (premium pass 2.6).
+  var footHtml = '<div class="vr-foot">'
     + '<button type="button" class="vr-next" id="vrNext" onclick="nextQ()">Next question' + ico('arrow-right', 18) + '</button>'
     + '</div>';
 
@@ -20489,17 +20452,17 @@ function showResult(chosen, correct, timeout, info) {
   vrPick = { id: q.id, chosen: chosen || null, correct: correct };
   p.innerHTML = vrRecapHtml(q)
     + verdictHtml
-    + (rows ? '<div class="vr-rows">' + rows + '</div>' : '')
-    + (ok || inExamMode ? whyHtml + vineA : vineA + whyHtml + vineB)
-    // One "Go deeper" row (the note, else the principle), filled by railSync
-    // once the notes are in. Everything else is in the header's More.
+    + (rows ? '<div class="vr-rows vr-card">' + rows + '</div>' : '')
+    + keyHtml + howHtml + whyHtml
+    // Go deeper (the note, else the principle), filled by railSync once the
+    // notes are in. Everything else is in the header's More.
     + '<div class="vr-study" id="vrStudy"></div>'
     + srcHtml
     + footHtml;
   p.classList.add('show', 'vr-panel');
   p.classList.toggle('vr-exam', inExamMode);
 
-  // The vine draws itself as it scrolls into view (motion allowed only); the
+  // The stem draws once as it scrolls into view (motion allowed only); the
   // folded one draws when "Read more" shows it.
   armVine(document.getElementById('vrVine'));
   armVine(document.getElementById('vrVine2'));
