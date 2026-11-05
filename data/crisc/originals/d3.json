@@ -5385,12 +5385,12 @@
         "A": "Escalate the exception to the superintendent for a decision",
         "B": "Ask the approver to re-sign the exception this month",
         "C": "Convert the exception into an exemption reviewed yearly",
-        "D": "Review the exception at its next due date in June"
+        "D": "Review the exception at its scheduled due date"
       },
       "correct": "D",
       "key_concept": "An exception within authority, in date and with a working compensating control is reviewed on schedule; escalation needs a trigger.",
       "pre_read": "List what the stem says about authority, dates and the compensating control.",
-      "correct_explanation": "Escalation needs a trigger: a deviation beyond the approver's authority, a failing compensating control, a tolerance breach or a missed date. Here the exception is within authority, in date, and its isolation passes monthly checks, so the June review is the right control point. Escalating to the superintendent is the runner-up: it looks cautious, but it moves a decision the approver already holds, with nothing new to decide.",
+      "correct_explanation": "Escalation needs a trigger: a deviation beyond the approver's authority, a failing compensating control, a tolerance breach or a missed date. Here the exception is within authority, in date, and its isolation passes monthly checks, so the scheduled review at its June due date is the right control point. Escalating to the superintendent is the runner-up: it looks cautious, but it moves a decision the approver already holds, with nothing new to decide.",
       "wrong_explanations": {
         "A": "Nothing exceeds the approver's authority, breaches a limit or fails a check, so escalating moves a decision the approver already holds, with nothing new to decide.",
         "B": "Re-approval is for changed terms or a renewal; the exception's terms, authority and checks are unchanged, so a new signature adds no assurance.",
@@ -5407,13 +5407,13 @@
         "Compensating controls",
         "Escalation triggers"
       ],
-      "_provenance": "Authored from concept: notes 3A4.2 (Exceptions and Exemptions: exceptions carry an expiry date and a plan to comply; one in date, within authority and compensated is reviewed then, not escalated early). Round 9, 5 Nov 2026: original scenario (a school district's in-date exception for an unpatched bus-routing server, isolated and checked monthly, which IT wants escalated), written for KaiSip in our own words; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D3 round 9 (crisc_d3_145 to 152). Angle: the round 9 deferral key, where waiting for the scheduled review is right and escalation is the tempting wrong answer; it is the counterpart of crisc_d3_058, where a change in the facts means not waiting. Neighbours checked: crisc_d3_007 (assess before approving an exception), crisc_d3_028 (exemption for kiosks), crisc_d3_029 and crisc_d3_095 (escalate overdue findings: a trigger exists there), crisc_d3_058 (exemption reassessed on change), crisc_d3_093 (renewed exception, not a permanent exemption), crisc_d3_119 (exceptions pointing to a capacity cause), crisc_d1_025 (expired exceptions), CISA d5_219 (compensating controls never checked), CC exception items. None keys keeping to the scheduled review of an in-date exception.",
+      "_provenance": "Authored from concept: notes 3A4.2 (Exceptions and Exemptions: exceptions carry an expiry date and a plan to comply; one in date, within authority and compensated is reviewed then, not escalated early). Round 9, 5 Nov 2026: original scenario (a school district's in-date exception for an unpatched bus-routing server, isolated and checked monthly, which IT wants escalated), written for KaiSip in our own words; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D3 round 9 (crisc_d3_145 to 152). Angle: the round 9 deferral key, where waiting for the scheduled review is right and escalation is the tempting wrong answer; it is the counterpart of crisc_d3_058, where a change in the facts means not waiting. Neighbours checked: crisc_d3_007 (assess before approving an exception), crisc_d3_028 (exemption for kiosks), crisc_d3_029 and crisc_d3_095 (escalate overdue findings: a trigger exists there), crisc_d3_058 (exemption reassessed on change), crisc_d3_093 (renewed exception, not a permanent exemption), crisc_d3_119 (exceptions pointing to a capacity cause), crisc_d1_025 (expired exceptions), CISA d5_219 (compensating controls never checked), CC exception items. None keys keeping to the scheduled review of an in-date exception. Keep apart in practice sets from crisc_d3_058. Review fixes 5 Nov 2026 (round 9 standards audit, concept review and blind test): option D no longer echoes \"June\" from the stem, and the exception expires in June rather than recurring.",
       "style_version": 2
     },
     {
       "id": "crisc_d3_147",
       "domain": 3,
-      "subtopic": "3B2 Control design, selection, implementation and analysis. Risk a control brings",
+      "subtopic": "3B2 Control design, selection, implementation and analysis. Comparing endpoint agents",
       "principle_id": "objectives-first",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
@@ -5444,7 +5444,7 @@
         "Single point of failure",
         "Business impact"
       ],
-      "_provenance": "Authored from concept: notes 3B2.1 (Selecting Controls by Root Cause and Cost-Benefit: check that the control fits the work it protects and weigh the risks it brings, such as one faulty update stopping every device). Round 9, 5 Nov 2026: original scenario (a hospital choosing an endpoint agent whose vendor updates reach all 6,000 clinical PCs at once), written for KaiSip in our own words; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D3 round 9 (crisc_d3_145 to 152). Angle: no item keyed the risk a control itself introduces; SP 800-39 Task 3-2 has alternatives evaluated for feasibility, including mission or business impact, and weighs near-term gains against long-term risk of mission harm. Neighbours checked: crisc_d3_009 and crisc_d3_098 (root-cause and automated checks), crisc_d3_010 (cheaper control within appetite), crisc_d3_063 (an approval rule that stalled work after go-live), crisc_d3_121 (standby site for an impact-driven scenario), crisc_d3_059 (keep policy beside a DLP tool), aaia_d1_011 and aaia_d2_109 (vendor model updates), CISA d5_244 (trojanized vendor update, an incident), CC defense-in-depth items cc_d4_027 and cc_d4_087. None keys weighing the outage risk a security control's own updates create.",
+      "_provenance": "Authored from concept: notes 3B2.1 (Selecting Controls by Root Cause and Cost-Benefit: check that the control fits the work it protects and weigh the risks it brings, such as one faulty update stopping every device). Round 9, 5 Nov 2026: original scenario (a hospital choosing an endpoint agent whose vendor updates reach all 6,000 clinical PCs at once), written for KaiSip in our own words; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D3 round 9 (crisc_d3_145 to 152). Angle: no item keyed the risk a control itself introduces; SP 800-39 Task 3-2 has alternatives evaluated for feasibility, including mission or business impact, and weighs near-term gains against long-term risk of mission harm. Neighbours checked: crisc_d3_009 and crisc_d3_098 (root-cause and automated checks), crisc_d3_010 (cheaper control within appetite), crisc_d3_063 (an approval rule that stalled work after go-live), crisc_d3_121 (standby site for an impact-driven scenario), crisc_d3_059 (keep policy beside a DLP tool), aaia_d1_011 and aaia_d2_109 (vendor model updates), CISA d5_244 (trojanized vendor update, an incident), CC defense-in-depth items cc_d4_027 and cc_d4_087. None keys weighing the outage risk a security control's own updates create. Review fixes 5 Nov 2026 (round 9 standards audit, concept review and blind test): subtopic label made neutral (the old label stated the key concept).",
       "style_version": 2
     },
     {
@@ -5454,7 +5454,7 @@
       "principle_id": "evidence-before-credit",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "In July, a charity moved its grant-payment approvals from signed paper forms to system workflow approvals. The risk analyst must conclude on approvals for the whole year; what is the BEST testing approach?",
+      "question": "In July, a charity moved its grant-payment approvals from signed paper forms to workflow approvals. Which testing BEST supports the risk analyst's report to the board that approvals worked all year?",
       "options": {
         "A": "Test a sample of payments made since the July change",
         "B": "Rely on the workflow's go-live test for the whole year",
@@ -5463,17 +5463,17 @@
       },
       "correct": "C",
       "key_concept": "When a control changes during the period under review, each version is tested for the months it ran.",
-      "pre_read": "Match the period the conclusion must cover with the period each option tests.",
-      "correct_explanation": "A conclusion on the whole year needs evidence for the whole year, and the approval control was a different control in each half. Sampling payments approved under each method, for the months it ran, tests both. Testing only payments since July is the runner-up: it shows how the current workflow works, but it says nothing about the paper approvals behind the first six months of grant payments.",
+      "pre_read": "Match the period the report must cover with the period each option tests.",
+      "correct_explanation": "A report that approvals worked all year needs evidence for the whole year, and the approval control was a different control before and after July. Sampling payments approved under each method, for the months it ran, tests both. Testing only payments since July is the runner-up: it shows how the current workflow works, but it says nothing about the paper approvals behind grant payments made before July.",
       "wrong_explanations": {
-        "A": "This tests only the workflow; payments approved on paper from January to June stay untested, so the conclusion cannot cover the year.",
+        "A": "This tests only the workflow; payments approved on paper before July stay untested, so the report cannot cover the year.",
         "B": "A go-live test shows the workflow was set up correctly on one date; it shows neither later operation nor anything about the paper months.",
-        "D": "Internal audit sets its own plan, so the paper months may stay untested; the analyst's own conclusion needs evidence for every month it covers."
+        "D": "Internal audit sets its own plan, so the paper months may stay untested; the analyst's report to the board needs evidence for every month it covers."
       },
       "tips": [
-        "Eliminate: B uses a go-live test, which shows set-up on one date and nothing about operation, and D passes half the year to internal audit, which sets its own plan.",
-        "Final two: C beats A because the conclusion covers the full year; testing only the workflow leaves the paper months without evidence.",
-        "Exam cue: when a control changes mid-period, test each version for the months it ran before concluding on the whole period."
+        "Eliminate: B uses a go-live test, which shows set-up on one date and nothing about operation, and D passes the paper months to internal audit, which sets its own plan.",
+        "Final two: C beats A because the report covers the full year; testing only the workflow leaves the paper months without evidence.",
+        "Exam cue: when a control changes mid-period, test each version for the months it ran before reporting on the whole period."
       ],
       "framework_ref": "NIST SP 800-53 Rev. 5 CA-2 (Control Assessments); NIST SP 800-53A Rev. 5 Section 2.4.2 (Assessment Methods: examine, interview and test, with depth and coverage)",
       "related_concepts": [
@@ -5481,7 +5481,7 @@
         "Test period",
         "Sampling"
       ],
-      "_provenance": "Authored from concept: notes 3B3.2 (Design and Operating Effectiveness Testing: test operation over a defined period, with a sample sized to the control's frequency and risk; if the control changed mid-period, sample each version for the months it ran). Round 9, 5 Nov 2026: original scenario (a charity whose grant-payment approvals moved from paper forms to workflow approvals in July), written for KaiSip in our own words; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D3 round 9 (crisc_d3_145 to 152). Angle: no item covered a control that changed during the test period; 'Refer' is a routing verb that stays wrong. Neighbours checked: crisc_d3_012 (sampled records over owner statements), crisc_d3_036 (missed days in a sample), crisc_d3_066 (a walkthrough supports design only), crisc_d3_101 (start from internal audit's recent results), crisc_d3_102 (population from the deployment log), crisc_d3_122 (design gap before sampling), crisc_d3_134 (records made after the fact), CISA sampling and test-period items (d1_053, d1_189) and CC testing items. None keys sampling each version of a control that changed mid-year.",
+      "_provenance": "Authored from concept: notes 3B3.2 (Design and Operating Effectiveness Testing: test operation over a defined period, with a sample sized to the control's frequency and risk; if the control changed mid-period, sample each version for the months it ran). Round 9, 5 Nov 2026: original scenario (a charity whose grant-payment approvals moved from paper forms to workflow approvals in July), written for KaiSip in our own words; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D3 round 9 (crisc_d3_145 to 152). Angle: no item covered a control that changed during the test period; 'Refer' is a routing verb that stays wrong. Neighbours checked: crisc_d3_012 (sampled records over owner statements), crisc_d3_036 (missed days in a sample), crisc_d3_066 (a walkthrough supports design only), crisc_d3_101 (start from internal audit's recent results), crisc_d3_102 (population from the deployment log), crisc_d3_122 (design gap before sampling), crisc_d3_134 (records made after the fact), CISA sampling and test-period items (d1_053, d1_189), CC testing items and AAIA aaia_d3_029 (a sample stratified by model version during the year under audit; keep apart in practice sets). None keys sampling each version of a control that changed mid-year. Review fixes 5 Nov 2026 (round 9 standards audit, concept review and blind test): the whole-year need is now a risk report to the board, not an audit-style conclusion; wording uses \"before July\" and \"before and after July\" so it holds for any financial year.",
       "style_version": 2
     },
     {
@@ -5518,7 +5518,7 @@
         "Automated controls",
         "Evidence strength"
       ],
-      "_provenance": "Authored from concept: notes 3B3.1 (Testing Techniques and Evidence Strength: reperformance gives the strongest evidence, because the tester reaches the result independently; job logs and sign-offs show a step ran, not that its result was right). Round 9, 5 Nov 2026: original scenario (a toll-road operator's automatic frequent-driver discounts), written for KaiSip in our own words; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D3 round 9 (crisc_d3_145 to 152). Angle: reperformance had never been keyed in D3 (d3_065 used it as a wrong blanket approach). Neighbours checked: crisc_d3_012 (sampled records keyed against statement, observation and procedure, with no reperformance option), crisc_d3_065, crisc_d3_066, crisc_d3_122, crisc_d3_134, CISA d1_189 (test the completeness of a signed report), CISA d4_307 (availability figure from a team's own dashboard), CISA d1_199 (recalculating payments reduces detection risk, an audit-risk item), aaia_d3_063 (reperforming model decisions). None keys recalculation over run logs for an automated calculation.",
+      "_provenance": "Authored from concept: notes 3B3.1 (Testing Techniques and Evidence Strength: reperformance gives the strongest evidence, because the tester reaches the result independently; job logs and sign-offs show a step ran, not that its result was right). Round 9, 5 Nov 2026: original scenario (a toll-road operator's automatic frequent-driver discounts), written for KaiSip in our own words; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D3 round 9 (crisc_d3_145 to 152). Angle: reperformance had never been keyed in D3 (d3_065 used it as a wrong blanket approach). Neighbours checked: crisc_d3_012 (sampled records keyed against statement, observation and procedure, with no reperformance option), crisc_d3_065, crisc_d3_066, crisc_d3_122, crisc_d3_134, CISA d1_189 (test the completeness of a signed report), CISA d4_307 (availability figure from a team's own dashboard), CISA d1_199 (recalculating payments reduces detection risk, an audit-risk item), aaia_d3_063 (reperforming model decisions). None keys recalculation over run logs for an automated calculation. Keep apart in practice sets from CISA d4_307. Review fixes 5 Nov 2026 (round 9 standards audit, concept review and blind test): keep-apart list widened (no text change).",
       "style_version": 2
     },
     {
@@ -5528,7 +5528,7 @@
       "principle_id": "kris-that-predict",
       "difficulty": "foundational",
       "bloom_level": "Foundational",
-      "question": "Which of the following should a risk analyst propose as the BEST key risk indicator for staff copying a crop-science company's research data before they leave?",
+      "question": "Which of the following should the risk analyst propose as the BEST key risk indicator for staff copying a crop-science company's research data before they leave?",
       "options": {
         "A": "Large downloads by staff serving their notice period",
         "B": "Leaver accounts disabled within a day of leaving",
@@ -5540,7 +5540,7 @@
       "pre_read": "Find when the named risk event happens, then check when each measure would move.",
       "correct_explanation": "A good KRI tracks a driver of the named scenario and moves before the loss. Unusually large downloads by staff serving notice rise while the data can still be protected, because the copying happens while their accounts are live. Disabling leaver accounts within a day is the runner-up: it is a useful control indicator, but it covers access after people leave, not copying before they go.",
       "wrong_explanations": {
-        "B": "This measures the offboarding control after people leave; the scenario is copying before they leave, while their accounts are still active.",
+        "B": "This measures the offboarding control after people leave; most data leaves before they do, while their accounts are still active.",
         "C": "Confirmed cases count losses that have already happened, so this lagging measure explains a loss rather than warning of one.",
         "D": "Training completion measures the awareness program's activity; it can stay high while leavers copy data, so it does not track the risk."
       },
@@ -5555,7 +5555,7 @@
         "Leading indicator",
         "Insider data theft"
       ],
-      "_provenance": "Authored from concept: notes 3C3.2 (Selecting Effective KRIs: relevant, measurable, predictive and owned; check the KRI sits on the scenario's own path). Round 9, 5 Nov 2026: original scenario (staff at a crop-science company copying research data before they leave), written for KaiSip in our own words; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D3 round 9 (crisc_d3_145 to 152). Angle: a short 'Which of the following' stem whose runner-up is a KCI for a nearby control that acts at the wrong time in the scenario. Neighbours checked: crisc_d3_015 (ransomware KRI), crisc_d3_017 (pricing-model early warning), crisc_d3_042 and crisc_d3_092 (KCIs), crisc_d3_043 (a KPI offered as risk evidence), crisc_d3_108 (lagging filing count), cc_d2_018 (departed staff's active accounts KRI, a reporting item), cc_d5_050, CISA d5_060, d5_273 and d2_202 (departing staff copying data: response and prevention, not indicators). None asks for an indicator of copying during notice.",
+      "_provenance": "Authored from concept: notes 3C3.2 (Selecting Effective KRIs: relevant, measurable, predictive and owned; check the KRI sits on the scenario's own path). Round 9, 5 Nov 2026: original scenario (staff at a crop-science company copying research data before they leave), written for KaiSip in our own words; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D3 round 9 (crisc_d3_145 to 152). Angle: a short 'Which of the following' stem whose runner-up is a KCI for a nearby control that acts at the wrong time in the scenario. Neighbours checked: crisc_d3_015 (ransomware KRI), crisc_d3_017 (pricing-model early warning), crisc_d3_042 and crisc_d3_092 (KCIs), crisc_d3_043 (a KPI offered as risk evidence), crisc_d3_108 (lagging filing count), cc_d2_018 (departed staff's active accounts KRI, a reporting item), cc_d5_050, CISA d5_060, d5_273 and d2_202 (departing staff copying data: response and prevention, not indicators). None asks for an indicator of copying during notice. Review fixes 5 Nov 2026 (round 9 standards audit, concept review and blind test): stem names \"the risk analyst\"; the explanation for B now says most data leaves before people do.",
       "style_version": 2
     },
     {
@@ -5630,7 +5630,7 @@
         "External data",
         "Supply chain updates"
       ],
-      "_provenance": "Authored from concept: notes 3C6.1 (Horizon Scanning and Emerging Risk Sources: a peer's incident on the same technology, or an industry report, is valid evidence to record an emerging risk; do not wait for an in-house event). Round 9, 5 Nov 2026: original scenario (a solar-farm operator whose peer went offline after the shared inverter maker pushed a faulty remote update), written for KaiSip in our own words; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D3 round 9 (crisc_d3_145 to 152). Angle: the round 9 outside-data key; options that take a value from peers had been keyed 0 of 27 across the bank. Here the peer's incident is the basis of the key, and 'wait for our own data at the yearly assessment' is the runner-up. Neighbours checked: crisc_d3_020 (regulators' consultation recorded as an emerging risk; the trigger there is a rule change, not another firm's event), crisc_d3_049 (a peer's rating as a wrong basis), crisc_d3_084 (peer losses among solid data), crisc_d3_114 (report once a peer has a loss, wrong), crisc_d3_115 (staged response to GPS spoofing), crisc_d3_128 (front-line reports), crisc_d3_143 (watch signs), crisc_d2_004 (a sharing group's warning assessed first), crisc_d3_144 (concentration risk), aaia_d1_011 and aaia_d1_027 (vendor model updates), cc_d2_064 (wind farm report figures). None keys recording an emerging risk on a peer's incident.",
+      "_provenance": "Authored from concept: notes 3C6.1 (Horizon Scanning and Emerging Risk Sources: a peer's incident on the same technology, or an industry report, is valid evidence to record an emerging risk; do not wait for an in-house event). Round 9, 5 Nov 2026: original scenario (a solar-farm operator whose peer went offline after the shared inverter maker pushed a faulty remote update), written for KaiSip in our own words; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D3 round 9 (crisc_d3_145 to 152). Angle: the round 9 outside-data key; options that take a value from peers had been keyed 0 of 27 across the bank. Here the peer's incident is the basis of the key, and 'wait for our own data at the yearly assessment' is the runner-up. Neighbours checked: crisc_d3_020 (regulators' consultation recorded as an emerging risk; the trigger there is a rule change, not another firm's event), crisc_d3_049 (a peer's rating as a wrong basis), crisc_d3_084 (peer losses among solid data), crisc_d3_114 (report once a peer has a loss, wrong), crisc_d3_115 (staged response to GPS spoofing), crisc_d3_128 (front-line reports), crisc_d3_143 (watch signs), crisc_d2_004 (a sharing group's warning assessed first), crisc_d3_144 (concentration risk), aaia_d1_011 and aaia_d1_027 (vendor model updates), cc_d2_064 (wind farm report figures). None keys recording an emerging risk on a peer's incident. Keep apart in practice sets from crisc_d2_103 and crisc_d2_096 (same own-data runner-up). Review fixes 5 Nov 2026 (round 9 standards audit, concept review and blind test): keep-apart list widened (no text change).",
       "style_version": 2
     }
   ]

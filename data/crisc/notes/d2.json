@@ -53,16 +53,14 @@
             "crisc_d2_100"
           ],
           "definition": "A risk event is something that happened, or nearly happened, that shows a risk scenario can occur. Loss events cause harm; near misses stop just short of it.",
-          "why_it_matters": "Events are the best evidence a practitioner has about real likelihood and impact. Counting only losses hides how often controls were nearly beaten, so the register understates risk.",
+          "why_it_matters": "Events are the best evidence of real likelihood and impact. Counting only losses hides how often controls were nearly beaten, so the register understates risk.",
           "how_it_works": [
-            "A loss event is one where a threat event actually causes harm, such as money lost or a service stopped.",
-            "A near miss would have caused loss but was stopped by a control, by chance or by timing.",
             "An incident breaks, or nearly breaks, security policy; it need not cause loss.",
             "Each event is linked to the scenario its review's root cause points to, not the first guess logged, and used to re-rate that scenario's likelihood or impact.",
             "Fixing the immediate cause closes the incident ticket, not the risk; an event whose cause fits no scenario shows a register gap, filled with the process owner.",
-            "Impact counts every loss, not only invoices paid: primary losses such as missed orders and staff time on recovery, and secondary losses such as customers who leave or contract penalties."
+            "Impact counts every loss: primary, such as missed orders and recovery time, and secondary, such as customers who leave or contract penalties."
           ],
-          "example": "At a regional water utility, an operator nearly opens the wrong valve after a remote session times out mid-command, and an alarm stops them. Nothing is lost. Priya Raman, the risk analyst, logs a near miss against the remote operation error scenario, notes that the alarm was the last barrier, and asks the operations manager, the scenario's risk owner, to review its likelihood rating.",
+          "example": "At a water utility, an alarm stops an operator from opening the wrong valve after a remote session times out. Priya Raman, the risk analyst, logs a near miss against the remote operation error scenario, notes the alarm was the last barrier, and asks the operations manager, its risk owner, to review the likelihood rating.",
           "audit_focus": {
             "review": [
               "Trace recent incidents and near misses to the risk scenarios they affect",
@@ -79,7 +77,7 @@
           "exam_traps": [
             {
               "trap": "A near miss caused no loss, so it does not need to be recorded.",
-              "why": "A near miss shows the threat can reach the asset and that controls barely held. It is strong likelihood evidence that is lost if nobody records it."
+              "why": "It shows the threat can reach the asset and controls barely held: strong likelihood evidence, lost if nobody records it."
             },
             {
               "trap": "Once the root cause is fixed, the incident and its register entry can both be closed.",
@@ -815,7 +813,7 @@
           "why_it_matters": "Scenarios written by the risk team alone often misjudge business impact. Tabletop exercises reveal missing scenarios, unclear roles and weak responses before a real event does.",
           "how_it_works": [
             "Process and asset owners review each scenario's events, impacts and existing controls and sign off the description.",
-            "A tabletop exercise is a facilitated, discussion-based walkthrough; no systems are touched, so a workaround claimed in play earns rating credit only after a drill shows it works.",
+            "A tabletop exercise is a facilitated, discussion-based walkthrough; no systems are touched, so a fallback claimed in play earns rating credit only after a drill shows it works.",
             "Participants include business owners, control owners, IT, communications and key suppliers; the exercise tests decisions, so the owners who would make them must take part.",
             "Injects, new facts added during play, test decisions such as escalation, customer notice and recovery order.",
             "Findings become actions: new or revised scenarios, register updates and control changes, each with an owner and a date.",
@@ -1598,15 +1596,14 @@
             "crisc_d2_071",
             "crisc_d2_104"
           ],
-          "definition": "Inherent risk is risk before any management action; current risk reflects controls already in place; residual risk is what remains after the chosen risk response is implemented.",
+          "definition": "Inherent risk is risk before any management action; current risk reflects controls already in place; residual risk is what remains after the chosen response is implemented.",
           "why_it_matters": "Comparing inherent risk with appetite overstates the need for new controls; counting planned controls as working understates real exposure.",
           "how_it_works": [
-            "Inherent risk credits no control, even standard ones every firm runs, so it shows how much a scenario depends on controls; a high rating marks controls that must not fail.",
-            "Current risk counts only actions already taken, not those proposed or planned.",
+            "Inherent risk credits no control, even standard ones, so it shows how much a scenario depends on controls; a high rating marks controls that must not fail.",
             "Residual risk is rated with the same scales and method as inherent risk, so the two are comparable.",
             "Current risk, counting only implemented, working responses, is compared with appetite now; a planned response's future residual risk shows whether the plan is enough.",
             "Residual risk is never zero; some uncertainty remains after any response.",
-            "Before controls are designed, inherent risk ranks which scenarios need the strongest controls; target risk then checks whether the chosen design is enough."
+            "Before design, inherent risk ranks which scenarios need the strongest controls; target risk then checks whether the design is enough."
           ],
           "compare": {
             "columns": [
@@ -1636,7 +1633,7 @@
               }
             ]
           },
-          "example": "A hospital's infusion pump tampering scenario has very high inherent risk. Network isolation exists today, and firmware signing is planned for next year. Siobhan Kelly, the risk analyst, records current risk as high, counting only isolation, and shows the target risk after signing on a separate line, so the patient safety director compares today's exposure with appetite.",
+          "example": "A hospital's infusion pump tampering scenario has very high inherent risk. Network isolation exists; firmware signing is planned for next year. Siobhan Kelly, the risk analyst, records current risk as high, counting only isolation, and shows target risk after signing separately, so the patient safety director compares today's exposure with appetite.",
           "audit_focus": {
             "review": [
               "Compare inherent, current and target ratings for use of the same scales",
@@ -1649,21 +1646,21 @@
             "recommend": "Have the risk function record inherent, current and target ratings separately, crediting only implemented, working controls in current risk, for owners to confirm.",
             "decides": "The risk owner compares current risk with appetite and decides further treatment"
           },
-          "isaca_rule": "Inherent risk shows reliance on controls; current risk is today's exposure; residual risk is what an implemented response leaves. Compare current risk with appetite to decide on treatment, and check that a plan's target (future residual) risk falls within appetite. Never compare inherent risk, or count planned controls as working.",
+          "isaca_rule": "Inherent risk shows reliance on controls; current risk is today's exposure; residual risk is what an implemented response leaves. Compare current risk with appetite, and check that a plan's target risk falls within it. Never compare inherent risk with appetite or count planned controls as working.",
           "exam_traps": [
             {
               "trap": "Compare inherent risk with appetite to decide whether to add controls.",
               "why": "Inherent risk ignores all management action. The decision compares the risk that exists now, counting only implemented, working controls, with appetite."
             },
             {
-              "trap": "Only 'current risk' can be compared with appetite, so an implemented response's residual rating should be ignored.",
-              "why": "Once a response is implemented, the risk it leaves is today's current risk; exam items may call it residual risk. Reject it as today's position if it credits planned or untested controls; check a plan's future residual risk against appetite."
+              "trap": "Only current risk is compared with appetite, so ignore an implemented response's residual rating.",
+              "why": "Once a response is implemented, the risk it leaves is today's current risk, which items may call residual. Reject any rating that credits planned or untested controls as today's position."
             }
           ],
           "key_terms": [
             {
               "term": "Future residual risk",
-              "definition": "ISACA Glossary name for the level a risk should reach once the planned response is in place; KaiSip calls it target risk."
+              "definition": "The ISACA Glossary's name for target risk: the level a risk should reach once the planned response is in place."
             },
             {
               "term": "Target risk",
