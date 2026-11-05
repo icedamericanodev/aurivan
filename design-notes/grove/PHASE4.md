@@ -10,17 +10,23 @@ Owner rules that hold on every line below: presentation only; keep every piece o
 
 ## 1. Sky's question: "am I missing something, or is it built in the next phases?"
 
-You are not missing anything. The phone Learn and Practice tabs still show the older layout because Phase 4 (Practice and Learn) has not been built yet on either branch. Phases 1 to 3 and the type pass are done; the newest commits on both branches are type fixes. This spec is Phase 4.
+Status, updated 5 Nov 2026 (web review round 2): Phase 4 is built on both branches. You are not missing anything; what still looks different is either approved by you and next to build (below) or planned for a later phase.
 
-Checked by the web and phone reviewers on 5 Nov (web f0b14a0, phone 5b612e5). Web: the Learn tab still opens Study notes (`NAV_HOME.learn` is `'topics'`, `index.html:12807`), there are no lessons on the web, and the Practice hub still has the italic `#msText` lead and no jump bar. Phone: Learn still uses Plate (`mobile/src/app/(tabs)/learn.tsx:205`, `:224`), Practice still uses Plate (`practice.tsx:288`), there is no `app/glossary.tsx` and no Dandelion glyph. Every cited function, token and line number checks out. Everything here can be built in `index.html` with no new dependency (`line-clamp`, `mask`, `position: sticky`, `IntersectionObserver` and native `<dialog>` are all in the browser), and on the phone without touching the files compiled into the website (section 6). The reviewers' fixes are folded into the sections below; the spec keeps the locked rules (confidence after a pick and before Check, the collapsible scenario, the sticky bottom bar, the tab bar hidden in a quiz, a word under every tab, one solid button per screen, the 3px rule for the coach only, the mock navigator's marks, display letters, no total question count).
+- **Website:** Practice, the answer screen, Learn (its own hub at `#learn`), Study notes, Glossary, Principles, About the exam, Final review week, set results, mock setup and mock results are on `feature/grove-ui` (c35f566, 6d61e22, 5cf31fb, a22f4d9, 5cae884, then review round 2).
+- **Phone:** the Learn, Practice and You tabs rebuilt to the 02, 03 and 04 boards, the answer screen and the inside pages (notes, principles, final review week, results) are on `grove-phone-p1` (3e8500a, 5562638, 5ee33e0, d04d620).
 
-Three things will not appear by restyling alone, because nothing is behind them yet. They need your yes or no (section 2):
+Sky answered the open items on 5 Nov (`phase4b/p4-owner-answers.md`): yes to O1, O2, O3, O4, O7 and O8. O3 is built. These are approved and are the next build step, not built yet:
 
-1. **The phone has no Glossary screen.** The kit's Glossary tile has nothing to open. The key-terms data exists on the phone (`mobile/src/content/terms.ts`); the screen does not.
-2. **The website has no lessons.** Lessons are phone only (`docs/content/LESSONS_SCHEMA.md`), so the kit's "Up next" lesson card and Lessons card have nothing to show on kaisip.com. The web Learn tab also has no hub page: it opens Study notes.
-3. **The phone You tab was built to the C2 spec** (DECISIONS 12), not the 04 board. Rebuilding it to 04 is in this phase (section 7.14).
+1. **O1, all three tips open after a miss** on both builds (only the long Why folds under Read more). Both builds still show the 4.6 fallback.
+2. **O2, the phone Glossary screen** (read-only: search, area chips, A to Z rows, each meaning and "Read the note") and its Learn tile.
+3. **O4, the website note reading pages** (`#note/<id>` with a back link, like the phone). The website still opens a note in the list, restyled.
+4. **O7, the phone Mindset strip** with the website's tips added to the phone content pack (the strip is built and hidden until then).
+5. **O8, the phone Weak spots drill row**, with the website's rule.
+6. Sky's own checks of the first web build: Learn tiles 2 by 2 at 390 (one column only at large text or under 360px, an odd last tile spanning the width); the web Learn subtitle reworded (no lessons on the web); the Eliminate tip shown after a miss.
 
-A few kit items (Drills, Question bank, the Mindset tip on the phone) exist on one build only. Bringing them to the other build is a feature, not a restyle, and is listed for you in section 2.
+Planned for later, not part of Phase 4: **O5 Drills and O6 Question bank on the website**, as their own feature after device sync. Phase 4b (the plant, badges and drills restyle) runs next on both builds.
+
+Original read (5 Nov, before the build; web f0b14a0, phone 5b612e5), kept for history: the Learn tab opened Study notes on the web, the Practice hub had the italic `#msText` lead and no jump bar, and the phone Learn and Practice tabs still used Plate. Everything here is built in `index.html` with no new dependency (`line-clamp`, `mask`, `position: sticky`, `IntersectionObserver` and native `<dialog>` are all in the browser), and on the phone without touching the files compiled into the website (section 6). The build keeps the locked rules (confidence after a pick and before Check, the collapsible scenario, the sticky bottom bar, the tab bar hidden in a quiz, a word under every tab, one solid button per screen, the 3px rule for the coach only, the mock navigator's marks, display letters, no total question count).
 
 ---
 

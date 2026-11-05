@@ -4814,7 +4814,7 @@ summary.gt-icon-btn::-webkit-details-marker { display: none; }
   grid-template-areas: "t c k v" "s c k v"; align-items: center; column-gap: 12px; row-gap: 2px;
   min-height: 64px; padding: 12px 0;
 }
-.gt-group-h { grid-area: t; margin: 0; }
+.gt-group-h { grid-area: t; margin: 0; overflow-wrap: anywhere; }
 .gt-group-hd > .gt-group-meta { grid-area: s; margin: 0; }
 .gt-group-hd > .gt-group-count { grid-area: c; }
 .gt-group-hd > .gt-mark { grid-area: k; margin-left: -2px; }
@@ -6209,8 +6209,8 @@ body[data-app-cta-card="shown"][data-section="today"] .app-cta-line { display: n
 .fg-large .p4-glyph { display: none; }
 .p4-hero-acts { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 16px; }
 .p4-go, .ph-go {
-  display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 52px; padding: 0 24px;
-  border: 0; border-radius: var(--r-tile); background: var(--btn-hero); color: var(--on-btn-hero); font: var(--t-button); cursor: pointer; text-decoration: none;
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 48px; padding: 0 24px;
+  border: 0; border-radius: var(--r-tile); background: var(--btn-hero); color: var(--on-btn-hero); font: var(--t-label); cursor: pointer; text-decoration: none;
 }
 .p4-go:hover, .ph-go:hover { filter: brightness(1.05); }
 .p4-go:focus-visible, .ph-go:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
@@ -6380,6 +6380,13 @@ body[data-app-cta-card="shown"][data-section="today"] .app-cta-line { display: n
 .gt-part-card + .gt-part-h { margin-top: var(--sp-xl); }
 .gt-part-h { margin-left: 4px; }
 @media (forced-colors: active) { .gt-part-card, .gt-extra { border: 1px solid CanvasText; } }
+/* A narrow card (a phone, or 200% text) drops each topic's count under its
+   meta, so the title keeps the width and never runs into the count. */
+.gt-part-card, .gt-extra { container: gtpart / inline-size; }
+@container gtpart (max-width: 30em) {
+  .gt-group-hd { grid-template-columns: minmax(0, 1fr) auto auto; grid-template-areas: "t k v" "s k v" "c k v"; }
+  .gt-group-hd > .gt-group-count { text-align: left; }
+}
 /* ── GLOSSARY (Grove Phase 4, PHASE4.md 7.3 and section 8) ── */
 .gl { display: flex; flex-direction: column; gap: 16px; }
 .gl > * { margin: 0; }
@@ -6636,8 +6643,10 @@ body[data-rs-acts] .rs-set > .rs-acts { display: none; }
 :is(.ph-chip, .subtopic-chip, .fb-type, .gloss-chip, .bk-tag-chip, .gt-chip):focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
 :is(.ph-chip, .subtopic-chip, .fb-type, .gloss-chip, .bk-tag-chip, .gt-chip):is([aria-disabled="true"], :disabled) { color: var(--muted); border-color: var(--border); }
 @media (forced-colors: active) {
-  :is(.ph-chip, .subtopic-chip, .fb-type, .gloss-chip, .bk-tag-chip, .gt-chip) { border-color: ButtonBorder; }
-  :is(.ph-chip, .subtopic-chip, .fb-type, .gloss-chip, .bk-tag-chip, .gt-chip):is(.active, .selected, [aria-pressed="true"]) { outline: 2px solid Highlight; outline-offset: -2px; }
+  :is(.ph-chip, .subtopic-chip, .fb-type, .gloss-chip, .bk-tag-chip, .gt-chip) { border-color: ButtonBorder; border-width: 2px; }
+  /* Selected: a Highlight border, so focus keeps its own outline outside it. */
+  :is(.ph-chip, .subtopic-chip, .fb-type, .gloss-chip, .bk-tag-chip, .gt-chip):is(.active, .selected, [aria-pressed="true"]) { border: 2px solid Highlight; }
+  :is(.ph-chip, .subtopic-chip, .fb-type, .gloss-chip, .bk-tag-chip, .gt-chip):is(.active, .selected, [aria-pressed="true"]):focus-visible { outline: 2px solid CanvasText; outline-offset: 2px; }
   :is(.ph-chip, .subtopic-chip, .fb-type, .gloss-chip, .bk-tag-chip, .gt-chip):is(.active, .selected, [aria-pressed="true"])::before { forced-color-adjust: none; background: Highlight; }
 }
 /* Focused session */
@@ -6793,6 +6802,9 @@ body[data-tab="practice"][data-pview="focus"] #subNav { display: none; }
    gets a Highlight outline inside the box (PHASE4 section 5). Focus keeps its
    own outline outside it. */
 @media (forced-colors: active) {
+  /* A real border the selected state can colour (the segments have none);
+     the padding gives the 2px back so nothing shifts. */
+  .conf-seg .conf-btn, .mr-seg-b { border: 2px solid transparent; padding: 0 calc(var(--sp-lg) - 2px); }
   .conf-seg .conf-btn.picked, .mr-seg-b.on, .gt-seg-btn[aria-selected="true"] { outline: 2px solid Highlight; outline-offset: -2px; }
   .conf-seg .conf-btn.picked, .mr-seg-b.on, .gt-seg-btn[aria-selected="true"] { border-color: Highlight; }
   .conf-seg .conf-btn.picked:focus-visible, .mr-seg-b.on:focus-visible, .gt-seg-btn[aria-selected="true"]:focus-visible { outline: 2px solid CanvasText; outline-offset: 2px; }
@@ -6909,6 +6921,13 @@ body[data-tab="practice"][data-pview="focus"] #subNav { display: none; }
 .mk-clock .timer-digits.urgent { color: var(--clay); animation: none; }
 /* Pick, then Next: no right or wrong during a mock (owner, step 5 review). */
 .mk-q .opt.picked .opt-letter { background: var(--text); border-color: var(--text); color: var(--bg); }
+/* Forced colours drop the ink fill: a picked option keeps a Highlight
+   outline and a filled Highlight letter; focus draws its own ring outside. */
+@media (forced-colors: active) {
+  .opt.picked, .opt.selected, .opt.mock-selected { outline: 2px solid Highlight; outline-offset: -2px; }
+  .opt.picked .opt-letter, .opt.selected .opt-letter, .opt.mock-selected .opt-letter, .mk-q .opt.picked .opt-letter { forced-color-adjust: none; background: Highlight; border-color: Highlight; color: HighlightText; }
+  .opt.picked:focus-visible, .opt.selected:focus-visible, .opt.mock-selected:focus-visible { outline: 2px solid CanvasText; outline-offset: 2px; }
+}
 .mk-acts { display: flex; flex-wrap: wrap; align-items: center; gap: var(--sp-sm) var(--sp-lg); margin-top: var(--sp-xl); }
 .mk-hint { font: var(--t-meta); color: var(--text2); margin: 0; flex: 1 1 220px; }
 .rs-btn.primary:disabled, .rs-btn.primary:disabled:hover { background: var(--surface2); border-color: var(--surface2); color: var(--muted); opacity: 1; cursor: default; }
@@ -7858,7 +7877,8 @@ html { scroll-padding-bottom: calc(104px + var(--consent-h, 0px)); }
   .you-go, .you-chip, .you-card, .you-stat, .you-streak, .you-plant, .you-set-btn { border: 1px solid CanvasText; }
   /* Today's Start and every filled Grove button keep a button edge
      (Today's cards keep theirs: see after the 768px hero rules). */
-  .fg-btn, .td-go, .td-tile-btn { border: 1px solid ButtonText; }
+  .fg-btn, .td-go, .td-tile-btn, .p4-go, .ph-go, .vr-next, .vr-readmore { border: 1px solid ButtonText; }
+  .vr-readmore { padding: 0 var(--sp-sm); }
   /* The plant chip is a button: its chevron and words in ButtonText, not
      the Grove on-forest tints (1.46:1 on a light Canvas). */
   .you-chip > .ico, .you-chip-k, .you-chip-s { color: ButtonText; }
@@ -12083,6 +12103,7 @@ function learnTile(o) {
 function renderLearnHub() {
   var area = document.getElementById('learnArea');
   if (!area) return;
+  fgLargeText();
   if (!CISA_NOTES_RAW && !conceptsLoadFailed) loadConceptsData(function () { if (S.activeTab === 'learn') renderLearnHub(); });
   var r = computeTodayReadiness();
   var ready = !!CISA_NOTES_RAW;
@@ -12224,6 +12245,7 @@ function lhSeeAll(d) {
 function renderTopics() {
   var area = document.getElementById('topicsArea');
   if (!area) return;
+  fgLargeText();
 
   if (!CISA_NOTES_RAW) {
     if (conceptsLoadFailed) { renderTopicsError(); return; }
@@ -17637,9 +17659,17 @@ var PH_DIFF_WORD = { foundational: 'Foundational', application: 'Application', a
 function renderPracticeHub() {
   var hero = document.getElementById('phHero');
   if (!hero || typeof S === 'undefined' || !S) return;
-  // A redraw keeps focus on the control that had it (a tile, a chip).
+  fgLargeText();
+  // A redraw keeps focus on the control that had it (a tile, a row, a mock
+  // tile, a chip): a bank arriving redraws the whole hub.
   var act = document.activeElement;
-  var keepId = act && act.id && hero.contains(act) ? act.id : null;
+  var hub = document.getElementById('practiceHub');
+  var keepId = act && act.id && (hub || hero).contains(act) ? act.id : null;
+  var refocus = function () {
+    if (!keepId) return;
+    var k = document.getElementById(keepId);
+    if (k && k !== document.activeElement) { try { k.focus({ preventScroll: true }); } catch (e) {} }
+  };
   var keepChip = act && act.getAttribute && act.getAttribute('data-k') ? act.getAttribute('data-k') : null;
   var rd = null;
   try { rd = computeTodayReadiness(); } catch (e) { rd = null; }
@@ -17692,7 +17722,7 @@ function renderPracticeHub() {
     + '<p class="p4-hero-note" id="phHeroNote">Timed counts up while you answer, never a countdown. The exam allows about ' + PRACTICE_PACE_SECONDS + ' seconds a question.</p>'
     + '<div class="p4-hero-acts">' + acts + '</div>'
     + '</section>' + cap;
-  if (keepId) { var k = document.getElementById(keepId); if (k) { try { k.focus({ preventScroll: true }); } catch (e) {} } }
+  refocus();
 
   var dc = document.getElementById('phDomChips');
   if (dc) {
@@ -17750,6 +17780,7 @@ function renderPracticeHub() {
       + '</div>'
       + '<p class="p4-note">' + SCALED_SCORE_NOTE + '</p>';
   }
+  refocus();
   // Focus next and Today's principle (the margin, or in the page below 1240px).
   try { railSync(); } catch (e) {}
 }
@@ -17990,21 +18021,36 @@ function railFocusRows() {
   var dueMap = {};
   dueIds.forEach(function (id) { dueMap[id] = true; });
   // The set it starts (at most REVIEW_SESSION_CAP), never the queue total.
+  // Always shown, as on the phone: "All caught up" when nothing is due.
   if (dueIds.length) {
     var nDue = Math.min(dueIds.length, REVIEW_SESSION_CAP);
     rows.push({ kind: 'review', icon: 'review', cap: '', title: 'Questions to revisit', meta: 'Ready today &middot; oldest first', count: nDue,
       said: 'Questions to revisit, ' + nDue + ' ready today, oldest first' });
+  } else {
+    rows.push({ kind: 'review', icon: 'review', cap: '', title: 'Questions to revisit', meta: 'All caught up',
+      said: 'Questions to revisit, all caught up' });
   }
   var r = null;
   try { r = computeTodayReadiness(); } catch (e) { r = null; }
-  if (r && r.answered > 0 && r.focusId && DI[r.focusId]) {
-    rows.push({ kind: 'focus', icon: 'target', cap: '', title: escapeHtml(DI[r.focusId].short), meta: 'Where you&rsquo;ll gain most &middot; ' + DI[r.focusId].weight + '% of the exam', cls: 'sr-row-focus' });
+  var fid = railFocusId(r);
+  if (fid) {
+    // Before any answers the line is "Focus next" (the phone's wording).
+    var fLine = r.answered > 0 ? 'Where you&rsquo;ll gain most' : 'Focus next';
+    rows.push({ kind: 'focus', icon: 'target', cap: '', title: escapeHtml(DI[fid].short), meta: fLine + ' &middot; ' + DI[fid].weight + '% of the exam', cls: 'sr-row-focus' });
   }
   var w = railWeakSpot();
   if (w) rows.push({ kind: 'weak', icon: 'weak', cap: 'Weak spot &middot; mixed set', title: escapeHtml(w.name), meta: escapeHtml(DI[w.d].short) + ' &middot; ' + w.right + ' of ' + w.n + ' right' });
   var m = railRecentMistakes(dueMap).length;
   if (m) rows.push({ kind: 'mistakes', icon: 'retry', cap: 'Recent mistakes', title: 'Try this week&rsquo;s mistakes', meta: Math.min(m, RAIL_SHOW_MAX) + ' ready to retry' });
   return rows.slice(0, 4);
+}
+// The focus row's area: Today's next area before any answers, then the
+// readiness focus (r.focusId) from the first answer on.
+function railFocusId(r) {
+  if (!r) return null;
+  var id = r.answered > 0 ? r.focusId : null;
+  if (!(r.answered > 0)) { try { id = todayNextArea(r).id; } catch (e) { id = r.focusId; } }
+  return id && DI[id] ? id : null;
 }
 function railRowHtml(r) {
   return '<li><button type="button" class="you-row sr-row p4-row' + (r.cls ? ' ' + r.cls : '') + '" data-rail-start="' + r.kind + '"'
@@ -18020,7 +18066,8 @@ function railStart(kind) {
   if (kind === 'focus') {
     var fr = null;
     try { fr = computeTodayReadiness(); } catch (e) { fr = null; }
-    if (fr && fr.focusId && DI[fr.focusId]) practiceDomain(fr.focusId);
+    var fid = railFocusId(fr);
+    if (fid) practiceDomain(fid);
     return;
   }
   if (kind === 'weak') {
@@ -21015,10 +21062,19 @@ function showResult(chosen, correct, timeout, info) {
   // The strip: progress moves on, and its Save hands over to the footer's.
   try { updateFocusStrip(); } catch (e) {}
 
-  // Focus the verdict so keyboard and screen-reader users land on it (the
-  // Check button they were on is gone), then bring the verdict into view.
+  // Focus moves to the verdict after 400ms (PHASE4.md 4.2 and 4.3, as the
+  // phone does), so keyboard and screen-reader users land on it (the Check
+  // button they were on is gone). A learner who has moved on keeps their place.
   var heroEl = document.getElementById('vrHero');
-  if (heroEl) { try { heroEl.focus({ preventScroll: true }); } catch (e) { heroEl.focus(); } }
+  if (heroEl) {
+    var focusWas = document.activeElement;
+    setTimeout(function () {
+      if (!heroEl.isConnected) return;
+      var a = document.activeElement;
+      if (a && a !== document.body && a !== focusWas && a !== heroEl && a.isConnected) return;
+      try { heroEl.focus({ preventScroll: true }); } catch (e) { heroEl.focus(); }
+    }, 400);
+  }
   // The recap, the verdict and both rows start right under the header.
   setTimeout(function(){
     var top = document.getElementById('pfStrip') || p;
@@ -24006,6 +24062,7 @@ function glChip(label, on, onclick, extra) {
 function renderGlossary() {
   var area = document.getElementById('glossaryArea');
   if (!area) return;
+  fgLargeText();
   var act = document.activeElement;
   var keepId = act && act.id && area.contains(act) ? act.id : null;
 
@@ -24024,7 +24081,7 @@ function renderGlossary() {
     + '<div class="gloss-search-row">'
     +   '<label class="lh-search gl-search">' + ico('search', 20)
     +   '<input type="search" class="gloss-search" id="glossSearch" aria-label="Search the glossary" autocomplete="off" '
-    +     'placeholder="Search by term, acronym or definition" '
+    +     'placeholder="Search terms or acronyms" '
     +     'value="' + escHtml(glossState.search) + '" '
     +     'oninput="onGlossSearch(this.value)"></label>'
     +   '<div class="gloss-mode-btns" role="group" aria-label="View">'
@@ -24471,6 +24528,15 @@ function pickTopSubtopics(domain, allSubtopics, count) {
 function renderSubtopicFilter() {
   var area = document.getElementById('subtopicFilterArea');
   if (!area) return;
+  // A redraw (a bank arriving, a pick) keeps focus on the chip that had it.
+  var fAct = document.activeElement, fKeep = null;
+  if (fAct && fAct !== area && area.contains(fAct)) {
+    var fk = fAct.getAttribute('data-k');
+    if (fAct.id) fKeep = { id: fAct.id };
+    else if (fk) fKeep = { k: fk, i: [].filter.call(area.querySelectorAll('[data-k]'), function (x) { return x.getAttribute('data-k') === fk; }).indexOf(fAct) };
+    else if (fAct.classList.contains('subtopic-expand-btn')) fKeep = { sel: '.subtopic-expand-btn' };
+    else fKeep = { k: 'st-all', i: 0 };
+  }
   var d = S.selectedDomain;
   var subtopics = getSubtopicsForDomain(d);
   if (!subtopics.length || d === 'all') { area.innerHTML = ''; return; }
@@ -24563,6 +24629,16 @@ function renderSubtopicFilter() {
     + activeChip
     + expandBtn
     + '</div>' + expandedHtml;
+  if (fKeep) {
+    var fEl = null;
+    if (fKeep.id) fEl = document.getElementById(fKeep.id);
+    else if (fKeep.sel) fEl = area.querySelector(fKeep.sel);
+    else {
+      var fSame = [].filter.call(area.querySelectorAll('[data-k]'), function (x) { return x.getAttribute('data-k') === fKeep.k; });
+      fEl = fSame[Math.max(0, fKeep.i)] || fSame[0] || area.querySelector('[data-k="st-all"]');
+    }
+    if (fEl) { try { fEl.focus({ preventScroll: true }); } catch (e) {} }
+  }
 
   // Restore focus on search input after re-render
   if (subtopicFilterExpanded && search) {
@@ -25255,6 +25331,18 @@ initConsentBanner(); // cookie consent — gates Google Analytics
 // An address like #glossary (or an old #topics / #weak link) opens that page
 // instead of the one used last.
 var bootNav = navFromHash(location.hash);
+// The large-text layout is set before the first page draws, whichever page
+// that is, and follows a change of the browser's text size mid-visit (the
+// fg-large rules are all CSS, so the class is all a page needs).
+fgLargeText();
+(function watchTextSize() {
+  if (typeof ResizeObserver === 'undefined' || !document.body) return;
+  var probe = document.createElement('span');
+  probe.setAttribute('aria-hidden', 'true');
+  probe.style.cssText = 'position:absolute;left:-9999px;top:0;width:1em;height:0;overflow:hidden;visibility:hidden;font-size:1rem';
+  document.body.appendChild(probe);
+  try { new ResizeObserver(function () { fgLargeText(); }).observe(probe); } catch (e) {}
+})();
 if (bootNav) S.activeTab = bootNav.tab;
 // v12.33: a returning visitor opens on Today, not the page used last (an
 // unfinished mock keeps its page, so its Resume is the first thing seen).

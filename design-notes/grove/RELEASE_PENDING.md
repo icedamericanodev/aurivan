@@ -34,6 +34,9 @@ Batched for the end of the uplift (web v13, mobile 2.0.0; DECISIONS 8). Write th
 - Practice shows your set as clear tiles you can change in place, and both mock exam sizes are one tap away.
 - The glossary lets you mark a term as mastered right from the list.
 - Keyboard and screen reader users now land on the new question after Next question, and keep their place when they tag or filter Saved questions or clear glossary filters.
+- Practice always shows what to revisit and where to focus next, even before your first answer or when you're all caught up.
+- In high contrast mode, your picked answer, confidence and filters now stand out clearly, and every button keeps its edge.
+- Study notes titles no longer run into their read counts on small phones, and large text settings now apply on every page from the moment it opens.
 
 ## Follow-ups to do at the release
 - `mobile/src/engine/plantLooks.ts` `howToOpen` says "in the Herbarium": change to "in Badges" and rebuild `assets/kaisip-plant.js` in the same commit.
