@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "comment": "Original CRISC practice questions for Domain 2 (Risk Assessment), written to the CRISC exam content outline effective 2025. Every item is authored from public concepts and KaiSip's own CRISC study notes (data/crisc/notes/d2.json), with no reference to the CRISC Review Manual, ISACA's QAE database, ISACA's practice quiz or any prior question bank. Schema: docs/content/QUESTION_SCHEMA.md; writing rules: docs/content/EXAM_STYLE_V2.md and .claude/agents/crisc-standards-auditor.md. Not affiliated with or endorsed by ISACA®. CRISC® is a registered trademark of ISACA. Pilot batch crisc_d2_001 to crisc_d2_020, 30 Oct 2026. Review fixes 30 Oct 2026 (blind test and standards audit). Quality pass 31 Oct 2026 (ISACA authenticity audit and concept review). Repair round 1, 31 Oct 2026 (independent verification). Round 3 crisc_d2_046 to crisc_d2_065, 4 Nov 2026. Round 7 crisc_d2_091 to crisc_d2_094, 4 Nov 2026. Round 8 crisc_d2_095 to crisc_d2_099, 5 Nov 2026. Round 9 crisc_d2_100 to crisc_d2_104, 5 Nov 2026. Round 10 crisc_d2_105 to crisc_d2_110, 5 Nov 2026.",
+    "comment": "Original CRISC practice questions for Domain 2 (Risk Assessment), written to the CRISC exam content outline effective 2025. Every item is authored from public concepts and KaiSip's own CRISC study notes (data/crisc/notes/d2.json), with no reference to the CRISC Review Manual, ISACA's QAE database, ISACA's practice quiz or any prior question bank. Schema: docs/content/QUESTION_SCHEMA.md; writing rules: docs/content/EXAM_STYLE_V2.md and .claude/agents/crisc-standards-auditor.md. Not affiliated with or endorsed by ISACA®. CRISC® is a registered trademark of ISACA. Pilot batch crisc_d2_001 to crisc_d2_020, 30 Oct 2026. Review fixes 30 Oct 2026 (blind test and standards audit). Quality pass 31 Oct 2026 (ISACA authenticity audit and concept review). Repair round 1, 31 Oct 2026 (independent verification). Round 3 crisc_d2_046 to crisc_d2_065, 4 Nov 2026. Round 7 crisc_d2_091 to crisc_d2_094, 4 Nov 2026. Round 8 crisc_d2_095 to crisc_d2_099, 5 Nov 2026. Round 9 crisc_d2_100 to crisc_d2_104, 5 Nov 2026. Round 10 crisc_d2_105 to crisc_d2_110, 5 Nov 2026. Round 11 crisc_d2_111 to crisc_d2_115, 5 Nov 2026.",
     "schema_version": 1
   },
   "domain": 2,
@@ -1650,7 +1650,7 @@
         "D": "Current risk set against the breached tolerance"
       },
       "correct": "D",
-      "key_concept": "A request to accept a tolerance breach goes to the limit-setter with the current risk measured against that limit.",
+      "key_concept": "A request to accept a tolerance breach goes to whoever set the limit, with the current risk measured against that limit.",
       "pre_read": "Notice what the committee is being asked to decide.",
       "correct_explanation": "The committee is asked to accept a risk above a limit it set, so the paper must show how far current risk now sits beyond that tolerance and what that means for the fund. The committee can then weigh the owner's request on the facts. The owner's case is the runner-up: the committee should hear it, but without current risk set against the tolerance it cannot judge what it is being asked to accept.",
       "wrong_explanations": {
@@ -1661,7 +1661,7 @@
       "tips": [
         "Eliminate: B prices one treatment and C counts the cause; neither shows the exposure the committee is asked to accept.",
         "Final two: D beats A because acceptance beyond tolerance turns on how far the risk exceeds the limit; the owner's case cannot show that.",
-        "Exam cue: when a limit-setter is asked to accept a breach, lead with the current risk measured against the limit it set."
+        "Exam cue: when the level that set a limit is asked to accept a breach, lead with the current risk measured against that limit."
       ],
       "framework_ref": "NIST IR 8286 Rev. 1 Section 3.5.2 (Responding to Residual Risk); ISACA Glossary (risk acceptance); ISACA Glossary (current risk)",
       "related_concepts": [
@@ -4075,6 +4075,191 @@
         "Restore testing"
       ],
       "_provenance": "Authored from concept: notes 2B5.2 (Control Effectiveness and the Residual Gap) and 2B5.1 (Inherent, Current and Residual Risk). Round 10, 5 Nov 2026: original scenario (a veterinary chain's register credits nothing for offline backups that have passed four quarterly full-restore tests) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Round 10 option opening: the key opens with \"Lower\", genuinely best because test evidence already exists; owner balance: the key names no owner and two distractors name one (the backup control owner, the risk owner). Waiting for the yearly review stays wrong here. Neighbours checked (stems and options): crisc_d2_019 (an untested control earns no credit: the complement), crisc_d2_102 (lowering a rating for an untried fallback is wrong; here the control is tested), crisc_d2_086 (a passed review that no longer covers the new system), crisc_d2_063 (design versus operating effectiveness), crisc_d2_064 (residual risk is not zero after tokenization), crisc_d2_044 (a large gap carried by one control), crisc_d4_088 and crisc_d4_034 (restore tests beside ransomware recovery), crisc_d1_067 (a keyed wait for the yearly KRI review), CISA d4_304 (backup rotation) and d4_306 (restore tests chosen by the backup administrator, audit evidence lens), CC cc_d1_003 (a veterinary clinic's shared booking login); no mirror in CISA, CC or AAIA. Keep apart from crisc_d2_019 and crisc_d2_102 in practice sets. Review fixes 5 Nov 2026 (round 10 standards audit, concept review and blind test): stem now says the offline backups are the booking system's; notes 2B5.2 now says 'current rating' to match.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d2_111",
+      "domain": 2,
+      "subtopic": "2A1 Risk events. Event data for an AI chatbot",
+      "principle_id": "emerging-and-ai-risk-owned",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "Which of the following BEST gives the risk analyst event data on a seed company's AI chatbot for farmers?",
+      "options": {
+        "A": "Agronomists' logged corrections of its wrong answers",
+        "B": "Public reports of failures in other firms' chatbots",
+        "C": "A daily count of the questions the chatbot answers",
+        "D": "The IT incident log for the chatbot's hosting servers"
+      },
+      "correct": "A",
+      "key_concept": "An AI system's own errors, including those reviewers catch before harm, are its risk events; other firms' failures and usage counts are other inputs.",
+      "pre_read": "Recall what counts as a risk event before comparing the sources.",
+      "correct_explanation": "Risk events include errors that reach users and near misses caught before harm. Agronomists' logged corrections record this chatbot's own wrong answers, so they show how often and how badly it errs in live use. Public reports of other firms' chatbot failures are the runner-up: they help identify scenarios and inform ratings once adjusted, but they describe other systems, not this one's event history.",
+      "wrong_explanations": {
+        "B": "Other firms' chatbot failures are useful external input for scenarios and ratings, but they describe other systems; this chatbot's own errors are more direct event data.",
+        "C": "A count of questions answered measures how much the chatbot is used, not when it is wrong; it holds no events at all.",
+        "D": "A server incident log captures outages and technical faults, but a wrong answer from a working chatbot never appears there, so most AI errors go unrecorded."
+      },
+      "tips": [
+        "Eliminate: C counts usage, not errors, and D logs server faults that miss wrong answers from a working chatbot.",
+        "Final two: A beats B because the chatbot's own corrected errors are direct event data; other firms' failures inform scenarios but describe other systems.",
+        "Exam cue: for AI risk events, look where the system's own errors are caught and recorded, including near misses that reviewers stop."
+      ],
+      "framework_ref": "NIST AI 100-1 (AI RMF 1.0) MEASURE 2.4 (the functionality and behavior of the AI system are monitored when in production); NIST SP 800-30 Rev. 1 Section 3.1 Task 1-4 (Identify Information Sources: information sources can be internal or external to the organization)",
+      "related_concepts": [
+        "Risk events",
+        "Near misses",
+        "AI output errors"
+      ],
+      "_provenance": "Authored from concept: notes 2A1.3 (AI Risk Events: Bias and Model Drift) and 2A1.2 (Internal and External Event Sources). Round 11, 5 Nov 2026: original scenario (a seed company's farmer-advice AI chatbot, whose agronomists log corrections of its wrong answers) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Round 11 asks: a genuinely short 'Which ... BEST' stem (18 words) with noun-phrase options, and the batch's one AI item. Owner balance: no option names an owner. Neighbours checked (stems and options): crisc_d2_002 (drift recorded as a risk event), crisc_d2_022 (repeated AI billing errors aggregated), crisc_d2_021 (peer events adjusted for exposure), crisc_d2_046 (a loss database that omits near misses), crisc_d2_047 (event record fields), crisc_d2_061 (vendor launch test results in a new AI entry; no launch-test option used here), crisc_d3_107 (a chatbot wrong-answer KRI), crisc_d3_128 (staff heard of scams before the horizon scan), AAIA aaia_d2_155 (staff check sampled chatbot answers: an audit recommendation, not an event source) and aaia_d2_133 (chatbot errors closed as separate incidents), CC cc_d1_132 (a chatbot's wrong cancellation promise) and cc_d1_052 (a seed bank's flood vulnerability); no mirror in CISA, CC or AAIA. Keep apart from crisc_d2_002, crisc_d2_022 and aaia_d2_155 in practice sets. Review fixes 5 Nov 2026 (round 11 audit, concept review and blind test): explanation's first sentence covers errors that reach users as well as near misses.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d2_112",
+      "domain": 2,
+      "subtopic": "2A4 Risk scenario development and evaluation. Two power scenarios",
+      "principle_id": "analyze-before-acting",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "A colocation data-center provider rates grid power loss and generator failure as two separate low scenarios, each assuming the other power source works. What is the risk analyst's BEST recommendation?",
+      "options": {
+        "A": "Have the facilities owner track generator start failures as a KRI",
+        "B": "Have the facilities owner add a second grid power feed",
+        "C": "Add a scenario where generators fail during a grid outage",
+        "D": "Ask the risk owner to accept both scenarios' low ratings"
+      },
+      "correct": "C",
+      "key_concept": "Scenarios that each assume the other safeguard works miss the case where both fail; a combined scenario rates that joint failure.",
+      "pre_read": "Check what each existing scenario assumes about the other before choosing.",
+      "correct_explanation": "Each scenario is rated low only because it assumes the other power source works, so the case that causes an outage, generators failing during a grid loss, is rated nowhere. Adding that combined scenario lets the provider rate its real exposure. A KRI on generator start failures is the runner-up: it is a useful indicator for that scenario, but it monitors a risk the register has not yet rated.",
+      "wrong_explanations": {
+        "A": "Generator start failures make a useful KRI, but an indicator tracks a rated scenario; the joint failure is not yet in the scenario set, so monitoring comes second.",
+        "B": "A second grid feed may be a sound response later, but choosing a control before the joint failure is rated puts treatment ahead of analysis.",
+        "D": "Acceptance is the owner's decision on an accurate rating; both low ratings assume the other source works, so accepting them hides the real exposure."
+      },
+      "tips": [
+        "Eliminate: B adds a control before the gap is rated, and D asks the owner to accept ratings that each assume the other power source works.",
+        "Final two: C beats A because the joint failure is rated nowhere yet; a KRI on generator starts can monitor that scenario once it exists, not replace it.",
+        "Exam cue: when each scenario assumes the other's safeguard works, look for the missing combined scenario in which both fail together."
+      ],
+      "framework_ref": "NIST IR 8286A Rev. 1 Section 2.2.3.2 (System Complexity as a Vulnerability: what-if scenarios include critical dependencies, and risk identification evaluates complex or cascading events); ISACA Glossary (risk scenario)",
+      "related_concepts": [
+        "Combined scenarios",
+        "Dependencies",
+        "Backup power"
+      ],
+      "_provenance": "Authored from concept: notes 2A4.2 (Top-Down and Bottom-Up Scenario Development) and 2A4.1 (Anatomy of a Risk Scenario). Round 11, 5 Nov 2026: original scenario (a colocation data-center provider rates grid power loss and generator failure as separate low scenarios, each assuming the other source works) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Owner balance: the key names no owner; the runner-up A and the easy distractor B name the facilities owner, and the easy distractor D names the risk owner, so the key is the lone option without an owner. Neighbours checked (stems and options): crisc_d2_053 (adding a bottom-up review), crisc_d2_007 (splitting a generic scenario), crisc_d2_014 and crisc_d3_158 (rolling up unit ratings), crisc_d2_103 (grid outage likelihood at a hilltop site), crisc_d2_028 (a flood zone as a predisposing condition), CISA d5_017 (a generator failing during a long utility outage: an auditor's shutdown order), d5_011 (power design weakness), d4_246 (colocation racks on generator power) and d4_184 (two data centers on one fibre route), CC cc_d1_100 (a generator's start delay); no mirror in CISA, CC or AAIA. Keep apart from CISA d5_017 in practice sets. Review fixes 5 Nov 2026 (round 11 audit, concept review and blind test): owner shape varied (rule 20): runner-up A now names the facilities owner; D reworded from a stock 'as they stand' phrase and shortened to match the other options.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d2_113",
+      "domain": 2,
+      "subtopic": "2B2 Business impact analysis (BIA). Change that calls for a revision",
+      "principle_id": "objectives-first",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "Which of the following MOST clearly shows the risk practitioner that a call-center outsourcer's BIA needs revising?",
+      "options": {
+        "A": "A new client contract with one-hour outage penalties",
+        "B": "A restore test that recovered the CRM well inside its RTO",
+        "C": "A rise in attempted attacks on the call platform",
+        "D": "A KRI showing call-platform uptime fell to 99.5%"
+      },
+      "correct": "A",
+      "key_concept": "A BIA records outage harm over time and dependencies, so changed obligations or processes call for a revision; threat trends feed the risk assessment.",
+      "pre_read": "Recall what a BIA measures, then test each option against it.",
+      "correct_explanation": "A BIA measures how the harm of a disruption grows over time and what each process depends on. A contract that adds one-hour outage penalties changes that harm, so impact over time and recovery priorities need revising. The restore test is the runner-up: it shows recovery capability meets the RTO already set, which confirms the plan rather than changing the business requirement the BIA records.",
+      "wrong_explanations": {
+        "B": "A restore test inside the RTO shows IT can meet the existing objective; it measures recovery capability, not the business impact the BIA sets requirements from.",
+        "C": "More attempted attacks raise the likelihood of an outage, which belongs in the risk assessment; a BIA assumes the disruption happens and leaves likelihood out.",
+        "D": "Falling uptime is a likelihood signal for the outage scenario's rating; it does not change how much harm an outage of a given length would cause."
+      },
+      "tips": [
+        "Eliminate: C and D both suggest outages are becoming more likely, and a BIA assumes the disruption happens, so likelihood belongs in the risk assessment.",
+        "Final two: A beats B because the BIA records business requirements; a new penalty changes outage harm, while a passed restore test only shows IT meets the current RTO.",
+        "Exam cue: revise a BIA when the business, its obligations or its dependencies change; test results and threat trends feed the plan and the risk assessment."
+      ],
+      "framework_ref": "NIST SP 800-34 Rev. 1 Section 3.6 (Plan Maintenance: when a significant change occurs, the BIA is updated to identify new contingency requirements or priorities); ISACA Glossary (business impact analysis)",
+      "related_concepts": [
+        "Business impact analysis",
+        "BIA maintenance",
+        "Recovery time objective"
+      ],
+      "_provenance": "Authored from concept: notes 2B2.1 (BIA Purpose, Dependencies and AI Systems) and 2B2.2 (MTO, RTO and RPO). Round 11, 5 Nov 2026: original scenario (a call-center outsourcer signs a client contract with one-hour outage penalties) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Round 11 asks: a genuinely short 'Which ... MOST' stem (17 words) with noun-phrase options. Owner balance: no option names an owner. Neighbours checked (stems and options): crisc_d2_011 (BIA and risk assessment), crisc_d2_036 (an AI dependency missing from a BIA), crisc_d2_073 (a supporting system ranked by user count), crisc_d2_106 (impact rated for the peak season), crisc_d2_010 (an assessment updated after a subcontractor change), crisc_d2_035 (a tested restore longer than the MTO), CISA d4_098 (a BIA update outruns DR funding), d4_243 (a BIA measured in the quietest month) and d4_259 (blank BIA questionnaires), CC cc_d2_073 (a glassworks rating likelihood first in a BIA) and cc_d2_053; no mirror in CISA, CC or AAIA. Keep apart from crisc_d2_106 in practice sets. Review fixes 5 Nov 2026 (round 11 audit, concept review and blind test): key concept no longer says test results never call for a revision (a test that finds a new dependency can).",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d2_114",
+      "domain": 2,
+      "subtopic": "2A3 Vulnerability management. A met patch target",
+      "principle_id": "priority-word-decides",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "A tile maker fixes 95% of critical flaws within its 30-day target, but every late flaw sits on its internet-facing order portal. What is the risk analyst's GREATEST concern?",
+      "options": {
+        "A": "The 30-day target is too long for critical flaws",
+        "B": "The late flaws are on a system attackers can reach",
+        "C": "One critical flaw in 20 is fixed later than 30 days",
+        "D": "Customer downtime while the order portal is patched"
+      },
+      "correct": "B",
+      "key_concept": "A patch rate measures speed across all flaws; the risk depends on where the open flaws sit and how easily attackers can reach those systems.",
+      "pre_read": "Compare what each option says about the actual risk to the business.",
+      "correct_explanation": "A patch rate measures speed across all flaws, but risk depends on where the open flaws are. Every late flaw sits on the internet-facing order portal, a system attackers can reach directly and one that takes orders, so the 95% figure hides concentrated exposure. One flaw in 20 running late is the runner-up: it shows the gap's size, but late flaws on isolated systems would matter far less than these.",
+      "wrong_explanations": {
+        "A": "A shorter target could help, but the exposure sits in where the late flaws are, on the portal attackers can reach, not in the target's length.",
+        "C": "The share of late flaws says nothing about which systems carry them; the same share on isolated systems would matter far less than these.",
+        "D": "Downtime is a scheduling matter for the portal's fix plan; it does not change the exposure the open flaws create today."
+      },
+      "tips": [
+        "Eliminate: A questions the target's length, a policy point, and D is a scheduling detail; neither describes the exposure left open.",
+        "Final two: B beats C because risk depends on where open flaws sit; the same share on isolated systems would matter far less than on a system attackers can reach.",
+        "Exam cue: a met patch target can hide risk; ask where the remaining flaws sit and how reachable those systems are."
+      ],
+      "framework_ref": "NIST SP 800-30 Rev. 1 Section 2.3.1 (Risk Models: threats, vulnerabilities, likelihood and impact); NIST CSF 2.0 ID.RA-05 (threats, vulnerabilities, likelihoods and impacts are used to understand inherent risk and inform risk response prioritization)",
+      "related_concepts": [
+        "Risk-based remediation",
+        "Exposure",
+        "Patch metrics"
+      ],
+      "_provenance": "Authored from concept: notes 2A3.3 (Risk-Based Remediation Priority) and 2A3.2 (CVSS as a Severity Input). Round 11, 5 Nov 2026: original scenario (a tile maker meets a 95% 30-day patch target, but every late critical flaw is on its internet-facing order portal) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Owner balance: no option names an owner. Neighbours checked (stems and options): crisc_d2_026 (clean scan results hide people and process weaknesses), crisc_d2_027 (first fix by active attack and business asset), crisc_d2_093 (scans without credentials understate exposure), crisc_d2_051 (finding where a flawed component runs), crisc_d2_105 (verifying disputed scan findings), crisc_d3_163 (ranking remediation of findings by the risk they affect), crisc_d4_016 (a met framework profile does not lower every rating), CC cc_d2_042 (a 40-day patch average against a 14-day target), cc_d2_119 (two parks counting patch days differently) and cc_d2_016 (a patching KRI), CISA d5_345 (monthly scans against zero-days); no mirror in CISA, CC or AAIA. Keep apart from crisc_d2_026 and crisc_d2_093 in practice sets. Review fixes 5 Nov 2026 (round 11 audit, concept review and blind test): A now questions the 30-day target, a fact the stem gives, instead of who reports the rate; D is no longer hedged with 'may' against a flat key, and A is flat too; wrong A and the Eliminate tip updated.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d2_115",
+      "domain": 2,
+      "subtopic": "2B4 Risk analysis methodologies. Range too wide for a decision",
+      "principle_id": "report-for-the-decision",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "Sensitivity analysis of a glass maker's Monte Carlo furnace-outage model shows its 4–120 hour outage-length estimate drives most of a spread too wide for the board. What is the risk analyst's BEST next step?",
+      "options": {
+        "A": "Rerun the model with ten times as many simulation trials",
+        "B": "Ask the furnace line owner to agree a single likely outage length",
+        "C": "Ask the furnace line owner for records of past outage lengths",
+        "D": "Have the risk owner narrow the range for outage frequency"
+      },
+      "correct": "C",
+      "key_concept": "When one uncertain input drives most of a model's spread, better data on it narrows the result; more trials or one agreed figure do not.",
+      "pre_read": "Note which input the sensitivity analysis points to before choosing a step.",
+      "correct_explanation": "Sensitivity analysis shows where better information pays off: the outage-length estimate drives most of the spread, so records of real outage lengths narrow the range the board needs. Asking the furnace line owner to agree one outage length is the runner-up: it shrinks the range on paper, but it hides real uncertainty behind a single figure, giving false precision instead of better knowledge.",
+      "wrong_explanations": {
+        "A": "More trials cut sampling noise in the simulation, but the spread comes from the wide input estimate, so the result stays just as uncertain.",
+        "B": "A single agreed length makes the result look precise, but it hides the uncertainty instead of reducing it with evidence; that is false precision.",
+        "D": "Frequency is not the input the sensitivity analysis flagged; narrowing it would barely change the spread the board finds too wide."
+      },
+      "tips": [
+        "Eliminate: A adds trials, which cut simulation noise but not input uncertainty, and D works on frequency, which the sensitivity analysis did not flag.",
+        "Final two: C beats B because records narrow the outage-length range for real; agreeing one figure only hides the uncertainty, which is false precision.",
+        "Exam cue: when a model's result is too uncertain to decide on, find the input that drives it and get better data on that input."
+      ],
+      "framework_ref": "NIST IR 8286A Rev. 1 Section 2.3.2 (Techniques for Estimating Likelihood and Impact: sensitivity analysis of input assumptions identifies which uncertain factors most affect the output); NIST IR 8286A Rev. 1 Section 2.3.2.1 (Improving Estimation Based on Knowledge of Prior Events: industry literature on loss events in a sector helps estimate likelihood and impact); NIST IR 8286A Rev. 1 Section 2.3.2.4 (Monte Carlo Simulation: randomly sampled values from estimated ranges identify a range of possible results)",
+      "related_concepts": [
+        "Sensitivity analysis",
+        "Monte Carlo simulation",
+        "False precision"
+      ],
+      "_provenance": "Authored from concept: notes 2B4.3 (Choosing a Method: Data, Decisions, FAIR and Monte Carlo). Round 11, 5 Nov 2026: original scenario (a glass maker's Monte Carlo model of furnace outage losses is too uncertain for a board decision, and sensitivity analysis points at the outage-length estimate) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Round 11 asks: the key opens 'Ask', genuinely best because records exist for the input that drives the spread. Owner balance: the key and the runner-up name the furnace line owner, and one easy distractor names the risk owner. Neighbours checked (stems and options): crisc_d2_041 (a Monte Carlo tail against tolerance), crisc_d2_083 (three-point inputs for a simulation), crisc_d2_017 (an annual loss range for a board asking for one figure), crisc_d2_067 (private estimates before discussion), crisc_d2_040 (loss ranges for the top five), CISA d2_012 (quantitative analysis with sparse data), d3_025 and d3_058 (sensitivity analysis of business-case benefits), d3_131 (single-point project estimates), CC cc_d1_165 (a glassblowing studio's exposure factor); no mirror in CISA, CC or AAIA. Keep apart from crisc_d2_017 and crisc_d2_083 in practice sets. Review fixes 5 Nov 2026 (round 11 audit, concept review and blind test): added the IR 8286A Rev. 1 Section 2.3.2.1 citation (estimates improved from prior events), which backs the key's records of past outages.",
       "style_version": 2
     }
   ]
