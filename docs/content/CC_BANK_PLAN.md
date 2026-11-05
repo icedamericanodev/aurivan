@@ -285,6 +285,7 @@ Learned from two blind tests and two standards audits of the pilot.
 | Batch 3, all domains (31 Oct 2026) | +30 | +20 | +25 | +25 | +20 | 345 |
 | Batch 4, all domains (4 Nov 2026) | +35 | +25 | +30 | +30 | +25 | 490 |
 | Batch 5, all domains (4 Nov 2026) | +40 | +25 | +30 | +30 | +25 | 640 |
+| Batch 6, all domains (5 Nov 2026) | +40 | +24 | +28 | +35 | +23 | 790 |
 
 Batch 2: the first blind test matched the keys 25/25 in every domain, and
 re-tests of every changed item all matched. The audits found 7 hard errors
@@ -382,6 +383,26 @@ Batch 6 guidance from this round:
 - Role names: use "IT manager", not "IT lead"; "security analyst" for the
   generic D1/D2/D5 practitioner.
 - D1 is still furthest from its target (240; 150 now).
+
+**Batch 6 (5 Nov 2026).** 150 new items on random key letters; the first blind
+test matched every key (150/150), the audits found no HARD errors, and the
+bank-wide opener gate stayed clean. The cross-domain gate found a speaker-role
+tell: when a stem has someone make a claim, the IT manager was wrong in about
+22 of 23 items across the bank and "a colleague" always right in this batch.
+Fixed by changing who speaks (keys and options unchanged), so the role no
+longer predicts the answer. Also re-angled: near-duplicate lessons (risk
+acceptance renewal, AI accountability, test-copy deletion, day-one training,
+PaaS patching) and one D4 item that had drifted into attack types (5.2).
+
+Batch 7 guidance from this round:
+- Vary who makes a claim and whether they are right: every role (IT manager,
+  colleague, security analyst, data owner) must be right in some items and
+  wrong in others; write two or three Disagree keys.
+- Remaining non-canonical roles in older items ("IT support analyst",
+  "metrics analyst", "security officer") can be swept in a small pass.
+- Avoid breach-notification scenarios for now; that cluster is full.
+- D1 needs 50 more (240), D4 49, D3 42, D2 34, D5 35: batch 7 closes the gap
+  to about 940; batch 8 finishes.
 
 ## 7. Follow-ups outside this plan's scope
 
