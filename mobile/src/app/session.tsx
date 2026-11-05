@@ -87,7 +87,7 @@ import {
   AnswerMore,
   AnswerPlate,
   AnswerRecap,
-  KeyIdeaCue,
+  KeyIdea,
   MORE_FOCUS_BACK_MS,
   ConfidenceRow,
   FEEDBACK_DELAY,
@@ -98,9 +98,10 @@ import {
   SourceLine,
   StemRecap,
   StickyFooter,
+  TipsCard,
+  TipsHeading,
   useVerdictIndent,
   Verdict,
-  Vine,
   WhyBlock,
   type MoreRow,
   type OptionState,
@@ -114,7 +115,7 @@ import { openTab } from '../lib/actions';
 import { moveFocus, sayLater } from '../lib/a11y';
 import { haptic } from '../lib/haptics';
 import { questionTarget, sessionWhere } from '../lib/support';
-import { Button, Gap, ICON_SIZE, ListRow, Row, SegmentBar, Stem, T, Tag } from '../components/ui';
+import { Button, Gap, groveCard, ICON_SIZE, ListRow, Row, SegmentBar, Stem, T, Tag } from '../components/ui';
 import { getCertification, getDomain } from '../content/certifications';
 import { missLessons } from '../content/lessons';
 import { findQuestion } from '../content/loader';
@@ -129,7 +130,8 @@ import { priorityWord } from '../engine/games/priorityLens';
 import { missCoachLine } from '../engine/slipCoach';
 import { pickCoachKind, pickCoachLine } from '../engine/pickCoach';
 import { RunningHead } from '../components/fieldguide';
-import { eliminateTip, runnerUp, splitMissTips, tipParts } from '../engine/tips';
+import { eliminateTip, runnerUp, tipParts } from '../engine/tips';
+import { answerTipRows, coachedTip } from '../engine/answerTips';
 import { finishSession } from '../lib/finishSession';
 import { advancePath } from '../lib/sessions';
 import { HINT_AFTER_LINE, HINT_BEFORE_LINE } from '../engine/readiness';
@@ -545,7 +547,7 @@ export default function SessionScreen() {
     }
     if (isMock) {
       // An untimed mock has no clock to keep running.
-      const body = active.deadline ? 'Your answers are saved. The clock keeps running — resume from Today.' : 'Your answers are saved. Resume from Today.';
+      const body = active.deadline ? 'Your answers are saved. The clock keeps running. Resume from Today.' : 'Your answers are saved. Resume from Today.';
       Alert.alert('Pause exam?', body, [
         { text: 'Stay', style: 'cancel' },
         { text: 'Pause', onPress: () => openTab('/home') },
@@ -715,8 +717,14 @@ export default function SessionScreen() {
   const hintTip = eliminateTip(q.tips);
   const hintWord = priorityWord(q.stem);
   const canCoach = !isMock && Boolean(hintTip || hintWord);
-  // After a miss: which tips lead (Exam cue) and which follow the folded "Why" (Eliminate, Final two).
-  const missTips = splitMissTips(q.tips);
+  // Grove Phase 4 (4.6 fallback): every tip open after a right answer; after a miss the Exam cue and
+  // the row the coach line named are open, the rest fold under the Why's "Read more".
+  const coachKind = response && !response.correct ? pickCoachKind(q.tips, q.correct, pickedOriginal) : null;
+  const coachFromPick = Boolean(coachKind) && !(taggedSlip && coachKind !== 'final-two') && pickCoachLine(q.tips, q.correct, pickedOriginal, perm) !== null;
+  const tipRows = answerTipRows(q.tips, {
+    correct: Boolean(response?.correct),
+    coached: coachedTip(coachKind, coachFromPick, Boolean(pickedOriginal && pickedOriginal === runnerUp(q.tips, q.correct))),
+  });
   // The navigator's summary: how many answered, flagged and left (the exam's own length, not the bank's).
   const answeredCount = Object.keys(active.responses).length;
   const navSummary = `${answeredCount} answered · ${active.flagged.length} flagged · ${total - answeredCount} left`;
@@ -950,10 +958,12 @@ export default function SessionScreen() {
                 {response.assisted && response.correct && <T v="meta" style={{ marginTop: space.xs, marginLeft: verdictIndent }}>{HINT_AFTER_LINE}</T>}
                 {/* A right retest (under 4 hours after a miss) is not promoted: say when it is back. */}
                 {response.retest && response.correct && <T v="meta" style={{ marginTop: space.xs, marginLeft: verdictIndent }}>{RETEST_LINE}</T>}
-                {/* Premium round 2: Fig. 4, one plate. After a miss: your pick (with "Why not B") and the best answer,
-                    a hairline between; after a right answer: "Your answer", one ✓ row. DISPLAY letters on screen and
-                    in every spoken label; the options are looked up by their ORIGINAL letters. The plate rises in,
-                    then its rows 40 ms apart, from where the rows always started (FEEDBACK_DELAY.rows). */}
+                {/* Grove Phase 4 (PHASE4.md 4.2, with the 4.6 fallback while O1 is open): one order in every
+                    state. The card (your answer, "Why not B", the best answer), then Key idea, then "How to
+                    think about it" (every tip after a right answer; after a miss the Exam cue and the row the
+                    coach named), then "Why D". After a miss a long Why folds to two lines, and "Read more"
+                    opens the rest of it and the other tips, right after the button. DISPLAY letters on screen
+                    and in every spoken label; the options are looked up by their ORIGINAL letters. */}
                 <AnswerPlate
                   key={`${qid}:plate`}
                   delay={FEEDBACK_DELAY.rows}
@@ -964,78 +974,43 @@ export default function SessionScreen() {
                   }
                   best={{ letter: correctDisplay, text: q.options[q.correct] ?? '' }}
                 />
-                {response.correct ? (
-                  <>
-                    <Rise delay={FEEDBACK_DELAY.why}>
-                      <WhyBlock letter={correctDisplay} text={renderText(q.explanation, perm)} fold={false} />
-                    </Rise>
-                    {/* In reading order: these arrive after the Why above them (motion round 2, 3a).
-                        Premium round 2 (UX review P2): a right answer gets the same "KEY IDEA" quotation and Exam cue
-                        label as a miss, then Eliminate two / Final two stay on the vine below. All of it sits in the
-                        one feedback-vine view, so VINE_ARRIVES and the single tick hold: KeyIdeaCue ticks as the key
-                        idea appears, and this Vine has no Key idea leaf, so it never ticks a second time. */}
-                    <Rise delay={FEEDBACK_DELAY.why + motion.stagger.group}>
-                      <View ref={vineRef} collapsable={false} onLayout={checkVine} testID="feedback-vine">
-                        <KeyIdeaCue
-                          key={`${qid}:a`}
-                          keyIdea={q.keyConcept}
-                          cues={missTips.first.map((i) => tipParts(renderText(q.tips[i], perm), i))}
-                          visible={vineVisible}
-                        />
-                        <Vine
-                          key={qid}
-                          tips={missTips.rest.map((i) => renderText(q.tips[i], perm))}
-                          tipIndex={missTips.rest}
-                          visible={vineVisible}
-                        />
-                      </View>
-                    </Rise>
-                  </>
-                ) : (
-                  <>
-                    {/* The short, memorable lines first: the Key idea and the Exam cue. They arrive in reading order,
-                        after the rows above them (motion round 2, 3a: they used to show at the tap, before the rows).
-                        Premium round 2: "KEY IDEA" over the quotation (no vine rule) and the Exam cue as a label.
-                        Its arrival is still the vine's (VINE_ARRIVES): `visible` and its one tick wait for it. */}
-                    <Rise delay={FEEDBACK_DELAY.why}>
-                      <View ref={vineRef} collapsable={false} onLayout={checkVine} testID="feedback-vine">
-                        <KeyIdeaCue
-                          key={`${qid}:a`}
-                          keyIdea={q.keyConcept}
-                          cues={missTips.first.map((i) => tipParts(renderText(q.tips[i], perm), i))}
-                          visible={vineVisible}
-                        />
-                      </View>
-                    </Rise>
-                    {/* Then the long "Why", folded to two lines, with Eliminate two / Final two inside the fold
-                        (mobile 1.43, owner decision): "Read more" opens all three, "Show less" closes them. */}
-                    <Rise delay={FEEDBACK_DELAY.why + motion.stagger.group}>
-                      <WhyBlock
-                        key={qid}
-                        letter={correctDisplay}
-                        text={renderText(q.explanation, perm)}
-                        fold
-                        more={missTips.rest.map((i) => tipParts(q.tips[i], i).label)}
-                        // The vine inside draws as the fold opens (it is on screen right under the toggle).
-                        onOpen={() => setVine2Visible(true)}
-                      >
-                        <Vine
-                          key={`${qid}:b`}
-                          tips={missTips.rest.map((i) => renderText(q.tips[i], perm))}
-                          tipIndex={missTips.rest}
-                          visible={vine2Visible}
-                        />
-                      </WhyBlock>
-                    </Rise>
-                  </>
-                )}
+                {/* Key idea and the open tips arrive in reading order, after the card (opacity only). Their
+                    arrival is still the vine's (VINE_ARRIVES): `visible`, the one tick and the stem's draw wait for it. */}
+                <Rise delay={FEEDBACK_DELAY.why}>
+                  <View ref={vineRef} collapsable={false} onLayout={checkVine} testID="feedback-vine">
+                    <KeyIdea key={`${qid}:a`} text={q.keyConcept} visible={vineVisible} />
+                    {tipRows.open.length > 0 && <TipsHeading />}
+                    <TipsCard key={`${qid}:tips`} rows={tipRows.open.map((i) => tipParts(renderText(q.tips[i], perm), i))} visible={vineVisible} />
+                  </View>
+                </Rise>
+                <Rise delay={FEEDBACK_DELAY.why + motion.stagger.group}>
+                  <WhyBlock
+                    key={qid}
+                    letter={correctDisplay}
+                    text={renderText(q.explanation, perm)}
+                    // After a right answer nothing folds (4.2 step 5).
+                    fold={!response.correct}
+                    more={tipRows.folded.map((i) => tipParts(q.tips[i], i).label)}
+                    // The tips inside draw as the fold opens (they are on screen right under the toggle).
+                    onOpen={() => setVine2Visible(true)}
+                  >
+                    {tipRows.folded.length > 0 && (
+                      <TipsCard
+                        key={`${qid}:b`}
+                        testID="answer-tips-more"
+                        rows={tipRows.folded.map((i) => tipParts(renderText(q.tips[i], perm), i))}
+                        visible={vine2Visible}
+                      />
+                    )}
+                  </WhyBlock>
+                </Rise>
                 {/* Mobile 1.49 (premium pass §2.2): ONE "Go deeper" row after a miss, after a hairline.
                     The lesson when it is not done yet (Play = lessons), otherwise the note (BookOpen =
                     notes). Never more than one: the principle, the note and the rest are in ⋯. Both PUSH,
                     so Back lands here again, on this same answer with its explanation. */}
                 {missed && (reviewLesson || (missNote && missNoteName)) && (
-                  <>
-                    <View style={{ height: 1, backgroundColor: c.line, marginTop: space.md }} />
+                  // Grove Phase 4 (4.2 step 6): the Go deeper row in one card.
+                  <View testID="go-deeper-card" style={[groveCard(c), { marginTop: space.lg, paddingHorizontal: space.lg }]}>
                     {reviewLesson ? (
                       // Only a lesson not done yet is offered, so it is "take", never "Replay" (1.22 review).
                       <ListRow
@@ -1066,15 +1041,15 @@ export default function SessionScreen() {
                         />
                       )
                     )}
-                  </>
+                  </View>
                 )}
                 {/* "Your note" (components/questionNote.tsx): only on a CHECKED practice or review
                     answer (this branch never renders in a mock), never on the very first set. Mobile
                     1.49: a saved note still shows here; "Add a note" moved into ⋯, which opens it. */}
                 {!active.firstSet && <QuestionNote ref={noteRef} certId={active.certId} questionId={qid} quietAdd returnFocus={moreRef} />}
-                {/* The source line, text only (premium pass §2.4); "Report a problem" is in ⋯. The note after a
-                    report's email app opened sits under it, as before. */}
-                <SourceLine reference={q.reference}>{report.block}</SourceLine>
+                {/* The source row (4.2 step 7): "Original · Reviewed", the source, and "Report a problem" at its
+                    right (it stays in ⋯ too). The note after a report's email app opened sits under it, as before. */}
+                <SourceLine reference={q.reference} onReport={report.open}>{report.block}</SourceLine>
               </>
             )
           )}

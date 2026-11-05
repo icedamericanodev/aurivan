@@ -18,7 +18,7 @@ import { act, create, type ReactTestInstance, type ReactTestRenderer } from 'rea
 import { setMockReducedMotion } from '../../jest/reanimated-mock';
 import { estimateMotion, growingStems, growthDrop, ScaleBar, scaleSpoken, StemChart, type Stem } from '../components/fieldguide';
 import { SPLASH_FADE, type Growth } from '../components/motion';
-import { FEEDBACK_DELAY, Vine, VINE_ARRIVES } from '../components/quiz';
+import { FEEDBACK_DELAY, TipsCard, VINE_ARRIVES } from '../components/quiz';
 import * as Reanimated from 'react-native-reanimated';
 import { haptic } from '../lib/haptics';
 import { getAllQuestions } from '../content/loader';
@@ -278,8 +278,9 @@ describe('after an answer, the vine arrives in reading order (3a)', () => {
     act(() => { check.props.onPress(); });
     const vine = byTestId('feedback-vine');
     expect(vine).toHaveLength(1);
-    // Never at the tap: at least the rows' delay, and after the Why on a right answer.
-    expect(entranceDelay(vine[0])).toBeGreaterThanOrEqual(right ? FEEDBACK_DELAY.why + motion.stagger.group : FEEDBACK_DELAY.why);
+    // Never at the tap: at least the rows' delay. Grove Phase 4: one order in every state, so Key idea and the
+    // tips come before the Why after a right answer too (PHASE4.md 4.2).
+    expect(entranceDelay(vine[0])).toBeGreaterThanOrEqual(FEEDBACK_DELAY.why);
     expect(entranceDelay(vine[0])).toBeGreaterThan(FEEDBACK_DELAY.rows);
   });
 
@@ -304,7 +305,8 @@ describe('after an answer, the vine arrives in reading order (3a)', () => {
     for (const v of views) if (v.instance) (v.instance as { measureInWindow?: unknown }).measureInWindow = onScreen;
     // Every layout at the tap: still not drawn.
     act(() => { host.props.onLayout?.({ nativeEvent: { layout: { x: 0, y: 400, width: 340, height: 200 } } }); });
-    const vineOf = () => root().findAllByType(Vine)[0];
+    // Grove Phase 4: the vine is the tips card's stem (TipsCard), on the same arrival.
+    const vineOf = () => root().findAllByType(TipsCard)[0];
     expect(vineOf().props.visible).toBe(false);
     act(() => { jest.advanceTimersByTime((reduced ? motion.dur.reduced : VINE_ARRIVES) - 1); });
     act(() => { host.props.onLayout?.({ nativeEvent: { layout: { x: 0, y: 400, width: 340, height: 200 } } }); });

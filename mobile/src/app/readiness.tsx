@@ -30,6 +30,7 @@
  * scores are not scaled exam scores, and the screen says so.
  */
 import { router, useLocalSearchParams } from 'expo-router';
+import { scaledScoreNote } from '../content/scoreNote';
 import { lessonsFor } from '../content/lessons';
 import { noteDomain } from '../content/notes';
 import { openTab } from '../lib/actions';
@@ -304,7 +305,7 @@ export default function ReadinessReport() {
             {words && <T v="small" style={{ marginTop: space.sm }}>{words}</T>}
           </View>
         )}
-        <T v="meta" style={{ marginTop: space.md }}>{`${PRACTICE_SCORES_NOTE} ${cert.exam.passingNote}`}</T>
+        <T v="meta" style={{ marginTop: space.md }}>{`${PRACTICE_SCORES_NOTE} ${scaledScoreNote(cert)}`}</T>
 
         {/* 6. Domain by domain */}
         <Section title="Domain by domain" />

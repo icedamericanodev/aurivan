@@ -154,7 +154,7 @@ export default function NotesDomain() {
 
       {notes.analogy ? (
         <Enter i={1} style={{ marginTop: space.xl }}>
-          <T v="caption" color={c.accentText}>Think of it like this</T>
+          <T v="caption" color={c.accentText}>Think of it this way</T>
           <T v="body" color={c.ink2} style={{ marginTop: space.xs }}>{notes.analogy}</T>
         </Enter>
       ) : null}

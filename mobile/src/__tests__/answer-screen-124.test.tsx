@@ -130,27 +130,29 @@ describe('the answer screen after a miss', () => {
     press('Check answer');
   };
 
-  it('order: Not quite, your pick, best answer, Key idea, Exam cue, Why, Eliminate two, Final two', () => {
+  // Grove Phase 4 (PHASE4.md 4.2, the 4.6 fallback while O1 is open): one order in every state.
+  it('order: Not quite, your answer, best answer, Key idea, How to think about it, Why, then the folded tips after Read more', () => {
     missRich();
-    // Mobile 1.43: Eliminate two and Final two sit inside the "Read more" fold.
     pressStarting('Read more');
     const t = allText();
     // "Why D" (the heading), not the pick's own "Why not B" note under its row (mobile 1.43).
-    const at = (s: string) => (s === 'Why ' ? t.search(/Why [A-D]\b/) : t.indexOf(s));
-    // Premium round 2: "Your pick" (not "Your answer") on the Fig. 4 plate.
-    const order = ['Not quite', '✗ Your pick', '✓ Best answer', 'Key idea', 'Exam cue', 'Why ', 'Eliminate two', 'Final two'].map(at);
+    const why = t.search(/Why [A-D]\b/);
+    const order = [t.indexOf('Not quite'), t.indexOf('✗ Your answer'), t.indexOf('✓ Best answer'), t.indexOf('Key idea'), t.indexOf('How to think about it'), why, t.indexOf('Show less')];
     expect(order.every((i) => i >= 0)).toBe(true);
     expect([...order].sort((a, b) => a - b)).toEqual(order);
+    // Every tip is on screen once the fold is open, and the Exam cue is above the Why.
+    for (const label of ['Eliminate two', 'Final two', 'Exam cue']) expect(t).toContain(label);
+    expect(t.indexOf('Exam cue')).toBeLessThan(why);
   });
 
-  it('a right answer keeps the old order: Why first, then the whole vine', () => {
+  it('a right answer: Key idea and the tips first, then the whole Why; nothing folds', () => {
     startFromIds('cisa', [rich.id, ...others.map((o) => o.id)], 'T');
     mount(<SessionScreen />);
     pickBy(true);
     press('Check answer');
     const t = allText();
-    expect(t.indexOf('Why ')).toBeGreaterThan(-1);
-    expect(t.indexOf('Why ')).toBeLessThan(t.indexOf('Key idea'));
+    expect(t.indexOf('Key idea')).toBeGreaterThan(-1);
+    expect(t.indexOf('Key idea')).toBeLessThan(t.search(/Why [A-D]\b/));
     expect(t).not.toContain('Read more');
   });
 

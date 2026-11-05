@@ -212,7 +212,7 @@ function FinalReviewWeek({ week }: { week: FinalWeek }) {
             <Plate testID="week-set-date">
               <T v="small" color={c.ink}>
                 {past
-                  ? 'Your exam date has passed. Set a new one to plan again.'
+                  ? 'Your exam date is behind you. Set a new one to plan again.'
                   : 'Set your exam date and the plan shows today’s day and keeps the days you mark done.'}
               </T>
               <Button

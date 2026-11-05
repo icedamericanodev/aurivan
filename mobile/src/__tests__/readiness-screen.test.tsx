@@ -12,6 +12,7 @@
  * - Native: the charts' paths, dashes and bar widths parse (no NaN, arrays of
  *   numbers, whole-percent widths), at every size the report draws.
  */
+import { scaledScoreNote } from '../content/scoreNote';
 import { act, create, type ReactTestInstance, type ReactTestRenderer } from 'react-test-renderer';
 import { Dimensions } from 'react-native';
 import { router, useLocalSearchParams } from 'expo-router';
@@ -156,7 +157,8 @@ describe('the readiness report: every section, every state', () => {
     setCert({ answers: seedAnswers(30, 0.7), mocks: EIGHT, moments: { readiness: LOG } });
     mount(<ReadinessReport />);
     const t = allText();
-    expect(t).toMatch(/\d+–\d+/);
+    // Grove Phase 4 (O9): the scaled scores are said with "to" (no en dash, no "pass").
+    expect(t).toContain('scaled scores from 200 to 800');
     expect(t).toContain('estimated readiness');
     expect(t).toContain('A study estimate, not a prediction.');
     // Mobile 1.39: the framing's detail is folded into "How it's worked out" (one tap away).
@@ -170,7 +172,7 @@ describe('the readiness report: every section, every state', () => {
     expect(t).toContain('From 58% to 63% over 12 days.');
     expect(t).toMatch(/Up \d+ points over your last 3 mocks\./);
     expect(t).toContain('Practice scores are not scaled exam scores.');
-    expect(t).toContain(cisa.exam.passingNote);
+    expect(t).toContain(scaledScoreNote(cisa));
     // Domains 1 → 5, with the C9 list label.
     expect(cisa.domains.map((d) => t.indexOf(`Domain ${d.id} · ${d.short}`))).toEqual([...cisa.domains.map((d) => t.indexOf(`Domain ${d.id} · ${d.short}`))].sort((a, b) => a - b));
     expect(t).toContain('Last mock 10 of 13 (77%)');
@@ -243,7 +245,7 @@ describe('honest words, everywhere on the report', () => {
     setCert(cp);
     mount(<ReadinessReport />);
     // The passing note is the exam's own fact, said once; nothing else may speak of passing.
-    const words = allWords().split(cisa.exam.passingNote).join(' ');
+    const words = allWords().split(scaledScoreNote(cisa)).join(' ');
     expect(words).not.toMatch(BANNED);
     expect(words).not.toMatch(/questions in this domain|of \d{3,} questions|\d{3,} questions in/i);
   });

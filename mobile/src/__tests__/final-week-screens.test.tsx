@@ -538,7 +538,7 @@ describe('review fixes', () => {
   it('a past exam date: the plan reads, with one line asking for a new date', () => {
     setDaysLeft(-2);
     mount(<ExamWeek />);
-    expect(allText()).toContain('Your exam date has passed. Set a new one to plan again.');
+    expect(allText()).toContain('Your exam date is behind you. Set a new one to plan again.');
     expect(allText()).not.toContain('days done');
   });
 

@@ -25,6 +25,7 @@
  * the whole backup; B3: "NaN%" on You for a 0-question mock) are fixed and
  * the tests here now assert the fixed behaviour ("Fixed (QA Bn)").
  */
+import { scaledScoreNote } from '../content/scoreNote';
 import { act, create, type ReactTestInstance, type ReactTestRenderer } from 'react-test-renderer';
 import { Dimensions } from 'react-native';
 import { router, useLocalSearchParams } from 'expo-router';
@@ -724,7 +725,8 @@ describe('QA 6: never a pass prediction, never the bank size', () => {
   const bank = getAllQuestions('cisa').length;
   const domainBank = cisa.domains.map((d) => getAllQuestions('cisa').filter((q) => q.domainId === d.id).length);
   const scan = () => {
-    const words = allWords().split(cisa.exam.passingNote).join(' ');
+    // Grove Phase 4 (O9): the scaled score note says "the score needed", never "pass" (content/scoreNote.ts).
+    const words = allWords().split(scaledScoreNote(cisa)).join(' ');
     expect(words).not.toMatch(BANNED);
     expect(words).not.toMatch(new RegExp(`\\b${bank}\\b`));
     expect(words).not.toMatch(/questions in this domain|of \d{3,} questions|\d{3,} questions in/i);
@@ -736,9 +738,10 @@ describe('QA 6: never a pass prediction, never the bank size', () => {
     setCert({ answers: seedAnswers(30, 0.5), mocks: series([72, 70, 50, 48, 46, 44, 60, 58, 56, 54, 52, 50], 150) });
     mount(<ReadinessReport />);
     scan();
-    // The passing note appears exactly once, next to "Practice scores are not scaled exam scores."
-    expect(allText().split(cisa.exam.passingNote)).toHaveLength(2);
-    expect(allText()).toContain(`Practice scores are not scaled exam scores. ${cisa.exam.passingNote}`);
+    // The scaled score note appears exactly once, next to "Practice scores are not scaled exam scores."
+    expect(allText().split(scaledScoreNote(cisa))).toHaveLength(2);
+    expect(allText()).toContain(`Practice scores are not scaled exam scores. ${scaledScoreNote(cisa)}`);
+    expect(allText()).not.toMatch(/passing mark/);
   });
 
   it('Today in exam week (card and full-mock row), the exam-week screen and You', () => {

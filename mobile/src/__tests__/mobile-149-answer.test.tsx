@@ -116,7 +116,7 @@ afterEach(() => {
 });
 
 describe('after a miss: one way on, in the body', () => {
-  it('one "Go deeper" row (the lesson not done yet); no principle, note or report rows in the body', () => {
+  it('one "Go deeper" row (the lesson not done yet); no principle or note rows in the body; Report a problem is the source row link', () => {
     answer([full.q.id, other.id]);
     const deeper = hosts(/^Go deeper, /);
     expect(deeper).toHaveLength(1);
@@ -125,8 +125,9 @@ describe('after a miss: one way on, in the body', () => {
     expect(hosts(/^Read the principle/)).toHaveLength(0);
     expect(hosts(/^Read the note/)).toHaveLength(0);
     expect(hosts(/^Add a note$/)).toHaveLength(0);
-    expect(hosts(/^Report /)).toHaveLength(0);
-    // The source line stays, as text.
+    // Grove Phase 4 (4.2 step 7): the report is the source row's text link (and still in ⋯), never a row.
+    expect(hosts(/^Report /).map((n) => n.props.testID)).toEqual(['answer-report-link']);
+    // The source line stays.
     expect(allText()).toMatch(/Original · Reviewed /);
   });
 
@@ -170,8 +171,9 @@ describe('the ⋯ "More on this question" sheet', () => {
     expect(allText()).toContain('More on this question');
     const labels = moreRowLabels(root());
     expect(labels.map((l) => l.split(':')[0])).toEqual(['Read the note', 'Read the principle', 'Add a note', 'Report a problem with this question']);
-    const report = root().findAll((n) => n.props.accessibilityLabel === 'Report a problem with this question' && typeof n.props.onPress === 'function')[0];
-    expect(report).toBeUndefined(); // the sheet is closed again
+    // The sheet is closed again: the only report entry left is the source row's own link.
+    const report = root().findAll((n) => n.props.accessibilityLabel === 'Report a problem with this question' && typeof n.props.onPress === 'function' && n.props.testID !== 'answer-report-link');
+    expect(report).toHaveLength(0);
   });
 
   it('before the answer is checked: only the report (the rest would give the answer away)', () => {

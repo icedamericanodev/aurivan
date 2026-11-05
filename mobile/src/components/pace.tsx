@@ -62,14 +62,15 @@ export interface PaceStripProps {
 export function PaceStrip({ clock, clockUnit, line, lineShort, bar, onRequest, ref }: PaceStripProps) {
   const { c } = useTheme();
   const large = useFontScale() >= LARGE_TEXT;
-  const attention = line && (line.tone === 'behind' || line.tone === 'cue' || line.tone === 'soon');
-  const lineColor = attention ? c.clay : c.ink2;
+  // Grove Phase 4 (PHASE4.md O13): pace attention is said in words in ink2, never clay (the handoff keeps
+  // clay for the streak, below-70 marks and the focus area's badge).
+  const lineColor = c.ink2;
   const LineIcon = !line ? null : line.tone === 'cue' ? Flag : line.tone === 'note' || line.tone === 'soon' ? Clock : Gauge;
   const clockText = clock === 'hidden' ? 'Clock hidden' : clock === 'untimed' ? 'Untimed' : clock.text;
   const clockSpoken =
     clock === 'hidden' ? 'Clock hidden. Pace checks only.' : clock === 'untimed' ? 'Untimed' : clock.spoken;
-  // The 5-minute mark: clay, never the error colour.
-  const clockColor = typeof clock === 'object' && clock.low ? c.clay : c.ink;
+  // The low clock: its words ("left", the 5-minute line) carry it; the numerals stay ink.
+  const clockColor = c.ink;
   const spoken = [clockSpoken, line?.text].filter(Boolean).join('. ');
 
   const body = (

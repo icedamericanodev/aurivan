@@ -64,6 +64,7 @@
  *   Done is the plate button.
  */
 import { router, useFocusEffect } from 'expo-router';
+import { scaledScoreNote } from '../content/scoreNote';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Alert, BackHandler, Pressable, View } from 'react-native';
 import { LeafStrip } from '../components/leafStrip';
@@ -416,7 +417,7 @@ export default function Results() {
         </SpecimenLabel>
         {isMock && (
           <T v="meta" style={{ marginTop: space.md }}>
-            Practice scores are not scaled exam scores. {cert.exam.passingNote}
+            Practice scores are not scaled exam scores. {scaledScoreNote(cert)}
           </T>
         )}
         {/* How well "how sure I felt" matched the result (only when enough answers were rated). */}

@@ -45,15 +45,15 @@ import { afterSheet } from '../lib/sheetWait';
 import { haptic } from '../lib/haptics';
 import { shortReference } from '../lib/format';
 import { LARGE_TEXT, maxScale, motion, radius, space, type } from '../theme/tokens';
-import { fieldRole } from '../theme/grove';
+import { fieldRole, groveRadius } from '../theme/grove';
 import { useTheme } from '../theme/useTheme';
 import { LeafBig, LeafSmall, VerdictLeaf } from './glyphs';
-import { FieldText, Plate } from './fieldguide';
+import { FieldText } from './fieldguide';
 import { Check, ChevronDown, Ellipsis, ICON_STROKE, X } from './icons';
 import { AnimatedPressable, Collapse, ease, FadeIn, Pop, StateLayer, tween, useMotion, usePressScale } from './motion';
 import { ReportRow } from './support';
 import { Sheet } from './settings';
-import { cardLift, Chip, Gap, groveTile, IconButton, ListRow, Row, T, useFontScale } from './ui';
+import { cardLift, Chip, Gap, groveCard, IconButton, ListRow, Row, T, useFontScale } from './ui';
 
 /** The Field Guide verdict leaf: 34pt (with a 16 gap, the lines under it still start at VERDICT_INDENT). */
 const FIELD_LEAF = 34;
@@ -299,7 +299,7 @@ export function Verdict({
           </View>
         </Pop>
         {field ? (
-          <FieldText v="verdict" color={c.ink} style={{ flexShrink: 1 }}>{correct ? 'Correct' : 'Not quite'}</FieldText>
+          <FieldText v="verdict" color={color} style={{ flexShrink: 1 }}>{correct ? 'Correct' : 'Not quite'}</FieldText>
         ) : (
           <T v="hero" color={color} style={{ flexShrink: 1 }}>{correct ? 'Correct' : 'Not quite'}</T>
         )}
@@ -318,25 +318,8 @@ export function useVerdictIndent(): number {
   return useFontScale() >= LARGE_TEXT ? 0 : VERDICT_INDENT;
 }
 
-/**
- * Mobile 1.43: the learner's own pick, explained, right under its red row: "Why not B" in a
- * `caption`, then that option's note in `small` `ink`. It sat inside the red block before; on its
- * own the block is calmer and the note reads as plain text. Never a header (the screen has ONE
- * "Why" heading, "Why D"): one screen-reader stop, "Why not B: …". `letter` is the DISPLAY letter
- * and `text` has already been through renderText.
- */
-export function PickNote({ letter, text }: { letter: Letter; text: string }) {
-  const { c } = useTheme();
-  return (
-    <View accessible accessibilityLabel={`Why not ${letter}: ${text}`} style={{ paddingHorizontal: space.lg, marginBottom: space.lg }}>
-      <T v="caption" color={c.ink2}>{`Why not ${letter}`}</T>
-      <T v="small" color={c.ink} style={{ marginTop: 2 }}>{text}</T>
-    </View>
-  );
-}
-
-// ── AnswerPlate: Fig. 4, your pick against the best answer (premium round 2) ──
-/** One row of the plate: the DISPLAY letter, the option's words, and (your pick only) why it isn't best. */
+// ── AnswerPlate: your answer against the best one (Grove Phase 4) ──
+/** One row of the card: the DISPLAY letter, the option's words, and (your answer after a miss) why it isn't best. */
 export interface PlateRow {
   letter: Letter;
   text: string;
@@ -344,51 +327,66 @@ export interface PlateRow {
   why?: string;
 }
 
-/** From this text size the letter disc sits above its key instead of beside it (spec 2, 200% text). */
+/** From this text size the letter badge sits above its words instead of beside them (200% text). */
 export const DISC_ABOVE_FROM = 1.6;
-/** The disc and its column: 30pt at every text size (the letter caps at ×1.3 inside it). */
+/** The letter badge: 30pt at every text size (the letter caps at ×1.3 inside it). */
 const DISC = 30;
-/** The gap between the disc and its key when they sit side by side. */
+/** The gap between the badge and its words when they sit side by side. */
 const DISC_GAP = 14;
-/** The rows rise this far apart after the plate (motion: plate, then rows, `enter` 240 each). */
-export const PLATE_ROW_STAGGER = motion.stagger.group;
+/** The rows fade in this far apart after the card (Grove Phase 4 motion: opacity only, 30 ms apart). */
+export const PLATE_ROW_STAGGER = 30;
 
 /**
- * Premium round 2 (REPORT spec 2). The answer screen's one plate. It is Fig. 4 in the figure
- * register the web and the phone share (DESIGN_SYSTEM.md §21.1: 4 = the answer; the web's caption
- * is "Three moves for this question", the phone's is this one):
+ * Grove Phase 4 (design-notes/grove/PHASE4.md 4.2 step 2): the answer card. ONE Grove card (`raised`,
+ * 24 corners, a 1pt edge, 18 inside), rows split by 1pt dividers, and NO tinted fills: the state
+ * colour is on the letter badge and the caption words only.
  *
- * - After a miss, "Fig. 4 · Your pick, and the best answer" and two rows with a hairline between:
- *   YOUR PICK (an outlined `wrong` disc with the display letter, "✗ Your pick" in `wrong`, the
- *   option in Figtree 500 16/22, then "Why not B: …" in Fraunces italic 15/21 `ink2`) and
- *   BEST ANSWER (a filled `correct` disc, "✓ Best answer" in `correct`, the option in Figtree 600).
- * - After a right answer, "Fig. 4 · Your answer" and one ✓ row.
+ * - After a miss: "Your answer" (a filled miss-tone badge, the caption in `wrong`, the option in
+ *   Figtree 500), then "Why not B" as a caption over its note (one stop, never a heading), a divider,
+ *   and "Best answer" (a filled correct-tone badge, the caption in `correct`, the option in Figtree 600).
+ * - After a right answer: one row, "Your answer · the best".
  *
- * Colour is never alone: every row has its ✗ / ✓ AND its words. The caption is a header (so plates
- * can be skipped between); each row is ONE screen-reader stop ("Your pick, B, not the best answer: …
- * Why not B: …"; "Best answer, D: …"). Focus after "Check answer" still goes to the verdict above.
- *
- * Motion: the plate rises in (`enter`, 240), then each row 40 ms apart. Reduce Motion: FadeIn's
- * 120 ms cross-fade, nothing moves. No fixed heights: at 200% text the rows just grow; from ×1.6
- * the disc sits above its key so the words keep the width.
+ * Colour is never alone: every row has its ✗ / ✓ and its words. Each row is one screen-reader stop
+ * ("Your answer, B, not the best: …"; "Why not B: …"; "Best answer, D: …"). DISPLAY letters only.
+ * The other options stay one tap away in More ("Show all options") and in review.
  */
 export function AnswerPlate({ pick, best, delay = 0 }: { pick?: PlateRow; best: PlateRow; delay?: number }) {
   const { c } = useTheme();
   const missed = Boolean(pick);
-  const rows: { kind: 'pick' | 'best'; row: PlateRow }[] = [...(pick ? [{ kind: 'pick' as const, row: pick }] : []), { kind: 'best', row: best }];
+  const parts: { key: string; node: ReactNode }[] = [];
+  if (pick) {
+    parts.push({ key: 'pick', node: <AnswerPlateRow kind="pick" row={pick} missed /> });
+    if (pick.why) parts.push({ key: 'why', node: <PickNote letter={pick.letter} text={pick.why} /> });
+  }
+  parts.push({ key: 'best', node: <AnswerPlateRow kind="best" row={best} missed={missed} /> });
   return (
-    <FadeIn dur="enter" delay={delay} style={{ marginTop: space.lg }}>
-      <Plate testID="answer-plate" fig={{ n: 4, title: missed ? 'Your pick, and the best answer' : 'Your answer' }}>
-        {rows.map(({ kind, row }, i) => (
-          <FadeIn key={kind} dur="enter" delay={delay + PLATE_ROW_STAGGER * (i + 1)}>
-            {/* The hairline between the two rows: a view border, never tied to a text baseline. */}
-            <View style={i > 0 ? { borderTopWidth: 1, borderTopColor: c.line, marginTop: space.md, paddingTop: space.md } : undefined}>
-              <AnswerPlateRow kind={kind} row={row} missed={missed} />
+    <FadeIn dur="reveal" rise={false} delay={delay} style={{ marginTop: space.lg }}>
+      <View testID="answer-plate" style={[groveCard(c), { padding: 18 }]}>
+        {parts.map((p, i) => (
+          <FadeIn key={p.key} dur="reveal" rise={false} delay={delay + PLATE_ROW_STAGGER * (i + 1)}>
+            {/* "Why not B" belongs to the row above it: no divider between them, one before Best answer. */}
+            <View style={i > 0 && p.key !== 'why' ? { borderTopWidth: 1, borderTopColor: c.line, marginTop: space.md, paddingTop: space.md } : undefined}>
+              {p.node}
             </View>
           </FadeIn>
         ))}
-      </Plate>
+      </View>
     </FadeIn>
+  );
+}
+
+/**
+ * "Why not B" in a `caption` (ink2) over that option's note in `small` (ink): one screen-reader stop,
+ * never a heading (the screen has ONE Why heading, "Why D"). Lined up with the row's words.
+ */
+export function PickNote({ letter, text }: { letter: Letter; text: string }) {
+  const { c } = useTheme();
+  const discAbove = useFontScale() >= DISC_ABOVE_FROM;
+  return (
+    <View testID="answer-why-not" accessible accessibilityLabel={`Why not ${letter}: ${text}`} style={{ marginTop: space.sm, marginLeft: discAbove ? 0 : DISC + DISC_GAP }}>
+      <T v="caption" color={c.ink2}>{`Why not ${letter}`}</T>
+      <T v="small" color={c.ink} style={{ marginTop: 2 }}>{text}</T>
+    </View>
   );
 }
 
@@ -396,17 +394,13 @@ function AnswerPlateRow({ kind, row, missed }: { kind: 'pick' | 'best'; row: Pla
   const { c } = useTheme();
   const fontScale = useFontScale();
   const discAbove = fontScale >= DISC_ABOVE_FROM;
-  // The disc grows with its letter, as the option row's badge does (TYPE_SCALE.md exception E4).
+  // The badge grows with its letter, as the option row's badge does (TYPE_SCALE.md exception E4).
   const disc = DISC * Math.min(Math.max(fontScale, 1), 1.6);
   const isPick = kind === 'pick';
   const tone = isPick ? c.wrong : c.correct;
-  const key = isPick ? '✗ Your pick' : '✓ Best answer';
+  const key = isPick ? 'Your answer' : missed ? 'Best answer' : 'Your answer · the best';
   // One stop per row, the display letter in every label.
-  const spoken = isPick
-    ? `Your pick, ${row.letter}, not the best answer: ${row.text}${row.why ? `. Why not ${row.letter}: ${row.why}` : ''}`
-    : missed
-      ? `Best answer, ${row.letter}: ${row.text}`
-      : `Best answer, ${row.letter}, your pick: ${row.text}`;
+  const spoken = isPick ? `Your answer, ${row.letter}, not the best: ${row.text}` : missed ? `Best answer, ${row.letter}: ${row.text}` : `Your answer, ${row.letter}, the best: ${row.text}`;
   return (
     <View
       accessible
@@ -414,93 +408,98 @@ function AnswerPlateRow({ kind, row, missed }: { kind: 'pick' | 'best'; row: Pla
       testID={isPick ? 'answer-row-pick' : 'answer-row-best'}
       style={{ flexDirection: discAbove ? 'column' : 'row', alignItems: 'flex-start', gap: discAbove ? space.sm : DISC_GAP }}
     >
-      {/* Your pick: an outlined disc in `wrong`. Best answer: a filled `correct` disc, the letter in paper. */}
-      <View
-        style={{
-          minWidth: disc,
-          minHeight: disc,
-          borderRadius: disc / 2,
-          borderWidth: 1.5,
-          borderColor: tone,
-          backgroundColor: isPick ? 'transparent' : tone,
-          alignItems: 'center',
-          justifyContent: 'center',
-        }}
-      >
-        <T v="badgeLetter" color={isPick ? tone : c.bg}>{row.letter}</T>
+      {/* A filled badge in the state colour, the display letter in paper; its ✗ / ✓ is in the caption. */}
+      <View style={{ minWidth: disc, minHeight: disc, borderRadius: groveRadius.step, backgroundColor: tone, alignItems: 'center', justifyContent: 'center' }}>
+        <T v="badgeLetter" color={c.bg}>{row.letter}</T>
       </View>
       <View style={{ flex: discAbove ? undefined : 1, alignSelf: 'stretch' }}>
-        {/* TYPE_SCALE row 14: a sentence-case caption, as the web's answer tag (uppercase is for kickers only). */}
-        <T v="caption" color={tone} style={{ marginBottom: 2 }}>{key}</T>
+        <T v="caption" color={tone} style={{ marginBottom: 2 }}>{`${isPick ? '✗' : '✓'} ${key}`}</T>
         <FieldText v={isPick ? 'option' : 'best'}>{row.text}</FieldText>
-        {isPick && row.why ? (
-          <FieldText v="why" style={{ marginTop: space.sm }}>{`Why not ${row.letter}: ${row.why}`}</FieldText>
-        ) : null}
       </View>
     </View>
   );
 }
 
-// ── Key idea + Exam cue after a miss (premium round 2) ───────────────
+// ── Key idea (Grove Phase 4, 4.2 step 3) ─────────────────────────────
 /**
- * Premium round 2 (REPORT spec 2.6–2.7), under Fig. 4 after any answer:
- *
- * - KEY IDEA: a sentence-case caption over the key idea set as a quotation (`type.quote`) in `ink`. The vine
- *   rule (the stem down its left) is gone here; Eliminate two and Final two keep their vine inside
- *   the "Read more" fold below.
- * - EXAM CUE: a label (`raised`, 1pt `line` edge, 3pt corners) with the `clay` key
- *   "Exam cue · use it again" over the cue in Figtree 16/24. On a wide screen (a tablet) it sits in
- *   a margin column beside the key idea, but only below ×1.3 text: with large text the column would
- *   squeeze the words, so it stays under the key idea.
- *
- * `visible` keeps the 1.52 vine timing: the screen sets it only once this block's entrance has
- * landed (VINE_ARRIVES) and it is on screen, and the one light tick plays then, as the Key idea leaf's
- * did. Each part is one screen-reader stop ("Key idea: …", "Exam cue, use it again: …").
+ * A `caption` "Key idea" in the accent text colour over the key concept in `quote` (Fraunces italic
+ * 18/26), with the 3px accent rule on its left: the coach is speaking. Not a card. One stop.
+ * `visible` keeps the 1.52 timing: the one light tick plays as it arrives on screen.
  */
-export function KeyIdeaCue({ keyIdea, cues, visible }: { keyIdea?: string; /** The cue tips' bodies and labels (tipParts), display letters already. */ cues: { label: string; body: string }[]; visible: boolean }) {
+export function KeyIdea({ text, visible }: { text?: string; visible: boolean }) {
   const { c } = useTheme();
-  const { width } = useWindowDimensions();
-  // Hooks first (before the early return below): large text keeps the cue under the key idea.
-  const largeText = useFontScale() >= LARGE_TEXT;
   useEffect(() => {
-    // The same one tick the vine gave as its Key idea leaf appeared, at the same moment.
-    if (visible && keyIdea) haptic.selection();
-  }, [visible, keyIdea]);
-  if (!keyIdea && cues.length === 0) return null;
-  const wide = width >= WIDE_MARGIN && !largeText && Boolean(keyIdea) && cues.length > 0;
-  const idea = keyIdea ? (
-    <View accessible accessibilityLabel={`Key idea: ${keyIdea}`} style={wide ? { flex: 1 } : undefined}>
-      {/* A caption in the accent text colour, as the web's Key idea label. */}
-      <T v="caption" color={c.accentText}>Key idea</T>
-      <T v="quote" color={c.ink} style={{ marginTop: space.xs }}>{keyIdea}</T>
-    </View>
-  ) : null;
-  const labels = cues.map((cue, i) => {
-    const key = cue.label === 'Exam cue' ? 'Exam cue · use it again' : cue.label;
-    return (
-      <View
-        key={i}
-        accessible
-        accessibilityLabel={`${key.replace(' · ', ', ')}: ${cue.body}`}
-        testID="exam-cue-label"
-        style={[groveTile(c), { paddingVertical: space.md, paddingHorizontal: space.lg, marginTop: wide ? 0 : space.lg }]}
-      >
-        <T v="caption" color={c.clay}>{key}</T>
-        <T v="body" color={c.ink} style={{ marginTop: space.xs }}>{cue.body}</T>
-      </View>
-    );
-  });
+    if (visible && text) haptic.selection();
+  }, [visible, text]);
+  if (!text) return null;
   return (
-    <View style={{ marginTop: space.xl, ...(wide ? { flexDirection: 'row', gap: space.xl, alignItems: 'flex-start' } : null) }}>
-      {idea}
-      {wide ? <View style={{ width: CUE_COLUMN, gap: space.md }}>{labels}</View> : labels}
+    <View testID="answer-key-idea" accessible accessibilityLabel={`Key idea: ${text}`} style={{ marginTop: space.xl, borderLeftWidth: 3, borderLeftColor: c.accent, paddingLeft: space.md }}>
+      <T v="caption" color={c.accentText}>Key idea</T>
+      <T v="quote" color={c.ink} style={{ marginTop: space.xs }}>{text}</T>
     </View>
   );
 }
 
-/** From this window width the Exam cue moves into a margin column (tablets, unfolded phones). */
-const WIDE_MARGIN = 600;
-const CUE_COLUMN = 240;
+// ── How to think about it: the tips in one card (Grove Phase 4, 4.2 step 4) ──
+/** The heading over the tips card ("Three moves" breaks when a question has four tips). */
+export const TIPS_HEADING = 'How to think about it';
+
+/** The `headline` heading over the tips (Figtree 600 17/24, never Fraunces). */
+export function TipsHeading() {
+  return (
+    <T v="headline" accessibilityRole="header" style={{ marginTop: space.xl }}>
+      {TIPS_HEADING}
+    </T>
+  );
+}
+
+/**
+ * One card, one row per tip: its label word (tipParts) as a `caption` in `accentText` over the tip in
+ * `small` ink, 1pt dividers between. A small accent leaf marks each row and ONE stem runs down the
+ * card's left edge, drawn once in reading order (drawn at once under Reduce Motion). Colour never tells
+ * the tips apart: the label words do. Each row is one stop that starts with its label ("Final two: …").
+ */
+export function TipsCard({ rows, visible, testID = 'answer-tips' }: { rows: { label: string; body: string }[]; visible: boolean; testID?: string }) {
+  const { c } = useTheme();
+  const { reduced } = useMotion();
+  const grow = useSharedValue(reduced ? 1 : 0);
+  useEffect(() => {
+    if (!visible) return;
+    if (reduced) {
+      grow.set(1);
+      return;
+    }
+    grow.set(tween(1, 'vine', ease.out));
+  }, [visible, reduced, grow]);
+  const stemStyle = useAnimatedStyle(() => ({ transform: [{ scaleY: grow.value }] }));
+  if (rows.length === 0) return null;
+  return (
+    <View testID={testID} style={[groveCard(c), { marginTop: space.sm, paddingVertical: space.sm, paddingRight: 18, paddingLeft: 40 }]}>
+      {/* The stem: 1.5pt accent down the left edge, behind the leaves, drawn from the top. Decorative. */}
+      <Animated.View
+        accessibilityElementsHidden
+        importantForAccessibility="no-hide-descendants"
+        style={[{ position: 'absolute', left: 19, top: 22, bottom: 22, width: 1.5, borderRadius: 1, backgroundColor: c.accent, opacity: 0.55, transformOrigin: 'top' }, stemStyle]}
+      />
+      {rows.map((r, i) => (
+        <View
+          key={`${r.label}-${i}`}
+          testID="answer-tip-row"
+          accessible
+          accessibilityLabel={`${r.label}: ${r.body}`}
+          style={[{ paddingVertical: space.md }, i > 0 && { borderTopWidth: 1, borderTopColor: c.line }]}
+        >
+          {/* The leaf sits on a paper knock-out so the stem seems to pass behind it. */}
+          <View style={{ position: 'absolute', left: -30, top: space.md, width: 22, height: 22, alignItems: 'center', justifyContent: 'center', backgroundColor: c.raised }}>
+            <LeafSmall color={c.accent} />
+          </View>
+          <T v="caption" color={c.accentText} style={{ marginBottom: 3 }}>{r.label}</T>
+          <T v="small" color={c.ink}>{r.body}</T>
+        </View>
+      ))}
+    </View>
+  );
+}
 
 /**
  * Mobile 1.22 (design spec §6.4): the answer screen's outcome, kept in the
@@ -662,7 +661,7 @@ export function WhyBlock({
   return (
     <View>
       <T v="headline" accessibilityRole="header" style={{ marginTop: space.lg }}>{`Why ${letter}`}</T>
-      <T v="body" numberOfLines={folded && long ? 2 : undefined} style={{ marginTop: space.xs }}>{text}</T>
+      <T v="body" numberOfLines={folded && long ? 2 : undefined} accessibilityLabel={text} style={{ marginTop: space.xs }}>{text}</T>
       {/* The toggle comes BEFORE what it opens, so a screen reader moves from "Read more" straight on to the
           Eliminate two and Final two tips it revealed. */}
       {canFold && (
@@ -788,12 +787,28 @@ export function TrustLine({ certId, target, reference }: { certId: string; targe
 // then the source. "Report a problem" moved into the ⋯ sheet (premium pass
 // §2.4), so the line is text only. `children`: the note after a report's email
 // app opened (useReportFlow's `block`), kept under the source as before.
-export function SourceLine({ reference, children }: { reference?: string; children?: ReactNode }) {
+export function SourceLine({ reference, children, onReport }: { reference?: string; children?: ReactNode; /** Grove Phase 4: the "Report a problem" link at the row's right (it stays in More too). */ onReport?: () => void }) {
   const { c } = useTheme();
   return (
-    <View style={{ borderTopWidth: 1, borderTopColor: c.line, marginTop: space.xs, paddingTop: space.md }}>
-      <T v="meta">{`Original · Reviewed ${config.contentReviewed}`}</T>
-      {reference ? <T v="meta" color={c.muted}>{shortReference(reference)}</T> : null}
+    <View testID="answer-source" style={{ borderTopWidth: 1, borderTopColor: c.line, marginTop: space.lg, paddingTop: space.md }}>
+      <View style={{ flexDirection: 'row', flexWrap: 'wrap', alignItems: 'flex-start', justifyContent: 'space-between', columnGap: space.md }}>
+        <View accessible accessibilityLabel={`Original, reviewed ${config.contentReviewed}${reference ? `, ${shortReference(reference)}` : ''}`} style={{ flexShrink: 1, paddingVertical: onReport ? 14 : 0 }}>
+          <T v="meta" color={c.ink2}>{`Original · Reviewed ${config.contentReviewed}`}</T>
+          {reference ? <T v="meta" color={c.ink2}>{shortReference(reference)}</T> : null}
+        </View>
+        {onReport && (
+          <Pressable
+            testID="answer-report-link"
+            accessibilityRole="button"
+            accessibilityLabel="Report a problem with this question"
+            accessibilityHint="Opens a short form, then your email app"
+            onPress={onReport}
+            style={({ pressed }) => ({ minHeight: 48, justifyContent: 'center', opacity: pressed ? 0.7 : 1 })}
+          >
+            <T v="meta" color={c.accentText}>Report a problem</T>
+          </Pressable>
+        )}
+      </View>
       {children}
     </View>
   );
