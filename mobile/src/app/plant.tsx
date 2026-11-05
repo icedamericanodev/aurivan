@@ -203,9 +203,10 @@ export default function YourPlant() {
   // The state tag (4.7): exam day, resting (or back after a while), or plan cleared. Exam eve has none.
   const tag = view.exam === 'day' ? 'Exam day' : view.exam === 'eve' ? null : rest ? 'Resting' : view.look?.visiting ? 'Plan cleared' : null;
   const examHidesNext = view.exam === 'eve' || view.exam === 'day';
-  // The art's mood: resting draws the small moon (never the dusk disc, see the plant below); exam day never rests.
+  // The art's state (4.7): resting draws the small moon (never a disc, see the plant below); exam day never rests.
+  const artResting = view.resting && view.exam !== 'day';
   const lookMood = view.look?.mood;
-  const artMood = view.exam === 'day' ? (lookMood === 'resting' ? 'idle' : lookMood) : view.resting ? 'resting' : lookMood;
+  const artMood = !artResting && lookMood === 'resting' ? 'idle' : lookMood;
 
   // The art: its growth's size on the page, on its soil line.
   const pageW = win.width - space.gutter * 2;
@@ -370,10 +371,11 @@ export default function YourPlant() {
                 stage={p.growth}
                 organs={view.scales}
                 quietLook={!view.face}
-                // Phase 4b review (4.1 items 2 and 3, 4.7): on paper, no disc behind the art. `resting`
-                // would draw the engine's dusk disc, so it stays off; the resting MOOD still draws the
-                // small moon and the slight tilt. Exam day is never drawn as resting (its tag says the state).
-                resting={false}
+                // Phase 4b review (4.1 items 2 and 3, 4.7): resting keeps its small moon and settle, but on
+                // paper there is no disc behind the art (`disc={false}` leaves out the engine's dusk disc).
+                // Exam day is never drawn as resting: its tag says the state.
+                resting={artResting}
+                disc={false}
                 size={size}
                 fit={false}
                 theme={theme}

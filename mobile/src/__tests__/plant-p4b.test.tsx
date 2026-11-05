@@ -20,6 +20,8 @@ import PlantLook from '../app/plant-look';
 import PlantPick from '../app/plant-pick';
 import { LeafFall, resetCelebrationsForTest, resetOncePerDayForTest, setSystemReducedMotionForTest } from '../components/motion';
 import { plantArtSize } from '../components/plant/PlantPage';
+import { buildPlant, type GNode } from '../components/plant/art';
+import { withoutDisc } from '../components/plant/LivePlant';
 import { CROWN_MOCK, FORM_FACTS, GROWTH_IDS, plantNew, SPROUT_ANSWERS, type CertPlant, type GrowthLevel } from '../engine/plant';
 import { lookItem } from '../engine/plantLooks';
 import { dayKey } from '../engine/streak';
@@ -281,15 +283,32 @@ describe('Your plant on paper (PHASE4B 4.1, 4.7)', () => {
     mount(<YourPlant />);
     expect(textOf(byTestID('plant-state-tag')[0])).toBe('Resting');
     const hero = () => r!.root.find((n) => n.props.testID === 'plant-hero' && typeof n.type !== 'string');
-    // `resting` draws the dusk disc (art.ts); on paper it stays off and the resting MOOD draws the moon.
-    expect(hero().props.resting).toBe(false);
-    expect(hero().props.mood).toBe('resting');
+    // The resting look (its moon and settle), drawn with no disc behind it.
+    expect(hero().props.resting).toBe(true);
+    expect(hero().props.disc).toBe(false);
     unmount();
     useSettings.setState({ examDates: { cisa: dayKey(Date.now()) } });
     mount(<YourPlant />);
     expect(textOf(byTestID('plant-state-tag')[0])).toBe('Exam day');
     expect(hero().props.resting).toBe(false);
     expect(hero().props.mood).not.toBe('resting');
+  });
+
+  it('no disc: the resting drawing loses only its dusk disc and keeps its moon, in both styles', () => {
+    const find = (n: GNode, id: string): GNode | undefined =>
+      n.id === id ? n : n.children.map((c) => (c.t === 'g' ? find(c, id) : undefined)).find(Boolean);
+    for (const style of ['botanical', 'storybook'] as const) {
+      for (const theme of ['light', 'dark'] as const) {
+        const b = buildPlant({ species: 'oak', stage: 4, lod: 'full', theme, px: 300, fit: false, look: { style }, resting: true });
+        expect(find(b.root, 'dusk')).toBeDefined();
+        const paper = withoutDisc(b.root);
+        expect(find(paper, 'dusk')).toBeUndefined();
+        expect(find(paper, 'fx')).toBeDefined();
+        // The shared build is never changed (the website draws it too), and the result is cached.
+        expect(find(b.root, 'dusk')).toBeDefined();
+        expect(withoutDisc(b.root)).toBe(paper);
+      }
+    }
   });
 
   it('hidden and nothing planted: the short lines', () => {

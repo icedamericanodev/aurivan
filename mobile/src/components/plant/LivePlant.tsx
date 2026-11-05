@@ -59,6 +59,11 @@ export interface LivePlantProps {
   size: number;
   theme: 'light' | 'dark';
   resting?: boolean;
+  /**
+   * Grove Phase 4b (PHASE4B 4.1 item 2): false = the art stands on the page with no disc behind it.
+   * The resting look keeps its small moon and settle; only its dusk disc goes. Default true.
+   */
+  disc?: boolean;
   mood?: PlantMood;
   look?: ArtLook;
   lod?: Lod;
@@ -178,6 +183,23 @@ export function baseOrigin(built: BuiltPlant, viewBox: string, size: number): st
   return originPx(px, py);
 }
 
+/**
+ * Grove Phase 4b: the same part tree without the resting dusk disc (the art on paper has no disc).
+ * A new root, cached per built root, so the shared build (art.ts, also drawn by the website) is never
+ * changed and the layer and element caches keep working.
+ */
+const NO_DISC = new WeakMap<GNode, GNode>();
+const isDisc = (c: GNode['children'][number]) => c.t === 'g' && c.id === 'dusk';
+export function withoutDisc(root: GNode): GNode {
+  if (!root.children.some(isDisc)) return root;
+  let r = NO_DISC.get(root);
+  if (!r) {
+    r = { ...root, children: root.children.filter((c) => !isDisc(c)) };
+    NO_DISC.set(root, r);
+  }
+  return r;
+}
+
 function Layer({ node, size, viewBox, style }: { node: GNode; size: number; viewBox: string; style?: StyleProp<ViewStyle> }): ReactElement {
   return (
     <View pointerEvents="none" style={[StyleSheet.absoluteFill, style]}>
@@ -189,7 +211,7 @@ function Layer({ node, size, viewBox, style }: { node: GNode; size: number; view
 }
 
 function LivePlantInner(p: LivePlantProps) {
-  const { species, stage, organs, quietLook, size, theme, resting, mood, look, lod, fit, accessibilityLabel, style, testID, breathe, breatheDelay = 0, reaction, growth, plantIn } = p;
+  const { species, stage, organs, quietLook, size, theme, resting, disc, mood, look, lod, fit, accessibilityLabel, style, testID, breathe, breatheDelay = 0, reaction, growth, plantIn } = p;
   const { reduced } = useMotion();
   const level = lod ?? lodFor(size);
   const organKey = organs ? organs.map((v) => Math.round(v * 40) / 40).join(',') : '';
@@ -204,7 +226,8 @@ function LivePlantInner(p: LivePlantProps) {
   );
   const built = useMemo(() => buildPlant({ ...opts, stage }), [opts, stage]);
   const viewBox = tight ? built.frame : '0 0 200 200';
-  const layers = plantLayers(built.root);
+  const rootOf = (b: BuiltPlant) => (disc === false ? withoutDisc(b.root) : b.root);
+  const layers = plantLayers(rootOf(built));
   // Onboarding: the first sprout pops on its own layer.
   // A seed's curled tip, or (an existing learner's study back-filled it) the Sprout's two leaves.
   const lifted = useMemo(() => (plantIn ? (liftGroup(layers.plant, 'sprout') ?? liftGroup(layers.plant, 'leaves')) : null), [plantIn, layers.plant]);
@@ -397,7 +420,7 @@ function LivePlantInner(p: LivePlantProps) {
         // The old growth, whole (its ground is a size smaller), swelling then fading.
         <Animated.View pointerEvents="none" style={[StyleSheet.absoluteFill, { transformOrigin: baseOrigin(old, viewBox, size) }, oldStyle]}>
           <Svg width={size} height={size} viewBox={viewBox}>
-            {elementsOf(old.root)}
+            {elementsOf(rootOf(old))}
           </Svg>
         </Animated.View>
       ) : null}
