@@ -2576,8 +2576,6 @@ header {
 .pl-row:hover .pl-row-chev { color: var(--text); }
 
 /* Detail */
-.pl-back { margin: 0 0 var(--sp-sm) -4px; }
-.pl-back .ico-back { margin-right: 2px; }
 .pl-d-head { padding-bottom: var(--sp-lg); border-bottom: 1px solid var(--border); }
 .pl-d-cap { font: var(--t-caption); letter-spacing: var(--tr-caption); color: var(--text2); margin: 0 0 var(--sp-xs); }
 .pl-d-title { font: var(--t-display); letter-spacing: var(--tr-display); color: var(--text); margin: 0; }
@@ -4632,6 +4630,52 @@ header {
 .cl-ver-label { font: var(--t-headline); letter-spacing: var(--tr-headline); color: var(--text); }
 .cl-ver-label .cl-latest { background: var(--btn); color: var(--on-btn); border-radius: var(--r-pill); }
 .cl-items li { font: var(--t-small); color: var(--text); }
+/* Grove sheet head on Your data, What's New and Practice summary (Phase 5):
+   the hero title on the left, the 44px close at the right, kept in view while
+   the sheet scrolls. The bottom Close or Done stays. */
+.summary-modal { border: 1px solid var(--raised-outline); border-radius: var(--r-xl); box-shadow: var(--sh-dialog); }
+.summary-overlay { background: rgba(17,22,19,.55); }
+.summary-modal, .changelog-modal { --dlg-pad: 32px; }
+/* Small phones: the same 24px sheet padding as Choose what you'll grow. */
+@media (max-width: 400px) { .summary-modal, .changelog-modal { --dlg-pad: var(--sp-xl); padding: var(--dlg-pad); } }
+/* The head reaches the sheet's top edge, so nothing scrolls past above it. */
+.dlg-head {
+  position: sticky; top: calc(-1 * var(--dlg-pad, 32px)); z-index: 1; display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  margin: calc(-1 * var(--dlg-pad, 32px)) 0 8px; padding: var(--dlg-pad, 32px) 0 4px; background: var(--surface);
+}
+.dlg-head > .cl-title, .dlg-head > .summary-title { margin: 0; min-width: 0; text-align: left; color: var(--text); }
+.summary-modal .summary-sub, .summary-modal .summary-big-score, .summary-modal .summary-score-label { text-align: left; }
+.summary-modal .summary-sub { margin: 0 0 var(--sp-lg); color: var(--text2); }
+.summary-modal .summary-score-label { margin-bottom: 0; color: var(--text2); }
+.summary-tiles.td-clear-ts.rs-tiles { margin: var(--sp-lg) 0 0; grid-template-columns: repeat(auto-fit, minmax(min(100%, 5em), 1fr)); }
+.summary-conf-row.td-clear-ts.rs-tiles { margin: 0; justify-content: stretch; }
+.summary-tiles .td-clear-of { white-space: normal; }
+.summary-modal .summary-conf-note { margin: 0 0 var(--sp-md); }
+/* Each area: the name as a label, its "too few yet" line as meta, hairlines between. */
+.summary-domain-row { min-height: 48px; margin: 0; padding: 8px 0; }
+.summary-domain-row + .summary-domain-row { border-top: 1px solid var(--border); }
+.summary-domain-label { flex: 1 1 11rem; font: var(--t-label); letter-spacing: normal; color: var(--text); }
+.summary-domain-val { flex: 1 1 6.5rem; }
+.summary-domain-nm { gap: 8px; }
+.summary-domain-nm .dom-dot { margin: 0; border-radius: 2px; }
+.summary-section-label::after { background: var(--border); }
+.summary-focus { border: 0; border-radius: var(--r-tile); background: var(--surface2); }
+.summary-focus-icon:empty { display: none; }
+/* Pacing: the same card as the focus lines above it, a sentence-case caption on top. */
+.summary-modal .pacing-feedback { border: 0; border-radius: var(--r-tile); background: var(--surface2); padding: 14px 16px; margin: 0 0 var(--sp-sm); }
+.pacing-cap { margin: 0 0 var(--sp-sm); font: var(--t-caption); letter-spacing: var(--tr-caption); color: var(--text2); }
+.pacing-row { flex-wrap: wrap; gap: var(--sp-sm) 14px; margin-bottom: 0; }
+.pacing-info { min-width: min(100%, 12em); }
+.pacing-info strong { font: var(--t-label); letter-spacing: normal; }
+.pacing-badge { flex-shrink: 0; }
+.pacing-msg { margin-top: var(--sp-sm); font: var(--t-small); color: var(--text2); }
+/* Each tile's number sits at the tile's foot, so the numbers share a line
+   whatever the labels wrap to (stacked tiles keep label and number side by side). */
+.summary-tiles .td-clear-v { margin-top: auto; }
+@container (max-width: 12em) { .summary-tiles .td-clear-v { margin-top: 0; } }
+/* Your data: the same words and tones as the Settings rows (Start fresh in clay). */
+.act-btn.yd-fresh { background: var(--badge-clay); color: var(--clay); border-color: var(--badge-clay); }
+.act-btn.yd-fresh:hover { border-color: var(--clay); }
 .cl-cat, .cl-cat.new, .cl-cat.improved, .cl-cat.fixed { background: var(--surface2); color: var(--text2); border-radius: var(--r-pill); font: var(--t-caption); letter-spacing: var(--tr-caption); }
 /* New, Improved and Fixed share one width (em, so it grows with the text),
    so every item's words start at one left edge. Where that column would
@@ -4726,7 +4770,7 @@ header {
 .gt-intro-p { font: var(--t-body); color: var(--text); max-width: 68ch; }
 .gt-intro-analogy { margin-top: 16px; border-left: 3px solid var(--accent); padding-left: 16px; max-width: 68ch; }
 .gt-intro:not(.open) .gt-intro-inner { max-height: 48px; overflow: hidden; -webkit-mask-image: linear-gradient(#000 40%, transparent); mask-image: linear-gradient(#000 40%, transparent); }
-.gt-intro-more { display: inline-flex; }
+.gt-intro-more { display: inline-flex; margin-inline-start: -4px; }
 /* Part caption above each part's topics (v12.32: replaces the topic-map chip rows) */
 .gt-part-h { font: var(--t-kicker); letter-spacing: var(--tr-kicker); text-transform: uppercase; color: var(--text2); margin: var(--sp-xl) 0 var(--sp-xs); }
 .gt-groups > .gt-part-h:first-child { margin-top: var(--sp-sm); }
@@ -5065,15 +5109,19 @@ body[data-mock-results="1"] #readinessCard { display: none; }
 /* Phones: every control is at least 44px tall (WCAG 2.5.5 target size). */
 @media (max-width: 600px) {
   .profile-btn, .exam-mode-btn, .hdr-icon-btn, .study-rec-btn, .readiness-set-btn, .readiness-date-input,
-  .ss-chip, .ss-select, .ctrl-btn, .subtopic-chip, .subtopic-expand-btn, .act-btn, .conf-tip button, .study-rec-dismiss,
-  .consent-close, .legal-disclaimer a, .legal-link-btn, .tipjar-btn, .home-cta, .pwa-install-btn, .pwa-dismiss-btn,
-  .ws-prac-btn, .mock-chip, .resume-btn, .bk-tag-chip, .gloss-chip, .fb-type, .flag-btn, .fb-btn, .session-btn { min-height: 44px; }
+  .ss-chip, .ss-select, .ctrl-btn, .subtopic-chip, .act-btn, .conf-tip button, .study-rec-dismiss,
+  .consent-close, .tipjar-btn, .home-cta, .pwa-install-btn, .pwa-dismiss-btn,
+  .mock-chip, .resume-btn, .bk-tag-chip, .gloss-chip, .fb-type, .flag-btn, .fb-btn, .session-btn { min-height: 44px; }
   .session-start .ss-chip, .session-start .ss-select,
   .mock-resume-btn, .gloss-mode-btn, .gloss-card-master-btn { min-height: 44px !important; }
   .gloss-card-master-btn { min-width: 44px; }
   .conf-tip button, .study-rec-dismiss, .consent-close, .pwa-dismiss-btn { min-width: 44px; }
-  .legal-disclaimer a, .legal-link-btn { display: inline-flex; align-items: center; }
 }
+/* At every width (tablets and touch laptops too): these stand-alone targets
+   are at least 44px tall. */
+.subtopic-expand-btn, .legal-disclaimer a, .legal-link-btn, .ws-prac-btn { min-height: 44px; }
+.legal-disclaimer a, .legal-link-btn { display: inline-flex; align-items: center; }
+.subtopic-expand-btn { display: inline-flex; align-items: center; justify-content: center; }
 
 /* ── WEB v12.1: slim web, honest reads, real dialogs ──────────────────────
    Home is a landing page; the dashboard chrome (stats, mindset line) belongs to
@@ -5316,7 +5364,7 @@ body[data-tab]:not([data-tab="about"]):not([data-tab="faq"]) .legal-disclaimer {
 .pg-empty { font: var(--t-headline); letter-spacing: var(--tr-headline); color: var(--text); margin: 0 0 var(--sp-xs); }
 .pg-act { margin-left: auto; padding: 0 var(--sp-lg); }
 .pg-act .ico, .pg-sact .ico { flex-shrink: 0; }
-.pg-sact { min-height: 48px; }
+.pg-sact { min-height: 48px; margin-inline-start: -4px; }
 .pg-act:focus-visible, .pg-sact:focus-visible, .pg-tbtn:focus-visible, .pg-iconbtn:focus-visible, .pg-cd:focus-visible {
   outline: 2px solid var(--focus-ring); outline-offset: 2px;
 }
@@ -5363,7 +5411,7 @@ body[data-tab]:not([data-tab="about"]):not([data-tab="faq"]) .legal-disclaimer {
 .pg-dot-untimed { stroke-dasharray: 2.5 2; }
 .pg-legend { display: flex; flex-wrap: wrap; gap: var(--sp-xs) var(--sp-lg); margin: var(--sp-sm) 0 0; font: var(--t-meta); color: var(--text2); }
 .pg-legend span { display: inline-flex; align-items: center; gap: var(--sp-xs); }
-.pg-tbtn { margin-top: var(--sp-xs); min-height: 48px; }
+.pg-tbtn { margin-top: var(--sp-xs); margin-inline-start: -4px; min-height: 48px; }
 .pg-tbtn[aria-expanded="true"] .ico { transform: rotate(180deg); }
 /* The low end over time: a closed disclosure (its button sits inside the h2). */
 .pg-disc-h { margin: 0; }
@@ -5382,6 +5430,7 @@ body[data-tab]:not([data-tab="about"]):not([data-tab="faq"]) .legal-disclaimer {
 .pg-table tbody th { font-weight: 500; }
 .pg-acc { padding: var(--sp-md) 0; border-bottom: 1px solid var(--border); }
 .pg-acc > .pg-t { display: flex; align-items: center; gap: var(--sp-sm); margin-bottom: var(--sp-xs); }
+.pg-dot { display: inline-block; width: 8px; height: 8px; border-radius: 2px; flex: none; }
 .pg-acc-r { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; column-gap: var(--sp-md); align-items: center; min-height: 28px; }
 .pg-acc-l { font: var(--t-meta); color: var(--text2); }
 .pg-acc-v { font: var(--t-meta); color: var(--text); font-variant-numeric: tabular-nums; text-align: right; white-space: nowrap; }
@@ -5401,6 +5450,9 @@ body[data-tab]:not([data-tab="about"]):not([data-tab="faq"]) .legal-disclaimer {
 .pg-cw { text-align: center; font: var(--t-caption); letter-spacing: var(--tr-caption); color: var(--muted); padding-bottom: var(--sp-xs); }
 .pg-cd { display: flex; flex-direction: column; align-items: center; gap: 2px; min-height: 48px; padding: var(--sp-xs) 0; border: 0; border-radius: var(--r-sm); background: none; font: inherit; color: inherit; }
 .pg-cd .td-leaf { width: 20px; height: 20px; }
+/* Narrow phones (320): the week runs into the page margin a little, so each
+   day stays a 44px target. */
+@media (max-width: 22.5em) { .pg-cal { gap: 0; margin-inline: min(0px, calc((100% - 308px) / 2)); } }
 button.pg-cd { cursor: pointer; }
 button.pg-cd:hover { background: var(--surface2); }
 .pg-cd[aria-pressed="true"] { background: var(--surface2); box-shadow: var(--sh-sel-2); }
@@ -5628,6 +5680,34 @@ button.pg-cd:hover { background: var(--surface2); }
 .ws-pct { width: auto; min-width: 64px; color: var(--text); }
 .ws-quiet { font: var(--t-meta); color: var(--text2); margin: 0 0 16px; }
 .ws-sub-label { font: var(--t-headline); letter-spacing: var(--tr-headline); color: var(--text); margin: 24px 0 12px; }
+/* Weak spots in Grove rows (Phase 5). Domain performance: the Practice hub's
+   By domain row (name over the answered line, number and band at the right)
+   with the area's bar under it. Where to focus: the area's colour, label over
+   meta, a quiet Practice action; the one filled button stays Train my weak spots. */
+.ws-doms, .ws-recs { list-style: none; margin: 0; padding: 0; }
+.ws-doms { container: phdom / inline-size; }
+.ws-dom { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; column-gap: 12px; row-gap: 4px; min-height: 56px; padding: 12px 0; }
+.ws-dom + .ws-dom, .ws-rec + .ws-rec { border-top: 1px solid var(--border); }
+.ws-dom-body { min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+.ws-dom-t { display: inline-flex; align-items: center; gap: 8px; font: var(--t-label); color: var(--text); overflow-wrap: anywhere; }
+.ws-dom-t .dom-dot { margin: 0; flex: none; border-radius: 2px; }
+.ws-dom-m { font: var(--t-meta); color: var(--text2); }
+.ws-dom .ws-track { display: block; grid-column: 1 / -1; width: 100%; margin-top: 6px; }
+.ws-dom .ws-fill { display: block; background: var(--accent); }
+.ws-dom-s { display: flex; flex-direction: column; align-items: flex-end; gap: 2px; text-align: right; }
+@container phdom (max-width: 19em) {
+  .ws-dom { grid-template-columns: minmax(0, 1fr); }
+  .ws-dom-s { flex-direction: row; flex-wrap: wrap; align-items: center; gap: 4px 8px; text-align: left; }
+}
+.ws-rec { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 12px; min-height: 56px; margin: 0; padding: 12px 0; background: none; border: 0; border-radius: 0; }
+.ws-rec-dot { width: 8px; height: 8px; border-radius: 2px; flex: none; align-self: flex-start; margin-top: .55em; }
+.ws-rec-t { flex: 1 1 12em; min-width: 0; display: flex; flex-direction: column; gap: 2px; overflow-wrap: anywhere; }
+.ws-rec-title { font: var(--t-label); color: var(--text); margin: 0; }
+.ws-rec-sub { font: var(--t-meta); color: var(--text2); }
+.ws-rec-sub .ws-band { font: inherit; }
+.ws-go { flex: none; margin-left: auto; margin-right: -4px; }
+.ws-go .ico { flex: none; }
+.ws-go:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; border-radius: var(--r-sm); }
 .mock-estimate { font: var(--t-small); color: var(--on-forest2); margin: 4px 0 0; }
 .mock-advisory-item strong { color: var(--text); }
 
@@ -5774,7 +5854,7 @@ header.app-header .brand-lockup { height: 28px; }
    page links scroll under it (PHASE4 7.1), so it is never off-screen on a
    phone. The left fade would hide it, so these bars fade the right edge only. */
 .sub-nav a.sub-nav-hub {
-  position: sticky; left: 0; z-index: 1; gap: 2px; padding: 0 var(--sp-md) 0 0; margin-right: 4px;
+  position: sticky; left: 0; z-index: 1; gap: 2px; padding: 0 var(--sp-md) 0 0;
   background: var(--bg); color: var(--accent-text); border-right: 1px solid var(--border);
 }
 /* The page's own grain, anchored to the viewport, so the link sits on the same paper. */
@@ -5783,6 +5863,13 @@ header.app-header .brand-lockup { height: 28px; }
   background-image: var(--grain-img); background-attachment: fixed; opacity: var(--grain-op);
 }
 .sub-nav:has(> .sub-nav-hub).sn-fade-l { -webkit-mask-image: none; mask-image: none; }
+/* No link ever rests half under the Learn link: the bar snaps each link's
+   left edge to the Learn link's right edge (--sn-hub), and a spacer at the
+   end (--sn-end) makes the last such position the end of the bar
+   (subNavAlign). The left fade is off on these bars. */
+.sub-nav:has(> .sub-nav-hub) { scroll-snap-type: x mandatory; scroll-padding-inline: var(--sn-hub, 0px) 0; }
+.sub-nav:has(> .sub-nav-hub) > a:not(.sub-nav-hub) { scroll-snap-align: start; }
+.sub-nav:has(> .sub-nav-hub)::after { content: ''; flex: 0 0 var(--sn-end, 0px); }
 .sub-nav:has(> .sub-nav-hub).sn-fade-l.sn-fade-r { -webkit-mask-image: linear-gradient(to right, #000 calc(100% - 40px), transparent); mask-image: linear-gradient(to right, #000 calc(100% - 40px), transparent); }
 @media (max-width: 600px) {
   .sub-nav:has(> .sub-nav-hub).sn-fade-l.sn-fade-r { -webkit-mask-image: linear-gradient(to right, #000 calc(100% - 64px), rgba(0,0,0,.15)); mask-image: linear-gradient(to right, #000 calc(100% - 64px), rgba(0,0,0,.15)); }
@@ -5920,6 +6007,15 @@ body[data-app-cta-card="shown"][data-section="today"] .app-cta-line { display: n
 
 @media (max-width: 47.9375em) {
   #bottomNav { display: flex; }
+  /* Large text on a wide screen falls back to this stacked layout: one
+     centred column (Today's 720px plus the page margins), with the logo bar,
+     the running head and the tab bar on the same width. Phones are narrower,
+     so nothing changes there. */
+  .app, .fg-page-rh, header.app-header { max-width: 760px; margin-left: auto; margin-right: auto; }
+  #bottomNav:not(.bnav-dock) {
+    left: max(calc(16px + env(safe-area-inset-left)), calc((100% - 720px) / 2));
+    right: max(calc(16px + env(safe-area-inset-right)), calc((100% - 720px) / 2));
+  }
   /* Room for the floating bar (16px off the edge, --tabbar-h tall, 64 at
      normal text) and more, so the bar never covers the end of a page; toasts
      sit 16px above it, whatever its height. */
@@ -5987,9 +6083,12 @@ body[data-app-cta-card="shown"][data-section="today"] .app-cta-line { display: n
 .vr-recap-t { margin: 2px 0 0; font: var(--t-small); color: var(--text2); overflow-wrap: anywhere; }
 .vr-recap-t:not(.open) { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; line-clamp: 2; overflow: hidden; }
 .vr-recap-btn {
-  display: inline-flex; align-items: center; gap: var(--sp-xs); min-height: 48px; padding: 0;
+  display: inline-block; min-height: 48px; padding: 12px 0; text-align: left;
   background: none; border: 0; cursor: pointer; font: var(--t-label); color: var(--accent-text);
 }
+/* The chevron follows the last word, so a label on two lines (large text)
+   keeps its chevron beside it, not out at the far edge. */
+.vr-recap-btn .ico { display: inline-block; margin-left: var(--sp-xs); vertical-align: -4px; }
 .vr-recap-btn[hidden] { display: none; }
 /* The four options under the opened stem: letter in an outline badge, the
    text in small (as the More sheet's other options). */
@@ -5998,7 +6097,7 @@ body[data-app-cta-card="shown"][data-section="today"] .app-cta-line { display: n
 .vr-recap-o { display: flex; align-items: flex-start; gap: var(--sp-sm); font: var(--t-small); color: var(--text); overflow-wrap: anywhere; }
 .vr-recap-o > span:last-child { min-width: 0; }
 .vr-recap-l {
-  width: 24px; height: 24px; flex-shrink: 0; border-radius: var(--r-round); border: 1.5px solid var(--control);
+  width: 1.85em; height: 1.85em; min-width: 24px; min-height: 24px; flex-shrink: 0; box-sizing: border-box; border-radius: var(--r-round); border: 1.5px solid var(--control);
   display: inline-flex; align-items: center; justify-content: center; font: var(--t-caption); letter-spacing: var(--tr-caption); color: var(--text2);
 }
 .vr-recap-btn:hover .vr-recap-bt { text-decoration: underline; }
@@ -6335,10 +6434,15 @@ body[data-app-cta-card="shown"][data-section="today"] .app-cta-line { display: n
 .ph-dom-w { font: var(--t-meta); color: var(--text2); }
 .ph-dom-w.c { padding: 1px 8px; border-radius: var(--r-pill); background: var(--badge-clay); color: var(--clay); }
 /* Status at the right: in a narrow card a long band ("Building · below 70")
-   goes on two lines inside its badge, so the area name keeps the room. */
-@container phdom (max-width: 30em) { .ph-dom-w.c { width: min-content; border-radius: var(--r-10); } }
-/* Narrow or large text: the status goes under the name. */
+   goes on two lines inside its badge, so the area name keeps the room. Each
+   half stays whole; on two lines the dot drops, so no line ends on it. */
+.ph-dom-wt { white-space: nowrap; }
+@container phdom (max-width: 30em) { .ph-dom-w.c { width: min-content; border-radius: var(--r-10); } .ph-dom-w.c .ph-dom-sep { display: none; } }
+/* Narrow or large text: the status goes under the name, where the badge has
+   the row's width and stays one pill line. */
 @container phdom (max-width: 19em) {
+  .ph-dom-w.c { width: auto; border-radius: var(--r-pill); }
+  .ph-dom-w.c .ph-dom-sep { display: inline; }
   .ph-dom { grid-template-columns: 1.25em minmax(0, 1fr) 18px; row-gap: 4px; }
   .ph-dom-s { grid-column: 2; grid-row: 2; align-items: flex-start; flex-direction: row; flex-wrap: wrap; gap: 4px 8px; text-align: left; }
   .ph-dom .you-chev { grid-column: 3; grid-row: 1 / span 2; }
@@ -6444,6 +6548,8 @@ body[data-app-cta-card="shown"][data-section="today"] .app-cta-line { display: n
 .gl .gloss-filters { display: flex; flex-direction: column; align-items: stretch; gap: 10px; }
 .gl-fgroup { display: flex; flex-wrap: wrap; align-items: center; justify-content: flex-start; gap: 8px; }
 .gl .gloss-filter-label { margin-right: 4px; color: var(--text2); }
+/* Domain and Status share one label width, so both chip rows start on one line. */
+.gl .gloss-filter-label { flex: none; min-width: 3.75em; }
 .gl .gloss-chip { display: inline-flex; align-items: center; gap: 6px; padding: 0 14px; }
 .gl .gloss-count { margin: 0; color: var(--text2); }
 .gl .gloss-count-clear { min-height: 44px; padding: 0 14px; border: 1.5px solid var(--control); border-radius: var(--r-pill); color: var(--text); font: var(--t-chip); }
@@ -6474,6 +6580,15 @@ body[data-app-cta-card="shown"][data-section="today"] .app-cta-line { display: n
     flex-wrap: nowrap; overflow-x: auto; overscroll-behavior-x: contain; scrollbar-width: thin;
     margin: 0 calc(-1 * var(--sp-xs)); padding: var(--sp-xs); scroll-padding-inline: var(--sp-lg);
   }
+  /* The chip rows run to the card's edges (the first chip still lines up with
+     the search field), and the edge with more chips fades (glRowFade), so a
+     cut-off chip reads as "scroll for more". */
+  .gl-fgroup { margin: 0 calc(-1 * var(--card-pad)); padding: var(--sp-xs) var(--card-pad); scroll-padding-inline: calc(var(--card-pad) + var(--sp-lg)); }
+  .gl-fade-r { -webkit-mask-image: linear-gradient(to right, #000 calc(100% - 48px), transparent); mask-image: linear-gradient(to right, #000 calc(100% - 48px), transparent); }
+  .gl-fade-l { -webkit-mask-image: linear-gradient(to right, transparent, #000 48px); mask-image: linear-gradient(to right, transparent, #000 48px); }
+  .gl-fade-l.gl-fade-r { -webkit-mask-image: linear-gradient(to right, transparent, #000 48px, #000 calc(100% - 48px), transparent); mask-image: linear-gradient(to right, transparent, #000 48px, #000 calc(100% - 48px), transparent); }
+  /* A keyboard-focused chip or letter is never faded. */
+  .gl-fade-l:has(:focus-visible), .gl-fade-r:has(:focus-visible) { -webkit-mask-image: none; mask-image: none; }
   .gl-fgroup > *, .gl .gloss-letter { flex: none; white-space: nowrap; }
   .gl .gloss-letter-index { padding: 0; }
   .gl .gloss-letter-grid { display: flex; gap: 2px; margin: 0; padding: var(--sp-xs); }
@@ -6663,7 +6778,7 @@ body[data-app-cta-card="shown"][data-section="today"] .app-cta-line { display: n
 .mr-signs-card #mrmSigns, .mr-signs-card #srhSigns { margin: 0 0 var(--sp-sm); }
 .mr-side .mr-signs-card { margin-top: 16px; }
 /* Set results (7.11): the stats as Today's clearing tiles, caption labels. */
-.rs-tiles { margin: var(--sp-lg) 0 0; }
+.td-clear-ts.rs-tiles { margin: var(--sp-lg) 0 0; }
 .rs-tiles .td-clear-k { font: var(--t-caption); letter-spacing: var(--tr-caption); text-transform: none; }
 /* On paper at every width: Today's forest colours for these tiles (from 48em) never apply here. */
 .rs-tiles .td-clear-t { background: var(--surface2); }
@@ -7140,7 +7255,7 @@ html { scroll-padding-bottom: calc(104px + var(--consent-h, 0px)); }
 .fg-page-rh[hidden] { display: none; }
 .fg-page-rh .fg-rh { margin: 0 0 var(--sp-xxl); }
 @media (max-width: 47.9375em) {
-  .fg-page-rh { max-width: 1200px; margin: 0 auto; padding: var(--sp-xs) 20px 0; }
+  .fg-page-rh { max-width: 760px; margin: 0 auto; padding: var(--sp-xs) 20px 0; }
 }
 @media (min-width: 48em) {
   .study-wrap.fg-frame {
@@ -8517,8 +8632,8 @@ html { scroll-padding-bottom: calc(104px + var(--consent-h, 0px)); }
 
 /* This week's twig (§6.6) */
 .td-twig { display: flex; flex-direction: column; gap: 6px; padding: 16px 18px; }
-.td-twig-top { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; }
-.td-twig-streak { margin: 0; font: var(--t-caption); letter-spacing: var(--tr-caption); color: var(--clay); text-align: right; }
+.td-twig-top { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 4px 12px; }
+.td-twig-streak { margin: 0; font: var(--t-caption); letter-spacing: var(--tr-caption); color: var(--clay); }
 .td-twig-svg { display: block; width: 100%; height: auto; overflow: visible; }
 .td-tw-branch { fill: none; stroke: var(--soil); stroke-width: 2; stroke-linecap: round; }
 .td-tw-leaf { fill: none; stroke: var(--leaf-line); stroke-width: 1.3; }
@@ -8556,8 +8671,12 @@ html { scroll-padding-bottom: calc(104px + var(--consent-h, 0px)); }
 .td-pair { display: flex; flex-direction: column; gap: 16px; }
 .td-pair:has(> .td-mind-slot:empty):not(:has(> .td-backup)) { display: none; }
 @container tdmain (min-width: 576px) {
-  .td-pair { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); align-items: start; }
+  .td-pair { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); align-items: stretch; }
   .td-pair:has(> .td-mind-slot:empty), .td-pair:not(:has(> .td-backup)), .td-pair:has(.td-mind-open[aria-expanded="true"]) { grid-template-columns: minmax(0, 1fr); }
+  /* Side by side, both cards fill the row, so the pair has one bottom edge. */
+  .td-pair > .td-mind-slot > .td-mind, .td-pair > .td-backup { height: 100%; box-sizing: border-box; }
+  .td-pair > .td-mind-slot > .td-mind:not(.td-idea) { display: flex; flex-direction: column; }
+  .td-pair > .td-mind-slot > .td-mind > .td-mind-open { flex: 1 0 auto; }
 }
 
 /* Estimated readiness */
@@ -11542,6 +11661,13 @@ function ydExport() {
   if (!backupSaveQuiet()) return;
   if (!ydSay('Backup saved: ' + profileDateWords(isoLocalDate(new Date())))) showToast('Backup saved', 'success', 2600);
 }
+// The Grove sheet head on the older dialogs (Your data, What's New, Practice
+// summary), as on Set options: the title on the left, a 44px close at the
+// right. Each dialog keeps its own Close or Done at the bottom too.
+function dlgHeadHtml(titleCls, title, close, label) {
+  return '<div class="dlg-head"><h2 class="' + titleCls + '">' + title + '</h2>'
+    + '<button type="button" class="ph-dlg-x" aria-label="' + label + '" onclick="' + close + '">' + ico('x', 22) + '</button></div>';
+}
 function showYourData() {
   var modal = document.getElementById('changelogModal');
   var others = otherProgressRecords();
@@ -11563,18 +11689,18 @@ function showYourData() {
   }
   modal.innerHTML = '<div class="changelog-overlay" onclick="closeSummary(event)">'
     + '<div class="changelog-modal" onclick="event.stopPropagation()">'
-    + '<div class="cl-title">Your data</div>'
-    + '<p class="yd-text">Your progress is saved in this browser, on this device only. There is no account, so clearing your browser data removes it. Export a file to keep a copy or move it to another browser.</p>'
+    + dlgHeadHtml('cl-title', 'Your data', 'closeSummary()', 'Close your data')
+    + '<p class="yd-text">Your progress is saved in this browser, on this device only. There is no account, so clearing your browser data removes it. Back up to a file to keep a copy or move it to another browser.</p>'
     + '<div class="yd-actions">'
-    + '<button type="button" class="act-btn" onclick="ydExport()">Export progress</button>'
-    + '<button type="button" class="act-btn" onclick="youRestore()">Import progress</button>'
+    + '<button type="button" class="act-btn" onclick="ydExport()">Back up</button>'
+    + '<button type="button" class="act-btn" onclick="youRestore()">Restore</button>'
     + '</div>'
     // The sheet's own status line, under its buttons (the confirmation rule).
     + '<p class="yd-say" id="ydSay" role="status" aria-live="polite"></p>'
     + othersHtml
     + '<div class="yd-danger-row">'
-    + '<button type="button" class="act-btn danger" onclick="confirmResetReadingProgress()">Reset reading progress</button>'
-    + '<button type="button" class="act-btn danger" onclick="confirmResetProgress()">Start fresh</button>'
+    + '<button type="button" class="act-btn" onclick="confirmResetReadingProgress()">Reset reading progress</button>'
+    + '<button type="button" class="act-btn yd-fresh" onclick="confirmResetProgress()">Start fresh</button>'
     + '</div>'
     + '<button class="cl-close" onclick="closeSummary()">Done</button>'
     + '</div></div>';
@@ -14023,6 +14149,11 @@ function syncNav(t) {
       sub.setAttribute('aria-label', 'Back');
       sub.className = 'sub-nav sub-nav-back';
       html = '<a href="#notes" onclick="return noteBackToList(event)">' + ico('chevron', 18, 'ico ico-back') + 'Study notes</a>';
+    } else if (t === 'principles' && principlesState.selectedId) {
+      // A principle's reading page: the same single way back as a note's.
+      sub.setAttribute('aria-label', 'Back');
+      sub.className = 'sub-nav sub-nav-back';
+      html = '<a href="#principles" onclick="return plBackLink(event)">' + ico('chevron', 18, 'ico ico-back') + 'All principles</a>';
     } else if (NAV_PAGES[sec]) {
       sub.setAttribute('aria-label', sec === 'learn' ? 'Learn pages' : 'Practice pages');
       sub.className = 'sub-nav sub-nav-pages';
@@ -14049,15 +14180,27 @@ function syncNav(t) {
     // (Measured against the bar itself: offsetLeft is from the page, which
     // scrolled the first link half out of view and faded it, v12.32.)
     var cur = html && sub.querySelector('[aria-current="page"]');
+    var al = html ? subNavAlign(sub) : null;
     if (cur) {
-      var curX = cur.getBoundingClientRect().left - sub.getBoundingClientRect().left + sub.scrollLeft;
-      // The sticky Learn link covers the bar's left edge: keep the current link clear of it.
-      var hub = sub.querySelector('.sub-nav-hub');
-      sub.scrollLeft = Math.max(0, curX - 16 - (hub ? hub.offsetWidth : 0));
+      if (al) {
+        // The sticky Learn link covers the bar's left edge. The bar stays at
+        // its start when the current link is already in full view; otherwise
+        // the current link's left edge goes to the Learn link's right edge,
+        // never half under it.
+        var stop = cur.getBoundingClientRect().left - sub.querySelector('a:not(.sub-nav-hub)').getBoundingClientRect().left;
+        var inView = al.edge + stop + cur.offsetWidth <= sub.clientWidth - 64;
+        sub.scrollLeft = inView ? 0 : Math.min(al.max, Math.max(0, stop));
+      } else {
+        var curX = cur.getBoundingClientRect().left - sub.getBoundingClientRect().left + sub.scrollLeft;
+        sub.scrollLeft = Math.max(0, curX - 16);
+      }
     }
     if (!sub.onscroll) {
       sub.onscroll = function () { subNavFade(sub); };
-      window.addEventListener('resize', function () { subNavFade(sub); });
+      // A link reached with Tab is brought fully into view, at a snap position.
+      sub.addEventListener('focusin', function (e) { subNavReveal(sub, e.target); });
+      window.addEventListener('resize', function () { subNavAlign(sub); subNavFade(sub); });
+      if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () { subNavAlign(sub); subNavFade(sub); }, function () {});
     }
     subNavFade(sub);
   }
@@ -14066,6 +14209,7 @@ function syncNav(t) {
   try {
     var want = '#' + (NAV_HASH[t] || 'today');
     if (t === 'topics' && topicState.page) want = '#note/' + encodeURIComponent(topicState.page);
+    if (t === 'principles' && principlesState.selectedId) want = '#principles/' + encodeURIComponent(principlesState.selectedId);
     if (location.hash !== want && window.history && history.replaceState) {
       history.replaceState(history.state, '', want);
     }
@@ -14106,6 +14250,55 @@ function bnavFit() {
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(soon, function () {});
   soon();
 })();
+// Learn's page bar: the left edge of the first link after the sticky Learn
+// link is where every link snaps to (--sn-hub). The spacer at the bar's end
+// (--sn-end) is sized so the furthest scroll is also such a position, so no
+// link is ever left half under the Learn link. Returns that edge and the
+// bar's furthest scroll, or null on bars without the Learn link.
+function subNavAlign(sub) {
+  var hub = sub.querySelector('.sub-nav-hub');
+  var links = sub.querySelectorAll('a:not(.sub-nav-hub)');
+  if (!hub || !links.length || !sub.clientWidth) return null;
+  // Measured at the bar's start with snapping paused, then put back.
+  var keep = sub.scrollLeft;
+  sub.style.scrollSnapType = 'none';
+  sub.style.setProperty('--sn-end', '0px');
+  sub.scrollLeft = 0;
+  var x0 = links[0].getBoundingClientRect().left;
+  var edge = hub.getBoundingClientRect().width + (parseFloat(getComputedStyle(sub).columnGap) || 0);
+  sub.style.setProperty('--sn-hub', edge + 'px');
+  var max = sub.scrollWidth - sub.clientWidth, end = max, stops = [];
+  for (var i = 0; i < links.length; i++) stops.push(links[i].getBoundingClientRect().left - x0);
+  if (max > 0) {
+    for (var j = 0; j < stops.length; j++) {
+      if (stops[j] >= max - 1) { end = Math.ceil(stops[j]); break; }
+    }
+    if (end > max) sub.style.setProperty('--sn-end', (end - max) + 'px');
+  }
+  sub.scrollLeft = keep;
+  sub.style.scrollSnapType = '';
+  return { edge: edge, max: Math.max(0, sub.scrollWidth - sub.clientWidth) };
+}
+// Learn's page bar: scrolls a focused link fully into view, choosing the
+// nearest position where a link's left edge meets the Learn link.
+function subNavReveal(sub, a) {
+  var hub = sub.querySelector('.sub-nav-hub');
+  if (!hub || !a || a === hub || a.parentNode !== sub || !sub.clientWidth) return;
+  var links = sub.querySelectorAll('a:not(.sub-nav-hub)');
+  var x0 = links[0].getBoundingClientRect().left;
+  var edge = hub.getBoundingClientRect().width + (parseFloat(getComputedStyle(sub).columnGap) || 0);
+  var ar = a.getBoundingClientRect(), from = ar.left - x0, to = ar.right - x0;
+  var room = sub.clientWidth - edge, sl = sub.scrollLeft, max = sub.scrollWidth - sub.clientWidth;
+  if (from >= sl - 1 && to <= sl + room + 1) return;
+  var want = from;
+  if (to > sl + room) {
+    for (var i = 0; i < links.length; i++) {
+      var st = links[i].getBoundingClientRect().left - x0;
+      if (to <= st + room + 1) { want = st; break; }
+    }
+  }
+  sub.scrollLeft = Math.min(max, Math.max(0, want));
+}
 // Fades the page bar's edge where more links are hidden (it scrolls sideways).
 function subNavFade(sub) {
   var max = sub.scrollWidth - sub.clientWidth;
@@ -18304,7 +18497,7 @@ function renderDomainGrid() {
     var load = isQBLoading(d) ? 'loading' : (window.QB_LOAD_ERROR && window.QB_LOAD_ERROR[d]) ? 'could not load' : '';
     var status = none ? '<span class="ph-dom-w">Not started</span>'
       : few ? '<span class="ph-dom-w">Too few yet</span>'
-      : '<span class="ph-dom-v">' + pct + '<sup>%</sup></span><span class="ph-dom-w' + (below ? ' c' : '') + '">' + band + (below ? '&nbsp;&middot; below&nbsp;' + DOMAIN_TARGET_PCT : '') + '</span>';
+      : '<span class="ph-dom-v">' + pct + '<sup>%</sup></span><span class="ph-dom-w' + (below ? ' c' : '') + '">' + (below ? '<span class="ph-dom-wt">' + band + '</span> <span class="ph-dom-wt"><span class="ph-dom-sep">&middot;&nbsp;</span>below&nbsp;' + DOMAIN_TARGET_PCT + '</span>' : band) + '</span>';
     var said = 'Domain ' + (i + 1) + ', ' + info.short + ', ' + info.weight + ' percent of the exam, ' + n + ' seen, '
       + (none ? 'not started' : few ? 'too few yet' : pct + ' percent, ' + band + (below ? ', below ' + DOMAIN_TARGET_PCT : ''))
       + (load ? ', ' + load : '') + '. Starts a set.';
@@ -21947,12 +22140,21 @@ function wsEarlySignHtml(rows) {
     sub = 'About ' + low.r.pct + '% right so far, from ' + low.r.n + ' answers. An early sign, not a verdict.';
     go = 'selectDomain(' + low.d + ');switchTab(\x27practice\x27)';
   }
-  return '<div class="ws-rec">'
-    + '<span class="ws-rec-dot" style="background:var(--tip)" aria-hidden="true"></span>'
-    + '<div><div class="ws-rec-title">Early sign: ' + title + '</div>'
-    + '<div class="ws-rec-sub">' + sub + '</div></div>'
-    + '<button class="ws-prac-btn" onclick="' + go + '">Practice &rarr;</button>'
-    + '</div>' + later;
+  return '<ul class="ws-recs">' + wsRecHtml(spot && DI[spot.d] ? spot.d : low.d, 'Early sign: ' + title, sub, go) + '</ul>' + later;
+}
+// One row under Where to focus (Grove Phase 5): the area's colour, its name
+// over the line, and a quiet Practice action. title and sub arrive escaped.
+function wsRecHtml(d, title, sub, go) {
+  var info = DI[d] || {}, id = 'wsRecT' + String(d).replace(/[^0-9a-z]/gi, '');
+  return '<li class="ws-rec"><span class="ws-rec-dot" style="background:' + info.color + '" aria-hidden="true"></span>'
+    + '<span class="ws-rec-t"><span class="ws-rec-title" id="' + id + '">' + title + '</span>'
+    + '<span class="ws-rec-sub">' + sub + '</span></span>'
+    + '<button type="button" class="gt-btn-ghost ws-go" aria-describedby="' + id + '" onclick="' + go + '">Practice' + ico('chevron', 18) + '</button></li>';
+}
+// "Building · below 70" kept in two whole halves, the dot leading the second,
+// so a line never ends on the dot.
+function wsBelowHtml(band) {
+  return '<span class="ph-dom-wt">' + band + '</span> <span class="ph-dom-wt"><span class="ph-dom-sep">&middot;&nbsp;</span>below&nbsp;' + DOMAIN_TARGET_PCT + '</span>';
 }
 // The page's title (v12.48: every page has one h1).
 var WS_TITLE_HTML = '<h1 class="ph-title" id="wsTitle" tabindex="-1">Weak spots</h1>';
@@ -21979,33 +22181,35 @@ function renderWeakSpots() {
   // v12.45: the Field Guide's words (as Your progress): under 30 answers
   // "too few yet · 18 answered" and no number; under the line the band word
   // and "below 70" in clay, so colour is never the only signal.
-  var rowsHtml = rows.map(function(x){
+  // Grove Phase 5: the Practice hub's By domain rows (name over the answered
+  // line, the number and band at the right), each with its bar.
+  var rowsHtml = '<ul class="ws-doms">' + rows.map(function(x){
     var r = x.r;
     var below = r.enough && r.pct < DOMAIN_TARGET_PCT;
     var line = !r.n ? 'not started'
       : !r.enough ? 'too few yet &middot; <span class="ws-n">' + escapeHtml(String(r.n)) + ' answered</span>'
-      : (below ? '<span class="ws-band c">' + r.band + ' &middot; below ' + DOMAIN_TARGET_PCT + '</span>' : '<span class="ws-band">' + r.band + '</span>')
-        + ' &middot; <span class="ws-n">' + escapeHtml(String(r.n)) + ' answered</span>';
-    return '<div class="ws-row">'
-      + '<span class="ws-label"><span><span class="dom-dot" style="background:' + x.info.color + '"></span>' + 'D' + x.d + ' ' + x.info.short + '</span>'
-      + '<span class="ws-count">' + line + '</span></span>'
-      + '<div class="ws-track" aria-hidden="true"><div class="ws-fill" style="width:' + readBarWidth(r) + '%;background:var(--accent)"></div></div>'
-      + '<span class="ws-pct">' + (r.enough ? r.pct + '%' : '') + '</span>'
-      + '</div>';
-  }).join('');
+      : '<span class="ws-n">' + escapeHtml(String(r.n)) + ' answered</span>';
+    var status = r.enough
+      ? '<span class="ph-dom-v">' + r.pct + '<sup>%</sup></span>'
+        + (below ? '<span class="ph-dom-w c">' + wsBelowHtml(r.band) + '</span>' : '<span class="ph-dom-w">' + r.band + '</span>')
+      : '';
+    return '<li class="ws-dom">'
+      + '<span class="ws-dom-body"><span class="ws-dom-t"><span class="dom-dot" style="background:' + x.info.color + '" aria-hidden="true"></span>' + 'D' + x.d + ' ' + escapeHtml(x.info.short) + '</span>'
+      + '<span class="ws-dom-m">' + line + '</span></span>'
+      + (status ? '<span class="ws-dom-s">' + status + '</span>' : '')
+      + '<span class="ws-track" aria-hidden="true"><span class="ws-fill" style="width:' + readBarWidth(r) + '%"></span></span>'
+      + '</li>';
+  }).join('') + '</ul>';
 
   // Only a domain with a real sample can be called weak.
   var weak = rows.filter(function(x){ return x.r.enough && x.r.pct < DOMAIN_TARGET_PCT; });
   var anyRead = rows.some(function(x){ return x.r.enough; });
   var recsHtml = weak.length > 0
-    ? weak.map(function(x){
-        return '<div class="ws-rec">'
-          + '<span class="ws-rec-dot" style="background:var(--tip)" aria-hidden="true"></span>'
-          + '<div><div class="ws-rec-title">Domain ' + x.d + ': ' + x.info.name + '</div>'
-          + '<div class="ws-rec-sub">' + x.r.pct + '% &middot; <span class="ws-band c">' + x.r.band + ' &middot; below ' + DOMAIN_TARGET_PCT + '</span></div></div>'
-          + '<button class="ws-prac-btn" onclick="selectDomain(' + x.d + ');switchTab(\x27practice\x27)">Practice &rarr;</button>'
-          + '</div>';
-      }).join('')
+    ? '<ul class="ws-recs">' + weak.map(function(x){
+        return wsRecHtml(x.d, 'Domain ' + x.d + ': ' + escapeHtml(x.info.name),
+          '<span class="ws-n">' + x.r.pct + '%</span> <span class="ph-dom-wt">&middot;&nbsp;<span class="ws-band c">' + x.r.band + '</span></span> <span class="ph-dom-wt ws-band c">&middot;&nbsp;below&nbsp;' + DOMAIN_TARGET_PCT + '</span>',
+          'selectDomain(' + x.d + ');switchTab(\x27practice\x27)');
+      }).join('') + '</ul>'
     : (anyRead ? '<div class="ws-quiet">No domain is below the ' + DOMAIN_TARGET_PCT + '% target. Keep building coverage across all five.</div>' : wsEarlySignHtml(rows));
 
   area.innerHTML = WS_TITLE_HTML + '<button class="train-ws-btn" onclick="startWeakSpotsDrill()">Train my weak spots <span class="train-ws-badge">20 questions</span></button>'
@@ -23829,6 +24033,8 @@ function renderPrinciplesLibrary() {
   principlesState.selectedId = p ? p.id : null;
   area.innerHTML = '<div class="gt pl">' + (p ? principleDetailHtml(p) : principlesListHtml()) + '</div>';
   syncPrinciplesHash(p, false);
+  // The page bar: the Learn pages on the list, one way back on a principle.
+  if (S.activeTab === 'principles') { try { syncNav('principles'); } catch (e) {} }
 }
 
 // The address shows the open principle (#principles/final-two), so it can be
@@ -23913,9 +24119,7 @@ function principleDetailHtml(p) {
   var ex = p.example || {};
   var triggers = (Array.isArray(p.triggers) ? p.triggers : []).filter(function (t) { return typeof t === 'string' && t.trim(); });
   var doms = (Array.isArray(p.domains) ? p.domains : []).filter(function (d) { return DI[String(d)]; });
-  var h = '<div class="pl-back">'
-    + '<button type="button" class="gt-btn-ghost" onclick="principlesBackToList()">' + ico('chevron', 18, 'ico ico-back') + 'All principles</button></div>'
-    + '<div class="pl-d-head">'
+  var h = '<div class="pl-d-head">'
     + '<p class="pl-d-cap">' + (fam ? escapeHtml(fam.title) + ' &middot; ' : '') + (i + 1) + ' of ' + n + '</p>'
     + '<h1 class="pl-d-title" id="plTitle" tabindex="-1">' + escapeHtml(p.title) + '</h1>'
     + '</div><div class="pl-d-body">';
@@ -24082,6 +24286,14 @@ function showPrinciplesList() {
   if (row) {
     try { row.focus({ preventScroll: true }); row.scrollIntoView({ block: 'center' }); } catch (e) {}
   } else plScrollTop();
+}
+// The page bar's "All principles" link: a plain click goes back to the list;
+// a new-tab click (modifier keys) follows the link.
+function plBackLink(e) {
+  if (e && (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || (e.button && e.button !== 0))) return true;
+  if (e && e.preventDefault) e.preventDefault();
+  principlesBackToList();
+  return false;
 }
 // The back link (and Learn > Principles while a principle is open): step back
 // through the entry the list added, so browser history stays in step.
@@ -24906,7 +25118,10 @@ function renderGlossary() {
   var rowX = Array.prototype.map.call(area.querySelectorAll(rowSel), function (el) { return el.scrollLeft; });
   area.innerHTML = '<div class="gl">' + hero + toolbar
     + (glossState.view === 'flashcards' ? renderFlashcardArea() : renderGlossList()) + '</div>';
-  Array.prototype.forEach.call(area.querySelectorAll(rowSel), function (el, i) { if (rowX[i]) el.scrollLeft = rowX[i]; });
+  Array.prototype.forEach.call(area.querySelectorAll(rowSel), function (el, i) {
+    if (rowX[i]) el.scrollLeft = rowX[i];
+    el.onscroll = function () { glRowFade(el); };
+  });
   // Each row's chosen chip (and a kept focus) stays in view in its row.
   Array.prototype.forEach.call(area.querySelectorAll('.gl-fgroup'), function (row) {
     var kept = keepId ? document.getElementById(keepId) : null;
@@ -24921,11 +25136,23 @@ function renderGlossary() {
       if (kr) glRowReveal(kr, k);
     }
   }
+  glRowFadeAll();
+  requestAnimationFrame(glRowFadeAll);
 }
+// Fades the edge of a sideways chip row or A to Z strip that has more to scroll to.
+function glRowFade(row) {
+  var max = row.scrollWidth - row.clientWidth;
+  row.classList.toggle('gl-fade-r', max > 2 && row.scrollLeft < max - 2);
+  row.classList.toggle('gl-fade-l', max > 2 && row.scrollLeft > 2);
+}
+function glRowFadeAll() {
+  Array.prototype.forEach.call(document.querySelectorAll('#glossaryArea .gl-fgroup, #glossaryArea .gloss-letter-grid'), glRowFade);
+}
+window.addEventListener('resize', function () { if (typeof S !== 'undefined' && S && S.activeTab === 'glossary') glRowFadeAll(); });
 // Scroll a sideways row (never the page) so one of its buttons is in view.
 function glRowReveal(row, el) {
   if (row.scrollWidth <= row.clientWidth) return;
-  var r = row.getBoundingClientRect(), e = el.getBoundingClientRect(), pad = 16;
+  var r = row.getBoundingClientRect(), e = el.getBoundingClientRect(), pad = 56; // clear of the 48px edge fade
   if (e.left < r.left + pad) row.scrollLeft -= (r.left + pad - e.left);
   else if (e.right > r.right - pad) row.scrollLeft += (e.right - (r.right - pad));
 }
@@ -25527,8 +25754,10 @@ function renderPacingFeedbackHtml() {
   var badgeLabel = overSec <= 0 ? 'On pace' : '+' + overSec + 's over';
   var msg = overSec <= 0
     ? "You're within the exam pace of 1.6 min a question."
-    : 'Avg ' + avgMin + ' min/Q vs 1.6 min target. On a 150-Q exam you\'d finish ~' + Math.round(Math.abs(overSec) * sessionPacingData.length / 60) + ' min over time.';
-  return '<div class="pacing-feedback"><div class="ty-meta" style="margin-bottom:10px">Pacing Feedback (' + sessionPacingData.length + ' questions)</div><div class="pacing-row"><div class="pacing-info"><strong>' + avgMin + ' min / question average</strong><span>CISA target: 1.6 min/Q (240 min ÷ 150 Q)</span></div><div class="pacing-badge ' + badgeClass + '">' + badgeLabel + '</div></div><div class="ty-small" style="margin-top:8px">' + msg + '</div></div>';
+    : 'That is ' + avgMin + ' min a question against a 1.6 min target. On a 150-question exam you\'d finish about ' + Math.round(Math.abs(overSec) * sessionPacingData.length / 60) + ' min over time.';
+  // Grove Phase 5: drawn like the focus cards above it (sentence-case caption, no shorthand).
+  var n = sessionPacingData.length;
+  return '<div class="pacing-feedback"><div class="pacing-cap">Pacing, ' + n + ' question' + (n === 1 ? '' : 's') + '</div><div class="pacing-row"><div class="pacing-info"><strong>' + avgMin + ' min a question on average</strong><span>CISA target: 1.6 min a question (240 min for 150 questions)</span></div><div class="pacing-badge ' + badgeClass + '">' + badgeLabel + '</div></div><div class="pacing-msg">' + msg + '</div></div>';
 }
 
 // ── PHASE 2: TRAIN WEAK SPOTS ──
@@ -26723,29 +26952,30 @@ function showSessionSummary() {
   // Shown only once an answer has a confidence mark, with one line saying what it is.
   var confAny = confSure + confEdu + confGuess > 0;
   var confCards = '<p class="summary-conf-note">How sure you said you were before you checked, and how often you were right.</p>'
-    + '<div class="summary-conf-row">'
-    + '<div class="summary-conf-card"><span class="summary-conf-num">' + confSure + '</span><span class="summary-conf-label">Sure</span>'
-    + (confSure > 0 ? '<div class="ty-meta-tnum" style="margin-top:4px">' + Math.round((confSureCorrect/confSure)*100) + '% correct</div>' : '') + '</div>'
-    + '<div class="summary-conf-card"><span class="summary-conf-num">' + confEdu + '</span><span class="summary-conf-label">Educated guess</span>'
-    + (confEdu > 0 ? '<div class="ty-meta-tnum" style="margin-top:4px">' + Math.round((confEduCorrect/confEdu)*100) + '% correct</div>' : '') + '</div>'
-    + '<div class="summary-conf-card"><span class="summary-conf-num">' + confGuess + '</span><span class="summary-conf-label">Guessing</span>'
-    + (confGuess > 0 ? '<div class="ty-meta-tnum" style="margin-top:4px">' + Math.round((confGuessCorrect/confGuess)*100) + '% correct</div>' : '') + '</div>'
-    + '</div>';
+    + '<ul class="td-clear-ts rs-tiles summary-tiles summary-conf-row">'
+    + '<li class="td-clear-t"><span class="td-clear-k">Sure</span><span class="td-clear-v">' + confSure + '</span>'
+    + (confSure > 0 ? '<span class="td-clear-of">' + Math.round((confSureCorrect/confSure)*100) + '% correct</span>' : '') + '</li>'
+    + '<li class="td-clear-t"><span class="td-clear-k">Educated guess</span><span class="td-clear-v">' + confEdu + '</span>'
+    + (confEdu > 0 ? '<span class="td-clear-of">' + Math.round((confEduCorrect/confEdu)*100) + '% correct</span>' : '') + '</li>'
+    + '<li class="td-clear-t"><span class="td-clear-k">Guessing</span><span class="td-clear-v">' + confGuess + '</span>'
+    + (confGuess > 0 ? '<span class="td-clear-of">' + Math.round((confGuessCorrect/confGuess)*100) + '% correct</span>' : '') + '</li>'
+    + '</ul>';
 
   var modal = document.getElementById("changelogModal");
   modal.innerHTML = '<div class="summary-overlay" onclick="closeSummary(event)">'
     + '<div class="summary-modal" onclick="event.stopPropagation()">'
-    + '<div class="summary-title">Practice summary</div>'
+    + dlgHeadHtml('summary-title', 'Practice summary', 'closeSummary()', 'Close practice summary')
     + '<div class="summary-sub">All your practice so far</div>'
     + '<div class="summary-big-score" style="color:' + pctColor + '">' + domainReadLabel(domainRead(S.score)) + '</div>'
     + '<div class="summary-score-label">' + escapeHtml(String(c)) + ' of ' + escapeHtml(String(t)) + ' correct</div>'
-    + '<div class="summary-grid">'
-    + '<div class="summary-stat"><span class="summary-stat-num">' + escapeHtml(String(t)) + '</span><span class="summary-stat-label">Answered</span></div>'
-    + '<div class="summary-stat"><span class="summary-stat-num" style="color:var(--correct)">' + escapeHtml(String(c)) + '</span><span class="summary-stat-label">Correct</span></div>'
+    // Grove Phase 5: the stats as the set results' tiles (caption over number).
+    + '<ul class="td-clear-ts rs-tiles summary-tiles">'
+    + '<li class="td-clear-t"><span class="td-clear-k">Answered</span><span class="td-clear-v">' + escapeHtml(String(t)) + '</span></li>'
+    + '<li class="td-clear-t"><span class="td-clear-k">Correct</span><span class="td-clear-v">' + escapeHtml(String(c)) + '</span></li>'
     + ((Number(S.streak) || 0) >= STREAK_SHOW_MIN
-      ? '<div class="summary-stat"><span class="summary-stat-num">' + escapeHtml(String(S.streak)) + '</span><span class="summary-stat-label">In a row</span></div>'
-      : '<div class="summary-stat"><span class="summary-stat-num">' + escapeHtml(String(studyDaysThisWeek())) + '</span><span class="summary-stat-label">Study days this week</span></div>')
-    + '</div>'
+      ? '<li class="td-clear-t"><span class="td-clear-k">In a row</span><span class="td-clear-v">' + escapeHtml(String(S.streak)) + '</span></li>'
+      : '<li class="td-clear-t"><span class="td-clear-k">Study days this week</span><span class="td-clear-v">' + escapeHtml(String(studyDaysThisWeek())) + '</span></li>')
+    + '</ul>'
     + (confAny ? '<div class="summary-section-label">How sure you were</div>' + confCards : '')
     + '<div class="summary-section-label">Each area</div>'
     + domainHtml
@@ -28465,7 +28695,7 @@ function showChangelog() {
   }
   modal.innerHTML = '<div class="changelog-overlay" onclick="closeChangelog(event)">'
     + '<div class="changelog-modal" onclick="event.stopPropagation()">'
-    + '<div class="cl-title">What’s New</div>'
+    + dlgHeadHtml('cl-title', 'What’s New', 'closeChangelog()', 'Close What’s New')
     + expanded
     + olderHtml
     + '<button class="cl-close" onclick="closeChangelog()">Close</button>'
