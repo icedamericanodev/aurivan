@@ -26,6 +26,12 @@ export function supportEmailFrom(env: string | undefined): string {
  */
 export const DEFAULT_PRIVACY_URL = 'https://kaisip.com/privacy';
 export const DEFAULT_TERMS_URL = 'https://kaisip.com/terms';
+/**
+ * The public "How KaiSip questions are made and checked" page (design-notes/grove/TRANSPARENCY.md, W1).
+ * Settings → About links to it; the same words are bundled in Help → Common questions, so the
+ * story still reads offline.
+ */
+export const HOW_MADE_URL = 'https://kaisip.com/how-questions-are-made';
 
 /** The env value when it is an https:// link; otherwise the default (an empty or broken value never hides the row). */
 export function linkFrom(env: string | undefined, fallback: string): string {

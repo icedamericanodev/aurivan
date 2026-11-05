@@ -17,7 +17,7 @@
  * Content only: no React, no storage.
  */
 import type { Fix, SupportTopic } from '../../engine/support';
-import { PROVENANCE_LINE } from '../brand';
+import { AI_LONG_DISCLAIMER_PARAGRAPHS, PROVENANCE_LINE } from '../brand';
 
 // ── Fixes after learner reports ──────────────────────────────────────────
 /**
@@ -744,5 +744,13 @@ export const FAQ: readonly FaqEntry[] = [
       PROVENANCE_LINE,
     ],
     topic: 'other',
+  },
+  {
+    // Transparency (owner request, 5 Nov 2026): the long disclaimer, word for word (content/brand.ts).
+    // Settings → About's "How questions are made" opens this entry (faq?open=how-made).
+    id: 'how-made',
+    question: 'How are the questions made and checked?',
+    answer: [...AI_LONG_DISCLAIMER_PARAGRAPHS],
+    topic: 'study',
   },
 ];

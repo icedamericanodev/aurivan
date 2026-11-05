@@ -47,7 +47,7 @@ import { StickyFooter } from '../components/quiz';
 import { Button, Chip, Enter, Gap, T } from '../components/ui';
 import { DataMessage, RestorePreview } from '../components/yourData';
 import { WebImportPreview } from '../components/webImport';
-import { EXAM_TRADEMARK_LINE, WELCOME_FACTS, WELCOME_HEADLINE, WELCOME_LINE } from '../content/brand';
+import { AI_DISCLAIMER_LINE, EXAM_TRADEMARK_LINE, WELCOME_FACTS, WELCOME_HEADLINE, WELCOME_LINE } from '../content/brand';
 import { DEFAULT_CERT_ID } from '../content/certifications';
 import { dateInMonths, daysToExam, EXAM_DATE_PRESETS, presetIndexFor } from '../engine/examDay';
 import { planConsequence } from '../engine/firstRun';
@@ -169,7 +169,9 @@ export default function Onboarding() {
             <T v="body">{line}</T>
           </View>
         ))}
-        <T v="meta" color={c.muted} style={{ marginTop: space.md }}>{EXAM_TRADEMARK_LINE}</T>
+        {/* Transparency (5 Nov 2026, TRANSPARENCY.md P4): the short AI disclaimer, one muted line right above the not-affiliated line. */}
+        <T v="meta" color={c.muted} style={{ marginTop: space.md }}>{AI_DISCLAIMER_LINE}</T>
+        <T v="meta" color={c.muted} style={{ marginTop: space.xs }}>{EXAM_TRADEMARK_LINE}</T>
       </View>
     </Enter>
   );

@@ -51,6 +51,7 @@ import {
   type ReportTarget,
   type SupportTopic,
 } from '../engine/support';
+import { REPORT_AI_LINE } from '../content/brand';
 import type { Letter } from '../content/types';
 import { ANNOUNCE_DELAY, moveFocus, sayLater } from '../lib/a11y';
 import { config } from '../lib/config';
@@ -396,6 +397,11 @@ export function ReportSheet({ visible, certId, target, reportedAt, onClose, onOp
         <T v="hero">{REPORT_LABEL}</T>
       </View>
       <T v="meta" style={{ marginTop: space.xs }}>{sheetMeta(target)}</T>
+      {/* Transparency (5 Nov 2026, TRANSPARENCY.md P5): content is written with AI help, so say thanks for the
+          catch. Not on an app-bug report (target 'app'), where it would not fit. Sending is unchanged. */}
+      {target.kind !== 'app' && !panel && (
+        <T v="small" color={c.ink2} style={{ marginTop: space.sm }}>{REPORT_AI_LINE}</T>
+      )}
       {reportedAt !== undefined && !panel && (
         <T v="small" color={c.ink2} style={{ marginTop: space.md }}>
           {`You started a report about this on ${shortDate(reportedAt)}. Send another if something else is wrong.`}

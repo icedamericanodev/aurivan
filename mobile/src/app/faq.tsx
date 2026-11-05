@@ -5,8 +5,11 @@
  * already chosen. "Finished in your email app?" shows under the entry
  * that opened it, not below the whole list (UX review O3).
  * Bundled content (content/support FAQ), no network.
+ *
+ * `faq?open=<id>` opens that entry at once (Settings → About's "How questions are
+ * made" opens `how-made`). An unknown id opens nothing, like a plain visit.
  */
-import { router } from 'expo-router';
+import { router, useLocalSearchParams } from 'expo-router';
 import { useState } from 'react';
 import { View } from 'react-native';
 import { DisclosureRow } from '../components/pathChooser';
@@ -21,7 +24,9 @@ export default function Faq() {
   const { c } = useTheme();
   const { cert } = useActiveCert();
   const contact = useContactFlow(cert.id);
-  const [openId, setOpenId] = useState<string | null>(null);
+  const params = useLocalSearchParams<{ open?: string }>();
+  // Only a real entry id opens one; anything else starts with every answer closed.
+  const [openId, setOpenId] = useState<string | null>(() => (FAQ.some((f) => f.id === params.open) ? params.open! : null));
   return (
     <Screen edges={['top', 'bottom']}>
       <PushedHeader title="Common questions" onBack={() => (router.canGoBack() ? router.back() : router.replace('/you'))} />

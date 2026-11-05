@@ -32,6 +32,37 @@ export const CERT_SCOPE_LINE = 'Starting with CISA. More certifications later.';
 export const PROVENANCE_LINE =
   'Original questions and notes, written with AI assistance and checked against ISACA’s published exam outline and standards.';
 
+/*
+ * Transparency (owner request, 5 Nov 2026; spec: design-notes/grove/TRANSPARENCY.md).
+ * Word for word from the spec. Keep every claim true: written WITH AI help (the app
+ * generates nothing at runtime), checked by automated checks, AI review checks and the
+ * founder, and NO outside panel of human reviewers. Never "experts", "verified" or
+ * "accurate", never the question count, never an AI vendor's name.
+ */
+
+/** The short disclaimer: Settings → About and the welcome screen, the same words everywhere. */
+export const AI_DISCLAIMER_LINE =
+  'KaiSip’s questions and notes are written with AI help and can contain mistakes. Check anything important against ISACA’s own materials and your own judgment.';
+
+/** Under the Report a problem sheet's title (content reports only, not app bugs). */
+export const REPORT_AI_LINE = 'Written with AI help, so mistakes can slip through. Thanks for telling us.';
+
+/**
+ * The long disclaimer, split into short paragraphs for a phone screen. Joined with a
+ * space it is the spec's text word for word (AI_LONG_DISCLAIMER). Help → Common
+ * questions answers "How are the questions made and checked?" with it.
+ */
+export const AI_LONG_DISCLAIMER_PARAGRAPHS: readonly string[] = [
+  'KaiSip’s questions, explanations and study notes are original. They are written with heavy AI help, directed by a CISA-certified founder, and each question is mapped to ISACA’s current CISA exam content outline.',
+  'Before a question is added, it goes through automated checks and AI review checks (exam question style, technical accuracy, a blind answer test, sources and how current they are, consistency across domains, grammar, and whether the longest option gives the answer away). Then the founder reviews the results. There is no outside panel of human reviewers yet.',
+  'AI tools make mistakes, and so do people, so check anything important against ISACA’s own materials and your own judgment. If something looks wrong, use Report a problem; fixes ship in app updates.',
+  'A readiness range is a study estimate, not a prediction of your exam result. KaiSip is not affiliated with or endorsed by ISACA.',
+];
+export const AI_LONG_DISCLAIMER = AI_LONG_DISCLAIMER_PARAGRAPHS.join(' ');
+
+/** The link text for the page that explains it all (web and phone say the same). */
+export const HOW_MADE_TITLE = 'How questions are made';
+
 /**
  * The welcome screen (mobile 1.24): literal, not poetic. It names the exam and
  * the benefit, then says in four plain lines what a learner will actually do

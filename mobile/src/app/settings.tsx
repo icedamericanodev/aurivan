@@ -83,7 +83,7 @@ import { dayKey } from '../engine/streak';
 import { shortDate } from '../lib/format';
 import { DAILY_MINUTES, examFocusedOf, FAMILIARITIES, FAMILIARITY_INFO, KEEP_TODAY_LINE, minutesLabel, minutesSpoken, type DailyMinutes, type Familiarity } from '../engine/fit';
 import { MODE_INFO, STUDY_MODES, type StudyMode } from '../engine/studyModes';
-import { CERT_SCOPE_LINE, PROVENANCE_LINE, WELCOME_HEADLINE, WELCOME_LINE } from '../content/brand';
+import { AI_DISCLAIMER_LINE, CERT_SCOPE_LINE, HOW_MADE_TITLE, PROVENANCE_LINE, WELCOME_HEADLINE, WELCOME_LINE } from '../content/brand';
 import { CERTIFICATIONS, combinedTrademarkNotice, selectableCertifications } from '../content/certifications';
 import { hasContent } from '../content/loader';
 import { hasNotes } from '../content/notes';
@@ -92,7 +92,7 @@ import { changeExamDate, changeFit } from '../lib/activity';
 import { moveFocus, sayLater } from '../lib/a11y';
 import { hideBadges, showBadgesAgain, shownAgainLine } from '../lib/badges';
 import { clearJustRead } from '../lib/noteNews';
-import { config } from '../lib/config';
+import { config, HOW_MADE_URL } from '../lib/config';
 import { DAY_CHIPS, localHour, localTime, MINUTE_STEP, reminderDays, reminderSummary, stepTime, toggleDay, type ReminderPrefs } from '../engine/reminders';
 import { cancelReminders, ensurePermission, remindersSupported } from '../lib/reminders';
 import { refreshReminders } from '../lib/reminderSync';
@@ -1015,6 +1015,26 @@ export default function Settings() {
         <Gap h={space.lg} />
         <T v="meta">{CERT_SCOPE_LINE}</T>
         <T v="meta" style={{ marginTop: space.xs }}>{PROVENANCE_LINE}</T>
+        {/* Transparency (owner request, 5 Nov 2026; design-notes/grove/TRANSPARENCY.md P2): the short AI
+            disclaimer, then where to read how questions are made: the bundled Help answer (works offline)
+            and the public page on kaisip.com. */}
+        <T v="meta" style={{ marginTop: space.xs }}>{AI_DISCLAIMER_LINE}</T>
+        <Gap h={space.md} />
+        <SettingsRow
+          title={HOW_MADE_TITLE}
+          subtitle="Read it in Help"
+          accessibilityHint="Opens the answer in Common questions"
+          onPress={() => {
+            close();
+            router.push({ pathname: '/faq', params: { open: 'how-made' } });
+          }}
+        />
+        <SettingsRow
+          title="Read it on kaisip.com"
+          onPress={() => Linking.openURL(HOW_MADE_URL)}
+          accessibilityHint="Opens in your browser"
+          last
+        />
       </Sheet>
     </Screen>
   );
