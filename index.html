@@ -7321,7 +7321,7 @@ html { scroll-padding-bottom: calc(104px + var(--consent-h, 0px)); }
 .pp-page { max-width: none; }
 .pp-cols { display: flex; flex-direction: column; gap: var(--sp-xxl); }
 .pp-bed { display: flex; flex-direction: column; gap: var(--sp-sm); min-width: 0; }
-.pp-main { display: flex; flex-direction: column; gap: var(--sp-xxl); min-width: 0; }
+.pp-main, .pp-story { display: flex; flex-direction: column; gap: var(--sp-xxl); min-width: 0; }
 .pp-title { margin: 0; font: var(--t-display); letter-spacing: var(--tr-display); color: var(--text); overflow-wrap: anywhere; }
 .pp-title.pp-title-sm { font: var(--t-title); letter-spacing: var(--tr-title); }
 .pp-title:focus { outline: none; }
@@ -7444,6 +7444,21 @@ html { scroll-padding-bottom: calc(104px + var(--consent-h, 0px)); }
 .pp-lk-prev { width: 100%; box-sizing: border-box; margin-top: var(--sp-md); padding: var(--sp-sm); border-radius: var(--r-tile); background: var(--bg); box-shadow: 0 1px 0 var(--border); }
 .pp-lk-prev .plnt-svg { width: 120px; height: 120px; }
 @media (max-height: 39.99em) { .pp-lk-prev { position: static; } }
+/* Under 48em, keyboard focus on a Look row scrolls clear of the sticky
+   preview above it (WCAG 2.4.11); the input fills its row. The tab bar
+   below is cleared by the page's scroll-padding-bottom. */
+@media (max-width: 47.99em) and (min-height: 40em) {
+  #plLookBody .plnt-radio { scroll-margin-top: calc(120px + 2 * var(--sp-sm) + var(--sp-md)); }
+}
+/* Forced colours drop box-shadow: the chosen row, the radio marks and the
+   tick boxes are drawn with outline and border there instead. */
+@media (forced-colors: active) {
+  .pp-opt:has(.plnt-radio:checked) { outline: 2px solid CanvasText; outline-offset: -2px; }
+  .pp-opt:has(.plnt-radio:focus-visible) { outline: 2px solid Highlight; outline-offset: 2px; }
+  .pp-mark-radio, .pp-mark-checkbox { box-sizing: border-box; box-shadow: none; border: 1.5px solid CanvasText; }
+  .pp-opt:has(.plnt-radio:checked) .pp-mark-radio { box-shadow: none; forced-color-adjust: none; border-color: CanvasText; background: radial-gradient(CanvasText 0 5px, Canvas 5.5px); }
+  .pp-opt:has(.plnt-radio:checked) .pp-mark-checkbox { box-shadow: none; border-color: CanvasText; }
+}
 /* From 48em: the plant bed on the left (sticky when the window is tall
    enough, never taller than the window), the stem and Look on the right. */
 @media (min-width: 48em) {
@@ -7453,6 +7468,13 @@ html { scroll-padding-bottom: calc(104px + var(--consent-h, 0px)); }
 }
 @media (min-width: 48em) and (min-height: 40em) {
   .pp-bed { position: sticky; top: var(--sp-lg); max-height: calc(100vh - 2 * var(--sp-lg)); overflow-y: auto; }
+}
+/* From 1240px (the page spans the frame): the bed, then the story (the
+   lines, the stem, Your domains), then Look, so the page stays under two
+   screens tall at 1280 by 900 (4.12). The bed stays the Look's preview. */
+@media (min-width: 77.5em) {
+  .pp-cols { grid-template-columns: minmax(13rem, 1fr) minmax(0, 2.5fr); }
+  .pp-main { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--sp-xxl) var(--sp-2xl); align-items: start; }
 }
 /* The Turning (web, 560 ms, under the 600 ms cap): the fact is there from
    the start; the light gathers (0 to 140), the old form cross-fades to the
@@ -13701,6 +13723,8 @@ function switchTab(t, opts) {
   // Leaving Settings clears its status lines, so a "Progress cleared" or an
   // old "Restored" never waits there after the learner has moved on.
   if (S.activeTab === 'settings' && t !== 'settings') { try { rowSayClear(); } catch (e) {} }
+  // Leaving Your plant ends its visit: the next open works out its moments again.
+  if (S.activeTab === 'plant' && t !== 'plant') ppMoment = null;
   S.activeTab = t;
   saveStateSoon(); // the click paints first (see SAVE SOON)
   // Lets CSS drop the shared dashboard above Topics on phones.
@@ -19705,11 +19729,13 @@ function ppLeafSvg(kind, fill) {
 // What this visit shows once: the back-fill line, the forms note, the quiet
 // grew line or the Turning. Worked out on the first draw of a visit, saved
 // as seen at once (as the phone does), and kept for the visit so a redraw
-// (a look change, the theme) shows the end state, never a replay.
+// (a look change, the theme) shows the end state, never a replay. A visit
+// is one stay on #plant (switchTab clears it on the way out); a growth
+// reached during the stay starts a new one.
 function ppMoments(K, KF) {
   var p = S.plant;
-  if (ppMoment && ppMoment.at === p.plantedAt) return ppMoment;
-  var m = { at: p.plantedAt, played: false, said: false };
+  if (ppMoment && ppMoment.at === p.plantedAt && ppMoment.g === p.growth) return ppMoment;
+  var m = { at: p.plantedAt, g: p.growth, played: false, said: false };
   var g = p.growth, call = K.plant.plantCallName(p), dirty = false;
   if (p.backfill && !p.backfill.seen) {
     m.backfill = K.plant.backfillLine(p, p.backfill.growth, KF && p.backfill.growth > 1 ? KF.formName(p.species, p.backfill.growth) : undefined);
@@ -19792,10 +19818,12 @@ function ppHtml() {
   if (rest) who += '<p class="pp-small pp-state">' + escapeHtml(rest) + '</p>';
   bed = '<div class="pp-bed" id="ppBed">' + bed + '<div class="pp-who">' + who + '</div></div>';
   // ── The main column ──
-  var main = '';
+  // From 1240px the story (the lines, the stem, Your domains) and Look are
+  // two columns beside the bed, in this same order (4.12: two screens tall).
+  var main = '<div class="pp-story">';
   [mo.backfill, mo.note, mo.grew ? mo.grew.line : ''].forEach(function (t) { if (t) main += '<p class="pp-aside">' + escapeHtml(t) + '</p>'; });
   main += ppStemHtml(K, KF, v, mo, reduce);
-  main += ppDomainsHtml(K, v);
+  main += ppDomainsHtml(K, v) + '</div>';
   main += '<section class="pp-sec pp-look" aria-labelledby="ppLookH"><div class="pp-head"><h2 class="pp-h" id="ppLookH">Look</h2></div>'
     + '<p class="pp-meta">' + PLANT_LOOK_LINE + '</p>'
     + '<ul class="pp-card pp-rows">'
