@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "comment": "Original CRISC practice questions for Domain 4 (Technology and Security), written to the CRISC exam content outline effective 2025. Every item is authored from public concepts and KaiSip's own CRISC study notes (data/crisc/notes/d4.json), with no reference to the CRISC Review Manual, ISACA's QAE database, ISACA's practice quiz or any prior question bank. Schema: docs/content/QUESTION_SCHEMA.md; writing rules: docs/content/EXAM_STYLE_V2.md and .claude/agents/crisc-standards-auditor.md. Not affiliated with or endorsed by ISACA®. CRISC® is a registered trademark of ISACA. Pilot batch crisc_d4_001 to crisc_d4_020, 30 Oct 2026. Round 2 crisc_d4_021 to crisc_d4_045, 31 Oct 2026. Round 3 crisc_d4_046 to crisc_d4_065, 4 Nov 2026. Round 5 crisc_d4_066 to crisc_d4_075, 4 Nov 2026. Round 6 crisc_d4_076 to crisc_d4_079, 4 Nov 2026. Round 7 crisc_d4_080 to crisc_d4_085, 4 Nov 2026. Round 8 crisc_d4_086 to crisc_d4_090, 5 Nov 2026.",
+    "comment": "Original CRISC practice questions for Domain 4 (Technology and Security), written to the CRISC exam content outline effective 2025. Every item is authored from public concepts and KaiSip's own CRISC study notes (data/crisc/notes/d4.json), with no reference to the CRISC Review Manual, ISACA's QAE database, ISACA's practice quiz or any prior question bank. Schema: docs/content/QUESTION_SCHEMA.md; writing rules: docs/content/EXAM_STYLE_V2.md and .claude/agents/crisc-standards-auditor.md. Not affiliated with or endorsed by ISACA®. CRISC® is a registered trademark of ISACA. Pilot batch crisc_d4_001 to crisc_d4_020, 30 Oct 2026. Round 2 crisc_d4_021 to crisc_d4_045, 31 Oct 2026. Round 3 crisc_d4_046 to crisc_d4_065, 4 Nov 2026. Round 5 crisc_d4_066 to crisc_d4_075, 4 Nov 2026. Round 6 crisc_d4_076 to crisc_d4_079, 4 Nov 2026. Round 7 crisc_d4_080 to crisc_d4_085, 4 Nov 2026. Round 8 crisc_d4_086 to crisc_d4_090, 5 Nov 2026. Round 9 crisc_d4_091 to crisc_d4_095, 5 Nov 2026.",
     "schema_version": 1
   },
   "domain": 4,
@@ -3335,6 +3335,191 @@
         "Learning priorities"
       ],
       "_provenance": "Authored from concept: notes 4B2.1 (Risk-Aware Culture and Role-Based Training: training content follows the risk profile). Round 8, 5 Nov 2026: original short stem (the basis for a toy maker's next awareness topics) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Neighbours checked: crisc_d4_017 (role-based onboarding for seasonal workers), crisc_d4_065 (directors' briefing on top cyber risks), crisc_d4_074 (contractors outside the program), crisc_d4_018 and crisc_d4_057 (AI-use awareness), crisc_d1_024 (near-miss reports counted against staff), crisc_d1_046 (insight into risk culture), crisc_d1_084 (one reporting channel); CISA d2_101 (awareness program design, with content refreshed from industry reports as a distractor), d2_055 (IT staff competence) and d1_044 (an audit team's training plan); CC cc_d2_038 (AI-written lures in course content), cc_d2_015 (naming staff who click) and cc_d2_108 (reading click and report rates). Judged distinct: this keys the enterprise's own rated scenarios as the basis for training topics, with industry threat reports as the runner-up. Earlier 4B2 ideas dropped as mirrors: penalties or naming in phishing simulations (CISA d5_104, CC cc_d2_015) and targets on near-miss reports (crisc_d1_024).",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d4_091",
+      "domain": 4,
+      "subtopic": "4A1 Technology roadmaps and enterprise architecture (EA). Accepting an unsupported server's risk",
+      "principle_id": "escalate-to-the-limit-setter",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "A refinery director, who may accept up to $250,000, wants to accept an unsupported server's $400,000 exposure within appetite and tolerance; its setup and threats are as assessed. What should the risk practitioner do FIRST?",
+      "options": {
+        "A": "Reassess the server's $400,000 exposure before the director accepts it",
+        "B": "Have the director accept it on record with a review date",
+        "C": "Refer it to an executive whose authority covers $400,000",
+        "D": "Propose an upgrade that brings the exposure under $250,000"
+      },
+      "correct": "C",
+      "key_concept": "Acceptance needs an exposure within appetite and tolerance and a signer whose delegated authority covers that exposure.",
+      "pre_read": "List every limit the stem gives, and whom each one binds, before choosing.",
+      "correct_explanation": "The server's setup and threats are as assessed and the exposure is within appetite and tolerance, so acceptance is a valid response and no reassessment is due. But acceptance must come from someone whose delegated authority covers the exposure, and the director's stops at $250,000. The practitioner refers the decision to an executive who holds that authority. Recorded acceptance by the director is the runner-up: right within the director's limit, not above it.",
+      "wrong_explanations": {
+        "A": "The setup and threats are as assessed, so a new assessment repeats current work; the open question is who may accept a $400,000 exposure, not what it is.",
+        "B": "Recorded acceptance with a review date fits an exposure within the signer's authority; this one is $400,000, and the director may accept only up to $250,000.",
+        "D": "The risk is within appetite and tolerance, so no treatment is required; spending to fit a signer's limit puts cost ahead of the decision an authorized executive should make."
+      },
+      "tips": [
+        "Eliminate: A repeats an assessment that still matches the server and its threats, and D funds treatment for a risk within appetite and tolerance only to fit a signing limit.",
+        "Final two: C beats B because acceptance within appetite and tolerance still needs a signer whose delegated authority covers the exposure; the director's authority stops at $250,000.",
+        "Exam cue: before keying owner acceptance, check appetite and tolerance, then the signer's delegated authority; an exposure above that authority goes to someone who holds it."
+      ],
+      "framework_ref": "ISACA Glossary (risk acceptance); NIST IR 8286B-upd1 Section 2.4.3 (Risk Owner: risk escalation and elevation); NIST CSF 2.0 GV.RR-02 (roles, responsibilities and authorities related to cybersecurity risk management are established, communicated, understood and enforced)",
+      "related_concepts": [
+        "Delegated acceptance authority",
+        "Legacy system risk",
+        "Risk acceptance"
+      ],
+      "_provenance": "Authored from concept: notes 4A1.3 (Technical Debt and Legacy Systems: accept for a defined period, signed by someone authorized for that rating) and D1 notes 1B4.3 (within appetite, tolerance and the owner's delegated authority, on a current assessment, the owner can accept on record). Round 9, 5 Nov 2026: original scenario (a refinery director, who may accept up to $250,000, wants to accept an unsupported server's $400,000 exposure within appetite and tolerance, with setup and threats as assessed) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Round 9 acceptance counter-example: a FIRST stem with a current assessment within appetite where acceptance is not keyed, because the rating is above the owner's delegated authority. Neighbours checked: crisc_d3_024 (a warehouse head's signed acceptance above a medium limit, BEST stem, keyed B, with filing, re-rating and co-signing as distractors), crisc_d1_114 (cinema outage acceptance keyed), crisc_d3_118 (AI vendor training terms, acceptance keyed), crisc_d4_086 (car-rental go-live, acceptance keyed), crisc_d4_080 (acceptance renewal after a cloud move, reassess keyed), crisc_d4_022 (legacy retirement slip), crisc_d4_002 (legacy system kept off the register), crisc_d3_110 (conditional acceptance of a legacy routing server), crisc_d3_039 (interim controls for unsupported servers), crisc_d1_042 (running above tolerance for 90 days); CISA d4_255 (formal management acceptance for an unsupported OS), d4_060 (firewalls past end of support), d5_260 (a five-year-old acceptance not reassessed) and d3_005 (project risk beyond a manager's delegated tolerance); CC cc_d5_081 (an approved exception for an unsupported PC), cc_d5_014 (isolating unsupported printers) and cc_d1_057 (unmanaged legacy risk); AAIA aaia_d1_030 (who may accept a retrained alarm model). Judged distinct from crisc_d3_024: here the decision has not been signed, the stem is FIRST, and the runner-up is the owner's recorded acceptance that crisc_d1_114 keys, so the item teaches the second limit on acceptance. Uses 'as assessed' (as in crisc_d4_086) for the facts, not the phrase 'nothing has changed'. Keep apart in practice sets from crisc_d3_024, crisc_d1_114 and crisc_d4_086. Review fixes 5 Nov 2026 (round 9 standards audit, concept review and blind test): moved from rating-level limits to money limits ($250,000 authority, $400,000 exposure) so it no longer mirrors crisc_d3_024 (option A also names the $400,000 exposure, so the key is not the only option echoing it); the stem now states the exposure is within appetite and tolerance, as the Glossary's risk acceptance requires, and the explanation and tips say so consistently.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d4_092",
+      "domain": 4,
+      "subtopic": "4A2 Operations management. A scheduled fix and a workaround",
+      "principle_id": "advise-dont-decide",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A city council's problem team traced repeated permit-system outages to a software flaw; the fix ships in March, and an owner-approved workaround keeps the risk within appetite. What is the risk practitioner's BEST action?",
+      "options": {
+        "A": "Escalate the March fix date to the system's risk owner",
+        "B": "Monitor the workaround's results until the fix ships",
+        "C": "Ask IT to sign an acceptance of the outage risk",
+        "D": "Request an emergency change to apply the fix this week"
+      },
+      "correct": "B",
+      "key_concept": "Once the owner has chosen a response and risk sits within appetite, the practitioner monitors it and escalates only when a trigger is met.",
+      "pre_read": "Note which decisions the stem says are already made, and by whom.",
+      "correct_explanation": "The cause is known, the fix has a release date, and the workaround the owner approved holds the risk within appetite, so the response is decided. The practitioner's part now is monitoring: checking that the workaround keeps outages contained and that the fix lands in March, and raising it if either slips. Escalating to the risk owner is the runner-up: the owner has already decided, so escalation adds no decision while risk stays within appetite.",
+      "wrong_explanations": {
+        "A": "The owner approved the workaround and the risk is within appetite; escalation suits a breach or a slipped date, and neither has happened yet.",
+        "C": "IT runs the system but does not own the outage risk; the business owner has already approved the workaround, so no acceptance is needed from IT.",
+        "D": "Emergency changes are for needs that cannot wait; with an approved workaround holding risk within appetite, the fix can follow normal release testing."
+      },
+      "tips": [
+        "Eliminate: C asks IT to accept a risk it does not own, and D sends a fix that can wait through the emergency path, skipping normal release testing.",
+        "Final two: B beats A because the owner has already decided and the risk is within appetite; the practitioner watches for a slip and escalates only then.",
+        "Exam cue: when the owner has chosen a response and risk sits within appetite, the practitioner's move is monitoring against a trigger, not escalating again."
+      ],
+      "framework_ref": "ISACA Glossary (workaround); ISACA Glossary (problem); NIST CSF 2.0 ID.RA-06 (risk responses are chosen, prioritized, planned, tracked and communicated)",
+      "related_concepts": [
+        "Known error and workaround",
+        "Monitoring a risk response",
+        "Emergency change"
+      ],
+      "_provenance": "Authored from concept: notes 4A2.2 (Incident and Problem Management: a known error records the cause and any workaround, which the owner approves and the practitioner monitors until the fix ships). Round 9, 5 Nov 2026: original scenario (a hospital's bed-management outages traced to a software flaw, a March fix and an owner-approved workaround within appetite) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Round 9 routing-verb item: Escalate is the runner-up and stays wrong, and the key is a monitoring step tied to the scheduled fix. Neighbours checked: crisc_d4_023 (an unfunded permanent fix taken to the payroll owner), crisc_d4_004 (a problem record for frozen kiosks), crisc_d4_003 and crisc_d4_024 (emergency changes), crisc_d1_063 (a tested workaround until a studio fix is live), crisc_d3_110 (a condition of acceptance never monitored), crisc_d1_117 (an owner who never chooses a response); CISA d4_031 (record a known error for the service desk), d4_015 (apply a workaround and open a problem record) and d4_095 (a DR test workaround); AAIA aaia_d2_134 (a known error with a vendor fix five months away) and aaia_d2_092 (a problem record closed too early); CC cc_d2_042 (tracking patch times after a new patch window). Judged distinct: this keys monitoring over escalation when the owner has decided and the risk is within appetite; the problem-record closure distractor of crisc_d4_023 is not reused.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d4_093",
+      "domain": 4,
+      "subtopic": "4A4 Data lifecycle management. Research data without a class",
+      "principle_id": "analyze-before-acting",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "A research hospital's genomics team has gathered patient sequencing data for three months and plans to classify it next year, before sharing it with a university partner. What should the risk practitioner recommend as BEST?",
+      "options": {
+        "A": "Have the data owner classify the data set now",
+        "B": "Have the data owner classify it before the partner share",
+        "C": "Encrypt the data set until the partner share is approved",
+        "D": "Have IT classify the data set as its custodian"
+      },
+      "correct": "A",
+      "key_concept": "Data is classified by its owner when it is created or collected, because the class sets every later handling rule.",
+      "pre_read": "Compare when each option would put handling rules in place.",
+      "correct_explanation": "Classification sets the handling rules for data, such as who may access it, how it is stored and how long it is kept, so the owner assigns it when data is created or collected. This data set has held patient information for three months with no class. Classifying before the partner share is the runner-up: the share does need a class, but the exposure began when the data was gathered, not when it leaves.",
+      "wrong_explanations": {
+        "B": "The owner is right but the timing is not: the data has sat unclassified for three months, and storage and access inside the team already need rules.",
+        "C": "Encryption is one handling rule; without a class, nobody has decided who may access the data, how long it is kept or how it may be shared.",
+        "D": "IT applies handling rules as custodian; setting the class belongs to the data owner, who answers for how the data is used."
+      },
+      "tips": [
+        "Eliminate: C picks one control before anyone has set the data's class, and D gives the class decision to IT, which only applies the owner's rules.",
+        "Final two: A beats B because the class sets handling from the moment data exists; waiting for the share leaves months of patient data without rules.",
+        "Exam cue: data is classified by its owner when it is created or collected; a later event such as sharing is a reason to review the class, not to set it."
+      ],
+      "framework_ref": "ISACA Glossary (data classification); ISACA Glossary (data owner); NIST SP 800-37 Rev. 2 Task C-2 (Security Categorization: the system owner and the information owner or steward categorize a new system at initiation, and the results influence control selection)",
+      "related_concepts": [
+        "Data classification",
+        "Data owner",
+        "Data lifecycle"
+      ],
+      "_provenance": "Authored from concept: notes 4A4.1 (Data Lifecycle, Classification and Ownership: the data owner classifies data when it is created or collected). Round 9, 5 Nov 2026: original scenario (a research hospital's genomics team holding three months of unclassified patient sequencing data, planning to classify it before a partner share next year) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Neighbours checked: crisc_d4_069 (the class of a joined data set), crisc_d4_030 (records no department claims), crisc_d4_007 (approving a new data use), crisc_d4_047 (identifiers in research extracts), crisc_d1_031 (a portal classed internal that now holds passport scans), crisc_d1_058 (over-classification), crisc_d1_076 (what IT may decide alone), crisc_d2_019 (untested laptop encryption); CISA d5_183 (DBAs deciding classification), d5_052 (DLP before data is labeled), d5_040 (inconsistent labels after a merger), d2_073 (basis for classification levels), d2_013 (a genomics privacy program) and d5_029 (collecting fields in case analytics needs them); CC cc_d5_004 (who classifies an unlabeled spreadsheet) and cc_d5_057 (screenshots of restricted scans). Judged distinct: the final two is the timing of classification (at collection against at sharing), not who classifies; the role trap is a distractor only.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d4_094",
+      "domain": 4,
+      "subtopic": "4A5 Portfolio and project management. Security tests cut to meet a date",
+      "principle_id": "analyze-before-acting",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "To meet a regulator's date, a gas supplier's program board cut its billing app's last-sprint security tests, and the app owner accepted the risk without an estimate. What is the risk practitioner's GREATEST concern?",
+      "options": {
+        "A": "The program board overruling the security team's plan",
+        "B": "Acceptance given with the app's flaws still unknown",
+        "C": "The team's sprint velocity falling below its plan",
+        "D": "Higher cost of fixing flaws found after launch"
+      },
+      "correct": "B",
+      "key_concept": "Acceptance is valid only for an analyzed risk; an owner who accepts a risk nobody has estimated has not made an informed decision.",
+      "pre_read": "Read each concern as a problem in its own right, then rank them.",
+      "correct_explanation": "An acceptance is only as sound as the analysis behind it. The cut tests were how the app's flaws would be found, and the owner accepted without an estimate, so nobody can say whether the risk is within appetite; the practitioner asks for one before launch. The board overruling the security team's plan is the runner-up: boards may trade scope for a date, but the decision then needs an analyzed risk.",
+      "wrong_explanations": {
+        "A": "A program board may trade scope for a date when the owner is informed; the plan changing matters less than an acceptance resting on no estimate.",
+        "C": "Velocity measures delivery pace, a performance measure; it says nothing about the size of the security risk the cut tests left unknown.",
+        "D": "Later fixes do cost more, but that cost is secondary; the larger issue is a risk of unknown size accepted for launch."
+      },
+      "tips": [
+        "Eliminate: C tracks delivery pace rather than risk, and D weighs the cost of later fixes while the size of the risk itself is unknown.",
+        "Final two: B beats A because a board may trade scope for a date; what makes this decision unsound is acceptance with no estimate behind it.",
+        "Exam cue: acceptance needs an analyzed risk to compare with appetite; when the work that measures the risk is cut, ask for an estimate before go-live."
+      ],
+      "framework_ref": "ISACA Glossary (risk acceptance); NIST SP 800-37 Rev. 2 Task R-4 (Authorization Decision: determine whether the risk from operating the system is acceptable, a decision that rests with the authorizing official); NIST SP 800-218 Version 1.1 PO.4.1 (define criteria for software security checks, such as adding them to the Definition of Done in agile methodologies)",
+      "related_concepts": [
+        "Informed risk acceptance",
+        "Security testing in Agile delivery",
+        "Schedule pressure"
+      ],
+      "_provenance": "Authored from concept: notes 4A5.2 (Project Risk and Agile Delivery: dropping risk work to meet a date is the risk owner's informed decision). Round 9, 5 Nov 2026: original scenario (a gas supplier's program board cutting a billing app's last-sprint security tests to meet a regulator's date, with the app owner accepting the risk without an estimate) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Neighbours checked: crisc_d4_086 (go-live with a known, assessed gap; acceptance keyed), crisc_d4_005 (developers running acceptance tests to meet a launch date), crisc_d4_031 (security stories deferred for six sprints), crisc_d4_084 (unrecorded acceptances in sprint reviews), crisc_d4_010 (a scrum team marking a risk accepted), crisc_d4_061 (deferred security backlog as a KRI), crisc_d1_096 (acceptance for a launch against a security lead's delay); CISA d3_020 (shipping tested reports before a regulatory deadline) and d3_151 (an RFP issued before requirements); CC cc_d5_112 (static analysis findings set aside). Judged distinct: the key is an acceptance resting on no analysis, set against a board's authority to change scope; it agrees with crisc_d4_086, where the assessment existed.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d4_095",
+      "domain": 4,
+      "subtopic": "4A7 Emerging technologies. A digital twin with remote control",
+      "principle_id": "objectives-first",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "A dairy plans a digital twin of its pasteurizing line, hosted on a start-up's cloud platform, through which engineers could change heating settings remotely. Which of the following should concern the risk practitioner MOST?",
+      "options": {
+        "A": "The start-up failing and the line's model being lost",
+        "B": "Unsafe heating changes made through the cloud platform",
+        "C": "Sensor data showing the dairy's daily output volumes",
+        "D": "Cloud storage costs rising as sensor data builds up"
+      },
+      "correct": "B",
+      "key_concept": "A new path from a cloud service to physical process controls adds safety and integrity risk that outranks data and vendor concerns.",
+      "pre_read": "Picture the worst realistic outcome of each option before ranking them.",
+      "correct_explanation": "A cloud path that can change heating settings links an internet-hosted service to the physical process that makes milk safe, so an error or misuse could put unsafe product on shelves, not just expose data. That safety and integrity exposure outweighs the others. The start-up failing is the runner-up: losing the twin's model costs money and insight, but the line keeps pasteurizing without it, while a misused control path could make the milk unsafe.",
+      "wrong_explanations": {
+        "A": "Vendor failure is a real risk with a start-up and calls for exit terms, but the line runs without its twin; lost analytics cost less than unsafe milk.",
+        "C": "Output volumes are low-sensitivity operating data; exposing them has a small impact beside a path that can change how the line heats milk.",
+        "D": "Rising storage cost is a budgeting matter the business case can cover; it does not threaten safe operation of the line."
+      },
+      "tips": [
+        "Eliminate: C exposes low-sensitivity operating data, and D is a cost the business case can cover; neither touches the safety of the product.",
+        "Final two: B beats A because the line keeps pasteurizing if the start-up fails, but a misused remote control path could make the milk unsafe.",
+        "Exam cue: when new technology links an internet service to a physical process, rank threats to safety and integrity above data and vendor concerns."
+      ],
+      "framework_ref": "NIST SP 800-82 Rev. 3 Section 3.2.1 (Benefits of Cybersecurity Investments: cyber attacks on OT can have physical impacts, particularly personal injury and loss of life, and damage to the environment); NIST SP 800-82 Rev. 3 Section 6.2.10 (Remote Access: provide remote access to OT only if justified and limited to the business need, and never so that it circumvents safety or security controls)",
+      "related_concepts": [
+        "Operational technology",
+        "Digital twin",
+        "Safety impact"
+      ],
+      "_provenance": "Authored from concept: notes 4A7.1 (Evaluating Emerging Technologies: identify new threats, including cloud paths to physical controls, and weigh them against the objective). Round 9, 5 Nov 2026: original short stem (a dairy's digital twin of its pasteurizing line on a start-up's cloud platform that can change heating settings) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Neighbours checked: crisc_d4_037 (exit terms for a drone start-up; its key is this item's runner-up), crisc_d4_063 (central face templates), crisc_d4_072 (private 5G across 14 plants), crisc_d4_036 (pause conditions for a headset pilot), crisc_d4_048 (an AI agent scheduling line shutdowns), crisc_d4_013 (vendor claims for blockchain), crisc_d2_078 (rating a treatment-plant failure by safety impact), crisc_d2_018 (a water utility's control system intrusion scenario); CISA d1_129 (vendor remote access to SCADA), d4_192 (SCADA lines in continuity planning) and d4_199 (ransomware on a chemical plant's SCADA); CC cc_d3_039 (operators able to change chlorine dosing). No bank holds a digital twin item. Judged distinct: this ranks a new cloud-to-process control path above vendor failure for an emerging technology before adoption; the setting moved from a water utility to a dairy to stay apart from crisc_d2_078.",
       "style_version": 2
     }
   ]

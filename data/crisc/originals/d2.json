@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "comment": "Original CRISC practice questions for Domain 2 (Risk Assessment), written to the CRISC exam content outline effective 2025. Every item is authored from public concepts and KaiSip's own CRISC study notes (data/crisc/notes/d2.json), with no reference to the CRISC Review Manual, ISACA's QAE database, ISACA's practice quiz or any prior question bank. Schema: docs/content/QUESTION_SCHEMA.md; writing rules: docs/content/EXAM_STYLE_V2.md and .claude/agents/crisc-standards-auditor.md. Not affiliated with or endorsed by ISACA®. CRISC® is a registered trademark of ISACA. Pilot batch crisc_d2_001 to crisc_d2_020, 30 Oct 2026. Review fixes 30 Oct 2026 (blind test and standards audit). Quality pass 31 Oct 2026 (ISACA authenticity audit and concept review). Repair round 1, 31 Oct 2026 (independent verification). Round 3 crisc_d2_046 to crisc_d2_065, 4 Nov 2026. Round 7 crisc_d2_091 to crisc_d2_094, 4 Nov 2026. Round 8 crisc_d2_095 to crisc_d2_099, 5 Nov 2026.",
+    "comment": "Original CRISC practice questions for Domain 2 (Risk Assessment), written to the CRISC exam content outline effective 2025. Every item is authored from public concepts and KaiSip's own CRISC study notes (data/crisc/notes/d2.json), with no reference to the CRISC Review Manual, ISACA's QAE database, ISACA's practice quiz or any prior question bank. Schema: docs/content/QUESTION_SCHEMA.md; writing rules: docs/content/EXAM_STYLE_V2.md and .claude/agents/crisc-standards-auditor.md. Not affiliated with or endorsed by ISACA®. CRISC® is a registered trademark of ISACA. Pilot batch crisc_d2_001 to crisc_d2_020, 30 Oct 2026. Review fixes 30 Oct 2026 (blind test and standards audit). Quality pass 31 Oct 2026 (ISACA authenticity audit and concept review). Repair round 1, 31 Oct 2026 (independent verification). Round 3 crisc_d2_046 to crisc_d2_065, 4 Nov 2026. Round 7 crisc_d2_091 to crisc_d2_094, 4 Nov 2026. Round 8 crisc_d2_095 to crisc_d2_099, 5 Nov 2026. Round 9 crisc_d2_100 to crisc_d2_104, 5 Nov 2026.",
     "schema_version": 1
   },
   "domain": 2,
@@ -662,7 +662,7 @@
       "tips": [
         "Eliminate: C leaves out controls that already work, overstating the need for treatment, and D swaps the utility's own exposure for a peer benchmark.",
         "Final two: A beats B because only implemented, working controls count today; a projection with planned controls is future residual risk, used to judge the plan.",
-        "Exam cue: compare today's risk, counting only implemented, working controls, with appetite; ISACA may call it current or residual risk. A projection with planned controls judges the plan; inherent risk only shows reliance on controls."
+        "Exam cue: compare today's risk, counting only implemented, working controls, with appetite; ISACA may call it current or residual risk. A projection with planned controls judges the plan; inherent risk ranks where controls matter most."
       ],
       "framework_ref": "ISACA Glossary (current risk); ISACA Glossary (risk response); ISACA Glossary (residual risk); ISACA Glossary (inherent risk); NIST IR 8286 Rev. 1 Section 3.5.2 (Responding to Residual Risk)",
       "related_concepts": [
@@ -3668,6 +3668,191 @@
         "Loss magnitude"
       ],
       "_provenance": "Authored from concept: notes 2B4.3 (Choosing a Method: Data, Decisions, FAIR and Monte Carlo). Round 8, 5 Nov 2026: original scenario (a FAIR analysis of ransomware at a pension administrator, with a regulator's fine that followed one peer attack in four) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Neighbours checked: crisc_d2_087 (primary and secondary losses in an event record), crisc_d2_091 (a loss repaid by insurance), crisc_d2_015 and crisc_d2_043 (ALE arithmetic), crisc_d2_041 (a Monte Carlo tail against tolerance), crisc_d2_017 (a range, not one exact figure), CISA d2_080 (inputs that show FAIR is applied) and d2_214 (expected fines against the cost of compliance); no mirror in CISA, CC or AAIA.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d2_100",
+      "domain": 2,
+      "subtopic": "2A1 Risk events. Double payment from a batch rerun",
+      "principle_id": "analyze-before-acting",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A batch job that ran twice paid a music label's artists double for one month's royalties; the nearest scenario in its register is payment fraud. What should the risk analyst do FIRST?",
+      "options": {
+        "A": "Link the event to the payment fraud scenario",
+        "B": "Draft a duplicate-payment scenario with the payments manager",
+        "C": "Escalate the double payment to the label's risk committee",
+        "D": "Record the event as a one-off outside any scenario"
+      },
+      "correct": "B",
+      "key_concept": "An event that fits no scenario shows a register gap; the practitioner drafts the missing scenario with the process owner so it can be rated.",
+      "pre_read": "Compare the event's cause with the cause behind the nearest scenario.",
+      "correct_explanation": "A job that ran twice is an accidental processing error, while fraud is deliberate theft with its own likelihood evidence and controls. The event exposes a gap in the register, so the analyst drafts the missing scenario with the payments manager, ready for rating. Linking the event to the fraud scenario is the runner-up: it keeps the event on record, but skews that scenario's rating and leaves the gap unrated.",
+      "wrong_explanations": {
+        "A": "Fraud is deliberate theft; filing an accidental double run under it inflates the fraud rating and leaves processing errors with no scenario of their own.",
+        "C": "Nothing has been analyzed or rated yet; the committee needs a rated scenario to act on, not an event that sits outside the register.",
+        "D": "Events are evidence about scenarios; a one-off label leaves the cause unrated, so a second double run would again come as a surprise."
+      },
+      "tips": [
+        "Eliminate: C sends an event to a committee before anyone has analyzed it, and D labels it a one-off, so it informs no scenario's rating.",
+        "Final two: B beats A because the cause decides the scenario; an accidental double run filed under deliberate fraud distorts that rating and hides the gap.",
+        "Exam cue: when an event fits no scenario in the register, the gap is the finding; draft the missing scenario with the process owner so it can be rated."
+      ],
+      "framework_ref": "ISACA Glossary (risk scenario); COBIT 2019 APO12.01 (Collect Data); NIST SP 800-30 Rev. 1 Appendix D Table D-2 (Taxonomy of Threat Sources: adversarial, accidental, structural and environmental)",
+      "related_concepts": [
+        "Risk event",
+        "Risk scenario",
+        "Threat source"
+      ],
+      "_provenance": "Authored from concept: notes 2A1.1 (Loss Events, Incidents and Near Misses). Round 9, 5 Nov 2026: original scenario (a batch job that ran twice paid a dairy cooperative's farmers double, and the nearest register scenario is payment fraud) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Neighbours checked: crisc_d2_072 (an outage linked to the scenario its root cause points to; here no scenario fits, so linking is the runner-up), crisc_d2_088 (a supplier outage recorded against the firm's own scenario), crisc_d2_048 (a payment error caught before release, recorded as a near miss), crisc_d2_001 (a near miss after a fix), crisc_d2_053 (gaps no scenario covers, found in vulnerability data), crisc_d2_003 (threat source classes), crisc_d1_052 (exam results released in error, a RACI item), CISA d4_050 (a failed batch job corrupting payment files) and d3_070 (duplicate payment controls), AAIA aaia_d1_015 and CC cc_d1_051 (dairy cooperative settings, other topics); no mirror in CISA, CC or AAIA. Keep apart from crisc_d2_072 in practice sets. Review fixes 5 Nov 2026 (round 9 standards audit, concept review and blind test): subtopic label made neutral (the old label ruled out the runner-up).",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d2_101",
+      "domain": 2,
+      "subtopic": "2A2 Threat modeling and threat landscape. Too many attack paths to rate",
+      "principle_id": "answer-from-the-stem",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A port operator's threat model of its container-tracking system lists 40 attack paths, more than the system owners can rate. Which of the following BEST helps the risk analyst judge which paths are credible?",
+      "options": {
+        "A": "The paths the system's developers think are easiest to exploit",
+        "B": "The CVSS base scores of the weaknesses along each path",
+        "C": "MITRE ATT&CK techniques used by groups that target ports",
+        "D": "The impact on port cargo or customers if each path succeeds"
+      },
+      "correct": "C",
+      "key_concept": "Attack paths are judged credible from evidence about real adversaries, such as the techniques groups that target the sector have used.",
+      "pre_read": "Decide whether the question asks about likelihood or about consequences before weighing the sources.",
+      "correct_explanation": "A path is credible when attackers with a reason to hit ports can and do walk it, so adversarial likelihood rests on capability, intent and targeting. MITRE ATT&CK records techniques seen in real attacks, and matching them to groups that target ports gives that evidence. The developers' view of the easiest paths is the runner-up: it speaks to ease of attack, but it is internal opinion and says nothing about who would try.",
+      "wrong_explanations": {
+        "A": "Developers know the system, but ease of attack is only part of capability; their view says nothing about whether groups that target ports would try.",
+        "B": "CVSS base scores rate a weakness's severity in general; they do not show whether attackers who target ports use the path, and severity is not likelihood.",
+        "D": "Impact shows how much a successful path would hurt cargo or customers, not whether attackers are likely to try it, so it cannot judge credibility."
+      },
+      "tips": [
+        "Eliminate: B treats a CVSS severity score as likelihood, and D measures how much a path would hurt, not how likely it is to be used.",
+        "Final two: C beats A because adversarial likelihood rests on capability, intent and targeting; the techniques of groups that target ports show all three, while developers' views show only ease.",
+        "Exam cue: for deliberate attacks, judge credibility from evidence about real adversaries; what groups that target the sector have done beats internal opinion about ease."
+      ],
+      "framework_ref": "NIST IR 8286A Rev. 1 Section 2.2.2.5 Table 7 (Example sources of threat information: MITRE ATT&CK is a knowledge base of adversary tactics and techniques based on real-world observations); NIST SP 800-30 Rev. 1 Section 2.3.1 (Risk Models: adversarial likelihood is based on intent, capability and targeting)",
+      "related_concepts": [
+        "Threat modeling",
+        "MITRE ATT&CK",
+        "Likelihood"
+      ],
+      "_provenance": "Authored from concept: notes 2A2.2 (Threat Intelligence and Threat Modeling). Round 9, 5 Nov 2026: original scenario (a port operator's threat model lists 40 attack paths, more than the owners can rate) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Round 9 outside-data key: an outside catalog of real attacks is keyed over internal opinion. Neighbours checked: crisc_d2_049 (an attack tree's open paths analyzed with the owner), crisc_d2_090 (threat alerts filtered by sector and technology), crisc_d2_056 (adversarial likelihood from capability, intent and targeting), crisc_d2_024 (a threat feed offered in place of modeling), crisc_d2_076 (STRIDE for a chatbot), crisc_d2_066 (threat sources missing staff error), crisc_d2_005 (a CVSS Base score copied in as the rating), crisc_d2_027 and crisc_d2_070 (CVSS beside active exploitation), CC cc_d5_073 (ATT&CK used to plan detection work for a security team, not to judge credibility for a risk rating) and cc_d5_008 (ATT&CK tactics), crisc_d3_008 and crisc_d4_022 (port operator settings, other topics); no mirror in CISA, CC or AAIA. Keep apart from crisc_d2_049 and crisc_d2_090 in practice sets. Review fixes 5 Nov 2026 (round 9 standards audit, concept review and blind test): option D now says \"port cargo\", so \"ports\" no longer echoes the stem only in the key.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d2_102",
+      "domain": 2,
+      "subtopic": "2A4 Risk scenario development and evaluation. Untried fallback raised in an exercise",
+      "principle_id": "evidence-before-credit",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "In a tabletop on a county's ambulance dispatch outage, dispatchers say the scenario's impact is overstated because they would switch to a paper-and-radio fallback they have never practiced. What is the risk practitioner's BEST response?",
+      "options": {
+        "A": "Lower the scenario's impact rating to credit the paper fallback",
+        "B": "Have the dispatch manager drill the fallback in a simulation",
+        "C": "Refer the disputed rating to the county's risk committee",
+        "D": "Close the outage scenario as covered by the paper fallback"
+      },
+      "correct": "B",
+      "key_concept": "A fallback claimed in a tabletop exercise earns credit in a scenario's rating only after a drill shows it works.",
+      "pre_read": "Separate what the exercise has shown from what participants have only claimed.",
+      "correct_explanation": "A fallback that would cut an outage's impact is a control, and a control earns credit in a rating only when evidence shows it works. The dispatchers have never practiced paper and radio, so a simulated drill under realistic call volumes, run by the dispatch manager, gives that evidence safely. Lowering the impact rating now is the runner-up: the claim is worth testing, but crediting an untried fallback could understate harm to patients.",
+      "wrong_explanations": {
+        "A": "Dispatchers know the work, but the fallback has never been practiced; crediting it before a drill shows it works could understate the scenario's impact.",
+        "C": "The dispute turns on whether the fallback works, which a drill can show; a committee would settle the rating without that evidence.",
+        "D": "Even a working fallback softens an outage rather than removing it; closing the scenario would drop a live risk on an untested claim."
+      },
+      "tips": [
+        "Eliminate: C hands a question of evidence to a committee instead of testing it, and D closes a scenario that a fallback could only soften.",
+        "Final two: B beats A because a fallback is a control; it earns credit in the impact rating only after a simulated drill shows it works under realistic load.",
+        "Exam cue: claims made in a discussion exercise are inputs to test, not evidence; credit a fallback in a rating once it has been shown to work."
+      ],
+      "framework_ref": "NIST SP 800-34 Rev. 1 Section 3.5.3 (Exercises: tabletop exercises are discussion-based and examine roles, responsibilities, coordination and decision making); NIST SP 800-34 Rev. 1 Section 3.5.3 (Exercises: functional exercises have personnel perform their duties in a simulated operational environment to validate operational readiness)",
+      "related_concepts": [
+        "Tabletop exercise",
+        "Functional exercise",
+        "Control effectiveness"
+      ],
+      "_provenance": "Authored from concept: notes 2A4.3 (Validating Scenarios and Tabletop Exercises) and 2B5.2 (Control Effectiveness and the Residual Gap). Round 9, 5 Nov 2026: original scenario (ambulance dispatchers in a county's tabletop exercise say an untried paper-and-radio fallback makes the outage scenario's impact overstated) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Round 9 routing-verb distractor: referring the dispute to a committee stays wrong. Neighbours checked: crisc_d2_008 (a tabletop finding that adds a missed dependency is written into the scenario; a fact that raises risk needs no proof of a control, while this one lowers the rating on an untested control), crisc_d2_030 (a gap found in an exercise logged as an owned action), crisc_d2_029 and crisc_d2_089 (exercise participants and injects), crisc_d2_019 (an untested control's credit), crisc_d1_107 (a workaround used in an exercise adds new risk), crisc_d1_063 (an exercise showing a backup studio cannot run playout), crisc_d4_056 (the risk of a full interruption test), CISA d5_176 (a functional drill after a tabletop, audit lens) and d4_095 (a workaround during a DR test), CC cc_d2_010 and cc_d5_035 (choosing an exercise type); no mirror in CISA, CC or AAIA. Keep apart from crisc_d2_008 in practice sets. Review fixes 5 Nov 2026 (round 9 standards audit, concept review and blind test): the key is now a simulated drill (a live drill of an untried fallback on real ambulance calls would be unsafe); \"fallback\" replaces \"workaround\" throughout; the explanation for C and the Eliminate tip no longer rely on a threshold the stem never mentions.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d2_103",
+      "domain": 2,
+      "subtopic": "2B1 Risk assessment concepts and standards. Grid outage likelihood at a new site",
+      "principle_id": "answer-from-the-stem",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A public radio network moved its transmitter servers to a hilltop site 14 months ago. Which of the following is the BEST basis for the risk analyst's rating of grid outage likelihood there?",
+      "options": {
+        "A": "The grid operator's ten-year outage records for the surrounding area",
+        "B": "The site's own power outage log since the servers moved there",
+        "C": "The tested run time of the site's backup generator",
+        "D": "The harm a day-long grid outage would do to broadcasts"
+      },
+      "correct": "A",
+      "key_concept": "When a site's own history is short, the likelihood of an environmental event is rated from longer regional records, refined with local data.",
+      "pre_read": "Check whether each source speaks to likelihood or to impact, and how much history it covers.",
+      "correct_explanation": "A grid outage is an environmental threat event that no one chooses, so its likelihood is rated from historical evidence and empirical data. Fourteen months is too short to show how often outages strike; the grid operator's ten years of area records show it far better. The site's own log is the runner-up: it is the most local evidence, but too short to rate a rare event alone; it refines the area rate.",
+      "wrong_explanations": {
+        "B": "Local records help, but 14 months is too short to show how often grid outages strike; the operator's longer area record is the firmer base.",
+        "C": "A generator limits how long the servers go dark, which is impact; it does nothing to change how often the grid itself fails.",
+        "D": "The harm of a day-long outage measures impact; it says how much an outage would hurt broadcasts, not how likely one is."
+      },
+      "tips": [
+        "Eliminate: C rates a control that limits the effect of an outage, and D measures harm, not how often the grid fails.",
+        "Final two: A beats B because a non-adversarial event's likelihood rests on historical evidence; the operator's ten years of area records outweigh a 14-month local log.",
+        "Exam cue: when your own history is short, rate natural and utility events from regional or industry records, then refine them with local data."
+      ],
+      "framework_ref": "NIST SP 800-30 Rev. 1 Section 2.3.1 (Risk Models: likelihood of non-adversarial threat events is estimated from historical evidence and empirical data); NIST SP 800-30 Rev. 1 Appendix D Table D-2 (Taxonomy of Threat Sources: environmental sources include failures of critical infrastructure, such as electrical power, outside the organization's control); NIST SP 800-30 Rev. 1 Section 3.1 Task 1-4 (Identify Information Sources: information sources can be internal or external to the organization)",
+      "related_concepts": [
+        "Likelihood",
+        "Environmental threat source",
+        "Historical evidence"
+      ],
+      "_provenance": "Authored from concept: notes 2B1.1 (Likelihood, Impact and Risk). Round 9, 5 Nov 2026: original scenario (a public radio network rates grid outage likelihood at a hilltop transmitter site it moved to 14 months ago) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Round 9 outside-data key, re-angled from the round 8 cross-domain seed (a flood at a logistics firm's data center), whose setting mirrored crisc_d2_028; the regional record is keyed and the site's own short log is the runner-up. Neighbours checked: crisc_d2_096 (equipment failure rated from the unit's own fault records; here the own record is too short, so the wider record wins), crisc_d2_028 (a flood zone as a predisposing condition), crisc_d2_021 (peer outage reports used as input, adjusted for local exposure), crisc_d2_056 (adversarial likelihood), crisc_d2_069 (attempts counted as likelihood), CC cc_d1_100 (a UPS for brief power cuts), cc_d1_007 (flood ALE) and cc_d1_052 (a flood-line location as the vulnerability); no mirror in CISA, CC or AAIA. Keep apart from crisc_d2_096 in practice sets. Keep apart in practice sets also from crisc_d3_152 (same own-data runner-up and energy setting). Review fixes 5 Nov 2026 (round 9 standards audit, concept review and blind test): subtopic label made neutral (\"short site history\" hinted at the key); keep-apart list widened.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d2_104",
+      "domain": 2,
+      "subtopic": "2B5 Inherent and residual risk. Rating to guide a new app's controls",
+      "principle_id": "residual-counts-working-controls",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An airline is designing controls for a self-service rebooking app due to launch in six months. Which rating BEST shows the risk analyst which of the app's scenarios need the strongest controls?",
+      "options": {
+        "A": "Target risk, once the planned controls are in place",
+        "B": "Current risk, rated in the first month after launch",
+        "C": "Inherent risk, with no credit for any planned control",
+        "D": "Impact alone, as a business impact analysis would rate it"
+      },
+      "correct": "C",
+      "key_concept": "Before controls exist, inherent risk ranks which scenarios need the strongest controls; target risk later checks whether the chosen design is enough.",
+      "pre_read": "Note what each rating assumes about controls and when it can be known.",
+      "correct_explanation": "Inherent risk rates each scenario's threats, weaknesses, likelihood and impact with no credit for controls, so it shows where the app is most exposed and where controls must work hardest; NIST CSF 2.0 uses inherent risk to prioritize responses. Target risk is the runner-up: it later shows whether the chosen design is enough, but it assumes the controls still being decided, so it cannot rank which scenarios need them.",
+      "wrong_explanations": {
+        "A": "Target risk is the level planned controls should reach; it depends on the design still being decided, so it cannot rank which scenarios need the strongest controls.",
+        "B": "Current risk counts controls in place and working; rated only after launch, it comes too late to guide a design being drawn up now.",
+        "D": "A business impact analysis leaves out likelihood; ranking on impact alone would put rare, costly scenarios ahead of likely ones that need stronger controls."
+      },
+      "tips": [
+        "Eliminate: B rates the app only after launch, too late to shape the design, and D ranks on impact alone, leaving out likelihood.",
+        "Final two: C beats A because inherent risk shows exposure before any control; target risk assumes the controls still being chosen, so it checks a design rather than ranking needs.",
+        "Exam cue: inherent risk ranks where controls are most needed; target risk judges whether a plan is enough; current risk is what is compared with appetite."
+      ],
+      "framework_ref": "NIST CSF 2.0 ID.RA-05 (threats, vulnerabilities, likelihoods and impacts are used to understand inherent risk and inform risk response prioritization); ISACA Glossary (inherent risk)",
+      "related_concepts": [
+        "Inherent risk",
+        "Target risk",
+        "Risk response prioritization"
+      ],
+      "_provenance": "Authored from concept: notes 2B5.1 (Inherent, Current and Residual Risk). Round 9, 5 Nov 2026: original scenario (an airline ranks a planned rebooking app's scenarios for control design six months before launch) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Round 9 key naming inherent risk. Neighbours checked: crisc_d2_018 (the complement: current risk is what is compared with appetite; inherent risk is its wrong option there and the key here, for a different use), crisc_d2_098 (inherent beside current ratings shows what controls carry), crisc_d2_044 (a large gap carried by one control), crisc_d2_071 (no credit for standard controls in inherent risk), crisc_d2_062 (the target rating field), crisc_d3_088 (target risk to choose among options), crisc_d1_096 (an airline's AI rebooking assistant, an acceptance item), CC cc_d1_087 (a Medium rating after controls is residual risk) and CISA d1_192 (untested controls push residual toward inherent); no mirror in CISA, CC or AAIA. Keep apart from crisc_d2_018 and crisc_d2_098 in practice sets. Review fixes 5 Nov 2026 (round 9 standards audit, concept review and blind test): subtopic label made neutral (the old label pointed to inherent risk).",
       "style_version": 2
     }
   ]
