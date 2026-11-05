@@ -47,3 +47,11 @@ Batched for the end of the uplift (web v13, mobile 2.0.0; DECISIONS 8). Write th
 - The long wrong-file message sits inside the Restore button; move failure text to a sibling line linked by aria-describedby so the button stays one row.
 - Phone Badges row says "Your badges and field notes": check against DECISIONS 8 at the release sweep.
 - Footer wording differs: Today "KaiSip is independent and not affiliated with ISACA." vs You and Settings "Not affiliated with or endorsed by ISACA®..."; pick one at the release.
+
+## Carry into the next push (from the type leftovers review)
+- Glossary letter buttons are 28px tall on phones: bring them to the 44px target block.
+- Glossary letter grid at 200% text leaves an orphan letter (5,5,5,5,5 then Z): even rows.
+- Letter bar spacing off the 4px scale (padding 10px, gap 3px): use the spacing tokens.
+- "Mastered" label in the Glossary ring overlaps the ring at 200% text; two labels use --muted where TYPE_SCALE 6 asks for --text2.
+- Phone: Results "Continue today's plan" and the widget still count an empty review step's minutes; pass the live due count.
+- Phone: "Go to Drills" is a ghost button at meta size; TYPE_SCALE R6 vs row 13 conflict, decide once.
