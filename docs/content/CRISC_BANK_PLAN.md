@@ -27,7 +27,7 @@ it can be sold:
 | Glossary | `data/crisc/glossary.json` (same shape as the CISA glossary) | isaca-mindset-coach, isaca-concept-reviewer | 265 terms; meaning checked against the ISACA Glossary; wording gated by `data/crisc/tools/check_originality.py` |
 | Decision lessons | `data/crisc/lessons/` (schema `docs/content/LESSONS_SCHEMA.md`) | crisc-d{N}-domain-expert, learning-game-designer | Not started |
 | Game decks | per the games content in `mobile/src/content/games/` | learning-game-designer | Not started |
-| Course description and store copy | this file, section 7 | growth-marketer, app-store-compliance-reviewer | Not started |
+| Course description and store copy | this file, section 7 | growth-marketer, app-store-compliance-reviewer | Approved with fixes, 5 Nov 2026 (five build items block the sale) |
 
 ## 2. Targets by outline weight
 
@@ -54,9 +54,19 @@ Inside each domain:
 
 ## 3. The free sample (what sells the course)
 
-The free tier is about 20% of each course's questions, at least 100,
-weighted by domain, plus one diagnostic and one short timed mock. For CRISC
-at 1,000 that is 200 items: **52 / 44 / 64 / 40**.
+**Owner decision (5 Nov 2026):** the free sample is **10% of the bank, never
+fewer than 100 items**, weighted by domain, plus one diagnostic and one short
+timed mock of **50 items** drawn only from the sample. This settles the earlier
+20% figure here against the 10% in `docs/business/monetization/WEB_GATE_PLAN.md`.
+At the 1,000-item launch the sample is 100 (10%).
+`scripts/build_free_sample.py` needs the 100-item floor when CRISC is added to it.
+
+**Owner decision (5 Nov 2026): CRISC goes on sale only when the full bank of
+1,000 reviewed items is done.** The product-manager recommended 600 (the AAIA
+rule); the owner chose the full target instead. At 1,000, two 150-item full
+mocks share only about 22 items (15%), and the bank holds six non-overlapping
+mocks. The paywall (Phase E) is not built yet, so the bank keeps growing in
+rounds of about 25 until 1,000. Learner copy never states the bank size.
 
 How the sample is chosen:
 1. Weighted by domain and spread over every sub-area (at least one item per
@@ -69,7 +79,7 @@ How the sample is chosen:
    (no schema field exists yet; don't invent one in the originals).
 5. The sample is fixed per release, so a learner's free progress stays valid.
 
-Until the bank reaches 500 items, the sample is "at least 100" rather than 20%.
+
 
 ## 4. Batch size and cadence
 
@@ -160,13 +170,80 @@ standard (`.claude/agents/crisc-standards-auditor.md`, "Calibration rules").
     urgency or subjective-frequency words as tells; no planted facts; numeric
     options ascending.
 
-## 7. Course description (draft for growth-marketer)
+## 7. Course description (growth-marketer draft, store-compliance approved)
 
-Not written yet. Rules from the compliance review: the product name leads with
-KaiSip or a generic course name and puts the exam after "for", for example
-"KaiSip IT Risk course, 6-month access (for the CRISC® exam)". Never "Pass",
-never a pass promise, never implied ISACA endorsement, the not-affiliated line
-on the paywall.
+Approved with fixes on 5 Nov 2026 (`app-store-compliance-reviewer`, against
+Apple 2.3, 3.1.1, 3.1.2(c) and 5.2.1 and Google Play's Metadata, Payments and
+IP rules). Same shape as the approved AAIA copy: free and paid parts separated,
+no price, no future features, no bank size, the notice part of the description.
+
+**Product names**
+- Google Play product name (53 of 55): KaiSip IT Risk course, 6 months (for the CRISC® exam)
+- iOS in-app purchase display name (24 of 30): KaiSip IT Risk, 6 months
+- iOS in-app purchase description (42 of 45): 6 months of CRISC® exam prep. Never renews
+
+**Description (variant A, ships first)**
+
+> Coming from IT audit or IT risk? This course teaches the risk practitioner's
+> lens: the business owns risk, appetite drives the response, and you analyze
+> before acting. It follows the CRISC exam content outline from ISACA®
+> (effective 2025): Governance, Risk Assessment, Risk Response and Reporting,
+> and Technology and Security.
+>
+> Free: study notes for all 43 outline areas, a glossary, mindset principles,
+> an "About the exam" guide and a final review week, plus a sample of practice
+> questions, a diagnostic and a short timed mock.
+>
+> 6-month access unlocks the full bank of original practice questions and
+> full-length timed mocks, drawn fresh each time, at the exam's length and
+> time: 150 questions in 4 hours. Every question explains each option and adds
+> three coaching tips. One payment, 6 months, never renews.
+>
+> KaiSip is not affiliated with or endorsed by ISACA®. CRISC® is a registered trademark of ISACA.
+
+- In-app subtitle or Play short description (60 of 80): "Practice for the CRISC® exam: think like a risk practitioner"
+- App Store subtitle (28 of 30): "Practice for the CRISC® exam". The App Store
+  subtitle belongs to the whole app (today "Practice for the CISA® exam"), so
+  use this line only if the app's subtitle changes, or as a course line in the
+  app. On Play it can go on a CRISC custom store listing.
+- ® rule: the first CRISC in each store field carries ® (each field is shown
+  alone); in-app study text and the description body use plain CRISC, with
+  the closing notice carrying the ®.
+- Variant B (lens first, names the three tips) is the later challenger: a Play
+  store-listing experiment or a RevenueCat paywall test only (Apple cannot
+  test descriptions). Draft: `crisc_store_copy.md` in the 5 Nov session notes.
+
+**Before submission (these block the sale)**
+1. Final review week: day 7 before the exam asks for a full mock, which is
+   paid. Free learners get the mini mock that day (and review its misses on
+   day 6), with one plain line that the full-length mock is in the full
+   course. If the build cannot, change the free list to "a final review week
+   plan" and label the step "Full course".
+2. Free sample: the short mock and diagnostic draw only from the free sample
+   (today `startMock` draws from the whole bank). Settle 10% (WEB_GATE_PLAN)
+   versus 20% with at least 100 (section 3) in one place; at 10% of 425 the
+   sample (about 43) is smaller than the 50-item mini mock.
+3. Paywall: local store price; "one payment · 6 months · never renews"; what
+   is free and what is paid; Restore, Terms, Privacy; "practice scores are not
+   scaled exam scores"; the trademark notice.
+4. Product types: iOS non-renewing subscription, Play prepaid plan. KaiSip
+   computes the 6-month end date and makes the purchase available on all the
+   learner's devices through the signed-in account and RevenueCat (sign-in
+   offered, never forced). Standard iOS restore does not restore non-renewing
+   subscriptions, so test restore on a second device.
+5. Free extras stay unlocked (notes, glossary, principles, exam guide, final
+   review week). A "Practice this concept" link to a paid question shows a
+   labelled lock or falls back to a free question.
+
+Also check: the full-mock timer runs 240 minutes on a device; all 43 areas show
+in the notes; the paid view shows every explanation and all three tips;
+re-check "effective 2025" and the domain names on isaca.org and clear the
+`TO VERIFY` comment in `mobile/src/content/certifications.ts`; re-read Play's
+policies and Apple's 2.3, 3.1 and 5.2 on the day of submission.
+
+**Sale threshold (owner decision, 5 Nov 2026):** the full 1,000 reviewed items; see
+section 3. The free-sample size is settled there too (10%, never fewer than 100;
+50-item mini mock), which resolves build item 2's size clash.
 
 ## 8. Pilot results (30 Oct 2026)
 
