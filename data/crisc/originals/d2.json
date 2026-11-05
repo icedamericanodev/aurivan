@@ -683,7 +683,7 @@
       "question": "A university's register rates research data theft as low residual risk because laptop encryption was installed two years ago, though it has not been tested since installation. What should the risk practitioner do FIRST?",
       "options": {
         "A": "Keep the low rating based on the owner's confirmation",
-        "B": "Reassess the scenario at its inherent level until it is tested",
+        "B": "Re-rate the scenario at its inherent level until it is tested",
         "C": "Ask IT for coverage reports showing the encryption is active",
         "D": "Recommend replacing the tool with a newer encryption product"
       },
@@ -699,7 +699,7 @@
       "tips": [
         "Eliminate: A accepts the owner's word as proof the tool works, and D replaces a control before anyone knows whether it is failing.",
         "Final two: C beats B because evidence comes before any re-rating; dropping to inherent strips credit from every control, while coverage reports show what the encryption really does.",
-        "Exam cue: when a rating relies on an untested control, the first step is evidence of design and operating effectiveness, then re-rating."
+        "Exam cue: untested is not failed; ask the control owner for evidence first, then remove the control's credit if the evidence is missing or shows it fails."
       ],
       "framework_ref": "ISACA Glossary (residual risk); COBIT 2019 APO12.02 (Analyze Risk)",
       "related_concepts": [
@@ -1164,7 +1164,7 @@
       "question": "Two analysts at a telecom rate the same outage scenario's likelihood as possible and likely; the first had the next year in mind, the second the next five. What should the risk practitioner do FIRST?",
       "options": {
         "A": "Average the two likelihood ratings into one level",
-        "B": "Have the owner adopt the higher rating as prudent",
+        "B": "Have a third analyst rate the scenario to break the tie",
         "C": "Set one time frame for all likelihood ratings",
         "D": "Ask the risk owner to choose between the ratings"
       },
@@ -1174,11 +1174,11 @@
       "correct_explanation": "The analysts did not disagree about the scenario; they rated likelihood over different periods, and an event is naturally more likely over five years than over one. Setting one time frame for all likelihood ratings removes the cause, after which the scenario is re-rated consistently. Asking the risk owner to choose is the runner-up: the owner agrees the final rating, but choosing between two incomparable ratings leaves the cause in place.",
       "wrong_explanations": {
         "A": "Averaging two ratings made over different periods produces a level that matches neither, and the next pair of analysts would diverge again.",
-        "B": "Adopting the higher rating looks cautious, but it rests on a five-year horizon that other scenarios in the register may not use, and the cause stays in place.",
+        "B": "A third rating breaks the tie without fixing the cause; with no set time frame, it may use yet another period and diverge again.",
         "D": "The owner agrees the final rating; however, choosing between ratings built on different time frames leaves the inconsistency that caused the gap."
       },
       "tips": [
-        "Eliminate: A blends two incomparable ratings, and B has the owner keep the higher one without fixing why they differ.",
+        "Eliminate: A blends two incomparable ratings, and B adds a third rating without fixing why they differ.",
         "Final two: C beats D because the ratings differ only in time frame; fix the basis first, then the owner can agree a rating made on it.",
         "Exam cue: likelihood is always over a stated period. When ratings disagree, check the basis (time frame, scale, level definitions) before choosing a rating."
       ],
@@ -3571,7 +3571,7 @@
         "A": "The model owner, not IT, proposed the impact ratings",
         "B": "The BIA leaves out how likely an outage of the data is",
         "C": "The recovery rank reflects only the harm of an outage",
-        "D": "The owner ranked the data without IT's restore times"
+        "D": "The BIA rank the owner cited ignored IT's restore times"
       },
       "correct": "C",
       "key_concept": "A BIA recovery rank measures the harm of losing access to a resource over time, not the harm of its data leaking or being altered.",
