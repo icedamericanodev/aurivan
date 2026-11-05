@@ -25,10 +25,32 @@
     s.src = 'https://www.googletagmanager.com/gtag/js?id=G-KDECR41WQ9';
     document.head.appendChild(s);
   };
+  // Decline (now or on an earlier visit) leaves no analytics cookie behind:
+  // each _ga and _ga_* cookie is expired on this host and on each parent
+  // domain (gtag sets them on the top domain, such as .kaisip.com).
+  window.clearGaCookies = function () {
+    try {
+      var names = document.cookie.split(';').map(function (c) { return c.split('=')[0].trim(); })
+        .filter(function (n) { return n === '_ga' || n.indexOf('_ga_') === 0; });
+      if (!names.length) return;
+      var parts = location.hostname.split('.'), doms = [''];
+      for (var i = 0; i < parts.length - 1; i++) {
+        var d = parts.slice(i).join('.');
+        doms.push('; domain=' + d, '; domain=.' + d);
+      }
+      names.forEach(function (n) {
+        doms.forEach(function (d) { document.cookie = n + '=; max-age=0; path=/' + d; });
+      });
+    } catch (e) {}
+  };
   try {
-    if (localStorage.getItem('aurivan_consent') === 'granted') {
+    var consentNow = localStorage.getItem('aurivan_consent');
+    if (consentNow === 'granted') {
       gtag('consent', 'update', { 'analytics_storage': 'granted' });
       window.loadGA();
+    } else if (consentNow === 'denied') {
+      window['ga-disable-G-KDECR41WQ9'] = true;
+      window.clearGaCookies();
     }
   } catch (e) {}
 </script>
@@ -11083,6 +11105,12 @@ function ensureLocalProfile() {
 
 function shouldResumeCurrent() {
   if (!S.current || !S.current.id) return false;
+  // A drill's question (often answered on an earlier day) is open until it
+  // is answered in the drill.
+  if (drillRun && drillRun.idx > 0) {
+    var last = drillRun.list[drillRun.idx - 1];
+    if (last && last.id === S.current.id) return !drillRun.done[S.current.id];
+  }
   var d = String(S.current.domain);
   return !(S.answeredIds && S.answeredIds[d] && S.answeredIds[d][S.current.id]);
 }
@@ -11356,6 +11384,8 @@ function backupPrefsToAdd(prefs) {
 // 5 MB); a far larger file is not one, and reading it would freeze the page.
 var IMPORT_MAX_BYTES = 20 * 1024 * 1024;
 var IMPORT_MSG_NOT_PROGRESS = 'That file isn\'t a KaiSip progress file. Choose the .json file you exported from KaiSip. Your progress hasn\'t changed.';
+// A backup from the phone app ({ app: 'kaisip' or 'aurivan', stores }) restores only in the app.
+var IMPORT_MSG_PHONE_BACKUP = 'That backup is from the KaiSip phone app, so restore it in the app. Here, choose a file you backed up on this website. Your progress hasn\'t changed.';
 // A restore that did not happen says why where it was asked for: in the Your
 // data sheet when it is open, else under Settings' Restore row (in the
 // wrong colour, replacing any earlier status); a toast only off Settings.
@@ -11373,6 +11403,10 @@ function importProgress(file) {
   reader.onload = function(e) {
     try {
       var data = JSON.parse(e.target.result);
+      if (isPlainObj(data) && data.cisaMindsetExport !== true && (data.app === 'kaisip' || data.app === 'aurivan') && isPlainObj(data.stores)) {
+        restoreSayFail(IMPORT_MSG_PHONE_BACKUP);
+        return;
+      }
       var ok = isPlainObj(data) && data.cisaMindsetExport === true && data.version === 1
         && isPlainObj(data.profile) && isPlainObj(data.profile.state);
       var state = ok ? normalizeImportedState(data.profile.state) : null;
@@ -12199,7 +12233,7 @@ function gtFigure(illustration) {
       + '<div class="gt-fig-fit">' + inner + '</div>'
       + '<div class="gt-fig-bar">'
       + (gtStr(ill.caption) ? '<figcaption>' + escapeHtml(ill.caption) + '</figcaption>' : '<span></span>')
-      + '<button type="button" class="gt-btn-secondary gt-fig-zoom" onclick="gtOpenFigure(this)">' + ico('search', 18) + '<span>Tap to enlarge</span></button>'
+      + '<button type="button" class="gt-btn-secondary gt-fig-zoom" onclick="gtOpenFigure(this)">' + ico('search', 18) + '<span>Enlarge</span></button>'
       + '</div></figure>';
   }).join('');
 }
@@ -12294,7 +12328,7 @@ function gtValue(val, t) {
 // "Practice this concept" block, then the domain-practice link.
 function gtFooter(itemId, domainId, practiceHtml) {
   var done = !!getTopicReviewedSet()[itemId];
-  var domainBtn = domainId ? '<button class="gt-btn-ghost" onclick="event.stopPropagation();startTopicPractice(\'' + domainId + '\')">Practice Domain ' + domainId + ' questions ' + ico('chevron', 16) + '</button>' : '';
+  var domainBtn = domainId ? '<button class="gt-btn-ghost" onclick="event.stopPropagation();startTopicPractice(\'' + domainId + '\')">Practice ' + escapeHtml((DI[domainId] && DI[domainId].short) || ('Domain ' + domainId)) + ' questions ' + ico('chevron', 16) + '</button>' : '';
   // data-gtfoot: the note's end line; reaching it by the learner's own
   // scrolling marks the note read (gtCheckAutoRead).
   return '<div class="gt-foot" data-gtfoot="' + escapeHtml(itemId) + '">'
@@ -13886,8 +13920,21 @@ function buildQueues() {
   if (!S.qIdx["all"]) S.qIdx["all"] = 0;
 }
 
+// A drill (Saved questions, one saved question, Weak spots drill) is a fixed
+// list asked in order, answered before or not. It never touches the practice
+// queues. startSession takes it from drillNext; any other start ends it.
+var drillRun = null;   // { scope: 'all' or a domain, list: [questions], idx, done: { id: true } }
+var drillNext = null;
+function drillArm(scope, list) {
+  drillNext = { scope: String(scope), list: list.slice(), idx: 0, done: {} };
+}
+function drillActive(domainStr) {
+  return !!(drillRun && drillRun.scope === String(domainStr));
+}
+
 // â”€â”€ GET NEXT QUESTION â”€â”€
 function getNextQ(domainStr, diff) {
+  if (drillActive(domainStr)) return drillRun.list[drillRun.idx++] || null;
   var pool = S.queues[domainStr] || [];
   if (!pool.length) return null;
 
@@ -13937,6 +13984,9 @@ function switchTab(t, opts) {
   if (t !== 'topics') notePageLeave();
   // Leaving a set mid-way pauses its clock (Continue picks it up again).
   if (S.activeTab === 'practice' && S.domainTimerActive && practiceLeftOpen()) S.domainTimerPaused = true;
+  // Leaving an open mock by any other way than its X (the sidebar, a link)
+  // pauses it the same way, so its clock never runs on another page.
+  if (S.activeTab === 'mock' && t !== 'mock' && S.mockTotalTimerInt) pauseMock();
   clearAllTimers(); // always clear timers when switching tabs
   // Leaving any review-replay session — clear the mode flags so the gen
   // button and nextQ() return to normal practice behaviour. startReviewQueue
@@ -16343,7 +16393,8 @@ function renderHome() {
   if (days !== null && days < 0) greeting = who ? who.html + ', your exam is done' : 'Exam done';
   else if (days === 0) greeting = who ? who.html + ', it’s exam day' : 'Exam day';
   else if (days !== null) {
-    var togo = days + (days === 1 ? ' day' : ' days') + ' to go';
+    // A no-break space keeps the number with its unit ("77 days") when the title wraps.
+    var togo = days + (days === 1 ? '\u00a0day' : '\u00a0days') + ' to go';
     greeting = who ? who.html + ', ' + togo : togo.charAt(0).toUpperCase() + togo.slice(1);
   }
 
@@ -16380,7 +16431,8 @@ function renderHome() {
         var part = pr && !done && pr.have > 0 ? ' &middot; ' + pr.have + ' of ' + pr.need + ' answered' : '';
         return '<li' + (done ? ' class="is-done"' : '') + '><span class="td-step" aria-hidden="true">' + (done ? ico('check', 16) : (i + 1)) + '</span>'
           + '<span class="td-step-t"><span class="td-step-h">' + it.title + '</span>'
-          + '<span class="td-step-m">' + it.meta + (done ? ' &middot; done' : part) + '</span></span>'
+          // Under way: the count only (the plan's why, such as a first set, may no longer hold).
+          + '<span class="td-step-m">' + (part ? part.replace(/^ &middot; /, '') : it.meta + (done ? ' &middot; done' : '')) + '</span></span>'
           + (mins[i] && !done ? '<span class="td-step-min">' + mins[i] + ' min</span>' : '') + '</li>';
       }).join('');
       planHtml = '<div class="td-planc-h"><h2 class="td-planc-t" id="tdHeroT">' + cap + '</h2>'
@@ -16485,7 +16537,7 @@ function renderHome() {
       + '<div class="td-plant" id="tdPlant">' + plantRow + '</div>')
     + (apps.length ? '<p class="td-apps">Get the app: ' + apps.join(' &middot; ') + '</p>' : '')
     // The full disclaimer lives on About (and Help); Today keeps one line.
-    + '<p class="td-legal">KaiSip is independent and not affiliated with ISACA.</p>'
+    + '<p class="td-legal">Not affiliated with or endorsed by ISACA&reg;. CISA&reg; is a registered trademark of ISACA.</p>'
     + '</div>';
   appCtaTodayWire();
   todayRingWatch();
@@ -16934,6 +16986,12 @@ function fgSheet(o) {
 // The engine parts come from the app (assets/kaisip-plant.js); every text
 // written into the page is escaped.
 var PROGRESS_MOCK_SIGN = true;  // owner's call: false leaves only signs 1 and 2
+// The full mock is locked on the website (in the Android app): with no full
+// timed mock saved yet, the mock sign says where it can be taken.
+function webFullMockAway(mocks) {
+  return !!(MOCK_TYPES.full && MOCK_TYPES.full.locked)
+    && !(mocks || []).some(function (x) { return x && x.total === MOCK_TOTAL && x.timing !== 'untimed'; });
+}
 var PG_WEEKS = 8;               // the low-end chart looks back 8 weeks
 var PG_STUCK_FROM_WEEKS = 3;    // the "What's stuck" line starts after 3 weeks of study
 var PG_STUCK_MAX_WEEKS = 12;    // and shows at most the last 12
@@ -17196,7 +17254,9 @@ function pgSignsHtml(r, phase, today) {
   var act = {
     low: '<button type="button" class="gt-btn-ghost pg-sact" onclick="pgGoRaise()">What would raise it' + ico('chevron', 18) + '</button>',
     domains: pgSignDomain ? '<button type="button" class="gt-btn-secondary pg-act" onclick="pgStartSet(pgSignDomain)">Practice ' + escapeHtml(DI[pgSignDomain].short) + ico('arrow-right', 18) + '</button>' : '',
-    mocks: '<a class="gt-btn-ghost pg-sact" href="#mock" onclick="return navTo(event,\'mock\')">Go to mock exams' + ico('chevron', 18) + '</a>'
+    mocks: webFullMockAway(S.mockHistory)
+      ? '<a class="gt-btn-ghost pg-sact" href="' + escapeHtml(FULL_COURSE_URL) + '">Full mock in the Android app' + ico('chevron', 18) + '</a>'
+      : '<a class="gt-btn-ghost pg-sact" href="#mock" onclick="return navTo(event,\'mock\')">Go to mock exams' + ico('chevron', 18) + '</a>'
   };
   return '<section class="pg-sec pg-signs" aria-labelledby="pgSignsH"><h2 class="pg-h2" id="pgSignsH">'
     + escapeHtml(phase === 'dated' ? K.readySigns.SIGNS_HEADING_DATED : K.readySigns.SIGNS_HEADING) + '</h2>'
@@ -17643,7 +17703,7 @@ function renderProgress() {
     + pgHerbariumHtml() + '</div>';
   var side = '<div class="pg-side" id="pgSide">' + pgMindHtml(phase) + '</div>';
   var foot = '<div class="pg-foot"><p class="pg-back"><a class="td-link" href="#today" onclick="return navTo(event,\'home\')">Back to today&rsquo;s plan' + ico('arrow-right', 18) + '</a></p>'
-    + '<p class="td-legal">KaiSip is independent and not affiliated with ISACA.</p></div>';
+    + '<p class="td-legal">Not affiliated with or endorsed by ISACA&reg;. CISA&reg; is a registered trademark of ISACA.</p></div>';
   // Reading order: the page, study days, the Mindset check. Below 1180px CSS
   // shows the Mindset check before the study days; from 1180px it is the side column.
   area.innerHTML = '<div class="pg">' + head + main + (studyDays ? '<div class="pg-daysw">' + studyDays + '</div>' : '') + side + foot + '</div>';
@@ -17715,6 +17775,8 @@ function renderFAQ() {
 // â”€â”€ DOMAIN SELECTION â”€â”€
 function selectDomain(d) {
   phDomainPicked = true;
+  drillRun = null;
+  drillNext = null;
   S.selectedDomain = String(d);
   activeSubtopic = null; // reset subtopic filter on domain change
   saveState();
@@ -17875,6 +17937,9 @@ function startMockTotalTimer() {
     if (S.mockTotalSecondsLeft <= 0) {
       clearInterval(S.mockTotalTimerInt);
       S.mockTotalTimerInt = null;
+      // Off the mock page (it should be paused there): stop at 0 and save;
+      // Resume on Mock exam submits it and shows the results.
+      if (S.activeTab !== 'mock') { S.mockTotalSecondsLeft = 0; saveState(); return; }
       // Auto-submit any unanswered as nulls and finish exam
       while (S.mockAnswers.length < S.mockQueue.length) {
         S.mockAnswers.push({chosen: null, correct: S.mockQueue[S.mockAnswers.length].correct, ts: Date.now(), timedOut: true});
@@ -20195,7 +20260,8 @@ function ppNextHtml(K, KF, v) {
     var pc = Math.round(Math.max(0, Math.min(1, st.progress)) * 100);
     var word = st.progress >= 1 ? 'Done' : st.progress <= 0 ? '' : String(pc);
     var spoken = st.progress >= 1 ? 'Done' : st.progress <= 0 ? 'Not yet' : pc + ' percent there';
-    var val = word === '' ? '<span class="pp-gate-nv">Not yet</span>' : word === 'Done' ? '<span class="pp-gate-nv">Done</span>' : '<span class="pp-gate-v">' + word + '<sup>%</sup></span>';
+    // A share of the way to the goal, so it says "there" (never read as the estimate itself).
+    var val = word === '' ? '<span class="pp-gate-nv">Not yet</span>' : word === 'Done' ? '<span class="pp-gate-nv">Done</span>' : '<span class="pp-gate-v">' + word + '<sup>%</sup></span><span class="pp-gate-nv"> there</span>';
     return '<li class="pp-gate"><div class="pp-gate-row"><span class="pp-gate-t">' + escapeHtml(st.label) + '<span class="sr-only">. ' + spoken + '.</span></span>'
       + '<span class="pp-gate-x" aria-hidden="true">' + val + '</span></div>'
       + '<div class="pp-bar" aria-hidden="true"><span style="width:' + pc + '%"></span></div></li>';
@@ -20216,7 +20282,9 @@ function ppDomainsHtml(K, v) {
     var step = K.plant.organStep(x.answered, x.mastery);
     var pc = Math.round(Math.max(0, Math.min(1, x.mastery)) * 100);
     var word = K.plant.ORGAN_STEP_WORDS[step];
+    // The figure rule everywhere else (domainFigure): no number under 30 answers.
     var val = step === 0 ? '<span class="pp-dom-w">' + escapeHtml(word.charAt(0).toUpperCase() + word.slice(1)) + '</span>'
+      : x.answered < DOMAIN_READ_MIN ? '<span class="pp-dom-w">Too few yet · ' + x.answered + ' answered</span>'
       : '<span class="pp-dom-v">' + pc + '<sup>%</sup></span><span class="pp-dom-w"> · ' + escapeHtml(word) + '</span>';
     return '<li class="pp-dom"><span class="dom-dot" style="background:' + escapeHtml(DI[d].color) + '" aria-hidden="true"></span>'
       + '<span class="pp-dom-n">' + escapeHtml(DI[d].short) + (i === nextI ? ' <span class="pp-pill">Next to grow</span>' : '') + '</span>'
@@ -20664,13 +20732,19 @@ function nextQ() {
     return;
   }
   var q = getNextQ(S.selectedDomain, S.diff);
+  if (!q && drillActive(S.selectedDomain)) {
+    // The drill's list is done: its results, never a "complete" card.
+    if (sessionGoal !== null && sessionAnswered > 0) { showSessionDebrief(); nextQ(); }
+    else { drillRun = null; backToPractice(); }
+    return;
+  }
   if (!q) {
     stopSessionTimer();
     // Check if a filter is active — show filter-complete screen, not domain-complete
     if (activeSubtopic || S.diff !== "any") {
       showFilterComplete();
     } else if (S.selectedDomain === "all") {
-      document.getElementById('qArea').innerHTML = '<div class="empty"><div class="empty-icon">Done</div><div class="empty-title">Free questions complete</div><div class="empty-sub">You have answered every free question on the website. Your review keeps going here, and the full course is in the KaiSip Android beta.</div><div style="margin-top:20px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap"><button class="act-btn primary" onclick="resetAllDomains()" style="background:var(--btn);border-color:var(--btn);color:var(--on-btn)">Reset all and restart</button><button class="act-btn secondary" onclick="showSessionSummary()">View summary</button><a class="act-btn secondary" href="' + escapeHtml(FULL_COURSE_URL) + '">Get the full course</a></div></div>';
+      document.getElementById('qArea').innerHTML = '<div class="empty"><div class="empty-icon">Done</div><div class="empty-title">Free questions complete</div><div class="empty-sub">You have answered every free question on the website. Your review keeps going here, and the full course is in the KaiSip Android beta.</div><div style="margin-top:20px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap"><button class="act-btn primary" onclick="confirmResetAllDomains()" style="background:var(--btn);border-color:var(--btn);color:var(--on-btn)">Reset all and restart</button><button class="act-btn secondary" onclick="showSessionSummary()">View summary</button><a class="act-btn secondary" href="' + escapeHtml(FULL_COURSE_URL) + '">Get the full course</a></div></div>';
     } else {
       showDomainComplete(S.selectedDomain);
     }
@@ -20946,14 +21020,26 @@ function initConsentBanner() {
 }
 function setConsent(granted) {
   try { localStorage.setItem('aurivan_consent', granted ? 'granted' : 'denied'); } catch (e) {}
+  var gaWasLoaded = !!window.__gaLoaded;
   try {
+    // Decline stops a tag already running at once (no more hits this visit).
+    window['ga-disable-G-KDECR41WQ9'] = !granted;
     if (window.gtag) {
       window.gtag('consent', 'update', { 'analytics_storage': granted ? 'granted' : 'denied' });
     }
     // The Google script loads only now, after "Accept" (see the head).
     if (granted && window.loadGA) window.loadGA();
+    // Decline leaves no analytics cookie on the device (privacy.html 3b).
+    if (!granted && window.clearGaCookies) window.clearGaCookies();
   } catch (e) {}
   hideConsentBanner();
+  // The Google script cannot be unloaded: after a Decline in the same visit
+  // the page reloads (progress saved first), so it is no longer running.
+  if (!granted && gaWasLoaded) {
+    try { saveState(); } catch (e) {}
+    setTimeout(function () { try { location.reload(); } catch (e) {} }, 0);
+    return;
+  }
   // A date ask waiting for Today's next look can show now.
   setTimeout(function () { try { maybeShowNextAsk(); } catch (e) {} }, 0);
 }
@@ -21125,6 +21211,8 @@ function resetSessionTally() {
 
 function startSession(n, domain, label) {
   if (label !== FIRST_FIVE_LABEL) firstFiveRun = false;
+  drillRun = drillNext;
+  drillNext = null;
   sessionGoal = (n === null || n === 0) ? -1 : n;
   sessionAnswered = 0;
   sessionCorrect = 0;
@@ -21157,6 +21245,7 @@ function hideSessionStart() {
 function onAnswerSubmittedForSession(wasCorrect) {
   if (sessionGoal === null) return; // not in a session
   if (reviewQueueMode || missedReviewMode) return; // a review run is not part of the set
+  if (drillRun && S.current && S.current.id) drillRun.done[S.current.id] = true;
   sessionAnswered++;
   if (wasCorrect) sessionCorrect++;
   // The results' per-domain rows, misses and time (the answer's own record).
@@ -21183,9 +21272,12 @@ function showSessionDebrief() {
     goal: goal, correct: sessionCorrect, domain: sessionDomain, label: sessionLabel,
     answered: sessionAnswered, byDomain: sessionByDomain, missed: sessionMissedIds.slice(), ms: sessionMs, before: sessionBefore,
     // The welcome's five: the exam date is asked once its results show.
-    firstFive: firstFiveRun && sessionLabel === FIRST_FIVE_LABEL
+    firstFive: firstFiveRun && sessionLabel === FIRST_FIVE_LABEL,
+    // A drill's "Practice another set" is a normal set, not the drill's length.
+    drill: !!drillRun
   };
   firstFiveRun = false;
+  drillRun = null;
   try { markFirstSetDone(); } catch (e) {}
   // Persist
   try {
@@ -21364,7 +21456,7 @@ function debriefHtml(deb, inHub) {
     + '<li class="td-clear-t"><span class="td-clear-k">Time</span><span class="td-clear-v"><span aria-hidden="true">' + t.v + (t.u ? ' <span class="td-clear-of">' + t.u + '</span>' : '') + '</span><span class="sr-only">' + t.s + '</span></span></li>'
     + '</ul>'
     + '<div class="rs-acts">'
-    + '<button type="button" class="rs-btn primary" onclick="startSession(' + deb.goal + ', \'' + dom + '\')">Practice another set' + ico('arrow-right', 18) + '</button>'
+    + '<button type="button" class="rs-btn primary" onclick="startSession(' + (deb.drill ? practiceLenGoal() : deb.goal) + ', \'' + dom + '\')">Practice another set' + ico('arrow-right', 18) + '</button>'
     + (missed.length ? '<button type="button" class="rs-btn" onclick="reviewSetMistakes()">Review your mistakes</button>' : '')
     + (inHub ? '<button type="button" class="rs-btn ghost" onclick="closeSetResults()">Close</button>' : '')
     + '</div>'
@@ -22880,17 +22972,23 @@ function startMock(type, notesWaited) {
   saveState(); // the new exam replaces the old one in the saved record now
 }
 
-// The strip's X: the mock pauses (its clock stops) and the setup page
-// offers Resume. Nothing is lost.
-function exitMock() {
+// Pauses an open mock: its clock stops, a pick not yet recorded with Next
+// is dropped, and the place is saved (Resume carries on with the same time
+// left). Returns true when every question is already answered.
+function pauseMock() {
   if (S.mockTotalTimerInt) { clearInterval(S.mockTotalTimerInt); S.mockTotalTimerInt = null; }
-  // A pick not yet recorded with Next is dropped; an answered question is
-  // never shown again (answers are recorded in order, once).
+  // An answered question is never shown again (answers are recorded in order, once).
   mockPick = null;
   mockAnswerLock = false;
   while (S.mockQueue && S.mockCurrent < S.mockQueue.length && S.mockAnswers[S.mockCurrent]) S.mockCurrent++;
-  if (S.mockQueue && S.mockQueue.length && S.mockCurrent >= S.mockQueue.length) { showMockResults(); return; }
+  if (S.mockQueue && S.mockQueue.length && S.mockCurrent >= S.mockQueue.length) return true;
   saveState();
+  return false;
+}
+// The strip's X: the mock pauses (its clock stops) and the setup page
+// offers Resume. Nothing is lost.
+function exitMock() {
+  if (pauseMock()) { showMockResults(); return; }
   renderMockSetup();
   try { window.scrollTo(0, 0); } catch (e) {}
   var b = document.querySelector('#mockArea .mock-resume-btn') || document.getElementById('mkTitle');
@@ -23288,7 +23386,9 @@ function mockSignsHtml(pre) {
       var hasFull = mocks.some(function (x) { return x.total === MOCK_TOTAL && x.timing !== 'untimed'; });
       var left = Math.max(0, MOCKS_SIGN_N - mocks.length);
       rr = s.met ? rr : Math.min(mocks.length, MOCKS_SIGN_N) + ' of ' + MOCKS_SIGN_N;
-      m = s.met ? '' : !hasFull ? (left > 1 ? (NUM_WORDS[left] || left) + ' mocks to go, one of them the full timed mock.' : 'The full timed mock is still to do.')
+      var away = webFullMockAway(mocks) ? 'The full timed mock is in the Android app.' : '';
+      m = s.met ? '' : !hasFull ? (away ? (left > 1 ? (NUM_WORDS[left] || left) + ' mocks to go. ' : '') + away
+          : left > 1 ? (NUM_WORDS[left] || left) + ' mocks to go, one of them the full timed mock.' : 'The full timed mock is still to do.')
         : left === 1 ? 'One more mock to go.' : (NUM_WORDS[left] || left) + ' more mocks to go.';
     } else if (s.id === 'domains') {
       var ok = r.domains.filter(function (x) { return x.answered >= DOMAIN_READ_MIN && pgPct(x) >= DOMAIN_TARGET_PCT; }).length;
@@ -23488,8 +23588,9 @@ function openExamDateSheet(firstRun) {
     + '<button type="button" class="ks-link" id="edExactBtn" aria-expanded="false" aria-controls="edExact" onclick="toggleExactExamDate()">Pick the exact date</button>'
     + '<div class="ks-exact" id="edExact" hidden>'
       + '<label class="ph-field" for="edInput">Exam date</label>'
-      + '<input type="date" class="ks-date-input" id="edInput" min="' + isoLocalDate(new Date()) + '" value="' + escapeHtml(cur) + '">'
+      + '<input type="date" class="ks-date-input" id="edInput" min="' + isoLocalDate(new Date()) + '" value="' + escapeHtml(cur) + '" aria-describedby="edErr" oninput="examDateErrClear()">'
       + '<button type="button" class="mock-confirm-btn gostart" onclick="saveExactExamDate()">Save</button>'
+      + '<p class="td-name-err" id="edErr" aria-live="polite"></p>'
     + '</div>'
     + '<div class="mock-confirm-btns"><button type="button" class="mock-confirm-btn cancel" onclick="closeFlagModal()">' + (firstRun ? 'Later' : 'Cancel') + '</button></div>'
     + '</div></div></div>';
@@ -23519,9 +23620,22 @@ function storeExamDate(iso) {
 function setExamDateMonths(n) {
   storeExamDate(n > 0 ? isoLocalDate(monthsFromToday(n)) : '');
 }
+function examDateErrClear() {
+  var inp = document.getElementById('edInput'), err = document.getElementById('edErr');
+  if (inp) inp.removeAttribute('aria-invalid');
+  if (err) err.textContent = '';
+}
 function saveExactExamDate() {
   var inp = document.getElementById('edInput');
   if (!inp || !inp.value) { if (inp) { try { inp.focus(); } catch (e) {} } return; }
+  // The field's minimum can be typed past: a past date is never saved.
+  if (inp.value < isoLocalDate(new Date())) {
+    var err = document.getElementById('edErr');
+    if (err) err.textContent = 'Pick today or a later date.';
+    inp.setAttribute('aria-invalid', 'true');
+    try { inp.focus(); } catch (e) {}
+    return;
+  }
   storeExamDate(inp.value);
 }
 // After the first five: once, and only when no date is set. v12.42: never
@@ -23732,7 +23846,17 @@ function doResetProgress() {
 }
 
 // â”€â”€ RESET ALL DOMAINS â”€â”€
+// One mis-tap must not clear the seen record: the sheet asks first.
+function confirmResetAllDomains() {
+  ksConfirm({
+    title: 'Restart all domains?',
+    body: 'Every free question can come up again. Your answers and scores stay.',
+    confirmLabel: 'Restart all',
+    onConfirm: resetAllDomains
+  });
+}
 function resetAllDomains() {
+  drillRun = null;
   Object.keys(DI).forEach(function(d) {
     if (S.answeredIds[d]) S.answeredIds[d] = {};
     S.qIdx[d] = 0;
@@ -25308,8 +25432,18 @@ function toggleMasteredFromDetail(id) {
   if (b) { try { b.focus({ preventScroll: true }); } catch (e) {} }
 }
 
+// Flashcards: a filter or search change deals a new deck from the filtered
+// terms (marking a card mastered mid-deck does not).
+function glossFilterDeck() {
+  if (glossState.view !== 'flashcards') return;
+  glossState.fcDeck = shuffleArr(getFilteredTerms().slice());
+  glossState.fcIndex = 0;
+  glossState.fcFlipped = false;
+}
+
 function onGlossSearch(v) {
   glossState.search = v;
+  glossFilterDeck();
   renderGlossary();
   var inp = document.getElementById('glossSearch');
   if (inp) {
@@ -25322,6 +25456,7 @@ function setGlossDomain(d) {
   glossState.domain = d;
   glossState.fcIndex = 0;
   glossState.fcFlipped = false;
+  glossFilterDeck();
   renderGlossary();
 }
 
@@ -25329,6 +25464,7 @@ function setGlossStatus(s) {
   glossState.showMastered = s;
   glossState.fcIndex = 0;
   glossState.fcFlipped = false;
+  glossFilterDeck();
   renderGlossary();
 }
 
@@ -25361,7 +25497,7 @@ function renderFlashcardArea() {
     return '<div class="flashcard-area"><div class="flashcard-empty">'
       + '<div class="flashcard-empty-icon">Cards</div>'
       + '<div class="flashcard-empty-title">No cards in this deck</div>'
-      + '<div class="flashcard-empty-sub">Try changing the domain or status filters above to build your study deck.</div>'
+      + '<div class="flashcard-empty-sub">Try other filters or a different search.</div>'
       + '</div></div>';
   }
 
@@ -25786,7 +25922,10 @@ function weakDrillDomains() {
 function getTrainWeakSpotsPool() {
   var pool = [];
   weakDrillDomains().forEach(function(d) {
+    // Questions not seen yet come first; seen ones fill the rest.
+    var seen = (S.answeredIds && S.answeredIds[d]) || {};
     var domQ = (QB[d] || []).slice().sort(function(){ return Math.random() - 0.5; });
+    domQ = domQ.filter(function(q){ return !seen[q.id]; }).concat(domQ.filter(function(q){ return seen[q.id]; }));
     domQ.slice(0, 7).forEach(function(q){ pool.push(q); });
   });
 
@@ -25807,16 +25946,15 @@ function startWeakSpotsDrill() {
   // The drill is the scope on purpose: the Practice hub must not swap in its own pick.
   phDomainPicked = true;
   S.selectedDomain = 'all';
-  S.queues['all'] = pool;
-  S.qIdx['all'] = 0;
   activeSubtopic = null;
   S.current = null;
   document.querySelectorAll('.domain-card').forEach(function(c){ c.classList.remove('selected'); });
   renderSubtopicFilter();
   switchTab('practice');
   showToast('Weak spots drill loaded', 'info', 2200);
-  // Its own set (no length), never "4 of 10" of a set left open.
-  setTimeout(function() { startSession(null, 'all', 'Weak spots drill'); }, 350);
+  // Its own set, the pool's length, every question asked (misses included).
+  drillArm('all', pool);
+  setTimeout(function() { startSession(pool.length, 'all', 'Weak spots drill'); }, 350);
 }
 
 // ── PHASE 2: BOOKMARK TAGGING ──
@@ -25988,14 +26126,14 @@ function startBookmarkDrill(tagFilter) {
   clearAllTimers();
   phDomainPicked = true;
   S.selectedDomain = 'all';
-  S.queues['all'] = fullQs.sort(function(){ return Math.random()-0.5; });
-  S.qIdx['all'] = 0;
   activeSubtopic = null;
   S.current = null;
   renderSubtopicFilter();
   switchTab('practice');
   showToast('Saved questions: ' + fullQs.length + ' to practise', 'info', 2000);
-  setTimeout(function(){ startSession(null, 'all', 'Saved questions'); }, 300);
+  // Every saved question is asked, answered before or not.
+  drillArm('all', fullQs.sort(function(){ return Math.random()-0.5; }));
+  setTimeout(function(){ startSession(fullQs.length, 'all', 'Saved questions'); }, 300);
 }
 
 function bkTagChange(el) {
@@ -26031,12 +26169,12 @@ function drillSingleBookmark(qId) {
   clearAllTimers();
   phDomainPicked = true;
   S.selectedDomain = d;
-  S.queues[d] = [found];
-  S.qIdx[d] = 0;
   activeSubtopic = null;
   S.current = null;
   switchTab('practice');
-  setTimeout(function(){ startSession(null, d, 'Saved question'); }, 200);
+  // The one question, answered before or not; the domain's queue is left as it is.
+  drillArm(d, [found]);
+  setTimeout(function(){ startSession(1, d, 'Saved question'); }, 200);
 }
 
 // ── PHASE 2: MOCK CHECKPOINT (retired) ──
@@ -26675,6 +26813,7 @@ function getQuestionNumber(q) {
 // â”€â”€ RESET DOMAIN â”€â”€
 function resetDomain(d) {
   d = String(d);
+  drillRun = null;
   if (S.answeredIds && S.answeredIds[d]) S.answeredIds[d] = {};
   S.qIdx[d] = 0;
   // Reshuffle the domain queue
@@ -28538,7 +28677,7 @@ const CHANGELOG = [
     title: 'Brand refresh and a wider canvas',
     items: [
       { cat: 'new', text: 'A new brand-aligned hero section anchors the app around the KaiSip slogan (Master Modern Risk) with the four guiding pillars: Navigate, Master, Adapt, Lead.' },
-      { cat: 'new', text: 'Coverage roadmap chips show what is live (CISA) and what is on the way (CRISC, CISM, Cloud Audit, AI Governance).' },
+      { cat: 'new', text: 'Coverage roadmap chips show which courses are live.' },
       { cat: 'new', text: 'A tip jar lets supporters chip in. Optional, no account.' },
       { cat: 'new', text: 'A new Tip button in the header makes supporting the project a one-click action.' },
       { cat: 'improved', text: 'The app now uses more of your screen on larger displays so dashboards, stats, and panels breathe, while question text stays in a comfortable reading width.' },

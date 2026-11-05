@@ -161,6 +161,51 @@ print("sha256-"+base64.b64encode(hashlib.sha256(m.group(1).encode()).digest()).d
   fi
 done
 
+# The home page's policy follows the mode. Landing: "/" and "/index.html"
+# serve beta.html, so they must carry its strict policy (default-src 'none',
+# its theme script by hash, form-action 'none'). App: that policy would block
+# the web app's inline scripts, so it is dropped from _site/_headers here and
+# the build checks it is gone.
+python3 - "$OUT/_headers" "$SITE_MODE" <<'PY' || fail "_headers: the home page policy does not fit SITE_MODE=$SITE_MODE (see above)"
+import re, sys, hashlib, base64
+path, mode = sys.argv[1], sys.argv[2]
+lines = open(path).read().split("\n")
+m = re.search(r"<script>(.*?)</script>", open("beta.html").read(), re.S)
+h = "'sha256-" + base64.b64encode(hashlib.sha256(m.group(1).encode()).digest()).decode() + "'" if m else None
+HOME = ("/", "/index.html")
+def strict(v):
+    return "default-src 'none'" in v and "form-action 'none'" in v and (h is None or h in v) and "'unsafe-inline' https://www.googletagmanager.com" not in v
+out, cur = [], None
+for ln in lines:
+    s = ln.strip()
+    if s and not s.startswith("#") and not ln[0].isspace():
+        cur = s
+    elif mode == "app" and cur in HOME and s.lower().startswith("content-security-policy:"):
+        continue
+    out.append(ln)
+if mode == "app":
+    open(path, "w").write("\n".join(out))
+rules, cur = {}, None
+for ln in out:
+    s = ln.strip()
+    if not s or s.startswith("#"):
+        continue
+    if not ln[0].isspace():
+        cur = s; rules.setdefault(cur, [])
+    elif cur:
+        rules[cur].append(s)
+bad = []
+for r in HOME:
+    csp = [x.split(":", 1)[1] for x in rules.get(r, []) if x.lower().startswith("content-security-policy:")]
+    if mode == "landing" and not any(strict(v) for v in csp):
+        bad.append(r + ": needs the strict landing-page policy (as /beta)")
+    if mode == "app" and csp:
+        bad.append(r + ": must not carry its own policy in app mode")
+if bad:
+    print("build_site: " + "; ".join(bad), file=sys.stderr)
+    sys.exit(1)
+PY
+
 # The full question bank must never be published (web v12.50). For every
 # question outside the free sample, its stem, explanations and tips (any text
 # of 40+ characters that no free question also uses) are looked for in every
