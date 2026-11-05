@@ -4339,30 +4339,30 @@
     {
       "id": "crisc_d1_118",
       "domain": 1,
-      "subtopic": "1A5 Business processes and resilience. Missed recovery target",
+      "subtopic": "1A5 Business processes and resilience. Recovery test reporting",
       "principle_id": "match-decision-to-role",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "A grain cooperative's recovery test results go only to IT; this year's test restored payments six hours past the target its process owner set. What should the risk practitioner recommend as BEST?",
+      "question": "For three years, a grain cooperative's recovery test results have gone only to IT, so process owners learned of missed targets only during real outages. What should the risk practitioner recommend as BEST?",
       "options": {
-        "A": "Escalate the missed target to the board's risk committee",
-        "B": "Have IT tune the recovery and rerun the test next quarter",
-        "C": "Have IT reset the process owner's target to the tested time",
-        "D": "Record the gap as a risk for the process owner to decide"
+        "A": "Escalate the past missed targets to the board's risk committee",
+        "B": "Have IT retest each system until it meets its owner's target",
+        "C": "Record this year's missed targets for their process owners",
+        "D": "Report each recovery test's results to the process owners"
       },
       "correct": "D",
-      "key_concept": "A recovery test that misses the process owner's target is a register risk for that owner to decide; IT carries out the chosen response.",
-      "pre_read": "Notice who set the target and who has seen the result.",
-      "correct_explanation": "The process owner set the recovery target, so a test that misses it is a gap for them to decide on: fund a fix, accept the gap within appetite, or revisit the target. Recording it puts the gap in the register at its current level. Having IT tune and retest is the runner-up: IT may well do that work, but only after the owner has seen the gap and chosen the response.",
+      "key_concept": "Recovery test results go to the process owners who set the targets, so they can decide on any gap.",
+      "pre_read": "Notice who receives the results and for how long.",
+      "correct_explanation": "Recovery targets belong to the process owners, so test results are evidence they need to decide whether to fund a fix, accept a gap or revisit a target. Sent only to IT, misses stay hidden until a real outage. Reporting every test's results to the process owners fixes that route. Recording this year's misses is the runner-up: it helps now, but next year's results would still reach IT alone.",
       "wrong_explanations": {
-        "A": "The board oversees appetite and major exposures, not single test results; the process owner, who set the target, has not yet seen the gap.",
-        "B": "Tuning may become part of the response, but the owner has not seen the result; IT would be choosing a response to a gap it does not own.",
-        "C": "Recovery targets come from the process owner's needs; resetting one to what IT achieved removes the gap on paper without anyone deciding on it."
+        "A": "The board oversees appetite and major exposures, not individual test results; the process owners who set the targets are the ones who need them.",
+        "B": "Retesting may follow, but IT would be choosing the response to gaps it does not own, and owners would still not see the results.",
+        "C": "Recording this year's misses helps once, but results would keep going only to IT, so next year's gaps would again stay hidden."
       },
       "tips": [
-        "Eliminate: A sends one test result past the owner to the board, and C has IT change a target only the process owner can set.",
-        "Final two: D beats B because the process owner set the target and decides the response; IT's retest may follow, but only once the owner has seen the gap.",
-        "Exam cue: a recovery test that misses its target is a risk for the process owner to decide on, not a technical task for IT to close on its own."
+        "Eliminate: A sends test results past the owners to the board, and B has IT choose responses to gaps the process owners own.",
+        "Final two: D beats C because the cause is the reporting route; recording this year's misses helps once, but future results would still reach IT alone.",
+        "Exam cue: recovery test results go to the process owners who set the targets; when results keep missing them, fix the reporting route, not one year's gaps."
       ],
       "framework_ref": "NIST SP 800-34 Rev. 1 Section 3.5 (Plan Testing, Training, and Exercises); NIST SP 800-34 Rev. 1 Section 3.2.1 (Determine Business Processes and Recovery Criticality: MTD, RTO and RPO); NIST CSF 2.0 ID.IM-02 (improvements are identified from security tests and exercises, including those done in coordination with suppliers and relevant third parties)",
       "related_concepts": [
@@ -4493,7 +4493,7 @@
       "bloom_level": "Analysis",
       "question": "A SaaS provider pays sales staff at signing; they knowingly promised security terms the platform cannot meet to win deals, and $1,500,000 in penalties followed months later. What should the risk practitioner recommend as BEST?",
       "options": {
-        "A": "Train sales staff on the terms the platform supports",
+        "A": "Have the platform team build the features sales promised",
         "B": "Have the risk team approve each contract's security terms",
         "C": "Add a security review of contract terms before signing",
         "D": "Defer part of sales pay, reducing it if losses follow"
@@ -4503,12 +4503,12 @@
       "pre_read": "Ask why staff acted as they did before weighing the fixes.",
       "correct_explanation": "Staff broke the terms knowingly because pay rewards the signature and ignores losses that surface months later. Deferring part of sales pay, reduced if a contract later causes loss, ties the reward to the risk taken. A pre-signing security review is the runner-up: it would catch some terms, but while pay rewards signing alone, the pressure to win deals moves onto the reviewer, so the cause remains.",
       "wrong_explanations": {
-        "A": "Training suits a knowledge gap, but staff knew the platform could not meet the terms; the pay that rewarded signing them stays as it was.",
+        "A": "Building each promised feature lets sales promises set the platform's roadmap, and pay would still reward the next term the platform cannot meet.",
         "B": "Having the risk team approve deals makes the second line take a first-line decision, and leaves the pay that drove the behavior in place.",
         "C": "A review adds a check, but staff paid at signing still gain from pushing risky terms through; the incentive behind the breaches remains."
       },
       "tips": [
-        "Eliminate: A treats a knowing choice as a knowledge gap, and B has the second-line risk team approve deals the first line owns.",
+        "Eliminate: A lets sales promises set the platform's roadmap, and B has the second-line risk team approve deals the first line owns.",
         "Final two: D beats C because pay rewards signing and ignores losses that surface later; a review adds a gate but leaves the reason to push past it.",
         "Exam cue: when people knowingly take risks their pay rewards, fix the incentive; deferred pay that later losses can reduce links reward to the risk taken."
       ],
@@ -4528,7 +4528,7 @@
       "principle_id": "escalate-to-the-limit-setter",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "An airline's baggage-system risk rose to moderate, within appetite, tolerance and escalation thresholds, and the IT director wants the risk committee alerted before its meeting next month. What is the risk analyst's BEST response?",
+      "question": "A ferry operator's booking-system risk rose to moderate, within appetite, tolerance and escalation thresholds, and the IT director wants the risk committee alerted before its meeting next month. What is the risk analyst's BEST response?",
       "options": {
         "A": "Report the change at the committee's scheduled meeting",
         "B": "Escalate the change to the committee before its meeting",
@@ -4547,7 +4547,7 @@
       "tips": [
         "Eliminate: C keeps a rising trend from the committee that reviews it, and D treats a risk within appetite and tolerance as if it needed reducing.",
         "Final two: A beats B because no escalation threshold is crossed; the scheduled review is the route for in-limit changes, and out-of-cycle escalation is kept for breaches.",
-        "Exam cue: escalate out of cycle only when a threshold is crossed; a change that stays within its limits goes in the next scheduled report."
+        "Exam cue: escalate out of cycle only when a threshold is crossed; a change within limits goes in the next scheduled report; working on a trend with its owner is not escalation."
       ],
       "framework_ref": "NIST IR 8286B-upd1 Section 2.4.3 (Risk Owner: risk escalation and elevation); NIST IR 8286 Rev. 1 Section 3.1.2 (Risk Management Strategy: leaders give guidance on risk calculation, including a common scale for assessing levels of risk and the mechanisms and frequency of risk reporting); COBIT 2019 APO12.03 (Maintain a Risk Profile)",
       "related_concepts": [
@@ -4569,21 +4569,21 @@
       "options": {
         "A": "A replacement for the utility's risk framework",
         "B": "A record of the outcomes the utility achieves today",
-        "C": "The utility's Target Profile, adopted as published",
+        "C": "A regulator's checklist the utility is audited against",
         "D": "A starting point for the utility's Target Profile"
       },
       "correct": "D",
       "key_concept": "A CSF 2.0 Community Profile is a sector baseline that an organization can use as the basis for its Target Profile, then tailor.",
       "pre_read": "Recall what each kind of CSF profile describes.",
-      "correct_explanation": "A Community Profile is a baseline of CSF outcomes shared by organizations in a sector, and NIST CSF 2.0 says an organization can use one as the basis for its Target Profile. The utility then tailors it to its own mission, threats and requirements. Adopting it as published is the runner-up: it brings in sector knowledge, but a baseline written for many utilities skips that tailoring.",
+      "correct_explanation": "A Community Profile is a baseline of CSF outcomes shared by organizations in a sector, and NIST CSF 2.0 says an organization can use one as the basis for its Target Profile, then tailor it to its own mission, threats and requirements. A record of today's outcomes is the runner-up: both are CSF profiles, but what the utility achieves now is its Current Profile, drawn from its own practices.",
       "wrong_explanations": {
         "A": "CSF 2.0 is used alongside an enterprise's risk management framework and ERM; a set of outcomes cannot replace the framework senior management approved.",
-        "B": "The outcomes the utility achieves today form its Current Profile, drawn from its own practices; a sector baseline says nothing about them.",
-        "C": "A sector baseline reflects shared goals, not this utility's mission, threats and obligations; adopting it as published skips the tailoring a Target Profile needs."
+        "B": "The outcomes the utility achieves today form its Current Profile, drawn from its own practices; a sector baseline describes shared targets, not today's state.",
+        "C": "A Community Profile is voluntary, sector-shared guidance, not a regulator's checklist; the utility tailors it rather than being audited against it."
       },
       "tips": [
-        "Eliminate: A swaps the approved risk framework for a set of outcomes, and B treats a sector baseline as a record of what the utility does today.",
-        "Final two: D beats C because a Community Profile is a shared baseline; the utility's target starts there but must reflect its own mission, threats and requirements.",
+        "Eliminate: A swaps the approved risk framework for a set of outcomes, and C treats voluntary sector guidance as a regulator's audit checklist.",
+        "Final two: D beats B because a Community Profile describes shared target outcomes; what the utility achieves today is its own Current Profile.",
         "Exam cue: outside baselines and frameworks are starting points to tailor, not finished answers to adopt as published."
       ],
       "framework_ref": "NIST CSF 2.0 Section 3.1 (CSF Profiles: a Community Profile is a baseline of outcomes for a sector or other use case that an organization can use as the basis for its own Target Profile); NIST CSF 2.0 Section 3.1 (CSF Profiles: a Current Profile describes outcomes being achieved and a Target Profile the outcomes selected for risk management objectives); NIST CSF 2.0 Section 1 (CSF Overview: the CSF is used in conjunction with other resources such as frameworks, standards and guidelines to manage cybersecurity risks)",

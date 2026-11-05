@@ -5454,7 +5454,7 @@
       "principle_id": "evidence-before-credit",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "In July, a charity moved its grant-payment approvals from signed paper forms to workflow approvals. Which testing BEST supports the risk analyst's report to the board that approvals worked all year?",
+      "question": "In July, a charity moved grant-payment approvals from paper forms to a workflow, and its board asks the risk analyst whether unapproved grants were paid this year. Which testing BEST supports the analyst's answer?",
       "options": {
         "A": "Test a sample of payments made since the July change",
         "B": "Rely on the workflow's go-live test for the whole year",
@@ -5463,17 +5463,17 @@
       },
       "correct": "C",
       "key_concept": "When a control changes during the period under review, each version is tested for the months it ran.",
-      "pre_read": "Match the period the report must cover with the period each option tests.",
-      "correct_explanation": "A report that approvals worked all year needs evidence for the whole year, and the approval control was a different control before and after July. Sampling payments approved under each method, for the months it ran, tests both. Testing only payments since July is the runner-up: it shows how the current workflow works, but it says nothing about the paper approvals behind grant payments made before July.",
+      "pre_read": "Match the period the board asks about with the period each option tests.",
+      "correct_explanation": "The board's question covers every grant paid this year, and approval was a different control before and after July. Sampling payments approved under each method, for the months it ran, shows whether either let unapproved grants through. Testing only payments since July is the runner-up: it shows how the current workflow works, but it says nothing about grants paid on paper approvals before July.",
       "wrong_explanations": {
-        "A": "This tests only the workflow; payments approved on paper before July stay untested, so the report cannot cover the year.",
+        "A": "This tests only the workflow; grants paid on paper approvals before July stay untested, so the answer cannot cover the year.",
         "B": "A go-live test shows the workflow was set up correctly on one date; it shows neither later operation nor anything about the paper months.",
-        "D": "Internal audit sets its own plan, so the paper months may stay untested; the analyst's report to the board needs evidence for every month it covers."
+        "D": "Internal audit sets its own plan, so the paper months may stay untested; the board asked the analyst about every grant paid this year."
       },
       "tips": [
         "Eliminate: B uses a go-live test, which shows set-up on one date and nothing about operation, and D passes the paper months to internal audit, which sets its own plan.",
-        "Final two: C beats A because the report covers the full year; testing only the workflow leaves the paper months without evidence.",
-        "Exam cue: when a control changes mid-period, test each version for the months it ran before reporting on the whole period."
+        "Final two: C beats A because the board asked about the whole year; testing only the workflow leaves grants paid on paper without evidence.",
+        "Exam cue: when a control changed during the period in question, test each version for the months it ran."
       ],
       "framework_ref": "NIST SP 800-53 Rev. 5 CA-2 (Control Assessments); NIST SP 800-53A Rev. 5 Section 2.4.2 (Assessment Methods: examine, interview and test, with depth and coverage)",
       "related_concepts": [
@@ -5491,7 +5491,7 @@
       "principle_id": "evidence-before-credit",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "A toll-road operator's billing system applies frequent-driver discounts automatically each month. Which evidence should the risk analyst rely on MOST to conclude that the discount control works?",
+      "question": "A toll-road operator's billing system applies frequent-driver discounts automatically each month. Which evidence should the risk analyst rely on MOST to rate the discount control effective?",
       "options": {
         "A": "Job logs showing each monthly discount run completed",
         "B": "Discounts the analyst recalculates for sampled accounts",
@@ -5606,7 +5606,7 @@
       "question": "A peer solar-farm operator went offline after its inverter maker pushed a faulty remote update; the risk analyst's firm, with no such event yet, uses the same inverters. What should the analyst do FIRST?",
       "options": {
         "A": "Rate it at the yearly assessment from the firm's own data",
-        "B": "Rate the peer's outage as a critical risk in the register",
+        "B": "Log the peer's outage as a loss event in the firm's register",
         "C": "Record it as an emerging risk, citing the peer's outage",
         "D": "Ask the inverter maker to stop remote updates to its sites"
       },
@@ -5616,11 +5616,11 @@
       "correct_explanation": "A peer's outage on the same inverters is relevant outside evidence that this firm is exposed too, so the risk should be recorded now as an emerging risk, with the peer's event as its basis, its uncertainty stated and an owner. Waiting for the yearly assessment and the firm's own data is the runner-up: it sounds rigorous, but it leaves a known exposure unrecorded until the firm suffers the same outage.",
       "wrong_explanations": {
         "A": "In-house data may arrive only as the firm's own outage; a peer's event on the same inverters is valid evidence now, and the yearly cycle leaves it unrecorded.",
-        "B": "One peer's outage does not make this firm's risk critical; an emerging risk is recorded with its uncertainty stated, not inflated to win attention.",
+        "B": "The outage happened at the peer, not here; logging it as this firm's own loss event misstates its loss history rather than recording the exposure.",
         "D": "This picks a control before the risk is analyzed, and stopping remote updates could also block the security fixes the inverters need."
       },
       "tips": [
-        "Eliminate: B rates the risk critical from one event before analysis, and D chooses a control first, which could also block needed security fixes.",
+        "Eliminate: B files a peer's outage as this firm's own loss event, and D chooses a control first, which could also block needed security fixes.",
         "Final two: C beats A because a peer's outage on the same equipment is valid evidence now; waiting for the firm's own data leaves the risk unrecorded.",
         "Exam cue: outside events, such as a peer's incident or an industry report, are valid triggers to record an emerging risk before it happens to you."
       ],
