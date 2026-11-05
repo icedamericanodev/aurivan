@@ -1,6 +1,6 @@
 # CRISC course plan: from the pilot to a sellable pack
 
-**Status:** plan, 30 Oct 2026; round 10 done 5 Nov 2026 (bank 500, on the outline weights). CRISC is a **paid course** learners buy in the
+**Status:** plan, 30 Oct 2026; round 11 done 5 Nov 2026 (bank 525, on the outline weights). CRISC is a **paid course** learners buy in the
 app (6-month access, one payment, never renews; see
 `docs/business/monetization/RECOMMENDATION.md`). Outline and sources:
 `docs/content/CRISC_BLUEPRINT.md`. Item standard:
@@ -20,7 +20,7 @@ it can be sold:
 |---|---|---|---|
 | Blueprint | `docs/content/CRISC_BLUEPRINT.md` | cert-blueprint-researcher | Done, 30 Oct 2026 |
 | Study notes | `data/crisc/notes/d{1..4}.json` + `_course.json` (strategy tips, cross-domain connections) | crisc-d{N}-domain-expert | All 43 outline sub-areas, 115 subtopics, Practice this concept links (`data/crisc/tools/sync_practice_ids.py`) |
-| Questions | `data/crisc/originals/d{1..4}.json` | crisc-d{N}-domain-expert | 500 reviewed (130 / 110 / 160 / 100) after round 10, each domain on its weight: a full 150-item mock and a short 50-item mock without repeats |
+| Questions | `data/crisc/originals/d{1..4}.json` | crisc-d{N}-domain-expert | 525 reviewed (137 / 115 / 168 / 105) after round 11, each domain on its weight: a full 150-item mock and a short 50-item mock without repeats |
 | Citation library | `data/crisc/originals/_framework_library.md` | domain experts | Started with the pilot |
 | Principles (mindset cards) | `data/crisc/mindset/principles.json` (schema `docs/content/PRINCIPLES_SCHEMA.md`) | isaca-mindset-coach | 19 principles; every item tagged |
 | Exam guide and final-review week | `data/crisc/exam/` (schema `docs/content/EXAM_GUIDE_SCHEMA.md`) | isaca-mindset-coach | Both done and reviewed |
@@ -502,6 +502,33 @@ small wording fixes followed. Still lopsided: permissive openers ("Let", "Allow"
 - Stem form: at least 3 D3 and 2 D2 items as genuinely short "Which of the following … MOST/BEST" stems (under 20 words, noun-phrase options).
 - Settings: at most 2 leisure or culture settings and no health settings (veterinary included). Unused so far: packaging, chemical distribution, textiles, seed or agritech, accounting firm, tax authority, court service, housing association (each once).
 - Keep apart in practice sets: d1_126/CISA d2_092/d1_074, d1_127/d3_077, d1_128/d3_101/d3_113, d1_129/d3_047, d1_130/d1_079/CISA d5_338, d2_105/cc_d5_114, d2_107/d2_021, d2_108/d2_014/d3_105, d2_110/d3_155/d2_019, d3_154/d3_006/d3_026, d3_157/d3_069/d3_129, d3_158/d3_105.
+
+### Round 11 (5 Nov 2026): 25 items, bank 525
+
+Round 11 added 7 D1 (`crisc_d1_131`–`137`), 5 D2 (`crisc_d2_111`–`115`),
+8 D3 (`crisc_d3_161`–`168`) and 5 D4 (`crisc_d4_101`–`105`) items from a shared
+brief (scratchpad `r11_brief.md`). Highlights: a genuine "wait" key (d3_161:
+the system is restored and the root-cause review is three days away, so do not
+approve a $400,000 replacement on a guess), recurring tolerance breaches
+analyzed before the fix or the limit changes (d1_132), correlated risk from
+shared unpatched software (d3_166), the bank's first blockchain-and-personal-data
+item (d4_105), and "Have"/"Ask" keys (d1_131, d1_133, d2_115, d3_167).
+
+| Stage | Result |
+|---|---|
+| Blind test | 25/25 picks matched the keys |
+| Standards audit and concept review | 0 HARD ERRORS; about 25 fixes. Applying rules 18–19 mechanically had made "two owner options are both wrong" and "three owner options include the key" hold every time; seven items were re-shaped (calibration rule 20: mix all four owner shapes). d3_166's explanation now agrees with SP 800-30 on aggregation; d1_136 no longer claims boards never approve the framework |
+| Re-blind of changed items | 17/17 |
+| Cross-domain gate | 0 HARD ERRORS, 5 PRECISION: d4_103 re-angled off d4_058 (retention follows purpose); analysis-verb openers ("Find" 4/4, "Analyze" 3/3) and "Bring" (4/4) balanced with distractor-only edits; notes 2B3.3 aligned with the bank on aggregation; D4 key-only lens words cut from 5 to 2; the standard's lens line now says the board, with senior management, sets appetite and senior management approves the framework under board oversight |
+| Gates | All lints 0 errors; originality 0 too close; practice links in sync; app pack dry run 0 problems; `verify_repo.sh` passes; no run of three identical keys |
+
+**Next round (round 12, +25 to 550):** D1 +6, D2 +6, D3 +8, D4 +5 (143/121/176/110).
+- Owner shapes: key 2–3 lone owner options (an owner action as the single best answer beside three ownerless distractors); write at least 3 three-owner items where the key is the one option without an owner. A cue pass on older items should take the owner word off about 8 of the 17 easy lone-owner distractors (d1_070, d1_078, d1_123, d2_019, d2_047, d2_074, d3_053, d3_070, d3_074, d3_085, d3_095, d3_124, d3_132, d3_134, d3_136, d4_040, d4_074).
+- Openers: no opener used 4+ times may be keyed above 60%; key none of Find, Analyze, Identify, Check, Bring, Link unless a wrong option in the same item opens with the same verb; put investigative verbs on at least 4 runners-up.
+- Stock tells: key one evidence-based threshold change (the old KRI threshold fires on normal activity after a documented volume change; re-set with its owner and the tolerance approver) and one item where the yearly review really is right; write no new "raise the threshold", "accept as it stands" or "wait for the yearly review" distractors.
+- Let 2–3 keys per domain be naturally the longest option (D1, D3, D4 sit at 16–17%). One AI item in D4. Settings not yet used: port authority, water bottler, shipyard, cooperative bank (non-retail), seed or agritech (second use), housing association (second use); no reuse of court service, accounting firm, newspaper, toy maker, call-center outsourcer or bus operator.
+- Near-duplicate scan: compare the option skeleton of same-code items, not only stems (it caught d4_103/d4_058 and d3_162/d3_153).
+- Keep apart in practice sets: d4_091/d3_024, d3_161/d3_115/d3_146, d3_162/d3_153/d1_070, d3_164/CISA d5_204/d1_092, d3_166/d3_144/d1_068, d3_168/d1_007/CISA d1_129, d4_103/d4_058, d4_104/CISA d3_046, d1_132/d1_018, d1_136/d1_013, d2_113/d2_106, d2_115/d2_017.
 
 **Open items:**
 - The `TO VERIFY` comment on the CRISC entry in `mobile/src/content/certifications.ts`
