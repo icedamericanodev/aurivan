@@ -82,12 +82,13 @@ describe('the stem chart (item 2)', () => {
     mount(<StemChart stems={five} />);
     // (440 - 32) / 5 = 81pt a column: the chart, not the list.
     layout(440);
-    for (const words of ['IS Audit', 'IT Governance', 'Info Protection']) expect([words, textStyle(words).fontFamily, textStyle(words).fontSize, textStyle(words).lineHeight]).toEqual([words, chartName.fontFamily, 13, 17]);
+    // The last column's name wraps at its space so it stays inside the chart.
+    for (const words of ['IS Audit', 'IT Governance', 'Info', 'Protection']) expect([words, textStyle(words).fontFamily, textStyle(words).fontSize, textStyle(words).lineHeight]).toEqual([words, chartName.fontFamily, 13, 17]);
     for (const words of ['too few\nyet', 'below 70']) expect([words, textStyle(words).fontSize, textStyle(words).lineHeight]).toEqual([words, chartLabel.fontSize, chartLabel.lineHeight]);
-    // A name's box is its column less 4, so two names never meet ("IS Acquisition" ran into "IS Operations"),
-    // and the longest name word ("Governance", about 72pt at 600 13pt) fits it at the floor.
-    expect(textStyle('IT Governance').width).toBe((440 - 32) / 5 - 4);
-    expect(MIN_COLUMN).toBe(78);
+    // Verify round 2: the names are never squeezed into one column; they keep two columns less 8 and
+    // every other block drops (stemLabelLayout), so the floor is the web's 58 again.
+    expect(textStyle('IT Governance').width).toBeUndefined();
+    expect(MIN_COLUMN).toBe(58);
   });
 
   it('the scale strip holds "100" at the label size, grown with the text to x1.3', () => {

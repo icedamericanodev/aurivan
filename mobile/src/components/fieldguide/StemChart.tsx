@@ -21,8 +21,8 @@
  *
  * Every column is its own screen-reader stop, left to right ("IS Audit:
  * Strong, 84 percent on latest tries, at or above the 70 line"); the drawing
- * itself is hidden. From ×1.3 text, or when a column would be narrower than
- * its longest name, the chart hands over to StemList: one row per area with
+ * itself is hidden. From ×1.3 text, or when a column is under MIN_COLUMN or its words would still
+ * meet after the stagger (stemLabelLayout), the chart hands over to StemList: one row per area with
  * a ruler bar (the outline for too few yet), the word and the figure.
  *
  * Motion:
@@ -43,7 +43,7 @@ import Animated, { useAnimatedStyle, useSharedValue, withDelay } from 'react-nat
 import Svg, { Ellipse, G, Path } from 'react-native-svg';
 import { THIN_WORDS, thinFigure, type Stem } from '../../engine/fieldGuide';
 import { chartLabel, chartName, grovePlate } from '../../theme/grove';
-import { fieldInk, LARGE_TEXT, motion, plate, space } from '../../theme/tokens';
+import { fieldInk, fieldType, LARGE_TEXT, motion, plate, space } from '../../theme/tokens';
 import { useTheme } from '../../theme/useTheme';
 import { ease, tween, useMotion } from '../motion';
 import { BigNum, T, useFontScale } from '../ui';
@@ -102,10 +102,99 @@ export function lineLabelSpot({ lastPct, line, gap, fs }: { /** The last column'
   return { beside: true, top: Math.max(below, top - 10), width: Math.max(0, gap / 2 - 8, Math.ceil(22 * fs)) };
 }
 /**
- * A column narrower than this hands over to the list. The longest name word, "Governance", is about
- * 72pt in fg name (600 13pt); a name's box is its column less 4 (so two names never meet), plus 2 to spare.
+ * A column narrower than this hands over to the list (the web's floor too). The labels under the soil
+ * no longer have to fit one column: they take two columns less 8 and every other area's labels drop
+ * below their neighbours' (stemLabelLayout), so "Governance" at 13pt (about 72pt) fits here.
  */
-export const MIN_COLUMN = 78;
+export const MIN_COLUMN = 58;
+
+/**
+ * Width guesses for one line of the chart's words, in points a character at x1 (measured from the
+ * shipped fonts, rounded up so a guess is never short): Figtree 500 or 600 at 13pt is 7.3 (as the
+ * web's est() for 13px), the figSm italic at 12pt is 6.2.
+ */
+const CHAR_LABEL = 7.3;
+const CHAR_FIG = 6.2;
+/** The least space between two neighbours' words (the web's 8px rule). */
+const LABEL_SPACE = 8;
+
+/** One line of words under the soil: its text, its kind (sets the type), its centre and top, its guessed width. */
+export type StemLabelLine = { t: string; kind: 'name' | 'word' | 'line'; x: number; y: number; w: number; lh: number };
+
+/**
+ * Where every word under the soil goes (pure, so it is tested on its own). It follows the web's
+ * method (index.html fgStemSvg, `clash` / `dy`):
+ * - Each area's block is its name, its word, then its extra lines, centred on its column. A name or
+ *   a line wraps at spaces only when it is wider than two columns less 8 (less at the chart's two
+ *   ends, so a line never leaves the chart).
+ * - When two neighbours' lines would sit on the same row closer than 8pt, every odd area's block drops
+ *   one small space below the deepest line beside it. Names on the same row are then two columns
+ *   apart, so they never meet or read across as one phrase.
+ * - If the words still meet (a very narrow chart), it gives `null`: the list takes over.
+ * `x` is from the chart's left edge; `y` from the top of the words (8pt under the soil).
+ */
+export function stemLabelLayout({ stems, line, gap, gutter, w, fs }: { stems: readonly Stem[]; line: number; gap: number; gutter: number; w: number; fs: number }): {
+  columns: StemLabelLine[][];
+  /** The words' total height, deepest block included. */
+  height: number;
+  staggered: boolean;
+} | null {
+  const nameH = chartName.lineHeight * fs;
+  const labelH = chartLabel.lineHeight * fs;
+  const figH = (fieldType.figSm.lineHeight ?? 16) * fs;
+  const est = (t: string, per: number) => t.length * per * fs;
+  const blocks = stems.map((s, i) => {
+    const centre = gutter + gap * i + gap / 2;
+    // The widest a line may be: two columns less 8, and never past either end of the chart.
+    const room = Math.min(2 * gap - LABEL_SPACE, 2 * centre, 2 * (w - centre));
+    const place = (t: string, kind: StemLabelLine['kind'], y: number, lh: number): StemLabelLine => {
+      const lw = est(t, kind === 'word' ? CHAR_FIG : CHAR_LABEL);
+      // A line wider than its room (one long word at an end) moves in just enough to stay inside the chart.
+      const x = Math.max(lw / 2, Math.min(w - lw / 2, centre));
+      return { t, kind, x, y, w: lw, lh };
+    };
+    // A name or a line on one line when it fits its room, else wrapped at spaces (never mid-word).
+    const wrap = (text: string) => {
+      const rows: string[] = [];
+      for (const word of text.split(' ')) {
+        const last = rows[rows.length - 1];
+        if (last !== undefined && est(`${last} ${word}`, CHAR_LABEL) <= room) rows[rows.length - 1] = `${last} ${word}`;
+        else rows.push(word);
+      }
+      return rows;
+    };
+    const out: StemLabelLine[] = [];
+    let y = 0;
+    for (const t of wrap(s.name)) {
+      out.push(place(t, 'name', y, nameH));
+      y += nameH;
+    }
+    for (const t of chartWord(s).split('\n')) {
+      out.push(place(t, 'word', y, figH));
+      y += figH;
+    }
+    for (const t of chartLines(s, line).flatMap(wrap)) {
+      out.push(place(t, 'line', y, labelH));
+      y += labelH;
+    }
+    return { lines: out, bottom: y };
+  });
+  // Two lines meet when they share a row (their boxes overlap by more than the 4pt of air a line box
+  // keeps above and below its letters) and come closer than 8pt across.
+  const meet = (a: StemLabelLine, b: StemLabelLine, dy: number) =>
+    Math.min(a.y + dy + a.lh, b.y + b.lh) - Math.max(a.y + dy, b.y) > 4 * fs && Math.abs(a.x - b.x) - a.w / 2 - b.w / 2 < LABEL_SPACE;
+  const clash = (i: number, j: number, di: number, dj: number) => blocks[i].lines.some((a) => blocks[j].lines.some((b) => meet(a, b, di - dj)));
+  const staggered = blocks.some((_, i) => i > 0 && clash(i - 1, i, 0, 0));
+  // Each odd block's drop: one small space under the deepest line of the blocks beside it.
+  const drop = blocks.map((_, i) => (staggered && i % 2 === 1 ? Math.max(blocks[i - 1].bottom, blocks[i + 1]?.bottom ?? 0) + 4 * fs : 0));
+  // Any two blocks that still meet (after the drop) hand the chart over to the list.
+  for (let i = 0; i < blocks.length; i++) for (let j = i + 1; j < blocks.length; j++) if (clash(i, j, drop[i], drop[j])) return null;
+  return {
+    columns: blocks.map((b, i) => b.lines.map((l) => ({ ...l, y: l.y + drop[i] }))),
+    height: Math.max(0, ...blocks.map((b, i) => b.bottom + drop[i])),
+    staggered,
+  };
+}
 
 /** Five stems on one scale, or the list at large text. */
 /** How a chart arrives: `true` / `'trace'` from the soil, `'growth'` only what grew, `false` still. */
@@ -155,15 +244,37 @@ export function StemChart({
   const { width: screen } = useWindowDimensions();
   const [w, setW] = useState(() => chartFirstWidth(screen));
   const gap = stems.length ? (w - gutterFor(fs)) / stems.length : 0;
-  const list = large || (w > 0 && gap < MIN_COLUMN * fs);
+  // The words under the soil: placed once here, so a chart whose words would still meet shows the list.
+  const labels = w > 0 && gap >= MIN_COLUMN * fs ? stemLabelLayout({ stems, line, gap, gutter: gutterFor(fs), w, fs }) : null;
+  const list = large || (w > 0 && !labels);
   return (
     <View testID={testID} onLayout={(e) => setW(e.nativeEvent.layout.width)}>
-      {list ? <StemList stems={stems} line={line} /> : w > 0 ? <Chart stems={stems} line={line} play={play} run={run} delay={delay} w={w} fs={fs} /> : <View style={{ height: plate.chart }} />}
+      {list ? <StemList stems={stems} line={line} /> : w > 0 && labels ? <Chart stems={stems} line={line} play={play} run={run} delay={delay} w={w} fs={fs} labels={labels} /> : <View style={{ height: plate.chart }} />}
     </View>
   );
 }
 
-function Chart({ stems, line, play, run, delay, w, fs }: { stems: readonly Stem[]; line: number; play: StemPlay; run: number; delay: number; w: number; /** The text size, up to ×1.3. */ fs: number }) {
+function Chart({
+  stems,
+  line,
+  play,
+  run,
+  delay,
+  w,
+  fs,
+  labels,
+}: {
+  stems: readonly Stem[];
+  line: number;
+  play: StemPlay;
+  run: number;
+  delay: number;
+  w: number;
+  /** The text size, up to ×1.3. */
+  fs: number;
+  /** Where the words under the soil go (stemLabelLayout). */
+  labels: NonNullable<ReturnType<typeof stemLabelLayout>>;
+}) {
   const { c, isDark } = useTheme();
   const ink = fieldInk[isDark ? 'dark' : 'light'];
   const { reduced } = useMotion();
@@ -174,13 +285,10 @@ function Chart({ stems, line, play, run, delay, w, fs }: { stems: readonly Stem[
   const gap = (w - GUTTER) / stems.length;
   const soil = TOP + PLOT;
   const y = (p: number) => soil - (Math.max(0, Math.min(100, p)) / 100) * PLOT;
-  const extras = Math.max(0, ...stems.map((s) => chartLines(s, line).length));
   const last = stems[stems.length - 1];
   const spot = lineLabelSpot({ lastPct: last && !last.thin ? last.pct : null, line, gap, fs });
-  // The words under the soil: a two-line name and the extra lines on the chart's 13/17 labels,
-  // the word (two lines for not started) in figSm, grown with the text size.
-  const twoLineWord = stems.some((s) => s.answered <= 0) ? 16 : 0;
-  const h = soil + 10 + Math.ceil((2 * chartName.lineHeight + 2 + 16 + twoLineWord + extras * chartLabel.lineHeight) * fs);
+  // The words under the soil start 8 below it; the deepest block (a dropped one included) sets the height.
+  const h = soil + 8 + Math.ceil(labels.height) + 6;
   const settle = useSharedValue(moving ? 0 : 1);
   useEffect(() => {
     if (!moving) {
@@ -255,19 +363,20 @@ function Chart({ stems, line, play, run, delay, w, fs }: { stems: readonly Stem[
           ) : null,
         )}
         {stems.map((s, i) => {
-          const lines = chartLines(s, line);
           const red = !s.thin && s.pct !== null && s.below;
-          return (
-            <View key={s.key} style={{ position: 'absolute', left: GUTTER + gap * i - 4, width: gap + 8, top: soil + 8, alignItems: 'center' }}>
-              {/* The name wraps only when it must ("IS Audit" on one line when it fits; "Info" over
-                  "Protection" when it does not), in its column less 4, so two neighbours' names never meet. */}
-              <FieldText v="tiny" color={c.ink} center numberOfLines={2} style={[chartName, { width: Math.max(0, gap - 4) }]}>{s.name}</FieldText>
-              <FieldText v="figSm" color={red ? c.clay : c.ink2} center>{chartWord(s)}</FieldText>
-              {lines.map((l) => (
-                <FieldText key={l} v="tiny" color={red && l.startsWith('below') ? c.clay : c.ink2} center style={chartLabel}>{l}</FieldText>
-              ))}
+          return labels.columns[i].map((l, k) => (
+            // Each line on its own, centred where stemLabelLayout put it, in a box wider than the line
+            // so it never wraps (the name was already wrapped at spaces, if it had to be).
+            <View key={`${s.key}-${k}`} style={{ position: 'absolute', left: l.x - 100 * fs, width: 200 * fs, top: soil + 8 + l.y, alignItems: 'center' }}>
+              {l.kind === 'name' ? (
+                <FieldText v="tiny" color={c.ink} center style={chartName}>{l.t}</FieldText>
+              ) : l.kind === 'word' ? (
+                <FieldText v="figSm" color={red ? c.clay : c.ink2} center>{l.t}</FieldText>
+              ) : (
+                <FieldText v="tiny" color={red && l.t.startsWith('below') ? c.clay : c.ink2} center style={chartLabel}>{l.t}</FieldText>
+              )}
             </View>
-          );
+          ));
         })}
       </View>
       {/* One stop per area, left to right. */}

@@ -143,7 +143,9 @@ the web agree; `num.score` is 1.0 (52/52) and `num.value` matches `title`
 - **"to" and units** beside or under a serif numeral, and a stat's label
   under its number, are Figtree `meta` (not Fraunces at 15, and not `aside`).
 - Small values a learner scans in a list, a counter or a timer are Figtree,
-  not Fraunces: "1 of 3", "12 / 20", the mock timer, "too few yet".
+  not Fraunces: "1 of 3", "12 / 20", the mock timer, "too few yet" in a list
+  or row. A tile's or stat's value in words ("Too few yet" on a tile) is
+  `title` (rows 52, 207, 59c).
 
 ### 2.2 Tabular figures
 
@@ -397,7 +399,7 @@ the literal with the role's token (no visual change).
 | 49 | `.sr-toc-t`, 6689 | 600 15/20 | label |
 | 50 | `.fg-key-t`, 5611; `.gt-trap-t`, 5031 | 600 15/22 | label |
 | 51 | `.td-ready-s` Today readiness first line, 7979 | Figtree 600 15/20 | label (supersedes "Figtree 15 semibold" in DECISIONS 9) |
-| 52 | `.td-tile-v`, `.td-tile-a`, 7722, 7831 | 600 15/22 | label |
+| 52 | `.td-tile-v`, `.td-tile-a`, 7722, 7831 | 600 15/22 | title for a value in words ("Too few yet", "Not started"; rows 207, 59c); num.value for a number; label for `.td-tile-a` |
 | 53 | `.td-dname` readiness list, 7987 | 400 15/20 | small |
 | 54 | `.td-dval` "too few yet", 7988 | 400 12/16 tabular | meta, tabular |
 | 55 | `.td-intro`, 5161, 7613; `.set-sub`, 7507 | 14/20 | small (short intro) or body if over two lines |
@@ -559,12 +561,12 @@ the literal with the role's token (no visual change).
 | # | Where | Now | Role |
 |---|---|---|---|
 | 171 | `.fg-st-t` 5557, 5566, 5567, 5568 | 500 / 600 11px, no line-height | fg tiny 11/14 |
-| 172 | `.fg-st-l2`, 5569 | 600 10.5px | fg tiny 11/14 (500) |
+| 172 | `.fg-st-l1`, `.fg-st-l2` (the area name), 5569 | 600 10.5px | fg name Figtree 600 13/17 at every width (row 176a). To make room, each area's label block may take two columns less 8 and every odd area's block drops one row below the deepest line beside it when two neighbours would come within 8 (the web's `clash` / `dy`; the phone's `stemLabelLayout`). The list floor stays 58 a column on both builds |
 | 173 | `.fg-st-w`, 5570 | italic 11.5px | fg figSm italic 12/16 |
 | 174 | `.fg-st-n` 5564 (18 at 390, 24 at 1280) | Fraunces 500 18 / 24, no line-height | fg chart 18/22 at every width |
 | 175 | `.fg-st-n .u` % sign, 5565; `tspan.u` at 10 and 13 | 10px | % at the 11px floor |
 | 176 | `.pg-axt` progress axis, 5411 | 500 13/1 | fg tiny 11/14, or caption if it must stay 13 |
-| 176a | `.fg-wide` chart labels (`.fg-st-t`, `-l1`, `-x`, `-line`, `-up`, `-dn`), 5581 | 13px at wide widths only | fg label 500 13/17 at every width (E1; one size at every width, as row 174) |
+| 176a | `.fg-wide` chart labels (`.fg-st-t`, `-l1`, `-l2`, `-x`, `-line`, `-up`, `-dn`), 5581 | 13px at wide widths only | fg label 500 13/17 at every width (E1; one size at every width, as row 174); the area name (`-l1`, `-l2`) is fg name 600 13/17 (row 172). The web's width guesses for the clash check measure 13px text (about 7.3px a character) |
 | 177 | Notes diagrams in `data/cisa_notes.json`, styled by 4991 (`.gt-figure svg text`) | Plus Jakarta Sans and JetBrains Mono, 700, 7.5 to 16 viewBox units | Figtree 600: add `font-weight: 600` to the 4991 reset beside the family (CSS overrides the data's `font-weight="700"` attribute; today the browser draws 700 from the 600 file). CSS cannot guarantee a 13px smallest label, because labels are viewBox units scaled to the plate; so, as the phone's notes rule: when the fitted figure's smallest rendered label is under 13px, show "Tap to enlarge". The zoom (index.html ~11327) opens with the smallest label at 16px or more, and the figcaption carries the meaning, because SVG text does not follow the browser text-size setting. The data stays as is |
 | 178 | rem only on You and Settings, index.html:7270 to 7577 (55 sizes); px everywhere else | mixed units | every token in rem (section 3); the You and Settings rem literals become the tokens |
 

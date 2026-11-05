@@ -195,7 +195,7 @@ describe('StemChart growth (#2)', () => {
     act(() => {
       r = create(<StemChart stems={STEMS} play={play} />);
     });
-    layout(360); // (360 - 32) / 4 = 82pt a column, over MIN_COLUMN 78: the chart
+    layout(360); // (360 - 32) / 4 = 82pt a column, over MIN_COLUMN 58: the chart
   };
 
   it('motion on: only the stem that grew moves, and it ends at its tip with "↑3"', () => atScale(1, () => {
