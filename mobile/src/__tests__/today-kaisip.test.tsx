@@ -7,7 +7,7 @@
  *   "Continue" once something is done; Play only for a lesson);
  * - the readiness row (rings, the RANGE, "Estimated readiness"; mobile 1.24: the disclaimer lives on the report and on
  *   the first-range card, and the stage line rests unless it changed lately);
- * - mobile 1.24: no stat tiles (one quiet line names the weakest area once there is a range);
+ * - mobile 1.24: no stat tiles (one quiet line names where you'll gain most once there is a range);
  * - never hours studied, never a single readiness percent;
  * - the screen-reader order: header, meta, greeting, plan, readiness.
  * The first-days states (Day 0, the first range, the reminder's second chance) are in today-first-days.test.tsx.
@@ -342,7 +342,7 @@ describe('Today, top to bottom', () => {
     expect(stops()).toContain('Accuracy, 73 percent, latest tries');
     expect(stops()).toContain('Exam date, 22 November');
     expect(allText()).not.toMatch(/Not yet/);
-    const line = allText().match(/200 answered · weakest area: ([^A]+?)(?= Also|$)/);
+    const line = allText().match(/200 answered · where you’ll gain most: ([^A]+?)(?= Also|$)/);
     expect(line).not.toBeNull();
     // The domain's short name ("IS Operations"), never the tile abbreviation ("IS Ops"): UX review S6.
     expect(cisa.domains.some((d) => d.short === line![1].trim())).toBe(true);
@@ -359,7 +359,7 @@ describe('Today, top to bottom', () => {
     mount(<Today />);
     const t = allText();
     const at = (x: string) => t.indexOf(x);
-    const order = ['Thu 15 Oct', '38 days to go', 'CISA exam 22 Nov', 'Growth 1 of 6', 'estimated range', 'Accuracy', 'Today’s plan', 'This week’s twig', 'weakest area'];
+    const order = ['Thu 15 Oct', '38 days to go', 'CISA exam 22 Nov', 'Growth 1 of 6', 'estimated range', 'Accuracy', 'Today’s plan', 'This week’s twig', 'gain most:'];
     const idx = order.map(at);
     expect(idx.every((i) => i >= 0)).toBe(true);
     expect([...idx].sort((a, b) => a - b)).toEqual(idx);
@@ -421,7 +421,7 @@ describe('Today at large text (200%)', () => {
     setScale(2);
     mount(<Today />);
     expect(allText()).toContain('estimated range');
-    expect(allText()).toContain('200 answered · weakest area');
+    expect(allText()).toContain('200 answered · where you’ll gain most');
     // The steps still wrap rather than clip: no fixed heights or line caps.
     const lines = byTestID('plan-steps')[0].findAll((n) => typeof n.type === 'string' && n.props.accessible === true);
     expect(lines).toHaveLength(3);

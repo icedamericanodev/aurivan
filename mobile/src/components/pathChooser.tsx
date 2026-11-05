@@ -17,7 +17,7 @@ import { LARGE_TEXT, space } from '../theme/tokens';
 import { useTheme } from '../theme/useTheme';
 import { ChevronDown, ICON_STROKE } from './icons';
 import { Turn } from './motion';
-import { Button, Chip, ChipRow, Gap, IconCircle, RadioRow, Segmented, T, useFontScale } from './ui';
+import { Button, Chip, ChipRow, Gap, ICON_BADGE, IconCircle, RadioRow, Segmented, T, useFontScale } from './ui';
 
 // ── DisclosureRow: a list row that shows or hides the panel under it ──
 export function DisclosureRow({
@@ -76,7 +76,7 @@ export function DisclosureRow({
           <ChevronDown size={18} color={action ? c.accentText : c.muted} strokeWidth={ICON_STROKE} />
         </Turn>
       </View>
-      {!last && !expanded && <View style={[styles.hairline, { left: icon ? 54 : 0, backgroundColor: c.line }]} />}
+      {!last && !expanded && <View style={[styles.hairline, { left: icon ? ICON_BADGE + space.md : 0, backgroundColor: c.line }]} />}
     </Pressable>
   );
 }
@@ -166,7 +166,9 @@ export function PathChooser({
 }
 
 const styles = StyleSheet.create({
-  row: { flexDirection: 'row', alignItems: 'center', gap: 14, minHeight: 56, paddingVertical: 12 },
+  // Polish round 1: the same gap as the rows it sits under (Practice's CardRow, ListRow: space.md), so
+  // the title and subtitle start on the same edge as theirs; it was 14, 2pt to the right.
+  row: { flexDirection: 'row', alignItems: 'center', gap: space.md, minHeight: 56, paddingVertical: space.md },
   rowStacked: { flexWrap: 'wrap', rowGap: space.xs },
   textStacked: { flexBasis: '100%', minWidth: 0 },
   trail: { flexDirection: 'row', alignItems: 'center', gap: space.xs },

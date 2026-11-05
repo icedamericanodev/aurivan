@@ -197,7 +197,7 @@ export function ReminderAsk({
       {/* A ghost after content sits at the gutter (spec §5): -8 cancels its own 8pt padding, so "Not now"
           lines up with the left edge of the button above it. */}
       <Button
-        kind="ghost"
+        kind="ghostNeutral"
         label="Not now"
         accessibilityHint="No reminder. You can set one in Settings."
         onPress={notNow}

@@ -41,10 +41,11 @@ export const PROVENANCE_LINE =
 export const WELCOME_HEADLINE = 'Think like an IS auditor.';
 /*
  * Premium round 2 (expert ruling C, growth-marketer, 30 Oct 2026): the welcome is a title page, and
- * its sub names the guide. One string, changed here (the one-story rule), so Settings → About says
+ * its sub is one plain line. One string, changed here (the one-story rule), so Settings → About says
  * the same; ® on its first prominent use. Store screenshot 1 is NOT changed (listing experiment B later).
  */
-export const WELCOME_LINE = 'A field guide to your CISA® exam study.';
+// Polish round 1 (DECISIONS 8, "No book labels on screen"): no "field guide" in what a learner reads.
+export const WELCOME_LINE = 'Your CISA® exam study, one day at a time.';
 export const WELCOME_FACTS: readonly string[] = [
   // Mobile 1.41: the best feature first, in the web welcome's words (pre-beta review #10).
   'Questions that explain every option, the trap included.',

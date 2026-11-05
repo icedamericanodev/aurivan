@@ -442,7 +442,9 @@ export function Stem({
 // ── Buttons ───────────────────────────────────────────────────────────
 // Grove Phase 4 (PHASE4.md section 6): `hero` is the mint button that sits INSIDE a forest hero card
 // (Learn's Start lesson, Practice's Start). Mint with dark ink, the same in both themes (10.3:1).
-export type ButtonKind = 'primary' | 'secondary' | 'ghost' | 'danger' | 'forest' | 'hero';
+// Polish round 1 (DECISIONS 11, "mint means go"): `ghostNeutral` is the ghost for a dismiss ("Not now",
+// "No thanks", "Cancel"), drawn in ink2 so it never looks like the forward action beside it.
+export type ButtonKind = 'primary' | 'secondary' | 'ghost' | 'ghostNeutral' | 'danger' | 'forest' | 'hero';
 
 export function Button({
   label,
@@ -502,12 +504,14 @@ export function Button({
         primary: { bg: c.btn, border: c.btn, fg: c.onBtn },
         secondary: { bg: 'transparent', border: c.control, fg: c.ink },
         ghost: { bg: 'transparent', border: 'transparent', fg: c.accentText },
+        // ink2 on paper and on a card is 4.5:1 or more in both themes.
+        ghostNeutral: { bg: 'transparent', border: 'transparent', fg: c.ink2 },
         danger: { bg: c.wrongBg, border: c.wrongBg, fg: c.wrong },
         forest: { bg: c.pill, border: c.pill, fg: c.onPill },
         hero: { bg: c.sap, border: c.sap, fg: mintInk },
       }[kind];
   const isForest = kind === 'forest';
-  const isGhost = kind === 'ghost';
+  const isGhost = kind === 'ghost' || kind === 'ghostNeutral';
   // Pressed = a tiny squeeze and dim on the UI thread, not a colour change.
   // A ghost button is text alone, so it only dims (never scale text alone).
   const press = usePressScale({ dim: true, scale: isGhost ? 1 : motion.pressScale, follow });
@@ -1178,6 +1182,7 @@ export function ListRow({
  */
 export function InviteRow({
   icon,
+  lead,
   title,
   body,
   actions,
@@ -1185,7 +1190,9 @@ export function InviteRow({
   accessibilityHint,
   testID,
 }: {
-  icon: ReactNode;
+  icon?: ReactNode;
+  /** Polish round 1: drawn in place of the icon circle (an earned badge's pressed paper tile). Decorative. */
+  lead?: ReactNode;
   title: string;
   body: string;
   /** Ghost buttons under the words ("Plant yours", "No thanks"). */
@@ -1216,7 +1223,7 @@ export function InviteRow({
         style={[styles.invite, styles.inviteRow, press.style]}
       >
         {press.layer}
-        <IconCircle>{icon}</IconCircle>
+        {lead ?? <IconCircle>{icon}</IconCircle>}
         {words}
         <ChevronRight size={18} color={c.muted} strokeWidth={ICON_STROKE} />
       </AnimatedPressable>
@@ -1224,7 +1231,7 @@ export function InviteRow({
   }
   return (
     <View testID={testID} style={styles.invite}>
-      <IconCircle>{icon}</IconCircle>
+      {lead ?? <IconCircle>{icon}</IconCircle>}
       <View style={{ flex: 1, minWidth: 0 }}>
         <View accessible accessibilityLabel={`${title}. ${body}`}>
           <T v="label">{title}</T>
@@ -2087,7 +2094,8 @@ function LeafMark({ color }: { color: string }) {
 // Numeral options show a Fraunces 20 numeral + a small unit. Stacks into a
 // column at large text sizes instead of squeezing.
 /** Dark-mode fill for the selected segment (DESIGN_SYSTEM.md, Practice screen). */
-const SEG_ON_DARK = '#2C372F';
+/** The selected segment's fill in dark (also the Practice jump bar's current section). */
+export const SEG_ON_DARK = '#2C372F';
 /** 44pt segment + 2pt each side = 48pt to the finger (the 3pt track gap keeps neighbours apart). */
 export const SEG_HIT_SLOP = 2;
 /** `raisedShadow` without Android's `elevation`, for a layer drawn beneath its own content. */

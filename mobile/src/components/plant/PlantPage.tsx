@@ -275,9 +275,11 @@ export function NextPanel({ growthName, formLine, gates, notes }: { growthName: 
               <T v="small" color={c.onForest} style={large ? undefined : { flex: 1 }}>
                 {st.label}
               </T>
-              {st.progress <= 0 ? (
-                <T v="meta" color={c.onForest2}>
-                  Not yet
+              {/* Polish round 1: a met gate says "Done" (as the website does), never "100%" beside its own
+                  target ("…reaches 65%"), which read as a second, different number. */}
+              {st.progress <= 0 || st.progress >= 1 ? (
+                <T v="meta" color={st.progress >= 1 ? c.onForest : c.onForest2}>
+                  {st.progress >= 1 ? 'Done' : 'Not yet'}
                 </T>
               ) : (
                 <BigNum value={String(pc)} pct size={20} color={c.onForest} />

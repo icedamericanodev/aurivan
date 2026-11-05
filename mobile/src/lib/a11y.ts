@@ -92,12 +92,16 @@ export const a11yTimersWaitingForTest = (): number => waiting.size;
 // (watchScreenReader in app/_layout.tsx) and kept live by the phone's own
 // 'screenReaderChanged' event. A screen can then read it synchronously
 // (screenReaderOn) before its first paint. `null` = not known yet.
+// Polish round 1: on the web build react-native-web's isScreenReaderEnabled() always answers true, so
+// every celebration (the Turning) took its Reduce Motion path there. The web cannot tell, so it counts as
+// off: known from the start, never asked, no listener. Phones are unchanged.
+const onWeb = () => Platform.OS === 'web';
 let screenReader: boolean | null = null;
 let watchingScreenReader = false;
 
 /** Start following the screen reader (once for the whole app; safe to call again). */
 export function watchScreenReader(): void {
-  if (watchingScreenReader) return;
+  if (watchingScreenReader || onWeb()) return;
   watchingScreenReader = true;
   AccessibilityInfo.addEventListener('screenReaderChanged', (on: boolean) => {
     screenReader = on;
@@ -112,10 +116,11 @@ export function watchScreenReader(): void {
 }
 
 /** True when a screen reader is on, false when off, null while the first answer is on its way. */
-export const screenReaderOn = (): boolean | null => screenReader;
+export const screenReaderOn = (): boolean | null => (onWeb() ? false : screenReader);
 
 /** The answer now if known, else the phone's (one async question). Never rejects (no answer counts as off). */
 export function whenScreenReaderKnown(): Promise<boolean> {
+  if (onWeb()) return Promise.resolve(false);
   if (screenReader !== null) return Promise.resolve(screenReader);
   return AccessibilityInfo.isScreenReaderEnabled().then(
     (on) => {

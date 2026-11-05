@@ -136,8 +136,8 @@ export default function Onboarding() {
   }, [step]);
 
   // Welcome (premium round 2, expert ruling C): a title page on the paper, like the first page of a
-  // field guide. The Kasama mark and "kaisip", the headline, the sub ("A field guide to your CISA® exam
-  // study."), an unnumbered seed plate ("Seed, before Day 1": Fig. 1 belongs to Day 1), then the four
+  // field guide. The Kasama mark and "kaisip", the headline, the sub ("Your CISA® exam study, one day at a
+  // time."), an unnumbered seed plate ("Seed, before Day 1": Fig. 1 belongs to Day 1), then the four
   // plain lines and the not-affiliated line. Screen readers hear "Welcome to KaiSip. Think like an IS
   // auditor." as one header; the lockup and the plate are hidden (the words carry them).
   const welcome = (

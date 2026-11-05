@@ -34,11 +34,13 @@ import { GameGlyph, SPARK, Sparkline } from './glyphs';
 import { AnimatedPressable, Celebrate, Pop, RollingText, Shake, StateLayer, useCelebration, useMotion, usePressScale } from './motion';
 import { haptic } from '../lib/haptics';
 import { momentName } from './milestones';
+import { PressedTile } from './pressedTile';
+import { markBadge } from '../engine/milestones';
 import type { MilestoneMoment } from '../lib/milestones';
 import { sayLater } from '../lib/a11y';
 import { GAME_TIER_NAME, GAME_TIERS, growthTier, tierChangeLine, type GameTier } from '../engine/games/growth';
 import type { RoundNews } from '../lib/gameRounds';
-import { BadgeIcon, Check, Info, ICON_STROKE, Play as PlayIcon, X } from './icons';
+import { Check, Info, ICON_STROKE, Play as PlayIcon, X } from './icons';
 import { BigNum, Button, cardLift, Enter, groveCard, Gap, ICON_SIZE, IconButton, InviteRow, PushedHeader, Stem, T, useFontScale } from './ui';
 
 /**
@@ -542,7 +544,6 @@ function RecapReport({ certId, game, misses }: { certId: string; game: GameId; m
  * without scrolling); calm, no burst.
  */
 function RoundBadge({ moment }: { moment: MilestoneMoment }) {
-  const { c } = useTheme();
   const name = momentName(moment);
   useEffect(() => {
     if (saidBadges.has(moment.key)) return;
@@ -554,7 +555,13 @@ function RoundBadge({ moment }: { moment: MilestoneMoment }) {
   return (
     <InviteRow
       testID="recap-badge"
-      icon={<BadgeIcon size={ICON_SIZE.row} color={c.accentText} strokeWidth={ICON_STROKE} />}
+      // Polish round 1: the earned badge's own pressed paper tile, as on Results (a plain outline icon
+      // read as a different thing). Its last frame at once: the recap's moment is the level change above.
+      lead={
+        <View accessible={false} importantForAccessibility="no-hide-descendants" accessibilityElementsHidden>
+          <PressedTile badge={markBadge(moment.key)} tier={moment.tier} {...(moment.emblem ? { emblem: moment.emblem } : {})} state="earned" size={RECAP_TILE} motion="end" testID="recap-badge-tile" />
+        </View>
+      }
       title={`A new badge: ${name}`}
       body={moment.completes ? `${moment.unlock} That completes ${moment.setName}.` : moment.unlock}
       onPress={() => router.push({ pathname: '/milestones', params: { open: moment.key } })}
@@ -562,6 +569,8 @@ function RoundBadge({ moment }: { moment: MilestoneMoment }) {
     />
   );
 }
+/** The recap badge tile's side: a little larger than the 36pt icon circle, smaller than Results' 68. */
+const RECAP_TILE = 44;
 /** Badges already announced this app session (a re-render never says it twice). */
 const saidBadges = new Set<string>();
 

@@ -28,8 +28,8 @@
  */
 import * as Router from 'expo-router';
 import { router } from 'expo-router';
-import { Children, memo, useCallback, useRef, useState, type ReactNode, type RefObject } from 'react';
-import { AccessibilityInfo, Pressable, useWindowDimensions, View } from 'react-native';
+import { Children, memo, useCallback, useEffect, useRef, useState, type ReactNode, type RefObject } from 'react';
+import { AccessibilityInfo, Dimensions, Pressable, useWindowDimensions, View } from 'react-native';
 import { ArrowRight, Bookmark, ChartColumn, ChevronRight, Compass, Crosshair, ICON_STROKE, Library, RotateCcw, SlidersHorizontal, X } from '../../components/icons';
 import { PracticeLeaf } from '../../components/glyphs';
 import { AreaDot, CardDivider, CardHead, CountChip, GlyphTile, HeroKicker, HubCard } from '../../components/groveHub';
@@ -38,7 +38,7 @@ import { AnimatedPressable, Collapse, usePressScale } from '../../components/mot
 import { Drills, DRILLS_MOVED, playedAnyGame } from '../../components/drills';
 import { DRILLS_SECTION } from '../../lib/actions';
 import { DisclosureRow, FieldLabel, PathChooser } from '../../components/pathChooser';
-import { Button, Chip, ChipRow, Enter, Gap, ICON_SIZE, IconCircle, Screen, Segmented, T, useFontScale, useScreenScroll, type ScreenScroll } from '../../components/ui';
+import { Button, Chip, ChipRow, Enter, Gap, ICON_SIZE, IconCircle, Screen, SEG_ON_DARK, Segmented, T, useFontScale, useScreenScroll, type ScreenScroll } from '../../components/ui';
 import { domainColor } from '../../content/certifications';
 import { mindsetTipsFor } from '../../content/mindset';
 import { scaledScoreNote } from '../../content/scoreNote';
@@ -79,9 +79,10 @@ const DOMAIN_SET = 10;
 
 /**
  * One area's status words on By domain (PHASE4.md 7.8 item 7): "Not started", "Too few yet" under 30
- * answers, then the score with its band word ("72% · Steady"). Under 70 it adds "below 70", as the
- * website does ("68% · Building · below 70", renderDomainGrid), and `below` asks the row to draw it in
- * clay. The words carry the meaning, so colour is never alone. Exported for tests.
+ * answers, then the score with its band word ("72% · Steady"). Under 70 `below` asks the row to draw it
+ * in clay. Polish round 1: the shown words stay short ("68% · Building") so every row keeps its score in
+ * the same trailing slot; the band word already says it is under 70 (colour is never alone), and the
+ * spoken words still add "below 70". Exported for tests.
  */
 export function domainStatus(answered: number, mastery: number): { text: string; spoken: string; below: boolean } {
   if (answered <= 0) return { text: 'Not started', spoken: 'not started', below: false };
@@ -89,7 +90,7 @@ export function domainStatus(answered: number, mastery: number): { text: string;
   const pct = Math.round(mastery * 100);
   const below = pct < STEADY_FROM; // 70
   return {
-    text: `${pct}% · ${bandOf(pct)}${below ? ` · below ${STEADY_FROM}` : ''}`,
+    text: `${pct}% · ${bandOf(pct)}`,
     spoken: `${pct} percent, ${bandOf(pct)}${below ? `, below ${STEADY_FROM}` : ''}`,
     below,
   };
@@ -192,6 +193,39 @@ export default function Practice() {
   const heroHead = useRef<View>(null);
   const mocksBox = useRef<View>(null);
   const mocksHead = useRef<View>(null);
+  const drillsBox = useRef<View>(null);
+  // Polish round 1: the jump bar marks the section in view. Asked each time the page comes to rest: the
+  // last section whose top is above 40% of the window (Questions at the top of the page).
+  const sectionInView = useCallback(async (): Promise<JumpKey> => {
+    const boxes: [JumpKey, RefObject<View | null>][] = [
+      ['questions', heroBox],
+      ['drills', drillsBox],
+      ['mocks', mocksBox],
+    ];
+    const tops = await Promise.all(
+      boxes.map(
+        ([k, r]) =>
+          new Promise<[JumpKey, number, number] | null>((res) => {
+            const node = r.current;
+            if (!node || typeof node.measureInWindow !== 'function') return res(null);
+            node.measureInWindow((_x, y, _w, h) => res(h > 0 ? [k, y, h] : null));
+          }),
+      ),
+    );
+    const windowH = Dimensions.get('window').height;
+    const line = windowH * 0.4;
+    let best: JumpKey = 'questions';
+    let bestY = -Infinity;
+    let last: [JumpKey, number, number] | null = null;
+    for (const t of tops) {
+      if (!t) continue;
+      if (t[1] <= line && t[1] > bestY) [best, bestY] = [t[0], t[1]];
+      if (!last || t[1] > last[1]) last = t;
+    }
+    // At the end of the page the last section may never reach the line: wholly on screen, it is the one in view.
+    if (last && last[1] > bestY && last[1] >= 0 && last[1] + last[2] <= windowH) best = last[0];
+    return best;
+  }, []);
   const jump = useCallback((k: JumpKey, scroll: ScreenScroll | null) => {
     if (k === 'drills') {
       // Drills runs its own jump (scroll and focus) from its layout, as an old Play link does.
@@ -218,7 +252,7 @@ export default function Practice() {
       <View style={{ gap: space.sm }}>
         {/* Secondary, not primary: an offer, never a push (P3). */}
         <Button kind="secondary" label="Turn on Timed" onPress={() => answerOffer('accepted')} />
-        <Button kind="ghost" label="No thanks" accessibilityHint="Hides this card. You can turn the timer on in Settings." onPress={() => answerOffer('dismissed')} />
+        <Button kind="ghostNeutral" label="No thanks" accessibilityHint="Hides this card. You can turn the timer on in Settings." onPress={() => answerOffer('dismissed')} />
       </View>
     </HubCard>
   ) : null;
@@ -251,7 +285,7 @@ export default function Practice() {
             />
           </View>
         )}
-        <JumpBar onJump={jump} />
+        <JumpBar onJump={jump} inView={sectionInView} />
         <MindsetStrip tips={mindsetTipsFor(cert.id)} />
       </Enter>
 
@@ -330,7 +364,7 @@ export default function Practice() {
 
       {/* The brain games (mobile 1.51: the Play tab moved here). Its own outer view sits right in the page, so
           its layout follows the sections above (the jump runs from it). */}
-      <View style={{ marginTop: space.lg }}>
+      <View ref={drillsBox} collapsable={false} style={{ marginTop: space.lg }}>
         <Drills enter={5} jumpKey={jumpKey} onJumped={section === DRILLS_SECTION ? jumped : undefined} onSeen={movedHint ? seeMoved : undefined} />
       </View>
 
@@ -352,33 +386,62 @@ const JUMPS: { key: JumpKey; label: string }[] = [
 /**
  * The jump bar (PHASE4.md 7.8 item 2): three equal buttons in a `soft` track, each at least 48pt.
  * Inside the Screen, so it can scroll the page. A column from text scale 1.3.
+ * Polish round 1: the segment for the section in view is marked, the Segmented look (raised fill and a
+ * 2pt ink edge, so never colour alone) and spoken as selected. It follows a tap at once, then the page:
+ * each time the page comes to rest it asks which section is in view.
  */
-const JumpBar = memo(function JumpBar({ onJump }: { onJump: (k: JumpKey, scroll: ScreenScroll | null) => void }) {
-  const { c } = useTheme();
+const JumpBar = memo(function JumpBar({ onJump, inView }: { onJump: (k: JumpKey, scroll: ScreenScroll | null) => void; inView: () => Promise<JumpKey> }) {
+  const { c, isDark } = useTheme();
   const scroll = useScreenScroll();
   const large = useFontScale() >= LARGE_TEXT;
+  const [current, setCurrent] = useState<JumpKey>('questions');
+  useEffect(() => {
+    let over = false;
+    const stop = scroll?.onSettle(() => {
+      void inView().then((k) => {
+        if (!over) setCurrent(k);
+      });
+    });
+    return () => {
+      over = true;
+      stop?.();
+    };
+  }, [scroll, inView]);
   return (
     <View testID="practice-jump" style={{ flexDirection: large ? 'column' : 'row', gap: 4, padding: 4, marginTop: space.lg, borderRadius: groveRadius.tile, backgroundColor: c.soft }}>
-      {JUMPS.map((j) => (
-        <Pressable
-          key={j.key}
-          accessibilityRole="button"
-          accessibilityLabel={j.label}
-          accessibilityHint={`Jumps to ${j.label}`}
-          onPress={() => onJump(j.key, scroll)}
-          style={({ pressed }) => ({
-            flex: large ? undefined : 1,
-            minHeight: 48,
-            borderRadius: 12,
-            alignItems: 'center',
-            justifyContent: 'center',
-            paddingHorizontal: space.sm,
-            backgroundColor: pressed ? c.raised : 'transparent',
-          })}
-        >
-          <T v="chip" center>{j.label}</T>
-        </Pressable>
-      ))}
+      {JUMPS.map((j) => {
+        const on = j.key === current;
+        return (
+          <Pressable
+            key={j.key}
+            accessibilityRole="button"
+            accessibilityState={{ selected: on }}
+            accessibilityLabel={j.label}
+            accessibilityHint={`Jumps to ${j.label}`}
+            onPress={() => {
+              setCurrent(j.key);
+              onJump(j.key, scroll);
+            }}
+            style={({ pressed }) => ({
+              flex: large ? undefined : 1,
+              minHeight: 48,
+              borderRadius: 12,
+              alignItems: 'center',
+              justifyContent: 'center',
+              paddingHorizontal: space.sm,
+              // A transparent edge of the same width when not chosen, so nothing moves.
+              borderWidth: 2,
+              borderColor: on ? c.ink : 'transparent',
+              backgroundColor: on ? (isDark ? SEG_ON_DARK : c.raised) : pressed ? c.raised : 'transparent',
+              opacity: pressed && on ? 0.85 : 1,
+            })}
+          >
+            <T v="chip" center color={on ? c.ink : c.ink2}>
+              {j.label}
+            </T>
+          </Pressable>
+        );
+      })}
     </View>
   );
 });
@@ -678,7 +741,8 @@ const ByDomain = memo(function ByDomain({ cert, figures }: { cert: Certification
               n={d.id}
               dot={domainColor(d.tone, isDark)}
               name={d.short}
-              line={`${d.weight}% of the exam · ${answered} seen`}
+              // Polish round 1: short enough for one line at 360pt ("18% · 40 seen"); the spoken words keep "of the exam".
+              line={`${d.weight}% · ${answered} seen`}
               status={status.text}
               below={status.below}
               spoken={`Domain ${d.id}, ${d.short}, ${d.weight} percent of the exam, ${answered} seen, ${status.spoken}`}
@@ -697,10 +761,10 @@ const DomainRow = memo(function DomainRow({ n, dot, name, line, status, below, s
   const onPress = () => guardedStart(() => startPractice(certId, { count: DOMAIN_SET, domainId, title: name }), open);
   const { c } = useTheme();
   const large = useFontScale() >= LARGE_TEXT;
-  // The status sits under the words from text scale 1.3, and always for the long "· below 70" status,
-  // so the area name and its line keep the row's width and never break mid-phrase (as the website moves
-  // a long band under the name in a narrow card).
-  const under = large || below;
+  // The status sits in the same trailing slot on every row; from text scale 1.3 it sits under the words
+  // on EVERY row (never one row alone), so the area name and its line keep the row's width. Under 70 is a
+  // text colour (clay), never a layout change (polish round 1).
+  const under = large;
   const press = usePressScale({ scale: 1, tint: c.soft, tintRadius: groveRadius.tile });
   return (
     <AnimatedPressable
@@ -720,9 +784,9 @@ const DomainRow = memo(function DomainRow({ n, dot, name, line, status, below, s
           <T v="label" style={{ flexShrink: 1 }}>{name}</T>
         </View>
         <T v="meta">{line}</T>
-        {under && <T v="meta" color={below ? c.clay : c.ink}>{status}</T>}
+        {under && <T v="meta" num color={below ? c.clay : c.ink2}>{status}</T>}
       </View>
-      {!under && <T v="meta">{status}</T>}
+      {!under && <T v="meta" num color={below ? c.clay : c.ink2}>{status}</T>}
       <RowChevron />
     </AnimatedPressable>
   );

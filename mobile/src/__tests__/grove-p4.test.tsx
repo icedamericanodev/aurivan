@@ -170,15 +170,14 @@ describe('Learn (7.1, the 02 board)', () => {
 });
 
 describe('Practice (7.8, the 03 board)', () => {
-  it('the jump bar: three plain buttons, never tabs and never selected', () => {
+  it('the jump bar: three buttons (never tabs); the section in view is marked selected (polish round 1)', () => {
     mount(<Practice />);
     const [bar] = byTestId('practice-jump');
     const items = bar.findAll((n) => typeof n.props.onPress === 'function' && n.props.accessibilityRole === 'button');
     expect(items.map((n) => n.props.accessibilityLabel)).toEqual(['Questions', 'Drills', 'Mock exams']);
-    for (const i of items) {
-      expect(i.props.accessibilityState).toBeUndefined();
-      expect(i.props.accessibilityHint).toBe(`Jumps to ${i.props.accessibilityLabel}`);
-    }
+    for (const i of items) expect(i.props.accessibilityHint).toBe(`Jumps to ${i.props.accessibilityLabel}`);
+    // At the top of the page: Questions is the section in view.
+    expect(items.map((n) => n.props.accessibilityState?.selected)).toEqual([true, false, false]);
   });
 
   it('the Timed tile is the switch itself (spoken "Timed", its state checked), at least 48pt', () => {
@@ -207,11 +206,12 @@ describe('Practice (7.8, the 03 board)', () => {
     expect(domainStatus(0, 0)).toEqual({ text: 'Not started', spoken: 'not started', below: false });
     expect(domainStatus(12, 0.5).text).toBe('Too few yet');
     expect(domainStatus(40, 0.72)).toEqual({ text: '72% · Steady', spoken: '72 percent, Steady', below: false });
-    // Under 70: the website's words ("68% Building · below 70", renderDomainGrid), and clay on the row.
-    expect(domainStatus(40, 0.68)).toEqual({ text: '68% · Building · below 70', spoken: '68 percent, Building, below 70', below: true });
+    // Under 70 (polish round 1): short shown words in the row's trailing slot, clay on the row, and the
+    // spoken words still say "below 70".
+    expect(domainStatus(40, 0.68)).toEqual({ text: '68% · Building', spoken: '68 percent, Building, below 70', below: true });
     expect(heroTitle('random', undefined)).toBe('A mixed set');
     expect(heroTitle('smart', 'IS Operations')).toBe('IS Operations');
     mount(<Practice />);
-    expect(textOf(root())).toContain('18% of the exam · 0 seen');
+    expect(textOf(root())).toContain('18% · 0 seen');
   });
 });

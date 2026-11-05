@@ -170,9 +170,10 @@ describe('the You tab’s specimen tag and the welcome’s seed', () => {
     expect(box.props.accessibilityElementsHidden).toBe(true);
   });
 
-  it('the welcome line names the guide, with ® on first use, and never a forbidden word', () => {
+  it('the welcome line is plain words (no book label), with ® on first use, and never a forbidden word', () => {
     expect(WELCOME_HEADLINE).toBe('Think like an IS auditor.');
-    expect(WELCOME_LINE).toBe('A field guide to your CISA® exam study.');
+    expect(WELCOME_LINE).toBe('Your CISA® exam study, one day at a time.');
+    expect(WELCOME_LINE).not.toMatch(/field guide/i);
     expect(WELCOME_LINE).not.toMatch(/\b(pass|guarantee|official|evolve)\b|you're ready/i);
   });
 });

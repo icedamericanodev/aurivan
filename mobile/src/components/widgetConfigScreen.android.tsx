@@ -117,7 +117,7 @@ export function WidgetConfigScreen(props: WidgetConfigurationScreenProps) {
             </View>
           ))}
           {copy.note ? <T v="small" color={c.ink2}>{copy.note}</T> : null}
-          <Button kind="ghost" label="Not now" accessibilityHint="The widget is not added." disabled={busy} onPress={() => choose(null)} />
+          <Button kind="ghostNeutral" label="Not now" accessibilityHint="The widget is not added." disabled={busy} onPress={() => choose(null)} />
         </ScrollView>
       </SafeAreaView>
     </SafeAreaProvider>

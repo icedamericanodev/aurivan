@@ -599,12 +599,17 @@ const LessonGroups = memo(function LessonGroups({
         const twoLines = twoLinesFor(isNext);
         // A track only once a lesson here is done: five empty bars read as five failures (L1).
         // It sits in the name's column, so it starts under the name at any text size.
-        const bar =
-          groupDone > 0 ? (
-            <View style={{ marginTop: space.sm }}>
-              <ProgressBar value={items.length ? groupDone / items.length : 0} color={tone} height={3} />
-            </View>
-          ) : null;
+        const track = groupDone > 0 ? <ProgressBar value={items.length ? groupDone / items.length : 0} color={tone} height={3} /> : null;
+        // Polish round 1: in the one-line row the track hangs UNDER the name, out of the flow, so the row
+        // centres on the name and the ring, dot, number, count and chevron sit level with it (with the
+        // track in the flow the name rose about 4pt above them). The row's 12pt padding has room for it.
+        const bar = track ? (
+          <View pointerEvents="none" style={{ position: 'absolute', left: 0, right: 0, top: '100%', marginTop: space.xs }}>
+            {track}
+          </View>
+        ) : null;
+        // Large text (stacked): the track stays in the flow, under the count.
+        const barStacked = track ? <View style={{ marginTop: space.sm }}>{track}</View> : null;
         return (
           <View key={d.id}>
             {gi > 0 && <CardDivider />}
@@ -640,7 +645,7 @@ const LessonGroups = memo(function LessonGroups({
                 <View style={{ marginTop: space.xs }}>
                   <T v="label">{d.short}</T>
                   <View style={{ marginTop: 2, alignSelf: 'flex-start' }}>{ends}</View>
-                  {bar}
+                  {barStacked}
                 </View>
               )}
             </GroupHeader>

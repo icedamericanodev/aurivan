@@ -61,7 +61,7 @@ export default function Fit() {
       </ScrollView>
       <StickyFooter onHeight={setFooterH}>
         <Button label="Save" onPress={save} />
-        <Button kind="ghost" label="Cancel" onPress={() => backOr('/home')} />
+        <Button kind="ghostNeutral" label="Cancel" onPress={() => backOr('/home')} />
       </StickyFooter>
     </SafeAreaView>
   );

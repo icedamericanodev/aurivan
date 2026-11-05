@@ -449,7 +449,7 @@ export default function Today() {
   const openTimed = plan.items.filter((it, i) => !plan.done[i] && it.kind !== 'mock' && !idle(i));
   const minutesSaid = dayMinutes > 0 && openTimed.length === 1 && openTimed[0] === curItem;
   const hero = curItem ? planHero(curItem, j.dueCount, { minutesSaid }) : null;
-  // Mobile 1.24: no stat tiles. After the range exists, one quiet line names the weakest area.
+  // Mobile 1.24: no stat tiles. After the range exists, one quiet line names the area where you'll gain most.
   const answeredTotal = j.readiness.domains.reduce((n, d) => n + d.answered, 0);
   const weakest = j.range.enough && j.focus ? j.focus : null;
 
@@ -939,11 +939,30 @@ export default function Today() {
           {/* The journey's coach line, for a few days after its stage changes (it was in the readiness row).
               Its number is left out here: the hero already says the plant's "Growth 1 of 6", and two numbered
               ladders never sit on one screen (PR #43). */}
-          {!showReady && showStage && answeredTotal > 0 && (
-            <View testID="today-stage-line" style={{ marginTop: space.lg }}>
-              <T v="meta">{j.stageLine}</T>
-            </View>
-          )}
+          {/* Polish round 1: the stage line and the answered line are ONE quiet block, one gap above it
+              (space.lg) and space.sm inside it. The stage line says what it is ("Study stage: …"), so
+              "Rehearse the exam" never reads as an order with nothing to tap; still no number, since the
+              hero's "Growth 1 of 6" is the screen's one numbered ladder (PR #43). The area line uses the
+              focus rule's own words, "where you’ll gain most" (DECISIONS 14: it is the largest weighted
+              gap, not the lowest score, so never "weakest"). */}
+          {(() => {
+            const stageShown = !showReady && showStage && answeredTotal > 0;
+            const gainShown = !!weakest && answeredTotal > 0 && !firstRangeDue;
+            if (!stageShown && !gainShown) return null;
+            return (
+              <View style={{ marginTop: space.lg, gap: space.sm }}>
+                {stageShown && (
+                  <View testID="today-stage-line">
+                    <T v="meta">{`Study stage: ${j.stageLine}`}</T>
+                  </View>
+                )}
+                {gainShown && weakest && (
+                  // The domain's short name ("IS Operations"), not the tile abbreviation ("IS Ops", spoken "I S ops"): UX review S6.
+                  <T v="meta">{`${answeredTotal} answered · where you’ll gain most: ${weakest.short}`}</T>
+                )}
+              </View>
+            );
+          })()}
           {/* Day 0 (mobile 1.39): the first five are still to finish, so say what comes after them. */}
           {firstNow && !plan.done[cur] && (
             <View testID="today-day0-next" style={{ marginTop: space.lg }}>
@@ -952,10 +971,6 @@ export default function Today() {
           )}
           {/* "Your first readiness range": one calm card, right under the range it explains (mobile 1.24). */}
           {firstRangeDue && <View style={{ marginTop: space.lg }}>{firstRangeCard}</View>}
-          {weakest && answeredTotal > 0 && !firstRangeDue && (
-            // The domain's short name ("IS Operations"), not the tile abbreviation ("IS Ops", spoken "I S ops"): UX review S6.
-            <T v="meta" style={{ marginTop: space.md }}>{`${answeredTotal} answered · weakest area: ${weakest.short}`}</T>
-          )}
           {plantView.plant && showReady && (
             // The exam-ready day has no ring: the plant sits here, as before.
             <Row gap={space.lg} style={{ alignItems: 'center', marginTop: space.xl }}>

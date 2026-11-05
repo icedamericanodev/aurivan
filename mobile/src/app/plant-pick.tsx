@@ -152,7 +152,7 @@ export default function PlantPick() {
             </View>
             <View style={large ? undefined : { flex: 1 }}>
               <Button
-                kind="ghost"
+                kind="ghostNeutral"
                 label={mode === 'new' ? 'Not now' : 'Cancel'}
                 accessibilityHint={mode === 'new' && params.from === 'today' ? 'Hides the plant row on Today. You can plant one from You.' : undefined}
                 onPress={() => {
