@@ -6221,7 +6221,7 @@ body[data-app-cta-card="shown"][data-section="today"] .app-cta-line { display: n
 .p4-rows li + li::before, .ph-doms li + li::before { content: ""; position: absolute; top: 0; left: var(--card-pad); right: var(--card-pad); height: 1px; background: var(--border); }
 .p4-rows .you-ico { width: 36px; height: 36px; border-radius: var(--r-badge); background: var(--surface2); color: var(--accent-text); }
 [data-theme="dark"] .p4-rows .you-ico { background: var(--forest); color: var(--sap); }
-.p4-rows .you-t { font: var(--t-label); overflow-wrap: anywhere; }
+.p4-rows .you-t { font: var(--t-label); }
 .p4-rows .you-m { font: var(--t-meta); }
 .p4-row-k { font: var(--t-caption); letter-spacing: var(--tr-caption); color: var(--text2); }
 .p4-rows .you-row:focus-visible, .p4-card .ph-dom:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: -2px; border-radius: var(--r-tile); }
@@ -6320,6 +6320,11 @@ body[data-app-cta-card="shown"][data-section="today"] .app-cta-line { display: n
 .ph-panel .subtopic-filter-row { background: transparent; border: 0; border-radius: 0; padding: 0; margin: var(--sp-lg) 0 0; animation: none; }
 .ph-panel .subtopic-drawer { margin-top: var(--sp-md); }
 .st-acc { font: var(--t-meta); color: var(--text2); }
+/* Large text (130% and up): row badges step aside so words keep their width,
+   and words wrap whole, never mid-word. */
+.fg-large .p4-rows .you-ico, .fg-large .ph-mind .p4-badge { display: none; }
+.p4-rows .you-t, .ph-dom-t, .lh-tile-t { overflow-wrap: break-word; hyphens: manual; }
+.fg-large .ph-dom { column-gap: 8px; }
 /* Study notes (Grove Phase 4, 7.2): each part's topics in one card with
    inset dividers; Key terms and Exam strategy each in their own card. */
 .gt-part-card, .gt-extra { padding: 0 var(--card-pad); background: var(--surface); border-radius: var(--r-card); box-shadow: var(--card-shadow); }
@@ -6385,7 +6390,7 @@ body[data-app-cta-card="shown"][data-section="today"] .app-cta-line { display: n
 }
 .gl-term:hover .gloss-card-term { text-decoration: underline; text-underline-offset: 3px; }
 .gl-term:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
-.gl .gloss-card-term, .gl .gloss-card.mastered .gloss-card-term { font: var(--t-label); color: var(--text); overflow-wrap: break-word; }
+.gl .gloss-card-term, .gl .gloss-card.mastered .gloss-card-term { max-width: 100%; font: var(--t-label); color: var(--text); overflow-wrap: anywhere; }
 .gl-term-m { font: var(--t-meta); color: var(--text2); }
 .gl .gloss-card-def { display: block; -webkit-line-clamp: unset; overflow: visible; font: var(--t-small); color: var(--text); overflow-wrap: break-word; }
 .gl .gloss-card-master-btn, .gl .gloss-card.mastered .gloss-card-master-btn {
