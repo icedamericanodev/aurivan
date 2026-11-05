@@ -116,10 +116,16 @@ The bracket is a short paraphrase of the subcategory statement.
   - Verified 30 Oct 2026: the seven characteristics (valid and reliable; safe; secure and resilient; accountable and transparent; explainable and interpretable; privacy-enhanced; fair with harmful bias managed).
 - NIST AI 100-1 Section 3.4 (Accountable and Transparent)
 - NIST AI 100-1 Section 3.5 (Explainable and Interpretable)
+- NIST AI 100-1 Section 3.6 (Privacy-Enhanced)
+  - Verified 5 Nov 2026: "3.6 Privacy-Enhanced" in the table of contents and as the section heading (page 17); it says privacy-related risks "come with tradeoffs with these other characteristics" and that, under conditions such as data sparsity, privacy-enhancing techniques "can result in a loss in accuracy, affecting decisions about fairness".
 - NIST AI 100-1 Section 3.7 (Fair with Harmful Bias Managed)
   - Section numbers 3.4, 3.5 and 3.7 Verified 30 Oct 2026 against the table of contents.
+- NIST AI 100-1 Section 5.1 (Govern is a cross-cutting function infused throughout the others)
+  - Verified 5 Nov 2026: Section 5.1 is "Govern" in the table of contents; its text says "GOVERN is a cross-cutting function that is infused throughout AI risk management and enables the other functions" and that attention to governance "is a continual and intrinsic requirement" over an AI system's lifespan. Section 5 adds that most users start with MAP after instituting the outcomes in GOVERN.
 - NIST AI 100-1 Section 5.2 (Map outcomes are the basis for Measure and Manage)
   - Verified 31 Oct 2026: Section 5.2 is "Map" in the table of contents; its text says "Outcomes in the MAP function are the basis for the MEASURE and MANAGE functions", and Section 5 says most users start with MAP and continue to MEASURE or MANAGE.
+- NIST AI 100-1 Section 6 (AI RMF Profiles)
+  - Verified 5 Nov 2026: "6 AI RMF Profiles" in the table of contents (page 33); the text says a Current Profile "indicates how AI is currently being managed", a Target Profile "indicates the outcomes needed", "Comparing Current and Target Profiles likely reveals gaps to be addressed", and "Prioritization of gap mitigation is driven by the user's needs and risk management processes".
 
 ## NIST AI 600-1, AI RMF Generative Artificial Intelligence Profile, Jul 2024
 
@@ -183,6 +189,8 @@ https://raw.githubusercontent.com/mitre-atlas/atlas-data/main/dist/ATLAS.yaml
 - MITRE ATLAS AML.T0056 (Extract LLM System Prompt)
 - MITRE ATLAS AML.T0057 (LLM Data Leakage)
 - MITRE ATLAS AML.T0070 (RAG Poisoning)
+- MITRE ATLAS AML.T0077 (LLM Response Rendering)
+  - Verified 5 Nov 2026 in ATLAS data v5.6.0 (id AML.T0077, name "LLM Response Rendering", Exfiltration tactic AML.TA0010): the LLM is made to respond with private information hidden from the user, which is exfiltrated when the client renders the response, for example an image whose URL carries the data to an adversary-controlled server.
 
 ## NIST SP 800-53 Rev. 5, Security and Privacy Controls (Sep 2020, updated Dec 2020)
 

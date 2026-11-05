@@ -1089,23 +1089,23 @@
       "question": "A Bulgarian power distributor's model sends inspectors to meters scoring above 0.8 for suspected tampering. To estimate how many of its flags are wrong, which stratum is MOST useful for the IS auditor to add?",
       "options": {
         "A": "Flagged meters at the households with the highest bills",
-        "B": "Flagged meters that scored just above the 0.8 cut-off",
+        "B": "Flagged meters that scored just above the 0.8 cutoff",
         "C": "Flagged meters whose tampering scores were 0.95 or higher",
-        "D": "Unflagged meters that scored just below the 0.8 cut-off"
+        "D": "Unflagged meters that scored just below the 0.8 cutoff"
       },
       "correct": "B",
-      "key_concept": "Among a model's flags, those just above the cut-off are the closest calls; a stratum there estimates wrong flags better than value strata.",
+      "key_concept": "Among a model's flags, those just above the cutoff are the closest calls; a stratum there estimates wrong flags better than value strata.",
       "pre_read": "Match the stratum to the error the objective names: wrong flags, not missed tampering.",
-      "correct_explanation": "Among flagged meters, those scored just above the cut-off are the closest calls, so wrong flags are most likely there. A stratum there gives the auditor enough of those cases to estimate the false-flag rate. Bill size suits a test of financial exposure, but it says nothing about whether a tampering flag is wrong, and the objective is wrongful flags on households.",
+      "correct_explanation": "Among flagged meters, those scored just above the cutoff are the closest calls, so wrong flags are most likely there. A stratum there gives the auditor enough of those cases to estimate the false-flag rate. Bill size suits a test of financial exposure, but it says nothing about whether a tampering flag is wrong, and the objective is wrongful flags on households.",
       "wrong_explanations": {
         "A": "Tempting because auditors often stratify by value. But bill size does not track model error; the objective is how many of the model's flags are wrong.",
         "C": "Tempting because high scores look like clear cases. But they are the flags least likely to be wrong, so they reveal little about the false-flag rate.",
-        "D": "Tempting because near-misses also sit by the cut-off. But unflagged meters show missed tampering, while the objective is households flagged wrongly."
+        "D": "Tempting because near-misses also sit by the cutoff. But unflagged meters show missed tampering, while the objective is households flagged wrongly."
       },
       "tips": [
         "Eliminate: C samples the flags least likely to be wrong, and D tests misses when the objective is wrongful flags.",
-        "Final two: B beats A because wrong flags gather just above the cut-off, while bill size measures money, not the model's mistakes.",
-        "Exam cue: to find an AI model's wrong flags, sample just above its cut-off score, where the calls are closest."
+        "Final two: B beats A because wrong flags gather just above the cutoff, while bill size measures money, not the model's mistakes.",
+        "Exam cue: to find an AI model's wrong flags, sample just above its cutoff score, where the calls are closest."
       ],
       "framework_ref": "ISACA ITAF Guideline 2208 (Information Technology Audit Sampling); NIST AI 100-1 MEASURE 2.5 (System shown to be valid and reliable, limits documented)",
       "related_concepts": [
@@ -1387,7 +1387,7 @@
         "A": "Extractions scored 90% or above can be wrong and go unchecked",
         "B": "Extractions below 90% may be mostly right, wasting checking effort",
         "C": "Handwritten notes may get lower confidence scores than printed ones",
-        "D": "The 90% cut-off came from the auditor rather than the tool's vendor"
+        "D": "The 90% cutoff came from the auditor rather than the tool's vendor"
       },
       "correct": "A",
       "key_concept": "AI confidence scores are self-estimates; using them to skip verification leaves confident errors untested in audit evidence.",
@@ -2378,24 +2378,24 @@
       "subtopic": "3C Evidence collection. Evidence of a threshold change",
       "difficulty": "foundational",
       "bloom_level": "Foundational",
-      "question": "A Sierra Leonean energy agency's solar-rebate approvals halved in June; its screening model's version log shows no release since January. Which evidence BEST shows the IS auditor whether, and by whom, the cut-off was altered?",
+      "question": "A Sierra Leonean energy agency's solar-rebate approvals halved in June; its screening model's version log shows no release since January. Which evidence BEST shows the IS auditor whether, and by whom, the cutoff was altered?",
       "options": {
-        "A": "The model card's stated cut-off score for rebate approvals",
+        "A": "The model card's stated cutoff score for rebate approvals",
         "B": "June's decision log showing each applicant's score and outcome",
-        "C": "The scoring platform's settings history for the cut-off value",
+        "C": "The scoring platform's settings history for the cutoff value",
         "D": "The model version log naming who approved each release"
       },
       "correct": "C",
       "key_concept": "AI thresholds are configuration that can change without a new model version; settings history, not the version log, shows such changes.",
       "pre_read": "Separate what the trained model holds from what is set around it.",
-      "correct_explanation": "A cut-off is usually a platform setting rather than part of the trained model, so it can be altered without a new model version. The platform's settings history for that value shows whether, when and by whom the cut-off moved. June's decision log lets the auditor infer an effective cut-off from scores and outcomes, but cannot prove the setting was altered, or show who altered it.",
+      "correct_explanation": "A cutoff is usually a platform setting rather than part of the trained model, so it can be altered without a new model version. The platform's settings history for that value shows whether, when and by whom the cutoff moved. June's decision log lets the auditor infer an effective cutoff from scores and outcomes, but cannot prove the setting was altered, or show who altered it.",
       "wrong_explanations": {
-        "A": "Tempting because it states the cut-off. But a model card is the builders' description and may never have been updated after a settings change.",
-        "B": "Tempting because scores and outcomes reveal the effective cut-off. But inference shows a pattern, not the change itself, when it happened or who made it.",
-        "D": "Tempting because it records approvers and shows no release since January. But a cut-off set on the platform can move without a new version, so this log cannot show it."
+        "A": "Tempting because it states the cutoff. But a model card is the builders' description and may never have been updated after a settings change.",
+        "B": "Tempting because scores and outcomes reveal the effective cutoff. But inference shows a pattern, not the change itself, when it happened or who made it.",
+        "D": "Tempting because it records approvers and shows no release since January. But a cutoff set on the platform can move without a new version, so this log cannot show it."
       },
       "tips": [
-        "Eliminate: A is the builders' description, which may predate any change, and D records model releases, while a platform cut-off can move without one.",
+        "Eliminate: A is the builders' description, which may predate any change, and D records model releases, while a platform cutoff can move without one.",
         "Final two: C beats B because the settings history records the change itself; decision logs only let the auditor infer one.",
         "Exam cue: a model's threshold can change without a new version. Ask for the configuration history, not just the model version log."
       ],
