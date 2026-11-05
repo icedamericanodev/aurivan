@@ -7255,6 +7255,7 @@ html { scroll-padding-bottom: calc(104px + var(--consent-h, 0px)); }
 .plnt-note { margin-top: var(--sp-lg); padding: var(--sp-md) var(--sp-lg); border-radius: var(--r-md); background: var(--raised2); }
 .plnt-note-h { margin: 0; font: var(--t-label); color: var(--text); }
 .plnt-note-m { margin: var(--sp-xs) 0 0; font: var(--t-small); color: var(--text2); }
+.plnt-note-m:first-child { margin-top: 0; }
 /* The dialog: plant yours, change plant, rename, change its look */
 .plnt-modal { max-width: 600px; }
 .plnt-modal .cl-title { margin-bottom: var(--sp-md); }
@@ -19682,7 +19683,9 @@ function plantYouCardHtml(K) {
   }
   html += '<ol class="you-stages" aria-label="' + escapeHtml('Your ' + info.lower + '’s six growths') + '">' + stages + '</ol>';
   var rest = plantRestWords(K.plant.restLine(p, v.lastDay, v.today, v.exam) || (v.resting ? K.plant.plantCallName(p) + ' is resting. Pick up whenever you like.' : null));
-  if (rest) html += '<div class="plnt-note"><p class="plnt-note-h">' + (v.exam === 'day' ? 'Exam day' : v.exam === 'eve' ? 'Rest day' : 'Resting') + '</p><p class="plnt-note-m">' + escapeHtml(rest) + '</p></div>';
+  // Exam eve has no heading: its line already opens with "Rest day" (4.7).
+  var noteH = v.exam === 'day' ? 'Exam day' : v.exam === 'eve' ? '' : 'Resting';
+  if (rest) html += '<div class="plnt-note">' + (noteH ? '<p class="plnt-note-h">' + noteH + '</p>' : '') + '<p class="plnt-note-m">' + escapeHtml(rest) + '</p></div>';
   return html + '<a class="you-pl-btn you-pl-go" id="plGoPage" href="#plant" onclick="return plantGoPage(event)">'
     + '<span class="you-pl-go-t"><span class="you-pl-go-n">Your plant</span><span class="you-pl-go-m">How it has grown</span></span>' + ico('chevron', 18) + '</a>';
 }
