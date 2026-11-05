@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "comment": "Original CRISC practice questions for Domain 1 (Governance), written to the CRISC exam content outline effective 2025 (delivered since 3 Nov 2025). Every item is authored from public concepts and KaiSip's own CRISC study notes (data/crisc/notes/d1.json), with no reference to the CRISC Review Manual, ISACA's QAE database, ISACA's practice quiz or any prep bank. Schema: docs/content/QUESTION_SCHEMA.md; writing rules: docs/content/EXAM_STYLE_V2.md and .claude/agents/crisc-standards-auditor.md. Not affiliated with or endorsed by ISACA®. CRISC® is a registered trademark of ISACA. Pilot batch crisc_d1_001 to crisc_d1_020, 30 Oct 2026. Round 7 crisc_d1_104 to crisc_d1_110, 4 Nov 2026. Round 8 crisc_d1_111 to crisc_d1_117, 5 Nov 2026.",
+    "comment": "Original CRISC practice questions for Domain 1 (Governance), written to the CRISC exam content outline effective 2025 (delivered since 3 Nov 2025). Every item is authored from public concepts and KaiSip's own CRISC study notes (data/crisc/notes/d1.json), with no reference to the CRISC Review Manual, ISACA's QAE database, ISACA's practice quiz or any prep bank. Schema: docs/content/QUESTION_SCHEMA.md; writing rules: docs/content/EXAM_STYLE_V2.md and .claude/agents/crisc-standards-auditor.md. Not affiliated with or endorsed by ISACA®. CRISC® is a registered trademark of ISACA. Pilot batch crisc_d1_001 to crisc_d1_020, 30 Oct 2026. Round 7 crisc_d1_104 to crisc_d1_110, 4 Nov 2026. Round 8 crisc_d1_111 to crisc_d1_117, 5 Nov 2026. Round 9 crisc_d1_118 to crisc_d1_124, 5 Nov 2026.",
     "schema_version": 1
   },
   "domain": 1,
@@ -4334,6 +4334,265 @@
         "Risk acceptance"
       ],
       "_provenance": "Authored from concept: notes 1A2.3 (RACI and Accountability, Including AI: an owner who leaves a risk above appetite undecided has not accepted it; the practitioner escalates to senior management or the risk committee). Round 8, 5 Nov 2026: original scenario (a retailer's logistics director leaves a risk above appetite without a response for five months despite three reminders) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Neighbours checked: crisc_d3_029 (an action owner's slipping dates escalated to the risk owner), crisc_d3_057 (a finding with no action owner taken to the risk owner), crisc_d1_005 (senior management assigns an owner to an unowned risk), crisc_d1_018 (a tolerance breach escalated to the owner), crisc_d1_060 (an owner asks the analyst to choose), crisc_d3_123 (a staffing conflict raised with the owner), CC cc_d2_049 (reminders for policy acknowledgments). None keys escalating above an owner who will not decide. Key form: escalate an owner's inaction to the level that assigns owners.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d1_118",
+      "domain": 1,
+      "subtopic": "1A5 Business processes and resilience. Missed recovery target",
+      "principle_id": "match-decision-to-role",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A grain cooperative's recovery test results go only to IT; this year's test restored payments six hours past the target its process owner set. What should the risk practitioner recommend as BEST?",
+      "options": {
+        "A": "Escalate the missed target to the board's risk committee",
+        "B": "Have IT tune the recovery and rerun the test next quarter",
+        "C": "Have IT reset the process owner's target to the tested time",
+        "D": "Record the gap as a risk for the process owner to decide"
+      },
+      "correct": "D",
+      "key_concept": "A recovery test that misses the process owner's target is a register risk for that owner to decide; IT carries out the chosen response.",
+      "pre_read": "Notice who set the target and who has seen the result.",
+      "correct_explanation": "The process owner set the recovery target, so a test that misses it is a gap for them to decide on: fund a fix, accept the gap within appetite, or revisit the target. Recording it puts the gap in the register at its current level. Having IT tune and retest is the runner-up: IT may well do that work, but only after the owner has seen the gap and chosen the response.",
+      "wrong_explanations": {
+        "A": "The board oversees appetite and major exposures, not single test results; the process owner, who set the target, has not yet seen the gap.",
+        "B": "Tuning may become part of the response, but the owner has not seen the result; IT would be choosing a response to a gap it does not own.",
+        "C": "Recovery targets come from the process owner's needs; resetting one to what IT achieved removes the gap on paper without anyone deciding on it."
+      },
+      "tips": [
+        "Eliminate: A sends one test result past the owner to the board, and C has IT change a target only the process owner can set.",
+        "Final two: D beats B because the process owner set the target and decides the response; IT's retest may follow, but only once the owner has seen the gap.",
+        "Exam cue: a recovery test that misses its target is a risk for the process owner to decide on, not a technical task for IT to close on its own."
+      ],
+      "framework_ref": "NIST SP 800-34 Rev. 1 Section 3.5 (Plan Testing, Training, and Exercises); NIST SP 800-34 Rev. 1 Section 3.2.1 (Determine Business Processes and Recovery Criticality: MTD, RTO and RPO); NIST CSF 2.0 ID.IM-02 (improvements are identified from security tests and exercises, including those done in coordination with suppliers and relevant third parties)",
+      "related_concepts": [
+        "Recovery testing",
+        "Process owner",
+        "Risk register"
+      ],
+      "_provenance": "Authored from concept: notes 1A5.2 (Continuity and Recovery Plans as Risk Responses: test results feed the register, and the owner approves an action plan or, within appetite, accepts the gap) and 1A5.1 (process owners set recovery needs; IT designs the capability). Round 9, 5 Nov 2026: original scenario (a grain cooperative's recovery test results reach only IT, and the payments recovery missed the process owner's target by six hours) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Neighbours checked: crisc_d1_063 (an exercise gap with a fix the owner approved), crisc_d1_099 (a slower recovery accepted by the owner within appetite), crisc_d1_029 (a system restored within RTO while the process stayed down), crisc_d1_010 (a paper-only test), crisc_d1_027 (a plan written as IT's restore list), CC cc_d2_099 (an RTO longer than the MTD escalated), CISA d4_204 (exercise recovery times on an executive dashboard), d4_322 (a resilience gap funded by senior management) and d4_262 (an RTO beyond tolerable downtime). None keys routing a missed test result from IT to the process owner as a register risk. Key form: the gap goes to the owner who set the target; escalation to the board is a routing distractor that stays wrong.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d1_119",
+      "domain": 1,
+      "subtopic": "1A6 Organizational asset management. Acceptance request for an AI model",
+      "principle_id": "objectives-first",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "A construction firm rated the corruption risk of its AI bid-pricing model within appetite, using the model's $60,000 build cost as impact, and its owner wants to accept. What is the risk practitioner's BEST recommendation?",
+      "options": {
+        "A": "Ask the owner to accept the risk on record as rated",
+        "B": "Ask the owner to revalue the model by its effect on bids",
+        "C": "Escalate the acceptance decision to the risk committee",
+        "D": "Have IT add integrity checks to the model before acceptance"
+      },
+      "correct": "B",
+      "key_concept": "An asset's value for risk rating is the business harm its loss or misuse would cause, not what it cost to build or buy.",
+      "pre_read": "Check what each input to the rating rests on before judging the request.",
+      "correct_explanation": "An asset's value for risk analysis is what its loss or misuse would cost the business, not what it cost to build. A corrupted pricing model could misprice bids worth far more than $60,000, so the within-appetite rating rests on the wrong figure. Accepting as rated is the runner-up: the owner may accept risk within appetite, but only on a rating that reflects the model's real value.",
+      "wrong_explanations": {
+        "A": "Owners may accept risk within appetite, but this rating takes the model's build cost as its impact, so the acceptance would rest on an understated figure.",
+        "C": "The owner has authority for risk within appetite; the problem is the rating's basis, which a committee would inherit just as it stands.",
+        "D": "Adding controls before the risk is properly valued puts treatment ahead of analysis; the corrected rating may or may not call for them."
+      },
+      "tips": [
+        "Eliminate: C sends to a committee a decision the owner can make within appetite, and D adds controls before the risk is properly rated.",
+        "Final two: B beats A because the rating values the model at its build cost; acceptance within appetite is the owner's call, but only on a rating that reflects business value.",
+        "Exam cue: when a within-appetite rating values an asset by its cost, fix the valuation before anyone accepts; value comes from what the business stands to lose."
+      ],
+      "framework_ref": "ISACA Glossary (asset value); NIST IR 8286 Rev. 1 Section 3.2.1 (Inventory and Valuation of Assets: attention goes to the assets with the greatest impact on the enterprise's ability to achieve its mission); NIST CSF 2.0 ID.AM-05 (assets are prioritized based on classification, criticality, resources and impact on the mission)",
+      "related_concepts": [
+        "Asset valuation",
+        "AI model as an asset",
+        "Risk acceptance"
+      ],
+      "_provenance": "Authored from concept: notes 1A6.2 (Classification and Valuation as Risk Input: value assets by business impact, not purchase price) and 1A6.3 (AI models are assets with business owners). Round 9, 5 Nov 2026: original scenario (a construction firm rates the corruption risk of its AI bid-pricing model within appetite on the model's $60,000 build cost, and the owner asks to accept) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Round 9 ask: a BEST stem within appetite whose key is not acceptance, for a new stated reason (the rating values the asset by its build cost), distinct from a legal requirement (crisc_d1_105), a stale rating (crisc_d3_139, crisc_d4_080), threat shifting (crisc_d2_092), credit for a response not in place (crisc_d3_130) and an unmet insurance condition (crisc_d1_103). Neighbours checked: crisc_d1_030 (the definitional item on the basis for asset value: keep apart in practice sets), crisc_d1_058 (over-classification), crisc_d1_031 (new data changes a class), crisc_d1_114 (an owner's acceptance inside the limits), crisc_d2_087 (an event record missing lost orders), AAIA aaia_d1_070 (a valuation model's training-data license) and aaia_d2_130 (model extraction from a valuation API), CISA d4_145 (end-of-support servers). None keys revaluing an AI model before an acceptance. Key form: fix the rating's basis before acceptance; escalation is a routing distractor that stays wrong.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d1_120",
+      "domain": 1,
+      "subtopic": "1B1 Enterprise risk management (ERM). Impact scale and a safety scenario",
+      "principle_id": "rate-on-common-terms",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A rail operator's enterprise impact scale measures only money, so a signaling-data scenario that could endanger passengers rates low on its $90,000 direct cost. What should the risk practitioner recommend as BEST?",
+      "options": {
+        "A": "Rate the scenario high by judgment, outside the scale",
+        "B": "Raise the scenario's dollar impact to reflect the danger",
+        "C": "Keep a separate safety scale beside the enterprise scale",
+        "D": "Propose adding safety to the enterprise impact scale"
+      },
+      "correct": "D",
+      "key_concept": "Enterprise impact scales measure what matters to objectives, such as safety and customers as well as money, so every risk is rated on them.",
+      "pre_read": "Read what the scale measures before judging the rating.",
+      "correct_explanation": "Impact scales should measure what matters to the enterprise's objectives, and for a rail operator that includes passenger safety. A money-only scale under-rates every safety scenario, not just this one, so the fix is to propose safety measures for the enterprise scale, which senior management approves. Rating this scenario high by judgment is the runner-up: it corrects one rating but leaves the others low and cannot be compared with the rest.",
+      "wrong_explanations": {
+        "A": "An override fixes one rating, but other safety scenarios still rate low, and a rating set outside the scale cannot be compared or combined with the rest.",
+        "B": "Inflating the dollar figure misstates the financial estimate and buries the real reason for the rating; safety needs its own measure on the scale.",
+        "C": "A second scale gives ratings that cannot be compared with the enterprise register; one scale with business-based measures lets every risk be ranked together."
+      },
+      "tips": [
+        "Eliminate: B makes the dollar estimate carry a harm money does not measure, and C creates a second scale whose ratings cannot be compared with the enterprise's.",
+        "Final two: D beats A because the scale itself under-rates every safety scenario; an override fixes one rating and leaves the gap in place.",
+        "Exam cue: when a scale cannot express a harm that matters to objectives, fix the shared scale through its approvers rather than overriding single ratings."
+      ],
+      "framework_ref": "NIST CSF 2.0 GV.RM-06 (a standardized method for calculating, documenting, categorizing and prioritizing cybersecurity risks is established and communicated); NIST SP 800-30 Rev. 1 Appendix H Table H-2 (Examples of Adverse Impacts: harm to operations, assets, individuals, other organizations and the Nation); NIST IR 8286 Rev. 1 Section 3.1.2 (Risk Management Strategy: leaders give guidance on risk calculation, including a common scale for assessing levels of risk and the mechanisms and frequency of risk reporting)",
+      "related_concepts": [
+        "Impact scale",
+        "Common rating scale",
+        "Safety impact"
+      ],
+      "_provenance": "Authored from concept: notes 1B1.2 (Common Taxonomy and Rating Scales: impact scales use business measures, such as money, customers affected, safety and regulatory standing, defined once for everyone and approved by senior management). Round 9, 5 Nov 2026: original scenario (a rail operator's money-only impact scale rates a signaling-data scenario that could endanger passengers low on its $90,000 direct cost) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Neighbours checked: crisc_d1_012 (IT ratings not normalized to the enterprise scale), crisc_d1_051 (one risk filed under two categories), crisc_d1_088 (thresholds on one common scale), crisc_d2_087 (an impact record missing lost customers), crisc_d3_133 (complaints ranked without a rate), CISA d4_071 (BIA and risk assessment first). None keys adding a non-financial measure to the enterprise impact scale. Key form: fix the shared method, not one rating; the runner-up is a one-off override.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d1_121",
+      "domain": 1,
+      "subtopic": "1B2 Lines of defense. Control team inside IT",
+      "principle_id": "lines-of-defense",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A postal service's CIO formed an IT control team to test IT's own controls, and the CFO proposes disbanding the second-line IT risk team as a duplicate. What is the risk practitioner's BEST advice?",
+      "options": {
+        "A": "Move the control team under the CRO as the second line",
+        "B": "Disband the IT risk team, relying on the control team",
+        "C": "Keep the IT risk team challenging the control team's work",
+        "D": "Ask internal audit to take over the IT risk team's challenge"
+      },
+      "correct": "C",
+      "key_concept": "A control team set up by, and reporting to, the function it checks is first-line self-testing; the second line still oversees and challenges it.",
+      "pre_read": "Place each team in a line by whom it reports to and what it does.",
+      "correct_explanation": "The control team reports to the CIO and tests IT's own controls, so it is a first-line function: useful self-checking, but not objective about the risks it checks. The second-line IT risk team oversees and challenges that work. Moving the control team under the CRO is the runner-up: it would create a second line, but IT would lose its own checks and the first line would stop testing the controls it runs.",
+      "wrong_explanations": {
+        "A": "Under the CRO the team would become second line, but IT would be left with no checks of its own, moving first-line monitoring onto the second line.",
+        "B": "The control team reports to the CIO whose controls it tests; that is first-line self-checking, which cannot replace objective second-line challenge.",
+        "D": "Internal audit gives periodic independent assurance; taking on ongoing challenge would make it part of management's oversight and weaken that independence."
+      },
+      "tips": [
+        "Eliminate: B counts a team reporting to the CIO as challenge of the CIO's own controls, and D moves ongoing second-line challenge onto internal audit.",
+        "Final two: C beats A because the control team's self-testing belongs in the first line; moving it would strip IT of its own checks rather than add challenge.",
+        "Exam cue: a control team inside the function it checks is first line; keep it, and keep an objective second line to challenge its results."
+      ],
+      "framework_ref": "ISACA Journal 2018 Volume 4 (Roles of Three Lines of Defense for Information Security and Governance); NIST CSF 2.0 GV.RR-02 (roles, responsibilities and authorities related to cybersecurity risk management are established, communicated, understood and enforced)",
+      "related_concepts": [
+        "First line of defense",
+        "Second-line challenge",
+        "Control self-testing"
+      ],
+      "_provenance": "Authored from concept: notes 1B2.1 (The Three Lines and Their Jobs: the first line owns and runs controls, the second line oversees and challenges) and 1B2.2 (the second line needs objectivity, not audit-style separation). The ISACA Journal 2018 Volume 4 article says businesses can set up control functions within the first line, such as an IT control team reporting to IT, while the second line monitors and challenges first-line controls. Round 9, 5 Nov 2026: original scenario (a postal service's CIO forms an IT control team and the CFO proposes disbanding the second-line IT risk team as a duplicate) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Neighbours checked: crisc_d3_111 (owner-run KCIs reviewed by the risk team when only external audit checks controls), crisc_d1_036 (the second line running a control), crisc_d1_065 (unchallenged self-assessments), crisc_d1_035 (overlapping assurance and a combined assurance map: keep apart in practice sets), crisc_d1_015 (second-line independence), crisc_d1_089 (second-line pay tied to the desk), crisc_d1_102 (evidence that challenge works). None keys keeping the second line beside a first-line control team. Key form: a first-line control team does not replace second-line challenge; asking internal audit to take over is a routing distractor that stays wrong.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d1_122",
+      "domain": 1,
+      "subtopic": "1A3 Organizational culture and ethics. Sales terms the platform cannot meet",
+      "principle_id": "root-cause-over-symptom",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "A SaaS provider pays sales staff at signing; they knowingly promised security terms the platform cannot meet to win deals, and $1,500,000 in penalties followed months later. What should the risk practitioner recommend as BEST?",
+      "options": {
+        "A": "Train sales staff on the terms the platform supports",
+        "B": "Have the risk team approve each contract's security terms",
+        "C": "Add a security review of contract terms before signing",
+        "D": "Defer part of sales pay, reducing it if losses follow"
+      },
+      "correct": "D",
+      "key_concept": "Deferring part of the pay of risk-taking roles, and reducing it if losses emerge, aligns rewards with risk that surfaces after the deal.",
+      "pre_read": "Ask why staff acted as they did before weighing the fixes.",
+      "correct_explanation": "Staff broke the terms knowingly because pay rewards the signature and ignores losses that surface months later. Deferring part of sales pay, reduced if a contract later causes loss, ties the reward to the risk taken. A pre-signing security review is the runner-up: it would catch some terms, but staff paid at signing keep the motive to push deals past it, so the cause remains.",
+      "wrong_explanations": {
+        "A": "Training suits a knowledge gap, but staff knew the platform could not meet the terms; the pay that rewarded signing them stays as it was.",
+        "B": "Having the risk team approve deals makes the second line take a first-line decision, and leaves the pay that drove the behavior in place.",
+        "C": "A review adds a check, but staff paid at signing still gain from pushing risky terms through; the incentive behind the breaches remains."
+      },
+      "tips": [
+        "Eliminate: A treats a knowing choice as a knowledge gap, and B has the second-line risk team approve deals the first line owns.",
+        "Final two: D beats C because pay rewards signing and ignores losses that surface later; a review adds a gate but leaves the reason to push past it.",
+        "Exam cue: when people knowingly take risks their pay rewards, fix the incentive; deferred pay that later losses can reduce links reward to the risk taken."
+      ],
+      "framework_ref": "NIST CSF 2.0 GV.RR-04 (cybersecurity is included in human resources practices); ISACA Glossary (risk culture); NIST SP 800-39 Section 2.7 (Organizational Culture)",
+      "related_concepts": [
+        "Incentives and risk",
+        "Deferred pay",
+        "Risk culture"
+      ],
+      "_provenance": "Authored from concept: notes 1A3.2 (Incentives, Speaking Up and Escalation: rewards for risk-taking roles can be deferred, and reduced if losses emerge later; no earlier item tested this bullet). Round 9, 5 Nov 2026: original scenario (a SaaS provider pays sales staff at signing, staff knowingly promise security terms the platform cannot meet, and $1,500,000 in penalties follows months later) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Neighbours checked: crisc_d1_006 (call-center incentives changed to reward identity checks: keep apart in practice sets), crisc_d1_109 (consequences for limit breaches), crisc_d1_055 (praise for a skipped review), crisc_d1_059 (a client's 24-hour notice term), crisc_d1_089 (second-line pay tied to the desk), AAIA aaia_d2_069 (a cleared-cases bonus that makes agreeing with a model easier), CC cc_d2_089 (bonuses tied to course completion). None keys deferring pay that later losses can reduce. Key form: fix the incentive, not only the gate.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d1_123",
+      "domain": 1,
+      "subtopic": "1A2 Organizational structure, roles and responsibilities. Change between committee meetings",
+      "principle_id": "escalate-to-the-limit-setter",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An airline's baggage-system risk rose to moderate, within appetite, tolerance and escalation thresholds, and the IT director wants the risk committee alerted before its meeting next month. What is the risk analyst's BEST response?",
+      "options": {
+        "A": "Report the change at the committee's scheduled meeting",
+        "B": "Escalate the change to the committee before its meeting",
+        "C": "Leave the change out of reports while within limits",
+        "D": "Ask the risk owner to bring the risk back down to low"
+      },
+      "correct": "A",
+      "key_concept": "Escalation thresholds decide what leaves the reporting cycle; a change that stays within them is reported at the committee's scheduled review.",
+      "pre_read": "Compare the change with each limit the stem names.",
+      "correct_explanation": "The framework sets escalation thresholds so that only changes crossing them go to decision makers out of cycle; this rise stays within appetite, tolerance and those thresholds. The committee reviews the profile at its scheduled meeting, where the change and its trend are reported. Escalating early is the runner-up: it looks prudent, but treating in-limit changes as escalations dilutes the signal the thresholds exist to give.",
+      "wrong_explanations": {
+        "B": "Out-of-cycle escalation is for changes that cross a threshold; this one does not, and early alerts for in-limit moves blur what escalation means.",
+        "C": "In-limit changes still belong in the profile: the committee needs the trend, not just breaches, to see where exposure is heading.",
+        "D": "Risk within appetite and tolerance needs no treatment to return it to low; its owner may accept and monitor it."
+      },
+      "tips": [
+        "Eliminate: C keeps a rising trend from the committee that reviews it, and D treats a risk within appetite and tolerance as if it needed reducing.",
+        "Final two: A beats B because no escalation threshold is crossed; the scheduled review is the route for in-limit changes, and out-of-cycle escalation is kept for breaches.",
+        "Exam cue: escalate out of cycle only when a threshold is crossed; a change that stays within its limits goes in the next scheduled report."
+      ],
+      "framework_ref": "NIST IR 8286B-upd1 Section 2.4.3 (Risk Owner: risk escalation and elevation); NIST IR 8286 Rev. 1 Section 3.1.2 (Risk Management Strategy: leaders give guidance on risk calculation, including a common scale for assessing levels of risk and the mechanisms and frequency of risk reporting); COBIT 2019 APO12.03 (Maintain a Risk Profile)",
+      "related_concepts": [
+        "Risk committee",
+        "Escalation thresholds",
+        "Risk reporting cycle"
+      ],
+      "_provenance": "Authored from concept: notes 1A2.1 (Board, Senior Management and the Risk Committee: the committee reviews the risk profile and escalates breaches) and 1B4.3 (escalation paths and timeframes are defined in the framework). Round 9, 5 Nov 2026: original scenario (an airline's baggage-system risk rises to moderate within appetite, tolerance and escalation thresholds, and the IT director wants the risk committee alerted before its next meeting) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Round 9 ask: a deferral key, where the scheduled review is right and escalation is the tempting runner-up. Neighbours checked: crisc_d3_127 (a confirmed tolerance breach escalated outside the cycle: the opposite facts; keep apart in practice sets), crisc_d1_069 (a policy gap above appetite where waiting for the scheduled review is wrong), crisc_d1_018 and crisc_d1_042 (tolerance breaches), crisc_d1_068 (combined exposure above appetite), crisc_d3_045 (a KCI rising below its red threshold), CISA d1_089 (a chief audit executive escalating before a committee meeting). None keys reporting an in-limit change at the scheduled meeting. Key form: deferral to the scheduled review; escalate is a routing verb that stays wrong.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d1_124",
+      "domain": 1,
+      "subtopic": "1B5 Risk frameworks, legal, regulatory and contractual requirements. Sector Community Profile",
+      "principle_id": "objectives-first",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "Which of the following should the risk practitioner recommend as the BEST use of a sector Community Profile by a water utility adopting NIST CSF 2.0?",
+      "options": {
+        "A": "A replacement for the utility's risk framework",
+        "B": "A record of the outcomes the utility achieves today",
+        "C": "The utility's Target Profile, adopted as published",
+        "D": "A starting point for the utility's Target Profile"
+      },
+      "correct": "D",
+      "key_concept": "A CSF 2.0 Community Profile is a sector baseline that an organization can use as the basis for its Target Profile, then tailor.",
+      "pre_read": "Recall what each kind of CSF profile describes.",
+      "correct_explanation": "A Community Profile is a baseline of CSF outcomes shared by organizations in a sector, and NIST CSF 2.0 says an organization can use one as the basis for its Target Profile. The utility then tailors it to its own mission, threats and requirements. Adopting it as published is the runner-up: it brings in sector knowledge, but a baseline written for many utilities skips that tailoring.",
+      "wrong_explanations": {
+        "A": "CSF 2.0 is used alongside an enterprise's risk management framework and ERM; a set of outcomes cannot replace the framework senior management approved.",
+        "B": "The outcomes the utility achieves today form its Current Profile, drawn from its own practices; a sector baseline says nothing about them.",
+        "C": "A sector baseline reflects shared goals, not this utility's mission, threats and obligations; adopting it as published skips the tailoring a Target Profile needs."
+      },
+      "tips": [
+        "Eliminate: A swaps the approved risk framework for a set of outcomes, and B treats a sector baseline as a record of what the utility does today.",
+        "Final two: D beats C because a Community Profile is a shared baseline; the utility's target starts there but must reflect its own mission, threats and requirements.",
+        "Exam cue: outside baselines and frameworks are starting points to tailor, not finished answers to adopt as published."
+      ],
+      "framework_ref": "NIST CSF 2.0 Section 3.1 (CSF Profiles: a Community Profile is a baseline of outcomes for a sector or other use case that an organization can use as the basis for its own Target Profile); NIST CSF 2.0 Section 3.1 (CSF Profiles: a Current Profile describes outcomes being achieved and a Target Profile the outcomes selected for risk management objectives); NIST CSF 2.0 Section 1 (CSF Overview: the CSF is used in conjunction with other resources such as frameworks, standards and guidelines to manage cybersecurity risks)",
+      "related_concepts": [
+        "NIST CSF 2.0 profiles",
+        "Framework tailoring",
+        "Community Profile"
+      ],
+      "_provenance": "Authored from concept: notes 1B5.1 (Choosing and Tailoring a Framework: in NIST CSF 2.0, tailoring runs through Organizational Profiles). NIST CSWP 29 Section 3.1 says an organization can use a Community Profile as the basis for its own Target Profile. Round 9, 5 Nov 2026: original scenario (a water utility adopting NIST CSF 2.0 weighs how to use a sector Community Profile) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. The key takes a starting point from outside the organization, which the bank had never keyed (plan, round 9: options that take a value from peers, benchmarks or vendors were keyed 0 of 27 times); the runner-up is adopting it as published. Neighbours checked: crisc_d1_044 (tailoring CSF 2.0 for a small firm: keep apart in practice sets), crisc_d1_092 (COBIT 2019 and CSF 2.0 combined), crisc_d4_038 (the value of mapping practices to CSF 2.0), crisc_d4_016 (meeting the target profile does not lower ratings), CC cc_d1_093 (current and target profiles defined), cc_d2_069 (CSF 2.0 chosen for a partner's reporting), CISA d5_175 (ranking profile gaps by business impact). None asks how to use a Community Profile. Key form: a shared baseline as the starting point, then tailor.",
       "style_version": 2
     }
   ]

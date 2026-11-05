@@ -58,7 +58,7 @@
             "A near miss would have caused loss but was stopped by a control, by chance or by timing.",
             "An incident breaks, or nearly breaks, security policy; it need not cause loss.",
             "Each event is linked to the scenario its review's root cause points to, not the first guess logged, and used to re-rate that scenario's likelihood or impact.",
-            "Fixing the immediate cause closes the incident ticket, not the risk.",
+            "Fixing the immediate cause closes the incident ticket, not the risk; an event whose cause fits no scenario shows a register gap, filled with the process owner.",
             "Impact counts every loss, not only invoices paid: primary losses such as missed orders and staff time on recovery, and secondary losses such as customers who leave or contract penalties."
           ],
           "example": "At a regional water utility, an operator nearly opens the wrong valve after a remote session times out mid-command, and an alarm stops them. Nothing is lost. Priya Raman, the risk analyst, logs a near miss against the remote operation error scenario, notes that the alarm was the last barrier, and asks the operations manager, the scenario's risk owner, to review its likelihood rating.",
@@ -311,7 +311,7 @@
             "Intelligence is filtered for relevance: does the actor target this sector, and does the enterprise use the targeted technology?",
             "STRIDE prompts six threat types against a design: spoofing, tampering, repudiation, information disclosure, denial of service and elevation of privilege; AI systems also need AI attack classes added.",
             "Attack trees break an attacker's goal into the paths that reach it; uncontrolled paths show where a scenario's exposure sits, and a control blocking several paths is a key control.",
-            "MITRE ATT&CK catalogs real adversary tactics and techniques, giving context for which attack paths are credible.",
+            "MITRE ATT&CK catalogs tactics and techniques seen in real attacks; those used by groups that target the sector show which attack paths are credible.",
             "Modeling results feed risk scenarios, where likelihood and impact are rated with the risk owner."
           ],
           "compare": {
@@ -812,7 +812,7 @@
           "why_it_matters": "Scenarios written by the risk team alone often misjudge business impact. Tabletop exercises reveal missing scenarios, unclear roles and weak responses before a real event does.",
           "how_it_works": [
             "Process and asset owners review each scenario's events, impacts and existing controls and sign off the description.",
-            "A tabletop exercise is a facilitated, discussion-based walkthrough; no systems are touched.",
+            "A tabletop exercise is a facilitated, discussion-based walkthrough; no systems are touched, so a workaround claimed in play earns rating credit only after a drill shows it works.",
             "Participants include business owners, control owners, IT, communications and key suppliers; the exercise tests decisions, so the owners who would make them must take part.",
             "Injects, new facts added during play, test decisions such as escalation, customer notice and recovery order.",
             "Findings become actions: new or revised scenarios, register updates and control changes, each with an owner and a date.",
@@ -881,7 +881,7 @@
           "why_it_matters": "Rating only impact makes every disaster look urgent; rating only likelihood ignores rare but severe events. Both together let owners compare risks fairly against appetite.",
           "how_it_works": [
             "Likelihood combines the chance a threat event starts and the chance it causes harm, over a stated time frame.",
-            "For adversaries, likelihood weighs capability, intent and targeting; for other sources, such as equipment failure, recorded history and empirical data, with expert judgment filling gaps.",
+            "For adversaries, likelihood weighs capability, intent and targeting; other sources use recorded history, from regional or industry records when local history is short, with expert judgment filling gaps.",
             "Impact is the effect on objectives: financial, operational, legal, reputational, safety or customer harm.",
             "Existing controls and predisposing conditions change likelihood, so they are understood before rating.",
             "ISO 31000, named here as context only, describes risk as the effect of uncertainty on objectives, which can include upside opportunity.",
@@ -1600,7 +1600,8 @@
             "Current risk counts only actions already taken, not those proposed or planned.",
             "Residual risk is rated with the same scales and method as inherent risk, so the two are comparable.",
             "Current risk, counting only implemented, working responses, is compared with appetite now; a planned response's future residual risk shows whether the plan is enough.",
-            "Residual risk is never zero; some uncertainty remains after any response."
+            "Residual risk is never zero; some uncertainty remains after any response.",
+            "Before controls are designed, inherent risk ranks which scenarios need the strongest controls; target risk then checks whether the chosen design is enough."
           ],
           "compare": {
             "columns": [
