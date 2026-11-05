@@ -5965,6 +5965,16 @@ body[data-app-cta-card="shown"][data-section="today"] .app-cta-line { display: n
   background: none; border: 0; cursor: pointer; font: var(--t-label); color: var(--accent-text);
 }
 .vr-recap-btn[hidden] { display: none; }
+/* The four options under the opened stem: letter in an outline badge, the
+   text in small (as the More sheet's other options). */
+.vr-recap-os { list-style: none; margin: var(--sp-sm) 0 0; padding: 0; display: flex; flex-direction: column; gap: var(--sp-sm); }
+.vr-recap-os[hidden] { display: none; }
+.vr-recap-o { display: flex; align-items: flex-start; gap: var(--sp-sm); font: var(--t-small); color: var(--text); overflow-wrap: anywhere; }
+.vr-recap-o > span:last-child { min-width: 0; }
+.vr-recap-l {
+  width: 24px; height: 24px; flex-shrink: 0; border-radius: var(--r-round); border: 1.5px solid var(--control);
+  display: inline-flex; align-items: center; justify-content: center; font: var(--t-caption); letter-spacing: var(--tr-caption); color: var(--text2);
+}
 .vr-recap-btn:hover .vr-recap-bt { text-decoration: underline; }
 .vr-recap-btn[aria-expanded="true"] .ico { transform: rotate(180deg); }
 .vr-recap-btn:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; border-radius: var(--r-sm); }
@@ -6050,7 +6060,7 @@ body[data-app-cta-card="shown"][data-section="today"] .app-cta-line { display: n
 .vr-readmore:hover .vr-rm-t { text-decoration: underline; }
 .vr-readmore:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; border-radius: var(--r-sm); }
 @media (prefers-reduced-motion: no-preference) {
-  .vr-recap-t.open { animation: flagFadeIn .12s ease-out both; }
+  .vr-recap-t.open, .vr-recap-os:not([hidden]) { animation: flagFadeIn .12s ease-out both; }
 }
 
 /* Go deeper: the row in one card. */
@@ -6427,6 +6437,25 @@ body[data-app-cta-card="shown"][data-section="today"] .app-cta-line { display: n
 .gl .gloss-letter.has { color: var(--text); }
 .gl .gloss-letter.has:hover { background: var(--surface2); color: var(--text); }
 .gl .gloss-letter:disabled { opacity: 1; color: var(--border2); }
+/* Phones (under 48em): the first term above the fold at 390. Domain and
+   Status are one chip row each that scrolls sideways (its label leads the
+   row), and A to Z is one strip of 44px letters that scrolls the same way
+   (a thin scrollbar for a mouse). Every chip and letter stays in the tab
+   order; focus scrolls it into view. */
+@media (max-width: 47.9375em) {
+  .gl { gap: 12px; }
+  .gl .gloss-toolbar { gap: 10px; }
+  .gl .gloss-filters { flex-wrap: nowrap; gap: 6px; }
+  .gl-fgroup, .gl .gloss-letter-grid {
+    flex-wrap: nowrap; overflow-x: auto; overscroll-behavior-x: contain; scrollbar-width: thin;
+    margin: 0 calc(-1 * var(--sp-xs)); padding: var(--sp-xs); scroll-padding-inline: var(--sp-lg);
+  }
+  .gl-fgroup > *, .gl .gloss-letter { flex: none; white-space: nowrap; }
+  .gl .gloss-letter-index { padding: 0; }
+  .gl .gloss-letter-grid { display: flex; gap: 2px; margin: 0; padding: var(--sp-xs); }
+  .gl .gloss-letter { width: 44px; min-width: 44px; }
+  .gl .gloss-letter:focus-visible { outline-offset: -2px; }
+}
 /* Terms: one card per letter, rows split by inset dividers. */
 .gl .gloss-list { display: flex; flex-direction: column; gap: 16px; }
 .gl-letter-h { margin: 0 0 8px 4px; font: var(--t-kicker); letter-spacing: var(--tr-kicker); text-transform: uppercase; color: var(--text2); scroll-margin-top: var(--sp-lg); }
@@ -15273,9 +15302,12 @@ function todayReadyHtml(r, range, st) {
   var html = '<section class="td-card td-ready" aria-labelledby="tdReadyH">' + head;
   if (!range.enough) {
     // One count toward one goal, in the same units as You's "Answered".
+    // Short text (Sky, 5 Nov): the ring above gives the count, except in
+    // exam week and on exam day (no caption, no label), so the card keeps it.
+    var soFar = todayRingSoFar(range);
     html += '<p class="td-ready-s">Not enough data yet</p>'
-      // Short text (Sky, 5 Nov): the ring above already gives the count.
-      + '<p class="td-ready-x">Your range will be a study estimate, not a prediction.</p>';
+      + '<p class="td-ready-x">' + (st.exam && r.answered > 0 ? soFar + ' of ' + RD_RANGE_MIN_ANSWERS + ' answers for your first range. ' : '')
+      + 'Your range will be a study estimate, not a prediction.</p>';
   } else {
     // Premium round (G18): the ring's caption is Today's one big range; here
     // it is the card's plain first line, like "Not enough data yet".
@@ -20994,15 +21026,27 @@ function vrWhyNotHtml(displayL, note) {
     + '<span class="vr-whynot-t">' + note + '</span></p>' : '';
 }
 // The stem recap at the top of the answer (premium pass 2.1): "Question",
-// the stem clamped to two lines, and "Show question" to open it in place.
-// Screen readers always get the whole stem (the clamp is visual only).
+// the stem clamped to two lines, and "Show question and options" to open it
+// in place with all four options under it (PHASE4.md 4.2: the other options
+// one tap away, so every letter the tips name can be read on this screen).
+// Screen readers always get the whole stem (the clamp is visual only); the
+// options are hidden until opened. Display letters in display order, read
+// through the shuffle the question was shown with.
 function vrRecapHtml(q) {
   var full = (q.scenario_context ? smartQuotes(q.scenario_context) + ' ' : '') + smartQuotes(q.question || '');
+  var shuffle = S.currentShuffle || DISPLAY_LETTERS;
+  var opts = DISPLAY_LETTERS.map(function (displayL) {
+    var t = (q.options || {})[displayToOriginal(displayL, shuffle)];
+    return t ? '<li class="vr-recap-o"><span class="vr-recap-l" aria-hidden="true">' + displayL + '</span>'
+      + '<span><span class="sr-only">Option ' + displayL + ': </span>' + escapeHtml(smartQuotes(t)) + '</span></li>' : '';
+  }).join('');
   return '<div class="vr-recap">'
     + '<p class="vr-recap-cap" id="vrRecapCap">Question<span class="sr-only">:</span></p>'
     + '<p class="vr-recap-t" id="vrRecapT">' + escapeHtml(full) + '</p>'
-    + '<button type="button" class="vr-recap-btn" id="vrRecapBtn" aria-expanded="false" aria-controls="vrRecapT" hidden onclick="toggleStemRecap(this)">'
-      + '<span class="vr-recap-bt">Show question</span>' + ico('chevron-down', 18) + '</button>'
+    + (opts ? '<ul class="vr-recap-os" id="vrRecapOs" aria-label="Options" hidden>' + opts + '</ul>' : '')
+    + '<button type="button" class="vr-recap-btn" id="vrRecapBtn" aria-expanded="false" aria-controls="vrRecapT' + (opts ? ' vrRecapOs' : '') + '"'
+      + (opts ? '' : ' hidden') + ' onclick="toggleStemRecap(this)">'
+      + '<span class="vr-recap-bt">' + (opts ? 'Show question and options' : 'Show question') + '</span>' + ico('chevron-down', 18) + '</button>'
     + '</div>';
 }
 
@@ -21020,7 +21064,7 @@ function showResult(chosen, correct, timeout, info) {
   var correctOrig = displayToOriginal(correct, shuffle);
 
   // The question card: hide the option list (it stays one tap away under
-  // "Show all options") and REMOVE the How sure? control and Check button.
+  // "Show question and options") and REMOVE the How sure? control and Check button.
   var card = p.closest('.q-card');
   if (card) card.classList.add('is-answered');
   var stage = document.getElementById('confStage');
@@ -21210,20 +21254,25 @@ function vrRecapWatch() {
   }
   try { if (document.fonts && document.fonts.ready) document.fonts.ready.then(vrRecapFit); } catch (e) {}
 }
-// "Show question" shows only when the stem is longer than its two lines.
+// The toggle always shows when there are options to open; with none (an
+// older item), "Show question" shows only when the stem is longer than its
+// two lines.
 function vrRecapFit() {
   var t = document.getElementById('vrRecapT'), b = document.getElementById('vrRecapBtn');
   if (!t || !b || b.getAttribute('aria-expanded') === 'true') return;
+  if (document.getElementById('vrRecapOs')) { b.hidden = false; return; }
   b.hidden = !(t.scrollHeight > t.clientHeight + 1);
 }
 function toggleStemRecap(btn) {
   var t = document.getElementById('vrRecapT');
   if (!t || !btn) return;
+  var os = document.getElementById('vrRecapOs');
   var open = btn.getAttribute('aria-expanded') !== 'true';
   btn.setAttribute('aria-expanded', open ? 'true' : 'false');
   t.classList.toggle('open', open);
+  if (os) os.hidden = !open;
   var l = btn.querySelector('.vr-recap-bt');
-  if (l) l.textContent = open ? 'Show less' : 'Show question';
+  if (l) l.textContent = open ? 'Show less' : (os ? 'Show question and options' : 'Show question');
 }
 
 // "Read more" under a folded Why (after a miss): it opens the rest of the
@@ -24215,12 +24264,33 @@ function renderGlossary() {
     + '</div>'
     + '</div>';
 
+  // Phones scroll the chip rows and A to Z sideways: keep where each was.
+  var rowSel = '.gl-fgroup, .gloss-letter-grid';
+  var rowX = Array.prototype.map.call(area.querySelectorAll(rowSel), function (el) { return el.scrollLeft; });
   area.innerHTML = '<div class="gl">' + hero + toolbar
     + (glossState.view === 'flashcards' ? renderFlashcardArea() : renderGlossList()) + '</div>';
+  Array.prototype.forEach.call(area.querySelectorAll(rowSel), function (el, i) { if (rowX[i]) el.scrollLeft = rowX[i]; });
+  // Each row's chosen chip (and a kept focus) stays in view in its row.
+  Array.prototype.forEach.call(area.querySelectorAll('.gl-fgroup'), function (row) {
+    var kept = keepId ? document.getElementById(keepId) : null;
+    var on = (kept && row.contains(kept)) ? kept : row.querySelector('[aria-pressed="true"]');
+    if (on) glRowReveal(row, on);
+  });
   if (keepId) {
     var k = document.getElementById(keepId);
-    if (k) { try { k.focus({ preventScroll: true }); } catch (e) {} }
+    if (k) {
+      try { k.focus({ preventScroll: true }); } catch (e) {}
+      var kr = k.closest('.gloss-letter-grid');
+      if (kr) glRowReveal(kr, k);
+    }
   }
+}
+// Scroll a sideways row (never the page) so one of its buttons is in view.
+function glRowReveal(row, el) {
+  if (row.scrollWidth <= row.clientWidth) return;
+  var r = row.getBoundingClientRect(), e = el.getBoundingClientRect(), pad = 16;
+  if (e.left < r.left + pad) row.scrollLeft -= (r.left + pad - e.left);
+  else if (e.right > r.right - pad) row.scrollLeft += (e.right - (r.right - pad));
 }
 // The plant script is deferred: draw the Glossary head again once it arrives.
 function glRefreshPlant() {

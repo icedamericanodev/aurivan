@@ -38,6 +38,9 @@ Batched for the end of the uplift (web v13, mobile 2.0.0; DECISIONS 8). Write th
 - In high contrast mode, your picked answer, confidence and filters now stand out clearly, and every button keeps its edge.
 - Study notes titles no longer run into their read counts on small phones, and large text settings now apply on every page from the moment it opens.
 - Each study note now opens as its own reading page, with a way back to the list and the next note one tap away.
+- After you answer, Show question and options brings back all four choices, so every tip is easy to follow.
+- In exam week, Today still shows how many answers you have toward your first readiness range.
+- On phones, the glossary shows its first terms right away, with filters and A to Z in tidy scrolling rows.
 - After a wrong answer, all three tips now stay open; only a long explanation folds under Read more.
 - Learn's tiles sit two by two on phones, and the answer screen shows the note, the principle, the terms and your note on every screen size.
 - Screen readers now hear which practice answer you picked, and the glossary letters are easier to tap.
