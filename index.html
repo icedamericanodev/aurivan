@@ -1612,23 +1612,37 @@ header {
 .pass-chip.pass { background: var(--correct-light); color: var(--correct); }
 .pass-chip.fail { background: var(--wrong-light); color: var(--wrong); }
 
-/* â”€â”€ BOOKMARKS â”€â”€ */
-.bk-panel {
-  background: var(--surface); border: 2px solid var(--border2);
-  border-radius: var(--radius); padding: 24px; box-shadow: var(--shadow);
+/* ── SAVED (Grove Phase 4, PHASE4.md 7.7): the title on the page, filter
+   chips, one solid practise button, the items in one card. ── */
+#screen-bookmarks .bk-panel { max-width: 720px; padding: 0; background: none; border: 0; box-shadow: none; border-radius: 0; }
+.bk-panel-title { margin: var(--sp-xs) 0 var(--sp-lg); padding: 0 4px; font: var(--t-display); letter-spacing: var(--tr-display); color: var(--text); }
+.bk-tag-bar { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin: 0 0 16px; }
+.bk-filter-l { margin-right: 4px; font: var(--t-caption); letter-spacing: var(--tr-caption); color: var(--text2); }
+.bk-tag-chip { display: inline-flex; align-items: center; gap: 6px; padding: 0 14px; cursor: pointer; }
+.bk-drill-btn {
+  display: flex; align-items: center; justify-content: center; width: 100%; min-height: 48px; margin: 0 0 16px; padding: 8px 20px;
+  border: 0; border-radius: var(--r-tile); background: var(--btn); color: var(--on-btn); font: var(--t-button); cursor: pointer;
 }
-.bk-panel-title {
-  margin-top: 0; font: var(--t-display); letter-spacing: var(--tr-display);
-  margin-bottom: 16px; color: var(--text);
+.bk-drill-btn:hover { opacity: .92; }
+.bk-drill-btn:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
+.bk-items, .p4-card.bk-items { list-style: none; margin: 0; padding: 4px 0; }
+.bk-item { position: relative; display: flex; flex-direction: column; align-items: stretch; gap: 8px; padding: 12px var(--card-pad); }
+.bk-item + .bk-item::before { content: ""; position: absolute; top: 0; left: var(--card-pad); right: var(--card-pad); height: 1px; background: var(--border); }
+.bk-open {
+  display: flex; flex-direction: column; align-items: flex-start; gap: 4px; width: 100%; min-height: 44px; padding: 4px 0;
+  border: 0; border-radius: var(--r-sm); background: none; color: var(--text); font: inherit; text-align: left; cursor: pointer;
 }
-.bk-item {
-  background: var(--surface2); border: 2px solid var(--border);
-  border-radius: var(--r-12); padding: 14px 16px; margin-bottom: 8px;
-  display: flex; align-items: flex-start; gap: 12px;
-  cursor: pointer; transition: var(--tr);
+.bk-open:hover .bk-item-text { text-decoration: underline; text-underline-offset: 3px; }
+.bk-open:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
+.bk-item-text { font: var(--t-label); color: var(--text); overflow-wrap: break-word; }
+.bk-item-m { display: inline-flex; flex-wrap: wrap; align-items: center; gap: 6px; font: var(--t-meta); color: var(--text2); }
+.bk-item-m .dom-dot { margin: 0; border-radius: 2px; }
+.bk-tag-select {
+  align-self: flex-start; min-height: 44px; max-width: 100%; padding: 0 36px 0 12px; border: 1.5px solid var(--control); border-radius: var(--r-tile);
+  background: var(--surface) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23697569' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E") right 10px center / 16px no-repeat;
+  color: var(--text); font: var(--t-body); cursor: pointer; appearance: none;
 }
-.bk-item:hover { border-color: var(--warning); transform: translateX(4px); box-shadow: var(--shadow); }
-.bk-item-text { font: var(--t-small); color: var(--text2); flex: 1; }
+.bk-tag-select:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
 .bk-d-tag { font: var(--t-caption); letter-spacing: var(--tr-caption); flex-shrink: 0; }
 .no-bk { font: var(--t-small); color: var(--muted); text-align: center; padding: 32px; }
 
@@ -3851,58 +3865,9 @@ header {
   font: var(--t-caption); letter-spacing: var(--tr-caption);
 }
 
-/* ── BOOKMARK TAGS ── */
-.bk-tag-bar {
-  display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 16px;
-  padding: 10px 14px; background: var(--surface); border: 2px solid var(--border);
-  border-radius: var(--r-12);
-}
-.bk-tag-chip {
-  font: var(--t-chip); letter-spacing: normal;
-  padding: 4px 10px; border-radius: var(--r-pill); border: 1.5px solid var(--border2);
-  background: var(--surface2); color: var(--text2); cursor: pointer;
-  transition: var(--tr); text-transform: none;
-}
-.bk-tag-chip:hover { border-color: var(--accent); color: var(--accent); }
-.bk-tag-chip.active { background: var(--btn); border-color: var(--accent); color: var(--on-btn); }
-.bk-tag-chip.review { border-color: var(--wrong); color: var(--wrong); }
-.bk-tag-chip.review.active { background: var(--wrong-fill); color: var(--on-fill); }
-.bk-tag-chip.tricky { border-color: var(--warning); color: var(--warning); }
-.bk-tag-chip.tricky.active { background: var(--tip-fill); color: var(--on-fill); }
-.bk-tag-chip.reference { border-color: var(--d2); color: var(--text2); }
-.bk-tag-chip.reference.active { background: var(--btn); color: var(--on-btn); }
-.bk-item-tag {
-  font: var(--t-caption); letter-spacing: var(--tr-caption);
-  padding: 2px 7px; border-radius: var(--r-pill);
-  text-transform: none; flex-shrink: 0;
-}
-.bk-item-tag.need-review { background: var(--wrong-light); color: var(--wrong); border: 1.5px solid var(--wrong); }
-.bk-item-tag.tricky-wording { background: var(--warning-light); color: var(--warning); border: 1.5px solid var(--warning); }
-.bk-item-tag.standard-ref { background: var(--d2-light); color: var(--text2); border: 1.5px solid var(--d2-border); }
-.bk-drill-btn {
-  padding: 9px 18px; border-radius: var(--r-10); background: var(--ink);
-  border: none; color: var(--on-forest); font: var(--t-label);
-  cursor: pointer; transition: var(--tr);
-  display: flex; align-items: center; gap: 7px;
-}
-.bk-drill-btn:hover { background: var(--accent); transform: translateY(-1px); }
-.bk-tag-select {
-  margin-left: auto; flex-shrink: 0; max-width: 100%; min-width: 0;
-  padding: 5px 10px; border: 1.5px solid var(--border2); border-radius: var(--r-sm);
-  background: var(--surface2); color: var(--text2);
-  font: var(--t-body); letter-spacing: normal;
-  cursor: pointer; outline: none; appearance: none;
-  text-transform: none;
-}
-.bk-tag-select:focus { border-color: var(--accent); }
-@media (max-width: 600px) {
-  /* The tag <select> renders at 16px (to stop iOS zoom-on-focus) and does not
-     shrink, which collapsed the question-text column to one word per line on
-     narrow screens. Wrap it to its own full-width row below the text, and pad
-     it to a >=44px tap target. */
-  .bk-item { flex-wrap: wrap; }
-  .bk-tag-select { flex-basis: 100%; width: 100%; margin-left: 0; margin-top: 8px; padding: 11px 12px; }
-}
+/* ── BOOKMARK TAGS (Grove Phase 4: see SAVED in the Phase 4 rules) ── */
+.bk-item-tag { font: var(--t-caption); letter-spacing: var(--tr-caption); padding: 2px 7px; border-radius: var(--r-pill); flex-shrink: 0; }
+
 
 /* ── PACING FEEDBACK ── */
 .pacing-feedback {
@@ -5504,12 +5469,12 @@ button.pg-cd:hover { background: var(--surface2); }
 .fg-st-stem { fill: none; stroke: var(--fg-stem); stroke-width: 2; stroke-linecap: round; }
 .fg-st-leaf { fill: var(--fg-leaf); stroke: var(--accent); stroke-width: .9; }
 .fg-st-leaf.c { fill: none; stroke: var(--clay); stroke-width: 1.3; }
-.fg-st-grow { fill: none; stroke: var(--clay); stroke-width: 2.6; stroke-linecap: round; }
+.fg-st-grow { fill: none; stroke: var(--accent); stroke-width: 2.6; stroke-linecap: round; }
 .fg-st-seed { fill: var(--fg-seed); stroke: var(--fg-stem); stroke-width: 1; }
 .fg-st-ghost { fill: none; stroke: var(--control); stroke-width: 1; stroke-dasharray: 2 3; }
 .fg-st-n { font: var(--t-fg-chart); fill: var(--text); }
 .fg-st-n .u { font-size: var(--t-num-sup); }
-.fg-st-up { font: var(--t-fg-tiny); fill: var(--clay); }
+.fg-st-up { font: var(--t-fg-tiny); font-weight: 600; fill: var(--accent-text); }
 .fg-st-dn { font: var(--t-fg-tiny); fill: var(--text2); }
 .fg-st-l1 { font: var(--t-fg-tiny); fill: var(--text2); }
 .fg-st-l2 { font: var(--t-fg-tiny); fill: var(--text); }
@@ -6159,111 +6124,261 @@ body[data-qmoves] .vr-skip-moves { display: block; }
 @keyframes vineDraw { from { transform: scaleY(0); } to { transform: scaleY(1); } }
 @keyframes vineLeaf { from { transform: scale(.4); opacity: 0; } to { transform: scale(1); opacity: 1; } }
 
-/* ── PRACTICE HUB + FOCUSED SESSION (Grove Desk step 3, 2026-10-18) ─────────
-   Hub: one calm column like the mobile Practice tab (title, the coach's
-   line, the forest start panel, the set's options folded behind one row,
-   the session timer, domains, more ways to practice, totals). Focus: a
+/* ── PRACTICE HUB + FOCUSED SESSION (Grove Desk step 3; Grove Phase 4) ─────
+   Hub (PHASE4.md 7.8, the kit's 03 board): the title and its line, the
+   Mindset card, the forest "Picked for you" hero (Domains, Count and Timed
+   tiles, the timed note, Start), Focus next, By domain, Review and saved,
+   Mock exams, each a Grove card; Focus next and Today's principle move to
+   the margin from 1240px. The set's options are a native dialog. Focus: a
    720px column with a slim strip (exit, progress, clock, save), then only
    the question. */
-.ph { max-width: 720px; }
+.ph { max-width: 720px; display: flex; flex-direction: column; gap: 16px; }
+.ph > * { margin: 0; }
+.ph > #sessionBoundaryArea:empty, .ph > #phFocus:empty, .ph > #phPrin:empty { display: none; }
 .ph[hidden], .pf[hidden] { display: none; }
+.ph-head { padding: 0 4px; }
 .ph-title { font: var(--t-display); letter-spacing: var(--tr-display); color: var(--text); margin: var(--sp-xs) 0 var(--sp-lg); }
-/* v12.49 (premium round 2, 5.3): the coach's line is an italic lead under the title. */
-.ph-lead { margin: calc(-1 * var(--sp-sm)) 0 var(--sp-xxl); font: var(--t-aside); color: var(--text2); max-width: 60ch; }
-@media (prefers-reduced-motion: no-preference) { .ph-lead { transition: opacity .4s ease; } }
-.ph #sessionBoundaryArea .session-debrief { margin-bottom: var(--sp-xl); }
+.ph-head .ph-title { margin: var(--sp-xs) 0 6px; }
+.ph-sub { margin: 0; font: var(--t-meta); color: var(--text2); text-wrap: pretty; }
+.ph #sessionBoundaryArea .session-debrief { margin-bottom: 0; }
 
-/* "Picked for you": the set as a plate (left: the pick and its two
-   actions; right: the set as a 248px specimen label, under it below 700px). */
-.ph-pick { margin-bottom: var(--sp-sm); }
-.ph-pick-g { display: grid; grid-template-columns: minmax(0, 1fr) 248px; gap: var(--sp-lg) var(--sp-xl); align-items: start; margin-top: var(--sp-sm); }
-.ph-pick-a { min-width: 0; }
-@container phpick (max-width: 559px) { .ph-pick-g { grid-template-columns: minmax(0, 1fr); } }
-.ph-plate .fg-plate-in { container: phpick / inline-size; }
-.ph-hero-t { font: var(--t-hero); letter-spacing: var(--tr-hero); color: var(--text); margin: 0 0 var(--sp-xs); overflow-wrap: anywhere; }
-.ph-hero-m { font: var(--t-meta); color: var(--text2); margin: 0; }
-.ph-hero-acts { display: flex; flex-wrap: wrap; align-items: center; gap: var(--sp-sm) var(--sp-lg); margin-top: var(--sp-lg); }
-.ph-go { padding: 0 var(--sp-xl); }
+/* Grove Phase 4 shared parts (PHASE4.md section 6): the card, the forest
+   hero with its glyph tile and mint button, rows inside a card, number
+   tiles. */
+.p4-card { background: var(--surface); border-radius: var(--r-card); box-shadow: var(--card-shadow); padding: var(--card-pad); }
+.p4-card-h { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 2px 12px; }
+.p4-card-h > h2 { margin: 0; }
+.p4-card-m { margin: 0; font: var(--t-meta); color: var(--text2); }
+.p4-note { margin: 0; font: var(--t-meta); color: var(--text2); text-wrap: pretty; }
+.p4-badge {
+  flex: none; display: inline-flex; align-items: center; justify-content: center; width: 36px; height: 36px;
+  border-radius: var(--r-badge); background: var(--surface2); color: var(--accent-text);
+}
+[data-theme="dark"] .p4-badge { background: var(--forest); color: var(--sap); }
+.p4-hero {
+  --text: var(--on-forest); --text2: var(--on-forest2); --muted: var(--on-forest2); --border: rgba(255,255,255,.12);
+  --surface2: var(--hero-inset); --accent: var(--sap); --accent-text: var(--sap); --focus-ring: var(--on-forest);
+  display: flex; flex-direction: column; gap: 14px; padding: 18px; border-radius: var(--r-card);
+  background: var(--hero-panel); box-shadow: var(--sh-hero); color: var(--on-forest);
+}
+.p4-hero-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; }
+.p4-hero-h { min-width: 0; display: flex; flex-direction: column; gap: 6px; }
+.p4-kicker { margin: 0; display: flex; align-items: center; gap: 6px; font: var(--t-kicker); letter-spacing: var(--tr-kicker); text-transform: uppercase; color: var(--on-forest2); }
+.p4-kicker .dom-dot { margin: 0; border-radius: 2px; }
+.p4-hero-t { margin: 0; font: var(--t-hero); letter-spacing: var(--tr-hero); color: var(--on-forest); overflow-wrap: break-word; text-wrap: balance; }
+.p4-hero-m, .p4-hero-note { margin: 0; font: var(--t-meta); color: var(--on-forest2); text-wrap: pretty; }
+/* The glyph tile: decorative, never drawn under 360px or at large text. */
+.p4-glyph {
+  flex: none; display: flex; align-items: center; justify-content: center; width: 64px; height: 64px;
+  border-radius: var(--r-18); background: var(--forest-track); color: var(--btn-hero);
+}
+@media (max-width: 22.4375em) { .p4-glyph { display: none; } }
+.fg-large .p4-glyph { display: none; }
+.p4-hero-acts { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 16px; }
+.p4-go, .ph-go {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 52px; padding: 0 24px;
+  border: 0; border-radius: var(--r-tile); background: var(--btn-hero); color: var(--on-btn-hero); font: var(--t-button); cursor: pointer; text-decoration: none;
+}
+.p4-go:hover, .ph-go:hover { filter: brightness(1.05); }
+.p4-go:focus-visible, .ph-go:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
+@media (max-width: 47.9375em) { .ph-hero .ph-go { flex: 1 1 100%; } }
 .ph-ghost {
   min-height: 48px; padding: 0 var(--sp-xs); background: none; border: 0; cursor: pointer;
   color: var(--accent-text); font: var(--t-label); text-decoration: none;
 }
 .ph-ghost:hover { text-decoration: underline; text-underline-offset: 3px; }
-.ph-pick-l .fg-lrow { align-items: center; min-height: 48px; padding-top: var(--sp-sm); padding-bottom: var(--sp-sm); }
-.ph-words { font: var(--t-label); letter-spacing: normal; }
-.ph-pick .fg-cap { margin-top: var(--sp-sm); }
-
-/* The set's options open in place under the plate ("Change the set"). */
-.ph-setup { margin-bottom: var(--sp-xs); }
-.ph-dom:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; border-radius: var(--r-12); }
-.ph-panel { padding: 0 0 var(--sp-xl); border-bottom: 1px solid var(--border); }
-.ph-panel[hidden] { display: none; }
-.ph-field { font: var(--t-caption); letter-spacing: var(--tr-caption); color: var(--text2); margin: var(--sp-xl) 0 var(--sp-md); }
-.ph-hint { font: var(--t-meta); color: var(--text2); margin: var(--sp-md) 0 0; max-width: 60ch; }
-.ph-timer { margin-top: var(--sp-xl); }
-.ph-timer .ph-hint { margin: calc(-1 * var(--sp-sm)) 0 var(--sp-md); }
-.ph-chips { display: flex; flex-wrap: wrap; gap: var(--sp-sm); }
-.ph-chip {
-  display: inline-flex; align-items: center; min-height: 44px; padding: 0 var(--sp-lg); border-radius: var(--r-pill);
-  border: 1.5px solid var(--control); background: transparent; color: var(--text); font: var(--t-chip); cursor: pointer;
+.ph-ghost:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
+/* The set as three inset tiles; they wrap at narrow widths and large text. */
+/* Domains is the widest tile (an area name); at narrow widths and large text
+   the tiles stack (container em: they follow the text size). */
+.ph-hero { container: phhero / inline-size; }
+.ph-tiles { display: grid; grid-template-columns: minmax(0, 1.7fr) minmax(0, 1fr) minmax(0, 1fr); gap: 8px; }
+@container phhero (max-width: 19.5em) {
+  .ph-tiles { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+  .ph-tiles > #phTileDom { grid-column: 1 / -1; }
 }
-.ph-chip:hover { background: var(--surface2); }
-.ph-chip.active, .ph-chip.active:hover { background: var(--text); border-color: var(--text); color: var(--bg); }
-.ph-chip.active .dom-dot { box-shadow: var(--sh-dot-ring); }
-.ph-chip:focus-visible, .ph-done:focus-visible, .ph-ghost:focus-visible, .pf-btn:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
-.ph-done {
-  margin-top: var(--sp-xl); min-height: 48px; padding: 0 var(--sp-xxl); border-radius: var(--r-pill); cursor: pointer;
-  border: 1.5px solid var(--control); background: transparent; color: var(--text); font: var(--t-label);
+@container phhero (max-width: 12em) { .ph-tiles { grid-template-columns: minmax(0, 1fr); } }
+.ph-tile {
+  display: flex; flex-direction: column; align-items: flex-start; gap: 4px; min-width: 0; min-height: 48px; padding: 10px 12px;
+  border: 0; border-radius: var(--r-tile); background: var(--hero-inset); color: var(--on-forest); font: inherit; text-align: left; cursor: pointer;
 }
-/* The sub-topic filter sits on the paper inside the panel, not in a box. */
-.ph-panel .subtopic-filter-row { background: transparent; border: 0; border-radius: 0; padding: 0; margin: var(--sp-xl) 0 0; animation: none; }
-.ph-panel .subtopic-drawer { margin-top: var(--sp-md); }
+.ph-tile:hover { box-shadow: inset 0 0 0 1px var(--forest-line); }
+.ph-tile:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
+.ph-tile-k { font: var(--t-kicker); letter-spacing: var(--tr-kicker); text-transform: uppercase; color: var(--on-forest2); }
+.ph-tile-v { font: var(--t-label); color: var(--on-forest); overflow-wrap: break-word; max-width: 100%; }
+.ph-tile-s { font: var(--t-meta); color: var(--on-forest2); overflow-wrap: anywhere; }
+.ph-tile-sw[aria-checked="true"] .ph-tile-v { color: var(--sap); }
+.ph-cap { margin: -6px 0 0; padding: 0 4px; font: var(--t-meta); color: var(--text2); }
+@media (min-width: 48em) { .p4-hero { padding: 22px; } }
+@media (forced-colors: active) {
+  .p4-card, .p4-hero, .ph-tile, .p4-numtile { border: 1px solid CanvasText; }
+  .ph-tile, .p4-numtile { border-color: ButtonText; }
+}
 
-/* Sections */
-.ph-sec { margin-top: var(--sp-2xl); }
+/* The Mindset tip: a card row (compass badge, "Mindset." then the tip). */
+.ph-mind { display: flex; align-items: flex-start; gap: 12px; padding: 14px 16px; }
+.ph-mind-p { margin: 0; align-self: center; font: var(--t-small); color: var(--text); text-wrap: pretty; }
+.ph-mind-k { font-weight: 600; }
+.ph-mind-t { color: var(--text2); }
+@media (prefers-reduced-motion: no-preference) { .ph-mind-t { transition: opacity .4s ease; } }
+
+/* Rows inside a card: 36px badges, label over meta, dividers inset. */
+.p4-card.ph-sec { padding: 0; }
+.p4-card.ph-sec > .p4-card-h { padding: 16px var(--card-pad) 6px; }
+.p4-rows { margin: 0; padding: 0 0 6px; }
+.p4-rows .you-row, .p4-card .ph-dom { min-height: 56px; padding: 12px var(--card-pad); border-bottom: 0; border-radius: 0; gap: 12px; }
+.p4-rows li, .ph-doms li { position: relative; }
+.p4-rows li + li::before, .ph-doms li + li::before { content: ""; position: absolute; top: 0; left: var(--card-pad); right: var(--card-pad); height: 1px; background: var(--border); }
+.p4-rows .you-ico { width: 36px; height: 36px; border-radius: var(--r-badge); background: var(--surface2); color: var(--accent-text); }
+[data-theme="dark"] .p4-rows .you-ico { background: var(--forest); color: var(--sap); }
+.p4-rows .you-t { font: var(--t-label); overflow-wrap: anywhere; }
+.p4-rows .you-m { font: var(--t-meta); }
+.p4-row-k { font: var(--t-caption); letter-spacing: var(--tr-caption); color: var(--text2); }
+.p4-rows .you-row:focus-visible, .p4-card .ph-dom:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: -2px; border-radius: var(--r-tile); }
+.p4-rows-top { padding: 0; }
+.p4-count {
+  flex: none; display: inline-flex; align-items: center; justify-content: center; min-width: 32px; height: 28px; padding: 0 8px;
+  border-radius: var(--r-10); background: var(--surface2); color: var(--accent-text); font: var(--t-label); font-variant-numeric: tabular-nums;
+}
+[data-theme="dark"] .p4-count { background: var(--forest-track); color: var(--sap); }
+/* The area where you'll gain most keeps its clay badge (DECISIONS 11). */
+.p4-rows .sr-row-focus .you-ico, [data-theme="dark"] .p4-rows .sr-row-focus .you-ico { background: var(--badge-clay); color: var(--clay); }
+
+/* By domain: number, dot, short name, weight and answers; status at the right. */
+.ph-doms { list-style: none; margin: 0; padding: 0 0 6px; }
+.ph-dom {
+  display: grid; grid-template-columns: 1.25em minmax(0, 1fr) auto 18px; align-items: center; column-gap: 12px;
+  width: 100%; background: none; border: 0; color: var(--text); text-align: left; cursor: pointer; font: inherit;
+}
+.ph-dom:hover { background: var(--surface2); }
+.ph-dom:hover .you-chev { color: var(--text); }
+.ph-dom-n { font: var(--t-meta); color: var(--text2); font-variant-numeric: tabular-nums; }
+.ph-dom-body { min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+.ph-dom-t { display: inline-flex; align-items: center; gap: 8px; font: var(--t-label); color: var(--text); overflow-wrap: anywhere; }
+.ph-dom-t .dom-dot { margin: 0; flex: none; border-radius: 2px; }
+.ph-dom-m { font: var(--t-meta); color: var(--text2); }
+.ph-dom-s { display: flex; flex-direction: column; align-items: flex-end; gap: 2px; text-align: right; }
+.ph-dom-v { font: var(--t-num-inline); letter-spacing: var(--tr-num-inline); color: var(--text); white-space: nowrap; }
+.ph-dom-v sup { font-size: var(--t-num-sup); line-height: 0; vertical-align: .9em; letter-spacing: 0; }
+.ph-dom-w { font: var(--t-meta); color: var(--text2); }
+.ph-dom-w.c { padding: 1px 8px; border-radius: var(--r-pill); background: var(--badge-clay); color: var(--clay); }
+/* Narrow or large text: the status goes under the name. */
+@container phdom (max-width: 22em) {
+  .ph-dom { grid-template-columns: 1.25em minmax(0, 1fr) 18px; row-gap: 4px; }
+  .ph-dom-s { grid-column: 2; grid-row: 2; align-items: flex-start; flex-direction: row; flex-wrap: wrap; gap: 4px 8px; text-align: left; }
+  .ph-dom .you-chev { grid-column: 3; grid-row: 1 / span 2; }
+}
+.ph-doms { container: phdom / inline-size; }
+.ph-bands { margin: -6px 0 0; padding: 0 4px; font: var(--t-meta); color: var(--text2); max-width: 62ch; }
 .ph-h { font: var(--t-headline); letter-spacing: var(--tr-headline); color: var(--text); margin: 0; }
 .ph-h-meta { font: var(--t-meta); color: var(--text2); margin: var(--sp-xs) 0 var(--sp-xs); }
 .ph-h-row { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 0 var(--sp-lg); margin-bottom: var(--sp-sm); }
 .ph-h-row .ph-h-meta { margin: 0; }
+.ph-sec { margin-top: var(--sp-2xl); }
+.ph > .ph-sec { margin-top: 0; }
 .you-stats { margin: var(--sp-md) 0 var(--sp-lg); }
 
-/* By domain: one scale for all five (an 8px ruler with the dashed 70 tick),
-   the band word in italic serif, the value on the right. Under 30 answers a
-   dashed outline, no fill, no number. */
-.ph-doms { list-style: none; margin: 0; padding: 0; }
-.ph-doms li + li .ph-dom { border-top: 1px solid var(--border); }
-.ph-dom {
-  display: grid; grid-template-columns: 28px minmax(0, 1fr) auto 18px; align-items: center; gap: var(--sp-xs) var(--sp-md);
-  width: 100%; min-height: 72px; padding: var(--sp-md) 0; background: none; border: 0; border-radius: 0;
-  color: var(--text); text-align: left; cursor: pointer; font: inherit;
+/* Mock exams: two number tiles, then the scaled score note. */
+.ph-mocks #phMocks { display: flex; flex-direction: column; gap: 12px; padding: 6px var(--card-pad) var(--card-pad); }
+.p4-numtiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 9em), 1fr)); gap: 8px; }
+.p4-numtile {
+  display: flex; flex-direction: column; align-items: flex-start; gap: 2px; min-width: 0; min-height: 48px; padding: 14px 16px;
+  border: 0; border-radius: var(--r-tile); background: transparent; box-shadow: inset 0 0 0 1px var(--border); color: var(--text); font: inherit; text-align: left; cursor: pointer;
 }
-.ph-dom:hover .you-chev { color: var(--text); }
-.ph-dom:hover .ph-dom-t { text-decoration: underline; text-underline-offset: 3px; }
-.ph-dom-n { align-self: start; padding-top: 1px; font: var(--t-aside); color: var(--text2); }
-.ph-dom-body { min-width: 0; display: flex; flex-direction: column; }
-.ph-dom-t { display: inline-flex; align-items: center; font: var(--t-label); color: var(--text); }
-.ph-dom-t .dom-dot { margin-right: var(--sp-sm); }
-.ph-ruler { position: relative; display: block; height: 8px; max-width: 360px; margin: var(--sp-sm) 0 var(--sp-sm); border-radius: var(--r-xs); background: var(--track); }
-.ph-ruler-f { position: absolute; left: 0; top: 0; bottom: 0; width: 100%; border-radius: var(--r-xs); background: var(--accent); transform: scaleX(var(--f, 0)); transform-origin: left center; }
-/* The 70 tick: a 1px paper gap each side, so it reads across the fill. */
-.ph-ruler-70 { position: absolute; left: 70%; top: -4px; bottom: -4px; width: 0; border-left: 1.5px dashed var(--text2); box-shadow: -1px 0 0 var(--bg), 1px 0 0 var(--bg); }
-.ph-ruler.seed { background: transparent; outline: 1.5px dashed var(--control); outline-offset: -1.5px; }
-.ph-dom-foot { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0 var(--sp-md); }
-.ph-dom-w { font: var(--t-aside); color: var(--text2); }
-.ph-dom-w.c { color: var(--clay); }
-.ph-dom-m { font: var(--t-meta); color: var(--text2); }
-.ph-dom-v { min-width: 52px; text-align: right; font: var(--t-num-inline); letter-spacing: var(--tr-num-inline); color: var(--text); white-space: nowrap; }
-.ph-dom-v sup { font-size: var(--t-num-sup); line-height: 0; vertical-align: .9em; letter-spacing: 0; }
-.ph-dom-v.none { color: var(--text2); }
-.ph-bands { margin: var(--sp-sm) 0 0; font: var(--t-meta); color: var(--text2); max-width: 62ch; }
-/* The rulers fill once a day: 400ms, 40ms apart. Transform only; Reduce Motion shows them filled. */
-@keyframes phFill { from { transform: scaleX(0); } }
-@media (prefers-reduced-motion: no-preference) {
-  .ph-fill-in .ph-ruler-f { animation: phFill .4s cubic-bezier(.33, 1, .68, 1) both; animation-delay: calc(var(--i, 0) * 40ms); }
+.p4-numtile:hover { background: var(--surface2); }
+.p4-numtile:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
+.p4-numtile-n { font: var(--t-num-value); letter-spacing: var(--tr-num-value); color: var(--text); font-variant-numeric: tabular-nums; }
+.p4-numtile-t { margin-top: 4px; font: var(--t-label); color: var(--text); }
+.p4-numtile-m { font: var(--t-meta); color: var(--text2); }
+
+/* The set's options: a native dialog, a bottom sheet below 48em and a
+   centred dialog from 48em, each group in one card. */
+.ph-dlg {
+  width: 100%; max-width: 36rem; max-height: min(92dvh, 100%); margin: auto auto 0; padding: 0; border: 0;
+  border-radius: var(--r-card) var(--r-card) 0 0; background: var(--surface); color: var(--text); box-shadow: var(--shadow-lg);
+  overflow: auto; overscroll-behavior: contain;
 }
-/* Review and saved: a key list, one button per row */
-.ph-keys { margin-top: var(--sp-xs); }
-.ph-keys .fg-key:first-child { border-top: 0; }
+.ph-dlg::backdrop { background: rgba(10, 15, 12, .55); }
+@media (min-width: 48em) { .ph-dlg { margin: auto; max-height: 88dvh; border-radius: var(--r-card); } }
+.ph-dlg-in { display: flex; flex-direction: column; gap: 12px; padding: 8px var(--card-pad) calc(var(--card-pad) + env(safe-area-inset-bottom)); }
+.ph-dlg-head { position: sticky; top: 0; z-index: 1; display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 10px 0 6px; background: var(--surface); }
+.ph-dlg-t { margin: 0; font: var(--t-hero); letter-spacing: var(--tr-hero); color: var(--text); }
+.ph-dlg-x {
+  flex: none; display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; margin-right: -8px;
+  border: 0; border-radius: var(--r-round); background: none; color: var(--text2); cursor: pointer;
+}
+.ph-dlg-x:hover { background: var(--surface2); color: var(--text); }
+.ph-dlg-x:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
+.ph-panel { display: flex; flex-direction: column; gap: 12px; }
+.ph-grp { padding: 14px 16px 16px; border-radius: var(--r-tile); box-shadow: inset 0 0 0 1px var(--border); }
+.ph-field { font: var(--t-caption); letter-spacing: var(--tr-caption); color: var(--text2); margin: 0 0 var(--sp-md); }
+.ph-hint { font: var(--t-meta); color: var(--text2); margin: var(--sp-md) 0 0; max-width: 60ch; }
+.ph-chips { display: flex; flex-wrap: wrap; gap: var(--sp-sm); }
+.ph-chip { display: inline-flex; align-items: center; gap: 6px; padding: 0 var(--sp-lg); cursor: pointer; }
+.ph-chip .dom-dot { margin: 0; }
+.ph-done {
+  width: 100%; min-height: 48px; padding: 0 var(--sp-xxl); border-radius: var(--r-tile); cursor: pointer;
+  border: 1.5px solid var(--control); background: transparent; color: var(--text); font: var(--t-label);
+}
+.ph-done:hover { background: var(--surface2); }
+.ph-done:focus-visible, .pf-btn:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
+.ph-timer { padding-top: 4px; padding-bottom: 8px; }
+.ph-timer .you-list { margin: 0; }
+.ph-timer .you-row { border-bottom: 0; min-height: 56px; }
+.ph-timer .ph-hint { margin: 0; }
+/* The sub-topic filter sits inside the Domain group, not in a box. */
+.ph-panel .subtopic-filter-row { background: transparent; border: 0; border-radius: 0; padding: 0; margin: var(--sp-lg) 0 0; animation: none; }
+.ph-panel .subtopic-drawer { margin-top: var(--sp-md); }
+.st-acc { font: var(--t-meta); color: var(--text2); }
+/* Mock results (7.13): Where to look next, Review answers and the signs as cards. */
+.rs-mock > .p4-card { margin-top: 16px; }
+.rs-mock > .p4-card > .ph-h, .rs-mock .mr-h-row .ph-h { font: var(--t-headline); letter-spacing: var(--tr-headline); text-transform: none; color: var(--text); }
+.mr-signs-card #mrmSigns, .mr-signs-card #srhSigns { margin: 0 0 var(--sp-sm); }
+.mr-side .mr-signs-card { margin-top: 16px; }
+/* Set results (7.11): the stats as Today's clearing tiles, caption labels. */
+.rs-tiles { margin: var(--sp-lg) 0 0; }
+.rs-tiles .td-clear-k { font: var(--t-caption); letter-spacing: var(--tr-caption); text-transform: none; }
+.rs-tiles .td-clear-v sup { font-size: var(--t-num-sup); line-height: 0; vertical-align: .9em; letter-spacing: 0; }
+.rs-set .rs-tiles + .rs-acts { margin-top: var(--sp-lg); }
+/* Focus next and Today's principle as cards (in the page, or the margin from 1240px). */
+.p4-card.sr-card { padding: 16px 0 6px; }
+.sr-card > .sr-cap { margin: 0 0 6px; padding: 0 var(--card-pad); }
+.sr-card .sr-rows { border: 0; }
+.sr-card .sr-kick { display: block; }
+.sr-card.sr-card-prin { display: flex; flex-direction: column; gap: 8px; padding: var(--card-pad); }
+.sr-card-prin > .sr-cap { margin: 0; padding: 0; }
+.sr-card-prin .sr-link { margin: 0; align-self: flex-start; }
+.study-rail .sr-card + .sr-card { margin-top: 16px; }
+.sr-card .sr-mocks { margin: 0; padding: 0 var(--card-pad) 10px; }
+.sr-card .sr-mocks li:last-child { border-bottom: 0; }
+
+/* One selected look (PHASE4.md section 5): selected is ink, never green.
+   The chip keeps its shape and fill; a 2px ink edge inside the box and a
+   14px tick show the choice. */
+:is(.ph-chip, .subtopic-chip, .fb-type, .gloss-chip, .bk-tag-chip, .gt-chip) {
+  min-height: 44px; border: 1.5px solid var(--control); background: transparent; color: var(--text);
+  border-radius: var(--r-pill); font: var(--t-chip); box-shadow: none;
+}
+@media (hover: hover) {
+  :is(.ph-chip, .subtopic-chip, .fb-type, .gloss-chip, .bk-tag-chip, .gt-chip):not(.active, .selected, [aria-pressed="true"]):hover { background: var(--surface2); border-color: var(--text2); color: var(--text); }
+}
+:is(.ph-chip, .subtopic-chip, .fb-type, .gloss-chip, .bk-tag-chip, .gt-chip):is(.active, .selected, [aria-pressed="true"]),
+:is(.ph-chip, .subtopic-chip, .fb-type, .gloss-chip, .bk-tag-chip, .gt-chip):is(.active, .selected, [aria-pressed="true"]):hover {
+  background: transparent; border-color: var(--text); box-shadow: inset 0 0 0 .5px var(--text); color: var(--text);
+}
+:is(.ph-chip, .subtopic-chip, .fb-type, .gloss-chip, .bk-tag-chip, .gt-chip):is(.active, .selected, [aria-pressed="true"])::before {
+  content: ""; flex: none; display: inline-block; width: 14px; height: 14px; margin-right: 2px; background: currentColor;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m5 12.5 4.5 4.5L19 7.5'/%3E%3C/svg%3E") center / contain no-repeat;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m5 12.5 4.5 4.5L19 7.5'/%3E%3C/svg%3E") center / contain no-repeat;
+}
+:is(.ph-chip, .subtopic-chip, .fb-type, .gloss-chip, .bk-tag-chip, .gt-chip):active { background: var(--surface2); }
+:is(.ph-chip, .subtopic-chip, .fb-type, .gloss-chip, .bk-tag-chip, .gt-chip):focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
+:is(.ph-chip, .subtopic-chip, .fb-type, .gloss-chip, .bk-tag-chip, .gt-chip):is([aria-disabled="true"], :disabled) { color: var(--muted); border-color: var(--border); }
+@media (forced-colors: active) {
+  :is(.ph-chip, .subtopic-chip, .fb-type, .gloss-chip, .bk-tag-chip, .gt-chip) { border-color: ButtonBorder; }
+  :is(.ph-chip, .subtopic-chip, .fb-type, .gloss-chip, .bk-tag-chip, .gt-chip):is(.active, .selected, [aria-pressed="true"]) { outline: 2px solid Highlight; outline-offset: -2px; }
+  :is(.ph-chip, .subtopic-chip, .fb-type, .gloss-chip, .bk-tag-chip, .gt-chip):is(.active, .selected, [aria-pressed="true"])::before { forced-color-adjust: none; background: Highlight; }
+}
 /* Focused session */
 .pf { max-width: 640px; margin: 0 auto; }
 .pf #qArea { max-width: none; margin: 0; }
@@ -6338,7 +6453,7 @@ body[data-tab="practice"][data-pview="focus"] #subNav { display: none; }
 .rs-title { font: var(--t-display); letter-spacing: var(--tr-display); color: var(--text); margin: var(--sp-xs) 0 0; overflow-wrap: anywhere; }
 .rs-set .rs-title { font: var(--t-hero); letter-spacing: var(--tr-hero); }
 .rs-fact { font: var(--t-small); color: var(--text2); margin: var(--sp-xs) 0 0; }
-.rs-timesup { font: var(--t-label); color: var(--clay); margin: var(--sp-sm) 0 0; }
+.rs-timesup { font: var(--t-label); color: var(--wrong); margin: var(--sp-sm) 0 0; }
 .rs-plate { margin-top: var(--sp-xxl); background: var(--raised2); border-radius: var(--r-lg); padding: var(--sp-xxl); }
 .rs-plate .td-legend { margin-top: var(--sp-xl); }
 .rs-dcount { flex-shrink: 0; font: var(--t-meta); color: var(--text2); font-variant-numeric: tabular-nums; }
@@ -6411,7 +6526,7 @@ body[data-tab="practice"][data-pview="focus"] #subNav { display: none; }
   color: var(--text2); font: var(--t-chip);
 }
 .mr-seg-b:hover { color: var(--text); }
-.mr-seg-b.on { background: var(--text); color: var(--bg); }
+.mr-seg-b.on { background: var(--surface); color: var(--text); box-shadow: inset 0 0 0 2px var(--text); }
 .mr-seg-b:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
 .mr-list { list-style: none; margin: var(--sp-sm) 0 0; padding: 0; }
 .mr-item[hidden] { display: none; }
@@ -6486,17 +6601,24 @@ body[data-tab="practice"][data-pview="focus"] #subNav { display: none; }
 .mk-resume-t { font: var(--t-hero); letter-spacing: var(--tr-hero); color: var(--on-forest); margin: var(--sp-xs) 0; max-width: min(520px, calc(100% - 110px)); }
 .mk-resume-m { font: var(--t-meta); color: var(--on-forest2); margin: 0; }
 .mk-resume-acts { margin-top: var(--sp-xl); }
-.mk-types { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--sp-md); margin-top: var(--sp-md); }
-.mk-intro.fg-sub { font: var(--t-aside); color: var(--text2); margin: var(--sp-xs) 0 var(--sp-xxl); }
-.mk-pick > .ph-h + .fg-plate { margin-top: var(--sp-md); }
-/* Inside the "Two mocks, one pace" plate the cards are mounted flat: no shadow, a hairline, 3px corners. */
-.mk-pick .mk-type { box-shadow: none; border-radius: var(--r-3); border: 1px solid var(--border); }
-@media (min-width: 640px) { .mk-types { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
-.mk-type { display: flex; flex-direction: column; align-items: flex-start; padding: var(--sp-xxl); background: var(--raised); border: 1px solid var(--raised-outline); border-radius: var(--r-md); box-shadow: var(--shadow); }
-.mk-type-t { font: var(--t-hero); letter-spacing: var(--tr-hero); color: var(--text); margin: 0; }
-.mk-type-n { font: var(--t-label); color: var(--text); margin: var(--sp-xs) 0 0; font-variant-numeric: tabular-nums; }
-.mk-type-m { font: var(--t-small); color: var(--text2); margin: var(--sp-xs) 0 var(--sp-xl); flex: 1; }
+.mk-types { display: grid; grid-template-columns: minmax(0, 1fr); gap: 8px; }
+.mk-intro { font: var(--t-meta); color: var(--text2); margin: 6px 0 var(--sp-xl); }
+/* Grove Phase 4 (7.12): the page's cards; the two mocks as number tiles. */
+.mk > .p4-card { display: flex; flex-direction: column; gap: 12px; margin-top: 16px; }
+.mk > .p4-card > .ph-h-meta, .mk > .p4-card > ul { margin: 0; }
+.mk-types { container: mktypes / inline-size; }
+@container mktypes (min-width: 30em) { .mk-types > .mk-type { min-width: 0; } }
+@media (min-width: 37.5em) { .mk-types { grid-template-columns: repeat(auto-fit, minmax(min(100%, 14em), 1fr)); } }
+.mk-type, .mk-pick .mk-type {
+  display: flex; flex-direction: column; align-items: flex-start; gap: 2px; padding: 16px;
+  background: transparent; border: 0; border-radius: var(--r-tile); box-shadow: inset 0 0 0 1px var(--border);
+}
+.mk-type-num { font: var(--t-num-value); letter-spacing: var(--tr-num-value); color: var(--text); font-variant-numeric: tabular-nums; }
+.mk-type-t { font: var(--t-label); letter-spacing: normal; color: var(--text); margin: 4px 0 0; }
+.mk-type-n { font: var(--t-meta); color: var(--text2); margin: 0; font-variant-numeric: tabular-nums; }
+.mk-type-m { font: var(--t-meta); color: var(--text2); margin: 0 0 var(--sp-lg); flex: 1; }
 .mk-type .rs-btn { width: 100%; }
+@media (forced-colors: active) { .mk-type { border: 1px solid CanvasText; } }
 .mk-weights, .mk-past { margin-top: var(--sp-md); }
 /* At large text the date and count move under the name instead of pushing the row past the screen. */
 .mk-weights li, .mk-past li { flex-wrap: wrap; }
@@ -6709,9 +6831,6 @@ html { scroll-padding-bottom: calc(104px + var(--consent-h, 0px)); }
 /* Fallbacks in the page: the hub's margin (Ready today, Today's principle)
    after Review and saved; on the answer screen, the note link and "Add a
    note" after the Key idea. */
-.ph-focus { margin-top: var(--sp-2xl); }
-.ph-focus + .ph-focus { margin-top: var(--sp-2xl); }
-.ph-focus .sr-kick { display: block; }
 /* Ready today: plain rows (no icon circles), a hairline above and below. */
 .sr-rows-plain .you-ico { display: none; }
 .sr-rows-plain { border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
@@ -7027,9 +7146,6 @@ html { scroll-padding-bottom: calc(104px + var(--consent-h, 0px)); }
   body[data-tab="mock"][data-mview="q"] .toast { bottom: calc(96px + var(--consent-h, 0px) + env(safe-area-inset-bottom)); }
 }
 
-/* The practice hub's Timed switch (counts up, never a countdown). */
-.ph-timer .you-list { margin: 0; }
-.ph-timer .ph-hint { margin-top: var(--sp-xs); }
 
 /* The cookie question (v12.30): a slim bar on the bottom edge, shown after
    the first answer, never over the welcome. */
@@ -7938,7 +8054,7 @@ html { scroll-padding-bottom: calc(104px + var(--consent-h, 0px)); }
 /* ── Type scale by page (design-notes/grove/TYPE_SCALE.md R4) ──
    Tab homes and their lists head sections with a kicker; reading pages,
    results, Settings and sheets use the headline. */
-#phDomH, #phMoreH, #mkPickH, #mkWH, #mkPastH, #srhMocks,
+#phDomH, #phMoreH, #phMockH, #mkPickH, #mkWH, #mkPastH, #srhMocks,
 #srhPrin, #phmPrin, #srhFocus, #phmFocus { font: var(--t-kicker); letter-spacing: var(--tr-kicker); text-transform: uppercase; color: var(--text2); }
 #srhCheck, #srhToc, #srhLook, #srhDeeper, #srhTerms, #srhMine, #srhSigns, #mrmSigns,
 .gt-sec:not(.gt-sec-def) > .gt-cap, .gt-audit-h, h3.gt-cap.eg-sub, #egTocH, #fwTocH,
@@ -8080,48 +8196,73 @@ html[data-kbd] :where(.you-plant, .vision-panel, .gt-panel, .readiness-card) :wh
      setPracticeView() switches between them. -->
 <div id="screen-practice" class="screen active">
   <div class="ph" id="practiceHub">
-    <h1 class="ph-title" id="phTitle" tabindex="-1">Practice</h1>
-    <!-- MINDSET LINE (the coach's voice): an italic lead under the title (v12.49) -->
-    <p class="ph-lead" id="msText">You are an auditor: you assess, recommend, and report. You don't fix.</p>
-    <!-- Decision 9 — a finished set's debrief, when you leave from it -->
-    <div id="sessionBoundaryArea"></div>
-    <!-- "Picked for you" (v12.49): the set as a plate; "Change the set" opens the options below it. -->
-    <div id="phHero"></div>
-    <div class="ph-setup">
-      <div class="ph-panel" id="phPanel" role="region" aria-label="Set options" hidden>
-        <p class="ph-field" id="phDomL">Domain</p>
-        <div class="ph-chips" role="group" aria-labelledby="phDomL" id="phDomChips"></div>
-        <div id="subtopicFilterArea"></div>
-        <p class="ph-field" id="phLenL">Length</p>
-        <div class="ph-chips" role="group" aria-labelledby="phLenL" id="phLenChips"></div>
-        <p class="ph-field" id="phDiffL">Difficulty</p>
-        <div class="ph-chips" role="group" aria-labelledby="phDiffL">
-          <button type="button" class="ph-chip active" data-diff="any" aria-pressed="true" onclick="setDiff(this,'any')">Any</button>
-          <button type="button" class="ph-chip" data-diff="foundational" aria-pressed="false" onclick="setDiff(this,'foundational')">Foundational</button>
-          <button type="button" class="ph-chip" data-diff="application" aria-pressed="false" onclick="setDiff(this,'application')">Application</button>
-          <button type="button" class="ph-chip" data-diff="analysis" aria-pressed="false" onclick="setDiff(this,'analysis')">Analysis</button>
-        </div>
-        <p class="ph-hint">Foundational is recall, Application is a scenario, Analysis is best judgment. The exam is mostly Application and Analysis.</p>
-        <!-- Timed (v12.30, the mobile rule): a switch; the clock counts up while you answer, never down. -->
-        <div class="ph-timer">
-          <ul class="you-list">
-            <li><button type="button" class="you-row" id="phTimedBtn" role="switch" aria-checked="false" aria-labelledby="phTimedT" aria-describedby="phTimedM phTimedH" onclick="toggleTimer()"><span class="you-ico" aria-hidden="true"><svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2"/><path d="M9.5 2.5h5"/></svg></span><span class="you-text"><span class="you-t" id="phTimedT">Timed</span><span class="you-m" id="phTimedM">Counts up while you answer; never a countdown.</span></span><span class="you-switch" aria-hidden="true"></span></button></li>
-          </ul>
-          <p class="ph-hint" id="phTimedH">The exam allows about 96 seconds a question.</p>
-        </div>
-        <button type="button" class="ph-done" onclick="togglePracticeSetup(false)">Done</button>
-      </div>
+    <div class="ph-head">
+      <h1 class="ph-title" id="phTitle" tabindex="-1">Practice</h1>
+      <p class="ph-sub">Every option explained, every trap named.</p>
     </div>
-    <!-- Below 1240px, Ready today follows the plate (the margin from 1240px) -->
+    <!-- Grove Phase 4 (PHASE4.md 7.8): the Mindset tip as a card row (the coach's line). -->
+    <div class="p4-card ph-mind">
+      <span class="p4-badge" aria-hidden="true"><svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="9"/><path d="m15.6 8.4-2.1 5.1-5.1 2.1 2.1-5.1z"/></svg></span>
+      <p class="ph-mind-p"><span class="ph-mind-k">Mindset.</span> <span class="ph-mind-t" id="msText">You are an auditor: you assess, recommend, and report. You do not fix.</span></p>
+    </div>
+    <!-- Decision 9: a finished set's debrief, when you leave from it -->
+    <div id="sessionBoundaryArea"></div>
+    <!-- "Picked for you": the forest hero with the Domains, Count and Timed tiles. -->
+    <div id="phHero"></div>
+    <!-- The set's options: a native dialog (a bottom sheet below 48em, centred
+         from 48em), opened from the Domains and Count tiles and Build a set.
+         The panel inside keeps its ids, which renderers fill. -->
+    <dialog class="ph-dlg" id="phDlg" aria-labelledby="phDlgT">
+      <div class="ph-dlg-in">
+        <div class="ph-dlg-head">
+          <h2 class="ph-dlg-t" id="phDlgT">Set options</h2>
+          <button type="button" class="ph-dlg-x" aria-label="Close set options" onclick="togglePracticeSetup(false)"><svg class="ico" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
+        </div>
+        <div class="ph-panel" id="phPanel">
+          <div class="ph-grp" id="phGrpDom">
+            <p class="ph-field" id="phDomL">Domain</p>
+            <div class="ph-chips" role="group" aria-labelledby="phDomL" id="phDomChips"></div>
+            <div id="subtopicFilterArea"></div>
+          </div>
+          <div class="ph-grp" id="phGrpLen">
+            <p class="ph-field" id="phLenL">Length</p>
+            <div class="ph-chips" role="group" aria-labelledby="phLenL" id="phLenChips"></div>
+          </div>
+          <div class="ph-grp" id="phGrpDiff">
+            <p class="ph-field" id="phDiffL">Difficulty</p>
+            <div class="ph-chips" role="group" aria-labelledby="phDiffL">
+              <button type="button" class="ph-chip active" data-diff="any" aria-pressed="true" onclick="setDiff(this,'any')">Any</button>
+              <button type="button" class="ph-chip" data-diff="foundational" aria-pressed="false" onclick="setDiff(this,'foundational')">Foundational</button>
+              <button type="button" class="ph-chip" data-diff="application" aria-pressed="false" onclick="setDiff(this,'application')">Application</button>
+              <button type="button" class="ph-chip" data-diff="analysis" aria-pressed="false" onclick="setDiff(this,'analysis')">Analysis</button>
+            </div>
+            <p class="ph-hint">Foundational is recall, Application is a scenario, Analysis is best judgment. The exam is mostly Application and Analysis.</p>
+          </div>
+          <!-- Timed (v12.30, the mobile rule): a switch; the clock counts up while you answer, never down. -->
+          <div class="ph-grp ph-timer" id="phGrpTimed">
+            <ul class="you-list">
+              <li><button type="button" class="you-row" id="phTimedBtn" role="switch" aria-checked="false" aria-labelledby="phTimedT" aria-describedby="phTimedM phTimedH" onclick="toggleTimer()"><span class="you-ico" aria-hidden="true"><svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2"/><path d="M9.5 2.5h5"/></svg></span><span class="you-text"><span class="you-t" id="phTimedT">Timed</span><span class="you-m" id="phTimedM">Counts up while you answer; never a countdown.</span></span><span class="you-switch" aria-hidden="true"></span></button></li>
+            </ul>
+            <p class="ph-hint" id="phTimedH">The exam allows about 96 seconds a question.</p>
+          </div>
+          <button type="button" class="ph-done" onclick="togglePracticeSetup(false)">Done</button>
+        </div>
+      </div>
+    </dialog>
+    <!-- Focus next: here below 1240px, a card in the margin from 1240px -->
     <div id="phFocus"></div>
-    <section class="ph-sec" aria-labelledby="phDomH">
-      <div class="ph-h-row"><h2 class="ph-h" id="phDomH">By domain</h2><p class="ph-h-meta">Starts a set in that domain</p></div>
+    <section class="p4-card ph-sec ph-dom-card" aria-labelledby="phDomH">
+      <div class="p4-card-h"><h2 class="ph-h" id="phDomH">By domain</h2><p class="p4-card-m">Starts a set in that domain</p></div>
       <ul class="ph-doms" id="domainGrid"></ul>
-      <p class="ph-bands" id="phBands"></p>
     </section>
-    <section class="ph-sec" aria-labelledby="phMoreH">
-      <h2 class="ph-h" id="phMoreH">Review and saved</h2>
+    <p class="ph-bands" id="phBands"></p>
+    <section class="p4-card ph-sec" aria-labelledby="phMoreH">
+      <div class="p4-card-h"><h2 class="ph-h" id="phMoreH">Review and saved</h2></div>
       <div id="phMore"></div>
+    </section>
+    <section class="p4-card ph-sec ph-mocks" aria-labelledby="phMockH">
+      <div class="p4-card-h"><h2 class="ph-h" id="phMockH">Mock exams</h2><p class="p4-card-m">Timed like the real exam</p></div>
+      <div id="phMocks"></div>
     </section>
     <!-- Below 1240px, Today's principle closes the page (the margin from 1240px) -->
     <div id="phPrin"></div>
@@ -8506,6 +8647,8 @@ var ICONS = {
   "missed": "<circle cx=\"12\" cy=\"12\" r=\"9\"/><path d=\"m9.2 9.2 5.6 5.6M14.8 9.2l-5.6 5.6\"/>",
   // Study rail rows: a weak spot (target) and recent mistakes (try again).
   "target": "<circle cx=\"12\" cy=\"12\" r=\"8.5\"/><circle cx=\"12\" cy=\"12\" r=\"4\"/><path d=\"M12 1.5v3M12 19.5v3M1.5 12h3M19.5 12h3\"/>",
+  // Build a set (Grove Phase 4): the set's options.
+  "sliders": "<path d=\"M4 7h9M17 7h3M4 17h3M11 17h9\"/><circle cx=\"15\" cy=\"7\" r=\"2\"/><circle cx=\"9\" cy=\"17\" r=\"2\"/>",
   "retry": "<path d=\"M9 14 4 9l5-5\"/><path d=\"M4 9h10.5a5.5 5.5 0 0 1 0 11H11\"/>",
   "install": "<path d=\"M12 3.5v11M7.5 10l4.5 4.5 4.5-4.5\"/><path d=\"M4.5 17v2.5a1 1 0 0 0 1 1h13a1 1 0 0 0 1-1V17\"/>",
   // The study-day streak's glyph (mobile Sprig, components/glyphs.tsx).
@@ -8988,7 +9131,7 @@ const TOPIC_STUDY_DETAILS = {
 
 const MINDSET = [
   "You are an auditor: you assess, recommend, and report. You do not fix.",
-  "When you see FIRST - eliminate any option that implements a solution.",
+  "When you see FIRST, eliminate any option that implements a solution.",
   "Risk-based thinking: always address the highest risk area first.",
   "Preventive controls > Detective controls > Corrective controls.",
   "Least privilege and need-to-know are the auditor best friends.",
@@ -16839,7 +16982,10 @@ function updateFocusStrip() {
   } else if (pr.total > 0) {
     html = '<span class="pf-bar" aria-hidden="true"><span style="width:' + Math.round((pr.done / pr.total) * 100) + '%"></span></span>';
   } else {
-    html = '<span class="pf-label">' + escapeHtml(focusSetName())
+    // A finished set's results name the set in their running head, so the
+    // strip says only how many were answered (PHASE4.md 7.11).
+    html = pendingDebrief ? '<span class="pf-label">' + pr.done + ' answered</span>'
+      : '<span class="pf-label">' + escapeHtml(focusSetName())
       + (pr.done ? '<span class="pf-label-n"> &middot; ' + pr.done + ' answered</span>' : '') + '</span>';
   }
   mid.innerHTML = html;
@@ -16924,16 +17070,37 @@ function continuePractice() {
   if (shouldResumeCurrent()) resumeCurrentQuestion();
   else nextQ();
 }
-function togglePracticeSetup(open) {
+// The set's options open as a native dialog (Grove Phase 4, PHASE4.md 7.8):
+// showModal() keeps focus inside, Esc closes and the page behind is inert.
+// The panel's ids are filled by renderers, so the node is never rebuilt.
+// `group` ('dom' or 'len') is where focus lands; focus goes back to the tile
+// or row that opened it.
+var phSetupOpener = null;
+function phDlgInit(dlg) {
+  if (dlg.getAttribute('data-ready')) return;
+  dlg.setAttribute('data-ready', '1');
+  dlg.addEventListener('close', function () {
+    phSetupOpen = false;
+    var back = phSetupOpener && document.getElementById(phSetupOpener);
+    phSetupOpener = null;
+    if (back) { try { back.focus({ preventScroll: true }); } catch (e) {} }
+  });
+  // A click on the backdrop (the dialog box itself, outside its card) closes it.
+  dlg.addEventListener('click', function (e) { if (e.target === dlg) dlg.close(); });
+}
+function togglePracticeSetup(open, group, opener) {
+  var dlg = document.getElementById('phDlg');
   phSetupOpen = typeof open === 'boolean' ? open : !phSetupOpen;
+  if (!dlg || typeof dlg.showModal !== 'function') { renderPracticeHub(); return; }
+  phDlgInit(dlg);
+  if (!phSetupOpen) { if (dlg.open) dlg.close(); return; }
+  var from = opener || document.activeElement;
+  phSetupOpener = from && from.id ? from.id : null;
   renderPracticeHub();
-  // "Change the set" lives in the plate, which was just drawn again: focus
-  // goes back to the new button (on Done too).
-  var b = document.getElementById('phSumBtn');
-  if (b) { try { b.focus({ preventScroll: true }); } catch (e) {} }
-  // Opened: the options come into view (below the plate, often under the fold on a phone).
-  var panel = document.getElementById('phPanel');
-  if (phSetupOpen && panel) { try { panel.scrollIntoView({ block: 'nearest' }); } catch (e) {} }
+  if (!dlg.open) { try { dlg.showModal(); } catch (e) { dlg.setAttribute('open', ''); } }
+  var box = document.getElementById(group === 'len' ? 'phLenChips' : 'phDomChips');
+  var target = box && (box.querySelector('[aria-pressed="true"]') || box.querySelector('button'));
+  if (target) { try { target.focus({ preventScroll: true }); } catch (e) {} }
 }
 
 // The hub's one start action, shared with Today's panel (step 4): continue
@@ -16966,16 +17133,22 @@ function runPracticePrimary() {
   else startPracticeSet();
 }
 
-// "Picked for you" (web v12.49; premium round 2, 5.3): the set as a
-// plate. Left: what Start opens (the domain, its length and time, and "where
-// you'll gain most" only when it is the domain with the most to gain), Start
-// and "Change the set" (which opens the set's options in place). Right: the
-// set as a specimen label. The line under it only when it is true: a measured
-// domain just under the 70 line.
+// "Picked for you" (Grove Phase 4, PHASE4.md 7.8; the kit's 03 board): one
+// forest hero. The kicker, the set's name, its length and time (and "where
+// you'll gain most" only when it is the domain with the most to gain), the
+// leaf glyph, three inset tiles (Domains and Count open the set's options;
+// Timed is the switch itself), the timed note and Start. The line under it
+// only when it is true: a measured domain just under the 70 line.
 var PH_JUST_UNDER = 5;   // "just under the 70 line": within 5 points of it
+var PH_LEAF_GLYPH = '<svg viewBox="0 0 48 48" width="40" height="40" aria-hidden="true" focusable="false"><path d="M10 40 C18 30 28 18 40 8" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="M16 33 C14 27 15 22 18 19 M22 27 C20 21 21 16 25 13 M28 20 C27 15 29 11 32 9 M18 35 C24 36 28 34 31 31 M24 28 C30 29 34 27 36 24 M30 21 C35 21 38 19 40 16" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>';
+var PH_DIFF_WORD = { foundational: 'Foundational', application: 'Application', analysis: 'Analysis' };
 function renderPracticeHub() {
   var hero = document.getElementById('phHero');
   if (!hero || typeof S === 'undefined' || !S) return;
+  // A redraw keeps focus on the control that had it (a tile, a chip).
+  var act = document.activeElement;
+  var keepId = act && act.id && hero.contains(act) ? act.id : null;
+  var keepChip = act && act.getAttribute && act.getAttribute('data-k') ? act.getAttribute('data-k') : null;
   var rd = null;
   try { rd = computeTodayReadiness(); } catch (e) { rd = null; }
   var p = practicePrimary();
@@ -16987,34 +17160,47 @@ function renderPracticeHub() {
     if (next && next.id && DI[next.id]) { S.selectedDomain = String(next.id); p = practicePrimary(); }
     else next = null;
   }
-  var scope = practiceScopeName();
   var d = S.selectedDomain && S.selectedDomain !== 'all' && DI[S.selectedDomain] ? String(S.selectedDomain) : null;
   var dx = d && rd ? rd.domains.filter(function (x) { return x.id === d; })[0] : null;
   var meta = p.meta;
+  if (!p.resume && S.diff && PH_DIFF_WORD[S.diff]) meta += ' &middot; ' + PH_DIFF_WORD[S.diff];
   if (!p.resume && d && rd && rd.answered > 0 && rd.focusId === d) meta += ' &middot; where you&rsquo;ll gain most';
   else if (!p.resume && d && next && next.plan && next.id === d) meta += ' &middot; today&rsquo;s set';
-  var change = '<button type="button" class="ph-ghost" id="phSumBtn" aria-expanded="' + (phSetupOpen ? 'true' : 'false') + '" aria-controls="phPanel" onclick="togglePracticeSetup()">Change the set</button>';
-  var acts = '<button type="button" class="fg-btn ph-go" onclick="runPracticePrimary()">' + p.label + ico('arrow-right', 18) + '</button>'
-    + (p.resume ? '<button type="button" class="ph-ghost" onclick="startPracticeSet()">Start a new set</button>' : '') + change;
-  var rows = [{ k: 'Domain', vHtml: '<span class="ph-words">' + escapeHtml(scope) + '</span>' }];
-  if (activeSubtopic) rows.push({ k: 'Topic', vHtml: '<span class="ph-words">' + escapeHtml(subtopicLabel(activeSubtopic)) + '</span>' });
-  rows.push({ k: 'Length', vHtml: practiceLen === -1 ? '<span class="ph-words">Open-ended</span>' : practiceLen + '<small>questions</small>' });
-  rows.push({ k: 'Difficulty', vHtml: '<span class="ph-words">' + escapeHtml(S.diff && S.diff !== 'any' ? S.diff.charAt(0).toUpperCase() + S.diff.slice(1) : 'Any') + '</span>' });
-  rows.push({ k: 'Timed', vHtml: '<span class="ph-words">' + (S.timerEnabled ? 'On' : 'Off') + '</span>' });
+  var kick = p.resume ? 'Where you left off' : rd && rd.answered === 0 ? 'A place to start' : 'Picked for you';
+  var domWords = d ? DI[d].short : 'All ' + Object.keys(DI).length;
+  var tile = function (id, k, vHtml, subHtml, group, said) {
+    return '<button type="button" class="ph-tile" id="' + id + '" aria-haspopup="dialog" aria-label="' + escapeHtml(said) + '"'
+      + ' onclick="togglePracticeSetup(true,\'' + group + '\',this)">'
+      + '<span class="ph-tile-k" aria-hidden="true">' + k + '</span><span class="ph-tile-v" aria-hidden="true">' + vHtml + '</span>'
+      + (subHtml ? '<span class="ph-tile-s" aria-hidden="true">' + subHtml + '</span>' : '') + '</button>';
+  };
+  var topic = activeSubtopic ? subtopicLabel(activeSubtopic) : '';
+  var lenWords = practiceLen === -1 ? 'Open-ended' : String(practiceLen);
+  var tiles = '<div class="ph-tiles">'
+    + tile('phTileDom', 'Domains', escapeHtml(domWords), topic ? escapeHtml(topic) : '', 'dom',
+      'Domains: ' + (d ? DI[d].short : 'all ' + Object.keys(DI).length) + (topic ? ', ' + topic : '') + '. Change the set')
+    + tile('phTileLen', 'Count', escapeHtml(lenWords), '', 'len',
+      'Count: ' + (practiceLen === -1 ? 'open-ended' : practiceLen + ' questions') + '. Change the set')
+    + '<button type="button" class="ph-tile ph-tile-sw" id="phTileTimed" role="switch" aria-checked="' + (S.timerEnabled ? 'true' : 'false') + '"'
+      + ' aria-label="Timed" aria-describedby="phHeroNote" onclick="toggleTimer()">'
+      + '<span class="ph-tile-k" aria-hidden="true">Timed</span><span class="ph-tile-v" aria-hidden="true">' + (S.timerEnabled ? 'On' : 'Off') + '</span></button>'
+    + '</div>';
+  var acts = '<button type="button" class="ph-go" onclick="runPracticePrimary()">' + p.label + ico('arrow-right', 18) + '</button>'
+    + (p.resume ? '<button type="button" class="ph-ghost" onclick="startPracticeSet()">Start a new set</button>' : '');
   var pct = dx ? Math.round(dx.mastery * 100) : null;
   var cap = !p.resume && dx && dx.answered >= DOMAIN_READ_MIN && pct < DOMAIN_TARGET_PCT && pct >= DOMAIN_TARGET_PCT - PH_JUST_UNDER
-    ? fgCaption('', DI[d].short + ' is ' + DI[d].weight + '% of the exam and sits just under the ' + DOMAIN_TARGET_PCT + ' line.') : '';
-  hero.innerHTML = '<section class="ph-pick" aria-labelledby="phHeroF">'
-    + fgPlate('', fgFigHtml(p.resume ? 'Where you left off' : rd && rd.answered === 0 ? 'A place to start' : 'Picked for you', 2, 'phHeroF')
-      + '<div class="ph-pick-g"><div class="ph-pick-a">'
-      + '<p class="ph-hero-t" id="phHeroT">' + p.title + '</p>'
-      + '<p class="ph-hero-m">' + meta + '</p>'
-      + '<div class="ph-hero-acts">' + acts + '</div></div>'
-      + fgLabel(rows, 'ph-pick-l') + '</div>', 'ph-plate')
-    + cap + '</section>';
-
-  var panel = document.getElementById('phPanel');
-  if (panel) panel.hidden = !phSetupOpen;
+    ? '<p class="ph-cap">' + escapeHtml(DI[d].short + ' is ' + DI[d].weight + '% of the exam and sits just under the ' + DOMAIN_TARGET_PCT + ' line.') + '</p>' : '';
+  hero.innerHTML = '<section class="p4-hero ph-hero" aria-labelledby="phHeroT">'
+    + '<div class="p4-hero-top"><div class="p4-hero-h">'
+    + '<p class="p4-kicker">' + kick + '</p>'
+    + '<h2 class="p4-hero-t" id="phHeroT">' + p.title + '</h2>'
+    + '<p class="p4-hero-m">' + meta + '</p></div>'
+    + '<span class="p4-glyph" aria-hidden="true">' + PH_LEAF_GLYPH + '</span></div>'
+    + tiles
+    + '<p class="p4-hero-note" id="phHeroNote">Timed counts up while you answer, never a countdown. The exam allows about ' + PRACTICE_PACE_SECONDS + ' seconds a question.</p>'
+    + '<div class="p4-hero-acts">' + acts + '</div>'
+    + '</section>' + cap;
+  if (keepId) { var k = document.getElementById(keepId); if (k) { try { k.focus({ preventScroll: true }); } catch (e) {} } }
 
   var dc = document.getElementById('phDomChips');
   if (dc) {
@@ -17022,7 +17208,7 @@ function renderPracticeHub() {
     dc.innerHTML = [['all', 'All domains']].concat(Object.keys(DI).map(function (k) { return [k, DI[k].short]; }))
       .map(function (c) {
         var on = sel === c[0];
-        return '<button type="button" class="ph-chip' + (on ? ' active' : '') + '" aria-pressed="' + on + '" onclick="selectDomain(\'' + c[0] + '\')">'
+        return '<button type="button" class="ph-chip' + (on ? ' active' : '') + '" data-k="dom-' + c[0] + '" aria-pressed="' + on + '" onclick="selectDomain(\'' + c[0] + '\')">'
           + (c[0] !== 'all' ? '<span class="dom-dot" style="background:' + DI[c[0]].color + '"></span>' : '') + escapeHtml(c[1]) + '</button>';
       }).join('');
   }
@@ -17030,91 +17216,114 @@ function renderPracticeHub() {
   if (lc) {
     lc.innerHTML = PRACTICE_LENGTHS.map(function (c) {
       var on = practiceLen === c[0];
-      return '<button type="button" class="ph-chip' + (on ? ' active' : '') + '" aria-pressed="' + on + '"'
+      return '<button type="button" class="ph-chip' + (on ? ' active' : '') + '" data-k="len-' + c[0] + '" aria-pressed="' + on + '"'
         + (c[0] > 0 ? ' aria-label="' + c[0] + ' questions"' : '') + ' onclick="setPracticeLen(' + c[0] + ')">' + c[1] + '</button>';
     }).join('');
   }
   syncDiffChips();
+  if (keepChip) {
+    var kc = [].filter.call(document.querySelectorAll('#phDlg [data-k]'), function (x) { return x.getAttribute('data-k') === keepChip; })[0];
+    if (kc && kc !== document.activeElement) { try { kc.focus({ preventScroll: true }); } catch (e) {} }
+  }
 
-  // Review and saved: the full lists as a key list (owner decision, 19 Oct:
-  // the margin's "Ready today" carries the smart picks, so this list has no
-  // spaced-review row of its own).
+  // Review and saved (PHASE4.md 7.8 item 7): rows with 36px badges. The
+  // mock exam row moved to the Mock exams card.
   var more = document.getElementById('phMore');
   if (more) {
     var missed = (S.missedQuestions || []).length;
     var saved = (S.bookmarks || []).length;
     var weak = weakDrillRanked().slice(0, 3).filter(function (r) { return r.tier < 2; }).map(function (r) { return DI[r.d].short; });
-    var weakLine = S.score && S.score.t > 0 && weak.length ? listWords(weak) : 'The domains you miss most';
-    var mockLine = isMockInProgress() ? 'In progress &middot; resume where you left off' : 'Full or mini, timed like the real exam';
-    more.innerHTML = fgKeyList([
-      { tHtml: 'All missed questions', mHtml: missed ? 'Each one, to try again' : 'None yet', onclick: 'practiceMissed()' },
-      { tHtml: 'Saved questions', mHtml: saved ? saved + ' saved' : 'Save a question to find it here', onclick: "switchTab('bookmarks')" },
-      { tHtml: 'Drill your weak spots', mHtml: escapeHtml(weakLine), onclick: 'startWeakSpotsDrill()' },
-      { tHtml: 'Mock exam', mHtml: mockLine, onclick: "switchTab('mock')" }
-    ], '', 'ph-keys');
+    var weakLine = S.score && S.score.t > 0 && weak.length ? 'From ' + listWords(weak) : 'From the domains you miss most';
+    more.innerHTML = p4RowsHtml([
+      { id: 'phRowMissed', icon: 'missed', title: 'All missed questions', meta: missed ? 'Each one you missed, to try again' : 'None yet', onclick: 'practiceMissed()' },
+      { id: 'phRowWeak', icon: 'weak', title: 'Weak spots drill', meta: escapeHtml(weakLine), onclick: 'startWeakSpotsDrill()' },
+      { id: 'phRowSaved', icon: 'saved', title: 'All saved questions', meta: saved ? saved + ' saved' : 'Save a question to find it here', onclick: "switchTab('bookmarks')" },
+      { id: 'phRowBuild', icon: 'sliders', title: 'Build a set', meta: 'Pick a domain, topic and difficulty', onclick: "togglePracticeSetup(true,'dom',this)", dialog: true }
+    ]);
   }
-  // Ready today and Today's principle (the margin, or in the page below 1240px).
+  // Mock exams (7.8 item 8): the two sizes as tiles, then the scaled score note.
+  var mk = document.getElementById('phMocks');
+  if (mk) {
+    var open = isMockInProgress();
+    var mt = function (type, m, line) {
+      return '<button type="button" class="p4-numtile" id="phMk-' + type + '" onclick="phStartMock(\'' + type + '\')">'
+        + '<span class="p4-numtile-n">' + MOCK_TYPES[type].total + '</span>'
+        + '<span class="p4-numtile-t">' + MOCK_TYPES[type].name + '</span>'
+        + '<span class="p4-numtile-m">' + line + '</span></button>';
+    };
+    mk.innerHTML = (open ? p4RowsHtml([{ id: 'phRowMock', icon: 'mock', title: 'Your mock in progress', meta: 'Resume where you left off', onclick: "switchTab('mock')" }], 'p4-rows-top') : '')
+      + '<div class="p4-numtiles">'
+      + mt('mini', MOCK_TYPES.mini, MOCK_TYPES.mini.minutes + ' min &middot; feedback at the end')
+      + mt('full', MOCK_TYPES.full, mockMinutesWords(MOCK_TYPES.full.minutes) + ' &middot; weighted like the real ' + escapeHtml(ACTIVE.name))
+      + '</div>'
+      + '<p class="p4-note">' + SCALED_SCORE_NOTE + '</p>';
+  }
+  // Focus next and Today's principle (the margin, or in the page below 1240px).
   try { railSync(); } catch (e) {}
+}
+// The scaled score note (PHASE4.md O9), in the owner's words.
+var SCALED_SCORE_NOTE = 'ISACA reports scaled scores from 200 to 800. The score needed is 450.';
+// A mock tile on the hub: the mock page, with that size's start sheet open.
+function phStartMock(type) {
+  switchTab('mock');
+  try { showMockConfirm(type); } catch (e) {}
+}
+// Rows inside a Grove card (36px badge, label over meta, chevron, 1px
+// dividers inset 16px). Each row is one button.
+function p4RowsHtml(rows, cls) {
+  return '<ul class="you-list p4-rows' + (cls ? ' ' + cls : '') + '">' + rows.map(function (r) {
+    return '<li><button type="button" class="you-row p4-row' + (r.cls ? ' ' + r.cls : '') + '"' + (r.id ? ' id="' + r.id + '"' : '')
+      + (r.dialog ? ' aria-haspopup="dialog"' : '') + (r.said ? ' aria-label="' + escapeHtml(r.said) + '"' : '') + ' onclick="' + r.onclick + '">'
+      + '<span class="you-ico" aria-hidden="true">' + ico(r.icon, 20) + '</span>'
+      + '<span class="you-text">' + (r.kicker ? '<span class="p4-row-k">' + r.kicker + '</span>' : '')
+      + '<span class="you-t">' + r.title + '</span>' + (r.meta ? '<span class="you-m">' + r.meta + '</span>' : '') + '</span>'
+      + (r.endHtml || '')
+      + '<span class="you-chev" aria-hidden="true">' + ico('chevron', 18) + '</span>'
+      + '</button></li>';
+  }).join('') + '</ul>';
 }
 // "A", "A and B", "A, B and C"
 function listWords(a) {
   return a.length < 2 ? (a[0] || '') : a.slice(0, -1).join(', ') + ' and ' + a[a.length - 1];
 }
 
-// ── PRACTICE HUB: BY DOMAIN (v12.49; premium round 2, 5.3) ──
-// Each domain on one scale: an 8px ruler with the dashed 70 tick, the band
-// word (clay with "below 70" under the line), how many answered, the value.
-// Under 30 answers the ruler is a dashed outline with no fill and no number
-// ("too few yet"), so a few answers never read as a verdict. The read is
-// Today's figure (the latest try at each question, the mobile rule). Each
-// row is one button that starts a set there. The rulers fill once a day.
+// ── PRACTICE HUB: BY DOMAIN (Grove Phase 4, PHASE4.md 7.8 item 6) ──
+// One row per domain in a card: the number, the area dot, the short name,
+// "18% of the exam · 2 seen", and the status at the right ("Not started",
+// "Too few yet", or the score with its band word; clay only below 70).
+// Each row is one button that starts a set there. The read is Today's
+// figure (the latest try at each question, the mobile rule).
 var BANDS_LINE = 'Building is under 70, Steady 70 to 79, Strong 80 and up. A domain is measured from 30 answers.';
-var PH_FILL_DAY_KEY = 'aurivan_ph_fill_day';   // new device key: the day the rulers last filled in
-function phFillToday() {
-  if (typeof S === 'undefined' || !S || S.activeTab !== 'practice' || practiceView !== 'hub') return false;
-  // Wait for the banks: the once-a-day fill plays on the render after they load.
-  if (Object.keys(DI).some(function (d) { return isQBLoading(d); })) return false;
-  var today = parityDayKey(Date.now()), last = '';
-  try { last = localStorage.getItem(PH_FILL_DAY_KEY) || ''; } catch (e) { last = today; }
-  if (last === today) return false;
-  try { localStorage.setItem(PH_FILL_DAY_KEY, today); } catch (e) {}
-  return true;
-}
 function renderDomainGrid() {
   var g = document.getElementById('domainGrid');
   if (!g) return;
   var rd = computeTodayReadiness();
-  var fill = phFillToday();
-  g.classList.toggle('ph-fill-in', fill);
+  var keep = document.activeElement && g.contains(document.activeElement) ? document.activeElement.getAttribute('data-d') : null;
   g.innerHTML = Object.keys(DI).map(function (d, i) {
     var info = DI[d];
     var x = rd.domains[i];
     var pct = Math.round(x.mastery * 100);
     var n = x.answered, none = n <= 0, few = n < DOMAIN_READ_MIN, below = !few && pct < DOMAIN_TARGET_PCT;
     var band = few ? '' : bandFor(pct);
-    // Not started: the track alone; a few answers: the dashed seed outline.
-    var seed = few && !none;
-    var wordHtml = none ? '<span class="ph-dom-w">not started</span>'
-      : few ? '<span class="ph-dom-w">too few yet &middot; ' + n + ' answered</span>'
-      : '<span class="ph-dom-w' + (below ? ' c' : '') + '">' + band + (below ? ' &middot; below ' + DOMAIN_TARGET_PCT : '') + '</span><span class="ph-dom-m">' + n + ' answered</span>';
     var load = isQBLoading(d) ? 'loading' : (window.QB_LOAD_ERROR && window.QB_LOAD_ERROR[d]) ? 'could not load' : '';
-    if (load) wordHtml += '<span class="ph-dom-m">' + load + '</span>';
-    var said = info.short + ', ' + (none ? 'not started' : few ? 'too few yet, ' + n + ' answered'
-      : pct + ' percent, ' + band + (below ? ', below ' + DOMAIN_TARGET_PCT : '') + ', ' + n + ' answered')
+    var status = none ? '<span class="ph-dom-w">Not started</span>'
+      : few ? '<span class="ph-dom-w">Too few yet</span>'
+      : '<span class="ph-dom-v">' + pct + '<sup>%</sup></span><span class="ph-dom-w' + (below ? ' c' : '') + '">' + band + (below ? ' &middot; below ' + DOMAIN_TARGET_PCT : '') + '</span>';
+    var said = 'Domain ' + (i + 1) + ', ' + info.short + ', ' + info.weight + ' percent of the exam, ' + n + ' seen, '
+      + (none ? 'not started' : few ? 'too few yet' : pct + ' percent, ' + band + (below ? ', below ' + DOMAIN_TARGET_PCT : ''))
       + (load ? ', ' + load : '') + '. Starts a set.';
     return '<li><button type="button" class="ph-dom" data-d="' + d + '" aria-label="' + escapeHtml(said) + '" onclick="practiceDomain(\'' + d + '\')">'
       + '<span class="ph-dom-n" aria-hidden="true">' + (i + 1) + '</span>'
       + '<span class="ph-dom-body" aria-hidden="true">'
       + '<span class="ph-dom-t"><span class="dom-dot" style="background:' + info.color + '"></span>' + escapeHtml(info.short) + '</span>'
-      + '<span class="ph-ruler' + (seed ? ' seed' : '') + '">' + (few ? '' : '<span class="ph-ruler-f" style="--f:' + (pct / 100) + ';--i:' + i + '"></span>')
-      + '<span class="ph-ruler-70"></span></span>'
-      + '<span class="ph-dom-foot">' + wordHtml + '</span></span>'
-      + '<span class="ph-dom-v' + (few ? ' none' : '') + '" aria-hidden="true">' + (few ? '' : pct + '<sup>%</sup>') + '</span>'
+      + '<span class="ph-dom-m">' + info.weight + '% of the exam &middot; ' + n + ' seen' + (load ? ' &middot; ' + load : '') + '</span></span>'
+      + '<span class="ph-dom-s" aria-hidden="true">' + status + '</span>'
       + '<span class="you-chev" aria-hidden="true">' + ico('chevron', 18) + '</span>'
       + '</button></li>';
   }).join('');
-  var b = document.getElementById('phBands');
-  if (b) b.textContent = BANDS_LINE;
+  if (keep) { var b = g.querySelector('[data-d="' + keep + '"]'); if (b) { try { b.focus({ preventScroll: true }); } catch (e) {} } }
+  var bl = document.getElementById('phBands');
+  if (bl) bl.textContent = BANDS_LINE;
 }
 
 // An open question from last time: refresh it from the bank, then the hub's
@@ -17277,29 +17486,49 @@ function railRecentMistakes(due) {
 }
 // Up to 3 smart picks, in learning-impact order (the hub's "Review and saved"
 // holds the full lists). None for a new learner. The due list is read once.
+// Focus next (Grove Phase 4, PHASE4.md 7.8 item 5): the questions to revisit
+// (their count at the right), the area where you'll gain most (r.focusId,
+// DECISIONS 14 follow-up; its clay badge; never called a weak spot), then
+// the existing weak topic mix and this week's mistakes.
 function railFocusRows() {
   var rows = [];
   var dueIds = railDueIds();
   var dueMap = {};
   dueIds.forEach(function (id) { dueMap[id] = true; });
   // The set it starts (at most REVIEW_SESSION_CAP), never the queue total.
-  if (dueIds.length) rows.push({ kind: 'review', icon: 'review', cap: '', title: 'Questions to revisit', meta: Math.min(dueIds.length, REVIEW_SESSION_CAP) + ' ready to revisit &middot; oldest first' });
+  if (dueIds.length) {
+    var nDue = Math.min(dueIds.length, REVIEW_SESSION_CAP);
+    rows.push({ kind: 'review', icon: 'review', cap: '', title: 'Questions to revisit', meta: 'Ready today &middot; oldest first', count: nDue,
+      said: 'Questions to revisit, ' + nDue + ' ready today, oldest first' });
+  }
+  var r = null;
+  try { r = computeTodayReadiness(); } catch (e) { r = null; }
+  if (r && r.answered > 0 && r.focusId && DI[r.focusId]) {
+    rows.push({ kind: 'focus', icon: 'target', cap: '', title: escapeHtml(DI[r.focusId].short), meta: 'Where you&rsquo;ll gain most &middot; ' + DI[r.focusId].weight + '% of the exam', cls: 'sr-row-focus' });
+  }
   var w = railWeakSpot();
-  if (w) rows.push({ kind: 'weak', icon: 'target', cap: 'Weak spot &middot; mixed set', title: escapeHtml(w.name), meta: escapeHtml(DI[w.d].short) + ' &middot; ' + w.right + ' of ' + w.n + ' right' });
+  if (w) rows.push({ kind: 'weak', icon: 'weak', cap: 'Weak spot &middot; mixed set', title: escapeHtml(w.name), meta: escapeHtml(DI[w.d].short) + ' &middot; ' + w.right + ' of ' + w.n + ' right' });
   var m = railRecentMistakes(dueMap).length;
   if (m) rows.push({ kind: 'mistakes', icon: 'retry', cap: 'Recent mistakes', title: 'Try this week&rsquo;s mistakes', meta: Math.min(m, RAIL_SHOW_MAX) + ' ready to retry' });
-  return rows.slice(0, 3);
+  return rows.slice(0, 4);
 }
 function railRowHtml(r) {
-  return '<li><button type="button" class="you-row sr-row" data-rail-start="' + r.kind + '" onclick="railStart(\'' + r.kind + '\')">'
+  return '<li><button type="button" class="you-row sr-row p4-row' + (r.cls ? ' ' + r.cls : '') + '" data-rail-start="' + r.kind + '"'
+    + (r.said ? ' aria-label="' + escapeHtml(r.said) + '"' : '') + ' onclick="railStart(\'' + r.kind + '\')">'
     + '<span class="you-ico" aria-hidden="true">' + ico(r.icon, 20) + '</span>'
     + '<span class="you-text">' + (r.cap ? '<span class="sr-kick">' + r.cap + '</span>' : '') + '<span class="you-t">' + r.title + '</span><span class="you-m">' + r.meta + '</span></span>'
-    + '<span class="you-chev" aria-hidden="true">' + ico('chevron', 18) + '</span>'
+    + (r.count ? '<span class="p4-count" aria-hidden="true">' + r.count + '</span>' : '<span class="you-chev" aria-hidden="true">' + ico('chevron', 18) + '</span>')
     + '</button></li>';
 }
 // A row's action: the review queue, the weak spot's mixed set, or the retry.
 function railStart(kind) {
   if (kind === 'review') { railStat('start_review'); startReviewQueue(); return; }
+  if (kind === 'focus') {
+    var fr = null;
+    try { fr = computeTodayReadiness(); } catch (e) { fr = null; }
+    if (fr && fr.focusId && DI[fr.focusId]) practiceDomain(fr.focusId);
+    return;
+  }
   if (kind === 'weak') {
     var w = railWeakSpot();
     var qs = w ? railMixedSet(w) : [];
@@ -17748,11 +17977,12 @@ function railHubSections(pre) {
   pre = pre || 'srh';
   var secs = [];
   var rows = railFocusRows();
-  if (rows.length) secs.push({ id: 'focus', key: rows.map(function (r) { return r.kind + r.meta + r.title; }).join('|'),
-    html: '<h2 class="sr-cap" id="' + pre + 'Focus">Ready today</h2><ul class="you-list sr-rows sr-rows-plain">' + rows.map(railRowHtml).join('') + '</ul>' });
+  if (rows.length) secs.push({ id: 'focus', key: rows.map(function (r) { return r.kind + r.meta + r.title + (r.count || ''); }).join('|'),
+    cls: 'p4-card sr-card', html: '<h2 class="sr-cap" id="' + pre + 'Focus">Focus next</h2><ul class="you-list p4-rows sr-rows">' + rows.map(railRowHtml).join('') + '</ul>' });
   var p = railPrinciple();
-  if (p) secs.push({ id: 'principle', key: 'p:' + p.id, html: '<h2 class="sr-cap" id="' + pre + 'Prin">Today&rsquo;s principle</h2>'
-    + '<div class="sr-key"><p class="sr-quote">' + escapeHtml(p.rule || '') + '</p><p class="sr-meta">' + escapeHtml(p.title) + '</p></div>'
+  // Today's principle as on Today: a plain card, no left rule.
+  if (p) secs.push({ id: 'principle', key: 'p:' + p.id, cls: 'p4-card sr-card sr-card-prin', html: '<h2 class="sr-cap" id="' + pre + 'Prin">Today&rsquo;s principle</h2>'
+    + '<p class="sr-quote">' + escapeHtml(p.rule || '') + '</p><p class="sr-meta">' + escapeHtml(p.title) + '</p>'
     + '<a class="sr-link" href="#principles/' + escapeHtml(p.id) + '" data-pid="' + escapeHtml(p.id) + '" onclick="return railOpenPrinciples(event,this.dataset.pid)">Read this principle' + ico('arrow-right', 16) + '</a>' });
   return secs;
 }
@@ -17840,7 +18070,7 @@ function railMockSections() {
   var hist = (Array.isArray(S.mockHistory) ? S.mockHistory : []).slice(0, 3);
   if (!hist.length) return [];
   var html = mockPastRowsHtml(hist);
-  return [{ id: 'mocks', key: 'mocks:' + html, html: '<h2 class="sr-cap" id="srhMocks">Your past mocks</h2><ul class="td-legend mk-past sr-mocks">' + html + '</ul>' }];
+  return [{ id: 'mocks', key: 'mocks:' + html, cls: 'p4-card sr-card', html: '<h2 class="sr-cap" id="srhMocks">Your past mocks</h2><ul class="td-legend mk-past sr-mocks">' + html + '</ul>' }];
 }
 
 // The fallbacks inside the page (below the breakpoints).
@@ -17853,7 +18083,7 @@ function railHubInline(show) {
     if (!slot) return;
     var html = secs.filter(function (s) { return s.id === pair[0]; }).map(function (s) {
       var h = /^<h2[^>]* id="([^"]+)"/.exec(s.html);
-      return '<section class="ph-focus sr-sec"' + (h ? ' aria-labelledby="' + h[1] + '"' : '') + '>' + s.html + '</section>';
+      return '<section class="ph-focus sr-sec' + (s.cls ? ' ' + s.cls : '') + '"' + (h ? ' aria-labelledby="' + h[1] + '"' : '') + '>' + s.html + '</section>';
     }).join('');
     if (slot.innerHTML !== html) slot.innerHTML = html;
   });
@@ -19622,7 +19852,9 @@ function rsGrowthPlate(byDomain, before) {
     return { id: d, name: DI[d].name, short: DI[d].short, pct: now[d].pct, answered: now[d].answered, before: b,
       note: byDomain[d].c + ' of ' + byDomain[d].t + ' this set' };
   });
-  var key = 'Dashed: the ' + DOMAIN_TARGET_PCT + ' line. Clay: growth from this set (with ↑), or a domain below it (with “below ' + DOMAIN_TARGET_PCT + '”).';
+  // Grove Phase 4 (PHASE4.md 7.11, DECISIONS 13 Q1): growth is green with ↑;
+  // clay only marks an area below 70.
+  var key = 'Dashed line: ' + DOMAIN_TARGET_PCT + ', the target for each area. ↑: growth from this set. Clay: an area below ' + DOMAIN_TARGET_PCT + '.';
   if (areas.length > 1) {
     return fgPlate('Your domains after this set', fgStemChart(areas, { ink: true, label: 'Each domain in this set', lineInKey: true }))
       + fgCaption('Key', key + ' No stem yet: fewer than ' + DOMAIN_READ_MIN + ' answers, too few yet for a score. The stem and score show at ' + DOMAIN_READ_MIN + '.', 'fg-chart-key');
@@ -19640,9 +19872,9 @@ function rsGrowthPlate(byDomain, before) {
       : nm + ' is ' + (-f.delta) + (f.delta === -1 ? ' point' : ' points') + ' lower after this set.';
   }
   var fig = a.short + (f.delta > 0 ? ', new growth' : ', after this set');
-  return fgPlate(fig, '<div class="rs-g">' + fgStemChart(areas, { ink: true, narrowOnly: true, w: 150, label: a.name })
+  return fgPlate(fig, '<div class="rs-g">' + fgStemChart(areas, { ink: true, narrowOnly: true, w: 150, label: a.name, lineInKey: true })
       + '<p class="rs-g-t">' + big + '<span class="rs-g-l">' + line + '</span></p></div>')
-    + fgCaption('Key', key, 'fg-chart-key');
+    + fgCaption('Key', key + ' No stem yet: fewer than ' + DOMAIN_READ_MIN + ' answers, too few yet for a score.', 'fg-chart-key');
 }
 // What you missed: a key list (the study note, or the question's topic, and its domain).
 var RS_MISSED_SHOWN = 5;
@@ -19686,17 +19918,19 @@ function debriefHtml(deb, inHub) {
     + '<p class="fg-sub">' + rsSetLine(total, deb.ms) + '</p>'
     + rsGrowthPlate(byDomain, deb.before)
     + fgCaption('Note', note)
-    + fgLabel([
-      { k: 'Right', vHtml: deb.correct + '<small>of ' + total + '</small>' },
-      { k: 'Accuracy', vHtml: pct + '<sup>%</sup>' },
-      { k: 'Time', vHtml: '<span aria-hidden="true">' + t.v + (t.u ? '<small>' + t.u + '</small>' : '') + '</span><span class="sr-only">' + t.s + '</span>' }
-    ], 'rs-label')
-    + rsMissedHtml(missed)
+    // Grove Phase 4 (7.11): Right, Accuracy and Time as Today's clearing
+    // tiles, the actions right under them, then the misses.
+    + '<ul class="td-clear-ts rs-tiles">'
+    + '<li class="td-clear-t"><span class="td-clear-k">Right</span><span class="td-clear-v">' + deb.correct + ' <span class="td-clear-of">of ' + total + '</span></span></li>'
+    + '<li class="td-clear-t"><span class="td-clear-k">Accuracy</span><span class="td-clear-v">' + pct + '<sup>%</sup></span></li>'
+    + '<li class="td-clear-t"><span class="td-clear-k">Time</span><span class="td-clear-v"><span aria-hidden="true">' + t.v + (t.u ? ' <span class="td-clear-of">' + t.u + '</span>' : '') + '</span><span class="sr-only">' + t.s + '</span></span></li>'
+    + '</ul>'
     + '<div class="rs-acts">'
     + '<button type="button" class="rs-btn primary" onclick="startSession(' + deb.goal + ', \'' + dom + '\')">Practice another set' + ico('arrow-right', 18) + '</button>'
     + (missed.length ? '<button type="button" class="rs-btn" onclick="reviewSetMistakes()">Review your mistakes</button>' : '')
     + (inHub ? '<button type="button" class="rs-btn ghost" onclick="closeSetResults()">Close</button>' : '')
     + '</div>'
+    + rsMissedHtml(missed)
     + '</section>';
 }
 // The end of the first five (mobile components/firstSet.tsx): the count,
@@ -20892,7 +21126,8 @@ function mockPastRowsHtml(hist) {
     var name = kind ? MOCK_TYPES[kind].name : m.total + ' questions';
     var pct = m.total ? Math.round((m.correct / m.total) * 100) : 0;
     var when = '';
-    try { when = new Date(m.finishedAt).toLocaleDateString(undefined, { day: 'numeric', month: 'short' }); } catch (e) {}
+    // The app's date format ("Tue 3 Nov"), as the running head.
+    when = fgDate(m.finishedAt);
     return '<li><span class="td-dname">' + name + '</span>'
       + '<span class="rs-dcount">' + escapeHtml(when) + ' &middot; ' + m.correct + ' of ' + m.total + '</span>'
       + '<span class="td-dval"><span class="td-num">' + pct + '<sup>%</sup></span></span></li>';
@@ -20908,7 +21143,7 @@ function renderMockSetup() {
   if (!area) return;
 
   var head = '<h1 class="ph-title mk-title" id="mkTitle" tabindex="-1">Mock exam</h1>'
-    + '<p class="mk-intro fg-sub">Timed like the real exam, with ISACA&rsquo;s domain weights. Answers and explanations come at the end.</p>';
+    + '<p class="mk-intro">Timed like the real exam, with ISACA&rsquo;s domain weights. Answers and explanations come at the end.</p>';
 
   // If any domain bank is still being fetched, say so instead of a
   // half-made plan. The fetch handler draws this page again.
@@ -20920,31 +21155,34 @@ function renderMockSetup() {
 
   var full = MOCK_TYPES.full, mini = MOCK_TYPES.mini;
   var fullN = mockPlanCounts(full.total), miniN = mockPlanCounts(mini.total);
+  // Grove Phase 4 (PHASE4.md 7.12): Mini first, then Full, as two tiles
+  // (the numeral, the title, the length and time, the line, Start), the
+  // scaled score note under them. One solid action per screen: with no mock
+  // unfinished, Full's start is solid and Mini's outlined; with one
+  // unfinished, Resume (the forest panel) is it and both are outlined.
   var card = function (type, t, desc, btnCls, primary) {
     return '<div class="mk-type">'
+      + '<span class="mk-type-num" aria-hidden="true">' + t.total + '</span>'
       + '<h3 class="mk-type-t" id="mkT-' + type + '">' + t.name + '</h3>'
       + '<p class="mk-type-n" id="mkN-' + type + '">' + t.total + ' questions &middot; ' + mockMinutesWords(t.minutes) + '</p>'
       + '<p class="mk-type-m">' + desc + '</p>'
       + '<button type="button" class="rs-btn' + (primary ? ' primary' : '') + ' ' + btnCls + '" aria-describedby="mkN-' + type + '" onclick="showMockConfirm(\'' + type + '\')">Start ' + t.name.toLowerCase() + ico('arrow-right', 18) + '</button>'
       + '</div>';
   };
-  // One solid action per screen: with a mock unfinished, Resume (the forest
-  // panel) is it, and both start buttons are outlined.
-  // v12.46: the two mocks are this page's plate ("Two mocks, one pace"),
-  // with the closed-tab promise as its NOTE caption.
-  var types = '<section class="ph-sec mk-pick" aria-labelledby="mkPickH">'
-    + (isMockInProgress() ? '<h2 class="ph-h" id="mkPickH">Or start a new mock</h2>' : '')
-    + fgPlate(isMockInProgress() ? '' : 'Two mocks, one pace', '<div class="mk-types">'
-      + card('full', full, 'The real exam&rsquo;s length and pace.', 'mock-start', !isMockInProgress())
-      + card('mini', mini, 'A third of the exam: the same domain weights and pace.', 'mock-start-mini', false)
-      + '</div>', 'mk-plate', 2).replace('<h2 class="fg-fig">', '<h2 class="fg-fig" id="mkPickH">')
-    + fgCaption('Note', 'Close the tab and your answers stay saved; the exam clock pauses until you come back.')
+  var types = '<section class="p4-card mk-pick" aria-labelledby="mkPickH">'
+    + '<div class="p4-card-h"><h2 class="ph-h" id="mkPickH">' + (isMockInProgress() ? 'Or start a new mock' : 'Two mocks, one pace') + '</h2></div>'
+    + '<div class="mk-types">'
+    + card('mini', mini, 'A third of the exam: the same domain weights and pace.', 'mock-start-mini', false)
+    + card('full', full, 'The real exam&rsquo;s length and pace.', 'mock-start', !isMockInProgress())
+    + '</div>'
+    + '<p class="p4-note">' + SCALED_SCORE_NOTE + '</p>'
+    + '<p class="p4-note">Close the tab and your answers stay saved; the exam clock pauses until you come back.</p>'
     + '</section>';
 
   var aPct = Math.round(MOCK_DIFFICULTY_MIX.analysis * 100);
   var mPct = Math.round(MOCK_DIFFICULTY_MIX.application * 100);
   var fPct = Math.round(MOCK_DIFFICULTY_MIX.foundational * 100);
-  var weights = '<section class="ph-sec" aria-labelledby="mkWH">'
+  var weights = '<section class="p4-card mk-sec" aria-labelledby="mkWH">'
     + '<h2 class="ph-h" id="mkWH">Domain weights</h2>'
     + '<p class="ph-h-meta">Both mocks follow these weights, with about ' + aPct + '% harder, ' + mPct + '% middle and ' + fPct + '% easier questions.</p>'
     + '<ul class="td-legend mk-weights">' + Object.keys(DI).map(function (d) {
@@ -20959,7 +21197,7 @@ function renderMockSetup() {
   var hist = (Array.isArray(S.mockHistory) ? S.mockHistory : []).slice(0, 5);
   var past = '';
   if (hist.length) {
-    past = '<section class="ph-sec mk-past-sec" aria-labelledby="mkPastH">'
+    past = '<section class="p4-card mk-sec mk-past-sec" aria-labelledby="mkPastH">'
       + '<h2 class="ph-h" id="mkPastH">Your mocks</h2>'
       + '<ul class="td-legend mk-past">' + mockPastRowsHtml(hist) + '</ul></section>';
   }
@@ -21335,11 +21573,11 @@ function showMockResults() {
     + '<p class="rs-note mr-honest">An estimate from this mock, not a prediction of your exam result. Practice scores are not scaled exam scores.</p>'
     + mockAreasPlate(db)
     + mockResultsLabel(cor, tot, blank, usedSec, kind)
-    + '<section class="mr-next" aria-labelledby="mrNextH"><h2 class="ph-h" id="mrNextH">Where to look next</h2>'
+    + '<section class="p4-card mr-next" aria-labelledby="mrNextH"><h2 class="ph-h" id="mrNextH">Where to look next</h2>'
     + '<p class="ph-h-meta">From this mock&rsquo;s questions only.</p>'
     + buildMockAdvisory(db, missIds)
     + '<div class="rs-acts">' + acts + '</div></section>'
-    + '<section class="rs-review" aria-labelledby="mrRevH">'
+    + '<section class="p4-card rs-review" aria-labelledby="mrRevH">'
     + '<div class="mr-h-row"><h2 class="ph-h" id="mrRevH" tabindex="-1">Review answers</h2>'
     + '<div class="mr-seg" role="group" aria-label="Show">'
     + (missed ? '<button type="button" class="mr-seg-b" data-f="miss" aria-pressed="false" onclick="mockReviewFilter(\'miss\')">Mistakes ' + missed + '</button>' : '')
@@ -21385,7 +21623,7 @@ function mockAreasPlate(db) {
       + (x.t ? ', ' + x.c + ' of ' + x.t + ' right in this mock' : '') + '.';
     return a;
   });
-  var key = 'Each line is where an area stands now, on your latest tries; under it, how this mock went (right of asked). Dashed: the ' + DOMAIN_TARGET_PCT + ' line.'
+  var key = 'Each line is where an area stands now, on your latest tries; under it, how this mock went (right of asked). Dashed line: ' + DOMAIN_TARGET_PCT + ', the target for each area.'
     + (anyMove ? ' ↑ and ↓: the change in points since the mock began.' : '')
     + (anyFew ? ' No stem yet: fewer than ' + DOMAIN_READ_MIN + ' answers, too few yet for a score. The stem and score show at ' + DOMAIN_READ_MIN + '.' : '');
   return fgPlate('Your five areas after this mock', fgStemChart(areas, { ink: true, lineInKey: true, label: 'Each area, in exam order' }), 'mr-plate', 2)
@@ -21402,9 +21640,10 @@ function mockResultsLabel(cor, tot, blank, usedSec, kind) {
   return fgLabel([
     { k: 'Right', vHtml: cor + '<small>of ' + tot + '</small>' },
     { k: 'Time', vHtml: '<span aria-hidden="true">' + t.v + (t.u ? '<small>' + t.u + '</small>' : '') + '</span><span class="sr-only">' + t.s + '</span>' },
+    // The pace in words (PHASE4.md 7.13): never a bare "s".
     { k: 'Pace', vHtml: pace === null ? 'none'
-      : '<span aria-hidden="true">' + (pace < 1 ? '&lt;1' : pace) + '<small>s a question &middot; exam pace ' + examPace + '</small></span>'
-        + '<span class="sr-only">' + (pace < 1 ? 'under a second' : pace + (pace === 1 ? ' second' : ' seconds')) + ' a question; the exam pace is ' + examPace + ' seconds</span>' },
+      : (pace < 1 ? 'under a second' : pace + '<small>' + (pace === 1 ? 'second' : 'seconds') + ' a question</small>'),
+      xHtml: pace === null ? '' : '<p class="fg-lrow-note">Your pace: ' + (pace < 1 ? 'under a second' : pace + (pace === 1 ? ' second' : ' seconds')) + ' a question. Exam pace: about ' + examPace + ' seconds.</p>' },
     { k: 'Unanswered', vHtml: String(blank), xHtml: blank > 0 ? '<p class="fg-lrow-note">A blank counts as not correct.</p>' : '' }
   ], 'mr-label');
 }
@@ -21518,13 +21757,13 @@ function mockSignsHtml(pre) {
 }
 function railResultsSections() {
   var html = mockSignsHtml('srh');
-  return html ? [{ id: 'signs', key: 'signs:' + html, html: html }] : [];
+  return html ? [{ id: 'signs', key: 'signs:' + html, cls: 'p4-card mr-signs-card', html: html }] : [];
 }
 function railResultsInline(show) {
   var slot = document.getElementById('mrSide');
   if (!slot) return;
   var html = show ? mockSignsHtml('mrm') : '';
-  html = html ? '<section class="sr-sec" aria-labelledby="mrmSigns">' + html + '</section>' : '';
+  html = html ? '<section class="sr-sec p4-card mr-signs-card" aria-labelledby="mrmSigns">' + html + '</section>' : '';
   if (slot.innerHTML !== html) slot.innerHTML = html;
 }
 
@@ -23711,24 +23950,22 @@ function renderSubtopicFilter() {
   var search = subtopicFilterSearch.toLowerCase();
 
   // Filter chip helper — returns the HTML for one chip
+  // Grove Phase 4 (PHASE4.md 7.8): the accuracy is words inside the chip
+  // and in its name ("Backup and restore, 42% right"), never a colour edge.
   function chipHtml(st, opts){
     opts = opts || {};
     var label = subtopicLabel(st); // display only; the stored value is unchanged
-    var active = activeSubtopic === st ? ' active' : '';
-    var accClass = '';
-    if (opts.showAccuracy && accuracy[st] !== undefined) {
-      accClass = accuracy[st] < 50 ? ' weak'
-               : accuracy[st] < 75 ? ' borderline' : ' strong';
-    }
-    return '<button class="subtopic-chip' + active + accClass + '"'
-      + ' data-st="' + escapeHtml(st) + '" onclick="setSubtopicFilter(this.dataset.st)"'
-      + (accuracy[st] !== undefined ? ' title="' + accuracy[st] + '% accuracy' : ' title="' + escapeHtml(label))
-      + '">' + escapeHtml(label) + '</button>';
+    var on = activeSubtopic === st;
+    var acc = opts.showAccuracy && accuracy[st] !== undefined ? accuracy[st] : null;
+    return '<button type="button" class="subtopic-chip' + (on ? ' active' : '') + '" aria-pressed="' + on + '"'
+      + ' data-k="st-' + escapeHtml(st) + '" data-st="' + escapeHtml(st) + '" onclick="setSubtopicFilter(this.dataset.st)"'
+      + (acc !== null ? ' aria-label="' + escapeHtml(label) + ', ' + acc + '% right"' : '')
+      + '>' + escapeHtml(label) + (acc !== null ? '<span class="st-acc" aria-hidden="true">' + acc + '% right</span>' : '') + '</button>';
   }
 
   // Top picks (collapsed view): All + 5 quick picks + expand
-  var allChip = '<button class="subtopic-chip' + (!activeSubtopic ? ' active' : '') + '"'
-    + ' onclick="setSubtopicFilter(null)">All</button>';
+  var allChip = '<button type="button" class="subtopic-chip' + (!activeSubtopic ? ' active' : '') + '" aria-pressed="' + !activeSubtopic + '"'
+    + ' data-k="st-all" onclick="setSubtopicFilter(null)">All</button>';
   var topPickChips = topPicks.map(function(st){ return chipHtml(st, { showAccuracy: hasHistory }); }).join('');
   var pickLabel = hasHistory
     ? '<span class="subtopic-pick-label" title="Your 5 weakest subtopics based on practice history">Weak spots</span>'
@@ -23740,8 +23977,8 @@ function renderSubtopicFilter() {
   // Active filter chip (highlighted, removable) — shown when filter NOT in topPicks
   var activeChip = '';
   if (activeSubtopic && topPicks.indexOf(activeSubtopic) === -1) {
-    activeChip = '<button class="subtopic-chip active selected-elsewhere"'
-      + ' onclick="setSubtopicFilter(null)"'
+    activeChip = '<button type="button" class="subtopic-chip active selected-elsewhere" aria-pressed="true"'
+      + ' aria-label="' + escapeHtml(subtopicLabel(activeSubtopic)) + ', clear this filter" onclick="setSubtopicFilter(null)"'
       + ' title="Click to clear">'
       + escapeHtml(subtopicLabel(activeSubtopic)) + ' ' + ico('x', 16) + '</button>';
   }
@@ -23828,7 +24065,17 @@ function setSubtopicFilter(st) {
     subtopicFilterExpanded = false;
     subtopicFilterSearch = '';
   }
+  var a = document.activeElement;
+  var k = a && a.getAttribute ? a.getAttribute('data-k') : null;
   renderSubtopicFilter();
+  // The hero's Domains tile names the topic too.
+  try { renderPracticeHub(); } catch (e) {}
+  if (k) {
+    var box = document.getElementById('subtopicFilterArea');
+    var btn = box && ([].filter.call(box.querySelectorAll('[data-k]'), function (x) { return x.getAttribute('data-k') === k; })[0]
+      || box.querySelector('[aria-pressed="true"]'));
+    if (btn) { try { btn.focus({ preventScroll: true }); } catch (e) {} }
+  }
 }
 // ── PHASE 2: PACING ──
 var questionStartTime = null;
@@ -23916,9 +24163,9 @@ function startWeakSpotsDrill() {
 
 // ── PHASE 2: BOOKMARK TAGGING ──
 var BK_TAG_OPTIONS = [
-  {value: 'need-review', label: 'Need Review', cls: 'need-review'},
-  {value: 'tricky-wording', label: 'Tricky Wording', cls: 'tricky-wording'},
-  {value: 'standard-ref', label: 'Standard Reference', cls: 'standard-ref'}
+  {value: 'need-review', label: 'Need review', cls: 'need-review'},
+  {value: 'tricky-wording', label: 'Tricky wording', cls: 'tricky-wording'},
+  {value: 'standard-ref', label: 'Standard reference', cls: 'standard-ref'}
 ];
 var bkActiveTagFilter = 'all';
 
@@ -23965,7 +24212,7 @@ function bkRefreshRows(listChanged) {
     var isSel = !!(a && a.classList && a.classList.contains('bk-tag-select'));
     renderBookmarks();
     if (qid) {
-      var back = Array.prototype.filter.call(area.querySelectorAll(isSel ? '.bk-tag-select' : '.bk-item'), function(el) { return el.getAttribute('data-qid') === qid; })[0];
+      var back = Array.prototype.filter.call(area.querySelectorAll(isSel ? '.bk-tag-select' : '.bk-open'), function(el) { return el.getAttribute('data-qid') === qid; })[0];
       if (back) { try { back.focus({ preventScroll: true }); } catch (e) {} }
     }
     return;
@@ -23991,43 +24238,53 @@ function renderBookmarks() {
     return;
   }
 
-  var filterBar = '<div class="bk-tag-bar"><span class="ty-meta" style="margin-right:4px">Filter</span>'
-    + '<button class="bk-tag-chip' + (bkActiveTagFilter==='all'?' active':'') + '" data-filter="all" onclick="bkFilterClick(this)">All (' + bks.length + ')</button>';
+  // Grove Phase 4 (PHASE4.md 7.7): filter chips in the selected look, one
+  // solid "Practice your N saved questions", then the items in one card.
+  // Each item is an <li> with three siblings, never nested: the button that
+  // opens the question, the learner's own note, and the tag select.
+  var chip = function (f, label, n) {
+    var on = bkActiveTagFilter === f;
+    return '<button type="button" class="bk-tag-chip' + (on ? ' active' : '') + '" aria-pressed="' + on + '" data-filter="' + f + '" onclick="bkFilterClick(this)">' + label + ' (' + n + ')</button>';
+  };
+  var filterBar = '<div class="bk-tag-bar" role="group" aria-labelledby="bkFilterL"><span class="bk-filter-l" id="bkFilterL">Filter</span>' + chip('all', 'All', bks.length);
   BK_TAG_OPTIONS.forEach(function(t) {
     var cnt = bks.filter(function(b){ return b.tag === t.value; }).length;
-    if (cnt) filterBar += '<button class="bk-tag-chip ' + t.cls + (bkActiveTagFilter===t.value?' active':'') + '" data-filter="' + t.value + '" onclick="bkFilterClick(this)">' + t.label + ' (' + cnt + ')</button>';
+    if (cnt) filterBar += chip(t.value, t.label, cnt);
   });
   filterBar += '</div>';
 
   var filtered = bkActiveTagFilter === 'all' ? bks : bks.filter(function(b){ return b.tag === bkActiveTagFilter; });
   var drillBks = filtered.length ? filtered : bks;
-  var drillLabel = 'Drill ' + drillBks.length + ' Bookmark' + (drillBks.length !== 1 ? 's' : '') + (bkActiveTagFilter !== 'all' ? ' (' + bkActiveTagFilter.replace(/-/g,' ') + ')' : '');
-  var drillBtn = '<button class="bk-drill-btn" style="width:100%;margin-bottom:14px" data-filter="' + bkActiveTagFilter + '" onclick="bkDrillBtnClick(this)">' + drillLabel + '</button>';
+  var activeTag = BK_TAG_OPTIONS.filter(function (t) { return t.value === bkActiveTagFilter; })[0];
+  var drillLabel = 'Practice your ' + drillBks.length + ' saved question' + (drillBks.length !== 1 ? 's' : '') + (activeTag ? ' tagged ' + activeTag.label : '');
+  var drillBtn = '<button type="button" class="bk-drill-btn" data-filter="' + escapeHtml(bkActiveTagFilter) + '" onclick="bkDrillBtnClick(this)">' + drillLabel + '</button>';
 
   if (!filtered.length) {
-    area.innerHTML = filterBar + '<div class="no-bk">No bookmarks with this tag.</div>';
+    area.innerHTML = filterBar + '<div class="no-bk">No saved questions with this tag.</div>';
     return;
   }
 
-  var dColors = {'1':'var(--d1)','2':'var(--d2)','3':'var(--d3)','4':'var(--d4)','5':'var(--d5)'};
   var itemsHtml = filtered.map(function(bk) {
     // The domain comes from the id and the text from the bank, never from the saved copy.
     var d = savedQuestionDomain(bk.id) || '';
     var safeId = escapeHtml(bk.id || '');
     var tagInfo = BK_TAG_OPTIONS.find(function(t){ return t.value === bk.tag; });
-    var tagHtml = tagInfo ? '<div style="margin-top:6px"><span class="bk-item-tag ' + tagInfo.cls + '">' + tagInfo.label + '</span></div>' : '';
     var tagOpts = '<option value="">Tag&#8230;</option>' + BK_TAG_OPTIONS.map(function(t){
       return '<option value="' + t.value + '"' + (bk.tag === t.value ? ' selected' : '') + '>' + t.label + '</option>';
     }).join('');
-    // Use data-qid to avoid quote-in-attribute HTML injection issues
-    var tagSel = '<select class="bk-tag-select" data-qid="' + safeId + '" onchange="bkTagChange(this)" onclick="event.stopPropagation()">' + tagOpts + '</select>';
-    return '<div class="bk-item" data-qid="' + safeId + '" onclick="bkDrillClick(this)">'
-      + '<span class="bk-d-tag">' + '<span class="dom-dot" style="background:' + (dColors[d]||'var(--muted)') + '"></span>' + 'D' + escapeHtml(d || '?') + '</span>'
-      + '<div style="flex:1;min-width:0"><div class="bk-item-text">' + bkRowTextHtml(bk.id) + '</div>' + tagHtml + qNoteBlockHtml(bk.id, 'q-note bk-item-note') + '</div>'
-      + tagSel + '</div>';
+    // data-qid avoids quote-in-attribute HTML injection issues
+    var tagSel = '<select class="bk-tag-select" data-qid="' + safeId + '" aria-label="Tag for this question" onchange="bkTagChange(this)">' + tagOpts + '</select>';
+    var meta = (DI[d] ? '<span class="dom-dot" style="background:' + DI[d].color + '" aria-hidden="true"></span>' + escapeHtml(DI[d].short) : '')
+      + (tagInfo ? (DI[d] ? ' &middot; ' : '') + escapeHtml(tagInfo.label) : '');
+    return '<li class="bk-item" data-qid="' + safeId + '">'
+      + '<button type="button" class="bk-open" data-qid="' + safeId + '" onclick="bkDrillClick(this)">'
+      + '<span class="bk-item-text">' + bkRowTextHtml(bk.id) + '</span>'
+      + (meta ? '<span class="bk-item-m">' + meta + '</span>' : '') + '</button>'
+      + qNoteBlockHtml(bk.id, 'q-note bk-item-note')
+      + tagSel + '</li>';
   }).join('');
 
-  area.innerHTML = filterBar + drillBtn + itemsHtml;
+  area.innerHTML = filterBar + drillBtn + '<ul class="p4-card bk-items">' + itemsHtml + '</ul>';
 }
 
 function startBookmarkDrill(tagFilter) {
@@ -24055,7 +24312,7 @@ function startBookmarkDrill(tagFilter) {
   S.current = null;
   renderSubtopicFilter();
   switchTab('practice');
-  showToast('Bookmark drill: ' + fullQs.length + ' questions', 'info', 2000);
+  showToast('Saved questions: ' + fullQs.length + ' to practise', 'info', 2000);
   setTimeout(function(){ startSession(null, 'all', 'Saved questions'); }, 300);
 }
 
