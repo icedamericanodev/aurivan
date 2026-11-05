@@ -534,6 +534,7 @@ const LessonGroups = memo(function LessonGroups({
 }) {
   const { c, g, isDark } = useTheme();
   const scale = useFontScale();
+  const { width } = useWindowDimensions();
   const lessons = lessonsFor(cert.id);
   const done = (id: string) => lessonsDone.includes(id);
   const freshIds = fresh ? fresh.split(',') : [];
@@ -551,8 +552,14 @@ const LessonGroups = memo(function LessonGroups({
   const [toggled, setToggled] = useState<Record<string, boolean>>({});
   const isOpenGroup = (domainId: string) => toggled[domainId] ?? (domainId === askedDomainId || freshAreas.includes(domainId));
   const toggleGroup = (domainId: string) => setToggled((t) => ({ ...t, [domainId]: !isOpenGroup(domainId) }));
-  // From text scale 1.5 the count and the Next pill go on a second line under the name.
-  const twoLines = scale >= 1.5;
+  // From text scale 1.5 the name gets the card's full width under the ring (so the longest short
+  // name, "Governance", stays whole at 200% on a 320pt phone), with the count and pill under it.
+  const stack = scale >= 1.5;
+  // PHASE4 7.1 item 6: the count and the Next pill also go on a second line "when it does not fit".
+  // A width rule, not a measure: the room left for the name is the window, less the screen and card
+  // padding and the ring, dot, number and chevron (about 160pt), less the Next pill (about 66pt) when
+  // it shows. A whole short name needs about 150pt at text scale 1, more as the text grows.
+  const twoLinesFor = (withPill: boolean) => stack || width - 160 - (withPill ? 66 : 0) < 150 * scale;
   return (
     <HubCard testID="learn-lessons">
       {/* The one progress meter on Learn (the notes tile counts, it never meters). */}
@@ -569,6 +576,15 @@ const LessonGroups = memo(function LessonGroups({
             <T v="meta" num>{allDone ? 'All done' : `${groupDone} of ${items.length}`}</T>
           </View>
         );
+        const twoLines = twoLinesFor(isNext);
+        // A track only once a lesson here is done: five empty bars read as five failures (L1).
+        // It sits in the name's column, so it starts under the name at any text size.
+        const bar =
+          groupDone > 0 ? (
+            <View style={{ marginTop: space.sm }}>
+              <ProgressBar value={items.length ? groupDone / items.length : 0} color={tone} height={3} />
+            </View>
+          ) : null;
         return (
           <View key={d.id}>
             {gi > 0 && <CardDivider />}
@@ -584,21 +600,27 @@ const LessonGroups = memo(function LessonGroups({
                     from the start (the ring alone is grey until a lesson is done). Decorative. */}
                 <AreaDot color={tone} />
                 <T v="meta" num style={{ minWidth: 12 }}>{d.id}</T>
-                <View style={{ flex: 1, minWidth: 0 }}>
-                  <T v="label">{d.short}</T>
-                  {twoLines && <View style={{ marginTop: 2, alignSelf: 'flex-start' }}>{ends}</View>}
-                </View>
+                {stack ? (
+                  <View style={{ flex: 1 }} />
+                ) : (
+                  <View style={{ flex: 1, minWidth: 0 }}>
+                    <T v="label">{d.short}</T>
+                    {twoLines && <View style={{ marginTop: 2, alignSelf: 'flex-start' }}>{ends}</View>}
+                    {bar}
+                  </View>
+                )}
                 {!twoLines && ends}
                 {/* The chevron points right when closed and down when open; it turns when tapped. */}
                 <Turn deg={isOpen ? 0 : -90}>
                   <ChevronDown size={ICON_SIZE.row} color={c.muted} strokeWidth={ICON_STROKE} />
                 </Turn>
               </View>
-              {/* A track only once a lesson here is done: five empty bars read as five failures (L1). */}
-              {/* Lines up under the name: ring 16 + dot 8 + number 12, with three 8pt gaps = 60. */}
-              {groupDone > 0 && (
-                <View style={{ marginTop: space.sm, marginLeft: 60 }}>
-                  <ProgressBar value={items.length ? groupDone / items.length : 0} color={tone} height={3} />
+              {/* Large text: the name at full width under the ring, then the count and pill, then the track. */}
+              {stack && (
+                <View style={{ marginTop: space.xs }}>
+                  <T v="label">{d.short}</T>
+                  <View style={{ marginTop: 2, alignSelf: 'flex-start' }}>{ends}</View>
+                  {bar}
                 </View>
               )}
             </GroupHeader>

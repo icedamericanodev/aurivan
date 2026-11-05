@@ -27,9 +27,20 @@ export interface GroveInk {
   // Grove Phase 4 (PHASE4.md section 6): the outline of an area ring or a read mark that is still empty
   // (the web's --leaf-line). It means "not started", so it keeps 3:1 or more (3.94 light, 3.31 dark).
   leafLine: string;
+  // The light paper sheet a pressed badge sits on, on You's badge shelf (kit 04 `.spec`). Light in
+  // BOTH themes, as the kit draws it: the art keeps its light-sheet inks (E3 #24603F is about 6:1 on
+  // it), and in dark the sheet stands well clear of the card (#1D2621).
+  specimen: string;
 }
-export const groveLight: GroveInk = { navFloat: '#FFFFFF', seed: '#8A6A48', seedEdge: '#5B4B3C', soil: '#A89B83', leafEmpty: '#CDC9BC', leafLine: '#86806F' };
-export const groveDark: GroveInk = { navFloat: '#1A231D', seed: '#8A6A48', seedEdge: '#E9D9C4', soil: '#6B5844', leafEmpty: '#39443C', leafLine: '#6A776D' };
+export const groveLight: GroveInk = { navFloat: '#FFFFFF', seed: '#8A6A48', seedEdge: '#5B4B3C', soil: '#A89B83', leafEmpty: '#CDC9BC', leafLine: '#86806F', specimen: '#E9E6DC' };
+export const groveDark: GroveInk = { navFloat: '#1A231D', seed: '#8A6A48', seedEdge: '#E9D9C4', soil: '#6B5844', leafEmpty: '#39443C', leafLine: '#6A776D', specimen: '#E9E2D2' };
+
+/**
+ * The pale paper tape across the top of a pressed badge on the shelf (kit 04, the strip on `.spec`).
+ * One value for both themes, because the sheet under it is light in both. Kept out of GroveInk,
+ * which holds hex values only.
+ */
+export const specimenTape = 'rgba(214,205,182,0.85)';
 
 /**
  * Grove Phase 4 (PHASE4.md section 6): the ink on a mint fill (the hero kind button, the "Next" pill).

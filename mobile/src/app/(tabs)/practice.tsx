@@ -28,7 +28,7 @@
  */
 import * as Router from 'expo-router';
 import { router } from 'expo-router';
-import { memo, useCallback, useRef, useState, type ReactNode, type RefObject } from 'react';
+import { Children, memo, useCallback, useRef, useState, type ReactNode, type RefObject } from 'react';
 import { AccessibilityInfo, Pressable, useWindowDimensions, View } from 'react-native';
 import { ArrowRight, Bookmark, ChevronRight, Compass, Crosshair, ICON_STROKE, Library, RotateCcw, SlidersHorizontal, X } from '../../components/icons';
 import { PracticeLeaf } from '../../components/glyphs';
@@ -471,7 +471,9 @@ const PracticeHero = memo(function PracticeHero({
             <PracticeLeaf size={40} color={c.sap} />
           </GlyphTile>
         </View>
-        <HeroTileRow>
+        {/* One area picked: its name ("IT Governance") needs a whole row to stay unbroken, so Domains
+            sits on its own line and Count and Timed share the next one. */}
+        <HeroTileRow domainsAlone={Boolean(pathDomainId)}>
           <HeroChoice ref={domainsRef} k="Domains" value={domains} spoken={domainsSpoken} hint={choose} onPress={openChooser} />
           {count !== null && <HeroChoice k="Count" value={String(count)} spoken={`Count, ${count} questions`} hint={choose} onPress={openChooser} />}
           <TimedTile ref={timedRef} on={timed} onChange={onTimed} />
@@ -490,10 +492,22 @@ const PracticeHero = memo(function PracticeHero({
   );
 });
 
-/** The hero's three tiles in a row, or a column from text scale 1.3. */
-function HeroTileRow({ children }: { children: ReactNode }) {
+/**
+ * The hero's three tiles in a row, or a column from text scale 1.3. With `domainsAlone` (one area
+ * picked), the first tile (Domains) takes a full row and the others share the row under it, so a long
+ * area name is never broken mid-word. The font never shrinks to make it fit (the label stays 16).
+ */
+function HeroTileRow({ children, domainsAlone = false }: { children: ReactNode; domainsAlone?: boolean }) {
   const large = useFontScale() >= LARGE_TEXT;
-  return <View style={{ flexDirection: large ? 'column' : 'row', gap: space.sm }}>{children}</View>;
+  if (large) return <View style={{ flexDirection: 'column', gap: space.sm }}>{children}</View>;
+  if (!domainsAlone) return <View style={{ flexDirection: 'row', gap: space.sm }}>{children}</View>;
+  const [first, ...rest] = Children.toArray(children);
+  return (
+    <View style={{ gap: space.sm }}>
+      <View style={{ flexDirection: 'row' }}>{first}</View>
+      <View style={{ flexDirection: 'row', gap: space.sm }}>{rest}</View>
+    </View>
+  );
 }
 
 /** A hero tile that opens a choice (Domains, Count): the inset tile as one button, at least 48pt. */
@@ -556,6 +570,9 @@ function CardRow({
   badgeTone?: string;
 }) {
   const { c } = useTheme();
+  // From text scale 1.3 the icon badge goes and the trailing part (the count chip) moves under the
+  // words, as DomainRow does with its status: the title keeps the row's width and never breaks mid-word.
+  const large = useFontScale() >= LARGE_TEXT;
   const press = usePressScale({ scale: 1, tint: c.soft, tintRadius: groveRadius.tile });
   return (
     <AnimatedPressable
@@ -568,16 +585,23 @@ function CardRow({
       style={[{ flexDirection: 'row', alignItems: 'center', gap: space.md, minHeight: 56, paddingVertical: space.md }, press.style]}
     >
       {press.layer}
-      <IconCircle>{icon(badgeTone ?? c.accentText)}</IconCircle>
+      {!large && <IconCircle>{icon(badgeTone ?? c.accentText)}</IconCircle>}
       <View style={{ flex: 1, minWidth: 0 }}>
         {kicker ? <T v="caption" color={c.accentText}>{kicker}</T> : null}
         <T v="label">{title}</T>
         {line ? <T v="meta">{line}</T> : null}
+        {large && trailing ? <View style={{ flexDirection: 'row', marginTop: space.xs }}>{trailing}</View> : null}
       </View>
-      {trailing}
+      {!large && trailing}
       <RowChevron />
     </AnimatedPressable>
   );
+}
+
+/** The divider between CardRows: inset to the words, or full width from text scale 1.3 (no icon badge then). */
+function RowDivider() {
+  const large = useFontScale() >= LARGE_TEXT;
+  return <CardDivider inset={large ? 0 : 36 + space.md} />;
 }
 
 /** The row chevron, muted (ListRow's own). Decorative: the row's role says it opens something. */
@@ -603,7 +627,7 @@ const FocusNext = memo(function FocusNext({ cert, dueCount, focus, hasAnswers }:
       />
       {focus && (
         <>
-          <CardDivider inset={36 + space.md} />
+          <RowDivider />
           {/* The focus area by name with its clay mark (DECISIONS 11): always readiness.focusDomainId, the
               same set as You's "Practice {area}" (lib/sessions.ts startFocusPractice). Never "weak spot". */}
           <CardRow
@@ -702,7 +726,7 @@ const ReviewSaved = memo(function ReviewSaved({ cert, timed }: { cert: Certifica
         hint="Opens your Mistake journal"
         onPress={() => router.push('/mistakes')}
       />
-      <CardDivider inset={36 + space.md} />
+      <RowDivider />
       <CardRow
         icon={(col) => <Bookmark size={ICON_SIZE.row} color={col} strokeWidth={ICON_STROKE} />}
         title="All saved questions"
@@ -710,7 +734,7 @@ const ReviewSaved = memo(function ReviewSaved({ cert, timed }: { cert: Certifica
         hint="Starts a set of your saved questions"
         onPress={() => guardedStart(() => startBookmarks(cert.id), open, () => router.push('/saved'))}
       />
-      <CardDivider inset={36 + space.md} />
+      <RowDivider />
       {/* Browse every question by domain and topic (app/bank). Never shows bank size. */}
       <CardRow
         icon={(col) => <Library size={ICON_SIZE.row} color={col} strokeWidth={ICON_STROKE} />}
@@ -718,7 +742,7 @@ const ReviewSaved = memo(function ReviewSaved({ cert, timed }: { cert: Certifica
         line="Browse by domain and topic"
         onPress={() => router.push('/bank')}
       />
-      <CardDivider inset={36 + space.md} />
+      <RowDivider />
       {/* A one-off set: saves nothing, and the only place with topic and difficulty. */}
       <DisclosureRow
         icon={<SlidersHorizontal size={ICON_SIZE.row} color={c.accentText} strokeWidth={ICON_STROKE} />}

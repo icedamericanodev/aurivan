@@ -87,7 +87,7 @@ import { youStreakRow, youSummary } from '../../engine/groveYou';
 import { accuracyTile, twigWeek } from '../../engine/groveToday';
 import { SETTINGS_ROW_NOTE, YouSummaryLine } from '../../components/youTop';
 import { usePlantView } from '../../lib/plant';
-import { Button, EmptyState, Enter, ICON_SIZE, InviteRow, Lead, ListRow, Screen, T } from '../../components/ui';
+import { Button, EmptyState, Enter, ICON_SIZE, InviteRow, Lead, ListRow, Screen, T, useFontScale } from '../../components/ui';
 import { pacingStats, pacingStatsLine, spokenMin } from '../../engine/pace';
 import { mockSubtitle } from '../../components/readinessReport';
 import { RANGE_MIN_ANSWERS, readinessRange, type ReadinessRange } from '../../engine/readinessRange';
@@ -108,7 +108,7 @@ import { dailyMinutesOf, examDateOf, useSettings } from '../../store/settings';
 import { StudyProfile } from '../../components/studyProfile';
 import { firstStudyDay, nameInitial, profileLines } from '../../engine/studyProfile';
 import { FAMILIARITY_INFO } from '../../engine/fit';
-import { motion, space } from '../../theme/tokens';
+import { LARGE_TEXT, motion, space } from '../../theme/tokens';
 import { useTheme } from '../../theme/useTheme';
 
 /**
@@ -555,13 +555,28 @@ const YouLists = memo(function YouLists({
 const ReadinessCard = memo(function ReadinessCard({ range, towardRange, growth }: { range: ReadinessRange; towardRange: number; growth?: Growth }) {
   const { c } = useTheme();
   const rangeGrowth = growth;
+  // From text scale 1.3 the header stacks (PHASE4 section 11): the ring, then the kicker and its words
+  // at full width, and "See report" moves to its own line under the range. Side by side, the kicker
+  // was squeezed to a few letters a line at 200%.
+  const large = useFontScale() >= LARGE_TEXT;
+  const seeReport = (
+    <Button
+      kind="ghost"
+      label="See report"
+      // WCAG 2.5.3: the spoken name starts with the visible words.
+      accessibilityLabel="See report, your readiness report"
+      accessibilityHint="Your mock trend, each domain side by side, and what would raise your low end"
+      onPress={() => router.push('/readiness')}
+      style={large ? { alignSelf: 'flex-start', marginLeft: -space.sm } : { marginRight: -space.sm }}
+    />
+  );
   // Estimated readiness, as one card: the small ring, the kicker, the range (on its scale bar) or
   // "Not enough data yet" with the count toward the first range, and the report link.
   return (
     <HubCard testID="you-readiness" style={{ marginTop: space.lg, paddingBottom: space.md }}>
-      <View style={{ flexDirection: 'row', alignItems: 'center', gap: space.md }}>
+      <View style={large ? { alignItems: 'flex-start', gap: space.sm } : { flexDirection: 'row', alignItems: 'center', gap: space.md }}>
         <MiniReadyRing answered={towardRange} range={range.enough ? { low: range.low, high: range.high } : null} />
-        <View style={{ flex: 1, minWidth: 0 }}>
+        <View style={large ? { alignSelf: 'stretch' } : { flex: 1, minWidth: 0 }}>
           {/* One kicker word on You and Today (UX review O9). */}
           <FieldText v="head" accessibilityRole="header">Estimated readiness</FieldText>
           {!range.enough && (
@@ -571,18 +586,12 @@ const ReadinessCard = memo(function ReadinessCard({ range, towardRange, growth }
             </View>
           )}
         </View>
-        <Button
-          kind="ghost"
-          label="See report"
-          // WCAG 2.5.3: the spoken name starts with the visible words.
-          accessibilityLabel="See report, your readiness report"
-          accessibilityHint="Your mock trend, each domain side by side, and what would raise your low end"
-          onPress={() => router.push('/readiness')}
-          style={{ marginRight: -space.sm }}
-        />
+        {!large && seeReport}
       </View>
       {/* Mobile 1.51: the range on a scale bar with a tick at the study bar and its words built in. */}
       {range.enough && <ReadinessBlock range={range} growth={rangeGrowth} />}
+      {/* Large text: "See report" on its own line, under the range (or under "Not enough data yet"). */}
+      {large && seeReport}
       {/* Grove panel Q1: once there is a range, the low end is defined once, before the study-bar line. */}
       {range.enough && <T v="meta" color={c.ink} style={{ marginTop: space.md }}>{lowEndLine(range.low)}</T>}
       {/* With the low-end sentence the study bar is already said: only the area line is left. */}

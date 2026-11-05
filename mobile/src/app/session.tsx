@@ -128,7 +128,7 @@ import { RETEST_LINE, type Confidence } from '../engine/srs';
 import { shortDate } from '../lib/format';
 import { priorityWord } from '../engine/games/priorityLens';
 import { missCoachLine } from '../engine/slipCoach';
-import { pickCoachKind, pickCoachLine } from '../engine/pickCoach';
+import { pickCoachKind, pickCoachLine, tipPickLetter } from '../engine/pickCoach';
 import { RunningHead } from '../components/fieldguide';
 import { eliminateTip, runnerUp, tipParts } from '../engine/tips';
 import { answerTipRows, coachedTip } from '../engine/answerTips';
@@ -725,6 +725,9 @@ export default function SessionScreen() {
     correct: Boolean(response?.correct),
     coached: coachedTip(coachKind, coachFromPick, Boolean(pickedOriginal && pickedOriginal === runnerUp(q.tips, q.correct))),
   });
+  // One tip row: its label and words in DISPLAY letters, plus the "Your pick, B" chip when the tip
+  // names the learner's pick (PHASE4 4.2 step 4). The chip's rule compares ORIGINAL letters.
+  const tipRow = (i: number) => ({ ...tipParts(renderText(q.tips[i], perm), i), pick: tipPickLetter(q.tips[i], q.correct, pickedOriginal, perm) });
   // The navigator's summary: how many answered, flagged and left (the exam's own length, not the bank's).
   const answeredCount = Object.keys(active.responses).length;
   const navSummary = `${answeredCount} answered · ${active.flagged.length} flagged · ${total - answeredCount} left`;
@@ -980,7 +983,7 @@ export default function SessionScreen() {
                   <View ref={vineRef} collapsable={false} onLayout={checkVine} testID="feedback-vine">
                     <KeyIdea key={`${qid}:a`} text={q.keyConcept} visible={vineVisible} />
                     {tipRows.open.length > 0 && <TipsHeading />}
-                    <TipsCard key={`${qid}:tips`} rows={tipRows.open.map((i) => tipParts(renderText(q.tips[i], perm), i))} visible={vineVisible} />
+                    <TipsCard key={`${qid}:tips`} rows={tipRows.open.map(tipRow)} visible={vineVisible} />
                   </View>
                 </Rise>
                 <Rise delay={FEEDBACK_DELAY.why + motion.stagger.group}>
@@ -998,7 +1001,7 @@ export default function SessionScreen() {
                       <TipsCard
                         key={`${qid}:b`}
                         testID="answer-tips-more"
-                        rows={tipRows.folded.map((i) => tipParts(renderText(q.tips[i], perm), i))}
+                        rows={tipRows.folded.map(tipRow)}
                         visible={vine2Visible}
                       />
                     )}

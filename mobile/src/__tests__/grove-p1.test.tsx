@@ -73,8 +73,8 @@ const HEX = /^#[0-9A-F]{6}$/;
 
 describe('Grove tokens (theme/grove.ts)', () => {
   it('the five new colours exist in both themes, as hex, with the kit values', () => {
-    expect(groveLight).toEqual({ navFloat: '#FFFFFF', seed: '#8A6A48', seedEdge: '#5B4B3C', soil: '#A89B83', leafEmpty: '#CDC9BC', leafLine: '#86806F' });
-    expect(groveDark).toEqual({ navFloat: '#1A231D', seed: '#8A6A48', seedEdge: '#E9D9C4', soil: '#6B5844', leafEmpty: '#39443C', leafLine: '#6A776D' });
+    expect(groveLight).toEqual({ navFloat: '#FFFFFF', seed: '#8A6A48', seedEdge: '#5B4B3C', soil: '#A89B83', leafEmpty: '#CDC9BC', leafLine: '#86806F', specimen: '#E9E6DC' });
+    expect(groveDark).toEqual({ navFloat: '#1A231D', seed: '#8A6A48', seedEdge: '#E9D9C4', soil: '#6B5844', leafEmpty: '#39443C', leafLine: '#6A776D', specimen: '#E9E2D2' });
     for (const v of [...Object.values(groveLight), ...Object.values(groveDark)]) expect(v).toMatch(HEX);
   });
 

@@ -12,12 +12,12 @@ import { View } from 'react-native';
 import type { LastPressed } from '../engine/fieldGuide';
 import { shortDate, spokenShortDate } from '../lib/format';
 import { fieldInk, LARGE_TEXT, space } from '../theme/tokens';
-import { groveRadius } from '../theme/grove';
+import { groveRadius, specimenTape } from '../theme/grove';
 import { useTheme } from '../theme/useTheme';
 import { ChevronRight, ICON_STROKE } from './icons';
 import { EmblemArt } from './medallion';
 import { AnimatedPressable, usePressScale } from './motion';
-import { groveTile, Row, T, Trail, useFontScale } from './ui';
+import { Row, T, Trail, useFontScale } from './ui';
 
 /** The row's title, shown and said. The code name stays; the words are "Badges" (labels decision 8). */
 export const HERBARIUM = 'Badges';
@@ -115,8 +115,7 @@ export const BadgeShelf = memo(function BadgeShelf({
   newBadge: boolean;
   onPress: () => void;
 }) {
-  const { c, g, isDark } = useTheme();
-  const ink = fieldInk[isDark ? 'dark' : 'light'];
+  const { c, g } = useTheme();
   const press = usePressScale({ scale: 1, tint: c.soft });
   const large = useFontScale() >= LARGE_TEXT;
   // One entry per slot: a pressed badge (newest first), or null for an empty slot.
@@ -149,11 +148,14 @@ export const BadgeShelf = memo(function BadgeShelf({
                 <View
                   key={p.key}
                   testID="shelf-tile"
-                  style={[groveTile(c, true), { flex: 1, aspectRatio: 1, minWidth: 48, alignItems: 'center', justifyContent: 'center' }]}
+                  // The kit's light paper sheet (04 `.spec`), light in both themes: in dark, the old soft
+                  // fill was about 1.03:1 on the card and the tile shape was lost.
+                  style={{ flex: 1, aspectRatio: 1, minWidth: 48, borderRadius: groveRadius.tile, backgroundColor: g.specimen, alignItems: 'center', justifyContent: 'center' }}
                 >
-                  {/* The paper tape that holds a pressed specimen (the kit's strip across the top). */}
-                  <View style={{ position: 'absolute', top: -4, width: 30, height: 10, borderRadius: 2, backgroundColor: ink.tape, transform: [{ rotate: '-4deg' }] }} />
-                  <EmblemArt badge={p.badge} tier={p.tier} emblem={p.emblem} palette={ink.pressed} size={large ? 64 : 44} />
+                  {/* The pale paper tape that holds a pressed specimen (the kit's strip across the top). */}
+                  <View style={{ position: 'absolute', top: -4, width: 30, height: 10, borderRadius: 2, backgroundColor: specimenTape, transform: [{ rotate: '-4deg' }] }} />
+                  {/* The art sits on a light sheet in both themes, so it keeps the light-sheet inks. */}
+                  <EmblemArt badge={p.badge} tier={p.tier} emblem={p.emblem} palette={fieldInk.light.pressed} size={large ? 64 : 44} />
                 </View>
               ) : (
                 <View

@@ -18,19 +18,21 @@ import { useEffect, useMemo, useState } from 'react';
 import { AccessibilityInfo, View } from 'react-native';
 import { EmptyScreen } from '../../components/emptyScreen';
 import { ReadMark } from '../../components/notes';
-import { DomainDot, EmptyState, Enter, ListRow, PushedHeader, Screen, SearchField, Section, T } from '../../components/ui';
+import { DomainDot, EmptyState, Enter, ListRow, PushedHeader, Screen, SearchField, Section, T, useFontScale } from '../../components/ui';
 import { domainLabel } from '../../content/certifications';
 import { getNotes, noteSubtopics } from '../../content/notes';
 import { readCount, readProgressText, searchNotes } from '../../engine/notesSearch';
 import { groupReadState } from '../../engine/noteReadState';
 import { readMarkKey } from '../../lib/noteNews';
 import { useActiveCert } from '../../lib/useActiveCert';
-import { space } from '../../theme/tokens';
+import { LARGE_TEXT, space } from '../../theme/tokens';
+import { grovePlate } from '../../theme/grove';
 
 const goBack = () => (router.canGoBack() ? router.back() : router.replace('/learn'));
 
 export default function NotesHome() {
   const { c } = useTheme();
+  const large = useFontScale() >= LARGE_TEXT;
   const { cert, progress } = useActiveCert();
   // Mobile 1.21: Learn's "See all results" opens here with its search (?q=).
   const { q } = useLocalSearchParams<{ q?: string }>();
@@ -117,7 +119,10 @@ export default function NotesHome() {
           {/* Mobile 1.24: no "0 of 252 read" to start with; the counts show once a note has been read. */}
           <Section variant="head" title="By domain" meta={readProgressText(readCount(noteSubtopics(cert.id).map((s) => s.id), read), total) ?? undefined} />
           {/* Grove Phase 4 (PHASE4.md 7.2): the rows in one card, 1pt dividers between them. */}
-          <HubCard testID="notes-domains" style={{ paddingTop: 0, paddingBottom: 0 }}>
+          {/* From text scale 1.3 the card gives its side padding back (padTight) and the rows drop their
+              chevron (the read mark still ends each row), so a domain name like "IS Acquisition" and
+              its subline never break mid-word at 200% on a 320pt phone. */}
+          <HubCard testID="notes-domains" style={[{ paddingTop: 0, paddingBottom: 0 }, large && { paddingHorizontal: grovePlate.padTight }]}>
           {domains.map((d, i) => {
             const ids = noteSubtopics(cert.id, d.id).map((s) => s.id);
             const done = readCount(ids, read);
@@ -144,6 +149,7 @@ export default function NotesHome() {
                 trailing={<ReadMark state={mark} play={readMarkKey(cert.id, 'domain', d.id)} />}
                 accessibilityLabel={`Domain ${d.id}, ${d.name}. ${d.weight} percent of the exam.${state ? ` ${state}.` : mark === 'started' ? ' Started.' : ''}`}
                 onPress={() => router.push(`/notes/${d.id}`)}
+                chevron={!large}
                 last={i === domains.length - 1}
               />
             );

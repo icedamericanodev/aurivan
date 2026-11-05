@@ -22,8 +22,8 @@ import { moveFocus } from '../lib/a11y';
 import { haptic } from '../lib/haptics';
 import { RETEST_LINE } from '../engine/srs';
 import { NEUTRAL_MISS_LINE, RUNNER_UP_LINE } from '../engine/slipCoach';
-import { pickCoachKind, pickCoachLine } from '../engine/pickCoach';
-import { displayToOriginal } from '../engine/shuffle';
+import { pickCoachKind, pickCoachLine, tipByLabel, tipLetters } from '../engine/pickCoach';
+import { displayToOriginal, originalToDisplay } from '../engine/shuffle';
 import { TIMES_UP_DETAIL, TIMES_UP_LINE } from '../engine/resultsCopy';
 import { selectCert, useProgress } from '../store/progress';
 import { useSession } from '../store/session';
@@ -144,6 +144,65 @@ describe('the answer screen after a miss', () => {
     // Every tip is on screen once the fold is open, and the Exam cue is above the Why.
     for (const label of ['Eliminate two', 'Final two', 'Exam cue']) expect(t).toContain(label);
     expect(t.indexOf('Exam cue')).toBeLessThan(why);
+  });
+
+  // Grove Phase 4 (PHASE4 4.2 step 4, 4.3): the "Your pick, B" chip, on ORIGINAL letters, shown in DISPLAY letters.
+  describe('the pick chip on a tip row', () => {
+    // A question whose Eliminate names two options (the key not among them) and whose Final two names the key and one more.
+    const chipQ = bank.find((q) => {
+      const el = tipLetters(tipByLabel(q.tips, 'Eliminate'));
+      const fi = tipLetters(tipByLabel(q.tips, 'Final two'));
+      return el.length === 2 && !el.includes(q.correct) && fi.length === 2 && fi.includes(q.correct) && !fi.some((l) => el.includes(l));
+    })!;
+    // Host views only (the test renderer also returns the component that wraps each one).
+    const tipRowsOf = () => root().findAll((n) => typeof n.type === 'string' && n.props.testID === 'answer-tip-row' && typeof n.props.accessibilityLabel === 'string');
+    const chipsOf = () => root().findAll((n) => typeof n.type === 'string' && n.props.testID === 'tip-pick-chip');
+    /** Start the question with this shuffle, tap the option with this ORIGINAL letter, open every tip. */
+    const missWith = (picked: string, perm: string[]) => {
+      startFromIds('cisa', [chipQ.id, others[0].id], 'T');
+      act(() => {
+        const a = useSession.getState().active!;
+        useSession.setState({ active: { ...a, perms: { ...a.perms, [chipQ.id]: perm as never } } });
+      });
+      mount(<SessionScreen />);
+      const display = originalToDisplay(picked as never, perm as never);
+      const card = optionCards().find((n) => n.props.letter === display)!;
+      act(() => {
+        card.props.onPress();
+      });
+      press('Check answer');
+      const more = root().findAll((n) => typeof n.props.accessibilityLabel === 'string' && n.props.accessibilityLabel.startsWith('Read more') && typeof n.props.onPress === 'function');
+      if (more[0]) act(() => more[0].props.onPress());
+      return display;
+    };
+    // A shuffled order (not A B C D): the chip must name the letter the learner saw.
+    const SHUFFLED = ['C', 'A', 'D', 'B'];
+
+    it('on Final two, when the pick is the other option it names; said "Final two, your pick B"', () => {
+      const other = tipLetters(tipByLabel(chipQ.tips, 'Final two')).find((l) => l !== chipQ.correct)!;
+      const shown = missWith(other, SHUFFLED);
+      expect(shown).not.toBe(other); // the shuffle really moved it
+      const chips = chipsOf();
+      expect(chips).toHaveLength(1);
+      expect(textOf(chips[0])).toBe(`Your pick, ${shown}`);
+      const final = tipRowsOf().find((n) => n.props.accessibilityLabel.startsWith('Final two'))!;
+      expect(final.props.accessibilityLabel.startsWith(`Final two, your pick ${shown}: `)).toBe(true);
+      expect(tipRowsOf().filter((n) => n.props.accessibilityLabel.includes('your pick'))).toHaveLength(1);
+    });
+
+    it('on Eliminate two, when the pick is one of the two to rule out', () => {
+      const ruled = tipLetters(tipByLabel(chipQ.tips, 'Eliminate'))[0];
+      const shown = missWith(ruled, SHUFFLED);
+      const elim = tipRowsOf().find((n) => n.props.accessibilityLabel.startsWith('Eliminate two'))!;
+      expect(elim.props.accessibilityLabel.startsWith(`Eliminate two, your pick ${shown}: `)).toBe(true);
+      expect(chipsOf().map(textOf)).toContain(`Your pick, ${shown}`);
+    });
+
+    it('a right answer shows no chip', () => {
+      missWith(chipQ.correct, SHUFFLED);
+      expect(chipsOf()).toHaveLength(0);
+      expect(tipRowsOf().some((n) => n.props.accessibilityLabel.includes('your pick'))).toBe(false);
+    });
   });
 
   it('a right answer: Key idea and the tips first, then the whole Why; nothing folds', () => {

@@ -459,7 +459,16 @@ export function TipsHeading() {
  * card's left edge, drawn once in reading order (drawn at once under Reduce Motion). Colour never tells
  * the tips apart: the label words do. Each row is one stop that starts with its label ("Final two: …").
  */
-export function TipsCard({ rows, visible, testID = 'answer-tips' }: { rows: { label: string; body: string }[]; visible: boolean; testID?: string }) {
+export function TipsCard({
+  rows,
+  visible,
+  testID = 'answer-tips',
+}: {
+  /** `pick`: the learner's DISPLAY letter when this row names their pick (engine/pickCoach.ts tipPickLetter). */
+  rows: { label: string; body: string; pick?: string | null }[];
+  visible: boolean;
+  testID?: string;
+}) {
   const { c } = useTheme();
   const { reduced } = useMotion();
   const grow = useSharedValue(reduced ? 1 : 0);
@@ -486,14 +495,25 @@ export function TipsCard({ rows, visible, testID = 'answer-tips' }: { rows: { la
           key={`${r.label}-${i}`}
           testID="answer-tip-row"
           accessible
-          accessibilityLabel={`${r.label}: ${r.body}`}
+          // Read as "Final two, your pick B: ..." when the row names the learner's pick (PHASE4 4.3).
+          accessibilityLabel={`${r.label}${r.pick ? `, your pick ${r.pick}` : ''}: ${r.body}`}
           style={[{ paddingVertical: space.md }, i > 0 && { borderTopWidth: 1, borderTopColor: c.line }]}
         >
           {/* The leaf sits on a paper knock-out so the stem seems to pass behind it. */}
           <View style={{ position: 'absolute', left: -30, top: space.md, width: 22, height: 22, alignItems: 'center', justifyContent: 'center', backgroundColor: c.raised }}>
             <LeafSmall color={c.accent} />
           </View>
-          <T v="caption" color={c.accentText} style={{ marginBottom: 3 }}>{r.label}</T>
+          {/* The label, then the pick chip when this row names the learner's pick (PHASE4 4.2 step 4):
+              a caption in ink inside a 1pt control outline, like the web's chip. At large text it
+              wraps under the label instead of squeezing it. */}
+          <View style={{ flexDirection: 'row', flexWrap: 'wrap', alignItems: 'center', columnGap: space.sm, rowGap: space.xs, marginBottom: 3 }}>
+            <T v="caption" color={c.accentText}>{r.label}</T>
+            {r.pick ? (
+              <View testID="tip-pick-chip" style={{ borderWidth: 1, borderColor: c.control, borderRadius: radius.pill, paddingHorizontal: space.sm, paddingVertical: 1 }}>
+                <T v="caption" color={c.ink}>{`Your pick, ${r.pick}`}</T>
+              </View>
+            ) : null}
+          </View>
           <T v="small" color={c.ink}>{r.body}</T>
         </View>
       ))}

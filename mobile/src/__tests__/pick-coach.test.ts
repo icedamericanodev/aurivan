@@ -11,7 +11,7 @@
  */
 import type { Letter, PackQuestion } from '../content/types';
 import { generatedPacks } from '../content/generated';
-import { finalTwoLine, pickCoachKind, pickCoachLine, ruleOutLine, tipByLabel, tipLetters } from '../engine/pickCoach';
+import { finalTwoLine, pickCoachKind, pickCoachLine, ruleOutLine, tipByLabel, tipLetters, tipPickLetter } from '../engine/pickCoach';
 import { optionLetters, originalToDisplay, type Permutation } from '../engine/shuffle';
 import { RUNNER_UP_LINE } from '../engine/slipCoach';
 
@@ -61,6 +61,30 @@ describe('pickCoachKind (ORIGINAL letters)', () => {
   });
   it('older tips without v2 labels fall back', () => {
     expect(pickCoachKind(['The trap is {{B}}.', 'Think like an auditor.'], 'D', 'B')).toBeNull();
+  });
+});
+
+describe('tipPickLetter (the "Your pick, B" chip on a tip row)', () => {
+  const ID: Permutation = ['A', 'B', 'C', 'D'];
+  // Display A shows original C, B shows A, C shows D, D shows B.
+  const SHUFFLED: Permutation = ['C', 'A', 'D', 'B'];
+  it('Eliminate two: when the tip names the pick (ORIGINAL letters in, the DISPLAY letter out)', () => {
+    expect(tipPickLetter(TIPS[0], 'D', 'A', ID)).toBe('A');
+    expect(tipPickLetter(TIPS[0], 'D', 'A', SHUFFLED)).toBe('B');
+    expect(tipPickLetter(TIPS[0], 'D', 'C', SHUFFLED)).toBe('A');
+    expect(tipPickLetter(TIPS[0], 'D', 'B', SHUFFLED)).toBeNull();
+  });
+  it('Final two: only when the tip names both the pick and the best answer', () => {
+    expect(tipPickLetter(TIPS[1], 'D', 'B', ID)).toBe('B');
+    expect(tipPickLetter(TIPS[1], 'D', 'B', SHUFFLED)).toBe('D');
+    expect(tipPickLetter(TIPS[1], 'D', 'A', SHUFFLED)).toBeNull();
+    expect(tipPickLetter('Final two: {{B}} beats {{C}}.', 'D', 'C', ID)).toBeNull();
+  });
+  it('never on the Exam cue or an older tip, never after a right answer or without a pick', () => {
+    expect(tipPickLetter(TIPS[2], 'D', 'A', ID)).toBeNull();
+    expect(tipPickLetter('The trap: {{A}} skips the owner.', 'D', 'A', ID)).toBeNull();
+    expect(tipPickLetter(TIPS[1], 'D', 'D', ID)).toBeNull();
+    expect(tipPickLetter(TIPS[1], 'D', undefined, ID)).toBeNull();
   });
 });
 
