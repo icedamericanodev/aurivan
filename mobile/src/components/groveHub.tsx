@@ -15,13 +15,14 @@
  *
  * Nothing here reads or writes saved data, and none of it is compiled into the website bundles.
  */
-import type { ReactNode, Ref } from 'react';
+import { useEffect, useRef, type ReactNode, type Ref } from 'react';
 import { Text, View, type StyleProp, type ViewStyle } from 'react-native';
 import { fieldMaxScale, fieldType, LARGE_TEXT, space } from '../theme/tokens';
 import { glyphTile, groveRadius, grovePlate, mintInk } from '../theme/grove';
 import { useTheme } from '../theme/useTheme';
 import { ChevronRight, ICON_STROKE } from './icons';
 import { AnimatedPressable, usePressScale } from './motion';
+import { moveFocus } from '../lib/a11y';
 import { FieldText } from './fieldguide';
 import { groveCard, groveTile, IconCircle, T, useFontScale } from './ui';
 
@@ -218,6 +219,23 @@ export function CountChip({ value }: { value: string }) {
       <T v="label" num color={c.accentText}>
         {value}
       </T>
+    </View>
+  );
+}
+
+/**
+ * A pushed page's display title (PHASE4.md 7.2: Study notes, Principles, Question bank, Saved questions,
+ * Mock start): `display` on the page, a screen-reader header, and screen-reader focus starts on it as
+ * the page opens (as Settings does). The bar above it shows no title of its own, so it is said once.
+ */
+export function PageTitle({ title }: { title: string }) {
+  const ref = useRef<View>(null);
+  useEffect(() => {
+    moveFocus(ref, 450);
+  }, []);
+  return (
+    <View ref={ref} testID="page-title" accessible accessibilityRole="header" accessibilityLabel={title} style={{ marginTop: space.xs }}>
+      <T v="display">{title}</T>
     </View>
   );
 }

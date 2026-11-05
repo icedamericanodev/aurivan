@@ -23,6 +23,7 @@
  * (components/questionNote.tsx). The group only shows once a note exists.
  * The screen is "empty" only when there are no saved questions AND no notes.
  */
+import { PageTitle } from '../components/groveHub';
 import { router } from 'expo-router';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Pressable, ScrollView, View } from 'react-native';
@@ -122,7 +123,8 @@ export default function Saved() {
   return (
     <SafeAreaView edges={['top', 'bottom']} style={{ flex: 1, backgroundColor: c.bg }}>
       <ScrollView contentContainerStyle={{ paddingHorizontal: space.gutter, paddingBottom: footerH + space.xl }}>
-        <PushedHeader title="Saved questions" onBack={() => router.back()} />
+        <PushedHeader title="Saved questions" showTitle={false} onBack={() => router.back()} />
+        <PageTitle title="Saved questions" />
         {/* Notes but nothing saved: say how to save, then the notes below. */}
         {saved.length === 0 && <T v="meta" style={{ marginTop: space.sm }}>Nothing saved yet. Tap the bookmark on any question to build your own revision set.</T>}
         {saved.map(({ id, q }, i) => (

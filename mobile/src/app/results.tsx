@@ -64,6 +64,7 @@
  *   Done is the plate button.
  */
 import { router, useFocusEffect } from 'expo-router';
+import { areasTitle } from '../components/youReadiness';
 import { scaledScoreNote } from '../content/scoreNote';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Alert, BackHandler, Pressable, View } from 'react-native';
@@ -334,7 +335,13 @@ export default function Results() {
   const figure = stems.length === 1 ? growthFigure(stems[0]) : null;
   // The plate's numbers are each area's score overall, after this set (the set's own count is the line under
   // each, "2 of 3 this set"), so the title says so, as the website's set results do ("Your domains after this set").
-  const plateTitle = stems.length === 1 ? `${stems[0].name}, ${figure && !figure.down ? 'new growth' : 'after this set'}` : 'Your areas after this set';
+  // Grove Phase 4 (PHASE4.md 7.13): after a mock the caption says so ("Your five areas after this mock").
+  const plateTitle =
+    active.mode === 'mock'
+      ? `Your ${areasTitle(stems.length).split(' ')[0].toLowerCase()} ${stems.length === 1 ? 'area' : 'areas'} after this mock`
+      : stems.length === 1
+        ? `${stems[0].name}, ${figure && !figure.down ? 'new growth' : 'after this set'}`
+        : 'Your areas after this set';
 
   return (
     <Screen edges={['top', 'bottom']} onScroll={moment && !momentSeen ? watch : undefined} onScrollBeginDrag={moment ? () => skipMoment.current?.() : undefined}>

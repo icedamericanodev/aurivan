@@ -10,6 +10,8 @@
  * (engine/noteReadState.ts groupReadState). It fills once, in view, when
  * the domain's last note was just read.
  */
+import { CardHead, HubCard, PageTitle } from '../../components/groveHub';
+import { useTheme } from '../../theme/useTheme';
 import { router, useLocalSearchParams } from 'expo-router';
 import { openTab } from '../../lib/actions';
 import { useEffect, useMemo, useState } from 'react';
@@ -28,6 +30,7 @@ import { space } from '../../theme/tokens';
 const goBack = () => (router.canGoBack() ? router.back() : router.replace('/learn'));
 
 export default function NotesHome() {
+  const { c } = useTheme();
   const { cert, progress } = useActiveCert();
   // Mobile 1.21: Learn's "See all results" opens here with its search (?q=).
   const { q } = useLocalSearchParams<{ q?: string }>();
@@ -66,7 +69,8 @@ export default function NotesHome() {
 
   return (
     <Screen edges={['top', 'bottom']}>
-      <PushedHeader title="Study notes" onBack={goBack} />
+      <PushedHeader title="Study notes" showTitle={false} onBack={goBack} />
+      <PageTitle title="Study notes" />
       <Enter i={0}>
         <T v="meta" style={{ marginTop: space.xs }}>
           Every exam topic in plain words, with examples and exam traps.
@@ -112,6 +116,8 @@ export default function NotesHome() {
         <Enter i={1}>
           {/* Mobile 1.24: no "0 of 252 read" to start with; the counts show once a note has been read. */}
           <Section variant="head" title="By domain" meta={readProgressText(readCount(noteSubtopics(cert.id).map((s) => s.id), read), total) ?? undefined} />
+          {/* Grove Phase 4 (PHASE4.md 7.2): the rows in one card, 1pt dividers between them. */}
+          <HubCard testID="notes-domains" style={{ paddingTop: 0, paddingBottom: 0 }}>
           {domains.map((d, i) => {
             const ids = noteSubtopics(cert.id, d.id).map((s) => s.id);
             const done = readCount(ids, read);
@@ -142,6 +148,29 @@ export default function NotesHome() {
               />
             );
           })}
+          </HubCard>
+          {/* The exam strategy tips and the links across domains: existing content, now on screen (web parity). */}
+          {pack && pack.strategyTips.length > 0 && (
+            <HubCard testID="notes-strategy" style={{ marginTop: space.lg, paddingBottom: space.md }}>
+              <CardHead title="Exam strategy" />
+              {pack.strategyTips.map((tip, i) => (
+                <View key={i} style={[{ paddingVertical: space.sm }, i > 0 && { borderTopWidth: 1, borderTopColor: c.line }]}>
+                  <T v="small" color={c.ink}>{tip}</T>
+                </View>
+              ))}
+            </HubCard>
+          )}
+          {pack && pack.connections.length > 0 && (
+            <HubCard testID="notes-connections" style={{ marginTop: space.lg, paddingBottom: space.md }}>
+              <CardHead title="Across the domains" />
+              {pack.connections.map((x, i) => (
+                <View key={i} accessible accessibilityLabel={`${x.connection}. ${x.note}`} style={[{ paddingVertical: space.sm }, i > 0 && { borderTopWidth: 1, borderTopColor: c.line }]}>
+                  <T v="label">{x.connection}</T>
+                  <T v="small" color={c.ink2} style={{ marginTop: 2 }}>{x.note}</T>
+                </View>
+              ))}
+            </HubCard>
+          )}
           <T v="meta" style={{ marginTop: space.md }}>Original content, reviewed against public frameworks.</T>
         </Enter>
       )}

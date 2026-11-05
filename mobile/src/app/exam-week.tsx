@@ -36,7 +36,7 @@ import { EmptyScreen } from '../components/emptyScreen';
 import { Bullets, Plate } from '../components/examGuide';
 import { ChevronDown, ICON_STROKE, ListChecks } from '../components/icons';
 import { Collapse, Turn } from '../components/motion';
-import { Button, CheckRow, Enter, ICON_SIZE, ListRow, PushedHeader, Screen, Section, T, useScreenScroll } from '../components/ui';
+import { Button, CheckRow, Enter, groveCard, ICON_SIZE, ListRow, PushedHeader, Screen, Section, T, useScreenScroll } from '../components/ui';
 import { getFinalWeek } from '../content/exam';
 import type { FinalWeek, WeekDay } from '../content/exam/types';
 import type { Certification } from '../content/types';
@@ -46,7 +46,7 @@ import { actionContext, taskButton } from '../lib/finalWeek';
 import { moveFocus } from '../lib/a11y';
 import { useActiveCert } from '../lib/useActiveCert';
 import { useProgress } from '../store/progress';
-import { radius, space } from '../theme/tokens';
+import { space } from '../theme/tokens';
 import { useTheme } from '../theme/useTheme';
 
 export const BLANK_LINE = 'Breathe out slowly, flag the question and move on. Come back at the end with fresh eyes. One question is a small part of the exam.';
@@ -228,8 +228,11 @@ function FinalReviewWeek({ week }: { week: FinalWeek }) {
 
       <Enter i={1}>
         <Section title="Day by day" />
-        {week.days.map((day) => (
+        {/* Grove Phase 4 (PHASE4.md 7.6): the days are rows in one card, 1pt dividers between them. */}
+        <View testID="week-days" style={[groveCard(c), { marginTop: space.sm, overflow: 'hidden' }]}>
+        {week.days.map((day, di) => (
           <DayCard
+            first={di === 0}
             key={day.id}
             day={day}
             cert={cert}
@@ -241,6 +244,7 @@ function FinalReviewWeek({ week }: { week: FinalWeek }) {
             onToggleDone={examDate ? () => toggleDay(cert.id, examDate, day.id) : undefined}
           />
         ))}
+        </View>
       </Enter>
 
       <View style={{ marginTop: space.xl }}>
@@ -302,7 +306,10 @@ function DayCard({
   open,
   onToggleOpen,
   onToggleDone,
+  first,
 }: {
+  /** The first row in the card has no divider above it. */
+  first?: boolean;
   day: WeekDay;
   cert: Certification;
   ctx: ActionContext;
@@ -319,13 +326,12 @@ function DayCard({
   return (
     <View
       testID={`week-${day.id}`}
+      // A row of the week's card: a divider above (not on the first); today on the soft fill, with
+      // "Today" in its words (never colour alone).
       style={{
-        marginTop: space.md,
-        borderRadius: radius.md,
-        backgroundColor: c.raised2,
-        borderWidth: isToday ? 1.5 : 1,
-        borderColor: isToday ? c.accent : c.line,
-        overflow: 'hidden',
+        borderTopWidth: first ? 0 : 1,
+        borderTopColor: c.line,
+        backgroundColor: isToday ? c.soft : 'transparent',
       }}
     >
       <Pressable

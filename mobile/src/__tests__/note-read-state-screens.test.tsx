@@ -30,6 +30,7 @@ import { resetNoteDwellForTest } from '../lib/useNoteDwell';
 import { selectCert, useProgress } from '../store/progress';
 import { useSession } from '../store/session';
 import { light } from '../theme/tokens';
+import { groveLight } from '../theme/grove';
 
 jest.mock('@react-native-async-storage/async-storage', () =>
   jest.requireActual('@react-native-async-storage/async-storage/jest/async-storage-mock'),
@@ -166,7 +167,7 @@ afterEach(() => {
 
 // ── The mark ───────────────────────────────────────────────────────────
 describe('ReadMark: fill the circle', () => {
-  it('none: one 2pt ring in track; started: accent ring + half pie; read: ONE solid accent disc (no seam); no check', () => {
+  it('none: one 2pt ring in leafLine; started: accent ring + half pie; read: ONE solid accent disc (no seam); no check', () => {
     mount(
       <View>
         <ReadMark state="none" />
@@ -177,7 +178,7 @@ describe('ReadMark: fill the circle', () => {
       </View>,
     );
     const [none, started, read, oldRead, oldNone] = marks();
-    expect(circlesOf(none).map((x) => [x.props.r, x.props.stroke, x.props.strokeWidth])).toEqual([[11, light.track, 2]]);
+    expect(circlesOf(none).map((x) => [x.props.r, x.props.stroke, x.props.strokeWidth])).toEqual([[11, groveLight.leafLine, 2]]); // Grove Phase 4: the empty ring is leafLine (3:1)
     const [ring, pie] = circlesOf(started);
     expect([ring.props.r, ring.props.stroke, ring.props.fill]).toEqual([11, light.accent, 'none']);
     expect(pie.props).toMatchObject({ cx: 12, cy: 12, r: 5.5, fill: 'none', stroke: light.accent, strokeWidth: 11, strokeDasharray: '17.279 34.558', rotation: -90, origin: '12,12' });

@@ -21,6 +21,7 @@
  * read fills its circle once when this page is back in view.
  * The domain's key terms fold away at the end.
  */
+import { HubCard } from '../../components/groveHub';
 import { router, useLocalSearchParams } from 'expo-router';
 import { useState } from 'react';
 import { Pressable, View } from 'react-native';
@@ -163,7 +164,9 @@ export default function NotesDomain() {
         {groups.map((g) => (
           <View key={g.title}>
             <Section variant="head" title={g.title} />
-            {g.topics.map((t) => {
+            {/* Grove Phase 4 (PHASE4.md 7.2): each part's topics in one card. */}
+            <HubCard style={{ paddingTop: 0, paddingBottom: space.xs }}>
+            {g.topics.map((t, ti) => {
               const isOpen = isOpenTopic(t.id);
               const readHere = t.subtopics.filter((st) => read.includes(st.id)).length;
               const readText = readProgressText(readHere, t.subtopics.length);
@@ -171,7 +174,7 @@ export default function NotesDomain() {
               const lesson = topicLessons(cert.id, t.id)[0];
               const lessonDone = lesson ? progress.lessonsDone.includes(lesson.id) : false;
               return (
-                <View key={t.id} style={{ marginTop: space.sm }}>
+                <View key={t.id} style={{ marginTop: ti === 0 ? 0 : space.sm }}>
                   {/* Topic header: tap to show or hide this topic (same look as Learn's domain groups). */}
                   <Pressable
                     accessibilityRole="button"
@@ -262,6 +265,7 @@ export default function NotesDomain() {
                 </View>
               );
             })}
+            </HubCard>
           </View>
         ))}
 

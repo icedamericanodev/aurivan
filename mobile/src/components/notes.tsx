@@ -118,7 +118,7 @@ const AnimatedCircle = Animated.createAnimatedComponent(Circle);
  * a faint seam showed where the two met (1.25 review).
  */
 function StillMark({ state }: { state: NoteReadState }) {
-  const { c } = useTheme();
+  const { c, g } = useTheme();
   if (state === 'read') {
     return (
       <Svg width={24} height={24} viewBox="0 0 24 24">
@@ -128,7 +128,8 @@ function StillMark({ state }: { state: NoteReadState }) {
   }
   return (
     <Svg width={24} height={24} viewBox="0 0 24 24">
-      <Circle cx={12} cy={12} r={11} fill="none" stroke={state === 'none' ? c.track : c.accent} strokeWidth={2} />
+      {/* Grove Phase 4: the empty ring is leafLine (3:1 or more), a state, never the 1.2:1 track. */}
+      <Circle cx={12} cy={12} r={11} fill="none" stroke={state === 'none' ? g.leafLine : c.accent} strokeWidth={2} />
       {state === 'started' && (
         <Circle
           cx={12}

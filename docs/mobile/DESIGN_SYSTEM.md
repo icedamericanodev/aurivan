@@ -139,7 +139,7 @@ Names keep the current `Palette` keys where the meaning is the same, so screens 
 | `sap` (v2) | `#A9D9BA` | `#A9D9BA` | Leaf progress marks and the mini ring on `forest` (6.4:1 / 7.0:1) |
 | `pill` / `onPill` (v2) | `#F3F1EA` / `#17231B` | `#EEF2EA` / `#0F1F16` | On-forest pill button (was hard-coded) |
 | `grainOp` (v2) | **`0.035`** (warm-black noise; 0.05 before 1.21) | `0.045` (white noise; 0.06 before 1.9) | Paper grain overlay opacity. Never higher: at 5% the weakest pair (`muted`/`bg`) stays ≥ 4.7:1. Dark went down in 1.9: white specks over the forest night read as dust. Light went down in 1.21: white cards read speckled, like slightly dirty paper |
-| `clay` | `#9A4F26` | `#E9A07A` | Streak + calm attention (pace behind, 2-min cue, last 5 min). Never for errors |
+| `clay` | `#9A4F26` | `#E9A07A` | The streak, an area below 70, and the focus area's badge (Grove Phase 4, PHASE4.md O13: pace attention, the 2-minute cue and the last 5 minutes are said in `ink2` words with the clock glyph, no longer clay). Never for errors |
 | `correct` / `correctBg` | `#1D6A43` / `#E0EDE2` | `#8AD6A8` / `#173022` | Answer feedback only |
 | `wrong` / `wrongBg` | `#A3333D` / `#F7E3E1` | `#FF9CA6` / **`#2C1A1D`** (1.43; was `#3A1A1D`) | Answer feedback only (and the danger button, the game tiles' wrong state). Dark went calmer in 1.43 (owner decision): a learner who is already wrong does not need a shouting slab. Dark `wrong` on it 8.30, `ink` 14.21 (both up); it sits closer to the page (ΔE 13.3 from `bg`), and the row's words carry the meaning. Fallback if the danger pill gets lost on a dim LCD: `#301B1E` |
 | `tip` / `tipBg` | `#7A5100` / `#F3EAD3` | `#E9C46A` / **`#2B2418`** (1.21; was `#2C2715`, which read muddy olive) | Trap warnings. Dark `tip` on `tipBg` 9.19, `ink` 13.21 |
@@ -523,6 +523,23 @@ may ever appear twice on one screen.
 - Motion: on first view per day, arcs grow from 0 to value over 600ms `Easing.out(cubic)`, outer ring first, 60ms stagger (animate `strokeDashoffset` via reanimated `useAnimatedProps`; pre-compute each arc's length). Since 1.9 they also grow from the value last SEEN to now (Today, You, the clearing mini ring from this morning's readiness), never shrink, and Results grows the session's score once (§8.3 rule 10). Reduce motion → static.
 
 ### 10.2 Vine reveal — the answer moment
+
+> **Grove Phase 4 (5 Nov 2026, `design-notes/grove/PHASE4.md` section 4, built with the 4.6 fallback while
+> the owner's O1 is open). This replaces the order below.** One order in every state: (1) the verdict, its
+> word in `hero` in its state colour, the coach line in `aside`; (2) ONE answer card (`raised`, 24 corners,
+> 1pt edge, 18 inside, no tinted fills): "Your answer" (filled `wrong` badge, caption in `wrong`), "Why not B"
+> as its own stop (caption `ink2` over `small` `ink`), a divider, "Best answer" (filled `correct` badge);
+> after a right answer one row, "Your answer · the best"; (3) Key idea: caption `accentText` over `quote`,
+> with the 3px `accent` rule (the coach speaking), not a card; (4) "How to think about it" (`headline`),
+> then one card of tip rows in the written order, each its label word (`caption`, `accentText`) over the
+> tip (`small`, `ink`), a small `accent` leaf per row and one stem down the card's left edge (drawn once;
+> at once under Reduce Motion); colour never tells the tips apart, the words do; (5) "Why D" (`headline`)
+> and the explanation. After a right answer every tip is open and nothing folds. After a miss (fallback
+> 4.6) the Exam cue and the tip the coach line named (Final two or Eliminate two) are open; a long Why
+> shows two lines (the screen reader always gets the whole text) and "Read more" (48pt, its name lists
+> what it opens) opens the rest of the Why and the other tip rows, right after the button. (6) Go deeper
+> in one card; (7) the source row with a "Report a problem" text link at its right (still in More);
+> (8) Next question, sticky. The split comes from `engine/answerTips.ts`.
 Order on the feedback screen:
 1. **Verdict row**: leaf-mark (38pt teardrop: a circle with its top-right corner squared, `M35.5 2.5V19A16.5 16.5 0 1 1 19 2.5z`) in `correct`/`wrong`, white ✓/✗ 20 @2.5 stroke, + `hero` "Correct"/"Not quite" in the same colour. Under it a one-line `meta` coach line at left 50: correct → "Clean read."; wrong pick of the runner-up → "You picked the closest wrong choice. That's the trap." (1.51: learner copy never says "runner-up"; the slip pattern reads "You often pick the closest wrong choice"); other wrong → "Check the role in the stem." At ×1.3 text and up (mobile 1.43) the coach line, and the hint / retest lines under it, start at the gutter (left 0) and wrap under the verdict, not in a narrow column beside the leaf.
 2. **Answer rows** (mobile 1.43, §6 "Answer rows"): if wrong, the chosen option in `wrongBg` with a `caption` tag "Your answer" in `wrong` and its letter in a `wrong` badge; under it, its own note as "Why not C" (`PickNote`). Then the correct option in `correctBg` tagged "Best answer", its letter in a `correct` badge. If correct, only the correct row. Other options are hidden (not dimmed) on this screen; the full list stays in review. Every letter is a DISPLAY letter and every note goes through `renderText` (grading stays on original letters).

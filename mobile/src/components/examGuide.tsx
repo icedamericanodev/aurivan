@@ -86,7 +86,7 @@ export function SourcesLine({ sources, asOf }: { sources: readonly GuideSource[]
           <T v="meta" color={c.accentText} style={{ textDecorationLine: 'underline' }}>{s.label}</T>
         </Pressable>
       ))}
-      {asOf ? <T v="meta" color={c.muted}>{`Checked ${isoLongDate(asOf)}`}</T> : null}
+      {asOf ? <T v="meta" color={c.ink2}>{`Checked ${isoLongDate(asOf)}`}</T> : null}
     </View>
   );
 }
