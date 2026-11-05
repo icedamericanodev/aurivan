@@ -54,9 +54,19 @@ Inside each domain:
 
 ## 3. The free sample (what sells the course)
 
-The free tier is about 20% of each course's questions, at least 100,
-weighted by domain, plus one diagnostic and one short timed mock. For CRISC
-at 1,000 that is 200 items: **52 / 44 / 64 / 40**.
+**Owner decision (5 Nov 2026):** the free sample is **10% of the bank, never
+fewer than 100 items**, weighted by domain, plus one diagnostic and one short
+timed mock of **50 items** drawn only from the sample. This settles the earlier
+20% figure here against the 10% in `docs/business/monetization/WEB_GATE_PLAN.md`.
+At 600 items the sample is 100 (about 17%); at 1,000 it is still 100.
+`scripts/build_free_sample.py` needs the 100-item floor when CRISC is added to it.
+
+**Owner decision (5 Nov 2026): CRISC goes on sale at 600 reviewed items**, the
+same rule as AAIA (product-manager recommendation). At 425, two 150-item full
+mocks share about a third of their items; at 600 they share about a quarter,
+and the bank holds four non-overlapping mocks. The paywall (Phase E) is not
+built yet, so reaching 600 first costs almost nothing. Learner copy never
+states the bank size.
 
 How the sample is chosen:
 1. Weighted by domain and spread over every sub-area (at least one item per
@@ -69,7 +79,7 @@ How the sample is chosen:
    (no schema field exists yet; don't invent one in the originals).
 5. The sample is fixed per release, so a learner's free progress stays valid.
 
-Until the bank reaches 500 items, the sample is "at least 100" rather than 20%.
+
 
 ## 4. Batch size and cadence
 
@@ -231,9 +241,9 @@ re-check "effective 2025" and the domain names on isaca.org and clear the
 `TO VERIFY` comment in `mobile/src/content/certifications.ts`; re-read Play's
 policies and Apple's 2.3, 3.1 and 5.2 on the day of submission.
 
-**Owner decision still open:** the bank size at which CRISC goes on sale.
-AAIA waits for about 600 reviewed items; CRISC has no threshold yet (425 now,
-1,000 target).
+**Sale threshold (owner decision, 5 Nov 2026):** 600 reviewed items; see
+section 3. The free-sample size is settled there too (10%, never fewer than 100;
+50-item mini mock), which resolves build item 2's size clash.
 
 ## 8. Pilot results (30 Oct 2026)
 
