@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "comment": "Original CC practice questions for Domain 1 (Security Principles), written to the CC exam outline effective 1 Sep 2026. Every item is authored from public concepts and KaiSip's own CC study notes (data/cc/notes/d1.json), with no reference to ISC2 training, CBK text or any prior question bank. Schema: docs/content/QUESTION_SCHEMA.md; writing rules: docs/content/EXAM_STYLE_V2.md and .claude/agents/isc2-cc-standards-auditor.md. Not affiliated with or endorsed by ISC2®. CC® is a registered trademark of ISC2, Inc. Pilot batch cc_d1_001 to cc_d1_020, Oct 2026; batch 2 cc_d1_021 to cc_d1_045, 30 Oct 2026; batch 3 cc_d1_046 to cc_d1_075, 31 Oct 2026; batch 4 cc_d1_076 to cc_d1_110, 1 Nov 2026; batch 5 cc_d1_111 to cc_d1_150, 4 Nov 2026.",
+    "comment": "Original CC practice questions for Domain 1 (Security Principles), written to the CC exam outline effective 1 Sep 2026. Every item is authored from public concepts and KaiSip's own CC study notes (data/cc/notes/d1.json), with no reference to ISC2 training, CBK text or any prior question bank. Schema: docs/content/QUESTION_SCHEMA.md; writing rules: docs/content/EXAM_STYLE_V2.md and .claude/agents/isc2-cc-standards-auditor.md. Not affiliated with or endorsed by ISC2®. CC® is a registered trademark of ISC2, Inc. Pilot batch cc_d1_001 to cc_d1_020, Oct 2026; batch 2 cc_d1_021 to cc_d1_045, 30 Oct 2026; batch 3 cc_d1_046 to cc_d1_075, 31 Oct 2026; batch 4 cc_d1_076 to cc_d1_110, 1 Nov 2026; batch 5 cc_d1_111 to cc_d1_150, 4 Nov 2026; batch 6 cc_d1_151 to cc_d1_190, 5 Nov 2026.",
     "schema_version": 1
   },
   "domain": 1,
@@ -5406,6 +5406,1446 @@
         "AI translation"
       ],
       "_provenance": "Authored from concept: 'Check AI output before relying on it; competent service means verifying, not pasting' (notes 1.5.6 Ethical Use of AI at Work). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D1 batch 5, 4 Nov 2026.",
+      "style_version": 2
+    },
+    {
+      "id": "cc_d1_151",
+      "domain": 1,
+      "subtopic": "1.1 Cybersecurity concepts. CIA triad",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "A gang copied a community choir's member database and demands payment not to publish it; the database stayed online and no record changed. Which security goal was MOST directly harmed?",
+      "options": {
+        "A": "Availability, because ransom demands follow attacks on access",
+        "B": "Confidentiality, because member data reached unauthorized people",
+        "C": "Integrity, because a copy of the records now exists elsewhere",
+        "D": "All three goals, because a ransom attack harms each of them"
+      },
+      "correct": "B",
+      "key_concept": "Name the goal by what failed: data copied and exposed is a confidentiality breach, even when systems stay up and nothing changes.",
+      "pre_read": "Ask what actually happened to the data: was it seen, changed or made unreachable?",
+      "correct_explanation": "Copying members' data and threatening to publish it is disclosure to people with no right to see it, which is a confidentiality failure. The database stayed online and no record changed, so availability and integrity held. Availability, the runner-up, tempts because ransom demands are linked with locked systems, but nothing was locked here; this extortion works by threatening exposure instead.",
+      "wrong_explanations": {
+        "A": "Closest choice: many ransom attacks do lock systems. But this database stayed online for members, so access was never lost; the harm here is exposure of the data.",
+        "C": "Tempting because the records now exist outside the choir. But a copy is not a change; integrity fails only when data is altered without authorization.",
+        "D": "Tempting because ransomware often hits several goals at once. But each goal is judged by what failed, and here only secrecy did."
+      },
+      "tips": [
+        "Eliminate: C confuses copying with altering, and D assumes every ransom attack harms all three goals; each goal is judged by what actually failed.",
+        "Final two: B beats A because the database stayed online; the gang's leverage is exposure, which is a confidentiality failure, not lost access.",
+        "Exam cue: classify by the harm, not the attack's name: seen is confidentiality, changed is integrity, unreachable is availability."
+      ],
+      "framework_ref": "NIST SP 800-12 Rev. 1 Section 1.4 (Important Terminology: confidentiality, integrity, availability)",
+      "related_concepts": [
+        "Data extortion",
+        "Confidentiality",
+        "CIA triad"
+      ],
+      "_provenance": "Authored from concept: 'Confidentiality fails through disclosure: someone sees data they should not' (notes 1.1.1 The CIA Triad). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D1 batch 6, 5 Nov 2026.",
+      "style_version": 2
+    },
+    {
+      "id": "cc_d1_152",
+      "domain": 1,
+      "subtopic": "1.1 Cybersecurity concepts. Confidentiality",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A ballet company's vendor asks the system administrator for the full staff file to fix 12 failed records; the data owner allows vendors only what a fix needs, masked. What should the administrator do FIRST?",
+      "options": {
+        "A": "Ask the data owner to approve sharing the full file",
+        "B": "Send the full file to the vendor in an encrypted archive",
+        "C": "Mask just the problem entries, then share those alone",
+        "D": "Mask the bank details, then share the whole staff file"
+      },
+      "correct": "C",
+      "key_concept": "Confidentiality limits disclosure to what the recipient needs; encrypting or partly masking a larger data set still over-shares.",
+      "pre_read": "Note what the vendor is asking for, and what the fix actually requires.",
+      "correct_explanation": "Confidentiality means disclosing data only to those who need it, and only as much as they need. The vendor needs only the problem entries, so masked copies of just those let the fix go ahead while every other staff record stays in house, as the owner's rules require. Masking only the bank details, the runner-up, hides the most sensitive field but still hands over every staff record.",
+      "wrong_explanations": {
+        "A": "Tempting because the data owner decides who sees the data. But the owner already allows what the fix needs; asking for the full file seeks needless disclosure.",
+        "B": "Tempting because encryption protects the file on its way. But the vendor decrypts it and then holds every staff record, far more than the fix needs.",
+        "D": "Closest choice: masking bank details removes the most sensitive field. But the vendor still receives every staff record, though only the problem entries are needed."
+      },
+      "tips": [
+        "Eliminate: A asks to widen a disclosure the data owner already limits, and B protects the file in transit but still hands over every record.",
+        "Final two: C beats D because confidentiality limits whose records are shared as well as which fields; the fix needs only the problem entries.",
+        "Exam cue: encryption protects data on the way, but need to know decides what is sent at all; share the least a task needs."
+      ],
+      "framework_ref": "NIST SP 800-53 Rev. 5 SA-8(33) (Security and Privacy Engineering Principles | Minimization); NIST SP 800-53 Rev. 5 SI-12(1) (Information Management and Retention | Limit Personally Identifiable Information Elements)",
+      "related_concepts": [
+        "Need to know",
+        "Data masking",
+        "Sharing with vendors"
+      ],
+      "_provenance": "Authored from concept: 'Access control, guided by need to know and least privilege, keeps the reader list short' (notes 1.1.2 Confidentiality). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D1 batch 6, 5 Nov 2026; re-angled from data deletion to need to know, final fix round.",
+      "style_version": 2
+    },
+    {
+      "id": "cc_d1_153",
+      "domain": 1,
+      "subtopic": "1.1 Cybersecurity concepts. Integrity checks",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "A film archive stores a plain hash, made with no secret key, beside each digitized reel so staff can spot changes. Which problem can this MOST reliably reveal?",
+      "options": {
+        "A": "Someone copying a reel and watching it without permission",
+        "B": "An insider who edits a reel and then updates its hash",
+        "C": "Silent corruption of one reel's file on a failing disk",
+        "D": "A forged reel that claims to come from a partner archive"
+      },
+      "correct": "C",
+      "key_concept": "A plain hash reliably reveals accidental changes, but a deliberate tamperer can recompute it; keyed hashes or signatures stop that.",
+      "pre_read": "Ask who could recompute the hash, and what that means for each problem.",
+      "correct_explanation": "A plain hash is a fingerprint anyone can recompute, so it reliably reveals accidental changes, such as a file silently corrupted on a failing disk: the stored hash no longer matches. An insider who edits a reel, the runner-up, can simply recompute and replace the hash, because no secret key is needed; stopping deliberate tampering takes a keyed hash or a digital signature.",
+      "wrong_explanations": {
+        "A": "Tempting because hashing is a security tool. But a hash does nothing to stop someone watching the reel; that needs access control or encryption.",
+        "B": "Closest choice: hashes are meant to show changes. But with no secret key, whoever edits the reel can recompute a matching hash and hide the edit.",
+        "D": "Tempting because a hash is tied to the file. But a plain hash shows nothing about who made the file; proving the source needs a signature or keyed hash."
+      },
+      "tips": [
+        "Eliminate: A is a confidentiality problem a hash cannot address, and D is about the file's source, which a keyless hash cannot prove.",
+        "Final two: C beats B because anyone can recompute a keyless hash, so it catches accidental changes but not an editor who also replaces the hash.",
+        "Exam cue: plain hash, accidental change; keyed hash or signature, deliberate tampering and proof of source."
+      ],
+      "framework_ref": "NIST SP 800-12 Rev. 1 Section 9.1.2 (Integrity)",
+      "related_concepts": [
+        "Plain hash",
+        "Integrity",
+        "Accidental corruption"
+      ],
+      "_provenance": "Authored from concept: 'A plain hash uses no key, so whoever alters the data can recompute it' (notes 1.1.3 Integrity and Authenticity). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D1 batch 6, 5 Nov 2026.",
+      "style_version": 2
+    },
+    {
+      "id": "cc_d1_154",
+      "domain": 1,
+      "subtopic": "1.1 Cybersecurity concepts. Availability",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "A bowling alley's IT manager says that keeping its lane-booking site online is an operations matter, not a security one. Which reply from the security analyst is MOST accurate?",
+      "options": {
+        "A": "It is right, as security keeps data secret and unchanged, nothing more",
+        "B": "It is wrong, as availability is a security goal that attacks target",
+        "C": "It is right, unless the site stores customers' card or personal data",
+        "D": "It is wrong when attackers cause the outage, and right otherwise"
+      },
+      "correct": "B",
+      "key_concept": "Availability is one of the three core security goals, so keeping systems usable is security work, whatever takes them down.",
+      "pre_read": "Recall the three core security goals, and what can stop a system being usable.",
+      "correct_explanation": "Availability, keeping systems and data usable by authorized people when needed, is one of the three core security goals beside confidentiality and integrity, and attacks such as denial of service and ransomware target it directly. Limiting it to attacker-caused outages, the runner-up, misses that failed disks, power cuts and overloads stop services too; redundancy and backups against them are security controls.",
+      "wrong_explanations": {
+        "A": "Tempting because confidentiality and integrity are the best-known goals. But security has three core goals, and availability, keeping systems usable when needed, is one of them.",
+        "C": "Tempting because customer data draws the most attention. But availability is a security goal whatever a system stores; a site that is down harms the business either way.",
+        "D": "Closest choice: attacks such as floods of traffic and ransomware do target availability. But failed disks and power cuts stop services too, and guarding against them is security work."
+      },
+      "tips": [
+        "Eliminate: A leaves availability out of security's three goals, and C ties security to stored data, though a site that is down harms the business whatever it holds.",
+        "Final two: B beats D because availability is a security goal whatever causes the outage; redundancy and backups against failures are security work too.",
+        "Exam cue: availability sits beside confidentiality and integrity as a core security goal; protecting uptime is security work, not just operations."
+      ],
+      "framework_ref": "NIST SP 800-12 Rev. 1 Section 1.4 (Important Terminology: confidentiality, integrity, availability); NIST SP 800-53 Rev. 5 SC-5 (Denial-of-service Protection)",
+      "related_concepts": [
+        "Availability",
+        "CIA triad",
+        "Denial of service"
+      ],
+      "_provenance": "Authored from concept: 'Availability is one of the three security goals; denial of service and ransomware attack it directly' (notes 1.1.4 Availability). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D1 batch 6, 5 Nov 2026.",
+      "style_version": 2
+    },
+    {
+      "id": "cc_d1_155",
+      "domain": 1,
+      "subtopic": "1.1 Cybersecurity concepts. Identification and authentication",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "A city's parking meters each present their own device certificate, and prove they hold its private key, before the payment server accepts their transactions. What is this check MOST accurately doing?",
+      "options": {
+        "A": "Identifying the meter by the name its certificate carries",
+        "B": "Authorizing the meter, granting it rights to submit payments",
+        "C": "Accounting for each payment that the meter takes in",
+        "D": "Authenticating the meter, verifying its claimed identity"
+      },
+      "correct": "D",
+      "key_concept": "Authentication proves a claimed identity with evidence; devices prove theirs too, for example by showing they hold a certificate's private key.",
+      "pre_read": "Separate the claim a device makes from the proof it gives.",
+      "correct_explanation": "Presenting a certificate makes a claim about which device this is; proving possession of the matching private key backs that claim with evidence, which is authentication. Devices and processes authenticate just as people do. Authorization, the runner-up, tempts because the server accepts transactions only after the check, but authorization decides what an authenticated meter may do; the private-key proof establishes which meter is connecting.",
+      "wrong_explanations": {
+        "A": "Tempting because the certificate does name the meter. But the meter also proves it holds the matching private key, which takes the check beyond identification to authentication.",
+        "B": "Closest choice: the server accepts transactions only after the check. But the check proves which meter is connecting; deciding what it may submit is authorization, a separate step that follows.",
+        "C": "Tempting because payments are involved. But accounting records what the meter did; this check proves which device is connecting."
+      },
+      "tips": [
+        "Eliminate: A stops at identification, but proving the private key goes beyond a bare identity claim, and C is accounting, which records actions after access.",
+        "Final two: D beats B because the private-key proof establishes which meter is connecting; deciding what it may then submit is authorization, a later step.",
+        "Exam cue: a claim is identification and evidence for it is authentication; devices and services authenticate too, not just people."
+      ],
+      "framework_ref": "NIST SP 800-53 Rev. 5 IA-3 (Device Identification and Authentication)",
+      "related_concepts": [
+        "Device authentication",
+        "Identification",
+        "AAA"
+      ],
+      "_provenance": "Authored from concept: 'Identification claims; authentication proves' (notes 1.1.5 Authentication). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D1 batch 6, 5 Nov 2026.",
+      "style_version": 2
+    },
+    {
+      "id": "cc_d1_156",
+      "domain": 1,
+      "subtopic": "1.1 Cybersecurity concepts. Non-repudiation",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "A cooperative's traders confirm sales with codes from a secret key each shares with the cooperative, and its IT manager says the codes cannot prove who made a disputed one. Which reply is MOST accurate?",
+      "options": {
+        "A": "Disagree; only that trader and the cooperative hold the key",
+        "B": "Agree; the cooperative holds the same key and could make it",
+        "C": "Disagree; a valid code shows that the confirmation was not altered",
+        "D": "Agree, but only because the codes are not also encrypted"
+      },
+      "correct": "B",
+      "key_concept": "A shared secret key cannot prove which holder made a message, so non-repudiation needs a private key only the signer controls.",
+      "pre_read": "Count who holds the key, and ask who could have made the code.",
+      "correct_explanation": "A code made with a shared secret key shows the confirmation came from someone holding that key, but two parties hold it. In a dispute, the trader can credibly say the cooperative made the code itself, so the code cannot give non-repudiation. The runner-up's point, that only two parties hold the key, is exactly the problem: proof against denial needs something only the signer controls, such as a private key.",
+      "wrong_explanations": {
+        "A": "Closest choice: a key held by just two parties sounds well protected. But the dispute is between those two parties, and either could have made the code.",
+        "C": "Tempting because the code does reveal changes. But being unaltered says nothing about which key holder created the confirmation.",
+        "D": "Tempting because encryption sounds like extra proof. But encrypting with a shared key still leaves both parties able to produce the message."
+      },
+      "tips": [
+        "Eliminate: C mistakes integrity for proof of origin, and D adds encryption, which leaves the same two parties holding the key.",
+        "Final two: B beats A because the dispute is between the only two key holders, so either could have made the code.",
+        "Exam cue: non-repudiation needs something only the signer controls, such as a private key; anything shared lets each party blame the other."
+      ],
+      "framework_ref": "NIST SP 800-53 Rev. 5 AU-10 (Non-repudiation); NIST SP 800-12 Rev. 1 Section 9.1.3.1 (Secret Key Electronic Signatures)",
+      "related_concepts": [
+        "Shared secret keys",
+        "Non-repudiation",
+        "Message authentication codes"
+      ],
+      "_provenance": "Authored from concept: 'Shared secrets cannot give non-repudiation: either key holder could have made the message' (notes 1.1.7 Non-Repudiation). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D1 batch 6, 5 Nov 2026.",
+      "style_version": 2
+    },
+    {
+      "id": "cc_d1_157",
+      "domain": 1,
+      "subtopic": "1.1 Cybersecurity concepts. Privacy and personal data",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A swimming pool chain plans ceiling cameras that count swimmers in each lane, and the vendor will finalize the design next month. What should the security analyst ask for FIRST?",
+      "options": {
+        "A": "Encryption of the camera footage, built into the design",
+        "B": "A penetration test of the cameras after they go live",
+        "C": "Signs at each pool telling swimmers about the new cameras",
+        "D": "A privacy impact assessment of the cameras as proposed"
+      },
+      "correct": "D",
+      "key_concept": "Privacy by design assesses personal data use before a system is built, while collection can still be reduced or avoided.",
+      "pre_read": "Note the timing: what can still change before next month?",
+      "correct_explanation": "Privacy by design means weighing privacy before a system is built: whether the cameras need identifiable images at all, what is kept and for how long. A privacy impact assessment now can still change the design, for example to count swimmers without recording faces. Signs, the runner-up, are good practice for transparency, but they tell swimmers about collection the assessment might have avoided.",
+      "wrong_explanations": {
+        "A": "Tempting because encryption can be built in from the start. But it hides footage from outsiders; it does not ask whether filming swimmers is needed.",
+        "B": "Tempting because testing finds security flaws. But it comes after launch and checks security, not whether the system collects more personal data than it needs.",
+        "C": "Closest choice: telling swimmers about cameras is good practice. But it informs them about a design nobody assessed; the assessment comes first, while the design can change."
+      },
+      "tips": [
+        "Eliminate: A protects footage without asking whether it should be recorded, and B tests security after go-live; neither reduces what the cameras collect.",
+        "Final two: D beats C because notice tells people about collection, while the assessment can still reduce it before the design is finalized.",
+        "Exam cue: for new systems handling personal data, privacy work starts at design; retrofits cost more and the data may already be collected."
+      ],
+      "framework_ref": "NIST SP 800-53 Rev. 5 RA-8 (Privacy Impact Assessments); NIST SP 800-53 Rev. 5 SA-8(33) (Security and Privacy Engineering Principles | Minimization)",
+      "related_concepts": [
+        "Privacy by design",
+        "Privacy impact assessment",
+        "Data minimization"
+      ],
+      "_provenance": "Authored from concept: 'Privacy by design builds these limits in from the first design step, with protective defaults' (notes 1.1.8 Privacy and Personal Data). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D1 batch 6, 5 Nov 2026.",
+      "style_version": 2
+    },
+    {
+      "id": "cc_d1_158",
+      "domain": 1,
+      "subtopic": "1.1 Cybersecurity concepts. AI and the CIA triad",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "A language-learning app's AI tutor, trained on learners' past chats, repeated one learner's phone number to another learner who asked cleverly. Which security goal does this MOST directly show failing?",
+      "options": {
+        "A": "Integrity, because the tutor gave an answer it should not give",
+        "B": "Confidentiality, because someone's personal data was revealed",
+        "C": "Availability, because the tutor stopped working as designed",
+        "D": "Non-repudiation, because nobody can prove who asked for it"
+      },
+      "correct": "B",
+      "key_concept": "Models can memorize training data and reveal it in answers, so personal data in training sets is a confidentiality and privacy risk.",
+      "pre_read": "Ask what reached whom: was data altered, made unreachable or disclosed?",
+      "correct_explanation": "The model memorized personal data from its training chats and revealed it to someone with no right to see it. That is disclosure, a confidentiality and privacy failure, and a known AI risk: training data can leak through outputs. Integrity, the runner-up, tempts because the tutor misbehaved, but nothing was altered; the harm that matters is a stranger learning a learner's phone number.",
+      "wrong_explanations": {
+        "A": "Closest choice: the tutor did behave in a way it should not. But no data or model was altered; the harm is that a learner's phone number reached a stranger.",
+        "C": "Tempting because the tutor misbehaved. But it kept answering learners; nothing became unreachable, so availability held.",
+        "D": "Tempting because AI actions can be hard to trace. But nothing here turns on denying an action; the failure is personal data reaching the wrong person."
+      },
+      "tips": [
+        "Eliminate: C fails because the tutor kept answering, and D concerns denying actions, which this leak does not involve.",
+        "Final two: B beats A because the harm is disclosure of a learner's phone number; nothing in the data or model was altered.",
+        "Exam cue: personal data in training sets can come back out through a model's answers; treat that as a confidentiality and privacy failure."
+      ],
+      "framework_ref": "NIST AI 100-2 E2025 Section 3.3.2 (Information Extraction: leaking sensitive training data)",
+      "related_concepts": [
+        "Training data leakage",
+        "Confidentiality",
+        "AI privacy"
+      ],
+      "_provenance": "Authored from concept: 'Training data and prompts can hold personal data the model later reveals: a confidentiality and privacy risk' (notes 1.1.9 AI and the Core Security Concepts). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D1 batch 6, 5 Nov 2026.",
+      "style_version": 2
+    },
+    {
+      "id": "cc_d1_159",
+      "domain": 1,
+      "subtopic": "1.2 Risk management. Risk terms",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "A photography studio's security analyst reads that generative AI now lets scammers write flawless phishing emails in any language. In risk terms, what has MOST directly changed?",
+      "options": {
+        "A": "A new vulnerability has appeared in the studio's email system",
+        "B": "The impact of a successful phishing attack has grown",
+        "C": "The studio has gained a new asset that it must protect",
+        "D": "The threat has become more capable than it was before"
+      },
+      "correct": "D",
+      "key_concept": "Better attacker tools, such as AI-written phishing, make the threat more capable; the organization's own weaknesses are its vulnerabilities.",
+      "pre_read": "Sort the news into threat, vulnerability, asset or impact before answering.",
+      "correct_explanation": "Generative AI changes what attackers can do: they can now produce fluent, convincing lures at scale. That is a more capable threat, which in turn raises the likelihood of successful phishing. A new vulnerability, the runner-up, would be a weakness inside the studio, such as an unpatched mail server; the studio's systems and staff are unchanged, and only the attackers' tools improved.",
+      "wrong_explanations": {
+        "A": "Closest choice: phishing does exploit weaknesses. But a vulnerability is the studio's own weakness, and nothing in its systems or staff changed; the attackers' tools did.",
+        "B": "Tempting because better phishing sounds more damaging. But a successful attack would cost the studio the same; what changes is how often attacks may succeed.",
+        "C": "Tempting because AI is new technology. But the AI belongs to the scammers, not the studio, so the studio has no new asset to protect."
+      },
+      "tips": [
+        "Eliminate: B confuses the chance of success with the harm a success causes, and C treats the attackers' AI as the studio's asset.",
+        "Final two: D beats A because a vulnerability is the studio's own weakness, and only the attackers' capability has changed.",
+        "Exam cue: sort each fact into threat, vulnerability or impact; new attacker tools change the threat, and your own weaknesses are vulnerabilities."
+      ],
+      "framework_ref": "NIST AI 600-1 (Generative AI Profile) Section 2.9 (Information Security: generative AI may augment attacks such as hacking, malware and phishing); NIST SP 800-30 Rev. 1 Section 2.3.1 (Risk Models: threats, vulnerabilities, likelihood and impact)",
+      "related_concepts": [
+        "Threat capability",
+        "AI-assisted phishing",
+        "Vulnerability"
+      ],
+      "_provenance": "Authored from concept: 'A threat is anything that could cause harm; a vulnerability is a weakness a threat can use' (notes 1.2.1 Threats, Vulnerabilities and Risk). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D1 batch 6, 5 Nov 2026.",
+      "style_version": 2
+    },
+    {
+      "id": "cc_d1_160",
+      "domain": 1,
+      "subtopic": "1.2 Risk management. Risk lifecycle",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A go-kart track's security analyst has rated the risks in its new booking app, three of them High, and each risk has a named owner. What should the analyst do FIRST?",
+      "options": {
+        "A": "Let each risk owner choose a treatment from the ratings",
+        "B": "Start fixing the three High risks with controls the analyst picks",
+        "C": "Sign off the Low risks to shorten the owners' list of decisions",
+        "D": "Buy cyber insurance that covers the three High risks"
+      },
+      "correct": "A",
+      "key_concept": "Assessment results go to the risk owners, who choose each treatment; communication runs through every step of the lifecycle.",
+      "pre_read": "Ask who chooses how each rated risk is handled.",
+      "correct_explanation": "Assessment feeds treatment, and treatment is the risk owner's decision: avoid, mitigate, transfer or accept. The analyst's next step is to communicate the ratings to each owner so they can choose. Fixing the High risks right away, the runner-up, feels proactive, but it picks mitigation and its cost on the owners' behalf, and an owner might rather avoid or transfer a risk.",
+      "wrong_explanations": {
+        "B": "Closest choice: High risks need prompt action. But choosing mitigation and its controls is the owner's treatment decision; the analyst informs it rather than making it.",
+        "C": "Tempting because Low risks seem harmless. But signing off a risk is acceptance, which belongs to the risk owner within tolerance, never the analyst.",
+        "D": "Tempting because insurance is a real treatment. But transfer is one option among four, and choosing it, and paying for it, belongs to the risk owner."
+      },
+      "tips": [
+        "Eliminate: C has the analyst accept risks, and D picks transfer for the owners; both are treatment decisions that belong to the risk owners.",
+        "Final two: A beats B because mitigation is also a treatment choice; the analyst's step is to bring the ratings to the owners, who decide.",
+        "Exam cue: after assessment comes treatment, and the owner chooses it; the practitioner communicates results and carries out what is decided."
+      ],
+      "framework_ref": "NIST CSF 2.0 ID.RA-06 (risk responses are chosen, prioritized, planned, tracked and communicated); NIST SP 800-39 Section 2.1 (Components of Risk Management: frame, assess, respond and monitor)",
+      "related_concepts": [
+        "Risk communication",
+        "Treatment decisions",
+        "Risk owners"
+      ],
+      "_provenance": "Authored from concept: 'The risk management lifecycle is the repeating cycle of identifying, assessing, treating and monitoring risks, with communication throughout' (notes 1.2.2 The Risk Management Lifecycle). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D1 batch 6, 5 Nov 2026.",
+      "style_version": 2
+    },
+    {
+      "id": "cc_d1_161",
+      "domain": 1,
+      "subtopic": "1.2 Risk management. Likelihood and impact",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "A credit union turns on phishing-resistant multifactor authentication (MFA) for staff email. How should its risk analyst MOST accurately update the rating for an email account takeover that leads to fraud?",
+      "options": {
+        "A": "Lower the likelihood, leaving the impact of a takeover as it was",
+        "B": "Lower the impact, since each stolen account would now cost far less",
+        "C": "Lower both the likelihood and the impact by one level each",
+        "D": "Remove the risk, since MFA makes account takeover impossible"
+      },
+      "correct": "A",
+      "key_concept": "Credit a control only with the factor it changes: MFA makes takeover less likely but leaves the harm of a successful one unchanged.",
+      "pre_read": "Ask which factor MFA changes: how likely a takeover is, or how bad it would be.",
+      "correct_explanation": "MFA makes it much harder for an attacker to take over an account, so it lowers the likelihood. If a takeover still happened, through a stolen session for example, the fraud it enabled would cost the same, so the impact stays. Lowering both, the runner-up, credits MFA with something it does not do; a control should be credited only with the factor it actually changes.",
+      "wrong_explanations": {
+        "B": "Tempting because MFA is a strong control. But it makes takeovers harder, not cheaper; a successful takeover would enable the same fraud.",
+        "C": "Closest choice: MFA clearly lowers the overall risk. But it changes only how likely a takeover is; crediting it with lower impact overstates what it does.",
+        "D": "Tempting because phishing-resistant MFA is very effective. But controls reduce risk, never remove it; attackers can still steal sessions or trick staff."
+      },
+      "tips": [
+        "Eliminate: B credits MFA with reducing harm it does not touch, and D treats a strong control as removing the risk entirely.",
+        "Final two: A beats C because MFA changes how likely a takeover is, not how much a successful one would cost.",
+        "Exam cue: credit each control only with the factor it changes; preventive controls usually lower likelihood, and recovery controls lower impact."
+      ],
+      "framework_ref": "NIST SP 800-30 Rev. 1 Section 2.3.1 (Risk Models: threats, vulnerabilities, likelihood and impact); NIST SP 800-63B-4 (Authentication and Authenticator Management: phishing resistance)",
+      "related_concepts": [
+        "Likelihood",
+        "Impact",
+        "Crediting controls"
+      ],
+      "_provenance": "Authored from concept: 'Credit each control only with the factor it changes' (notes 1.2.3 Assessing Likelihood and Impact). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D1 batch 6, 5 Nov 2026.",
+      "style_version": 2
+    },
+    {
+      "id": "cc_d1_162",
+      "domain": 1,
+      "subtopic": "1.2 Risk management. Choosing an analysis method",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A flower wholesaler's owner must decide whether a $40,000-a-year backup cold-room system is worth buying, and five years of outage cost records exist. Which approach is BEST for its risk analyst?",
+      "options": {
+        "A": "Rate the outage risk as high, medium or low for the owner",
+        "B": "Estimate the yearly loss in money and compare it with the cost",
+        "C": "Run a penetration test on the cold rooms' controllers",
+        "D": "Copy the choice that similar wholesalers made last year"
+      },
+      "correct": "B",
+      "key_concept": "Quantitative analysis fits a specific spending decision backed by loss data; qualitative levels fit ranking many risks quickly.",
+      "pre_read": "Note what the owner must decide and what data exists.",
+      "correct_explanation": "This is a spending decision with good loss records, which is where quantitative analysis fits: estimate the annualized loss from outages and compare it with the $40,000 yearly cost. A high, medium or low rating, the runner-up, is fast and useful for ranking many risks, but it cannot show whether the system saves more money than it costs.",
+      "wrong_explanations": {
+        "A": "Closest choice: qualitative ratings are quick and widely used. But a High label cannot tell the owner whether $40,000 a year is less than the loss it prevents.",
+        "C": "Tempting because testing finds weaknesses. But a test of the controllers says nothing about outage costs or whether the backup system pays for itself.",
+        "D": "Tempting because peers face similar risks. But another wholesaler's losses, costs and appetite differ; the decision should rest on this wholesaler's own records."
+      },
+      "tips": [
+        "Eliminate: C tests technical weaknesses instead of weighing cost, and D borrows other wholesalers' decisions instead of using this wholesaler's records.",
+        "Final two: B beats A because a money decision with reliable loss records calls for numbers; a rating cannot be compared with $40,000.",
+        "Exam cue: use quantitative analysis to justify a specific spend when data exists, and qualitative levels to rank many risks quickly."
+      ],
+      "framework_ref": "NIST SP 800-30 Rev. 1 Section 2.3.2 (Assessment Approaches: quantitative assessments support cost-benefit analysis of risk responses)",
+      "related_concepts": [
+        "Quantitative analysis",
+        "Cost-benefit",
+        "Annualized loss expectancy"
+      ],
+      "_provenance": "Authored from concept: 'Use numbers when a spending decision needs them and levels when speed matters' (notes 1.2.4 Qualitative and Quantitative Analysis). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D1 batch 6, 5 Nov 2026.",
+      "style_version": 2
+    },
+    {
+      "id": "cc_d1_163",
+      "domain": 1,
+      "subtopic": "1.2 Risk management. Risk treatment",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A wildlife park's marketing team wants an optional app that tags visitors' faces in photos, and leaders have a very low appetite for biometric privacy risk. Which treatment BEST fits?",
+      "options": {
+        "A": "Transfer it, by buying insurance that covers privacy claims",
+        "B": "Avoid it, by not adopting the face-tagging app",
+        "C": "Mitigate it, by encrypting the stored face templates",
+        "D": "Accept it, by keeping the app as a marketing cost"
+      },
+      "correct": "B",
+      "key_concept": "Avoidance fits when an activity is optional and its risk far exceeds appetite: not starting it removes the risk entirely.",
+      "pre_read": "Weigh how much leaders want this risk against how much the park needs the feature.",
+      "correct_explanation": "When an activity is optional and its risk sits far outside a very low appetite, the cleanest treatment is avoidance: don't start the activity. Encrypting the face templates, the runner-up, is a real mitigation, but the park would still collect visitors' biometric data, the very risk leaders said they barely want, for a feature it does not need.",
+      "wrong_explanations": {
+        "A": "Tempting because insurance is a real treatment. But it pays some costs after harm; visitors' biometric data would still be collected and the park still accountable.",
+        "C": "Closest choice: encryption lowers the chance stored templates leak. But the park would still collect biometric data, far outside its appetite, for an optional feature.",
+        "D": "Tempting because marketing features carry some risk. But acceptance clashes with a very low appetite, and the decision would belong to leaders, not the team."
+      },
+      "tips": [
+        "Eliminate: A leaves the biometric data collected and the park accountable, and D accepts a risk that the very low appetite rules out.",
+        "Final two: B beats C because the app is optional; not starting it removes the risk, while encryption still leaves biometric data collected.",
+        "Exam cue: when an activity is optional and its risk exceeds appetite, avoidance is often the best treatment."
+      ],
+      "framework_ref": "NIST SP 800-39 Section 3.3 (Responding to Risk: accept, avoid, mitigate, share or transfer); NIST CSF 2.0 GV.RM-02 (risk appetite and risk tolerance statements are established, communicated and maintained)",
+      "related_concepts": [
+        "Risk avoidance",
+        "Risk appetite",
+        "Biometric data"
+      ],
+      "_provenance": "Authored from concept: 'The rating, each option's cost and the risk appetite guide the choice' (notes 1.2.5 Risk Treatment Options). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D1 batch 6, 5 Nov 2026.",
+      "style_version": 2
+    },
+    {
+      "id": "cc_d1_164",
+      "domain": 1,
+      "subtopic": "1.2 Risk management. Appetite and tolerance",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A greenhouse grower's operations director owns a delivery-planner outage risk whose residual level is within tolerance, and further controls would cost more than the expected loss. Which decision by the director is MOST appropriate?",
+      "options": {
+        "A": "Refer the decision to senior management for sign-off",
+        "B": "Ask the security analyst to sign and record the acceptance",
+        "C": "Fund further controls until the residual risk reaches zero",
+        "D": "Accept the residual risk, recorded with a review date"
+      },
+      "correct": "D",
+      "key_concept": "Within tolerance, the risk owner may formally accept residual risk, documented with a review date; beyond tolerance, senior management decides.",
+      "pre_read": "Note where the residual risk sits against tolerance, and who owns it.",
+      "correct_explanation": "The residual risk is within tolerance and further controls would cost more than they save, so formal acceptance by the risk owner is the sound choice, documented and given a review date. Referring it to senior management, the runner-up, would be right beyond tolerance, but within tolerance the owner holds the authority, and sending routine acceptances upward wastes leaders' attention.",
+      "wrong_explanations": {
+        "A": "Closest choice: senior management does decide risks beyond tolerance. But this one is within tolerance, so the director, as risk owner, has the authority to accept it.",
+        "B": "Tempting because analysts document acceptances. But acceptance commits the organization, so the risk owner signs it; an analyst never accepts risk.",
+        "C": "Tempting because lower risk feels safer. But no control reaches zero, and these would cost more than the loss they prevent."
+      },
+      "tips": [
+        "Eliminate: B hands acceptance to an analyst, who never accepts risk, and C chases zero risk with controls that cost more than they save.",
+        "Final two: D beats A because the risk is within tolerance, so its owner may accept it; senior management decides only beyond tolerance.",
+        "Exam cue: within tolerance, the risk owner may accept and record the risk with a review date; beyond tolerance, senior management decides."
+      ],
+      "framework_ref": "ISO/IEC 27001:2022 Clause 6.1.3 f) (risk owners approve the risk treatment plan and accept residual risk); NIST SP 800-53 Rev. 5 RA-7 (Risk Response)",
+      "related_concepts": [
+        "Risk acceptance",
+        "Risk tolerance",
+        "Risk owner"
+      ],
+      "_provenance": "Authored from concept: 'Residual risk within tolerance can be formally accepted by its owner; anything beyond goes to senior leaders' (notes 1.2.6 Risk Appetite, Tolerance and Acceptance). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D1 batch 6, 5 Nov 2026.",
+      "style_version": 2
+    },
+    {
+      "id": "cc_d1_165",
+      "domain": 1,
+      "subtopic": "1.2 Risk management. Quantitative analysis",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "A glassblowing studio's $50,000 kiln would lose $20,000 of its value in a single flood. Which exposure factor (EF) should the studio's risk analyst record as MOST accurate?",
+      "options": {
+        "A": "$20,000, the amount one flood would cost the studio",
+        "B": "60%, the share of the value that survives",
+        "C": "40%, the share of the value one flood destroys",
+        "D": "2.5, the asset value divided by the loss"
+      },
+      "correct": "C",
+      "key_concept": "Exposure factor is the share of an asset's value one incident destroys; asset value times exposure factor gives the single loss expectancy.",
+      "pre_read": "Recall which quantitative term is a percentage and which are amounts of money.",
+      "correct_explanation": "Exposure factor is the share of an asset's value that one incident destroys: $20,000 of $50,000 is 40%. Multiplying the asset value by the exposure factor gives the single loss expectancy, $20,000, the runner-up; that figure is the cost of one flood, not the exposure factor, which is always a percentage.",
+      "wrong_explanations": {
+        "A": "Closest choice: $20,000 is the right loss figure. But that is the single loss expectancy, asset value times EF; the exposure factor is the percentage, 40%.",
+        "B": "Tempting because 60% comes from the same numbers. But it is the share that survives; exposure factor measures the share destroyed.",
+        "D": "Tempting because it divides the two figures. But it divides them the wrong way round; EF is the loss over the value, 20,000 over 50,000."
+      },
+      "tips": [
+        "Eliminate: B measures what survives instead of what is lost, and D divides the two figures the wrong way round.",
+        "Final two: C beats A because exposure factor is the percentage of value lost; $20,000 is the single loss expectancy.",
+        "Exam cue: EF is the share lost, SLE is AV times EF, and ALE is SLE times ARO; check whether the answer should be a percent or money."
+      ],
+      "framework_ref": "NIST SP 800-30 Rev. 1 Section 2.3.2 (Assessment Approaches: quantitative assessments support cost-benefit analysis of risk responses)",
+      "related_concepts": [
+        "Exposure factor",
+        "Single loss expectancy",
+        "Quantitative analysis"
+      ],
+      "_provenance": "Authored from concept: 'Exposure factor (EF) is the share of an asset value that one incident destroys' (notes 1.2.4 Qualitative and Quantitative Analysis). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D1 batch 6, 5 Nov 2026.",
+      "style_version": 2
+    },
+    {
+      "id": "cc_d1_166",
+      "domain": 1,
+      "subtopic": "1.2 Risk management. Appetite and tolerance",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A basketball arena's register shows a risk acceptance that expired last month, and the risk's rating has since risen beyond tolerance; procedure has the risk analyst handle expired acceptances. What should the analyst do FIRST?",
+      "options": {
+        "A": "Return it to the risk owner to renew the acceptance",
+        "B": "Extend the acceptance a year, then inform senior management",
+        "C": "Close the entry, since the risk was already accepted once",
+        "D": "Escalate it to senior management, copying the risk owner"
+      },
+      "correct": "D",
+      "key_concept": "A risk owner may accept risk only within tolerance; when a lapsed acceptance covers a risk now beyond tolerance, senior management decides.",
+      "pre_read": "Note what has changed about the risk since the acceptance was signed.",
+      "correct_explanation": "Acceptances are time-limited so risks get looked at again, and this one lapsed while the risk grew. A risk owner may accept risk only within tolerance; beyond it, senior management decides whether to treat or accept it, so the analyst escalates and keeps the owner informed. Returning it to the owner to renew, the runner-up, is the usual path, but here renewal would exceed the owner's authority.",
+      "wrong_explanations": {
+        "A": "Closest choice: lapsed acceptances normally go back to their owner. But this risk now exceeds tolerance, and a risk owner may accept only within it.",
+        "B": "Tempting because senior management is told. But extending the acceptance is a fresh acceptance the analyst cannot make, and telling leaders afterwards does not undo it.",
+        "C": "Tempting because the risk was accepted before. But acceptances expire so the risk is reconsidered; closing the entry hides a risk that is still there."
+      },
+      "tips": [
+        "Eliminate: B has the analyst re-accept a grown risk and only tell leaders afterwards, and C closes an entry whose risk still exists; neither leaves the decision with someone who holds authority.",
+        "Final two: D beats A because the risk owner may accept only within tolerance; beyond it, senior management decides to treat or accept.",
+        "Exam cue: before routing a risk decision, compare the risk with tolerance; within it the owner decides, beyond it senior management does."
+      ],
+      "framework_ref": "NIST SP 800-53 Rev. 5 RA-7 (Risk Response); NIST SP 800-39 Section 3.4 (Monitoring Risk)",
+      "related_concepts": [
+        "Risk tolerance",
+        "Expired acceptance",
+        "Escalation"
+      ],
+      "_provenance": "Authored from concept: 'Residual risk within tolerance can be formally accepted by its owner; anything beyond goes to senior leaders' (notes 1.2.6 Risk Appetite, Tolerance and Acceptance). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D1 batch 6, 5 Nov 2026; re-angled from owner renewal to the tolerance check, final fix round.",
+      "style_version": 2
+    },
+    {
+      "id": "cc_d1_167",
+      "domain": 1,
+      "subtopic": "1.3 Governance. Laws and regulations",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "During an incident at a Dutch canal-tour firm, an analyst sees passengers' data was exposed, which may start GDPR's 72-hour notice clock; the plan has legal counsel decide notices. What should the analyst do FIRST?",
+      "options": {
+        "A": "Inform legal counsel of the exposure and when it was found",
+        "B": "Notify the regulator directly, copying legal counsel",
+        "C": "Wait to report it until the investigation confirms every fact",
+        "D": "Email each affected passenger directly to warn them"
+      },
+      "correct": "A",
+      "key_concept": "Legal deadlines such as GDPR breach notice need prompt escalation to whoever the plan names to decide, not a practitioner acting alone.",
+      "pre_read": "Note who the plan says decides on notices, and what they need to know.",
+      "correct_explanation": "Laws set deadlines, but the analyst should not interpret or act on them alone. The plan gives notice decisions to legal counsel, so the analyst's first step is to make sure counsel knows about the exposure and the clock. Notifying the regulator directly, the runner-up, shows urgency, but a notice speaks for the whole firm, and its content and timing belong to counsel.",
+      "wrong_explanations": {
+        "B": "Closest choice: the deadline is real and close. But a regulator notice speaks for the whole firm; the plan gives that decision to legal counsel, who must know first.",
+        "C": "Tempting because facts should be checked. But the clock may already be running; holding back can make the firm miss its legal deadline.",
+        "D": "Tempting because passengers deserve to know. But notices to people are also legal decisions with set content; sending them alone bypasses counsel."
+      },
+      "tips": [
+        "Eliminate: C lets a legal deadline run while facts are gathered, and D has the analyst send legal notices alone.",
+        "Final two: A beats B because the plan gives notice decisions to legal counsel; speaking to the regulator for the firm is not the analyst's call.",
+        "Exam cue: when a law's deadline may apply, make sure the people who interpret it know quickly; never interpret or notify alone."
+      ],
+      "framework_ref": "NIST CSF 2.0 GV.OC-03 (legal, regulatory and contractual requirements, including privacy obligations, are understood and managed); ISO/IEC 27002:2022 Control 5.31 (Legal, statutory, regulatory and contractual requirements)",
+      "related_concepts": [
+        "Breach notification",
+        "GDPR",
+        "Legal counsel"
+      ],
+      "_provenance": "Authored from concept: 'Note which data and locations are involved, then bring in legal counsel or the compliance officer; never interpret the law alone' (notes 1.3.2 Laws and Regulations). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D1 batch 6, 5 Nov 2026.",
+      "style_version": 2
+    },
+    {
+      "id": "cc_d1_168",
+      "domain": 1,
+      "subtopic": "1.3 Governance. Laws and regulations",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A US speech therapy practice that bills health insurers electronically keeps patients' treatment notes, and its IT manager says only state law covers them. Which reply from the security analyst is MOST accurate?",
+      "options": {
+        "A": "Agree; state law alone applies, as the practice is in one state",
+        "B": "Disagree; HIPAA also applies, as the practice is a covered provider",
+        "C": "Disagree; PCI DSS applies instead, as patients pay their bills by card",
+        "D": "Agree; federal health privacy law covers hospitals, not small practices"
+      },
+      "correct": "B",
+      "key_concept": "Laws apply by industry and data type as well as location, so a US health provider that bills insurers electronically falls under HIPAA too.",
+      "pre_read": "Ask what kind of organization this is and what kind of data it holds.",
+      "correct_explanation": "Laws apply by industry and data type as well as by location. A health care provider becomes subject to HIPAA when it sends standard transactions, such as insurance claims, electronically; this practice bills insurers electronically, so its patients' treatment notes fall under HIPAA's rules as well as state law. State law alone, the runner-up, reflects the trap of looking only at geography; sector laws such as HIPAA add duties for specific kinds of data.",
+      "wrong_explanations": {
+        "A": "Closest choice: state law does apply. But sector laws add duties for certain data, and HIPAA covers health records held by providers that bill electronically.",
+        "C": "Tempting because card payments bring PCI DSS. But PCI DSS is a contractual card-data standard; it says nothing about treatment notes and replaces no law.",
+        "D": "Tempting because HIPAA is often linked with hospitals. But it covers any health care provider that bills insurers electronically, whatever its size, so a small practice is included."
+      },
+      "tips": [
+        "Eliminate: C treats PCI DSS, a contractual card standard, as covering health records, and D wrongly limits federal health law to hospitals.",
+        "Final two: B beats A because laws apply by industry and data type as well as location; a provider that bills insurers electronically falls under HIPAA too.",
+        "Exam cue: check location, industry and data type; sector laws such as HIPAA add duties on top of general state law."
+      ],
+      "framework_ref": "NIST CSF 2.0 GV.OC-03 (legal, regulatory and contractual requirements, including privacy obligations, are understood and managed); ISO/IEC 27002:2022 Control 5.31 (Legal, statutory, regulatory and contractual requirements)",
+      "related_concepts": [
+        "Sector laws",
+        "HIPAA",
+        "Health records"
+      ],
+      "_provenance": "Authored from concept: 'Sector laws cover specific data, such as the US Health Insurance Portability and Accountability Act (HIPAA) for health records' (notes 1.3.2 Laws and Regulations). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D1 batch 6, 5 Nov 2026.",
+      "style_version": 2
+    },
+    {
+      "id": "cc_d1_169",
+      "domain": 1,
+      "subtopic": "1.3 Governance. Frameworks",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "A symphony orchestra's security team sets up alerts for unusual sign-ins to its donor database. Under NIST CSF 2.0, which function does this work MOST directly support?",
+      "options": {
+        "A": "Protect",
+        "B": "Detect",
+        "C": "Identify",
+        "D": "Govern"
+      },
+      "correct": "B",
+      "key_concept": "In NIST CSF 2.0, monitoring that finds possible attacks, such as unusual sign-in alerts, belongs to the Detect function.",
+      "pre_read": "Ask whether the alerts stop something or reveal it.",
+      "correct_explanation": "Alerts on unusual sign-ins find possible attacks as they happen, which is the Detect function: possible attacks and compromises are found and analyzed, including by monitoring personnel activity. Protect, the runner-up, covers safeguards such as sign-in controls that stop misuse; an alert does not stop the sign-in, it reveals it so someone can act.",
+      "wrong_explanations": {
+        "A": "Closest choice: the alerts concern sign-ins, which Protect safeguards cover. But an alert stops nothing; it finds suspicious activity, which is detection.",
+        "C": "Tempting because the team must know its donor database exists. But Identify covers understanding assets and risks, not watching activity for attacks.",
+        "D": "Tempting because leaders oversee all security work. But Govern sets strategy, roles and policy; it does not watch sign-ins."
+      },
+      "tips": [
+        "Eliminate: C is about understanding assets and risks, and D about strategy, roles and policy; neither watches live activity.",
+        "Final two: B beats A because an alert does not stop a sign-in; it reveals suspicious activity, which is the Detect function.",
+        "Exam cue: in CSF 2.0, safeguards that stop harm are Protect, monitoring that finds it is Detect, and acting on incidents is Respond."
+      ],
+      "framework_ref": "NIST CSF 2.0 DE.CM-03 (personnel activity and technology usage are monitored to find potentially adverse events); NIST CSF 2.0 Section 1 (CSF Overview)",
+      "related_concepts": [
+        "NIST CSF 2.0 functions",
+        "Detect",
+        "Monitoring"
+      ],
+      "_provenance": "Authored from concept: 'The Cybersecurity Framework (CSF) 2.0 groups outcomes into six functions' (notes 1.3.3 Security Frameworks and Guidelines). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D1 batch 6, 5 Nov 2026.",
+      "style_version": 2
+    },
+    {
+      "id": "cc_d1_170",
+      "domain": 1,
+      "subtopic": "1.3 Governance. Security policies",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A car-sharing company will let staff take work laptops abroad for the first time, and its security team must write the documents for this. Which document should the team write FIRST?",
+      "options": {
+        "A": "The standard listing the settings that travel laptops must use",
+        "B": "The procedure for preparing a laptop before each trip",
+        "C": "A guideline with tips on public Wi-Fi and hotel safes",
+        "D": "The policy stating what travel with laptops must protect"
+      },
+      "correct": "D",
+      "key_concept": "Write the policy first: it states what is required and why, and standards and procedures then work it out in detail.",
+      "pre_read": "Recall which governance document every other one must agree with.",
+      "correct_explanation": "Documents are written top-down: the policy states what the organization requires and why, and senior management approves it. Standards, procedures and guidelines then work it out in detail and must agree with it. Starting with the standard, the runner-up, fixes specifics, such as required laptop settings, before leaders have decided what travel with laptops must protect, so it may need rewriting.",
+      "wrong_explanations": {
+        "A": "Closest choice: the standard sets key specifics. But it puts a policy into practice; written first, it can contradict what leaders later decide.",
+        "B": "Tempting because staff need steps. But a procedure carries out policy and standards, so it cannot sensibly come before them.",
+        "C": "Tempting because tips help travelers early. But guidelines are optional advice and cannot set the rules everything else must follow."
+      },
+      "tips": [
+        "Eliminate: B gives steps for rules that do not exist yet, and C is optional advice, which cannot set requirements.",
+        "Final two: D beats A because the policy sets what must be achieved, and the standard's specifics must follow from it.",
+        "Exam cue: governance documents go top-down: policy first, then standards and procedures; guidelines are optional advice alongside."
+      ],
+      "framework_ref": "NIST CSF 2.0 GV.PO-01 (cybersecurity policy is established, communicated and enforced); ISO/IEC 27002:2022 Control 5.1 (Policies for information security); NIST SP 800-12 Rev. 1 Section 5.1 (Standards, Guidelines, and Procedures)",
+      "related_concepts": [
+        "Policy hierarchy",
+        "Travel security",
+        "Standards"
+      ],
+      "_provenance": "Authored from concept: 'Policies state what the organization requires; standards, procedures and guidelines sit beneath them' (notes 1.3.4 Security Policies). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D1 batch 6, 5 Nov 2026.",
+      "style_version": 2
+    },
+    {
+      "id": "cc_d1_171",
+      "domain": 1,
+      "subtopic": "1.3 Governance. Procedures and standards",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A phone repair chain's wipe procedure, owned by the IT manager, ends with checking each trade-in holds no data, and a supervisor tells a technician to skip that check. What should the technician do FIRST?",
+      "options": {
+        "A": "Skip the check this once and note it on the job ticket",
+        "B": "Complete every step and raise the time issue with the IT manager",
+        "C": "Skip it, as the supervisor directs the technician's daily work",
+        "D": "Rewrite the procedure to drop the check, then carry on"
+      },
+      "correct": "B",
+      "key_concept": "Procedures are mandatory steps; only their owner may change them, so concerns about time go to the owner while the steps are followed.",
+      "pre_read": "Note who owns the procedure and who is asking to skip a step.",
+      "correct_explanation": "Procedures are mandatory steps, and the final check is what proves customers' data is gone before a phone is resold. A supervisor who is not the procedure's owner cannot waive it, so the technician completes every step and raises the time pressure with the IT manager, who can change the procedure if a faster safe way exists. Skipping once and noting it, the runner-up, records the gap but still risks reselling someone's data.",
+      "wrong_explanations": {
+        "A": "Closest choice: noting the skip is honest and leaves a record. But the record does not undo the risk; a phone could be resold with a customer's data on it.",
+        "C": "Tempting because supervisors direct daily work. But they cannot waive a mandatory step in a procedure the IT manager owns.",
+        "D": "Tempting because the step slows work. But only the procedure's owner, the IT manager, may change it; a technician's edit has no authority."
+      },
+      "tips": [
+        "Eliminate: C lets someone who is not the owner waive a mandatory step, and D has the technician rewrite a procedure they do not own.",
+        "Final two: B beats A because a recorded skip still risks reselling customer data; the procedure's owner, not the supervisor, decides on changes.",
+        "Exam cue: procedures are mandatory; follow them, and send improvement or time concerns to the procedure's owner."
+      ],
+      "framework_ref": "NIST SP 800-12 Rev. 1 Section 5.1 (Standards, Guidelines, and Procedures)",
+      "related_concepts": [
+        "Procedures",
+        "Mandatory steps",
+        "Procedure owner"
+      ],
+      "_provenance": "Authored from concept: 'Procedures list the exact steps for a task, and only their owner may change them' (notes 1.3.5 Standards, Procedures and Guidelines). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D1 batch 6, 5 Nov 2026.",
+      "style_version": 2
+    },
+    {
+      "id": "cc_d1_172",
+      "domain": 1,
+      "subtopic": "1.3 Governance. Laws and AI",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "At a Spanish recruitment agency, a colleague says an AI tool that ranks job applicants counts as high risk under the EU AI Act. Which reply from the security analyst is MOST accurate?",
+      "options": {
+        "A": "Disagree; the Act sets the same duties for every AI tool",
+        "B": "Disagree; the Act covers only AI tools built inside the EU",
+        "C": "Agree, so the agency is barred from using such a tool",
+        "D": "Agree; it may be used, but it carries strict legal duties"
+      },
+      "correct": "D",
+      "key_concept": "The EU AI Act sets duties by risk level; hiring uses are high risk, which means strict duties, not a ban.",
+      "pre_read": "Recall how the EU AI Act sorts AI uses, and what high risk requires.",
+      "correct_explanation": "The EU AI Act sorts AI uses by risk level, and AI used in hiring, such as ranking applicants, is among its high-risk uses. High risk does not mean banned: the tool may be used, but with strict duties, such as human oversight. Reading high risk as a ban, the runner-up, confuses it with the small set of practices the Act prohibits outright.",
+      "wrong_explanations": {
+        "A": "Tempting because one rulebook sounds simpler. But the Act scales duties to risk, with the strictest for high-risk uses such as hiring.",
+        "B": "Tempting because laws often stop at borders. But the Act reaches AI used in the EU, wherever it was built, so the agency's tool is covered.",
+        "C": "Closest choice: the colleague is right about high risk. But high-risk AI may be used with strict duties; only a few practices are banned outright."
+      },
+      "tips": [
+        "Eliminate: A misses that the Act scales duties to risk level, and B wrongly limits it to tools built inside the EU.",
+        "Final two: D beats C because high risk brings strict duties, not a ban; the Act prohibits only a small set of practices.",
+        "Exam cue: AI law follows the use, not the technology: high-impact uses about people, such as hiring, carry the heaviest duties."
+      ],
+      "framework_ref": "NIST AI 100-1 (AI RMF 1.0) GOVERN 1.1 (legal and regulatory requirements involving AI are understood, managed and documented)",
+      "related_concepts": [
+        "EU AI Act",
+        "High-risk AI",
+        "AI in hiring"
+      ],
+      "_provenance": "Authored from concept: 'The EU AI Act sets duties by risk level, strictest for high-risk uses such as hiring' (notes 1.3.6 Laws and Rules That Apply to AI). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D1 batch 6, 5 Nov 2026.",
+      "style_version": 2
+    },
+    {
+      "id": "cc_d1_173",
+      "domain": 1,
+      "subtopic": "1.3 Governance. Frameworks",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "A learning platform's vendor shows an ISO/IEC 27001 certificate covering only its London office, but the service the platform buys runs from a Toronto data center. What should the security analyst MOST accurately conclude?",
+      "options": {
+        "A": "The Toronto service is covered, as the certificate names the vendor",
+        "B": "The certificate shows that the vendor passed a penetration test",
+        "C": "The Toronto service sits outside the certificate's scope",
+        "D": "The certificate is invalid unless it lists every vendor site"
+      },
+      "correct": "C",
+      "key_concept": "An ISO/IEC 27001 certificate covers only the scope stated on it, so check that the service you rely on falls inside.",
+      "pre_read": "Compare where the certificate applies with where the service actually runs.",
+      "correct_explanation": "An ISO/IEC 27001 certificate covers the management system within the scope stated on it, here the London office. The Toronto data center that runs the platform's service is outside that scope, so the certificate gives no assurance about it, and the analyst should ask for evidence covering Toronto. Assuming the whole vendor is covered, the runner-up, is the common trap: certification is only as wide as its scope.",
+      "wrong_explanations": {
+        "A": "Closest choice: a certificate in the vendor's name sounds company-wide. But it covers only the scope stated on it, and that scope stops at the London office.",
+        "B": "Tempting because both look at security. But a penetration test checks technical weaknesses; ISO/IEC 27001 certifies a management system against requirements.",
+        "D": "Tempting because a narrow scope seems suspicious. But certifying part of an organization is normal and valid; it just says nothing about what lies outside."
+      },
+      "tips": [
+        "Eliminate: B confuses certification with a penetration test, and D treats a narrow but normal scope as making the certificate invalid.",
+        "Final two: C beats A because a certificate covers only its stated scope, and the Toronto data center is outside it.",
+        "Exam cue: when shown a certificate, check its scope against the service you rely on before treating it as assurance."
+      ],
+      "framework_ref": "ISO/IEC 27001:2022 (Information security management systems: Requirements); NIST SP 800-53 Rev. 5 SA-9 (External System Services)",
+      "related_concepts": [
+        "ISO/IEC 27001 certification",
+        "Certification scope",
+        "Vendor assurance"
+      ],
+      "_provenance": "Authored from concept: 'ISO/IEC 27001 sets certifiable requirements for an information security management system' (notes 1.3.3 Security Frameworks and Guidelines). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D1 batch 6, 5 Nov 2026.",
+      "style_version": 2
+    },
+    {
+      "id": "cc_d1_174",
+      "domain": 1,
+      "subtopic": "1.3 Governance. Security policies",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A college's security manager owns a sign-in policy letting technicians apply listed multifactor exceptions, including shared lab kiosks. A lab manager requests one for a new shared kiosk; what should the technician do FIRST?",
+      "options": {
+        "A": "Refer it to the security manager to approve the listed exception",
+        "B": "Refuse the request and record the refusal in the ticket",
+        "C": "Ask the lab manager to sign a form accepting the kiosk's risk",
+        "D": "Grant the listed kiosk exception and record it in the ticket"
+      },
+      "correct": "D",
+      "key_concept": "When a policy owner pre-approves an exception type and assigns it to technicians, applying and recording a listed case is in role.",
+      "pre_read": "Check whether this request is already on the policy's approved list.",
+      "correct_explanation": "The policy's owner has already approved this kind of exception in advance and given technicians the task of applying it. A shared lab kiosk is on the list, so the technician applies the exception and records it as the policy expects. Referring it to the security manager, the runner-up, would be right for an unlisted exception, but here it re-asks a decision the owner already made.",
+      "wrong_explanations": {
+        "A": "Closest choice: exceptions usually need the policy owner's approval. But this owner pre-approved shared lab kiosks and gave technicians the task, so referral only delays it.",
+        "B": "Tempting because the policy requires multifactor sign-in. But the same policy lists approved exceptions, and this kiosk fits one.",
+        "C": "Tempting because a signature feels like accountability. But a lab manager cannot accept risk under the security manager's policy, and the listed exception already covers it."
+      },
+      "tips": [
+        "Eliminate: B overlooks the policy's own approved exceptions, and C has someone without authority accept the risk.",
+        "Final two: D beats A because the owner pre-approved this exception and assigned it to technicians; referral re-asks a settled decision.",
+        "Exam cue: when the owner has already decided and the procedure assigns the task to you, carry it out and record it; escalate what falls outside."
+      ],
+      "framework_ref": "NIST CSF 2.0 GV.PO-01 (cybersecurity policy is established, communicated and enforced); NIST CSF 2.0 ID.RA-07 (changes and exceptions are managed, assessed for risk impact, recorded and tracked)",
+      "related_concepts": [
+        "Policy exceptions",
+        "Pre-approved exceptions",
+        "In-role action"
+      ],
+      "_provenance": "Authored from concept: 'Exceptions go through a formal process: recorded, time-limited and reviewed' (notes 1.3.4 Security Policies). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D1 batch 6, 5 Nov 2026.",
+      "style_version": 2
+    },
+    {
+      "id": "cc_d1_175",
+      "domain": 1,
+      "subtopic": "1.4 Security controls. What a control is",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "A music festival's security analyst lists four items related to ticket fraud. Which item is MOST accurately a security control?",
+      "options": {
+        "A": "The register entry that rates the festival's ticket fraud risk",
+        "B": "The board's stated appetite for ticket fraud risk",
+        "C": "The holograms printed on each ticket to resist copying",
+        "D": "The police report on ticket fraud at other festivals"
+      },
+      "correct": "C",
+      "key_concept": "A security control lowers risk by reducing likelihood or damage; records, statements and reports about risk are not controls themselves.",
+      "pre_read": "Ask which item actually changes the chance or cost of fraud.",
+      "correct_explanation": "A security control is a safeguard that lowers risk by reducing the chance of harm or the damage it causes. Holograms make tickets hard to forge, so they directly reduce fraud. The register entry, the runner-up, is essential risk paperwork, but it records and rates the risk; by itself it changes neither how likely fraud is nor how much it costs.",
+      "wrong_explanations": {
+        "A": "Closest choice: the register is central to managing the risk. But recording and rating a risk does not reduce it; a safeguard such as the holograms does.",
+        "B": "Tempting because appetite guides decisions. But a statement of how much risk leaders will take does not itself lower the risk.",
+        "D": "Tempting because threat information informs choices. But knowing fraud happens elsewhere does not stop forged tickets at this festival."
+      },
+      "tips": [
+        "Eliminate: B states how much risk leaders will take, and D describes the threat elsewhere; neither changes the festival's risk.",
+        "Final two: C beats A because the holograms make forgery harder, while the register entry only records and rates the risk.",
+        "Exam cue: to spot a control, ask whether it changes the likelihood or the damage; records and statements about risk do not."
+      ],
+      "framework_ref": "NIST SP 800-53 Rev. 5 Appendix A Glossary (security control)",
+      "related_concepts": [
+        "Security control",
+        "Safeguards",
+        "Risk register"
+      ],
+      "_provenance": "Authored from concept: 'A security control, or safeguard, is any measure that lowers risk by reducing the likelihood of a harmful event or the damage it causes' (notes 1.4.1 What a Security Control Is). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D1 batch 6, 5 Nov 2026.",
+      "style_version": 2
+    },
+    {
+      "id": "cc_d1_176",
+      "domain": 1,
+      "subtopic": "1.4 Security controls. Administrative controls",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "At a printing works, maintenance contractors from outside firms walk into the press control room on their own. Which administrative control should the security manager propose as BEST?",
+      "options": {
+        "A": "A rule that contractors sign in and are escorted on site",
+        "B": "A confidentiality agreement each contractor signs before work",
+        "C": "A camera recording every contractor who enters the control room",
+        "D": "Blocked USB ports on each of the press room's controllers"
+      },
+      "correct": "A",
+      "key_concept": "Administrative controls are rules and people practices, such as visitor sign-in and escort, that direct how people act on site.",
+      "pre_read": "Sort the options by control type, then match each one to the problem in the stem.",
+      "correct_explanation": "Administrative controls are rules and people practices. A rule that contractors sign in and stay escorted directs where outsiders go on site, so it tackles the problem directly. A confidentiality agreement, the runner-up, is also administrative and aimed at contractors, but it governs what they disclose, not where they walk, so they could still enter the control room alone.",
+      "wrong_explanations": {
+        "B": "Closest choice: an agreement is an administrative control aimed at contractors. But it governs what they disclose, not where they go; they could still walk into the control room alone.",
+        "C": "Tempting because footage helps investigations. But a camera is a physical control that records entry; it does not stop anyone walking in.",
+        "D": "Tempting because controllers are sensitive. But blocking ports is a technical control, and it does nothing about people wandering into the room."
+      },
+      "tips": [
+        "Eliminate: C is a physical camera that only records entry, and D is a technical port setting; neither is administrative, and neither keeps people out of the room.",
+        "Final two: A beats B because both are administrative, but only the sign-in and escort rule controls where contractors go; the agreement covers what they disclose.",
+        "Exam cue: when several options share the type asked for, pick the one aimed at the behavior in the stem, here where outsiders go."
+      ],
+      "framework_ref": "NIST SP 800-53 Rev. 5 PE-3 (Physical Access Control); NIST SP 800-53 Rev. 5 PS-7 (External Personnel Security)",
+      "related_concepts": [
+        "Administrative controls",
+        "Visitor escort",
+        "Contractors"
+      ],
+      "_provenance": "Authored from concept: 'Administrative controls are the policies, procedures, training and people practices that direct how security is handled' (notes 1.4.3 Administrative Controls). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D1 batch 6, 5 Nov 2026.",
+      "style_version": 2
+    },
+    {
+      "id": "cc_d1_177",
+      "domain": 1,
+      "subtopic": "1.4 Security controls. Physical controls",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A school's network switch sits on an open shelf in a storeroom used all day by cleaners and teachers. Which physical control should the network technician propose to BEST stop people plugging in?",
+      "options": {
+        "A": "A camera that records anyone who touches the switch",
+        "B": "A lock on the storeroom door, with keys held by IT staff",
+        "C": "A locked cabinet around the switch, keyed to IT staff",
+        "D": "A sign on the shelf saying the switch is for IT staff"
+      },
+      "correct": "C",
+      "key_concept": "When a shared room must stay open, put the physical barrier around the asset itself, such as a locked cabinet around a switch.",
+      "pre_read": "Note who uses the storeroom each day, and what each option would block.",
+      "correct_explanation": "To stop people plugging in, the control must block access to the switch itself. The storeroom has to stay open to cleaners and teachers, so a locked cabinet around the switch puts the barrier at the asset while the room stays usable. Locking the storeroom door, the runner-up, would also keep people from the switch, but with keys held only by IT staff it shuts out the cleaners and teachers who need the room daily.",
+      "wrong_explanations": {
+        "A": "Tempting because footage helps identify tampering. But a camera only deters and records; someone can still plug in while it films.",
+        "B": "Closest choice: a door lock is a strong preventive control. But if only IT staff hold keys, cleaners and teachers lose a room they need all day.",
+        "D": "Tempting because signs discourage casual use. But a sign only deters; anyone ignoring it can still plug in."
+      },
+      "tips": [
+        "Eliminate: A only deters and records, and D only discourages; neither blocks access to the switch.",
+        "Final two: C beats B because the room must stay open to others; the barrier belongs around the switch itself, where only IT staff hold keys.",
+        "Exam cue: when a shared space must stay open, place the preventive barrier around the asset, not around the whole room."
+      ],
+      "framework_ref": "NIST SP 800-53 Rev. 5 PE-3(4) (Physical Access Control | Lockable Casings); NIST SP 800-53 Rev. 5 PE-3 (Physical Access Control)",
+      "related_concepts": [
+        "Physical controls",
+        "Preventive controls",
+        "Lockable cabinets"
+      ],
+      "_provenance": "Authored from concept: 'Entry controls, such as locks and badge readers, admit authorized people only' (notes 1.4.4 Physical Controls). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D1 batch 6, 5 Nov 2026.",
+      "style_version": 2
+    },
+    {
+      "id": "cc_d1_178",
+      "domain": 1,
+      "subtopic": "1.4 Security controls. Technical controls",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A tutoring company's standard says laptops get security updates within seven days, but staff keep postponing them for weeks. Which control should the IT manager add as BEST?",
+      "options": {
+        "A": "Weekly email reminders asking staff to install their updates",
+        "B": "A monthly manager check of each laptop's update status",
+        "C": "Device settings that force updates after a short grace period",
+        "D": "A new line in the acceptable use policy about updates"
+      },
+      "correct": "C",
+      "key_concept": "Technical controls enforce what policy and standards require, especially where people keep forgetting or putting off a rule.",
+      "pre_read": "Note what is failing: knowing the rule, or acting on it.",
+      "correct_explanation": "Staff already know the rule and keep postponing, so another reminder or rule adds little. A technical control that enforces the standard, installing updates automatically after a short grace period, closes the gap without relying on memory. Weekly reminders, the runner-up, are a reasonable administrative nudge, but they depend on the same people who keep postponing.",
+      "wrong_explanations": {
+        "A": "Closest choice: reminders cost little and keep updates visible. But staff already know the rule; reminders still depend on them acting, which is what keeps failing.",
+        "B": "Tempting because it gives oversight. But a monthly check finds gaps weeks late, after the seven-day window has passed.",
+        "D": "Tempting because policy backs every control. But the standard already sets the rule; restating it in another document does not make staff follow it."
+      },
+      "tips": [
+        "Eliminate: B finds overdue laptops long after the window, and D restates a rule staff already know and put off.",
+        "Final two: C beats A because enforcement does not depend on staff remembering, which is exactly what keeps failing.",
+        "Exam cue: when people keep forgetting or bypassing a rule, look for a technical control that enforces it."
+      ],
+      "framework_ref": "NIST SP 800-53 Rev. 5 SI-2 (Flaw Remediation); NIST SP 800-40 Rev. 4 (Guide to Enterprise Patch Management Planning: Preventive Maintenance for Technology)",
+      "related_concepts": [
+        "Technical controls",
+        "Enforcing policy",
+        "Patch management"
+      ],
+      "_provenance": "Authored from concept: 'Use technical controls to enforce what policy requires, especially where people forget or bypass rules' (notes 1.4.2 Technical Controls). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D1 batch 6, 5 Nov 2026.",
+      "style_version": 2
+    },
+    {
+      "id": "cc_d1_179",
+      "domain": 1,
+      "subtopic": "1.4 Security controls. Control functions",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "A dog daycare posts signs saying its yard is under camera watch, though the cameras do not record. Which control function do the signs MOST accurately serve?",
+      "options": {
+        "A": "Deterrent",
+        "B": "Preventive",
+        "C": "Detective",
+        "D": "Corrective"
+      },
+      "correct": "A",
+      "key_concept": "A deterrent discourages an attack without stopping it; a preventive control blocks the action even for someone undeterred.",
+      "pre_read": "Ask what the signs do to someone who ignores them.",
+      "correct_explanation": "The signs work only by discouraging people who read them, which makes them a deterrent. Nothing records, so they detect nothing, and they physically stop nobody. Preventive, the runner-up, is the classic beginner pick for signs, but a preventive control blocks the action itself, as a locked gate would; someone undeterred can walk straight past a sign.",
+      "wrong_explanations": {
+        "B": "Closest choice: signs do aim to stop unwanted entry. But they only discourage; a preventive control, such as a locked gate, blocks the action itself.",
+        "C": "Tempting because cameras are usually detective. But these do not record, and the question is about the signs, which detect nothing.",
+        "D": "Tempting because the signs respond to a problem. But corrective controls fix harm after it happens; signs act before, and only by discouraging."
+      },
+      "tips": [
+        "Eliminate: C fails because nothing is recorded, and D fixes harm after the fact, which signs never do.",
+        "Final two: A beats B because signs only discourage; a preventive control would block entry even for someone undeterred.",
+        "Exam cue: discourages is deterrent, blocks is preventive, notices is detective, fixes is corrective."
+      ],
+      "framework_ref": "NIST SP 800-53 Rev. 5 Appendix A Glossary (security: protective measures may combine deterrence, avoidance, prevention, detection, recovery and correction)",
+      "related_concepts": [
+        "Deterrent controls",
+        "Control functions",
+        "Preventive controls"
+      ],
+      "_provenance": "Authored from concept: 'A sign only discourages, so it is a deterrent; preventive controls block the action, like a lock' (notes 1.4.5 Control Functions). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D1 batch 6, 5 Nov 2026.",
+      "style_version": 2
+    },
+    {
+      "id": "cc_d1_180",
+      "domain": 1,
+      "subtopic": "1.4 Security controls. Layered controls",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "An ice rink's ticket server runs antivirus, and its IT manager wants a second layer of protection against ransomware. Which addition BEST layers the server's protection?",
+      "options": {
+        "A": "A second antivirus product scanning the same server files",
+        "B": "Antivirus signature updates every hour instead of daily",
+        "C": "Tested offline backups that can restore the whole server",
+        "D": "A longer password on the antivirus management console"
+      },
+      "correct": "C",
+      "key_concept": "Layered protection mixes control types and functions, so a recovery control such as tested backups still works when prevention fails.",
+      "pre_read": "Ask what still protects the server if ransomware gets past the antivirus.",
+      "correct_explanation": "Layering works when added controls differ in type or function, so one failure does not take them all down. Antivirus is preventive; tested offline backups add a recovery function that still works if ransomware gets past every scanner. A second antivirus product, the runner-up, looks like depth, but it does the same preventive job and can miss the same new strain.",
+      "wrong_explanations": {
+        "A": "Closest choice: two scanners can catch more samples. But both do the same preventive job, so a strain that evades scanning may get past both.",
+        "B": "Tempting because fresher signatures catch new malware sooner. But it strengthens the same layer rather than adding a different one.",
+        "D": "Tempting because the console is worth protecting. But it guards the antivirus tool itself and adds no new defense if ransomware gets through."
+      },
+      "tips": [
+        "Eliminate: B tunes the existing antivirus layer, and D protects the antivirus console; neither adds a different defense.",
+        "Final two: C beats A because backups add a different function, recovery, while a second scanner repeats the same preventive approach.",
+        "Exam cue: for layering, ask what still works when the first control fails; a control with a different function answers that."
+      ],
+      "framework_ref": "NIST SP 800-53 Rev. 5 Appendix A Glossary (defense in depth); NIST SP 800-53 Rev. 5 CP-9 (System Backup)",
+      "related_concepts": [
+        "Layered controls",
+        "Recovery controls",
+        "Ransomware"
+      ],
+      "_provenance": "Authored from concept: 'Mix functions, so failed prevention is still detected and corrected' (notes 1.4.6 Layering and Compensating Controls). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D1 batch 6, 5 Nov 2026.",
+      "style_version": 2
+    },
+    {
+      "id": "cc_d1_181",
+      "domain": 1,
+      "subtopic": "1.4 Security controls. Controls for AI tools",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A comedy club's system administrator says the vendor-built AI refund agent on its office server needs only technical controls, since it is software. Which reply from the security analyst is MOST accurate?",
+      "options": {
+        "A": "Technical controls suffice if its account is limited and logged",
+        "B": "The vendor's built-in safeguards cover whatever else the agent needs",
+        "C": "It also needs rules for staff and physical protection where it runs",
+        "D": "The vendor, not the club, must control an agent it has built"
+      },
+      "correct": "C",
+      "key_concept": "AI tools need technical, administrative and physical controls like any system; being software does not make technical controls enough.",
+      "pre_read": "Recall the three control types, and whether AI tools can skip any of them.",
+      "correct_explanation": "AI tools need all three control types, like any other system: technical ones such as limited accounts and logs, administrative ones such as a use policy and human review of refunds, and physical protection for the office server it runs on. A limited, logged account, the runner-up, is a strong technical control, but it sets no rules for staff and leaves the server physically unprotected.",
+      "wrong_explanations": {
+        "A": "Closest choice: a limited, logged account is a strong technical control. But it sets no rules for staff and leaves the office server running the agent physically unprotected.",
+        "B": "Tempting because vendors build in safeguards. But those are technical too, and the club still needs its own rules for staff and physical protection for its server.",
+        "D": "Tempting because the vendor built the agent. But the club chose to deploy it and stays accountable for controlling how it is used."
+      },
+      "tips": [
+        "Eliminate: B leans on the vendor's technical safeguards alone, and D hands control to the vendor, though the club deploying the agent stays accountable.",
+        "Final two: C beats A because a limited, logged account is only the technical layer; AI tools also need staff rules and physical protection.",
+        "Exam cue: classify AI controls like any others, as technical, administrative and physical; being software never makes technical controls enough."
+      ],
+      "framework_ref": "NIST AI 100-1 (AI RMF 1.0) Section 1.2.4 (Organizational Integration and Management of Risk: AI risks are treated along with other critical risks); NIST SP 800-53 Rev. 5 Appendix A Glossary (security control)",
+      "related_concepts": [
+        "Controls for AI tools",
+        "Control types",
+        "AI accountability"
+      ],
+      "_provenance": "Authored from concept: 'AI tools need the same three control types as any system: technical, administrative and physical safeguards' (notes 1.4.7 Controls for AI Tools). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D1 batch 6, 5 Nov 2026.",
+      "style_version": 2
+    },
+    {
+      "id": "cc_d1_182",
+      "domain": 1,
+      "subtopic": "1.4 Security controls. Physical controls",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A game studio's server closet overheated twice when its only air conditioner failed at night. Which physical control should the IT manager add to BEST keep the servers running?",
+      "options": {
+        "A": "A temperature alarm that pages the on-call technician when cooling fails",
+        "B": "A backup cooling unit that starts when the main one fails",
+        "C": "A battery backup that carries the servers through any power cuts",
+        "D": "A badge reader that limits who can enter the closet"
+      },
+      "correct": "B",
+      "key_concept": "Physical controls include environmental protection; removing a single point of failure, such as one cooling unit, keeps systems available.",
+      "pre_read": "Find the single point of failure, then ask which option removes it.",
+      "correct_explanation": "The failure is a single cooling unit, so the fix that keeps servers running is redundancy: a second unit that starts automatically when the first fails. A temperature alarm, the runner-up, is a useful detective control, but at night someone must wake, travel and act before the servers overheat, which has already happened twice.",
+      "wrong_explanations": {
+        "A": "Closest choice: an alarm warns someone fast. But it only detects; at night a person must still respond in time, while a backup unit keeps cooling on its own.",
+        "C": "Tempting because battery backup protects servers. But the problem is heat from a failed air conditioner, not lost power.",
+        "D": "Tempting because closets should be locked. But limiting entry does nothing when the cooling fails."
+      },
+      "tips": [
+        "Eliminate: C covers power cuts, not cooling, and D controls entry, which has nothing to do with heat.",
+        "Final two: B beats A because automatic backup cooling keeps the servers running without waiting for a person to respond at night.",
+        "Exam cue: for availability, remove the single point of failure; an alarm that needs a person to respond detects but does not keep things running."
+      ],
+      "framework_ref": "NIST SP 800-53 Rev. 5 PE-14(1) (Environmental Controls | Automatic Controls); NIST CSF 2.0 PR.IR-03 (mechanisms are implemented to achieve resilience requirements in normal and adverse situations)",
+      "related_concepts": [
+        "Environmental controls",
+        "Redundancy",
+        "Physical controls"
+      ],
+      "_provenance": "Authored from concept: 'Fire suppression, cooling and backup power protect equipment' (notes 1.4.4 Physical Controls). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D1 batch 6, 5 Nov 2026.",
+      "style_version": 2
+    },
+    {
+      "id": "cc_d1_183",
+      "domain": 1,
+      "subtopic": "1.5 Professional conduct. Code of conduct",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "Clearing disk space, a resort's system administrator accidentally deleted a week of guest-booking logs that the security team uses for investigations. What should the administrator do FIRST?",
+      "options": {
+        "A": "Say nothing to the security team, as one week is minor",
+        "B": "Rebuild the missing entries by hand from other records",
+        "C": "Restore the deleted logs from backup and carry on with the cleanup",
+        "D": "Tell the security team what was deleted and when"
+      },
+      "correct": "D",
+      "key_concept": "Professional conduct means owning mistakes openly: tell the people who rely on the affected records rather than fixing things quietly.",
+      "pre_read": "Ask who relies on the deleted logs and what they need to know.",
+      "correct_explanation": "Honesty about your own mistakes is a core professional duty, and the security team relies on these logs for investigations, so they need to know about the gap and can check whether any restore is complete. Restoring quietly, the runner-up, is a sensible repair but not a substitute for telling them: a quiet fix hides the gap from the people who rely on those records.",
+      "wrong_explanations": {
+        "A": "Tempting because a week of logs sounds minor. But investigators rely on those logs, and hiding an error breaches the honesty every code of conduct expects.",
+        "B": "Tempting because it fills the gap. But hand-made entries are not genuine logs; presenting them as real would damage the records' integrity.",
+        "C": "Closest choice: restoring is a sensible repair. But a quiet fix hides the gap from the team that relies on the logs, who must also confirm the restore is complete."
+      },
+      "tips": [
+        "Eliminate: A conceals the error, and B creates entries that are not genuine; both breach honesty and the logs' integrity.",
+        "Final two: D beats C because the people who rely on the logs must know about the gap; repairing quietly hides the mistake from them.",
+        "Exam cue: own your mistakes: tell the people who rely on what you affected, then help fix it through the proper process."
+      ],
+      "framework_ref": "NIST SP 800-53 Rev. 5 PL-4 (Rules of Behavior); NIST SP 800-53 Rev. 5 AU-5 (Response to Audit Logging Process Failures)",
+      "related_concepts": [
+        "Honesty",
+        "Owning mistakes",
+        "Log integrity"
+      ],
+      "_provenance": "Authored from concept: 'Common themes are honesty, avoiding conflicts of interest and protecting confidential information' (notes 1.5.1 Professional Code of Conduct). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D1 batch 6, 5 Nov 2026.",
+      "style_version": 2
+    },
+    {
+      "id": "cc_d1_184",
+      "domain": 1,
+      "subtopic": "1.5 Professional conduct. Due care and due diligence",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "Before a legal aid charity adopts an AI transcription service, its security analyst checks where recordings are stored and whether the vendor trains models on them. What is this check MOST accurately?",
+      "options": {
+        "A": "Due diligence, researching the vendor's risks",
+        "B": "Due care, acting to protect the clients' recordings",
+        "C": "Risk acceptance, taking on the vendor's remaining risks",
+        "D": "Risk transfer, moving the recordings' risks to the vendor"
+      },
+      "correct": "A",
+      "key_concept": "Researching an AI vendor's data handling before adoption is due diligence; acting on the findings, such as changing settings, is due care.",
+      "pre_read": "Ask whether the check finds things out or acts on them.",
+      "correct_explanation": "Researching a vendor before adoption, here how it stores recordings and whether it trains on them, is due diligence: finding out what a prudent organization should know. Due care, the runner-up, is acting on what was found, such as switching off model training on recordings or choosing another service. The check informs that action; it is not yet the action.",
+      "wrong_explanations": {
+        "B": "Closest choice: the check does aim to protect clients. But it gathers facts; due care is what the charity then does, such as changing settings or choosing another service.",
+        "C": "Tempting because using a vendor means living with some risk. But acceptance is an owner's decision on assessed risk; this check comes before any decision.",
+        "D": "Tempting because outsourcing sounds like handing risk over. But checking the vendor transfers nothing, and the charity stays accountable for clients' data."
+      },
+      "tips": [
+        "Eliminate: C and D are risk decisions, and this check makes no decision; it gathers facts before one.",
+        "Final two: A beats B because investigating the vendor is finding out; due care is acting on the findings.",
+        "Exam cue: researching, assessing and verifying are due diligence; implementing, enforcing and fixing are due care."
+      ],
+      "framework_ref": "NIST AI 100-1 (AI RMF 1.0) MANAGE 3.1 (AI risks and benefits from third-party resources are regularly monitored, and risk controls are applied and documented); NIST SP 800-53 Rev. 5 SA-9 (External System Services)",
+      "related_concepts": [
+        "Due diligence",
+        "AI vendors",
+        "Due care"
+      ],
+      "_provenance": "Authored from concept: 'Due diligence investigates: researching a vendor, assessing risks, testing controls' (notes 1.5.2 Due Care and Due Diligence). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D1 batch 6, 5 Nov 2026.",
+      "style_version": 2
+    },
+    {
+      "id": "cc_d1_185",
+      "domain": 1,
+      "subtopic": "1.5 Professional conduct. Ethics canons",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "A certified analyst spends weekends mentoring students who want security careers and helping a local chapter build free training. Which canon does this work MOST directly support?",
+      "options": {
+        "A": "Advance and protect the profession",
+        "B": "Protect society, the common good and the infrastructure",
+        "C": "Provide diligent and competent service to principals",
+        "D": "Act honorably, honestly, justly, responsibly and legally"
+      },
+      "correct": "A",
+      "key_concept": "Mentoring and teaching newcomers advances the profession, the focus of the fourth canon; principals are those served under an agreement.",
+      "pre_read": "Ask who the work serves directly: the public, a client or the field.",
+      "correct_explanation": "Mentoring newcomers and building training grows the security field and its standing, which is what the canon on advancing and protecting the profession covers. Protecting society, the runner-up, is a fair secondary benefit, since better-trained people make systems safer, but the work's direct aim is developing the profession. The other canons concern honest conduct and service to principals, and no principal is served here.",
+      "wrong_explanations": {
+        "B": "Closest choice: a stronger workforce does help protect society in the end. But the work directly develops people entering the field, which is the profession canon's focus.",
+        "C": "Tempting because the analyst gives skilled service. But principals are employers or clients served under an agreement, and the students are neither.",
+        "D": "Tempting because volunteering is honorable. But that canon is about conducting oneself honestly and legally, not about growing the field."
+      },
+      "tips": [
+        "Eliminate: C needs a principal, which the students are not, and D concerns honest, lawful conduct rather than growing the field.",
+        "Final two: A beats B because the work directly develops the security profession; any benefit to society comes through that.",
+        "Exam cue: match the action to each canon's focus: the public, honest conduct, principals or the profession; the listed order is not a ranking."
+      ],
+      "framework_ref": "ISC2 Code of Ethics, Canons",
+      "related_concepts": [
+        "Code of Ethics canons",
+        "Advancing the profession",
+        "Mentoring"
+      ],
+      "_provenance": "Authored from concept: 'Canon 4 asks members to support the security field and its good name' (notes 1.5.3 The ISC2 Code of Ethics). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D1 batch 6, 5 Nov 2026.",
+      "style_version": 2
+    },
+    {
+      "id": "cc_d1_186",
+      "domain": 1,
+      "subtopic": "1.5 Professional conduct. Ethical dilemmas",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "Testing a client's network under contract, a certified tester finds a serious flaw in a router model used by many organizations. What is the tester's BEST response?",
+      "options": {
+        "A": "Tell the client, and with the client's consent, alert the maker",
+        "B": "Report it in the client's findings only, as the contract is private",
+        "C": "Post the details online so every organization can protect itself",
+        "D": "Scan other networks for the router to show how widespread it is"
+      },
+      "correct": "A",
+      "key_concept": "When a flaw affects many organizations, report it through proper channels, client first and then the maker, rather than hiding or publishing it.",
+      "pre_read": "Weigh what each option does for the client, for other router owners and for attackers.",
+      "correct_explanation": "The flaw threatens many organizations, so keeping it to one report fails the public, yet publishing it before a fix hands attackers a way in. The tester serves the client first: tell the client and, with its consent, report the flaw to the router's maker so it can be fixed for everyone. Keeping it in the client's report only, the runner-up, honors confidentiality but leaves every other owner of that router exposed.",
+      "wrong_explanations": {
+        "B": "Closest choice: client confidentiality matters. But the flaw is in a product many others use; with the client's consent, telling the maker protects them without exposing the client.",
+        "C": "Tempting because it warns everyone fast. But publishing before a fix gives attackers a ready way in, and it may breach the client contract.",
+        "D": "Tempting because it would measure the risk. But scanning networks nobody authorized is illegal and unethical, whatever the motive."
+      },
+      "tips": [
+        "Eliminate: C publishes before a fix exists, helping attackers, and D tests networks without authorization, which is illegal.",
+        "Final two: A beats B because the flaw endangers many organizations; going to the maker, with the client's consent, protects them while honoring the contract.",
+        "Exam cue: in dilemmas, look for the option that serves the client and protects the public through proper channels, such as telling the vendor."
+      ],
+      "framework_ref": "ISC2 Code of Ethics, Preamble and Canons",
+      "related_concepts": [
+        "Coordinated disclosure",
+        "Ethical dilemmas",
+        "Client confidentiality"
+      ],
+      "_provenance": "Authored from concept: 'Report flaws to the owner first; publishing before a fix hands attackers a way in' (notes 1.5.4 Applying the Canons to Dilemmas). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D1 batch 6, 5 Nov 2026.",
+      "style_version": 2
+    },
+    {
+      "id": "cc_d1_187",
+      "domain": 1,
+      "subtopic": "1.5 Professional conduct. Ethics complaints",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "A cyber cafe owner wants to file an ethics complaint against a certified consultant but fears the consultant will learn who complained. Which statement is MOST accurate?",
+      "options": {
+        "A": "Their name is never shared with the consultant, at any stage",
+        "B": "Their name may be published along with the board's final decision",
+        "C": "Their name is kept from the public but may reach the consultant",
+        "D": "Their name can be left off, as complaints may be filed anonymously"
+      },
+      "correct": "C",
+      "key_concept": "Ethics complaints are kept confidential from the public, but the respondent may learn who complained so they can answer fairly.",
+      "pre_read": "Weigh the complainant's privacy against the respondent's right to answer.",
+      "correct_explanation": "The procedures keep the identities of both parties confidential from the general public, but filing a complaint implies consent to share the complainant's identity with the respondent where due process needs it, since the consultant may see the complaint and answer it. Never sharing it, the runner-up, would leave the consultant unable to answer specific allegations from a known source.",
+      "wrong_explanations": {
+        "A": "Closest choice: identities are protected from the public. But the respondent may see the complaint and answer it, so the complainant's name can be shared for due process.",
+        "B": "Tempting because board actions may be published. But the parties' identities are kept confidential from the general public.",
+        "D": "Tempting because anonymity feels safer. But a complaint must be a sworn written statement, so the complainant is named and stands behind it."
+      },
+      "tips": [
+        "Eliminate: B contradicts the confidentiality the procedures give both parties, and D overlooks that complaints are sworn statements by a named person.",
+        "Final two: C beats A because filing implies consent to share the complainant's identity with the respondent where due process needs it.",
+        "Exam cue: ethics procedures balance privacy with fairness: hidden from the public, but the accused can see and answer the case."
+      ],
+      "framework_ref": "ISC2 Ethical Complaint Procedures (confidentiality: identities are kept from the general public, and filing implies consent to disclose the complainant's identity to the respondent for due process)",
+      "related_concepts": [
+        "Ethics complaints",
+        "Confidentiality",
+        "Due process"
+      ],
+      "_provenance": "Authored from concept: 'The member complained about sees the complaint and evidence and may reply in a sworn statement' (notes 1.5.5 Ethics Complaints and Enforcement). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D1 batch 6, 5 Nov 2026.",
+      "style_version": 2
+    },
+    {
+      "id": "cc_d1_188",
+      "domain": 1,
+      "subtopic": "1.5 Professional conduct. Ethical AI use",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A junior analyst submitted a firewall rule an approved AI assistant wrote, without checking it; the change board approved it, and it caused an outage. Which statement is MOST accurate?",
+      "options": {
+        "A": "The analyst stays accountable for the rule they chose to submit",
+        "B": "The tool's approver is accountable, having approved the AI assistant",
+        "C": "The change board alone is accountable, having approved it",
+        "D": "The firewall's system owner is accountable for every rule on it"
+      },
+      "correct": "A",
+      "key_concept": "Professionals stay accountable for AI output they rely on; reviewers' approval adds a check but does not remove the submitter's responsibility.",
+      "pre_read": "Ask who chose to rely on the AI's rule, and what approval does and does not change.",
+      "correct_explanation": "Whoever relies on AI output owns the result: the analyst chose to submit the AI's rule without checking it, so they remain accountable for it. The change board's approval, the runner-up, is a real second check, but approval does not move the submitter's responsibility onto the reviewers; both share in the outcome, and the analyst cannot point to the board or the tool.",
+      "wrong_explanations": {
+        "B": "Tempting because someone approved the assistant for use. But approving a tool is not approving each output it produces; the analyst who submitted the rule still had to check it.",
+        "C": "Closest choice: the board did approve the change. But approval adds a second check; it does not remove the submitter's responsibility for what they submitted.",
+        "D": "Tempting because the system owner holds the firewall's risk. But owning a system does not take over the submitter's duty to check their own work before submitting it."
+      },
+      "tips": [
+        "Eliminate: B confuses approving a tool with approving each output, and D lets system ownership absorb the submitter's duty to check their work.",
+        "Final two: A beats C because review by others adds a check but does not take over the submitter's responsibility for unchecked work.",
+        "Exam cue: AI is a tool; the professional who relies on its output stays accountable, so verify before you submit."
+      ],
+      "framework_ref": "NIST AI 100-1 (AI RMF 1.0) Section 3.4 (Accountable and Transparent); ISC2 Code of Ethics, Canons (service to principals)",
+      "related_concepts": [
+        "Accountability for AI output",
+        "Verifying AI work",
+        "Change approval"
+      ],
+      "_provenance": "Authored from concept: 'AI is a tool; the professional stays accountable' (notes 1.5.6 Ethical Use of AI at Work). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D1 batch 6, 5 Nov 2026.",
+      "style_version": 2
+    },
+    {
+      "id": "cc_d1_189",
+      "domain": 1,
+      "subtopic": "1.5 Professional conduct. Code of conduct",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A ticket reseller's security analyst suspects, without proof, that a coworker sells customer data; the code of conduct sends such concerns to the ethics hotline. What should the analyst do FIRST?",
+      "options": {
+        "A": "Confront the coworker privately to hear their side first",
+        "B": "Search the coworker's mailbox for proof before calling the ethics hotline",
+        "C": "Warn customers that their data may have been sold",
+        "D": "Use the ethics hotline to raise the possible data sale"
+      },
+      "correct": "D",
+      "key_concept": "Raise suspected misconduct through the channel the code of conduct names; using your own access to investigate misuses it.",
+      "pre_read": "Note what the code of conduct says about raising concerns, and what the analyst is assigned to do.",
+      "correct_explanation": "A suspicion of data theft is serious, but the analyst has no proof and no assignment to investigate. The code of conduct names the ethics hotline for such concerns, so the analyst raises it there, letting authorized people investigate properly. Searching the coworker's mailbox, the runner-up, feels thorough, but it uses access for work nobody assigned and could breach privacy and spoil any investigation.",
+      "wrong_explanations": {
+        "A": "Tempting because hearing both sides seems fair. But a confrontation can tip off someone who may be stealing data, letting them hide evidence.",
+        "B": "Closest choice: evidence would make the concern stronger. But searching a coworker's mailbox uses access for work nobody assigned and can spoil a proper investigation.",
+        "C": "Tempting because customers may be harmed. But nothing is confirmed yet, and notices to customers are a decision for the organization, not one analyst."
+      },
+      "tips": [
+        "Eliminate: A risks tipping off a possible thief, and C alarms customers about something nobody has confirmed.",
+        "Final two: D beats B because the code sends concerns to the hotline; investigating a coworker with your own access is not your assigned work.",
+        "Exam cue: raise concerns through the channel your code of conduct names, and never use your access to investigate on your own."
+      ],
+      "framework_ref": "NIST SP 800-53 Rev. 5 AT-2(2) (Literacy Training and Awareness | Insider Threat); NIST SP 800-53 Rev. 5 PL-4 (Rules of Behavior)",
+      "related_concepts": [
+        "Raising concerns",
+        "Insider threat",
+        "Proper channels"
+      ],
+      "_provenance": "Authored from concept: 'Use access only for assigned work, and raise concerns through proper channels' (notes 1.5.1 Professional Code of Conduct). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D1 batch 6, 5 Nov 2026.",
+      "style_version": 2
+    },
+    {
+      "id": "cc_d1_190",
+      "domain": 1,
+      "subtopic": "1.5 Professional conduct. Ethical dilemmas",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "A certified analyst at a payment app sees that a draft breach notice tells customers no sensitive data was taken, though card numbers were. What is the analyst's BEST response?",
+      "options": {
+        "A": "Challenge the wording with the incident response lead and legal counsel",
+        "B": "Defer to management, since breach notices are management's decision",
+        "C": "Post the true details on social media so customers learn the facts",
+        "D": "Email affected customers the correct details from a personal account"
+      },
+      "correct": "A",
+      "key_concept": "When an employer's message would mislead the public, raise the inaccuracy through official channels before it goes out; silence makes you party to it.",
+      "pre_read": "Ask what customers would do differently if the notice were accurate.",
+      "correct_explanation": "A notice saying no sensitive data was taken, when card numbers were, misleads customers who need to protect themselves, so staying silent would make the analyst party to a dishonest statement. The right channel is to raise the inaccuracy with the incident response lead and legal counsel before it goes out. Deferring to management, the runner-up, respects their authority over notices, but that authority does not make a false statement acceptable.",
+      "wrong_explanations": {
+        "B": "Closest choice: management does decide what the notice says. But the analyst knows it is false; raising that through proper channels comes before deferring.",
+        "C": "Tempting because customers deserve the truth. But going public skips the internal channels that can still correct the notice, and may breach confidentiality.",
+        "D": "Tempting because it warns customers directly. But it bypasses the organization's process, and a personal account has no authority, so customers may not trust it."
+      },
+      "tips": [
+        "Eliminate: C and D bypass the internal channels that can still correct the notice before it goes out.",
+        "Final two: A beats B because management's authority over notices does not make a false statement acceptable; the analyst must raise the inaccuracy.",
+        "Exam cue: when an employer's statement would mislead the public, raise it through official channels first; neither silence nor going public comes first."
+      ],
+      "framework_ref": "ISC2 Code of Ethics, Canons; NIST CSF 2.0 RS.CO-03 (information is shared with designated internal and external stakeholders)",
+      "related_concepts": [
+        "Honesty",
+        "Breach notices",
+        "Ethical dilemmas"
+      ],
+      "_provenance": "Authored from concept: 'Reject any illegal or deceptive option, even if an employer asks for it' (notes 1.5.4 Applying the Canons to Dilemmas). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D1 batch 6, 5 Nov 2026.",
       "style_version": 2
     }
   ]
