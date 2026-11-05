@@ -233,6 +233,7 @@ the notice is part of the description.
 | Batch 3 (31 Oct – 4 Nov 2026) | +30 | +42 | — | 222 |
 | Batch 4 (4 Nov 2026) | — | +42 | +32 | 296 |
 | Batch 5 (5 Nov 2026) | +30 | +42 | — | 368 |
+| Batch 6 (5 Nov 2026) | — | +42 | +32 | 442 |
 
 Pilot review, 30 Oct 2026:
 - **Blind tests:** 60/60 picks matched the keys on the first pass. After the
@@ -332,6 +333,22 @@ Batch 5 review, 5 Nov 2026 (D1 and D2 only):
 - Length tell: D1 18.6%, D2 19.0% (both inside the 15–24% band).
 
 **Next round:** D2 and D3 (D3 is furthest from its target share after D1).
+
+Batch 6 review, 5 Nov 2026 (D2 and D3 only):
+- **Authors:** two new items per notes subtopic in D2 (42) and D3 (32), with the batch 3–5 lessons in the brief
+  (AI fact must decide; no stem echo, leading pre_read or reused frame). 11 of D3's 32 are on using AI inside
+  the audit.
+- **Five reviewers per domain:** first blind pass 74/74 and no HARD ERROR from any reviewer, the first batch
+  with none. PRECISION findings went through three fix rounds, the cross-domain gate (6) and the completeness
+  critic (4 gaps: two reused frames, a library question and a soft length-tell target).
+- **One disputed item:** aaia_d2_187 split the blind tester three times (the direct fix against the per-use
+  inventory key). The domain expert's fix kept the key and added the deciding fact (most models are shared
+  across lines); the runner-up is now a model-level rule, so the per-use fact decides. Re-tested blind.
+- **Citations:** two added by the citation librarian and checked by hand against the opened texts (NIST AI
+  100-2e2025 Section 2.4.1; MITRE ATLAS AML.T0088).
+- Length tell: D2 19.7%, D3 19.7%. Tags: 373 of 442.
+
+**Next round:** D1 and D2.
 
 ## 10. Follow-ups outside this plan's scope
 

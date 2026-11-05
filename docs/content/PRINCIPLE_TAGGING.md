@@ -430,9 +430,9 @@ version bump today.
 | Domain | Questions | Tagged | Untagged |
 |---|---|---|---|
 | D1 | 110 | 83 | 27 |
-| D2 | 176 | 151 | 25 |
-| D3 | 82 | 74 | 8 |
-| All | 368 | 308 | 60 |
+| D2 | 218 | 186 | 32 |
+| D3 | 114 | 104 | 10 |
+| All | 442 | 373 | 69 |
 
 New principle `independence-of-ai-assurance` (role family): seeds and tags
 aaia_d2_014, aaia_d3_024 and aaia_d3_043, moved from
@@ -601,3 +601,39 @@ aaia_d1_086 aaia_d1_090 aaia_d1_093 aaia_d1_094 aaia_d1_097 aaia_d1_098
 aaia_d1_100 aaia_d1_106 aaia_d1_107 aaia_d1_108 aaia_d2_135 aaia_d2_144
 aaia_d2_151 aaia_d2_153 aaia_d2_154 aaia_d2_155 aaia_d2_157 aaia_d2_159
 aaia_d2_162 aaia_d2_164 aaia_d2_165 aaia_d2_171 aaia_d2_172 aaia_d2_176.
+
+### Batch 6 (5 November 2026)
+aaia_d2_177-218 and aaia_d3_083-114 were read against the rule above. None
+is a seed. Changed: aaia_d2_181, aaia_d2_182 and aaia_d2_213 moved to
+`ai-deciding-fact` (each Final two says the runner-up is a real risk the
+facts never raise; in aaia_d2_181 and aaia_d2_182 both options are accuracy
+concerns, and in aaia_d2_213 both are harms); aaia_d3_088 moved from
+`accuracy-is-not-assurance` to `independence-of-ai-assurance` (the runner-up
+lets the model owner choose the audit's fairness measure); aaia_d3_105 moved
+from `ai-changes-are-changes`, whose domains omit D3, to `test-the-ai-as-used`
+(the runner-up reuses the validation because the model is unchanged, that
+card's trap). Newly tagged: aaia_d2_178, aaia_d2_197 and aaia_d2_199
+`fix-the-control-not-the-model` (the runner-up treats the symptom: a check of
+each quote, an autumn retrain, more appeal staff); aaia_d2_179
+`test-the-ai-as-used` (a filter validated on English is tested on Welsh before
+use); aaia_d2_203 and aaia_d3_098 `accuracy-is-not-assurance` (data that fits
+the real group; outcomes by group, not the training mix). Two tags removed
+(below).
+
+**Untagged new items (low confidence):**
+- aaia_d2_177: was `ai-deciding-fact`; the Final two weighs what disclosure reveals, not a stated fact, so knowing a vendor score carries its model's data and changes decides.
+- aaia_d2_188: skill-erosion knowledge; a procedure against shown proficiency is CISA `proven-not-configured` (as aaia_d3_009).
+- aaia_d2_196: was `real-human-oversight`; the runner-up, override-rate reporting, is that principle's own move, so seeded-test design decides (as aaia_d2_101).
+- aaia_d2_208: attack knowledge (evasion attacks transfer from similar public models), as aaia_d2_081.
+- aaia_d2_209: attack knowledge (multi-turn jailbreaks), as aaia_d2_016.
+- aaia_d2_210: memory-injection knowledge; both options are enforced outside the model (as aaia_d2_084).
+- aaia_d2_212: injection knowledge (as aaia_d2_016); the runner-up, key expiry, is a least-privilege point too.
+- aaia_d3_093: sampling design (whole agent tasks as the unit), as aaia_d3_030.
+- aaia_d3_094: generative-variability knowledge (users receive every sampled answer); no principle separates the exception call.
+
+**Medium confidence (tagged, review first):** aaia_d2_178 aaia_d2_179
+aaia_d2_181 aaia_d2_184 aaia_d2_191 aaia_d2_193 aaia_d2_197 aaia_d2_198
+aaia_d2_199 aaia_d2_200 aaia_d2_201 aaia_d2_203 aaia_d2_204 aaia_d2_206
+aaia_d2_213 aaia_d2_217 aaia_d2_218 aaia_d3_084 aaia_d3_085 aaia_d3_086
+aaia_d3_088 aaia_d3_092 aaia_d3_098 aaia_d3_102 aaia_d3_103 aaia_d3_104
+aaia_d3_107 aaia_d3_109 aaia_d3_110 aaia_d3_114.
