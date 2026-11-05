@@ -451,12 +451,12 @@
             "crisc_d4_068"
           ],
           "definition": "The system development life cycle (SDLC) is the sequence of phases from initiation through design, build, testing, implementation, operation and disposal, each with its own risk activities.",
-          "why_it_matters": "A flaw found in design costs little to fix; the same flaw found after go-live costs far more and may already have caused harm. Risk activities in every phase keep the project within appetite.",
+          "why_it_matters": "A design flaw costs little to fix; after go-live it costs far more and may have caused harm. Risk activities in every phase keep the project within appetite.",
           "how_it_works": [
             "Initiation: confirm the business case, owner, data sensitivity and initial risk assessment, and update it whenever scope or data change.",
             "Requirements and design: define security, privacy and control requirements alongside functional ones; for a purchased system, put them in the selection criteria and contract.",
             "Build and test: verify requirements are met; business users, not developers, sign off acceptance testing.",
-            "Implementation: confirm the owner accepts residual risk within appetite, or orders more treatment, before go-live; a current assessment with nothing changed since needs no repeat.",
+            "Implementation: before go-live, the owner accepts residual risk within appetite or orders more treatment, on the current assessment unless something changed.",
             "Post-implementation review: check whether benefits arrived and risks stayed within appetite.",
             "Disposal is planned: the data owner has old data archived or securely destroyed, and servers and access are retired and confirmed."
           ],
@@ -975,8 +975,7 @@
             "The strategy must meet RTO and RPO by design, at a cost the owner accepts.",
             "An alternate site is placed so the same event cannot disable both sites.",
             "Shared dependencies, such as one network carrier, identity service or power feed, are single points of failure.",
-            "Cloud recovery is a shared responsibility: the contract sets who restores what, often the platform but not data the customer's users delete; the customer stays accountable for its data.",
-            "Under ransomware, recovery time includes containment and malware checks before any restore, so a restore test alone can overstate how fast the system returns."
+            "Cloud recovery is a shared responsibility: the contract sets who restores what, often the platform but not data the customer's users delete; the customer stays accountable for its data."
           ],
           "compare": {
             "columns": [
@@ -1131,7 +1130,8 @@
             "A test that could disrupt operations is a business decision: the owner of the affected process accepts or limits the disruption, informed by what a failed test could cost.",
             "Each test has objectives tied to RTO, RPO and the scenarios in the risk register.",
             "Observers record what worked, what failed and how long recovery actually took.",
-            "Findings go into a corrective action plan with owners and dates, and the plan is retested."
+            "Findings go into a corrective action plan with owners and dates, and the plan is retested.",
+            "A restore test times only the restore; under ransomware, containment and malware checks come first, so real recovery takes longer than the test shows."
           ],
           "types": [
             {

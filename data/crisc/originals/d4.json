@@ -3161,18 +3161,18 @@
       "bloom_level": "Application",
       "question": "A hotel group's new booking system goes live in two days without single sign-on; last week's assessment rated the resulting risk within appetite, and nothing has changed since. What should the risk practitioner recommend FIRST?",
       "options": {
-        "A": "Reassess the risk together with the system's owner",
-        "B": "Ask the system owner to delay go-live until sign-on is added",
+        "A": "Reassess the risk together with the business owner",
+        "B": "Ask the business owner to delay go-live until sign-on is added",
         "C": "Record the gap as accepted in the risk register",
-        "D": "Obtain the system owner's acceptance of the risk"
+        "D": "Obtain the business owner's acceptance of the risk"
       },
       "correct": "D",
       "key_concept": "When a current assessment covers the facts and the risk is within appetite, the owner's acceptance comes before any new assessment.",
       "pre_read": "Note what the stem says about the assessment before weighing the options.",
-      "correct_explanation": "Last week's assessment is current, already covers going live without single sign-on and still holds, because nothing has changed. Before go-live, the system's business owner decides whether risk within appetite is accepted or needs more treatment, so that recorded acceptance comes first, with a review date for when single sign-on arrives. Reassessing is the runner-up: it comes first after a change, but here it would repeat current work and delay the owner's decision.",
+      "correct_explanation": "Last week's assessment is current, already covers going live without single sign-on and still holds, because nothing has changed. Before go-live, the system's business owner decides whether risk within appetite is accepted or needs more treatment, so that recorded acceptance comes first, with a date to review it. Reassessing is the runner-up: it comes first after a change, but here it would repeat current work and delay the owner's decision.",
       "wrong_explanations": {
         "A": "Reassessing comes first after a change in scope, threat or controls; nothing has changed since last week's assessment, so it repeats current work and delays the owner's decision.",
-        "B": "The risk is within appetite, so holding go-live until the vendor adds single sign-on buys treatment the risk does not need; the owner can accept it and review it later.",
+        "B": "The risk is within appetite, so holding go-live until single sign-on is added buys treatment the risk does not need; the owner can accept it and review it later.",
         "C": "Marking the gap accepted in the register is the practitioner deciding for the owner; the register records an acceptance, it does not make one."
       },
       "tips": [
@@ -3200,7 +3200,7 @@
       "options": {
         "A": "Human review of each drafted report before the board sees it",
         "B": "Read-only access to the risk ratings for the assistant",
-        "C": "A change history kept for each risk rating it edits",
+        "C": "A change history kept for the ratings the assistant edits",
         "D": "A yearly internal audit review of the AI assistant"
       },
       "correct": "B",
@@ -3260,17 +3260,17 @@
         "Ransomware recovery",
         "Recovery testing"
       ],
-      "_provenance": "Authored from concept: notes 4A6.1 (Recovery Strategies and Alternate Sites: a strategy is judged by whether it meets the RTO under the scenarios that matter; under ransomware, recovery time includes containment and clean checks) and 4A6.2 (contain the attack, then verify backups are clean before restoring). Round 8, 5 Nov 2026: original scenario (a manufacturer whose restore tests meet a 12-hour RTO while its ransomware playbook adds two days of containment and malware checks before any restore) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Neighbours checked: crisc_d4_012 (contain before restoring), crisc_d4_034 (no test assuming online backups are lost), crisc_d4_071 (backup retention against intruder dwell time), crisc_d4_035 (restore tests as a control indicator), crisc_d4_011 (a carrier shared by both sites), crisc_d2_035 (a tested recovery longer than the MTO, reported to the owner), crisc_d2_012 (an RTO set by IT), crisc_d1_029 (re-entry after a restore within the RTO); CISA d5_261 (find when the attacker entered before restoring), d4_267 (replication in place of backups), d4_305 (a timed restore of the whole database) and d4_189 (recovery time along a dependency chain); CC cc_d5_099 (checking a restored server for compromise) and cc_d2_097 (replication is not backup). Judged distinct: this keys the end-to-end ransomware recovery time against the RTO, which a restore test alone does not show. Earlier 4A6 ideas dropped as mirrors: replication in place of backups (CISA d4_267, CC cc_d2_097), verifying a clean backup (CC cc_d5_099, CISA d5_261), an RTO changed to fit capability (crisc_d2_035, crisc_d2_012) and decision authority in a tabletop (crisc_d2_030).",
+      "_provenance": "Authored from concept: notes 4A6.1 (Recovery Strategies and Alternate Sites: a strategy is judged by whether it meets the RTO under the scenarios that matter), 4A6.2 (contain the attack, then verify backups are clean before restoring) and 4A6.3 (a restore test times only the restore; under ransomware, containment and malware checks come first). Round 8, 5 Nov 2026: original scenario (a manufacturer whose restore tests meet a 12-hour RTO while its ransomware playbook adds two days of containment and malware checks before any restore) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Neighbours checked: crisc_d4_012 (contain before restoring), crisc_d4_034 (no test assuming online backups are lost), crisc_d4_071 (backup retention against intruder dwell time), crisc_d4_035 (restore tests as a control indicator), crisc_d4_011 (a carrier shared by both sites), crisc_d2_035 (a tested recovery longer than the MTO, reported to the owner), crisc_d2_012 (an RTO set by IT), crisc_d1_029 (re-entry after a restore within the RTO); CISA d5_261 (find when the attacker entered before restoring), d4_267 (replication in place of backups), d4_305 (a timed restore of the whole database) and d4_189 (recovery time along a dependency chain); CC cc_d5_099 (checking a restored server for compromise) and cc_d2_097 (replication is not backup). Judged distinct: this keys the end-to-end ransomware recovery time against the RTO, which a restore test alone does not show. Earlier 4A6 ideas dropped as mirrors: replication in place of backups (CISA d4_267, CC cc_d2_097), verifying a clean backup (CC cc_d5_099, CISA d5_261), an RTO changed to fit capability (crisc_d2_035, crisc_d2_012) and decision authority in a tabletop (crisc_d2_030).",
       "style_version": 2
     },
     {
       "id": "crisc_d4_089",
       "domain": 4,
       "subtopic": "4B3 Data privacy and data protection principles. What a privacy impact assessment rates",
-      "principle_id": "objectives-first",
+      "principle_id": "final-two",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "A dating service's privacy impact assessment for a feature showing members' location to their matches rates each risk only by the fines and press coverage it could face. What is the risk practitioner's BEST recommendation?",
+      "question": "A dating service's privacy impact assessment for a feature showing members' location to their matches rates each risk only by the fines and press coverage it would face. What is the risk practitioner's BEST recommendation?",
       "options": {
         "A": "Fine estimates updated from recent enforcement cases",
         "B": "A penetration test of the feature before launch",
@@ -3280,7 +3280,7 @@
       "correct": "D",
       "key_concept": "A privacy impact assessment rates the problems processing could cause people first, then the impacts that follow for the organization.",
       "pre_read": "Note what the assessment's ratings measure before weighing the options.",
-      "correct_explanation": "Privacy risk is the chance that people suffer problems from how their data is processed. Showing members' location to strangers could lead to stalking or physical harm; fines and press coverage are costs that follow for the service. Rating harm to members first, then the service's impacts, shows the owner the real exposure. Counting members who leave is the runner-up: it is one more cost to the service and still omits the harm itself.",
+      "correct_explanation": "Privacy risk is the chance that people suffer problems from how their data is processed. Showing members' location to their matches could lead to stalking or physical harm; fines and press coverage are costs that follow for the service. Rating harm to members first, then the service's impacts, shows the owner the real exposure. Counting members who leave is the runner-up: it is one more cost to the service and still omits the harm.",
       "wrong_explanations": {
         "A": "Sharper fine estimates refine the same narrow measure; a feature can be lawful and still expose members to stalking, which no fine figure captures.",
         "B": "The harm comes from the feature working as designed; a penetration test looks for security flaws, not the risk of showing members' location.",
