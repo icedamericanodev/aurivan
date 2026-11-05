@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "comment": "Original CRISC practice questions for Domain 3 (Risk Response and Reporting), written to the CRISC exam content outline effective 2025. Every item is authored from public concepts and KaiSip's own CRISC study notes (data/crisc/notes/d3.json), with no reference to the CRISC Review Manual, ISACA's QAE database, ISACA's practice quiz or any prior question bank. Schema: docs/content/QUESTION_SCHEMA.md; writing rules: docs/content/EXAM_STYLE_V2.md and .claude/agents/crisc-standards-auditor.md. Not affiliated with or endorsed by ISACA®. CRISC® is a registered trademark of ISACA. Pilot batch crisc_d3_001 to crisc_d3_020, 30 Oct 2026. Round 2 crisc_d3_021 to crisc_d3_050, 31 Oct 2026. Round 3 crisc_d3_051 to crisc_d3_085, 4 Nov 2026. Round 7 crisc_d3_129 to crisc_d3_136, 4 Nov 2026.",
+    "comment": "Original CRISC practice questions for Domain 3 (Risk Response and Reporting), written to the CRISC exam content outline effective 2025. Every item is authored from public concepts and KaiSip's own CRISC study notes (data/crisc/notes/d3.json), with no reference to the CRISC Review Manual, ISACA's QAE database, ISACA's practice quiz or any prior question bank. Schema: docs/content/QUESTION_SCHEMA.md; writing rules: docs/content/EXAM_STYLE_V2.md and .claude/agents/crisc-standards-auditor.md. Not affiliated with or endorsed by ISACA®. CRISC® is a registered trademark of ISACA. Pilot batch crisc_d3_001 to crisc_d3_020, 30 Oct 2026. Round 2 crisc_d3_021 to crisc_d3_050, 31 Oct 2026. Round 3 crisc_d3_051 to crisc_d3_085, 4 Nov 2026. Round 7 crisc_d3_129 to crisc_d3_136, 4 Nov 2026. Round 8 crisc_d3_137 to crisc_d3_144, 5 Nov 2026.",
     "schema_version": 1
   },
   "domain": 3,
@@ -5038,6 +5038,302 @@
         "Recurring issues"
       ],
       "_provenance": "Authored from concept: notes 3A4.1 (Tracking Issues and Findings to Closure: close an issue only after evidence shows the fix works, not on the owner's statement). Round 7, 4 Nov 2026: original scenario (an airport operator where internal audit finds 7 of 25 closed control-test issues have come back, each closed on the owner's email), written for KaiSip in our own words; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D3 round 7 (crisc_d3_129 to 136). Neighbours checked: crisc_d3_013 (one plan reported complete: obtain evidence; this item fixes the closure rule after repeats), crisc_d3_068 (milestone evidence), crisc_d3_094 (one issue log), crisc_d3_119 (repeated exceptions with one cause), crisc_d3_101 (internal audit results as evidence), crisc_d1_065 (risk team challenges self-assessed ratings), CISA d1_169 (a finding recurring for three cycles), CISA d4_016 (reopened tickets as a metric), CISA d2_042 (recurring SLA breaches). None keys changing the closure rule after closed issues recur.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d3_137",
+      "domain": 3,
+      "subtopic": "3C4 Risk and control monitoring techniques. Rise during a change freeze",
+      "principle_id": "analyze-before-acting",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "A retailer's KRI for servers missing critical patches has risen three months running to near amber; the IT manager says it does so each holiday change freeze. What should the risk practitioner do FIRST?",
+      "options": {
+        "A": "Compare the rise with the same months in past years",
+        "B": "Raise the rising trend with the patching risk's owner",
+        "C": "Record the IT manager's freeze explanation in the KRI report",
+        "D": "Lift the KRI's amber level for the freeze months"
+      },
+      "correct": "A",
+      "key_concept": "Trend analysis compares an indicator with the same period in past years, so a seasonal rise is told apart from a real worsening.",
+      "pre_read": "Note what explanation the stem offers and whether it can be checked.",
+      "correct_explanation": "Trend analysis reads a series for seasonal patterns as well as direction. The IT manager's claim can be checked against the KRI's history for past freezes: a matching rise is a known pattern that should ease after the freeze, while a steeper one is a real worsening. Raising the trend with the owner is the runner-up; it follows, with that comparison, if this year's rise is new.",
+      "wrong_explanations": {
+        "B": "A rise toward amber is worth raising, but the seasonal claim can be checked first, so the owner hears whether the trend is new or the usual pattern.",
+        "C": "Writing the explanation into the report takes the IT manager's word; the KRI's own history can confirm or refute it.",
+        "D": "Thresholds come from tolerance, not from when a rise is expected; exposure during the freeze is still exposure, and the risk owner approves any threshold change."
+      },
+      "tips": [
+        "Eliminate: C reports the IT manager's word without checking it, and D bends the threshold to the season when thresholds come from tolerance.",
+        "Final two: A beats B because the seasonal claim can be tested against past years first; raising the trend follows if the rise is new.",
+        "Exam cue: before calling a rise a trend, compare it with the same period in past years; seasonal patterns repeat."
+      ],
+      "framework_ref": "NIST SP 800-55v1 Appendix C.3 (Time Series Analysis: shows the level, trend, seasonality or noise within a series of data points); NIST IR 8286C Rev. 1 Section 5.2 (Monitoring Risks: KRIs are observed for trends such as rising likelihood or failing controls)",
+      "related_concepts": [
+        "Trend analysis",
+        "Seasonal patterns",
+        "KRI history"
+      ],
+      "_provenance": "Authored from concept: notes 3C4.2 (Control Self-Assessment and Trend Analysis: trend analysis shows direction, speed and seasonal patterns; compare a rise with the same months of past years before calling it new). Round 8, 5 Nov 2026: original scenario (a retailer's unpatched-server KRI rising toward amber during the holiday change freeze, with the IT manager calling it seasonal), written for KaiSip in our own words; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D3 round 8 (crisc_d3_137 to 144). Angle: the notes teach seasonal patterns in trend analysis, and no item keyed reading a rise against past years. Neighbours checked: crisc_d3_045 (worsening KCI below red: review the trend with the control owner; here that move is the runner-up until the seasonal claim is tested), crisc_d3_124 (KRI history lined up with incidents to test predictive value), crisc_d3_040 (sudden indicator change after a data source change), crisc_d3_125 (amber warns), crisc_d3_107 (only the approver moves a threshold), crisc_d3_047 (trend arrows on a heat map), CC cc_d2_020 (board report shows a KRI trend below amber), CISA d3_154 and d4_243 (seasonal timing of a review and a BIA), AAIA aaia_d2_111 (rainy-season footage left out of validation). None keys checking a rise against the same months of past years.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d3_138",
+      "domain": 3,
+      "subtopic": "3A2 Risk and control ownership. Review frequency cut",
+      "principle_id": "match-decision-to-role",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A bank's IT security manager, who owns the weekly review of privileged activity, wants it monthly; the payments director accepted the fraud risk's residual rating with weekly reviews. What is the risk practitioner's BEST recommendation?",
+      "options": {
+        "A": "Let the IT security manager set the review's frequency",
+        "B": "Re-rate the fraud risk after the first monthly review",
+        "C": "Put the change to the payments director for a decision",
+        "D": "Approve the monthly review while fraud alerts stay low"
+      },
+      "correct": "C",
+      "key_concept": "A control owner runs and improves a control, but a change that alters accepted residual risk needs the risk owner's agreement first.",
+      "pre_read": "Note each person's role and what the acceptance rested on.",
+      "correct_explanation": "The IT security manager owns the review, but the payments director accepted the fraud risk's residual rating on the strength of weekly reviews. Running it monthly could leave more risk than was accepted, so the change goes to the director, with the practitioner's estimate of its effect, before it takes effect. Letting the control owner decide is the runner-up: they own the control, not the risk it protects.",
+      "wrong_explanations": {
+        "A": "The control owner decides how the review runs, but cutting its frequency changes the residual risk the director accepted, which only the director can accept.",
+        "B": "Re-rating after the change means the director learns of any extra risk only once it is already being carried.",
+        "D": "Agreeing to more risk is the risk owner's decision; the practitioner estimates the effect and advises, and fewer alerts may only mean less activity is being reviewed."
+      },
+      "tips": [
+        "Eliminate: B rates the change only after the risk is carried, and D has the practitioner approve a change to accepted risk, which is the risk owner's call.",
+        "Final two: C beats A because the review protects a risk the payments director accepted at weekly frequency; the control owner cannot change that residual risk alone.",
+        "Exam cue: a control change that alters accepted residual risk goes to the risk owner before it takes effect."
+      ],
+      "framework_ref": "ISACA Glossary (control owner); ISACA Glossary (risk owner); NIST CSF 2.0 ID.RA-07 (changes and exceptions are managed, assessed for risk impact, recorded and tracked)",
+      "related_concepts": [
+        "Control owner",
+        "Risk owner",
+        "Accepted residual risk"
+      ],
+      "_provenance": "Authored from concept: notes 3A2.2 (Control Owners and Validating Ownership: risk owners rely on control owners to keep residual risk at the level they accepted, so a change that weakens a control goes to the risk owner first). Round 8, 5 Nov 2026: original scenario (a bank's IT security manager wanting the weekly privileged-activity review run monthly, when the payments director accepted the fraud risk on weekly reviews), written for KaiSip in our own words; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D3 round 8 (crisc_d3_137 to 144). Neighbours checked: crisc_d3_051 (a control owner marks a risk acceptable after a failed review; here no acceptance is claimed, the control owner changes the control itself), crisc_d3_089 (one control owner reporting to several risk owners), crisc_d3_063 (a control that stalls the work is reworked with its owner), crisc_d3_053 (control owner retiring), crisc_d3_005 (control owner for a recovery control), crisc_d1_022 (contracted-out control keeps an internal owner), crisc_d2_044 (a wide inherent-to-current gap marks reliance on a key control), CC cc_d3_119 (privileged reviews run more often than routine ones), CISA d2_051 (KCI for a privileged-access review). None keys routing a control owner's frequency cut to the risk owner who accepted the risk.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d3_139",
+      "domain": 3,
+      "subtopic": "3C2 Data collection, aggregation, analysis and validation. Losses left out of a rating",
+      "principle_id": "analyze-before-acting",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "Before a hotel group's owner accepts a card-fraud risk rated within appetite, the risk analyst finds it omitted online bookings, 40% of sales, whose losses the payments team records. What is the analyst's BEST recommendation?",
+      "options": {
+        "A": "Let the owner accept as rated, with a review in a year",
+        "B": "Fund the $45,000 fraud-screening upgrade for online bookings",
+        "C": "Note the omitted online losses in the acceptance record",
+        "D": "Re-rate the risk with the payments team's loss records"
+      },
+      "correct": "D",
+      "key_concept": "An acceptance rests on its rating; when the rating left out loss data that exists, re-rate before the owner decides.",
+      "pre_read": "Note what the rating was built on and what has come to light since.",
+      "correct_explanation": "An acceptance is only as sound as the rating behind it, and this rating left out online bookings, 40% of sales. Their losses are already on record with the payments team, so the rating can be redone before the owner decides; the risk may still be within appetite, or it may not. Noting the gap is the runner-up: it suits data that cannot be had in time, not records another team holds.",
+      "wrong_explanations": {
+        "A": "The rating is within appetite only on the data it used; accepting now would rest on a figure that leaves out 40% of sales.",
+        "B": "Spending $45,000 treats a risk whose size is not yet known; the full loss data may show no treatment is needed, or a different one.",
+        "C": "Stating a limitation fits data that cannot be obtained; here the payments team holds the records, so the owner can decide on a complete rating."
+      },
+      "tips": [
+        "Eliminate: A accepts on a rating that left out 40% of sales, and B spends $45,000 before the risk's real size is known.",
+        "Final two: D beats C because the missing losses are on record and can be added; noting a gap suits data that cannot be had in time.",
+        "Exam cue: when a rating proves to have missed data that exists, redo it before anyone accepts or treats the risk."
+      ],
+      "framework_ref": "NIST SP 800-55v1 Section 3.1.4 (Data Quality: a validation process checks the integrity, accuracy and structure of data before any analysis is done); ISACA Glossary (risk acceptance)",
+      "related_concepts": [
+        "Data completeness",
+        "Risk acceptance",
+        "Re-rating"
+      ],
+      "_provenance": "Authored from concept: notes 3C2.3 (Validating Data Before Reporting: completeness, so a rating found to have missed a unit, system or source is redone before decisions rest on it). Round 8, 5 Nov 2026: original scenario (a hotel group's card-fraud risk, rated within appetite and due for acceptance, whose rating left out online bookings logged by the payments team), written for KaiSip in our own words; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D3 round 8 (crisc_d3_137 to 144). Round 8 acceptance counter-example: the stem says within appetite and offers acceptance, which is wrong for a reason the bank had not used (the rating rests on data later found incomplete), and a priced alternative is offered too. Neighbours checked: crisc_d3_041 (two depots' KRI data missing at report time: report and state the gap; that lesson is this item's runner-up, set apart because here the records exist), crisc_d3_040 (indicator change after a data source change), crisc_d3_106 (AI-sorted data checked against originals), crisc_d2_046 (loss database omits near misses), crisc_d2_093 (ratings on uncredentialed scans understate exposure), crisc_d2_057 (report missing evidence and its effect on the rating), crisc_d4_080 (rating predates a cloud move), crisc_d3_130 (rating credits a planned review), crisc_d1_103 (insurance condition not met), crisc_d3_118 (acceptance keyed within appetite). None keys re-rating before acceptance because the rating left out loss records that exist.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d3_140",
+      "domain": 3,
+      "subtopic": "3B1 Control frameworks, types and standards. Values copied from a bank",
+      "principle_id": "root-cause-over-symptom",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A clinic adopting NIST SP 800-53 copied a bank's parameter values, such as 30-day reviews of all accounts; its two-person IT team signs reviews off unchecked. What should the risk practitioner recommend as BEST?",
+      "options": {
+        "A": "Hire a contractor to keep up the 30-day account reviews",
+        "B": "Set each parameter value from the clinic's own risk and work",
+        "C": "Move the clinic's account reviews to a 90-day cycle",
+        "D": "Record an exception for the 30-day account review cycle"
+      },
+      "correct": "B",
+      "key_concept": "Tailoring a control catalog includes setting each organization-defined parameter value from the organization's own risk and operations.",
+      "pre_read": "Note where the clinic's control settings came from.",
+      "correct_explanation": "Assigning values to a catalog's parameters, such as how often accounts are reviewed, is part of tailoring, and each value comes from the organization's own risk and operations. Copied wholesale, the bank's values outran a two-person team, so reviews became sign-offs without checks. A 90-day cycle is the runner-up: it may suit the reviews, but it is one guessed value, and the other copied values stay unchecked.",
+      "wrong_explanations": {
+        "A": "A contractor keeps up a value chosen for a bank's risk, not the clinic's, and the other copied values stay unexamined.",
+        "C": "Ninety days may fit, but it is chosen without the clinic's risk, and every other copied value still needs the same review.",
+        "D": "An exception is a temporary deviation from a requirement that fits; here the requirement's value was never set for the clinic."
+      },
+      "tips": [
+        "Eliminate: A funds a value chosen for a bank's risk, and D treats an unsuitable value as a temporary deviation rather than tailoring it.",
+        "Final two: B beats C because every value was copied; changing the review cycle alone leaves the rest unchecked against the clinic's own risk.",
+        "Exam cue: tailoring a catalog includes setting each parameter value from the organization's own risk and operations, not another firm's."
+      ],
+      "framework_ref": "NIST SP 800-53B Section 2.4 (Assigning Control Parameter Values: parameter values may be driven by mission or business requirements); NIST SP 800-53 Rev. 5 Section 1.1 (Purpose and Applicability: a comprehensive and flexible catalog of security and privacy controls)",
+      "related_concepts": [
+        "Tailoring",
+        "Organization-defined parameters",
+        "Control catalogs"
+      ],
+      "_provenance": "Authored from concept: notes 3B1.3 (Control Frameworks and Tailoring: tailor by scoping out what does not apply, setting parameter values from the organization's own risk and operations, and adding controls for risks the baseline misses). Round 8, 5 Nov 2026: original scenario (a clinic adopting the SP 800-53 catalog with a bank's parameter values, so a two-person IT team signs off 30-day account reviews unchecked), written for KaiSip in our own words; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D3 round 8 (crisc_d3_137 to 144). Angle: the notes teach setting parameter values as part of tailoring, and no item keyed it. Two earlier 3B1 ideas were dropped as mirrors: automating a high-volume manual check (crisc_d3_009, CISA d3_070) and one control set mapped to several frameworks (CISA d5_204, d2_113, d1_038). Neighbours checked: crisc_d3_060 (baseline by impact level, then tailor), crisc_d3_016 (KRI thresholds from own tolerance, not a survey), crisc_d3_061 (baseline met, risk still high), crisc_d3_120 (SP 800-53 as a catalog), crisc_d1_026 (a rule needing exceptions everywhere is revised), CC cc_d2_022 (tailoring exclusion recorded), CC cc_d3_086 (console lock endangering rescuers: narrow exception), CISA d3_090 (configurable limit tables under change control). None keys setting a catalog's parameter values from the organization's own risk.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d3_141",
+      "domain": 3,
+      "subtopic": "3C5 Risk and control reporting techniques. Default heat-map colors",
+      "principle_id": "appetite-drives-response",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A retailer's board treats risks scoring over 9 of 25 as above appetite, but its heat map colors scores up to 12 green, the GRC tool's default. What should the risk practitioner recommend as BEST?",
+      "options": {
+        "A": "Color bands set from the board's approved appetite",
+        "B": "A note under the map that lists the risks above appetite",
+        "C": "Trend arrows on each risk, fed by its KRI history",
+        "D": "Board approval of the tool's default bands as appetite"
+      },
+      "correct": "A",
+      "key_concept": "Heat-map color bands are set from the board's approved appetite and tolerance, not a tool's defaults, so color shows position against appetite.",
+      "pre_read": "Compare the board's appetite with what the map's colors show.",
+      "correct_explanation": "A heat map's colors tell the board which risks are acceptable, so its bands must come from the board's own appetite, with tolerance marking the red edge. Here scores of 10 to 12 look acceptable though they are above appetite. A note listing them is the runner-up: it corrects this board pack, but the map would still show them green and mislead the next reader.",
+      "wrong_explanations": {
+        "B": "A note corrects one report, but the map's colors still say scores of 10 to 12 are acceptable, so the next reader is misled again.",
+        "C": "Trend arrows show which way a risk is moving, not whether its position is within appetite; the colors would still be wrong.",
+        "D": "Appetite is the board's choice from its objectives and capacity; a software default is no basis for it."
+      },
+      "tips": [
+        "Eliminate: C adds direction when the problem is position against appetite, and D lets a software default set the board's appetite.",
+        "Final two: A beats B because the bands themselves misstate appetite; a note fixes one pack while the map keeps showing risks above appetite as green.",
+        "Exam cue: heat-map colors must come from the approved appetite and tolerance, or the map tells the board the wrong story."
+      ],
+      "framework_ref": "ISACA Glossary (risk map); NIST CSF 2.0 GV.RM-02 (risk appetite and risk tolerance statements are established, communicated and maintained); NIST SP 800-55v1 Section 3.1.2 (Measurement Reporting: context such as the risk indicated, fit with risk appetite and the decision needed)",
+      "related_concepts": [
+        "Heat maps",
+        "Risk appetite",
+        "Board reporting"
+      ],
+      "_provenance": "Authored from concept: notes 3C5.1 (Heat Maps, Scorecards and Dashboards: draw heat-map color bands from the approved appetite and tolerance, not a tool's default scoring). Round 8, 5 Nov 2026: original scenario (a retailer's board heat map colored by the GRC tool's default bands, so scores of 10 to 12 above appetite show green), written for KaiSip in our own words; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D3 round 8 (crisc_d3_137 to 144). Angle: round 7's 3C4 and 3C5 ideas mirrored older items, so this takes a heat-map point no item keyed; the notes gained the bullet in this round. Neighbours checked: crisc_d3_047 (trend arrows on a heat map; that lesson is a distractor here), crisc_d3_079 (averaging ordinal heat-map scores), crisc_d3_080 (KRI values need thresholds and trend), crisc_d3_016 (thresholds from own tolerance), crisc_d1_067 (thresholds recalibrated to a changed appetite), crisc_d2_065 (residual rated on a tool's scale cannot be compared with appetite), crisc_d3_125 (red marks the tolerance), CC cc_d2_095 (a GRC check that misreads a control is corrected by its owner), CISA d2_112 (heat maps as a register feature). None keys setting heat-map bands from the approved appetite.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d3_142",
+      "domain": 3,
+      "subtopic": "3C1 Risk action plans. Ending an interim review",
+      "principle_id": "evidence-before-credit",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A university's AI tool flagging false expense claims, the action plan's permanent control, went live Monday; finance wants to end the interim manual review of claims over $500. What is the risk practitioner's BEST recommendation?",
+      "options": {
+        "A": "End the manual review of expense claims over $500",
+        "B": "Keep the manual review running beside the tool until it is proven",
+        "C": "End the manual review once the vendor confirms the tool's accuracy",
+        "D": "Keep the manual review as a standing second layer of control"
+      },
+      "correct": "B",
+      "key_concept": "An interim measure stays until the permanent control is shown to work on the organization's own data; go-live and vendor figures are not proof.",
+      "pre_read": "Note what has been shown about the new control so far.",
+      "correct_explanation": "Go-live shows the AI tool is running, not that it catches the university's false claims. Keeping the manual review beside it for a period lets reviewers' findings be compared with its flags on the same claims; once it is shown to work, the interim step can end. Ending the review on the vendor's accuracy figure is the runner-up: that figure comes from the vendor's tests, not the university's claims.",
+      "wrong_explanations": {
+        "A": "A control that has just gone live is unproven; ending the interim review now leaves false claims uncaught if the tool misses them.",
+        "C": "The vendor's figure comes from its own tests, not the university's claims; the university's own comparison shows whether the tool works here.",
+        "D": "Interim measures cover exposure until the permanent control is proven; keeping both afterward pays twice to treat the same risk."
+      },
+      "tips": [
+        "Eliminate: A treats go-live as proof the tool works, and D keeps a stopgap after the permanent control is proven, paying twice for one risk.",
+        "Final two: B beats C because the vendor's accuracy figure comes from its own tests; comparing flags with reviewers' findings shows the tool works on the university's claims.",
+        "Exam cue: an interim measure stays until the permanent control is shown to work in your own setting, then it can end."
+      ],
+      "framework_ref": "NIST AI 100-1 (AI RMF 1.0) MEASURE 2.3 (AI system performance or assurance criteria are measured and demonstrated for conditions similar to deployment settings); NIST CSF 2.0 ID.RA-06 (risk responses are chosen, prioritized, planned, tracked and communicated)",
+      "related_concepts": [
+        "Interim measures",
+        "Validating a new control",
+        "AI controls"
+      ],
+      "_provenance": "Authored from concept: notes 3C1.1 (Building a Risk Action Plan: interim measures reduce exposure while long actions are under way and stay until the permanent control is shown to work) and 3C1.2 (confirm the control operates before treating the action as complete). Round 8, 5 Nov 2026: original scenario (a university's AI expense-claim tool goes live and finance wants to end the interim manual review at once), written for KaiSip in our own words; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D3 round 8 (crisc_d3_137 to 144). The setting moved from duplicate payments to expense claims to stay clear of CISA d3_070. Neighbours checked: crisc_d3_013 (plan reported complete: obtain evidence of enforcement), crisc_d3_039 (interim measures for a long plan), crisc_d3_098 (automatic check of AI figures), crisc_d4_014 (test a vendor's AI tool on the council's own data before go-live; here the tool is live and the question is when the stopgap ends), crisc_d4_006 (vendor model change needs validation), crisc_d2_085 (a response can create new risk), CISA d3_118 (parallel run before relying on migrated reports), CISA d3_070 (automated duplicate-payment control), AAIA aaia_d3_008 (anomaly model on expense claims, auditor's use). None keys keeping an interim measure until the permanent control is proven.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d3_143",
+      "domain": 3,
+      "subtopic": "3C6 Monitoring and reporting of emerging risks. Reviews that find nothing",
+      "principle_id": "kris-that-predict",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "Each six-monthly review of a holiday-rental platform's emerging risk of AI-generated fake listings asks its owner only if anything has changed; the last three answers were no. What should the risk practitioner recommend as BEST?",
+      "options": {
+        "A": "Have the owner review the entry each quarter, not twice a year",
+        "B": "Rate the risk on the usual scale in the main profile",
+        "C": "Close the entry until the first AI-made fake listing is found",
+        "D": "Agree with the owner the signs that would show it growing"
+      },
+      "correct": "D",
+      "key_concept": "Emerging risks are watched through agreed signs that would show them growing, so each review checks evidence rather than asking if anything changed.",
+      "pre_read": "Note what each review actually asks the owner.",
+      "correct_explanation": "The reviews keep finding nothing because they ask only whether anything has changed, with nothing named to check. Agreeing signs that would show the risk growing, such as reported fake listings or cheaper tools for faking photos, gives each review evidence to weigh and tells the owner when to act. A shorter cycle is the runner-up: asking the same open question more often still finds nothing.",
+      "wrong_explanations": {
+        "A": "Reviewing more often repeats the same open question; with nothing named to check, a three-month review finds nothing new either.",
+        "B": "Nothing new is known, so a usual rating would claim certainty the evidence lacks; an emerging risk joins the main profile once it can be rated with confidence.",
+        "C": "Waiting for the first case records the risk only after it has caused harm, which an emerging-risk entry exists to avoid."
+      },
+      "tips": [
+        "Eliminate: B rates the risk with confidence nobody has, and C waits for the first case, losing the early warning the entry is for.",
+        "Final two: D beats A because the reviews ask an open question with nothing named to check; asking it more often still finds nothing.",
+        "Exam cue: an emerging risk needs named signs to watch, so each review has evidence to check and the owner knows when to act."
+      ],
+      "framework_ref": "NIST IR 8286C Rev. 1 Section 5.2 (Monitoring Risks: KRIs are observed for trends such as rising likelihood or failing controls); NIST CSF 2.0 ID.RA-03 (internal and external threats to the organization are identified and recorded)",
+      "related_concepts": [
+        "Emerging risk",
+        "Early-warning signs",
+        "AI misuse"
+      ],
+      "_provenance": "Authored from concept: notes 3C6.2 (Recording and Reporting Emerging Risk: set short review dates and agree with the owner the signs that would show the risk growing, so each review checks evidence and refines the rating). Round 8, 5 Nov 2026: original scenario (a holiday-rental platform whose six-monthly reviews of AI-generated fake listings only ask the owner whether anything has changed), written for KaiSip in our own words; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D3 round 8 (crisc_d3_137 to 144). Angle: 3C6 ideas kept mirroring older items, so this keys watch signs for an emerging risk, which the notes now teach and no item keyed. Neighbours checked: crisc_d3_132 (entry too vague to rate: add a scenario), crisc_d3_084 (solid data moves a risk to the main profile; that lesson rules out a distractor here), crisc_d3_049 (ranges with stated confidence), crisc_d3_115 (staged response with trigger points for spending), crisc_d3_020 (record early), crisc_d3_114 (report emerging risks in their own section), crisc_d3_110 (indicator for an acceptance condition), crisc_d2_061 (new AI risk recorded with uncertainty), crisc_d4_036 (pilot pause conditions), AAIA and CISA emerging-technology items (none on review content). None keys agreeing watch signs for an emerging risk.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d3_144",
+      "domain": 3,
+      "subtopic": "3A3 Vendor/supply chain risk management. Low ratings for critical vendors",
+      "principle_id": "rate-on-common-terms",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "A bank rates each of its three critical vendors low risk, but all three run in the same cloud provider's region. Which of the following should concern the risk practitioner MOST?",
+      "options": {
+        "A": "The cloud provider sitting outside the bank's contracts",
+        "B": "Accountability for the bank's data passing to the provider",
+        "C": "One regional outage stopping all three services together",
+        "D": "Cloud hosting being less secure than on-premises hosting"
+      },
+      "correct": "C",
+      "key_concept": "Concentration risk: critical services that rely on one provider or region can fail together, a combined exposure no single vendor rating shows.",
+      "pre_read": "Note how the vendors were rated.",
+      "correct_explanation": "Each vendor was rated alone, so no rating shows that all three critical services depend on one provider's region. A single regional outage would stop the three together, a combined impact far above what any one vendor's rating reflects. The cloud provider sitting outside the bank's contracts is the runner-up: it is a real fourth-party point, handled through each vendor's own terms, but it does not multiply the impact.",
+      "wrong_explanations": {
+        "A": "A fourth party outside the bank's contracts is common and is covered through each vendor's terms; it does not multiply the impact as the shared region does.",
+        "B": "Outsourcing moves the work, not accountability; the bank still answers to customers and regulators for its data.",
+        "D": "Cloud hosting is not weaker by nature; the concern is that all three services share one region, wherever they are hosted."
+      },
+      "tips": [
+        "Eliminate: B assumes accountability moves with hosting, which outsourcing never does, and D faults cloud hosting itself rather than the shared region.",
+        "Final two: C beats A because one regional outage would stop three critical services at once; the fourth-party point is real but does not multiply the impact.",
+        "Exam cue: rate vendors together as well as alone; critical services that share one provider or region can fail together."
+      ],
+      "framework_ref": "ISACA Glossary (concentration risk); NIST SP 800-161 Rev. 1 SR-3(1) (Diverse Supply Base: identify single points of failure and risk among primes and lower-level entities in the supply chain)",
+      "related_concepts": [
+        "Concentration risk",
+        "Fourth parties",
+        "Vendor risk aggregation"
+      ],
+      "_provenance": "Authored from concept: notes 3A3.2 (Ongoing Vendor Monitoring and Assurance Reports: watch concentration, since many critical services on one provider or region create a single point of failure, even when different vendors share it). Round 8, 5 Nov 2026: original scenario (a bank's three critical vendors each rated low risk though all run in one cloud provider's region), written for KaiSip in our own words; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D3 round 8 (crisc_d3_137 to 144). Eighth item, to 3A3: every D3 sub-area stood at 11 after the seven named ones, and concentration risk is a 3A3 trap in the outline that no item keyed. Neighbours checked: crisc_d2_014 (four regions rate a shared platform low: one group scenario on combined impact; this item asks for the concern, with vendors sharing a fourth party), crisc_d3_006 (fourth party outside an assurance report's scope), crisc_d3_026 (complementary user controls), crisc_d3_030 (exceptions on one asset add up), crisc_d1_070 (outsourcing keeps accountability), crisc_d4_033 (shared responsibility in the cloud), AAIA aaia_d1_067 (several AI vendors on one hosted model), CC cc_d3_005 (SSO concentrates risk at one provider), CISA d5_325 (one appliance as a single point of failure). None keys vendor concentration on a shared provider and region in CRISC.",
       "style_version": 2
     }
   ]

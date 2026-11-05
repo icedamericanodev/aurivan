@@ -327,7 +327,7 @@
           "how_it_works": [
             "Each key control gets one named owner who answers for it working, keeps its evidence and reports when it fails; day-to-day operation may sit with their team.",
             "One control can protect several risks, so its owner may serve several risk owners.",
-            "Risk owners rely on control owners to keep residual risk at the level they accepted.",
+            "Risk owners rely on control owners to keep residual risk at the level they accepted, so a change that weakens a control goes to the risk owner first.",
             "Validate by asking the owner to describe the control and show recent evidence, not just by reading the register.",
             "When a control owner changes jobs, or a project hands over a control it built, ownership transfers formally, with a handover of procedures and evidence."
           ],
@@ -927,7 +927,7 @@
             "COBIT 2019 sets out governance and management objectives for enterprise IT, such as managed risk and managed vendors.",
             "NIST SP 800-53 Rev. 5 is a catalog of security and privacy controls; its starting baselines are published separately in SP 800-53B.",
             "CSF 2.0 lists outcomes under six functions: Govern, Identify, Protect, Detect, Respond and Recover; it does not prescribe the controls that achieve them.",
-            "Tailor by scoping out what does not apply, setting parameters and adding controls for risks the baseline misses.",
+            "Tailor by scoping out what does not apply, setting parameter values from the organization's own risk and operations, and adding controls for risks the baseline misses.",
             "Map internal controls to every framework and regulation that applies, so one control can meet several requirements; re-map whenever one is revised."
           ],
           "example": "A software-as-a-service provider adopts every control in a large catalog to win a government contract, and its backlog grows to 400 items. Oluwaseun, the risk analyst, maps the catalog to the provider's own risk assessment, marks controls that cannot apply to a cloud-only service and proposes a tailored baseline, with a recorded reason for each change, to the chief technology officer.",
@@ -1389,7 +1389,7 @@
             "Each action has one owner, a target date and the resources it needs, agreed with the risk owner; a resource conflict goes back to that owner.",
             "Milestones break long work into checkpoints, so slippage shows early.",
             "The plan states the target risk expected at completion, so success can be measured.",
-            "Interim measures reduce the exposure while long actions are under way.",
+            "Interim measures reduce the exposure while long actions are under way, and stay until the permanent control is shown to work.",
             "The plan links to its risk register entry, so progress updates the risk picture.",
             "When a planned control or its cost changes, re-estimate the target risk and the cost-benefit before the risk owner agrees the change."
           ],
@@ -1609,7 +1609,7 @@
           "definition": "Data validation is checking that risk and control data are complete, accurate, current and consistent before they are analyzed or reported to decision makers.",
           "why_it_matters": "A wrong figure in a board report can drive the wrong decision and damages trust in the whole risk function. Checking before reporting costs far less than correcting afterward.",
           "how_it_works": [
-            "Completeness: every unit and system expected in the data is present.",
+            "Completeness: every unit, system and source expected in the data is present; a rating found to have missed one is redone before decisions rest on it.",
             "Accuracy: a sample reconciles to the source records, whether a person, a spreadsheet or an AI tool produced the figures.",
             "Currency: the data dates match the reporting period.",
             "Consistency: definitions and scales match across sources and over time.",
@@ -1960,7 +1960,7 @@
           "how_it_works": [
             "The risk function designs the questions and facilitates; managers answer for their own areas.",
             "CSA builds ownership and awareness, but results are self-reported, so key answers are spot-checked independently.",
-            "Trend analysis compares indicator values over several periods to show direction, speed and seasonal patterns.",
+            "Trend analysis compares indicator values over several periods to show direction, speed and seasonal patterns; compare a rise with the same months of past years before calling it new.",
             "A worsening trend can justify action even before a threshold is breached.",
             "A worsening KCI goes to the control owner, who fixes the control; the risk function challenges and tracks it but does not take over running it."
           ],
@@ -2071,7 +2071,8 @@
             "Heat maps show relative position but not trend; add trend arrows fed by each risk's KRI history, because a risk can hold its cell while its drivers worsen.",
             "Heat-map scores are ordinal, so cells cannot be added or averaged meaningfully.",
             "Scorecards and dashboards show indicators against thresholds and trend, not raw counts alone.",
-            "Every visual needs a date, a data source and a note of known limitations."
+            "Every visual needs a date, a data source and a note of known limitations.",
+            "Draw heat-map color bands from the approved appetite and tolerance, not a tool's default scoring, so a risk's color shows where it stands against appetite."
           ],
           "types": [
             {
@@ -2254,7 +2255,7 @@
           "how_it_works": [
             "Record the risk as a scenario of how it would affect objectives, with a confidence level and the assumptions behind any rating.",
             "Use ranges or alternative scenarios rather than single scores while uncertainty is high.",
-            "Set short review dates, and refine the rating as evidence arrives.",
+            "Set short review dates and agree with the owner the signs that would show the risk growing, so each review checks evidence and refines the rating.",
             "Report emerging risks in their own section: what is known, what is not, and what is being done to learn more.",
             "Move the risk into the main profile once it is understood well enough to rate normally.",
             "Respond to emerging risk in stages: low-cost steps to learn more, options prepared, and agreed triggers for larger spending as evidence grows."
