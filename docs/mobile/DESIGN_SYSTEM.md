@@ -2183,13 +2183,14 @@ One rule for every action that changes saved data (Back up, Restore and its fail
 
 The phone follows the same rule: a status line under the row, scrolled into view, an accessibility announcement, and a toast only off that screen.
 
-### 21.13 Your plant on the web (Grove Phase 4b, 5 Nov 2026)
+### 21.13 Your plant and badges on the web (Grove Phase 4b, 5 Nov 2026)
 
-Built from `design-notes/grove/phase4b/PHASE4B.md` 4.12 ("Web B, the line" with Web A's dialogs).
+Built from `design-notes/grove/phase4b/PHASE4B.md` 4.12 and 5.7 ("Web B, the line" with Web A's dialogs; "Web A, the disc").
 
 - **Your plant** is a sub-page of You at `#plant` (back link "You"; the tab bar marks You). Today's plant row ("How it has grown"), You's plant card row and planting open it, with focus on its title. From 48em: a plant bed on the left (the art on a `--soil` line, sized 180 / 240 / 300 by growth and at most 40vh, the state tag, the name block; sticky only when the window is at least 40em tall), and on the right How it has grown, Your domains and Look. Under 48em: one column, and Look starts with its own 120px preview.
 - **The stem:** one 2px line, `--accent` where reached and dashed `--leaf-line` still to come; leaves differ by shape (filled, filled in a ring for now, dashed outline). Dates only from saved fields; facts word for word (Today's grew facts for Sprout and Crown, `FORM_FACTS` for Shoot, Bough and Elder when forms are on). What grows it next is the page's one forest panel, on the next row; hidden at Elder and on exam eve and exam day. Marks and the stem are in rem, so they grow with text.
 - **Forms and the Turning:** read from `KaiSipPlant.forms` only when the bundle exposes it. The Turning plays once per form for life (`S.plantForms`, the phone's FormSeen shape, a new saved field; forgotten on restore, baselined on first load), on `#plant` only, in 560ms: fact in place, wash 0 to 140, cross-fade 140 to 320, settle 320 to 420, label and name 400 to 520, leaf fill 420 to 560. Any tap, key or scroll skips to the end; reduced motion shows the end state; one polite status line.
 - **Look** is inline: radio rows (Style, Colour, Ground, Planter, Visitor) and checkbox rows (Keepsakes, "Show up to three" said once), selected with the 2px ink edge and an ink mark. Change plant and Rename stay dialogs; the pick grid shows the F9 tick and "Now" on the planted species, in em columns. A look change cross-fades the bed's plant in 160ms.
 - **You's plant card:** growth wording, the six-growth strip in the real species art for reached growths and dashed `--hero-leaf-line` squares for the rest, and one row to Your plant. The count shows once per screen (the chip below 1240px, the card line from 1240px).
+- **Badges on the web:** "Badges", "Labelled the day you earn them.", three empty dashed `--leaf-line` mounts (aria-hidden, always three, never art), "Nothing here yet", "Badges are earned in the phone app for now." and the app link at 44px. Never a count.
 

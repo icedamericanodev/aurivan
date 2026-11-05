@@ -51,6 +51,7 @@ Batched for the end of the uplift (web v13, mobile 2.0.0; DECISIONS 8). Write th
 - Screen readers now move through study notes by heading in a clear order.
 - Your plant has its own page, showing how it has grown and the form it grows into. (Phase 4b, PHASE4B.md section 12.)
 - Your plant's look is now chosen right on its page, and Today and You open it in one tap.
+- The badges space on You and Your progress is clearer about where badges are earned.
 
 ## Follow-ups to do at the release
 - `mobile/src/engine/plantLooks.ts` `howToOpen` says "in the Herbarium": change to "in Badges" and rebuild `assets/kaisip-plant.js` in the same commit.

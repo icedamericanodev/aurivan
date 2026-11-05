@@ -5339,6 +5339,17 @@ body[data-tab]:not([data-tab="about"]):not([data-tab="faq"]) .legal-disclaimer {
 /* By domain: the stem chart on a plate; the Badges empty sheet */
 .pg-rows, .pg-accs { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--border); }
 .pg-herb .td-link { margin-top: var(--sp-xs); }
+/* Badges on the web (Grove 4b, PHASE4B 5.7): three empty mounts, the empty
+   line, where badges are earned. The mounts are decoration (aria-hidden). */
+.bd-disc { display: flex; flex-direction: column; align-items: flex-start; }
+.bd-h { margin: 0; font: var(--t-headline); letter-spacing: var(--tr-headline); color: var(--text); }
+.bd-kick { margin: 0; font: var(--t-kicker); letter-spacing: var(--tr-kicker); text-transform: uppercase; color: var(--text); }
+.bd-line { margin: var(--sp-xs) 0 0; font: var(--t-small); color: var(--text2); }
+.bd-mounts { display: flex; flex-wrap: wrap; gap: var(--sp-md); margin: var(--sp-lg) 0 var(--sp-md); }
+.bd-mount { width: 3.5rem; height: 3.5rem; border: 1.5px dashed var(--leaf-line); border-radius: var(--r-tile); box-sizing: border-box; }
+.bd-empty { margin: 0; font: var(--t-aside); color: var(--text); }
+.bd-meta { margin: 2px 0 0; font: var(--t-meta); color: var(--text2); }
+.pg-herb .bd-link { min-height: 44px; }
 .pg-row { display: flex; flex-wrap: wrap; align-items: center; gap: var(--sp-sm) var(--sp-md); min-height: 64px; padding: var(--sp-md) 0; border-bottom: 1px solid var(--border); }
 
 /* 3. Charts */
@@ -8044,8 +8055,6 @@ html { scroll-padding-bottom: calc(104px + var(--consent-h, 0px)); }
 .you-link:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; border-radius: var(--r-sm); }
 .you-badges { padding: 12px 16px 10px; }
 .you-badges .pg-herb { margin: 0; }
-.you-badges .fg-sheet-nm { font: var(--t-title); letter-spacing: var(--tr-title); }
-.you-badges .fg-sheet-p { font: var(--t-small); color: var(--text2); }
 .you-badges .td-link { min-height: 44px; }
 
 /* Settings */
@@ -14471,7 +14480,7 @@ function renderYou() {
   put('youMocks', youMocksHtml());
   // The website's Badges sheet, as Your progress draws it (its own ids here,
   // since both pages stay in the document).
-  put('youBadges', plantSafe(pgHerbariumHtml).replace(/pgHerbH/g, 'youHerbH'));
+  put('youBadges', plantSafe(function () { return pgHerbariumHtml('you'); }));
   youToolsSync();
   youRingWatch();
 }
@@ -16575,12 +16584,6 @@ function fgSheet(o) {
     + (o.purpose ? '<p class="fg-sheet-p">' + escapeHtml(o.purpose) + '</p>' : '') + (o.innerHtml || '') + '</div>';
 }
 
-// Empty plate: the mount with nothing drawn yet ("Nothing here yet").
-function fgEmptyPlate(textHtml, title) {
-  return fgPlate('', '<p class="fg-empty-t">' + escapeHtml(title || 'Nothing here yet') + '</p>'
-    + (textHtml ? '<p class="fg-empty-m">' + textHtml + '</p>' : ''), 'fg-empty');
-}
-
 // ── YOUR PROGRESS (web v12.41, You → Your progress) ──
 // The page a learner opens on purpose to see where they stand; Today stays
 // the landing page. Design: scratchpad web-dashboard v2 (owner, 26 Oct) and
@@ -16795,15 +16798,22 @@ function pgDomainsHtml(r) {
 // Badges (the phone's herbarium; headed "Badges" on the website). The website
 // does not collect badges yet, so its sheet is an empty mount that says where
 // they are; never a count.
-function pgHerbariumHtml() {
+// Badges on the web (Grove 4b, PHASE4B 5.7, "Web A, the disc"): the web has
+// no badge art and no badges to earn, so it shows three empty dashed mounts,
+// always three (the number never hints at the catalogue's size), the empty
+// line and where badges are earned. Never a count. where 'you': You's card
+// (a kicker head); otherwise Your progress (a headline).
+function pgHerbariumHtml(where) {
+  var you = where === 'you', id = you ? 'youHerbH' : 'pgHerbH';
   var href = '';
   try { href = appCtaHref(); } catch (e) { href = ''; }
-  var link = href ? '<a class="td-link" href="' + escapeHtml(href) + '" target="_blank" rel="noopener">Get the KaiSip app<span class="sr-only"> (opens in a new tab)</span>' + ico('chevron', 18) + '</a>' : '';
-  return '<section class="pg-sec pg-herb">' + fgSheet({
-    level: 2, id: 'pgHerbH', name: 'Badges',
-    purpose: 'Labelled the day you earn them.',
-    innerHtml: fgEmptyPlate('Badges are earned in the phone app for now.') + link
-  }) + '</section>';
+  var link = href ? '<a class="td-link bd-link" href="' + escapeHtml(href) + '" target="_blank" rel="noopener">Get the KaiSip app<span class="sr-only"> (opens in a new tab)</span>' + ico('chevron', 18) + '</a>' : '';
+  return '<section class="pg-sec pg-herb bd-disc" aria-labelledby="' + id + '">'
+    + '<h2 class="' + (you ? 'bd-kick' : 'bd-h') + '" id="' + id + '">Badges</h2>'
+    + '<p class="bd-line">Labelled the day you earn them.</p>'
+    + '<div class="bd-mounts" aria-hidden="true"><span class="bd-mount"></span><span class="bd-mount"></span><span class="bd-mount"></span></div>'
+    + '<p class="bd-empty">Nothing here yet</p>'
+    + '<p class="bd-meta">Badges are earned in the phone app for now.</p>' + link + '</section>';
 }
 
 var pgRaiseActs = [];
