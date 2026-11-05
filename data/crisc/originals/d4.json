@@ -3973,9 +3973,9 @@
       "principle_id": "objectives-first",
       "difficulty": "foundational",
       "bloom_level": "Foundational",
-      "question": "An e-signature provider's register rates its signed-contract archive only on data exposure, since the archive is encrypted; customers rely on the contracts as evidence in disputes. What should the risk practitioner recommend as BEST?",
+      "question": "An e-signature provider's register rates its encrypted signed-contract archive only on leak harm; customers rely on the contracts as evidence in disputes. What should the risk practitioner recommend as BEST?",
       "options": {
-        "A": "Fine estimates added to the archive's exposure ratings",
+        "A": "Fine estimates added to the archive's leak ratings",
         "B": "Availability harm rated with the archive's business owner",
         "C": "Integrity harm rated with the archive's business owner",
         "D": "Quarterly tests of the archive's encryption strength"
@@ -3985,7 +3985,7 @@
       "pre_read": "Note what customers use the archive for before reading the options.",
       "correct_explanation": "Encryption guards against reading the contracts, but the archive's value is that each contract stays exactly as signed; FIPS 199 counts non-repudiation and authenticity under integrity. Since customers use the contracts as evidence, an undetected change is the harm the register misses most. Rating availability harm is the runner-up: an outage delays access, but the contracts survive intact, while an altered contract can lose a customer's dispute.",
       "wrong_explanations": {
-        "A": "Fine estimates refine the exposure rating, the one harm already rated; the register stays blind to contracts being changed, the harm that matters most for evidence.",
+        "A": "Fine estimates refine the leak rating, the one harm already rated; the register stays blind to contracts being changed, the harm that matters most for evidence.",
         "B": "An outage harms customers too, but it delays access and the contracts survive intact; an altered contract can lose a dispute, so integrity comes first.",
         "D": "Testing encryption strength checks confidentiality, the one harm already rated; it says nothing about whether a signed contract could be changed unnoticed."
       },
@@ -4000,7 +4000,7 @@
         "Non-repudiation",
         "Impact rating"
       ],
-      "_provenance": "Authored from concept: notes 4B1.1 (Core Security Principles: CIA names what an event harms, shaping the impact rating; encryption guards confidentiality, not integrity, which includes non-repudiation). Round 12, 5 Nov 2026: original scenario (an e-signature provider whose register rates its encrypted signed-contract archive only on data exposure, while customers rely on the contracts as evidence in disputes) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Neighbours checked: crisc_d4_015 (conflicting duties), crisc_d4_053 (removing layers around customer data), crisc_d4_016 (lowering ratings after a framework assessment), crisc_d4_073 (two firewalls with copied rules), crisc_d4_078 (an archive tied to a retiring system), crisc_d2_097 (a recovery rank used to rate leak and tampering impact), crisc_d1_119 (an AI model's tampering impact rated at build cost); CISA d4_244 (sealing archived logs kept as evidence); CC cc_d1_112 (encryption said to prove files were not altered), cc_d1_026 (integrity first for published tide tables), cc_d1_156 (shared-key codes and non-repudiation). Options compared with every 4B1 item; an early easy distractor that lowered ratings to credit encryption was replaced, as it repeated crisc_d4_016's lowering pattern. Judged distinct: no CRISC item asks which CIA harm a register misses for an encrypted archive of signed records; CISA d4_244 keys a sealing control, and the CC items name a property, not a register rating. Owner pattern: k=2, the key C and the runner-up B both name the archive's business owner; the easy distractors name none.",
+      "_provenance": "Authored from concept: notes 4B1.1 (Core Security Principles: CIA names what an event harms, shaping the impact rating; encryption guards confidentiality, not integrity, which includes non-repudiation). Round 12, 5 Nov 2026: original scenario (an e-signature provider whose register rates its encrypted signed-contract archive only on leak harm, while customers rely on the contracts as evidence in disputes) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Neighbours checked: crisc_d4_015 (conflicting duties), crisc_d4_053 (removing layers around customer data), crisc_d4_016 (lowering ratings after a framework assessment), crisc_d4_073 (two firewalls with copied rules), crisc_d4_078 (an archive tied to a retiring system), crisc_d2_097 (a recovery rank used to rate leak and tampering impact), crisc_d1_119 (an AI model's tampering impact rated at build cost); CISA d4_244 (sealing archived logs kept as evidence); CC cc_d1_112 (encryption said to prove files were not altered), cc_d1_026 (integrity first for published tide tables), cc_d1_156 (shared-key codes and non-repudiation). Options compared with every 4B1 item; an early easy distractor that lowered ratings to credit encryption was replaced, as it repeated crisc_d4_016's lowering pattern. Judged distinct: no CRISC item asks which CIA harm a register misses for an encrypted archive of signed records; CISA d4_244 keys a sealing control, and the CC items name a property, not a register rating. Owner pattern: k=2, the key C and the runner-up B both name the archive's business owner; the easy distractors name none.",
       "style_version": 2
     },
     {
@@ -4015,12 +4015,12 @@
         "A": "Share of simulated phishing emails that staff report each month",
         "B": "Share of staff who say in surveys they would report mistakes",
         "C": "Monthly count of data-handling mistakes staff report themselves",
-        "D": "Share of filter-caught misdirected files that their senders reported"
+        "D": "Share of filter-flagged misdirected files that their senders reported"
       },
       "correct": "D",
       "key_concept": "Measure reporting culture by behavior against an independent record: the share of detected mistakes that staff reported themselves, not intent or raw counts.",
-      "pre_read": "Ask which measure could tell more reporting apart from fewer mistakes.",
-      "correct_explanation": "Reporting culture shows in what people do after a mistake. Comparing the misdirected payroll files the email filter catches with those their senders reported gives a share that rises only when more mistakes are reported. A monthly count of self-reported mistakes is the runner-up: it is real behavior, but a fall could mean fewer mistakes or more hidden ones, and the count alone cannot tell which.",
+      "pre_read": "Decide what the measure must show before reading the options.",
+      "correct_explanation": "Reporting culture shows in what people do after a mistake. Comparing the misdirected payroll files the email filter flags with those their senders reported gives a share that rises only when more mistakes are reported. A monthly count of self-reported mistakes is the runner-up: it is real behavior, but a fall could mean fewer mistakes or more hidden ones, and the count alone cannot tell which.",
       "wrong_explanations": {
         "A": "Reporting a phishing lure costs staff nothing; owning up to their own mistake is a different behavior, and this measure says nothing about it.",
         "B": "A survey records what staff say they would do; reporting culture is judged by what they do when a real mistake happens.",
@@ -4037,7 +4037,7 @@
         "Awareness metrics",
         "Self-reporting"
       ],
-      "_provenance": "Authored from concept: notes 4B2.2 (Measuring Awareness, Phishing Simulations and Shadow AI: measure behavior, not attendance; outcome measures include the share of independently detected mistakes that staff reported themselves). Round 12, 5 Nov 2026: original scenario (a payroll provider measuring whether staff report their own data-handling mistakes, such as payroll files sent to the wrong client, which its email filter also catches) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Neighbours checked: crisc_d4_018 (tracking whether AI-use training works), crisc_d1_046 (gauging a freight forwarder's risk culture), crisc_d1_024 (near-miss reports that fell once they counted against ratings), crisc_d4_042 (an error blamed on one clerk), crisc_d4_035 (a backup control indicator); CC cc_d2_077 (signs that a culture program works: staff report their own mistakes), cc_d2_089 (bonuses tied to course completion), cc_d2_015 and cc_d2_139 (falling phishing reports), cc_d2_108 (report and click rates with a harder lure); CISA d5_226 (report rate when click rates are flat), d5_227 (observed behavior against completion and quiz scores). Options compared with every 4B2 item; an early completion-rate distractor was replaced, as it repeated crisc_d4_018's. Judged distinct: cc_d2_077 keys self-reporting as a sign of culture; this item's final two is a share of independently detected mistakes against a raw count of self-reports. Owner pattern: no option names an owner.",
+      "_provenance": "Authored from concept: notes 4B2.2 (Measuring Awareness, Phishing Simulations and Shadow AI: measure behavior, not attendance; outcome measures include the share of independently detected mistakes that staff reported themselves). Round 12, 5 Nov 2026: original scenario (a payroll provider measuring whether staff report their own data-handling mistakes, such as payroll files sent to the wrong client, which its email filter also flags) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Neighbours checked: crisc_d4_018 (tracking whether AI-use training works), crisc_d1_046 (gauging a freight forwarder's risk culture), crisc_d1_024 (near-miss reports that fell once they counted against ratings), crisc_d4_042 (an error blamed on one clerk), crisc_d4_035 (a backup control indicator); CC cc_d2_077 (signs that a culture program works: staff report their own mistakes), cc_d2_089 (bonuses tied to course completion), cc_d2_015 and cc_d2_139 (falling phishing reports), cc_d2_108 (report and click rates with a harder lure); CISA d5_226 (report rate when click rates are flat), d5_227 (observed behavior against completion and quiz scores). Options compared with every 4B2 item; an early completion-rate distractor was replaced, as it repeated crisc_d4_018's. Judged distinct: cc_d2_077 keys self-reporting as a sign of culture; this item's final two is a share of independently detected mistakes against a raw count of self-reports. Owner pattern: no option names an owner.",
       "style_version": 2
     },
     {

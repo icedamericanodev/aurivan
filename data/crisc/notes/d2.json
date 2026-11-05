@@ -58,7 +58,7 @@
             "An incident breaks, or nearly breaks, security policy; it need not cause loss.",
             "Each event is linked to the scenario its review's root cause points to, not the first guess logged, and used to re-rate that scenario's likelihood or impact.",
             "Fixing the immediate cause closes the incident ticket, not the risk; an event whose cause fits no scenario shows a register gap, filled with the process owner.",
-            "Impact counts every loss: primary, such as missed orders and recovery time, and secondary, such as customers who leave or contract penalties."
+            "Impact counts every loss: primary, such as missed orders or recovery time; secondary, such as lost customers or penalties; and harm to customers."
           ],
           "example": "At a water utility, an alarm stops an operator from opening the wrong valve after a remote session times out. Priya Raman, the risk analyst, logs a near miss against the remote operation error scenario, notes the alarm was the last barrier, and asks the operations manager, its risk owner, to review the likelihood rating.",
           "audit_focus": {
@@ -1276,7 +1276,7 @@
             "Status follows evidence: an entry moves to treated only when the response is implemented and working, not when it is planned.",
             "Current and residual ratings credit a control only after it is implemented and tested, not on the day it is approved.",
             "Each owner reviews their entries on a set cycle, and KRIs flag when an earlier review is needed.",
-            "Closing an entry needs a reason, such as the asset being retired or the risk avoided, and the owner's approval; closed entries stay in the register as history.",
+            "Closing an entry needs a reason, such as a retired asset or an avoided risk, and the owner's approval; outsourcing is no such reason. Closed entries stay as history.",
             "A new or emerging risk, such as a newly launched AI system, is entered early with its rating's uncertainty stated and an early review date."
           ],
           "example": "A pension fund's register shows member portal account takeover as treated because multifactor sign-in was approved in March. In September, Elif Yilmaz, the risk analyst, finds the rollout covers only 20% of members. Elif moves the status back to in treatment, re-scores the current risk on the control as it stands, and flags the gap to the member services director.",
@@ -1470,16 +1470,16 @@
             "crisc_d2_107"
           ],
           "definition": "Quantitative analysis expresses risk in money and probability. The classic method multiplies single loss expectancy (SLE) by annual rate of occurrence (ARO) to get annualized loss expectancy (ALE).",
-          "why_it_matters": "Money values let owners weigh a control's cost against the loss it avoids, which supports cost-benefit decisions that word scales cannot.",
+          "why_it_matters": "Money values let owners weigh a control's cost against the loss it avoids, a cost-benefit test that word scales cannot support.",
           "how_it_works": [
             "SLE is the expected loss from one occurrence: asset value times exposure factor, the share of value lost.",
-            "ARO is how many times a year the event is expected; once every four years is 0.25.",
-            "ALE equals SLE times ARO: the expected yearly loss from the scenario.",
+            "ARO is the expected number of events a year; once every four years is 0.25.",
+            "ALE equals SLE times ARO, the expected yearly loss; for rare, severe events, also show the SLE, as one event can far exceed ALE.",
             "Worked example: an $800,000 asset with a 25% exposure factor has an SLE of $200,000; at an ARO of 0.5, ALE is $100,000.",
             "A control is cost-justified when the yearly drop in ALE, ALE before minus ALE after, exceeds the control's yearly cost.",
-            "Results are only as good as the inputs: scale an outside rate to the enterprise's own exposure, and state each figure's source and uncertainty."
+            "Results are only as good as the inputs: scale an outside rate to the enterprise's exposure, and state each figure's source and uncertainty."
           ],
-          "example": "Each crane control outage at a port terminal loses about $300,000 in handling revenue, and history shows two outages in five years, an ARO of 0.4, so the ALE is $120,000. A redundant controller priced at $50,000 annually would lower the ARO to 0.1, giving $30,000. Mei Tanaka, the risk analyst, shows the terminal manager a $90,000 yearly reduction against $50,000 spent.",
+          "example": "Each crane control outage at a port terminal loses about $300,000; there were two in five years, an ARO of 0.4, so ALE is $120,000. A redundant controller costing $50,000 a year would cut the ARO to 0.1, giving $30,000. Mei Tanaka, the risk analyst, shows the terminal manager a $90,000 yearly reduction against $50,000 spent.",
           "audit_focus": {
             "review": [
               "Recalculate SLE, ARO and ALE from the stated inputs",
