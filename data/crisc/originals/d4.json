@@ -571,7 +571,7 @@
       "bloom_level": "Analysis",
       "question": "A bank's latest framework assessment shows its cybersecurity practices meet the target profile, and the CIO proposes lowering every cyber risk rating in the register by one level. What is the risk practitioner's BEST recommendation?",
       "options": {
-        "A": "Lower the ratings as the CIO proposes, citing the assessment",
+        "A": "Lower the ratings, taking the assessment as evidence",
         "B": "Lower the ratings for scenarios the improved practices address",
         "C": "Convert the profile's outcome scores into new risk ratings",
         "D": "Reassess each scenario on evidence before changing its rating"
@@ -944,7 +944,7 @@
         "A": "Treat instruction edits as changes that need testing",
         "B": "Propose a filter that strips refund offers from chatbot replies",
         "C": "Limit instruction edits to the IT operations team",
-        "D": "Review a weekly sample of chatbot conversations for errors"
+        "D": "Find errors in a weekly sample of chatbot conversations"
       },
       "correct": "A",
       "key_concept": "Edits to an AI system's instructions are production changes and need testing, approval and rollback like code or model updates.",
@@ -2054,7 +2054,7 @@
         "A": "Have the plan owner, the IT director, set the test date",
         "B": "Repeat last year's parallel test in place of the full test",
         "C": "Take the disruption risk of a failed test to the business owner",
-        "D": "Ask internal audit to approve the full interruption test"
+        "D": "Ask internal audit to approve the test for the business"
       },
       "correct": "C",
       "key_concept": "The business owner decides how much test disruption to accept; the practitioner shows what a failed test could cost the process.",
@@ -2348,7 +2348,7 @@
       "question": "A SaaS provider's executive committee has deferred funding for the billing platform's technical debt three years running; the CTO's requests describe only code complexity and effort. What is the risk practitioner's BEST action?",
       "options": {
         "A": "Restate the debt as the yearly business losses it could cause",
-        "B": "Report the debt's growth in story points to the committee",
+        "B": "Report the debt's growth in story points to the business",
         "C": "Ask the CTO to resubmit with a fuller effort and cost estimate",
         "D": "Propose clearing the debt in engineering's spare sprint capacity"
       },
@@ -3788,28 +3788,28 @@
       "principle_id": "root-cause-over-symptom",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "An electronics repair chain's technicians copy each customer's phone to a store PC before repair in case it is wiped; copies from 2021 remain. What should the risk practitioner recommend as BEST?",
+      "question": "An electronics repair chain copies each customer's phone to a store PC before repair in case it is wiped; copies from 2021 remain. Which deletion point should the risk practitioner recommend as BEST?",
       "options": {
-        "A": "Have IT encrypt the phone copies kept on each store PC",
-        "B": "Have IT, as the PCs' owner, decide how long copies stay",
-        "C": "Have the data owner set when each phone copy is deleted",
-        "D": "Have technicians stop copying phones before repairs"
+        "A": "Seven years, the period the chain keeps its invoices",
+        "B": "Whenever a store PC's disk nears its capacity",
+        "C": "Once the repaired phone is handed back with its data restored",
+        "D": "When the customer asks the chain to delete their phone copy"
       },
       "correct": "C",
-      "key_concept": "Data kept for a short task should be deleted when the task ends; the data owner sets that retention point, and IT carries it out.",
+      "key_concept": "Data copied for a short task is deleted when the task ends; retention follows purpose, not storage space, other records' periods or customer requests.",
       "pre_read": "Work out why the copies exist before weighing the options.",
-      "correct_explanation": "The copies exist only to protect a phone during its repair, yet copies from 2021 remain, so customers' personal data is kept years past its purpose. The data owner setting when each copy is deleted, such as when the customer collects the phone, stops that build-up. Encryption is the runner-up: it protects the copies from being read, but years of customers' data would still sit on store PCs with no need.",
+      "correct_explanation": "The copies exist only to protect customers' data if a repair wipes the phone, so their purpose ends once the phone is handed back with the data restored. Deleting then, at a point the data owner approves, stops personal data piling up. Deletion on request is the runner-up: it honors a customer's wish, but copies nobody asks about, like those from 2021, would stay for good.",
       "wrong_explanations": {
-        "A": "Encryption makes stolen copies harder to read, but it keeps each copy; customers' data still builds up on store PCs long after the repairs end.",
-        "B": "IT looks after the PCs as custodian; how long customer data is kept is a business decision for the data owner, made with legal advice.",
-        "D": "The copies protect customers if a repair wipes their phones; ending them removes a needed safeguard when the problem is how long copies are kept."
+        "A": "Invoices are kept for legal and tax reasons; phone copies serve only the repair, so tying them to another record's period keeps personal data for years without need.",
+        "B": "Disk space measures storage, not need; copies would stay as long as space allows, so a roomy PC would keep customers' data for years.",
+        "D": "A deletion request must be honored, but retention should end when the purpose does; copies nobody asks about, like those from 2021, would stay for good."
       },
       "tips": [
-        "Eliminate: B gives a retention decision to IT, which is custodian, not data owner, and D drops copies the repairs need when the problem is how long they are kept.",
-        "Final two: C beats A because encryption protects copies that should no longer exist; a deletion point removes customers' data once its repair purpose ends.",
-        "Exam cue: when data is kept long after its purpose ends, the lifecycle answer sets retention through the data owner, not more protection for the pile."
+        "Eliminate: A borrows the invoice period, set for other records and reasons, and B lets disk space decide how long personal data is kept.",
+        "Final two: C beats D because a copy's purpose ends when the phone goes back with its data; waiting for requests keeps copies nobody asks about.",
+        "Exam cue: tie retention to the purpose the data was collected for; when the purpose ends, so does the reason to keep it."
       ],
-      "framework_ref": "NIST SP 800-53 Rev. 5 SI-12 (Information Management and Retention); ISACA Glossary (data owner); ISACA Glossary (data custodian)",
+      "framework_ref": "NIST SP 800-53 Rev. 5 SI-12 (Information Management and Retention); ISACA Glossary (data owner)",
       "related_concepts": [
         "Data retention",
         "Data owner and custodian",
@@ -3827,7 +3827,7 @@
       "bloom_level": "Application",
       "question": "A satellite operator's ground station, being built for a maritime customer who has since canceled, is 70% complete; its sponsor wants to finish it because $9,000,000 is spent. What is the risk practitioner's BEST action?",
       "options": {
-        "A": "Reassess the delivery risks in the project's risk log",
+        "A": "Analyze the delivery risks in the project's risk log",
         "B": "Back the sponsor's plan to complete the ground station",
         "C": "Stop the project's spending until a new customer signs",
         "D": "Bring the project's new value and risk to the portfolio board"
@@ -3835,7 +3835,7 @@
       "correct": "D",
       "key_concept": "Continuing a project rests on the value and risk of the remaining spend; a project whose value has gone returns to the portfolio board.",
       "pre_read": "Note what has changed about the project before reading the options.",
-      "correct_explanation": "The customer the station was built for has gone, so the value that justified the project has changed, and continuing or stopping it is a portfolio decision. The practitioner brings the changed value and risk to the portfolio board so it decides on the money still to be spent. Reassessing delivery risks is the runner-up: it is sound analysis, but delivery is not what changed, and the project log keeps the decision inside the project.",
+      "correct_explanation": "The customer the station was built for has gone, so the value that justified the project has changed, and continuing or stopping it is a portfolio decision. The practitioner brings the changed value and risk to the portfolio board so it decides on the money still to be spent. Analyzing delivery risks is the runner-up: it is sound analysis, but delivery is not what changed, and the project log keeps the decision inside the project.",
       "wrong_explanations": {
         "A": "Delivery risks cover building the station on time and budget; what changed is its value, and the project log does not take that to the decision makers.",
         "B": "Money already spent is gone whichever way the decision goes; continuing should rest on the value and risk of the spend still to come.",
