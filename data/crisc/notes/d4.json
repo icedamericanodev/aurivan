@@ -1078,7 +1078,7 @@
           "definition": "Backups are protected copies of data and systems kept so they can be restored after loss, corruption or attack, including ransomware.",
           "why_it_matters": "Backups are often the last control against ransomware and destructive attacks. If attackers can reach or encrypt them, or restores fail, the organization faces long outages or pressure to pay.",
           "how_it_works": [
-            "A common rule keeps three copies on two kinds of media, one offsite or offline, with decryption keys kept apart from the main site but reachable.",
+            "A common rule of thumb keeps at least three copies on two kinds of media, one offsite or offline; keep decryption keys apart from the main site but reachable.",
             "Immutable or offline copies resist an attacker with administrator access; retention should outlast how long intruders may stay unnoticed.",
             "Backup frequency is set by the RPO; restore speed must support the RTO.",
             "In ransomware recovery, contain the attack first, then verify backups are clean before restoring.",
@@ -1429,7 +1429,7 @@
           "definition": "Zero Trust is a security approach that grants no implicit trust based on network location; each access request is checked using identity, device state and policy.",
           "why_it_matters": "Remote work, cloud and partners have dissolved the network edge. Zero Trust limits how far a stolen account or infected device can reach, lowering the impact of the most common attack paths.",
           "how_it_works": [
-            "NIST SP 800-207 tenets include that network location alone grants no trust and access to each resource is granted per session, so one stolen login does not open others.",
+            "NIST SP 800-207 tenets include that network location alone grants no trust and access to each resource is granted per session, so one stolen login cannot roam to other systems.",
             "Decisions use identity, device health, behavior and data sensitivity, and are re-checked over time.",
             "Least privilege and micro-segmentation keep each user or workload to what it needs.",
             "Monitoring of assets and access feeds back into policy decisions.",

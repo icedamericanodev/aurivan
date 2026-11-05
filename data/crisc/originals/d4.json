@@ -3613,7 +3613,7 @@
       "correct": "A",
       "key_concept": "Zero Trust removes trust based on network location, so its largest effect is on lateral movement from a compromised account or device.",
       "pre_read": "Match each scenario to the kind of control that would change its likelihood or impact.",
-      "correct_explanation": "Zero Trust grants no trust for network location and checks the user and device for each session and resource, so a stolen login no longer opens the systems beyond the first one; NIST SP 800-207 says this stops compromised accounts moving laterally. A driver misusing permitted addresses is the runner-up: the checks confirm a valid driver on a valid device, so access the job grants is still allowed.",
+      "correct_explanation": "Zero Trust grants no trust for network location and checks the user and device in each session, so an intruder with one stolen login can no longer move freely from system to system; NIST SP 800-207 says this stops compromised accounts moving laterally. A driver misusing permitted addresses is the runner-up: the checks confirm a valid driver on a valid device, so access the job grants is still allowed.",
       "wrong_explanations": {
         "B": "Per-session checks confirm a valid driver on a valid device; misuse of addresses the job allows passes them, so this rating moves little.",
         "C": "Zero Trust governs who may connect, not whether the cloud service runs; its policy service can even add a dependency for availability.",
@@ -3621,7 +3621,7 @@
       },
       "tips": [
         "Eliminate: C is an availability event that access checks cannot prevent, and D is an error by authorized staff that input controls, not access decisions, address.",
-        "Final two: A beats B because a valid driver on a valid device passes every check, while a stolen login can no longer move from system to system.",
+        "Final two: A beats B because a valid driver on a valid device passes every check, while a stolen login can no longer move freely from system to system.",
         "Exam cue: Zero Trust cuts the reach of a compromised account or device; it does little against outages, honest errors or misuse within granted access."
       ],
       "framework_ref": "NIST SP 800-207 Section 2.1 (Tenets of Zero Trust: network location alone does not imply trust, and access to each enterprise resource is granted per session); NIST SP 800-207 Section 5.3 (Stolen Credentials/Insider Threat: Zero Trust stops compromised accounts or assets from moving laterally, but a valid account can still reach the resources it is granted)",
@@ -3630,7 +3630,7 @@
         "Lateral movement",
         "Insider threat"
       ],
-      "_provenance": "Authored from concept: notes 4B1.2 (Zero Trust Architecture: network location grants no trust and access is granted per session, so one stolen login does not open other systems). Round 10, 5 Nov 2026: original short stem (a courier firm's depot applications behind tested Zero Trust access, and which register scenario's rating falls most) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Neighbours checked: crisc_d4_040 (rating a partial Zero Trust rollout), crisc_d4_062 (ranking processes for the first Zero Trust move), crisc_d4_073 (two firewalls with copied rules), crisc_d4_053 (removing layers around customer data), crisc_d4_087 (an AI assistant's edit access); CISA d5_050 (VPN users reaching every application), d5_336 (the ZTNA feature that limits a compromised laptop), d5_306 (unauthenticated calls to a network controller) and d5_046 (personal devices admitted on credentials alone); CC cc_d4_012 (a per-session access decision for a teacher) and cc_d4_089 (what a posture check examines). Two earlier angles for this slot (implicit trust on depot networks, device state for drivers' phones) were dropped as too close to cc_d4_012 and CISA d5_046. Judged distinct: the item asks which register scenario a working Zero Trust control changes most, with insider misuse inside granted access as the runner-up.",
+      "_provenance": "Authored from concept: notes 4B1.2 (Zero Trust Architecture: network location grants no trust and access is granted per session, so one stolen login does not open other systems). Round 10, 5 Nov 2026: original short stem (a courier firm's depot applications behind tested Zero Trust access, and which register scenario's rating falls most) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Neighbours checked: crisc_d4_040 (rating a partial Zero Trust rollout), crisc_d4_062 (ranking processes for the first Zero Trust move), crisc_d4_073 (two firewalls with copied rules), crisc_d4_053 (removing layers around customer data), crisc_d4_087 (an AI assistant's edit access); CISA d5_050 (VPN users reaching every application), d5_336 (the ZTNA feature that limits a compromised laptop), d5_306 (unauthenticated calls to a network controller) and d5_046 (personal devices admitted on credentials alone); CC cc_d4_012 (a per-session access decision for a teacher) and cc_d4_089 (what a posture check examines). Two earlier angles for this slot (implicit trust on depot networks, device state for drivers' phones) were dropped as too close to cc_d4_012 and CISA d5_046. Judged distinct: the item asks which register scenario a working Zero Trust control changes most, with insider misuse inside granted access as the runner-up. Review fixes 5 Nov 2026 (round 10 standards audit, concept review and blind test): correct explanation, Final two tip and notes 4B1.2 no longer overstate Zero Trust: a stolen login can no longer roam freely, but SP 800-207 Section 5.3 says a valid account still reaches what it is granted.",
       "style_version": 2
     },
     {
@@ -3640,11 +3640,11 @@
       "principle_id": "root-cause-over-symptom",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "At a print works, staff may use AI image tools for non-confidential work, but a survey shows most treat unreleased customer artwork as non-confidential. What should the risk practitioner recommend as BEST?",
+      "question": "Staff at a print works may use AI image tools for non-confidential work; a survey shows most treat unreleased customer artwork, which policy marks confidential, as non-confidential. What should the risk practitioner recommend as BEST?",
       "options": {
         "A": "The policy owner's reminder that AI is for non-confidential work",
         "B": "AI-use training with examples of confidential customer files",
-        "C": "The data owner's approval before customer files reach AI tools",
+        "C": "The data owner's sign-off before confidential customer files reach AI tools",
         "D": "A block on AI image tools across the print works network"
       },
       "correct": "B",
@@ -3653,11 +3653,11 @@
       "correct_explanation": "Staff already know the rule; they misjudge what it covers, treating unreleased artwork as safe to upload. Training with concrete examples of confidential customer files, such as unreleased designs, corrects that belief where the decision is made. A policy reminder is the runner-up: it repeats the rule, but staff who think unreleased artwork is non-confidential will read the reminder the same way and keep uploading it.",
       "wrong_explanations": {
         "A": "Repeating the rule leaves its meaning unchanged; staff who think unreleased artwork is non-confidential will keep uploading it while following the reminder.",
-        "C": "An approval for every file adds a bottleneck to allowed work and still leaves staff misjudging which files count as confidential.",
+        "C": "Sign-off catches only files staff already see as confidential; those who think unreleased artwork is not will never ask for it.",
         "D": "A ban ends an approved use and tends to push staff to personal devices, without teaching what counts as confidential."
       },
       "tips": [
-        "Eliminate: C puts an approval on every file instead of fixing staff's judgment, and D bans an approved use, which tends to drive it onto personal devices.",
+        "Eliminate: C adds a sign-off that staff who misjudge artwork will never seek, and D bans an approved use, which tends to drive it onto personal devices.",
         "Final two: B beats A because staff already know the rule; a reminder repeats words they misread, while examples change what they think the rule covers.",
         "Exam cue: when staff break a rule they know, find what they misunderstand; awareness built on concrete examples beats repeating the policy."
       ],
@@ -3667,7 +3667,7 @@
         "Data classification in practice",
         "Generative AI use"
       ],
-      "_provenance": "Authored from concept: notes 4B2.2 (Measuring Awareness, Phishing Simulations and Shadow AI: awareness names concrete examples of restricted data, because staff apply a rule by their own idea of confidential). Round 10, 5 Nov 2026: original scenario (a print works whose staff may use AI image tools for non-confidential work but treat unreleased customer artwork as non-confidential) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Neighbours checked: crisc_d4_057 (a block on AI chat sites pushing use to personal phones), crisc_d4_018 (a measure for AI-use training), crisc_d4_017 (role-based onboarding for seasonal workers), crisc_d4_042 (an error blamed on one clerk), crisc_d4_090 (choosing awareness topics), crisc_d4_093 (when data is classified); CISA d4_315 (measuring shadow IT from proxy logs), d3_074 (rules for an AI coding assistant) and d5_104 (discipline for clicking simulated phishing); CC cc_d2_004 (a free AI email extension) and cc_d2_015 (naming staff who click simulations). An earlier phishing-simulation angle for this slot was dropped as a mirror of CISA d5_104 and CC cc_d2_015. Judged distinct: staff know an approved AI-use rule but misjudge which data it covers, and the final two is concrete examples against a policy reminder.",
+      "_provenance": "Authored from concept: notes 4B2.2 (Measuring Awareness, Phishing Simulations and Shadow AI: awareness names concrete examples of restricted data, because staff apply a rule by their own idea of confidential). Round 10, 5 Nov 2026: original scenario (a print works whose staff may use AI image tools for non-confidential work but treat unreleased customer artwork as non-confidential) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Neighbours checked: crisc_d4_057 (a block on AI chat sites pushing use to personal phones), crisc_d4_018 (a measure for AI-use training), crisc_d4_017 (role-based onboarding for seasonal workers), crisc_d4_042 (an error blamed on one clerk), crisc_d4_090 (choosing awareness topics), crisc_d4_093 (when data is classified); CISA d4_315 (measuring shadow IT from proxy logs), d3_074 (rules for an AI coding assistant) and d5_104 (discipline for clicking simulated phishing); CC cc_d2_004 (a free AI email extension) and cc_d2_015 (naming staff who click simulations). An earlier phishing-simulation angle for this slot was dropped as a mirror of CISA d5_104 and CC cc_d2_015. Judged distinct: staff know an approved AI-use rule but misjudge which data it covers, and the final two is concrete examples against a policy reminder. Review fixes 5 Nov 2026 (round 10 standards audit, concept review and blind test): stem now states that policy marks unreleased artwork confidential (the deciding fact); option C now gates only files staff see as confidential (keeping 'customer' so the stem word is not key-only), so wrong C and the Eliminate tip hold.",
       "style_version": 2
     },
     {

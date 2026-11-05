@@ -5677,9 +5677,9 @@
       "principle_id": "evidence-before-credit",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "A logistics park's gate vendor sent a clean, full-year SOC 2 Type 2 report on the service and host; the park runs the user controls it lists. What should the risk analyst recommend as BEST?",
+      "question": "A logistics park's gate vendor sent a clean, full-year SOC 2 Type 2 report covering its service and hosting provider; the park runs the listed user controls. What should the risk analyst recommend as BEST?",
       "options": {
-        "A": "Have vendor control owners sign off the report's controls",
+        "A": "Send the vendor this year's security questionnaire beside the report",
         "B": "Have the gate system's business owner fund an on-site audit",
         "C": "Repeat the full onboarding due diligence on the vendor",
         "D": "Rely on the report in this year's review of the vendor"
@@ -5689,12 +5689,12 @@
       "pre_read": "Check the report's scope, period, subcontractors and user controls before deciding what more is needed.",
       "correct_explanation": "The report is independent, tested evidence over a full year, it covers both the service and the host behind it, it shows no exceptions, and the park runs the user controls it depends on. Nothing is left open, so relying on it is sound ongoing monitoring. An on-site audit is the runner-up: it sounds thorough, but it repeats a year of independent testing at the business's cost with no gap to target.",
       "wrong_explanations": {
-        "A": "A sign-off by the vendor's own staff is self-reported; it is weaker evidence than the independent, tested report already in hand.",
+        "A": "A self-completed questionnaire is weaker evidence than the independent, tested report already in hand, and it asks again about controls the report has tested.",
         "B": "A site audit repeats a full year of independent testing with no gap or exception to target, so it adds cost without adding assurance.",
         "C": "Onboarding due diligence suits a new vendor; for a live one, current assurance reports are the ongoing check, and this one leaves nothing open."
       },
       "tips": [
-        "Eliminate: A swaps tested evidence for the vendor's own word, and C repeats onboarding checks on a vendor a current report already covers.",
+        "Eliminate: A adds the vendor's own answers to tested evidence already in hand, and C repeats onboarding checks on a vendor a current report already covers.",
         "Final two: D beats B because the report covers the service, host and year with no exceptions; a site audit would repeat that testing with no gap to target.",
         "Exam cue: an assurance report counts for what it covers; when scope, period, subcontractors and user controls all check out, rely on it."
       ],
@@ -5704,7 +5704,7 @@
         "Complementary user entity controls",
         "Fourth party"
       ],
-      "_provenance": "Authored from concept: notes 3A3.2 (Ongoing Vendor Monitoring and Assurance Reports: when a report's scope, period and subcontractors fit and no exceptions or user controls are open, rely on it rather than repeat its tests). Round 10, 5 Nov 2026: original scenario (a logistics park's gate vendor with a clean, full-year SOC 2 Type 2 report on the service and its host), written for KaiSip in our own words; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D3 round 10 (crisc_d3_153 to 160). Angle: the counter-example to crisc_d3_006 (scope gap) and crisc_d3_026 (user controls to check): here nothing is open, so the key opens 'Rely' (keyed 0 of 6 in D3 before this round) and an on-site audit is the runner-up. Owner pattern: the key names no owner; two distractors name one. Neighbours checked (stems and options): crisc_d3_006, crisc_d3_025 (right to audit refused), crisc_d3_026, crisc_d3_054 (contract terms before signing), crisc_d3_091 (due diligence behind schedule), crisc_d3_118, crisc_d3_135 (provider sold), crisc_d1_105, CISA d4_109 (owners confirming ratings in writing, reworded away) and d5_198, cc_d4_126. None keys relying on a report whose scope, host, period and user controls all check out. Keep apart in practice sets from crisc_d3_006 and crisc_d3_026.",
+      "_provenance": "Authored from concept: notes 3A3.2 (Ongoing Vendor Monitoring and Assurance Reports: when a report's scope, period and subcontractors fit and no exceptions or user controls are open, rely on it rather than repeat its tests). Round 10, 5 Nov 2026: original scenario (a logistics park's gate vendor with a clean, full-year SOC 2 Type 2 report on the service and its host), written for KaiSip in our own words; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D3 round 10 (crisc_d3_153 to 160). Angle: the counter-example to crisc_d3_006 (scope gap) and crisc_d3_026 (user controls to check): here nothing is open, so the key opens 'Rely' (keyed 0 of 6 in D3 before this round) and an on-site audit is the runner-up. Owner pattern: the key names no owner; after the round 10 review one distractor names one (B, the business owner). Neighbours checked (stems and options): crisc_d3_006, crisc_d3_025 (right to audit refused), crisc_d3_026, crisc_d3_054 (contract terms before signing), crisc_d3_091 (due diligence behind schedule), crisc_d3_118, crisc_d3_135 (provider sold), crisc_d1_105, CISA d4_109 (owners confirming ratings in writing, reworded away) and d5_198, cc_d4_126. None keys relying on a report whose scope, host, period and user controls all check out. Keep apart in practice sets from crisc_d3_006 and crisc_d3_026. Review fixes 5 Nov 2026 (round 10 standards audit, concept review and blind test): stem clarifies 'service and hosting provider'; option A replaced (vendor control owners signing off was not a choice a candidate would make) by the yearly security questionnaire (worded 'beside the report' so the stem word 'report' is not key-only), with wrong A and the Eliminate tip to match.",
       "style_version": 2
     },
     {
@@ -5760,7 +5760,7 @@
       },
       "correct": "C",
       "key_concept": "An AI input check catches the inputs a model is known to misjudge and sends them to a person before a wrong output is used.",
-      "pre_read": "Find exactly when the model fails, then look for the control aimed at those cases.",
+      "pre_read": "Read what the tests found before weighing the controls.",
       "correct_explanation": "The model fails on a known kind of input, blurred photos, so the most effective control checks each photo's quality before the grade is trusted and sends blurred ones to an inspector. That catches the cases where faulty welds pass, at the point of use. A random 2% inspector sample is the runner-up: it adds human review, but it reaches few of the blurred photos, so most hidden faults still pass.",
       "wrong_explanations": {
         "A": "A random sample picks 2% of welds without regard to photo quality, so most blurred photos, where the faults hide, never reach a person.",
@@ -5778,7 +5778,7 @@
         "Human review",
         "AI model limits"
       ],
-      "_provenance": "Authored from concept: notes 3B2.1 (Selecting Controls by Root Cause and Cost-Benefit: for AI systems, scale input checks to impact and route inputs the model cannot judge, such as blurred photos, to a person). Round 10, 5 Nov 2026: original scenario (a car maker's AI model that passes faulty welds when spatter or poor light blurs the photo), written for KaiSip in our own words; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D3 round 10 (crisc_d3_153 to 160). AI item. Angle: an input check at the point of use, where crisc_d3_098 keyed an output check and crisc_d3_062 the basis for human review. Owner pattern: no option names an owner. Neighbours checked (stems and options): crisc_d3_009 (retyped readings), crisc_d3_044 (review KCI), crisc_d3_062, crisc_d3_098, crisc_d3_142 (ending an interim manual review), crisc_d3_149, crisc_d4_050, aaia_d2_032 (lens-defect model after a library patch), aaia_d2_053, aaia_d2_111 (camera-trap model and rainy-season footage), aaia_d2_117 (compressed model not retested), CISA d3_070 and d2_159. None keys an input-quality check that routes inputs the model cannot judge to a person.",
+      "_provenance": "Authored from concept: notes 3B2.1 (Selecting Controls by Root Cause and Cost-Benefit: for AI systems, scale input checks to impact and route inputs the model cannot judge, such as blurred photos, to a person). Round 10, 5 Nov 2026: original scenario (a car maker's AI model that passes faulty welds when spatter or poor light blurs the photo), written for KaiSip in our own words; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D3 round 10 (crisc_d3_153 to 160). AI item. Angle: an input check at the point of use, where crisc_d3_098 keyed an output check and crisc_d3_062 the basis for human review. Owner pattern: no option names an owner. Neighbours checked (stems and options): crisc_d3_009 (retyped readings), crisc_d3_044 (review KCI), crisc_d3_062, crisc_d3_098, crisc_d3_142 (ending an interim manual review), crisc_d3_149, crisc_d4_050, aaia_d2_032 (lens-defect model after a library patch), aaia_d2_053, aaia_d2_111 (camera-trap model and rainy-season footage), aaia_d2_117 (compressed model not retested), CISA d3_070 and d2_159. None keys an input-quality check that routes inputs the model cannot judge to a person. Review fixes 5 Nov 2026 (round 10 standards audit, concept review and blind test): pre_read no longer points at the control aimed at the failing cases (the key).",
       "style_version": 2
     },
     {
@@ -5788,12 +5788,12 @@
       "principle_id": "answer-from-the-stem",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "A rail operator's named-account plan for signal engineers is done: the risk team's operating test passed, and the risk owner signed the re-rated risk, now at target. What is the risk analyst's BEST action?",
+      "question": "A rail operator's action plan for signal engineers' named accounts is done: the risk team's operating test passed, and the risk owner signed the re-rated risk at target. What is the risk analyst's BEST action?",
       "options": {
         "A": "Wait for internal audit's review before closing the plan",
         "B": "Ask the control owner to repeat the operating test",
         "C": "Leave the plan open until the risk owner meets next quarter",
-        "D": "Close the completed action plan in the risk register"
+        "D": "Close the plan, citing the risk owner's sign-off"
       },
       "correct": "D",
       "key_concept": "An action plan closes once evidence shows the control works and the risk owner signs the re-rated risk at its target.",
@@ -5815,7 +5815,7 @@
         "Plan closure",
         "Operating effectiveness"
       ],
-      "_provenance": "Authored from concept: notes 3C1.2 (Validating Execution and Tracking to Closure: close the plan once evidence and the owner's sign-off show the risk at its target). Round 10, 5 Nov 2026: original scenario (a rail operator's plan to give signal engineers named accounts, tested and signed off at target), written for KaiSip in our own words; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D3 round 10 (crisc_d3_153 to 160). Angle: the closure counter-example; crisc_d3_013, crisc_d3_069, crisc_d3_130 and crisc_d3_142 keep plans open, but here every condition is met, so the key opens 'Close' (keyed 0 of 13 in D3 before this round) and waiting for internal audit is the runner-up. Owner pattern: the key names no owner; two distractors name one. Neighbours checked (stems and options): crisc_d3_013, crisc_d3_068, crisc_d3_069, crisc_d3_070, crisc_d3_123, crisc_d3_129 (a 'Close the plan as scheduled' distractor), crisc_d3_130, crisc_d3_142, crisc_d1_018 (hold for the owner's quarterly review, reworded away), crisc_d2_038 (close retired-app entries), crisc_d4_005, crisc_d3_029 and crisc_d3_057 (shared accounts as findings), crisc_d2_110 (offline backups credited after restore tests: a rating item written in parallel this round; this item was moved off backups to keep the two apart), cc_d1_123, CISA d4_220 and d1_194. None keys closing a validated, signed-off plan. Keep apart in practice sets from crisc_d3_069 and crisc_d3_129.",
+      "_provenance": "Authored from concept: notes 3C1.2 (Validating Execution and Tracking to Closure: close the plan once evidence and the owner's sign-off show the risk at its target). Round 10, 5 Nov 2026: original scenario (a rail operator's plan to give signal engineers named accounts, tested and signed off at target), written for KaiSip in our own words; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D3 round 10 (crisc_d3_153 to 160). Angle: the closure counter-example; crisc_d3_013, crisc_d3_069, crisc_d3_130 and crisc_d3_142 keep plans open, but here every condition is met, so the key opens 'Close' (keyed 0 of 13 in D3 before this round) and waiting for internal audit is the runner-up. Owner pattern (changed in the round 10 review): the key cites the risk owner's sign-off, and two distractors name an owner too (B, the control owner; C, the risk owner), so three options name an owner and the key is among them. Neighbours checked (stems and options): crisc_d3_013, crisc_d3_068, crisc_d3_069, crisc_d3_070, crisc_d3_123, crisc_d3_129 (a 'Close the plan as scheduled' distractor), crisc_d3_130, crisc_d3_142, crisc_d1_018 (hold for the owner's quarterly review, reworded away), crisc_d2_038 (close retired-app entries), crisc_d4_005, crisc_d3_029 and crisc_d3_057 (shared accounts as findings), crisc_d2_110 (offline backups credited after restore tests: a rating item written in parallel this round; this item was moved off backups to keep the two apart), cc_d1_123, CISA d4_220 and d1_194. None keys closing a validated, signed-off plan. Keep apart in practice sets from crisc_d3_069 and crisc_d3_129. Review fixes 5 Nov 2026 (round 10 standards audit, concept review and blind test): stem reworded ('named-account plan' read as jargon); key D no longer echoes 'done' with 'completed' and now cites the risk owner's sign-off, which puts an owner in a key against the round's owner reverse cue; 'in the register' dropped so the lens word 'register' is not key-only.",
       "style_version": 2
     },
     {
@@ -5887,9 +5887,9 @@
       "related_concepts": [
         "Key risk indicator",
         "AI fairness",
-        "Leading indicator"
+        "Outcome monitoring"
       ],
-      "_provenance": "Authored from concept: notes 3C3.3 (Thresholds and AI Model Indicators: for AI systems, track drift, error rates, outcome gaps between groups, override rates and complaints). Round 10, 5 Nov 2026: original scenario (a recruitment agency's AI CV-screening tool and unfair rejection), written for KaiSip in our own words; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D3 round 10 (crisc_d3_153 to 160). AI item. Angle: a short 'Which of the following' KRI stem whose runner-up is the vendor's overall accuracy figure, so the option-type skeleton differs from crisc_d3_150 (leading, control indicator, lagging, training) and crisc_d3_015. Owner pattern: no option names an owner. Neighbours checked (stems and options): crisc_d3_015, crisc_d3_017, crisc_d3_042, crisc_d3_044, crisc_d3_150, crisc_d3_062 (vendor accuracy as a basis for human review, reworded away), crisc_d1_105, crisc_d4_035, crisc_d4_061, crisc_d1_045 and crisc_d2_004 (staffing and recruitment AI), cc_d2_090 (drift KRI), cc_d1_061 (age gap in AI screening: legal concern), CISA d2_225 (who runs the age check), aaia_d1_077. None asks for the KRI of unfair AI rejection.",
+      "_provenance": "Authored from concept: notes 3C3.3 (Thresholds and AI Model Indicators: for AI systems, track drift, error rates, outcome gaps between groups, override rates and complaints). Round 10, 5 Nov 2026: original scenario (a recruitment agency's AI CV-screening tool and unfair rejection), written for KaiSip in our own words; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D3 round 10 (crisc_d3_153 to 160). AI item. Angle: a short 'Which of the following' KRI stem whose runner-up is the vendor's overall accuracy figure, so the option-type skeleton differs from crisc_d3_150 (leading, control indicator, lagging, training) and crisc_d3_015. Owner pattern: no option names an owner. Neighbours checked (stems and options): crisc_d3_015, crisc_d3_017, crisc_d3_042, crisc_d3_044, crisc_d3_150, crisc_d3_062 (vendor accuracy as a basis for human review, reworded away), crisc_d1_105, crisc_d4_035, crisc_d4_061, crisc_d1_045 and crisc_d2_004 (staffing and recruitment AI), cc_d2_090 (drift KRI), cc_d1_061 (age gap in AI screening: legal concern), CISA d2_225 (who runs the age check), aaia_d1_077. None asks for the KRI of unfair AI rejection. Review fixes 5 Nov 2026 (round 10 standards audit, concept review and blind test): related concept 'Leading indicator' replaced by 'Outcome monitoring' (the pass-rate gap measures the unfair rejection as it happens).",
       "style_version": 2
     },
     {
@@ -5899,25 +5899,25 @@
       "principle_id": "report-for-the-decision",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "A ferry operator's executive dashboard shows its booking-fraud KRI as a 12-month rolling average, green all year, though two single months passed the red threshold. Which change should the risk analyst recommend as MOST important?",
+      "question": "A mining company's executive dashboard shows its payment-fraud KRI as a 12-month rolling average, green all year, though two single months passed the red threshold. Which change should the risk analyst recommend as MOST important?",
       "options": {
-        "A": "Shorten the rolling average to the most recent quarter",
+        "A": "Have the KRI owner shorten the average to the latest quarter",
         "B": "Let each KRI's owner choose its averaging period",
         "C": "Plot each month's value against the KRI's thresholds",
         "D": "Replace the KRI with yearly fraud losses against a threshold"
       },
       "correct": "C",
       "key_concept": "Show each period's KRI value against the thresholds set for it; a rolling average can hide single breaches from decision-makers.",
-      "pre_read": "Check whether the figure shown is the same measure the threshold was set for.",
-      "correct_explanation": "The thresholds apply to each month's value, and a 12-month average dilutes a single bad month until it vanishes, so the executives never saw two red months. Plotting each month against the thresholds shows a breach when it happens, and the average can stay as a trend line. A three-month average is the runner-up: it reacts faster, but it still blends a red month with two calmer ones.",
+      "pre_read": "Note what the executives saw and what they did not see.",
+      "correct_explanation": "The thresholds apply to each month's value, and a 12-month average dilutes a single bad month until it vanishes, so the executives never saw two red months. Plotting each month against the thresholds shows a breach when it happens, and the average can stay as a trend line. The owner's quarterly average is the runner-up: it reacts faster, but it still blends a red month with two calmer ones.",
       "wrong_explanations": {
-        "A": "A shorter average reacts faster but still blends a red month with two others, so a single breach can still show amber or green.",
+        "A": "A shorter average, whoever sets it, reacts faster but still blends a red month with two others, so a single breach can still show amber or green.",
         "B": "Letting each owner pick a smoothing period gives inconsistent views and can still hide breaches; the dashboard needs values shown against the thresholds.",
         "D": "A yearly loss total arrives after the fraud has happened; checking it against a limit swaps an early warning for a lagging count of losses."
       },
       "tips": [
         "Eliminate: B lets each owner pick a smoothing period, which still blends breaches into calmer months, and D swaps an early warning for a yearly loss count.",
-        "Final two: C beats A because any average blends a red month with calmer ones; each month's value shows a breach when it happens.",
+        "Final two: C beats A because any average, however short or whoever sets it, blends a red month with calmer ones; each month's value shows a breach when it happens.",
         "Exam cue: compare a KRI with the threshold on the values it was set for; a dashboard that smooths data can hide the breaches it exists to show."
       ],
       "framework_ref": "NIST SP 800-55v1 Section 3.1.2 (Measurement Reporting: context such as the risk indicated, fit with risk appetite and the decision needed); NIST SP 800-55v1 Appendix C.3 (Time Series Analysis: shows the level, trend, seasonality or noise within a series of data points)",
@@ -5926,7 +5926,7 @@
         "KRI threshold",
         "Trend"
       ],
-      "_provenance": "Authored from concept: notes 3C5.1 (Heat Maps, Scorecards and Dashboards: show each period's KRI value against its thresholds; a rolling average smooths single breaches away). Round 10, 5 Nov 2026: original scenario (a ferry operator's booking-fraud KRI shown as a 12-month rolling average), written for KaiSip in our own words; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D3 round 10 (crisc_d3_153 to 160). Angle: no item covered smoothing that hides breaches; runner-up is a shorter average. Owner pattern: the key names no owner; one distractor names one. Neighbours checked (stems and options): crisc_d3_047 (trend arrows), crisc_d3_080 (bare numbers: thresholds and trend), crisc_d3_082, crisc_d3_109 (no agreed action for red), crisc_d3_112 (figures of different ages), crisc_d3_141 (default color bands), crisc_d2_070, crisc_d1_123, CISA d2_190. None keys showing per-period values where an average hid breaches.",
+      "_provenance": "Authored from concept: notes 3C5.1 (Heat Maps, Scorecards and Dashboards: show each period's KRI value against its thresholds; a rolling average smooths single breaches away). Round 10, 5 Nov 2026: original scenario (a ferry operator's booking-fraud KRI shown as a 12-month rolling average; moved to a mining company's payment-fraud KRI in the round 10 review), written for KaiSip in our own words; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D3 round 10 (crisc_d3_153 to 160). Angle: no item covered smoothing that hides breaches; runner-up is a shorter average. Owner pattern (changed in the round 10 review): the key names no owner; two distractors name one (the runner-up A, the KRI owner; B, each KRI's owner), so no lone owner decoy remains. Neighbours checked (stems and options): crisc_d3_047 (trend arrows), crisc_d3_080 (bare numbers: thresholds and trend), crisc_d3_082, crisc_d3_109 (no agreed action for red), crisc_d3_112 (figures of different ages), crisc_d3_141 (default color bands), crisc_d2_070, crisc_d1_123, CISA d2_190. None keys showing per-period values where an average hid breaches. Review fixes 5 Nov 2026 (round 10 standards audit, concept review and blind test): setting moved from a ferry operator to a mining company (crisc_d2_108 uses a shipping line), with a payment-fraud KRI; pre_read no longer states the key's logic; the runner-up A now names the KRI owner so the lone owner decoy is not a tell, with wrong A, the Final two tip and the correct explanation to match.",
       "style_version": 2
     }
   ]
