@@ -58,7 +58,7 @@ auditor,cybersecurity,governance,risk,controls,compliance,quiz,certification,stu
 ```
 Grow the judgment the exam rewards.
 
-KaiSip helps IT auditors, security and risk professionals prepare for their certification exam in short, calm sessions that fit around work. Every answer teaches the principle behind it, so you learn to choose the best answer, not just one that sounds right. We're starting with the CISA® exam, and more certifications will follow.
+KaiSip helps IT auditors, security and risk professionals prepare for the CISA® exam in short, calm sessions that fit around work. Every answer teaches the principle behind it, so you learn to choose the best answer, not just one that sounds right. Starting with CISA. More certifications later.
 
 PRACTICE THAT TEACHES
 • Original practice questions across all 5 CISA domains
@@ -75,7 +75,7 @@ SEE THE PATH
 
 GROW DEEP ROOTS
 • Questions to revisit come back before they fade
-• A mistake journal that names the slip behind each miss, and the drill that fixes it
+• A mistake journal where you tag the slip behind each miss, then get the drill for your most common one
 • Study notes for every topic, short lessons and key terms
 • Save questions and add your own notes
 • A question bank you can browse by domain and topic
@@ -98,7 +98,7 @@ A PLANT THAT GROWS WITH YOU
 
 MADE FOR REAL LIFE
 • Works offline, on the commute or between meetings
-• Home-screen widgets and gentle study reminders you set yourself
+• Gentle study reminders you set yourself
 • No account and no sign-up. No data collected. Your progress stays on your phone, and a backup file you save yourself moves it to a new one.
 • Report any question from where you see it. Fixes are listed in What's new.
 • Light and dark themes, and calmer motion when your phone asks for it
@@ -153,7 +153,7 @@ It carries "cybersecurity" (Play does not reliably match "cyber" to it) and the 
 
 ### Full description (4000): 2,829/4000
 
-Its own text for Play (22 Oct 2026). It differs from the App Store text in three places: the beta line "free to use during the beta" (the same words as the beta invitation; never "free app", "completely free" or "free forever", because paid plans may come), the owner's line "Starting with CISA. More certifications later." (no other certification is named), and the three drills a new learner sees first (Snare Spotter, Signpost, Call It First; the rest open after 50 answers, `todaysDrill.ts`). Apple lists the same three. Play indexes the full description for search, so these phrases already appear naturally: "CISA® exam", "IT auditors", "practice questions", "mock exams", "offline". Do not add keyword lists. Play's metadata policy rejects them.
+Its own text for Play (22 Oct 2026, revised 5 Nov 2026). It differs from the App Store text in three places: the beta line "free to use during the beta" (the same words as the beta invitation; never "free app", "completely free" or "free forever", because paid plans may come), home-screen widgets (Android only; the iPhone app has none), and the question-bank line (App Store only). Both descriptions carry the owner's line "Starting with CISA. More certifications later." and the same three drills (Snare Spotter, Signpost, Call It First; the rest open after 50 answers, `todaysDrill.ts`). Play indexes the full description for search, so these phrases already appear naturally: "CISA® exam", "IT auditors", "practice questions", "mock exams", "offline". Do not add keyword lists. Play's metadata policy rejects them.
 
 "No data collected" in MADE FOR REAL LIFE is true only because the Play build ships with over-the-air updates off (owner decision, 22 Oct 2026; PLAY_LAUNCH.md B1 Option A). If store builds ever turn updates back on, change that line to "No account, no ads, no analytics. Your progress stays on your phone." and redo the Data safety form below.
 
@@ -162,7 +162,7 @@ When the beta ends, change the beta line (the owner decides the wording then).
 ```
 Grow the judgment the exam rewards.
 
-KaiSip helps IT auditors, security and risk professionals prepare for their certification exam in short, calm sessions that fit around work. Every answer teaches the principle behind it, so you learn to choose the best answer, not just one that sounds right. We're starting with the CISA® exam, and more certifications will follow.
+KaiSip helps IT auditors, security and risk professionals prepare for the CISA® exam in short, calm sessions that fit around work. Every answer teaches the principle behind it, so you learn to choose the best answer, not just one that sounds right. Starting with CISA. More certifications later.
 
 KaiSip is free to use during the beta. No account, no ads.
 
@@ -181,7 +181,7 @@ SEE THE PATH
 
 GROW DEEP ROOTS
 • Questions to revisit come back before they fade
-• A mistake journal that names the slip behind each miss, and the drill that fixes it
+• A mistake journal where you tag the slip behind each miss, then get the drill for your most common one
 • Study notes for every topic, short lessons and key terms
 • Save questions and add your own notes
 
