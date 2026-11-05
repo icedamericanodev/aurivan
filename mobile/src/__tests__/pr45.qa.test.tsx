@@ -261,13 +261,13 @@ describe('J1 a new learner: onboarding, then an honest day 1', () => {
   it('the experienced learner gets Mock exams first on Practice from day 1; the others do not', () => {
     onboard('experienced', 20);
     mount(<Practice />);
-    let [mocks, more] = sectionOrder(['Mock exams', 'More ways to practice']);
+    let [mocks, more] = sectionOrder(['Timed like the real exam', 'Review and saved']);
     expect(mocks).toBeGreaterThan(-1);
     expect(mocks).toBeLessThan(more);
     unmount();
     onboard('some', 20);
     mount(<Practice />);
-    [mocks, more] = sectionOrder(['Mock exams', 'More ways to practice']);
+    [mocks, more] = sectionOrder(['Timed like the real exam', 'Review and saved']);
     expect(mocks).toBeGreaterThan(more);
   });
 
@@ -403,7 +403,7 @@ describe('J2 the Exam-focused path', () => {
     expect(allText()).toContain((lesson as { title: string }).title);
     unmount();
     mount(<Practice />);
-    const [mocks, more] = sectionOrder(['Mock exams', 'More ways to practice']);
+    const [mocks, more] = sectionOrder(['Timed like the real exam', 'Review and saved']);
     expect(mocks).toBeGreaterThan(more);
   });
 

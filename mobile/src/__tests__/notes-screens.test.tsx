@@ -474,17 +474,16 @@ describe('screens', () => {
 describe('Learn: the course and the reference (mobile 1.21)', () => {
   it('says what each is for, and opens the notes', () => {
     mount(<Learn />);
-    expect(allText()).toContain('Lessons start each topic. Study notes go deeper.'); // mobile 1.45 (PM story 3)
-    expect(allText()).toContain('Look it up');
+    expect(allText()).toContain('Lessons start each topic. Notes go deeper.'); // Grove Phase 4 (the kit's line)
     expect(allText()).toContain('Lessons');
     expect(allText()).toContain('Study notes');
     // A reference has no finish line: no "x of N read" meter on its row.
-    press('Study notes, Every topic, with traps and key terms');
+    press('Study notes, Every topic, with traps');
     expect(mockPush).toHaveBeenCalledWith('/notes');
     expect(allText()).not.toMatch(/\d+ of \d+ read/);
     // Never claims a lesson for every topic (one outline topic has none).
     expect(allText()).not.toMatch(/lesson for every topic/i);
-    expect(allText()).toContain('In exam order. Each ends with a quick check.');
+    expect(allText()).toContain('in exam order · each ends with a check');
     expect(allText()).toContain('Short lessons across every domain of the exam outline. IS means information systems.');
   });
 
@@ -505,9 +504,9 @@ describe('Learn: the course and the reference (mobile 1.21)', () => {
       useProgress.getState().setNoteRead('cisa', '4B1.2', true);
     });
     mount(<Learn />);
-    // Premium round 2: an index row, "1 read" at the end of its leader; the spoken label keeps the full words.
-    expect(allText()).toContain('Study notes 1 read');
-    expect(root().findAll((n) => n.props.accessibilityLabel === 'Study notes, 1 note read · every topic, with traps').length).toBeGreaterThan(0);
+    // Grove Phase 4: the tile's line counts them, in words; the spoken label says the same.
+    expect(allText()).toContain('Study notes 1 note read · with traps');
+    expect(root().findAll((n) => n.props.accessibilityLabel === 'Study notes, 1 note read, with traps').length).toBeGreaterThan(0);
   });
 
   it('searches the notes right on Learn, announces the count, and opens a hit', () => {
@@ -515,7 +514,7 @@ describe('Learn: the course and the reference (mobile 1.21)', () => {
     const announce = jest.spyOn(AccessibilityInfo, 'announceForAccessibility').mockImplementation(() => {});
     mount(<Learn />);
     const input = root().findAll((n) => n.props.accessibilityLabel === 'Search the study notes' && n.props.onChangeText)[0];
-    expect(input.props.placeholder).toBe('Search the notes, like RTO or SoD');
+    expect(input.props.placeholder).toBe('Search notes, like RTO or SoD');
     act(() => {
       input.props.onChangeText('payroll');
     });
@@ -542,7 +541,7 @@ describe('Learn: the course and the reference (mobile 1.21)', () => {
     clearNotesCache();
     mount(<Learn />);
     expect(allText()).not.toContain('Study notes,');
-    expect(allText()).not.toContain('Look it up');
+    expect(allText()).not.toContain('Study notes');
     expect(root().findAll((n) => n.props.accessibilityLabel?.startsWith?.('Study notes,'))).toHaveLength(0);
     expect(allText()).toContain('Lessons'); // the lessons are still there
   });

@@ -189,7 +189,7 @@ describe('Practice opened at Drills', () => {
     expect(first.length).toBeGreaterThan(0);
     // After "More ways to practice" (the hero stays the one primary action).
     const t = textOf(root());
-    expect(t.indexOf('More ways to practice')).toBeLessThan(t.indexOf('Drills'));
+    expect(t.indexOf('Review and saved')).toBeLessThan(t.indexOf('All at Seedling'));
     expect(mockSetParams).not.toHaveBeenCalled();
     // The jump runs from Drills' own layout (no fixed delay), then the param is cleared.
     layDrills();

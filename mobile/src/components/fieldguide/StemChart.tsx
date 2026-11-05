@@ -87,32 +87,6 @@ const TOP = 40;
 const PLOT = 150;
 
 /**
- * Where the "70 line" words go (UX follow-up to H1, mobile 1.51). By default under the dashed line at its
- * right end, one line, on a paper halo. But when the LAST column's top (its top leaf reaches ~11pt above it)
- * sits in or just under that band, the halo would hide the top of that stem, and just above the line is
- * taken by the same stem's own number. Then the words go beside the line's end, on two lines ("70" /
- * "line"), in the clear strip right of that stem (right-aligned, no halo so no leaf tip is hidden), pushed
- * down below the number when a low top brings it under the line. Pure, so it is tested on its own.
- */
-export function lineLabelSpot({ lastPct, line, gap, fs }: { /** The last column's measured percent, or null. */ lastPct: number | null; line: number; gap: number; fs: number }): {
-  beside: boolean;
-  top: number;
-  /** The box's width from the plot's right edge (beside only). */
-  width?: number;
-} {
-  const y = (p: number) => TOP + PLOT - (Math.max(0, Math.min(100, p)) / 100) * PLOT;
-  const below = y(line) + 2;
-  // The words' line height (the chart label's 17, grown with the text).
-  const band = Math.ceil(chartLabel.lineHeight * fs);
-  if (lastPct === null) return { beside: false, top: below };
-  const top = y(lastPct);
-  const near = top >= y(line) - 2 && top - 11 <= below + band;
-  if (!near) return { beside: false, top: below };
-  // The number above a stem ends about 12pt over its top: the words start under it.
-  // Never narrower than "line" at the chart label's size, so the word is never broken.
-  return { beside: true, top: Math.max(below, top - 10), width: Math.max(0, gap / 2 - 8, Math.ceil(22 * fs)) };
-}
-/**
  * A column narrower than this hands over to the list (the web's floor too). The labels under the soil
  * no longer have to fit one column: they take two columns less 8 and every other area's labels drop
  * below their neighbours' (stemLabelLayout), so "Governance" at 13pt (about 72pt) fits here.
@@ -296,8 +270,6 @@ function Chart({
   const gap = (w - GUTTER) / stems.length;
   const soil = TOP + PLOT;
   const y = (p: number) => soil - (Math.max(0, Math.min(100, p)) / 100) * PLOT;
-  const last = stems[stems.length - 1];
-  const spot = lineLabelSpot({ lastPct: last && !last.thin ? last.pct : null, line, gap, fs });
   // The words under the soil start 8 below it; the deepest block (a dropped one included) sets the height.
   const h = soil + 8 + Math.ceil(labels.height) + 6;
   const settle = useSharedValue(moving ? 0 : 1);
@@ -331,17 +303,7 @@ function Chart({
         {stems.map((s, i) => (
           <StemColumn key={s.key} s={s} i={i} left={GUTTER + gap * i} gap={gap} soil={soil} y={y} moving={moving} order={growing.indexOf(s.key)} run={run} delay={delay} ink={ink} />
         ))}
-        {/* After the stems, so the last column's stem never paints over it (UX review H1); beside the line's
-            end instead when the last stem's top would sit under it (lineLabelSpot). */}
-        {spot.beside ? (
-          <View testID="line-label" style={{ position: 'absolute', right: 0, top: spot.top, width: spot.width, alignItems: 'flex-end' }}>
-            <FieldText v="tiny" color={c.ink2} style={[chartLabel, { textAlign: 'right' }]}>{`${line}\nline`}</FieldText>
-          </View>
-        ) : (
-          <View testID="line-label" style={{ position: 'absolute', right: 0, top: spot.top, backgroundColor: c.raised2, paddingLeft: 3 }}>
-            <FieldText v="tiny" color={c.ink2} style={chartLabel}>{`${line} line`}</FieldText>
-          </View>
-        )}
+        {/* Grove Phase 4 (PHASE4.md 7.11): no "70 line" words on the chart; the 70 on the scale and the key say it. */}
         <Animated.View style={[{ position: 'absolute', left: 0, top: 0, width: w, height: h }, settleStyle]} pointerEvents="none">
           {stems.map((s, i) => {
             const cx = GUTTER + gap * i + gap / 2;
@@ -358,7 +320,7 @@ function Chart({
                   <View style={{ flexDirection: 'row', alignItems: 'flex-start', backgroundColor: c.raised2, paddingHorizontal: 3, borderRadius: 3 }}>
                     <BigNum value={String(s.pct)} pct size={20} />
                     {/* The chart's ↑ and ↓ are chart labels too (fg label 500 13/17, TYPE_SCALE row 176a), like its other words. */}
-                    {s.up ? <FieldText v="tiny" color={c.clay} style={[chartLabel, { marginLeft: 2, marginTop: 6 }]}>{`↑${Math.round(s.up)}`}</FieldText> : null}
+                    {s.up ? <FieldText v="tiny" color={c.accentText} style={[chartLabel, { marginLeft: 2, marginTop: 6 }]}>{`↑${Math.round(s.up)}`}</FieldText> : null}
                     {s.down ? <FieldText v="tiny" color={c.ink2} style={[chartLabel, { marginLeft: 2, marginTop: 6 }]}>{`↓${Math.round(s.down)}`}</FieldText> : null}
                     {overall ? <FieldText v="tiny" color={c.ink2} style={[chartLabel, { marginLeft: 4, marginTop: 6 }]}>overall</FieldText> : null}
                   </View>
@@ -470,8 +432,8 @@ function StemColumn({
     }
     const top = (
       <>
-        {up > 0 && <Path d={`M${x} ${y(base)}V${y(s.pct)}`} stroke={c.clay} strokeWidth={2.6} strokeLinecap="round" />}
-        <Ellipse cx={x} cy={y(s.pct) - 5} rx={3} ry={5.6} fill={ink.leaf} stroke={s.below || up > 0 ? c.clay : c.accent} strokeWidth={0.9} />
+        {up > 0 && <Path d={`M${x} ${y(base)}V${y(s.pct)}`} stroke={c.accent} strokeWidth={2.6} strokeLinecap="round" />}
+        <Ellipse cx={x} cy={y(s.pct) - 5} rx={3} ry={5.6} fill={ink.leaf} stroke={s.below ? c.clay : c.accent} strokeWidth={0.9} />
       </>
     );
     const stem = (
@@ -556,7 +518,7 @@ function GrowNumber({ s, cx, top, drop, order, run, delay, overall, box }: { s: 
       <View style={{ flexDirection: 'row', alignItems: 'flex-start', backgroundColor: c.raised2, paddingHorizontal: 3, borderRadius: 3 }}>
         <BigNum value={String(pct)} pct size={20} roll={{ play: true, from: String(pct - up), run, delay: delay + order * motion.stagger.stat }} />
         <Animated.View style={arrowStyle}>
-          <FieldText v="tiny" color={c.clay} style={[chartLabel, { marginLeft: 2, marginTop: 6 }]}>{`↑${up}`}</FieldText>
+          <FieldText v="tiny" color={c.accentText} style={[chartLabel, { marginLeft: 2, marginTop: 6 }]}>{`↑${up}`}</FieldText>
         </Animated.View>
         {overall ? <FieldText v="tiny" color={c.ink2} style={[chartLabel, { marginLeft: 4, marginTop: 6 }]}>overall</FieldText> : null}
       </View>
@@ -598,7 +560,7 @@ export function StemList({ stems, line = 70 }: { stems: readonly Stem[]; line?: 
                 {/* On Results (a stem with the set's note, "2 of 3 this set") the number is the area's score
                     overall, not the set's: "88% overall", the unit beside a numeral in meta (TYPE_SCALE 2.1). */}
                 {s.pct !== null && s.note ? <T v="meta">overall</T> : null}
-                {s.up ? <T v="caption" color={c.clay}>{`↑${Math.round(s.up)}`}</T> : null}
+                {s.up ? <T v="caption" color={c.accentText}>{`↑${Math.round(s.up)}`}</T> : null}
                 {s.down ? <T v="caption" color={c.ink2}>{`↓${Math.round(s.down)}`}</T> : null}
               </View>
             </View>

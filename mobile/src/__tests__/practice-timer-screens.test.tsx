@@ -75,11 +75,20 @@ const press = (label: string) =>
   act(() => {
     find(label)[0].props.onPress();
   });
+// A switch row (Settings) has onValueChange; Practice's Timed tile (Grove Phase 4) is a pressable with the
+// switch role and its checked state, flipped by a tap.
+const switchTile = (title: string) =>
+  root().findAll((n) => n.props.accessibilityLabel === title && n.props.accessibilityRole === 'switch' && typeof n.props.onPress === 'function' && n.props.accessibilityState)[0];
 const toggle = (title: string, value: boolean) =>
   act(() => {
-    root().findAll((n) => n.props.accessibilityLabel === title && typeof n.props.onValueChange === 'function')[0].props.onValueChange(value);
+    const row = root().findAll((n) => n.props.accessibilityLabel === title && typeof n.props.onValueChange === 'function')[0];
+    if (row) row.props.onValueChange(value);
+    else if (switchTile(title).props.accessibilityState.checked !== value) switchTile(title).props.onPress();
   });
-const toggleValue = (title: string) => root().findAll((n) => n.props.accessibilityLabel === title && typeof n.props.onValueChange === 'function')[0].props.value;
+const toggleValue = (title: string) => {
+  const row = root().findAll((n) => n.props.accessibilityLabel === title && typeof n.props.onValueChange === 'function')[0];
+  return row ? row.props.value : switchTile(title).props.accessibilityState.checked;
+};
 const allText = () => {
   const out: string[] = [];
   const walk = (n: ReactTestInstance | string) => (typeof n === 'string' ? out.push(n) : n.children.forEach(walk));

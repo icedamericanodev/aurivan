@@ -200,14 +200,14 @@ export function RingCaptionText({ caption }: { caption: RingCaption }) {
 }
 
 /** A small tile inside the hero (the kit's inset tile): a tracked key over its value. */
-export function HeroTile({ k, children, spoken, testID }: { k: string; children: ReactNode; spoken?: string; testID?: string }) {
+export function HeroTile({ k, children, spoken, testID, minHeight = 72 }: { k: string; children: ReactNode; spoken?: string; testID?: string; /** Grove Phase 4: Practice's choice tiles are 48 (a target, not a stat). */ minHeight?: number }) {
   const { c, isDark } = useTheme();
   return (
     <View
       testID={testID}
       accessible={Boolean(spoken)}
       accessibilityLabel={spoken}
-      style={{ flex: 1, minWidth: 0, minHeight: 72, borderRadius: groveRadius.tile, backgroundColor: heroInset[isDark ? 'dark' : 'light'], paddingHorizontal: space.md, paddingVertical: 10, gap: 2 }}
+      style={{ flex: 1, minWidth: 0, minHeight, borderRadius: groveRadius.tile, backgroundColor: heroInset[isDark ? 'dark' : 'light'], paddingHorizontal: space.md, paddingVertical: 10, gap: 2 }}
     >
       <FieldText v="head" color={c.onForest2}>
         {k}

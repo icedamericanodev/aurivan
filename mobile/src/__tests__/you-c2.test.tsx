@@ -145,7 +145,9 @@ describe('the plant chip', () => {
     const chip = root().findAll((n) => n.props.testID === 'you-plant-chip' && typeof n.type === 'string');
     expect(chip).toHaveLength(1);
     expect(textOf(chip[0])).toContain('Your plant');
-    expect(textOf(chip[0])).toContain('Bayani · Seed · growth 1 of 6');
+    // Grove Phase 4 (the 04 board): a forest card, the name over its growth and the plant's promise.
+    expect(textOf(chip[0])).toContain('Bayani');
+    expect(textOf(chip[0])).toContain('Seed · growth 1 of 6 · grows only from real progress, never wilts');
     expect(chip[0].props.accessibilityLabel).toMatch(/^Your plant: /);
     press(/^Your plant: /);
     expect(router.push).toHaveBeenCalledWith('/plant');

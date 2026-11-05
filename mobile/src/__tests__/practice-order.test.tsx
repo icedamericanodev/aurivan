@@ -94,13 +94,14 @@ describe('Practice: mocks first for the exam-focused, the pace offer under Timed
   it('Mock exams sit under the hero for the Exam-focused plan, and last otherwise', () => {
     useSettings.setState({ familiarity: 'experienced' });
     mount(<Practice />);
-    let [mocks, more] = sectionOrder()(['Mock exams', 'More ways to practice']);
+    // Grove Phase 4: the jump bar also says "Mock exams", so the card is found by its own line.
+    let [mocks, more] = sectionOrder()(['Timed like the real exam', 'Review and saved']);
     expect(mocks).toBeGreaterThan(-1);
     expect(mocks).toBeLessThan(more);
     unmount();
     useSettings.setState({ familiarity: 'some' });
     mount(<Practice />);
-    [mocks, more] = sectionOrder()(['Mock exams', 'More ways to practice']);
+    [mocks, more] = sectionOrder()(['Timed like the real exam', 'Review and saved']);
     expect(mocks).toBeGreaterThan(more);
   });
 
@@ -108,7 +109,7 @@ describe('Practice: mocks first for the exam-focused, the pace offer under Timed
     // Close to the exam: the offer is due.
     useSettings.setState({ examDates: { cisa: addDays(today(), 14) } });
     mount(<Practice />);
-    const [hero, timed, offer] = sectionOrder()(['Your path', 'Timed', 'Practice at exam pace?']);
+    const [hero, timed, offer] = sectionOrder()(['Domains', 'Timed counts up', 'Practice at exam pace?']);
     expect(offer).toBeGreaterThan(timed);
     expect(timed).toBeGreaterThan(hero);
     expect(allText()).toContain('The exam allows about 96 seconds a question. A timer counts up while you answer, never down, and stops while you read the explanation.');
@@ -121,16 +122,16 @@ describe('Practice: the hero sized from the daily minutes (mobile 1.16, UX revie
   it('no length chosen: 30 minutes a day starts 20 questions; 20 minutes, 10 (never past the day)', () => {
     useSettings.setState({ familiarity: 'some', studyMode: 'smart', studySize: undefined, dailyMinutes: 30 });
     mount(<Practice />);
-    expect(allText()).toContain('Picked for you 20 questions · ');
+    expect(allText()).toContain('Picked for you A mixed set 20 questions · ');
     unmount();
     useSettings.setState({ dailyMinutes: 20 });
     mount(<Practice />);
-    expect(allText()).toContain('Picked for you 10 questions · ');
+    expect(allText()).toContain('Picked for you A mixed set 10 questions · ');
   });
 
   it('a length the learner chose always wins', () => {
     useSettings.setState({ familiarity: 'some', studyMode: 'smart', studySize: 50, dailyMinutes: 10 });
     mount(<Practice />);
-    expect(allText()).toContain('Picked for you 50 questions · ');
+    expect(allText()).toContain('Picked for you A mixed set 50 questions · ');
   });
 });

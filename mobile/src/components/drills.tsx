@@ -27,7 +27,8 @@ import { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useWindowDimensions, View } from 'react-native';
 import { KeyList, type KeyItem } from './fieldguide';
 import { DisclosureRow } from './pathChooser';
-import { Enter, Section, T, useScreenScroll } from './ui';
+import { CardHead, HubCard } from './groveHub';
+import { Enter, T, useScreenScroll } from './ui';
 import { GAME_TIER_NAME, growthTier } from '../engine/games/growth';
 import { scoreSpoken, scoreText } from '../engine/games/recap';
 import { GAMES, type GameId } from '../engine/games/registry';
@@ -183,7 +184,9 @@ export const Drills = memo(function Drills({
   return (
     <View ref={box} testID="drills" collapsable={false} onLayout={onLayout}>
       <Enter i={enter}>
-      <Section variant="head" title="Drills" headRef={head} meta={allSeedling ? 'All at Seedling' : undefined} />
+      {/* Grove Phase 4 (PHASE4.md 7.8 item 9): Drills is one card with its kicker inside. */}
+      <HubCard testID="drills-card" style={{ paddingBottom: space.md }}>
+      <CardHead title="Drills" headRef={head} meta={allSeedling ? 'All at Seedling' : undefined} />
       {!plan.drill ? (
         // No game has enough questions for this exam yet: said calmly, no numbers.
         <T v="meta">Drills arrive once this exam has enough practice questions for them.</T>
@@ -216,6 +219,7 @@ export const Drills = memo(function Drills({
           )}
         </>
       )}
+      </HubCard>
       </Enter>
     </View>
   );

@@ -35,11 +35,14 @@ export const HerbariumEntry = memo(function HerbariumEntry({
   count,
   newBadge,
   onPress,
+  bare,
 }: {
   pressed: readonly LastPressed[];
   count: number;
   newBadge: boolean;
   onPress: () => void;
+  /** Grove Phase 4: inside You's Badges card, so no rules above and below (the card is the frame). */
+  bare?: boolean;
 }) {
   const { c, isDark } = useTheme();
   const ink = fieldInk[isDark ? 'dark' : 'light'];
@@ -58,7 +61,7 @@ export const HerbariumEntry = memo(function HerbariumEntry({
       }}
       onPressIn={press.onPressIn}
       onPressOut={press.onPressOut}
-      style={[{ flexDirection: large ? 'column' : 'row', alignItems: large ? 'flex-start' : 'center', gap: large ? space.sm : space.md, minHeight: 64, paddingVertical: space.sm, borderTopWidth: 1, borderBottomWidth: 1, borderColor: c.line }, press.style]}
+      style={[{ flexDirection: large ? 'column' : 'row', alignItems: large ? 'flex-start' : 'center', gap: large ? space.sm : space.md, minHeight: 64, paddingVertical: space.sm, borderTopWidth: bare ? 0 : 1, borderBottomWidth: bare ? 0 : 1, borderColor: c.line }, press.style]}
     >
       {press.layer}
       <View accessibilityElementsHidden importantForAccessibility="no-hide-descendants" style={{ flexDirection: 'row', minWidth: 40 }}>
@@ -73,8 +76,9 @@ export const HerbariumEntry = memo(function HerbariumEntry({
         )}
       </View>
       <View style={large ? { alignSelf: 'stretch' } : { flex: 1, minWidth: 0 }}>
-        <T v="label">{HERBARIUM}</T>
-        <T v="meta" style={{ marginTop: 2 }}>{herbariumLine(pressed[0])}</T>
+        {/* Inside You's Badges card the card's head already says "Badges" (bare): the line alone. */}
+        {bare ? null : <T v="label">{HERBARIUM}</T>}
+        <T v="meta" style={{ marginTop: bare ? 0 : 2 }}>{herbariumLine(pressed[0])}</T>
       </View>
       <Row gap={space.sm}>
         {newBadge && <View testID="new-badge-dot" style={{ width: 8, height: 8, borderRadius: 4, backgroundColor: c.accent }} />}

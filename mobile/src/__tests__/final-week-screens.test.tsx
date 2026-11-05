@@ -201,11 +201,11 @@ describe('About the CISA exam', () => {
 });
 
 describe('entry rows', () => {
-  it('Learn → Look it up: About the CISA exam and Final review week, under Principles', () => {
+  it('Learn tiles: The CISA exam after Principles, then Final review week', () => {
     mount(<Learn />);
     const text = allText();
-    expect(text.indexOf('The thinking the exam rewards')).toBeLessThan(text.indexOf('About the CISA exam'));
-    expect(text.indexOf('About the CISA exam')).toBeLessThan(text.indexOf('Final review week'));
+    expect(text.indexOf('How the exam thinks')).toBeLessThan(text.indexOf('The CISA exam'));
+    expect(text.indexOf('The CISA exam')).toBeLessThan(text.indexOf('Final review week'));
     press(/^About the CISA exam/);
     expect(mockPush).toHaveBeenLastCalledWith('/exam-guide');
     press(/^Final review week/);
@@ -216,7 +216,7 @@ describe('entry rows', () => {
     jest.spyOn(examContent, 'hasExamGuide').mockReturnValue(false);
     jest.spyOn(examContent, 'hasFinalWeek').mockReturnValue(false);
     mount(<Learn />);
-    expect(allText()).not.toContain('About the CISA exam');
+    expect(allText()).not.toContain('The CISA exam');
     expect(allText()).not.toContain('Final review week');
   });
 

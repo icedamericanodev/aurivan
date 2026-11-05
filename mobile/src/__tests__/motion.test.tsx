@@ -483,20 +483,20 @@ describe('Segmented thumb', () => {
 });
 
 describe('Chip', () => {
-  it('the label keeps its contrast mid-fade: it swaps colour with the fill at half-way, not at the tap', () => {
+  // Grove Phase 4 (PHASE4.md section 5): selected is an ink EDGE and a tick, never an ink fill, so the
+  // label stays ink in both states and there is no mid-fade colour swap to guard any more.
+  it('the label stays ink, chosen or not (the selected look is an edge and a tick, not a fill)', () => {
     setMockReducedMotion(false);
     const el = (on: boolean) => <Chip label="Domain 1" selected={on} onPress={() => {}} />;
     mount(el(false));
     const label = () => style(r!.root.find((n) => n.props.children === 'Domain 1' && typeof n.type !== 'string'));
     const ink = label().color;
-    // The tap's own render: the fill has not started, so the label is still ink.
     act(() => {
       r!.update(el(true));
     });
     expect(label().color).toBe(ink);
-    // Once the fill is past half-way, the label is paper on ink.
     settle(el(true));
-    expect(label().color).not.toBe(ink);
+    expect(label().color).toBe(ink);
   });
 });
 

@@ -38,6 +38,47 @@ import { Pop, useCelebrationSettled, useMotion, useOncePerDay } from './motion';
 
 type GlyphProps = { size?: number; color: string; strokeWidth?: number };
 
+// ── Grove Phase 4: the hero glyphs (Learn and Practice) ─────────────────
+/**
+ * The kit's dandelion (reference/02-phone-learn.html line 39): a stem, nine seed spokes with a dot at
+ * each tip and a clay centre, on a 64 grid. Learn's Up next card draws it in its glyph tile.
+ * Decorative only: the caller hides it from screen readers.
+ */
+export function Dandelion({ size = 44, color, centre }: { size?: number; color: string; centre: string }) {
+  const tips: [number, number][] = [[32, 6], [46, 12], [52, 26], [46, 40], [18, 12], [12, 26], [18, 40], [40, 7], [24, 7]];
+  return (
+    <Svg testID="glyph-dandelion" width={size} height={size} viewBox="0 0 64 64" fill="none">
+      <Path d="M32 29V60" stroke={color} strokeWidth={1.3} />
+      {tips.map(([x, y]) => (
+        <Path key={`s${x}-${y}`} d={`M32 26L${x} ${y}`} stroke={color} strokeWidth={0.9} />
+      ))}
+      {/* The kit puts dots on seven tips (the two short spokes have none). */}
+      {tips.slice(0, 7).map(([x, y]) => (
+        <Circle key={`d${x}-${y}`} cx={x} cy={y} r={1.8} fill={color} />
+      ))}
+      <Circle cx={32} cy={26} r={3} fill={centre} />
+    </Svg>
+  );
+}
+
+/**
+ * The kit's leaf badge (reference/03-phone-practice.html line 56): a long rib with six side veins,
+ * on a 48 grid. Practice's Picked for you card draws it in its glyph tile. Decorative only.
+ */
+export function PracticeLeaf({ size = 40, color }: { size?: number; color: string }) {
+  return (
+    <Svg testID="glyph-practice-leaf" width={size} height={size} viewBox="0 0 48 48" fill="none">
+      <Path d="M10 40C18 30 28 18 40 8" stroke={color} strokeWidth={1.5} strokeLinecap="round" />
+      <Path
+        d="M16 33C14 27 15 22 18 19M22 27C20 21 21 16 25 13M28 20C27 15 29 11 32 9M18 35C24 36 28 34 31 31M24 28C30 29 34 27 36 24M30 21C35 21 38 19 40 16"
+        stroke={color}
+        strokeWidth={1.2}
+        strokeLinecap="round"
+      />
+    </Svg>
+  );
+}
+
 // ── Tab and streak glyphs ───────────────────────────────────────────────
 export function Sprout({ size = 24, color, strokeWidth = 1.75 }: GlyphProps) {
   return (

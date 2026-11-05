@@ -113,14 +113,14 @@ describe('the tab hero renders its content (Android blank-hero regression)', () 
     const [content] = byTestId('practice-plate');
     expect(content).toBeDefined();
     const text = textOf(content);
-    // The one label line (type pass: "Next set · Your path") and the path's title are the plate's two headers.
+    // Grove Phase 4 (the 03 board): one kicker header naming the path ("Your path · Random").
     const header = content.findAll((n) => n.props.accessibilityRole === 'header' && typeof n.type === 'string');
-    expect(header.map((h) => h.props.accessibilityLabel ?? textOf(h))).toContain('Next set, your path');
-    expect(header.length).toBe(2);
+    expect(header.map((h) => h.props.accessibilityLabel ?? textOf(h))).toContain('Your path, Random');
+    expect(header.length).toBe(1);
     expect(text).toMatch(/min/); // the meta carries the honest length
-    // The plate is never a button: the Start button sits under it.
-    expect(content.findAll((n) => n.props.accessibilityRole === 'button')).toHaveLength(0);
-    const start = root().findAll((n) => typeof n.type === 'string' && n.props.accessibilityRole === 'button' && n.props.accessibilityLabel === 'Start');
+    // The card itself is never a button: its controls are the tiles and the mint Start inside it.
+    expect(content.props.accessibilityRole).toBeUndefined();
+    const start = content.findAll((n) => typeof n.type === 'string' && n.props.accessibilityRole === 'button' && n.props.accessibilityLabel === 'Start');
     expect(start).toHaveLength(1);
     expect(byTestId('hero-seal')).toHaveLength(0);
   });
@@ -176,12 +176,11 @@ describe('the tab hero renders its content (Android blank-hero regression)', () 
     expect(textOf(content)).toContain('10 questions · ');
   });
 
-  it('the plate has no shadow; Grove: one rounded card with a 1pt edge (the white shadowed card is retired)', () => {
+  it('Grove Phase 4: the forest hero card, 24 corners, the 1px top light and no outer shadow', () => {
     mount(<Practice />);
     const [plateEl] = byTestId('practice-plate');
-    expect(flat(plateEl).boxShadow).toBeUndefined();
+    expect(String(flat(plateEl).boxShadow)).toMatch(/^inset 0 1px 0 /);
     expect(flat(plateEl).borderRadius).toBe(24);
-    expect(flat(plateEl).borderWidth).toBe(1);
   });
 });
 

@@ -42,6 +42,8 @@ export { default as Maximize2 } from 'lucide-react-native/icons/maximize-2';
 // Mobile 1.21: the leading glyph in every search field (Learn, Study notes).
 export { default as Search } from 'lucide-react-native/icons/search';
 export { default as Settings } from 'lucide-react-native/icons/settings';
+// Grove Phase 4: Practice, Review and saved, "Build a set" (the kit's sliders).
+export { default as SlidersHorizontal } from 'lucide-react-native/icons/sliders-horizontal';
 export { default as Share2 } from 'lucide-react-native/icons/share-2';
 export { default as ShieldCheck } from 'lucide-react-native/icons/shield-check';
 export { default as SunMoon } from 'lucide-react-native/icons/sun-moon';

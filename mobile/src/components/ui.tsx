@@ -66,7 +66,7 @@ import {
   type TypeVariant,
   type Palette,
 } from '../theme/tokens';
-import { groveEmphasis, groveEmphasisSans, groveRadius, grovePlate, heroPanel, numRole, percentFor, role, type HeroGradient, type NumStep, type RoleName } from '../theme/grove';
+import { groveEmphasis, groveEmphasisSans, groveRadius, grovePlate, heroPanel, mintInk, numRole, percentFor, role, type HeroGradient, type NumStep, type RoleName } from '../theme/grove';
 import { useTheme } from '../theme/useTheme';
 import { Botany, botanySize, EmptyArt, type BotanyKind, type EmptyArtKind } from './glyphs';
 import { Check, ChevronLeft, ChevronRight, ICON_STROKE, Minus, Plus, Search, Settings as SettingsIcon, X } from './icons';
@@ -417,7 +417,9 @@ export function Stem({ children, color, highlight }: { children: string; color?:
 }
 
 // ── Buttons ───────────────────────────────────────────────────────────
-export type ButtonKind = 'primary' | 'secondary' | 'ghost' | 'danger' | 'forest';
+// Grove Phase 4 (PHASE4.md section 6): `hero` is the mint button that sits INSIDE a forest hero card
+// (Learn's Start lesson, Practice's Start). Mint with dark ink, the same in both themes (10.3:1).
+export type ButtonKind = 'primary' | 'secondary' | 'ghost' | 'danger' | 'forest' | 'hero';
 
 export function Button({
   label,
@@ -479,6 +481,7 @@ export function Button({
         ghost: { bg: 'transparent', border: 'transparent', fg: c.accentText },
         danger: { bg: c.wrongBg, border: c.wrongBg, fg: c.wrong },
         forest: { bg: c.pill, border: c.pill, fg: c.onPill },
+        hero: { bg: c.sap, border: c.sap, fg: mintInk },
       }[kind];
   const isForest = kind === 'forest';
   const isGhost = kind === 'ghost';
@@ -1412,7 +1415,11 @@ export function Tag({ label, domain, color, numberOfLines }: { label: string; do
 }
 
 // ── Chip: selectable filter (spec §6) ─────────────────────────────────
-// Selected = ink fill + bg label + leading ✓ (shape AND colour, never green).
+// Grove Phase 4, one selected look (PHASE4.md section 5): selected is INK, never a fill and never
+// green. The chip keeps its `raised` fill and its 1.5pt `control` edge in both states; a chosen chip
+// adds a 2pt ink edge drawn as an overlay on top (so the box never changes size and nothing reflows)
+// and a 14pt ink tick before its label. The label stays ink at the same weight in both states.
+// Colour is never the only signal: the tick and the spoken state carry it too.
 export function Chip({
   label,
   selected,
@@ -1434,38 +1441,27 @@ export function Chip({
 }) {
   const { c } = useTheme();
   const press = usePressScale({ tint: c.soft, tintRadius: radius.pill });
-  // The label and ✓ swap colour at the fill's half-way point (as StateLayer
-  // `step` does for a badge): flipping at the tap would put paper-coloured
-  // text on a still-transparent fill for a few frames.
-  const half = useSharedValue(selected ? 1 : 0);
-  useEffect(() => {
-    half.set(tween(selected ? 1 : 0, 'select'));
-  }, [selected, half]);
-  const labelInk = useAnimatedStyle(() => ({ color: half.value >= 0.5 ? c.bg : c.ink }));
-  const markShown = useAnimatedStyle(() => ({ opacity: half.value >= 0.5 ? 1 : 0 }));
+  // A disabled chip: muted words and a quiet edge; a chosen and disabled chip keeps its tick, in muted.
+  const ink = disabled ? c.muted : c.ink;
   return (
     <AnimatedPressable
+      testID={selected ? 'chip-selected' : undefined}
       accessibilityRole={checkbox ? 'checkbox' : 'button'}
       accessibilityState={{ ...(checkbox ? { checked: selected } : { selected }), ...(disabled ? { disabled } : {}) }}
       disabled={disabled}
       accessibilityHint={accessibilityHint}
-      accessibilityLabel={accessibilityLabel ?? label} // the ✓ is visual; the state is spoken
+      accessibilityLabel={accessibilityLabel ?? label} // the tick is visual; the state is spoken
       onPress={onPress}
       hitSlop={4} // 40pt chip + 4pt each side = 48pt touch target
       onPressIn={press.onPressIn}
       onPressOut={press.onPressOut}
-      style={[styles.chip, { borderColor: selected ? c.ink : c.control }, press.style]}
+      style={[styles.chip, { backgroundColor: c.raised, borderColor: disabled ? c.line : c.control }, press.style]}
     >
       {press.layer}
-      {/* The ink fill cross-fades in (120 ms), covering the outline too. */}
-      <StateLayer on={selected} style={[styles.chipFill, { backgroundColor: c.ink }]} />
-      {/* In a View, so the mark always draws above the fill layer (web paints a bare SVG under it). */}
-      {selected && (
-        <Animated.View style={markShown}>
-          <Check size={14} color={c.bg} strokeWidth={2.5} />
-        </Animated.View>
-      )}
-      <Animated.Text maxFontSizeMultiplier={role.chip.max} style={[role.chip.style, styles.chipLabel, labelInk]}>{label}</Animated.Text>
+      {/* The 2pt ink edge, drawn over the 1.5pt rest edge (it cross-fades in over 120 ms). */}
+      <StateLayer on={selected} style={[styles.chipFill, { borderWidth: 2, borderColor: ink }]} />
+      {selected && <Check testID="chip-tick" size={14} color={ink} strokeWidth={2.5} />}
+      <Text maxFontSizeMultiplier={role.chip.max} style={[role.chip.style, styles.chipLabel, { color: ink }]}>{label}</Text>
     </AnimatedPressable>
   );
 }
@@ -1737,7 +1733,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   chipLabel: { flexShrink: 1 },
-  // Covers the 1.5 outline too, so the selected chip reads as one ink shape.
+  // The selected chip's 2pt ink edge: laid over the 1.5pt rest edge, so the box keeps its size.
   chipFill: { top: -1.5, left: -1.5, right: -1.5, bottom: -1.5, borderRadius: radius.pill },
   search: { minHeight: 48, borderRadius: radius.md, borderWidth: 1.5, paddingLeft: space.md, flexDirection: 'row', alignItems: 'center' },
   searchGlyph: { marginRight: space.sm },
@@ -2121,7 +2117,8 @@ export function Segmented<V extends string | number>({
   // per-segment layer sit UNDER the labels, so they never take Android
   // `elevation` (it would lift them above the label they belong to): the
   // shadow is iOS and web only, and the ink outline carries the choice.
-  const onLook = [{ backgroundColor: isDark ? SEG_ON_DARK : c.raised, borderWidth: 1.5, borderColor: c.ink, borderRadius: 22 }, !isDark && layerShadow];
+  // Grove Phase 4 (PHASE4.md section 5): the selected edge is 2pt (was 1.5), the same weight as a chip's.
+  const onLook = [{ backgroundColor: isDark ? SEG_ON_DARK : c.raised, borderWidth: 2, borderColor: c.ink, borderRadius: 22 }, !isDark && layerShadow];
   return (
     <View
       accessibilityRole="radiogroup"
@@ -2147,7 +2144,7 @@ export function Segmented<V extends string | number>({
             onPress={() => onChange(o.value)}
             hitSlop={SEG_HIT_SLOP}
             // A transparent border of the same width as the selected one, so nothing jumps.
-            style={[styles.segItem, !stacked && { flex: 1 }, { borderWidth: 1.5, borderColor: 'transparent' }]}
+            style={[styles.segItem, !stacked && { flex: 1 }, { borderWidth: 2, borderColor: 'transparent' }]}
           >
             {!slide && <StateLayer on={on} style={[styles.segOn, onLook]} />}
             {o.icon ? <View>{o.icon(on ? c.ink : c.ink2)}</View> : null}
@@ -2210,17 +2207,25 @@ export function SearchField({
   placeholder,
   accessibilityLabel,
   accessibilityHint,
+  edge = 'control',
 }: {
   value: string;
   onChangeText: (v: string) => void;
   placeholder: string;
   accessibilityLabel: string;
   accessibilityHint?: string;
+  /**
+   * Grove Phase 4 (PHASE4.md 7.1 item 3): Learn's search is the kit's quiet field, a 1pt `line` edge
+   * like the tiles under it (`edge="line"`). The search glyph and the words in it say what it is;
+   * it still turns to an ink edge while typing. Everywhere else keeps the 1.5pt `control` edge.
+   */
+  edge?: 'control' | 'line';
 }) {
   const { c } = useTheme();
   const [focused, setFocused] = useState(false);
+  const quiet = edge === 'line';
   return (
-    <View style={[styles.search, { backgroundColor: c.raised, borderColor: focused ? c.ink : c.control }]}>
+    <View style={[styles.search, quiet && { borderWidth: 1 }, { backgroundColor: c.raised, borderColor: focused ? c.ink : quiet ? c.line : c.control }]}>
       <View accessible={false} importantForAccessibility="no-hide-descendants" accessibilityElementsHidden style={styles.searchGlyph}>
         <Search size={ICON_SIZE.row} color={c.muted} strokeWidth={ICON_STROKE} />
       </View>

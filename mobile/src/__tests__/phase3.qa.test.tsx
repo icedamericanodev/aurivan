@@ -627,7 +627,7 @@ describe('J4 You', () => {
     expect(plusTags()).toEqual([]);
     expect(growingArcs()).toBe(0);
     // "answered" went up (it may roll); accuracy went down and must not roll.
-    const accuracy = byName('SpecimenRow').find((s) => s.props.label === 'Accuracy')!;
+    const accuracy = byName('StatTile').find((s) => s.props.label === 'Accuracy')!;
     const accRoll = accuracy.findAllByType(RollingText)[0];
     expect(accRoll.props.from === accRoll.props.value || !accRoll.props.play).toBe(true);
   });

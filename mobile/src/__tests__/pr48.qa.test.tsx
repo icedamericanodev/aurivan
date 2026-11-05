@@ -373,7 +373,7 @@ describe('answering, then switching tabs: every tab shows fresh numbers', () => 
     }
     // Learn's "Next lesson" follows the focus domain.
     const focus = cert.domains.find((d) => d.id === rd.focusDomainId)!;
-    expect(joined('learn')).toContain(`Next lesson · ${focus.short}`);
+    expect(joined('learn')).toContain(`Up next · ${focus.short}`);
     // Today's plan: the session ticked it.
     const plan = useProgress.getState().days.cisa;
     const doneN = plan.done.filter(Boolean).length;
@@ -417,7 +417,7 @@ describe('answering, then switching tabs: every tab shows fresh numbers', () => 
       useProgress.getState().completeLesson('cisa', lesson.id);
       useProgress.getState().recordGame('cisa', 'trap', 7);
     });
-    expect(joined('learn')).toContain(`1 of ${lessonsFor('cisa').length} done`); // the course total, never a hard-coded count
+    expect(joined('learn')).toContain(`1 of ${lessonsFor('cisa').length} · in exam order`); // the course total, never a hard-coded count
     expectTabsFresh(['learn', 'practice']);
   });
 
@@ -558,7 +558,7 @@ describe('Reset', () => {
     expect(joined('you')).toContain('No mocks yet');
     expect(joined('you')).toContain('[Answered: 0]');
     expect(joined('practice')).toContain('[Questions to revisit, all caught up]');
-    expect(joined('learn')).toContain(`0 of ${lessonsFor('cisa').length} done`);
+    expect(joined('learn')).toContain(`0 of ${lessonsFor('cisa').length} · in exam order`);
     expect(engineDue()).toBe(0);
   });
 });

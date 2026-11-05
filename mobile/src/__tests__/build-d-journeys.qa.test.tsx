@@ -448,7 +448,7 @@ describe('journey 6: the "Practice at exam pace?" card', () => {
     useSettings.setState({ examDates: { cisa: dayKey(T0 + 14 * DAY) } });
     mount(<Practice />);
     act(() => {
-      root().findAll((n) => n.props.accessibilityLabel === 'Timed' && typeof n.props.onValueChange === 'function')[0].props.onValueChange(true);
+      const t = root().findAll((n) => n.props.accessibilityLabel === 'Timed' && n.props.accessibilityRole === 'switch' && typeof n.props.onPress === 'function' && n.props.accessibilityState)[0]; if (t.props.accessibilityState.checked !== true) t.props.onPress();
     });
     expect(allText()).not.toContain('Practice at exam pace?');
   });

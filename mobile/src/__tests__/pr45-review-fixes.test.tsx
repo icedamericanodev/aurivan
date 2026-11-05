@@ -429,7 +429,7 @@ describe('Practice: when mocks lead, they come straight after Timed, then the pa
     useSettings.setState({ familiarity: 'experienced', examDates: { cisa: addDays(today(), 14) } });
     mount(<Practice />);
     const t = allText();
-    const at = ['Timed', 'Mock exams', 'Practice at exam pace?', 'More ways to practice'].map((s) => t.indexOf(s));
+    const at = ['Timed counts up', 'Timed like the real exam', 'Practice at exam pace?', 'Review and saved'].map((s) => t.indexOf(s));
     expect(at.every((n) => n > -1)).toBe(true);
     expect([...at].sort((a, b) => a - b)).toEqual(at);
   });

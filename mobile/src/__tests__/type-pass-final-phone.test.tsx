@@ -14,7 +14,7 @@
  */
 import { Dimensions, StyleSheet, Text } from 'react-native';
 import { act, create, type ReactTestInstance, type ReactTestRenderer } from 'react-test-renderer';
-import { gutterFor, lineLabelSpot, MIN_COLUMN, StemChart, type Stem } from '../components/fieldguide/StemChart';
+import { gutterFor, MIN_COLUMN, StemChart, type Stem } from '../components/fieldguide/StemChart';
 import { AccuracyHeroTile } from '../components/groveToday';
 import { DisclosureRow } from '../components/pathChooser';
 import { Button, toggleInk } from '../components/ui';
@@ -63,7 +63,7 @@ describe('the stem chart (item 2)', () => {
     act(() => Dimensions.set({ window: { ...w, fontScale: 1 }, screen: { ...w, fontScale: 1 } }));
     mount(<StemChart stems={STEMS} />);
     layout(340);
-    for (const words of ['0', '50', '70', '100', '70 line']) expect([words, textStyle(words).fontSize, textStyle(words).lineHeight]).toEqual([words, chartLabel.fontSize, chartLabel.lineHeight]);
+    for (const words of ['0', '50', '70', '100']) expect([words, textStyle(words).fontSize, textStyle(words).lineHeight]).toEqual([words, chartLabel.fontSize, chartLabel.lineHeight]);
     // "IS Audit" is one string: it wraps only when its column is too narrow, never by a forced break.
     expect(textStyle('IS Audit')).toBeDefined();
     expect(root().findAll((n) => n.type === Text && textOf(n) === 'IS\nAudit')).toHaveLength(0);
@@ -94,8 +94,6 @@ describe('the stem chart (item 2)', () => {
   it('the scale strip holds "100" at the label size, grown with the text to x1.3', () => {
     expect(gutterFor(1)).toBe(32);
     expect(gutterFor(1.3)).toBeGreaterThan(gutterFor(1));
-    // "line" beside the line's end is never narrower than its word.
-    expect(lineLabelSpot({ lastPct: 68, line: 70, gap: 40, fs: 1 }).width).toBeGreaterThanOrEqual(22);
   });
 });
 

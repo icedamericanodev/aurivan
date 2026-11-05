@@ -24,9 +24,25 @@ export interface GroveInk {
   seedEdge: string; // a seed's outline (kit --seed-edge)
   soil: string; // ground lines: the week twig's branch, a chart's baseline (kit --soil). Decorative: under 3:1, words carry the state
   leafEmpty: string; // empty leaf outlines and locked stages (kit --leaf-empty, the web's --border2). Decorative, like soil
+  // Grove Phase 4 (PHASE4.md section 6): the outline of an area ring or a read mark that is still empty
+  // (the web's --leaf-line). It means "not started", so it keeps 3:1 or more (3.94 light, 3.31 dark).
+  leafLine: string;
 }
-export const groveLight: GroveInk = { navFloat: '#FFFFFF', seed: '#8A6A48', seedEdge: '#5B4B3C', soil: '#A89B83', leafEmpty: '#CDC9BC' };
-export const groveDark: GroveInk = { navFloat: '#1A231D', seed: '#8A6A48', seedEdge: '#E9D9C4', soil: '#6B5844', leafEmpty: '#39443C' };
+export const groveLight: GroveInk = { navFloat: '#FFFFFF', seed: '#8A6A48', seedEdge: '#5B4B3C', soil: '#A89B83', leafEmpty: '#CDC9BC', leafLine: '#86806F' };
+export const groveDark: GroveInk = { navFloat: '#1A231D', seed: '#8A6A48', seedEdge: '#E9D9C4', soil: '#6B5844', leafEmpty: '#39443C', leafLine: '#6A776D' };
+
+/**
+ * Grove Phase 4 (PHASE4.md section 6): the ink on a mint fill (the hero kind button, the "Next" pill).
+ * The same dark ink in both themes, because mint is the same in both (#A9D9BA with #17231B, 10.3:1).
+ * Never `c.ink`: in dark that is a light colour, which fails on mint.
+ */
+export const mintInk = light.onPill;
+
+/**
+ * Grove Phase 4: the glyph tile at the top right of the Learn and Practice heroes. 64pt, the hero's
+ * track colour, the glyph in mint. Decorative only, and not drawn from text scale 1.3.
+ */
+export const glyphTile = { size: 64, radius: 18, glyph: 44 } as const;
 
 /**
  * Grove corners: card = cards and plates, tile = inner tiles, buttons and the search field,

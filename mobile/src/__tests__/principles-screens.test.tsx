@@ -261,23 +261,19 @@ describe('Principle page', () => {
 });
 
 describe('entry points', () => {
-  it('Learn: Principles is the second row of "Look it up", under Study notes (no separate section)', () => {
+  it('Learn: Principles is the second tile, after Study notes (no separate section)', () => {
     mount(<Learn />);
     const text = allText();
     expect(text).not.toContain('Exam mindset');
-    // (The page's own subtitle also says "Study notes", so the rows are found by their subtitles.)
-    const notesRow = text.indexOf('Every topic, with traps and key terms');
-    expect(text.indexOf('Look it up')).toBeLessThan(notesRow);
-    expect(notesRow).toBeLessThan(text.indexOf('The thinking the exam rewards'));
-    expect(text.indexOf('The thinking the exam rewards')).toBeLessThan(text.indexOf('In exam order. Each ends with a quick check.'));
-    // Premium round 2: one index list (KeyList), numbered in order: notes 1, Principles 2, the exam
-    // guide and the final review week after (exam-guide-screens.test.tsx), the week row last.
+    // Grove Phase 4: the kit's tiles in a fixed order, then Final review week as a full-width row,
+    // all before the Lessons card.
     const [lookup] = root().findAll((n) => n.props.testID === 'learn-lookup' && typeof n.type === 'string');
     const order = lookup.findAll((n) => n.props.accessibilityRole === 'button' && typeof n.type === 'string').map((n) => n.props.accessibilityLabel as string);
     expect(order[0]).toMatch(/^Study notes, /);
-    expect(order[1]).toBe('Principles, the thinking the exam rewards');
+    expect(order[1]).toBe('Principles, how the exam thinks');
     expect(order[order.length - 1]).toMatch(/^Final review week/);
-    press('Principles, the thinking the exam rewards');
+    expect(text.indexOf('How the exam thinks')).toBeLessThan(text.indexOf('in exam order'));
+    press('Principles, how the exam thinks');
     expect(mockPush).toHaveBeenCalledWith('/principles');
   });
 

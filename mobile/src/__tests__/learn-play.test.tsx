@@ -21,7 +21,8 @@ import LessonPlayer, { lessonPracticeIds } from '../app/lesson/[id]';
 import Learn, { upNextMeta, upNextReason } from '../app/(tabs)/learn';
 import { Drills } from '../components/drills';
 import { branchLeaves, DomainRing, GAME_GLYPHS, GameGlyph, LeafBig, LessonBranch, sparkPoints, TierLeaf, TierLeafMorph } from '../components/glyphs';
-import { T } from '../components/ui';
+import { ProgressBar, T } from '../components/ui';
+import { groveLight } from '../theme/grove';
 import { GameFrame, RoundEnd, RoundScore } from '../components/game';
 import { lessonMap, partDelay, SceneView, splitCoachText } from '../components/lesson';
 import { CheckDraw, Collapse, DrawLine, FadeIn, Pop, resetCelebrationsForTest, Turn } from '../components/motion';
@@ -427,7 +428,7 @@ describe('Learn', () => {
     mount(<Learn />);
     // Mobile 1.21: the cover's one meta line, its length and its place on the trail (the caption names the domain).
     expect(allText()).toMatch(/\d+ min · lesson 2 of \d+/);
-    expect(allText()).toContain('Next lesson · IS Audit');
+    expect(allText()).toContain('Up next · IS Audit');
     expect(root().findAllByType(DomainRing).length).toBe(getCertification('cisa')!.domains.length);
     const rows = root()
       .findAll((n) => typeof n.props.onPress === 'function' && /^IS Audit lesson \d+:/.test(String(n.props.accessibilityLabel)))
@@ -435,10 +436,9 @@ describe('Learn', () => {
     expect(rows[0]).toMatch(/, done$/);
     expect(rows[1]).toMatch(/, up next$/);
     expect(rows[2]).toMatch(/, \d+ min$/);
-    // Mobile 1.24: the next lesson is named once, on the cover (type pass: its one label line, "Next
-    // lesson · IS Audit"). The trail row has no caption and no card.
-    expect(allText().match(/Next lesson/g)).toHaveLength(1);
-    expect(allText()).not.toMatch(/Up next/);
+    // Mobile 1.24: the next lesson is named once, on the cover (Grove Phase 4: its kicker "Up next ·
+    // IS Audit"; the area's row adds only the mint "Next" word). The trail row has no caption and no card.
+    expect(allText().match(/Up next/g)).toHaveLength(1);
     // …and its row is not a raised card that bleeds past the page gutter (no negative margin, no fill).
     const upRow = root().findAll((n) => n.props.accessibilityRole === 'button' && /, up next$/.test(String(n.props.accessibilityLabel)))[0];
     const flat = StyleSheet.flatten(upRow.props.style) ?? {};
@@ -448,14 +448,15 @@ describe('Learn', () => {
 
   it('a domain with nothing done draws no empty track (five grey bars read as five failures)', () => {
     mount(<Learn />);
-    // Nothing done anywhere: every ring is one quiet `track` ring (no centre dot,
-    // never the `control` outline that reads as a radio button), and no progress bar.
+    // Nothing done anywhere: every ring is one empty outline ring (no centre dot), and no progress bar.
+    // Grove Phase 4 (PHASE4.md section 6): the empty ring is `leafLine` (3:1), no longer the 1.2:1 track.
     const rings = root().findAllByType(DomainRing);
     expect(rings.every((x) => x.props.done === 0)).toBe(true);
     for (const ring of rings) {
       expect(ring.findAllByType(Circle).length).toBe(1);
-      expect(ring.props.outline).toBe(ring.props.track);
+      expect(ring.props.outline).toBe(groveLight.leafLine);
     }
+    expect(root().findAllByType(ProgressBar)).toHaveLength(0);
   });
 });
 

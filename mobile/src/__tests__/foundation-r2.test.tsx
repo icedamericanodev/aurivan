@@ -14,7 +14,7 @@ import { KeyList, SeedSketch } from '../components/fieldguide';
 import { SpecimenTag } from '../components/glyphs';
 import { clearingGrowth } from '../components/journey';
 import { Button, IconButton, Section } from '../components/ui';
-import { lookUpItems } from '../app/(tabs)/learn';
+import { lookUpItems, tileRows } from '../app/(tabs)/learn';
 import { getCertification } from '../content/certifications';
 import { WELCOME_HEADLINE, WELCOME_LINE } from '../content/brand';
 import { fieldType } from '../theme/tokens';
@@ -110,27 +110,35 @@ describe('KeyList as a navigation list', () => {
   });
 });
 
-describe('Learn: the reference rows as an index list', () => {
+describe('Learn: the reference tiles (Grove Phase 4, the kit order)', () => {
   const cert = getCertification('cisa')!;
   const all = { showNotes: true, showPrinciples: true, showGuide: true, showWeek: true };
 
-  it('the old subtitles become kickers; the spoken labels are unchanged', () => {
+  it('Study notes, Principles, The CISA exam, then Final review week, each with its kit line', () => {
     const items = lookUpItems(cert, 0, all);
-    expect(items.map((i) => i.title)).toEqual(['Study notes', 'Principles', `About the ${cert.name} exam`, 'Final review week']);
-    expect(items[0]).toMatchObject({ kicker: 'Every topic, with traps and key terms', right: undefined, spoken: 'Study notes, Every topic, with traps and key terms' });
-    expect(items[1].spoken).toBe('Principles, the thinking the exam rewards');
+    expect(items.map((i) => i.title)).toEqual(['Study notes', 'Principles', `The ${cert.name} exam`, 'Final review week']);
+    expect(items.map((i) => i.line)).toEqual(['Every topic, with traps', 'How the exam thinks', 'Booking to results', 'Your last seven days, day by day']);
+    expect(items[0].spoken).toBe('Study notes, Every topic, with traps');
+    expect(items[2].spoken).toBe(`About the ${cert.name} exam, booking to results`);
     for (const i of items) expect(i.onPress).toBeDefined();
   });
 
-  it('once notes are read, the count closes the row ("12 read"); never a total', () => {
+  it('once notes are read, the line counts them ("1 note read", "12 notes read"); never a total', () => {
+    expect(lookUpItems(cert, 1, all)[0].line).toBe('1 note read · with traps');
     const [notes] = lookUpItems(cert, 12, all);
-    expect(notes.right).toBe('12 read');
-    expect(notes.spoken).toBe('Study notes, 12 notes read · every topic, with traps');
-    expect(notes.right).not.toMatch(/of/);
+    expect(notes.line).toBe('12 notes read · with traps');
+    expect(notes.spoken).toBe('Study notes, 12 notes read, with traps');
+    expect(notes.line).not.toMatch(/ of /);
   });
 
-  it('a row shows only when the exam has it', () => {
+  it('a tile shows only when the exam has it', () => {
     expect(lookUpItems(cert, 0, { showNotes: false, showPrinciples: true, showGuide: false, showWeek: false }).map((i) => i.key)).toEqual(['principles']);
+  });
+
+  it('tiles pair up two by two; an odd last tile is alone in its row (it spans the width); one per row otherwise', () => {
+    expect(tileRows(['a', 'b', 'c'], true)).toEqual([['a', 'b'], ['c']]);
+    expect(tileRows(['a', 'b', 'c', 'd'], true)).toEqual([['a', 'b'], ['c', 'd']]);
+    expect(tileRows(['a', 'b', 'c'], false)).toEqual([['a'], ['b'], ['c']]);
   });
 });
 

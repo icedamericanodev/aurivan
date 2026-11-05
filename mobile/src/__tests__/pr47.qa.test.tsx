@@ -684,14 +684,14 @@ describe('QA 5: Practice sized from the minutes; a chosen length wins', () => {
     useSettings.setState({ familiarity: 'some', studyMode: 'smart', studySize: undefined, dailyMinutes: minutes as never });
     mount(<Practice />);
     // Mobile 1.21: the hero title never holds a count; the count leads its meta line.
-    expect(allText()).toContain(`Picked for you ${n} questions · `);
+    expect(allText()).toContain(`Picked for you A mixed set ${n} questions · `);
   });
 
   it.each([10, 20, 50])('a chosen length (%i) wins at every minutes setting', (size) => {
     for (const minutes of DAILY_MINUTES) {
       useSettings.setState({ familiarity: 'some', studyMode: 'smart', studySize: size, dailyMinutes: minutes });
       mount(<Practice />);
-      expect(allText()).toContain(`Picked for you ${size} questions · `);
+      expect(allText()).toContain(`Picked for you A mixed set ${size} questions · `);
       unmount();
     }
   });
@@ -699,7 +699,7 @@ describe('QA 5: Practice sized from the minutes; a chosen length wins', () => {
   it('an old save with only a daily goal (no minutes) still sizes sensibly', () => {
     useSettings.setState({ familiarity: 'some', studyMode: 'smart', studySize: undefined, dailyMinutes: undefined, dailyGoal: 40 } as never);
     mount(<Practice />);
-    expect(allText()).toMatch(/Picked for you (10|20) questions · /);
+    expect(allText()).toMatch(/Picked for you A mixed set (10|20) questions · /);
   });
 
   it('Start uses the same size the hero shows', () => {

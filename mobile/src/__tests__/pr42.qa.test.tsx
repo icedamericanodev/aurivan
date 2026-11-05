@@ -401,7 +401,7 @@ describe('Journey 3: Learn list states', () => {
     const r0 = rows();
     expect(r0[0]).toMatch(/, up next$/);
     expect(r0.slice(1).every((x) => /, \d+ min$/.test(x))).toBe(true);
-    expect(allText()).toContain(`Next lesson · IS Audit`);
+    expect(allText()).toContain(`Up next · IS Audit`);
     expect(allText()).toContain('0 of');
   });
 
@@ -418,16 +418,17 @@ describe('Journey 3: Learn list states', () => {
     const inDomain = CISA_LESSONS.filter((l) => l.domainId === '1').length;
     expect(r1[0]).toBe(`IS Audit lesson 1: ${charter.title}, done`);
     expect(r1[1]).toMatch(/, up next$/);
-    expect(root().findAll((n) => n.props.accessibilityState?.expanded === true && String(n.props.accessibilityLabel).includes(`1 of ${inDomain} done`)).length).toBeGreaterThan(0);
+    expect(root().findAll((n) => n.props.accessibilityState?.expanded === true && String(n.props.accessibilityLabel).includes(`1 of ${inDomain} lessons done`)).length).toBeGreaterThan(0);
   });
 
   it('every lesson of a domain done: the group says All done and the cover moves on', () => {
     for (const l of CISA_LESSONS.filter((x) => x.domainId === '1')) useProgress.getState().completeLesson('cisa', l.id);
     mount(<Learn />);
-    const allDone = new Set(root().findAll((n) => typeof n.props.accessibilityLabel === 'string' && /lessons?, all done$/i.test(n.props.accessibilityLabel)).map((n) => n.props.accessibilityLabel));
+    const allDone = new Set(root().findAll((n) => typeof n.props.accessibilityLabel === 'string' && /, all lessons done/i.test(n.props.accessibilityLabel)).map((n) => n.props.accessibilityLabel));
     expect([...allDone]).toHaveLength(1);
-    expect([...allDone][0]).toMatch(/^Information System Auditing Process, /);
-    expect(allText()).not.toContain('Next lesson · IS Audit');
+    // Grove Phase 4: the row says the area number and its short name, as on Practice's By domain.
+    expect([...allDone][0]).toMatch(/^Domain 1, IS Audit, /);
+    expect(allText()).not.toContain('Up next · IS Audit');
   });
 
   it('finishing a lesson buzzes once (Lesson complete); back on Learn its ✓ draws without a second buzz', () => {
@@ -492,6 +493,8 @@ describe('Journey 3: Learn list states', () => {
     act(() => {
       r!.update(<Learn />);
     });
+    // Grove Phase 4: the areas start closed (the kit), so open IS Audit to see its trail.
+    press(/^Domain 1, IS Audit, /);
     // Fixed (QA bug 2): no ✓ draws and no haptic; the three rows are simply done.
     expect(root().findAll((n) => n.type === CheckDraw && (n.props.play === true || n.props.hold === true))).toHaveLength(0);
     expect(root().findAll((n) => n.type === CheckDraw)).toHaveLength(3);
@@ -529,8 +532,8 @@ describe('Journey 4: notes Mark as read', () => {
     mount(<Learn />);
     // Mobile 1.21: a reference has no finish line, so the row counts notes read (no "of N" meter).
     // Premium round 2: an index row, "1 read" at the end of its leader; the spoken label keeps the full words.
-    expect(allText()).toContain('Study notes 1 read');
-    expect(root().findAll((n) => n.props.accessibilityLabel === 'Study notes, 1 note read · every topic, with traps').length).toBeGreaterThan(0);
+    expect(allText()).toContain('Study notes 1 note read · with traps');
+    expect(root().findAll((n) => n.props.accessibilityLabel === 'Study notes, 1 note read, with traps').length).toBeGreaterThan(0);
     expect(allText()).not.toContain(`of ${noteSubtopics('cisa').length} read`);
   });
 });
@@ -792,9 +795,9 @@ describe('Journey 7: an old 1.11 save and a backup restore', () => {
     unmount();
     mount(<Learn />);
     // Premium round 2: an index row, "1 read" at the end of its leader; the spoken label keeps the full words.
-    expect(allText()).toContain('Study notes 1 read');
-    expect(root().findAll((n) => n.props.accessibilityLabel === 'Study notes, 1 note read · every topic, with traps').length).toBeGreaterThan(0);
-    expect(root().findAll((n) => typeof n.props.accessibilityLabel === 'string' && /^Information System Auditing Process, \d+ lessons, 1 of \d+ done$/.test(n.props.accessibilityLabel)).length).toBeGreaterThan(0);
+    expect(allText()).toContain('Study notes 1 note read · with traps');
+    expect(root().findAll((n) => n.props.accessibilityLabel === 'Study notes, 1 note read, with traps').length).toBeGreaterThan(0);
+    expect(root().findAll((n) => typeof n.props.accessibilityLabel === 'string' && /^Domain 1, IS Audit, 1 of \d+ lessons done/.test(n.props.accessibilityLabel)).length).toBeGreaterThan(0);
   });
 
   it('a backup of the 1.11 save restores on a new phone unchanged, and Forecast’s round end reads it', async () => {

@@ -9,7 +9,7 @@
  */
 import { Dimensions, StyleSheet } from 'react-native';
 import { act, create, type ReactTestInstance, type ReactTestRenderer } from 'react-test-renderer';
-import { EmptyPlate, EMPTY_PLATE_TITLE, ESTIMATE_WORDS, KeyCaption, KeyList, lineLabelSpot, Plate, RunningHead, ScaleBar, scaleSpoken, Specimen, SpecimenLabel, SpecimenRow, StemChart, type Stem } from '../components/fieldguide';
+import { EmptyPlate, EMPTY_PLATE_TITLE, ESTIMATE_WORDS, KeyCaption, KeyList, Plate, RunningHead, ScaleBar, scaleSpoken, Specimen, SpecimenLabel, SpecimenRow, StemChart, type Stem } from '../components/fieldguide';
 import { Button } from '../components/ui';
 import { grovePlate } from '../theme/grove';
 
@@ -103,7 +103,7 @@ describe('StemChart', () => {
     expect(allText()).toMatch(/18 of 30\s+answers/);
     expect(t).not.toContain('18 answered');
     expect(t).toContain('not started');
-    expect(t).toContain('70 line');
+    expect(t).not.toContain('70 line'); // Grove Phase 4 (7.11): the key says what the dashed line is
     // Below the line: the word in clay AND the words "below 70" (never colour alone).
     expect(t).toContain('below 70');
     expect(t).toContain('↑3');
@@ -142,43 +142,18 @@ describe('StemChart', () => {
     expect(allText()).not.toMatch(/[\u2013\u2014]/);
   });
 
-  // UX review H1: the "70 line" label is drawn after the stems, so the last column's stem never paints over it.
-  it('draws the "70 line" label after every stem', () => atScale(1, () => {
+  // Grove Phase 4 (PHASE4.md 7.11): the chart draws no "70 line" words (the key says what the dashed line
+  // is); the dashed line and the 70 on the scale stay.
+  it('draws no "70 line" words; the dashed line and the 70 on its scale stay', () => atScale(1, () => {
     act(() => {
       r = create(<StemChart stems={STEMS} />);
     });
     layout(440); // (440 - 32) / 5 = 81pt a column, over MIN_COLUMN 58
-    const drawing = root().find((n) => typeof n.type === 'string' && n.props.accessibilityElementsHidden === true);
-    const kids = drawing.children.filter((k): k is ReactTestInstance => typeof k !== 'string');
-    const lastStem = kids.map((k) => (typeof k.type === 'function' && k.type.name === 'StemColumn' ? 1 : 0)).lastIndexOf(1);
-    const lineLabel = kids.findIndex((k) => textOf(k) === '70 line');
-    expect(lastStem).toBeGreaterThan(-1);
-    expect(lineLabel).toBeGreaterThan(lastStem);
+    expect(root().findAll((n) => n.props.testID === 'line-label')).toHaveLength(0);
+    expect(allText()).not.toContain('70 line');
+    expect(allText()).toContain('70');
+    expect(root().findAll((n) => n.props.strokeDasharray === '4 4').length).toBeGreaterThan(0);
   }));
-
-  // Follow-up to H1: the last column's top in the label's band under the line moves the words beside the line's end.
-  it('places the "70 line" words beside the line’s end when the last stem’s top sits under them', () => {
-    const at = (lastPct: number | null) => lineLabelSpot({ lastPct, line: 70, gap: 63, fs: 1 });
-    // Default: under the line at the right, one line.
-    for (const p of [null, 100, 90, 75, 45, 20]) expect([p, at(p).beside]).toEqual([p, false]);
-    expect(at(90).top).toBe(at(null).top);
-    // A top at or just under the line (its top leaf in the band): beside, in the strip right of the stem.
-    for (const p of [71, 68, 64, 60, 55, 52]) expect([p, at(p).beside]).toEqual([p, true]);
-    expect(at(68).width).toBe(63 / 2 - 8);
-    // Never above the line (that is where the stem's own number sits), pushed down under a low top's number.
-    expect(at(68).top).toBe(at(null).top);
-    expect(at(55).top).toBeGreaterThan(at(null).top);
-    atScale(1, () => {
-      const near = STEMS.map((s, i) => (i === STEMS.length - 1 ? { ...s, pct: 68, answered: 40, thin: false, below: true } : s));
-      act(() => {
-        r = create(<StemChart stems={near} />);
-      });
-      layout(440); // (440 - 32) / 5 = 81pt a column, over MIN_COLUMN 58
-      const label = root().find((n) => n.props.testID === 'line-label' && typeof n.type === 'string');
-      expect(textOf(label)).toBe('70\nline');
-      expect(StyleSheet.flatten(label.props.style).backgroundColor).toBeUndefined();
-    });
-  });
 
   // UX review H2: between ×1.15 and ×1.29 the columns need room for the grown names, or the list takes over;
   // where the chart stays (×1.1 on a wide plate) it grows taller with the words under the soil.
