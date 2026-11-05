@@ -232,6 +232,7 @@ the notice is part of the description.
 | Batch 2 (31 Oct 2026) | +30 | +30 | +30 | 150 |
 | Batch 3 (31 Oct – 4 Nov 2026) | +30 | +42 | — | 222 |
 | Batch 4 (4 Nov 2026) | — | +42 | +32 | 296 |
+| Batch 5 (5 Nov 2026) | +30 | +42 | — | 368 |
 
 Pilot review, 30 Oct 2026:
 - **Blind tests:** 60/60 picks matched the keys on the first pass. After the
@@ -315,6 +316,22 @@ Batch 4 review, 4 Nov 2026 (D2 and D3 only):
 
 **Carried to batch 5:** `auditor-assesses-never-owns-ai` still has no D1 seed; spell "cutoff" (US English, as the
 CISA bank) across all AAIA files in one spelling-only change. Next round: D1 and D2.
+
+Batch 5 review, 5 Nov 2026 (D1 and D2 only):
+- **Spelling:** "cutoff" is now one word in every AAIA file (42 changes, spelling only).
+- **Authors:** two new items per notes subtopic in D1 (30) and D2 (42), each on an angle and setting the
+  subtopic did not use. The carried seed exists: aaia_d1_089 is the first D1 item for
+  `auditor-assesses-never-owns-ai`.
+- **Five reviewers per domain:** first blind pass 72/72. Two HARD ERRORs (one per domain, from the second
+  domain expert), fixed without changing a key.
+- **Fix loops, cross-domain gate (10 PRECISION fixes) and completeness critic (2 gaps: a tagging-record count
+  and the library question below), all closed; a final fix round cleared the remaining wording findings,
+  with every changed item re-tested blind.**
+- **Citations:** four added by the citation librarian after checking the opened texts (NIST AI 100-1
+  Sections 3.6, 5.1 and 6; MITRE ATLAS AML.T0077). Authors still may not edit the library; the librarian may.
+- Length tell: D1 18.6%, D2 19.0% (both inside the 15–24% band).
+
+**Next round:** D2 and D3 (D3 is furthest from its target share after D1).
 
 ## 10. Follow-ups outside this plan's scope
 

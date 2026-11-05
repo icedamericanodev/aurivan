@@ -557,9 +557,9 @@ aaia_d3_054 aaia_d3_058 aaia_d3_059 aaia_d3_060 aaia_d3_065 aaia_d3_067
 aaia_d3_069 aaia_d3_071 aaia_d3_072 aaia_d3_073 aaia_d3_074 aaia_d3_075
 aaia_d3_078 aaia_d3_079.
 
-**Still open:** `auditor-assesses-never-owns-ai` has no D1 seed (aaia_d3_055
-and aaia_d3_082 are D3); add a D1 item whose runner-up has the IS auditor
-signing or approving in the next D1 round.
+**Closed in batch 5:** `auditor-assesses-never-owns-ai` now has a D1 seed,
+aaia_d1_089 (the runner-up has the IS auditor approve each restart of a model
+paused for drift).
 
 ### Batch 5 (5 November 2026)
 aaia_d1_081-110 and aaia_d2_135-176 were read against the rule above.
@@ -572,7 +572,7 @@ a real risk nothing raises); aaia_d2_144 tagged `ai-priority-word-decides`
 (FIRST puts limiting use ahead of retraining, the lasting fix); aaia_d2_165
 tagged `accuracy-is-not-assurance` (the runner-up watches overall accuracy,
 which targeted poisoning leaves normal; attack knowledge carries some of the
-weight). Five tags removed (below).
+weight). Six tags removed (below).
 
 **Untagged new items (low confidence):**
 - aaia_d1_081: was `accuracy-is-not-assurance`; the runner-up, a flawed benchmark, also challenges the score, so knowing generative models sample their answers decides.
