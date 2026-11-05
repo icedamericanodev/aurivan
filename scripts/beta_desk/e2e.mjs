@@ -375,12 +375,12 @@ const bd = await page.evaluate(() => {
     elig: (() => {
       const H = ['Timestamp', 'Email Address', 'Do you have an Android device with access to Google Play?', 'Which country are you in? ', 'When is your CISA exam? ',
         'Which other certifications interest you? (Optional; separate paid content, not included in this beta or reward.)', 'How did you find us? ', 'Testing commitment',
-        'Would you like your name in the app\'s "Thank you, beta testers" screen? ', 'Name or handle to show.\n(Max 24 characters. No links, emails or rude words. We check every name before adding it. Leave blank if you chose anonymous.) ', 'Please confirm. '];
+        'Would you like your name in the app\'s "Thank you, beta testers" screen? ', 'Name or handle to show.\n(Max 24 characters. No links, emails or rude words. We check every name before adding it. Leave blank if you chose anonymous.) ', 'Email me when the iPhone app is ready.', 'Please confirm. '];
       const q = (v) => '"' + String(v).replace(/"/g, '""') + '"';
       const rows = [H,
-        ['2026/11/02 9:15:03 PM GMT+8', 'ana@test.invalid', 'Android', 'Philippines', '1–3 months', 'CISM;CRISC', 'Reddit', 'I plan…', 'Yes, show my name or handle', 'Ann', "I'm 18 or older."],
-        ['2026/11/04 10:01:44 AM GMT+8', 'ben@test.invalid', 'No eligible Android device / no Google Play access', 'Singapore', '', '', '', '', '', '', ''],
-        ['2026/11/04 11:30:00 AM GMT+8', 'carla@test.invalid', 'Android', 'UAE', '', '', '', '', 'No, keep me anonymous', '', '']];
+        ['2026/11/02 9:15:03 PM GMT+8', 'ana@test.invalid', 'Android', 'Philippines', '1–3 months', 'CISM;CRISC', 'Reddit', 'I plan…', 'Yes, show my name or handle', 'Ann', '', "I'm 18 or older."],
+        ['2026/11/04 10:01:44 AM GMT+8', 'ben@test.invalid', 'No eligible Android device / no Google Play access', 'Singapore', '', '', '', '', '', '', '', ''],
+        ['2026/11/04 11:30:00 AM GMT+8', 'carla@test.invalid', 'Android', 'UAE', '', '', '', '', 'No, keep me anonymous', '', '', '']];
       const parsed = B.parseCSV(rows.map((r) => r.map(q).join(',')).join('\r\n'));
       const map = B.guessColumns(parsed[0]);
       const plan = B.planImport(parsed, map, {}, { order: 'mdy', keepOther: false, today: '2026-11-04' });
