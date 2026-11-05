@@ -37,6 +37,10 @@ Batched for the end of the uplift (web v13, mobile 2.0.0; DECISIONS 8). Write th
 - Practice always shows what to revisit and where to focus next, even before your first answer or when you're all caught up.
 - In high contrast mode, your picked answer, confidence and filters now stand out clearly, and every button keeps its edge.
 - Study notes titles no longer run into their read counts on small phones, and large text settings now apply on every page from the moment it opens.
+- Each study note now opens as its own reading page, with a way back to the list and the next note one tap away.
+- After a wrong answer, all three tips now stay open; only a long explanation folds under Read more.
+- Learn's tiles sit two by two on phones, and the answer screen shows the note, the principle, the terms and your note on every screen size.
+- Screen readers now hear which practice answer you picked, and the glossary letters are easier to tap.
 
 ## Follow-ups to do at the release
 - `mobile/src/engine/plantLooks.ts` `howToOpen` says "in the Herbarium": change to "in Badges" and rebuild `assets/kaisip-plant.js` in the same commit.
@@ -57,7 +61,9 @@ Batched for the end of the uplift (web v13, mobile 2.0.0; DECISIONS 8). Write th
 - Footer wording differs: Today "KaiSip is independent and not affiliated with ISACA." vs You and Settings "Not affiliated with or endorsed by ISACA®..."; pick one at the release.
 
 ## Carry into the next push (from the type leftovers review)
-- Glossary letter buttons are 28px tall on phones: bring them to the 44px target block.
+- Glossary letter buttons are 28px tall on phones: bring them to the 44px target block. (Web done in Phase 4 review round 3: 44px wide and tall at every width.)
+- Phone, same release as the web O1 build: stop calling `splitMissTips` in `app/session.tsx` so all three tips are open after a miss (PHASE4.md 7.10).
+- Source titles in `framework_ref` with spaced en or em dashes (52 questions): the web shows them as a colon; fix the originals in a content pass and show the same on the phone.
 - Glossary letter grid at 200% text leaves an orphan letter (5,5,5,5,5 then Z): even rows.
 - Letter bar spacing off the 4px scale (padding 10px, gap 3px): use the spacing tokens.
 - "Mastered" label in the Glossary ring overlaps the ring at 200% text; two labels use --muted where TYPE_SCALE 6 asks for --text2.

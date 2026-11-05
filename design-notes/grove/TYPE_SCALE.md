@@ -366,7 +366,7 @@ the literal with the role's token (no visual change).
 | 29 | `.td-planc-t` "Today's plan", 7738, 7885 | Fraunces 18/24 at 390, caps 11/14 at 1280 | title at every width |
 | 30 | `h2#tdBkH.plnt-invite-h` "Save a backup", 5205 | Figtree 600 15/20 | title |
 | 31 | `.td-planc-h.td-resume-h`, 7741 | Fraunces 20/26 | title |
-| 32 | `.ph-h` Practice hub and Mock hub heads, 6287 | headline | kicker (tab home, R4; phone practice.tsx:209, 364) |
+| 32 | `.ph-h` Practice hub heads, 6287 | headline | kicker (tab home, R4; phone practice.tsx:209, 364). The Mock setup page (`#mkPickH`, `#mkWH`, `#mkPastH`) is a pushed page, so its heads are headline (Phase 4 review round 3) |
 | 33 | `.ph-h` on mock and set results, 6287, 6556 | headline | headline (no change) |
 | 34 | `.sr-cap` "Today's principle" in the Practice rail (`#srhPrin`, `#phmPrin`), 6625 | caption 13 | kicker (same label as Today's `.td-card-k`) |
 | 34a | `.sr-cap` h2 on reading and results pages: `#srhCheck`, `#srhToc`, `#srhLook` (note page); `#srhDeeper`, `#srhMine` (answer screen and set results); `#srhSigns`, `#mrmSigns` (mock results). `#srhTerms` is an h3 `caption` over the second group inside Go deeper (PHASE4.md 4.2, Phase 4 review round 1) | caption 13 | headline (R4) |
