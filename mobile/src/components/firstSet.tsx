@@ -541,7 +541,7 @@ function PlantOffer({
             <T v="small">Want a plant that grows as you learn? It’s optional.</T>
             <Row gap={0} style={{ flexWrap: 'wrap', marginLeft: -space.sm }}>
               <Button kind="ghost" label="Plant a seed" accessibilityHint="Plants an oak. You can choose a different plant after." onPress={onPlant} />
-              <Button kind="ghost" label="Maybe later" accessibilityLabel="Maybe later, no plant for now" onPress={onNotNow} />
+              <Button kind="ghostNeutral" label="Maybe later" accessibilityLabel="Maybe later, no plant for now" onPress={onNotNow} />
             </Row>
           </>
         )}

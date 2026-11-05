@@ -428,7 +428,8 @@ const JumpBar = memo(function JumpBar({ onJump, inView }: { onJump: (k: JumpKey,
               borderRadius: 12,
               alignItems: 'center',
               justifyContent: 'center',
-              paddingHorizontal: space.sm,
+              // The 2pt edge below + 6 = the old 8pt inset, so "Mock exams" keeps its one line at 360pt.
+              paddingHorizontal: space.sm - 2,
               // A transparent edge of the same width when not chosen, so nothing moves.
               borderWidth: 2,
               borderColor: on ? c.ink : 'transparent',

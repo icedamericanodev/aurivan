@@ -958,7 +958,9 @@ export default function Today() {
                 )}
                 {gainShown && weakest && (
                   // The domain's short name ("IS Operations"), not the tile abbreviation ("IS Ops", spoken "I S ops"): UX review S6.
-                  <T v="meta">{`${answeredTotal} answered · where you’ll gain most: ${weakest.short}`}</T>
+                  // No-break spaces inside the area's name, so a narrow phone breaks before "Info Protection",
+                  // never between its words (DECISIONS 11). Screen readers read them as normal spaces.
+                  <T v="meta">{`${answeredTotal} answered · where you’ll gain most: ${weakest.short.replace(/ /g, '\u00A0')}`}</T>
                 )}
               </View>
             );

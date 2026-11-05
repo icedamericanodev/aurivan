@@ -345,7 +345,10 @@ describe('Today, top to bottom', () => {
     const line = allText().match(/200 answered · where you’ll gain most: ([^A]+?)(?= Also|$)/);
     expect(line).not.toBeNull();
     // The domain's short name ("IS Operations"), never the tile abbreviation ("IS Ops"): UX review S6.
-    expect(cisa.domains.some((d) => d.short === line![1].trim())).toBe(true);
+    // No-break spaces hold the area's name together, so a narrow phone never splits it (DECISIONS 11).
+    const name = line![1].trim();
+    expect(name).not.toMatch(/ /);
+    expect(cisa.domains.some((d) => d.short === name.replace(/\u00A0/g, ' '))).toBe(true);
   });
   it('never hours studied, and no single readiness percent', () => {
     storePlan([WARM, REVIEW, LESSON], [false, false, false]);
