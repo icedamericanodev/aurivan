@@ -11,6 +11,7 @@
 #
 #   The list:
 #     - the pages: index.html, privacy.html, terms.html, support.html,
+#       how-questions-are-made.html (how questions are made and checked),
 #       beta.html (the beta-tester sign-up page, kaisip.com/beta), and
 #       beta-desk.html (the private Beta Desk, kaisip.com/beta-desk: the page
 #       holds no tester data; rows load only after an admin's two-step
@@ -52,7 +53,8 @@ OUT="${SITE_OUT:-_site}"
 # SITE_MODE (owner, 4 Nov 2026): the website is CLOSED to a landing page
 # until the phone app is in the stores.
 #   landing (the default, what Cloudflare publishes): kaisip.com shows the beta
-#     landing page (beta.html, also at /beta) plus Privacy, Terms and Help. The
+#     landing page (beta.html, also at /beta) plus Privacy, Terms, Help and
+#     How questions are made. The
 #     web study app and every data file are not published; any other address
 #     shows the landing page (Cloudflare's single-page fallback serves
 #     index.html, which is the landing page here).
@@ -69,7 +71,7 @@ case "$SITE_MODE" in
   landing|app) ;;
   *) echo "build_site: SITE_MODE must be landing or app (got: $SITE_MODE)" >&2; exit 1 ;;
 esac
-PAGES=(index.html privacy.html terms.html support.html beta.html)
+PAGES=(index.html privacy.html terms.html support.html how-questions-are-made.html beta.html)
 DATA=(data/free/cisa_d1.json data/free/cisa_d2.json data/free/cisa_d3.json data/free/cisa_d4.json data/free/cisa_d5.json data/cisa_notes.json data/mindset/principles.json data/exam/cisa_exam_guide.json data/exam/final_review_week.json)
 SITE_CONFIG=(_headers _redirects)
 # File types allowed inside assets/ (lower case).
@@ -150,7 +152,7 @@ fi
 
 # The legal pages' inline theme script is allowed in _headers by its sha256
 # hash. If the script is edited, the hash must change too, or browsers block it.
-for page in privacy.html terms.html support.html beta.html beta-desk.html; do
+for page in privacy.html terms.html support.html how-questions-are-made.html beta.html beta-desk.html; do
   hash="$(python3 -c 'import re,sys,hashlib,base64
 s=open(sys.argv[1]).read(); m=re.search(r"<script>(.*?)</script>",s,re.S)
 print("sha256-"+base64.b64encode(hashlib.sha256(m.group(1).encode()).digest()).decode() if m else "")' "$page")"
@@ -245,7 +247,7 @@ PYCHK
 while IFS= read -r -d '' f; do
   rel="${f#"$OUT"/}"
   case "$rel" in
-    index.html|privacy.html|terms.html|support.html|beta.html|_headers|_redirects|favicon.ico) ;;
+    index.html|privacy.html|terms.html|support.html|how-questions-are-made.html|beta.html|_headers|_redirects|favicon.ico) ;;
     beta-desk.html) [ -n "$DESK" ] || fail "the Beta Desk must not be in the preview folder" ;;
     data/free/cisa_d[1-5].json|data/cisa_notes.json|data/mindset/principles.json) ;;
     data/exam/cisa_exam_guide.json|data/exam/final_review_week.json) ;;

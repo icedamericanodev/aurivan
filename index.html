@@ -3464,6 +3464,8 @@ header {
   font: var(--t-hero); letter-spacing: var(--tr-hero);
   margin-bottom:16px;display:flex;align-items:center;gap:8px;
 }
+/* The report sheet line (transparency, 5 Nov 2026): close under the title. */
+.flag-ai-note { margin:-8px 0 14px; }
 .flag-label {
   font: var(--t-caption); letter-spacing: var(--tr-caption);
   text-transform: none;color:var(--muted);margin-bottom:6px;display:block;
@@ -9225,6 +9227,7 @@ html[data-kbd] :where(.you-plant, .vision-panel, .gt-panel, .readiness-card) :wh
   <section class="legal-disclaimer" data-testid="legal-disclaimer">
     <div class="legal-disclaimer-head">Disclaimer</div>
     <p>This is an independent CISA exam preparation tool designed to help users develop an IS auditor’s way of reasoning through scenario-based practice and critical thinking. Original questions and notes, written with AI assistance and checked against ISACA’s published exam outline and standards.</p>
+    <p>KaiSip's questions and notes are written with AI help and can contain mistakes. Check anything important against ISACA's own materials and your own judgment. <a href="how-questions-are-made.html" target="_blank" rel="noopener noreferrer">How questions are made<span class="sr-only"> (opens in a new tab)</span></a></p>
     <p><span class="warn">This app is NOT affiliated with, endorsed by, or sponsored by ISACA&reg;.</span></p>
     <p><strong>CISA&reg; is a registered trademark of ISACA.</strong> All references are used for educational and identification purposes only.</p>
     <p>This tool is intended as a supplementary study resource and should not be considered a replacement for official ISACA materials.</p>
@@ -9284,7 +9287,7 @@ html[data-kbd] :where(.you-plant, .vision-panel, .gt-panel, .readiness-card) :wh
 {"cat":"Study strategy","q":"Which domain should I focus on?","a":"Domains 4 and 5 are the largest, at about 26% each. Use the Weak Spots tab to find where your accuracy is lowest and drill there first."},
 {"cat":"Study strategy","q":"How many practice questions should I do?","a":"There is no fixed number. Aim for consistent daily practice, full coverage of every domain, and Mock Exams close to your test date. How carefully you review each answer matters more than raw volume."},
 {"cat":"About & your data","q":"Is this app affiliated with ISACA?","a":"No. It is an independent study resource. CISA is a registered trademark of ISACA; this app is for educational use only and is not a substitute for official ISACA materials."},
-{"cat":"About & your data","q":"Where do the questions and notes come from?","a":"Original questions and notes, written with AI assistance and checked against ISACA’s published exam outline and standards."},
+{"cat":"About & your data","q":"Where do the questions and notes come from?","a":"KaiSip's questions, explanations and study notes are original. They are written with heavy AI help, directed by a CISA-certified founder, and each question is mapped to ISACA's current CISA exam content outline. Before a question is added, it goes through automated checks and AI review checks (exam question style, technical accuracy, a blind answer test, sources and how current they are, consistency across domains, grammar, and whether the longest option gives the answer away). Then the founder reviews the results. There is no outside panel of human reviewers yet. AI tools make mistakes, and so do people, so check anything important against ISACA's own materials and your own judgment. If something looks wrong, use Report a problem; fixes ship in app updates. A readiness range is a study estimate, not a prediction of your exam result. KaiSip is not affiliated with or endorsed by ISACA."},
 {"cat":"About & your data","q":"Does the app cost anything?","a":"Not during the beta. KaiSip is free during the beta, with no account and no ads. If paid features come later, we'll say so here first, and everything you've saved stays yours."},
 {"cat":"About & your data","q":"Is everything free on the website?","a":"The website has a free set of practice questions from every topic, plus all the study notes, the glossary and lessons, and review of what you've answered. The full course, with every practice question and full mock exams, is in the KaiSip Android app (in beta now)."},
 {"cat":"About & your data","q":"Is my data private?","a":"Yes. Your progress is stored only in your own browser and never leaves your device. There is no sign-up, and your answers are not sent to any server."},
@@ -27005,6 +27008,7 @@ function showFlagModal() {
   modal.innerHTML = '<div class="flag-overlay" onclick="closeFlagModal(event)">'
     + '<div class="flag-modal" onclick="event.stopPropagation()">'
     + '<div class="flag-title">Flag this question</div>'
+    + '<p class="fb-helper flag-ai-note">Written with AI help, so mistakes can slip through. Thanks for telling us.</p>'
     + '<label class="flag-label" for="flagReason">Reason</label>'
     + '<select class="flag-select" id="flagReason">'
     + '<option value="I think the correct answer is wrong">I think the correct answer is wrong</option>'
