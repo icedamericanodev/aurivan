@@ -1305,6 +1305,7 @@ header {
 .q-text {
   font: var(--t-stem); letter-spacing: var(--tr-stem);
   color: var(--text); margin-bottom: 24px;
+  overflow-wrap: anywhere; hyphens: auto; hyphenate-limit-chars: 10 4 4;
 }
 
 /* â”€â”€ OPTIONS â”€â”€ */
@@ -1636,7 +1637,7 @@ header {
   background: var(--surface); border: 2px solid var(--border2);
   border-radius: var(--radius); padding: 24px; box-shadow: var(--shadow);
 }
-.ws-title { font: var(--t-display); letter-spacing: var(--tr-display); margin-bottom: 20px; }
+.ws-title { font: var(--t-hero); letter-spacing: var(--tr-hero); overflow-wrap: anywhere; margin: 0 0 20px; }
 .ws-row { display: flex; align-items: center; gap: 14px; margin-bottom: 14px; }
 .ws-label { font: var(--t-meta); width: 80px; flex-shrink: 0; }
 .ws-track { flex: 1; height: 10px; background: var(--border2); border-radius: var(--r-5); overflow: hidden; }
@@ -1645,15 +1646,16 @@ header {
 .ws-rec {
   background: var(--surface2); border: 2px solid var(--border);
   border-radius: var(--r-12); padding: 14px 18px; margin-bottom: 8px;
-  display: flex; align-items: center; gap: 14px;
+  display: flex; flex-wrap: wrap; align-items: center; gap: 8px 14px;
 }
+.ws-rec > div { flex: 1 1 12em; min-width: 0; overflow-wrap: anywhere; }
 .ws-rec-title { font: var(--t-label); margin-bottom: 2px; }
-.ws-rec-sub { font: var(--t-meta); color: var(--muted); }
+.ws-rec-sub { font: var(--t-meta); color: var(--text2); }
 .ws-prac-btn {
   margin-left: auto; background: transparent; border: 2px solid var(--accent);
   border-radius: var(--r-sm); padding: 7px 14px; color: var(--accent);
   font: var(--t-label);
-  cursor: pointer; transition: var(--tr); flex-shrink: 0;
+  cursor: pointer; transition: var(--tr); flex-shrink: 1; max-width: 100%; white-space: normal;
 }
 .ws-prac-btn:hover { background: var(--btn); color: var(--on-btn); }
 
@@ -2563,8 +2565,6 @@ header {
 .pl-d-head { padding-bottom: var(--sp-lg); border-bottom: 1px solid var(--border); }
 .pl-d-cap { font: var(--t-caption); letter-spacing: var(--tr-caption); color: var(--text2); margin: 0 0 var(--sp-xs); }
 .pl-d-title { font: var(--t-display); letter-spacing: var(--tr-display); color: var(--text); margin: 0; }
-.pl-d-title:focus { outline: none; }
-.pl-d-title:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; border-radius: var(--r-sm); }
 .pl-d-body .gt-sec { margin-top: var(--sp-xxl); }
 .pl-d-body .gt-sec:first-child { margin-top: var(--sp-xl); }
 .pl-chips { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: var(--sp-sm); }
@@ -2634,8 +2634,6 @@ header {
 .eg-src-l { font-weight: 600; }
 .eg-src a { color: var(--accent-text); text-decoration: underline; text-underline-offset: 3px; text-decoration-thickness: 1px; }
 .eg-src a .ico { display: inline-block; vertical-align: -2px; margin-left: 2px; }
-.eg-h:focus, .fw-h3:focus, .fw-day-h:focus, .eg-toc .gt-cap:focus { outline: none; }
-.eg-h:focus-visible, .fw-h3:focus-visible, .fw-day-h:focus-visible, .eg-toc .gt-cap:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; border-radius: var(--r-sm); }
 
 /* Final review week: the days, flat on the paper with a rule between them;
    today's day (when an exam date is set) is outlined in the ink colour. */
@@ -2880,15 +2878,24 @@ header {
 }
 .gloss-count-clear:hover { border-color: var(--accent); color: var(--accent); }
 
-/* A-Z letter index */
+/* A-Z letter index: one row of 26 when the bar is wide enough, else two
+   even rows of 13, then rows of 9 on the narrowest phones. Measured on the
+   bar itself (rem), so a larger text setting steps it down too. */
 .gloss-letter-index {
-  display: flex; flex-wrap: wrap; gap: 3px;
+  container-type: inline-size;
   background: var(--surface); border: 2px solid var(--border2);
-  border-radius: var(--r-12); padding: 10px 12px; margin-bottom: 14px;
+  border-radius: var(--r-12); padding: 10px; margin-bottom: 14px;
   box-shadow: var(--shadow);
 }
+.gloss-letter-grid {
+  display: grid; gap: 3px;
+  grid-template-columns: repeat(auto-fill, minmax(1.75rem, 1fr));
+}
+@container (min-width: 14rem) { .gloss-letter-grid { grid-template-columns: repeat(9, minmax(0, 1fr)); } }
+@container (min-width: 19.25rem) { .gloss-letter-grid { grid-template-columns: repeat(13, minmax(0, 1fr)); } }
+@container (min-width: 43.75rem) { .gloss-letter-grid { grid-template-columns: repeat(26, minmax(0, 1fr)); } }
 .gloss-letter {
-  flex: 1; min-width: 22px; padding: 5px 4px; border-radius: var(--r-6);
+  min-width: 0; padding: 5px 2px; border-radius: var(--r-6);
   background: transparent; border: none; cursor: pointer;
   font: var(--t-caption); letter-spacing: var(--tr-caption);
   color: var(--muted); transition: var(--tr); text-align: center;
@@ -2898,8 +2905,10 @@ header {
 .gloss-letter.has:hover { background: var(--btn); color: var(--on-btn); }
 .gloss-letter:disabled { opacity: 0.3; cursor: default; }
 
+/* Two columns at most: each column is at least half the list (so never
+   three), and at least 17.5em (so one column when text is large). */
 .gloss-list {
-  display: grid; grid-template-columns: repeat(auto-fill, minmax(min(280px, 100%), 1fr));
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(max(min(17.5em, 100%), calc(50% - 6px)), 1fr));
   gap: 12px;
 }
 .gloss-card {
@@ -3519,6 +3528,7 @@ header {
   border-radius:var(--radius);padding:32px;max-width:520px;width:92%;
   max-height:80vh;overflow-y:auto;box-shadow:var(--shadow-lg);
   animation:slideUp 0.3s ease both;
+  overflow-wrap:break-word;
 }
 .cl-title {
   font: var(--t-hero); letter-spacing: var(--tr-hero);
@@ -3613,7 +3623,7 @@ header {
 }
 .fb-types { display:flex;gap:8px;flex-wrap:wrap; }
 .fb-type {
-  flex:1;min-width:90px;padding:10px 12px;border-radius:var(--r-10);
+  flex: 1 1 auto; min-width: max(90px, min-content); padding: 0.625em 0.75em; border-radius: var(--r-10);
   border:2px solid var(--border2);background:var(--surface2);
   font: var(--t-chip);
   color:var(--muted);cursor:pointer;transition:var(--tr);
@@ -3644,11 +3654,12 @@ header {
   cursor:pointer;user-select:none;
 }
 .fb-checkrow input { cursor:pointer;accent-color:var(--accent); }
-.fb-actions { display:flex;gap:10px;margin-top:8px; }
+.fb-actions { display:flex;flex-wrap:wrap;gap:10px;margin-top:8px; }
 .fb-btn {
   flex:1;padding:12px;border-radius:var(--r-10);border:none;
   font: var(--t-label);
   cursor:pointer;transition:var(--tr);
+  min-width:min-content;max-width:100%;white-space:normal;
 }
 .fb-btn.cancel { background:transparent;border:2px solid var(--border2);color:var(--muted); }
 .fb-btn.cancel:hover { border-color:var(--text);color:var(--text); }
@@ -3876,7 +3887,7 @@ header {
 }
 .bk-drill-btn:hover { background: var(--accent); transform: translateY(-1px); }
 .bk-tag-select {
-  margin-left: auto; flex-shrink: 0;
+  margin-left: auto; flex-shrink: 0; max-width: 100%; min-width: 0;
   padding: 5px 10px; border: 1.5px solid var(--border2); border-radius: var(--r-sm);
   background: var(--surface2); color: var(--text2);
   font: var(--t-body); letter-spacing: normal;
@@ -3890,7 +3901,7 @@ header {
      narrow screens. Wrap it to its own full-width row below the text, and pad
      it to a >=44px tap target. */
   .bk-item { flex-wrap: wrap; }
-  .bk-tag-select { flex-basis: 100%; margin-left: 0; margin-top: 8px; padding: 11px 12px; }
+  .bk-tag-select { flex-basis: 100%; width: 100%; margin-left: 0; margin-top: 8px; padding: 11px 12px; }
 }
 
 /* ── PACING FEEDBACK ── */
@@ -3905,7 +3916,7 @@ header {
 .pacing-icon { font-size: 18px; flex-shrink: 0; }
 .pacing-info { flex: 1; }
 .pacing-info strong { display: block; font: var(--t-caption); letter-spacing: var(--tr-caption); color: var(--text); }
-.pacing-info span { font: var(--t-meta); color: var(--muted); }
+.pacing-info span { font: var(--t-meta); color: var(--text2); }
 .pacing-badge {
   font: var(--t-caption); letter-spacing: var(--tr-caption);
   padding: 3px 10px; border-radius: var(--r-pill);
@@ -4534,7 +4545,7 @@ header {
 .q-num { font: var(--t-meta); color: var(--muted); }
 .bk-btn, .fl-btn { min-width: 44px; min-height: 44px; border-radius: var(--r-round); background: transparent; border: 1.5px solid var(--control); color: var(--text); }
 .q-body { padding: 20px 0 8px; }
-.q-text { font: var(--t-stem); letter-spacing: var(--tr-stem); color: var(--text); margin-bottom: 20px; }
+.q-text { font: var(--t-stem); letter-spacing: var(--tr-stem); color: var(--text); margin-bottom: 20px; overflow-wrap: anywhere; hyphens: auto; hyphenate-limit-chars: 10 4 4; }
 .scenario-block { background: transparent; border: 0; border-left: 3px solid var(--accent); border-radius: 0; padding: 2px 0 2px 16px; }
 .sc-label { font: var(--t-caption); letter-spacing: var(--tr-caption); color: var(--accent-text); }
 .sc-text { font: var(--t-body); color: var(--text2); }
@@ -4543,6 +4554,7 @@ header {
   background: var(--surface); border: 1.5px solid var(--raised-outline); box-shadow: var(--shadow);
   border-radius: var(--r-md); padding: 15px 16px; gap: 12px; align-items: flex-start;
   font: var(--t-body); color: var(--text); min-height: 56px;
+  overflow-wrap: anywhere; hyphens: auto; hyphenate-limit-chars: 10 4 4;
 }
 .opt:hover:not(:disabled) { transform: none; background: var(--surface); border-color: var(--control); color: var(--text); }
 .opt-letter {
@@ -4648,6 +4660,16 @@ header {
 .cl-ver-label .cl-latest { background: var(--btn); color: var(--on-btn); border-radius: var(--r-pill); }
 .cl-items li { font: var(--t-small); color: var(--text); }
 .cl-cat, .cl-cat.new, .cl-cat.improved, .cl-cat.fixed { background: var(--surface2); color: var(--text2); border-radius: var(--r-pill); font: var(--t-caption); letter-spacing: var(--tr-caption); }
+/* New, Improved and Fixed share one width (em, so it grows with the text),
+   so every item's words start at one left edge. Where that column would
+   leave the words too little room (a narrow phone, large text) the label
+   sits above its item instead. */
+.cl-cat { min-width: 6.25em; box-sizing: border-box; text-align: center; }
+@media (max-width: 24em) {
+  .cl-items li { flex-direction: column; gap: 4px; }
+  .cl-cat { min-width: 0; }
+  .cl-ver-label { flex-wrap: wrap; row-gap: 4px; }
+}
 .consent-banner { background: var(--surface); border: 1px solid var(--raised-outline); box-shadow: var(--shadow-lg); border-radius: var(--r-lg); color: var(--text); }
 .consent-btn { border-radius: var(--r-pill); min-height: 44px; font: var(--t-label); }
 .consent-btn.accept { background: var(--btn); color: var(--on-btn); border: 1.5px solid var(--btn); }
@@ -4687,7 +4709,11 @@ header {
 .gt-seg-btn[aria-selected="true"] { background: var(--surface); border-color: var(--text); color: var(--text); box-shadow: var(--shadow); }
 .gt-seg-name { font: var(--t-chip); margin-left: 6px; }
 .gt-seg-btn[aria-selected="true"] .gt-seg-name { color: var(--text2); }
-@media (max-width: 600px) {
+/* The switcher follows its own width in rem units, not the window: the five
+   columns need about 34em, so a narrow main column or 200% text keeps the
+   scrolling strip with whole names. */
+.gt-seg-cq { container: gtseg / inline-size; font-size: 1rem; }
+@container gtseg (max-width: 33.9375em) {
   .gt-seg-wrap::after { content: ''; position: absolute; top: 0; right: 0; bottom: 0; width: 15%; pointer-events: none; background: linear-gradient(to right, transparent, var(--bg)); }
   .gt-seg { background: transparent; padding: 0; gap: 8px; padding-right: 15%; }
   .gt-seg-btn { flex: 0 0 auto; min-height: 44px; border: 1.5px solid var(--control); border-radius: var(--r-pill); }
@@ -4736,6 +4762,7 @@ header {
 
 /* Shared captions, buttons */
 .gt-cap, .gt-cap-inline { font: var(--t-caption); letter-spacing: var(--tr-caption); color: var(--text2); margin: 0 0 6px; }
+.gt-sec-def > .gt-cap { color: var(--accent-text); }
 .gt-btn-ghost {
   display: inline-flex; align-items: center; gap: 4px; min-height: 44px; padding: 0 4px; background: none; border: 0; cursor: pointer;
   color: var(--accent-text); font: var(--t-label);
@@ -4868,7 +4895,7 @@ summary.gt-icon-btn::-webkit-details-marker { display: none; }
 /* Subtopic body sections (fixed order) */
 .gt-sec { margin-top: 18px; max-width: 68ch; }
 .gt-sec:first-child { margin-top: 4px; }
-.gt-oneline { font: var(--t-stem); letter-spacing: var(--tr-stem); color: var(--text); }
+.gt-oneline { font: var(--t-stem); letter-spacing: var(--tr-stem); color: var(--text); overflow-wrap: anywhere; hyphens: auto; hyphenate-limit-chars: 10 4 4; }
 .gt-p { font: var(--t-body); color: var(--text); }
 .gt-p + .gt-p { margin-top: 10px; }
 .gt-muted { color: var(--text2); font: var(--t-meta); }
@@ -4902,9 +4929,9 @@ summary.gt-icon-btn::-webkit-details-marker { display: none; }
   .gt-table-stack, .gt-table-stack tbody, .gt-table-stack tr, .gt-table-stack th, .gt-table-stack td { display: block; width: 100%; min-width: 0; }
   .gt-table-stack thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
   .gt-table-stack tbody tr { background: var(--surface); border: 1px solid var(--raised-outline); box-shadow: var(--shadow); border-radius: var(--r-12); padding: 8px 12px; margin-bottom: 8px; }
-  .gt-table-stack tbody th { border: 0; padding: 0 0 2px; font: var(--t-caption); letter-spacing: var(--tr-caption); color: var(--text2); }
+  .gt-table-stack tbody th { border: 0; padding: 0 0 2px; font: var(--t-label); letter-spacing: normal; color: var(--text); }
   .gt-table-stack td { border: 0; padding: 1px 0; font: var(--t-small); }
-  .gt-table-stack td::before { content: attr(data-col) ': '; font-weight: 600; color: var(--text); }
+  .gt-table-stack td::before { content: attr(data-col); display: block; margin-top: var(--sp-xs); font: var(--t-caption); letter-spacing: var(--tr-caption); color: var(--accent-text); }
 }
 }
 .gt-figure { margin: 20px 0 0; padding: 14px 0; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); max-width: 68ch; }
@@ -5026,12 +5053,12 @@ button.principle-link { background: none; border: 0; border-bottom: 1px dashed c
   body[data-tab="about"] .mindset-strip, body[data-tab="about"] .stats-row, body[data-tab="about"] #studyRecCard,
   body[data-tab="about"] #readinessCard, body[data-tab="about"] .pwa-banner, body[data-tab="about"] #welcome-banner { display: none !important; }
 }
-/* Domain switcher: all five fit on desktop (number above name). */
+/* Domain switcher: all five fit when it is wide enough (number above name). */
 .gt-seg-top { display: inline-flex; align-items: center; }
-@media (min-width: 601px) {
+@container gtseg (min-width: 34em) {
   .gt-seg { overflow: visible; }
   .gt-seg-btn { flex: 1 1 0; min-width: 0; flex-direction: column; gap: 0; min-height: 56px; padding: 6px 8px; }
-  .gt-seg-name { margin-left: 0; max-width: 100%; white-space: normal; overflow: visible; text-overflow: clip; overflow-wrap: anywhere; hyphens: auto; text-wrap: balance; text-align: center; }
+  .gt-seg-name { margin-left: 0; max-width: 100%; white-space: normal; overflow: visible; text-overflow: clip; overflow-wrap: break-word; text-wrap: balance; text-align: center; }
 }
 /* Mock results: the score header is the screen's one forest panel. */
 body[data-mock-results="1"] #readinessCard { display: none; }
@@ -5077,7 +5104,6 @@ body[data-tab]:not([data-tab="about"]):not([data-tab="faq"]) .legal-disclaimer {
 .td-streak { display: inline-flex; align-items: center; gap: var(--sp-sm); margin: 0; font: var(--t-meta); color: var(--text2); }
 .td-streak .ico { color: var(--clay); flex-shrink: 0; }
 .td-title { font: var(--t-display); letter-spacing: var(--tr-display); color: var(--text); margin: var(--sp-xs) 0 0; overflow-wrap: anywhere; }
-.td-title:focus { outline: none; }
 .td-intro { font: var(--t-small); color: var(--text2); margin: var(--sp-sm) 0 0; max-width: 52ch; }
 .td-setdate {
   position: relative; display: inline; padding: 0; margin: 0; background: none; border: 0; cursor: pointer;
@@ -5225,7 +5251,7 @@ body[data-tab]:not([data-tab="about"]):not([data-tab="faq"]) .legal-disclaimer {
 .td-none { font: var(--t-headline); letter-spacing: var(--tr-headline); color: var(--text); margin: 0; }
 .td-legend { list-style: none; margin: var(--sp-xl) 0 0; padding: 0; border-top: 1px solid var(--border); }
 .td-legend li { display: flex; align-items: center; gap: var(--sp-sm); min-height: 44px; padding: var(--sp-sm) 0; border-bottom: 1px solid var(--border); }
-.td-dname { flex: 1; min-width: 0; font: var(--t-small); color: var(--text); }
+.td-dname { flex: 1; min-width: 0; overflow-wrap: anywhere; font: var(--t-small); color: var(--text); }
 .td-dval { flex-shrink: 0; text-align: right; }
 .td-num { font: var(--t-num-inline); letter-spacing: var(--tr-num-inline); color: var(--text); }
 .td-num sup { font-size: var(--t-num-sup); line-height: 0; vertical-align: .9em; }
@@ -5285,8 +5311,6 @@ body[data-tab]:not([data-tab="about"]):not([data-tab="faq"]) .legal-disclaimer {
 .pg-foot { order: 4; }
 .pg-sec { margin-top: var(--sp-xxxl); }
 .pg-h2 { font: var(--t-headline); letter-spacing: var(--tr-headline); color: var(--text); margin: 0 0 var(--sp-md); }
-.pg-h2:focus { outline: none; }
-.pg-h2:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; border-radius: var(--r-sm); }
 .pg-h-tag { display: flex; flex-wrap: wrap; align-items: center; gap: var(--sp-sm); margin: 0 0 var(--sp-md); }
 .pg-h-tag .pg-h2 { margin: 0; }
 .pg-tag { font: var(--t-caption); letter-spacing: var(--tr-caption); color: var(--text2); background: var(--surface2); border-radius: var(--r-pill); padding: var(--sp-xs) var(--sp-sm); }
@@ -5455,18 +5479,20 @@ button.pg-cd:hover { background: var(--surface2); }
 .fg-scale-w { margin: 0; font: var(--t-aside); color: var(--text2); }
 .fg-scale-none { font: var(--t-headline); letter-spacing: var(--tr-headline); color: var(--text); }
 .fg-sb { max-width: 360px; margin-top: var(--sp-sm); padding: 0 var(--sp-md); }
-.fg-sb-in { position: relative; height: 56px; }
-.fg-sb-svg { position: absolute; left: 0; top: 16px; width: 100%; height: 20px; overflow: visible; }
+/* The bar's box and label rows are in rem, so they grow with the labels at
+   large text; 80 sits on the same baseline as 0, 50 and 100 (the tick ends
+   above them), as on You. */
+.fg-sb-in { position: relative; height: 3.625rem; }
+.fg-sb-svg { position: absolute; left: 0; top: 1.125rem; width: 100%; height: 20px; overflow: visible; }
 .fg-sb-svg rect, .fg-sb-svg path { vector-effect: non-scaling-stroke; }
 .fg-sb-a { fill: var(--text2); stroke: var(--text2); stroke-width: .8; }
 .fg-sb-b { fill: var(--raised); stroke: var(--text2); stroke-width: .8; }
 .fg-sb-r { fill: var(--accent); stroke: var(--accent); stroke-width: .8; }
 .fg-sb-br { fill: none; stroke: var(--accent); stroke-width: 2; }
 .fg-sb-tick { fill: none; stroke: var(--text); stroke-width: 1.4; }
-.fg-sb-t, .fg-sb-rt { position: absolute; transform: translateX(-50%); white-space: nowrap; font: var(--t-fg-tiny); font-variant-numeric: tabular-nums; }
-.fg-sb-t { top: 38px; color: var(--text2); }
-.fg-sb-t.fg-sb-mark { top: 42px; }
-.fg-sb-rt { top: 0; font-weight: 600; color: var(--accent-text); }
+.fg-sb-t, .fg-sb-rt { position: absolute; transform: translateX(-50%); white-space: nowrap; font: var(--t-fg-small); font-variant-numeric: tabular-nums; }
+.fg-sb-t { top: 2.5rem; color: var(--text2); }
+.fg-sb-rt { top: 0; color: var(--accent-text); }
 /* Stem chart: one stem per area on one scale. The list below it is the same
    data: read by screen readers, and shown instead of the chart at large text
    (the phone's LARGE_TEXT, font scale 1.3+) or in a column under 300px. */
@@ -5540,7 +5566,7 @@ button.pg-cd:hover { background: var(--surface2); }
 .fg-key-body { flex: 1 1 auto; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
 .fg-key-line { display: flex; align-items: baseline; gap: var(--sp-sm) var(--sp-md); min-width: 0; }
 .fg-key-2 .fg-key-t { font-weight: 600; }
-.fg-key-m { font: var(--t-small); color: var(--text2); overflow-wrap: anywhere; }
+.fg-key-m { font: var(--t-meta); color: var(--text2); overflow-wrap: anywhere; }
 .fg-key-chev { flex: none; align-self: center; display: inline-flex; margin-left: auto; color: var(--muted); }
 .fg-key-btn:hover .fg-key-chev { color: var(--text); }
 .fg-key-btn:hover .fg-key-t { text-decoration: underline; text-underline-offset: 3px; }
@@ -5944,7 +5970,6 @@ body[data-app-cta-card="shown"][data-section="today"] .app-cta-line { display: n
 /* v12.47: the verdict word is ink; the leaf's fill and mark carry the state
    (and the word says it), so colour is never doubled or the only signal. */
 .vr-hero { margin: 0; font: var(--t-hero); letter-spacing: var(--tr-hero); color: var(--text); }
-.vr-hero:focus { outline: none; }
 /* The coach's voice: the italic lead, under the word from 700px (leaf 38 + gap 12). */
 .vr-coach { margin: var(--sp-xs) 0 0; font: var(--t-aside); color: var(--text2); }
 @media (min-width: 700px) { .vr-coach { margin-left: 50px; } }
@@ -6103,8 +6128,6 @@ body[data-qmoves] .vr-skip-moves { display: block; }
   display: inline-flex; align-items: center; min-height: 44px; font: var(--t-label); color: var(--accent-text);
   text-decoration: underline; text-underline-offset: 3px; outline: 2px solid var(--focus-ring); outline-offset: 2px; border-radius: var(--r-sm);
 }
-#srhMoves:focus { outline: none; }
-#srhMoves:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
 /* Motion: the plate's rows fade in 60ms apart from 120ms after the verdict;
    the tag settles from .96. Reduce Motion: the finished plate. */
 @keyframes vmRow { from { opacity: 0; } to { opacity: 1; } }
@@ -6145,7 +6168,6 @@ body[data-qmoves] .vr-skip-moves { display: block; }
 .ph { max-width: 720px; }
 .ph[hidden], .pf[hidden] { display: none; }
 .ph-title { font: var(--t-display); letter-spacing: var(--tr-display); color: var(--text); margin: var(--sp-xs) 0 var(--sp-lg); }
-.ph-title:focus { outline: none; }
 /* v12.49 (premium round 2, 5.3): the coach's line is an italic lead under the title. */
 .ph-lead { margin: calc(-1 * var(--sp-sm)) 0 var(--sp-xxl); font: var(--t-aside); color: var(--text2); max-width: 60ch; }
 @media (prefers-reduced-motion: no-preference) { .ph-lead { transition: opacity .4s ease; } }
@@ -6230,7 +6252,7 @@ body[data-qmoves] .vr-skip-moves { display: block; }
 .ph-dom-w { font: var(--t-aside); color: var(--text2); }
 .ph-dom-w.c { color: var(--clay); }
 .ph-dom-m { font: var(--t-meta); color: var(--text2); }
-.ph-dom-v { min-width: 52px; text-align: right; font: var(--t-num-value); letter-spacing: var(--tr-num-value); color: var(--text); white-space: nowrap; }
+.ph-dom-v { min-width: 52px; text-align: right; font: var(--t-num-inline); letter-spacing: var(--tr-num-inline); color: var(--text); white-space: nowrap; }
 .ph-dom-v sup { font-size: var(--t-num-sup); line-height: 0; vertical-align: .9em; letter-spacing: 0; }
 .ph-dom-v.none { color: var(--text2); }
 .ph-bands { margin: var(--sp-sm) 0 0; font: var(--t-meta); color: var(--text2); max-width: 62ch; }
@@ -6315,7 +6337,6 @@ body[data-tab="practice"][data-pview="focus"] #subNav { display: none; }
 .rs-kicker { font: var(--t-meta); color: var(--text2); margin: 0; }
 .rs-title { font: var(--t-display); letter-spacing: var(--tr-display); color: var(--text); margin: var(--sp-xs) 0 0; overflow-wrap: anywhere; }
 .rs-set .rs-title { font: var(--t-hero); letter-spacing: var(--tr-hero); }
-.rs-title:focus { outline: none; }
 .rs-fact { font: var(--t-small); color: var(--text2); margin: var(--sp-xs) 0 0; }
 .rs-timesup { font: var(--t-label); color: var(--clay); margin: var(--sp-sm) 0 0; }
 .rs-plate { margin-top: var(--sp-xxl); background: var(--raised2); border-radius: var(--r-lg); padding: var(--sp-xxl); }
@@ -6383,7 +6404,6 @@ body[data-tab="practice"][data-pview="focus"] #subNav { display: none; }
 .sr-sec .mr-signs + .fg-cap + .sr-link { margin-top: var(--sp-md); }
 /* Review answers: key-list rows on the paper, opening in place. */
 .rs-review { margin-top: var(--sp-2xl); }
-.rs-review .ph-h:focus { outline: none; }
 .mr-h-row { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--sp-sm) var(--sp-lg); }
 .mr-seg { display: inline-flex; flex-wrap: wrap; gap: 2px; padding: 3px; border: 1.5px solid var(--control); border-radius: var(--r-pill); }
 .mr-seg-b {
@@ -6478,6 +6498,11 @@ body[data-tab="practice"][data-pview="focus"] #subNav { display: none; }
 .mk-type-m { font: var(--t-small); color: var(--text2); margin: var(--sp-xs) 0 var(--sp-xl); flex: 1; }
 .mk-type .rs-btn { width: 100%; }
 .mk-weights, .mk-past { margin-top: var(--sp-md); }
+/* At large text the date and count move under the name instead of pushing the row past the screen. */
+.mk-weights li, .mk-past li { flex-wrap: wrap; }
+.mk-weights .td-dname, .mk-past .td-dname { flex: 1 1 auto; }
+.mk-weights .td-dval, .mk-past .td-dval { margin-left: auto; }
+.fg-large .mk-weights .rs-dcount, .fg-large .mk-past .rs-dcount { order: 3; flex-basis: 100%; }
 .mk-foot { font: var(--t-meta); color: var(--text2); margin: var(--sp-2xl) 0 0; max-width: 62ch; }
 
 /* Mock question: the practice strip, with the exam clock and Flag. */
@@ -6596,11 +6621,14 @@ html { scroll-padding-bottom: calc(104px + var(--consent-h, 0px)); }
 .sr-toc-row {
   display: flex; align-items: center; gap: var(--sp-md); width: 100%; min-height: 48px; padding: var(--sp-sm) 0;
   background: none; border: 0; border-bottom: 1px solid var(--border); border-radius: 0; cursor: pointer;
-  text-align: left; font: var(--t-small); color: var(--text2);
+  text-align: left; font: var(--t-label); color: var(--text2);
 }
 .sr-toc li:last-child .sr-toc-row { border-bottom: 0; }
 .sr-toc-row:hover { color: var(--text); }
-.sr-toc-row.cur { color: var(--text); font-weight: 600; }
+/* Rows are label (R5); the note open now is in ink and underlined, so it is
+   marked by more than colour (and by aria-current for screen readers). */
+.sr-toc-row.cur { color: var(--text); }
+.sr-toc-row.cur .sr-toc-t { text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 4px; text-decoration-color: var(--accent); }
 .sr-toc-t { flex: 1; min-width: 0; overflow-wrap: anywhere; }
 .sr-mocks { margin-top: 0; border-top: 0; }
 /* Terms in this question: tap a term for its definition. */
@@ -6647,11 +6675,13 @@ html { scroll-padding-bottom: calc(104px + var(--consent-h, 0px)); }
 }
 @media (min-width: 77.5em) {
   .study-wrap.fg-frame { grid-template-columns: minmax(0, var(--frame-main)) var(--frame-margin); column-gap: var(--frame-gap); }
-  /* Today, Your progress, You and Settings: the page spans the frame, the same two tracks inside. */
+  /* Today, Your progress, You and Settings: the page spans the frame, the same two tracks inside.
+     Glossary spans it too: its margin is always empty, so the cards use the width. */
   body[data-tab="home"] .fg-frame > main.app,
   body[data-tab="progress"] .fg-frame > main.app,
   body[data-tab="you"] .fg-frame > main.app,
-  body[data-tab="settings"] .fg-frame > main.app { grid-column: 1 / -1; }
+  body[data-tab="settings"] .fg-frame > main.app,
+  body[data-tab="glossary"] .fg-frame > main.app { grid-column: 1 / -1; }
   .fg-frame > .fg-margin:not([hidden]) {
     display: block; grid-column: 2; grid-row: 2;
     position: sticky; top: 32px; z-index: 1; max-height: calc(100vh - 64px); overflow-y: auto; overscroll-behavior: contain;
@@ -6752,7 +6782,6 @@ html { scroll-padding-bottom: calc(104px + var(--consent-h, 0px)); }
 .you-plant { margin-top: var(--sp-xl); }
 .you-plant[hidden] { display: none; }
 .plnt-cap { display: block; margin: 0 0 var(--sp-md); font: var(--t-caption); letter-spacing: var(--tr-caption); color: var(--text2); }
-.plnt-cap:focus { outline: none; }
 .plnt-hero { display: flex; justify-content: center; }
 .plnt-name { margin: var(--sp-md) 0 0; font: var(--t-title); letter-spacing: var(--tr-title); color: var(--text); overflow-wrap: anywhere; }
 .plnt-meta { margin: var(--sp-xs) 0 0; font: var(--t-meta); color: var(--text2); }
@@ -6790,7 +6819,7 @@ html { scroll-padding-bottom: calc(104px + var(--consent-h, 0px)); }
 [data-theme="dark"] .plnt-tile, [data-theme="dark"] .plnt-opt { border-color: var(--control); box-shadow: none; }
 .plnt-tile { flex-direction: column; justify-content: flex-start; gap: var(--sp-xs); min-height: 48px; padding: var(--sp-sm) var(--sp-xs) var(--sp-md); text-align: center; }
 .plnt-tile-art { width: 72px; height: 72px; }
-.plnt-tile-n { font: var(--t-label); color: var(--text); overflow-wrap: normal; word-break: keep-all; }
+.plnt-tile-n { font: var(--t-label); color: var(--text); max-width: 100%; overflow-wrap: anywhere; }
 /* The radio stays a real radio (arrow keys, the form's name), drawn as the card's ring. */
 .plnt-radio { position: absolute; inset: 0; width: 100%; height: 100%; margin: 0; opacity: 0; cursor: pointer; }
 .plnt-tile:has(.plnt-radio:checked), .plnt-opt:has(.plnt-radio:checked) { border-color: var(--text); }
@@ -6829,6 +6858,8 @@ html { scroll-padding-bottom: calc(104px + var(--consent-h, 0px)); }
   .plnt-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .changelog-modal.plnt-modal { padding: var(--sp-xl); }
 }
+/* Large text: one plant per row, so long names wrap inside the tile. */
+@media (max-width: 22.5em) { .plnt-grid { grid-template-columns: 1fr; } }
 
 /* ── v12.30: FIRST RUN, ANSWER FLOW, SHEETS (pre-beta quality pass) ───────── */
 /* The welcome: a port of the mobile one. The forest header (lockup, "Think
@@ -6851,7 +6882,6 @@ html { scroll-padding-bottom: calc(104px + var(--consent-h, 0px)); }
 .ob-title.onboard-title {
   margin: 28px 0 0; font: var(--t-display); letter-spacing: var(--tr-display); color: var(--on-forest); text-align: left;
 }
-.ob-title:focus { outline: none; }
 .ob-sub { margin: var(--sp-md) 0 0; font: var(--t-quote); color: var(--on-forest2); max-width: 340px; }
 .ob-body { flex-shrink: 0; padding: var(--sp-xxl) var(--sp-xxl) 0; }
 .ob-checks { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: var(--sp-lg); }
@@ -7221,7 +7251,7 @@ html { scroll-padding-bottom: calc(104px + var(--consent-h, 0px)); }
 .you-chip-art { flex: none; display: flex; align-items: center; justify-content: center; width: 34px; height: 34px; border-radius: var(--r-round); background: rgba(255,255,255,.08); }
 .you-chip-t { min-width: 0; }
 .you-chip-k { display: block; font: var(--t-kicker); letter-spacing: var(--tr-kicker); text-transform: uppercase; color: var(--on-forest2); }
-.you-chip-s { font-weight: 500; color: var(--on-forest2); }
+.you-chip-s { font: var(--t-meta); color: var(--on-forest2); }
 @media (min-width: 77.5em) { .you-chip.you-chip-dup { display: none; } }
 /* The chip sits on the paper: its ring is the page's --focus-ring (the
    grove-check line below records the rule), never the forest's. */
@@ -7312,16 +7342,8 @@ html { scroll-padding-bottom: calc(104px + var(--consent-h, 0px)); }
 .you-k-dash { fill: none; stroke: var(--text2); stroke-width: 1.2; stroke-dasharray: 3 3; }
 /* The straight scale bar under the ring (expert decision Q5): its 80 in clay, as the ring's mark. */
 .you-scale .fg-sb { max-width: 420px; margin-top: 0; }
-.you-scale .fg-sb-t.fg-sb-mark { font-weight: 600; color: var(--clay); }
+.you-scale .fg-sb-t.fg-sb-mark { color: var(--clay); }
 .you-scale .fg-sb-tick { stroke: var(--clay); }
-/* On You the bar's numbers and caption are in rem, so they grow with the
-   browser's text size like the key beside them (Your progress keeps px). */
-.you-scale .fg-sb-t, .you-scale .fg-sb-rt { font: var(--t-fg-tiny); font-variant-numeric: tabular-nums; }
-.you-scale .fg-sb-in { height: 3.5rem; }
-.you-scale .fg-sb-svg { top: 1rem; }
-.you-scale .fg-sb-t { top: 2.375rem; }
-/* 80 on the same baseline as 0, 50 and 100 (the tick ends above them). */
-.you-scale .fg-sb-t.fg-sb-mark { top: 2.375rem; }
 .you-low { text-wrap: pretty; }
 
 /* Five areas */
@@ -7358,8 +7380,6 @@ html { scroll-padding-bottom: calc(104px + var(--consent-h, 0px)); }
 .you-pl-art .plnt-svg, .you-pl-art svg { display: block; width: 96px; height: auto; max-height: 112px; }
 .you-pl-t { flex: 1 1 9rem; min-width: 0; display: flex; flex-direction: column; gap: 3px; padding-bottom: 8px; }
 .you-pl-h { margin: 0; font: var(--t-kicker); letter-spacing: var(--tr-kicker); text-transform: uppercase; color: var(--on-forest2); }
-.you-pl-h:focus { outline: none; }
-.you-pl-h:focus-visible { outline: 2px solid var(--on-forest); outline-offset: 3px; border-radius: var(--r-6); }
 .you-pl-name { margin: 0; font: var(--t-hero); letter-spacing: var(--tr-hero); color: var(--on-forest); overflow-wrap: anywhere; }
 .you-pl-s { margin: 0; font: var(--t-meta); color: var(--on-forest); }
 .you-pl-q { margin: 0; font: var(--t-fig); color: var(--on-forest2); }
@@ -7416,7 +7436,6 @@ html { scroll-padding-bottom: calc(104px + var(--consent-h, 0px)); }
 /* Settings */
 .set-head { display: flex; flex-direction: column; gap: 4px; }
 .set-head .you-title { margin: 0; font: var(--t-display); letter-spacing: var(--tr-display); }
-.set-head .you-title:focus, .you-prof .you-title:focus { outline: none; }
 .set-sub { margin: 0; font: var(--t-small); color: var(--text2); }
 .set .you-name-edit { padding: 4px 16px 14px 66px; border-bottom: 0; }
 /* A status line under the row acted on (DESIGN_SYSTEM, Confirmations):
@@ -7885,10 +7904,10 @@ html { scroll-padding-bottom: calc(104px + var(--consent-h, 0px)); }
 .td-ready .td-gain { margin: 6px 0 0; font: var(--t-meta); color: var(--text2); }
 .td-ready .td-gain-d { margin: 0; font: var(--t-label); color: var(--text); }
 .td-doms { list-style: none; margin: 4px 0 0; padding: 0; }
-.td-doms li { display: flex; align-items: center; gap: 10px; min-height: 40px; padding: 8px 0; border-top: 1px solid var(--border); }
+.td-doms li { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; min-height: 40px; padding: 8px 0; border-top: 1px solid var(--border); }
 .td-doms li:last-child { border-bottom: 1px solid var(--border); }
 .td-doms .dom-dot { margin: 0; border-radius: 3px; }
-.td-doms .td-dname { flex: 1; min-width: 0; font: var(--t-small); color: var(--text); }
+.td-doms .td-dname { flex: 1 1 6em; min-width: 0; overflow-wrap: anywhere; font: var(--t-small); color: var(--text); }
 .td-doms .td-dval { flex: none; font: var(--t-meta); color: var(--muted); font-variant-numeric: tabular-nums; }
 .td-doms .td-dval.td-dnum { font: var(--t-num-inline); letter-spacing: var(--tr-num-inline); font-variant-numeric: tabular-nums; color: var(--text); }
 .td-ready .td-how { margin: 0; }
@@ -7949,6 +7968,16 @@ h1, h2, h3, h4 { overflow-wrap: break-word; }
 .fg-large .td-tiles { grid-template-columns: minmax(0, 1fr); }
 /* Units and words beside a tracked numeral or title keep normal tracking. */
 .mock-confirm-row strong, .td-rcap-to, .you-to, .you-mocks .empty-state .es-heading { letter-spacing: normal; }
+/* Titles that take focus from script (tabindex -1: a page title after a
+   link, Back or a direct address; a results or section title). One rule
+   everywhere: no ring after a click or tap; for a keyboard user a tidy ring
+   that hugs the words, because the heading is only as wide as its text. */
+:where(h1, h2, h3, h4)[tabindex="-1"] { width: fit-content; max-width: 100%; }
+:where(h1, h2, h3, h4)[tabindex="-1"]:focus, :where(h1, h2, h3, h4)[tabindex="-1"]:focus-visible { outline: none; }
+/* A direct link focuses the title before any input, which Chromium counts as
+   focus-visible: the ring waits until the learner has used the keyboard. */
+html[data-kbd] :where(h1, h2, h3, h4)[tabindex="-1"]:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 4px; border-radius: var(--r-xs); }
+html[data-kbd] :where(.you-plant, .vision-panel, .gt-panel, .readiness-card) :where(h1, h2, h3, h4)[tabindex="-1"]:focus-visible { outline-color: var(--on-forest); }
 </style>
 </head>
 <body>
@@ -8120,7 +8149,7 @@ h1, h2, h3, h4 { overflow-wrap: break-word; }
 <!-- BOOKMARKS -->
 <div id="screen-bookmarks" class="screen">
   <div class="bk-panel">
-    <h1 class="bk-panel-title">Saved questions</h1>
+    <h1 class="bk-panel-title" tabindex="-1">Saved questions</h1>
     <div id="bkList"><div class="no-bk">Nothing saved yet. Tap the bookmark on any question to keep it here.</div></div>
   </div>
 </div>
@@ -8341,7 +8370,7 @@ h1, h2, h3, h4 { overflow-wrap: break-word; }
       <div class="you-col">
         <section class="you-card set-card" aria-labelledby="youHelpH">
           <h2 class="you-card-h" id="youHelpH">Help and about</h2>
-          <ul class="you-list"><li><button type="button" class="you-row" aria-haspopup="dialog" onclick="showChangelog()" aria-labelledby="setNewT"><span class="you-ico" aria-hidden="true"><svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 3.5 13.8 9 19.5 10.5 13.8 12 12 17.5 10.2 12 4.5 10.5 10.2 9z"/><path d="M19 17v4M17 19h4"/></svg></span><span class="you-text"><span class="you-t" id="setNewT">What&#39;s New</span></span><span class="you-chev" aria-hidden="true"><svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m9 6 6 6-6 6"/></svg></span></button></li><li><a class="you-row" href="#help" onclick="return navGoFocus(event,'faq')" aria-labelledby="setFaqT"><span class="you-ico" aria-hidden="true"><svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="9"/><path d="M9.6 9.2a2.5 2.5 0 1 1 3.4 2.3c-.6.3-1 .8-1 1.5v.6"/><path d="M12 16.8h.01"/></svg></span><span class="you-text"><span class="you-t" id="setFaqT">FAQ and help</span></span><span class="you-chev" aria-hidden="true"><svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m9 6 6 6-6 6"/></svg></span></a></li><li><button type="button" class="you-row" aria-haspopup="dialog" onclick="showOnboarding()" aria-labelledby="setHowT" aria-describedby="setHowM"><span class="you-ico" aria-hidden="true"><svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="9"/><path d="M12 11v5.5M12 7.6h.01"/></svg></span><span class="you-text"><span class="you-t" id="setHowT">How KaiSip works</span><span class="you-m" id="setHowM">The welcome screen again</span></span><span class="you-chev" aria-hidden="true"><svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m9 6 6 6-6 6"/></svg></span></button></li><li><button type="button" class="you-row" aria-haspopup="dialog" onclick="showFeedback()" aria-labelledby="setFeedT"><span class="you-ico" aria-hidden="true"><svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M20.5 15a2 2 0 0 1-2 2H8l-4.5 3.5V5.5a2 2 0 0 1 2-2h13a2 2 0 0 1 2 2z"/></svg></span><span class="you-text"><span class="you-t" id="setFeedT">Send feedback</span></span><span class="you-chev" aria-hidden="true"><svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m9 6 6 6-6 6"/></svg></span></button></li><li><button type="button" class="you-row" onclick="openSupport()" aria-labelledby="setSupportT"><span class="you-ico" aria-hidden="true"><svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 20s-7.5-4.6-7.5-10.2A4.3 4.3 0 0 1 12 7.2a4.3 4.3 0 0 1 7.5 2.6C19.5 15.4 12 20 12 20z"/></svg></span><span class="you-text"><span class="you-t" id="setSupportT">Support KaiSip<span class="sr-only"> (opens in a new tab)</span></span></span><span class="you-ext" aria-hidden="true"><svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M14 4.5h5.5V10"/><path d="M19.5 4.5 11 13"/><path d="M17.5 13.5v5a1 1 0 0 1-1 1h-11a1 1 0 0 1-1-1v-11a1 1 0 0 1 1-1h5"/></svg></span><span class="you-chev" aria-hidden="true"><svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m9 6 6 6-6 6"/></svg></span></button></li><li><a class="you-row" href="#about" onclick="return navGoFocus(event,'about')" aria-labelledby="setAboutT"><span class="you-ico" aria-hidden="true"><svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 21v-9"/><path d="M12 12c0-4 3-6 7-6 0 4-3 6-7 6z"/><path d="M12 14c0-3-2-5-6-5 0 3 2 5 6 5z"/></svg></span><span class="you-text"><span class="you-t" id="setAboutT">About KaiSip</span></span><span class="you-chev" aria-hidden="true"><svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m9 6 6 6-6 6"/></svg></span></a></li></ul>
+          <ul class="you-list"><li><button type="button" class="you-row" aria-haspopup="dialog" onclick="showChangelog()" aria-labelledby="setNewT"><span class="you-ico" aria-hidden="true"><svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 3.5 13.8 9 19.5 10.5 13.8 12 12 17.5 10.2 12 4.5 10.5 10.2 9z"/><path d="M19 17v4M17 19h4"/></svg></span><span class="you-text"><span class="you-t" id="setNewT">What’s New</span></span><span class="you-chev" aria-hidden="true"><svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m9 6 6 6-6 6"/></svg></span></button></li><li><a class="you-row" href="#help" onclick="return navGoFocus(event,'faq')" aria-labelledby="setFaqT"><span class="you-ico" aria-hidden="true"><svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="9"/><path d="M9.6 9.2a2.5 2.5 0 1 1 3.4 2.3c-.6.3-1 .8-1 1.5v.6"/><path d="M12 16.8h.01"/></svg></span><span class="you-text"><span class="you-t" id="setFaqT">FAQ and help</span></span><span class="you-chev" aria-hidden="true"><svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m9 6 6 6-6 6"/></svg></span></a></li><li><button type="button" class="you-row" aria-haspopup="dialog" onclick="showOnboarding()" aria-labelledby="setHowT" aria-describedby="setHowM"><span class="you-ico" aria-hidden="true"><svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="9"/><path d="M12 11v5.5M12 7.6h.01"/></svg></span><span class="you-text"><span class="you-t" id="setHowT">How KaiSip works</span><span class="you-m" id="setHowM">The welcome screen again</span></span><span class="you-chev" aria-hidden="true"><svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m9 6 6 6-6 6"/></svg></span></button></li><li><button type="button" class="you-row" aria-haspopup="dialog" onclick="showFeedback()" aria-labelledby="setFeedT"><span class="you-ico" aria-hidden="true"><svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M20.5 15a2 2 0 0 1-2 2H8l-4.5 3.5V5.5a2 2 0 0 1 2-2h13a2 2 0 0 1 2 2z"/></svg></span><span class="you-text"><span class="you-t" id="setFeedT">Send feedback</span></span><span class="you-chev" aria-hidden="true"><svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m9 6 6 6-6 6"/></svg></span></button></li><li><button type="button" class="you-row" onclick="openSupport()" aria-labelledby="setSupportT"><span class="you-ico" aria-hidden="true"><svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 20s-7.5-4.6-7.5-10.2A4.3 4.3 0 0 1 12 7.2a4.3 4.3 0 0 1 7.5 2.6C19.5 15.4 12 20 12 20z"/></svg></span><span class="you-text"><span class="you-t" id="setSupportT">Support KaiSip<span class="sr-only"> (opens in a new tab)</span></span></span><span class="you-ext" aria-hidden="true"><svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M14 4.5h5.5V10"/><path d="M19.5 4.5 11 13"/><path d="M17.5 13.5v5a1 1 0 0 1-1 1h-11a1 1 0 0 1-1-1v-11a1 1 0 0 1 1-1h5"/></svg></span><span class="you-chev" aria-hidden="true"><svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m9 6 6 6-6 6"/></svg></span></button></li><li><a class="you-row" href="#about" onclick="return navGoFocus(event,'about')" aria-labelledby="setAboutT"><span class="you-ico" aria-hidden="true"><svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 21v-9"/><path d="M12 12c0-4 3-6 7-6 0 4-3 6-7 6z"/><path d="M12 14c0-3-2-5-6-5 0 3 2 5 6 5z"/></svg></span><span class="you-text"><span class="you-t" id="setAboutT">About KaiSip</span></span><span class="you-chev" aria-hidden="true"><svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m9 6 6 6-6 6"/></svg></span></a></li></ul>
         </section>
         <p class="you-foot">Not affiliated with or endorsed by ISACA&reg;. CISA&reg; is a registered trademark of ISACA.</p>
       </div>
@@ -11223,7 +11252,9 @@ function gtItemBody(raw, d, q, id, underPart) {
 }
 function gtCap(label) { return gtHead(5, 'gt-cap', escapeHtml(label)); }
 function gtSection(label, inner, cls) {
-  return inner ? '<section class="gt-sec' + (cls ? ' ' + cls : '') + '">' + (label ? gtCap(label) : '') + inner + '</section>' : '';
+  // "In one line" is a small label above the definition (as on the phone), not a heading.
+  var cap = !label ? '' : cls === 'gt-sec-def' ? '<p class="gt-cap gt-cap-label">' + escapeHtml(label) + '</p>' : gtCap(label);
+  return inner ? '<section class="gt-sec' + (cls ? ' ' + cls : '') + '">' + cap + inner + '</section>' : '';
 }
 function gtList(arr, t) {
   if (!Array.isArray(arr) || !arr.length) return '';
@@ -11616,11 +11647,11 @@ function renderTopics() {
   var totalItems = domProg.total;
 
   // ── Header ──
-  var headHtml = '<div class="gt-head"><h1 class="gt-title">Study notes</h1>'
+  var headHtml = '<div class="gt-head"><h1 class="gt-title" tabindex="-1">Study notes</h1>'
     + '<p class="gt-sub">Plain-language study notes for every exam topic.</p></div>';
 
   // ── Domain switcher (segmented control; chip scroller on phones) ──
-  var tabsHtml = '<div class="gt-seg-wrap"><div class="gt-seg" role="tablist" aria-label="Domain">'
+  var tabsHtml = '<div class="gt-seg-cq"><div class="gt-seg-wrap"><div class="gt-seg" role="tablist" aria-label="Domain">'
     + data.domains.map(function(dom) {
         var inf = DI[String(dom.domain_id)];
         var on = dom.domain_id === d;
@@ -11628,7 +11659,7 @@ function renderTopics() {
           + '<span class="gt-seg-top"><span class="dom-dot" style="background:' + inf.color + '"></span>'
           + '<span class="gt-seg-num">D' + dom.domain_id + '</span></span><span class="gt-seg-name">' + escapeHtml(inf.short) + '</span></button>';
       }).join('')
-    + '</div></div>';
+    + '</div></div></div>';
 
   // ── Domain panel: the screen's one forest panel ──
   var panelHtml = '<section class="gt-panel" aria-labelledby="gtPanelTitle">'
@@ -12304,12 +12335,39 @@ function youGoBack(e) {
 // A link inside a page that opens another page (You's "In more detail"
 // rows, Settings' FAQ and About rows) lands focus on that page's title
 // (tabindex -1), as the cog and the Back link do, never on the page body.
+// A page still loading its file (Study notes, the exam guide) draws its
+// title a moment later, and a page may draw itself again: focus waits for
+// the title (up to 4 s) unless the learner has moved focus on meanwhile.
+// Input modality for the title ring: set by a key press (not a shortcut
+// chord), cleared by a pointer press. Read only by CSS.
+(function () {
+  var de = document.documentElement;
+  document.addEventListener('keydown', function (e) { if (!e.metaKey && !e.ctrlKey && !e.altKey) de.setAttribute('data-kbd', ''); }, true);
+  document.addEventListener('pointerdown', function () { de.removeAttribute('data-kbd'); }, true);
+})();
+var navFocusWait = null;
 function navFocusTitle() {
-  var scr = document.getElementById('screen-' + S.activeTab);
-  var h = scr && scr.querySelector('h1');
-  if (!h) return;
-  if (!h.hasAttribute('tabindex')) h.setAttribute('tabindex', '-1');
-  try { h.focus({ preventScroll: true }); } catch (ex) {}
+  if (navFocusWait) { navFocusWait.disconnect(); navFocusWait = null; }
+  var tab = S.activeTab;
+  var scr = document.getElementById('screen-' + tab);
+  if (!scr) return;
+  var put = function () {
+    var h = scr.querySelector('h1');
+    if (!h) return false;
+    if (!h.hasAttribute('tabindex')) h.setAttribute('tabindex', '-1');
+    try { h.focus({ preventScroll: true }); } catch (ex) {}
+    return true;
+  };
+  if (put() || typeof MutationObserver !== 'function') return;
+  var mo = new MutationObserver(function () {
+    var a = document.activeElement;
+    var idle = !a || a === document.body || a === document.documentElement;
+    if (S.activeTab !== tab || !idle) { mo.disconnect(); navFocusWait = null; return; }
+    if (put()) { mo.disconnect(); navFocusWait = null; }
+  });
+  mo.observe(scr, { childList: true, subtree: true });
+  navFocusWait = mo;
+  setTimeout(function () { if (navFocusWait === mo) { mo.disconnect(); navFocusWait = null; } }, 4000);
 }
 function navGoFocus(e, target) {
   var r = navTo(e || null, target);
@@ -12857,7 +12915,9 @@ function syncNav(t) {
       sub.setAttribute('aria-label', sec === 'learn' ? 'Learn pages' : 'Practice pages');
       sub.className = 'sub-nav sub-nav-pages';
       html = NAV_PAGES[sec].map(function (p) {
-        return '<a href="#' + NAV_HASH[p[0]] + '" onclick="return navTo(event,\'' + p[0] + '\')"'
+        // The bar is drawn again for the new page, so the link that had focus
+        // is gone: focus moves to the new page's title, never the page body.
+        return '<a href="#' + NAV_HASH[p[0]] + '" onclick="return navGoFocus(event,\'' + p[0] + '\')"'
           + (p[0] === t ? ' aria-current="page"' : '') + '>' + p[1] + '</a>';
       }).join('');
     } else if (sec === 'you' && t !== 'you') {
@@ -15639,7 +15699,12 @@ function pgToggleTable(id) {
 
 // ── Charts: static inline SVG in Grove tokens (decorative to screen readers:
 // the sentence above and the table below carry the numbers) ──
-function pgChartBox(w, h) { return { w: w, h: h, l: 40, r: 16, t: 14, b: 26 }; }
+// The axis labels are in rem, so the margins grow with the text setting (up to 2x).
+function pgChartBox(w, h) {
+  var k = Math.min(2, (parseFloat(getComputedStyle(document.documentElement).fontSize) || 16) / 16);
+  if (!(k >= 1)) k = 1;
+  return { w: w, h: h, l: Math.ceil(40 * k), r: 16, t: 14, b: Math.ceil(26 * k), k: k };
+}
 function pgLeafAt(x, y) {
   // The app's leaf (todayLeafSvg's shape), 18px, its stem end on the point.
   var k = 18 / 26, ox = x - 3.9 * k, oy = y - 22.1 * k;
@@ -15652,7 +15717,7 @@ function pgAxes(b, lo, hi, ticks, xl, n) {
   var x = function (i) { return b.l + (n > 1 ? iw * i / (n - 1) : iw / 2); };
   ticks.forEach(function (v) {
     g += '<line class="pg-grid" x1="' + b.l + '" x2="' + (b.w - b.r) + '" y1="' + y(v).toFixed(1) + '" y2="' + y(v).toFixed(1) + '"/>'
-      + '<text class="pg-axt" x="' + (b.l - 8) + '" y="' + (y(v) + 4).toFixed(1) + '" text-anchor="end">' + Math.round(v) + '%</text>';
+      + '<text class="pg-axt" x="' + (b.l - 8) + '" y="' + (y(v) + 4 * (b.k || 1)).toFixed(1) + '" text-anchor="end">' + Math.round(v) + '%</text>';
   });
   xl.forEach(function (p) {
     var anchor = p[0] === 0 && n > 1 ? 'start' : p[0] === n - 1 && n > 1 ? 'end' : 'middle';
@@ -16285,7 +16350,7 @@ function renderFAQ() {
   var raw = (faqState.search || '').trim();
   var words = raw ? raw.toLowerCase().split(/\s+/) : [];
   var hero = '<div class="gloss-hero"><div class="gloss-hero-left">'
-    + '<h1 class="gloss-title">FAQ &amp; Help</h1>'
+    + '<h1 class="gloss-title" tabindex="-1">FAQ &amp; Help</h1>'
     + '<div class="gloss-sub">Answers about using the app, the CISA exam, and how to study effectively. Search a question or browse by topic.</div>'
     + '</div></div>';
   var searchBox = '<div style="margin-bottom:8px"><input type="text" class="faq-search" id="faqSearch" aria-label="Search the FAQ" '
@@ -20411,7 +20476,7 @@ function renderWeakSpots() {
     : (anyRead ? '<div class="ws-quiet">No domain is below the ' + DOMAIN_TARGET_PCT + '% target. Keep building coverage across all five.</div>' : wsEarlySignHtml(rows));
 
   area.innerHTML = WS_TITLE_HTML + '<button class="train-ws-btn" onclick="startWeakSpotsDrill()">Train my weak spots <span class="train-ws-badge">20 questions</span></button>'
-    + '<div class="ws-panel"><div class="ws-title">Domain performance</div>'
+    + '<div class="ws-panel"><h2 class="ws-title">Domain performance</h2>'
     + '<p class="ws-quiet">From your practice answers: an estimate, not a prediction. Building is under ' + DOMAIN_TARGET_PCT + ', Steady ' + DOMAIN_TARGET_PCT + ' to 79, Strong 80 and up. A domain is measured from ' + DOMAIN_READ_MIN + ' answers.</p>'
     + rowsHtml
     + '<div class="ws-sub-label">Where to focus</div>'
@@ -22176,7 +22241,7 @@ function syncPrinciplesHash(p, push) {
 // ── The list: one short section per family ──
 function principlesListHtml() {
   var q = principlesState.query || '';
-  return '<div class="gt-head"><h1 class="gt-title">Principles</h1>'
+  return '<div class="gt-head"><h1 class="gt-title" tabindex="-1">Principles</h1>'
     + '<p class="gt-sub">How an IS auditor reasons: the thinking CISA questions reward, grouped by the question each one answers.</p></div>'
     + '<div class="gt-search gt-search-sm">' + ico('search', 20)
     + '<label class="sr-only" for="plSearch">Search principles</label>'
@@ -23174,7 +23239,7 @@ function renderGlossary() {
 
   var hero = '<div class="gloss-hero">'
     +   '<div class="gloss-hero-left">'
-    +     '<h1 class="gloss-title">Glossary</h1>'
+    +     '<h1 class="gloss-title" tabindex="-1">Glossary</h1>'
     +     '<div class="gloss-sub">Master the language of information systems audit. Curated terms across audit, governance, development, operations and security. Search a definition, filter by domain, or drill yourself with flashcards.</div>'
     +   '</div>'
     +   '<div class="gloss-hero-right">'
@@ -23218,7 +23283,7 @@ function renderGlossary() {
     +   '<span style="width:14px"></span>'
     +   '<span class="gloss-filter-label">Status</span>'
     +   '<button class="gloss-chip' + (glossState.showMastered==='all'?' active':'') + '" onclick="setGlossStatus(\'all\')">All</button>'
-    +   '<button class="gloss-chip' + (glossState.showMastered==='unmastered'?' active':'') + '" onclick="setGlossStatus(\'unmastered\')">To Learn</button>'
+    +   '<button class="gloss-chip' + (glossState.showMastered==='unmastered'?' active':'') + '" onclick="setGlossStatus(\'unmastered\')">To learn</button>'
     +   '<button class="gloss-chip' + (glossState.showMastered==='mastered'?' active':'') + '" onclick="setGlossStatus(\'mastered\')">Mastered</button>'
     + '</div>'
     + '</div>';
@@ -23251,14 +23316,14 @@ function renderGlossList() {
     var c = (t.term || '').charAt(0).toUpperCase();
     if (c >= 'A' && c <= 'Z') present[c] = true;
   });
-  var letterIndex = '<div class="gloss-letter-index">';
+  var letterIndex = '<div class="gloss-letter-index"><div class="gloss-letter-grid">';
   letters.forEach(function(L){
     var has = !!present[L];
     letterIndex += '<button class="gloss-letter' + (has ? ' has' : '') + '" '
       + (has ? 'onclick="jumpToLetter(\'' + L + '\')"' : 'disabled')
       + ' aria-label="Jump to ' + L + '">' + L + '</button>';
   });
-  letterIndex += '</div>';
+  letterIndex += '</div></div>';
 
   if (filtered.length === 0) {
     return countHtml + '<div class="gloss-empty">No terms match your filters.<br><br>'
@@ -26604,7 +26669,7 @@ function showChangelog() {
   }
   modal.innerHTML = '<div class="changelog-overlay" onclick="closeChangelog(event)">'
     + '<div class="changelog-modal" onclick="event.stopPropagation()">'
-    + '<div class="cl-title">What\'s New</div>'
+    + '<div class="cl-title">What’s New</div>'
     + expanded
     + olderHtml
     + '<button class="cl-close" onclick="closeChangelog()">Close</button>'
@@ -26629,7 +26694,7 @@ function showFeedback() {
   FEEDBACK_STATE.type = 'general';
   modal.innerHTML = '<div class="changelog-overlay" onclick="closeFeedback(event)">'
     + '<div class="changelog-modal" onclick="event.stopPropagation()" role="dialog" aria-labelledby="fbTitle">'
-    + '<div class="cl-title" id="fbTitle">Send Feedback</div>'
+    + '<div class="cl-title" id="fbTitle">Send feedback</div>'
     + '<div class="ty-small" style="margin-bottom:20px">'
     + 'Tell us what you love, what feels off, or what you wish this app did. '
     + 'Sent privately to <strong>' + escapeHtml(FEEDBACK_EMAIL) + '</strong>.'
@@ -26655,7 +26720,7 @@ function showFeedback() {
     + '<div id="fbStatus" class="fb-helper" style="display:none"></div>'
     + '<div class="fb-actions">'
     + '<button type="button" class="fb-btn cancel" onclick="closeFeedback()">Cancel</button>'
-    + '<button type="button" class="fb-btn send" id="fbSendBtn" onclick="sendFeedback()">Send Feedback</button>'
+    + '<button type="button" class="fb-btn send" id="fbSendBtn" onclick="sendFeedback()">Send feedback</button>'
     + '</div>'
     + '<div class="fb-helper" style="margin-top:14px;text-align:center">Prefer your own email? '
     + '<a href="#" id="fbMailtoLink" onclick="sendFeedbackViaMailto();return false;">Open mail app instead</a>.</div>'
@@ -26723,7 +26788,7 @@ function sendFeedback() {
       showToast('Sent. Thank you for the feedback.', 'success', 2600);
     }
   }).catch(function(err){
-    if (btn) { btn.disabled = false; btn.textContent = 'Send Feedback'; }
+    if (btn) { btn.disabled = false; btn.textContent = 'Send feedback'; }
     if (status) {
       status.style.display = 'block';
       status.style.color = 'var(--wrong)';

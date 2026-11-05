@@ -152,3 +152,26 @@ The phone follows this rule already; it stays the rule for both apps. Detail: `d
 - **Not changed:** readiness maths, the saved plan's shape (`todayPlanV1`), its sanitizer, export and import, the `aurivan_last_session` key (Resume), and the mobile app.
 - **Release:** the panel asked for a PATCH with "Today's plan and the You page now point you to the same area to study next." under Fixed; it waits in `RELEASE_PENDING.md` with the uplift's batched release (8).
 - **Follow-up, built 4 Nov 2026 (strict review):** the drift was not rare: on day one the zero-answer focus is the first area, and after a few answers it moves to the heaviest untouched one, so every new learner saw Today's plan name IS Audit while You and the readiness card named IS Operations. Now, while today's saved plan still has its set to finish, You's Focus next and its Practice button, Today's readiness card line and Read next name the set's area. Where that is no longer the readiness focus they say "today's set" (and the plan's own line "today's set"), never "where you'll gain most", so no label claims more than its rule. Once the set is done, every surface follows `r.focusId` again. The rows labelled "Where you'll gain most" ("If you have more time" on Today, the Practice hub) keep `r.focusId` (round 4: You's area list no longer does; it marks the area You's Focus next names, "today's set" while the set is unfinished and is not the focus, so You names one area, as Today's readiness card does), and the "If you have more time" row no longer says "Your weakest area" (it names the largest weighted gap, not the lowest score). The other option, making the zero-answer focus the heaviest area, changes the shared engine and the phone and was not taken. Nothing new is saved; the readiness maths and `todayPlanV1` are unchanged.
+
+## 15. The Learn tab follows the kit, with changes (expert panel, 4 of 4, 5 Nov 2026)
+
+Sky asked for the phone Learn tab to match `screens/02-phone-learn.png` "exactly" and asked the experts to challenge it. All four (premium web designer, mobile UX reviewer, first-time candidate, behavioural scientist) voted "build the kit with changes". Built in Phase 4 as `PHASE4.md` sections 3 and 7.1 describe:
+
+- **The kit's order and look**, at `TYPE_SCALE.md` sizes: title and line, the forest Up next card with Start lesson inside it as its only control, the search field, the reference tiles, the Final review week row, the Lessons card, the footnote.
+- **Nothing learners use today is lost:** the lesson trail opens inside the Lessons card (no new area page), the inline search results, both Up next reasons, All caught up with Go to Practice, the guided path's line "Guided pairs each lesson with practice", "in exam order", the area numbers and the area ring (outline, arc, tick).
+- **Large text and other courses:** tiles become one column of rows from text scale 1.3; an odd last tile spans the width; rows and the guided button are at least 48pt; names wrap, never cut.
+- **The one tie (2 to 2):** areas start closed, as the kit shows, except one a `?domain=N` link asks for.
+- **Not in the kit's reach without Sky:** a phone Glossary screen (the tile is hidden until then) and a website Learn hub without lessons ("Read next" note card and "Notes by domain" instead; the website has no lessons). `PHASE4.md` section 2, O2 and O3.
+
+Why: the kit gives the tab one clear focal point and a shorter, calmer page; the changes keep every feature and make it hold at large text.
+
+## 16. The answer screen: one calm order, every tip in view (expert panel, 5 Nov 2026)
+
+The kit has no answer screen; four experts (behavioural scientist, product manager, UX reviewer, first-time candidate) chose it. Detail and votes: `PHASE4.md` section 4.
+
+- **Option B, 4 of 4:** one order for a right answer, a miss and Time's up, on web and phone at every width: verdict and coach line; one answer card (your pick with its Why not note, the best answer; no tinted fills); Key idea; "How to think about it" with Eliminate two, Final two and Exam cue in that order; Why; Go deeper; the source row with a visible "Report a problem"; a sticky Next question.
+- **Tips always open, 3 of 4.** Only a long Why folds after a miss ("Read more", screen readers hear it all). This reverses the mobile 1.43 fold of Eliminate two and Final two, so it waits for Sky (`PHASE4.md` O1); until then the fallback in section 4.6 keeps the fold and never folds the tip the coach line names.
+- **Tie (2 to 2) on tips before or after the Why:** tips first, the split rule's "least change" (today's order after a miss).
+- **Also:** "Time's up" in the miss tone, never clay; tips stay in the main column from 1240px (the margin card and its skip link go); no automatic hyphenation; focus to the verdict after 400ms with one spoken label. Display letters on screen; `data-l` and the letter mapping are untouched.
+
+Why: explained feedback in one predictable place helps learners carry the reasoning to new questions; folding the tips hid the part the coach line points to.
