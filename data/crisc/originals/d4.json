@@ -3534,7 +3534,7 @@
         "A": "Requirements set from the new game's own risk assessment",
         "B": "The product owner's sign-off on the copied requirements",
         "C": "Requirements taken from the studio's secure coding checklist",
-        "D": "A security assessment the game's owner orders after beta"
+        "D": "A security assessment the business owner orders after beta"
       },
       "correct": "A",
       "key_concept": "Security requirements come from a risk assessment of the system being built; requirements copied from a different system miss its own threats.",
@@ -3606,14 +3606,14 @@
       "question": "A courier firm's depot applications now sit behind tested Zero Trust access that checks the user and device in each session. Which register scenario's rating should the risk practitioner expect to fall MOST?",
       "options": {
         "A": "An intruder using one stolen login to reach other systems",
-        "B": "A driver misusing customer addresses they may view for work",
+        "B": "A driver misusing customer addresses within their job access",
         "C": "A cloud outage taking the depot applications offline",
         "D": "Depot staff mistyping parcel details that misroute deliveries"
       },
       "correct": "A",
       "key_concept": "Zero Trust removes trust based on network location, so its largest effect is on lateral movement from a compromised account or device.",
       "pre_read": "Match each scenario to the kind of control that would change its likelihood or impact.",
-      "correct_explanation": "Zero Trust grants no trust for network location and checks the user and device for each session and resource, so a stolen login no longer opens the systems beyond the first one; NIST SP 800-207 names stopping lateral movement as a main benefit. A driver misusing permitted addresses is the runner-up: the checks confirm a valid driver on a valid device, so access the job grants is still allowed.",
+      "correct_explanation": "Zero Trust grants no trust for network location and checks the user and device for each session and resource, so a stolen login no longer opens the systems beyond the first one; NIST SP 800-207 says this stops compromised accounts moving laterally. A driver misusing permitted addresses is the runner-up: the checks confirm a valid driver on a valid device, so access the job grants is still allowed.",
       "wrong_explanations": {
         "B": "Per-session checks confirm a valid driver on a valid device; misuse of addresses the job allows passes them, so this rating moves little.",
         "C": "Zero Trust governs who may connect, not whether the cloud service runs; its policy service can even add a dependency for availability.",
