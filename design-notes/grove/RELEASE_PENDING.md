@@ -45,6 +45,8 @@ Batched for the end of the uplift (web v13, mobile 2.0.0; DECISIONS 8). Write th
 - Learn's tiles sit two by two on phones, and the answer screen shows the note, the principle, the terms and your note on every screen size.
 - Screen readers now hear which practice answer you picked, and the glossary letters are easier to tap.
 - Today, Learn, Practice, You and Settings now say things in fewer, shorter words.
+- Study notes topics are easier to scan: each name in plain type, with one line for progress and reading time.
+- On wide screens, Check yourself beside a note now matches the note's own Practice this concept button.
 
 ## Follow-ups to do at the release
 - `mobile/src/engine/plantLooks.ts` `howToOpen` says "in the Herbarium": change to "in Badges" and rebuild `assets/kaisip-plant.js` in the same commit.

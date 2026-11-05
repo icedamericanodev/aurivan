@@ -4805,18 +4805,19 @@ summary.gt-icon-btn::-webkit-details-marker { display: none; }
 .gt-group, .gt-extra { border-bottom: 1px solid var(--border); }
 .gt-extra { margin-top: 0; }
 .gt-extra:first-of-type { margin-top: 24px; }
-/* A group's head (Grove Phase 4, 7.2): the title is the heading, in the
-   kicker role (a list screen, R4); the meta, the count, the mark and the
-   chevron sit beside it, outside the heading. The button's ::after covers
-   the whole head, so the row is still one target with one focus ring. */
+/* A group's head (Grove Phase 4, 7.2; 4c review round 2): a topic is a row,
+   its name in `label` over one `meta` line ("0 of 7 read · about 17 min"),
+   as on the phone (R5); the part above it is the kicker heading. Key terms
+   and Exam strategy keep a kicker heading. The mark and the chevron sit
+   beside it. The button's ::after covers the whole head, so the row is
+   still one target with one focus ring. */
 .gt-group-hd {
-  position: relative; display: grid; grid-template-columns: minmax(0, 1fr) auto auto auto;
-  grid-template-areas: "t c k v" "s c k v"; align-items: center; column-gap: 12px; row-gap: 2px;
+  position: relative; display: grid; grid-template-columns: minmax(0, 1fr) auto auto;
+  grid-template-areas: "t k v" "s k v"; align-items: center; column-gap: 12px; row-gap: 2px;
   min-height: 64px; padding: 12px 0;
 }
 .gt-group-h { grid-area: t; margin: 0; overflow-wrap: anywhere; }
 .gt-group-hd > .gt-group-meta { grid-area: s; margin: 0; }
-.gt-group-hd > .gt-group-count { grid-area: c; }
 .gt-group-hd > .gt-mark { grid-area: k; margin-left: -2px; }
 .gt-group-hd > .gt-chev { grid-area: v; }
 .gt-group-btn {
@@ -4827,9 +4828,11 @@ summary.gt-icon-btn::-webkit-details-marker { display: none; }
 .gt-group-btn:focus-visible::after { outline: 2px solid var(--focus-ring); outline-offset: -2px; }
 @media (hover: hover) { .gt-group-hd:hover .gt-chev { color: var(--text); } }
 .gt-group-title { font: var(--t-kicker); letter-spacing: var(--tr-kicker); text-transform: uppercase; color: var(--text2); overflow-wrap: break-word; }
+.gt-topic-name { font: var(--t-label); color: var(--text); overflow-wrap: break-word; }
+/* A domain with no parts keeps its topic names as headings: headline (R4). */
+h3.gt-group-h .gt-topic-name { font: var(--t-headline); letter-spacing: var(--tr-headline); }
 .gt-group-meta { font: var(--t-meta); color: var(--text2); }
-.gt-group-count { flex-shrink: 0; text-align: right; font: var(--t-meta); color: var(--text2); white-space: nowrap; }
-.gt-group-count .gt-num { font: var(--t-num-value); letter-spacing: var(--tr-num-value); color: var(--text2); }
+.gt-group-meta .gt-num { font: inherit; letter-spacing: inherit; font-variant-numeric: tabular-nums; }
 .gt-chev { color: var(--muted); transition: transform .2s ease; flex-shrink: 0; }
 .gt-group.open > .gt-group-hd .gt-chev, .gt-extra.open > .gt-group-hd .gt-chev, .gt-row.open .gt-chev { transform: rotate(180deg); }
 .gt-group-body:empty { display: none; }
@@ -6388,13 +6391,6 @@ body[data-app-cta-card="shown"][data-section="today"] .app-cta-line { display: n
 .gt-part-card + .gt-part-h { margin-top: var(--sp-xl); }
 .gt-part-h { margin-left: 4px; }
 @media (forced-colors: active) { .gt-part-card, .gt-extra { border: 1px solid CanvasText; } }
-/* A narrow card (a phone, or 200% text) drops each topic's count under its
-   meta, so the title keeps the width and never runs into the count. */
-.gt-part-card, .gt-extra { container: gtpart / inline-size; }
-@container gtpart (max-width: 30em) {
-  .gt-group-hd { grid-template-columns: minmax(0, 1fr) auto auto; grid-template-areas: "t k v" "s k v" "c k v"; }
-  .gt-group-hd > .gt-group-count { text-align: left; }
-}
 /* ── GLOSSARY (Grove Phase 4, PHASE4.md 7.3 and section 8) ── */
 .gl { display: flex; flex-direction: column; gap: 16px; }
 .gl > * { margin: 0; }
@@ -12451,7 +12447,7 @@ function renderTopics() {
       var readMin = gtGroupReadMinutes(g);
       var bodyHtml = '';
       var part = partOf[String(g.group_id)] || null, partHtml = '';
-      var gh = part ? 'h4' : 'h3';
+      var gh = part ? 'div' : 'h3';
       if (isOpen) {
         // One intro layer per topic: the "You should be able to" list, else the overview.
         if (!(Array.isArray(g.can_do) && g.can_do.length) && g.group_summary) bodyHtml += '<p class="gt-group-about">' + escapeHtml(g.group_summary) + '</p>';
@@ -12470,13 +12466,13 @@ function renderTopics() {
       }
       lastPart = part;
       return partHtml + '<section class="gt-group' + (isOpen ? ' open' : '') + '" id="ng-' + escapeHtml(gKey) + '">'
-        // The head (7.2): the title alone is the heading, in the kicker role;
-        // "7 notes · about 17 min" is meta outside it. The button covers the
-        // whole row (its ::after), so the row is still one target.
-        + '<div class="gt-group-hd"><' + gh + ' class="gt-group-h"><button class="gt-group-btn" aria-expanded="' + isOpen + '" aria-controls="ngb-' + escapeHtml(gKey) + '" aria-describedby="ngm-' + escapeHtml(gKey) + ' ngc-' + escapeHtml(gKey) + '" data-id="' + escapeHtml(gKey) + '" onclick="toggleNotesGroup(this.dataset.id)">'
-        + '<span class="gt-group-title" id="ngt-' + escapeHtml(gKey) + '">' + escapeHtml(g.group_title) + '</span></button></' + gh + '>'
-        + '<p class="gt-group-meta" id="ngm-' + escapeHtml(gKey) + '">' + gTotal + ' notes &middot; about ' + readMin + ' min</p>'
-        + '<span class="gt-group-count" id="ngc-' + escapeHtml(gKey) + '" data-gcount="' + escapeHtml(gKey) + '"><span class="gt-num">' + gDone + '</span><span class="gt-of"> of ' + gTotal + ' read</span></span>'
+        // The head (7.2, 4c review round 2): a row, the topic name in label
+        // over one meta line "0 of 7 read · about 17 min" (R5, as the phone);
+        // under a part the part caption is the heading, so the name is not
+        // one (R4). The button covers the whole row (its ::after).
+        + '<div class="gt-group-hd"><' + gh + ' class="gt-group-h"><button class="gt-group-btn" aria-expanded="' + isOpen + '" aria-controls="ngb-' + escapeHtml(gKey) + '" aria-describedby="ngm-' + escapeHtml(gKey) + '" data-id="' + escapeHtml(gKey) + '" onclick="toggleNotesGroup(this.dataset.id)">'
+        + '<span class="gt-topic-name" id="ngt-' + escapeHtml(gKey) + '">' + escapeHtml(g.group_title) + '</span></button></' + gh + '>'
+        + '<p class="gt-group-meta" id="ngm-' + escapeHtml(gKey) + '" data-gcount="' + escapeHtml(gKey) + '"><span class="gt-num">' + gDone + '</span> of ' + gTotal + ' read &middot; about ' + readMin + ' min</p>'
         + gtMarkSvg(gtGroupState(g.items), '', ' data-gmark="' + escapeHtml(gKey) + '"')
         + ico('chevron-down', 20, 'ico gt-chev') + '</div>'
         + '<div class="gt-group-body" id="ngb-' + escapeHtml(gKey) + '">' + bodyHtml + '</div>'
@@ -18093,7 +18089,7 @@ function railPage() {
 }
 
 // Device-only counts of rail use (never sent anywhere): row starts by kind,
-// "Practice this note" starts and note-link opens.
+// "Practice this concept" starts and note-link opens.
 function railStat(key) {
   try {
     var raw = JSON.parse(localStorage.getItem('aurivan_rail_stats') || '{}');
@@ -18641,8 +18637,9 @@ function railNotesSections() {
       if (n) {
         secs.push({ id: 'check', key: 'check:' + it.id + ':' + n, html: '<h2 class="sr-cap" id="srhCheck">Check yourself</h2>'
           + '<div class="sr-plate"><p class="sr-label">Recall it while it&rsquo;s fresh</p>'
-          + '<p class="sr-small">A short set on ' + escapeHtml(it.name) + '. Answering from memory makes it stick.</p>'
-          + '<button type="button" class="sr-btn" data-id="' + escapeHtml(it.id) + '" onclick="railPracticeNote(this.dataset.id)">Practice this note' + ico('arrow-right', 18) + '</button></div>' });
+          // The same line and button as the narrow note end (gtPracticeBlock).
+          + '<p class="sr-small">' + n + (n === 1 ? ' question that tests' : ' questions that test') + ' this concept.</p>'
+          + '<button type="button" class="sr-btn" data-id="' + escapeHtml(it.id) + '" onclick="railPracticeNote(this.dataset.id)">Practice this concept' + ico('arrow-right', 18) + '</button></div>' });
       }
     }
     if (g) {
