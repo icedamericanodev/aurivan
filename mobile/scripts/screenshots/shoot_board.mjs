@@ -22,6 +22,9 @@
 //   board-held           Maya's post waiting for review; board-paused: the composer, paused
 //   mod-held, mod-reported, mod-appeals, mod-members, mod-log, mod-pause   the staff queue
 //   board-you, board-settings, board-feedback-public, board-whatsnew   the entry points
+//                        (board-settings: the "Feedback board, …" door in Settings' last card)
+//   board-settings-section   Settings → Feedback board, its own screen since mobile 1.46
+//                        (settings-section?category=board): Your activity, Blocked learners
 //   board-top-xl, compose-bank-xl   about 200% text
 //   off-help, off-whatsnew   the flag-OFF build: Help and What's new unchanged
 import { createRequire } from 'module';
@@ -174,9 +177,19 @@ const SIGNED_IN = { signedIn: true, authAgeMin: 30 };
   await go(page, ON, '/you');
   await scrollTo(page, 'Help and feedback', 300);
   await shot(page, 'board-you');
+  // Settings → Feedback board is a door in the last card ("Data and help"), spoken
+  // "Feedback board, Your activity and blocked learners" (components/settings.tsx
+  // SettingsCategoryRow); its rows are on its own screen, settings-section?category=board.
   await go(page, ON, '/settings');
-  await scrollTo(page, 'Feedback board', 200);
+  const boardDoor = page.getByRole('button', { name: /^Feedback board, / });
+  await boardDoor.scrollIntoViewIfNeeded();
+  await page.waitForTimeout(700);
   await shot(page, 'board-settings');
+  await boardDoor.click();
+  await page.waitForURL(/settings-section/);
+  await page.getByText('Blocked learners', { exact: true }).last().waitFor();
+  await page.waitForTimeout(1200);
+  await shot(page, 'board-settings-section');
   await go(page, ON, '/help');
   await tap(page, 'Suggest an idea');
   await page.mouse.wheel(0, 2000);
@@ -231,7 +244,8 @@ const SIGNED_IN = { signedIn: true, authAgeMin: 30 };
   await shot(page, 'board-gate');
   await scrollTo(page, 'Choose how you appear', 120);
   await tap(page, 'A name you choose');
-  await fill(page, 'Your name on the board', 'KaiSip Helper');
+  // Not a reserved name: names with the product's name are kept for the team (engine/moderation.ts).
+  await fill(page, 'Your name on the board', 'Maya Studies');
   await tap(page, 'I agree to the community guidelines');
   await shot(page, 'board-handle');
   await ctx.close();

@@ -9,6 +9,9 @@
 import { act, create, type ReactTestInstance, type ReactTestRenderer } from 'react-test-renderer';
 import { OptionCard } from '../components/quiz';
 import { findQuestion } from '../content/loader';
+import { getNotes } from '../content/notes';
+import { buildRumorRound, rumorStatements, type StatementKind } from '../engine/games/rootOrRumor';
+import { createRng } from '../engine/random';
 import { selectCert, useProgress } from '../store/progress';
 import { useSettings } from '../store/settings';
 import RootOrRumor from '../app/game/rumor';
@@ -63,7 +66,32 @@ afterEach(() => {
 });
 
 describe('Root or Rumor screen', () => {
+  // The screen seeds each round with Date.now() (and Heartwood's "Why?"
+  // choices too), so without this every run plays different statements.
+  // Pinning the clock makes each test play the same round every run, so a
+  // failure always reproduces. Only here: Call It First's 10-second countdown
+  // needs a moving clock.
+  const ROUND_SEED = Date.UTC(2026, 9, 31, 9, 0);
+  let clock: jest.SpyInstance<number, []> | undefined;
+  beforeEach(() => {
+    clock = jest.spyOn(Date, 'now').mockReturnValue(ROUND_SEED);
+  });
+  afterEach(() => {
+    clock?.mockRestore();
+    clock = undefined;
+  });
+
   it('plays a round: 12 statements, Root / Rumor buttons, cards recorded, never answers', () => {
+    // Taps alternate Root, Rumor, Root... without reading the statement.
+    const tapFor = (k: number): StatementKind => (k % 2 ? 'rumor' : 'root');
+    // Guard for the "cards recorded" check below. A right tap on a brand-new
+    // card stores nothing (engine/srs.ts); only a miss stores a card. About 1
+    // round in 1,000 these taps are all right, which made this test fail at
+    // random. Rebuild the pinned round the way the screen does (Seedling is
+    // a new learner's level) and check the taps miss at least once.
+    const round = buildRumorRound(rumorStatements(getNotes('cisa')), undefined, 'seedling', createRng(ROUND_SEED), ROUND_SEED);
+    expect(round.filter((s, k) => s.kind !== tapFor(k)).length).toBeGreaterThan(0);
+
     mount(<RootOrRumor />);
     expect(allText()).toContain('Tell a sound principle from an exam myth.');
     expect(allText()).toContain('Pick your level');
@@ -72,7 +100,10 @@ describe('Root or Rumor screen', () => {
     expect(pressable('Root, a sound principle').length).toBeGreaterThan(0);
     expect(pressable('Rumor, an exam myth').length).toBeGreaterThan(0);
     for (let k = 0; k < 12; k++) {
-      press(k % 2 ? 'Rumor, an exam myth' : 'Root, a sound principle');
+      // The screen plays the round the guard checked. If it stops seeding
+      // from the clock, this fails instead of the test going flaky again.
+      expect(allText()).toContain(round[k].text);
+      press(tapFor(k) === 'rumor' ? 'Rumor, an exam myth' : 'Root, a sound principle');
       expect(allText()).toMatch(/Root: a sound principle|This one is a Root|Rumor: myth spotted|This one is a Rumor: a myth the exam counts on/);
       press(k === 11 ? 'See results' : 'Next statement');
     }
@@ -89,7 +120,9 @@ describe('Root or Rumor screen', () => {
     mount(<RootOrRumor />);
     press('Heartwood. All domains, plus “Why?” on each myth.');
     press('Start');
-    // Tap Rumor until a statement really is a rumor (half of them are).
+    // Tap Rumor until a statement really is a rumor (half of them are). The
+    // pinned clock fixes the round; every Heartwood round has a myth with a
+    // "Why?" (checked over 20,000 seeds), so any seed would pass.
     for (let k = 0; k < 12; k++) {
       press('Rumor, an exam myth');
       if (allText().includes('Why is it a myth?')) break;

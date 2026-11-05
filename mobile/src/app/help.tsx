@@ -7,10 +7,14 @@
  * here). Any other value just shows the screen.
  * - Read in an effect on the param, so a SECOND link that arrives while
  *   Help is already open still opens its sheet (QA Journey 7).
- * - Once handled, the param is cleared (router.setParams), so going back to
- *   Help or re-rendering never opens the sheet again, and the same link
- *   tapped later works again.
+ * - Once handled, the param is cleared, so going back to Help or
+ *   re-rendering never opens the sheet again, and the same link tapped later
+ *   works again. Cleared through Help's OWN navigation (1.54, expo-router 58):
+ *   `router.setParams` acts on the screen in focus, which during a warm push
+ *   is still the screen underneath, so Help kept its param and a second
+ *   identical link did nothing.
  */
+import * as Router from 'expo-router';
 import { router, useLocalSearchParams } from 'expo-router';
 import { useEffect } from 'react';
 import { View } from 'react-native';
@@ -21,6 +25,10 @@ import { helpOpenParam } from '../lib/support';
 import { useActiveCert } from '../lib/useActiveCert';
 import { space } from '../theme/tokens';
 
+/** This screen's own navigation (absent where a test's expo-router stand-in has none). */
+const useOwnNavigation: () => { setParams?: (p: { open?: string }) => void } | undefined =
+  (Router as { useNavigation?: () => { setParams?: (p: { open?: string }) => void } }).useNavigation ?? (() => undefined);
+
 export default function Help() {
   const { cert } = useActiveCert();
   const { open } = useLocalSearchParams<{ open?: string }>();
@@ -29,13 +37,15 @@ export default function Help() {
   const report = useReportFlow(cert.id, { kind: 'app', id: 'help', name: 'Help', where: 'Help' });
   // A strict allowlist: arrays, other words and missing values are null.
   const want = helpOpenParam(open);
+  const navigation = useOwnNavigation();
   useEffect(() => {
     if (!want) return;
     if (want === 'support') contact.openSupport(undefined, 'Link');
     else if (want === 'feedback') contact.openFeedback('other', 'Link');
     else if (want === 'idea') contact.openFeedback('idea', 'Link');
     else report.open();
-    router.setParams({ open: undefined });
+    if (navigation?.setParams) navigation.setParams({ open: undefined });
+    else router.setParams({ open: undefined });
     // Only a NEW value should open a sheet: the flows' functions change every render.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [want]);

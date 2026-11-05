@@ -1,8 +1,9 @@
 // Mobile 1.9 "progress you can see" (SHOTS=growth, see run.sh): end states of
-// Today (normal, cleared, exam-ready, exam eve), Results, You, Milestones,
-// every new empty state, the bank grouping and a page sheet; plus slow-motion
-// frame strips of a number roll, ring growth, the Today clearing, the
-// milestone moment, the theme fade and You's growth since the last look.
+// Today (normal, cleared, exam-ready, exam eve), Results, You, Badges
+// (/milestones), every new empty state, the bank grouping and a page sheet;
+// plus slow-motion frame strips of a number roll (Today's scale bar), Results'
+// growth plate (Fig. 6), the Today clearing, the badge moment, the theme fade
+// (Settings → Appearance → Theme) and You's growth since the last look.
 //
 // The clock tricks are shoot_motion.mjs's: the page's clocks run at 1/SLOW
 // speed during a strip, so a 600 ms roll lasts ~6 s and frames land inside
@@ -153,31 +154,36 @@ async function compose(name, title, frames, clip) {
 // ── 1. Today and You, as they open ─────────────────────────────────────
 await go('/home', 2600);
 await shot('p01-today');
+// Today's readiness (mobile 1.51: the scale bar, no rings), measured now: f1's frames are clipped round it.
+const readyTap = page.getByTestId('readiness-tap').first();
+const readyBox = (await readyTap.count()) ? await readyTap.boundingBox() : null;
+const readyClip = readyBox
+  ? { x: 0, y: Math.max(0, Math.round(readyBox.y) - 40), width: 393, height: Math.round(readyBox.height) + 80 }
+  : { x: 0, y: 330, width: 393, height: 290 };
 await go('/you', 2600);
 await shot('p06-you');
 
 // ── 2. A number roll: Today after a session, coming back from You ──────
-// The range and the rings were lower when Today was last seen.
+// The range was lower when Today was last seen (Today draws it on the scale bar; it has no rings).
 await edit(SEEN, `
   const s = v.state; s.values = s.values || {};
-  const r = s.values['today:range:cisa']; if (r) s.values['today:range:cisa'] = r.map((x) => x - 5);
-  const g = s.values['today:rings:cisa']; if (g) s.values['today:rings:cisa'] = g.map((x) => Math.max(0, x - 8));`);
+  const r = s.values['today:range:cisa']; if (r) s.values['today:range:cisa'] = r.map((x) => x - 5);`);
 await go('/you', 2200);
 await strip(
   'f1-number-roll',
   [
-    'Back on Today after a session: the range rolls up from what you last saw (digits finish right to left), the rings grow the difference',
-    'Back on Today after a session: no roll, no growth: the new range and rings brighten in place',
+    'Back on Today after a session: the scale bar’s band and bracket slide up from the range you last saw while the numeral rolls (digits finish right to left); the ruler stays still',
+    'Back on Today after a session: no roll, no slide: the finished bar with the new range',
   ],
   async () => {
     await tab('Today');
   },
   [60, 330, 560, 1000],
-  { x: 0, y: 330, width: 393, height: 290 },
+  readyClip,
 );
 await wait(1200);
 
-// ── 3. Ring growth and the milestone moment: finishing a session ───────
+// ── 3. Results' growth plate and the badge moment: finishing a session ─
 // A milestone waits in the queue, so this session's Results gets its moment.
 const now = Date.now();
 await edit(P, `
@@ -195,11 +201,14 @@ for (let q = 0; q < keys.length; q++) {
     await wait(1400);
   }
 }
+// Mobile 1.51: Results has no rings; Fig. 6 (the areas this set asked about) traces in. The seeded set is
+// three Domain 1 questions: one stem, no "before" snapshot (so 'trace', not 'growth'), and under 8 answers
+// so no Score row (results.tsx:262, 389): the headline is the count, which does not roll.
 await strip(
-  'f2-ring-growth',
+  'f2-plate-growth',
   [
-    'See results: the screen dissolves in, then the rings grow from 0 to the score (outer ring first), the score and "correct" roll up',
-    'See results: the screen dissolves in; rings and numbers are simply there (no growth)',
+    'See results: the screen dissolves in, then Fig. 6 traces in: the stem of the one area this set asked about draws up from the soil, then its number settles in',
+    'See results: the screen dissolves in; the plate is simply there (no growth)',
   ],
   async () => {
     await page.getByText('See results', { exact: true }).click();
@@ -208,13 +217,14 @@ await strip(
   { x: 0, y: 0, width: 393, height: 520 },
 );
 await wait(1500);
-// The moment sits under the stats: it plays when scrolled into view.
-const moment = page.getByText('A quiet milestone').first();
+// The badge moment sits under the stats: it plays when scrolled into view. Its caption is
+// "A new badge · <set>", or, past three full moments this week, the quiet "New in your badges: <badge>".
+const moment = page.getByText(/^(A new badge · |New in your badges: )/).first();
 await strip(
   'f4-milestone-moment',
   [
-    'Scroll to the milestone: the pressed leaf springs in and six leaves drift down its own column, once (≤ 1.2 s; a tap ends it)',
-    'Scroll to the milestone: it is simply there, with the same words (no leaves, no spring)',
+    'Scroll to the new badge: the medallion presses in, its rim catches the light once and its emblem fills, while six leaves drift down its own column (≤ 1.2 s; a tap or scroll ends it)',
+    'Scroll to the new badge: it is simply there, with the same words (no leaves, no press)',
   ],
   async () => {
     // An instant scroll that puts the moment mid-screen (a wheel scroll can stop short).
@@ -229,7 +239,7 @@ await page.setViewportSize({ width: 393, height: 852 });
 await wait(600);
 await scrollBy(-3000);
 await shot('p05-results');
-await scrollBy(Math.max(0, (await page.getByText('A quiet milestone').first().boundingBox()).y - 260));
+await scrollBy(Math.max(0, (await moment.boundingBox()).y - 260));
 await shot('p07-results-milestone');
 // A page sheet (raised2, mobile 1.9): "Something not working? Report a bug".
 await page.getByText('Something not working? Report a bug', { exact: true }).scrollIntoViewIfNeeded();
@@ -255,7 +265,7 @@ await go('/you', 2200);
 await strip(
   'f3-today-clearing',
   [
-    'Back on Today, the plan done: the day’s numbers roll up, the small ring grows today’s growth, then “grew to” fades in (≤ 1.2 s, a tap ends it)',
+    'Back on Today, the plan done: the day’s numbers roll up, the mini stem grows from this morning’s readiness, then “grew to” fades in (≤ 1.2 s, a tap ends it)',
     'Back on Today, the plan done: the clearing is simply there, with the same words',
   ],
   async () => {
@@ -268,6 +278,16 @@ await wait(1500);
 await shot('p02-today-cleared');
 
 // ── 5. You: growth since the last look, and the theme fade ─────────────
+// Mobile 1.51: You's areas are Fig. 5 (one stem per area, "↑6" on what rose) and the stats are ruled rows
+// (Answered, Accuracy, Streak), both below the study profile and the scale bar: a taller window keeps
+// them on screen for the strip, measured on a direct visit (tabs stay mounted, so not mid-switch).
+await page.setViewportSize({ width: 393, height: 1500 });
+await go('/you', 2400);
+const areasBox = await page.getByTestId('areas-plate').boundingBox();
+const statsBox = await page.getByTestId('you-stats').boundingBox();
+const youTop = Math.max(0, Math.round(areasBox.y) - 10);
+const youClip = { x: 0, y: youTop, width: 393, height: Math.min(1500 - youTop, Math.round(statsBox.y + statsBox.height - youTop) + 16) };
+await go('/home', 2200);
 await edit(SEEN, `
   const s = v.state; s.values = s.values || {};
   const g = s.values['you:rings:cisa']; if (g) s.values['you:rings:cisa'] = g.map((x, i) => (i % 2 ? x : Math.max(0, x - 6)));
@@ -276,17 +296,25 @@ await go('/home', 2200);
 await strip(
   'f6-you-growth',
   [
-    'You, after a session: the changed rings grow from where you last saw them, then a quiet "+6" beside each; "answered" rolls up',
-    'You, after a session: the new values are simply there; the "+6" tags still say what changed',
+    'You, after a session: in Fig. 5 the areas that rose grow from where you last saw them, then a quiet "↑6" beside each and one "Since you last looked" line; "Answered" rolls up',
+    'You, after a session: the new values are simply there; the "↑6" tags and the line still say what changed',
   ],
   async () => {
     await tab('You');
   },
   [80, 420, 760, 1300],
-  { x: 0, y: 120, width: 393, height: 520 },
+  youClip,
 );
 await wait(1500);
+// Back to a full phone, Fig. 5 at the top: the end state of the growth.
+await page.setViewportSize({ width: 393, height: 852 });
+await wait(600);
+await page.getByTestId('areas-plate').evaluate((el) => el.scrollIntoView({ block: 'start' }));
+await scrollBy(-40);
 await shot('p06b-you-growth');
+// The theme lives only in Settings → Appearance → Theme (mobile 1.43): a System / Light / Dark radio group
+// at the top of Settings, each radio named by its word alone (no "appearance" switch on You any more).
+await go('/settings', 2200);
 const other = theme === 'dark' ? 'Light' : 'Dark';
 await strip(
   'f5-theme-fade',
@@ -295,13 +323,13 @@ await strip(
     `Switch to ${other}: the same dissolve, shorter (120 ms, opacity only)`,
   ],
   async () => {
-    await page.getByRole('radio', { name: new RegExp(`^${other} appearance`) }).click();
+    await page.getByRole('radio', { name: other, exact: true }).click();
   },
   [10, 60, 130, 300],
   { x: 0, y: 0, width: 393, height: 420 },
 );
 await wait(800);
-await page.getByRole('radio', { name: new RegExp(`^${theme === 'dark' ? 'Dark' : 'Light'} appearance`) }).click();
+await page.getByRole('radio', { name: theme === 'dark' ? 'Dark' : 'Light', exact: true }).click();
 await wait(800);
 
 // ── 6. Exam-ready, and the exam eve ────────────────────────────────────
@@ -321,16 +349,19 @@ await scrollBy(380);
 await shot('p04b-today-exam-eve-scrolled');
 await edit(S, `v.state.examDates.cisa = a;`, examWas);
 
-// ── 7. Milestones: leaves earned since the last look press in ──────────
+// ── 7. Badges (/milestones): badges earned since the last look press in ─
+// Mobile 1.10+: "new" is every badge earned after the case was last opened (seen store caseSeen), and the
+// "Still to collect" bars grow from what was last seen under badges:next:<cert>:<their keys>.
 await go('/milestones', 600);
 await go('/home', 1200);
 await edit(SEEN, `
-  const s = v.state;
-  const e = s.values['milestones:earned:cisa']; if (e) s.values['milestones:earned:cisa'] = e.map(() => 0);
-  const b = s.values['milestones:bars:cisa']; if (b) s.values['milestones:bars:cisa'] = b.map((x) => Math.max(0, x - 25));`);
+  const s = v.state; s.values = s.values || {}; s.caseSeen = s.caseSeen || {};
+  s.caseSeen.cisa = 0;
+  for (const k of Object.keys(s.values)) if (k.startsWith('badges:next:cisa:')) s.values[k] = s.values[k].map((x) => Math.max(0, x - 25));`);
 await go('/milestones', 2600);
 await shot('p08-milestones');
-await page.getByText('Closest next', { exact: true }).evaluate((el) => el.scrollIntoView({ block: 'start' }));
+// "Closest next" became "Still to collect · for your exam" (mobile 1.51): the same panel of the nearest badges.
+await page.getByTestId('still-to-collect').evaluate((el) => el.scrollIntoView({ block: 'start' }));
 await wait(700);
 await shot('p08b-milestones-closest');
 

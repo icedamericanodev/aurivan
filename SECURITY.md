@@ -4,10 +4,10 @@
 
 KaiSip is a **fully client-side, single-file HTML application**. It has:
 
-- No backend server
-- No database
-- No user accounts or authentication
-- No personally identifiable information collected or stored
+- No backend server for learners today (accounts, sync and a feedback board are built but switched off in every released build, so nothing a learner does is sent to a server)
+- One database in use today: the maintainer's private Beta Desk (Android beta tester records, admin-only, two-step sign-in; `docs/beta/BETA_DESK.md`)
+- No learner accounts today (the only sign-in is the Beta Desk admin's)
+- No personal information collected from learners by the apps; beta testers' sign-up details are held as privacy.html section 3e describes
 - No cookies set by the app itself; a Google Analytics cookie is set **only if you accept** it on the in-app cookie banner
 
 All progress (scores, bookmarks, profiles) lives in your browser's `localStorage` and never leaves your device — except in two cases:

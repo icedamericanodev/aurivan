@@ -1,12 +1,24 @@
 # Who must review a change before it can merge to main (security audit M3,
-# 27 Oct 2026). The workflows hold real credentials: db-backup.yml has the
-# full database password, eas-update.yml the Expo token. A change to them
-# needs the owner's review, so a bad merge can't quietly send a credential
-# somewhere else.
+# 27 Oct 2026; paths widened after the 4 Nov 2026 assessment). The workflows
+# hold real credentials: db-backup.yml has the full database password,
+# eas-update.yml the Expo token. A change to them, or to anything that runs in
+# those jobs or in every agent session, needs the owner's review, so a bad
+# merge can't quietly send a credential somewhere else.
 #
 # This file only takes effect with branch protection on main:
-# Settings → Branches → main → "Require a pull request before merging" →
-# "Require review from Code Owners" (ACCOUNTS_BETA_PLAN.md §9 and its go-live
-# gates). If a workflow ever changes without that review, rotate the
-# database password (docs/mobile/SCALING.md, runbooks).
+# Settings -> Branches -> main -> "Require a pull request before merging" ->
+# "Require review from Code Owners" (ACCOUNTS_BETA_PLAN.md section 9 and its
+# go-live gates). On a PRIVATE repository that needs GitHub Pro; on the Free
+# plan this file is ignored. If a workflow ever changes without that review,
+# rotate the database password (docs/mobile/SCALING.md, runbooks).
 /.github/ @icedamericanodev
+/.claude/ @icedamericanodev
+/CLAUDE.md @icedamericanodev
+/supabase/ @icedamericanodev
+/_headers @icedamericanodev
+/wrangler.jsonc @icedamericanodev
+/mobile/eas.json @icedamericanodev
+/mobile/app.config.js @icedamericanodev
+/scripts/build_site.sh @icedamericanodev
+/scripts/check_secrets.sh @icedamericanodev
+/scripts/verify_repo.sh @icedamericanodev

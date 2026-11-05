@@ -1,0 +1,1982 @@
+[
+  {
+    "id": 1,
+    "term": "Acceptance criteria",
+    "acronym": null,
+    "def": "Measurable conditions, agreed in advance, that an AI system must meet before its owner accepts it, such as a maximum error rate for each affected group.",
+    "scopeNotes": "The model owner sets use-level criteria. The IS auditor checks that they were fixed before testing and not adjusted to fit the results.",
+    "domain": 2,
+    "category": "Control"
+  },
+  {
+    "id": 2,
+    "term": "Accountability",
+    "acronym": null,
+    "def": "Being answerable for a decision, outcome or conclusion. A named person stays accountable for each model and each AI-made decision, and accountability never passes to a tool.",
+    "scopeNotes": "\"The AI decided\" is never an acceptable answer. The same holds for the IS auditor's own conclusions when AI tools support the audit.",
+    "domain": 0,
+    "category": "Concept"
+  },
+  {
+    "id": 3,
+    "term": "Accuracy",
+    "acronym": null,
+    "def": "The share of all outputs a model gets right. When one outcome is rare, overall accuracy can look high while the cases that matter are missed.",
+    "scopeNotes": "The IS auditor asks for error rates by outcome and by group, such as precision, recall and false negative rate, not one overall figure.",
+    "domain": 0,
+    "category": "Concept"
+  },
+  {
+    "id": 4,
+    "term": "Adversarial machine learning",
+    "acronym": null,
+    "def": "The study of attacks that manipulate AI systems through their data, models or inputs, and of the defenses against them.",
+    "scopeNotes": "NIST AI 100-2 sets out a taxonomy of these attacks; MITRE ATLAS catalogs real techniques and case studies.",
+    "domain": 2,
+    "category": "Concept"
+  },
+  {
+    "id": 5,
+    "term": "Affected group",
+    "acronym": null,
+    "def": "People who share a trait, such as age, language or region, whose outcomes an audit compares to find unequal errors or treatment by an AI system.",
+    "scopeNotes": "",
+    "domain": 3,
+    "category": "Concept"
+  },
+  {
+    "id": 6,
+    "term": "Agentic AI",
+    "acronym": null,
+    "def": "AI that plans steps and uses tools or connected systems to take actions, such as sending messages or updating records, rather than only giving answers.",
+    "scopeNotes": "Risk rises with what the agent can do, so the IS auditor looks at its permissions, action limits and approvals. See AI agent.",
+    "domain": 1,
+    "category": "Technology"
+  },
+  {
+    "id": 7,
+    "term": "AI agent",
+    "acronym": null,
+    "def": "A system that uses a model to plan and take actions through tools, such as sending email, making payments or updating records.",
+    "scopeNotes": "Each agent needs a named owner, its own non-human identity, least-privilege permissions, logged actions and human approval for risky steps.",
+    "domain": 2,
+    "category": "Technology"
+  },
+  {
+    "id": 8,
+    "term": "AI audit universe",
+    "acronym": null,
+    "def": "Every AI use the audit function could audit, ranked by the likelihood and impact of harm to choose which ones enter the risk-based audit plan.",
+    "scopeNotes": "Built from the AI inventory plus embedded and shadow AI the IS auditor finds; the inventory alone may be incomplete.",
+    "domain": 3,
+    "category": "Process"
+  },
+  {
+    "id": 9,
+    "term": "AI disclosure",
+    "acronym": null,
+    "def": "A statement telling audit report readers how AI tools supported the audit work and how their output was checked.",
+    "scopeNotes": "Disclosure does not shift responsibility: the IS auditor still owns every conclusion.",
+    "domain": 3,
+    "category": "Process"
+  },
+  {
+    "id": 10,
+    "term": "AI governance committee",
+    "acronym": null,
+    "def": "A cross-functional body that sets AI standards, approves high-impact AI use cases and escalates to senior management.",
+    "scopeNotes": "The IS auditor may give advisory, non-voting input but never chairs it, votes or approves uses, which would impair independence.",
+    "domain": 1,
+    "category": "Control"
+  },
+  {
+    "id": 11,
+    "term": "AI impact assessment",
+    "acronym": null,
+    "def": "A documented review, before deployment and on significant change, of how an AI system could affect people, the organization and others, and of the safeguards chosen.",
+    "scopeNotes": "The IS auditor checks that it was done before go-live, covers the people actually affected and is updated when the use or population changes.",
+    "domain": 1,
+    "category": "Process"
+  },
+  {
+    "id": 12,
+    "term": "AI incident",
+    "acronym": null,
+    "def": "An event in which an AI system causes or nearly causes harm through its outputs, data or behavior, such as wrongful denials, unsafe advice or leaked personal data.",
+    "scopeNotes": "Near misses count. The IS auditor checks that the incident definition covers AI-specific harms, not only outages and breaches.",
+    "domain": 2,
+    "category": "Concept"
+  },
+  {
+    "id": 13,
+    "term": "AI inventory",
+    "acronym": null,
+    "def": "A maintained register of every AI system in use or development, including embedded and shadow AI, with its owner, purpose, data, vendor and risk tier.",
+    "scopeNotes": "The IS auditor tests completeness by tracing from purchasing, network and software records back to the inventory.",
+    "domain": 1,
+    "category": "Control"
+  },
+  {
+    "id": 14,
+    "term": "AI policy",
+    "acronym": null,
+    "def": "The rules, approved by the board or senior management, for how the organization may acquire, build and use AI, including risk tiers, required reviews and prohibited uses.",
+    "scopeNotes": "The IS auditor checks that it covers embedded and shadow AI and that staff duties in it are known and followed.",
+    "domain": 1,
+    "category": "Control"
+  },
+  {
+    "id": 15,
+    "term": "AI Risk Management Framework (AI RMF)",
+    "acronym": "AI RMF",
+    "def": "A voluntary framework from the US National Institute of Standards and Technology (NIST), published as NIST AI 100-1, for managing AI risk through four functions: Govern, Map, Measure and Manage.",
+    "scopeNotes": "It is guidance, not law. The IS auditor may select it as audit criteria where it suits the use. Govern runs across the other three functions.",
+    "domain": 1,
+    "category": "Process"
+  },
+  {
+    "id": 16,
+    "term": "AI strategy",
+    "acronym": null,
+    "def": "The organization's plan for how AI will support its goals, which uses it will pursue or avoid, and how they will be governed and resourced.",
+    "scopeNotes": "The IS auditor checks that AI uses trace to the strategy and that it links to risk appetite and policy.",
+    "domain": 1,
+    "category": "Concept"
+  },
+  {
+    "id": 17,
+    "term": "Anomaly detection",
+    "acronym": null,
+    "def": "A technique that flags items unlike most of the data, such as unusual payments, logins or journal entries.",
+    "scopeNotes": "Unflagged items are not tested items. Before relying on it, the IS auditor validates its miss rate on known cases.",
+    "domain": 3,
+    "category": "Technology"
+  },
+  {
+    "id": 18,
+    "term": "Appeal route",
+    "acronym": null,
+    "def": "A defined way for a person affected by an AI decision to challenge it before someone with authority to change it.",
+    "scopeNotes": "The IS auditor checks that people know the route exists, that appeals reach a person who can overturn the decision and that outcomes feed back into monitoring.",
+    "domain": 2,
+    "category": "Control"
+  },
+  {
+    "id": 19,
+    "term": "Approved use",
+    "acronym": null,
+    "def": "A specific audit task an AI tool may perform, with stated data limits and review steps, approved under the audit methodology before the tool is used.",
+    "scopeNotes": "",
+    "domain": 3,
+    "category": "Control"
+  },
+  {
+    "id": 20,
+    "term": "Artificial intelligence (AI) system",
+    "acronym": "AI",
+    "def": "A machine-based system that produces predictions, content, recommendations or actions from data for a given objective.",
+    "scopeNotes": "A rules engine, whose logic people write and maintain, can automate decisions but does not learn from data, so it is not machine learning. In a machine learning system, a trained model turns inputs into outputs; retraining creates a new model version.",
+    "domain": 0,
+    "category": "Technology"
+  },
+  {
+    "id": 21,
+    "term": "Audit criteria",
+    "acronym": null,
+    "def": "The benchmarks a condition is measured against, such as policy, a framework, a contract or a regulation. The IS auditor selects criteria suitable for the AI use under review.",
+    "scopeNotes": "A voluntary framework such as the NIST AI RMF can serve as criteria, but it is not a legal requirement.",
+    "domain": 3,
+    "category": "Concept"
+  },
+  {
+    "id": 22,
+    "term": "Audit evidence",
+    "acronym": null,
+    "def": "The information the IS auditor obtains to support conclusions, which must be sufficient, relevant and reliable. For AI it includes model cards, logs, lineage records and validation reports.",
+    "scopeNotes": "AI evidence counts only if it matches the model version and period under review. Vendor claims and accuracy scores are inputs, not assurance.",
+    "domain": 3,
+    "category": "Concept"
+  },
+  {
+    "id": 23,
+    "term": "Audit finding",
+    "acronym": null,
+    "def": "A documented gap between what the IS auditor observed and what the criteria require, reported with its cause, its effect and a recommendation.",
+    "scopeNotes": "See finding attributes. For AI, the effect states the harm to people or the business, not only the faulty setting.",
+    "domain": 3,
+    "category": "Concept"
+  },
+  {
+    "id": 24,
+    "term": "Audit methodology",
+    "acronym": null,
+    "def": "The audit function's documented approach and procedures for planning, performing and reporting engagements, including when and how AI tools may be used in the audit.",
+    "scopeNotes": "",
+    "domain": 3,
+    "category": "Process"
+  },
+  {
+    "id": 25,
+    "term": "Audit sampling",
+    "acronym": null,
+    "def": "Testing fewer than all items in a population to reach a conclusion about the whole. For AI decisions, the sample should cover each relevant group, period and model version.",
+    "scopeNotes": "Where analytics can test every item, full-population testing may replace sampling.",
+    "domain": 3,
+    "category": "Process"
+  },
+  {
+    "id": 26,
+    "term": "Audit universe",
+    "acronym": null,
+    "def": "Every auditable area the audit function could cover, from which the risk-based audit plan is chosen. AI uses are one part of it.",
+    "scopeNotes": "",
+    "domain": 3,
+    "category": "Concept"
+  },
+  {
+    "id": 27,
+    "term": "Automated machine learning (AutoML)",
+    "acronym": "AutoML",
+    "def": "Tools that automatically choose, train and tune models with little manual work.",
+    "scopeNotes": "Automation does not make a model independently validated: the people who ran the tool are still its builders.",
+    "domain": 2,
+    "category": "Technology"
+  },
+  {
+    "id": 28,
+    "term": "Automation bias",
+    "acronym": null,
+    "def": "The tendency to over-trust automated output and accept it without enough scrutiny, so human review becomes a formality.",
+    "scopeNotes": "The IS auditor tests it through reviewer behavior, such as override rates and review times, and with seeded known-wrong cases, not by counting how often reviewers signed off.",
+    "domain": 2,
+    "category": "Concept"
+  },
+  {
+    "id": 29,
+    "term": "Backdoor",
+    "acronym": null,
+    "def": "A hidden behavior planted in a model, through poisoned data or tampering, that stays dormant until a specific trigger appears in the input.",
+    "scopeNotes": "A backdoored model can score well on normal accuracy tests, so integrity checks on the model's source come first.",
+    "domain": 2,
+    "category": "Concept"
+  },
+  {
+    "id": 30,
+    "term": "Base model",
+    "acronym": null,
+    "def": "The pre-trained model that a fine-tuned or customized model is built on.",
+    "scopeNotes": "When a vendor changes or retires the base model, the models built on it need retesting or rebuilding, managed as a change.",
+    "domain": 2,
+    "category": "Technology"
+  },
+  {
+    "id": 31,
+    "term": "Certification scope",
+    "acronym": null,
+    "def": "The part of the organization, its systems and processes that a certificate actually covers.",
+    "scopeNotes": "A certified AI management system does not show that each model's outputs are fair or accurate. The IS auditor reads the scope before relying on it.",
+    "domain": 1,
+    "category": "Concept"
+  },
+  {
+    "id": 32,
+    "term": "Chain of custody",
+    "acronym": null,
+    "def": "A record of who handled evidence and when, showing it was not altered. In an AI incident it covers prompt logs, decision logs, model versions and configuration snapshots.",
+    "scopeNotes": "",
+    "domain": 2,
+    "category": "Process"
+  },
+  {
+    "id": 33,
+    "term": "Champion-challenger",
+    "acronym": null,
+    "def": "Running a new (challenger) model beside the current (champion) model on the same cases to compare results before deciding whether to switch.",
+    "scopeNotes": "If the challenger's outputs decide real cases, the comparison is a deployment and needs validation first; shadow mode compares without deciding. An independently built challenger can also point the IS auditor's testing at cases where outputs diverge.",
+    "domain": 2,
+    "category": "Process"
+  },
+  {
+    "id": 34,
+    "term": "Class imbalance",
+    "acronym": null,
+    "def": "When one outcome is rare in the data, so overall accuracy can look high while the rare cases, often the important ones, are missed.",
+    "scopeNotes": "",
+    "domain": 1,
+    "category": "Concept"
+  },
+  {
+    "id": 35,
+    "term": "Co-sourcing",
+    "acronym": null,
+    "def": "Bringing outside experts, such as data scientists, into an audit team while the audit function keeps responsibility for the work and its conclusions.",
+    "scopeNotes": "",
+    "domain": 3,
+    "category": "Process"
+  },
+  {
+    "id": 36,
+    "term": "Concept drift",
+    "acronym": null,
+    "def": "A change in the relationship between inputs and the correct outcome, so the patterns a model learned stop holding even if inputs look the same.",
+    "scopeNotes": "Compare data drift, where the inputs themselves change.",
+    "domain": 2,
+    "category": "Concept"
+  },
+  {
+    "id": 37,
+    "term": "Confabulation",
+    "acronym": null,
+    "def": "A generative AI system producing confident but false or invented content, such as citations or facts that do not exist. Often called hallucination.",
+    "scopeNotes": "NIST AI 600-1 lists it as a generative AI risk. Output used as evidence needs checking against an independent source.",
+    "domain": 2,
+    "category": "Concept"
+  },
+  {
+    "id": 38,
+    "term": "Confidence score",
+    "acronym": null,
+    "def": "A model's own estimate of how likely its output is correct. It is not proof that the output is correct.",
+    "scopeNotes": "",
+    "domain": 3,
+    "category": "Concept"
+  },
+  {
+    "id": 39,
+    "term": "Configuration baseline",
+    "acronym": null,
+    "def": "The approved, documented set of settings and versions, including model, prompts, thresholds and libraries, that production is compared against.",
+    "scopeNotes": "",
+    "domain": 2,
+    "category": "Control"
+  },
+  {
+    "id": 40,
+    "term": "Containment",
+    "acronym": null,
+    "def": "Limiting an AI incident's harm, such as disengaging the model, switching to a manual fallback or rolling back, while preserving logs and versions as evidence.",
+    "scopeNotes": "",
+    "domain": 2,
+    "category": "Process"
+  },
+  {
+    "id": 41,
+    "term": "Context window",
+    "acronym": null,
+    "def": "The amount of text a language model can take in and consider at once.",
+    "scopeNotes": "Input beyond it may be cut or ignored without warning, so the IS auditor confirms that the whole population was processed before relying on the output.",
+    "domain": 3,
+    "category": "Technology"
+  },
+  {
+    "id": 42,
+    "term": "Continuous monitoring",
+    "acronym": null,
+    "def": "Ongoing, often automated checks of an AI system's inputs, outputs, performance and impacts against set thresholds, so problems surface between periodic reviews.",
+    "scopeNotes": "",
+    "domain": 2,
+    "category": "Process"
+  },
+  {
+    "id": 43,
+    "term": "Control total",
+    "acronym": null,
+    "def": "A sum or count used to check that data was transferred completely and accurately, such as the number of decision log records extracted for testing.",
+    "scopeNotes": "",
+    "domain": 3,
+    "category": "Control"
+  },
+  {
+    "id": 44,
+    "term": "Corroboration",
+    "acronym": null,
+    "def": "Confirming evidence with another independent source, such as the original record, rather than accepting a single source.",
+    "scopeNotes": "Output from an AI tool, including the audit's own, is corroborated before it supports a finding.",
+    "domain": 3,
+    "category": "Process"
+  },
+  {
+    "id": 45,
+    "term": "Data catalog",
+    "acronym": null,
+    "def": "An organized listing of datasets with their owners, meanings, classifications and permitted uses.",
+    "scopeNotes": "",
+    "domain": 1,
+    "category": "Technology"
+  },
+  {
+    "id": 46,
+    "term": "Data drift",
+    "acronym": null,
+    "def": "A change in the inputs a model receives compared with its training data, which often lowers accuracy.",
+    "scopeNotes": "Also called input drift. Compare concept drift.",
+    "domain": 2,
+    "category": "Concept"
+  },
+  {
+    "id": 47,
+    "term": "Data governance",
+    "acronym": null,
+    "def": "The roles, policies and processes that decide who owns data, how it may be used, and how its quality, lineage and protection are maintained, including for data used in AI.",
+    "scopeNotes": "",
+    "domain": 1,
+    "category": "Control"
+  },
+  {
+    "id": 48,
+    "term": "Data leakage",
+    "acronym": null,
+    "def": "Information from the test set or from the future reaching a model during training, which inflates its reported scores.",
+    "scopeNotes": "Not the same as a data breach. The IS auditor checks how training, validation and test data were separated.",
+    "domain": 2,
+    "category": "Concept"
+  },
+  {
+    "id": 49,
+    "term": "Data lineage",
+    "acronym": null,
+    "def": "A record of where data came from, every transformation it passed through and where it went, including into which models.",
+    "scopeNotes": "System-generated lineage is usually more reliable evidence than a description written by the developers.",
+    "domain": 0,
+    "category": "Control"
+  },
+  {
+    "id": 50,
+    "term": "Data minimization",
+    "acronym": null,
+    "def": "Collecting, keeping and sending only the personal data a purpose needs. For generative AI it starts with what goes into prompts.",
+    "scopeNotes": "",
+    "domain": 1,
+    "category": "Control"
+  },
+  {
+    "id": 51,
+    "term": "Data owner",
+    "acronym": null,
+    "def": "The business role accountable for a dataset's permitted uses, classification and quality, including whether it may be used to train AI.",
+    "scopeNotes": "",
+    "domain": 1,
+    "category": "Control"
+  },
+  {
+    "id": 52,
+    "term": "Data provenance",
+    "acronym": null,
+    "def": "Where data came from and the terms under which it was obtained.",
+    "scopeNotes": "Provenance supports the right to use data and helps detect poisoned or unreliable sources.",
+    "domain": 2,
+    "category": "Concept"
+  },
+  {
+    "id": 53,
+    "term": "Data quality rules",
+    "acronym": null,
+    "def": "Defined checks for accuracy, completeness, timeliness and representativeness that data must pass before it is used for training or decisions.",
+    "scopeNotes": "",
+    "domain": 1,
+    "category": "Control"
+  },
+  {
+    "id": 54,
+    "term": "Data snapshot",
+    "acronym": null,
+    "def": "A fixed copy of input data, often hashed, kept so an analysis can be rerun on exactly the same data.",
+    "scopeNotes": "",
+    "domain": 3,
+    "category": "Control"
+  },
+  {
+    "id": 55,
+    "term": "Datasheet",
+    "acronym": null,
+    "def": "A document describing a dataset's origin, contents, collection method, intended uses and known gaps.",
+    "scopeNotes": "Written by the dataset's creators, so the IS auditor corroborates it with lineage and quality evidence.",
+    "domain": 2,
+    "category": "Concept"
+  },
+  {
+    "id": 56,
+    "term": "De-identification",
+    "acronym": null,
+    "def": "Removing or masking details that identify people in a dataset, such as names, account numbers or exact birth dates.",
+    "scopeNotes": "It reduces but does not remove privacy risk, because combining datasets can allow re-identification. Pseudonymization replaces names with codes while keeping a key, so the data is still personal data.",
+    "domain": 1,
+    "category": "Control"
+  },
+  {
+    "id": 57,
+    "term": "Decision log",
+    "acronym": null,
+    "def": "A record of each automated decision with its inputs, model version, output and final action, including any human override.",
+    "scopeNotes": "",
+    "domain": 2,
+    "category": "Control"
+  },
+  {
+    "id": 58,
+    "term": "Decision threshold",
+    "acronym": null,
+    "def": "The score at which a model's output triggers an action, such as an alert, referral or decline.",
+    "scopeNotes": "Changing it changes outcomes for people, so it is a controlled change with testing and approval.",
+    "domain": 2,
+    "category": "Control"
+  },
+  {
+    "id": 59,
+    "term": "Decommissioning",
+    "acronym": null,
+    "def": "Retiring an AI system in a planned way: keeping required records, revoking access to endpoints, keys and service accounts, moving dependent systems and updating the inventory.",
+    "scopeNotes": "",
+    "domain": 2,
+    "category": "Process"
+  },
+  {
+    "id": 60,
+    "term": "Direct prompt injection",
+    "acronym": null,
+    "def": "A user typing instructions into a generative AI system meant to override its rules or reach data and actions they should not.",
+    "scopeNotes": "Compare indirect prompt injection, where the instructions come hidden in content the system reads.",
+    "domain": 2,
+    "category": "Concept"
+  },
+  {
+    "id": 61,
+    "term": "Disaggregated results",
+    "acronym": null,
+    "def": "Performance figures broken out by group instead of reported as one overall number, so unequal errors become visible.",
+    "scopeNotes": "",
+    "domain": 2,
+    "category": "Concept"
+  },
+  {
+    "id": 62,
+    "term": "Due diligence",
+    "acronym": null,
+    "def": "Checks on a vendor and its product before signing, to judge whether its risks are acceptable, repeated when the service or its suppliers change.",
+    "scopeNotes": "",
+    "domain": 1,
+    "category": "Process"
+  },
+  {
+    "id": 63,
+    "term": "Embedded AI",
+    "acronym": null,
+    "def": "AI features built into purchased software or services, often switched on by the vendor without a separate project.",
+    "scopeNotes": "Easy to miss in the AI inventory. The IS auditor checks vendor release notes and contracts for it.",
+    "domain": 1,
+    "category": "Technology"
+  },
+  {
+    "id": 64,
+    "term": "Endpoint",
+    "acronym": null,
+    "def": "The network address where a deployed model receives requests and returns outputs. Access to it is revoked when the model is retired.",
+    "scopeNotes": "",
+    "domain": 2,
+    "category": "Technology"
+  },
+  {
+    "id": 65,
+    "term": "Enterprise architecture (EA)",
+    "acronym": "EA",
+    "def": "The organization's agreed blueprint for how processes, data, applications and technology fit together. New AI solutions are assessed for fit with it.",
+    "scopeNotes": "",
+    "domain": 1,
+    "category": "Concept"
+  },
+  {
+    "id": 66,
+    "term": "Escrow",
+    "acronym": null,
+    "def": "An arrangement in which a third party holds a vendor's materials for release if the vendor fails.",
+    "scopeNotes": "For AI, source code alone cannot rebuild a trained model. Continuity needs the model files, configuration and, where possible, data or a tested alternative.",
+    "domain": 1,
+    "category": "Control"
+  },
+  {
+    "id": 67,
+    "term": "EU AI Act",
+    "acronym": null,
+    "def": "The European Union's risk-based AI regulation, Regulation (EU) 2024/1689, which adds duties for high-risk uses and prohibits some practices.",
+    "scopeNotes": "Context only in this course. Which laws apply to a use is confirmed with legal counsel.",
+    "domain": 1,
+    "category": "Concept"
+  },
+  {
+    "id": 68,
+    "term": "Evasion",
+    "acronym": null,
+    "def": "Crafting inputs at use time that a trained model gets wrong, such as a disguised fraud pattern, without changing the model itself.",
+    "scopeNotes": "",
+    "domain": 2,
+    "category": "Concept"
+  },
+  {
+    "id": 69,
+    "term": "Excessive agency",
+    "acronym": null,
+    "def": "An AI agent having more tools, permissions or autonomy than its task requires, so an error or attack can do more damage.",
+    "scopeNotes": "Countered by least privilege, action limits and human approval for risky actions.",
+    "domain": 2,
+    "category": "Concept"
+  },
+  {
+    "id": 70,
+    "term": "Experiment tracking",
+    "acronym": null,
+    "def": "Recording the data, code, settings and results of each training run so it can be reproduced and compared.",
+    "scopeNotes": "",
+    "domain": 2,
+    "category": "Control"
+  },
+  {
+    "id": 71,
+    "term": "Explainability",
+    "acronym": null,
+    "def": "How well the way an AI system reaches its outputs can be described to the people who oversee it or are affected by it.",
+    "scopeNotes": "NIST pairs it with interpretability as one trustworthy-AI characteristic. Legal compliance does not remove the need for it. Explanation fidelity is how accurately an explanation reflects what the model actually did. Feature importance charts help explain a model but do not show the data was suitable or outcomes fair.",
+    "domain": 1,
+    "category": "Concept"
+  },
+  {
+    "id": 72,
+    "term": "Fairness metric",
+    "acronym": null,
+    "def": "A measure comparing outcomes or errors across groups of people, such as approval-rate gaps or differences in false negative rates.",
+    "scopeNotes": "Metrics can conflict, so the model owner chooses and documents which ones fit the use.",
+    "domain": 1,
+    "category": "Concept"
+  },
+  {
+    "id": 73,
+    "term": "Fairness testing",
+    "acronym": null,
+    "def": "Comparing a system's outcomes and error rates across groups of people, before release and again after changes.",
+    "scopeNotes": "",
+    "domain": 2,
+    "category": "Process"
+  },
+  {
+    "id": 74,
+    "term": "False negative",
+    "acronym": null,
+    "def": "A real problem or positive case that a tool or model fails to flag.",
+    "scopeNotes": "",
+    "domain": 3,
+    "category": "Concept"
+  },
+  {
+    "id": 75,
+    "term": "False negative rate",
+    "acronym": null,
+    "def": "The share of real positive cases that a model misses. Also called the miss rate; it equals one minus recall.",
+    "scopeNotes": "",
+    "domain": 2,
+    "category": "Concept"
+  },
+  {
+    "id": 76,
+    "term": "False positive",
+    "acronym": null,
+    "def": "An item a tool or model flags that turns out to be normal.",
+    "scopeNotes": "",
+    "domain": 3,
+    "category": "Concept"
+  },
+  {
+    "id": 77,
+    "term": "Features",
+    "acronym": null,
+    "def": "The input values a model uses to make a prediction, such as order size, region or season.",
+    "scopeNotes": "",
+    "domain": 1,
+    "category": "Concept"
+  },
+  {
+    "id": 78,
+    "term": "Feedback loop",
+    "acronym": null,
+    "def": "When a model's outputs shape the data it later learns from, such as recording outcomes only for cases it approved, which can reinforce its own errors.",
+    "scopeNotes": "",
+    "domain": 2,
+    "category": "Concept"
+  },
+  {
+    "id": 79,
+    "term": "Finding attributes",
+    "acronym": null,
+    "def": "The parts of an audit finding: condition, criteria, cause, effect and recommendation.",
+    "scopeNotes": "",
+    "domain": 3,
+    "category": "Concept"
+  },
+  {
+    "id": 80,
+    "term": "Finding rating",
+    "acronym": null,
+    "def": "The priority given to a finding, based on the likelihood and impact of the harm it could cause.",
+    "scopeNotes": "",
+    "domain": 3,
+    "category": "Concept"
+  },
+  {
+    "id": 81,
+    "term": "Fine-tuning",
+    "acronym": null,
+    "def": "Further training a pre-trained model on new data, such as an organization's own records, to adapt it to a specific task.",
+    "scopeNotes": "It creates a new model version, and personal data used in it may be memorized.",
+    "domain": 2,
+    "category": "Technology"
+  },
+  {
+    "id": 82,
+    "term": "Follow-up",
+    "acronym": null,
+    "def": "Checking that management's agreed actions on a finding were completed and work in practice: the missing control now operates and, where the finding was about outcomes, production results show the harm has stopped.",
+    "scopeNotes": "A restored accuracy figure treats a symptom; it does not show the missing control is in place.",
+    "domain": 3,
+    "category": "Process"
+  },
+  {
+    "id": 83,
+    "term": "Foundation model",
+    "acronym": null,
+    "def": "A large model trained on broad data that other firms adapt or build products on.",
+    "scopeNotes": "",
+    "domain": 1,
+    "category": "Technology"
+  },
+  {
+    "id": 84,
+    "term": "Fourth-party AI risk",
+    "acronym": null,
+    "def": "Risk from the suppliers an organization's vendors rely on, such as a model provider behind a vendor's service, which may receive the organization's data on its own terms.",
+    "scopeNotes": "",
+    "domain": 1,
+    "category": "Concept"
+  },
+  {
+    "id": 85,
+    "term": "Full-population testing",
+    "acronym": null,
+    "def": "Testing every item in a population with analytics instead of a sample.",
+    "scopeNotes": "The IS auditor still confirms the population is complete and validates the tool doing the testing.",
+    "domain": 3,
+    "category": "Process"
+  },
+  {
+    "id": 86,
+    "term": "Generalization",
+    "acronym": null,
+    "def": "A model's ability to perform well on new data that differs from its training examples.",
+    "scopeNotes": "",
+    "domain": 1,
+    "category": "Concept"
+  },
+  {
+    "id": 87,
+    "term": "Generative AI",
+    "acronym": null,
+    "def": "AI that creates new text, images, audio or code from patterns in its training data, rather than looking facts up.",
+    "scopeNotes": "",
+    "domain": 1,
+    "category": "Technology"
+  },
+  {
+    "id": 88,
+    "term": "Govern (AI RMF function)",
+    "acronym": null,
+    "def": "The AI RMF function that sets up the culture, policies, roles and accountability for AI risk management. It runs across Map, Measure and Manage.",
+    "scopeNotes": "",
+    "domain": 1,
+    "category": "Process"
+  },
+  {
+    "id": 89,
+    "term": "Grounding",
+    "acronym": null,
+    "def": "Tying a generative model's answers to checked sources, such as approved documents retrieved at answer time, so the output can be verified.",
+    "scopeNotes": "It reduces confabulation but does not remove it.",
+    "domain": 1,
+    "category": "Technology"
+  },
+  {
+    "id": 90,
+    "term": "Guardrail",
+    "acronym": null,
+    "def": "A control that limits what an AI system will accept or produce, such as an input or output filter.",
+    "scopeNotes": "The IS auditor tests it by attempting reworded and disguised bypasses in an agreed setting; counts of blocked items show only catches.",
+    "domain": 2,
+    "category": "Control"
+  },
+  {
+    "id": 91,
+    "term": "Harmful bias",
+    "acronym": null,
+    "def": "Systematic errors or outcomes that disadvantage some groups of people, entering through data, design or use of an AI system.",
+    "scopeNotes": "NIST names \"fair with harmful bias managed\" as a trustworthy-AI characteristic.",
+    "domain": 1,
+    "category": "Concept"
+  },
+  {
+    "id": 92,
+    "term": "High-risk AI use",
+    "acronym": null,
+    "def": "A use that a risk-based law treats as able to cause serious harm, such as in employment, credit or public services, which brings added duties.",
+    "scopeNotes": "",
+    "domain": 1,
+    "category": "Concept"
+  },
+  {
+    "id": 93,
+    "term": "Historical bias",
+    "acronym": null,
+    "def": "Unfairness built into past decisions or records that a model learns and repeats, even when the data is accurate.",
+    "scopeNotes": "",
+    "domain": 2,
+    "category": "Concept"
+  },
+  {
+    "id": 94,
+    "term": "Holdout set",
+    "acronym": null,
+    "def": "Data kept aside and unseen during development, used once for the final performance check.",
+    "scopeNotes": "If it is reused to tune the model, it stops being an unseen check.",
+    "domain": 2,
+    "category": "Control"
+  },
+  {
+    "id": 95,
+    "term": "Human oversight",
+    "acronym": null,
+    "def": "People who understand an AI system's output and can override or stop it, with the authority and time to do so.",
+    "scopeNotes": "Three common designs: human-in-the-loop, human-on-the-loop and human-in-command.",
+    "domain": 2,
+    "category": "Control"
+  },
+  {
+    "id": 96,
+    "term": "Human-in-command",
+    "acronym": null,
+    "def": "An oversight design in which people set policy, limits and shutdown conditions for an AI system without reviewing individual decisions.",
+    "scopeNotes": "",
+    "domain": 2,
+    "category": "Control"
+  },
+  {
+    "id": 97,
+    "term": "Human-in-the-loop",
+    "acronym": null,
+    "def": "An oversight design in which a person must review or approve each AI decision before it takes effect. Suited to high-impact decisions about people.",
+    "scopeNotes": "Only effective if reviewers are not rubber-stamping; see automation bias.",
+    "domain": 2,
+    "category": "Control"
+  },
+  {
+    "id": 98,
+    "term": "Human-on-the-loop",
+    "acronym": null,
+    "def": "An oversight design in which the AI system acts on its own while a person monitors it and can intervene or stop it.",
+    "scopeNotes": "",
+    "domain": 2,
+    "category": "Control"
+  },
+  {
+    "id": 99,
+    "term": "Identity and access management (IAM)",
+    "acronym": "IAM",
+    "def": "The processes and tools that create, approve, review and remove access for people and non-human identities, including AI agents and model service accounts.",
+    "scopeNotes": "",
+    "domain": 2,
+    "category": "Control"
+  },
+  {
+    "id": 100,
+    "term": "Incident closure",
+    "acronym": null,
+    "def": "Formally ending an AI incident once normal, safe service is confirmed. Root cause work continues under a problem record.",
+    "scopeNotes": "An incident with suspected manipulation, such as poisoning or injection, stays open while it is investigated.",
+    "domain": 2,
+    "category": "Process"
+  },
+  {
+    "id": 101,
+    "term": "Independence",
+    "acronym": null,
+    "def": "Freedom from conditions that threaten, or appear to threaten, the IS auditor's objectivity, such as building, approving or running the AI system under audit.",
+    "scopeNotes": "",
+    "domain": 3,
+    "category": "Concept"
+  },
+  {
+    "id": 102,
+    "term": "Independent validation",
+    "acronym": null,
+    "def": "Review and retesting of a model by qualified people who did not build it, before use and after significant change.",
+    "scopeNotes": "Management arranges it; the IS auditor assesses whether it was independent and adequate, but does not perform it. Revalidation repeats it after material change.",
+    "domain": 2,
+    "category": "Process"
+  },
+  {
+    "id": 103,
+    "term": "Indirect prompt injection",
+    "acronym": null,
+    "def": "Instructions hidden by a third party in content an AI system later reads, such as a file, email or web page, which the system may follow.",
+    "scopeNotes": "Its risk rises with how much outside content the system reads and what the system can do.",
+    "domain": 2,
+    "category": "Concept"
+  },
+  {
+    "id": 104,
+    "term": "Inference",
+    "acronym": null,
+    "def": "Running a trained model to get an output. In privacy, an inference is also a conclusion a model draws about a person, which can reveal sensitive facts they never shared.",
+    "scopeNotes": "In privacy topics the second meaning applies; in operations and cost topics, the first.",
+    "domain": 1,
+    "category": "Concept"
+  },
+  {
+    "id": 105,
+    "term": "Input drift",
+    "acronym": null,
+    "def": "Another name for data drift: a change in incoming data away from what a model learned from, often lowering accuracy.",
+    "scopeNotes": "",
+    "domain": 2,
+    "category": "Concept"
+  },
+  {
+    "id": 106,
+    "term": "Intended use",
+    "acronym": null,
+    "def": "The purpose, users, setting and limits for which an AI system was designed and tested. Use outside it needs a fresh assessment.",
+    "scopeNotes": "Fitness for purpose is judged against it: accuracy, coverage, timeliness, rights and representativeness for this use.",
+    "domain": 1,
+    "category": "Concept"
+  },
+  {
+    "id": 107,
+    "term": "Interpretability",
+    "acronym": null,
+    "def": "How well people can understand what an AI output means for the purpose it serves.",
+    "scopeNotes": "NIST pairs it with explainability, which concerns how the output was produced.",
+    "domain": 1,
+    "category": "Concept"
+  },
+  {
+    "id": 108,
+    "term": "ISO/IEC 42001",
+    "acronym": null,
+    "def": "ISO/IEC 42001:2023, an international management system standard for AI that describes how an organization runs AI governance. It can be certified.",
+    "scopeNotes": "Context only in this course. Certification covers the management system within its scope, not each model's outputs.",
+    "domain": 1,
+    "category": "Process"
+  },
+  {
+    "id": 109,
+    "term": "Jailbreak",
+    "acronym": null,
+    "def": "A direct prompt crafted to make a model ignore its safety rules, such as role-play or reworded requests.",
+    "scopeNotes": "",
+    "domain": 2,
+    "category": "Concept"
+  },
+  {
+    "id": 110,
+    "term": "Key performance indicator (KPI)",
+    "acronym": "KPI",
+    "def": "A metric that shows whether an activity is delivering its intended value, such as cases handled per hour.",
+    "scopeNotes": "",
+    "domain": 1,
+    "category": "Concept"
+  },
+  {
+    "id": 111,
+    "term": "Key risk indicator (KRI)",
+    "acronym": "KRI",
+    "def": "A metric that warns when a risk is rising toward or past its tolerance, such as a rising override rate or drift score.",
+    "scopeNotes": "The IS auditor checks that each KRI has a threshold, an owner and an escalation route.",
+    "domain": 1,
+    "category": "Control"
+  },
+  {
+    "id": 112,
+    "term": "Kill switch",
+    "acronym": null,
+    "def": "A tested mechanism that quickly stops an AI system or its automated actions.",
+    "scopeNotes": "The IS auditor looks for evidence that it was tested and that authority to use it is assigned.",
+    "domain": 2,
+    "category": "Control"
+  },
+  {
+    "id": 113,
+    "term": "Known-outcome test",
+    "acronym": null,
+    "def": "Running a tool on data where the right answers are known, to measure its errors before relying on it.",
+    "scopeNotes": "Synthetic test data, created with known properties, can supply known answers when real labeled cases are scarce.",
+    "domain": 3,
+    "category": "Process"
+  },
+  {
+    "id": 114,
+    "term": "Label",
+    "acronym": null,
+    "def": "The correct answer attached to a training example, such as fraud or not fraud, that a supervised model learns to predict.",
+    "scopeNotes": "Label errors teach the model wrong answers, so label quality checks are part of data governance.",
+    "domain": 2,
+    "category": "Concept"
+  },
+  {
+    "id": 115,
+    "term": "Large language model (LLM)",
+    "acronym": "LLM",
+    "def": "An AI model trained on vast amounts of text that generates language, used in chat assistants and drafting tools.",
+    "scopeNotes": "",
+    "domain": 0,
+    "category": "Technology"
+  },
+  {
+    "id": 116,
+    "term": "Least privilege",
+    "acronym": null,
+    "def": "Giving each person, model or agent only the access its task needs.",
+    "scopeNotes": "For AI agents it covers tools, data and actions as well as accounts.",
+    "domain": 2,
+    "category": "Control"
+  },
+  {
+    "id": 117,
+    "term": "Legal hold",
+    "acronym": null,
+    "def": "An instruction to preserve records relevant to a dispute or investigation, overriding normal deletion schedules.",
+    "scopeNotes": "",
+    "domain": 2,
+    "category": "Control"
+  },
+  {
+    "id": 118,
+    "term": "Machine learning (ML)",
+    "acronym": "ML",
+    "def": "Building software whose logic is learned from example data rather than written as rules by people.",
+    "scopeNotes": "",
+    "domain": 1,
+    "category": "Technology"
+  },
+  {
+    "id": 119,
+    "term": "Machine learning operations (MLOps)",
+    "acronym": "MLOps",
+    "def": "Practices and tools that automate the training, testing, deployment and monitoring of models.",
+    "scopeNotes": "Automation does not replace stage gates and approvals; the IS auditor checks they are built into the pipeline.",
+    "domain": 2,
+    "category": "Process"
+  },
+  {
+    "id": 120,
+    "term": "Manage (AI RMF function)",
+    "acronym": null,
+    "def": "The AI RMF function that prioritizes and responds to mapped and measured AI risks, including recovery and communication when things go wrong.",
+    "scopeNotes": "",
+    "domain": 1,
+    "category": "Process"
+  },
+  {
+    "id": 121,
+    "term": "Management response",
+    "acronym": null,
+    "def": "Management's agreed actions, owner and target dates for addressing an audit finding.",
+    "scopeNotes": "",
+    "domain": 3,
+    "category": "Process"
+  },
+  {
+    "id": 122,
+    "term": "Management system standard",
+    "acronym": null,
+    "def": "A standard describing how an organization runs a process, such as AI governance, which can be certified.",
+    "scopeNotes": "",
+    "domain": 1,
+    "category": "Concept"
+  },
+  {
+    "id": 123,
+    "term": "Manual fallback",
+    "acronym": null,
+    "def": "A tested non-AI way to keep a process running when an AI system is stopped or unreliable, such as manual review or rules-based handling.",
+    "scopeNotes": "Fail-safe design means the system falls back to such a safe state when it fails or is unsure.",
+    "domain": 2,
+    "category": "Control"
+  },
+  {
+    "id": 124,
+    "term": "Map (AI RMF function)",
+    "acronym": null,
+    "def": "The AI RMF function that establishes an AI system's context, purpose, users and potential impacts, so its risks can be identified.",
+    "scopeNotes": "",
+    "domain": 1,
+    "category": "Process"
+  },
+  {
+    "id": 125,
+    "term": "Materiality",
+    "acronym": null,
+    "def": "Whether a matter is significant enough to affect the decisions of the people who rely on an audit report.",
+    "scopeNotes": "It guides which AI findings are reported and whether material use of AI in the audit is disclosed.",
+    "domain": 3,
+    "category": "Concept"
+  },
+  {
+    "id": 126,
+    "term": "Measure (AI RMF function)",
+    "acronym": null,
+    "def": "The AI RMF function that analyzes, tests and tracks AI risks and trustworthiness, using quantitative and qualitative methods.",
+    "scopeNotes": "",
+    "domain": 1,
+    "category": "Process"
+  },
+  {
+    "id": 127,
+    "term": "Membership inference",
+    "acronym": null,
+    "def": "Using a model's outputs to learn whether a particular person's record was in its training data.",
+    "scopeNotes": "Made harder by query limits, monitoring of query patterns and less detailed outputs.",
+    "domain": 2,
+    "category": "Concept"
+  },
+  {
+    "id": 128,
+    "term": "Memorization",
+    "acronym": null,
+    "def": "A model storing specific training examples closely enough to reproduce them in its outputs.",
+    "scopeNotes": "Deleting source records does not remove what a trained model has memorized.",
+    "domain": 1,
+    "category": "Concept"
+  },
+  {
+    "id": 129,
+    "term": "MITRE ATLAS",
+    "acronym": null,
+    "def": "A public knowledge base of tactics and techniques attackers use against AI systems, with real case studies.",
+    "scopeNotes": "ATLAS stands for Adversarial Threat Landscape for AI Systems.",
+    "domain": 2,
+    "category": "Concept"
+  },
+  {
+    "id": 130,
+    "term": "Model card",
+    "acronym": null,
+    "def": "A short document from a model's builders describing its intended use, training data, performance and known limitations.",
+    "scopeNotes": "Useful evidence only if it matches the version in production; the IS auditor corroborates its claims.",
+    "domain": 2,
+    "category": "Concept"
+  },
+  {
+    "id": 131,
+    "term": "Model drift",
+    "acronym": null,
+    "def": "A decline in a model's performance after deployment because the conditions it works in have changed since it was trained.",
+    "scopeNotes": "Model drift is the effect: performance falls. Data drift (inputs change) and concept drift (what the right answer looks like changes) are two common causes. Monitoring production outcomes catches it.",
+    "domain": 3,
+    "category": "Concept"
+  },
+  {
+    "id": 132,
+    "term": "Model extraction",
+    "acronym": null,
+    "def": "Rebuilding a working copy of a model by querying it repeatedly and using its answers.",
+    "scopeNotes": "",
+    "domain": 2,
+    "category": "Concept"
+  },
+  {
+    "id": 133,
+    "term": "Model inversion",
+    "acronym": null,
+    "def": "Using a model's outputs to reconstruct details of the data it was trained on, such as a typical example of a class. NIST AI 100-2 treats it as one kind of data reconstruction attack.",
+    "scopeNotes": "",
+    "domain": 2,
+    "category": "Concept"
+  },
+  {
+    "id": 134,
+    "term": "Model owner",
+    "acronym": null,
+    "def": "The named business leader accountable for a model's use, results and accepted risks.",
+    "scopeNotes": "Sets use-level criteria and accepts residual risk within tolerance. Never the IS auditor.",
+    "domain": 1,
+    "category": "Control"
+  },
+  {
+    "id": 135,
+    "term": "Model registry",
+    "acronym": null,
+    "def": "A controlled store of model versions with their data, code, settings, test results and approvals.",
+    "scopeNotes": "",
+    "domain": 2,
+    "category": "Control"
+  },
+  {
+    "id": 136,
+    "term": "Model version",
+    "acronym": null,
+    "def": "A uniquely identified release of a trained model. Any retraining creates a new version.",
+    "scopeNotes": "Audit evidence is tied to the version in use during the period under review.",
+    "domain": 3,
+    "category": "Concept"
+  },
+  {
+    "id": 137,
+    "term": "Natural language processing (NLP)",
+    "acronym": "NLP",
+    "def": "AI that reads and interprets text, such as contracts, tickets or emails.",
+    "scopeNotes": "",
+    "domain": 3,
+    "category": "Technology"
+  },
+  {
+    "id": 138,
+    "term": "NIST AI 100-2",
+    "acronym": null,
+    "def": "NIST's taxonomy and terminology of adversarial machine learning attacks and mitigations, which classifies attacks by the attacker's goals, capabilities, knowledge and lifecycle stage.",
+    "scopeNotes": "The current edition is NIST AI 100-2e2025.",
+    "domain": 2,
+    "category": "Concept"
+  },
+  {
+    "id": 139,
+    "term": "NIST AI 600-1",
+    "acronym": null,
+    "def": "NIST's Generative AI Profile, which applies the AI RMF to generative AI and describes risks such as confabulation, data privacy and information security.",
+    "scopeNotes": "",
+    "domain": 1,
+    "category": "Concept"
+  },
+  {
+    "id": 140,
+    "term": "Non-human identity",
+    "acronym": null,
+    "def": "An account used by software, such as a service, model or agent, rather than by a person.",
+    "scopeNotes": "Each needs an owner and a place in access reviews, like other privileged access.",
+    "domain": 2,
+    "category": "Control"
+  },
+  {
+    "id": 141,
+    "term": "Objectivity",
+    "acronym": null,
+    "def": "Freedom from bias or conflicts that would sway an assessor's judgment, such as having built the system under review.",
+    "scopeNotes": "",
+    "domain": 3,
+    "category": "Concept"
+  },
+  {
+    "id": 142,
+    "term": "Obligations register",
+    "acronym": null,
+    "def": "A record linking each legal or contractual duty to the systems it covers, its control, owner and evidence.",
+    "scopeNotes": "",
+    "domain": 1,
+    "category": "Control"
+  },
+  {
+    "id": 143,
+    "term": "Operating effectiveness",
+    "acronym": null,
+    "def": "Whether a control worked as designed, consistently, throughout the period under review.",
+    "scopeNotes": "Point-in-time evidence cannot show it on its own. Design effectiveness, whether the control as designed would address its risk, is assessed first.",
+    "domain": 3,
+    "category": "Concept"
+  },
+  {
+    "id": 144,
+    "term": "Out-of-time test",
+    "acronym": null,
+    "def": "A test on data from a later period than the training data, to check performance on newer cases.",
+    "scopeNotes": "",
+    "domain": 2,
+    "category": "Process"
+  },
+  {
+    "id": 145,
+    "term": "Output variability",
+    "acronym": null,
+    "def": "The tendency of generative AI to give different outputs to the same input across runs or versions.",
+    "scopeNotes": "The IS auditor keeps prompts, settings, versions and outputs so AI-assisted work can be explained and reviewed.",
+    "domain": 3,
+    "category": "Concept"
+  },
+  {
+    "id": 146,
+    "term": "Over-reliance",
+    "acronym": null,
+    "def": "Trusting a tool's output more than the evidence warrants, often from habit or time pressure.",
+    "scopeNotes": "",
+    "domain": 3,
+    "category": "Concept"
+  },
+  {
+    "id": 147,
+    "term": "Overfitting",
+    "acronym": null,
+    "def": "When a model learns its training data too closely, including noise, so it scores well in development but poorly on new data.",
+    "scopeNotes": "",
+    "domain": 2,
+    "category": "Concept"
+  },
+  {
+    "id": 148,
+    "term": "Override rate",
+    "acronym": null,
+    "def": "The share of AI outputs that human reviewers change or reject, tracked over time and by reviewer.",
+    "scopeNotes": "A rate near zero can mean rubber-stamping, not a perfect model.",
+    "domain": 2,
+    "category": "Concept"
+  },
+  {
+    "id": 149,
+    "term": "Point-in-time evidence",
+    "acronym": null,
+    "def": "Evidence showing a single moment, which cannot prove a control operated over a period.",
+    "scopeNotes": "",
+    "domain": 3,
+    "category": "Concept"
+  },
+  {
+    "id": 150,
+    "term": "Poisoning",
+    "acronym": null,
+    "def": "Planting or altering training data, or tampering with a model, so it learns wrong or hidden behavior.",
+    "scopeNotes": "Also called data poisoning. Countered by provenance checks, limits on who can add training data and checks before retraining.",
+    "domain": 2,
+    "category": "Concept"
+  },
+  {
+    "id": 151,
+    "term": "Population",
+    "acronym": null,
+    "def": "The complete set of items about which the IS auditor wants to reach a conclusion, such as every automated decision in the period.",
+    "scopeNotes": "",
+    "domain": 3,
+    "category": "Concept"
+  },
+  {
+    "id": 152,
+    "term": "Pre-trained model",
+    "acronym": null,
+    "def": "A model already trained by someone else, used as is or adapted with further training.",
+    "scopeNotes": "",
+    "domain": 1,
+    "category": "Technology"
+  },
+  {
+    "id": 153,
+    "term": "Precision",
+    "acronym": null,
+    "def": "The share of items a model flags as positive that really are positive.",
+    "scopeNotes": "High precision says nothing about how many real cases were missed; see recall.",
+    "domain": 2,
+    "category": "Concept"
+  },
+  {
+    "id": 154,
+    "term": "Predictive AI",
+    "acronym": null,
+    "def": "AI that classifies, scores or forecasts, such as flagging a likely fault or rating a claim's fraud risk.",
+    "scopeNotes": "",
+    "domain": 1,
+    "category": "Technology"
+  },
+  {
+    "id": 155,
+    "term": "Privacy by design",
+    "acronym": null,
+    "def": "Building privacy protections into a system from the first design step, with protective defaults.",
+    "scopeNotes": "",
+    "domain": 1,
+    "category": "Control"
+  },
+  {
+    "id": 156,
+    "term": "Privacy impact assessment (PIA)",
+    "acronym": "PIA",
+    "def": "A documented review of privacy risks before personal data is processed, updated when data sources, uses or inferences change.",
+    "scopeNotes": "",
+    "domain": 1,
+    "category": "Process"
+  },
+  {
+    "id": 157,
+    "term": "Problem management",
+    "acronym": null,
+    "def": "The process that finds and removes the causes of incidents so they do not recur. The problem record carries the root cause.",
+    "scopeNotes": "",
+    "domain": 2,
+    "category": "Process"
+  },
+  {
+    "id": 158,
+    "term": "Professional judgment",
+    "acronym": null,
+    "def": "Applying training and experience to reach conclusions the IS auditor can explain and defend.",
+    "scopeNotes": "",
+    "domain": 3,
+    "category": "Concept"
+  },
+  {
+    "id": 159,
+    "term": "Professional skepticism",
+    "acronym": null,
+    "def": "A questioning mind that critically assesses evidence, including output from AI tools and vendor claims, instead of accepting it at face value.",
+    "scopeNotes": "",
+    "domain": 3,
+    "category": "Concept"
+  },
+  {
+    "id": 160,
+    "term": "Program metrics",
+    "acronym": null,
+    "def": "Measures that show whether the AI governance program covers and controls what it should, such as inventory coverage or overdue reviews.",
+    "scopeNotes": "",
+    "domain": 1,
+    "category": "Concept"
+  },
+  {
+    "id": 161,
+    "term": "Prompt",
+    "acronym": null,
+    "def": "The instruction or question given to a generative AI tool to produce its output.",
+    "scopeNotes": "",
+    "domain": 0,
+    "category": "Technology"
+  },
+  {
+    "id": 162,
+    "term": "Prompt injection",
+    "acronym": null,
+    "def": "Input crafted to override a generative AI system's instructions, typed directly or hidden in content it reads.",
+    "scopeNotes": "Some injections will get through, so the IS auditor looks for least privilege and human approval that limit the damage.",
+    "domain": 2,
+    "category": "Concept"
+  },
+  {
+    "id": 163,
+    "term": "Prompt log",
+    "acronym": null,
+    "def": "A stored record of inputs sent to an AI system, often holding personal or confidential data.",
+    "scopeNotes": "Needs access control and a retention limit, like other records.",
+    "domain": 1,
+    "category": "Control"
+  },
+  {
+    "id": 164,
+    "term": "Proxy variable",
+    "acronym": null,
+    "def": "An input that closely tracks a protected characteristic, such as postal code for ethnicity, and can carry its bias into a model.",
+    "scopeNotes": "A proxy label is the same problem in the target: a stand-in outcome, such as spending standing in for need, used because the real outcome is hard to measure.",
+    "domain": 2,
+    "category": "Concept"
+  },
+  {
+    "id": 165,
+    "term": "Purpose limitation",
+    "acronym": null,
+    "def": "The principle that personal data collected for one purpose is not used for another, such as model training, without a lawful basis.",
+    "scopeNotes": "Using data for a purpose other than the original one is called secondary use.",
+    "domain": 1,
+    "category": "Control"
+  },
+  {
+    "id": 166,
+    "term": "RACI chart",
+    "acronym": null,
+    "def": "A table showing who is responsible, accountable, consulted and informed for each AI activity or decision.",
+    "scopeNotes": "",
+    "domain": 1,
+    "category": "Control"
+  },
+  {
+    "id": 167,
+    "term": "Re-identification",
+    "acronym": null,
+    "def": "Linking de-identified records back to real people, often by combining datasets or using details that remain in them.",
+    "scopeNotes": "",
+    "domain": 1,
+    "category": "Concept"
+  },
+  {
+    "id": 168,
+    "term": "Recall",
+    "acronym": null,
+    "def": "The share of real positive cases that a model correctly flags. Low recall means many false negatives, even when accuracy looks high.",
+    "scopeNotes": "",
+    "domain": 2,
+    "category": "Concept"
+  },
+  {
+    "id": 169,
+    "term": "Reconciliation",
+    "acronym": null,
+    "def": "Comparing counts or totals between two sources to show that data is complete, such as decision log records against processed cases.",
+    "scopeNotes": "",
+    "domain": 3,
+    "category": "Control"
+  },
+  {
+    "id": 170,
+    "term": "Red teaming",
+    "acronym": null,
+    "def": "Structured adversarial testing in which people act as attackers or misusers to make an AI system fail or misbehave.",
+    "scopeNotes": "A red-team report is evidence of what was tried, within its scope; it does not prove the system is safe.",
+    "domain": 2,
+    "category": "Process"
+  },
+  {
+    "id": 171,
+    "term": "Regression test",
+    "acronym": null,
+    "def": "Rerunning a fixed set of cases with known expected results to detect unwanted changes after an update.",
+    "scopeNotes": "",
+    "domain": 2,
+    "category": "Process"
+  },
+  {
+    "id": 172,
+    "term": "Reperformance",
+    "acronym": null,
+    "def": "The IS auditor independently repeating a control, calculation or decision to see whether the same result occurs.",
+    "scopeNotes": "",
+    "domain": 3,
+    "category": "Process"
+  },
+  {
+    "id": 173,
+    "term": "Representativeness",
+    "acronym": null,
+    "def": "How closely the data's mix of people and conditions matches the population the model will serve.",
+    "scopeNotes": "Selection bias arises when the way cases were chosen leaves parts of the served population out of the data.",
+    "domain": 2,
+    "category": "Concept"
+  },
+  {
+    "id": 174,
+    "term": "Reproducibility",
+    "acronym": null,
+    "def": "The ability to rerun an analysis under the same conditions and get the same result.",
+    "scopeNotes": "",
+    "domain": 3,
+    "category": "Concept"
+  },
+  {
+    "id": 175,
+    "term": "Residual risk",
+    "acronym": null,
+    "def": "The risk that remains after controls and responses are applied. The risk owner accepts it when it is within tolerance; otherwise it needs a further response.",
+    "scopeNotes": "The IS auditor reports residual risk but never accepts it.",
+    "domain": 1,
+    "category": "Concept"
+  },
+  {
+    "id": 176,
+    "term": "Retention schedule",
+    "acronym": null,
+    "def": "An approved rule for how long each type of record, including prompts, outputs and training data, is kept and how it is disposed of.",
+    "scopeNotes": "",
+    "domain": 1,
+    "category": "Control"
+  },
+  {
+    "id": 177,
+    "term": "Retraining",
+    "acronym": null,
+    "def": "Training a model again on new or updated data, which creates a new model version and is a change that needs testing and approval.",
+    "scopeNotes": "A self-retraining model updates itself in production; each update is still a change, so it needs versioning, automated tests against owner-approved limits before it goes live, monitoring and a way to roll back.",
+    "domain": 2,
+    "category": "Process"
+  },
+  {
+    "id": 178,
+    "term": "Retrieval-augmented generation (RAG)",
+    "acronym": "RAG",
+    "def": "A design in which a generative model looks up documents at answer time, often from the organization's own sources, and uses them in its response.",
+    "scopeNotes": "The retrieved content needs the same governance as training data: ownership, access control and currency.",
+    "domain": 2,
+    "category": "Technology"
+  },
+  {
+    "id": 179,
+    "term": "Revalidation",
+    "acronym": null,
+    "def": "Repeating validation after a material change, such as retraining, new data sources or a new use, or on a set schedule.",
+    "scopeNotes": "",
+    "domain": 2,
+    "category": "Process"
+  },
+  {
+    "id": 180,
+    "term": "Right to erasure",
+    "acronym": null,
+    "def": "A person's right, under some privacy laws, to have their personal data deleted.",
+    "scopeNotes": "Deleting source records may not remove what a trained model has memorized.",
+    "domain": 1,
+    "category": "Concept"
+  },
+  {
+    "id": 181,
+    "term": "Right to use data",
+    "acronym": null,
+    "def": "The permission, from contract, license, consent or law, to use data for a specific purpose such as training a model.",
+    "scopeNotes": "Having access to data does not by itself grant the right to train on it.",
+    "domain": 1,
+    "category": "Concept"
+  },
+  {
+    "id": 182,
+    "term": "Risk appetite",
+    "acronym": null,
+    "def": "The amount and type of risk, including AI risk, that the board is willing to accept in pursuit of objectives.",
+    "scopeNotes": "",
+    "domain": 1,
+    "category": "Concept"
+  },
+  {
+    "id": 183,
+    "term": "Risk owner",
+    "acronym": null,
+    "def": "The person accountable for managing a particular risk and choosing its response within tolerance, often the model owner for an AI use. Never the IS auditor.",
+    "scopeNotes": "",
+    "domain": 1,
+    "category": "Concept"
+  },
+  {
+    "id": 184,
+    "term": "Risk register",
+    "acronym": null,
+    "def": "The record of identified risks with owner, rating, response and status, including AI risks.",
+    "scopeNotes": "",
+    "domain": 1,
+    "category": "Control"
+  },
+  {
+    "id": 185,
+    "term": "Risk response",
+    "acronym": null,
+    "def": "The risk owner's choice to mitigate, transfer, avoid or accept a risk, recorded in the risk register.",
+    "scopeNotes": "",
+    "domain": 1,
+    "category": "Process"
+  },
+  {
+    "id": 186,
+    "term": "Risk tier",
+    "acronym": null,
+    "def": "A rating, such as low, medium or high, given to each AI use by its potential impact, which sets the reviews, approvals and controls it needs.",
+    "scopeNotes": "",
+    "domain": 1,
+    "category": "Control"
+  },
+  {
+    "id": 187,
+    "term": "Risk tolerance",
+    "acronym": null,
+    "def": "A measurable limit on how much of a type of risk the organization will accept, such as the highest error rate allowed for decisions about customers, set by senior management within the board's appetite.",
+    "scopeNotes": "Model owners then set use-level acceptance criteria that fit inside it. The IS auditor checks that the criteria stay within tolerance and that key risk indicators trace to it, and never sets either.",
+    "domain": 1,
+    "category": "Concept"
+  },
+  {
+    "id": 188,
+    "term": "Risk-based audit plan",
+    "acronym": null,
+    "def": "An audit plan that chooses engagements by the likelihood and impact of harm, not by novelty or technical complexity.",
+    "scopeNotes": "",
+    "domain": 3,
+    "category": "Process"
+  },
+  {
+    "id": 189,
+    "term": "Robustness",
+    "acronym": null,
+    "def": "A model's ability to keep producing reliable outputs when inputs are noisy, unusual, missing or manipulated.",
+    "scopeNotes": "Backtesting on past data shows historical fit, not how the model copes with conditions it has never seen.",
+    "domain": 2,
+    "category": "Concept"
+  },
+  {
+    "id": 190,
+    "term": "Role-based training",
+    "acronym": null,
+    "def": "Training tailored to the AI duties of a specific role, such as reviewer, developer or model owner.",
+    "scopeNotes": "",
+    "domain": 1,
+    "category": "Control"
+  },
+  {
+    "id": 191,
+    "term": "Rollback",
+    "acronym": null,
+    "def": "Restoring a previous approved version and its settings after a faulty change.",
+    "scopeNotes": "Covers the model, prompts, thresholds and data feeds together, not just the model file.",
+    "domain": 2,
+    "category": "Control"
+  },
+  {
+    "id": 192,
+    "term": "Root cause",
+    "acronym": null,
+    "def": "The underlying reason a condition exists, which a lasting fix must address.",
+    "scopeNotes": "",
+    "domain": 3,
+    "category": "Concept"
+  },
+  {
+    "id": 193,
+    "term": "Root cause analysis",
+    "acronym": null,
+    "def": "A structured investigation that finds the underlying reason for an incident, not just its symptoms.",
+    "scopeNotes": "",
+    "domain": 2,
+    "category": "Process"
+  },
+  {
+    "id": 194,
+    "term": "Rules engine",
+    "acronym": null,
+    "def": "Software that applies fixed if-then logic written and maintained by people, rather than logic learned from data.",
+    "scopeNotes": "",
+    "domain": 1,
+    "category": "Technology"
+  },
+  {
+    "id": 195,
+    "term": "Secrets management",
+    "acronym": null,
+    "def": "Storing and controlling passwords, keys and tokens in a protected vault rather than in code or prompts.",
+    "scopeNotes": "System prompts can be extracted, so they never hold secrets.",
+    "domain": 2,
+    "category": "Control"
+  },
+  {
+    "id": 196,
+    "term": "Seeded test cases",
+    "acronym": null,
+    "def": "Known-answer items, such as deliberately wrong AI outputs, placed into a normal work queue to test whether reviewers or tools catch them.",
+    "scopeNotes": "",
+    "domain": 3,
+    "category": "Process"
+  },
+  {
+    "id": 197,
+    "term": "Segregation of duties (SoD)",
+    "acronym": "SoD",
+    "def": "Assigning incompatible tasks to different people, so no one person can both make and approve a change, or both act and check their own work. For AI, builders do not validate or approve their own models.",
+    "scopeNotes": "",
+    "domain": 0,
+    "category": "Control"
+  },
+  {
+    "id": 198,
+    "term": "Self-review",
+    "acronym": null,
+    "def": "A threat to objectivity when people assess work they built or designed, such as a team validating its own model.",
+    "scopeNotes": "",
+    "domain": 3,
+    "category": "Concept"
+  },
+  {
+    "id": 199,
+    "term": "Shadow AI",
+    "acronym": null,
+    "def": "AI tools or features used for business without the organization's approval or knowledge.",
+    "scopeNotes": "",
+    "domain": 1,
+    "category": "Concept"
+  },
+  {
+    "id": 200,
+    "term": "Shadow mode",
+    "acronym": null,
+    "def": "Running a new model on live cases beside the current one without its outputs deciding them.",
+    "scopeNotes": "Also called shadow deployment.",
+    "domain": 2,
+    "category": "Process"
+  },
+  {
+    "id": 201,
+    "term": "Stage gate",
+    "acronym": null,
+    "def": "A checkpoint where defined evidence must be shown and approved before work moves to the next lifecycle stage.",
+    "scopeNotes": "",
+    "domain": 2,
+    "category": "Control"
+  },
+  {
+    "id": 202,
+    "term": "Standard change",
+    "acronym": null,
+    "def": "A pre-approved, low-risk change whose outcome is known in advance, so it can skip individual approval.",
+    "scopeNotes": "Edits to system prompts, thresholds or models rarely qualify, because small changes can shift every output.",
+    "domain": 2,
+    "category": "Process"
+  },
+  {
+    "id": 203,
+    "term": "Stratified sampling",
+    "acronym": null,
+    "def": "Dividing a population into groups and sampling each one, so small groups are represented.",
+    "scopeNotes": "",
+    "domain": 3,
+    "category": "Process"
+  },
+  {
+    "id": 204,
+    "term": "Supervised learning",
+    "acronym": null,
+    "def": "Machine learning in which a model learns from examples labeled with known answers, such as past claims marked fraud or not fraud.",
+    "scopeNotes": "Unsupervised learning finds patterns or groups without labeled answers, as in many anomaly detection tools.",
+    "domain": 1,
+    "category": "Technology"
+  },
+  {
+    "id": 205,
+    "term": "Supply-chain compromise",
+    "acronym": null,
+    "def": "Tampered models, libraries or datasets obtained from outside sources, such as a public model hub, that carry hidden flaws or malicious code.",
+    "scopeNotes": "Downloaded models stay untrusted until their source and integrity are verified, for example by comparing the file's hash with the publisher's.",
+    "domain": 2,
+    "category": "Concept"
+  },
+  {
+    "id": 206,
+    "term": "System prompt",
+    "acronym": null,
+    "def": "Standing instructions given to a generative AI model that shape every answer it produces.",
+    "scopeNotes": "Changing it is a controlled change. It can be extracted by prompting, so it never holds secrets.",
+    "domain": 2,
+    "category": "Technology"
+  },
+  {
+    "id": 207,
+    "term": "Test set",
+    "acronym": null,
+    "def": "Data held back from training and used to measure how a model performs.",
+    "scopeNotes": "Often used as another name for the holdout set. It proves performance only if it stayed unseen while the model was built and tuned; if its scores guide tuning or model choice, or its cases also appear in training, it stops being an unseen check. Compare validation set and data leakage.",
+    "domain": 3,
+    "category": "Concept"
+  },
+  {
+    "id": 208,
+    "term": "Test, evaluation, verification and validation (TEVV)",
+    "acronym": "TEVV",
+    "def": "The activities that show an AI system meets its requirements and suits its intended use, before release and throughout operation.",
+    "scopeNotes": "",
+    "domain": 2,
+    "category": "Process"
+  },
+  {
+    "id": 209,
+    "term": "Third-party AI risk",
+    "acronym": null,
+    "def": "Risk from AI models, data and services supplied by vendors and their own suppliers.",
+    "scopeNotes": "Using a vendor's model does not transfer accountability for its use.",
+    "domain": 1,
+    "category": "Concept"
+  },
+  {
+    "id": 210,
+    "term": "Third-party assurance report",
+    "acronym": null,
+    "def": "A report, such as a System and Organization Controls (SOC) 2 report, in which an independent auditor gives an opinion on a service provider's controls.",
+    "scopeNotes": "For AI vendors it often covers hosting, not the model's behavior on the customer's data.",
+    "domain": 3,
+    "category": "Concept"
+  },
+  {
+    "id": 211,
+    "term": "Training data",
+    "acronym": null,
+    "def": "The examples a model learns from; their quality, rights and representativeness shape the model.",
+    "scopeNotes": "",
+    "domain": 1,
+    "category": "Concept"
+  },
+  {
+    "id": 212,
+    "term": "Training on inputs",
+    "acronym": null,
+    "def": "A provider using submitted prompts and data to improve its models, which can expose them later.",
+    "scopeNotes": "",
+    "domain": 3,
+    "category": "Concept"
+  },
+  {
+    "id": 213,
+    "term": "Transparency",
+    "acronym": null,
+    "def": "Openness about when AI is used, what it does and its limits, so affected people and overseers can understand and question it.",
+    "scopeNotes": "",
+    "domain": 1,
+    "category": "Concept"
+  },
+  {
+    "id": 214,
+    "term": "Triage",
+    "acronym": null,
+    "def": "Ranking incidents by severity and impact to decide response order and escalation.",
+    "scopeNotes": "",
+    "domain": 2,
+    "category": "Process"
+  },
+  {
+    "id": 215,
+    "term": "Trustworthy AI",
+    "acronym": null,
+    "def": "AI that meets agreed characteristics such as validity, safety, security, accountability, explainability, privacy and fairness.",
+    "scopeNotes": "Principles become auditable only when stated as measurable criteria with owners.",
+    "domain": 1,
+    "category": "Concept"
+  },
+  {
+    "id": 216,
+    "term": "Valid and reliable",
+    "acronym": null,
+    "def": "The trustworthy-AI characteristic that a system does what it is meant to, accurately and consistently, under the conditions of its intended use.",
+    "scopeNotes": "",
+    "domain": 1,
+    "category": "Concept"
+  },
+  {
+    "id": 217,
+    "term": "Validation set",
+    "acronym": null,
+    "def": "Data used during development to compare models and tune their settings before the final check.",
+    "scopeNotes": "Because it shapes choices, it is not an unseen check; that is the holdout set's role.",
+    "domain": 2,
+    "category": "Concept"
+  },
+  {
+    "id": 218,
+    "term": "Version pinning",
+    "acronym": null,
+    "def": "Fixing a hosted AI service to one specific model version so behavior does not change without a decision.",
+    "scopeNotes": "",
+    "domain": 2,
+    "category": "Control"
+  },
+  {
+    "id": 219,
+    "term": "Work papers",
+    "acronym": null,
+    "def": "The documented record of the audit's planning, tests, evidence and conclusions, kept so a reviewer can follow the work.",
+    "scopeNotes": "When AI tools support the audit, the work papers also record the prompts, tool versions, inputs and how outputs were checked.",
+    "domain": 3,
+    "category": "Control"
+  },
+  {
+    "id": 220,
+    "term": "Workforce impact analysis",
+    "acronym": null,
+    "def": "A review of how AI changes roles, skills and staffing, used to plan reskilling and support.",
+    "scopeNotes": "It also looks for deskilling: staff losing skills they need to oversee AI or work without it.",
+    "domain": 1,
+    "category": "Process"
+  }
+]

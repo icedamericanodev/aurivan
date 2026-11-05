@@ -193,7 +193,19 @@ export async function saveBackup(now = Date.now()): Promise<SaveOutcome> {
     // The app's cache folder: private to the app; the share sheet makes the copy the learner keeps.
     const file = new File(Paths.cache, name);
     file.create({ overwrite: true });
-    file.write(text);
+    // Expo SDK 58: write() is async now. Wait for it, or the share sheet could
+    // open on a file that is still empty or half-written. If it fails, remove
+    // the partial copy at once rather than leave it for the cache sweep.
+    try {
+      await file.write(text);
+    } catch (e) {
+      try {
+        file.delete();
+      } catch {
+        // Already gone, or never created: nothing to clean up.
+      }
+      throw e;
+    }
     await Sharing.shareAsync(file.uri, { mimeType: 'application/json', UTI: 'public.json', dialogTitle: 'Save your KaiSip backup' });
   }
   useBackup.getState().setLastBackup(now);

@@ -3,13 +3,10 @@
 The topic map every KaiSip CISA question is tagged against. Use it to find
 thin or missing topics before writing new questions.
 
-**Status: partly verified (2026-10-07).** The cloud environment blocks
-isaca.org, so this list was rebuilt from search results that quote the
-official outline and its copies. The weights and the effective date are
-confirmed. The topic names below match those results; a few titles have
-small wording variants between sources (noted). Re-check against the
-official page when it can be reached:
+**Status: verified (2026-10-30)** against ISACA's official page:
 https://www.isaca.org/credentialing/cisa/cisa-exam-content-outline
+Every topic title below matches it word for word, except that KaiSip adds
+the acronym in brackets for 2A5 (ERM) and 5A7 (PKI).
 
 Exam facts (confirmed): 150 questions, 240 minutes, scaled score 200–800,
 pass at 450. Domain weights match `DI` in `index.html` and
@@ -21,7 +18,7 @@ number, part letter, topic number. Scripts parse this file.
 ## Domain 1 — Information Systems Auditing Process (18%)
 
 ### Part A: Planning
-- 1A1 IS Audit Standards, Guidelines, Functions, and Codes of Ethics
+- 1A1 IS Audit Standards, Guidelines, and Codes of Ethics
 - 1A2 Types of Audits, Assessments, and Reviews
 - 1A3 Risk-Based Audit Planning
 - 1A4 Types of Controls and Considerations
@@ -39,7 +36,7 @@ number, part letter, topic number. Scripts parse this file.
 ### Part A: IT Governance
 - 2A1 Laws, Regulations, and Industry Standards
 - 2A2 Organizational Structure, IT Governance, and IT Strategy
-- 2A3 IT Policies, Standards, Procedures, and Guidelines
+- 2A3 IT Policies, Standards, Procedures and Practices
 - 2A4 Enterprise Architecture and Considerations
 - 2A5 Enterprise Risk Management (ERM)
 - 2A6 Privacy Program and Principles
@@ -90,7 +87,7 @@ number, part letter, topic number. Scripts parse this file.
 ## Domain 5 — Protection of Information Assets (26%)
 
 ### Part A: Information Asset Security and Control
-- 5A1 Information Asset Security Policies, Frameworks, Standards, and Guidelines
+- 5A1 Information Asset Security Frameworks, Standards, and Guidelines
 - 5A2 Physical and Environmental Controls
 - 5A3 Identity and Access Management
 - 5A4 Network and End-Point Security
@@ -104,18 +101,13 @@ number, part letter, topic number. Scripts parse this file.
 - 5B1 Security Awareness Training and Programs
 - 5B2 Information System Attack Methods and Techniques
 - 5B3 Security Testing Tools and Techniques
-- 5B4 Security Monitoring Logs, Tools, and Techniques
+- 5B4 Security Monitoring Tools and Techniques
 - 5B5 Security Incident Response Management
 - 5B6 Evidence Collection and Forensics
 
-## Wording variants seen in sources
+## Wording check
 
-- 1A1: some sources drop "Functions" (that is the 2019 title).
-- 2A3: "IT Policies, Standards, Procedures, and Guidelines" (2024) vs
-  "... and Processes" in older copies.
-- 4A5: the 2024 Candidate Guide lists "Shadow IT and End-User Computing";
-  some copies reverse it.
-- 5A1: some sources omit "Policies".
+Titles re-checked against ISACA's page on 30 Oct 2026; 1A1, 2A3, 5A1 and 5B4 were updated to ISACA's wording.
 
 ## App name differences (cosmetic)
 

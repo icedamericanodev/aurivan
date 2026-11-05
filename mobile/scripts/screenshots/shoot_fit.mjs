@@ -5,7 +5,7 @@
 // day 1, a 10-minute day with a big review queue, the Exam-focused mini mock,
 // the existing-learner "Fit your plan" card and a cleared day's Tomorrow;
 // the fit screen; Settings → Your study with "Today's plan stays"; Practice in
-// the Exam-focused order; You's legend and accuracy note; the Mistake
+// the Exam-focused order; You's areas plate (Fig. 5) and its KEY; the Mistake
 // journal's tags and their sheet; an answer after a hint; the exam-eve card.
 // NARROW=1 uses a 360-wide phone; FONT_SCALE=2 approximates 200% text.
 import { createRequire } from 'module';
@@ -203,10 +203,14 @@ await shot('f12-practice-exam-focused');
 await toTop('Mock exams', 60);
 await shot('f12b-practice-mocks');
 
-// ── 6. You: the legend 1 → 5 and the accuracy note ─────────────────────
+// ── 6. You: the areas plate (Fig. 5) and its KEY ───────────────────────
+// Mobile 1.43 dropped the five rings and their "Domain 1 is the inner ring."
+// legend; since 1.51 the areas sit on one scale in a plate, "Fig. 5 · Five
+// areas, one scale", whose KEY line is the legend and starts with the
+// accuracy note ("Right on your latest tries").
 await fit({ familiarity: 'some' });
 await go('/you', 2600);
-await toTop('Domain 1 is the inner ring.', 380);
+await toTop('Five areas, one scale', 60);
 await shot('f13-you-legend');
 
 // ── 7. Mistake journal: the tags and what they mean ────────────────────

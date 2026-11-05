@@ -34,6 +34,7 @@
  *   strongest and the weakest domain. Still, no confetti.
  */
 import { router, useFocusEffect } from 'expo-router';
+import { openTab } from '../lib/actions';
 import { useCallback, useEffect, useMemo, useRef, useState, type Ref } from 'react';
 import { BackHandler, ScrollView, View, type StyleProp, type ViewStyle } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -343,7 +344,7 @@ export function FirstSetDone({ session }: { session: ActiveSession }) {
 
   const done = useCallback(() => {
     useSession.getState().clear();
-    router.replace('/home');
+    openTab('/home');
   }, []);
   // "Do 5 more": the learner's choice, an ordinary short set (confidence chips and all).
   const fiveMore = () => {
@@ -353,7 +354,7 @@ export function FirstSetDone({ session }: { session: ActiveSession }) {
         return startPractice(certId, { count: FIRST_SET_SIZE, title: 'Five more' });
       },
       () => router.replace('/session'),
-      () => router.replace('/home'),
+      () => openTab('/home'),
     );
   };
   // Android Back means "Done for today" here, never a way back into the finished set.

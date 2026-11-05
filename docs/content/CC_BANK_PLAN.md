@@ -11,6 +11,27 @@ opened source and recorded in `data/cc/originals/_framework_library.md`.
 CC is not wired into the apps yet (that is Stage 2.7), so bank work needs no
 `APP_VERSION` bump. Never put the bank size in learner copy.
 
+### Stage 2.7 blocker: notes headings
+
+CC notes keep the shared keys `audit_focus` and `isaca_rule` (one schema for
+CISA, CC, CRISC and AAIA; decided 31 Oct 2026 with `product-manager`). The key
+names are internal and learners never see them. What would leak are the CISA
+headings typed into the notes screen (`mobile/src/components/notes.tsx`:
+"Think like the IS auditor", "Auditing it", "The IS auditor's lens", "Typical
+recommendation"). Before CC ships, the notes screen must take its headings from
+the certification. CC uses:
+
+- Section heading: "Think like a security practitioner"
+- `audit_focus`: "In practice", with the parts "What to check", "What shows it
+  works", "What you do" and "Who decides"
+- `isaca_rule`: "The practitioner's rule"
+
+Done when a test opens a CC note and finds no "auditor", "IS auditor", "ISACA"
+or "Auditing it" text, and the CC notes screenshots are checked at Stage 2.8.
+CRISC and AAIA need their own headings through the same setup. If neutral key
+names are ever wanted, rename once for every certification and keep the old
+names readable; never fork a CC-only schema.
+
 ## 1. Targets by outline weight
 
 From the "Question targets" table in `docs/content/CC_BLUEPRINT.md` (bank of
@@ -59,13 +80,26 @@ The pilot set this order. Don't skip a step to go faster.
 1. **Author** with `cc-d{N}-domain-expert`, under `isc2-cc-standards-auditor.md`
    and the pilot calibration rules (section 6).
 2. **Self-check:**
+   - `python3 data/cc/tools/check_cc.py N` must show 0 errors: item shape,
+     IDs, notes and library links, tip structure, key spread, and the "pick
+     the longest" rate (15–24%, ties shared, the same rule
+     `scripts/check_longest_option.py` applies to CISA since #155). Tools are
+     described in `data/cc/tools/README.md`.
    - `python3 scripts/lint_exam_style_v2.py --file data/cc/originals/dN.json`
-     must show 0 errors. Its "stem names no actor" warning looks for CISA
+     must show 0 errors.
+   - When notes change: `python3 scripts/lint_notes.py data/cc/notes/dN.json
+     --outline docs/content/CC_BLUEPRINT.md --bank data/cc/originals` must show
+     0 errors (it also warns when a notes example retells a bank question), and
+     `python3 data/cc/tools/sync_practice_ids.py` refreshes the notes'
+     "Practice this concept" links.
+   - `python3 data/cc/tools/check_cc.py --similarity` lists question and
+     notes-example pairs that share many words (0.18 and up). Read each one
+     and re-angle whichever retells the other's scenario (rule 8). Its "stem names no actor" warning looks for CISA
      actors, so it is expected on CC items, but every stem must still name
      who acts.
    - Every `framework_ref` part must match a library bullet exactly.
 3. **Blind test** with `qa-question-tester`, on a copy that has only the id,
-   stem and options (no key, explanations or tips). Compare its picks with
+   stem and options (`data/cc/tools/blind_copy.py`; no key, explanations or tips). Compare its picks with
    the keys afterwards.
 4. **Standards audit** with `isc2-cc-standards-auditor`, plus the domain
    expert's accuracy pass.
@@ -246,15 +280,136 @@ Learned from two blind tests and two standards audits of the pilot.
 | Round | D1 | D2 | D3 | D4 | D5 | Total |
 |---|---|---|---|---|---|---|
 | Pilot (Oct 2026) | 20 | 20 | 20 | 20 | 20 | 100 |
-| Batch 2 (30 Oct 2026) | +25 | | | +25 | | 150 |
+| Batch 2, D1 and D4 (30 Oct 2026) | +25 | | | +25 | | 150 |
+| Batch 2, D2, D3 and D5 (30 Oct 2026) | | +25 | +25 | | +25 | 225 |
+| Batch 3, all domains (31 Oct 2026) | +30 | +20 | +25 | +25 | +20 | 345 |
+| Batch 4, all domains (4 Nov 2026) | +35 | +25 | +30 | +30 | +25 | 490 |
+| Batch 5, all domains (4 Nov 2026) | +40 | +25 | +30 | +30 | +25 | 640 |
+| Batch 6, all domains (5 Nov 2026) | +40 | +24 | +28 | +35 | +23 | 790 |
 
-Batch 2 for D1 and D4: blind test 25/25 in each domain; re-tests of every
-changed item all matched the keys. No hard errors remained.
+Batch 2: the first blind test matched the keys 25/25 in every domain, and
+re-tests of every changed item all matched. The audits found 7 hard errors
+across the round (D1 1, D2 3, D3 2, D5 1); all are fixed.
+
+Lessons from the D2/D3/D5 round, for batch 3:
+- Check every new item against the other four domains as well as the notes.
+  The worst finding was two domains teaching the same AI-tool lesson in the
+  same batch (cc_d2_026 and cc_d5_026).
+- Use the cited source's own term (SP 800-84 calls a timed restore a test;
+  SP 800-63B-4 allows synced passkeys, so "the key never leaves the device"
+  is wrong).
+- Name the guide in the stem when an older model would give another answer
+  (SP 800-61r3 shares lessons during an incident).
+- Notes gap closed 31 Oct 2026: notes 5.2.9 (network attacks: DoS, on-path,
+  spoofing) now exists; batch 3 adds its first questions.
+
+**Cross-review round (31 Oct 2026).** All 225 items were read together by
+`cc-cross-domain-reviewer`, two notes-versus-bank tests and a structure scan.
+Fixed: two pairs of items that taught opposite rules (drift versus unapproved
+change; lessons-learned timing), one rule for risk acceptance everywhere (the
+risk owner within tolerance, senior management beyond it), 27 notes worked
+examples that mirrored their own questions, missing or contradicting notes
+facts, auditor wording in "In practice" blocks, the ties-shared longest-option
+rate (now 17-21% in every domain), and a citation to the now-final IR 8547.
+Every change was blind-tested and audited.
+
+Batch 3 guidance from this round:
+- Write a question for 1.5.3 (the ethics canons themselves; none tests them
+  now) and the first questions for 5.2.9.
+- D3: keep authentication mechanisms to about 30% of 3.1 items, so the
+  identity life cycle keeps most of the section's slots.
+- Write counter-examples to the "stem names an owner, so the key routes to
+  that owner" pattern: owners named, but the procedure assigns the task.
+- Give D1 more weight than D2 and D5 (D1 is under its 24% outline weight),
+  and vary D1 settings away from healthcare.
+
+**Batch 3 (31 Oct 2026).** 120 new items; every notes sub-topic now has at
+least one question (1.5.3 and 5.2.9 included). A container restart left two
+runs editing the same files at once, so a final pass re-tested all 120 items
+blind (120/120 matched the keys) and re-audited them; changed items were
+re-tested again. No HARD findings survived. Inside the batch, the key is the
+longest option in 10-16% of items per domain and the shortest in 8-20%.
+
+Batch 4 guidance from this round:
+- Length tells are gated both ways now: `check_cc.py` fails a domain whose
+  "pick the shortest" rate leaves 12-30%, and `--new N` shows a batch alone.
+- Key letter order: authors rotated letters by hand, which left a periodic
+  pattern (every 4th key repeats up to 50%; back-to-back repeats 3-14%, chance
+  is about 25%). Fixed 31 Oct 2026: 54 items had their key moved by swapping
+  two options (no text changed), and `check_cc.py` now fails a patterned key
+  order. Batch 4 authors take their letters from
+  `python3 data/cc/tools/key_sequence.py N COUNT`.
+- Rival words: give a distractor any oversight or least-privilege word the key
+  uses (record, log, monitor, need), and avoid urgency words ("now") on the key
+  alone.
+- Canonical roles now include "access analyst" (D3); notes say "security
+  manager", not "security management".
+- D1 still needs the most items (240 target, 75 now).
+
+**Batch 4 (4 Nov 2026).** 145 new items, written to key letters drawn by
+`key_sequence.py`, so the stored order passes the key-order gate without any
+re-keying. The first blind test matched every key (145/145); the audits found
+no HARD errors. A final cross-domain gate found two lessons taught twice in
+the batch across domains (re-angled), a soft contradiction about whether an
+accepted risk has a review date (fixed: it always does), and stem or owner
+words echoed only on the key (given a rival). Inside the batch, the key is the
+longest option in 15-20% of items and the shortest in 12-21%.
+
+Batch 5 guidance from this round:
+- No more hazard-rescue scenarios in 2.2, and no more AI-agent stop or
+  approval items in 5.5.6 for now; both clusters are full.
+- When the stem names the owner, give a distractor the owner too, so the key
+  is not the only option that mentions them.
+- D1 is still furthest from its target (240; 110 now).
+
+**Batch 5 (4 Nov 2026).** 150 new items on random key letters; the first blind
+test matched every key (150/150) and the audits found no HARD errors. The
+cross-domain gate found a new kind of tell: an option's first word predicting
+the key across the bank ("Report", "Refer" and "An" won far more often than
+chance; "Delete", "Accept" and "Agree" never won, because every "a colleague
+claims X" item had a wrong claimant). `check_cc.py` now fails any opener whose
+win rate would happen by chance less than 1% of the time, measured over the
+whole bank. The fix kept meanings and keys: other openers on some keys, and
+honest counter-examples (a correct Delete, Accept and Agree; Report and Refer
+options that lose because the procedure assigns the task or names another
+owner).
+
+Batch 6 guidance from this round:
+- Write one or two in-role "Delete" keys (an expired firewall rule, a stale
+  bucket, data at the end of its retention period) and a "risk owner accepts
+  within tolerance" key, and keep some "a colleague claims X" items where the
+  colleague is right.
+- Vary key openers: not every escalation key should start "Report".
+- Role names: use "IT manager", not "IT lead"; "security analyst" for the
+  generic D1/D2/D5 practitioner.
+- D1 is still furthest from its target (240; 150 now).
+
+**Batch 6 (5 Nov 2026).** 150 new items on random key letters; the first blind
+test matched every key (150/150), the audits found no HARD errors, and the
+bank-wide opener gate stayed clean. The cross-domain gate found a speaker-role
+tell: when a stem has someone make a claim, the IT manager was wrong in about
+22 of 23 items across the bank and "a colleague" always right in this batch.
+Fixed by changing who speaks (keys and options unchanged), so the role no
+longer predicts the answer. Also re-angled: near-duplicate lessons (risk
+acceptance renewal, AI accountability, test-copy deletion, day-one training,
+PaaS patching) and one D4 item that had drifted into attack types (5.2).
+
+Batch 7 guidance from this round:
+- Vary who makes a claim and whether they are right: every role (IT manager,
+  colleague, security analyst, data owner) must be right in some items and
+  wrong in others; write two or three Disagree keys.
+- Remaining non-canonical roles in older items ("IT support analyst",
+  "metrics analyst", "security officer") can be swept in a small pass.
+- Avoid breach-notification scenarios for now; that cluster is full.
+- D1 needs 50 more (240), D4 49, D3 42, D2 34, D5 35: batch 7 closes the gap
+  to about 940; batch 8 finishes.
 
 ## 7. Follow-ups outside this plan's scope
 
-- A CC mode for `scripts/lint_exam_style_v2.py` (CC actors in place of the CISA
-  actor check, and a library-match check for `data/cc/`). This touches
-  `scripts/`, so it waits for a session that owns shared tooling.
-- Align the five domain-expert agent files' "at least" counts with the
-  blueprint table.
+- The CC-only checks now live in `data/cc/tools/check_cc.py` (library match,
+  notes links, tip structure, length tells). What remains for a session that
+  owns `scripts/`: let `lint_exam_style_v2.py` accept CC actors so its "stem
+  names no actor" warning stops firing on CC items. (`scripts/lint_notes.py`
+  already checks CC notes when given the CC outline and bank; see section 3.)
+- Done 31 Oct 2026: the five domain-expert agent files and the standards
+  auditor now point at the blueprint targets, this plan and the checker.

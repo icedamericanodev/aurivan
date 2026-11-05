@@ -101,7 +101,7 @@ export default function BankDomain() {
   );
 
   if (!domain) {
-    return <EmptyScreen header="Question bank" title="Domain not found" body="Go back and pick a domain from the list." />;
+    return <EmptyScreen header="Question bank" fallback="/practice" title="Domain not found" body="Go back and pick a domain from the list." />;
   }
 
   const empty = emptyCopy(filter);

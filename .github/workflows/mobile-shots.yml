@@ -1,0 +1,77 @@
+name: Mobile screenshots
+
+# Runs a few phone screenshot sets (mobile/scripts/screenshots/run.sh) on every
+# pull request that changes the app's screens or the screenshot scripts, so a
+# script that no longer matches the app fails here instead of weeks later (in
+# Oct 2026 a sweep found 17 of 34 sets broken by earlier redesigns, PR #173).
+# Three sets that between them walk most screens:
+#   default  - Learn, lessons, practice, results, Today, You, saved, mistakes,
+#              games and onboarding (shoot.mjs + shoot_m149.mjs)
+#   settings - every Settings card and sheet, Help and about, updates
+#   data     - Your data: backup, restore preview, errors, undo, welcome restore
+# A set fails when a step times out (the script stops) or the app throws a page
+# error. The pictures are kept as a download on the run, for review.
+# Playwright is installed outside mobile/ (not a project dependency).
+
+on:
+  pull_request:
+    branches: [main]
+    paths: ['mobile/src/**', 'mobile/scripts/screenshots/**', 'mobile/app.json', 'mobile/package.json', 'mobile/package-lock.json', '.github/workflows/mobile-shots.yml']
+
+# Read-only token: `npm ci` runs third-party install scripts, which must not
+# be able to push to the repo.
+permissions:
+  contents: read
+
+# A newer push to the same pull request replaces the run in progress.
+concurrency:
+  group: mobile-shots-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  shots:
+    name: Screenshots (${{ matrix.set }})
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    strategy:
+      fail-fast: false
+      matrix:
+        set: [default, settings, data]
+    defaults:
+      run:
+        working-directory: mobile
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: mobile/package-lock.json
+      - name: Install (also builds the content pack)
+        run: npm ci
+      - name: Install Playwright and Chromium (outside the app's dependencies)
+        run: |
+          npm install --prefix "$RUNNER_TEMP/pw" --no-save --no-package-lock playwright@1.63.0
+          "$RUNNER_TEMP/pw/node_modules/.bin/playwright" install --with-deps chromium
+      - name: Take the ${{ matrix.set }} screenshots
+        env:
+          # The shoot_*.mjs scripts load Playwright from here (createRequire).
+          PLAYWRIGHT_REQUIRE_FROM: ${{ runner.temp }}/pw/node_modules/
+        run: |
+          set -o pipefail
+          if [ "${{ matrix.set }}" = default ]; then unset SHOTS; else export SHOTS="${{ matrix.set }}"; fi
+          bash scripts/screenshots/run.sh "$RUNNER_TEMP/shots" dark 2>&1 | tee "$RUNNER_TEMP/shots.log"
+          # The scripts print the page errors they saw: "errors: [...]" (or "page errors: ..." in shoot_m149.mjs).
+          if grep -E "^(errors: \[|page errors:)" "$RUNNER_TEMP/shots.log" | grep -v "^errors: \[\]$"; then
+            echo "::error::The app threw a page error while the ${{ matrix.set }} screenshots ran (see the lines above)."
+            exit 1
+          fi
+          echo "$(ls "$RUNNER_TEMP/shots" | wc -l) screenshots taken."
+      - name: Keep the pictures (a download on this run, 7 days)
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: shots-${{ matrix.set }}
+          path: ${{ runner.temp }}/shots/
+          retention-days: 7
+          if-no-files-found: ignore

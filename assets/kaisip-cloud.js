@@ -167,7 +167,7 @@ exports.CERTIFICATIONS = [
             questions: 90,
             minutes: 150,
             difficultyMix: ISACA_MIX,
-            passingNote: 'Check ISACA’s current candidate guide for scoring details.',
+            passingNote: 'ISACA reports scaled scores from 200–800; 450 is the passing mark.',
         },
         domains: [
             { id: '1', name: 'AI Governance and Risk', short: 'Governance', weight: 33, tone: 0 },
@@ -10502,7 +10502,7 @@ function decodeUtf8(bytes) {
   var api = {};
   api["browser"] = load("src/webcloud/browser.ts");
   api["config"] = load("src/webcloud/config.ts");
-  api.sourceHash = "ba0a1aca4dcfbc0a";
+  api.sourceHash = "0ddcda6d9c929d89";
   var cloud = load("src/webcloud/index.ts");
   var liveVersion = "1.48.0";
   var liveStoreVersions = {"progress":2,"settings":1};

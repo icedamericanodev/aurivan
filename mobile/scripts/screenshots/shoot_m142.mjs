@@ -1,7 +1,8 @@
 // Mobile 1.42 "bring your website progress into the app" (SHOTS=m142, see run.sh).
 //
-// Shots: Settings → Your data (the Restore row now names the website file), the "Add your website
-// progress?" sheet (top and end), the message after adding (with Undo restore), the same file again
+// Shots: Settings → the "Your data, …" door → the Your data screen (since mobile 1.46 its own screen,
+// settings-section?category=data; the Restore row names the website file), the "Add your website
+// progress?" sheet (top and end), the message after adding (with Undo last import), the same file again
 // ("Already on this phone"), a file with two profiles ("Which progress?"), a newer website file's
 // message, and a new phone's welcome screen adding website progress.
 // The website file is the test fixture made by driving the real website (src/__tests__/fixtures).
@@ -94,8 +95,15 @@ const sheetEnd = async (p = page) => {
 };
 
 // ── Settings → Your data, then the website file ─────────────────────────
+// Your data is a door in Settings' last card ("Data and help"); tapping it opens its own screen,
+// where the Restore row lives. Every later pick() stays on that screen.
 await go('/settings');
-await into('Your data');
+const door = page.getByRole('button', { name: /^Your data, / }).first();
+await door.scrollIntoViewIfNeeded();
+await door.click();
+await page.waitForURL(/settings-section/);
+await page.getByRole('button', { name: 'Restore from a backup' }).first().waitFor();
+await wait(1200);
 await shot('w01-your-data');
 await pick('kaisip-web-progress.json', WEB);
 await shot('w02-web-sheet');

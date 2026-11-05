@@ -229,6 +229,55 @@ else
   printf "  ${OK} reported (errors=%s warnings=%s; new batches should use --batch --strict)\n" "$errors_count" "$warnings_count"
 fi
 
+# 5z. Free sample (web v12.50) -----------------------------------------------
+# kaisip.com publishes only the free sample in data/free/. It must match the
+# bank, cover every notes topic, and never lose an id (the list only grows).
+printf "\nFree sample (data/free, published on the website):\n"
+if ! python3 scripts/build_free_sample.py --check; then
+  status=1
+fi
+
+# 6a. Longest-option tell ----------------------------------------------------
+# Per domain, how often "always pick the longest option" (ties shared) would
+# win. Chance is 25%; the target is about 20%. Outside 15–24% fails.
+printf "\n"
+if ! python3 scripts/check_longest_option.py; then
+  status=1
+fi
+
+# 6a2. AAIA course (data/aaia/) ---------------------------------------------
+# The paid AAIA pack: item style (lint_exam_style_v2 --file, exit 1 = error),
+# notes against the AAIA outline and bank, and the bank checks (citations in
+# the AAIA library, area coverage, length tell, notes links).
+if [ -d data/aaia/originals ]; then
+  printf "\n"
+  python3 scripts/check_aaia_bank.py || status=1
+  for f in data/aaia/originals/d[0-9].json; do
+    out=$(python3 scripts/lint_exam_style_v2.py --file "$f"); rc=$?
+    printf "  %s: %s\n" "$(basename "$f")" "$(printf '%s\n' "$out" | tail -1)"
+    if [ "$rc" -eq 1 ]; then printf '%s\n' "$out" | grep '^ERROR' | sed 's/^/    /'; status=1; fi
+  done
+  for f in data/aaia/notes/d[0-9].json; do
+    out=$(python3 scripts/lint_notes.py "$f" --outline docs/content/AAIA_BLUEPRINT.md --bank data/aaia/originals); rc=$?
+    printf "  notes %s: %s\n" "$(basename "$f")" "$(printf '%s\n' "$out" | tail -1)"
+    if [ "$rc" -ne 0 ]; then printf '%s\n' "$out" | grep '^ERROR' | sed 's/^/    /'; status=1; fi
+  done
+  # Principles, exam guide and final review week (each "skipped" until written),
+  # then the app's own pack builders run on every AAIA file (dry run, temp folder).
+  out=$(python3 scripts/lint_principles.py --cert aaia); rc=$?
+  printf "  principles: %s\n" "$(printf '%s\n' "$out" | tail -1 | sed 's/^ *//; s/^Principles lint (aaia): //')"
+  if [ "$rc" -ne 0 ]; then printf '%s\n' "$out" | grep '✗' | sed 's/^ */    /'; status=1; fi
+  out=$(python3 scripts/lint_exam_guide.py --cert aaia); rc=$?
+  printf '%s\n' "$out" | grep 'skipped' | sed 's/^ */  exam guide: /'
+  if [ "$rc" -ne 0 ]; then printf '%s\n' "$out" | grep '✗' | sed 's/^ */    /'; status=1;
+  elif printf '%s\n' "$out" | grep -q '✓'; then printf "  exam guide: %s\n" "$(printf '%s\n' "$out" | tail -1 | sed 's/^ *//')"; fi
+  if command -v node >/dev/null 2>&1; then
+    node scripts/aaia_pack_dry_run.cjs || status=1
+  else
+    printf "  AAIA pack dry run: skipped (node not found)\n"
+  fi
+fi
+
 # 6b. Mindset principles (data/mindset/principles.json) ----------------------
 # Schema, ids, practice-question and subtopic cross-references, word limits,
 # family/domain coverage, legacy id mapping. Errors fail the check; warnings
@@ -245,6 +294,43 @@ fi
 # are reported only.
 printf "\n"
 if ! python3 scripts/lint_exam_guide.py; then
+  status=1
+fi
+
+# 6c-crisc. CRISC course (paid pack, not wired into the apps yet) ---------
+# The same gates the CRISC reviews use: questions, notes (against the CRISC
+# outline and bank), principles, exam guide + final review week, and the
+# notes' "Practice this concept" links. Errors fail the check.
+printf "\nCRISC course (data/crisc):\n"
+crisc_ok=1
+for d in 1 2 3 4; do
+  out=$(python3 scripts/lint_exam_style_v2.py --file "data/crisc/originals/d$d.json" | tail -1)
+  printf "  D%s questions: %s\n" "$d" "$out"
+  case "$out" in *" 0 error(s)"*) ;; *) crisc_ok=0 ;; esac
+  out=$(python3 scripts/lint_notes.py "data/crisc/notes/d$d.json" --outline docs/content/CRISC_BLUEPRINT.md --bank data/crisc/originals | tail -1)
+  printf "  D%s notes: %s\n" "$d" "$out"
+  case "$out" in *" 0 error(s)"*) ;; *) crisc_ok=0 ;; esac
+done
+python3 scripts/lint_principles.py data/crisc/mindset/principles.json --notes data/crisc/notes --bank data/crisc/originals >/dev/null || crisc_ok=0
+python3 scripts/lint_exam_guide.py --cert crisc data/crisc/exam/crisc_exam_guide.json >/dev/null || crisc_ok=0
+python3 data/crisc/tools/sync_practice_ids.py --check >/dev/null || { echo "  $FAIL practice links out of date: python3 data/crisc/tools/sync_practice_ids.py"; crisc_ok=0; }
+python3 - <<'PY' || crisc_ok=0
+import json, sys
+g = json.load(open("data/crisc/glossary.json"))
+need = {"id", "term", "acronym", "def", "scopeNotes", "domain", "category"}
+bad = [e.get("id") for e in g if not need <= set(e) or e["domain"] not in range(5) or not e["def"].strip()]
+ids, terms = [e["id"] for e in g], [e["term"].lower() for e in g]
+if bad or len(set(ids)) != len(ids) or len(set(terms)) != len(terms):
+    print(f"  ✗ glossary: {len(bad)} bad entries, duplicate ids or terms")
+    sys.exit(1)
+PY
+if command -v node >/dev/null 2>&1; then
+  node scripts/crisc_pack_dry_run.cjs | sed 's/^CRISC pack dry run/  App pack dry run/' || crisc_ok=0
+fi
+if [ $crisc_ok -eq 1 ]; then
+  echo "  $OK principles, exam guide, final review week, glossary, practice links and app pack clean"
+else
+  echo "  $FAIL CRISC content has errors (run the commands above)"
   status=1
 fi
 

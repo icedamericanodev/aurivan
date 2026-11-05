@@ -1,0 +1,1096 @@
+{
+  "schema_version": 2,
+  "title": "KaiSip CC exam mindset principles",
+  "updated": "2026-10-31",
+  "description": "The reasoning patterns CC questions reward, written for the entry-level security practitioner: protect people first, follow policy and procedure, do the in-role task, escalate to the owner outside your authority, never accept risk yourself, pick the basic control that fits and act within the ISC2 Code of Ethics. These are patterns KaiSip sees in CC-style questions, not ISC2 rules, except where a principle names an ISC2 source (the Code of Ethics canons). Same shape as the CISA file data/mindset/principles.json (schema v2, docs/content/PRINCIPLES_SCHEMA.md), with these CC deviations: subtopics are CC notes ids from data/cc/notes (for example 1.2.6); practice_ids refer to data/cc/originals (ids such as cc_d1_006), one principle per question; legacy_ids are empty because the old web PRINCIPLES_LIB was CISA only; families are named for the practitioner lens. The slip coach patterns are shared app-wide, so the CC slips map onto them: role covers deciding a risk yourself, changing what the owner decides, or escalating a task the procedure assigns to you; tech-first covers skipping the procedure; symptom covers fixing the person or the effect instead of the cause; priority covers reading past FIRST, BEST or MOST. Slips with no coach pattern are taught by their principle: picking the technical fix before people's safety (people-first) and picking the advanced control over the basic one that fits (basic-control-that-fits). Lint: python3 data/cc/tools/lint_cc_principles.py. Not affiliated with or endorsed by ISC2®. CC® is a registered trademark of ISC2, Inc.",
+  "families": [
+    {
+      "id": "role",
+      "order": 1,
+      "title": "Your role",
+      "question": "Who am I in this question, and what is mine to do?"
+    },
+    {
+      "id": "priorities",
+      "order": 2,
+      "title": "What matters most",
+      "question": "What must I protect first?"
+    },
+    {
+      "id": "controls",
+      "order": 3,
+      "title": "Choosing the control",
+      "question": "Which control actually fits this risk?"
+    },
+    {
+      "id": "response",
+      "order": 4,
+      "title": "When something goes wrong",
+      "question": "What do I do once something has happened?"
+    },
+    {
+      "id": "ethics",
+      "order": 5,
+      "title": "Ethics and professional duty",
+      "question": "What would an honest, careful professional do?"
+    },
+    {
+      "id": "reading",
+      "order": 6,
+      "title": "Reading the question",
+      "question": "What is the question really asking?"
+    }
+  ],
+  "principles": [
+    {
+      "id": "follow-policy-and-procedure",
+      "family": "role",
+      "order": 1,
+      "title": "Follow the procedure, even under pressure",
+      "rule": "Follow approved policy and procedure, including verification steps, even when someone senior or urgent asks you to skip them.",
+      "why": "Policies and procedures carry management's approval, so they protect you and the organization when a request turns out to be fake or unsafe. Attackers and impatient colleagues both use rank and urgency to get a step skipped. In CC-style questions the answer usually takes the approved route: an exception, a change request or a callback on a known number.",
+      "triggers": [
+        "without a change request",
+        "without a ticket",
+        "urgently asks",
+        "a senior manager says to go ahead",
+        "seems to be from",
+        "asks you to skip"
+      ],
+      "trap": {
+        "move": "Doing what the senior or urgent person asks, then sorting out the paperwork afterward.",
+        "why_wrong": "Rank and urgency don't change who approves. A skipped step is exactly what a social engineer or a rushed change needs, and a record filed later can't undo the risk already taken."
+      },
+      "example": {
+        "scenario": "Late at night, a ward manager phones the help desk sounding stressed and asks for a locked-out nurse's password to be reset and read out over the phone.",
+        "answer": "Follow the reset procedure: verify the nurse by the approved method and give the new password only to them. If the caller's identity matters, call back on the directory number. Stress and seniority don't replace the steps."
+      },
+      "check": {
+        "scenario": "A project manager asks a system administrator to open a firewall port tonight for a vendor demo, saying the change board is too slow and they will take responsibility.",
+        "right": "Raise a change request, using the urgent route if needed, and wait for approval.",
+        "trap": "Open the port tonight for the demo and file the change request tomorrow.",
+        "why": "Taking responsibility doesn't make the manager the approver. The change process reviews a risky change first; a request filed afterward only records a step that was skipped."
+      },
+      "nuance": "Procedures can have gaps. If following one would put people at risk or plainly breaks a higher standard, take the safe step the rules allow and report the gap to the procedure's owner.",
+      "domains": [
+        1,
+        2,
+        3,
+        5
+      ],
+      "subtopics": [
+        "1.3.4",
+        "1.3.5",
+        "2.1.8",
+        "2.3.3",
+        "2.3.5",
+        "3.1.3",
+        "3.1.14",
+        "5.4.6"
+      ],
+      "practice_ids": [
+        "cc_d1_010",
+        "cc_d2_004",
+        "cc_d2_013",
+        "cc_d2_037",
+        "cc_d2_038",
+        "cc_d3_004",
+        "cc_d3_008",
+        "cc_d5_015"
+      ],
+      "slip_pattern": "tech-first",
+      "legacy_ids": [],
+      "aliases": []
+    },
+    {
+      "id": "act-in-role-escalate-outside",
+      "family": "role",
+      "order": 2,
+      "title": "Do your part; escalate the rest",
+      "rule": "Do the task your role or procedure assigns you; report what sits outside your authority to the owner who decides.",
+      "why": "An entry-level practitioner works inside a defined role. When the procedure names you, doing the task is the answer, and passing it up only leaves the exposure open longer. When the system, data, policy or decision belongs to someone else, give that owner the facts quickly instead of changing, blocking or deciding it yourself.",
+      "triggers": [
+        "the procedure assigns",
+        "the runbook lets",
+        "owned by another team",
+        "the system owner",
+        "outside their authority",
+        "only the risk owner may"
+      ],
+      "trap": {
+        "move": "Escalating a fix the procedure already gives you, or making a change, block or decision that belongs to the owner.",
+        "why_wrong": "The first leaves a known problem open while you wait. The second takes a decision you can't be held to, and may break a live system its owner understands better."
+      },
+      "example": {
+        "scenario": "A help desk technician's procedure says they reset lost sign-in tokens. The same morning, they notice that the HR system, owned by the HR director, emails payslips without encryption.",
+        "answer": "Reset the token as the procedure says. For the payslips, report what they saw to the HR director and the security team, and leave the system's settings alone."
+      },
+      "check": {
+        "scenario": "A junior analyst's runbook lets them quarantine phishing emails. They also spot a mail rule, owned by the messaging team, that forwards all finance mail to an outside address.",
+        "right": "Quarantine the phishing emails and report the forwarding rule to the messaging and security teams.",
+        "trap": "Quarantine the phishing emails, delete the forwarding rule, then tell the messaging team.",
+        "why": "The runbook makes quarantine the analyst's job. The mail rule belongs to another team and may be evidence of an attack, so its owners and the responders decide what happens to it."
+      },
+      "nuance": "If people are in immediate danger, take the protective step the plan allows, then report at once. Lacking authority never means staying silent: report what you found, with the facts, to someone who can act.",
+      "domains": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "subtopics": [
+        "1.2.7",
+        "1.3.5",
+        "1.3.6",
+        "2.1.4",
+        "2.1.6",
+        "2.1.8",
+        "2.2.5",
+        "2.4.4",
+        "2.4.7",
+        "3.1.6",
+        "3.1.12",
+        "3.2.9",
+        "4.2.8",
+        "4.3.8",
+        "5.2.3",
+        "5.4.1"
+      ],
+      "practice_ids": [
+        "cc_d1_012",
+        "cc_d1_031",
+        "cc_d1_037",
+        "cc_d2_003",
+        "cc_d2_005",
+        "cc_d2_009",
+        "cc_d2_018",
+        "cc_d2_019",
+        "cc_d2_026",
+        "cc_d2_044",
+        "cc_d3_003",
+        "cc_d3_010",
+        "cc_d3_035",
+        "cc_d4_013",
+        "cc_d4_019",
+        "cc_d4_044",
+        "cc_d5_006",
+        "cc_d5_038"
+      ],
+      "slip_pattern": "role",
+      "legacy_ids": [],
+      "aliases": []
+    },
+    {
+      "id": "owner-decides-risk",
+      "family": "role",
+      "order": 3,
+      "title": "The owner decides and stays accountable",
+      "rule": "Never accept risk yourself: the risk owner accepts within tolerance and senior management decides beyond it; outsourcing never moves accountability.",
+      "why": "Accepting a risk, setting a classification or approving access are business decisions for whoever answers for the loss; tolerance is the risk level the organization has agreed to live with. A practitioner prepares the facts, then routes the decision. Insurers, providers and outsourced teams can take on work or cost, but the owner still answers for the outcome.",
+      "triggers": [
+        "sign the acceptance",
+        "residual risk",
+        "the risk owner",
+        "the insurer now covers it",
+        "outsourced to a provider",
+        "above tolerance",
+        "who should approve"
+      ],
+      "trap": {
+        "move": "Signing an acceptance, setting a classification or approving access yourself because you understand the risk, or because someone asked you to.",
+        "why_wrong": "Understanding a risk is not owning it. A decision made without the authority leaves no one accountable when the loss arrives."
+      },
+      "example": {
+        "scenario": "A clinic's new booking app leaves a small residual risk (the risk left after controls) that the practice manager, its owner, has not reviewed. The developer asks the security analyst to approve go-live so the launch date holds.",
+        "answer": "Document the residual risk and send it to the practice manager to accept or treat. Had it been above tolerance, senior management would decide. The analyst advises; the owner decides."
+      },
+      "check": {
+        "scenario": "A risk analyst finds that a warehouse scanner risk sits just above tolerance after controls. The warehouse manager, its owner, says they are happy to accept it and asks the analyst to log it.",
+        "right": "Route the decision to senior management, with the owner's view attached, since it is above tolerance.",
+        "trap": "Log the warehouse manager's acceptance in the register, since the manager is the risk owner.",
+        "why": "A risk owner accepts only within tolerance. Above it, senior management decides whether to treat further or accept, so the analyst routes the decision rather than recording the owner's acceptance."
+      },
+      "nuance": "A practitioner may be given record-keeping tasks such as updating the register or tracking review dates, never the acceptance. Re-accepting a risk at its review date is the owner's decision too.",
+      "domains": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "subtopics": [
+        "1.2.4",
+        "1.2.5",
+        "1.2.6",
+        "1.4.6",
+        "2.1.3",
+        "2.1.7",
+        "2.2.6",
+        "3.1.2",
+        "3.1.10",
+        "4.3.5",
+        "4.3.6",
+        "5.1.1",
+        "5.4.3"
+      ],
+      "practice_ids": [
+        "cc_d1_006",
+        "cc_d1_007",
+        "cc_d1_008",
+        "cc_d1_015",
+        "cc_d2_008",
+        "cc_d2_023",
+        "cc_d2_024",
+        "cc_d3_006",
+        "cc_d3_022",
+        "cc_d4_017",
+        "cc_d4_030",
+        "cc_d5_004",
+        "cc_d5_014"
+      ],
+      "slip_pattern": null,
+      "legacy_ids": [],
+      "aliases": []
+    },
+    {
+      "id": "people-first",
+      "family": "priorities",
+      "order": 1,
+      "title": "People first",
+      "rule": "When people's safety is at stake, protect them first; data, systems and schedules come after.",
+      "why": "Data can be restored and systems rebuilt, but harm to people can't be undone. Backups, recovery plans and insurance exist so you never have to trade a person's safety for an asset. Questions that mention fire, patients, escape routes or an angry crowd usually turn on this.",
+      "triggers": [
+        "fire alarm",
+        "escape route",
+        "patient care",
+        "could harm the public",
+        "life-safety system",
+        "a crowd gathers"
+      ],
+      "trap": {
+        "move": "Saving the drives, keeping a door locked or sticking to the test plan because the asset or the schedule feels urgent.",
+        "why_wrong": "Every one of those can be recovered later. A delay that leaves someone trapped, hurt or in danger cannot."
+      },
+      "example": {
+        "scenario": "During a power cut, a data center's fire suppression system warns it will release gas in 30 seconds while a technician is halfway through swapping a failed server disk.",
+        "answer": "Leave the room at once and follow the evacuation procedure. The swap can resume later and the server's data has backups; the technician's safety comes first."
+      },
+      "check": {
+        "scenario": "A firmware update leaves a hospital ward's doors locked shut during a fire drill. The vendor says rolling it back would reopen a known security flaw for a day.",
+        "right": "Roll back now via the emergency change route so the doors release, and cover the flaw with other controls.",
+        "trap": "Keep the update to close the flaw, and run fire drills in other wards until the vendor's next fix.",
+        "why": "Doors that trap people in a fire are a safety failure. The flaw can be covered for a day by other controls; a trapped ward cannot wait."
+      },
+      "nuance": "People first does not mean shutting everything down: stopping a hospital's ventilation to patch it could create the very danger you meant to prevent. Choose the move that keeps people safest.",
+      "domains": [
+        1,
+        2,
+        4,
+        5
+      ],
+      "subtopics": [
+        "1.4.4",
+        "2.2.2",
+        "4.1.11",
+        "5.5.5"
+      ],
+      "practice_ids": [
+        "cc_d1_016",
+        "cc_d2_031",
+        "cc_d4_007",
+        "cc_d5_043"
+      ],
+      "slip_pattern": null,
+      "legacy_ids": [],
+      "aliases": []
+    },
+    {
+      "id": "match-the-security-goal",
+      "family": "priorities",
+      "order": 2,
+      "title": "Protect the goal the scenario needs",
+      "rule": "Ask which goal is at stake, confidentiality, integrity, availability or privacy, and pick the control that protects that one.",
+      "why": "Different data needs different protection. A public timetable needs no secrecy but must be correct and online, while patient charts must be private yet reachable by the clinicians treating patients. Naming the goal first stops you picking a strong control that guards the wrong thing.",
+      "triggers": [
+        "public data",
+        "a wrong figure",
+        "the site is down",
+        "personal data",
+        "MOST directly harms",
+        "what an AI model learns from"
+      ],
+      "trap": {
+        "move": "Defaulting to confidentiality controls such as encryption or tighter access, whatever the data actually needs.",
+        "why_wrong": "Encryption does nothing for a server that is down or a figure that is wrong, and tighter access can block the people who need the data."
+      },
+      "example": {
+        "scenario": "A city shows live bus arrival times on public screens. Riders complain that the screens sometimes show times that are an hour wrong.",
+        "answer": "Protect integrity: make sure only the approved feed can change the times, and check what it publishes. The data is public, so secrecy adds nothing; correctness is what riders rely on."
+      },
+      "check": {
+        "scenario": "A food bank shares its volunteer rota openly with all volunteers, and sessions get missed whenever the rota website goes down.",
+        "right": "Improve availability, for example with a backup copy volunteers can reach when the site is down.",
+        "trap": "Improve confidentiality, for example by limiting the rota to named volunteers with passwords.",
+        "why": "The rota is already shared openly, so secrecy isn't the problem. Missed sessions come from the site being unreachable, which is an availability need."
+      },
+      "nuance": "Privacy asks more than secrecy: whether personal data should be collected, kept or reused at all. Raise that question before choosing how to encrypt the data.",
+      "domains": [
+        1,
+        2
+      ],
+      "subtopics": [
+        "1.1.1",
+        "1.1.2",
+        "1.1.4",
+        "1.1.8",
+        "1.1.9",
+        "2.2.1"
+      ],
+      "practice_ids": [
+        "cc_d1_001",
+        "cc_d1_004",
+        "cc_d1_021",
+        "cc_d1_025",
+        "cc_d1_026",
+        "cc_d1_028",
+        "cc_d2_027"
+      ],
+      "slip_pattern": null,
+      "legacy_ids": [],
+      "aliases": []
+    },
+    {
+      "id": "risk-sets-priority",
+      "family": "priorities",
+      "order": 3,
+      "title": "Assess, then rank by real risk",
+      "rule": "Assess first, then rank by real exposure: likelihood and impact together, not the highest score or loudest request.",
+      "why": "A severity score or a scary headline describes a weakness in general, not your risk. Active exploitation, internet exposure, how long data must stay secret and what a control actually changes decide what comes first. When something new appears, reassess before buying a fix so the treatment fits the risk as it now stands.",
+      "triggers": [
+        "actively exploited",
+        "highest severity score",
+        "which to fix first",
+        "a new threat",
+        "a new control was added",
+        "keeps rising",
+        "where work should start"
+      ],
+      "trap": {
+        "move": "Ranking by the biggest number, the newest headline or the most senior requester, or buying a tool before reassessing.",
+        "why_wrong": "A high score on an isolated test server can matter less than a lower one under active attack, and a tool chosen before assessment may not fit the risk."
+      },
+      "example": {
+        "scenario": "A charity's scan shows a critical flaw on an offline training laptop and a medium flaw on its public donation site, which attackers are actively probing.",
+        "answer": "Fix the donation site first. It is exposed and under attack, so its likelihood is far higher; the offline laptop's flaw waits for the normal patch cycle."
+      },
+      "check": {
+        "scenario": "A school treated its exam-paper leak risk with locked printers last year. Staff now report that students are photographing papers with smart glasses.",
+        "right": "Reassess the leak risk with the new method and update the register before choosing controls.",
+        "trap": "Ban smart glasses from exam rooms now, and update the risk register next term.",
+        "why": "A new threat changes the risk, so it is assessed before treatment. A ban chosen first may miss how leaks really happen, and the register stays out of date."
+      },
+      "nuance": "Likelihood and impact go together, and a control may lower only one: disk encryption cuts what a stolen laptop costs, not how often laptops are stolen.",
+      "domains": [
+        1,
+        2,
+        4,
+        5
+      ],
+      "subtopics": [
+        "1.2.2",
+        "1.2.3",
+        "2.1.2",
+        "2.4.5",
+        "4.2.4",
+        "5.1.7",
+        "5.4.5"
+      ],
+      "practice_ids": [
+        "cc_d1_029",
+        "cc_d1_030",
+        "cc_d2_020",
+        "cc_d2_021",
+        "cc_d4_039",
+        "cc_d5_016",
+        "cc_d5_024"
+      ],
+      "slip_pattern": null,
+      "legacy_ids": [],
+      "aliases": []
+    },
+    {
+      "id": "basic-control-that-fits",
+      "family": "controls",
+      "order": 1,
+      "title": "The basic control that fits",
+      "rule": "Choose the simplest control that fits the data, size and need, not the strictest, newest or most expensive.",
+      "why": "A control that suits the organization gets used and kept; an oversized one costs more, slows work and gets bypassed. CC-style questions often place a strict or advanced option beside a plain one that fully meets the stated need. The pattern is that the plain fit wins unless the question gives a reason for more.",
+      "triggers": [
+        "a small business",
+        "only a few staff",
+        "the vendor recommends",
+        "the most secure option",
+        "meets the stated need",
+        "lowest cost that meets"
+      ],
+      "trap": {
+        "move": "Picking the strictest access model, a fully equipped standby site (hot site) or a full interruption test because stronger sounds safer.",
+        "why_wrong": "The question asks for the best fit. Strength the situation doesn't need adds cost and disruption without lowering the stated risk."
+      },
+      "example": {
+        "scenario": "A 12-person bakery wants staff to reach its order system by job: bakers, drivers and the office. The owner asks whether they need attribute-based rules checked on every request.",
+        "answer": "Role-based access with three roles fits. Jobs map neatly to roles, and attribute rules would add complexity the bakery doesn't need."
+      },
+      "check": {
+        "scenario": "A three-person design studio wants to stop lost laptops exposing client files. A vendor pitches a full data-loss prevention suite with AI monitoring.",
+        "right": "Turn on the full-disk encryption already built into the laptops' operating system.",
+        "trap": "Buy the data-loss prevention suite and have it monitor every file the studio uses.",
+        "why": "The risk is a lost laptop, and built-in disk encryption covers it at no extra cost. The suite is far more than three people need and targets the loss no better."
+      },
+      "nuance": "Fit cuts both ways: when data is classified, life-critical or regulated, the stricter control is the one that fits. Let the facts in the question set the level.",
+      "domains": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "subtopics": [
+        "1.4.3",
+        "2.2.6",
+        "2.2.7",
+        "2.3.2",
+        "3.2.1",
+        "3.2.7",
+        "3.2.10",
+        "4.1.10"
+      ],
+      "practice_ids": [
+        "cc_d1_039",
+        "cc_d2_010",
+        "cc_d2_012",
+        "cc_d2_034",
+        "cc_d3_034",
+        "cc_d3_036",
+        "cc_d3_037",
+        "cc_d4_036"
+      ],
+      "slip_pattern": null,
+      "legacy_ids": [],
+      "aliases": []
+    },
+    {
+      "id": "prevent-before-detect",
+      "family": "controls",
+      "order": 2,
+      "title": "Prevent before you detect",
+      "rule": "When harm can be stopped before it happens, prefer the preventive control over one that only spots it afterward.",
+      "why": "Detective controls such as logs, alerts and spot checks find a problem once the damage may be done. Preventive controls such as locks, approval steps and removed rights stop it first. Where a wrong change, payment or entry could hurt someone, catching it later is too late.",
+      "triggers": [
+        "nothing stops it",
+        "BEST prevent",
+        "could harm someone before anyone notices",
+        "any amount",
+        "still has their old access",
+        "stopped automatically, not just reported",
+        "before turning it on",
+        "a hostile exit"
+      ],
+      "trap": {
+        "move": "Adding logging, alerts, cameras or monthly reviews where a lock, an approval or a removed right could stop the harm.",
+        "why_wrong": "Those controls tell you what went wrong. They don't stop it, so the loss or harm still happens."
+      },
+      "example": {
+        "scenario": "A system administrator is setting up a shared drive for payroll files. They can limit it to the payroll group from the start, or open it to all staff and review the access log each month.",
+        "answer": "Limit it to the payroll group from the start. The monthly log would show who opened the files only after they had seen them; the restriction stops that happening."
+      },
+      "check": {
+        "scenario": "A technician's checklist for new laptops offers two settings: lock the screen after five idle minutes, or add the laptop to a monthly report of sessions left unlocked.",
+        "right": "Turn on the automatic screen lock on each laptop as it is set up.",
+        "trap": "Add each laptop to the monthly report of sessions left unlocked.",
+        "why": "The screen lock stops someone using an unattended laptop. The report shows that it happened, weeks later, after any harm is done."
+      },
+      "nuance": "Detection still matters: where prevention is already in place or isn't possible, a log, alarm or reconciliation adds a layer. Prefer prevention when both are on offer and the harm is avoidable.",
+      "domains": [
+        1,
+        3,
+        4
+      ],
+      "subtopics": [
+        "1.4.5",
+        "3.1.9",
+        "3.1.11",
+        "3.2.2",
+        "3.2.3",
+        "3.2.11",
+        "4.1.4",
+        "4.1.8"
+      ],
+      "practice_ids": [
+        "cc_d1_014",
+        "cc_d3_007",
+        "cc_d3_009",
+        "cc_d3_019",
+        "cc_d3_038",
+        "cc_d3_039",
+        "cc_d4_004",
+        "cc_d4_023"
+      ],
+      "slip_pattern": null,
+      "legacy_ids": [],
+      "aliases": []
+    },
+    {
+      "id": "least-privilege-need-to-know",
+      "family": "controls",
+      "order": 3,
+      "title": "Least privilege and need to know",
+      "rule": "Give people, services, AI agents and network paths only the access the task needs, for only as long as needed.",
+      "why": "Every extra right is a way for a mistake, an attacker or a tricked AI tool to do more damage. Limiting scope, actions and time shrinks what any one account or path can reach. The same idea shapes networks: allow only the flows a system needs and deny the rest.",
+      "triggers": [
+        "just in case",
+        "administrator rights",
+        "all-access account",
+        "unrestricted outbound",
+        "allows all traffic except",
+        "keeps access after moving roles",
+        "the vendor's guide asks for"
+      ],
+      "trap": {
+        "move": "Granting broad or permanent access so work is never blocked, or the admin rights a vendor's guide asks for.",
+        "why_wrong": "Convenience access is still access. If the account or path is misused, everything it can reach is exposed."
+      },
+      "example": {
+        "scenario": "A school's new AI homework helper needs to read the week's lesson plans. Its vendor's setup guide asks for read and write access to the whole shared drive.",
+        "answer": "Approve read-only access to the lesson-plan folder alone. The tool only reads one folder, so write rights and the rest of the drive add risk with no benefit."
+      },
+      "check": {
+        "scenario": "A contractor needs administrator rights on one server for a two-day upgrade next week. Their manager asks for standing domain admin rights so they are never held up.",
+        "right": "Grant admin rights on that one server only, for the two days, with the session logged.",
+        "trap": "Grant standing domain admin rights now, with every session the contractor opens logged.",
+        "why": "The task covers one server for two days, so access should match its scope and time. Logging standing rights records misuse but leaves the whole domain exposed."
+      },
+      "nuance": "Least privilege is a strong default, not an absolute. Approved, time-limited, watched exceptions, such as access granted only for the hours a job needs (just-in-time) or a sealed emergency account (break-glass), are part of it, not a breach of it.",
+      "domains": [
+        3,
+        4,
+        5
+      ],
+      "subtopics": [
+        "3.1.1",
+        "3.1.9",
+        "3.1.12",
+        "3.2.2",
+        "3.2.4",
+        "3.2.5",
+        "3.2.11",
+        "3.2.12",
+        "4.1.5",
+        "4.1.7",
+        "4.1.12",
+        "4.2.2",
+        "4.2.4",
+        "4.2.9",
+        "5.5.6"
+      ],
+      "practice_ids": [
+        "cc_d3_012",
+        "cc_d3_014",
+        "cc_d3_020",
+        "cc_d3_021",
+        "cc_d3_032",
+        "cc_d3_041",
+        "cc_d3_044",
+        "cc_d4_008",
+        "cc_d4_011",
+        "cc_d4_014",
+        "cc_d4_025",
+        "cc_d4_033",
+        "cc_d4_037",
+        "cc_d5_045"
+      ],
+      "slip_pattern": null,
+      "legacy_ids": [],
+      "aliases": []
+    },
+    {
+      "id": "defense-in-depth",
+      "family": "controls",
+      "order": 4,
+      "title": "Layers that fail separately",
+      "rule": "Layer independent controls and keep verifying trust, so one stolen password, failed device or breach can't open everything.",
+      "why": "Attackers often start inside, through phishing or a stolen login, so one strong edge is not enough. Layers only count when they fail separately: a shared password or a single identity provider can switch them all off at once. Zero Trust carries the idea further by checking each request instead of trusting a location.",
+      "triggers": [
+        "already has a firewall",
+        "one shared password",
+        "single sign-on",
+        "on the internal network",
+        "all managed from one console"
+      ],
+      "trap": {
+        "move": "Counting controls, or buying one product, as if more boxes or one gateway equals depth.",
+        "why_wrong": "Five controls behind one password act as one control. Depth comes from layers that each need a separate failure to defeat."
+      },
+      "example": {
+        "scenario": "A city's firewall, email filter and backups are all managed from one console that anyone on the IT team can reach with a single shared login.",
+        "answer": "Give each person their own login with multifactor sign-in on the console, and keep one backup copy the console can't delete. Then one stolen login can't switch off every layer at once."
+      },
+      "check": {
+        "scenario": "A clinic keeps its backups on a server joined to the same domain as everything else, so any domain administrator can delete them.",
+        "right": "Keep one backup copy offline or immutable, out of the domain administrators' reach.",
+        "trap": "Add closer monitoring of domain administrator activity on the backup server.",
+        "why": "Backups are the layer you need when the domain is compromised. If the same admin rights can delete them, one stolen account defeats both layers at once."
+      },
+      "nuance": "Layers are not an excuse for many weak controls. Each layer should work on its own, and the basics, such as patching and multifactor sign-in, still come first.",
+      "domains": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "subtopics": [
+        "1.4.6",
+        "2.2.9",
+        "3.1.7",
+        "3.1.16",
+        "3.2.12",
+        "4.1.6",
+        "4.2.1",
+        "4.2.5",
+        "4.2.6"
+      ],
+      "practice_ids": [
+        "cc_d1_042",
+        "cc_d2_030",
+        "cc_d3_005",
+        "cc_d3_026",
+        "cc_d3_045",
+        "cc_d4_003",
+        "cc_d4_012",
+        "cc_d4_026",
+        "cc_d4_027",
+        "cc_d4_040"
+      ],
+      "slip_pattern": null,
+      "legacy_ids": [],
+      "aliases": []
+    },
+    {
+      "id": "report-early-right-channel",
+      "family": "response",
+      "order": 1,
+      "title": "Report early, through the right channel",
+      "rule": "Report a suspected incident or exposure at once, with the facts, through the channel your plan names.",
+      "why": "Early reports give responders time to contain harm, warn others and meet legal deadlines. A quiet fix, a deleted message or a hopeful wait loses that time and sometimes the evidence. The channel matters too: customer statements, shared threat reports and team messages each have an owner and a route.",
+      "triggers": [
+        "realizes they made a mistake",
+        "asks for their password",
+        "no change request",
+        "noticed something odd",
+        "a reporter asks",
+        "suspected compromise",
+        "nothing unusual yet"
+      ],
+      "trap": {
+        "move": "Cleaning up quietly, waiting for proof of harm, or answering outsiders yourself before the plan's spokesperson does.",
+        "why_wrong": "Deleting or waiting can't undo the exposure and costs responders time. An answer from the wrong person may be wrong, and it speaks for the organization."
+      },
+      "example": {
+        "scenario": "A receptionist clicks a link in an email, types their password on a page that then shows an error, and realizes the page looked odd.",
+        "answer": "Report it to the security team at once, through the report button or the help desk, saying what was clicked and entered. Changing the password alone wouldn't tell responders whether others got the same email."
+      },
+      "check": {
+        "scenario": "A developer notices they pushed a cloud access key to a public code repository an hour ago. Nothing unusual shows in the cloud account yet.",
+        "right": "Report the exposed key to the security team now, saying where and when it was posted.",
+        "trap": "Delete the commit and wait to see whether anything unusual shows up in the account.",
+        "why": "A public key can be copied within minutes, so the risk is live before misuse shows. Deleting the commit doesn't remove copies, and waiting gives an attacker time."
+      },
+      "nuance": "Report facts, not guesses, and keep the report inside the plan's channels. Whether to tell affected people or the public is decided by the owners the plan names, such as legal counsel and management.",
+      "domains": [
+        2,
+        5
+      ],
+      "subtopics": [
+        "2.3.6",
+        "2.3.7",
+        "5.1.8",
+        "5.2.1",
+        "5.2.4",
+        "5.3.1",
+        "5.3.5",
+        "5.4.6",
+        "5.5.1"
+      ],
+      "practice_ids": [
+        "cc_d2_014",
+        "cc_d5_003",
+        "cc_d5_007",
+        "cc_d5_012",
+        "cc_d5_018",
+        "cc_d5_031",
+        "cc_d5_033",
+        "cc_d5_041"
+      ],
+      "slip_pattern": null,
+      "legacy_ids": [],
+      "aliases": []
+    },
+    {
+      "id": "contain-and-preserve",
+      "family": "response",
+      "order": 2,
+      "title": "Contain, preserve, then clean up",
+      "rule": "In an incident, follow the plan: contain first, preserve evidence as you go, then eradicate (remove the threat) and recover.",
+      "why": "Containment stops one infected machine or account from becoming many. Doing it the plan's way, such as disconnecting a device but leaving it powered on, keeps the evidence responders need to find the cause. Cleaning or restoring first can wipe that evidence and let the threat return through the same opening.",
+      "triggers": [
+        "ransom note",
+        "an infected device",
+        "the playbook lets",
+        "evidence on the device",
+        "follow the malware playbook"
+      ],
+      "trap": {
+        "move": "Wiping, shutting down or restoring at once to make the problem disappear, or waiting while it spreads.",
+        "why_wrong": "A wipe or restore destroys evidence and can reinfect through the same gap. Waiting lets the attack reach more systems."
+      },
+      "example": {
+        "scenario": "A shop's payment terminal starts sending card data to an unknown address. The playbook says on-call staff may isolate terminals.",
+        "answer": "Unplug the terminal from the network but leave it powered on, record what was done and when, and call the incident response lead. Wiping it now would destroy evidence of how the attack got in."
+      },
+      "check": {
+        "scenario": "An analyst's playbook lets them isolate infected laptops. One laptop is showing ransomware encrypting a shared folder right now.",
+        "right": "Isolate the laptop from the network now, leave it powered on, and alert the response lead.",
+        "trap": "Shut the laptop down now to stop the encryption, then alert the response lead.",
+        "why": "Isolation stops the spread while keeping memory evidence that a shutdown would lose. The playbook gives the analyst this step, and the lead directs what comes next."
+      },
+      "nuance": "The plan and the response lead decide the steps; some plans do call for powering a device off in set cases. Eradicate before recovery so restored systems don't bring the threat back.",
+      "domains": [
+        5
+      ],
+      "subtopics": [
+        "5.3.2",
+        "5.3.3",
+        "5.3.4"
+      ],
+      "practice_ids": [
+        "cc_d5_009",
+        "cc_d5_011",
+        "cc_d5_037"
+      ],
+      "slip_pattern": null,
+      "legacy_ids": [],
+      "aliases": []
+    },
+    {
+      "id": "fix-the-cause",
+      "family": "response",
+      "order": 3,
+      "title": "Fix the cause, then prove it works",
+      "rule": "Fix why it happened, not the person or the symptom, then measure or retest to show the fix works.",
+      "why": "Blaming one person or cleaning up the effect leaves in place the gap that let it happen, so it happens again. Lessons learned, leaders' example and process changes target the cause. A change is not yet an improvement, so track results and retest after anything changes.",
+      "triggers": [
+        "keeps happening",
+        "for the second time",
+        "retrain the employee",
+        "the same error",
+        "after the change",
+        "lessons learned"
+      ],
+      "trap": {
+        "move": "Naming and retraining one person, turning up the power, or marking a gap closed as soon as a change is made.",
+        "why_wrong": "Each treats the moment, not the cause. Without a fresh measure or test, no one knows whether the fix worked."
+      },
+      "example": {
+        "scenario": "A technician notices that the council's nightly backup has failed twice this year, and each time someone spotted it days later and reran it by hand.",
+        "answer": "Rerun the job, then report the pattern to the backup system's owner: failed jobs raise no alert. Fixing that cause, and checking over the coming months that failures are caught the same day, stops it recurring."
+      },
+      "check": {
+        "scenario": "A help desk analyst has reset the same printer's network settings three times this month, each time after a nightly update changed them.",
+        "right": "Reset it again, then raise a problem ticket so the owner finds why the update changes it.",
+        "trap": "Reset it again and set a daily reminder to check the printer's settings each morning.",
+        "why": "A daily check treats the effect every time it happens. A problem ticket gets the cause found and fixed, so the reset stops being needed."
+      },
+      "nuance": "In a live incident, follow the incident order: contain, eradicate, then recover. The search for why it happened, and lessons learned, come once service is safely back. Coaching people can be one fix among system fixes, never the whole answer.",
+      "domains": [
+        2,
+        4,
+        5
+      ],
+      "subtopics": [
+        "2.3.1",
+        "2.3.7",
+        "2.4.6",
+        "4.1.2",
+        "5.3.6",
+        "5.3.7",
+        "5.5.6"
+      ],
+      "practice_ids": [
+        "cc_d2_015",
+        "cc_d2_035",
+        "cc_d2_042",
+        "cc_d4_032",
+        "cc_d5_020",
+        "cc_d5_034",
+        "cc_d5_035"
+      ],
+      "slip_pattern": "symptom",
+      "legacy_ids": [],
+      "aliases": []
+    },
+    {
+      "id": "canons-held-together",
+      "family": "ethics",
+      "order": 1,
+      "title": "The four canons, held together",
+      "rule": "Act honestly, legally and only as authorized, protecting the public; weigh the four canons together, never by list order.",
+      "why": "The four canons, in ISC2's words: protect society, the common good, necessary public trust and confidence, and the infrastructure; act honorably, honestly, justly, responsibly, and legally; provide diligent and competent service to principals; and advance and protect the profession. Principals means your employers and clients. ISC2 gives no ranking rule, so KaiSip never keys an answer on canon order.",
+      "triggers": [
+        "leave it out of the report",
+        "has not given permission",
+        "a conflict of interest",
+        "marked do not share",
+        "a public AI chatbot",
+        "confidential plans"
+      ],
+      "trap": {
+        "move": "Ranking the canons by list order, or pleasing a client or employer by hiding, bending or stretching a permission.",
+        "why_wrong": "Serving a principal never covers deceit, unlawful testing or putting the public at risk. Weighing the canons together points to the honest, authorized choice."
+      },
+      "example": {
+        "scenario": "A friend at another company asks a security analyst to quickly check whether that company's website is vulnerable, without telling the company.",
+        "answer": "Decline unless the company's owner gives written authorization and a scope. Testing without permission is unlawful however good the intent, and a friend's request is not the owner's consent."
+      },
+      "check": {
+        "scenario": "A help desk analyst learns that a coworker shares their login with a contractor to save time. The coworker is a friend and asks the analyst to say nothing.",
+        "right": "Report the shared login through the proper channel, stating the facts without exaggeration.",
+        "trap": "Keep quiet this time and privately warn the friend to stop sharing the login.",
+        "why": "Hiding a known breach for a friend isn't honest or responsible, and it leaves the employer exposed. Reporting the facts plainly is fair to the friend and serves the organization."
+      },
+      "nuance": "Ethics questions rarely need a ranking. If two canons truly seem to clash, choose the action that is lawful, honest and protects people, and disclose the conflict to someone who can act on it.",
+      "domains": [
+        1,
+        2,
+        5
+      ],
+      "subtopics": [
+        "1.5.1",
+        "1.5.3",
+        "1.5.4",
+        "1.5.6",
+        "2.3.7",
+        "5.2.6",
+        "5.5.2"
+      ],
+      "practice_ids": [
+        "cc_d1_018",
+        "cc_d1_019",
+        "cc_d1_020",
+        "cc_d1_043",
+        "cc_d2_040",
+        "cc_d5_029",
+        "cc_d5_044"
+      ],
+      "slip_pattern": null,
+      "legacy_ids": [],
+      "aliases": []
+    },
+    {
+      "id": "due-care-due-diligence",
+      "family": "ethics",
+      "order": 2,
+      "title": "Due diligence finds, due care acts",
+      "rule": "Due diligence finds and understands the risk; due care takes the reasonable action on it and keeps it working.",
+      "why": "Due care and due diligence are named in the 2026 CC outline. Investigating before you buy, sign or connect is diligence; patching a known flaw and keeping controls owned and tested is care. Neither promises zero incidents: a firm that took reasonable precautions has met due care even if an unknown flaw is later used against it.",
+      "triggers": [
+        "a known flaw",
+        "the vendor has released a fix",
+        "security can be added later",
+        "no one owns it",
+        "an attack still got through",
+        "shows due care"
+      ],
+      "trap": {
+        "move": "Recording, researching or re-reviewing a known risk instead of acting on it, or judging due care by whether an attack succeeded.",
+        "why_wrong": "Due care is the reasonable action itself. A logged but unfixed flaw shows awareness, not care, and a successful attack alone doesn't prove care was missing."
+      },
+      "example": {
+        "scenario": "Before signing with a cloud booking service, a dental practice's office manager checks the provider's security reports, data location and breach terms. After go-live, they enforce multifactor authentication and remove leavers' accounts the day they go.",
+        "answer": "The checks before signing are due diligence. Enforcing multifactor authentication and removing leavers' accounts afterward is due care: acting reasonably on what the diligence found, and continuing to."
+      },
+      "check": {
+        "scenario": "A clinic's yearly review finds that its door-entry system still uses the installer's default admin password. The fix takes ten minutes.",
+        "right": "Change the default password now through the change process, and record it.",
+        "trap": "Add the default password finding to the risk register for next year's review.",
+        "why": "The review was the diligence, and the fix is quick. Due care means acting on the known risk; a register entry alone leaves the door system open."
+      },
+      "nuance": "Due care asks what a reasonable organization would do, not perfection. When a fix needs time or money, a documented plan with an owner and interim controls can still be reasonable.",
+      "domains": [
+        1,
+        5
+      ],
+      "subtopics": [
+        "1.4.1",
+        "1.5.2",
+        "5.4.2"
+      ],
+      "practice_ids": [
+        "cc_d1_017",
+        "cc_d1_038",
+        "cc_d1_045",
+        "cc_d5_039"
+      ],
+      "slip_pattern": null,
+      "legacy_ids": [],
+      "aliases": []
+    },
+    {
+      "id": "priority-word-decides",
+      "family": "reading",
+      "order": 1,
+      "title": "The priority word decides",
+      "rule": "Find the priority word (FIRST, BEST, MOST, PRIMARY, GREATEST, MOST LIKELY or LEAST); it decides which true answer wins.",
+      "why": "Many CC options describe things a sensible practitioner might do. The priority word turns the question into a ranking: what comes first, what fits best, what matters most. Read it before the options, then test each option against that word rather than against whether it is true.",
+      "triggers": [
+        "FIRST",
+        "BEST",
+        "MOST",
+        "PRIMARY",
+        "GREATEST",
+        "MOST LIKELY",
+        "LEAST"
+      ],
+      "trap": {
+        "move": "Picking the first true option, or the step that feels most important, without asking what the priority word ranks.",
+        "why_wrong": "Several options are true. FIRST asks for order, GREATEST for the worst outcome, MOST LIKELY for probability and BEST for the closest fit to the facts."
+      },
+      "example": {
+        "scenario": "A question asks which risk to a new AI spam filter is GREATEST: some false alarms on newsletters, or attackers teaching it to let their phishing through.",
+        "answer": "Pick the attackers teaching it to let phishing through (called poisoning). GREATEST asks which outcome is worse, and phishing that the filter now trusts does more harm than extra alarms that people notice."
+      },
+      "check": {
+        "scenario": "A question asks what a new analyst should do FIRST when asked to build a security dashboard for the board.",
+        "right": "Ask what decisions the board needs the dashboard to support.",
+        "trap": "Pick a charting tool and gather every metric the systems produce.",
+        "why": "FIRST asks for order. Knowing the audience's decisions comes before choosing tools or data, because both later steps depend on it."
+      },
+      "nuance": "MOST LIKELY ranks probability, not severity, and LEAST turns the test around: find the option that does the job worst. Whatever the word, read the last line of the question slowly.",
+      "domains": [
+        3,
+        4,
+        5
+      ],
+      "subtopics": [],
+      "practice_ids": [
+        "cc_d3_029",
+        "cc_d4_035",
+        "cc_d5_010"
+      ],
+      "slip_pattern": "priority",
+      "legacy_ids": [],
+      "aliases": []
+    },
+    {
+      "id": "final-two",
+      "family": "reading",
+      "order": 2,
+      "title": "Choosing between the final two",
+      "rule": "Apply the priority word, then choose what keeps people safe, follows the procedure, fits your role and fixes the cause.",
+      "why": "Topic knowledge usually rules out two options; the CC lens settles the last two. The closest wrong choice is often a real control aimed slightly off: it keeps the output but not its source, hands a decision to a tool, or protects what is already covered. Say in one sentence why the winner beats it before you commit.",
+      "triggers": [
+        "two options both look right",
+        "both use the same tool",
+        "both keep a record",
+        "one option covers only part of the need"
+      ],
+      "trap": {
+        "move": "Choosing the closest wrong choice because it sounds more complete, more automated or more technical.",
+        "why_wrong": "It is usually right in general but misses the exact gap, takes a decision away from a person, or protects something already covered."
+      },
+      "example": {
+        "scenario": "A question asks how to stop staff installing unapproved apps on work laptops. Two options survive: review installed-app reports weekly, or block installs that are not on the approved list.",
+        "answer": "Blocking wins. Both deal with unapproved apps, but the block stops one before it is installed, while the report finds it a week later. Name that difference before you choose."
+      },
+      "check": {
+        "scenario": "A question asks for the BEST way to stop former staff signing in to a clinic's patient portal. Two options survive elimination.",
+        "right": "Disable each account when HR records the exit, through the leaver process.",
+        "trap": "Review every portal account each quarter and disable any that belong to leavers.",
+        "why": "Both remove leavers' access, but a quarterly review leaves it open for weeks. Tying removal to the exit closes the exact gap the question names."
+      },
+      "nuance": "If you can't name the difference in one sentence, reread the question; the deciding fact is usually there.",
+      "domains": [
+        1,
+        2,
+        5
+      ],
+      "subtopics": [],
+      "practice_ids": [
+        "cc_d1_040",
+        "cc_d2_029",
+        "cc_d5_026",
+        "cc_d5_032"
+      ],
+      "slip_pattern": "runner-up",
+      "legacy_ids": [],
+      "aliases": []
+    },
+    {
+      "id": "answer-from-the-facts",
+      "family": "reading",
+      "order": 3,
+      "title": "Answer from the facts given",
+      "rule": "Use only the facts in the question; words like approved, intact, only and must keep running change the answer.",
+      "why": "A CC question holds the fact that makes the best answer best: backups that were intact, a change that was approved, a hold that names one person, a service that must keep running. Adding a worst case or skimming a qualifier answers a different question. Read the last line slowly, then check each option against every fact given.",
+      "triggers": [
+        "is already fixed",
+        "was approved",
+        "backups were intact",
+        "must keep running",
+        "only one",
+        "no one has used it yet"
+      ],
+      "trap": {
+        "move": "Answering the question you expected, adding a detail the question doesn't give, or skimming past a qualifier.",
+        "why_wrong": "The deciding fact is often one phrase. Reading past it, or inventing one, swaps the question for a different one."
+      },
+      "example": {
+        "scenario": "A question says a storage bucket was public for an hour, logs confirm nobody downloaded anything, and the setting is already fixed. It asks for the next step.",
+        "answer": "Record the event, confirm the fix stays in place and report it as the procedure requires. Options about containment or customer notices answer a different question: the facts say no one got in and the gap is closed."
+      },
+      "check": {
+        "scenario": "A question says a resigning employee's account was disabled an hour ago, and their manager needs the mailbox for open customer orders. It asks what to do about the mailbox.",
+        "right": "Give the manager approved, time-limited access to the mailbox under the leaver process.",
+        "trap": "Delete the account and the mailbox now, since the employee has resigned and left.",
+        "why": "The question says the account is already disabled and the mailbox is still needed. Deleting it ignores both facts; approved, time-limited access fits them."
+      },
+      "nuance": "Don't add facts, but don't drop real context either: the role named, the owner named and the priority word are all facts the answer must fit.",
+      "domains": [
+        1,
+        2,
+        3,
+        5
+      ],
+      "subtopics": [],
+      "practice_ids": [
+        "cc_d1_023",
+        "cc_d2_022",
+        "cc_d3_033",
+        "cc_d5_021",
+        "cc_d5_040"
+      ],
+      "slip_pattern": "misread",
+      "legacy_ids": [],
+      "aliases": []
+    }
+  ],
+  "slip_map": {
+    "runner-up": "final-two",
+    "priority": "priority-word-decides",
+    "overconfident": "answer-from-the-facts",
+    "role": "act-in-role-escalate-outside",
+    "tech-first": "follow-policy-and-procedure",
+    "symptom": "fix-the-cause",
+    "misread": "answer-from-the-facts",
+    "knowledge": null
+  }
+}

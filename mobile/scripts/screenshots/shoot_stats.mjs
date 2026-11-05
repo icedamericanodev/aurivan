@@ -1,6 +1,7 @@
 // Stat rows (SHOTS=stats, see run.sh): Results after a 1-question practice,
-// a 20-question practice and a timed mock (the stats and the pacing), You's
-// stats, and the Today clearing card. The finished sessions are written
+// a 20-question practice and a timed mock (the Score / Time / Per question
+// rows and the pacing), You's stats (Answered / Accuracy / Streak), and the
+// Today clearing card. The finished sessions are written
 // straight into the session store, so Results opens on them.
 // NARROW=1 uses a 360-wide phone (small Android); FONT_SCALE=2 approximates
 // 200% text (the app reads the scale from the page; text runs are zoomed).
@@ -96,29 +97,41 @@ const toTop = async (text, offset = 90) => {
   await page.mouse.wheel(0, -offset);
   await wait(700);
 };
+/** The same, for a block with a testID (React Native Web renders it as data-testid). */
+const testIdTop = async (id, offset = 90) => {
+  await page.getByTestId(id).first().evaluate((n) => n.scrollIntoView({ block: 'start' }));
+  await wait(300);
+  await page.mouse.move(W / 2, H / 2);
+  await page.mouse.wheel(0, -offset);
+  await wait(700);
+};
 
 await go('/home', 2600);
 for (const [name, s] of Object.entries(SESSIONS)) {
   await edit(SESSION, `v.state = { active: a };`, s);
   await go('/results', 2800);
-  // On a narrow phone, the rings and their legend first (it stacks under the rings below 380 wide).
+  // On a narrow phone, the top of Results first: the running head, the count headline and the
+  // Fig. 6 growth plate (mobile 1.51 replaced the rings and their legend; src/app/results.tsx:339, :353).
   if (NARROW && name === 'mock') {
-    await toTop('Mock exam', 20);
-    await shot('s1-results-mock-rings');
+    await testIdTop('running-head', 20);
+    await shot('s1-results-mock-plate');
   }
-  // From the rings' legend down: the stats row, the line under it, the actions.
-  await toTop(/the ring is your score|Each ring is a domain/, 160);
+  // From the line above the stats (leaf strip or missed line) down: the Score / Time / Per question
+  // rows, the lines under them and the actions (SpecimenLabel testID, src/app/results.tsx:385).
+  await testIdTop('results-stats', 160);
   await shot(`s1-results-${name}`);
   if (name === 'mock') {
-    await toTop('Pacing', 40);
+    // The Pacing panel's section head (src/components/pace.tsx:205).
+    await toTop(/^Pacing$/, 40);
     await shot('s1-results-mock-pacing');
   }
 }
 await edit(SESSION, `v.state = { active: null };`);
 
-// You: the three stats under the rings.
+// You: the three stats (Answered, Accuracy, Streak) under the readiness scale bar and the areas
+// (SpecimenLabel testID, src/app/(tabs)/you.tsx:287).
 await go('/you', 2600);
-await toTop('Rings read from the outside in', 160);
+await testIdTop('you-stats', 160);
 await shot('s2-you');
 
 // Today: the clearing card (every plan item done).

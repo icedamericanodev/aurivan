@@ -1,0 +1,869 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- Private admin page: never listed by search engines, never linked from the site. -->
+<meta name="robots" content="noindex, nofollow, noarchive">
+<meta name="referrer" content="no-referrer">
+<title>Beta Desk — KaiSip</title>
+<link rel="icon" href="assets/favicon.ico" sizes="48x48">
+<link rel="icon" type="image/svg+xml" href="assets/icon.svg">
+<script>
+  /* Follow the theme the learner chose in the app, otherwise the system. */
+  try { var t = localStorage.getItem('cisa_theme'); if (t === 'dark' || t === 'light') document.documentElement.setAttribute('data-theme', t); } catch (e) {}
+</script>
+<style>
+  /* ───────────────────────────────────────────────────────────────────
+     KaiSip Beta Desk: the private tracker for Android beta testers.
+     Grove tokens (docs/mobile/DESIGN_SYSTEM.md). Light by default; dark
+     follows the system, or the theme saved by the app (cisa_theme).
+     ─────────────────────────────────────────────────────────────────── */
+  :root {
+    color-scheme: light;
+    --bg: #F3F1EA; --raised: #FFFFFF; --raised2: #F8F7F2; --soft: #E9E6DC; --line: #DFDCD1;
+    --control: #7D897F; --track: #E2E0D6;
+    --ink: #17231B; --ink2: #465349; --muted: #5E6A61;
+    --accent: #2B6E4A; --accent-text: #24603F; --btn: #1E4A34; --on-btn: #F7F5EF;
+    --forest: #1E4A34; --forest-top: #245A40; --on-forest: #F3F1EA; --on-forest2: #C9DACD;
+    --forest-line: #3A6B51; --forest-track: #2F5C44; --sap: #A9D9BA;
+    --clay: #9A4F26; --clay-bg: #F5E6DB;
+    --correct: #1D6A43; --correct-bg: #E0EDE2;
+    --wrong: #A3333D; --wrong-bg: #F7E3E1;
+    --tip: #7A5100; --tip-bg: #F3EAD3;
+    --scrim: rgba(23, 35, 27, .4);
+    --shadow: 0 1px 2px rgba(23, 35, 27, .05), 0 8px 24px -12px rgba(23, 35, 27, .18);
+    --shadow-lg: 0 24px 60px -20px rgba(23, 35, 27, .35);
+    --f-serif: Fraunces, Georgia, 'Times New Roman', serif;
+    --f-sans: Figtree, system-ui, -apple-system, 'Segoe UI', sans-serif;
+    --r-sm: 8px; --r-md: 16px; --r-lg: 24px; --r-pill: 999px;
+    --on-sap: #0F1F16;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      color-scheme: dark;
+      --bg: #111613; --raised: #1D2621; --raised2: #1B231E; --soft: #202A23; --line: #29322B;
+      --control: #66736A; --track: #2A332C;
+      --ink: #ECEFE8; --ink2: #B4BFB6; --muted: #97A39A;
+      --accent: #7FC39C; --accent-text: #93CFAA; --btn: #A9D9BA; --on-btn: #0F1F16;
+      --forest: #21432F; --forest-top: #285139; --on-forest: #EEF2EA; --on-forest2: #BCD2C2;
+      --forest-line: #3C6B51; --forest-track: #2E5440; --sap: #A9D9BA;
+      --clay: #E9A07A; --clay-bg: #2E2019;
+      --correct: #8AD6A8; --correct-bg: #173022;
+      --wrong: #FF9CA6; --wrong-bg: #2C1A1D;
+      --tip: #E9C46A; --tip-bg: #2B2418;
+      --scrim: rgba(0, 0, 0, .6);
+      --shadow: 0 1px 0 rgba(255, 255, 255, .04) inset, 0 8px 24px -12px rgba(0, 0, 0, .6);
+      --shadow-lg: 0 24px 60px -20px rgba(0, 0, 0, .8);
+    }
+  }
+  :root[data-theme="dark"] {
+    color-scheme: dark;
+    --bg: #111613; --raised: #1D2621; --raised2: #1B231E; --soft: #202A23; --line: #29322B;
+    --control: #66736A; --track: #2A332C;
+    --ink: #ECEFE8; --ink2: #B4BFB6; --muted: #97A39A;
+    --accent: #7FC39C; --accent-text: #93CFAA; --btn: #A9D9BA; --on-btn: #0F1F16;
+    --forest: #21432F; --forest-top: #285139; --on-forest: #EEF2EA; --on-forest2: #BCD2C2;
+    --forest-line: #3C6B51; --forest-track: #2E5440; --sap: #A9D9BA;
+    --clay: #E9A07A; --clay-bg: #2E2019;
+    --correct: #8AD6A8; --correct-bg: #173022;
+    --wrong: #FF9CA6; --wrong-bg: #2C1A1D;
+    --tip: #E9C46A; --tip-bg: #2B2418;
+    --scrim: rgba(0, 0, 0, .6);
+    --shadow: 0 1px 0 rgba(255, 255, 255, .04) inset, 0 8px 24px -12px rgba(0, 0, 0, .6);
+    --shadow-lg: 0 24px 60px -20px rgba(0, 0, 0, .8);
+  }
+  /* Fraunces + Figtree, served from this site (no request to a font service). */
+  @font-face { font-family: 'Fraunces'; font-style: normal; font-weight: 400; font-display: swap; src: url('assets/fonts/Fraunces_400Regular.woff2') format('woff2'); }
+  @font-face { font-family: 'Fraunces'; font-style: italic; font-weight: 400; font-display: swap; src: url('assets/fonts/Fraunces_400Regular_Italic.woff2') format('woff2'); }
+  @font-face { font-family: 'Fraunces'; font-style: normal; font-weight: 500 600; font-display: swap; src: url('assets/fonts/Fraunces_500Medium.woff2') format('woff2'); }
+  @font-face { font-family: 'Figtree'; font-style: normal; font-weight: 400; font-display: swap; src: url('assets/fonts/Figtree_400Regular.woff2') format('woff2'); }
+  @font-face { font-family: 'Figtree'; font-style: normal; font-weight: 500; font-display: swap; src: url('assets/fonts/Figtree_500Medium.woff2') format('woff2'); }
+  @font-face { font-family: 'Figtree'; font-style: normal; font-weight: 600 700; font-display: swap; src: url('assets/fonts/Figtree_600SemiBold.woff2') format('woff2'); }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; }
+  body {
+    background: var(--bg); color: var(--ink);
+    font-family: var(--f-sans); font-size: 15px; line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+  [hidden] { display: none !important; }
+  a { color: var(--accent-text); }
+  button, input, select, textarea { font: inherit; color: inherit; }
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .side :focus-visible { outline-color: var(--on-forest); }
+  .pipeline button:focus-visible, .nav button:focus-visible { outline-offset: -3px; }
+  .drop:focus-within { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+  .serif { font-family: var(--f-serif); }
+  .eyebrow { font-size: 12px; font-weight: 600; letter-spacing: .16em; text-transform: uppercase; color: var(--accent-text); margin: 0; }
+  .meta { color: var(--ink2); font-size: 13px; }
+  .num { font-family: var(--f-serif); font-variant-numeric: lining-nums tabular-nums; }
+
+  /* ── Buttons, inputs, chips ─────────────────────────────────────── */
+  .btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+    min-height: 44px; padding: 0 18px; border-radius: var(--r-sm);
+    border: 1px solid var(--line); background: var(--raised); color: var(--ink);
+    font-weight: 600; font-size: 14px; cursor: pointer; text-decoration: none;
+    transition: background .15s ease, border-color .15s ease, transform .1s ease;
+  }
+  .btn:hover { border-color: var(--control); }
+  .btn:active { transform: translateY(1px); }
+  .btn[disabled] { opacity: .5; cursor: not-allowed; }
+  .btn-primary { background: var(--btn); border-color: var(--btn); color: var(--on-btn); }
+  .btn-primary:hover { filter: brightness(1.08); border-color: var(--btn); }
+  .btn-danger { color: var(--wrong); border-color: color-mix(in srgb, var(--wrong) 35%, var(--line)); }
+  .btn-danger.solid { background: var(--wrong-bg); border-color: var(--wrong); color: var(--wrong); }
+  .btn-ghost { background: transparent; border-color: transparent; }
+  .btn-ghost:hover { background: var(--soft); border-color: transparent; }
+  .btn-sm { min-height: 34px; padding: 0 12px; font-size: 13px; border-radius: 8px; }
+  .btn svg { width: 16px; height: 16px; flex: none; }
+  .field { display: grid; gap: 6px; }
+  .field > span { font-size: 13px; font-weight: 600; color: var(--ink2); }
+  .field .hint { font-size: 12px; color: var(--muted); font-weight: 400; }
+  .input, select.input, textarea.input {
+    width: 100%; min-height: 44px; padding: 10px 14px; border-radius: var(--r-sm);
+    border: 1.5px solid var(--control); background: var(--raised); color: var(--ink);
+  }
+  textarea.input { min-height: 84px; resize: vertical; line-height: 1.45; }
+  .input:hover { border-color: var(--control); }
+  .input:focus { outline: none; border-color: var(--ink); box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 22%, transparent); }
+  .input[aria-invalid="true"] { border-color: var(--wrong); }
+  .chip {
+    display: inline-flex; align-items: center; gap: 6px; padding: 3px 10px; border-radius: var(--r-pill);
+    font-size: 12px; font-weight: 600; white-space: nowrap; background: var(--soft); color: var(--ink2);
+  }
+  .chip .dot { width: 7px; height: 7px; border-radius: 50%; background: currentColor; }
+  .chip.green { background: var(--correct-bg); color: var(--correct); }
+  .chip.clay { background: var(--clay-bg); color: var(--clay); }
+  .chip.red { background: var(--wrong-bg); color: var(--wrong); }
+  .chip.tip { background: var(--tip-bg); color: var(--tip); }
+  .chip.forest { background: var(--btn); color: var(--on-btn); }
+  /* "Auto" (calculated) vs "You" (a manual step). Used everywhere a date or action shows. */
+  .tag { display: inline-flex; align-items: center; gap: 4px; font-size: 11.5px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; padding: 2px 7px; border-radius: 6px; vertical-align: middle; }
+  .tag.auto { color: var(--accent-text); background: color-mix(in srgb, var(--accent) 14%, transparent); }
+  .tag.you { color: var(--clay); background: var(--clay-bg); }
+
+  /* ── Sign-in screen ─────────────────────────────────────────────── */
+  .gate { min-height: 100vh; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr); }
+  .gate-art {
+    position: relative; overflow: hidden; color: var(--on-forest);
+    background: linear-gradient(180deg, var(--forest-top), var(--forest));
+    padding: 56px; display: flex; flex-direction: column; justify-content: space-between;
+  }
+  .gate-art .lines { position: absolute; right: -80px; bottom: -60px; width: 520px; height: 520px; opacity: .9; pointer-events: none; }
+  .gate-art h2 { font-family: var(--f-serif); font-weight: 400; font-size: clamp(30px, 3.4vw, 44px); line-height: 1.12; margin: 0; max-width: 14ch; position: relative; }
+  .gate-art h2 em { color: var(--sap); }
+  .gate-art p { color: var(--on-forest2); margin: 16px 0 0; max-width: 40ch; position: relative; }
+  .gate-main { display: flex; align-items: center; justify-content: center; padding: 40px 24px; }
+  .gate-card { width: 100%; max-width: 420px; }
+  .gate-card h1 { font-family: var(--f-serif); font-weight: 500; font-size: 34px; line-height: 1.15; margin: 10px 0 8px; }
+  .gate-card form { display: grid; gap: 16px; margin-top: 28px; }
+  .check { display: flex; gap: 10px; align-items: flex-start; font-size: 14px; color: var(--ink2); }
+  .check input { width: 18px; height: 18px; margin-top: 2px; accent-color: var(--btn); }
+  .notice { border-radius: var(--r-md); padding: 12px 14px; font-size: 14px; background: var(--soft); color: var(--ink); }
+  .notice.err { background: var(--wrong-bg); color: var(--wrong); }
+  .notice.ok { background: var(--correct-bg); color: var(--correct); }
+  .notice.tip { background: var(--tip-bg); color: var(--tip); }
+  .code-input { letter-spacing: .4em; font-family: var(--f-serif); font-size: 22px; text-align: center; }
+  .mfa-steps { margin: 4px 0 14px; padding-left: 20px; color: var(--ink2); font-size: 14px; display: grid; gap: 4px; }
+  .mfa-qr { display: grid; place-items: center; padding: 14px; background: #FFFFFF; border-radius: var(--r-md); border: 1px solid var(--line); width: max-content; margin: 0 auto; }
+  .mfa-secret { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 13px; color: var(--ink); word-break: break-all; }
+  .lock-row { display: flex; gap: 10px; align-items: center; margin-top: 28px; padding-top: 20px; border-top: 1px solid var(--line); color: var(--muted); font-size: 13px; }
+  .lock-row svg { width: 16px; height: 16px; flex: none; }
+
+  /* ── App shell ──────────────────────────────────────────────────── */
+  .shell { display: grid; grid-template-columns: 280px minmax(0, 1fr); min-height: 100vh; }
+  .side {
+    position: sticky; top: 0; height: 100vh; overflow: hidden;
+    background: linear-gradient(180deg, var(--forest-top), var(--forest) 40%);
+    color: var(--on-forest); padding: 32px 22px 24px; display: flex; flex-direction: column;
+    box-shadow: inset -1px 0 0 rgba(255, 255, 255, .04);
+  }
+  .side .lines { position: absolute; left: -40px; bottom: 120px; width: 360px; height: 360px; opacity: .55; pointer-events: none; }
+  .brand { display: flex; gap: 14px; align-items: center; position: relative; }
+  .brand-tile {
+    width: 52px; height: 52px; border-radius: 14px; display: grid; place-items: center;
+    background: rgba(255, 255, 255, .06); box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .14);
+  }
+  .brand-tile svg { width: 30px; height: 30px; }
+  .brand b { display: block; font-family: var(--f-sans); font-size: 24px; font-weight: 700; letter-spacing: -.01em; line-height: 1; }
+  .brand small { display: block; margin-top: 6px; font-size: 11px; font-weight: 600; letter-spacing: .24em; color: var(--on-forest2); }
+  .side-label { margin: 40px 6px 10px; font-size: 11px; font-weight: 600; letter-spacing: .2em; color: var(--on-forest2); position: relative; }
+  .nav { display: grid; gap: 4px; position: relative; }
+  .nav button {
+    display: flex; align-items: center; gap: 12px; width: 100%; min-height: 46px; padding: 0 14px;
+    border: 0; border-radius: 12px; background: transparent; color: var(--on-forest2);
+    font-size: 15px; font-weight: 500; cursor: pointer; text-align: left;
+  }
+  .nav button svg { width: 18px; height: 18px; flex: none; opacity: .9; }
+  .nav button:hover { background: rgba(255, 255, 255, .06); color: var(--on-forest); }
+  .nav button[aria-current="page"] { background: rgba(255, 255, 255, .1); color: var(--on-forest); box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .08); }
+  .nav .count { margin-left: auto; min-width: 24px; padding: 1px 8px; border-radius: var(--r-pill); background: var(--sap); color: var(--on-sap); font-size: 12px; font-weight: 700; text-align: center; }
+  .side-foot { margin-top: auto; position: relative; display: grid; gap: 18px; }
+  .side-foot .program { display: flex; gap: 10px; align-items: center; font-size: 14px; color: var(--on-forest); }
+  .side-foot .program .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--sap); box-shadow: 0 0 0 4px rgba(169, 217, 186, .15); }
+  .side-foot blockquote { margin: 0; font-family: var(--f-serif); font-size: 22px; line-height: 1.25; color: var(--on-forest2); }
+  .side-foot blockquote em { color: var(--on-forest); }
+  .side-foot .rule { height: 1px; background: var(--forest-track); }
+  .side-foot a, .side-foot .linkbtn { color: var(--on-forest); font-size: 14px; text-decoration: none; display: inline-flex; gap: 8px; align-items: center; background: none; border: 0; padding: 0; cursor: pointer; }
+  .side-foot a:hover, .side-foot .linkbtn:hover { text-decoration: underline; }
+  .who { font-size: 12.5px; color: var(--on-forest2); display: flex; justify-content: space-between; gap: 10px; align-items: center; }
+
+  .main { min-width: 0; padding: 36px clamp(20px, 4vw, 56px) 64px; }
+  .topbar { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding-bottom: 20px; border-bottom: 1px solid var(--line); }
+  .crumbs { font-size: 12px; font-weight: 600; letter-spacing: .18em; text-transform: uppercase; color: var(--ink2); }
+  .crumbs b { color: var(--ink); font-weight: 600; }
+  .owner-pill { display: inline-flex; align-items: center; gap: 8px; padding: 8px 14px; border-radius: var(--r-pill); background: var(--correct-bg); color: var(--correct); font-size: 13px; font-weight: 600; }
+  .owner-pill svg { width: 14px; height: 14px; }
+  .hero { display: flex; justify-content: space-between; align-items: flex-end; gap: 24px; margin: 44px 0 32px; flex-wrap: wrap; }
+  .hero h1 { font-family: var(--f-serif); font-weight: 500; font-size: clamp(38px, 5vw, 64px); line-height: 1.02; letter-spacing: -.02em; margin: 14px 0 12px; }
+  .hero h1 em { font-style: italic; font-weight: 400; color: var(--accent-text); }
+  .hero p { margin: 0; color: var(--ink2); font-size: 16px; max-width: 52ch; }
+  .hero-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+
+  /* Stat cards */
+  .stats { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; }
+  .stat {
+    background: var(--raised); border: 1px solid var(--line); border-radius: var(--r-lg);
+    padding: 22px 22px 20px; box-shadow: var(--shadow); display: flex; flex-direction: column; min-height: 176px;
+  }
+  .stat h3 { margin: 0; font-size: 11.5px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; color: var(--ink2); display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+  .stat .big { font-family: var(--f-serif); font-weight: 400; font-size: 52px; line-height: 1; margin: 18px 0 auto; letter-spacing: -.02em; }
+  .stat .big small { font-family: var(--f-sans); font-size: 14px; color: var(--ink2); letter-spacing: 0; margin-left: 4px; }
+  .stat .foot { margin-top: 16px; font-size: 13px; color: var(--ink2); }
+  .stat .foot button { background: none; border: 0; padding: 0; color: var(--accent-text); font-weight: 600; cursor: pointer; font-size: 13px; }
+  .stat .foot button:hover { text-decoration: underline; }
+  .bar { height: 6px; border-radius: var(--r-pill); background: var(--track); overflow: hidden; }
+  .bar > i { display: block; height: 100%; border-radius: inherit; background: var(--accent); transition: width .5s cubic-bezier(.2, .8, .2, 1); }
+  .stat.attn .big { color: var(--clay); }
+
+  /* The rule banner */
+  .rule-banner {
+    margin: 22px 0; display: flex; gap: 18px; align-items: center; flex-wrap: wrap;
+    padding: 18px 22px; border-radius: var(--r-lg);
+    background: color-mix(in srgb, var(--accent) 10%, var(--raised2));
+    border: 1px solid color-mix(in srgb, var(--accent) 22%, var(--line));
+  }
+  .rule-banner b { font-weight: 700; }
+  .rule-banner .legend { margin-left: auto; display: flex; gap: 14px; font-size: 12.5px; color: var(--ink2); align-items: center; }
+
+  /* The pipeline strip */
+  .pipeline { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 0; background: var(--raised); border: 1px solid var(--line); border-radius: var(--r-lg); overflow: hidden; box-shadow: var(--shadow); margin-bottom: 22px; }
+  .pipeline button { position: relative; text-align: left; border: 0; background: transparent; padding: 16px 18px; cursor: pointer; border-right: 1px solid var(--line); }
+  .pipeline button:last-child { border-right: 0; }
+  .pipeline button:hover { background: var(--raised2); }
+  .pipeline button[aria-pressed="true"] { background: var(--raised2); }
+  .pipeline button[aria-pressed="true"]::after { content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 3px; background: var(--ink); }
+  .pipeline .n { font-family: var(--f-serif); font-size: 28px; line-height: 1; display: block; }
+  .pipeline .l { display: block; margin-top: 6px; font-size: 12.5px; font-weight: 600; color: var(--ink2); }
+  .pipeline .s { display: block; margin-top: 2px; font-size: 11.5px; color: var(--muted); }
+
+  /* Roster */
+  .card { background: var(--raised); border: 1px solid var(--line); border-radius: var(--r-lg); box-shadow: var(--shadow); }
+  .roster-head { padding: 26px 28px 20px; display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; align-items: flex-start; }
+  .roster-head h2 { margin: 0; font-size: 22px; font-weight: 700; display: flex; align-items: center; gap: 10px; }
+  .roster-head h2 .badge { font-size: 13px; padding: 2px 9px; border-radius: 8px; background: var(--soft); font-weight: 700; }
+  .roster-head p { margin: 6px 0 0; }
+  .toolbar { display: grid; grid-template-columns: minmax(0, 1fr) 200px 180px auto; gap: 12px; padding: 0 28px 22px; border-bottom: 1px solid var(--line); }
+  .search { position: relative; }
+  .search svg { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); width: 16px; height: 16px; color: var(--muted); }
+  .search .input { padding-left: 40px; }
+  .search kbd { position: absolute; right: 12px; top: 50%; transform: translateY(-50%); font: 600 11px var(--f-sans); color: var(--muted); border: 1px solid var(--line); border-radius: 6px; padding: 1px 6px; background: var(--raised2); }
+  .table-wrap { overflow-x: auto; }
+  table.roster { width: 100%; border-collapse: collapse; }
+  table.roster th { text-align: left; font-size: 11px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); padding: 14px 16px; border-bottom: 1px solid var(--line); white-space: nowrap; }
+  table.roster th:first-child, table.roster td:first-child { padding-left: 28px; }
+  table.roster th:last-child, table.roster td:last-child { padding-right: 28px; }
+  table.roster td { padding: 14px 16px; border-bottom: 1px solid var(--line); vertical-align: middle; font-size: 14px; }
+  table.roster tbody tr { cursor: pointer; transition: background .12s ease; }
+  table.roster tbody tr:hover { background: var(--raised2); }
+  table.roster tbody tr:last-child td { border-bottom: 0; }
+  .person { display: flex; gap: 12px; align-items: center; min-width: 220px; }
+  .avatar { width: 38px; height: 38px; border-radius: 50%; display: grid; place-items: center; font-size: 13px; font-weight: 700; flex: none; background: var(--soft); color: var(--ink2); }
+  .person b, .row-open { display: block; font-weight: 600; }
+  .row-open { background: none; border: 0; padding: 0; color: var(--ink); font-size: 14px; text-align: left; cursor: pointer; }
+  table.roster tbody tr:focus-within { background: var(--raised2); }
+  .person span { display: block; font-size: 13px; color: var(--ink2); word-break: break-all; }
+  .progress-cell { min-width: 140px; }
+  .progress-cell .bar { margin-top: 6px; width: 120px; }
+  .next-cell { min-width: 200px; }
+  .next-cell .what { display: flex; gap: 6px; align-items: center; }
+  .row-attn td:first-child { box-shadow: inset 3px 0 0 var(--clay); }
+  .empty { text-align: center; padding: 72px 24px 80px; }
+  .empty .glyph { width: 84px; height: 84px; border-radius: 24px; margin: 0 auto 26px; display: grid; place-items: center; background: color-mix(in srgb, var(--accent) 12%, var(--raised2)); color: var(--accent); }
+  .empty .glyph svg { width: 36px; height: 36px; }
+  .empty h3 { margin: 0 0 10px; font-size: 24px; font-weight: 700; }
+  .empty p { margin: 0 auto 26px; color: var(--ink2); max-width: 44ch; }
+  .foot-note { text-align: center; margin: 28px 0 0; font-size: 13px; color: var(--muted); }
+
+  /* Opening the desk (before we know who you are) */
+  .booting { min-height: 100vh; display: grid; place-items: center; color: var(--ink2); }
+  /* Skeleton loading */
+  .skel { height: 14px; border-radius: 6px; background: linear-gradient(90deg, var(--soft), var(--raised2), var(--soft)); background-size: 200% 100%; animation: shimmer 1.2s linear infinite; }
+  @keyframes shimmer { to { background-position: -200% 0; } }
+
+  /* Actions view */
+  .actions-list { display: grid; gap: 12px; }
+  .action { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: 16px; align-items: center; padding: 18px 22px; }
+  .action .ico { width: 40px; height: 40px; border-radius: 12px; display: grid; place-items: center; background: var(--clay-bg); color: var(--clay); }
+  .action .ico.calm { background: color-mix(in srgb, var(--accent) 12%, var(--raised2)); color: var(--accent-text); }
+  .action .ico svg { width: 18px; height: 18px; }
+  .action h3 { margin: 0; font-size: 15px; font-weight: 600; }
+  .action p { margin: 2px 0 0; font-size: 13.5px; color: var(--ink2); }
+  .section-title { font-family: var(--f-serif); font-weight: 500; font-size: 22px; margin: 34px 0 14px; }
+
+  /* Playbook */
+  .steps { display: grid; gap: 14px; counter-reset: step; }
+  .step { display: grid; grid-template-columns: 56px minmax(0, 1fr); gap: 18px; padding: 22px 24px; }
+  .step .k { counter-increment: step; width: 44px; height: 44px; border-radius: 50%; display: grid; place-items: center; font-family: var(--f-serif); font-size: 20px; background: var(--btn); color: var(--on-btn); }
+  .step .k::before { content: counter(step); }
+  .step h3 { margin: 2px 0 6px; font-size: 16px; font-weight: 700; display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+  .step p, .step li { margin: 0; color: var(--ink2); font-size: 14.5px; }
+  .step ul { margin: 8px 0 0; padding-left: 18px; display: grid; gap: 4px; }
+  .split { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .split .card { padding: 22px 24px; }
+  .split h3 { margin: 0 0 10px; display: flex; align-items: center; gap: 8px; }
+  .split ul { margin: 0; padding-left: 18px; display: grid; gap: 6px; color: var(--ink2); font-size: 14.5px; }
+
+  /* Settings */
+  .settings-card { padding: 26px 28px; display: grid; gap: 18px; max-width: 760px; }
+
+  /* ── Drawer + dialogs ───────────────────────────────────────────── */
+  .scrim { position: fixed; inset: 0; background: var(--scrim); z-index: 40; opacity: 0; transition: opacity .2s ease; }
+  .scrim.on { opacity: 1; }
+  .drawer {
+    position: fixed; top: 0; right: 0; bottom: 0; width: min(640px, 100vw); z-index: 50;
+    background: var(--bg); box-shadow: var(--shadow-lg); display: flex; flex-direction: column;
+    transform: translateX(100%); transition: transform .28s cubic-bezier(.2, .8, .2, 1);
+  }
+  .drawer.on { transform: none; }
+  .drawer-head { padding: 24px 28px 20px; border-bottom: 1px solid var(--line); background: var(--raised); display: flex; gap: 16px; align-items: flex-start; }
+  .drawer-head .avatar { width: 52px; height: 52px; font-size: 17px; }
+  .drawer-head h2 { margin: 0; font-family: var(--f-serif); font-weight: 500; font-size: 26px; line-height: 1.15; word-break: break-word; }
+  .drawer-head .sub { margin-top: 4px; color: var(--ink2); font-size: 14px; word-break: break-all; }
+  .drawer-head .chips { margin-top: 10px; display: flex; gap: 6px; flex-wrap: wrap; }
+  .drawer-body { flex: 1; overflow-y: auto; padding: 8px 28px 28px; }
+  .drawer-foot { padding: 16px 28px; border-top: 1px solid var(--line); background: var(--raised); display: flex; gap: 10px; align-items: center; }
+  .drawer-foot .spacer { flex: 1; }
+  .icon-btn { width: 40px; height: 40px; border-radius: 10px; border: 0; background: transparent; display: grid; place-items: center; cursor: pointer; color: var(--ink2); margin-left: auto; flex: none; }
+  .icon-btn:hover { background: var(--soft); }
+  .icon-btn svg { width: 20px; height: 20px; }
+  /* Timeline sections */
+  .tl { position: relative; padding-left: 40px; margin-top: 22px; }
+  .tl::before { content: ''; position: absolute; left: 15px; top: 34px; bottom: -22px; width: 2px; background: var(--line); }
+  .tl:last-child::before { display: none; }
+  .tl .node { position: absolute; left: 4px; top: 2px; width: 24px; height: 24px; border-radius: 50%; display: grid; place-items: center; background: var(--raised); border: 2px solid var(--track); color: var(--on-btn); }
+  .tl.done .node { background: var(--accent); border-color: var(--accent); }
+  .tl.done .node::after { content: ''; width: 9px; height: 5px; border-left: 2px solid var(--on-btn); border-bottom: 2px solid var(--on-btn); transform: rotate(-45deg) translate(1px, -1px); }
+  .tl.now .node { border-color: var(--accent); box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent) 20%, transparent); }
+  .tl h3 { margin: 0 0 4px; font-size: 15px; font-weight: 700; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .tl .explain { margin: 0 0 12px; font-size: 13px; color: var(--ink2); }
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .date-row { display: flex; gap: 8px; align-items: center; }
+  .date-row .input { flex: 1; }
+  .calc { display: flex; gap: 12px; align-items: center; padding: 12px 14px; border-radius: var(--r-md); background: var(--raised); border: 1px dashed color-mix(in srgb, var(--accent) 45%, var(--line)); font-size: 14px; margin-top: 10px; }
+  .calc .ring { width: 46px; height: 46px; flex: none; }
+  .calc b { font-weight: 700; }
+  .radios { display: grid; gap: 8px; }
+  .radio { display: flex; gap: 12px; align-items: flex-start; padding: 12px 14px; border-radius: var(--r-md); border: 1px solid var(--line); background: var(--raised); cursor: pointer; }
+  .radio input { margin-top: 3px; accent-color: var(--btn); width: 17px; height: 17px; flex: none; }
+  .radio b { display: block; font-size: 14px; }
+  .radio span { display: block; font-size: 12.5px; color: var(--ink2); }
+  .radio:has(input:checked) { border-color: var(--ink); box-shadow: inset 0 0 0 1px var(--ink); }
+  .checklist { list-style: none; padding: 0; margin: 0 0 12px; display: grid; gap: 6px; }
+  .checklist li { display: flex; gap: 10px; align-items: flex-start; font-size: 13.5px; }
+  .checklist .mk { width: 18px; height: 18px; border-radius: 50%; flex: none; display: grid; place-items: center; font-size: 11px; font-weight: 700; margin-top: 1px; }
+  .checklist .ok .mk { background: var(--correct-bg); color: var(--correct); }
+  .checklist .no .mk { background: var(--soft); color: var(--muted); }
+  .checklist .warn .mk { background: var(--tip-bg); color: var(--tip); }
+  .checklist .route-head { margin-top: 6px; font-size: 13px; color: var(--ink2); gap: 6px; align-items: center; }
+  .cisa-only { font-size: 12.5px; color: var(--ink2); margin-top: 8px; }
+
+  .dialog { position: fixed; z-index: 60; left: 50%; top: 50%; transform: translate(-50%, -48%) scale(.98); opacity: 0; transition: transform .2s ease, opacity .2s ease;
+    width: min(760px, calc(100vw - 32px)); max-height: calc(100vh - 48px); display: flex; flex-direction: column;
+    background: var(--bg); border-radius: var(--r-lg); box-shadow: var(--shadow-lg); overflow: hidden; }
+  .dialog.on { transform: translate(-50%, -50%); opacity: 1; }
+  .dialog.small { width: min(460px, calc(100vw - 32px)); }
+  .dialog-head { padding: 22px 26px 16px; display: flex; gap: 12px; align-items: flex-start; background: var(--raised); border-bottom: 1px solid var(--line); }
+  .dialog-head h2 { margin: 0; font-family: var(--f-serif); font-weight: 500; font-size: 24px; }
+  .dialog-head p { margin: 4px 0 0; color: var(--ink2); font-size: 14px; }
+  .dialog-body { padding: 20px 26px; overflow-y: auto; display: grid; gap: 16px; }
+  .dialog-foot { padding: 14px 26px; display: flex; gap: 10px; justify-content: flex-end; border-top: 1px solid var(--line); background: var(--raised); flex-wrap: wrap; }
+  .drop {
+    border: 2px dashed var(--control); border-radius: var(--r-lg); padding: 30px; text-align: center; background: var(--raised);
+    cursor: pointer; transition: border-color .15s ease, background .15s ease;
+  }
+  .drop:hover, .drop.over { border-color: var(--accent); background: color-mix(in srgb, var(--accent) 6%, var(--raised)); }
+  .drop b { display: block; font-size: 16px; margin-bottom: 4px; }
+  .mapping { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+  .summary-row { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; }
+  .summary-row .s { padding: 12px 14px; border-radius: var(--r-md); background: var(--raised); border: 1px solid var(--line); }
+  .summary-row .s .num { font-size: 26px; display: block; line-height: 1.1; }
+  .summary-row .s span { font-size: 12px; color: var(--ink2); }
+  .preview { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .preview th, .preview td { text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--line); }
+  .preview th { font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
+  .preview .skip td { color: var(--muted); text-decoration: line-through; }
+
+  /* Toasts */
+  .toasts { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); z-index: 80; display: grid; gap: 8px; width: min(440px, calc(100vw - 32px)); }
+  body:has(.drawer.on) .toasts { bottom: 96px; }
+  .toast { background: var(--ink); color: var(--bg); padding: 12px 16px; border-radius: 12px; box-shadow: var(--shadow-lg); font-size: 14px; display: flex; gap: 10px; align-items: center; animation: rise .22s ease; }
+  .toast.err { background: var(--wrong-bg); color: var(--wrong); border: 1px solid var(--wrong); }
+  @keyframes rise { from { transform: translateY(8px); opacity: 0; } }
+
+  /* ── Smaller screens ─────────────────────────────────────────────── */
+  @media (max-width: 1180px) {
+    .stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .pipeline { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .pipeline button:nth-child(3) { border-right: 0; }
+    .pipeline button:nth-child(-n+3) { border-bottom: 1px solid var(--line); }
+    .toolbar { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+    .toolbar .search { grid-column: 1 / -1; }
+  }
+  @media (max-width: 900px) {
+    .shell { grid-template-columns: 1fr; }
+    .side { position: static; height: auto; padding: 18px 16px 12px; }
+    .side .lines, .side-label, .side-foot blockquote, .side-foot .program { display: none; }
+    .nav { grid-auto-flow: column; grid-auto-columns: max-content; overflow-x: auto; margin-top: 16px; gap: 6px; }
+    .nav button { min-height: 40px; padding: 0 12px; font-size: 14px; }
+    .side-foot { margin-top: 12px; gap: 10px; }
+    .side-foot .rule { display: none; }
+    .search kbd { display: none; }
+    .gate { grid-template-columns: 1fr; }
+    .gate-art { padding: 32px 24px; min-height: 220px; }
+    .gate-art .lines { width: 320px; height: 320px; }
+    .split { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 640px) {
+    body { font-size: 15px; }
+    .btn-sm, .nav button, .side-foot a, .side-foot .linkbtn, .stat .foot button { min-height: 44px; }
+    .icon-btn { width: 44px; height: 44px; }
+    .nav { grid-auto-flow: row; grid-template-columns: 1fr 1fr; overflow: visible; }
+    .main { padding: 20px 16px 48px; }
+    .hero { margin: 28px 0 22px; }
+    .hero-actions { width: 100%; }
+    .hero-actions .btn { flex: 1; }
+    .stats { gap: 10px; }
+    .stat { min-height: 0; padding: 16px; }
+    .stat .big { font-size: 40px; margin: 12px 0 0; }
+    .pipeline { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .pipeline button { border-right: 1px solid var(--line) !important; border-bottom: 1px solid var(--line); }
+    .pipeline button:nth-child(2n) { border-right: 0 !important; }
+    .rule-banner .legend { margin-left: 0; }
+    .roster-head, .toolbar { padding-left: 16px; padding-right: 16px; }
+    .toolbar { grid-template-columns: 1fr 1fr; }
+    .toolbar .refresh { grid-column: 1 / -1; }
+    /* The roster turns into cards */
+    table.roster thead { display: none; }
+    table.roster, table.roster tbody, table.roster tr, table.roster td { display: block; width: 100%; }
+    table.roster tr { padding: 14px 16px; border-bottom: 1px solid var(--line); }
+    table.roster td { border: 0; padding: 4px 0 !important; }
+    table.roster td[data-label]::before { content: attr(data-label); display: inline-block; min-width: 92px; font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
+    .row-attn td:first-child { box-shadow: none; }
+    .row-attn { box-shadow: inset 3px 0 0 var(--clay); }
+    .progress-cell .bar { display: none; }
+    .drawer-head, .drawer-body, .drawer-foot { padding-left: 18px; padding-right: 18px; }
+    .grid2, .mapping { grid-template-columns: 1fr; }
+    .summary-row { grid-template-columns: 1fr 1fr; }
+    .action { grid-template-columns: auto minmax(0, 1fr); }
+    .action .btn { grid-column: 1 / -1; }
+    .step { grid-template-columns: 1fr; gap: 10px; }
+    .dialog { top: auto; bottom: 0; left: 0; right: 0; width: 100%; transform: translateY(16px); border-radius: var(--r-lg) var(--r-lg) 0 0; max-height: 92vh; max-height: 92dvh; }
+    .dialog.on { transform: none; }
+    .dialog.small { width: 100%; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { transition: none !important; animation: none !important; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Shared drawings (one copy, used by <use>) -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <defs>
+    <mask id="kmask" maskUnits="userSpaceOnUse" x="-100" y="-100" width="400" height="400"><rect x="-100" y="-100" width="400" height="400" fill="white"/><path d="M72 146 V66" stroke="black" stroke-width="4" stroke-linecap="round"/></mask>
+    <symbol id="i-mark" viewBox="35 5 70 130"><g transform="translate(70 70) scale(0.90228) translate(-102.999 -100.123)"><path d="M72 168 C90 129.92 90 78.24 72 32 C54 78.24 54 129.92 72 168Z" fill="#F3F1EA" mask="url(#kmask)"/><path d="M94 100 C120.2 93.85 140.92 69.43 150 34 C113.47 46.14 92.75 70.56 94 100Z" fill="#A9D9BA"/><path d="M94 100 C93.48 129.7 114.94 154.12 152 166 C141.98 130.36 120.52 105.94 94 100Z" fill="#A9D9BA"/></g></symbol>
+    <symbol id="i-users" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></symbol>
+    <symbol id="i-bell" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></symbol>
+    <symbol id="i-book" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></symbol>
+    <symbol id="i-gear" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></symbol>
+    <symbol id="i-plus" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></symbol>
+    <symbol id="i-search" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></symbol>
+    <symbol id="i-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></symbol>
+    <symbol id="i-lock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></symbol>
+    <symbol id="i-up" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 16V4M7 9l5-5 5 5M4 20h16"/></symbol>
+    <symbol id="i-down" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v12M7 11l5 5 5-5M4 20h16"/></symbol>
+    <symbol id="i-refresh" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-2.64-6.36L21 8"/><path d="M21 3v5h-5"/></symbol>
+    <symbol id="i-spark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"><path d="M12 2c.8 5.2 4.8 9.2 10 10-5.2.8-9.2 4.8-10 10-.8-5.2-4.8-9.2-10-10 5.2-.8 9.2-4.8 10-10z"/></symbol>
+    <symbol id="i-ext" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M8 7h9v9"/></symbol>
+    <symbol id="i-clock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-10"/></symbol>
+    <!-- Botanical line art (decorative) -->
+    <symbol id="i-lines" viewBox="0 0 400 400" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><path d="M200 400 C200 300 210 210 250 120 C270 80 300 50 340 30"/><path d="M215 300 C170 270 130 270 90 290 C130 240 180 245 215 300Z"/><path d="M225 230 C270 200 320 205 360 230 C320 260 265 260 225 230Z"/><path d="M240 160 C205 130 175 95 170 50 C210 75 235 115 240 160Z"/><path d="M262 112 C300 105 330 80 350 45"/><circle cx="345" cy="38" r="5"/><path d="M90 290 C120 285 160 288 215 300"/><path d="M360 230 C320 228 270 230 225 230"/></symbol>
+  </defs>
+</svg>
+
+<!-- ── Sign-in (shown until a Beta Desk admin is signed in) ───────── -->
+<p id="booting" class="booting" role="status">Opening Beta Desk…</p>
+
+<div id="gate" class="gate" hidden>
+  <section class="gate-art" aria-hidden="true">
+    <svg class="lines" style="color:var(--forest-line)"><use href="#i-lines"/></svg>
+    <div class="brand">
+      <div class="brand-tile"><svg><use href="#i-mark"/></svg></div>
+      <div><b>KaiSip</b><small>BETA DESK</small></div>
+    </div>
+    <div>
+      <h2>Every tester, <em>from first signup</em> to thank&nbsp;you.</h2>
+      <p>A private desk for the Android beta: invites, the 14 days on Google Play, feedback, approval and the CISA reward.</p>
+    </div>
+  </section>
+  <main class="gate-main">
+    <div class="gate-card">
+      <p class="eyebrow">Private workspace</p>
+      <h1 id="gateTitle">Sign in to Beta Desk</h1>
+      <p class="meta" id="gateLead">Admins only. Two steps: a one-time code by email, then a code from your authenticator app. There is no password.</p>
+
+      <form id="emailForm" novalidate>
+        <label class="field"><span>Email</span>
+          <input class="input" id="emailInput" type="email" autocomplete="email" inputmode="email" required maxlength="254" placeholder="you@example.com">
+        </label>
+        <div id="captchaBox" hidden></div>
+        <button class="btn btn-primary" type="submit" id="sendCodeBtn">Email me a code</button>
+      </form>
+
+      <form id="codeForm" novalidate hidden>
+        <p class="notice ok" id="codeSentNote">Code sent. Check your inbox.</p>
+        <label class="field"><span>The code from the email</span>
+          <input class="input code-input" id="codeInput" inputmode="numeric" autocomplete="one-time-code" pattern="[0-9]*" maxlength="10" required>
+        </label>
+        <button class="btn btn-primary" type="submit" id="verifyBtn">Continue</button>
+        <button class="btn btn-ghost" type="button" id="backToEmail">Use a different email</button>
+      </form>
+
+      <form id="mfaForm" novalidate hidden>
+        <p class="meta" id="mfaLead" style="margin:0"></p>
+        <div id="mfaSetup" hidden>
+          <ol class="mfa-steps">
+            <li>Open your authenticator app and add an account.</li>
+            <li>Scan this code, or type the key under it.</li>
+            <li>Enter the 6-digit code the app shows.</li>
+          </ol>
+          <div class="mfa-qr"><img id="mfaQr" alt="QR code to add KaiSip Beta Desk to your authenticator app" width="180" height="180"></div>
+          <p class="meta" style="margin:8px 0 0;text-align:center">Key: <code id="mfaSecret" class="mfa-secret"></code></p>
+        </div>
+        <label class="field"><span>6-digit code from the app</span>
+          <input class="input code-input" id="mfaInput" inputmode="numeric" autocomplete="one-time-code" pattern="[0-9]*" maxlength="6" required>
+        </label>
+        <button class="btn btn-primary" type="submit" id="mfaBtn">Open Beta Desk</button>
+        <button class="btn btn-ghost" type="button" id="mfaSignOut">Sign out</button>
+      </form>
+
+      <div id="notAdmin" hidden>
+        <p class="notice tip">This account is signed in but is not a Beta Desk admin, so no tester details are shown. If it should be, add it to the admin list (docs/beta/BETA_DESK.md, "Adding an admin"), then sign in again.</p>
+        <p class="meta" id="notAdminWho"></p>
+        <button class="btn" type="button" id="notAdminSignOut" style="margin-top:12px">Sign out</button>
+      </div>
+
+      <p class="notice err" id="gateError" role="alert" hidden></p>
+
+      <div class="lock-row"><svg aria-hidden="true"><use href="#i-lock"/></svg><span>Tester details load only after an admin signs in, and the database checks every request. Nothing is stored on this page.</span></div>
+    </div>
+  </main>
+</div>
+
+<!-- ── The desk ───────────────────────────────────────────────────── -->
+<div id="app" class="shell" hidden>
+  <aside class="side">
+    <svg class="lines" style="color:var(--forest-line)" aria-hidden="true"><use href="#i-lines"/></svg>
+    <div class="brand">
+      <div class="brand-tile"><svg aria-hidden="true"><use href="#i-mark"/></svg></div>
+      <div><b>KaiSip</b><small>BETA DESK</small></div>
+    </div>
+    <p class="side-label">PRIVATE WORKSPACE</p>
+    <nav class="nav" aria-label="Beta Desk">
+      <button type="button" data-view="testers" aria-current="page"><svg aria-hidden="true"><use href="#i-users"/></svg>Testers</button>
+      <button type="button" data-view="actions"><svg aria-hidden="true"><use href="#i-bell"/></svg>Next actions <span class="count" id="navAttn" hidden>0</span></button>
+      <button type="button" data-view="playbook"><svg aria-hidden="true"><use href="#i-book"/></svg>Playbook</button>
+      <button type="button" data-view="settings"><svg aria-hidden="true"><use href="#i-gear"/></svg>Settings</button>
+    </nav>
+    <div class="side-foot">
+      <div class="program"><span class="dot" aria-hidden="true"></span>CISA · Android beta</div>
+      <blockquote>One certification.<br><em>A better study experience.</em></blockquote>
+      <div class="rule" aria-hidden="true"></div>
+      <a id="signupLink" href="#" target="_blank" rel="noopener noreferrer" hidden>Open signup form <svg width="14" height="14" aria-hidden="true"><use href="#i-ext"/></svg></a>
+      <button class="linkbtn" type="button" id="addSignupLink" hidden>Add your signup form link</button>
+      <div class="who"><span id="whoEmail"></span><button class="linkbtn" type="button" id="signOutBtn">Sign out</button></div>
+    </div>
+  </aside>
+
+  <main class="main" id="main" tabindex="-1">
+    <div class="topbar">
+      <div class="crumbs">Workspace / <b id="crumb">Testers</b></div>
+      <span class="owner-pill"><svg aria-hidden="true"><use href="#i-lock"/></svg>Admins only</span>
+    </div>
+
+    <!-- Testers -->
+    <section data-panel="testers">
+      <div class="hero">
+        <div>
+          <p class="eyebrow">From first signup to thank you</p>
+          <h1>Your beta, <em>in focus.</em></h1>
+          <p>A clear next step for every KaiSip tester. Dates you enter are marked <span class="tag you">You</span>; dates the desk works out are marked <span class="tag auto">Auto</span>.</p>
+        </div>
+        <div class="hero-actions">
+          <button class="btn" type="button" id="importBtnHero"><svg aria-hidden="true"><use href="#i-up"/></svg>Import CSV</button>
+          <button class="btn btn-primary" type="button" id="addBtn"><svg aria-hidden="true"><use href="#i-plus"/></svg>Add tester</button>
+        </div>
+      </div>
+
+      <h2 class="sr-only">Summary</h2>
+      <div class="stats" id="stats">
+        <article class="stat">
+          <h3>Registrations</h3>
+          <div class="big"><span id="stReg">0</span><small>/ <span id="stTarget">50</span> target</small></div>
+          <div class="foot"><div class="bar" aria-hidden="true"><i id="stRegBar" style="width:0%"></i></div></div>
+        </article>
+        <article class="stat">
+          <h3>Testing now <span class="tag auto">Auto</span></h3>
+          <div class="big" id="stTesting">0</div>
+          <div class="foot">Opted in on Google Play, before approval</div>
+        </article>
+        <article class="stat" id="stAttnCard">
+          <h3>Needs attention <span class="tag auto">Auto</span></h3>
+          <div class="big" id="stAttn">0</div>
+          <div class="foot"><button type="button" id="viewActions">View next actions →</button></div>
+        </article>
+        <article class="stat">
+          <h3>CISA rewards active</h3>
+          <div class="big" id="stRewards">0</div>
+          <div class="foot">Six months from activation</div>
+        </article>
+      </div>
+
+      <div class="rule-banner">
+        <span><b>14 days of testing. 6 months of CISA.</b></span>
+        <span class="meta">The 14 days count from the Google Play opt-in, never the signup. Approve completion before activating a reward.</span>
+        <span class="legend"><span><span class="tag auto">Auto</span> calculated</span><span><span class="tag you">You</span> your step</span></span>
+      </div>
+
+      <div class="pipeline" role="group" aria-label="Filter by stage" id="pipeline"></div>
+
+      <section class="card" aria-labelledby="rosterTitle">
+        <div class="roster-head">
+          <div>
+            <h2 id="rosterTitle">Tester roster <span class="badge" id="rosterCount">0</span></h2>
+            <p class="meta">Saved privately online · Manual updates and CSV import · No Google Forms or Play sync</p>
+          </div>
+          <div class="hero-actions">
+            <button class="btn" type="button" id="importBtn">Import CSV</button>
+            <button class="btn" type="button" id="exportBtn">Export CSV</button>
+          </div>
+        </div>
+        <div class="toolbar">
+          <label class="search"><span class="sr-only">Search testers</span>
+            <svg aria-hidden="true"><use href="#i-search"/></svg>
+            <input class="input" id="q" type="search" placeholder="Search name, email, device or notes…" autocomplete="off">
+            <kbd aria-hidden="true">/</kbd>
+          </label>
+          <label><span class="sr-only">Filter</span>
+            <select class="input" id="filter">
+              <option value="all">All testers</option>
+              <option value="attention">Needs attention</option>
+              <option value="registered">Registered (not invited)</option>
+              <option value="invited">Invited (awaiting opt-in)</option>
+              <option value="testing">Testing (before day 14)</option>
+              <option value="review">Ready for review</option>
+              <option value="approved">Approved (no reward yet)</option>
+              <option value="rewarded">CISA reward active</option>
+              <option value="reward_ended">Reward ended</option>
+              <option value="followup">Follow-up set</option>
+              <option value="closed">Not eligible or left</option>
+              <option value="deletion">Due for deletion</option>
+            </select>
+          </label>
+          <label><span class="sr-only">Sort</span>
+            <select class="input" id="sort">
+              <option value="next">Next step first</option>
+              <option value="newest">Newest signup</option>
+              <option value="oldest">Oldest signup</option>
+              <option value="name">Name A–Z</option>
+              <option value="review">Review date</option>
+            </select>
+          </label>
+          <button class="btn refresh" type="button" id="refreshBtn"><svg aria-hidden="true"><use href="#i-refresh"/></svg>Refresh</button>
+        </div>
+        <div id="rosterBody"></div>
+      </section>
+      <p class="foot-note">Private admin tracker · CISA rewards only · No automatic Google Forms or Play Console connection</p>
+    </section>
+
+    <!-- Next actions -->
+    <section data-panel="actions" hidden>
+      <div class="hero">
+        <div>
+          <p class="eyebrow">Worked out from your dates</p>
+          <h1>Next <em>actions.</em></h1>
+          <p>Each card is a step only you can take: the desk can't send invites, read Google Play or switch on rewards. Open a tester, do the step, then record the date.</p>
+        </div>
+      </div>
+      <div id="actionsBody"></div>
+    </section>
+
+    <!-- Playbook -->
+    <section data-panel="playbook" hidden>
+      <div class="hero">
+        <div>
+          <p class="eyebrow">How the beta runs</p>
+          <h1>The <em>playbook.</em></h1>
+          <p>Seven steps from signup to thank you. Nothing here is connected to Google Forms or Google Play, so every <span class="tag you">You</span> step is done by hand.</p>
+        </div>
+      </div>
+      <div class="steps">
+        <article class="card step"><div class="k" aria-hidden="true"></div><div>
+          <h3>Registration <span class="tag you">You</span></h3>
+          <p>Import your Google Forms responses (Responses → Download CSV) or add a tester by hand. The same email is never added twice, whatever its capital letters or spaces.</p></div></article>
+        <article class="card step"><div class="k" aria-hidden="true"></div><div>
+          <h3>Invitation <span class="tag you">You</span></h3>
+          <p>Add their Google account to the closed test's tester list in Play Console and send the opt-in link. Then record the invite date.</p></div></article>
+        <article class="card step"><div class="k" aria-hidden="true"></div><div>
+          <h3>Google Play opt-in <span class="tag you">You</span> then <span class="tag auto">Auto</span></h3>
+          <p>When the tester has actually opted in and installed from Google Play, record that date. The 14-day review date is then worked out from the opt-in, never from the signup.</p></div></article>
+        <article class="card step"><div class="k" aria-hidden="true"></div><div>
+          <h3>Feedback <span class="tag you">You</span></h3>
+          <p>Record when feedback arrives and a short summary. The desk nudges you from day 10 if none has come in.</p></div></article>
+        <article class="card step"><div class="k" aria-hidden="true"></div><div>
+          <h3>Participation check <span class="tag you">You</span></h3>
+          <p>New testers qualify by 14 consecutive days in the Android test (feedback is encouraged, not required). Earlier sign-ups keep the terms they were offered, which for some also allow one piece of feedback. On or after the review date, check they stayed opted in every day. Choose one:</p>
+          <ul><li><b>Continuous</b>: opted in every day.</li><li><b>Technical gap, accepted</b>: a break caused by a technical issue (describe it); you decide it still counts.</li><li><b>Interrupted</b>: they left or paused for another reason, so they are not eligible.</li></ul>
+          <p style="margin-top:8px">Also confirm the eligibility terms they were offered, which are saved on their record.</p></div></article>
+        <article class="card step"><div class="k" aria-hidden="true"></div><div>
+          <h3>Completion approval <span class="tag you">You</span></h3>
+          <p>Approve when the tester's own terms are met. The database refuses an approval before day 14 (14-day route) or before the feedback date (feedback route, for earlier sign-ups whose terms include it).</p></div></article>
+        <article class="card step"><div class="k" aria-hidden="true"></div><div>
+          <h3>CISA reward <span class="tag you">You</span> then <span class="tag auto">Auto</span></h3>
+          <p>Switch on six months of CISA premium content and app study features for them yourself, then record the day you did it. The six months count from that activation day. Other certifications are not included.</p></div></article>
+      </div>
+
+      <h2 class="section-title">What's automatic, and what isn't</h2>
+      <div class="split">
+        <div class="card"><h3><span class="tag auto">Auto</span> The desk works out</h3><ul>
+          <li>The review date: Google Play opt-in + 14 days</li>
+          <li>The reward end date: activation + 6 months</li>
+          <li>Each tester's stage and next step</li>
+          <li>Who needs attention, and follow-ups that are due</li>
+          <li>Duplicate emails, skipped on import and refused on save</li></ul></div>
+        <div class="card"><h3><span class="tag you">You</span> You do by hand</h3><ul>
+          <li>Download responses from Google Forms and import them</li>
+          <li>Send Play invites and confirm each opt-in in Play Console</li>
+          <li>Check continuous participation and technical issues</li>
+          <li>Approve completion</li>
+          <li>Switch on the CISA reward in the app, then record it</li></ul></div>
+      </div>
+
+      <h2 class="section-title">Looking after tester data</h2>
+      <div class="card" style="padding:22px 24px">
+        <ul style="margin:0;padding-left:18px;display:grid;gap:6px;color:var(--ink2)">
+          <li>Only admins can read the roster. The database checks this on every request.</li>
+          <li>An exported CSV holds names and emails. Keep it private and delete it when you're done.</li>
+          <li>When a tester asks, or the programme ends, delete their record (open the tester → Delete).</li>
+          <li>Tell testers on your signup form that KaiSip keeps their answers to run the beta.</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- Settings -->
+    <section data-panel="settings" hidden>
+      <div class="hero">
+        <div>
+          <p class="eyebrow">Saved online for every admin</p>
+          <h1>Desk <em>settings.</em></h1>
+          <p>These apply on every device you sign in from.</p>
+        </div>
+      </div>
+      <form class="card settings-card" id="settingsForm" novalidate>
+        <label class="field"><span>Registration target</span>
+          <input class="input" id="setTarget" type="number" min="1" max="100000" step="1" required>
+          <span class="hint">Shown on the Registrations card. Google Play asks for at least 12 testers opted in for 14 days in a row.</span>
+        </label>
+        <label class="field"><span>Signup form link</span>
+          <input class="input" id="setForm" type="url" maxlength="500" placeholder="https://forms.gle/…">
+          <span class="hint">Your Google Form. Must start with https://. Leave empty to hide the link.</span>
+        </label>
+        <label class="field"><span>Eligibility terms offered to testers</span>
+          <textarea class="input" id="setTerms" maxlength="1000" rows="4" required></textarea>
+          <span class="hint">Copied onto each new tester's record, so you can always see what that person was offered. Changing it here doesn't change existing testers.</span>
+        </label>
+        <div><button class="btn btn-primary" type="submit" id="saveSettings">Save settings</button></div>
+      </form>
+    </section>
+  </main>
+</div>
+
+<div class="scrim" id="scrim" hidden></div>
+
+<!-- Tester drawer -->
+<aside class="drawer" id="drawer" role="dialog" aria-modal="true" aria-labelledby="dTitle" hidden>
+  <div class="drawer-head">
+    <div class="avatar" id="dAvatar" aria-hidden="true"></div>
+    <div style="min-width:0">
+      <h2 id="dTitle">Tester</h2>
+      <div class="sub" id="dSub"></div>
+      <div class="chips" id="dChips"></div>
+    </div>
+    <button class="icon-btn" type="button" id="dClose" aria-label="Close"><svg aria-hidden="true"><use href="#i-x"/></svg></button>
+  </div>
+  <form class="drawer-body" id="dForm" novalidate></form>
+  <p class="notice err" id="dError" role="alert" hidden style="margin:0;border-radius:0"></p>
+  <div class="drawer-foot">
+    <button class="btn btn-danger" type="button" id="dDelete">Delete</button>
+    <span class="spacer"></span>
+    <button class="btn btn-ghost" type="button" id="dCancel">Cancel</button>
+    <button class="btn btn-primary" type="submit" form="dForm" id="dSave">Save</button>
+  </div>
+</aside>
+
+<!-- Import dialog -->
+<section class="dialog" id="importDialog" role="dialog" aria-modal="true" aria-labelledby="impTitle" hidden>
+  <div class="dialog-head">
+    <div><h2 id="impTitle">Import Google Forms responses</h2>
+      <p>In Google Forms: Responses → ⋮ → Download responses (.csv). Nothing is saved until you press Import.</p></div>
+    <button class="icon-btn" type="button" data-close aria-label="Close"><svg aria-hidden="true"><use href="#i-x"/></svg></button>
+  </div>
+  <div class="dialog-body" id="impBody">
+    <label class="drop" id="drop">
+      <input type="file" id="impFile" accept=".csv,text/csv" class="sr-only">
+      <b>Choose a CSV file</b><span class="meta">or drop it here</span>
+    </label>
+    <div id="impStep2" hidden>
+      <div class="mapping" id="impMapping"></div>
+      <div class="summary-row" id="impSummary" style="margin-top:16px"></div>
+      <div class="table-wrap" style="margin-top:16px"><table class="preview" id="impPreview"></table></div>
+    </div>
+  </div>
+  <div class="dialog-foot">
+    <button class="btn btn-ghost" type="button" data-close>Cancel</button>
+    <button class="btn btn-primary" type="button" id="impGo" disabled>Import</button>
+  </div>
+</section>
+
+<!-- Confirm dialog -->
+<section class="dialog small" id="confirmDialog" role="alertdialog" aria-modal="true" aria-labelledby="cfTitle" aria-describedby="cfText" hidden>
+  <div class="dialog-head"><div><h2 id="cfTitle">Are you sure?</h2></div></div>
+  <div class="dialog-body"><p id="cfText" style="margin:0;color:var(--ink2)"></p></div>
+  <div class="dialog-foot">
+    <button class="btn btn-ghost" type="button" id="cfNo">Cancel</button>
+    <button class="btn btn-danger solid" type="button" id="cfYes">Delete</button>
+  </div>
+</section>
+
+<div class="toasts" id="toasts" role="status" aria-live="polite"></div>
+
+<script src="assets/beta-desk.js"></script>
+</body>
+</html>

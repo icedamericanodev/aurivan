@@ -1,0 +1,2387 @@
+[
+  {
+    "id": 1,
+    "term": "Acceptable interruption window (AIW)",
+    "acronym": "AIW",
+    "def": "The business's downtime limit for a system, set at the point where a longer outage would start to put business objectives at risk. Recovery has to bring the system back inside it.",
+    "scopeNotes": "MTO and AIW are business limits on how long an outage can last; RTO is the recovery target set inside them; RPO limits data loss, not downtime.",
+    "domain": 2,
+    "category": "Metric"
+  },
+  {
+    "id": 2,
+    "term": "Acceptable use policy (AUP)",
+    "acronym": "AUP",
+    "def": "A policy stating how staff may and may not use the enterprise's technology, data and AI tools. Users usually acknowledge it before they get access.",
+    "scopeNotes": "",
+    "domain": 1,
+    "category": "Document"
+  },
+  {
+    "id": 3,
+    "term": "Accountability",
+    "acronym": null,
+    "def": "Being answerable for an outcome and its consequences, with a clear record of who decided and who acted. Tasks can be delegated, but accountability for the outcome stays with the owner.",
+    "scopeNotes": "Outsourcing and insurance never move accountability: the enterprise still answers to customers, regulators and the board.",
+    "domain": 1,
+    "category": "Concept"
+  },
+  {
+    "id": 4,
+    "term": "Action owner",
+    "acronym": null,
+    "def": "The person responsible for completing a specific risk treatment task by its due date.",
+    "scopeNotes": "The risk owner decides the response and accepts the risk; the control owner answers for a control being in place and working; the action owner completes a treatment task.",
+    "domain": 2,
+    "category": "Role"
+  },
+  {
+    "id": 5,
+    "term": "After-action report",
+    "acronym": null,
+    "def": "The record of what an exercise or real incident revealed: findings, gaps, and improvement actions with owners and due dates.",
+    "scopeNotes": "An exercise adds value only when its actions are tracked to validated closure.",
+    "domain": 2,
+    "category": "Document"
+  },
+  {
+    "id": 6,
+    "term": "AI inventory",
+    "acronym": null,
+    "def": "A record of AI systems in use, each with owner, purpose, data used and risk rating.",
+    "scopeNotes": "",
+    "domain": 4,
+    "category": "Document"
+  },
+  {
+    "id": 7,
+    "term": "AI model",
+    "acronym": null,
+    "def": "Software trained on data to make predictions, classifications or content. It is versioned, owned and changed under control like any other asset.",
+    "scopeNotes": "",
+    "domain": 4,
+    "category": "Technology"
+  },
+  {
+    "id": 8,
+    "term": "Algorithmic bias",
+    "acronym": null,
+    "def": "Systematically unfair outcomes for a group of people, caused by the data, design or use of an AI system.",
+    "scopeNotes": "",
+    "domain": 2,
+    "category": "Concept"
+  },
+  {
+    "id": 9,
+    "term": "Annual rate of occurrence (ARO)",
+    "acronym": "ARO",
+    "def": "The expected number of times an event occurs in a year. Once every ten years is 0.1.",
+    "scopeNotes": "Also written annualized rate of occurrence; it pairs with annualized loss expectancy (ALE = SLE × ARO).",
+    "domain": 2,
+    "category": "Metric"
+  },
+  {
+    "id": 10,
+    "term": "Annualized loss expectancy (ALE)",
+    "acronym": "ALE",
+    "def": "The expected yearly loss from a risk scenario: single loss expectancy times annual rate of occurrence.",
+    "scopeNotes": "A response is worth funding when its yearly cost is less than the yearly loss it avoids.",
+    "domain": 2,
+    "category": "Metric"
+  },
+  {
+    "id": 11,
+    "term": "Anonymization",
+    "acronym": null,
+    "def": "Transforming data so the people it describes can no longer be identified by anyone using any reasonably likely means. Done properly it cannot be reversed, and privacy law no longer treats the result as personal data.",
+    "scopeNotes": "Pseudonymized data can be re-linked with separately held information; anonymized data cannot.",
+    "domain": 4,
+    "category": "Control"
+  },
+  {
+    "id": 12,
+    "term": "Asset",
+    "acronym": null,
+    "def": "Something the enterprise depends on to meet its objectives and would be harmed by losing or having misused, such as its people, data, systems, funds, reputation or AI models.",
+    "scopeNotes": "",
+    "domain": 1,
+    "category": "Concept"
+  },
+  {
+    "id": 13,
+    "term": "Asset inventory",
+    "acronym": null,
+    "def": "A register of the enterprise's assets, including cloud services, data and AI models, each with a named business owner. Risk on an asset nobody knows about cannot be assessed.",
+    "scopeNotes": "",
+    "domain": 1,
+    "category": "Document"
+  },
+  {
+    "id": 14,
+    "term": "Asset owner",
+    "acronym": null,
+    "def": "The business role accountable for an asset's classification, protection and acceptable use. The owner decides; a custodian looks after the asset day to day.",
+    "scopeNotes": "",
+    "domain": 1,
+    "category": "Role"
+  },
+  {
+    "id": 15,
+    "term": "Audit committee",
+    "acronym": null,
+    "def": "A board committee that oversees financial reporting, internal control and the internal and external auditors. Internal audit reports to it functionally.",
+    "scopeNotes": "",
+    "domain": 1,
+    "category": "Role"
+  },
+  {
+    "id": 16,
+    "term": "Automated control",
+    "acronym": null,
+    "def": "A control a system performs the same way every time, such as an input validation rule.",
+    "scopeNotes": "Once tested and under change control, it is more consistent than a manual control.",
+    "domain": 3,
+    "category": "Control"
+  },
+  {
+    "id": 17,
+    "term": "Back-out plan",
+    "acronym": null,
+    "def": "The tested steps to undo a change and restore the previous working state if the change fails.",
+    "scopeNotes": "Part of approving a change, not something written after it fails.",
+    "domain": 4,
+    "category": "Document"
+  },
+  {
+    "id": 18,
+    "term": "Benefits realization",
+    "acronym": null,
+    "def": "Making sure an investment delivers the value promised in its business case, by tracking benefits after delivery and changing or stopping initiatives that fall short.",
+    "scopeNotes": "A core aim of IT governance, alongside risk optimization and resource optimization.",
+    "domain": 4,
+    "category": "Process"
+  },
+  {
+    "id": 19,
+    "term": "Board of directors",
+    "acronym": null,
+    "def": "The governing body accountable to owners and stakeholders. It sets direction, approves risk appetite with senior management and oversees how management runs the enterprise.",
+    "scopeNotes": "The board oversees and sets limits; it does not own individual risks.",
+    "domain": 1,
+    "category": "Role"
+  },
+  {
+    "id": 20,
+    "term": "Business case",
+    "acronym": null,
+    "def": "The documented reasoning for an investment, weighing its costs, benefits and risks; it supports the go or no-go decision and is revisited until the investment is retired.",
+    "scopeNotes": "",
+    "domain": 4,
+    "category": "Document"
+  },
+  {
+    "id": 21,
+    "term": "Business continuity plan (BCP)",
+    "acronym": "BCP",
+    "def": "A plan for keeping critical business processes running during and after a disruption. The IT systems those processes need are brought back under the disaster recovery plan.",
+    "scopeNotes": "BCP keeps the business process going; the DRP restores IT. Both draw their priorities from the BIA.",
+    "domain": 1,
+    "category": "Document"
+  },
+  {
+    "id": 22,
+    "term": "Business impact analysis (BIA)",
+    "acronym": "BIA",
+    "def": "An analysis of critical business processes, how the impact of losing them grows over time and the resources they depend on. It sets recovery priorities and objectives.",
+    "scopeNotes": "A BIA looks at impact only and ignores likelihood; a risk assessment combines likelihood and impact.",
+    "domain": 2,
+    "category": "Process"
+  },
+  {
+    "id": 23,
+    "term": "Business objective",
+    "acronym": null,
+    "def": "A measurable result the enterprise has committed to, such as revenue, a service level or regulatory standing. Every risk should be linked to the objective it threatens.",
+    "scopeNotes": "",
+    "domain": 1,
+    "category": "Concept"
+  },
+  {
+    "id": 24,
+    "term": "Capability level",
+    "acronym": null,
+    "def": "A COBIT 2019 rating from 0 to 5 of how well a process achieves its purpose and is managed. Often used as the scale for rating control maturity.",
+    "scopeNotes": "",
+    "domain": 3,
+    "category": "Metric"
+  },
+  {
+    "id": 25,
+    "term": "Challenge",
+    "acronym": null,
+    "def": "The second line's role of questioning first-line risk ratings, assumptions and controls, using evidence. Challenge tests the owner's view; it does not take over the decision.",
+    "scopeNotes": "",
+    "domain": 1,
+    "category": "Process"
+  },
+  {
+    "id": 26,
+    "term": "Change advisory board (CAB)",
+    "acronym": "CAB",
+    "def": "A group that assesses and advises on higher-risk changes before the change authority approves them.",
+    "scopeNotes": "",
+    "domain": 4,
+    "category": "Role"
+  },
+  {
+    "id": 27,
+    "term": "Change management",
+    "acronym": null,
+    "def": "In the CRISC outline (4A2, operations management), the controlled process for assessing, approving, testing, implementing and reviewing changes to IT systems. See IT change management.",
+    "scopeNotes": "The ISACA Glossary gives two senses: leading people from a current to a desired organizational state, and (from CMMI) a disciplined, planned way of controlling how changes are made. CRISC 4A2 uses the second.",
+    "domain": 4,
+    "category": "Process"
+  },
+  {
+    "id": 28,
+    "term": "Chief risk officer (CRO)",
+    "acronym": "CRO",
+    "def": "The executive who leads the risk function and reports on enterprise risk to senior management and the board. The CRO oversees risk; business managers still own their risks.",
+    "scopeNotes": "",
+    "domain": 1,
+    "category": "Role"
+  },
+  {
+    "id": 29,
+    "term": "CI/CD pipeline",
+    "acronym": null,
+    "def": "The automated path that builds, tests and deploys code changes to production.",
+    "scopeNotes": "The pipeline and its secrets need the same change and access controls as production.",
+    "domain": 4,
+    "category": "Technology"
+  },
+  {
+    "id": 30,
+    "term": "Cloud computing",
+    "acronym": null,
+    "def": "Using computing resources, such as servers, storage and applications, as a service over a network: drawn from a provider's shared pool and scaled up or down on demand. Service models include IaaS, PaaS and SaaS.",
+    "scopeNotes": "",
+    "domain": 4,
+    "category": "Technology"
+  },
+  {
+    "id": 31,
+    "term": "COBIT 2019",
+    "acronym": "COBIT",
+    "def": "ISACA's framework for the governance and management of enterprise information and technology. It separates governance objectives (evaluate, direct, monitor) from management objectives such as APO12 Managed Risk.",
+    "scopeNotes": "",
+    "domain": 1,
+    "category": "Framework"
+  },
+  {
+    "id": 32,
+    "term": "Combined assurance",
+    "acronym": null,
+    "def": "Coordinating the assurance work of the three lines, and any external providers, so key risks are covered once and gaps and duplication are avoided.",
+    "scopeNotes": "Coordination does not merge the lines: internal audit keeps its independence.",
+    "domain": 1,
+    "category": "Process"
+  },
+  {
+    "id": 33,
+    "term": "Common Vulnerability Scoring System (CVSS)",
+    "acronym": "CVSS",
+    "def": "FIRST's 0 to 10 scale for the technical severity of a software flaw. In version 4.0, Threat and Environmental metrics can refine the Base score (labeled CVSS-B, -BT, -BE or -BTE), and Supplemental metrics add context without changing it.",
+    "scopeNotes": "A CVSS score is one input to risk, not a risk rating: it ignores business impact.",
+    "domain": 2,
+    "category": "Metric"
+  },
+  {
+    "id": 34,
+    "term": "Compensating control",
+    "acronym": null,
+    "def": "An alternative control that reduces risk when a required control is missing, weak or cannot be applied. It keeps exposure acceptable while the gap remains.",
+    "scopeNotes": "",
+    "domain": 3,
+    "category": "Control"
+  },
+  {
+    "id": 35,
+    "term": "Complementary user entity controls (CUEC)",
+    "acronym": "CUEC",
+    "def": "Controls the customer must run itself, such as reviewing its own user access, for a service provider's controls to work as described in its assurance report.",
+    "scopeNotes": "",
+    "domain": 3,
+    "category": "Control"
+  },
+  {
+    "id": 36,
+    "term": "Compliance risk",
+    "acronym": null,
+    "def": "The risk of penalties, sanctions or lost licenses from failing to meet legal, regulatory or contractual obligations.",
+    "scopeNotes": "Passing a compliance check does not mean risk is within appetite; rules cover only some risks.",
+    "domain": 1,
+    "category": "Concept"
+  },
+  {
+    "id": 37,
+    "term": "Concentration risk",
+    "acronym": null,
+    "def": "Exposure that builds up when many processes or services depend on one supplier, site, system or technology. One failure then hits many objectives at once.",
+    "scopeNotes": "",
+    "domain": 1,
+    "category": "Concept"
+  },
+  {
+    "id": 38,
+    "term": "Confidentiality, integrity and availability (CIA)",
+    "acronym": "CIA",
+    "def": "The three core aims of information security: only authorized access and disclosure, protection from improper change or destruction, and timely, reliable access.",
+    "scopeNotes": "",
+    "domain": 4,
+    "category": "Concept"
+  },
+  {
+    "id": 39,
+    "term": "Configuration baseline",
+    "acronym": null,
+    "def": "The approved, documented set of settings for a system, used to build it consistently and to detect unauthorized drift.",
+    "scopeNotes": "Changing the baseline is itself a change that needs approval.",
+    "domain": 4,
+    "category": "Control"
+  },
+  {
+    "id": 40,
+    "term": "Containment",
+    "acronym": null,
+    "def": "Steps that stop a confirmed incident from spreading or doing more harm, such as isolating affected systems or disabling compromised accounts.",
+    "scopeNotes": "Containment comes first only once an incident is confirmed; for a new threat, finding or change, analyze and report first.",
+    "domain": 4,
+    "category": "Process"
+  },
+  {
+    "id": 41,
+    "term": "Continuous control monitoring",
+    "acronym": null,
+    "def": "Automated, frequent testing of how controls operate, such as daily checks of access settings against policy, with exceptions sent to the control owner.",
+    "scopeNotes": "Narrower than continuous monitoring, which also covers threats and vulnerabilities.",
+    "domain": 3,
+    "category": "Process"
+  },
+  {
+    "id": 42,
+    "term": "Continuous monitoring",
+    "acronym": null,
+    "def": "Watching security posture, vulnerabilities and threats on a continuing basis, at a frequency set by risk, so risk decisions rest on current information rather than a yearly snapshot.",
+    "scopeNotes": "NIST calls it information security continuous monitoring (ISCM).",
+    "domain": 3,
+    "category": "Process"
+  },
+  {
+    "id": 43,
+    "term": "Control",
+    "acronym": null,
+    "def": "Any measure that keeps a risk within acceptable limits, such as a policy, a procedure, a technical setting or a management structure. Also called a safeguard or countermeasure.",
+    "scopeNotes": "",
+    "domain": 0,
+    "category": "Control"
+  },
+  {
+    "id": 44,
+    "term": "Control deficiency",
+    "acronym": null,
+    "def": "A control that is missing, badly designed or not operating as intended.",
+    "scopeNotes": "",
+    "domain": 2,
+    "category": "Concept"
+  },
+  {
+    "id": 45,
+    "term": "Control mapping",
+    "acronym": null,
+    "def": "Linking one internal control to the matching requirements in several frameworks or regulations, so it is designed and tested once and reused as evidence.",
+    "scopeNotes": "A crosswalk does the same between two frameworks' requirements.",
+    "domain": 3,
+    "category": "Process"
+  },
+  {
+    "id": 46,
+    "term": "Control maturity",
+    "acronym": null,
+    "def": "How well a control or process is defined, repeated, measured and improved, rated on a scale from ad hoc to optimized. It shows whether a control will keep working, which is distinct from whether it is effective today.",
+    "scopeNotes": "Effectiveness says a control works now; maturity says it will keep working. Targets are set by risk, not one level for every control.",
+    "domain": 3,
+    "category": "Concept"
+  },
+  {
+    "id": 47,
+    "term": "Control objective",
+    "acronym": null,
+    "def": "The result a control, or set of controls, is meant to secure in a process, such as 'only approved changes reach production'.",
+    "scopeNotes": "",
+    "domain": 3,
+    "category": "Control"
+  },
+  {
+    "id": 48,
+    "term": "Control owner",
+    "acronym": null,
+    "def": "The manager who answers for one control doing its job, from its design and daily running to the fix when it fails. Often the manager whose team runs it, or who manages the supplier that does.",
+    "scopeNotes": "The risk owner decides the response and accepts the risk; the control owner answers for a control being in place and working; the action owner completes a treatment task. When a supplier runs the control, the control owner stays an internal manager, often the contract manager.",
+    "domain": 1,
+    "category": "Role"
+  },
+  {
+    "id": 49,
+    "term": "Control self-assessment (CSA)",
+    "acronym": "CSA",
+    "def": "Managers and staff evaluating their own risks and controls, usually in workshops facilitated by the risk function.",
+    "scopeNotes": "CSA builds first-line ownership; it does not replace independent testing.",
+    "domain": 3,
+    "category": "Process"
+  },
+  {
+    "id": 50,
+    "term": "Corrective control",
+    "acronym": null,
+    "def": "A control that limits damage and restores normal operation after an event, such as restoring from backup.",
+    "scopeNotes": "",
+    "domain": 3,
+    "category": "Control"
+  },
+  {
+    "id": 51,
+    "term": "Correlated risk",
+    "acronym": null,
+    "def": "Risks that tend to happen together because they share a cause or dependency. Aggregation must allow for them rather than simply adding scores.",
+    "scopeNotes": "",
+    "domain": 1,
+    "category": "Concept"
+  },
+  {
+    "id": 52,
+    "term": "COSO ERM",
+    "acronym": null,
+    "def": "The COSO framework Enterprise Risk Management: Integrating with Strategy and Performance (2017), which links risk to strategy setting and performance.",
+    "scopeNotes": "",
+    "domain": 1,
+    "category": "Framework"
+  },
+  {
+    "id": 53,
+    "term": "Cost-benefit analysis",
+    "acronym": null,
+    "def": "Comparing what a response costs over its life with the reduction in expected loss it delivers, to build the case for a response.",
+    "scopeNotes": "",
+    "domain": 3,
+    "category": "Process"
+  },
+  {
+    "id": 54,
+    "term": "Criticality",
+    "acronym": null,
+    "def": "How essential an asset or process is to keeping key business operations running, which sets the impact of losing it.",
+    "scopeNotes": "Criticality is about availability and dependence; sensitivity is about harm from disclosure or alteration.",
+    "domain": 1,
+    "category": "Concept"
+  },
+  {
+    "id": 55,
+    "term": "Current risk",
+    "acronym": null,
+    "def": "Today's exposure, counting only responses already in place and working; anything planned or proposed is left out. It is what is compared with appetite now.",
+    "scopeNotes": "Inherent ignores all management action; current counts only actions already taken; residual is what an implemented response leaves; future residual (KaiSip: target) is what a planned response should reach.",
+    "domain": 2,
+    "category": "Concept"
+  },
+  {
+    "id": 56,
+    "term": "Cyber insurance",
+    "acronym": null,
+    "def": "Insurance that pays part of the costs of a cyber incident, such as recovery, legal and notification costs. It transfers financial impact, not accountability.",
+    "scopeNotes": "",
+    "domain": 3,
+    "category": "Control"
+  },
+  {
+    "id": 57,
+    "term": "Data classification",
+    "acronym": null,
+    "def": "Assigning data a sensitivity level that sets the controls and handling rules for it. The data owner decides the level.",
+    "scopeNotes": "",
+    "domain": 4,
+    "category": "Control"
+  },
+  {
+    "id": 58,
+    "term": "Data custodian",
+    "acronym": null,
+    "def": "The person or team, often IT, that stores and protects data according to the data owner's rules.",
+    "scopeNotes": "",
+    "domain": 4,
+    "category": "Role"
+  },
+  {
+    "id": 59,
+    "term": "Data lifecycle",
+    "acronym": null,
+    "def": "The stages data passes through, from creation or collection through storage, use, sharing and archiving to disposal, each with its own risks and controls.",
+    "scopeNotes": "",
+    "domain": 4,
+    "category": "Process"
+  },
+  {
+    "id": 60,
+    "term": "Data lineage",
+    "acronym": null,
+    "def": "A traceable record of where data came from and how it was transformed on its way to a report, model or decision.",
+    "scopeNotes": "Lets a practitioner validate risk metrics and confirm AI training data is fit for use.",
+    "domain": 3,
+    "category": "Concept"
+  },
+  {
+    "id": 61,
+    "term": "Data minimization",
+    "acronym": null,
+    "def": "Collecting and keeping only the personal data the purpose needs.",
+    "scopeNotes": "",
+    "domain": 4,
+    "category": "Control"
+  },
+  {
+    "id": 62,
+    "term": "Data owner",
+    "acronym": null,
+    "def": "The business manager accountable for a set of data: its quality, its proper use and its protection. The data owner classifies it and decides who may access it and how long it is kept.",
+    "scopeNotes": "",
+    "domain": 4,
+    "category": "Role"
+  },
+  {
+    "id": 63,
+    "term": "Data poisoning",
+    "acronym": null,
+    "def": "Corrupting an AI model's training or fine-tuning data so it learns wrong or hidden behavior.",
+    "scopeNotes": "",
+    "domain": 4,
+    "category": "Concept"
+  },
+  {
+    "id": 64,
+    "term": "Defense in depth",
+    "acronym": null,
+    "def": "Layering several independent controls so one failure does not expose an asset and an attacker has to beat several barriers.",
+    "scopeNotes": "",
+    "domain": 4,
+    "category": "Control"
+  },
+  {
+    "id": 65,
+    "term": "Definition of done",
+    "acronym": null,
+    "def": "The agreed criteria, including security and control criteria, an Agile work item must meet before it counts as complete.",
+    "scopeNotes": "",
+    "domain": 4,
+    "category": "Control"
+  },
+  {
+    "id": 66,
+    "term": "Delegation of authority",
+    "acronym": null,
+    "def": "A documented set of limits stating which roles may approve spending or accept risk, and up to what level.",
+    "scopeNotes": "Acceptance above a person's limit goes to the next level up; the practitioner checks the limit, never raises it.",
+    "domain": 3,
+    "category": "Document"
+  },
+  {
+    "id": 67,
+    "term": "Design effectiveness",
+    "acronym": null,
+    "def": "Whether a control, performed as intended, would address the risk it targets.",
+    "scopeNotes": "Design comes first: an operating test on a badly designed control proves nothing useful.",
+    "domain": 3,
+    "category": "Concept"
+  },
+  {
+    "id": 68,
+    "term": "Detective control",
+    "acronym": null,
+    "def": "A control that finds and reports an unwanted event or error after it occurs, such as a log review or reconciliation.",
+    "scopeNotes": "",
+    "domain": 3,
+    "category": "Control"
+  },
+  {
+    "id": 69,
+    "term": "Disaster recovery plan (DRP)",
+    "acronym": "DRP",
+    "def": "The documented plan for restoring IT systems, data and facilities after a disaster, naming the people, alternate sites, technology and steps, so recovery meets the RTO and RPO the business set.",
+    "scopeNotes": "",
+    "domain": 4,
+    "category": "Document"
+  },
+  {
+    "id": 70,
+    "term": "Due diligence",
+    "acronym": null,
+    "def": "The prudent, thorough checks expected before a decision, such as reviewing a vendor's controls, finances and assurance reports before signing.",
+    "scopeNotes": "",
+    "domain": 3,
+    "category": "Process"
+  },
+  {
+    "id": 71,
+    "term": "Due professional care",
+    "acronym": null,
+    "def": "Doing the work with the thoroughness and competence that peers would expect of a qualified professional in that role.",
+    "scopeNotes": "Part of the ISACA Code of Professional Ethics expected of every certified practitioner.",
+    "domain": 1,
+    "category": "Concept"
+  },
+  {
+    "id": 72,
+    "term": "Emergency change",
+    "acronym": null,
+    "def": "A change made quickly to restore service or stop harm, authorized by a designated emergency authority, then fully documented, reviewed and formally approved after the fact.",
+    "scopeNotes": "",
+    "domain": 4,
+    "category": "Process"
+  },
+  {
+    "id": 73,
+    "term": "Emerging risk",
+    "acronym": null,
+    "def": "A new or changing risk whose likelihood and impact are not yet well understood. It is recorded early with an owner, stated uncertainty and a review date.",
+    "scopeNotes": "",
+    "domain": 3,
+    "category": "Concept"
+  },
+  {
+    "id": 74,
+    "term": "Emerging technology",
+    "acronym": null,
+    "def": "A technology new to the enterprise or the market whose risks and benefits are not yet well understood.",
+    "scopeNotes": "",
+    "domain": 4,
+    "category": "Technology"
+  },
+  {
+    "id": 75,
+    "term": "End of support",
+    "acronym": null,
+    "def": "The date after which a vendor stops providing patches, fixes or help for a product.",
+    "scopeNotes": "",
+    "domain": 4,
+    "category": "Concept"
+  },
+  {
+    "id": 76,
+    "term": "Enterprise architecture (EA)",
+    "acronym": "EA",
+    "def": "The documented model of how business processes, data, applications and technology fit together to support the enterprise's objectives.",
+    "scopeNotes": "",
+    "domain": 4,
+    "category": "Framework"
+  },
+  {
+    "id": 77,
+    "term": "Enterprise goal",
+    "acronym": null,
+    "def": "A business-level goal in the COBIT 2019 goals cascade, such as customer-oriented service or compliance with external laws, that alignment goals for information and technology support.",
+    "scopeNotes": "Tie IT risks to the enterprise goals they threaten.",
+    "domain": 1,
+    "category": "Framework"
+  },
+  {
+    "id": 78,
+    "term": "Enterprise risk management (ERM)",
+    "acronym": "ERM",
+    "def": "An enterprise-wide approach to identifying, assessing, responding to and monitoring every type of risk, including upside risk, so that risk-taking supports strategy and adds value for stakeholders. IT risk is one part of it.",
+    "scopeNotes": "",
+    "domain": 1,
+    "category": "Framework"
+  },
+  {
+    "id": 79,
+    "term": "Enterprise risk profile",
+    "acronym": null,
+    "def": "The combined, prioritized view of an enterprise's significant risks, built by normalizing and aggregating unit and IT risk registers, and compared with appetite for senior management and the board.",
+    "scopeNotes": "Aggregation can turn many small local risks into one significant enterprise risk. Senior management and the board decide whether the profile is acceptable. See Risk profile.",
+    "domain": 2,
+    "category": "Concept"
+  },
+  {
+    "id": 80,
+    "term": "Escalation path",
+    "acronym": null,
+    "def": "The predefined route, roles and timeframe for taking an issue to higher authority, such as a validated tolerance breach going to the risk owner and to the level that set the limit.",
+    "scopeNotes": "",
+    "domain": 1,
+    "category": "Process"
+  },
+  {
+    "id": 81,
+    "term": "EU AI Act",
+    "acronym": null,
+    "def": "The European Union's risk-based law on artificial intelligence (Regulation (EU) 2024/1689). It bans some uses and places stricter duties on high-risk AI systems.",
+    "scopeNotes": "",
+    "domain": 1,
+    "category": "Framework"
+  },
+  {
+    "id": 82,
+    "term": "Exception",
+    "acronym": null,
+    "def": "A temporary, approved departure from a policy or standard, with a business reason, compensating controls and an expiry date. The risk owner approves it and accepts the risk.",
+    "scopeNotes": "An exception is temporary and expires; an exemption excludes a defined scope from a requirement and is reviewed periodically. The ISACA Glossary's own exception entry is the programming sense.",
+    "domain": 3,
+    "category": "Process"
+  },
+  {
+    "id": 83,
+    "term": "Exception register",
+    "acronym": null,
+    "def": "One record of all approved exceptions, with owner, reason, compensating control, risk rating and expiry date. Expired or open-ended entries are a warning sign.",
+    "scopeNotes": "",
+    "domain": 3,
+    "category": "Document"
+  },
+  {
+    "id": 84,
+    "term": "Exemption",
+    "acronym": null,
+    "def": "An approved exclusion of a defined scope from a requirement, such as a system that a standard does not apply to. It is reviewed periodically rather than expiring.",
+    "scopeNotes": "Contrast with an exception: a time-limited deviation that should end when the gap is fixed.",
+    "domain": 3,
+    "category": "Process"
+  },
+  {
+    "id": 85,
+    "term": "Explainability",
+    "acronym": null,
+    "def": "How far people can understand why an AI system produced a given output, enough to check, challenge or justify it.",
+    "scopeNotes": "",
+    "domain": 4,
+    "category": "Concept"
+  },
+  {
+    "id": 86,
+    "term": "Exposure",
+    "acronym": null,
+    "def": "How much the enterprise stands to lose from one or more risks, judged from their likelihood and impact together.",
+    "scopeNotes": "",
+    "domain": 1,
+    "category": "Concept"
+  },
+  {
+    "id": 87,
+    "term": "Exposure factor (EF)",
+    "acronym": "EF",
+    "def": "The share of an asset's value lost in one occurrence of an event, given as a percentage.",
+    "scopeNotes": "",
+    "domain": 2,
+    "category": "Metric"
+  },
+  {
+    "id": 88,
+    "term": "FAIR",
+    "acronym": "FAIR",
+    "def": "Factor Analysis of Information Risk: an Open Group model that quantifies risk in money from loss event frequency and loss magnitude.",
+    "scopeNotes": "",
+    "domain": 2,
+    "category": "Framework"
+  },
+  {
+    "id": 89,
+    "term": "Finding",
+    "acronym": null,
+    "def": "A documented gap between what is required and what is in place, found by a review, audit or test, with an owner and a due date for its fix.",
+    "scopeNotes": "",
+    "domain": 3,
+    "category": "Concept"
+  },
+  {
+    "id": 90,
+    "term": "Fourth party",
+    "acronym": null,
+    "def": "A vendor's own supplier or subcontractor, such as the cloud host behind a software provider.",
+    "scopeNotes": "",
+    "domain": 3,
+    "category": "Concept"
+  },
+  {
+    "id": 91,
+    "term": "Future residual risk",
+    "acronym": null,
+    "def": "The name the ISACA Glossary uses, inside its risk response entry, for the level a risk is expected to reach once the planned response is in place. KaiSip calls it target risk and uses it to judge whether a plan is enough.",
+    "scopeNotes": "Inherent ignores all management action; current counts only actions already taken; residual is what an implemented response leaves; future residual (KaiSip: target) is what a planned response should reach.",
+    "domain": 3,
+    "category": "Concept"
+  },
+  {
+    "id": 92,
+    "term": "Gap analysis",
+    "acronym": null,
+    "def": "Comparing the current state of controls or capability with the desired state to find and prioritize what is missing.",
+    "scopeNotes": "",
+    "domain": 3,
+    "category": "Process"
+  },
+  {
+    "id": 93,
+    "term": "Generative AI",
+    "acronym": null,
+    "def": "AI that learns patterns from data to create new content, such as text, images, audio or code.",
+    "scopeNotes": "",
+    "domain": 4,
+    "category": "Technology"
+  },
+  {
+    "id": 94,
+    "term": "Goals cascade",
+    "acronym": null,
+    "def": "The COBIT 2019 chain that links stakeholder needs to enterprise goals, then to alignment goals for information and technology, and then to the governance and management objectives that deliver them.",
+    "scopeNotes": "Use it to trace a technical issue up to the business objective it threatens.",
+    "domain": 1,
+    "category": "Framework"
+  },
+  {
+    "id": 95,
+    "term": "Governance",
+    "acronym": null,
+    "def": "The board-led system that evaluates what stakeholders need, directs management on priorities, and checks whether the agreed objectives are being met.",
+    "scopeNotes": "Governance evaluates, directs and monitors; management plans, builds, runs and monitors within that direction.",
+    "domain": 1,
+    "category": "Concept"
+  },
+  {
+    "id": 96,
+    "term": "Guideline",
+    "acronym": null,
+    "def": "Advisory good practice that leaves more room for judgment than a standard or procedure. People may depart from it for a sound reason.",
+    "scopeNotes": "",
+    "domain": 1,
+    "category": "Document"
+  },
+  {
+    "id": 97,
+    "term": "Hallucination",
+    "acronym": null,
+    "def": "Generative AI output that sounds confident but is wrong or invented.",
+    "scopeNotes": "",
+    "domain": 4,
+    "category": "Concept"
+  },
+  {
+    "id": 98,
+    "term": "Heat map",
+    "acronym": null,
+    "def": "A grid that plots risks by likelihood and impact bands, colored by rating, so the highest exposures stand out.",
+    "scopeNotes": "The ISACA Glossary calls it a risk map. Boards want the profile against appetite, not a map of every risk.",
+    "domain": 3,
+    "category": "Document"
+  },
+  {
+    "id": 99,
+    "term": "Hot site",
+    "acronym": null,
+    "def": "A fully equipped and configured alternate facility that can take over processing within minutes to hours.",
+    "scopeNotes": "A warm site is partly equipped and takes longer; a cold site has space and power but no equipment, so recovery takes the longest.",
+    "domain": 4,
+    "category": "Technology"
+  },
+  {
+    "id": 100,
+    "term": "Human oversight",
+    "acronym": null,
+    "def": "People with the authority and means to review, override or stop AI outputs before they cause harm.",
+    "scopeNotes": "",
+    "domain": 4,
+    "category": "Control"
+  },
+  {
+    "id": 101,
+    "term": "Human-in-the-loop",
+    "acronym": null,
+    "def": "A person checks or approves an AI output before it takes effect, used where errors have high impact.",
+    "scopeNotes": "Approving every output without real review is automation bias, not oversight.",
+    "domain": 3,
+    "category": "Control"
+  },
+  {
+    "id": 102,
+    "term": "Immutable backup",
+    "acronym": null,
+    "def": "A backup copy that cannot be altered or deleted for a set period, even by administrators.",
+    "scopeNotes": "",
+    "domain": 4,
+    "category": "Control"
+  },
+  {
+    "id": 103,
+    "term": "Impact",
+    "acronym": null,
+    "def": "The size of the harm to objectives if an event occurs, such as financial loss, service disruption or regulatory penalty.",
+    "scopeNotes": "",
+    "domain": 2,
+    "category": "Concept"
+  },
+  {
+    "id": 104,
+    "term": "Implicit acceptance",
+    "acronym": null,
+    "def": "Risk kept without a recorded decision, often because treatment was postponed. It hides exposure from the people who should decide.",
+    "scopeNotes": "",
+    "domain": 3,
+    "category": "Concept"
+  },
+  {
+    "id": 105,
+    "term": "Incident",
+    "acronym": null,
+    "def": "An event that damages, or is about to damage, the confidentiality, integrity or availability of information or systems, or that breaks, or is about to break, the law or the enterprise's security or acceptable use rules. Alerts become incidents only once triage confirms them.",
+    "scopeNotes": "This is the ISACA Glossary's security sense. In IT service management (incident management, CRISC 4A2), an incident is any unplanned interruption to a service or drop in its quality, security-related or not; problem management then removes the cause.",
+    "domain": 2,
+    "category": "Concept"
+  },
+  {
+    "id": 106,
+    "term": "Incident management",
+    "acronym": null,
+    "def": "The process for logging, prioritizing and resolving incidents so the affected service is back in use quickly and the disruption to the business stays small.",
+    "scopeNotes": "Incident management restores service; problem management removes the cause.",
+    "domain": 4,
+    "category": "Process"
+  },
+  {
+    "id": 107,
+    "term": "Incident response plan (IRP)",
+    "acronym": "IRP",
+    "def": "The written playbook for a suspected security incident: who confirms and contains it, how affected systems are restored, who must be told, and how lessons feed back into controls.",
+    "scopeNotes": "",
+    "domain": 4,
+    "category": "Document"
+  },
+  {
+    "id": 108,
+    "term": "Inherent risk",
+    "acronym": null,
+    "def": "The level of a risk if management had done nothing about it: no controls, no transfer and no other response.",
+    "scopeNotes": "Inherent ignores all management action; current counts only actions already taken; residual is what an implemented response leaves; future residual (KaiSip: target) is what a planned response should reach.",
+    "domain": 2,
+    "category": "Concept"
+  },
+  {
+    "id": 109,
+    "term": "Internal audit",
+    "acronym": null,
+    "def": "The independent third-line function that gives the board and senior management objective assurance on governance, risk management and control.",
+    "scopeNotes": "Audit evaluates the risk program; it does not own risks or design first-line controls.",
+    "domain": 1,
+    "category": "Role"
+  },
+  {
+    "id": 110,
+    "term": "ISACA Code of Professional Ethics",
+    "acronym": null,
+    "def": "ISACA's code that members and certification holders agree to follow, covering objectivity, due professional care, competence, confidentiality and disclosure of significant facts.",
+    "scopeNotes": "Leaving a significant finding out of a report to spare someone breaks the duty to inform appropriate parties.",
+    "domain": 0,
+    "category": "Framework"
+  },
+  {
+    "id": 111,
+    "term": "ISO 31000",
+    "acronym": null,
+    "def": "The international guideline standard for risk management (ISO 31000:2018). It sets out principles, a framework and a process that any organization can adapt.",
+    "scopeNotes": "",
+    "domain": 1,
+    "category": "Framework"
+  },
+  {
+    "id": 112,
+    "term": "ISO/IEC 27001:2022",
+    "acronym": null,
+    "def": "The international standard for an information security management system (ISMS); the current edition is 2022. An organization can be certified against it for a defined scope.",
+    "scopeNotes": "Always check the certification scope before relying on it.",
+    "domain": 4,
+    "category": "Framework"
+  },
+  {
+    "id": 113,
+    "term": "ISO/IEC 27005",
+    "acronym": null,
+    "def": "ISO/IEC guidance (2022 edition) on managing information security risk, supporting the risk assessment and treatment an ISO/IEC 27001 ISMS requires.",
+    "scopeNotes": "",
+    "domain": 2,
+    "category": "Framework"
+  },
+  {
+    "id": 114,
+    "term": "IT change management",
+    "acronym": null,
+    "def": "The controlled process for assessing, approving, testing, implementing and reviewing changes to IT systems.",
+    "scopeNotes": "COBIT 2019 BAI06 Managed IT Changes. New data, thresholds, prompts and vendor model updates are changes too.",
+    "domain": 4,
+    "category": "Process"
+  },
+  {
+    "id": 115,
+    "term": "IT risk",
+    "acronym": null,
+    "def": "Business risk arising from how the enterprise uses, runs and depends on information and technology. It is one part of enterprise risk and is rated by business impact.",
+    "scopeNotes": "",
+    "domain": 0,
+    "category": "Concept"
+  },
+  {
+    "id": 116,
+    "term": "Key control",
+    "acronym": null,
+    "def": "A control whose failure would let a significant risk move outside appetite, so it is owned and tested explicitly.",
+    "scopeNotes": "",
+    "domain": 3,
+    "category": "Control"
+  },
+  {
+    "id": 117,
+    "term": "Key control indicator (KCI)",
+    "acronym": "KCI",
+    "def": "A metric showing that a control is weakening or failing before the risk it guards against grows, such as the share of test restores that miss their recovery objectives.",
+    "scopeNotes": "KRI warns that a risk is changing; KCI shows a control weakening; KPI tracks how well a process performs; KGI reports, at period end, whether a goal was reached.",
+    "domain": 3,
+    "category": "Metric"
+  },
+  {
+    "id": 118,
+    "term": "Key goal indicator (KGI)",
+    "acronym": "KGI",
+    "def": "A lagging metric, read at the end of a period, of whether a business goal that a process supports was reached, such as the share of orders delivered on time over the year.",
+    "scopeNotes": "KRI warns that a risk is changing; KCI shows a control weakening; KPI tracks how well a process performs; KGI reports, at period end, whether a goal was reached.",
+    "domain": 3,
+    "category": "Metric"
+  },
+  {
+    "id": 119,
+    "term": "Key performance indicator (KPI)",
+    "acronym": "KPI",
+    "def": "A measure of how well a process or project is performing against its goal, such as tickets closed on time.",
+    "scopeNotes": "KRI warns that a risk is changing; KCI shows a control weakening; KPI tracks how well a process performs; KGI reports, at period end, whether a goal was reached.",
+    "domain": 3,
+    "category": "Metric"
+  },
+  {
+    "id": 120,
+    "term": "Key risk indicator (KRI)",
+    "acronym": "KRI",
+    "def": "A metric picked to give early warning on a significant risk, because it reliably moves before that risk's likelihood or impact changes. It is read against thresholds drawn from appetite and tolerance.",
+    "scopeNotes": "KRI warns that a risk is changing; KCI shows a control weakening; KPI tracks how well a process performs; KGI reports, at period end, whether a goal was reached. The best KRIs lead rather than lag.",
+    "domain": 3,
+    "category": "Metric"
+  },
+  {
+    "id": 121,
+    "term": "Key-person dependency",
+    "acronym": null,
+    "def": "Reliance on one person's knowledge or access for a critical task or control, with no trained backup.",
+    "scopeNotes": "",
+    "domain": 2,
+    "category": "Concept"
+  },
+  {
+    "id": 122,
+    "term": "Known error",
+    "acronym": null,
+    "def": "A problem whose root cause has been identified and documented, often with a workaround, while a permanent fix is pending.",
+    "scopeNotes": "A workaround limits impact; it does not remove the cause.",
+    "domain": 4,
+    "category": "Concept"
+  },
+  {
+    "id": 123,
+    "term": "Lagging indicator",
+    "acronym": null,
+    "def": "A metric that confirms after the fact what has already happened, such as last quarter's losses; useful for checking results, too late to warn.",
+    "scopeNotes": "",
+    "domain": 3,
+    "category": "Metric"
+  },
+  {
+    "id": 124,
+    "term": "Leading indicator",
+    "acronym": null,
+    "def": "A predictive metric that changes before a risk event, giving time to act.",
+    "scopeNotes": "A lagging indicator, such as last quarter's incident count or losses, confirms harm after the fact.",
+    "domain": 3,
+    "category": "Metric"
+  },
+  {
+    "id": 125,
+    "term": "Least privilege",
+    "acronym": null,
+    "def": "Giving users and systems only the access needed for their tasks, and no more.",
+    "scopeNotes": "",
+    "domain": 4,
+    "category": "Control"
+  },
+  {
+    "id": 126,
+    "term": "Legacy system",
+    "acronym": null,
+    "def": "An older system still in use that is hard to support, change or secure with current methods.",
+    "scopeNotes": "",
+    "domain": 4,
+    "category": "Technology"
+  },
+  {
+    "id": 127,
+    "term": "Legal hold",
+    "acronym": null,
+    "def": "A requirement to preserve data relevant to litigation or an investigation, suspending normal disposal until it is lifted.",
+    "scopeNotes": "",
+    "domain": 4,
+    "category": "Process"
+  },
+  {
+    "id": 128,
+    "term": "Likelihood",
+    "acronym": null,
+    "def": "The estimated chance that a threat event occurs and causes harm within a stated time frame.",
+    "scopeNotes": "",
+    "domain": 2,
+    "category": "Concept"
+  },
+  {
+    "id": 129,
+    "term": "Lines of defense",
+    "acronym": null,
+    "def": "A model separating risk ownership and control (first line), oversight and challenge (second line) and independent assurance (third line).",
+    "scopeNotes": "The risk practitioner usually sits in the second line: it advises and challenges, but the first line owns the risk.",
+    "domain": 1,
+    "category": "Framework"
+  },
+  {
+    "id": 130,
+    "term": "Loss event",
+    "acronym": null,
+    "def": "A threat event that actually causes loss, such as lost money, data, service or reputation.",
+    "scopeNotes": "A near miss is an event that could have caused loss but did not.",
+    "domain": 2,
+    "category": "Concept"
+  },
+  {
+    "id": 131,
+    "term": "Manual control",
+    "acronym": null,
+    "def": "A control a person performs, such as a supervisor's review, whose quality can vary with workload and attention.",
+    "scopeNotes": "",
+    "domain": 3,
+    "category": "Control"
+  },
+  {
+    "id": 132,
+    "term": "Maximum tolerable outage (MTO)",
+    "acronym": "MTO",
+    "def": "The outage limit for a critical process or the IT system behind it: once an outage runs past it, the damage to the enterprise becomes significant. Every recovery target, including the RTO, must fit inside it.",
+    "scopeNotes": "MTO and AIW are business limits on how long an outage can last; RTO is the recovery target set inside them; RPO limits data loss, not downtime. Other sources call it maximum tolerable downtime (MTD).",
+    "domain": 2,
+    "category": "Metric"
+  },
+  {
+    "id": 133,
+    "term": "Micro-segmentation",
+    "acronym": null,
+    "def": "Dividing a network into small, separately controlled zones so access to each workload is granted only as needed.",
+    "scopeNotes": "A Zero Trust technique that limits how far an attacker can move.",
+    "domain": 4,
+    "category": "Control"
+  },
+  {
+    "id": 134,
+    "term": "MITRE ATT&CK",
+    "acronym": null,
+    "def": "A public knowledge base of adversary tactics and techniques drawn from real-world observations, used to build threat scenarios and test detection.",
+    "scopeNotes": "",
+    "domain": 2,
+    "category": "Framework"
+  },
+  {
+    "id": 135,
+    "term": "Model drift",
+    "acronym": null,
+    "def": "A decline in an AI model's accuracy over time as live data or real-world patterns move away from its training data.",
+    "scopeNotes": "",
+    "domain": 4,
+    "category": "Concept"
+  },
+  {
+    "id": 136,
+    "term": "Model registry",
+    "acronym": null,
+    "def": "A controlled record of AI model versions with their training data, test results, approvals and named owners.",
+    "scopeNotes": "Supports change management for retraining and makes unapproved models visible.",
+    "domain": 4,
+    "category": "Document"
+  },
+  {
+    "id": 137,
+    "term": "Model validation",
+    "acronym": null,
+    "def": "Testing, ideally independent, that a model meets agreed accuracy, fairness and robustness criteria before and during use.",
+    "scopeNotes": "",
+    "domain": 4,
+    "category": "Process"
+  },
+  {
+    "id": 138,
+    "term": "Monte Carlo simulation",
+    "acronym": null,
+    "def": "Repeated random sampling from input ranges to estimate the spread of possible outcomes, such as yearly loss.",
+    "scopeNotes": "",
+    "domain": 2,
+    "category": "Process"
+  },
+  {
+    "id": 139,
+    "term": "Near miss",
+    "acronym": null,
+    "def": "An event that could have caused loss but did not, because a control, chance or timing stopped it. Reporting near misses is a sign of a healthy risk culture.",
+    "scopeNotes": "",
+    "domain": 2,
+    "category": "Concept"
+  },
+  {
+    "id": 140,
+    "term": "Need-to-know",
+    "acronym": null,
+    "def": "Access to specific information is granted only when a person's current task requires it, even if their role or clearance would otherwise allow it.",
+    "scopeNotes": "Need-to-know limits what a person can see or reach; least privilege limits what they can do once there.",
+    "domain": 4,
+    "category": "Control"
+  },
+  {
+    "id": 141,
+    "term": "NIST AI Risk Management Framework (AI RMF)",
+    "acronym": "AI RMF",
+    "def": "NIST AI 100-1 (2023): a voluntary framework for managing AI risk through four functions: Govern, Map, Measure and Manage.",
+    "scopeNotes": "",
+    "domain": 2,
+    "category": "Framework"
+  },
+  {
+    "id": 142,
+    "term": "NIST Cybersecurity Framework (CSF) 2.0",
+    "acronym": "CSF",
+    "def": "A NIST framework of cybersecurity outcomes in six functions: Govern, Identify, Protect, Detect, Respond and Recover.",
+    "scopeNotes": "",
+    "domain": 4,
+    "category": "Framework"
+  },
+  {
+    "id": 143,
+    "term": "NIST SP 800-30 Rev. 1",
+    "acronym": null,
+    "def": "NIST's Guide for Conducting Risk Assessments (Rev. 1, 2012). It sets out a process of preparing, conducting, communicating and maintaining an assessment, built from threat sources, events, vulnerabilities, likelihood and impact.",
+    "scopeNotes": "",
+    "domain": 2,
+    "category": "Framework"
+  },
+  {
+    "id": 144,
+    "term": "Normalization",
+    "acronym": null,
+    "def": "Converting risk ratings and data from different units or scales onto common criteria, so they can be compared and combined.",
+    "scopeNotes": "Normalize before you aggregate.",
+    "domain": 1,
+    "category": "Process"
+  },
+  {
+    "id": 145,
+    "term": "Objectivity",
+    "acronym": null,
+    "def": "Basing judgments on evidence, free from bias, pressure or conflicts of interest.",
+    "scopeNotes": "The second-line risk function needs objectivity; internal audit needs full organizational independence as well.",
+    "domain": 1,
+    "category": "Concept"
+  },
+  {
+    "id": 146,
+    "term": "Operating effectiveness",
+    "acronym": null,
+    "def": "Whether a control actually worked as designed, consistently, throughout the period reviewed.",
+    "scopeNotes": "A signed statement or one observation shows intent; operating evidence over time earns credit.",
+    "domain": 3,
+    "category": "Concept"
+  },
+  {
+    "id": 147,
+    "term": "Opportunity",
+    "acronym": null,
+    "def": "A possible future event or condition that would help the enterprise meet its objectives if it happened and the enterprise acted on it.",
+    "scopeNotes": "Also called upside or positive risk. Refusing every new technology can itself be a risk to objectives.",
+    "domain": 1,
+    "category": "Concept"
+  },
+  {
+    "id": 148,
+    "term": "Ordinal scale",
+    "acronym": null,
+    "def": "A scale that ranks items in order, such as low to very high, without showing how far apart the levels are.",
+    "scopeNotes": "Multiplying ordinal ratings can mislead.",
+    "domain": 2,
+    "category": "Concept"
+  },
+  {
+    "id": 149,
+    "term": "Outsourcing",
+    "acronym": null,
+    "def": "An arrangement in which an outside provider runs an IT or business process under contract, in place of the enterprise's own staff.",
+    "scopeNotes": "Outsourcing moves the work, not the accountability.",
+    "domain": 3,
+    "category": "Process"
+  },
+  {
+    "id": 150,
+    "term": "Override rate",
+    "acronym": null,
+    "def": "How often human reviewers reject or change an AI system's outputs. A rising rate can signal drift or mistrust; a zero rate can signal rubber-stamping.",
+    "scopeNotes": "",
+    "domain": 4,
+    "category": "Metric"
+  },
+  {
+    "id": 151,
+    "term": "Patch management",
+    "acronym": null,
+    "def": "Acquiring, testing and installing software fixes in a controlled, timely way, prioritized by risk.",
+    "scopeNotes": "",
+    "domain": 4,
+    "category": "Process"
+  },
+  {
+    "id": 152,
+    "term": "Penetration test",
+    "acronym": null,
+    "def": "An authorized, simulated attack that tries to exploit weaknesses to show what a real attacker could achieve.",
+    "scopeNotes": "",
+    "domain": 2,
+    "category": "Process"
+  },
+  {
+    "id": 153,
+    "term": "Personal data",
+    "acronym": null,
+    "def": "Any information that tells you about a particular person, or lets someone work out who they are, alone or combined with other data; names, ID numbers, location data and device IDs all count.",
+    "scopeNotes": "Close to, but broader than, the US term personally identifiable information (PII): it covers anything that can identify a person directly or indirectly, such as an online identifier.",
+    "domain": 4,
+    "category": "Concept"
+  },
+  {
+    "id": 154,
+    "term": "Plan of action and milestones (POA&M)",
+    "acronym": "POA&M",
+    "def": "NIST's term for a record of planned fixes for control weaknesses, with tasks, resources, milestones and scheduled completion dates.",
+    "scopeNotes": "In CRISC terms it works like a risk action plan; each item needs an owner and evidence at closure.",
+    "domain": 3,
+    "category": "Document"
+  },
+  {
+    "id": 155,
+    "term": "Policy",
+    "acronym": null,
+    "def": "Management's formal statement of what people must and must not do. Senior management approves it, and standards and procedures make it specific.",
+    "scopeNotes": "",
+    "domain": 1,
+    "category": "Document"
+  },
+  {
+    "id": 156,
+    "term": "Policy exception",
+    "acronym": null,
+    "def": "An approved, documented and time-limited permission to depart from a policy or standard, with its risk assessed and accepted by the risk owner at the authority level the rating requires.",
+    "scopeNotes": "Often shortened to exception. The practitioner analyzes and records it in the exception register; approval never sits with the practitioner. Many exceptions to one rule suggest the rule or the process needs review.",
+    "domain": 1,
+    "category": "Process"
+  },
+  {
+    "id": 157,
+    "term": "Policy owner",
+    "acronym": null,
+    "def": "The manager accountable for a policy's content and review, and for running its exception process. The risk owner approves each exception and accepts its risk.",
+    "scopeNotes": "",
+    "domain": 1,
+    "category": "Role"
+  },
+  {
+    "id": 158,
+    "term": "Portfolio management",
+    "acronym": null,
+    "def": "Selecting, prioritizing and stopping programs and projects by value, risk and strategic fit.",
+    "scopeNotes": "",
+    "domain": 4,
+    "category": "Process"
+  },
+  {
+    "id": 159,
+    "term": "Post-implementation review (PIR)",
+    "acronym": "PIR",
+    "def": "A review after go-live of whether a project or change delivered its benefits and kept risk within appetite.",
+    "scopeNotes": "",
+    "domain": 4,
+    "category": "Process"
+  },
+  {
+    "id": 160,
+    "term": "Preventive control",
+    "acronym": null,
+    "def": "A control that stops an unwanted event before it happens, such as access approval or input validation.",
+    "scopeNotes": "",
+    "domain": 3,
+    "category": "Control"
+  },
+  {
+    "id": 161,
+    "term": "Privacy by default",
+    "acronym": null,
+    "def": "Setting a system so the most privacy-protective options apply automatically, without the user having to act.",
+    "scopeNotes": "Part of privacy by design.",
+    "domain": 4,
+    "category": "Control"
+  },
+  {
+    "id": 162,
+    "term": "Privacy by design",
+    "acronym": null,
+    "def": "Building privacy protections into a system from the start and throughout its life, with privacy-protective settings by default.",
+    "scopeNotes": "",
+    "domain": 4,
+    "category": "Control"
+  },
+  {
+    "id": 163,
+    "term": "Privacy impact assessment (PIA)",
+    "acronym": "PIA",
+    "def": "An analysis of how a system or activity handles personal data, its privacy risks and the measures to reduce them.",
+    "scopeNotes": "",
+    "domain": 4,
+    "category": "Process"
+  },
+  {
+    "id": 164,
+    "term": "Problem management",
+    "acronym": null,
+    "def": "The process that investigates what lies behind one incident or a pattern of them and removes that cause, so the failure does not return.",
+    "scopeNotes": "",
+    "domain": 4,
+    "category": "Process"
+  },
+  {
+    "id": 165,
+    "term": "Procedure",
+    "acronym": null,
+    "def": "Step-by-step instructions for carrying out a task so the result complies with the policy or standard behind it.",
+    "scopeNotes": "",
+    "domain": 1,
+    "category": "Document"
+  },
+  {
+    "id": 166,
+    "term": "Process owner",
+    "acronym": null,
+    "def": "The person accountable for a business process's design, performance, risks and controls from start to finish.",
+    "scopeNotes": "",
+    "domain": 1,
+    "category": "Role"
+  },
+  {
+    "id": 167,
+    "term": "Prompt injection",
+    "acronym": null,
+    "def": "An attack that hides instructions in text a language model reads, such as a prompt, document or web page, so the model overrides its intended behavior, leaks data or acts harmfully.",
+    "scopeNotes": "",
+    "domain": 4,
+    "category": "Concept"
+  },
+  {
+    "id": 168,
+    "term": "Pseudonymization",
+    "acronym": null,
+    "def": "Replacing direct identifiers, such as names, with codes or tokens, while the key that links codes back to people is stored apart under its own controls. The result is still personal data, because it can be re-linked.",
+    "scopeNotes": "",
+    "domain": 4,
+    "category": "Control"
+  },
+  {
+    "id": 169,
+    "term": "Purpose limitation",
+    "acronym": null,
+    "def": "A privacy principle: personal data may be used only for the specific, legitimate purposes declared when it was collected, or for purposes compatible with them; an unrelated new use needs its own legal basis.",
+    "scopeNotes": "",
+    "domain": 4,
+    "category": "Control"
+  },
+  {
+    "id": 170,
+    "term": "Qualitative analysis",
+    "acronym": null,
+    "def": "Rating likelihood and impact on defined word scales, such as low to very high, based on expert judgment and experience.",
+    "scopeNotes": "Also called qualitative risk analysis. Semi-quantitative analysis maps the word levels to numbered scores; the numbers still only rank, so multiplying them can mislead.",
+    "domain": 2,
+    "category": "Process"
+  },
+  {
+    "id": 171,
+    "term": "Quantitative analysis",
+    "acronym": null,
+    "def": "Estimating likelihood and impact in numbers, such as money and frequency, using statistical or financial methods.",
+    "scopeNotes": "Also called quantitative risk analysis.",
+    "domain": 2,
+    "category": "Process"
+  },
+  {
+    "id": 172,
+    "term": "RACI chart",
+    "acronym": "RACI",
+    "def": "A responsibility grid that lists activities against roles and marks who does the work (R), who answers for the outcome (A), who gives input (C) and who is kept updated (I).",
+    "scopeNotes": "Only one role is Accountable for an activity and holds the authority to decide; several roles can be Responsible for doing the work.",
+    "domain": 1,
+    "category": "Document"
+  },
+  {
+    "id": 173,
+    "term": "Ransomware",
+    "acronym": null,
+    "def": "Malicious software that encrypts or steals data and demands payment to restore or withhold it.",
+    "scopeNotes": "",
+    "domain": 4,
+    "category": "Concept"
+  },
+  {
+    "id": 174,
+    "term": "Recovery point objective (RPO)",
+    "acronym": "RPO",
+    "def": "How far back in time recovered data may be after a disruption, set from how much data loss the business can accept. It drives how often data is backed up or replicated.",
+    "scopeNotes": "MTO and AIW are business limits on how long an outage can last; RTO is the recovery target set inside them; RPO limits data loss, not downtime.",
+    "domain": 4,
+    "category": "Metric"
+  },
+  {
+    "id": 175,
+    "term": "Recovery time objective (RTO)",
+    "acronym": "RTO",
+    "def": "The target for how soon a business function, or a resource it depends on, must be working again after a disruption. The business sets it through the BIA, within the MTO.",
+    "scopeNotes": "MTO and AIW are business limits on how long an outage can last; RTO is the recovery target set inside them; RPO limits data loss, not downtime.",
+    "domain": 4,
+    "category": "Metric"
+  },
+  {
+    "id": 176,
+    "term": "Reperformance",
+    "acronym": null,
+    "def": "A test in which the tester independently carries out a control again and compares the results.",
+    "scopeNotes": "Strong evidence because it does not rely on what the control operator says.",
+    "domain": 3,
+    "category": "Process"
+  },
+  {
+    "id": 177,
+    "term": "Residual risk",
+    "acronym": null,
+    "def": "What is left of a risk once the chosen response is in place and working. The risk owner accepts it if it is within appetite, or chooses further treatment or elevates it.",
+    "scopeNotes": "Inherent ignores all management action; current counts only actions already taken; residual is what an implemented response leaves; future residual (KaiSip: target) is what a planned response should reach.",
+    "domain": 2,
+    "category": "Concept"
+  },
+  {
+    "id": 178,
+    "term": "Restore test",
+    "acronym": null,
+    "def": "A trial recovery from backup to prove data or a system can be restored within the RTO.",
+    "scopeNotes": "A backup that has never been restored is not evidence of recoverability.",
+    "domain": 4,
+    "category": "Control"
+  },
+  {
+    "id": 179,
+    "term": "Retention schedule",
+    "acronym": null,
+    "def": "A documented list stating how long each type of record is kept and when and how it is disposed of.",
+    "scopeNotes": "Keeping data longer than needed adds privacy and breach risk; a legal hold overrides disposal.",
+    "domain": 4,
+    "category": "Document"
+  },
+  {
+    "id": 180,
+    "term": "Right to audit",
+    "acronym": null,
+    "def": "A contractual right for the customer, or an assessor it appoints, to examine a vendor's controls, records and premises relating to the service.",
+    "scopeNotes": "Written into the contract as a right-to-audit clause, ideally before signing, when leverage is highest. If a vendor refuses it, seek independent assurance reports rather than relying on the vendor's own questionnaire answers.",
+    "domain": 3,
+    "category": "Control"
+  },
+  {
+    "id": 181,
+    "term": "Right-to-audit clause",
+    "acronym": null,
+    "def": "A contract term letting the customer, or an assessor it appoints, examine a vendor's controls and records.",
+    "scopeNotes": "",
+    "domain": 3,
+    "category": "Control"
+  },
+  {
+    "id": 182,
+    "term": "Risk",
+    "acronym": null,
+    "def": "The chance that an event happens, weighed together with how much it would affect objectives if it did. Risk is always judged by its business impact, not by technical severity alone.",
+    "scopeNotes": "ISO 31000 describes risk as the effect of uncertainty on objectives, which also covers upside (opportunity).",
+    "domain": 0,
+    "category": "Concept"
+  },
+  {
+    "id": 183,
+    "term": "Risk acceptance",
+    "acronym": null,
+    "def": "The risk owner's recorded decision to keep a risk at its current level without further treatment, because it sits inside the appetite and tolerance the board and senior management set and the owner has authority for that level.",
+    "scopeNotes": "The practitioner recommends and records; only the owner accepts. Unrecorded acceptance is implicit acceptance. Carrying risk above appetite or tolerance is not the owner's call: it needs a time-limited temporary acceptance from the level that set the limit.",
+    "domain": 3,
+    "category": "Process"
+  },
+  {
+    "id": 184,
+    "term": "Risk action plan",
+    "acronym": null,
+    "def": "The actions, owners, resources and dates for carrying out a chosen risk response.",
+    "scopeNotes": "",
+    "domain": 3,
+    "category": "Document"
+  },
+  {
+    "id": 185,
+    "term": "Risk aggregation",
+    "acronym": null,
+    "def": "Rolling unit-level risk ratings up into one view of the enterprise's total exposure, after normalizing them to common criteria.",
+    "scopeNotes": "Allow for correlated risks; do not just add scores.",
+    "domain": 3,
+    "category": "Process"
+  },
+  {
+    "id": 186,
+    "term": "Risk analysis",
+    "acronym": null,
+    "def": "Estimating how often a risk scenario could occur and how large its impact would be.",
+    "scopeNotes": "",
+    "domain": 2,
+    "category": "Process"
+  },
+  {
+    "id": 187,
+    "term": "Risk appetite",
+    "acronym": null,
+    "def": "The overall level and kinds of risk the enterprise has chosen to take on to achieve its strategy and objectives. The board and senior management set it, and every response decision is measured against it.",
+    "scopeNotes": "Appetite is the overall, enterprise-wide level set by the board and senior management; tolerance is how far a particular risk may move from it before escalation, often a measurable limit; capacity is the most loss the enterprise can survive. Appetite sits below capacity.",
+    "domain": 1,
+    "category": "Concept"
+  },
+  {
+    "id": 188,
+    "term": "Risk appetite statement",
+    "acronym": null,
+    "def": "A written, board-approved expression of how much risk the enterprise accepts for each risk type, often with tolerances and indicators attached.",
+    "scopeNotes": "",
+    "domain": 1,
+    "category": "Document"
+  },
+  {
+    "id": 189,
+    "term": "Risk assessment",
+    "acronym": null,
+    "def": "The overall process of finding risks, estimating their likelihood and impact, and judging each one against the risk criteria.",
+    "scopeNotes": "A risk assessment weighs likelihood and impact; a BIA weighs impact over time only.",
+    "domain": 2,
+    "category": "Process"
+  },
+  {
+    "id": 190,
+    "term": "Risk avoidance",
+    "acronym": null,
+    "def": "Ending or not starting the activity that creates a risk, so the risk no longer applies.",
+    "scopeNotes": "Avoidance also gives up the benefit the activity would bring.",
+    "domain": 3,
+    "category": "Process"
+  },
+  {
+    "id": 191,
+    "term": "Risk capacity",
+    "acronym": null,
+    "def": "The most loss, in money, capital or operations, the enterprise could take and still survive and meet its obligations. It is a hard limit set by facts, not by preference.",
+    "scopeNotes": "Appetite is the overall, enterprise-wide level set by the board and senior management; tolerance is how far a particular risk may move from it before escalation, often a measurable limit; capacity is the most loss the enterprise can survive. Appetite sits below capacity.",
+    "domain": 1,
+    "category": "Concept"
+  },
+  {
+    "id": 192,
+    "term": "Risk committee",
+    "acronym": null,
+    "def": "A board or management committee that reviews the risk profile, challenges ratings, approves high-risk decisions within its authority and escalates issues.",
+    "scopeNotes": "A committee oversees; it cannot be the single named, accountable owner of a risk.",
+    "domain": 1,
+    "category": "Role"
+  },
+  {
+    "id": 193,
+    "term": "Risk criteria",
+    "acronym": null,
+    "def": "The agreed scales, thresholds and rules used to decide how serious a risk is.",
+    "scopeNotes": "",
+    "domain": 2,
+    "category": "Concept"
+  },
+  {
+    "id": 194,
+    "term": "Risk culture",
+    "acronym": null,
+    "def": "The values and beliefs people across the enterprise share about risk, and the behavior they drive: whether people weigh risk honestly in decisions, do the right thing when no one is watching, and feel safe raising risks, mistakes and losses.",
+    "scopeNotes": "",
+    "domain": 1,
+    "category": "Concept"
+  },
+  {
+    "id": 195,
+    "term": "Risk dashboard",
+    "acronym": null,
+    "def": "A one-page view of key risks, KRIs and actions against appetite, built for the audience that has to decide.",
+    "scopeNotes": "",
+    "domain": 3,
+    "category": "Document"
+  },
+  {
+    "id": 196,
+    "term": "Risk driver",
+    "acronym": null,
+    "def": "A condition that pushes likelihood or impact up, such as excess overtime or unpatched systems. Good KRIs measure drivers.",
+    "scopeNotes": "",
+    "domain": 3,
+    "category": "Concept"
+  },
+  {
+    "id": 197,
+    "term": "Risk evaluation",
+    "acronym": null,
+    "def": "The decision step after analysis: setting each rated risk against the agreed criteria and appetite to decide whether it is acceptable, needs a response and how urgently.",
+    "scopeNotes": "",
+    "domain": 2,
+    "category": "Process"
+  },
+  {
+    "id": 198,
+    "term": "Risk event",
+    "acronym": null,
+    "def": "Something that happened, or nearly happened, showing that a risk scenario can occur.",
+    "scopeNotes": "",
+    "domain": 2,
+    "category": "Concept"
+  },
+  {
+    "id": 199,
+    "term": "Risk factor",
+    "acronym": null,
+    "def": "An internal or external circumstance, such as staff turnover, system age or a new regulation, that raises or lowers how often a scenario could happen or how much it would hurt. A risk driver is a factor that pushes risk up.",
+    "scopeNotes": "",
+    "domain": 2,
+    "category": "Concept"
+  },
+  {
+    "id": 200,
+    "term": "Risk indicator",
+    "acronym": null,
+    "def": "Any metric that suggests exposure to a risk is rising or that a risk could happen. Key risk indicators are the few that management watches most closely, because each tracks a significant risk and gives early warning.",
+    "scopeNotes": "",
+    "domain": 3,
+    "category": "Metric"
+  },
+  {
+    "id": 201,
+    "term": "Risk IT Framework",
+    "acronym": null,
+    "def": "ISACA's framework (2nd edition, 2020) for governing and managing IT-related business risk, built on COBIT 2019; its Practitioner Guide shows how to build scenarios, analyze risk and choose responses.",
+    "scopeNotes": "",
+    "domain": 1,
+    "category": "Framework"
+  },
+  {
+    "id": 202,
+    "term": "Risk management",
+    "acronym": null,
+    "def": "Everything the enterprise does to understand and steer its risk: identifying, assessing, responding to, monitoring and reporting it, within the appetite the board and senior management set.",
+    "scopeNotes": "",
+    "domain": 0,
+    "category": "Process"
+  },
+  {
+    "id": 203,
+    "term": "Risk management framework",
+    "acronym": null,
+    "def": "The enterprise's approved principles, roles, methods, criteria and reporting for managing risk.",
+    "scopeNotes": "",
+    "domain": 1,
+    "category": "Framework"
+  },
+  {
+    "id": 204,
+    "term": "Risk mitigation",
+    "acronym": null,
+    "def": "Reducing a risk's likelihood or impact by applying controls and countermeasures.",
+    "scopeNotes": "",
+    "domain": 3,
+    "category": "Process"
+  },
+  {
+    "id": 205,
+    "term": "Risk owner",
+    "acronym": null,
+    "def": "The named person who answers for a risk: they decide how it is treated, accept what remains, and their part of the business carries the loss if the risk occurs. They need enough authority and budget to act on it.",
+    "scopeNotes": "The risk owner decides the response and accepts the risk; the control owner answers for a control being in place and working; the action owner completes a treatment task. Senior management assigns risk owners.",
+    "domain": 1,
+    "category": "Role"
+  },
+  {
+    "id": 206,
+    "term": "Risk practitioner",
+    "acronym": null,
+    "def": "The professional who identifies, analyzes, recommends, facilitates, monitors and reports on risk. The practitioner advises the business; it does not decide for the risk owner.",
+    "scopeNotes": "The CRISC lens: when an option has the practitioner accepting risk, choosing the response or setting appetite, it is usually the trap.",
+    "domain": 0,
+    "category": "Role"
+  },
+  {
+    "id": 207,
+    "term": "Risk profile",
+    "acronym": null,
+    "def": "The current, aggregated view of the risks the enterprise faces, reported to senior management and the board against appetite.",
+    "scopeNotes": "The ISACA Glossary has no plain 'risk profile' entry; its closest is 'IT risk profile', which covers IT risk only.",
+    "domain": 1,
+    "category": "Concept"
+  },
+  {
+    "id": 208,
+    "term": "Risk register",
+    "acronym": null,
+    "def": "The working record of risk scenarios, each with its owner, current rating, chosen response, action plan and status.",
+    "scopeNotes": "",
+    "domain": 2,
+    "category": "Document"
+  },
+  {
+    "id": 209,
+    "term": "Risk response",
+    "acronym": null,
+    "def": "How a risk owner decides to deal with a risk, using one or a mix of accept, mitigate, transfer (share) or avoid. The aim is to get the level the response should reach (future residual risk; KaiSip: target) inside appetite; where budget falls short and the remaining risk is still above appetite, the owner treats it further or escalates it to the level that set the appetite, which may approve a time-limited temporary acceptance.",
+    "scopeNotes": "The risk owner chooses the response; the practitioner analyzes options and recommends.",
+    "domain": 3,
+    "category": "Process"
+  },
+  {
+    "id": 210,
+    "term": "Risk scenario",
+    "acronym": null,
+    "def": "A concrete account of how a threat could cause an event that harms objectives, naming the cause, the asset affected and the business impact, specific enough to be rated.",
+    "scopeNotes": "",
+    "domain": 2,
+    "category": "Concept"
+  },
+  {
+    "id": 211,
+    "term": "Risk taxonomy",
+    "acronym": null,
+    "def": "An agreed set of risk categories and sources that everyone uses to label risks, so risks from every unit can be compared and combined.",
+    "scopeNotes": "",
+    "domain": 1,
+    "category": "Framework"
+  },
+  {
+    "id": 212,
+    "term": "Risk tolerance",
+    "acronym": null,
+    "def": "How far a particular risk or result may move from what the appetite intends before it must be escalated, usually set as a measurable limit.",
+    "scopeNotes": "Appetite is the overall, enterprise-wide level set by the board and senior management; tolerance is how far a particular risk may move from it before escalation, often a measurable limit; capacity is the most loss the enterprise can survive. Appetite sits below capacity. A validated tolerance breach goes to the risk owner and the level that set the limit.",
+    "domain": 1,
+    "category": "Concept"
+  },
+  {
+    "id": 213,
+    "term": "Risk transfer",
+    "acronym": null,
+    "def": "Moving some of a risk's financial impact to another party, most often an insurer or a service provider under contract.",
+    "scopeNotes": "Also called risk sharing. Transfer moves cost or work; accountability stays with the enterprise.",
+    "domain": 3,
+    "category": "Process"
+  },
+  {
+    "id": 214,
+    "term": "Risk velocity",
+    "acronym": null,
+    "def": "How quickly a risk's impact would be felt once the event occurs. Fast risks need earlier warning and quicker escalation.",
+    "scopeNotes": "",
+    "domain": 3,
+    "category": "Metric"
+  },
+  {
+    "id": 215,
+    "term": "Risk-aware culture",
+    "acronym": null,
+    "def": "A culture in which people understand the risks in their own work, speak up about them early and act within appetite.",
+    "scopeNotes": "Risk culture is the values, beliefs and behavior about risk that exist today; a risk-aware culture is the state that tone at the top and role-based training aim to build.",
+    "domain": 4,
+    "category": "Concept"
+  },
+  {
+    "id": 216,
+    "term": "Root cause analysis",
+    "acronym": null,
+    "def": "A structured method for finding the underlying reason an event happened, so the response fixes the cause rather than the symptom.",
+    "scopeNotes": "",
+    "domain": 3,
+    "category": "Process"
+  },
+  {
+    "id": 217,
+    "term": "Sampling",
+    "acronym": null,
+    "def": "Testing a selected subset of a population to reach a conclusion about the whole population.",
+    "scopeNotes": "The population must be complete, and the sample sized and chosen so it represents the population.",
+    "domain": 3,
+    "category": "Process"
+  },
+  {
+    "id": 218,
+    "term": "Sanitization",
+    "acronym": null,
+    "def": "Making data on storage media unrecoverable by clearing, purging or destroying the media.",
+    "scopeNotes": "",
+    "domain": 4,
+    "category": "Control"
+  },
+  {
+    "id": 219,
+    "term": "Secure Software Development Framework (SSDF)",
+    "acronym": "SSDF",
+    "def": "NIST SP 800-218: a set of practices for building security into any software development model.",
+    "scopeNotes": "",
+    "domain": 4,
+    "category": "Framework"
+  },
+  {
+    "id": 220,
+    "term": "Security awareness program",
+    "acronym": null,
+    "def": "Ongoing, role-based training and messaging that helps people recognize and report risks in their work, measured by behavior such as report rates, not just completion.",
+    "scopeNotes": "",
+    "domain": 4,
+    "category": "Process"
+  },
+  {
+    "id": 221,
+    "term": "Senior management",
+    "acronym": null,
+    "def": "The executives who set policy and direction and allocate resources. They assign risk owners and, with the board, set risk appetite and tolerance.",
+    "scopeNotes": "",
+    "domain": 1,
+    "category": "Role"
+  },
+  {
+    "id": 222,
+    "term": "Sensitivity",
+    "acronym": null,
+    "def": "How much harm would follow if information were disclosed or altered without authorization. It drives classification; criticality drives recovery priority.",
+    "scopeNotes": "",
+    "domain": 1,
+    "category": "Concept"
+  },
+  {
+    "id": 223,
+    "term": "Separation of duties (SoD)",
+    "acronym": "SoD",
+    "def": "Splitting conflicting tasks, such as initiating, recording and holding assets, among different people so no one can complete and conceal misuse alone.",
+    "scopeNotes": "Also called segregation of duties.",
+    "domain": 4,
+    "category": "Control"
+  },
+  {
+    "id": 224,
+    "term": "Service delivery objective (SDO)",
+    "acronym": "SDO",
+    "def": "The level of service the business has agreed it must still get while it runs on recovery arrangements, often below normal. It sets how much capacity the alternate setup must provide.",
+    "scopeNotes": "",
+    "domain": 2,
+    "category": "Metric"
+  },
+  {
+    "id": 225,
+    "term": "Service level agreement (SLA)",
+    "acronym": "SLA",
+    "def": "A provider-customer agreement that sets the service levels to be met, how each is measured and reported, and the remedy when one is missed.",
+    "scopeNotes": "",
+    "domain": 3,
+    "category": "Document"
+  },
+  {
+    "id": 226,
+    "term": "Shadow AI",
+    "acronym": null,
+    "def": "Use of AI tools for work without the enterprise's approval or oversight.",
+    "scopeNotes": "The first move is to assess and report, not to ban outright.",
+    "domain": 4,
+    "category": "Concept"
+  },
+  {
+    "id": 227,
+    "term": "Shadow IT",
+    "acronym": null,
+    "def": "Technology that staff or business units buy or use for work outside the enterprise's approval, security review and inventory, so its risk goes unseen.",
+    "scopeNotes": "",
+    "domain": 4,
+    "category": "Concept"
+  },
+  {
+    "id": 228,
+    "term": "Shared responsibility model",
+    "acronym": null,
+    "def": "The split of security duties between a cloud provider and its customer, which changes with the service model (IaaS, PaaS or SaaS).",
+    "scopeNotes": "The customer always keeps accountability for its data and access.",
+    "domain": 4,
+    "category": "Concept"
+  },
+  {
+    "id": 229,
+    "term": "Single loss expectancy (SLE)",
+    "acronym": "SLE",
+    "def": "The expected loss from one occurrence of an event: asset value times exposure factor.",
+    "scopeNotes": "",
+    "domain": 2,
+    "category": "Metric"
+  },
+  {
+    "id": 230,
+    "term": "Single point of failure",
+    "acronym": null,
+    "def": "One component, person or supplier whose loss alone stops a process or service.",
+    "scopeNotes": "",
+    "domain": 1,
+    "category": "Concept"
+  },
+  {
+    "id": 231,
+    "term": "SOC 2 Type 2 report",
+    "acronym": null,
+    "def": "An independent auditor's report on a service organization's controls that tests how they operated over a stated period, not just their design.",
+    "scopeNotes": "A Type 1 report covers design at a point in time. Check the report's scope and your complementary user entity controls before relying on it.",
+    "domain": 3,
+    "category": "Document"
+  },
+  {
+    "id": 232,
+    "term": "Software as a service (SaaS)",
+    "acronym": "SaaS",
+    "def": "Software the enterprise uses over the internet while the provider runs and maintains the application and its infrastructure.",
+    "scopeNotes": "",
+    "domain": 4,
+    "category": "Technology"
+  },
+  {
+    "id": 233,
+    "term": "Software bill of materials (SBOM)",
+    "acronym": "SBOM",
+    "def": "A list of the components and libraries inside a piece of software, used to track known vulnerabilities and supply chain risk.",
+    "scopeNotes": "",
+    "domain": 4,
+    "category": "Document"
+  },
+  {
+    "id": 234,
+    "term": "Stakeholder",
+    "acronym": null,
+    "def": "Any person or group that affects, is affected by or has a legitimate interest in the enterprise's decisions, such as owners, customers, regulators and staff.",
+    "scopeNotes": "",
+    "domain": 0,
+    "category": "Role"
+  },
+  {
+    "id": 235,
+    "term": "Standard",
+    "acronym": null,
+    "def": "A mandatory rule that makes a policy specific and measurable, such as a minimum password length or an approved encryption setting.",
+    "scopeNotes": "The ISACA Glossary uses the word for a published standard approved by a recognized body such as ISO. A guideline is advisory; a procedure gives the steps.",
+    "domain": 1,
+    "category": "Document"
+  },
+  {
+    "id": 236,
+    "term": "System development life cycle (SDLC)",
+    "acronym": "SDLC",
+    "def": "The phases a system goes through, from initiation through design, build, testing, operation and disposal.",
+    "scopeNotes": "",
+    "domain": 4,
+    "category": "Process"
+  },
+  {
+    "id": 237,
+    "term": "Tabletop exercise",
+    "acronym": null,
+    "def": "A facilitated discussion in which a team walks through a scenario to test roles, decisions and plans without touching live systems.",
+    "scopeNotes": "",
+    "domain": 2,
+    "category": "Process"
+  },
+  {
+    "id": 238,
+    "term": "Tailoring",
+    "acronym": null,
+    "def": "Adjusting a framework or control baseline to fit the enterprise's risks, size and obligations, by scoping out, changing or adding elements and recording why.",
+    "scopeNotes": "",
+    "domain": 1,
+    "category": "Process"
+  },
+  {
+    "id": 239,
+    "term": "Target risk",
+    "acronym": null,
+    "def": "KaiSip's name for the level a planned response is expected to reach, set within appetite; the ISACA Glossary calls it future residual risk. It judges a plan, never today's position.",
+    "scopeNotes": "Inherent ignores all management action; current counts only actions already taken; residual is what an implemented response leaves; future residual (KaiSip: target) is what a planned response should reach.",
+    "domain": 3,
+    "category": "Concept"
+  },
+  {
+    "id": 240,
+    "term": "Technical debt",
+    "acronym": null,
+    "def": "The future cost and risk created by shortcuts, deferred upgrades or aging technology.",
+    "scopeNotes": "",
+    "domain": 4,
+    "category": "Concept"
+  },
+  {
+    "id": 241,
+    "term": "Technology roadmap",
+    "acronym": null,
+    "def": "A time-based plan of which technologies will be adopted, upgraded or retired, linked to business goals.",
+    "scopeNotes": "",
+    "domain": 4,
+    "category": "Document"
+  },
+  {
+    "id": 242,
+    "term": "Temporary acceptance",
+    "acronym": null,
+    "def": "A time-limited decision, approved by the level that set the limit, to carry risk above appetite or tolerance while a fix is delivered.",
+    "scopeNotes": "",
+    "domain": 1,
+    "category": "Process"
+  },
+  {
+    "id": 243,
+    "term": "Third-party risk management (TPRM)",
+    "acronym": "TPRM",
+    "def": "Assessing, contracting for and monitoring the risk from vendors and partners across the relationship, scaled to how critical each one is.",
+    "scopeNotes": "",
+    "domain": 3,
+    "category": "Process"
+  },
+  {
+    "id": 244,
+    "term": "Threat",
+    "acronym": null,
+    "def": "A possible source of harm, such as an attacker, a careless user, a failing supplier or a flood, that could damage an asset or disrupt an objective.",
+    "scopeNotes": "",
+    "domain": 2,
+    "category": "Concept"
+  },
+  {
+    "id": 245,
+    "term": "Threat event",
+    "acronym": null,
+    "def": "A specific occurrence, such as a phishing campaign or a flood, through which a threat source could harm an asset or disrupt a process.",
+    "scopeNotes": "",
+    "domain": 2,
+    "category": "Concept"
+  },
+  {
+    "id": 246,
+    "term": "Threat intelligence",
+    "acronym": null,
+    "def": "Analyzed information about adversaries, their methods and current campaigns that matter to the enterprise, used to anticipate attacks, tune defenses and update risk scenarios.",
+    "scopeNotes": "New intelligence is a trigger to assess and report, not to jump to controls.",
+    "domain": 2,
+    "category": "Concept"
+  },
+  {
+    "id": 247,
+    "term": "Threat landscape",
+    "acronym": null,
+    "def": "The current set of threats, threat sources and attack methods relevant to the enterprise and its sector; a change in it is a trigger to reassess scenarios.",
+    "scopeNotes": "",
+    "domain": 2,
+    "category": "Concept"
+  },
+  {
+    "id": 248,
+    "term": "Threat modeling",
+    "acronym": null,
+    "def": "A structured way, such as STRIDE or attack trees, to work out how a system could be attacked or harmed.",
+    "scopeNotes": "",
+    "domain": 2,
+    "category": "Process"
+  },
+  {
+    "id": 249,
+    "term": "Threat source",
+    "acronym": null,
+    "def": "Anyone or anything that could cause harm, grouped as adversarial, accidental, structural or environmental.",
+    "scopeNotes": "In NIST SP 800-30, a privileged insider who intends harm is adversarial; an administrator's honest mistake is accidental.",
+    "domain": 2,
+    "category": "Concept"
+  },
+  {
+    "id": 250,
+    "term": "Three Lines Model",
+    "acronym": null,
+    "def": "The Institute of Internal Auditors' 2020 update of the lines of defense model. It stresses clear roles and cooperation over strict separation.",
+    "scopeNotes": "",
+    "domain": 1,
+    "category": "Framework"
+  },
+  {
+    "id": 251,
+    "term": "Threshold",
+    "acronym": null,
+    "def": "A defined value that, when crossed, triggers review, escalation or action, such as a KRI's amber and red levels.",
+    "scopeNotes": "",
+    "domain": 1,
+    "category": "Metric"
+  },
+  {
+    "id": 252,
+    "term": "Tone at the top",
+    "acronym": null,
+    "def": "The attitude toward risk and integrity that senior leaders show through their words, decisions and behavior.",
+    "scopeNotes": "",
+    "domain": 1,
+    "category": "Concept"
+  },
+  {
+    "id": 253,
+    "term": "Top-down and bottom-up approach",
+    "acronym": null,
+    "def": "Two ways to build risk scenarios: top-down starts from business objectives and asks what could stop them; bottom-up starts from assets, threats and vulnerabilities. Using both gives fuller coverage.",
+    "scopeNotes": "",
+    "domain": 2,
+    "category": "Process"
+  },
+  {
+    "id": 254,
+    "term": "Total cost of ownership (TCO)",
+    "acronym": "TCO",
+    "def": "All costs of a control or system over its life, including purchase, staff time, maintenance, training and any drag on the business.",
+    "scopeNotes": "",
+    "domain": 3,
+    "category": "Metric"
+  },
+  {
+    "id": 255,
+    "term": "Training data",
+    "acronym": null,
+    "def": "The data used to build an AI model. Its quality, representativeness and usage rights shape the model's risk.",
+    "scopeNotes": "",
+    "domain": 4,
+    "category": "Technology"
+  },
+  {
+    "id": 256,
+    "term": "Trend analysis",
+    "acronym": null,
+    "def": "Comparing a measure over several periods to see the direction and speed of change.",
+    "scopeNotes": "A worsening trend can call for action before any threshold is breached.",
+    "domain": 3,
+    "category": "Process"
+  },
+  {
+    "id": 257,
+    "term": "Trigger event",
+    "acronym": null,
+    "def": "A change, such as an acquisition, new law, major incident or new technology, that prompts reassessment of a risk before its scheduled review.",
+    "scopeNotes": "Also called a reassessment or review trigger.",
+    "domain": 1,
+    "category": "Concept"
+  },
+  {
+    "id": 258,
+    "term": "User acceptance testing (UAT)",
+    "acronym": "UAT",
+    "def": "Testing by business users to confirm a system meets their requirements before it goes live.",
+    "scopeNotes": "Sign-off comes from the business owner, not the developers.",
+    "domain": 4,
+    "category": "Process"
+  },
+  {
+    "id": 259,
+    "term": "Validated closure",
+    "acronym": null,
+    "def": "Closing an issue only after independent evidence confirms the fix is in place and working.",
+    "scopeNotes": "",
+    "domain": 3,
+    "category": "Process"
+  },
+  {
+    "id": 260,
+    "term": "Vendor lock-in",
+    "acronym": null,
+    "def": "Dependence on one supplier's product or platform that makes switching costly, slow or risky.",
+    "scopeNotes": "Plan exit and data-portability terms before adopting a new technology or service.",
+    "domain": 4,
+    "category": "Concept"
+  },
+  {
+    "id": 261,
+    "term": "Vulnerability",
+    "acronym": null,
+    "def": "A weakness that a threat could exploit, whether in technology, a process, people's skills or the controls and governance around them.",
+    "scopeNotes": "",
+    "domain": 2,
+    "category": "Concept"
+  },
+  {
+    "id": 262,
+    "term": "Vulnerability management",
+    "acronym": null,
+    "def": "The ongoing cycle of finding, rating, fixing or accepting, and verifying weaknesses, prioritized by the business risk each poses, not by technical score alone.",
+    "scopeNotes": "",
+    "domain": 2,
+    "category": "Process"
+  },
+  {
+    "id": 263,
+    "term": "Walkthrough",
+    "acronym": null,
+    "def": "Tracing one transaction through a process and its controls to confirm how they are designed and that they are in place.",
+    "scopeNotes": "",
+    "domain": 3,
+    "category": "Process"
+  },
+  {
+    "id": 264,
+    "term": "Whistleblowing",
+    "acronym": null,
+    "def": "Reporting suspected wrongdoing through a protected, often anonymous, channel, without fear of retaliation.",
+    "scopeNotes": "A healthy risk culture protects reporters; retaliation silences the early warnings that risk management relies on.",
+    "domain": 1,
+    "category": "Process"
+  },
+  {
+    "id": 265,
+    "term": "Zero Trust",
+    "acronym": null,
+    "def": "A security approach that grants no implicit trust based on network location and verifies every access request against policy.",
+    "scopeNotes": "",
+    "domain": 4,
+    "category": "Framework"
+  }
+]

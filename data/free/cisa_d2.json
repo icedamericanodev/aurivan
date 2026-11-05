@@ -1,0 +1,1765 @@
+{
+  "domain": 2,
+  "title": "Governance and Management of IT",
+  "weight": "18%",
+  "count": 47,
+  "questions": [
+    {
+      "id": "d2_002",
+      "domain": 2,
+      "subtopic": "Three Lines Model. Roles and Boundaries",
+      "principle_id": "independence-throughout",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An IS auditor briefs the audit committee on the Three Lines Model. Which role assignment is MOST accurate?",
+      "options": {
+        "A": "Internal audit owns risk; management oversees it; the board gives assurance",
+        "B": "Risk functions own risk; line managers monitor it; audit approves controls",
+        "C": "Management owns risk; risk functions provide independent assurance; audit advises management",
+        "D": "Management owns risk; risk functions support and challenge; audit independently assures"
+      },
+      "correct": "D",
+      "key_concept": "Management owns risk, second-line functions support and challenge, and internal audit alone provides independent assurance to the governing body.",
+      "pre_read": "Track two things per line: who owns the risk, and who is independent of management.",
+      "correct_explanation": "In the IIA Three Lines Model, first-line management owns and manages risk, second-line roles such as risk and compliance provide expertise, support, monitoring and challenge, and internal audit gives independent, objective assurance to the governing body. Option C wrongly makes the second line independent; it supports management, so only internal audit is independent.",
+      "wrong_explanations": {
+        "A": "This inverts the model. Audit cannot own risk without losing independence, and the board is the governing body that receives assurance.",
+        "B": "Operational management, not risk functions, owns risk. Audit evaluates controls; approving them would create a self-review threat.",
+        "C": "Second-line functions sit within management and support it. They monitor and challenge but are not independent; independent assurance is the third line's role."
+      },
+      "tips": [
+        "Eliminate: A has audit owning risk, and B moves risk ownership away from operational management.",
+        "Final two: D beats C because only internal audit is independent of management; the second line supports and challenges but is not independent.",
+        "Exam cue: in role questions, find the owner (management) and the only independent assurer (internal audit), then check nobody else claims independence."
+      ],
+      "framework_ref": "IIA Three Lines Model (2020); IIA Global Internal Audit Standards (2024), Standard 7.1 (Organizational Independence)",
+      "related_concepts": [
+        "Three Lines Model",
+        "Operational risk ownership",
+        "Risk and compliance functions",
+        "Independent assurance"
+      ],
+      "_provenance": "Authored from concept: 'Three Lines Model - three distinct accountabilities (own / support / independently assure), distinct from inverted-roles / audit-owns-all / COSO-conflation'. Public source: IIA Three Lines Model (2020). All scenario specifics (health-insurance company, audit committee briefing) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "style_version": 2
+    },
+    {
+      "id": "d2_004",
+      "domain": 2,
+      "subtopic": "IT Strategy. Alignment with Business Strategy",
+      "principle_id": "evidence-quality",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An IS auditor is assessing whether a retailer's three-year IT strategy is aligned with the business. Which evidence is MOST convincing?",
+      "options": {
+        "A": "The CIO set the strategy and shared it for information",
+        "B": "Every major investment traces to a measurable business objective",
+        "C": "IT spending as a share of revenue matches peer retailers",
+        "D": "Business-unit heads formally signed off the final strategy document"
+      },
+      "correct": "B",
+      "key_concept": "IT-business alignment is evidenced by tracing each major IT investment to a business objective with a measure of success.",
+      "pre_read": "Distinguish evidence that people agreed from evidence that investments actually serve business goals.",
+      "correct_explanation": "Alignment is shown by traceability: every major IT investment should map to a business objective with a measure, so gaps in either direction become visible and progress can be judged. Option D shows the business agreed to the document, but sign-off does not prove investments serve objectives; leaders often approve plans they have not tested against strategy.",
+      "wrong_explanations": {
+        "A": "A CIO-only strategy shared for information shows IT acting alone. Alignment requires business input and approval, not notification.",
+        "C": "Peer spending levels show what IT costs relative to others, not whether this strategy's investments serve this retailer's objectives.",
+        "D": "An auditor would expect business sign-off on any IT strategy, though approval is a process step; alignment is demonstrated investment by investment."
+      },
+      "tips": [
+        "Eliminate: A has the CIO setting strategy without business approval, and C benchmarks spending, which measures cost, not alignment.",
+        "Final two: B beats D because traceability to measurable objectives proves alignment, while sign-off only proves agreement.",
+        "Exam cue: when asked for the BEST evidence of alignment, choose the mapping of IT investments to business objectives over approvals or opinions."
+      ],
+      "framework_ref": "COBIT 2019 APO02 (Managed Strategy); COBIT 2019 (Goals Cascade and Performance Management)",
+      "related_concepts": [
+        "IT strategy",
+        "IT-business alignment",
+        "Strategic mapping",
+        "Capability roadmap"
+      ],
+      "_provenance": "Authored from concept: 'IT strategy alignment - explicit mapping of IT investments to business objectives with measurable success criteria, distinct from technical-ambition / identical-strategies / CIO-only-authoring'. Public source: COBIT 2019 APO02. All scenario specifics (retail e-commerce, 3-year IT strategy) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. D2 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): C (newest technologies) was technology for its own sake; it is now a peer spend benchmark, a common but wrong proxy for alignment.",
+      "style_version": 2
+    },
+    {
+      "id": "d2_012",
+      "domain": 2,
+      "subtopic": "Risk Analysis Methods. Qualitative vs Quantitative Selection",
+      "principle_id": "fit-method-to-objective",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A CIO wants dollar-based quantitative analysis for every IT risk, though loss data is sparse for many. What should the IS auditor advise as MOST important?",
+      "options": {
+        "A": "Reserve quantitative analysis for risks above a set loss threshold",
+        "B": "Match the method to available data and the decision's purpose",
+        "C": "Run Monte Carlo simulation to fill gaps in the sparse loss data",
+        "D": "Convert qualitative ratings to dollars with a fixed scale"
+      },
+      "correct": "B",
+      "key_concept": "Choose qualitative, semi-quantitative or quantitative risk analysis based on available data and the decision it must support.",
+      "pre_read": "Notice that loss data is sparse; it decides how credible quantitative output would be.",
+      "correct_explanation": "Method choice should follow the data available and what the decision needs. Quantitative analysis is credible only where loss data supports the estimates; with sparse data it produces precise-looking but unreliable numbers. Reserving quantitative work for large risks sounds proportionate, but size does not create data: a large risk with no loss history still yields guessed figures.",
+      "wrong_explanations": {
+        "A": "Materiality does decide how much analysis a risk deserves; which technique the evidence supports is a separate question.",
+        "C": "Simulation propagates its inputs. With sparse loss data the input ranges are guesses, so the output only looks precise.",
+        "D": "A fixed conversion adds dollar labels without new evidence, giving false precision to judgments that remain qualitative."
+      },
+      "tips": [
+        "Eliminate: C and D produce dollar figures without adding loss data: simulation spreads guessed inputs, and a fixed scale relabels ratings.",
+        "Final two: B beats A because the data behind a risk, not its size, decides whether quantitative output is credible.",
+        "Exam cue: when data is sparse, prefer judgment-based or semi-quantitative analysis; precise numbers built on guesses mislead decision-makers."
+      ],
+      "framework_ref": "ISACA Risk IT Framework; ISO 31000:2018 (Risk Management); IEC 31010:2019 (Risk Assessment Techniques); FAIR (Factor Analysis of Information Risk)",
+      "related_concepts": [
+        "Qualitative risk analysis",
+        "Quantitative risk analysis",
+        "Semi-quantitative methods",
+        "FAIR",
+        "Method selection criteria"
+      ],
+      "_provenance": "Authored from concept: 'risk-analysis method selection - data + objective, semi-quantitative as middle ground, distinct from universal-quantitative / universal-qualitative / consistency-over-fit'. Public source: ISACA Risk IT + ISO 31000 + FAIR. All scenario specifics (regional REIT, CIO universal-quantitative proposal) invented for this question. Distinct from D1 d1_097 (which applied quant-vs-qual to a port authority's audit risk-assessment context). Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. D2 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): A, C and D all fell to 'everywhere' or 'all'; they are now a loss-size threshold, Monte Carlo on sparse data and a fixed rating-to-dollar scale.",
+      "style_version": 2
+    },
+    {
+      "id": "d2_021",
+      "domain": 2,
+      "subtopic": "IT Risk Register. Definition and Purpose",
+      "principle_id": "priority-word-decides",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "An IS auditor reviews how management uses its IT risk register. Which use reflects its PRIMARY purpose?",
+      "options": {
+        "A": "Logging remediation actions completed during the fiscal year",
+        "B": "Recording each identified IT risk's likelihood and impact ratings for reference",
+        "C": "Prioritizing IT risks and tracking the response to each",
+        "D": "Documenting which controls the audit plan will test each year"
+      },
+      "correct": "C",
+      "key_concept": "An IT risk register supports prioritization, owned response decisions and monitoring across the risk lifecycle, not just storage of ratings.",
+      "pre_read": "Ask what decision each register entry should help someone make.",
+      "correct_explanation": "A risk register is the working tool of the risk program: each entry records the risk, its rating, controls, residual risk, owner and response status, so management can prioritize, decide and monitor. Option B describes part of its content, but a register used only to store ratings supports no decisions; ownership and response tracking make it useful.",
+      "wrong_explanations": {
+        "A": "A remediation log records past actions. The register covers current risks, their owners and pending responses, not just completed fixes.",
+        "B": "Rating likelihood and impact is a needed assessment step that fills the register, but purpose asks what a record is used for, not what it stores.",
+        "D": "Choosing controls to test is internal audit's planning task. The register is management's tool for prioritizing and treating risk."
+      },
+      "tips": [
+        "Eliminate: A is a log of past fixes, and D describes audit planning, which uses the register but is not its purpose.",
+        "Final two: C beats B because the register exists to drive prioritized, owned responses; ratings alone are a static list.",
+        "Exam cue: a risk register without owners and response status is a list, not risk management."
+      ],
+      "framework_ref": "ISACA Risk IT Framework; ISO 31000:2018 (Risk Management); COBIT 2019 APO12 (Managed Risk)",
+      "related_concepts": [
+        "IT risk register",
+        "Risk-management lifecycle",
+        "Residual risk",
+        "Risk owner",
+        "Risk attributes"
+      ],
+      "_provenance": "Authored from concept: 'IT risk register foundational definition - structured catalog with 6 attributes supporting lifecycle decisions, distinct from remediation log / audit-only / regulatory filing'. Public source: ISACA Risk IT + ISO 31000. Foundational tier launches in D2 batch 3 (mirrors D1 pattern: foundational at D1 batch 6). Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. D2 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): D (regulatory filing) was a strawman; it is now an audit-planning use. Key no longer reads as a three-part list.",
+      "style_version": 2
+    },
+    {
+      "id": "d2_022",
+      "domain": 2,
+      "subtopic": "Risk Treatment Options. Accept / Reduce / Transfer / Avoid",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "A planned analytics project's privacy risk would still far exceed board appetite after the proposed controls. Which treatment should the IS auditor recommend as MOST appropriate?",
+      "options": {
+        "A": "Accept the risk with senior management sign-off",
+        "B": "Reduce the risk by adding monitoring and proceed as planned",
+        "C": "Transfer the risk to the analytics vendor by contract",
+        "D": "Avoid the risk by redesigning or canceling the initiative"
+      },
+      "correct": "D",
+      "key_concept": "The four treatments are accept, reduce, transfer and avoid; when no other treatment brings a risk within appetite, avoid it.",
+      "pre_read": "Note that the risk stays above appetite after controls and that the project is only planned. Ask which treatment remains.",
+      "correct_explanation": "When a planned activity's risk would still far exceed appetite after the proposed controls, the IS auditor should recommend avoiding it by redesigning or dropping the activity that creates it. Acceptance is the most tempting alternative because senior sign-off looks like governance, but accepting a risk far beyond board-set appetite overrides that appetite rather than respecting it.",
+      "wrong_explanations": {
+        "A": "Sign-off is the proper route for risk within appetite; far beyond it, a plan still on paper is redesigned, since avoidance is cheapest before commitment.",
+        "B": "Monitoring detects misuse after it happens; it does not lower the exposure the project's design creates, so residual risk stays above appetite.",
+        "C": "A controller stays accountable for personal data its vendors process. A contract can shift costs but cannot transfer the privacy risk or accountability."
+      },
+      "tips": [
+        "Eliminate: B adds detective monitoring that does not lower the design's exposure, and C tries to contract away privacy accountability that stays with the controller.",
+        "Final two: D beats A because the project is still only planned; accepting risk far beyond appetite would override the board's limits when avoidance is available.",
+        "Exam cue: when proposed controls cannot bring a new, planned activity within appetite, avoid it; acceptance suits risk within appetite, and keeping risk above it takes a rare documented exception."
+      ],
+      "framework_ref": "ISACA Risk IT Framework; ISO 31000:2018 (Risk Management); COBIT 2019 APO12 (Managed Risk)",
+      "related_concepts": [
+        "Risk treatment",
+        "Accept / Reduce / Transfer / Avoid",
+        "Risk-management lifecycle",
+        "Risk tolerance",
+        "Strategic risk response"
+      ],
+      "_provenance": "Authored from concept: 'risk treatment options foundational - the four standard responses (accept/reduce/transfer/avoid), distinct from incident response (detect/respond/document/report) and lifecycle stages (identify/assess/respond/monitor)'. Public source: ISACA Risk IT + ISO 31000. Distinct from D1 d1_033 (which covered the same options at application tier with a scenario). Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. v2: retargeted to an applied accept-versus-avoid decision to avoid duplicating d2_070. Learner-impact review (Oct 2026): aligned acceptance rule with other items: above-appetite acceptance is a rare documented exception approved at the level the risk policy names. Role-lens pass (Oct 2026): stem recast so the IS auditor recommends or judges; key and options unchanged. D2 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): The stem no longer states that no control works, which ruled out B and C by fact; B is now detective monitoring, which knowledge rules out. Audit round: wrong explanation A reworded (it said the opposite of what was meant).",
+      "style_version": 2
+    },
+    {
+      "id": "d2_028",
+      "domain": 2,
+      "subtopic": "Six Sigma vs Agile vs IT Balanced Scorecard. Method Selection",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "IT operations must cut defects in a high-volume change-deployment process where small variations matter and root causes are unclear. Which method should the IS auditor consider MOST suitable?",
+      "options": {
+        "A": "Agile Scrum, using sprint retrospectives",
+        "B": "Six Sigma, using the DMAIC cycle",
+        "C": "An IT balanced scorecard, using process KPIs",
+        "D": "Lean, using value stream mapping"
+      },
+      "correct": "B",
+      "key_concept": "Match the improvement method to the problem: Six Sigma suits high-volume processes where variation causes defects and root causes need statistical analysis.",
+      "pre_read": "Notice three facts: high volume, small variation matters, unclear root causes. Ask which method is built for that combination.",
+      "correct_explanation": "Six Sigma is designed for high-volume processes where small variation produces defects. Its DMAIC cycle measures the process, uses statistical analysis to find unclear root causes, and adds controls to hold the gain. Lean also improves processes, but its focus is removing waste and delay; it does not supply the statistical root-cause analysis this defect problem needs.",
+      "wrong_explanations": {
+        "A": "Scrum organizes iterative product delivery. It offers no statistical method for finding the root causes of process variation.",
+        "C": "A balanced scorecard links IT goals to strategy and measures them. It reports results but is not a defect-reduction method.",
+        "D": "Lean targets waste and flow. It speeds a process up but is not designed to diagnose variation-driven defects."
+      },
+      "tips": [
+        "Eliminate: A is a delivery framework, and C is a measurement tool, not an improvement method.",
+        "Final two: B beats D because unclear root causes and variation call for statistical analysis; Lean removes waste but does not diagnose variation.",
+        "Exam cue: high volume plus variation plus unknown causes points to Six Sigma; waste and delay point to Lean."
+      ],
+      "framework_ref": "COBIT 2019 MEA01 (Managed Performance and Conformance Monitoring); COBIT 2019 APO11 (Managed Quality)",
+      "related_concepts": [
+        "Six Sigma",
+        "DMAIC",
+        "Agile / Scrum",
+        "IT Balanced Scorecard",
+        "Lean",
+        "Method-fit selection"
+      ],
+      "_provenance": "Authored from concept: 'method selection across Six Sigma / Agile / Balanced Scorecard / Lean - method-fit by situation, distinct from Agile-universal / BSC-as-improvement / Lean-universal'. Public source: ITAF + COBIT 2019 APO11. All scenario specifics (precision-instruments manufacturer, change-deployment defects) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. CISA quality pass (Oct 2026): every option glossed its own purpose and only the key echoed the stem's 'variation'; the options now name the method only, so the item tests knowing what each method is for. Blind-tester polish (Oct 2026): options A and C now follow the same 'method, using …' pattern as B and D.",
+      "style_version": 2
+    },
+    {
+      "id": "d2_034",
+      "domain": 2,
+      "subtopic": "IT Policy Hierarchy. Standard vs Guideline",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "Management issues a document requiring every laptop to use full-disk encryption with AES-256. How should the IS auditor MOST appropriately classify it?",
+      "options": {
+        "A": "A policy, stating management's high-level security intent",
+        "B": "A guideline, recommending a practice staff may adapt",
+        "C": "A standard, setting a mandatory minimum requirement",
+        "D": "A procedure, describing the step-by-step encryption tasks"
+      },
+      "correct": "C",
+      "key_concept": "Policy states intent, a standard sets mandatory specific requirements, a procedure gives steps, and a guideline recommends optional practice.",
+      "pre_read": "Notice the document is both mandatory and technically specific. Place it in the policy hierarchy using those two facts.",
+      "correct_explanation": "A standard sets mandatory, specific requirements that support a policy, such as a named encryption algorithm on every laptop. A policy is also mandatory, which makes it the tempting choice, but it states management's intent at a high level, such as protecting data at rest, and leaves the technical specification to standards beneath it.",
+      "wrong_explanations": {
+        "A": "A policy expresses high-level intent. Naming a specific algorithm and device scope is the detail a standard provides.",
+        "B": "Guidelines are recommendations. This document is mandatory, so it cannot be a guideline.",
+        "D": "A procedure lists the steps to perform a task. The document states what is required, not how to do it."
+      },
+      "tips": [
+        "Eliminate: B is optional by definition, and D gives how-to steps rather than a requirement.",
+        "Final two: C beats A because mandatory and technically specific means standard; a policy states intent without naming an algorithm.",
+        "Exam cue: specific and mandatory is a standard; broad intent is a policy; optional is a guideline; steps are a procedure."
+      ],
+      "framework_ref": "ISO/IEC 27002:2022; NIST SP 800-12 (Introduction to Information Security); COBIT 2019 APO01 (Managed I&T Management Framework)",
+      "related_concepts": [
+        "Policy hierarchy",
+        "Standard",
+        "Guideline",
+        "Procedure"
+      ],
+      "_provenance": "Authored from concept: 'Standard vs Guideline distinction - mandatory vs recommended, distinct from procedure / interchangeable / audience-split'. Public source: ISO/IEC 27002 + NIST SP 800-12. All scenario specifics invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "style_version": 2
+    },
+    {
+      "id": "d2_037",
+      "domain": 2,
+      "subtopic": "Compensating Controls for Lack of SoD",
+      "principle_id": "compensating-controls-fallback",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "At a 12-person fintech, one engineer can both deploy code and write to the production database. Which compensating control should the IS auditor consider BEST?",
+      "options": {
+        "A": "Independent review of production logs against approved change tickets",
+        "B": "Automatic alerts to the engineer whenever production data changes",
+        "C": "Founder sign-off on each change ticket before the engineer deploys",
+        "D": "Formal management acceptance of the conflict in the risk register"
+      },
+      "correct": "A",
+      "key_concept": "When team size prevents segregation of duties, use independent detective controls such as log review against approved changes.",
+      "pre_read": "Notice the team is small, so separation is not possible yet. Ask what independent check can still catch misuse.",
+      "correct_explanation": "When duties cannot be split, an independent detective control compensates. Reviewing production logs against approved change tickets lets someone other than the engineer spot unauthorized changes on a regular cadence. Recording risk acceptance is a valid governance step, but it only documents the exposure; it does not reduce it, so it is not a compensating control.",
+      "wrong_explanations": {
+        "B": "Alerts sent to the person being checked are a self-review; no one independent sees the changes.",
+        "C": "Sign-off approves the changes the engineer submits, but direct database writes need no ticket, so unauthorized changes would bypass it unseen.",
+        "D": "Risk acceptance records a decision to tolerate exposure. It reduces nothing, so it does not compensate for the missing segregation."
+      },
+      "tips": [
+        "Eliminate: B sends the alerts to the engineer being checked, and C approves only the changes the engineer chooses to submit.",
+        "Final two: A beats D because a compensating control must reduce risk; acceptance only records it.",
+        "Exam cue: when segregation of duties is impossible, look for an independent, detective review that runs on a regular cadence."
+      ],
+      "framework_ref": "COBIT 2019 DSS06 (Managed Business Process Controls); NIST SP 800-53 Rev 5 AC-5 (Separation of Duties); NIST SP 800-53 Rev 5 AU-6 (Audit Record Review, Analysis, and Reporting)",
+      "related_concepts": [
+        "Segregation of Duties",
+        "Compensating controls",
+        "Detective controls",
+        "Independent review"
+      ],
+      "_provenance": "Authored from concept: 'Compensating Controls for SoD lack - log + independent review + mgmt oversight, distinct from trust-only / accept-only / unscalable re-perform'. Public source: COBIT 2019 DSS06 + ISACA SoD guidance. All scenario specifics (12-person fintech) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. D2 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): B (self-reporting with an ethics pledge) was a strawman; it is now alerts routed to the engineer, a self-review. Blind round: C (re-perform every query) was near-silly; it is now ticket sign-off, which direct database writes bypass.",
+      "style_version": 2
+    },
+    {
+      "id": "d2_041",
+      "domain": 2,
+      "subtopic": "Sourcing Practices. In-House Retention Drivers",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An IS auditor reviews a bank's sourcing strategy for core banking modernization. Which factor MOST strongly justifies keeping a function in-house?",
+      "options": {
+        "A": "Mature vendors offer standard service levels at a lower unit cost",
+        "B": "In-house delivery costs slightly less than recent vendor quotes",
+        "C": "The function is strategic and losing control of it is unacceptable",
+        "D": "Moving the function would disrupt the staff who support it today"
+      },
+      "correct": "C",
+      "key_concept": "Keep a function in-house when it is strategic, differentiating, knowledge-intensive or its loss of control would be unacceptable; cost alone shifts over time.",
+      "pre_read": "Separate strategic sourcing drivers from short-term cost and convenience. Ask which factor stays true even when prices change.",
+      "correct_explanation": "Sourcing decisions follow business strategy and risk. A function that differentiates the bank or whose loss of control would be unacceptable should stay in-house whatever the price. A small cost advantage also points toward keeping the work, but it is a weak and changeable reason: vendor pricing moves, and cost says nothing about strategic value or control risk.",
+      "wrong_explanations": {
+        "A": "Mature, cheaper vendors are a reason to outsource. This factor argues against keeping the function.",
+        "B": "Sourcing starts from what the bank must control; cost, a legitimate input, decides only among options that keep that control.",
+        "D": "Staff disruption is a change-management issue. Status-quo comfort is not a strategic sourcing driver."
+      },
+      "tips": [
+        "Eliminate: A argues for outsourcing, and D is inertia rather than a sourcing driver.",
+        "Final two: C beats B because sourcing follows strategy and control risk; a slight cost advantage is weak and short-lived.",
+        "Exam cue: in sourcing questions, strategic importance and control outrank cost differences and convenience."
+      ],
+      "framework_ref": "COBIT 2019 APO10 (Managed Vendors); COBIT 2019 APO02 (Managed Strategy)",
+      "related_concepts": [
+        "IT sourcing",
+        "In-house vs outsource",
+        "Strategic vs commodity functions",
+        "Co-sourcing"
+      ],
+      "_provenance": "Authored from concept: 'Sourcing Practices in-house retention drivers - strategic + differentiating + control-critical, distinct from operational hours / vendor maturity / status quo'. Public source: COBIT 2019 APO10 + ISACA IT Sourcing guidance. All scenario specifics (regional bank core banking modernization) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "style_version": 2
+    },
+    {
+      "id": "d2_044",
+      "domain": 2,
+      "subtopic": "Business Intelligence Governance. Dashboard Integrity",
+      "principle_id": "governance-before-technology",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An insurer's board relies on BI dashboards for decisions. Which design element should the IS auditor consider MOST important for dashboard integrity?",
+      "options": {
+        "A": "Automated alerts whenever a board metric crosses its set threshold",
+        "B": "Documented data lineage and quality checks with named stewards",
+        "C": "Access restricted to the executive team and the board",
+        "D": "Real-time refresh of every metric from source systems"
+      },
+      "correct": "B",
+      "key_concept": "Dashboard integrity depends on data governance: documented lineage, data-quality validation and accountable data stewards.",
+      "pre_read": "Notice the stem asks about integrity, not speed or appearance. Ask what proves the numbers are complete and accurate.",
+      "correct_explanation": "Integrity means the figures are complete, accurate and traceable to their sources. Documented lineage shows where each number comes from, quality checks catch errors in the pipeline, and named stewards are accountable for each data area. Real-time refresh makes data current, which feels like accuracy, but it simply delivers unvalidated data faster; it does not make the figures correct.",
+      "wrong_explanations": {
+        "A": "Alerts tell the board when a figure moves, but they assume the figure is right; they do not validate the data behind it.",
+        "C": "Access restriction protects confidentiality. It does not show the figures are complete or accurate.",
+        "D": "Refresh speed improves timeliness only. Errors in source data or pipelines arrive faster rather than being caught."
+      },
+      "tips": [
+        "Eliminate: A alerts on figures it cannot validate, and C protects confidentiality, not integrity.",
+        "Final two: B beats D because integrity needs validated, traceable data with accountable owners; faster refresh only delivers data sooner.",
+        "Exam cue: for report or dashboard integrity, look for lineage, data-quality controls and data ownership."
+      ],
+      "framework_ref": "DAMA-DMBOK 2nd Edition (Data Governance + Data Quality); COBIT 2019 APO14 (Managed Data)",
+      "related_concepts": [
+        "Business Intelligence",
+        "Data lineage",
+        "Data quality rules",
+        "Data stewardship"
+      ],
+      "_provenance": "Authored from concept: 'BI Governance dashboard integrity - lineage + DQ rules + stewardship, distinct from aesthetics / access restriction / refresh cadence'. Public source: DAMA-DMBOK 2nd Edition + COBIT 2019 APO14. All scenario specifics (insurance company executive dashboards) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. D2 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): A (branding) was a strawman; it is now threshold alerts. Key no longer reads as a three-part list.",
+      "style_version": 2
+    },
+    {
+      "id": "d2_065",
+      "domain": 2,
+      "subtopic": "Operational Excellence. Framework Selection",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "A logistics company's IT teams use ITIL 4, SAFe and ISO 9001, and the CEO wants operational excellence. Which approach should the IS auditor recommend as BEST?",
+      "options": {
+        "A": "Adopt Lean as the single operational excellence method for every team",
+        "B": "Keep the current frameworks, linked by shared excellence goals and metrics",
+        "C": "Appoint a separate owner to run each of the three frameworks",
+        "D": "Assess each framework's maturity separately and report the scores"
+      },
+      "correct": "B",
+      "key_concept": "Operational excellence in mixed IT environments links fitting frameworks through shared goals and metrics rather than forcing a single method.",
+      "pre_read": "Notice each framework already serves a different team. Ask how to point them at one goal without losing fit.",
+      "correct_explanation": "Each framework fits its domain: ITIL 4 for service management, SAFe for delivery, ISO 9001 for regulated quality. Keeping them, linked by shared cost, quality and speed goals and metrics, preserves that fit, with Lean or Six Sigma applied where they fit. Adopting Lean everywhere is tempting for consistency, but it discards domain fit, including the regulated group's quality discipline.",
+      "wrong_explanations": {
+        "A": "Shared goals and one Lean method both give teams a common improvement language; excellence programs standardize outcomes and measures, though, and leave methods to each domain.",
+        "C": "Owners keep each framework running, but nothing points them at a shared excellence goal, so the teams still optimize separately.",
+        "D": "Separate maturity scores show how each framework performs on its own terms; they do not link the frameworks to one excellence objective."
+      },
+      "tips": [
+        "Eliminate: C and D manage or measure each framework on its own, so nothing ties the three to one excellence goal.",
+        "Final two: B beats A because linking the fitting frameworks through shared goals keeps domain strengths; one method everywhere discards them.",
+        "Exam cue: when several frameworks each fit their area, choose integration under governance over replacement or uniformity."
+      ],
+      "framework_ref": "COBIT 2019 APO11 (Managed Quality); EFQM Model (2020); ITIL 4; ISO 9001:2015",
+      "related_concepts": [
+        "Operational Excellence",
+        "Layered framework strategy",
+        "ITIL 4",
+        "SAFe",
+        "ISO 9001"
+      ],
+      "_provenance": "Authored from concept: 'Operational Excellence framework selection - layered strategy distinct from d2_048 (Quality Mgmt framework selection at smaller scale) and d2_028 (Six Sigma/Agile/BSC method-fit selection)'. Public source: ISACA OpEx + EFQM Model 2020. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. D2 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): C (defer) and D (CEO-selected replacement) were strawmen; they are now per-framework owners and separate maturity scores.",
+      "style_version": 2
+    },
+    {
+      "id": "d2_069",
+      "domain": 2,
+      "subtopic": "Enterprise Architecture. Program Starting Point",
+      "principle_id": "governance-before-technology",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A bank's CIO plans to design a target enterprise architecture and immediately launch migration projects toward it. What should the IS auditor recommend doing FIRST?",
+      "options": {
+        "A": "Select an EA modeling tool for the architecture team",
+        "B": "Document the current-state architecture as a baseline",
+        "C": "Approve the migration projects needed to reach the target",
+        "D": "Benchmark the target design against peer banks' architectures"
+      },
+      "correct": "B",
+      "key_concept": "EA gap analysis needs both states: document the current-state baseline before planning the migration to a target architecture.",
+      "pre_read": "Ask what the target must be compared with before any migration plan makes sense.",
+      "correct_explanation": "A target architecture becomes actionable only when compared with a documented baseline, because the gap between the two defines the migration roadmap. Without the current state, the bank cannot see redundancies, dependencies or the true effort of change. Benchmarking peers can inspire the target design, but it says nothing about the bank's own systems, so it cannot replace the baseline needed for gap analysis.",
+      "wrong_explanations": {
+        "A": "Tool choice is an implementation detail. A tool does not tell the bank what it has today or what must change.",
+        "C": "Approving projects before a gap analysis guesses at the work. Dependencies and redundancies stay unknown until the baseline exists.",
+        "D": "Peer designs may inform the target, but they describe other banks. They cannot reveal the gaps in this bank's own estate."
+      },
+      "tips": [
+        "Eliminate: A starts with tooling, which supports architecture work but defines none of it, and C approves projects before any gap analysis.",
+        "Final two: B beats D because gap analysis needs this bank's baseline; peer benchmarks describe someone else's estate.",
+        "Exam cue: in architecture and improvement programs, document the current state before planning the move to the target state."
+      ],
+      "framework_ref": "TOGAF Standard; COBIT 2019 APO03 (Managed Enterprise Architecture)",
+      "related_concepts": [
+        "Current-state architecture",
+        "Target architecture",
+        "Gap analysis",
+        "Migration planning"
+      ],
+      "_provenance": "Authored from concept: 'InfoSec Governance EGIT/Risk/Quality integration - unified agenda + preserved decision rights, distinct from d2_006 (board accountability) and d2_046 (IT mgmt practices integration synthesis)'. Public source: COBIT 2019 EDM03 + ISO/IEC 27014. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Rebalanced (Oct 2026): re-angled from 2A2 to 2A4.",
+      "style_version": 2
+    },
+    {
+      "id": "d2_072",
+      "domain": 2,
+      "subtopic": "Enterprise Architecture. Business Architecture Layer",
+      "principle_id": "governance-before-technology",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An IS auditor finds a company's enterprise architecture documents only servers, networks and applications, with no link to business processes. Which weakness is GREATEST?",
+      "options": {
+        "A": "The documentation may not show every server in the estate",
+        "B": "IT investments cannot be traced to business needs",
+        "C": "Network diagrams may become outdated as the estate changes",
+        "D": "The architecture does not follow a recognized framework"
+      },
+      "correct": "B",
+      "key_concept": "EA must connect business architecture to data, applications and technology; without the business layer, IT cannot be traced to needs.",
+      "pre_read": "List the layers an enterprise architecture should cover and spot the one missing here.",
+      "correct_explanation": "Enterprise architecture links business strategy and processes to the data, applications and technology that support them. Documenting only the technology layers leaves out business architecture, so the company cannot show why each system exists or which investments support which capabilities. Lack of a recognized framework is a lesser point; a framework is a tool, and even a framework-based model fails if it omits the business layer.",
+      "wrong_explanations": {
+        "A": "Completeness of the server list matters, but it is a detail. The bigger gap is that no layer connects technology to the business.",
+        "C": "Currency is a maintenance issue for any documentation. It does not explain why the architecture cannot support business decisions.",
+        "D": "TOGAF is an established way to structure architecture work, but weaknesses rank by the purpose they defeat, and form ranks below substance."
+      },
+      "tips": [
+        "Eliminate: A and C are documentation-maintenance points, not design weaknesses of the architecture.",
+        "Final two: B beats D because the missing business layer breaks traceability; adopting a framework does not restore it.",
+        "Exam cue: EA spans business, data, application and technology; if the business layer is missing, alignment cannot be shown."
+      ],
+      "framework_ref": "TOGAF Standard; COBIT 2019 APO03 (Managed Enterprise Architecture); COBIT 2019 (Goals Cascade and Performance Management)",
+      "related_concepts": [
+        "Business architecture",
+        "Architecture layers",
+        "Traceability",
+        "IT-business alignment"
+      ],
+      "_provenance": "Authored from concept: 'Cloud Deployment Models foundational - NIST 4-model distinction by tenancy, complementing d2_053 (foundational - Service Models IaaS/PaaS/SaaS)'. Public source: NIST SP 800-145. All scenario specifics invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Rebalanced (Oct 2026): re-angled from 5A8 to 2A4. Rebalance review (Oct 2026): smoothed the key wording.",
+      "style_version": 2
+    },
+    {
+      "id": "d2_082",
+      "domain": 2,
+      "subtopic": "IT Policy Exceptions. Exception Handling",
+      "principle_id": "management-owns-risk",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An IS auditor finds the IT manager grants open-ended exceptions to the access control policy without informing anyone. What should the IS auditor recommend as BEST?",
+      "options": {
+        "A": "Prohibit exceptions so the policy is applied without variation",
+        "B": "Have the internal audit team approve each exception request in advance",
+        "C": "Log each exception in a spreadsheet that the IT manager maintains",
+        "D": "Require risk-owner approval and an expiry date for every exception"
+      },
+      "correct": "D",
+      "key_concept": "Policy exceptions accept risk, so the risk owner approves them, each has an expiry date, and they are tracked and reviewed.",
+      "pre_read": "Think of an exception as a small risk acceptance. Ask who may accept risk and for how long.",
+      "correct_explanation": "Exceptions are a legitimate part of policy management, but each one accepts risk, so the business owner of that risk must approve it, and an expiry date forces reassessment instead of leaving a permanent hole. Logging exceptions in the IT manager's spreadsheet adds visibility, yet the same person still grants them unchecked and nothing makes them lapse, so accepted risk accumulates silently.",
+      "wrong_explanations": {
+        "A": "Banning exceptions ignores real business needs and pushes people to bypass the policy informally. A controlled exception process is safer than a rule nobody can follow.",
+        "B": "Approving exceptions is a management decision. If internal audit approved them, it would later be auditing its own decisions and lose independence.",
+        "C": "A log improves visibility, but the IT manager still grants exceptions alone, and nothing forces them to expire or be reassessed."
+      },
+      "tips": [
+        "Eliminate: A bans exceptions the business genuinely needs, and B hands a management approval to internal audit.",
+        "Final two: D beats C because accepted risk needs its owner's approval and an end date; a log alone leaves both gaps.",
+        "Exam cue: a policy exception is a risk acceptance, so look for risk-owner approval, a time limit and periodic review."
+      ],
+      "framework_ref": "COBIT 2019 APO01 (Managed I&T Management Framework); ISO/IEC 27001:2022 Control A.5.1 (Policies for Information Security); COBIT 2019 APO12 (Managed Risk)",
+      "related_concepts": [
+        "Policy exception management",
+        "Risk acceptance",
+        "Risk ownership",
+        "Policy compliance"
+      ],
+      "_provenance": "Authored from concept: 'IT Strategy update cadence (2.2.5 depth) - annual + event-triggered + board-endorsed, complements d2_004 (IT-business alignment application) and d2_023/d2_024 (foundational + components)'. Public source: COBIT 2019 APO02. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Rebalanced (Oct 2026): re-angled from 2A2 to 2A3.",
+      "style_version": 2
+    },
+    {
+      "id": "d2_084",
+      "domain": 2,
+      "subtopic": "Privacy DPIA. Application",
+      "principle_id": "governance-before-technology",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "Before an EU retailer deploys facial recognition for loss prevention, which privacy activity should the IS auditor recommend management complete FIRST?",
+      "options": {
+        "A": "A records-of-processing (Article 30) entry for the camera system",
+        "B": "A data protection impact assessment of the planned processing",
+        "C": "Updated privacy notices informing shoppers about the cameras",
+        "D": "A two-store pilot, with privacy review after value is proven"
+      },
+      "correct": "B",
+      "key_concept": "High-risk processing such as biometric identification requires a DPIA before it starts, to test necessity, proportionality and risks to individuals.",
+      "pre_read": "Biometric processing of the public is high risk. Ask what must be decided before anything else, including what to tell people.",
+      "correct_explanation": "GDPR Article 35 requires a data protection impact assessment before high-risk processing such as biometric identification. It describes the processing, tests necessity and proportionality, assesses risks to individuals and sets mitigations, and may show the plan should not go ahead. Updated notices are also required for transparency, but they inform people about processing that the DPIA must first show is justified.",
+      "wrong_explanations": {
+        "A": "An Article 30 entry is a required accountability record, but it lists processing rather than assessing it; only Article 35 tests necessity and risk before biometric use.",
+        "C": "Notices are needed, but they only describe processing. The DPIA must first decide whether the processing is justified.",
+        "D": "A pilot is itself live biometric processing of real shoppers, so the assessment must come before it, not after."
+      },
+      "tips": [
+        "Eliminate: A is the routine Article 30 record kept for all processing, not the gate Article 35 sets for high-risk use, and D starts the risky processing before assessing it.",
+        "Final two: B beats C because the DPIA decides whether the processing should happen at all; notices only describe it.",
+        "Exam cue: for new high-risk processing, the impact assessment comes before deployment, notices and pilots."
+      ],
+      "framework_ref": "GDPR Article 35 (Data Protection Impact Assessment); Article 29 Working Party Guidelines on DPIA (WP248 rev.01, endorsed by the EDPB)",
+      "related_concepts": [
+        "DPIA",
+        "GDPR Article 35",
+        "Privacy by design",
+        "Biometric processing"
+      ],
+      "_provenance": "Authored from concept: 'DPIA application for high-risk processing (2.6.1 depth) - Article 35 specific application, complements d2_039 (RoPA Article 30) and d2_040 (Article 6 lawful basis)'. Public source: GDPR Article 35 + EDPB Guidelines 248/2017. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): stem names the EU so the GDPR basis is given. Role-lens pass (Oct 2026): stem recast so the IS auditor recommends or judges; key and options unchanged. CISA quality pass (Oct 2026): option A (a vendor cost comparison) was not a privacy activity; it is now an Article 30 records-of-processing entry, with its explanation and Eliminate tip updated. Blind-tester polish (Oct 2026): option A names Article 30 so the record it means is unambiguous.",
+      "style_version": 2
+    },
+    {
+      "id": "d2_093",
+      "domain": 2,
+      "subtopic": "Service Level Agreement (SLA). Definition",
+      "principle_id": "evidence-quality",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "An IS auditor must confirm that a payroll provider met its SLA targets last quarter. Which evidence is MOST reliable?",
+      "options": {
+        "A": "Provider's monthly SLA report, attested by its service owner",
+        "B": "A satisfaction survey of payroll users across departments",
+        "C": "The signed SLA document showing the agreed targets",
+        "D": "Customer-side measurements reconciled to the defined SLA metrics"
+      },
+      "correct": "D",
+      "key_concept": "SLA compliance is best shown by customer-side measurements against defined metrics; provider reports need independent verification.",
+      "pre_read": "Ask who produced each piece of evidence and whether it measures actual delivery.",
+      "correct_explanation": "Evidence the customer generates independently, such as its own timing records reconciled to the SLA's defined metrics, shows whether targets were actually met. The provider's report is the strongest alternative because it addresses the right targets, but it is self-reported by the party being measured; the customer should verify it rather than rely on it alone.",
+      "wrong_explanations": {
+        "A": "An auditor would read the attested report as useful corroboration. Evidence gains weight, however, with its independence from the party it describes.",
+        "B": "Satisfaction reflects perception, not measured performance against agreed targets. Users can be content while targets are missed.",
+        "C": "The signed SLA shows what was promised, not what was delivered. It is the baseline for testing, not evidence of performance."
+      },
+      "tips": [
+        "Eliminate: B measures perception rather than performance, and C shows the commitment, not whether it was met.",
+        "Final two: D beats A because independent customer-side data is more reliable than a report from the party being measured.",
+        "Exam cue: for SLA compliance, prefer evidence the customer generates or verifies over provider self-reporting."
+      ],
+      "framework_ref": "COBIT 2019 APO09 (Managed Service Agreements); ITIL 4 Service Level Management practice",
+      "related_concepts": [
+        "Service Level Agreement",
+        "Service-level targets",
+        "APO09",
+        "Service management"
+      ],
+      "_provenance": "Authored from concept: 'SLA foundational definition - documented commitment + measurable + remediable, complements d2_079 (vendor SLA design) and d2_083 (APO09 service agreements multi-element)'. Public source: COBIT 2019 APO09 + ITIL 4. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. v2: retargeted to SLA evidence reliability to avoid duplicating d2_079.",
+      "style_version": 2
+    },
+    {
+      "id": "d2_102",
+      "domain": 2,
+      "subtopic": "Quality Assurance. Independence of the QA Function",
+      "principle_id": "independence-throughout",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "At a software company, the QA team reports to the development manager whose releases it reviews and approves. Which concern is GREATEST for the IS auditor?",
+      "options": {
+        "A": "QA may be pressured to pass releases to meet deadlines",
+        "B": "QA staff may lack training in the latest testing tools",
+        "C": "The development manager may have too many direct reports",
+        "D": "QA may lack the budget to review every release fully"
+      },
+      "correct": "A",
+      "key_concept": "QA must be organizationally independent of the development work it reviews so it can reject releases without pressure.",
+      "pre_read": "Look at the reporting line and ask whether QA can say no to its own manager.",
+      "correct_explanation": "Quality assurance must be independent of the work it reviews. Reporting to the manager whose releases it approves creates a conflict: deadline and delivery pressure can lead QA to pass releases it should reject, so defects reach production. A limited budget can also weaken coverage, but that is a resourcing issue management can see and fix, whereas compromised objectivity undermines every QA decision.",
+      "wrong_explanations": {
+        "B": "Tool training is a skills gap that is easy to close. It does not affect whether QA can reject a release freely.",
+        "C": "Span of control is a management structure question. The concern is the conflict of interest, not the manager's workload.",
+        "D": "Budget limits coverage, but that is visible and fixable. A QA function that cannot say no fails even with ample budget."
+      },
+      "tips": [
+        "Eliminate: B is a training gap, and C is a span-of-control point; neither touches independence.",
+        "Final two: A beats D because a conflicted QA function fails at every budget level; funding is a fixable resourcing issue.",
+        "Exam cue: QA, like audit, must be independent of what it reviews; check reporting lines first."
+      ],
+      "framework_ref": "COBIT 2019 APO11 (Managed Quality); ISO 9001:2015; ISO/IEC 90003:2018 (Software engineering — Guidelines for the application of ISO 9001:2015 to computer software)",
+      "related_concepts": [
+        "QA independence",
+        "Reporting lines",
+        "Conflict of interest",
+        "Release approval"
+      ],
+      "_provenance": "Authored from concept: 'BC vs DR governance distinction - broader-vs-subset relationship, no prior D2 coverage'. Public source: ISO 22301 + NIST SP 800-34. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Rebalanced (Oct 2026): re-angled from 4B4 to 2B4.",
+      "style_version": 2
+    },
+    {
+      "id": "d2_107",
+      "domain": 2,
+      "subtopic": "Data Retention Conflict. GDPR vs SOX",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "An EU customer requests erasure, but some of their records must be kept under SOX and national accounting-retention law. What should the IS auditor recommend as the BEST response?",
+      "options": {
+        "A": "Delete the customer's full record set to meet the GDPR deadline",
+        "B": "Erase only the records no legal obligation requires keeping",
+        "C": "Refuse the request, since SOX retention overrides erasure",
+        "D": "Refer the conflict to the data protection authority to decide"
+      },
+      "correct": "B",
+      "key_concept": "GDPR erasure has exemptions where a legal obligation requires retention. Keep only what the law requires, restrict it, and erase the rest.",
+      "pre_read": "Notice only some records carry a retention duty. Ask whether the request must be fully granted, fully refused, or split.",
+      "correct_explanation": "GDPR Article 17(3)(b) exempts data a controller must keep to meet an EU or member-state legal obligation, such as national accounting retention; a US law like SOX alone does not qualify. So management erases everything not required, restricts access to the retained records and explains this to the customer. A full refusal over-applies the exemption, so data no legal obligation requires would be kept.",
+      "wrong_explanations": {
+        "A": "Deleting records that national accounting law requires breaches a legal obligation; GDPR exempts that data from erasure.",
+        "C": "The exemption covers only records the law requires. Refusing everything keeps data with no legal basis.",
+        "D": "The controller must decide using GDPR's own exemptions. Supervisory authorities do not pre-rule on individual requests."
+      },
+      "tips": [
+        "Eliminate: A breaches a legal retention duty, and D passes a controller decision to the regulator.",
+        "Final two: B beats C because the legal-obligation exemption covers only required records; a full refusal retains data without basis.",
+        "Exam cue: when two laws seem to conflict, first look for scoping that satisfies both, such as erasing only what no law requires keeping."
+      ],
+      "framework_ref": "GDPR Article 17 (Right to Erasure); GDPR Article 17(3) (Erasure Exemptions); Sarbanes-Oxley Act Section 802 (Records Retention / Criminal Penalties for Altering Documents); 17 CFR 210.2-06 (Retention of Audit and Review Records)",
+      "related_concepts": [
+        "GDPR Article 17",
+        "Right to erasure",
+        "Legal-obligation exemption",
+        "SOX retention"
+      ],
+      "_provenance": "Authored from concept: 'GDPR right-to-erasure vs SOX retention conflict - Article 17(3) legal-obligation exemption, distinct from d2_098 (multi-regulation retention design)'. Public source: GDPR Article 17 + SOX. All scenario specifics (3-year-old $50K purchase, GDPR clock expiring) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Round 2 review (Oct 2026): key reworded as one clause to remove the two-part tell; explanation keeps the restricted-access point. Role-lens pass (Oct 2026): stem recast so the IS auditor recommends or judges; key and options unchanged. D2 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): Final audit round: wording, cue or citation aligned with the auditor's findings; key letter kept.",
+      "style_version": 2
+    },
+    {
+      "id": "d2_111",
+      "domain": 2,
+      "subtopic": "IT Investment Business Case Design",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An IS auditor reviews the business case for a $20M data modernization program. Which element MOST supports a well-founded investment decision?",
+      "options": {
+        "A": "A vendor-prepared cost model showing a three-year payback period",
+        "B": "A successful small-scale demonstration by the engineering team",
+        "C": "Written support from every business-unit vice president before funding",
+        "D": "Outcome-based benefits with measurable success criteria"
+      },
+      "correct": "D",
+      "key_concept": "A sound business case links quantified benefits to business outcomes and defines success measures, so value can be judged and later tracked.",
+      "pre_read": "Notice the phrase well-founded. Ask which element lets the board judge and later verify business value.",
+      "correct_explanation": "Investment decisions should rest on expected business value. Benefits tied to specific outcomes, with measurable success criteria, let decision-makers compare options and later confirm the value was delivered. A vendor cost model gives financial figures that look rigorous, but it was prepared by an interested party, is unvalidated, and speaks to cost recovery rather than business outcomes.",
+      "wrong_explanations": {
+        "A": "A payback figure belongs in any business case. Still, an investment is judged by measurable outcomes the business owns and will answer for.",
+        "B": "A small demonstration shows technical feasibility, not business value or scalability.",
+        "C": "Sponsorship signatures show support, not evidence. Approval without analysis is not an evidence-based decision."
+      },
+      "tips": [
+        "Eliminate: B shows only technical feasibility, and C shows support rather than evidence.",
+        "Final two: D beats A because value must be tied to business outcomes and measurable; an unvalidated vendor model is neither independent nor outcome-based.",
+        "Exam cue: for investment decisions, prefer measurable business outcomes over vendor figures, demos or signatures."
+      ],
+      "framework_ref": "COBIT 2019 APO05 (Managed Portfolio)",
+      "related_concepts": [
+        "IT investment",
+        "Business case",
+        "APO05",
+        "Benefits realization"
+      ],
+      "_provenance": "Authored from concept: 'IT investment business case multi-element analytical depth, complements d2_026 (R/G/T tier discipline), d2_068 (mid-year rebalance), d2_088 (under regulatory uncertainty)'. Public source: COBIT 2019 APO05. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "style_version": 2
+    },
+    {
+      "id": "d2_113",
+      "domain": 2,
+      "subtopic": "Compliance Program. Multi-Regulation Operationalization",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A bank's management is building a compliance program covering FFIEC, GLBA, BSA/AML and CCPA. Which design should the IS auditor recommend as BEST for sustained compliance?",
+      "options": {
+        "A": "Separate compliance teams and controls for each regulation",
+        "B": "One control library mapped to each regulation, with named owners",
+        "C": "The strictest regulation applied to every process as the standard",
+        "D": "Compliance fully outsourced to a managed service provider"
+      },
+      "correct": "B",
+      "key_concept": "Integrated compliance maps one control set to many regulations, with clear owners, so overlaps are tested once and gaps are visible.",
+      "pre_read": "Notice the many overlapping regulations. Ask which design avoids duplication while keeping each requirement traceable.",
+      "correct_explanation": "Many requirements overlap across these regulations. A single control library mapped to each one lets a control satisfy several obligations, makes gaps visible, and gives each area a named owner. Separate teams per regulation bring depth, but they duplicate controls and testing, burden the business with repeated requests, and can miss cross-regulation gaps no single team owns.",
+      "wrong_explanations": {
+        "A": "Dedicated teams share the mapped library's aim of covering each regulation in full; controls are built once and mapped many times, though.",
+        "C": "Regulations differ in scope, not just strictness. One regulation's rules do not cover another's specific requirements.",
+        "D": "Providers can support, but the bank remains accountable for compliance. Outsourcing does not transfer that accountability."
+      },
+      "tips": [
+        "Eliminate: C assumes one regulation covers the others, and D tries to outsource accountability.",
+        "Final two: B beats A because one mapped control set avoids duplication and exposes gaps, while silos repeat work and miss overlaps.",
+        "Exam cue: for multi-regulation compliance, choose a unified, mapped control framework with named owners."
+      ],
+      "framework_ref": "COBIT 2019 MEA03 (Managed Compliance with External Requirements); ISO 37301:2021 (Compliance Management Systems); FFIEC IT Examination Handbook",
+      "related_concepts": [
+        "Compliance program",
+        "Multi-regulation mapping",
+        "Control library",
+        "MEA03"
+      ],
+      "_provenance": "Authored from concept: 'Compliance program multi-regulation operationalization - integrated with mapping, complements d2_050 (multi-sector regulatory mapping audit-design analysis) and d2_005 (GRC integration)'. Public source: FFIEC + COBIT 2019 MEA03. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. D2 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): Stem now names the IS auditor.",
+      "style_version": 2
+    },
+    {
+      "id": "d2_119",
+      "domain": 2,
+      "subtopic": "Cloud Center of Excellence (CCoE) Governance",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An IS auditor at a media company reviews its Cloud Center of Excellence. Which role MOST supports cloud governance maturity?",
+      "options": {
+        "A": "Setting guardrails while teams manage their own cloud usage",
+        "B": "Provisioning cloud resources centrally on behalf of business teams",
+        "C": "Advising teams on request, without setting or enforcing standards",
+        "D": "Owning workload security on behalf of the business units"
+      },
+      "correct": "A",
+      "key_concept": "A mature Cloud Center of Excellence enables: it sets standards and guardrails while teams manage their own consumption within them.",
+      "pre_read": "Notice the word maturity. Ask which role scales control across many teams without becoming a bottleneck.",
+      "correct_explanation": "A Cloud Center of Excellence matures governance by setting architecture standards, security baselines, cost guardrails and reusable patterns, while teams manage their own usage within those limits. Central provisioning gives tight control and looks safe, but it bottlenecks every team, slows the business and keeps accountability for consumption away from the people making the decisions.",
+      "wrong_explanations": {
+        "B": "Like guardrails, central provisioning keeps every resource within approved standards. Mature governance sets the limits and lets owners act inside them, though.",
+        "C": "Advice without authority cannot enforce baselines or cost discipline, so governance stays optional.",
+        "D": "Security accountability stays with workload owners. A central team cannot be the sole defense for every business unit's workload."
+      },
+      "tips": [
+        "Eliminate: C has no authority to govern, and D strips workload owners of their accountability.",
+        "Final two: A beats B because guardrails with team-managed usage scale governance, while central provisioning bottlenecks teams and blurs accountability.",
+        "Exam cue: mature governance functions set guardrails and enable; they do not do every task themselves."
+      ],
+      "framework_ref": "ISACA Cloud Computing Management Audit/Assurance Program; CSA Cloud Controls Matrix; COBIT 2019 APO03 (Managed Enterprise Architecture); COBIT 2019 APO13 (Managed Security)",
+      "related_concepts": [
+        "Cloud Center of Excellence",
+        "Cloud governance",
+        "Infrastructure as Code",
+        "Security baselines"
+      ],
+      "_provenance": "Authored from concept: 'Cloud Center of Excellence governance - enabling function pattern, complements d2_087 (multi-cloud governance synthesis) and d2_100 (FinOps)'. Public source: ISACA Cloud Governance + CSA CCM. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "style_version": 2
+    },
+    {
+      "id": "d2_123",
+      "domain": 2,
+      "subtopic": "IT Outsourcing Concentration Risk Synthesis",
+      "principle_id": "management-owns-risk",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "A bank's analysis shows concentration on one cloud provider exceeds risk appetite; the CIO plans to accept the excess to keep discounts. What should the IS auditor recommend as BEST?",
+      "options": {
+        "A": "Let the CIO accept the excess as owner of the provider relationship",
+        "B": "Have the IS auditor sign off the acceptance after testing the analysis",
+        "C": "Accept it with a note in the vendor management file",
+        "D": "Escalate for treatment or a documented exception at the right level"
+      },
+      "correct": "D",
+      "key_concept": "Risk above appetite is treated; keeping it needs a documented exception at the level the risk policy names. Operational owners and auditors cannot accept it.",
+      "pre_read": "Notice the analysis is done and exposure exceeds appetite. Ask who has authority to keep risk above that line.",
+      "correct_explanation": "Exposure above appetite cannot be accepted by the function that manages the relationship. It must be escalated so senior management treats it; keeping it anyway is an exception to the board-set appetite and needs a documented decision at the level the risk policy names, often senior management or the board. The CIO owns the provider relationship, so acceptance looks natural, but accepting above-appetite risk to protect discounts overrides the appetite without authority.",
+      "wrong_explanations": {
+        "A": "Relationship owners may accept risk within appetite; beyond it, acceptance moves up and away from whoever gains by keeping the risk.",
+        "B": "Auditors assess and report risk. Signing off acceptance makes the auditor part of management's decision and impairs independence.",
+        "C": "A file note is not a risk decision; above-appetite exposure needs treatment or an exception approved at the level the risk policy names."
+      },
+      "tips": [
+        "Eliminate: B puts the auditor in management's decision, and C records the acceptance in a vendor file instead of escalating it.",
+        "Final two: D beats A because above-appetite risk goes up for treatment or a documented exception at the proper level, not acceptance by the operational owner protecting discounts.",
+        "Exam cue: when exposure exceeds appetite, look for escalation that leads to treatment, not acceptance lower down."
+      ],
+      "framework_ref": "Interagency Guidance on Third-Party Relationships: Risk Management (OCC/FRB/FDIC, 2023, superseding OCC Bulletin 2013-29); COBIT 2019 APO10 (Managed Vendors); COBIT 2019 APO12 (Managed Risk)",
+      "related_concepts": [
+        "Concentration risk synthesis",
+        "Multi-cloud architecture",
+        "Exit-readiness",
+        "Contract diversification"
+      ],
+      "_provenance": "Authored from concept: 'IT outsourcing concentration risk integrated analysis - distinct from d2_118 (concentration application tier). Public source: OCC Bulletin 2013-29 + FFIEC. Scenario specifics invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. v2: retargeted to risk-acceptance authority to avoid duplicating d2_118. Oct 2026: option D and explanation aligned with the notes' risk-acceptance position (above appetite = treat, or a documented exception approved at the level the risk policy names). Role-lens pass (Oct 2026): stem recast so the IS auditor recommends or judges; wording-only lint fixes (key_concept, correct_explanation and wrong_explanations.A shortened to the word caps); stem already named the IS auditor. D2 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): C (accept without record) was a strawman; it is now a vendor-file note. Key trimmed.",
+      "style_version": 2
+    },
+    {
+      "id": "d2_126",
+      "domain": 2,
+      "subtopic": "Data Governance. Customer Data Handling",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "For a FinTech's new data architecture, executives propose treating all customer data as sensitive and retaining everything for seven years. What is the IS auditor's BEST recommendation?",
+      "options": {
+        "A": "Treat every customer record as sensitive under maximum controls",
+        "B": "Keep every record for seven years to satisfy regulators",
+        "C": "Classify data in tiers and set retention per category",
+        "D": "Require explicit consent before collecting any customer data"
+      },
+      "correct": "C",
+      "key_concept": "Data classification is the foundation: tiers drive proportionate protection, and retention follows each category's legal and business requirement.",
+      "pre_read": "Notice the proposals are flat rules for all data. Ask which option lets controls follow the actual risk of each category.",
+      "correct_explanation": "Tiered classification is the foundation of data governance: it lets protection, retention and privacy controls follow the real sensitivity and legal requirements of each category. Retention can then be set per category, avoiding storage-limitation breaches. Requiring consent for all collection sounds privacy-friendly, but consent is only one lawful basis and is often not the right one; it does not address classification or retention at all.",
+      "wrong_explanations": {
+        "A": "Uniform maximum controls ignore actual sensitivity, raising cost without proportionate benefit. Controls should follow classification tiers.",
+        "B": "A flat seven-year period keeps some data longer than needed, breaching storage limitation, and may keep other data too briefly.",
+        "D": "Consent can lawfully cover one marketing use. Architecture starts from classification, since every later decision depends on knowing what data it governs."
+      },
+      "tips": [
+        "Eliminate: A applies costly controls regardless of sensitivity, and B breaches storage limitation with a flat retention period.",
+        "Final two: C beats D because classification is the foundation that drives protection and retention; consent is one lawful basis, not a design.",
+        "Exam cue: when proposals apply one rule to all data, look for the option that classifies first."
+      ],
+      "framework_ref": "GDPR Article 5 (Principles relating to processing of personal data); COBIT 2019 APO14 (Managed Data); DAMA-DMBOK 2nd Edition; ISO/IEC 27701:2025 (Privacy Information Management Systems — Requirements and Guidance)",
+      "related_concepts": [
+        "Data discipline integration",
+        "Data classification",
+        "Retention",
+        "Privacy controls"
+      ],
+      "_provenance": "Authored from concept: 'Data discipline multi-control synthesis - tiered-per-purpose approach, complements d2_098 (multi-regulation retention design) and d2_063 (privacy operationalization)'. Public source: GDPR Article 5 + ISACA Data Governance + DAMA-DMBOK. All scenario specifics (FinTech rollout, four leader positions in tension) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "style_version": 2
+    },
+    {
+      "id": "d2_129",
+      "domain": 2,
+      "subtopic": "Cloud Cost vs Availability Trade-Off Analysis",
+      "principle_id": "recover-by-business-priority",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "A SaaS firm's single-region platform serves enterprise clients with 99.99% SLAs and self-serve users with none. Which architecture should the IS auditor consider BEST?",
+      "options": {
+        "A": "Run active-active across regions for every customer tier",
+        "B": "Match each tier's resilience investment to its SLA and revenue",
+        "C": "Add a second region after the next enterprise SLA breach",
+        "D": "Run active-passive across regions for every tier with fast failover"
+      },
+      "correct": "B",
+      "key_concept": "Availability investment should follow business value: resilience matched to each customer tier's SLA commitments and revenue.",
+      "pre_read": "Notice the tiers have very different commitments. Ask which option spends on resilience where the business needs it.",
+      "correct_explanation": "Resilience spending should follow business value. Enterprise clients with 99.99% SLAs justify multi-region active-active, while self-serve users with no SLA can stay single-region with better operations. Uniform active-passive looks like a balanced compromise, but it overspends on the self-serve tier and its failover time may still breach the 99.99% enterprise commitment.",
+      "wrong_explanations": {
+        "A": "Uniform active-active pays the highest cost for tiers that have no SLA and generate little revenue. Spending is not aligned to value.",
+        "C": "Waiting for a breach accepts a known shortfall against a 99.99% commitment and pays penalties before acting.",
+        "D": "Active-passive across regions is a proven resilience design. Still, resilience is bought per service: each tier gets what its commitments and revenue justify."
+      },
+      "tips": [
+        "Eliminate: A overspends on every tier, and C waits for an SLA breach the single-region design already makes likely.",
+        "Final two: B beats D because investment should follow each tier's business value, not one compromise applied everywhere.",
+        "Exam cue: when customers or systems differ in value, prefer the option that tiers controls to match, not a uniform design."
+      ],
+      "framework_ref": "ISACA Cloud Computing Management Audit/Assurance Program; CSA Cloud Controls Matrix; COBIT 2019 BAI04 (Managed Availability and Capacity)",
+      "related_concepts": [
+        "Cloud architecture",
+        "Tier-based design",
+        "Active-active vs active-passive",
+        "Cost-per-availability"
+      ],
+      "_provenance": "Authored from concept: 'Cloud cost vs availability trade-off tier-based architecture, complements d2_045 (capacity planning) and d2_087 (multi-cloud governance)'. Public source: ISACA Cloud Architecture + SRE discipline. All scenario specifics (SaaS analytics platform, three customer tiers, mixed SLAs) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): removed mid-tier clients absent from the stem. D2 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): C ('close enough') was a strawman; it is now a reactive second region.",
+      "style_version": 2
+    },
+    {
+      "id": "d2_141",
+      "domain": 2,
+      "subtopic": "IT Change Management vs Enterprise Change Management",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A manufacturer's ERP rollout will change both its systems and how staff work. Which view of IT and enterprise change management should the IS auditor consider BEST?",
+      "options": {
+        "A": "They are two names for the same governance discipline",
+        "B": "They are distinct, complementary disciplines the rollout needs",
+        "C": "IT change control should lead, as the rollout is mainly technical",
+        "D": "Enterprise change management follows once IT change control finishes"
+      },
+      "correct": "B",
+      "key_concept": "IT change management controls technical changes; enterprise change management drives people adoption. Major initiatives need both to deliver value.",
+      "pre_read": "Notice the rollout changes both systems and how people work. Ask which view covers both kinds of change.",
+      "correct_explanation": "IT change management governs technical changes such as releases and configurations through change records and approval. Enterprise change management helps people adopt new ways of working through communication, training and reinforcement. An ERP rollout needs both. Letting IT change control lead looks reasonable for a technical project, but benefits are realized only when staff adopt the new processes.",
+      "wrong_explanations": {
+        "A": "The disciplines differ in scope and methods: one controls technical change, the other manages people and organizational adoption.",
+        "C": "Controlling releases protects systems, but value depends on users adopting new processes. Treating ERP as purely technical risks failed adoption.",
+        "D": "People change cannot wait for technical change to finish; stakeholder preparation must run alongside the build, or adoption fails at go-live."
+      },
+      "tips": [
+        "Eliminate: A merges two different disciplines, and D sequences people change after technical change, when it must run alongside it.",
+        "Final two: B beats C because business value depends on people adopting the change, not only on controlled releases.",
+        "Exam cue: when a project changes both systems and how people work, expect an answer that addresses both."
+      ],
+      "framework_ref": "ITIL 4 (Change Enablement); COBIT 2019 BAI06 (Managed IT Changes); COBIT 2019 BAI05 (Managed Organizational Change); Prosci ADKAR Model",
+      "related_concepts": [
+        "IT change management",
+        "Enterprise change management",
+        "ITIL Change Enablement",
+        "ADKAR"
+      ],
+      "_provenance": "Authored from concept: 'IT change management vs enterprise change management distinction, complements d2_095 (enterprise CM stakeholder management) and d2_104 (failed M&A integration)'. Public source: ITIL 4 + Prosci + Kotter. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. D2 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): D (ECM makes IT change control unnecessary) was a strawman; it is now ECM sequenced after technical change.",
+      "style_version": 2
+    },
+    {
+      "id": "d2_145",
+      "domain": 2,
+      "subtopic": "Privacy Program Rollout in M&A Integration",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "Eight weeks before a US–EU health-tech merger closes, the Chief Privacy Officer asks the IS auditor how to combine the HIPAA and GDPR programs. Which approach is BEST?",
+      "options": {
+        "A": "Meet each regime's rules within one shared governance baseline",
+        "B": "Adopt the stricter GDPR program as the single enterprise standard",
+        "C": "Extend the acquirer's HIPAA program across the acquired EU business",
+        "D": "Run separate programs and defer integration until a year after close"
+      },
+      "correct": "A",
+      "key_concept": "When an entity falls under two privacy regimes, it must meet each regime's specific requirements within a shared governance baseline.",
+      "pre_read": "Ask whether either single framework fully covers the other regime's specific obligations.",
+      "correct_explanation": "The combined entity must comply with both regimes from day one, so the program should meet HIPAA's and GDPR's specific obligations while sharing one data-governance baseline, joint data-flow mapping and clear officer accountability. Adopting GDPR as the single standard is tempting because it is stricter overall, but it does not cover HIPAA-specific duties such as business associate agreements and HIPAA breach-notification rules.",
+      "wrong_explanations": {
+        "B": "Adopting the stricter regime works only where both laws set one duty at different strengths; distinct duties are each met on their own terms.",
+        "C": "HIPAA does not address GDPR duties such as lawful basis, data-subject rights and transfer rules, leaving EU data noncompliant from day one.",
+        "D": "Both regimes apply from the day the deal closes. Deferring integration leaves cross-entity data flows ungoverned during the riskiest period."
+      },
+      "tips": [
+        "Eliminate: C extends HIPAA, which does not cover GDPR duties for EU data, and D leaves day-one data flows ungoverned.",
+        "Final two: A beats B because compliance means meeting each regime's specific rules; a stricter framework is not a superset of another.",
+        "Exam cue: one regime covers another only where they differ in degree on the same duty; where each sets its own duties, meet both within one governance baseline."
+      ],
+      "framework_ref": "GDPR; HIPAA Privacy Rule; HIPAA Security Rule; HIPAA Breach Notification Rule; ISO/IEC 27701:2025 (Privacy Information Management Systems — Requirements and Guidance)",
+      "related_concepts": [
+        "M&A privacy integration",
+        "GDPR + HIPAA",
+        "Cross-regime privacy",
+        "Day-1 compliance"
+      ],
+      "_provenance": "Authored from concept: 'Privacy program rollout in M&A integration - cross-regime architecture, complements d2_063 (privacy operationalization) and d2_104 (failed M&A IT integration)'. Public source: GDPR + HIPAA + ISACA Privacy Program. All scenario specifics (US-EU health-tech merger, 8-week close) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. D2 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): Tip no longer says 'ignores'. Cross-domain round: cue, convention or explanation aligned with related items across the bank. Final audit round: wording, cue or citation aligned with the auditor's findings; key letter kept.",
+      "style_version": 2
+    },
+    {
+      "id": "d2_153",
+      "domain": 2,
+      "subtopic": "Performance Reporting. Board-Level Reporting Design",
+      "principle_id": "root-cause-over-symptom",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A CIO's quarterly report gives the board 150 operational metrics, and directors say they cannot tell whether IT is on track. What should the IS auditor recommend as BEST?",
+      "options": {
+        "A": "A short set of goal-linked metrics with targets and trends",
+        "B": "A named owner accountable for each of the 150 metrics",
+        "C": "Group the 150 metrics into sections for each IT function",
+        "D": "A briefing session teaching directors to read operational metrics"
+      },
+      "correct": "A",
+      "key_concept": "Board performance reporting should be concise, linked to enterprise goals, and show targets, trends and exceptions.",
+      "pre_read": "Ask what the board needs to decide and what level of detail serves that decision.",
+      "correct_explanation": "Boards need a few metrics showing whether IT is achieving enterprise goals, each with a target, a trend and clear exceptions, while detailed operational metrics stay with management. Training directors to read 150 metrics treats the board as the problem; even well-trained directors would still lack a clear view of strategic progress, because the report is pitched at the wrong level.",
+      "wrong_explanations": {
+        "B": "Named owners improve accountability for each figure, but the board still receives 150 operational metrics and cannot see progress on goals.",
+        "C": "Grouping makes the report easier to navigate. Directors still get 150 operational figures with no link to goals, so they still cannot tell whether IT is on track.",
+        "D": "An auditor would support director education on IT generally, but a report is cut to fit its reader, never the reader to fit the report."
+      },
+      "tips": [
+        "Eliminate: B and C, because both keep all 150 operational metrics, either by naming owners or by regrouping them by function.",
+        "Final two: A beats D because board reports should show goal-linked results; training directors on detail misplaces the fix.",
+        "Exam cue: tailor performance reports to the audience; boards get a few goal-linked metrics with targets, trends and exceptions."
+      ],
+      "framework_ref": "COBIT 2019 MEA01 (Managed Performance and Conformance Monitoring); COBIT 2019 (Goals Cascade and Performance Management)",
+      "related_concepts": [
+        "Board reporting",
+        "Goal-linked metrics",
+        "Exception reporting",
+        "Audience-appropriate reporting"
+      ],
+      "_provenance": "Authored from concept: 'Threat intelligence program design - operationalized multi-source, no prior D2 coverage'. Public source: NIST SP 800-150 + ISO/IEC 27035. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): removed loosely attributed NIST SP 800-150 citation from the explanation. Rebalanced (Oct 2026): re-angled from 5B4 to 2B3. Rebalance review (Oct 2026): rewrote distractor B in credible governance language. Strawman pass (Oct 2026): eliminated option(s) rewritten to a plausible same-type error; blind re-tested.",
+      "style_version": 2
+    },
+    {
+      "id": "d2_154",
+      "domain": 2,
+      "subtopic": "Enterprise Architecture. Use in Audit Planning",
+      "principle_id": "plan-before-testing",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An IS auditor is planning an audit of order processing that spans eight interconnected systems. Which enterprise architecture artifact is MOST useful for identifying key control points?",
+      "options": {
+        "A": "The technology standards catalog listing approved products and versions",
+        "B": "The architecture principles approved by the board",
+        "C": "Data flow and interface diagrams for the order process",
+        "D": "The application inventory listing each of the eight systems"
+      },
+      "correct": "C",
+      "key_concept": "EA data flow and interface views help auditors locate control points where data enters, moves and transforms across systems.",
+      "pre_read": "Think about where controls sit in a process that passes data across many systems.",
+      "correct_explanation": "Controls in a multi-system process sit where data enters, moves between systems and is transformed, so data flow and interface diagrams show the auditor where to look for input, interface and reconciliation controls. The technology standards catalog is a genuine architecture artifact, but it lists approved products, not how this process's data moves, so it cannot locate control points.",
+      "wrong_explanations": {
+        "A": "The catalog shows which products are approved. It does not show how order data moves between the eight systems.",
+        "B": "Principles guide decisions at a high level. They give no detail about where this process's data flows or is transformed.",
+        "D": "The inventory confirms which systems are in scope, a natural starting point. It does not show where order data enters, moves or is transformed, which is where controls sit."
+      },
+      "tips": [
+        "Eliminate: B and D, because B is too high-level, and D lists the eight systems without showing how order data moves between them.",
+        "Final two: C beats A because control points sit where data moves and changes; a product catalog does not show flows.",
+        "Exam cue: for multi-system processes, auditors use data flow and interface views to find input, interface and reconciliation controls."
+      ],
+      "framework_ref": "TOGAF Standard; COBIT 2019 APO03 (Managed Enterprise Architecture); ISACA IT Audit Standard 1201 (Risk Assessment in Planning)",
+      "related_concepts": [
+        "Architecture artifacts",
+        "Data flow diagrams",
+        "Interface controls",
+        "Audit planning"
+      ],
+      "_provenance": "Authored from concept: 'IT-OT convergence governance - distinct OT profile + IEC 62443, no prior D2 coverage'. Public source: IEC 62443 + NIST SP 800-82. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Rebalanced (Oct 2026): re-angled from 5A4 to 2A4. Rebalance review (Oct 2026): replaced an unverifiable planning citation with ISACA Standard 1201. Strawman pass (Oct 2026): eliminated option(s) rewritten to a plausible same-type error; blind re-tested.",
+      "style_version": 2
+    },
+    {
+      "id": "d2_156",
+      "domain": 2,
+      "subtopic": "API Governance",
+      "principle_id": "governance-before-technology",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An IS auditor reviews governance of a SaaS company's customer-facing API platform. Which control should the auditor verify FIRST?",
+      "options": {
+        "A": "Every API passes through a central gateway with rate limiting",
+        "B": "A complete inventory of APIs, including undocumented shadow APIs",
+        "C": "Design standards that every new API must meet before release",
+        "D": "Security staff manually review each API once a quarter"
+      },
+      "correct": "B",
+      "key_concept": "API governance begins with a complete inventory, including shadow APIs, because every other control depends on knowing what exists.",
+      "pre_read": "Notice the word FIRST. Ask which control the others depend on.",
+      "correct_explanation": "API governance starts with knowing what exists. A complete inventory, including shadow and deprecated APIs, defines the scope for design standards, gateway coverage, testing and version control. A gateway with rate limiting is a strong runtime control, but it protects only the APIs routed through it; undocumented APIs bypass it entirely, so inventory must come first.",
+      "wrong_explanations": {
+        "A": "A gateway is valuable, but it only covers APIs routed through it. Without an inventory, shadow APIs stay exposed and unseen.",
+        "C": "Design standards are core API governance. They apply only to APIs going through release, so undocumented shadow APIs already in production stay outside them until an inventory finds them.",
+        "D": "Quarterly manual reviews cannot keep pace with frequent releases and give no runtime protection between reviews."
+      },
+      "tips": [
+        "Eliminate: C and D, because C governs only new APIs, leaving existing shadow APIs unseen, and D is too infrequent and manual for a fast-changing platform.",
+        "Final two: B beats A because a gateway protects only known APIs; the inventory defines what must be protected.",
+        "Exam cue: when asked what comes FIRST, look for the inventory or scope step that every other control depends on."
+      ],
+      "framework_ref": "OWASP API Security Top 10 (2023); NIST SP 800-204 (Security Strategies for Microservices-based Application Systems); COBIT 2019 BAI09 (Managed Assets)",
+      "related_concepts": [
+        "API governance",
+        "API gateway",
+        "Shadow APIs",
+        "OWASP API Top 10"
+      ],
+      "_provenance": "Authored from concept: 'API governance multi-layer program, no prior D2 coverage'. Public source: OWASP API Security Top 10 + CSA. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Strawman pass (Oct 2026): eliminated option(s) rewritten to a plausible same-type error; blind re-tested.",
+      "style_version": 2
+    },
+    {
+      "id": "d2_171",
+      "domain": 2,
+      "subtopic": "Cyber Resilience Strategy. Beyond IR",
+      "principle_id": "recover-by-business-priority",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "A bank's CISO says its tested incident-response program is no longer enough as regulators stress operational resilience. Which approach should the IS auditor recommend as BEST?",
+      "options": {
+        "A": "Shorten recovery time objectives for each system in the plan",
+        "B": "Run more frequent tabletop exercises of the current plan",
+        "C": "Build a resilience program around critical services and degraded modes",
+        "D": "Add immutable, air-gapped backup tiers to the current incident-response plan"
+      },
+      "correct": "C",
+      "key_concept": "Cyber resilience is broader than incident response: it keeps critical business services running, in degraded mode if needed, under sustained disruption.",
+      "pre_read": "Notice the shift from incident response to operational resilience. Ask which option changes the scope, not just adds a control.",
+      "correct_explanation": "Operational resilience asks whether critical business services keep running through severe disruption. A program built around those services and their degraded-mode operations sets the scope, governance and testing that incident response alone lacks. Adding immutable, air-gapped backups is a sound technical step and would likely be part of the program, but on its own it extends the existing plan rather than delivering the business-service view regulators expect.",
+      "wrong_explanations": {
+        "A": "Tighter recovery targets improve incident recovery but keep the incident-response scope; they do not define critical services or degraded modes.",
+        "B": "More exercises test the current plan more often; they do not widen its scope to keeping critical services running.",
+        "D": "Protected backups help recovery from destructive attacks, but a single control does not set resilience scope, governance or testing."
+      },
+      "tips": [
+        "Eliminate: A tightens targets and B exercises the plan more often; both keep the incident-response scope instead of a service view.",
+        "Final two: C beats D because a service-based program sets scope and governance, while backups are one control within it.",
+        "Exam cue: when the problem is a gap in scope, prefer the option that redefines the program over one that adds a single control."
+      ],
+      "framework_ref": "NIST SP 800-160 Vol 2 Rev 1 (Developing Cyber-Resilient Systems); ISO 22301:2019 Security and resilience — Business continuity management systems; COBIT 2019 DSS04 (Managed Continuity); FFIEC Business Continuity Management Booklet",
+      "related_concepts": [
+        "Cyber resilience",
+        "Operational resilience",
+        "Degraded-mode operations",
+        "Destructive recovery"
+      ],
+      "_provenance": "Authored from concept: 'Cyber resilience strategy beyond IR - multi-element scope, complements d2_105 (IR governance) and d2_148 (multi-business-line cloud incident)'. Public source: Federal Reserve SR 20-15 + FFIEC + ISACA Cyber Resilience. All scenario specifics (regional bank, current-state IR, regulatory landscape) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. D2 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): A (rebrand) and B (defer) were strawmen; they are now tighter recovery targets and more exercises, partial fixes within the old scope. Cue balance (stage 3): distractor no longer carries an absolute.",
+      "style_version": 2
+    },
+    {
+      "id": "d2_176",
+      "domain": 2,
+      "subtopic": "Performance Measurement. Measuring Improvement",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A new IT performance program sets improvement targets for incident resolution before any historical data has been collected. What should the IS auditor recommend FIRST?",
+      "options": {
+        "A": "Adopt the targets that a peer company in the same sector uses",
+        "B": "Report progress against the targets from the next quarter",
+        "C": "Establish a performance baseline from current measured data",
+        "D": "Ask each team to set its own targets for next year"
+      },
+      "correct": "C",
+      "key_concept": "Performance targets should be set from a measured baseline, so improvement can be judged against actual starting performance.",
+      "pre_read": "Ask how anyone would know whether performance improved without a starting point.",
+      "correct_explanation": "Improvement targets make sense only relative to where performance stands today, so the program should first measure current performance to set a baseline, then set realistic targets linked to business needs. Borrowing a peer's targets is tempting because it looks objective, but the peer's starting point, scope and definitions differ, so the targets may be unreachable or trivially easy here.",
+      "wrong_explanations": {
+        "A": "An auditor would use peer targets later, as a check on ambition; a target means nothing, however, until the organization's own baseline exists.",
+        "B": "Reporting against arbitrary targets produces figures with no meaning. Nobody can tell whether results reflect improvement or a guess.",
+        "D": "Teams setting their own targets lack independence and consistency. The targets still have no baseline to anchor them."
+      },
+      "tips": [
+        "Eliminate: B reports against arbitrary targets, and D lets each team set its own targets, which tend to be ones it can already meet.",
+        "Final two: C beats A because targets must start from this firm's measured baseline; peer targets assume someone else's starting point.",
+        "Exam cue: measure the current state before setting targets; improvement is only meaningful against a baseline."
+      ],
+      "framework_ref": "COBIT 2019 MEA01 (Managed Performance and Conformance Monitoring); COBIT 2019 (Performance Management)",
+      "related_concepts": [
+        "Performance baseline",
+        "Target setting",
+        "Performance measurement",
+        "Continuous improvement"
+      ],
+      "_provenance": "Authored from concept: 'Customer trust recovery after major incident - multi-element measurable program, complements d2_143/d2_150 (post-breach strategy refresh) and d2_168 (ransomware crisis communication)'. Public source: ISACA Customer Trust Recovery + Edelman Trust Barometer. All scenario specifics (SaaS company, 6 months post-incident, specific metrics, JS library origin) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): management, not the auditor, sets trust-recovery strategy. Rebalanced (Oct 2026): re-angled from 2A2 to 2B3.",
+      "style_version": 2
+    },
+    {
+      "id": "d2_179",
+      "domain": 2,
+      "subtopic": "ESG Governance. Technology and Climate Disclosure",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "A manufacturer must publish climate disclosures that include data-center emissions and IT energy use under several regimes. Which governance approach should the IS auditor recommend to the audit committee as BEST?",
+      "options": {
+        "A": "Disclose the legal minimum, filed separately in each jurisdiction",
+        "B": "Let the sustainability team own disclosures, coordinating quarterly with IT",
+        "C": "Bring ESG data under IT governance controls, ready for assurance",
+        "D": "Have consultants collect IT data and prepare the filings"
+      },
+      "correct": "C",
+      "key_concept": "ESG metrics drawn from IT need the same data-quality controls and governance as financial data, so disclosures are consistent and can be assured.",
+      "pre_read": "Notice the disclosures depend on data from IT systems. Ask which option puts controls on that data before it is published.",
+      "correct_explanation": "Data-center emissions and energy figures come from IT systems, and investors and assurers will test their accuracy. Integrating ESG data controls into existing IT governance gives the metrics ownership, quality checks and audit trails, ready for external assurance. Letting the sustainability team own disclosures with quarterly coordination keeps clear ownership, but leaves the underlying IT data outside the controls that make it reliable.",
+      "wrong_explanations": {
+        "A": "Separate minimal filings risk inconsistent figures across jurisdictions, which investors and regulators will notice.",
+        "B": "Quarterly coordination does bring IT into the reporting cycle, yet externally assured figures need the same controls as financial data.",
+        "D": "Consultants can help, but management stays accountable for disclosure accuracy and must govern the data it publishes."
+      },
+      "tips": [
+        "Eliminate: A invites inconsistent filings across regimes, and D hands away accountability for published figures.",
+        "Final two: C beats B because reliable disclosures need governed data, not just coordination between separate teams.",
+        "Exam cue: when published figures come from IT systems, prefer integrating them into IT governance and controls over loose coordination."
+      ],
+      "framework_ref": "ISSB IFRS S2 (Climate-related Disclosures); CSRD (Corporate Sustainability Reporting Directive); GHG Protocol Corporate Standard; COBIT 2019 APO14 (Managed Data); COBIT 2019 MEA03 (Managed Compliance with External Requirements)",
+      "related_concepts": [
+        "ESG governance",
+        "Climate disclosure",
+        "Scope 2/3 emissions",
+        "Third-party assurance"
+      ],
+      "_provenance": "Authored from concept: 'ESG governance technology and climate disclosure - integrated approach, no prior D2 coverage'. Public source: ISSB IFRS S2 + CSRD + SEC + ISACA ESG. All scenario specifics (multinational manufacturer, three-jurisdiction regimes, Scope 2/3 IT-related metrics) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "style_version": 2
+    },
+    {
+      "id": "d2_182",
+      "domain": 2,
+      "subtopic": "IT Policy Framework. Local Requirements",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "A foreign subsidiary adopted the group IT policy word for word, but one clause conflicts with local employment law on monitoring staff. What should the IS auditor recommend as BEST?",
+      "options": {
+        "A": "Apply the clause and log the legal conflict as accepted risk",
+        "B": "Let the subsidiary rewrite its entire policy set to suit local law",
+        "C": "Keep the group policy and add an approved local addendum",
+        "D": "Suspend staff monitoring across the group until the conflict is resolved"
+      },
+      "correct": "C",
+      "key_concept": "Group policies set a baseline; approved local addenda handle legal conflicts without fragmenting the policy framework.",
+      "pre_read": "Look for the answer that satisfies local law while preserving group consistency and oversight.",
+      "correct_explanation": "Group policy should set a consistent baseline, while each jurisdiction's legal obligations must still be met. A local addendum, approved through group governance, adjusts only the conflicting clause and keeps everything else aligned. Rewriting the entire policy set does fix the legal conflict, but it fragments the framework, weakens group oversight and invites unrelated local deviations that no one has assessed.",
+      "wrong_explanations": {
+        "A": "Logging accepted risk looks like proper governance, but management cannot accept a breach of local law as a risk; the clause must be adjusted for that jurisdiction.",
+        "B": "A full rewrite fixes one clause at the cost of consistency. Group oversight weakens and unassessed local deviations creep in.",
+        "D": "Stopping monitoring everywhere overreacts to a local conflict. Other entities lose a control that is lawful where they operate."
+      },
+      "tips": [
+        "Eliminate: A puts internal policy above the law, and D removes a lawful control everywhere.",
+        "Final two: C beats B because a governed local addendum fixes the conflict while keeping one framework; a full rewrite fragments it.",
+        "Exam cue: for multinational policy, pick a group baseline with approved local variations where law requires them."
+      ],
+      "framework_ref": "COBIT 2019 APO01 (Managed I&T Management Framework); COBIT 2019 MEA03 (Managed Compliance with External Requirements); ISO/IEC 27001:2022 Control A.5.1 (Policies for Information Security)",
+      "related_concepts": [
+        "Group policy framework",
+        "Local addenda",
+        "Legal compliance",
+        "Policy consistency"
+      ],
+      "_provenance": "Authored from concept: 'Precision-word BEST vs FIRST in multi-jurisdiction privacy governance — BEST = global baseline + Privacy Governance Council + board KPIs + regulatory-triggered review; FIRST = baseline only'. Paired companion to d2_066. Public sources: GDPR, EDPB Guidelines, ISO/IEC 27701, ISACA Privacy A/A Program. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): spelled out DSAR. Cross-domain review (Oct 2026): re-angled or clarified to remove duplication/contradiction. Final cross-domain polish (Oct 2026). Rebalanced (Oct 2026): re-angled from 2A6 to 2A3. Rebalance review (Oct 2026): option A now states the rationale its explanation rejects. Strawman pass (Oct 2026): eliminated option(s) rewritten to a plausible same-type error; blind re-tested.",
+      "style_version": 2
+    },
+    {
+      "id": "d2_187",
+      "domain": 2,
+      "subtopic": "IT Strategy Committee vs IT Steering Committee",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "An IS auditor reviews the charter of a newly formed IT steering committee. Which responsibility is MOST appropriate to find in it?",
+      "options": {
+        "A": "Prioritizing IT projects and allocating resources to them",
+        "B": "Advising the board on emerging technology and long-term IT direction",
+        "C": "Approving routine change requests in daily IT operations",
+        "D": "Providing independent assurance over IT controls"
+      },
+      "correct": "A",
+      "key_concept": "The IT steering committee is a management body that prioritizes projects, allocates resources and monitors delivery; the IT strategy committee advises the board.",
+      "pre_read": "Separate the board-level IT strategy committee from the management-level steering committee. Ask which duty belongs at management level.",
+      "correct_explanation": "An IT steering committee works at executive management level: it prioritizes projects, allocates resources and monitors delivery against business objectives. Advising the board on emerging technology and long-term direction is a genuine committee role, which makes it tempting, but it belongs to the board-level IT strategy committee, not the steering committee. Mixing the two blurs governance and management responsibilities.",
+      "wrong_explanations": {
+        "B": "Technology foresight for the board is an accepted governance duty, but a charter's duties are tested against the level its committee serves.",
+        "C": "Routine change approval belongs to operational change management, such as a change advisory board, not a senior committee.",
+        "D": "Independent assurance is internal audit's role. A management committee cannot independently assure its own decisions."
+      },
+      "tips": [
+        "Eliminate: C is routine operational work, and D is internal audit's independent assurance role.",
+        "Final two: A beats B because the steering committee manages the portfolio, while advising the board is the strategy committee's job.",
+        "Exam cue: strategy committee advises the board; steering committee prioritizes, resources and monitors projects for management."
+      ],
+      "framework_ref": "COBIT 2019 EDM01 (Ensured Governance Framework Setting and Maintenance); COBIT 2019 APO05 (Managed Portfolio)",
+      "_provenance": "Authored from concept: 'IT strategy committee vs IT steering committee role distinctions'. Foundational recall tier addressing the bank's recall-tier shortage. Public sources: COBIT 2019 EDM01. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "style_version": 2
+    },
+    {
+      "id": "d2_190",
+      "domain": 2,
+      "subtopic": "KPI vs KRI. Performance and Risk Indicators",
+      "principle_id": "escalate-to-decision-owner",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "A vendor-risk KRI has exceeded its threshold for three months; the breaches show on a dashboard but trigger nothing. What should the IS auditor recommend as BEST?",
+      "options": {
+        "A": "Investigate the vendors driving the KRI and report to the CRO",
+        "B": "Link each KRI threshold to an owner and escalation",
+        "C": "Add a second KRI and threshold to confirm the trend",
+        "D": "Report the KRI to the board more often than quarterly"
+      },
+      "correct": "B",
+      "key_concept": "KRI thresholds need assigned owners and defined escalation so a breach leads to timely risk response.",
+      "pre_read": "Notice the KRI works but nothing happens. Ask what is missing between signal and action.",
+      "correct_explanation": "A KRI only reduces risk if a breach triggers a response, so each threshold needs a named owner and a defined escalation and action. Reporting it to the board more often raises visibility, but without an owner obliged to act, the board simply sees the same unaddressed breach more frequently.",
+      "wrong_explanations": {
+        "A": "A one-off investigation handles this breach but leaves future breaches with no owner or required response.",
+        "C": "Three months above threshold is already a trend; another indicator delays the response and still assigns no one to act.",
+        "D": "More frequent reporting adds visibility but still assigns no one to act."
+      },
+      "tips": [
+        "Eliminate: A fixes this breach once, and C delays action by measuring a trend that is already clear.",
+        "Final two: B beats D because ownership and escalation create action; more reporting only adds visibility.",
+        "Exam cue: a KRI threshold is useful only when a breach triggers a defined owner and response."
+      ],
+      "framework_ref": "ISACA Risk IT Framework, 2nd Edition; COBIT 2019 APO12 (Managed Risk); COBIT 2019 MEA01 (Managed Performance and Conformance Monitoring)",
+      "_provenance": "Authored from concept: 'KPI vs KRI definitions and distinctions'. Foundational recall tier addressing the bank's recall-tier shortage. Public sources: ISACA Risk IT Framework 2nd Edition; COBIT 2019 Performance Management. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Cross-domain review (Oct 2026): re-angled or clarified to remove duplication/contradiction. Round 2 review (Oct 2026): stem echo reduced; distractors A (investigate) and C (second KRI) made plausible.",
+      "style_version": 2
+    },
+    {
+      "id": "d2_196",
+      "domain": 2,
+      "subtopic": "Quality Management. Acceptance Failures",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "An IS auditor finds an IT quality program checks only that releases match technical specifications, yet many releases fail acceptance by the departments that requested them. Which weakness is GREATEST?",
+      "options": {
+        "A": "The technical specifications may lack enough detail to test against",
+        "B": "Acceptance testing may start too late in each release cycle",
+        "C": "The QA team may be testing too few releases each quarter",
+        "D": "Quality criteria are not tied to business and user requirements"
+      },
+      "correct": "D",
+      "key_concept": "Quality criteria must trace to business and user requirements; technical conformance alone does not prove fitness for purpose.",
+      "pre_read": "Ask who defines quality, and whether the QA checks reflect that definition.",
+      "correct_explanation": "Quality means fitness for purpose as defined by the customer, so quality criteria must trace to business and user requirements. A program that checks only technical conformance can pass releases that meet the specification yet fail the business. More detailed specifications would sharpen technical testing, but if the specifications do not reflect user needs, greater detail only confirms the wrong thing more precisely.",
+      "wrong_explanations": {
+        "A": "More detail sharpens conformance testing, but if specifications miss user needs, releases still pass QA and fail the business.",
+        "B": "Earlier acceptance testing finds rejections sooner. But releases built to criteria that miss user needs are still rejected, just earlier.",
+        "C": "Testing more releases against the same criteria would just pass more releases that users reject. Coverage is not the gap."
+      },
+      "tips": [
+        "Eliminate: B and C, because B moves acceptance earlier and C adds coverage, both still testing against the same specification-only criteria.",
+        "Final two: D beats A because quality must trace to user needs; more detailed specifications can still miss them.",
+        "Exam cue: quality is fitness for purpose; if requesters reject what QA passes, check where the quality criteria come from."
+      ],
+      "framework_ref": "COBIT 2019 APO11 (Managed Quality); ISO 9001:2015; COBIT 2019 BAI02 (Managed Requirements Definition)",
+      "related_concepts": [
+        "Fitness for purpose",
+        "Requirements traceability",
+        "Quality criteria",
+        "User acceptance"
+      ],
+      "_provenance": "Authored from concept: 'Quality Management. Customer-Defined Quality Criteria'. Original Aurivan item (Oct 2026), written for CISA topic 2B4. All scenario specifics invented for this question. Rebalance review (Oct 2026): removed the stem echo of the key. Strawman pass (Oct 2026): eliminated option(s) rewritten to a plausible same-type error; blind re-tested.",
+      "style_version": 2
+    },
+    {
+      "id": "d2_199",
+      "domain": 2,
+      "subtopic": "Enterprise Architecture Frameworks. TOGAF Implementation Governance",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "A hospital group's architecture team follows the TOGAF development cycle through migration planning, then stops, leaving project delivery unsupervised by architects. Which risk should the IS auditor consider GREATEST?",
+      "options": {
+        "A": "The baseline architecture may have been described in too much detail",
+        "B": "The architecture repository may fall out of date after delivery",
+        "C": "Delivered systems may drift from the approved target architecture",
+        "D": "Business units may resist the new architecture's operating model"
+      },
+      "correct": "C",
+      "key_concept": "TOGAF's cycle continues past planning into implementation governance and change management; without them, delivered systems can drift from the target.",
+      "pre_read": "Notice which part of the development cycle was skipped. Ask what that work protects against.",
+      "correct_explanation": "TOGAF's Architecture Development Method (ADM) does not end with a migration plan: architects then govern implementation, checking that projects conform to the target, and manage change afterward. Skipping that work lets delivered systems drift from the approved target, recreating the fragmentation the architecture was meant to remove. An outdated repository is a real consequence too, but it is a documentation problem; nonconforming systems carry the business risk.",
+      "wrong_explanations": {
+        "A": "Too much baseline detail wastes effort, but it does not result from skipping governance of delivery.",
+        "B": "A stale repository is the lesser, documentary effect. The business harm comes from systems that do not conform.",
+        "D": "Resistance to change is an organizational risk on any program; it does not follow from the skipped governance work."
+      },
+      "tips": [
+        "Eliminate: A concerns baseline detail and D concerns user resistance; neither results from stopping after migration planning.",
+        "Final two: C beats B because nonconforming systems create lasting cost and risk; a stale repository is the lesser, documentary effect.",
+        "Exam cue: architecture must be governed through delivery; a plan nobody enforces is where drift begins."
+      ],
+      "framework_ref": "TOGAF Standard, 10th Edition, ADM Phase G (Implementation Governance) and Phase H (Architecture Change Management); COBIT 2019 APO03 (Managed Enterprise Architecture)",
+      "related_concepts": [
+        "TOGAF Architecture Development Method",
+        "Implementation governance",
+        "Architecture compliance",
+        "Target architecture"
+      ],
+      "_provenance": "Authored from concept: 'TOGAF cycle continues into implementation governance'. Original KaiSip item (Oct 2026), written for CISA topic 2A4 to fill a subtopic with no practice questions. All scenario specifics invented for this question. No legacy bank consulted. Review round 1 (Oct 2026): revised after exam, standards, language and pedagogy review.",
+      "style_version": 2
+    },
+    {
+      "id": "d2_201",
+      "domain": 2,
+      "subtopic": "Hiring and Termination Controls. Background Screening",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "A payments firm runs the same basic reference check for every new hire, including system administrators who can reach cardholder data. What should the IS auditor recommend as BEST?",
+      "options": {
+        "A": "Run full criminal and credit checks on every new hire",
+        "B": "Scale screening depth to the sensitivity of each role",
+        "C": "Replace pre-hire checks with monitoring of administrators' activity",
+        "D": "Have administrators sign a confidentiality agreement before access"
+      },
+      "correct": "B",
+      "key_concept": "Background screening is scaled to each role's sensitivity and limited by law; privileged roles get deeper checks before access is granted.",
+      "pre_read": "Ask whether one level of screening fits every role, and what limits how deep screening can go.",
+      "correct_explanation": "Screening should match the trust a role carries: administrators who can reach cardholder data warrant deeper checks than most staff, within privacy and employment law. Scaling screening to role sensitivity closes the gap without overreaching. A confidentiality agreement is also needed before access, but it is a promise, not a check; it cannot reveal a candidate's history the way screening does.",
+      "wrong_explanations": {
+        "A": "Uniform deep checks overreach for low-risk roles and can breach privacy or employment law; depth should follow role sensitivity.",
+        "C": "Monitoring detects misuse after access is granted; it does not replace screening before a person is trusted.",
+        "D": "Agreements are required, but they rely on the signer's good faith and reveal nothing about the candidate's background."
+      },
+      "tips": [
+        "Eliminate: A screens everyone deeply regardless of role or law, and C drops pre-hire screening for after-the-fact monitoring.",
+        "Final two: B beats D because screening tests trustworthiness before access; a signed agreement only records a promise.",
+        "Exam cue: screening scales with role sensitivity and stays within the law; privileged roles get the deepest checks."
+      ],
+      "framework_ref": "COBIT 2019 APO07 (Managed Human Resources); ISO/IEC 27002:2022 (Control 6.1 Screening); PCI DSS v4.0 Requirement 12.7.1 (Personnel Screening)",
+      "related_concepts": [
+        "Background screening",
+        "Role sensitivity",
+        "Privacy and employment law",
+        "Confidentiality agreement"
+      ],
+      "_provenance": "Authored from concept: 'background screening scaled to role sensitivity within the law'. Original KaiSip item (Oct 2026), written for CISA topic 2B1 to fill a subtopic with no practice questions. All scenario specifics invented for this question. No legacy bank consulted. Review round 1 (Oct 2026): revised after exam, standards, language and pedagogy review.",
+      "style_version": 2
+    },
+    {
+      "id": "d2_204",
+      "domain": 2,
+      "subtopic": "Governance Versus Management. Board Oversight in Practice",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "A shipping company's board receives detailed monthly IT reports, yet its minutes show no IT decisions, questions or follow-up actions in two years. Which conclusion is MOST appropriate for the IS auditor to draw?",
+      "options": {
+        "A": "The board is informed about IT but is not governing it",
+        "B": "IT performed well, so no board decisions were needed",
+        "C": "The reports are too technical for directors to act on",
+        "D": "The board has formally delegated IT accountability to management"
+      },
+      "correct": "A",
+      "key_concept": "A board governs IT only when it sets direction and challenges results; receiving reports alone is not oversight.",
+      "pre_read": "Look at what the board does with information, not how much information it receives.",
+      "correct_explanation": "Governance means evaluating, directing and monitoring. Two years of reports with no decisions, questions or follow-up show the board receiving information without exercising any of those roles, so IT is in effect steering itself. Good performance does not explain the silence: even when results are on target, a governing board still sets direction, approves priorities and challenges what it is told. Passive receipt of reports is information, not oversight.",
+      "wrong_explanations": {
+        "B": "Even strong results need a board that sets direction and challenges reports. Two years without a single question cannot be explained by performance alone.",
+        "C": "Hard-to-read reports can dull engagement. But nothing in the facts faults the reports, and two years without one question describes how the board behaves, not how the reports are written.",
+        "D": "Nothing shows a formal delegation, and accountability for IT cannot be delegated anyway; the board keeps it whatever it hands to management."
+      },
+      "tips": [
+        "Eliminate: C and D, because C faults report design that nothing in the facts questions, and D claims a delegation of accountability that a board cannot make.",
+        "Final two: A beats B because governing means directing and challenging, which good results do not replace; B mistakes silence for oversight.",
+        "Exam cue: reports that are received but never questioned or acted on point to information, not governance."
+      ],
+      "framework_ref": "COBIT 2019 EDM01.03 (Monitor the governance system); ISO/IEC 38500:2024 Information technology - Governance of IT for the organization",
+      "related_concepts": [
+        "Board oversight of IT",
+        "Evaluate, direct and monitor",
+        "Governance evidence",
+        "Board accountability"
+      ],
+      "_provenance": "Authored from concept: 'a board that receives IT reports but never acts on them is not governing'. Original KaiSip item (Oct 2026), written for CISA topic 2A2 to add practice to a thin subtopic and test a lesson its existing items do not. All scenario specifics invented for this question. No legacy bank consulted. Strawman pass (Oct 2026): eliminated option(s) rewritten to a plausible same-type error; blind re-tested.",
+      "style_version": 2
+    },
+    {
+      "id": "d2_208",
+      "domain": 2,
+      "subtopic": "Managing IT People. Key-Person Dependency",
+      "principle_id": "risk-sets-priority",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "After two unplanned resignations stalled IT services, management wants to reduce the organization's dependence on individual staff. What should the IS auditor recommend FIRST?",
+      "options": {
+        "A": "Cross-train backups for the most senior engineer in each team",
+        "B": "Offer retention bonuses to staff in hard-to-fill technical roles",
+        "C": "Write detailed procedures for every system the IT function runs",
+        "D": "Identify the roles and people that critical services rely on"
+      },
+      "correct": "D",
+      "key_concept": "Reducing key-person risk starts by identifying the roles critical services depend on; remedies follow that analysis.",
+      "pre_read": "For a FIRST question, ask what must be known before any remedy can be aimed.",
+      "correct_explanation": "Reducing dependence starts with knowing where it lies: which roles and individuals critical services cannot run without. That analysis directs cross-training, documentation and succession planning to the right places. Cross-training senior engineers acts before that analysis and assumes seniority equals criticality, yet the person a service depends on may be a junior specialist. Once key roles are known, cross-training them becomes the main remedy.",
+      "wrong_explanations": {
+        "A": "Seniority is not the same as criticality. Without first identifying key roles, backups may be trained for the wrong people.",
+        "B": "Bonuses may keep people longer, but services still depend on them; illness or a later resignation leaves the same gap.",
+        "C": "Documenting everything at once spreads effort thinly and still leaves no trained backup for the systems that matter most."
+      },
+      "tips": [
+        "Eliminate: B keeps the dependency in place, and C spreads effort across every system without creating a trained backup.",
+        "Final two: D beats A because cross-training works only once the critical roles are known; seniority is a poor guide to criticality.",
+        "Exam cue: for a FIRST question on people risk, identify key roles and single points of knowledge before choosing remedies."
+      ],
+      "framework_ref": "COBIT 2019 APO07.02 (Identify key IT personnel); COBIT 2019 BAI08 (Managed Knowledge)",
+      "related_concepts": [
+        "Key-person dependency",
+        "Succession planning",
+        "Cross-training",
+        "Knowledge management"
+      ],
+      "_provenance": "Authored from concept: 'identify key IT personnel before choosing dependency remedies'. Original KaiSip item (Oct 2026), written for CISA topic 2B1 to add practice to a thin subtopic and test a lesson its existing items do not. All scenario specifics invented for this question. No legacy bank consulted.",
+      "style_version": 2
+    },
+    {
+      "id": "d2_210",
+      "domain": 2,
+      "subtopic": "Retention and Disposal. Former Customer Data",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A retailer's marketing team wants to keep former customers' identifiable purchase histories indefinitely for trend analysis, beyond their documented retention period. Which approach should the IS auditor recommend as MOST appropriate?",
+      "options": {
+        "A": "Ask former customers to consent to keeping their histories",
+        "B": "Keep the histories, since trend analysis is a legitimate business purpose",
+        "C": "Anonymize the histories once their retention period ends",
+        "D": "Delete each customer's history as soon as the customer leaves"
+      },
+      "correct": "C",
+      "key_concept": "At the end of retention, data is deleted or made anonymous; anonymous data can still serve analysis without identifying anyone.",
+      "pre_read": "Ask whether the stated purpose actually needs to know who each person is.",
+      "correct_explanation": "Trend analysis needs patterns, not identities. Anonymizing the histories when the retention period ends honors the schedule, because data that can no longer identify anyone is no longer personal data, while still giving marketing what it needs. Seeking consent from former customers is a weaker route: few will reply, consent can be withdrawn, and it keeps identifiable data indefinitely for a purpose that does not require it.",
+      "wrong_explanations": {
+        "A": "Consent is a valid lawful basis, but a lawful basis does not answer minimization: keep the least identifying form that still serves the purpose.",
+        "B": "A legitimate purpose does not justify keeping identifiable data indefinitely when the purpose can be met without identities.",
+        "D": "Deleting at departure ignores the documented retention period, which may exist for tax, warranty or dispute needs."
+      },
+      "tips": [
+        "Eliminate: B lets a business purpose override the retention period, and D destroys records before their documented period ends.",
+        "Final two: C beats A because the analysis does not need identities, so anonymizing meets it without chasing consent from people who left.",
+        "Exam cue: when a purpose needs patterns rather than people, anonymize at the end of retention instead of keeping identifiable data."
+      ],
+      "framework_ref": "GDPR Article 5(1)(e) (Storage Limitation); ISO/IEC 27002:2022 Control 8.11 (Data Masking); COBIT 2019 APO14.09 (Support data archiving and retention); GDPR Recital 26 (Anonymous information)",
+      "related_concepts": [
+        "Storage limitation",
+        "Anonymization",
+        "Records retention schedule",
+        "Data minimization"
+      ],
+      "_provenance": "Authored from concept: 'anonymize rather than keep identifiable data past its retention period'. Original KaiSip item (Oct 2026), written for CISA topic 2A7 to add practice to a thin subtopic and test a lesson its existing items do not. All scenario specifics invented for this question. No legacy bank consulted.",
+      "style_version": 2
+    },
+    {
+      "id": "d2_214",
+      "domain": 2,
+      "subtopic": "How Outside Rules Shape IT Governance. Cost of Compliance",
+      "principle_id": "management-owns-risk",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A software firm's management proposes not complying with a new law requiring breach reports within 72 hours, because expected fines would cost less than compliance. Which response should the IS auditor recommend as MOST appropriate?",
+      "options": {
+        "A": "Have the board accept the risk of noncompliance",
+        "B": "Comply with the law in the most cost-effective way",
+        "C": "Delay compliance until the regulator issues guidance",
+        "D": "Have the IS audit team run breach reporting to save cost"
+      },
+      "correct": "B",
+      "key_concept": "Mandatory legal obligations are not open to cost trade-offs; management chooses how to comply, not whether to comply.",
+      "pre_read": "Sort the options into ways of complying and ways of not complying before weighing costs.",
+      "correct_explanation": "A legal duty is not a risk to buy out with a fine: management decides how to comply, not whether. The appropriate response is to meet the 72-hour requirement in the most cost-effective way. Board acceptance looks like proper risk governance, but no level of the organization can accept deliberately breaking the law, and fines often bring regulatory orders and reputational damage on top.",
+      "wrong_explanations": {
+        "A": "Risk acceptance covers risks within appetite, not deliberate breaches of law. Board approval would make the violation a board decision, not a lawful one.",
+        "C": "Waiting for guidance can seem prudent with a new law. But the 72-hour duty is already in force, so delaying is still noncompliance the firm has chosen.",
+        "D": "Running an operational process would impair the IS audit team's independence when it later audits breach reporting."
+      },
+      "tips": [
+        "Eliminate: C and D, because C postpones a duty already in force, and D puts the IS auditors in charge of a process they must audit.",
+        "Final two: B beats A because no one, not even the board, can accept a deliberate breach of law as a risk decision.",
+        "Exam cue: for mandatory obligations, choose the answer about how to comply cost-effectively, never whether to comply."
+      ],
+      "framework_ref": "COBIT 2019 MEA03.02 (Optimize response to external requirements); ISO/IEC 27002:2022 Control 5.31 (Legal, Statutory, Regulatory and Contractual Requirements)",
+      "related_concepts": [
+        "Regulatory compliance",
+        "Risk acceptance",
+        "Mandatory obligations",
+        "Breach notification"
+      ],
+      "_provenance": "Authored from concept: 'mandatory legal obligations are not open to cost trade-offs'. Original KaiSip item (Oct 2026), written for CISA topic 2A1 to add practice to a thin subtopic and test a lesson its existing items do not. All scenario specifics invented for this question. No legacy bank consulted. D2 difficulty upgrade (Oct 2026, owner's rule: eliminations fall to CISA knowledge, final two decided by the ISACA lens): C (wait until another firm is fined) was a strawman; it is now selective timely reporting. Strawman pass (Oct 2026): eliminated option(s) rewritten to a plausible same-type error; blind re-tested.",
+      "style_version": 2
+    },
+    {
+      "id": "d2_216",
+      "domain": 2,
+      "subtopic": "Due Diligence, Contracts and SLAs. Source Code Escrow",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "A hospital plans to run patient scheduling on a start-up's software as a service (SaaS) platform, relying on a source code escrow agreement if the start-up fails. What should be the IS auditor's PRIMARY concern?",
+      "options": {
+        "A": "Released code alone could not quickly restore the hosted service",
+        "B": "The escrow agent might not confirm that deposits are complete",
+        "C": "The escrow release triggers might not cover a service shutdown",
+        "D": "Escrow could expose the start-up's code to its competitors"
+      },
+      "correct": "A",
+      "key_concept": "Source code escrow helps only customers able to run the code; hosted services need data return and service transition terms.",
+      "pre_read": "Picture the day after the start-up fails: what would the hospital actually need to keep scheduling patients?",
+      "correct_explanation": "Source code escrow protects a customer that can run the software itself. For a SaaS platform, the hospital has no hosting environment, operating staff or current copy of its data, so released code would not restore scheduling for weeks. Continuity needs data return and service transition terms. Deposit verification matters, but even a complete, verified deposit leaves the same gap, so it is a secondary concern.",
+      "wrong_explanations": {
+        "B": "Fit comes before execution. Deposit verification is a normal escrow term, yet refining a protection cannot cure a mismatch with the delivery model.",
+        "C": "Clear triggers matter, but even a timely release would give the hospital code it has no infrastructure or staff to run.",
+        "D": "Escrow agents hold deposits in confidence and release them only to the customer when agreed conditions occur, such as vendor failure."
+      },
+      "tips": [
+        "Eliminate: C refines release terms that still deliver only code, and D misreads escrow, which releases code only to the customer on agreed triggers.",
+        "Final two: A beats B because even a verified deposit cannot run a hosted service without infrastructure, data and operating staff.",
+        "Exam cue: match the protection to the delivery model; for hosted services, look for data return and service transition, not code alone."
+      ],
+      "framework_ref": "COBIT 2019 APO10.03 (Manage vendor relationships and contracts); ISO/IEC 27002:2022 Control 5.23 (Information Security for Use of Cloud Services)",
+      "related_concepts": [
+        "Source code escrow",
+        "SaaS continuity",
+        "Exit provisions",
+        "Vendor failure"
+      ],
+      "_provenance": "Authored from concept: 'source code escrow protects only a customer able to run the released code'. Original KaiSip item (Oct 2026), written for CISA topic 2B2 to add practice to a thin subtopic and test a lesson its existing items do not (d3_015 and d3_130 test when to use escrow and how to verify deposits). All scenario specifics invented for this question. No legacy bank consulted.",
+      "style_version": 2
+    },
+    {
+      "id": "d2_218",
+      "domain": 2,
+      "subtopic": "IT Due Diligence in Mergers and Acquisitions. Ranking Deal Findings",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "During due diligence on a software company whose revenue depends on one platform, an IS auditor records four findings. Which poses the GREATEST risk to the buyer's deal?",
+      "options": {
+        "A": "Two senior developers hold undocumented knowledge of the platform",
+        "B": "The platform's core component license ends if the company is sold",
+        "C": "The company runs an ERP version the buyer does not support",
+        "D": "Several security policies have not been reviewed in over two years"
+      },
+      "correct": "B",
+      "key_concept": "Change-of-control clauses can end licenses or contracts a target depends on, so due diligence flags them before closing.",
+      "pre_read": "Ask which finding could stop the buyer from using what it is paying for, and which can be managed later.",
+      "correct_explanation": "A change-of-control clause that ends the core component license threatens the buyer's right to run the platform that produces all the revenue. Only terms agreed before closing, such as the licensor's consent or a price change, can address it. Undocumented developer knowledge is a serious key-person risk, but retention agreements and documentation can reduce it, while the clause lets the licensor end or reprice the right to run the revenue platform.",
+      "wrong_explanations": {
+        "A": "An auditor would flag key-person dependency in any software deal, yet risks the buyer controls after closing usually rank below those a third party holds.",
+        "C": "Unsupported ERP versions add integration cost, which buyers notice. It is a post-closing integration task, and it does not threaten the right to run the platform that earns the revenue.",
+        "D": "Overdue policy reviews are a minor governance gap the buyer can fix after closing, with little effect on the price or the deal."
+      },
+      "tips": [
+        "Eliminate: C is a routine integration task after closing, and D is a minor policy gap the buyer can fix later.",
+        "Final two: B beats A because the licensor could end or reprice the right to run the revenue platform, while key-person risk can be reduced with retention terms.",
+        "Exam cue: in due diligence, rank findings by whether they threaten what the buyer is paying for; change-of-control clauses often do."
+      ],
+      "framework_ref": "COBIT 2019 BAI09.05 (Manage licenses); COBIT 2019 APO12.02 (Analyze risk)",
+      "related_concepts": [
+        "Change-of-control clause",
+        "Software licensing",
+        "Key-person risk",
+        "Deal-breaker criteria"
+      ],
+      "_provenance": "Authored from concept: 'change-of-control clauses can remove rights the target depends on'. Original KaiSip item (Oct 2026), written for CISA topic 2A5 to add practice to a thin subtopic and test a lesson its existing items do not (d2_128 tests risk-based depth of review). All scenario specifics invented for this question. No legacy bank consulted. Strawman pass (Oct 2026): eliminated option(s) rewritten to a plausible same-type error; blind re-tested.",
+      "style_version": 2
+    },
+    {
+      "id": "d2_220",
+      "domain": 2,
+      "subtopic": "Governing Artificial Intelligence and Emerging Technology. AI in Purchased Systems",
+      "principle_id": "governance-before-technology",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A city government's departments have enabled artificial intelligence (AI) features in several purchased systems that serve residents, but no one knows how many exist. What should the IS auditor recommend FIRST?",
+      "options": {
+        "A": "Build an inventory of AI uses, each rated by its impact",
+        "B": "Test each AI feature found so far for biased outcomes",
+        "C": "Ask each vendor to certify that its AI features are fair",
+        "D": "Disable the AI features until a council policy is approved"
+      },
+      "correct": "A",
+      "key_concept": "AI governance starts with an inventory of every AI use, including vendor and embedded features, ranked by impact.",
+      "pre_read": "Ask what the city must know before it can decide which AI features to assess, test or switch off.",
+      "correct_explanation": "Governance starts with knowing what exists. An inventory of AI uses, with an owner and an impact rating for each, shows which features affect residents most and where assessment and monitoring must go first. Testing features for bias is valuable, but testing only those found so far, without an inventory, leaves unknown high-impact uses untested and gives no basis for ranking the effort.",
+      "wrong_explanations": {
+        "B": "Bias testing is a core AI assurance step, but every test is scoped from a known population.",
+        "C": "The city stays accountable for decisions made with vendor AI. A vendor's self-certification is not independent evidence of fair outcomes.",
+        "D": "Disabling the features could halt services to residents before anyone knows which ones are low risk. It is a disproportionate first response."
+      },
+      "tips": [
+        "Eliminate: C hands assurance to vendors although the city stays accountable, and D halts services before knowing which features matter.",
+        "Final two: A beats B because testing cannot be targeted or complete until an inventory shows which AI uses exist and which matter most.",
+        "Exam cue: when no one knows what exists, the first step is an inventory ranked by risk; assessment and testing follow."
+      ],
+      "framework_ref": "NIST AI Risk Management Framework (AI RMF 1.0), GOVERN 1.6 (Mechanisms are in place to inventory AI systems); ISO/IEC 42001:2023 (Artificial Intelligence Management System)",
+      "related_concepts": [
+        "AI inventory",
+        "Embedded AI",
+        "AI governance",
+        "Vendor accountability"
+      ],
+      "_provenance": "Authored from concept: 'AI governance starts with an inventory that includes embedded vendor AI'. Original KaiSip item (Oct 2026), written for CISA topic 2A2 to add practice to a thin subtopic and test a lesson its existing items do not (d2_163 tests response to found bias; d4_209 tests staff use of public AI tools). All scenario specifics invented for this question. No legacy bank consulted.",
+      "style_version": 2
+    },
+    {
+      "id": "d2_222",
+      "domain": 2,
+      "subtopic": "Capability and Maturity Models. Self-Assessed Ratings",
+      "principle_id": "evidence-quality",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "Process owners rated the incident management process at capability level 4 in a self-assessment, but the IS auditor finds no one collects data on how it performs. What is the MOST LIKELY conclusion?",
+      "options": {
+        "A": "The rating stands, because process owners know the process best",
+        "B": "The rating is overstated, as quantitative measurement is absent",
+        "C": "The rating stands, since practices are documented and followed",
+        "D": "No conclusion is possible until an external assessor repeats the rating"
+      },
+      "correct": "B",
+      "key_concept": "Capability ratings must rest on evidence; level 4 requires quantitative measurement, so a rating without performance data is overstated.",
+      "pre_read": "Recall what separates level 4 from level 3, then check whether the evidence meets it.",
+      "correct_explanation": "Level 4 means the process is measured and controlled with quantitative data. If no one collects performance data, that criterion cannot be met, so the self-assessed rating is most likely overstated, and the IS auditor reports it. An independent reassessment could confirm the true level, but the evidence already contradicts level 4, so the conclusion does not have to wait for one.",
+      "wrong_explanations": {
+        "A": "Owners rating their own processes tend to be optimistic. A rating must rest on evidence, and here the evidence contradicts it.",
+        "C": "Documented, consistent practice describes level 3. Level 4 also needs performance measured and controlled with data.",
+        "D": "The missing performance data already fails the level 4 criterion. A reassessment may set the exact level, but the overstatement is clear now."
+      },
+      "tips": [
+        "Eliminate: A trusts a self-rating the evidence contradicts, and C mistakes level 3 practice for level 4.",
+        "Final two: B beats D because the missing data already fails the level 4 criterion, so the IS auditor can conclude without waiting.",
+        "Exam cue: know what each capability level requires; level 4 means measured, data-driven control, and level 5 adds continual improvement."
+      ],
+      "framework_ref": "ISO/IEC 33020:2019 (Process Measurement Framework for Assessment of Process Capability); COBIT 2019 Framework: Introduction and Methodology",
+      "related_concepts": [
+        "Capability levels",
+        "Self-assessment",
+        "Process measurement",
+        "Audit evidence"
+      ],
+      "_provenance": "Authored from concept: 'capability ratings must meet each level's evidence criteria'. Original KaiSip item (Oct 2026), written for CISA topic 2B4 to add practice to a thin subtopic and test a lesson its existing items do not (d2_168 tests choosing a capability assessment; d1_188 tests maturity versus assurance). All scenario specifics invented for this question. No legacy bank consulted.",
+      "style_version": 2
+    },
+    {
+      "id": "d2_224",
+      "domain": 2,
+      "subtopic": "Privacy by Design and by Default. Readmission Analytics",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A European hospital's analysts must follow each patient across visits to study readmissions, but never need names or contact details. Which design should the IS auditor recommend as BEST?",
+      "options": {
+        "A": "Replace identifiers with codes, holding the linking key separately",
+        "B": "Encrypt the full records and give analysts the decryption key",
+        "C": "Give analysts full records under signed confidentiality agreements",
+        "D": "Remove names, using the hospital record number to link visits"
+      },
+      "correct": "A",
+      "key_concept": "Privacy by design minimizes exposure: pseudonymization supports linked analysis, while a separately protected key limits re-identification risk.",
+      "pre_read": "List what the analysts actually need, then find the option that gives them that and nothing more.",
+      "correct_explanation": "Pseudonymization gives analysts what they need, a consistent code linking each patient's visits, without identities. Because the key linking codes to patients is held separately under its own access control, analysts cannot readily re-identify patients, although the coded data remains personal data under the General Data Protection Regulation (GDPR). Removing names looks similar, but the hospital record number is itself an identifier that many staff can look up, so patients remain easily identifiable.",
+      "wrong_explanations": {
+        "B": "Encryption protects data in storage, but analysts holding the key see every identity. It does not reduce the personal data they are exposed to.",
+        "C": "Agreements add accountability but still expose identities the analysis never needs, so they do not minimize the data used.",
+        "D": "Like coding, removing names keeps the visit linkage analysts need, though a pseudonym protects only if it means nothing to those who see it."
+      },
+      "tips": [
+        "Eliminate: B protects data only in storage, since key holders see everything, and C relies on promises instead of reducing the data shown.",
+        "Final two: A beats D because a hospital record number is a widely known identifier, while true pseudonyms need a separately protected key.",
+        "Exam cue: when a task needs linkage but not identity, look for pseudonymization with the re-identification key held apart."
+      ],
+      "framework_ref": "GDPR Article 25 (Data Protection by Design and by Default); ISO/IEC 27002:2022 Control 8.11 (Data Masking)",
+      "related_concepts": [
+        "Pseudonymization",
+        "Data minimization",
+        "Privacy by design",
+        "Re-identification risk"
+      ],
+      "_provenance": "Authored from concept: 'pseudonymization with a separately held key supports linked analysis without identities'. Original KaiSip item (Oct 2026), written for CISA topic 2A6 to add practice to a thin subtopic and test a lesson its existing items do not (d2_086 tests default settings; d2_097 tests SDLC gates; d3_010 tests test-data masking). All scenario specifics invented for this question. No legacy bank consulted.",
+      "style_version": 2
+    }
+  ],
+  "free_sample": true
+}

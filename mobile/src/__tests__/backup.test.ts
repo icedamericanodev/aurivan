@@ -64,6 +64,10 @@ jest.mock('expo-notifications', () => ({
 // expo-file-system / expo-sharing / expo-document-picker: tiny fakes.
 const mockFiles = new Map<string, string>();
 const mockShared: string[] = [];
+/** What each shared file held at the moment the share sheet opened. */
+const mockSharedText: (string | undefined)[] = [];
+/** Makes the next write() fail part-way (a full disk), after the empty file exists. */
+let mockWriteFails = false;
 let mockPick: { canceled: boolean; assets: { uri: string; name: string; size?: number; lastModified: number }[] | null } = { canceled: true, assets: null };
 jest.mock('expo-file-system', () => {
   class MockFile {
@@ -74,8 +78,18 @@ jest.mock('expo-file-system', () => {
     create() {
       mockFiles.set(this.uri, '');
     }
+    // Expo SDK 58: write() returns a Promise and the file is written later, as here.
     write(text: string) {
-      mockFiles.set(this.uri, text);
+      return Promise.resolve().then(() => {
+        if (mockWriteFails) {
+          mockFiles.set(this.uri, text.slice(0, 10));
+          throw new Error('disk full');
+        }
+        mockFiles.set(this.uri, text);
+      });
+    }
+    delete() {
+      mockFiles.delete(this.uri);
     }
     get size() {
       return (mockFiles.get(this.uri) ?? '').length;
@@ -92,6 +106,7 @@ jest.mock('expo-sharing', () => ({
   isAvailableAsync: async () => true,
   shareAsync: async (uri: string) => {
     mockShared.push(uri);
+    mockSharedText.push(mockFiles.get(uri));
   },
 }));
 jest.mock('expo-document-picker', () => ({ getDocumentAsync: async () => mockPick }));
@@ -144,6 +159,7 @@ beforeEach(() => {
   mockScheduled.clear();
   mockFiles.clear();
   mockShared.length = 0;
+  mockSharedText.length = 0;
   Object.assign(mockPermission, { granted: true, grantOnAsk: true, asked: 0 });
 });
 afterEach(() => jest.useRealTimers());
@@ -158,6 +174,9 @@ describe('round trip', () => {
     expect(mockShared).toEqual(['file:///cache/kaisip-backup-2026-10-10.json']);
     expect(useBackup.getState().lastBackupAt).toBe(NOW);
     const text = mockFiles.get(mockShared[0])!;
+    // Expo SDK 58: the share sheet opens only after the async write finished (never on an empty file).
+    expect(mockSharedText).toEqual([text]);
+    expect(text.length).toBeGreaterThan(100);
 
     freshInstall();
     // The new phone went through the welcome screen (onboarded is the phone's own, never the file's).
@@ -170,6 +189,20 @@ describe('round trip', () => {
     expect(progressData()).toEqual(before.progress);
     // Today's plan is rebuilt by the planner, never taken from a file.
     expect(useProgress.getState().days).toEqual({});
+  });
+
+  it('a failed write is not shared, and its partial copy is removed at once', async () => {
+    studiedLearner();
+    const lastBefore = useBackup.getState().lastBackupAt;
+    mockWriteFails = true;
+    try {
+      await expect(saveBackup(NOW)).rejects.toThrow('disk full');
+    } finally {
+      mockWriteFails = false;
+    }
+    expect(mockShared).toEqual([]);
+    expect(mockFiles.has('file:///cache/kaisip-backup-2026-10-10.json')).toBe(false);
+    expect(useBackup.getState().lastBackupAt).toBe(lastBefore);
   });
 
   it('the file holds the envelope and both stores, and nothing about the device', () => {

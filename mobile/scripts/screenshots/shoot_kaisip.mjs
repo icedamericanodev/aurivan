@@ -1,8 +1,9 @@
 // Mobile 1.23, the KaiSip rename and "What should we call you?" (SHOTS=kaisip, see run.sh).
 //
-// Shots: Today with a name, the same with a long name at about 200% text, onboarding's name step
-// (empty and typed), Settings (the "You" group), the "Your name" sheet, About (the new name and the
-// move-from-Aurivan line), Your data (the same line) and the share card (no name on it).
+// Shots: Today with a name, a long name and no name, onboarding's welcome, Settings (the "You" group),
+// the "Your name" sheet, About KaiSip (top and end; behind the "Help and about" door since mobile 1.46),
+// the Your data screen (its own screen behind its door since 1.46) and the share card (no name on it).
+// The move-from-Aurivan lines these shots once showed were removed in mobile 1.24.
 // FONT_SCALE=2 approximates 200% text for the whole run.
 import { createRequire } from 'module';
 import fs from 'fs';
@@ -84,25 +85,41 @@ await go('/onboarding', 1800);
 await shot('k02-onboarding-welcome');
 await edit(S, `v.state.onboarded = true; v.state.displayName = 'Maya';`);
 
-// Settings: the "You" group, its sheet, About and Your data.
+// Settings: the "You" group (the last card before "Data and help" since mobile 1.43), its sheet,
+// then About KaiSip (behind the "Help and about" door since 1.46) and the Your data screen (its own door).
 await go('/settings');
+await page.getByRole('button', { name: /^Your name, / }).first().evaluate((n) => n.scrollIntoView({ block: 'center' }));
+await wait(500);
 await shot('k04-settings');
 await press(/^Your name, /);
 await shot('k05-settings-your-name');
 await page.getByLabel('Cancel, Your name').first().click().catch(() => {});
 await wait(500);
-const aboutRow = page.getByRole('button', { name: /^About KaiSip/ }).first();
-await aboutRow.scrollIntoViewIfNeeded();
-await aboutRow.click();
-await wait(900);
+// Help and about is a door in the last card: it opens settings-section?category=help, where the About row is.
+await press(/^Help and about, /, 300);
+await page.waitForURL(/settings-section/);
+await wait(1200);
+await press(/^About KaiSip/);
 await shot('k06-about');
-await page.getByText('New name', { exact: true }).first().scrollIntoViewIfNeeded().catch(() => {});
-await wait(400);
-await shot('k06b-about-new-name');
+// The end of the sheet: the scope and provenance lines (the "New name" line went in mobile 1.24).
+await page
+  .getByText(/^Original questions and notes, written/)
+  .last()
+  .scrollIntoViewIfNeeded({ timeout: 3000 })
+  .catch(async () => {
+    await page.mouse.move(196, 700);
+    await page.mouse.wheel(0, 2000);
+  });
+await wait(600);
+await shot('k06b-about-end');
 await page.getByRole('button', { name: /^Close, About KaiSip/ }).first().click().catch(() => {});
 await wait(500);
-await page.getByText('Your data', { exact: true }).first().scrollIntoViewIfNeeded().catch(() => {});
-await wait(400);
+// Your data: its own screen behind its door in Settings' last card (settings-section?category=data).
+await go('/settings');
+await press(/^Your data, /, 300);
+await page.waitForURL(/settings-section/);
+await page.getByRole('button', { name: 'Save a backup' }).waitFor();
+await wait(800);
 await shot('k07-settings-your-data');
 
 // The share card: no name, only the KaiSip lockup.

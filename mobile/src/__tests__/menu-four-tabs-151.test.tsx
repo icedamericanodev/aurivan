@@ -59,7 +59,9 @@ jest.mock('expo-router', () => {
       canDismiss: () => mockCanDismiss.current,
       setParams: jest.fn(),
     },
-    useFocusEffect: jest.fn(),
+    // A screen mounted here is in front: its focus effect runs once, as the real router's would
+    // (app/play.tsx waits for focus since Expo SDK 58: lib/useOnceOnFocus.ts).
+    useFocusEffect: (cb: () => void | (() => void)) => React.useEffect(cb, [cb]),
     useLocalSearchParams: () => mockParams.current,
     useNavigation: () => ({ setParams: mockSetParams }),
     Tabs,

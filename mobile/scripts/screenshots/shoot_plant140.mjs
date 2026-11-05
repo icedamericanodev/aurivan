@@ -5,8 +5,9 @@
 // its Style choice (and the same plant switched to "Storybook with a face");
 // a plant saved before 1.40 (no style: unchanged, the storybook face); the
 // Settings row that replaced Quiet look; "Plant yours" previewing botanical;
-// Play before "More games" opens (one quiet line) and after; and a real
-// Field Guide round whose recap earns a badge (the InviteRow) with the one
+// Drills (Practice's games section since mobile 1.51, the old Play tab)
+// before "More drills" opens (one quiet line) and after; and a real Field
+// Guide round whose recap earns a badge (the InviteRow) with the one
 // "Report a problem" at its foot.
 import { createRequire } from 'module';
 import fs from 'fs';
@@ -131,7 +132,8 @@ await setPlant(null);
 await go('/plant-pick', 2600);
 await shot('p140-07-plant-yours-botanical');
 
-// ── 6. Play before "More games" opens (12 answers, no game played) ──────
+// ── 6. Drills before "More drills" opens (12 answers, no game played) ───
+// Shot names keep "play" (the old Play tab) so handoffs stay comparable.
 await reseed();
 await setPlant(botanical);
 await edit(
@@ -141,14 +143,16 @@ await edit(
 await go('/practice?section=drills', 2600);
 await shot('p140-08-play-before-50');
 
-// ── 7. Play after 50 answers: "More games", folded, then open ───────────
+// ── 7. Drills after 50 answers: "More drills", folded, then open ────────
+// The disclosure's name is "More drills, N more, each trains one exam skill"
+// (components/drills.tsx DisclosureRow; pathChooser.tsx joins title and subtitle).
 await reseed();
 await setPlant(botanical);
 await go('/practice?section=drills', 2600);
 await shot('p140-09-play-after-50');
-await page.getByRole('button', { name: /^More games/ }).first().click();
+await page.getByRole('button', { name: /^More drills/ }).first().click();
 await wait(900);
-await toTop('More games', 40);
+await toTop('More drills', 40);
 await shot('p140-09b-play-more-open');
 
 // ── 8. A real Field Guide round whose recap earns Whole Grove ───────────

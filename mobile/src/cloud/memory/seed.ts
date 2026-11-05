@@ -227,7 +227,8 @@ export function shotsSeed(now = Date.now()): MemoryOptions {
               progress: {
                 store: 'progress' as const,
                 rev: 7,
-                appVersion: state.remote === 'newer' ? '9.0.0' : '1.17.0',
+                // "newer": the next major version. Further ahead reads as a damaged copy (engine/syncPlan.ts implausibleApp).
+                appVersion: state.remote === 'newer' ? `${Number((Constants.expoConfig?.version ?? '1.0.0').split('.')[0]) + 1}.0.0` : '1.17.0',
                 storeVersion: 1,
                 updatedAt: now - 3 * day,
                 deviceId: OTHER_PHONE,

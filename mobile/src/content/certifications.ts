@@ -125,7 +125,7 @@ export const CERTIFICATIONS: Certification[] = [
       questions: 90,
       minutes: 150,
       difficultyMix: ISACA_MIX,
-      passingNote: 'Check ISACA’s current candidate guide for scoring details.',
+      passingNote: 'ISACA reports scaled scores from 200–800; 450 is the passing mark.',
     },
     domains: [
       { id: '1', name: 'AI Governance and Risk', short: 'Governance', weight: 33, tone: 0 },

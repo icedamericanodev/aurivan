@@ -4,6 +4,20 @@
 Usage:
     python3 scripts/lint_exam_guide.py                  # both shared files in data/exam/
     python3 scripts/lint_exam_guide.py draft.json ...   # draft copies (type detected from content)
+    python3 scripts/lint_exam_guide.py --cert crisc data/crisc/exam/crisc_exam_guide.json
+    python3 scripts/lint_exam_guide.py --cert aaia     # data/aaia/exam_guide.json + final_review_week.json
+
+Optional flag (the default, cisa, is unchanged):
+    --cert NAME   lint another certification's files: `certification` must be
+                  NAME, domain ids and weights come from NAME's block in
+                  mobile/src/content/certifications.ts (and from DI only if
+                  index.html has CERTS.NAME), and a final review week is checked
+                  against data/NAME/mindset/principles.json and data/NAME/notes/
+                  AAIA keeps its files flat (CERT_PATHS): data/aaia/exam_guide.json,
+                  data/aaia/final_review_week.json, data/aaia/principles.json and
+                  data/aaia/notes/ (codes like 1A and 1A.2); its exam length (90)
+                  comes from certifications.ts. A file not written yet prints
+                  "skipped: ..." (exit 0 when nothing else is wrong)
 
 Errors break the schema, a cross-reference (domain weights, principle ids, note
 codes) or a hard limit. Warnings are gaps to close (for example facts that have
@@ -32,10 +46,24 @@ DOMAIN_IDS = ["1", "2", "3", "4", "5"]
 DATE = re.compile(r"^\d{4}-\d{2}-\d{2}$")
 KEBAB = re.compile(r"^[a-z0-9]+(-[a-z0-9]+)*$")
 NOTE_CODE = re.compile(r"^([1-5])[AB]\d+(\.\d+)?$")
+CERT = "cisa"
 STALE_DAYS = 180  # warn when a section's facts are older than this
 
 # Sources must be ISACA's or the exam provider's own pages.
 SOURCE_HOSTS = ("isaca.org", "psiexams.com", "psionline.com")
+
+# Certifications whose files do not follow data/NAME/exam/ and data/NAME/mindset/.
+CERT_PATHS = {
+    "aaia": {
+        "guide": ROOT / "data" / "aaia" / "exam_guide.json",
+        "week": ROOT / "data" / "aaia" / "final_review_week.json",
+        "principles": ROOT / "data" / "aaia" / "principles.json",
+        "notes": ROOT / "data" / "aaia" / "notes",
+        "note_code": r"^([1-9])[A-Z](\.\d+)?$",
+        "note_example": "1A or 1A.2",
+    },
+}
+NOTE_EXAMPLE = "1B3 or 1B3.2"
 
 # ---- Exam guide ------------------------------------------------------------
 GUIDE_TOP = {"schema_version", "certification", "title", "description", "last_checked",
@@ -189,6 +217,13 @@ def load_di_weights():
     except OSError as e:
         err("index.html", f"cannot read ({e})")
         return {}
+    if CERT != "cisa":
+        # The web app's DI holds CISA only today; check another cert when it is added.
+        m = re.search(rf"\b{CERT}:\s*\{{.*?domains:\s*\{{(.*?)\n\s*\}},", src, re.S)
+        if not m:
+            return None
+        found = dict(re.findall(r'"([1-9])"\s*:\s*\{[^}]*?\bweight\s*:\s*(\d+)', m.group(1)))
+        return {k: int(v) for k, v in found.items()}
     m = re.search(r"\bcisa:\s*\{.*?domains:\s*\{(.*?)\n\s*\},", src, re.S)
     if not m:
         err("index.html", "CERTS.cisa.domains not found; cannot check weights against DI")
@@ -203,6 +238,14 @@ def load_mobile_weights():
     except OSError:
         warn("certifications.ts", "not found; skipping the mobile weight check")
         return None
+    if CERT != "cisa":
+        # From this cert's `id: '<cert>'` up to the next certification object.
+        m = re.search(rf"id:\s*'{CERT}'(.*?)(?=\n\s*\{{\s*\n\s*id:\s*'|\Z)", src, re.S)
+        if not m:
+            err("certifications.ts", f"{CERT.upper()} block not found; cannot check weights")
+            return {}
+        found = dict(re.findall(r"\{\s*id:\s*'([1-9])'[^}]*?\bweight:\s*(\d+)", m.group(1)))
+        return {k: int(v) for k, v in found.items()}
     m = re.search(r"id:\s*'cisa'(.*?)\bid:\s*'cism'", src, re.S)
     if not m:
         err("certifications.ts", "CISA block not found; cannot check weights")
@@ -215,7 +258,7 @@ def load_principles():
     try:
         doc = json.loads(PRINCIPLES.read_text())
     except (OSError, ValueError) as e:
-        err("data/mindset/principles.json", f"cannot read ({e})")
+        err(str(PRINCIPLES.relative_to(ROOT)), f"cannot read ({e})")
         return [], set()
     ids = [p.get("id") for p in doc.get("principles", [])]
     fams = {f.get("id") for f in doc.get("families", [])}
@@ -223,17 +266,20 @@ def load_principles():
 
 
 def load_note_codes():
-    try:
-        notes = json.loads(NOTES.read_text())
-    except (OSError, ValueError) as e:
-        err("data/cisa_notes.json", f"cannot read ({e})")
-        return set()
+    files = sorted(NOTES.glob("d*.json")) if NOTES.is_dir() else [NOTES]
     codes = set()
-    for d in notes.get("domains", []):
-        for t in d.get("topics", []):
-            codes.add(t.get("topic_id"))
-            for s in t.get("subtopics", []):
-                codes.add(s.get("id"))
+    for f in files:
+        try:
+            notes = json.loads(f.read_text())
+        except (OSError, ValueError) as e:
+            err(str(f.relative_to(ROOT)) if f.is_relative_to(ROOT) else str(f), f"cannot read ({e})")
+            continue
+        # One combined file holds "domains"; a per-domain file holds "topics".
+        for d in notes.get("domains", [notes]):
+            for t in d.get("topics", []):
+                codes.add(t.get("topic_id"))
+                for s in t.get("subtopics", []):
+                    codes.add(s.get("id"))
     codes.discard(None)
     return codes
 
@@ -241,10 +287,10 @@ def load_note_codes():
 def check_note(where, code, ctx, domain=None):
     m = NOTE_CODE.match(code) if isinstance(code, str) else None
     if not m:
-        err(where, f"note '{code}' is not a topic or subtopic code like 1B3 or 1B3.2")
+        err(where, f"note '{code}' is not a topic or subtopic code like {NOTE_EXAMPLE}")
         return
     if ctx["codes"] and code not in ctx["codes"]:
-        err(where, f"note '{code}' does not exist in data/cisa_notes.json")
+        err(where, f"note '{code}' does not exist in {NOTES.relative_to(ROOT) if NOTES.is_relative_to(ROOT) else NOTES}")
     if domain is not None and m.group(1) != domain:
         err(where, f"note '{code}' is in D{m.group(1)}, not D{domain}")
 
@@ -256,8 +302,8 @@ def lint_guide(doc, ctx):
         return
     if doc.get("schema_version") != SCHEMA_VERSION:
         err(label, f"schema_version must be {SCHEMA_VERSION}")
-    if doc.get("certification") != "cisa":
-        err(label, "certification must be 'cisa'")
+    if doc.get("certification") != CERT:
+        err(label, f"certification must be '{CERT}'")
     for k in ("title", "description"):
         if not nonempty_str(doc.get(k)):
             err(label, f"{k} must be a non-empty string")
@@ -378,11 +424,11 @@ def check_action(where, action, ctx):
         err(where, f"action '{kind}' takes no target")
     elif kind == "practice_domain":
         if target not in set(DOMAIN_IDS) | DYNAMIC_DOMAINS:
-            err(where, f"practice_domain target '{target}' must be 1-5, 'focus' or 'next_focus'")
+            err(where, f"practice_domain target '{target}' must be {DOMAIN_IDS[0]}-{DOMAIN_IDS[-1]}, 'focus' or 'next_focus'")
     elif kind == "note" and has:
         check_note(where, target, ctx)
     elif kind == "principles" and has:
-        if target == "top_slip":
+        if target == "top_slip" or ctx.get("no_principles"):
             pass
         elif target in ctx["families"]:
             ctx["families_used"].add(target)
@@ -400,8 +446,8 @@ def lint_week(doc, ctx):
         return
     if doc.get("schema_version") != SCHEMA_VERSION:
         err(label, f"schema_version must be {SCHEMA_VERSION}")
-    if doc.get("certification") != "cisa":
-        err(label, "certification must be 'cisa'")
+    if doc.get("certification") != CERT:
+        err(label, f"certification must be '{CERT}'")
     if not nonempty_str(doc.get("title")):
         err(label, "title must be a non-empty string")
     upd = parse_date(label, doc.get("updated"), "updated")
@@ -506,6 +552,8 @@ def lint_cheat_sheet(cs, ctx):
         pids = pr.get("ids")
         if not isinstance(pids, list):
             err(f"{label} principles", "ids must be a list")
+        elif ctx.get("no_principles"):
+            pass  # principles file not written yet (reported as skipped)
         else:
             if len(set(pids)) != len(pids):
                 err(f"{label} principles", "ids contain duplicates")
@@ -557,8 +605,71 @@ def kind_of(doc):
     return None
 
 
+def configure(cert):
+    """Switch the cross-checks to another certification (default cisa: unchanged)."""
+    global CERT, DOMAIN_IDS, SHEET_REFS, NOTE_CODE, PRINCIPLES, NOTES, GUIDE, WEEK
+    global NOTE_EXAMPLE, EXAM_QUESTION_COUNTS
+    CERT = cert
+    if cert == "cisa":
+        return
+    GUIDE = ROOT / "data" / cert / "exam" / f"{cert}_exam_guide.json"
+    WEEK = ROOT / "data" / cert / "exam" / "final_review_week.json"
+    PRINCIPLES = ROOT / "data" / cert / "mindset" / "principles.json"
+    NOTES = ROOT / "data" / cert / "notes"
+    NOTE_CODE = re.compile(r"^([1-9])[A-Z]\d+(\.\d+)?$")
+    if cert in CERT_PATHS:
+        cp = CERT_PATHS[cert]
+        GUIDE, WEEK, PRINCIPLES, NOTES = cp["guide"], cp["week"], cp["principles"], cp["notes"]
+        NOTE_CODE = re.compile(cp["note_code"])
+        NOTE_EXAMPLE = cp["note_example"]
+    try:
+        src = MOBILE_CERTS.read_text()
+        m = re.search(rf"id:\s*'{cert}'(.*?)(?=\n\s*\{{\s*\n\s*id:\s*'|\Z)", src, re.S)
+        ids = re.findall(r"\{\s*id:\s*'([1-9])'", m.group(1)) if m else []
+        q = re.search(r"\bquestions:\s*(\d+)", m.group(1)) if m else None
+    except OSError:
+        ids, q = [], None
+    if cert in CERT_PATHS and q:
+        # The cert's own exam length may be stated (AAIA: 90), not CISA's 150.
+        EXAM_QUESTION_COUNTS = {int(q.group(1))}
+    if not ids:
+        print(f"✗ --cert {cert}: no domains found for '{cert}' in {MOBILE_CERTS.relative_to(ROOT)}")
+        sys.exit(2)
+    DOMAIN_IDS = ids
+    SHEET_REFS = set(DOMAIN_IDS) | DYNAMIC_DOMAINS | {"principles", "priority_words", "routine", "pace"}
+
+
+def _rel(p):
+    p = Path(p).resolve()
+    return p.relative_to(ROOT) if p.is_relative_to(ROOT) else p
+
+
 def main(argv):
-    paths = [Path(a) for a in argv[1:]] or [GUIDE, WEEK]
+    args = list(argv[1:])
+    cert = "cisa"
+    if "--cert" in args:
+        i = args.index("--cert")
+        if i + 1 >= len(args):
+            print("✗ --cert needs a certification id, such as crisc")
+            return 2
+        cert = args[i + 1].lower()
+        del args[i:i + 2]
+    configure(cert)
+    paths = [Path(a) for a in args] or [p for p in (GUIDE, WEEK) if cert == "cisa" or p.exists()]
+    skipped = []
+    if cert in CERT_PATHS:
+        if not args:
+            skipped += [p for p in (GUIDE, WEEK) if not p.exists()]
+        if not PRINCIPLES.exists():
+            skipped.append(PRINCIPLES)
+        missing_args = [p for p in paths if not p.exists()]
+        skipped += missing_args
+        paths = [p for p in paths if p.exists()]
+        if not paths:
+            print(f"Exam guide lint ({cert}):")
+            for p in skipped:
+                print(f"  skipped: {_rel(p)} not written yet")
+            return 0
     docs = {}
     for p in paths:
         try:
@@ -572,8 +683,10 @@ def main(argv):
             return 1
         docs[k] = (p, doc)
 
-    principle_ids, families = load_principles()
+    no_principles = cert in CERT_PATHS and not PRINCIPLES.exists()
+    principle_ids, families = ([], set()) if no_principles else load_principles()
     ctx = {
+        "no_principles": no_principles,
         "today": dt.date.today(),
         "di": load_di_weights(),
         "mobile": load_mobile_weights(),
@@ -599,7 +712,9 @@ def main(argv):
     if "week" in docs:
         lint_week(docs["week"][1], ctx)
 
-    print("Exam guide lint:")
+    print("Exam guide lint:" if cert not in CERT_PATHS else f"Exam guide lint ({cert}):")
+    for p in skipped:
+        print(f"  skipped: {_rel(p)} not written yet")
     for k, (p, doc) in docs.items():
         rel = p.resolve().relative_to(ROOT) if p.resolve().is_relative_to(ROOT) else p
         if k == "guide":
@@ -609,6 +724,10 @@ def main(argv):
                   f"{len(doc.get('cheat_sheet', {}).get('domains', []))} domain sheets")
     if ctx["di"]:
         print(f"  DI weights: {ctx['di']}")
+    elif CERT != "cisa" and ctx["di"] is None:
+        print(f"  DI weights: none for {CERT} in index.html (checked against mobile certifications.ts only)")
+    if CERT != "cisa" and ctx["mobile"]:
+        print(f"  mobile weights ({CERT}): {ctx['mobile']}")
     for w in warnings:
         print(f"  ⚠ {w}")
     for e in errors:
