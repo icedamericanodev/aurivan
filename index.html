@@ -4661,6 +4661,18 @@ header {
 .summary-section-label::after { background: var(--border); }
 .summary-focus { border: 0; border-radius: var(--r-tile); background: var(--surface2); }
 .summary-focus-icon:empty { display: none; }
+/* Pacing: the same card as the focus lines above it, a sentence-case caption on top. */
+.summary-modal .pacing-feedback { border: 0; border-radius: var(--r-tile); background: var(--surface2); padding: 14px 16px; margin: 0 0 var(--sp-sm); }
+.pacing-cap { margin: 0 0 var(--sp-sm); font: var(--t-caption); letter-spacing: var(--tr-caption); color: var(--text2); }
+.pacing-row { flex-wrap: wrap; gap: var(--sp-sm) 14px; margin-bottom: 0; }
+.pacing-info { min-width: min(100%, 12em); }
+.pacing-info strong { font: var(--t-label); letter-spacing: normal; }
+.pacing-badge { flex-shrink: 0; }
+.pacing-msg { margin-top: var(--sp-sm); font: var(--t-small); color: var(--text2); }
+/* Each tile's number sits at the tile's foot, so the numbers share a line
+   whatever the labels wrap to (stacked tiles keep label and number side by side). */
+.summary-tiles .td-clear-v { margin-top: auto; }
+@container (max-width: 12em) { .summary-tiles .td-clear-v { margin-top: 0; } }
 /* Your data: the same words and tones as the Settings rows (Start fresh in clay). */
 .act-btn.yd-fresh { background: var(--badge-clay); color: var(--clay); border-color: var(--badge-clay); }
 .act-btn.yd-fresh:hover { border-color: var(--clay); }
@@ -5842,7 +5854,7 @@ header.app-header .brand-lockup { height: 28px; }
    page links scroll under it (PHASE4 7.1), so it is never off-screen on a
    phone. The left fade would hide it, so these bars fade the right edge only. */
 .sub-nav a.sub-nav-hub {
-  position: sticky; left: 0; z-index: 1; gap: 2px; padding: 0 var(--sp-md) 0 0; margin-right: 4px;
+  position: sticky; left: 0; z-index: 1; gap: 2px; padding: 0 var(--sp-md) 0 0;
   background: var(--bg); color: var(--accent-text); border-right: 1px solid var(--border);
 }
 /* The page's own grain, anchored to the viewport, so the link sits on the same paper. */
@@ -5851,18 +5863,19 @@ header.app-header .brand-lockup { height: 28px; }
   background-image: var(--grain-img); background-attachment: fixed; opacity: var(--grain-op);
 }
 .sub-nav:has(> .sub-nav-hub).sn-fade-l { -webkit-mask-image: none; mask-image: none; }
-/* Links scrolled under the Learn link fade out at its right edge, so no word
-   is cut off hard (the left fade is off on these bars). */
-.sub-nav.sn-fade-l a.sub-nav-hub::after {
-  content: ''; position: absolute; top: 0; bottom: 1px; left: calc(100% + 1px); width: 24px; pointer-events: none;
-  background: linear-gradient(to right, var(--bg), transparent);
-}
+/* No link ever rests half under the Learn link: the bar snaps each link's
+   left edge to the Learn link's right edge (--sn-hub), and a spacer at the
+   end (--sn-end) makes the last such position the end of the bar
+   (subNavAlign). The left fade is off on these bars. */
+.sub-nav:has(> .sub-nav-hub) { scroll-snap-type: x mandatory; scroll-padding-inline: var(--sn-hub, 0px) 0; }
+.sub-nav:has(> .sub-nav-hub) > a:not(.sub-nav-hub) { scroll-snap-align: start; }
+.sub-nav:has(> .sub-nav-hub)::after { content: ''; flex: 0 0 var(--sn-end, 0px); }
 .sub-nav:has(> .sub-nav-hub).sn-fade-l.sn-fade-r { -webkit-mask-image: linear-gradient(to right, #000 calc(100% - 40px), transparent); mask-image: linear-gradient(to right, #000 calc(100% - 40px), transparent); }
 @media (max-width: 600px) {
   .sub-nav:has(> .sub-nav-hub).sn-fade-l.sn-fade-r { -webkit-mask-image: linear-gradient(to right, #000 calc(100% - 64px), rgba(0,0,0,.15)); mask-image: linear-gradient(to right, #000 calc(100% - 64px), rgba(0,0,0,.15)); }
   .sub-nav:has(> .sub-nav-hub).sn-fade-r:has(a:focus-visible) { -webkit-mask-image: none; mask-image: none; }
 }
-@media (forced-colors: active) { .sub-nav a.sub-nav-hub { background: Canvas; border-right-color: CanvasText; } .sub-nav a.sub-nav-hub::after { display: none; } }
+@media (forced-colors: active) { .sub-nav a.sub-nav-hub { background: Canvas; border-right-color: CanvasText; } }
 .ico-back { transform: rotate(180deg); }
 
 /* You: rows on the paper with hairlines (DESIGN_SYSTEM §6, Settings group and row) */
@@ -14167,15 +14180,27 @@ function syncNav(t) {
     // (Measured against the bar itself: offsetLeft is from the page, which
     // scrolled the first link half out of view and faded it, v12.32.)
     var cur = html && sub.querySelector('[aria-current="page"]');
+    var al = html ? subNavAlign(sub) : null;
     if (cur) {
-      var curX = cur.getBoundingClientRect().left - sub.getBoundingClientRect().left + sub.scrollLeft;
-      // The sticky Learn link covers the bar's left edge: keep the current link clear of it.
-      var hub = sub.querySelector('.sub-nav-hub');
-      sub.scrollLeft = Math.max(0, curX - 16 - (hub ? hub.offsetWidth : 0));
+      if (al) {
+        // The sticky Learn link covers the bar's left edge. The bar stays at
+        // its start when the current link is already in full view; otherwise
+        // the current link's left edge goes to the Learn link's right edge,
+        // never half under it.
+        var stop = cur.getBoundingClientRect().left - sub.querySelector('a:not(.sub-nav-hub)').getBoundingClientRect().left;
+        var inView = al.edge + stop + cur.offsetWidth <= sub.clientWidth - 64;
+        sub.scrollLeft = inView ? 0 : Math.min(al.max, Math.max(0, stop));
+      } else {
+        var curX = cur.getBoundingClientRect().left - sub.getBoundingClientRect().left + sub.scrollLeft;
+        sub.scrollLeft = Math.max(0, curX - 16);
+      }
     }
     if (!sub.onscroll) {
       sub.onscroll = function () { subNavFade(sub); };
-      window.addEventListener('resize', function () { subNavFade(sub); });
+      // A link reached with Tab is brought fully into view, at a snap position.
+      sub.addEventListener('focusin', function (e) { subNavReveal(sub, e.target); });
+      window.addEventListener('resize', function () { subNavAlign(sub); subNavFade(sub); });
+      if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () { subNavAlign(sub); subNavFade(sub); }, function () {});
     }
     subNavFade(sub);
   }
@@ -14225,6 +14250,55 @@ function bnavFit() {
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(soon, function () {});
   soon();
 })();
+// Learn's page bar: the left edge of the first link after the sticky Learn
+// link is where every link snaps to (--sn-hub). The spacer at the bar's end
+// (--sn-end) is sized so the furthest scroll is also such a position, so no
+// link is ever left half under the Learn link. Returns that edge and the
+// bar's furthest scroll, or null on bars without the Learn link.
+function subNavAlign(sub) {
+  var hub = sub.querySelector('.sub-nav-hub');
+  var links = sub.querySelectorAll('a:not(.sub-nav-hub)');
+  if (!hub || !links.length || !sub.clientWidth) return null;
+  // Measured at the bar's start with snapping paused, then put back.
+  var keep = sub.scrollLeft;
+  sub.style.scrollSnapType = 'none';
+  sub.style.setProperty('--sn-end', '0px');
+  sub.scrollLeft = 0;
+  var x0 = links[0].getBoundingClientRect().left;
+  var edge = hub.getBoundingClientRect().width + (parseFloat(getComputedStyle(sub).columnGap) || 0);
+  sub.style.setProperty('--sn-hub', edge + 'px');
+  var max = sub.scrollWidth - sub.clientWidth, end = max, stops = [];
+  for (var i = 0; i < links.length; i++) stops.push(links[i].getBoundingClientRect().left - x0);
+  if (max > 0) {
+    for (var j = 0; j < stops.length; j++) {
+      if (stops[j] >= max - 1) { end = Math.ceil(stops[j]); break; }
+    }
+    if (end > max) sub.style.setProperty('--sn-end', (end - max) + 'px');
+  }
+  sub.scrollLeft = keep;
+  sub.style.scrollSnapType = '';
+  return { edge: edge, max: Math.max(0, sub.scrollWidth - sub.clientWidth) };
+}
+// Learn's page bar: scrolls a focused link fully into view, choosing the
+// nearest position where a link's left edge meets the Learn link.
+function subNavReveal(sub, a) {
+  var hub = sub.querySelector('.sub-nav-hub');
+  if (!hub || !a || a === hub || a.parentNode !== sub || !sub.clientWidth) return;
+  var links = sub.querySelectorAll('a:not(.sub-nav-hub)');
+  var x0 = links[0].getBoundingClientRect().left;
+  var edge = hub.getBoundingClientRect().width + (parseFloat(getComputedStyle(sub).columnGap) || 0);
+  var ar = a.getBoundingClientRect(), from = ar.left - x0, to = ar.right - x0;
+  var room = sub.clientWidth - edge, sl = sub.scrollLeft, max = sub.scrollWidth - sub.clientWidth;
+  if (from >= sl - 1 && to <= sl + room + 1) return;
+  var want = from;
+  if (to > sl + room) {
+    for (var i = 0; i < links.length; i++) {
+      var st = links[i].getBoundingClientRect().left - x0;
+      if (to <= st + room + 1) { want = st; break; }
+    }
+  }
+  sub.scrollLeft = Math.min(max, Math.max(0, want));
+}
 // Fades the page bar's edge where more links are hidden (it scrolls sideways).
 function subNavFade(sub) {
   var max = sub.scrollWidth - sub.clientWidth;
@@ -25680,8 +25754,10 @@ function renderPacingFeedbackHtml() {
   var badgeLabel = overSec <= 0 ? 'On pace' : '+' + overSec + 's over';
   var msg = overSec <= 0
     ? "You're within the exam pace of 1.6 min a question."
-    : 'Avg ' + avgMin + ' min/Q vs 1.6 min target. On a 150-Q exam you\'d finish ~' + Math.round(Math.abs(overSec) * sessionPacingData.length / 60) + ' min over time.';
-  return '<div class="pacing-feedback"><div class="ty-meta" style="margin-bottom:10px">Pacing Feedback (' + sessionPacingData.length + ' questions)</div><div class="pacing-row"><div class="pacing-info"><strong>' + avgMin + ' min / question average</strong><span>CISA target: 1.6 min/Q (240 min ÷ 150 Q)</span></div><div class="pacing-badge ' + badgeClass + '">' + badgeLabel + '</div></div><div class="ty-small" style="margin-top:8px">' + msg + '</div></div>';
+    : 'That is ' + avgMin + ' min a question against a 1.6 min target. On a 150-question exam you\'d finish about ' + Math.round(Math.abs(overSec) * sessionPacingData.length / 60) + ' min over time.';
+  // Grove Phase 5: drawn like the focus cards above it (sentence-case caption, no shorthand).
+  var n = sessionPacingData.length;
+  return '<div class="pacing-feedback"><div class="pacing-cap">Pacing, ' + n + ' question' + (n === 1 ? '' : 's') + '</div><div class="pacing-row"><div class="pacing-info"><strong>' + avgMin + ' min a question on average</strong><span>CISA target: 1.6 min a question (240 min for 150 questions)</span></div><div class="pacing-badge ' + badgeClass + '">' + badgeLabel + '</div></div><div class="pacing-msg">' + msg + '</div></div>';
 }
 
 // ── PHASE 2: TRAIN WEAK SPOTS ──
