@@ -429,10 +429,10 @@ version bump today.
 ### Results
 | Domain | Questions | Tagged | Untagged |
 |---|---|---|---|
-| D1 | 80 | 63 | 17 |
-| D2 | 134 | 119 | 15 |
+| D1 | 110 | 83 | 27 |
+| D2 | 176 | 151 | 25 |
 | D3 | 82 | 74 | 8 |
-| All | 296 | 256 | 40 |
+| All | 368 | 308 | 60 |
 
 New principle `independence-of-ai-assurance` (role family): seeds and tags
 aaia_d2_014, aaia_d3_024 and aaia_d3_043, moved from
@@ -560,3 +560,44 @@ aaia_d3_078 aaia_d3_079.
 **Still open:** `auditor-assesses-never-owns-ai` has no D1 seed (aaia_d3_055
 and aaia_d3_082 are D3); add a D1 item whose runner-up has the IS auditor
 signing or approving in the next D1 round.
+
+### Batch 5 (5 November 2026)
+aaia_d1_081-110 and aaia_d2_135-176 were read against the rule above.
+aaia_d1_089 is tagged `auditor-assesses-never-owns-ai` (high: the runner-up
+has internal audit approve each restart), so it can close the D1 seed gap
+above; moving it into `practice_ids` is the maintainer's call.
+Changed: aaia_d1_097, aaia_d1_098 and aaia_d1_107 tagged `ai-deciding-fact`
+(each Final two says the stem's facts point to the key and the runner-up is
+a real risk nothing raises); aaia_d2_144 tagged `ai-priority-word-decides`
+(FIRST puts limiting use ahead of retraining, the lasting fix); aaia_d2_165
+tagged `accuracy-is-not-assurance` (the runner-up watches overall accuracy,
+which targeted poisoning leaves normal; attack knowledge carries some of the
+weight). Five tags removed (below).
+
+**Untagged new items (low confidence):**
+- aaia_d1_081: was `accuracy-is-not-assurance`; the runner-up, a flawed benchmark, also challenges the score, so knowing generative models sample their answers decides.
+- aaia_d1_082: AI-classification knowledge (a fixed decision table has no training data).
+- aaia_d1_087: strategy-fit knowledge (training large models uses energy); the runner-up is a cost comparison, not a tooling move or a harm ranking.
+- aaia_d1_095: KRI design knowledge (measuring grain); the runner-up also measures against tolerance (as aaia_d2_099).
+- aaia_d1_099: was `test-the-ai-as-used`; nothing is tested, and the runner-up is a record-keeping weakness, so training-serving skew knowledge decides.
+- aaia_d1_102: privacy knowledge (coded names in free text are pseudonymized, not anonymous), as aaia_d1_041.
+- aaia_d1_103: privacy-by-design knowledge (keep files in a retrieval index, not in weights, so deletion takes effect at once).
+- aaia_d1_104: retention knowledge (a tuning service makes copies the owner's logs never see), as aaia_d1_073.
+- aaia_d1_109: framework knowledge (NIST AI RMF current and target profiles).
+- aaia_d1_110: was `ai-governance-before-tooling`; the runner-up, rerunning Map, is not a tooling move, so framework knowledge (Govern is ongoing) decides.
+- aaia_d2_136: data-provenance knowledge; the runner-up also reviews drafts, so coverage decides.
+- aaia_d2_137: representativeness knowledge (more of the same skew); the runner-up relabels, so the by-group report does not separate.
+- aaia_d2_140: was `accuracy-is-not-assurance`; the runner-up, a stale test set, is the principle's own "recent data" move, so leakage knowledge decides (as aaia_d2_099).
+- aaia_d2_143: documentation-scope knowledge (the system's own prompt, index and filter); no testing or evidence principle separates the key.
+- aaia_d2_145: agent-access knowledge (delegated grants outlive the service account).
+- aaia_d2_147: was `ai-changes-are-changes`; the runner-up also treats each retrain as a change, so standard-change design decides.
+- aaia_d2_150: adapter knowledge (an adapter depends on its exact base model); both options version the adapter.
+- aaia_d2_156: monitoring knowledge (a rolling baseline hides slow drift), as aaia_d2_113.
+- aaia_d2_161: fairness-measure knowledge (measures conflict when base rates differ); the runner-up loses on impossibility, not on owner or harm.
+- aaia_d2_167: was `limits-outside-the-model`; the runner-up, a name filter, is also enforced outside the model (as aaia_d2_084).
+
+**Medium confidence (tagged, review first):** aaia_d1_083 aaia_d1_085
+aaia_d1_086 aaia_d1_090 aaia_d1_093 aaia_d1_094 aaia_d1_097 aaia_d1_098
+aaia_d1_100 aaia_d1_106 aaia_d1_107 aaia_d1_108 aaia_d2_135 aaia_d2_144
+aaia_d2_151 aaia_d2_153 aaia_d2_154 aaia_d2_155 aaia_d2_157 aaia_d2_159
+aaia_d2_162 aaia_d2_164 aaia_d2_165 aaia_d2_171 aaia_d2_172 aaia_d2_176.
