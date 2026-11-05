@@ -412,7 +412,7 @@ the literal with the role's token (no visual change).
 | 59e | `.gloss-mastered-count`, 2799 | legacy | meta |
 | 59f | `.pacing-badge`, 3954 | legacy | caption |
 | 59g | `.fg-cap.td-platecap` | italic 14/18 | fig 14/20 (E1) |
-| 59h | Notes table `th` / `td` | 15/22 and 15/21 | small 15/22 |
+| 59h | Notes table `th` / `td` | 15/22 and 15/21 | column heads caption, row heads label, cells small 15/22 (stacked under 600px: the row label is label in `--text`, each column name is caption in `--accent-text` above its small cell, as on the phone) |
 | 59i | Mock-confirm `strong` "50" | Figtree 400 16, no tnum | same role, tabular figures (section 2.2) |
 | 59j | `.principle-link`, 1512, 5083 | 0.92em | 1em / inherit (a link in running text keeps its parent's size) |
 | 60 | `.you-foot`, 7344 | 400 12/18 rem, `--muted` | meta in `--text2` |

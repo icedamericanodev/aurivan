@@ -4918,9 +4918,9 @@ summary.gt-icon-btn::-webkit-details-marker { display: none; }
   .gt-table-stack, .gt-table-stack tbody, .gt-table-stack tr, .gt-table-stack th, .gt-table-stack td { display: block; width: 100%; min-width: 0; }
   .gt-table-stack thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
   .gt-table-stack tbody tr { background: var(--surface); border: 1px solid var(--raised-outline); box-shadow: var(--shadow); border-radius: var(--r-12); padding: 8px 12px; margin-bottom: 8px; }
-  .gt-table-stack tbody th { border: 0; padding: 0 0 2px; font: var(--t-caption); letter-spacing: var(--tr-caption); color: var(--text2); }
+  .gt-table-stack tbody th { border: 0; padding: 0 0 2px; font: var(--t-label); letter-spacing: normal; color: var(--text); }
   .gt-table-stack td { border: 0; padding: 1px 0; font: var(--t-small); }
-  .gt-table-stack td::before { content: attr(data-col) ': '; font-weight: 600; color: var(--text); }
+  .gt-table-stack td::before { content: attr(data-col); display: block; margin-top: var(--sp-xs); font: var(--t-caption); letter-spacing: var(--tr-caption); color: var(--accent-text); }
 }
 }
 .gt-figure { margin: 20px 0 0; padding: 14px 0; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); max-width: 68ch; }
@@ -5240,7 +5240,7 @@ body[data-tab]:not([data-tab="about"]):not([data-tab="faq"]) .legal-disclaimer {
 .td-none { font: var(--t-headline); letter-spacing: var(--tr-headline); color: var(--text); margin: 0; }
 .td-legend { list-style: none; margin: var(--sp-xl) 0 0; padding: 0; border-top: 1px solid var(--border); }
 .td-legend li { display: flex; align-items: center; gap: var(--sp-sm); min-height: 44px; padding: var(--sp-sm) 0; border-bottom: 1px solid var(--border); }
-.td-dname { flex: 1; min-width: 0; font: var(--t-small); color: var(--text); }
+.td-dname { flex: 1; min-width: 0; overflow-wrap: anywhere; font: var(--t-small); color: var(--text); }
 .td-dval { flex-shrink: 0; text-align: right; }
 .td-num { font: var(--t-num-inline); letter-spacing: var(--tr-num-inline); color: var(--text); }
 .td-num sup { font-size: var(--t-num-sup); line-height: 0; vertical-align: .9em; }
@@ -6806,7 +6806,7 @@ html { scroll-padding-bottom: calc(104px + var(--consent-h, 0px)); }
 [data-theme="dark"] .plnt-tile, [data-theme="dark"] .plnt-opt { border-color: var(--control); box-shadow: none; }
 .plnt-tile { flex-direction: column; justify-content: flex-start; gap: var(--sp-xs); min-height: 48px; padding: var(--sp-sm) var(--sp-xs) var(--sp-md); text-align: center; }
 .plnt-tile-art { width: 72px; height: 72px; }
-.plnt-tile-n { font: var(--t-label); color: var(--text); overflow-wrap: normal; word-break: keep-all; }
+.plnt-tile-n { font: var(--t-label); color: var(--text); max-width: 100%; overflow-wrap: anywhere; }
 /* The radio stays a real radio (arrow keys, the form's name), drawn as the card's ring. */
 .plnt-radio { position: absolute; inset: 0; width: 100%; height: 100%; margin: 0; opacity: 0; cursor: pointer; }
 .plnt-tile:has(.plnt-radio:checked), .plnt-opt:has(.plnt-radio:checked) { border-color: var(--text); }
@@ -6845,6 +6845,8 @@ html { scroll-padding-bottom: calc(104px + var(--consent-h, 0px)); }
   .plnt-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .changelog-modal.plnt-modal { padding: var(--sp-xl); }
 }
+/* Large text: one plant per row, so long names wrap inside the tile. */
+@media (max-width: 22.5em) { .plnt-grid { grid-template-columns: 1fr; } }
 
 /* ── v12.30: FIRST RUN, ANSWER FLOW, SHEETS (pre-beta quality pass) ───────── */
 /* The welcome: a port of the mobile one. The forest header (lockup, "Think
@@ -7889,10 +7891,10 @@ html { scroll-padding-bottom: calc(104px + var(--consent-h, 0px)); }
 .td-ready .td-gain { margin: 6px 0 0; font: var(--t-meta); color: var(--text2); }
 .td-ready .td-gain-d { margin: 0; font: var(--t-label); color: var(--text); }
 .td-doms { list-style: none; margin: 4px 0 0; padding: 0; }
-.td-doms li { display: flex; align-items: center; gap: 10px; min-height: 40px; padding: 8px 0; border-top: 1px solid var(--border); }
+.td-doms li { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; min-height: 40px; padding: 8px 0; border-top: 1px solid var(--border); }
 .td-doms li:last-child { border-bottom: 1px solid var(--border); }
 .td-doms .dom-dot { margin: 0; border-radius: 3px; }
-.td-doms .td-dname { flex: 1; min-width: 0; font: var(--t-small); color: var(--text); }
+.td-doms .td-dname { flex: 1 1 6em; min-width: 0; overflow-wrap: anywhere; font: var(--t-small); color: var(--text); }
 .td-doms .td-dval { flex: none; font: var(--t-meta); color: var(--muted); font-variant-numeric: tabular-nums; }
 .td-doms .td-dval.td-dnum { font: var(--t-num-inline); letter-spacing: var(--tr-num-inline); font-variant-numeric: tabular-nums; color: var(--text); }
 .td-ready .td-how { margin: 0; }
