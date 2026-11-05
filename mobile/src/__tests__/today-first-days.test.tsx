@@ -232,6 +232,15 @@ describe('the Start button (mobile 1.51, Field Guide)', () => {
 describe('the title is said once, and the optional mock is not a checklist row', () => {
   it('every step is listed once, numbered, the one you are on first and said "up next"', () => {
     storePlan([REVIEW, LESSON, WARM], [false, false, false]);
+    // Twenty questions due, so the review step has something to do (with none due it is passed over: below).
+    const review = Object.fromEntries(
+      getAllQuestions('cisa')
+        .slice(0, 20)
+        .map((q) => [q.id, { box: 1, dueAt: NOW.getTime() - DAY, lastSeen: NOW.getTime() - 2 * DAY, reps: 1 }]),
+    );
+    act(() => {
+      useProgress.setState((s) => ({ byCert: { ...s.byCert, cisa: completeCert({ ...selectCert(s, 'cisa'), review }) } }));
+    });
     mount(<Today />);
     const lines = byTestID('plan-steps')[0]
       .findAll((n) => typeof n.type === 'string' && n.props.accessible === true)
@@ -243,6 +252,35 @@ describe('the title is said once, and the optional mock is not a checklist row',
     ]);
     // "Questions to revisit" is said once.
     expect(allText().split('Questions to revisit')).toHaveLength(2);
+  });
+
+  it('a review step with nothing due says "All caught up", has no time, and the next step is up next', () => {
+    storePlan([REVIEW, LESSON, WARM], [false, false, false]);
+    mount(<Today />);
+    const lines = byTestID('plan-steps')[0]
+      .findAll((n) => typeof n.type === 'string' && n.props.accessible === true)
+      .map((n) => n.props.accessibilityLabel as string);
+    expect(lines).toEqual([
+      'Step 1, Questions to revisit, All caught up',
+      expect.stringMatching(/^Step 2, Business impact analysis, .*, up next$/),
+      expect.stringMatching(/^Step 3, Warm-up, .*, later$/),
+    ]);
+    // Start opens the lesson, never "All caught up".
+    act(() => pill().props.onPress());
+    expect(router.push).toHaveBeenCalledWith({ pathname: '/lesson/[id]', params: { id: LESSON.lessonId } });
+  });
+
+  it('when the only open step is a review with nothing due: no time anywhere, and Start runs the live plan (as the website)', () => {
+    storePlan([REVIEW], [false]);
+    mount(<Today />);
+    const lines = byTestID('plan-steps')[0]
+      .findAll((n) => typeof n.type === 'string' && n.props.accessible === true)
+      .map((n) => n.props.accessibilityLabel as string);
+    expect(lines).toEqual(['Step 1, Questions to revisit, All caught up']);
+    expect(allText()).not.toMatch(/\b\d+ min\b/);
+    jest.mocked(router.push).mockClear();
+    act(() => pill().props.onPress());
+    expect(router.push).not.toHaveBeenCalledWith('/caught-up');
   });
 
   it('the weekly mini mock is an "Also today" row, with its length, and not part of "N of N done"', () => {

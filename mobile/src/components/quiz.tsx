@@ -37,13 +37,15 @@ import Svg, { Defs, LinearGradient, Rect, Stop } from 'react-native-svg';
 import type { Letter } from '../content/types';
 import type { Confidence } from '../engine/srs';
 import type { ReportTarget } from '../engine/support';
+import { lineBudget, shortenAtWord } from '../engine/textClip';
 import { tipParts } from '../engine/tips';
 import { config } from '../lib/config';
 import { moveFocus } from '../lib/a11y';
 import { afterSheet } from '../lib/sheetWait';
 import { haptic } from '../lib/haptics';
 import { shortReference } from '../lib/format';
-import { LARGE_TEXT, motion, radius, space } from '../theme/tokens';
+import { LARGE_TEXT, maxScale, motion, radius, space, type } from '../theme/tokens';
+import { fieldRole } from '../theme/grove';
 import { useTheme } from '../theme/useTheme';
 import { LeafBig, LeafSmall, VerdictLeaf } from './glyphs';
 import { FieldText, Plate } from './fieldguide';
@@ -718,6 +720,15 @@ export function StemRecap({
   const [open, setOpen] = useState(false);
   const canOpen = Boolean(scenario) || stem.length > STEM_RECAP_CHARS;
   const whole = scenario ? `${scenario} ${stem}` : stem;
+  // Folded, the stem is shortened HERE, at a whole word with one "…" (engine/textClip.ts), to what two lines
+  // of this box hold at this text size. The platform's own cut-off would end "peer …" on one screen and
+  // "processe…" on another. numberOfLines stays as a safety stop only. First guess: the screen less its gutters.
+  const { width: screen } = useWindowDimensions();
+  const [boxW, setBoxW] = useState(() => Math.max(0, screen - 2 * space.lg));
+  const textScale = useFontScale();
+  const size = field ? (fieldRole.recap?.style.fontSize ?? 18) : (type.small.fontSize ?? 15);
+  const cap = field ? (fieldRole.recap?.max ?? 2) : maxScale.small;
+  const folded = shortenAtWord(stem, lineBudget(boxW, size * Math.min(Math.max(1, textScale), cap), 2));
   const words = (text: string, lines?: number) =>
     field ? (
       <FieldText v="recap" numberOfLines={lines} style={{ marginTop: space.xs }}>{text}</FieldText>
@@ -726,11 +737,11 @@ export function StemRecap({
     );
   return (
     <View style={{ marginTop: space.md }}>
-      <View accessible accessibilityLabel={`${caption}: ${whole}`}>
+      <View accessible accessibilityLabel={`${caption}: ${whole}`} onLayout={(e) => setBoxW(e.nativeEvent.layout.width)}>
         {/* One caption for both looks, so the same "Question" label never changes role. */}
         <T v="caption" color={c.ink2}>{caption}</T>
         {scenario ? <Collapse open={open}>{words(scenario)}</Collapse> : null}
-        {words(stem, canOpen && !open ? 2 : undefined)}
+        {canOpen && !open ? words(folded, 2) : words(stem)}
       </View>
       {canOpen && (
         <Pressable

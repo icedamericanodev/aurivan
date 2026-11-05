@@ -71,6 +71,7 @@ import { OptionCard, PickNote, TrustLine } from '../components/quiz';
 import { QuestionNote } from '../components/questionNote';
 import { useReportFlow } from '../components/support';
 import { todayMinutes } from '../components/journey';
+import { shortenAtWord } from '../engine/textClip';
 import { EmptyPlate, FieldText, KeyCaption, KeyList, Plate, RunningHead, SpecimenLabel, SpecimenRow, StemChart } from '../components/fieldguide';
 import { emptyPlateLine, growthFigure, setStems } from '../engine/fieldGuide';
 import { STEADY_FROM } from '../engine/domainBand';
@@ -330,7 +331,9 @@ export default function Results() {
   const stems = setStems(cert.domains, readinessNow.domains, score.byDomain, active.before);
   const plateLine = emptyPlateLine(stems);
   const figure = stems.length === 1 ? growthFigure(stems[0]) : null;
-  const plateTitle = stems.length === 1 ? `${stems[0].name}${figure && !figure.down ? ', new growth' : ''}` : 'This set’s areas';
+  // The plate's numbers are each area's score overall, after this set (the set's own count is the line under
+  // each, "2 of 3 this set"), so the title says so, as the website's set results do ("Your domains after this set").
+  const plateTitle = stems.length === 1 ? `${stems[0].name}, ${figure && !figure.down ? 'new growth' : 'after this set'}` : 'Your areas after this set';
 
   return (
     <Screen edges={['top', 'bottom']} onScroll={moment && !momentSeen ? watch : undefined} onScrollBeginDrag={moment ? () => skipMoment.current?.() : undefined}>
@@ -538,7 +541,8 @@ export default function Results() {
               {quietLines.map((line) => (
                 <T key={line} v="meta" style={{ marginTop: space.xs }}>{line}</T>
               ))}
-              <T v="body" style={{ marginTop: space.xs }}>{open ? q.stem : `${q.stem.slice(0, 110)}${q.stem.length > 110 ? '…' : ''}`}</T>
+              {/* Folded: whole words, then one "…" (engine/textClip.ts), the answer screen's style; never cut inside a word. */}
+              <T v="body" style={{ marginTop: space.xs }}>{open ? q.stem : shortenAtWord(q.stem, 110)}</T>
             </Pressable>
             {open && (
               <View style={{ paddingBottom: space.lg }}>

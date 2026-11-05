@@ -150,7 +150,8 @@ export function planHero(item: PlanItem, due?: number, opts: { minutesSaid?: boo
       const queue = due ?? item.due ?? item.count;
       const more = queue > item.count;
       // A labelled review is exam week's ("Light review · 8 questions"). An old save's "Review 20 due" label is a count, so it reads as the plain review.
-      if (item.label && !/^Review \d/.test(item.label)) return { title: item.label.split(' · ')[0], meta: join(`${qs(item.count)}, ${REVIEW_ORDER}`) };
+      // With nothing due it says so, like the plain review (its count would be a promise the queue cannot keep).
+      if (item.label && !/^Review \d/.test(item.label)) return { title: item.label.split(' · ')[0], meta: join(queue === 0 ? 'all caught up' : `${qs(item.count)}, ${REVIEW_ORDER}`) };
       return {
         title: 'Questions to revisit',
         // Premium pass 1.4: today's set only ("16 ready to revisit · oldest first"), never "16 of 55 due".
@@ -188,9 +189,31 @@ export function planHero(item: PlanItem, due?: number, opts: { minutesSaid?: boo
   }
 }
 
+/**
+ * A "Questions to revisit" step with nothing due now (the queue was cleared since the plan was made, for
+ * example by practice elsewhere): it says "All caught up", so it has no time and is not the step Start
+ * opens. `due`: the LIVE review queue; left out, no step is idle (callers that do not know it).
+ * Presentation only: the step stays in the plan and its saved state is not touched.
+ */
+export function reviewIdle(item: PlanItem | undefined, done: boolean | undefined, due?: number): boolean {
+  return item?.kind === 'review' && !done && due === 0;
+}
+
 /** The open items' minutes, mocks left out (they are longer than any day; their rows say so). 0 when only mocks are open. */
-export function todayMinutes(items: readonly PlanItem[], done: readonly boolean[]): number {
-  return items.reduce((n, it, i) => n + (done[i] || it.kind === 'mock' ? 0 : itemMinutes(it)), 0);
+export function todayMinutes(items: readonly PlanItem[], done: readonly boolean[], due?: number): number {
+  return items.reduce((n, it, i) => n + (done[i] || it.kind === 'mock' || reviewIdle(it, done[i], due) ? 0 : itemMinutes(it)), 0);
+}
+
+/**
+ * The step Start opens: the first open required one that has something to do. A review step with nothing
+ * due is passed over (the website shows no such step); when it is the only one left, it is still the
+ * index returned, and Today's Start runs the live plan's first real step instead (as the website's
+ * todayLivePlanStart does). -1 when the day is done.
+ */
+export function nextStepIndex(plan: Pick<DayPlan, 'items' | 'done'>, due?: number): number {
+  const open = (k: number) => !plan.done[k] && !isOptional(plan.items, k);
+  const real = plan.items.findIndex((it, k) => open(k) && !reviewIdle(it, plan.done[k], due));
+  return real >= 0 ? real : plan.items.findIndex((_, k) => open(k));
 }
 
 /**

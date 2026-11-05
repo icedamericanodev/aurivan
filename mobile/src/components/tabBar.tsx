@@ -173,12 +173,34 @@ export function FloatingTabBar({ state, descriptors, emitter, navigateToTab, ins
   const { c, g, isDark } = useTheme();
   const keyboard = useKeyboardUp();
   const report = useContext(TabHeightContext);
-  const onLayout = useCallback((e: LayoutChangeEvent) => report(Math.round(e.nativeEvent.layout.height)), [report]);
+  // The bar's own measured height (larger text makes it taller), for the fill under it.
+  const [barH, setBarH] = useState<number>(TAB_BAR.height);
+  const onLayout = useCallback(
+    (e: LayoutChangeEvent) => {
+      const h = Math.round(e.nativeEvent.layout.height);
+      setBarH(h);
+      report(h);
+    },
+    [report],
+  );
   if (keyboard) return null;
+  const bottom = tabBarBottom(insets.bottom);
   return (
+    <>
+    {/* The fill under the bar: the page's own paper (bg; the grain lies over it as over the page) from the
+        screen's bottom edge to the bar's middle, so a scrolled line never shows through the gap under the
+        floating bar or past its rounded lower corners. It covers no content: every tab screen already ends
+        clear of the bar (TabSpaceContext). Touches pass through; hidden from screen readers. */}
+    <View
+      testID="tab-bar-fill"
+      pointerEvents="none"
+      accessibilityElementsHidden
+      importantForAccessibility="no-hide-descendants"
+      style={{ position: 'absolute', left: 0, right: 0, bottom: 0, height: bottom + Math.round(barH / 2), backgroundColor: c.bg }}
+    />
     <View
       pointerEvents="box-none"
-      style={{ position: 'absolute', left: TAB_BAR.side + insets.left, right: TAB_BAR.side + insets.right, bottom: tabBarBottom(insets.bottom), alignItems: 'center' }}
+      style={{ position: 'absolute', left: TAB_BAR.side + insets.left, right: TAB_BAR.side + insets.right, bottom, alignItems: 'center' }}
     >
       <View
         testID="tab-bar"
@@ -226,6 +248,7 @@ export function FloatingTabBar({ state, descriptors, emitter, navigateToTab, ins
         })}
       </View>
     </View>
+    </>
   );
 }
 

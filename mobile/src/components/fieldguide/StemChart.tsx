@@ -72,6 +72,17 @@ export function stemLines(s: Stem, line: number): string[] {
  * x1.3 (where the list takes over): 32pt at 1x.
  */
 export const gutterFor = (fs: number) => 12 + Math.ceil(20 * fs);
+
+/**
+ * Results (a stem with the set's note, "2 of 3 this set"): the number over the stem is the area's score
+ * OVERALL, not the set's, so a column wide enough says "88% overall" (a one-area set, or two or three
+ * areas on a wide phone). Narrower columns leave the word to the plate's title ("Your areas after this
+ * set"), as the website's chart does, so neighbours never meet. `gap`: the column's width.
+ */
+export const OVERALL_COLUMN = 120;
+export const saysOverall = (s: Stem, gap: number, fs: number) => Boolean(s.note) && s.pct !== null && gap >= OVERALL_COLUMN * fs;
+/** The number's box over a stem: 80 wide, or the column less 4 (at most 160) when it says "overall". */
+const numberBox = (overall: boolean, gap: number) => (overall ? Math.min(gap - 4, 160) : 80);
 const TOP = 40;
 const PLOT = 150;
 
@@ -338,14 +349,18 @@ function Chart({
             const top = s.pct !== null ? y(s.pct) - 34 : s.thin ? soil - 30 - Math.ceil(2 * chartLabel.lineHeight * fs) : null;
             // A growing stem's number rides its tip (GrowNumber, below).
             if (growing.includes(s.key)) return null;
+            const overall = saysOverall(s, gap, fs);
+            const box = numberBox(overall, gap);
             return top === null ? null : (
-              <View key={s.key} style={{ position: 'absolute', left: cx - 40, width: 80, top, alignItems: 'center' }}>
+              <View key={s.key} style={{ position: 'absolute', left: cx - box / 2, width: box, top, alignItems: 'center' }}>
                 {s.pct !== null ? (
                   // A paper halo (the plate's own surface) under the number, so the dashed line never strikes through it.
                   <View style={{ flexDirection: 'row', alignItems: 'flex-start', backgroundColor: c.raised2, paddingHorizontal: 3, borderRadius: 3 }}>
                     <BigNum value={String(s.pct)} pct size={20} />
-                    {s.up ? <T v="caption" color={c.clay} style={{ marginLeft: 2, marginTop: 6 }}>{`↑${Math.round(s.up)}`}</T> : null}
-                    {s.down ? <T v="caption" color={c.ink2} style={{ marginLeft: 2, marginTop: 6 }}>{`↓${Math.round(s.down)}`}</T> : null}
+                    {/* The chart's ↑ and ↓ are chart labels too (fg label 500 13/17, TYPE_SCALE row 176a), like its other words. */}
+                    {s.up ? <FieldText v="tiny" color={c.clay} style={[chartLabel, { marginLeft: 2, marginTop: 6 }]}>{`↑${Math.round(s.up)}`}</FieldText> : null}
+                    {s.down ? <FieldText v="tiny" color={c.ink2} style={[chartLabel, { marginLeft: 2, marginTop: 6 }]}>{`↓${Math.round(s.down)}`}</FieldText> : null}
+                    {overall ? <FieldText v="tiny" color={c.ink2} style={[chartLabel, { marginLeft: 4, marginTop: 6 }]}>overall</FieldText> : null}
                   </View>
                 ) : (
                   // Too few yet: words where the number will grow (Grove has no dashes; "seed" is the plant's word only).
@@ -359,7 +374,7 @@ function Chart({
         </Animated.View>
         {stems.map((s, i) =>
           growing.includes(s.key) && s.pct !== null ? (
-            <GrowNumber key={`n${s.key}`} s={s} cx={GUTTER + gap * i + gap / 2} top={y(s.pct) - 34} drop={growthDrop(s, y)} order={growing.indexOf(s.key)} run={run} delay={delay} />
+            <GrowNumber key={`n${s.key}`} s={s} cx={GUTTER + gap * i + gap / 2} top={y(s.pct) - 34} drop={growthDrop(s, y)} order={growing.indexOf(s.key)} run={run} delay={delay} overall={saysOverall(s, gap, fs)} box={numberBox(saysOverall(s, gap, fs), gap)} />
           ) : null,
         )}
         {stems.map((s, i) => {
@@ -524,7 +539,7 @@ function GrowTop({ drop, tip, children }: { drop: number; tip: ReturnType<typeof
 }
 
 /** A growing stem's number: rides the tip, rolls up from where the set began, and "↑3" arrives as the tip lands. */
-function GrowNumber({ s, cx, top, drop, order, run, delay }: { s: Stem; cx: number; top: number; drop: number; order: number; run: number; delay: number }) {
+function GrowNumber({ s, cx, top, drop, order, run, delay, overall, box }: { s: Stem; cx: number; top: number; drop: number; order: number; run: number; delay: number; overall: boolean; box: number }) {
   const { c } = useTheme();
   const tip = useGrowClock(true, order, run, delay);
   const arrow = useSharedValue(0);
@@ -537,12 +552,13 @@ function GrowNumber({ s, cx, top, drop, order, run, delay }: { s: Stem; cx: numb
   const pct = s.pct ?? 0;
   const up = Math.round(Math.max(0, Math.min(pct, s.up ?? 0)));
   return (
-    <Animated.View testID={`area-number-${s.key}`} style={[{ position: 'absolute', left: cx - 40, width: 80, top, alignItems: 'center' }, rideStyle]}>
+    <Animated.View testID={`area-number-${s.key}`} style={[{ position: 'absolute', left: cx - box / 2, width: box, top, alignItems: 'center' }, rideStyle]}>
       <View style={{ flexDirection: 'row', alignItems: 'flex-start', backgroundColor: c.raised2, paddingHorizontal: 3, borderRadius: 3 }}>
         <BigNum value={String(pct)} pct size={20} roll={{ play: true, from: String(pct - up), run, delay: delay + order * motion.stagger.stat }} />
         <Animated.View style={arrowStyle}>
-          <T v="caption" color={c.clay} style={{ marginLeft: 2, marginTop: 6 }}>{`↑${up}`}</T>
+          <FieldText v="tiny" color={c.clay} style={[chartLabel, { marginLeft: 2, marginTop: 6 }]}>{`↑${up}`}</FieldText>
         </Animated.View>
+        {overall ? <FieldText v="tiny" color={c.ink2} style={[chartLabel, { marginLeft: 4, marginTop: 6 }]}>overall</FieldText> : null}
       </View>
     </Animated.View>
   );
@@ -579,6 +595,9 @@ export function StemList({ stems, line = 70 }: { stems: readonly Stem[]; line?: 
               <T v="label" style={{ flexShrink: 1 }}>{s.name}</T>
               <View style={{ flexDirection: 'row', alignItems: 'baseline', gap: 4 }}>
                 {s.pct !== null ? <BigNum value={String(s.pct)} pct size={20} /> : <T v="meta">{listFigure(s)}</T>}
+                {/* On Results (a stem with the set's note, "2 of 3 this set") the number is the area's score
+                    overall, not the set's: "88% overall", the unit beside a numeral in meta (TYPE_SCALE 2.1). */}
+                {s.pct !== null && s.note ? <T v="meta">overall</T> : null}
                 {s.up ? <T v="caption" color={c.clay}>{`↑${Math.round(s.up)}`}</T> : null}
                 {s.down ? <T v="caption" color={c.ink2}>{`↓${Math.round(s.down)}`}</T> : null}
               </View>

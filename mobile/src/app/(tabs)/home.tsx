@@ -98,7 +98,7 @@ import { router, useFocusEffect } from 'expo-router';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Pressable, useWindowDimensions, View } from 'react-native';
 import { ExamEveCard, ExamReadyPanel } from '../../components/moments';
-import { ClearingBody, clearingLine, clearingTitle, PlanLeaves, planHero, planText, ReadinessRow, todayMinutes } from '../../components/journey';
+import { ClearingBody, clearingLine, clearingTitle, nextStepIndex, PlanLeaves, planHero, planText, ReadinessRow, reviewIdle, todayMinutes } from '../../components/journey';
 import { FieldText, headDate, KeyList, Plate, RunningHead } from '../../components/fieldguide';
 import {
   AccuracyHeroTile,
@@ -138,7 +138,7 @@ import { Celebrate, useCelebration, useGrowth, useScreenFocus } from '../../comp
 import { ArrowRight, ICON_STROKE, Inbox, Play, Settings, Sprout } from '../../components/icons';
 import { PlantButton, PlantNote } from '../../components/plant/PlantUI';
 import { Button, Enter, groveTile, HeroPanel, ICON_SIZE, InviteRow, ListRow, Row, Screen, Section, T } from '../../components/ui';
-import { countedDone, currentIndex, isOptional, itemMinutes, MINUTES_PER_QUESTION, planComplete, SHORT_SET_SIZE, shortSetItem } from '../../engine/dayPlan';
+import { countedDone, isOptional, itemMinutes, MINUTES_PER_QUESTION, planComplete, SHORT_SET_SIZE, shortSetItem } from '../../engine/dayPlan';
 import { shouldAskFit } from '../../engine/fit';
 import { firstRangePanelDue, NAME_ASK_AWAY_DAYS, nameAskDue, nameNudgeDue, secondAskDue, studyDaysAway } from '../../engine/firstRun';
 import { STAGE_ORDER } from '../../engine/journey';
@@ -254,7 +254,10 @@ export default function Today() {
   }, [creditDue, markCreditSeen]);
   const plan = j.dayPlan;
   const allDone = planComplete(plan);
-  const cur = currentIndex(plan);
+  // The step you are on: a "Questions to revisit" step with nothing due is passed over, so Start opens the next
+  // real step (the website shows no review step when none is due). Its saved state is not touched.
+  const cur = nextStepIndex(plan, j.dueCount);
+  const idle = (i: number) => reviewIdle(plan.items[i], plan.done[i], j.dueCount);
   const moments = useTodayMoments({ cert: j.cert, progress: j.progress, range: j.range, examDate: j.examDate, today: plan.day });
   // The one-time panel takes the forest slot while the plan is still open.
   const showReady = moments.ready && plan.items.length > 0 && !allDone;
@@ -427,13 +430,18 @@ export default function Today() {
   // The day's minutes, beside "Today’s plan" on its card: "About 19 min" (Grove; "Today’s plan · about 19 min" from
   // mobile 1.23). The open items only, so it shrinks as the day goes. Only for plans sized in minutes (1.15+). A mock
   // is left out: its own line says it is optional and how long it is.
-  const dayMinutes = plan.budget ? todayMinutes(plan.items, plan.done) : 0;
+  // A review step with nothing due adds no minutes (it says "All caught up").
+  const dayMinutes = plan.budget ? todayMinutes(plan.items, plan.done, j.dueCount) : 0;
   const curItem = plan.items[cur];
+  // What Start opens. With every open step a review with nothing due, the website's Start runs the live plan
+  // instead (todayLivePlanStart): here too, its first real step (a practice set, a lesson), never "All caught
+  // up". The saved plan is not changed.
+  const startItem = (idle(cur) && j.plan.find((it) => it.kind !== 'mock' && !reviewIdle(it, false, j.dueCount))) || curItem;
   // The hero's words: the title names the activity (no count) and the meta line under it carries the detail
   // ("16 ready to revisit · oldest first", "8 questions", a mock's length). Mobile 1.24: the meta always shows,
   // because the item you are on is no longer ALSO the first checklist row (it was said twice). Its minutes are
   // said once: when this item is the day's only timed one, the caption's total is its own, so the meta leaves them out.
-  const openTimed = plan.items.filter((it, i) => !plan.done[i] && it.kind !== 'mock');
+  const openTimed = plan.items.filter((it, i) => !plan.done[i] && it.kind !== 'mock' && !idle(i));
   const minutesSaid = dayMinutes > 0 && openTimed.length === 1 && openTimed[0] === curItem;
   const hero = curItem ? planHero(curItem, j.dueCount, { minutesSaid }) : null;
   // Mobile 1.24: no stat tiles. After the range exists, one quiet line names the weakest area.
@@ -624,7 +632,9 @@ export default function Today() {
   // never beside a paused session (Also today already offers to resume it).
   const examWeekNow = j.daysLeft !== null && j.daysLeft >= 0 && j.daysLeft <= 7;
   // Not beside a Tester question either (review 1.41): one extra ask on Today at a time.
-  const shortIdx = !showReady && !allDone && !resume && !(testerShown && !nameVisit) ? shortSetItem(plan, { examWeek: examWeekNow }) : -1;
+  const shortFirst = !showReady && !allDone && !resume && !(testerShown && !nameVisit) ? shortSetItem(plan, { examWeek: examWeekNow }) : -1;
+  // With nothing due, the short path is the plan's practice set (as Start is), never "All caught up".
+  const shortIdx = shortFirst >= 0 && idle(shortFirst) ? plan.items.findIndex((it, k) => k > shortFirst && it.kind === 'practice' && !plan.done[k]) : shortFirst;
   // "About 6 min. Counts toward today’s plan." (the app's one minutes style; spoken as "minutes").
   const shortLine = `${aboutMin(SHORT_SET_SIZE * MINUTES_PER_QUESTION)}. Counts toward today’s plan.`;
 
@@ -696,8 +706,11 @@ export default function Today() {
     .map(({ item, i }, k) => {
       const words = planHero(item, j.dueCount, { minutesSaid: true });
       // A mock's own words already say how long it is ("50 questions · about 80 min"): no second minutes.
-      const mins = item.kind === 'mock' ? null : `${Math.max(1, Math.round(itemMinutes(item)))} min`;
-      const state = plan.done[i] ? 'done' : i === cur ? 'now' : 'later';
+      // A review with nothing due says "All caught up" and has no time either.
+      const nothingDue = idle(i);
+      const mins = item.kind === 'mock' || nothingDue ? null : `${Math.max(1, Math.round(itemMinutes(item)))} min`;
+      // An idle review is never the step you are on (Start opens the next real one): it keeps the outline square.
+      const state = plan.done[i] ? 'done' : i === cur && !nothingDue ? 'now' : 'later';
       return {
         key: String(i),
         n: k + 1,
@@ -705,7 +718,8 @@ export default function Today() {
         meta: words.meta,
         minutes: mins ? keepUnits(mins) : undefined,
         state,
-        spoken: spokenMin(`Step ${k + 1}, ${words.title}, ${words.meta}${mins ? `, ${mins}` : ''}, ${state === 'now' ? 'up next' : state}`),
+        // An idle review is not "later" (there is nothing to come back to): its meta, "All caught up", is the whole state.
+        spoken: spokenMin(`Step ${k + 1}, ${words.title}, ${words.meta}${mins ? `, ${mins}` : ''}${nothingDue ? '' : `, ${state === 'now' ? 'up next' : state}`}`),
       };
     });
   const doneCount = countedDone(plan).filter(Boolean).length;
@@ -864,11 +878,11 @@ export default function Today() {
               <Button
                 shape="plate"
                 label={plan.done.some(Boolean) || firstBegun ? 'Continue' : 'Start'}
-                onPress={() => runPlanItem(curItem, j.cert.id)}
-                icon={startIcon(curItem?.kind)}
+                onPress={() => runPlanItem(startItem, j.cert.id)}
+                icon={startIcon(startItem?.kind)}
                 // Play only for a lesson (leading); everything else goes forward with an arrow after the label.
-                iconLeading={curItem?.kind === 'lesson'}
-                accessibilityHint={hero!.title}
+                iconLeading={startItem?.kind === 'lesson'}
+                accessibilityHint={startItem === curItem ? hero!.title : planHero(startItem, j.dueCount).title}
                 style={{ marginTop: space.xs }}
               />
               <T v="meta" center>Stop any time; your place is saved.</T>

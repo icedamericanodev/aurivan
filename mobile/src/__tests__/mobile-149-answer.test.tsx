@@ -254,9 +254,13 @@ describe('the stem recap at the top of the answer (premium pass §2.1)', () => {
     const recap = root().findByType(StemRecap);
     const t = textOf(recap);
     expect(t.startsWith('Question')).toBe(true);
-    // Clamped to two lines while closed.
-    const stemText = recap.findAll((n) => n.props.children === long.stem && n.props.numberOfLines !== undefined);
+    // Closed: shortened at a whole word with one "…" (engine/textClip.ts), two lines kept as a safety stop.
+    const stemText = recap.findAll((n) => typeof n.props.children === 'string' && n.props.numberOfLines !== undefined);
     expect(stemText[0].props.numberOfLines).toBe(2);
+    const shown = stemText[0].props.children as string;
+    expect(shown.endsWith('…')).toBe(true);
+    expect(long.stem.replace(/\s+/g, ' ').startsWith(shown.slice(0, -1))).toBe(true);
+    expect(shown).not.toMatch(/\s…$/);
     const toggle = hosts(/^Show question$/)[0];
     expect(toggle.props.accessibilityState).toMatchObject({ expanded: false });
     const style = Object.assign({}, ...[toggle.props.style].flat(5).filter(Boolean));
