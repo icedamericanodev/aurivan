@@ -187,3 +187,9 @@ Sky answered the Phase 4 questions in chat (`phase4b/p4-owner-answers.md`; every
 - **Short interface text:** one idea per line, sublines about 6 words, notes one short sentence, nothing said twice on a screen; cut, never hide meaning, and keep honesty lines. Interface text only: course content (questions, options, explanations, tips, notes, glossary, lessons, principles, exam guide, final review week) stays word for word. The web pass is listed in `PHASE4.md` section 12; the phone mirrors it in its own pass, and the 4b designs follow the same rule.
 
 Why: Sky's answers settle the open navigation and answer-screen questions, and shorter interface text respects a learner's attention without losing anything they need.
+
+## 18. "Growth", never "stage", for the plant (PHASE4B 3.2, 5 Nov 2026)
+
+The plant's progress is "growth" on both builds: Today ("Growth 4 of 6"; from 768px "Bough · growth 4 of 6", spoken "Bough, growth 4 of 6"), the You chip and card ("Kai · Bough · growth 4 of 6"), the six-growth strip ("Your oak's six growths") and Your plant. A line that shows a form name carries no count ("Your oak · Bough", then "The Standard Oak" on its own line). "Stage" stays only for the phone's study journey; drill progress is "level". This amends entry 8's Today line ("Stage 1 of 6").
+
+Why: the phone already says "growth" on three of its four plant surfaces and in its engine, the panel chose it, and "stage" already names the study journey's steps on the phone's Today, so one word cannot mean two things on one screen.
