@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "comment": "Original CRISC practice questions for Domain 2 (Risk Assessment), written to the CRISC exam content outline effective 2025. Every item is authored from public concepts and KaiSip's own CRISC study notes (data/crisc/notes/d2.json), with no reference to the CRISC Review Manual, ISACA's QAE database, ISACA's practice quiz or any prior question bank. Schema: docs/content/QUESTION_SCHEMA.md; writing rules: docs/content/EXAM_STYLE_V2.md and .claude/agents/crisc-standards-auditor.md. Not affiliated with or endorsed by ISACA®. CRISC® is a registered trademark of ISACA. Pilot batch crisc_d2_001 to crisc_d2_020, 30 Oct 2026. Review fixes 30 Oct 2026 (blind test and standards audit). Quality pass 31 Oct 2026 (ISACA authenticity audit and concept review). Repair round 1, 31 Oct 2026 (independent verification). Round 3 crisc_d2_046 to crisc_d2_065, 4 Nov 2026. Round 7 crisc_d2_091 to crisc_d2_094, 4 Nov 2026.",
+    "comment": "Original CRISC practice questions for Domain 2 (Risk Assessment), written to the CRISC exam content outline effective 2025. Every item is authored from public concepts and KaiSip's own CRISC study notes (data/crisc/notes/d2.json), with no reference to the CRISC Review Manual, ISACA's QAE database, ISACA's practice quiz or any prior question bank. Schema: docs/content/QUESTION_SCHEMA.md; writing rules: docs/content/EXAM_STYLE_V2.md and .claude/agents/crisc-standards-auditor.md. Not affiliated with or endorsed by ISACA®. CRISC® is a registered trademark of ISACA. Pilot batch crisc_d2_001 to crisc_d2_020, 30 Oct 2026. Review fixes 30 Oct 2026 (blind test and standards audit). Quality pass 31 Oct 2026 (ISACA authenticity audit and concept review). Repair round 1, 31 Oct 2026 (independent verification). Round 3 crisc_d2_046 to crisc_d2_065, 4 Nov 2026. Round 7 crisc_d2_091 to crisc_d2_094, 4 Nov 2026. Round 8 crisc_d2_095 to crisc_d2_099, 5 Nov 2026.",
     "schema_version": 1
   },
   "domain": 2,
@@ -3483,6 +3483,191 @@
         "Enterprise risk profile"
       ],
       "_provenance": "Authored from concept: notes 2B3.3 (From Register to Enterprise Risk Profile). Round 7, 4 Nov 2026: original scenario (a logistics firm's IT register entries worded as missing tools, found while the analyst prepares the risk profile) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Neighbours checked: crisc_d2_007 (a generic 'cyberattack' entry split into specific scenarios; this item's flaw is an entry that names a fix, and its runner-up is cost-benefit, not a tabletop), crisc_d2_006 (a control test finding recorded as a vulnerability), crisc_d2_054 (a draft scenario missing its consequence), crisc_d2_013 (an entry closed when a tool was approved), crisc_d1_033 and crisc_d1_056 (the IT register and the enterprise profile), CISA d3_120 (a workaround reported as a control gap) and d1_196 (an audit finding missing its business harm). Keep apart from crisc_d2_007 in practice sets. Review fixes 4 Nov 2026 (round 7 audit and concept review): explanation shows the entries restated with each entry's owner (audit).",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d2_095",
+      "domain": 2,
+      "subtopic": "2A3 Vulnerability management. Weakness from a standard install",
+      "principle_id": "root-cause-over-symptom",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "Checks at 10 of a convenience chain's 240 stores find card-reader passwords left at the vendor default in nine, a setting the chain's standard store install applies. How should the risk analyst BEST record this?",
+      "options": {
+        "A": "As a weakness at the nine stores where it was found",
+        "B": "As a weakness in every store built on that install",
+        "C": "As a matter for each store's manager to put right",
+        "D": "As closed once the nine stores reset their passwords"
+      },
+      "correct": "B",
+      "key_concept": "A weakness with a common cause, such as a standard install, is recorded across every asset that shares the cause, not only where found.",
+      "pre_read": "Read what the checks covered and how the stores were set up.",
+      "correct_explanation": "Nine failures in ten checks share one cause, the chain's standard store install, so the weakness is recorded wherever that install runs, and the card fraud scenario reflects the whole chain's exposure until checks show otherwise. Recording it at the nine stores alone is the runner-up: it keeps to what was seen, but it treats the 230 unchecked stores, built the same way, as sound.",
+      "wrong_explanations": {
+        "A": "Tempting because it records only what the checks saw, but the cause is the standard install every store shares, so the 230 unchecked stores carry it too.",
+        "C": "Store managers can reset passwords, but a weakness built into the standard install is a chain-wide exposure; local fixes leave the install, and the next store built from it, unchanged.",
+        "D": "Resetting nine passwords fixes the stores checked, not the install that set them; closing the record would leave the same weakness open across the chain."
+      },
+      "tips": [
+        "Eliminate: C hands a chain-wide weakness to store managers as local fixes, and D closes the record after fixing only the stores checked.",
+        "Final two: B beats A because the nine failures share a cause, the standard install, so the weakness exists wherever that install runs, checked or not.",
+        "Exam cue: when a weakness comes from a shared build, template or install, record it across everything built that way, not only where a check found it."
+      ],
+      "framework_ref": "ISACA Glossary (vulnerability); NIST SP 800-30 Rev. 1 Section 2.4 (Application of Risk Assessments: common threats and vulnerabilities across many systems can be assessed as organization-wide risks)",
+      "related_concepts": [
+        "Vulnerability",
+        "Root cause",
+        "Organization-wide risk"
+      ],
+      "_provenance": "Authored from concept: notes 2A3.1 (Vulnerabilities in People, Process and Technology). Round 8, 5 Nov 2026: original scenario (spot checks at a convenience chain find vendor-default card-reader passwords that its standard store install sets) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Neighbours checked: crisc_d2_051 (a newly disclosed flaw in a shared component: find where it runs first; here the weakness is already found and the question is how far it reaches), crisc_d2_014 (four regional ratings of a shared platform aggregated; ratings, not a sampled weakness), crisc_d2_006 (a control test finding recorded as a vulnerability), crisc_d3_105 (unit entries consolidated), crisc_d4_052 (a recurring injection flaw traced to how code is written), CC cc_d4_051 and cc_d3_090 (default passwords changed during device setup: a hardening step, not a recording decision), CISA d3_087 (one template behind two environments) and d4_203 (one engineer able to restore a platform); no mirror in CISA, CC or AAIA. Keep apart from crisc_d2_051 and crisc_d2_014 in practice sets.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d2_096",
+      "domain": 2,
+      "subtopic": "2B1 Risk assessment concepts and standards. Likelihood of an equipment failure",
+      "principle_id": "answer-from-the-stem",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "A risk analyst is rating how likely an airport's baggage-sorting controllers are to fail in the next year. Which of the following is the BEST basis for the rating?",
+      "options": {
+        "A": "The capability and intent of likely attackers",
+        "B": "The cost of a day sorting baggage by hand",
+        "C": "The maintenance lead's view of the controllers' condition",
+        "D": "The fault and repair records for the controllers"
+      },
+      "correct": "D",
+      "key_concept": "The likelihood of a non-adversarial event, such as equipment failing, is rated from historical evidence and empirical data, not attacker factors.",
+      "pre_read": "Decide what kind of event is being rated before weighing the sources.",
+      "correct_explanation": "A controller failing comes from a structural threat source: no one chooses to cause it. NIST SP 800-30 rates the likelihood of non-adversarial events from historical evidence and empirical data, so the controllers' fault and repair records are the firmest basis. The maintenance lead's view is the runner-up: expert judgment fills gaps where records are thin, but one person's view is weaker evidence than a record of how often these units actually failed.",
+      "wrong_explanations": {
+        "A": "Capability and intent rate deliberate attacks; controllers fail without anyone choosing to act, so attacker factors say nothing about this event.",
+        "B": "The cost of sorting baggage by hand measures impact; it says how much a failure would hurt, not how likely one is next year.",
+        "C": "An experienced lead's view helps when records are thin, but it is one person's judgment; the records show how often the controllers have actually failed."
+      },
+      "tips": [
+        "Eliminate: A applies attacker factors to equipment failing on its own, and B measures the impact of a failure rather than its likelihood.",
+        "Final two: D beats C because, for a non-adversarial event, the recorded history of failures is firmer evidence than one person's judgment.",
+        "Exam cue: for equipment failures, accidents and natural events, rate likelihood from recorded history and data; expert judgment fills gaps where records are thin."
+      ],
+      "framework_ref": "NIST SP 800-30 Rev. 1 Section 2.3.1 (Risk Models: likelihood of non-adversarial threat events is estimated from historical evidence and empirical data); NIST SP 800-30 Rev. 1 Appendix D Table D-2 (Taxonomy of Threat Sources: adversarial, accidental, structural and environmental)",
+      "related_concepts": [
+        "Likelihood",
+        "Threat source",
+        "Historical evidence"
+      ],
+      "_provenance": "Authored from concept: notes 2B1.1 (Likelihood, Impact and Risk). Round 8, 5 Nov 2026: original scenario (rating how likely an airport's baggage-sorting controllers are to fail next year) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Neighbours checked: crisc_d2_056 (the adversarial half of the same NIST rule, keyed on capability, intent and targeting with incident history as its runner-up; this item's final two is recorded history against one expert's view), crisc_d2_069 (attempts counted as likelihood), crisc_d2_003 (threat source classes), crisc_d2_028 (a flood zone as a predisposing condition), crisc_d2_021 (peer outage reports as rating input), CC cc_d1_055 (qualitative rating with no loss history) and CISA d3_050 (test effort by failure likelihood); no mirror in CISA, CC or AAIA. Keep apart from crisc_d2_056 in practice sets.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d2_097",
+      "domain": 2,
+      "subtopic": "2B2 Business impact analysis (BIA). Recovery rank cited for a data leak",
+      "principle_id": "objectives-first",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "A retailer's BIA ranks its AI model's training data, customers' purchase histories, low for recovery; citing this, the model owner rates the data's leak and tampering impact low. What is the risk analyst's GREATEST concern?",
+      "options": {
+        "A": "The model owner, not IT, proposed the impact ratings",
+        "B": "The BIA leaves out how likely an outage of the data is",
+        "C": "The recovery rank reflects only the harm of an outage",
+        "D": "The rank was set without IT's restore times for the data"
+      },
+      "correct": "C",
+      "key_concept": "A BIA recovery rank measures the harm of losing access to a resource over time, not the harm of its data leaking or being altered.",
+      "pre_read": "Note what the BIA measured and what the owner is now rating.",
+      "correct_explanation": "A recovery rank shows how fast harm grows while a resource is unavailable, so a low rank means the business can wait for this data. It says nothing about customers' purchase histories leaking or about tampering that poisons the next model, so those scenarios need their own impact ratings. The BIA's silence on likelihood is the runner-up: true of every BIA, but these ratings are about impact.",
+      "wrong_explanations": {
+        "A": "Proposing impact is the business owner's role, since the business bears the harm; the flaw is the evidence the owner cited, not who cited it.",
+        "B": "A BIA leaves out likelihood by design and still gives sound impact figures for outages; the problem is that a leak or tampering is not an outage.",
+        "D": "Recovery priority comes from how long the business can wait, not from IT's restore times, which would say nothing about a leak or tampering either."
+      },
+      "tips": [
+        "Eliminate: A objects to the business owner proposing impact, which is the owner's role, and D wants IT's restore times to set a priority the business decides.",
+        "Final two: C beats B because the ratings concern impact; the BIA's impact figures measure outage harm, not the harm of a leak or of tampering.",
+        "Exam cue: a BIA recovery rank answers how long the business can wait for a resource; rate leak and tampering scenarios on their own harm."
+      ],
+      "framework_ref": "ISACA Glossary (business impact analysis); NIST SP 800-34 Rev. 1 Section 3.2 (Conduct the Business Impact Analysis: recovery criticality rests on the impact of a system disruption and the downtime the process can tolerate)",
+      "related_concepts": [
+        "Business impact analysis",
+        "Recovery priority",
+        "Data poisoning"
+      ],
+      "_provenance": "Authored from concept: notes 2B2.1 (BIA Purpose, Dependencies and AI Systems). Round 8, 5 Nov 2026: original scenario (a retailer's model owner cites a BIA recovery rank to rate leak and tampering of an AI model's training data low) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Neighbours checked: crisc_d2_011 (a BIA ignores likelihood, here the runner-up), crisc_d2_036 (an AI service missing from a BIA), crisc_d2_073 (a supporting system ranked by user count), crisc_d2_012 (an AI service's RTO set by IT), crisc_d2_050 (poisoning through an editable dataset), crisc_d1_030 (asset value from the harm of losing or exposing data), crisc_d4_029 (model versions linked to training data), CC cc_d2_073 and cc_d2_028 (BIA impact from owners), CISA d4_243 (BIA timing), AAIA aaia_d2_023 and aaia_d2_095 (training data quality); no mirror in CISA, CC or AAIA.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d2_098",
+      "domain": 2,
+      "subtopic": "2B3 Risk register. Dropping a rating field",
+      "principle_id": "residual-counts-working-controls",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "To shorten quarterly reviews, a toll-road operator's risk team plans to drop inherent ratings from its register and keep only current ratings. What is the GREATEST drawback for the risk analyst to raise?",
+      "options": {
+        "A": "No view of how much each rating relies on its controls",
+        "B": "No basis for comparing current ratings with appetite",
+        "C": "No way to combine the entries in the risk profile",
+        "D": "No record of how likely each risk event is"
+      },
+      "correct": "A",
+      "key_concept": "Inherent ratings beside current ratings show how much each risk relies on its controls; current risk is what is compared with appetite.",
+      "pre_read": "Think about what each rating in the register is used for.",
+      "correct_explanation": "Inherent risk gives no credit for controls, so beside current risk it shows how much each rating relies on its controls and how far a risk would climb if one failed. Without it, owners cannot see which controls carry their ratings. Losing the comparison with appetite is the runner-up, but appetite is compared with current risk, which the register keeps.",
+      "wrong_explanations": {
+        "B": "Appetite is compared with current risk, which stays in the register; comparing inherent risk with appetite would judge each risk as if no control existed.",
+        "C": "The risk profile combines current ratings on common scales and categories; removing the inherent field leaves that roll-up as it was.",
+        "D": "A current rating already combines likelihood and impact on today's controls, so how likely each event is still shows."
+      },
+      "tips": [
+        "Eliminate: C and D rest on current ratings, which the register keeps, so neither the profile roll-up nor each event's likelihood is lost.",
+        "Final two: A beats B because appetite is set against current risk, which stays; only the inherent rating shows how much each risk depends on its controls.",
+        "Exam cue: inherent beside current risk shows what the controls are carrying; current risk is what is compared with appetite."
+      ],
+      "framework_ref": "ISACA Glossary (inherent risk); NIST IR 8286 Rev. 1 Section 3 Table 1 (Descriptions of notional cybersecurity risk register template elements)",
+      "related_concepts": [
+        "Inherent risk",
+        "Current risk",
+        "Risk register"
+      ],
+      "_provenance": "Authored from concept: notes 2B3.1 (Register Fields and Ownership) and 2B5.1 (Inherent, Current and Residual Risk). Round 8, 5 Nov 2026: original scenario (a toll-road operator's risk team plans to drop inherent ratings from its register) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Neighbours checked: crisc_d2_044 (one control carrying a large gap: test it), crisc_d2_065 (residual ratings moved off the enterprise scale; its runner-up was the lost inherent-to-residual gap, keyed here because current ratings stay on the scale), crisc_d2_071 (no control credit in inherent risk), crisc_d2_018 (current risk against appetite), crisc_d2_062 (the target rating field), crisc_d2_082 (controls linked to entries), CC cc_d1_087 and CISA d1_192 (residual risk on untested controls); no mirror in CISA, CC or AAIA. Keep apart from crisc_d2_044 and crisc_d2_065 in practice sets.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d2_099",
+      "domain": 2,
+      "subtopic": "2B4 Risk analysis methodologies. A possible fine in a FAIR analysis",
+      "principle_id": "rate-on-common-terms",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "A risk analyst's FAIR analysis of ransomware at a pension administrator puts response costs at $400,000 per attack; regulators fined peers $2,000,000 each after one in four attacks. How should the fine BEST be modeled?",
+      "options": {
+        "A": "As a primary loss in every attack, at $2,000,000",
+        "B": "Left out of the analysis until a regulator acts",
+        "C": "As a secondary loss in one of every four attacks",
+        "D": "As a secondary loss in every attack, at $2,000,000"
+      },
+      "correct": "C",
+      "key_concept": "In FAIR, secondary losses such as regulators' fines have their own frequency: the share of loss events that trigger them.",
+      "pre_read": "Separate the losses an attack causes from those that may follow it.",
+      "correct_explanation": "In FAIR, a fine is a secondary loss: it comes from a regulator's reaction to the attack, not the attack itself, and it has its own frequency, the share of attacks that trigger it. Peers were fined after one attack in four, so the $2,000,000 applies to that share. Counting it in every attack is the runner-up: right category, but it makes the expected fine four times too high.",
+      "wrong_explanations": {
+        "A": "A fine comes from a regulator reacting to the attack, which makes it a secondary loss; booking it in every attack also overstates how often it follows.",
+        "B": "A fine that has not happened yet is still a possible loss; leaving it out until a regulator acts understates the scenario's total impact.",
+        "D": "Fines followed one attack in four, not every attack; counting the fine each time treats it as certain and makes the expected loss four times too high."
+      },
+      "tips": [
+        "Eliminate: A files a regulator's fine as a primary loss, and B leaves out a loss because it has not happened yet.",
+        "Final two: C beats D because a secondary loss carries its own frequency; fines followed one attack in four, so counting one in every attack overstates the loss.",
+        "Exam cue: in FAIR, response costs and lost productivity are primary losses; fines and lost customers are secondary losses, weighted by how often they follow the event."
+      ],
+      "framework_ref": "NIST IR 8286A Rev. 1 Section 2.2.4 (Determining Potential Impact: secondary impacts such as fines and penalties from regulators follow the primary impact); NIST IR 8286 Rev. 1 Section 3.3.2 (Techniques for Estimating Likelihood and Impact of Consequences: secondary losses, such as lost customers and contract penalties, are captured with primary losses to show total impact)",
+      "related_concepts": [
+        "FAIR",
+        "Secondary loss",
+        "Loss magnitude"
+      ],
+      "_provenance": "Authored from concept: notes 2B4.3 (Choosing a Method: Data, Decisions, FAIR and Monte Carlo). Round 8, 5 Nov 2026: original scenario (a FAIR analysis of ransomware at a pension administrator, with a regulator's fine that followed one peer attack in four) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Neighbours checked: crisc_d2_087 (primary and secondary losses in an event record), crisc_d2_091 (a loss repaid by insurance), crisc_d2_015 and crisc_d2_043 (ALE arithmetic), crisc_d2_041 (a Monte Carlo tail against tolerance), crisc_d2_017 (a range, not one exact figure), CISA d2_080 (inputs that show FAIR is applied) and d2_214 (expected fines against the cost of compliance); no mirror in CISA, CC or AAIA.",
       "style_version": 2
     }
   ]
