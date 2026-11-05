@@ -77,7 +77,7 @@
  *   head       the date only (said in full). No book label, no gear: Settings is on You's header.
  *   title      the countdown is the news: "Maya, 38 days to go" (engine/fieldGuide.ts todayTitle; with
  *              no date, the greeting), then "CISA exam 6 Dec" on one quiet line (the twig says the study days)
- *   hero       ONE forest card: the plant's stage in words ("Seed", "Stage 1 of 6"; the button to Your
+ *   hero       ONE forest card: the plant's growth in words ("Seed", "Growth 1 of 6"; Phase 4b: "growth", never "stage", for the plant; the button to Your
  *              plant), the readiness ring with the plant full size inside (40 seed dots before the first
  *              range, then 50 ticks with the range in gold and the clay 80 mark), the caption under it
  *              ("63 to 73 estimated range", "A study estimate, not a prediction."), and the Accuracy and
@@ -671,7 +671,7 @@ export default function Today() {
   const caption = ringCaption(j.range, examWeekNow);
   const mastered = j.readiness.domains.reduce((n, d) => n + d.mastered, 0);
   const accuracy = accuracyTile(answeredTotal, mastered);
-  // The plant's stage in words ("Seed", "Stage 1 of 6"); with no plant shown, the kit's seed.
+  // The plant's growth in words ("Seed", "Growth 1 of 6"; PHASE4B 3.2: "stage" is only the study journey's); with no plant shown, the kit's seed.
   const growth = plantView.plant?.growth ?? 1;
   const stageName = GROWTH_NAMES[growth];
   const examShown = j.examDate && j.daysLeft !== null ? shortDate(new Date(`${j.examDate}T12:00:00`).getTime()) : null;
@@ -815,13 +815,13 @@ export default function Today() {
                 disabled={!plantView.plant}
                 accessibilityRole={plantView.plant ? 'button' : 'text'}
                 // The plant's own words (its name, form, growth and mood), then the stage in words.
-                accessibilityLabel={plantView.plant ? `${plantView.label} Stage ${growth} of ${HERO_STAGES}.` : `${stageName}, stage ${growth} of ${HERO_STAGES}`}
+                accessibilityLabel={plantView.plant ? `${plantView.label} Growth ${growth} of ${HERO_STAGES}.` : `${stageName}, growth ${growth} of ${HERO_STAGES}`}
                 accessibilityHint={plantView.plant ? 'Opens your plant' : undefined}
                 onPress={() => router.push('/plant')}
                 style={{ flexDirection: 'row', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'space-between', columnGap: space.md, minHeight: plantView.plant ? 48 : 32, marginVertical: plantView.plant ? -space.sm : 0 }}
               >
                 <FieldText v="sub" color={c.onForest}>{stageName}</FieldText>
-                <T v="meta" num color={c.onForest2}>{`Stage ${growth} of ${HERO_STAGES}`}</T>
+                <T v="meta" num color={c.onForest2}>{`Growth ${growth} of ${HERO_STAGES}`}</T>
               </Pressable>
               {/* The ring and its caption are one button to the readiness report, said in words. */}
               <RingTap label={caption.spoken} onPress={() => router.push('/readiness')}>
@@ -932,7 +932,7 @@ export default function Today() {
             />
           )}
           {/* The journey's coach line, for a few days after its stage changes (it was in the readiness row).
-              Its number is left out here: the hero already says the plant's "Stage 1 of 6", and two numbered
+              Its number is left out here: the hero already says the plant's "Growth 1 of 6", and two numbered
               ladders never sit on one screen (PR #43). */}
           {!showReady && showStage && answeredTotal > 0 && (
             <View testID="today-stage-line" style={{ marginTop: space.lg }}>

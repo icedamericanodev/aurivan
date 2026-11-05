@@ -34,7 +34,7 @@ export const ESTIMATE_LINE = 'A study estimate, not a prediction.';
 export const TWIG_STREAK_UNTIL = 14;
 /** A streak shows from this many days; below it there is only the week (no 0, no 1). */
 export const STREAK_SHOW_MIN = 2;
-/** Today's stage count, in words beside the stage name ("Stage 1 of 6"). */
+/** Today's growth count, in words beside the growth name ("Growth 1 of 6"; Phase 4b: never "stage" for the plant). */
 export const HERO_STAGES = 6;
 
 /** Answers that count toward the first range so far (0 to 40). Never more than 40, never below 0. */

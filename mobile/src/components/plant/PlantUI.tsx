@@ -22,8 +22,8 @@ import { Pressable, TextInput, View } from 'react-native';
 import { cleanPlantName, MAX_NAME, PLANT_SPECIES, SPECIES_INFO, suggestName, type GrowthLevel, type PlantSpecies } from '../../engine/plant';
 import { radius, space, type as typeScale, maxScale, LARGE_TEXT } from '../../theme/tokens';
 import { useTheme } from '../../theme/useTheme';
-import { ICON_STROKE, Sprout } from '../icons';
-import { Button, cardLift, ICON_SIZE, InviteRow, T, useFontScale } from '../ui';
+import { Check, ICON_STROKE, Sprout } from '../icons';
+import { Button, ICON_SIZE, InviteRow, T, useFontScale } from '../ui';
 import { Plant } from './Plant';
 import { LivePlant, type LivePlantProps } from './LivePlant';
 import type { ArtLook, Lod } from './art';
@@ -116,22 +116,22 @@ export function PlantNote({ caption, line, children, testID }: { caption: string
 /** The growth shown in the picker: Crown, a full plant (owner brief: "stage 5 preview"). */
 export const PICK_PREVIEW: GrowthLevel = 5;
 
-/** The narrowest tile a species name fits in at 100% text (UX review H1); it grows with the text, up to ×1.3. */
-export const PICK_MIN_CELL = 112;
-/** From this text scale the picker is one column of rows (plant beside its name and line). */
-export const PICK_ONE_COLUMN = 1.6;
+/** The grid's width on a 360pt phone (360 less the two 16pt gutters): narrower than this is two across. */
+export const PICK_NARROW = 328;
+/** From this text scale the picker is one column of rows (plant beside its name). */
+export const PICK_ONE_COLUMN = 2;
+/** Below this the grid is too narrow for two tiles, so it is one column of rows. */
+const PICK_TWO_MIN = 220;
 
 /**
- * How many tiles across (UX review H1): three when three fit at this text
- * size, else two, and one row per species at ×1.6 text or when two don't fit.
- * Measured from the real width, so a 360 dp phone gets two and never clips
- * a name.
+ * How many tiles across (Grove Phase 4b, PHASE4B 4.3): three; two from text scale 1.3 or on a
+ * phone under 360pt; one column of rows from text scale 2 (or when two don't fit). Measured from
+ * the grid's real width.
  */
-export function pickColumns(width: number, fontScale: number, gap: number = space.sm): 1 | 2 | 3 {
-  if (fontScale >= PICK_ONE_COLUMN) return 1;
-  const min = PICK_MIN_CELL * Math.min(Math.max(fontScale, 1), LARGE_TEXT);
-  const fits = (n: number) => width >= n * min + (n - 1) * gap;
-  return fits(3) ? 3 : fits(2) ? 2 : 1;
+export function pickColumns(width: number, fontScale: number): 1 | 2 | 3 {
+  if (fontScale >= PICK_ONE_COLUMN || width < PICK_TWO_MIN) return 1;
+  if (fontScale >= LARGE_TEXT || width < PICK_NARROW) return 2;
+  return 3;
 }
 
 /** One look object per style (a constant, so the previews never rebuild). */
@@ -142,7 +142,7 @@ export function SpeciesGrid({ value, onChange, plantStyle = NEW_PLANT_STYLE }: {
   const scale = useFontScale();
   const [width, setWidth] = useState(0);
   const gap = space.sm;
-  const cols = pickColumns(width, scale, gap);
+  const cols = pickColumns(width, scale);
   const rows = cols === 1;
   const cell = width ? Math.floor((width - gap * (cols - 1)) / cols) : 0;
   const art = rows ? 56 : Math.min(scale >= LARGE_TEXT ? 96 : 76, Math.max(56, cell - 32));
@@ -176,21 +176,26 @@ export function SpeciesGrid({ value, onChange, plantStyle = NEW_PLANT_STYLE }: {
                   borderRadius: radius.md,
                   backgroundColor: c.raised,
                   // Selected = 2px ink border (shape, not colour alone); padding shrinks so nothing jumps.
-                  borderWidth: selected ? 2 : 1.5,
-                  borderColor: selected ? c.ink : isDark ? c.line : 'transparent',
-                  paddingTop: selected ? space.sm - 0.5 : space.sm,
-                  paddingBottom: selected ? space.sm + 1.5 : space.sm + 2,
-                  paddingHorizontal: rows ? (selected ? space.md - 0.5 : space.md) : space.xs,
+                  // Grove tile (PHASE4B 4.3): the raised fill with a 1pt line edge; selected is a 2pt ink edge.
+                  borderWidth: selected ? 2 : 1,
+                  borderColor: selected ? c.ink : c.line,
+                  paddingTop: selected ? space.sm - 1 : space.sm,
+                  paddingBottom: selected ? space.sm + 1 : space.sm + 2,
+                  paddingHorizontal: rows ? (selected ? space.md - 1 : space.md) : space.xs,
                 },
-                cardLift(isDark),
                 pressed && { transform: [{ scale: 0.98 }] },
               ]}
             >
               <Plant species={s} stage={PICK_PREVIEW} quietLook={plantStyle !== 'storybook-face'} look={STYLE_LOOK[plantStyle]} size={art} theme={isDark ? 'dark' : 'light'} />
+              {/* Selected (PHASE4 5, F9): the 2px ink edge plus an ink tick, never green. */}
+              {selected ? (
+                <View testID={`species-${s}-tick`} style={{ position: 'absolute', top: 6, right: 6 }} accessible={false} importantForAccessibility="no-hide-descendants">
+                  <Check size={16} color={c.ink} strokeWidth={2.5} />
+                </View>
+              ) : null}
               {rows ? (
                 <View style={{ flex: 1 }}>
                   <T v="label">{info.name}</T>
-                  <T v="meta" style={{ marginTop: 2 }}>{info.line}</T>
                 </View>
               ) : (
                 // Two lines at most, and never a break inside a word ("Cherry / blossom", not "Cherry blos- / som").

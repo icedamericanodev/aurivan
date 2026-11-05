@@ -170,6 +170,8 @@ const setWindow = (width: number, fontScale: number) =>
   });
 const layout = (width: number) => {
   const sv = root().findAll((n) => typeof n.props.onLayout === 'function' && n.props.contentContainerStyle)[0];
+  // Grove Phase 4b: Look is one column at every width, so it no longer measures itself.
+  if (!sv) return;
   act(() => {
     sv.props.onLayout({ nativeEvent: { layout: { width, height: 800 } } });
   });
@@ -269,7 +271,8 @@ describe('J1 the Look screen', () => {
     // The fourth: disabled for a tap, and its spoken label says how to make room.
     const signpost = option('signpost');
     expect(signpost.props.accessibilityState).toMatchObject({ checked: false, disabled: true });
-    expect(signpost.props.accessibilityLabel).toMatch(/Put one away to show this\./);
+    // Phase 4b (PHASE4B 4.2): the row keeps just its line; the hint says how to make room.
+    expect(signpost.props.accessibilityHint).toBe('Put one away to show this');
     expect(signpost.props.onPress).toBeUndefined();
     tap('signpost');
     expect(cp().plant!.look?.keepsakes).toBeUndefined();
@@ -313,7 +316,9 @@ describe('J1 the Look screen', () => {
     mount(<PlantLook />);
     // Visible, not only spoken: the section says three are on show and how to make room.
     expect(allText()).toMatch(/Three on show/);
-    expect(allText()).toMatch(/Tap one that’s on show to put it away, then pick another\./);
+    // Phase 4b (PHASE4B 4.2): the section's meta is the only place the limit is said; the waiting rows say how by hint.
+    expect(allText()).not.toMatch(/Tap one that’s on show/);
+    expect(option('signpost').props.accessibilityHint).toBe('Put one away to show this');
     // The waiting row is drawn muted (its art at half strength, its name in ink2), unlike an open one.
     expect(looks('signpost')).not.toBe(openLooks);
     expect(looks('signpost')).toMatch(/"opacity":0\.5/);
@@ -403,7 +408,7 @@ describe('J3 completing a set opens its planter exactly once', () => {
     mount(<PlantLook />);
     openMore();
     expect(option('root-woven').props.accessibilityState).toMatchObject({ disabled: true });
-    expect(textOf(option('root-woven'))).toMatch(/Opens when you finish the Rooted set in the Herbarium\./);
+    expect(textOf(option('root-woven'))).toMatch(/Opens when you finish the Rooted set in Badges\./);
     unmount();
     let added: unknown;
     act(() => {
@@ -925,6 +930,10 @@ describe('J12 never on question, mock, lesson or game screens (transitive import
       const f = todo.pop()!;
       if (seen.has(f)) continue;
       seen.add(f);
+      // Grove Phase 4b (PHASE4B 4.9): the first set's closing screen (shown by Results once, ever)
+      // draws "Kai is planted" after "Plant a seed". That one block is its own check (plant-p4b test);
+      // the walk does not follow it, so every other study screen part stays plant-free.
+      if (f.endsWith('/components/firstSet.tsx')) continue;
       for (const m of readFileSync(f, 'utf8').matchAll(/(?:from|import)\s*\(?\s*['"](\.{1,2}\/[^'"]+)['"]/g)) {
         const to = resolveImport(f, m[1]);
         if (to && to.startsWith(SRC) && !to.includes('/content/generated/')) todo.push(to);
@@ -944,7 +953,7 @@ describe('J12 never on question, mock, lesson or game screens (transitive import
     const files = [...reach(join(SRC, f))].map((x) => x.slice(SRC.length + 1));
     expect(files.length).toBeGreaterThan(3);
     expect(files.filter((x) => x.startsWith('components/plant/'))).toEqual([]);
-    for (const x of files.filter((y) => y !== 'lib/plant.ts')) expect(readFileSync(join(SRC, x), 'utf8')).not.toMatch(/usePlantView\(|<LivePlant\b|<Plant\b|<PlantButton|<KeepsakeIcon|plantLookView\(/);
+    for (const x of files.filter((y) => y !== 'lib/plant.ts' && y !== 'components/firstSet.tsx')) expect(readFileSync(join(SRC, x), 'utf8')).not.toMatch(/usePlantView\(|<LivePlant\b|<Plant\b|<PlantButton|<KeepsakeIcon|plantLookView\(/);
   });
 
   it('the Look screen is reached only from Your plant (and, from 1.40, Settings › Change its look)', () => {

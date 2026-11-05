@@ -13,9 +13,9 @@ import { StyleSheet, View } from 'react-native';
 import Svg, { Circle, Path } from 'react-native-svg';
 import { radius, space } from '../../theme/tokens';
 import { useTheme } from '../../theme/useTheme';
-import { Check, ICON_STROKE } from '../icons';
+import { Check } from '../icons';
 import { AnimatedPressable, StateLayer, usePressScale } from '../motion';
-import { cardLift, ICON_SIZE, T } from '../ui';
+import { T } from '../ui';
 export { KeepsakeIcon, PlanterIcon } from './Keepsake';
 
 /** A small colour swatch (a colourway's three tones), decorative. */
@@ -33,7 +33,7 @@ export function Swatch({ tones, size = 28 }: { tones: readonly string[]; size?: 
 
 export interface LookOptionProps {
   name: string;
-  /** Unlocked: what it is (a keepsake's skill line). Locked: how to open it. */
+  /** Unlocked: what it is (its caption or a keepsake's skill line). Locked: how to open it. */
   line: string;
   art?: ReactNode;
   selected: boolean;
@@ -42,22 +42,24 @@ export interface LookOptionProps {
   multi?: boolean;
   /** Keepsakes: three are shown already, so this one waits until one is put away. */
   full?: boolean;
-  /** One column of full-width rows (large text), else a tile in a grid. */
-  row: boolean;
-  width?: number;
   onPress: () => void;
   testID?: string;
+  /** Not the last row of its group: a 1px divider under it, inset past the thumbnail. */
+  divider?: boolean;
 }
 
+/** The thumbnail box on every Look row (PHASE4B 4.2). */
+export const LOOK_THUMB = 48;
+
 /**
- * One choice. Selected = a 2px ink ring that cross-fades in (an always-
- * mounted StateLayer, so nothing reflows; UX review P11); a shown keepsake
- * also gets a ✓. Press: the soft tint fades in under the row. Locked: a
- * dashed outline and how to open it. A keepsake that can't be shown while
- * three are on show is drawn muted (UX review H3), and says why.
+ * One choice, as a row (Grove Phase 4b, PHASE4B 4.2): a 48pt art thumbnail, the name (`label`)
+ * over its line (`meta`), and the mark at the right: a radio (a filled ink dot when chosen) or, for
+ * keepsakes, a checkbox (an ink tick). Selected is INK, never green (PHASE4 5). An item not open yet
+ * shows a dashed mount instead of its art, is disabled and says how to open it. With three keepsakes
+ * on show, the others are disabled and keep just their line; the hint says "Put one away to show this".
  */
-export function LookOption({ name, line, art, selected, locked, multi = false, full = false, row, width, onPress, testID }: LookOptionProps) {
-  const { c, isDark } = useTheme();
+export function LookOption({ name, line, art, selected, locked, multi = false, full = false, onPress, testID, divider = false }: LookOptionProps) {
+  const { c, g } = useTheme();
   const waiting = multi && full && !selected && !locked;
   const disabled = locked || waiting;
   const press = usePressScale({ scale: 1, tint: disabled ? undefined : c.soft, tintRadius: radius.md });
@@ -66,37 +68,29 @@ export function LookOption({ name, line, art, selected, locked, multi = false, f
     <AnimatedPressable
       accessibilityRole={multi ? 'checkbox' : 'radio'}
       accessibilityState={{ checked: selected, disabled }}
-      accessibilityLabel={`${name}.${state ? ` ${state}` : ''}${line ? ` ${line}` : ''}${waiting ? ' Put one away to show this.' : ''}`}
+      accessibilityLabel={`${name}.${state ? ` ${state}` : ''}${line ? ` ${line}` : ''}`}
+      accessibilityHint={waiting ? 'Put one away to show this' : undefined}
       onPress={disabled ? undefined : onPress}
       onPressIn={disabled ? undefined : press.onPressIn}
       onPressOut={disabled ? undefined : press.onPressOut}
       testID={testID}
-      style={[
-        {
-          width: row ? undefined : width,
-          minHeight: 56,
-          flexDirection: 'row',
-          alignItems: 'center',
-          gap: space.md,
-          borderRadius: radius.md,
-          backgroundColor: locked ? 'transparent' : c.raised,
-          // The idle outline never changes width, so selecting never moves a thing.
-          borderWidth: 1.5,
-          borderStyle: locked ? 'dashed' : 'solid',
-          borderColor: locked ? c.control : isDark ? c.line : 'transparent',
-          paddingVertical: space.sm,
-          paddingHorizontal: space.md,
-        },
-        !locked && cardLift(isDark),
-        press.style,
-      ]}
+      style={[{ minHeight: 64, flexDirection: 'row', alignItems: 'center', gap: space.md, paddingVertical: space.sm }, press.style]}
     >
       {press.layer}
-      {/* The selection ring: 2px ink over the idle outline, cross-fading (shape, not colour alone). */}
-      <StateLayer on={selected} style={[styles.ring, { borderColor: c.ink }]} />
-      {art ? <View style={{ opacity: locked || waiting ? 0.5 : 1 }}>{art}</View> : null}
+      <View
+        accessible={false}
+        importantForAccessibility="no-hide-descendants"
+        accessibilityElementsHidden
+        style={[
+          { width: LOOK_THUMB, height: LOOK_THUMB, alignItems: 'center', justifyContent: 'center', borderRadius: radius.md },
+          // Not open yet: a pencilled, dashed mount (leafLine), never the art.
+          locked ? { borderWidth: 1.5, borderStyle: 'dashed', borderColor: g.leafLine } : { backgroundColor: c.soft },
+        ]}
+      >
+        {locked ? null : <View style={{ opacity: waiting ? 0.5 : 1 }}>{art}</View>}
+      </View>
       <View style={{ flex: 1, minWidth: 0 }}>
-        <T v="label" color={locked || waiting ? c.ink2 : c.ink}>
+        <T v="label" color={disabled ? c.ink2 : c.ink}>
           {name}
         </T>
         {line ? (
@@ -105,19 +99,29 @@ export function LookOption({ name, line, art, selected, locked, multi = false, f
           </T>
         ) : null}
       </View>
-      {multi && !locked ? (
-        // A shown keepsake's ✓ fades in with its ring.
-        <View style={{ width: ICON_SIZE.inline, height: ICON_SIZE.inline }}>
-          <StateLayer on={selected}>
-            <Check size={ICON_SIZE.inline} color={c.ink} strokeWidth={ICON_STROKE} />
+      {locked ? null : multi ? (
+        // A checkbox: the control outline, an ink fill and a paper tick when on show (cross-fades in).
+        <View style={[styles.box, { borderColor: waiting ? c.line : c.control }]}>
+          <StateLayer on={selected} style={[styles.boxFill, { backgroundColor: c.ink }]}>
+            <Check size={14} color={c.bg} strokeWidth={2.5} />
           </StateLayer>
         </View>
-      ) : null}
+      ) : (
+        // A radio: the control ring, and the ink ring and dot when chosen (shape, not colour alone).
+        <View style={[styles.radio, { borderColor: c.control }]}>
+          <StateLayer on={selected} style={[styles.radioOn, { borderColor: c.ink }]} />
+          <StateLayer on={selected} style={[styles.radioDot, { backgroundColor: c.ink }]} />
+        </View>
+      )}
+      {divider ? <View style={{ position: 'absolute', left: LOOK_THUMB + space.md, right: 0, bottom: 0, height: 1, backgroundColor: c.line }} /> : null}
     </AnimatedPressable>
   );
 }
 
 const styles = StyleSheet.create({
-  // Drawn over the 1.5pt idle outline (inset −1.5), so the ring sits exactly on it.
-  ring: { top: -1.5, left: -1.5, right: -1.5, bottom: -1.5, borderRadius: radius.md + 1.5, borderWidth: 2 },
+  radio: { width: 22, height: 22, borderRadius: 11, borderWidth: 2 },
+  radioOn: { top: -2, left: -2, right: -2, bottom: -2, borderRadius: 11, borderWidth: 2 },
+  radioDot: { top: 4, left: 4, right: undefined, bottom: undefined, width: 10, height: 10, borderRadius: 5 },
+  box: { width: 22, height: 22, borderRadius: 6, borderWidth: 2 },
+  boxFill: { top: -2, left: -2, right: -2, bottom: -2, borderRadius: 6, alignItems: 'center', justifyContent: 'center' },
 });

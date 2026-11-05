@@ -554,7 +554,7 @@ export default function Settings() {
     <>
       <ToggleRow
         title="Show badges"
-        subtitle="A short moment when you earn one. Off: earned quietly."
+        subtitle="Off: earned quietly."
         value={!s.badgesHidden}
         onValueChange={(on) => {
           if (on) {

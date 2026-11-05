@@ -131,7 +131,8 @@ describe('copy consistency: the old words stay gone', () => {
     // Grove (owner's labels decision, 31 Oct 2026): Today's hero says the plant's stage in words, "Stage 1 of 6"
     // (as the website does). The journey's "Stage 4 · Rehearse the exam" stays only on the exam-ready day, when
     // the hero is not shown, so the two numbered ladders are still never side by side.
-    expect(hits(/^Stage …|\bStage \d/, { in: (f) => f === join('app', '(tabs)', 'home.tsx') }).sort()).toEqual(['app/(tabs)/home.tsx: Stage … of …', 'app/(tabs)/home.tsx: Stage … · …']);
+    // Grove Phase 4b (PHASE4B 3.2): the plant's count is "Growth 1 of 6" now; "Stage" names only the study journey.
+    expect(hits(/^Stage …|\bStage \d/, { in: (f) => f === join('app', '(tabs)', 'home.tsx') }).sort()).toEqual(['app/(tabs)/home.tsx: Stage … · …']);
     expect(hits(/Follow my stage/i)).toEqual([]);
     expect(hits(/counts? half toward readiness/i)).toEqual([]);
   });

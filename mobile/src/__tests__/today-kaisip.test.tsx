@@ -324,9 +324,9 @@ describe('Today, top to bottom', () => {
     expect(byTestID('ring-ticks')).toHaveLength(1);
     expect(byTestID('ring-study-bar')).toHaveLength(1);
     expect(byTestID('ring-dots')).toHaveLength(0);
-    // The journey's stage keeps its words, without a second numbered ladder beside the plant's "Stage 1 of 6".
+    // The journey's stage keeps its words, without a second numbered ladder beside the plant's "Growth 1 of 6" (Phase 4b: growth, never stage, for the plant).
     expect(allText()).not.toMatch(/Stage \d ·/);
-    expect(allText()).toContain('Stage 1 of 6');
+    expect(allText()).toContain('Growth 1 of 6');
     const j = root().findAll((n) => n.props.testID === 'readiness-tap' && typeof n.props.onPress === 'function')[0];
     expect(j.props.accessibilityLabel).toMatch(/^Estimated readiness range \d+ to \d+ out of 100\. The study bar is 80\. A study estimate, not a prediction\.$/);
     act(() => {
@@ -359,7 +359,7 @@ describe('Today, top to bottom', () => {
     mount(<Today />);
     const t = allText();
     const at = (x: string) => t.indexOf(x);
-    const order = ['Thu 15 Oct', '38 days to go', 'CISA exam 22 Nov', 'Stage 1 of 6', 'estimated range', 'Accuracy', 'Today’s plan', 'This week’s twig', 'weakest area'];
+    const order = ['Thu 15 Oct', '38 days to go', 'CISA exam 22 Nov', 'Growth 1 of 6', 'estimated range', 'Accuracy', 'Today’s plan', 'This week’s twig', 'weakest area'];
     const idx = order.map(at);
     expect(idx.every((i) => i >= 0)).toBe(true);
     expect([...idx].sort((a, b) => a - b)).toEqual(idx);

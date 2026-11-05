@@ -208,6 +208,13 @@ describe('the closing screen', () => {
     await press(/^Plant a seed$/);
     expect(selectCert(useProgress.getState(), CERT).plant?.species).toBe('oak');
     expect(allText()).toMatch(/is planted\. It grows as you learn\./);
+    // Grove Phase 4b (PHASE4B 4.9): "Your oak is planted." on its soil line, with the planting moment
+    // (Reduce Motion is on here, so LivePlant shows the planted sprout at once).
+    const planted = r!.root.findAll((n) => n.props.testID === 'first-set-planted' && typeof n.type === 'string');
+    expect(planted).toHaveLength(1);
+    expect(r!.root.findAll((n) => n.props.testID === 'first-set-plant' && n.props.plantIn === true).length).toBeGreaterThan(0);
+    expect(r!.root.findAll((n) => n.props.testID === 'first-set-soil-soil' && typeof n.type === 'string')).toHaveLength(1);
+    expect(allText()).toContain('Your oak is planted.');
     await press(/^Choose a different plant$/);
     expect(router.push).toHaveBeenCalledWith({ pathname: '/plant-pick', params: { mode: 'species' } });
   });

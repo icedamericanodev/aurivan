@@ -1922,8 +1922,14 @@ export function PushedHeader({
   right,
   center,
   titleRef,
+  backLabel,
 }: {
   title?: string;
+  /**
+   * Grove Phase 4b (PHASE4B F2): the back row is named for where it goes ("You"): the word beside
+   * the chevron, said "Back to You". Leave out for the plain chevron.
+   */
+  backLabel?: string;
   /** For moving screen-reader focus to the bar's title as the screen opens (a screen whose only heading is in the bar). */
   titleRef?: Ref<View>;
   /** Collapse mode: true once the page's own title is under the bar (leave out = always shown). */
@@ -1946,12 +1952,14 @@ export function PushedHeader({
     <View style={styles.pushed}>
       <Pressable
         accessibilityRole="button"
-        accessibilityLabel={icon === 'back' ? 'Back' : 'Close'}
+        accessibilityLabel={backLabel ? `Back to ${backLabel}` : icon === 'back' ? 'Back' : 'Close'}
         onPress={onBack}
         hitSlop={4}
-        style={[styles.pushedIcon, { marginLeft: -10, alignItems: 'center' }]}
+        testID={backLabel ? 'pushed-back' : undefined}
+        style={[styles.pushedIcon, { marginLeft: -10, alignItems: 'center' }, backLabel ? { width: 'auto', minWidth: 48, minHeight: 48, flexDirection: 'row', gap: 2, paddingRight: space.sm } : null]}
       >
         <Icon size={ICON_SIZE.bar} color={c.ink} strokeWidth={ICON_STROKE} />
+        {backLabel ? <T v="label">{backLabel}</T> : null}
       </Pressable>
       {/* A custom centre (progress bar) stretches; a title is centred. */}
       <View style={{ flex: 1, alignItems: center ? 'stretch' : 'center' }}>

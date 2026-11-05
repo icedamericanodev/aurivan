@@ -256,13 +256,13 @@ describe('J1 a new learner and the plant', () => {
     press(/^Plant it$/);
     expect(cp().plant).toMatchObject({ species: 'pine', name: 'Summit Lee', growth: 1 });
     expect(cp().plant!.pending).toBeUndefined();
-    expect(router.replace).toHaveBeenCalledWith('/plant');
+    expect(router.replace).toHaveBeenCalledWith({ pathname: '/plant', params: { planted: '1' } });
     unmount();
 
     mount(<Today />);
     expect(byTestID('today-plant')).toHaveLength(1);
     // The plant's own words, then the stage in words (Grove: the hero's stage line is the plant's button).
-    expect(byTestID('today-plant')[0].props.accessibilityLabel).toBe('Summit Lee, your pine. Starburst Pine form. Growth: Seed. Stage 1 of 6.');
+    expect(byTestID('today-plant')[0].props.accessibilityLabel).toBe('Summit Lee, your pine. Starburst Pine form. Growth: Seed. Growth 1 of 6.');
     expect(byTestID('plant-prompt')).toHaveLength(0);
     expect(byTestID('plant-grew')).toHaveLength(0); // planting is not a "grew" moment
     unmount();
@@ -363,11 +363,12 @@ describe('J2 an existing 1.12 save upgrading', () => {
     expect(router.push).toHaveBeenCalledWith({ pathname: '/plant-pick', params: { from: 'today' } });
     unmount();
     mount(<PlantPick />);
-    expect(allText()).toMatch(/Plant yours/);
+    // Grove Phase 4b (PHASE4B 4.3): the picker's title is the page's own.
+    expect(allText()).toMatch(/Choose what you’ll grow/);
     layoutGrid();
     press(/^Mango\./);
     press(/^Plant it$/);
-    expect(router.replace).toHaveBeenCalledWith('/plant');
+    expect(router.replace).toHaveBeenCalledWith({ pathname: '/plant', params: { planted: '1' } });
     // 25 clean answers: past the diagnostic, so Sprout, quietly.
     expect(cp().plant).toMatchObject({ species: 'mango', growth: 2 });
     expect(cp().plant!.pending).toBeUndefined();
@@ -733,7 +734,8 @@ describe('J7 resting', () => {
       unmount();
     }
     mount(<YourPlant />);
-    expect(allText()).toMatch(/Reed is resting\. Pick up whenever you're ready\./);
+    // Phase 4b (PHASE4B 3.4): never "you're ready".
+    expect(allText()).toMatch(/Reed is resting\. Pick up whenever you like\./);
     expect(labels().join(' ')).toMatch(/Resting\./);
     expect(allText()).not.toMatch(BANNED);
     expect(labels().join(' ')).not.toMatch(BANNED);
@@ -1091,6 +1093,10 @@ describe('J11 never on question, mock, lesson or game screens (transitive import
       const f = todo.pop()!;
       if (seen.has(f)) continue;
       seen.add(f);
+      // Grove Phase 4b (PHASE4B 4.9): the first set's closing screen (shown by Results once, ever)
+      // draws "Kai is planted" after "Plant a seed". That one block is its own check (plant-p4b test);
+      // the walk does not follow it, so every other study screen part stays plant-free.
+      if (f.endsWith('/components/firstSet.tsx')) continue;
       const src = readFileSync(f, 'utf8');
       for (const m of src.matchAll(/(?:from|import)\s*\(?\s*['"](\.{1,2}\/[^'"]+)['"]/g)) {
         const to = resolveImport(f, m[1]);
@@ -1112,6 +1118,6 @@ describe('J11 never on question, mock, lesson or game screens (transitive import
     expect(files.length).toBeGreaterThan(3); // the walk really follows imports
     expect(files.filter((x) => x.startsWith('components/plant/'))).toEqual([]);
     // lib/plant.ts is reached for its non-visual checkPlant (finishSession): fine. No screen part may draw.
-    for (const x of files.filter((y) => y !== 'lib/plant.ts')) expect(readFileSync(join(SRC, x), 'utf8')).not.toMatch(/usePlantView\(|<Plant\b|<PlantButton|<PlantNote/);
+    for (const x of files.filter((y) => y !== 'lib/plant.ts' && y !== 'components/firstSet.tsx')) expect(readFileSync(join(SRC, x), 'utf8')).not.toMatch(/usePlantView\(|<Plant\b|<PlantButton|<PlantNote/);
   });
 });

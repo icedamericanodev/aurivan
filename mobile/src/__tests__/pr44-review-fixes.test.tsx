@@ -322,9 +322,9 @@ describe('the proud face (UX review P3, option a) and the build cache (M8c)', ()
 });
 
 describe('the Look preview size (UX review P9)', () => {
-  it('140pt, 96pt at large text, 72pt at very large text or on a short phone', () => {
-    expect(previewSizeFor(1, 852)).toBe(140);
-    expect(previewSizeFor(LARGE_TEXT, 852)).toBe(96);
+  it('160pt, 120pt at large text, 72pt at very large text or on a short phone (Grove Phase 4b, PHASE4B 4.2)', () => {
+    expect(previewSizeFor(1, 852)).toBe(160);
+    expect(previewSizeFor(LARGE_TEXT, 852)).toBe(120);
     expect(previewSizeFor(2, 852)).toBe(72);
     expect(previewSizeFor(1, 640)).toBe(72);
   });
@@ -345,7 +345,8 @@ describe('a growth applied quietly on Today is said on Your plant, once (code re
     const text: string[] = [];
     const walk = (n: unknown) => (typeof n === 'string' ? text.push(n) : (n as { children: unknown[] }).children.forEach(walk));
     walk(line()[0]);
-    expect(text.join(' ')).toMatch(/Your plant grew Kai grew to Elder\./);
+    // Phase 4b (PHASE4B 4.1 item 5): one quiet line above the stem, no caption.
+    expect(text.join(' ')).toMatch(/^Kai grew to Elder\.$/);
     expect(useSeen.getState().quietGrowth.cisa).toBeUndefined();
     act(() => r!.unmount());
     act(() => {
