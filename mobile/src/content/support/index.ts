@@ -42,6 +42,11 @@ export interface WhatsNewEntry {
 /** Newest first. The first entry must match app.json (a test checks it). */
 export const WHATS_NEW: readonly WhatsNewEntry[] = [
   {
+    version: '1.54.4',
+    date: '2026-11-05',
+    improved: ['The About screen now says plainly what KaiSip teaches you: know why the best answer wins.'],
+  },
+  {
     version: '1.54.3',
     date: '2026-11-01',
     fixed: ['A paused mock exam or practice set can now be resumed from Today even after you finish the day’s plan.'],

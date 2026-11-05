@@ -10,7 +10,7 @@ You are my creative director, scriptwriter and video producer. I'm launching a *
 
 ## About the product
 - **KaiSip** is an exam-prep app for IT audit, security and risk certifications, **starting with CISA®** (Certified Information Systems Auditor). It is on the web at **kaisip.com** and on **Android (Google Play, in beta)**, with **iPhone coming later**.
-- **Tagline (use as the main line):** "Grow the judgment the exam rewards. CISA® exam prep, taught the way the exam thinks." Any video that shows "CISA" on screen carries the trademark notice in its end card.
+- **Tagline (use as the main line):** "Know why the best answer wins. CISA® exam prep, taught the way the exam thinks." Any video that shows "CISA" on screen carries the trademark notice in its end card.
 - **Future certifications:** you may say "Starting with CISA. More certifications later." Never list future certifications or give dates.
 - **Audience:**
   - IT auditors, accountants moving into IT audit, risk, compliance and security people preparing for CISA, worldwide.
