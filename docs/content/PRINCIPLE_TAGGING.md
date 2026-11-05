@@ -460,7 +460,7 @@ turns on whether the test data represents current students.
 - aaia_d2_045: decided by knowing system prompts can be extracted; breadth of exposure, not harm.
 - aaia_d3_002: the auditor's own scoping; no AAIA principle covers it.
 - aaia_d3_009: turns on a control operating over the period (CISA `proven-not-configured`), which no AAIA principle covers.
-- aaia_d3_030: sampling mechanics (a stratum just above the cut-off).
+- aaia_d3_030: sampling mechanics (a stratum just above the cutoff).
 
 ### Batch 3 (31 October 2026)
 aaia_d1_051-080, aaia_d2_051-092 and the re-angled aaia_d1_029 and

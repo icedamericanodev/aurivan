@@ -863,20 +863,20 @@
       "principle_id": "named-human-owner",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "A Canadian wildfire agency's data team set its ignition-alert model's cut-off score to maximize overall accuracy, which treats a missed fire and a false alarm alike. What should the IS auditor recommend as BEST?",
+      "question": "A Canadian wildfire agency's data team set its ignition-alert model's cutoff score to maximize overall accuracy, which treats a missed fire and a false alarm alike. What should the IS auditor recommend as BEST?",
       "options": {
-        "A": "Have the data team lower the cut-off until no fire is missed",
-        "B": "Have the model owner set the cut-off from each error's cost",
+        "A": "Have the data team lower the cutoff until no fire is missed",
+        "B": "Have the model owner set the cutoff from each error's cost",
         "C": "Have the model owner order retraining on more fire seasons",
         "D": "Have an independent team revalidate the model's overall accuracy"
       },
       "correct": "B",
-      "key_concept": "Where to set a model's cut-off is a business choice about error costs, made by the model owner, not a technical default like accuracy.",
+      "key_concept": "Where to set a model's cutoff is a business choice about error costs, made by the model owner, not a technical default like accuracy.",
       "pre_read": "Ask what each kind of model error costs here, and who should decide how much of each is acceptable.",
-      "correct_explanation": "A cut-off decides how many missed fires the agency trades for false alarms, and a missed fire usually costs far more. That trade-off is a business decision for the model owner, within the agency's tolerances, not a default chosen to maximize accuracy. Pushing misses to zero, option A, is the runner-up: it weighs the costlier error, but it ignores the cost of false alarms and leaves the builders deciding.",
+      "correct_explanation": "A cutoff decides how many missed fires the agency trades for false alarms, and a missed fire usually costs far more. That trade-off is a business decision for the model owner, within the agency's tolerances, not a default chosen to maximize accuracy. Pushing misses to zero, option A, is the runner-up: it weighs the costlier error, but it ignores the cost of false alarms and leaves the builders deciding.",
       "wrong_explanations": {
         "A": "Tempting because missed fires are costly. But pushing misses toward zero floods crews with false alarms, and the data team would still be making the owner's trade-off.",
-        "C": "Tempting because more data often improves models. But retraining leaves the cut-off choice unchanged; how errors are weighed is a decision, not a data gap.",
+        "C": "Tempting because more data often improves models. But retraining leaves the cutoff choice unchanged; how errors are weighed is a decision, not a data gap.",
         "D": "Tempting because independent checks add assurance. But revalidating overall accuracy confirms the same metric; it does not weigh a missed fire against a false alarm."
       },
       "tips": [
