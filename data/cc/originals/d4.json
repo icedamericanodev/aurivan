@@ -5129,7 +5129,7 @@
    "options": {
     "A": "It will still miss some attacks and flag some safe traffic",
     "B": "After a month of learning normal traffic, the cut is likely safe",
-    "C": "Weekly vendor updates will keep the model ahead of new attacks",
+    "C": "It blocks known attacks well, so one analyst on call is enough",
     "D": "AI firewalls only alert, so analysts do all the blocking"
    },
    "correct": "A",
@@ -5138,11 +5138,11 @@
    "correct_explanation": "Machine learning still produces false positives and false negatives, and attackers deliberately try to evade it, so AI detection is a strong assistant, not a final judge. People must review its alerts and decide high-impact actions. A month of baseline is the runner-up: learning normal traffic helps accuracy, but no baseline removes misses, false alarms or evasion.",
    "wrong_explanations": {
     "B": "Closest choice: a good baseline does improve accuracy. But no amount of learning removes false alarms, misses or attackers' attempts to evade the model.",
-    "C": "Tempting because updates help a model spot new attack patterns. But updates follow attacks after they appear, and no update removes misses, false alarms or evasion.",
+    "C": "Tempting because it keeps a person in the loop. But one on-call analyst cannot review the misses and false alarms an AI firewall still produces overnight.",
     "D": "Tempting because classic IDS tools only alert. But AI firewalls can block; the point is that their blocks and alerts still need human review."
    },
    "tips": [
-    "Eliminate: C trusts weekly updates to stay ahead of attackers, though updates follow new attacks, and D wrongly says AI firewalls cannot block traffic.",
+    "Eliminate: C leaves one on-call analyst to catch what the AI misses or wrongly flags, and D wrongly says AI firewalls cannot block traffic.",
     "Final two: A beats B because a longer baseline improves accuracy but never removes misses, false alarms or evasion, so people stay in the loop.",
     "Exam cue: AI in security operations assists analysts; any option that removes human review of its output is the trap."
    ],
@@ -5152,7 +5152,7 @@
     "Human oversight",
     "Evasion"
    ],
-   "_provenance": "Authored from concept: 'An AI-powered firewall removes the need for analysts' (exam trap, notes 4.1.9 AI in Traffic Monitoring, IDS and Firewalls). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 6, 5 Nov 2026.",
+   "_provenance": "Authored from concept: 'An AI-powered firewall removes the need for analysts' (exam trap, notes 4.1.9 AI in Traffic Monitoring, IDS and Firewalls). Original scenario and wording; no prep-bank, CBK or certification-body training text used. CC D4 batch 6, 5 Nov 2026. Blind re-test fix (5 Nov 2026): C given a measured but still wrong claim, so the key is not the only cautious option.",
    "style_version": 2
   },
   {
