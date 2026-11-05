@@ -423,7 +423,7 @@
             "Downstream systems that call the model are identified and moved off it before it is switched off.",
             "Model versions, inputs, outputs and decision logs are kept as long as decisions can be challenged, then disposed of on schedule.",
             "Access rights, credentials and application programming interface (API) keys for the model, its data and its tools are revoked.",
-            "The AI inventory is updated so the system's status and retained records are known.",
+            "The AI inventory records the system's status and kept records, with one entry per use when a model serves several, so retiring one use leaves others monitored.",
             "For vendor-hosted or vendor-tuned models, retirement also covers the vendor's copies of the model and its tuning data, with a recorded keep-or-delete decision."
           ],
           "example": "A Spanish city council switches off a parking-permit chatbot after launching a new portal. Months later, the IS auditor finds the old model's cloud endpoint still running with an active API key, and a payments system still sending it requests. The auditor reports that the retirement plan had no steps for access, dependencies or the inventory.",

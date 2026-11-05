@@ -6797,7 +6797,7 @@
       "principle_id": "reproducible-ai-evidence",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "A Lithuanian export-control agency's draft contract for a vendor's export-risk model covers uptime and data security, but says nothing about investigating a score an exporter disputes. What should the IS auditor recommend as BEST?",
+      "question": "A Lithuanian export-control agency's draft contract for a vendor's hosted export-risk model, retrained monthly, covers uptime and data security; refused exporters may appeal within a year. What should the IS auditor recommend as BEST?",
       "options": {
         "A": "Add a right to audit the vendor's data centers and access controls",
         "B": "Require version logs and vendor analysis for challenged results",
@@ -6805,18 +6805,18 @@
         "D": "Have the IS auditor draft the contract's AI clauses"
       },
       "correct": "B",
-      "key_concept": "A contract for a bought model must let the buyer trace and explain past scores, since the vendor holds the version, inputs and settings.",
+      "key_concept": "A contract for a bought model must let the buyer trace and explain past scores, since the vendor holds the version and settings.",
       "pre_read": "Ask what each contract term would let the agency do in practice.",
-      "correct_explanation": "When an exporter disputes a refusal, the agency must show why the model scored that case, and only the vendor holds the model version, inputs and settings behind it, which may since have been updated. Terms requiring version logs and vendor analysis for challenged results make each score traceable. A right to audit data centers and access controls checks security; it cannot show why one score was given.",
+      "correct_explanation": "An exporter may appeal a refusal months later, after monthly retraining has replaced the model that scored it. Only the vendor holds that version and its settings, so terms requiring version logs and vendor analysis for challenged results make each past score traceable. A right to audit data centers and access controls checks security, which the contract already covers; it cannot show why one score was given.",
       "wrong_explanations": {
-        "A": "Tempting because audit rights are a standard vendor term. But data centers and access controls show security, not why the model scored one exporter as it did.",
+        "A": "Tempting because audit rights are a standard vendor term. But the contract already covers security, and data centers cannot show why a since-retrained model scored one exporter as it did.",
         "C": "Tempting because it covers losses from wrong scores. But insurance moves cost, not accountability; the agency still cannot explain a disputed score.",
         "D": "Tempting because the IS auditor knows the risks. But drafting contract terms is management's job; the IS auditor recommends and later assesses them."
       },
       "tips": [
         "Eliminate: C moves the cost of wrong scores but explains none, and D has the IS auditor drafting terms that management owns.",
-        "Final two: B beats A because only version records and vendor analysis let the agency trace a disputed score; a right to audit data centers checks security, not scoring.",
-        "Exam cue: for a bought model, check that the contract lets you reproduce and explain a past decision, not only that the service is up and secure."
+        "Final two: B beats A because monthly retraining replaces the model that scored an appealed case, so only vendor version records can trace it; data center audits check security the contract already covers.",
+        "Exam cue: for a bought model that is retrained, check that the contract lets you reproduce and explain a past decision, not only that the service is up and secure."
       ],
       "framework_ref": "NIST AI 100-1 GOVERN 6.1 (Policies address third-party AI risks including intellectual property); NIST AI 100-1 MEASURE 2.9 (Model explained, validated and documented, output interpreted in context)",
       "related_concepts": [
@@ -6824,7 +6824,7 @@
         "Vendor contracts",
         "Reproducibility"
       ],
-      "_provenance": "Authored from concept: notes 2B.2 Model Documentation and Build, Buy or Tune (contracts for bought models should require documentation and cooperation, so past scores can be traced). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 6, 5 Nov 2026.",
+      "_provenance": "Authored from concept: notes 2B.2 Model Documentation and Build, Buy or Tune (contracts for bought models should require documentation and cooperation, so past scores can be traced). Final review round: stem gives monthly retraining and a one-year appeal window instead of naming the gap. Final fix round: stem says the model is vendor-hosted, supporting that only the vendor holds past versions, inputs and settings. Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 6, 5 Nov 2026.",
       "style_version": 2
     },
     {
@@ -6867,29 +6867,29 @@
     {
       "id": "aaia_d2_187",
       "domain": 2,
-      "subtopic": "2B AI lifecycle. A model retired for one use only",
+      "subtopic": "2B AI lifecycle. Partial retirement of a shared model",
       "principle_id": "fix-the-control-not-the-model",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "An Estonian insurer stopped using its claims-triage model for car claims, keeping it for boat claims; the inventory now marks it retired, so drift checks stopped. What should the IS auditor recommend as BEST?",
+      "question": "An Estonian insurer shares most models across lines; car claims dropped a triage model still serving boat claims, and the inventory marked it retired, ending drift checks. Which IS auditor recommendation BEST prevents a recurrence?",
       "options": {
-        "A": "Restart drift checks on the boat claims the model still triages",
+        "A": "Require drift checks on every model the inventory lists as live",
         "B": "Retire the model for boat claims too, so it matches the inventory",
         "C": "Have the IS auditor run drift checks until the inventory is fixed",
-        "D": "Track each use of the model as its own inventory entry"
+        "D": "Record each use of a model as its own inventory entry"
       },
       "correct": "D",
       "key_concept": "Inventory and monitoring should follow each use of a model, so retiring one use does not end oversight of another.",
       "pre_read": "Ask what else depends on the inventory status being right.",
-      "correct_explanation": "Monitoring follows the inventory, and an entry that tracked the model rather than each use let one retirement switch off checks for a use still live. A separate entry for each use puts boat claims back on the live list, so their checks resume and later partial retirements cannot repeat the gap. Restarting drift checks for boat claims treats this case but leaves an inventory that will mislead again.",
+      "correct_explanation": "Marking the whole model retired when only car claims dropped it shows the inventory tracks models, not uses, so one line's retirement ended drift checks on a live use. With most models shared, the gap can recur anywhere. An entry per use puts boat claims back on the live list and keeps other uses monitored. Checking every model listed as live keeps the per-model status that caused the gap.",
       "wrong_explanations": {
-        "A": "Tempting because it restores monitoring at once. But the inventory still marks the model retired, so the next review or retirement can stop checks again.",
+        "A": "Tempting because it covers every model. But status is kept per model, so one line dropping a shared model still marks it retired and ends checks for the others.",
         "B": "Tempting because it makes the record true. But whether to retire a working use is the owner's business decision, not a fix for a record.",
         "C": "Tempting because it fills the gap. But running the monitoring would make the IS auditor part of the control they must assess."
       },
       "tips": [
         "Eliminate: B ends a working use just to fit a record, and C has the IS auditor operating the monitoring.",
-        "Final two: D beats A because a separate entry per use fixes the inventory that switched monitoring off, so checks resume and stay on; restarting checks alone treats this case while the record stays wrong.",
+        "Final two: D beats A because drift checks keyed to a model's status lapse once one line drops a shared model; only per-use entries keep boat claims and every other live use monitored.",
         "Exam cue: one model can serve several uses. Inventory, ownership and monitoring belong to each use, so retiring one must not silence the others."
       ],
       "framework_ref": "NIST AI 100-1 GOVERN 1.6 (Mechanisms to inventory AI systems); NIST AI 100-1 GOVERN 1.7 (Decommissioning AI systems safely)",
@@ -6898,7 +6898,7 @@
         "Partial retirement",
         "Drift monitoring"
       ],
-      "_provenance": "Authored from concept: notes 2B.3 Decommissioning AI Systems (inventory and monitoring follow each use, so retiring one use keeps the others watched). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 6, 5 Nov 2026.",
+      "_provenance": "Authored from concept: notes 2B.3 Decommissioning AI Systems (inventory and monitoring follow each use, so retiring one use keeps the others watched). Final review round: stem now states that many models are shared across lines, so the per-use inventory fix is needed beyond this one model. Re-audit round: runner-up A is now a model-level standing rule, so the per-use fact, not root-cause wording, decides the final two; stem says 'still serving' so it no longer echoes the key. Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 6, 5 Nov 2026.",
       "style_version": 2
     },
     {

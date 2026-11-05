@@ -3089,7 +3089,7 @@
       "correct": "C",
       "key_concept": "AI stays in the audit universe while its outputs drive decisions; stored predictions go stale as conditions change, even after the model is retired.",
       "pre_read": "Read what retirement changed and what it did not.",
-      "correct_explanation": "A model's risk lasts as long as its outputs drive decisions. Retiring the code did not retire the scores: they still set how often each bridge is inspected, and as bridges age and weather changes, those frozen scores grow stale. So the use stays in the universe, ranked by the decisions it still drives. Rating it low because the scores never change gets it backwards: fixed predictions about changing assets drift from reality.",
+      "correct_explanation": "A model's risk lasts as long as its outputs drive decisions. Retiring the code did not retire the scores: they still set how often each bridge is inspected, and as bridges age, those frozen scores grow stale, raising the likelihood of missed corrosion. So the use stays in the universe, ranked by that likelihood and the impact of the decisions it drives. Rating it low because the scores never change gets it backwards.",
       "wrong_explanations": {
         "A": "Tempting because the model is switched off. But its stored scores still set inspection intervals, so the use and its risk continue.",
         "B": "Tempting because nothing in the model can change now. But frozen predictions about aging bridges grow less accurate each month, so their risk rises rather than falls.",
@@ -3098,7 +3098,7 @@
       "tips": [
         "Eliminate: A treats retirement as the end of the use, and D defers a use whose outputs drive decisions today.",
         "Final two: C beats B because scores frozen in March grow stale as bridges age; fixed predictions about changing assets raise risk, not lower it.",
-        "Exam cue: rank AI by the decisions its outputs still drive. A retired model whose scores remain in use is still in the universe."
+        "Exam cue: a retired model whose outputs still drive decisions stays in the audit universe. Rank it by likelihood and impact; frozen outputs grow stale, so likelihood rises."
       ],
       "framework_ref": "NIST AI 100-1 GOVERN 1.7 (Decommissioning AI systems safely); ISACA IT Audit Standard 1201 (Risk Assessment in Planning)",
       "related_concepts": [
@@ -3106,7 +3106,7 @@
         "Decommissioning",
         "Stale predictions"
       ],
-      "_provenance": "Authored from concept: notes 3A.1 AI Audit Universe and Risk-Based Plan (the universe covers AI whose outputs still drive decisions; rank by the likelihood and impact of harm). Review round 1, 5 Nov 2026: setting moved from a railway's track-defect model (aaia_d2_022, aaia_d2_103) to a motorway's bridge-corrosion model; key no longer echoes the stem's 'inspections'. Cross-domain review, 5 Nov 2026: scores now set inspection intervals, so the stem no longer echoes aaia_d2_103's planners consulting a retired model's scores. Review round 2, 5 Nov 2026: C no longer echoes the stem's 'still'; B's explanation no longer claims nobody monitors the scores. Review round 3, 5 Nov 2026: D's explanation no longer claims a decommissioning review is under way. Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 6, 5 Nov 2026.",
+      "_provenance": "Authored from concept: notes 3A.1 AI Audit Universe and Risk-Based Plan (the universe covers AI whose outputs still drive decisions; rank by the likelihood and impact of harm). Review round 1, 5 Nov 2026: setting moved from a railway's track-defect model (aaia_d2_022, aaia_d2_103) to a motorway's bridge-corrosion model; key no longer echoes the stem's 'inspections'. Cross-domain review, 5 Nov 2026: scores now set inspection intervals, so the stem no longer echoes aaia_d2_103's planners consulting a retired model's scores. Review round 2, 5 Nov 2026: C no longer echoes the stem's 'still'; B's explanation no longer claims nobody monitors the scores. Review round 3, 5 Nov 2026: D's explanation no longer claims a decommissioning review is under way. Final review, 5 Nov 2026: explanation and exam cue now rank by likelihood and impact (rule 4), and the explanation drops the unstated weather fact. Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 6, 5 Nov 2026.",
       "style_version": 2
     },
     {
@@ -3208,7 +3208,7 @@
       },
       "tips": [
         "Eliminate: A swaps a test for the vendor's assurance, and D weighs who ran the tests instead of what they covered.",
-        "Final two: B beats C because the app's own prompt, data and tools can change how the model responds; API results do not carry over to the deployed assistant.",
+        "Final two: B beats C because the app's own system prompt, and any data or tools it adds, can change how the model responds; API results do not carry over to the deployed assistant.",
         "Exam cue: before relying on an AI specialist's result, check that the tests hit the system as deployed: channel, prompts, data, users and version."
       ],
       "framework_ref": "ISACA IT Audit Standard 1206 (Using the Work of Other Experts); NIST AI 100-1 MEASURE 2.3 (Performance measured in conditions similar to deployment)",
@@ -3217,7 +3217,7 @@
         "Jailbreaks",
         "Deployed system testing"
       ],
-      "_provenance": "Authored from concept: notes 3A.3 Specialists, Skills and Independence (evaluate a specialist's method and data before relying on results; the audit function stays responsible). Review round 1, 5 Nov 2026: re-angled from an English-only test of a bilingual assistant (aaia_d2_122's frame) to tests sent to the bare model API instead of the deployed app. Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 6, 5 Nov 2026.",
+      "_provenance": "Authored from concept: notes 3A.3 Specialists, Skills and Independence (evaluate a specialist's method and data before relying on results; the audit function stays responsible). Review round 1, 5 Nov 2026: re-angled from an English-only test of a bilingual assistant (aaia_d2_122's frame) to tests sent to the bare model API instead of the deployed app. Final review, 5 Nov 2026: tip 2 now hedges the app's data and tools as the explanations do. Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 6, 5 Nov 2026.",
       "style_version": 2
     },
     {
@@ -3334,11 +3334,11 @@
     {
       "id": "aaia_d3_091",
       "domain": 3,
-      "subtopic": "3B Testing and sampling. A fairness control watching totals",
+      "subtopic": "3B Testing and sampling. Design of a fairness alert",
       "principle_id": "accuracy-is-not-assurance",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "A Costa Rican training institute's fairness control alerts when its apprenticeship-placement model's overall rejection rate moves more than 3 percentage points from last year's. What is the IS auditor's BEST conclusion about this control's design?",
+      "question": "A Costa Rican arts council's fairness control alerts when its grant-screening model's overall rejection rate moves more than 3 percentage points from last year's. What is the IS auditor's BEST conclusion about this control's design?",
       "options": {
         "A": "Its 3-point limit may be too wide to catch meaningful changes",
         "B": "It needs operating evidence for the period before design is judged",
@@ -3365,7 +3365,7 @@
         "Fairness monitoring",
         "Group outcomes"
       ],
-      "_provenance": "Authored from concept: notes 3B.1 Testing AI Controls and Human Oversight (test design by walking each control through the risk it should address, such as bias). Review round 3, 5 Nov 2026: setting moved from an insurer's claims model (KaiSip CISA d2_163 is a health insurer's claims-denial model with group gaps) to a training institute's apprenticeship-placement model. Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 6, 5 Nov 2026.",
+      "_provenance": "Authored from concept: notes 3B.1 Testing AI Controls and Human Oversight (test design by walking each control through the risk it should address, such as bias). Review round 3, 5 Nov 2026: setting moved from an insurer's claims model (KaiSip CISA d2_163 is a health insurer's claims-denial model with group gaps) to a training institute's apprenticeship-placement model. Final review, 5 Nov 2026: subtopic label made neutral (no longer names the flaw or echoes key C's 'total'). Re-audit, 5 Nov 2026: setting moved from a training institute's apprenticeship-placement model (aaia_d1_022 is a Jamaican apprenticeship program's applicant-scoring model with rejections) to an arts council's grant-screening model (a taxi-license model was not used because aaia_d2 already has a market authority's stall-license model). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 6, 5 Nov 2026.",
       "style_version": 2
     },
     {
