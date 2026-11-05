@@ -29,6 +29,10 @@ Batched for the end of the uplift (web v13, mobile 2.0.0; DECISIONS 8). Write th
 - Backing up, restoring, resetting and Today's backup reminder now confirm right under what you tapped, on any screen size, and never cover another button.
 - Today's next step now labels your own score, and the Practice summary fits small screens at larger text sizes.
 - Text sizes and styles are now consistent across every screen, and all text grows with your browser's text size.
+- Practice and Learn have a calmer, clearer look, and the answer screen keeps every tip in view. (Phase 4 draft line, PHASE4.md section 10.)
+- Learn now opens on its own page, with the note to read next, a search across every domain's notes and a quick way into each part of Learn.
+- Practice shows your set as clear tiles you can change in place, and both mock exam sizes are one tap away.
+- The glossary lets you mark a term as mastered right from the list.
 
 ## Follow-ups to do at the release
 - `mobile/src/engine/plantLooks.ts` `howToOpen` says "in the Herbarium": change to "in Badges" and rebuild `assets/kaisip-plant.js` in the same commit.
@@ -55,3 +59,11 @@ Batched for the end of the uplift (web v13, mobile 2.0.0; DECISIONS 8). Write th
 - "Mastered" label in the Glossary ring overlaps the ring at 200% text; two labels use --muted where TYPE_SCALE 6 asks for --text2.
 - Phone: Results "Continue today's plan" and the widget still count an empty review step's minutes; pass the live due count.
 - Phone: "Go to Drills" is a ghost button at meta size; TYPE_SCALE R6 vs row 13 conflict, decide once.
+
+## Phase 4b (added 5 Nov 2026, Sky asked: "did we account the evolving plants animation and the games and badges?")
+Runs right after Phase 4, web and phone, presentation only, nothing removed:
+- Plant: Your plant page, plant pick and naming, looks and planters, the six growth stages, The Turning (plant evolutions) and every plant moment and animation (growth, breathing, stage-up, reactions). Restyle to Grove; prove every animation still plays, and that Reduce Motion shows the end state.
+- Badges: the Badges case (shelves, sheet, ladders, tiers, domain emblems), the unlock moment, "New in", the share card, Show badges. Rename any learner-visible "Herbarium" (including plantLooks howToOpen, with the bundle rebuild).
+- Drills (games): every drill screen (Snare Spotter, Signpost, Call It First and the six that open after 50 answers), the round header, recap, level-up and the 3-then-unlock rule. Restyle to Grove and TYPE_SCALE.md; behaviour unchanged.
+- Web: the plant on Today and You, the web plant page, and the website's badges message.
+- Final QA (Phase 5) walks all three on both platforms.

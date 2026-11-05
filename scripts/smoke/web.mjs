@@ -183,8 +183,8 @@ for (const [view, scheme] of [['phone', 'light'], ['desktop', 'dark']]) {
       }
       const exp = norm(await page.locator('#vrExp').innerText().catch(() => ''));
       c.check(exp.length > 40, `Q${k + 1}: the explanation is missing or very short`);
-      // The three moves sit under the answer below 1240px and in the margin plate
-      // ("Three moves for this question", .vm-plate) from 1240px (web v12.47): check whichever shows.
+      // The tips sit under the answer at every width (Grove Phase 4); the older
+      // margin plate (.vm-plate) is still read if a build shows it.
       const tips = await ev(page, () => {
         const shown = (e) => e && e.offsetParent !== null;
         const inline = [...document.querySelectorAll('#rPanel .vine-elim, #rPanel .vine-final, #rPanel .vine-cue')]
