@@ -64,12 +64,12 @@
             "crisc_d3_145"
           ],
           "definition": "Risk responses are the four ways an organization deals with an analyzed risk: accept it, mitigate it with controls, transfer or share it, or avoid the activity causing it.",
-          "why_it_matters": "The response decides how much risk is left and what that costs. The wrong choice wastes money on a risk already within appetite, or leaves a risk above appetite untreated.",
+          "why_it_matters": "The response decides how much risk is left and what that costs. The wrong choice wastes money on a risk within appetite or leaves one above appetite untreated.",
           "how_it_works": [
-            "Every response starts from an analyzed risk compared with appetite and tolerance, not from a favorite tool.",
-            "Responses can be combined: reduce the likelihood with controls, then insure part of the financial impact that remains.",
+            "Every response starts from an analyzed risk compared with appetite and tolerance, not a favorite tool; if a root-cause review is days away, wait for it.",
+            "Responses can be combined: reduce the likelihood with controls, then insure part of the remaining financial impact.",
             "Transfer moves money, not accountability: a breach at an insured or outsourced service still harms the organization's customers and reputation.",
-            "Insurance reduces neither the likelihood of an event nor its harm to operations; it pays back part of the financial loss.",
+            "Insurance cuts neither likelihood nor harm to operations; it repays part of the financial loss.",
             "Avoidance also gives up the benefit, so it fits when the activity is not needed for objectives or nothing else brings the risk within appetite."
           ],
           "types": [
@@ -90,7 +90,7 @@
               "meaning": "The business stops, changes or never starts the activity that creates the risk, for good or until a fix is in place."
             }
           ],
-          "example": "A regional airline's loyalty team wants members to pay for flights with stored points through a new partner app. Amara, the risk analyst, rates the account-takeover fraud risk above appetite. They lay out four options, each with its cost and the target risk it would leave: accept the risk (needing temporary acceptance from the level that set the appetite), add step-up authentication, insure fraud losses, or drop the feature. Amara then presents the comparison to the loyalty director.",
+          "example": "A regional airline's loyalty team wants members to pay for flights with stored points in a new partner app. Amara, the risk analyst, rates the account-takeover fraud risk above appetite. They lay out four options, each with its cost and the target risk left: accept the risk (needing temporary acceptance from the level that set the appetite), add step-up authentication, insure fraud losses, or drop the feature. Amara presents the comparison to the loyalty director.",
           "audit_focus": {
             "review": [
               "Compare each response in the register with the risk rating and appetite",
@@ -113,7 +113,7 @@
             },
             {
               "trap": "Avoid any risk that is above appetite.",
-              "why": "Avoidance also drops the benefit. If the activity is needed to meet objectives, the better response is usually to mitigate or share the risk until it fits appetite."
+              "why": "Avoidance also drops the benefit; if the activity serves objectives, mitigating or sharing the risk until it fits appetite is usually better."
             }
           ],
           "key_terms": [
@@ -123,7 +123,7 @@
             },
             {
               "term": "Response option analysis",
-              "definition": "A side-by-side comparison of each option's cost, effect on likelihood and impact, and the target risk it would leave."
+              "definition": "A side-by-side comparison of each option's cost, effect on likelihood and impact, and the target risk it leaves."
             }
           ],
           "memory_aid": "Keep it, cut it, share it or skip it: accept, mitigate, transfer, avoid."
@@ -328,7 +328,7 @@
           "definition": "A control owner is accountable for a control being in place and working, often as the manager whose team runs it; validation confirms owners perform the role.",
           "why_it_matters": "A control that nobody owns decays quietly: reviews stop, settings drift and evidence disappears. Validating ownership finds these gaps before a test or an incident does.",
           "how_it_works": [
-            "Each key control gets one named owner who answers for it working, keeps its evidence and reports when it fails; day-to-day operation may sit with their team.",
+            "Each key control has one named owner inside the organization who answers for it working, keeps its evidence and reports failures; their team or a contractor may run it.",
             "One control can protect several risks, so its owner may serve several risk owners.",
             "Risk owners rely on control owners to keep residual risk at the level they accepted, so a change that weakens a control goes to the risk owner first.",
             "Validate by asking the owner to describe the control and show recent evidence, not just by reading the register.",
@@ -619,7 +619,7 @@
           "definition": "Issue management is logging each control weakness, audit finding or incident lesson with an owner, an action and a due date, then tracking it until closure is validated.",
           "why_it_matters": "Findings that are logged but never really fixed leave the same risk open while reports show progress. Overdue items are often where the next incident comes from.",
           "how_it_works": [
-            "Log every issue in one tracker, linked to the risk it affects and rated by that risk.",
+            "Log every issue in one tracker, linked to the risk it affects and ranked by that risk's rating, since audits, regulators and reviews each rate on their own scale.",
             "Give each issue one owner, an agreed action and a realistic due date.",
             "Escalate overdue or slipping items to the risk owner and, past a set point, to senior management.",
             "Close an issue only after evidence shows the fix works, not on the owner's statement.",
@@ -1459,7 +1459,7 @@
           "definition": "Validating execution is confirming, with evidence, that the actions in a risk plan were carried out as agreed and reduced the risk as expected.",
           "why_it_matters": "Status reports often say done when a control is installed but untested. Validation stops the register from showing a lower risk than really exists.",
           "how_it_works": [
-            "Ask for evidence at each milestone, not only a status color.",
+            "Ask for evidence at each milestone, not only a status color, and watch the risk's indicators: if completed, working actions do not move them, check what drives the risk.",
             "Confirm the control is implemented, then that it operates, before treating the action as complete.",
             "Re-rate the risk after validation; that residual rating is compared with the target the plan set.",
             "Escalate slipping or blocked actions to the risk owner, and past agreed limits to senior management.",
@@ -1577,7 +1577,7 @@
             "Merge duplicate or similar risks into a representative risk, keeping a link back to each source entry.",
             "Look for the same risk treated differently by different units, and find out why.",
             "Keep severe single risks visible as their own lines; aggregation must not average them into a moderate total or lift a whole group to the worst rating.",
-            "Watch for correlated risks, such as several units relying on one vendor, that add up to a larger exposure.",
+            "Watch for correlated risks, such as several units relying on one vendor or running the same flawed software, that add up to a larger exposure.",
             "To compare units, turn counts into rates on a common base, such as complaints per 1,000 chats; a common scale aligns ratings, not volumes."
           ],
           "example": "A hospital group asks its five hospitals for their top risks. Two rate on a 1 to 5 scale and three on 1 to 10, and one hospital's critical ransomware risk disappears when the scores are averaged. Malik, the enterprise risk analyst, converts every rating to the group scale, keeps the critical risk as its own line and notes that four hospitals share one imaging vendor.",
@@ -1926,7 +1926,7 @@
             "Write a monitoring strategy: what to monitor, how often and who receives the results.",
             "Automate where it helps, such as configuration checks, vulnerability scans and control health checks.",
             "Set frequency by risk and by how fast the item changes; continuous does not mean every second.",
-            "Route every alert to an owner with a response time, track it to closure and measure the share resolved in time.",
+            "Route every alert, including those a vendor's tool raises, to an owner in the organization with a response time; track it to closure and measure the share resolved in time.",
             "Analyze results against tolerance and feed them into the register and reports.",
             "Roll monitoring out in priority order, starting with the controls behind the highest risks; switching on every check at once floods owners with alerts."
           ],
@@ -2165,8 +2165,8 @@
             "Board and senior management: the enterprise profile, appetite breaches, top risks, trends and the decisions needed.",
             "Risk owners: their risks, indicator status, overdue actions and acceptances due for review.",
             "Control owners and operations: control failures, test results and specific remediation tasks.",
-            "Send each report to someone with authority to decide on what it shows, and state the decision requested.",
-            "Escalate outside the cycle when a tolerance breach or a critical risk needs a decision now.",
+            "Send each report to someone with authority to decide, stating the decision requested; escalate outside the cycle when a breach or critical risk needs a decision now.",
+            "Report ratings as assessed; if an owner disputes one without new evidence, show their view beside the unchanged rating.",
             "Share the risk profile with internal audit so its plan can cover the top risks; internal audit still sets its own plan, approved by the audit committee."
           ],
           "example": "A national charity's IT risk report to its board lists 140 vulnerability findings by server name. Samir, the risk analyst, rewrites it for the board as the three risks outside appetite, their trend and the funding decision needed for one of them. They send the server-level detail to the infrastructure manager as an action list.",

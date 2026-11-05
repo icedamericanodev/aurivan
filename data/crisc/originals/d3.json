@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "comment": "Original CRISC practice questions for Domain 3 (Risk Response and Reporting), written to the CRISC exam content outline effective 2025. Every item is authored from public concepts and KaiSip's own CRISC study notes (data/crisc/notes/d3.json), with no reference to the CRISC Review Manual, ISACA's QAE database, ISACA's practice quiz or any prior question bank. Schema: docs/content/QUESTION_SCHEMA.md; writing rules: docs/content/EXAM_STYLE_V2.md and .claude/agents/crisc-standards-auditor.md. Not affiliated with or endorsed by ISACA®. CRISC® is a registered trademark of ISACA. Pilot batch crisc_d3_001 to crisc_d3_020, 30 Oct 2026. Round 2 crisc_d3_021 to crisc_d3_050, 31 Oct 2026. Round 3 crisc_d3_051 to crisc_d3_085, 4 Nov 2026. Round 7 crisc_d3_129 to crisc_d3_136, 4 Nov 2026. Round 8 crisc_d3_137 to crisc_d3_144, 5 Nov 2026. Round 9 crisc_d3_145 to crisc_d3_152, 5 Nov 2026. Round 10 crisc_d3_153 to crisc_d3_160, 5 Nov 2026.",
+    "comment": "Original CRISC practice questions for Domain 3 (Risk Response and Reporting), written to the CRISC exam content outline effective 2025. Every item is authored from public concepts and KaiSip's own CRISC study notes (data/crisc/notes/d3.json), with no reference to the CRISC Review Manual, ISACA's QAE database, ISACA's practice quiz or any prior question bank. Schema: docs/content/QUESTION_SCHEMA.md; writing rules: docs/content/EXAM_STYLE_V2.md and .claude/agents/crisc-standards-auditor.md. Not affiliated with or endorsed by ISACA®. CRISC® is a registered trademark of ISACA. Pilot batch crisc_d3_001 to crisc_d3_020, 30 Oct 2026. Round 2 crisc_d3_021 to crisc_d3_050, 31 Oct 2026. Round 3 crisc_d3_051 to crisc_d3_085, 4 Nov 2026. Round 7 crisc_d3_129 to crisc_d3_136, 4 Nov 2026. Round 8 crisc_d3_137 to crisc_d3_144, 5 Nov 2026. Round 9 crisc_d3_145 to crisc_d3_152, 5 Nov 2026. Round 10 crisc_d3_153 to crisc_d3_160, 5 Nov 2026. Round 11 crisc_d3_161 to crisc_d3_168, 5 Nov 2026.",
     "schema_version": 1
   },
   "domain": 3,
@@ -5927,6 +5927,302 @@
         "Trend"
       ],
       "_provenance": "Authored from concept: notes 3C5.1 (Heat Maps, Scorecards and Dashboards: show each period's KRI value against its thresholds; a rolling average smooths single breaches away). Round 10, 5 Nov 2026: original scenario (a ferry operator's booking-fraud KRI shown as a 12-month rolling average; moved to a mining company's payment-fraud KRI in the round 10 review), written for KaiSip in our own words; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D3 round 10 (crisc_d3_153 to 160). Angle: no item covered smoothing that hides breaches; runner-up is a shorter average. Owner pattern (changed in the round 10 review): the key names no owner; two distractors name one (the runner-up A, the KRI owner; B, each KRI's owner), so no lone owner decoy remains. Neighbours checked (stems and options): crisc_d3_047 (trend arrows), crisc_d3_080 (bare numbers: thresholds and trend), crisc_d3_082, crisc_d3_109 (no agreed action for red), crisc_d3_112 (figures of different ages), crisc_d3_141 (default color bands), crisc_d2_070, crisc_d1_123, CISA d2_190. None keys showing per-period values where an average hid breaches. Review fixes 5 Nov 2026 (round 10 standards audit, concept review and blind test): setting moved from a ferry operator to a mining company (crisc_d2_108 uses a shipping line), with a payment-fraud KRI; pre_read no longer states the key's logic; the runner-up A now names the KRI owner so the lone owner decoy is not a tell, with wrong A, the Final two tip and the correct explanation to match.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d3_161",
+      "domain": 3,
+      "subtopic": "3A1 Risk response options. Replacement asked for after a fault",
+      "principle_id": "analyze-before-acting",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A steel mill's scheduling system is restored after a storage fault, with the root-cause review due in three days; the plant director wants a $400,000 replacement approved today. What is the risk analyst's BEST recommendation?",
+      "options": {
+        "A": "Have the risk owner approve the replacement today",
+        "B": "Compare the replacement's cost with two other systems",
+        "C": "Have the risk owner accept the risk as it stands",
+        "D": "Wait for the review before choosing a response"
+      },
+      "correct": "D",
+      "key_concept": "Choose a response once the cause is known; when that analysis is days away and operations are restored, waiting costs less than a wrong fix.",
+      "pre_read": "Check what is still unknown about the event and how soon it will be known.",
+      "correct_explanation": "Nobody yet knows what caused the storage fault, and the system is running again, so three days' wait costs little, while a $400,000 replacement chosen now may not address the cause at all. Waiting for the review lets the response and its cost be judged against the real cause. Comparing the replacement with other systems is the runner-up: it weighs cost, but it still assumes a new system is the answer.",
+      "wrong_explanations": {
+        "A": "Approving today commits $400,000 before anyone knows what caused the fault; the risk owner decides, but on an analyzed risk, not a guess.",
+        "B": "Comparing systems weighs cost, but it still assumes a new system is the answer; the cause may be fixed far more cheaply.",
+        "C": "Accepting the risk as it stands is a decision on a risk nobody has analyzed; it is not yet known whether the fault will recur."
+      },
+      "tips": [
+        "Eliminate: A commits $400,000 before the cause is known, and C accepts a risk nobody has analyzed yet; both decide ahead of the analysis.",
+        "Final two: D beats B because comparing systems still assumes replacement is the answer; the review, days away, shows what the response must fix.",
+        "Exam cue: when the analysis that defines the problem is days away and operations are restored, wait for it before choosing a response."
+      ],
+      "framework_ref": "NIST SP 800-39 Section 3.3 Task 3-2 (Evaluation of Alternatives: effectiveness, feasibility and cost); NIST CSF 2.0 RS.AN-03 (analysis is performed to establish what has taken place during an incident and the root cause of the incident)",
+      "related_concepts": [
+        "Root cause analysis",
+        "Risk response selection",
+        "Cost-benefit analysis"
+      ],
+      "_provenance": "Authored from concept: notes 3A1.1 (The Four Risk Responses: every response starts from an analyzed risk, not a favorite tool; if a root-cause review is days away, wait for it). Round 11, 5 Nov 2026: original scenario (a steel mill's scheduling system restored after a storage fault, with a $400,000 replacement asked for before the root-cause review ends), written for KaiSip in our own words; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D3 round 11 (crisc_d3_161 to 168). Angle: a genuine wait key (round 11 ask). Its reason is new: the analysis that defines the response is days away and the system is running, so a decision now would rest on a guess about the cause. It does not contradict escalation-on-trigger keys (crisc_d3_127 confirmed tolerance breach, crisc_d3_058 exemption whose facts changed, crisc_d3_045 worsening trend) or the scheduled-review deferrals (crisc_d1_123, crisc_d3_146): nothing here is breached or changed, and no response can be judged until the cause is known. Owner pattern: the key names no owner; the two easy distractors (A, C) name the risk owner; the runner-up B names none. Neighbours checked (stems and options): crisc_d3_009 (root-cause control), crisc_d3_010 and crisc_d3_088 (comparing response options), crisc_d3_086, crisc_d3_087, crisc_d3_121 (rare long outage), crisc_d3_115 (staged response to uncertain threat), crisc_d3_067 (buying a tool), crisc_d2_051 ('Wait for each vendor' as a wrong option), crisc_d1_016, crisc_d1_045, crisc_d3_020 and crisc_d3_045 (Wait options left wrong), aaia_d2_090, CISA d5_067. None keys waiting for a root-cause review before choosing a response. Keep apart in practice sets from crisc_d3_115.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d3_162",
+      "domain": 3,
+      "subtopic": "3A2 Risk and control ownership. Control run by a contractor",
+      "principle_id": "transfer-keeps-accountability",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A telecom tower company's register names its security contractor, which issues and revokes engineers' tower-site keys, as owner of the site-access control. What should the risk analyst recommend as BEST?",
+      "options": {
+        "A": "Name a company manager overseeing the work as control owner",
+        "B": "Keep the contractor as control owner under its contract",
+        "C": "Have the risk owner issue and revoke the site keys",
+        "D": "Drop the control from the register as outsourced"
+      },
+      "correct": "A",
+      "key_concept": "Accountability for a control stays inside the organization; a contractor may run it, but a named internal manager owns it.",
+      "pre_read": "Separate who does the control's daily work from who answers for it working.",
+      "correct_explanation": "A control owner answers for the control working, and that accountability stays inside the company even when a contractor does the work. Naming a company manager who oversees the work as owner gives someone with authority to demand evidence, act on failures and report to the risk owner. Keeping the contractor as owner is the runner-up: the contract binds its service, but the company still bears the harm when keys are not revoked.",
+      "wrong_explanations": {
+        "B": "A contract binds the contractor's service, but it cannot make an outside firm accountable inside the company; when keys stay active, the company bears the harm.",
+        "C": "The risk owner answers for the risk, not for running its controls; issuing keys is the contractor's work, overseen by the control owner.",
+        "D": "Outsourcing the work removes neither the control nor its risk; dropping it from the register hides a control the company relies on."
+      },
+      "tips": [
+        "Eliminate: C hands key work to the risk owner, who answers for the risk rather than its controls, and D drops a relied-on control because a contractor runs it.",
+        "Final two: A beats B because a contract binds the contractor's service, but accountability for the control stays with someone inside the company.",
+        "Exam cue: when an outside firm runs a control, the firm operates it, but a named internal manager owns it and answers for its evidence."
+      ],
+      "framework_ref": "ISACA Glossary (control owner); NIST CSF 2.0 GV.RR-02 (roles, responsibilities and authorities related to cybersecurity risk management are established, communicated, understood and enforced)",
+      "related_concepts": [
+        "Control owner",
+        "Outsourced control",
+        "Accountability"
+      ],
+      "_provenance": "Authored from concept: notes 3A2.2 (Control Owners and Validating Ownership: each key control has one named owner inside the organization; their team or a contractor may run it). Round 11, 5 Nov 2026: original scenario (a telecom tower company's register naming its security contractor, which issues and revokes tower-site keys, as owner of the site-access control), written for KaiSip in our own words; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D3 round 11 (crisc_d3_161 to 168). Angle: no item asked who owns a control an outside firm operates. Owner pattern: the key names an owner; two distractors name one too (the runner-up B, the contractor as control owner; C, the risk owner); D names none. Neighbours checked (stems and options): crisc_d3_005 (backup control owner), crisc_d3_053 (owner retiring), crisc_d3_089, crisc_d3_129 (owner at plan closure), crisc_d3_153 (junior owner ignored), crisc_d3_055 (contractor access after contract end), crisc_d1_070 (risk kept after outsourcing payroll), crisc_d1_081 (liability cap), crisc_d1_005, cc_d4_095 (provider responsibility matrix), cc_d3_121. None keys an internal owner for a contractor-run control. Keep apart in practice sets from crisc_d1_070.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d3_163",
+      "domain": 3,
+      "subtopic": "3A4 Issues, findings, exceptions and exemptions management. Ranking open findings",
+      "principle_id": "rate-on-common-terms",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "Which of the following is the risk analyst's BEST basis for prioritizing findings from audits, regulators and reviews?",
+      "options": {
+        "A": "The severity each finding's source assigned to it",
+        "B": "The order each finding's action owner proposes",
+        "C": "The rating of the risk each finding affects",
+        "D": "The due dates the risk owners first agreed"
+      },
+      "correct": "C",
+      "key_concept": "Rank findings by the rating of the risk each affects, so findings from audits, regulators and reviews compete on one business scale.",
+      "pre_read": "Consider where the findings come from and what each ranking basis actually measures.",
+      "correct_explanation": "Findings from audits, regulators and reviews each arrive rated on their source's own scale and from its own scope. Ranking each by the register rating of the risk it affects puts them on one scale, tied to business exposure and appetite, so the fixes that matter most go first. The severity each source assigned is the runner-up: it is a fair view of the gap, but sources rate differently.",
+      "wrong_explanations": {
+        "A": "Each source rates on its own scale and scope, so an auditor's 'low' and a regulator's 'medium' cannot be ranked together or against business exposure.",
+        "B": "Action owners plan the fixes, but their preferred order reflects workload and ease, not how much each finding matters to the risk it affects.",
+        "D": "Agreed due dates say when each fix is expected, not how much it matters; ranking by them leaves the most serious exposure waiting on a calendar."
+      },
+      "tips": [
+        "Eliminate: B lets action owners set the order by their own workload, and D ranks fixes by calendar dates rather than by how much each one matters.",
+        "Final two: C beats A because sources rate findings on different scales; the rating of the affected risk puts every finding on one business scale.",
+        "Exam cue: rank remediation by the risk each finding affects, so findings from every source compete on one scale tied to appetite."
+      ],
+      "framework_ref": "NIST CSF 2.0 ID.RA-06 (risk responses are chosen, prioritized, planned, tracked and communicated); NIST IR 8286C Rev. 1 Section 2.2 (Normalization of Cybersecurity Risk Registers: the same rating criteria enable comparison and tracking)",
+      "related_concepts": [
+        "Issue management",
+        "Remediation priority",
+        "Risk register"
+      ],
+      "_provenance": "Authored from concept: notes 3A4.1 (Tracking Issues and Findings to Closure: link each issue to the risk it affects and rank it by that risk's rating, since audits, regulators and reviews each rate on their own scale). Round 11, 5 Nov 2026: original scenario (a short stem on how to prioritize findings from audits, regulators and reviews), written for KaiSip in our own words; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D3 round 11 (crisc_d3_161 to 168). Angle: a genuinely short 'Which of the following' stem (round 11 ask) with noun-phrase options; the runner-up is the source's own severity rating. Owner pattern: the key names no owner; the two easy distractors (B, D) name owners; the runner-up A names none. Neighbours checked (stems and options): crisc_d3_094 (one issue log linked to risks: this item ranks by that link), crisc_d3_029, crisc_d3_057, crisc_d3_095, crisc_d3_136, crisc_d3_119, crisc_d3_014 and crisc_d3_071 (one scale), crisc_d1_025 (lapsed exceptions), crisc_d4_062 (rank processes by risk for Zero Trust), CISA d1_127. None asks for the basis for ranking open findings. Keep apart in practice sets from crisc_d3_094.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d3_164",
+      "domain": 3,
+      "subtopic": "3B1 Control frameworks, types and standards. Three overlapping requirement sets",
+      "principle_id": "proportionate-response",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "Which of the following BEST helps a catering company's risk analyst meet three overlapping sets of control requirements?",
+      "options": {
+        "A": "A separate control set for each set of requirements",
+        "B": "One control set mapped to each requirement it meets",
+        "C": "The strictest of the three sets, adopted as written",
+        "D": "Certification against the most widely used set"
+      },
+      "correct": "B",
+      "key_concept": "Map one set of internal controls to every requirement it meets, so a single control can satisfy several frameworks or contracts.",
+      "pre_read": "Think about what the three sets share and what each still asks for alone.",
+      "correct_explanation": "Overlapping requirement sets ask for many of the same things, so one set of controls, each mapped to every requirement it meets, satisfies them all without duplicate work, and the map shows any requirement left uncovered. Adopting the strictest set as written is the runner-up: it seems to cover the rest, but it may still miss terms unique to the other two and adds controls the company's risks do not need.",
+      "wrong_explanations": {
+        "A": "Separate control sets duplicate work and drift apart over time; staff end up running three versions of the same check.",
+        "C": "The strictest set may still miss terms unique to the other two, and adopting it as written adds controls without tailoring them to the company's risks.",
+        "D": "A certificate against one set shows nothing about the terms only the other two contain, so it does not meet them."
+      },
+      "tips": [
+        "Eliminate: A duplicates the same controls three times, and D certifies against one set while the other two still have terms of their own.",
+        "Final two: B beats C because a mapped control set covers every requirement once; the strictest set can still miss the others' terms and skips tailoring.",
+        "Exam cue: when several frameworks, laws or contracts overlap, map one tailored control set to all of them rather than adopting any one whole."
+      ],
+      "framework_ref": "NIST CSF 2.0 Section 4 (Informative References are mappings that indicate relationships between the Core and various standards, guidelines and regulations); NIST SP 800-53B Section 2.4 (Tailoring Control Baselines: align the baseline with organizational risk and record a risk-based justification for each decision)",
+      "related_concepts": [
+        "Control mapping",
+        "Framework tailoring",
+        "Compliance requirements"
+      ],
+      "_provenance": "Authored from concept: notes 3B1.3 (Control Frameworks and Tailoring: map internal controls to every framework and regulation that applies, so one control can meet several requirements; use frameworks as catalogs, not checklists to adopt whole). Round 11, 5 Nov 2026: original scenario (a catering company facing three overlapping sets of control requirements), written for KaiSip in our own words; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D3 round 11 (crisc_d3_161 to 168). Angle: a genuinely short 'Which of the following' stem (round 11 ask) on mapping one control set to several requirement sets, with 'adopt the strictest set as written' as runner-up. Owner pattern: no option names an owner. Neighbours checked (stems and options): crisc_d1_092 (COBIT and CSF used together, mapped to each other: a governance choice between two frameworks, not a control set), crisc_d4_038 (value of mapping to CSF 2.0), crisc_d3_060 and crisc_d3_140 (tailoring baselines), crisc_d3_120 (catalog), crisc_d3_131 (re-map after CSF revision), crisc_d3_061, cc_d1_011, CISA d1_158. None keys one mapped control set for several requirement sets. Keep apart in practice sets from crisc_d1_092 and crisc_d4_038.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d3_165",
+      "domain": 3,
+      "subtopic": "3C1 Risk action plans. Fraud indicator rising mid-plan",
+      "principle_id": "root-cause-over-symptom",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "Four of six actions in a bus operator's plan to cut fare-card fraud are done and tested as working, yet the fraud KRI has risen each month. What should the risk analyst do FIRST?",
+      "options": {
+        "A": "Have each action owner report progress weekly",
+        "B": "Bring the plan's remaining two actions forward",
+        "C": "Ask the risk owner to raise the KRI's thresholds",
+        "D": "Find out what is driving the fraud KRI's rise"
+      },
+      "correct": "D",
+      "key_concept": "An action plan succeeds when the risk falls, not when tasks finish; if working actions do not move the KRI, find what drives the risk.",
+      "pre_read": "Compare what the plan has done with what the indicator shows.",
+      "correct_explanation": "The completed actions work as designed, yet fraud keeps rising, so the plan may target the wrong cause, or fraudsters may have moved to a method it does not cover. Finding what drives the rise shows whether the plan still fits the risk. Bringing the last two actions forward is the runner-up: it speeds the plan up, but nothing shows more of the same plan will reverse the trend.",
+      "wrong_explanations": {
+        "A": "Weekly reports track tasks that are already on schedule; the problem is that finished, working actions are not moving the risk.",
+        "B": "Speeding up the plan assumes it targets what drives the fraud; four working actions have not slowed the rise, so that needs checking first.",
+        "C": "Raising thresholds makes the KRI look calmer without cutting fraud; thresholds follow tolerance, not the results a plan happens to get."
+      },
+      "tips": [
+        "Eliminate: A tracks tasks already on schedule rather than the risk, and C moves the KRI's thresholds instead of reducing the fraud they measure.",
+        "Final two: D beats B because finished, working actions have not slowed the fraud; speeding up the plan assumes it targets the right cause.",
+        "Exam cue: track the risk as well as the tasks; when actions are done and working but the indicator worsens, check what drives the risk before pushing on."
+      ],
+      "framework_ref": "NIST SP 800-39 Section 3.4 (Monitoring Risk: compliance, response effectiveness and risk-impacting changes); NIST IR 8286C Rev. 1 Section 5.2 (Monitoring Risks: KRIs are observed for trends such as rising likelihood or failing controls)",
+      "related_concepts": [
+        "Risk action plan",
+        "Response effectiveness",
+        "Key risk indicator"
+      ],
+      "_provenance": "Authored from concept: notes 3C1.2 (Validating Execution and Tracking to Closure: watch the risk's indicators as well as milestones; if completed, working actions do not move them, check what drives the risk). Round 11, 5 Nov 2026: original scenario (a bus operator's fare-card fraud plan with four working actions while the fraud KRI keeps rising), written for KaiSip in our own words; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D3 round 11 (crisc_d3_161 to 168). Angle: the plan is on schedule and its controls work, yet the risk worsens; earlier 3C1 items cover status colors, untested completion and shortfall at closure. Owner pattern: the key names no owner; the two easy distractors (A, C) name owners; the runner-up B names none. Neighbours checked (stems and options): crisc_d3_013, crisc_d3_068 (green status), crisc_d3_069 (complete but short of target), crisc_d3_103, crisc_d3_104, crisc_d3_157, crisc_d3_045 (rising KCI below red: review with control owner), crisc_d3_151 (KPI and KRI moving apart), crisc_d3_040 (threshold reset as a wrong option), crisc_d3_041 (bus operator depots: different topic), crisc_d1_129, cc_d5_056 (bus fare-fraud model). None keys finding the driver of a KRI that rises while working actions complete. Keep apart in practice sets from crisc_d3_069.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d3_166",
+      "domain": 3,
+      "subtopic": "3C2 Data collection, aggregation, analysis and validation. Medium risks across units",
+      "principle_id": "rate-on-common-terms",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "Which of the following MOST indicates to a risk analyst that several units' medium risks form one higher risk?",
+      "options": {
+        "A": "The same unpatched software running in each unit",
+        "B": "Many medium risks recorded in each unit",
+        "C": "Ratings each unit made on its own scoring scale",
+        "D": "Unit ratings gathered in different months"
+      },
+      "correct": "A",
+      "key_concept": "Risks that share a cause, such as the same weakness in every unit, can strike together, so their combined exposure exceeds each unit's rating.",
+      "pre_read": "Before combining ratings, consider how the risks in different units relate to one another.",
+      "correct_explanation": "When every unit runs the same unpatched software, one attack can hit them all at once, so the units' medium risks share a cause and move together: the enterprise faces one larger event. Many medium risks in each unit is the runner-up: a long list looks alarming, but separate risks with separate causes do not combine into one larger event.",
+      "wrong_explanations": {
+        "B": "A long list of separate medium risks does not show they would strike together; risks with different causes stay separate, however many there are.",
+        "C": "Different scales must be normalized before ratings are combined; that is a data problem to fix, not a sign that risks add up.",
+        "D": "Ratings from different months may need refreshing, but their timing says nothing about whether the risks share a cause."
+      },
+      "tips": [
+        "Eliminate: C and D are data-quality problems, scales to normalize and dates to refresh before aggregating; neither shows risks moving together.",
+        "Final two: A beats B because a shared weakness lets one event strike every unit at once; many separate medium risks need not combine.",
+        "Exam cue: when aggregating, look for a shared cause, such as common software or a common supplier, that turns separate risks into one larger exposure."
+      ],
+      "framework_ref": "NIST SP 800-30 Rev. 1 Section 3.2 Task 2-6 (Determine Risk: several moderate-level risks can aggregate to a higher level of risk); ISACA Glossary (risk aggregation)",
+      "related_concepts": [
+        "Risk aggregation",
+        "Correlated risk",
+        "Common vulnerability"
+      ],
+      "_provenance": "Authored from concept: notes 3C2.2 (Aggregating and Normalizing Risk Data: watch for correlated risks, such as several units relying on one vendor or running the same flawed software, that add up to a larger exposure). Round 11, 5 Nov 2026: original scenario (a short stem on what shows medium risks in several units combine into one higher risk), written for KaiSip in our own words; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D3 round 11 (crisc_d3_161 to 168). Angle: a genuinely short 'Which of the following' stem (round 11 ask); no item keyed correlation through a shared weakness. The key is a common vulnerability, not a single supplier, so it does not mirror crisc_d3_144 (concentration risk). Owner pattern: no option names an owner. Neighbours checked (stems and options): crisc_d3_014 (mixed scales), crisc_d3_073 (one office rates higher), crisc_d3_105 (same risk worded nine ways), crisc_d3_112 (figures of different ages), crisc_d3_133, crisc_d3_158 (critical single risk), crisc_d3_144 (concentration risk), crisc_d1_068 (12 supplier risks together beyond tolerance: escalate), crisc_d2_051 (one component in many products), cc_d5_032 (alert correlation). None asks what shows separate unit risks combine. Keep apart in practice sets from crisc_d1_068 and crisc_d3_144.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d3_167",
+      "domain": 3,
+      "subtopic": "3C4 Risk and control monitoring techniques. Vendor's drift alerts for an AI tool",
+      "principle_id": "emerging-and-ai-risk-owned",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A legal aid agency's AI vendor monitors drift in the tool ranking aid applications, but alerts reach only vendor staff, and the agency sees quarterly summaries. What should the risk analyst recommend as BEST?",
+      "options": {
+        "A": "Ask the vendor's account owner for monthly drift summaries",
+        "B": "Have drift alerts sent to the tool's owner at the agency",
+        "C": "Have the agency's risk owner rely on quarterly summaries",
+        "D": "Add contract penalties for drift beyond agreed limits"
+      },
+      "correct": "B",
+      "key_concept": "Monitoring reduces risk only when an accountable owner sees the alert in time; a vendor's AI drift alerts must reach the customer's own tool owner.",
+      "pre_read": "Trace where each alert goes and who could act on it once it arrives.",
+      "correct_explanation": "Drift that ranks applicants wrongly harms them from the day it starts, yet the agency, which owns the decisions and their risk, hears months later. Sending drift alerts to the tool's owner at the agency lets someone accountable act, such as adding human review or pausing the tool. Monthly summaries from the vendor are the runner-up: they arrive sooner than quarterly ones, but a summary still reports drift after the fact.",
+      "wrong_explanations": {
+        "A": "Monthly summaries arrive sooner than quarterly ones, but they still report drift after the fact; the agency needs the alert itself while it can act.",
+        "C": "Quarterly summaries keep the agency months behind drift that harms applicants now; monitoring helps only when the owner sees it in time to act.",
+        "D": "Penalties may recover money from the vendor, but they neither tell the agency drift has started nor protect applicants ranked wrongly meanwhile."
+      },
+      "tips": [
+        "Eliminate: C keeps the agency months behind drift that harms applicants now, and D recovers money without telling anyone that drift has started.",
+        "Final two: B beats A because a monthly summary still reports drift after the fact; the alert must reach someone at the agency who can act on it.",
+        "Exam cue: when a vendor monitors an AI tool, its alerts must reach the organization's own owner; outsourcing the monitoring does not outsource acting on it."
+      ],
+      "framework_ref": "NIST AI 100-1 (AI RMF 1.0) MEASURE 2.4 (the functionality and behavior of the AI system are monitored when in production); NIST SP 800-137 Section 3.5 (Respond to Findings)",
+      "related_concepts": [
+        "Model drift",
+        "Third-party AI",
+        "Alert routing"
+      ],
+      "_provenance": "Authored from concept: notes 3C4.1 (Continuous Monitoring and Automated Alerts: route every alert, including those a vendor's tool raises, to an owner in the organization with a response time). Round 11, 5 Nov 2026: original scenario (a legal aid agency whose AI vendor monitors drift in the tool that ranks aid applications, with alerts reaching only vendor staff), written for KaiSip in our own words; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D3 round 11 (crisc_d3_161 to 168). AI item (the batch's only one). Angle: monitoring a third-party AI tool where the vendor sees the alerts and the customer sees summaries; no item covered who receives a vendor's monitoring alerts. Key opens 'Have' (round 11 ask: key one Have/Ask option). Owner pattern: the key names an owner; two distractors name one too (the runner-up A, the vendor's account owner; C, the risk owner); D names none. Neighbours checked (stems and options): crisc_d3_018 (alerts to a shared inbox), crisc_d3_126, crisc_d3_078, crisc_d3_027 (AI vendor service credits: keep own sampling), crisc_d3_056 (AI service outage), crisc_d3_159 (fairness KRI), crisc_d3_062, aaia_d2_008 (vendor upgrades a model), aaia_d1_035 (legal aid charity tolerance), cc_d1_184 (legal aid charity vendor diligence), cc_d2_090 (drift KRI). None keys routing a vendor's drift alerts to the customer's owner. Keep apart in practice sets from crisc_d3_018 and crisc_d3_027.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d3_168",
+      "domain": 3,
+      "subtopic": "3C5 Risk and control reporting techniques. Owner asks for a softer color",
+      "principle_id": "report-for-the-decision",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A day before the executive committee's risk report, a tax authority's risk owner asks the risk analyst to show a red-rated refund-fraud risk as amber, citing no new evidence. What is the analyst's BEST response?",
+      "options": {
+        "A": "Re-rate the risk jointly with its owner before the meeting",
+        "B": "Show the owner's amber rating in the report",
+        "C": "Report the red rating, noting the risk owner's view",
+        "D": "Ask internal audit to decide the rating first"
+      },
+      "correct": "C",
+      "key_concept": "Ratings change with evidence, not requests; report the assessed rating and show a risk owner's disagreement so decision-makers see both.",
+      "pre_read": "Note what the owner offers in support of the change.",
+      "correct_explanation": "A rating should change when the evidence changes, and the owner offers none. Reporting the red rating with the owner's view noted keeps the committee's picture accurate and shows the disagreement openly, so the committee can weigh it or ask for more analysis. Re-rating jointly before the meeting is the runner-up: it sounds collaborative, but with no new evidence and a day to go it becomes a negotiation over the color.",
+      "wrong_explanations": {
+        "A": "Re-rating with the owner is right when new evidence appears; with none offered and a day left, it turns the rating into a negotiation.",
+        "B": "Changing the color on request, with no new evidence, misleads the committee about a risk it may need to act on; ratings follow evidence.",
+        "D": "Internal audit gives independent assurance; it does not set the risk function's ratings, and passing the dispute to it delays an accurate report."
+      },
+      "tips": [
+        "Eliminate: B changes the color on request without evidence, misleading the committee, and D asks internal audit to set a rating, which is not its role.",
+        "Final two: C beats A because no new evidence was offered, so re-rating becomes a negotiation; reporting the rating with the owner's view keeps both visible.",
+        "Exam cue: when a rating is challenged without new evidence, report it as assessed and show the dissent; change ratings only when evidence changes."
+      ],
+      "framework_ref": "ISACA Code of Professional Ethics (inform appropriate parties of all significant facts); ISACA Code of Professional Ethics (objectivity, due diligence and professional care)",
+      "related_concepts": [
+        "Risk reporting",
+        "Objectivity",
+        "Risk rating"
+      ],
+      "_provenance": "Authored from concept: notes 3C5.2 (Reporting for the Audience and the Decision: report ratings as assessed; if an owner disputes one without new evidence, show their view beside the unchanged rating). Round 11, 5 Nov 2026: original scenario (a tax authority's risk owner asking for a red refund-fraud risk to be shown amber in the next day's executive committee report, with no new evidence), written for KaiSip in our own words; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D3 round 11 (crisc_d3_161 to 168). Angle: reporting integrity under pressure from a risk owner; no CRISC item covered it. Owner pattern: the key names an owner; two distractors name one too (the runner-up A, re-rating with its owner; B, the owner's amber rating); D names none. Neighbours checked (stems and options): crisc_d3_019, crisc_d3_048, crisc_d3_079, crisc_d3_082, crisc_d3_112, crisc_d3_127 (breach between reports), crisc_d3_141, crisc_d3_160, crisc_d1_007 (a director asks to drop a test result from a board report because a fix is under way: key keeps it beside the plan; here the request is a softer color with no evidence, and the runner-up is a joint re-rating), crisc_d1_065 (self-assessed ratings passed on unchanged), crisc_d1_078 (internal audit's role), crisc_d1_102, crisc_d1_129, crisc_d2_058, CISA d1_050 (auditee asks the IS auditor to downgrade findings: auditor's lens, key declines and offers to discuss facts). None keys reporting an assessed rating with the owner's dissent. Keep apart in practice sets from crisc_d1_007 and CISA d1_050.",
       "style_version": 2
     }
   ]

@@ -168,7 +168,7 @@
           "how_it_works": [
             "Bias events are outputs that treat groups unfairly, such as a screening model rejecting qualified applicants from one region.",
             "Model drift is a fall in accuracy as live data or real-world relationships change after training; it builds gradually rather than in one incident.",
-            "Signals include complaints, increasing human override rates, accuracy monitoring and error trends found by reviewers.",
+            "Signals include complaints, increasing human override rates, accuracy monitoring and error trends found by reviewers; reviewers' logged corrections, near misses included, are the system's own event record.",
             "Each AI event is logged against an AI risk scenario with a named business owner, not only the data science team.",
             "Repeated small errors are aggregated, because their combined impact may exceed what any single event shows."
           ],
@@ -615,7 +615,7 @@
           "why_it_matters": "No enterprise can fix everything at once. Ranking by business risk spends limited patching effort where a successful exploit would hurt objectives most.",
           "how_it_works": [
             "First confirm findings are real, verifying a sample when a vendor disputes them; then start from asset criticality: which business process the asset supports and what compromise would cost.",
-            "Add reachability: internet-facing, reachable from partners, or isolated behind strong segmentation.",
+            "Add reachability: internet-facing, reachable from partners, or isolated behind strong segmentation; a met patch-rate target can still leave every late flaw on the most reachable system.",
             "Add exploitability: public exploit code, active attacks or a listing in a known-exploited vulnerabilities catalog.",
             "Set fix time frames by risk tier in a policy approved by management, so teams do not negotiate each fix.",
             "When a fix cannot meet its time frame, raise an exception with compensating controls for the risk owner to accept or reject.",
@@ -735,7 +735,7 @@
             "Top-down: work with executives from strategy and objectives to the events that would damage them most.",
             "Bottom-up: work from asset inventories, threat models, vulnerability data and event history toward possible business effects.",
             "Generic scenario libraries are a starting point, tailored to the enterprise's own processes and assets.",
-            "Merge overlapping scenarios and drop implausible ones so the set stays reviewable.",
+            "Merge overlapping scenarios and drop implausible ones so the set stays reviewable; when separate scenarios each assume the other's backup works, add one where both fail together.",
             "NIST SP 800-30 notes that any single starting point can bias results, so adding a second orientation improves rigor.",
             "A set drawn only from past incidents misses severe events not yet suffered; add plausible ones from objectives, peers and threat data."
           ],
@@ -1070,7 +1070,7 @@
             "recommend": "Have process owners refresh the BIA after major changes, including new AI or cloud services.",
             "decides": "Senior management approves the critical process list and recovery priorities"
           },
-          "isaca_rule": "The BIA measures impact over time, not likelihood. Get impact from business owners, include every dependency, AI services and suppliers included, and use the results to rank recovery and inform risk ratings.",
+          "isaca_rule": "The BIA measures impact over time, not likelihood. Get impact from business owners, include every dependency, AI services and suppliers included, and use the results to rank recovery and inform risk ratings. Revise it when the business, its obligations or its dependencies change.",
           "exam_traps": [
             {
               "trap": "A completed BIA can replace the risk assessment for continuity risks.",
@@ -1530,11 +1530,11 @@
           "definition": "Choosing a method means matching the analysis to the decision it must support and the quality of the data available, from simple scales to FAIR models and Monte Carlo simulation.",
           "why_it_matters": "A precise-looking number built on guesses misleads decision makers more than an honest qualitative rating. The method must fit both the data and the decision.",
           "how_it_works": [
-            "Ask what the decision needs: ranking many risks, a funding case for one control, or capital and insurance planning.",
+            "Ask what the decision needs: ranking many risks, funding one control, or capital and insurance planning.",
             "Check the data: loss history, industry benchmarks and expert estimates, and how reliable each one is; gather each expert's estimate privately before discussion, as in the Delphi technique.",
             "FAIR, an Open Group standard, splits risk into loss event frequency and loss magnitude; secondary losses, such as fines, get their own frequency: the share of events that trigger them.",
             "Monte Carlo simulation runs thousands of trials from estimated ranges to give a spread of losses; a limit on large losses is tested on its tail, not the mean.",
-            "Ranges with stated confidence beat single-point numbers when data is uncertain.",
+            "Ranges beat single-point numbers; when a range is too wide to decide, sensitivity analysis shows which input needs better data.",
             "Methods can be combined: qualitative screening first, then quantitative analysis of the top risks."
           ],
           "example": "A biotech firm's board asks how much cyber insurance to buy. The previous analysis gave one ALE figure from a single guess. Olu Adeyemi, the risk practitioner, gathers ranges from claims data and experts, runs a Monte Carlo simulation and shows the board a loss distribution, including a one-in-twenty-year loss of about $9 million, with every assumption listed.",
