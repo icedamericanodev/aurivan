@@ -239,7 +239,7 @@ var BD = (function () {
       })(),
       last: find([/last\s*name|surname|family\s*name/]),
       eligible: find([/do you have an android/, /android device.*google play|google play access/]),
-      device: (function () { for (var i = 0; i < h.length; i++) if (/device|phone|model/.test(h[i]) && !/^do you have/.test(h[i])) return i; return -1; })(),
+      device: (function () { for (var i = 0; i < h.length; i++) if (/device|phone|model/.test(h[i]) && !/^do you have|iphone|\bios\b|\bipad\b/.test(h[i])) return i; return -1; })(),
       registered: find([/^timestamp$/, /timestamp|submitted|submission/, /^date$/])
     };
   }
