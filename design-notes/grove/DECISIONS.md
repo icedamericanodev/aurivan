@@ -175,3 +175,14 @@ The kit has no answer screen; four experts (behavioural scientist, product manag
 - **Also:** "Time's up" in the miss tone, never clay; tips stay in the main column from 1240px (the margin card and its skip link go); no automatic hyphenation; focus to the verdict after 400ms with one spoken label. Display letters on screen; `data-l` and the letter mapping are untouched.
 
 Why: explained feedback in one predictable place helps learners carry the reasoning to new questions; folding the tips hid the part the coach line points to.
+
+## 17. Sky's Phase 4 answers and short interface text (owner, Sky, 5 Nov 2026)
+
+Sky answered the Phase 4 questions in chat (`phase4b/p4-owner-answers.md`; every answer is in `PHASE4.md` section 2):
+
+- **Yes to O1, O2, O3, O4, O7 and O8.** After a miss all three tips are open and only a long Why folds (web and phone; replaces the mobile 1.43 fold). The phone gets a read-only Glossary, the Mindset strip and the Weak spots drill row. The website Learn is its own hub at `#learn` in the kit order, and each web note is its own reading page with a back link.
+- **Defaults kept:** O5 and O6 (drills and the question bank on the web) later; O9 "The score needed is 450"; O15 one word, "Mastered"; O16 "Saved questions" on both builds.
+- **Sky's own fixes to the first web build:** Learn tiles 2 by 2 at normal text (one column only from 1.3x text or under 360px; an odd last tile spans), a web Learn line with no lessons wording, and the Eliminate tip always shown after a miss.
+- **Short interface text:** one idea per line, sublines about 6 words, notes one short sentence, nothing said twice on a screen; cut, never hide meaning, and keep honesty lines. Interface text only: course content (questions, options, explanations, tips, notes, glossary, lessons, principles, exam guide, final review week) stays word for word. The web pass is listed in `PHASE4.md` section 12; the phone mirrors it in its own pass, and the 4b designs follow the same rule.
+
+Why: Sky's answers settle the open navigation and answer-screen questions, and shorter interface text respects a learner's attention without losing anything they need.

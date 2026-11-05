@@ -41,6 +41,7 @@ Batched for the end of the uplift (web v13, mobile 2.0.0; DECISIONS 8). Write th
 - After a wrong answer, all three tips now stay open; only a long explanation folds under Read more.
 - Learn's tiles sit two by two on phones, and the answer screen shows the note, the principle, the terms and your note on every screen size.
 - Screen readers now hear which practice answer you picked, and the glossary letters are easier to tap.
+- Today, Learn, Practice, You and Settings now say things in fewer, shorter words.
 
 ## Follow-ups to do at the release
 - `mobile/src/engine/plantLooks.ts` `howToOpen` says "in the Herbarium": change to "in Badges" and rebuild `assets/kaisip-plant.js` in the same commit.

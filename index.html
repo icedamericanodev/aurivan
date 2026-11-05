@@ -8554,14 +8554,14 @@ html[data-kbd] :where(.you-plant, .vision-panel, .gt-panel, .readiness-card) :wh
               <button type="button" class="ph-chip" data-diff="application" aria-pressed="false" onclick="setDiff(this,'application')">Application</button>
               <button type="button" class="ph-chip" data-diff="analysis" aria-pressed="false" onclick="setDiff(this,'analysis')">Analysis</button>
             </div>
-            <p class="ph-hint">Foundational is recall, Application is a scenario, Analysis is best judgment. The exam is mostly Application and Analysis.</p>
+            <p class="ph-hint">Recall, a scenario, best judgment, in that order. The exam is mostly the last two.</p>
           </div>
           <!-- Timed (v12.30, the mobile rule): a switch; the clock counts up while you answer, never down. -->
           <div class="ph-grp ph-timer" id="phGrpTimed">
             <ul class="you-list">
-              <li><button type="button" class="you-row" id="phTimedBtn" role="switch" aria-checked="false" aria-labelledby="phTimedT" aria-describedby="phTimedM phTimedH" onclick="toggleTimer()"><span class="you-ico" aria-hidden="true"><svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2"/><path d="M9.5 2.5h5"/></svg></span><span class="you-text"><span class="you-t" id="phTimedT">Timed</span><span class="you-m" id="phTimedM">Counts up while you answer; never a countdown.</span></span><span class="you-switch" aria-hidden="true"></span></button></li>
+              <li><button type="button" class="you-row" id="phTimedBtn" role="switch" aria-checked="false" aria-labelledby="phTimedT" aria-describedby="phTimedM phTimedH" onclick="toggleTimer()"><span class="you-ico" aria-hidden="true"><svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2"/><path d="M9.5 2.5h5"/></svg></span><span class="you-text"><span class="you-t" id="phTimedT">Timed</span><span class="you-m" id="phTimedM">Counts up, never down</span></span><span class="you-switch" aria-hidden="true"></span></button></li>
             </ul>
-            <p class="ph-hint" id="phTimedH">The exam allows about 96 seconds a question.</p>
+            <p class="ph-hint" id="phTimedH">Exam pace: about 96 seconds a question.</p>
           </div>
           <button type="button" class="ph-done" onclick="togglePracticeSetup(false)">Done</button>
         </div>
@@ -8777,12 +8777,12 @@ html[data-kbd] :where(.you-plant, .vision-panel, .gt-panel, .readiness-card) :wh
         </section>
         <section class="you-card" aria-labelledby="youMoreH">
           <h2 class="you-card-h" id="youMoreH">In more detail</h2>
-          <ul class="you-list"><li><a class="you-row" href="#progress" onclick="return navGoFocus(event,'progress')" aria-labelledby="youProgT" aria-describedby="youProgM"><span class="you-ico" aria-hidden="true"><svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1"/></svg></span><span class="you-text"><span class="you-t" id="youProgT">Your progress</span><span class="you-m" id="youProgM">Your range in detail, charts and study days</span></span><span class="you-chev" aria-hidden="true"><svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m9 6 6 6-6 6"/></svg></span></a></li><li><a class="you-row" href="#weak-spots" onclick="return navGoFocus(event,'weakspots')" aria-labelledby="youWeakT" aria-describedby="youWeakM"><span class="you-ico" aria-hidden="true"><svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3.5 20.5h17"/><path d="M7 17v-5M12 17V6M17 17v-8"/></svg></span><span class="you-text"><span class="you-t" id="youWeakT">Weak spots</span><span class="you-m" id="youWeakM">Each area&rsquo;s score, and a drill for the low ones</span></span><span class="you-chev" aria-hidden="true"><svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m9 6 6 6-6 6"/></svg></span></a></li><li><button type="button" class="you-row" aria-haspopup="dialog" onclick="showSessionSummary()" aria-labelledby="youSessT" aria-describedby="youSessM"><span class="you-ico" aria-hidden="true"><svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3 12h4l3-7.5 4 15 3-7.5h4"/></svg></span><span class="you-text"><span class="you-t" id="youSessT">Practice summary</span><span class="you-m" id="youSessM">All your practice so far</span></span><span class="you-chev" aria-hidden="true"><svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m9 6 6 6-6 6"/></svg></span></button></li></ul>
+          <ul class="you-list"><li><a class="you-row" href="#progress" onclick="return navGoFocus(event,'progress')" aria-labelledby="youProgT" aria-describedby="youProgM"><span class="you-ico" aria-hidden="true"><svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1"/></svg></span><span class="you-text"><span class="you-t" id="youProgT">Your progress</span><span class="you-m" id="youProgM">Your range, charts and study days</span></span><span class="you-chev" aria-hidden="true"><svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m9 6 6 6-6 6"/></svg></span></a></li><li><a class="you-row" href="#weak-spots" onclick="return navGoFocus(event,'weakspots')" aria-labelledby="youWeakT" aria-describedby="youWeakM"><span class="you-ico" aria-hidden="true"><svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3.5 20.5h17"/><path d="M7 17v-5M12 17V6M17 17v-8"/></svg></span><span class="you-text"><span class="you-t" id="youWeakT">Weak spots</span><span class="you-m" id="youWeakM">Area scores and a drill</span></span><span class="you-chev" aria-hidden="true"><svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m9 6 6 6-6 6"/></svg></span></a></li><li><button type="button" class="you-row" aria-haspopup="dialog" onclick="showSessionSummary()" aria-labelledby="youSessT" aria-describedby="youSessM"><span class="you-ico" aria-hidden="true"><svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3 12h4l3-7.5 4 15 3-7.5h4"/></svg></span><span class="you-text"><span class="you-t" id="youSessT">Practice summary</span><span class="you-m" id="youSessM">All your practice so far</span></span><span class="you-chev" aria-hidden="true"><svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m9 6 6 6-6 6"/></svg></span></button></li></ul>
         </section>
       </div>
     </div>
     <div class="you-card you-setrow">
-      <ul class="you-list"><li><a class="you-row" href="#settings" onclick="return youGoSettings(event)" aria-labelledby="youSetT" aria-describedby="youSetM"><span class="you-ico" aria-hidden="true"><svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915"/><circle cx="12" cy="12" r="3"/></svg></span><span class="you-text"><span class="you-t" id="youSetT">Settings</span><span class="you-m" id="youSetM">Name, exam date, dark mode, your data, help and about</span></span><span class="you-chev" aria-hidden="true"><svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m9 6 6 6-6 6"/></svg></span></a></li></ul>
+      <ul class="you-list"><li><a class="you-row" href="#settings" onclick="return youGoSettings(event)" aria-labelledby="youSetT" aria-describedby="youSetM"><span class="you-ico" aria-hidden="true"><svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915"/><circle cx="12" cy="12" r="3"/></svg></span><span class="you-text"><span class="you-t" id="youSetT">Settings</span><span class="you-m" id="youSetM">Name, exam date, theme, data, help</span></span><span class="you-chev" aria-hidden="true"><svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m9 6 6 6-6 6"/></svg></span></a></li></ul>
     </div>
     <p class="you-foot">Not affiliated with or endorsed by ISACA&reg;. CISA&reg; is a registered trademark of ISACA.</p>
   </div>
@@ -8796,7 +8796,7 @@ html[data-kbd] :where(.you-plant, .vision-panel, .gt-panel, .readiness-card) :wh
   <div class="you set">
     <div class="set-head">
       <h1 class="you-title" id="setTitle" tabindex="-1">Settings</h1>
-      <p class="set-sub">Kept in this browser only. Change any of it whenever you like.</p>
+      <p class="set-sub">Kept in this browser only.</p>
     </div>
     <div class="you-cols">
       <div class="you-col">
@@ -8814,21 +8814,21 @@ html[data-kbd] :where(.you-plant, .vision-panel, .gt-panel, .readiness-card) :wh
             <!-- Exam date (v12.30): the one place to set or change it, as on mobile Settings. -->
             <li><button type="button" class="you-row" id="youExamDateBtn" aria-haspopup="dialog" onclick="openExamDateSheet(false)" aria-labelledby="youExamDateT" aria-describedby="youExamDateM"><span class="you-ico" aria-hidden="true"><svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="4" y="5" width="16" height="15.5" rx="2"/><path d="M4 9.5h16M8.5 3v4M15.5 3v4"/></svg></span><span class="you-text"><span class="you-t" id="youExamDateT">Exam date</span><span class="you-m" id="youExamDateM">Not set &middot; shapes your plan and exam week</span></span><span class="you-chev" aria-hidden="true"><svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m9 6 6 6-6 6"/></svg></span></button></li>
             <li><button type="button" class="you-row" id="darkToggleBtn" role="switch" aria-checked="false" aria-labelledby="youDarkT" aria-describedby="youDarkM" onclick="toggleDarkMode()"><span class="you-ico" aria-hidden="true"><svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M20 14.6A8.2 8.2 0 1 1 9.4 4a6.6 6.6 0 0 0 10.6 10.6z"/></svg></span><span class="you-text"><span class="you-t" id="youDarkT">Dark mode</span><span class="you-m" id="youDarkM">Easier on the eyes at night</span></span><span class="you-sw-w" aria-hidden="true"></span><span class="you-switch" aria-hidden="true"></span></button></li>
-            <li><button type="button" class="you-row" id="examModeBtn" role="switch" aria-checked="false" aria-labelledby="youExamT" aria-describedby="youExamM" onclick="toggleExamMode()"><span class="you-ico" aria-hidden="true"><svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4V2.8h6V4"/><path d="M8.5 10h7M8.5 13.5h7M8.5 17h4"/></svg></span><span class="you-text"><span class="you-t" id="youExamT">Exam-day rehearsal</span><span class="you-m" id="youExamM">Practice like exam day: no tips or coaching after you answer</span></span><span class="you-sw-w" aria-hidden="true"></span><span class="you-switch" aria-hidden="true"></span></button></li>
+            <li><button type="button" class="you-row" id="examModeBtn" role="switch" aria-checked="false" aria-labelledby="youExamT" aria-describedby="youExamM" onclick="toggleExamMode()"><span class="you-ico" aria-hidden="true"><svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4V2.8h6V4"/><path d="M8.5 10h7M8.5 13.5h7M8.5 17h4"/></svg></span><span class="you-text"><span class="you-t" id="youExamT">Exam-day rehearsal</span><span class="you-m" id="youExamM">No tips or coaching after you answer</span></span><span class="you-sw-w" aria-hidden="true"></span><span class="you-switch" aria-hidden="true"></span></button></li>
           </ul>
         </section>
         <section class="you-card set-card" aria-labelledby="youDataH">
           <h2 class="you-card-h" id="youDataH">Your data</h2>
-          <p class="you-card-sub">Keep a backup file, in case this browser clears its data.</p>
+          <p class="you-card-sub">In case this browser clears its data.</p>
           <ul class="you-list"><li><button type="button" class="you-row" id="setBackup" onclick="backupSave()" aria-labelledby="setBackupT" aria-describedby="setBackupM setBackupL"><span class="you-ico" aria-hidden="true"><svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 3.5v11M7.5 10l4.5 4.5 4.5-4.5"/><path d="M4.5 17v2.5a1 1 0 0 0 1 1h13a1 1 0 0 0 1-1V17"/></svg></span><span class="you-text"><span class="you-t" id="setBackupT">Back up</span><span class="you-m" id="setBackupM">Save a file of your progress</span><span class="you-m" id="setBackupL" hidden></span></span><span class="you-chev" aria-hidden="true"><svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m9 6 6 6-6 6"/></svg></span></button><span class="sr-only" id="setSay" role="status" aria-live="polite"></span></li><li><button type="button" class="you-row" id="setRestore" onclick="youRestore()" aria-labelledby="setRestoreT" aria-describedby="setRestoreM setRestoreL"><span class="you-ico" aria-hidden="true"><svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 15.5v-11M7.5 9 12 4.5 16.5 9"/><path d="M4.5 17v2.5a1 1 0 0 0 1 1h13a1 1 0 0 0 1-1V17"/></svg></span><span class="you-text"><span class="you-t" id="setRestoreT">Restore</span><span class="you-m" id="setRestoreM">Load a backup file</span><span class="you-m set-say" id="setRestoreL" hidden></span></span><span class="you-chev" aria-hidden="true"><svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m9 6 6 6-6 6"/></svg></span></button></li>
-            <li id="setOthersLi" hidden><button type="button" class="you-row" id="setOthers" aria-haspopup="dialog" onclick="showYourData()" aria-labelledby="setOthersT" aria-describedby="setOthersM"><span class="you-ico" aria-hidden="true"><svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="4" y="4" width="16" height="6" rx="1.5"/><rect x="4" y="14" width="16" height="6" rx="1.5"/></svg></span><span class="you-text"><span class="you-t" id="setOthersT">Other saved progress</span><span class="you-m" id="setOthersM">Earlier progress records in this browser</span></span><span class="you-chev" aria-hidden="true"><svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m9 6 6 6-6 6"/></svg></span></button></li>
+            <li id="setOthersLi" hidden><button type="button" class="you-row" id="setOthers" aria-haspopup="dialog" onclick="showYourData()" aria-labelledby="setOthersT" aria-describedby="setOthersM"><span class="you-ico" aria-hidden="true"><svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="4" y="4" width="16" height="6" rx="1.5"/><rect x="4" y="14" width="16" height="6" rx="1.5"/></svg></span><span class="you-text"><span class="you-t" id="setOthersT">Other saved progress</span><span class="you-m" id="setOthersM">Earlier records in this browser</span></span><span class="you-chev" aria-hidden="true"><svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m9 6 6 6-6 6"/></svg></span></button></li>
           </ul>
           <!-- The one file input for a restore (Settings and the Your data sheet both use it). -->
           <input type="file" id="setFile" accept=".json" hidden onchange="importProgress(this.files[0]);this.value=''">
         </section>
         <section class="you-card set-card set-danger" aria-labelledby="setResetH">
           <h3 class="you-card-h" id="setResetH">Reset</h3>
-          <ul class="you-list"><li><button type="button" class="you-row" id="setReadReset" aria-haspopup="dialog" onclick="confirmResetReadingProgress()" aria-labelledby="setReadResetT" aria-describedby="setReadResetM setReadResetL"><span class="you-ico" aria-hidden="true"><svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M2.5 4.5h6a3.5 3.5 0 0 1 3.5 3.5v12.5a2.5 2.5 0 0 0-2.5-2.5h-7z"/><path d="M21.5 4.5h-6A3.5 3.5 0 0 0 12 8v12.5a2.5 2.5 0 0 1 2.5-2.5h7z"/></svg></span><span class="you-text"><span class="you-t" id="setReadResetT">Reset reading progress</span><span class="you-m" id="setReadResetM">Every study note goes back to not read. Asks first.</span><span class="you-m set-say" id="setReadResetL" hidden></span></span><span class="you-chev" aria-hidden="true"><svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m9 6 6 6-6 6"/></svg></span></button></li><li><button type="button" class="you-row set-fresh" id="setStartFresh" aria-haspopup="dialog" onclick="confirmResetProgress()" aria-labelledby="setStartFreshT" aria-describedby="setStartFreshM setStartFreshL"><span class="you-ico" aria-hidden="true"><svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M20 12a8 8 0 1 1-2.3-5.7"/><path d="M20 4.5v4h-4"/></svg></span><span class="you-text"><span class="you-t" id="setStartFreshT">Start fresh</span><span class="you-m" id="setStartFreshM">Clear progress in this browser. Asks first.</span><span class="you-m set-say" id="setStartFreshL" hidden></span></span><span class="you-chev" aria-hidden="true"><svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m9 6 6 6-6 6"/></svg></span></button></li></ul>
+          <ul class="you-list"><li><button type="button" class="you-row" id="setReadReset" aria-haspopup="dialog" onclick="confirmResetReadingProgress()" aria-labelledby="setReadResetT" aria-describedby="setReadResetM setReadResetL"><span class="you-ico" aria-hidden="true"><svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M2.5 4.5h6a3.5 3.5 0 0 1 3.5 3.5v12.5a2.5 2.5 0 0 0-2.5-2.5h-7z"/><path d="M21.5 4.5h-6A3.5 3.5 0 0 0 12 8v12.5a2.5 2.5 0 0 1 2.5-2.5h7z"/></svg></span><span class="you-text"><span class="you-t" id="setReadResetT">Reset reading progress</span><span class="you-m" id="setReadResetM">Marks every note not read. Asks first.</span><span class="you-m set-say" id="setReadResetL" hidden></span></span><span class="you-chev" aria-hidden="true"><svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m9 6 6 6-6 6"/></svg></span></button></li><li><button type="button" class="you-row set-fresh" id="setStartFresh" aria-haspopup="dialog" onclick="confirmResetProgress()" aria-labelledby="setStartFreshT" aria-describedby="setStartFreshM setStartFreshL"><span class="you-ico" aria-hidden="true"><svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M20 12a8 8 0 1 1-2.3-5.7"/><path d="M20 4.5v4h-4"/></svg></span><span class="you-text"><span class="you-t" id="setStartFreshT">Start fresh</span><span class="you-m" id="setStartFreshM">Clear progress in this browser. Asks first.</span><span class="you-m set-say" id="setStartFreshL" hidden></span></span><span class="you-chev" aria-hidden="true"><svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m9 6 6 6-6 6"/></svg></span></button></li></ul>
         </section>
       </div>
       <div class="you-col">
@@ -11988,7 +11988,7 @@ function gtPracticeBlock(raw, itemId, domainId) {
   return '<div class="gt-practice">'
     + '<button type="button" class="gt-practice-btn" aria-describedby="gtps-' + idE + '" data-id="' + idE + '" onclick="event.stopPropagation();startConceptPractice(this.dataset.id)">'
     + ico('play', 16) + '<span>Practice this concept</span></button>'
-    + '<p class="gt-practice-sub" id="gtps-' + idE + '">' + n + (n === 1 ? ' question that tests' : ' questions that test') + ' this concept. Answers count toward your progress.</p>'
+    + '<p class="gt-practice-sub" id="gtps-' + idE + '">' + n + (n === 1 ? ' question that tests' : ' questions that test') + ' this concept.</p>'
     + '</div>';
 }
 
@@ -12156,7 +12156,7 @@ function renderLearnHub() {
   } else if (ready) {
     // Every note read: never an empty forest card.
     var fd = r.focusId && DI[r.focusId] ? r.focusId : '1';
-    hero = heroOpen('Every note read', 'Revisit a note', 'Start with the area where you can gain the most',
+    hero = heroOpen('Every note read', 'Revisit a note', 'Start where you&rsquo;ll gain most',
       '<button type="button" class="p4-go" data-d="' + fd + '" onclick="lhOpenNotes(this.dataset.d)">' + ico('topics', 18) + 'Open study notes</button>');
   } else {
     hero = heroOpen('Study notes', conceptsLoadFailed ? 'Every topic, with traps' : 'Getting your notes ready',
@@ -12183,7 +12183,7 @@ function renderLearnHub() {
   // 5. Final review week.
   var fw = '<a class="lh-row p4-card" href="#final-week" onclick="return navGoFocus(event,\'finalweek\')">'
     + '<span class="p4-badge" aria-hidden="true">' + ico('calendar', 20) + '</span>'
-    + '<span class="lh-row-text"><span class="lh-tile-t">Final review week</span><span class="lh-tile-m">Your last seven days, day by day</span></span>'
+    + '<span class="lh-row-text"><span class="lh-tile-t">Final review week</span><span class="lh-tile-m">Your last seven days</span></span>'
     + '<span class="you-chev" aria-hidden="true">' + ico('chevron', 18) + '</span></a>';
 
   // 6. Notes by domain (the Lessons card's shape).
@@ -14269,17 +14269,14 @@ function renderYou() {
   youRingWatch();
 }
 // The summary: one sentence for the week, then the next step and the plant.
-// Days: "No study days yet this week" / "1 study day" / "N study days". The
-// readiness part: the range, the count toward the first range, or how to get
-// one. Focus next is Today's r.focusId; "where you'll gain most" once there
+// Days: "No study days yet this week" / "1 study day" / "N study days". Focus next is Today's r.focusId; "where you'll gain most" once there
 // are answers (Today's rule). The countdown joins with no-break spaces, so a
 // line never starts with the dot; none without a date or after it.
 function youSummaryHtml(r, range, st) {
   var days = studyDaysThisWeek(new Date());
+  // Short text (Sky, 5 Nov): the readiness card below says the range or the
+  // count, so the sentence keeps the week and the next step only.
   var parts = [days > 0 ? studyDaysWeekWords(days) : 'No study days yet this week'];
-  if (range.enough) parts.push('Readiness <span class="you-nowrap">' + range.low + ' to ' + range.high + '</span>, a study estimate');
-  else if (r.answered > 0) parts.push(todayRingSoFar(range) + ' of ' + RD_RANGE_MIN_ANSWERS + ' answers toward your first readiness range');
-  else parts.push('Answer ' + RD_RANGE_MIN_ANSWERS + ' questions to see your first readiness range');
   var next = todayNextArea(r);
   var f = next.id ? String(next.id) : '';
   var left = st ? st.days : examDaysLeft();
@@ -14359,8 +14356,8 @@ function youReadyHtml(r, range, grow) {
   var html = '<div class="you-ready-top">' + ring + '<div class="you-ready-t"><h2 class="you-kick" id="youReadyH">Estimated readiness</h2>' + words + '</div></div>';
   // Before the first range, the three thresholds on this page in one line,
   // so 10, 30 and 40 read as one plan, not three rules.
-  if (!range.enough) return html + '<p class="you-cap you-thr">Your numbers show at ' + YOU_STATS_MIN + ' answers, an area&rsquo;s score at ' + DOMAIN_READ_MIN
-    + ' answers in that area, and your range at ' + RD_RANGE_MIN_ANSWERS + ' answers in total.</p>';
+  if (!range.enough) return html + '<p class="you-cap you-thr">Numbers at ' + YOU_STATS_MIN + ' answers, area scores at ' + DOMAIN_READ_MIN
+    + ', your range at ' + RD_RANGE_MIN_ANSWERS + '.</p>';
   var gap = FG_STUDY_BAR - range.low;
   return html + '<div class="you-scale">' + fgScaleBar(range, { number: false }) + '</div>'
     + '<ul class="you-key you-rkey" aria-label="Readiness key">'
@@ -14373,10 +14370,9 @@ function youReadyHtml(r, range, grow) {
     + ', this app&rsquo;s study bar.</span></li>'
     // The bar above the key: its bracket is the same range, and its blocks
     // are steps of 10 (a map-style scale), so the key says both.
-    + '<li><svg width="14" height="16" viewBox="0 0 14 16" aria-hidden="true" focusable="false"><path class="you-k-br" d="M2 11V5h10v6"/></svg><span><b>Green bracket on the bar:</b> the same range, ' + range.low + ' to ' + range.high + ', on a straight scale in blocks of 10.</span></li></ul>'
-    + '<p class="you-cap you-low">Your low end, ' + range.low + ', is the cautious end of your range: we&rsquo;re fairly sure you&rsquo;re at or above it. '
-    + 'The study bar asks for a low end of ' + FG_STUDY_BAR + ', a goal to study toward, not an exam score. '
-    + (gap > 0 ? 'Yours is ' + gap + ' under it.' : 'Yours is at or above it.') + '</p>';
+    + '<li><svg width="14" height="16" viewBox="0 0 14 16" aria-hidden="true" focusable="false"><path class="you-k-br" d="M2 11V5h10v6"/></svg><span><b>Green bracket:</b> the same range, in blocks of 10.</span></li></ul>'
+    + '<p class="you-cap you-low">Your low end, ' + range.low + ', is the cautious end of your range. '
+    + FG_STUDY_BAR + ' is a study goal, not an exam score' + (gap > 0 ? '; you are ' + gap + ' under it.' : '; you are at or above it.') + '</p>';
 }
 function youRingWatch() {
   if (youRingIo) { youRingIo.disconnect(); youRingIo = null; }
@@ -14440,11 +14436,11 @@ function youAreasHtml(r) {
     + (measured.length ? '<ul class="you-key" aria-label="Chart key">'
       + '<li>' + dash + '<span><b>Dashed line:</b> ' + DOMAIN_TARGET_PCT + ', the target for each area.</span></li>'
       + (anyBelow ? '<li>' + tip + '<span><b>Clay tip and &ldquo;below ' + DOMAIN_TARGET_PCT + '&rdquo;:</b> that area sits under the line.</span></li>' : '')
-      + (anyFew ? '<li>' + seed + '<span><b>No stem yet:</b> fewer than ' + DOMAIN_READ_MIN + ' answers, too few yet for a score. The stem and score show at ' + DOMAIN_READ_MIN + '.</span></li>' : '') + '</ul>' : '')
+      + (anyFew ? '<li>' + seed + '<span><b>No stem yet:</b> under ' + DOMAIN_READ_MIN + ' answers so far.</span></li>' : '') + '</ul>' : '')
     // When the list replaces the chart (large text, a narrow column, or no
     // area with a score yet), the key's marks are not on screen: one line
     // for the list instead.
-    + '<p class="you-key-list' + (measured.length ? '' : ' you-key-only') + '">Target for each area: ' + DOMAIN_TARGET_PCT + '. Scores show from ' + DOMAIN_READ_MIN + ' answers.</p>';
+    + '<p class="you-key-list' + (measured.length ? '' : ' you-key-only') + '">Target for each area: ' + DOMAIN_TARGET_PCT + '.</p>';
 }
 // Mock exams: the newest three (mockPastRowsHtml: name, date, right of
 // asked, percent; no Review, past answers are not kept) and a link to all of
@@ -14453,7 +14449,7 @@ function youMocksHtml() {
   var hist = (Array.isArray(S.mockHistory) ? S.mockHistory : []).slice(0, 3);
   var h = '<h2 class="you-card-h" id="youMocksH">Mock exams</h2>';
   if (!hist.length) {
-    return h + emptyState({ kind: 'chart', heading: 'No mocks yet', body: 'A mini mock shows how the exam feels. Start one whenever you like.',
+    return h + emptyState({ kind: 'chart', heading: 'No mocks yet', body: 'A mini mock shows how the exam feels.',
       actions: [{ label: 'Start a mini mock', style: 'ghost', onclick: 'youStartMini()' }] });
   }
   return h + '<ul class="td-legend mk-past you-mk">' + mockPastRowsHtml(hist) + '</ul>'
@@ -14633,7 +14629,7 @@ function todayReadNextHit(r, inPlan) {
     var hit = todayNoteIn(order[i], 'none');
     if (hit) {
       var why = r.answered === 0 ? 'a good place to start'
-        : (i === 0 && next.id && !next.plan) ? 'picked where you can gain the most' : '';
+        : (i === 0 && next.id && !next.plan) ? 'where you&rsquo;ll gain most' : '';
       return { hit: hit, kicker: 'Read next', why: why };
     }
   }
@@ -15079,8 +15075,8 @@ function backupNudgeHtml(answered) {
   return '<section class="td-backup" id="tdBackup" aria-labelledby="tdBkH">'
     + '<div class="plnt-invite"><span class="you-ico" aria-hidden="true">' + ico('install', 20) + '</span>'
     + '<div class="plnt-invite-t"><h2 class="plnt-invite-h" id="tdBkH">Save a backup</h2>'
-    + '<p class="plnt-invite-m" id="tdBkM">Your progress lives only in this browser. A backup file lets you restore it if the browser clears it.'
-    + (ios ? ' On iPhone, adding KaiSip to your Home Screen also helps Safari keep it.' : '') + '</p>'
+    + '<p class="plnt-invite-m" id="tdBkM">Your progress lives only in this browser.'
+    + (ios ? ' On iPhone, add KaiSip to your Home Screen too.' : '') + '</p>'
     + '<div class="plnt-invite-acts"><button type="button" class="plnt-ghost" id="tdBkGo" aria-describedby="tdBkM" onclick="backupNudgeSave()">Download backup</button>'
     + '<button type="button" class="plnt-ghost plnt-ghost-quiet" onclick="backupNudgeLater()">Not now</button></div></div></div></section>';
 }
@@ -15110,7 +15106,7 @@ function backupNudgeSay(head, words) {
 }
 function backupNudgeSave() {
   if (exportProgress() === false) return;
-  var words = 'Backup saved to your downloads. Keep the file somewhere safe.';
+  var words = 'In your downloads. Keep it safe.';
   if (!backupNudgeSay('Backup saved', words)) { backupNudgeClose(); showToast(words, 'info', 3200); }
 }
 function backupNudgeLater() {
@@ -15278,15 +15274,14 @@ function todayReadyHtml(r, range, st) {
   if (!range.enough) {
     // One count toward one goal, in the same units as You's "Answered".
     html += '<p class="td-ready-s">Not enough data yet</p>'
-      + '<p class="td-ready-x">' + (r.answered > 0
-        ? (RD_RANGE_MIN_ANSWERS - range.needed) + ' of ' + RD_RANGE_MIN_ANSWERS + ' answers for your first range. Each question counts once. ' + TODAY_EST_LINE
-        : 'Answer ' + RD_RANGE_MIN_ANSWERS + ' questions to see your first readiness range. Your range will be a study estimate, not a prediction.') + '</p>';
+      // Short text (Sky, 5 Nov): the ring above already gives the count.
+      + '<p class="td-ready-x">Your range will be a study estimate, not a prediction.</p>';
   } else {
     // Premium round (G18): the ring's caption is Today's one big range; here
     // it is the card's plain first line, like "Not enough data yet".
     html += '<p class="td-ready-s">' + range.low + ' to ' + range.high
       + '<span class="sr-only"> out of 100</span></p>'
-      + '<p class="td-ready-x">Your estimated range. ' + TODAY_EST_LINE + '</p>';
+      + '<p class="td-ready-x">Your estimated range</p>';
   }
   if (r.answered <= 0) return html + '</section>';
   // One name for the weak area, its full name once (from DI). Not on a
@@ -15311,12 +15306,12 @@ function todayReadyHtml(r, range, st) {
         + '<span class="sr-only">: ' + spoken + '</span><span class="td-dval' + (few ? '' : ' td-dnum') + '" aria-hidden="true">' + shown + '</span></li>';
     }).join('') + '</ul>';
   }
-  var how = '<p class="td-note">The range is about how much of the exam you would get right today, weighted like the exam. It narrows as you answer more.</p>'
-    + '<p class="td-note">The ring starts at the top and runs clockwise from 0 to 100. Before your first range, each dot is one answer, up to ' + RD_RANGE_MIN_ANSWERS + '. After it, each tick is 2 points.</p>'
+  var how = '<p class="td-note">How much of the exam you would get right today, weighted like the exam.</p>'
+    + '<p class="td-note">The ring runs clockwise from 0 to 100. Each dot is one answer, up to ' + RD_RANGE_MIN_ANSWERS + '; then each tick is 2 points.</p>'
     + '<ul class="td-key" aria-label="Ring key">'
     + '<li><span class="td-key-sw td-key-low" aria-hidden="true"></span>Up to your low end</li>'
     + '<li><span class="td-key-sw td-key-rng" aria-hidden="true"></span>Your range</li>'
-    + '<li><span class="td-key-sw td-key-bar" aria-hidden="true"></span>' + FG_STUDY_BAR + ', this app&rsquo;s own study bar for your low end</li></ul>';
+    + '<li><span class="td-key-sw td-key-bar" aria-hidden="true"></span>' + FG_STUDY_BAR + ', the study bar for your low end</li></ul>';
   if (banded) how += '<p class="td-note">' + bandsLine() + '</p>';
   else if (r.domains.some(function (x) { return x.answered >= DOMAIN_READ_MIN; })) how += '<p class="td-note">Percentages count your latest try at each question.</p>';
   html += '<details class="td-how"><summary class="td-how-s"><span>How this is worked out</span>' + ico('chevron-down', 18) + '</summary>' + how + '</details>';
@@ -15622,7 +15617,7 @@ function todayRingHtml(range, st, shoot, o) {
     ticks = '<g class="td-tks">' + ticks + '</g>';
     mark = '<line class="td-tk-mark" x1="100" y1="3" x2="100" y2="27" transform="rotate(' + (FG_STUDY_BAR * 3.6) + ' 100 100)"/>';
     label = 'Estimated readiness range ' + range.low + ' to ' + range.high + ' out of 100. The study bar is ' + FG_STUDY_BAR + '. '
-      + (o.first ? 'Your first range is in. It usually narrows as you answer more. ' : '') + TODAY_EST_LINE;
+      + (o.first ? 'Your first range. It usually narrows with more answers. ' : '') + TODAY_EST_LINE;
     // The hand-off (G19): the full count of dots fades as the ticks light.
     if (o.handoff) {
       for (i = 0; i < n; i++) dots += todayDot(i, n, true);
@@ -15671,7 +15666,7 @@ function todayRingCapHtml(r, range, st, o) {
   return '<div class="td-ring-cap td-ring-cap-r' + (o.handoff ? ' td-cap-in' : '') + '" aria-hidden="true">'
     + '<p class="td-rcap-r"><span class="td-rcap-n">' + range.low + '<span class="td-rcap-to"> to </span>' + range.high + '</span> '
     + '<span class="td-rcap-l">estimated range</span></p>'
-    + '<p class="td-rcap-x">' + (o.first ? 'Your first range is in. It usually narrows as you answer more. ' : '') + TODAY_EST_LINE + '</p></div>';
+    + '<p class="td-rcap-x">' + (o.first ? 'Your first range. It usually narrows with more answers. ' : '') + TODAY_EST_LINE + '</p></div>';
 }
 // The hero's figure: the stage line (two layouts: "Seed" with "Stage 1 of 6"
 // beside it on phones, "Seed · stage 1 of 6" under the caption from 768px;
@@ -15858,8 +15853,8 @@ function renderHome() {
     }
   }
   var intro = '';
-  if (r.answered === 0) intro = '<p class="td-intro">CISA exam practice, free during the beta. Start with a short set below.</p>';
-  else if (st.back) intro = '<p class="td-intro">A short start today.' + (plan && plan.due > plan.review ? ' The rest of your reviews will spread out over the next days.' : '') + '</p>';
+  if (r.answered === 0) intro = '<p class="td-intro">CISA exam practice, free during the beta.</p>';
+  else if (st.back) intro = '<p class="td-intro">A short start today.' + (plan && plan.due > plan.review ? ' Other reviews spread over the next days.' : '') + '</p>';
 
   // One invitation per visit: when the backup reminder and the plant
   // invitation are both due, the first study day gets the plant and a later
@@ -16595,8 +16590,8 @@ function pgHerbariumHtml() {
   var link = href ? '<a class="td-link" href="' + escapeHtml(href) + '" target="_blank" rel="noopener">Get the KaiSip app<span class="sr-only"> (opens in a new tab)</span>' + ico('chevron', 18) + '</a>' : '';
   return '<section class="pg-sec pg-herb">' + fgSheet({
     level: 2, id: 'pgHerbH', name: 'Badges',
-    purpose: 'Badges, pressed and labelled the day you earn them.',
-    innerHtml: fgEmptyPlate('Badges are collected in the KaiSip phone app for now, so this sheet stays empty on the website.') + link
+    purpose: 'Labelled the day you earn them.',
+    innerHtml: fgEmptyPlate('Badges are earned in the phone app for now.') + link
   }) + '</section>';
 }
 
@@ -17843,7 +17838,7 @@ function renderPracticeHub() {
     + (p.resume ? '<button type="button" class="ph-ghost" onclick="startPracticeSet()">Start a new set</button>' : '');
   var pct = dx ? Math.round(dx.mastery * 100) : null;
   var cap = !p.resume && dx && dx.answered >= DOMAIN_READ_MIN && pct < DOMAIN_TARGET_PCT && pct >= DOMAIN_TARGET_PCT - PH_JUST_UNDER
-    ? '<p class="ph-cap">' + escapeHtml(DI[d].short + ' is ' + DI[d].weight + '% of the exam and sits just under the ' + DOMAIN_TARGET_PCT + ' line.') + '</p>' : '';
+    ? '<p class="ph-cap">' + escapeHtml(DI[d].short + ' sits just under ' + DOMAIN_TARGET_PCT + '.') + '</p>' : '';
   hero.innerHTML = '<section class="p4-hero ph-hero" aria-labelledby="phHeroT">'
     + '<div class="p4-hero-top"><div class="p4-hero-h">'
     + '<p class="p4-kicker">' + kick + '</p>'
@@ -17851,7 +17846,7 @@ function renderPracticeHub() {
     + '<p class="p4-hero-m">' + meta + '</p></div>'
     + '<span class="p4-glyph" aria-hidden="true">' + PH_LEAF_GLYPH + '</span></div>'
     + tiles
-    + '<p class="p4-hero-note" id="phHeroNote">Timed counts up while you answer, never a countdown. The exam allows about ' + PRACTICE_PACE_SECONDS + ' seconds a question.</p>'
+    + '<p class="p4-hero-note" id="phHeroNote">Timed counts up, never down. Exam pace: about ' + PRACTICE_PACE_SECONDS + ' seconds a question.</p>'
     + '<div class="p4-hero-acts">' + acts + '</div>'
     + '</section>' + cap;
   refocus();
@@ -17889,7 +17884,7 @@ function renderPracticeHub() {
     var weak = weakDrillRanked().slice(0, 3).filter(function (r) { return r.tier < 2; }).map(function (r) { return DI[r.d].short; });
     var weakLine = S.score && S.score.t > 0 && weak.length ? 'From ' + listWords(weak) : 'From the domains you miss most';
     more.innerHTML = p4RowsHtml([
-      { id: 'phRowMissed', icon: 'missed', title: 'All missed questions', meta: missed ? 'Each one you missed, to try again' : 'None yet', onclick: 'practiceMissed()' },
+      { id: 'phRowMissed', icon: 'missed', title: 'All missed questions', meta: missed ? 'Try each miss again' : 'None yet', onclick: 'practiceMissed()' },
       { id: 'phRowWeak', icon: 'weak', title: 'Weak spots drill', meta: escapeHtml(weakLine), onclick: 'startWeakSpotsDrill()' },
       { id: 'phRowSaved', icon: 'saved', title: 'All saved questions', meta: saved ? saved + ' saved' : 'Save a question to find it here', onclick: "switchTab('bookmarks')" },
       { id: 'phRowBuild', icon: 'sliders', title: 'Build a set', meta: 'Pick a domain, topic and difficulty', onclick: "togglePracticeSetup(true,'dom',this)", dialog: true }
@@ -17948,7 +17943,7 @@ function listWords(a) {
 // "Too few yet", or the score with its band word; clay only below 70).
 // Each row is one button that starts a set there. The read is Today's
 // figure (the latest try at each question, the mobile rule).
-var BANDS_LINE = 'Building is under 70, Steady 70 to 79, Strong 80 and up. A domain is measured from 30 answers.';
+var BANDS_LINE = 'Building under 70, Steady 70 to 79, Strong 80 and up. Scored from 30 answers.';
 function renderDomainGrid() {
   var g = document.getElementById('domainGrid');
   if (!g) return;
@@ -19303,7 +19298,7 @@ function plantTodayHtml() {
     return '<div class="plnt-invite">'
       + '<span class="you-ico" aria-hidden="true">' + ico('sprig', 20) + '</span>'
       + '<div class="plnt-invite-t"><p class="plnt-invite-h" id="tdPlantInvH">Plant a companion</p>'
-      + '<p class="plnt-invite-m" id="tdPlantInvM">It grows only from real progress across the exam outline. It asks for nothing and never wilts.</p>'
+      + '<p class="plnt-invite-m" id="tdPlantInvM">It grows only from real progress, and never wilts.</p>'
       + '<div class="plnt-invite-acts"><button type="button" class="plnt-ghost" id="tdPlantGo" onclick="plantOpen(\'new\',\'today\')" aria-describedby="tdPlantInvM">Plant yours</button>'
       + '<button type="button" class="plnt-ghost plnt-ghost-quiet" onclick="plantHidePrompt()">No thanks</button></div></div></div>';
   }
@@ -19365,7 +19360,7 @@ function plantYouHtml(where) {
     // Not before the first finished set (as Today's invitation).
     if (!firstSetDone()) return '';
     return head + '<div class="plnt-empty"><p class="plnt-empty-t">Nothing planted yet</p>'
-      + '<p class="plnt-meta">Pick a plant and give it a name. It grows only from real progress across the exam outline, and it never wilts.</p>'
+      + '<p class="plnt-meta">It grows only from real progress, and never wilts.</p>'
       + '<button type="button" class="sr-btn plnt-plant-btn" id="plActPlant" onclick="plantOpen(\'new\',\'you\')">' + ico('sprig', 18) + 'Plant yours</button></div>';
   }
   var v = plantView(now);
@@ -19433,7 +19428,7 @@ function plantYouCardHtml(K) {
     if (!firstSetDone()) return '';
     return '<div class="you-pl-top"><div class="you-pl-art">' + youStageSvg(1, 72, 85) + '</div><div class="you-pl-t">' + head
       + '<p class="you-pl-name">Nothing planted yet</p>'
-      + '<p class="you-pl-q">Pick a plant and give it a name. It grows only from real progress across the exam outline, and it never wilts.</p></div></div>'
+      + '<p class="you-pl-q">It grows only from real progress, and never wilts.</p></div></div>'
       + '<button type="button" class="you-pl-btn" id="plActPlant" onclick="plantOpen(\'new\',\'you\')">Pick a plant' + ico('chevron', 18) + '</button>';
   }
   var v = plantView(now);
@@ -19537,8 +19532,8 @@ function plantOpen(mode, from) {
   var title = { 'new': 'Choose what you’ll grow', species: 'Change plant', name: 'Rename', look: 'Change its look' }[mode];
   var body = '';
   if (mode === 'new') {
-    body += '<p class="plnt-meta">It grows only from real progress across the exam outline. Never from taps or time. It asks for nothing and never wilts.</p>';
-    if (from === 'today') body += '<p class="plnt-meta">Not now also hides the plant row on Today. You can plant one from You.</p>';
+    body += '<p class="plnt-meta">Grows from real progress, never from taps or time.</p>';
+    if (from === 'today') body += '<p class="plnt-meta">Not now hides this on Today. Plant one any time from You.</p>';
   }
   if (mode === 'species') body += '<p class="plnt-meta">Same growth, new look. Each is shown at Crown.</p>';
   if (mode === 'new' || mode === 'species') body += plantPickHtml();
@@ -23322,11 +23317,10 @@ function principlePracticeSet(qs) {
   return railShuffle(missed.concat(fresh, right).slice(0, PRINCIPLE_SET_SIZE));
 }
 function principlePracticeSubText(p) {
-  if (!principleBanksReady()) return 'Questions that turn on this principle. Answers count toward your progress.';
+  if (!principleBanksReady()) return 'Questions that turn on this principle.';
   var n = principlePracticeQuestions(p).length;
   return n + (n === 1 ? ' question turns' : ' questions turn') + ' on this principle.'
-    + (n > PRINCIPLE_SET_SIZE ? ' Each set draws ' + PRINCIPLE_SET_SIZE + ', missed and new ones first.' : '')
-    + ' Answers count toward your progress.';
+    + (n > PRINCIPLE_SET_SIZE ? ' Each set draws ' + PRINCIPLE_SET_SIZE + ', missed and new first.' : '');
 }
 function principlePracticeBlock(p) {
   // While the banks load, the curated ids keep the block in place.
@@ -24462,8 +24456,8 @@ function renderFlashcardArea() {
     + '<div class="flashcard-actions">';
 
   if (flipped) {
-    html += '<button class="flashcard-action-btn review" onclick="fcAction(\'review\')">Review Again</button>'
-      + '<button class="flashcard-action-btn know" onclick="fcAction(\'know\')">' + (mastered ? 'Mastered - Next' : 'I Know This - Next') + '</button>';
+    html += '<button class="flashcard-action-btn review" onclick="fcAction(\'review\')">Review again</button>'
+      + '<button class="flashcard-action-btn know" onclick="fcAction(\'know\')">' + (mastered ? 'Mastered, next' : 'I know this, next') + '</button>';
   } else {
     html += '<button class="flashcard-action-btn skip" onclick="fcAction(\'skip\')">Skip</button>'
       + '<button class="flashcard-action-btn" onclick="flipFlashcard()" style="background:var(--ink);color:var(--ink-fg);border-color:var(--ink)">Reveal</button>';
