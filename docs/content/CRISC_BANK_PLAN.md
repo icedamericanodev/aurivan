@@ -58,15 +58,15 @@ Inside each domain:
 fewer than 100 items**, weighted by domain, plus one diagnostic and one short
 timed mock of **50 items** drawn only from the sample. This settles the earlier
 20% figure here against the 10% in `docs/business/monetization/WEB_GATE_PLAN.md`.
-At 600 items the sample is 100 (about 17%); at 1,000 it is still 100.
+At the 1,000-item launch the sample is 100 (10%).
 `scripts/build_free_sample.py` needs the 100-item floor when CRISC is added to it.
 
-**Owner decision (5 Nov 2026): CRISC goes on sale at 600 reviewed items**, the
-same rule as AAIA (product-manager recommendation). At 425, two 150-item full
-mocks share about a third of their items; at 600 they share about a quarter,
-and the bank holds four non-overlapping mocks. The paywall (Phase E) is not
-built yet, so reaching 600 first costs almost nothing. Learner copy never
-states the bank size.
+**Owner decision (5 Nov 2026): CRISC goes on sale only when the full bank of
+1,000 reviewed items is done.** The product-manager recommended 600 (the AAIA
+rule); the owner chose the full target instead. At 1,000, two 150-item full
+mocks share only about 22 items (15%), and the bank holds six non-overlapping
+mocks. The paywall (Phase E) is not built yet, so the bank keeps growing in
+rounds of about 25 until 1,000. Learner copy never states the bank size.
 
 How the sample is chosen:
 1. Weighted by domain and spread over every sub-area (at least one item per
@@ -241,7 +241,7 @@ re-check "effective 2025" and the domain names on isaca.org and clear the
 `TO VERIFY` comment in `mobile/src/content/certifications.ts`; re-read Play's
 policies and Apple's 2.3, 3.1 and 5.2 on the day of submission.
 
-**Sale threshold (owner decision, 5 Nov 2026):** 600 reviewed items; see
+**Sale threshold (owner decision, 5 Nov 2026):** the full 1,000 reviewed items; see
 section 3. The free-sample size is settled there too (10%, never fewer than 100;
 50-item mini mock), which resolves build item 2's size clash.
 
