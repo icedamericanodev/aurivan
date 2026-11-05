@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "comment": "Original CRISC practice questions for Domain 2 (Risk Assessment), written to the CRISC exam content outline effective 2025. Every item is authored from public concepts and KaiSip's own CRISC study notes (data/crisc/notes/d2.json), with no reference to the CRISC Review Manual, ISACA's QAE database, ISACA's practice quiz or any prior question bank. Schema: docs/content/QUESTION_SCHEMA.md; writing rules: docs/content/EXAM_STYLE_V2.md and .claude/agents/crisc-standards-auditor.md. Not affiliated with or endorsed by ISACA®. CRISC® is a registered trademark of ISACA. Pilot batch crisc_d2_001 to crisc_d2_020, 30 Oct 2026. Review fixes 30 Oct 2026 (blind test and standards audit). Quality pass 31 Oct 2026 (ISACA authenticity audit and concept review). Repair round 1, 31 Oct 2026 (independent verification). Round 3 crisc_d2_046 to crisc_d2_065, 4 Nov 2026. Round 7 crisc_d2_091 to crisc_d2_094, 4 Nov 2026. Round 8 crisc_d2_095 to crisc_d2_099, 5 Nov 2026. Round 9 crisc_d2_100 to crisc_d2_104, 5 Nov 2026.",
+    "comment": "Original CRISC practice questions for Domain 2 (Risk Assessment), written to the CRISC exam content outline effective 2025. Every item is authored from public concepts and KaiSip's own CRISC study notes (data/crisc/notes/d2.json), with no reference to the CRISC Review Manual, ISACA's QAE database, ISACA's practice quiz or any prior question bank. Schema: docs/content/QUESTION_SCHEMA.md; writing rules: docs/content/EXAM_STYLE_V2.md and .claude/agents/crisc-standards-auditor.md. Not affiliated with or endorsed by ISACA®. CRISC® is a registered trademark of ISACA. Pilot batch crisc_d2_001 to crisc_d2_020, 30 Oct 2026. Review fixes 30 Oct 2026 (blind test and standards audit). Quality pass 31 Oct 2026 (ISACA authenticity audit and concept review). Repair round 1, 31 Oct 2026 (independent verification). Round 3 crisc_d2_046 to crisc_d2_065, 4 Nov 2026. Round 7 crisc_d2_091 to crisc_d2_094, 4 Nov 2026. Round 8 crisc_d2_095 to crisc_d2_099, 5 Nov 2026. Round 9 crisc_d2_100 to crisc_d2_104, 5 Nov 2026. Round 10 crisc_d2_105 to crisc_d2_110, 5 Nov 2026.",
     "schema_version": 1
   },
   "domain": 2,
@@ -3853,6 +3853,228 @@
         "Risk response prioritization"
       ],
       "_provenance": "Authored from concept: notes 2B5.1 (Inherent, Current and Residual Risk). Round 9, 5 Nov 2026: original scenario (an airline ranks a planned rebooking app's scenarios for control design six months before launch) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Round 9 key naming inherent risk. Neighbours checked: crisc_d2_018 (the complement: current risk is what is compared with appetite; inherent risk is its wrong option there and the key here, for a different use), crisc_d2_098 (inherent beside current ratings shows what controls carry), crisc_d2_044 (a large gap carried by one control), crisc_d2_071 (no credit for standard controls in inherent risk), crisc_d2_062 (the target rating field), crisc_d3_088 (target risk to choose among options), crisc_d1_096 (an airline's AI rebooking assistant, an acceptance item), CC cc_d1_087 (a Medium rating after controls is residual risk) and CISA d1_192 (untested controls push residual toward inherent); no mirror in CISA, CC or AAIA. Keep apart from crisc_d2_018 and crisc_d2_098 in practice sets. Review fixes 5 Nov 2026 (round 9 standards audit, concept review and blind test): subtopic label made neutral (the old label pointed to inherent risk).",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d2_105",
+      "domain": 2,
+      "subtopic": "2A3 Vulnerability management. Disputed scan findings",
+      "principle_id": "evidence-before-credit",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "A scan reports 300 critical findings on a research lab's genome sequencers, but the sequencer vendor says most are false positives caused by misread software versions. What should the risk analyst do FIRST?",
+      "options": {
+        "A": "Rate the sequencer scenarios from the 300 findings as reported",
+        "B": "Have the lab's risk owner sign off the vendor's false-positive claim",
+        "C": "Ask the sequencers' system owner to patch the reported findings",
+        "D": "Have a sample of the reported findings verified on the sequencers"
+      },
+      "correct": "D",
+      "key_concept": "Vulnerability findings are validated before they drive a risk rating, so disputed scan results are checked on a sample first.",
+      "pre_read": "Note which facts in the stem are confirmed and which are only claimed.",
+      "correct_explanation": "Vulnerabilities are identified, validated and recorded before they inform risk. The scanner and the vendor disagree and neither view has been checked, so verifying a sample on the sequencers shows which findings are real and how far to trust the rest. Rating the scenarios from all 300 findings is the runner-up: it is cautious, but unvalidated findings could overstate the risk and send effort to flaws that do not exist.",
+      "wrong_explanations": {
+        "A": "Cautious, but the findings are disputed and unchecked; rating from them could overstate the sequencer risk and misdirect effort until a sample is verified.",
+        "B": "The vendor's claim is as unverified as the scan; a risk owner's sign-off would settle a factual question by authority instead of by evidence.",
+        "C": "Patching before anyone knows which findings are real puts action before analysis; the system owner needs validated findings to plan the fixes."
+      },
+      "tips": [
+        "Eliminate: B has the risk owner settle a factual dispute by sign-off, and C sends the findings to patching before anyone knows which are real.",
+        "Final two: D beats A because vulnerabilities are validated before they are rated; a verified sample shows whether the scan or the vendor is closer to the truth.",
+        "Exam cue: when two sources disagree about the facts, check the data first; rating, accepting or fixing comes after validation."
+      ],
+      "framework_ref": "NIST CSF 2.0 ID.RA-01 (vulnerabilities in assets are identified, validated and recorded); NIST SP 800-30 Rev. 1 Section 3.1 Task 1-3 (Identify Assumptions and Constraints: uncertainty in assumptions and information is considered)",
+      "related_concepts": [
+        "Vulnerability validation",
+        "False positive",
+        "Vulnerability identification"
+      ],
+      "_provenance": "Authored from concept: notes 2A3.3 (Risk-Based Remediation Priority) and 2A3.1 (Vulnerabilities in People, Process and Technology). Round 10, 5 Nov 2026: original scenario (a scan reports 300 critical findings on a research lab's genome sequencers, and the sequencer vendor calls most of them false positives from misread software versions) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Round 10 owner balance: the key names no owner and two distractors name one (a risk owner's sign-off, a system owner's patching); the vendor's outside claim is not keyed. The FIRST key validates data rather than assessing or recording. Neighbours checked (stems and options): crisc_d2_093 (scans without credentials understate exposure), crisc_d2_005 (a CVSS score copied in as the rating), crisc_d2_051 (a shared-component alert: find where it runs first), crisc_d2_026 (clean monthly scans), crisc_d2_095 (spot-check findings at stores), crisc_d3_083 (300 horizon-scan signals screened for relevance), CC cc_d5_114 (one flagged flaw an administrator says is patched: evidence before marking a false positive, security-analyst lens) and cc_d5_044, CISA d5_123 (suppressed static-analysis findings) and d5_125 (scans without sign-in); no mirror in CISA, CC or AAIA. Keep apart from crisc_d3_083 in practice sets.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d2_106",
+      "domain": 2,
+      "subtopic": "2B2 Business impact analysis (BIA). Ticket sales across the year",
+      "principle_id": "objectives-first",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A theatre group sells 60% of its tickets in the six weeks before the holidays, but its BIA rated box office outage impact from July sales. What is the risk practitioner's BEST recommendation?",
+      "options": {
+        "A": "Add the likelihood of a holiday outage to the BIA rating",
+        "B": "Have the box office owner rate impact for the peak season",
+        "C": "Have the finance director rate impact on yearly average sales",
+        "D": "Have the system owner set the box office RTO from restore tests"
+      },
+      "correct": "B",
+      "key_concept": "A BIA rates outage impact for the period when an outage would hurt most; a quiet month or a yearly average understates it.",
+      "pre_read": "Check what period each figure in the stem describes.",
+      "correct_explanation": "Impact depends on timing: an outage in the six weeks that carry 60% of ticket sales would hurt far more than one in July. The box office owner knows that trade, so having them rate impact for the peak season gives the BIA a figure that recovery priorities can rest on. A yearly average is the runner-up: it smooths the seasons, but it still understates the harm of an outage at the peak.",
+      "wrong_explanations": {
+        "A": "A BIA assumes the disruption happens and rates its impact over time; likelihood belongs to the risk assessment, so adding it blurs the BIA's purpose.",
+        "C": "An average spreads peak sales across quiet months, so it still understates the harm of an outage in the six weeks that carry 60% of sales.",
+        "D": "Restore tests show what IT can achieve, not what the business can tolerate; the RTO follows the impact rating, which is still wrong."
+      },
+      "tips": [
+        "Eliminate: A adds likelihood to a BIA, which assumes the outage happens, and D sets the RTO from IT's restore capability instead of business impact.",
+        "Final two: B beats C because a BIA rates impact for the period when an outage would hurt most; an average still hides the six-week peak.",
+        "Exam cue: when impact swings with the calendar, have the process owner rate it for the worst credible time; averages and quiet months understate it."
+      ],
+      "framework_ref": "NIST IR 8286 Rev. 1 Section 3.3.2 (Techniques for Estimating Likelihood and Impact of Consequences: timing can change impact, such as a loss shortly before payday); NIST SP 800-34 Rev. 1 Section 3.2 (Conduct the Business Impact Analysis: recovery criticality rests on the impact of a system disruption and the downtime the process can tolerate)",
+      "related_concepts": [
+        "Business impact analysis",
+        "Impact over time",
+        "Peak period"
+      ],
+      "_provenance": "Authored from concept: notes 2B2.1 (BIA Purpose, Dependencies and AI Systems). Round 10, 5 Nov 2026: original scenario (a theatre group sells 60% of its tickets in the six weeks before the holidays, but its BIA rated box office outage impact from July sales) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Round 10 owner balance: the key names the box office owner and two distractors name an owner or role (the finance director, the system owner). Neighbours checked (stems and options): crisc_d2_059 (impact at set intervals shows when a process becomes critical), crisc_d2_081 (cumulative BIA figures for a scenario's outage length), crisc_d2_073 (a supporting system ranked by user count), crisc_d2_012 (an RTO set from a vendor's restore time), crisc_d2_080 (outage limits claimed by every head), crisc_d2_011 (a BIA is not a risk assessment), crisc_d2_034 and crisc_d2_037 (RPO and SDO), crisc_d3_023 (owner of a peak-season double-booking risk), crisc_d3_137 (a KRI rising each holiday change freeze), CISA d3_051 and d3_145 (peak load tests), CC cc_d4_065 (an IPS before the holiday rush); no mirror in CISA, CC or AAIA. Keep apart from crisc_d2_059 in practice sets.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d2_107",
+      "domain": 2,
+      "subtopic": "2B4 Risk analysis methodologies. Industry figure for a leak ARO",
+      "principle_id": "answer-from-the-stem",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An industry survey finds studios releasing about 20 films a year average two pre-release leaks yearly. What is the BEST basis for the risk analyst's leak ARO at a studio releasing four?",
+      "options": {
+        "A": "The survey's leak rate per film, applied to the studio's four films",
+        "B": "The survey's figure of two leaks yearly, used as published",
+        "C": "The studio's own record of no leaks in its first two years",
+        "D": "The leak rate that the studio's distribution owner can tolerate"
+      },
+      "correct": "A",
+      "key_concept": "An outside rate informs likelihood only after it is scaled to the enterprise's own exposure, such as the number of units at risk.",
+      "pre_read": "Ask what each figure measures and for whom it was measured.",
+      "correct_explanation": "Outside data informs likelihood only after it is adjusted for local exposure. Leaks come from films in release, and the surveyed studios release five times as many, so the survey's 0.1 leaks per film applied to four films gives an ARO of about 0.4. The published two leaks a year is the runner-up: it is real industry data, but it describes studios with far more films at risk.",
+      "wrong_explanations": {
+        "B": "Industry data is a sound input, but it reflects studios releasing about 20 films; used unadjusted, it would overstate this studio's leak frequency about fivefold.",
+        "C": "Two quiet years cover only about eight films, too few to show a rate; a short record without leaks does not mean leaks are unlikely.",
+        "D": "What an owner can tolerate is a threshold for judging the result, not an estimate of how often leaks occur."
+      },
+      "tips": [
+        "Eliminate: C reads a short record with no leaks as a low rate, and D uses an owner's tolerance, a threshold, as if it measured frequency.",
+        "Final two: A beats B because outside figures are adjusted for local exposure; scaled per film, the survey supports an ARO near 0.4, not 2.",
+        "Exam cue: before using a peer or industry figure, ask whether the enterprise's exposure matches; scale it by the units at risk, such as sites, films or users."
+      ],
+      "framework_ref": "NIST IR 8286 Rev. 1 Section 3.3.2 (Techniques for Estimating Likelihood and Impact of Consequences: likelihood estimation is context-driven and draws on the risk experiences of similar organizations); NIST IR 8286A Rev. 1 Section 2.3.2.1 (Improving Estimation Based on Knowledge of Prior Events: industry literature on loss events in a sector helps estimate likelihood and impact)",
+      "related_concepts": [
+        "Annualized rate of occurrence",
+        "External loss data",
+        "Exposure"
+      ],
+      "_provenance": "Authored from concept: notes 2B4.2 (Quantitative Analysis: SLE, ARO and ALE) and 2A1.2 (Internal and External Event Sources). Round 10, 5 Nov 2026: original scenario (an industry survey gives two pre-release leaks a year for studios releasing about 20 films; the analyst's studio releases four) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Round 10 outside-figure counter-example: the industry figure as published is the runner-up and stays wrong because the studio's exposure differs; the key scales it per film. The studio's own short record is an eliminable distractor, so the final two differ from crisc_d2_103 (regional records beat a short own log). Neighbours checked (stems and options): crisc_d2_021 (peer airline outages used as rating input, adjusted for local exposure; a general rule, here applied as a calculation), crisc_d2_096 (equipment failure rated from its own fault records), crisc_d2_103 (grid outage likelihood from area records), crisc_d2_099 (a peer regulator's fine as a secondary loss in one attack in four), crisc_d2_015 and crisc_d2_043 (ALE arithmetic), crisc_d2_061 (an ALE from industry benchmarks as a wrong option for a new AI tool), crisc_d3_049 (a peer firm's rating for quantum risk as a wrong option), crisc_d3_016 (an 8% survey threshold for a KRI), crisc_d1_124 (a sector Community Profile), CISA and AAIA pre-release items (d2_020, d3_031, aaia_d2_015: testing, not leak frequency); no mirror in CISA, CC or AAIA. Keep apart from crisc_d2_021 and crisc_d2_103 in practice sets.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d2_108",
+      "domain": 2,
+      "subtopic": "2B3 Risk register. One scenario in two registers",
+      "principle_id": "rate-on-common-terms",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A shipping line's IT and operations registers each record the same vessel-tracking outage scenario, with the same harm and rating but different owners. What should the risk practitioner do FIRST for the risk profile?",
+      "options": {
+        "A": "Show both entries in the profile under their own owners",
+        "B": "Combine the two entries' impacts into one higher rating",
+        "C": "Have the IT owner keep the entry and close the other",
+        "D": "Merge them into one entry under a single agreed owner"
+      },
+      "correct": "D",
+      "key_concept": "Before registers roll up, a scenario recorded twice is merged into one entry and one owner, so its harm is counted once.",
+      "pre_read": "Ask whether the two entries describe separate exposures or the same one.",
+      "correct_explanation": "A risk profile counts each risk once, on the common scale, with one accountable owner. These entries record the same scenario and the same harm, so merging them under a single agreed owner removes the duplicate without changing the rating. Combining the impacts is the runner-up: aggregation suits the same weakness in separate units, but here it would count one harm twice and inflate the rating.",
+      "wrong_explanations": {
+        "A": "Two entries for one risk count the same harm twice and leave two owners answerable for it; normalization removes duplicates before the profile.",
+        "B": "Aggregation adds distinct exposures, such as one weakness in separate units; these entries record one harm, so combining them would count it twice.",
+        "C": "Vessel tracking serves operations, so its outage harms the business, not only IT; closing the operations entry drops the business owner's view."
+      },
+      "tips": [
+        "Eliminate: A shows one risk twice under two owners, and C hands a business-impact scenario to IT and drops the operations view.",
+        "Final two: D beats B because the entries record one harm; aggregation adds separate exposures, while a duplicate is merged so the harm counts once.",
+        "Exam cue: before rolling up registers, merge duplicates into one entry and one owner; combine only exposures that are genuinely separate."
+      ],
+      "framework_ref": "NIST IR 8286 Rev. 1 Section 3.8 (Creating and Maintaining an Enterprise-Level Cybersecurity Risk Register); COBIT 2019 APO12.03 (Maintain a Risk Profile)",
+      "related_concepts": [
+        "Risk register",
+        "Normalization",
+        "Enterprise risk profile"
+      ],
+      "_provenance": "Authored from concept: notes 2B3.3 (From Register to Enterprise Risk Profile) and 2B3.1 (Register Fields and Ownership). Round 10, 5 Nov 2026: original scenario (a shipping line's IT and operations registers each record the same vessel-tracking outage scenario, same harm and rating, under different owners) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Round 10 owner balance: the key names an owner and two distractors name one (each register's owners, the IT owner). The FIRST key merges rather than assessing. Neighbours checked (stems and options): crisc_d2_014 (four regions' low ratings of a shared platform outage combined into one group scenario on combined impact: the complement, as those were separate exposures and these entries record one harm), crisc_d2_032 (ratings that differ by time frame), crisc_d2_060 (IT named owner of every entry), crisc_d2_098 (dropping inherent ratings), crisc_d3_073 (one office rates a scenario differently: find out why), crisc_d1_094 (risk team and owner disagree on a rating), crisc_d2_064 (closing a scenario after tokenization), CISA d4_112 and d4_216 (duplicate orders and tickets, not register entries); no mirror in CISA, CC or AAIA. Keep apart from crisc_d2_014 and crisc_d3_073 in practice sets.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d2_109",
+      "domain": 2,
+      "subtopic": "2A2 Threat modeling and threat landscape. Faked video calls",
+      "principle_id": "analyze-before-acting",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A translation agency's scenario of impostors posing as directors to obtain payments credits a video-call check; threat reports say fraudsters now fake faces and voices live. How should the risk analyst BEST reflect this?",
+      "options": {
+        "A": "Add a separate deepfake fraud scenario to the register",
+        "B": "Keep the video check's credit until a faked call succeeds",
+        "C": "Re-rate the scenario with less credit for the video check",
+        "D": "Have the finance director train clerks to spot faked calls"
+      },
+      "correct": "C",
+      "key_concept": "A new attack technique that weakens a credited control changes the existing scenario's rating; it does not need a separate scenario.",
+      "pre_read": "Separate what the threat report changes from what stays the same.",
+      "correct_explanation": "Deepfakes raise attackers' capability without changing the event or the asset: a fraudulent payment by an impostor. The scenario's rating credits a video check that live fakes can now defeat, so re-rating it with less credit keeps its likelihood honest. A separate deepfake scenario is the runner-up: it names the new technique, but it splits one loss in two and leaves the old rating crediting a weakened check.",
+      "wrong_explanations": {
+        "A": "The event and asset are unchanged, so a new scenario would split one loss in two and leave the old rating crediting a weakened check.",
+        "B": "Waiting for a successful fake treats a loss as the only evidence; credible threat reports already show the check is weaker than its credit assumes.",
+        "D": "Training is a response the owner may choose once the rating changes; choosing it now skips the analysis of how far the check has weakened."
+      },
+      "tips": [
+        "Eliminate: B waits for a loss when threat reports already show the check is weaker, and D picks a response before the scenario is re-rated.",
+        "Final two: C beats A because deepfakes change the attacker's capability, not the event or asset; re-rating the existing scenario keeps one loss in one entry.",
+        "Exam cue: when a new technique makes a credited control easier to beat, re-rate the scenario that credits it before adding new entries."
+      ],
+      "framework_ref": "NIST AI 600-1 Section 2.8 (Information Integrity: generative AI can produce highly realistic deepfakes and help malicious actors create fraudulent content that impersonates others); NIST SP 800-30 Rev. 1 Section 2.3.1 (Risk Models: adversarial likelihood is based on intent, capability and targeting)",
+      "related_concepts": [
+        "Deepfake impersonation",
+        "Adversary capability",
+        "Control credit"
+      ],
+      "_provenance": "Authored from concept: notes 2A2.2 (Threat Intelligence and Threat Modeling) and 2B5.2 (Control Effectiveness and the Residual Gap). Round 10, 5 Nov 2026: original scenario (a translation agency's scenario of impostors posing as directors to obtain payments credits a video-call check; threat reports say fraudsters now fake faces and voices live) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Round 10 AI item (generative AI as the attacker's tool). A first draft on a model fine-tuned on every client's documents was dropped because it mirrored aaia_d3_075 and aaia_d1_043. Neighbours checked (stems and options): crisc_d2_092 (threat shifting to call-center resets: re-rate across both channels), crisc_d2_100 (a new event type needs its own scenario: the complement, as here the event is unchanged), crisc_d2_023 (the threat event of a fraud scenario), crisc_d2_004 (new AI threat intelligence), crisc_d2_056 (adversarial likelihood), crisc_d3_084 (deepfake voice fraud re-rated once data arrives), CC cc_d2_013 (a clerk's first move on a faked finance-director video call) and cc_d2_081 (a cloned voice passing a callback), AAIA aaia_d3_075 and aaia_d1_043 (memorized training data); no mirror in CISA, CC or AAIA. Keep apart from crisc_d2_092 and crisc_d3_084 in practice sets.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d2_110",
+      "domain": 2,
+      "subtopic": "2B5 Inherent and residual risk. Credit for offline backups",
+      "principle_id": "residual-counts-working-controls",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "A veterinary chain's register rates its booking-system ransomware scenario high, crediting nothing for offline backups added a year ago, which have passed four quarterly full-restore tests. What is the risk analyst's BEST action?",
+      "options": {
+        "A": "Keep the high rating until the yearly register review",
+        "B": "Lower the current rating to credit the restore-tested backups",
+        "C": "Have the backup control owner run another restore test",
+        "D": "Ask the risk owner to accept the high rating as it stands"
+      },
+      "correct": "B",
+      "key_concept": "A control shown working by repeated tests earns its credit in the current rating now; withholding it overstates today's exposure.",
+      "pre_read": "Check what the stem says has already been tested before choosing a next step.",
+      "correct_explanation": "Current risk counts controls that are in place and shown to work. Four full restores show the offline backups would cut a ransomware outage's impact, so the rating should be lowered to credit them and the risk owner told. Another restore test is the runner-up: testing is how a control earns credit, but four passed tests already give that evidence, and a fifth would only delay an accurate rating.",
+      "wrong_explanations": {
+        "A": "A register is kept current when evidence changes, not only at a set review; holding the rating until then overstates today's exposure for months.",
+        "C": "Testing is how a control earns credit, but four passed full restores already give that evidence; another test delays the rating without adding much.",
+        "D": "Acceptance is the owner's decision on an accurate rating; accepting one that leaves out working backups keeps the register overstating the risk."
+      },
+      "tips": [
+        "Eliminate: A waits for a set review when the evidence has already changed, and D asks the owner to accept a rating that leaves out a working control.",
+        "Final two: B beats C because current risk counts controls shown to work; four passed restore tests are that evidence, so a fifth only delays the credit.",
+        "Exam cue: evidence cuts both ways; withhold credit from an untested control, and give it promptly once tests show the control works."
+      ],
+      "framework_ref": "ISACA Glossary (current risk); NIST SP 800-30 Rev. 1 Section 3.4 (Maintaining the Risk Assessment)",
+      "related_concepts": [
+        "Current risk",
+        "Control effectiveness",
+        "Restore testing"
+      ],
+      "_provenance": "Authored from concept: notes 2B5.2 (Control Effectiveness and the Residual Gap) and 2B5.1 (Inherent, Current and Residual Risk). Round 10, 5 Nov 2026: original scenario (a veterinary chain's register credits nothing for offline backups that have passed four quarterly full-restore tests) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Round 10 option opening: the key opens with \"Lower\", genuinely best because test evidence already exists; owner balance: the key names no owner and two distractors name one (the backup control owner, the risk owner). Waiting for the yearly review stays wrong here. Neighbours checked (stems and options): crisc_d2_019 (an untested control earns no credit: the complement), crisc_d2_102 (lowering a rating for an untried fallback is wrong; here the control is tested), crisc_d2_086 (a passed review that no longer covers the new system), crisc_d2_063 (design versus operating effectiveness), crisc_d2_064 (residual risk is not zero after tokenization), crisc_d2_044 (a large gap carried by one control), crisc_d4_088 and crisc_d4_034 (restore tests beside ransomware recovery), crisc_d1_067 (a keyed wait for the yearly KRI review), CISA d4_304 (backup rotation) and d4_306 (restore tests chosen by the backup administrator, audit evidence lens), CC cc_d1_003 (a veterinary clinic's shared booking login); no mirror in CISA, CC or AAIA. Keep apart from crisc_d2_019 and crisc_d2_102 in practice sets.",
       "style_version": 2
     }
   ]
