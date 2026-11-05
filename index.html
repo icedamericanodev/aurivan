@@ -2878,15 +2878,24 @@ header {
 }
 .gloss-count-clear:hover { border-color: var(--accent); color: var(--accent); }
 
-/* A-Z letter index */
+/* A-Z letter index: one row of 26 when the bar is wide enough, else two
+   even rows of 13, then rows of 9 on the narrowest phones. Measured on the
+   bar itself (rem), so a larger text setting steps it down too. */
 .gloss-letter-index {
-  display: flex; flex-wrap: wrap; gap: 3px;
+  container-type: inline-size;
   background: var(--surface); border: 2px solid var(--border2);
-  border-radius: var(--r-12); padding: 10px 12px; margin-bottom: 14px;
+  border-radius: var(--r-12); padding: 10px; margin-bottom: 14px;
   box-shadow: var(--shadow);
 }
+.gloss-letter-grid {
+  display: grid; gap: 3px;
+  grid-template-columns: repeat(auto-fill, minmax(1.75rem, 1fr));
+}
+@container (min-width: 14rem) { .gloss-letter-grid { grid-template-columns: repeat(9, minmax(0, 1fr)); } }
+@container (min-width: 19.25rem) { .gloss-letter-grid { grid-template-columns: repeat(13, minmax(0, 1fr)); } }
+@container (min-width: 43.75rem) { .gloss-letter-grid { grid-template-columns: repeat(26, minmax(0, 1fr)); } }
 .gloss-letter {
-  flex: 1; min-width: 22px; padding: 5px 4px; border-radius: var(--r-6);
+  min-width: 0; padding: 5px 2px; border-radius: var(--r-6);
   background: transparent; border: none; cursor: pointer;
   font: var(--t-caption); letter-spacing: var(--tr-caption);
   color: var(--muted); transition: var(--tr); text-align: center;
@@ -2896,8 +2905,10 @@ header {
 .gloss-letter.has:hover { background: var(--btn); color: var(--on-btn); }
 .gloss-letter:disabled { opacity: 0.3; cursor: default; }
 
+/* Two columns at most: each column is at least half the list (so never
+   three), and at least 17.5em (so one column when text is large). */
 .gloss-list {
-  display: grid; grid-template-columns: repeat(auto-fill, minmax(min(280px, 100%), 1fr));
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(max(min(17.5em, 100%), calc(50% - 6px)), 1fr));
   gap: 12px;
 }
 .gloss-card {
@@ -6664,11 +6675,13 @@ html { scroll-padding-bottom: calc(104px + var(--consent-h, 0px)); }
 }
 @media (min-width: 77.5em) {
   .study-wrap.fg-frame { grid-template-columns: minmax(0, var(--frame-main)) var(--frame-margin); column-gap: var(--frame-gap); }
-  /* Today, Your progress, You and Settings: the page spans the frame, the same two tracks inside. */
+  /* Today, Your progress, You and Settings: the page spans the frame, the same two tracks inside.
+     Glossary spans it too: its margin is always empty, so the cards use the width. */
   body[data-tab="home"] .fg-frame > main.app,
   body[data-tab="progress"] .fg-frame > main.app,
   body[data-tab="you"] .fg-frame > main.app,
-  body[data-tab="settings"] .fg-frame > main.app { grid-column: 1 / -1; }
+  body[data-tab="settings"] .fg-frame > main.app,
+  body[data-tab="glossary"] .fg-frame > main.app { grid-column: 1 / -1; }
   .fg-frame > .fg-margin:not([hidden]) {
     display: block; grid-column: 2; grid-row: 2;
     position: sticky; top: 32px; z-index: 1; max-height: calc(100vh - 64px); overflow-y: auto; overscroll-behavior: contain;
@@ -23270,7 +23283,7 @@ function renderGlossary() {
     +   '<span style="width:14px"></span>'
     +   '<span class="gloss-filter-label">Status</span>'
     +   '<button class="gloss-chip' + (glossState.showMastered==='all'?' active':'') + '" onclick="setGlossStatus(\'all\')">All</button>'
-    +   '<button class="gloss-chip' + (glossState.showMastered==='unmastered'?' active':'') + '" onclick="setGlossStatus(\'unmastered\')">To Learn</button>'
+    +   '<button class="gloss-chip' + (glossState.showMastered==='unmastered'?' active':'') + '" onclick="setGlossStatus(\'unmastered\')">To learn</button>'
     +   '<button class="gloss-chip' + (glossState.showMastered==='mastered'?' active':'') + '" onclick="setGlossStatus(\'mastered\')">Mastered</button>'
     + '</div>'
     + '</div>';
@@ -23303,14 +23316,14 @@ function renderGlossList() {
     var c = (t.term || '').charAt(0).toUpperCase();
     if (c >= 'A' && c <= 'Z') present[c] = true;
   });
-  var letterIndex = '<div class="gloss-letter-index">';
+  var letterIndex = '<div class="gloss-letter-index"><div class="gloss-letter-grid">';
   letters.forEach(function(L){
     var has = !!present[L];
     letterIndex += '<button class="gloss-letter' + (has ? ' has' : '') + '" '
       + (has ? 'onclick="jumpToLetter(\'' + L + '\')"' : 'disabled')
       + ' aria-label="Jump to ' + L + '">' + L + '</button>';
   });
-  letterIndex += '</div>';
+  letterIndex += '</div></div>';
 
   if (filtered.length === 0) {
     return countHtml + '<div class="gloss-empty">No terms match your filters.<br><br>'
