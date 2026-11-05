@@ -10,3 +10,4 @@ My own checks of the first build to fix too:
 - Web Learn at 390: tiles must be 2 by 2 at normal text (one column only from 1.3x text or under 360px); an odd last tile spans the width.
 - Web Learn subtitle "Lessons start each topic. Notes go deeper." is wrong on the web (no lessons): reword for the web only.
 - Web answer after a miss: the Eliminate tip must show (it was missing beside Final two and Exam cue).
+- COPY RULE (Sky, 5 Nov): "dont make it too wordy consider users attention span". Every learner-facing line on Today, Learn, Practice, You, Settings, the plant, badges and drills: one short idea per line, sublines about 6 words, notes at most one short sentence (about 12 words), no repeated explanations on one screen. Cut, never hide meaning (keep honesty lines like "A study estimate, not a prediction."). Run a copy-trim pass in the next round on web and phone together, and give the 4b designs the same rule.
