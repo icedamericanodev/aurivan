@@ -117,7 +117,7 @@ describe('Learn: the reference tiles (Grove Phase 4, the kit order)', () => {
   it('Study notes, Glossary, Principles, The CISA exam, then Final review week, each with its kit line', () => {
     const items = lookUpItems(cert, 0, all);
     expect(items.map((i) => i.title)).toEqual(['Study notes', 'Glossary', 'Principles', `The ${cert.name} exam`, 'Final review week']);
-    expect(items.map((i) => i.line)).toEqual(['Every topic, with traps', 'Key terms, plain words', 'How the exam thinks', 'Booking to results', 'Your last seven days, day by day']);
+    expect(items.map((i) => i.line)).toEqual(['Every topic, with traps', 'Key terms, plain words', 'How the exam thinks', 'Booking to results', 'Your last seven days']);
     expect(items[0].spoken).toBe('Study notes, Every topic, with traps');
     expect(items[1].spoken).toBe('Glossary, key terms in plain words');
     expect(items[3].spoken).toBe(`About the ${cert.name} exam, booking to results`);

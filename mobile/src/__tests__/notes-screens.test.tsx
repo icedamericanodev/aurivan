@@ -483,8 +483,9 @@ describe('Learn: the course and the reference (mobile 1.21)', () => {
     expect(allText()).not.toMatch(/\d+ of \d+ read/);
     // Never claims a lesson for every topic (one outline topic has none).
     expect(allText()).not.toMatch(/lesson for every topic/i);
-    expect(allText()).toContain('in exam order · each ends with a check');
-    expect(allText()).toContain('Short lessons across every domain of the exam outline. IS means information systems.');
+    expect(allText()).toContain('0 of 66 · in exam order');
+    expect(allText()).toContain('IS means information systems. Original content, reviewed against public frameworks.');
+    expect(allText()).not.toContain('Short lessons across every domain');
   });
 
   it('mobile 1.45: with every lesson done, the hero points to practice and the notes', () => {
@@ -493,7 +494,7 @@ describe('Learn: the course and the reference (mobile 1.21)', () => {
     });
     mount(<Learn />);
     expect(allText()).toContain('Every lesson done');
-    expect(allText()).toContain('Keep practicing, and open the study notes for any topic that trips you up.');
+    expect(allText()).toContain('Keep practicing. Notes help when a topic trips you.');
     expect(allText()).not.toContain('Revisit any lesson anytime');
     press('Go to Practice');
     expect(mockPush).toHaveBeenCalledWith('/practice');

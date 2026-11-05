@@ -24,7 +24,8 @@ import { Button, cardLift, RadioRow, Row, Segmented, T, ToggleRow } from './ui';
 /** The question, also the radiogroup's spoken name. */
 export const FAMILIARITY_QUESTION = 'Where are you starting from?';
 export const EXAM_FOCUSED_TITLE = 'Exam-focused plan';
-export const EXAM_FOCUSED_SUBTITLE = 'Leads with mocks and your weak spots, and leaves lessons out of Today. Lessons stay in Learn.';
+// Short text (Sky, 5 Nov): two short ideas, nothing lost (lessons leave Today, they stay in Learn).
+export const EXAM_FOCUSED_SUBTITLE = 'Mocks and weak spots lead Today. Lessons stay in Learn.';
 /** Mobile 1.43 (Settings, board 5): the one-line form, and what it says aloud (it keeps "Lessons stay in Learn."). */
 export const EXAM_FOCUSED_SHORT = 'Mocks and weak spots lead Today';
 export const EXAM_FOCUSED_SPOKEN = 'Mocks and weak spots lead Today. Lessons stay in Learn.';
@@ -196,7 +197,8 @@ export function YourStudy({
  */
 export function FitCard({ onSetUp, onNotNow }: { onSetUp: () => void; onNotNow: () => void }) {
   const { c } = useTheme();
-  const line = 'Tell us how long you have and where you’re starting from, and Today’s plan will fit.';
+  // Short text (Sky, 5 Nov): one short sentence.
+  const line = 'Set your time and starting point to fit Today’s plan.';
   return (
     <View testID="fit-card" style={{ borderLeftWidth: 3, borderLeftColor: c.accent, paddingLeft: space.md }}>
       {/* The words are one stop; each button stays its own. */}

@@ -112,7 +112,10 @@ describe('Practice: mocks first for the exam-focused, the pace offer under Timed
     const [hero, timed, offer] = sectionOrder()(['Domains', 'Timed counts up', 'Practice at exam pace?']);
     expect(offer).toBeGreaterThan(timed);
     expect(timed).toBeGreaterThan(hero);
-    expect(allText()).toContain('The exam allows about 96 seconds a question. A timer counts up while you answer, never down, and stops while you read the explanation.');
+    // Short text (Sky, 5 Nov): the hero says the pace and "counts up, never down"; the offer adds only the pause.
+    expect(allText()).toContain('Timed counts up, never down. The exam allows about 96 seconds a question.');
+    expect(allText()).toContain('It pauses while you read each explanation.');
+    expect(allText().split('The exam allows about 96 seconds a question.')).toHaveLength(2);
     expect(allText()).not.toMatch(/\d s a question/);
   });
 });

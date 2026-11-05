@@ -196,7 +196,7 @@ export default function PlantLook() {
       </View>
       <ScrollView contentContainerStyle={{ paddingHorizontal: space.gutter, paddingBottom: space.xxxl }} onLayout={(e) => setWidth(e.nativeEvent.layout.width - space.gutter * 2)}>
         {/* With forms on, no readiness word near the form choice (UX review P3). */}
-        <T v="meta" style={{ marginTop: space.md }}>{view.forms ? 'A look is just for you: it never changes your growth.' : 'A look is just for you: it never changes your growth or your readiness.'}</T>
+        <T v="meta" style={{ marginTop: space.md }}>{view.forms ? 'Looks never change your growth.' : 'Looks never change your growth or readiness.'}</T>
 
         {view.forms && p.growth >= 6 ? (
           <>

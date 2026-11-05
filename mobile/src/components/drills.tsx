@@ -179,7 +179,7 @@ export const Drills = memo(function Drills({
   const inSight = plan.drill ? [item(plan.drill, 'Today’s drill'), ...plan.also.map((id) => item(id))] : [];
   const allSeedling = available.length > 0 && available.every((id) => level(id) === 'seedling');
 
-  // "Today's pick is from your mistakes: you often pick…" (lower case after the colon; UX review H1).
+  // "From your misses: you often pick…" (lower case after the colon; UX review H1).
   const why = pattern ? pattern.title.replace(/\.$/, '') : '';
   return (
     <View ref={box} testID="drills" collapsable={false} onLayout={onLayout}>
@@ -189,20 +189,22 @@ export const Drills = memo(function Drills({
       <CardHead title="Drills" headRef={head} meta={allSeedling ? 'All at Seedling' : undefined} />
       {!plan.drill ? (
         // No game has enough questions for this exam yet: said calmly, no numbers.
-        <T v="meta">Drills arrive once this exam has enough practice questions for them.</T>
+        <T v="meta">Drills come once this exam has enough questions.</T>
       ) : (
         <>
+          {/* Short text (Sky, 5 Nov): one idea per line. The pick's reason replaces the general
+              line when there is one (each row already names its skill). */}
           <T v="meta" style={{ marginBottom: space.xs }}>
             {plan.fromPattern && pattern
-              ? `Short games, each for one exam skill. Today’s pick is from your mistakes: ${why.charAt(0).toLowerCase()}${why.slice(1)}.`
-              : 'Short games, each for one exam skill. Missed questions go to your review.'}
+              ? `From your misses: ${why.charAt(0).toLowerCase()}${why.slice(1)}.`
+              : 'Short games, one exam skill each. Misses go to review.'}
           </T>
           <KeyList items={inSight} testID="drills-list" />
           {plan.more.length > 0 && (
             <>
               <DisclosureRow
                 title="More drills"
-                subtitle={`${plan.more.length} more, each trains one exam skill`}
+                subtitle={`${plan.more.length} more`}
                 expanded={moreOpen}
                 onPress={() => setMoreOpen((o) => !o)}
                 accessibilityHint={moreOpen ? 'Hides the other drills' : 'Shows the other drills'}

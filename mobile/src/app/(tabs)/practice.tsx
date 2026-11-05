@@ -183,7 +183,7 @@ export default function Practice() {
   const chooserHeadRef = useRef<View>(null);
   const heroMeta =
     mode === 'guided'
-      ? 'Learn it, practice it, then mix it with earlier topics.'
+      ? 'Learn, practice, then mix in earlier topics.'
       : `${pathSize} questions · ${aboutMin(pathSize * MINUTES_PER_QUESTION, true)}${timed ? ' · timed' : ''}`;
   const focus = cert.domains.find((d) => d.id === readiness.focusDomainId);
 
@@ -210,7 +210,9 @@ export default function Practice() {
     <HubCard style={{ marginTop: space.md, paddingBottom: space.md }}>
       <T v="headline" accessibilityRole="header">Practice at exam pace?</T>
       <T v="small" color={c.ink2} style={{ marginTop: space.xs }}>
-        {`${examPaceWords(cert.exam)} A timer counts up while you answer, never down, and stops while you read the explanation.`}
+        {/* Short text (Sky, 5 Nov): the hero above already says it counts up and the exam's pace,
+            so this card adds only what is new. */}
+        It pauses while you read each explanation.
       </T>
       <Gap h={space.md} />
       <View style={{ gap: space.sm }}>
@@ -235,7 +237,7 @@ export default function Practice() {
         {movedHint && (
           // Once, for those who played on the old Play tab: where the games went (no modal, no toast).
           <View testID="drills-moved" style={{ flexDirection: 'row', flexWrap: 'wrap', alignItems: 'center', columnGap: space.sm, marginTop: space.xs }}>
-            <T v="meta">The games are here now, as Drills.</T>
+            <T v="meta">The games are now Drills.</T>
             {/* A label-size text button (R6), so it reads as a control, not as part of the sentence. */}
             <Button
               kind="ghost"
@@ -269,7 +271,7 @@ export default function Practice() {
           onTimed={setTimedHere}
           onChoose={setPathOpen}
           chooserHeadRef={chooserHeadRef}
-          paceLine={`Timed counts up while you answer, never a countdown. ${examPaceWords(cert.exam)}`}
+          paceLine={`Timed counts up, never down. ${examPaceWords(cert.exam)}`}
           startLabel={mode === 'guided' ? 'Open step' : 'Start'}
           startHint={mode === 'guided' ? 'Opens your Guided step' : `${pathSize} questions, ${MODE_INFO[mode].name}`}
           certId={cert.id}
@@ -903,8 +905,8 @@ const MockExams = memo(function MockExams({ cert, headRef }: { cert: Certificati
         <MockTile
           n={cert.exam.questions}
           title="Full mock"
-          line={`${hours} hours · weighted like the real ${cert.name}`}
-          spoken={`Full mock, ${cert.exam.questions} questions, ${hours} hours`}
+          line={`${hours} hours · weighted by domain`}
+          spoken={`Full mock, ${cert.exam.questions} questions, ${hours} hours, weighted by domain`}
           onPress={() => router.push({ pathname: '/mock-start', params: { questions: String(cert.exam.questions) } })}
         />
       </View>

@@ -527,8 +527,9 @@ describe('You: the badge shelf (Grove PHASE4 7.14 item 7, board 04-phone-you)', 
     const [card] = hostsWith('you-badges');
     expect(card.findAll((n) => n.props.testID === 'shelf-tile' && typeof n.type === 'string')).toHaveLength(1);
     expect(card.findAll((n) => n.props.testID === 'shelf-empty' && typeof n.type === 'string')).toHaveLength(3);
-    // The kit's line, led by the kept words.
-    expect(allText()).toContain('Your badges and field notes. 1 pressed · First Foothold, 11 Oct');
+    // The kit's line (short text, Sky, 5 Nov: the card's title already says Badges).
+    expect(allText()).toContain('1 pressed · First Foothold, 11 Oct');
+    expect(allText()).not.toContain('Your badges and field notes.');
     // Two controls only: All badges and the shelf.
     expect(card.findAll((n) => n.props.accessibilityRole === 'button' && typeof n.type === 'string')).toHaveLength(2);
     expect(shelf()).toHaveLength(1);
@@ -543,7 +544,7 @@ describe('You: the badge shelf (Grove PHASE4 7.14 item 7, board 04-phone-you)', 
   it('none pressed yet: four empty slots and the line says so', () => {
     mount(<You />);
     expect(hostsWith('shelf-empty')).toHaveLength(4);
-    expect(allText()).toContain('Your badges and field notes. None pressed yet');
+    expect(allText()).toContain('None pressed yet');
   });
 
   it('from text scale 1.3 the shelf wraps 2 by 2', () => {

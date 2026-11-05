@@ -310,7 +310,7 @@ export default function Settings() {
     try {
       if (enabled) {
         if (!(await ensurePermission())) {
-          Alert.alert('Notifications are off', 'Allow notifications for KaiSip in your phone settings to get reminders.');
+          Alert.alert('Notifications are off', 'Turn them on for KaiSip in your phone settings.');
           return;
         }
         // Read the CURRENT choice after the permission prompt, not the one
@@ -481,7 +481,7 @@ export default function Settings() {
         ref={startRow}
         title="Starting point"
         // Mobile 1.43: a one-line hint (a tester: "Starting point: Not set. I don't know what that is").
-        subtitle="How much audit you know; it shapes your first weeks"
+        subtitle="How much audit you know"
         value={s.familiarity ? START_SHORT[s.familiarity] : 'Not set'}
         spokenValue={s.familiarity ? FAMILIARITY_INFO[s.familiarity].title : 'not set'}
         onPress={open('start')}
@@ -524,7 +524,7 @@ export default function Settings() {
       />
       <ToggleRow
         title="Timed practice"
-        subtitle="A timer that counts up while you answer, never a countdown. Practice’s own switch can change it for one set."
+        subtitle="Counts up, never down. Practice can change it per set."
         value={s.practiceTimer}
         onValueChange={s.setPracticeTimer}
       />
@@ -554,7 +554,7 @@ export default function Settings() {
     <>
       <ToggleRow
         title="Show badges"
-        subtitle="A short moment when you earn one, and your Badges on You. Off: you still earn them, quietly."
+        subtitle="A short moment when you earn one. Off: earned quietly."
         value={!s.badgesHidden}
         onValueChange={(on) => {
           if (on) {
@@ -574,7 +574,7 @@ export default function Settings() {
       )}
       <ToggleRow
         title="Show my plant"
-        subtitle="A plant on Today and You that grows only from real progress. Off: no plant and no prompts. Its growth is kept."
+        subtitle="Grows with your study. Off: hidden, growth kept."
         value={plantOn}
         onValueChange={(on) => setPlantSettings({ showPlant: on })}
         last={!plantOn}
@@ -592,7 +592,7 @@ export default function Settings() {
       <SettingsRow
         // The same words as You's row, so the way to Help reads the same everywhere.
         title="Get help or send feedback"
-        subtitle={dueItems ? creditSubtitle(dueItems) : 'Common questions, reports and what’s new'}
+        subtitle={dueItems ? creditSubtitle(dueItems) : 'Questions, reports, what’s new'}
         onPress={() => router.push('/help')}
       />
       <SettingsRow
@@ -748,7 +748,7 @@ export default function Settings() {
           {/* Destructive, so set apart from the rows above, with its own line saying what goes and what stays. */}
           <Gap h={space.xxl} />
           <Button kind="danger" label={`Reset ${cert.name} progress`} accessibilityHint="Asks first" onPress={confirmReset} />
-          <T v="meta" center style={{ marginTop: space.sm }}>{`Erases your ${cert.name} answers, scores, saved questions, mock history and badges on this phone. Your settings stay.`}</T>
+          <T v="meta" center style={{ marginTop: space.sm }}>{`Erases your ${cert.name} progress on this phone. Settings stay.`}</T>
         </View>
       ),
     },
@@ -923,7 +923,7 @@ export default function Settings() {
         intro="What practice starts with. Practice can change it for one set."
         groupLabel="Default study mode"
         options={[
-          { value: AUTO_MODE, title: 'Let the app choose', subtitle: 'It changes as you go and fits where you’re starting from, ending with a smart mix of what you need.' },
+          { value: AUTO_MODE, title: 'Let the app choose', subtitle: 'Adapts as you go, then mixes what you need.' },
           ...STUDY_MODES.map((m) => ({ value: m, title: MODE_INFO[m].name, subtitle: MODE_INFO[m].why })),
         ]}
         value={s.studyMode ?? AUTO_MODE}
@@ -992,7 +992,7 @@ export default function Settings() {
             title: 'Match my phone',
             subtitle: phoneReduced
               ? `Your phone’s ${phoneSetting()} is on, so movement is already reduced.`
-              : `Calm movement that shows what changed. Follows your phone’s ${phoneSetting()} setting.`,
+              : `Calm movement. Follows your phone’s ${phoneSetting()}.`,
           },
           { value: 'reduced', title: 'Reduced', subtitle: 'Short fades instead of slides; growth shows its end state.' },
         ]}

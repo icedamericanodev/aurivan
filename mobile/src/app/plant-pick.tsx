@@ -83,10 +83,10 @@ export default function PlantPick() {
           {mode === 'new' && (
             <>
               <T v="display" accessibilityRole="header" style={{ marginTop: space.md }}>Choose what you’ll grow</T>
-              <T v="meta" style={{ marginTop: space.sm }}>It grows only from real progress across the exam outline. Never from taps or time. It asks for nothing and never wilts.</T>
+              <T v="meta" style={{ marginTop: space.sm }}>It grows from real progress, never taps or time. It never wilts.</T>
               {/* Opened from Today's plant row: say what "Not now" does there (review decision). */}
               {params.from === 'today' && (
-                <T v="meta" style={{ marginTop: space.sm }}>Not now also hides the plant row on Today. You can plant one from You.</T>
+                <T v="meta" style={{ marginTop: space.sm }}>Not now hides it on Today. Plant one later from You.</T>
               )}
             </>
           )}

@@ -217,6 +217,8 @@ describe('Today, top to bottom', () => {
     expect(byTestID('week-twig')).toHaveLength(1);
     expect(allText()).toContain('6 day streak');
     expect(allText()).toContain('1 study day this week');
+    // Short text (Sky, 5 Nov: nothing repeated on a screen): said once, on the twig, not again under the title.
+    expect(allText().split('1 study day this week')).toHaveLength(2);
   });
   it('a learner with no streak has no pill', () => {
     act(() => {

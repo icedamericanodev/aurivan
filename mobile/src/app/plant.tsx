@@ -235,7 +235,7 @@ export default function YourPlant() {
               </View>
             ))}
             <T v="meta">{`“Know the outline” counts: ${SPREAD_EXPLAINER.charAt(0).toLowerCase()}${SPREAD_EXPLAINER.slice(1)}`}</T>
-            <T v="meta">Only real progress grows it: never taps, minutes, streaks or games. It never shrinks.</T>
+            <T v="meta">Real progress grows it, never taps, time or games. It never shrinks.</T>
           </View>
         ) : (
           <T v="body" style={{ marginTop: space.sm }}>Fully grown, and in season. It keeps all of its growth.</T>

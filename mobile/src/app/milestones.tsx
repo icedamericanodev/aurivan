@@ -339,8 +339,8 @@ export default function Badges() {
         {/* Mobile 1.51 (Field Guide): the running head, then the title and its one promise. Grove You C2: the head shows the date only and the title is "Badges", never "Herbarium" (labels decision 8). */}
         <RunningHead section={today.shown} sectionLabel={today.spoken} />
         <T v="display" accessibilityRole="header" style={{ marginTop: space.lg }}>Badges</T>
-        <FieldText v="sub" style={{ marginTop: 2 }}>Each badge is pressed and labelled the day you earn it. Every sheet counts on its own.</FieldText>
-        <T v="meta" style={{ marginTop: space.sm }}>Earned by what you’ve mastered. Once earned, a badge stays.</T>
+        {/* Short text (Sky, 5 Nov): one promise under the title, said once (the footer no longer repeats it). */}
+        <FieldText v="sub" style={{ marginTop: 2 }}>Earned by what you master. Once earned, a badge stays.</FieldText>
 
         {fillSummary && (
           <View accessible style={{ marginTop: space.lg, borderLeftWidth: 3, borderLeftColor: c.accent, paddingLeft: space.md }}>
@@ -408,7 +408,7 @@ export default function Badges() {
           </View>
         )}
 
-        <T v="meta" style={{ marginTop: space.xl }}>Answers after Coach me and game answers don’t count toward study badges. Nothing here is ever taken away.</T>
+        <T v="meta" style={{ marginTop: space.xl }}>Answers after Coach me and game answers don’t count toward study badges.</T>
       </ScrollView>
 
       {sheetMark && (

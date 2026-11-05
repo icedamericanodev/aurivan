@@ -210,7 +210,7 @@ describe('UX review fixes (1.50 forms)', () => {
     useSeen.setState({ plantForms: { cisa: { seen: 4 } } });
     mount(<PlantLook />);
     const text = allText();
-    expect(text).toContain('A look is just for you: it never changes your growth.');
+    expect(text).toContain('Looks never change your growth.');
     expect(text).not.toMatch(/readiness/i);
     expect(text).toContain('Your oak · Elder');
     expect(text).not.toMatch(/growth \d|\d of 6/);

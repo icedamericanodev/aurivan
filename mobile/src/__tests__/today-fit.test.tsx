@@ -256,7 +256,7 @@ describe('Today: the one "Fit your plan" card', () => {
     oldLearner();
     mount(<Today />);
     expect(byTestID('fit-card')).toHaveLength(1);
-    expect(allText()).toContain('Tell us how long you have and where you’re starting from, and Today’s plan will fit.');
+    expect(allText()).toContain('Set your time and starting point to fit Today’s plan.');
     // Below "Also today" / the hero: after the readiness words in reading order.
     expect(allText().indexOf('Fit your plan')).toBeGreaterThan(allText().indexOf('more answers until your readiness range'));
     press(/^Set it up$/);

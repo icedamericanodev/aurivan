@@ -1,8 +1,9 @@
 /**
  * Grove You, version C2 (engine/groveYou.ts): the summary sentence and the streak row.
  *
- * Plain English for the founder: You opens with one sentence: this week's study days, the
- * readiness range (or how far to the first one), the area to focus on next and the countdown.
+ * Plain English for the founder: You opens with one sentence: the area to focus on next and the
+ * countdown. Since Sky's short-text rule (5 Nov 2026: nothing repeated on a screen) the week's study
+ * days and the readiness range are left to the streak tile and the readiness card right under it.
  * These tests pin the website's own rules (SPEC section 2, "Summary sentence rules"), so the phone
  * and the web say the same thing. The streak row follows Today's twig (DECISIONS 3).
  */
@@ -15,26 +16,27 @@ const DASHES = /[\u2013\u2014]/;
 const BANNED = /\b(pass|passed|guarantee|official|evolve)\b|you’re ready|you're ready/i;
 
 describe('the summary sentence (SPEC section 2 rules)', () => {
-  it('Maya: days, range, focus with its reason, and the countdown held by no-break spaces', () => {
+  it('Maya: focus with its reason, and the countdown held by no-break spaces (no days, no range: shown under it)', () => {
     const s = youSummary({ studyDaysThisWeek: 4, range: after(63, 73), focusShort: 'Protection', answered: 112, daysLeft: 42 });
-    expect(s.shown).toBe(`4 study days this week. Readiness 63 to 73, a study estimate. Focus next: Protection, ${GAIN_MOST}${KEEP_DOT}42 days to go.`);
+    expect(s.shown).toBe(`Focus next: Protection, ${GAIN_MOST}${KEEP_DOT}42 days to go.`);
+    expect(s.shown).not.toMatch(/study days|Readiness/);
     expect(s.lead + s.focus + s.tail).toBe(s.shown);
     expect(s.focus).toBe('Protection');
     // Said with a comma where the dot is; no "·" read aloud.
-    expect(s.spoken).toBe('4 study days this week. Readiness 63 to 73, a study estimate. Focus next: Protection, where you’ll gain most, 42 days to go.');
+    expect(s.spoken).toBe('Focus next: Protection, where you’ll gain most, 42 days to go.');
   });
 
-  it('a new learner: no days yet, answer 40, focus with no reason (no answers), no countdown without a date', () => {
+  it('a new learner: focus with no reason (no answers), no countdown without a date', () => {
     const s = youSummary({ studyDaysThisWeek: 0, range: before(40, 0), focusShort: 'Audit', answered: 0, daysLeft: null });
-    expect(s.shown).toBe('No study days yet this week. Answer 40 questions to see your first readiness range. Focus next: Audit.');
+    expect(s.shown).toBe('Focus next: Audit.');
   });
 
-  it('before 40 answers: "N of 40 answers toward your first readiness range"', () => {
+  it('before 40 answers: the count stays on the readiness card, not in the sentence', () => {
     const s = youSummary({ studyDaysThisWeek: 3, range: before(6), focusShort: 'Operations', answered: 34, daysLeft: 42 });
-    expect(s.shown).toBe(`3 study days this week. 34 of 40 answers toward your first readiness range. Focus next: Operations, ${GAIN_MOST}${KEEP_DOT}42 days to go.`);
-    expect(youSummary({ studyDaysThisWeek: 1, range: before(22), focusShort: 'Governance', answered: 18, daysLeft: null }).shown).toBe(
-      `1 study day this week. 18 of 40 answers toward your first readiness range. Focus next: Governance, ${GAIN_MOST}.`,
-    );
+    expect(s.shown).toBe(`Focus next: Operations, ${GAIN_MOST}${KEEP_DOT}42 days to go.`);
+    expect(youSummary({ studyDaysThisWeek: 1, range: before(22), focusShort: 'Governance', answered: 18, daysLeft: null }).shown).toBe(`Focus next: Governance, ${GAIN_MOST}.`);
+    // The words themselves are kept for other screens.
+    expect(readinessWords(before(6))).toBe('34 of 40 answers toward your first readiness range');
   });
 
   it('the countdown: "1 day to go", "Exam day", and left out once the date has passed', () => {
@@ -54,9 +56,10 @@ describe('the summary sentence (SPEC section 2 rules)', () => {
     expect(s.shown).toContain(' · ');
   });
 
-  it('with no focus area the sentence still reads whole (and the countdown stays)', () => {
+  it('with no focus area the sentence still reads whole: the week, and the countdown stays', () => {
     const s = youSummary({ studyDaysThisWeek: 1, range: after(60, 70), focusShort: null, answered: 50, daysLeft: 9 });
-    expect(s.shown).toBe(`1 study day this week. Readiness 60 to 70, a study estimate${KEEP_DOT}9 days to go.`);
+    expect(s.shown).toBe(`1 study day this week${KEEP_DOT}9 days to go.`);
+    expect(youSummary({ studyDaysThisWeek: 0, range: after(60, 70), focusShort: null, answered: 50, daysLeft: null }).shown).toBe('No study days yet this week.');
     expect(s.focus).toBeNull();
   });
 

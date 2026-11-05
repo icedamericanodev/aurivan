@@ -213,7 +213,7 @@ describe('Settings, mobile 1.46: one page, clear groups', () => {
   it('Reset says what goes and what stays', () => {
     mockParams.current = { category: 'data' };
     render();
-    expect(textOf(root())).toContain('Erases your CISA answers, scores, saved questions, mock history and badges on this phone. Your settings stay.');
+    expect(textOf(root())).toContain('Erases your CISA progress on this phone. Settings stay.');
   });
 
   it('no Settings gear on Settings itself', () => {
@@ -238,7 +238,7 @@ describe('Settings, mobile 1.46: one page, clear groups', () => {
   it('hints, the exam date’s distance, and the short exam-focused line (spoken in full)', () => {
     render();
     const t = textOf(root());
-    expect(t).toContain('How much audit you know; it shapes your first weeks');
+    expect(t).toContain('How much audit you know');
     expect(t).toContain('How Practice picks your questions');
     expect(t).toMatch(/In \d+ days/);
     expect(t).toContain('Mocks and weak spots lead Today');

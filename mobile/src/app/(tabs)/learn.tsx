@@ -67,11 +67,12 @@ export function upNextReason(lesson: Lesson, opts: { askedDomain?: string; focus
 }
 
 /**
- * The cover's one meta line and its spoken form ("5 min · picked where you
- * can gain the most" / "5 minutes, …"; "1 minute" for one). Exported for tests.
+ * The cover's one meta line and its spoken form ("5 min · where you'll gain
+ * most" / "5 minutes, …"; "1 minute" for one). Exported for tests. The words
+ * match Practice's "Where you'll gain most" row (short text, Sky, 5 Nov).
  */
 export function upNextMeta(minutes: number, reason: UpNextReason, place: string): { meta: string; spoken: string } {
-  const why = reason === 'focus' ? 'picked where you can gain the most' : place;
+  const why = reason === 'focus' ? 'where you’ll gain most' : place;
   return { meta: `${minutes} min · ${why}`, spoken: `${minutes} ${minutes === 1 ? 'minute' : 'minutes'}, ${why}` };
 }
 
@@ -207,7 +208,9 @@ export default function Learn() {
       )}
       {/* The footnote (PHASE4.md 7.1 item 7): ink2, one paragraph. J25: the short names keep "IS", so say once what it stands for. */}
       <T v="meta" color={c.ink2} style={{ marginTop: space.xl }}>
-        {`${lessons.length > 0 ? 'Short lessons across every domain of the exam outline. ' : ''}${cert.domains.some((d) => /\bIS\b/.test(d.short)) ? 'IS means information systems. ' : ''}Original content, reviewed against public frameworks.`}
+        {/* Short text (Sky, 5 Nov): the lessons sentence went (the Lessons card shows them); the
+            IS line and the honesty line stay. */}
+        {`${cert.domains.some((d) => /\bIS\b/.test(d.short)) ? 'IS means information systems. ' : ''}Original content, reviewed against public frameworks.`}
       </T>
     </Screen>
   );
@@ -278,7 +281,7 @@ function UpNextCard({
       <HeroCard testID="learn-plate">
         {top(<HeroKicker label="All caught up" />, 'Every lesson done')}
         <T v="meta" color={c.onForest2}>
-          {showNotes ? 'Keep practicing, and open the study notes for any topic that trips you up.' : 'Keep practicing to make it stick.'}
+          {showNotes ? 'Keep practicing. Notes help when a topic trips you.' : 'Keep practicing to make it stick.'}
         </T>
         <Button kind="hero" label="Go to Practice" accessibilityHint="Opens the Practice tab" onPress={() => router.push('/practice')} style={action} />
       </HeroCard>
@@ -377,8 +380,8 @@ export function lookUpItems(
     items.push({
       key: 'week',
       title: 'Final review week',
-      line: 'Your last seven days, day by day',
-      spoken: 'Final review week, your last seven days, day by day',
+      line: 'Your last seven days',
+      spoken: 'Final review week, your last seven days',
       hint: 'Opens the final review week',
       onPress: () => router.push('/exam-week'),
     });
@@ -579,7 +582,8 @@ const LessonGroups = memo(function LessonGroups({
   return (
     <HubCard testID="learn-lessons">
       {/* The one progress meter on Learn (the notes tile counts, it never meters). */}
-      <CardHead serif title="Lessons" meta={`${doneCount} of ${lessons.length} · in exam order · each ends with a check`} />
+      {/* Short text (Sky, 5 Nov): "each ends with a check" went; the lesson itself says so. */}
+      <CardHead serif title="Lessons" meta={`${doneCount} of ${lessons.length} · in exam order`} />
       {groups.map(({ domain: d, items }, gi) => {
         const groupDone = items.filter((l) => done(l.id)).length;
         const isOpen = isOpenGroup(d.id);

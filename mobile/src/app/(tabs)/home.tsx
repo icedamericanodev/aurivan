@@ -76,7 +76,7 @@
  * owner's decision). Top to bottom:
  *   head       the date only (said in full). No book label, no gear: Settings is on You's header.
  *   title      the countdown is the news: "Maya, 38 days to go" (engine/fieldGuide.ts todayTitle; with
- *              no date, the greeting), then "CISA exam 6 Dec · 2 study days this week" on one quiet line
+ *              no date, the greeting), then "CISA exam 6 Dec" on one quiet line (the twig says the study days)
  *   hero       ONE forest card: the plant's stage in words ("Seed", "Stage 1 of 6"; the button to Your
  *              plant), the readiness ring with the plant full size inside (40 seed dots before the first
  *              range, then 50 ticks with the range in gold and the clay 80 mark), the caption under it
@@ -731,9 +731,10 @@ export default function Today() {
   const awayNow = studyDaysAway(studyDays, plan.day);
   const twigShown = !examWeekNow && awayNow < NAME_ASK_AWAY_DAYS;
   const twigRight = twigStreak(j.progress.milestones?.days ?? 0, j.streak);
-  // The quiet line under the title: the exam's date, then this week's study days (the streak is on the twig).
-  const subLine = [examLine, twigShown && studiedThisWeek > 0 ? studyDaysWords(studiedThisWeek) : null].filter(Boolean).join(' · ');
-  const subSpoken = [examSpoken, twigShown && studiedThisWeek > 0 ? studyDaysWords(studiedThisWeek) : null].filter(Boolean).join(', ');
+  // The quiet line under the title: the exam's date. Short text (Sky, 5 Nov: nothing repeated on a
+  // screen): this week's study days left this line, because the twig card says them whenever it shows.
+  const subLine = examLine ?? '';
+  const subSpoken = examSpoken ?? '';
   // The line under the hero, in the guide's italic: what grows the plant (no book label).
   // With a plant, its name ("Kai grows with your study."), as the web's line does.
   const plantName = plantView.plant ? plantCallName(plantView.plant) : '';

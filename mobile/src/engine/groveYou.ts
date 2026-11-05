@@ -4,9 +4,9 @@
  * (Spec: scratchpad grove/you-c2/final/SPEC.md sections 2 and 4; design-notes/grove/DECISIONS.md 1 and 3.)
  *
  * Plain English:
- * - The summary sentence under the profile says, in one breath, this week's study days, the
- *   readiness range (or how far to the first one), where to focus next and the countdown. It is
- *   built by the same rules as the website's, so the phone and the web never disagree.
+ * - The summary sentence under the profile says where to focus next and the countdown (short
+ *   text, 5 Nov 2026: the study days and the range are on the tiles and card under it). It was
+ *   built by the same rules as the website's; the website takes the same cut in its copy pass.
  * - "Focus next" is the same domain Today and Practice pick (readiness.focusDomainId). Once there
  *   are answers it says why: "where you'll gain most".
  * - The countdown hangs off the last sentence with no-break spaces around its dot, so a line
@@ -75,16 +75,19 @@ export interface YouSummary {
 export function youSummary(i: YouSummaryInput): YouSummary {
   const countdown = countdownWords(i.daysLeft);
   const end = countdown ? `${KEEP_DOT}${countdown}.` : '.';
-  const first = `${weekDaysWords(i.studyDaysThisWeek)}. ${readinessWords(i.range)}`;
+  // Short text (Sky, 5 Nov 2026: nothing repeated on a screen): the week's study days and the
+  // readiness range left this sentence, because the streak tile and the Estimated readiness card
+  // right under it say them. What is left is the one thing only this line says: where to go next.
+  // With no focus area (a course with no domains) the week's study days stay, so the line is never empty.
   let lead: string;
   let focus: string | null = null;
   let tail: string;
   if (i.focusShort) {
-    lead = `${first}. Focus next: `;
+    lead = 'Focus next: ';
     focus = i.focusShort;
     tail = `${i.answered > 0 ? `, ${GAIN_MOST}` : ''}${end}`;
   } else {
-    lead = first;
+    lead = weekDaysWords(i.studyDaysThisWeek);
     tail = end;
   }
   const shown = `${lead}${focus ?? ''}${tail}`;

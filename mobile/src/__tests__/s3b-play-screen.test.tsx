@@ -106,7 +106,7 @@ describe('Drills: Today’s drill', () => {
     mount();
     const text = textOf(root());
     expect(text).toContain('Today’s drill');
-    expect(text).toContain('Missed questions go to your review.');
+    expect(text).toContain('Short games, one exam skill each. Misses go to review.');
     // Today's drill = Snare Spotter, said so first; its related games are Signpost and Call It First.
     expect(drill()).toBe(GAMES.trap.name);
     expect(String(drillRow().props.accessibilityLabel)).toMatch(/^Today’s drill: /);
@@ -155,7 +155,7 @@ describe('Drills: Today’s drill', () => {
     tagFive('role');
     mount();
     expect(drill()).toBe(GAMES.canopy.name);
-    expect(textOf(root())).toContain('Today’s pick is from your mistakes: you answer as the wrong person.');
+    expect(textOf(root())).toContain('From your misses: you answer as the wrong person.');
     // Its row opens that game.
     act(() => {
       drillRow().props.onPress();

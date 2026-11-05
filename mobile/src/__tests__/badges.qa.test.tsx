@@ -1189,7 +1189,7 @@ describe('8. regressions', () => {
     // Grove You C2: the head is the date, then the title "Badges" (never "Herbarium", labels decision 8).
     expect(allText()).toMatch(/^\w{3} \d{1,2} \w{3} Badges /);
     expect(allText()).not.toMatch(/Herbarium/);
-    expect(allText()).toContain('Earned by what you’ve mastered.');
+    expect(allText()).toContain('Earned by what you master. Once earned, a badge stays.');
   });
 
   it('every link to the badges in the app uses /milestones (nothing points at a /badges route that does not exist)', () => {

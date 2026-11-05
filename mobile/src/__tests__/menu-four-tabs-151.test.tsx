@@ -289,7 +289,7 @@ describe('the one-time "games moved" line (UX review P4)', () => {
     played();
     mountMeasured(<Practice />);
     expect(moved()).toHaveLength(1);
-    expect(textOf(moved()[0])).toContain('The games are here now, as Drills.');
+    expect(textOf(moved()[0])).toContain('The games are now Drills.');
     const go = moved()[0].findAll((n) => n.props.accessibilityRole === 'button' && typeof n.props.onPress === 'function')[0];
     expect(go.props.accessibilityLabel ?? textOf(go)).toContain('Go to Drills');
     expect(go.props.accessibilityHint).toBe('Scrolls to Drills on this page');

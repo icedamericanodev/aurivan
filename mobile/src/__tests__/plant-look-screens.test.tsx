@@ -148,7 +148,7 @@ describe('Look', () => {
     expect(cp().plant!.look).toMatchObject({ colourway: 'oak-autumn', planter: 'terracotta', visitor: 'no-visitor' });
     // Cosmetics only: growth never changes.
     expect(cp().plant!.growth).toBe(4);
-    expect(allText()).toMatch(/never changes your growth or your readiness/);
+    expect(allText()).toMatch(/never change your growth or readiness/);
   });
 
   it('a locked choice says how to open it, and can’t be picked', () => {

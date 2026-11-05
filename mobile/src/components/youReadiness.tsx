@@ -41,20 +41,15 @@ export function readinessSpoken(range: ReadinessRange): string {
  * same sentence): what the low end is, what the study bar asks of it, and how
  * far off it is. The numbers come from the range and the app's study bar
  * (READY_LOW), never a written-in 80. Presentation only: no maths changes.
+ * Short text (Sky, 5 Nov): three short sentences, one idea each, and the
+ * honesty words ("a goal, not an exam score") kept.
  */
 export function lowEndLine(low: number, bar = READY_LOW): string {
   const gap = bar - low;
-  return `Your low end, ${low}, is the cautious end of your range: we’re fairly sure you’re at or above it. The study bar asks for a low end of ${bar}, a goal to study toward, not an exam score. ${
-    gap > 0 ? `Yours is ${gap} under it.` : 'Yours is at or above it.'
+  return `Your low end, ${low}, is the cautious end. The study bar is ${bar}, a goal, not an exam score. ${
+    gap > 0 ? `You’re ${gap} under it.` : 'You’re at or above it.'
   }`;
 }
-
-/**
- * The study-bar line once the low-end sentence shows: that sentence already names the study bar and says
- * it is not an exam score, so only the area line is left to say. Before a range (and anywhere without the
- * sentence) the full STUDY_BAR_LINE stays.
- */
-export const AREA_LINE_ONLY = `Each area has its own ${STEADY_FROM}% line.`;
 
 /** The range on its scale bar, with the study bar's tick. */
 export function ReadinessBlock({ range, growth }: { range: ReadinessRange; growth?: Growth }) {
@@ -68,8 +63,10 @@ export const areasTitle = (n: number) => `${COUNT_WORDS[n] ?? n} ${n === 1 ? 'ar
  * What the plate's marks mean, in words (KEY). Grove Phase 4 (PHASE4.md 7.11, DECISIONS 13 Q1): the
  * web's wording. The dashed line is 70, the target for each area; growth is the up arrow in green;
  * clay marks only an area below 70. On You the growth is since the learner last looked.
+ * Short text (Sky, 5 Nov): "one line of growth per area, on the same scale" went (the title, "Five
+ * areas, one scale", says it); each mark keeps its few words.
  */
-export const AREAS_KEY = `${AREAS_CAPTION}. One line of growth per area, on the same scale. Dashed line: ${STEADY_FROM}, the target for each area. ↑: growth since you last looked. Clay: an area below ${STEADY_FROM}.`;
+export const AREAS_KEY = `${AREAS_CAPTION}. Dashed line: ${STEADY_FROM}, each area’s target. ↑: growth since you last looked. Clay: below ${STEADY_FROM}.`;
 /** The line under the chart (the board's words): where the numbers come from. */
 export const AREAS_SOURCE = 'Built from your answers in this app.';
 

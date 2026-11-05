@@ -209,7 +209,7 @@ describe('Today', () => {
     mockParams = { from: 'today' };
     mount(<PlantPick />);
     // It says so before the learner taps it (review decision).
-    expect(allText()).toContain('Not now also hides the plant row on Today. You can plant one from You.');
+    expect(allText()).toContain('Not now hides it on Today. Plant one later from You.');
     press(/^Not now$/);
     expect(useProgress.getState().plantSettings?.promptHidden).toBe(true);
   });

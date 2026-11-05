@@ -133,9 +133,9 @@ describe('Settings → Help and feedback', () => {
     // Mobile 1.46: on Help and about's own screen (Settings' door).
     mockParams = { category: 'help' };
     mount(<Settings />);
-    expect(pressables('Get help or send feedback, Common questions, reports and what’s new')).toHaveLength(1);
+    expect(pressables('Get help or send feedback, Questions, reports, what’s new')).toHaveLength(1);
     for (const t of ['Common questions', 'Contact support', 'Suggest an idea', 'Your reports', 'What’s next']) expect(pressables(t)).toHaveLength(0);
-    press('Get help or send feedback, Common questions, reports and what’s new');
+    press('Get help or send feedback, Questions, reports, what’s new');
     expect(mockPush).toHaveBeenCalledWith('/help');
   });
 });
@@ -402,7 +402,7 @@ describe('Your reports and the credit loop', () => {
 
   it('You has one entry to Help and feedback', () => {
     mount(<You />);
-    press('Get help or send feedback, Common questions, reports and what’s new');
+    press('Get help or send feedback, Questions, reports, what’s new');
     expect(mockPush).toHaveBeenCalledWith('/help');
   });
 });

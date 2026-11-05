@@ -219,7 +219,7 @@ describe('Settings in the headers (Grove: on You only)', () => {
     mount(<You />);
     const rows = root().findAll((n) => n.props.title === 'Settings' && typeof n.props.onPress === 'function');
     expect(rows).toHaveLength(1);
-    expect(rows[0].props.subtitle).toBe('Name, exam date, dark mode, your data, help and about');
+    expect(rows[0].props.subtitle).toBe('Name, exam date, theme, your data');
     const tools = root().findAll((n) => n.props.testID === 'study-tools');
     expect(tools[0].findAll((n) => n.props.title === 'Settings')).toHaveLength(0);
     act(() => {
@@ -234,7 +234,7 @@ describe('Drills when no game is playable for this exam', () => {
     const spy = jest.spyOn(registry, 'isPlayable').mockReturnValue(false);
     (router.push as jest.Mock).mockClear();
     mount(<Drills />);
-    expect(textOf(root())).toContain('Drills arrive once this exam has enough practice questions for them.');
+    expect(textOf(root())).toContain('Drills come once this exam has enough questions.');
     expect(byTestId('drills-list')).toHaveLength(0);
     expect(textOf(root())).not.toMatch(/\d+ (questions|more)/);
     expect(router.push).not.toHaveBeenCalled();

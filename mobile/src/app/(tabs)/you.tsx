@@ -67,7 +67,7 @@ import { router, useFocusEffect } from 'expo-router';
 import { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { View } from 'react-native';
 import { ringsChangeLine } from '../../components/journey';
-import { AREA_LINE_ONLY, AreaRows, lowEndLine, ReadinessBlock } from '../../components/youReadiness';
+import { AreaRows, lowEndLine, ReadinessBlock } from '../../components/youReadiness';
 import { FieldText, headDate, RunningHead } from '../../components/fieldguide';
 import { BadgeShelf, HERBARIUM, SHELF_SLOTS } from '../../components/herbarium';
 import { lastPressed } from '../../engine/fieldGuide';
@@ -92,7 +92,7 @@ import { pacingStats, pacingStatsLine, spokenMin } from '../../engine/pace';
 import { mockSubtitle } from '../../components/readinessReport';
 import { RANGE_MIN_ANSWERS, readinessRange, type ReadinessRange } from '../../engine/readinessRange';
 import { mockPct } from '../../engine/readinessReport';
-import { BAND_MIN_ANSWERS, BANDS_LINE, domainFigure, STUDY_BAR_LINE } from '../../engine/domainBand';
+import { BAND_MIN_ANSWERS, BANDS_LINE, domainFigure } from '../../engine/domainBand';
 import { dayKey } from '../../engine/streak';
 import { FOCUS_SET_SIZE, guardedStart, reviewSubtitle, startFocusPractice, startReview } from '../../lib/sessions';
 import { caseEarnedCount } from '../../engine/badgeCatalog';
@@ -323,7 +323,7 @@ export default function You() {
         {plant.plant ? (
           <YourPlantCard
             title={plantCallName(plant.plant)}
-            line={`${growthShort(plant.plant.growth)} · grows only from real progress, never wilts`}
+            line={`${growthShort(plant.plant.growth)} · never wilts`}
             spoken={`Your plant: ${plant.label}`}
             hint="Opens your plant"
             onPress={() => router.push('/plant')}
@@ -332,7 +332,7 @@ export default function You() {
         ) : plant.shown ? (
           <YourPlantCard
             title="Pick your plant"
-            line="It grows only from real progress, never wilts"
+            line="Grows with your study, never wilts"
             spoken="Your plant: pick your plant. It grows only with your study."
             hint="Opens the plant picker"
             onPress={() => router.push('/plant-pick')}
@@ -485,7 +485,7 @@ const YouLists = memo(function YouLists({
   const icon = (G: typeof Settings) => <G size={ICON_SIZE.row} color={c.accentText} strokeWidth={ICON_STROKE} />;
   // A mini mock is a third of the exam, as on Practice.
   const miniMock = Math.round(cert.exam.questions / 3);
-  const helpLine = creditItems ? creditSubtitle(creditItems) : 'Common questions, reports and what’s new';
+  const helpLine = creditItems ? creditSubtitle(creditItems) : 'Questions, reports, what’s new';
   return (
     <>
       {summary && (
@@ -580,9 +580,11 @@ const ReadinessCard = memo(function ReadinessCard({ range, towardRange, growth }
           {/* One kicker word on You and Today (UX review O9). */}
           <FieldText v="head" accessibilityRole="header">Estimated readiness</FieldText>
           {!range.enough && (
-            <View accessible accessibilityLabel={`Not enough data yet. ${towardRange} of ${RANGE_MIN_ANSWERS} answers for your first range. A study bar, not an exam score.`}>
+            // Short text (Sky, 5 Nov): one line. No scale bar is drawn before a range, so the study-bar
+            // words wait until there is one (they were said twice here).
+            <View accessible accessibilityLabel={`Not enough data yet. ${towardRange} of ${RANGE_MIN_ANSWERS} answers for your first range.`}>
               <T v="title" style={{ marginTop: 2 }}>Not enough data yet</T>
-              <T v="meta">{`${towardRange} of ${RANGE_MIN_ANSWERS} answers for your first range. A study bar, not an exam score.`}</T>
+              <T v="meta">{`${towardRange} of ${RANGE_MIN_ANSWERS} answers for your first range.`}</T>
             </View>
           )}
         </View>
@@ -593,9 +595,9 @@ const ReadinessCard = memo(function ReadinessCard({ range, towardRange, growth }
       {/* Large text: "See report" on its own line, under the range (or under "Not enough data yet"). */}
       {large && seeReport}
       {/* Grove panel Q1: once there is a range, the low end is defined once, before the study-bar line. */}
+      {/* Short text (Sky, 5 Nov): the area line ("Each area has its own 70% line") went; the areas
+          card's key says it, one card below. */}
       {range.enough && <T v="meta" color={c.ink} style={{ marginTop: space.md }}>{lowEndLine(range.low)}</T>}
-      {/* With the low-end sentence the study bar is already said: only the area line is left. */}
-      <T v="meta" style={{ marginTop: space.md }}>{range.enough ? AREA_LINE_ONLY : STUDY_BAR_LINE}</T>
     </HubCard>
   );
 });
@@ -610,7 +612,7 @@ const ProgressCard = memo(function ProgressCard({ cert, focus, hasAnswers }: { c
         <ListRow
           icon={icon(Gauge)}
           title="Your progress"
-          subtitle="Where you stand, charts and study days"
+          subtitle="Charts and study days"
           accessibilityHint="Opens your readiness report"
           onPress={() => router.push('/readiness')}
           last={!focus}
@@ -688,7 +690,7 @@ const MockHistory = memo(function MockHistory({ mocks, miniMock }: { mocks: read
     <>
       {mocks.length === 0 ? (
         <>
-          <EmptyState compact title="No mocks yet" body="A mini mock shows how the exam feels. Start one whenever you like." />
+          <EmptyState compact title="No mocks yet" body="A mini mock shows how the exam feels." />
           {/* An experienced learner shouldn't have to wait for Today (ui.md Y4): the same start sheet as Practice. */}
           <Button
             kind="ghost"

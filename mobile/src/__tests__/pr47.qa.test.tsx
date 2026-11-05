@@ -395,7 +395,8 @@ describe('QA 2: entry points', () => {
     // Fixed (QA B3): You uses mockPct(), like the report.
     expect(allWords()).not.toContain('NaN');
     expect(allWords()).toContain('score 0 percent');
-    expect(allText()).toContain('0%');
+    // The mock's own score, "0 %" (a standalone 0, not the "70%" of another line).
+    expect(allText()).toMatch(/(^|\s)0 ?%/);
   });
 
   it('the exam-week screen links to the report; the report links back to the checklist in exam week', () => {

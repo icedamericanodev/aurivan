@@ -90,11 +90,12 @@ export const HerbariumEntry = memo(function HerbariumEntry({
 export const SHELF_SLOTS = 4;
 
 /**
- * The line under the shelf (the kit: "1 pressed · Fresh Start, 26 Oct"), led by the row's
- * kept words "Your badges and field notes" (DECISIONS 8 carry item, PHASE4 7.14 item 7).
+ * The line under the shelf, the kit's words: "1 pressed · Fresh Start, 26 Oct". It was led by
+ * "Your badges and field notes" (PHASE4 7.14 item 7) until the short-text rule (5 Nov).
  */
 export function shelfLine(count: number, last?: LastPressed): string {
-  return last && count ? `Your badges and field notes. ${count} pressed · ${last.name}, ${shortDate(last.at)}` : 'Your badges and field notes. None pressed yet';
+  // Short text (Sky, 5 Nov): the kit's own line; the card's title already says Badges.
+  return last && count ? `${count} pressed · ${last.name}, ${shortDate(last.at)}` : 'None pressed yet';
 }
 
 /**

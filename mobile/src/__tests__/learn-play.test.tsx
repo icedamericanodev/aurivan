@@ -291,7 +291,7 @@ describe('helpers', () => {
   });
 
   it('the cover’s meta line says its length and why, and speaks "minute" for one', () => {
-    expect(upNextMeta(5, 'focus', 'lesson 2 of 7')).toEqual({ meta: '5 min · picked where you can gain the most', spoken: '5 minutes, picked where you can gain the most' });
+    expect(upNextMeta(5, 'focus', 'lesson 2 of 7')).toEqual({ meta: '5 min · where you’ll gain most', spoken: '5 minutes, where you’ll gain most' });
     expect(upNextMeta(1, 'next', 'lesson 2 of 7')).toEqual({ meta: '1 min · lesson 2 of 7', spoken: '1 minute, lesson 2 of 7' });
   });
 

@@ -24,7 +24,8 @@ import { AnimatedPressable, usePressScale } from './motion';
 import { T, useFontScale } from './ui';
 
 /** The Settings row's line near the end of You (the owner's words, 31 Oct 2026): what Settings holds. */
-export const SETTINGS_ROW_NOTE = 'Name, exam date, dark mode, your data, help and about';
+// Short text (Sky, 5 Nov): help has its own row on You, so the line names the rest.
+export const SETTINGS_ROW_NOTE = 'Name, exam date, theme, your data';
 
 /** The sentence:"4 study days this week. Readiness 63 to 73, a study estimate. Focus next: **Protection**, …". */
 export const YouSummaryLine = memo(function YouSummaryLine({ summary }: { summary: YouSummary }) {

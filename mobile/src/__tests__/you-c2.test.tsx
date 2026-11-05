@@ -99,7 +99,9 @@ describe('the head and the summary sentence', () => {
   it('a new learner: no days, answer 40, Focus next: the first area, and "Practice {area}"', () => {
     mount();
     const first = cisa.domains[0].short;
-    expect(allText()).toContain(`No study days yet this week. Answer 40 questions to see your first readiness range. Focus next: ${first}.`);
+    // Short text (Sky, 5 Nov): the sentence says only the focus; the tiles and readiness card say the rest.
+    expect(allText()).toContain(`Focus next: ${first}.`);
+    expect(allText()).not.toContain('No study days yet this week.');
     expect(allText()).not.toContain('gain most');
     expect(pressable(new RegExp(`^Practice ${first}$`))).toHaveLength(1);
   });
@@ -112,12 +114,14 @@ describe('the head and the summary sentence', () => {
     mount();
     const focus = cisa.domains.find((d) => d.id === readinessFor(cisa, selectCert(useProgress.getState(), 'cisa').answers).focusDomainId)!;
     const t = allText();
-    expect(t).toContain('1 study day this week. 34 of 40 answers toward your first readiness range.');
+    // The count toward the first range is on the readiness card, said once.
+    expect(t).toContain('34 of 40 answers for your first range.');
+    expect(t).not.toContain('answers toward your first readiness range');
     expect(t).toContain(`Focus next: ${focus.short}, where you’ll gain most · 42 days to go.`);
     // Said once, with a comma where the dot is.
     expect(labels().some((l) => l.endsWith(`Focus next: ${focus.short}, where you’ll gain most, 42 days to go.`))).toBe(true);
     // The sentence itself has no en or em dash (the chart's own placeholders are older, Phase 1).
-    expect(labels().find((l) => l.startsWith('1 study day this week'))).not.toMatch(DASHES);
+    expect(labels().find((l) => l.startsWith('Focus next:'))).not.toMatch(DASHES);
   });
 
   it('"Practice {area}" starts the focus area set (the same as Practice\'s Weak spots row) and opens it', () => {
@@ -147,7 +151,7 @@ describe('the plant chip', () => {
     expect(textOf(chip[0])).toContain('Your plant');
     // Grove Phase 4 (the 04 board): a forest card, the name over its growth and the plant's promise.
     expect(textOf(chip[0])).toContain('Bayani');
-    expect(textOf(chip[0])).toContain('Seed · growth 1 of 6 · grows only from real progress, never wilts');
+    expect(textOf(chip[0])).toContain('Seed · growth 1 of 6 · never wilts');
     expect(chip[0].props.accessibilityLabel).toMatch(/^Your plant: /);
     press(/^Your plant: /);
     expect(router.push).toHaveBeenCalledWith('/plant');
@@ -207,10 +211,10 @@ describe('Badges, never "Herbarium", and the Settings row', () => {
   it('a Settings row near the end, with the owner\'s line, opens the same Settings screen as the cog', () => {
     mount();
     const t = allText();
-    expect(t).toContain('Name, exam date, dark mode, your data, help and about');
+    expect(t).toContain('Name, exam date, theme, your data');
     // Near the end: after Help and feedback, before the trademark line.
-    expect(t.indexOf('Get help or send feedback')).toBeLessThan(t.indexOf('Name, exam date, dark mode'));
-    expect(t.indexOf('Name, exam date, dark mode')).toBeLessThan(t.indexOf('Not affiliated'));
+    expect(t.indexOf('Get help or send feedback')).toBeLessThan(t.indexOf('Name, exam date, theme'));
+    expect(t.indexOf('Name, exam date, theme')).toBeLessThan(t.indexOf('Not affiliated'));
     press(/^Settings, Name, exam date/);
     expect(router.push).toHaveBeenCalledWith('/settings');
   });
