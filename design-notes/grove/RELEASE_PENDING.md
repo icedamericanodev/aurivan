@@ -47,6 +47,8 @@ Batched for the end of the uplift (web v13, mobile 2.0.0; DECISIONS 8). Write th
 - Today, Learn, Practice, You and Settings now say things in fewer, shorter words.
 - Study notes topics are easier to scan: each name in plain type, with one line for progress and reading time.
 - On wide screens, Check yourself beside a note now matches the note's own Practice this concept button.
+- After you answer, the other choices sit right under your answer, so the tips are easy to follow.
+- Screen readers now move through study notes by heading in a clear order.
 
 ## Follow-ups to do at the release
 - `mobile/src/engine/plantLooks.ts` `howToOpen` says "in the Herbarium": change to "in Badges" and rebuild `assets/kaisip-plant.js` in the same commit.
@@ -68,6 +70,7 @@ Batched for the end of the uplift (web v13, mobile 2.0.0; DECISIONS 8). Write th
 
 ## Carry into the next push (from the type leftovers review)
 - Glossary letter buttons are 28px tall on phones: bring them to the 44px target block. (Web done in Phase 4 review round 3: 44px wide and tall at every width.)
+- Phone, to match web 4c review round 3: after an answer, list the options the answer rows have not shown as muted rows under an "Other options" caption (not in exam mode), so every letter the tips name is visible (`PHASE4.md` 4.2 step 2).
 - Phone, same release as the web O1 build: stop calling `splitMissTips` in `app/session.tsx` so all three tips are open after a miss (PHASE4.md 7.10).
 - Source titles in `framework_ref` with spaced en or em dashes (52 questions): the web shows them as a colon; fix the originals in a content pass and show the same on the phone.
 - Glossary letter grid at 200% text leaves an orphan letter (5,5,5,5,5 then Z): even rows.

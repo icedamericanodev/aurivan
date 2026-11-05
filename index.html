@@ -6025,6 +6025,11 @@ body[data-app-cta-card="shown"][data-section="today"] .app-cta-line { display: n
 .vr-nl .vine-cap { margin: 0 0 var(--sp-xs); font: var(--t-caption); letter-spacing: var(--tr-caption); color: var(--text2); }
 .vr-whynot-k { font: var(--t-caption); letter-spacing: var(--tr-caption); color: var(--text2); }
 .vr-whynot-t { font: var(--t-small); color: var(--text); overflow-wrap: anywhere; }
+/* The other options under the answer rows: muted, as the recap's list. */
+.vr-others { padding: 14px 0; border-top: 1px solid var(--border); }
+.vr-others-cap { margin: 0 0 var(--sp-sm); font: var(--t-caption); letter-spacing: var(--tr-caption); color: var(--text2); }
+.vr-others-l { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: var(--sp-sm); }
+.vr-others .vr-recap-o { color: var(--text2); }
 
 /* Key idea: the coach speaking, so the 3px accent rule. */
 .vr-key { display: flex; flex-direction: column; gap: var(--sp-xs); margin: var(--sp-xl) 0 0; padding-left: var(--sp-lg); border-left: 3px solid var(--accent); }
@@ -12079,7 +12084,9 @@ function gtItemRow(it, d, tokens, opts) {
   var state = gtNoteState(it.id);
   var isDone = state === 'read';
   var idE = escapeHtml(it.id);
-  var rh = opts.underPart ? 'h5' : 'h4';
+  // Always h4: under a part the h3 part caption leads, else the h3 topic
+  // (the topic is a div under a part), so no level is skipped.
+  var rh = 'h4';
   // Just read this session and not yet seen: draw the old state, and let
   // gtWatchJustRead sweep it to full once the row is on screen.
   var shown = (isDone && gtJustRead[it.id]) ? gtJustRead[it.id] : state;
@@ -12455,7 +12462,7 @@ function renderTopics() {
           bodyHtml += '<div class="gt-cando"><p class="gt-cap-inline">You should be able to</p><ul class="gt-list">'
             + g.can_do.map(function(x) { return '<li>' + escapeHtml(x) + '</li>'; }).join('') + '</ul></div>';
         }
-        bodyHtml += '<div class="gt-rows">' + items.map(function(it) { return gtItemRow(it, d, tokens, { underPart: !!part }); }).join('') + '</div>';
+        bodyHtml += '<div class="gt-rows">' + items.map(function(it) { return gtItemRow(it, d, tokens); }).join('') + '</div>';
       }
       if (part && part !== lastPart) {
         partHtml = '<h3 class="gt-part-h">Part ' + escapeHtml(part.part || '') + ' &middot; ' + escapeHtml(part.name || '') + '</h3>';
@@ -21099,8 +21106,8 @@ function showResult(chosen, correct, timeout, info) {
       + (back ? (coach ? ' ' : '') + '<span id="vrBack">' + escapeHtml(back) + '</span>' : '') + '</p>' : '');
 
   // 2. The answer card: your answer, "Why not B" under it, then the best
-  //    answer after a miss. A timeout has the best answer only. The other
-  //    two options stay in More ("Why the other options are wrong").
+  //    answer after a miss. A timeout has the best answer only. Then the
+  //    other options, muted (their notes stay in More).
   var rows = '';
   if (chosen && ok) {
     rows += vrOptionRow('right', 'Your answer &middot; the best', chosen, optText(correctOrig), ', ' + chosen + ', the best: ');
@@ -21109,6 +21116,21 @@ function showResult(chosen, correct, timeout, info) {
       + vrWhyNotHtml(chosen, wrongNote(chosenOrig));
   }
   if (!ok) rows += vrOptionRow('best', 'Best answer', correct, optText(correctOrig), ', ' + correct + ': ');
+  // The options the card has not shown yet, as short muted rows in display
+  // order, so every letter the tips name is on screen next to them (4c-web
+  // review round 3). Only where the tips show (never in exam mode).
+  if (!inExamMode && (q.tips || []).length) {
+    var others = DISPLAY_LETTERS.filter(function (displayL) {
+      return displayL !== chosen && displayL !== correct && (q.options || {})[displayToOriginal(displayL, shuffle)];
+    });
+    if (others.length) {
+      rows += '<div class="vr-others"><p class="vr-others-cap" id="vrOthersCap">Other options</p>'
+        + '<ul class="vr-others-l" aria-labelledby="vrOthersCap">' + others.map(function (displayL) {
+          return '<li class="vr-recap-o"><span class="vr-recap-l" aria-hidden="true">' + displayL + '</span>'
+            + '<span><span class="sr-only">Option ' + displayL + ': </span>' + optText(displayToOriginal(displayL, shuffle)) + '</span></li>';
+        }).join('') + '</ul></div>';
+    }
+  }
 
   // 3. Key idea (the coach is speaking: the 3px accent rule). Not a card.
   var keyHtml = !inExamMode && q.key_concept

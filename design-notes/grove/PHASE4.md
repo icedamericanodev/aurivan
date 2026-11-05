@@ -121,6 +121,7 @@ Every letter shown is a display letter (`mapLettersInText`, the shuffle). Gradin
    - Right: one row, caption "Your answer · the best".
    - Time's up: the Best answer row only.
    - The other options stay out of view and remain one tap away in More, under the recap's "Show question and options" (web), and in review.
+   - **Amended (4c-web review round 3):** on the web the card ends with the options it has not shown, under a divider: `caption` "Other options" in `--text2`, then each as the recap's row (outline letter badge, option text in `small` `--text2`), in display order. The tips name all four letters, and the learner should not have to scroll back up to the recap to follow Eliminate two and Final two. Not in exam mode (no tips there). Their Why not notes stay in More. The phone mirrors this in its next pass (RELEASE_PENDING).
 3. **Key idea.** `caption` "Key idea" in `--accent-text` over the key concept in `quote` (Fraunces italic 18/26), with the 3px `--accent` left rule (the coach is speaking). Not a card.
 4. **How to think about it.** `headline` heading (17/24, Figtree 600, never Fraunces, R4), then one card with one row per tip in this fixed order: Eliminate two, Final two, Exam cue. Each row is its `caption` label (from `tipParts`, words only, one colour `--accent-text`) over the tip in `small` `--text`, with 1px inset dividers. A small accent leaf marks each row; the vine is one stem down the card's left edge, drawn once in reading order (static under Reduce Motion). Colour never tells the tips apart; the label words do. A fourth tip, or an older "Mindset" tip with its principle link (`.principle-link`), adds a row; an older tip with no label word takes the position labels from `tipParts` (`index.html:19768`: Trap, Mindset, Exam-day, the locked tip labels) on both builds, never "Tip 1". The pick chip stays: "Your pick, B" on Final two when the pick was the other of the final two, on Eliminate two when the pick is one of the two to rule out. **Open in every state.**
 5. **Why D.** `headline` heading, the explanation in `body`.
@@ -145,6 +146,7 @@ No live announcement on Check answer. After 400ms focus moves to the verdict hea
 1. "Your answer, B, not the best: {text}"
 2. "Why not B: {note}" (one stop)
 3. "Best answer, D: {text}"
+   - then (web, round 3) "Other options", a list: "Option A: {text}", "Option C: {text}"
 4. "Key idea: {text}"
 5. heading "How to think about it", then a list of 3 on the web (`<ul>`): "Eliminate two: ...", "Final two, your pick B: ...", "Exam cue: ...". On the phone RN Views give TalkBack and VoiceOver no list information, so each tip row is one stop whose label starts with its label word ("Eliminate two: ..."); never a faked "list of 3" or "1 of 3".
 6. heading "Why D", then the whole explanation
