@@ -29,6 +29,10 @@ Batched for the end of the uplift (web v13, mobile 2.0.0; DECISIONS 8). Write th
 - Backing up, restoring, resetting and Today's backup reminder now confirm right under what you tapped, on any screen size, and never cover another button.
 - Today's next step now labels your own score, and the Practice summary fits small screens at larger text sizes.
 - Text sizes and styles are now consistent across every screen, and all text grows with your browser's text size.
+- Practice and Learn have a calmer, clearer look, and the answer screen keeps every tip in view. (Phase 4 draft line, PHASE4.md section 10.)
+- Learn now opens on its own page, with the note to read next, a search across every domain's notes and a quick way into each part of Learn.
+- Practice shows your set as clear tiles you can change in place, and both mock exam sizes are one tap away.
+- The glossary lets you mark a term as mastered right from the list.
 
 ## Follow-ups to do at the release
 - `mobile/src/engine/plantLooks.ts` `howToOpen` says "in the Herbarium": change to "in Badges" and rebuild `assets/kaisip-plant.js` in the same commit.

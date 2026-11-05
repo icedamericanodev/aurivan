@@ -4671,7 +4671,7 @@ header {
   font: var(--t-chip); white-space: nowrap;
 }
 .gt-seg-btn:hover { color: var(--text); }
-.gt-seg-btn[aria-selected="true"] { background: var(--surface); border-color: var(--text); color: var(--text); box-shadow: var(--shadow); }
+.gt-seg-btn[aria-selected="true"] { background: var(--surface); border: 2px solid var(--text); color: var(--text); box-shadow: var(--shadow); }
 .gt-seg-name { font: var(--t-chip); margin-left: 6px; }
 .gt-seg-btn[aria-selected="true"] .gt-seg-name { color: var(--text2); }
 /* The switcher follows its own width in rem units, not the window: the five
@@ -4682,8 +4682,8 @@ header {
   .gt-seg-wrap::after { content: ''; position: absolute; top: 0; right: 0; bottom: 0; width: 15%; pointer-events: none; background: linear-gradient(to right, transparent, var(--bg)); }
   .gt-seg { background: transparent; padding: 0; gap: 8px; padding-right: 15%; }
   .gt-seg-btn { flex: 0 0 auto; min-height: 44px; border: 1.5px solid var(--control); border-radius: var(--r-pill); }
-  .gt-seg-btn[aria-selected="true"] { background: var(--text); color: var(--bg); border-color: var(--text); box-shadow: none; }
-  .gt-seg-btn[aria-selected="true"] .gt-seg-name { color: var(--bg); }
+  .gt-seg-btn[aria-selected="true"] { background: var(--surface); color: var(--text); border-color: var(--text); box-shadow: inset 0 0 0 .5px var(--text); }
+  .gt-seg-btn[aria-selected="true"] .gt-seg-name { color: var(--text2); }
 }
 
 /* Domain panel: the one forest panel */
@@ -4824,7 +4824,7 @@ summary.gt-icon-btn::-webkit-details-marker { display: none; }
    the chevron as on mobile; the whole row is the button. A leading circle
    read as a checkbox. */
 .gt-mark { width: 24px; height: 24px; flex-shrink: 0; display: block; overflow: visible; }
-.gt-mark-ring { fill: none; stroke: var(--track); stroke-width: 2; }
+.gt-mark-ring { fill: none; stroke: var(--leaf-line); stroke-width: 2; }
 .gt-mark-pie { fill: none; stroke: var(--accent); stroke-width: 11; stroke-dasharray: 0 34.558; }
 .gt-mark-started .gt-mark-ring, .gt-mark-read .gt-mark-ring { stroke: var(--accent); }
 .gt-mark-started .gt-mark-pie { stroke-dasharray: 17.279 34.558; }
@@ -4838,7 +4838,7 @@ summary.gt-icon-btn::-webkit-details-marker { display: none; }
 }
 .gt-group-btn .gt-mark { margin-left: -2px; }
 /* Narrow phones: the "N of M read" count says it; the title gets the room. */
-@media (max-width: 399px) { .gt-group-btn .gt-mark { display: none; } }
+
 .gt-row-h { flex: 1; min-width: 0; margin: 0; }
 .gt-row-btn {
   width: 100%; display: flex; align-items: center; gap: 10px; min-height: 64px; padding: 12px 0;
@@ -6320,6 +6320,201 @@ body[data-app-cta-card="shown"][data-section="today"] .app-cta-line { display: n
 .ph-panel .subtopic-filter-row { background: transparent; border: 0; border-radius: 0; padding: 0; margin: var(--sp-lg) 0 0; animation: none; }
 .ph-panel .subtopic-drawer { margin-top: var(--sp-md); }
 .st-acc { font: var(--t-meta); color: var(--text2); }
+/* Study notes (Grove Phase 4, 7.2): each part's topics in one card with
+   inset dividers; Key terms and Exam strategy each in their own card. */
+.gt-part-card, .gt-extra { padding: 0 var(--card-pad); background: var(--surface); border-radius: var(--r-card); box-shadow: var(--card-shadow); }
+.gt-part-card > .gt-group, .gt-extra { border-bottom: 0; }
+.gt-part-card > .gt-group + .gt-group { border-top: 1px solid var(--border); }
+.gt-extra, .gt-extra:first-of-type { margin-top: 16px; }
+.gt-part-card + .gt-part-h { margin-top: var(--sp-xl); }
+.gt-part-h { margin-left: 4px; }
+@media (forced-colors: active) { .gt-part-card, .gt-extra { border: 1px solid CanvasText; } }
+/* ── GLOSSARY (Grove Phase 4, PHASE4.md 7.3 and section 8) ── */
+.gl { display: flex; flex-direction: column; gap: 16px; }
+.gl > * { margin: 0; }
+.gl-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; padding: 0 4px; }
+.gl-head-t { min-width: 0; display: flex; flex-direction: column; gap: 6px; }
+.gl .gloss-title { margin: var(--sp-xs) 0 0; font: var(--t-display); letter-spacing: var(--tr-display); color: var(--text); }
+.gl-sub { margin: 0; font: var(--t-meta); color: var(--text2); }
+.gl-prog { margin: 0; font: var(--t-meta); color: var(--text2); }
+.gl-prog .gloss-progress-pct { font: inherit; color: inherit; font-variant-numeric: tabular-nums; }
+.gl-plant { flex: none; width: 64px; line-height: 0; }
+.gl-plant svg { display: block; width: 64px; height: auto; max-height: 72px; }
+@media (max-width: 22.4375em) { .gl-plant { display: none; } }
+.fg-large .gl-plant { display: none; }
+.gl .gloss-toolbar { display: flex; flex-direction: column; gap: 14px; margin: 0; }
+.gl .gloss-search-row { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin: 0; }
+.gl-search { flex: 1 1 16em; min-width: 0; box-shadow: 0 0 0 1px var(--control); background: var(--surface); }
+.gl .gloss-search, [data-theme="dark"] .gl .gloss-search {
+  flex: 1; min-width: 0; min-height: 46px; padding: 0; border: 0; border-radius: 0; outline: 0; box-shadow: none;
+  background: transparent; color: var(--text); font: var(--t-body);
+}
+.gl .gloss-mode-btns { display: flex; flex-wrap: wrap; gap: 8px; }
+.gl .gloss-mode-btn { display: inline-flex; align-items: center; gap: 6px; padding: 0 16px; }
+.gl .gloss-filters { display: flex; flex-direction: column; align-items: stretch; gap: 10px; }
+.gl-fgroup { display: flex; flex-wrap: wrap; align-items: center; justify-content: flex-start; gap: 8px; }
+.gl .gloss-filter-label { margin-right: 4px; color: var(--text2); }
+.gl .gloss-chip { display: inline-flex; align-items: center; gap: 6px; padding: 0 14px; }
+.gl .gloss-count { margin: 0; color: var(--text2); }
+.gl .gloss-count-clear { min-height: 44px; padding: 0 14px; border: 1.5px solid var(--control); border-radius: var(--r-pill); color: var(--text); font: var(--t-chip); }
+.gl .gloss-count-clear:hover { background: var(--surface2); }
+.gl .gloss-count-clear:focus-visible, .gl .gloss-letter:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
+/* A to Z: 44px targets, even rows at every width (26, 13, then 9 by 3). */
+.gl .gloss-letter-index { margin: 0; padding: 6px; border: 0; background: var(--surface); box-shadow: var(--card-shadow); border-radius: var(--r-tile); }
+.gl .gloss-letter-grid { gap: var(--sp-xs); grid-template-columns: repeat(7, minmax(0, 1fr)); }
+@container (min-width: 22rem) { .gl .gloss-letter-grid { grid-template-columns: repeat(9, minmax(0, 1fr)); } }
+@container (min-width: 36rem) { .gl .gloss-letter-grid { grid-template-columns: repeat(13, minmax(0, 1fr)); } }
+@container (min-width: 72rem) { .gl .gloss-letter-grid { grid-template-columns: repeat(26, minmax(0, 1fr)); } }
+.gl .gloss-letter { min-height: 44px; padding: 0; border-radius: var(--r-10); font: var(--t-chip); color: var(--muted); }
+.gl .gloss-letter.has { color: var(--text); }
+.gl .gloss-letter.has:hover { background: var(--surface2); color: var(--text); }
+.gl .gloss-letter:disabled { opacity: 1; color: var(--border2); }
+/* Terms: one card per letter, rows split by inset dividers. */
+.gl .gloss-list { display: flex; flex-direction: column; gap: 16px; }
+.gl-letter-h { margin: 0 0 8px 4px; font: var(--t-kicker); letter-spacing: var(--tr-kicker); text-transform: uppercase; color: var(--text2); scroll-margin-top: var(--sp-lg); }
+.gl-terms { list-style: none; margin: 0; padding: 4px var(--card-pad); background: var(--surface); border-radius: var(--r-card); box-shadow: var(--card-shadow); }
+.gl .gloss-card, .gl .gloss-card.mastered {
+  display: flex; flex-direction: row; align-items: flex-start; gap: 8px; padding: 12px 0; margin: 0;
+  background: none; border: 0; border-radius: 0; box-shadow: none; cursor: default;
+}
+.gl .gloss-card + .gloss-card { border-top: 1px solid var(--border); }
+.gl .gloss-card:hover { transform: none; box-shadow: none; }
+.gl-term {
+  flex: 1; min-width: 0; display: flex; flex-direction: column; align-items: flex-start; gap: 2px; min-height: 44px; padding: 2px 0;
+  border: 0; background: none; color: var(--text); font: inherit; text-align: left; cursor: pointer; border-radius: var(--r-sm);
+}
+.gl-term:hover .gloss-card-term { text-decoration: underline; text-underline-offset: 3px; }
+.gl-term:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
+.gl .gloss-card-term, .gl .gloss-card.mastered .gloss-card-term { font: var(--t-label); color: var(--text); overflow-wrap: break-word; }
+.gl-term-m { font: var(--t-meta); color: var(--text2); }
+.gl .gloss-card-def { display: block; -webkit-line-clamp: unset; overflow: visible; font: var(--t-small); color: var(--text); overflow-wrap: break-word; }
+.gl .gloss-card-master-btn, .gl .gloss-card.mastered .gloss-card-master-btn {
+  position: static; flex: none; display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; min-width: 44px; margin: -2px -10px 0 0;
+  border: 0; border-radius: var(--r-round); background: none; color: var(--leaf-line); cursor: pointer;
+}
+.gl .gloss-card-master-btn:hover { background: var(--surface2); }
+.gl .gloss-card-master-btn:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: -2px; }
+.gl-mk-c { fill: none; stroke: var(--leaf-line); stroke-width: 1.5; }
+.gl-mk-t { fill: none; stroke: transparent; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.gloss-card-master-btn[aria-pressed="true"] .gl-mk-c { fill: var(--accent); stroke: var(--accent); }
+.gloss-card-master-btn[aria-pressed="true"] .gl-mk-t { stroke: var(--on-btn); }
+[data-theme="dark"] .gloss-card-master-btn[aria-pressed="true"] .gl-mk-t { stroke: var(--bg); }
+@media (forced-colors: active) {
+  .gl-terms, .gl .gloss-letter-index { border: 1px solid CanvasText; }
+  .gloss-card-master-btn[aria-pressed="true"] .gl-mk-c { fill: Highlight; stroke: Highlight; }
+}
+/* The term sheet: a ks-sheet (a bottom sheet below 48em). */
+.gl-sheet { display: flex; flex-direction: column; gap: 12px; padding: var(--sp-xl) var(--card-pad) calc(var(--sp-xl) + env(safe-area-inset-bottom)); }
+.gl-sheet .gloss-detail-scope { padding: 0; border: 0; background: none; border-radius: 0; }
+.gl-sheet-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
+.gl-sheet-ht { min-width: 0; display: flex; flex-direction: column; gap: 4px; }
+.gl-sheet .mock-confirm-head { margin: 0; padding: 0; text-align: left; font: var(--t-hero); letter-spacing: var(--tr-hero); color: var(--text); overflow-wrap: break-word; }
+.gl-sheet-ac { margin: 0; font: var(--t-label); color: var(--text2); }
+.gl-sheet-meta { margin: 0; font: var(--t-meta); color: var(--text2); }
+.gl-sheet .gloss-detail-close { flex: none; width: 44px; height: 44px; margin: -6px -10px 0 0; border: 0; border-radius: var(--r-round); background: none; color: var(--text2); cursor: pointer; display: inline-flex; align-items: center; justify-content: center; }
+.gl-sheet .gloss-detail-close:hover { background: var(--surface2); color: var(--text); }
+.gl-sheet-body { display: flex; flex-direction: column; gap: 6px; }
+.gl-sheet-h { margin: 8px 0 0; font: var(--t-headline); letter-spacing: var(--tr-headline); color: var(--text); }
+.gl-sheet .gloss-detail-def, .gl-sheet .gloss-detail-scope { margin: 0; font: var(--t-body); color: var(--text); }
+.gl-sheet .gloss-detail-actions { margin-top: 12px; }
+.gl-sheet-btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px; width: 100%; min-height: 48px; padding: 0 20px;
+  border: 1.5px solid var(--control); border-radius: var(--r-tile); background: transparent; color: var(--text); font: var(--t-label); cursor: pointer;
+}
+.gl-sheet-btn[aria-pressed="true"] { border-color: var(--text); box-shadow: inset 0 0 0 .5px var(--text); }
+.gl-sheet-btn:hover { background: var(--surface2); }
+.gl-sheet-btn:focus-visible, .gl-sheet .gloss-detail-close:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
+/* Principles (Grove Phase 4, 7.4): families as kicker heads, each family's
+   principles in one card; the page's title is hero, Previous and Next are
+   two rows in one card. */
+.pl-fam-title { font: var(--t-kicker); letter-spacing: var(--tr-kicker); text-transform: uppercase; color: var(--text2); }
+.pl-fam-q { margin: 4px 0 var(--sp-sm); }
+.pl-rows { padding: 4px var(--card-pad); border: 0; background: var(--surface); border-radius: var(--r-card); box-shadow: var(--card-shadow); }
+.pl-rows > li { border: 0; }
+.pl-rows > li + li { border-top: 1px solid var(--border); }
+.pl-row { min-height: 56px; padding: 12px 0; }
+.pl-row-rule { font: var(--t-meta); color: var(--text2); display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; line-clamp: 2; overflow: hidden; }
+.pl-d-title, .pl-d-title:where(*) { font: var(--t-hero); letter-spacing: var(--tr-hero); }
+.pl-pn { grid-template-columns: minmax(0, 1fr); gap: 0; padding: 0 var(--card-pad); border: 0; background: var(--surface); border-radius: var(--r-card); box-shadow: var(--card-shadow); }
+.pl-pn-btn, .pl-pn-next { grid-column: auto; align-items: flex-start; text-align: left; min-height: 56px; padding: 12px 0; border: 0; border-radius: 0; background: none; box-shadow: none; }
+.pl-pn-btn + .pl-pn-btn { border-top: 1px solid var(--border); }
+.pl-pn-btn:hover .pl-pn-t { text-decoration: underline; text-underline-offset: 3px; }
+@media (forced-colors: active) { .pl-rows, .pl-pn { border: 1px solid CanvasText; } }
+/* About the exam and Final review week (Grove Phase 4, 7.5 and 7.6): one
+   display title, section heads in headline; the facts at a glance, the days
+   and the cheat sheet each in one card. */
+.eg-h { font: var(--t-headline); letter-spacing: var(--tr-headline); color: var(--text); margin: 0 0 var(--sp-sm); }
+#eg-at-a-glance > .eg-list { padding: 4px var(--card-pad); background: var(--surface); border-radius: var(--r-card); box-shadow: var(--card-shadow); }
+#eg-at-a-glance > .eg-list > li { margin: 0; padding: 12px 0 12px 18px; }
+#eg-at-a-glance > .eg-list > li + li { border-top: 1px solid var(--border); }
+#eg-at-a-glance > .eg-list > li::before { top: 21px; }
+.eg-src { display: flex; flex-wrap: wrap; align-items: center; column-gap: 4px; }
+.eg-src a { display: inline-flex; align-items: center; min-height: 44px; }
+.fw-days { padding: 0 var(--card-pad); background: var(--surface); border-radius: var(--r-card); box-shadow: var(--card-shadow); overflow: hidden; }
+.fw-day, .fw-day:last-child { padding: var(--sp-xl) 0; border: 0; }
+.fw-day + .fw-day { border-top: 1px solid var(--border); }
+.fw-day.fw-today, .fw-day.fw-today:last-child { margin: 0 calc(-1 * var(--card-pad)); padding: var(--sp-xl) var(--card-pad); border: 0; border-radius: 0; background: var(--surface2); }
+.fw-day.fw-today + .fw-day { border-top: 0; }
+.fw-day-t { font: var(--t-headline); letter-spacing: var(--tr-headline); color: var(--text); }
+.fw-today-pill { background: var(--surface); color: var(--text); }
+.fw-sheet { padding: var(--card-pad); background: var(--surface); border-radius: var(--r-card); box-shadow: var(--card-shadow); }
+@media (forced-colors: active) { .fw-days, .fw-sheet, #eg-at-a-glance > .eg-list { border: 1px solid CanvasText; } }
+/* ── LEARN HUB (Grove Phase 4, PHASE4.md 7.1) ── */
+.lh { max-width: 720px; display: flex; flex-direction: column; gap: 16px; }
+.lh > * { margin: 0; }
+.lh-search-wrap { display: flex; flex-direction: column; gap: 8px; }
+.lh-search {
+  display: flex; align-items: center; gap: 10px; min-height: 48px; padding: 0 16px; border-radius: var(--r-tile);
+  background: var(--surface); box-shadow: 0 0 0 1px var(--control); color: var(--text2); cursor: text;
+}
+.lh-search:focus-within { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
+.lh-search-in { flex: 1; min-width: 0; min-height: 46px; padding: 0; border: 0; outline: 0; background: transparent; color: var(--text); font: var(--t-body); }
+.lh-search-in::placeholder { color: var(--muted); }
+.lh-search-in::-webkit-search-cancel-button { cursor: pointer; }
+.lh-results:empty { display: none; }
+.lh-results { display: flex; flex-direction: column; gap: 4px; }
+.p4-card.lh-res { padding: 4px 0; }
+.lh-res .you-m { display: inline-flex; flex-wrap: wrap; align-items: center; gap: 6px; }
+.lh-res .dom-dot { margin: 0; border-radius: 2px; }
+.lh-res mark { background: var(--surface2); color: inherit; border-radius: 3px; }
+.lh-all { align-self: flex-start; }
+.lh-none { display: flex; flex-direction: column; gap: 4px; }
+.lh-none-t { margin: 0; font: var(--t-label); color: var(--text); }
+.lh-none-m { margin: 0; font: var(--t-small); color: var(--text2); }
+/* Tiles: one column, 2 by 2 from 37.5em, a row of four from 64em. They
+   follow their own width (a container), so 200% text reflows them. */
+.lh-tiles { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: minmax(0, 1fr); gap: 8px; container: lhtiles / inline-size; }
+.lh-tiles > li { display: flex; min-width: 0; }
+@container lhtiles (min-width: 30em) { .lh-tiles { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (min-width: 37.5em) { .lh-tiles { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (min-width: 64em) { .lh-tiles { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+.fg-large .lh-tiles { grid-template-columns: minmax(0, 1fr); }
+.lh-tile {
+  flex: 1; display: flex; flex-direction: column; align-items: flex-start; gap: 2px; min-height: 48px; padding: 16px;
+  border-radius: var(--r-tile); background: var(--surface); box-shadow: var(--card-shadow); color: var(--text); text-decoration: none;
+}
+.lh-tile .p4-badge { margin-bottom: 10px; }
+.lh-tile-t { font: var(--t-label); color: var(--text); overflow-wrap: break-word; }
+.lh-tile-m { font: var(--t-meta); color: var(--text2); }
+.lh-tile:hover, .lh-row:hover { background: var(--surface2); }
+.lh-tile:focus-visible, .lh-row:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
+/* Below 37.5em (one column) a tile reads as a row: badge, words. */
+@media (max-width: 37.4375em) {
+  .lh-tile { flex-direction: row; align-items: center; gap: 12px; padding: 12px 16px; }
+  .lh-tile .p4-badge { margin: 0; }
+  .lh-tile-t { flex: none; }
+  .lh-tile { display: grid; grid-template-columns: auto minmax(0, 1fr); grid-template-rows: auto auto; column-gap: 12px; row-gap: 2px; }
+  .lh-tile .p4-badge { grid-row: 1 / span 2; }
+}
+.lh-row { display: flex; align-items: center; gap: 12px; min-height: 56px; padding: 12px 16px; border-radius: var(--r-tile); color: var(--text); text-decoration: none; }
+.lh-row-text { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+.lh-dom-mark { flex: none; display: inline-flex; align-items: center; gap: 10px; }
+.lh-ring { width: 16px; height: 16px; flex: none; }
+.lh-dom-n { min-width: 1ch; font: var(--t-meta); color: var(--text2); font-variant-numeric: tabular-nums; }
+#lhDomH { font: var(--t-title); letter-spacing: var(--tr-title); text-transform: none; color: var(--text); }
+.lh-dom-c { flex: none; font: var(--t-meta); color: var(--text2); font-variant-numeric: tabular-nums; }
+.lh-foot { padding: 0 4px; font: var(--t-meta); color: var(--text2); max-width: 62ch; }
+@media (forced-colors: active) { .lh-tile, .lh-row, .lh-search { border: 1px solid CanvasText; } }
 /* Mock results (7.13): Where to look next, Review answers and the signs as cards. */
 .rs-mock > .p4-card { margin-top: 16px; }
 .rs-mock > .p4-card > .ph-h, .rs-mock .mr-h-row .ph-h { font: var(--t-headline); letter-spacing: var(--tr-headline); text-transform: none; color: var(--text); }
@@ -8121,7 +8316,7 @@ html[data-kbd] :where(.you-plant, .vision-panel, .gt-panel, .readiness-card) :wh
 <nav class="side-nav" id="sideNav" aria-label="Main">
   <ul class="sn-list">
     <li><a class="sn-item" data-sec="today" href="#today" onclick="return navTo(event,'home')"><svg class="ico" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 21v-9"/><path d="M12 12c0-4 3-6 7-6 0 4-3 6-7 6z"/><path d="M12 14c0-3-2-5-6-5 0 3 2 5 6 5z"/></svg><span>Today</span></a></li>
-    <li><a class="sn-item" data-sec="learn" href="#learn" onclick="return navTo(event,'sec:learn')"><svg class="ico" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M2 5h7a3 3 0 0 1 3 3v12a2 2 0 0 0-2-2H2z"/><path d="M22 5h-7a3 3 0 0 0-3 3v12a2 2 0 0 1 2-2h8z"/></svg><span>Learn</span></a>
+    <li><a class="sn-item" data-sec="learn" href="#learn" onclick="return navTo(event,'learn')"><svg class="ico" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M2 5h7a3 3 0 0 1 3 3v12a2 2 0 0 0-2-2H2z"/><path d="M22 5h-7a3 3 0 0 0-3 3v12a2 2 0 0 1 2-2h8z"/></svg><span>Learn</span></a>
       <ul class="sn-sub">
         <li><a class="sn-subitem" data-tab="topics" href="#notes" onclick="return navTo(event,'topics')">Study notes</a></li>
         <li><a class="sn-subitem" data-tab="glossary" href="#glossary" onclick="return navTo(event,'glossary')">Glossary</a></li>
@@ -8296,6 +8491,11 @@ html[data-kbd] :where(.you-plant, .vision-panel, .gt-panel, .readiness-card) :wh
 <!-- YOUR PROGRESS (v12.41): You → Your progress, and Today's "See your progress". Filled by renderProgress(). -->
 <div id="screen-progress" class="screen">
   <div id="pgArea"></div>
+</div>
+
+<!-- LEARN (Grove Phase 4, PHASE4.md 7.1): the Learn hub. Filled by renderLearnHub(). -->
+<div id="screen-learn" class="screen">
+  <div id="learnArea"></div>
 </div>
 
 <!-- TOPICS -->
@@ -8555,6 +8755,7 @@ html[data-kbd] :where(.you-plant, .vision-panel, .gt-panel, .readiness-card) :wh
 </div>
 
 <div id="flagModal"></div>
+<div id="glossDetailModal"></div>
 <div id="changelogModal"></div>
 <!-- Toasts: one live region, in the page from the start so screen readers announce each message. -->
 <div id="globalToast" class="toast" role="status" aria-live="polite"></div>
@@ -8565,7 +8766,7 @@ html[data-kbd] :where(.you-plant, .vision-panel, .gt-panel, .readiness-card) :wh
      current one has a pill behind its icon. Play stays hidden on web. -->
 <nav id="bottomNav" aria-label="Main">
   <a class="bnav-item" data-sec="today" href="#today" onclick="return navTo(event,'home')"><span class="bnav-icon"><svg class="ico" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 21v-9"/><path d="M12 12c0-4 3-6 7-6 0 4-3 6-7 6z"/><path d="M12 14c0-3-2-5-6-5 0 3 2 5 6 5z"/></svg></span><span class="bnav-label">Today</span></a>
-  <a class="bnav-item" data-sec="learn" href="#learn" onclick="return navTo(event,'sec:learn')"><span class="bnav-icon"><svg class="ico" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M2 5h7a3 3 0 0 1 3 3v12a2 2 0 0 0-2-2H2z"/><path d="M22 5h-7a3 3 0 0 0-3 3v12a2 2 0 0 1 2-2h8z"/></svg></span><span class="bnav-label">Learn</span></a>
+  <a class="bnav-item" data-sec="learn" href="#learn" onclick="return navTo(event,'learn')"><span class="bnav-icon"><svg class="ico" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M2 5h7a3 3 0 0 1 3 3v12a2 2 0 0 0-2-2H2z"/><path d="M22 5h-7a3 3 0 0 0-3 3v12a2 2 0 0 1 2-2h8z"/></svg></span><span class="bnav-label">Learn</span></a>
   <a class="bnav-item" data-sec="practice" href="#practice" onclick="return navTo(event,'sec:practice')"><span class="bnav-icon"><svg class="ico" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m3 6 2 2 4-4"/><path d="m3 14 2 2 4-4"/><path d="M13 6h8M13 14h8M13 20h8"/></svg></span><span class="bnav-label">Practice</span></a>
   <a class="bnav-item" data-sec="you" href="#you" onclick="return navTo(event,'you')"><span class="bnav-icon"><svg class="ico" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="8" r="4"/><path d="M4 21c1-4 4-6 8-6s7 2 8 6"/></svg></span><span class="bnav-label">You</span></a>
 </nav>
@@ -11755,6 +11956,194 @@ function gtFilterChipsHtml(filterMode) {
   return '<div class="gt-chips" role="group" aria-label="Show">' + btn('all', 'All') + btn('unreviewed', 'To review') + btn('reviewed', 'Read') + '</div>';
 }
 
+// ── LEARN HUB (Grove Phase 4, PHASE4.md 7.1; the kit's 02 board in the
+// web's own layout) ──
+// The title and its line, the forest "Read next" hero (Today's own note
+// picker, so Today and Learn name the same note), a search across every
+// domain's notes with five inline results, the four tiles (a row of four
+// from 64em, 2 by 2 from 37.5em, one column below), Final review week, the
+// notes by domain, and the footnote. No lessons on the web, so no lesson
+// parts: the hero and the card are about notes.
+var LH_INLINE = 5;              // inline search results before "See all results"
+var lhSearchQ = '';
+var lhSayTimer = null;
+var LH_DANDELION = '<svg viewBox="0 0 64 64" width="48" height="48" aria-hidden="true" focusable="false"><path d="M32 29 V60" stroke="currentColor" stroke-width="1.3" fill="none"/><path d="M32 26 L32 6 M32 26 L46 12 M32 26 L52 26 M32 26 L46 40 M32 26 L18 12 M32 26 L12 26 M32 26 L18 40 M32 26 L40 7 M32 26 L24 7" stroke="currentColor" stroke-width=".9" fill="none"/><g fill="currentColor"><circle cx="32" cy="6" r="1.8"/><circle cx="46" cy="12" r="1.8"/><circle cx="52" cy="26" r="1.8"/><circle cx="46" cy="40" r="1.8"/><circle cx="18" cy="12" r="1.8"/><circle cx="12" cy="26" r="1.8"/><circle cx="18" cy="40" r="1.8"/></g><circle cx="32" cy="26" r="3" fill="#E9A07A"/></svg>';
+// The note to read next: Continue reading first, then the first unread note
+// in the area to study next (todayNextArea), then the other areas.
+function learnReadNext(r) {
+  if (!CISA_NOTES_RAW) return null;
+  var started = todayStartedNote();
+  if (started) return { hit: started, kicker: 'Continue reading', why: 'pick up where you left off' };
+  var next = todayNextArea(r);
+  var keys = Object.keys(DI);
+  var order = next.id ? [next.id].concat(keys.filter(function (d) { return d !== next.id; })) : keys;
+  for (var i = 0; i < order.length; i++) {
+    var hit = todayNoteIn(order[i], 'none');
+    if (hit) {
+      var why = i > 0 || !next.id ? 'next in the exam outline' : next.plan ? 'the area of today&rsquo;s set' : 'picked where you can gain the most';
+      return { hit: hit, kicker: 'Read next', why: why };
+    }
+  }
+  return null;
+}
+// An area's mark: the ring outline in --leaf-line, the arc in the area
+// colour, a filled ring with a tick when every note is read.
+function lhRingSvg(color, done, total) {
+  var pct = total ? done / total : 0, c = 2 * Math.PI * 6.5;
+  if (total && done >= total) {
+    return '<svg class="lh-ring" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><circle cx="8" cy="8" r="7.5" style="fill:' + color + '"/>'
+      + '<path d="M4.8 8.3l2.1 2.1 4.3-4.6" fill="none" stroke="var(--surface)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+  }
+  return '<svg class="lh-ring" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><circle cx="8" cy="8" r="6.5" fill="none" stroke="var(--leaf-line)" stroke-width="1.5"/>'
+    + (pct > 0 ? '<circle cx="8" cy="8" r="6.5" fill="none" style="stroke:' + color + '" stroke-width="2.2" stroke-linecap="round" stroke-dasharray="' + (c * pct).toFixed(2) + ' ' + c.toFixed(2) + '" transform="rotate(-90 8 8)"/>' : '')
+    + '</svg>';
+}
+function learnTile(o) {
+  return '<li><a class="lh-tile" href="#' + o.hash + '"' + (o.said ? ' aria-label="' + escapeHtml(o.said) + '"' : '') + ' onclick="return navGoFocus(event,\'' + o.tab + '\')">'
+    + '<span class="p4-badge" aria-hidden="true">' + o.icon + '</span>'
+    + '<span class="lh-tile-t">' + o.title + '</span><span class="lh-tile-m">' + o.meta + '</span></a></li>';
+}
+function renderLearnHub() {
+  var area = document.getElementById('learnArea');
+  if (!area) return;
+  if (!CISA_NOTES_RAW && !conceptsLoadFailed) loadConceptsData(function () { if (S.activeTab === 'learn') renderLearnHub(); });
+  var r = computeTodayReadiness();
+  var ready = !!CISA_NOTES_RAW;
+  var data = ready ? buildConceptsData() : null;
+  var reviewed = ready ? getTopicReviewedSet() : {};
+  var readAll = 0, totalAll = 0;
+  var perDom = Object.keys(DI).map(function (d) {
+    var pr = ready ? getConceptDomainProgress(d) : { done: 0, total: 0 };
+    readAll += pr.done; totalAll += pr.total;
+    return { d: d, done: pr.done, total: pr.total };
+  });
+
+  // 2. The forest hero: one control inside it.
+  var hero;
+  var nx = ready ? learnReadNext(r) : null;
+  var heroOpen = function (kickHtml, title, meta, btnHtml) {
+    return '<section class="p4-hero lh-hero" aria-labelledby="lhHeroT"><div class="p4-hero-top"><div class="p4-hero-h">'
+      + '<p class="p4-kicker">' + kickHtml + '</p><h2 class="p4-hero-t" id="lhHeroT">' + title + '</h2></div>'
+      + '<span class="p4-glyph" aria-hidden="true">' + LH_DANDELION + '</span></div>'
+      + '<p class="p4-hero-m">' + meta + '</p><div class="p4-hero-acts">' + btnHtml + '</div></section>';
+  };
+  if (nx) {
+    var it = nx.hit.item, dd = nx.hit.domain, mins = 0;
+    try { mins = estimateReadMinutes(it.raw); } catch (e) { mins = 0; }
+    hero = heroOpen('<span class="dom-dot" style="background:' + DI[dd].color + '" aria-hidden="true"></span>' + nx.kicker + ' &middot; ' + escapeHtml(DI[dd].short),
+      escapeHtml(it.name), (mins ? mins + ' min read &middot; ' : '') + nx.why,
+      '<button type="button" class="p4-go" data-d="' + escapeHtml(dd) + '" data-id="' + escapeHtml(String(it.id)) + '" onclick="todayOpenNote(this.dataset.d,this.dataset.id)">' + ico('topics', 18) + 'Read note</button>');
+  } else if (ready) {
+    // Every note read: never an empty forest card.
+    var fd = r.focusId && DI[r.focusId] ? r.focusId : '1';
+    hero = heroOpen('Every note read', 'Revisit a note', 'Start with the area where you can gain the most',
+      '<button type="button" class="p4-go" data-d="' + fd + '" onclick="lhOpenNotes(this.dataset.d)">' + ico('topics', 18) + 'Open study notes</button>');
+  } else {
+    hero = heroOpen('Study notes', conceptsLoadFailed ? 'Every topic, with traps' : 'Getting your notes ready',
+      conceptsLoadFailed ? 'The notes could not load. Open Study notes to try again.' : '<span role="status">Loading study notes&hellip;</span>',
+      '<button type="button" class="p4-go" onclick="lhOpenNotes()">' + ico('topics', 18) + 'Open study notes</button>');
+  }
+
+  // 3. Search across every domain's notes.
+  var search = '<div class="lh-search-wrap">'
+    + '<label class="lh-search">' + ico('search', 20)
+    + '<input type="search" id="lhSearch" class="lh-search-in" aria-label="Search the study notes" placeholder="Search notes, like RTO or SoD" autocomplete="off" value="' + escapeHtml(lhSearchQ) + '" oninput="lhOnSearch(this.value)">'
+    + '</label><div class="lh-results" id="lhResults"></div><p class="sr-only" role="status" id="lhSay"></p></div>';
+
+  // 4. Tiles, in a fixed order.
+  var notesLine = readAll === 0 ? 'Every topic, with traps' : readAll + (readAll === 1 ? ' note' : ' notes') + ' read &middot; with traps';
+  var tiles = '<ul class="lh-tiles" aria-label="Look it up">'
+    + learnTile({ hash: 'notes', tab: 'topics', icon: ico('topics', 20), title: 'Study notes', meta: notesLine })
+    + learnTile({ hash: 'glossary', tab: 'glossary', icon: ico('glossary', 20), title: 'Glossary', meta: 'Key terms, plain words' })
+    + learnTile({ hash: 'principles', tab: 'principles', icon: ico('principles', 20), title: 'Principles', meta: 'How the exam thinks' })
+    + learnTile({ hash: 'exam-guide', tab: 'examguide', icon: ico('info', 20), title: 'The ' + escapeHtml(ACTIVE.name) + ' exam', meta: 'Booking to results',
+      said: 'About the ' + ACTIVE.name + ' exam, booking to results' })
+    + '</ul>';
+
+  // 5. Final review week.
+  var fw = '<a class="lh-row p4-card" href="#final-week" onclick="return navGoFocus(event,\'finalweek\')">'
+    + '<span class="p4-badge" aria-hidden="true">' + ico('calendar', 20) + '</span>'
+    + '<span class="lh-row-text"><span class="lh-tile-t">Final review week</span><span class="lh-tile-m">Your last seven days, day by day</span></span>'
+    + '<span class="you-chev" aria-hidden="true">' + ico('chevron', 18) + '</span></a>';
+
+  // 6. Notes by domain (the Lessons card's shape).
+  var doms = '<section class="p4-card ph-sec lh-doms" aria-labelledby="lhDomH">'
+    + '<div class="p4-card-h"><h2 class="ph-h" id="lhDomH">Notes by domain</h2>'
+    + (ready ? '<p class="p4-card-m">' + readAll + ' of ' + totalAll + ' read &middot; in exam order</p>' : '') + '</div>'
+    + '<ul class="you-list p4-rows">' + perDom.map(function (x, i) {
+      var info = DI[x.d], all = x.total && x.done >= x.total;
+      var count = !ready ? '' : all ? 'All read' : x.done + ' of ' + x.total + ' read';
+      return '<li><button type="button" class="you-row lh-dom" data-d="' + x.d + '" onclick="lhOpenNotes(this.dataset.d)"'
+        + ' aria-label="' + escapeHtml('Domain ' + (i + 1) + ', ' + info.short + (count ? ', ' + count : '') + '. Opens its notes') + '">'
+        + '<span class="lh-dom-mark" aria-hidden="true">' + lhRingSvg(info.color, x.done, x.total) + '<span class="lh-dom-n">' + (i + 1) + '</span></span>'
+        + '<span class="you-text" aria-hidden="true"><span class="you-t">' + escapeHtml(info.short) + '</span></span>'
+        + (count ? '<span class="lh-dom-c" aria-hidden="true">' + count + '</span>' : '')
+        + '<span class="you-chev" aria-hidden="true">' + ico('chevron', 18) + '</span></button></li>';
+    }).join('') + '</ul></section>';
+
+  // 7. The footnote.
+  var foot = '<p class="lh-foot">IS means information systems. Original content, reviewed against public frameworks.</p>';
+
+  var keep = document.activeElement && document.activeElement.id === 'lhSearch';
+  area.innerHTML = '<div class="lh">'
+    + '<div class="ph-head"><h1 class="ph-title" id="lhTitle" tabindex="-1">Learn</h1><p class="ph-sub">Lessons start each topic. Notes go deeper.</p></div>'
+    + hero + search + tiles + fw + doms + foot + '</div>';
+  if (keep) { var inp = document.getElementById('lhSearch'); if (inp) { try { inp.focus({ preventScroll: true }); inp.setSelectionRange(inp.value.length, inp.value.length); } catch (e) {} } }
+  if (lhSearchQ) lhRenderResults(false);
+  try { railSync(); } catch (e) {}
+}
+function lhOpenNotes(d) {
+  if (d && DI[d]) topicState.domain = String(d);
+  switchTab('topics');
+  try { navFocusTitle(); } catch (e) {}
+}
+function lhOnSearch(v) {
+  lhSearchQ = String(v || '').slice(0, 80);
+  lhRenderResults(true);
+}
+// The search: every domain's notes through the Study notes matcher, best
+// first; five inline, then "See all results" (Study notes, searching the
+// domain with the best match).
+function lhRenderResults(say) {
+  var box = document.getElementById('lhResults');
+  var sayEl = document.getElementById('lhSay');
+  if (!box) return;
+  var q = lhSearchQ.trim(), tokens = topicSearchTokens(q);
+  if (!tokens.length || !CISA_NOTES_RAW) { box.innerHTML = ''; if (sayEl) sayEl.textContent = ''; return; }
+  var res = [];
+  buildConceptsData().domains.forEach(function (dom) {
+    dom.groups.forEach(function (g) {
+      g.items.forEach(function (it) {
+        var sc = scoreTopicItem(it, tokens);
+        if (sc > 0) res.push({ it: it, d: String(dom.domain_id), sc: sc });
+      });
+    });
+  });
+  res.sort(function (a, b) { return b.sc - a.sc; });
+  if (!res.length) {
+    box.innerHTML = '<div class="lh-none p4-card"><p class="lh-none-t">No matching notes</p><p class="lh-none-m">Try a shorter word, or an acronym like RTO or SoD.</p></div>';
+  } else {
+    box.innerHTML = '<ul class="you-list p4-rows p4-card lh-res">' + res.slice(0, LH_INLINE).map(function (x) {
+      var mins = 0;
+      try { mins = estimateReadMinutes(x.it.raw); } catch (e) { mins = 0; }
+      return '<li><button type="button" class="you-row" data-d="' + escapeHtml(x.d) + '" data-id="' + escapeHtml(String(x.it.id)) + '" onclick="todayOpenNote(this.dataset.d,this.dataset.id)">'
+        + '<span class="you-text"><span class="you-t">' + highlightText(x.it.name, tokens) + '</span>'
+        + '<span class="you-m"><span class="dom-dot" style="background:' + DI[x.d].color + '" aria-hidden="true"></span>' + escapeHtml(DI[x.d].short) + (mins ? ' &middot; about ' + mins + ' min' : '') + '</span></span>'
+        + '<span class="you-chev" aria-hidden="true">' + ico('chevron', 18) + '</span></button></li>';
+    }).join('') + '</ul>'
+      + (res.length > LH_INLINE ? '<button type="button" class="ph-ghost lh-all" data-d="' + escapeHtml(res[0].d) + '" onclick="lhSeeAll(this.dataset.d)">See all results</button>' : '');
+  }
+  if (say && sayEl) {
+    clearTimeout(lhSayTimer);
+    var n = res.length;
+    lhSayTimer = setTimeout(function () { sayEl.textContent = n ? n + (n === 1 ? ' note matches' : ' notes match') : 'No matching notes'; }, 700);
+  }
+}
+function lhSeeAll(d) {
+  topicState.search = lhSearchQ.trim();
+  lhOpenNotes(d);
+}
+
 function renderTopics() {
   var area = document.getElementById('topicsArea');
   if (!area) return;
@@ -11885,8 +12274,9 @@ function renderTopics() {
           }).join('') + '</div>'
         : '<div class="gt-empty">No notes in Domain ' + d + ' match &ldquo;' + escapeHtml(searchQ) + '&rdquo;. Try a shorter word, or another domain.</div>');
   } else {
-    // ── Topics (all start collapsed), under their part's caption ──
-    var lastPart = null;
+    // ── Topics (all start collapsed), under their part's caption; each
+    // part's topics in one card (Grove Phase 4, 7.2) ──
+    var lastPart = null, cardOpen = false;
     listHtml = domainData.groups.map(function(g) {
       var gKey = d + '-g-' + g.group_id;
       var isOpen = topicState.openGroups[gKey] === true;
@@ -11910,6 +12300,10 @@ function renderTopics() {
       if (part && part !== lastPart) {
         partHtml = '<h3 class="gt-part-h">Part ' + escapeHtml(part.part || '') + ' &middot; ' + escapeHtml(part.name || '') + '</h3>';
       }
+      if (!cardOpen || part !== lastPart) {
+        partHtml = (cardOpen ? '</div>' : '') + partHtml + '<div class="gt-part-card">';
+        cardOpen = true;
+      }
       lastPart = part;
       return partHtml + '<section class="gt-group' + (isOpen ? ' open' : '') + '" id="ng-' + escapeHtml(gKey) + '">'
         + '<' + gh + ' class="gt-group-h"><button class="gt-group-btn" aria-expanded="' + isOpen + '" aria-controls="ngb-' + escapeHtml(gKey) + '" aria-labelledby="ngt-' + escapeHtml(gKey) + '" aria-describedby="ngm-' + escapeHtml(gKey) + ' ngc-' + escapeHtml(gKey) + '" data-id="' + escapeHtml(gKey) + '" onclick="toggleNotesGroup(this.dataset.id)">'
@@ -11920,7 +12314,7 @@ function renderTopics() {
         + ico('chevron-down', 20, 'ico gt-chev') + '</button></' + gh + '>'
         + '<div class="gt-group-body" id="ngb-' + escapeHtml(gKey) + '">' + bodyHtml + '</div>'
         + '</section>';
-    }).join('');
+    }).join('') + (cardOpen ? '</div>' : '');
     if (!listHtml.trim()) listHtml = '<div class="gt-empty">Nothing here yet. Switch the filter to All to see every topic.</div>';
   }
 
@@ -12892,6 +13286,7 @@ function switchTab(t, opts) {
   if (t === 'progress') renderProgress();
   if (t === 'you') renderYou();
   if (t === 'mock') renderMockSetup();
+  if (t === 'learn') renderLearnHub();
   if (t === 'topics') renderTopics();
   if (t === 'glossary') renderGlossary();
   if (t === 'faq') renderFAQ();
@@ -12935,12 +13330,14 @@ function switchTab(t, opts) {
 // still open the right page.
 var NAV_SECTION = {
   home: 'today',
-  topics: 'learn', glossary: 'learn', principles: 'learn', examguide: 'learn', finalweek: 'learn',
+  learn: 'learn', topics: 'learn', glossary: 'learn', principles: 'learn', examguide: 'learn', finalweek: 'learn',
   practice: 'practice', mock: 'practice', bookmarks: 'practice',
   you: 'you', settings: 'you', weakspots: 'you', progress: 'you', faq: 'you', about: 'you'
 };
 // The page a section opens on (its first page) and its listed sub-pages.
-var NAV_HOME = { today: 'home', learn: 'topics', practice: 'practice', you: 'you' };
+// Learn opens its hub (Grove Phase 4, PHASE4.md 7.1); the sidebar's and the
+// tab bar's Learn always open it, and each Learn page's bar starts with a way back.
+var NAV_HOME = { today: 'home', learn: 'learn', practice: 'practice', you: 'you' };
 var NAV_PAGES = {
   // Short labels on purpose: the phone page bar has five Learn pages (the
   // sidebar uses the full names, "About the CISA exam" and "Final review week").
@@ -12949,14 +13346,14 @@ var NAV_PAGES = {
 };
 // The address each page shows (#notes, #saved ...) and every name we accept.
 var NAV_HASH = {
-  home: 'today', topics: 'notes', glossary: 'glossary', principles: 'principles',
+  home: 'today', learn: 'learn', topics: 'notes', glossary: 'glossary', principles: 'principles',
   examguide: 'exam-guide', finalweek: 'final-week',
   practice: 'practice', mock: 'mock', bookmarks: 'saved',
   you: 'you', settings: 'settings', weakspots: 'weak-spots', progress: 'progress', faq: 'help', about: 'about'
 };
 var NAV_ALIAS = {
   today: 'home', home: 'home',
-  learn: 'sec:learn', notes: 'topics', 'study-notes': 'topics', topics: 'topics',
+  learn: 'learn', notes: 'topics', 'study-notes': 'topics', topics: 'topics',
   glossary: 'glossary', principles: 'principles',
   'exam-guide': 'examguide', 'about-the-exam': 'examguide', 'final-week': 'finalweek', 'final-review-week': 'finalweek',
   practice: 'practice', mock: 'mock', 'mock-exam': 'mock',
@@ -13023,7 +13420,7 @@ function navRunAction(action) {
 // the section's page links (phones) or the way back to You, and keeps the
 // address in step (without adding history entries).
 var NAV_TITLE = {
-  topics: 'Study notes', glossary: 'Glossary', principles: 'Principles',
+  learn: 'Learn', topics: 'Study notes', glossary: 'Glossary', principles: 'Principles',
   examguide: 'About the CISA exam', finalweek: 'Final review week',
   practice: 'Practice', mock: 'Mock exam', bookmarks: 'Saved',
   you: 'You', settings: 'Settings', weakspots: 'Weak spots', progress: 'Your progress', faq: 'Help', about: 'About'
@@ -13032,13 +13429,13 @@ function syncNav(t) {
   var sec = NAV_SECTION[t] || 'today';
   // Screen readers announce the new title, so a page change is not silent.
   document.title = NAV_TITLE[t] ? NAV_TITLE[t] + ' · KaiSip' : 'KaiSip: CISA exam prep that teaches the auditor’s mindset';
-  if (NAV_PAGES[sec]) navLastPage[sec] = t;
+  if (NAV_PAGES[sec] && t !== NAV_HOME[sec]) navLastPage[sec] = t;
   document.body.setAttribute('data-section', sec);
   document.querySelectorAll('.sn-item, .bnav-item').forEach(function (x) {
     if (x.getAttribute('data-sec') !== sec) { x.removeAttribute('aria-current'); return; }
     // The section's own first page is "the page"; inside a sub-page the
     // section is the current set and the sub-link is the page.
-    x.setAttribute('aria-current', (t === NAV_HOME[sec] && !NAV_PAGES[sec]) ? 'page' : 'true');
+    x.setAttribute('aria-current', (t === NAV_HOME[sec] && (!NAV_PAGES[sec] || sec === 'learn')) ? 'page' : 'true');
   });
   document.querySelectorAll('.sn-subitem').forEach(function (x) {
     if (x.getAttribute('data-tab') === t) x.setAttribute('aria-current', 'page');
@@ -13047,10 +13444,15 @@ function syncNav(t) {
   var sub = document.getElementById('subNav');
   if (sub) {
     var html = '';
-    if (NAV_PAGES[sec]) {
+    if (sec === 'learn' && t === 'learn') {
+      // The Learn hub: its tiles are the way into each page.
+      html = '';
+    } else if (NAV_PAGES[sec]) {
       sub.setAttribute('aria-label', sec === 'learn' ? 'Learn pages' : 'Practice pages');
       sub.className = 'sub-nav sub-nav-pages';
-      html = NAV_PAGES[sec].map(function (p) {
+      // Every Learn page's bar starts with the way back to the hub.
+      html = (sec === 'learn' ? '<a class="sub-nav-hub" href="#learn" onclick="return navGoFocus(event,\'learn\')">' + ico('chevron', 18, 'ico ico-back') + 'Learn</a>' : '')
+        + NAV_PAGES[sec].map(function (p) {
         // The bar is drawn again for the new page, so the link that had focus
         // is gone: focus moves to the new page's title, never the page body.
         return '<a href="#' + NAV_HASH[p[0]] + '" onclick="return navGoFocus(event,\'' + p[0] + '\')"'
@@ -15345,7 +15747,7 @@ function fgRunningHead(left, rightHtml) {
 // frame by syncPageRh (#pageRh), never inside a page. Never on a question
 // in a set or a mock: there the strip is the head. The pages that show it:
 var PAGE_RH = {
-  home: 1, practice: 1, mock: 1, bookmarks: 1, weakspots: 1, progress: 1, topics: 1, principles: 1,
+  home: 1, learn: 1, practice: 1, mock: 1, bookmarks: 1, weakspots: 1, progress: 1, topics: 1, principles: 1,
   examguide: 1, finalweek: 1, glossary: 1, faq: 1, about: 1, you: 1, settings: 1
 };
 var pageRhRight = {};   // a page's own right side: { progress: html, mockResults: { kind, total, at, min } }
@@ -15369,16 +15771,7 @@ function pageRhHtml(t) {
       + '<span class="sr-only">' + escapeHtml(dayLong) + (dayLong ? ', ' : '') + durLong + '</span>');
   }
   if (t === 'progress' && pageRhRight.progress) right = pageRhRight.progress;
-  if (t === 'examguide') {
-    var iso = EXAM_GUIDE && EXAM_GUIDE.data ? String(EXAM_GUIDE.data.last_checked || '') : '';
-    if (PARITY_DAY_RE.test(iso)) {
-      try {
-        var ck = new Date(iso + 'T12:00:00');
-        right = '<span aria-hidden="true">Checked ' + escapeHtml(new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }).format(ck)) + '</span>'
-          + '<span class="sr-only">Checked ' + escapeHtml(new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'long', year: 'numeric' }).format(ck)) + '</span>';
-      } catch (e) {}
-    }
-  }
+  // About the exam: the date only (DECISIONS 8); the body says when it was last checked.
   return fgRunningHead('', right);
 }
 function syncPageRh() {
@@ -17353,7 +17746,7 @@ function showSessionStart() { renderPracticeHub(); }
 // No streaks, counters, tip of the day or second countdown live here.
 // v12.46: one breakpoint, the page frame's margin (1240px).
 var FRAME_MARGIN_BP = 1240;
-var RAIL_BP = { hub: FRAME_MARGIN_BP, notes: FRAME_MARGIN_BP, mock: FRAME_MARGIN_BP, results: FRAME_MARGIN_BP, q: FRAME_MARGIN_BP, you: FRAME_MARGIN_BP };
+var RAIL_BP = { learn: FRAME_MARGIN_BP, principles: FRAME_MARGIN_BP, hub: FRAME_MARGIN_BP, notes: FRAME_MARGIN_BP, mock: FRAME_MARGIN_BP, results: FRAME_MARGIN_BP, q: FRAME_MARGIN_BP, you: FRAME_MARGIN_BP };
 var RAIL_SHOW_MAX = 20;          // the most a retry set holds; a backlog total is never shown
 var RAIL_WEAK_MIN = 8;           // answers in a topic before it can be called weak
 var RAIL_MIX_SIZE = 10;          // the weak spot's mixed set
@@ -17391,6 +17784,8 @@ function railPage() {
   var t = S.activeTab;
   if (t === 'practice') return practiceView === 'focus' ? 'q' : 'hub';
   if (t === 'topics') return 'notes';
+  if (t === 'learn') return 'learn';
+  if (t === 'principles') return 'principles';
   if (t === 'mock') {
     var mv = document.body.getAttribute('data-mview');
     // A mock's results (v12.49): the signs for an exam date in the margin.
@@ -18009,6 +18404,17 @@ function railQSections() {
   if (terms.length) secs.push({ id: 'terms', key: 'terms:' + q.id, cls: 'p4-card sr-card-pad', html: '<h2 class="sr-cap" id="srhTerms">Terms in this question</h2>' + railTermsHtml(terms) });
   return secs;
 }
+// The Learn hub's margin (Grove Phase 4, 7.1): "Look up a term" (as Study
+// notes) and Today's principle (a plain card, as Today).
+function railLearnSections() {
+  var secs = [{ id: 'look', key: 'look', cls: 'p4-card sr-card-pad', html: '<h2 class="sr-cap" id="srhLook">Look up a term</h2>' + railLookupHtml() }];
+  var p = null;
+  try { p = railPrinciple(); } catch (e) { p = null; }
+  if (p) secs.push({ id: 'principle', key: 'p:' + p.id, cls: 'p4-card sr-card sr-card-prin', html: '<h2 class="sr-cap" id="srhPrin">Today&rsquo;s principle</h2>'
+    + '<p class="sr-quote">' + escapeHtml(p.rule || '') + '</p><p class="sr-meta">' + escapeHtml(p.title) + '</p>'
+    + '<a class="sr-link" href="#principles/' + escapeHtml(p.id) + '" data-pid="' + escapeHtml(p.id) + '" onclick="return railOpenPrinciples(event,this.dataset.pid)">Read this principle' + ico('arrow-right', 16) + '</a>' });
+  return secs;
+}
 function railMockSections() {
   var hist = (Array.isArray(S.mockHistory) ? S.mockHistory : []).slice(0, 3);
   if (!hist.length) return [];
@@ -18102,6 +18508,8 @@ function railSync() {
   if (page === 'q') { railQInline(!wide); if (wide) secs = railQSections(); }
   else railQInline(false);
   if (page === 'notes' && wide) secs = railNotesSections();
+  if (page === 'learn' && wide) secs = railLearnSections();
+  if (page === 'principles' && wide) secs = railLearnSections().slice(0, 1);
   if (page === 'mock' && wide) secs = railMockSections();
   if (page === 'results') { railResultsInline(!wide); if (wide) secs = railResultsSections(); }
   else railResultsInline(false);
@@ -22837,7 +23245,11 @@ function egSections(g) {
 }
 function examGuideHtml(g) {
   var secs = egSections(g);
-  var checked = exDateWords(g.last_checked);
+  // The app's date format: "Last checked 19 Oct 2026" (PHASE4.md 7.5).
+  var checked = '';
+  if (PARITY_DAY_RE.test(String(g.last_checked || ''))) {
+    try { checked = new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }).format(new Date(g.last_checked + 'T12:00:00')); } catch (e) { checked = exDateWords(g.last_checked); }
+  }
   var h = '<div class="gt-head"><h1 class="gt-title" id="egTitle" tabindex="-1">' + escapeHtml(gtStr(g.title) || 'About the CISA exam') + '</h1>'
     + (gtStr(g.description) ? '<p class="gt-sub">' + escapeHtml(g.description) + '</p>' : '') + '</div>';
   // The one "check before you book" note covers every fee and rule below.
@@ -22845,7 +23257,7 @@ function examGuideHtml(g) {
     h += '<div class="ex-note" role="note">' + ico('info', 20)
       + '<div class="ex-note-text">'
       + (gtStr(g.check_before_booking) ? '<p class="ex-note-t">' + escapeHtml(g.check_before_booking) + '</p>' : '')
-      + (checked ? '<p class="ex-note-m">Last checked ' + checked + '</p>' : '')
+      + (checked ? '<p class="ex-note-m">Last checked ' + escapeHtml(checked) + '</p>' : '')
       + '</div></div>';
   }
   if (gtStr(g.disclaimer)) h += '<p class="eg-disc">' + escapeHtml(g.disclaimer) + '</p>';
@@ -23055,7 +23467,7 @@ function fwDayHtml(d, left, coach) {
   var h = '<article class="fw-day' + (isToday ? ' fw-today' : '') + '" id="fw-' + d.id + '" aria-labelledby="' + hid + '">'
     + '<h3 class="fw-day-h" id="' + hid + '" tabindex="-1"><span class="fw-day-n">' + (isFinite(num) && num > 0 ? 'Day ' + num : '')
     + (isToday ? '<span class="fw-today-pill">Today</span>' : '') + '</span>'
-    + '<span class="sr-only">: </span><span class="fw-day-t">' + escapeHtml(d.title) + '</span></h3>'
+    + '<span class="sr-only">, </span><span class="fw-day-t">' + escapeHtml(d.title) + '</span></h3>'
     + (gtStr(d.goal) ? '<p class="fw-goal">' + escapeHtml(d.goal) + '</p>' : '');
   if (tasks.length) {
     h += '<ol class="fw-tasks">' + tasks.map(function (t, i) { return fwTaskHtml(t, d.id + '-' + i); }).join('') + '</ol>';
@@ -23428,75 +23840,81 @@ function todayHideFinalWeek() {
   showToast('Hidden for today. The plan stays under Learn.', 'info', 2600);
 }
 
+// ── GLOSSARY (Grove Phase 4, PHASE4.md 7.3 and section 8) ──
+// The title on the page with the Glossary plant beside it, one plain line,
+// the progress as one meta line, the search, then every control kept
+// (domain chips with the short names, Status, Browse or Flashcards), each
+// in the selected look with aria-pressed. Terms sit in one card per letter;
+// each term is a list item with two sibling buttons: the term (opens the
+// sheet) and the mastered toggle.
+function glDomShort(d) { return DI[String(d)] ? DI[String(d)].short : 'General'; }
+// The Glossary plant (section 8): always the oak at stage 2, quiet, never the
+// learner's own; not drawn when the plant is turned off or its script is
+// missing (no gap is left).
+function glPlantHtml() {
+  if (S.plantSettings && S.plantSettings.showPlant === false) return '';
+  var svg = plantSafe(function () { return plantApi() ? plantSvg({ species: 'oak', stage: 2, size: 64, fit: true, lod: 'small', quiet: true, theme: plantTheme() }) : ''; });
+  return svg ? '<div class="gl-plant" aria-hidden="true">' + svg + '</div>' : '';
+}
+function glChip(label, on, onclick, extra) {
+  return '<button type="button" class="gloss-chip' + (on ? ' active' : '') + '" aria-pressed="' + on + '"' + (extra || '') + ' onclick="' + onclick + '">' + label + '</button>';
+}
 function renderGlossary() {
   var area = document.getElementById('glossaryArea');
   if (!area) return;
+  var act = document.activeElement;
+  var keepId = act && act.id && area.contains(act) ? act.id : null;
 
   var totalCount = GLOSS.length;
   var masteredCount = Object.keys(getMasteredSet()).length;
   var pct = totalCount ? Math.round((masteredCount / totalCount) * 100) : 0;
-  var ringR = 40;
-  var ringDash = 2 * Math.PI * ringR;
-  var ringOffset = ringDash * (1 - pct / 100);
 
-  var hero = '<div class="gloss-hero">'
-    +   '<div class="gloss-hero-left">'
-    +     '<h1 class="gloss-title" tabindex="-1">Glossary</h1>'
-    +     '<div class="gloss-sub">Master the language of information systems audit. Curated terms across audit, governance, development, operations and security. Search a definition, filter by domain, or drill yourself with flashcards.</div>'
-    +   '</div>'
-    +   '<div class="gloss-hero-right">'
-    +     '<div class="gloss-progress-ring" role="img" aria-label="' + pct + '% of terms mastered">'
-    +       '<svg viewBox="0 0 96 96" width="96" height="96">'
-    +         '<circle cx="48" cy="48" r="' + ringR + '" stroke="var(--border2)" stroke-width="7" fill="none"/>'
-    +         '<circle cx="48" cy="48" r="' + ringR + '" stroke="var(--accent2)" stroke-width="7" fill="none" stroke-linecap="round" '
-    +           'stroke-dasharray="' + ringDash.toFixed(2) + '" stroke-dashoffset="' + ringOffset.toFixed(2) + '" '
-    +           'transform="rotate(-90 48 48)" style="transition: stroke-dashoffset 0.6s ease"/>'
-    +       '</svg>'
-    +       '<div class="gloss-progress-inner">'
-    +         '<div class="gloss-progress-pct">' + pct + '%</div>'
-    +         '<div class="gloss-progress-label">Mastered</div>'
-    +       '</div>'
-    +     '</div>'
-    +     '<div class="gloss-mastered-count">' + masteredCount + ' learned</div>'
-    +   '</div>'
-    + '</div>';
+  var hero = '<div class="gl-head"><div class="gl-head-t">'
+    + '<h1 class="gloss-title" tabindex="-1">Glossary</h1>'
+    + '<p class="gl-sub">Key terms in plain words, with search and flashcards.</p>'
+    + '<p class="gl-prog"><span class="gloss-progress-pct">' + masteredCount + ' learned &middot; ' + pct + '%</span></p>'
+    + '</div>' + glPlantHtml() + '</div>';
 
+  var dom = glossState.domain, st = glossState.showMastered;
   var toolbar = '<div class="gloss-toolbar">'
     + '<div class="gloss-search-row">'
-    +   '<input type="text" class="gloss-search" id="glossSearch" aria-label="Search the glossary" '
-    +     'placeholder="Search by term, acronym, or definition&hellip;" '
+    +   '<label class="lh-search gl-search">' + ico('search', 20)
+    +   '<input type="search" class="gloss-search" id="glossSearch" aria-label="Search the glossary" autocomplete="off" '
+    +     'placeholder="Search by term, acronym or definition" '
     +     'value="' + escHtml(glossState.search) + '" '
-    +     'oninput="onGlossSearch(this.value)">'
-    +   '<div class="gloss-mode-btns">'
-    +     '<button class="gloss-mode-btn' + (glossState.view==='browse'?' active':'') + '" onclick="setGlossView(\'browse\')">Browse</button>'
-    +     '<button class="gloss-mode-btn' + (glossState.view==='flashcards'?' active':'') + '" onclick="setGlossView(\'flashcards\')">Flashcards</button>'
+    +     'oninput="onGlossSearch(this.value)"></label>'
+    +   '<div class="gloss-mode-btns" role="group" aria-label="View">'
+    +     glChip('Browse', glossState.view === 'browse', "setGlossView('browse')", ' id="glVBrowse"').replace('gloss-chip', 'gloss-chip gloss-mode-btn')
+    +     glChip('Flashcards', glossState.view === 'flashcards', "setGlossView('flashcards')", ' id="glVFlash"').replace('gloss-chip', 'gloss-chip gloss-mode-btn')
     +   '</div>'
     + '</div>'
-
     + '<div class="gloss-filters">'
-    +   '<span class="gloss-filter-label">Domain</span>'
-    +   '<button class="gloss-chip' + (glossState.domain==='all'?' active':'') + '" onclick="setGlossDomain(\'all\')">All</button>'
-    +   '<button class="gloss-chip d1' + (glossState.domain==='1'?' active':'') + '" onclick="setGlossDomain(\'1\')">D1 Audit</button>'
-    +   '<button class="gloss-chip d2' + (glossState.domain==='2'?' active':'') + '" onclick="setGlossDomain(\'2\')">D2 Gov</button>'
-    +   '<button class="gloss-chip d3' + (glossState.domain==='3'?' active':'') + '" onclick="setGlossDomain(\'3\')">D3 Dev</button>'
-    +   '<button class="gloss-chip d4' + (glossState.domain==='4'?' active':'') + '" onclick="setGlossDomain(\'4\')">D4 Ops</button>'
-    +   '<button class="gloss-chip d5' + (glossState.domain==='5'?' active':'') + '" onclick="setGlossDomain(\'5\')">D5 Sec</button>'
-    +   '<button class="gloss-chip' + (glossState.domain==='0'?' active':'') + '" onclick="setGlossDomain(\'0\')">General</button>'
-    +   '<span style="width:14px"></span>'
-    +   '<span class="gloss-filter-label">Status</span>'
-    +   '<button class="gloss-chip' + (glossState.showMastered==='all'?' active':'') + '" onclick="setGlossStatus(\'all\')">All</button>'
-    +   '<button class="gloss-chip' + (glossState.showMastered==='unmastered'?' active':'') + '" onclick="setGlossStatus(\'unmastered\')">To learn</button>'
-    +   '<button class="gloss-chip' + (glossState.showMastered==='mastered'?' active':'') + '" onclick="setGlossStatus(\'mastered\')">Mastered</button>'
+    +   '<div class="gl-fgroup" role="group" aria-labelledby="glDomL"><span class="gloss-filter-label" id="glDomL">Domain</span>'
+    +     glChip('All', dom === 'all', "setGlossDomain('all')", ' id="glD-all"')
+    +     Object.keys(DI).map(function (d) { return glChip(escapeHtml(DI[d].short), dom === d, "setGlossDomain('" + d + "')", ' id="glD-' + d + '"'); }).join('')
+    +     glChip('General', dom === '0', "setGlossDomain('0')", ' id="glD-0"')
+    +   '</div>'
+    +   '<div class="gl-fgroup" role="group" aria-labelledby="glStL"><span class="gloss-filter-label" id="glStL">Status</span>'
+    +     glChip('All', st === 'all', "setGlossStatus('all')", ' id="glS-all"')
+    +     glChip('To learn', st === 'unmastered', "setGlossStatus('unmastered')", ' id="glS-un"')
+    +     glChip('Mastered', st === 'mastered', "setGlossStatus('mastered')", ' id="glS-m"')
+    +   '</div>'
     + '</div>'
     + '</div>';
 
-  var header = hero + toolbar;
-
-  if (glossState.view === 'flashcards') {
-    area.innerHTML = header + renderFlashcardArea();
-  } else {
-    area.innerHTML = header + renderGlossList();
+  area.innerHTML = '<div class="gl">' + hero + toolbar
+    + (glossState.view === 'flashcards' ? renderFlashcardArea() : renderGlossList()) + '</div>';
+  if (keepId) {
+    var k = document.getElementById(keepId);
+    if (k) { try { k.focus({ preventScroll: true }); } catch (e) {} }
   }
+}
+// The plant script is deferred: draw the Glossary head again once it arrives.
+function glRefreshPlant() {
+  if (typeof S === 'undefined' || !S || S.activeTab !== 'glossary') return;
+  var head = document.querySelector('#glossaryArea .gl-head');
+  if (!head || head.querySelector('.gl-plant')) return;
+  head.insertAdjacentHTML('beforeend', glPlantHtml());
 }
 
 function renderGlossList() {
@@ -23505,7 +23923,7 @@ function renderGlossList() {
   var countLabel = filtered.length === 1 ? 'term' : 'terms';
   var countHtml = '<div class="gloss-count">'
     + '<span><strong>' + filtered.length + '</strong> ' + countLabel + (hasFilters ? ' matched' : '') + '</span>'
-    + (hasFilters ? '<button class="gloss-count-clear" onclick="clearGlossFilters()">Clear filters</button>' : '')
+    + (hasFilters ? '<button type="button" class="gloss-count-clear" onclick="clearGlossFilters()">Clear filters</button>' : '')
     + '</div>';
 
   // Sort alphabetically
@@ -23518,41 +23936,46 @@ function renderGlossList() {
     var c = (t.term || '').charAt(0).toUpperCase();
     if (c >= 'A' && c <= 'Z') present[c] = true;
   });
-  var letterIndex = '<div class="gloss-letter-index"><div class="gloss-letter-grid">';
+  var letterIndex = '<nav class="gloss-letter-index" aria-label="Jump to a letter"><div class="gloss-letter-grid">';
   letters.forEach(function(L){
     var has = !!present[L];
-    letterIndex += '<button class="gloss-letter' + (has ? ' has' : '') + '" '
+    letterIndex += '<button type="button" class="gloss-letter' + (has ? ' has' : '') + '" '
       + (has ? 'onclick="jumpToLetter(\'' + L + '\')"' : 'disabled')
       + ' aria-label="Jump to ' + L + '">' + L + '</button>';
   });
-  letterIndex += '</div></div>';
+  letterIndex += '</div></nav>';
 
   if (filtered.length === 0) {
     return countHtml + '<div class="gloss-empty">No terms match your filters.<br><br>'
-      + '<button class="gloss-count-clear" onclick="clearGlossFilters()">Reset filters</button>'
+      + '<button type="button" class="gloss-count-clear" onclick="clearGlossFilters()">Reset filters</button>'
       + '</div>';
   }
 
-  var html = letterIndex + countHtml + '<div class="gloss-list">';
-  var lastLetter = '';
-  filtered.forEach(function(t){
-    var mastered = isMastered(t.id);
-    var dInfo = GLOSS_DOMAINS[t.domain] || GLOSS_DOMAINS[0];
+  // One card per letter; each term one row with two sibling buttons.
+  var groups = [], cur = null;
+  filtered.forEach(function (t) {
     var letter = (t.term || '').charAt(0).toUpperCase();
-    var anchorAttr = (letter !== lastLetter && letter >= 'A' && letter <= 'Z')
-      ? ' id="gloss-letter-' + letter + '"' : '';
-    if (anchorAttr) lastLetter = letter;
-    html += '<div class="gloss-card dl' + t.domain + (mastered ? ' mastered' : '') + '"' + anchorAttr + ' onclick="showGlossDetail(' + t.id + ')">'
-      + '<button class="gloss-card-master-btn" onclick="event.stopPropagation();toggleMasteredCard(' + t.id + ')" aria-pressed="' + mastered + '" aria-label="Mastered: ' + escHtml(t.term) + '" title="' + (mastered ? 'Unmark mastered' : 'Mark as mastered') + '">' + (mastered ? '&#10003;' : '') + '</button>'
-      + '<div class="gloss-card-top">'
-      +   '<div class="gloss-card-term">' + highlightSearch(t.term, glossState.search) + '</div>'
-      + '</div>'
-      + '<div class="gloss-card-top">'
-      +   (t.acronym ? '<span class="gloss-card-acronym">' + escHtml(t.acronym) + '</span>' : '')
-      +   '<span class="gloss-card-domain d' + t.domain + '">' + dInfo.short + '</span>'
-      + '</div>'
-      + '<div class="gloss-card-def">' + highlightSearch(t.def, glossState.search) + '</div>'
-      + '</div>';
+    var key = letter >= 'A' && letter <= 'Z' ? letter : '#';
+    if (!cur || cur.key !== key) { cur = { key: key, items: [] }; groups.push(cur); }
+    cur.items.push(t);
+  });
+  var html = letterIndex + countHtml + '<div class="gloss-list">';
+  groups.forEach(function (g) {
+    var hid = g.key === '#' ? 'gloss-letter-other' : 'gloss-letter-' + g.key;
+    html += '<section class="gl-group" aria-labelledby="' + hid + '"><h2 class="gl-letter-h" id="' + hid + '" tabindex="-1">' + (g.key === '#' ? 'Other' : g.key) + '</h2><ul class="gl-terms">';
+    g.items.forEach(function (t) {
+      var mastered = isMastered(t.id);
+      html += '<li class="gloss-card' + (mastered ? ' mastered' : '') + '">'
+        + '<button type="button" class="gl-term" id="glT-' + t.id + '" aria-haspopup="dialog" onclick="showGlossDetail(' + t.id + ')">'
+        +   '<span class="gloss-card-term">' + highlightSearch(t.term, glossState.search) + '</span>'
+        +   '<span class="gl-term-m">' + (t.acronym ? escHtml(t.acronym) + ' &middot; ' : '') + escapeHtml(glDomShort(t.domain)) + '</span>'
+        +   '<span class="gloss-card-def">' + highlightSearch(t.def, glossState.search) + '</span>'
+        + '</button>'
+        + '<button type="button" class="gloss-card-master-btn" id="glM-' + t.id + '" onclick="toggleMasteredCard(' + t.id + ')" aria-pressed="' + mastered + '" aria-label="Mastered: ' + escHtml(t.term) + '">'
+        +   '<svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="9.25" class="gl-mk-c"/><path d="m7.8 12.3 2.8 2.8 5.6-5.9" class="gl-mk-t"/></svg>'
+        + '</button></li>';
+    });
+    html += '</ul></section>';
   });
   html += '</div>';
   return html;
@@ -23560,7 +23983,9 @@ function renderGlossList() {
 
 function jumpToLetter(L) {
   var el = document.getElementById('gloss-letter-' + L);
-  if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  if (!el) return;
+  el.scrollIntoView({ behavior: cpScrollBehavior(), block: 'start' });
+  try { el.focus({ preventScroll: true }); } catch (e) {}
 }
 
 function clearGlossFilters() {
@@ -23570,32 +23995,30 @@ function clearGlossFilters() {
   renderGlossary();
 }
 
+// The term sheet (7.3): a managed dialog (glossDetailModal is one of the
+// dialog manager's holders): role dialog, aria-modal, focus in, Tab kept
+// inside, Esc closes, focus back to the term button that opened it. A
+// bottom sheet below 48em, as the You and Settings sheets.
 function showGlossDetail(id) {
   var t = GLOSS.find(function(x){ return x.id === id; });
   if (!t) return;
   var mastered = isMastered(t.id);
-  var dInfo = GLOSS_DOMAINS[t.domain] || GLOSS_DOMAINS[0];
-  var html = '<div class="gloss-detail-overlay" onclick="if(event.target===this)closeGlossDetail()">'
-    + '<div class="gloss-detail">'
-    + '<div class="gloss-detail-header">'
-    +   '<div>'
-    +     '<div class="gloss-detail-title">' + escHtml(t.term) + '</div>'
-    +     (t.acronym ? '<span class="gloss-detail-acronym">' + escHtml(t.acronym) + '</span>' : '')
-    +   '</div>'
+  var meta = escapeHtml(glDomShort(t.domain)) + (t.category ? ' &middot; ' + escHtml(t.category) : '') + (mastered ? ' &middot; Mastered' : '');
+  var html = '<div class="mock-confirm-overlay ks-sheet-overlay gl-sheet-overlay" onclick="if(event.target===this)closeGlossDetail()">'
+    + '<div class="mock-confirm-modal ks-sheet gl-sheet">'
+    + '<div class="gl-sheet-head">'
+    +   '<div class="gl-sheet-ht"><h2 class="mock-confirm-head" id="glSheetT">' + escHtml(t.term) + '</h2>'
+    +     (t.acronym ? '<p class="gl-sheet-ac">' + escHtml(t.acronym) + '</p>' : '')
+    +     '<p class="gl-sheet-meta">' + meta + '</p></div>'
     +   '<button type="button" class="gloss-detail-close" aria-label="Close" onclick="closeGlossDetail()">' + ico('x', 22) + '</button>'
     + '</div>'
-    + '<div class="gloss-detail-body">'
-    +   '<div class="gloss-detail-meta">'
-    +     '<span class="gloss-detail-meta-pill">Domain: ' + dInfo.name + '</span>'
-    +     '<span class="gloss-detail-meta-pill">' + escHtml(t.category) + '</span>'
-    +     (mastered ? '<span class="gloss-detail-meta-pill" style="background:var(--correct-light);color:var(--correct);border-color:var(--correct-light)">Mastered</span>' : '')
-    +   '</div>'
-    +   '<div class="gloss-detail-section-label">Definition</div>'
-    +   '<div class="gloss-detail-def">' + escHtml(t.def) + '</div>'
-    +   (t.scopeNotes ? '<div class="gloss-detail-section-label">Scope Notes</div><div class="gloss-detail-scope">' + escHtml(t.scopeNotes) + '</div>' : '')
+    + '<div class="gl-sheet-body">'
+    +   '<h3 class="gl-sheet-h">Definition</h3>'
+    +   '<p class="gloss-detail-def">' + escHtml(t.def) + '</p>'
+    +   (t.scopeNotes ? '<h3 class="gl-sheet-h">Scope notes</h3><p class="gloss-detail-scope">' + escHtml(t.scopeNotes) + '</p>' : '')
     +   '<div class="gloss-detail-actions">'
-    +     '<button class="gloss-detail-btn primary' + (mastered ? ' mastered-btn' : '') + '" onclick="toggleMasteredFromDetail(' + t.id + ')">'
-    +       (mastered ? 'Mastered' : 'Mark as Mastered')
+    +     '<button type="button" class="gl-sheet-btn" id="glSheetM" aria-pressed="' + mastered + '" onclick="toggleMasteredFromDetail(' + t.id + ')">'
+    +       (mastered ? ico('check', 18) + 'Mastered' : 'Mark as mastered')
     +     '</button>'
     +   '</div>'
     + '</div>'
@@ -23617,21 +24040,19 @@ function closeGlossDetail() {
 function toggleMasteredCard(id) {
   toggleMastered(id);
   renderGlossary();
+  // Focus stays on the toggle, drawn again.
+  var b = document.getElementById('glM-' + id);
+  if (b) { try { b.focus({ preventScroll: true }); } catch (e) {} }
 }
 
 function toggleMasteredFromDetail(id) {
   toggleMastered(id);
+  // The list behind the sheet updates (the sheet's opener keeps its id).
+  if (glossState.view === 'browse') renderGlossary();
   showGlossDetail(id);
-  // Re-render list in background so card status updates when modal closes
-  if (glossState.view === 'browse') {
-    var area = document.getElementById('glossaryArea');
-    if (area) {
-      // Just refresh the list portion; full re-render is fine
-      renderGlossary();
-      // Keep modal open by re-showing it
-      showGlossDetail(id);
-    }
-  }
+  // Focus stays on the sheet's toggle (the dialog manager sees it inside).
+  var b = document.getElementById('glSheetM');
+  if (b) { try { b.focus({ preventScroll: true }); } catch (e) {} }
 }
 
 function onGlossSearch(v) {
@@ -27044,7 +27465,7 @@ function loadExamMode() {
 // aria-modal, a name, focus moved in, Tab kept inside, Esc to close, and focus
 // handed back to whatever opened it.
 (function dialogManager() {
-  var HOLDERS = ['flagModal', 'changelogModal', 'feedbackModal'];
+  var HOLDERS = ['flagModal', 'changelogModal', 'feedbackModal', 'glossDetailModal'];
   var BOX = '.onboard-modal, .flag-modal, .changelog-modal, .summary-modal, .mock-confirm-modal';
   var TITLE = '.onboard-title, .flag-title, .cl-title, .summary-title, .mock-confirm-head';
   var FOCUSABLE = 'a[href], button:not([disabled]), input:not([disabled]):not([hidden]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
@@ -27118,6 +27539,8 @@ function loadExamMode() {
       if (box.classList.contains('onboard-modal')) closeOnboarding(); else closeFlagModal();
     } else if (id === 'changelogModal') {
       closeSummary();
+    } else if (id === 'glossDetailModal') {
+      closeGlossDetail();
     } else {
       closeFeedback();
     }
@@ -27159,6 +27582,7 @@ function loadExamMode() {
 (function plantWhenReady() {
   var ready = function () {
     try { if (S.plant) S.plant = plantValid(S.plant); plantRefresh(); } catch (e) {}
+    try { glRefreshPlant(); } catch (e) {}
   };
   if (plantApi()) { ready(); return; }
   var el = document.getElementById('kaisipPlantJs');
