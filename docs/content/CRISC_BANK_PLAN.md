@@ -1,6 +1,6 @@
 # CRISC course plan: from the pilot to a sellable pack
 
-**Status:** plan, 30 Oct 2026; round 7 done 4 Nov 2026 (bank 425, on the outline weights). CRISC is a **paid course** learners buy in the
+**Status:** plan, 30 Oct 2026; round 8 done 5 Nov 2026 (bank 450, on the outline weights). CRISC is a **paid course** learners buy in the
 app (6-month access, one payment, never renews; see
 `docs/business/monetization/RECOMMENDATION.md`). Outline and sources:
 `docs/content/CRISC_BLUEPRINT.md`. Item standard:
@@ -20,7 +20,7 @@ it can be sold:
 |---|---|---|---|
 | Blueprint | `docs/content/CRISC_BLUEPRINT.md` | cert-blueprint-researcher | Done, 30 Oct 2026 |
 | Study notes | `data/crisc/notes/d{1..4}.json` + `_course.json` (strategy tips, cross-domain connections) | crisc-d{N}-domain-expert | All 43 outline sub-areas, 115 subtopics, Practice this concept links (`data/crisc/tools/sync_practice_ids.py`) |
-| Questions | `data/crisc/originals/d{1..4}.json` | crisc-d{N}-domain-expert | 425 reviewed (110 / 94 / 136 / 85) after round 7, each domain on its weight: a full 150-item mock and a short 50-item mock without repeats |
+| Questions | `data/crisc/originals/d{1..4}.json` | crisc-d{N}-domain-expert | 450 reviewed (117 / 99 / 144 / 90) after round 8, each domain on its weight: a full 150-item mock and a short 50-item mock without repeats |
 | Citation library | `data/crisc/originals/_framework_library.md` | domain experts | Started with the pilot |
 | Principles (mindset cards) | `data/crisc/mindset/principles.json` (schema `docs/content/PRINCIPLES_SCHEMA.md`) | isaca-mindset-coach | 19 principles; every item tagged |
 | Exam guide and final-review week | `data/crisc/exam/` (schema `docs/content/EXAM_GUIDE_SCHEMA.md`) | isaca-mindset-coach | Both done and reviewed |
@@ -386,6 +386,31 @@ in place (d3_130), and a rating that predates a cloud move (d4_080).
 - Acceptance: add one more FIRST-stem acceptance key (D1 or D4) and one BEST counter-example; key "reassess beside accept" only when the stem reports a change after the rating.
 - D1: analysis keys on A, C or D; one foundational keyed B. D2: fill 2A3, 2B1–2B4; analysis keys on C; at least one AI item. D3: fill 3A2, 3B1, 3C1, 3C2, 3C4–3C6; analysis keys on D; at most one "Which …" stem. D4: fill 4A3, 4A6, 4B1–4B3; one foundational keyed C, application keys on D.
 - Keep apart in practice sets: d1_105/d3_062, d1_107/d1_063/d1_075/d2_085, d1_108/d1_068, d1_110/d4_022, d2_091/d2_087, d2_092/d2_085, d2_094/d2_007, d3_130/d2_018/d2_013, d3_133/d3_014, d3_134/d3_102, d3_135/d2_010, d4_080/d3_058/d4_072, d4_084/d4_010/d3_021, d4_085/d4_075/d3_118.
+
+### Round 8 (5 Nov 2026): 25 items, bank 450
+
+Round 8 added 7 D1 (`crisc_d1_111`–`117`), 5 D2 (`crisc_d2_095`–`099`),
+8 D3 (`crisc_d3_137`–`144`) and 5 D4 (`crisc_d4_086`–`090`) items: FIRST-stem
+acceptance keys (d1_114, d4_086), a BEST counter-example where the rating left
+out a data source (d3_139), silence is not acceptance (d1_117), peer policies
+go back to the level that approved both (d1_115), and FAIR secondary loss (d2_099).
+
+| Stage | Result |
+|---|---|
+| Blind test | 25/25 picks matched the keys |
+| Standards audit and concept review | 0 HARD ERRORS; about 25 PRECISION fixes. Re-angles: d3_138 (hospital pharmacy, off d1_050) and d3_144. d4_086 moved to a car-rental launch, off the "nothing has changed" phrase, key moved from D to B. Stems now hold the deciding fact (d2_096, d3_140, d1_115 "neither says which prevails") |
+| Re-blind of changed items | 15/15, all sure |
+| Cross-domain gate | 0 HARD ERRORS, 4 PRECISION. d3_144 re-angled again (it mirrored CISA d2_217): now the concept of concentration risk, lock-in as runner-up. d3_142 runner-up changed (it shared d3_027's final two). Option cues removed ("Agree", "Let", "on record"). Five runs of three identical keys from earlier rounds broken by option swaps |
+| Gates | All lints 0 errors; originality 0 too close; practice links in sync; app pack dry run 0 problems; `verify_repo.sh` passes; no run of three identical keys in any domain |
+
+**Next round (round 9, +25 to 475):** D1 +7, D2 +5, D3 +8, D4 +5 (124/104/152/95).
+- Outside data: key it at least twice (a D2 likelihood item rated from regional records with the site's own thin records as runner-up; a D3 item where a peer's incident triggers recording an emerging risk). Across the bank, options that take a value from peers, benchmarks or vendors are never keyed (0 of 27).
+- Routing verbs: write items where escalate, refer or agree is the wrong answer, and key two where waiting for the scheduled review is right. Put "or", "impact" and "harm" into distractors that stay wrong; key one option that names inherent risk.
+- Acceptance: no new "current, within appetite, accept" FIRST items. Write the counter-example (nothing has changed, but the residual rating is above the owner's authority, so the key is to refer the acceptance; D2 or D4, key on A or C) and one BEST stem within appetite that does not key acceptance.
+- Vary "set it from the organization's own risk" (keyed in d3_016, d3_033, d3_035, d3_060, d1_019, d3_140, d3_141, d4_090): no new item keys it.
+- Keys and settings: D1 needs D keys, D4 needs B keys; plan file order so no three keys repeat. Bank or retailer settings at most twice.
+- Near-duplicate scan against CISA `data/originals` as well as AAIA and CC; list every neighbour checked in `_provenance`.
+- Keep apart in practice sets: d1_114/d3_118/d4_086, d3_138/d1_050, d3_144/d2_014/aaia_d1_067, d3_142/d3_027/d4_014, d3_137/cc_d2_020, d1_116/d2_013/d3_130, d2_096/d2_056, d2_098/d2_044/d2_065, d3_141/d3_047, d4_089/aaia_d1_012, d1_113/d2_002/d1_105.
 
 **Open items:**
 - The `TO VERIFY` comment on the CRISC entry in `mobile/src/content/certifications.ts`
