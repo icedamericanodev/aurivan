@@ -448,19 +448,20 @@
             "crisc_d4_027",
             "crisc_d4_028",
             "crisc_d4_059",
-            "crisc_d4_068"
+            "crisc_d4_068",
+            "crisc_d4_086"
           ],
           "definition": "The system development life cycle (SDLC) is the sequence of phases from initiation through design, build, testing, implementation, operation and disposal, each with its own risk activities.",
-          "why_it_matters": "A flaw found in design costs little to fix; the same flaw found after go-live costs far more and may already have caused harm. Risk activities in every phase keep the project within appetite.",
+          "why_it_matters": "A design flaw costs little to fix; after go-live it costs far more and may have caused harm. Risk work in every phase keeps the project within appetite.",
           "how_it_works": [
-            "Initiation: confirm the business case, owner, data sensitivity and initial risk assessment, and update it whenever scope or data change.",
+            "Initiation: confirm the business case, owner, data sensitivity and initial risk assessment, updated when scope or data change.",
             "Requirements and design: define security, privacy and control requirements alongside functional ones; for a purchased system, put them in the selection criteria and contract.",
             "Build and test: verify requirements are met; business users, not developers, sign off acceptance testing.",
-            "Implementation: confirm the owner accepts residual risk within appetite, or orders more treatment, before go-live.",
+            "Implementation: before go-live, the owner accepts residual risk within appetite or orders more treatment; the assessment is updated first only if scope, data or threats changed.",
             "Post-implementation review: check whether benefits arrived and risks stayed within appetite.",
-            "Disposal is planned: the data owner has old data archived or securely destroyed, and servers and access are retired and confirmed."
+            "Disposal is planned: the data owner has old data archived or securely destroyed, and servers and access are retired."
           ],
-          "example": "A retailer is rebuilding its loyalty app, and the project plan schedules the only security review two weeks before launch. Teo, the risk analyst, shows the sponsor that a late finding could force a costly redesign or a launch with open risk, and proposes adding security and privacy requirements to the design phase gate.",
+          "example": "A retailer is rebuilding its loyalty app, and the plan schedules the only security review two weeks before launch. Teo, the risk analyst, shows the sponsor that a late finding could force a costly redesign or a launch with open risk, and proposes adding security and privacy requirements to the design phase gate.",
           "audit_focus": {
             "review": [
               "Trace each project phase gate to a completed risk assessment",
@@ -966,7 +967,8 @@
           "practice_ids": [
             "crisc_d4_011",
             "crisc_d4_033",
-            "crisc_d4_076"
+            "crisc_d4_076",
+            "crisc_d4_088"
           ],
           "definition": "Recovery strategies are planned ways to restore systems after a disruption, such as hot, warm or cold sites or cloud failover, chosen to meet recovery objectives.",
           "why_it_matters": "The strategy decides whether the business recovers within its tolerance for downtime and data loss. Too little capability breaches tolerance; too much wastes money.",
@@ -1130,7 +1132,8 @@
             "A test that could disrupt operations is a business decision: the owner of the affected process accepts or limits the disruption, informed by what a failed test could cost.",
             "Each test has objectives tied to RTO, RPO and the scenarios in the risk register.",
             "Observers record what worked, what failed and how long recovery actually took.",
-            "Findings go into a corrective action plan with owners and dates, and the plan is retested."
+            "Findings go into a corrective action plan with owners and dates, and the plan is retested.",
+            "A restore test times only the restore; under ransomware, containment and malware checks come first, so real recovery takes longer than the test shows."
           ],
           "types": [
             {
@@ -1350,14 +1353,15 @@
             "crisc_d4_015",
             "crisc_d4_039",
             "crisc_d4_053",
-            "crisc_d4_073"
+            "crisc_d4_073",
+            "crisc_d4_087"
           ],
           "definition": "Core security principles are the design rules behind controls: protect confidentiality, integrity and availability, layer defenses, grant least privilege and separate duties.",
           "why_it_matters": "These principles let a practitioner judge whether a control set is sound without knowing every product. Gaps against them, such as one control guarding everything, point to concentrated risk.",
           "how_it_works": [
             "Confidentiality, integrity and availability (CIA) name what an event harms, which shapes the impact rating.",
             "Layered controls of different kinds mean one failure does not expose the asset.",
-            "Each user and system gets only the access its role needs, for only as long as needed.",
+            "Each user, system and AI tool gets only the access its task needs, for only as long as needed.",
             "Critical tasks are split so no one person can complete and hide a harmful action.",
             "Where duties cannot be split, compensating controls such as independent review reduce the risk.",
             "Layers sharing a vendor, design or rule set can fail together, adding less depth than their number suggests; diversity adds management work, so it is weighed against the risk."
@@ -1537,7 +1541,8 @@
             "crisc_d4_042",
             "crisc_d4_049",
             "crisc_d4_065",
-            "crisc_d4_074"
+            "crisc_d4_074",
+            "crisc_d4_090"
           ],
           "definition": "A risk-aware culture is one where people at every level understand the risks in their work, speak up about them and act within appetite, supported by targeted training.",
           "why_it_matters": "Most controls depend on people. Where staff fear blame or see risk as someone else's job, problems stay hidden until they become incidents; where they speak up, risk is found early.",
@@ -1745,13 +1750,14 @@
           "practice_ids": [
             "crisc_d4_020",
             "crisc_d4_043",
-            "crisc_d4_081"
+            "crisc_d4_081",
+            "crisc_d4_089"
           ],
           "definition": "Privacy by design builds privacy protections into systems from the start, and a privacy impact assessment (PIA) analyzes how a system handles personal data and the risks involved.",
           "why_it_matters": "Privacy fixes after launch are costly and may come after people are harmed. A PIA at the design stage finds problems while they are cheap to fix and gives owners a documented basis for decisions.",
           "how_it_works": [
             "A PIA is run before building or buying technology that processes personal data, or starting a new collection.",
-            "It maps data flows, assesses risks to individuals and the organization, and proposes mitigations.",
+            "It maps data flows, rates the problems the processing could cause individuals and the organizational impacts that follow, and proposes mitigations.",
             "Privacy by design sets protective defaults, such as minimal collection and short retention.",
             "The PIA is updated when the system, purpose or data changes.",
             "The NIST Privacy Framework helps organize privacy risk work alongside cybersecurity risk.",

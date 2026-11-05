@@ -471,15 +471,16 @@
             "crisc_d2_028",
             "crisc_d2_052",
             "crisc_d2_077",
-            "crisc_d2_093"
+            "crisc_d2_093",
+            "crisc_d2_095"
           ],
           "definition": "A vulnerability is a weakness in the design, implementation, operation or internal control of a process or system that a threat could exploit.",
-          "why_it_matters": "Most serious losses combine a technical flaw with a process gap or a human error. Looking only at scanner output leaves the process and people weaknesses unmanaged.",
+          "why_it_matters": "Many serious losses combine a technical flaw with a process gap or human error; scanner output alone leaves process and people weaknesses unmanaged.",
           "how_it_works": [
             "People weaknesses include missing skills, weak security awareness, key-person dependency and too few staff for a critical task.",
             "Process weaknesses include missing approvals, poor segregation of duties, untested recovery plans and undocumented procedures.",
             "Technology weaknesses include unpatched software, misconfigurations, default passwords, unsupported systems and over-broad access, which an AI assistant searching with users' rights makes easy to reach.",
-            "A control deficiency found in testing or audit is a vulnerability, because it weakens protection against a scenario.",
+            "A control deficiency found in testing or audit is a vulnerability; one with a shared cause, such as a standard install, is recorded against that cause.",
             "Predisposing conditions, such as a flood-prone site, change likelihood even when nothing is broken.",
             "Walkthroughs and control tests with staff find process and people weaknesses; documents and self-assessments show intent; scanners find technical flaws but, without credentials, miss many in installed software."
           ],
@@ -525,7 +526,7 @@
           "exam_traps": [
             {
               "trap": "The vulnerability scanner report is the complete list of the enterprise's vulnerabilities.",
-              "why": "Scanners find technical flaws only. Process gaps, weak segregation of duties and people weaknesses come from walkthroughs, control tests and audits."
+              "why": "Scanners find technical flaws only; process and people weaknesses come from walkthroughs, control tests and audits."
             },
             {
               "trap": "A data center in a flood zone is the threat source in its outage scenario.",
@@ -873,13 +874,14 @@
             "crisc_d2_032",
             "crisc_d2_056",
             "crisc_d2_069",
-            "crisc_d2_078"
+            "crisc_d2_078",
+            "crisc_d2_096"
           ],
           "definition": "Risk is the chance that an event happens, weighed with how much it would affect objectives; the ISACA Glossary frames it as likelihood combined with impact.",
           "why_it_matters": "Rating only impact makes every disaster look urgent; rating only likelihood ignores rare but severe events. Both together let owners compare risks fairly against appetite.",
           "how_it_works": [
             "Likelihood combines the chance a threat event starts and the chance it causes harm, over a stated time frame.",
-            "For adversaries, likelihood weighs capability, intent and targeting; for other sources, history and empirical data.",
+            "For adversaries, likelihood weighs capability, intent and targeting; for other sources, such as equipment failure, recorded history and empirical data, with expert judgment filling gaps.",
             "Impact is the effect on objectives: financial, operational, legal, reputational, safety or customer harm.",
             "Existing controls and predisposing conditions change likelihood, so they are understood before rating.",
             "ISO 31000, named here as context only, describes risk as the effect of uncertainty on objectives, which can include upside opportunity.",
@@ -1008,7 +1010,8 @@
             "crisc_d2_036",
             "crisc_d2_059",
             "crisc_d2_073",
-            "crisc_d2_081"
+            "crisc_d2_081",
+            "crisc_d2_097"
           ],
           "definition": "A business impact analysis (BIA) finds the critical business processes, how their impact grows over time when disrupted, and the resources and dependencies they need to recover.",
           "why_it_matters": "Recovery money and effort are limited. The BIA tells the enterprise what to restore first, and it gives risk assessments the impact data they need.",
@@ -1016,7 +1019,7 @@
             "Process owners describe each process, its outputs and the harm of losing it at intervals such as one hour, one day and one week.",
             "Impact includes lost revenue, regulatory breaches, safety, contract penalties and reputation, and rises as an outage lengthens.",
             "Dependencies are traced: systems, data, people, facilities, suppliers and other processes, including cloud and AI services.",
-            "A BIA assumes the disruption happens; it does not estimate likelihood, so it is not a risk assessment.",
+            "A BIA assumes the disruption happens and skips likelihood, so it is not a risk assessment; its recovery ranks reflect outage harm, not leaks or tampering.",
             "Results set recovery priorities and feed continuity plans and scenario impact ratings; a scenario takes the figure for the outage length it names, and cumulative figures are not added together.",
             "A supporting system takes the priority of the most critical process that depends on it, however few people use it or revenue it earns."
           ],
@@ -1194,7 +1197,8 @@
           "practice_ids": [
             "crisc_d2_060",
             "crisc_d2_062",
-            "crisc_d2_082"
+            "crisc_d2_082",
+            "crisc_d2_098"
           ],
           "definition": "A risk register is the working record of risk scenarios, with the owner, ratings, controls, chosen response and status for each one.",
           "why_it_matters": "The register is how risk is tracked and decided on. An entry with no owner has nobody to accept, treat or monitor it, so it drifts.",
@@ -1513,14 +1517,15 @@
             "crisc_d2_040",
             "crisc_d2_041",
             "crisc_d2_067",
-            "crisc_d2_083"
+            "crisc_d2_083",
+            "crisc_d2_099"
           ],
           "definition": "Choosing a method means matching the analysis to the decision it must support and the quality of the data available, from simple scales to FAIR models and Monte Carlo simulation.",
           "why_it_matters": "A precise-looking number built on guesses misleads decision makers more than an honest qualitative rating. The method must fit both the data and the decision.",
           "how_it_works": [
             "Ask what the decision needs: ranking many risks, a funding case for one control, or capital and insurance planning.",
             "Check the data: loss history, industry benchmarks and expert estimates, and how reliable each one is; gather each expert's estimate privately before discussion, as in the Delphi technique.",
-            "FAIR, an Open Group standard, breaks risk into loss event frequency and loss magnitude for quantitative analysis.",
+            "FAIR, an Open Group standard, splits risk into loss event frequency and loss magnitude; secondary losses, such as fines, get their own frequency: the share of events that trigger them.",
             "Monte Carlo simulation runs thousands of trials from estimated ranges to give a spread of losses; a limit on large losses is tested on its tail, not the mean.",
             "Ranges with stated confidence beat single-point numbers when data is uncertain.",
             "Methods can be combined: qualitative screening first, then quantitative analysis of the top risks."

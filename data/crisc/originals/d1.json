@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "comment": "Original CRISC practice questions for Domain 1 (Governance), written to the CRISC exam content outline effective 2025 (delivered since 3 Nov 2025). Every item is authored from public concepts and KaiSip's own CRISC study notes (data/crisc/notes/d1.json), with no reference to the CRISC Review Manual, ISACA's QAE database, ISACA's practice quiz or any prep bank. Schema: docs/content/QUESTION_SCHEMA.md; writing rules: docs/content/EXAM_STYLE_V2.md and .claude/agents/crisc-standards-auditor.md. Not affiliated with or endorsed by ISACA®. CRISC® is a registered trademark of ISACA. Pilot batch crisc_d1_001 to crisc_d1_020, 30 Oct 2026. Round 7 crisc_d1_104 to crisc_d1_110, 4 Nov 2026.",
+    "comment": "Original CRISC practice questions for Domain 1 (Governance), written to the CRISC exam content outline effective 2025 (delivered since 3 Nov 2025). Every item is authored from public concepts and KaiSip's own CRISC study notes (data/crisc/notes/d1.json), with no reference to the CRISC Review Manual, ISACA's QAE database, ISACA's practice quiz or any prep bank. Schema: docs/content/QUESTION_SCHEMA.md; writing rules: docs/content/EXAM_STYLE_V2.md and .claude/agents/crisc-standards-auditor.md. Not affiliated with or endorsed by ISACA®. CRISC® is a registered trademark of ISACA. Pilot batch crisc_d1_001 to crisc_d1_020, 30 Oct 2026. Round 7 crisc_d1_104 to crisc_d1_110, 4 Nov 2026. Round 8 crisc_d1_111 to crisc_d1_117, 5 Nov 2026.",
     "schema_version": 1
   },
   "domain": 1,
@@ -1830,14 +1830,14 @@
       "question": "At a bank, the access control standard requires quarterly access reviews, and the team that owns the review procedure wants to rewrite it to run the reviews yearly. What is the risk practitioner's BEST advice?",
       "options": {
         "A": "Accept a yearly cycle if the team logs an exception",
-        "B": "Let the procedure's owner set the review frequency",
+        "B": "Leave the review frequency to the procedure's owner",
         "C": "Approve the yearly cycle as a procedure update",
         "D": "Refer the change to the standard's owner to decide"
       },
       "correct": "D",
       "key_concept": "A procedure carries out a standard and cannot relax it; changing a mandatory requirement is a decision for the standard's owner.",
       "pre_read": "Place each document in the policy hierarchy before reading the options.",
-      "correct_explanation": "A procedure sets out the steps for meeting a standard, so it cannot relax what the standard requires. Moving from quarterly to yearly reviews changes the standard itself, which its owner decides, informed by the practitioner's analysis of what a longer cycle would add to risk. Letting the procedure's owner set the frequency is the runner-up: the team owns its steps, but not the mandatory requirement those steps exist to meet.",
+      "correct_explanation": "A procedure sets out the steps for meeting a standard, so it cannot relax what the standard requires. Moving from quarterly to yearly reviews changes the standard itself, which its owner decides, informed by the practitioner's analysis of what a longer cycle would add to risk. Leaving the frequency to the procedure's owner is the runner-up: the team owns its steps, but not the mandatory requirement those steps exist to meet.",
       "wrong_explanations": {
         "A": "An exception covers a specific, time-limited gap approved by the risk owner. It is not a way to rewrite a requirement, and the practitioner does not accept it.",
         "B": "Procedure owners control how the steps are done, not the mandatory requirement. A yearly cycle would quietly override the standard.",
@@ -3865,7 +3865,7 @@
       "question": "A lender's standard, following its country's lending law, requires officer review of every AI-declined loan; the risk owner seeks an exception below $2,000, with wrong declines there rated within appetite. What is the BEST advice?",
       "options": {
         "A": "Keep the review of each small-loan decline",
-        "B": "Let the risk owner accept the risk on record",
+        "B": "Have the risk owner accept the risk on record",
         "C": "Review a 10% sample of small-loan declines",
         "D": "Ask the vendor to confirm the model's accuracy"
       },
@@ -4075,6 +4075,265 @@
         "End of vendor support"
       ],
       "_provenance": "Authored from concept: notes 1A6.1 (Asset Inventory and Ownership: lifecycle dates, such as when vendor support ends, let owners plan replacement or treatment in time). Round 7, 4 Nov 2026: original scenario (a clinic group learns from a supplier, not its inventory, that 40 imaging workstations lose updates in six months) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Neighbours checked: crisc_d4_002 and crisc_d4_022 (unsupported software risk in the register and its rating), crisc_d1_064 (the inventory kept current through purchasing), crisc_d1_030 (value by business impact, not price), crisc_d1_011 (an AI model's owner is the field that matters most), CISA d4_043 (unsupported hardware as an audit priority), CISA d4_038 (servers losing support: compare options), CC cc_d5_081 (an exception for an unsupported PC) and cc_d2_020 (a KRI for unsupported servers). None keys the inventory recording when support ends. Key form: a record that shows risk early. Review fixes 4 Nov 2026 (round 7 audit and concept review): pre_read no longer points at the forward-looking key (audit).",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d1_111",
+      "domain": 1,
+      "subtopic": "1A1 Strategy, goals and objectives. Treatment outlasting its objective",
+      "principle_id": "objectives-first",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A telecom's board will close its fixed-line business in 18 months, but the fixed-line director's risk response plan still funds a two-year, $1,200,000 billing platform rebuild. What is the risk practitioner's BEST recommendation?",
+      "options": {
+        "A": "Report the rebuild to the board that decided the closure",
+        "B": "Move the rebuild budget to the mobile business's risks",
+        "C": "Ask the director to weigh the rebuild against the closure",
+        "D": "Keep the rebuild going as the plan the director approved"
+      },
+      "correct": "C",
+      "key_concept": "When strategy ends or shortens an objective, the treatments planned for it go back to their owner to weigh against the new horizon.",
+      "pre_read": "Note what the plan was approved for and what has changed since.",
+      "correct_explanation": "The rebuild was planned to protect fixed-line billing, but that business closes in 18 months, before a two-year rebuild could finish. A treatment is worth its cost only while the objective it protects lasts, so the director, as owner, should weigh it again, perhaps against cheaper cover for the months left. Reporting to the board is the runner-up: the board set the strategy, but this treatment sits in the director's own plan.",
+      "wrong_explanations": {
+        "A": "The board decided the closure; revisiting a treatment inside the director's plan is the director's call, and the board sees the result in the profile.",
+        "B": "Moving budget between businesses is a management decision; the practitioner brings options, and billing outages still need cover until the closure.",
+        "D": "The plan was approved before the closure was decided; a rebuild finishing six months after the business closes may cost more than the risk it removes."
+      },
+      "tips": [
+        "Eliminate: B has the practitioner move a budget that management controls, and D keeps a plan whose objective ends before the rebuild is done.",
+        "Final two: C beats A because the rebuild sits in the director's plan; when strategy changes, the owner re-decides the treatment without the board deciding it.",
+        "Exam cue: when strategy shortens or ends an objective, the treatments planned for it go back to their owner to weigh against the new horizon."
+      ],
+      "framework_ref": "COBIT 2019 APO02 (Managed Strategy); NIST IR 8286B-upd1 Section 2.4.1 (Risk Response Cost: the cost of a response is compared with the risk exposure to support a cost-benefit analysis); ISACA Glossary (risk owner)",
+      "related_concepts": [
+        "Strategic change",
+        "Cost-benefit of risk treatment",
+        "Risk owner"
+      ],
+      "_provenance": "Authored from concept: notes 1A1.2 (The Goals Cascade and Strategic Change: a new strategy or other change triggers a fresh look at each affected goal's risks and the treatments planned for them). Round 8, 5 Nov 2026: original scenario (a telecom's board will close its fixed-line business in 18 months while the fixed-line director's plan still funds a two-year billing platform rebuild) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Neighbours checked: crisc_d1_104 (a failed strategic assumption taken to the strategy's owner), crisc_d1_021 (identify the risks to a new strategy), crisc_d1_039 (exposure far below appetite), crisc_d1_099 (a costly fix weighed against a within-appetite recovery), crisc_d4_023 (an unfunded fix taken to its owner), crisc_d3_069 (a finished plan short of its target), CISA d2_177 (IT carve-out in a divestiture) and d3_103 (insourcing business case). None keys revisiting a treatment that would finish after the objective it protects ends. Key form: the owner weighs a planned treatment against a strategy change. Review fixes 5 Nov 2026 (round 8 standards audit, ISACA concept review and blind test): stem says 'risk response plan' so the rebuild reads as a treatment the director owns (blind test). Key unchanged (C).",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d1_112",
+      "domain": 1,
+      "subtopic": "1B5 Risk frameworks, legal, regulatory and contractual requirements. Obligations as risk sources",
+      "principle_id": "rate-on-common-terms",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "An energy retailer's legal team keeps a list of its 40 regulatory obligations. Which of the following BEST lets the risk practitioner manage those obligations as sources of risk?",
+      "options": {
+        "A": "A yearly risk attestation from each unit head",
+        "B": "Register entries for the risk of missing each obligation",
+        "C": "A map from each obligation to the control that meets it",
+        "D": "The legal team's own register of the obligations"
+      },
+      "correct": "B",
+      "key_concept": "Each compliance obligation is a source of risk: the risk of failing it is rated and owned in the risk register like any other.",
+      "pre_read": "Note exactly what the stem wants the obligations treated as.",
+      "correct_explanation": "Treating an obligation as a source of risk means asking what happens if it is missed, such as fines, license conditions or harm to customers. A register entry for that risk gives it a rating against appetite and a business owner, so it is weighed beside every other risk. A control map is the runner-up: it shows how each obligation is met, but not the impact of failing it or who decides on that risk.",
+      "wrong_explanations": {
+        "A": "An attestation records that unit heads believe they comply; it neither rates the effect of a failure nor gives the risk an owner.",
+        "C": "Mapping obligations to controls is sound compliance practice, but it shows how each duty is met, not what missing it would cost or who owns that risk.",
+        "D": "A list kept by legal is where tracking starts, but kept apart from the risk register, its entries get no rating against appetite and are not weighed beside other risks."
+      },
+      "tips": [
+        "Eliminate: A records belief in compliance, not a rated risk, and D keeps the obligations in a legal list outside the risk process.",
+        "Final two: B beats C because a register entry rates the impact of failing an obligation and names its owner; a control map shows only how it is met.",
+        "Exam cue: on CRISC items, a law, rule or contract term enters risk management as the risk of failing it, rated and owned in the register."
+      ],
+      "framework_ref": "NIST CSF 2.0 GV.OC-03 (legal, regulatory and contractual requirements, including privacy obligations, are understood and managed); COBIT 2019 MEA03 (Managed Compliance With External Requirements); ISACA Glossary (risk register)",
+      "related_concepts": [
+        "Compliance obligations",
+        "Risk register",
+        "Sources of risk"
+      ],
+      "_provenance": "Authored from concept: notes 1B5.2 (Compliance Obligations as a Source of Risk: each obligation is a source of risk scenarios, what happens if the enterprise fails to meet it, held with an owner). Round 8, 5 Nov 2026: original scenario (an energy retailer's legal team keeps a list of 40 regulatory obligations) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Neighbours checked: crisc_d1_020 (a clean examination is not low risk), crisc_d1_045 (a new AI law assessed before its date), crisc_d1_095 (monitoring draft rules), crisc_d1_059 (a signed contract term in force), crisc_d3_033 (desired control state from appetite), CISA d2_113 (one control library mapped to each regulation, a compliance design and this item's runner-up) and d2_213 (an industry standard recorded as a binding obligation). None keys turning obligations into rated, owned register entries. Key form: a register entry for the risk of failing an obligation. Review fixes 5 Nov 2026 (round 8 standards audit, ISACA concept review and blind test): wrong D no longer says the obligations lack an owner, which notes 1B5.2 contradicts. Key unchanged (B).",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d1_113",
+      "domain": 1,
+      "subtopic": "1A3 Organizational culture and ethics. Fairness concern closed on accuracy",
+      "principle_id": "emerging-and-ai-risk-owned",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "A lender's AI loan-triage model sends older applicants to slow review at twice the usual rate; its owner, the lending director, dismissed staff concerns since accuracy meets target. What is the risk analyst's BEST advice?",
+      "options": {
+        "A": "Have the disparity rated as a risk for the director",
+        "B": "Ask the data scientists to rebalance the model's training data",
+        "C": "Accept the director's closure as the owner's risk decision",
+        "D": "Pass the staff's concern to internal audit to review"
+      },
+      "correct": "A",
+      "key_concept": "A fairness concern about an AI model is a risk to rate and take to its owner, even when the model meets its accuracy target.",
+      "pre_read": "Separate what staff raised from what the owner checked.",
+      "correct_explanation": "An accuracy target shows whether the model predicts well overall; it does not show whether slowing older applicants is acceptable, which can mean unfair treatment, complaints and legal exposure. Staff raised the concern in good faith, so it is rated as a risk and taken to the director, who then decides. Accepting the closure is the runner-up: the owner decides, but on an analyzed risk, not on a measure that tests something else.",
+      "wrong_explanations": {
+        "B": "Rebalancing the training data is a treatment chosen before anyone knows whether the gap is unfair or justified, and choosing the response is the director's call.",
+        "C": "The director owns the model's risks but closed the concern on accuracy, a measure that does not test how older applicants are treated, so the risk is still unanalyzed.",
+        "D": "Internal audit gives independent assurance later; analyzing a newly raised risk and taking it to the owner is the second line's job now."
+      },
+      "tips": [
+        "Eliminate: B changes the model's data before the gap is analyzed, and D hands a new risk to internal audit, whose role is independent assurance.",
+        "Final two: A beats C because the owner decides on an analyzed risk; an accuracy target does not test fairness, so the closure rests on the wrong measure.",
+        "Exam cue: a concern raised in good faith is analyzed like any risk; meeting one target does not close a risk the target never measured."
+      ],
+      "framework_ref": "NIST AI 100-1 (AI RMF 1.0) MEASURE 2.11 (fairness and bias as identified in the MAP function are evaluated and results are documented); NIST AI 100-1 (AI RMF 1.0) GOVERN 4.2 (organizational teams document the risks and potential impacts of the AI technology they design, develop, deploy, evaluate and use, and communicate about the impacts more broadly); NIST CSF 2.0 GV.RR-01 (organizational leadership is responsible and accountable for cybersecurity risk and fosters a culture that is risk-aware, ethical and continually improving)",
+      "related_concepts": [
+        "Ethical AI use",
+        "Speaking up",
+        "AI fairness risk"
+      ],
+      "_provenance": "Authored from concept: notes 1A3.3 (Professional Ethics and Ethical AI Use: a fairness concern is analyzed as a risk even when the model meets its accuracy target) and 1A3.2 (reported concerns are logged and assessed like any risk event). Round 8, 5 Nov 2026: original scenario (a lender's AI loan-triage model sends older applicants to slow review at twice the usual rate; the lending director dismisses staff concerns because accuracy is on target) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Neighbours checked: crisc_d4_014 (test a vendor's AI tool for bias before go-live), crisc_d1_097 (reports that seem to go nowhere), crisc_d1_084 (one channel for concerns), crisc_d1_007 (pressure to remove a finding), crisc_d2_067 (bias in estimates), AAIA aaia_d3_045 (an auditor recommends group limits for a biased model) and aaia_d2_077 (complaint patterns across combined groups), CISA d1_057 (AI risks distinctive to audits). None keys rating a fairness concern that an owner closed on an accuracy measure. Key form: a raised concern rated as a risk for the owner. Review fixes 5 Nov 2026 (round 8 standards audit, ISACA concept review and blind test): setting moved from an insurer's claims model to a lender's loan-triage model so the item no longer reuses the notes 1A3.3 worked example (insurer, claims director, older claimants); option B now rebalances the training data so it does not echo crisc_d2_002's retraining distractor. Also checked: crisc_d2_002 (a bank's loan-triage model drifting, logged as a risk event) and crisc_d1_105 (a lender's exception to officer review of AI declines); different lessons, keep apart from both in practice sets. Key unchanged (A).",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d1_114",
+      "domain": 1,
+      "subtopic": "1B4 Risk appetite and risk tolerance. Owner's request inside the limits",
+      "principle_id": "appetite-drives-response",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A cinema chain's ticketing director owns the risk of two-hour ticketing outages, assessed last week within appetite and tolerance, and wants to accept it; nothing has changed since. What should the risk practitioner recommend FIRST?",
+      "options": {
+        "A": "Reassess the outage risk before the director can accept it",
+        "B": "Ask the board's risk committee to approve the acceptance",
+        "C": "Fund a standby system to remove the outage risk",
+        "D": "Have the director accept the risk with a date to review it"
+      },
+      "correct": "D",
+      "key_concept": "When a current assessment puts a risk within appetite and tolerance and nothing has changed, the owner's acceptance on record comes first.",
+      "pre_read": "Note who owns the risk and how it compares with the limits.",
+      "correct_explanation": "The assessment is a week old, nothing has changed, and the risk sits within both appetite and tolerance, so the limits leaders set already allow it. The first step is the director's decision as owner: accept on record, then monitor. Reassessing is the runner-up: after a change in the risk or its setting it would come first, but here it repeats current analysis and delays the owner's decision.",
+      "wrong_explanations": {
+        "A": "Reassessment comes first after a change; with a week-old assessment and nothing changed, it repeats work the owner can decide on now.",
+        "B": "The committee approves carrying risk above a limit it set; inside appetite and tolerance, the owner decides without escalation.",
+        "C": "A standby system treats a risk already inside the limits, spending money the rating says the business need not spend."
+      },
+      "tips": [
+        "Eliminate: B escalates a risk that sits inside the limits leaders set, and C buys treatment for a risk already within appetite.",
+        "Final two: D beats A because the assessment is current and nothing has changed; reassessing comes first only after a change.",
+        "Exam cue: check what has changed since the rating; with no change and the risk inside both limits, the owner's decision is the first step, not another assessment."
+      ],
+      "framework_ref": "NIST IR 8286B-upd1 Section 2.3.1 (Risk Acceptance: exposure within risk tolerance is still reported, monitored and managed); ISACA Glossary (risk acceptance); NIST CSF 2.0 GV.RM-02 (risk appetite and risk tolerance statements are established, communicated and maintained)",
+      "related_concepts": [
+        "Risk acceptance",
+        "Risk tolerance",
+        "Risk owner"
+      ],
+      "_provenance": "Authored from concept: notes 1B4.3 (Tolerance Breaches and Escalation: within appetite and tolerance on a current assessment, the risk owner can accept on record without escalation; reassessment follows a change). Round 8, 5 Nov 2026: original scenario (a cinema chain's ticketing director wants to accept the risk of two-hour ticketing outages, assessed last week within appetite and tolerance, with nothing changed since) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Neighbours checked: crisc_d3_118 (a FIRST stem keyed on accepting a vendor's training terms, reassess as runner-up: the same rule in a D3 vendor setting; this item adds the committee distractor and the tolerance angle; keep apart in practice sets), crisc_d1_042 (running above tolerance needs the committee that set it: this item is its converse), crisc_d1_099 and crisc_d1_096 (BEST stems keyed on acceptance), crisc_d1_103 and crisc_d4_080 (reassess after a change or a doubtful credit), crisc_d3_021 (what to record with an acceptance), crisc_d3_024 (acceptance above a delegated level). CISA and CC banks: no FIRST stem keys owner acceptance. Key form: owner acceptance under FIRST with reassess as runner-up. Review fixes 5 Nov 2026 (round 8 standards audit, ISACA concept review and blind test): Also keep apart from crisc_d4_086 (the same FIRST-acceptance device at a system go-live) and crisc_d3_118 in practice sets. Key unchanged (D).",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d1_115",
+      "domain": 1,
+      "subtopic": "1A4 Policies and standards. Two policies in conflict",
+      "principle_id": "match-decision-to-role",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A consultancy's top-level travel policy allows client work over hotel Wi-Fi on VPN, but its top-level security policy bans it on public networks; neither says which prevails. What is the risk practitioner's BEST recommendation?",
+      "options": {
+        "A": "Apply the security policy as the stricter of the two",
+        "B": "Ask senior management to reconcile the two policies",
+        "C": "Have each department head choose which policy applies",
+        "D": "Have IT write a standard that bridges both policies"
+      },
+      "correct": "B",
+      "key_concept": "When peer policies conflict and neither takes precedence, the senior management that approved both reconciles them; applying the stricter one is at most a stopgap.",
+      "pre_read": "Note which layer each rule sits in before deciding which applies.",
+      "correct_explanation": "Both are top-level policies, which senior management approves, so neither outranks the other and staff cannot follow both. The conflict goes back to that level to reconcile, for example by setting when a VPN makes hotel Wi-Fi acceptable. Applying the stricter policy is the runner-up: it may serve as a stopgap, but between peer policies it sets aside a choice senior management made and leaves the conflict in place.",
+      "wrong_explanations": {
+        "A": "Following the stricter policy can serve as a stopgap, but it leaves the conflict in place and overrides a choice senior management made; only that level can reconcile peers.",
+        "C": "Having each department choose splits one enterprise rule into many, so client data is protected differently across the consultancy.",
+        "D": "A standard sits below both policies and must meet each; it cannot permit what one policy forbids, so the conflict is settled above it."
+      },
+      "tips": [
+        "Eliminate: C splits an enterprise rule by department, and D asks a lower layer to settle a conflict between the policies above it.",
+        "Final two: B beats A because the two policies are peers and neither takes precedence; following the stricter one leaves the conflict standing, so it goes to the level that approved both.",
+        "Exam cue: when rules conflict, check each one's layer; a lower layer may tighten a higher one, but a conflict between peers goes back to the level that approved both."
+      ],
+      "framework_ref": "NIST CSF 2.0 GV.PO-01 (policy for managing cybersecurity risks is established based on organizational context, cybersecurity strategy and priorities and is communicated and enforced); NIST CSF 2.0 GV.PO-02 (policy for managing cybersecurity risks is reviewed, updated, communicated and enforced to reflect changes); ISACA Glossary (policy)",
+      "related_concepts": [
+        "Policy hierarchy",
+        "Policy conflicts",
+        "Senior management approval"
+      ],
+      "_provenance": "Authored from concept: notes 1A4.3 (Policy Review and AI Acceptable Use: conflicts between approved policies go to senior management, which approved both) and 1A4.1 (a lower layer may tighten a higher one). Round 8, 5 Nov 2026: original scenario (a consultancy's travel policy allows client work over hotel Wi-Fi on VPN while its security policy bans client work on public networks) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Neighbours checked: crisc_d1_098 (a stricter local standard kept beside the group's: the lower-layer rule this item's runner-up misapplies), crisc_d1_050 (a procedure cannot relax a standard), crisc_d1_069 (a device policy behind personal phones), crisc_d1_085 (an acquired firm's weaker policy), crisc_d1_008 (where to state management intent), CISA d2_124 (technical settings moved to standards), d5_093 and d5_330 (personal device rules), CC cc_d1_094 (the top-level security policy). None keys reconciling two conflicting peer policies. Key form: a conflict between peers goes to the level that approved them. Review fixes 5 Nov 2026 (round 8 standards audit, ISACA concept review and blind test): stem now says neither policy states which prevails, so applying the stricter one is taught as a possible stopgap rather than wrong by rule; key_concept, explanation, wrong A and tips rewritten to match; option C no longer starts with 'Let'. Key unchanged (B).",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d1_116",
+      "domain": 1,
+      "subtopic": "1B3 Risk profile. Risks left out while in treatment",
+      "principle_id": "residual-counts-working-controls",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "A bank's board risk profile omits risks with an approved, unfinished treatment plan: six of its nine risks above appetite. Which of the following should concern the risk practitioner MOST?",
+      "options": {
+        "A": "Plans for risks above appetite approved without the board",
+        "B": "Whether the six plans will reach their target risk",
+        "C": "Exposure above appetite today that the board cannot see",
+        "D": "A profile listing fewer risks than the register holds"
+      },
+      "correct": "C",
+      "key_concept": "The profile reports current risk, which counts only responses already in place, so risks with approved but unfinished plans stay in it.",
+      "pre_read": "Ask what the board uses the profile to decide.",
+      "correct_explanation": "Current risk counts only responses already in place, so an approved plan does not lower it. Leaving those risks out hides two-thirds of the exposure above appetite from the board, which set that appetite and oversees it. Whether the plans will reach their target risk is the runner-up: it matters, but it is tracked for risks the board can see, and here the board cannot see what the plans are for.",
+      "wrong_explanations": {
+        "A": "Owners choose responses within the framework; the board oversees exposure against its appetite rather than approving each treatment plan.",
+        "B": "Plans can miss their target, but that is monitored once the risks are reported; first the board needs the current exposure the plans address.",
+        "D": "A profile selects and combines register entries, so holding fewer lines than the register is normal, not a gap."
+      },
+      "tips": [
+        "Eliminate: A gives the board approval of plans that owners decide, and D treats a profile shorter than the register as a fault.",
+        "Final two: C beats B because an approved plan is not yet a response in place; the board must see current exposure before plan progress matters.",
+        "Exam cue: current risk counts only what is already in place; a risk in treatment stays in the profile at today's rating until its response is working."
+      ],
+      "framework_ref": "ISACA Glossary (current risk); NIST IR 8286 Rev. 1 Section 4.1 (Applying the Enterprise Risk Register and Developing the Enterprise Risk Profile); COBIT 2019 APO12.03 (Maintain a Risk Profile)",
+      "related_concepts": [
+        "Risk profile",
+        "Current risk",
+        "Target risk"
+      ],
+      "_provenance": "Authored from concept: notes 1B3.1 (Risk Register Versus Risk Profile: the profile sets current risk, counting only responses already in place, against today's appetite). Round 8, 5 Nov 2026: original scenario (a bank's board risk profile leaves out risks with approved, unfinished treatment plans, six of its nine risks above appetite) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Neighbours checked: crisc_d2_013 (a register entry stays in treatment, rated on today's controls: the same rule at the register level; this item is the board's view; keep apart in practice sets), crisc_d3_130 (crediting a review not yet started), crisc_d1_037 (a credited control that failed), crisc_d1_090 (counting high-rated risks), crisc_d1_056 (the full register in place of the profile), crisc_d3_019 (what a board report holds), crisc_d3_069 (a plan short of its target). None keys a profile that drops risks once a plan is approved. Key form: exposure hidden from the decision maker. Review fixes 5 Nov 2026 (round 8 standards audit, ISACA concept review and blind test): Keep apart in practice sets: crisc_d2_013 and crisc_d3_130. Key unchanged (C).",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d1_117",
+      "domain": 1,
+      "subtopic": "1A2 Organizational structure, roles and responsibilities. Owner who does not decide",
+      "principle_id": "match-decision-to-role",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A retailer's logistics director has owned a risk rated above appetite for five months without choosing a response, despite three reminders from the risk analyst. What is the analyst's BEST action?",
+      "options": {
+        "A": "Escalate the undecided risk to senior management",
+        "B": "Send the director a fourth reminder with a deadline",
+        "C": "Record the director's silence as acceptance of the risk",
+        "D": "Have IT begin the treatment the analyst recommended"
+      },
+      "correct": "A",
+      "key_concept": "An owner's silence is not acceptance: a risk above appetite left undecided after repeated reminders is escalated above the owner.",
+      "pre_read": "Weigh how long the risk has waited and what has been tried.",
+      "correct_explanation": "Five months and three reminders show the director is not deciding, while a risk above appetite stays neither treated nor accepted. Escalating to senior management, who assign owners and expect them to act, puts the decision back on track; they may press the director or reassign the risk. Another reminder is the runner-up: it keeps the matter with the owner, but three have failed and the exposure continues.",
+      "wrong_explanations": {
+        "B": "A deadline suits a first delay, but after three reminders over five months the pattern is clear and the exposure above appetite continues.",
+        "C": "Acceptance is a decision the owner makes and records; reading silence as acceptance invents a decision no one took on a risk above appetite.",
+        "D": "Starting a treatment the owner never chose has the analyst and IT decide the response, which is the owner's decision to make."
+      },
+      "tips": [
+        "Eliminate: C turns silence into an acceptance no one made, and D has IT start a treatment the owner never chose.",
+        "Final two: A beats B because three reminders over five months have failed; a risk above appetite left undecided goes above the owner, not round again.",
+        "Exam cue: an owner's inaction is not acceptance; when an owner will not decide on a risk above appetite, escalate to the level that assigns owners."
+      ],
+      "framework_ref": "NIST IR 8286B-upd1 Section 2.4.3 (Risk Owner: risk escalation and elevation); ISACA Glossary (risk owner); NIST CSF 2.0 GV.RR-02 (roles, responsibilities and authorities related to cybersecurity risk management are established, communicated, understood and enforced)",
+      "related_concepts": [
+        "Risk owner",
+        "Escalation",
+        "Risk acceptance"
+      ],
+      "_provenance": "Authored from concept: notes 1A2.3 (RACI and Accountability, Including AI: an owner who leaves a risk above appetite undecided has not accepted it; the practitioner escalates to senior management or the risk committee). Round 8, 5 Nov 2026: original scenario (a retailer's logistics director leaves a risk above appetite without a response for five months despite three reminders) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Neighbours checked: crisc_d3_029 (an action owner's slipping dates escalated to the risk owner), crisc_d3_057 (a finding with no action owner taken to the risk owner), crisc_d1_005 (senior management assigns an owner to an unowned risk), crisc_d1_018 (a tolerance breach escalated to the owner), crisc_d1_060 (an owner asks the analyst to choose), crisc_d3_123 (a staffing conflict raised with the owner), CC cc_d2_049 (reminders for policy acknowledgments). None keys escalating above an owner who will not decide. Key form: escalate an owner's inaction to the level that assigns owners.",
       "style_version": 2
     }
   ]
