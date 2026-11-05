@@ -4339,38 +4339,38 @@
     {
       "id": "crisc_d2_118",
       "domain": 2,
-      "subtopic": "2B3 Risk register. Entry for an outsourced platform",
-      "principle_id": "match-decision-to-role",
+      "subtopic": "2B3 Risk register. Scanner findings loaded as entries",
+      "principle_id": "rate-on-common-terms",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "An elevator maintenance firm moved its fault-monitoring platform to a provider that caps outage credits at one month's fee; IT asks to close the platform's register entry. What is the risk practitioner's BEST response?",
+      "question": "An elevator maintenance firm's IT team loaded 3,800 vulnerability scanner findings into the risk register as separate entries, and risk owners have stopped reviewing it. What should the risk practitioner recommend as BEST?",
       "options": {
-        "A": "Close the entry once its risk owner signs off the outsourcing",
-        "B": "Move the entry to the provider's service owner to manage",
-        "C": "Close the entry, with the signed contract filed as evidence",
-        "D": "Keep the entry under its risk owner, rated on the provider's controls"
+        "A": "Have each scenario's risk owner review the critical findings",
+        "B": "Group the findings into one register entry per system",
+        "C": "Have the system owners close findings more than a year old",
+        "D": "Replace them with risk scenarios linked to the findings"
       },
       "correct": "D",
-      "key_concept": "Outsourcing moves the work, not the risk: the entry stays open under the firm's risk owner and is re-rated on the provider's controls.",
-      "pre_read": "Check what the move and the contract change, and what they leave with the firm.",
-      "correct_explanation": "Moving the platform changes who runs it and how likely an outage is, but the firm still bears the harm, unmonitored elevators and breached client contracts, against credits capped at one month's fee. The entry stays under its risk owner, re-rated on the provider's controls. Closing it once the owner signs off is the runner-up: owner approval is needed to close an entry, but only once the risk has gone, and it has not.",
+      "key_concept": "A register lists risk scenarios stated as events and harm; vulnerability findings stay in their tracker, linked to the scenarios they affect.",
+      "pre_read": "Decide what one register entry should describe before choosing how to cut the volume.",
+      "correct_explanation": "A register entry describes a risk: an event and its harm to objectives, which owners can rate against appetite and the profile can combine. Scanner findings are vulnerabilities, inputs to those risks, so they stay in the vulnerability tracker, linked to the scenarios they affect. Grouping them per system is the runner-up: it cuts the count, but each entry still names an asset, not an event and its harm, so owners cannot rate it.",
       "wrong_explanations": {
-        "A": "Owner sign-off is needed to close an entry, but closing also needs the risk to be gone; the firm still relies on the platform and bears most outage harm.",
-        "B": "The provider runs the platform but cannot own the firm's risk; its service owner answers for the service, not for the firm's losses or response decisions.",
-        "C": "A contract with capped credits shares a small part of the cost; it does not remove the outage risk, so it gives no reason to close the entry."
+        "A": "Critical scores rate technical severity, not business risk, and owners would still face a register of findings rather than risks they can weigh against appetite.",
+        "B": "Fewer entries help, but an entry per system still lists assets and flaws with no event or business harm, so owners cannot rate or compare them.",
+        "C": "A finding's age does not remove the weakness; closing old findings leaves real vulnerabilities untracked and the register still full of findings, not risks."
       },
       "tips": [
-        "Eliminate: B hands the firm's risk to the provider, which cannot own it, and C treats a contract with capped credits as if it removed the risk.",
-        "Final two: D beats A because closing an entry needs the risk to be gone; outsourcing leaves the harm with the firm, so the entry stays and is re-rated.",
-        "Exam cue: outsourcing changes who runs a service and a contract shares some cost; the risk, its owner and its register entry stay with the enterprise."
+        "Eliminate: A treats critical scanner scores as risk ratings, and C closes findings by age, though an old weakness stays open until it is fixed.",
+        "Final two: D beats B because a register entry must state an event and its harm; grouping findings by system shortens the list but still lists assets.",
+        "Exam cue: the register holds risks, not raw findings; vulnerabilities live in their tracker and link to the scenarios whose likelihood they change."
       ],
-      "framework_ref": "NIST CSF 2.0 GV.SC-07 (the risks posed by a supplier, their products and services and other third parties are understood, recorded, prioritized, assessed, responded to and monitored); NIST IR 8286 Rev. 1 Section 3.5 Table 2 (Response types for negative cybersecurity risks: transfer shares a portion of the consequences, such as through cybersecurity insurance); ISACA Glossary (risk owner)",
+      "framework_ref": "ISACA Glossary (risk register); NIST IR 8286 Rev. 1 Section 3 Table 1 (Descriptions of notional cybersecurity risk register template elements); NIST CSF 2.0 ID.RA-01 (vulnerabilities in assets are identified, validated and recorded)",
       "related_concepts": [
-        "Risk register maintenance",
-        "Outsourcing and accountability",
-        "Closing register entries"
+        "Risk register",
+        "Risk scenarios",
+        "Vulnerability management"
       ],
-      "_provenance": "Authored from concept: notes 2B3.2 (Keeping the Register Current: closing an entry needs a reason and the owner's approval). Round 12, 5 Nov 2026: original scenario (an elevator maintenance firm outsources its fault-monitoring platform under a contract with capped outage credits, and IT asks to close the entry) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Owner shape: three options name an owner and the key is among them; the runner-up also names the risk owner. The key is naturally the longest option (by 7 characters). Neighbours checked (stems and options): crisc_d2_038 (entries for a retired system, closed with owners' approval), crisc_d2_013 (closed on an approved plan), crisc_d2_088 (a supplier outage as the firm's own loss event), crisc_d2_091 (insurance repaid most of a loss), crisc_d3_162 (a contractor named as control owner; its distractor 'Drop the control from the register as outsourced' is a different code and idea), crisc_d3_001 (insurance and accountability), crisc_d1_043 (a supplier SLA against the RTO), CISA d4_093 (insurance instead of a BCP budget) and d2_161 (service credits), CC cc_d4_059 (an uptime promise and no outage plan); no mirror in CISA, CC or AAIA. Keep apart from crisc_d2_038 and crisc_d3_162 in practice sets.",
+      "_provenance": "Authored from concept: notes 2B3.3 (From Register to Enterprise Risk Profile: an entry states a risk, an event and its effect on objectives) and 2B3.1 (Register Fields and Ownership). Round 12, 5 Nov 2026: original scenario (an elevator maintenance firm's IT team loads 3,800 scanner findings into the risk register as entries, and owners stop reviewing it) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. A first draft on closing an outsourced platform's entry was dropped because it mirrored crisc_d1_070. Owner shape: the two easy distractors name an owner (a scenario's risk owner, the system owners); the key and the runner-up name none. Neighbours checked (stems and options): crisc_d2_094 (entries naming a missing tool, restated as event and harm), crisc_d2_005 (CVSS scores copied in as ratings), crisc_d2_007 (a generic entry split into scenarios), crisc_d2_082 (controls held as free text), crisc_d2_031 (too many scenarios for owners), crisc_d2_075 (entries updated by the risk team alone), crisc_d1_070 (outsourced payroll kept in the register), crisc_d4_025 (EDR and CMDB counts differ), CISA d2 and d4 vulnerability-management items, CC cc_d1_143; no mirror in CISA, CC or AAIA. Keep apart from crisc_d2_094 and crisc_d2_005 in practice sets.",
       "style_version": 2
     },
     {
@@ -4452,8 +4452,8 @@
       "domain": 2,
       "subtopic": "2A1 Risk events. Wrong advice sent to farmers",
       "principle_id": "objectives-first",
-      "difficulty": "application",
-      "bloom_level": "Application",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
       "question": "A sensor calibration error, since fixed, made an agritech start-up's app tell 40 farmers to over-irrigate for a week, raising their water bills; no farmer has complained. What is the risk analyst's BEST action?",
       "options": {
         "A": "Have the product owner log it as a no-loss near miss",
