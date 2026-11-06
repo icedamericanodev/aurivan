@@ -6529,6 +6529,8 @@ body[data-app-cta-card="shown"][data-section="today"] .app-cta-line { display: n
 .ph-timer .you-list { margin: 0; }
 .ph-timer .you-row { border-bottom: 0; min-height: 56px; }
 .ph-timer .ph-hint { margin: 0; }
+.ph-hint-miss { color: var(--text); }
+.ph-hint-miss:empty { margin: 0; }
 /* The sub-topic filter sits inside the Domain group, not in a box. */
 .ph-panel .subtopic-filter-row { background: transparent; border: 0; border-radius: 0; padding: 0; margin: var(--sp-lg) 0 0; animation: none; }
 .ph-panel .subtopic-drawer { margin-top: var(--sp-md); }
@@ -8929,6 +8931,7 @@ html[data-kbd] :where(.you-plant, .vision-panel, .gt-panel, .readiness-card) :wh
               <button type="button" class="ph-chip" data-diff="analysis" aria-pressed="false" onclick="setDiff(this,'analysis')">Analysis</button>
             </div>
             <p class="ph-hint">Recall, a scenario, best judgment, in that order. The exam is mostly the last two.</p>
+            <p class="ph-hint ph-hint-miss" id="phDiffMiss" role="status"></p>
           </div>
           <!-- Timed (v12.30, the mobile rule): a switch; the clock counts up while you answer, never down. -->
           <div class="ph-grp ph-timer" id="phGrpTimed">
@@ -9290,7 +9293,7 @@ html[data-kbd] :where(.you-plant, .vision-panel, .gt-panel, .readiness-card) :wh
 {"cat":"Using the app","q":"How does the Mock Exam work?","a":"On the website you can take the mini mock (50 questions, 80 minutes). The full mock (150 questions, 4 hours) is part of the full course in the KaiSip Android app. Both follow the real CISA blueprint: the same domain mix and a realistic spread of difficulty. Like the real exam, you see no right or wrong while you answer. Your score, a breakdown by domain and every explanation come at the end."},
 {"cat":"Using the app","q":"What are Questions to revisit?","a":"Questions you miss come back the next day, then at widening intervals as you get them right, until they retire. A right answer you marked Unsure or Guessing comes back too. Today's plan starts with them, a few at a time, oldest first."},
 {"cat":"Using the app","q":"How do I save a question for later?","a":"Use the bookmark control on a question to save it. Saved questions live under Practice, then Saved, where you can revisit them any time."},
-{"cat":"Using the app","q":"What does the Weak Spots tab show?","a":"Weak Spots shows how each of the five domains is going and lets you start a drill on the ones that need work. Until a domain has 30 answers it shows Building, Steady or Strong instead of a number, so a few answers never read as a verdict."},
+{"cat":"Using the app","q":"What does Weak spots (under You) show?","a":"Weak spots shows how each of the five domains is going and lets you start a drill on the ones that need work. A domain shows too few yet until it has 30 answers, so a few answers never read as a verdict. From 30 answers it shows a score and a band: Building under 70, Steady 70 to 79, Strong 80 and up."},
 {"cat":"Using the app","q":"Some tabs are missing on my phone. Where are they?","a":"On phones the bottom bar shows Today, Learn, Practice and You. Learn holds Study notes, Glossary, Principles, About the CISA exam and Final review week; Practice holds Mock exam and Saved; You holds Weak spots and Your progress, and its Settings page (the cog on You) holds your name, exam date, data and help."},
 {"cat":"Using the app","q":"What are Study notes?","a":"Study notes are a study reference. Each topic has a plain-language explanation, clear diagrams, and the common mistakes to watch for, organized by domain."},
 {"cat":"Using the app","q":"How do I switch to dark mode?","a":"Open Settings (the cog on You) and turn on Dark mode. Your choice is remembered for next time."},
@@ -9306,12 +9309,12 @@ html[data-kbd] :where(.you-plant, .vision-panel, .gt-panel, .readiness-card) :wh
 {"cat":"Study strategy","q":"What is spaced repetition?","a":"It means reviewing material at increasing intervals: questions you struggle with come back sooner, and ones you know come back later. Questions to revisit does this for you automatically."},
 {"cat":"Study strategy","q":"Why do questions ask for the BEST, FIRST, or MOST answer?","a":"CISA questions often have several defensible options. The wording asks for the single best, first, or most appropriate one, so train yourself to compare all four options against the IS auditor's priorities (risk, governance, independence), not just spot a correct-looking answer."},
 {"cat":"Study strategy","q":"How do I think like an IS auditor?","a":"The IS auditor evaluates, recommends and reports; management implements and decides. Favor governance, risk-based reasoning, and understanding a situation before acting. The tips after each question reinforce this."},
-{"cat":"Study strategy","q":"Which domain should I focus on?","a":"Domains 4 and 5 are the largest, at about 26% each. Use the Weak Spots tab to find where your accuracy is lowest and drill there first."},
+{"cat":"Study strategy","q":"Which domain should I focus on?","a":"Domains 4 and 5 are the largest, at about 26% each. Use Weak spots (under You) to find where your accuracy is lowest and drill there first."},
 {"cat":"Study strategy","q":"How many practice questions should I do?","a":"There is no fixed number. Aim for consistent daily practice, full coverage of every domain, and Mock Exams close to your test date. How carefully you review each answer matters more than raw volume."},
 {"cat":"About & your data","q":"Is this app affiliated with ISACA?","a":"No. It is an independent study resource. CISA is a registered trademark of ISACA; this app is for educational use only and is not a substitute for ISACA's own materials."},
 {"cat":"About & your data","q":"Where do the questions and notes come from?","a":"KaiSip's questions, explanations and study notes are original. They are written with heavy AI help, directed by a CISA-certified founder, and each question is mapped to ISACA's current CISA exam content outline. Before a question is added, it goes through automated checks and AI review checks (exam question style, technical accuracy, a blind answer test, sources and how current they are, consistency across domains, grammar, and whether the longest option gives the answer away). Then the founder reviews the results. There is no outside panel of human reviewers yet. AI tools make mistakes, and so do people, so check anything important against ISACA's own materials and your own judgment. If something looks wrong, use Report a problem; fixes ship in app updates. A readiness range is a study estimate, not a prediction of your exam result. KaiSip is not affiliated with or endorsed by ISACA."},
 {"cat":"About & your data","q":"Does the app cost anything?","a":"Not during the beta. KaiSip is free during the beta, with no account and no ads. If paid features come later, we'll say so here first, and everything you've saved stays yours."},
-{"cat":"About & your data","q":"Is everything free on the website?","a":"The website has a free set of practice questions from every topic, plus all the study notes, the glossary and lessons, and review of what you've answered. The full course, with every practice question and full mock exams, is in the KaiSip Android app (in beta now)."},
+{"cat":"About & your data","q":"Is everything free on the website?","a":"The website has a free set of practice questions from every topic, plus all the study notes, the glossary, and review of what you've answered. The full course, with every practice question and full mock exams, is in the KaiSip Android app (in beta now)."},
 {"cat":"About & your data","q":"Is my data private?","a":"Yes. Your progress is stored only in your own browser and never leaves your device. There is no sign-up, and your answers are not sent to any server."},
 {"cat":"About & your data","q":"Where is my progress saved?","a":"All progress is saved locally in your browser. Clearing your browser data or using a different device or browser will start you fresh. Open Settings (the cog on You), then use Your data to back up a copy, restore one, or start fresh."},
 {"cat":"About & your data","q":"How do I report a problem or suggest a feature?","a":"Open Settings (the cog on You), then Send feedback. It goes straight to the team."}
@@ -11198,7 +11201,72 @@ document.addEventListener('visibilitychange', function() {
 // would write this tab's older copy over what that tab just saved.
 window.addEventListener('storage', function(e) {
   if (e.key === PROFILES_KEY || e.key === ACTIVE_KEY) cancelSaveSoon();
+  if (e.key === PROFILES_KEY || e.key === null) profilesChangedElsewhere = true;
 });
+
+// Two tabs on the same progress: every write stamps the record (saveRev, a
+// new field beside the old ones) and this tab keeps the stamp it loaded or
+// last wrote (heldRev). Once another tab has saved, this tab never writes its
+// older copy over it: it reloads to pick the newer progress up when it is
+// next used (shown, focused, clicked or typed in), before that use acts. A
+// tab is never reloaded by another tab's save alone (a reload saves too), so
+// two tabs never reload each other in turn.
+var heldRev = 0;
+var staleFromOtherTab = false;
+var profilesChangedElsewhere = false;
+var TAB_SYNC_NOTE_KEY = 'kaisip_tab_synced';
+function recordRev(p) {
+  var n = Number(p && p.saveRev);
+  return isFinite(n) && n > 0 ? Math.floor(n) : 0;
+}
+// Stamps a record this tab is about to write (saveState, a restore, Start fresh).
+function stampRecord(p, id) {
+  p.saveRev = Math.max(recordRev(p), heldRev) + 1;
+  if (!profileInUse || id === profileInUse) { heldRev = p.saveRev; staleFromOtherTab = false; }
+}
+function otherTabSaved() {
+  var id = getActiveProfileId();
+  if (!id || (profileInUse && id !== profileInUse)) return false;
+  var raw;
+  try { raw = JSON.parse(localStorage.getItem(PROFILES_KEY) || '{}'); } catch (e) { return false; }
+  var p = raw && typeof raw === 'object' ? raw[id] : null;
+  return !!(p && typeof p === 'object' && recordRev(p) > heldRev);
+}
+// True when it reloads this tab.
+function checkOtherTab() {
+  if (leavingForReload) return !!staleFromOtherTab;
+  if (document.visibilityState === 'hidden') return false;
+  if (typeof document.hasFocus === 'function' && !document.hasFocus()) return false;
+  if (!staleFromOtherTab && !profilesChangedElsewhere) return false;
+  profilesChangedElsewhere = false;
+  if (!staleFromOtherTab && !otherTabSaved()) return false;
+  staleFromOtherTab = true;
+  cancelSaveSoon();
+  leavingForReload = true;
+  try { sessionStorage.setItem(TAB_SYNC_NOTE_KEY, '1'); } catch (e) {}
+  location.reload();
+  return true;
+}
+// The first click, tap or key in a tab another tab has saved over reloads
+// it instead of acting on the older copy.
+function staleInputGuard(e) {
+  if (!staleFromOtherTab && !profilesChangedElsewhere) return;
+  if (checkOtherTab()) { e.preventDefault(); e.stopPropagation(); }
+}
+document.addEventListener('pointerdown', staleInputGuard, true);
+document.addEventListener('keydown', staleInputGuard, true);
+document.addEventListener('visibilitychange', checkOtherTab);
+window.addEventListener('focus', checkOtherTab);
+window.addEventListener('pageshow', function(e) {
+  if (e.persisted) { profilesChangedElsewhere = true; checkOtherTab(); }
+});
+// After that reload, one line says why the numbers changed.
+function tabSyncNoteShow() {
+  var had = null;
+  try { had = sessionStorage.getItem(TAB_SYNC_NOTE_KEY); sessionStorage.removeItem(TAB_SYNC_NOTE_KEY); } catch (e) { had = null; }
+  if (had !== '1') return;
+  setTimeout(function() { showToast('Updated with progress from another tab.', 'info', 3200); }, 400);
+}
 
 // opts.quiet: a failed save shows no message (Today's plan, saved on the
 // first visit of the day, falls back to the live plan without one).
@@ -11211,6 +11279,13 @@ function saveState(opts) {
   if (profileInUse && id !== profileInUse) return;
   var profiles = getProfiles();
   if (!profiles[id]) return;
+  // Another tab saved this record since this tab read it: never write the
+  // older copy over it (see checkOtherTab, which reloads this tab).
+  if (staleFromOtherTab || recordRev(profiles[id]) > heldRev) {
+    staleFromOtherTab = true;
+    setTimeout(checkOtherTab, 0);
+    return;
+  }
   // Save mock exam progress as IDs only (avoids bloating localStorage with full
   // question objects). A saved mock whose banks are still loading is written
   // back as it is (see MOCK RESUME).
@@ -11265,9 +11340,12 @@ function saveState(opts) {
   profiles[id].state = persist;
   profiles[id].lastActive = Date.now();
   profiles[id].totalAnswered = S.score.t;
+  var revBefore = heldRev;
+  stampRecord(profiles[id], id);
   try {
     localStorage.setItem(PROFILES_KEY, JSON.stringify(profiles));
   } catch(e) {
+    heldRev = revBefore; // nothing was written
     if (!(opts && opts.quiet === true)) showSaveError();
   }
 }
@@ -11278,6 +11356,8 @@ function loadState() {
   // No saved state yet: this profile's ticks are already v2 ids.
   if (!id) { S.topicTicksSchema = 2; return; }
   var profiles = getProfiles();
+  heldRev = profiles[id] ? recordRev(profiles[id]) : 0;
+  staleFromOtherTab = false;
   if (!profiles[id] || !profiles[id].state) { S.topicTicksSchema = 2; return; }
   var saved = normalizeImportedState(profiles[id].state) || {};
   var fields = ["score","ds","streak","bookmarks","bookmarksLocked","answeredIds","missedQuestions","missedLocked",
@@ -11511,6 +11591,7 @@ function importProgress(file) {
           profiles[id].state = state;
           profiles[id].totalAnswered = state.score ? Number(state.score.t) || 0 : 0;
           profiles[id].lastActive = Date.now();
+          stampRecord(profiles[id], id);
           saveProfiles(profiles);
           if (addName && !getDisplayName()) {
             try {
@@ -13981,20 +14062,47 @@ function drillActive(domainStr) {
 }
 
 // â”€â”€ GET NEXT QUESTION â”€â”€
+// Build a set's filters on a pool: the chosen sub-topic first, then the
+// difficulty. A difficulty the sub-topic has no question at is dropped (the
+// sheet and the hub say so), never the sub-topic the learner picked.
+function practiceFilterPool(pool, diff) {
+  var list = pool || [];
+  var hasSt = false;
+  if (activeSubtopic) {
+    var st = list.filter(function(q){ return q.subtopic === activeSubtopic; });
+    if (st.length) { list = st; hasSt = true; }
+  }
+  var diffApplies = false;
+  if (diff && diff !== "any") {
+    var df = list.filter(function(q){ return q.difficulty === diff; });
+    if (df.length) { list = df; diffApplies = true; }
+  }
+  return { list: list, subtopicApplies: hasSt, diffApplies: diffApplies };
+}
+// The chosen sub-topic has no question at the chosen difficulty.
+function subtopicDiffMissing() {
+  if (!activeSubtopic || !S.diff || S.diff === "any") return false;
+  var f = practiceFilterPool((S.queues && S.queues[S.selectedDomain]) || [], S.diff);
+  return f.subtopicApplies && !f.diffApplies;
+}
+// Questions still to come in a filtered set (null with no filter on), so a
+// one-question sub-topic never promises "1 of 10".
+function practiceFilterLeft() {
+  if (!activeSubtopic && (!S.diff || S.diff === "any")) return null;
+  if (drillActive(S.selectedDomain)) return null;
+  var pool = (S.queues && S.queues[S.selectedDomain]) || [];
+  if (!pool.length) return null;
+  return practiceFilterPool(pool, S.diff).list.filter(function(q){
+    var qd = String(q.domain);
+    return !(S.answeredIds && S.answeredIds[qd] && q.id && S.answeredIds[qd][q.id]);
+  }).length;
+}
+
 function getNextQ(domainStr, diff) {
   if (drillActive(domainStr)) return drillRun.list[drillRun.idx++] || null;
   var pool = S.queues[domainStr] || [];
   if (!pool.length) return null;
-
-  // Apply difficulty filter first
-  var filtered = (diff === "any") ? pool : pool.filter(function(q){ return q.difficulty === diff; });
-  if (!filtered.length) filtered = pool;
-
-  // Apply subtopic filter if active
-  if (activeSubtopic) {
-    var stFiltered = filtered.filter(function(q){ return q.subtopic === activeSubtopic; });
-    if (stFiltered.length) filtered = stFiltered;
-  }
+  var filtered = practiceFilterPool(pool, diff).list;
 
   // Completion check: count only within the effective filtered pool
   // This ensures subtopic/difficulty filters don\'t inflate the "total"
@@ -17871,6 +17979,13 @@ function syncDiffChips() {
     b.classList.toggle('active', on);
     b.setAttribute('aria-pressed', on ? 'true' : 'false');
   });
+  // The chosen topic has no question at this level: the set keeps the topic.
+  var miss = document.getElementById('phDiffMiss');
+  if (miss) {
+    var say = subtopicDiffMissing() && PH_DIFF_WORD[S.diff]
+      ? 'This topic has no ' + PH_DIFF_WORD[S.diff] + ' question, so its set uses every level.' : '';
+    if (miss.textContent !== say) miss.textContent = say;
+  }
 }
 
 // â”€â”€ TIMER TOGGLE â”€â”€
@@ -18024,8 +18139,10 @@ function startMockTotalTimer() {
         S.mockAnswers.push({chosen: null, correct: S.mockQueue[S.mockAnswers.length].correct, ts: Date.now(), timedOut: true});
       }
       showMockResults();
-    } else if (S.mockTotalSecondsLeft % MOCK_SAVE_EVERY_SEC === 0) {
-      // Keep the time left saved, so a reload resumes close to it.
+    } else if (S.mockTotalSecondsLeft % MOCK_SAVE_EVERY_SEC === 0 && document.visibilityState !== 'hidden') {
+      // Keep the time left saved, so a reload resumes close to it. Not from a
+      // tab in the background (hiding it saved the clock already), so it
+      // never writes over a tab in use.
       saveState();
     }
   }, 1000);
@@ -18263,7 +18380,10 @@ function focusProgress(fresh) {
   if (bookmarkReviewMode) return { pos: 0, total: 0, done: 0 };
   if (pendingDebrief) return { pos: pendingDebrief.goal, total: pendingDebrief.goal, done: pendingDebrief.goal };
   if (sessionGoal > 0) {
-    return { pos: Math.min(sessionAnswered + (answered ? 0 : 1), sessionGoal), total: sessionGoal, done: Math.min(sessionAnswered, sessionGoal) };
+    var goal = sessionGoal;
+    var left = practiceFilterLeft();
+    if (left !== null) goal = Math.max(1, Math.min(goal, sessionAnswered + left));
+    return { pos: Math.min(sessionAnswered + (answered ? 0 : 1), goal), total: goal, done: Math.min(sessionAnswered, goal) };
   }
   return { pos: 0, total: 0, done: focusAnswered };
 }
@@ -18450,11 +18570,18 @@ function practicePrimary() {
       meta: midSet ? sessionAnswered + ' of ' + sessionGoal + ' answered &middot; ' + escapeHtml(oq) : escapeHtml(oq) + ' &middot; not answered yet'
     };
   }
-  var lenPart = practiceLen === -1 ? 'Open-ended' : practiceLen + ' questions';
+  // A filtered set with fewer questions left says its real length.
+  var setLen = practiceLen;
+  if (setLen > 0) {
+    var left = null;
+    try { left = practiceFilterLeft(); } catch (e) { left = null; }
+    if (left !== null && left > 0 && left < setLen) setLen = left;
+  }
+  var lenPart = practiceLen === -1 ? 'Open-ended' : setLen + (setLen === 1 ? ' question' : ' questions');
   return {
     resume: false, cap: 'Picked for you', label: 'Start',
     title: scope === 'All domains' ? 'A mixed set' : escapeHtml(scope),
-    meta: lenPart + ' &middot; ' + (practiceLen === -1 ? 'stop any time' : 'about ' + Math.round(practiceLen * MINUTES_PER_PRACTICE_Q) + ' min') + (timedWords ? ' &middot; ' + timedWords : '')
+    meta: lenPart + ' &middot; ' + (practiceLen === -1 ? 'stop any time' : 'about ' + Math.max(1, Math.round(setLen * MINUTES_PER_PRACTICE_Q)) + ' min') + (timedWords ? ' &middot; ' + timedWords : '')
   };
 }
 function runPracticePrimary() {
@@ -18500,7 +18627,7 @@ function renderPracticeHub() {
   var d = S.selectedDomain && S.selectedDomain !== 'all' && DI[S.selectedDomain] ? String(S.selectedDomain) : null;
   var dx = d && rd ? rd.domains.filter(function (x) { return x.id === d; })[0] : null;
   var meta = p.meta;
-  if (!p.resume && S.diff && PH_DIFF_WORD[S.diff]) meta += ' &middot; ' + PH_DIFF_WORD[S.diff];
+  if (!p.resume && S.diff && PH_DIFF_WORD[S.diff] && !subtopicDiffMissing()) meta += ' &middot; ' + PH_DIFF_WORD[S.diff];
   if (!p.resume && d && rd && rd.answered > 0 && rd.focusId === d) meta += ' &middot; where you&rsquo;ll gain most';
   else if (!p.resume && d && next && next.plan && next.id === d) meta += ' &middot; today&rsquo;s set';
   var kick = p.resume ? 'Where you left off' : rd && rd.answered === 0 ? 'A place to start' : 'Picked for you';
@@ -23878,6 +24005,7 @@ function doResetProgress() {
       profiles[id].state = null;
       profiles[id].totalAnswered = 0;
       profiles[id].lastActive = Date.now();
+      stampRecord(profiles[id], id);
       saveProfiles(profiles);
     }
   }
@@ -23919,6 +24047,8 @@ function doResetProgress() {
   // Reading progress too: kept in memory, the next save wrote it back.
   S.topicReviewed = {};
   S.topicViewed = {};
+  // The Glossary's mastered marks too (the Glossary redraws when opened).
+  S.glossMastered = {};
   // An unfinished mock goes too.
   if (S.mockTotalTimerInt) { clearInterval(S.mockTotalTimerInt); S.mockTotalTimerInt = null; }
   mockResumePending = null;
@@ -26762,6 +26892,7 @@ if (bootNav && bootNav.action) setTimeout(function () { navRunAction(bootNav.act
 checkOnboarding();
 // Just restored from a file: say how many answers came back.
 try { restoredNoteShow(); } catch (e) {}
+try { tabSyncNoteShow(); } catch (e) {}
 
 // FTUE Decision 4 (Approach A — Instant question): if practice tab is the
 // active screen, no exam is in progress, no resume is pending, and the user
@@ -26817,52 +26948,42 @@ function dismissConfTip() {
 function showFilterComplete() {
   var d = S.selectedDomain;
   var info = d !== "all" ? DI[d] : null;
+  // The set as getNextQ drew it: the sub-topic first, then the difficulty
+  // when the sub-topic has a question at it.
+  var pool = (S.queues && S.queues[d]) || [];
+  var f = practiceFilterPool(pool, S.diff);
 
   // Build a human-readable description of what filter was active
   var filterDesc = [];
-  if (activeSubtopic) filterDesc.push('\u201c' + subtopicLabel(activeSubtopic) + '\u201d');
-  if (S.diff !== "any") filterDesc.push(S.diff + ' difficulty');
-  var filterLabel = filterDesc.join(' + ');
+  if (activeSubtopic && f.subtopicApplies) filterDesc.push(escapeHtml('\u201c' + subtopicLabel(activeSubtopic) + '\u201d'));
+  if (f.diffApplies && PH_DIFF_WORD[S.diff]) filterDesc.push(escapeHtml(PH_DIFF_WORD[S.diff]));
+  var filterLabel = filterDesc.join(' &middot; ');
 
-  // Count questions in this filtered set and how many answered
-  var pool = d === "all"
-    ? Object.keys(QB).reduce(function(a, k){ return a.concat(QB[k]||[]); }, [])
-    : (QB[d] || []);
-  var filtered = S.diff !== "any" ? pool.filter(function(q){ return q.difficulty === S.diff; }) : pool.slice();
-  if (activeSubtopic) filtered = filtered.filter(function(q){ return q.subtopic === activeSubtopic; });
-
-  var total = filtered.length;
-  var answered = filtered.filter(function(q){
-    var qd = String(q.domain);
-    return S.answeredIds && S.answeredIds[qd] && q.id && S.answeredIds[qd][q.id];
-  }).length;
-  var correct = filtered.filter(function(q){
-    var qd = String(q.domain);
-    return S.answeredIds && S.answeredIds[qd] && q.id && S.answeredIds[qd][q.id]
-      && S.sessionHistory.some(function(h){ return false; }); // approx via ds
-  }).length;
-
-  // Approximate accuracy from domain stats for answered subset
-  var pct = answered > 0 ? Math.round((S.ds[d] ? (S.ds[d].c / Math.max(S.ds[d].t, 1)) * 100 : 0)) : 0;
-  var pctColor = 'var(--text)';
-
-
-  var domainLabel = info ? 'Domain ' + d + ': ' + info.name : 'All Domains';
+  // How the area is going overall: a number only from 30 answers, the same
+  // rule as You, Practice and Weak spots.
+  var areaWords = info ? info.short : 'All domains';
+  var r = domainRead(info ? S.ds[d] : S.score);
+  var figure = r.enough
+    ? '<div class="ty-score" style="margin-top:16px;color:var(--text)">' + r.pct + '%</div>'
+      + '<div class="ty-meta" style="margin-bottom:20px">accuracy on ' + escapeHtml(areaWords) + ' overall</div>'
+    : '<div class="ty-meta" style="margin:16px 0 20px">' + escapeHtml(areaWords) + ' overall: '
+      + (r.n > 0 ? 'too few yet, ' + r.n + (r.n === 1 ? ' answer' : ' answers') : 'not started') + '</div>';
 
   document.getElementById('qArea').innerHTML =
     '<div class="empty" style="background:var(--correct-light);border:2px solid var(--correct-light);border-radius:var(--radius);padding:36px 28px">'
     + '<div class="empty-title" style="color:var(--correct)">Filter complete</div>'
-    + '<div class="empty-sub" style="margin-bottom:4px"><strong>' + filterLabel + '</strong></div>'
-    + '<div class="empty-sub">' + domainLabel + ': every question answered</div>'
-    + '<div class="ty-score" style="margin-top:16px;color:' + pctColor + '">' + pct + '%</div>'
-    + '<div class="ty-meta" style="margin-bottom:20px">accuracy on ' + domainLabel + ' overall</div>'
+    + (filterLabel ? '<div class="empty-sub" style="margin-bottom:4px"><strong>' + filterLabel + '</strong></div>' : '')
+    + '<div class="empty-sub">Every question in this set answered.</div>'
+    + figure
     + '<div style="margin-top:8px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap">'
-    + '<button class="act-btn primary" onclick="clearFilterAndContinue()" style="background:var(--btn);border-color:var(--btn);color:var(--on-btn)">Continue with all sub-topics</button>'
+    + '<button class="act-btn primary" onclick="clearFilterAndContinue()" style="background:var(--btn);border-color:var(--btn);color:var(--on-btn)">' + (activeSubtopic ? 'Continue with all sub-topics' : 'Continue with every level') + '</button>'
     + '<button class="act-btn secondary" onclick="showSessionSummary()">View summary</button>'
     + '</div></div>';
 }
 
 function clearFilterAndContinue() {
+  // A level-only filter that is done opens every level (else the same card again).
+  if (!activeSubtopic && S.diff !== "any") { S.diff = "any"; syncDiffChips(); saveState(); }
   activeSubtopic = null;
   renderSubtopicFilter();
   nextQ();
@@ -27019,7 +27140,7 @@ function showNextMissed() {
     document.getElementById('qArea').innerHTML = '<div class="empty" style="background:var(--correct-light);border:2px solid var(--correct-light);border-radius:var(--radius);padding:36px">'
       + '<div class="empty-icon"></div>'
       + '<div class="empty-title" style="color:var(--correct)">Review complete</div>'
-      + '<div class="empty-sub">' + (remaining > 0 ? remaining + ' questions still in your review queue (answered incorrectly again).' : 'You answered every review question correctly this time.') + '</div>'
+      + '<div class="empty-sub">' + (remaining > 0 ? remaining + (remaining === 1 ? ' question' : ' questions') + ' still in your review queue (answered incorrectly again).' : 'You answered every review question correctly this time.') + '</div>'
       + '<div style="margin-top:20px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap">'
       + (remaining > 0 ? '<button class="act-btn primary" onclick="' + retry + '" style="background:var(--wrong-fill);border-color:var(--wrong-fill);color:var(--on-fill)">Review missed again (' + remaining + ')</button>' : '')
       + '<button class="act-btn secondary" onclick="backToPractice()">Back to Practice</button>'
@@ -27210,7 +27331,7 @@ function showSessionSummary() {
   var missedHtml = "";
   if (S.missedQuestions.length > 0) {
     missedHtml = '<div class="summary-focus"><span class="summary-focus-icon"></span>'
-      + '<span class="summary-focus-text"><strong>' + S.missedQuestions.length + ' incorrect answers</strong> in your review queue for spaced repetition.</span></div>';
+      + '<span class="summary-focus-text"><strong>' + S.missedQuestions.length + (S.missedQuestions.length === 1 ? ' incorrect answer' : ' incorrect answers') + '</strong> in your review queue for spaced repetition.</span></div>';
   }
 
   // Shown only once an answer has a confidence mark, with one line saying what it is.
