@@ -682,11 +682,15 @@ export const STRONG_ROUND = 'A strong round: 80% or more.';
  */
 export function LevelNote({ level }: { level: GameTier }) {
   const how = level === 'heartwood' ? 'The top level.' : 'Two strong rounds in a row grow it.';
-  const line = `Your level: ${GAME_TIER_NAME[level]}. ${how}`;
+  const name = `Your level: ${GAME_TIER_NAME[level]}.`;
+  const line = `${name} ${how}`;
+  // Release prep 2.0.0: one sentence per line. As one centred line it wrapped at 390pt with "it."
+  // alone on the second line. Still one screen-reader stop that says the whole line.
   return (
-    <T v="meta" center accessibilityLabel={line} style={{ marginTop: space.xs }}>
-      {line}
-    </T>
+    <View testID="level-note" accessible accessibilityRole="text" accessibilityLabel={line} style={{ marginTop: space.xs }}>
+      <T v="meta" center>{name}</T>
+      <T v="meta" center>{how}</T>
+    </View>
   );
 }
 

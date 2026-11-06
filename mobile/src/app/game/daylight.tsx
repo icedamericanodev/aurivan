@@ -276,8 +276,10 @@ function Daylight() {
         below={
           <>
             <T v="meta" num center style={{ marginTop: space.sm }}>
-              {`${sec} seconds a question · ${durationText(Math.round((items.length * sec) / 60))} of light${tierCanExtend(chosen) ? ' · you can add time' : ''}`}
+              {`${sec} seconds a question · ${durationText(Math.round((items.length * sec) / 60))} of light`}
             </T>
+            {/* Release prep 2.0.0: its own line. On the line above it wrapped at 390pt with "time" alone. */}
+            {tierCanExtend(chosen) ? <T v="meta" center>You can add time.</T> : null}
             {level ? (
               <LevelNote level={level} />
             ) : (

@@ -5,7 +5,7 @@
  *
  * 1. The question folded to two lines with "Show question" (the built StemRecap).
  * 2. The verdict: the leaf mark, the drill's word in `hero` in its state colour ("Snare spotted",
- *    "Correct", "Not quite"), the coach line in `aside`.
+ *    "Correct", "Half right" in clay, "Not quite"), the coach line in `aside`.
  * 3. The two-half line (Snare Spotter, Signpost, Call It First only), one `small` line at the top of the
  *    answer card naming ONLY the half that was earned ("Snare spotted, 1 point.").
  * 4. One untinted answer card: "Your answer", "Best answer", a "Snare" row (outline letter badge,
@@ -20,7 +20,7 @@
  * state at once (a 120 ms fade at most), with the same haptic.
  *
  * Screen readers: focus moves to the verdict heading after 400 ms and it says the drill's line once
- * (`spoken`, for example "Not quite. Snare spotted, 1 point."); the card is read as the learner moves on.
+ * (`spoken`, for example "Half right. Snare spotted, 1 point."); the card is read as the learner moves on.
  * Letters are DISPLAY letters; every option is looked up by its ORIGINAL letter (engine/shuffle.ts).
  */
 import { useEffect, useRef, useState, type ReactNode } from 'react';
@@ -37,7 +37,7 @@ import { space } from '../theme/tokens';
 import { useTheme } from '../theme/useTheme';
 import { FieldText } from './fieldguide';
 import { VerdictLeaf } from './glyphs';
-import { Check, ChevronDown, ICON_STROKE, X } from './icons';
+import { Check, ChevronDown, ICON_STROKE, Minus, X } from './icons';
 import { Collapse, FadeIn, Pop } from './motion';
 import { DISC_ABOVE_FROM, PickNote, PLATE_ROW_STAGGER, StemRecap, TipsCard, TipsHeading, useVerdictIndent, VERDICT_INDENT } from './quiz';
 import { groveCard, Row, T, useFontScale } from './ui';
@@ -74,7 +74,8 @@ function DrillVerdict({ verdict, animate }: { verdict: DrillVerdictCopy; animate
   const { c } = useTheme();
   const indent = useVerdictIndent();
   const ref = useRef<View>(null);
-  const color = verdict.good ? c.correct : c.wrong;
+  // One half earned (release prep 2.0.0): clay, the calm-attention colour that never means an error.
+  const color = verdict.good ? c.correct : verdict.partial ? c.clay : c.wrong;
   useEffect(() => {
     moveFocus(ref, DRILL_FOCUS_MS);
   }, []);
@@ -86,7 +87,13 @@ function DrillVerdict({ verdict, animate }: { verdict: DrillVerdictCopy; animate
           <Pop mount={animate} spring="pop" delay={DRILL_REVEAL.leaf} style={{ width: LEAF, height: LEAF }}>
             <VerdictLeaf size={LEAF} color={color} />
             <View style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, alignItems: 'center', justifyContent: 'center' }}>
-              {verdict.good ? <Check size={18} color={c.bg} strokeWidth={2.5} /> : <X size={18} color={c.bg} strokeWidth={2.5} />}
+              {verdict.good ? (
+                <Check size={18} color={c.bg} strokeWidth={2.5} />
+              ) : verdict.partial ? (
+                <Minus size={18} color={c.bg} strokeWidth={2.5} />
+              ) : (
+                <X size={18} color={c.bg} strokeWidth={2.5} />
+              )}
             </View>
           </Pop>
           <FieldText v="verdict" color={color} style={{ flexShrink: 1 }}>{verdict.word}</FieldText>

@@ -5,8 +5,9 @@
  * - A two-step drill (Snare Spotter, Signpost, Call It First below Heartwood) scores two halves: the
  *   skill step (spot the snare, read the word, name the principle) and the best answer.
  * - Both halves: the verdict is the game's own good word ("Snare spotted"; "Correct" for the others).
- * - One half: "Not quite", and ONE short line names only the half that was earned ("Snare spotted,
- *   1 point."). Never "No point", never the verdict said twice.
+ * - One half: "Half right" (release prep 2.0.0; it was a red "Not quite", which read as a contradiction
+ *   above "Best answer picked, 1 point."), drawn in clay with a neutral mark, and ONE short line names
+ *   only the half that was earned ("Snare spotted, 1 point."). Never "No point", never the verdict said twice.
  * - Neither half: "Not quite", no line.
  * - Snare Spotter, the best answer tapped as the snare: the answer was revealed, so it never earns the
  *   answer half (engine/games/trapSpotter.ts scoreTrapPick): "Not quite", no line.
@@ -30,10 +31,12 @@ export const HALF = {
 
 /** The words of a drill's verdict. */
 export interface DrillVerdictCopy {
-  /** The drill's word: "Snare spotted", "Correct" or "Not quite". */
+  /** The drill's word: "Snare spotted", "Correct", "Half right" or "Not quite". */
   word: string;
   /** ✓ and the correct colour, or ✗ and the miss colour (colour is never alone: the mark and the word say it). */
   good: boolean;
+  /** Exactly one half of a two-step drill was earned: "Half right", a neutral mark in clay (never red). */
+  partial?: true;
   /** The coach line, in `aside`. */
   coach: string;
   /** What the verdict heading says when focus lands on it (said once). */
@@ -43,6 +46,12 @@ export interface DrillVerdictCopy {
 /** The coach line after a right answer, as on the main answer screen (session.tsx). */
 export const CLEAN_READ = 'Clean read.';
 
+/** The verdict word when exactly one half of a two-step drill was earned. */
+export const HALF_RIGHT = 'Half right';
+
+/** One half earned: the overall result is "Half right", and the half line names which half. */
+const halfVerdict = (coach: string, half: string): DrillVerdictCopy => ({ word: HALF_RIGHT, good: false, partial: true, coach, spoken: `${HALF_RIGHT}. ${half}` });
+
 /** Snare Spotter's verdict. `snare`, `best` and `tapped` (the step-1 pick) are DISPLAY letters. */
 export function snareVerdict(o: { spotted: boolean; correct: boolean; revealed: boolean; snare: string; best: string; tapped: string; missCoach: string }): { verdict: DrillVerdictCopy; half: string | null } {
   if (o.spotted && o.correct) {
@@ -50,12 +59,12 @@ export function snareVerdict(o: { spotted: boolean; correct: boolean; revealed: 
     return { verdict: { word: 'Snare spotted', good: true, coach, spoken: `Snare spotted. ${coach}` }, half: null };
   }
   if (o.spotted) {
-    return { verdict: { word: 'Not quite', good: false, coach: o.missCoach, spoken: `Not quite. ${HALF.snare}` }, half: HALF.snare };
+    return { verdict: halfVerdict(o.missCoach, HALF.snare), half: HALF.snare };
   }
   // The snare was missed. The words that said so before 4b ("The snare was D, not B") stay as the coach line.
   const coach = `The snare was ${o.snare}, not ${o.tapped}.`;
   if (o.correct && !o.revealed) {
-    return { verdict: { word: 'Not quite', good: false, coach, spoken: `Not quite. ${HALF.best}` }, half: HALF.best };
+    return { verdict: halfVerdict(coach, HALF.best), half: HALF.best };
   }
   return { verdict: { word: 'Not quite', good: false, coach, spoken: 'Not quite.' }, half: null };
 }
@@ -66,8 +75,8 @@ export function snareVerdict(o: { spotted: boolean; correct: boolean; revealed: 
  */
 export function twoHalfVerdict(o: { skill: boolean; correct: boolean; skillHalf: string; skillCoach: string; missCoach: string }): { verdict: DrillVerdictCopy; half: string | null } {
   if (o.skill && o.correct) return { verdict: { word: 'Correct', good: true, coach: CLEAN_READ, spoken: `Correct. ${CLEAN_READ}` }, half: null };
-  if (o.skill) return { verdict: { word: 'Not quite', good: false, coach: o.missCoach, spoken: `Not quite. ${o.skillHalf}` }, half: o.skillHalf };
-  if (o.correct) return { verdict: { word: 'Not quite', good: false, coach: o.skillCoach, spoken: `Not quite. ${HALF.best}` }, half: HALF.best };
+  if (o.skill) return { verdict: halfVerdict(o.missCoach, o.skillHalf), half: o.skillHalf };
+  if (o.correct) return { verdict: halfVerdict(o.skillCoach, HALF.best), half: HALF.best };
   return { verdict: { word: 'Not quite', good: false, coach: o.missCoach, spoken: 'Not quite.' }, half: null };
 }
 

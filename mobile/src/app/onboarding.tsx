@@ -69,6 +69,8 @@ import { useTheme } from '../theme/useTheme';
 // Exam date presets (shared with Settings and the calendar). The calendar is
 // pure React Native: no native date-picker dependency.
 const PRESETS = EXAM_DATE_PRESETS;
+/** The welcome's ruled lines: 10 above and below each (was 12), part of the 390x844 fit (release prep 2.0.0). */
+const WELCOME_ROW_PAD = 10;
 
 /** The steps in order: welcome, where you start, date and minutes. */
 type Step = 0 | 1 | 2;
@@ -155,15 +157,19 @@ function OnboardingFlow() {
   // time."), an unnumbered seed plate ("Seed, before Day 1": Fig. 1 belongs to Day 1), then the four
   // plain lines and the not-affiliated line. Screen readers hear "Welcome to KaiSip. Think like an IS
   // auditor." as one header; the lockup and the plate are hidden (the words carry them).
+  // Release prep for 2.0.0 (final screenshot review): the gaps are one step tighter (16 not 24 above
+  // the headline and the plate, 10 not 12 inside each ruled line), so on a 390x844 phone the whole
+  // page, down to the trademark line, sits above Get started without scrolling. The scroll's bottom
+  // padding still equals the footer's height, so at 200% text every line can be scrolled into view.
   const welcome = (
     <Enter key="s0">
-      <View style={{ paddingHorizontal: space.gutter, paddingTop: space.xl }}>
+      <View testID="welcome-page" style={{ paddingHorizontal: space.gutter, paddingTop: space.lg }}>
         <KaisipLockup height={34} decorative />
-        <T v="display" accessibilityRole="header" accessibilityLabel={`Welcome to KaiSip. ${WELCOME_HEADLINE}`} style={{ marginTop: space.xl }}>
+        <T v="display" accessibilityRole="header" accessibilityLabel={`Welcome to KaiSip. ${WELCOME_HEADLINE}`} style={{ marginTop: space.lg }}>
           {WELCOME_HEADLINE}
         </T>
         <FieldText v="sub" style={{ marginTop: space.xs }}>{WELCOME_LINE}</FieldText>
-        <View testID="welcome-plate" accessibilityElementsHidden importantForAccessibility="no-hide-descendants" style={{ marginTop: space.xl }}>
+        <View testID="welcome-plate" accessibilityElementsHidden importantForAccessibility="no-hide-descendants" style={{ marginTop: space.lg }}>
           <Plate fig={{ title: 'Seed, before Day 1' }}>
             <View style={{ alignItems: 'center' }}>
               <SeedSketch width={Math.min(240, width - 2 * space.gutter - 2 * (grovePlate.edge + grovePlate.pad))} />
@@ -171,7 +177,7 @@ function OnboardingFlow() {
           </Plate>
         </View>
       </View>
-      <View style={{ paddingHorizontal: space.gutter, paddingTop: space.lg }}>
+      <View style={{ paddingHorizontal: space.gutter, paddingTop: space.sm }}>
         {/* Ruled lines on the paper (no icon circles): one stop each. */}
         {WELCOME_FACTS.map((line, i) => (
           <View
@@ -179,13 +185,13 @@ function OnboardingFlow() {
             accessible
             accessibilityRole="text"
             accessibilityLabel={line}
-            style={{ paddingVertical: space.md, borderTopWidth: i === 0 ? 0 : 1, borderTopColor: c.line }}
+            style={{ paddingVertical: WELCOME_ROW_PAD, borderTopWidth: i === 0 ? 0 : 1, borderTopColor: c.line }}
           >
             <T v="body">{line}</T>
           </View>
         ))}
         {/* Transparency (5 Nov 2026, TRANSPARENCY.md P4): the short AI disclaimer, one muted line right above the not-affiliated line. */}
-        <T v="meta" color={c.muted} style={{ marginTop: space.md }}>{AI_DISCLAIMER_LINE}</T>
+        <T v="meta" color={c.muted} style={{ marginTop: space.sm }}>{AI_DISCLAIMER_LINE}</T>
         <T v="meta" color={c.muted} style={{ marginTop: space.xs }}>{EXAM_TRADEMARK_LINE}</T>
       </View>
     </Enter>

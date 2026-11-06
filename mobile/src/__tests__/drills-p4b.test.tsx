@@ -38,7 +38,9 @@ import { getAllQuestions } from '../content/loader';
 import type { PackQuestion } from '../content/types';
 import { CALL_TIER_LINE } from '../engine/games/callItFirst';
 import { trapLetter, trapPool } from '../engine/games/trapSpotter';
-import { CLEAN_READ, HALF, oneStepVerdict, snareVerdict, twoHalfVerdict } from '../lib/drillVerdict';
+import { CLEAN_READ, HALF, HALF_RIGHT, oneStepVerdict, snareVerdict, twoHalfVerdict } from '../lib/drillVerdict';
+import { identityPermutation } from '../engine/shuffle';
+import { light as lightPalette } from '../theme/tokens';
 import { drillName, drillTitle, TERM_MATCH } from '../lib/drillNames';
 import { selectCert, useProgress } from '../store/progress';
 import { useSettings } from '../store/settings';
@@ -127,10 +129,12 @@ describe('the verdict and the two-half line (6.4)', () => {
     expect(v.half).toBeNull();
     expect(v.verdict).toEqual({ word: 'Snare spotted', good: true, coach: 'D was built to fool you, and A is the best. Two points.', spoken: 'Snare spotted. D was built to fool you, and A is the best. Two points.' });
   });
-  it('one half: "Not quite", and the line names only the earned half', () => {
-    expect(snareVerdict({ ...base, spotted: true, correct: false })).toMatchObject({ half: 'Snare spotted, 1 point.', verdict: { word: 'Not quite', spoken: 'Not quite. Snare spotted, 1 point.' } });
+  // Release prep 2.0.0 (final screenshot review): a red "Not quite" above "Best answer picked, 1 point."
+  // read as a contradiction, so one earned half says "Half right" (partial, never `good`).
+  it('one half: "Half right", and the line names only the earned half', () => {
+    expect(snareVerdict({ ...base, spotted: true, correct: false })).toMatchObject({ half: 'Snare spotted, 1 point.', verdict: { word: 'Half right', good: false, partial: true, spoken: 'Half right. Snare spotted, 1 point.' } });
     const best = snareVerdict({ ...base, tapped: 'B', spotted: false, correct: true });
-    expect(best).toMatchObject({ half: 'Best answer picked, 1 point.', verdict: { word: 'Not quite', spoken: 'Not quite. Best answer picked, 1 point.', coach: 'The snare was D, not B.' } });
+    expect(best).toMatchObject({ half: 'Best answer picked, 1 point.', verdict: { word: 'Half right', partial: true, spoken: 'Half right. Best answer picked, 1 point.', coach: 'The snare was D, not B.' } });
   });
   it('neither half, or the best answer tapped as the snare: "Not quite", no line, never "No point"', () => {
     for (const v of [snareVerdict({ ...base, tapped: 'B', spotted: false, correct: false }), snareVerdict({ ...base, tapped: 'A', spotted: false, correct: true, revealed: true })]) {
@@ -142,16 +146,34 @@ describe('the verdict and the two-half line (6.4)', () => {
   it('Signpost and Call It First: "Correct" with both, the earned half with one', () => {
     const o = { skillHalf: 'Principle named, 1 point.', skillCoach: 'The principle is marked above.', missCoach: 'Coach.' };
     expect(twoHalfVerdict({ ...o, skill: true, correct: true })).toEqual({ verdict: { word: 'Correct', good: true, coach: CLEAN_READ, spoken: `Correct. ${CLEAN_READ}` }, half: null });
-    expect(twoHalfVerdict({ ...o, skill: true, correct: false }).half).toBe('Principle named, 1 point.');
-    expect(twoHalfVerdict({ ...o, skill: false, correct: true })).toMatchObject({ half: HALF.best, verdict: { coach: 'The principle is marked above.' } });
-    expect(twoHalfVerdict({ ...o, skill: false, correct: false }).half).toBeNull();
+    expect(twoHalfVerdict({ ...o, skill: true, correct: false })).toMatchObject({ half: 'Principle named, 1 point.', verdict: { word: HALF_RIGHT, partial: true, spoken: 'Half right. Principle named, 1 point.' } });
+    // Signpost: the word misread, the best answer picked. The heading is the overall result, never "Not quite".
+    expect(twoHalfVerdict({ ...o, skill: false, correct: true })).toMatchObject({ half: HALF.best, verdict: { word: HALF_RIGHT, partial: true, coach: 'The principle is marked above.', spoken: `Half right. ${HALF.best}` } });
+    const none = twoHalfVerdict({ ...o, skill: false, correct: false });
+    expect(none.half).toBeNull();
+    expect(none.verdict.word).toBe('Not quite');
+    expect(none.verdict.partial).toBeUndefined();
+  });
+  it('the "Half right" heading is drawn in clay with a neutral mark, never the miss red', () => {
+    const q = getAllQuestions('cisa')[0];
+    const pick = (['A', 'B', 'C', 'D'] as const).find((l) => l !== q.correct && q.options[l])!;
+    const { verdict, half } = twoHalfVerdict({ skill: true, correct: false, skillHalf: 'You read FIRST right, 1 point.', skillCoach: 'x', missCoach: 'Coach.' });
+    mount(<DrillAnswer q={q} perm={identityPermutation(q)} pick={pick} verdict={verdict} half={half} animate={false} />);
+    const heading = root().findAll((n) => n.props.accessibilityRole === 'header' && n.props.accessibilityLabel === 'Half right. You read FIRST right, 1 point.');
+    expect(heading.length).toBeGreaterThan(0);
+    const word = root().findAll((n) => typeof n.type !== 'string' && n.props.children === 'Half right' && 'color' in n.props)[0];
+    expect(word.props.color).toBe(lightPalette.clay);
+    expect(word.props.color).not.toBe(lightPalette.wrong);
+    expect(allText()).not.toContain('Not quite');
+    expect(host('drill-half')).toHaveLength(1);
+    expect(mockSuccess).not.toHaveBeenCalled();
   });
   it('one-step drills say "Correct" or "Not quite" with the best letter, never a half line', () => {
     expect(oneStepVerdict({ correct: true, best: 'B', missCoach: 'x' })).toMatchObject({ word: 'Correct', coach: CLEAN_READ });
     expect(oneStepVerdict({ correct: false, best: 'B', missCoach: 'Close.', extra: '+1 · Lean' }).spoken).toBe('Not quite. Best answer B. +1 · Lean. Close.');
   });
   it('no banned words, no em or en dashes in the new lines', () => {
-    const lines = [HALF.snare, HALF.best, SNARE_HINT, STRONG_ROUND, 'The options open once you name the principle.', 'Options hidden until you name the principle'];
+    const lines = [HALF.snare, HALF.best, HALF_RIGHT, SNARE_HINT, STRONG_ROUND, 'The options open once you name the principle.', 'Options hidden until you name the principle'];
     for (const l of lines) {
       expect(l).not.toMatch(/[—–]/);
       expect(l).not.toMatch(/\b(pass|guarantee|official|evolve|runner-up)\b|you're ready|you’re ready/i);

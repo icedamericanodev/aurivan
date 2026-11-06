@@ -1131,7 +1131,7 @@ export default function SessionScreen() {
                     answer (this branch never renders in a mock), never on the very first set. Mobile
                     1.49: a saved note still shows here; "Add a note" moved into ⋯, which opens it. */}
                 {!active.firstSet && <QuestionNote ref={noteRef} certId={active.certId} questionId={qid} quietAdd returnFocus={moreRef} />}
-                {/* The source row (4.2 step 7): "Original · Reviewed", the source, and "Report a problem" at its
+                {/* The source row (4.2 step 7): "Original · Checked", the source, and "Report a problem" at its
                     right (it stays in ⋯ too). The note after a report's email app opened sits under it, as before. */}
                 <SourceLine reference={q.reference} onReport={report.open}>{report.block}</SourceLine>
               </>
@@ -1183,15 +1183,20 @@ export default function SessionScreen() {
                 iconLeading
                 style={{ paddingHorizontal: space.md, minWidth: 56 }}
               />
+              {/* Release prep 2.0.0 (final screenshot review): the visible word stays "Flag" in both states.
+                  "Unflag" was wider, so tapping Flag reflowed the row onto two lines and shrank Next. The
+                  filled flag and the selected look show it is on; the spoken name still changes
+                  ("Flag question" / "Unflag question") and is announced as selected. */}
               <Button
                 kind="secondary"
-                label={shownFlagged ? 'Unflag' : 'Flag'}
+                label="Flag"
                 accessibilityLabel={shownFlagged ? 'Unflag question' : 'Flag question'}
                 selected={shownFlagged}
                 onPress={settled(() => toggleFlag(qid))}
                 icon={(col) => <Flag size={ICON_SIZE.inline} color={col} strokeWidth={ICON_STROKE} fill={shownFlagged ? col : 'none'} />}
                 iconLeading
-                style={{ paddingHorizontal: space.md, minWidth: 56 }}
+                // On: the ink edge, Grove's one selected look (only the colour changes, so the size never does).
+                style={{ paddingHorizontal: space.md, minWidth: 56, ...(shownFlagged ? { borderColor: c.ink } : null) }}
               />
               <Button
                 kind="secondary"

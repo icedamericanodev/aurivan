@@ -498,8 +498,13 @@ export function Button({
   const { c } = useTheme();
   // Each kind = fill · border · label colour (spec §6 "Button").
   // Disabled is its own look (soft + muted), not a faded copy.
+  // A ghost button is words alone, so its disabled look is muted words with no fill (release prep
+  // 2.0.0: a disabled "Copy or share instead" drew a square beige block under the rounded buttons).
+  const ghostKind = kind === 'ghost' || kind === 'ghostNeutral';
   const look = disabled
-    ? { bg: c.soft, border: c.soft, fg: c.muted }
+    ? ghostKind
+      ? { bg: 'transparent', border: 'transparent', fg: c.muted }
+      : { bg: c.soft, border: c.soft, fg: c.muted }
     : {
         primary: { bg: c.btn, border: c.btn, fg: c.onBtn },
         secondary: { bg: 'transparent', border: c.control, fg: c.ink },

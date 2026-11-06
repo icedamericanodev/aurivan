@@ -103,7 +103,9 @@ describe('picking a light', () => {
     expect(allText()).toContain('Answer at exam pace.');
     expect(allText()).toContain('Suggested: Seedling, from your recent answer times.');
     // Mobile 1.15 (C2): seconds in words, never a bare "s".
-    expect(allText()).toContain('120 seconds a question · 10 min of light · you can add time');
+    expect(allText()).toContain('120 seconds a question · 10 min of light');
+    // Release prep 2.0.0: the extend note is its own line, so no word sits alone at 390pt.
+    expect(allText()).toContain('You can add time.');
     const radios = root().findAll((n) => n.props.accessibilityRole === 'radio' && typeof n.props.onPress === 'function');
     expect(radios.map((n) => n.props.accessibilityLabel)).toEqual([
       'Seedling, 120 seconds a question, suggested',

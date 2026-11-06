@@ -126,7 +126,9 @@ describe('Snare Spotter: picking the best answer as the snare', () => {
     expect(row('drill-row-snare').props.accessibilityLabel).toContain(q.options[snare]!);
     expect(row('drill-row-best').props.accessibilityLabel).toContain(`: ${q.options[q.correct]!}`);
     expect(allText()).toContain('Snare spotted, 1 point.');
-    expect(allText()).toContain('Not quite');
+    // One half earned: the heading is the overall result, "Half right" (release prep 2.0.0), never "Not quite".
+    expect(allText()).toContain('Half right');
+    expect(allText()).not.toContain('Not quite');
   });
 
   it('taking the snare as your answer: one row says "Your answer · the snare" (no second snare row)', () => {
