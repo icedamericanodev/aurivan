@@ -12,8 +12,10 @@
 #   - its Content-Security-Policy is the web app's policy. A joined policy is
 #     safe: the browser reads "A, B" as two policies and enforces BOTH, so a
 #     path with its own stricter policy (the legal pages, /data, /assets)
-#     stays at least that strict. Any other address (Cloudflare shows the app
-#     for an unknown path) still gets the app's policy.
+#     stays at least that strict. Any other address still gets the app's
+#     policy. A missing address gets 404.html with status 404 (its presence
+#     turns off Cloudflare's single-page fallback); under /data/ or /assets/
+#     it also gets that folder's policy, so 404.html works as plain text.
 # Cloudflare serves /privacy.html at /privacy (it drops ".html"), so each page
 # is listed both ways. A new page needs its own rule here (and a line in
 # scripts/build_site.sh).
@@ -42,12 +44,19 @@
   Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=()
   Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com/gtag/js https://static.cloudflareinsights.com https://challenges.cloudflare.com; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: https://*.google-analytics.com https://*.googletagmanager.com; connect-src 'self' https://docs.google.com https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com https://cloudflareinsights.com https://ziadnvepttlgcowvqvom.supabase.co; frame-src https://docs.google.com https://challenges.cloudflare.com; form-action https://docs.google.com; object-src 'none'; base-uri 'none'; frame-ancestors 'none'
 
-# The web app: its policy comes from the /* rule above (one policy, so
-# nothing to join here).
+# The home page. While SITE_MODE=landing (the default in
+# scripts/build_site.sh) it is the beta landing page (a copy of beta.html), so
+# it gets the same strict policy as /beta, joined with the /* policy (the
+# browser enforces both). In SITE_MODE=app it is the web app, whose inline
+# scripts that policy would block: the build drops these two lines from
+# _site/_headers in app mode, and checks each mode. Remove them here when the
+# web app reopens for good.
 /
   Cache-Control: public, max-age=0, must-revalidate
+  Content-Security-Policy: default-src 'none'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; script-src 'sha256-nbMPt7DJNCogX1hWKTLNy0Fg4H3+bU/3Jfci1NXG084=' https://static.cloudflareinsights.com; connect-src 'self' https://cloudflareinsights.com; base-uri 'none'; form-action 'none'; frame-ancestors 'none'
 /index.html
   Cache-Control: public, max-age=0, must-revalidate
+  Content-Security-Policy: default-src 'none'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; script-src 'sha256-nbMPt7DJNCogX1hWKTLNy0Fg4H3+bU/3Jfci1NXG084=' https://static.cloudflareinsights.com; connect-src 'self' https://cloudflareinsights.com; base-uri 'none'; form-action 'none'; frame-ancestors 'none'
 
 # The legal pages have one tiny inline script (it applies the theme saved by
 # the app), allowed by its exact hash; scripts/build_site.sh fails if the
@@ -73,6 +82,23 @@
 /support.html
   Cache-Control: public, max-age=0, must-revalidate
   Content-Security-Policy: default-src 'none'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; script-src 'sha256-nbMPt7DJNCogX1hWKTLNy0Fg4H3+bU/3Jfci1NXG084=' https://static.cloudflareinsights.com; connect-src 'self' https://cloudflareinsights.com; base-uri 'none'; form-action 'none'; frame-ancestors 'none'
+# How questions are made and checked (5 Nov 2026): a legal-style page, the
+# same theme script and the same strict policy as /support.
+/how-questions-are-made
+  Cache-Control: public, max-age=0, must-revalidate
+  Content-Security-Policy: default-src 'none'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; script-src 'sha256-nbMPt7DJNCogX1hWKTLNy0Fg4H3+bU/3Jfci1NXG084=' https://static.cloudflareinsights.com; connect-src 'self' https://cloudflareinsights.com; base-uri 'none'; form-action 'none'; frame-ancestors 'none'
+/how-questions-are-made.html
+  Cache-Control: public, max-age=0, must-revalidate
+  Content-Security-Policy: default-src 'none'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; script-src 'sha256-nbMPt7DJNCogX1hWKTLNy0Fg4H3+bU/3Jfci1NXG084=' https://static.cloudflareinsights.com; connect-src 'self' https://cloudflareinsights.com; base-uri 'none'; form-action 'none'; frame-ancestors 'none'
+
+# The not-found page (Cloudflare serves it, status 404, for any missing
+# address). It has no script, image or font, so it needs nothing.
+/404
+  Cache-Control: public, max-age=0, must-revalidate
+  Content-Security-Policy: default-src 'none'; style-src 'unsafe-inline'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'
+/404.html
+  Cache-Control: public, max-age=0, must-revalidate
+  Content-Security-Policy: default-src 'none'; style-src 'unsafe-inline'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'
 
 # The Beta Desk (private admin tracker). Never indexed, never cached (it
 # shows tester details once an admin signs in), and a strict policy of its

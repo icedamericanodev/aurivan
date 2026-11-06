@@ -217,8 +217,8 @@ for (const [view, scheme] of [['phone', 'light'], ['desktop', 'dark']]) {
       }
       const exp = norm(await page.locator('#vrExp').innerText().catch(() => ''));
       c.check(exp.length > 40, `Q${k + 1}: the explanation is missing or very short`);
-      // The three moves sit under the answer below 1240px and in the margin plate
-      // ("Fig. 4 · Three moves", .vm-plate) from 1240px (web v12.47): check whichever shows.
+      // The tips sit under the answer at every width (Grove Phase 4); the older
+      // margin plate (.vm-plate) is still read if a build shows it.
       const tips = await ev(page, () => {
         const shown = (e) => e && e.offsetParent !== null;
         const inline = [...document.querySelectorAll('#rPanel .vine-elim, #rPanel .vine-final, #rPanel .vine-cue')]
@@ -490,19 +490,22 @@ for (const [view, scheme] of [['phone', 'light'], ['desktop', 'dark']]) {
       const a = document.getElementById('pgArea');
       return { text: a.innerText, svgs: a.querySelectorAll('svg').length, loading: !!a.querySelector('.gt-loading'),
         head: (document.getElementById('pageRh')?.innerText || '') + ' ' + (a.querySelector('.pg-head')?.innerText || ''),
-        figs: [...a.querySelectorAll('.fg-fig [aria-hidden="true"]')].map((e) => e.textContent.trim()) };
+        rh: document.getElementById('pageRh')?.innerText || '',
+        figs: [...a.querySelectorAll('.fg-fig')].map((e) => e.textContent.trim()) };
     });
     c.check(!pg.loading, 'Progress is stuck on "Loading your progress"');
     c.check(/Your progress/.test(pg.text), 'Progress heading missing');
-    c.check(/Field record/i.test(pg.head), 'Field Guide running head ("Field record · Progress") missing');
+    // No book labels on screen (expert decision, 31 Oct 2026): the running head is the date only.
+    c.check(/\b\d{1,2} [A-Z]{3}\b/i.test(pg.rh), `running head shows no date (got "${pg.rh.trim()}")`);
+    c.check(!/\bField (guide|record)\b|\bPlates?\b|\bFig\.\s?\d|\bFigure \d|\bHerbarium\b/i.test(pg.head + ' ' + pg.text), 'a book label ("Field record", "Plate", "Fig. N", "Herbarium") is on the Progress page');
     c.check(pg.svgs > 0, 'no chart (svg) on the Progress page');
-    c.check(pg.figs.length > 0, 'no Field Guide plate captions ("Fig. N · …") on the Progress page');
+    c.check(pg.figs.length > 0, 'no plate captions ("Five areas, one scale") on the Progress page');
     c.note(`Progress page: ${pg.svgs} svg drawings; plates: ${pg.figs.join(' | ')}`);
     await c.shot(`w5-progress-${tag}`);
     await c.shot(`w5-progress-full-${tag}`, page, true);
 
-    c.step('You → Dark mode switch, reload, check it stuck, switch back');
-    await go(page, 'you');
+    c.step('You → Settings → Dark mode switch, reload, check it stuck, switch back');
+    await go(page, 'you', 'settings');
     const t0 = await ev(page, () => document.documentElement.getAttribute('data-theme'));
     await page.locator('#darkToggleBtn').scrollIntoViewIfNeeded();
     await page.locator('#darkToggleBtn').click();
@@ -515,7 +518,7 @@ for (const [view, scheme] of [['phone', 'light'], ['desktop', 'dark']]) {
     c.check(t2.t === t1, `after reload the theme is ${t2.t}, chosen ${t1}`);
     c.check(t2.sw === (t1 === 'dark' ? 'true' : 'false'), `the Dark mode switch shows ${t2.sw} for theme ${t2.t}`);
     await c.shot(`w5-theme-after-reload-${tag}`);
-    await go(page, 'you');
+    await go(page, 'you', 'settings');
     await page.locator('#darkToggleBtn').click();
     await sleep(300);
   });
@@ -525,12 +528,12 @@ for (const [view, scheme] of [['phone', 'light'], ['desktop', 'dark']]) {
     const before = await ev(page, () => ({ t: S.score.t, c: S.score.c, mocks: (S.mockHistory || []).length, read: Object.keys(getTopicReviewedSet()).length,
       answered: Object.values(S.answeredIds || {}).reduce((n, o) => n + Object.keys(o || {}).length, 0) }));
     c.step(`before: ${JSON.stringify(before)}`);
-    await go(page, 'you');
-    await page.locator('button[onclick="showYourData()"]:visible').first().click();
-    await page.getByRole('button', { name: 'Export progress' }).waitFor({ timeout: 5000 });
+    // Your data is on the Settings page (Grove C2): Back up and Restore rows.
+    await go(page, 'you', 'settings');
+    await page.locator('#setBackup').scrollIntoViewIfNeeded();
     await c.shot(`w6-your-data-${tag}`);
     const dl = page.waitForEvent('download');
-    await page.getByRole('button', { name: 'Export progress' }).click();
+    await page.locator('#setBackup').click();
     const file = path.join(outDir, `w6-backup-${tag}.json`);
     await (await dl).saveAs(file);
     const data = JSON.parse(fs.readFileSync(file, 'utf8'));
@@ -544,15 +547,16 @@ for (const [view, scheme] of [['phone', 'light'], ['desktop', 'dark']]) {
     await clearAsks(page);
     const empty = await ev(page, () => S.score.t);
     c.check(empty === 0, `after clearing storage the app still shows ${empty} answers`);
-    c.step('Your data → Import progress → the exported file → Replace my progress');
-    await go(page, 'you');
-    await page.locator('button[onclick="showYourData()"]').first().click();
+    c.step('Settings → Your data → Restore → the exported file → Restore (this browser has no answers, so the sheet is a plain restore)');
+    await go(page, 'you', 'settings');
     const chooser = page.waitForEvent('filechooser');
-    await page.getByRole('button', { name: 'Import progress' }).click();
+    await page.locator('#setRestore').click();
     await (await chooser).setFiles(file);
-    await page.getByRole('button', { name: 'Replace my progress' }).waitFor({ timeout: 5000 });
+    // The sheet's confirm (the Settings row behind it is also named Restore).
+    const restoreBtn = page.getByRole('dialog').getByRole('button', { name: 'Restore', exact: true });
+    await restoreBtn.waitFor({ timeout: 5000 });
     await c.shot(`w6-import-confirm-${tag}`);
-    await Promise.all([page.waitForEvent('load'), page.getByRole('button', { name: 'Replace my progress' }).click()]);
+    await Promise.all([page.waitForEvent('load'), restoreBtn.click()]);
     await page.waitForLoadState('networkidle'); await sleep(800); await clearAsks(page);
     const after = await ev(page, () => ({ t: S.score.t, c: S.score.c, mocks: (S.mockHistory || []).length, read: Object.keys(getTopicReviewedSet()).length,
       answered: Object.values(S.answeredIds || {}).reduce((n, o) => n + Object.keys(o || {}).length, 0) }));
@@ -566,7 +570,7 @@ for (const [view, scheme] of [['phone', 'light'], ['desktop', 'dark']]) {
   // ── W7 Phone reflow ──────────────────────────────────────────────
   if (view === 'phone') {
     await rec.run(`W7-${tag}`, 'At 390px: no horizontal scroll, tab bar reachable', page, async (c) => {
-      const pages = [['today'], ['learn', 'notes'], ['learn', 'glossary'], ['practice'], ['practice', 'mock'], ['you'], ['you', 'progress']];
+      const pages = [['today'], ['learn', 'notes'], ['learn', 'glossary'], ['practice'], ['practice', 'mock'], ['you'], ['you', 'settings'], ['you', 'progress']];
       for (const [sec, h] of pages) {
         await go(page, sec, h);
         await sleep(300);

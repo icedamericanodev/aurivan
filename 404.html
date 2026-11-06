@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex">
+<title>Page not found · KaiSip</title>
+<!-- Cloudflare Pages serves this for any missing address (status 404), so it
+     may load under /data/ or /assets/, whose strict policy blocks styles,
+     images and scripts. So: no script, no image, no font, root links only,
+     and it reads fine as plain text. scripts/build_site.sh publishes it. -->
+<style>
+  :root {
+    color-scheme: light;
+    --bg: #F3F1EA; --card: #FFFFFF; --line: #DFDCD1;
+    --ink: #17231B; --ink2: #465349; --accent-text: #24603F;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      color-scheme: dark;
+      --bg: #111613; --card: #1A211C; --line: #29322B;
+      --ink: #ECEFE8; --ink2: #B4BFB6; --accent-text: #93CFAA;
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--bg); color: var(--ink);
+    font-family: system-ui, -apple-system, 'Segoe UI', sans-serif;
+    line-height: 1.6; font-size: 16px;
+  }
+  main {
+    max-width: 520px; margin: 12vh auto 0; padding: 32px 24px;
+    background: var(--card); border: 1px solid var(--line); border-radius: 16px;
+  }
+  h1 { font-family: Georgia, 'Times New Roman', serif; font-weight: 500; font-size: 28px; margin: 0 0 8px; }
+  p { margin: 0 0 16px; color: var(--ink2); }
+  ul { list-style: none; padding: 0; margin: 0; display: flex; flex-wrap: wrap; gap: 8px 20px; }
+  a { color: var(--accent-text); font-weight: 600; text-underline-offset: 3px; }
+  a:focus-visible { outline: 2px solid var(--accent-text); outline-offset: 3px; border-radius: 4px; }
+</style>
+</head>
+<body>
+<main>
+  <h1>Page not found</h1>
+  <p>This address is not on KaiSip. It may have moved.</p>
+  <ul>
+    <li><a href="/">Home</a></li>
+    <li><a href="/support">Help and contact</a></li>
+    <li><a href="/privacy">Privacy</a></li>
+  </ul>
+</main>
+</body>
+</html>

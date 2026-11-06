@@ -48,7 +48,7 @@ Cloudflare publishes `_site/`:
 
 | File | Why |
 |---|---|
-| `index.html`, `privacy.html`, `terms.html`, `support.html`, `beta.html` | The pages (`beta.html` is the beta-tester sign-up page at `/beta`; `/testers`, `/tester` and `/join` redirect to it) |
+| `index.html`, `privacy.html`, `terms.html`, `support.html`, `how-questions-are-made.html`, `beta.html` | The pages (`how-questions-are-made.html` is how questions are made and checked; `beta.html` is the beta-tester sign-up page at `/beta`; `/testers`, `/tester` and `/join` redirect to it) |
 | `assets/` (images, icons, fonts, stylesheets, plus one named script: `assets/kaisip-plant.js`) | Icons and fonts the pages use, and the plant companion (generated from the mobile app by `mobile/scripts/build-web-plant.mjs`) |
 | `data/free/cisa_d1.json` … `cisa_d5.json` (the free question sample, from `scripts/build_free_sample.py`), `data/cisa_notes.json`, `data/mindset/principles.json`, the two `data/exam/` files | The data the web app loads. The full bank `data/domain*.json` is **not** published since web v12.50; the build fails if any question outside the sample appears in `_site/` |
 | `_headers`, `_redirects` | Security headers and friendly redirects |
@@ -100,8 +100,9 @@ answers 200).
 - Cloudflare shows `/privacy.html` at `/privacy`. Use the short addresses in
   the store listings and in the app: `https://<domain>/privacy`, `/terms`,
   `/support`.
-- An address that doesn't exist shows the web app (Cloudflare's default for a
-  site with no `404.html`). Nothing private can be reached that way.
+- An address that doesn't exist gets `404.html` with status 404 (a site with a
+  `404.html` has no single-page fallback on Cloudflare). Nothing private can
+  be reached that way.
 
 ## Owner: connect Cloudflare Pages (about 10 minutes, free)
 
@@ -132,7 +133,8 @@ answers 200).
    - **Branch control → Preview branches:** *None* (or *Custom branches*,
      include `claude/*`, if you want a preview link for each pull request).
    - **Build watch paths → Include paths:** `index.html`, `privacy.html`,
-     `terms.html`, `support.html`, `beta.html`, `assets/*`, `data/free/*`,
+     `terms.html`, `support.html`, `how-questions-are-made.html`, `beta.html`,
+     `assets/*`, `data/free/*`,
      `data/cisa_notes.json`, `data/mindset/principles.json`, `_headers`,
      `_redirects`, `scripts/build_site.sh`.
      Changes to the mobile app or the docs then don't start a website build.

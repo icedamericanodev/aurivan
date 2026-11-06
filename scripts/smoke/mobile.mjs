@@ -265,6 +265,13 @@ const answersIn = (p) => Object.keys((p && p.state && p.state.byCert && p.state.
       const r = after && after.a.responses[p.id];
       c.check(r && r.display === p.disp && r.correct === want, `Q${i + 1} ${p.id}: stored response ${JSON.stringify(r)} does not match the pick (${p.disp}, correct=${want})`);
       if (i < 2) {
+        // Phone 1.53: the answer screen leads with one captioned plate (Fig. 4). After a miss it
+        // reads "Your pick, and the best answer"; after a right answer, "Your answer".
+        const plate = page.locator('[data-testid="answer-plate"]').first();
+        if (await visible(plate)) { await plate.evaluate((e) => e.scrollIntoView({ block: 'center' })).catch(() => {}); await sleep(400); }
+        const cap = want ? /Fig\.\s*4\W+Your answer/ : /Fig\.\s*4\W+Your pick, and the best answer/;
+        c.check(cap.test(await bodyText(page)), `Q${i + 1}: the answer plate caption is not "${want ? 'Fig. 4 · Your answer' : 'Fig. 4 · Your pick, and the best answer'}"`);
+        await c.shot(`m3-q${i + 1}-plate`);
         const more = page.getByRole('button', { name: /^Read more/ });
         if (await visible(more)) { await more.first().click(); await sleep(600); }
         const why = h.match(/Why ([A-D])/);

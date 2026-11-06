@@ -4,6 +4,22 @@ All notable user-facing changes to this app. The in-app **What's New** modal mir
 
 For internal/technical history, see git log and PR descriptions.
 
+## [v13] Welcome to the new KaiSip
+
+### New
+- KaiSip has a new look across the whole site: calmer pages, clearer text and your plant at the heart of Today and You.
+- A new page, How questions are made, explains how our questions are written with AI help and checked, reminds you that AI can make mistakes and shows how to report one.
+- Learn, Settings and your plant each have their own page, and Learn can search every study note.
+
+### Improved
+- Today, Practice and You now point you to the same area to study next.
+- After you answer, every choice and every tip stays in view, so each tip is easy to follow.
+- Backups say when they were saved, and a restore shows what the file holds before it replaces anything.
+- Text grows with your browser text size on every page, and keyboard, screen reader and high contrast use are clearer throughout.
+
+### Fixed
+- Many fixes across the site, from chart labels that ran together on phones to messages that could cover a button.
+
 ## [v12.50.1] A clearer promise on the About page
 
 ### Improved
@@ -381,7 +397,7 @@ For internal/technical history, see git log and PR descriptions.
 ## [v12.14] — Exam guide and final review week
 
 ### New
-- About the CISA exam: registration and fees, test center or online, exam day, results, and how to become certified, with links to the official sources and the date we last checked them.
+- About the CISA exam: registration and fees, test center or online, exam day, results, and how to become certified, with links to ISACA's sources and the date we last checked them.
 - Final review week: a calm seven-day plan for the last week before your exam, with one-tap tasks, a must-remember sheet for each domain and an exam-day answering routine.
 - With an exam date set, Today shows your final-week plan for the last eight days.
 
@@ -487,7 +503,7 @@ For internal/technical history, see git log and PR descriptions.
 ## [v12.2] — Questions re-checked
 
 ### Improved
-- Every practice question was re-checked by independent reviewers: clearer wording, more realistic wrong answers and up-to-date references.
+- Every practice question was re-checked by our AI review checks: clearer wording, more realistic wrong answers and up-to-date references.
 
 ### Fixed
 - Explanations no longer turn words like "A SOC 2 report" into an answer letter after the options are shuffled.
@@ -560,7 +576,7 @@ For internal/technical history, see git log and PR descriptions.
 - New study notes on AI governance, IT checks during mergers and acquisitions, ESG data, and machine-learning systems.
 
 ### Improved
-- The study notes were reviewed by exam experts: wording now follows the plain, exam-style phrasing used for IS auditor roles, and examples are fresh scenarios.
+- The study notes were checked by our AI review checks: wording now follows the plain, exam-style phrasing used for IS auditor roles, and examples are fresh scenarios.
 - Notes across all five domains now agree on who can accept risk, who approves changes and when an auditor must step aside.
 
 ### Fixed
@@ -594,12 +610,12 @@ For internal/technical history, see git log and PR descriptions.
 ## [v10.55] — Fairer answer choices
 
 ### Improved
-- Wrong answers in many operations and security questions now sound just as professional as the right one, so you win by judgment, not by spotting the most official-sounding option.
+- Wrong answers in many operations and security questions now sound just as professional as the right one, so you win by judgment, not by spotting the most formal-sounding option.
 
 ## [v10.54] — New topic notes
 
 ### New
-- The Topics notes are rewritten from scratch in plain language and follow every topic in the official CISA exam outline.
+- The Topics notes are rewritten from scratch in plain language and follow every topic in the CISA exam outline.
 
 ### Improved
 - Each topic now tells you how an IS auditor reasons about it and which trap to avoid.
@@ -619,13 +635,13 @@ For internal/technical history, see git log and PR descriptions.
 - New questions on policies and procedures, enterprise architecture, post-implementation review, business impact analysis, operational logs, attack methods and more.
 
 ### Improved
-- Practice now covers every topic in the official CISA exam outline, in proportion to how much it matters on the exam.
+- Practice now covers every topic in the CISA exam outline, in proportion to how much it matters on the exam.
 - Fewer repeats: lessons that were asked many times now make room for topics you had too little practice on.
 
 ## [v10.52] — Sharper questions
 
 ### Improved
-- A fresh round of expert review made a set of questions clearer, so each one has a single best answer and no wording gives it away.
+- A fresh round of review checks made a set of questions clearer, so each one has a single best answer and no wording gives it away.
 - Sources now point to the latest editions of the project management and IT governance standards.
 - Questions now use consistent American spelling, as on the real exam.
 
@@ -649,14 +665,14 @@ For internal/technical history, see git log and PR descriptions.
 
 ### Improved
 - Protection of Information Assets questions are now short and direct, like the real exam, with every answer choice written as a plain, complete sentence.
-- Each of those questions was reviewed by exam experts and now comes with tips on ruling out two choices and picking between the final two.
+- Each of those questions was checked by our AI review checks and now comes with tips on ruling out two choices and picking between the final two.
 
 ## [v10.49] — Operations and resilience questions, exam-style
 
 ### Improved
 - Information Systems Operations and Business Resilience questions are now short and direct, like the real exam, with tips on ruling out two choices and picking between the final two.
 - Each of those questions now points to the current edition of the framework or standard behind its answer.
-- Questions across the first four topics were reviewed by exam experts: clearer answer choices, every fact you need now in the question, and explanations that no longer contradict each other.
+- Questions across the first four topics were checked by our AI review checks: clearer answer choices, every fact you need now in the question, and explanations that no longer contradict each other.
 
 ## [v10.48] — Systems development questions, exam-style
 
@@ -928,7 +944,7 @@ For internal/technical history, see git log and PR descriptions.
 ### Improved
 - First-time users on the Practice tab now land directly on Q1 instead of an explainer card. The locked design decision was always "instant question" — this restores it. Keyboard shortcuts and the start button remain available for users who prefer them.
 
-## [v10.3] — Quality pass: 28 question touch-ups from specialist review
+## [v10.3] — Quality review: 28 question touch-ups from specialist review
 
 ### Fixed
 - A Domain 2 supply-chain incident question (d2_172) had a wrong-answer explanation that critiqued a deadline that was not actually in the option text. The explanation now addresses what the option actually says — that an "updated vendor-vetting checklist" is administrative compensation, not systemic prevention against the next compromised dependency.

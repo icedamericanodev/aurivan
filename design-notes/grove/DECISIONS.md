@@ -1,0 +1,195 @@
+# Grove: decisions so far
+
+A record of the owner-facing decisions made while building Grove on the website (branch `feature/grove-ui`). `GROVE_HANDOFF.md` stays as delivered apart from dated "Changed from the kit" notes; where a decision below differs from it, this file and `docs/mobile/DESIGN_SYSTEM.md` (§21.8) describe what was built. Each entry says what was decided, who decided it and why.
+
+## 1. Accuracy before 30 answers (owner, 31 Oct 2026)
+
+Today's accuracy tile keeps You's own rule: "Not started" with no answers, "Too few yet" under 30 answers, then the whole percentage of latest tries. Under 30 a small hint says when the number shows ("Shows at 30 answers"). Screen readers hear the tile as one phrase ("Accuracy, too few yet, 12 answered").
+
+Why: a few answers never read as a score, and Today and You say the same thing.
+
+## 2. The ring and the twig together (owner, 31 Oct 2026)
+
+Today shows the ring (with the plant, the range and its caption) and this week's twig together, at every width and on every day. Never one or the other by the day. Exam week keeps its earlier rule (readiness in words, no ring ticks, no twig), as does Welcome back (no twig).
+
+Why: the ring is progress over the whole study, the twig is this week; each answers a different question.
+
+## 3. The streak is hidden from study day 14 (owner, 31 Oct 2026)
+
+Before the 14th study day the twig's right side says "Streak starts today" while there are fewer than 2 study days in all, then "N day streak" from a streak of 2. A streak under 2 after that shows nothing (no 0, no 1, no reset line). From the 14th study day the twig shows no streak; its leaves and "N study days this week" carry the week. Streak maths are unchanged.
+
+Why: a streak helps a new habit form, then becomes pressure; by day 14 the habit is the point, not the count.
+
+## 4. Labels on all tabs (owner, 31 Oct 2026)
+
+All four tabs of the phone's floating bar (Today, Learn, Practice, You) show their word under the icon and share the width equally; the current one has a pill behind its icon. The words use the tab type size. Larger text makes the bar taller instead of cutting a word off. When the words cannot fit side by side, the bar docks full width at the bottom; when even that is too narrow (200% page zoom on a small phone), the tabs wrap two to a row so You is always reachable. The bar's height is kept in one place, and the cookie bar and messages sit above it.
+
+Why: icons alone are guessed at; a word under every icon is learned once.
+
+## 5. The current tab in forced colours (accessibility requirement, 31 Oct 2026)
+
+The current tab's pill carries an outline: transparent in light (where the pill alone is 7.7:1 on the bar) and the sap green in dark (where the pill alone is only 1.89:1, so the 10:1 edge marks it by shape as well as colour). Forced colours (Windows High Contrast) drop the pill's fill but paint the outline, so the current tab stays marked there in both themes. Normal light and dark look as before.
+
+Why: WCAG 1.4.11 and the Grove rule that the current tab is never shown by colour alone. Not an owner choice; recorded here because it amends the tab bar in the kit.
+
+## 6. The first screen on phones, and how it is measured (expert vote, 31 Oct 2026; replaced by 7 for the order)
+
+**Replaced on 31 Oct 2026:** the owner chose ring first on phones (decision 7). The measuring method below still stands; the plan-first order and the "Start above the bar in every state" target do not.
+
+On Today, Start sits fully above the floating tab bar on the first screen, with at least 8px to spare, for every learner state, name length, greeting and exam date, in light and dark.
+
+It is measured in the browser's visible area with its toolbars showing: 390 by 664 and 375 by 635 are the main sizes; 390 by 844 and 375 by 812 (the full CSS viewport, which no browser shows at load) are secondary. Load, do not scroll, and compare Start's bottom edge with the bar's top edge.
+
+To meet it, the product manager, the premium web designer, the behavioural scientist and the mobile UX reviewer all voted for "plan first on phones": below 768px the plan comes first in the page's own order, then the figure (ring, plant, range, "A study estimate, not a prediction.", the answers caption and the tiles), then the plant line, then the twig. Nothing is hidden or shrunk. From 768px the kit's order (figure first, plan beside it) is unchanged. The native app, with no browser toolbars, keeps hero-first.
+
+The phone title keeps to two lines: a name longer than 12 characters greets with its first word there (the full name shows from 768px and on You), and one very long word steps the title down a size.
+
+Why: on real phone browsers Start was under the bar in every state; an anxious learner should see one small, safe step first (time, Start, "Stop any time; your place is saved"), with the plant and the estimate as the reward just below.
+
+**Owner sign-off:** this changes the kit's order on phones, a design-direction item. Before and after screenshots at 390 by 664 and 375 by 635, light and dark, go to the owner at handoff.
+
+## 7. Ring first on phones (owner, 31 Oct 2026; replaces plan first)
+
+Below 768px Today goes back to the kit's order (`screens/01-phone-today.png`): the hero figure first (the stage line, the readiness ring with the plant, its caption, the Accuracy and Exam date tiles), then Today's plan with Start, then the plant line, then the twig, then the rest. The order is the page's own (the markup), never CSS `order`, so keyboard focus and screen readers follow what is seen. The phone ring is 132px at 100% text (was 150px; the owner asked for a smaller ring) and the figure is tighter, so Start sits as high as it can. The ring is sized from its own text size, so with larger text it grows (about 172px at 130%, capped by the card's width) and nothing inside it is clipped; checked at text scales 1, 1.15, 1.3 and 2 at 320, 375 and 390px.
+
+On short browser screens (390 by 664, 375 by 635) a learner may scroll a little to reach Start; that is accepted. Not accepted: clipping the plant, the range or its caption, or text smaller than the type scale. From 768px nothing changes (the figure beside or above the plan in one forest card). Start's position is still measured as in decision 6 and reported at each handoff.
+
+Why: the owner prefers the kit's design, where the plant and the honest range greet the learner first and the plan follows.
+
+## 8. No book labels on screen (expert decision, unanimous, 31 Oct 2026)
+
+The website no longer shows or says "Field guide", "Field record", "Plate", "Plates" or "Fig. N". The plant drawings and the short italic serif captions stay. In detail:
+
+- The running head over each page shows the date only ("Sat 31 Oct"); Your progress keeps "Exam in N days" beside it. A set's or a mock's results still name the set there. No empty divider is left behind.
+- Today: the stage line reads "Seed" with "Stage 1 of 6" beside it (phones) or "Seed · stage 1 of 6" (from 768px, said "Seed, stage 1 of 6"); the plant line is the sentence alone; the figure is announced as "Your plant and study estimate".
+- Your progress: "Five areas, one scale"; "Built from your answers in this app."; the badges sheet is headed "Badges" (was "Herbarium") and its empty mount says "Nothing here yet".
+- Practice: "Picked for you", "Where you left off", "A place to start"; the domain note is the sentence alone; "Three moves for this question".
+- Results and mocks: "Your domains after this set", "IS Operations, new growth", "Your five areas after this mock", "Two mocks, one pace".
+
+The Grove kit (`reference/*.html`, `screens/01`, `04`, `05`, `06`, `GROVE_HANDOFF.md` and `START_HERE.md`) was updated the same day so a later build does not bring the labels back.
+
+"Field Guide" stays the team's name for the look, never words on screen. Code names such as `fgPlate` stay. The phone app follows in its own round (the decision asks both apps to ship together; the version bump and What's New line wait for the end of the uplift).
+
+Why: the labels come from old printed nature books. A nervous learner, or someone reading English as a second language, has to stop and work out what they mean, and the numbers did not add up (Fig. 1 on Today, Fig. 5 on You, nothing between).
+
+## 9. The plant first in the ring (expert decision, unanimous, 31 Oct 2026: "ring-plant-first" option B)
+
+The plant is drawn at the same full size at every stage, Seed to Elder, in light and dark; it no longer shrinks when the first range arrives. The range moved out of the ring to the caption under it, in the same spot in both states. Each measure has its own mark:
+
+- **Before the first range:** 40 seed dots, one per answer that counts (an assisted first answer counts half, as the engine already does). An answered dot is solid sap; a dot not answered yet is an outline in `--leaf-line` (on the forest hero, `--hero-leaf-line` #8FAE98: 3.3:1 at the panel's lightest top, 4.8:1 around the ring). Both are the same outer size, so they differ by shape, not colour alone: 6px across in the 132px phone ring (also at 320px wide) and about 7px in the 190px web ring. The dots match the caption's count and never go backwards.
+- **Once a range exists:** the 50 ticks of 2 points, lit to the low end, gold across the range, with the clay mark at the 80 study bar (only when the ticks show).
+- **Caption:** before the range, "12 of 40 answers until your first readiness range", and from 30 answers a countdown ("8 more answers to your first range", "1 more answer to your first range"). After it, phones read "63 to 73 estimated range" and "A study estimate, not a prediction." word for word; from 768px the range is in the serif (32px, under the 40px greeting) with "estimated range" under it. For the first range (40 to 59 answers that count) it adds "Your first range is in. It usually narrows as you answer more." Never one number, never a dash, never "pass" or "ready". This is the only big range on Today: the Estimated readiness card now shows it as its plain first line (Figtree 15 semibold), like "Not enough data yet".
+- **Screen readers:** the ring keeps `role="img"` with its label in words ("N of 40 answers toward your first readiness range.", or the range sentence with "A study estimate, not a prediction."); the caption is hidden from them, so it is said once.
+- **The 40th answer (G19):** when the range arrives during a visit, the dots fade, the ticks light, then the range fades in, in 560ms, opacity only, and a status line says "Your first readiness range is in: 44 to 62. A study estimate, not a prediction." once. With Reduce Motion, and for a learner who comes back later, the final state shows straight away. No confetti, arrows or needles.
+- **Not changed:** the readiness maths, the 40-answer threshold, the 50-tick scale, the 80 study bar and every storage key.
+- **Not built yet:** the small ring on You (G31: 20 dots worth 2 answers each at 64px, then ticks) waits for Phase 3 You, where that ring is first drawn; the phone port waits for its Grove round (`mobile/` is mid-upgrade).
+
+The kit images stay as delivered. `GROVE_HANDOFF.md` §6.4 carries a dated note of the change from the kit (and §6.6 the twig's `--leaf-line` outline); this entry and `docs/mobile/DESIGN_SYSTEM.md` §21.10 hold the detail.
+
+Why: in the kit as built the plant shrank to a speck at the moment it grew, and at 39 answers the ring looked nearly full, then dropped to about two thirds at 40, so the first milestone looked like a loss.
+
+## 10. Today's finish line (expert decision, unanimous, 31 Oct 2026: "today-finish-line" option B)
+
+Today's plan is saved once a day in one new field of the progress record, `todayPlanV1`, beside the old fields (nothing renamed or replaced): the local day and the time it was made, the plan's mode, the ids of the questions to revisit it holds, and its set (domain, size). It is made on the first visit after local midnight from the live plan and stays fixed all day: answering, exam week or Welcome back do not change it. A missing, broken or older one is rebuilt quietly. It travels in export and backup; a file without it still imports, and older versions ignore it.
+
+- **Done** only when every step is finished: each question to revisit answered after the plan was made, and the set's size answered today in its domain (less those questions). More answers never undo it; Start runs what is left of the saved plan.
+- **If it cannot be saved** (private browsing, full storage), it lasts the visit with no message, and a rebuilt plan still waits for the due questions to revisit, so "done" never comes early.
+- **The finish card**, in the plan's place: "Today's clearing", "One of one, done." (or "Two of two, done."), plain tiles for Questions, Correct ("8 of 10") and Time, a Tomorrow line ("About 12 min"), "Do a little more" as an outline button (no filled button), "Stop any time; your place is saved." and "Short on time?". "Do a little more" starts the live plan and never resets or grows the saved one. No "pass", "ready", guilt, streak warnings, confetti or total question count.
+- **Not changed:** readiness maths, scoring, review timing, the due queue and the order of questions.
+
+The version bump and What's New line wait for the end of the uplift, as agreed.
+
+## 11. Today premium round (31 Oct 2026)
+
+Built from the premium plan (section 1 items 1, 2, 3, 4, 6, 7, 8, 11 and G26), with no book labels anywhere:
+
+- **One "not yet" outline:** `--leaf-line` (light #86806F, dark #6A776D), for empty marks that carry meaning only (the twig's empty leaves now; locked stages and empty badge tiles later). Never text.
+- **One mint button on forest panels:** `--btn-hero` #A9D9BA with `--on-btn-hero` #17231B, the same in both themes, for Today's Start from 768px, Study notes' "Practice Domain N" and the mock's "Resume exam". Hover keeps the mint.
+- **Mint means go:** the row labels ("Read next", "Mindset check", "Your weakest area") are grey, in sentence case; the weakest area keeps its clay badge; "Not now" and "No thanks" are neutral; "Short on time?" is a plain underlined text link; "Set exam date" is ink.
+- **No lonely words:** headings are balanced and notes never end with one word alone; "Today's plan" uses the card title size on phones; the phone avatar sits on the title's first line.
+- **The plant's story:** the hero line says "Fern grows only from real progress. Next, Bough: grows when topics stick across days." ("Fully grown. It keeps all of its growth." at Elder). On the visit after it grows: "Fern grew to Shoot." and one true fact about what earned it, with the art fading over from the old stage in under half a second (none with Reduce Motion) and one announcement. The plant row lower on the page no longer repeats it ("Its look and growth, on You").
+- **Settings:** the You header shows the phone's cog, never a sun: a 44px icon button on phones, the cog and "Settings" as a quiet text button from 768px.
+- **Accuracy:** a small "Latest tries" line under the hero's Accuracy number (not in exam week or on a Welcome back day, which stay as they are).
+
+## 12. Settings is its own page; You is C2 (owner, Sky, 31 Oct 2026)
+
+Sky chose You version "C with the improvements", asked for better accessibility and buildability, and asked that Settings be separated from You as its own page, so it is easy to find without a long scroll. Spec: `scratchpad/grove/you-c2/final/SPEC.md` (after accessibility, buildability and first-time learner reviews).
+
+- **Settings is its own page** (web: `#settings`, a sub-page of You; the phone keeps its existing `app/settings.tsx`). Three ways in: the 44px cog in the You header (a real cog, at every width, no word beside it), the "Settings" row near the end of You, and on computers "Settings" under You in the rail. Back is the page bar's "You" link. While Settings is open, the phone tab bar marks You as the current section. Old links still work: `#settings`, `#data`, `#your-data` and `settings!data` (which opens the Your data sheet).
+- **This replaces** `GROVE_HANDOFF.md` §5 rule 4 (line 89: "Settings stay on You … a settings button that scrolls to it") and §6 item 11 (line 190 onward: the Settings card on You), and the "from 768px the cog and the word Settings" note in 11 above.
+- **Nothing moved out of the app:** Settings holds General (Your name, Exam date, Dark mode, Exam-day rehearsal), Your data (Back up, Restore, Other saved progress when there is any; one file input), Reset (Reset reading progress, Start fresh, each asks first) and Help and about (What's New, FAQ and help, How KaiSip works, Send feedback, Support KaiSip, About KaiSip). Start fresh asks "Start fresh?" with "Keep my progress" (focused), "Back up first" (saves a file, the sheet stays open and says "Backup saved." or "Backup failed.") and "Clear progress".
+- **No tabs on You.** With Settings out, You is one scroll: the profile, one sentence for the week with "Practice {area}" and the plant chip, the numbers, the readiness ring, five areas, the plant, mock exams, badges, study tools, "In more detail", the Settings row and the footer. From 1240px two real column groups sit side by side (DOM order = reading order). If a later review finds it too long, split it into two tabs only ("Progress" and "Plant and badges"); never bring Settings back as a tab.
+- **Focus next** is Today's own value (`r.focusId`: the area with the most points to gain, weighted like the exam), so You and Today never disagree.
+- **The fourth number** is study days in a row (the study-day streak, as on Today, 3 above), no longer right answers in a row (that count stays in the saved data).
+- **Not changed:** readiness and streak maths, scoring, plan logic, the letter mapping and every storage key.
+- **Built differently from the spec (recorded 4 Nov 2026, review of ec4a41c):** the two column groups start at 1240px, where the page frame spans both tracks; the way back from Settings is the page bar's link named for where it goes, "You" with a back chevron, not "Back"; the phone tab bar keeps the kit's 16px from the bottom edge (plus the safe area) on Settings as on every page; and focus rings use the app's `--focus-ring` token, since the spec's `--focus` does not exist in the web stylesheet (the grove-check comment in the CSS names `--focus-ring`).
+
+
+## 13. You and Settings polish (review of ec4a41c and an expert panel, 31 Oct 2026; built 4 Nov 2026)
+
+The full list and the decisions, word for word, are in `design-notes/grove/POLISH_P3.md` (fix list 1 to 16, Q1 to Q6). Q1 to Q5 were unanimous (product manager, behavioural scientist, UX reviewer, first-time candidate). The phone follows the same decisions in its Grove round.
+
+- **Q1 Readiness words.** "Study bar" and "low end" stay, and the low end is defined once. The ring key reads "Gold ticks: your range, 67 to 79." and "Clay mark: 80, this app's study bar.", then one sentence: "Your low end, 67, is the cautious end of your range: we're fairly sure you're at or above it. The study bar asks for a low end of 80, a goal to study toward, not an exam score. Yours is 13 under it." The area key's first item is "Dashed line: 70, the target for each area." Phone: the same low-end sentence under its scale bar, before its study-bar line.
+- **Q2 "Seed" means the plant only.** An area with 1 to 29 answers reads "22 of 30", "answers, too few yet for a score" (said "IT Governance, 22 of 30 answers, too few yet for a score."); the chart key says "No stem yet: fewer than 30 answers, too few yet for a score. The stem and score show at 30." Phone: its chart says "too few yet" instead of "seed".
+- **Q3 Area names.** The DI short names everywhere ("IS Audit", "IT Governance", "IS Acquisition", "IS Operations", "Info Protection"); the button reads "Practice Info Protection".
+- **Q4 Plant chip and plant card.** Owner decision 2 holds. The plant stays on You's first view at every width: as the chip on phones and narrower screens, and as the plant card itself from 1240px (there the chip steps aside only when the learner has a plant; "Pick your plant" stays at every width). Follow-up, optional: a quieter chip style.
+- **Q5 Scale numbers.** On You only, once a range exists, the straight scale bar (0, 50, 80 in clay, 100, the range bracket) sits under the ring and before the key; the card's own "A study estimate, not a prediction." caption steps aside because the bar prints it. The bar is hidden from screen readers; its sentence carries the facts. No bar before the first range. Its range label reads "67 to 79" (Your progress too; the phone ScaleBar the same). Today: no change.
+- **Fixes built with them:** the chart's labels no longer run together at 390px; no "70 line" label or floating dash in the chart; focus lands on the Settings title from You's Settings row and on You's title from Settings' back link; switches, buttons and cards stay visible in forced colours; a restore says what the file holds ("This file: 112 answers, saved 4 Nov"), offers "Back up first", brings back the exam date when this browser has none and says "Restored: 112 answers" after its reload; Back up says "Backup saved", names the file by day (`kaisip-web-progress-2026-11-04.json`) and shows "Last backup: 4 Nov" (from the existing `aurivan_backup_saved_at`); toasts step aside while a sheet is open; `#you` opens at the top; ranges read "64 to 74"; root tokens instead of hex on You's ring and the switch thumb (dark off thumb in ink2); "Kept in this browser only" once on Settings; dead code pruned.
+- **New fields, nothing renamed:** the backup file gains `savedAt` beside the old fields (older readers ignore it); the after-restore note is a one-time session marker. Every `cisa_*` and `aurivan_*` key and `cisaMindsetExport` stay as they are.
+- **Not changed:** readiness and streak maths, scoring, the letter mapping. The version bump and What's New wait for the end of the uplift (8).
+- **Round 1 after the strict review (4 Nov 2026):** Q2 covers every area chart on the website, not only You: Your progress, set results and mock results keys now say "No stem yet: fewer than 30 answers, too few yet for a score." Q2 also covers Today's figure: with no plant picked it says "Nothing planted yet" with no stage line (as You), so "Seed" only ever names a picked plant; with a plant, 8's "Seed" with "Stage 1 of 6" stands. Item 8 is now "lift, never hide": hiding the toast behind a sheet made import and export errors silent, so a toast moves to the top edge while a sheet is open, and no toast ever takes a tap. Item 10 includes the set results line ("Readiness is 68 to 78%"). The backup file also carries a new `prefs` field (dark mode, Exam-day rehearsal and the set length, each still stored under its own `cisa_theme`, `cisa_exam_mode` and `aurivan_practice_len` key); a restore adds each only where this browser has none, as with the name and exam date. Help and About opened from Settings go back to Settings (the link is named for where it goes, 12).
+- **Round 2 after the strict review (4 Nov 2026):** Q6 reaches Session summary (it names You's next area in the DI short name, never the lowest score) and the Practice hub ("Picked for you" is that area until the learner picks a domain on purpose on that page load). The restore sheet's "Back up first" shows only when this browser has answers to lose, and its done line gives the count; Start fresh keeps it always. The readiness key gains a third line for the scale bar's bracket; the bar keeps the Grove ScaleBar look. Detail: `POLISH_P3.md`, round 2.
+- **Round 3 after the strict review (4 Nov 2026):** no owner decision changed. Chart scores keep 8px from their neighbours (beside the tip to the left, or a line lower), odd areas' names start below their neighbours' blocks, and no area chart draws "70 line". The readiness key names the green ticks ("up to your low end") and the bar's green bracket; the bar keeps the Grove ScaleBar look (round 2). Session summary becomes "Practice summary: All your practice so far" (its numbers were always all-time). An area with no answers is "Not started" on Today as on You. Back up on Settings confirms on its own row instead of a toast. Old What's New entries lose their dashes, question ids and domain numbers (release history kept otherwise). Detail: `POLISH_P3.md`, round 3.
+- **Round 4 after the strict review (4 Nov 2026):** no owner decision changed. Q2's key line is built as written on every area chart, with "The stem and score show at 30." (round 3 had cut it on You). Settings' name and exam date, the restore's "Restored: N answers", You's empty "Questions to revisit" and Today's "Download backup" confirm in their own row or card with a status line, not a toast over the rows. Practice summary's rows put the bar and score under the name when they do not fit. In forced colours the plant chip's chevron and words are ButtonText. Detail: `POLISH_P3.md`, round 4.
+
+## 14. Today and You name the same next area (expert panel, two of three, 4 Nov 2026)
+
+The phone follows this rule already; it stays the rule for both apps. Detail: `design-notes/grove/POLISH_P3.md`, Q6.
+
+- **One rule for "where to study next":** Today's readiness focus, `r.focusId` (the area with the most exam points left to gain, weighted like the exam; the first area before any answers). Today's plan set, Today's "Where you'll gain most", You's "Focus next" and its Practice button, the Practice hub, Read next and the first five's "Tomorrow" line all use it, so they always name the same area. The web's "not started first, in outline order" rule and its "never the last set's area" rule are gone (the phone never had them).
+- **The plan's words for an area with no answers:** "your first set here" (was "not started"), so the saved reason stays true next to the live count ("10 questions · your first set here · 3 of 10 answered").
+- **Given up:** variety from skipping yesterday's area; the review queue still mixes areas and the focus moves on as an area's gap shrinks. Untouched areas are visited heaviest first.
+- **Not changed:** readiness maths, the saved plan's shape (`todayPlanV1`), its sanitizer, export and import, the `aurivan_last_session` key (Resume), and the mobile app.
+- **Release:** the panel asked for a PATCH with "Today's plan and the You page now point you to the same area to study next." under Fixed; it waits in `RELEASE_PENDING.md` with the uplift's batched release (8).
+- **Follow-up, built 4 Nov 2026 (strict review):** the drift was not rare: on day one the zero-answer focus is the first area, and after a few answers it moves to the heaviest untouched one, so every new learner saw Today's plan name IS Audit while You and the readiness card named IS Operations. Now, while today's saved plan still has its set to finish, You's Focus next and its Practice button, Today's readiness card line and Read next name the set's area. Where that is no longer the readiness focus they say "today's set" (and the plan's own line "today's set"), never "where you'll gain most", so no label claims more than its rule. Once the set is done, every surface follows `r.focusId` again. The rows labelled "Where you'll gain most" ("If you have more time" on Today, the Practice hub) keep `r.focusId` (round 4: You's area list no longer does; it marks the area You's Focus next names, "today's set" while the set is unfinished and is not the focus, so You names one area, as Today's readiness card does), and the "If you have more time" row no longer says "Your weakest area" (it names the largest weighted gap, not the lowest score). The other option, making the zero-answer focus the heaviest area, changes the shared engine and the phone and was not taken. Nothing new is saved; the readiness maths and `todayPlanV1` are unchanged.
+
+## 15. The Learn tab follows the kit, with changes (expert panel, 4 of 4, 5 Nov 2026)
+
+Sky asked for the phone Learn tab to match `screens/02-phone-learn.png` "exactly" and asked the experts to challenge it. All four (premium web designer, mobile UX reviewer, first-time candidate, behavioural scientist) voted "build the kit with changes". Built in Phase 4 as `PHASE4.md` sections 3 and 7.1 describe:
+
+- **The kit's order and look**, at `TYPE_SCALE.md` sizes: title and line, the forest Up next card with Start lesson inside it as its only control, the search field, the reference tiles, the Final review week row, the Lessons card, the footnote.
+- **Nothing learners use today is lost:** the lesson trail opens inside the Lessons card (no new area page), the inline search results, both Up next reasons, All caught up with Go to Practice, the guided path's line "Guided pairs each lesson with practice", "in exam order", the area numbers and the area ring (outline, arc, tick).
+- **Large text and other courses:** tiles become one column of rows from text scale 1.3; an odd last tile spans the width; rows and the guided button are at least 48pt; names wrap, never cut.
+- **The one tie (2 to 2):** areas start closed, as the kit shows, except one a `?domain=N` link asks for.
+- **Not in the kit's reach without Sky:** a phone Glossary screen (the tile is hidden until then) and a website Learn hub without lessons ("Read next" note card and "Notes by domain" instead; the website has no lessons). `PHASE4.md` section 2, O2 and O3.
+
+Why: the kit gives the tab one clear focal point and a shorter, calmer page; the changes keep every feature and make it hold at large text.
+
+## 16. The answer screen: one calm order, every tip in view (expert panel, 5 Nov 2026)
+
+The kit has no answer screen; four experts (behavioural scientist, product manager, UX reviewer, first-time candidate) chose it. Detail and votes: `PHASE4.md` section 4.
+
+- **Option B, 4 of 4:** one order for a right answer, a miss and Time's up, on web and phone at every width: verdict and coach line; one answer card (your pick with its Why not note, the best answer; no tinted fills); Key idea; "How to think about it" with Eliminate two, Final two and Exam cue in that order; Why; Go deeper; the source row with a visible "Report a problem"; a sticky Next question.
+- **Tips always open, 3 of 4.** Only a long Why folds after a miss ("Read more", screen readers hear it all). This reverses the mobile 1.43 fold of Eliminate two and Final two, so it waits for Sky (`PHASE4.md` O1); until then the fallback in section 4.6 keeps the fold and never folds the tip the coach line names.
+- **Tie (2 to 2) on tips before or after the Why:** tips first, the split rule's "least change" (today's order after a miss).
+- **Amended, 4c-web review round 3:** the web answer card also lists the other options, muted, under the best answer, so every letter a tip names is on screen beside the tips (`PHASE4.md` 4.2 step 2); the phone mirrors it in its next pass.
+- **Also:** "Time's up" in the miss tone, never clay; tips stay in the main column from 1240px (the margin card and its skip link go); no automatic hyphenation; focus to the verdict after 400ms with one spoken label. Display letters on screen; `data-l` and the letter mapping are untouched.
+
+Why: explained feedback in one predictable place helps learners carry the reasoning to new questions; folding the tips hid the part the coach line points to.
+
+## 17. Sky's Phase 4 answers and short interface text (owner, Sky, 5 Nov 2026)
+
+Sky answered the Phase 4 questions in chat (`phase4b/p4-owner-answers.md`; every answer is in `PHASE4.md` section 2):
+
+- **Yes to O1, O2, O3, O4, O7 and O8.** After a miss all three tips are open and only a long Why folds (web and phone; replaces the mobile 1.43 fold). The phone gets a read-only Glossary, the Mindset strip and the Weak spots drill row. The website Learn is its own hub at `#learn` in the kit order, and each web note is its own reading page with a back link.
+- **Defaults kept:** O5 and O6 (drills and the question bank on the web) later; O9 "The score needed is 450"; O15 one word, "Mastered"; O16 "Saved questions" on both builds.
+- **Sky's own fixes to the first web build:** Learn tiles 2 by 2 at normal text (one column only from 1.3x text or under 360px; an odd last tile spans), a web Learn line with no lessons wording, and the Eliminate tip always shown after a miss.
+- **Short interface text:** one idea per line, sublines about 6 words, notes one short sentence, nothing said twice on a screen; cut, never hide meaning, and keep honesty lines. Interface text only: course content (questions, options, explanations, tips, notes, glossary, lessons, principles, exam guide, final review week) stays word for word. The web pass is listed in `PHASE4.md` section 12; the phone mirrors it in its own pass, and the 4b designs follow the same rule.
+
+Why: Sky's answers settle the open navigation and answer-screen questions, and shorter interface text respects a learner's attention without losing anything they need.
+
+## 18. "Growth", never "stage", for the plant (PHASE4B 3.2, 5 Nov 2026)
+
+The plant's progress is "growth" on both builds: Today ("Growth 4 of 6"; from 768px "Bough · growth 4 of 6", spoken "Bough, growth 4 of 6"), the You chip and card ("Kai · Bough · growth 4 of 6"), the six-growth strip ("Your oak's six growths") and Your plant. A line that shows a form name carries no count ("Your oak · Bough", then "The Standard Oak" on its own line). "Stage" stays only for the phone's study journey; drill progress is "level". This amends entry 8's Today line ("Stage 1 of 6").
+
+Why: the phone already says "growth" on three of its four plant surfaces and in its engine, the panel chose it, and "stage" already names the study journey's steps on the phone's Today, so one word cannot mean two things on one screen.

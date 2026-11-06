@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>KaiSip Grove · 03-phone-practice</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;1,9..144,400&amp;family=Figtree:wght@400;500;600;700&amp;display=swap">
+<style>
+body{margin:0;background:#111613}
+a{color:#A9D9BA}a:hover{color:#CBEBD6}
+.gv{font-family:'Figtree',system-ui,sans-serif;color:#ECEFE8}
+.serif{font-family:'Fraunces',Georgia,serif}
+.lbl{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:#B4BFB6;font-weight:600}
+.num{font-family:'Fraunces',Georgia,serif;font-variant-numeric:tabular-nums;font-weight:500;letter-spacing:-.02em}
+.ic{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.tab{display:flex;align-items:center;justify-content:center;gap:8px;height:48px;border-radius:16px;color:#97A39A;text-decoration:none;font-size:14px;font-weight:600;flex:1}
+.card{border-radius:24px;background:#1D2621;box-shadow:0 0 0 1px #29322B}
+.head{display:flex;justify-content:space-between;align-items:baseline;padding:16px 16px 6px}
+.seg{flex:1;height:40px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:600;color:#B4BFB6;text-decoration:none}
+.cfg{display:flex;flex-direction:column;gap:3px;padding:10px 12px;border-radius:14px;background:rgba(17,22,19,.35);color:#EEF2EA;text-decoration:none}
+.row{display:flex;align-items:center;gap:12px;padding:12px 16px;color:#ECEFE8;text-decoration:none}
+.badge{width:36px;height:36px;border-radius:11px;background:#21432F;color:#A9D9BA;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.div{height:1px;background:#29322B;margin:0 16px}
+.drill{display:flex;align-items:center;gap:10px;padding:12px 16px;color:#ECEFE8;text-decoration:none}
+.chev{color:#97A39A;width:16px;height:16px}
+</style>
+</head>
+<body>
+<div class="gv" style="width:390px;height:2180px;box-sizing:border-box;position:relative;background:#111613;overflow:hidden">
+  <div style="padding:54px 18px 120px;display:flex;flex-direction:column;gap:14px">
+
+    <header style="display:flex;flex-direction:column;gap:6px;padding:0 4px 4px">
+      <h1 class="serif" style="margin:0;font-size:34px;font-weight:500;letter-spacing:-.02em">Practice</h1>
+      <p style="margin:0;font-size:14px;color:#B4BFB6">Every option explained, every trap named.</p>
+    </header>
+
+    <nav aria-label="Jump to section" style="display:flex;gap:4px;padding:4px;border-radius:16px;background:#1D2621;box-shadow:0 0 0 1px #29322B">
+      <a href="#" class="seg" aria-current="true" style="background:#2E5440;color:#CBEBD6">Questions</a>
+      <a href="#" class="seg">Drills</a>
+      <a href="#" class="seg">Mock exams</a>
+    </nav>
+
+    <section aria-label="Mindset" style="display:flex;gap:12px;align-items:flex-start;padding:14px 16px;border-radius:18px;background:#202A23;box-shadow:inset 0 0 0 1px #29322B">
+      <svg class="ic" viewBox="0 0 24 24" aria-hidden="true" style="color:#E9C46A;flex-shrink:0;margin-top:2px"><circle cx="12" cy="12" r="9"/><path d="M15.5 8.5l-2 5-5 2 2-5z"/></svg>
+      <p style="margin:0;font-size:13px;line-height:1.5;color:#B4BFB6"><span style="font-weight:700;color:#ECEFE8">Mindset.</span> RTO is how fast you recover. RPO is how much data you can afford to lose.</p>
+    </section>
+
+    <section aria-label="Picked for you" style="display:flex;flex-direction:column;gap:14px;padding:18px;border-radius:24px;background:linear-gradient(165deg,#24452F 0%,#1A3324 70%);box-shadow:inset 0 1px 0 rgba(255,255,255,.07);color:#EEF2EA">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px">
+        <div style="display:flex;flex-direction:column;gap:6px">
+          <span class="lbl" style="color:#BCD2C2">Picked for you</span>
+          <h2 class="serif" style="margin:0;font-size:28px;font-weight:500;line-height:1.05">A mixed set</h2>
+          <span style="font-size:13px;color:#BCD2C2">10 questions · about 12 min</span>
+        </div>
+        <span style="width:56px;height:56px;border-radius:16px;background:#2E5440;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+          <svg viewBox="0 0 48 48" width="40" height="40" aria-hidden="true"><path d="M10 40 C18 30 28 18 40 8" fill="none" stroke="#A9D9BA" stroke-width="1.5" stroke-linecap="round"/><path d="M16 33 C14 27 15 22 18 19 M22 27 C20 21 21 16 25 13 M28 20 C27 15 29 11 32 9 M18 35 C24 36 28 34 31 31 M24 28 C30 29 34 27 36 24 M30 21 C35 21 38 19 40 16" fill="none" stroke="#A9D9BA" stroke-width="1.2" stroke-linecap="round"/></svg>
+        </span>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px">
+        <a href="#" class="cfg"><span class="lbl" style="font-size:10px;color:#BCD2C2">Domains</span><span style="font-size:14px;font-weight:600">All 5</span></a>
+        <a href="#" class="cfg"><span class="lbl" style="font-size:10px;color:#BCD2C2">Count</span><span style="font-size:14px;font-weight:600">10</span></a>
+        <a href="#" class="cfg"><span class="lbl" style="font-size:10px;color:#BCD2C2">Timed</span><span style="font-size:14px;font-weight:600">Off</span></a>
+      </div>
+      <p style="margin:0;font-size:12px;color:#BCD2C2;line-height:1.45">Timed counts up while you answer, never a countdown. The exam allows about 96 seconds a question.</p>
+      <a href="#" style="height:54px;border-radius:16px;background:#A9D9BA;color:#0F1F16;display:flex;align-items:center;justify-content:center;gap:10px;font-size:16px;font-weight:700;text-decoration:none">Start<svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14"/><path d="M13 6l6 6-6 6"/></svg></a>
+    </section>
+
+    <section aria-label="Focus next" class="card" style="display:flex;flex-direction:column;padding-bottom:4px">
+      <div class="head"><h2 class="serif" style="margin:0;font-size:19px;font-weight:500">Focus next</h2></div>
+      <a href="#" class="row"><span class="badge"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12a8 8 0 1 0 2.5-5.8"/><path d="M4 4v4h4"/></svg></span><span style="flex:1;display:flex;flex-direction:column;gap:2px"><span style="font-size:12px;font-weight:600;color:#A9D9BA">Ready today</span><span style="font-size:15px;font-weight:600">Questions to revisit</span><span style="font-size:12px;color:#B4BFB6">Oldest first</span></span><span class="num" style="font-size:15px;padding:3px 10px;border-radius:10px;background:#2E5440;color:#CBEBD6">8</span></a>
+      <div class="div"></div>
+      <a href="#" class="row"><span class="badge" style="background:#3A2A22;color:#E9A07A"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8"/><path d="M12 2v4M12 18v4M2 12h4M18 12h4"/></svg></span><span style="flex:1;display:flex;flex-direction:column;gap:2px"><span style="font-size:12px;font-weight:600;color:#E9A07A">Weak spot</span><span style="font-size:15px;font-weight:600">IS Operations</span><span style="font-size:12px;color:#B4BFB6">Most points to gain</span></span><svg class="ic chev" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></a>
+    </section>
+
+    <section aria-label="By domain" class="card" style="display:flex;flex-direction:column;padding-bottom:6px">
+      <div class="head"><h2 class="serif" style="margin:0;font-size:19px;font-weight:500">By domain</h2><span style="font-size:12px;color:#B4BFB6">Starts a set in that domain</span></div>
+      <a href="#" class="row"><span class="num" style="width:22px;font-size:18px;color:#97A39A">1</span><span style="flex:1;display:flex;flex-direction:column;gap:2px"><span style="font-size:15px;font-weight:600"><span style="display:inline-block;width:8px;height:8px;border-radius:2px;background:#72B4CB;margin-right:6px"></span>IS Audit</span><span style="font-size:12px;color:#B4BFB6">18% of the exam · 2 seen</span></span><span style="font-size:12px;color:#97A39A">Too few yet</span><svg class="ic chev" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></a>
+      <div class="div"></div>
+      <a href="#" class="row"><span class="num" style="width:22px;font-size:18px;color:#97A39A">2</span><span style="flex:1;display:flex;flex-direction:column;gap:2px"><span style="font-size:15px;font-weight:600"><span style="display:inline-block;width:8px;height:8px;border-radius:2px;background:#8CC474;margin-right:6px"></span>IT Governance</span><span style="font-size:12px;color:#B4BFB6">18% of the exam · 1 seen</span></span><span style="font-size:12px;color:#97A39A">Too few yet</span><svg class="ic chev" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></a>
+      <div class="div"></div>
+      <a href="#" class="row"><span class="num" style="width:22px;font-size:18px;color:#97A39A">3</span><span style="flex:1;display:flex;flex-direction:column;gap:2px"><span style="font-size:15px;font-weight:600"><span style="display:inline-block;width:8px;height:8px;border-radius:2px;background:#DDB066;margin-right:6px"></span>IS Acquisition</span><span style="font-size:12px;color:#B4BFB6">12% of the exam · 1 seen</span></span><span style="font-size:12px;color:#97A39A">Too few yet</span><svg class="ic chev" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></a>
+      <div class="div"></div>
+      <a href="#" class="row"><span class="num" style="width:22px;font-size:18px;color:#97A39A">4</span><span style="flex:1;display:flex;flex-direction:column;gap:2px"><span style="font-size:15px;font-weight:600"><span style="display:inline-block;width:8px;height:8px;border-radius:2px;background:#B99DCD;margin-right:6px"></span>IS Operations</span><span style="font-size:12px;color:#B4BFB6">26% of the exam · 6 seen</span></span><span style="font-size:12px;color:#97A39A">Too few yet</span><svg class="ic chev" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></a>
+      <div class="div"></div>
+      <a href="#" class="row"><span class="num" style="width:22px;font-size:18px;color:#97A39A">5</span><span style="flex:1;display:flex;flex-direction:column;gap:2px"><span style="font-size:15px;font-weight:600"><span style="display:inline-block;width:8px;height:8px;border-radius:2px;background:#9AAFBB;margin-right:6px"></span>Info Protection</span><span style="font-size:12px;color:#B4BFB6">26% of the exam · 1 seen</span></span><span style="font-size:12px;color:#97A39A">Too few yet</span><svg class="ic chev" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></a>
+    </section>
+
+    <section aria-label="Review and saved" class="card" style="display:flex;flex-direction:column;padding-bottom:4px">
+      <div class="head"><h2 class="serif" style="margin:0;font-size:19px;font-weight:500">Review and saved</h2></div>
+      <a href="#" class="row"><span class="badge"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></span><span style="flex:1;display:flex;flex-direction:column;gap:2px"><span style="font-size:15px;font-weight:600">All missed questions</span><span style="font-size:12px;color:#B4BFB6">Each one you missed, to try again</span></span><svg class="ic chev" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></a>
+      <div class="div"></div>
+      <a href="#" class="row"><span class="badge"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 20V12M12 20V8M18 20V4"/></svg></span><span style="flex:1;display:flex;flex-direction:column;gap:2px"><span style="font-size:15px;font-weight:600">Weak spots drill</span><span style="font-size:12px;color:#B4BFB6">From the domains you miss most</span></span><svg class="ic chev" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></a>
+      <div class="div"></div>
+      <a href="#" class="row"><span class="badge"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 4h12v17l-6-4-6 4z"/></svg></span><span style="flex:1;display:flex;flex-direction:column;gap:2px"><span style="font-size:15px;font-weight:600">All saved questions</span><span style="font-size:12px;color:#B4BFB6">Save a question to find it here</span></span><svg class="ic chev" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></a>
+      <div class="div"></div>
+      <a href="#" class="row"><span class="badge"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4v16M9 4v16"/><path d="M13 5l4 15"/></svg></span><span style="flex:1;display:flex;flex-direction:column;gap:2px"><span style="font-size:15px;font-weight:600">Question bank</span><span style="font-size:12px;color:#B4BFB6">Browse by domain and topic</span></span><svg class="ic chev" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></a>
+      <div class="div"></div>
+      <a href="#" class="row"><span class="badge"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h10M18 7h2M4 17h4M12 17h8"/><circle cx="16" cy="7" r="2"/><circle cx="10" cy="17" r="2"/></svg></span><span style="flex:1;display:flex;flex-direction:column;gap:2px"><span style="font-size:15px;font-weight:600">Build a set</span><span style="font-size:12px;color:#B4BFB6">Pick a domain, topic and difficulty</span></span><svg class="ic chev" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></a>
+    </section>
+
+    <section aria-label="Drills" class="card" style="display:flex;flex-direction:column">
+      <div class="head"><h2 class="serif" style="margin:0;font-size:19px;font-weight:500">Drills</h2><span style="font-size:12px;color:#B4BFB6">All at Seedling</span></div>
+      <p style="margin:0;padding:0 16px 4px;font-size:12px;color:#B4BFB6;line-height:1.45">Short games, each for one exam skill. Missed questions go to your review.</p>
+      <a href="#" class="drill"><span class="serif" style="font-style:italic;font-size:16px;color:#E9A07A;width:12px">1</span><span style="display:flex;flex-direction:column;gap:2px;flex-shrink:0"><span style="font-size:11px;font-weight:600;color:#A9D9BA">Today’s drill · Spot the trick answer</span><span style="font-size:15px;font-weight:600">Snare Spotter</span></span><span aria-hidden="true" style="flex:1;border-bottom:1px dotted #39443C"></span><span style="font-size:13px;color:#B4BFB6">6 min</span></a>
+      <a href="#" class="drill"><span class="serif" style="font-style:italic;font-size:16px;color:#97A39A;width:12px">2</span><span style="display:flex;flex-direction:column;gap:2px;flex-shrink:0"><span style="font-size:11px;color:#B4BFB6">Find the word that decides</span><span style="font-size:15px;font-weight:600">Signpost</span></span><span aria-hidden="true" style="flex:1;border-bottom:1px dotted #39443C"></span><span style="font-size:13px;color:#B4BFB6">6 min</span></a>
+      <a href="#" class="drill"><span class="serif" style="font-style:italic;font-size:16px;color:#97A39A;width:12px">3</span><span style="display:flex;flex-direction:column;gap:2px;flex-shrink:0"><span style="font-size:11px;color:#B4BFB6">Answer before you see the options</span><span style="font-size:15px;font-weight:600">Call It First</span></span><span aria-hidden="true" style="flex:1;border-bottom:1px dotted #39443C"></span><span style="font-size:13px;color:#B4BFB6">6 min</span></a>
+      <p style="margin:0;padding:6px 16px 16px;font-size:12px;color:#97A39A">More drills open after 50 practice questions.</p>
+    </section>
+
+    <section aria-label="Mock exams" class="card" style="display:flex;flex-direction:column;padding-bottom:16px">
+      <div class="head"><h2 class="serif" style="margin:0;font-size:19px;font-weight:500">Mock exams</h2><span style="font-size:12px;color:#B4BFB6">Timed like the real exam</span></div>
+      <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;padding:6px 16px 0">
+        <a href="#" style="display:flex;flex-direction:column;gap:4px;padding:14px;border-radius:16px;background:#202A23;box-shadow:inset 0 0 0 1px #29322B;color:#ECEFE8;text-decoration:none"><span class="num" style="font-size:34px;line-height:1">50</span><span style="font-size:14px;font-weight:600">Mini mock</span><span style="font-size:12px;color:#B4BFB6">80 min · feedback at the end</span></a>
+        <a href="#" style="display:flex;flex-direction:column;gap:4px;padding:14px;border-radius:16px;background:#202A23;box-shadow:inset 0 0 0 1px #29322B;color:#ECEFE8;text-decoration:none"><span class="num" style="font-size:34px;line-height:1">150</span><span style="font-size:14px;font-weight:600">Full mock</span><span style="font-size:12px;color:#B4BFB6">4 hours · weighted like the real CISA</span></a>
+      </div>
+      <p style="margin:0;padding:12px 16px 0;font-size:12px;color:#97A39A;line-height:1.45">ISACA reports scaled scores from 200 to 800. 450 is the passing mark.</p>
+    </section>
+  </div>
+
+  <nav aria-label="Main" style="position:absolute;left:16px;right:16px;bottom:22px;height:64px;padding:0 8px;box-sizing:border-box;border-radius:22px;background:#1A231D;box-shadow:0 0 0 1px #2E3A31,0 14px 34px rgba(0,0,0,.5);display:flex;align-items:center;gap:4px">
+    <a href="#" class="tab" aria-label="Today"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21v-9"/><path d="M12 12c0-4 3-6 7-6 0 4-3 6-7 6z"/><path d="M12 14c0-3-2-5-6-5 0 3 2 5 6 5z"/></svg></a>
+    <a href="#" class="tab" aria-label="Learn"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 5.5C5 4.5 8 4.5 12 6c4-1.5 7-1.5 9-.5V19c-2-1-5-1-9 .5-4-1.5-7-1.5-9-.5z"/><path d="M12 6v13.5"/></svg></a>
+    <a href="#" class="tab" aria-current="page" style="background:#2E5440;color:#CBEBD6;flex:2.2"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7l1.5 1.5L8 6"/><path d="M4 15l1.5 1.5L8 14"/><path d="M11 7.5h9"/><path d="M11 15.5h9"/></svg>Practice</a>
+    <a href="#" class="tab" aria-label="You"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c1-4 4-6 8-6s7 2 8 6"/></svg></a>
+  </nav>
+</div>
+</body>
+</html>
