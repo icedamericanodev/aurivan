@@ -65,7 +65,7 @@ await open('/session');
 await page.getByLabel(new RegExp(`^Option ${keys[0]}:`)).first().click();
 await page.getByText('Check answer', { exact: true }).click();
 await page.waitForTimeout(900);
-await scrollTo(/^Original · Reviewed /, 520);
+await scrollTo(/^Original · Checked /, 520);
 await snap('s01-question-source-line');
 await page.getByRole('button', { name: 'More on this question', exact: true }).click();
 await page.waitForTimeout(700);

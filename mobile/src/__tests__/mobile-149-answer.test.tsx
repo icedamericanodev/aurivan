@@ -128,7 +128,7 @@ describe('after a miss: one way on, in the body', () => {
     // Grove Phase 4 (4.2 step 7): the report is the source row's text link (and still in ⋯), never a row.
     expect(hosts(/^Report /).map((n) => n.props.testID)).toEqual(['answer-report-link']);
     // The source line stays.
-    expect(allText()).toMatch(/Original · Reviewed /);
+    expect(allText()).toMatch(/Original · Checked /);
   });
 
   it('with every lesson done, the one row is the note', () => {

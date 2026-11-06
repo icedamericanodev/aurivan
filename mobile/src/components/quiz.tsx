@@ -25,7 +25,7 @@
  *              idea too), drawn in when it scrolls into view (static under
  *              Reduce Motion). After a miss, Eliminate two and Final two sit
  *              inside Why's "Read more" fold (mobile 1.43).
- *   Trust    – "Original · Reviewed Oct 2026 · Report a problem" (Results' review).
+ *   Trust    – "Original · Checked Oct 2026 · Report a problem" (Results' review; "Reviewed" until 2.0.0).
  *   Source   – the practice answer's source line, no link (mobile 1.49: the
  *              report lives in the header's ⋯ "More on this question" sheet,
  *              AnswerMore).
@@ -803,7 +803,7 @@ export function StemRecap({
 }
 
 // ── Trust line: provenance + Report a problem ────────────────────────
-// Under every revealed answer: "Original · Reviewed Oct 2026" with the
+// Under every revealed answer: "Original · Checked Oct 2026" (was "Reviewed" until 2.0.0, transparency) with the
 // report link on the right, then the code and source. The link, its sheet
 // and the note after sending live in components/support.tsx (one look and
 // one spoken pattern for every report entry point).
@@ -812,7 +812,7 @@ export function TrustLine({ certId, target, reference }: { certId: string; targe
     <ReportRow
       certId={certId}
       target={target}
-      meta={`Original · Reviewed ${config.contentReviewed}`}
+      meta={`Original · Checked ${config.contentReviewed}`}
       // The question's code (d1_010) lives in the Report sheet, not here (mobile 1.24): the learner
       // sees the source, and the code travels with a report as before.
       sub={reference ? shortReference(reference) : undefined}
@@ -821,7 +821,7 @@ export function TrustLine({ certId, target, reference }: { certId: string; targe
 }
 
 // ── Source line: provenance only (mobile 1.49) ───────────────────────
-// The practice answer's last line: a hairline, "Original · Reviewed Oct 2026",
+// The practice answer's last line: a hairline, "Original · Checked Oct 2026",
 // then the source. "Report a problem" moved into the ⋯ sheet (premium pass
 // §2.4), so the line is text only. `children`: the note after a report's email
 // app opened (useReportFlow's `block`), kept under the source as before.
@@ -830,8 +830,8 @@ export function SourceLine({ reference, children, onReport }: { reference?: stri
   return (
     <View testID="answer-source" style={{ borderTopWidth: 1, borderTopColor: c.line, marginTop: space.lg, paddingTop: space.md }}>
       <View style={{ flexDirection: 'row', flexWrap: 'wrap', alignItems: 'flex-start', justifyContent: 'space-between', columnGap: space.md }}>
-        <View accessible accessibilityLabel={`Original, reviewed ${config.contentReviewed}${reference ? `, ${shortReference(reference)}` : ''}`} style={{ flexShrink: 1, paddingVertical: onReport ? 14 : 0 }}>
-          <T v="meta" color={c.ink2}>{`Original · Reviewed ${config.contentReviewed}`}</T>
+        <View accessible accessibilityLabel={`Original, checked ${config.contentReviewed}${reference ? `, ${shortReference(reference)}` : ''}`} style={{ flexShrink: 1, paddingVertical: onReport ? 14 : 0 }}>
+          <T v="meta" color={c.ink2}>{`Original · Checked ${config.contentReviewed}`}</T>
           {reference ? <T v="meta" color={c.ink2}>{shortReference(reference)}</T> : null}
         </View>
         {onReport && (

@@ -51,7 +51,7 @@ export const config = {
   // with the cloud flag off carries no backend address at all (guard G2).
   /**
    * Month the question bank was last reviewed, shown in the trust line under
-   * every answer ("Original · Reviewed Oct 2026"). Update it with each
+   * every answer ("Original · Checked Oct 2026"). Update it with each
    * content review.
    */
   contentReviewed: 'Oct 2026',

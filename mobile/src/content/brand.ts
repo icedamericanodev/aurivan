@@ -53,8 +53,8 @@ export const REPORT_AI_LINE = 'Written with AI help, so mistakes can slip throug
  * questions answers "How are the questions made and checked?" with it.
  */
 export const AI_LONG_DISCLAIMER_PARAGRAPHS: readonly string[] = [
-  'KaiSip’s questions, explanations and study notes are original. They are written with heavy AI help, directed by a CISA-certified founder, and each question is mapped to ISACA’s current CISA exam content outline.',
-  'Before a question is added, it goes through automated checks and AI review checks (exam question style, technical accuracy, a blind answer test, sources and how current they are, consistency across domains, grammar, and whether the longest option gives the answer away). Then the founder reviews the results. There is no outside panel of human reviewers yet.',
+  'KaiSip’s questions, explanations and study notes are original. They are drafted with AI tools, directed by a CISA-certified founder, and each question is mapped to ISACA’s current CISA exam content outline.',
+  'Before a question is added, it goes through automated checks and AI review checks (exam question style, technical accuracy, a blind answer test, sources and how current they are, consistency across domains, grammar, and whether the longest option gives the answer away). Then the founder reads the review reports and decides what to fix; not every question has been checked by hand yet. There is no outside panel of human reviewers yet.',
   'AI tools make mistakes, and so do people, so check anything important against ISACA’s own materials and your own judgment. If something looks wrong, use Report a problem; fixes ship in app updates.',
   'A readiness range is a study estimate, not a prediction of your exam result. KaiSip is not affiliated with or endorsed by ISACA.',
 ];
