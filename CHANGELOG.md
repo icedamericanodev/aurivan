@@ -576,7 +576,7 @@ For internal/technical history, see git log and PR descriptions.
 - New study notes on AI governance, IT checks during mergers and acquisitions, ESG data, and machine-learning systems.
 
 ### Improved
-- The study notes were reviewed by exam experts: wording now follows the plain, exam-style phrasing used for IS auditor roles, and examples are fresh scenarios.
+- The study notes were checked by our AI review checks: wording now follows the plain, exam-style phrasing used for IS auditor roles, and examples are fresh scenarios.
 - Notes across all five domains now agree on who can accept risk, who approves changes and when an auditor must step aside.
 
 ### Fixed
@@ -665,14 +665,14 @@ For internal/technical history, see git log and PR descriptions.
 
 ### Improved
 - Protection of Information Assets questions are now short and direct, like the real exam, with every answer choice written as a plain, complete sentence.
-- Each of those questions was reviewed by exam experts and now comes with tips on ruling out two choices and picking between the final two.
+- Each of those questions was checked by our AI review checks and now comes with tips on ruling out two choices and picking between the final two.
 
 ## [v10.49] — Operations and resilience questions, exam-style
 
 ### Improved
 - Information Systems Operations and Business Resilience questions are now short and direct, like the real exam, with tips on ruling out two choices and picking between the final two.
 - Each of those questions now points to the current edition of the framework or standard behind its answer.
-- Questions across the first four topics were reviewed by exam experts: clearer answer choices, every fact you need now in the question, and explanations that no longer contradict each other.
+- Questions across the first four topics were checked by our AI review checks: clearer answer choices, every fact you need now in the question, and explanations that no longer contradict each other.
 
 ## [v10.48] — Systems development questions, exam-style
 
