@@ -51,3 +51,38 @@ export function redirectOnboardedPath(path: string, onboarded: boolean | (() => 
   // Asked only for an onboarding link (a function is called here, so other links never load settings).
   return (typeof onboarded === 'function' ? onboarded() : onboarded) ? '/home' : path;
 }
+
+/**
+ * Release bug hunt round 3: the screen part of an incoming link, lower case, without slashes, "?…" or
+ * "#…" ("kaisip://settings?section=data" → "settings", "kaisip://" → "", the Expo Go form
+ * "exp://host:8081/--/home" → "home").
+ */
+export function linkRoute(path: string): string {
+  let p = path.split(/[?#]/)[0];
+  const dash = p.indexOf('/--/');
+  if (dash >= 0) p = p.slice(dash + 4);
+  else if (/^exps?:\/\//i.test(p)) p = '';
+  else p = p.replace(/^[a-z][a-z0-9+.-]*:\/\//i, '');
+  return p.replace(/^\/+|\/+$/g, '').toLowerCase();
+}
+
+/**
+ * Links that may open before onboarding is finished: the start ("/", which sends a new learner to
+ * onboarding), onboarding itself, and the widget link (it checks onboarding on its own,
+ * lib/widgetOpen.ts). The dev client's own links are left alone.
+ */
+const OPEN_BEFORE_ONBOARDING = new Set(['', 'index', 'onboarding', 'widget', 'expo-development-client']);
+
+/** True when this link leads to a screen a learner reaches only after onboarding. */
+export function needsOnboardingFirst(path: string): boolean {
+  return !OPEN_BEFORE_ONBOARDING.has(linkRoute(path));
+}
+
+/**
+ * Release bug hunt round 3: an outside link to a real screen (kaisip://home, kaisip://settings…)
+ * skipped onboarding on a fresh install. For a learner who has not finished onboarding it now goes to
+ * "/", and app/index.tsx opens onboarding. Onboarded learners' links pass through unchanged.
+ */
+export function redirectNotOnboardedPath(path: string, onboarded: boolean): string {
+  return !onboarded && needsOnboardingFirst(path) ? '/' : path;
+}

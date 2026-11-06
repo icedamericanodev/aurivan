@@ -93,7 +93,7 @@ const textOf = (n: ReactTestInstance) => {
 
 beforeEach(() => {
   useProgress.getState().resetCert('cisa');
-  useSettings.setState({ theme: 'light', activeCertId: 'cisa' });
+  useSettings.setState({ theme: 'light', activeCertId: 'cisa', onboarded: true }); // links below are for an onboarded learner
   mockParams.current = {};
   mockSetParams.mockClear();
   mockCanDismiss.current = true;

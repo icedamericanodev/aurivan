@@ -43,7 +43,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Platform, ScrollView, useWindowDimensions, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { BadgeCellMemo as BadgeCell, BadgeListRowMemo as BadgeListRow, BadgeSheet, caseTileSize, NextPanel, planterLine, ShelfHeader, StretchHeader } from '../components/badges';
-import { useGrowth } from '../components/motion';
+import { useGrowth, useScreenFocus } from '../components/motion';
 import { Plant } from '../components/plant/Plant';
 import { PlanterIcon } from '../components/plant/LookUI';
 import { plantArtSize, SoilBed, soilYFor } from '../components/plant/PlantPage';
@@ -71,6 +71,7 @@ import { moveFocus } from '../lib/a11y';
 import { caseStage, seeCase, studyFor, weakestDomain } from '../lib/badges';
 import { backfillLine, badgeCase, catalogFillLine, seeBackfill, seeCatalogFill } from '../lib/milestones';
 import { useActiveCert } from '../lib/useActiveCert';
+import { HoldContext } from '../lib/holdWhileHidden';
 import { plantCallName } from '../engine/plant';
 import { keepsakeForBadge, onYourPlantLine } from '../engine/plantLooks';
 import { usePlantView } from '../lib/plant';
@@ -96,7 +97,21 @@ const OPEN_AT_EXAM_DAY = 21;
 /** "Study for this" from the sheet waits for it to slide away (iOS says when; elsewhere, and as a fallback, this long). */
 const SHEET_GONE_MS = Platform.OS === 'ios' ? 700 : 60;
 
+/**
+ * Release bug hunt round 3: the case stays mounted under a "Study for this" session or drill. While it
+ * is covered its reads are held (lib/holdWhileHidden.ts), so an answer no longer rebuilds every badge
+ * and redraws the whole case; back in view, it reads the live progress once.
+ */
 export default function Badges() {
+  const focused = useScreenFocus();
+  return (
+    <HoldContext.Provider value={!focused}>
+      <BadgeCase />
+    </HoldContext.Provider>
+  );
+}
+
+function BadgeCase() {
   const { c, isDark } = useTheme();
   const theme = isDark ? 'dark' : 'light';
   const { cert, progress, readiness, daysLeft, dueCount } = useActiveCert();
@@ -158,11 +173,11 @@ export default function Badges() {
   );
   // Each new badge presses in ONCE: switching the sort or a filter remounts
   // its cell, which must not replay it (code review minor 7).
+  // Release bug hunt round 3: marked done by the taps that remount the cells (Sort and the filter),
+  // in the same render as their change. It was set by a timer right after opening, which drew the
+  // whole case a second time on every open (about 670 components). A cell already on screen never
+  // replays its press-in when it draws again.
   const [pressDone, setPressDone] = useState(false);
-  useEffect(() => {
-    const t = setTimeout(() => setPressDone(true), 0);
-    return () => clearTimeout(t);
-  }, []);
   const pressAt = (key: string) => {
     const k = pressDone ? -1 : fresh.indexOf(key);
     return k < 0 ? undefined : motion.dur.screen + k * motion.stagger.leaf;
@@ -211,6 +226,7 @@ export default function Badges() {
   const sortButton = useRef<View>(null);
   const pickSort = (x: CaseSort) => {
     useSeen.getState().setBadgeSort(x);
+    setPressDone(true);
     setAtShelf(false);
     setSortOpen(false);
     // The menu unmounts under the finger: focus goes back to the Sort button (UX H2).
@@ -438,7 +454,10 @@ export default function Badges() {
         <View style={{ marginTop: space.xl }}>
           <ChipRow>
             {FILTERS.map((f) => (
-              <Chip key={f.id} label={f.label} selected={filter === f.id} onPress={() => setFilter(f.id)} accessibilityLabel={f.spoken} />
+              <Chip key={f.id} label={f.label} selected={filter === f.id} onPress={() => {
+                    setPressDone(true);
+                    setFilter(f.id);
+                  }} accessibilityLabel={f.spoken} />
             ))}
           </ChipRow>
           <View style={{ alignSelf: 'flex-start', marginLeft: -space.sm, marginTop: space.xs }}>

@@ -28,6 +28,7 @@ import { GAMES } from '../../engine/games/registry';
 import { createRng } from '../../engine/random';
 import { displayToOriginal, isCorrect } from '../../engine/shuffle';
 import { finishGameRound, startingTier, type RoundNews } from '../../lib/gameRounds';
+import { batchSaves } from '../../store/storage';
 import { useAnswerClock } from '../../lib/useAnswerClock';
 import { useActiveCert } from '../../lib/useActiveCert';
 import { useProgress } from '../../store/progress';
@@ -106,30 +107,34 @@ function Signpost() {
 
   const choose = (d: Letter) => {
     if (!ask || answered) return;
-    const ok = isCorrect(q, d, perm);
-    setPick(d);
-    const gained = (readRight ? 1 : 0) + (ok ? 1 : 0);
-    setScore((s) => s + gained);
-    const miss = signpostMiss(q, readRight, ok);
-    if (miss) setMisses((m) => [...m, miss]);
-    // Game answers never count toward the subtopic mastery date (mastery: false).
-    progress.recordAnswer(cert.id, q.id, ok, undefined, { ms: readClock(), mastery: false });
-    if (!ok) progress.recordMistake(cert.id, q.id, displayToOriginal(d, perm));
-    setItems((it) => [...it, readRight && ok ? 'right' : 'missed']);
-    const nextReads = [...reads, { id: q.id, right: readRight, first: actual === 'FIRST' }];
-    setReads(nextReads);
-    if (i === round.length - 1) {
-      setNews(
-        finishGameRound(cert.id, 'priority', {
-          score: score + gained,
-          rate: nextReads.filter((r) => r.right).length / round.length,
-          tier: startingTier(cert.id, 'priority'),
-          hits: nextReads.map((r) => r.right),
-          // Signpost Reader's rolling window: every FIRST question, read right or not.
-          windows: { signposts: nextReads.filter((r) => r.first).map((r) => ({ id: r.id, ok: r.right })) },
-        }),
-      );
-    }
+    // One save per tap (store/storage.ts batchSaves): the answer, a miss and, on the last one, the round's end
+    // used to save the whole progress file up to 7 times (release bug hunt round 3).
+    batchSaves(() => {
+      const ok = isCorrect(q, d, perm);
+      setPick(d);
+      const gained = (readRight ? 1 : 0) + (ok ? 1 : 0);
+      setScore((s) => s + gained);
+      const miss = signpostMiss(q, readRight, ok);
+      if (miss) setMisses((m) => [...m, miss]);
+      // Game answers never count toward the subtopic mastery date (mastery: false).
+      progress.recordAnswer(cert.id, q.id, ok, undefined, { ms: readClock(), mastery: false });
+      if (!ok) progress.recordMistake(cert.id, q.id, displayToOriginal(d, perm));
+      setItems((it) => [...it, readRight && ok ? 'right' : 'missed']);
+      const nextReads = [...reads, { id: q.id, right: readRight, first: actual === 'FIRST' }];
+      setReads(nextReads);
+      if (i === round.length - 1) {
+        setNews(
+          finishGameRound(cert.id, 'priority', {
+            score: score + gained,
+            rate: nextReads.filter((r) => r.right).length / round.length,
+            tier: startingTier(cert.id, 'priority'),
+            hits: nextReads.map((r) => r.right),
+            // Signpost Reader's rolling window: every FIRST question, read right or not.
+            windows: { signposts: nextReads.filter((r) => r.first).map((r) => ({ id: r.id, ok: r.right })) },
+          }),
+        );
+      }
+    });
   };
 
   const readTitle = readRight ? `${actual}: you read it right` : `${actual} asks for: ${ASK_LABEL[accepted[0]].toLowerCase()}`;

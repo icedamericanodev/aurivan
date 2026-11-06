@@ -42,7 +42,7 @@ import { getCertification } from '../content/certifications';
 import type { Certification } from '../content/types';
 import { findQuestion } from '../content/loader';
 import { findNote, subtopicOfQuestion } from '../content/notes';
-import { FIRST_SET_SIZE } from '../content/firstSet';
+import { FIRST_SET_SIZE, firstSetIds } from '../content/firstSet';
 import { comeBackLine, defaultReminderTime, firstRange, firstSetFact, REMINDER_ASK_LEAD, reminderAskLine, tomorrowPreview } from '../engine/firstRun';
 import { missedSubtopics } from '../engine/outline';
 import { plantCallName, plantShown, type GrowthLevel, type PlantSpecies } from '../engine/plant';
@@ -304,8 +304,6 @@ export function FirstSetDone({ session }: { session: ActiveSession }) {
   const j = useJourney();
   const certId = session.certId;
   const cert = getCertification(certId);
-  const score = useMemo(() => scoreSession(session), [session]);
-  const missed = useMemo(() => session.questionIds.filter((id) => session.responses[id] && !session.responses[id].correct), [session]);
   const headRef = useRef<View>(null);
   // "Not now" on the reminder ask removes it: screen-reader focus goes to the footer's main button (UX review B1).
   const doneRef = useRef<View>(null);
@@ -314,6 +312,22 @@ export function FirstSetDone({ session }: { session: ActiveSession }) {
   const answers = useProgress((s) => selectCert(s, certId).answers);
   const left = useMemo(() => firstSetLeftOf(certId, answers).length, [certId, answers]);
   const endedEarly = left > 0;
+  // Release bug hunt round 3: a set resumed from Today holds only the questions that were left, so
+  // "N of M right", the fact and "The N you missed" come from all five once every one is answered:
+  // this session's answers for its own questions, the saved answers for the earlier ones.
+  // A set done in one go (or ended early) keeps reading this session alone, as before.
+  const { score, missed } = useMemo(() => {
+    const own = scoreSession(session);
+    const ownMissed = session.questionIds.filter((id) => session.responses[id] && !session.responses[id].correct);
+    const ids = firstSetIds(certId);
+    const resumed = session.firstSet && !endedEarly && ids.some((id) => !session.questionIds.includes(id));
+    if (!resumed) return { score: own, missed: ownMissed };
+    const missedAll = ids.filter((id) => {
+      const r = session.responses[id];
+      return r ? !r.correct : !answers[id]?.lastCorrect;
+    });
+    return { score: { ...own, answered: ids.length, correct: ids.length - missedAll.length }, missed: missedAll };
+  }, [session, certId, endedEarly, answers]);
 
   // The topic most missed: the study note behind the misses, else the domain of the first miss.
   const topic = useMemo(() => {

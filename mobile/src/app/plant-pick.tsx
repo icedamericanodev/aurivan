@@ -45,8 +45,11 @@ export default function PlantPick() {
   const scale = useFontScale();
   const large = scale >= LARGE_TEXT;
   const p = view.plant;
-  // Without a plant, every mode is "plant yours".
-  const mode: Mode = p && (params.mode === 'species' || params.mode === 'name') ? params.mode : 'new';
+  // Without a plant, every mode is "plant yours". With one, a link with no mode (kaisip://plant-pick,
+  // or a widget face from before planting) opens Change plant: "plant yours" would be thrown away
+  // (plantFor keeps an existing plant) and replay the planting (release bug hunt round 3).
+  // Fixed when the screen opens, so planting here never turns the title into "Change plant" on the way out.
+  const [mode] = useState<Mode>(() => (!p ? 'new' : params.mode === 'name' ? 'name' : 'species'));
   const [species, setSpecies] = useState<PlantSpecies>(p?.species ?? 'oak');
   // Empty to start (the name field shows an idea as its placeholder); renaming starts from the current name.
   const [name, setName] = useState(() => (p ? p.name : ''));
@@ -58,6 +61,11 @@ export default function PlantPick() {
   const confirm = () => {
     const certId = view.certId;
     if (mode === 'new') {
+      // A plant that appeared since this opened is kept as it is: no planting to show.
+      if (view.plant) {
+        router.replace('/plant');
+        return;
+      }
       plantFor(certId, species, name);
       // Phase 4b (PHASE4B 4.3 item 5): Your plant plays the planting (plantIn, 820 ms) on arrival.
       router.replace({ pathname: '/plant', params: { planted: '1' } });

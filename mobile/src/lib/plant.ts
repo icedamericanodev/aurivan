@@ -52,6 +52,7 @@ import { readinessFor } from '../engine/readiness';
 import { dayKey } from '../engine/streak';
 import { selectCert, useProgress, type CertProgress, type MockResult, type ProgressState } from '../store/progress';
 import { useSeen } from '../store/seen';
+import { useHeld } from './holdWhileHidden';
 import { examDateOf, useSettings } from '../store/settings';
 import { certOutline, questionExists } from './outline';
 import { useActiveCertId } from './activeCert';
@@ -397,10 +398,11 @@ export function usePlantView(): PlantView & { cert: Certification; certId: strin
   const examDate = useSettings((s) => examDateOf(s.examDates, certId));
   // Only what the view reads (code review M6c): a review, a bookmark or a
   // session save elsewhere in the cert never rebuilds the plant on a mounted tab.
-  const answers = useProgress((s) => selectCert(s, certId).answers);
-  const plant = useProgress((s) => selectCert(s, certId).plant);
-  const lastDay = useProgress((s) => selectCert(s, certId).milestones?.lastDay);
-  const settings = useProgress((s) => s.plantSettings);
+  // Held while a screen that asks for it is covered (lib/holdWhileHidden.ts); live everywhere else.
+  const answers = useHeld(useProgress, (s) => selectCert(s, certId).answers, certId);
+  const plant = useHeld(useProgress, (s) => selectCert(s, certId).plant, certId);
+  const lastDay = useHeld(useProgress, (s) => selectCert(s, certId).milestones?.lastDay, certId);
+  const settings = useHeld(useProgress, (s) => s.plantSettings, 'plantSettings');
   const finalChoice = useSeen((s) => s.plantFinal?.[certId]);
   const cert = getCertification(certId) ?? CERTIFICATIONS[0];
   // Today's date, read once per render of a screen that is already re-rendering.

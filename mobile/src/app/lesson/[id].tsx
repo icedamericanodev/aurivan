@@ -66,6 +66,7 @@ import { backOr, openSessionFromStack, openTab } from '../../lib/actions';
 import { guardedStart, startFromIds, startPractice } from '../../lib/sessions';
 import { useProgress } from '../../store/progress';
 import { useSettings } from '../../store/settings';
+import { batchSaves } from '../../store/storage';
 import { motion, space } from '../../theme/tokens';
 import { useTheme } from '../../theme/useTheme';
 
@@ -234,8 +235,12 @@ export default function LessonPlayer() {
     // Learn draws the ✓ only for a lesson finished here, this app session (never one restored or synced).
     // Noted first: the store change below re-renders Learn.
     if (fresh) noteLessonFinished(lesson.id);
-    completeLesson(lesson.certId, lesson.id);
-    logLesson(lesson.certId, lesson.id);
+    // One save for the tap (store/storage.ts batchSaves): the lesson done and today's plan used to
+    // save the whole progress file 2 or 3 times (release bug hunt round 3).
+    batchSaves(() => {
+      completeLesson(lesson.certId, lesson.id);
+      logLesson(lesson.certId, lesson.id);
+    });
     setFinished({ fresh });
   };
   const back = () => {

@@ -16,7 +16,8 @@ import { useActiveCert } from '../lib/useActiveCert';
 import { EmptyScreen } from './emptyScreen';
 import type { Letter, PackQuestion } from '../content/types';
 import { createRng } from '../engine/random';
-import { makePermutation, type Permutation } from '../engine/shuffle';
+import { identityPermutation, makePermutation, type Permutation } from '../engine/shuffle';
+import { useSettings } from '../store/settings';
 import { lastScores, reviewLine, runningScore, scoreSpoken, scoreText, trendSpoken, type RecapMiss } from '../engine/games/recap';
 import { useProgress, type GameId } from '../store/progress';
 import { LARGE_TEXT, maxScale, motion, radius, space, type } from '../theme/tokens';
@@ -53,16 +54,22 @@ export const LEAF_SETTLE_MS = Math.round(motion.spring.leaf.duration * 1.5) + 30
 /** The level just below (the one a level-up grew from). */
 const tierBelow = (t: GameTier): GameTier => GAME_TIERS[Math.max(0, GAME_TIERS.indexOf(t) - 1)];
 
-/** A fixed list of questions + one shuffle each, created once per round. */
+/**
+ * A fixed list of questions + one shuffle each, created once per round.
+ * Release bug hunt round 3: Settings → Shuffle answer options is honoured here too (practice, review,
+ * mocks and lessons already did). Off: the bank's own order. Read once when the round is made, so the
+ * order stays fixed for the whole round. Grading still converts back to the ORIGINAL letters.
+ */
 export function useRound(certId: string, build: (rngSeed: number) => string[]) {
   const [seed, setSeed] = useState(() => Date.now());
   const round = useMemo(() => {
     const rng = createRng(seed);
     const ids = build(seed);
+    const shuffle = useSettings.getState().shuffleOptions;
     const items: { q: PackQuestion; perm: Permutation }[] = [];
     for (const id of ids) {
       const q = findQuestion(certId, id);
-      if (q) items.push({ q, perm: makePermutation(q, rng) });
+      if (q) items.push({ q, perm: shuffle ? makePermutation(q, rng) : identityPermutation(q) });
     }
     return items;
     // eslint-disable-next-line react-hooks/exhaustive-deps

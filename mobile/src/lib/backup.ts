@@ -61,6 +61,7 @@ import { cancelReminders, ensurePermission, remindersSupported } from './reminde
 import { refreshReminders } from './reminderSync';
 import { refreshWidgets } from './widgets';
 import { REVEAL_KEY, WIDGET_KEY } from '../engine/widgets';
+import { isFinalId } from '../engine/plantForms';
 import { useWidgetStore } from '../store/widgets';
 
 // ── The data in each store (no actions) ──────────────────────────────────
@@ -171,6 +172,22 @@ export function sweepBackupFiles(now = Date.now()) {
   } catch {
     // A cache we can't list is not the learner's problem.
   }
+}
+
+/**
+ * Settings → Reset: clear study progress on this phone for these exams (one exam from Settings,
+ * every exam for the account's "remove from this phone" fallback). A reset is a fresh start: the
+ * open session goes, an old "Undo restore" no longer applies and old backup files are tidied away.
+ * Release bug hunt round 3: the reminders are planned again right away, so the next one never
+ * says "The 12 you missed are back" when nothing is waiting for review any more.
+ */
+export function resetLocalProgress(certIds: readonly string[]) {
+  const { resetCert } = useProgress.getState();
+  for (const certId of certIds) resetCert(certId);
+  useSession.getState().clear();
+  useBackup.getState().setUndo(null);
+  sweepBackupFiles();
+  refreshReminders().catch(() => {});
 }
 
 // ── Save a backup ────────────────────────────────────────────────────────
@@ -619,10 +636,36 @@ export async function wipeLocalStudy(also: WipeAlso[] = []): Promise<void> {
   await refreshWidgets({ force: true });
 }
 
+/**
+ * An undo copy that also holds the Form IV choice per exam (store/seen.ts plantFinal) when it was
+ * taken. Kept on this phone only, like importedName; a copy without it (older builds) undoes as before.
+ * Declared here, not in engine/backup.ts, so the website's cloud bundle (built from that file) is unchanged.
+ */
+export type UndoWithFinals = UndoSnapshot & { plantFinal?: Record<string, string> };
+
+/**
+ * The Form IV choices on this phone now, for an undo copy (release bug hunt round 3). The choice is not
+ * in a backup file yet (DESIGN_SYSTEM §8.10 stage 1), and a restore forgets it, so without this an
+ * "Undo restore" brought back the plant with its default final. Undefined when none was chosen.
+ */
+export function finalsForUndo(): Pick<UndoWithFinals, 'plantFinal'> {
+  const finals = useSeen.getState().plantFinal ?? {};
+  return Object.keys(finals).length > 0 ? { plantFinal: { ...finals } } : {};
+}
+
+/** Put the Form IV choices from an undo copy back, for the exams the undone data holds (valid ids only). */
+function restoreFinals(finals: UndoWithFinals['plantFinal']) {
+  if (!finals) return;
+  const byCert = useProgress.getState().byCert;
+  for (const [certId, final] of Object.entries(finals)) {
+    if (isFinalId(final) && byCert[certId]) useSeen.getState().setPlantFinal(certId, final);
+  }
+}
+
 /** The undo copy for a first sync ("Undo sync"), or null when this phone's own data couldn't be checked. */
 export function syncUndoSnapshot(now = Date.now()): UndoSnapshot | null {
   const file = currentBackup(now);
-  return checkBackupText(JSON.stringify(file)).kind === 'ok' ? { takenAt: now, file, kind: 'sync' } : null;
+  return checkBackupText(JSON.stringify(file)).kind === 'ok' ? { takenAt: now, file, kind: 'sync', ...finalsForUndo() } : null;
 }
 
 /** How reminders ended up after a restore or undo. */
@@ -679,7 +722,7 @@ export async function restoreBackup(
   if (!opts.fresh) {
     const file = currentBackup(now);
     if (checkBackupText(JSON.stringify(file)).kind !== 'ok') return { kind: 'no-snapshot' };
-    undo = { takenAt: now, file };
+    undo = { takenAt: now, file, ...finalsForUndo() };
   }
   try {
     const saved = Date.parse(data.exportedAt);
@@ -734,6 +777,8 @@ export async function undoRestore(now = Date.now()): Promise<UndoOutcome> {
   } catch {
     return { kind: 'failed' };
   }
+  // The plant's chosen final comes back too (writeAll forgot it, as for any restore).
+  restoreFinals((snap as UndoWithFinals).plantFinal);
   return { kind: 'ok', reminders: await reapplyReminders().catch((): ReminderOutcome => 'off') };
 }
 

@@ -117,7 +117,7 @@ import { openTab } from '../lib/actions';
 import { moveFocus, sayLater } from '../lib/a11y';
 import { haptic } from '../lib/haptics';
 import { questionTarget, sessionWhere } from '../lib/support';
-import { Button, Gap, groveCard, ICON_SIZE, ListRow, Row, SegmentBar, Stem, T, Tag } from '../components/ui';
+import { Button, Gap, groveCard, ICON_SIZE, IconButton, ListRow, Row, SegmentBar, Stem, T, Tag, useFontScale } from '../components/ui';
 import { getCertification, getDomain } from '../content/certifications';
 import { missLessons } from '../content/lessons';
 import { findQuestion } from '../content/loader';
@@ -154,6 +154,8 @@ const NO_LESSONS: string[] = [];
 const useInView: () => boolean = (Router as { useIsFocused?: () => boolean }).useIsFocused ?? (() => true);
 /** At this text size the confidence chips move out of the sticky footer (spec §10.7). */
 const HUGE_TEXT = 1.6;
+/** The mock's first pace note at large text ("Pace checks at 25, 50 and 75% of the time." in full). */
+export const FIRST_PACE_SHORT = 'Checks at 25, 50, 75%';
 
 /** The header recap's hysteresis (pt): it hides only once the verdict is 8pt back below the header. */
 const RECAP_HYSTERESIS = 8;
@@ -227,8 +229,11 @@ const MockClock = memo(function MockClock({ deadline, hideClock, finished }: { d
             ? { text: paceMessage({ status: statusOf(lastCheck.deviation), minutes: lastCheck.minutes }), tone: statusOf(lastCheck.deviation) }
             : { text: 'Pace checks at 25, 50 and 75% of the time.', tone: 'note' }
       }
-      // The strip shows this at very large text instead of the full advice (P6).
-      lineShort={lastCheck && !(hideClock && lowTime) ? paceShort({ status: statusOf(lastCheck.deviation), minutes: lastCheck.minutes }) : undefined}
+      // The strip shows this at very large text instead of the full advice (P6). The first note has a
+      // short form too (release bug hunt round 3): in full it took 3 lines at 200% text on a narrow phone.
+      lineShort={
+        hideClock && lowTime ? undefined : lastCheck ? paceShort({ status: statusOf(lastCheck.deviation), minutes: lastCheck.minutes }) : FIRST_PACE_SHORT
+      }
     />
   );
 });
@@ -281,7 +286,9 @@ export default function SessionScreen() {
   const bookmarks = useProgress((s) => (active ? selectCert(s, active.certId).bookmarks : NO_BOOKMARKS));
   // Lessons already done: a done lesson is not offered again after a miss (mobile 1.20).
   const lessonsDone = useProgress((s) => (active ? selectCert(s, active.certId).lessonsDone : NO_LESSONS));
-  const { fontScale } = useWindowDimensions();
+  // The phone's text size through useFontScale (the screenshot harness can set it on web too).
+  const fontScale = useFontScale();
+  const { width: screenW } = useWindowDimensions();
   // Lines under the verdict start under its word; at ×1.3 text, at the gutter (mobile 1.43).
   const verdictIndent = useVerdictIndent();
   // Reduce Motion: the navigator sheet fades in instead of sliding.
@@ -571,8 +578,10 @@ export default function SessionScreen() {
   // is left for a later full session (celebrate: false).
   // Not a widget's one question (the Recall card, Today's rule's "Try one"): those go on to Results,
   // which hands back to today's plan ("Today's plan · about N min left", Continue or Done for now).
+  // Not the first set either: a first set resumed with one question left still ends on its own
+  // closing screen ("See results"), and X still asks "End session?" (release bug hunt round 3).
   const widgetQuestion = active.title === RECALL_TITLE || active.title === QUICK_TITLE;
-  const singleQuestion = !isMock && total === 1 && !widgetQuestion;
+  const singleQuestion = !isMock && total === 1 && !widgetQuestion && !active.firstSet;
   const exitSingle = () => {
     if (Object.keys(active.responses).length > 0) finishSession({ celebrate: false });
     useSession.getState().clear();
@@ -782,6 +791,10 @@ export default function SessionScreen() {
       : null; // a timed mock: MockClock draws the strip (below)
   const largeText = fontScale >= LARGE_TEXT;
   const confidenceInScroll = fontScale >= HUGE_TEXT;
+  // Release bug hunt round 3: a narrow phone (under 360 wide) with large text stacked the mock footer
+  // in 4 rows, leaving about 2 lines of the question. There, Previous, Flag and Questions share one
+  // row as square icon buttons (their spoken names unchanged) and Next has its own: 2 rows.
+  const compactMockFooter = isMock && largeText && screenW < 360;
   // Coach me content: the Eliminate tip (letters mapped to what's on screen)
   // and the stem's capitalised priority word.
   const hintTip = eliminateTip(q.tips);
@@ -1130,7 +1143,33 @@ export default function SessionScreen() {
         {/* Sticky bottom action, within thumb reach */}
         {/* Practice and review (premium round 2): the plate button over a hairline. A mock keeps its footer. */}
         <StickyFooter onHeight={setFooterH} rule={!isMock}>
-          {isMock ? (
+          {compactMockFooter ? (
+            <View style={{ gap: space.sm }}>
+              <Row gap={space.sm}>
+                <IconButton
+                  outline
+                  label="Previous question"
+                  disabled={active.index === 0}
+                  onPress={settled(() => goTo(active.index - 1))}
+                  icon={(col) => <ChevronLeft size={ICON_SIZE.inline} color={col} strokeWidth={ICON_STROKE} />}
+                />
+                <IconButton
+                  outline
+                  label={shownFlagged ? 'Unflag question' : 'Flag question'}
+                  selected={shownFlagged}
+                  onPress={settled(() => toggleFlag(qid))}
+                  icon={(col) => <Flag size={ICON_SIZE.inline} color={col} strokeWidth={ICON_STROKE} fill={shownFlagged ? col : 'none'} />}
+                />
+                <IconButton
+                  outline
+                  label="Questions, question navigator"
+                  onPress={settled(() => setNavOpen(true))}
+                  icon={(col) => <LayoutGrid size={ICON_SIZE.inline} color={col} strokeWidth={ICON_STROKE} />}
+                />
+              </Row>
+              <Button label={isLast ? 'Finish' : 'Next'} onPress={settled(next)} />
+            </View>
+          ) : isMock ? (
             // Icon AND word on every button (mobile 1.24), each at least 56 tall (Button) and 56 wide.
             // Wraps at large text; Next then takes a full row of its own.
             <Row gap={space.sm} style={{ flexWrap: 'wrap' }}>

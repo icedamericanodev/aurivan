@@ -564,6 +564,19 @@ describe('Look and Pick (PHASE4B 4.2, 4.3)', () => {
     expect(allText()).toContain('Save name');
     expect(r!.root.findAll((n) => typeof n.props.testID === 'string' && n.props.testID.startsWith('species-'))).toHaveLength(0);
   });
+
+  it('release bug hunt round 3: kaisip://plant-pick with no mode and a plant already planted opens Change plant, never a planting', () => {
+    const { router } = jest.requireMock('expo-router') as { router: { replace: jest.Mock; back: jest.Mock } };
+    router.replace.mockClear();
+    setPlant(grown(3, { name: 'Kai' }));
+    mount(<PlantPick />);
+    expect(allText()).not.toContain('Choose what you’ll grow');
+    expect(allText()).toMatch(/^Change plant/);
+    const confirm = r!.root.findAll((n) => n.props.accessibilityLabel === 'Use this plant' && typeof n.props.onPress === 'function')[0];
+    act(() => confirm.props.onPress());
+    expect(router.replace).not.toHaveBeenCalledWith({ pathname: '/plant', params: { planted: '1' } });
+    expect(useProgress.getState().byCert.cisa?.plant).toMatchObject({ name: 'Kai', growth: 3 });
+  });
 });
 
 // ── The widget ──────────────────────────────────────────────────────────

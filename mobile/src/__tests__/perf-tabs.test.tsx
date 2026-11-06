@@ -429,6 +429,35 @@ describe('budgets with the heavy save', () => {
     expect(total(s).saves).toBe(1);
   });
 
+  // Release bug hunt round 3: Today read the whole open session, so every pick, Flag and Next in a mock
+  // redrew hidden Today (about 240 components a tap, more than the question screen itself).
+  it('a mock tap (pick, Flag, Next) re-renders hidden Today not at all; back on Today the Resume row is live', () => {
+    openAll();
+    tapTab('practice');
+    act(() => {
+      require('../lib/sessions').startMock('cisa', 150);
+    });
+    const ids = useSession.getState().active!.questionIds;
+    startMeasure();
+    for (let k = 0; k < 3; k++) {
+      act(() => {
+        useSession.getState().answer(ids[k], { display: 'A', correct: false, ms: 1000 });
+      });
+      act(() => {
+        useSession.getState().toggleFlag(ids[k]);
+      });
+      act(() => {
+        useSession.getState().goTo(k + 1);
+      });
+    }
+    expect(renders().home ?? 0).toBe(0);
+    tapTab('home');
+    expect(JSON.stringify(r!.toJSON())).toContain('Question 4 of 150');
+    act(() => {
+      useSession.getState().clear();
+    });
+  });
+
   it('a store write that changes nothing re-renders nothing and saves nothing', () => {
     openAll();
     startMeasure();

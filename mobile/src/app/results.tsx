@@ -192,8 +192,10 @@ const ReviewRow = memo(function ReviewRow({
       <Pressable
         accessibilityRole="button"
         accessibilityState={{ expanded: open }}
-        // One sentence each; the coaching line ends with its own full stop (O2).
-        accessibilityLabel={`Question ${i + 1}, ${status}.${quiet ? ` ${quiet}` : ''} Tap to ${open ? 'collapse' : 'expand'}`}
+        // One sentence each; the coaching line ends with its own full stop (O2). Open or closed is said
+        // once, from accessibilityState, and the gesture is the screen reader's own (release bug hunt round 3).
+        accessibilityLabel={`Question ${i + 1}, ${status}.${quiet ? ` ${quiet}` : ''}`}
+        accessibilityHint="Shows your answer and the explanation"
         onPress={() => onToggle(id)}
         style={({ pressed }) => ({ paddingVertical: 13, minHeight: 64, opacity: pressed ? 0.7 : 1 })}
       >

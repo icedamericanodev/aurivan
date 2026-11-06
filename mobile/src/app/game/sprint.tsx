@@ -43,6 +43,7 @@ import { buildPracticeQueue } from '../../engine/queue';
 import { createRng } from '../../engine/random';
 import { displayToOriginal, isCorrect, originalToDisplay, renderText } from '../../engine/shuffle';
 import { finishGameRound, startingTier, type RoundNews } from '../../lib/gameRounds';
+import { batchSaves } from '../../store/storage';
 import { useAnswerClock } from '../../lib/useAnswerClock';
 import { useActiveCert } from '../../lib/useActiveCert';
 import { selectCert, useProgress } from '../../store/progress';
@@ -194,36 +195,40 @@ function Forecast() {
 
   const choose = (display: Letter) => {
     if (!footing || answered) return;
-    const ok = isCorrect(q, display, perm);
-    setPick(display);
-    // Answering counts as having seen the rules (they were on screen), so
-    // the next play starts without them even if "Got it" was never tapped.
-    markRulesSeen('sprint');
-    const next = [...results, { questionId: q.id, footing, correct: ok }];
-    setResults(next);
-    const miss = pickMiss(q, displayToOriginal(display, perm), ok, (t) => renderText(t, perm));
-    if (miss) setMisses((m) => [...m, miss]);
-    // Guess / Lean / Sure are the practice confidence levels, so spaced
-    // review treats a lucky Guess like a lucky guess anywhere else.
-    // The footing is kept on the answer record as its confidence (lastConfidence).
-    // Game answers never count toward the subtopic mastery date (mastery: false).
-    // Answered with the rules still open: the time isn't known, so none is saved.
-    progress.recordAnswer(cert.id, q.id, ok, FOOTING_CONFIDENCE[footing], { ms: rulesOpen ? undefined : readClock(), mastery: false });
-    if (!ok) progress.recordMistake(cert.id, q.id, displayToOriginal(display, perm), FOOTING_CONFIDENCE[footing]);
-    if (i === round.length - 1) {
-      // The skill step is an honest level (calibration.ts wellJudged); the
-      // round's verdict feeds Even Keel ("well calibrated" rounds in a row).
-      const judged = next.map(wellJudged);
-      setNews(
-        finishGameRound(cert.id, 'sprint', {
-          score: sprintScore(next),
-          rate: judged.filter(Boolean).length / next.length,
-          tier: startingTier(cert.id, 'sprint'),
-          hits: judged,
-          good: calibrationVerdict(next) === 'calibrated',
-        }),
-      );
-    }
+    // One save per tap (store/storage.ts batchSaves): the answer, a miss and, on the last one, the round's end
+    // used to save the whole progress file up to 7 times (release bug hunt round 3).
+    batchSaves(() => {
+      const ok = isCorrect(q, display, perm);
+      setPick(display);
+      // Answering counts as having seen the rules (they were on screen), so
+      // the next play starts without them even if "Got it" was never tapped.
+      markRulesSeen('sprint');
+      const next = [...results, { questionId: q.id, footing, correct: ok }];
+      setResults(next);
+      const miss = pickMiss(q, displayToOriginal(display, perm), ok, (t) => renderText(t, perm));
+      if (miss) setMisses((m) => [...m, miss]);
+      // Guess / Lean / Sure are the practice confidence levels, so spaced
+      // review treats a lucky Guess like a lucky guess anywhere else.
+      // The footing is kept on the answer record as its confidence (lastConfidence).
+      // Game answers never count toward the subtopic mastery date (mastery: false).
+      // Answered with the rules still open: the time isn't known, so none is saved.
+      progress.recordAnswer(cert.id, q.id, ok, FOOTING_CONFIDENCE[footing], { ms: rulesOpen ? undefined : readClock(), mastery: false });
+      if (!ok) progress.recordMistake(cert.id, q.id, displayToOriginal(display, perm), FOOTING_CONFIDENCE[footing]);
+      if (i === round.length - 1) {
+        // The skill step is an honest level (calibration.ts wellJudged); the
+        // round's verdict feeds Even Keel ("well calibrated" rounds in a row).
+        const judged = next.map(wellJudged);
+        setNews(
+          finishGameRound(cert.id, 'sprint', {
+            score: sprintScore(next),
+            rate: judged.filter(Boolean).length / next.length,
+            tier: startingTier(cert.id, 'sprint'),
+            hits: judged,
+            good: calibrationVerdict(next) === 'calibrated',
+          }),
+        );
+      }
+    });
   };
 
   const ok = answered && isCorrect(q, pick!, perm);

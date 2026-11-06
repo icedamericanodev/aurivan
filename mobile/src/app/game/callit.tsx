@@ -40,15 +40,17 @@ import {
 } from '../../engine/games/callItFirst';
 import { clip, firstSentence, type RecapMiss } from '../../engine/games/recap';
 import { createRng } from '../../engine/random';
-import { displayToOriginal, isCorrect, makePermutation, originalToDisplay, renderText, type Permutation } from '../../engine/shuffle';
+import { displayToOriginal, identityPermutation, isCorrect, makePermutation, originalToDisplay, renderText, type Permutation } from '../../engine/shuffle';
 import { missCoach, oneStepVerdict, PRINCIPLE_HALF, twoHalfVerdict } from '../../lib/drillVerdict';
 import { moveFocus } from '../../lib/a11y';
 import { finishGameRound, startingTier, type RoundNews } from '../../lib/gameRounds';
+import { batchSaves } from '../../store/storage';
 import { certOutline } from '../../lib/outline';
 import { useAnswerClock } from '../../lib/useAnswerClock';
 import { useActiveCert } from '../../lib/useActiveCert';
 import { HINT_AFTER_LINE, HINT_BEFORE_LINE } from '../../engine/readiness';
 import { useProgress } from '../../store/progress';
+import { useSettings } from '../../store/settings';
 import { radius, space } from '../../theme/tokens';
 import { useTheme } from '../../theme/useTheme';
 
@@ -117,10 +119,12 @@ function CallItFirst() {
     const rng = createRng(seed);
     const ctx = { all: bank.filter((x) => x.keyConcept), topicOf: certOutline(cert.id).topicOf };
     const items = buildCallRound(bank, ctx, tier, rng);
+    // Settings → Shuffle answer options off: the bank's own order (release bug hunt round 3).
+    const shuffle = useSettings.getState().shuffleOptions;
     const perms: Record<string, Permutation> = {};
     for (const it of items) {
       const qq = findQuestion(cert.id, it.id);
-      if (qq) perms[it.id] = makePermutation(qq, rng);
+      if (qq) perms[it.id] = shuffle ? makePermutation(qq, rng) : identityPermutation(qq);
     }
     setRound({ items, perms, seed, tier });
     setI(0);
@@ -188,42 +192,46 @@ function CallItFirst() {
 
   const pickAnswer = (display: Letter) => {
     if (phase !== 'answer') return;
-    const ok = isCorrect(q, display, perm);
-    setAnswer(display);
-    setPhase('reveal');
-    const pts = callPoints(round.tier, principleRight, ok);
-    setScore((s) => s + pts);
-    const p = useProgress.getState();
-    // A hint (the pre-read line) makes the answer assisted; never a mastery date.
-    p.recordAnswer(cert.id, q.id, ok, undefined, answerOptions(hint, readClock()));
-    if (!ok) p.recordMistake(cert.id, q.id, displayToOriginal(display, perm));
-    const principleMissed = round.tier !== 'heartwood' && !principleRight;
-    if (!ok || principleMissed) {
-      setMisses((m) => [
-        ...m,
-        {
-          questionId: q.id,
-          stem: clip(q.stem),
-          tag: `Principle: ${clip(q.keyConcept ?? '', 70)}`,
-          why: firstSentence(renderText(q.explanation, perm)),
-          answerWrong: !ok,
-        },
-      ]);
-    }
-    setItems((it) => [...it, ok && (round.tier === 'heartwood' || principleRight) ? 'right' : 'missed']);
-    const nextSteps = [...steps, round.tier === 'heartwood' ? ok : principleRight];
-    setSteps(nextSteps);
-    if (i === round.items.length - 1) {
-      const news = finishGameRound(cert.id, 'callit', {
-        score: score + pts,
-        rate: nextSteps.filter(Boolean).length / round.items.length,
-        tier: round.tier,
-        hits: nextSteps,
-      });
-      setNews(news);
-      // The level moved: "Play again" starts on the new level, not the old one.
-      if (news.change) setTier(news.tier);
-    }
+    // One save per tap (store/storage.ts batchSaves): the answer, a miss and, on the last one, the round's end
+    // used to save the whole progress file up to 7 times (release bug hunt round 3).
+    batchSaves(() => {
+      const ok = isCorrect(q, display, perm);
+      setAnswer(display);
+      setPhase('reveal');
+      const pts = callPoints(round.tier, principleRight, ok);
+      setScore((s) => s + pts);
+      const p = useProgress.getState();
+      // A hint (the pre-read line) makes the answer assisted; never a mastery date.
+      p.recordAnswer(cert.id, q.id, ok, undefined, answerOptions(hint, readClock()));
+      if (!ok) p.recordMistake(cert.id, q.id, displayToOriginal(display, perm));
+      const principleMissed = round.tier !== 'heartwood' && !principleRight;
+      if (!ok || principleMissed) {
+        setMisses((m) => [
+          ...m,
+          {
+            questionId: q.id,
+            stem: clip(q.stem),
+            tag: `Principle: ${clip(q.keyConcept ?? '', 70)}`,
+            why: firstSentence(renderText(q.explanation, perm)),
+            answerWrong: !ok,
+          },
+        ]);
+      }
+      setItems((it) => [...it, ok && (round.tier === 'heartwood' || principleRight) ? 'right' : 'missed']);
+      const nextSteps = [...steps, round.tier === 'heartwood' ? ok : principleRight];
+      setSteps(nextSteps);
+      if (i === round.items.length - 1) {
+        const news = finishGameRound(cert.id, 'callit', {
+          score: score + pts,
+          rate: nextSteps.filter(Boolean).length / round.items.length,
+          tier: round.tier,
+          hits: nextSteps,
+        });
+        setNews(news);
+        // The level moved: "Play again" starts on the new level, not the old one.
+        if (news.change) setTier(news.tier);
+      }
+    });
   };
 
   const cardState = (k: number): OptionState => {

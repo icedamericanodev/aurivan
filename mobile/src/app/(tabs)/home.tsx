@@ -164,6 +164,7 @@ import { useReports } from '../../lib/useReports';
 import { useProgress } from '../../store/progress';
 import { useSeen } from '../../store/seen';
 import { useSession, type ActiveSession } from '../../store/session';
+import { useHeldWhen } from '../../lib/holdWhileHidden';
 import { legacyTitle, type PlanItem } from '../../engine/planner';
 import { space } from '../../theme/tokens';
 import { useTheme } from '../../theme/useTheme';
@@ -233,7 +234,15 @@ export function greeting(hour: number, name?: string | null): string {
 export default function Today() {
   const { c } = useTheme();
   const j = useJourney();
-  const active = useSession((s) => s.active);
+  // Mobile 1.9 motion: growth plays when Today is ON VIEW (it changes while a
+  // session sits on top), shows what went up since you last looked, and
+  // never replays on a later visit (components/motion.tsx useGrowth).
+  const focused = useScreenFocus();
+  // Release bug hunt round 3: Today reads the open session only for its Resume row and the first set's
+  // Continue. Every pick, Next and Flag in a session replaces the session, and Today (hidden under it)
+  // redrew about 240 components each time. While Today is out of view it keeps the session it last
+  // showed; when it comes back into view it reads the live one again.
+  const active = useHeldWhen(!focused, useSession, (s) => s.active, 'active');
   const markCelebrated = useProgress((s) => s.markCelebrated);
   // When the clearing's haptic last played: the plant's growth stays silent right after it (one haptic only).
   const clearingTapAt = useRef(0);
@@ -285,10 +294,6 @@ export default function Today() {
       return <Glyph size={ICON_SIZE.inline} color={color} strokeWidth={ICON_STROKE} />;
     };
 
-  // Mobile 1.9 motion: growth plays when Today is ON VIEW (it changes while a
-  // session sits on top), shows what went up since you last looked, and
-  // never replays on a later visit (components/motion.tsx useGrowth).
-  const focused = useScreenFocus();
   const cert = j.cert.id;
   const ringsGrowth = useGrowth(`today:rings:${cert}`, j.readiness.domains.map((d) => Math.round(d.mastery * 100)), { active: focused, firstOfDay: true });
   const rangeGrowth = useGrowth(`today:range:${cert}`, j.range.enough ? [j.range.low, j.range.high] : [], { active: focused, firstOfDay: true });

@@ -38,7 +38,8 @@
  */
 import { router } from 'expo-router';
 import { backOr } from '../lib/actions';
-import { memo, useCallback, useMemo, useState } from 'react';
+import { moveFocus, sayLater } from '../lib/a11y';
+import { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { FlatList, Modal, ScrollView, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { EmptyScreen } from '../components/emptyScreen';
@@ -143,6 +144,17 @@ const MistakeCard = memo(function MistakeCard({
     return noteId ? findNote(certId, noteId) : undefined;
   }, [certId, id, m.resolved]);
   const target = useMemo(() => (q ? questionTarget(certId, q, 'Mistake journal', undefined, m.picked) : null), [certId, q, m.picked]);
+  // Release bug hunt round 3 (TalkBack): every press here removes the button that has focus (the tag
+  // button, Change, a tag chip). So focus moves to what replaced it: the tags when they open, the
+  // "Why you slipped" line once a tag is picked. Never on the first draw (the screen just opened).
+  const groupRef = useRef<View>(null);
+  const slipRef = useRef<View>(null);
+  const wasTagging = useRef(isTagging);
+  useEffect(() => {
+    if (isTagging && !wasTagging.current) moveFocus(groupRef, 150);
+    else if (!isTagging && wasTagging.current && m.slip) moveFocus(slipRef, 150);
+    wasTagging.current = isTagging;
+  }, [isTagging, m.slip]);
   if (!q || !target) return null;
   return (
     <View style={{ paddingVertical: space.lg, borderBottomWidth: 1, borderBottomColor: c.line }}>
@@ -186,6 +198,7 @@ const MistakeCard = memo(function MistakeCard({
               </Row>
               {/* One group with a name, so a screen reader says which question the six tags are for. */}
               <View
+                ref={groupRef}
                 accessibilityRole="radiogroup"
                 accessibilityLabel={`Why you slipped on this question: ${q.stem.split(/\s+/).slice(0, 6).join(' ')}`}
                 style={{ flexDirection: 'row', flexWrap: 'wrap', gap: space.sm }}
@@ -204,7 +217,9 @@ const MistakeCard = memo(function MistakeCard({
             </>
           ) : m.slip ? (
             <Row gap={space.xs} style={{ flexWrap: 'wrap', justifyContent: 'space-between' }}>
-              <T v="meta" color={c.ink} style={{ flexShrink: 1 }}>{`Why you slipped: ${SLIPS.find((x) => x.id === m.slip)?.label ?? ''}`}</T>
+              <View ref={slipRef} accessible style={{ flexShrink: 1 }}>
+                <T v="meta" color={c.ink}>{`Why you slipped: ${SLIPS.find((x) => x.id === m.slip)?.label ?? ''}`}</T>
+              </View>
               <Button kind="ghost" label="Change" accessibilityHint="Shows the tags again" onPress={() => onToggleTag(id)} style={{ marginRight: -space.sm }} />
             </Row>
           ) : (
@@ -267,6 +282,9 @@ export default function Mistakes() {
     (id: string, slip: ThinkingSlip) => {
       tagMistake(certId, id, slip);
       setTagging((t) => t.filter((x) => x !== id));
+      // The chip just pressed goes away: say the saved choice (TalkBack, release bug hunt round 3).
+      const label = SLIPS.find((x) => x.id === slip)?.label;
+      if (label) sayLater(`Tagged: ${label}`);
     },
     [certId, tagMistake],
   );

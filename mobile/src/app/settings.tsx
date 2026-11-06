@@ -101,11 +101,10 @@ import { runningUpdateLine, useUpdateCheck } from '../lib/updates';
 import { UPDATE_WORDS } from '../engine/updates';
 import { useActiveCert } from '../lib/useActiveCert';
 import { useReports } from '../lib/useReports';
-import { sweepBackupFiles } from '../lib/backup';
+import { resetLocalProgress } from '../lib/backup';
 import { useBackup } from '../store/backup';
 import { selectCert, useProgress } from '../store/progress';
 import { useSeen } from '../store/seen';
-import { useSession } from '../store/session';
 import { dailyMinutesOf, examDateOf, type MotionPref, type ThemePref, useSettings } from '../store/settings';
 import { space } from '../theme/tokens';
 import { useTheme } from '../theme/useTheme';
@@ -149,7 +148,6 @@ export default function Settings() {
   const phoneReduced = useSystemReducedMotion();
   // Help and feedback (mobile 1.7): the row says so when a report's update hasn't been seen yet.
   const { dueItems } = useReports();
-  const resetCert = useProgress((p) => p.resetCert);
   // Mobile 1.25: Reset reading progress (notes only), and whether there is any to reset.
   const resetNotesReading = useProgress((p) => p.resetNotesReading);
   const readingTouched = useProgress((p) => {
@@ -162,7 +160,6 @@ export default function Settings() {
   const setPlantSettings = useProgress((p) => p.setPlantSettings);
   const hasPlant = useProgress((p) => Boolean(selectCert(p, cert.id).plant));
   const plantOn = plantSettings?.showPlant !== false;
-  const clearSession = useSession((x) => x.clear);
   const [busy, setBusy] = useState(false);
   // Release bug hunt round 1: notifications can be turned off for KaiSip in the phone's settings at any
   // time, and the app is not told. Read it (never ask) when Settings opens and each time the app comes
@@ -414,12 +411,9 @@ export default function Settings() {
           text: 'Reset',
           style: 'destructive',
           onPress: () => {
-            resetCert(cert.id);
-            clearSession();
-            // A reset is a fresh start: an old "Undo restore" no longer applies,
-            // and old backup files in the app's cache are tidied away.
-            useBackup.getState().setUndo(null);
-            sweepBackupFiles();
+            // A reset is a fresh start: the open session, an old "Undo restore" and old backup files
+            // go, and the reminders are planned again from the empty review queue (lib/backup.ts).
+            resetLocalProgress([cert.id]);
           },
         },
       ],

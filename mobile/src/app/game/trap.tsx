@@ -24,6 +24,7 @@ import { snareMiss, type RecapMiss } from '../../engine/games/recap';
 import { GAMES } from '../../engine/games/registry';
 import { missCoach, snareVerdict } from '../../lib/drillVerdict';
 import { finishGameRound, startingTier, type RoundNews } from '../../lib/gameRounds';
+import { batchSaves } from '../../store/storage';
 import { useAnswerClock } from '../../lib/useAnswerClock';
 import { useActiveCert } from '../../lib/useActiveCert';
 import { selectCert, useProgress } from '../../store/progress';
@@ -116,31 +117,35 @@ function TrapSpotter() {
       return;
     }
     if (phase === 'answer') {
-      setAnswerPick(display);
-      const result = scoreTrapPick(q, displayToOriginal(trapPick!, perm), displayToOriginal(display, perm));
-      setScore((s) => s + result.points);
-      const miss = snareMiss(q, result.spotted, result.correct, (t) => renderText(t, perm));
-      if (miss) setMisses((m) => [...m, miss]);
-      // Once we've said which option is best, a right answer is assisted
-      // (half credit in readiness, no box promotion), like Coach me.
-      // Game answers never count toward the subtopic mastery date (mastery: false).
-      progress.recordAnswer(cert.id, q.id, result.correct, undefined, { assisted: step === 'key', ms: readClock(), mastery: false });
-      if (!result.correct) progress.recordMistake(cert.id, q.id, displayToOriginal(display, perm));
-      const nextHits = [...hits, result.spotted];
-      setHits(nextHits);
-      // Both halves (2 points) fill the twig's leaf; anything less is a missed leaf (never red).
-      setItems((it) => [...it, result.points === 2 ? 'right' : 'missed']);
-      if (i === round.length - 1) {
-        // Snare Spotter has no level picker: the round counts at the learner's level.
-        setNews(
-          finishGameRound(cert.id, 'trap', {
-            score: score + result.points,
-            rate: nextHits.filter(Boolean).length / round.length,
-            tier: startingTier(cert.id, 'trap'),
-            hits: nextHits,
-          }),
-        );
-      }
+      // One save per tap (store/storage.ts batchSaves): the answer, a miss and, on the last one, the round's end
+      // used to save the whole progress file up to 7 times (release bug hunt round 3).
+      batchSaves(() => {
+        setAnswerPick(display);
+        const result = scoreTrapPick(q, displayToOriginal(trapPick!, perm), displayToOriginal(display, perm));
+        setScore((s) => s + result.points);
+        const miss = snareMiss(q, result.spotted, result.correct, (t) => renderText(t, perm));
+        if (miss) setMisses((m) => [...m, miss]);
+        // Once we've said which option is best, a right answer is assisted
+        // (half credit in readiness, no box promotion), like Coach me.
+        // Game answers never count toward the subtopic mastery date (mastery: false).
+        progress.recordAnswer(cert.id, q.id, result.correct, undefined, { assisted: step === 'key', ms: readClock(), mastery: false });
+        if (!result.correct) progress.recordMistake(cert.id, q.id, displayToOriginal(display, perm));
+        const nextHits = [...hits, result.spotted];
+        setHits(nextHits);
+        // Both halves (2 points) fill the twig's leaf; anything less is a missed leaf (never red).
+        setItems((it) => [...it, result.points === 2 ? 'right' : 'missed']);
+        if (i === round.length - 1) {
+          // Snare Spotter has no level picker: the round counts at the learner's level.
+          setNews(
+            finishGameRound(cert.id, 'trap', {
+              score: score + result.points,
+              rate: nextHits.filter(Boolean).length / round.length,
+              tier: startingTier(cert.id, 'trap'),
+              hits: nextHits,
+            }),
+          );
+        }
+      });
     }
   };
 

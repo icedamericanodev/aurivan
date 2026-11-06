@@ -74,6 +74,7 @@ import { moveFocus, sayLater } from '../../lib/a11y';
 import { createRng } from '../../engine/random';
 import { displayToOriginal, isCorrect, originalToDisplay, renderText } from '../../engine/shuffle';
 import { finishGameRound, type RoundNews } from '../../lib/gameRounds';
+import { batchSaves } from '../../store/storage';
 import { useAnswerClock } from '../../lib/useAnswerClock';
 import { useActiveCert } from '../../lib/useActiveCert';
 import { useProgress } from '../../store/progress';
@@ -219,20 +220,23 @@ function Daylight() {
   useEffect(() => {
     if (!state?.over || fed.current) return;
     fed.current = true;
-    const p = useProgress.getState();
-    if (state.timedOut.length) p.queueForReview(cert.id, state.timedOut);
-    // The skill step is exam pace: each question answered before the light
-    // set AND right (engine daylightHits), so speed alone never grows the level.
-    const hits = daylightHits(state);
-    const n = finishGameRound(cert.id, 'daylight', {
-      score: daylightScore(state),
-      rate: hits.filter(Boolean).length / Math.max(1, state.ids.length),
-      tier: state.tier,
-      hits,
-      // Sure-Footed Pace: inside the light at Sapling pace or faster, with 4 of 5 right.
-      counts: { paceRounds: atSurePace(state) ? 1 : 0 },
+    // One save for the round's end: the review queue and the round's results together (release bug hunt round 3).
+    batchSaves(() => {
+      const p = useProgress.getState();
+      if (state.timedOut.length) p.queueForReview(cert.id, state.timedOut);
+      // The skill step is exam pace: each question answered before the light
+      // set AND right (engine daylightHits), so speed alone never grows the level.
+      const hits = daylightHits(state);
+      const n = finishGameRound(cert.id, 'daylight', {
+        score: daylightScore(state),
+        rate: hits.filter(Boolean).length / Math.max(1, state.ids.length),
+        tier: state.tier,
+        hits,
+        // Sure-Footed Pace: inside the light at Sapling pace or faster, with 4 of 5 right.
+        counts: { paceRounds: atSurePace(state) ? 1 : 0 },
+      });
+      setNews(n);
     });
-    setNews(n);
   }, [state, cert.id]);
 
   const begin = () => {
@@ -368,9 +372,12 @@ function Daylight() {
     const ms = next.answers[q.id].ms;
     const p = useProgress.getState();
     // Feeds review like any practice answer; games never count toward mastery dates.
-    p.recordAnswer(cert.id, q.id, correct, undefined, { ms, mastery: false });
+    // One save for the answer and its miss (release bug hunt round 3).
+    batchSaves(() => {
+      p.recordAnswer(cert.id, q.id, correct, undefined, { ms, mastery: false });
+      if (!correct) p.recordMistake(cert.id, q.id, original);
+    });
     if (!correct) {
-      p.recordMistake(cert.id, q.id, original);
       const miss = pickMiss(q, original, false, (t) => renderText(t, perm));
       if (miss) setMisses((m) => [...m, miss]);
     }

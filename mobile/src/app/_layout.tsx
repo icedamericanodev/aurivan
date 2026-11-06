@@ -57,6 +57,7 @@ import { sayLater, watchScreenReader } from '../lib/a11y';
 import { useFontsSettled } from '../lib/fontGate';
 import type { ErrorBoundaryProps } from 'expo-router';
 import { useHydration } from '../store/useHydrated';
+import { OutsideLinkGate } from '../lib/outsideLinkGate';
 import { useTheme } from '../theme/useTheme';
 
 SplashScreen.preventAutoHideAsync().catch(() => {});
@@ -206,6 +207,8 @@ export default function RootLayout() {
     <SafeAreaProvider>
       <StatusBar style={isDark ? 'light' : 'dark'} />
       {CLOUD && <SyncRouteWatch />}
+      {/* An outside link on a cold start never skips onboarding (release bug hunt round 3). */}
+      <OutsideLinkGate ready={ready} />
       <Stack
         screenOptions={{
           headerShown: false,

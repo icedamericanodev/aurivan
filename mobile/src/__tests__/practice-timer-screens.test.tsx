@@ -287,6 +287,8 @@ describe('Results: pace line and coaching lines', () => {
     expect(rows[0].props.accessibilityLabel).not.toMatch(/Slow down|trust your first read/);
     // One full stop between sentences, never two (O2).
     const q1 = root().findAll((n) => typeof n.props.accessibilityLabel === 'string' && n.props.accessibilityLabel.startsWith('Question 1,'))[0];
-    expect(q1.props.accessibilityLabel).toBe('Question 1, Missed. Slow down on the question. Tap to expand');
+    // Release bug hunt round 3: no "Tap to expand" in the label; the state is said from accessibilityState.
+    expect(q1.props.accessibilityLabel).toBe('Question 1, Missed. Slow down on the question.');
+    expect(q1.props.accessibilityState).toEqual({ expanded: false });
   });
 });
