@@ -277,9 +277,9 @@ await wait(1200);
 await shot('m08-answer-assisted');
 // Next: the page turn.
 // Read to the end of the answer first, so the turn also shows the scroll reset.
-// The answer's last line is the source line ("Original · Reviewed …"); since
+// The answer's last line is the source line ("Original · Checked …"); since
 // mobile 1.49 "Report a problem" is in the ⋯ sheet, not on the page.
-await page.getByText(/^Original · Reviewed /).first().scrollIntoViewIfNeeded();
+await page.getByText(/^Original · Checked /).first().scrollIntoViewIfNeeded();
 await wait(800);
 await shot('m15-answer-bottom');
 await strip(

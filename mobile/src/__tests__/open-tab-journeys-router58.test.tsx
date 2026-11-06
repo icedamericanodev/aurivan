@@ -27,6 +27,7 @@ import { addDays } from '../engine/examDay';
 import type { PlanItem } from '../engine/planner';
 import { dayKey } from '../engine/streak';
 import { finishSession } from '../lib/finishSession';
+import { openFromWidget } from '../lib/widgetOpen';
 import { startFirstSet } from '../lib/firstSet';
 import { startFromIds, startMock } from '../lib/sessions';
 import { selectCert, useProgress } from '../store/progress';
@@ -192,11 +193,14 @@ describe('Results "Continue" (today\'s plan): openTab, then the next item above 
     expect(s.finishedAt).toBeUndefined();
   });
 
-  it('a review item whose queue was cleared elsewhere: "caught up" on the tabs, no session', async () => {
+  it('a review item whose queue was cleared elsewhere adds no minutes: no "left" line and no Continue (Grove 7.11)', async () => {
+    // The plan's only open step is a review with nothing due now, so there is nothing left to continue
+    // (Today counts it the same way, with the live due count).
     const r = await quickQuestionDone({ kind: 'review', count: 3 });
-    await go(() => fireEvent.press(screen.getByText('Continue')));
-    expect(names(r)).toEqual(['(tabs)', 'caught-up']);
-    expect(useSession.getState().active).toBeNull();
+    expect(names(r)).toEqual(['(tabs)', 'results']);
+    expect(screen.queryByText(/Today’s plan · .* left/)).toBeNull();
+    expect(screen.queryByText('Continue')).toBeNull();
+    expect(screen.queryByText('Done for now')).toBeNull();
   });
 
   it('a lesson item: the lesson on the tabs, Results gone', async () => {
@@ -437,5 +441,44 @@ describe('Session\'s "Back to Today" (nothing to continue)', () => {
     await go(() => fireEvent.press(screen.getByLabelText('End session')));
     expect(names(r)).toEqual(['(tabs)']);
     expect(r.getPathname()).toBe('/home');
+  });
+});
+
+describe("A widget's one question, answered on the real Session screen (release bug hunt round 1)", () => {
+  // Before the fix, Session treated these one-question sets like a Question bank question: the last
+  // button cleared the set and went back to Today, so Results' plan handoff could never show.
+  const answerOnScreen = async (kind: 'question' | 'think') => {
+    const r = await renderRouter(APP, { initialUrl: '/home' });
+    const q = bank[500];
+    await go(() => {
+      openFromWidget({ kind, go: 'question', id: q.id, fromWidget: true });
+    });
+    expect(r.getPathname()).toBe('/session');
+    const s = useSession.getState().active!;
+    expect(s.questionIds).toEqual([q.id]);
+    // Tap the right option (the shown letter of the ORIGINAL key), then Check answer, then the last button.
+    const shown = (['A', 'B', 'C', 'D'] as const)[s.perms[q.id].indexOf(q.correct)];
+    await go(() => fireEvent.press(screen.getAllByLabelText(new RegExp(`^Option ${shown}:`))[0]));
+    await go(() => fireEvent.press(screen.getByText('Check answer')));
+    await go(() => fireEvent.press(screen.getByText('See results')));
+    return r;
+  };
+
+  it.each(['question', 'think'] as const)('kind %s: lands on Results with the plan left, Continue and Done for now', async (kind) => {
+    useProgress.setState({ days: { cisa: planWith({ kind: 'practice', count: 5, label: 'Mixed practice' }) } });
+    const r = await answerOnScreen(kind);
+    expect(r.getPathname()).toBe('/results');
+    expect(names(r)).toEqual(['(tabs)', 'results']);
+    expect(screen.getByText(/Today’s plan · .* left/)).toBeTruthy();
+    expect(screen.getByText('Continue')).toBeTruthy();
+    expect(screen.getByText('Done for now')).toBeTruthy();
+  });
+
+  it("with today's plan already done, Results shows only Done", async () => {
+    useProgress.setState({ days: { cisa: { ...planWith({ kind: 'practice', count: 5, label: 'Mixed practice' }), done: [true] } } });
+    const r = await answerOnScreen('question');
+    expect(r.getPathname()).toBe('/results');
+    expect(screen.queryByText('Continue')).toBeNull();
+    expect(screen.getByText('Done')).toBeTruthy();
   });
 });

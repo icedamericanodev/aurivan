@@ -11,8 +11,11 @@
  */
 import { useEffect, useRef, useState } from 'react';
 import { AccessibilityInfo, StyleSheet, View } from 'react-native';
-import { GameFrame, GameIntro, PlayableGate, QuestionHead, RevealCard, RoundEnd, useRound } from '../../components/game';
-import { OptionCard, type OptionState } from '../../components/quiz';
+import { DrillAnswer } from '../../components/drillAnswer';
+import type { ItemResult } from '../../components/drillKit';
+import { GameFrame, GameIntro, PlayableGate, QuestionHead, RoundEnd, useRound } from '../../components/game';
+import { missCoach, oneStepVerdict } from '../../lib/drillVerdict';
+import { OptionCard } from '../../components/quiz';
 import { Button, Gap, ProgressBar, Segmented, T, useFontScale } from '../../components/ui';
 import { getAllQuestions } from '../../content/loader';
 import { LETTERS, type Letter } from '../../content/types';
@@ -40,6 +43,7 @@ import { buildPracticeQueue } from '../../engine/queue';
 import { createRng } from '../../engine/random';
 import { displayToOriginal, isCorrect, originalToDisplay, renderText } from '../../engine/shuffle';
 import { finishGameRound, startingTier, type RoundNews } from '../../lib/gameRounds';
+import { batchSaves } from '../../store/storage';
 import { useAnswerClock } from '../../lib/useAnswerClock';
 import { useActiveCert } from '../../lib/useActiveCert';
 import { selectCert, useProgress } from '../../store/progress';
@@ -191,45 +195,48 @@ function Forecast() {
 
   const choose = (display: Letter) => {
     if (!footing || answered) return;
-    const ok = isCorrect(q, display, perm);
-    setPick(display);
-    // Answering counts as having seen the rules (they were on screen), so
-    // the next play starts without them even if "Got it" was never tapped.
-    markRulesSeen('sprint');
-    const next = [...results, { questionId: q.id, footing, correct: ok }];
-    setResults(next);
-    const miss = pickMiss(q, displayToOriginal(display, perm), ok, (t) => renderText(t, perm));
-    if (miss) setMisses((m) => [...m, miss]);
-    // Guess / Lean / Sure are the practice confidence levels, so spaced
-    // review treats a lucky Guess like a lucky guess anywhere else.
-    // The footing is kept on the answer record as its confidence (lastConfidence).
-    // Game answers never count toward the subtopic mastery date (mastery: false).
-    // Answered with the rules still open: the time isn't known, so none is saved.
-    progress.recordAnswer(cert.id, q.id, ok, FOOTING_CONFIDENCE[footing], { ms: rulesOpen ? undefined : readClock(), mastery: false });
-    if (!ok) progress.recordMistake(cert.id, q.id, displayToOriginal(display, perm), FOOTING_CONFIDENCE[footing]);
-    if (i === round.length - 1) {
-      // The skill step is an honest level (calibration.ts wellJudged); the
-      // round's verdict feeds Even Keel ("well calibrated" rounds in a row).
-      const judged = next.map(wellJudged);
-      setNews(
-        finishGameRound(cert.id, 'sprint', {
-          score: sprintScore(next),
-          rate: judged.filter(Boolean).length / next.length,
-          tier: startingTier(cert.id, 'sprint'),
-          hits: judged,
-          good: calibrationVerdict(next) === 'calibrated',
-        }),
-      );
-    }
+    // One save per tap (store/storage.ts batchSaves): the answer, a miss and, on the last one, the round's end
+    // used to save the whole progress file up to 7 times (release bug hunt round 3).
+    batchSaves(() => {
+      const ok = isCorrect(q, display, perm);
+      setPick(display);
+      // Answering counts as having seen the rules (they were on screen), so
+      // the next play starts without them even if "Got it" was never tapped.
+      markRulesSeen('sprint');
+      const next = [...results, { questionId: q.id, footing, correct: ok }];
+      setResults(next);
+      const miss = pickMiss(q, displayToOriginal(display, perm), ok, (t) => renderText(t, perm));
+      if (miss) setMisses((m) => [...m, miss]);
+      // Guess / Lean / Sure are the practice confidence levels, so spaced
+      // review treats a lucky Guess like a lucky guess anywhere else.
+      // The footing is kept on the answer record as its confidence (lastConfidence).
+      // Game answers never count toward the subtopic mastery date (mastery: false).
+      // Answered with the rules still open: the time isn't known, so none is saved.
+      progress.recordAnswer(cert.id, q.id, ok, FOOTING_CONFIDENCE[footing], { ms: rulesOpen ? undefined : readClock(), mastery: false });
+      if (!ok) progress.recordMistake(cert.id, q.id, displayToOriginal(display, perm), FOOTING_CONFIDENCE[footing]);
+      if (i === round.length - 1) {
+        // The skill step is an honest level (calibration.ts wellJudged); the
+        // round's verdict feeds Even Keel ("well calibrated" rounds in a row).
+        const judged = next.map(wellJudged);
+        setNews(
+          finishGameRound(cert.id, 'sprint', {
+            score: sprintScore(next),
+            rate: judged.filter(Boolean).length / next.length,
+            tier: startingTier(cert.id, 'sprint'),
+            hits: judged,
+            good: calibrationVerdict(next) === 'calibrated',
+          }),
+        );
+      }
+    });
   };
 
-  const stateFor = (d: Letter): OptionState => {
-    if (!answered) return 'idle';
-    if (displayToOriginal(d, perm) === q.correct) return 'correct';
-    return d === pick ? 'wrong' : 'dimmed';
-  };
   const ok = answered && isCorrect(q, pick!, perm);
   const gained = answered && footing ? points(footing, ok) : 0;
+  // Grove 4b: the twig, one leaf per question (right = a filled leaf).
+  const items: ItemResult[] = results.map((r) => (r.correct ? 'right' : 'missed'));
+  // The points this answer earned, under the verdict ("+2 · Sure"): Forecast's own words.
+  const extra = answered && footing ? `${signed(gained)} · ${PAYOFF[footing].label}` : null;
 
   return (
     <GameFrame
@@ -237,6 +244,7 @@ function Forecast() {
       index={i}
       total={round.length}
       score={score}
+      results={items}
       onInfo={() => {
         if (rulesOpen) closeRules();
         else {
@@ -265,6 +273,8 @@ function Forecast() {
             <Gap h={space.sm} />
             {/* A radio group (one choice, spoken as "radio, checked"); stacks at large text. */}
             <Segmented
+              // PHASE4B 6.3 item 10: Forecast's three segments stack from text scale 1.5.
+              stackAt={1.5}
               accessibilityLabel="How sure are you?"
               value={footing}
               onChange={setFooting}
@@ -279,29 +289,21 @@ function Forecast() {
       }
     >
       {rulesOpen && <ForecastRules onDone={closeRules} focus={rulesFromInfo} />}
-      <QuestionHead q={q} />
-      {letters.map((d) => (
-        <OptionCard
-          key={d}
-          letter={d}
-          text={q.options[displayToOriginal(d, perm)] ?? ''}
-          state={stateFor(d)}
-          disabled={!footing || answered}
-          onPress={() => choose(d)}
+      {answered && footing && pick ? (
+        <DrillAnswer
+          q={q}
+          perm={perm}
+          pick={pick}
+          animate={ok}
+          extra={extra}
+          verdict={oneStepVerdict({ correct: ok, best: originalToDisplay(q.correct, perm), missCoach: missCoach(q, displayToOriginal(pick, perm), perm), extra })}
         />
-      ))}
-      {answered && footing && (
+      ) : (
         <>
-          <Gap h={space.sm} />
-          <RevealCard
-            tone={ok ? 'good' : 'bad'}
-            title={
-              ok
-                ? `${signed(gained)} · ${PAYOFF[footing].label}, and right`
-                : `${signed(gained)} · ${PAYOFF[footing].label} · best answer ${originalToDisplay(q.correct, perm)}`
-            }
-            body={renderText(q.explanation, perm)}
-          />
+          <QuestionHead q={q} />
+          {letters.map((d) => (
+            <OptionCard key={d} letter={d} text={q.options[displayToOriginal(d, perm)] ?? ''} state="idle" disabled={!footing} onPress={() => choose(d)} />
+          ))}
         </>
       )}
     </GameFrame>

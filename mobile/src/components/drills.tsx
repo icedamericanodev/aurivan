@@ -27,7 +27,8 @@ import { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useWindowDimensions, View } from 'react-native';
 import { KeyList, type KeyItem } from './fieldguide';
 import { DisclosureRow } from './pathChooser';
-import { Enter, Section, T, useScreenScroll } from './ui';
+import { CardHead, HubCard } from './groveHub';
+import { Enter, T, useScreenScroll } from './ui';
 import { GAME_TIER_NAME, growthTier } from '../engine/games/growth';
 import { scoreSpoken, scoreText } from '../engine/games/recap';
 import { GAMES, type GameId } from '../engine/games/registry';
@@ -40,6 +41,9 @@ import { playableGames } from '../lib/games';
 import { topSlipPattern } from '../lib/slipPattern';
 import { selectCert, useProgress, type ProgressState } from '../store/progress';
 import { space } from '../theme/tokens';
+import { useTheme } from '../theme/useTheme';
+import { TierLeaf } from './glyphs';
+import { drillName } from '../lib/drillNames';
 
 
 /**
@@ -59,6 +63,23 @@ function playedKey(s: ProgressState): string {
 
 /** How long after a jump Drills keeps following its own position (saved progress can still grow the sections above). */
 const FOLLOW_MS = 1500;
+
+/**
+ * Release bug hunt round 2: the games this learner can open now (the same rule Drills shows: the core
+ * three, every game after about 50 practice answers, and any game already played). The mistake journal
+ * uses it too, so its "Drill it" never offers a drill Drills still keeps locked.
+ */
+export function useAvailableGames(certId: string): GameId[] {
+  // A game whose question pool is too small for this exam is not offered at all (never explained with a number).
+  const playable = useMemo(() => playableGames(certId), [certId]);
+  // The other games open after about 50 practice answers, subscribed as a yes/no.
+  const open = useProgress((s) => moreGamesOpen(Object.keys(selectCert(s, certId).answers).length));
+  const played = useProgress(playedKey);
+  return useMemo(
+    () => availableGames(playable, { answered: open ? MORE_GAMES_AT : 0, played: (played ? played.split(',') : []) as GameId[] }),
+    [playable, open, played],
+  );
+}
 
 /** Has this learner played any game, on any exam? (The one-time "games moved" hint on Practice is for them.) */
 export const playedAnyGame = (s: ProgressState): boolean => playedKey(s) !== '';
@@ -80,6 +101,7 @@ export const Drills = memo(function Drills({
   /** Its place in the screen's entrance order. */
   enter?: number;
 }) {
+  const { c } = useTheme();
   const certId = useActiveCertId();
   const cert = getCertification(certId) ?? CERTIFICATIONS[0];
   const gameBest = useProgress((s) => selectCert(s, certId).gameBest);
@@ -164,13 +186,17 @@ export const Drills = memo(function Drills({
   const item = (id: GameId, kicker?: string): KeyItem => {
     const g = GAMES[id];
     const b = gameBest[id];
-    const grown = level(id) !== 'seedling' ? ` · ${GAME_TIER_NAME[level(id)]}` : '';
+    const tier = level(id);
+    // Grove 4b (PHASE4B 6.1): once grown, the level's leaf glyph before its word.
+    const grown = tier !== 'seedling' ? { mark: <TierLeaf tier={tier} color={c.accentText} rib={c.raised} size={14} />, text: GAME_TIER_NAME[tier] } : undefined;
+    const name = drillName(id);
     return {
       key: id,
-      title: g.name,
-      kicker: `${kicker ? `${kicker} · ` : ''}${g.plain}${grown}`,
+      title: name,
+      kicker: `${kicker ? `${kicker} · ` : ''}${g.plain}`,
+      kickerTail: grown,
       right: b !== undefined ? `best ${scoreText(b)} · ${g.minutes} min` : `${g.minutes} min`,
-      spoken: `${kicker ? `${kicker}: ` : ''}${g.name}. ${g.plain}. Your level: ${GAME_TIER_NAME[level(id)]}. About ${g.minutes} minutes.${b !== undefined ? ` Best score ${scoreSpoken(b)}.` : ''}`,
+      spoken: `${kicker ? `${kicker}: ` : ''}${name}. ${g.plain}. Your level: ${GAME_TIER_NAME[level(id)]}. About ${g.minutes} minutes.${b !== undefined ? ` Best score ${scoreSpoken(b)}.` : ''}`,
       hint: 'Opens the game',
       onPress: () => router.push(`/game/${id}`),
     };
@@ -178,28 +204,32 @@ export const Drills = memo(function Drills({
   const inSight = plan.drill ? [item(plan.drill, 'Today’s drill'), ...plan.also.map((id) => item(id))] : [];
   const allSeedling = available.length > 0 && available.every((id) => level(id) === 'seedling');
 
-  // "Today's pick is from your mistakes: you often pick…" (lower case after the colon; UX review H1).
+  // "From your misses: you often pick…" (lower case after the colon; UX review H1).
   const why = pattern ? pattern.title.replace(/\.$/, '') : '';
   return (
     <View ref={box} testID="drills" collapsable={false} onLayout={onLayout}>
       <Enter i={enter}>
-      <Section variant="head" title="Drills" headRef={head} meta={allSeedling ? 'All at Seedling' : undefined} />
+      {/* Grove Phase 4 (PHASE4.md 7.8 item 9): Drills is one card with its kicker inside. */}
+      <HubCard testID="drills-card" style={{ paddingBottom: space.md }}>
+      <CardHead title="Drills" headRef={head} meta={allSeedling ? 'All at Seedling' : undefined} />
       {!plan.drill ? (
         // No game has enough questions for this exam yet: said calmly, no numbers.
-        <T v="meta">Drills arrive once this exam has enough practice questions for them.</T>
+        <T v="meta">Drills come once this exam has enough questions.</T>
       ) : (
         <>
+          {/* Short text (Sky, 5 Nov): one idea per line. The pick's reason replaces the general
+              line when there is one (each row already names its skill). */}
           <T v="meta" style={{ marginBottom: space.xs }}>
             {plan.fromPattern && pattern
-              ? `Short games, each for one exam skill. Today’s pick is from your mistakes: ${why.charAt(0).toLowerCase()}${why.slice(1)}.`
-              : 'Short games, each for one exam skill. Missed questions go to your review.'}
+              ? `From your misses: ${why.charAt(0).toLowerCase()}${why.slice(1)}.`
+              : 'Short games, one exam skill each. Misses go to review.'}
           </T>
           <KeyList items={inSight} testID="drills-list" />
           {plan.more.length > 0 && (
             <>
               <DisclosureRow
                 title="More drills"
-                subtitle={`${plan.more.length} more, each trains one exam skill`}
+                subtitle={`${plan.more.length} more`}
                 expanded={moreOpen}
                 onPress={() => setMoreOpen((o) => !o)}
                 accessibilityHint={moreOpen ? 'Hides the other drills' : 'Shows the other drills'}
@@ -216,6 +246,7 @@ export const Drills = memo(function Drills({
           )}
         </>
       )}
+      </HubCard>
       </Enter>
     </View>
   );

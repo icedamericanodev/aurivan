@@ -384,9 +384,10 @@ describe('game recaps', () => {
     );
     expect(pressables(/^Report a problem/)).toHaveLength(1);
     expect(pressables(`Report a problem with question ${q.id}`)).toHaveLength(0);
-    // It sits at the foot: after "Done".
+    // It sits at the foot of the recap's page, after What caught you (Grove 4b: Play again and Done are
+    // in the sticky footer, PHASE4B 6.5 item 5).
     const t = allText();
-    expect(t.lastIndexOf('Report a problem')).toBeGreaterThan(t.indexOf('Done'));
+    expect(t.lastIndexOf('Report a problem')).toBeGreaterThan(t.indexOf('What caught you'));
     press('Report a problem with the app');
     for (const reason of REASONS.app) expect(allText()).toContain(reason.label);
     await sendReport('A score or result looks wrong');

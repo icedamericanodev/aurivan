@@ -80,7 +80,7 @@ afterEach(() => {
 describe('Timer: Practice’s Timed switch ("Your path and Build a set")', () => {
   const flipTimed = (on: boolean) =>
     act(() => {
-      root().findAll((n) => n.props.title === 'Timed' && typeof n.props.onValueChange === 'function')[0].props.onValueChange(on);
+      const t = root().findAll((n) => n.props.accessibilityLabel === 'Timed' && n.props.accessibilityRole === 'switch' && typeof n.props.onPress === 'function' && n.props.accessibilityState)[0]; if (t.props.accessibilityState.checked !== on) t.props.onPress();
     });
 
   it('overrides the default for Smart / In order / Random started from the hero', () => {

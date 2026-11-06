@@ -80,7 +80,10 @@ describe('share card headline', () => {
     expect(above.range.enough).toBe(true);
     const h = pickShareHeadline(above);
     expect(h.kind).toBe('range');
-    expect(h.value).toMatch(/^\d+–\d+%$/);
+    // Release prep 2.0.0: the range reads "68 to 78%", never with an en dash.
+    expect(h.value).toMatch(/^\d+ to \d+%$/);
+    expect(h.value).not.toMatch(/[–—]/);
+    expect(h.value).toBe(`${(above.range as { low: number }).low} to ${(above.range as { high: number }).high}%`);
     expect(h.label).toBe('Estimated readiness');
   });
 
@@ -100,7 +103,7 @@ describe('share card headline', () => {
   it('the honesty guard catches pass claims', () => {
     expect(isHonestShareText('Ready to pass CISA!')).toBe(false);
     expect(isHonestShareText('I will pass')).toBe(false);
-    expect(isHonestShareText('Estimated readiness 68–76%')).toBe(true);
+    expect(isHonestShareText('Estimated readiness 68 to 76%')).toBe(true);
   });
 
   it('counts distinct days inside the 2-week window only', () => {

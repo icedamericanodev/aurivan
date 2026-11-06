@@ -13,6 +13,7 @@
  * `kicker`, its count the `right` words; the icon circle and chevron go.
  * `numbered={false}` drops the italic numbers for a lone row (a note's lesson).
  */
+import type { ReactNode } from 'react';
 import { View } from 'react-native';
 import Svg, { Line } from 'react-native-svg';
 import { LARGE_TEXT, space } from '../../theme/tokens';
@@ -28,6 +29,11 @@ export interface KeyItem {
   right?: string;
   /** A caption above the title that says what the row does ("Read the note · question 3"). */
   kicker?: string;
+  /**
+   * Grove Phase 4b (PHASE4B 6.1): a mark and a word after the kicker, after a "·" (a drill's grown level:
+   * its leaf glyph, then "Sapling"). The mark is decorative: the word and the row's spoken label say it.
+   */
+  kickerTail?: { mark: ReactNode; text: string };
   /** A ✗ or ✓ before the title, always with words beside it (never the only signal). */
   mark?: 'missed' | 'right';
   spoken: string;
@@ -53,9 +59,19 @@ function KeyRow({ item, n, first }: { item: KeyItem; n: number | null; first: bo
   const body = (
     <>
       {press.layer}
-      {n !== null && <FieldText v="keyNo" style={{ width: 22 }}>{String(n)}</FieldText>}
+      {n !== null && <FieldText v="keyNo" style={{ minWidth: 22 }}>{String(n)}</FieldText>}
       <View style={{ flex: 1, minWidth: 0 }}>
-        {item.kicker ? <T v="caption" color={c.accentText}>{item.kicker}</T> : null}
+        {item.kicker && item.kickerTail ? (
+          <View style={{ flexDirection: 'row', flexWrap: 'wrap', alignItems: 'center', columnGap: space.xs }}>
+            <T v="caption" color={c.accentText}>{`${item.kicker} ·`}</T>
+            <View style={{ flexDirection: 'row', alignItems: 'center', gap: 2 }}>
+              {item.kickerTail.mark}
+              <T v="caption" color={c.accentText}>{item.kickerTail.text}</T>
+            </View>
+          </View>
+        ) : item.kicker ? (
+          <T v="caption" color={c.accentText}>{item.kicker}</T>
+        ) : null}
         <View style={{ flexDirection: large ? 'column' : 'row', alignItems: large ? 'flex-start' : 'center' }}>
           <T v="label" style={{ flexShrink: 1 }}>
             {item.mark ? <T v="label" color={item.mark === 'missed' ? c.wrong : c.correct}>{item.mark === 'missed' ? '✗ ' : '✓ '}</T> : null}

@@ -71,7 +71,7 @@ for (const theme of THEMES) {
     await wait(500);
   } else console.log('no "Show question" (a short stem)');
   // The one way on, then the source line under it.
-  await into('Original · Reviewed', 'center');
+  await into('Original · Checked', 'center');
   await shot('m149-3-go-deeper');
   await page.getByRole('button', { name: 'More on this question', exact: true }).first().click();
   await wait(900);

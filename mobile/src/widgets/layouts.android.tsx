@@ -15,7 +15,7 @@
  * - Today's plan: the forest card (the only one), "12 questions", the day's
  *   step pips and the one Start button on the home screen.
  * - This week: paper, a big "3" and the week's leaves (the only leaves).
- * - Your plant: the botanical plate, "Fig. 3 · Shoot".
+ * - Your plant: the botanical plate, "Growth 3 · Shoot" (no book label since Grove).
  * - Today's rule and the Recall card: ruled index cards with a clay margin.
  * - Key term and Readiness: paper. Road to exam: the ink card.
  *
@@ -313,16 +313,16 @@ function topRow(x: X, text: string, right: El, rightW: number): JSX.Element {
 }
 
 /** An italic note for the right of the top row ("step 2 of 3"). */
-const asideEl = (x: X, text: string, color = x.c.ink2) => txt(text, F.serifItalic, sz(12.5, x.scale, 1.3), color, { ml: 8 });
-const asideW = (x: X, text: string) => Math.ceil(text.length * sz(12.5, x.scale, 1.3) * 0.5) + 10;
+const asideEl = (x: X, text: string, color = x.c.ink2) => txt(text, F.serifItalic, Math.max(SERIF_MIN, sz(12.5, x.scale, 1.3)), color, { ml: 8 });
+const asideW = (x: X, text: string) => Math.ceil(text.length * Math.max(SERIF_MIN, sz(12.5, x.scale, 1.3)) * 0.5) + 10;
 
 /** A big serif figure and its italic unit beside it ("12 questions", "3 study days"). */
 function figure(x: X, value: string, unit: string | undefined, px: number, unitPx: number, unitColor: string, unitLines = 2, width = x.iw): JSX.Element {
-  // The unit beside the figure shrinks (to 12 sp) before a word would break; if it still can't fit, it goes under the figure.
+  // The unit beside the figure shrinks (to SERIF_MIN, 13 sp) before a word would break; if it still can't fit, it goes under the figure.
   const room = width - Math.ceil(value.length * px * 0.62) - 6;
   const longest = Math.max(0, ...(unit ?? '').split(' ').map((w) => w.length));
-  let upx = unitPx;
-  while (unit && upx > 12 && longest * upx * 0.55 > room) upx -= 0.5;
+  let upx = Math.max(SERIF_MIN, unitPx);
+  while (unit && upx > SERIF_MIN && longest * upx * 0.55 > room) upx -= 0.5;
   const stack = Boolean(unit) && longest * upx * 0.55 > room;
   return (
     <FlexWidget style={{ flexDirection: stack ? 'column' : 'row', alignItems: stack ? 'flex-start' : 'flex-end', width: 'match_parent' }}>
@@ -599,9 +599,13 @@ function week(x: X): El {
     const d = narrow ? 12 : Math.max(11, Math.min(iw < 320 ? 22 : 26, ih - (letters ? lettersH(scale) : 0)));
     const room = iw - leavesW(d) - 10;
     const unit = number ? (one ? 'day' : 'days') : undefined;
-    // On a 2×1 the figure steps down (not under 22) until its unit fits beside it at 12 sp or more.
+    // On a 2×1 the figure steps down (not under 20) until its unit fits beside it at SERIF_MIN (13 sp), the
+    // same floor figure() measures the unit at, so the unit stays on the figure's line.
     let fpx = figPx(narrow ? 34 : 44, x, ih, 20);
-    while (narrow && unit && fpx > 22 && room - Math.ceil(count.length * fpx * 0.62) - 6 < unit.length * 12 * 0.55) fpx -= 1;
+    const besideRoom = (px: number) => room - Math.ceil(count.length * px * 0.62) - 6;
+    while (narrow && unit && fpx > 20 && besideRoom(fpx) < unit.length * SERIF_MIN * 0.55) fpx -= 1;
+    // If the unit still cannot sit beside it, figure() puts it under the figure: shrink the figure so both lines fit the strip's height.
+    if (narrow && unit && besideRoom(fpx) < unit.length * SERIF_MIN * 0.55) fpx = Math.max(10, Math.min(fpx, Math.floor((ih - Math.ceil(SERIF_MIN * LH)) / LH)));
     const left = number ? figure(x, count, unit, fpx, sz(narrow ? 13 : 15, scale, SMALL_TITLE_CAP), c.ink2, 1, room) : heroText(face.title, face.short, F.serif, sz(17, scale, 1.3), SERIF_MIN, room, ih, c.ink);
     return (
       <FlexWidget style={{ width: 'match_parent', height: 'match_parent', flexDirection: 'row', alignItems: 'center' }}>
@@ -615,7 +619,8 @@ function week(x: X): El {
   const fit = Math.min(d, Math.floor((iw - 6 * 4) / 7 / 0.75));
   const leafH = fit + (letters ? lettersH(scale) : 0);
   const head = x.huge ? 0 : capH(x) + HAIR;
-  const linePx = sz(12, scale, 1.3);
+  // E6: serif italic never under SERIF_MIN, clamped here so the fit check measures the drawn size.
+  const linePx = Math.max(SERIF_MIN, sz(12, scale, 1.3));
   const weekLines = small && !x.big && face.line ? (fitsLines(face.line, linePx, iw, 1) ? 1 : 2) : 0;
   const lineShown = weekLines ? tall(linePx, weekLines) + 6 : 0;
   const room = ih - head - leafH - lineShown - 4;
@@ -766,7 +771,9 @@ function card(x: X): El {
     const words = iw - pairW - showW - actW;
     const head = !x.big && !narrow && !shownTerm ? capH(x) : 0;
     const subOk = !x.big && Boolean(face.sub) && !shownTerm;
-    const room = ih - head - (subOk ? tall(12) : 0);
+    // E6: the serif italic sub line at SERIF_MIN or more, and the room measured at that size.
+    const stripSubPx = Math.max(SERIF_MIN, sz(12, scale, 1.3));
+    const room = ih - head - (subOk ? tall(stripSubPx) : 0);
     // A 2×1 shows the short prompt; a shown key term its meaning under the term.
     // One block, so the meaning gets the strip's whole height: "RPO: The most data, …" (never under BODY_MIN; ended cleanly if it must be).
     const termBody = shownTerm ? fitBody(`${face.sub ?? face.title}: ${face.line ?? ''}`, sz(12.5, scale, 1.3), Math.floor(words * 0.92), ih) : null;
@@ -782,7 +789,7 @@ function card(x: X): El {
         <FlexWidget style={{ flex: 1, flexDirection: 'column' }}>
           {head ? caption(face.caption, x, words) : null}
           {main}
-          {subOk ? txt(face.sub as string, F.serifItalic, 12, c.ink2) : null}
+          {subOk ? txt(face.sub as string, F.serifItalic, stripSubPx, c.ink2) : null}
         </FlexWidget>
         {pairW ? (
           <FlexWidget style={{ flexDirection: 'row', alignItems: 'center', marginLeft: 8 }}>
@@ -815,12 +822,12 @@ function card(x: X): El {
     const { m, block, termPx, termText, termLines } = t;
     labelShown = t.label;
     // "A new term each morning." only under a meaning shown whole, with room to spare.
-    const line2Ok = face.line2 && !x.big && m.whole && t.left >= tall(12) + 4;
+    const line2Ok = face.line2 && !x.big && m.whole && t.left >= tall(Math.max(SERIF_MIN, sz(12, scale, 1.3))) + 4;
     middle = (
       <FlexWidget style={{ flex: 1, flexDirection: 'column', justifyContent: 'center', width: 'match_parent' }}>
         {block ? null : txt(termText, F.serif, termPx, c.ink, { lines: termLines })}
         {txt(m.text, F.sans, m.px, c.ink, { lines: m.lines, mt: block ? 0 : 4 })}
-        {line2Ok ? txt(face.line2 as string, F.serifItalic, sz(12, scale, 1.3), c.ink2, { mt: 4 }) : null}
+        {line2Ok ? txt(face.line2 as string, F.serifItalic, Math.max(SERIF_MIN, sz(12, scale, 1.3)), c.ink2, { mt: 4 }) : null}
       </FlexWidget>
     );
   } else {
@@ -832,7 +839,8 @@ function card(x: X): El {
     // A hidden term is the big hero ("RPO"; a plain term like "Single point of failure" big too);
     // a shown rule or answer leaves the room to the words under it.
     const heroMax = term && hidden ? sz(face.sub ? (small ? 40 : 52) : small ? 22 : 28, scale, 1.15) : face.reveal === 'shown' && cardLine ? sz(small ? 17 : 17.5, scale, 1.15) : sz(small ? 18 : 17.5, scale, SMALL_TITLE_CAP);
-    const subPx = sz(small ? 12.5 : 13.5, scale, 1.3);
+    // E6: the serif italic sub line never under SERIF_MIN (12.5 on a small card was under it).
+    const subPx = Math.max(SERIF_MIN, sz(small ? 12.5 : 13.5, scale, 1.3));
     const subH = face.sub && hidden ? tall(subPx, 2) : 0;
     // The revealed words (the rule, the Exam cue) are sized first; the hero gets what is left (never under SERIF_MIN).
     let body: ReturnType<typeof fitBody> | null = null;
@@ -860,13 +868,13 @@ function card(x: X): El {
     }
     const heroUsed = fit ? tall(fit.px, Math.min(fit.lines, linesFor(heroFull, fit.px, iw))) : room;
     const bodyUsed = body ? tall(body.px, body.lines) + 4 : 0;
-    const line2Ok = face.line2 && !x.big && room - heroUsed - subH - bodyUsed >= tall(12) + 4;
+    const line2Ok = face.line2 && !x.big && room - heroUsed - subH - bodyUsed >= tall(Math.max(SERIF_MIN, sz(12, scale, 1.3))) + 4;
     middle = (
       <FlexWidget style={{ flex: 1, flexDirection: 'column', justifyContent: 'center', width: 'match_parent' }}>
         {fit ? txt(heroFull, font, fit.px, c.ink, { lines: fit.lines }) : heroText(heroFull, face.short, font, heroMax, SERIF_MIN, iw, room - subH, c.ink)}
         {face.sub && hidden ? txt(face.sub, F.serifItalic, subPx, c.ink2, { lines: 2 }) : null}
         {body ? txt(body.text, F.sans, body.px, c.ink2, { lines: body.lines, mt: 4 }) : null}
-        {line2Ok ? txt(face.line2 as string, F.serifItalic, sz(12, scale, 1.3), c.ink2, { mt: 4 }) : null}
+        {line2Ok ? txt(face.line2 as string, F.serifItalic, Math.max(SERIF_MIN, sz(12, scale, 1.3)), c.ink2, { mt: 4 }) : null}
       </FlexWidget>
     );
   }
@@ -922,21 +930,23 @@ function readiness(x: X): El {
   const smallNote = (range ? qualifier : (face.shortLine ?? face.line)) ?? '';
   const extra = range ? face.line2 : undefined;
   if (size === 'strip') {
+    // E6: the serif italic note at SERIF_MIN (it was 11.5); every fit check below measures this size.
+    const NOTE_PX = SERIF_MIN;
     // The rings give way (down to 36 dp) so a range's "A study estimate" fits one line beside them.
-    const d = Math.min(ih, 60, range ? Math.max(36, iw - 12 - Math.ceil(qualifier.length * 11.5 * CHAR_W) - 2) : 60);
+    const d = Math.min(ih, 60, range ? Math.max(36, iw - 12 - Math.ceil(qualifier.length * NOTE_PX * CHAR_W) - 2) : 60);
     const words = iw - d - 12;
     const headPx = sz(iw < 230 ? 15 : 18, scale, 1.2);
     const headFit = fitText(head, headPx, SERIF_MIN, words, ih) ? head : (face.short ?? head);
     const headLines = linesFor(headFit, headPx, words) > 1 && ih >= tall(headPx, 2) ? 2 : 1;
     const noteRoom = ih - tall(headPx, headLines);
-    const noteText = range ? (firstFit([note, smallNote], 11.5, words) ?? smallNote) : !x.big && noteRoom >= tall(11) ? firstFit([note, smallNote], 11.5, words) : undefined;
-    const noteLines = noteText && !fitsLines(noteText, 11.5, words, 1) ? 2 : 1;
+    const noteText = range ? (firstFit([note, smallNote], NOTE_PX, words) ?? smallNote) : !x.big && noteRoom >= tall(NOTE_PX) ? firstFit([note, smallNote], NOTE_PX, words) : undefined;
+    const noteLines = noteText && !fitsLines(noteText, NOTE_PX, words, 1) ? 2 : 1;
     return (
       <FlexWidget style={{ width: 'match_parent', height: 'match_parent', flexDirection: 'row', alignItems: 'center' }}>
         {rings(d)}
         <FlexWidget style={{ flex: 1, flexDirection: 'column', marginLeft: 12 }}>
-          {heroText(headFit, face.short, F.serif, headPx, SERIF_MIN, words, ih - (noteText ? tall(11.5, noteLines) : 0), c.ink)}
-          {noteText ? txt(noteText, F.serifItalic, 11.5, c.ink2, { lines: noteLines }) : null}
+          {heroText(headFit, face.short, F.serif, headPx, SERIF_MIN, words, ih - (noteText ? tall(NOTE_PX, noteLines) : 0), c.ink)}
+          {noteText ? txt(noteText, F.serifItalic, NOTE_PX, c.ink2, { lines: noteLines }) : null}
         </FlexWidget>
       </FlexWidget>
     );
@@ -945,7 +955,8 @@ function readiness(x: X): El {
     const top = x.huge ? 0 : capH(x) + HAIR;
     const headPx = sz(range ? 20 : 15, scale, 1.2);
     const headText = fitsLines(head, headPx, iw, 1) ? head : (face.short ?? head);
-    const notePx = sz(12.5, scale, 1.3);
+    // E6: the serif italic notes never under SERIF_MIN.
+    const notePx = Math.max(SERIF_MIN, sz(12.5, scale, 1.3));
     // The qualifier stays at every scale for a range; other notes go at large text.
     const noteLines = !smallNote || (x.big && !range) ? 0 : fitsLines(smallNote, notePx, iw, 1) ? 1 : 2;
     const ringsRoom = ih - top - tall(headPx) - tall(notePx, noteLines) - 6;
@@ -971,11 +982,13 @@ function readiness(x: X): El {
   const noteW = Math.floor(words * 0.92);
   // A range: the qualifier (whole, or its short form) under the figure; then what grew, if there is room.
   const qPx = sz(12.5, scale, 1.5);
+  // E6: what grew is serif italic, so it is never under SERIF_MIN; the sans qualifier keeps qPx.
+  const qSerif = Math.max(SERIF_MIN, qPx);
   const qText = range ? (fitsLines(note, qPx, noteW, 2) ? note : qualifier) : '';
   const qLines = range ? (fitsLines(qText, qPx, noteW, 1) ? 1 : 2) : 0;
   const qH = range ? tall(qPx, qLines) + 2 : 0;
-  const extraH = tall(qPx) + 6;
-  const extraOk = range && Boolean(extra) && !x.big && fitsLines(extra as string, qPx, noteW, 1) && ih - top - qH - extraH >= 50;
+  const extraH = tall(qSerif) + 6;
+  const extraOk = range && Boolean(extra) && !x.big && fitsLines(extra as string, qSerif, noteW, 1) && ih - top - qH - extraH >= 50;
   const room = range ? ih - top - qH - (extraOk ? extraH : 0) : ih - top - tall(notePx, 2);
   return (
     <FlexWidget style={{ width: 'match_parent', height: 'match_parent', flexDirection: 'row', alignItems: 'center' }}>
@@ -986,7 +999,7 @@ function readiness(x: X): El {
         <FlexWidget style={{ flex: 1, flexDirection: 'column', justifyContent: 'center' }}>
           {range ? figure(x, face.title, face.unit, figPx(44, x, Math.max(28, room), 22), sz(20, scale, 1.15), c.ink2, 1, words) : heroText(face.title, face.short, F.serif, sz(26, scale, 1.2), SERIF_MIN, words, room, c.ink)}
           {range ? txt(qText, F.sans, qPx, c.ink2, { lines: qLines, mt: 2 }) : null}
-          {extraOk ? txt(extra as string, F.serifItalic, qPx, c.accentText, { mt: 6 }) : null}
+          {extraOk ? txt(extra as string, F.serifItalic, qSerif, c.accentText, { mt: 6 }) : null}
           {!range && note ? txt(fitsLines(note, notePx, noteW, 2) ? note : smallNote, F.serifItalic, notePx, c.accentText, { lines: 2, mt: 6 }) : null}
         </FlexWidget>
       </FlexWidget>

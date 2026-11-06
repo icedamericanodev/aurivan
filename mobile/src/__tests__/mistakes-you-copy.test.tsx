@@ -160,7 +160,9 @@ describe('You: the legend 1 → 5, and what Accuracy counts', () => {
     });
     mount(<You />);
     // The chart may break a name over two lines ("IS" / "Audit"): read it as words.
-    const t = allText().replace(/\s+/g, ' ');
+    // Grove You C2: the summary sentence above names the focus area too, so read from the chart on.
+    const all = allText().replace(/\s+/g, ' ');
+    const t = all.slice(all.indexOf('Estimated readiness'));
     const at = ['IS Audit', 'IT Governance', 'IS Acquisition', 'IS Operations', 'Info Protection'].map((n) => t.indexOf(n));
     expect(at.every((i) => i > -1)).toBe(true);
     expect([...at].sort((a, b) => a - b)).toEqual(at);

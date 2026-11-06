@@ -27,7 +27,7 @@ import Svg, { Circle, Line, Path } from 'react-native-svg';
 import { radius, space } from '../theme/tokens';
 import { useTheme } from '../theme/useTheme';
 import { ICON_STROKE, RotateCcw } from './icons';
-import { BigNum, Card, ICON_SIZE, T } from './ui';
+import { Card, ICON_SIZE, T } from './ui';
 
 /** A label tied to a mark's position grows with the text size up to here, then wraps (the caption carries the rest). */
 const PINNED_LABEL_SCALE = 1.3;
@@ -238,7 +238,7 @@ export function FlowFigure({ steps, cycle, scale }: { steps: FlowStep[]; cycle?:
           <View style={{ alignItems: 'center', width: 28 }}>
             {/* Grows with a large numeral instead of clipping it (1.22 review P6). */}
             <View style={{ minWidth: 28, minHeight: 28, padding: 2, borderRadius: radius.pill, backgroundColor: c.soft, alignItems: 'center', justifyContent: 'center' }}>
-              <BigNum value={String(i + 1)} size={17} color={c.accentText} />
+              <T v="aside" color={c.accentText}>{String(i + 1)}</T>
             </View>
             {(i < n - 1 || cycle || scale) && (
               <View style={{ width: 1.5, flex: 1, minHeight: 12, backgroundColor: c.accent, opacity: 0.8 }} />

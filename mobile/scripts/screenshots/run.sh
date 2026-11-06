@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Screenshot harness: web-export the app, seed demo data, capture key screens.
-# Usage (from mobile/): [SHOTS=motion2|fieldguide|forms|m149|m146|m145|m144|m143|m142|m141|guides|principles|qnote|today|firstdays|notes|data|pace|practice|milestones|support|paths|motion|growth|badges|badgesC|stats|learnplay|plant|fit|proof|settings|cloud|store] bash scripts/screenshots/run.sh [out_dir] [dark|light]
+# Usage (from mobile/): [SHOTS=grovedrills|grovebadges|groveplant|grove|motion2|fieldguide|forms|m149|m146|m145|m144|m143|m142|m141|guides|principles|qnote|today|firstdays|notes|data|pace|practice|milestones|support|paths|motion|growth|badges|badgesC|stats|learnplay|plant|fit|proof|settings|cloud|store] bash scripts/screenshots/run.sh [out_dir] [dark|light]
 # Needs Playwright (preinstalled in Claude cloud sessions; locally: npx playwright install chromium).
 set -euo pipefail
 cd "$(dirname "$0")/../.."
@@ -158,6 +158,26 @@ elif [ "${SHOTS:-}" = plant ]; then
   if [ "${PLANT:-}" != 4b ] && [ "${PLANT:-}" != 140 ]; then node scripts/screenshots/shoot_plant.mjs "$TMP/seed.json" "$OUT" "$THEME"; fi
   if [ "${PLANT:-}" != 140 ]; then node scripts/screenshots/shoot_plant4b.mjs "$TMP/seed.json" "$OUT" "$THEME"; fi
   if [ "${PLANT:-}" != 4b ]; then node scripts/screenshots/shoot_plant140.mjs "$TMP/seed.json" "$OUT" "$THEME"; fi
+elif [ "${SHOTS:-}" = groveplant ]; then
+  # Grove Phase 4b, the phone plant: Your plant on paper, Look, Pick, Today's hero, light and dark at
+  # 100% and about 200% text, and frame strips of the Turning and the stem leaf fill (shoot_grove_plant.mjs).
+  node scripts/screenshots/shoot_grove_plant.mjs "$TMP/seed.json" "$OUT"
+elif [ "${SHOTS:-}" = grovebadges ]; then
+  # Grove Phase 4b, the phone badges: the case as set cards with pressed paper tiles and planter lines,
+  # a sheet (earned with the vignette, not yet), share, the album, You's shelf and the press on Results,
+  # light and dark at 100% and about 200% text, with frame strips of the press (shoot_grove_badges.mjs).
+  node scripts/screenshots/shoot_grove_badges.mjs "$TMP/seed.json" "$OUT"
+elif [ "${SHOTS:-}" = grovedrills ]; then
+  # Grove Phase 4b, the phone drills: the Drills card, an intro, Call It First's folded options, a Snare
+  # Spotter round (step 1 with the hint, step 2, a right answer, a miss), the recap with a level-up and the
+  # next one, Field notes and Daylight's intro, light and dark at 100% and about 200% text, with frame
+  # strips of the right-answer reveal and the level-up and their Reduce Motion end states (shoot_grove_drills.mjs).
+  node scripts/screenshots/shoot_grove_drills.mjs "$TMP/seed.json" "$OUT"
+elif [ "${SHOTS:-}" = grove ]; then
+  # Grove Phase 1 and Today on the phone: Today (a new learner, 10 answers, past the first range), You,
+  # Settings and the floating tab bar, light and dark in one run (shoot_grove.mjs; THEMES=dark for one;
+  # FONT_SCALE=2 for about 200% text; GROVE_ONLY=today,you,settings,bar narrows it; GROVE_W=480 for a wide phone).
+  node scripts/screenshots/shoot_grove.mjs "$TMP/seed.json" "$OUT"
 elif [ "${SHOTS:-}" = fieldguide ]; then
   # Mobile 1.51 Field Guide: You, the Herbarium, Today and Results as plates (shoot_fieldguide.mjs;
   # FONT_SCALE=2 for about 200% text; FG_ONLY=you,herbarium,today,results narrows it).

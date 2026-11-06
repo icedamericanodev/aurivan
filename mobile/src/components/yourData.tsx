@@ -265,7 +265,7 @@ export function RestorePreview({
     <Modal visible={ready !== null} animationType={reduceMotion ? 'fade' : 'slide'} presentationStyle="pageSheet" onRequestClose={busy ? () => {} : onCancel}>
       <SafeAreaView edges={['top', 'bottom']} style={{ flex: 1, backgroundColor: c.raised2 }}>
         <ScrollView contentContainerStyle={{ padding: space.gutter, paddingBottom: space.xl }}>
-          <T v="display" accessibilityRole="header">Restore this backup?</T>
+          <T v="hero" accessibilityRole="header">Restore this backup?</T>
           {Number.isFinite(saved) && <T v="meta" style={{ marginTop: space.xs }}>{`Saved on ${dateOf(saved)}`}</T>}
           <T v="body" color={c.ink2} style={{ marginTop: space.md }}>
             {fresh

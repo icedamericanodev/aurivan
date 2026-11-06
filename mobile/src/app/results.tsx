@@ -64,13 +64,16 @@
  *   Done is the plate button.
  */
 import { router, useFocusEffect } from 'expo-router';
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { areasTitle } from '../components/youReadiness';
+import { scaledScoreNote } from '../content/scoreNote';
+import { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Alert, BackHandler, Pressable, View } from 'react-native';
 import { LeafStrip } from '../components/leafStrip';
 import { OptionCard, PickNote, TrustLine } from '../components/quiz';
 import { QuestionNote } from '../components/questionNote';
 import { useReportFlow } from '../components/support';
-import { todayMinutes } from '../components/journey';
+import { nextStepIndex, todayMinutes } from '../components/journey';
+import { shortenAtWord } from '../engine/textClip';
 import { EmptyPlate, FieldText, KeyCaption, KeyList, Plate, RunningHead, SpecimenLabel, SpecimenRow, StemChart } from '../components/fieldguide';
 import { emptyPlateLine, growthFigure, setStems } from '../engine/fieldGuide';
 import { STEADY_FROM } from '../engine/domainBand';
@@ -84,6 +87,7 @@ import { ICON_STROKE, Sprout } from '../components/icons';
 import { BigNum, Button, Enter, Gap, ICON_SIZE, InviteRow, Row, Screen, Section, T, useScreenScroll } from '../components/ui';
 import { getCertification } from '../content/certifications';
 import { findQuestion } from '../content/loader';
+import { questionExists } from '../lib/outline';
 import { findNote, subtopicOfQuestion } from '../content/notes';
 import { missedNoteGroups } from '../engine/outline';
 import { legacyTitle } from '../engine/planner';
@@ -95,6 +99,7 @@ import {
   moreMissedLine,
   noteKicker,
   resultsHeadline,
+  secondsWords,
   SMALL_SAMPLE,
   smallSampleFact,
   STRIP_MAX,
@@ -103,30 +108,166 @@ import {
   type LeafState,
 } from '../engine/resultsCopy';
 import { moveFocus, sayLater } from '../lib/a11y';
-import { displayToOriginal, originalToDisplay, renderText } from '../engine/shuffle';
-import { aboutMin, COACHING, coachingTag, practicePace, spokenMin, timeStat, TIMING_LABEL } from '../engine/pace';
+import { displayToOriginal, originalToDisplay, renderText, type Permutation } from '../engine/shuffle';
+import { aboutMin, coachingTag, practicePace, spokenMin, timeStat, TIMING_LABEL } from '../engine/pace';
+import { coachingLine } from '../lib/coachingCopy';
 import { msUsed, scoreSession, sessionPacing } from '../lib/finishSession';
 import { trapTip } from '../engine/games/trapSpotter';
 import { badgeNextLine } from '../lib/badges';
 import { momentFor } from '../lib/milestones';
 import { startFromIds } from '../lib/sessions';
 import { openTab, runPlanItem } from '../lib/actions';
-import { currentIndex, planComplete } from '../engine/dayPlan';
+import { currentIndex, planComplete, planLeft as sizedToLeft } from '../engine/dayPlan';
 import { dayKey } from '../engine/streak';
+import { dueIds } from '../engine/srs';
 import { selectCert, useProgress } from '../store/progress';
 import { questionTarget, sessionWhere } from '../lib/support';
-import { useSession } from '../store/session';
+import { useSession, type Response as SessionResponse } from '../store/session';
 import { motion, space } from '../theme/tokens';
 import { useTheme } from '../theme/useTheme';
 
 /** The growth plate's entrance group: its growth waits for this group to land (premium round 2, UX P4). */
 const PLATE_GROUP = 1;
 
+/**
+ * Grove Phase 4 (PHASE4.md 7.11 and 7.13): the key under the results chart, in the website's words, so
+ * the dashed line, the up arrow and the clay colour each say what they mean ("growth from this mock"
+ * after a mock).
+ */
+export function resultsKey(isMock: boolean): string {
+  return `Dashed line: ${STEADY_FROM}, the target for each area. ↑: growth from this ${isMock ? 'mock' : 'set'}. Clay: an area below ${STEADY_FROM}.`;
+}
+
+/** The key in words for screen readers: the "↑" glyph said as "Up arrow" (release bug hunt round 2). */
+export function resultsKeySpoken(isMock: boolean): string {
+  return resultsKey(isMock).replace('↑:', 'Up arrow:');
+}
+
+/**
+ * One row of Review answers (release bug hunt round 2). Memoised, with plain props, so a tap that
+ * opens or closes one row redraws only that row: before, every tap redrew the whole Results screen
+ * and all its rows (about 2,150 components after a 150-question mock). Grading and the letters are
+ * unchanged: picks are turned back into ORIGINAL letters (displayToOriginal), the key into the
+ * DISPLAY letter (originalToDisplay).
+ */
+const ReviewRow = memo(function ReviewRow({
+  id,
+  index: i,
+  certId,
+  perm,
+  response,
+  open,
+  where,
+  onToggle,
+}: {
+  id: string;
+  index: number;
+  certId: string;
+  perm: Permutation | undefined;
+  response: SessionResponse | undefined;
+  open: boolean;
+  where: string;
+  onToggle: (id: string) => void;
+}) {
+  const { c } = useTheme();
+  const q = useMemo(() => findQuestion(certId, id), [certId, id]);
+  if (!q || !perm) return null;
+  const r = response;
+  // Plain words (mobile 1.24): the glyphs ("✓", "✗", "○") were read aloud as "check mark", "ballot x".
+  const status = !r ? 'Skipped' : r.correct ? 'Correct' : 'Missed';
+  // Answered after Coach me: a right answer after a hint counts as half.
+  const assisted = Boolean(r?.assisted);
+  // Coaching (engine/pace.ts): only on a fast miss or a long, right answer.
+  const coaching = r ? coachingTag(r.correct, r.ms) : null;
+  // ONE quiet line instead of a row of tags (mobile 1.24): the hint and the pace note, together.
+  // Each on its own line, so "You used a hint." never reads as the cause of the pace advice (UX review nit).
+  const quietLines = [assisted ? 'You used a hint.' : null, coaching ? coachingLine(coaching) : null].filter((x): x is string => Boolean(x));
+  const quiet = quietLines.join(' ');
+  const color = !r ? c.muted : r.correct ? c.correct : c.wrong;
+  const picked = r ? displayToOriginal(r.display, perm) : undefined;
+  const correctDisplay = originalToDisplay(q.correct, perm);
+  return (
+    // A list row with a hairline below, not a card (spec §5).
+    <View style={{ borderBottomWidth: 1, borderBottomColor: c.line }}>
+      <Pressable
+        accessibilityRole="button"
+        accessibilityState={{ expanded: open }}
+        // One sentence each; the coaching line ends with its own full stop (O2). Open or closed is said
+        // once, from accessibilityState, and the gesture is the screen reader's own (release bug hunt round 3).
+        accessibilityLabel={`Question ${i + 1}, ${status}.${quiet ? ` ${quiet}` : ''}`}
+        accessibilityHint="Shows your answer and the explanation"
+        onPress={() => onToggle(id)}
+        style={({ pressed }) => ({ paddingVertical: 13, minHeight: 64, opacity: pressed ? 0.7 : 1 })}
+      >
+        <Row style={{ justifyContent: 'space-between' }}>
+          <T v="label" num>{`Question ${i + 1}`}</T>
+          <T v="label" color={color}>{status}</T>
+        </Row>
+        {quietLines.map((line) => (
+          <T key={line} v="meta" style={{ marginTop: space.xs }}>{line}</T>
+        ))}
+        {/* Folded: whole words, then one "…" (engine/textClip.ts), the answer screen's style; never cut inside a word. */}
+        <T v="body" style={{ marginTop: space.xs }}>{open ? q.stem : shortenAtWord(q.stem, 110)}</T>
+      </Pressable>
+      {open && (
+        <View style={{ paddingBottom: space.lg }}>
+          {/* The same rows as the answer screen (mobile 1.43): the DISPLAY letter in each badge and spoken
+              label, and the pick's own note under its red row. */}
+          {r && !r.correct && picked && (
+            <>
+              <OptionCard
+                letter={r.display}
+                text={q.options[picked] ?? ''}
+                state="wrong"
+                mark="letter"
+                tag="Your pick"
+                spoken={`Your pick, ${r.display}, not the best answer: ${q.options[picked] ?? ''}`}
+              />
+              {q.wrongExplanations[picked] ? <PickNote letter={r.display} text={renderText(q.wrongExplanations[picked]!, perm)} /> : null}
+            </>
+          )}
+          <OptionCard
+            letter={correctDisplay}
+            text={q.options[q.correct] ?? ''}
+            state="correct"
+            mark="letter"
+            tag="Best answer"
+            spoken={`Best answer, ${correctDisplay}: ${q.options[q.correct] ?? ''}`}
+          />
+          <T v="headline">{`Why ${correctDisplay}`}</T>
+          <T v="body" style={{ marginBottom: space.sm }}>{renderText(q.explanation, perm)}</T>
+          {trapTip(q) !== '' && (
+            <T v="small" color={c.ink2}>
+              {trapTip(q).startsWith('Final two:') ? '' : 'Trap: '}
+              {renderText(trapTip(q), perm)}
+            </T>
+          )}
+          {/* "Your note": the review is the best moment to reflect, and the only place a mock offers it. */}
+          <QuestionNote certId={certId} questionId={id} />
+          {/* Report a problem: mock questions are reported here, after the exam (never during it). */}
+          <TrustLine
+            certId={certId}
+            reference={q.reference}
+            target={questionTarget(certId, q, where, {
+              perm,
+              pickedDisplay: r?.display,
+            })}
+          />
+        </View>
+      )}
+    </View>
+  );
+});
+
 export default function Results() {
   const { c } = useTheme();
   const active = useSession((s) => s.active);
   const clear = useSession((s) => s.clear);
+  // When Results opened: the "now" for the plan's due count, read once on the first draw (not on every render).
+  const [openedAt] = useState(() => Date.now());
   const [openId, setOpenId] = useState<string | null>(null);
+  // One stable toggle for every review row (a memoised row then redraws only when its own `open` changes).
+  const toggleRow = useCallback((id: string) => setOpenId((cur) => (cur === id ? null : id)), []);
   // Mobile 1.43: "What you missed" → "See answers" jumps to the Review answers heading.
   const reviewHead = useRef<View>(null);
   const score = useMemo(() => (active ? scoreSession(active) : null), [active]);
@@ -225,6 +366,8 @@ export default function Results() {
   if (active.firstSet) return <FirstSetDone session={active} />;
 
   const cert = getCertification(active.certId)!;
+  // Where a report from a review row says it came from (a plain string, so the rows stay memoised).
+  const reviewWhere = sessionWhere(active.mode === 'mock' ? 'Mock review' : 'Practice review', active.title);
   const denominator = active.mode === 'mock' ? score.total : Math.max(score.answered, 1);
   const pct = Math.round((score.correct / denominator) * 100);
   // Missed: answered wrong. On a mock, a question left blank is missed too (it
@@ -291,13 +434,22 @@ export default function Results() {
   // question) hands back to today's plan, if it has time left: "Today's plan · about N min left",
   // Continue or Done for now. Read once (not a live value).
   const oneQuestion = active.title === 'Quick question' || active.title === 'Recall card';
-  const todayPlan = oneQuestion && active.mode !== 'mock' && !guidedScope ? useProgress.getState().days[active.certId] : undefined;
-  const planLeft = todayPlan && todayPlan.day === dayKey(active.finishedAt ?? active.startedAt) && !planComplete(todayPlan) ? todayMinutes(todayPlan.items, todayPlan.done) : 0;
+  const storedPlan = oneQuestion && active.mode !== 'mock' && !guidedScope ? useProgress.getState().days[active.certId] : undefined;
+  // Sized to what is left (round 4: answers banked today count toward their step).
+  const todayPlan = storedPlan ? sizedToLeft(storedPlan) : undefined;
+  // Grove Phase 4 (7.11 carry item): the questions due now, read once like the plan, so a review step with
+  // nothing due adds no minutes. Today passes the same count, so both screens give the same total.
+  const dueNow = todayPlan ? dueIds(selectCert(useProgress.getState(), active.certId).review, openedAt, questionExists(active.certId)).length : 0;
+  const planLeft = todayPlan && todayPlan.day === dayKey(active.finishedAt ?? active.startedAt) && !planComplete(todayPlan) ? todayMinutes(todayPlan.items, todayPlan.done, dueNow) : 0;
   const continuePlan = () => {
     const plan = todayPlan;
     clear();
     openTab('/home');
-    if (plan) runPlanItem(plan.items[currentIndex(plan)], cert.id);
+    if (plan) {
+      // The next step with something to do (an empty review step is passed over, as on Today).
+      const next = nextStepIndex(plan, dueNow);
+      runPlanItem(plan.items[next >= 0 ? next : currentIndex(plan)], cert.id);
+    }
   };
 
   const practiseMissed = () => {
@@ -330,7 +482,15 @@ export default function Results() {
   const stems = setStems(cert.domains, readinessNow.domains, score.byDomain, active.before);
   const plateLine = emptyPlateLine(stems);
   const figure = stems.length === 1 ? growthFigure(stems[0]) : null;
-  const plateTitle = stems.length === 1 ? `${stems[0].name}${figure && !figure.down ? ', new growth' : ''}` : 'This set’s areas';
+  // The plate's numbers are each area's score overall, after this set (the set's own count is the line under
+  // each, "2 of 3 this set"), so the title says so, as the website's set results do ("Your domains after this set").
+  // Grove Phase 4 (PHASE4.md 7.13): after a mock the caption says so ("Your five areas after this mock").
+  const plateTitle =
+    active.mode === 'mock'
+      ? `Your ${areasTitle(stems.length).split(' ')[0].toLowerCase()} ${stems.length === 1 ? 'area' : 'areas'} after this mock`
+      : stems.length === 1
+        ? `${stems[0].name}, ${figure && !figure.down ? 'new growth' : 'after this set'}`
+        : 'Your areas after this set';
 
   return (
     <Screen edges={['top', 'bottom']} onScroll={moment && !momentSeen ? watch : undefined} onScrollBeginDrag={moment ? () => skipMoment.current?.() : undefined}>
@@ -340,7 +500,8 @@ export default function Results() {
         {/* A timed mock that ended on the clock says so first (seen here, spoken by the effect above). */}
         {timedOut && (
           <View accessible accessibilityLabel={`${TIMES_UP_LINE} ${TIMES_UP_DETAIL}`} style={{ marginTop: space.sm }}>
-            <T v="label" color={c.clay}>{TIMES_UP_LINE}</T>
+            {/* The miss tone, never clay (PHASE4 4.1): clay means an area below the line. */}
+            <T v="label" color={c.wrong}>{TIMES_UP_LINE}</T>
             <T v="meta">{TIMES_UP_DETAIL}</T>
           </View>
         )}
@@ -367,8 +528,13 @@ export default function Results() {
             <StemChart stems={stems} line={STEADY_FROM} play={grow ? (active.before ? 'growth' : 'trace') : false} delay={motion.dur.enter + PLATE_GROUP * motion.stagger.group} />
           </Plate>
         )}
+        {/* The chart's key (7.11): the "70 line" label is gone from the chart, so the key says what the dashed line,
+            the up arrow and clay mean, as the website's results do. Only when a chart is drawn. */}
+        {!plateLine && <KeyCaption label="Key" spoken={resultsKeySpoken(isMock)}>{resultsKey(isMock)}</KeyCaption>}
         {range.enough && (
-          <KeyCaption label="NOTE">{`Readiness is ${range.low}–${range.high}%: a study estimate, not a prediction.`}</KeyCaption>
+          // TYPE_SCALE 2.1: a range reads "68 to 78", never a dash (matches the web; a screen reader may say a dash as "minus").
+          // The caps come from the head cut's textTransform.
+          <KeyCaption label="Note">{`Readiness is ${range.low} to ${range.high}%: a study estimate, not a prediction.`}</KeyCaption>
         )}
       </Enter>
 
@@ -405,13 +571,13 @@ export default function Results() {
               value={String(pace.own)}
               unit="s"
               note={`Exam pace: about ${pace.exam} s`}
-              spoken={`${pace.own} seconds. Exam pace about ${pace.exam} seconds`}
+              spoken={`${secondsWords(pace.own)}. Exam pace about ${secondsWords(pace.exam)}`}
             />
           ) : null}
         </SpecimenLabel>
         {isMock && (
           <T v="meta" style={{ marginTop: space.md }}>
-            Practice scores are not scaled exam scores. {cert.exam.passingNote}
+            Practice scores are not scaled exam scores. {scaledScoreNote(cert)}
           </T>
         )}
         {/* How well "how sure I felt" matched the result (only when enough answers were rated). */}
@@ -499,94 +665,19 @@ export default function Results() {
       </View>
 
       <Section title="Review answers" headRef={reviewHead} />
-      {active.questionIds.map((id, i) => {
-        const q = findQuestion(active.certId, id);
-        const perm = active.perms[id];
-        if (!q || !perm) return null;
-        const r = active.responses[id];
-        // Plain words (mobile 1.24): the glyphs ("✓", "✗", "○") were read aloud as "check mark", "ballot x".
-        const status = !r ? 'Skipped' : r.correct ? 'Correct' : 'Missed';
-        // Answered after Coach me: a right answer after a hint counts as half.
-        const assisted = Boolean(r?.assisted);
-        // Coaching (engine/pace.ts): only on a fast miss or a long, right answer.
-        const coaching = r ? coachingTag(r.correct, r.ms) : null;
-        // ONE quiet line instead of a row of tags (mobile 1.24): the hint and the pace note, together.
-        // Each on its own line, so "You used a hint." never reads as the cause of the pace advice (UX review nit).
-        const quietLines = [assisted ? 'You used a hint.' : null, coaching ? COACHING[coaching].line : null].filter((x): x is string => Boolean(x));
-        const quiet = quietLines.join(' ');
-        const color = !r ? c.muted : r.correct ? c.correct : c.wrong;
-        const open = openId === id;
-        const picked = r ? displayToOriginal(r.display, perm) : undefined;
-        const correctDisplay = originalToDisplay(q.correct, perm);
-        return (
-          // A list row with a hairline below, not a card (spec §5).
-          <View key={id} style={{ borderBottomWidth: 1, borderBottomColor: c.line }}>
-            <Pressable
-              accessibilityRole="button"
-              accessibilityState={{ expanded: open }}
-              // One sentence each; the coaching line ends with its own full stop (O2).
-              accessibilityLabel={`Question ${i + 1}, ${status}.${quiet ? ` ${quiet}` : ''} Tap to ${open ? 'collapse' : 'expand'}`}
-              onPress={() => setOpenId(open ? null : id)}
-              style={({ pressed }) => ({ paddingVertical: 13, minHeight: 64, opacity: pressed ? 0.7 : 1 })}
-            >
-              <Row style={{ justifyContent: 'space-between' }}>
-                <T v="label" num>{`Question ${i + 1}`}</T>
-                <T v="label" color={color}>{status}</T>
-              </Row>
-              {quietLines.map((line) => (
-                <T key={line} v="meta" style={{ marginTop: space.xs }}>{line}</T>
-              ))}
-              <T v="body" style={{ marginTop: space.xs }}>{open ? q.stem : `${q.stem.slice(0, 110)}${q.stem.length > 110 ? '…' : ''}`}</T>
-            </Pressable>
-            {open && (
-              <View style={{ paddingBottom: space.lg }}>
-                {/* The same rows as the answer screen (mobile 1.43): the DISPLAY letter in each badge and spoken
-                    label, and the pick's own note under its red row. */}
-                {r && !r.correct && picked && (
-                  <>
-                    <OptionCard
-                      letter={r.display}
-                      text={q.options[picked] ?? ''}
-                      state="wrong"
-                      mark="letter"
-                      tag="Your pick"
-                      spoken={`Your pick, ${r.display}, not the best answer: ${q.options[picked] ?? ''}`}
-                    />
-                    {q.wrongExplanations[picked] ? <PickNote letter={r.display} text={renderText(q.wrongExplanations[picked]!, perm)} /> : null}
-                  </>
-                )}
-                <OptionCard
-                  letter={correctDisplay}
-                  text={q.options[q.correct] ?? ''}
-                  state="correct"
-                  mark="letter"
-                  tag="Best answer"
-                  spoken={`Best answer, ${correctDisplay}: ${q.options[q.correct] ?? ''}`}
-                />
-                <T v="headline">{`Why ${correctDisplay}`}</T>
-                <T v="body" style={{ marginBottom: space.sm }}>{renderText(q.explanation, perm)}</T>
-                {trapTip(q) !== '' && (
-                  <T v="small" color={c.ink2}>
-                    {trapTip(q).startsWith('Final two:') ? '' : 'Trap: '}
-                    {renderText(trapTip(q), perm)}
-                  </T>
-                )}
-                {/* "Your note": the review is the best moment to reflect, and the only place a mock offers it. */}
-                <QuestionNote certId={active.certId} questionId={id} />
-                {/* Report a problem: mock questions are reported here, after the exam (never during it). */}
-                <TrustLine
-                  certId={active.certId}
-                  reference={q.reference}
-                  target={questionTarget(active.certId, q, sessionWhere(active.mode === 'mock' ? 'Mock review' : 'Practice review', active.title), {
-                    perm,
-                    pickedDisplay: r?.display,
-                  })}
-                />
-              </View>
-            )}
-          </View>
-        );
-      })}
+      {active.questionIds.map((id, i) => (
+        <ReviewRow
+          key={id}
+          id={id}
+          index={i}
+          certId={active.certId}
+          perm={active.perms[id]}
+          response={active.responses[id]}
+          open={openId === id}
+          where={reviewWhere}
+          onToggle={toggleRow}
+        />
+      ))}
       {/* The app's own problems (a score, the timer, a freeze): one quiet ghost button at the end. */}
       <View style={{ marginTop: space.xl, alignItems: 'flex-start' }}>
         <Button

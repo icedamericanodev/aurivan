@@ -15,10 +15,11 @@
 import { router } from 'expo-router';
 import { useMemo, useState } from 'react';
 import { AccessibilityInfo, View } from 'react-native';
+import type { ItemResult } from '../../components/drillKit';
 import { GameFrame, GameIntro, PlayableGate, RevealCard, RoundEnd } from '../../components/game';
 import { BookOpen, ICON_STROKE } from '../../components/icons';
 import { OptionCard, type OptionState } from '../../components/quiz';
-import { Button, Gap, ICON_SIZE, ListRow, Row, Stem, T, useFontScale } from '../../components/ui';
+import { Button, Gap, groveCard, ICON_SIZE, ListRow, Row, Stem, T, useFontScale } from '../../components/ui';
 import { getNotes } from '../../content/notes';
 import { LETTERS } from '../../content/types';
 import { clip, firstSentence, type RecapMiss } from '../../engine/games/recap';
@@ -115,7 +116,18 @@ function RootOrRumor() {
     const again = readAgain(progress.cards).filter((sub) => touched.has(sub));
     const nameOf = (sub: string) => round.find((s) => s.subtopicId === sub)?.subtopicName ?? sub;
     return (
-      <RoundEnd certId={cert.id} game="rumor" score={score} max={round.length} misses={misses} reviewNote={MISS_LINE} onAgain={start} news={news}>
+      <RoundEnd
+        certId={cert.id}
+        game="rumor"
+        score={score}
+        max={round.length}
+        misses={misses}
+        reviewNote={MISS_LINE}
+        onAgain={start}
+        news={news}
+        results={taps.map((t): ItemResult => (t ? 'right' : 'missed'))}
+        tierLines={RUMOR_TIER_LINE}
+      >
         <T v="small" num>{`Longest run of right calls: ${longestRun(taps)}`}</T>
         {whysAsked > 0 && <T v="small" num style={{ marginTop: space.xs }}>{`“Why?” right: ${whysRight} of ${whysAsked}`}</T>}
         {again.length > 0 && (
@@ -135,7 +147,6 @@ function RootOrRumor() {
             ))}
           </View>
         )}
-        <Gap h={space.md} />
       </RoundEnd>
     );
   }
@@ -214,6 +225,7 @@ function RootOrRumor() {
       index={i}
       total={round.length}
       score={score}
+      results={taps.map((t): ItemResult => (t ? 'right' : 'missed'))}
       footer={
         revealed ? (
           <Button label={i === round.length - 1 ? 'See results' : 'Next statement'} onPress={next} />
@@ -276,13 +288,18 @@ function RootOrRumor() {
           />
           {/* The note: always for a Root; for a Rumor when it caught the learner (UX review O4). */}
           {(s.kind === 'root' || !right) && (
-            <Button
-              kind="ghost"
-              label="Read the note"
-              accessibilityHint={`Opens the study note on ${s.subtopicName}`}
-              onPress={() => router.push(`/notes/subtopic/${encodeURIComponent(s.subtopicId)}`)}
-              style={{ marginTop: space.sm }}
-            />
+            // Grove 4b (PHASE4B 6.6): "Read the note" as the answer screen's Go deeper row, in one card.
+            <View testID="go-deeper-card" style={[groveCard(c), { marginTop: space.md, paddingHorizontal: space.lg }]}>
+              <ListRow
+                icon={<BookOpen size={ICON_SIZE.row} color={c.accentText} strokeWidth={ICON_STROKE} />}
+                kicker="Go deeper · read the note"
+                title={s.subtopicName}
+                accessibilityLabel={`Read the note: ${s.subtopicName}`}
+                accessibilityHint={`Opens the study note on ${s.subtopicName}`}
+                onPress={() => router.push(`/notes/subtopic/${encodeURIComponent(s.subtopicId)}`)}
+                last
+              />
+            </View>
           )}
         </View>
       )}

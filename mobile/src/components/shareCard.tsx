@@ -20,7 +20,7 @@
  */
 import * as Sharing from 'expo-sharing';
 import { useEffect, useRef, useState, type ReactNode } from 'react';
-import { Modal, Platform, ScrollView, Share, useWindowDimensions, View } from 'react-native';
+import { Modal, Platform, ScrollView, Share, Text, useWindowDimensions, View } from 'react-native';
 import { moveFocus } from '../lib/a11y';
 import { useMotion } from './motion';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -279,11 +279,11 @@ export function BadgeShareCard({ text, art }: { text: BadgeCardText; art: ReactN
           {art}
         </View>
         <T v="caption" center color={cardInk.ink2} maxFontSizeMultiplier={FIXED} style={{ marginTop: space.xs }}>{text.caption}</T>
-        <T v="hero" center color={cardInk.ink} maxFontSizeMultiplier={FIXED} style={[cardType.name, { marginTop: space.sm }]}>{text.name}</T>
+        <Text maxFontSizeMultiplier={FIXED} style={[cardType.name, { color: cardInk.ink, textAlign: 'center', marginTop: space.sm }]}>{text.name}</Text>
         {text.tierLine && (
           <T v="caption" center color={cardInk.sap} maxFontSizeMultiplier={FIXED} style={{ marginTop: 2 }}>{text.tierLine}</T>
         )}
-        <T v="quote" center color={cardInk.ink} maxFontSizeMultiplier={FIXED} style={[cardType.skill, { marginTop: space.xs }]}>{text.skill}</T>
+        <Text maxFontSizeMultiplier={FIXED} style={[cardType.skill, { color: cardInk.ink, textAlign: 'center', marginTop: space.xs }]}>{text.skill}</Text>
       </View>
       <View style={{ paddingTop: space.sm, borderTopWidth: 1, borderTopColor: cardInk.line }}>
         <T v="caption" color={cardInk.ink} maxFontSizeMultiplier={FIXED}>{text.headline}</T>

@@ -361,14 +361,14 @@ The built answer screen (F12, `PHASE4.md` 4.2) with the drill's own content, in 
 2. **Verdict:** the built Verdict component (leaf mark, the word in `hero` in its state colour, coach line `aside`). The drill's words: "Snare spotted", "Correct", "Not quite". A miss is calm: no shake, no flash, no sound; the twig leaf stays an outline.
 3. **Two-half line** (Snare Spotter, Signpost, Call It First only; never Forecast, Daylight or one-step games): one `small` line at the top of the answer card, naming only what was earned, never repeating the verdict or the answer card. The four cases (Snare Spotter words; Signpost's and Call It First's half names come from engine copy, listed and checked before the drills build, or are left out):
    - Both halves earned: verdict "Snare spotted" (Signpost and Call It First: "Correct"); no line.
-   - One half earned: verdict "Not quite"; the line names only the earned half: "Snare spotted, 1 point." or "Best answer picked, 1 point."
+   - One half earned: verdict "Half right" in clay with a neutral mark (release prep 2.0.0; a red "Not quite" above "Best answer picked, 1 point." read as a contradiction); the line names only the earned half: "Snare spotted, 1 point." or "Best answer picked, 1 point."
    - Neither half: verdict "Not quite"; no line.
    - The best answer tapped as the snare (revealed, 0 points, `trapSpotter.ts:84`): verdict "Not quite"; never credit the answer half; no line.
    - The twig leaf fills only when both halves are earned, so the twig, the verdict and What caught you agree. Never "No point".
 4. **Answer card**, untinted: "Your answer", "Best answer", and a "Snare" row with why it tempts (`caption` label in `--text2`, outline letter badge, never clay); then "Other options" as the built muted list.
 5. **How to think about it:** the built tips card, with the item's Final two and Exam cue rows (and Eliminate two where the item has it), word for word.
 6. **"Why A, and the key idea"**: a closed disclosure (48pt, the built Read more pattern), holding the explanation and the key idea.
-7. Next (solid, sticky footer). Focus moves to the verdict heading after 400 ms; announced once, matching the two-half line: both halves "Snare spotted. D was built to fool you, and A is the best. Two points."; one half "Not quite. Snare spotted, 1 point." (or "Not quite. Best answer picked, 1 point."); none "Not quite." The answer card is read as the learner moves through it.
+7. Next (solid, sticky footer). Focus moves to the verdict heading after 400 ms; announced once, matching the two-half line: both halves "Snare spotted. D was built to fool you, and A is the best. Two points."; one half "Half right. Snare spotted, 1 point." (or "Half right. Best answer picked, 1 point."; "Not quite" until 2.0.0); none "Not quite." The answer card is read as the learner moves through it.
 
 ### 6.5 Round recap
 

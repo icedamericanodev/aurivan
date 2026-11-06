@@ -418,11 +418,11 @@ describe('the words and taps a learner sees', () => {
     expect(priv).toContain('Rings growing');
   });
 
-  it('Your plant, 2×2: the plant is the hero on its plate, "Fig. 3 · Shoot", and the stage word stays at 200%', () => {
+  it('Your plant, 2×2: the plant is the hero on its plate, "Growth 3 · Shoot", and the stage word stays at 200%', () => {
     const tree = build('plant', snap(), 182, 184);
     const hero = svgs(tree).reduce((m, p) => Math.max(m, (p.width as number) ?? 0), 0);
     expect(hero).toBeGreaterThanOrEqual(100);
-    expect(texts(tree)).toContain('Fig. 3 · Shoot');
+    expect(texts(tree)).toContain('Growth 3 · Shoot');
     expect(texts(build('plant', snap(), 182, 184, 'light', 2)).join(' ')).toContain('Shoot');
   });
 

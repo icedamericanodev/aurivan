@@ -297,8 +297,10 @@ describe('the session’s moment already spent', () => {
     mount(<FormReveal {...props} onDone={onDone} />);
     expect(byTestID('rv-wait')).toHaveLength(1);
     const words = textOf(byTestID('rv-words')[0]);
-    expect(words).toContain(FORM_FACTS[3]);
+    // Grove Phase 4b (PHASE4B 4.4): the fact sits above the art; the button and its line under it.
+    expect(textOf(byTestID('rv-fact')[0])).toContain(FORM_FACTS[3]);
     expect(words).toContain('See Kai’s new form');
+    expect(words).toContain('It plays when you tap.');
     expect(words).not.toContain('The Whip Oak');
     expect(byTestID('rv-words')[0].props.accessibilityElementsHidden).toBe(false);
     expect(said()).toEqual([]);

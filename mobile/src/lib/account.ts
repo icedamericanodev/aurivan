@@ -20,11 +20,9 @@ import { CLOUD, PROVIDERS } from '../cloud/flag';
 import { errorCode, CloudError, type AccountInfo, type CloudErrorCode } from '../cloud/types';
 import { accountExportFileName, deleteGate, deleteStep, providersFor, TERMS_VERSION, type Provider } from '../engine/account';
 import { SIGNED_OUT, useAccount } from '../store/account';
-import { useBackup } from '../store/backup';
 import { useProgress } from '../store/progress';
-import { useSession } from '../store/session';
 import { SYNC_OFF, useSyncMeta } from '../store/sync';
-import { sweepBackupFiles, wipeLocalStudy, type WipeAlso } from './backup';
+import { resetLocalProgress, wipeLocalStudy, type WipeAlso } from './backup';
 import { refreshWidgets } from './widgets';
 import { REVEAL_KEY, WIDGET_KEY } from '../engine/widgets';
 import { useWidgetStore } from '../store/widgets';
@@ -373,11 +371,7 @@ const pickFacts = (s: ReturnType<typeof useAccount.getState>) => ({
 
 /** Clear study progress on this phone for every exam: Settings → Reset's path, for each one (removeAllLocal's fallback). */
 function removeLocalProgress() {
-  const { byCert, resetCert } = useProgress.getState();
-  for (const certId of Object.keys(byCert)) resetCert(certId);
-  useSession.getState().clear();
-  useBackup.getState().setUndo(null);
-  sweepBackupFiles();
+  resetLocalProgress(Object.keys(useProgress.getState().byCert));
 }
 
 // ── Download my data ──────────────────────────────────────────────────

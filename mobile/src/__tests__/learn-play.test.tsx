@@ -21,7 +21,8 @@ import LessonPlayer, { lessonPracticeIds } from '../app/lesson/[id]';
 import Learn, { upNextMeta, upNextReason } from '../app/(tabs)/learn';
 import { Drills } from '../components/drills';
 import { branchLeaves, DomainRing, GAME_GLYPHS, GameGlyph, LeafBig, LessonBranch, sparkPoints, TierLeaf, TierLeafMorph } from '../components/glyphs';
-import { T } from '../components/ui';
+import { ProgressBar, T } from '../components/ui';
+import { groveLight } from '../theme/grove';
 import { GameFrame, RoundEnd, RoundScore } from '../components/game';
 import { lessonMap, partDelay, SceneView, splitCoachText } from '../components/lesson';
 import { CheckDraw, Collapse, DrawLine, FadeIn, Pop, resetCelebrationsForTest, Turn } from '../components/motion';
@@ -290,7 +291,7 @@ describe('helpers', () => {
   });
 
   it('the cover’s meta line says its length and why, and speaks "minute" for one', () => {
-    expect(upNextMeta(5, 'focus', 'lesson 2 of 7')).toEqual({ meta: '5 min · picked where you can gain the most', spoken: '5 minutes, picked where you can gain the most' });
+    expect(upNextMeta(5, 'focus', 'lesson 2 of 7')).toEqual({ meta: '5 min · where you’ll gain most', spoken: '5 minutes, where you’ll gain most' });
     expect(upNextMeta(1, 'next', 'lesson 2 of 7')).toEqual({ meta: '1 min · lesson 2 of 7', spoken: '1 minute, lesson 2 of 7' });
   });
 
@@ -435,7 +436,8 @@ describe('Learn', () => {
     expect(rows[0]).toMatch(/, done$/);
     expect(rows[1]).toMatch(/, up next$/);
     expect(rows[2]).toMatch(/, \d+ min$/);
-    // Mobile 1.24: "Up next" is said once, on the cover. The trail row has no caption and no card.
+    // Mobile 1.24: the next lesson is named once, on the cover (Grove Phase 4: its kicker "Up next ·
+    // IS Audit"; the area's row adds only the mint "Next" word). The trail row has no caption and no card.
     expect(allText().match(/Up next/g)).toHaveLength(1);
     // …and its row is not a raised card that bleeds past the page gutter (no negative margin, no fill).
     const upRow = root().findAll((n) => n.props.accessibilityRole === 'button' && /, up next$/.test(String(n.props.accessibilityLabel)))[0];
@@ -446,14 +448,15 @@ describe('Learn', () => {
 
   it('a domain with nothing done draws no empty track (five grey bars read as five failures)', () => {
     mount(<Learn />);
-    // Nothing done anywhere: every ring is one quiet `track` ring (no centre dot,
-    // never the `control` outline that reads as a radio button), and no progress bar.
+    // Nothing done anywhere: every ring is one empty outline ring (no centre dot), and no progress bar.
+    // Grove Phase 4 (PHASE4.md section 6): the empty ring is `leafLine` (3:1), no longer the 1.2:1 track.
     const rings = root().findAllByType(DomainRing);
     expect(rings.every((x) => x.props.done === 0)).toBe(true);
     for (const ring of rings) {
       expect(ring.findAllByType(Circle).length).toBe(1);
-      expect(ring.props.outline).toBe(ring.props.track);
+      expect(ring.props.outline).toBe(groveLight.leafLine);
     }
+    expect(root().findAllByType(ProgressBar)).toHaveLength(0);
   });
 });
 
@@ -490,7 +493,7 @@ describe('Play identity', () => {
       </GameFrame>,
     );
     const head = root().find((n) => n.props.accessibilityRole === 'header' && n.props.accessible === true);
-    expect(head.props.accessibilityLabel).toBe('Snare Spotter, 1 of 5');
+    expect(head.props.accessibilityLabel).toBe('Snare Spotter, 1 of 5. Beating distractors');
     expect(root().findAllByType(GameGlyph)).toHaveLength(1);
     act(() => {
       r!.update(

@@ -36,6 +36,8 @@ describe('areaStems', () => {
     ]);
     expect(stems[3].spoken).toBe('IS Operations: Building, 61 percent on latest tries, below the 70 line. Up 3 since you last looked');
     expect(stems[2].spoken).toBe('IS Acquisition: not started');
+    // Grove panel Q2: a thin area is said like the website's row, never "seed".
+    expect(stems[1].spoken).toBe('IT Governance, 12 of 30 answers, too few yet for a score.');
   });
 });
 
@@ -56,7 +58,7 @@ describe('setStems and the growth plate', () => {
     ]);
     expect(growthFigure(stems[1])).toEqual({ shown: '58 → 61%', line: 'IS Operations grew 3 points in this set', spoken: 'IS Operations, from 58 to 61 percent on latest tries', down: false });
     expect(growthFigure(stems[0])).toBeNull();
-    expect(stems[0].spoken).toBe('IS Acquisition: too few yet, 18 answered. 3 of 4 this set');
+    expect(stems[0].spoken).toBe('IS Acquisition, 18 of 30 answers, too few yet for a score. 3 of 4 this set');
   });
 
   it('a drop is said as plainly as a gain, in points (web parity)', () => {

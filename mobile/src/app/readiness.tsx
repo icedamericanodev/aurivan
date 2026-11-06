@@ -29,7 +29,9 @@
  * Honest numbers: no pass, fail or guarantee wording anywhere; practice
  * scores are not scaled exam scores, and the screen says so.
  */
+import { HoldContext } from '../lib/holdWhileHidden';
 import { router, useLocalSearchParams } from 'expo-router';
+import { scaledScoreNote } from '../content/scoreNote';
 import { lessonsFor } from '../content/lessons';
 import { noteDomain } from '../content/notes';
 import { openTab } from '../lib/actions';
@@ -38,7 +40,7 @@ import { ScrollView, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { ReadinessFigure } from '../components/journey';
 import { ICON_STROKE, ListChecks } from '../components/icons';
-import { Collapse } from '../components/motion';
+import { Collapse, useScreenFocus } from '../components/motion';
 import { DisclosureRow } from '../components/pathChooser';
 import { DomainReportRow, type DomainLink, FRAMING_LINE, HOW_LINE, lowMarks, mockSubtitle, PRACTICE_SCORES_NOTE, ScoreChart, TrendLegend, trendMarks, useChartWidth } from '../components/readinessReport';
 import { PlanLeaf } from '../components/glyphs';
@@ -84,7 +86,21 @@ import { useTheme } from '../theme/useTheme';
 /** Your mocks shows the newest this many, then "Show all N mocks" (UX review P8). */
 export const MOCKS_SHOWN = 5;
 
+/**
+ * Release bug hunt round 4: this screen stays mounted under a pushed session (or the Look screen).
+ * While it is covered its reads are held (lib/holdWhileHidden.ts), so an answer no longer redraws
+ * it; back in view, it reads the live progress once. The same pattern as the badge case.
+ */
 export default function ReadinessReport() {
+  const focused = useScreenFocus();
+  return (
+    <HoldContext.Provider value={!focused}>
+      <ReadinessReportScreen />
+    </HoldContext.Provider>
+  );
+}
+
+function ReadinessReportScreen() {
   const { c } = useTheme();
   const params = useLocalSearchParams<{ mock?: string | string[] }>();
   // A repeated key arrives as an array: only a single id can open a mock (code review M5a).
@@ -218,7 +234,7 @@ export default function ReadinessReport() {
           accessibilityLabel={range.enough ? `Estimated readiness ${rangeSpoken(range)}.` : `Not enough data yet. ${range.needed} more ${range.needed === 1 ? 'answer' : 'answers'} until your readiness range.`}
           style={{ marginTop: space.lg }}
         >
-          <ReadinessFigure range={range} />
+          <ReadinessFigure range={range} report />
           <T v="meta" style={{ marginTop: 4 }}>
             {range.enough ? 'estimated readiness' : `${range.needed} more ${range.needed === 1 ? 'answer' : 'answers'} until your readiness range`}
           </T>
@@ -287,7 +303,7 @@ export default function ReadinessReport() {
           </>
         ) : trend.length === 1 ? (
           <View accessible accessibilityLabel={`Your mock: ${trend[0].pct} percent, ${trend[0].kind === 'full' ? 'a full mock' : trend[0].kind === 'mini' ? 'a mini mock' : `${mocks[0].total} questions`}, ${shortDate(trend[0].at)}.`} style={{ marginTop: space.xs }}>
-            <BigNum value={String(trend[0].pct)} pct size={34} />
+            <BigNum value={String(trend[0].pct)} pct size={38} />
             <T v="meta">{`${trend[0].kind === 'full' ? 'Full mock' : trend[0].kind === 'mini' ? 'Mini mock' : `${mocks[0].total} questions`} · ${shortDate(trend[0].at)}${trend[0].timed ? '' : ' · untimed'}`}</T>
           </View>
         ) : (
@@ -304,7 +320,7 @@ export default function ReadinessReport() {
             {words && <T v="small" style={{ marginTop: space.sm }}>{words}</T>}
           </View>
         )}
-        <T v="meta" style={{ marginTop: space.md }}>{`${PRACTICE_SCORES_NOTE} ${cert.exam.passingNote}`}</T>
+        <T v="meta" style={{ marginTop: space.md }}>{`${PRACTICE_SCORES_NOTE} ${scaledScoreNote(cert)}`}</T>
 
         {/* 6. Domain by domain */}
         <Section title="Domain by domain" />
@@ -334,7 +350,7 @@ export default function ReadinessReport() {
         {/* 8. Your path: the six steps. "Now: Make it stick", no "Step N of 6"
             counter (UX review P1, decided): the plan can move back a step. */}
         <Section title="Your path" />
-        <T v="stage">{stepLabel(stage)}</T>
+        <T v="quote">{stepLabel(stage)}</T>
         <View style={{ marginTop: space.sm }}>
           {PATH_STEPS.map((s, i) => {
             const now = i === stepNow;

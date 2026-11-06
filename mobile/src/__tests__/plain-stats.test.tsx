@@ -252,10 +252,10 @@ describe('the Results ring legend at 360 dp (UX H1)', () => {
     }
   });
 
-  it('the readiness range never breaks after its dash', () => {
+  it('the readiness range reads "67 to 77" and never breaks inside', () => {
     const cisa = getCertification('cisa')!;
     const readiness = { ...computeReadiness(cisa, {}), score: 0.7 };
     const plan = newDayPlan('2026-10-12', 'cisa', [{ kind: 'review', count: 1 }], computeReadiness(cisa, {}));
-    expect(clearingLine(plan, readiness, { enough: true, low: 67, high: 77 } as never)).toBe('Readiness grew to 67–\u206077%');
+    expect(clearingLine(plan, readiness, { enough: true, low: 67, high: 77 } as never)).toBe('Readiness grew, now 67\u00a0to\u00a077%');
   });
 });

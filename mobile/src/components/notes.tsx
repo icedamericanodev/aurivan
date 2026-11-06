@@ -118,7 +118,7 @@ const AnimatedCircle = Animated.createAnimatedComponent(Circle);
  * a faint seam showed where the two met (1.25 review).
  */
 function StillMark({ state }: { state: NoteReadState }) {
-  const { c } = useTheme();
+  const { c, g } = useTheme();
   if (state === 'read') {
     return (
       <Svg width={24} height={24} viewBox="0 0 24 24">
@@ -128,7 +128,8 @@ function StillMark({ state }: { state: NoteReadState }) {
   }
   return (
     <Svg width={24} height={24} viewBox="0 0 24 24">
-      <Circle cx={12} cy={12} r={11} fill="none" stroke={state === 'none' ? c.track : c.accent} strokeWidth={2} />
+      {/* Grove Phase 4: the empty ring is leafLine (3:1 or more), a state, never the 1.2:1 track. */}
+      <Circle cx={12} cy={12} r={11} fill="none" stroke={state === 'none' ? g.leafLine : c.accent} strokeWidth={2} />
       {state === 'started' && (
         <Circle
           cx={12}
@@ -621,8 +622,8 @@ export function ExamTraps({ traps }: { traps: NoteSubtopic['examTraps'] }) {
 }
 
 /**
- * One of the page's three movements: the serif numeral (17, accentText), a
- * caption kicker in ink2, then a hairline to the edge, with 48 above it (the
+ * One of the page's three movements: the serif numeral (20, accentText), a
+ * headline (R4: a reading page's section heads are headline), then a hairline to the edge, with 48 above it (the
  * rhythm rule's "between page movements"). One screen-reader heading, so a
  * screen-reader user can jump between them, and the "On this page" row can
  * move focus here.
@@ -637,8 +638,9 @@ export function Movement({ n, title, ref }: { n: number; title: string; ref?: Re
       accessibilityLabel={title}
       style={{ marginTop: space.xxxl, flexDirection: 'row', alignItems: 'center', gap: space.sm }}
     >
-      <BigNum value={String(n)} size={17} color={c.accentText} />
-      <T v="caption" color={c.ink2}>{title}</T>
+      <BigNum value={String(n)} size={20} color={c.accentText} />
+      {/* Shrinks so a long head wraps at large text instead of pushing past the edge. */}
+      <T v="headline" style={{ flexShrink: 1 }}>{title}</T>
       <View style={{ flex: 1, height: 1, backgroundColor: c.line, marginLeft: space.xs }} />
     </View>
   );
@@ -659,6 +661,8 @@ export function OnThisPage({ items }: { items: { title: string; ref: { current: 
   const column = useColumnWidth();
   // Stacks at large text, AND whenever one line would not fit (between ×1.1 and ×1.3 it overflowed).
   const stacked = scale >= LARGE_TEXT || !onThisPageFits(items.map((x) => x.title), column, scale);
+  // Wide enough for any one digit of the 16pt italic numeral, grown with it (aside stops at x2).
+  const numCol = Math.ceil(11 * Math.min(Math.max(1, scale), 2));
   if (!scroll || items.length < 2) return null;
   return (
     <View
@@ -684,7 +688,12 @@ export function OnThisPage({ items }: { items: { title: string; ref: { current: 
             stacked && i > 0 && { borderTopWidth: 1, borderTopColor: c.line },
           ]}
         >
-          <BigNum value={String(i + 1)} size={17} color={c.accentText} />
+          {/* Stacked, a fixed-width number column (type pass): an italic "1" is narrower than "2" or
+              "3", so each title starts at the same place. It grows with the number (aside, to x2). On
+              one line each number keeps its own width (the fit estimate above counts it so). */}
+          <View testID="on-this-page-no" style={stacked ? { width: numCol } : undefined}>
+            <T v="aside" color={c.accentText}>{String(i + 1)}</T>
+          </View>
           <T v="meta" color={c.ink} style={{ flexShrink: 1 }}>{it.title}</T>
         </Pressable>
       ))}

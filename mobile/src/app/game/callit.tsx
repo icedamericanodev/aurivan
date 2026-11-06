@@ -11,13 +11,19 @@
  * 3. The shared recap. Wrong answers go to review; a wrong principle pick
  *    adds no mistake tag. Game answers never count toward mastery dates.
  * Grading compares ORIGINAL letters (engine/shuffle.ts).
+ *
+ * Grove Phase 4b (design-notes/grove/phase4b/PHASE4B.md section 6): the twig, the two steps as step
+ * squares, the options drawn as folded bars until the principle is named, and after the answer the
+ * drill's answer screen with its two-half line (one step at Heartwood: "Correct" or "Not quite").
  */
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { AccessibilityInfo, Pressable, View } from 'react-native';
+import { DrillAnswer } from '../../components/drillAnswer';
+import { FoldedBars, StepSquares, type ItemResult } from '../../components/drillKit';
 import { GameFrame, GameIntro, PlayableGate, QuestionHead, RevealCard, RoundEnd } from '../../components/game';
 import { EyeOff, ICON_STROKE, Lightbulb } from '../../components/icons';
 import { OptionCard, type OptionState } from '../../components/quiz';
-import { Button, Gap, ICON_SIZE, Row, T } from '../../components/ui';
+import { Button, ICON_SIZE, Row, T } from '../../components/ui';
 import { findQuestion, getAllQuestions } from '../../content/loader';
 import { LETTERS, type Letter } from '../../content/types';
 import {
@@ -34,14 +40,17 @@ import {
 } from '../../engine/games/callItFirst';
 import { clip, firstSentence, type RecapMiss } from '../../engine/games/recap';
 import { createRng } from '../../engine/random';
-import { displayToOriginal, isCorrect, makePermutation, originalToDisplay, renderText, type Permutation } from '../../engine/shuffle';
+import { displayToOriginal, identityPermutation, isCorrect, makePermutation, originalToDisplay, renderText, type Permutation } from '../../engine/shuffle';
+import { missCoach, oneStepVerdict, PRINCIPLE_HALF, twoHalfVerdict } from '../../lib/drillVerdict';
 import { moveFocus } from '../../lib/a11y';
 import { finishGameRound, startingTier, type RoundNews } from '../../lib/gameRounds';
+import { batchSaves } from '../../store/storage';
 import { certOutline } from '../../lib/outline';
 import { useAnswerClock } from '../../lib/useAnswerClock';
 import { useActiveCert } from '../../lib/useActiveCert';
-import { HINT_BEFORE_LINE } from '../../engine/readiness';
+import { HINT_AFTER_LINE, HINT_BEFORE_LINE } from '../../engine/readiness';
 import { useProgress } from '../../store/progress';
+import { useSettings } from '../../store/settings';
 import { radius, space } from '../../theme/tokens';
 import { useTheme } from '../../theme/useTheme';
 
@@ -64,6 +73,8 @@ function CallItFirst() {
   const [news, setNews] = useState<RoundNews | null>(null);
   // The skill step per question: the principle named (Heartwood: the answer itself).
   const [steps, setSteps] = useState<boolean[]>([]);
+  // Grove 4b: each item for the twig (right only when every half was earned).
+  const [items, setItems] = useState<ItemResult[]>([]);
   // The round keeps the level it is played at, so a level change at its end never changes it mid-screen (code review).
   const [round, setRound] = useState<{ items: CallItem[]; perms: Record<string, Permutation>; seed: number; tier: CallTier } | null>(null);
   const [i, setI] = useState(0);
@@ -108,10 +119,12 @@ function CallItFirst() {
     const rng = createRng(seed);
     const ctx = { all: bank.filter((x) => x.keyConcept), topicOf: certOutline(cert.id).topicOf };
     const items = buildCallRound(bank, ctx, tier, rng);
+    // Settings → Shuffle answer options off: the bank's own order (release bug hunt round 3).
+    const shuffle = useSettings.getState().shuffleOptions;
     const perms: Record<string, Permutation> = {};
     for (const it of items) {
       const qq = findQuestion(cert.id, it.id);
-      if (qq) perms[it.id] = makePermutation(qq, rng);
+      if (qq) perms[it.id] = shuffle ? makePermutation(qq, rng) : identityPermutation(qq);
     }
     setRound({ items, perms, seed, tier });
     setI(0);
@@ -119,6 +132,7 @@ function CallItFirst() {
     setMisses([]);
     setNews(null);
     setSteps([]);
+    setItems([]);
     resetItem(tier);
   };
   const resetItem = (t: CallTier) => {
@@ -148,11 +162,20 @@ function CallItFirst() {
 
   if (i >= round.items.length || !item || !q || !perm) {
     return (
-      <RoundEnd certId={cert.id} game="callit" score={score} max={callMax(round.tier, round.items.length)} misses={misses} onAgain={() => start(Date.now())} news={news}>
-        <T color={c.ink2}>
+      <RoundEnd
+        certId={cert.id}
+        game="callit"
+        score={score}
+        max={callMax(round.tier, round.items.length)}
+        misses={misses}
+        onAgain={() => start(Date.now())}
+        news={news}
+        results={items}
+        tierLines={CALL_TIER_LINE}
+      >
+        <T v="aside" color={c.ink2}>
           On exam day, read the question, name the principle in your head, then look for the option that matches it. The options are written to pull you off course.
         </T>
-        <Gap h={space.md} />
       </RoundEnd>
     );
   }
@@ -169,41 +192,46 @@ function CallItFirst() {
 
   const pickAnswer = (display: Letter) => {
     if (phase !== 'answer') return;
-    const ok = isCorrect(q, display, perm);
-    setAnswer(display);
-    setPhase('reveal');
-    const pts = callPoints(round.tier, principleRight, ok);
-    setScore((s) => s + pts);
-    const p = useProgress.getState();
-    // A hint (the pre-read line) makes the answer assisted; never a mastery date.
-    p.recordAnswer(cert.id, q.id, ok, undefined, answerOptions(hint, readClock()));
-    if (!ok) p.recordMistake(cert.id, q.id, displayToOriginal(display, perm));
-    const principleMissed = round.tier !== 'heartwood' && !principleRight;
-    if (!ok || principleMissed) {
-      setMisses((m) => [
-        ...m,
-        {
-          questionId: q.id,
-          stem: clip(q.stem),
-          tag: `Principle: ${clip(q.keyConcept ?? '', 70)}`,
-          why: firstSentence(renderText(q.explanation, perm)),
-          answerWrong: !ok,
-        },
-      ]);
-    }
-    const nextSteps = [...steps, round.tier === 'heartwood' ? ok : principleRight];
-    setSteps(nextSteps);
-    if (i === round.items.length - 1) {
-      const news = finishGameRound(cert.id, 'callit', {
-        score: score + pts,
-        rate: nextSteps.filter(Boolean).length / round.items.length,
-        tier: round.tier,
-        hits: nextSteps,
-      });
-      setNews(news);
-      // The level moved: "Play again" starts on the new level, not the old one.
-      if (news.change) setTier(news.tier);
-    }
+    // One save per tap (store/storage.ts batchSaves): the answer, a miss and, on the last one, the round's end
+    // used to save the whole progress file up to 7 times (release bug hunt round 3).
+    batchSaves(() => {
+      const ok = isCorrect(q, display, perm);
+      setAnswer(display);
+      setPhase('reveal');
+      const pts = callPoints(round.tier, principleRight, ok);
+      setScore((s) => s + pts);
+      const p = useProgress.getState();
+      // A hint (the pre-read line) makes the answer assisted; never a mastery date.
+      p.recordAnswer(cert.id, q.id, ok, undefined, answerOptions(hint, readClock()));
+      if (!ok) p.recordMistake(cert.id, q.id, displayToOriginal(display, perm));
+      const principleMissed = round.tier !== 'heartwood' && !principleRight;
+      if (!ok || principleMissed) {
+        setMisses((m) => [
+          ...m,
+          {
+            questionId: q.id,
+            stem: clip(q.stem),
+            tag: `Principle: ${clip(q.keyConcept ?? '', 70)}`,
+            why: firstSentence(renderText(q.explanation, perm)),
+            answerWrong: !ok,
+          },
+        ]);
+      }
+      setItems((it) => [...it, ok && (round.tier === 'heartwood' || principleRight) ? 'right' : 'missed']);
+      const nextSteps = [...steps, round.tier === 'heartwood' ? ok : principleRight];
+      setSteps(nextSteps);
+      if (i === round.items.length - 1) {
+        const news = finishGameRound(cert.id, 'callit', {
+          score: score + pts,
+          rate: nextSteps.filter(Boolean).length / round.items.length,
+          tier: round.tier,
+          hits: nextSteps,
+        });
+        setNews(news);
+        // The level moved: "Play again" starts on the new level, not the old one.
+        if (news.change) setTier(news.tier);
+      }
+    });
   };
 
   const cardState = (k: number): OptionState => {
@@ -211,12 +239,12 @@ function CallItFirst() {
     if (k === item.correct) return 'correct';
     return k === cardPick ? 'wrong' : 'dimmed';
   };
-  const answerState = (display: Letter): OptionState => {
-    if (phase !== 'reveal') return 'idle';
-    if (displayToOriginal(display, perm) === q.correct) return 'correct';
-    return display === answer ? 'wrong' : 'dimmed';
-  };
   const answerRight = answer !== null && isCorrect(q, answer, perm);
+  const twoStep = round.tier !== 'heartwood';
+  const best = originalToDisplay(q.correct, perm);
+  const coachMiss = answer ? missCoach(q, displayToOriginal(answer, perm), perm) : '';
+  // A right answer after the hint counts as half: said under the verdict (as on the answer screen).
+  const extra = hint && answerRight ? HINT_AFTER_LINE : null;
 
   return (
     <GameFrame
@@ -224,6 +252,7 @@ function CallItFirst() {
       index={i}
       total={round.items.length}
       score={score}
+      results={items}
       // Step 2: the options appear below the cards; bring them into view.
       scrollToY={phase === 'answer' ? optionsY : null}
       footer={
@@ -235,108 +264,128 @@ function CallItFirst() {
               resetItem(round.tier);
             }}
           />
-        ) : (
+        ) : !twoStep ? (
+          // Heartwood is one step: its prompt stays in the footer (no step squares).
           <T v="label" center color={c.accentText}>
-            {phase === 'principle' ? 'Step 1: which principle does it test?' : phase === 'think' ? 'Think: what principle decides this?' : 'Step 2: pick the BEST answer'}
+            {phase === 'think' ? 'Think: what principle decides this?' : 'Step 2: pick the BEST answer'}
           </T>
-        )
+        ) : undefined
       }
     >
-      <QuestionHead q={q} />
-
-      {/* The optional hint: the question's pre-read line. Using it counts the answer as assisted. */}
-      {q.preRead && phase !== 'reveal' && (
-        hint ? (
-          <View style={{ borderLeftWidth: 3, borderLeftColor: c.tip, paddingLeft: space.md, marginBottom: space.lg }}>
-            <T v="small">{renderText(q.preRead, perm)}</T>
-            {/* Shown before the reveal, so it says what a RIGHT answer will count (UX H1). */}
-            <T v="meta" style={{ marginTop: space.xs }}>{HINT_BEFORE_LINE}</T>
-          </View>
-        ) : (
-          <Pressable
-            accessibilityRole="button"
-            accessibilityLabel="Show a hint"
-            accessibilityHint="Shows a reading hint. A right answer after a hint counts as half."
-            onPress={() => setHint(true)}
-            style={({ pressed }) => ({ alignSelf: 'flex-start', minHeight: 48, justifyContent: 'center', opacity: pressed ? 0.7 : 1, marginBottom: space.sm })}
-          >
-            <Row gap={space.xs} style={{ flexWrap: 'wrap' }}>
-              <Lightbulb size={ICON_SIZE.inline} color={c.accentText} strokeWidth={ICON_STROKE} />
-              <T v="label" color={c.accentText}>Show a hint</T>
-              <T v="meta">A right answer after a hint counts as half.</T>
-            </Row>
-          </Pressable>
-        )
-      )}
-
-      {phase === 'think' && (
-        <View
-          ref={thinkRef}
-          accessible
-          accessibilityLabel={`Options hidden. Think about the principle. ${thinkLeft} seconds.`}
-          style={{ backgroundColor: c.soft, borderRadius: radius.md, padding: space.lg, alignItems: 'center' }}
+      {phase === 'reveal' && answer ? (
+        <DrillAnswer
+          q={q}
+          perm={perm}
+          pick={answer}
+          extra={extra}
+          animate={answerRight && (!twoStep || principleRight)}
+          {...(twoStep
+            ? twoHalfVerdict({ skill: principleRight, correct: answerRight, skillHalf: PRINCIPLE_HALF, skillCoach: 'The principle is marked above.', missCoach: coachMiss })
+            : { verdict: oneStepVerdict({ correct: answerRight, best, missCoach: coachMiss, extra }), half: null })}
         >
-          <EyeOff size={ICON_SIZE.bar} color={c.accentText} strokeWidth={ICON_STROKE} />
-          <T v="headline" center style={{ marginTop: space.sm }}>Options hidden</T>
-          <T v="small" center color={c.ink2} style={{ marginTop: space.xs }}>Name the principle in your own words first.</T>
-          <T v="meta" num center style={{ marginTop: space.sm }}>{`Options in ${thinkLeft} s`}</T>
-        </View>
-      )}
-
-      {/* Step 1: the three principle cards (they stay, marked, once picked). */}
-      {round.tier !== 'heartwood' && (
-        <View accessibilityRole="radiogroup" accessibilityLabel="Which principle does it test?">
-          {/* Not "The principle": the card's own tag already says it (UX review P6). */}
-          {phase !== 'principle' && <T v="caption" style={{ marginBottom: space.xs }}>Step 1 · your call</T>}
-          {item.cards.map((text, k) =>
-            phase === 'principle' ? (
-              <OptionCard key={k} letter={LETTERS[k]} text={text} state="idle" onPress={() => pickCard(k)} />
-            ) : k === item.correct || k === cardPick ? (
-              <OptionCard
-                key={k}
-                letter={LETTERS[k]}
-                text={text}
-                state={cardState(k)}
-                tag={k === item.correct ? 'The principle' : 'Your pick'}
-                // A principle card is not the answer: never "best answer" (UX review P5).
-                spokenSuffix={k === item.correct ? (k === cardPick ? ', your pick, the principle' : ', the principle') : ', your pick, not the principle'}
+          {twoStep && (
+            // The principle, marked (step 1's card), above the answer card.
+            <View style={{ marginTop: space.lg }}>
+              <RevealCard
+                tone={principleRight ? 'good' : 'bad'}
+                title={principleRight ? 'Principle named' : 'The principle'}
+                body={cardPick !== null && !principleRight ? `${item.cards[item.correct]}\n\nYour pick: ${item.cards[cardPick]}` : item.cards[item.correct]}
               />
-            ) : null,
+            </View>
           )}
-        </View>
-      )}
-
-      {/* Step 2: the options appear. */}
-      {(phase === 'answer' || phase === 'reveal') && (
-        <View style={{ marginTop: space.lg }} onLayout={(e) => setOptionsY(e.nativeEvent.layout.y)}>
-          {round.tier !== 'heartwood' && (
-            <T v="caption" color={principleRight ? c.correct : c.accentText} style={{ marginBottom: space.sm }}>
-              {principleRight ? 'Principle named. Now find the option that matches it.' : 'The principle is marked above. Now find the option that matches it.'}
-            </T>
-          )}
-          <View accessibilityRole="radiogroup" accessibilityLabel="Answer options">
-            {letters.map((d) => (
-              <OptionCard
-                key={d}
-                letter={d}
-                text={q.options[displayToOriginal(d, perm)] ?? ''}
-                state={answerState(d)}
-                disabled={phase === 'reveal'}
-                onPress={() => pickAnswer(d)}
-              />
-            ))}
-          </View>
-        </View>
-      )}
-
-      {phase === 'reveal' && (
+        </DrillAnswer>
+      ) : (
         <>
-          <Gap h={space.sm} />
-          <RevealCard
-            tone={answerRight ? 'good' : 'bad'}
-            title={answerRight ? `Best answer: correct${hint ? ' (assisted)' : ''}` : `Best answer: ${originalToDisplay(q.correct, perm)}`}
-            body={renderText(q.explanation, perm)}
-          />
+          {twoStep && (
+            // The two steps, the screen's own words (PHASE4B 6.3 item 5).
+            <StepSquares
+              steps={[
+                { label: 'Step 1: which principle does it test?', state: phase === 'principle' ? 'now' : 'done' },
+                { label: 'Step 2: pick the BEST answer', state: phase === 'answer' ? 'now' : 'later' },
+              ]}
+            />
+          )}
+          <QuestionHead q={q} />
+
+          {/* The optional hint: the question's pre-read line. Using it counts the answer as assisted. */}
+          {q.preRead &&
+            (hint ? (
+              <View style={{ borderLeftWidth: 3, borderLeftColor: c.tip, paddingLeft: space.md, marginBottom: space.lg }}>
+                <T v="small">{renderText(q.preRead, perm)}</T>
+                {/* Shown before the reveal, so it says what a RIGHT answer will count (UX H1). */}
+                <T v="meta" style={{ marginTop: space.xs }}>{HINT_BEFORE_LINE}</T>
+              </View>
+            ) : (
+              <Pressable
+                accessibilityRole="button"
+                accessibilityLabel="Show a hint"
+                accessibilityHint="Shows a reading hint. A right answer after a hint counts as half."
+                onPress={() => setHint(true)}
+                style={({ pressed }) => ({ alignSelf: 'flex-start', minHeight: 48, justifyContent: 'center', opacity: pressed ? 0.7 : 1, marginBottom: space.sm })}
+              >
+                <Row gap={space.xs} style={{ flexWrap: 'wrap' }}>
+                  <Lightbulb size={ICON_SIZE.inline} color={c.accentText} strokeWidth={ICON_STROKE} />
+                  <T v="label" color={c.accentText}>Show a hint</T>
+                  <T v="meta">A right answer after a hint counts as half.</T>
+                </Row>
+              </Pressable>
+            ))}
+
+          {phase === 'think' && (
+            <View
+              ref={thinkRef}
+              accessible
+              accessibilityLabel={`Options hidden. Think about the principle. ${thinkLeft} seconds.`}
+              style={{ backgroundColor: c.soft, borderRadius: radius.md, padding: space.lg, alignItems: 'center' }}
+            >
+              <EyeOff size={ICON_SIZE.bar} color={c.accentText} strokeWidth={ICON_STROKE} />
+              <T v="headline" center style={{ marginTop: space.sm }}>Options hidden</T>
+              <T v="small" center color={c.ink2} style={{ marginTop: space.xs }}>Name the principle in your own words first.</T>
+              <T v="meta" num center style={{ marginTop: space.sm }}>{`Options in ${thinkLeft} s`}</T>
+            </View>
+          )}
+
+          {/* Step 1: the three principle cards (they stay, marked, once picked). */}
+          {twoStep && (
+            <View accessibilityRole="radiogroup" accessibilityLabel="Which principle does it test?">
+              {/* Not "The principle": the card's own tag already says it (UX review P6). */}
+              {phase !== 'principle' && <T v="caption" style={{ marginBottom: space.xs }}>Step 1 · your call</T>}
+              {item.cards.map((text, k) =>
+                phase === 'principle' ? (
+                  <OptionCard key={k} letter={LETTERS[k]} text={text} state="idle" onPress={() => pickCard(k)} />
+                ) : k === item.correct || k === cardPick ? (
+                  <OptionCard
+                    key={k}
+                    letter={LETTERS[k]}
+                    text={text}
+                    state={cardState(k)}
+                    tag={k === item.correct ? 'The principle' : 'Your pick'}
+                    // A principle card is not the answer: never "best answer" (UX review P5).
+                    spokenSuffix={k === item.correct ? (k === cardPick ? ', your pick, the principle' : ', the principle') : ', your pick, not the principle'}
+                  />
+                ) : null,
+              )}
+            </View>
+          )}
+
+          {/* Step 1: the options, folded until the principle is named (PHASE4B 6.3 item 8). */}
+          {twoStep && phase === 'principle' && <FoldedBars count={letters.length} />}
+
+          {/* Step 2: the options appear. */}
+          {phase === 'answer' && (
+            <View style={{ marginTop: space.lg }} onLayout={(e) => setOptionsY(e.nativeEvent.layout.y)}>
+              {twoStep && (
+                <T v="caption" color={principleRight ? c.correct : c.accentText} style={{ marginBottom: space.sm }}>
+                  {principleRight ? 'Principle named. Now find the option that matches it.' : 'The principle is marked above. Now find the option that matches it.'}
+                </T>
+              )}
+              <View accessibilityRole="radiogroup" accessibilityLabel="Answer options">
+                {letters.map((d) => (
+                  <OptionCard key={d} letter={d} text={q.options[displayToOriginal(d, perm)] ?? ''} state="idle" onPress={() => pickAnswer(d)} />
+                ))}
+              </View>
+            </View>
+          )}
         </>
       )}
     </GameFrame>

@@ -3,7 +3,7 @@
  *  - 3a: after an answer, the vine's words arrive in reading order (after the rows above them),
  *    never at the tap before them;
  *  - #5: the splash dissolves into the app (tokens, never a raw duration);
- *  - the tab dot pops from .6, never from nothing;
+ *  - (the tab dot retired with the old tab bar in Grove Phase 1);
  *  - #1: the readiness ruler never moves; the estimate slides from the range last seen, opens from
  *    its centre on the day's first view, and never moves on a fall;
  *  - #2: in a growth, only the stems that grew move, from where they stood; spoken labels are the
@@ -18,10 +18,9 @@ import { act, create, type ReactTestInstance, type ReactTestRenderer } from 'rea
 import { setMockReducedMotion } from '../../jest/reanimated-mock';
 import { estimateMotion, growingStems, growthDrop, ScaleBar, scaleSpoken, StemChart, type Stem } from '../components/fieldguide';
 import { SPLASH_FADE, type Growth } from '../components/motion';
-import { FEEDBACK_DELAY, Vine, VINE_ARRIVES } from '../components/quiz';
+import { FEEDBACK_DELAY, TipsCard, VINE_ARRIVES } from '../components/quiz';
 import * as Reanimated from 'react-native-reanimated';
 import { haptic } from '../lib/haptics';
-import { TAB_DOT_FROM, TabLabel } from '../components/ui';
 import { getAllQuestions } from '../content/loader';
 import { startFromIds } from '../lib/sessions';
 import { useProgress } from '../store/progress';
@@ -196,7 +195,7 @@ describe('StemChart growth (#2)', () => {
     act(() => {
       r = create(<StemChart stems={STEMS} play={play} />);
     });
-    layout(340);
+    layout(360); // (360 - 32) / 4 = 82pt a column, over MIN_COLUMN 58: the chart
   };
 
   it('motion on: only the stem that grew moves, and it ends at its tip with "↑3"', () => atScale(1, () => {
@@ -231,18 +230,7 @@ describe('StemChart growth (#2)', () => {
   }));
 });
 
-// ── the tab dot ────────────────────────────────────────────────────────
-describe('tab dot', () => {
-  it('pops from .6, never from nothing', () => {
-    setMockReducedMotion(false);
-    act(() => {
-      r = create(<TabLabel label="Learn" focused={false} />);
-    });
-    const dot = root().findAll((n) => typeof n.type === 'string' && transformOf(n).some((t) => 'scale' in t))[0];
-    expect(TAB_DOT_FROM).toBe(0.6);
-    expect(transformOf(dot).find((t) => 'scale' in t)!.scale).toBeCloseTo(TAB_DOT_FROM);
-  });
-});
+// The tab dot retired with the old tab bar (Grove Phase 1); the floating bar's pill is tested in grove-p1.test.tsx.
 
 // ── #5 the launch ──────────────────────────────────────────────────────
 describe('launch dissolve (#5)', () => {
@@ -290,8 +278,9 @@ describe('after an answer, the vine arrives in reading order (3a)', () => {
     act(() => { check.props.onPress(); });
     const vine = byTestId('feedback-vine');
     expect(vine).toHaveLength(1);
-    // Never at the tap: at least the rows' delay, and after the Why on a right answer.
-    expect(entranceDelay(vine[0])).toBeGreaterThanOrEqual(right ? FEEDBACK_DELAY.why + motion.stagger.group : FEEDBACK_DELAY.why);
+    // Never at the tap: at least the rows' delay. Grove Phase 4: one order in every state, so Key idea and the
+    // tips come before the Why after a right answer too (PHASE4.md 4.2).
+    expect(entranceDelay(vine[0])).toBeGreaterThanOrEqual(FEEDBACK_DELAY.why);
     expect(entranceDelay(vine[0])).toBeGreaterThan(FEEDBACK_DELAY.rows);
   });
 
@@ -316,7 +305,8 @@ describe('after an answer, the vine arrives in reading order (3a)', () => {
     for (const v of views) if (v.instance) (v.instance as { measureInWindow?: unknown }).measureInWindow = onScreen;
     // Every layout at the tap: still not drawn.
     act(() => { host.props.onLayout?.({ nativeEvent: { layout: { x: 0, y: 400, width: 340, height: 200 } } }); });
-    const vineOf = () => root().findAllByType(Vine)[0];
+    // Grove Phase 4: the vine is the tips card's stem (TipsCard), on the same arrival.
+    const vineOf = () => root().findAllByType(TipsCard)[0];
     expect(vineOf().props.visible).toBe(false);
     act(() => { jest.advanceTimersByTime((reduced ? motion.dur.reduced : VINE_ARRIVES) - 1); });
     act(() => { host.props.onLayout?.({ nativeEvent: { layout: { x: 0, y: 400, width: 340, height: 200 } } }); });

@@ -42,10 +42,11 @@ import { getCertification } from '../content/certifications';
 import type { Certification } from '../content/types';
 import { findQuestion } from '../content/loader';
 import { findNote, subtopicOfQuestion } from '../content/notes';
-import { FIRST_SET_SIZE } from '../content/firstSet';
+import { FIRST_SET_SIZE, firstSetIds } from '../content/firstSet';
 import { comeBackLine, defaultReminderTime, firstRange, firstSetFact, REMINDER_ASK_LEAD, reminderAskLine, tomorrowPreview } from '../engine/firstRun';
 import { missedSubtopics } from '../engine/outline';
-import { plantCallName, plantShown } from '../engine/plant';
+import { plantCallName, plantShown, type GrowthLevel, type PlantSpecies } from '../engine/plant';
+import { NEW_PLANT_STYLE } from '../engine/plantLooks';
 import type { Readiness } from '../engine/readiness';
 import { RANGE_MIN_ANSWERS } from '../engine/readinessRange';
 import { localHour, localTime, MINUTE_STEP, stepTime } from '../engine/reminders';
@@ -61,9 +62,12 @@ import { selectCert, useProgress } from '../store/progress';
 import { useSeen } from '../store/seen';
 import { useSession, type ActiveSession } from '../store/session';
 import { useSettings } from '../store/settings';
-import { LARGE_TEXT, plate, space } from '../theme/tokens';
+import { grovePlate } from '../theme/grove';
+import { LARGE_TEXT, space } from '../theme/tokens';
 import { useTheme } from '../theme/useTheme';
 import { Seedling } from './glyphs';
+import { LivePlant } from './plant/LivePlant';
+import { SoilBed, soilYFor } from './plant/PlantPage';
 import { ChevronDown, ICON_STROKE } from './icons';
 import { AnimatedPressable, usePressScale } from './motion';
 import { StickyFooter } from './quiz';
@@ -193,7 +197,7 @@ export function ReminderAsk({
       {/* A ghost after content sits at the gutter (spec §5): -8 cancels its own 8pt padding, so "Not now"
           lines up with the left edge of the button above it. */}
       <Button
-        kind="ghost"
+        kind="ghostNeutral"
         label="Not now"
         accessibilityHint="No reminder. You can set one in Settings."
         onPress={notNow}
@@ -229,12 +233,12 @@ export function ReminderAsk({
 
 /**
  * The reminder ask's time chip: an outlined chip with the time and a down chevron (it opens the
- * time sheet). Premium round 2 (Field Guide foundation): the plate button's shape, 52pt tall with 12pt
- * corners, the same as the button beside it (and over the 48pt touch target).
+ * time sheet). Premium round 2 (Field Guide foundation): the plate button's shape, 54pt tall with 16pt
+ * corners (Grove Phase 1), the same as the button beside it (and over the 48pt touch target).
  */
 function TimeChip({ time, onPress, disabled, ref }: { time: string; onPress: () => void; disabled?: boolean; ref?: Ref<View> }) {
   const { c } = useTheme();
-  const press = usePressScale({ tint: c.soft, tintRadius: plate.buttonRadius });
+  const press = usePressScale({ tint: c.soft, tintRadius: grovePlate.buttonRadius });
   return (
     <AnimatedPressable
       ref={ref}
@@ -248,9 +252,9 @@ function TimeChip({ time, onPress, disabled, ref }: { time: string; onPress: () 
       onPressOut={press.onPressOut}
       style={[
         {
-          minHeight: plate.button,
+          minHeight: grovePlate.button,
           maxWidth: '100%',
-          borderRadius: plate.buttonRadius,
+          borderRadius: grovePlate.buttonRadius,
           borderWidth: 1.5,
           borderColor: c.control,
           paddingHorizontal: space.md,
@@ -263,7 +267,7 @@ function TimeChip({ time, onPress, disabled, ref }: { time: string; onPress: () 
       ]}
     >
       {press.layer}
-      <T v="label" style={{ fontVariant: ['tabular-nums'], flexShrink: 1 }}>{time}</T>
+      <T v="label" num style={{ flexShrink: 1 }}>{time}</T>
       <ChevronDown size={ICON_SIZE.inline} color={c.ink2} strokeWidth={ICON_STROKE} />
     </AnimatedPressable>
   );
@@ -300,8 +304,6 @@ export function FirstSetDone({ session }: { session: ActiveSession }) {
   const j = useJourney();
   const certId = session.certId;
   const cert = getCertification(certId);
-  const score = useMemo(() => scoreSession(session), [session]);
-  const missed = useMemo(() => session.questionIds.filter((id) => session.responses[id] && !session.responses[id].correct), [session]);
   const headRef = useRef<View>(null);
   // "Not now" on the reminder ask removes it: screen-reader focus goes to the footer's main button (UX review B1).
   const doneRef = useRef<View>(null);
@@ -310,6 +312,22 @@ export function FirstSetDone({ session }: { session: ActiveSession }) {
   const answers = useProgress((s) => selectCert(s, certId).answers);
   const left = useMemo(() => firstSetLeftOf(certId, answers).length, [certId, answers]);
   const endedEarly = left > 0;
+  // Release bug hunt round 3: a set resumed from Today holds only the questions that were left, so
+  // "N of M right", the fact and "The N you missed" come from all five once every one is answered:
+  // this session's answers for its own questions, the saved answers for the earlier ones.
+  // A set done in one go (or ended early) keeps reading this session alone, as before.
+  const { score, missed } = useMemo(() => {
+    const own = scoreSession(session);
+    const ownMissed = session.questionIds.filter((id) => session.responses[id] && !session.responses[id].correct);
+    const ids = firstSetIds(certId);
+    const resumed = session.firstSet && !endedEarly && ids.some((id) => !session.questionIds.includes(id));
+    if (!resumed) return { score: own, missed: ownMissed };
+    const missedAll = ids.filter((id) => {
+      const r = session.responses[id];
+      return r ? !r.correct : !answers[id]?.lastCorrect;
+    });
+    return { score: { ...own, answered: ids.length, correct: ids.length - missedAll.length }, missed: missedAll };
+  }, [session, certId, endedEarly, answers]);
 
   // The topic most missed: the study note behind the misses, else the domain of the first miss.
   const topic = useMemo(() => {
@@ -335,6 +353,10 @@ export function FirstSetDone({ session }: { session: ActiveSession }) {
   const reminderAnswered = useSeen((s) => s.reminderAsk?.first !== undefined);
   const askSettled = !remindersSupported || reminderOn || reminderAnswered;
   const offerPlant = plantOn && !plant && askSettled && (!plantLater || offerAnswer === 'later');
+  // Grove Phase 4b (PHASE4B 4.9): planted HERE, on this visit: the closing screen shows it planted
+  // on its soil line (the seed settles, the sprout pops), in the offer's place.
+  const [justPlanted, setJustPlanted] = useState(false);
+  const { isDark } = useTheme();
   // At large text the seedling sits above the words, so the words keep the full width.
   const large = useFontScale() >= LARGE_TEXT;
 
@@ -405,7 +427,7 @@ export function FirstSetDone({ session }: { session: ActiveSession }) {
             <T v="caption" color={c.accentText}>Tomorrow</T>
             {tomorrow ? <T v="body">{tomorrow}</T> : <T v="body">Your next plan is ready when you open the app.</T>}
             {comeBack && <T v="body">{comeBack}</T>}
-            {plantOn && plant && (
+            {plantOn && plant && !justPlanted && (
               <Row gap={space.md} style={large ? { flexDirection: 'column', alignItems: 'flex-start' } : { alignItems: 'center' }}>
                 {/* A seed, not the plant drawing: Results stays light and the plant keeps its own screens.
                     Decorative: hidden from TalkBack (importantForAccessibility) and VoiceOver (accessibilityElementsHidden). */}
@@ -432,6 +454,11 @@ export function FirstSetDone({ session }: { session: ActiveSession }) {
           <ReminderAsk which="first" style={{ marginTop: space.xl }} onNotNow={() => moveFocus(doneRef, ANNOUNCE_DELAY + 50)} />
         </Enter>
         {/* Then the plant, in its own block under the ask (one decision at a time). */}
+        {plantOn && plant && justPlanted && (
+          <Card variant="plate" style={{ marginTop: space.xl }}>
+            <PlantedHere species={plant.species} growth={plant.growth} name={plantCallName(plant)} theme={isDark ? 'dark' : 'light'} />
+          </Card>
+        )}
         {offerPlant && (
           <Card variant="plate" style={{ marginTop: space.xl }}>
             <PlantOffer
@@ -440,6 +467,7 @@ export function FirstSetDone({ session }: { session: ActiveSession }) {
               lineRef={offerRef}
               onPlant={() => {
                 plantFor(certId, 'oak', '');
+                setJustPlanted(true);
                 sayLater('Seed planted. It grows as you learn.');
               }}
               onNotNow={() => {
@@ -465,6 +493,30 @@ export function FirstSetDone({ session }: { session: ActiveSession }) {
         )}
       </StickyFooter>
     </SafeAreaView>
+  );
+}
+
+/**
+ * Grove Phase 4b (PHASE4B 4.9): "{Name} is planted." The plant on its soil line plays `plantIn`
+ * (820 ms: the seed settles, the sprout pops; the planted sprout at once under Reduce Motion), then
+ * one short line and "Choose a different plant" (opens the picker in Change plant mode).
+ */
+const PLANTED_ART = 120;
+function PlantedHere({ species, growth, name, theme }: { species: PlantSpecies; growth: GrowthLevel; name: string; theme: 'light' | 'dark' }) {
+  return (
+    <View testID="first-set-planted">
+      <SoilBed testID="first-set-soil" size={PLANTED_ART} soilY={soilYFor(species, growth, { style: NEW_PLANT_STYLE }, PLANTED_ART, theme)} bleed={0}>
+        <LivePlant testID="first-set-plant" species={species} stage={growth} size={PLANTED_ART} fit={false} quietLook theme={theme} look={{ style: NEW_PLANT_STYLE }} plantIn accessibilityLabel={`${name}, planted.`} />
+      </SoilBed>
+      <T v="title" style={{ marginTop: space.md }}>{`${name} is planted.`}</T>
+      <T v="small" style={{ marginTop: space.xs }}>It grows as you learn.</T>
+      <Button
+        kind="ghost"
+        label="Choose a different plant"
+        onPress={() => router.push({ pathname: '/plant-pick', params: { mode: 'species' } })}
+        style={{ alignSelf: 'flex-start', marginLeft: -space.sm, marginTop: space.xs }}
+      />
+    </View>
   );
 }
 
@@ -503,7 +555,7 @@ function PlantOffer({
             <T v="small">Want a plant that grows as you learn? It’s optional.</T>
             <Row gap={0} style={{ flexWrap: 'wrap', marginLeft: -space.sm }}>
               <Button kind="ghost" label="Plant a seed" accessibilityHint="Plants an oak. You can choose a different plant after." onPress={onPlant} />
-              <Button kind="ghost" label="Maybe later" accessibilityLabel="Maybe later, no plant for now" onPress={onNotNow} />
+              <Button kind="ghostNeutral" label="Maybe later" accessibilityLabel="Maybe later, no plant for now" onPress={onNotNow} />
             </Row>
           </>
         )}

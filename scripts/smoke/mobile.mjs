@@ -208,7 +208,7 @@ const answersIn = (p) => Object.keys((p && p.state && p.state.byCert && p.state.
     const order = ['Learn', 'Practice', 'You', 'Today', 'Practice', 'Learn', 'You', 'Today'];
     const expect = { Today: /\/home/, Learn: /\/learn/, Practice: /\/practice/, You: /\/you/ };
     // A heading only that tab shows, so a stale screen from the last tab cannot pass.
-    const own = { Today: /days to go|Today’s study|Also today/i, Learn: /^Learn$/, Practice: /^Practice$/, You: /READINESS|^Figure/i };
+    const own = { Today: /days to go|Today’s study|Also today/i, Learn: /^Learn$/, Practice: /^Practice$/, You: /READINESS|Five areas, one scale/i };
     for (const name of order) {
       const t0 = Date.now();
       await tab(page, name);
@@ -265,12 +265,17 @@ const answersIn = (p) => Object.keys((p && p.state && p.state.byCert && p.state.
       const r = after && after.a.responses[p.id];
       c.check(r && r.display === p.disp && r.correct === want, `Q${i + 1} ${p.id}: stored response ${JSON.stringify(r)} does not match the pick (${p.disp}, correct=${want})`);
       if (i < 2) {
-        // Phone 1.53: the answer screen leads with one captioned plate (Fig. 4). After a miss it
-        // reads "Your pick, and the best answer"; after a right answer, "Your answer".
+        // Grove answer card (phone 1.54, commit 5562638: one card, no caption, no book label). After a
+        // miss it holds two rows, "Your answer" (the pick) and "Best answer"; after a right answer, one
+        // row, "Your answer · the best". Release bug hunt round 3: this checked the removed "Fig. 4" caption.
         const plate = page.locator('[data-testid="answer-plate"]').first();
         if (await visible(plate)) { await plate.evaluate((e) => e.scrollIntoView({ block: 'center' })).catch(() => {}); await sleep(400); }
-        const cap = want ? /Fig\.\s*4\W+Your answer/ : /Fig\.\s*4\W+Your pick, and the best answer/;
-        c.check(cap.test(await bodyText(page)), `Q${i + 1}: the answer plate caption is not "${want ? 'Fig. 4 · Your answer' : 'Fig. 4 · Your pick, and the best answer'}"`);
+        const bestRows = await page.locator('[data-testid="answer-row-best"]').count();
+        const pickRows = await page.locator('[data-testid="answer-row-pick"]').count();
+        const body = await bodyText(page);
+        c.check(bestRows === 1, `Q${i + 1}: ${bestRows} best-answer rows on the answer card, expected 1`);
+        c.check(pickRows === (want ? 0 : 1), `Q${i + 1}: ${pickRows} "Your answer" rows on the answer card, expected ${want ? 0 : 1}`);
+        c.check(want ? /Your answer · the best/.test(body) : /Your answer/.test(body) && /Best answer/.test(body), `Q${i + 1}: the answer card does not say ${want ? '"Your answer · the best"' : '"Your answer" and "Best answer"'}`);
         await c.shot(`m3-q${i + 1}-plate`);
         const more = page.getByRole('button', { name: /^Read more/ });
         if (await visible(more)) { await more.first().click(); await sleep(600); }
@@ -535,14 +540,15 @@ const answersIn = (p) => Object.keys((p && p.state && p.state.byCert && p.state.
   await ctx.close();
 }
 
-// ── M6 You: plant, badges, Field Guide; Settings; backup round trip ────────
+// ── M6 You: plant, badges, areas chart; Settings; backup round trip ────────
 {
   const { ctx, page } = await phone(demo);
-  await rec.run('M6', 'You: plant, badges, Field Guide render; Settings opens; backup save and restore round-trips', page, async (c) => {
+  await rec.run('M6', 'You: plant, badges, areas chart render; Settings opens; backup save and restore round-trips', page, async (c) => {
     await open(page, BASE, '/you', 2000);
     const h = (await headings(page)).join(' | ');
     const t = norm(await bodyText(page));
-    c.check(/Figure \d/.test(h), `no Field Guide plate ("Figure N") on You (headings: ${h.slice(0, 120)})`);
+    // The Grove You tab names its areas chart "Five areas, one scale" (commit 7120591; no "Figure N" any more).
+    c.check(/Five areas, one scale/i.test(h) || /Five areas, one scale/i.test(t), `no areas chart ("Five areas, one scale") on You (headings: ${h.slice(0, 120)})`);
     c.check(/Herbarium|badges/i.test(t), 'no badges (Herbarium) row on You');
     c.check(/plant/i.test(t), 'no plant row on You');
     const svgs = await ev(page, () => document.querySelectorAll('svg').length);

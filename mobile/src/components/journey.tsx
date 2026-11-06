@@ -9,23 +9,24 @@
  * never promises a pass: it describes mastery, weighted like the exam.
  */
 import { readyLine, REVIEW_ORDER } from '../engine/srs';
-import { gameTitle } from '../engine/games/registry';
+import { drillTitle as gameTitle } from '../lib/drillNames';
 import { useEffect, useState, type ReactNode } from 'react';
-import { Text, useWindowDimensions, View, type ViewStyle } from 'react-native';
+import { useWindowDimensions, View, type ViewStyle } from 'react-native';
 import { domainColor } from '../content/certifications';
 import type { Certification } from '../content/types';
 import { biggestGrowth, clearingTitle, dayAccuracy, isOptional, itemMinutes, type DayPlan } from '../engine/dayPlan';
 import { legacyTitle, type PlanItem } from '../engine/planner';
 import { SMALL_SAMPLE } from '../engine/resultsCopy';
 import type { Readiness } from '../engine/readiness';
-import { RANGE_MIN_ANSWERS, rangeLabel, rangeSpoken, type ReadinessRange } from '../engine/readinessRange';
+import { RANGE_MIN_ANSWERS, rangeSpoken, type ReadinessRange } from '../engine/readinessRange';
 import { haptic } from '../lib/haptics';
-import { grewLine, LARGE_TEXT, motion, radius, space } from '../theme/tokens';
+import { rangeStep } from '../theme/grove';
+import { LARGE_TEXT, motion, radius, space } from '../theme/tokens';
 import { useTheme } from '../theme/useTheme';
 import { GrowthRings, MiniStem, PlanLeaf } from './glyphs';
 import { Check, ICON_STROKE, Pinwheel, Play, RotateCcw, Target, Timer } from './icons';
 import { AnimatedPressable, FadeIn, Pop, usePressScale, type Celebration, type Growth } from './motion';
-import { ESTIMATE_WORDS, FieldText, ScaleBar } from './fieldguide';
+import { ESTIMATE_WORDS, FieldText, RangeNum, rangeWords, ScaleBar } from './fieldguide';
 import { READY_LOW } from '../engine/examReady';
 import { BigNum, DomainDot, ICON_SIZE, Row, Stat, StatRow, T, useFontScale } from './ui';
 import { aboutMin, spokenMin, timeStat } from '../engine/pace';
@@ -149,7 +150,8 @@ export function planHero(item: PlanItem, due?: number, opts: { minutesSaid?: boo
       const queue = due ?? item.due ?? item.count;
       const more = queue > item.count;
       // A labelled review is exam week's ("Light review · 8 questions"). An old save's "Review 20 due" label is a count, so it reads as the plain review.
-      if (item.label && !/^Review \d/.test(item.label)) return { title: item.label.split(' · ')[0], meta: join(`${qs(item.count)}, ${REVIEW_ORDER}`) };
+      // With nothing due it says so, like the plain review (its count would be a promise the queue cannot keep).
+      if (item.label && !/^Review \d/.test(item.label)) return { title: item.label.split(' · ')[0], meta: join(queue === 0 ? 'all caught up' : `${qs(item.count)}, ${REVIEW_ORDER}`) };
       return {
         title: 'Questions to revisit',
         // Premium pass 1.4: today's set only ("16 ready to revisit · oldest first"), never "16 of 55 due".
@@ -187,9 +189,31 @@ export function planHero(item: PlanItem, due?: number, opts: { minutesSaid?: boo
   }
 }
 
+/**
+ * A "Questions to revisit" step with nothing due now (the queue was cleared since the plan was made, for
+ * example by practice elsewhere): it says "All caught up", so it has no time and is not the step Start
+ * opens. `due`: the LIVE review queue; left out, no step is idle (callers that do not know it).
+ * Presentation only: the step stays in the plan and its saved state is not touched.
+ */
+export function reviewIdle(item: PlanItem | undefined, done: boolean | undefined, due?: number): boolean {
+  return item?.kind === 'review' && !done && due === 0;
+}
+
 /** The open items' minutes, mocks left out (they are longer than any day; their rows say so). 0 when only mocks are open. */
-export function todayMinutes(items: readonly PlanItem[], done: readonly boolean[]): number {
-  return items.reduce((n, it, i) => n + (done[i] || it.kind === 'mock' ? 0 : itemMinutes(it)), 0);
+export function todayMinutes(items: readonly PlanItem[], done: readonly boolean[], due?: number): number {
+  return items.reduce((n, it, i) => n + (done[i] || it.kind === 'mock' || reviewIdle(it, done[i], due) ? 0 : itemMinutes(it)), 0);
+}
+
+/**
+ * The step Start opens: the first open required one that has something to do. A review step with nothing
+ * due is passed over (the website shows no such step); when it is the only one left, it is still the
+ * index returned, and Today's Start runs the live plan's first real step instead (as the website's
+ * todayLivePlanStart does). -1 when the day is done.
+ */
+export function nextStepIndex(plan: Pick<DayPlan, 'items' | 'done'>, due?: number): number {
+  const open = (k: number) => !plan.done[k] && !isOptional(plan.items, k);
+  const real = plan.items.findIndex((it, k) => open(k) && !reviewIdle(it, plan.done[k], due));
+  return real >= 0 ? real : plan.items.findIndex((_, k) => open(k));
 }
 
 /**
@@ -363,18 +387,21 @@ export function PlanChecklist({
   );
 }
 
-// ── Readiness number: "62–70%" or "Not enough data yet" ───────────────
-/** "62–70" for two bounds (what a rolling range starts from). */
-export const boundsLabel = (b: number[]) => (b.length === 2 ? rangeLabel({ enough: true, answered: 0, low: b[0], high: b[1], centre: b[0] }) : null);
+// ── Readiness number: "62 to 70" or "Not enough data yet" ─────────────
 
-export function ReadinessFigure({ range, size = 52, growth }: { range: ReadinessRange; size?: 52 | 38 | 34 | 30 | 24; growth?: Growth }) {
+/**
+ * The range on the range step (TYPE_SCALE.md section 2.1): 38, stepping to 30 and 22 only when
+ * space runs out (large text, a narrow phone). `report`: the readiness report, where "Not enough
+ * data yet" is the page's hero line; elsewhere it is a headline.
+ */
+export function ReadinessFigure({ range, report = false, growth }: { range: ReadinessRange; report?: boolean; growth?: Growth }) {
   const { c } = useTheme();
+  const size = rangeStep(useFontScale(), useWindowDimensions().width);
   if (!range.enough) {
-    return <T v={size === 52 ? 'hero' : 'headline'} color={c.ink}>Not enough data yet</T>;
+    return <T v={report ? 'hero' : 'headline'} color={c.ink}>Not enough data yet</T>;
   }
-  // Rolls on the first view of the day, or up from what you last saw.
-  const roll = growth ? { play: growth.play, from: boundsLabel(growth.from), run: growth.run } : undefined;
-  return <BigNum value={rangeLabel(range)} pct size={size} roll={roll} />;
+  // Rolls on the first view of the day, or up from what you last saw. "62 to 70", as on You (Grove: no dashes).
+  return <RangeNum low={range.low} high={range.high} size={size} growth={growth} />;
 }
 
 /** Shown with the readiness range: it is a study estimate, not a promise of a pass. */
@@ -444,9 +471,9 @@ export function ReadinessRow({
   const spoken = `${range.enough ? `Estimated readiness ${rangeSpoken(range)}.` : `Not enough data yet. ${meta}.`}${stage ? ` ${stage.replace(' · ', ', ')}.` : ''}`;
   const words = (
     <View style={{ flex: stacked ? undefined : 1, minWidth: 0, alignSelf: stacked ? 'stretch' : undefined }}>
-      <ReadinessFigure range={range} size={range.enough ? 38 : 30} growth={rangeGrowth} />
+      <ReadinessFigure range={range} growth={rangeGrowth} />
       <T v="meta" style={{ marginTop: space.xs }}>{meta}</T>
-      {stage ? <T v="stage" color={c.accentText} style={{ marginTop: space.xs }}>{stage}</T> : null}
+      {stage ? <T v="quote" color={c.accentText} style={{ marginTop: space.xs }}>{stage}</T> : null}
     </View>
   );
   const ringArt = rings && (
@@ -470,7 +497,7 @@ export function ReadinessRow({
         </View>
         {/* Today names its tick (UX review: the 80 is the app's study bar, not a pass mark). */}
         <ScaleBar range={range} growth={rangeGrowth} accessible={false} markLabel="study bar" style={{ marginTop: space.xs }} />
-        {stage ? <T v="stage" color={c.accentText} style={{ marginTop: space.xs }}>{stage}</T> : null}
+        {stage ? <T v="quote" color={c.accentText} style={{ marginTop: space.xs }}>{stage}</T> : null}
       </View>
     );
     return onPress ? (
@@ -616,9 +643,9 @@ export function DomainRings({
                 {isWord ? (
                   <T v="label" color={c.ink}>{value}</T>
                 ) : value.endsWith('%') ? (
-                  <BigNum value={value.slice(0, -1)} pct size={17} />
+                  <BigNum value={value.slice(0, -1)} pct size={20} />
                 ) : (
-                  <BigNum value={value} size={17} />
+                  <BigNum value={value} size={20} />
                 )}
               </View>
             </Row>
@@ -661,7 +688,7 @@ export function ringsSpoken(cert: Certification, values: (number | null)[], spok
  * The clearing's numbers. Mobile 1.9, in a full celebration (≤ 1.2 s, any
  * tap skips to the end): the three stats roll up, 60 ms apart; the mini
  * stem grows from where readiness stood this morning to now (premium round
- * 2: it was a mini ring); then "grew to" and the growth line fade in last. Short: the panel cross-fades in.
+ * 2: it was a mini ring); then "grew, now" and the growth line fade in last. Short: the panel cross-fades in.
  * Reduced: all of it at once. The words are the same in every mode.
  */
 export function ClearingBody({
@@ -730,7 +757,7 @@ export function ClearingBody({
         <MiniStem score={readiness.score} from={plan.start.score} play={full} run={run} delay={ringAt} color={c.sap} soil={c.forestTrack} />
         {/* Keyed by the celebration, so its words wait for their beat (a tap shows them at once). */}
         <FadeIn key={run} delay={full ? wordsAt : 0} rise={false} style={{ flex: 1 }}>
-          <Text maxFontSizeMultiplier={2} style={[grewLine, { color: c.onForest }]}>{line}</Text>
+          <T v="aside" color={c.onForest}>{line}</T>
           {/* No "↑10" before the first range exists: a delta reads as a score on the day Today says
               "Not enough data yet" (UX review S4). Premium round 2 (item 11): the old ring wording is gone,
               a gain is "↑3" as everywhere in the Field Guide, said "up 3 points". */}
@@ -756,12 +783,14 @@ export function clearingGrowth(grew: { area: string; points: number } | null, ar
 }
 
 /**
- * "Readiness grew to 67–77%": never a negative framing ("holding at" otherwise).
- * A word joiner after the dash keeps the range on one line ("67–" never ends a line).
+ * "Readiness grew, now 67 to 77%": never a negative framing ("holding at 67 to 77%"
+ * otherwise; "grew, now" so the line never says "to" twice).
+ * No-break spaces keep the range on one line ("67 to" never ends a line); a
+ * sentence keeps its %, as the website's "Your estimated readiness is 63 to 73%".
  */
 export function clearingLine(plan: DayPlan, readiness: Readiness, range: ReadinessRange): string {
   return range.enough
-    ? `Readiness ${readiness.score > plan.start.score ? 'grew to' : 'holding at'} ${rangeLabel(range).replace('–', '–\u2060')}%`
+    ? `Readiness ${readiness.score > plan.start.score ? 'grew, now' : 'holding at'} ${rangeWords(range).replace(/ /g, '\u00a0')}%`
     : 'Readiness takes shape as you answer';
 }
 

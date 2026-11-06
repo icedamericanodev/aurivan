@@ -4,6 +4,8 @@
 
 Ready-to-paste copy for App Store Connect and Google Play Console.
 
+**Release version: 2.0.0, "The KaiSip launch"** (6 Nov 2026; the Google Play closed-test build). It is 2.0.0, not 1.0.0, because backups and sync refuse data stamped by a newer version and testers already hold 1.5x saves.
+
 **Revised 5 Nov 2026 against mobile 1.54.3** (claim-by-claim check of the app code): the app's own names are used (Drills, Questions to revisit, Mistake journal, Eliminate two); widgets, reminders, study notes, principles, the exam guide, final review week, plant forms and badges are now listed; the brand line is **"Know why the best answer wins."** (owner decision after a trademark clearance check, 5 Nov 2026; see `TRADEMARK_CLEARANCE.md`). It replaces "Grow the judgment the exam rewards." (same day) and "Think like an IS auditor.", and it stays true when other certifications ship, because every one is a "choose the best answer" exam. The "GROW DEEP ROOTS" heading is now "REMEMBER WHAT YOU LEARN": "Grow Deep Roots" is a live US education trademark. The screenshots predate mobile 1.50 to 1.53 and are re-shot in the closed-test build session.
 Voice: Grove, warm, calm and credible, like a senior colleague who already passed.
 Brand source: `mobile/src/content/brand.ts`. Compliance source: `docs/mobile/ARCHITECTURE.md` §6.
@@ -113,13 +115,19 @@ CISA® and ISACA® are registered trademarks of ISACA. KaiSip is not affiliated 
 
 ### What's New
 
-App Store Connect does not show this field on a version 1.0 submission. Use this text on the first update, or wherever the field appears.
+App Store Connect does not show this field on a version 1.0 submission. Use this text on the first update, or wherever the field appears. Google Play: paste it as the release notes of the 2.0.0 closed-test release ("The KaiSip launch"; it matches the app's own What's new).
+
+```
+The KaiSip launch. A new look across Today, Practice, Learn and You. Your plant grows as you study, with badges along the way. Drills each train one exam skill, and a glossary in Learn lets you search any term. A clearer study plan shows what to do next. A new page, How questions are made, explains how questions are drafted with AI tools and checked. AI can make mistakes, so please report anything that looks wrong. Many fixes for a smoother study session.
+```
+
+459 characters (limit 500).
+
+The first-release text before the launch build, kept for an App Store 1.0 note if needed:
 
 ```
 Welcome to KaiSip. This first release brings calm, focused practice for the CISA® exam: a daily plan, teaching tips on every question, questions to revisit, drills, full mock exams and an estimated readiness range. It works offline, with no account needed.
 ```
-
-About 250 characters.
 
 ### Support URL
 

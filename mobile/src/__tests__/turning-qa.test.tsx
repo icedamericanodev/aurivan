@@ -497,7 +497,13 @@ describe('4. Reduce Motion and haptics', () => {
     const words = byTestID('plant-form-reveal-words')[0];
     expect(words.props.accessibilityElementsHidden).toBe(false);
     const t = textOf(words);
-    for (const w of ['A new form', FORM_FACTS[4], 'The Standard Oak', 'A clear stem and an upright oval crown; the first acorns.']) expect(t).toContain(w);
+    // Grove Phase 4b (PHASE4B 4.4): the fact sits above the art from the first frame; the label under it
+    // says "New form" and the name; the form's one line is in the name block. All readable at once.
+    const fact = byTestID('plant-form-reveal-fact')[0];
+    expect(fact.props.accessibilityElementsHidden).toBe(false);
+    expect(textOf(fact)).toContain(FORM_FACTS[4]);
+    for (const w of ['New form', 'The Standard Oak']) expect(t).toContain(w);
+    expect(textOf(byTestID('plant-name-block')[0])).toContain('A clear stem and an upright oval crown; the first acorns.');
     expect(byTestID('plant-form-reveal-play')).toHaveLength(0);
     expect(said()).toEqual(['Kai grows into a new form: the Standard Oak.']);
     expect(success()).toBe(1);
@@ -537,7 +543,8 @@ describe('5. the Form IV choice', () => {
     expect(revealMode()).toBe('full');
     const t = textOf(byTestID('plant-form-reveal-words')[0]);
     expect(t).toContain('The Moot Oak');
-    expect(t).toContain('Long level limbs roof a ring of five stones; the crown sits in tiers.');
+    // Phase 4b: the form's one line is in the name block under the Turning.
+    expect(textOf(byTestID('plant-name-block')[0])).toContain('Long level limbs roof a ring of five stones; the crown sits in tiers.');
     expect(t).not.toContain('Broadcrown');
     const newDrawing = build.mock.calls.find((c) => c[0].stage === 6)![0];
     expect(newDrawing.look?.final).toBe('moot');

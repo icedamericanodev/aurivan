@@ -22,7 +22,7 @@ import { originalToDisplay } from '../engine/shuffle';
 import { useProgress } from '../store/progress';
 import { useSession } from '../store/session';
 import SessionScreen from '../app/session';
-import { AnswerPlate, FEEDBACK_DELAY, KeyIdeaCue, PLATE_ROW_STAGGER, StemRecap, StickyFooter, Verdict, Vine, VINE_ARRIVES, DISC_ABOVE_FROM, WhyBlock } from '../components/quiz';
+import { AnswerPlate, FEEDBACK_DELAY, PLATE_ROW_STAGGER, Rise, StemRecap, StickyFooter, Verdict, VINE_ARRIVES, DISC_ABOVE_FROM, WhyBlock, KeyIdea, TipsCard } from '../components/quiz';
 import type { Letter } from '../content/types';
 import { finalTwoLine, pickCoachKind, ruleOutLine } from '../engine/pickCoach';
 import { SLIP_LINE } from '../engine/slipCoach';
@@ -127,42 +127,41 @@ describe('after a miss', () => {
     expect(labelled(/^Show question$/).length).toBe(1);
   });
 
-  it('the verdict word is ink; the leaf keeps its colour and ✗', () => {
+  // Grove Phase 4 (PHASE4.md 4.2 step 1): the word in hero, in its state colour (was ink).
+  it('the verdict word is in the miss tone; the leaf keeps its colour and ✗', () => {
     answer(false);
     const v = root().findByType(Verdict);
     expect(v.props.field).toBe(true);
     const word = v.findAll((n) => typeof n.type === 'string' && n.props.children === 'Not quite')[0];
-    expect(StyleSheet.flatten(word.props.style).color).toBe(light.ink);
+    expect(StyleSheet.flatten(word.props.style).color).toBe(light.wrong);
   });
 
-  it('Fig. 4 · Your pick, and the best answer: a header caption and two rows, one stop each', () => {
+  // Grove Phase 4 (4.2 step 2): one card, no caption, no book label; "Your answer", "Why not B" and
+  // "Best answer" are one stop each.
+  it('the answer card: your answer, why not, the best answer; one stop each, colour never alone', () => {
     const { picked, best } = answer(false);
-    expect(allText()).toContain('Fig. 4 · Your pick, and the best answer');
-    const caption = labelled(/^Figure 4, Your pick, and the best answer$/);
-    expect(caption).toHaveLength(1);
-    expect(caption[0].props.accessibilityRole).toBe('header');
+    expect(allText()).not.toContain('Your pick, and the best answer');
     const pick = byTestId('answer-row-pick');
     const key = byTestId('answer-row-best');
     expect(pick).toHaveLength(1);
     expect(key).toHaveLength(1);
     expect(pick[0].props.accessible).toBe(true);
-    expect(pick[0].props.accessibilityLabel).toMatch(new RegExp(`^Your pick, ${picked}, not the best answer: .+\\. Why not ${picked}: `));
+    expect(pick[0].props.accessibilityLabel).toMatch(new RegExp(`^Your answer, ${picked}, not the best: `));
+    expect(labelled(new RegExp(`^Why not ${picked}: `))).toHaveLength(1);
     expect(key[0].props.accessibilityLabel).toMatch(new RegExp(`^Best answer, ${best}: `));
     // Colour is never alone: the ✗ / ✓ and the words.
-    expect(allText()).toContain('✗ Your pick');
+    expect(allText()).toContain('✗ Your answer');
     expect(allText()).toContain('✓ Best answer');
   });
 
-  it('KEY IDEA over the quotation, and the Exam cue as a clay-keyed label', () => {
+  it('Key idea over the quotation with the coach rule; the Exam cue is a row of "How to think about it"', () => {
     answer(false);
-    const block = root().findByType(KeyIdeaCue);
-    expect(block.props.keyIdea).toBe(rich.keyConcept);
+    expect(root().findByType(KeyIdea).props.text).toBe(rich.keyConcept);
     expect(labelled(/^Key idea: /)).toHaveLength(1);
-    const cue = byTestId('exam-cue-label');
-    expect(cue).toHaveLength(1);
-    expect(cue[0].props.accessibilityLabel).toMatch(/^Exam cue, use it again: /);
-    const key = cue[0].findAll((n) => typeof n.type === 'string' && n.props.children === 'Exam cue · use it again')[0];
-    expect(StyleSheet.flatten(key.props.style).color).toBe(light.clay);
+    const idea = byTestId('answer-key-idea')[0];
+    expect(StyleSheet.flatten(idea.props.style).borderLeftWidth).toBe(3);
+    expect(labelled(/^Exam cue: /)).toHaveLength(1);
+    expect(allText()).toContain('How to think about it');
   });
 
   it('"Next question" is the plate button over a hairline', () => {
@@ -180,34 +179,52 @@ describe('after a miss', () => {
 });
 
 describe('after a right answer', () => {
-  it('Fig. 4 · Your answer, with one ✓ row', () => {
+  it('"Your answer · the best", one ✓ row', () => {
     const { best } = answer(true);
-    expect(allText()).toContain('Fig. 4 · Your answer');
+    expect(allText()).toContain('Your answer · the best');
     expect(byTestId('answer-row-pick')).toHaveLength(0);
     const key = byTestId('answer-row-best');
     expect(key).toHaveLength(1);
-    expect(key[0].props.accessibilityLabel).toMatch(new RegExp(`^Best answer, ${best}, your pick: `));
+    expect(key[0].props.accessibilityLabel).toMatch(new RegExp(`^Your answer, ${best}, the best: `));
     expect(root().findByType(AnswerPlate).props.pick).toBeUndefined();
   });
 
-  it('Why first, then KEY IDEA and the Exam cue label, then Eliminate / Final two on the vine (UX review P2)', () => {
+  // Grove Phase 4 (4.2): one order in every state, so a right answer reads Key idea, the tips, then Why.
+  it('Key idea, then every tip in one card, then the whole Why', () => {
     answer(true);
     // Tree order is reading order.
     const order = root()
-      .findAll((n) => n.type === WhyBlock || n.type === KeyIdeaCue || n.type === Vine)
-      .map((n) => (n.type === WhyBlock ? 'why' : n.type === KeyIdeaCue ? 'key' : 'vine'));
-    expect(order).toEqual(['why', 'key', 'vine']);
-    expect(root().findByType(KeyIdeaCue).props.keyIdea).toBe(rich.keyConcept);
-    expect(byTestId('exam-cue-label')).toHaveLength(1);
-    // The vine keeps the other two tips and no Key idea leaf (so it never ticks a second time).
-    const vine = root().findByType(Vine);
-    expect(vine.props.keyIdea).toBeUndefined();
-    expect(vine.props.tips).toHaveLength(2);
-    expect(vine.props.tips.some((t: string) => t.startsWith('Exam cue'))).toBe(false);
-    // Both live in the one feedback-vine view that carries the vine's timing.
+      .findAll((n) => n.type === WhyBlock || n.type === KeyIdea || n.type === TipsCard)
+      .map((n) => (n.type === WhyBlock ? 'why' : n.type === KeyIdea ? 'key' : 'tips'));
+    expect(order).toEqual(['key', 'tips', 'why']);
+    const tips = root().findAllByType(TipsCard)[0];
+    expect(tips.props.rows.map((t: { label: string }) => t.label)).toEqual(['Eliminate two', 'Final two', 'Exam cue']);
+    // Both live in the one feedback-vine view that carries the vine's timing (one tick).
     const host = root().findAll((n) => n.props.testID === 'feedback-vine')[0];
-    expect(host.findAllByType(KeyIdeaCue)).toHaveLength(1);
-    expect(host.findAllByType(Vine)).toHaveLength(1);
+    expect(host.findAllByType(KeyIdea)).toHaveLength(1);
+    expect(host.findAllByType(TipsCard)).toHaveLength(1);
+  });
+
+  // Owner answer O1: after a miss the same order and the same one tips card, every tip open.
+  it('after a miss: Key idea, every tip in one card, then the Why; the fold holds nothing else', () => {
+    answer(false);
+    const order = root()
+      .findAll((n) => n.type === WhyBlock || n.type === KeyIdea || n.type === TipsCard)
+      .map((n) => (n.type === WhyBlock ? 'why' : n.type === KeyIdea ? 'key' : 'tips'));
+    expect(order).toEqual(['key', 'tips', 'why']);
+    expect(root().findAllByType(TipsCard)[0].props.rows.map((t: { label: string }) => t.label)).toEqual(['Eliminate two', 'Final two', 'Exam cue']);
+    const why = root().findByType(WhyBlock);
+    expect(why.props.more).toEqual([]);
+    expect(why.props.children).toBeUndefined();
+  });
+
+  // PHASE4.md 4.4: the blocks after the card fade in reading order, opacity only, 30 ms apart.
+  it('Key idea with the tips, then the Why: opacity only, 30 ms apart', () => {
+    answer(false);
+    const rises = root().findAllByType(Rise);
+    expect(rises).toHaveLength(2);
+    expect(rises.map((n) => n.props.rise)).toEqual([false, false]);
+    expect(rises[1].props.delay - rises[0].props.delay).toBe(PLATE_ROW_STAGGER);
   });
 });
 
@@ -249,15 +266,13 @@ describe('motion', () => {
       .findAll((n) => typeof n.type === 'function' && n.type.name === 'FadeIn')
       .map((n) => ({ delay: n.props.delay as number, dur: n.props.dur as string }));
 
-  it('the plate rises first, then its rows 40 ms apart (`enter`)', () => {
+  // Grove Phase 4 (4.4): the card and its rows fade in reading order, opacity only, 30 ms apart.
+  it('the card fades in first, then its rows 30 ms apart (opacity only)', () => {
     answer(false);
-    expect(PLATE_ROW_STAGGER).toBe(40);
-    expect(fades()).toEqual([
-      { delay: FEEDBACK_DELAY.rows, dur: 'enter' },
-      { delay: FEEDBACK_DELAY.rows + 40, dur: 'enter' },
-      { delay: FEEDBACK_DELAY.rows + 80, dur: 'enter' },
-    ]);
-    expect(motion.dur.enter).toBe(240);
+    expect(PLATE_ROW_STAGGER).toBe(30);
+    const f = fades();
+    expect(f[0]).toEqual({ delay: FEEDBACK_DELAY.rows, dur: 'reveal' });
+    expect(f.slice(1).map((x) => x.delay)).toEqual(f.slice(1).map((_, i) => FEEDBACK_DELAY.rows + 30 * (i + 1)));
   });
 
   it.each([
@@ -275,7 +290,7 @@ describe('motion', () => {
       const onScreen = (cb: (x: number, y: number) => void) => cb(0, 100);
       for (const v of root().findAll((n) => n.props.testID === 'feedback-vine')) if (v.instance) (v.instance as { measureInWindow?: unknown }).measureInWindow = onScreen;
       const layout = () => act(() => { host.props.onLayout?.({ nativeEvent: { layout: { x: 0, y: 400, width: 340, height: 200 } } }); });
-      const block = () => root().findByType(KeyIdeaCue);
+      const block = () => root().findByType(KeyIdea);
       layout();
       act(() => { jest.advanceTimersByTime((reduced ? motion.dur.reduced : VINE_ARRIVES) - 1); });
       layout();
@@ -304,28 +319,6 @@ describe('a mock is unchanged', () => {
 });
 
 describe('200% text', () => {
-  it('on a wide screen the Exam cue takes a margin column, but not from ×1.3 text (UX review P4)', () => {
-    const w = Dimensions.get('window');
-    const at = (fontScale: number) => act(() => Dimensions.set({ window: { ...w, width: 700, fontScale }, screen: { ...w, width: 700, fontScale } }));
-    const direction = () => {
-      const outer = r!.root.findByType(KeyIdeaCue).children[0] as ReactTestInstance;
-      return StyleSheet.flatten(outer.props.style).flexDirection;
-    };
-    const el = <KeyIdeaCue keyIdea="Independence first." cues={[{ label: 'Exam cue', body: 'Look for who owns it.' }]} visible={false} />;
-    try {
-      at(1);
-      act(() => { r = create(el); });
-      expect(direction()).toBe('row');
-      act(() => r!.unmount());
-      at(1.3);
-      act(() => { r = create(el); });
-      expect(direction()).toBeUndefined();
-    } finally {
-      at(w.fontScale);
-      act(() => Dimensions.set({ window: w, screen: w }));
-    }
-  });
-
   it('from ×1.6 the disc sits above its key; below it, beside', () => {
     const w = Dimensions.get('window');
     const at = (fontScale: number) => act(() => Dimensions.set({ window: { ...w, fontScale }, screen: { ...w, fontScale } }));

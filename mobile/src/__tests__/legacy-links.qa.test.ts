@@ -11,6 +11,16 @@
  */
 import { redirectSystemPath } from '../app/+native-intent';
 import { redirectLegacyPath } from '../lib/legacyLinks';
+import { useSettings } from '../store/settings';
+
+// Release bug hunt round 3: a link to a real screen goes to "/" until onboarding is done
+// (release-hunt-3-links.test.ts). These links are for a learner who has finished it.
+jest.mock('@react-native-async-storage/async-storage', () =>
+  jest.requireActual('@react-native-async-storage/async-storage/jest/async-storage-mock'),
+);
+beforeAll(() => {
+  useSettings.setState({ onboarded: true });
+});
 
 const both = (path: string) => [
   redirectSystemPath({ path, initial: true }),

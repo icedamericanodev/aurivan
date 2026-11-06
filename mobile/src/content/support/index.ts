@@ -17,7 +17,7 @@
  * Content only: no React, no storage.
  */
 import type { Fix, SupportTopic } from '../../engine/support';
-import { PROVENANCE_LINE } from '../brand';
+import { AI_LONG_DISCLAIMER_PARAGRAPHS, PROVENANCE_LINE } from '../brand';
 
 // ── Fixes after learner reports ──────────────────────────────────────────
 /**
@@ -34,13 +34,44 @@ export interface WhatsNewEntry {
   version: string;
   /** The day it shipped, YYYY-MM-DD. */
   date: string;
+  /**
+   * A name for a big release, shown as its heading instead of "Version 2.0" (the version moves to the
+   * meta line). Only the launch has one: store version 2.0.0 is the KaiSip launch (the number is above
+   * the testers' 1.5x saves, because backups refuse data from a newer version).
+   */
+  title?: string;
   new?: string[];
   improved?: string[];
   fixed?: string[];
+  /**
+   * Only about over-the-air updates (Check for updates, the update stamp).
+   * Hidden where updates are off (the Google Play build), so What's new never
+   * points to a row that build does not have. Never set on the newest entry.
+   */
+  needsUpdates?: true;
+}
+
+/** The entries to show: all of them, minus the update-only ones when updates are off. */
+export function whatsNewFor(updatesOn: boolean, list: readonly WhatsNewEntry[] = WHATS_NEW): readonly WhatsNewEntry[] {
+  return updatesOn ? list : list.filter((e) => !e.needsUpdates);
 }
 
 /** Newest first. The first entry must match app.json (a test checks it). */
 export const WHATS_NEW: readonly WhatsNewEntry[] = [
+  {
+    version: '2.0.0',
+    date: '2026-11-06',
+    title: 'The KaiSip launch',
+    new: [
+      'A new look across Today, Practice, Learn and You: calmer pages that are easier to read and quicker to use.',
+      'Your plant grows as you study and has its own page, and badges mark each step of the way.',
+      'Drills each train one exam skill, like spotting the tempting wrong answer, reading what a question asks for or naming the idea first.',
+      'A glossary in Learn: search any term or acronym, filter by area and open the note that teaches it.',
+      'A new page, How questions are made, explains how questions are drafted with AI tools and checked, reminds you that AI can make mistakes and shows how to report one.',
+    ],
+    improved: ['Your study plan is clearer: Today shows what to do next and tells you when the day’s plan is done.'],
+    fixed: ['Many fixes for a smoother study session.'],
+  },
   {
     version: '1.54.4',
     date: '2026-11-05',
@@ -106,7 +137,7 @@ export const WHATS_NEW: readonly WhatsNewEntry[] = [
   {
     version: '1.49.0',
     date: '2026-10-29',
-    improved: ['Answers end sooner: one next step after a miss, the question kept at the top, and the rest a tap away under ⋯. Lesson quick checks now look like practice answers.'],
+    improved: ['Answers end sooner: one next step after a miss, the question kept at the top, and the rest a tap away under the More button. Lesson quick checks now look like practice answers.'],
   },
   {
     version: '1.48.0',
@@ -294,7 +325,7 @@ export const WHATS_NEW: readonly WhatsNewEntry[] = [
     version: '1.28.0',
     date: '2026-10-19',
     new: [
-      'About the CISA exam: registration and fees, test center or online, exam day, results and how to become certified, with links to the official sources.',
+      'About the CISA exam: registration and fees, test center or online, exam day, results and how to become certified, with links to the sources.',
       'Final review week: a calm seven-day plan for your last week, with one-tap tasks, a must-remember sheet you can quiz yourself on, and an exam-day routine.',
     ],
     improved: ['Exam week now follows the seven-day plan, and keeps the checklist you already started.'],
@@ -332,7 +363,7 @@ export const WHATS_NEW: readonly WhatsNewEntry[] = [
   {
     version: '1.24.2',
     date: '2026-10-18',
-    improved: ['Every practice question was re-checked by independent reviewers: clearer wording, more realistic wrong answers and up-to-date references.'],
+    improved: ['Every practice question was re-checked by our AI review checks: clearer wording, more realistic wrong answers and up-to-date references.'],
     fixed: ['Explanations no longer turn words like “A SOC 2 report” into an answer letter after the options are shuffled.'],
   },
   {
@@ -400,6 +431,7 @@ export const WHATS_NEW: readonly WhatsNewEntry[] = [
   {
     version: '1.19.0',
     date: '2026-10-13',
+    needsUpdates: true,
     new: ['Settings can now check for the latest update and restart to apply it, under Help and about.'],
     improved: ['Settings also shows which update your app is running, which helps if you contact support.'],
   },
@@ -694,7 +726,8 @@ export const FAQ: readonly FaqEntry[] = [
     id: 'from-website',
     question: 'Can I bring my progress from the KaiSip website?',
     answer: [
-      'Yes. On the website, open Your data and choose Export progress. Then in the app, choose Restore from a backup, on the welcome screen or in Settings under Your data, and pick that file.',
+      'Yes. On the KaiSip website, open Settings and, under Your data, choose Back up. Then in the app, choose Restore from a backup, on the welcome screen or in Settings under Your data, and pick that file.',
+      'During the beta the website shows only the beta page. Its study app opens again at launch.',
       'KaiSip shows what it will add first. Your answers, saved questions, notes and mock results are added to what is already on this phone; nothing here is replaced or deleted.',
     ],
     topic: 'backup',
@@ -744,5 +777,13 @@ export const FAQ: readonly FaqEntry[] = [
       PROVENANCE_LINE,
     ],
     topic: 'other',
+  },
+  {
+    // Transparency (owner request, 5 Nov 2026): the long disclaimer, word for word (content/brand.ts).
+    // Settings → About's "How questions are made" opens this entry (faq?open=how-made).
+    id: 'how-made',
+    question: 'How are the questions made and checked?',
+    answer: [...AI_LONG_DISCLAIMER_PARAGRAPHS],
+    topic: 'study',
   },
 ];

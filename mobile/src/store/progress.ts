@@ -28,6 +28,8 @@ import { keepOnReset } from '../engine/plantLooks';
 import type { MockTiming } from '../engine/pace';
 import { withNoteRead, withNoteViewed } from '../engine/noteReadState';
 import { migrateProgress, PROGRESS_VERSION } from '../engine/saveMigrations';
+import { REWRITTEN_QUESTIONS } from '../content/rewrittenQuestions';
+import { dropRewritten } from '../engine/rewrittenQuestions';
 import { withNote, type QuestionNotes } from '../engine/questionNotes';
 import type { ThinkingSlip } from '../engine/slipCoach';
 import { addReport, type ReportEntry } from '../engine/support';
@@ -772,6 +774,10 @@ export const useProgress = create<ProgressState>()(
       // "Your note" added CertProgress.qNotes, OPTIONAL: same (no notes until one is written).
       version: PROGRESS_VERSION,
       migrate: (persisted) => migrateProgress(persisted) as unknown as ProgressState,
+      // Round 4: on every load, records saved for the OLD wording of a question rewritten in place
+      // (same id, new question) are dropped: no old pick, slip tag or result on the new question.
+      // Notes and bookmarks stay. Reads each record's own time, so it is safe to run every time.
+      merge: (persisted, current) => ({ ...current, ...(dropRewritten(persisted, REWRITTEN_QUESTIONS) as Partial<ProgressState>) }),
     },
   ),
 );

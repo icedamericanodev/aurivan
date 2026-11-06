@@ -21,7 +21,7 @@ import { crossesForm, delayedRecalls, formMoment, RECALL_FORM_III } from '../eng
 import { addDays } from '../engine/examDay';
 import { growthBefore, growthFor, plantNew, PLANT_SPECIES, type CertPlant } from '../engine/plant';
 import { dayKey } from '../engine/streak';
-import { checkBackupText, currentBackup, restoreBackup } from '../lib/backup';
+import { checkBackupText, currentBackup, restoreBackup, undoRestore } from '../lib/backup';
 import { carryPlantIdentity, checkPlant, plantFactsFor, plantFor, plantSubtopics, plantView } from '../lib/plant';
 import { selectCert, useProgress, type CertProgress, type MockResult } from '../store/progress';
 import { useSeen } from '../store/seen';
@@ -298,5 +298,32 @@ describe('QA-150-6: Android widget and the Form IV choice', () => {
     const snap = JSON.parse((await AsyncStorage.getItem('aurivan.widget.v1')) ?? '{}') as { plant?: { final?: string } };
     expect(snap.plant?.final).toBe('moot');
     stop();
+  });
+});
+
+// ── Release bug hunt round 3 · Minor: Undo restore lost the Form IV choice ("Lookout Oak" came back as the default) ──
+describe('release bug hunt round 3: Undo restore puts the Form IV choice back', () => {
+  const view = () => plantView(cert, cp(), undefined, dayKey(T0), false, useSeen.getState().plantFinal?.cisa).final;
+  it('Elder + Lookout, restore another file, Undo restore: Lookout again, growth kept', async () => {
+    answerClean([40, 40, 12, 40, 40]);
+    const mastery: Record<string, { firstDay: string; masteredAt: string }> = {};
+    for (const s of plantSubtopics('cisa').flat()) mastery[s] = { firstDay: '2026-09-01', masteredAt: '2026-09-03' };
+    setCert({
+      mastery,
+      milestones: { ...(cp().milestones ?? { earned: {} }), longIds: Object.keys(cp().answers).slice(0, 40) },
+      mocks: [mock(150, T0 - DAY)],
+      moments: { ...(cp().moments ?? {}), readySeenAt: T0 - 2 * DAY },
+      plant: { ...plantNew('oak', 'Kai', T0 - 60 * DAY, 6), look: { style: 'botanical' } },
+    });
+    // An older backup file (no Form IV choice in it, as every file today).
+    const other = checkBackupText(JSON.stringify(currentBackup(T0)));
+    if (other.kind !== 'ok') throw new Error(other.code);
+    useSeen.getState().setPlantFinal('cisa', 'lookout');
+    expect(view()).toBe('lookout');
+    expect((await restoreBackup(other.data, { now: T0 })).kind).toBe('ok');
+    expect(view()).toBe('own'); // the file decides (§8.10 stage 1)
+    expect((await undoRestore(T0)).kind).toBe('ok');
+    expect(view()).toBe('lookout');
+    expect(cp().plant?.growth).toBe(6);
   });
 });

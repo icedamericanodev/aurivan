@@ -54,9 +54,12 @@ Status (6 Nov 2026): the web What's New for v13 ("Welcome to the new KaiSip") is
 - Your plant has its own page, showing how it has grown and the form it grows into. (Phase 4b, PHASE4B.md section 12.)
 - Your plant's look is now chosen right on its page, and Today and You open it in one tap.
 - The badges space on You and Your progress is clearer about where badges are earned.
+
 - New page, How questions are made: how KaiSip's questions are written with AI help and checked, with a reminder that AI can make mistakes and how to report one. (Transparency, TRANSPARENCY.md.)
 
 ## Follow-ups to do at the release
+- Phone 2.0.0 (the KaiSip launch, 6 Nov 2026): `mobile/LIVE_VERSION` stays 1.48.0 while the web study app is closed. When the web app reopens, set `mobile/LIVE_VERSION` to 2.0.0 (and rebuild the web bundle stamp with `npm run web-plant` if verify_repo asks).
+- Phone dash sweep, left for the joint web and phone sweep: the home-screen widget's readiness number ("68–78" beside a raised %, `engine/widgets.ts`) needs a check on a real widget before it changes to words; `rangeLabel` in `engine/readinessRange.ts` is bundled for the website and unused on the phone. The phone share card now says "68 to 78%".
 - Transparency owner decisions (TRANSPARENCY.md section 5): the older What's New lines about independent and expert review, the beta FAQ title, "Reviewed" in the source row, support.html's "small team" and "Flag" wording, and confirming the founder's CISA is current before the page goes live.
 - `mobile/src/engine/plantLooks.ts` `howToOpen` says "in the Herbarium": change to "in Badges" and rebuild `assets/kaisip-plant.js` in the same commit.
 - Old What's New entries (v12.44, v12.49) mention "field guide": release history, leave unless Sky says otherwise.
@@ -106,3 +109,4 @@ Goal: make the look unmistakably KaiSip and less like a generic AI-made design. 
 - Fewer stacked cards: more open lists and whitespace on Practice, You and Learn.
 - The plant and botanical drawings as the main visual signature (heroes, empty states, onboarding).
 - Run with super-lens-critic, premium-mobile-designer, premium-web-designer and brand-logo-designer, using beta tester feedback; mockups to Sky before building. Web and phone together.
+- Phone nits from the 2.0.0 release review (not blocking): the mock Flag button's spoken name "Unflag question" vs the visible "Flag" (label in name: use "Flag question" with the selected state, update four tests); the welcome line "written with AI help" vs "drafted with AI tools" elsewhere (pick one, web and phone together); a share-card test or shot at "100 to 100%" on a 360dp phone.

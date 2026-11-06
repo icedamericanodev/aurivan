@@ -25,7 +25,7 @@
 import { existsSync, readFileSync } from 'fs';
 import { join } from 'path';
 import { act, create, type ReactTestInstance, type ReactTestRenderer } from 'react-test-renderer';
-import { Dimensions, Modal, ScrollView } from 'react-native';
+import { AccessibilityInfo, Dimensions, Modal, ScrollView } from 'react-native';
 import { router } from 'expo-router';
 import { setMockReducedMotion } from '../../jest/reanimated-mock';
 import Badges from '../app/milestones';
@@ -62,6 +62,7 @@ import { space } from '../theme/tokens';
 import { checkBackupText, currentBackup, restoreBackup } from '../lib/backup';
 import { caseStage, hasNewBadge, initCaseSeen, showBadgesAgain, studyFor, weakestDomain } from '../lib/badges';
 import { finishSession } from '../lib/finishSession';
+import { flushSayLaterForTest } from '../lib/a11y';
 import { finishGameRound } from '../lib/gameRounds';
 import { badgeCase, checkMilestones, ensureBackfill, momentFor, syncPlanters } from '../lib/milestones';
 import { startFromIds } from '../lib/sessions';
@@ -254,7 +255,7 @@ describe('1. upgrade from a 1.9 save with earned milestones', () => {
     expect(hasNewBadge('cisa')).toBe(false);
     mount(<You />);
     expect(root().findAll((n) => n.props.testID === 'new-badge-dot')).toHaveLength(0);
-    expect(labels().some((l) => l.startsWith(`Herbarium: badges and field notes, ${Object.keys(SAVED).length} earned.`))).toBe(true);
+    expect(labels().some((l) => l.startsWith(`Badges: your badges and field notes, ${Object.keys(SAVED).length} earned.`))).toBe(true);
     unmount();
     mount(<TabsLayout />);
     expect(root().findAll((n) => n.props.testID === 'you-new-dot')).toHaveLength(0);
@@ -426,6 +427,11 @@ describe('2. earning a new badge in a session', () => {
     act(() => {
     screen().props.onScroll(700, 700);
   }); // 1200 < 700 + 700 − 96: in view
+    // Grove 4b (5.4): the one success tap comes as the tile is pressed, 320 ms into the press.
+    expect(mockSuccess).not.toHaveBeenCalled();
+    act(() => {
+      jest.advanceTimersByTime(320);
+    });
     expect(mockSuccess).toHaveBeenCalledTimes(1);
     expect(cel().mode).toBe('full');
     expect(cel().settled).toBe(false);
@@ -442,7 +448,7 @@ describe('2. earning a new badge in a session', () => {
     expect(hasNewBadge('cisa')).toBe(true);
     mount(<You />);
     expect(root().findAll((n) => n.props.testID === 'new-badge-dot').length).toBeGreaterThan(0);
-    expect(labels().some((l) => l.startsWith('Herbarium: badges and field notes, new badge, 2 earned.'))).toBe(true);
+    expect(labels().some((l) => l.startsWith('Badges: your badges and field notes, new badge, 2 earned.'))).toBe(true);
     unmount();
     mount(<TabsLayout />);
     expect(root().findAll((n) => n.props.testID === 'you-new-dot').length).toBeGreaterThan(0);
@@ -772,7 +778,7 @@ describe('4. the case', () => {
     press(/^Badges not yet earned$/);
     expect(allText()).toContain('All earned.');
     press(/^Earned badges$/);
-    expect(allText()).toContain('Nothing pressed on this sheet yet.');
+    expect(allText()).toContain('Nothing pressed in this set yet.');
   });
 
   it('detail sheet, not yet: rule, progress, how to earn it, effort, and Study for this', () => {
@@ -804,10 +810,10 @@ describe('4. the case', () => {
   it('detail sheet, earned: the date and what it means, no How to earn, no Study button', () => {
     midLearner();
     mount(<Badges />);
-    press(/^First Foothold\. Pressed 22 September/);
+    press(/^First Foothold\. Earned 22 September/);
     const sheet = root().findByType(Modal);
     const t = textOf(sheet);
-    expect(t).toContain('Earned 22 Sep');
+    expect(t).toContain('Pressed 22 Sep');
     expect(t).toContain('You’ve mapped where you stand.');
     expect(t).not.toContain('How to earn it');
     expect(sheet.findAll((n) => /^Study for/.test(n.props.accessibilityLabel ?? ''))).toHaveLength(0);
@@ -958,7 +964,15 @@ describe('5. Settings → Show badges', () => {
     toggle().props.onValueChange(true);
   });
     const lines = allText().match(/Badges are on again\.[^.]*\./g) ?? [];
-    expect(lines).toEqual(['Badges are on again. 2 badges arrived while they were hidden: see You → Herbarium.']);
+    expect(lines).toEqual(['Badges are on again. 2 badges arrived while they were hidden: see You → Badges.']);
+    // Round 4: the line under the switch and the announcement say the way in words, never "→".
+    const spoken = root().findAll((n) => typeof n.props.accessibilityLabel === 'string' && n.props.accessibilityLabel.startsWith('Badges are on again.'));
+    expect(spoken.length).toBeGreaterThan(0);
+    for (const n of spoken) expect(n.props.accessibilityLabel).toBe('Badges are on again. 2 badges arrived while they were hidden: see them on You, under Badges.');
+    const said = jest.spyOn(AccessibilityInfo, 'announceForAccessibility').mockImplementation(() => {});
+    flushSayLaterForTest();
+    expect(said.mock.calls.map((c) => c[0]).filter((t) => t.startsWith('Badges are on again'))).toEqual(['Badges are on again. 2 badges arrived while they were hidden: see them on You, under Badges.']);
+    said.mockRestore();
     unmount();
     // The next session earns nothing new: its Results show no moment for the two that waited.
     const more = ids('4', 20, 5);
@@ -971,7 +985,7 @@ describe('5. Settings → Show badges', () => {
     // And the row is back, with its dot (two badges arrived since the case was last opened).
     jest.setSystemTime(T0 + 60_000);
     mount(<You />);
-    expect(labels().some((l) => l.startsWith('Herbarium: badges and field notes, new badge, 2 earned.'))).toBe(true);
+    expect(labels().some((l) => l.startsWith('Badges: your badges and field notes, new badge, 2 earned.'))).toBe(true);
   });
 
   it('the choice travels in a backup; an older backup (no such field) keeps this phone’s choice', async () => {
@@ -1149,7 +1163,7 @@ describe('7. reset', () => {
     expect(sets.every((s) => s.earned === 0)).toBe(true);
     expect(hasNewBadge('cisa')).toBe(false);
     mount(<You />);
-    expect(labels().some((l) => l.startsWith('Herbarium: badges and field notes, none yet.'))).toBe(true);
+    expect(labels().some((l) => l.startsWith('Badges: your badges and field notes, none yet.'))).toBe(true);
     unmount();
     // The phone's own choices (the Sort) stay; a new badge after the reset is new.
     expect(useSeen.getState().badgeSort).toBe('effort');
@@ -1174,7 +1188,9 @@ describe('8. regressions', () => {
     mount(<FieldNotes />);
     const t = allText();
     expect(t).toContain('Game levels');
-    for (const name of ['Sapling', 'Seedling']) expect(t.includes(name) || t.includes('Heartwood')).toBe(true);
+    // Grove 4b (PHASE4B 6.6): each row shows its level in words, and says the three markers in one label.
+    expect(t).toContain('Snare Spotter Seedling');
+    expect(labels()).toContain('Snare Spotter. Level: Seedling. Sapling and Heartwood not reached. Two rounds in a row at 80% or more, at your level, grow it to Sapling.');
     const shelf = badgeCase('cisa', cp()).sets.find((s) => s.info.id === 'fieldNotes')!;
     expect(t).toContain(`${shelf.earned} of ${shelf.total} earned, in your badges`);
     press(/^Your skill badges/);
@@ -1186,8 +1202,10 @@ describe('8. regressions', () => {
     expect(existsSync(join(__dirname, '..', 'app', 'milestones.tsx'))).toBe(true);
     expect(readFileSync(join(__dirname, '..', 'app', '_layout.tsx'), 'utf8')).toMatch(/<Stack\.Screen name="milestones"/);
     mount(<Badges />);
-    expect(allText()).toMatch(/^Herbarium · Badges /); // mobile 1.51: the badge case is the Herbarium
-    expect(allText()).toContain('Earned by what you’ve mastered.');
+    // Grove 4b (F2, 5.1 item 1): the back row "You", then the title "Badges" (never "Herbarium", labels decision 8).
+    expect(allText()).toMatch(/^You Badges Every set counts on its own\. /);
+    expect(allText()).not.toMatch(/Herbarium/);
+    expect(allText()).toContain('Earned by what you’ve mastered. Once earned, a badge stays.');
   });
 
   it('every link to the badges in the app uses /milestones (nothing points at a /badges route that does not exist)', () => {

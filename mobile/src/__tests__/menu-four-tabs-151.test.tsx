@@ -44,9 +44,9 @@ jest.mock('../components/icons', () => {
 // The tab bar, drawn flat: each tab's name, title and spoken label (the real Tabs needs a navigator).
 jest.mock('expo-router', () => {
   const React = jest.requireActual('react');
-  const Tabs = ({ children }: { children: unknown }) => React.createElement(React.Fragment, null, children);
-  Tabs.Screen = function TabScreen({ name, options }: { name: string; options: { title?: string; tabBarAccessibilityLabel?: string; tabBarButton?: unknown } }) {
-    return React.createElement('TabScreen', { name, title: options.title, spoken: options.tabBarAccessibilityLabel ?? options.title, button: options.tabBarButton });
+  const Tabs = ({ children, tabBar }: { children: unknown; tabBar?: unknown }) => React.createElement('Tabs', { tabBar }, children);
+  Tabs.Screen = function TabScreen({ name, options }: { name: string; options: { title?: string; tabBarAccessibilityLabel?: string; tabBarIcon?: unknown } }) {
+    return React.createElement('TabScreen', { name, title: options.title, spoken: options.tabBarAccessibilityLabel ?? options.title, options });
   };
   return {
     router: {
@@ -93,7 +93,7 @@ const textOf = (n: ReactTestInstance) => {
 
 beforeEach(() => {
   useProgress.getState().resetCert('cisa');
-  useSettings.setState({ theme: 'light', activeCertId: 'cisa' });
+  useSettings.setState({ theme: 'light', activeCertId: 'cisa', onboarded: true }); // links below are for an onboarded learner
   mockParams.current = {};
   mockSetParams.mockClear();
   mockCanDismiss.current = true;
@@ -116,26 +116,25 @@ describe('the tab bar', () => {
     expect(tabs.map((t) => t.props.spoken)).toEqual(['Today', 'Learn', 'Practice', 'You']);
   });
 
-  // UX review H2: the navigator's item asks for role "button" on iOS (VoiceOver said "Practice, button").
-  it('every tab button is a tab to screen readers, with its selected state kept', () => {
+  // UX review H2 (kept by Grove's floating bar, components/tabBar.tsx): every tab is a TAB to screen readers.
+  it('the navigator draws the floating bar: every tab is a tab to screen readers, with its selected state kept', () => {
     mount(<TabsLayout />);
-    const made = root()
-      .findAll((n) => (n.type as unknown) === 'TabScreen')
-      .map((t) => t.props.button as React.ComponentType<Record<string, unknown>>);
-    const buttons = made.map((Button, i) => {
-      act(() => {
-        r!.update(<Button aria-selected={i === 2} role="button" onPress={() => {}} />);
-      });
-      return root().find((n) => (n.type as unknown) === 'PlatformPressable').props;
+    const screens = root().findAll((n) => (n.type as unknown) === 'TabScreen');
+    const tabBar = root().find((n) => (n.type as unknown) === 'Tabs').props.tabBar as (p: object) => React.ReactElement;
+    expect(typeof tabBar).toBe('function');
+    const routes = screens.map((t) => ({ key: `${t.props.name}-k`, name: t.props.name as string }));
+    const descriptors = Object.fromEntries(screens.map((t, i) => [routes[i].key, { options: t.props.options }]));
+    act(() => {
+      r!.update(tabBar({ state: { index: 2, routes }, descriptors, emitter: { emit: () => ({ defaultPrevented: false }) }, navigateToTab: () => {}, insets: { top: 0, bottom: 0, left: 0, right: 0 } }));
     });
-    expect(buttons).toHaveLength(4);
-    for (const [i, b] of buttons.entries()) {
-      expect([i, b.role, b.accessibilityRole]).toEqual([i, 'tab', 'tab']);
-      expect([i, b.accessibilityState?.selected]).toEqual([i, i === 2]);
-      expect(b['aria-selected']).toBe(i === 2);
-      // The position ("3 of 4") is the navigator's own label: never written into ours.
-      expect(String(b.accessibilityLabel ?? '')).not.toMatch(/\d of \d/);
+    const tabs = root().findAll((n) => typeof n.type === 'string' && n.props.accessibilityRole === 'tab');
+    expect(tabs).toHaveLength(4);
+    for (const [i, b] of tabs.entries()) {
+      expect([i, b.props.accessibilityState?.selected]).toEqual([i, i === 2]);
+      // The position ("3 of 4") is never written into the spoken name.
+      expect(String(b.props.accessibilityLabel ?? '')).not.toMatch(/\d of \d/);
     }
+    expect(tabs.map((b) => b.props.accessibilityLabel)).toEqual(['Today', 'Learn', 'Practice', 'You']);
   });
 
   it('the Play tab’s screen is gone; its route is a redirect outside the tabs', () => {
@@ -190,7 +189,7 @@ describe('Practice opened at Drills', () => {
     expect(first.length).toBeGreaterThan(0);
     // After "More ways to practice" (the hero stays the one primary action).
     const t = textOf(root());
-    expect(t.indexOf('More ways to practice')).toBeLessThan(t.indexOf('Drills'));
+    expect(t.indexOf('Review and saved')).toBeLessThan(t.indexOf('All at Seedling'));
     expect(mockSetParams).not.toHaveBeenCalled();
     // The jump runs from Drills' own layout (no fixed delay), then the param is cleared.
     layDrills();
@@ -290,7 +289,7 @@ describe('the one-time "games moved" line (UX review P4)', () => {
     played();
     mountMeasured(<Practice />);
     expect(moved()).toHaveLength(1);
-    expect(textOf(moved()[0])).toContain('The games are here now, as Drills.');
+    expect(textOf(moved()[0])).toContain('The games are now Drills.');
     const go = moved()[0].findAll((n) => n.props.accessibilityRole === 'button' && typeof n.props.onPress === 'function')[0];
     expect(go.props.accessibilityLabel ?? textOf(go)).toContain('Go to Drills');
     expect(go.props.accessibilityHint).toBe('Scrolls to Drills on this page');

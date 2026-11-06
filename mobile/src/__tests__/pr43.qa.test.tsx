@@ -143,7 +143,8 @@ const plants = () => root().findAll((n) => typeof n.type !== 'string' && typeof 
 /** Is a growth-ring drawing on screen? (GrowthRings takes `preset`.) */
 // Mobile 1.21: Today's condensed readiness row draws the small `row` rings (the exam-ready panel keeps `today`).
 // The readiness picture: the rings, or (mobile 1.51, Field Guide) Today's scale bar.
-const ringsShown = () => root().findAll((n) => (typeof n.type !== 'string' && (n.props.preset === 'today' || n.props.preset === 'row')) || (typeof n.type === 'string' && n.props.testID === 'scale-bar')).length > 0;
+// Grove: Today's readiness is the hero's ring (the kit's seed inside it when the plant is off).
+const ringsShown = () => root().findAll((n) => (typeof n.type !== 'string' && (n.props.preset === 'today' || n.props.preset === 'row')) || (typeof n.type === 'string' && (n.props.testID === 'scale-bar' || n.props.testID === 'today-ring'))).length > 0;
 const layoutGrid = () => {
   const grid = root().findAll((n) => n.props.accessibilityRole === 'radiogroup')[0];
   act(() => {
@@ -234,7 +235,7 @@ describe('J1 a new learner and the plant', () => {
     unmount();
 
     mount(<You />);
-    press(/^Plant yours/);
+    press(/^Your plant: pick your plant/); // Grove You C2: the plant chip (was the "Plant yours" row)
     expect(router.push).toHaveBeenCalledWith('/plant-pick');
   });
 
@@ -255,12 +256,14 @@ describe('J1 a new learner and the plant', () => {
     press(/^Plant it$/);
     expect(cp().plant).toMatchObject({ species: 'pine', name: 'Summit Lee', growth: 1 });
     expect(cp().plant!.pending).toBeUndefined();
-    expect(router.replace).toHaveBeenCalledWith('/plant');
+    expect(router.replace).toHaveBeenCalledWith({ pathname: '/plant', params: { planted: '1' } });
     unmount();
 
     mount(<Today />);
     expect(byTestID('today-plant')).toHaveLength(1);
+    // The plant's own words only (round 4: the growth was read twice before).
     expect(byTestID('today-plant')[0].props.accessibilityLabel).toBe('Summit Lee, your pine. Starburst Pine form. Growth: Seed.');
+    expect(String(byTestID('today-plant')[0].props.accessibilityLabel).match(/Growth/g)).toHaveLength(1);
     expect(byTestID('plant-prompt')).toHaveLength(0);
     expect(byTestID('plant-grew')).toHaveLength(0); // planting is not a "grew" moment
     unmount();
@@ -268,7 +271,7 @@ describe('J1 a new learner and the plant', () => {
     mount(<You />);
     expect(allText()).toMatch(/Summit Lee/);
     expect(allText()).toMatch(/Seed · growth 1 of 6/);
-    expect(allText()).not.toMatch(/Plant yours/);
+    expect(allText()).not.toMatch(/Pick your plant/); // Grove You C2: the plant chip
   });
 
   it('the name starts empty with an idea as its placeholder; "Another idea" fills one in, and it follows the species until the learner types one', () => {
@@ -349,8 +352,8 @@ describe('J2 an existing 1.12 save upgrading', () => {
     expect(byTestID('plant-prompt')).toHaveLength(0);
     unmount();
     mount(<You />);
-    expect(allText()).toMatch(/Plant yours/);
-    expect(allText()).toMatch(/Grows only with your study/);
+    expect(allText()).toMatch(/Pick your plant/); // Grove You C2: the plant chip
+    expect(allText()).toMatch(/Your plant/);
   });
 
   it('"Plant yours" from the prompt: the study so far sets growth quietly (no Today moment), one back-fill line', async () => {
@@ -361,11 +364,12 @@ describe('J2 an existing 1.12 save upgrading', () => {
     expect(router.push).toHaveBeenCalledWith({ pathname: '/plant-pick', params: { from: 'today' } });
     unmount();
     mount(<PlantPick />);
-    expect(allText()).toMatch(/Plant yours/);
+    // Grove Phase 4b (PHASE4B 4.3): the picker's title is the page's own.
+    expect(allText()).toMatch(/Choose what you’ll grow/);
     layoutGrid();
     press(/^Mango\./);
     press(/^Plant it$/);
-    expect(router.replace).toHaveBeenCalledWith('/plant');
+    expect(router.replace).toHaveBeenCalledWith({ pathname: '/plant', params: { planted: '1' } });
     // 25 clean answers: past the diagnostic, so Sprout, quietly.
     expect(cp().plant).toMatchObject({ species: 'mango', growth: 2 });
     expect(cp().plant!.pending).toBeUndefined();
@@ -725,11 +729,14 @@ describe('J7 resting', () => {
       expect(plants().length).toBeGreaterThan(0);
       expect(plants().every((x) => x.props.resting === true && x.props.stage === 3)).toBe(true);
       // Today keeps its own countdown ("N days to exam") and journey stage line: only the plant's words are checked.
-      expect(plantWords()).not.toMatch(BANNED);
+      // Grove (owner's labels decision, 31 Oct 2026): Today's hero says the plant's stage in words, "Stage 3 of 6",
+      // shown and said, as the website does. That one phrase is allowed; every other banned word still is not.
+      expect(plantWords().replace(/ Stage \d of 6\./g, '')).not.toMatch(BANNED);
       unmount();
     }
     mount(<YourPlant />);
-    expect(allText()).toMatch(/Reed is resting\. Pick up whenever you're ready\./);
+    // Phase 4b (PHASE4B 3.4): never "you're ready".
+    expect(allText()).toMatch(/Reed is resting\. Pick up whenever you like\./);
     expect(labels().join(' ')).toMatch(/Resting\./);
     expect(allText()).not.toMatch(BANNED);
     expect(labels().join(' ')).not.toMatch(BANNED);
@@ -1033,7 +1040,7 @@ describe('J10 a separate plant per certification', () => {
     useSettings.setState({ activeCertId: 'cism' });
     mount(<You />);
     expect(allText()).not.toMatch(/Kai/);
-    expect(allText()).toMatch(/Plant yours/);
+    expect(allText()).toMatch(/Pick your plant/); // Grove You C2: the plant chip
     unmount();
     setPlant(plantNew('lotus', 'Nila', Date.now()), 'cism');
     mount(<You />);
@@ -1087,6 +1094,10 @@ describe('J11 never on question, mock, lesson or game screens (transitive import
       const f = todo.pop()!;
       if (seen.has(f)) continue;
       seen.add(f);
+      // Grove Phase 4b (PHASE4B 4.9): the first set's closing screen (shown by Results once, ever)
+      // draws "Kai is planted" after "Plant a seed". That one block is its own check (plant-p4b test);
+      // the walk does not follow it, so every other study screen part stays plant-free.
+      if (f.endsWith('/components/firstSet.tsx')) continue;
       const src = readFileSync(f, 'utf8');
       for (const m of src.matchAll(/(?:from|import)\s*\(?\s*['"](\.{1,2}\/[^'"]+)['"]/g)) {
         const to = resolveImport(f, m[1]);
@@ -1108,6 +1119,6 @@ describe('J11 never on question, mock, lesson or game screens (transitive import
     expect(files.length).toBeGreaterThan(3); // the walk really follows imports
     expect(files.filter((x) => x.startsWith('components/plant/'))).toEqual([]);
     // lib/plant.ts is reached for its non-visual checkPlant (finishSession): fine. No screen part may draw.
-    for (const x of files.filter((y) => y !== 'lib/plant.ts')) expect(readFileSync(join(SRC, x), 'utf8')).not.toMatch(/usePlantView\(|<Plant\b|<PlantButton|<PlantNote/);
+    for (const x of files.filter((y) => y !== 'lib/plant.ts' && y !== 'components/firstSet.tsx')) expect(readFileSync(join(SRC, x), 'utf8')).not.toMatch(/usePlantView\(|<Plant\b|<PlantButton|<PlantNote/);
   });
 });

@@ -10,7 +10,7 @@
  *   the date moves back) only until the first tick under the new date
  *   replaces them (code review M6b).
  * - Never a notification, never a red or "overdue" state.
- * - Generic, true wording: "the official candidate guide", never a claim
+ * - Generic, true wording: "the candidate guide", never a claim
  *   about what any exam body says, and no links that imply affiliation.
  *
  * Final review week (exam guide work, Oct 2026): when the certification has
@@ -52,7 +52,7 @@ export function examWeekText(id: ExamWeekItem, exam: ExamFacts): string {
     case 'booking':
       return 'Confirm your exam date, time and place, or your online-exam setup.';
     case 'guide':
-      return 'Read the official candidate guide for ID and test-day rules.';
+      return 'Read the candidate guide for ID and test-day rules.';
     case 'online':
       return 'Taking it online? Run the system check, and plan a clear desk and a quiet room.';
     case 'centre':

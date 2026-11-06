@@ -17,10 +17,11 @@ import Animated, { Easing, ReduceMotion, useAnimatedStyle, useSharedValue, withT
 import type { Certification } from '../content/types';
 import { aboutSeconds, checkpointText, durationSpoken, durationText, durationWords, spokenMin, type MockPacing, type PaceStatus } from '../engine/pace';
 import { LARGE_TEXT, motion, radius, space } from '../theme/tokens';
+import { grovePlate } from '../theme/grove';
 import { useTheme } from '../theme/useTheme';
 import { Clock, Flag, Gauge, ICON_STROKE } from './icons';
 import { ProgressFill, useMotion } from './motion';
-import { ICON_SIZE, Row, Section, T, useFontScale } from './ui';
+import { groveCard, ICON_SIZE, Row, T, useFontScale } from './ui';
 
 /**
  * What the pace line says: a status (gauge icon), a cue to flag (flag icon,
@@ -50,9 +51,10 @@ export interface PaceStripProps {
   /**
    * Daylight's pace bar: `done` = share of items answered (the fill),
    * `used` = share of the time budget gone (the tick). Fill behind the tick
-   * = behind pace. Both 0..1.
+   * = behind pace. Both 0..1. `step` (Grove 4b, PHASE4B 6.3 item 9): the tick steps once a second
+   * with no tween (Daylight's clock moves it once a second), in place of the 900 ms linear glide.
    */
-  bar?: { done: number; used: number };
+  bar?: { done: number; used: number; step?: boolean };
   /** Daylight: tap the strip to hear the pace again (announced by the screen). */
   onRequest?: () => void;
   /** For moving screen-reader focus to the strip (Daylight, after Resume). */
@@ -62,14 +64,15 @@ export interface PaceStripProps {
 export function PaceStrip({ clock, clockUnit, line, lineShort, bar, onRequest, ref }: PaceStripProps) {
   const { c } = useTheme();
   const large = useFontScale() >= LARGE_TEXT;
-  const attention = line && (line.tone === 'behind' || line.tone === 'cue' || line.tone === 'soon');
-  const lineColor = attention ? c.clay : c.ink2;
+  // Grove Phase 4 (PHASE4.md O13): pace attention is said in words in ink2, never clay (the handoff keeps
+  // clay for the streak, below-70 marks and the focus area's badge).
+  const lineColor = c.ink2;
   const LineIcon = !line ? null : line.tone === 'cue' ? Flag : line.tone === 'note' || line.tone === 'soon' ? Clock : Gauge;
   const clockText = clock === 'hidden' ? 'Clock hidden' : clock === 'untimed' ? 'Untimed' : clock.text;
   const clockSpoken =
     clock === 'hidden' ? 'Clock hidden. Pace checks only.' : clock === 'untimed' ? 'Untimed' : clock.spoken;
-  // The 5-minute mark: clay, never the error colour.
-  const clockColor = typeof clock === 'object' && clock.low ? c.clay : c.ink;
+  // The low clock: its words ("left", the 5-minute line) carry it; the numerals stay ink.
+  const clockColor = c.ink;
   const spoken = [clockSpoken, line?.text].filter(Boolean).join('. ');
 
   const body = (
@@ -90,7 +93,7 @@ export function PaceStrip({ clock, clockUnit, line, lineShort, bar, onRequest, r
           </Row>
         )}
       </View>
-      {bar && <PaceBar done={bar.done} used={bar.used} />}
+      {bar && <PaceBar done={bar.done} used={bar.used} step={bar.step} />}
     </View>
   );
 
@@ -125,18 +128,21 @@ export function PaceStrip({ clock, clockUnit, line, lineShort, bar, onRequest, r
  * and the fill is a ProgressFill, so nothing triggers a layout pass each
  * second (the tick used to animate `left`).
  */
-function PaceBar({ done, used }: { done: number; used: number }) {
+function PaceBar({ done, used, step = false }: { done: number; used: number; step?: boolean }) {
   const { c } = useTheme();
   const { reduced: reduce } = useMotion();
+  // PHASE4B 6.3 item 9 and section 8: a component value that replaces `motion.dur.tick` for this bar
+  // only (theme/tokens.ts is bundled into the website and is not edited). Read, not changed.
+  const glide = !step;
   const clamp = (x: number) => Math.max(0, Math.min(1, x));
   // Reduce Motion: step to the nearest 10% instead of gliding every second.
-  const tickAt = reduce ? Math.floor(clamp(used) * 10) / 10 : clamp(used);
+  const tickAt = reduce && !step ? Math.floor(clamp(used) * 10) / 10 : clamp(used);
   const [width, setWidth] = useState(0);
   const tick = useSharedValue(tickAt);
   useEffect(() => {
     // The clock's own pace: a linear glide over most of each 1 s tick (the one linear motion in the app).
-    tick.set(reduce ? tickAt : withTiming(tickAt, { duration: motion.dur.tick, easing: Easing.linear, reduceMotion: ReduceMotion.Never }));
-  }, [tickAt, reduce, tick]);
+    tick.set(reduce || !glide ? tickAt : withTiming(tickAt, { duration: motion.dur.tick, easing: Easing.linear, reduceMotion: ReduceMotion.Never }));
+  }, [tickAt, reduce, glide, tick]);
   const tickStyle = useAnimatedStyle(() => ({ transform: [{ translateX: tick.value * width }] }));
   return (
     <View
@@ -161,9 +167,11 @@ function PaceBar({ done, used }: { done: number; used: number }) {
 }
 
 /**
- * Results → Pacing (timed mocks). Hairline rows, no card: time used vs
- * allowed, median seconds, each checkpoint, unanswered at the end, the last
- * 10% of the time vs the rest, and the slowest domain.
+ * Results → Pacing (timed mocks): time used vs allowed, median seconds, each
+ * checkpoint, unanswered at the end, the last 10% of the time vs the rest, and
+ * the slowest domain. Grove Phase 4 (PHASE4.md 7.13): one card with label and
+ * value rows like set results, headed by a `headline` (results are not a tab
+ * home, R4). Every row and its spoken words are as before.
  */
 export function PacingPanel({ pacing, cert }: { pacing: MockPacing; cert: Certification }) {
   const { c } = useTheme();
@@ -201,14 +209,15 @@ export function PacingPanel({ pacing, cert }: { pacing: MockPacing; cert: Certif
     }
   }
   return (
-    <View>
-      <Section title="Pacing" />
+    <View testID="pacing-card" style={[groveCard(c), { paddingHorizontal: grovePlate.pad, paddingTop: space.md, paddingBottom: space.xs }]}>
+      <T v="headline" accessibilityRole="header">Pacing</T>
       {rows.map(([k, v, spokenV], i) => (
         <View
           key={k}
           accessible
           accessibilityLabel={`${k}: ${spokenV}`}
-          style={{ paddingVertical: 12, borderBottomWidth: i === rows.length - 1 ? 0 : 1, borderBottomColor: c.line, gap: 2 }}
+          // A hairline between rows only; the first row sits under the heading.
+          style={{ paddingVertical: 12, borderTopWidth: i === 0 ? 0 : 1, borderTopColor: c.line, gap: 2 }}
         >
           <T v="meta">{k}</T>
           <T v="label" num>{v}</T>

@@ -26,6 +26,12 @@ export function supportEmailFrom(env: string | undefined): string {
  */
 export const DEFAULT_PRIVACY_URL = 'https://kaisip.com/privacy';
 export const DEFAULT_TERMS_URL = 'https://kaisip.com/terms';
+/**
+ * The public "How KaiSip questions are made and checked" page (design-notes/grove/TRANSPARENCY.md, W1).
+ * Settings → About links to it; the same words are bundled in Help → Common questions, so the
+ * story still reads offline.
+ */
+export const HOW_MADE_URL = 'https://kaisip.com/how-questions-are-made';
 
 /** The env value when it is an https:// link; otherwise the default (an empty or broken value never hides the row). */
 export function linkFrom(env: string | undefined, fallback: string): string {
@@ -45,7 +51,7 @@ export const config = {
   // with the cloud flag off carries no backend address at all (guard G2).
   /**
    * Month the question bank was last reviewed, shown in the trust line under
-   * every answer ("Original · Reviewed Oct 2026"). Update it with each
+   * every answer ("Original · Checked Oct 2026"). Update it with each
    * content review.
    */
   contentReviewed: 'Oct 2026',

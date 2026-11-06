@@ -48,7 +48,7 @@ Status words are PASS / FAIL / WARN rather than symbols.
 |---|---|---|---|
 | Target API | PASS | Play requires API 36 for new apps and updates from 31 Aug 2026 (https://developer.android.com/google/play/requirements/target-sdk, fetched). SDK 57 / RN 0.86.3 targets 36: `/home/user/aurivan/mobile/node_modules/react-native/gradle/libs.versions.toml:4`; Expo SDK table shows 57 → compile/target 36 (https://docs.expo.dev/versions/latest/) | None |
 | 16 KB page size | PASS | Required for apps targeting 35+; updates blocked from 1 Feb 2027 (https://developer.android.com/guide/practices/page-sizes). RN 0.86 supports it | None |
-| Package and version | PASS | `com.kaisip.app`, version 1.38.0 (`app.json:7,26`); `appVersionSource: remote` and `autoIncrement` (`eas.json:4,21`) | None |
+| Package and version | PASS | `com.kaisip.app`, version 2.0.0, the KaiSip launch (`app.json:7,26`; 2.0.0 rather than 1.0.0 so testers' 1.5x backups still restore); `appVersionSource: remote` and `autoIncrement` (`eas.json:4,21`) | None |
 | OTA security (Gate 1) | FAIL | See B1 | Option A or B |
 | Cloud flag OFF | PASS, one gap | `/home/user/aurivan/mobile/src/cloud/flag.ts:19`: `CLOUD = EXPO_PUBLIC_AURIVAN_CLOUD === '1'`, inlined at build time. The OFF bundle guard (`scripts/check_off_bundle.sh`) proves no Supabase, sign-in, SecureStore or REST code ships. Cloud routes redirect to Today (`src/app/(cloud)/_layout.tsx`). Gap: nothing stops `EXPO_PUBLIC_AURIVAN_CLOUD=1` in the EAS **production** environment. `eas-update.yml` checks only the preview environment, and `configGuard.ts` is not wired into any build | Owner: run `eas env:list --environment production`. Engineer: build-time guard (c4) |
 | What a production build contains | Info | Every study feature, offline, no account. No analytics, crash reporting or ads (no Sentry, PostHog or RevenueCat in `/home/user/aurivan/mobile/package.json`). Network use is only the expo-updates check (`app.json:75`). The app opens browser links only when the learner taps one (`examGuide.tsx:61`, `settings.tsx:517`), and support uses mailto: drafts (`src/lib/support.ts`). Notifications are local only; no push-token call exists | None |
@@ -116,7 +116,7 @@ What exists in the repo:
 
 **8. The production build**
 - `eas build --platform android --profile production` gives an AAB (AAB is the default; only `buildType: apk` gives an APK).
-- With `appVersionSource: remote` and `autoIncrement`, EAS stores the versionCode and adds 1 per production build. It starts from 1 when nothing is set (https://docs.expo.dev/build-reference/app-versions/). versionName = `expo.version` (1.38.0).
+- With `appVersionSource: remote` and `autoIncrement`, EAS stores the versionCode and adds 1 per production build. It starts from 1 when nothing is set (https://docs.expo.dev/build-reference/app-versions/). versionName = `expo.version` (2.0.0 for the closed-test launch build).
 - The channel is "production". The runtime version comes from the fingerprint, which matches the preview builds because they use the same app.json.
 - On whether Gate 1 can wait: refuted, see B1. It can wait only if the store build has OTA disabled (Option A).
 
@@ -151,7 +151,7 @@ What exists in the repo:
 7. **First upload, by hand.**
    - Play Console → Test and release → Testing → Internal testing → Testers tab: create an email list with yourself → Save.
    - Releases → Create new release. App integrity / Play App Signing: choose "Use Google-generated key" (the default).
-   - Upload the `.aab`. Release name auto-fills (2 (1.38.0)). Notes: "First internal build." Next → Save and publish / Start rollout.
+   - Upload the `.aab`. Release name auto-fills (versionCode (2.0.0), for example "2 (2.0.0)"). Notes: "First internal build." For the closed test, paste the "What's New" text from `STORE_LISTING.md` as the release notes. Next → Save and publish / Start rollout.
    - Install through the internal "Join on Android" link. Smoke test:
      - first launch offline
      - the reminder prompt appears only when you turn reminders on

@@ -3,7 +3,8 @@
 // plate, the plan's label, the scale bar) and Results (the growth plate, the key list of misses).
 // FONT_SCALE=2 approximates 200% text (1.2 for the chart's grown-but-not-list size); FG_ONLY=you,herbarium,
 // today,results,drills narrows it. Review sets (UX review, 1.51): FG_ONLY=full (You with all five areas measured, one
-// below 70), drop (Results with a set that lowered an area), new (a brand-new learner: Today, You, the Herbarium).
+// below 70), drop (Results with a set that lowered an area), new (a brand-new learner: Today, You, the Herbarium),
+// empty (Results for a brand-new learner's first short set: the empty plate and its sentence).
 import { createRequire } from 'module';
 import fs from 'fs';
 const require = createRequire(process.env.PLAYWRIGHT_REQUIRE_FROM || import.meta.url);
@@ -14,7 +15,7 @@ const theme = process.argv[4] || 'light';
 const BASE = 'http://127.0.0.1:8093';
 const FONT_SCALE = Number(process.env.FONT_SCALE) || 0;
 const ONLY = (process.env.FG_ONLY || '').split(',').filter(Boolean);
-const REVIEW = ['full', 'drop', 'new'];
+const REVIEW = ['full', 'drop', 'new', 'empty'];
 // The review sets only run when asked for by name.
 const want = (k) => (ONLY.length === 0 ? !REVIEW.includes(k) : ONLY.includes(k));
 const tag = `${theme}${FONT_SCALE ? `-fs${Math.round(FONT_SCALE * 100)}` : ''}`;
@@ -257,6 +258,27 @@ if (want('new')) {
   await go('/practice?section=drills', 3200);
   await toDrills();
   await shot('fg-new-drills');
+}
+
+if (want('empty')) {
+  // A brand-new learner's first short set (three IS Operations questions): the area has too few answers to be
+  // measured, so Results draws the empty plate ("... needs a few more answers before it is measured.").
+  await edit(
+    P,
+    `const cp = v.state.byCert.cisa; cp.answers = {}; cp.review = {}; cp.mistakes = {}; cp.mocks = []; delete cp.mastery;`,
+  );
+  const ids = bank(4).slice(0, 3).map((q) => q.id);
+  const responses = Object.fromEntries(ids.map((id, i) => [id, { display: 'A', correct: i !== 1, ms: 60_000, at: now - (3 - i) * 60_000 }]));
+  await edit(
+    'aurivan.session.v1',
+    `v.state.active = { id: 'fg-empty', mode: 'practice', certId: 'cisa', title: 'Practice · IS Operations', questionIds: a.ids,
+      perms: Object.fromEntries(a.ids.map((i) => [i, ['A', 'B', 'C', 'D']])), index: 2, responses: a.responses, flagged: [],
+      startedAt: a.now - 4 * 60000, finishedAt: a.now };`,
+    { ids, responses, now },
+  );
+  await go('/results', 2800);
+  await intoId('empty-plate', 'center');
+  await shot('fg-empty-results');
 }
 
 if (errs.length) console.log('page errors:', [...new Set(errs)].slice(0, 5));

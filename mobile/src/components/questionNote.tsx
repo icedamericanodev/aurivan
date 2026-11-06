@@ -28,6 +28,8 @@ import { moveFocus, sayLater } from '../lib/a11y';
 import { useKeyboardShown } from '../lib/useKeyboardShown';
 import { CLOUD } from '../cloud/flag';
 import { NOTES_FULL_LINE, QNOTE_MAX, isLiveNote, noteFits } from '../engine/questionNotes';
+import { REWRITTEN_QUESTIONS } from '../content/rewrittenQuestions';
+import { noteBeforeRewrite } from '../engine/rewrittenQuestions';
 import { useProgress } from '../store/progress';
 import { LARGE_TEXT, space } from '../theme/tokens';
 import { useTheme } from '../theme/useTheme';
@@ -39,6 +41,8 @@ import { Button, Card, ICON_SIZE, NoteField, Row, T, useFontScale } from './ui';
 /** The words on screen, in one place so tests and screens agree. */
 export const ADD_NOTE = 'Add a note';
 export const NOTE_TITLE = 'Your note';
+/** Round 4: above a note written before its question was rewritten in place (the note is kept). */
+export const NOTE_UPDATED_LINE = 'This question was updated after you wrote this note.';
 /** Said once, in the sheet: where the note is kept (the PM's privacy line). */
 export const NOTE_INTRO = 'Kept on this phone and in backups you save. It shows here each time you answer this question.';
 /**
@@ -94,6 +98,8 @@ export function QuestionNote({
   // The saved note (a tombstone or nothing reads as no note).
   const saved = useProgress((s) => s.byCert[certId]?.qNotes?.[questionId]);
   const text = isLiveNote(saved) ? saved.text.trim() : '';
+  // Written for the old wording of a question rewritten in place: kept, with a short line above it.
+  const stale = Boolean(text) && noteBeforeRewrite(REWRITTEN_QUESTIONS, certId, questionId, saved?.ts);
   // True while the typed text can't be saved because all notes together are at the cap.
   const [full, setFull] = useState(false);
 
@@ -242,7 +248,8 @@ export function QuestionNote({
               <Button kind="ghost" label="Edit" accessibilityLabel="Edit your note" onPress={openSheet} style={{ marginRight: -space.sm }} />
             </Row>
             {/* The whole note, never cut: the learner wrote it, and it is at most 1,000 characters. */}
-            <View ref={plateRef} accessible accessibilityLabel={`${NOTE_TITLE}: ${text}`}>
+            <View ref={plateRef} accessible accessibilityLabel={`${NOTE_TITLE}: ${stale ? `${NOTE_UPDATED_LINE} ` : ''}${text}`}>
+              {stale ? <T v="meta" style={{ marginBottom: space.xs }}>{NOTE_UPDATED_LINE}</T> : null}
               <T v="body">{text}</T>
             </View>
           </Card>

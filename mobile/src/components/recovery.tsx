@@ -113,7 +113,7 @@ export function RecoveryScreen({
       <ScrollView contentContainerStyle={{ flexGrow: 1, justifyContent: 'center', padding: space.gutter }}>
         <KaisipLockup height={32} />
         <Gap h={space.xl} />
-        <T v="hero" accessibilityRole="header">{load ? RECOVERY_COPY.loadTitle : RECOVERY_COPY.crashTitle}</T>
+        <T v="display" accessibilityRole="header">{load ? RECOVERY_COPY.loadTitle : RECOVERY_COPY.crashTitle}</T>
         <T v="body" style={{ marginTop: space.sm }}>{load ? RECOVERY_COPY.loadBody : RECOVERY_COPY.crashBody}</T>
         {note && (
           <T v="small" accessibilityRole="text" style={{ marginTop: space.md }}>{note}</T>

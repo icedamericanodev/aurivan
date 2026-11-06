@@ -18,6 +18,7 @@ import { growthTier, type GameTier, type TierChange } from '../engine/games/grow
 import type { GameId } from '../engine/games/registry';
 import { addCount, addToWindow, type CounterId, type WindowHit, type WindowId } from '../engine/milestones';
 import { selectCert, useProgress } from '../store/progress';
+import { batchSaves } from '../store/storage';
 import { logGame } from './activity';
 import { celebrateFrom, checkMilestones, type MilestoneMoment } from './milestones';
 
@@ -48,25 +49,29 @@ export interface RoundNews {
 }
 
 export function finishGameRound(certId: string, game: GameId, r: GameRoundResult): RoundNews {
-  const p = useProgress.getState();
-  const before = selectCert(p, certId).gameBest[game];
-  p.recordGame(certId, game, r.score);
-  const change = p.noteGameRound(certId, game, { rate: r.rate, tier: r.tier, ...(r.hits ? { hits: r.hits } : {}), ...(r.good !== undefined ? { good: r.good } : {}) });
-  for (const [id, by] of Object.entries(r.counts ?? {}) as [CounterId, number][]) {
-    if (by > 0) p.updateMilestones(certId, (m) => ({ milestones: addCount(m, id, by)! }));
-  }
-  for (const [id, hits] of Object.entries(r.windows ?? {}) as [WindowId, WindowHit[]][]) {
-    if (hits.length) p.updateMilestones(certId, (m) => ({ milestones: addToWindow(m, id, hits)! }));
-  }
-  logGame(certId, game);
-  // Code review #2: only this game's own skill badges (isRoundBadge) can be the recap's news.
-  const earnedNow = checkMilestones(certId, { finished: true }).filter((k) => isRoundBadge(game, k));
-  // Never two celebrations at once: a level-up line and a milestone don't stack.
-  // Mobile 1.40: and only a badge THIS round earned; an older one stays queued
-  // (You's badge dot shows it quietly), so the recap never repeats old news.
-  const moment = change === 'up' ? null : celebrateFrom(certId, earnedNow);
-  const tier = growthTier(selectCert(useProgress.getState(), certId).gameGrowth?.[game]);
-  return { change, tier, best: before !== undefined && r.score > before, moment };
+  // Release bug hunt round 3: the score, level, counters, today's plan and badges are each a change to
+  // the progress store; save it ONCE with the final state (store/storage.ts batchSaves), not 7 times.
+  return batchSaves(() => {
+    const p = useProgress.getState();
+    const before = selectCert(p, certId).gameBest[game];
+    p.recordGame(certId, game, r.score);
+    const change = p.noteGameRound(certId, game, { rate: r.rate, tier: r.tier, ...(r.hits ? { hits: r.hits } : {}), ...(r.good !== undefined ? { good: r.good } : {}) });
+    for (const [id, by] of Object.entries(r.counts ?? {}) as [CounterId, number][]) {
+      if (by > 0) p.updateMilestones(certId, (m) => ({ milestones: addCount(m, id, by)! }));
+    }
+    for (const [id, hits] of Object.entries(r.windows ?? {}) as [WindowId, WindowHit[]][]) {
+      if (hits.length) p.updateMilestones(certId, (m) => ({ milestones: addToWindow(m, id, hits)! }));
+    }
+    logGame(certId, game);
+    // Code review #2: only this game's own skill badges (isRoundBadge) can be the recap's news.
+    const earnedNow = checkMilestones(certId, { finished: true }).filter((k) => isRoundBadge(game, k));
+    // Never two celebrations at once: a level-up line and a milestone don't stack.
+    // Mobile 1.40: and only a badge THIS round earned; an older one stays queued
+    // (You's badge dot shows it quietly), so the recap never repeats old news.
+    const moment = change === 'up' ? null : celebrateFrom(certId, earnedNow);
+    const tier = growthTier(selectCert(useProgress.getState(), certId).gameGrowth?.[game]);
+    return { change, tier, best: before !== undefined && r.score > before, moment };
+  });
 }
 
 /** The level a game's first screen starts on: the learner's own. */

@@ -96,6 +96,36 @@ describe('the first set on the question screen', () => {
     expect(mockReplace).toHaveBeenCalledWith('/results');
   });
 
+  it('a first set resumed with one question left still ends on "See results" and its closing screen', () => {
+    // Release bug hunt round 3: answer 4 of the five, end the set, then Continue the last one.
+    startFirstSet('cisa');
+    mount();
+    for (let i = 0; i < 4; i++) {
+      pickFirstOption();
+      press('Check answer');
+      press('Next question');
+    }
+    act(() => {
+      finish.finishSession({ celebrate: false });
+      useSession.getState().clear();
+    });
+    act(() => {
+      r?.unmount();
+    });
+    jest.mocked(finish.finishSession).mockClear();
+    mockReplace.mockClear();
+    const resumed = startFirstSet('cisa')!;
+    expect(resumed.questionIds).toHaveLength(1);
+    expect(resumed.firstSet).toBe(true);
+    mount();
+    pickFirstOption();
+    press('Check answer');
+    expect(btn('Done')).toBeUndefined();
+    press('See results');
+    expect(finish.finishSession).toHaveBeenCalledWith({ celebrate: false });
+    expect(mockReplace).toHaveBeenCalledWith('/results');
+  });
+
   it('an ordinary set still offers the confidence chips and finishes the usual way', () => {
     startFromIds('cisa', getAllQuestions('cisa').slice(0, 2).map((q) => q.id), 'T');
     mount();

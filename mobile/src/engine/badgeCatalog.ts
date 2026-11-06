@@ -917,7 +917,16 @@ export function suggestLine(m: CaseMark, stage: Stage, daysLeft: number | null, 
 
 /** The one Results line under a moment: "Next: Firm Footing · IS Operations, 62% → 70% · 14 of 20 answered". */
 export function nextLine(m: CaseMark): string {
-  return m.detail ? `Next: ${m.name}, ${m.detail}` : `Next: ${m.name}`;
+  return m.detail ? `Next: ${m.name}, ${afterComma(m.detail)}` : `Next: ${m.name}`;
+}
+
+/**
+ * Polish round 1: a detail that follows a comma is in sentence case ("Next: Dress Rehearsal · 1 mock,
+ * not yet"). Only a first word in plain capitals-then-lowercase ("Not yet", "Closest topic", "Opens
+ * when…", "A topic took root") is lowered; "IS Operations" and numbers stay as they are.
+ */
+function afterComma(detail: string): string {
+  return /^[A-Z](?:[a-z]|\s)/.test(detail) ? detail.charAt(0).toLowerCase() + detail.slice(1) : detail;
 }
 
 // ── Study for this (badges_game.md §4.4) ─────────────────────────────────

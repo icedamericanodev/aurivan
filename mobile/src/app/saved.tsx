@@ -23,10 +23,11 @@
  * (components/questionNote.tsx). The group only shows once a note exists.
  * The screen is "empty" only when there are no saved questions AND no notes.
  */
+import { PageTitle } from '../components/groveHub';
 import { router } from 'expo-router';
 import { backOr } from '../lib/actions';
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { Pressable, ScrollView, View } from 'react-native';
+import { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { FlatList, Pressable, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { EmptyScreen } from '../components/emptyScreen';
 import { BookmarkCheck, ICON_STROKE, PencilLine } from '../components/icons';
@@ -47,6 +48,77 @@ export const REMOVED_LINE = 'Removed from saved.';
 /** How much of the stem a "Your notes" row shows. */
 const STEM_PREVIEW = 110;
 
+type SavedItem = { id: string; stem: string; domain?: string };
+const savedKey = (x: SavedItem) => x.id;
+
+/**
+ * One saved question (release bug hunt round 1: memoised). The row and the remove button are
+ * siblings (not nested), so each is its own target for touch and for screen readers.
+ */
+const SavedRow = memo(function SavedRow({
+  item,
+  pending,
+  last,
+  onOpen,
+  onRemove,
+  onUndo,
+}: {
+  item: SavedItem;
+  pending: boolean;
+  last: boolean;
+  onOpen: (id: string) => void;
+  onRemove: (id: string) => void;
+  onUndo: (id: string) => void;
+}) {
+  const { c } = useTheme();
+  const { id } = item;
+  return (
+    <View style={{ flexDirection: 'row', alignItems: 'center', gap: space.xs }}>
+      {pending ? (
+        <Row gap={space.sm} style={{ flex: 1, minHeight: 64, justifyContent: 'space-between' }}>
+          <T v="body" color={c.ink2} style={{ flexShrink: 1 }}>{REMOVED_LINE}</T>
+          <Button kind="ghost" label="Undo" accessibilityLabel="Undo: keep this question saved" onPress={() => onUndo(id)} />
+        </Row>
+      ) : (
+        <>
+          <View style={{ flex: 1 }}>
+            <ListRow
+              reading
+              full
+              title={item.stem}
+              subtitle={item.domain}
+              accessibilityLabel={`Answer saved question: ${item.stem}`}
+              // Opens a one-question session for just this question.
+              onPress={() => onOpen(id)}
+              chevron={false}
+              last // the hairline is drawn below the whole row instead
+            />
+          </View>
+          <Pressable
+            accessibilityRole="button"
+            accessibilityLabel="Remove from saved"
+            accessibilityHint="Takes this question out of your saved set. You can undo it for a few seconds."
+            onPress={() => onRemove(id)}
+            hitSlop={4}
+            style={({ pressed }) => ({
+              width: 48,
+              height: 48,
+              marginRight: -12, // optical alignment with the screen edge
+              borderRadius: 24,
+              alignItems: 'center',
+              justifyContent: 'center',
+              backgroundColor: pressed ? c.soft : 'transparent',
+            })}
+          >
+            <BookmarkCheck size={ICON_SIZE.row} color={c.accentText} strokeWidth={ICON_STROKE} />
+          </Pressable>
+        </>
+      )}
+      {!last && <View style={{ position: 'absolute', left: 0, right: 0, bottom: 0, height: 1, backgroundColor: c.line }} />}
+    </View>
+  );
+});
+
 export default function Saved() {
   const { c } = useTheme();
   const { cert, progress } = useActiveCert();
@@ -66,17 +138,23 @@ export default function Saved() {
     },
     [certId, toggleBookmark],
   );
-  const remove = (id: string) => {
-    setPending((p) => (p.includes(id) ? p : [...p, id]));
-    timers.current.set(id, setTimeout(() => commit(id), UNDO_MS));
-    sayLater(`${REMOVED_LINE} Undo is next to it.`);
-  };
-  const undo = (id: string) => {
+  // Stable callbacks (release bug hunt round 1), so a memoised row redraws only when its own values change.
+  const remove = useCallback(
+    (id: string) => {
+      setPending((p) => (p.includes(id) ? p : [...p, id]));
+      timers.current.set(id, setTimeout(() => commit(id), UNDO_MS));
+      sayLater(`${REMOVED_LINE} Undo is next to it.`);
+    },
+    [commit],
+  );
+  const undo = useCallback((id: string) => {
     const t = timers.current.get(id);
     if (t) clearTimeout(t);
     timers.current.delete(id);
     setPending((p) => p.filter((x) => x !== id));
-  };
+  }, []);
+  // Opens a one-question session for just this question.
+  const openSaved = useCallback((id: string) => guardedStart(() => startFromIds(certId, [id], 'Saved question'), () => router.push('/session')), [certId]);
   /** Practising uses the saved set as it is now: finish any removal that is still waiting. */
   const commitAll = () => {
     for (const [id, t] of [...timers.current]) {
@@ -106,6 +184,23 @@ export default function Saved() {
     [qNotes, certId],
   );
 
+  const bookmarks = progress.bookmarks;
+  const saved = useMemo(
+    () =>
+      bookmarks
+        .map((id) => ({ id, q: findQuestion(certId, id) }))
+        .filter((x): x is { id: string; q: NonNullable<typeof x.q> } => Boolean(x.q))
+        .map(({ id, q }) => ({ id, stem: q.stem, domain: cert.domains.find((d) => d.id === q.domainId)?.short })),
+    [bookmarks, certId, cert.domains],
+  );
+  const lastIndex = saved.length - 1;
+  const renderItem = useCallback(
+    ({ item, index }: { item: SavedItem; index: number }) => (
+      <SavedRow item={item} pending={pending.includes(item.id)} last={index === lastIndex} onOpen={openSaved} onRemove={remove} onUndo={undo} />
+    ),
+    [pending, lastIndex, openSaved, remove, undo],
+  );
+
   if (progress.bookmarks.length === 0 && notes.length === 0) {
     return (
       <EmptyScreen
@@ -119,64 +214,19 @@ export default function Saved() {
     );
   }
 
-  const saved = progress.bookmarks.map((id) => ({ id, q: findQuestion(cert.id, id) })).filter((x) => x.q);
   const keptCount = saved.filter((x) => !pending.includes(x.id)).length;
-  return (
-    <SafeAreaView edges={['top', 'bottom']} style={{ flex: 1, backgroundColor: c.bg }}>
-      <ScrollView contentContainerStyle={{ paddingHorizontal: space.gutter, paddingBottom: footerH + space.xl }}>
-        <PushedHeader title="Saved questions" onBack={() => backOr('/you')} />
-        {/* Notes but nothing saved: say how to save, then the notes below. */}
-        {saved.length === 0 && <T v="meta" style={{ marginTop: space.sm }}>Nothing saved yet. Tap the bookmark on any question to build your own revision set.</T>}
-        {saved.map(({ id, q }, i) => (
-          // The row and the remove button are siblings (not nested), so each
-          // is its own target for touch and for screen readers.
-          <View key={id} style={{ flexDirection: 'row', alignItems: 'center', gap: space.xs }}>
-            {pending.includes(id) ? (
-              <Row gap={space.sm} style={{ flex: 1, minHeight: 64, justifyContent: 'space-between' }}>
-                <T v="body" color={c.ink2} style={{ flexShrink: 1 }}>{REMOVED_LINE}</T>
-                <Button kind="ghost" label="Undo" accessibilityLabel="Undo: keep this question saved" onPress={() => undo(id)} />
-              </Row>
-            ) : (
-              <>
-                <View style={{ flex: 1 }}>
-                  <ListRow
-                    reading
-                    full
-                    title={q!.stem}
-                    subtitle={cert.domains.find((d) => d.id === q!.domainId)?.short}
-                    accessibilityLabel={`Answer saved question: ${q!.stem}`}
-                    // Opens a one-question session for just this question.
-                    onPress={() => guardedStart(() => startFromIds(cert.id, [id], 'Saved question'), open)}
-                    chevron={false}
-                    last // the hairline is drawn below the whole row instead
-                  />
-                </View>
-                <Pressable
-                  accessibilityRole="button"
-                  accessibilityLabel="Remove from saved"
-                  accessibilityHint="Takes this question out of your saved set. You can undo it for a few seconds."
-                  onPress={() => remove(id)}
-                  hitSlop={4}
-                  style={({ pressed }) => ({
-                    width: 48,
-                    height: 48,
-                    marginRight: -12, // optical alignment with the screen edge
-                    borderRadius: 24,
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    backgroundColor: pressed ? c.soft : 'transparent',
-                  })}
-                >
-                  <BookmarkCheck size={ICON_SIZE.row} color={c.accentText} strokeWidth={ICON_STROKE} />
-                </Pressable>
-              </>
-            )}
-            {i < saved.length - 1 && (
-              <View style={{ position: 'absolute', left: 0, right: 0, bottom: 0, height: 1, backgroundColor: c.line }} />
-            )}
-          </View>
-        ))}
-        {notes.length > 0 && <Section title="Your notes" />}
+  const header = (
+    <View>
+      <PushedHeader title="Saved questions" showTitle={false} onBack={() => backOr('/you')} />
+      <PageTitle title="Saved questions" />
+      {/* Notes but nothing saved: say how to save, then the notes below. */}
+      {saved.length === 0 && <T v="meta" style={{ marginTop: space.sm }}>Nothing saved yet. Tap the bookmark on any question to build your own revision set.</T>}
+    </View>
+  );
+  const footer =
+    notes.length > 0 ? (
+      <View>
+        <Section title="Your notes" />
         {notes.map(({ id, q }, i) => {
           const stem = noteSnippet(q!.stem, STEM_PREVIEW);
           return (
@@ -197,7 +247,23 @@ export default function Saved() {
             />
           );
         })}
-      </ScrollView>
+      </View>
+    ) : null;
+  return (
+    <SafeAreaView edges={['top', 'bottom']} style={{ flex: 1, backgroundColor: c.bg }}>
+      {/* Release bug hunt round 1: a FlatList draws only the rows near the screen, and each row is
+          memoised, so removing one (or undoing) redraws that row only. */}
+      <FlatList
+        data={saved}
+        keyExtractor={savedKey}
+        renderItem={renderItem}
+        extraData={pending}
+        ListHeaderComponent={header}
+        ListFooterComponent={footer}
+        contentContainerStyle={{ paddingHorizontal: space.gutter, paddingBottom: footerH + space.xl }}
+        initialNumToRender={12}
+        windowSize={5}
+      />
       {keptCount > 0 && (
         <StickyFooter onHeight={setFooterH}>
           <Button

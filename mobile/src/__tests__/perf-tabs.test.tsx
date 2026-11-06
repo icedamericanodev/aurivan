@@ -386,7 +386,7 @@ describe('budgets with the heavy save', () => {
     // every focus, Today rendered again (+236).
     const renderedOnEvents = Object.fromEntries(Object.entries(l.events).filter(([, n]) => n > 0));
     expect(renderedOnEvents).toEqual({});
-    expect(l.renders).toBeLessThan(1600); // 1.15.0: 6,112 (now ~1,230)
+    expect(l.renders).toBeLessThan(1600); // 1.15.0: 6,112; Grove phase 1: ~1,550; the ring built once (bug hunt round 1): ~1,440
     expect(l.saves).toBe(0); // 1.15.0: 7 saves of the whole store (~310 KB on each Today tap)
     expect(l.setParams).toBe(0); // 1.15.0: 1 (leaving Learn set params on the next tab)
   });
@@ -427,6 +427,35 @@ describe('budgets with the heavy save', () => {
     expect(s.learn.renders).toBe(0);
     expect(total(s).renders).toBeLessThan(1150);
     expect(total(s).saves).toBe(1);
+  });
+
+  // Release bug hunt round 3: Today read the whole open session, so every pick, Flag and Next in a mock
+  // redrew hidden Today (about 240 components a tap, more than the question screen itself).
+  it('a mock tap (pick, Flag, Next) re-renders hidden Today not at all; back on Today the Resume row is live', () => {
+    openAll();
+    tapTab('practice');
+    act(() => {
+      require('../lib/sessions').startMock('cisa', 150);
+    });
+    const ids = useSession.getState().active!.questionIds;
+    startMeasure();
+    for (let k = 0; k < 3; k++) {
+      act(() => {
+        useSession.getState().answer(ids[k], { display: 'A', correct: false, ms: 1000 });
+      });
+      act(() => {
+        useSession.getState().toggleFlag(ids[k]);
+      });
+      act(() => {
+        useSession.getState().goTo(k + 1);
+      });
+    }
+    expect(renders().home ?? 0).toBe(0);
+    tapTab('home');
+    expect(JSON.stringify(r!.toJSON())).toContain('Question 4 of 150');
+    act(() => {
+      useSession.getState().clear();
+    });
   });
 
   it('a store write that changes nothing re-renders nothing and saves nothing', () => {

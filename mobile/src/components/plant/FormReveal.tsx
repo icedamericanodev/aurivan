@@ -23,14 +23,26 @@
  *   leaving the app, or the screen reader's "activate" dissolves it to the
  *   end in 120 ms: never a hard cut, never a fast replay. Input is never
  *   blocked: it is not a modal.
- * - Reduce Motion: a 120 ms cross-fade and every word at once, with no light
- *   and no motes. The haptic stays.
+ * - Reduce Motion, or a screen reader on (VoiceOver, TalkBack): a 120 ms
+ *   cross-fade and every word at once, with no light and no motes, no waiting
+ *   button, and the session's moment is never claimed. The haptic stays.
  * - Safe for people sensitive to flashing: at most 2.5 changes a second (the
  *   limit is 3), warm gold on paper, never white on dark.
  * - The plant is ONE image stop with the new form's label from the first
  *   frame; the words are hidden from screen readers until it ends; the new
  *   form is announced exactly once, at the end or on a skip (sayLater).
  *   Focus never moves (the waiting button hands focus to the plant when it goes).
+ *
+ * Grove Phase 4b (design-notes/grove/phase4b/PHASE4B.md 4.4), on paper:
+ * - the fact is on screen from the first frame, ABOVE the art (small, secondary ink);
+ * - the art stands centred on a soil line that runs the full width of the page;
+ * - under it the label: a 1px rule drawn out from the plant side (nameAt to nameAt + 240 ms),
+ *   "New form" and the form's name in `title` (nameAt + 100 to nameAt + 500 ms);
+ * - `onName` fires at nameAt (or at the end, under Reduce Motion or a skip), so the screen fills
+ *   the matching stem leaf then and never during the swaps;
+ * - waiting: the solid button "See Kai's new form" with "It plays when you tap." under it;
+ * - at Elder (`drift`), at most 8 leaves drift once down the art's own column after it ends
+ *   (only when it played to its end; never after a skip).
  *
  * Performance: every layer is a static drawing built once (useMemo); React
  * never re-renders while it plays. One shared clock drives every style on
@@ -58,13 +70,13 @@ import {
   phases,
   propsMix,
   tierOf,
-  wordsIn,
 } from '../../engine/turnTimeline';
-import { moveFocus, sayLater } from '../../lib/a11y';
+import { moveFocus, sayLater, screenReaderOn, watchScreenReader, whenScreenReaderKnown } from '../../lib/a11y';
 import { haptic } from '../../lib/haptics';
 import { motion, space, turnLook, turnTone } from '../../theme/tokens';
 import { useTheme } from '../../theme/useTheme';
-import { claimMoment, useMotion } from '../motion';
+import { claimMoment, LeafFall, useMotion } from '../motion';
+import { FieldText } from '../fieldguide';
 import { Button, T } from '../ui';
 import { buildPlant, lodFor, type ArtLook, type GNode, type PNode } from './art';
 import { originPx } from './LivePlant';
@@ -92,15 +104,20 @@ export interface FormRevealProps {
   accessibilityLabel: string;
   /** What earned it, past tense (engine/plant.ts FORM_FACTS). Shown first. */
   fact: string;
-  /** The form's name ("Whip Oak") and its look line. */
+  /** The form's name ("Whip Oak"). */
   name: string;
-  lookLine: string;
   /** Said once at the end: "Kai grows into a new form: the Whip Oak." */
   announce: string;
   /** The waiting button's words (engine/plantForms.ts seeNewFormLabel): "See Kai's new form". */
   playLabel?: string;
   /** The moment ended (played to the end, skipped, or shown at once). */
   onDone?: () => void;
+  /** Phase 4b: the form's name lands (nameAt in full motion; the end under Reduce Motion or a skip). */
+  onName?: () => void;
+  /** Phase 4b: draw the soil line under the art, across this many points either side of the stage (the page's gutter). */
+  soilBleed?: number;
+  /** Phase 4b (4.5): at Elder, a few leaves drift once down the art's column after it ends (never under Reduce Motion). */
+  drift?: boolean;
   /** For the screen: `skip()` on a scroll drag. */
   controlRef?: RefObject<FormRevealHandle | null>;
   testID?: string;
@@ -112,18 +129,17 @@ const linear = Easing.linear;
 const RISE = motion.rise;
 const R = motion.plant.turnReduced;
 const out = Easing.out(Easing.cubic);
+/** Phase 4b label timings (PHASE4B 4.4): the rule 240 ms from nameAt; the name 400 ms from nameAt + 100. */
+export const LABEL_RULE = 240;
+export const LABEL_NAME_AFTER = 100;
+export const LABEL_NAME = 400;
+/** The label rule's length (pt). */
+const RULE_W = 24;
 
 /** The value now, mixed toward its end state by the skip (0 → 1 over 120 ms). */
 function mix(v: number, end: number, s: number): number {
   'worklet';
   return v + (end - v) * s;
-}
-
-/** A line of words at time t: it fades in and rises 8pt from `at` (or is simply there). */
-function wordsStyle(t: number, skip: number, at: number, shown: boolean) {
-  'worklet';
-  const p = shown ? 1 : mix(wordsIn(t, at), 1, skip);
-  return { opacity: p, transform: [{ translateY: RISE * (1 - p) }] };
 }
 
 /** One static drawing on the 200-unit stage, built once. */
@@ -150,35 +166,55 @@ export function FormReveal({
   accessibilityLabel,
   fact,
   name,
-  lookLine,
   announce,
   playLabel = 'See the new form',
   onDone,
+  onName,
+  soilBleed,
+  drift = false,
   controlRef,
   testID,
 }: FormRevealProps) {
-  const { c } = useTheme();
+  const { c, g } = useTheme();
   const { reduced } = useMotion();
   // Decided once, before the first paint, in a layout effect (review P3): a render React throws
   // away (a suspended or interrupted one) never spends the session's moment. Reduce Motion is
   // known at once (it spends nothing). A later Reduce Motion change can't restart it.
-  const [mode, setMode] = useState<RevealMode | 'deciding'>(() => (reduced ? 'reduced' : 'deciding'));
+  // Phase 4b review: a screen reader counts like Reduce Motion (PHASE4B 4.4): the end state at once,
+  // no waiting button, and the session's moment is never claimed. Its answer is read synchronously
+  // (lib/a11y.ts keeps it from app start); only if it isn't known yet does the reveal wait for it.
+  const [mode, setMode] = useState<RevealMode | 'deciding'>(() => (reduced || screenReaderOn() === true ? 'reduced' : 'deciding'));
   const decided = useRef(false);
+  const unmounted = useRef(false);
+  useEffect(() => {
+    unmounted.current = false;
+    return () => {
+      unmounted.current = true;
+    };
+  }, []);
   useLayoutEffect(() => {
     // Once per reveal: StrictMode's second effect run keeps the first decision.
     if (decided.current) return;
     decided.current = true;
-    // eslint-disable-next-line react-hooks/set-state-in-effect -- decided before paint, so the first frame is never the wrong mode
-    if (mode === 'deciding') setMode(revealMode(false, claimMoment));
+    if (mode !== 'deciding') return;
+    if (screenReaderOn() !== null) {
+      // Known and off (on was caught above): decided before paint, so the first frame is never the wrong mode.
+      // eslint-disable-next-line react-hooks/set-state-in-effect -- decided before paint
+      setMode(revealMode(false, claimMoment));
+      return;
+    }
+    // Not known yet (the app's first question is still out): stay 'deciding' until the answer comes.
+    watchScreenReader();
+    whenScreenReaderKnown().then((on) => {
+      if (unmounted.current) return;
+      setMode(revealMode(on, claimMoment));
+    });
     // eslint-disable-next-line react-hooks/exhaustive-deps -- decided once
   }, []);
-  // A reveal that waited for its tap already shows the fact (it stays put when it plays).
-  const [waited, setWaited] = useState(false);
   const [done, setDone] = useState(false);
   const P = useMemo(() => phases(tierOf(to)), [to]);
   const isReduced = mode === 'reduced';
   const playing = mode === 'full' && !done;
-  const factShown = isReduced || waited || mode === 'wait';
 
   // ── The static layers, built once ─────────────────────────────────────
   const glowId = `turnGlow${useId().replace(/[^A-Za-z0-9]/g, '')}`;
@@ -253,6 +289,13 @@ export function FormReveal({
     },
     [],
   );
+  // The name lands once: the screen fills the stem leaf then (PHASE4B 4.4 and 4.6).
+  const nameFired = useRef(false);
+  const named = useCallback(() => {
+    if (nameFired.current || !alive.current) return;
+    nameFired.current = true;
+    onName?.();
+  }, [onName]);
   const bloom = useCallback(() => {
     if (buzzed.current) return;
     buzzed.current = true;
@@ -261,15 +304,22 @@ export function FormReveal({
   const finish = useCallback(() => {
     if (finished.current || !alive.current) return;
     finished.current = true;
+    named();
     setDone(true);
     bloom(); // the one haptic, if the bloom hadn't fired it yet (Reduce Motion, a skip)
     sayLater(announce);
     onDone?.();
-  }, [announce, bloom, onDone]);
+  }, [announce, bloom, named, onDone]);
   // The tap that started a waiting reveal (or its quick second tap) is never a skip (review P2a).
   const playedAt = useRef(0);
+  // Phase 4b review: cut short (a tap, a scroll drag, leaving the app). A Turning that was cut short
+  // never drifts its Elder leaves, and a tap or drag during the drift ends it (PHASE4B 8: any tap or
+  // scroll skips a celebration to its end).
+  const [cut, setCut] = useState(false);
   const skip = useCallback(() => {
-    if (mode !== 'full' || finished.current || skipping.current) return;
+    if (mode !== 'full') return;
+    setCut(true);
+    if (finished.current || skipping.current) return;
     skipping.current = true;
     cancelAnimation(clock);
     skipV.set(
@@ -313,20 +363,31 @@ export function FormReveal({
     },
     [full, b0],
   );
-  // Leaving the app mid-way skips to the end (it is never left half-turned).
+  // The name's moment, from the UI thread when the clock crosses nameAt (full motion only).
+  const nameAt = P.nameAt;
+  useAnimatedReaction(
+    () => full && clock.value >= nameAt,
+    (now, prev) => {
+      if (now && !prev) runOnJS(named)();
+    },
+    [full, nameAt],
+  );
+  // At Elder, a few leaves drift once after a Turning that played to its end (never after a skip).
+  const drifting = drift && done && mode === 'full' && !cut;
+  // Leaving the app mid-way skips to the end (it is never left half-turned), and drops the drift.
+  const listening = playing || drifting;
   useEffect(() => {
-    if (!playing) return;
+    if (!listening) return;
     const sub = AppState.addEventListener('change', (s) => {
       if (s !== 'active') skip();
     });
     return () => sub.remove();
-  }, [playing, skip]);
+  }, [listening, skip]);
 
   const play = () => {
     playedAt.current = Date.now();
-    setWaited(true);
-    // Reduce Motion turned on while it waited: the cross-fade, never the full motion (review P2b).
-    setMode(reduced ? 'reduced' : 'full');
+    // Reduce Motion (or a screen reader) turned on while it waited: the cross-fade, never the full motion (review P2b).
+    setMode(reduced || screenReaderOn() === true ? 'reduced' : 'full');
     // The button goes: hand screen-reader focus to the plant (never lost on the page).
     moveFocus(stageRef);
   };
@@ -373,90 +434,115 @@ export function FormReveal({
   }));
   // Each updater reads the clock and the skip ITSELF: a shared value read only inside a nested
   // helper is not seen as an input, and the words would never move until a re-render.
-  const factStyle = useAnimatedStyle(() => wordsStyle(clock.value, skipV.value, 0, factShown));
-  const nameStyle = useAnimatedStyle(() => wordsStyle(clock.value, skipV.value, P.nameAt, isReduced));
-  const lookStyle = useAnimatedStyle(() => wordsStyle(clock.value, skipV.value, P.nameAt + 80, isReduced));
+  // Phase 4b: the label rule draws out from the plant side (nameAt to +240 ms), then the name fades in
+  // (nameAt + 100 to + 500 ms). Opacity and transform only.
+  const ruleStyle = useAnimatedStyle(() => {
+    const p = isReduced ? 1 : mix(clamp01((clock.value - nameAt) / LABEL_RULE), 1, skipV.value);
+    return { opacity: p > 0 ? 1 : 0, transform: [{ scaleX: p }] };
+  });
+  const nameStyle = useAnimatedStyle(() => {
+    const p = isReduced ? 1 : mix(clamp01((clock.value - nameAt - LABEL_NAME_AFTER) / LABEL_NAME), 1, skipV.value);
+    return { opacity: p, transform: [{ translateY: RISE * (1 - p) }] };
+  });
 
   const moving = playing;
   const hideWords = playing;
+  // Full motion: the words are hidden from screen readers until it ends (UX review P5), so nobody
+  // hears text that isn't on screen yet; the one announcement (sayLater) still comes at the end.
+  const wordsA11y = { accessibilityElementsHidden: hideWords, importantForAccessibility: hideWords ? ('no-hide-descendants' as const) : ('auto' as const) };
   return (
-    <View testID={testID} style={{ alignItems: 'center' }} onTouchStart={playing ? touchSkip : undefined}>
-      <View
-        ref={stageRef}
-        style={[styles.stage, { width: size, height: size }]}
-        accessible
-        accessibilityRole="image"
-        accessibilityLabel={accessibilityLabel}
-        accessibilityIgnoresInvertColors
-        accessibilityHint={playing ? 'Double-tap to show the new form now.' : undefined}
-        accessibilityActions={playing ? [{ name: 'activate', label: 'Show the new form now' }] : undefined}
-        onAccessibilityAction={playing ? skip : undefined}
-        testID={testID ? `${testID}-${mode}` : undefined}
-      >
-        <View style={StyleSheet.absoluteFill} importantForAccessibility="no-hide-descendants" accessibilityElementsHidden>
-          {layers.backOld && !done ? <Layer el={layers.backOld} size={size} style={backOld} /> : null}
-          <Layer el={layers.backNew} size={size} style={layers.backOld ? backNew : undefined} />
-          {layers.artGlow ? <Layer el={layers.artGlow} size={size} style={artGlow} /> : null}
-          {!isReduced && !done ? <Layer el={layers.gather} size={size} style={[gather, { transformOrigin: lightOrigin }]} raster={moving} /> : null}
-          {ring ? (
-            <View pointerEvents="none" style={StyleSheet.absoluteFill} testID={testID ? `${testID}-halo` : undefined}>
-              <Svg width={size} height={size} viewBox="0 0 200 200">
-                <AnimatedCircle
-                  cx={ring.cx}
-                  cy={ring.cy}
-                  r={ring.r}
-                  fill="none"
-                  stroke={ring.stroke}
-                  strokeWidth={ring.sw}
-                  opacity={ring.opacity}
-                  strokeLinecap="round"
-                  strokeDasharray={`${circ} ${circ}`}
-                  transform={`rotate(-90 ${ring.cx} ${ring.cy})`}
-                  animatedProps={haloProps}
-                />
-              </Svg>
-            </View>
-          ) : null}
-          {!done ? <Layer el={layers.treeOld} size={size} style={[treeOld, { transformOrigin: baseOrigin }]} raster={moving} /> : null}
-          <Layer el={layers.treeNew} size={size} style={[treeNew, { transformOrigin: baseOrigin }]} raster={moving} />
-          {!isReduced && !done ? (
-            <>
-              <Layer el={layers.silOld} size={size} style={[silOld, { transformOrigin: baseOrigin }]} raster={moving} />
-              <Layer el={layers.silNew} size={size} style={silNew} raster={moving} />
-            </>
-          ) : null}
-          {layers.frontOld && !done ? <Layer el={layers.frontOld} size={size} style={backOld} /> : null}
-          <Layer el={layers.frontNew} size={size} style={layers.frontOld ? backNew : undefined} />
-          {mode === 'full' && !done ? (
-            <TurnMotes species={species} theme={theme} P={P} clock={clock} skip={skipV} u={u} light={layers.light} base={layers.base} tipY={layers.tipY} />
-          ) : null}
+    <View testID={testID} style={{ alignSelf: 'stretch' }} onTouchStart={playing || drifting ? touchSkip : undefined}>
+      {/* Phase 4b: the fact that earned the form, on screen from the first frame, above the art. */}
+      <View testID={testID ? `${testID}-fact` : undefined} style={{ paddingHorizontal: space.md, marginBottom: space.md }} {...wordsA11y}>
+        <T v="small" center color={c.ink2}>
+          {fact}
+        </T>
+      </View>
+      <View style={{ alignItems: 'center' }}>
+        {/* The soil line the art stands on, the full width of the page. Decorative (words carry the moment). */}
+        {soilBleed !== undefined ? (
+          <View
+            testID={testID ? `${testID}-soil` : undefined}
+            pointerEvents="none"
+            accessible={false}
+            importantForAccessibility="no-hide-descendants"
+            style={{ position: 'absolute', left: -soilBleed, right: -soilBleed, top: layers.base * u - 1, height: 2, borderRadius: 1, backgroundColor: g.soil }}
+          />
+        ) : null}
+        <View
+          ref={stageRef}
+          style={[styles.stage, { width: size, height: size }]}
+          accessible
+          accessibilityRole="image"
+          accessibilityLabel={accessibilityLabel}
+          accessibilityIgnoresInvertColors
+          accessibilityHint={playing ? 'Double-tap to show the new form now.' : undefined}
+          accessibilityActions={playing ? [{ name: 'activate', label: 'Show the new form now' }] : undefined}
+          onAccessibilityAction={playing ? skip : undefined}
+          testID={testID ? `${testID}-${mode}` : undefined}
+        >
+          <View style={StyleSheet.absoluteFill} importantForAccessibility="no-hide-descendants" accessibilityElementsHidden>
+            {layers.backOld && !done ? <Layer el={layers.backOld} size={size} style={backOld} /> : null}
+            <Layer el={layers.backNew} size={size} style={layers.backOld ? backNew : undefined} />
+            {layers.artGlow ? <Layer el={layers.artGlow} size={size} style={artGlow} /> : null}
+            {!isReduced && !done ? <Layer el={layers.gather} size={size} style={[gather, { transformOrigin: lightOrigin }]} raster={moving} /> : null}
+            {ring ? (
+              <View pointerEvents="none" style={StyleSheet.absoluteFill} testID={testID ? `${testID}-halo` : undefined}>
+                <Svg width={size} height={size} viewBox="0 0 200 200">
+                  <AnimatedCircle
+                    cx={ring.cx}
+                    cy={ring.cy}
+                    r={ring.r}
+                    fill="none"
+                    stroke={ring.stroke}
+                    strokeWidth={ring.sw}
+                    opacity={ring.opacity}
+                    strokeLinecap="round"
+                    strokeDasharray={`${circ} ${circ}`}
+                    transform={`rotate(-90 ${ring.cx} ${ring.cy})`}
+                    animatedProps={haloProps}
+                  />
+                </Svg>
+              </View>
+            ) : null}
+            {!done ? <Layer el={layers.treeOld} size={size} style={[treeOld, { transformOrigin: baseOrigin }]} raster={moving} /> : null}
+            <Layer el={layers.treeNew} size={size} style={[treeNew, { transformOrigin: baseOrigin }]} raster={moving} />
+            {!isReduced && !done ? (
+              <>
+                <Layer el={layers.silOld} size={size} style={[silOld, { transformOrigin: baseOrigin }]} raster={moving} />
+                <Layer el={layers.silNew} size={size} style={silNew} raster={moving} />
+              </>
+            ) : null}
+            {layers.frontOld && !done ? <Layer el={layers.frontOld} size={size} style={backOld} /> : null}
+            <Layer el={layers.frontNew} size={size} style={layers.frontOld ? backNew : undefined} />
+            {mode === 'full' && !done ? (
+              <TurnMotes species={species} theme={theme} P={P} clock={clock} skip={skipV} u={u} light={layers.light} base={layers.base} tipY={layers.tipY} />
+            ) : null}
+            {/* Phase 4b (4.5): at Elder, at most 8 leaves drift once down the art's own column (never
+                over words; LeafFall draws nothing under Reduce Motion). Only after a Turning that
+                played to its end: never after a skip, and a tap or drag during it ends it. */}
+            {drifting ? <LeafFall run colors={[c.accent, c.sap]} width={size} height={size} /> : null}
+          </View>
         </View>
       </View>
-      {/* Full motion: the words are hidden from screen readers until it ends (UX review P5),
-          so nobody hears text that isn't on screen yet; the one announcement (sayLater) still comes at the end. */}
-      <View
-        style={{ marginTop: space.md, alignItems: 'center', gap: space.xs, paddingHorizontal: space.md }}
-        testID={testID ? `${testID}-words` : undefined}
-        accessibilityElementsHidden={hideWords}
-        importantForAccessibility={hideWords ? 'no-hide-descendants' : 'auto'}
-      >
-        <Animated.View style={[{ alignItems: 'center', gap: space.xs }, factStyle]}>
-          <T v="caption" center color={c.ink2}>A new form</T>
-          <T v="body" center>{fact}</T>
-        </Animated.View>
+      <View style={{ marginTop: space.md, alignItems: 'center', paddingHorizontal: space.md }} testID={testID ? `${testID}-words` : undefined} {...wordsA11y}>
         {mode === 'wait' ? (
-          <View style={{ marginTop: space.sm }} testID={testID ? `${testID}-play` : undefined}>
-            <Button kind="secondary" label={playLabel} onPress={play} />
+          // Phase 4b: the session's moment is spent, so it waits for a tap (the solid main button).
+          <View style={{ alignSelf: 'stretch', alignItems: 'center', gap: space.xs }} testID={testID ? `${testID}-play` : undefined}>
+            <Button label={playLabel} onPress={play} style={{ alignSelf: 'stretch' }} />
+            <T v="meta" center>
+              It plays when you tap.
+            </T>
           </View>
         ) : (
-          <>
-            <Animated.View style={nameStyle}>
-              <T v="hero" center accessibilityRole="header">{`The ${name}`}</T>
+          // The label: a 1px rule drawn out from the plant side, "New form" and the form's name.
+          <View testID={testID ? `${testID}-label` : undefined} style={{ flexDirection: 'row', alignItems: 'flex-end', gap: space.sm, maxWidth: '100%' }}>
+            <Animated.View testID={testID ? `${testID}-rule` : undefined} style={[{ width: RULE_W, height: 1, marginBottom: 12, backgroundColor: c.ink2, transformOrigin: 'left' }, ruleStyle]} />
+            <Animated.View testID={testID ? `${testID}-name` : undefined} style={[{ flexShrink: 1 }, nameStyle]}>
+              <FieldText v="head">New form</FieldText>
+              <T v="title">{`The ${name}`}</T>
             </Animated.View>
-            <Animated.View style={lookStyle}>
-              <T v="quote" center color={c.ink2}>{lookLine}</T>
-            </Animated.View>
-          </>
+          </View>
         )}
       </View>
     </View>

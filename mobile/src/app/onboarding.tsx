@@ -36,7 +36,7 @@
  * - Grove: choices are raised rows (selected = ink border, never green) and the
  *   action sits in a sticky footer.
  */
-import { router } from 'expo-router';
+import { Redirect, router } from 'expo-router';
 import { useEffect, useRef, useState, type RefObject } from 'react';
 import { BackHandler, KeyboardAvoidingView, Platform, ScrollView, useWindowDimensions, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -47,7 +47,7 @@ import { StickyFooter } from '../components/quiz';
 import { Button, Chip, Enter, Gap, T } from '../components/ui';
 import { DataMessage, RestorePreview } from '../components/yourData';
 import { WebImportPreview } from '../components/webImport';
-import { EXAM_TRADEMARK_LINE, WELCOME_FACTS, WELCOME_HEADLINE, WELCOME_LINE } from '../content/brand';
+import { AI_DISCLAIMER_LINE, EXAM_TRADEMARK_LINE, WELCOME_FACTS, WELCOME_HEADLINE, WELCOME_LINE } from '../content/brand';
 import { DEFAULT_CERT_ID } from '../content/certifications';
 import { dateInMonths, daysToExam, EXAM_DATE_PRESETS, presetIndexFor } from '../engine/examDay';
 import { planConsequence } from '../engine/firstRun';
@@ -62,17 +62,35 @@ import { dayKey } from '../engine/streak';
 import { selectCert, useProgress } from '../store/progress';
 import { useSeen } from '../store/seen';
 import { examDateOf, useSettings } from '../store/settings';
-import { plate, space } from '../theme/tokens';
+import { grovePlate } from '../theme/grove';
+import { space } from '../theme/tokens';
 import { useTheme } from '../theme/useTheme';
 
 // Exam date presets (shared with Settings and the calendar). The calendar is
 // pure React Native: no native date-picker dependency.
 const PRESETS = EXAM_DATE_PRESETS;
+/** The welcome's ruled lines: 10 above and below each (was 12), part of the 390x844 fit (release prep 2.0.0). */
+const WELCOME_ROW_PAD = 10;
 
 /** The steps in order: welcome, where you start, date and minutes. */
 type Step = 0 | 1 | 2;
 
+/**
+ * Release bug hunt round 2: onboarding is only for learners who have not finished it. An outside link
+ * (kaisip://onboarding) opened it again for anyone, and finishing it again wiped the exam date, the
+ * starting point, the daily time and today's plan ticks. A learner already onboarded when the screen
+ * opens goes to Today instead, with every saved setting kept.
+ *
+ * Read ONCE when the screen opens (not live): finishing here, or a restore, sets `onboarded` while the
+ * screen is still open, and the flow must carry on to its own next screen.
+ */
 export default function Onboarding() {
+  const [doneBefore] = useState(() => useSettings.getState().onboarded);
+  if (doneBefore) return <Redirect href="/home" />;
+  return <OnboardingFlow />;
+}
+
+function OnboardingFlow() {
   const { c } = useTheme();
   const complete = useSettings((s) => s.completeOnboarding);
   const { width } = useWindowDimensions();
@@ -135,27 +153,31 @@ export default function Onboarding() {
   }, [step]);
 
   // Welcome (premium round 2, expert ruling C): a title page on the paper, like the first page of a
-  // field guide. The Kasama mark and "kaisip", the headline, the sub ("A field guide to your CISA® exam
-  // study."), an unnumbered seed plate ("Seed, before Day 1": Fig. 1 belongs to Day 1), then the four
+  // field guide. The Kasama mark and "kaisip", the headline, the sub ("Your CISA® exam study, one day at a
+  // time."), an unnumbered seed plate ("Seed, before Day 1": Fig. 1 belongs to Day 1), then the four
   // plain lines and the not-affiliated line. Screen readers hear "Welcome to KaiSip. Think like an IS
   // auditor." as one header; the lockup and the plate are hidden (the words carry them).
+  // Release prep for 2.0.0 (final screenshot review): the gaps are one step tighter (16 not 24 above
+  // the headline and the plate, 10 not 12 inside each ruled line), so on a 390x844 phone the whole
+  // page, down to the trademark line, sits above Get started without scrolling. The scroll's bottom
+  // padding still equals the footer's height, so at 200% text every line can be scrolled into view.
   const welcome = (
     <Enter key="s0">
-      <View style={{ paddingHorizontal: space.gutter, paddingTop: space.xl }}>
+      <View testID="welcome-page" style={{ paddingHorizontal: space.gutter, paddingTop: space.lg }}>
         <KaisipLockup height={34} decorative />
-        <T v="display" accessibilityRole="header" accessibilityLabel={`Welcome to KaiSip. ${WELCOME_HEADLINE}`} style={{ marginTop: space.xl }}>
+        <T v="display" accessibilityRole="header" accessibilityLabel={`Welcome to KaiSip. ${WELCOME_HEADLINE}`} style={{ marginTop: space.lg }}>
           {WELCOME_HEADLINE}
         </T>
         <FieldText v="sub" style={{ marginTop: space.xs }}>{WELCOME_LINE}</FieldText>
-        <View testID="welcome-plate" accessibilityElementsHidden importantForAccessibility="no-hide-descendants" style={{ marginTop: space.xl }}>
+        <View testID="welcome-plate" accessibilityElementsHidden importantForAccessibility="no-hide-descendants" style={{ marginTop: space.lg }}>
           <Plate fig={{ title: 'Seed, before Day 1' }}>
             <View style={{ alignItems: 'center' }}>
-              <SeedSketch width={Math.min(240, width - 2 * space.gutter - 2 * (plate.mount + space.md + 2))} />
+              <SeedSketch width={Math.min(240, width - 2 * space.gutter - 2 * (grovePlate.edge + grovePlate.pad))} />
             </View>
           </Plate>
         </View>
       </View>
-      <View style={{ paddingHorizontal: space.gutter, paddingTop: space.lg }}>
+      <View style={{ paddingHorizontal: space.gutter, paddingTop: space.sm }}>
         {/* Ruled lines on the paper (no icon circles): one stop each. */}
         {WELCOME_FACTS.map((line, i) => (
           <View
@@ -163,12 +185,14 @@ export default function Onboarding() {
             accessible
             accessibilityRole="text"
             accessibilityLabel={line}
-            style={{ paddingVertical: space.md, borderTopWidth: i === 0 ? 0 : 1, borderTopColor: c.line }}
+            style={{ paddingVertical: WELCOME_ROW_PAD, borderTopWidth: i === 0 ? 0 : 1, borderTopColor: c.line }}
           >
             <T v="body">{line}</T>
           </View>
         ))}
-        <T v="meta" color={c.muted} style={{ marginTop: space.md }}>{EXAM_TRADEMARK_LINE}</T>
+        {/* Transparency (5 Nov 2026, TRANSPARENCY.md P4): the short AI disclaimer, one muted line right above the not-affiliated line. */}
+        <T v="meta" color={c.muted} style={{ marginTop: space.sm }}>{AI_DISCLAIMER_LINE}</T>
+        <T v="meta" color={c.muted} style={{ marginTop: space.xs }}>{EXAM_TRADEMARK_LINE}</T>
       </View>
     </Enter>
   );

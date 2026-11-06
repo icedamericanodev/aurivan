@@ -159,9 +159,9 @@ describe('the exam-week checklist (engine)', () => {
   it('six items, in order, with the pace from the exam’s own facts', () => {
     expect(EXAM_WEEK_ITEMS).toEqual(['booking', 'guide', 'online', 'centre', 'pace', 'sleep']);
     expect(examWeekText('pace', cisa.exam)).toBe('Know your pace: about 96 seconds a question. Past 2 minutes, flag it and move on.');
-    expect(examWeekText('guide', cisa.exam)).toBe('Read the official candidate guide for ID and test-day rules.');
+    expect(examWeekText('guide', cisa.exam)).toBe('Read the candidate guide for ID and test-day rules.');
     // Generic and true: no exam body named, no promise.
-    for (const id of EXAM_WEEK_ITEMS) expect(examWeekText(id, cisa.exam)).not.toMatch(/ISACA|ISC2|guarantee|pass/i);
+    for (const id of EXAM_WEEK_ITEMS) expect(examWeekText(id, cisa.exam)).not.toMatch(/ISACA|ISC2|guarantee|pass|official/i);
   });
 
   it('ticks belong to one exam date: moving the date starts fresh (the old ticks are ignored)', () => {

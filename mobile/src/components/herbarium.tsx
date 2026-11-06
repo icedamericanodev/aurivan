@@ -1,30 +1,35 @@
 /**
- * The herbarium's way in from You (mobile 1.51, Field Guide §21): one row
- * with the three newest pressed specimens, "Herbarium", "Badges and field
+ * The badges' way in from You (mobile 1.51, Field Guide §21): one row
+ * with the three newest pressed specimens, "Badges", "Your badges and field
  * notes · Last pressed: Know What You Know, 28 Oct", a small "new" dot (shape,
- * and said) and the count earned (never "of N"). One button to the herbarium.
+ * and said) and the count earned (never "of N"). One button to the badges screen.
  * Settings → Show badges off hides it (You keeps a Field notes row instead).
+ * Grove You C2: the row says and shows "Badges", never "Herbarium" (labels decision 8);
+ * the code names (HerbariumEntry, HERBARIUM, herbarium-entry) stay.
  */
 import { memo } from 'react';
 import { View } from 'react-native';
 import type { LastPressed } from '../engine/fieldGuide';
 import { shortDate, spokenShortDate } from '../lib/format';
 import { fieldInk, LARGE_TEXT, space } from '../theme/tokens';
+import { groveRadius } from '../theme/grove';
 import { useTheme } from '../theme/useTheme';
 import { ChevronRight, ICON_STROKE } from './icons';
 import { EmblemArt } from './medallion';
 import { AnimatedPressable, usePressScale } from './motion';
+import { TapeStrips } from './pressedTile';
 import { Row, T, Trail, useFontScale } from './ui';
 
-export const HERBARIUM = 'Herbarium';
+/** The row's title, shown and said. The code name stays; the words are "Badges" (labels decision 8). */
+export const HERBARIUM = 'Badges';
 
-/** "Badges and field notes · Last pressed: Know What You Know, 28 Oct". */
+/** "Your badges and field notes · Last pressed: Know What You Know, 28 Oct". */
 export function herbariumLine(last?: LastPressed): string {
-  return last ? `Badges and field notes · Last pressed: ${last.name}, ${shortDate(last.at)}` : 'Badges and field notes · none pressed yet';
+  return last ? `Your badges and field notes · Last pressed: ${last.name}, ${shortDate(last.at)}` : 'Your badges and field notes · none pressed yet';
 }
 
 export function herbariumSpoken(count: number, newBadge: boolean, last?: LastPressed): string {
-  return `${HERBARIUM}: badges and field notes${newBadge ? ', new badge' : ''}, ${count ? `${count} earned` : 'none yet'}.${last ? ` Last pressed: ${last.name}, ${spokenShortDate(last.at)}.` : ''}`;
+  return `${HERBARIUM}: your badges and field notes${newBadge ? ', new badge' : ''}, ${count ? `${count} earned` : 'none yet'}.${last ? ` Last pressed: ${last.name}, ${spokenShortDate(last.at)}.` : ''}`;
 }
 
 export const HerbariumEntry = memo(function HerbariumEntry({
@@ -77,6 +82,99 @@ export const HerbariumEntry = memo(function HerbariumEntry({
         {newBadge && <View testID="new-badge-dot" style={{ width: 8, height: 8, borderRadius: 4, backgroundColor: c.accent }} />}
         {count ? <Trail value={String(count)} unit="earned" /> : null}
         <ChevronRight size={18} color={c.muted} strokeWidth={ICON_STROKE} />
+      </Row>
+    </AnimatedPressable>
+  );
+});
+
+/** How many tiles the You shelf shows (the kit's 4-up row: the newest pressed first, then empty slots). */
+export const SHELF_SLOTS = 4;
+
+/**
+ * The line under the shelf, the kit's words: "1 pressed · Fresh Start, 26 Oct". It was led by
+ * "Your badges and field notes" (PHASE4 7.14 item 7) until the short-text rule (5 Nov).
+ */
+export function shelfLine(count: number, last?: LastPressed): string {
+  // Short text (Sky, 5 Nov): the kit's own line; the card's title already says Badges.
+  return last && count ? `${count} pressed · ${last.name}, ${shortDate(last.at)}` : 'None pressed yet';
+}
+
+/**
+ * Grove Phase 4b (PHASE4B 5.6): only the tiles' look changed, to the pressed paper tile (two strips
+ * of tape at opposite corners). Grove Phase 4 (PHASE4.md 7.14 item 7, board 04-phone-you): You's badge shelf. Four square tiles,
+ * the newest pressed badges first (each its own pressed art on a quiet tile with its paper tape),
+ * then dashed empty slots in `leafEmpty`; under them one line. The shelf and its line are ONE
+ * button to the badges screen, spoken as before (count, "new badge", the last one pressed); the
+ * tiles inside are hidden from screen readers. At text scale 1.3 and up the tiles wrap 2 by 2.
+ */
+export const BadgeShelf = memo(function BadgeShelf({
+  pressed,
+  count,
+  newBadge,
+  onPress,
+}: {
+  pressed: readonly LastPressed[];
+  count: number;
+  newBadge: boolean;
+  onPress: () => void;
+}) {
+  const { c, g } = useTheme();
+  const press = usePressScale({ scale: 1, tint: c.soft });
+  const large = useFontScale() >= LARGE_TEXT;
+  // One entry per slot: a pressed badge (newest first), or null for an empty slot.
+  const slots: (LastPressed | null)[] = Array.from({ length: SHELF_SLOTS }, (_, i) => pressed[i] ?? null);
+  // 4 across, or 2 rows of 2 when the text is large (each tile stays square and at least 48pt).
+  const perRow = large ? 2 : SHELF_SLOTS;
+  const rows: (LastPressed | null)[][] = [];
+  for (let i = 0; i < slots.length; i += perRow) rows.push(slots.slice(i, i + perRow));
+  return (
+    <AnimatedPressable
+      testID="badge-shelf"
+      accessibilityRole="button"
+      accessibilityLabel={herbariumSpoken(count, newBadge, pressed[0])}
+      accessibilityHint="Opens your badges"
+      onPress={() => {
+        press.settle();
+        onPress();
+      }}
+      onPressIn={press.onPressIn}
+      onPressOut={press.onPressOut}
+      style={[{ gap: space.md, paddingVertical: space.xs }, press.style]}
+    >
+      {press.layer}
+      {/* The tiles are pictures only: the button's label says what they show. */}
+      <View accessibilityElementsHidden importantForAccessibility="no-hide-descendants" style={{ gap: space.sm }}>
+        {rows.map((row, ri) => (
+          <View key={ri} style={{ flexDirection: 'row', gap: space.sm }}>
+            {row.map((p, i) =>
+              p ? (
+                <View
+                  key={p.key}
+                  testID="shelf-tile"
+                  // The kit's light paper sheet (04 `.spec`), light in both themes: in dark, the old soft
+                  // fill was about 1.03:1 on the card and the tile shape was lost.
+                  style={{ flex: 1, aspectRatio: 1, minWidth: 48, borderRadius: groveRadius.tile, backgroundColor: g.specimen, alignItems: 'center', justifyContent: 'center' }}
+                >
+                  {/* Grove 4b (5.2, 5.6): the pressed paper tile's two strips of tape, at opposite corners. */}
+                  <TapeStrips size={large ? 120 : 72} />
+                  {/* The art sits on a light sheet in both themes, so it keeps the light-sheet inks. */}
+                  <EmblemArt badge={p.badge} tier={p.tier} emblem={p.emblem} palette={fieldInk.light.pressed} size={large ? 64 : 44} />
+                </View>
+              ) : (
+                <View
+                  key={`empty-${ri}-${i}`}
+                  testID="shelf-empty"
+                  style={{ flex: 1, aspectRatio: 1, minWidth: 48, borderRadius: groveRadius.tile, borderWidth: 1.5, borderStyle: 'dashed', borderColor: g.leafEmpty }}
+                />
+              ),
+            )}
+          </View>
+        ))}
+      </View>
+      <Row gap={space.sm}>
+        <T v="meta" style={{ flex: 1, minWidth: 0 }}>{shelfLine(count, pressed[0])}</T>
+        {/* The "new" dot: shape here, and said in the button's label. */}
+        {newBadge && <View testID="new-badge-dot" style={{ width: 8, height: 8, borderRadius: 4, backgroundColor: c.accent }} />}
       </Row>
     </AnimatedPressable>
   );

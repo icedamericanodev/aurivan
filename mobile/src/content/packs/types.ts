@@ -19,6 +19,7 @@ import type { ExamPack } from '../exam/types';
 import type { Lesson } from '../lessons/types';
 import type { NotesPack } from '../notes/types';
 import type { PrinciplesPack } from '../principles/types';
+import type { MindsetPack } from '../mindset';
 import type { TermsPack } from '../terms';
 import type { PackQuestion } from '../types';
 
@@ -64,4 +65,9 @@ export interface PackSource {
    * Optional: a source without it (an older downloaded pack) gives the widget no terms.
    */
   terms?(certId: string): TermsPack | null;
+  /**
+   * Grove Phase 4 (owner answer O7): the website's "Mindset." tips for the Practice strip
+   * (content/mindset.ts). Optional: a source without it gives no tips, and the strip hides.
+   */
+  mindset?(certId: string): MindsetPack | null;
 }

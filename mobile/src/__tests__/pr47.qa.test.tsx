@@ -25,6 +25,7 @@
  * the whole backup; B3: "NaN%" on You for a 0-question mock) are fixed and
  * the tests here now assert the fixed behaviour ("Fixed (QA Bn)").
  */
+import { scaledScoreNote } from '../content/scoreNote';
 import { act, create, type ReactTestInstance, type ReactTestRenderer } from 'react-test-renderer';
 import { Dimensions } from 'react-native';
 import { router, useLocalSearchParams } from 'expo-router';
@@ -394,7 +395,8 @@ describe('QA 2: entry points', () => {
     // Fixed (QA B3): You uses mockPct(), like the report.
     expect(allWords()).not.toContain('NaN');
     expect(allWords()).toContain('score 0 percent');
-    expect(allText()).toContain('0%');
+    // The mock's own score, "0 %" (a standalone 0, not the "70%" of another line).
+    expect(allText()).toMatch(/(^|\s)0 ?%/);
   });
 
   it('the exam-week screen links to the report; the report links back to the checklist in exam week', () => {
@@ -568,7 +570,7 @@ describe('QA 3: the exam-week taper plans', () => {
     mount(<Today />);
     const t = allText();
     // The caption gives the day's minutes; the mock's own row says it is optional (UX review O9; mobile 1.21).
-    expect(t).toContain('Today’s plan · about\u00A030\u00A0min');
+    expect(t).toContain('Today’s plan About\u00A030\u00A0min');
     // While the mock sits in "Also today" its row reads "Optional this week · about 4 h";
     // the "a last long rehearsal; skip it if you’d rather rest" meta only shows once it
     // becomes the hero (after the top-up). Observation, not a bug: both say optional.
@@ -684,14 +686,14 @@ describe('QA 5: Practice sized from the minutes; a chosen length wins', () => {
     useSettings.setState({ familiarity: 'some', studyMode: 'smart', studySize: undefined, dailyMinutes: minutes as never });
     mount(<Practice />);
     // Mobile 1.21: the hero title never holds a count; the count leads its meta line.
-    expect(allText()).toContain(`Picked for you ${n} questions · `);
+    expect(allText()).toContain(`Picked for you A mixed set ${n} questions · `);
   });
 
   it.each([10, 20, 50])('a chosen length (%i) wins at every minutes setting', (size) => {
     for (const minutes of DAILY_MINUTES) {
       useSettings.setState({ familiarity: 'some', studyMode: 'smart', studySize: size, dailyMinutes: minutes });
       mount(<Practice />);
-      expect(allText()).toContain(`Picked for you ${size} questions · `);
+      expect(allText()).toContain(`Picked for you A mixed set ${size} questions · `);
       unmount();
     }
   });
@@ -699,7 +701,7 @@ describe('QA 5: Practice sized from the minutes; a chosen length wins', () => {
   it('an old save with only a daily goal (no minutes) still sizes sensibly', () => {
     useSettings.setState({ familiarity: 'some', studyMode: 'smart', studySize: undefined, dailyMinutes: undefined, dailyGoal: 40 } as never);
     mount(<Practice />);
-    expect(allText()).toMatch(/Picked for you (10|20) questions · /);
+    expect(allText()).toMatch(/Picked for you A mixed set (10|20) questions · /);
   });
 
   it('Start uses the same size the hero shows', () => {
@@ -724,7 +726,8 @@ describe('QA 6: never a pass prediction, never the bank size', () => {
   const bank = getAllQuestions('cisa').length;
   const domainBank = cisa.domains.map((d) => getAllQuestions('cisa').filter((q) => q.domainId === d.id).length);
   const scan = () => {
-    const words = allWords().split(cisa.exam.passingNote).join(' ');
+    // Grove Phase 4 (O9): the scaled score note says "the score needed", never "pass" (content/scoreNote.ts).
+    const words = allWords().split(scaledScoreNote(cisa)).join(' ');
     expect(words).not.toMatch(BANNED);
     expect(words).not.toMatch(new RegExp(`\\b${bank}\\b`));
     expect(words).not.toMatch(/questions in this domain|of \d{3,} questions|\d{3,} questions in/i);
@@ -736,9 +739,10 @@ describe('QA 6: never a pass prediction, never the bank size', () => {
     setCert({ answers: seedAnswers(30, 0.5), mocks: series([72, 70, 50, 48, 46, 44, 60, 58, 56, 54, 52, 50], 150) });
     mount(<ReadinessReport />);
     scan();
-    // The passing note appears exactly once, next to "Practice scores are not scaled exam scores."
-    expect(allText().split(cisa.exam.passingNote)).toHaveLength(2);
-    expect(allText()).toContain(`Practice scores are not scaled exam scores. ${cisa.exam.passingNote}`);
+    // The scaled score note appears exactly once, next to "Practice scores are not scaled exam scores."
+    expect(allText().split(scaledScoreNote(cisa))).toHaveLength(2);
+    expect(allText()).toContain(`Practice scores are not scaled exam scores. ${scaledScoreNote(cisa)}`);
+    expect(allText()).not.toMatch(/passing mark/);
   });
 
   it('Today in exam week (card and full-mock row), the exam-week screen and You', () => {

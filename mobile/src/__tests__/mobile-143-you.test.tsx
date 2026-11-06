@@ -18,7 +18,9 @@ import { getCertification } from '../content/certifications';
 import { computeReadiness } from '../engine/readiness';
 import You from '../app/(tabs)/you';
 import { DomainRings } from '../components/journey';
-import { AreaRows, ReadinessBlock, readinessSpoken } from '../components/youReadiness';
+import { AREAS_KEY, AreaRows, lowEndLine, ReadinessBlock, readinessSpoken } from '../components/youReadiness';
+import { READY_LOW } from '../engine/examReady';
+import { readinessRange } from '../engine/readinessRange';
 import { ScaleBar } from '../components/fieldguide';
 import { light } from '../theme/tokens';
 
@@ -97,6 +99,24 @@ describe('the area words (engine/domainBand.ts)', () => {
   });
 });
 
+describe('the low end, said once (Grove panel Q1)', () => {
+  it('names the low end, what the study bar asks, and how far off it is, from the study bar constant', () => {
+    expect(lowEndLine(67)).toBe(
+      `Your low end, 67, is the cautious end. The study bar is ${READY_LOW}, a goal, not an exam score. You’re ${READY_LOW - 67} under it.`,
+    );
+    expect(lowEndLine(READY_LOW)).toMatch(/You’re at or above it\.$/);
+    expect(lowEndLine(READY_LOW + 4)).toMatch(/You’re at or above it\.$/);
+    expect(lowEndLine(70, 75)).toContain('The study bar is 75');
+    // Short text (Sky, 5 Nov): three short sentences, each about 12 words or fewer.
+    for (const sentence of lowEndLine(67).split(/(?<=\.) /)) expect(sentence.split(' ').length).toBeLessThanOrEqual(12);
+    // Grove copy rules: no dashes, none of the banned words.
+    for (const line of [lowEndLine(40), lowEndLine(90)]) {
+      expect(line).not.toMatch(/[\u2013\u2014]/);
+      expect(line).not.toMatch(/\bpass|guarantee|official|you['’]re ready|evolve|runner-up/i);
+    }
+  });
+});
+
 describe('the You screen (Field Guide since mobile 1.51)', () => {
   it('one scale bar, spoken with the range and its words; no rings; the areas plate; Plant, the Herbarium and Study tools stay', () => {
     seedDomain('1', 40, 34);
@@ -110,9 +130,20 @@ describe('the You screen (Field Guide since mobile 1.51)', () => {
     expect(block).toHaveLength(1);
     expect(block[0].props.accessibilityRole).toBe('image');
     const t = allText();
-    expect(t).toContain(STUDY_BAR_LINE);
+    // Grove panel Q1: the low-end sentence, from the same range. Short text (Sky, 5 Nov): the area line
+    // ("Each area has its own 70% line") went, since the areas card's key says the same thing.
+    expect(t).not.toContain(STUDY_BAR_LINE);
+    expect(t).not.toContain('Each area has its own 70% line.');
+    expect(t).toContain(AREAS_KEY);
+    expect(AREAS_KEY).toContain('Dashed line: 70, each area’s target.');
+    const range = readinessRange(cisa, computeReadiness(cisa, selectCert(useProgress.getState(), 'cisa').answers));
+    expect(range.enough).toBe(true);
+    if (range.enough) {
+      expect(t).toContain(lowEndLine(range.low));
+      expect(t.indexOf(lowEndLine(range.low))).toBeLessThan(t.indexOf(AREAS_KEY));
+    }
     expect(t).toContain(AREAS_CAPTION);
-    expect(t).toContain('Fig. 5 · Five areas, one scale');
+    expect(t).toContain('Five areas, one scale');
     expect(t).not.toMatch(/inner ring|Thicker rings|notch/);
     expect(t).not.toMatch(/\bpass\b/i);
     // Below the line: IS Operations at 65% says "below 70" in words, and its word is clay (never colour alone).
@@ -123,18 +154,36 @@ describe('the You screen (Field Guide since mobile 1.51)', () => {
     // The rest of You is still here.
     expect(t).toContain('Study tools');
     expect(t).toMatch(/Plant yours|Your plant|Kai/);
-    expect(t).toContain('Herbarium');
+    expect(t).toContain('Badges'); // Grove You C2: never "Herbarium" on screen
+    expect(t).not.toContain('Herbarium');
   });
 
-  it('thin data: "too few yet · N answered", an outline, and no number', () => {
+  it('thin data: "12 of 30", "answers, too few yet for a score", an outline, and no number', () => {
     seedDomain('2', 12, 9);
     act(() => {
       r = create(<AreaRows cert={cisa} readiness={computeReadiness(cisa, selectCert(useProgress.getState(), 'cisa').answers)} />);
     });
-    expect(allText()).toMatch(/IT Governance\s+–\s+too few yet\s+· 12 answered/);
+    // The website's row words (Grove panel Q2: no dash for a missing number, and "seed" is the plant's word only).
+    expect(allText()).toMatch(/IT Governance\s+12 of 30\s+answers, too few yet for a score/);
+    expect(allText()).not.toMatch(/\bseed\b/i);
+    const row = root().findAll((n) => typeof n.type === 'string' && typeof n.props.accessibilityLabel === 'string' && n.props.accessibilityLabel.startsWith('IT Governance'))[0];
+    expect(row.props.accessibilityLabel).toBe('IT Governance, 12 of 30 answers, too few yet for a score.');
     // The ruler is an outline with no fill (dashed), never a lighter bar with a height it hasn't earned.
     const outline = root().findAll((n) => typeof n.type === 'string' && StyleSheet.flatten(n.props.style ?? {}).borderStyle === 'dashed' && StyleSheet.flatten(n.props.style ?? {}).height === 8);
     expect(outline).toHaveLength(1);
+  });
+
+  it('before the first range: no low-end sentence and no study-bar line (no scale bar is drawn yet)', () => {
+    seedDomain('1', 34, 30);
+    act(() => {
+      r = create(<You />);
+    });
+    const t = allText();
+    // Short text (Sky, 5 Nov): the study-bar words wait for the scale bar; one count line stands.
+    expect(t).not.toContain(STUDY_BAR_LINE);
+    expect(t).toContain('34 of 40 answers for your first range.');
+    expect(t).not.toContain('A study bar, not an exam score.');
+    expect(t).not.toContain('Your low end,');
   });
 
   it('not enough data: the bar with no bracket, and the countdown', () => {

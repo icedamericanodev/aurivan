@@ -27,6 +27,7 @@ import { findPrinciple } from '../content/principles';
 import { FIXES } from '../content/support';
 import { examDateLabel as dayLabel } from '../engine/examDay';
 import { fixFor, labelOf, parseItemRef, REASONS, type ReportEntry } from '../engine/support';
+import { TERM_MATCH } from '../lib/drillNames';
 import { shortDate } from '../lib/format';
 import { useReports } from '../lib/useReports';
 import { useProgress } from '../store/progress';
@@ -37,7 +38,7 @@ import { useTheme } from '../theme/useTheme';
 const CARD_GAME: Record<string, string> = {
   rumor: 'Root or Rumor',
   root: 'Root or Rumor',
-  kt: 'Field Guide',
+  kt: TERM_MATCH,
   role: 'Canopy Call',
   seq: 'Stepping Stones',
   flow: 'Stepping Stones',

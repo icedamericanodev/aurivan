@@ -229,7 +229,7 @@ describe('Results edges', () => {
     });
     expect(allText()).toContain('3 of 4 right');
     expect(root().findAllByType(LeafStrip)).toHaveLength(1);
-    expect(hostLabelled(/^Right: 1, 3 and 4\. Missed: 2\. Not answered: 5, 6, 7, 8, 9 and 10\.$/)).toHaveLength(1);
+    expect(hostLabelled(/^Right: questions 1, 3 and 4\. Missed: question 2\. Not answered: questions 5, 6, 7, 8, 9 and 10\.$/)).toHaveLength(1);
     expect(allText()).toContain('The one you missed comes back tomorrow');
   });
 

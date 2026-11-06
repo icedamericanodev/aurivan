@@ -15,7 +15,7 @@
  */
 import { badgeDef, markBadge } from './milestones';
 import { caseKey, tierOf } from './badgeCatalog';
-import { areaFigure, STEADY_FROM } from './domainBand';
+import { areaFigure, BAND_MIN_ANSWERS, STEADY_FROM } from './domainBand';
 import { cleanDisplayName, greetingWithName } from './displayName';
 
 /** One stem on a Field Guide chart (components/fieldguide/StemChart.tsx draws it). */
@@ -56,6 +56,16 @@ export interface AreaMastery {
 const pctOf = (m: AreaMastery | undefined) => Math.round((m?.mastery ?? 0) * 100);
 
 /**
+ * A thin area (1 to 29 answers), said as the website says it (Grove panel Q2:
+ * "seed" means the plant only): "22 of 30 answers, too few yet for a score".
+ * The list rows show the same words (components/fieldguide/StemChart.tsx).
+ */
+export const thinFigure = (answered: number) => `${answered} of ${BAND_MIN_ANSWERS}`;
+export const THIN_WORDS = 'answers, too few yet for a score';
+/** "IT Governance, 22 of 30 answers, too few yet for a score" (no full stop: the caller ends the sentence). */
+export const thinSpoken = (short: string, answered: number) => `${short}, ${thinFigure(answered)} ${THIN_WORDS}`;
+
+/**
  * You's stems, blueprint order. `ups`: points up since the learner last
  * looked (only areas that show a number; a word never gets a "+12").
  */
@@ -74,7 +84,8 @@ export function areaStems(domains: readonly AreaInfo[], mastery: readonly AreaMa
       below: f.below,
       thin: f.thin,
       ...(up ? { up } : {}),
-      spoken: `${d.short}: ${f.spoken}${up ? `. Up ${up} since you last looked` : ''}`,
+      // A thin area reads like the website's row ("IT Governance, 22 of 30 answers, too few yet for a score.").
+      spoken: f.thin ? `${thinSpoken(d.short, answered)}.` : `${d.short}: ${f.spoken}${up ? `. Up ${up} since you last looked` : ''}`,
     };
   });
 }
@@ -124,7 +135,9 @@ export function setStems(
         ...(up ? { up } : {}),
         ...(down ? { down } : {}),
         note,
-        spoken: `${d.short}: ${f.spoken}${up ? `, up ${up} ${up === 1 ? 'point' : 'points'} in this set` : ''}${down ? `, ${down} ${down === 1 ? 'point' : 'points'} lower after this set` : ''}. ${note}`,
+        spoken: f.thin
+          ? `${thinSpoken(d.short, answered)}. ${note}`
+          : `${d.short}: ${f.spoken}${up ? `, up ${up} ${up === 1 ? 'point' : 'points'} in this set` : ''}${down ? `, ${down} ${down === 1 ? 'point' : 'points'} lower after this set` : ''}. ${note}`,
       };
     });
 }

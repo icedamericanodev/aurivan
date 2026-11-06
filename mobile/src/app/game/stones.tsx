@@ -16,8 +16,10 @@ import { router } from 'expo-router';
 import { useMemo, useRef, useState } from 'react';
 import { View } from 'react-native';
 import { FadeIn } from '../../components/motion';
+import type { ItemResult } from '../../components/drillKit';
 import { GameFrame, GameIntro, MatchTile, PlayableGate, RevealCard, RoundEnd, type TileState } from '../../components/game';
-import { Button, Gap, Section, T } from '../../components/ui';
+import { BookOpen, ICON_STROKE, Play as PlayIcon } from '../../components/icons';
+import { Button, groveCard, ICON_SIZE, ListRow, Section, T } from '../../components/ui';
 import { getStepSequences } from '../../content/games';
 import type { RecapMiss } from '../../engine/games/recap';
 import {
@@ -65,6 +67,8 @@ function SteppingStones() {
   const [pick, setPick] = useState<number | null>(null);
   const [score, setScore] = useState(0);
   const [hits, setHits] = useState<boolean[]>([]);
+  // Grove 4b: each process, a perfect path or not (the twig, and the recap's squares).
+  const [paths, setPaths] = useState<ItemResult[]>([]);
   const [misses, setMisses] = useState<RecapMiss[]>([]);
   const [news, setNews] = useState<RoundNews | null>(null);
   // Screen-reader focus (UX review H3): each stone's element under "Stones",
@@ -88,6 +92,7 @@ function SteppingStones() {
     setPick(null);
     setScore(0);
     setHits([]);
+    setPaths([]);
     setMisses([]);
     setNews(null);
   };
@@ -111,9 +116,19 @@ function SteppingStones() {
   const max = stonesMax(round.items);
   if (i >= round.items.length) {
     return (
-      <RoundEnd certId={cert.id} game="stones" score={score} max={max} misses={misses} reviewNote={MISS_LINE} onAgain={start} news={news}>
-        <T v="small" color={c.ink2}>On the exam, FIRST questions are order questions: picture the path and find the step everything else rests on.</T>
-        <Gap h={space.md} />
+      <RoundEnd
+        certId={cert.id}
+        game="stones"
+        score={score}
+        max={max}
+        misses={misses}
+        reviewNote={MISS_LINE}
+        onAgain={start}
+        news={news}
+        results={paths}
+        tierLines={STONES_TIER_LINE}
+      >
+        <T v="aside" color={c.ink2}>On the exam, FIRST questions are order questions: picture the path and find the step everything else rests on.</T>
       </RoundEnd>
     );
   }
@@ -127,6 +142,7 @@ function SteppingStones() {
   /** One process settled: its card, its score, its hits, a miss line, and the round's end. */
   const settle = (points: number, stoneHits: boolean[], perfect: boolean, tag: string) => {
     useProgress.getState().recordCard(cert.id, stonesCardId(seq), perfect);
+    setPaths((p) => [...p, perfect ? 'right' : 'missed']);
     const nextScore = score + points;
     const nextHits = [...hits, ...stoneHits];
     setScore(nextScore);
@@ -187,15 +203,21 @@ function SteppingStones() {
 
   // The right order with each step's note, and the caption: the teaching payload.
   const explain = `${seq.steps.map((s, k) => `${k + 1}. ${s.label}: ${s.note}`).join('\n')}${seq.caption ? `\n\n${seq.caption}` : ''}`;
-  const source = seq.lessonId ? (
-    <Button kind="ghost" label="Open the lesson" onPress={() => router.push(`/lesson/${encodeURIComponent(seq.lessonId!)}`)} style={{ marginTop: space.sm }} />
-  ) : seq.subtopicId ? (
-    <Button kind="ghost" label="Read the note" onPress={() => router.push(`/notes/subtopic/${encodeURIComponent(seq.subtopicId!)}`)} style={{ marginTop: space.sm }} />
-  ) : null;
+  // PHASE4B 6.6: "Open the lesson" (or "Read the note") as the answer screen's Go deeper row, in one card.
+  const deeper = (title: string, kicker: string, Icon: typeof PlayIcon, to: string) => (
+    <View testID="go-deeper-card" style={[groveCard(c), { marginTop: space.md, paddingHorizontal: space.lg }]}>
+      <ListRow icon={<Icon size={ICON_SIZE.row} color={c.accentText} strokeWidth={ICON_STROKE} />} kicker={kicker} title={title} subtitle={seq.title} accessibilityLabel={title} onPress={() => router.push(to)} last />
+    </View>
+  );
+  const source = seq.lessonId
+    ? deeper('Open the lesson', 'Go deeper', PlayIcon, `/lesson/${encodeURIComponent(seq.lessonId)}`)
+    : seq.subtopicId
+      ? deeper('Read the note', 'Go deeper', BookOpen, `/notes/subtopic/${encodeURIComponent(seq.subtopicId)}`)
+      : null;
 
   const header = (
     <>
-      <T v="caption" color={c.accentText}>{`Process ${i + 1} of ${round.items.length}`}</T>
+      <T v="caption" num color={c.accentText}>{`Process ${i + 1} of ${round.items.length}`}</T>
       <T v="headline" accessibilityRole="header" style={{ marginTop: space.xs }}>{seq.title}</T>
     </>
   );
@@ -210,6 +232,7 @@ function SteppingStones() {
         index={i}
         total={round.items.length}
         score={score}
+        results={paths}
         footer={done ? <Button label={last ? 'See results' : 'Next process'} onPress={next} /> : <T v="label" center color={c.accentText}>Which step is missing?</T>}
       >
         {header}
@@ -264,6 +287,7 @@ function SteppingStones() {
       index={i}
       total={round.items.length}
       score={score}
+      results={paths}
       footer={
         done ? (
           <Button label={last ? 'See results' : 'Next process'} onPress={next} />

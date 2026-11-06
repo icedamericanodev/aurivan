@@ -1,8 +1,8 @@
 /**
  * Premium round 2, "1 · Foundation" (DESIGN_SYSTEM.md §21.7): one button, one list, one surface.
- *  - Button: the plate shape is the default (52 tall, 12pt corners) in every kind but ghost.
+ *  - Button: the plate shape is the default (54 tall, 16pt corners since Grove) in every kind but ghost.
  *  - Section variant="head": tracked caps drawn, the sentence-case words spoken, still a header.
- *  - IconButton outline (the lesson's "Previous step"): a 52×52 square with 12pt corners.
+ *  - IconButton outline (the lesson's "Previous step"): a 54×54 square with 16pt corners (Grove).
  *  - KeyList without numbers, and with a testID per row.
  *  - Learn's reference rows: an index list, spoken as before.
  *  - The clearing's growth line: "IS Audit ↑3", said "up 3 points"; no ring wording.
@@ -14,10 +14,11 @@ import { KeyList, SeedSketch } from '../components/fieldguide';
 import { SpecimenTag } from '../components/glyphs';
 import { clearingGrowth } from '../components/journey';
 import { Button, IconButton, Section } from '../components/ui';
-import { lookUpItems } from '../app/(tabs)/learn';
+import { lookUpItems, tileRows } from '../app/(tabs)/learn';
 import { getCertification } from '../content/certifications';
 import { WELCOME_HEADLINE, WELCOME_LINE } from '../content/brand';
-import { fieldType, plate } from '../theme/tokens';
+import { fieldType } from '../theme/tokens';
+import { grovePlate as plate } from '../theme/grove';
 
 jest.mock('@react-native-async-storage/async-storage', () =>
   jest.requireActual('@react-native-async-storage/async-storage/jest/async-storage-mock'),
@@ -44,7 +45,7 @@ afterEach(() => {
 });
 
 describe('Button: the plate is the default shape', () => {
-  it.each(['primary', 'secondary', 'danger', 'forest'] as const)('%s: 52 tall with 12pt corners, with no shape asked for', (kind) => {
+  it.each(['primary', 'secondary', 'danger', 'forest'] as const)('%s: 54 tall with 16pt corners (Grove), with no shape asked for', (kind) => {
     mount(<Button kind={kind} label="Continue" onPress={() => {}} />);
     const btn = host((n) => n.props.accessibilityRole === 'button')[0];
     const st = StyleSheet.flatten(btn.props.style);
@@ -87,7 +88,7 @@ describe('Section variant="head"', () => {
 });
 
 describe('the lesson footer’s back button', () => {
-  it('is a 52×52 square outline with 12pt corners (was a 56pt circle)', () => {
+  it('is a 54×54 square outline with 16pt corners (Grove; a 56pt circle before)', () => {
     mount(<IconButton outline label="Previous step" onPress={() => {}} icon={() => null} />);
     const st = StyleSheet.flatten(host((n) => n.props.accessibilityRole === 'button')[0].props.style);
     expect(st.width).toBe(plate.button);
@@ -109,27 +110,36 @@ describe('KeyList as a navigation list', () => {
   });
 });
 
-describe('Learn: the reference rows as an index list', () => {
+describe('Learn: the reference tiles (Grove Phase 4, the kit order)', () => {
   const cert = getCertification('cisa')!;
-  const all = { showNotes: true, showPrinciples: true, showGuide: true, showWeek: true };
+  const all = { showNotes: true, showGlossary: true, showPrinciples: true, showGuide: true, showWeek: true };
 
-  it('the old subtitles become kickers; the spoken labels are unchanged', () => {
+  it('Study notes, Glossary, Principles, The CISA exam, then Final review week, each with its kit line', () => {
     const items = lookUpItems(cert, 0, all);
-    expect(items.map((i) => i.title)).toEqual(['Study notes', 'Principles', `About the ${cert.name} exam`, 'Final review week']);
-    expect(items[0]).toMatchObject({ kicker: 'Every topic, with traps and key terms', right: undefined, spoken: 'Study notes, Every topic, with traps and key terms' });
-    expect(items[1].spoken).toBe('Principles, the thinking the exam rewards');
+    expect(items.map((i) => i.title)).toEqual(['Study notes', 'Glossary', 'Principles', `The ${cert.name} exam`, 'Final review week']);
+    expect(items.map((i) => i.line)).toEqual(['Every topic, with traps', 'Key terms, plain words', 'How the exam thinks', 'Booking to results', 'Your last seven days']);
+    expect(items[0].spoken).toBe('Study notes, Every topic, with traps');
+    expect(items[1].spoken).toBe('Glossary, key terms in plain words');
+    expect(items[3].spoken).toBe(`About the ${cert.name} exam, booking to results`);
     for (const i of items) expect(i.onPress).toBeDefined();
   });
 
-  it('once notes are read, the count closes the row ("12 read"); never a total', () => {
+  it('once notes are read, the line counts them ("1 note read", "12 notes read"); never a total', () => {
+    expect(lookUpItems(cert, 1, all)[0].line).toBe('1 note read · with traps');
     const [notes] = lookUpItems(cert, 12, all);
-    expect(notes.right).toBe('12 read');
-    expect(notes.spoken).toBe('Study notes, 12 notes read · every topic, with traps');
-    expect(notes.right).not.toMatch(/of/);
+    expect(notes.line).toBe('12 notes read · with traps');
+    expect(notes.spoken).toBe('Study notes, 12 notes read, with traps');
+    expect(notes.line).not.toMatch(/ of /);
   });
 
-  it('a row shows only when the exam has it', () => {
+  it('a tile shows only when the exam has it', () => {
     expect(lookUpItems(cert, 0, { showNotes: false, showPrinciples: true, showGuide: false, showWeek: false }).map((i) => i.key)).toEqual(['principles']);
+  });
+
+  it('tiles pair up two by two; an odd last tile is alone in its row (it spans the width); one per row otherwise', () => {
+    expect(tileRows(['a', 'b', 'c'], true)).toEqual([['a', 'b'], ['c']]);
+    expect(tileRows(['a', 'b', 'c', 'd'], true)).toEqual([['a', 'b'], ['c', 'd']]);
+    expect(tileRows(['a', 'b', 'c'], false)).toEqual([['a'], ['b'], ['c']]);
   });
 });
 
@@ -160,9 +170,10 @@ describe('the You tab’s specimen tag and the welcome’s seed', () => {
     expect(box.props.accessibilityElementsHidden).toBe(true);
   });
 
-  it('the welcome line names the guide, with ® on first use, and never a forbidden word', () => {
+  it('the welcome line is plain words (no book label), with ® on first use, and never a forbidden word', () => {
     expect(WELCOME_HEADLINE).toBe('Think like an IS auditor.');
-    expect(WELCOME_LINE).toBe('A field guide to your CISA® exam study.');
+    expect(WELCOME_LINE).toBe('Your CISA® exam study, one day at a time.');
+    expect(WELCOME_LINE).not.toMatch(/field guide/i);
     expect(WELCOME_LINE).not.toMatch(/\b(pass|guarantee|official|evolve)\b|you're ready/i);
   });
 });

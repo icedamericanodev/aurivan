@@ -10,6 +10,7 @@ import { mockPacing, type MockPacing } from '../engine/pace';
 import { displayToOriginal } from '../engine/shuffle';
 import { useProgress, type MockResult } from '../store/progress';
 import { useSession, type ActiveSession } from '../store/session';
+import { batchSaves } from '../store/storage';
 import { logActivity } from './activity';
 import { celebrateNext, checkMilestones } from './milestones';
 import { checkPlant } from './plant';
@@ -121,6 +122,13 @@ export function scoreSession(s: ActiveSession): SessionScore {
  * spent on a screen nobody sees.
  */
 export function finishSession(opts: { celebrate?: boolean } = {}) {
+  // Release bug hunt round 1: a mock records up to 150 answers (plus mistakes, review, readiness,
+  // the plan, badges and the plant), each a change to a store. Save each store ONCE at the end,
+  // not after every change (store/storage.ts batchSaves): Submit no longer freezes on a large save.
+  batchSaves(() => finishSessionNow(opts));
+}
+
+function finishSessionNow(opts: { celebrate?: boolean }) {
   const s = useSession.getState().active;
   if (!s || s.finishedAt) return;
   if (s.mode === 'mock') {

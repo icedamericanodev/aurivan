@@ -75,3 +75,22 @@ export function pickCoachLine(tips: readonly string[], correct: Letter, picked: 
   const pick = originalToDisplay(picked, perm);
   return kind === 'rule-out' ? ruleOutLine(pick) : finalTwoLine(pick, originalToDisplay(correct, perm));
 }
+
+/**
+ * Grove Phase 4 (PHASE4.md 4.2 step 4): the "Your pick, B" chip on one tip row, after a miss.
+ * The same rule as the website's chip (index.html, the tips loop that draws `.vr-pick`):
+ *   - on the Eliminate row, when that tip names the pick;
+ *   - on the Final two row, when that tip names both the pick and the best answer.
+ * Every other row (Exam cue, an older tip), a right answer or no pick: null.
+ * `correct` and `picked` are ORIGINAL letters (the comparing happens on originals); the answer is
+ * the pick's DISPLAY letter for this shuffle, the letter the learner saw and tapped.
+ */
+export function tipPickLetter(tip: string, correct: Letter, picked: Letter | undefined, perm: Permutation): string | null {
+  if (!picked || picked === correct) return null;
+  const label = tip.match(/^(Eliminate|Final two):/)?.[1];
+  if (!label) return null;
+  const letters = tipLetters(tip);
+  if (!letters.includes(picked)) return null;
+  if (label === 'Final two' && !letters.includes(correct)) return null;
+  return originalToDisplay(picked, perm);
+}

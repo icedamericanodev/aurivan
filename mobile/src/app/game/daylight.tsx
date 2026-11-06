@@ -22,16 +22,17 @@
  * Both clocks reuse the answer clock (lib/useAnswerClock.ts): one for the
  * round's budget, one per question visit. Background time never counts.
  */
-import { useEffect, useMemo, useRef, useState } from 'react';
-import { ScrollView, View } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { backOr, DRILLS_HREF } from '../../lib/actions';
-import { GameFrame, LevelNote, PlayableGate, QuestionHead, RevealCard, RoundEnd, useRound } from '../../components/game';
-import { GameGlyph, TierLeafMorph } from '../../components/glyphs';
+import { memo, useEffect, useMemo, useRef, useState, type Dispatch, type RefObject, type SetStateAction } from 'react';
+import { View } from 'react-native';
+import { DrillAnswer } from '../../components/drillAnswer';
+import type { ItemResult } from '../../components/drillKit';
+import { GameFrame, GameIntro, LevelNote, PlayableGate, QuestionHead, RoundEnd, useRound } from '../../components/game';
+import { GameGlyph } from '../../components/glyphs';
 import { ICON_STROKE, Pause, Play } from '../../components/icons';
 import { PaceStrip } from '../../components/pace';
-import { OptionCard, type OptionState } from '../../components/quiz';
-import { Button, Gap, ICON_SIZE, PushedHeader, Row, Section, Segmented, T, useFontScale } from '../../components/ui';
+import { OptionCard } from '../../components/quiz';
+import { Button, groveCard, ICON_SIZE, Row, T, useFontScale } from '../../components/ui';
+import { missCoach, oneStepVerdict } from '../../lib/drillVerdict';
 import { getAllQuestions } from '../../content/loader';
 import { LETTERS, type Letter } from '../../content/types';
 import {
@@ -67,12 +68,13 @@ import {
   type PaceMark,
 } from '../../engine/games/daylight';
 import { clip, pickMiss, type RecapMiss } from '../../engine/games/recap';
-import { GAMES } from '../../engine/games/registry';
 import { durationSpoken, durationText, formatClock, spokenClock, spokenClockCoarse } from '../../engine/pace';
+import { secondsWords } from '../../engine/resultsCopy';
 import { moveFocus, sayLater } from '../../lib/a11y';
 import { createRng } from '../../engine/random';
 import { displayToOriginal, isCorrect, originalToDisplay, renderText } from '../../engine/shuffle';
 import { finishGameRound, type RoundNews } from '../../lib/gameRounds';
+import { batchSaves } from '../../store/storage';
 import { useAnswerClock } from '../../lib/useAnswerClock';
 import { useActiveCert } from '../../lib/useActiveCert';
 import { useProgress } from '../../store/progress';
@@ -92,6 +94,90 @@ export default function DaylightScreen() {
 const say = (text: string) => sayLater(text);
 /** A stem cut for one line, without a full stop before the "…" (O4). */
 const clipStem = (stem: string, max = 70) => clip(stem, max).replace(/[.,;:?!]…$/, '…');
+
+/**
+ * Daylight's light strip (release bug hunt round 2). It holds the once-a-second tick itself, so only
+ * the strip redraws each second: before, the whole round screen (the question and all four options)
+ * redrew every second for the whole round.
+ *
+ * Each tick it does what the screen did: move the strip, set the light at the end of the budget, and
+ * say the pace at half time and 10% left (`said` is the screen's, so a pace line is said once a round).
+ * While the light waits (an answer showing, Pause, the round over) it reads the round clock once, so
+ * the strip shows the time used up to that moment.
+ */
+const DaylightStrip = memo(function DaylightStrip({
+  state,
+  held,
+  paused,
+  readRound,
+  setRound,
+  said,
+  stripRef,
+}: {
+  state: DaylightRound;
+  held: boolean;
+  paused: boolean;
+  readRound: () => number;
+  setRound: Dispatch<SetStateAction<DaylightRound | null>>;
+  said: RefObject<PaceMark[]>;
+  stripRef: RefObject<View | null>;
+}) {
+  // Lazy initialiser: read the round clock once on mount, not on every render.
+  const [used, setUsed] = useState(() => readRound());
+  // The light starts to wait (an answer, Pause, the round over): show the time used up to that moment
+  // (it stands still meanwhile). React's "adjust state when a prop changes" pattern, not an effect.
+  const [heldBefore, setHeldBefore] = useState(held);
+  if (heldBefore !== held) {
+    setHeldBefore(held);
+    if (held) setUsed(readRound());
+  }
+  // Once a second while the light is up: move the strip, set the light at
+  // the end of the budget, and say the pace at half time and 10% left.
+  useEffect(() => {
+    if (held) return;
+    const t = setInterval(() => {
+      const now = readRound();
+      setUsed(now);
+      if (budgetGone(state, now)) {
+        setRound(setLight(state));
+        say('The light has set. Unanswered questions are shown, not marked wrong.');
+        return;
+      }
+      const due = paceMarksDue(state, now, said.current);
+      if (due.length) {
+        said.current = [...said.current, ...due];
+        const line = daylightLine(daylightPace(state, now), canFlag(state));
+        say(due.includes('tenthLeft') ? `${spokenClock(state.budgetMs - now)} of light left. ${lowLightLine(state)}` : `Half the light is gone. ${line}`);
+      }
+    }, 1000);
+    return () => clearInterval(t);
+  }, [held, state, readRound, setRound, said]);
+
+  const answered = Object.keys(state.answers).length;
+  const remaining = Math.max(0, state.budgetMs - used);
+  const status = daylightPace(state, used);
+  // The light's last 10%: a visible line too, not only an announcement (P12).
+  const low = lowLight(state, used);
+  return (
+    <PaceStrip
+      ref={stripRef}
+      // Spoken in whole minutes (U-H2); the precise time is for tap-to-hear only.
+      clock={{ text: formatClock(remaining), spoken: `Light left ${spokenClockCoarse(remaining)}` }}
+      clockUnit="left"
+      line={
+        paused
+          ? { text: 'Paused. The light holds.', tone: 'note' }
+          : low
+            ? { text: lowLightLine(state), tone: 'soon' }
+            : { text: daylightLine(status, canFlag(state)), tone: status }
+      }
+      lineShort={!paused && !low && status === 'behind' ? 'Behind pace' : undefined}
+      // The pace bar steps once a second, no tween (PHASE4B 6.3 item 9).
+      bar={{ done: answered / state.ids.length, used: used / state.budgetMs, step: true }}
+      onRequest={() => say(`Light left ${spokenClock(remaining)}. ${paused ? 'Paused.' : low ? lowLightLine(state) : daylightLine(status, canFlag(state))}`)}
+    />
+  );
+});
 
 function Daylight() {
   const { c } = useTheme();
@@ -115,7 +201,6 @@ function Daylight() {
   // Focus targets: Resume after Pause, the strip after Resume (P9).
   const resumeRef = useRef<View>(null);
   const stripRef = useRef<View>(null);
-  const [used, setUsed] = useState(0);
   const [misses, setMisses] = useState<RecapMiss[]>([]);
   const said = useRef<PaceMark[]>([]);
   const fed = useRef(false);
@@ -128,47 +213,30 @@ function Daylight() {
   const readRound = useAnswerClock(state ? `daylight:${seed}` : undefined, held);
   const readVisit = useAnswerClock(state && currentId ? `daylight:${seed}:${visit}` : undefined, held);
 
-  // Once a second while the light is up: move the strip, set the light at
-  // the end of the budget, and say the pace at half time and 10% left.
-  useEffect(() => {
-    if (held || !state) return;
-    const t = setInterval(() => {
-      const now = readRound();
-      setUsed(now);
-      if (budgetGone(state, now)) {
-        setState(setLight(state));
-        say('The light has set. Unanswered questions are shown, not marked wrong.');
-        return;
-      }
-      const due = paceMarksDue(state, now, said.current);
-      if (due.length) {
-        said.current = [...said.current, ...due];
-        const line = daylightLine(daylightPace(state, now), canFlag(state));
-        say(due.includes('tenthLeft') ? `${spokenClock(state.budgetMs - now)} of light left. ${lowLightLine(state)}` : `Half the light is gone. ${line}`);
-      }
-    }, 1000);
-    return () => clearInterval(t);
-  }, [held, state, readRound]);
+  // The once-a-second tick (strip, light setting, pace lines) lives in DaylightStrip (above).
 
   // The round is over: feed progress ONCE. Answers were recorded as they
   // came; questions the light set on go to review WITHOUT counting as answered.
   useEffect(() => {
     if (!state?.over || fed.current) return;
     fed.current = true;
-    const p = useProgress.getState();
-    if (state.timedOut.length) p.queueForReview(cert.id, state.timedOut);
-    // The skill step is exam pace: each question answered before the light
-    // set AND right (engine daylightHits), so speed alone never grows the level.
-    const hits = daylightHits(state);
-    const n = finishGameRound(cert.id, 'daylight', {
-      score: daylightScore(state),
-      rate: hits.filter(Boolean).length / Math.max(1, state.ids.length),
-      tier: state.tier,
-      hits,
-      // Sure-Footed Pace: inside the light at Sapling pace or faster, with 4 of 5 right.
-      counts: { paceRounds: atSurePace(state) ? 1 : 0 },
+    // One save for the round's end: the review queue and the round's results together (release bug hunt round 3).
+    batchSaves(() => {
+      const p = useProgress.getState();
+      if (state.timedOut.length) p.queueForReview(cert.id, state.timedOut);
+      // The skill step is exam pace: each question answered before the light
+      // set AND right (engine daylightHits), so speed alone never grows the level.
+      const hits = daylightHits(state);
+      const n = finishGameRound(cert.id, 'daylight', {
+        score: daylightScore(state),
+        rate: hits.filter(Boolean).length / Math.max(1, state.ids.length),
+        tier: state.tier,
+        hits,
+        // Sure-Footed Pace: inside the light at Sapling pace or faster, with 4 of 5 right.
+        counts: { paceRounds: atSurePace(state) ? 1 : 0 },
+      });
+      setNews(n);
     });
-    setNews(n);
   }, [state, cert.id]);
 
   const begin = () => {
@@ -178,59 +246,53 @@ function Daylight() {
     setMisses([]);
     setReveal(null);
     setPaused(false);
-    setUsed(0);
     setVisit(0);
     // The tier is locked into the round here (C2): a new suggestion can't change it mid-round.
     setState(newDaylightRound(items.map((x) => x.q.id), chosen, tierSeconds(chosen, cert.exam)));
   };
 
   // ── 1. Pick a light ────────────────────────────────────────────────────
+  // Grove 4b (PHASE4B 6.6): the drills' intro with the three level markers as "Pick your light", the
+  // picked light's seconds and the suggested line ("Suggested: ... from your recent answer times.").
   if (!state) {
     const sec = tierSeconds(chosen, cert.exam);
+    // Each light's radio, spoken with its seconds (and "your level" once the learner has one).
+    const spoken = Object.fromEntries(
+      DAYLIGHT_TIERS.map((t) => [t, `${TIER_NAME[t]}${level === t ? ', your level' : ''}, ${tierSeconds(t, cert.exam)} seconds a question${t === suggested ? ', suggested' : ''}`]),
+    ) as Record<DaylightTier, string>;
     return (
-      <SafeAreaView edges={['top', 'bottom']} style={{ flex: 1, backgroundColor: c.bg }}>
-        <View style={{ paddingHorizontal: space.gutter }}>
-          <PushedHeader icon="close" onBack={() => backOr(DRILLS_HREF)} title={GAMES.daylight.name} />
-        </View>
-        <ScrollView contentContainerStyle={{ padding: space.gutter, paddingBottom: space.xxl }}>
-          {/* The sun rises once as the intro opens (motion.md M5; still under Reduce Motion). */}
-          <View style={{ alignItems: 'center' }}>
-            <GameGlyph game="daylight" size={48} color={c.accent} rise />
-          </View>
-          <T v="caption" center color={c.accentText} style={{ marginTop: space.sm }}>{GAMES.daylight.skill}</T>
-          <T v="hero" center accessibilityRole="header" style={{ marginTop: space.xs }}>{GAMES.daylight.tagline}</T>
-          <T v="body" color={c.ink2} style={{ marginTop: space.md }}>
-            {`${items.length} questions share one light. There is no countdown on each question: keep an eye on the pace line, and flag one that's stuck to come back to it. When the light sets, anything unanswered is shown, not marked wrong.`}
-          </T>
-          <Section title="Pick your light" />
-          <Gap h={space.sm} />
-          <Segmented
-            accessibilityLabel="Pick your light"
-            value={chosen}
-            onChange={setTier}
-            options={DAYLIGHT_TIERS.map((t) => ({
-              value: t,
-              label: TIER_NAME[t],
-              spoken: `${TIER_NAME[t]}, ${tierSeconds(t, cert.exam)} seconds a question${t === suggested ? ', suggested' : ''}`,
-            }))}
-          />
-          <Row gap={space.sm} style={{ marginTop: space.sm, justifyContent: 'center', flexWrap: 'wrap' }}>
-            <TierLeafMorph tier={chosen} color={c.accentText} rib={c.bg} />
-            <T v="meta" num center style={{ flexShrink: 1 }}>
-              {`${sec} seconds a question · ${durationText(Math.round((items.length * sec) / 60))} of light${tierCanExtend(chosen) ? ' · you can add time' : ''}`}
+      <GameIntro
+        game="daylight"
+        rules={`${items.length} questions share one light. There is no countdown on each question: keep an eye on the pace line, and flag one that's stuck to come back to it. When the light sets, anything unanswered is shown, not marked wrong.`}
+        tiers={DAYLIGHT_TIERS}
+        tier={chosen}
+        onTier={setTier}
+        tierName={TIER_NAME}
+        tierLine={spoken}
+        spokenTier={spoken}
+        level={level}
+        pickTitle="Pick your light"
+        onStart={begin}
+        below={
+          <>
+            <T v="meta" num center style={{ marginTop: space.sm }}>
+              {`${sec} seconds a question · ${durationText(Math.round((items.length * sec) / 60))} of light`}
             </T>
-          </Row>
-          {level ? (
-            <LevelNote level={level} />
-          ) : (
-            <T v="meta" center style={{ marginTop: space.xs }}>{`Suggested: ${TIER_NAME[suggested]}, from your recent answer times.`}</T>
-          )}
-          <Gap h={space.xl} />
-          <Button label="Start" onPress={begin} icon={(col) => <Play size={ICON_SIZE.inline} color={col} strokeWidth={ICON_STROKE} />} />
-        </ScrollView>
-      </SafeAreaView>
+            {/* Release prep 2.0.0: its own line. On the line above it wrapped at 390pt with "time" alone. */}
+            {tierCanExtend(chosen) ? <T v="meta" center>You can add time.</T> : null}
+            {level ? (
+              <LevelNote level={level} />
+            ) : (
+              <T v="meta" center style={{ marginTop: space.xs }}>{`Suggested: ${TIER_NAME[suggested]}, from your recent answer times.`}</T>
+            )}
+          </>
+        }
+      />
     );
   }
+
+  // Grove 4b: each answered question, in the order answered, for the twig and the recap's squares.
+  const roundItems: ItemResult[] = Object.values(state.answers).map((a) => (a.correct ? 'right' : 'missed'));
 
   // ── 3. The light has set, or every question is answered ────────────────
   if (state.over && reveal === null) {
@@ -238,7 +300,8 @@ function Daylight() {
     const slow = slowestItem(state);
     const slowQ = slow ? items.find((x) => x.q.id === slow.id)?.q : undefined;
     const inBudget = finishedInBudget(state);
-    const lightUsed = Math.min(used, state.budgetMs);
+    // The round clock stands still once the round is over, so this reads the light used.
+    const lightUsed = Math.min(readRound(), state.budgetMs);
     return (
       <RoundEnd
         certId={cert.id}
@@ -247,25 +310,29 @@ function Daylight() {
         max={daylightMax(state.ids.length)}
         misses={misses}
         news={news}
+        results={roundItems}
         onAgain={() => {
           restart();
           setState(null);
         }}
       >
+        {/* PHASE4B 6.6: "This is where time went" as a headline in a card, as the Last 5 rounds card. */}
+        <View testID="daylight-time" style={[groveCard(c), { padding: 16 }]}>
         <T v="headline" accessibilityRole="header">This is where time went</T>
         <View style={{ marginTop: space.sm, gap: space.xs }}>
           <T
             v="small"
             num
-            accessibilityLabel={`Light used: ${durationSpoken(Math.round(lightUsed / 60_000))} of ${durationSpoken(Math.round(state.budgetMs / 60_000))}${inBudget ? '. Finished in time, plus 1' : ''}`}
+            accessibilityLabel={`Light used: ${spokenClock(lightUsed)} of ${durationSpoken(Math.round(state.budgetMs / 60_000))}${inBudget ? '. Finished in time, plus 1' : ''}`}
           >
             {`Light used: ${formatClock(lightUsed)} of ${formatClock(state.budgetMs)}${inBudget ? ' · finished in time, +1' : ''}`}
           </T>
-          {avg !== null && <T v="small" num>{`Average ${avg} seconds a question · your light gave ${state.perItemSec} seconds`}</T>}
-          {slow && slowQ && <T v="small">{`Slowest: ${slow.seconds} seconds on “${clipStem(slowQ.stem)}”`}</T>}
+          {avg !== null && <T v="small" num>{`Average ${secondsWords(avg)} a question · your light gave ${state.perItemSec} seconds`}</T>}
+          {slow && slowQ && <T v="small">{`Slowest: ${secondsWords(slow.seconds)} on “${clipStem(slowQ.stem)}”`}</T>}
+        </View>
         </View>
         {state.timedOut.length > 0 && (
-          <View style={{ marginTop: space.lg }}>
+          <View style={[groveCard(c), { marginTop: space.md, padding: 16 }]}>
             <T v="headline" accessibilityRole="header">The light set before these</T>
             <T v="meta" style={{ marginTop: space.xs }}>Shown, not marked wrong. They are in your review.</T>
             {state.timedOut.map((id, k) => {
@@ -286,7 +353,6 @@ function Daylight() {
             })}
           </View>
         )}
-        <Gap h={space.md} />
       </RoundEnd>
     );
   }
@@ -298,10 +364,6 @@ function Daylight() {
   const { q, perm } = shown;
   const letters = LETTERS.slice(0, perm.length);
   const answered = Object.keys(state.answers).length;
-  const remaining = Math.max(0, state.budgetMs - used);
-  const status = daylightPace(state, used);
-  // The light's last 10%: a visible line too, not only an announcement (P12).
-  const low = lowLight(state, used);
   const right = Object.values(state.answers).filter((a) => a.correct).length;
 
   const pick = (display: Letter) => {
@@ -312,13 +374,15 @@ function Daylight() {
     const ms = next.answers[q.id].ms;
     const p = useProgress.getState();
     // Feeds review like any practice answer; games never count toward mastery dates.
-    p.recordAnswer(cert.id, q.id, correct, undefined, { ms, mastery: false });
+    // One save for the answer and its miss (release bug hunt round 3).
+    batchSaves(() => {
+      p.recordAnswer(cert.id, q.id, correct, undefined, { ms, mastery: false });
+      if (!correct) p.recordMistake(cert.id, q.id, original);
+    });
     if (!correct) {
-      p.recordMistake(cert.id, q.id, original);
       const miss = pickMiss(q, original, false, (t) => renderText(t, perm));
       if (miss) setMisses((m) => [...m, miss]);
     }
-    setUsed(readRound());
     setState(next);
     setReveal({ id: q.id, display });
   };
@@ -329,31 +393,9 @@ function Daylight() {
     say('Flagged. It comes back at the end if there is light left.');
   };
 
-  const stateFor = (display: Letter): OptionState => {
-    if (reveal === null) return 'idle';
-    if (displayToOriginal(display, perm) === q.correct) return 'correct';
-    return display === reveal.display ? 'wrong' : 'dimmed';
-  };
-
   const lastAnswer = state.answers[q.id];
-  const strip = (
-    <PaceStrip
-      ref={stripRef}
-      // Spoken in whole minutes (U-H2); the precise time is for tap-to-hear only.
-      clock={{ text: formatClock(remaining), spoken: `Light left ${spokenClockCoarse(remaining)}` }}
-      clockUnit="left"
-      line={
-        paused
-          ? { text: 'Paused. The light holds.', tone: 'note' }
-          : low
-            ? { text: lowLightLine(state), tone: 'soon' }
-            : { text: daylightLine(status, canFlag(state)), tone: status }
-      }
-      lineShort={!paused && !low && status === 'behind' ? 'Behind pace' : undefined}
-      bar={{ done: answered / state.ids.length, used: used / state.budgetMs }}
-      onRequest={() => say(`Light left ${spokenClock(remaining)}. ${paused ? 'Paused.' : low ? lowLightLine(state) : daylightLine(status, canFlag(state))}`)}
-    />
-  );
+  // Only the strip ticks (DaylightStrip); the question and its options stay as they are.
+  const strip = <DaylightStrip state={state} held={held} paused={paused} readRound={readRound} setRound={setState} said={said} stripRef={stripRef} />;
 
   return (
     <GameFrame
@@ -361,6 +403,7 @@ function Daylight() {
       index={answered - (reveal !== null ? 1 : 0)}
       total={state.ids.length}
       score={right}
+      results={roundItems}
       strip={strip}
       footer={
         reveal !== null ? (
@@ -388,7 +431,6 @@ function Daylight() {
               kind="secondary"
               label="Pause"
               onPress={() => {
-                setUsed(readRound());
                 setPaused(true);
                 say('Paused. The light holds.');
                 moveFocus(resumeRef);
@@ -422,27 +464,28 @@ function Daylight() {
         </View>
       ) : (
         <>
-          {state.flagged.includes(q.id) && reveal === null && <T v="caption" color={c.tip}>Flagged earlier</T>}
-          <QuestionHead q={q} />
-          {letters.map((d) => (
-            <OptionCard
-              key={d}
-              letter={d}
-              text={q.options[displayToOriginal(d, perm)] ?? ''}
-              state={stateFor(d)}
-              disabled={reveal !== null}
-              onPress={() => pick(d)}
+          {reveal !== null && lastAnswer ? (
+            <DrillAnswer
+              q={q}
+              perm={perm}
+              pick={reveal.display}
+              animate={lastAnswer.correct}
+              extra={`${Math.round(lastAnswer.ms / 1000)} s`}
+              note="The light waits while you read this."
+              verdict={oneStepVerdict({
+                correct: lastAnswer.correct,
+                best: originalToDisplay(q.correct, perm),
+                missCoach: missCoach(q, displayToOriginal(reveal.display, perm), perm),
+                extra: `${Math.round(lastAnswer.ms / 1000)} seconds`,
+              })}
             />
-          ))}
-          {reveal !== null && lastAnswer && (
+          ) : (
             <>
-              <Gap h={space.sm} />
-              <RevealCard
-                tone={lastAnswer.correct ? 'good' : 'bad'}
-                title={lastAnswer.correct ? `Correct · ${Math.round(lastAnswer.ms / 1000)} s` : `Best answer: ${originalToDisplay(q.correct, perm)} · ${Math.round(lastAnswer.ms / 1000)} s`}
-                body={renderText(q.explanation, perm)}
-              />
-              <T v="meta" style={{ marginTop: space.sm }}>The light waits while you read this.</T>
+              {state.flagged.includes(q.id) && <T v="caption" color={c.tip}>Flagged earlier</T>}
+              <QuestionHead q={q} />
+              {letters.map((d) => (
+                <OptionCard key={d} letter={d} text={q.options[displayToOriginal(d, perm)] ?? ''} state="idle" onPress={() => pick(d)} />
+              ))}
             </>
           )}
         </>

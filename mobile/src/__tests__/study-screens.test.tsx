@@ -67,7 +67,7 @@ afterEach(() => {
 /** The mode picker sits behind the "Your path" row under the hero (practice redesign). */
 const openPath = () =>
   act(() => {
-    root().findAll((n) => String(n.props.accessibilityLabel).startsWith('Your path:') && typeof n.props.onPress === 'function')[0].props.onPress();
+    root().findAll((n) => String(n.props.accessibilityLabel).startsWith('Domains, ') && typeof n.props.onPress === 'function')[0].props.onPress();
   });
 
 describe('Practice: the mode picker', () => {

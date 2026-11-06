@@ -85,6 +85,7 @@ export type Destination =
   | { to: 'note'; id: string } // a subtopic page
   | { to: 'notesDomain'; domainId: string } // a topic code: its domain's notes page
   | { to: 'notes'; q?: string } // the notes (and their search)
+  | { to: 'glossary'; q?: string } // the Glossary (and its search), when the course has one
   | { to: 'principle'; id: string }
   | { to: 'principles'; family?: string }
   | { to: 'practice'; domainId: string }
@@ -103,6 +104,8 @@ export interface ActionContext {
   noteKind: (code: string) => { kind: 'topic'; domainId: string } | { kind: 'subtopic' } | undefined;
   /** A principles target's kind: one principle, or a family. */
   principleKind: (id: string) => 'principle' | 'family' | undefined;
+  /** Grove Phase 4 (O2): the course has a Glossary screen, so glossary tasks open it. Left out: the notes search, as before. */
+  hasGlossary?: boolean;
 }
 
 /** The mini mock: a third of the real exam (the size Practice and You offer). */
@@ -142,6 +145,8 @@ export function resolveAction(action: TaskAction, ctx: ActionContext): Destinati
     case 'mistakes':
       return { to: 'mistakes' };
     case 'glossary':
+      // The Glossary when the course has one (its search filled in), else the notes and their search.
+      if (ctx.hasGlossary) return t ? { to: 'glossary', q: t } : { to: 'glossary' };
       return t ? { to: 'notes', q: t } : { to: 'notes' };
   }
 }

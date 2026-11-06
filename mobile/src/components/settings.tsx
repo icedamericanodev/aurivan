@@ -32,7 +32,7 @@ import { LARGE_TEXT, radius, scrimOp, space } from '../theme/tokens';
 import { useTheme } from '../theme/useTheme';
 import { Bell, BookOpen, ChevronRight, CircleQuestionMark, Flag, ICON_STROKE, LayoutGrid, ListChecks, MessagesSquare, Palette as PaletteIcon, RefreshCw, ShieldCheck, SproutIcon, UserRound } from './icons';
 import { AnimatedPressable, FadeIn, usePressScale } from './motion';
-import { Button, ICON_SIZE, RadioRow, T, useFontScale } from './ui';
+import { Button, groveCard, ICON_SIZE, RadioRow, T, useFontScale } from './ui';
 
 // ── Categories ────────────────────────────────────────────────────────
 /**
@@ -140,9 +140,10 @@ export function SettingsCategoryRow({
 
 /** The flat card the categories sit on (also the doors' card): never a button, no shadow (Grove §5 rule 8). */
 export function SettingsCard({ children, title }: { children: ReactNode; /** A plain header (no mark), for the doors card. */ title?: string }) {
-  const { c, isDark } = useTheme();
+  const { c } = useTheme();
   return (
-    <View style={[styles.card, { backgroundColor: c.raised, borderColor: isDark ? c.line : 'transparent' }]}>
+    // Grove Phase 1: the kit's card, a 1pt `line` edge in both themes (was 1.5 in dark and none in light).
+    <View style={[groveCard(c), styles.card]}>
       {title ? (
         <View accessible accessibilityRole="header" accessibilityLabel={title} style={[styles.cardHead, { borderBottomColor: c.line }]}>
           <T v="headline">{title}</T>
@@ -163,13 +164,12 @@ export function SettingsGroup({
   title,
   intro,
   children,
-  cat,
   headRef,
 }: {
   title: string;
   intro?: string;
   children: ReactNode;
-  /** Which category it is (its mark). */
+  /** Which category it is. Its mark is drawn on the door rows only since the type pass (heads are words alone). */
   cat?: SettingsCat;
   /** Mobile 1.47: a link that opens Settings at this group moves screen-reader focus to its title. */
   headRef?: Ref<View>;
@@ -186,8 +186,9 @@ export function SettingsGroup({
     );
   return (
     <SettingsCard>
+      {/* Type pass (TYPE_SCALE.md R4): a section head on Settings is the headline alone, as on the web's
+          Settings page; the category marks stay on the door rows, which are rows, not heads. */}
       <View ref={headRef} accessible accessibilityRole="header" accessibilityLabel={title} style={[styles.cardHead, { borderBottomColor: c.line }]}>
-        {cat ? <SettingsMark cat={cat} size={28} /> : null}
         <T v="headline" style={{ flexShrink: 1 }}>{title}</T>
       </View>
       {intro ? <T v="meta" style={{ marginTop: space.sm }}>{intro}</T> : null}
@@ -431,7 +432,7 @@ const styles = StyleSheet.create({
   // A door to a category's own screen (72: mark, name and summary).
   catRow: { flexDirection: 'row', alignItems: 'center', gap: space.md, minHeight: 72, paddingVertical: space.md },
   // The flat category card, 16 apart, and its title inside over a hairline (48pt tall at least).
-  card: { marginTop: space.xl, borderRadius: radius.lg, borderWidth: 1.5, paddingHorizontal: space.lg, paddingTop: space.xs },
+  card: { marginTop: space.xl, paddingHorizontal: space.lg, paddingTop: space.xs },
   cardHead: { flexDirection: 'row', alignItems: 'center', gap: space.sm, minHeight: 48, paddingVertical: space.sm, borderBottomWidth: 1 },
   sheetHost: { flex: 1, justifyContent: 'flex-end' },
   sheet: { borderTopLeftRadius: radius.sheet, borderTopRightRadius: radius.sheet, overflow: 'hidden' },

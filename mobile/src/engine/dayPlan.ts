@@ -151,6 +151,43 @@ export function itemTarget(item: PlanItem): number {
 }
 
 /**
+ * Questions still to do on a review/practice item (release bug hunt round 4): its planned count less
+ * the answers already banked on it today (for example the "Short on time? 5 questions" set), at
+ * least 1. Other kinds return 0.
+ */
+export function remainingCount(plan: Pick<DayPlan, 'items' | 'credit'>, k: number): number {
+  const item = plan.items[k];
+  if (!item || (item.kind !== 'review' && item.kind !== 'practice')) return 0;
+  return Math.max(1, item.count - Math.max(0, plan.credit?.[k] ?? 0));
+}
+
+/** "8 questions" in a saved label becomes "3 questions" (the label's own count follows what is left). */
+function relabel(label: string, from: number, to: number): string {
+  return label.replace(new RegExp(`\\b${from}( mixed)? questions?\\b`), (_m, mixed: string | undefined) => `${to}${mixed ?? ''} question${to === 1 ? '' : 's'}`);
+}
+
+/**
+ * The plan as Today shows and starts it: each open review/practice item sized to what is left
+ * (remainingCount), so its "N questions", its minutes, the day's total and Continue all follow
+ * the answers already banked. Only for showing and starting: the saved plan (its items, done
+ * and credit) is never changed, and the step still finishes at itemTarget of the PLANNED count.
+ * Returns the same object when nothing is banked.
+ */
+export function planLeft<P extends Pick<DayPlan, 'items' | 'done' | 'credit'>>(plan: P): P {
+  if (!plan.credit?.some((n) => n > 0)) return plan;
+  let changed = false;
+  const items = plan.items.map((item, k): PlanItem => {
+    if (plan.done[k] || (item.kind !== 'review' && item.kind !== 'practice')) return item;
+    const count = remainingCount(plan, k);
+    if (count === item.count) return item;
+    changed = true;
+    if (item.kind === 'practice') return { ...item, count, label: relabel(item.label, item.count, count) };
+    return { ...item, count, ...(item.label ? { label: relabel(item.label, item.count, count) } : {}) };
+  });
+  return changed ? { ...plan, items } : plan;
+}
+
+/**
  * How many of this activity's answers count toward this item.
  * Only sessions of the same mode count; a domain-focused item only counts
  * answers from that domain (a session without a per-domain breakdown gives

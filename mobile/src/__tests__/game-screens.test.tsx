@@ -105,30 +105,42 @@ describe('Snare Spotter: picking the best answer as the snare', () => {
     expect(optionWith(best).props.disabled).toBe(false);
     tap(optionWith(best));
     expect(root().findAll((n) => n.props.accessibilityLabel === 'Score 0').length).toBeGreaterThan(0);
-    expect(allText()).toContain(`Best answer: ${shownAs} (shown above)`);
-    expect(allText()).not.toContain('Best answer: correct');
+    // Grove 4b (PHASE4B 6.4 item 3): the answer half is never credited once it was revealed: "Not quite", no line.
+    expect(allText()).toContain('Not quite');
+    expect(allText()).toContain(`not ${shownAs}.`);
+    expect(allText()).not.toContain('Best answer picked, 1 point.');
+    expect(allText()).not.toContain('Snare spotted, 1 point.');
+    expect(root().findAll((n) => n.props.testID === 'drill-row-best' && typeof n.props.accessibilityLabel === 'string')[0].props.accessibilityLabel).toContain(`Your answer, ${shownAs}, the best`);
     // We told them which option was best, so the answer counts as assisted.
     expect(selectCert(useProgress.getState(), 'cisa').answers[q.id].lastAssisted).toBe(true);
   });
 
-  it('the answer screen marks your wrong pick ✗, tags the real snare "Snare" (tip tone, no ✗), and the best ✓', () => {
+  it('the answer card: your wrong pick ✗, the real snare as a "Snare" row (outline badge, never clay), the best ✓, and the earned half', () => {
     const q = current();
     const snare = trapLetter(q)!;
     const other = (['A', 'B', 'C', 'D'] as const).find((l) => l !== q.correct && l !== snare && q.options[l])!;
     tap(optionWith(q.options[snare]!)); // step 1: spotted
     tap(optionWith(q.options[other]!)); // step 2: a wrong answer that is NOT the snare
-    expect(optionWith(q.options[other]!).props).toMatchObject({ state: 'wrong', tag: 'Your answer' });
-    expect(optionWith(q.options[snare]!).props).toMatchObject({ state: 'dimmed', tag: 'Snare', tagTone: 'tip' });
-    expect(optionWith(q.options[q.correct]!).props).toMatchObject({ state: 'correct', tag: 'Best answer' });
+    const row = (id: string) => root().findAll((n) => n.props.testID === id && typeof n.props.accessibilityLabel === 'string')[0];
+    expect(row('drill-row-pick').props.accessibilityLabel).toMatch(new RegExp(`^Your answer, [A-D], not the best: ${q.options[other]!.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}`));
+    expect(row('drill-row-snare').props.accessibilityLabel).toContain(q.options[snare]!);
+    expect(row('drill-row-best').props.accessibilityLabel).toContain(`: ${q.options[q.correct]!}`);
+    expect(allText()).toContain('Snare spotted, 1 point.');
+    // One half earned: the heading is the overall result, "Half right" (release prep 2.0.0), never "Not quite".
+    expect(allText()).toContain('Half right');
+    expect(allText()).not.toContain('Not quite');
   });
 
-  it('taking the snare as your answer: one row says "Snare · your answer"', () => {
+  it('taking the snare as your answer: one row says "Your answer · the snare" (no second snare row)', () => {
     const q = current();
     const snare = trapLetter(q)!;
     const other = (['A', 'B', 'C', 'D'] as const).find((l) => l !== q.correct && l !== snare && q.options[l])!;
     tap(optionWith(q.options[other]!)); // step 1: missed the snare
     tap(optionWith(q.options[snare]!)); // step 2: fell for it
-    expect(optionWith(q.options[snare]!).props).toMatchObject({ state: 'wrong', tag: 'Snare · your answer', tagTone: 'tip' });
+    expect(allText()).toContain('✗ Your answer · the snare');
+    expect(root().findAll((n) => n.props.testID === 'drill-row-snare')).toHaveLength(0);
+    // Neither half: "Not quite", no two-half line.
+    expect(allText()).not.toContain('1 point.');
   });
 
   it('a wrong (non-best) snare pick is still closed in step 2', () => {
@@ -248,19 +260,14 @@ describe('Forecast rules panel', () => {
 });
 
 describe('Signpost step 1', () => {
-  it('asks its question as a heading above the four meanings; the footer copy is hidden from screen readers', () => {
+  it('asks its question as a heading (the step square on screen) above the four meanings, said once', () => {
     mount(<Signpost />);
     const prompt = 'Step 1: what does this question ask for?';
-    const heading = root().findAll((n) => typeof n.type === 'string' && n.props.accessibilityRole === 'header' && n.children.includes(prompt));
+    const heading = root().findAll((n) => typeof n.type === 'string' && n.props.accessibilityRole === 'header' && n.props.accessibilityLabel === prompt);
     expect(heading).toHaveLength(1);
-    // The footer copy: inside a container hidden from VoiceOver and TalkBack.
+    // Grove 4b: the step squares carry the prompt; the footer no longer repeats it.
     const copies = root().findAll((n) => typeof n.type === 'string' && n.children.includes(prompt));
-    const hidden = copies.filter((n) => {
-      for (let p = n.parent; p; p = p.parent) if (p.props.importantForAccessibility === 'no-hide-descendants' && p.props.accessibilityElementsHidden) return true;
-      return false;
-    });
-    expect(copies).toHaveLength(2);
-    expect(hidden).toHaveLength(1);
+    expect(copies).toHaveLength(1);
     // The heading comes before the first meaning button.
     const text = allText();
     expect(text.indexOf(prompt)).toBeLessThan(text.indexOf('The step that must come before the others'));
