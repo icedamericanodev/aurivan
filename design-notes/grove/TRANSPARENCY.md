@@ -222,3 +222,11 @@ Measure: Report a problem submissions per 100 testers per week (a modest rise
 is the goal) and report-to-fix time. Guardrails: beta sign-up clicks hold, and
 the exit survey item "I trust the answers and explanations" has a median of 4
 or more out of 5.
+
+## Update, 6 Nov 2026 (Sky)
+"What we don't have yet" became "The honest limits" (AI checking AI can share
+blind spots; a big bank built fast is not proof of quality; no outside human
+panel yet) plus "What we're doing about it" (the founder hand-checks a random
+sample per domain during the beta and the page will report the numbers;
+learner reports come first). Promise to keep: publish the sample-review result
+on this page when it's done.
