@@ -381,7 +381,7 @@ For internal/technical history, see git log and PR descriptions.
 ## [v12.14] — Exam guide and final review week
 
 ### New
-- About the CISA exam: registration and fees, test center or online, exam day, results, and how to become certified, with links to the official sources and the date we last checked them.
+- About the CISA exam: registration and fees, test center or online, exam day, results, and how to become certified, with links to ISACA's sources and the date we last checked them.
 - Final review week: a calm seven-day plan for the last week before your exam, with one-tap tasks, a must-remember sheet for each domain and an exam-day answering routine.
 - With an exam date set, Today shows your final-week plan for the last eight days.
 
@@ -594,12 +594,12 @@ For internal/technical history, see git log and PR descriptions.
 ## [v10.55] — Fairer answer choices
 
 ### Improved
-- Wrong answers in many operations and security questions now sound just as professional as the right one, so you win by judgment, not by spotting the most official-sounding option.
+- Wrong answers in many operations and security questions now sound just as professional as the right one, so you win by judgment, not by spotting the most formal-sounding option.
 
 ## [v10.54] — New topic notes
 
 ### New
-- The Topics notes are rewritten from scratch in plain language and follow every topic in the official CISA exam outline.
+- The Topics notes are rewritten from scratch in plain language and follow every topic in the CISA exam outline.
 
 ### Improved
 - Each topic now tells you how an IS auditor reasons about it and which trap to avoid.
@@ -619,7 +619,7 @@ For internal/technical history, see git log and PR descriptions.
 - New questions on policies and procedures, enterprise architecture, post-implementation review, business impact analysis, operational logs, attack methods and more.
 
 ### Improved
-- Practice now covers every topic in the official CISA exam outline, in proportion to how much it matters on the exam.
+- Practice now covers every topic in the CISA exam outline, in proportion to how much it matters on the exam.
 - Fewer repeats: lessons that were asked many times now make room for topics you had too little practice on.
 
 ## [v10.52] — Sharper questions
@@ -928,7 +928,7 @@ For internal/technical history, see git log and PR descriptions.
 ### Improved
 - First-time users on the Practice tab now land directly on Q1 instead of an explainer card. The locked design decision was always "instant question" — this restores it. Keyboard shortcuts and the start button remain available for users who prefer them.
 
-## [v10.3] — Quality pass: 28 question touch-ups from specialist review
+## [v10.3] — Quality review: 28 question touch-ups from specialist review
 
 ### Fixed
 - A Domain 2 supply-chain incident question (d2_172) had a wrong-answer explanation that critiqued a deadline that was not actually in the option text. The explanation now addresses what the option actually says — that an "updated vendor-vetting checklist" is administrative compensation, not systemic prevention against the next compromised dependency.
