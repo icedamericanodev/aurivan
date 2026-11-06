@@ -100,8 +100,9 @@ answers 200).
 - Cloudflare shows `/privacy.html` at `/privacy`. Use the short addresses in
   the store listings and in the app: `https://<domain>/privacy`, `/terms`,
   `/support`.
-- An address that doesn't exist shows the web app (Cloudflare's default for a
-  site with no `404.html`). Nothing private can be reached that way.
+- An address that doesn't exist gets `404.html` with status 404 (a site with a
+  `404.html` has no single-page fallback on Cloudflare). Nothing private can
+  be reached that way.
 
 ## Owner: connect Cloudflare Pages (about 10 minutes, free)
 

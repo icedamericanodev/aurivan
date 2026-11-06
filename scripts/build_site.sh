@@ -17,6 +17,10 @@
 #       holds no tester data; rows load only after an admin's two-step
 #       sign-in, and the database checks it). The desk is published only at
 #       the top of the site, never inside the preview folder.
+#     - 404.html: the not-found page. With it, Cloudflare answers a missing
+#       address with a real 404 instead of its single-page fallback (which
+#       showed the home page, broken by the strict /data/* and /assets/*
+#       policies). No script, image or font, and root links only.
 #     - assets/ (icons, the self-hosted fonts and og-kaisip.png, the
 #       link-preview card that index.html names in og:image). Only image,
 #       font and stylesheet files: anything else in assets/ stops the build.
@@ -56,8 +60,7 @@ OUT="${SITE_OUT:-_site}"
 #     landing page (beta.html, also at /beta) plus Privacy, Terms, Help and
 #     How questions are made. The
 #     web study app and every data file are not published; any other address
-#     shows the landing page (Cloudflare's single-page fallback serves
-#     index.html, which is the landing page here).
+#     gets the not-found page (404.html, status 404).
 #   app: the full web study app as before (index.html + the free sample).
 #     CI and the smoke tester build this too, so the app stays deployable.
 # To reopen the web app at launch: change "landing" to "app" on the next line.
@@ -71,7 +74,7 @@ case "$SITE_MODE" in
   landing|app) ;;
   *) echo "build_site: SITE_MODE must be landing or app (got: $SITE_MODE)" >&2; exit 1 ;;
 esac
-PAGES=(index.html privacy.html terms.html support.html how-questions-are-made.html beta.html)
+PAGES=(index.html 404.html privacy.html terms.html support.html how-questions-are-made.html beta.html)
 DATA=(data/free/cisa_d1.json data/free/cisa_d2.json data/free/cisa_d3.json data/free/cisa_d4.json data/free/cisa_d5.json data/cisa_notes.json data/mindset/principles.json data/exam/cisa_exam_guide.json data/exam/final_review_week.json)
 SITE_CONFIG=(_headers _redirects)
 # File types allowed inside assets/ (lower case).
@@ -292,7 +295,7 @@ PYCHK
 while IFS= read -r -d '' f; do
   rel="${f#"$OUT"/}"
   case "$rel" in
-    index.html|privacy.html|terms.html|support.html|how-questions-are-made.html|beta.html|_headers|_redirects|favicon.ico) ;;
+    index.html|404.html|privacy.html|terms.html|support.html|how-questions-are-made.html|beta.html|_headers|_redirects|favicon.ico) ;;
     beta-desk.html) [ -n "$DESK" ] || fail "the Beta Desk must not be in the preview folder" ;;
     data/free/cisa_d[1-5].json|data/cisa_notes.json|data/mindset/principles.json) ;;
     data/exam/cisa_exam_guide.json|data/exam/final_review_week.json) ;;

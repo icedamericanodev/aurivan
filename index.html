@@ -12133,7 +12133,7 @@ function flattenForSearch(val) {
   if (typeof val === 'string') return val + ' ';
   if (typeof val === 'number' || typeof val === 'boolean') return String(val) + ' ';
   if (Array.isArray(val)) return val.map(flattenForSearch).join(' ');
-  if (typeof val === 'object') return Object.keys(val).filter(function(k){ return k !== 'legacy_ids'; }).map(function(k){ return k + ' ' + flattenForSearch(val[k]); }).join(' ');
+  if (typeof val === 'object') return Object.keys(val).filter(function(k){ return k !== 'legacy_ids' && k !== 'practice_ids'; }).map(function(k){ return k + ' ' + flattenForSearch(val[k]); }).join(' ');
   return '';
 }
 
@@ -12202,15 +12202,15 @@ function highlightText(s, tokens) {
 // Kept for older callers: renderText(text, query) highlights the query.
 function renderText(s, searchQ) { return highlightText(s, topicSearchTokens(searchQ)); }
 
-// All readable text of a subtopic (illustration markup excluded; its
-// caption and alt text included), used for search and snippets.
+// All readable text of a subtopic (illustration markup and question ids
+// excluded; its caption and alt text included), used for search and snippets.
 function topicSearchText(val) {
   if (val == null) return '';
   if (typeof val === 'string') return val + ' ';
   if (typeof val === 'number' || typeof val === 'boolean') return String(val) + ' ';
   if (Array.isArray(val)) return val.map(topicSearchText).join(' ');
   if (typeof val === 'object') {
-    return Object.keys(val).filter(function(k) { return k !== 'legacy_ids' && k !== 'svg' && k !== 'id'; })
+    return Object.keys(val).filter(function(k) { return k !== 'legacy_ids' && k !== 'practice_ids' && k !== 'svg' && k !== 'id'; })
       .map(function(k) { return topicSearchText(val[k]); }).join(' ');
   }
   return '';
@@ -12511,7 +12511,7 @@ function renderItemBodyV2(raw, domainId, t) {
 
 // v1 body: the same Grove sections, fed from the older field names.
 function renderItemBodyV1(raw, domainId, t) {
-  var done = { id:1, name:1, topic_id:1, topic_name:1, subtopics:1, legacy_ids:1 };
+  var done = { id:1, name:1, topic_id:1, topic_name:1, subtopics:1, legacy_ids:1, practice_ids:1 };
   var h = '';
   var use = function(k) { done[k] = 1; return raw[k]; };
   var summary = gtStr(use('summary'));
@@ -18320,11 +18320,22 @@ function setPracticeView(v) {
   if (v === 'hub') { try { maybeShowNextAsk(); } catch (e) {} }
 }
 
+// The set's filter (a level or sub-topic) has no question left, so the set
+// cannot go on: it is never offered as "Continue".
+function practiceFilterSpent() {
+  var left = null;
+  try { left = practiceFilterLeft(); } catch (e) { left = null; }
+  return left === 0;
+}
+// A set under way that still has questions to give.
+function practiceMidSet() {
+  return sessionGoal > 0 && sessionAnswered > 0 && sessionAnswered < sessionGoal && !practiceFilterSpent();
+}
 // Is something left open that the hub's Continue would pick up?
 function practiceLeftOpen() {
   var open = false;
   try { open = shouldResumeCurrent(); } catch (e) {}
-  return open || (sessionGoal > 0 && sessionAnswered > 0 && sessionAnswered < sessionGoal);
+  return open || practiceMidSet();
 }
 // The practice clock pauses (not stops) while a set or question is left
 // open, so Continue carries on counting from where it was.
@@ -18560,7 +18571,7 @@ function practicePrimary() {
   var timedWords = S.timerEnabled ? 'timed' : '';
   var open = null;
   try { open = shouldResumeCurrent() ? S.current : null; } catch (e) {}
-  var midSet = sessionGoal > 0 && sessionAnswered > 0 && sessionAnswered < sessionGoal;
+  var midSet = practiceMidSet();
   if (open || midSet) {
     var oq = open && DI[String(open.domain)] ? DI[String(open.domain)].short : scope;
     // Meta lines stay at six words or fewer (DESIGN_SYSTEM §6, Hero panel).
@@ -18572,14 +18583,13 @@ function practicePrimary() {
   }
   // A filtered set with fewer questions left says its real length.
   var setLen = practiceLen;
-  if (setLen > 0) {
-    var left = null;
-    try { left = practiceFilterLeft(); } catch (e) { left = null; }
-    if (left !== null && left > 0 && left < setLen) setLen = left;
-  }
+  var left = null;
+  try { left = practiceFilterLeft(); } catch (e) { left = null; }
+  if (setLen > 0 && left !== null && left > 0 && left < setLen) setLen = left;
   var lenPart = practiceLen === -1 ? 'Open-ended' : setLen + (setLen === 1 ? ' question' : ' questions');
   return {
-    resume: false, cap: 'Picked for you', label: 'Start',
+    // A spent filter is cleared when the set starts (startSession).
+    resume: false, cap: 'Picked for you', label: 'Start', filterDone: left === 0,
     title: scope === 'All domains' ? 'A mixed set' : escapeHtml(scope),
     meta: lenPart + ' &middot; ' + (practiceLen === -1 ? 'stop any time' : 'about ' + Math.max(1, Math.round(setLen * MINUTES_PER_PRACTICE_Q)) + ' min') + (timedWords ? ' &middot; ' + timedWords : '')
   };
@@ -18627,7 +18637,7 @@ function renderPracticeHub() {
   var d = S.selectedDomain && S.selectedDomain !== 'all' && DI[S.selectedDomain] ? String(S.selectedDomain) : null;
   var dx = d && rd ? rd.domains.filter(function (x) { return x.id === d; })[0] : null;
   var meta = p.meta;
-  if (!p.resume && S.diff && PH_DIFF_WORD[S.diff] && !subtopicDiffMissing()) meta += ' &middot; ' + PH_DIFF_WORD[S.diff];
+  if (!p.resume && !p.filterDone && S.diff && PH_DIFF_WORD[S.diff] && !subtopicDiffMissing()) meta += ' &middot; ' + PH_DIFF_WORD[S.diff];
   if (!p.resume && d && rd && rd.answered > 0 && rd.focusId === d) meta += ' &middot; where you&rsquo;ll gain most';
   else if (!p.resume && d && next && next.plan && next.id === d) meta += ' &middot; today&rsquo;s set';
   var kick = p.resume ? 'Where you left off' : rd && rd.answered === 0 ? 'A place to start' : 'Picked for you';
@@ -20955,6 +20965,9 @@ function nextQ() {
     stopSessionTimer();
     // Check if a filter is active — show filter-complete screen, not domain-complete
     if (activeSubtopic || S.diff !== "any") {
+      // Nothing left to draw, so the set ends here: Today and the hub stop
+      // offering to continue it.
+      if (sessionGoal !== null) endSession();
       showFilterComplete();
     } else if (S.selectedDomain === "all") {
       document.getElementById('qArea').innerHTML = '<div class="empty"><div class="empty-icon">Done</div><div class="empty-title">Free questions complete</div><div class="empty-sub">You have answered every free question on the website. Your review keeps going here, and the full course is in the KaiSip Android beta.</div><div style="margin-top:20px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap"><button class="act-btn primary" onclick="confirmResetAllDomains()" style="background:var(--btn);border-color:var(--btn);color:var(--on-btn)">Reset all and restart</button><button class="act-btn secondary" onclick="showSessionSummary()">View summary</button><a class="act-btn secondary" href="' + escapeHtml(FULL_COURSE_URL) + '">Get the full course</a></div></div>';
@@ -21447,6 +21460,13 @@ function startSession(n, domain, label) {
     saveState();
     renderDomainGrid();
   } else S.selectedDomain = 'all';
+  // A level or sub-topic with nothing left would open "Filter complete" at
+  // once (a saved level survives a reload): the set opens every question.
+  if (!drillRun && practiceFilterSpent()) {
+    if (S.diff && S.diff !== 'any') { S.diff = 'any'; try { syncDiffChips(); } catch (e) {} saveState(); }
+    if (activeSubtopic) { activeSubtopic = null; try { renderSubtopicFilter(); } catch (e) {} }
+    showToast('That filter is done. Showing every question.', 'info', 2600);
+  }
   hideSessionStart();
   // Trigger first question
   try { nextQ(); } catch (e) {}
