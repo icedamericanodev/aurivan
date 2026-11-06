@@ -229,7 +229,7 @@ CISA® and ISACA® are registered trademarks of ISACA. KaiSip is not affiliated 
 Made from `design-notes/brand-kaisip/store/` (re-render with `node design-notes/brand-kaisip/store/render.mjs`):
 - **App icon:** `play-icon-512.png`, 512×512, 32-bit PNG with alpha, under 1 MB.
 - **Feature graphic:** `feature-graphic-1024x500.png`, 1024×500, 24-bit PNG with no alpha. The lockup and "Know why the best answer wins." on the Grove forest green (5 Nov 2026; earlier "Grow the judgment the exam rewards." and "Think like an IS auditor."). No CISA or ISACA text.
-- **Phone screenshots:** the six in `screenshots/` (section 3), 1080×1920, 24-bit PNG. **Stale:** taken before mobile 1.50 to 1.53 (4 tabs, Drills inside Practice, the new answer plate). Re-shoot before the closed test.
+- **Phone screenshots:** the eight in section 3 (captioned, 1080×1920, 24-bit PNG), made 6 Nov 2026 from phone 2.0.0. They are kept outside the repo until the owner approves them; the six in `screenshots/` are the older, uncaptioned set. Re-shoot if the app's look changes before the closed test.
 
 ### Category
 
@@ -276,18 +276,29 @@ From `docs/mobile/PLAY_LAUNCH.md` section (d). These assume the owner's decision
 
 ## 3. Screenshot captions (2–5 words each)
 
-The Play set, in listing order. Files: `design-notes/brand-kaisip/store/screenshots/` (1080×1920, 24-bit PNG, light theme, demo data). Re-shoot with `SHOTS=store npm run shots -- <out_dir>` in `mobile/`, then copy the six files there.
+**Revised 6 Nov 2026 (phone 2.0.0).** The product manager and growth-marketer reviewed the first six and both said adjust: lead with what sets KaiSip apart (the answer teaching, the daily plan, the Drills), add the Mistake journal, and move the lesson and the plant to the back. The owner then added the timed mock exam. The question screen was dropped (the answer screen already shows the question; the two reviewers disagreed on it).
 
-| # | File | Screen | Caption | Words |
-|---|---|---|---|---|
-| 1 | `store-01-today.png` | Today (daily plan) | Know what to study next | 5 |
-| 2 | `store-02-question.png` | A practice question | Choose the best answer | 4 |
-| 3 | `store-03-answer.png` | The answer (since 1.43, Eliminate two and Final two sit behind Read more: open it before the shot) | Learn the why behind answers | 5 |
-| 4 | `store-04-lesson.png` | A lesson | Short lessons, big ideas | 4 |
-| 5 | `store-05-readiness.png` | Readiness report after mocks | An honest readiness estimate | 4 |
-| 6 | `store-06-plant.png` | Your plant (botanical; a form change if the owner wants The Turning shown) | Watch your progress grow | 4 |
+The Play set, in listing order, 8 screenshots (Play's maximum). Each is 1080×1920, 24-bit PNG with no alpha, light theme, demo data, the caption above a phone shot on the Grove forest green. The phone is shot at 390×844: Learn and other screens change layout under about 375 wide, so a 360-wide shot looks different from a real phone. The set is kept outside the repo until the owner approves it. The built-in `SHOTS=store` script still makes the older six at 360×640, without captions or the new screens.
 
-Screenshots must not show the bank size. The store shoot checks each screen's visible text for "<number> questions" and stops if it finds one. Today shows the learner's own numbers ("16 of 53 due", "200 answered"), which say nothing about the bank's size. Keep "CISA" out of the captions.
+| # | Screen | Caption | Words |
+|---|---|---|---|
+| 1 | The answer after a wrong pick, with Read more opened: Key idea, Eliminate two, Final two, Exam cue, Why B | Learn the why behind answers | 5 |
+| 2 | Today (daily plan; scroll a little so the Start button clears the tab bar) | Know what to study next | 5 |
+| 3 | Drills: Snare Spotter | Spot the trap answers | 4 |
+| 4 | A full mock exam running: the 4 h countdown and "1 of 150" | Timed 150-question mock exam | 4 |
+| 5 | Readiness report after mocks | An honest readiness estimate | 4 |
+| 6 | Mistake journal | Turn mistakes into progress | 4 |
+| 7 | A lesson | Short lessons, big ideas | 4 |
+| 8 | Your plant (botanical) | Watch your progress grow | 4 |
+
+Rules for every shot:
+- Never show the bank size. Today and the Mistake journal show the learner's own numbers ("16 ready to revisit", "54 open"), which say nothing about the bank. Slot 4 shows "1 of 150": that is the length of the mock exam, not the bank size (owner decision, 6 Nov 2026).
+- Read more only exists after a wrong answer (since 1.43; after a correct answer the tips are already open), so slot 1 uses a wrong pick. A correct-answer version is the second A/B test.
+- Starting a mock asks to replace an unfinished practice set, so clear the demo's set before shooting slot 4. The mock draws its questions at random: retry until all four options sit above the Previous, Flag and Questions buttons.
+- Words: no "pass", "guarantee" or "official"; no "real exam" or "actual exam" claim in a caption; no ISACA logo; keep "CISA" out of the captions. The in-app words "CISA exam 14 Dec" on Today are fine.
+- Before each upload scan each screen's visible text for names, emails and the banned words.
+
+First A/B test (growth-marketer): Today first against the answer screen first, as Play listing experiments.
 
 ---
 
