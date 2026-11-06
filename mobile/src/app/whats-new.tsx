@@ -51,7 +51,11 @@ function Release({ entry, latest }: { entry: WhatsNewEntry; latest: boolean }) {
   ];
   return (
     <View>
-      <Section title={`Version ${shortVersion(entry.version)}`} meta={latest ? `Latest · ${dayLabel(entry.date)}` : dayLabel(entry.date)} />
+      {/* A named release (the launch) leads with its name; the version moves into the meta line. */}
+      <Section
+        title={entry.title ?? `Version ${shortVersion(entry.version)}`}
+        meta={[entry.title ? `Version ${shortVersion(entry.version)}` : null, latest ? 'Latest' : null, dayLabel(entry.date)].filter(Boolean).join(' · ')}
+      />
       {groups.map(([label, items]) =>
         items?.length ? (
           <View key={label} style={{ marginTop: space.md }}>

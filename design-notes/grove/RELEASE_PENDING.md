@@ -54,6 +54,8 @@ Batched for the end of the uplift (web v13, mobile 2.0.0; DECISIONS 8). Write th
 - The badges space on You and Your progress is clearer about where badges are earned.
 
 ## Follow-ups to do at the release
+- Phone 2.0.0 (the KaiSip launch, 6 Nov 2026): `mobile/LIVE_VERSION` stays 1.48.0 while the web study app is closed. When the web app reopens, set `mobile/LIVE_VERSION` to 2.0.0 (and rebuild the web bundle stamp with `npm run web-plant` if verify_repo asks).
+- Phone dash sweep, left for the joint web and phone sweep: the home-screen widget's readiness number ("68–78" beside a raised %, `engine/widgets.ts`) needs a check on a real widget before it changes to words; `rangeLabel` in `engine/readinessRange.ts` is bundled for the website and unused on the phone. The phone share card now says "68 to 78%".
 - `mobile/src/engine/plantLooks.ts` `howToOpen` says "in the Herbarium": change to "in Badges" and rebuild `assets/kaisip-plant.js` in the same commit.
 - Old What's New entries (v12.44, v12.49) mention "field guide": release history, leave unless Sky says otherwise.
 - Q1, Q2, Q5 on the phone (DECISIONS 13): the low-end sentence under its scale bar, "too few yet" instead of "seed" in its chart, and the ScaleBar range label "67 to 79".

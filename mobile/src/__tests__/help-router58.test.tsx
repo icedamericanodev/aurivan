@@ -27,7 +27,7 @@ jest.mock('../components/icons', () => {
   });
 });
 jest.mock('../components/shareCard', () => ({ ShareProgressSheet: () => null }));
-jest.mock('expo-constants', () => ({ __esModule: true, default: { expoConfig: { version: '1.54.0' } } }));
+jest.mock('expo-constants', () => ({ __esModule: true, default: { expoConfig: { version: '2.0.0' } } }));
 jest.mock('expo-file-system', () => ({ File: class {}, Directory: class { list() { return []; } }, Paths: { cache: { uri: 'file:///cache' } } }));
 jest.mock('expo-sharing', () => ({ isAvailableAsync: async () => true, shareAsync: async () => {} }));
 

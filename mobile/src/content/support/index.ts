@@ -34,6 +34,12 @@ export interface WhatsNewEntry {
   version: string;
   /** The day it shipped, YYYY-MM-DD. */
   date: string;
+  /**
+   * A name for a big release, shown as its heading instead of "Version 2.0" (the version moves to the
+   * meta line). Only the launch has one: store version 2.0.0 is the KaiSip launch (the number is above
+   * the testers' 1.5x saves, because backups refuse data from a newer version).
+   */
+  title?: string;
   new?: string[];
   improved?: string[];
   fixed?: string[];
@@ -52,6 +58,20 @@ export function whatsNewFor(updatesOn: boolean, list: readonly WhatsNewEntry[] =
 
 /** Newest first. The first entry must match app.json (a test checks it). */
 export const WHATS_NEW: readonly WhatsNewEntry[] = [
+  {
+    version: '2.0.0',
+    date: '2026-11-06',
+    title: 'The KaiSip launch',
+    new: [
+      'A new look across Today, Practice, Learn and You: calmer pages that are easier to read and quicker to use.',
+      'Your plant grows as you study and has its own page, and badges mark each step of the way.',
+      'Drills each train one exam skill, like spotting the tempting wrong answer, reading what a question asks for or naming the idea first.',
+      'A glossary in Learn: search any term or acronym, filter by area and open the note that teaches it.',
+      'A new page, How questions are made, explains how questions are drafted with AI tools and checked, reminds you that AI can make mistakes and shows how to report one.',
+    ],
+    improved: ['Your study plan is clearer: Today shows what to do next and tells you when the day’s plan is done.'],
+    fixed: ['Many fixes for a smoother study session.'],
+  },
   {
     version: '1.54.4',
     date: '2026-11-05',
@@ -343,7 +363,7 @@ export const WHATS_NEW: readonly WhatsNewEntry[] = [
   {
     version: '1.24.2',
     date: '2026-10-18',
-    improved: ['Every practice question was re-checked by independent reviewers: clearer wording, more realistic wrong answers and up-to-date references.'],
+    improved: ['Every practice question was re-checked by our AI review checks: clearer wording, more realistic wrong answers and up-to-date references.'],
     fixed: ['Explanations no longer turn words like “A SOC 2 report” into an answer letter after the options are shuffled.'],
   },
   {
