@@ -208,6 +208,8 @@ and the app must say the same thing.
    problem". Recommended: "made by a CISA-certified IT auditor" if no one
    else helps, and "Report a problem" in the website help.
 5. Confirm the founder's CISA certification is current before publishing.
+   CONFIRMED by Sky, 6 Nov 2026: certified February 2026. Keep the yearly
+   CPE hours and maintenance fee current so the claim stays true.
 
 ## 6. Reviews before merge
 
