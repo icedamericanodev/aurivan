@@ -4,6 +4,22 @@ All notable user-facing changes to this app. The in-app **What's New** modal mir
 
 For internal/technical history, see git log and PR descriptions.
 
+## [v13] Welcome to the new KaiSip
+
+### New
+- KaiSip has a new look across the whole site: calmer pages, clearer text and your plant at the heart of Today and You.
+- A new page, How questions are made, explains how our questions are written with AI help and checked, reminds you that AI can make mistakes and shows how to report one.
+- Learn, Settings and your plant each have their own page, and Learn can search every study note.
+
+### Improved
+- Today, Practice and You now point you to the same area to study next.
+- After you answer, every choice and every tip stays in view, so each tip is easy to follow.
+- Backups say when they were saved, and a restore shows what the file holds before it replaces anything.
+- Text grows with your browser text size on every page, and keyboard, screen reader and high contrast use are clearer throughout.
+
+### Fixed
+- Many fixes across the site, from chart labels that ran together on phones to messages that could cover a button.
+
 ## [v12.50.1] A clearer promise on the About page
 
 ### Improved

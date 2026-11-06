@@ -2,6 +2,8 @@
 
 Batched for the end of the uplift (web v13, mobile 2.0.0; DECISIONS 8). Write the final What's New in the CLAUDE.md style.
 
+Status (6 Nov 2026): the web What's New for v13 ("Welcome to the new KaiSip") is written from the lines below and shipped on feature/grove-ui; do not add them to the web again. The phone (2.0.0) entry and the follow-ups below are still open.
+
 ## What's New lines (draft)
 - Today has a calmer, clearer look: your plant grows full size in the readiness ring, and today's plan shows when you've finished.
 - Settings now has its own page, and You opens with your week, your next step and your plant.
