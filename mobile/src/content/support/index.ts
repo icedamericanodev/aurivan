@@ -37,6 +37,17 @@ export interface WhatsNewEntry {
   new?: string[];
   improved?: string[];
   fixed?: string[];
+  /**
+   * Only about over-the-air updates (Check for updates, the update stamp).
+   * Hidden where updates are off (the Google Play build), so What's new never
+   * points to a row that build does not have. Never set on the newest entry.
+   */
+  needsUpdates?: true;
+}
+
+/** The entries to show: all of them, minus the update-only ones when updates are off. */
+export function whatsNewFor(updatesOn: boolean, list: readonly WhatsNewEntry[] = WHATS_NEW): readonly WhatsNewEntry[] {
+  return updatesOn ? list : list.filter((e) => !e.needsUpdates);
 }
 
 /** Newest first. The first entry must match app.json (a test checks it). */
@@ -400,6 +411,7 @@ export const WHATS_NEW: readonly WhatsNewEntry[] = [
   {
     version: '1.19.0',
     date: '2026-10-13',
+    needsUpdates: true,
     new: ['Settings can now check for the latest update and restart to apply it, under Help and about.'],
     improved: ['Settings also shows which update your app is running, which helps if you contact support.'],
   },

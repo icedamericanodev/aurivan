@@ -8,6 +8,8 @@
  * Each row shows only the learner's own progress ("42 answered · 7 missed").
  * The summary text comes from engine/bank.ts, which is tested for this.
  */
+import { HoldContext } from '../../lib/holdWhileHidden';
+import { useScreenFocus } from '../../components/motion';
 import { PageTitle } from '../../components/groveHub';
 import { router } from 'expo-router';
 import { useMemo } from 'react';
@@ -21,7 +23,21 @@ import { useActiveCert } from '../../lib/useActiveCert';
 import { space } from '../../theme/tokens';
 import { useTheme } from '../../theme/useTheme';
 
+/**
+ * Release bug hunt round 4: this screen stays mounted under a pushed session (or the Look screen).
+ * While it is covered its reads are held (lib/holdWhileHidden.ts), so an answer no longer redraws
+ * it; back in view, it reads the live progress once. The same pattern as the badge case.
+ */
 export default function BankDomains() {
+  const focused = useScreenFocus();
+  return (
+    <HoldContext.Provider value={!focused}>
+      <BankDomainsScreen />
+    </HoldContext.Provider>
+  );
+}
+
+function BankDomainsScreen() {
   const { c } = useTheme();
   const { cert, progress } = useActiveCert();
 

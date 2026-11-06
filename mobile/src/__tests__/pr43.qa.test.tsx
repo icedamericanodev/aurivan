@@ -261,8 +261,9 @@ describe('J1 a new learner and the plant', () => {
 
     mount(<Today />);
     expect(byTestID('today-plant')).toHaveLength(1);
-    // The plant's own words, then the stage in words (Grove: the hero's stage line is the plant's button).
-    expect(byTestID('today-plant')[0].props.accessibilityLabel).toBe('Summit Lee, your pine. Starburst Pine form. Growth: Seed. Growth 1 of 6.');
+    // The plant's own words only (round 4: the growth was read twice before).
+    expect(byTestID('today-plant')[0].props.accessibilityLabel).toBe('Summit Lee, your pine. Starburst Pine form. Growth: Seed.');
+    expect(String(byTestID('today-plant')[0].props.accessibilityLabel).match(/Growth/g)).toHaveLength(1);
     expect(byTestID('plant-prompt')).toHaveLength(0);
     expect(byTestID('plant-grew')).toHaveLength(0); // planting is not a "grew" moment
     unmount();

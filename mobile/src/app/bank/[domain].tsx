@@ -15,6 +15,8 @@
  *
  * PRODUCT RULE: no totals anywhere (see engine/bank.ts).
  */
+import { HoldContext } from '../../lib/holdWhileHidden';
+import { useScreenFocus } from '../../components/motion';
 import { router, useLocalSearchParams } from 'expo-router';
 import { useCallback, useMemo, useState } from 'react';
 import { FlatList, View, type ListRenderItem } from 'react-native';
@@ -56,7 +58,21 @@ const EMPTY_ART: Record<BankFilter, EmptyArtKind> = { all: 'seedling', new: 'fie
 const openSession = () => router.push('/session');
 const goBack = () => (router.canGoBack() ? router.back() : router.replace('/bank'));
 
+/**
+ * Release bug hunt round 4: this screen stays mounted under a pushed session (or the Look screen).
+ * While it is covered its reads are held (lib/holdWhileHidden.ts), so an answer no longer redraws
+ * it; back in view, it reads the live progress once. The same pattern as the badge case.
+ */
 export default function BankDomain() {
+  const focused = useScreenFocus();
+  return (
+    <HoldContext.Provider value={!focused}>
+      <BankDomainScreen />
+    </HoldContext.Provider>
+  );
+}
+
+function BankDomainScreen() {
   const { c } = useTheme();
   const { domain: domainId } = useLocalSearchParams<{ domain: string }>();
   const { cert, progress } = useActiveCert();

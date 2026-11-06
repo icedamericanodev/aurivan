@@ -117,7 +117,7 @@ import { badgeNextLine } from '../lib/badges';
 import { momentFor } from '../lib/milestones';
 import { startFromIds } from '../lib/sessions';
 import { openTab, runPlanItem } from '../lib/actions';
-import { currentIndex, planComplete } from '../engine/dayPlan';
+import { currentIndex, planComplete, planLeft as sizedToLeft } from '../engine/dayPlan';
 import { dayKey } from '../engine/streak';
 import { dueIds } from '../engine/srs';
 import { selectCert, useProgress } from '../store/progress';
@@ -434,7 +434,9 @@ export default function Results() {
   // question) hands back to today's plan, if it has time left: "Today's plan · about N min left",
   // Continue or Done for now. Read once (not a live value).
   const oneQuestion = active.title === 'Quick question' || active.title === 'Recall card';
-  const todayPlan = oneQuestion && active.mode !== 'mock' && !guidedScope ? useProgress.getState().days[active.certId] : undefined;
+  const storedPlan = oneQuestion && active.mode !== 'mock' && !guidedScope ? useProgress.getState().days[active.certId] : undefined;
+  // Sized to what is left (round 4: answers banked today count toward their step).
+  const todayPlan = storedPlan ? sizedToLeft(storedPlan) : undefined;
   // Grove Phase 4 (7.11 carry item): the questions due now, read once like the plan, so a review step with
   // nothing due adds no minutes. Today passes the same count, so both screens give the same total.
   const dueNow = todayPlan ? dueIds(selectCert(useProgress.getState(), active.certId).review, openedAt, questionExists(active.certId)).length : 0;

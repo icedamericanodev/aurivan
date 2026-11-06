@@ -23,7 +23,7 @@ import { router, type Href } from 'expo-router';
 import { findQuestion } from '../content/loader';
 import { findNote, noteDomain } from '../content/notes';
 import { findPrinciple } from '../content/principles';
-import { currentIndex, planComplete, shortSetItem } from '../engine/dayPlan';
+import { currentIndex, planComplete, planLeft, shortSetItem } from '../engine/dayPlan';
 import { GOAL_ROUTES, type WidgetTap } from '../engine/widgets';
 import { dayKey } from '../engine/streak';
 import { useProgress } from '../store/progress';
@@ -78,7 +78,9 @@ export function openFromWidget(tap: WidgetTap): boolean {
     case 'start':
     case 'short': {
       ensureTodayPlan(certId);
-      const plan = useProgress.getState().days[certId];
+      const stored = useProgress.getState().days[certId];
+      // Sized to what is left (round 4): a step's banked answers lower what Continue starts.
+      const plan = stored ? planLeft(stored) : stored;
       home();
       if (!plan || plan.items.length === 0 || planComplete(plan)) return false;
       const left = daysUntil(examDateOf(settings.examDates, certId));
@@ -90,7 +92,8 @@ export function openFromWidget(tap: WidgetTap): boolean {
     case 'review': {
       // The widget shows today's plan's review count: run that item (it asks exactly its count).
       ensureTodayPlan(certId);
-      const plan = useProgress.getState().days[certId];
+      const stored = useProgress.getState().days[certId];
+      const plan = stored ? planLeft(stored) : stored;
       const ri = plan ? plan.items.findIndex((it, i) => it.kind === 'review' && !plan.done[i]) : -1;
       home();
       if (plan && ri >= 0) runPlanItem(plan.items[ri], certId);

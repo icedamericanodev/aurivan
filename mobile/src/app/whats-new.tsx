@@ -27,9 +27,10 @@ import { CLOUD } from '../cloud/flag';
 import { BoardCreditLine } from '../components/board';
 import { Bullets } from '../components/notes';
 import { Button, PushedHeader, Screen, Section, T } from '../components/ui';
-import { FIXES, shortVersion, WHATS_NEW, WHATS_NEW_FOOTER, type WhatsNewEntry } from '../content/support';
+import { FIXES, shortVersion, WHATS_NEW_FOOTER, whatsNewFor, type WhatsNewEntry } from '../content/support';
 import { examDateLabel as dayLabel } from '../engine/examDay';
 import { useReports } from '../lib/useReports';
+import { updatesAvailable } from '../lib/updates';
 import { useProgress } from '../store/progress';
 import { space } from '../theme/tokens';
 import { useTheme } from '../theme/useTheme';
@@ -73,7 +74,8 @@ export default function WhatsNew() {
     if (due.length) markCreditSeen(due.map((r) => r.ref));
   }, [due, markCreditSeen]);
   const fixes = [...FIXES].sort((a, b) => (a.date < b.date ? 1 : -1)).slice(0, FIXES_SHOWN);
-  const [latest, ...earlier] = WHATS_NEW;
+  // Store builds have updates off: entries only about updates are left out (round 4).
+  const [latest, ...earlier] = whatsNewFor(updatesAvailable());
 
   return (
     <Screen edges={['top', 'bottom']}>

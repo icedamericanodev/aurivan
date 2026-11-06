@@ -138,7 +138,7 @@ import { Celebrate, useCelebration, useGrowth, useScreenFocus } from '../../comp
 import { ArrowRight, ICON_STROKE, Inbox, Play, Settings, Sprout } from '../../components/icons';
 import { PlantButton, PlantNote } from '../../components/plant/PlantUI';
 import { Button, Enter, groveTile, HeroPanel, ICON_SIZE, InviteRow, ListRow, Row, Screen, Section, T } from '../../components/ui';
-import { countedDone, isOptional, itemMinutes, MINUTES_PER_QUESTION, planComplete, SHORT_SET_SIZE, shortSetItem } from '../../engine/dayPlan';
+import { countedDone, isOptional, itemMinutes, MINUTES_PER_QUESTION, planComplete, planLeft, SHORT_SET_SIZE, shortSetItem } from '../../engine/dayPlan';
 import { shouldAskFit } from '../../engine/fit';
 import { firstRangePanelDue, NAME_ASK_AWAY_DAYS, nameAskDue, nameNudgeDue, secondAskDue, studyDaysAway } from '../../engine/firstRun';
 import { STAGE_ORDER } from '../../engine/journey';
@@ -261,7 +261,9 @@ export default function Today() {
   useEffect(() => {
     if (creditDue.length) markCreditSeen(creditDue.map((r) => r.ref));
   }, [creditDue, markCreditSeen]);
-  const plan = j.dayPlan;
+  // Each open step sized to what is left (round 4): answers already banked today (the short set)
+  // lower its count, its minutes, the day's total and what Continue starts. The saved plan is untouched.
+  const plan = useMemo(() => planLeft(j.dayPlan), [j.dayPlan]);
   const allDone = planComplete(plan);
   // The step you are on: a "Questions to revisit" step with nothing due is passed over, so Start opens the next
   // real step (the website shows no review step when none is due). Its saved state is not touched.
@@ -824,8 +826,9 @@ export default function Today() {
                   // With a plant, this is the plant's button (it keeps the plant's old test id).
                   testID="today-plant"
                   accessibilityRole="button"
-                  // The plant's own words (its name, form, growth and mood), then the stage in words.
-                  accessibilityLabel={`${plantView.label} Growth ${growth} of ${HERO_STAGES}.`}
+                  // The plant's own words (its name, form, growth and mood). They already say
+                  // the growth, so it is not added again (TalkBack read it twice before).
+                  accessibilityLabel={plantView.label}
                   accessibilityHint="Opens your plant"
                   onPress={() => router.push('/plant')}
                   style={{ flexDirection: 'row', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'space-between', columnGap: space.md, minHeight: 48, marginVertical: -space.sm }}
@@ -902,7 +905,8 @@ export default function Today() {
               <PlanSteps steps={steps} />
               <Button
                 shape="plate"
-                label={plan.done.some(Boolean) || firstBegun ? 'Continue' : 'Start'}
+                // Answers already banked on a step (the short set) mean the day has begun: Continue.
+                label={plan.done.some(Boolean) || firstBegun || (plan.credit ?? []).some((n) => n > 0) ? 'Continue' : 'Start'}
                 onPress={() => runPlanItem(startItem, j.cert.id)}
                 icon={startIcon(startItem?.kind)}
                 // Play only for a lesson (leading); everything else goes forward with an arrow after the label.

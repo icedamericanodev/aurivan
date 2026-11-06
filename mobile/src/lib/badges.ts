@@ -172,3 +172,11 @@ export function shownAgainLine(n: number): string {
   if (n <= 0) return 'Badges are on again.';
   return `Badges are on again. ${n === 1 ? '1 badge' : `${n} badges`} arrived while they were hidden: see You → Badges.`;
 }
+
+/**
+ * The same line for TalkBack and VoiceOver: "→" is read as "right arrow", so
+ * the spoken form says the way there in words. The visible line is unchanged.
+ */
+export function shownAgainSpoken(line: string): string {
+  return line.replace('see You → Badges', 'see them on You, under Badges');
+}

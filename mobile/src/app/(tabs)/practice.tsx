@@ -461,7 +461,8 @@ export const MindsetStrip = memo(function MindsetStrip({ tips }: { tips: readonl
   return (
     <HubCard testID="mindset-strip" style={{ marginTop: space.md, paddingBottom: space.md, flexDirection: 'row', gap: space.md, alignItems: 'flex-start' }}>
       <Compass size={ICON_SIZE.row} color={c.accentText} strokeWidth={ICON_STROKE} />
-      <T v="small" color={c.ink2} style={{ flex: 1 }} accessibilityLabel={`Mindset. ${tip}`}>
+      {/* Spoken: a ">" between words (an order of preference) is said as ", then", not "greater than". */}
+      <T v="small" color={c.ink2} style={{ flex: 1 }} accessibilityLabel={`Mindset. ${tip.replace(/\s*>\s*/g, ', then ')}`}>
         <T v="label">Mindset. </T>
         {tip}
       </T>

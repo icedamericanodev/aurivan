@@ -29,6 +29,7 @@
  * Honest numbers: no pass, fail or guarantee wording anywhere; practice
  * scores are not scaled exam scores, and the screen says so.
  */
+import { HoldContext } from '../lib/holdWhileHidden';
 import { router, useLocalSearchParams } from 'expo-router';
 import { scaledScoreNote } from '../content/scoreNote';
 import { lessonsFor } from '../content/lessons';
@@ -39,7 +40,7 @@ import { ScrollView, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { ReadinessFigure } from '../components/journey';
 import { ICON_STROKE, ListChecks } from '../components/icons';
-import { Collapse } from '../components/motion';
+import { Collapse, useScreenFocus } from '../components/motion';
 import { DisclosureRow } from '../components/pathChooser';
 import { DomainReportRow, type DomainLink, FRAMING_LINE, HOW_LINE, lowMarks, mockSubtitle, PRACTICE_SCORES_NOTE, ScoreChart, TrendLegend, trendMarks, useChartWidth } from '../components/readinessReport';
 import { PlanLeaf } from '../components/glyphs';
@@ -85,7 +86,21 @@ import { useTheme } from '../theme/useTheme';
 /** Your mocks shows the newest this many, then "Show all N mocks" (UX review P8). */
 export const MOCKS_SHOWN = 5;
 
+/**
+ * Release bug hunt round 4: this screen stays mounted under a pushed session (or the Look screen).
+ * While it is covered its reads are held (lib/holdWhileHidden.ts), so an answer no longer redraws
+ * it; back in view, it reads the live progress once. The same pattern as the badge case.
+ */
 export default function ReadinessReport() {
+  const focused = useScreenFocus();
+  return (
+    <HoldContext.Provider value={!focused}>
+      <ReadinessReportScreen />
+    </HoldContext.Provider>
+  );
+}
+
+function ReadinessReportScreen() {
   const { c } = useTheme();
   const params = useLocalSearchParams<{ mock?: string | string[] }>();
   // A repeated key arrives as an array: only a single id can open a mock (code review M5a).

@@ -91,7 +91,7 @@ import { hasNotes } from '../content/notes';
 import { examDateLabel } from '../engine/examDay';
 import { changeExamDate, changeFit } from '../lib/activity';
 import { moveFocus, sayLater } from '../lib/a11y';
-import { hideBadges, showBadgesAgain, shownAgainLine } from '../lib/badges';
+import { hideBadges, showBadgesAgain, shownAgainLine, shownAgainSpoken } from '../lib/badges';
 import { clearJustRead } from '../lib/noteNews';
 import { config, HOW_MADE_URL } from '../lib/config';
 import { DAY_CHIPS, localHour, localTime, MINUTE_STEP, reminderDays, reminderSummary, stepTime, toggleDay, type ReminderPrefs } from '../engine/reminders';
@@ -592,7 +592,8 @@ export default function Settings() {
           if (on) {
             const line = shownAgainLine(showBadgesAgain());
             setBadgesLine(line);
-            sayLater(line);
+            // Spoken in words: the visible "→" would be read as "right arrow".
+            sayLater(shownAgainSpoken(line));
           } else {
             setBadgesLine(null);
             hideBadges();
@@ -600,7 +601,7 @@ export default function Settings() {
         }}
       />
       {badgesLine && (
-        <T v="meta" color={c.accentText} style={{ marginTop: space.xs, marginBottom: space.sm }}>
+        <T v="meta" color={c.accentText} accessibilityLabel={shownAgainSpoken(badgesLine)} style={{ marginTop: space.xs, marginBottom: space.sm }}>
           {badgesLine}
         </T>
       )}

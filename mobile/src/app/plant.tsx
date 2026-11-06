@@ -22,6 +22,7 @@
  * No needs, no guilt: the plant asks for nothing. Resting is a calm look that never counts the
  * days away. Settings, Show my plant off: this screen says the plant is hidden and how to show it.
  */
+import { HoldContext, useHeld } from '../lib/holdWhileHidden';
 import { router, useLocalSearchParams } from 'expo-router';
 import { useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
 import { ScrollView, useWindowDimensions, View } from 'react-native';
@@ -29,7 +30,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { EmptyScreen } from '../components/emptyScreen';
 import { FieldText } from '../components/fieldguide';
 import { MintPill } from '../components/groveHub';
-import { Collapse } from '../components/motion';
+import { Collapse, useScreenFocus } from '../components/motion';
 import { DisclosureRow } from '../components/pathChooser';
 import { FormReveal, type FormRevealHandle } from '../components/plant/FormReveal';
 import { LivePlant } from '../components/plant/LivePlant';
@@ -81,7 +82,21 @@ function badgeEarnedAt(byCert: ReturnType<typeof useProgress.getState>['byCert']
   return at;
 }
 
+/**
+ * Release bug hunt round 4: this screen stays mounted under a pushed session (or the Look screen).
+ * While it is covered its reads are held (lib/holdWhileHidden.ts), so an answer no longer redraws
+ * it; back in view, it reads the live progress once. The same pattern as the badge case.
+ */
 export default function YourPlant() {
+  const focused = useScreenFocus();
+  return (
+    <HoldContext.Provider value={!focused}>
+      <YourPlantScreen />
+    </HoldContext.Provider>
+  );
+}
+
+function YourPlantScreen() {
   const { c, isDark } = useTheme();
   const view = usePlantView();
   // `planted=1`: just planted from the picker (You or Today): the seed settles and the sprout pops once.
@@ -92,7 +107,8 @@ export default function YourPlant() {
   const win = useWindowDimensions();
   const { readiness, progress } = useActiveCert();
   const badgesHidden = useSettings((s) => s.badgesHidden);
-  const byCert = useProgress((s) => s.byCert);
+  // Held while covered (round 4): a plain read would redraw the page on every answer under a session.
+  const byCert = useHeld(useProgress, (s) => s.byCert, 'byCert');
   const p = view.plant;
   const certId = view.certId;
   const theme = isDark ? 'dark' : 'light';

@@ -205,6 +205,14 @@ describe('the Mindset strip (O7)', () => {
     expect(textOf(strip[0])).toContain('Mindset.');
   });
 
+  it('round 4: a ">" in a tip is spoken as ", then" (never "greater than"); the visible tip is unchanged', () => {
+    mount(<MindsetStrip tips={['A > B > C.']} />);
+    const strip = byTestId('mindset-strip')[0];
+    const labelled = strip.findAll((n) => typeof n.props.accessibilityLabel === 'string' && n.props.accessibilityLabel.startsWith('Mindset.'));
+    expect(labelled[0].props.accessibilityLabel).toBe('Mindset. A, then B, then C.');
+    expect(textOf(strip)).toContain('A > B > C.');
+  });
+
   it('stays hidden when the course has no tips (never an empty card)', () => {
     mount(<MindsetStrip tips={[]} />);
     expect(byTestId('mindset-strip')).toHaveLength(0);

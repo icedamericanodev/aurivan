@@ -22,6 +22,7 @@ import { todaysPlan } from '../engine/planner';
 import { dayKey, weekStrip, type Streak } from '../engine/streak';
 import { useProgress, type CertProgress } from '../store/progress';
 import { useDailyMinutes, useSettings } from '../store/settings';
+import { useHeld } from './holdWhileHidden';
 import { useActiveCert } from './useActiveCert';
 
 export interface JourneyInput {
@@ -159,8 +160,9 @@ export function useJourney() {
   const dailyMinutes = useDailyMinutes();
   const familiarity = useSettings((s) => s.familiarity);
   const examFocused = useSettings((s) => s.examFocused);
-  const streakState = useProgress((s) => s.streak);
-  const storedDay = useProgress((s) => s.days[cert.id]);
+  // Held while a covered screen asks for it (lib/holdWhileHidden.ts); live everywhere else.
+  const streakState = useHeld(useProgress, (s) => s.streak, 'streak');
+  const storedDay = useHeld(useProgress, (s) => s.days[cert.id], `days:${cert.id}`);
   const startDay = useProgress((s) => s.startDay);
   const today = useToday();
 

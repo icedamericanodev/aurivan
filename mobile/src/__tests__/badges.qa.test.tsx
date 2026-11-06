@@ -25,7 +25,7 @@
 import { existsSync, readFileSync } from 'fs';
 import { join } from 'path';
 import { act, create, type ReactTestInstance, type ReactTestRenderer } from 'react-test-renderer';
-import { Dimensions, Modal, ScrollView } from 'react-native';
+import { AccessibilityInfo, Dimensions, Modal, ScrollView } from 'react-native';
 import { router } from 'expo-router';
 import { setMockReducedMotion } from '../../jest/reanimated-mock';
 import Badges from '../app/milestones';
@@ -62,6 +62,7 @@ import { space } from '../theme/tokens';
 import { checkBackupText, currentBackup, restoreBackup } from '../lib/backup';
 import { caseStage, hasNewBadge, initCaseSeen, showBadgesAgain, studyFor, weakestDomain } from '../lib/badges';
 import { finishSession } from '../lib/finishSession';
+import { flushSayLaterForTest } from '../lib/a11y';
 import { finishGameRound } from '../lib/gameRounds';
 import { badgeCase, checkMilestones, ensureBackfill, momentFor, syncPlanters } from '../lib/milestones';
 import { startFromIds } from '../lib/sessions';
@@ -964,6 +965,14 @@ describe('5. Settings → Show badges', () => {
   });
     const lines = allText().match(/Badges are on again\.[^.]*\./g) ?? [];
     expect(lines).toEqual(['Badges are on again. 2 badges arrived while they were hidden: see You → Badges.']);
+    // Round 4: the line under the switch and the announcement say the way in words, never "→".
+    const spoken = root().findAll((n) => typeof n.props.accessibilityLabel === 'string' && n.props.accessibilityLabel.startsWith('Badges are on again.'));
+    expect(spoken.length).toBeGreaterThan(0);
+    for (const n of spoken) expect(n.props.accessibilityLabel).toBe('Badges are on again. 2 badges arrived while they were hidden: see them on You, under Badges.');
+    const said = jest.spyOn(AccessibilityInfo, 'announceForAccessibility').mockImplementation(() => {});
+    flushSayLaterForTest();
+    expect(said.mock.calls.map((c) => c[0]).filter((t) => t.startsWith('Badges are on again'))).toEqual(['Badges are on again. 2 badges arrived while they were hidden: see them on You, under Badges.']);
+    said.mockRestore();
     unmount();
     // The next session earns nothing new: its Results show no moment for the two that waited.
     const more = ids('4', 20, 5);

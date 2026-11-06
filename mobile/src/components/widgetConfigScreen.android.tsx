@@ -24,7 +24,8 @@ import { countdownConfigCopy, kindOfName, parseSnapshot, readinessConfigCopy, re
 import { dayKey } from '../engine/streak';
 import { whenHydrated } from '../lib/backup';
 import { refreshWidgets } from '../lib/widgets';
-import { useSettings } from '../store/settings';
+import { effectiveCertId } from '../lib/activeCert';
+import { examDateOf, useSettings } from '../store/settings';
 import { useWidgetStore } from '../store/widgets';
 import { space } from '../theme/tokens';
 import { useTheme } from '../theme/useTheme';
@@ -91,7 +92,9 @@ export function WidgetConfigScreen(props: WidgetConfigurationScreenProps) {
   const { c } = useTheme();
   const kind = kindOfName(props.widgetInfo.widgetName);
   const prefs = useWidgetStore((s) => s.prefs);
-  const examDay = useSettings((s) => s.examDates[s.activeCertId] ?? null);
+  // The date of the exam the app studies (effectiveCertId), never the raw
+  // stored choice: a restored parked course falls back to CISA everywhere else.
+  const examDay = useSettings((s) => examDateOf(s.examDates, effectiveCertId(s.activeCertId)) ?? null);
   const [busy, setBusy] = useState(false);
   useEffect(() => {
     if (kind !== 'readiness' && kind !== 'countdown') props.setResult('cancel');
