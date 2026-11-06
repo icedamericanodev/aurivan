@@ -3,7 +3,7 @@
  * so Results' growth plate (Fig. 6) can show this set's change honestly.
  */
 import { act, create, type ReactTestInstance, type ReactTestRenderer } from 'react-test-renderer';
-import Results, { resultsKey } from '../app/results';
+import Results, { resultsKey, resultsKeySpoken } from '../app/results';
 import { getAllQuestions } from '../content/loader';
 import { finishSession } from '../lib/finishSession';
 import { startFromIds } from '../lib/sessions';
@@ -98,6 +98,8 @@ it('Results keys its chart in the website’s words, and the chart never draws a
   });
   const t = textOf(r!.root);
   expect(t).toContain(resultsKey(false));
-  expect(labels()).toContain(`Key: ${resultsKey(false)}`);
+  // Release bug hunt round 2: spoken in words ("Up arrow"), never the glyph's Unicode name.
+  expect(labels()).toContain(`Key: ${resultsKeySpoken(false)}`);
+  expect(resultsKeySpoken(false)).toContain('Up arrow: growth from this set.');
   expect(t).not.toContain('70 line');
 });

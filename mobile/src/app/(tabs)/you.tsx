@@ -612,7 +612,7 @@ const ProgressCard = memo(function ProgressCard({ cert, focus, hasAnswers }: { c
         <ListRow
           icon={icon(Gauge)}
           title="Your progress"
-          subtitle="Charts and study days"
+          subtitle="Your range, charts and mock trend"
           accessibilityHint="Opens your readiness report"
           onPress={() => router.push('/readiness')}
           last={!focus}

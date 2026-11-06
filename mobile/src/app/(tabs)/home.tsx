@@ -814,20 +814,34 @@ export default function Today() {
           <View>
             <HeroCard testID="today-hero">
               {/* The plant's stage in words; with a plant, the button to Your plant. */}
-              <Pressable
-                // With a plant, this is the plant's button (it keeps the plant's old test id); without one, plain words.
-                testID={plantView.plant ? 'today-plant' : 'today-stage'}
-                disabled={!plantView.plant}
-                accessibilityRole={plantView.plant ? 'button' : 'text'}
-                // The plant's own words (its name, form, growth and mood), then the stage in words.
-                accessibilityLabel={plantView.plant ? `${plantView.label} Growth ${growth} of ${HERO_STAGES}.` : `${stageName}, growth ${growth} of ${HERO_STAGES}`}
-                accessibilityHint={plantView.plant ? 'Opens your plant' : undefined}
-                onPress={() => router.push('/plant')}
-                style={{ flexDirection: 'row', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'space-between', columnGap: space.md, minHeight: plantView.plant ? 48 : 32, marginVertical: plantView.plant ? -space.sm : 0 }}
-              >
-                <FieldText v="sub" color={c.onForest}>{stageName}</FieldText>
-                <T v="meta" num color={c.onForest2}>{`Growth ${growth} of ${HERO_STAGES}`}</T>
-              </Pressable>
+              {plantView.plant ? (
+                <Pressable
+                  // With a plant, this is the plant's button (it keeps the plant's old test id).
+                  testID="today-plant"
+                  accessibilityRole="button"
+                  // The plant's own words (its name, form, growth and mood), then the stage in words.
+                  accessibilityLabel={`${plantView.label} Growth ${growth} of ${HERO_STAGES}.`}
+                  accessibilityHint="Opens your plant"
+                  onPress={() => router.push('/plant')}
+                  style={{ flexDirection: 'row', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'space-between', columnGap: space.md, minHeight: 48, marginVertical: -space.sm }}
+                >
+                  <FieldText v="sub" color={c.onForest}>{stageName}</FieldText>
+                  <T v="meta" num color={c.onForest2}>{`Growth ${growth} of ${HERO_STAGES}`}</T>
+                </Pressable>
+              ) : (
+                // Release bug hunt round 2: without a plant, plain words in a View, not a disabled Pressable
+                // (Pressable copies `disabled` into the accessibility state, so TalkBack said "disabled").
+                <View
+                  testID="today-stage"
+                  accessible
+                  accessibilityRole="text"
+                  accessibilityLabel={`${stageName}, growth ${growth} of ${HERO_STAGES}`}
+                  style={{ flexDirection: 'row', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'space-between', columnGap: space.md, minHeight: 32 }}
+                >
+                  <FieldText v="sub" color={c.onForest}>{stageName}</FieldText>
+                  <T v="meta" num color={c.onForest2}>{`Growth ${growth} of ${HERO_STAGES}`}</T>
+                </View>
+              )}
               {/* The ring and its caption are one button to the readiness report, said in words. */}
               <RingTap label={caption.spoken} onPress={() => router.push('/readiness')}>
                 <ReadinessRing mode={mode} on={seedDotsOn(j.range)} low={j.range.enough ? j.range.low : 0} high={j.range.enough ? j.range.high : 0} size={ring} growth={rangeGrowth}>

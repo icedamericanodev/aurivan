@@ -66,7 +66,7 @@
 import { router, useFocusEffect } from 'expo-router';
 import { areasTitle } from '../components/youReadiness';
 import { scaledScoreNote } from '../content/scoreNote';
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Alert, BackHandler, Pressable, View } from 'react-native';
 import { LeafStrip } from '../components/leafStrip';
 import { OptionCard, PickNote, TrustLine } from '../components/quiz';
@@ -99,6 +99,7 @@ import {
   moreMissedLine,
   noteKicker,
   resultsHeadline,
+  secondsWords,
   SMALL_SAMPLE,
   smallSampleFact,
   STRIP_MAX,
@@ -107,7 +108,7 @@ import {
   type LeafState,
 } from '../engine/resultsCopy';
 import { moveFocus, sayLater } from '../lib/a11y';
-import { displayToOriginal, originalToDisplay, renderText } from '../engine/shuffle';
+import { displayToOriginal, originalToDisplay, renderText, type Permutation } from '../engine/shuffle';
 import { aboutMin, coachingTag, practicePace, spokenMin, timeStat, TIMING_LABEL } from '../engine/pace';
 import { coachingLine } from '../lib/coachingCopy';
 import { msUsed, scoreSession, sessionPacing } from '../lib/finishSession';
@@ -121,7 +122,7 @@ import { dayKey } from '../engine/streak';
 import { dueIds } from '../engine/srs';
 import { selectCert, useProgress } from '../store/progress';
 import { questionTarget, sessionWhere } from '../lib/support';
-import { useSession } from '../store/session';
+import { useSession, type Response as SessionResponse } from '../store/session';
 import { motion, space } from '../theme/tokens';
 import { useTheme } from '../theme/useTheme';
 
@@ -137,6 +138,125 @@ export function resultsKey(isMock: boolean): string {
   return `Dashed line: ${STEADY_FROM}, the target for each area. ↑: growth from this ${isMock ? 'mock' : 'set'}. Clay: an area below ${STEADY_FROM}.`;
 }
 
+/** The key in words for screen readers: the "↑" glyph said as "Up arrow" (release bug hunt round 2). */
+export function resultsKeySpoken(isMock: boolean): string {
+  return resultsKey(isMock).replace('↑:', 'Up arrow:');
+}
+
+/**
+ * One row of Review answers (release bug hunt round 2). Memoised, with plain props, so a tap that
+ * opens or closes one row redraws only that row: before, every tap redrew the whole Results screen
+ * and all its rows (about 2,150 components after a 150-question mock). Grading and the letters are
+ * unchanged: picks are turned back into ORIGINAL letters (displayToOriginal), the key into the
+ * DISPLAY letter (originalToDisplay).
+ */
+const ReviewRow = memo(function ReviewRow({
+  id,
+  index: i,
+  certId,
+  perm,
+  response,
+  open,
+  where,
+  onToggle,
+}: {
+  id: string;
+  index: number;
+  certId: string;
+  perm: Permutation | undefined;
+  response: SessionResponse | undefined;
+  open: boolean;
+  where: string;
+  onToggle: (id: string) => void;
+}) {
+  const { c } = useTheme();
+  const q = useMemo(() => findQuestion(certId, id), [certId, id]);
+  if (!q || !perm) return null;
+  const r = response;
+  // Plain words (mobile 1.24): the glyphs ("✓", "✗", "○") were read aloud as "check mark", "ballot x".
+  const status = !r ? 'Skipped' : r.correct ? 'Correct' : 'Missed';
+  // Answered after Coach me: a right answer after a hint counts as half.
+  const assisted = Boolean(r?.assisted);
+  // Coaching (engine/pace.ts): only on a fast miss or a long, right answer.
+  const coaching = r ? coachingTag(r.correct, r.ms) : null;
+  // ONE quiet line instead of a row of tags (mobile 1.24): the hint and the pace note, together.
+  // Each on its own line, so "You used a hint." never reads as the cause of the pace advice (UX review nit).
+  const quietLines = [assisted ? 'You used a hint.' : null, coaching ? coachingLine(coaching) : null].filter((x): x is string => Boolean(x));
+  const quiet = quietLines.join(' ');
+  const color = !r ? c.muted : r.correct ? c.correct : c.wrong;
+  const picked = r ? displayToOriginal(r.display, perm) : undefined;
+  const correctDisplay = originalToDisplay(q.correct, perm);
+  return (
+    // A list row with a hairline below, not a card (spec §5).
+    <View style={{ borderBottomWidth: 1, borderBottomColor: c.line }}>
+      <Pressable
+        accessibilityRole="button"
+        accessibilityState={{ expanded: open }}
+        // One sentence each; the coaching line ends with its own full stop (O2).
+        accessibilityLabel={`Question ${i + 1}, ${status}.${quiet ? ` ${quiet}` : ''} Tap to ${open ? 'collapse' : 'expand'}`}
+        onPress={() => onToggle(id)}
+        style={({ pressed }) => ({ paddingVertical: 13, minHeight: 64, opacity: pressed ? 0.7 : 1 })}
+      >
+        <Row style={{ justifyContent: 'space-between' }}>
+          <T v="label" num>{`Question ${i + 1}`}</T>
+          <T v="label" color={color}>{status}</T>
+        </Row>
+        {quietLines.map((line) => (
+          <T key={line} v="meta" style={{ marginTop: space.xs }}>{line}</T>
+        ))}
+        {/* Folded: whole words, then one "…" (engine/textClip.ts), the answer screen's style; never cut inside a word. */}
+        <T v="body" style={{ marginTop: space.xs }}>{open ? q.stem : shortenAtWord(q.stem, 110)}</T>
+      </Pressable>
+      {open && (
+        <View style={{ paddingBottom: space.lg }}>
+          {/* The same rows as the answer screen (mobile 1.43): the DISPLAY letter in each badge and spoken
+              label, and the pick's own note under its red row. */}
+          {r && !r.correct && picked && (
+            <>
+              <OptionCard
+                letter={r.display}
+                text={q.options[picked] ?? ''}
+                state="wrong"
+                mark="letter"
+                tag="Your pick"
+                spoken={`Your pick, ${r.display}, not the best answer: ${q.options[picked] ?? ''}`}
+              />
+              {q.wrongExplanations[picked] ? <PickNote letter={r.display} text={renderText(q.wrongExplanations[picked]!, perm)} /> : null}
+            </>
+          )}
+          <OptionCard
+            letter={correctDisplay}
+            text={q.options[q.correct] ?? ''}
+            state="correct"
+            mark="letter"
+            tag="Best answer"
+            spoken={`Best answer, ${correctDisplay}: ${q.options[q.correct] ?? ''}`}
+          />
+          <T v="headline">{`Why ${correctDisplay}`}</T>
+          <T v="body" style={{ marginBottom: space.sm }}>{renderText(q.explanation, perm)}</T>
+          {trapTip(q) !== '' && (
+            <T v="small" color={c.ink2}>
+              {trapTip(q).startsWith('Final two:') ? '' : 'Trap: '}
+              {renderText(trapTip(q), perm)}
+            </T>
+          )}
+          {/* "Your note": the review is the best moment to reflect, and the only place a mock offers it. */}
+          <QuestionNote certId={certId} questionId={id} />
+          {/* Report a problem: mock questions are reported here, after the exam (never during it). */}
+          <TrustLine
+            certId={certId}
+            reference={q.reference}
+            target={questionTarget(certId, q, where, {
+              perm,
+              pickedDisplay: r?.display,
+            })}
+          />
+        </View>
+      )}
+    </View>
+  );
+});
+
 export default function Results() {
   const { c } = useTheme();
   const active = useSession((s) => s.active);
@@ -144,6 +264,8 @@ export default function Results() {
   // When Results opened: the "now" for the plan's due count, read once on the first draw (not on every render).
   const [openedAt] = useState(() => Date.now());
   const [openId, setOpenId] = useState<string | null>(null);
+  // One stable toggle for every review row (a memoised row then redraws only when its own `open` changes).
+  const toggleRow = useCallback((id: string) => setOpenId((cur) => (cur === id ? null : id)), []);
   // Mobile 1.43: "What you missed" → "See answers" jumps to the Review answers heading.
   const reviewHead = useRef<View>(null);
   const score = useMemo(() => (active ? scoreSession(active) : null), [active]);
@@ -242,6 +364,8 @@ export default function Results() {
   if (active.firstSet) return <FirstSetDone session={active} />;
 
   const cert = getCertification(active.certId)!;
+  // Where a report from a review row says it came from (a plain string, so the rows stay memoised).
+  const reviewWhere = sessionWhere(active.mode === 'mock' ? 'Mock review' : 'Practice review', active.title);
   const denominator = active.mode === 'mock' ? score.total : Math.max(score.answered, 1);
   const pct = Math.round((score.correct / denominator) * 100);
   // Missed: answered wrong. On a mock, a question left blank is missed too (it
@@ -402,7 +526,7 @@ export default function Results() {
         )}
         {/* The chart's key (7.11): the "70 line" label is gone from the chart, so the key says what the dashed line,
             the up arrow and clay mean, as the website's results do. Only when a chart is drawn. */}
-        {!plateLine && <KeyCaption label="Key">{resultsKey(isMock)}</KeyCaption>}
+        {!plateLine && <KeyCaption label="Key" spoken={resultsKeySpoken(isMock)}>{resultsKey(isMock)}</KeyCaption>}
         {range.enough && (
           // TYPE_SCALE 2.1: a range reads "68 to 78", never a dash (matches the web; a screen reader may say a dash as "minus").
           // The caps come from the head cut's textTransform.
@@ -443,7 +567,7 @@ export default function Results() {
               value={String(pace.own)}
               unit="s"
               note={`Exam pace: about ${pace.exam} s`}
-              spoken={`${pace.own} seconds. Exam pace about ${pace.exam} seconds`}
+              spoken={`${secondsWords(pace.own)}. Exam pace about ${secondsWords(pace.exam)}`}
             />
           ) : null}
         </SpecimenLabel>
@@ -537,95 +661,19 @@ export default function Results() {
       </View>
 
       <Section title="Review answers" headRef={reviewHead} />
-      {active.questionIds.map((id, i) => {
-        const q = findQuestion(active.certId, id);
-        const perm = active.perms[id];
-        if (!q || !perm) return null;
-        const r = active.responses[id];
-        // Plain words (mobile 1.24): the glyphs ("✓", "✗", "○") were read aloud as "check mark", "ballot x".
-        const status = !r ? 'Skipped' : r.correct ? 'Correct' : 'Missed';
-        // Answered after Coach me: a right answer after a hint counts as half.
-        const assisted = Boolean(r?.assisted);
-        // Coaching (engine/pace.ts): only on a fast miss or a long, right answer.
-        const coaching = r ? coachingTag(r.correct, r.ms) : null;
-        // ONE quiet line instead of a row of tags (mobile 1.24): the hint and the pace note, together.
-        // Each on its own line, so "You used a hint." never reads as the cause of the pace advice (UX review nit).
-        const quietLines = [assisted ? 'You used a hint.' : null, coaching ? coachingLine(coaching) : null].filter((x): x is string => Boolean(x));
-        const quiet = quietLines.join(' ');
-        const color = !r ? c.muted : r.correct ? c.correct : c.wrong;
-        const open = openId === id;
-        const picked = r ? displayToOriginal(r.display, perm) : undefined;
-        const correctDisplay = originalToDisplay(q.correct, perm);
-        return (
-          // A list row with a hairline below, not a card (spec §5).
-          <View key={id} style={{ borderBottomWidth: 1, borderBottomColor: c.line }}>
-            <Pressable
-              accessibilityRole="button"
-              accessibilityState={{ expanded: open }}
-              // One sentence each; the coaching line ends with its own full stop (O2).
-              accessibilityLabel={`Question ${i + 1}, ${status}.${quiet ? ` ${quiet}` : ''} Tap to ${open ? 'collapse' : 'expand'}`}
-              onPress={() => setOpenId(open ? null : id)}
-              style={({ pressed }) => ({ paddingVertical: 13, minHeight: 64, opacity: pressed ? 0.7 : 1 })}
-            >
-              <Row style={{ justifyContent: 'space-between' }}>
-                <T v="label" num>{`Question ${i + 1}`}</T>
-                <T v="label" color={color}>{status}</T>
-              </Row>
-              {quietLines.map((line) => (
-                <T key={line} v="meta" style={{ marginTop: space.xs }}>{line}</T>
-              ))}
-              {/* Folded: whole words, then one "…" (engine/textClip.ts), the answer screen's style; never cut inside a word. */}
-              <T v="body" style={{ marginTop: space.xs }}>{open ? q.stem : shortenAtWord(q.stem, 110)}</T>
-            </Pressable>
-            {open && (
-              <View style={{ paddingBottom: space.lg }}>
-                {/* The same rows as the answer screen (mobile 1.43): the DISPLAY letter in each badge and spoken
-                    label, and the pick's own note under its red row. */}
-                {r && !r.correct && picked && (
-                  <>
-                    <OptionCard
-                      letter={r.display}
-                      text={q.options[picked] ?? ''}
-                      state="wrong"
-                      mark="letter"
-                      tag="Your pick"
-                      spoken={`Your pick, ${r.display}, not the best answer: ${q.options[picked] ?? ''}`}
-                    />
-                    {q.wrongExplanations[picked] ? <PickNote letter={r.display} text={renderText(q.wrongExplanations[picked]!, perm)} /> : null}
-                  </>
-                )}
-                <OptionCard
-                  letter={correctDisplay}
-                  text={q.options[q.correct] ?? ''}
-                  state="correct"
-                  mark="letter"
-                  tag="Best answer"
-                  spoken={`Best answer, ${correctDisplay}: ${q.options[q.correct] ?? ''}`}
-                />
-                <T v="headline">{`Why ${correctDisplay}`}</T>
-                <T v="body" style={{ marginBottom: space.sm }}>{renderText(q.explanation, perm)}</T>
-                {trapTip(q) !== '' && (
-                  <T v="small" color={c.ink2}>
-                    {trapTip(q).startsWith('Final two:') ? '' : 'Trap: '}
-                    {renderText(trapTip(q), perm)}
-                  </T>
-                )}
-                {/* "Your note": the review is the best moment to reflect, and the only place a mock offers it. */}
-                <QuestionNote certId={active.certId} questionId={id} />
-                {/* Report a problem: mock questions are reported here, after the exam (never during it). */}
-                <TrustLine
-                  certId={active.certId}
-                  reference={q.reference}
-                  target={questionTarget(active.certId, q, sessionWhere(active.mode === 'mock' ? 'Mock review' : 'Practice review', active.title), {
-                    perm,
-                    pickedDisplay: r?.display,
-                  })}
-                />
-              </View>
-            )}
-          </View>
-        );
-      })}
+      {active.questionIds.map((id, i) => (
+        <ReviewRow
+          key={id}
+          id={id}
+          index={i}
+          certId={active.certId}
+          perm={active.perms[id]}
+          response={active.responses[id]}
+          open={openId === id}
+          where={reviewWhere}
+          onToggle={toggleRow}
+        />
+      ))}
       {/* The app's own problems (a score, the timer, a freeze): one quiet ghost button at the end. */}
       <View style={{ marginTop: space.xl, alignItems: 'flex-start' }}>
         <Button

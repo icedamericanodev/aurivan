@@ -18,6 +18,7 @@
 import { isRunningInExpoGo } from 'expo';
 import { Platform } from 'react-native';
 import { isStudyReminder, rollingCopy, rollingPlan, type ReminderPrefs, type WaitingReviews } from '../engine/reminders';
+import { beforeCutoff } from '../engine/reminderLimits';
 
 type NotificationsModule = typeof import('expo-notifications');
 
@@ -140,6 +141,11 @@ export interface ScheduleOptions {
    * refresh (lib/reminderSync.ts) sets it; a check that fails carries on as before.
    */
   onlyIfAllowed?: boolean;
+  /**
+   * Release bug hunt round 2: no reminder after this moment (the end of exam day,
+   * engine/reminderLimits.ts examDayEnd). Unset = no cut-off.
+   */
+  until?: number;
 }
 
 /**
@@ -165,7 +171,8 @@ async function replaceOurs(N: NotificationsModule, prefs: ReminderPrefs, certNam
     }
     if (blocked) return;
   }
-  const plan = rollingPlan(prefs, opts.now ?? Date.now(), { skipToday: opts.skipToday });
+  // Release bug hunt round 2: none after the cut-off (the end of exam day).
+  const plan = beforeCutoff(rollingPlan(prefs, opts.now ?? Date.now(), { skipToday: opts.skipToday }), opts.until);
   // Mobile 1.41: each reminder has its own words (engine/reminders.ts slotCopy). Same count, same ids.
   const words = rollingCopy(plan, certName, opts.waitingFor);
   for (const [i, r] of plan.entries()) {

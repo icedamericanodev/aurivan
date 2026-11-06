@@ -36,7 +36,7 @@
  * - Grove: choices are raised rows (selected = ink border, never green) and the
  *   action sits in a sticky footer.
  */
-import { router } from 'expo-router';
+import { Redirect, router } from 'expo-router';
 import { useEffect, useRef, useState, type RefObject } from 'react';
 import { BackHandler, KeyboardAvoidingView, Platform, ScrollView, useWindowDimensions, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -73,7 +73,22 @@ const PRESETS = EXAM_DATE_PRESETS;
 /** The steps in order: welcome, where you start, date and minutes. */
 type Step = 0 | 1 | 2;
 
+/**
+ * Release bug hunt round 2: onboarding is only for learners who have not finished it. An outside link
+ * (kaisip://onboarding) opened it again for anyone, and finishing it again wiped the exam date, the
+ * starting point, the daily time and today's plan ticks. A learner already onboarded when the screen
+ * opens goes to Today instead, with every saved setting kept.
+ *
+ * Read ONCE when the screen opens (not live): finishing here, or a restore, sets `onboarded` while the
+ * screen is still open, and the flow must carry on to its own next screen.
+ */
 export default function Onboarding() {
+  const [doneBefore] = useState(() => useSettings.getState().onboarded);
+  if (doneBefore) return <Redirect href="/home" />;
+  return <OnboardingFlow />;
+}
+
+function OnboardingFlow() {
   const { c } = useTheme();
   const complete = useSettings((s) => s.completeOnboarding);
   const { width } = useWindowDimensions();

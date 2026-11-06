@@ -21,17 +21,18 @@
  * ?q=RTO (Final review week's "Look up" tasks) opens with that search filled in.
  */
 import { router, useLocalSearchParams } from 'expo-router';
-import { useDeferredValue, useEffect, useMemo, useState } from 'react';
+import { memo, useDeferredValue, useEffect, useMemo, useState } from 'react';
 import { AccessibilityInfo, Pressable, useWindowDimensions, View } from 'react-native';
 import { EmptyScreen } from '../components/emptyScreen';
 import { CardDivider, CardHead, HubCard, PageTitle } from '../components/groveHub';
 import { Plant } from '../components/plant/Plant';
 import { Chip, ChipRow, EmptyState, Enter, PushedHeader, Screen, SearchField, T, useFontScale } from '../components/ui';
+import { CERTIFICATIONS, getCertification } from '../content/certifications';
 import { findNote, noteDomain } from '../content/notes';
 import { getTerms, type KeyTerm } from '../content/terms';
-import { glossaryGroups, matchTerms } from '../engine/glossary';
+import { glossaryGroups, matchTerms, type GlossaryGroup } from '../engine/glossary';
 import { openTab } from '../lib/actions';
-import { useActiveCert } from '../lib/useActiveCert';
+import { useActiveCertId } from '../lib/activeCert';
 import { useProgress } from '../store/progress';
 import { LARGE_TEXT, space } from '../theme/tokens';
 import { useTheme } from '../theme/useTheme';
@@ -44,15 +45,89 @@ const PLANT_MIN_WIDTH = 360;
 const PLANT_SIZE = 56;
 
 /** Open the study note that teaches a term: its subtopic page, else its domain's notes, else Study notes. */
-function openTermNote(certId: string, term: KeyTerm) {
-  if (findNote(certId, term.note)) router.push({ pathname: '/notes/subtopic/[id]', params: { id: term.note } });
-  else if (noteDomain(certId, term.note)) router.push({ pathname: '/notes/[domain]', params: { domain: term.note } });
+function openTermNote(certId: string, note: KeyTerm['note']) {
+  if (findNote(certId, note)) router.push({ pathname: '/notes/subtopic/[id]', params: { id: note } });
+  else if (noteDomain(certId, note)) router.push({ pathname: '/notes/[domain]', params: { domain: note } });
   else router.push('/notes');
 }
 
+/**
+ * The A to Z cards (release bug hunt round 2). Memoised, so a keystroke's urgent render (the search
+ * field) skips the list: the list only redraws when the matching terms change (the deferred pass), and
+ * then only the rows that are new are drawn (TermRow is memoised too).
+ */
+const GlossaryList = memo(function GlossaryList({ groups, certId }: { groups: GlossaryGroup[]; certId: string }) {
+  const cert = getCertification(certId) ?? CERTIFICATIONS[0];
+  const shortOf = (id: string) => cert.domains.find((d) => d.id === id)?.short ?? `Domain ${id}`;
+  return (
+    <>
+      {groups.map((g) => (
+        <HubCard key={g.letter} testID={`glossary-letter-${g.letter}`} style={{ marginTop: space.lg, paddingBottom: space.xs }}>
+          <CardHead title={g.letter} />
+          {g.terms.map((t, i) => (
+            <TermRow key={t.id} name={t.term} short={t.short} meaning={t.meaning} note={t.note} first={i === 0} area={shortOf(t.domainId)} certId={certId} />
+          ))}
+        </HubCard>
+      ))}
+    </>
+  );
+});
+
+/**
+ * One term: its name, meta line and meaning (one screen-reader stop), then "Read the note". Plain
+ * props (the search makes new term objects each time), so a row still shown is never drawn again.
+ */
+const TermRow = memo(function TermRow({
+  name,
+  short,
+  meaning,
+  note,
+  first,
+  area,
+  certId,
+}: {
+  name: string;
+  short?: string;
+  meaning: string;
+  note: KeyTerm['note'];
+  first: boolean;
+  area: string;
+  certId: string;
+}) {
+  const { c } = useTheme();
+  const t = { term: name, short, meaning };
+  const meta = [t.short, area].filter(Boolean).join(' · ');
+  return (
+    <View>
+      {!first && <CardDivider />}
+      <View style={{ paddingTop: space.md }}>
+        {/* The term, its meta and its meaning: one screen-reader stop. */}
+        <View accessible accessibilityLabel={`${t.term}${t.short ? `, ${t.short}` : ''}, ${area}. ${t.meaning}`} testID="glossary-term">
+          <T v="label">{t.term}</T>
+          <T v="meta" style={{ marginTop: 2 }}>{meta}</T>
+          <T v="small" color={c.ink} style={{ marginTop: space.xs }}>{t.meaning}</T>
+        </View>
+        <Pressable
+          accessibilityRole="link"
+          accessibilityLabel={`Read the note: ${t.term}`}
+          accessibilityHint="Opens the study note that teaches it"
+          onPress={() => openTermNote(certId, note)}
+          hitSlop={4}
+          style={({ pressed }) => ({ minHeight: 48, justifyContent: 'center', alignSelf: 'flex-start', opacity: pressed ? 0.7 : 1 })}
+        >
+          <T v="label" color={c.accentText}>Read the note</T>
+        </Pressable>
+      </View>
+    </View>
+  );
+});
+
 export default function Glossary() {
   const { c, isDark } = useTheme();
-  const { cert } = useActiveCert();
+  // Release bug hunt round 2: only the exam's id, so a recorded answer (the glossary can stay open under a
+  // practice set) never redraws it. The glossary shows no progress.
+  const certId = useActiveCertId();
+  const cert = getCertification(certId) ?? CERTIFICATIONS[0];
   const { width } = useWindowDimensions();
   const large = useFontScale() >= LARGE_TEXT;
   const plantOn = useProgress((p) => p.plantSettings?.showPlant !== false);
@@ -62,10 +137,9 @@ export default function Glossary() {
   const [query, setQuery] = useState(typeof q === 'string' ? q : '');
   const [area, setArea] = useState<string | undefined>(undefined);
   const deferred = useDeferredValue(query);
-  const pack = getTerms(cert.id);
+  const pack = useMemo(() => getTerms(cert.id), [cert.id]);
   // Only the domains that have terms, in the course's own order.
   const areas = cert.domains.filter((d) => (pack?.domains[d.id] ?? []).length > 0);
-  const shortOf = (id: string) => cert.domains.find((d) => d.id === id)?.short ?? `Domain ${id}`;
   const shown = useMemo(() => matchTerms(pack, deferred, area), [pack, deferred, area]);
   const groups = useMemo(() => glossaryGroups(shown), [shown]);
   const filtered = deferred.trim().length > 0 || area !== undefined;
@@ -145,37 +219,7 @@ export default function Glossary() {
         {groups.length === 0 ? (
           <EmptyState compact art="fieldbook" title="No terms match your filters." body="Try a shorter word, an acronym like RTO, or All areas." />
         ) : (
-          groups.map((g) => (
-            <HubCard key={g.letter} testID={`glossary-letter-${g.letter}`} style={{ marginTop: space.lg, paddingBottom: space.xs }}>
-              <CardHead title={g.letter} />
-              {g.terms.map((t, i) => {
-                const meta = [t.short, shortOf(t.domainId)].filter(Boolean).join(' · ');
-                return (
-                  <View key={t.id}>
-                    {i > 0 && <CardDivider />}
-                    <View style={{ paddingTop: space.md }}>
-                      {/* The term, its meta and its meaning: one screen-reader stop. */}
-                      <View accessible accessibilityLabel={`${t.term}${t.short ? `, ${t.short}` : ''}, ${shortOf(t.domainId)}. ${t.meaning}`} testID="glossary-term">
-                        <T v="label">{t.term}</T>
-                        <T v="meta" style={{ marginTop: 2 }}>{meta}</T>
-                        <T v="small" color={c.ink} style={{ marginTop: space.xs }}>{t.meaning}</T>
-                      </View>
-                      <Pressable
-                        accessibilityRole="link"
-                        accessibilityLabel={`Read the note: ${t.term}`}
-                        accessibilityHint="Opens the study note that teaches it"
-                        onPress={() => openTermNote(cert.id, t)}
-                        hitSlop={4}
-                        style={({ pressed }) => ({ minHeight: 48, justifyContent: 'center', alignSelf: 'flex-start', opacity: pressed ? 0.7 : 1 })}
-                      >
-                        <T v="label" color={c.accentText}>Read the note</T>
-                      </Pressable>
-                    </View>
-                  </View>
-                );
-              })}
-            </HubCard>
-          ))
+          <GlossaryList groups={groups} certId={cert.id} />
         )}
         <T v="meta" style={{ marginTop: space.md }}>Original content, reviewed against public frameworks.</T>
       </Enter>

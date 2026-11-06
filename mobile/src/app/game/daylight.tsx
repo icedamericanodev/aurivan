@@ -22,7 +22,7 @@
  * Both clocks reuse the answer clock (lib/useAnswerClock.ts): one for the
  * round's budget, one per question visit. Background time never counts.
  */
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { memo, useEffect, useMemo, useRef, useState, type Dispatch, type RefObject, type SetStateAction } from 'react';
 import { View } from 'react-native';
 import { DrillAnswer } from '../../components/drillAnswer';
 import type { ItemResult } from '../../components/drillKit';
@@ -69,6 +69,7 @@ import {
 } from '../../engine/games/daylight';
 import { clip, pickMiss, type RecapMiss } from '../../engine/games/recap';
 import { durationSpoken, durationText, formatClock, spokenClock, spokenClockCoarse } from '../../engine/pace';
+import { secondsWords } from '../../engine/resultsCopy';
 import { moveFocus, sayLater } from '../../lib/a11y';
 import { createRng } from '../../engine/random';
 import { displayToOriginal, isCorrect, originalToDisplay, renderText } from '../../engine/shuffle';
@@ -93,6 +94,90 @@ const say = (text: string) => sayLater(text);
 /** A stem cut for one line, without a full stop before the "…" (O4). */
 const clipStem = (stem: string, max = 70) => clip(stem, max).replace(/[.,;:?!]…$/, '…');
 
+/**
+ * Daylight's light strip (release bug hunt round 2). It holds the once-a-second tick itself, so only
+ * the strip redraws each second: before, the whole round screen (the question and all four options)
+ * redrew every second for the whole round.
+ *
+ * Each tick it does what the screen did: move the strip, set the light at the end of the budget, and
+ * say the pace at half time and 10% left (`said` is the screen's, so a pace line is said once a round).
+ * While the light waits (an answer showing, Pause, the round over) it reads the round clock once, so
+ * the strip shows the time used up to that moment.
+ */
+const DaylightStrip = memo(function DaylightStrip({
+  state,
+  held,
+  paused,
+  readRound,
+  setRound,
+  said,
+  stripRef,
+}: {
+  state: DaylightRound;
+  held: boolean;
+  paused: boolean;
+  readRound: () => number;
+  setRound: Dispatch<SetStateAction<DaylightRound | null>>;
+  said: RefObject<PaceMark[]>;
+  stripRef: RefObject<View | null>;
+}) {
+  // Lazy initialiser: read the round clock once on mount, not on every render.
+  const [used, setUsed] = useState(() => readRound());
+  // The light starts to wait (an answer, Pause, the round over): show the time used up to that moment
+  // (it stands still meanwhile). React's "adjust state when a prop changes" pattern, not an effect.
+  const [heldBefore, setHeldBefore] = useState(held);
+  if (heldBefore !== held) {
+    setHeldBefore(held);
+    if (held) setUsed(readRound());
+  }
+  // Once a second while the light is up: move the strip, set the light at
+  // the end of the budget, and say the pace at half time and 10% left.
+  useEffect(() => {
+    if (held) return;
+    const t = setInterval(() => {
+      const now = readRound();
+      setUsed(now);
+      if (budgetGone(state, now)) {
+        setRound(setLight(state));
+        say('The light has set. Unanswered questions are shown, not marked wrong.');
+        return;
+      }
+      const due = paceMarksDue(state, now, said.current);
+      if (due.length) {
+        said.current = [...said.current, ...due];
+        const line = daylightLine(daylightPace(state, now), canFlag(state));
+        say(due.includes('tenthLeft') ? `${spokenClock(state.budgetMs - now)} of light left. ${lowLightLine(state)}` : `Half the light is gone. ${line}`);
+      }
+    }, 1000);
+    return () => clearInterval(t);
+  }, [held, state, readRound, setRound, said]);
+
+  const answered = Object.keys(state.answers).length;
+  const remaining = Math.max(0, state.budgetMs - used);
+  const status = daylightPace(state, used);
+  // The light's last 10%: a visible line too, not only an announcement (P12).
+  const low = lowLight(state, used);
+  return (
+    <PaceStrip
+      ref={stripRef}
+      // Spoken in whole minutes (U-H2); the precise time is for tap-to-hear only.
+      clock={{ text: formatClock(remaining), spoken: `Light left ${spokenClockCoarse(remaining)}` }}
+      clockUnit="left"
+      line={
+        paused
+          ? { text: 'Paused. The light holds.', tone: 'note' }
+          : low
+            ? { text: lowLightLine(state), tone: 'soon' }
+            : { text: daylightLine(status, canFlag(state)), tone: status }
+      }
+      lineShort={!paused && !low && status === 'behind' ? 'Behind pace' : undefined}
+      // The pace bar steps once a second, no tween (PHASE4B 6.3 item 9).
+      bar={{ done: answered / state.ids.length, used: used / state.budgetMs, step: true }}
+      onRequest={() => say(`Light left ${spokenClock(remaining)}. ${paused ? 'Paused.' : low ? lowLightLine(state) : daylightLine(status, canFlag(state))}`)}
+    />
+  );
+});
+
 function Daylight() {
   const { c } = useTheme();
   const { cert, progress } = useActiveCert();
@@ -115,7 +200,6 @@ function Daylight() {
   // Focus targets: Resume after Pause, the strip after Resume (P9).
   const resumeRef = useRef<View>(null);
   const stripRef = useRef<View>(null);
-  const [used, setUsed] = useState(0);
   const [misses, setMisses] = useState<RecapMiss[]>([]);
   const said = useRef<PaceMark[]>([]);
   const fed = useRef(false);
@@ -128,27 +212,7 @@ function Daylight() {
   const readRound = useAnswerClock(state ? `daylight:${seed}` : undefined, held);
   const readVisit = useAnswerClock(state && currentId ? `daylight:${seed}:${visit}` : undefined, held);
 
-  // Once a second while the light is up: move the strip, set the light at
-  // the end of the budget, and say the pace at half time and 10% left.
-  useEffect(() => {
-    if (held || !state) return;
-    const t = setInterval(() => {
-      const now = readRound();
-      setUsed(now);
-      if (budgetGone(state, now)) {
-        setState(setLight(state));
-        say('The light has set. Unanswered questions are shown, not marked wrong.');
-        return;
-      }
-      const due = paceMarksDue(state, now, said.current);
-      if (due.length) {
-        said.current = [...said.current, ...due];
-        const line = daylightLine(daylightPace(state, now), canFlag(state));
-        say(due.includes('tenthLeft') ? `${spokenClock(state.budgetMs - now)} of light left. ${lowLightLine(state)}` : `Half the light is gone. ${line}`);
-      }
-    }, 1000);
-    return () => clearInterval(t);
-  }, [held, state, readRound]);
+  // The once-a-second tick (strip, light setting, pace lines) lives in DaylightStrip (above).
 
   // The round is over: feed progress ONCE. Answers were recorded as they
   // came; questions the light set on go to review WITHOUT counting as answered.
@@ -178,7 +242,6 @@ function Daylight() {
     setMisses([]);
     setReveal(null);
     setPaused(false);
-    setUsed(0);
     setVisit(0);
     // The tier is locked into the round here (C2): a new suggestion can't change it mid-round.
     setState(newDaylightRound(items.map((x) => x.q.id), chosen, tierSeconds(chosen, cert.exam)));
@@ -231,7 +294,8 @@ function Daylight() {
     const slow = slowestItem(state);
     const slowQ = slow ? items.find((x) => x.q.id === slow.id)?.q : undefined;
     const inBudget = finishedInBudget(state);
-    const lightUsed = Math.min(used, state.budgetMs);
+    // The round clock stands still once the round is over, so this reads the light used.
+    const lightUsed = Math.min(readRound(), state.budgetMs);
     return (
       <RoundEnd
         certId={cert.id}
@@ -253,12 +317,12 @@ function Daylight() {
           <T
             v="small"
             num
-            accessibilityLabel={`Light used: ${durationSpoken(Math.round(lightUsed / 60_000))} of ${durationSpoken(Math.round(state.budgetMs / 60_000))}${inBudget ? '. Finished in time, plus 1' : ''}`}
+            accessibilityLabel={`Light used: ${spokenClock(lightUsed)} of ${durationSpoken(Math.round(state.budgetMs / 60_000))}${inBudget ? '. Finished in time, plus 1' : ''}`}
           >
             {`Light used: ${formatClock(lightUsed)} of ${formatClock(state.budgetMs)}${inBudget ? ' · finished in time, +1' : ''}`}
           </T>
-          {avg !== null && <T v="small" num>{`Average ${avg} seconds a question · your light gave ${state.perItemSec} seconds`}</T>}
-          {slow && slowQ && <T v="small">{`Slowest: ${slow.seconds} seconds on “${clipStem(slowQ.stem)}”`}</T>}
+          {avg !== null && <T v="small" num>{`Average ${secondsWords(avg)} a question · your light gave ${state.perItemSec} seconds`}</T>}
+          {slow && slowQ && <T v="small">{`Slowest: ${secondsWords(slow.seconds)} on “${clipStem(slowQ.stem)}”`}</T>}
         </View>
         </View>
         {state.timedOut.length > 0 && (
@@ -294,10 +358,6 @@ function Daylight() {
   const { q, perm } = shown;
   const letters = LETTERS.slice(0, perm.length);
   const answered = Object.keys(state.answers).length;
-  const remaining = Math.max(0, state.budgetMs - used);
-  const status = daylightPace(state, used);
-  // The light's last 10%: a visible line too, not only an announcement (P12).
-  const low = lowLight(state, used);
   const right = Object.values(state.answers).filter((a) => a.correct).length;
 
   const pick = (display: Letter) => {
@@ -314,7 +374,6 @@ function Daylight() {
       const miss = pickMiss(q, original, false, (t) => renderText(t, perm));
       if (miss) setMisses((m) => [...m, miss]);
     }
-    setUsed(readRound());
     setState(next);
     setReveal({ id: q.id, display });
   };
@@ -326,25 +385,8 @@ function Daylight() {
   };
 
   const lastAnswer = state.answers[q.id];
-  const strip = (
-    <PaceStrip
-      ref={stripRef}
-      // Spoken in whole minutes (U-H2); the precise time is for tap-to-hear only.
-      clock={{ text: formatClock(remaining), spoken: `Light left ${spokenClockCoarse(remaining)}` }}
-      clockUnit="left"
-      line={
-        paused
-          ? { text: 'Paused. The light holds.', tone: 'note' }
-          : low
-            ? { text: lowLightLine(state), tone: 'soon' }
-            : { text: daylightLine(status, canFlag(state)), tone: status }
-      }
-      lineShort={!paused && !low && status === 'behind' ? 'Behind pace' : undefined}
-      // The pace bar steps once a second, no tween (PHASE4B 6.3 item 9).
-      bar={{ done: answered / state.ids.length, used: used / state.budgetMs, step: true }}
-      onRequest={() => say(`Light left ${spokenClock(remaining)}. ${paused ? 'Paused.' : low ? lowLightLine(state) : daylightLine(status, canFlag(state))}`)}
-    />
-  );
+  // Only the strip ticks (DaylightStrip); the question and its options stay as they are.
+  const strip = <DaylightStrip state={state} held={held} paused={paused} readRound={readRound} setRound={setState} said={said} stripRef={stripRef} />;
 
   return (
     <GameFrame
@@ -380,7 +422,6 @@ function Daylight() {
               kind="secondary"
               label="Pause"
               onPress={() => {
-                setUsed(readRound());
                 setPaused(true);
                 say('Paused. The light holds.');
                 moveFocus(resumeRef);

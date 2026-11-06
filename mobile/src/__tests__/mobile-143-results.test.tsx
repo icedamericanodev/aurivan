@@ -105,9 +105,12 @@ describe('the words (engine/resultsCopy.ts)', () => {
   });
 
   it('the strip is spoken once, by question number', () => {
-    expect(stripSpoken(['right', 'right', 'missed', 'right', 'right', 'right', 'missed', 'right', 'right', 'right'])).toBe('Right: 1, 2, 4, 5, 6, 8, 9 and 10. Missed: 3 and 7.');
+    expect(stripSpoken(['right', 'right', 'missed', 'right', 'right', 'right', 'missed', 'right', 'right', 'right'])).toBe('Right: questions 1, 2, 4, 5, 6, 8, 9 and 10. Missed: questions 3 and 7.');
     expect(stripSpoken(['right', 'right'])).toBe('All 2 right.');
-    expect(stripSpoken(['missed', 'blank'])).toBe('None right. Missed: 1. Not answered: 2.');
+    expect(stripSpoken(['missed', 'blank'])).toBe('None right. Missed: question 1. Not answered: question 2.');
+    // Release bug hunt round 2: one right is a position, never a count ("Right: 8" after "1 of 10 right").
+    const onlyEight = Array.from({ length: 10 }, (_, i) => (i === 7 ? 'right' : 'missed') as 'right' | 'missed');
+    expect(stripSpoken(onlyEight)).toBe('Right: question 8. Missed: questions 1, 2, 3, 4, 5, 6, 7, 9 and 10.');
     expect(andList([3])).toBe('3');
   });
 
@@ -157,7 +160,7 @@ describe('the screen', () => {
     expect(t).not.toMatch(/Strong work|Getting there|Every miss is a lesson/);
     // The strip: one image, spoken once.
     expect(root().findAllByType(LeafStrip)).toHaveLength(1);
-    expect(hostLabelled(/^Right: 1, 2, 4, 5, 6, 8, 9 and 10\. Missed: 3 and 7\.$/)).toHaveLength(1);
+    expect(hostLabelled(/^Right: questions 1, 2, 4, 5, 6, 8, 9 and 10\. Missed: questions 3 and 7\.$/)).toHaveLength(1);
     // The notice is on screen and true: the two misses are not due today, and are due from midnight.
     expect(t).toContain('The 2 you missed come back tomorrow');
     const review = selectCert(useProgress.getState(), 'cisa').review;

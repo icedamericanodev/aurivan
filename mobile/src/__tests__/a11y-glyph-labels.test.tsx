@@ -7,7 +7,11 @@
 import { readdirSync, readFileSync, statSync } from 'fs';
 import { join } from 'path';
 import { act, create, type ReactTestRenderer } from 'react-test-renderer';
+import { resultsKey, resultsKeySpoken } from '../app/results';
 import SessionScreen from '../app/session';
+import { KeyCaption } from '../components/fieldguide';
+import { AREAS_KEY, AREAS_KEY_SPOKEN } from '../components/youReadiness';
+import { WHATS_NEW } from '../content/support';
 import { startMock } from '../lib/sessions';
 import { useSession } from '../store/session';
 
@@ -67,5 +71,43 @@ describe('no glyph read aloud', () => {
     expect(legend.length).toBeGreaterThan(0);
     act(() => r!.unmount());
     jest.useRealTimers();
+  });
+
+  // Release bug hunt round 2: the chart keys on You and Results said "upwards arrow", and a What's new
+  // entry said "midline horizontal ellipsis".
+  it('a chart key with a glyph is spoken in words; the visible key keeps its glyph', () => {
+    const plain = (s: string) => !/[↑↓⋯]/.test(s);
+    expect(AREAS_KEY).toContain('↑');
+    expect(plain(AREAS_KEY_SPOKEN)).toBe(true);
+    expect(AREAS_KEY_SPOKEN).toContain('Up arrow: growth since you last looked');
+    for (const mock of [false, true]) {
+      expect(resultsKey(mock)).toContain('↑');
+      expect(plain(resultsKeySpoken(mock))).toBe(true);
+    }
+    let r: ReactTestRenderer | undefined;
+    act(() => {
+      r = create(<KeyCaption label="KEY" spoken={AREAS_KEY_SPOKEN}>{AREAS_KEY}</KeyCaption>);
+    });
+    const stop = r!.root.findAll((x) => typeof x.type === 'string' && typeof x.props.accessibilityLabel === 'string')[0];
+    expect(stop.props.accessibilityLabel).toBe(`Key: ${AREAS_KEY_SPOKEN}`);
+    act(() => r!.unmount());
+  });
+
+  it('every KeyCaption showing a glyph key passes a spoken version', () => {
+    const missing: string[] = [];
+    for (const f of [...files(join(__dirname, '..', 'app')), ...files(join(__dirname, '..', 'components'))]) {
+      const src = readFileSync(f, 'utf8');
+      for (let i = src.indexOf('<KeyCaption'); i >= 0; i = src.indexOf('<KeyCaption', i + 1)) {
+        const tag = src.slice(i, src.indexOf('</KeyCaption>', i));
+        if (/AREAS_KEY\b|resultsKey\(|[↑↓⋯]/.test(tag) && !/\bspoken=/.test(tag)) missing.push(f.split('src')[1]);
+      }
+    }
+    expect(missing).toEqual([]);
+  });
+
+  it('no What\'s new line reads a glyph by its name', () => {
+    const lines = WHATS_NEW.flatMap((e) => Object.values(e).flatMap((v) => (Array.isArray(v) ? v : [])) as string[]);
+    expect(lines.length).toBeGreaterThan(0);
+    expect(lines.filter((l) => /[↑↓⋯]/.test(l))).toEqual([]);
   });
 });

@@ -139,6 +139,7 @@ import { advancePath } from '../lib/sessions';
 import { HINT_AFTER_LINE, HINT_BEFORE_LINE } from '../engine/readiness';
 import { useAnswerClock } from '../lib/useAnswerClock';
 import { selectCert, useProgress } from '../store/progress';
+import { batchSaves } from '../store/storage';
 import { useSession } from '../store/session';
 import { LARGE_TEXT, motion, radius, space } from '../theme/tokens';
 import { useTheme } from '../theme/useTheme';
@@ -228,6 +229,45 @@ const MockClock = memo(function MockClock({ deadline, hideClock, finished }: { d
       }
       // The strip shows this at very large text instead of the full advice (P6).
       lineShort={lastCheck && !(hideClock && lowTime) ? paceShort({ status: statusOf(lastCheck.deviation), minutes: lastCheck.minutes }) : undefined}
+    />
+  );
+});
+
+/**
+ * Timed practice's clock strip (release bug hunt round 2). Like MockClock, it holds the once-a-second
+ * tick itself, so only this strip redraws each second: before, the whole question screen (the stem,
+ * all four options and the progress segments) redrew every second while the learner read.
+ *
+ * It counts UP: the answered questions' times (`answeredMs`, a number, so the screen's own redraws
+ * don't reach it) plus the running time on the question on screen, read from the same answer clock
+ * (no second timing system). While the explanation shows (`answering` false) the clock stands still.
+ * The soft cue ("take a breath, you can come back") shows and is said once per question; the screen
+ * mounts one strip per question (key = the question id), so it starts fresh on each.
+ */
+const PracticeClock = memo(function PracticeClock({ readClock, answering, answeredMs }: { readClock: () => number; answering: boolean; answeredMs: number }) {
+  const [curMs, setCurMs] = useState(0);
+  useEffect(() => {
+    if (!answering) return;
+    const t = setInterval(() => setCurMs(readClock()), 1000);
+    return () => clearInterval(t);
+  }, [answering, readClock]);
+  // The soft cue is announced once per question.
+  const cueSaid = useRef(false);
+  const cueNow = answering && softCue(curMs);
+  useEffect(() => {
+    if (!cueNow || cueSaid.current) return;
+    cueSaid.current = true;
+    AccessibilityInfo.announceForAccessibility(SOFT_CUE_LINE);
+  }, [cueNow]);
+  // Answered questions' times plus the one on screen (none while the explanation shows).
+  const ms = answeredMs + (answering ? Math.max(0, curMs) : 0);
+  return (
+    <PaceStrip
+      // Spoken in whole minutes (U-H2), so the label doesn't change every second.
+      clock={{ text: formatClock(ms), spoken: `Session time ${spokenClockCoarse(ms)}${answering ? ' so far' : ', paused'}` }}
+      clockUnit={answering ? 'so far' : 'paused'}
+      // Practice has no Flag button: the cue talks about the exam, clock icon in clay (U-H1).
+      line={cueNow ? { text: SOFT_CUE_LINE, tone: 'soon' } : null}
     />
   );
 });
@@ -325,24 +365,9 @@ export default function SessionScreen() {
   // (the last answer's time plus visits that ended without an answer), so
   // going back and answering adds to it instead of replacing it.
   const [visitBase, setVisitBase] = useState<number | undefined>(undefined);
-  // Timed practice: the running time on the current question, refreshed
-  // once a second from the same answer clock (no second timing system).
+  // Timed practice: its once-a-second clock and the soft cue live in PracticeClock (above), so the
+  // tick redraws only the strip (release bug hunt round 2).
   const timedPractice = !isMock && Boolean(active?.timed);
-  const answering = !response; // false once submitted: the explanation is showing
-  const [curMs, setCurMs] = useState(0);
-  useEffect(() => {
-    if (!timedPractice || !answering) return;
-    const t = setInterval(() => setCurMs(readClock()), 1000);
-    return () => clearInterval(t);
-  }, [timedPractice, answering, qid, readClock]);
-  // The soft cue is announced once per question.
-  const cueSaidFor = useRef<string | undefined>(undefined);
-  const cueNow = timedPractice && answering && softCue(curMs);
-  useEffect(() => {
-    if (!cueNow || cueSaidFor.current === qid) return;
-    cueSaidFor.current = qid;
-    AccessibilityInfo.announceForAccessibility(SOFT_CUE_LINE);
-  }, [cueNow, qid]);
   // Mock exams: did this visit end with a tap on an option? If not, its time
   // is kept in the session store when the learner moves on (effect below).
   const pickedThisVisit = useRef(false);
@@ -365,7 +390,6 @@ export default function SessionScreen() {
     setResetFor(qid);
     setSelected(isMock && response ? response.display : null);
     setVisitBase(isMock ? (response?.ms ?? 0) + (active?.visitMs?.[qid ?? ''] ?? 0) : undefined);
-    setCurMs(0);
     setConfidence(undefined);
     setVineVisible(false);
     setAllOptionsOpen(false);
@@ -517,17 +541,22 @@ export default function SessionScreen() {
     // "Not quite. Best answer D." itself. An announcement as well was cut off on iOS and doubled on Android.
     // Time from the question appearing to "Check answer" (background excluded).
     const ms = readClock();
-    // Progress first: the store decides whether this was a RETEST (a right answer under 4 hours after
-    // a miss on this question, engine/srs.ts): it counts half and is not promoted.
-    recordAnswer(active.certId, qid, ok, confidence, { assisted: coached, ms });
-    const retest = ok && selectCert(useProgress.getState(), active.certId).answers[qid]?.lastRetest === true;
-    // Answers after Coach me are "assisted": half weight toward readiness.
-    answer(qid, { display: selected, correct: ok, confidence, ms, ...(coached ? { assisted: true } : {}), ...(retest ? { retest: true } : {}) });
-    // In order (Build E): remember the place (never from the mixed tail).
-    advancePath(active, qid);
-    // File every miss in the Mistake Journal, with the ORIGINAL letter picked
-    // (and how sure they felt, for the slip coach's "over-confident" pattern).
-    if (!ok) useProgress.getState().recordMistake(active.certId, qid, displayToOriginal(selected, perm), confidence);
+    // Release bug hunt round 2: every store write below is saved ONCE, with its final state
+    // (store/storage.ts batchSaves). A miss used to save the whole progress file twice (the answer,
+    // then the mistake). The state itself still changes at once, so the retest read sees the answer.
+    batchSaves(() => {
+      // Progress first: the store decides whether this was a RETEST (a right answer under 4 hours after
+      // a miss on this question, engine/srs.ts): it counts half and is not promoted.
+      recordAnswer(active.certId, qid, ok, confidence, { assisted: coached, ms });
+      const retest = ok && selectCert(useProgress.getState(), active.certId).answers[qid]?.lastRetest === true;
+      // Answers after Coach me are "assisted": half weight toward readiness.
+      answer(qid, { display: selected, correct: ok, confidence, ms, ...(coached ? { assisted: true } : {}), ...(retest ? { retest: true } : {}) });
+      // In order (Build E): remember the place (never from the mixed tail).
+      advancePath(active, qid);
+      // File every miss in the Mistake Journal, with the ORIGINAL letter picked
+      // (and how sure they felt, for the slip coach's "over-confident" pattern).
+      if (!ok) useProgress.getState().recordMistake(active.certId, qid, displayToOriginal(selected, perm), confidence);
+    });
     // Start the answer screen at the top, so the verdict is the first thing seen,
     // and move the screen reader there (the footer button it was on sits below the explanation).
     scrollRef.current?.scrollTo({ y: 0, animated: false });
@@ -743,21 +772,11 @@ export default function SessionScreen() {
   // AnswerMore drops the nulls (the rows that don't apply here), in this order.
   const moreRows = [optionsRow, noteRow, principleRow, yourNoteRow, reportRow];
   // The shared pace strip (components/pace.tsx): mock clock and pace line.
-  // Timed practice: answered questions' times plus the one on screen (none
-  // while the explanation shows, so the clock stands still there).
-  const practiceMs = timedPractice
-    ? practiceElapsedMs(Object.values(active.responses).map((r) => r.ms), submitted ? null : curMs)
-    : 0;
+  // Timed practice: the answered questions' times, as one number (PracticeClock adds the running time
+  // on the question on screen, and draws the strip).
+  const practiceAnsweredMs = timedPractice ? practiceElapsedMs(Object.values(active.responses).map((r) => r.ms), null) : 0;
   const strip: PaceStripProps | null = !isMock
-    ? timedPractice
-      ? {
-          // Spoken in whole minutes (U-H2), so the label doesn't change every second.
-          clock: { text: formatClock(practiceMs), spoken: `Session time ${spokenClockCoarse(practiceMs)}${submitted ? ', paused' : ' so far'}` },
-          clockUnit: submitted ? 'paused' : 'so far',
-          // Practice has no Flag button: the cue talks about the exam, clock icon in clay (U-H1).
-          line: cueNow ? { text: SOFT_CUE_LINE, tone: 'soon' } : null,
-        }
-      : null
+    ? null // untimed practice has no strip; timed practice: PracticeClock draws it (below)
     : !active.deadline
       ? { clock: 'untimed' }
       : null; // a timed mock: MockClock draws the strip (below)
@@ -892,6 +911,7 @@ export default function SessionScreen() {
         )}
       </Row>
       {strip && <PaceStrip {...strip} />}
+      {timedPractice && qid && <PracticeClock key={qid} readClock={readClock} answering={!submitted} answeredMs={practiceAnsweredMs} />}
       {isMock && active.deadline !== undefined && <MockClock deadline={active.deadline} hideClock={Boolean(active.hideClock)} finished={Boolean(active.finishedAt)} />}
 
       <View style={{ flex: 1 }}>

@@ -70,6 +70,8 @@ export function buildTodayPlan(certId: string, keepToday: boolean) {
 export function changeExamDate(certId: string, date: string | undefined) {
   useSettings.getState().setExamDate(certId, date);
   buildTodayPlan(certId, true);
+  // Release bug hunt round 2: reminders follow the date (none after the exam; a new date brings them back).
+  if (certId === activeCertIdNow()) refreshReminders().catch(() => {});
 }
 
 /**

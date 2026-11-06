@@ -64,6 +64,23 @@ function playedKey(s: ProgressState): string {
 /** How long after a jump Drills keeps following its own position (saved progress can still grow the sections above). */
 const FOLLOW_MS = 1500;
 
+/**
+ * Release bug hunt round 2: the games this learner can open now (the same rule Drills shows: the core
+ * three, every game after about 50 practice answers, and any game already played). The mistake journal
+ * uses it too, so its "Drill it" never offers a drill Drills still keeps locked.
+ */
+export function useAvailableGames(certId: string): GameId[] {
+  // A game whose question pool is too small for this exam is not offered at all (never explained with a number).
+  const playable = useMemo(() => playableGames(certId), [certId]);
+  // The other games open after about 50 practice answers, subscribed as a yes/no.
+  const open = useProgress((s) => moreGamesOpen(Object.keys(selectCert(s, certId).answers).length));
+  const played = useProgress(playedKey);
+  return useMemo(
+    () => availableGames(playable, { answered: open ? MORE_GAMES_AT : 0, played: (played ? played.split(',') : []) as GameId[] }),
+    [playable, open, played],
+  );
+}
+
 /** Has this learner played any game, on any exam? (The one-time "games moved" hint on Practice is for them.) */
 export const playedAnyGame = (s: ProgressState): boolean => playedKey(s) !== '';
 /** The `moments` key (store/seen.ts) of that hint, once seen. */

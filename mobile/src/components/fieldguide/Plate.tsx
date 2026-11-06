@@ -81,11 +81,15 @@ export function Plate({
   );
 }
 
-/** "KEY  One stem per area…": the key is tracked caps in ink, the sentence italic. One stop for screen readers. */
-export function KeyCaption({ label, children, style }: { label: string; children: string; style?: StyleProp<ViewStyle> }) {
+/**
+ * "KEY  One stem per area…": the key is tracked caps in ink, the sentence italic. One stop for screen readers.
+ * `spoken` (release bug hunt round 2): the same key in words, for a caption with a glyph ("↑") that a
+ * screen reader would otherwise read by its Unicode name ("upwards arrow"). The visible text is unchanged.
+ */
+export function KeyCaption({ label, children, spoken, style }: { label: string; children: string; spoken?: string; style?: StyleProp<ViewStyle> }) {
   const { c } = useTheme();
   return (
-    <View accessible accessibilityLabel={`${label[0]}${label.slice(1).toLowerCase()}: ${children}`} style={[{ marginTop: space.sm }, style]}>
+    <View accessible accessibilityLabel={`${label[0]}${label.slice(1).toLowerCase()}: ${spoken ?? children}`} style={[{ marginTop: space.sm }, style]}>
       <Text maxFontSizeMultiplier={fieldMaxScale.fig} style={[fieldType.fig, { color: c.ink2 }]}>
         <Text maxFontSizeMultiplier={fieldMaxScale.head} style={[fieldType.head, { color: c.ink }]}>{`${label}  `}</Text>
         {children}

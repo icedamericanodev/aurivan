@@ -67,6 +67,8 @@ export const areasTitle = (n: number) => `${COUNT_WORDS[n] ?? n} ${n === 1 ? 'ar
  * areas, one scale", says it); each mark keeps its few words.
  */
 export const AREAS_KEY = `${AREAS_CAPTION}. Dashed line: ${STEADY_FROM}, each area’s target. ↑: growth since you last looked. Clay: below ${STEADY_FROM}.`;
+/** The key in words for screen readers: the "↑" glyph said as "Up arrow" (release bug hunt round 2). */
+export const AREAS_KEY_SPOKEN = AREAS_KEY.replace('↑:', 'Up arrow:');
 /** The line under the chart (the board's words): where the numbers come from. */
 export const AREAS_SOURCE = 'Built from your answers in this app.';
 
@@ -110,7 +112,7 @@ export function AreaRows({
       <View style={{ marginHorizontal: space.md }}>
         <T v="meta" style={{ marginTop: space.sm }}>{AREAS_SOURCE}</T>
         {children}
-        <KeyCaption label="KEY" style={{ marginTop: space.sm }}>{AREAS_KEY}</KeyCaption>
+        <KeyCaption label="KEY" spoken={AREAS_KEY_SPOKEN} style={{ marginTop: space.sm }}>{AREAS_KEY}</KeyCaption>
       </View>
     </Plate>
   );

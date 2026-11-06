@@ -433,3 +433,17 @@ describe('Today at large text (200%)', () => {
     }
   });
 });
+
+// Release bug hunt round 2: without a plant, the hero's stage line was a disabled Pressable, so its
+// accessibility state said disabled and TalkBack read "disabled" after "Seed, growth 1 of 6".
+describe('the hero stage line without a plant', () => {
+  it('is plain text: not disabled, no tap, one stop said as words', () => {
+    mount(<Today />);
+    const line = byTestID('today-stage');
+    expect(line).toHaveLength(1);
+    expect(line[0].props.accessibilityState?.disabled).not.toBe(true);
+    expect(line[0].props['aria-disabled']).not.toBe(true);
+    expect(line[0].props.accessibilityRole).toBe('text');
+    expect(line[0].props.accessibilityLabel).toMatch(/^.+, growth \d of \d$/);
+  });
+});

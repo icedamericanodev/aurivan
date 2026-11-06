@@ -38,3 +38,16 @@ export function redirectLegacyPath(path: string): string {
   // Own keys only: "constructor" or "__proto__" must never match an inherited value.
   return Object.prototype.hasOwnProperty.call(MOVED, last) ? MOVED[last] : path;
 }
+
+/**
+ * Release bug hunt round 2: an outside link to onboarding ("kaisip://onboarding") for a learner who has
+ * already finished it lands on Today instead (the onboarding screen has the same guard; this one acts
+ * before the screen opens). Any other link, or a learner still onboarding, passes through unchanged.
+ */
+export function redirectOnboardedPath(path: string, onboarded: boolean | (() => boolean)): string {
+  const bare = path.split(/[?#]/)[0].replace(/\/+$/, '');
+  const last = bare.slice(bare.lastIndexOf('/') + 1).toLowerCase();
+  if (last !== 'onboarding') return path;
+  // Asked only for an onboarding link (a function is called here, so other links never load settings).
+  return (typeof onboarded === 'function' ? onboarded() : onboarded) ? '/home' : path;
+}

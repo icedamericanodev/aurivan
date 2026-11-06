@@ -56,6 +56,7 @@ import { questionTarget } from '../lib/support';
 import { useActiveCert } from '../lib/useActiveCert';
 import { GAMES } from '../engine/games/registry';
 import { canPlay } from '../lib/games';
+import { useAvailableGames } from '../components/drills';
 import { slipCoach, type SlipInput } from '../engine/slipCoach';
 import { useProgress, type MistakeEntry, type ThinkingSlip } from '../store/progress';
 import { space } from '../theme/tokens';
@@ -225,6 +226,8 @@ export default function Mistakes() {
   const { c } = useTheme();
   const { cert, progress } = useActiveCert();
   const certId = cert.id;
+  // The drills open for this learner now (the same rule as Practice > Drills).
+  const offered = useAvailableGames(certId);
   const tagMistake = useProgress((s) => s.tagMistake);
   const [showFixed, setShowFixed] = useState(false);
   const [footerH, setFooterH] = useState(120);
@@ -318,8 +321,9 @@ export default function Mistakes() {
             />
           )}
           <Gap h={space.md} />
-          {/* "Drill it" only when that game can be played for this exam (registry minPool). */}
-          {pattern.game && canPlay(cert.id, pattern.game) ? (
+          {/* "Drill it" only when that game can be played for this exam (registry minPool) AND Drills has it open
+              for this learner (release bug hunt round 2: the 50-answer unlock). Otherwise review the mistakes. */}
+          {pattern.game && canPlay(cert.id, pattern.game) && offered.includes(pattern.game) ? (
             <Button
               kind="secondary"
               label={`Drill it: ${GAMES[pattern.game].name}`}

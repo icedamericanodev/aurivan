@@ -106,7 +106,7 @@ export const WHATS_NEW: readonly WhatsNewEntry[] = [
   {
     version: '1.49.0',
     date: '2026-10-29',
-    improved: ['Answers end sooner: one next step after a miss, the question kept at the top, and the rest a tap away under ⋯. Lesson quick checks now look like practice answers.'],
+    improved: ['Answers end sooner: one next step after a miss, the question kept at the top, and the rest a tap away under the More button. Lesson quick checks now look like practice answers.'],
   },
   {
     version: '1.48.0',
@@ -694,7 +694,8 @@ export const FAQ: readonly FaqEntry[] = [
     id: 'from-website',
     question: 'Can I bring my progress from the KaiSip website?',
     answer: [
-      'Yes. On the website, open Your data and choose Export progress. Then in the app, choose Restore from a backup, on the welcome screen or in Settings under Your data, and pick that file.',
+      'Yes. On the KaiSip website, open Settings and, under Your data, choose Back up. Then in the app, choose Restore from a backup, on the welcome screen or in Settings under Your data, and pick that file.',
+      'During the beta the website shows only the beta page. Its study app opens again at launch.',
       'KaiSip shows what it will add first. Your answers, saved questions, notes and mock results are added to what is already on this phone; nothing here is replaced or deleted.',
     ],
     topic: 'backup',

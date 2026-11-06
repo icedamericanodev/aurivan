@@ -572,6 +572,9 @@ describe('Journey 5b: Canopy Call on the reviewed deck', () => {
     expect(coach.ready && coach.pattern).toBe('role');
     expect(coach.ready && coach.game).toBe('canopy');
     expect(canPlay('cisa', 'canopy')).toBe(true);
+    // Release bug hunt round 2: "Drill it" follows Drills' unlock (about 50 practice answers), so this
+    // learner has answered 50 (release-hunt-2-journal-drill.test.tsx covers the locked case).
+    for (const id of d1.slice(100, 150)) useProgress.getState().recordAnswer('cisa', id, true);
     act(() => {
       r = create(<Mistakes />);
     });
