@@ -9312,7 +9312,7 @@ html[data-kbd] :where(.you-plant, .vision-panel, .gt-panel, .readiness-card) :wh
 {"cat":"Study strategy","q":"Which domain should I focus on?","a":"Domains 4 and 5 are the largest, at about 26% each. Use Weak spots (under You) to find where your accuracy is lowest and drill there first."},
 {"cat":"Study strategy","q":"How many practice questions should I do?","a":"There is no fixed number. Aim for consistent daily practice, full coverage of every domain, and Mock Exams close to your test date. How carefully you review each answer matters more than raw volume."},
 {"cat":"About & your data","q":"Is this app affiliated with ISACA?","a":"No. It is an independent study resource. CISA is a registered trademark of ISACA; this app is for educational use only and is not a substitute for ISACA's own materials."},
-{"cat":"About & your data","q":"Where do the questions and notes come from?","a":"KaiSip's questions, explanations and study notes are original. They are written with heavy AI help, directed by a CISA-certified founder, and each question is mapped to ISACA's current CISA exam content outline. Before a question is added, it goes through automated checks and AI review checks (exam question style, technical accuracy, a blind answer test, sources and how current they are, consistency across domains, grammar, and whether the longest option gives the answer away). Then the founder reviews the results. There is no outside panel of human reviewers yet. AI tools make mistakes, and so do people, so check anything important against ISACA's own materials and your own judgment. If something looks wrong, use Report a problem; fixes ship in app updates. A readiness range is a study estimate, not a prediction of your exam result. KaiSip is not affiliated with or endorsed by ISACA."},
+{"cat":"About & your data","q":"Where do the questions and notes come from?","a":"KaiSip's questions, explanations and study notes are original. They are drafted with AI tools, directed by a CISA-certified founder, and each question is mapped to ISACA's current CISA exam content outline. Before a question is added, it goes through automated checks and AI review checks (exam question style, technical accuracy, a blind answer test, sources and how current they are, consistency across domains, grammar, and whether the longest option gives the answer away). Then the founder reads the review reports and decides what to fix; not every question has been checked by hand yet. There is no outside panel of human reviewers yet. AI tools make mistakes, and so do people, so check anything important against ISACA's own materials and your own judgment. If something looks wrong, use Report a problem; fixes ship in app updates. A readiness range is a study estimate, not a prediction of your exam result. KaiSip is not affiliated with or endorsed by ISACA."},
 {"cat":"About & your data","q":"Does the app cost anything?","a":"Not during the beta. KaiSip is free during the beta, with no account and no ads. If paid features come later, we'll say so here first, and everything you've saved stays yours."},
 {"cat":"About & your data","q":"Is everything free on the website?","a":"The website has a free set of practice questions from every topic, plus all the study notes, the glossary, and review of what you've answered. The full course, with every practice question and full mock exams, is in the KaiSip Android app (in beta now)."},
 {"cat":"About & your data","q":"Is my data private?","a":"Yes. Your progress is stored only in your own browser and never leaves your device. There is no sign-up, and your answers are not sent to any server."},
@@ -22275,12 +22275,12 @@ function showResult(chosen, correct, timeout, info) {
       + '<span class="vr-rm-t">Read more</span><span class="sr-only"> of the explanation</span></button>';
   }
 
-  // 7. Source row (mobile TrustLine): "Original · Reviewed Oct 2026", the
+  // 7. Source row (mobile TrustLine): "Original · Checked Oct 2026", the
   //    main source (the first one listed, its bracketed parts dropped, as
   //    mobile shortReference), and Report a problem (also in More).
   var ref = q.framework_ref ? refNoDash(String(q.framework_ref).split(';')[0].replace(/\s*\([^)]*\)/g, '').trim()) : '';
   var srcHtml = '<div class="vr-src"><div class="vr-src-t">'
-    + '<span class="vr-src-ref">Original &middot; Reviewed ' + CONTENT_REVIEWED + '</span>'
+    + '<span class="vr-src-ref">Original &middot; Checked ' + CONTENT_REVIEWED + '</span>'
     + (ref ? '<p class="vr-src-sub">' + escapeHtml(ref) + '</p>' : '')
     + '</div><button type="button" class="vr-report" onclick="showFlagModal()">Report a problem<span class="sr-only"> with this question</span></button>'
     + '</div>';
@@ -28288,7 +28288,7 @@ const CHANGELOG = [
     version: 'v12.2',
     title: 'Questions re-checked',
     items: [
-      { cat: 'improved', text: 'Every practice question was re-checked by independent reviewers: clearer wording, more realistic wrong answers and up-to-date references.' },
+      { cat: 'improved', text: 'Every practice question was re-checked by our AI review checks: clearer wording, more realistic wrong answers and up-to-date references.' },
       { cat: 'fixed', text: 'Explanations no longer turn words like "A SOC 2 report" into an answer letter after the options are shuffled.' }
     ]
   },
@@ -28436,7 +28436,7 @@ const CHANGELOG = [
     version: 'v10.52',
     title: 'Sharper questions',
     items: [
-      { cat: 'improved', text: 'A fresh round of expert review made a set of questions clearer, so each one has a single best answer and no wording gives it away.' },
+      { cat: 'improved', text: 'A fresh round of review checks made a set of questions clearer, so each one has a single best answer and no wording gives it away.' },
       { cat: 'improved', text: 'Sources now point to the latest editions of the project management and IT governance standards.' },
       { cat: 'improved', text: 'Questions now use consistent American spelling, as on the real exam.' }
     ]

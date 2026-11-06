@@ -503,7 +503,7 @@ For internal/technical history, see git log and PR descriptions.
 ## [v12.2] — Questions re-checked
 
 ### Improved
-- Every practice question was re-checked by independent reviewers: clearer wording, more realistic wrong answers and up-to-date references.
+- Every practice question was re-checked by our AI review checks: clearer wording, more realistic wrong answers and up-to-date references.
 
 ### Fixed
 - Explanations no longer turn words like "A SOC 2 report" into an answer letter after the options are shuffled.
@@ -641,7 +641,7 @@ For internal/technical history, see git log and PR descriptions.
 ## [v10.52] — Sharper questions
 
 ### Improved
-- A fresh round of expert review made a set of questions clearer, so each one has a single best answer and no wording gives it away.
+- A fresh round of review checks made a set of questions clearer, so each one has a single best answer and no wording gives it away.
 - Sources now point to the latest editions of the project management and IT governance standards.
 - Questions now use consistent American spelling, as on the real exam.
 
