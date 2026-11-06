@@ -1127,16 +1127,3 @@ For internal/technical history, see git log and PR descriptions.
 
 ### New
 - Local persistence, mock exams, weak spots, bookmarks, spaced repetition, all 5 domains, and configurable session timers.
-
-[v8.7]: https://github.com/laladev-ai/cisa-prep/releases/tag/v8.7
-[v8.6]: https://github.com/laladev-ai/cisa-prep/releases/tag/v8.6
-[v8.5]: https://github.com/laladev-ai/cisa-prep/releases/tag/v8.5
-[v8.4]: https://github.com/laladev-ai/cisa-prep/releases/tag/v8.4
-[v8.3]: https://github.com/laladev-ai/cisa-prep/releases/tag/v8.3
-[v8.2]: https://github.com/laladev-ai/cisa-prep/releases/tag/v8.2
-[v8.1]: https://github.com/laladev-ai/cisa-prep/releases/tag/v8.1
-[v8.0]: https://github.com/laladev-ai/cisa-prep/releases/tag/v8.0
-[v7.0]: https://github.com/laladev-ai/cisa-prep/releases/tag/v7.0
-[v6.0]: https://github.com/laladev-ai/cisa-prep/releases/tag/v6.0
-[v5.x]: https://github.com/laladev-ai/cisa-prep/releases/tag/v5.2
-[v4.0]: https://github.com/laladev-ai/cisa-prep/releases/tag/v4.0
