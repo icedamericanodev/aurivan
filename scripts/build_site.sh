@@ -11,11 +11,16 @@
 #
 #   The list:
 #     - the pages: index.html, privacy.html, terms.html, support.html,
+#       how-questions-are-made.html (how questions are made and checked),
 #       beta.html (the beta-tester sign-up page, kaisip.com/beta), and
 #       beta-desk.html (the private Beta Desk, kaisip.com/beta-desk: the page
 #       holds no tester data; rows load only after an admin's two-step
 #       sign-in, and the database checks it). The desk is published only at
 #       the top of the site, never inside the preview folder.
+#     - 404.html: the not-found page. With it, Cloudflare answers a missing
+#       address with a real 404 instead of its single-page fallback (which
+#       showed the home page, broken by the strict /data/* and /assets/*
+#       policies). No script, image or font, and root links only.
 #     - assets/ (icons, the self-hosted fonts and og-kaisip.png, the
 #       link-preview card that index.html names in og:image). Only image,
 #       font and stylesheet files: anything else in assets/ stops the build.
@@ -52,10 +57,10 @@ OUT="${SITE_OUT:-_site}"
 # SITE_MODE (owner, 4 Nov 2026): the website is CLOSED to a landing page
 # until the phone app is in the stores.
 #   landing (the default, what Cloudflare publishes): kaisip.com shows the beta
-#     landing page (beta.html, also at /beta) plus Privacy, Terms and Help. The
+#     landing page (beta.html, also at /beta) plus Privacy, Terms, Help and
+#     How questions are made. The
 #     web study app and every data file are not published; any other address
-#     shows the landing page (Cloudflare's single-page fallback serves
-#     index.html, which is the landing page here).
+#     gets the not-found page (404.html, status 404).
 #   app: the full web study app as before (index.html + the free sample).
 #     CI and the smoke tester build this too, so the app stays deployable.
 # To reopen the web app at launch: change "landing" to "app" on the next line.
@@ -69,7 +74,7 @@ case "$SITE_MODE" in
   landing|app) ;;
   *) echo "build_site: SITE_MODE must be landing or app (got: $SITE_MODE)" >&2; exit 1 ;;
 esac
-PAGES=(index.html privacy.html terms.html support.html beta.html)
+PAGES=(index.html 404.html privacy.html terms.html support.html how-questions-are-made.html beta.html)
 DATA=(data/free/cisa_d1.json data/free/cisa_d2.json data/free/cisa_d3.json data/free/cisa_d4.json data/free/cisa_d5.json data/cisa_notes.json data/mindset/principles.json data/exam/cisa_exam_guide.json data/exam/final_review_week.json)
 SITE_CONFIG=(_headers _redirects)
 # File types allowed inside assets/ (lower case).
@@ -150,7 +155,7 @@ fi
 
 # The legal pages' inline theme script is allowed in _headers by its sha256
 # hash. If the script is edited, the hash must change too, or browsers block it.
-for page in privacy.html terms.html support.html beta.html beta-desk.html; do
+for page in privacy.html terms.html support.html how-questions-are-made.html beta.html beta-desk.html; do
   hash="$(python3 -c 'import re,sys,hashlib,base64
 s=open(sys.argv[1]).read(); m=re.search(r"<script>(.*?)</script>",s,re.S)
 print("sha256-"+base64.b64encode(hashlib.sha256(m.group(1).encode()).digest()).decode() if m else "")' "$page")"
@@ -158,6 +163,51 @@ print("sha256-"+base64.b64encode(hashlib.sha256(m.group(1).encode()).digest()).d
     fail "$page: its inline script hash $hash is not in _headers (update the legal-page CSP rules)"
   fi
 done
+
+# The home page's policy follows the mode. Landing: "/" and "/index.html"
+# serve beta.html, so they must carry its strict policy (default-src 'none',
+# its theme script by hash, form-action 'none'). App: that policy would block
+# the web app's inline scripts, so it is dropped from _site/_headers here and
+# the build checks it is gone.
+python3 - "$OUT/_headers" "$SITE_MODE" <<'PY' || fail "_headers: the home page policy does not fit SITE_MODE=$SITE_MODE (see above)"
+import re, sys, hashlib, base64
+path, mode = sys.argv[1], sys.argv[2]
+lines = open(path).read().split("\n")
+m = re.search(r"<script>(.*?)</script>", open("beta.html").read(), re.S)
+h = "'sha256-" + base64.b64encode(hashlib.sha256(m.group(1).encode()).digest()).decode() + "'" if m else None
+HOME = ("/", "/index.html")
+def strict(v):
+    return "default-src 'none'" in v and "form-action 'none'" in v and (h is None or h in v) and "'unsafe-inline' https://www.googletagmanager.com" not in v
+out, cur = [], None
+for ln in lines:
+    s = ln.strip()
+    if s and not s.startswith("#") and not ln[0].isspace():
+        cur = s
+    elif mode == "app" and cur in HOME and s.lower().startswith("content-security-policy:"):
+        continue
+    out.append(ln)
+if mode == "app":
+    open(path, "w").write("\n".join(out))
+rules, cur = {}, None
+for ln in out:
+    s = ln.strip()
+    if not s or s.startswith("#"):
+        continue
+    if not ln[0].isspace():
+        cur = s; rules.setdefault(cur, [])
+    elif cur:
+        rules[cur].append(s)
+bad = []
+for r in HOME:
+    csp = [x.split(":", 1)[1] for x in rules.get(r, []) if x.lower().startswith("content-security-policy:")]
+    if mode == "landing" and not any(strict(v) for v in csp):
+        bad.append(r + ": needs the strict landing-page policy (as /beta)")
+    if mode == "app" and csp:
+        bad.append(r + ": must not carry its own policy in app mode")
+if bad:
+    print("build_site: " + "; ".join(bad), file=sys.stderr)
+    sys.exit(1)
+PY
 
 # The full question bank must never be published (web v12.50). For every
 # question outside the free sample, its stem, explanations and tips (any text
@@ -245,7 +295,7 @@ PYCHK
 while IFS= read -r -d '' f; do
   rel="${f#"$OUT"/}"
   case "$rel" in
-    index.html|privacy.html|terms.html|support.html|beta.html|_headers|_redirects|favicon.ico) ;;
+    index.html|404.html|privacy.html|terms.html|support.html|how-questions-are-made.html|beta.html|_headers|_redirects|favicon.ico) ;;
     beta-desk.html) [ -n "$DESK" ] || fail "the Beta Desk must not be in the preview folder" ;;
     data/free/cisa_d[1-5].json|data/cisa_notes.json|data/mindset/principles.json) ;;
     data/exam/cisa_exam_guide.json|data/exam/final_review_week.json) ;;

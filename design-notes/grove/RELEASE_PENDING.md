@@ -2,6 +2,8 @@
 
 Batched for the end of the uplift (web v13, mobile 2.0.0; DECISIONS 8). Write the final What's New in the CLAUDE.md style.
 
+Status (6 Nov 2026): the web What's New for v13 ("Welcome to the new KaiSip") is written from the lines below and shipped on feature/grove-ui; do not add them to the web again. The phone (2.0.0) entry and the follow-ups below are still open.
+
 ## What's New lines (draft)
 - Today has a calmer, clearer look: your plant grows full size in the readiness ring, and today's plan shows when you've finished.
 - Settings now has its own page, and You opens with your week, your next step and your plant.
@@ -53,9 +55,12 @@ Batched for the end of the uplift (web v13, mobile 2.0.0; DECISIONS 8). Write th
 - Your plant's look is now chosen right on its page, and Today and You open it in one tap.
 - The badges space on You and Your progress is clearer about where badges are earned.
 
+- New page, How questions are made: how KaiSip's questions are written with AI help and checked, with a reminder that AI can make mistakes and how to report one. (Transparency, TRANSPARENCY.md.)
+
 ## Follow-ups to do at the release
 - Phone 2.0.0 (the KaiSip launch, 6 Nov 2026): `mobile/LIVE_VERSION` stays 1.48.0 while the web study app is closed. When the web app reopens, set `mobile/LIVE_VERSION` to 2.0.0 (and rebuild the web bundle stamp with `npm run web-plant` if verify_repo asks).
 - Phone dash sweep, left for the joint web and phone sweep: the home-screen widget's readiness number ("68–78" beside a raised %, `engine/widgets.ts`) needs a check on a real widget before it changes to words; `rangeLabel` in `engine/readinessRange.ts` is bundled for the website and unused on the phone. The phone share card now says "68 to 78%".
+- Transparency owner decisions (TRANSPARENCY.md section 5): the older What's New lines about independent and expert review, the beta FAQ title, "Reviewed" in the source row, support.html's "small team" and "Flag" wording, and confirming the founder's CISA is current before the page goes live.
 - `mobile/src/engine/plantLooks.ts` `howToOpen` says "in the Herbarium": change to "in Badges" and rebuild `assets/kaisip-plant.js` in the same commit.
 - Old What's New entries (v12.44, v12.49) mention "field guide": release history, leave unless Sky says otherwise.
 - Q1, Q2, Q5 on the phone (DECISIONS 13): the low-end sentence under its scale bar, "too few yet" instead of "seed" in its chart, and the ScaleBar range label "67 to 79".
@@ -96,3 +101,12 @@ Runs right after Phase 4, web and phone, presentation only, nothing removed:
 - Drills (games): every drill screen (Snare Spotter, Signpost, Call It First and the six that open after 50 answers), the round header, recap, level-up and the 3-then-unlock rule. Restyle to Grove and TYPE_SCALE.md; behaviour unchanged.
 - Web: the plant on Today and You, the web plant page, and the website's badges message.
 - Final QA (Phase 5) walks all three on both platforms.
+
+## After the beta: signature pass (Sky approved 5 Nov 2026)
+Goal: make the look unmistakably KaiSip and less like a generic AI-made design. Not before the beta .aab.
+- Custom icon set drawn in the plant's line style (replace stock icons on tabs, rows and tiles).
+- Fewer UPPERCASE kicker labels; sentence-case headings where a kicker only repeats the title.
+- Fewer stacked cards: more open lists and whitespace on Practice, You and Learn.
+- The plant and botanical drawings as the main visual signature (heroes, empty states, onboarding).
+- Run with super-lens-critic, premium-mobile-designer, premium-web-designer and brand-logo-designer, using beta tester feedback; mockups to Sky before building. Web and phone together.
+- Phone nits from the 2.0.0 release review (not blocking): the mock Flag button's spoken name "Unflag question" vs the visible "Flag" (label in name: use "Flag question" with the selected state, update four tests); the welcome line "written with AI help" vs "drafted with AI tools" elsewhere (pick one, web and phone together); a share-card test or shot at "100 to 100%" on a 360dp phone.
