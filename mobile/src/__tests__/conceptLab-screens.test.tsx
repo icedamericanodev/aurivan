@@ -59,6 +59,7 @@ it('adjustable actions and increment alternatives are bounded and labelled', () 
   expect(slider().props.accessibilityValue).toMatchObject({ min: 0, max: 180, now: 80 });
   act(() => { slider().props.onAccessibilityAction({ nativeEvent: { actionName: 'increment' } }); });
   expect(slider().props.accessibilityValue.now).toBe(81); press('Show precise controls'); press('Decrease Actual recovery time'); expect(slider().props.accessibilityValue.now).toBe(80);
+  adjust(1, 60); expect(slider().props.accessibilityValue.text).toBe('1 minute');
   adjust(0, 60); const decrease = r!.root.findAll(n => n.props.accessibilityLabel === 'Decrease Actual recovery time' && n.props.disabled === true); expect(decrease.length).toBeGreaterThan(0);
 });
 it.each([undefined, '%', 'missing', '__proto__'])('handles invalid or absent lab ID %s', id => { mockParams = { id }; mount(<LabDetail />); expect(text()).toContain('Lab not found'); press('Browse labs'); expect(router.replace).toHaveBeenCalledWith('/labs'); });

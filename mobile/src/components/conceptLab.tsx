@@ -72,7 +72,7 @@ export function LabRange({ label, value, max, onChange, target, meaning, precise
       }}
       accessible accessibilityRole="adjustable" accessibilityLabel={label}
       accessibilityHint={`${meaning ? `${meaning}. ` : ''}Swipe up or down to change by one minute. Show precise controls for decrease and increase buttons.`}
-      accessibilityValue={{ min: 0, max, now: value, text: `${value} minutes` }}
+      accessibilityValue={{ min: 0, max, now: value, text: `${value} ${value === 1 ? 'minute' : 'minutes'}` }}
       accessibilityActions={[{ name: 'increment' }, { name: 'decrement' }]}
       onAccessibilityAction={(e) => {
         if (e.nativeEvent.actionName === 'increment') adjust(1);
