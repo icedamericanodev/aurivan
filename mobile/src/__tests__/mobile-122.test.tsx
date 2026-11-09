@@ -19,7 +19,7 @@
  * Real content and real stores. Never `act(() => store.action())`: use braces.
  */
 import { act, create, type ReactTestInstance, type ReactTestRenderer } from 'react-test-renderer';
-import { AppState, Dimensions, ScrollView, View, type AppStateStatus } from 'react-native';
+import { AppState, Dimensions, ScrollView, StyleSheet, View, type AppStateStatus } from 'react-native';
 import LessonPlayer from '../app/lesson/[id]';
 import NoteSubtopicScreen from '../app/notes/subtopic/[id]';
 import Results from '../app/results';
@@ -32,7 +32,7 @@ import { IllustrationView, NoteBody } from '../components/notes';
 import { NATIVE_FIGURE_IDS, nativeFigureFor, RecoveryTimeline } from '../components/noteFigures';
 import { AnswerRecap } from '../components/quiz';
 import { moreRowLabels } from '../../jest/answerMore';
-import { IconButton, PushedHeader, Screen } from '../components/ui';
+import { IconButton, PushedHeader, Screen, T } from '../components/ui';
 import { TOPIC_CARD_INSET } from '../components/topicCard';
 import { CISA_LESSONS } from '../content/lessons/cisa';
 import type { Scene } from '../content/lessons/types';
@@ -45,7 +45,7 @@ import { monthYear } from '../lib/format';
 import { startFromIds } from '../lib/sessions';
 import { selectCert, useProgress } from '../store/progress';
 import { useSession } from '../store/session';
-import { space } from '../theme/tokens';
+import { space, type } from '../theme/tokens';
 
 jest.mock('@react-native-async-storage/async-storage', () =>
   jest.requireActual('@react-native-async-storage/async-storage/jest/async-storage-mock'),
@@ -296,6 +296,27 @@ const answerOnScreen = (right: boolean) => {
 };
 
 describe('answer screen after a miss', () => {
+  it('keeps the answer letter uncapped and reserves two recap lines at 320dp with 200% text', () => {
+    const w = Dimensions.get('window');
+    act(() => {
+      Dimensions.set({ window: { ...w, width: 320, fontScale: 2 }, screen: { ...w, width: 320, fontScale: 2 } });
+    });
+    startFromIds('cisa', ['d4_062'], 'T');
+    answerOnScreen(false);
+    mount(<SessionScreen />);
+    const recap = root().findByType(AnswerRecap);
+    const text = recap.findByType(T);
+    expect(text.props.children).toBe(`Not quite · ${recap.props.letter}`);
+    expect(text.props.numberOfLines).toBeUndefined();
+    const overlay = root().findAllByType(CrossFade)[0];
+    const height = StyleSheet.flatten(overlay.props.style).minHeight;
+    expect(height).toBeGreaterThanOrEqual(2 * type.meta.lineHeight! * text.props.maxFontSizeMultiplier);
+    expect(root().findAll((n) => n.props.accessibilityLabel === 'Save question').length).toBeGreaterThan(0);
+    act(() => {
+      Dimensions.set({ window: w, screen: w });
+    });
+  });
+
   it('the rows say what they do; the header recap swaps in once the verdict has scrolled away', () => {
     startFromIds('cisa', ['d4_062'], 'T');
     answerOnScreen(false);
@@ -446,11 +467,11 @@ describe('note page: title collapse and reading to the end', () => {
     expect(seen).toHaveBeenLastCalledWith(300, 700);
   });
 
-  it('the topic tag is one line, and wraps at large text', () => {
+  it('the full topic breadcrumb can wrap at normal and large text', () => {
     mockParams = { id: '4B1.2' };
     mount(<NoteSubtopicScreen />);
     const tagLines = () => root().findAll((n) => typeof n.props.children === 'string' && n.props.children.startsWith('IS Operations · Business') && n.props.v === 'meta')[0].props.numberOfLines;
-    expect(tagLines()).toBe(1);
+    expect(tagLines()).toBeUndefined();
     act(() => {
       r?.unmount();
     });

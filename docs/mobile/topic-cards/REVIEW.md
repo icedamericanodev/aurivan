@@ -2,6 +2,8 @@
 
 Owner-approved design, 9 November 2026. PR #242.
 
+The 10 November follow-up is documented in the [app-wide text fit audit](../text-fit/REVIEW.md), including final test results and native large-text evidence.
+
 Each mistake, study note, principle, lesson content scene, and Concept Lab stage has one bounded Grove reading surface. Learn navigation/title tiles and lesson covers retain their existing design. No course content, grading rules, progress storage or dependencies changed.
 
 Figures use the measured card interior, capped at the existing 560pt reading measure. Note/principle collapsed titles, note read thresholds and lesson answer scrolling include the card inset. The card itself does not group its interactive descendants into one accessibility element.

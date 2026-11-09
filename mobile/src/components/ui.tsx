@@ -522,6 +522,7 @@ export function Button({
       style={[
         isForest ? styles.buttonForest : isGhost ? styles.buttonGhost : styles.button,
         shape === 'plate' && !isGhost && styles.buttonPlate,
+        styles.boundedControl,
         { backgroundColor: look.bg, borderColor: look.border },
         style,
         press.style,
@@ -1443,6 +1444,10 @@ export function Tag({ label, domain, color, numberOfLines }: { label: string; do
 // adds a 2pt ink edge drawn as an overlay on top (so the box never changes size and nothing reflows)
 // and a 14pt ink tick before its label. The label stays ink at the same weight in both states.
 // Colour is never the only signal: the tick and the spoken state carry it too.
+// Wrapped chip groups use a stable line width before native text is measured.
+// The scrolling, compact row keeps its original intrinsic-size pills.
+const ChipWrapContext = createContext(false);
+
 export function Chip({
   label,
   selected,
@@ -1451,8 +1456,8 @@ export function Chip({
   accessibilityHint,
   disabled,
   checkbox,
-  shape = 'pill',
-  fullWidth = false,
+  shape,
+  fullWidth,
 }: {
   label: string;
   selected: boolean;
@@ -1469,7 +1474,9 @@ export function Chip({
   fullWidth?: boolean;
 }) {
   const { c } = useTheme();
-  const corner = shape === 'rounded' ? radius.md : radius.pill;
+  const wrapped = useContext(ChipWrapContext);
+  const stretch = fullWidth ?? wrapped;
+  const corner = (shape ?? (wrapped ? 'rounded' : 'pill')) === 'rounded' ? radius.md : radius.pill;
   const press = usePressScale({ tint: c.soft, tintRadius: corner });
   // A disabled chip: muted words and a quiet edge; a chosen and disabled chip keeps its tick, in muted.
   const ink = disabled ? c.muted : c.ink;
@@ -1485,13 +1492,13 @@ export function Chip({
       hitSlop={4} // 40pt chip + 4pt each side = 48pt touch target
       onPressIn={press.onPressIn}
       onPressOut={press.onPressOut}
-      style={[styles.chip, { backgroundColor: c.raised, borderColor: disabled ? c.line : c.control, borderRadius: corner }, fullWidth && { width: '100%', justifyContent: 'flex-start' }, press.style]}
+      style={[styles.chip, { backgroundColor: c.raised, borderColor: disabled ? c.line : c.control, borderRadius: corner }, stretch && { width: '100%', justifyContent: 'flex-start' }, press.style]}
     >
       {press.layer}
       {/* The 2pt ink edge, drawn over the 1.5pt rest edge (it cross-fades in over 120 ms). */}
       <StateLayer on={selected} style={[styles.chipFill, { borderWidth: 2, borderColor: ink, borderRadius: corner }]} />
       {selected && <Check testID="chip-tick" size={14} color={ink} strokeWidth={2.5} />}
-      <Text maxFontSizeMultiplier={role.chip.max} style={[role.chip.style, styles.chipLabel, fullWidth && { flex: 1, minWidth: 0 }, { color: ink }]}>{label}</Text>
+      <Text maxFontSizeMultiplier={role.chip.max} style={[role.chip.style, styles.chipLabel, stretch && { flex: 1, minWidth: 0 }, { color: ink }]}>{label}</Text>
     </AnimatedPressable>
   );
 }
@@ -1641,8 +1648,8 @@ const styles = StyleSheet.create({
   pushed: { flexDirection: 'row', alignItems: 'center', minHeight: 52, gap: space.sm },
   pushedIcon: { width: 44, minHeight: 44, justifyContent: 'center' },
   pushedRight: { minWidth: 44, minHeight: 44, justifyContent: 'center' },
-  tagRow: { flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'center', gap: space.sm, marginTop: space.lg },
-  teachTag: { minHeight: 32, paddingHorizontal: space.md, borderRadius: radius.pill, flexDirection: 'row', alignItems: 'center', gap: space.sm },
+  tagRow: { alignSelf: 'stretch', gap: space.sm, marginTop: space.lg },
+  teachTag: { width: '100%', minHeight: 32, paddingHorizontal: space.md, paddingVertical: space.xs, borderRadius: radius.md, flexDirection: 'row', alignItems: 'center', gap: space.sm },
   teachDot: { width: 6, height: 6, borderRadius: 3 },
   // The empty state's "next" line: a leaf and a sentence, centred, that may wrap.
   nextLine: { marginTop: space.lg, maxWidth: '100%', paddingHorizontal: space.md, flexDirection: 'row', alignItems: 'center', gap: space.sm },
@@ -1659,6 +1666,7 @@ const styles = StyleSheet.create({
   chipFade: { position: 'absolute', right: 0, top: 0, bottom: 0 },
   numUnit: { marginTop: 1 },
   noTouch: { pointerEvents: 'none' },
+  boundedControl: { maxWidth: '100%', minWidth: 0, flexShrink: 1 },
   button: {
     minHeight: 56, // spec: 56 tall, a comfortable thumb target (WCAG 2.5.8)
     borderRadius: radius.pill,
@@ -1889,9 +1897,9 @@ function Percent({ size, color, roll }: { size: NumStep; color: string; roll?: R
 }
 
 /** The unit under or beside a serif numeral ("due", "questions"): meta 14/20 (TYPE_SCALE.md row 205). */
-export function Unit({ children, color }: { children: string; color?: string }) {
+export function Unit({ children, color, style }: { children: string; color?: string; style?: StyleProp<TextStyle> }) {
   const { c } = useTheme();
-  return <T v="meta" color={color ?? c.ink2} style={styles.numUnit}>{children}</T>;
+  return <T v="meta" color={color ?? c.ink2} style={[styles.numUnit, style]}>{children}</T>;
 }
 
 /** Right-aligned count in a list row: the 22 value step over a unit ("59 / due"). */
@@ -2071,7 +2079,7 @@ export function EmptyState({
           {tags.map((t) => (
             <View key={t} style={[styles.teachTag, { backgroundColor: c.soft }]}>
               <View style={[styles.teachDot, { backgroundColor: c.clay }]} />
-              <T v="meta">{t}</T>
+              <T v="meta" style={{ flex: 1, minWidth: 0 }}>{t}</T>
             </View>
           ))}
         </View>
@@ -2118,7 +2126,7 @@ export function Segmented<V extends string | number>({
 }) {
   const { c, isDark } = useTheme();
   const { reduced } = useMotion();
-  const stacked = useFontScale() >= stackAt;
+  const fontScale = useFontScale();
   // The thumb (spec §8): ONE selected shape that slides to the new choice
   // (translateX, a settle spring with no visible overshoot). It needs the
   // track's width, so until the first layout, and in a stacked column at
@@ -2128,6 +2136,16 @@ export function Segmented<V extends string | number>({
   const n = options.length;
   const at = options.findIndex((o) => o.value === value);
   const itemW = trackW > 0 ? (trackW - SEG_INSET * 2 - SEG_GAP * (n - 1)) / n : 0;
+  // A measured narrow track must reflow even at the default text size.
+  // Budget half an em per unit letter and 0.6 em per numeral, plus the
+  // existing padding, borders and gap. Labels still shrink/wrap if a font
+  // needs more room; this budget avoids squeezing long units on small phones.
+  const numericWidth = Math.max(0, ...options.map((o) => o.numeral
+    ? space.sm * 2 + 4 + space.xs
+      + o.numeral.length * 20 * 0.6 * Math.min(fontScale, numRole[20].max)
+      + o.label.length * (type.meta.fontSize ?? 14) * 0.5 * Math.min(fontScale, maxScale.meta)
+    : 0));
+  const stacked = fontScale >= stackAt || (itemW > 0 && itemW < numericWidth);
   const slide = !stacked && !reduced && itemW > 0;
   // The thumb's place in SEGMENTS, not points: its offset is drawn from the
   // current width, so the first layout (and a rotation) puts it in place at
@@ -2189,17 +2207,17 @@ export function Segmented<V extends string | number>({
             onPress={() => onChange(o.value)}
             hitSlop={SEG_HIT_SLOP}
             // A transparent border of the same width as the selected one, so nothing jumps.
-            style={[styles.segItem, !stacked && { flex: 1 }, { borderWidth: 2, borderColor: 'transparent' }]}
+            style={[styles.segItem, { minWidth: 0 }, !stacked && { flex: 1 }, { borderWidth: 2, borderColor: 'transparent' }]}
           >
             {!slide && <StateLayer on={on} style={[styles.segOn, onLook]} />}
             {o.icon ? <View>{o.icon(on ? c.ink : c.ink2)}</View> : null}
             {o.numeral ? (
               <>
                 <BigNum value={o.numeral} size={20} />
-                <Unit color={on ? c.ink : c.ink2}>{o.label}</Unit>
+                <Unit color={on ? c.ink : c.ink2} style={{ flexShrink: 1, minWidth: 0 }}>{o.label}</Unit>
               </>
             ) : (
-              <T v="chip" color={on ? c.ink : c.ink2}>{o.label}</T>
+              <T v="chip" color={on ? c.ink : c.ink2} style={{ flexShrink: 1, minWidth: 0, textAlign: 'center' }}>{o.label}</T>
             )}
           </Pressable>
         );
@@ -2209,11 +2227,11 @@ export function Segmented<V extends string | number>({
 }
 
 // ── ChipRow: one scrolling line of chips with a fade at the right edge ─
-// At large text sizes the chips wrap instead of scrolling (spec §10.7).
+// At large text sizes each chip gets a full line instead of scrolling (spec §10.7).
 export function ChipRow({ children }: { children: ReactNode }) {
   const { c } = useTheme();
   const wrap = useFontScale() >= LARGE_TEXT;
-  if (wrap) return <View style={styles.chipWrap}>{children}</View>;
+  if (wrap) return <ChipWrapContext.Provider value><View style={styles.chipWrap}>{children}</View></ChipWrapContext.Provider>;
   return (
     <View style={{ marginRight: -space.gutter }}>
       <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.chipScroll}>

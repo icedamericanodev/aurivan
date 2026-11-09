@@ -87,6 +87,7 @@ import {
   AnswerPlate,
   AnswerContext,
   AnswerRecap,
+  recapHeight,
   KeyIdea,
   MORE_FOCUS_BACK_MS,
   ConfidenceRow,
@@ -862,7 +863,7 @@ export default function SessionScreen() {
             back up brings them back. 120 ms, at once under Reduce Motion. */}
         <CrossFade
           showSecond={showRecap}
-          style={{ flex: 1, minHeight: 44 }}
+          style={{ flex: 1, minHeight: isMock ? 44 : recapHeight(fontScale) }}
           first={
             <View style={{ flexDirection: 'row' }}>
               <SegmentBar total={total} done={Object.keys(active.responses).length} current={active.index} />

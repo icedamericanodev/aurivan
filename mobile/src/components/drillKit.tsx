@@ -30,7 +30,7 @@ import { useTheme } from '../theme/useTheme';
 import { TierLeaf } from './glyphs';
 import { Check, X } from './icons';
 import { Pop, useMotion } from './motion';
-import { T } from './ui';
+import { T, useFontScale } from './ui';
 
 // ── The twig ───────────────────────────────────────────────────────────
 
@@ -390,9 +390,10 @@ export function LevelMarkers({
   testID?: string;
 }) {
   const { c } = useTheme();
+  const large = useFontScale() >= LARGE_TEXT;
   if (onPick) {
     return (
-      <View testID={testID} accessibilityRole="radiogroup" accessibilityLabel="Pick your level" style={{ flexDirection: 'row', gap: space.sm }}>
+      <View testID={testID} accessibilityRole="radiogroup" accessibilityLabel="Pick your level" style={{ flexDirection: large ? 'column' : 'row', gap: space.sm }}>
         {GAME_TIERS.map((t) => {
           const on = picked === t;
           return (
@@ -404,7 +405,8 @@ export function LevelMarkers({
               accessibilityLabel={labels?.[t] ?? `${GAME_TIER_NAME[t]}${yours && t === level ? ', your level' : ''}${lines?.[t] ? `. ${lines[t]}` : ''}`}
               onPress={() => onPick(t)}
               style={({ pressed }) => ({
-                flex: 1,
+                flex: large ? undefined : 1,
+                flexDirection: large ? 'row' : 'column',
                 minWidth: 0,
                 minHeight: 48,
                 borderRadius: groveRadius.tile,
@@ -421,9 +423,9 @@ export function LevelMarkers({
               {/* The picked tile's 2pt ink edge sits inside the box (F9); focus draws outside it. */}
               {on ? <View pointerEvents="none" style={{ position: 'absolute', top: -1, left: -1, right: -1, bottom: -1, borderRadius: groveRadius.tile, borderWidth: 2, borderColor: c.ink }} /> : null}
               <Marker tier={t} level={level} />
-              <View style={{ flexDirection: 'row', alignItems: 'center', flexWrap: 'wrap', justifyContent: 'center', gap: 2 }}>
+              <View style={{ ...(large ? { flex: 1 } : { width: '100%' as const }), minWidth: 0, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 2 }}>
                 {on ? <Check size={12} color={c.ink} strokeWidth={2.75} /> : null}
-                <T v="caption" center color={c.ink}>{GAME_TIER_NAME[t]}</T>
+                <T v="caption" center color={c.ink} style={{ flex: 1, minWidth: 0 }}>{GAME_TIER_NAME[t]}</T>
               </View>
             </Pressable>
           );
@@ -433,11 +435,11 @@ export function LevelMarkers({
   }
   const name = forest ? c.onForest : c.ink;
   return (
-    <View testID={testID} accessible={!decorative} accessibilityRole={decorative ? undefined : 'image'} accessibilityLabel={decorative ? undefined : levelSpoken(level)} style={{ flexDirection: 'row', flexWrap: 'wrap', gap: small ? space.md : space.lg, justifyContent: small ? 'flex-start' : 'center' }}>
+    <View testID={testID} accessible={!decorative} accessibilityRole={decorative ? undefined : 'image'} accessibilityLabel={decorative ? undefined : levelSpoken(level)} style={{ flexDirection: large && !small ? 'column' : 'row', flexWrap: 'wrap', gap: small ? space.md : space.lg, justifyContent: small ? 'flex-start' : 'center' }}>
       {GAME_TIERS.map((t) => (
-        <View key={t} style={{ alignItems: 'center', gap: space.xs, minWidth: small ? 0 : 72 }}>
+        <View key={t} style={{ alignItems: 'center', gap: space.xs, minWidth: small ? 0 : 72, ...(large && !small && { width: '100%' }) }}>
           <MarkerSwap tier={t} level={level} forest={forest} small={small} play={play} />
-          {small ? null : <T v="caption" center color={name}>{GAME_TIER_NAME[t]}</T>}
+          {small ? null : <T v="caption" center color={name} style={{ alignSelf: 'stretch' }}>{GAME_TIER_NAME[t]}</T>}
         </View>
       ))}
     </View>

@@ -62,6 +62,7 @@ export const WHATS_NEW: readonly WhatsNewEntry[] = [
     version: '2.3.0',
     date: '2026-11-09',
     improved: ['Read each topic in a clear card, with its explanation and related actions together.'],
+    fixed: ['Long labels stay readable on smaller screens and with larger text.'],
   },
   {
     version: '2.2.0',

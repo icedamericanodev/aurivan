@@ -17,7 +17,9 @@
  */
 import { act, create, type ReactTestInstance, type ReactTestRenderer } from 'react-test-renderer';
 import { Dimensions } from 'react-native';
-import { PrincipleBody } from '../components/principles';
+import { PrincipleBody, TriggerChips } from '../components/principles';
+import { T } from '../components/ui';
+import { radius } from '../theme/tokens';
 import { findQuestion, getAllQuestions } from '../content/loader';
 import { getPrinciples, principleFamilies } from '../content/principles';
 import { questionsForPrinciple } from '../lib/principleQuestions';
@@ -146,6 +148,22 @@ describe('every principle renders', () => {
     mount(<PrincipleBody principle={pack.principles[0]} />);
     const chips = root().findAll((n) => typeof n.props.accessibilityLabel === 'string' && n.props.accessibilityLabel.startsWith('Words that signal it'))[0];
     expect(chips.findAll((n) => typeof n.props.onPress === 'function')).toEqual([]);
+  });
+
+  it('gives wrapped trigger text rectangular corners without changing its words or short-label appearance', () => {
+    const label = 'The auditor is asked to review a system they designed';
+    mount(<TriggerChips triggers={[label]} />);
+    const text = () => root().findByType(T);
+    const corner = () => text().parent!.props.style.borderRadius;
+    expect(corner()).toBe(radius.pill);
+    act(() => { text().props.onTextLayout({ nativeEvent: { lines: [{ text: 'The auditor is asked' }, { text: 'to review a system they designed' }] } }); });
+    expect(corner()).toBe(radius.md);
+    expect(allText()).toBe(label);
+    expect(text().props.numberOfLines).toBeUndefined();
+    act(() => { text().props.onTextLayout({ nativeEvent: { lines: [{ text: label }] } }); });
+    expect(corner()).toBe(radius.pill);
+    setFontScale(2);
+    expect(corner()).toBe(radius.md);
   });
 });
 

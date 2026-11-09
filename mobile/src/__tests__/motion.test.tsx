@@ -439,7 +439,7 @@ describe('Segmented thumb', () => {
   const opts = [10, 20, 50].map((n) => ({ value: n, numeral: String(n), label: 'questions' }));
   const layout = () =>
     act(() => {
-      r!.root.findByProps({ accessibilityRole: 'radiogroup' }).props.onLayout({ nativeEvent: { layout: { width: 306, height: 50 } } });
+      r!.root.findByProps({ accessibilityRole: 'radiogroup' }).props.onLayout({ nativeEvent: { layout: { width: 366, height: 50 } } });
     });
   const thumb = () => r!.root.findAll((n) => n.type === View && style(n).position === 'absolute' && style(n).width !== undefined && style(n).borderColor !== undefined)[0];
 

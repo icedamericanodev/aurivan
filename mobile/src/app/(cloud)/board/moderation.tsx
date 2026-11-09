@@ -245,14 +245,14 @@ export default function Moderation() {
       {queue?.items.map((it, i) => (
         <View key={`${it.kind}-${it.id}`} style={{ paddingVertical: space.md, borderBottomWidth: i === queue.items.length - 1 ? 0 : 1, borderBottomColor: c.line }}>
           <T v="label">{headline(shown, it)}</T>
-          {it.title ? <T v="body" numberOfLines={2}>{it.title}</T> : null}
-          {it.body ? <T v="small" numberOfLines={2} color={c.ink}>{`“${it.body}”`}</T> : null}
+          {it.title ? <T v="body">{it.title}</T> : null}
+          {it.body ? <T v="small" color={c.ink}>{`“${it.body}”`}</T> : null}
           {shown === 'reported' && it.editedSinceReport ? (
             <>
               <T v="meta">{copy('board.staff.edited')}</T>
-              {it.reportedFirst ? <T v="small" numberOfLines={3}>{copy('board.staff.reportedFirst', { text: oneLine(it.reportedFirst) })}</T> : null}
+              {it.reportedFirst ? <T v="small">{copy('board.staff.reportedFirst', { text: oneLine(it.reportedFirst) })}</T> : null}
               {it.reportedLast && it.reportedLast !== it.reportedFirst ? (
-                <T v="small" numberOfLines={3}>{copy('board.staff.reportedLast', { text: oneLine(it.reportedLast) })}</T>
+                <T v="small">{copy('board.staff.reportedLast', { text: oneLine(it.reportedLast) })}</T>
               ) : null}
             </>
           ) : null}

@@ -6,7 +6,7 @@
  *   once the page's own title has scrolled under the bar (at once under
  *   Reduce Motion; never read by screen readers, it repeats the hero). The
  *   tag above the title reads "IS Operations · 4B1 Business Impact
- *   Analysis" on one line (it wraps at large text), so the page has two
+ *   Analysis" with wrapping as needed, so the page has two
  *   levels of wayfinding, not three.
  * - Under the title: "About 3 min read" (the note's own `minutes`), plus
  *   "· Read ✓" once read. Then the lesson for this idea (mobile 1.20), its
@@ -40,7 +40,7 @@ import { CheckDraw, useScreenFocus } from '../../../components/motion';
 import { AcronymPlate, NoteBody } from '../../../components/notes';
 import { titleAcronyms } from '../../../engine/noteAcronyms';
 import { ReportRow } from '../../../components/support';
-import { Button, Enter, Gap, PushedHeader, Row, Screen, Tag, T, useFontScale } from '../../../components/ui';
+import { Button, Enter, Gap, PushedHeader, Row, Screen, Tag, T } from '../../../components/ui';
 import { EmptyScreen } from '../../../components/emptyScreen';
 import { TopicCard, TOPIC_CARD_INSET } from '../../../components/topicCard';
 import { labForNote } from '../../../content/labs';
@@ -57,7 +57,7 @@ import { useNoteDwell } from '../../../lib/useNoteDwell';
 import { canAutoRead, groupReadState, READ_FILL, noteReadState } from '../../../engine/noteReadState';
 import { useActiveCert } from '../../../lib/useActiveCert';
 import { useProgress } from '../../../store/progress';
-import { LARGE_TEXT, space } from '../../../theme/tokens';
+import { space } from '../../../theme/tokens';
 import { useTheme } from '../../../theme/useTheme';
 
 /** The header title's hysteresis (pt): it shows past the line, and hides only 8pt back above it. */
@@ -84,7 +84,6 @@ export default function NoteSubtopicScreen() {
   const autoRead = useRef(false);
   // The learner has dragged the page themselves (auto-read waits for this).
   const dragged = useRef(false);
-  const fontScale = useFontScale();
   const note = findNote(cert.id, id);
   const domain = note ? cert.domains.find((d) => d.id === note.domainId) : undefined;
   // Mobile 1.25: time open on screen (paused out of view or in the background).
@@ -175,7 +174,6 @@ export default function NoteSubtopicScreen() {
   };
   const readLine = `${aboutMin(minutes)} read`;
   const acronyms = titleAcronyms(note);
-  const large = fontScale >= LARGE_TEXT;
 
   return (
     <Screen
@@ -192,7 +190,7 @@ export default function NoteSubtopicScreen() {
           {/* The tag and the title: the header's title appears once this has scrolled under it. */}
           <View onLayout={(e) => (titleBottom.current = space.lg + TOPIC_CARD_INSET + e.nativeEvent.layout.y + e.nativeEvent.layout.height)}>
             {/* Mobile 1.43: words, not codes ("IS Operations · Business Impact Analysis"); the code stays in the source row. */}
-            <Tag domain={domain} numberOfLines={large ? undefined : 1} label={topic ? `${domain.short} · ${topic.name}` : domain.short} />
+            <Tag domain={domain} label={topic ? `${domain.short} · ${topic.name}` : domain.short} />
             <T v="hero" accessibilityRole="header" style={{ marginTop: space.sm }}>{note.name}</T>
           </View>
           <View accessible accessibilityLabel={`${spokenMin(aboutMin(minutes))} to read${isRead ? '. Marked as read' : ''}`} style={{ marginTop: space.xs }}>

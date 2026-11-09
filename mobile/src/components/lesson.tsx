@@ -250,7 +250,7 @@ function KeyIdea({ caption, body, i = 0 }: { caption: string; body: string; i?: 
           <View accessible={false} importantForAccessibility="no-hide-descendants">
             <LeafBig color={c.accent} rib={c.bg} />
           </View>
-          <T v="caption" color={c.accentText} accessibilityRole="header">{caption}</T>
+          <T v="caption" color={c.accentText} accessibilityRole="header" style={{ flexShrink: 1, minWidth: 0 }}>{caption}</T>
         </View>
         <Gap h={space.md} />
       </Part>
