@@ -29,7 +29,9 @@ cause in the app, and slots it into the plan below.
 
 | ID | Date | Ref | Where | Type | Severity | Reach | Status | Plan |
 |---|---|---|---|---|---|---|---|---|
-| FB-001 | 2026-11-06 | R-D28Q | Phone · Practice answer screen | UX | High | Whole app (every answered question) | Planned | Next update |
+| FB-001 | 2026-11-06 | R-D28Q | Phone · Practice answer screen | UX | High | Whole app (every answered question) | Implemented, release checks pending | 2.1 |
+| FB-002 | 2026-11-09 | Owner-provided screenshots | Phone · Coach me | Bug | High | Highlighted question stems | Implemented, native acceptance pending | 2.1 |
+| FB-003 | 2026-11-06 | Beta reply email | Phone · Nickname setup | UX | Medium | New learners | Implemented, native keyboard/a11y checks pending | 2.1 |
 
 ## Next update plan (phone app, proposed 2.1.0)
 
@@ -96,3 +98,13 @@ Your first five · KaiSip 2.0.0 (Android 17) · Ref R-D28Q.
 **Reply to the tester when shipped:** "Thanks for report R-D28Q. In 2.1 the
 answer screen shows all four options with their full wording next to the
 explanation, so you can compare them without going back."
+
+## 2.1 report-to-fix verification (9 Nov 2026)
+
+The owner requested all three entries under the learner-facing “Fixed after learner reports” heading, without names. Verified against the original explanation email (6 Nov, report R-D28Q), the beta invitation reply (6 Nov, difficulty finding username setup), and the owner-provided Coach me screenshots (9 Nov, app screen and accompanying Samsung S25 conversation). No reporter names, addresses or screenshot chat content are copied into public notes.
+
+- **FB-001:** Original email requests option wording alongside explanations. Implemented in practice and mock review with permutation tests.
+- **FB-002:** Screenshot shows ordinary question text unreadable after Coach me, with the priority word still visible. Implemented by removing the overlapping question layer. Native high-contrast on/off, dark/light, large-text and Samsung acceptance remain pending; do not mark shipped or verified on those devices.
+- **FB-003:** Original email describes an abrupt start and needing to find username setup. Implemented optional local nickname on the existing setup screen. Does not add a sign-in journey. Native keyboard and screen-reader acceptance remain pending.
+
+All three bundled notes describe the implemented change only. Release gates remain in `docs/mobile/RELEASE_2_1.md`; none is marked shipped.

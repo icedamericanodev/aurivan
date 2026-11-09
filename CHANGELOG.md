@@ -14,6 +14,7 @@ For internal/technical history, see git log and PR descriptions.
 - Find support and feedback options together.
 
 ### Fixed after learner reports
+- Learners had trouble finding nickname setup; an optional local nickname is now offered during setup.
 - Learners reported missing options in explanations; each option now stays beside its explanation.
 - Learners reported unreadable questions after Coach me; question text now uses one readable layer.
 

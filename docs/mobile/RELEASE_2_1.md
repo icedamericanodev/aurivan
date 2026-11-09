@@ -20,9 +20,10 @@ Owner requirement recorded 9 Nov 2026: the next Android App Bundle must have ver
 Draft release notes; retain this exact section heading separately from other improvements. Do not name reporters. Promote each entry only after its acceptance checks pass.
 
 - **Answer explanations:** Learners reported having to remember missing answer options. The answer and mock-review screens now keep each option beside its explanation.
+- **Nickname setup:** Learners reported having to search for username setup. The existing setup screen now offers an optional local nickname; this does not introduce accounts or sign-in.
 - **Coach me readability:** Learners reported that question text became unreadable after opening Coach me. The duplicate question layer was removed so the question uses one readable text layer. Native high-contrast verification remains pending.
 
-Add corresponding bundled `mobile/src/content/support/fixes.json` entries once confirmed for this release, so the existing in-app “Fixed after learner reports” section is populated. Keep tester-log entries In review until shipment; do not claim inbox delivery or that a release has shipped.
+The three anonymous entries are now bundled in `mobile/src/content/support/fixes.json` for the integrated 2.1 preview. They describe implemented changes, not completed native acceptance or a published release. Keep tester-log entries In review until shipment; do not claim inbox delivery or that a release has shipped.
 
 ## Required bundle handoff gates
 
