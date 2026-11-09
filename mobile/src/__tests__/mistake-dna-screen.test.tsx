@@ -1,7 +1,9 @@
 /** Mistake DNA journal integration: accessible evidence, retained notes and independent practice. */
 import { act, create, type ReactTestInstance, type ReactTestRenderer } from 'react-test-renderer';
 import { router } from 'expo-router';
-import { Dimensions } from 'react-native';
+import { Dimensions, Modal } from 'react-native';
+import { GAMES } from '../engine/games/registry';
+import { FeatureInfo } from '../components/featureInfo';
 import { useSession } from '../store/session';
 import { DAY_MS } from '../engine/srs';
 import Mistakes from '../app/mistakes';
@@ -76,12 +78,12 @@ it.each(['light', 'dark'] as const)('shows accessible evidence and real remediat
   act(() => { useSettings.setState({ theme }); });
   expect(text()).toContain('Your Mistake DNA');
   expect(text()).toContain('Role confusion');
-  expect(labels()).toContain('Drill it: Canopy Call');
+  expect(labels()).toContain(`Drill it: ${GAMES.canopy.name}`);
   press('Explore pattern evidence');
   expect(text()).toContain('Thinking-pattern breakdown');
   expect(text()).toContain('6 of 6');
   expect(text()).toContain('Your tags');
-  press('Drill it: Canopy Call');
+  press(`Drill it: ${GAMES.canopy.name}`);
   expect(router.push).toHaveBeenCalledWith('/game/canopy');
   act(() => { useSettings.setState({ theme: 'light' }); });
 });
@@ -110,20 +112,25 @@ it('handles certification reset and old-only evidence honestly', () => {
   expect(text()).toContain('Not enough evidence yet');
   expect(labels().some((l) => /^Drill it/.test(l))).toBe(false);
   act(() => { useProgress.getState().resetCert('cisa'); });
+  press('Explore pattern evidence');
   expect(text()).toContain('0 classified');
   expect(text()).toContain('Nothing open right now');
 });
-it('keeps explanations behind labelled information buttons', () => {
+it('uses one help entry for the whole journal, with a visible coaching cue', () => {
   seed(50);
-  expect(text()).not.toContain('These are learning clues, not a diagnosis');
-  press('About Your Mistake DNA');
-  expect(text()).toContain('These are learning clues, not a diagnosis');
-  press('About Your Mistake DNA');
-  expect(text()).not.toContain('These are learning clues, not a diagnosis');
-  press('Explore pattern evidence');
+  expect(r!.root.findAllByType(FeatureInfo)).toHaveLength(1);
   expect(text()).not.toContain('shares do not add up to 100%');
-  press('About Thinking-pattern breakdown');
+  expect(text()).toContain('Ask who you are in the question');
+  expect(text()).not.toContain('tagged by you');
+  press('How Mistake DNA works');
   expect(text()).toContain('shares do not add up to 100%');
-  press('About Progress over time');
   expect(text()).toContain('Each window needs at least 5 classified mistakes');
+  press('Close, How Mistake DNA works');
+  expect(text()).not.toContain('shares do not add up to 100%');
+  press('How Mistake DNA works');
+  act(() => { r!.root.findAllByType(Modal).find((m) => m.props.visible)?.props.onRequestClose(); });
+  expect(text()).not.toContain('shares do not add up to 100%');
+  press('Explore pattern evidence');
+  expect(r!.root.findAllByType(FeatureInfo)).toHaveLength(1);
+  expect(text()).toContain('6 classified');
 });

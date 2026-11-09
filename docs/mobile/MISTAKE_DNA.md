@@ -1,12 +1,12 @@
 # Mistake DNA
 
-Review scope: Mistake Journal only, independently based on main `5382a2ee95fa82404e9b5ee6186d030773cbefe0`. No Concept Lab dependency, Learn changes, new tab, stored field, dependency, entitlement change or release configuration change.
+Review scope: Mistake Journal only. Initially based independently on main `5382a2ee95fa82404e9b5ee6186d030773cbefe0`, then refreshed onto `5e3fad10c1777e3453dc9f9604ca46fcc46cf687` after the Concept Lab and shared UI updates merged. No Concept Lab dependency, Learn changes, new tab, stored field, dependency, entitlement change or release configuration change.
 
 ## What it adds
 
 Slip Coach still provides the existing tag-based all-history pattern for other consumers. The journal now adds a recent evidence summary, provenance-labelled breakdown, honest classified/unclassified coverage, two-window comparison, related notes and a fresh-practice path. Its learner-facing copy describes observations and possible reflection points rather than diagnosing a thinking style.
 
-Explanatory captions are collapsed by default behind labelled “i” controls. Counts, source labels and the trend’s subject stay visible; sample rules, methodology and educational explanations remain available on demand with expanded/collapsed accessibility state.
+One labelled “i” control beside “Your Mistake DNA” opens the existing scrollable FeatureInfo sheet. Dates, a short practical coaching cue, counts, evidence sources and the trend’s subject stay visible. Coverage totals live in expanded evidence. The shared help consolidates sample rules, methodology, retained-miss handling and pattern definitions, with Close/Android Back/escape support and focus restoration. The journal-header help is consolidated here to avoid a second icon.
 
 ## Architecture and calculations
 
@@ -19,7 +19,7 @@ Explanatory captions are collapsed by default behind labelled “i” controls. 
 - The denominator is **distinct classified mistakes in that window**, never attempts, pattern occurrences, all questions or all incorrect answers. Each pattern’s numerator is the number of those mistakes showing it, counted once. Percentages round to the nearest integer. A question can contribute to multiple different patterns, so percentages need not sum to 100; the UI says this explicitly.
 - A leading pattern requires at least **5 classified mistakes** and **3 examples of that pattern**. Counts rank descending; existing `PATTERN_ORDER` breaks ties. Ties are disclosed as “One of your most common patterns.” Details show at most five rows, even below the leading-pattern threshold, without claiming a recurring diagnosis.
 - Trend compares the same leading pattern’s share in `[now - 14 days, now]` with `[now - 28 days, now - 14 days)`. Each needs 5 classified distinct questions. Changes **within 10 percentage points inclusive** are “similar”; larger changes are “less” or “more.” Integer cross-products avoid floating-point boundary differences. Both counts/denominators are visible. The copy explicitly warns that question mix and tagging coverage change shares and that this is not mastery or overall error-rate improvement.
-- Existing `PATTERN_COPY` maps to the actual registry: final-two → Snare Spotter, priority → Signpost, confidence → Forecast, role → Canopy Call. Journal links still require both `canPlay` and `useAvailableGames`. Principle and note links use existing selected-certification loaders. Knowledge gaps get a related study note where one exists, including fixed mistakes.
+- Existing `PATTERN_COPY` maps to the actual registry: final-two → Snare Spotter, priority → Signpost, confidence → Forecast, role → Role Check. Journal links still require both `canPlay` and `useAvailableGames`. Principle and note links use existing selected-certification loaders. Knowledge gaps get a related study note where one exists, including fixed mistakes.
 - “Practice other questions” feeds the existing practice factory ids outside the entire saved mistake history, so immediate repeats cannot be mistaken for reassessment. When none exist, the learner can choose an existing Practice activity. Existing journal review controls remain available separately.
 
 No readiness, spaced repetition, planner, Smart Mix, grading, backup, sync, authentication or access rules change. The compiled `assets/kaisip-cloud.js` is regenerated because its existing dependency graph includes the shared Slip Coach/tip helpers; it introduces no DNA data transmission.

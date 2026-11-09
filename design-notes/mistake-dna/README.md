@@ -1,5 +1,7 @@
 # Mistake DNA review evidence
 
+Current design: one help icon beside “Your Mistake DNA,” opening a shared scrollable help sheet. A coaching cue and exact evidence remain visible; coverage is in expanded evidence.
+
 Synthetic QA data only. Screenshots are browser renderings at 393 × 852; enlarged-text views simulate larger text and do not certify native Android accessibility.
 
 - `light-journal.png`, `dark-journal.png`: integrated journal summary and existing remediation.
@@ -82,10 +84,18 @@ The owner asked for screenshots and an emulator update. This task runs in a clou
 
 Use branch `codex/kaisip-mistake-dna` / PR #240 in an isolated local checkout. No native dependencies or configuration changed, so the existing compatible KaiSip development client can receive the branch with `npx expo start --dev-client --android` from `mobile/`, following `docs/mobile/RUN_ON_ANDROID_EMULATOR.md`. Coordinate with the Lab branch before choosing which feature(s) to show. Keep the existing emulator app data: do not uninstall, clear storage, reset progress, or import these synthetic fixtures into a tester profile. The cloud task has **not** updated the emulator. This is a local development handoff, not production release authorization.
 
-## Compact caption refinement
+## Earlier compact caption refinement (superseded)
 
 At the owner’s request, all DNA explanatory copy now opens from adjacent information icons rather than filling the screen. Essential counts and evidence sources stay visible. The controls have 48-point targets, distinct spoken labels and expanded state; help follows the label in reading order. Trend text still names the specific pattern. Independent UX re-review of light/dark, large-text, collapsed and help-open views found no remaining blocking issues. The refreshed synthetic screenshot run had zero page errors and no horizontal overflow. A regression test verifies help is hidden initially and opens/closes on demand.
 
 Android export and cloud-OFF/size guards passed again (11,851,499-byte bundle). This is a UI-only refinement; no analytics, progress or cloud behavior changed.
 
 Compact-caption verification: `npm run check` passed with 357 suites / 7,279 tests, 2 existing skips; the focused disclosure tests also passed (5/5).
+
+## One-icon reviewer recommendation implemented
+
+Both UI and content reviewers recommended one information control, not one per label. The journal now uses the existing `FeatureInfo` sheet for all methodology and definitions, with a visible coaching cue, explicit 28-day window and exact supporting count. Expanded evidence keeps source labels, classified/unclassified coverage and named 14-day trends. Redundant tagged totals and percentage text are removed from the default view; bar shares and spoken percentages retain explicit denominators.
+
+Current main `5e3fad1` was merged into this feature branch. The generated cloud bundle was regenerated and the shared role-drill test retains main’s Role Check display name while expecting the new DNA heading. The Concept Lab and release configuration receive no feature-PR edits. UI/content re-reviews are clear; the help-sheet screenshot now waits for the transition to finish and uses Asia/Manila browser time. Native emulator access remains unavailable in this cloud workspace.
+
+Latest-main one-icon verification: `npm run check` passed (361 suites; 7,167 tests passed, 2 existing skips). Repository health, Android export, cloud-OFF guard, release-channel/shared-source guards and size budgets passed. Current Android bundle: 11,357,548 bytes (11.36 MB of 14 MB); the changed baseline includes main’s UI cleanup. Focused help/journal tests passed; screenshots have zero page errors. No Learn, Lab, app.json or EAS differences relative to current main.

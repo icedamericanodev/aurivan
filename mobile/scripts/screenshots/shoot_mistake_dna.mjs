@@ -10,7 +10,7 @@ fs.mkdirSync(out, { recursive: true });
 const browser = await chromium.launch({ executablePath: process.env.CHROME_PATH || undefined, args: ['--no-sandbox'] });
 const errors = [];
 for (const theme of ['light', 'dark']) {
-  const context = await browser.newContext({ viewport: { width: 393, height: 852 }, deviceScaleFactor: 1 });
+  const context = await browser.newContext({ viewport: { width: 393, height: 852 }, deviceScaleFactor: 1, timezoneId: 'Asia/Manila' });
   await context.addInitScript(({ seed, theme }) => {
     if (localStorage.getItem('__dna_seed')) return;
     for (const [key, value] of Object.entries(seed)) if (!key.startsWith('__')) localStorage.setItem(key, value);
@@ -32,10 +32,12 @@ for (const theme of ['light', 'dark']) {
   await page.getByRole('button', { name: 'Explore pattern evidence', exact: true }).click();
   await page.getByText('Thinking-pattern breakdown', { exact: true }).scrollIntoViewIfNeeded();
   await page.screenshot({ path: `${out}/${theme}-evidence.png` });
-  await page.getByRole('button', { name: 'About Thinking-pattern breakdown', exact: true }).click();
-  await page.getByText('Thinking-pattern breakdown', { exact: true }).evaluate((el) => el.scrollIntoView({ block: 'start' }));
+  await page.getByRole('button', { name: 'How Mistake DNA works', exact: true }).click();
+  await page.getByRole('button', { name: 'Close, How Mistake DNA works', exact: true }).waitFor();
+  await page.waitForTimeout(700);
   await page.screenshot({ path: `${out}/${theme}-info.png` });
-  await page.getByRole('button', { name: 'About Thinking-pattern breakdown', exact: true }).click();
+  await page.getByRole('button', { name: 'Close, How Mistake DNA works', exact: true }).click();
+  await page.waitForTimeout(400);
   await page.getByText('Progress over time', { exact: true }).evaluate((el) => el.scrollIntoView({ block: 'start' }));
   await page.waitForTimeout(350);
   await page.screenshot({ path: `${out}/${theme}-trend.png` });
