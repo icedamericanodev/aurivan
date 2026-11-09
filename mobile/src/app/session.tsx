@@ -87,6 +87,7 @@ import {
   AllOptionsSheet,
   AnswerMore,
   AnswerPlate,
+  AnswerContext,
   AnswerRecap,
   KeyIdea,
   MORE_FOCUS_BACK_MS,
@@ -671,7 +672,6 @@ export default function SessionScreen() {
 
   // ── answer-screen facts (all compared on ORIGINAL letters) ───────────
   const pickedOriginal = response ? displayToOriginal(response.display, perm) : undefined;
-  const whyWrong = pickedOriginal && pickedOriginal !== q.correct ? q.wrongExplanations[pickedOriginal] : undefined;
   const correctDisplay = originalToDisplay(q.correct, perm);
   // Premium round 2 (web v12.47 parity): after a miss, a line about the learner's OWN pick, read
   // from the tips on ORIGINAL letters and said in DISPLAY letters ("Your pick, B, is one of the two to
@@ -1062,11 +1062,12 @@ export default function SessionScreen() {
                   delay={FEEDBACK_DELAY.rows}
                   pick={
                     !response.correct && pickedOriginal
-                      ? { letter: response.display, text: q.options[pickedOriginal] ?? '', why: whyWrong ? renderText(whyWrong, perm) : undefined }
+                      ? { letter: response.display, text: q.options[pickedOriginal] ?? '' }
                       : undefined
                   }
                   best={{ letter: correctDisplay, text: q.options[q.correct] ?? '' }}
                 />
+                <AnswerContext question={q} perm={perm} picked={response.display} />
                 {/* Key idea and every tip, then the Why, arrive in reading order after the card: opacity only,
                     200ms each, 30ms apart (PHASE4.md 4.4). Their arrival is still the vine's (VINE_ARRIVES):
                     `visible`, the one tick and the stem's draw wait for it. */}

@@ -69,7 +69,7 @@ import { scaledScoreNote } from '../content/scoreNote';
 import { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Alert, BackHandler, Pressable, View } from 'react-native';
 import { LeafStrip } from '../components/leafStrip';
-import { OptionCard, PickNote, TrustLine } from '../components/quiz';
+import { AnswerContext, OptionCard, TrustLine } from '../components/quiz';
 import { QuestionNote } from '../components/questionNote';
 import { useReportFlow } from '../components/support';
 import { nextStepIndex, todayMinutes } from '../components/journey';
@@ -223,7 +223,6 @@ const ReviewRow = memo(function ReviewRow({
                 tag="Your pick"
                 spoken={`Your pick, ${r.display}, not the best answer: ${q.options[picked] ?? ''}`}
               />
-              {q.wrongExplanations[picked] ? <PickNote letter={r.display} text={renderText(q.wrongExplanations[picked]!, perm)} /> : null}
             </>
           )}
           <OptionCard
@@ -234,6 +233,7 @@ const ReviewRow = memo(function ReviewRow({
             tag="Best answer"
             spoken={`Best answer, ${correctDisplay}: ${q.options[q.correct] ?? ''}`}
           />
+          <AnswerContext question={q} perm={perm} picked={r?.display} />
           <T v="headline">{`Why ${correctDisplay}`}</T>
           <T v="body" style={{ marginBottom: space.sm }}>{renderText(q.explanation, perm)}</T>
           {trapTip(q) !== '' && (

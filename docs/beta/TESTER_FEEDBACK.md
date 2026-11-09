@@ -29,7 +29,7 @@ cause in the app, and slots it into the plan below.
 
 | ID | Date | Ref | Where | Type | Severity | Reach | Status | Plan |
 |---|---|---|---|---|---|---|---|---|
-| FB-001 | 2026-11-06 | R-D28Q | Phone · Practice answer screen | UX | High | Whole app (every answered question) | Planned | Next update |
+| FB-001 | 2026-11-06 | R-D28Q | Phone · Practice answer screen | UX | High | Whole app (every answered question) | Implemented on development branch; not shipped | Next update |
 
 ## Next update plan (phone app, proposed 2.1.0)
 
@@ -96,3 +96,7 @@ Your first five · KaiSip 2.0.0 (Android 17) · Ref R-D28Q.
 **Reply to the tester when shipped:** "Thanks for report R-D28Q. In 2.1 the
 answer screen shows all four options with their full wording next to the
 explanation, so you can compare them without going back."
+
+## FB-001 implementation verification
+
+The development change keeps the compact verdict, then shows a shared Compare all options section in practice and Results review. Each option keeps its saved display letter and full wording beside its own explanation. Results remains gated on a finished session; active mocks do not mount answer context. Version 2.1.0 is reserved for this development update, not a claim of a store release.

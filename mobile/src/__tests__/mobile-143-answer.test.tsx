@@ -114,7 +114,7 @@ describe('the answer screen order (Grove Phase 4)', () => {
   it('a miss on an option to rule out: card, Key idea, every tip in the written order, then Why', () => {
     const { picked, best } = miss(ruledOut());
     const t = allText();
-    const order = ['Not quite', '✗ Your answer', `Why not ${picked}`, '✓ Best answer', 'Key idea', 'How to think about it', 'Eliminate two', 'Final two', 'Exam cue', `Why ${best}`].map((s) => t.indexOf(s));
+    const order = ['Not quite', '✗ Your answer', '✓ Best answer', 'Compare all options', `Why not ${picked}`, 'Key idea', 'How to think about it', 'Eliminate two', 'Final two', 'Exam cue', `Why ${best}`].map((s) => t.indexOf(s));
     expect(order.every((i) => i >= 0)).toBe(true);
     expect([...order].sort((a, b) => a - b)).toEqual(order);
     // The fold holds only the paragraph, and says so.
@@ -187,7 +187,8 @@ describe('the answer card (Grove Phase 4, 4.2 step 2)', () => {
     expect(labelled(new RegExp(`^Best answer, ${best}: `)).length).toBe(1);
     // The note of the option the learner picked: found by its ORIGINAL letter, shown with display letters.
     const note = renderText(rich.wrongExplanations[displayToOriginal(picked, perm)]!, perm);
-    expect(plate.props.pick.why).toBe(note);
+    expect(plate.props.pick.why).toBeUndefined();
+    expect(labelled(new RegExp(`^Why not ${picked}: `))[0].props.accessibilityLabel).toBe(`Why not ${picked}: ${note}`);
     expect(labelled(new RegExp(`^Why not ${picked}: `)).length).toBe(1);
     // "Why not B" is never a heading: "Why D" is the one Why heading.
     const whyHeaders = root().findAll((n) => typeof n.type === 'string' && n.props.accessibilityRole === 'header' && typeof n.props.children === 'string' && /^Why /.test(n.props.children));

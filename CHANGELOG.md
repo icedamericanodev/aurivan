@@ -1,5 +1,9 @@
 # Changelog
 
+## Phone 2.1.0 (unreleased)
+
+- Improved: Compare all four options and their explanations after checking an answer or finishing a mock.
+
 All notable user-facing changes to this app. The in-app **What's New** modal mirrors this file; both are written for CISA candidates rather than developers. Format follows [Keep a Changelog](https://keepachangelog.com/) loosely, with the project's own **New / Improved / Fixed** categories.
 
 For internal/technical history, see git log and PR descriptions.
