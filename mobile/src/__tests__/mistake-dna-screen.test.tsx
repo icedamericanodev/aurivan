@@ -84,7 +84,6 @@ it.each(['light', 'dark'] as const)('shows accessible evidence and real remediat
   press('Drill it: Canopy Call');
   expect(router.push).toHaveBeenCalledWith('/game/canopy');
   act(() => { useSettings.setState({ theme: 'light' }); });
-  Dimensions.set({ window: w, screen: w });
 });
 it('keeps a next action and study notes for corrected knowledge gaps', () => {
   seed(12);
@@ -113,4 +112,18 @@ it('handles certification reset and old-only evidence honestly', () => {
   act(() => { useProgress.getState().resetCert('cisa'); });
   expect(text()).toContain('0 classified');
   expect(text()).toContain('Nothing open right now');
+});
+it('keeps explanations behind labelled information buttons', () => {
+  seed(50);
+  expect(text()).not.toContain('These are learning clues, not a diagnosis');
+  press('About Your Mistake DNA');
+  expect(text()).toContain('These are learning clues, not a diagnosis');
+  press('About Your Mistake DNA');
+  expect(text()).not.toContain('These are learning clues, not a diagnosis');
+  press('Explore pattern evidence');
+  expect(text()).not.toContain('shares do not add up to 100%');
+  press('About Thinking-pattern breakdown');
+  expect(text()).toContain('shares do not add up to 100%');
+  press('About Progress over time');
+  expect(text()).toContain('Each window needs at least 5 classified mistakes');
 });

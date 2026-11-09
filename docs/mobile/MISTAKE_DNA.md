@@ -6,6 +6,8 @@ Review scope: Mistake Journal only, independently based on main `5382a2ee95fa824
 
 Slip Coach still provides the existing tag-based all-history pattern for other consumers. The journal now adds a recent evidence summary, provenance-labelled breakdown, honest classified/unclassified coverage, two-window comparison, related notes and a fresh-practice path. Its learner-facing copy describes observations and possible reflection points rather than diagnosing a thinking style.
 
+Explanatory captions are collapsed by default behind labelled “i” controls. Counts, source labels and the trend’s subject stay visible; sample rules, methodology and educational explanations remain available on demand with expanded/collapsed accessibility state.
+
 ## Architecture and calculations
 
 - `engine/mistakeDNA.ts` is pure TypeScript. The screen joins the selected certification’s saved mistakes to its existing question pack, then passes the certification and an explicit clock to the engine. All processing is local.

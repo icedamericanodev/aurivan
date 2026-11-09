@@ -32,6 +32,10 @@ for (const theme of ['light', 'dark']) {
   await page.getByRole('button', { name: 'Explore pattern evidence', exact: true }).click();
   await page.getByText('Thinking-pattern breakdown', { exact: true }).scrollIntoViewIfNeeded();
   await page.screenshot({ path: `${out}/${theme}-evidence.png` });
+  await page.getByRole('button', { name: 'About Thinking-pattern breakdown', exact: true }).click();
+  await page.getByText('Thinking-pattern breakdown', { exact: true }).evaluate((el) => el.scrollIntoView({ block: 'start' }));
+  await page.screenshot({ path: `${out}/${theme}-info.png` });
+  await page.getByRole('button', { name: 'About Thinking-pattern breakdown', exact: true }).click();
   await page.getByText('Progress over time', { exact: true }).evaluate((el) => el.scrollIntoView({ block: 'start' }));
   await page.waitForTimeout(350);
   await page.screenshot({ path: `${out}/${theme}-trend.png` });

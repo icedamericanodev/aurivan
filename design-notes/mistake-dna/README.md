@@ -4,6 +4,7 @@ Synthetic QA data only. Screenshots are browser renderings at 393 × 852; enlarg
 
 - `light-journal.png`, `dark-journal.png`: integrated journal summary and existing remediation.
 - `light-evidence.png`, `dark-evidence.png`: provenance and overlapping percentages.
+- `light-info.png`, `dark-info.png`: an opened information control with the complete explanation.
 - `light-trend.png`, `dark-trend.png`: both sample windows and interpretation limits.
 - `light-large-text.png`, `dark-large-text.png`: enlarged-text wrapping with no horizontal viewport overflow.
 - `light-empty.png`, `dark-empty.png`: honest empty summary and retained journal empty state.
@@ -51,11 +52,13 @@ Android export is a local compilation check only; no Android package was built, 
 - `design-notes/mistake-dna/README.md`
 - `design-notes/mistake-dna/dark-empty.png`
 - `design-notes/mistake-dna/dark-evidence.png`
+- `design-notes/mistake-dna/dark-info.png`
 - `design-notes/mistake-dna/dark-journal.png`
 - `design-notes/mistake-dna/dark-large-text.png`
 - `design-notes/mistake-dna/dark-trend.png`
 - `design-notes/mistake-dna/light-empty.png`
 - `design-notes/mistake-dna/light-evidence.png`
+- `design-notes/mistake-dna/light-info.png`
 - `design-notes/mistake-dna/light-journal.png`
 - `design-notes/mistake-dna/light-large-text.png`
 - `design-notes/mistake-dna/light-trend.png`
@@ -78,3 +81,11 @@ Android export is a local compilation check only; no Android package was built, 
 The owner asked for screenshots and an emulator update. This task runs in a cloud Linux workspace; there is no `adb`, Android SDK, emulator process or connected device. The coordinating chat “Coordinate KaiSip feature development” runs locally on the owner’s Mac and can perform that update from its existing Android development setup.
 
 Use branch `codex/kaisip-mistake-dna` / PR #240 in an isolated local checkout. No native dependencies or configuration changed, so the existing compatible KaiSip development client can receive the branch with `npx expo start --dev-client --android` from `mobile/`, following `docs/mobile/RUN_ON_ANDROID_EMULATOR.md`. Coordinate with the Lab branch before choosing which feature(s) to show. Keep the existing emulator app data: do not uninstall, clear storage, reset progress, or import these synthetic fixtures into a tester profile. The cloud task has **not** updated the emulator. This is a local development handoff, not production release authorization.
+
+## Compact caption refinement
+
+At the owner’s request, all DNA explanatory copy now opens from adjacent information icons rather than filling the screen. Essential counts and evidence sources stay visible. The controls have 48-point targets, distinct spoken labels and expanded state; help follows the label in reading order. Trend text still names the specific pattern. Independent UX re-review of light/dark, large-text, collapsed and help-open views found no remaining blocking issues. The refreshed synthetic screenshot run had zero page errors and no horizontal overflow. A regression test verifies help is hidden initially and opens/closes on demand.
+
+Android export and cloud-OFF/size guards passed again (11,851,499-byte bundle). This is a UI-only refinement; no analytics, progress or cloud behavior changed.
+
+Compact-caption verification: `npm run check` passed with 357 suites / 7,279 tests, 2 existing skips; the focused disclosure tests also passed (5/5).
