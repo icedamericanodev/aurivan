@@ -175,9 +175,10 @@ describe('Day 1 on Today, after "Done for today"', () => {
     expect(allText()).not.toMatch(/Accuracy \d+ ?%/);
     // The count, as Results names it: "Correct 3 of 5" (UX review S4: one line, the row's shared baseline).
     expect(allText()).toContain('Correct 3 of 5');
-    // No ring "+N" before the first range exists: it would read as a score on a "Not enough data yet" day.
-    expect(allText()).not.toMatch(/ring \+\d/);
-    expect(allText()).toContain('Every answer feeds the rings');
+    // No "↑N" before the first range exists: it would read as a score on a "Not enough data yet" day.
+    // Premium round 2 (item 11): the old ring wording is retired.
+    expect(allText()).not.toMatch(/↑\d|ring \+\d/);
+    expect(allText()).toContain('Every answer feeds your five areas');
   });
 });
 

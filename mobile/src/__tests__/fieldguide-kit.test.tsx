@@ -9,9 +9,9 @@
  */
 import { Dimensions, StyleSheet } from 'react-native';
 import { act, create, type ReactTestInstance, type ReactTestRenderer } from 'react-test-renderer';
-import { EmptyPlate, EMPTY_PLATE_TITLE, ESTIMATE_WORDS, KeyCaption, KeyList, lineLabelSpot, Plate, RunningHead, ScaleBar, scaleSpoken, Specimen, SpecimenLabel, SpecimenRow, StemChart, type Stem } from '../components/fieldguide';
+import { EmptyPlate, EMPTY_PLATE_TITLE, ESTIMATE_WORDS, KeyCaption, KeyList, Plate, RunningHead, ScaleBar, scaleSpoken, Specimen, SpecimenLabel, SpecimenRow, StemChart, type Stem } from '../components/fieldguide';
 import { Button } from '../components/ui';
-import { plate } from '../theme/tokens';
+import { grovePlate } from '../theme/grove';
 
 jest.mock('@react-native-async-storage/async-storage', () =>
   jest.requireActual('@react-native-async-storage/async-storage/jest/async-storage-mock'),
@@ -68,7 +68,10 @@ describe('ScaleBar', () => {
     });
     layout(340);
     expect(allText()).toContain(ESTIMATE_WORDS);
-    expect(allText()).toContain('64–72');
+    // Grove: the range reads "64 to 72" in words (the figure and the bracket's label), as on the website; never a dash.
+    expect(allText()).toMatch(/64\s+to\s+72/);
+    expect(allText()).toContain('64 to 72');
+    expect(allText()).not.toMatch(/[\u2013\u2014]/);
     expect(scaleSpoken(range)).toBe('Estimated readiness 64 to 72 percent, a study estimate, not a prediction. The tick marks this app’s 80 percent study bar.');
     expect(labels()).toContain(scaleSpoken(range));
     expect(`${allText()} ${labels().join(' ')}`).not.toMatch(/\bpass|you'?re ready|official/i);
@@ -90,18 +93,25 @@ describe('StemChart', () => {
     act(() => {
       r = create(<StemChart stems={STEMS} />);
     });
-    layout(340);
+    layout(440); // (440 - 32) / 5 = 81pt a column, over MIN_COLUMN 58
     expect(labels()).toEqual(STEMS.map((s) => s.spoken));
     // The chart sets "not started" and "too few yet" on two lines, like the names.
     const t = allText().replace(/\n/g, ' ');
-    expect(allText()).toContain('not\nstarted');
+    expect(allText()).toMatch(/not\s+started/);
     expect(t).toContain('too few yet');
-    expect(t).toContain('18 answered');
+    // A thin column under the soil reads like the list rows: "18 of 30" over "answers".
+    expect(allText()).toMatch(/18 of 30\s+answers/);
+    expect(t).not.toContain('18 answered');
     expect(t).toContain('not started');
-    expect(t).toContain('70 line');
+    expect(t).not.toContain('70 line'); // Grove Phase 4 (7.11): the key says what the dashed line is
     // Below the line: the word in clay AND the words "below 70" (never colour alone).
     expect(t).toContain('below 70');
     expect(t).toContain('↑3');
+    // Too few yet: the words "too few yet" where the number will grow, never a dash, and never "seed"
+    // (Grove panel Q2: that word is the plant's). Said once per thin column, over its seed.
+    expect(t.match(/too few yet/g)?.length).toBe(STEMS.filter((s) => s.thin).length);
+    expect(t).not.toMatch(/\bseed\b/i);
+    expect(t).not.toMatch(/[\u2013\u2014]/);
     expect(list()).toHaveLength(0);
   }));
 
@@ -122,47 +132,28 @@ describe('StemChart', () => {
       layout(240);
       expect(list()).toHaveLength(1);
     });
-    // The list's too-few-yet bar is an outline with no fill.
-    expect(allText()).toContain('too few yet');
+    // The list's too-few-yet bar is an outline with no fill; its figure and words read like the website's
+    // rows (Grove panel Q2): "18 of 30" and "answers, too few yet for a score", never a dash or "seed".
+    expect(allText()).toMatch(/18 of 30\s+answers, too few yet for a score/);
+    expect(allText()).not.toContain('18 answered');
+    expect(allText()).not.toContain('not measured yet');
+    expect(allText()).toContain('Not started');
+    expect(allText()).not.toMatch(/\bseed\b/i);
+    expect(allText()).not.toMatch(/[\u2013\u2014]/);
   });
 
-  // UX review H1: the "70 line" label is drawn after the stems, so the last column's stem never paints over it.
-  it('draws the "70 line" label after every stem', () => atScale(1, () => {
+  // Grove Phase 4 (PHASE4.md 7.11): the chart draws no "70 line" words (the key says what the dashed line
+  // is); the dashed line and the 70 on the scale stay.
+  it('draws no "70 line" words; the dashed line and the 70 on its scale stay', () => atScale(1, () => {
     act(() => {
       r = create(<StemChart stems={STEMS} />);
     });
-    layout(340);
-    const drawing = root().find((n) => typeof n.type === 'string' && n.props.accessibilityElementsHidden === true);
-    const kids = drawing.children.filter((k): k is ReactTestInstance => typeof k !== 'string');
-    const lastStem = kids.map((k) => (typeof k.type === 'function' && k.type.name === 'StemColumn' ? 1 : 0)).lastIndexOf(1);
-    const lineLabel = kids.findIndex((k) => textOf(k) === '70 line');
-    expect(lastStem).toBeGreaterThan(-1);
-    expect(lineLabel).toBeGreaterThan(lastStem);
+    layout(440); // (440 - 32) / 5 = 81pt a column, over MIN_COLUMN 58
+    expect(root().findAll((n) => n.props.testID === 'line-label')).toHaveLength(0);
+    expect(allText()).not.toContain('70 line');
+    expect(allText()).toContain('70');
+    expect(root().findAll((n) => n.props.strokeDasharray === '4 4').length).toBeGreaterThan(0);
   }));
-
-  // Follow-up to H1: the last column's top in the label's band under the line moves the words beside the line's end.
-  it('places the "70 line" words beside the line’s end when the last stem’s top sits under them', () => {
-    const at = (lastPct: number | null) => lineLabelSpot({ lastPct, line: 70, gap: 63, fs: 1 });
-    // Default: under the line at the right, one line.
-    for (const p of [null, 100, 90, 75, 45, 20]) expect([p, at(p).beside]).toEqual([p, false]);
-    expect(at(90).top).toBe(at(null).top);
-    // A top at or just under the line (its top leaf in the band): beside, in the strip right of the stem.
-    for (const p of [71, 68, 64, 60, 55, 52]) expect([p, at(p).beside]).toEqual([p, true]);
-    expect(at(68).width).toBe(63 / 2 - 8);
-    // Never above the line (that is where the stem's own number sits), pushed down under a low top's number.
-    expect(at(68).top).toBe(at(null).top);
-    expect(at(55).top).toBeGreaterThan(at(null).top);
-    atScale(1, () => {
-      const near = STEMS.map((s, i) => (i === STEMS.length - 1 ? { ...s, pct: 68, answered: 40, thin: false, below: true } : s));
-      act(() => {
-        r = create(<StemChart stems={near} />);
-      });
-      layout(340);
-      const label = root().find((n) => n.props.testID === 'line-label' && typeof n.type === 'string');
-      expect(textOf(label)).toBe('70\nline');
-      expect(StyleSheet.flatten(label.props.style).backgroundColor).toBeUndefined();
-    });
-  });
 
   // UX review H2: between ×1.15 and ×1.29 the columns need room for the grown names, or the list takes over;
   // where the chart stays (×1.1 on a wide plate) it grows taller with the words under the soil.
@@ -173,7 +164,7 @@ describe('StemChart', () => {
       act(() => {
         r = create(<StemChart stems={STEMS} />);
       });
-      layout(340);
+      layout(440); // (440 - 32) / 5 = 81pt a column, over MIN_COLUMN 58
       base = height();
     });
     act(() => r?.unmount());
@@ -181,7 +172,7 @@ describe('StemChart', () => {
       act(() => {
         r = create(<StemChart stems={STEMS} />);
       });
-      // (340 - 24) / 5 = 63pt a column, under 58 × 1.2: the list, never truncated names.
+      // (340 - 36) / 5 = 60pt a column, under 58 × 1.2: the list, never truncated names.
       layout(340);
       expect(list()).toHaveLength(1);
     });
@@ -190,7 +181,7 @@ describe('StemChart', () => {
       act(() => {
         r = create(<StemChart stems={STEMS} />);
       });
-      layout(420);
+      layout(520); // (520 - 36) / 5 = 96pt, over 58 × 1.2
       expect(list()).toHaveLength(0);
       expect(height()).toBeGreaterThan(base);
     });
@@ -260,7 +251,7 @@ describe('the small pieces', () => {
     act(() => {
       r = create(
         <>
-          <RunningHead section="Field guide · Today" aside="Thu 29 Oct" asideLabel="Thursday 29 October" />
+          <RunningHead section="Thu 29 Oct" sectionLabel="Thursday 29 October" />
           <Plate fig={{ n: 5, title: 'Five areas, one scale' }} />
           <KeyCaption label="KEY">One line of growth per area.</KeyCaption>
           <EmptyPlate body="IS Acquisition needs a few more answers before it is measured." />
@@ -278,19 +269,21 @@ describe('the small pieces', () => {
     expect(l).toContain('Days to exam: 38');
     expect(l).toContain('Study days in a row: Starts today');
     expect(l).toContain('Question 3, missed: Change management');
-    const fig = root().findAll((n) => n.props?.accessibilityRole === 'header' && n.props.accessibilityLabel === 'Figure 5, Five areas, one scale');
+    // No book labels (Grove, 31 Oct 2026): the caption is its words, shown and said; the head is the date.
+    const fig = root().findAll((n) => n.props?.accessibilityRole === 'header' && n.props.accessibilityLabel === 'Five areas, one scale');
     expect(fig.length).toBeGreaterThan(0);
-    expect(allText()).toContain('Fig. 5 · Five areas, one scale');
-    expect(root().findAll((n) => n.props?.accessibilityLabel === 'Field guide, Today').length).toBeGreaterThan(0);
+    expect(allText()).toContain('Five areas, one scale');
+    expect(`${allText()} ${l.join(' ')}`).not.toMatch(/Fig\.|Figure|Field guide|Plate/);
+    expect(root().findAll((n) => n.props?.accessibilityLabel === 'Thursday 29 October').length).toBeGreaterThan(0);
   });
 
-  it('the plate button: 52 tall with 12pt corners', () => {
+  it('the plate button: 54 tall with 16pt corners (Grove)', () => {
     act(() => {
       r = create(<Button label="Continue" shape="plate" onPress={() => {}} />);
     });
     const btn = root().find((n) => typeof n.type === 'string' && n.props.accessibilityRole === 'button');
     const st = StyleSheet.flatten(btn.props.style);
-    expect(st.minHeight).toBe(plate.button);
-    expect(st.borderRadius).toBe(plate.buttonRadius);
+    expect(st.minHeight).toBe(grovePlate.button);
+    expect(st.borderRadius).toBe(grovePlate.buttonRadius);
   });
 });

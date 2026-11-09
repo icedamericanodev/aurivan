@@ -87,6 +87,8 @@ const setWindow = (width: number, fontScale: number) =>
   });
 const layout = (width: number) => {
   const sv = root().findAll((n) => typeof n.props.onLayout === 'function' && n.props.contentContainerStyle)[0];
+  // Grove Phase 4b: Look is one column at every width, so it no longer measures itself.
+  if (!sv) return;
   act(() => {
     sv.props.onLayout({ nativeEvent: { layout: { width, height: 800 } } });
   });
@@ -148,7 +150,7 @@ describe('Look', () => {
     expect(cp().plant!.look).toMatchObject({ colourway: 'oak-autumn', planter: 'terracotta', visitor: 'no-visitor' });
     // Cosmetics only: growth never changes.
     expect(cp().plant!.growth).toBe(4);
-    expect(allText()).toMatch(/never changes your growth or your readiness/);
+    expect(allText()).toMatch(/never change your growth or readiness/);
   });
 
   it('a locked choice says how to open it, and can’t be picked', () => {
@@ -166,7 +168,7 @@ describe('Look', () => {
     expect(allText()).toMatch(/Badges and finished badge sets add more\. Each one says how\./);
     expect(option('lantern').props.accessibilityState).toMatchObject({ disabled: true });
     expect(allText()).toMatch(/Sit a full, timed mock \(the Dress Rehearsal badge\)\./);
-    expect(allText()).toMatch(/Opens when you finish the Groundwork set in the Herbarium\./);
+    expect(allText()).toMatch(/Opens when you finish the Groundwork set in Badges\./);
     // No collection counters (only the plant's own "growth n of 6"), no "unlocked!", never "Pokémon".
     expect(allText().replace(/growth \d of 6/, '')).not.toMatch(/\b\d+ of \d+\b|collected|unlocked!|Pokémon|Pokemon/i);
   });
@@ -185,7 +187,8 @@ describe('Look', () => {
     for (const id of ['jay', 'lantern', 'sundial']) expect(option(id).props.accessibilityState).toMatchObject({ checked: true });
     const fox = option('fox');
     expect(fox.props.accessibilityState).toMatchObject({ disabled: true });
-    expect(fox.props.accessibilityLabel).toMatch(/Put one away to show this\./);
+    // Phase 4b (PHASE4B 4.2): the row says just its line; the hint says how to make room.
+    expect(fox.props.accessibilityHint).toBe('Put one away to show this');
     // The first tap starts from what shows, and stores the learner's own list.
     tap('sundial');
     expect(cp().plant!.look?.keepsakes).toEqual(['jay', 'lantern']);
@@ -201,20 +204,18 @@ describe('Look', () => {
     expect(option('ribbon')).toBeUndefined();
   });
 
-  it('two across at normal text; one column of rows at large text and on a 360 dp phone at 200%', () => {
+  it('one column of full-width rows at every text size (Grove Phase 4b, PHASE4B 4.2): no tiles, no fixed width', () => {
     setPlant(plantNew('oak', 'Kai', Date.now(), 3));
     mount(<PlantLook />);
-    layout(393);
-    expect(option('meadow').props.style).toBeDefined();
     const w = (id: string) => JSON.stringify(option(id).props.style ?? '');
-    expect(w('meadow')).toMatch(/"width":172/);
+    expect(w('meadow')).not.toMatch(/"width":/);
+    expect(w('meadow')).toMatch(/"minHeight":64/);
     act(() => {
       r!.unmount();
     });
     setWindow(360, 2);
     mount(<PlantLook />);
-    layout(360);
-    expect(w('meadow')).not.toMatch(/^\[\{"width"/);
+    expect(w('meadow')).not.toMatch(/"width":/);
   });
 
   it('hidden: says so; no plant: offers to plant one', () => {
@@ -334,7 +335,7 @@ describe('Look › Style', () => {
       expect(option(id).props.accessibilityRole).toBe('radio');
       expect(option(id).props.accessibilityState).toMatchObject({ disabled: false });
     }
-    expect(option('botanical').props.accessibilityLabel).toMatch(/^Botanical\. A fine line drawing, like a field guide\./);
+    expect(option('botanical').props.accessibilityLabel).toMatch(/^Botanical\. A fine line drawing, like a botanist’s sketch\./);
     expect(option('storybook-face').props.accessibilityLabel).toMatch(/^Storybook with a face\. A friendly face that shows its mood\./);
     // A new plant is botanical: on its own (no visitor) until the learner picks one.
     expect(option('botanical').props.accessibilityState).toMatchObject({ checked: true });

@@ -140,7 +140,7 @@ describe('Settings → Your study', () => {
     expect(root().findAll((n) => n.props.accessibilityLabel === 'Mocks and weak spots lead Today. Lessons stay in Learn.').length).toBeGreaterThan(0);
     // Each row shows its current value: an old 40-a-day goal reads as 45 minutes; no start chosen yet.
     expect(rowLabel('Daily time')).toBe('Daily time, 45 minutes a day');
-    expect(rowLabel('Starting point')).toBe('Starting point, not set, How much audit you know; it shapes your first weeks');
+    expect(rowLabel('Starting point')).toBe('Starting point, not set, How much audit you know');
     // The choices are in sheets.
     openRow('Daily time');
     expect(allText()).toContain('Most days. Your daily plan fits this.');
@@ -196,7 +196,7 @@ describe('Settings → Your study', () => {
     expect(rowLabel('Default mode')).toBe('Default mode, Let the app choose, How Practice picks your questions');
     openRow('Default mode');
     expect(allText()).toContain('Let the app choose');
-    expect(allText()).toContain('It changes as you go and fits where you’re starting from, ending with a smart mix of what you need.');
+    expect(allText()).toContain('Adapts as you go, then mixes what you need.');
     expect(allText()).not.toContain('Follow my stage');
   });
 });

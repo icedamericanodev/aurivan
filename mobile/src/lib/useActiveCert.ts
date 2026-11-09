@@ -14,6 +14,7 @@ import { selectCert, useProgress } from '../store/progress';
 import { examDateOf, useSettings } from '../store/settings';
 import { questionExists } from './outline';
 import { useActiveCertId } from './activeCert';
+import { useHeld } from './holdWhileHidden';
 
 /**
  * Calendar days from today to the exam date (local days, DST-safe; the same
@@ -26,9 +27,10 @@ export function daysUntil(dateStr?: string): number | null {
 export function useActiveCert() {
   const certId = useActiveCertId();
   const examDate = useSettings((s) => examDateOf(s.examDates, certId));
-  const progress = useProgress((s) => selectCert(s, certId));
-  const streak = useProgress((s) => s.streak);
-  const today = useProgress((s) => s.today);
+  // Held while a screen that asks for it is covered (lib/holdWhileHidden.ts); live everywhere else.
+  const progress = useHeld(useProgress, (s) => selectCert(s, certId), certId);
+  const streak = useHeld(useProgress, (s) => s.streak, 'streak');
+  const today = useHeld(useProgress, (s) => s.today, 'today');
   const cert = getCertification(certId) ?? CERTIFICATIONS[0];
 
   // "Now" refreshes whenever the app returns to the foreground, so reviews

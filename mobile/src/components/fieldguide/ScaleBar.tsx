@@ -1,7 +1,7 @@
 /**
  * ScaleBar (Field Guide §21.2): readiness as a map's scale bar. Ten
  * alternating segments from 0 to 100, the range as a bracket and a filled
- * band ("64–72"), and a tick at the app's study bar (80, the low end it
+ * band ("64 to 72", in words like the website: Grove has no dashes), and a tick at the app's study bar (80, the low end it
  * steers by), labelled 0 · 50 · 80 · 100. It replaces the readiness ring.
  *
  * The words are built in, so it can't ship without them: the range is
@@ -26,19 +26,62 @@
  * At 200% text the numeral and its words stack; the bar keeps its labels at ×1.3.
  */
 import { useLayoutEffect, useRef, useState } from 'react';
-import { View, type StyleProp, type ViewStyle } from 'react-native';
+import { useWindowDimensions, View, type StyleProp, type ViewStyle } from 'react-native';
 import Animated, { useAnimatedStyle, useSharedValue, withDelay, withSequence } from 'react-native-reanimated';
 import Svg, { Path, Rect } from 'react-native-svg';
 import { READY_LOW } from '../../engine/examReady';
-import { rangeLabel, RANGE_MIN_ANSWERS, type ReadinessRange } from '../../engine/readinessRange';
+import { RANGE_MIN_ANSWERS, type ReadinessRange } from '../../engine/readinessRange';
+import { rangeStep } from '../../theme/grove';
 import { LARGE_TEXT, motion, space } from '../../theme/tokens';
 import { useTheme } from '../../theme/useTheme';
-import { ease, snap, tween, useMotion, type Growth } from '../motion';
+import { ease, FadeIn, snap, tween, useMotion, type Growth } from '../motion';
 import { BigNum, T, useFontScale } from '../ui';
 import { FieldText } from './FieldText';
 
 /** The words that travel with every range. */
 export const ESTIMATE_WORDS = 'a study estimate, not a prediction';
+
+/**
+ * "68 to 78": a range in words, as the website writes it (Grove: no dashes in
+ * what a learner reads). Kept here, not in engine/readinessRange.ts, because
+ * that file is compiled into the website's bundle.
+ */
+export const rangeWords = (r: { low: number; high: number }) => `${r.low} to ${r.high}`;
+
+/**
+ * The range as a figure: "68 to 78", two serif numbers on the range step with a
+ * muted Figtree "to" (the `meta` role, TYPE_SCALE.md section 2.1) between them
+ * (the website's You card: no % sign, no dash). Each number rolls
+ * up from where it was last seen with `growth`; on a count-up from blank the
+ * "to" fades in with the first digits, so it never waits there alone.
+ * It says nothing to a screen reader itself: its group says "68 to 78 percent".
+ */
+export function RangeNum({ low, high, size, growth }: { low: number; high: number; size: 38 | 30 | 22; growth?: Growth }) {
+  const { c } = useTheme();
+  const { reduced } = useMotion();
+  // Each number rolls from its own last-seen value (the pair, when there is one).
+  const roll = (i: 0 | 1) => (growth ? { play: growth.play, from: growth.from.length === 2 ? String(growth.from[i]) : null, run: growth.run } : undefined);
+  // The "to" is a unit beside the numerals: Figtree `meta` in muted ink, like the website's "to".
+  const word = (
+    <T v="meta" color={c.ink2} style={{ marginHorizontal: Math.round(size * 0.15) }}>
+      to
+    </T>
+  );
+  const countUp = Boolean(growth?.play) && !reduced && growth?.from.length !== 2;
+  return (
+    <View style={{ flexDirection: 'row', alignItems: 'baseline' }} testID="range-num">
+      <BigNum value={String(low)} size={size} roll={roll(0)} />
+      {countUp ? (
+        <FadeIn key={growth?.run ?? 0} rise={false} dur="quick">
+          {word}
+        </FadeIn>
+      ) : (
+        word
+      )}
+      <BigNum value={String(high)} size={size} roll={roll(1)} />
+    </View>
+  );
+}
 
 /** How the bar is said. */
 export function scaleSpoken(range: ReadinessRange, mark = READY_LOW): string {
@@ -51,6 +94,8 @@ const H = 52;
 const BAR_Y = 22;
 const BAR_H = 5;
 const LABEL_W = 56;
+/** The bracket's "68 to 78" needs more room than one number (it still fits at ×1.3 text). */
+const RANGE_LABEL_W = 84;
 /** Where the numbers sit under the bar, and the extra line the tick's words take. */
 const LABEL_Y = 32;
 const MARK_LINE = 16;
@@ -91,7 +136,7 @@ export function ScaleBar({
   range,
   mark = READY_LOW,
   markLabel,
-  size = 38,
+  size,
   growth,
   accessible = true,
   style,
@@ -101,7 +146,8 @@ export function ScaleBar({
   mark?: number;
   /** The tick's words, set under its number ("study bar": Today reads "80 / study bar"). Left out (You), the number alone. */
   markLabel?: string;
-  size?: 38 | 34 | 30;
+  /** The range's numeral step; left out, 38 stepping down to 30 and 22 when space runs out (grove.ts rangeStep). */
+  size?: 38 | 30 | 22;
   /** The range rolls, and the bar draws in, on the day's first view or when it changed. */
   growth?: Growth;
   /** false inside a button that already says `scaleSpoken`. */
@@ -110,7 +156,10 @@ export function ScaleBar({
 }) {
   const { c } = useTheme();
   const { reduced } = useMotion();
-  const large = useFontScale() >= LARGE_TEXT;
+  const fontScale = useFontScale();
+  const large = fontScale >= LARGE_TEXT;
+  const { width } = useWindowDimensions();
+  const step = size ?? rangeStep(fontScale, width);
   const [w, setW] = useState(0);
   const x0 = 8;
   const x1 = Math.max(x0 + 10, w - 14);
@@ -160,7 +209,6 @@ export function ScaleBar({
   const labelStyle = useAnimatedStyle(() => ({ opacity: q.value }));
   // Native origins are keywords: the slide grows from the band's left end, the opening from its centre.
   const origin = open ? 'center' : 'left';
-  const roll = growth && range.enough ? { play: growth.play, from: growth.from.length === 2 ? `${growth.from[0]}–${growth.from[1]}` : null, run: growth.run } : undefined;
   const ticks = [0, 50, mark, 100].filter((p, i, all) => all.indexOf(p) === i);
   // The tick's words go on a line of their own under its number, so "80" stays under the tick, on the
   // numbers' one baseline, and never crowds "100" (UX review P2). They take the room a second line needs.
@@ -181,11 +229,11 @@ export function ScaleBar({
       testID="scale-bar"
     >
       <View style={{ flexDirection: large ? 'column' : 'row', alignItems: large ? 'flex-start' : 'center', columnGap: space.md, rowGap: space.xs }}>
-        {range.enough ? <BigNum value={rangeLabel(range)} pct size={size} roll={roll} /> : <T v="headline">Not enough data yet</T>}
+        {range.enough ? <RangeNum low={range.low} high={range.high} size={step} growth={growth} /> : <T v="headline">Not enough data yet</T>}
         {range.enough ? (
           <FieldText v="sub" style={{ flexShrink: 1 }}>{ESTIMATE_WORDS}</FieldText>
         ) : (
-          <T v="meta" style={{ flexShrink: 1 }}>{`${RANGE_MIN_ANSWERS - range.needed} of ${RANGE_MIN_ANSWERS} for your first range`}</T>
+          <T v="meta" num style={{ flexShrink: 1 }}>{`${RANGE_MIN_ANSWERS - range.needed} of ${RANGE_MIN_ANSWERS} for your first range`}</T>
         )}
       </View>
       <View
@@ -220,7 +268,7 @@ export function ScaleBar({
                 <Animated.View style={[{ position: 'absolute', left: X(range.low) - BRACKET_T / 2, top: BRACKET_Y, width: BRACKET_T, height: BRACKET_TICK, backgroundColor: c.accent }, lowTickStyle]} />
                 <Animated.View style={[{ position: 'absolute', left: X(range.high) - BRACKET_T / 2, top: BRACKET_Y, width: BRACKET_T, height: BRACKET_TICK, backgroundColor: c.accent }, highTickStyle]} />
                 {/* The bracket's own label: at large text the range above says it (it would crowd the bar). */}
-                {!large && <Animated.View style={[{ position: 'absolute', left: 0, top: 0, width: w, height: H }, labelStyle]}>{label((range.low + range.high) / 2, `${range.low}–${range.high}`, -4, c.accentText)}</Animated.View>}
+                {!large && <Animated.View style={[{ position: 'absolute', left: 0, top: 0, width: w, height: H }, labelStyle]}>{label((range.low + range.high) / 2, rangeWords(range), -4, c.accentText, RANGE_LABEL_W)}</Animated.View>}
               </>
             )}
             {/* One baseline for every number; the tick's words under its own. */}

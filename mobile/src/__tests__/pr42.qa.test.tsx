@@ -21,6 +21,7 @@
  *
  * Gotcha: never `act(() => store.action())` — use braces.
  */
+import { drillName } from '../lib/drillNames';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { act, create, type ReactTestInstance, type ReactTestRenderer } from 'react-test-renderer';
 import { setMockReducedMotion } from '../../jest/reanimated-mock';
@@ -418,15 +419,16 @@ describe('Journey 3: Learn list states', () => {
     const inDomain = CISA_LESSONS.filter((l) => l.domainId === '1').length;
     expect(r1[0]).toBe(`IS Audit lesson 1: ${charter.title}, done`);
     expect(r1[1]).toMatch(/, up next$/);
-    expect(root().findAll((n) => n.props.accessibilityState?.expanded === true && String(n.props.accessibilityLabel).includes(`1 of ${inDomain} done`)).length).toBeGreaterThan(0);
+    expect(root().findAll((n) => n.props.accessibilityState?.expanded === true && String(n.props.accessibilityLabel).includes(`1 of ${inDomain} lessons done`)).length).toBeGreaterThan(0);
   });
 
   it('every lesson of a domain done: the group says All done and the cover moves on', () => {
     for (const l of CISA_LESSONS.filter((x) => x.domainId === '1')) useProgress.getState().completeLesson('cisa', l.id);
     mount(<Learn />);
-    const allDone = new Set(root().findAll((n) => typeof n.props.accessibilityLabel === 'string' && /lessons?, all done$/i.test(n.props.accessibilityLabel)).map((n) => n.props.accessibilityLabel));
+    const allDone = new Set(root().findAll((n) => typeof n.props.accessibilityLabel === 'string' && /, all lessons done/i.test(n.props.accessibilityLabel)).map((n) => n.props.accessibilityLabel));
     expect([...allDone]).toHaveLength(1);
-    expect([...allDone][0]).toMatch(/^Information System Auditing Process, /);
+    // Grove Phase 4: the row says the area number and its short name, as on Practice's By domain.
+    expect([...allDone][0]).toMatch(/^Domain 1, IS Audit, /);
     expect(allText()).not.toContain('Up next · IS Audit');
   });
 
@@ -492,6 +494,8 @@ describe('Journey 3: Learn list states', () => {
     act(() => {
       r!.update(<Learn />);
     });
+    // Grove Phase 4: the areas start closed (the kit), so open IS Audit to see its trail.
+    press(/^Domain 1, IS Audit, /);
     // Fixed (QA bug 2): no ✓ draws and no haptic; the three rows are simply done.
     expect(root().findAll((n) => n.type === CheckDraw && (n.props.play === true || n.props.hold === true))).toHaveLength(0);
     expect(root().findAll((n) => n.type === CheckDraw)).toHaveLength(3);
@@ -528,7 +532,9 @@ describe('Journey 4: notes Mark as read', () => {
     useProgress.getState().setNoteRead('cisa', note.id, true);
     mount(<Learn />);
     // Mobile 1.21: a reference has no finish line, so the row counts notes read (no "of N" meter).
-    expect(allText()).toContain('1 note read · every topic, with traps');
+    // Premium round 2: an index row, "1 read" at the end of its leader; the spoken label keeps the full words.
+    expect(allText()).toContain('Study notes 1 note read · with traps');
+    expect(root().findAll((n) => n.props.accessibilityLabel === 'Study notes, 1 note read, with traps').length).toBeGreaterThan(0);
     expect(allText()).not.toContain(`of ${noteSubtopics('cisa').length} read`);
   });
 });
@@ -554,7 +560,7 @@ describe('Journey 5: Play', () => {
       mount(SCREENS[id]());
       if (hasButton('Start')) press('Start');
       const head = root().findAll(
-        (n) => n.props.accessible === true && n.props.accessibilityRole === 'header' && typeof n.props.accessibilityLabel === 'string' && n.props.accessibilityLabel.startsWith(`${GAMES[id].name}, 1 of `),
+        (n) => n.props.accessible === true && n.props.accessibilityRole === 'header' && typeof n.props.accessibilityLabel === 'string' && n.props.accessibilityLabel.startsWith(`${drillName(id)}, 1 of `),
       );
       // The game id in the failure message tells which game lost its header.
       expect({ id, hasHeader: head.length > 0 }).toEqual({ id, hasHeader: true });
@@ -783,14 +789,16 @@ describe('Journey 7: an old 1.11 save and a backup restore', () => {
     await loadSave();
     mount(<ForecastScreen />);
     expect(allText()).not.toContain('How scoring works');
-    expect(root().findAll((n) => n.props.accessibilityRole === 'header' && String(n.props.accessibilityLabel) === `Forecast, 1 of ${GAMES.sprint.size}`).length).toBeGreaterThan(0);
+    expect(root().findAll((n) => n.props.accessibilityRole === 'header' && String(n.props.accessibilityLabel).startsWith(`Forecast, 1 of ${GAMES.sprint.size}.`)).length).toBeGreaterThan(0);
     const item = useProgress.getState().days.cisa!.items[0];
     expect(planText(item as Parameters<typeof planText>[0]).title).toBe('Forecast');
     // Learn and notes see the old progress.
     unmount();
     mount(<Learn />);
-    expect(allText()).toContain('1 note read · every topic, with traps');
-    expect(root().findAll((n) => typeof n.props.accessibilityLabel === 'string' && /^Information System Auditing Process, \d+ lessons, 1 of \d+ done$/.test(n.props.accessibilityLabel)).length).toBeGreaterThan(0);
+    // Premium round 2: an index row, "1 read" at the end of its leader; the spoken label keeps the full words.
+    expect(allText()).toContain('Study notes 1 note read · with traps');
+    expect(root().findAll((n) => n.props.accessibilityLabel === 'Study notes, 1 note read, with traps').length).toBeGreaterThan(0);
+    expect(root().findAll((n) => typeof n.props.accessibilityLabel === 'string' && /^Domain 1, IS Audit, 1 of \d+ lessons done/.test(n.props.accessibilityLabel)).length).toBeGreaterThan(0);
   });
 
   it('a backup of the 1.11 save restores on a new phone unchanged, and Forecast’s round end reads it', async () => {

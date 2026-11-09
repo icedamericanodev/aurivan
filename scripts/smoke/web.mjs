@@ -1,19 +1,25 @@
 // KaiSip web smoke test (index.html over a local server).
-// Usage: node web.mjs <repo_root> <out_dir> <base_url>
+// Usage: node web.mjs <web_root> <out_dir> <base_url> [repo_root]
+//   web_root  the folder being served: the repo root, or _site/ (the public
+//             site, SMOKE_WEB_SITE=1) where only the free sample is present
+//   repo_root the checkout (default web_root); W9 takes a full-course question
+//             from its data/domain*.json to check a saved one is skipped calmly
 // Walks the web paths in .claude/agents/smoke-tester.md and writes
 // web-results.json + screenshots to <out_dir>. Read-only on the app.
 import fs from 'fs';
 import path from 'path';
 import { launch, Recorder, loadBank, norm, sleep } from './lib.mjs';
 
-const [repo, outDir, base] = process.argv.slice(2);
+const [repo, outDir, base, fullRepoArg] = process.argv.slice(2);
+const fullRepo = fullRepoArg || repo;
 if (!repo || !outDir || !base) { console.error('usage: node web.mjs <repo_root> <out_dir> <base_url>'); process.exit(2); }
 const URL0 = base.replace(/\/$/, '') + '/index.html';
 const ORIGIN = new URL(URL0).origin;
 const html = fs.readFileSync(path.join(repo, 'index.html'), 'utf8');
 const APP_VERSION = (html.match(/const APP_VERSION\s*=\s*'([^']+)'/) || [])[1];
 const bank = loadBank(repo);
-const rec = new Recorder(outDir, 'web', { appVersion: APP_VERSION, url: URL0 });
+const SITE = bank.__site; // serving the public site: the free sample only (web v12.50+)
+const rec = new Recorder(outDir, 'web', { appVersion: APP_VERSION, url: URL0, site: SITE });
 const browser = await launch();
 
 const VIEWS = {
@@ -27,6 +33,11 @@ async function newPage(view, scheme) {
   await ctx.route(/googletagmanager|google-analytics/, (r) => r.abort());
   const page = await ctx.newPage();
   rec.watch(page, ORIGIN);
+  // Since web v12.50 the website loads only the free sample (data/free/).
+  // Asking for the full bank is a FAIL even where it would be served.
+  page.on('request', (r) => {
+    if (rec.cur && /\/data\/domain\d+\.json/.test(new URL(r.url()).pathname)) rec.cur.errors.push(`requested the full bank: ${r.url()}`);
+  });
   return { ctx, page };
 }
 const visible = async (loc) => { try { return await loc.first().isVisible(); } catch { return false; } };
@@ -80,7 +91,30 @@ async function go(page, section, hash) {
   }
   await clearAsks(page);
 }
-const ev = (page, fn) => page.evaluate(fn);
+const ev = (page, fn, arg) => page.evaluate(fn, arg);
+
+// The Practice page itself (the Practice section can reopen its last page, e.g. Mock exam).
+async function goPracticeHub(page) {
+  await go(page, 'practice');
+  if (!(await visible(page.locator('#screen-practice .ph-go')))) {
+    const sub = page.locator('a[data-tab="practice"]:visible');
+    if (await visible(sub)) { await sub.first().click(); await sleep(600); }
+  }
+  await page.locator('#screen-practice .ph-go:visible').first().waitFor({ timeout: 10000 });
+}
+
+// Open study note `id` (topic group first, if it is closed), leaving it expanded.
+async function openNote(page, id) {
+  const row = page.locator(`[id="ni-${id}"]`);
+  if (!(await visible(row.locator('.gt-row-btn')))) {
+    await page.locator('#topicsArea button', { hasText: 'Types of Audits' }).first().click();
+    await sleep(500);
+  }
+  const btn = row.locator('.gt-row-btn');
+  await btn.waitFor({ timeout: 10000 });
+  if ((await btn.getAttribute('aria-expanded')) !== 'true') { await btn.click(); await sleep(800); }
+  return row;
+}
 
 // The option button whose text is `text` (smart quotes ignored).
 async function optionByText(page, scope, text) {
@@ -183,8 +217,8 @@ for (const [view, scheme] of [['phone', 'light'], ['desktop', 'dark']]) {
       }
       const exp = norm(await page.locator('#vrExp').innerText().catch(() => ''));
       c.check(exp.length > 40, `Q${k + 1}: the explanation is missing or very short`);
-      // The three moves sit under the answer below 1240px and in the margin plate
-      // ("Fig. 4 · Three moves", .vm-plate) from 1240px (web v12.47): check whichever shows.
+      // The tips sit under the answer at every width (Grove Phase 4); the older
+      // margin plate (.vm-plate) is still read if a build shows it.
       const tips = await ev(page, () => {
         const shown = (e) => e && e.offsetParent !== null;
         const inline = [...document.querySelectorAll('#rPanel .vine-elim, #rPanel .vine-final, #rPanel .vine-cue')]
@@ -210,6 +244,18 @@ for (const [view, scheme] of [['phone', 'light'], ['desktop', 'dark']]) {
   await rec.run(`W3-${tag}`, `Mock: answer 3, reload, resume (answers kept), submit, review letters (${tag})`, page, async (c) => {
     await go(page, 'practice', 'mock');
     await c.shot(`w3-setup-${tag}`);
+    const fullLocked = await ev(page, () => !!(MOCK_TYPES.full && MOCK_TYPES.full.locked));
+    if (SITE) c.check(fullLocked, 'on the free site the Full mock is not locked');
+    if (fullLocked) {
+      const lk = await ev(page, () => ({ card: !!document.querySelector('#screen-mock .mk-type-locked #mkT-full, .mk-type-locked #mkT-full'),
+        startBtn: [...document.querySelectorAll('button')].some((b) => b.offsetParent && /Start full mock/i.test(b.textContent)),
+        cap: (document.querySelector('.mk-type-locked .mk-type-cap') || {}).textContent || '',
+        link: (document.querySelector('.mk-type-locked a.mk-course-link') || {}).href || '' }));
+      c.check(lk.card && /Part of the full course/.test(lk.cap), 'the locked Full mock card ("Part of the full course") is missing');
+      c.check(!lk.startBtn, 'a "Start full mock" button is still on screen');
+      c.check(!!lk.link, 'the locked Full mock card has no link to the full course');
+      c.note(`Full mock is locked; its link goes to ${lk.link}`);
+    }
     c.step('Start mini mock → confirm');
     await page.locator('.mock-start-mini:visible').first().click();
     await page.locator('.mock-confirm-btn.gostart').click();
@@ -260,7 +306,10 @@ for (const [view, scheme] of [['phone', 'light'], ['desktop', 'dark']]) {
     await page.locator('#mrTitle').waitFor({ timeout: 10000 });
     await sleep(500);
     await c.shot(`w3-results-${tag}`);
-    c.step('open the review rows for the first 3 questions');
+    // Web v12.49: the review opens on the mistakes, five rows at a time; "All" shows every question in order.
+    c.step('review: show All, then open the rows for the first 3 questions');
+    await page.locator('.mr-seg [data-f="all"]').click();
+    await sleep(200);
     for (let i = 0; i < 3; i++) {
       const item = page.locator('#mrList .mr-item').nth(i);
       await item.locator('.mr-row').click();
@@ -275,14 +324,122 @@ for (const [view, scheme] of [['phone', 'light'], ['desktop', 'dark']]) {
       c.check(best && norm(best.t) === p.key, `review row ${i + 1}: "Best answer" is on the wrong option text`);
       c.check(yours && norm(yours.t) === p.text, `review row ${i + 1}: "Your answer" is on a different option than the one picked`);
       if (!p.right) {
-        const m = norm(await item.locator('.mr-meta').innerText());
-        const mm = m.match(/You: ([A-D]) . Best: ([A-D])/);
+        // v12.49: "You C · Best A" on the row's right, in display letters.
+        const m = norm(await item.locator('.mr-yb').innerText());
+        const mm = m.match(/You ([A-D]) . Best ([A-D])/);
         c.check(mm && mm[1] === yours.l && mm[2] === best.l, `review row ${i + 1}: meta "${m}" letters do not match the rows (yours ${yours && yours.l}, best ${best && best.l})`);
       }
     }
     await page.locator('#mrList .mr-item').first().scrollIntoViewIfNeeded();
     await c.shot(`w3-review-${tag}`);
     memo.mockTotal = total;
+    c.check(new Set(await ev(page, () => S.mockQueue.map((q) => q.id))).size === total, 'the mini mock has a question twice');
+    const unknown = await ev(page, () => S.mockQueue.map((q) => q.id));
+    const off = unknown.filter((id) => !bank[id]);
+    c.check(!off.length, `the mini mock drew questions that are not in the served bank: ${off.slice(0, 5).join(', ')}`);
+  });
+
+  // ── W8 Practice this concept (from a study note) ─────────────────
+  await rec.run(`W8-${tag}`, `Study note → Practice this concept: answer, verdict, explanation (${tag})`, page, async (c) => {
+    await go(page, 'learn', 'notes');
+    await page.locator('#topicsArea button', { hasText: 'Types of Audits' }).first().waitFor({ timeout: 10000 });
+    const row = await openNote(page, '1A2.1');
+    // Below the notes rail the button sits in the note; with the rail (desktop)
+    // the note's own block is hidden and the rail's "Practice this note" starts it.
+    const inNote = row.locator('.gt-practice-btn:visible');
+    const inRail = page.locator('button[onclick^="railPracticeNote"]:visible');
+    const btn = (await visible(inNote)) ? inNote.first() : inRail.first();
+    c.check(await visible(btn), 'note 1A2.1 has no visible "Practice this concept" / "Practice this note" button');
+    if (!(await visible(btn))) { await c.shot(`w8-note-${tag}`); return; }
+    c.note(`button: "${norm(await btn.innerText())}"`);
+    const sub = norm(await row.locator('.gt-practice-sub').innerText().catch(() => ''));
+    if (sub) c.note(`button caption: "${sub}"`);
+    await btn.scrollIntoViewIfNeeded();
+    await c.shot(`w8-note-button-${tag}`);
+    await btn.click();
+    await page.locator('#qArea .opt').first().waitFor({ timeout: 10000 });
+    await sleep(500);
+    const id = await ev(page, () => S.current && S.current.id);
+    const q = bank[id];
+    c.check(!!q, `concept question ${id} is not in the served bank`);
+    if (!q) return;
+    c.step(`question ${id}: pick the key by its text`);
+    const pick = await optionByText(page, '#qArea', q.options[q.correct]);
+    c.check(!!pick, 'could not find the key option on screen');
+    if (!pick) return;
+    await pick.btn.click(); await sleep(200);
+    await page.locator('#submitBtn').click();
+    await page.locator('#vrHero').waitFor({ timeout: 5000 }); await sleep(400);
+    const hero = norm(await page.locator('#vrHero').innerText());
+    c.check(/^Correct/.test(hero), `picked the key (letter ${pick.letter}) but the verdict says "${hero.slice(0, 40)}"`);
+    const exp = norm(await page.locator('#vrExp').innerText().catch(() => ''));
+    c.check(exp.length > 40, 'the explanation is missing or very short');
+    await c.shot(`w8-concept-answer-${tag}`);
+    c.step('Next (or end of the set), then leave with the X');
+    await page.locator('#vrNext').click(); await sleep(800);
+    await c.shot(`w8-concept-next-${tag}`);
+  });
+
+  // ── W9 Saved ─────────────────────────────────────────────────────
+  await rec.run(`W9-${tag}`, `Saved: bookmark a question, it lists and survives a reload; a full-course saved question is skipped calmly (${tag})`, page, async (c) => {
+    await goPracticeHub(page);
+    await page.locator('#screen-practice .ph-go:visible').first().click();
+    await page.locator('#qArea .opt').first().waitFor({ timeout: 10000 });
+    const id = await ev(page, () => S.current.id);
+    c.step(`bookmark ${id} with the header button`);
+    await page.locator('#bkBtn').click(); await sleep(300);
+    c.check((await page.locator('#bkBtn').getAttribute('aria-pressed')) === 'true', 'the bookmark button did not switch on');
+    await go(page, 'practice', 'saved');
+    await sleep(500);
+    const stem = norm(bank[id].question).slice(0, 50);
+    const list1 = norm(await page.locator('#bkList').innerText());
+    c.check(list1.includes(stem), 'Saved does not list the bookmarked question');
+    await c.shot(`w9-saved-${tag}`);
+    c.step('reload: still saved');
+    await page.reload({ waitUntil: 'networkidle' }); await sleep(800); await clearAsks(page);
+    await go(page, 'practice', 'saved'); await sleep(500);
+    c.check(norm(await page.locator('#bkList').innerText()).includes(stem), 'after a reload Saved no longer lists the question');
+    if (!SITE) return;
+    // A question saved elsewhere that is not in the free sample (e.g. a backup
+    // from before v12.50): the app should skip it without breaking Saved.
+    const full = loadBank(fullRepo);
+    const paid = Object.values(full).find((x) => !bank[x.id] && x.id.startsWith('d1_'));
+    if (!paid) { c.note('no full-course question available to seed; skipped the full-course part'); return; }
+    c.step(`seed a saved full-course question ${paid.id} beside ${id}, reload`);
+    await ev(page, (pq) => { S.bookmarks.push(pq); saveState(); }, paid);
+    await page.reload({ waitUntil: 'networkidle' }); await sleep(800); await clearAsks(page);
+    await go(page, 'practice', 'saved'); await sleep(500);
+    const ids = await ev(page, () => S.bookmarks.map((b) => b.id));
+    c.check(ids.includes(id), `the free saved question ${id} is gone after seeding a full-course one`);
+    c.check(!ids.includes(paid.id), `the full-course question ${paid.id} still shows in Saved`);
+    // It must be kept in storage (not deleted), so it comes back with the full course.
+    const savedState = () => ev(page, (pid) => ({ shown: S.bookmarks.map((b) => b.id), kept: (S.bookmarksLocked || []).map((b) => b.id),
+      stored: Object.keys(localStorage).some((k) => (localStorage.getItem(k) || '').includes(pid)) }), paid.id);
+    let st = await savedState();
+    c.note(`after reload: shown ${JSON.stringify(st.shown)}, kept ${JSON.stringify(st.kept)}, in storage ${st.stored}`);
+    const kept1 = st.stored;
+    c.check(kept1, `the saved full-course question ${paid.id} was deleted from storage after a reload`);
+    const list2 = norm(await page.locator('#bkList').innerText());
+    c.check(list2.includes(stem) && !list2.includes(norm(paid.question).slice(0, 50)), 'Saved shows the wrong questions after seeding');
+    await c.shot(`w9-saved-with-paid-${tag}`);
+    c.step('remove the free one, reload: Saved shows the full-course row');
+    await ev(page, (pq) => { S.bookmarks = [pq]; saveState(); }, paid);
+    await page.reload({ waitUntil: 'networkidle' }); await sleep(800); await clearAsks(page);
+    await go(page, 'practice', 'saved'); await sleep(500);
+    st = await savedState();
+    c.note(`after reload: shown ${JSON.stringify(st.shown)}, kept ${JSON.stringify(st.kept)}, in storage ${st.stored}`);
+    const fc = await visible(page.locator('#bkList .fc-row'));
+    c.check(fc, 'with only a full-course question saved, Saved does not show the "full course" row');
+    if (fc) c.note(`Saved says: "${norm(await page.locator('#bkList .fc-row').innerText())}"`);
+    await c.shot(`w9-saved-full-course-row-${tag}`);
+    c.step('one more reload: the full-course save is still in storage');
+    await page.reload({ waitUntil: 'networkidle' }); await sleep(800); await clearAsks(page);
+    st = await savedState();
+    c.note(`after reload: shown ${JSON.stringify(st.shown)}, kept ${JSON.stringify(st.kept)}, in storage ${st.stored}`);
+    const kept2 = st.stored;
+    c.check(kept2, `the saved full-course question ${paid.id} was deleted from storage after reloads`);
+    // Leave Saved empty for W6 (the backup compares the counts before/after).
+    await ev(page, () => { S.bookmarks = []; if (S.bookmarksLocked) S.bookmarksLocked = []; saveState(); });
   });
 
   // ── W4 Topics ────────────────────────────────────────────────────
@@ -290,11 +447,7 @@ for (const [view, scheme] of [['phone', 'light'], ['desktop', 'dark']]) {
     await go(page, 'learn', 'notes');
     await page.locator('#topicsArea .gt-row-btn, #topicsArea button').first().waitFor({ timeout: 10000 });
     c.step('open topic "Types of Audits, Assessments, and Reviews"');
-    await page.locator('#topicsArea button', { hasText: 'Types of Audits' }).first().click();
-    await sleep(500);
-    const row = page.locator('[id="ni-1A2.1"]');
-    await row.locator('.gt-row-btn').click();
-    await sleep(800);
+    const row = await openNote(page, '1A2.1');
     const body = norm(await row.innerText());
     c.check(body.length > 300, `note 1A2.1 opened with only ${body.length} characters`);
     c.check(!/coming soon/i.test(body), 'note 1A2.1 says "coming soon"');
@@ -337,19 +490,22 @@ for (const [view, scheme] of [['phone', 'light'], ['desktop', 'dark']]) {
       const a = document.getElementById('pgArea');
       return { text: a.innerText, svgs: a.querySelectorAll('svg').length, loading: !!a.querySelector('.gt-loading'),
         head: (document.getElementById('pageRh')?.innerText || '') + ' ' + (a.querySelector('.pg-head')?.innerText || ''),
-        figs: [...a.querySelectorAll('.fg-fig [aria-hidden="true"]')].map((e) => e.textContent.trim()) };
+        rh: document.getElementById('pageRh')?.innerText || '',
+        figs: [...a.querySelectorAll('.fg-fig')].map((e) => e.textContent.trim()) };
     });
     c.check(!pg.loading, 'Progress is stuck on "Loading your progress"');
     c.check(/Your progress/.test(pg.text), 'Progress heading missing');
-    c.check(/Field record/i.test(pg.head), 'Field Guide running head ("Field record · Progress") missing');
+    // No book labels on screen (expert decision, 31 Oct 2026): the running head is the date only.
+    c.check(/\b\d{1,2} [A-Z]{3}\b/i.test(pg.rh), `running head shows no date (got "${pg.rh.trim()}")`);
+    c.check(!/\bField (guide|record)\b|\bPlates?\b|\bFig\.\s?\d|\bFigure \d|\bHerbarium\b/i.test(pg.head + ' ' + pg.text), 'a book label ("Field record", "Plate", "Fig. N", "Herbarium") is on the Progress page');
     c.check(pg.svgs > 0, 'no chart (svg) on the Progress page');
-    c.check(pg.figs.length > 0, 'no Field Guide plate captions ("Fig. N · …") on the Progress page');
+    c.check(pg.figs.length > 0, 'no plate captions ("Five areas, one scale") on the Progress page');
     c.note(`Progress page: ${pg.svgs} svg drawings; plates: ${pg.figs.join(' | ')}`);
     await c.shot(`w5-progress-${tag}`);
     await c.shot(`w5-progress-full-${tag}`, page, true);
 
-    c.step('You → Dark mode switch, reload, check it stuck, switch back');
-    await go(page, 'you');
+    c.step('You → Settings → Dark mode switch, reload, check it stuck, switch back');
+    await go(page, 'you', 'settings');
     const t0 = await ev(page, () => document.documentElement.getAttribute('data-theme'));
     await page.locator('#darkToggleBtn').scrollIntoViewIfNeeded();
     await page.locator('#darkToggleBtn').click();
@@ -362,7 +518,7 @@ for (const [view, scheme] of [['phone', 'light'], ['desktop', 'dark']]) {
     c.check(t2.t === t1, `after reload the theme is ${t2.t}, chosen ${t1}`);
     c.check(t2.sw === (t1 === 'dark' ? 'true' : 'false'), `the Dark mode switch shows ${t2.sw} for theme ${t2.t}`);
     await c.shot(`w5-theme-after-reload-${tag}`);
-    await go(page, 'you');
+    await go(page, 'you', 'settings');
     await page.locator('#darkToggleBtn').click();
     await sleep(300);
   });
@@ -372,12 +528,12 @@ for (const [view, scheme] of [['phone', 'light'], ['desktop', 'dark']]) {
     const before = await ev(page, () => ({ t: S.score.t, c: S.score.c, mocks: (S.mockHistory || []).length, read: Object.keys(getTopicReviewedSet()).length,
       answered: Object.values(S.answeredIds || {}).reduce((n, o) => n + Object.keys(o || {}).length, 0) }));
     c.step(`before: ${JSON.stringify(before)}`);
-    await go(page, 'you');
-    await page.locator('button[onclick="showYourData()"]:visible').first().click();
-    await page.getByRole('button', { name: 'Export progress' }).waitFor({ timeout: 5000 });
+    // Your data is on the Settings page (Grove C2): Back up and Restore rows.
+    await go(page, 'you', 'settings');
+    await page.locator('#setBackup').scrollIntoViewIfNeeded();
     await c.shot(`w6-your-data-${tag}`);
     const dl = page.waitForEvent('download');
-    await page.getByRole('button', { name: 'Export progress' }).click();
+    await page.locator('#setBackup').click();
     const file = path.join(outDir, `w6-backup-${tag}.json`);
     await (await dl).saveAs(file);
     const data = JSON.parse(fs.readFileSync(file, 'utf8'));
@@ -391,15 +547,16 @@ for (const [view, scheme] of [['phone', 'light'], ['desktop', 'dark']]) {
     await clearAsks(page);
     const empty = await ev(page, () => S.score.t);
     c.check(empty === 0, `after clearing storage the app still shows ${empty} answers`);
-    c.step('Your data → Import progress → the exported file → Replace my progress');
-    await go(page, 'you');
-    await page.locator('button[onclick="showYourData()"]').first().click();
+    c.step('Settings → Your data → Restore → the exported file → Restore (this browser has no answers, so the sheet is a plain restore)');
+    await go(page, 'you', 'settings');
     const chooser = page.waitForEvent('filechooser');
-    await page.getByRole('button', { name: 'Import progress' }).click();
+    await page.locator('#setRestore').click();
     await (await chooser).setFiles(file);
-    await page.getByRole('button', { name: 'Replace my progress' }).waitFor({ timeout: 5000 });
+    // The sheet's confirm (the Settings row behind it is also named Restore).
+    const restoreBtn = page.getByRole('dialog').getByRole('button', { name: 'Restore', exact: true });
+    await restoreBtn.waitFor({ timeout: 5000 });
     await c.shot(`w6-import-confirm-${tag}`);
-    await Promise.all([page.waitForEvent('load'), page.getByRole('button', { name: 'Replace my progress' }).click()]);
+    await Promise.all([page.waitForEvent('load'), restoreBtn.click()]);
     await page.waitForLoadState('networkidle'); await sleep(800); await clearAsks(page);
     const after = await ev(page, () => ({ t: S.score.t, c: S.score.c, mocks: (S.mockHistory || []).length, read: Object.keys(getTopicReviewedSet()).length,
       answered: Object.values(S.answeredIds || {}).reduce((n, o) => n + Object.keys(o || {}).length, 0) }));
@@ -413,7 +570,7 @@ for (const [view, scheme] of [['phone', 'light'], ['desktop', 'dark']]) {
   // ── W7 Phone reflow ──────────────────────────────────────────────
   if (view === 'phone') {
     await rec.run(`W7-${tag}`, 'At 390px: no horizontal scroll, tab bar reachable', page, async (c) => {
-      const pages = [['today'], ['learn', 'notes'], ['learn', 'glossary'], ['practice'], ['practice', 'mock'], ['you'], ['you', 'progress']];
+      const pages = [['today'], ['learn', 'notes'], ['learn', 'glossary'], ['practice'], ['practice', 'mock'], ['you'], ['you', 'settings'], ['you', 'progress']];
       for (const [sec, h] of pages) {
         await go(page, sec, h);
         await sleep(300);
@@ -440,6 +597,59 @@ for (const [view, scheme] of [['phone', 'light'], ['desktop', 'dark']]) {
       c.note('The tab bar is hidden by design inside a practice question and a mock question (they have their own exit button).');
     });
   }
+  await ctx.close();
+}
+
+// ── W10 Today: "You've worked through the free questions" ───────────
+// Free site only. A fresh profile with every loaded question marked answered
+// (seeded through the app's own state, as a learner who finished them).
+for (const [view, scheme] of [['phone', 'light'], ['desktop', 'dark']]) {
+  const tag = `${view === 'phone' ? '390' : '1280'}-${scheme}`;
+  if (!SITE) { rec.notTested(`W10-${tag}`, 'Today: free-questions-done card', 'only on the public site (SMOKE_WEB_SITE=1)'); continue; }
+  const { ctx, page } = await newPage(view, scheme);
+  await rec.run(`W10-${tag}`, `Today: the "worked through the free questions" card shows, has no counts, "Not now" hides it across reloads (${tag})`, page, async (c) => {
+    await boot(page);
+    await page.waitForFunction(() => !Object.keys(window.QB_LOADING || {}).length && Object.keys(DI).every((d) => (QB[d] || []).length), null, { timeout: 15000 });
+    c.check(!(await visible(page.locator('#tdFs'))), 'the card shows on a fresh profile');
+    const n = await ev(page, () => { let n = 0; Object.keys(DI).forEach((d) => { S.answeredIds[d] = S.answeredIds[d] || {}; (QB[d] || []).forEach((q) => { S.answeredIds[d][q.id] = true; n++; }); }); saveState(); return n; });
+    const served = Object.keys(bank).length;
+    c.check(n === served, `the app loaded ${n} questions, the served sample has ${served}`);
+    c.step('mark every loaded question answered, reload, open Today');
+    await page.reload({ waitUntil: 'networkidle' }); await sleep(1000); await clearAsks(page);
+    await go(page, 'today'); await sleep(600);
+    const card = page.locator('#tdFs');
+    c.check(await visible(card), 'the "worked through the free questions" card is not on Today');
+    if (!(await visible(card))) { await c.shot(`w10-today-${tag}`); return; }
+    const txt = norm(await card.innerText());
+    c.check(!/\d/.test(txt), `the card shows a number: "${txt}"`);
+    await card.scrollIntoViewIfNeeded();
+    await c.shot(`w10-free-done-card-${tag}`);
+    c.step('Not now → card gone, reload → still gone');
+    await card.locator('.td-fs-hide').click(); await sleep(400);
+    c.check(!(await visible(page.locator('#tdFs'))), '"Not now" did not hide the card');
+    await page.reload({ waitUntil: 'networkidle' }); await sleep(1000); await clearAsks(page);
+    await go(page, 'today'); await sleep(600);
+    c.check(!(await visible(page.locator('#tdFs'))), 'the card is back after a reload');
+    const until = await ev(page, () => Number(localStorage.getItem('aurivan_free_sample_done_hidden_until')) - Date.now());
+    c.check(until > 6 * 86400000, `"Not now" hides it for ${(until / 86400000).toFixed(1)} days, expected 7`);
+    await c.shot(`w10-after-not-now-${tag}`);
+    c.step('Practice with everything answered: a question, or the "domain complete" card and Restart');
+    await goPracticeHub(page);
+    await page.locator('#screen-practice .ph-go:visible').first().click();
+    await sleep(1200);
+    await c.shot(`w10-practice-after-all-${tag}`);
+    if (!(await visible(page.locator('#qArea .opt')))) {
+      const restart = page.getByRole('button', { name: /Restart/ });
+      const done = norm(await page.locator('#screen-practice').innerText());
+      c.note(`practice shows: "${done.slice(0, 120)}"`);
+      c.check(await visible(restart), 'with every free question answered, Practice shows neither a question nor a Restart button');
+      if (await visible(restart)) {
+        await restart.first().click();
+        await page.locator('#qArea .opt').first().waitFor({ timeout: 10000 });
+        await c.shot(`w10-practice-restarted-${tag}`);
+      }
+    }
+  });
   await ctx.close();
 }
 

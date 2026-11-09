@@ -203,6 +203,11 @@ describe('results', () => {
     // Mobile 1.11: plain words, never "median".
     expect(labels).toContain('Typical time per question: about 60 seconds');
     expect(labels).toContain('Unanswered at submit: 48');
+    // Grove PHASE4 7.13: one card, headed "Pacing", its rows inside it; the mock's key names this mock.
+    const [card] = root().findAll((n) => n.props.testID === 'pacing-card' && typeof n.type === 'string');
+    const head = card.findAll((n) => n.props.accessibilityRole === 'header' && typeof n.type === 'string');
+    expect(head.map((n) => n.props.children)).toEqual(['Pacing']);
+    expect(card.findAll((n) => n.props.accessibilityLabel === 'Time used: 30 minutes of 1 hour 20 minutes')).not.toHaveLength(0);
   });
 
   it('an untimed mock is labelled and has no pacing panel', () => {

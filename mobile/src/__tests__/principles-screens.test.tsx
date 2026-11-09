@@ -261,22 +261,21 @@ describe('Principle page', () => {
 });
 
 describe('entry points', () => {
-  it('Learn: Principles is the second row of "Look it up", under Study notes (no separate section)', () => {
+  it('Learn: Principles is the third tile, after Study notes and Glossary (no separate section)', () => {
     mount(<Learn />);
     const text = allText();
     expect(text).not.toContain('Exam mindset');
-    // (The page's own subtitle also says "Study notes", so the rows are found by their subtitles.)
-    const notesRow = text.indexOf('Every topic, with traps and key terms');
-    expect(text.indexOf('Look it up')).toBeLessThan(notesRow);
-    expect(notesRow).toBeLessThan(text.indexOf('The thinking the exam rewards'));
-    expect(text.indexOf('The thinking the exam rewards')).toBeLessThan(text.indexOf('In exam order. Each ends with a quick check.'));
-    // Only the final row drops its hairline. Since the exam guide, "About the CISA exam" and
-    // "Final review week" follow Principles (exam-guide-screens.test.tsx), so the week row is last.
-    const rowNamed = (title: string) => root().findAll((n) => n.props.title === title && 'last' in n.props)[0];
-    expect(rowNamed('Study notes').props.last).toBe(false);
-    expect(rowNamed('Principles').props.last).toBe(false);
-    expect(rowNamed('Final review week').props.last).toBe(true);
-    press('Principles, the thinking the exam rewards');
+    // Grove Phase 4: the kit's tiles in a fixed order, then Final review week as a full-width row,
+    // all before the Lessons card.
+    const [lookup] = root().findAll((n) => n.props.testID === 'learn-lookup' && typeof n.type === 'string');
+    const order = lookup.findAll((n) => n.props.accessibilityRole === 'button' && typeof n.type === 'string').map((n) => n.props.accessibilityLabel as string);
+    expect(order[0]).toMatch(/^Study notes, /);
+    // Grove Phase 4 (O2): the kit's order, Study notes, Glossary, Principles.
+    expect(order[1]).toBe('Glossary, key terms in plain words');
+    expect(order[2]).toBe('Principles, how the exam thinks');
+    expect(order[order.length - 1]).toMatch(/^Final review week/);
+    expect(text.indexOf('How the exam thinks')).toBeLessThan(text.indexOf('in exam order'));
+    press('Principles, how the exam thinks');
     expect(mockPush).toHaveBeenCalledWith('/principles');
   });
 

@@ -1,7 +1,7 @@
 /**
  * Mobile 1.24, the answer screen and Results (stream S2):
  *  - after a miss the order is: verdict, your answer, best answer, Key idea,
- *    Exam cue, THEN the folded "Why", then Eliminate two / Final two;
+ *    every tip (Grove Phase 4, owner answer O1), THEN the folded "Why";
  *  - no "Code d1_xxx" in the learner view;
  *  - the coach line is neutral unless a slip was tagged; no "error" buzz;
  *  - a right retest says "Back in your review tomorrow.";
@@ -11,7 +11,8 @@
  *  - Results: headline by sample size, calibration line, no tag soup,
  *    "Time's up", Android Back.
  */
-import { AccessibilityInfo, BackHandler } from 'react-native';
+import { AccessibilityInfo, BackHandler, StyleSheet } from 'react-native';
+import { light } from '../theme/tokens';
 import { act, create, type ReactTestInstance, type ReactTestRenderer } from 'react-test-renderer';
 import { router } from 'expo-router';
 import { getAllQuestions } from '../content/loader';
@@ -21,6 +22,8 @@ import { moveFocus } from '../lib/a11y';
 import { haptic } from '../lib/haptics';
 import { RETEST_LINE } from '../engine/srs';
 import { NEUTRAL_MISS_LINE, RUNNER_UP_LINE } from '../engine/slipCoach';
+import { pickCoachKind, pickCoachLine, tipByLabel, tipLetters } from '../engine/pickCoach';
+import { displayToOriginal, originalToDisplay } from '../engine/shuffle';
 import { TIMES_UP_DETAIL, TIMES_UP_LINE } from '../engine/resultsCopy';
 import { selectCert, useProgress } from '../store/progress';
 import { useSession } from '../store/session';
@@ -128,26 +131,90 @@ describe('the answer screen after a miss', () => {
     press('Check answer');
   };
 
-  it('order: Not quite, your answer, best answer, Key idea, Exam cue, Why, Eliminate two, Final two', () => {
+  // Grove Phase 4 (PHASE4.md 4.2, owner answer O1): one order in every state, every tip open before the Why.
+  it('order: Not quite, your answer, best answer, Key idea, How to think about it, every tip, Why, then Read more', () => {
     missRich();
-    // Mobile 1.43: Eliminate two and Final two sit inside the "Read more" fold.
+    // Every tip is open before Read more is touched.
+    for (const label of ['Eliminate two', 'Final two', 'Exam cue']) expect(allText()).toContain(label);
     pressStarting('Read more');
     const t = allText();
     // "Why D" (the heading), not the pick's own "Why not B" note under its row (mobile 1.43).
-    const at = (s: string) => (s === 'Why ' ? t.search(/Why [A-D]\b/) : t.indexOf(s));
-    const order = ['Not quite', 'Your answer', 'Best answer', 'Key idea', 'Exam cue', 'Why ', 'Eliminate two', 'Final two'].map(at);
+    const why = t.search(/Why [A-D]\b/);
+    const order = [t.indexOf('Not quite'), t.indexOf('✗ Your answer'), t.indexOf('✓ Best answer'), t.indexOf('Key idea'), t.indexOf('How to think about it'), why, t.indexOf('Show less')];
     expect(order.every((i) => i >= 0)).toBe(true);
     expect([...order].sort((a, b) => a - b)).toEqual(order);
+    // Every tip is on screen once the fold is open, and the Exam cue is above the Why.
+    for (const label of ['Eliminate two', 'Final two', 'Exam cue']) expect(t).toContain(label);
+    expect(t.indexOf('Exam cue')).toBeLessThan(why);
   });
 
-  it('a right answer keeps the old order: Why first, then the whole vine', () => {
+  // Grove Phase 4 (PHASE4 4.2 step 4, 4.3): the "Your pick, B" chip, on ORIGINAL letters, shown in DISPLAY letters.
+  describe('the pick chip on a tip row', () => {
+    // A question whose Eliminate names two options (the key not among them) and whose Final two names the key and one more.
+    const chipQ = bank.find((q) => {
+      const el = tipLetters(tipByLabel(q.tips, 'Eliminate'));
+      const fi = tipLetters(tipByLabel(q.tips, 'Final two'));
+      return el.length === 2 && !el.includes(q.correct) && fi.length === 2 && fi.includes(q.correct) && !fi.some((l) => el.includes(l));
+    })!;
+    // Host views only (the test renderer also returns the component that wraps each one).
+    const tipRowsOf = () => root().findAll((n) => typeof n.type === 'string' && n.props.testID === 'answer-tip-row' && typeof n.props.accessibilityLabel === 'string');
+    const chipsOf = () => root().findAll((n) => typeof n.type === 'string' && n.props.testID === 'tip-pick-chip');
+    /** Start the question with this shuffle, tap the option with this ORIGINAL letter, open every tip. */
+    const missWith = (picked: string, perm: string[]) => {
+      startFromIds('cisa', [chipQ.id, others[0].id], 'T');
+      act(() => {
+        const a = useSession.getState().active!;
+        useSession.setState({ active: { ...a, perms: { ...a.perms, [chipQ.id]: perm as never } } });
+      });
+      mount(<SessionScreen />);
+      const display = originalToDisplay(picked as never, perm as never);
+      const card = optionCards().find((n) => n.props.letter === display)!;
+      act(() => {
+        card.props.onPress();
+      });
+      press('Check answer');
+      const more = root().findAll((n) => typeof n.props.accessibilityLabel === 'string' && n.props.accessibilityLabel.startsWith('Read more') && typeof n.props.onPress === 'function');
+      if (more[0]) act(() => more[0].props.onPress());
+      return display;
+    };
+    // A shuffled order (not A B C D): the chip must name the letter the learner saw.
+    const SHUFFLED = ['C', 'A', 'D', 'B'];
+
+    it('on Final two, when the pick is the other option it names; said "Final two, your pick B"', () => {
+      const other = tipLetters(tipByLabel(chipQ.tips, 'Final two')).find((l) => l !== chipQ.correct)!;
+      const shown = missWith(other, SHUFFLED);
+      expect(shown).not.toBe(other); // the shuffle really moved it
+      const chips = chipsOf();
+      expect(chips).toHaveLength(1);
+      expect(textOf(chips[0])).toBe(`Your pick, ${shown}`);
+      const final = tipRowsOf().find((n) => n.props.accessibilityLabel.startsWith('Final two'))!;
+      expect(final.props.accessibilityLabel.startsWith(`Final two, your pick ${shown}: `)).toBe(true);
+      expect(tipRowsOf().filter((n) => n.props.accessibilityLabel.includes('your pick'))).toHaveLength(1);
+    });
+
+    it('on Eliminate two, when the pick is one of the two to rule out', () => {
+      const ruled = tipLetters(tipByLabel(chipQ.tips, 'Eliminate'))[0];
+      const shown = missWith(ruled, SHUFFLED);
+      const elim = tipRowsOf().find((n) => n.props.accessibilityLabel.startsWith('Eliminate two'))!;
+      expect(elim.props.accessibilityLabel.startsWith(`Eliminate two, your pick ${shown}: `)).toBe(true);
+      expect(chipsOf().map(textOf)).toContain(`Your pick, ${shown}`);
+    });
+
+    it('a right answer shows no chip', () => {
+      missWith(chipQ.correct, SHUFFLED);
+      expect(chipsOf()).toHaveLength(0);
+      expect(tipRowsOf().some((n) => n.props.accessibilityLabel.includes('your pick'))).toBe(false);
+    });
+  });
+
+  it('a right answer: Key idea and the tips first, then the whole Why; nothing folds', () => {
     startFromIds('cisa', [rich.id, ...others.map((o) => o.id)], 'T');
     mount(<SessionScreen />);
     pickBy(true);
     press('Check answer');
     const t = allText();
-    expect(t.indexOf('Why ')).toBeGreaterThan(-1);
-    expect(t.indexOf('Why ')).toBeLessThan(t.indexOf('Key idea'));
+    expect(t.indexOf('Key idea')).toBeGreaterThan(-1);
+    expect(t.indexOf('Key idea')).toBeLessThan(t.search(/Why [A-D]\b/));
     expect(t).not.toContain('Read more');
   });
 
@@ -168,19 +235,25 @@ describe('the answer screen after a miss', () => {
     expect(moreRowLabels(root())).toContain('Report a problem with this question');
   });
 
-  it('the coach line is neutral for an untagged miss', () => {
+  it('an untagged miss never guesses: the pick-aware line from the tips, else the neutral one', () => {
     startFromIds('cisa', [others[0].id, others[1].id], 'T');
     mount(<SessionScreen />);
     pickBy(false);
     press('Check answer');
     const coach = root().findByType(Verdict).props.coach as string;
-    // Neutral unless the runner-up tip applies (that line comes from the question itself).
+    // Premium round 2 (web v12.47 parity): the tips name the pick, so the line says so, in DISPLAY letters.
+    const s = useSession.getState().active!;
+    const q = others[0];
+    const picked = displayToOriginal(s.responses[q.id].display, s.perms[q.id]);
+    const expected = pickCoachLine(q.tips, q.correct, picked, s.perms[q.id]) ?? NEUTRAL_MISS_LINE;
+    expect(coach).toBe(expected);
     expect(coach).not.toContain('Check who you are');
     expect(allText()).not.toContain('Check who you are in the question.');
-    expect([NEUTRAL_MISS_LINE, RUNNER_UP_LINE]).toContain(coach);
+    expect(coach).not.toMatch(/runner/i);
+    expect(coach === RUNNER_UP_LINE).toBe(false);
   });
 
-  it('a tagged "acted as the wrong person" slip gets its own line', () => {
+  it('a tagged "acted as the wrong person" slip: the slip line, unless the pick reached the final two', () => {
     const q = others[0];
     act(() => {
       useProgress.getState().recordMistake('cisa', q.id, 'A');
@@ -190,8 +263,13 @@ describe('the answer screen after a miss', () => {
     mount(<SessionScreen />);
     pickBy(false);
     press('Check answer');
-    // (A runner-up pick would still say so; otherwise the tagged slip's line.)
-    expect(['Check who you are in the question.', RUNNER_UP_LINE]).toContain(root().findByType(Verdict).props.coach);
+    // Premium round 2 (UX review P1): the learner's own tag is their words, so it wins over "rule out
+    // first"; only reaching the final two (the more useful news) outranks it.
+    const s = useSession.getState().active!;
+    const picked = displayToOriginal(s.responses[q.id].display, s.perms[q.id]);
+    const expected =
+      pickCoachKind(q.tips, q.correct, picked) === 'final-two' ? pickCoachLine(q.tips, q.correct, picked, s.perms[q.id]) : 'Check who you are in the question.';
+    expect(root().findByType(Verdict).props.coach).toBe(expected);
   });
 
   it('a miss gets the neutral tap, never the error buzz; a right answer keeps success', () => {
@@ -376,6 +454,11 @@ describe('Results', () => {
     mount(<Results />);
     expect(allText()).toContain(TIMES_UP_LINE);
     expect(allText()).toContain(TIMES_UP_DETAIL);
+    // Grove PHASE4 4.1 and 7.13: in the miss tone, never clay (clay means an area below the line).
+    const line = root().findAll((n) => typeof n.type === 'string' && n.props.children === TIMES_UP_LINE)[0];
+    const colour = StyleSheet.flatten(line.props.style).color;
+    expect(colour).toBe(light.wrong);
+    expect(colour).not.toBe(light.clay);
     act(() => {
       jest.advanceTimersByTime(1000);
     });

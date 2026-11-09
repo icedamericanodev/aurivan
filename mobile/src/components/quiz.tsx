@@ -3,20 +3,29 @@
  * Spec: docs/mobile/DESIGN_SYSTEM.md (Grove v2) §6 "Option row", §10.2
  * "Vine reveal", §11 "Question".
  *
- * Plain-English map of the answer screen (top to bottom):
+ * Plain-English map of the answer screen (top to bottom). Premium round 2
+ * made the practice/review answer a Field Guide page (DESIGN_SYSTEM §21):
+ *   Head     – (premium round 2) the running head "Practice · IS Audit" and
+ *              "Question 4 of 10" (fieldguide/RunningHead, set by the screen).
  *   Recap    – (mobile 1.49) "Question" and the stem in two lines, with
- *              "Show question" to read it whole (StemRecap).
+ *              "Show question" to read it whole (StemRecap; `field`: the
+ *              guide's tracked head and a Fraunces stem).
  *   Verdict  – a leaf-shaped mark with ✓/✗, "Correct" / "Not quite", and a
- *              one-line coach note.
- *   Answers  – if wrong: your option, "Why not C" under it, then the best
- *              answer. If right: just the best answer. Each badge holds
- *              its DISPLAY letter (mobile 1.43).
+ *              one-line coach note (`field`: the word in ink, the note in
+ *              italics; the leaf keeps its colour).
+ *   Fig. 4   – (premium round 2) AnswerPlate: one captioned plate. If wrong:
+ *              "Your pick" (with "Why not C: …") over "Best answer". If
+ *              right: "Your answer", one ✓ row. Each disc holds its DISPLAY
+ *              letter (mobile 1.43).
+ *   Key idea – after a miss (premium round 2): KeyIdeaCue, "KEY IDEA" over the
+ *              quotation and the Exam cue as a label. It arrives on the vine's
+ *              timing (VINE_ARRIVES).
  *   Why B    – the explanation.
- *   Vine     – the key idea and the tips as leaves on one stem, drawn in
- *              when it scrolls into view (static under Reduce Motion).
- *              After a miss, Eliminate two and Final two sit inside Why's
- *              "Read more" fold (mobile 1.43).
- *   Trust    – "Original · Reviewed Oct 2026 · Report a problem" (Results' review).
+ *   Vine     – the tips as leaves on one stem (after a right answer, the key
+ *              idea too), drawn in when it scrolls into view (static under
+ *              Reduce Motion). After a miss, Eliminate two and Final two sit
+ *              inside Why's "Read more" fold (mobile 1.43).
+ *   Trust    – "Original · Checked Oct 2026 · Report a problem" (Results' review; "Reviewed" until 2.0.0).
  *   Source   – the practice answer's source line, no link (mobile 1.49: the
  *              report lives in the header's ⋯ "More on this question" sheet,
  *              AnswerMore).
@@ -28,21 +37,26 @@ import Svg, { Defs, LinearGradient, Rect, Stop } from 'react-native-svg';
 import type { Letter } from '../content/types';
 import type { Confidence } from '../engine/srs';
 import type { ReportTarget } from '../engine/support';
+import { lineBudget, shortenAtWord } from '../engine/textClip';
 import { tipParts } from '../engine/tips';
 import { config } from '../lib/config';
 import { moveFocus } from '../lib/a11y';
 import { afterSheet } from '../lib/sheetWait';
 import { haptic } from '../lib/haptics';
 import { shortReference } from '../lib/format';
-import { badgeLetter, LARGE_TEXT, motion, optionText, radius, space } from '../theme/tokens';
+import { LARGE_TEXT, maxScale, motion, radius, space, type } from '../theme/tokens';
+import { fieldRole, groveRadius } from '../theme/grove';
 import { useTheme } from '../theme/useTheme';
 import { LeafBig, LeafSmall, VerdictLeaf } from './glyphs';
+import { FieldText } from './fieldguide';
 import { Check, ChevronDown, Ellipsis, ICON_STROKE, X } from './icons';
 import { AnimatedPressable, Collapse, ease, FadeIn, Pop, StateLayer, tween, useMotion, usePressScale } from './motion';
 import { ReportRow } from './support';
 import { Sheet } from './settings';
-import { cardLift, Chip, Gap, IconButton, ListRow, Row, T, useFontScale } from './ui';
+import { cardLift, Chip, Gap, groveCard, IconButton, ListRow, Row, T, useFontScale } from './ui';
 
+/** The Field Guide verdict leaf: 34pt (with a 16 gap, the lines under it still start at VERDICT_INDENT). */
+const FIELD_LEAF = 34;
 
 // ── Scenario block: a longer case study above the stem, collapsible ───
 // Not a card: a 3px green rule on the left, like the key idea.
@@ -163,27 +177,27 @@ export function OptionCard({
       >
         {/* ✓ / ✗ mark correct/wrong by shape, not colour alone; with mark="letter" the row's tag words do. */}
         {mark === 'letter' && tinted ? (
-          <T v="caption" color={look.badgeText} style={badgeLetter}>{letter}</T>
+          <T v="badgeLetter" color={look.badgeText}>{letter}</T>
         ) : state === 'correct' ? (
           <Check size={16} color={look.badgeText} strokeWidth={2.5} />
         ) : state === 'wrong' ? (
           <X size={16} color={look.badgeText} strokeWidth={2.5} />
         ) : (
-          <T v="caption" color={look.badgeText} style={badgeLetter}>{letter}</T>
+          <T v="badgeLetter" color={look.badgeText}>{letter}</T>
         )}
         {choosable && (
           <>
             {/* The ink fill fades in; the paper letter flips on at half-way, so it never vanishes mid-fade. */}
             <StateLayer on={selected} style={[badgeOn, { borderRadius: badge / 2, backgroundColor: c.ink }]} />
             <StateLayer on={selected} step style={badgeOn}>
-              <T v="caption" color={c.bg} style={badgeLetter}>{letter}</T>
+              <T v="badgeLetter" color={c.bg}>{letter}</T>
             </StateLayer>
           </>
         )}
       </View>
       <View style={{ flex: 1 }}>
         {tag && <T v="caption" color={tagColor} style={{ marginBottom: 2 }}>{tag}</T>}
-        <T v="body" color={look.text} style={optionText}>{text}</T>
+        <T v="body" color={look.text}>{text}</T>
         {note && <T v="small" style={{ marginTop: 6 }}>{note}</T>}
       </View>
     </>
@@ -244,6 +258,7 @@ export function Verdict({
   coach,
   best,
   ref,
+  field,
 }: {
   correct: boolean;
   coach: string;
@@ -251,6 +266,13 @@ export function Verdict({
   best?: string;
   /** For moving screen-reader focus here after "Check answer" (lib/a11y.ts moveFocus). */
   ref?: Ref<View>;
+  /**
+   * Premium round 2 (Field Guide answer screen, practice and review): the word is set in `ink`
+   * (Fraunces 500 30/34) and the coach line in the guide's italic `sub`. The leaf keeps its colour
+   * and its ✓ / ✗ (colour is never the only signal) and its pop. Left out (a lesson's quick
+   * check), the 1.43 look: the word in the verdict colour.
+   */
+  field?: boolean;
 }) {
   const { c } = useTheme();
   const color = correct ? c.correct : c.wrong;
@@ -261,22 +283,29 @@ export function Verdict({
   // longer makes a separate announcement (the focus move cut it off on iOS and doubled it on Android),
   // so the verdict says everything once, the best answer's letter included.
   const head = correct ? 'Correct' : best ? `Not quite. Best answer ${best}` : 'Not quite';
+  // The Field Guide leaf is 34 with a 16 gap, so the lines under it still start at VERDICT_INDENT (50).
+  const leaf = field ? FIELD_LEAF : 38;
   // The leaf springs from 60% to full size (spec §10.2, the one signature
   // spring); under Reduce Motion it fades in instead (120 ms).
   return (
     // No live region: focus moves here after "Check answer", which reads this label once.
     <View ref={ref} accessible accessibilityRole="header" accessibilityLabel={`${head}. ${coach}`}>
-      <Row gap={space.md} style={{ marginTop: space.md }}>
-        <Pop mount spring="pop" style={{ width: 38, height: 38 }}>
-          <VerdictLeaf color={color} />
+      <Row gap={field ? VERDICT_INDENT - FIELD_LEAF : space.md} style={{ marginTop: space.md }}>
+        <Pop mount spring="pop" style={{ width: leaf, height: leaf }}>
+          <VerdictLeaf size={leaf} color={color} />
           {/* The ✓ / ✗ sits on top of the leaf, centred. */}
           <View style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, alignItems: 'center', justifyContent: 'center' }}>
-            {correct ? <Check size={20} color={c.bg} strokeWidth={2.5} /> : <X size={20} color={c.bg} strokeWidth={2.5} />}
+            {correct ? <Check size={field ? 18 : 20} color={c.bg} strokeWidth={2.5} /> : <X size={field ? 18 : 20} color={c.bg} strokeWidth={2.5} />}
           </View>
         </Pop>
-        <T v="hero" color={color} style={{ flexShrink: 1 }}>{correct ? 'Correct' : 'Not quite'}</T>
+        {field ? (
+          <FieldText v="verdict" color={color} style={{ flexShrink: 1 }}>{correct ? 'Correct' : 'Not quite'}</FieldText>
+        ) : (
+          <T v="hero" color={color} style={{ flexShrink: 1 }}>{correct ? 'Correct' : 'Not quite'}</T>
+        )}
       </Row>
-      <T v="meta" style={{ marginTop: space.xs, marginLeft: indent }}>{coach}</T>
+      {/* The coach's line is `aside` (Fraunces italic 16/22) in practice, mocks and lessons alike. */}
+      <FieldText v="sub" style={{ marginTop: space.xs, marginLeft: indent }}>{coach}</FieldText>
     </View>
   );
 }
@@ -289,22 +318,217 @@ export function useVerdictIndent(): number {
   return useFontScale() >= LARGE_TEXT ? 0 : VERDICT_INDENT;
 }
 
+// ── AnswerPlate: your answer against the best one (Grove Phase 4) ──
+/** One row of the card: the DISPLAY letter, the option's words, and (your answer after a miss) why it isn't best. */
+export interface PlateRow {
+  letter: Letter;
+  text: string;
+  /** "Why not B": the picked option's own explanation, already through renderText. */
+  why?: string;
+}
+
+/** From this text size the letter badge sits above its words instead of beside them (200% text). */
+export const DISC_ABOVE_FROM = 1.6;
+/** The letter badge: 30pt at every text size (the letter caps at ×1.3 inside it). */
+const DISC = 30;
+/** The gap between the badge and its words when they sit side by side. */
+const DISC_GAP = 14;
+/** The rows fade in this far apart after the card (Grove Phase 4 motion: opacity only, 30 ms apart). */
+export const PLATE_ROW_STAGGER = 30;
+
 /**
- * Mobile 1.43: the learner's own pick, explained, right under its red row: "Why not B" in a
- * `caption`, then that option's note in `small` `ink`. It sat inside the red block before; on its
- * own the block is calmer and the note reads as plain text. Never a header (the screen has ONE
- * "Why" heading, "Why D"): one screen-reader stop, "Why not B: …". `letter` is the DISPLAY letter
- * and `text` has already been through renderText.
+ * Grove Phase 4 (design-notes/grove/PHASE4.md 4.2 step 2): the answer card. ONE Grove card (`raised`,
+ * 24 corners, a 1pt edge, 18 inside), rows split by 1pt dividers, and NO tinted fills: the state
+ * colour is on the letter badge and the caption words only.
+ *
+ * - After a miss: "Your answer" (a filled miss-tone badge, the caption in `wrong`, the option in
+ *   Figtree 500), then "Why not B" as a caption over its note (one stop, never a heading), a divider,
+ *   and "Best answer" (a filled correct-tone badge, the caption in `correct`, the option in Figtree 600).
+ * - After a right answer: one row, "Your answer · the best".
+ *
+ * Colour is never alone: every row has its ✗ / ✓ and its words. Each row is one screen-reader stop
+ * ("Your answer, B, not the best: …"; "Why not B: …"; "Best answer, D: …"). DISPLAY letters only.
+ * The other options stay one tap away in More ("Show all options", AllOptionsSheet below) and in review.
+ */
+export function AnswerPlate({ pick, best, delay = 0 }: { pick?: PlateRow; best: PlateRow; delay?: number }) {
+  const { c } = useTheme();
+  const missed = Boolean(pick);
+  const parts: { key: string; node: ReactNode }[] = [];
+  if (pick) {
+    parts.push({ key: 'pick', node: <AnswerPlateRow kind="pick" row={pick} missed /> });
+    if (pick.why) parts.push({ key: 'why', node: <PickNote letter={pick.letter} text={pick.why} /> });
+  }
+  parts.push({ key: 'best', node: <AnswerPlateRow kind="best" row={best} missed={missed} /> });
+  return (
+    <FadeIn dur="reveal" rise={false} delay={delay} style={{ marginTop: space.lg }}>
+      <View testID="answer-plate" style={[groveCard(c), { padding: 18 }]}>
+        {parts.map((p, i) => (
+          <FadeIn key={p.key} dur="reveal" rise={false} delay={delay + PLATE_ROW_STAGGER * (i + 1)}>
+            {/* "Why not B" belongs to the row above it: no divider between them, one before Best answer. */}
+            <View style={i > 0 && p.key !== 'why' ? { borderTopWidth: 1, borderTopColor: c.line, marginTop: space.md, paddingTop: space.md } : undefined}>
+              {p.node}
+            </View>
+          </FadeIn>
+        ))}
+      </View>
+    </FadeIn>
+  );
+}
+
+/**
+ * "Why not B" in a `caption` (ink2) over that option's note in `small` (ink): one screen-reader stop,
+ * never a heading (the screen has ONE Why heading, "Why D"). Lined up with the row's words.
  */
 export function PickNote({ letter, text }: { letter: Letter; text: string }) {
   const { c } = useTheme();
+  const discAbove = useFontScale() >= DISC_ABOVE_FROM;
   return (
-    <View accessible accessibilityLabel={`Why not ${letter}: ${text}`} style={{ paddingHorizontal: space.lg, marginBottom: space.lg }}>
+    <View testID="answer-why-not" accessible accessibilityLabel={`Why not ${letter}: ${text}`} style={{ marginTop: space.sm, marginLeft: discAbove ? 0 : DISC + DISC_GAP }}>
       <T v="caption" color={c.ink2}>{`Why not ${letter}`}</T>
       <T v="small" color={c.ink} style={{ marginTop: 2 }}>{text}</T>
     </View>
   );
 }
+
+function AnswerPlateRow({ kind, row, missed }: { kind: 'pick' | 'best'; row: PlateRow; missed: boolean }) {
+  const { c } = useTheme();
+  const fontScale = useFontScale();
+  const discAbove = fontScale >= DISC_ABOVE_FROM;
+  // The badge grows with its letter, as the option row's badge does (TYPE_SCALE.md exception E4).
+  const disc = DISC * Math.min(Math.max(fontScale, 1), 1.6);
+  const isPick = kind === 'pick';
+  const tone = isPick ? c.wrong : c.correct;
+  const key = isPick ? 'Your answer' : missed ? 'Best answer' : 'Your answer · the best';
+  // One stop per row, the display letter in every label.
+  const spoken = isPick ? `Your answer, ${row.letter}, not the best: ${row.text}` : missed ? `Best answer, ${row.letter}: ${row.text}` : `Your answer, ${row.letter}, the best: ${row.text}`;
+  return (
+    <View
+      accessible
+      accessibilityLabel={spoken}
+      testID={isPick ? 'answer-row-pick' : 'answer-row-best'}
+      style={{ flexDirection: discAbove ? 'column' : 'row', alignItems: 'flex-start', gap: discAbove ? space.sm : DISC_GAP }}
+    >
+      {/* A filled badge in the state colour, the display letter in paper; its ✗ / ✓ is in the caption. */}
+      <View style={{ minWidth: disc, minHeight: disc, borderRadius: groveRadius.step, backgroundColor: tone, alignItems: 'center', justifyContent: 'center' }}>
+        <T v="badgeLetter" color={c.bg}>{row.letter}</T>
+      </View>
+      <View style={{ flex: discAbove ? undefined : 1, alignSelf: 'stretch' }}>
+        <T v="caption" color={tone} style={{ marginBottom: 2 }}>{`${isPick ? '✗' : '✓'} ${key}`}</T>
+        <FieldText v={isPick ? 'option' : 'best'}>{row.text}</FieldText>
+      </View>
+    </View>
+  );
+}
+
+// ── Key idea (Grove Phase 4, 4.2 step 3) ─────────────────────────────
+/**
+ * A `caption` "Key idea" in the accent text colour over the key concept in `quote` (Fraunces italic
+ * 18/26), with the 3px accent rule on its left: the coach is speaking. Not a card. One stop.
+ * `visible` keeps the 1.52 timing: the one light tick plays as it arrives on screen.
+ */
+export function KeyIdea({ text, visible }: { text?: string; visible: boolean }) {
+  const { c } = useTheme();
+  useEffect(() => {
+    if (visible && text) haptic.selection();
+  }, [visible, text]);
+  if (!text) return null;
+  return (
+    <View testID="answer-key-idea" accessible accessibilityLabel={`Key idea: ${text}`} style={{ marginTop: space.xl, borderLeftWidth: 3, borderLeftColor: c.accent, paddingLeft: space.md }}>
+      <T v="caption" color={c.accentText}>Key idea</T>
+      <T v="quote" color={c.ink} style={{ marginTop: space.xs }}>{text}</T>
+    </View>
+  );
+}
+
+// ── How to think about it: the tips in one card (Grove Phase 4, 4.2 step 4) ──
+/** The heading over the tips card ("Three moves" breaks when a question has four tips). */
+export const TIPS_HEADING = 'How to think about it';
+
+/** The `headline` heading over the tips (Figtree 600 17/24, never Fraunces). */
+export function TipsHeading() {
+  return (
+    <T v="headline" accessibilityRole="header" style={{ marginTop: space.xl }}>
+      {TIPS_HEADING}
+    </T>
+  );
+}
+
+/**
+ * One card, one row per tip: its label word (tipParts) as a `caption` in `accentText` over the tip in
+ * `small` ink, 1pt dividers between. A small accent leaf marks each row and ONE stem runs down the
+ * card's left edge, drawn once in reading order (drawn at once under Reduce Motion). Colour never tells
+ * the tips apart: the label words do. Each row is one stop that starts with its label ("Final two: …").
+ */
+export function TipsCard({
+  rows,
+  visible,
+  testID = 'answer-tips',
+}: {
+  /** `pick`: the learner's DISPLAY letter when this row names their pick (engine/pickCoach.ts tipPickLetter). */
+  rows: { label: string; body: string; pick?: string | null }[];
+  visible: boolean;
+  testID?: string;
+}) {
+  const { c } = useTheme();
+  const { reduced } = useMotion();
+  const grow = useSharedValue(reduced ? 1 : 0);
+  useEffect(() => {
+    if (!visible) return;
+    if (reduced) {
+      grow.set(1);
+      return;
+    }
+    grow.set(tween(1, 'vine', ease.out));
+  }, [visible, reduced, grow]);
+  const stemStyle = useAnimatedStyle(() => ({ transform: [{ scaleY: grow.value }] }));
+  if (rows.length === 0) return null;
+  return (
+    <View testID={testID} style={[groveCard(c), { marginTop: space.sm, paddingVertical: space.sm, paddingRight: 18, paddingLeft: 40 }]}>
+      {/* The stem: 1.5pt accent down the left edge, behind the leaves, drawn from the top. Decorative. */}
+      <Animated.View
+        accessibilityElementsHidden
+        importantForAccessibility="no-hide-descendants"
+        style={[{ position: 'absolute', left: 19, top: 22, bottom: 22, width: 1.5, borderRadius: 1, backgroundColor: c.accent, opacity: 0.55, transformOrigin: 'top' }, stemStyle]}
+      />
+      {rows.map((r, i) => (
+        <View
+          key={`${r.label}-${i}`}
+          testID="answer-tip-row"
+          accessible
+          // Read as "Final two, your pick B: ..." when the row names the learner's pick (PHASE4 4.3).
+          accessibilityLabel={`${r.label}${r.pick ? `, your pick ${r.pick}` : ''}: ${r.body}`}
+          style={[{ paddingVertical: space.md }, i > 0 && { borderTopWidth: 1, borderTopColor: c.line }]}
+        >
+          {/* The leaf sits on a paper knock-out so the stem seems to pass behind it. */}
+          <View style={{ position: 'absolute', left: -30, top: space.md, width: 22, height: 22, alignItems: 'center', justifyContent: 'center', backgroundColor: c.raised }}>
+            <LeafSmall color={c.accent} />
+          </View>
+          {/* The label, then the pick chip when this row names the learner's pick (PHASE4 4.2 step 4):
+              a caption in ink inside a 1pt control outline, like the web's chip. At large text it
+              wraps under the label instead of squeezing it. */}
+          <View style={{ flexDirection: 'row', flexWrap: 'wrap', alignItems: 'center', columnGap: space.sm, rowGap: space.xs, marginBottom: 3 }}>
+            <T v="caption" color={c.accentText}>{r.label}</T>
+            {r.pick ? (
+              <View testID="tip-pick-chip" style={{ borderWidth: 1, borderColor: c.control, borderRadius: radius.pill, paddingHorizontal: space.sm, paddingVertical: 1 }}>
+                <T v="caption" color={c.ink}>{`Your pick, ${r.pick}`}</T>
+              </View>
+            ) : null}
+          </View>
+          <T v="small" color={c.ink}>{r.body}</T>
+        </View>
+      ))}
+    </View>
+  );
+}
+
+/**
+ * The room the recap's words get in the answer screen's header (session.tsx): the window less the
+ * 20pt gutters, the 12pt gaps, the close (36), bookmark (48) and ⋯ (36) buttons, and the 18pt disc
+ * with its 8pt gap. 222pt in all.
+ */
+export const recapRoom = (windowWidth: number) => windowWidth - 222;
+/** "Not quite · Best answer D" at 1.0 text, in the meta face (Figtree 14): about 161pt. */
+export const RECAP_LONG_W = 161;
 
 /**
  * Mobile 1.22 (design spec §6.4): the answer screen's outcome, kept in the
@@ -314,8 +538,12 @@ export function PickNote({ letter, text }: { letter: Letter; text: string }) {
  */
 export function AnswerRecap({ correct, letter }: { correct: boolean; letter: Letter }) {
   const { c } = useTheme();
+  const scale = useFontScale();
+  const { width } = useWindowDimensions();
   // Large text (×1.3+): the short form fits the bar ("Not quite · D"); the spoken label keeps every word.
-  const short = useFontScale() >= LARGE_TEXT;
+  // Release bug hunt round 1: also when the bar is too narrow for the long form, so the letter always
+  // shows (360dp, 320dp, or a 390dp phone at ×1.15 cut it to "Not quite · Best ans…").
+  const short = scale >= LARGE_TEXT || recapRoom(width) < RECAP_LONG_W * Math.min(scale, 1.3);
   const words = `${correct ? 'Correct' : 'Not quite'} · ${short ? '' : 'Best answer '}${letter}`;
   return (
     <View accessible accessibilityLabel={`${correct ? 'Correct' : 'Not quite'}. Best answer ${letter}`} style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: space.sm }}>
@@ -327,10 +555,13 @@ export function AnswerRecap({ correct, letter }: { correct: boolean; letter: Let
   );
 }
 
-/** Entrance wrapper for the answer rows and explanation: fade + 8pt rise over `reveal` (200 ms). */
-export function Rise({ children, delay = 0 }: { children: ReactNode; delay?: number }) {
+/**
+ * Entrance wrapper for the answer rows and explanation: a fade over `reveal` (200 ms), with an 8pt rise
+ * unless `rise` is false. The answer screen's blocks pass `rise={false}` (PHASE4.md 4.4: opacity only).
+ */
+export function Rise({ children, delay = 0, rise = true }: { children: ReactNode; delay?: number; rise?: boolean }) {
   return (
-    <FadeIn dur="reveal" delay={delay}>
+    <FadeIn dur="reveal" delay={delay} rise={rise}>
       {children}
     </FadeIn>
   );
@@ -429,15 +660,16 @@ function spokenList(items: string[]): string {
 }
 
 /**
- * "Why D" and its explanation. After a miss the Key idea and the Exam cue come
- * first, so this long paragraph shows its first two lines and a "Read more".
- * Mobile 1.43 (owner decision): the fold also holds Eliminate two and Final two
- * (`children`, named in `more` for the spoken label), so the first screen keeps
- * the principle and the detail is one tap away. "Read more" opens all of it in
- * place (no height animation; what opens fades in, and the vine inside arrives
- * drawn under Reduce Motion); "Show less" closes all of it. The toggle keeps its
- * place in the tree, so screen-reader focus stays on it. A short explanation
- * with nothing else to hide, or any explanation when `fold` is false, is whole.
+ * "Why D" and its explanation. After a miss the Key idea and every tip come
+ * first, so a long paragraph shows its first two lines and a "Read more"
+ * (PHASE4.md 4.2 step 5). Owner answer O1 (5 Nov 2026): the fold holds this
+ * paragraph and nothing else, so its spoken name is "Read more of the
+ * explanation". The `children` and `more` props are kept for the 1.43 fold
+ * (tips under the fold), which the answer screen no longer uses: when `more`
+ * names anything, the label still lists it. "Read more" opens in place (no
+ * height animation); "Show less" closes it. The toggle keeps its place in the
+ * tree, so screen-reader focus stays on it. A short explanation with nothing
+ * else to hide, or any explanation when `fold` is false, is whole.
  */
 export function WhyBlock({
   letter,
@@ -466,13 +698,14 @@ export function WhyBlock({
   return (
     <View>
       <T v="headline" accessibilityRole="header" style={{ marginTop: space.lg }}>{`Why ${letter}`}</T>
-      <T v="body" numberOfLines={folded && long ? 2 : undefined} style={{ marginTop: space.xs }}>{text}</T>
-      {/* The toggle comes BEFORE what it opens, so a screen reader moves from "Read more" straight on to the
-          Eliminate two and Final two tips it revealed. */}
+      <T v="body" numberOfLines={folded && long ? 2 : undefined} accessibilityLabel={text} style={{ marginTop: space.xs }}>{text}</T>
+      {/* The toggle comes right after the paragraph it opens (and before anything else a fold holds), so a
+          screen reader moves from "Read more" straight on to what it revealed. */}
       {canFold && (
         <Pressable
           accessibilityRole="button"
-          accessibilityLabel={open ? `Show less: hides ${what}` : `Read more: ${what}`}
+          // Only the paragraph folds (O1): the spec's name. A fold that also holds tips lists them.
+          accessibilityLabel={more.length === 0 ? (open ? 'Show less of the explanation' : 'Read more of the explanation') : open ? `Show less: hides ${what}` : `Read more: ${what}`}
           accessibilityState={{ expanded: open }}
           onPress={() => {
             if (!open) onOpen?.();
@@ -504,23 +737,48 @@ export const STEM_RECAP_CHARS = 90;
  * WHOLE question ("Question: …"), clamped or not; the toggle is its own stop
  * with its expanded state, for sighted learners who want it on screen.
  */
-export function StemRecap({ stem, scenario, caption = 'Question' }: { stem: string; scenario?: string; caption?: string }) {
+export function StemRecap({
+  stem,
+  scenario,
+  caption = 'Question',
+  field,
+}: {
+  stem: string;
+  scenario?: string;
+  caption?: string;
+  /**
+   * Premium round 2 (the Field Guide answer screen): the caption is a sentence-case caption
+   * ("Question") and the stem is set in Fraunces 17/24 `ink2`, still cut to two lines. Left out
+   * (a lesson's quick check), the 1.49 look.
+   */
+  field?: boolean;
+}) {
   const { c } = useTheme();
   const [open, setOpen] = useState(false);
   const canOpen = Boolean(scenario) || stem.length > STEM_RECAP_CHARS;
   const whole = scenario ? `${scenario} ${stem}` : stem;
+  // Folded, the stem is shortened HERE, at a whole word with one "…" (engine/textClip.ts), to what two lines
+  // of this box hold at this text size. The platform's own cut-off would end "peer …" on one screen and
+  // "processe…" on another. numberOfLines stays as a safety stop only. First guess: the screen less its gutters.
+  const { width: screen } = useWindowDimensions();
+  const [boxW, setBoxW] = useState(() => Math.max(0, screen - 2 * space.lg));
+  const textScale = useFontScale();
+  const size = field ? (fieldRole.recap?.style.fontSize ?? 18) : (type.small.fontSize ?? 15);
+  const cap = field ? (fieldRole.recap?.max ?? 2) : maxScale.small;
+  const folded = shortenAtWord(stem, lineBudget(boxW, size * Math.min(Math.max(1, textScale), cap), 2));
+  const words = (text: string, lines?: number) =>
+    field ? (
+      <FieldText v="recap" numberOfLines={lines} style={{ marginTop: space.xs }}>{text}</FieldText>
+    ) : (
+      <T v="small" color={c.ink2} numberOfLines={lines} style={{ marginTop: space.xs }}>{text}</T>
+    );
   return (
     <View style={{ marginTop: space.md }}>
-      <View accessible accessibilityLabel={`${caption}: ${whole}`}>
+      <View accessible accessibilityLabel={`${caption}: ${whole}`} onLayout={(e) => setBoxW(e.nativeEvent.layout.width)}>
+        {/* One caption for both looks, so the same "Question" label never changes role. */}
         <T v="caption" color={c.ink2}>{caption}</T>
-        {scenario ? (
-          <Collapse open={open}>
-            <T v="small" color={c.ink2} style={{ marginTop: space.xs }}>{scenario}</T>
-          </Collapse>
-        ) : null}
-        <T v="small" color={c.ink2} numberOfLines={canOpen && !open ? 2 : undefined} style={{ marginTop: space.xs }}>
-          {stem}
-        </T>
+        {scenario ? <Collapse open={open}>{words(scenario)}</Collapse> : null}
+        {canOpen && !open ? words(folded, 2) : words(stem)}
       </View>
       {canOpen && (
         <Pressable
@@ -545,7 +803,7 @@ export function StemRecap({ stem, scenario, caption = 'Question' }: { stem: stri
 }
 
 // ── Trust line: provenance + Report a problem ────────────────────────
-// Under every revealed answer: "Original · Reviewed Oct 2026" with the
+// Under every revealed answer: "Original · Checked Oct 2026" (was "Reviewed" until 2.0.0, transparency) with the
 // report link on the right, then the code and source. The link, its sheet
 // and the note after sending live in components/support.tsx (one look and
 // one spoken pattern for every report entry point).
@@ -554,7 +812,7 @@ export function TrustLine({ certId, target, reference }: { certId: string; targe
     <ReportRow
       certId={certId}
       target={target}
-      meta={`Original · Reviewed ${config.contentReviewed}`}
+      meta={`Original · Checked ${config.contentReviewed}`}
       // The question's code (d1_010) lives in the Report sheet, not here (mobile 1.24): the learner
       // sees the source, and the code travels with a report as before.
       sub={reference ? shortReference(reference) : undefined}
@@ -563,16 +821,32 @@ export function TrustLine({ certId, target, reference }: { certId: string; targe
 }
 
 // ── Source line: provenance only (mobile 1.49) ───────────────────────
-// The practice answer's last line: a hairline, "Original · Reviewed Oct 2026",
+// The practice answer's last line: a hairline, "Original · Checked Oct 2026",
 // then the source. "Report a problem" moved into the ⋯ sheet (premium pass
 // §2.4), so the line is text only. `children`: the note after a report's email
 // app opened (useReportFlow's `block`), kept under the source as before.
-export function SourceLine({ reference, children }: { reference?: string; children?: ReactNode }) {
+export function SourceLine({ reference, children, onReport }: { reference?: string; children?: ReactNode; /** Grove Phase 4: the "Report a problem" link at the row's right (it stays in More too). */ onReport?: () => void }) {
   const { c } = useTheme();
   return (
-    <View style={{ borderTopWidth: 1, borderTopColor: c.line, marginTop: space.xs, paddingTop: space.md }}>
-      <T v="meta">{`Original · Reviewed ${config.contentReviewed}`}</T>
-      {reference ? <T v="meta" color={c.muted}>{shortReference(reference)}</T> : null}
+    <View testID="answer-source" style={{ borderTopWidth: 1, borderTopColor: c.line, marginTop: space.lg, paddingTop: space.md }}>
+      <View style={{ flexDirection: 'row', flexWrap: 'wrap', alignItems: 'flex-start', justifyContent: 'space-between', columnGap: space.md }}>
+        <View accessible accessibilityLabel={`Original, checked ${config.contentReviewed}${reference ? `, ${shortReference(reference)}` : ''}`} style={{ flexShrink: 1, paddingVertical: onReport ? 14 : 0 }}>
+          <T v="meta" color={c.ink2}>{`Original · Checked ${config.contentReviewed}`}</T>
+          {reference ? <T v="meta" color={c.ink2}>{shortReference(reference)}</T> : null}
+        </View>
+        {onReport && (
+          <Pressable
+            testID="answer-report-link"
+            accessibilityRole="button"
+            accessibilityLabel="Report a problem with this question"
+            accessibilityHint="Opens a short form, then your email app"
+            onPress={onReport}
+            style={({ pressed }) => ({ minHeight: 48, justifyContent: 'center', opacity: pressed ? 0.7 : 1 })}
+          >
+            <T v="meta" color={c.accentText}>Report a problem</T>
+          </Pressable>
+        )}
+      </View>
       {children}
     </View>
   );
@@ -643,7 +917,7 @@ export function AnswerMore({ rows: given, buttonRef }: { rows: (MoreRow | null)[
       <IconButton
         ref={buttonRef}
         label="More on this question"
-        hint={rows.length > 1 ? 'Opens the note, the principle, your note and Report a problem' : 'Opens Report a problem'}
+        hint={rows.length > 1 ? 'Opens all the options, the note, the principle, your note and Report a problem' : 'Opens Report a problem'}
         expanded={open}
         icon={(col) => <Ellipsis size={24} color={col} strokeWidth={ICON_STROKE} />}
         onPress={() => setOpen(true)}
@@ -668,24 +942,112 @@ export function AnswerMore({ rows: given, buttonRef }: { rows: (MoreRow | null)[
   );
 }
 
+// ── Show all options: the four options, read-only, after the answer ──
+/** One option in the "Show all options" sheet: its DISPLAY letter, its text, and whether it is the pick or the best. */
+export interface AllOptionsRow {
+  letter: Letter;
+  text: string;
+  pick: boolean;
+  best: boolean;
+}
+
+/**
+ * Grove Phase 4 (PHASE4.md 4.2 step 2 and 4.5): the answer card shows only the pick and the best
+ * answer, so the other options stay one tap away in More as "Show all options". This sheet lists all
+ * of them in DISPLAY order, read-only (nothing here can be tapped or graded). The pick and the best
+ * answer carry their badge colour AND their words ("Your answer", "Best answer"), so colour is never
+ * alone. The caller looks each option up by its ORIGINAL letter through the session's shuffle; this
+ * part only draws what it is given. Each row is one screen-reader stop.
+ */
+export function AllOptionsSheet({ visible, onClose, rows }: { visible: boolean; onClose: () => void; rows: AllOptionsRow[] }) {
+  const { c } = useTheme();
+  const fontScale = useFontScale();
+  const discAbove = fontScale >= DISC_ABOVE_FROM;
+  // The badge grows with its letter, as on the answer card (TYPE_SCALE.md exception E4).
+  const disc = DISC * Math.min(Math.max(fontScale, 1), 1.6);
+  return (
+    <Sheet visible={visible} onClose={onClose} title="All options">
+      <View testID="all-options">
+        {rows.map((r, i) => {
+          // The caption words: the pick, the best, or both at once after a right answer.
+          const caption = r.pick && r.best ? '✓ Your answer · the best' : r.best ? '✓ Best answer' : r.pick ? '✗ Your answer' : null;
+          const tone = r.best ? c.correct : r.pick ? c.wrong : null;
+          const spoken = r.pick && r.best
+            ? `${r.letter}, your answer, the best: ${r.text}`
+            : r.best
+              ? `${r.letter}, best answer: ${r.text}`
+              : r.pick
+                ? `${r.letter}, your answer, not the best: ${r.text}`
+                : `${r.letter}: ${r.text}`;
+          return (
+            <View
+              key={r.letter}
+              accessible
+              accessibilityLabel={spoken}
+              testID={`all-options-${r.letter}`}
+              style={[
+                { flexDirection: discAbove ? 'column' : 'row', alignItems: 'flex-start', gap: discAbove ? space.sm : DISC_GAP, paddingVertical: space.md },
+                i > 0 && { borderTopWidth: 1, borderTopColor: c.line },
+              ]}
+            >
+              {/* The pick and the best: a filled badge in their state colour. The others: an outlined badge. */}
+              <View
+                style={{
+                  minWidth: disc,
+                  minHeight: disc,
+                  borderRadius: groveRadius.step,
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  backgroundColor: tone ?? 'transparent',
+                  borderWidth: tone ? 0 : 1.5,
+                  borderColor: c.control,
+                }}
+              >
+                <T v="badgeLetter" color={tone ? c.bg : c.ink}>{r.letter}</T>
+              </View>
+              <View style={{ flex: discAbove ? undefined : 1, alignSelf: 'stretch' }}>
+                {caption && tone && <T v="caption" color={tone} style={{ marginBottom: 2 }}>{caption}</T>}
+                <FieldText v={r.best ? 'best' : 'option'}>{r.text}</FieldText>
+              </View>
+            </View>
+          );
+        })}
+      </View>
+    </Sheet>
+  );
+}
+
 // ── Sticky footer with a paper fade above it (spec §6) ────────────────
 // Reports its height so the scroll view can pad by footer + 24 and the
 // last option never sits under the button.
-export function StickyFooter({ children, onHeight }: { children: ReactNode; onHeight: (h: number) => void }) {
+//
+// `rule` (premium round 2, the Field Guide footer in practice and review, question and answer): a 1pt `line` hairline across the top
+// instead of the paper fade, and the button sits a little below it, as on a guide's page foot.
+export function StickyFooter({ children, onHeight, rule }: { children: ReactNode; onHeight: (h: number) => void; rule?: boolean }) {
   const { c } = useTheme();
   const onLayout = (e: LayoutChangeEvent) => onHeight(e.nativeEvent.layout.height);
   return (
     <View onLayout={onLayout} style={{ position: 'absolute', left: 0, right: 0, bottom: 0, pointerEvents: 'box-none' }}>
-      <Svg height={22} width="100%" style={{ pointerEvents: 'none' }}>
-        <Defs>
-          <LinearGradient id="footerFade" x1="0" y1="0" x2="0" y2="1">
-            <Stop offset="0" stopColor={c.bg} stopOpacity={0} />
-            <Stop offset="1" stopColor={c.bg} stopOpacity={1} />
-          </LinearGradient>
-        </Defs>
-        <Rect x="0" y="0" width="100%" height="22" fill="url(#footerFade)" />
-      </Svg>
-      <View style={{ backgroundColor: c.bg, paddingHorizontal: space.gutter, paddingBottom: space.md, gap: space.md }}>{children}</View>
+      {rule ? null : (
+        <Svg height={22} width="100%" style={{ pointerEvents: 'none' }}>
+          <Defs>
+            <LinearGradient id="footerFade" x1="0" y1="0" x2="0" y2="1">
+              <Stop offset="0" stopColor={c.bg} stopOpacity={0} />
+              <Stop offset="1" stopColor={c.bg} stopOpacity={1} />
+            </LinearGradient>
+          </Defs>
+          <Rect x="0" y="0" width="100%" height="22" fill="url(#footerFade)" />
+        </Svg>
+      )}
+      <View
+        testID={rule ? 'footer-rule' : undefined}
+        style={[
+          { backgroundColor: c.bg, paddingHorizontal: space.gutter, paddingBottom: space.md, gap: space.md },
+          rule ? { borderTopWidth: 1, borderTopColor: c.line, paddingTop: space.md } : null,
+        ]}
+      >
+        {children}
+      </View>
     </View>
   );
 }
@@ -694,8 +1056,8 @@ export function StickyFooter({ children, onHeight }: { children: ReactNode; onHe
 // (spec §10.2): the rows start as the verdict leaf settles, "Why" just after.
 export const FEEDBACK_DELAY = { rows: motion.dur.select, why: motion.dur.reveal } as const;
 /**
- * When the vine's entrance has landed (premium round 2, UX H1): the latest vine group rises at
- * `why + stagger.group` over `reveal`. The vine may draw (stem, leaf pops, its one haptic) only from
- * here, never while its group is still invisible. Under Reduce Motion everything is in after `reduced`.
+ * When the vine's entrance has landed (premium round 2, UX H1): the vine's group (Key idea and the tips)
+ * fades in at `why` over `reveal`. Since the owner's O1 answer every tip is in that one group. The
+ * vine may draw (stem, leaf pops, its one haptic) only from here, never while its group is still invisible. Under Reduce Motion everything is in after `reduced`.
  */
-export const VINE_ARRIVES = FEEDBACK_DELAY.why + motion.stagger.group + motion.dur.reveal;
+export const VINE_ARRIVES = FEEDBACK_DELAY.why + motion.dur.reveal;

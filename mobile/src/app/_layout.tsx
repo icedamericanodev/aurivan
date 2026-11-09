@@ -34,6 +34,7 @@ import { Stack, usePathname } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
 import { useEffect, useState } from 'react';
+import { AppState } from 'react-native';
 import { CLOUD } from '../cloud/flag';
 import { initAccount } from '../lib/account';
 import { initSync, setRoute } from '../lib/sync';
@@ -52,10 +53,11 @@ import { MotionRoot, SPLASH_FADE, ThemeFade, useMotion } from '../components/mot
 import { Grain } from '../components/ui';
 import { motion } from '../theme/tokens';
 import { RecoveryScreen } from '../components/recovery';
-import { sayLater } from '../lib/a11y';
+import { sayLater, watchScreenReader } from '../lib/a11y';
 import { useFontsSettled } from '../lib/fontGate';
 import type { ErrorBoundaryProps } from 'expo-router';
 import { useHydration } from '../store/useHydrated';
+import { OutsideLinkGate } from '../lib/outsideLinkGate';
 import { useTheme } from '../theme/useTheme';
 
 SplashScreen.preventAutoHideAsync().catch(() => {});
@@ -99,6 +101,10 @@ export default function RootLayout() {
     if (ready || recovering) SplashScreen.hideAsync().catch(() => {});
   }, [ready, recovering]);
 
+  // Ask once whether a screen reader is on, and follow it (lib/a11y.ts): a celebration can then
+  // show its end state at once for VoiceOver and TalkBack users, decided before its first paint.
+  useEffect(() => watchScreenReader(), []);
+
   // Once saved settings have loaded: if reminders are on, re-apply them;
   // if they are off, clear any of ours left behind (e.g. an older
   // version's untagged reminder). Never asks for permission.
@@ -110,6 +116,16 @@ export default function RootLayout() {
     else cancelReminders().catch(() => {});
     // An "Undo restore" snapshot older than 7 days is dropped once, at launch.
     pruneUndo();
+  }, [hydrated]);
+  // Release bug hunt round 1: back in the app, re-plan the reminders. Notifications turned back on in
+  // the phone's settings then bring them back without touching the switch (and turned off, they are
+  // cleared: refreshReminders never schedules while they are blocked). Never asks for permission.
+  useEffect(() => {
+    if (!hydrated) return;
+    const sub = AppState.addEventListener('change', (st) => {
+      if (st === 'active' && useSettings.getState().reminder.enabled) refreshReminders().catch(() => {});
+    });
+    return () => sub.remove();
   }, [hydrated]);
 
   // Mobile 1.47, home-screen widgets (Android): once saved data has loaded, keep the widget snapshot
@@ -191,6 +207,8 @@ export default function RootLayout() {
     <SafeAreaProvider>
       <StatusBar style={isDark ? 'light' : 'dark'} />
       {CLOUD && <SyncRouteWatch />}
+      {/* An outside link on a cold start never skips onboarding (release bug hunt round 3). */}
+      <OutsideLinkGate ready={ready} />
       <Stack
         screenOptions={{
           headerShown: false,
@@ -254,6 +272,8 @@ export default function RootLayout() {
         {/* The exam guide (Learn, Help) and the final review week's cheat sheet (data/exam/). */}
         <Stack.Screen name="exam-guide" />
         <Stack.Screen name="cheat-sheet" />
+        {/* Grove Phase 4 (O2): the Glossary, read-only (Learn's Glossary tile, Final review week's look-ups). */}
+        <Stack.Screen name="glossary" />
         {/* Mobile 1.13: Your plant, and its picker (plant, change species, rename). */}
         <Stack.Screen name="plant" />
         <Stack.Screen name="plant-pick" options={{ animation: rise }} />

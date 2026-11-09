@@ -115,6 +115,14 @@ describe('Mistake journal: tags in plain words, with an example each', () => {
     expect(chip.props.accessibilityHint).toBe('For example: You picked a new tool before anyone agreed who owns the risk.');
   });
 
+  it('each mistake says "Your pick" over "Best answer" (premium round 2, the answer screen’s words)', () => {
+    miss(1);
+    mount(<Mistakes />);
+    expect(allText()).toContain('Your pick');
+    expect(allText()).toContain('Best answer');
+    expect(allText()).not.toContain('Your answer');
+  });
+
   it('"What do these mean?" opens one example for each tag', () => {
     miss(1);
     mount(<Mistakes />);
@@ -152,7 +160,9 @@ describe('You: the legend 1 → 5, and what Accuracy counts', () => {
     });
     mount(<You />);
     // The chart may break a name over two lines ("IS" / "Audit"): read it as words.
-    const t = allText().replace(/\s+/g, ' ');
+    // Grove You C2: the summary sentence above names the focus area too, so read from the chart on.
+    const all = allText().replace(/\s+/g, ' ');
+    const t = all.slice(all.indexOf('Estimated readiness'));
     const at = ['IS Audit', 'IT Governance', 'IS Acquisition', 'IS Operations', 'Info Protection'].map((n) => t.indexOf(n));
     expect(at.every((i) => i > -1)).toBe(true);
     expect([...at].sort((a, b) => a - b)).toEqual(at);

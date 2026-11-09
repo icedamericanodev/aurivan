@@ -19,6 +19,7 @@ import { isFinalId } from '../engine/plantForms';
 import { buildPlant, plantLayers, type ArtLook, type PNode } from '../components/plant/art';
 import { KAI_LEAF, KAI_PAIR_DOWN, KAI_PAIR_UP, KAI_VEIN } from '../theme/kasama';
 import { dark, font, kaisip, light } from '../theme/tokens';
+import { groveDark, groveLight } from '../theme/grove';
 
 export type WidgetTheme = 'light' | 'dark';
 
@@ -258,5 +259,16 @@ export function plantSvg(p: PlantSnap, theme: WidgetTheme): string | null {
   const built = buildPlant({ species: p.species, stage: Math.max(1, Math.min(6, p.growth)), quietLook: true, lod: 'small', theme, resting: false, mood: 'idle', drift: false, look, px: 120, fit: true });
   const L = plantLayers(built.root);
   const kids = (g: { children: PNode[] }) => g.children.map(nodeSvg).join('');
-  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${attr(built.frame)}">${kids(L.back)}${kids(L.plant)}${kids(L.front)}</svg>`;
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${attr(built.frame)}">${soilLine(built.frame, built.anchors.base.y, theme)}${kids(L.back)}${kids(L.plant)}${kids(L.front)}</svg>`;
+}
+
+/**
+ * Grove Phase 4b (PHASE4B 4.10): the widget's plant stands on paper, on a soil line across the
+ * whole frame, as on Your plant. Decorative (the words say the growth); the Grove soil colour.
+ */
+export function soilLine(frame: string, baseY: number, theme: WidgetTheme): string {
+  const [x, , w] = frame.split(' ').map(Number);
+  if (![x, w, baseY].every(Number.isFinite)) return '';
+  const stroke = (theme === 'dark' ? groveDark : groveLight).soil;
+  return `<path d="M${attr(String(x))} ${attr(String(baseY))}H${attr(String(x + w))}" fill="none" stroke="${stroke}" stroke-width="${attr((w / 100).toFixed(2))}" stroke-linecap="round"/>`;
 }

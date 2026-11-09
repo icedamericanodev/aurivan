@@ -123,7 +123,7 @@ describe('the exact §2.3 strings', () => {
       ['board.empty.body', 'Be the first to suggest an idea or tell us what to fix.'],
       ['board.offline', 'You’re offline. Showing what was last loaded.'],
       ['board.foot.contact', 'Questions or concerns: {supportEmail}'],
-      ['board.team', 'KaiSip team · official response'],
+      ['board.team', 'KaiSip team · reply'],
       ['board.spoiler', 'This post talks about the answer to a practice question.'],
       ['board.vote.a11y', 'Vote for: {title}. {n} votes. {state}.'],
       ['board.compose.private', 'Reporting one question? Report it privately instead. It’s faster, and it won’t spoil the answer for others.'],

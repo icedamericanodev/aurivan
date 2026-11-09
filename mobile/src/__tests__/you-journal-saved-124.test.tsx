@@ -117,15 +117,16 @@ afterEach(() => {
 });
 
 describe('You: bands below 30 answers, numbers from 30', () => {
-  it('10 answers in a domain show "too few yet" and "10 answered", never a number (mobile 1.51: thin data looks thin)', () => {
+  it('10 answers in a domain show "too few yet" and "10 of 30" answers, never a number (mobile 1.51: thin data looks thin)', () => {
     seedDomain('1', 10, 9);
     mount(<You />);
     const t = allText();
     // 9 of 10 right: words under its line of growth, never "90" (the chart's own spoken stop is checked below).
     // (The chart sets it on two lines, like the names: "too few" / "yet".)
     expect(t.replace(/\n/g, ' ')).toContain('too few yet');
-    expect(t).toContain('10 answered');
-    expect(t.slice(t.indexOf('Fig. 5'), t.indexOf('KEY'))).not.toMatch(/\b90\b/);
+    // Grove panel Q2: under the soil, "10 of 30" over "answers", as the list rows say it.
+    expect(t).toMatch(/10 of 30\s+answers/);
+    expect(t.slice(t.indexOf('Five areas, one scale'), t.indexOf('KEY'))).not.toMatch(/\b90\b/);
     expect(t).toMatch(/Building is under 70, Steady 70 to 79, Strong 80 and up/);
   });
 
@@ -155,21 +156,23 @@ describe('You: bands below 30 answers, numbers from 30', () => {
   it('each area is one spoken stop with its word, and its thin data said as thin', () => {
     seedDomain('1', 10, 9);
     mount(<You />);
-    const row = root().findAll((n) => typeof n.type === 'string' && typeof n.props.accessibilityLabel === 'string' && n.props.accessibilityLabel.startsWith('IS Audit: '))[0];
+    const row = root().findAll((n) => typeof n.type === 'string' && typeof n.props.accessibilityLabel === 'string' && n.props.accessibilityLabel.startsWith('IS Audit, '))[0];
     // Mobile 1.51 (Field Guide): it says what it shows, "too few yet", never a band word for 10 answers.
-    expect(row.props.accessibilityLabel).toBe('IS Audit: too few yet, 10 answered');
+    // Grove panel Q2: said like the website's row.
+    expect(row.props.accessibilityLabel).toBe('IS Audit, 10 of 30 answers, too few yet for a score.');
     expect(row.props.accessibilityLabel).not.toContain('90');
   });
 
-  it('Badges and Field notes are one row: the Herbarium (mobile 1.51)', () => {
+  it('Badges and Field notes are one row: Badges (mobile 1.51; Grove You C2 says "Badges", never "Herbarium")', () => {
     mount(<You />);
     const labels = root()
       .findAll((n) => typeof n.props.accessibilityLabel === 'string')
       .map((n) => n.props.accessibilityLabel as string);
-    expect(labels.some((l) => l.startsWith('Herbarium: badges and field notes'))).toBe(true);
+    expect(labels.some((l) => l.startsWith('Badges: your badges and field notes'))).toBe(true);
+    expect(labels.some((l) => l.includes('Herbarium'))).toBe(false);
     expect(labels.some((l) => l.startsWith('Field notes'))).toBe(false);
     expect(labels.some((l) => l.startsWith('Badges,'))).toBe(false);
-    press(/^Herbarium: badges and field notes/);
+    press(/^Badges: your badges and field notes/);
     expect(router.push).toHaveBeenCalledWith('/milestones');
   });
 

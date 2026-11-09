@@ -20,7 +20,7 @@ import { findLesson } from '../content/lessons';
 import { getPrinciples } from '../content/principles';
 import { RULE_PROMPTS } from '../content/principles/widgetPrompts';
 import { planHero, todayMinutes } from '../components/journey';
-import { currentIndex, isOptional, itemMinutes, newDayPlan, planComplete, shortSetItem, type DayPlan } from '../engine/dayPlan';
+import { currentIndex, isOptional, itemMinutes, newDayPlan, planComplete, planLeft, shortSetItem, type DayPlan } from '../engine/dayPlan';
 import { addDays, daysToExam } from '../engine/examDay';
 import { growthBefore, plantShown, SPECIES_INFO, isPlantSpecies } from '../engine/plant';
 import type { PlanItem } from '../engine/planner';
@@ -150,7 +150,9 @@ function planFor(certId: string, now: number): { plan: DayPlan; live: ReturnType
 function planSnap(certId: string, now: number): PlanSnap | null {
   const got = planFor(certId, now);
   if (!got || got.plan.items.length === 0) return null;
-  const { plan, live } = got;
+  const { live } = got;
+  // Sized to what is left (round 4): answers banked today lower a step's count and minutes.
+  const plan = planLeft(got.plan);
   const progress = selectCert(useProgress.getState(), certId);
   const due = dueIds(progress.review, now, questionExists(certId));
   const done = planComplete(plan);

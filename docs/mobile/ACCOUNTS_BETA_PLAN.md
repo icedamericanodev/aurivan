@@ -49,6 +49,9 @@ MCP stores its own apply-time version, not the file's. Before any `supabase db p
 | `20261014000000_feedback_board.sql` | `20261028045309` | `b45c8e2a6d36d260a0d66d4127a9d045` |
 | `20261027000000_beta_board_paused.sql` | `20261028045341` | `af1be1f0a0904ba010f7a4039f1bea68` |
 | `20261027000100_beta_no_passwords.sql` | `20261028045402` | `3a676a49c8ea05a88f0a0678f1dee3a0` |
+| `20261104000000_beta_desk.sql` (Beta Desk, applied 4 Nov 2026; `docs/beta/BETA_DESK.md`) | `20261104141549` | `ff5c70bc6ceef2bd3d0b3f50c9ed2794` |
+| `20261104010000_beta_desk_feedback_route.sql` (14 days OR feedback, applied 4 Nov 2026) | `20261104144423` | `833e6d09bdd293ca59970677d80568e8` |
+| `20261104020000_beta_desk_terms_from_form.sql` (default terms = the live form, applied 4 Nov 2026) | `20261104152733` | `d10d1953bc783f035fda8296b27b83ac` |
 
 Checks after the apply:
 - 22 tables in `public` and `private`, every one with RLS on.
@@ -63,6 +66,27 @@ Advisors (no ERROR, no WARN):
 - Performance: INFO "unindexed foreign keys" on 7 board columns (author_member, parent_id, duplicate_of, official_comment_id, and the notification post and comment ids). Add those indexes in the migration that opens the board; the board is off for the beta.
 
 The Supabase MCP asks the owner to confirm any SQL containing DROP, DELETE, TRUNCATE or an UPDATE without WHERE. Its check is keyword-based, so comments and function bodies set it off. Future applies must run with Sky present.
+
+### Beta Desk sign-in apply (9 Nov 2026, dashboard SQL editor)
+
+Applied the SQL in `20261109000000_beta_desk_sign_in.sql` to project
+`ziadnvepttlgcowvqvom` (comments omitted in the editor). Source file md5:
+`5258c2197f7c6574dce1366364e28898`. This manual apply did **not** insert a
+migration-history version. Before a future CLI db push, verify the two
+function definitions and mark repo version `20261109000000` applied with
+migration repair, alongside the earlier MCP mappings above; do not rerun
+CREATE FUNCTION against the existing functions.
+
+Verified live: anon and authenticated cannot execute the public eligibility
+RPC; service_role can; an unknown email returns false. The owner saved
+`BETA_DESK_TURNSTILE_SECRET` directly in Supabase. Deployed
+`beta-desk-sign-in` through the dashboard using a single-file concatenation
+of the unchanged shared HTTP/key helpers, handler and entrypoint from PR #232
+(local imports removed). JWT verification is off with owner approval; the
+function enforces CAPTCHA and private admin eligibility before email delivery.
+Live smoke: a request without CAPTCHA returns HTTP 400 `captcha_failed` with
+CORS restricted to kaisip.com. Full email/MFA acceptance remains an owner
+browser test after the frontend release. No Android release is needed.
 
 ## Security audit (27 Oct 2026) and the go-live gates
 
@@ -105,7 +129,11 @@ if it words them differently.
   Android email-code flow sends a Turnstile token (through the
   `kaisip.com/human-check` page, §2.1).
 - [ ] 4. **"Require review from Code Owners"** on `main` (Settings →
-  Branches → main), so `.github/CODEOWNERS` takes effect.
+  Branches → main), so `.github/CODEOWNERS` takes effect. **Since the repo
+  went private (4 Nov 2026) this needs GitHub Pro**: on the Free plan branch
+  protection, code owner review and environments (with their secrets) are
+  not enforced. Also recreate the `ota` and `db-backup` environments
+  (deployment branch `main` only) and move their secrets back into them.
 - [ ] 5. `list_edge_functions` shows only `delete-account` and
   `export-my-data` (no board function deployed).
 - [ ] 6. `DELETION_PEPPER` set (40 random characters, Function secret)
@@ -155,7 +183,7 @@ if it words them differently.
    `encoding` server-owned (no client grant), so a client can't pick a
    format another client can't read.
 7. **Public backup logs.** §6 said the backup job prints the account and
-   session counts. The repo is public, so its Actions logs are too: the job
+   session counts. The repo was public, and logs can be shared, so: the job
    prints only the database size and largest tables; the counts go inside
    the encrypted file.
 8. **`supabase db dump` needs the repo's `config.toml`** to pick the

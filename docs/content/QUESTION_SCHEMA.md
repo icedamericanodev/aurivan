@@ -115,3 +115,15 @@ Moved here on 26 Oct 2026 from the retired relaunch checklist
 3. `bash scripts/verify_repo.sh`, plus `python3 scripts/lint_exam_style_v2.py N`
    and, after touching `data/`, `(cd mobile && npm run check)`.
 4. Commit `data/originals/d{N}.json` and `data/domain{N}.json` together.
+
+## Rewriting a question
+
+Saved progress (web and phone) stores answers, picks, slip tags and notes by
+question `id`. So a rewrite that changes the **stem or the key** gets a **new
+id**; mark the old question `"retired": true` instead of reusing its id.
+Small wording fixes that keep the same question and key may keep the id.
+
+Three CISA questions were rewritten in place before this rule (d1_139, d3_087,
+d3_106, mobile 1.43). The phone drops progress saved for their old wording
+(`mobile/src/content/rewrittenQuestions.ts`). Add an entry there only if an
+in-place rewrite ever ships by mistake.

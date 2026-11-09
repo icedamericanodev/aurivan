@@ -115,7 +115,7 @@ describe('the welcome screen: literal, names the exam, no metaphors', () => {
     mount(<Onboarding />);
     const t = allText();
     expect(t).toContain('Think like an IS auditor.');
-    expect(t).toContain('CISA exam prep, taught the way the exam thinks.');
+    expect(t).toContain('Your CISA® exam study, one day at a time.');
     // Mobile 1.41: the best feature first, in the web welcome's words.
     expect(t).toContain('Questions that explain every option, the trap included.');
     expect(t).toContain('Your daily plan, built around your exam date.');
@@ -124,7 +124,7 @@ describe('the welcome screen: literal, names the exam, no metaphors', () => {
     expect(t).toContain('No account. Everything stays on your phone.');
     expect(t).toMatch(/Not affiliated with or endorsed by ISACA/);
     // The four metaphor rows and the old-app line are gone.
-    expect(t).not.toMatch(/Grow with the seasons|Grow deep roots|Stand tall|See the path|Moving from|Aurivan/);
+    expect(t).not.toMatch(/Grow with the seasons|Know why the best answer wins|Stand tall|See the path|Moving from|Aurivan/);
     expect(t).not.toContain('Master Modern Risk.');
   });
 

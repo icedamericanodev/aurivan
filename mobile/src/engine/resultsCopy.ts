@@ -43,6 +43,16 @@ export type LeafState = 'right' | 'missed' | 'blank';
 /** The strip shows sessions up to this many questions (rows of 10); bigger ones and mocks get one line instead. */
 export const STRIP_MAX = 20;
 
+/**
+ * Whole seconds in words (release bug hunt round 2): "under 1 second" below one, "1 second", then
+ * "2 seconds". Fast answers no longer read "0 seconds" or "1 seconds" (Results, Daylight).
+ * Here and not in engine/pace.ts, which is also compiled into the website's bundles.
+ */
+export function secondsWords(n: number): string {
+  if (n < 1) return 'under 1 second';
+  return `${n} ${n === 1 ? 'second' : 'seconds'}`;
+}
+
 /** "3 and 7", "3, 7 and 9" (question numbers as words for a screen reader and the note kickers). */
 export function andList(items: readonly (string | number)[]): string {
   const xs = items.map(String);
@@ -50,8 +60,10 @@ export function andList(items: readonly (string | number)[]): string {
 }
 
 /**
- * The strip said once, as one image (mobile 1.43): "Right: 1, 2, 4, 5, 6, 8, 9 and 10. Missed: 3 and 7."
- * Question numbers are the order the learner saw them (1-based), never internal ids.
+ * The strip said once, as one image (mobile 1.43): "Right: questions 1, 2, 4, 5, 6, 8, 9 and 10.
+ * Missed: questions 3 and 7." Question numbers are the order the learner saw them (1-based), never
+ * internal ids. Release bug hunt round 2: the numbers are named as questions ("Right: question 8"),
+ * so one position never sounds like a count ("Right: 8" after "1 of 10 right").
  */
 export function stripSpoken(states: readonly LeafState[]): string {
   const at = (k: LeafState) => states.map((s, i) => (s === k ? i + 1 : 0)).filter(Boolean);
@@ -59,10 +71,12 @@ export function stripSpoken(states: readonly LeafState[]): string {
   const missed = at('missed');
   const blank = at('blank');
   if (states.length > 0 && right.length === states.length) return `All ${states.length} right.`;
+  // "question 8", "questions 3 and 7": the positions said as questions, like the note kickers.
+  const q = (n: number[]) => `${n.length === 1 ? 'question' : 'questions'} ${andList(n)}`;
   return [
-    right.length ? `Right: ${andList(right)}.` : 'None right.',
-    missed.length ? `Missed: ${andList(missed)}.` : null,
-    blank.length ? `Not answered: ${andList(blank)}.` : null,
+    right.length ? `Right: ${q(right)}.` : 'None right.',
+    missed.length ? `Missed: ${q(missed)}.` : null,
+    blank.length ? `Not answered: ${q(blank)}.` : null,
   ]
     .filter(Boolean)
     .join(' ');

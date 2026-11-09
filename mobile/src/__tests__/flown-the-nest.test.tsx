@@ -130,10 +130,10 @@ describe('a 1.17 save with Graduate earned, opened on 1.18', () => {
     act(() => {
       r = create(<Badges />);
     });
-    press(/^Flown the Nest\. Pressed/);
+    press(/^Flown the Nest\. Earned/);
     const sheet = () => root().findByType(Modal);
     expect(textOf(sheet())).toContain('Answer 50 questions right from the last review box, so they leave review.');
-    press(/^Share Flown the Nest$/);
+    press(/^Share this badge: Flown the Nest$/);
     const shown = textOf(root().findByType(BadgeShareCard));
     expect(shown).toContain('Flown the Nest');
     expect(shown).toContain('Moved 50 questions out of review');

@@ -415,7 +415,7 @@ describe('journey 5: timed practice', () => {
     // Mobile 1.43: a "Per question" stat beside the exam pace (it was one sentence).
     expect(allText()).toContain('Per question 50 s Exam pace: about 96 s');
     // Mobile 1.24: the tags are gone (one quiet line each); the line says it.
-    expect(allText()).toContain('You knew it; trust the first pass.');
+    expect(allText()).toContain('You knew it; trust your first read.');
   });
 });
 
@@ -448,7 +448,7 @@ describe('journey 6: the "Practice at exam pace?" card', () => {
     useSettings.setState({ examDates: { cisa: dayKey(T0 + 14 * DAY) } });
     mount(<Practice />);
     act(() => {
-      root().findAll((n) => n.props.accessibilityLabel === 'Timed' && typeof n.props.onValueChange === 'function')[0].props.onValueChange(true);
+      const t = root().findAll((n) => n.props.accessibilityLabel === 'Timed' && n.props.accessibilityRole === 'switch' && typeof n.props.onPress === 'function' && n.props.accessibilityState)[0]; if (t.props.accessibilityState.checked !== true) t.props.onPress();
     });
     expect(allText()).not.toContain('Practice at exam pace?');
   });
@@ -515,7 +515,7 @@ describe('journey 7: Daylight', () => {
     tickSeconds(10 * S);
     tapFirst();
     // 15 s on the first visit + 10 s now.
-    expect(allText()).toMatch(/· 25 s/);
+    expect(allText()).toMatch(/\b25 s\b/);
     press('See results');
     expect(allText()).toContain('Light used: 02:25 of 08:00 · finished in time, +1');
     expect(allText()).toContain('your light gave 96 seconds');

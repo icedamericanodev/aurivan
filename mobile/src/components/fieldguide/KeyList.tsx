@@ -6,7 +6,14 @@
  * side), and the right-hand words close the row. A row with `onPress` is a
  * button (48pt at least) with the chevron's job done by its hint.
  * At 200% text the leader goes and the right-hand words drop under the title.
+ *
+ * Premium round 2 (foundation): the navigation list on every Field Guide
+ * screen (Learn's "Look it up", Practice's "More ways to practice", Today's
+ * "Also today", You's "Study tools"). A ListRow's subtitle becomes the
+ * `kicker`, its count the `right` words; the icon circle and chevron go.
+ * `numbered={false}` drops the italic numbers for a lone row (a note's lesson).
  */
+import type { ReactNode } from 'react';
 import { View } from 'react-native';
 import Svg, { Line } from 'react-native-svg';
 import { LARGE_TEXT, space } from '../../theme/tokens';
@@ -22,11 +29,17 @@ export interface KeyItem {
   right?: string;
   /** A caption above the title that says what the row does ("Read the note · question 3"). */
   kicker?: string;
+  /**
+   * Grove Phase 4b (PHASE4B 6.1): a mark and a word after the kicker, after a "·" (a drill's grown level:
+   * its leaf glyph, then "Sapling"). The mark is decorative: the word and the row's spoken label say it.
+   */
+  kickerTail?: { mark: ReactNode; text: string };
   /** A ✗ or ✓ before the title, always with words beside it (never the only signal). */
   mark?: 'missed' | 'right';
   spoken: string;
   onPress?: () => void;
   hint?: string;
+  testID?: string;
 }
 
 function Leader({ color }: { color: string }) {
@@ -39,16 +52,26 @@ function Leader({ color }: { color: string }) {
   );
 }
 
-function KeyRow({ item, n, first }: { item: KeyItem; n: number; first: boolean }) {
+function KeyRow({ item, n, first }: { item: KeyItem; n: number | null; first: boolean }) {
   const { c } = useTheme();
   const large = useFontScale() >= LARGE_TEXT;
   const press = usePressScale({ scale: 1, tint: c.soft });
   const body = (
     <>
       {press.layer}
-      <FieldText v="keyNo" style={{ width: 22 }}>{String(n)}</FieldText>
+      {n !== null && <FieldText v="keyNo" style={{ minWidth: 22 }}>{String(n)}</FieldText>}
       <View style={{ flex: 1, minWidth: 0 }}>
-        {item.kicker ? <T v="caption" color={c.accentText}>{item.kicker}</T> : null}
+        {item.kicker && item.kickerTail ? (
+          <View style={{ flexDirection: 'row', flexWrap: 'wrap', alignItems: 'center', columnGap: space.xs }}>
+            <T v="caption" color={c.accentText}>{`${item.kicker} ·`}</T>
+            <View style={{ flexDirection: 'row', alignItems: 'center', gap: 2 }}>
+              {item.kickerTail.mark}
+              <T v="caption" color={c.accentText}>{item.kickerTail.text}</T>
+            </View>
+          </View>
+        ) : item.kicker ? (
+          <T v="caption" color={c.accentText}>{item.kicker}</T>
+        ) : null}
         <View style={{ flexDirection: large ? 'column' : 'row', alignItems: large ? 'flex-start' : 'center' }}>
           <T v="label" style={{ flexShrink: 1 }}>
             {item.mark ? <T v="label" color={item.mark === 'missed' ? c.wrong : c.correct}>{item.mark === 'missed' ? '✗ ' : '✓ '}</T> : null}
@@ -67,13 +90,14 @@ function KeyRow({ item, n, first }: { item: KeyItem; n: number; first: boolean }
   const style = { flexDirection: 'row' as const, alignItems: 'center' as const, gap: space.sm, minHeight: 48, paddingVertical: space.md, borderTopWidth: first ? 0 : 1, borderTopColor: c.line };
   if (!item.onPress) {
     return (
-      <View accessible accessibilityLabel={item.spoken} style={style}>
+      <View testID={item.testID} accessible accessibilityLabel={item.spoken} style={style}>
         {body}
       </View>
     );
   }
   return (
     <AnimatedPressable
+      testID={item.testID}
       accessibilityRole="button"
       accessibilityLabel={item.spoken}
       accessibilityHint={item.hint}
@@ -87,11 +111,23 @@ function KeyRow({ item, n, first }: { item: KeyItem; n: number; first: boolean }
   );
 }
 
-export function KeyList({ items, start = 1, testID }: { items: readonly KeyItem[]; /** The first row's number, when a list continues another (Drills' "More drills"). */ start?: number; testID?: string }) {
+export function KeyList({
+  items,
+  start = 1,
+  testID,
+  numbered = true,
+}: {
+  items: readonly KeyItem[];
+  /** The first row's number, when a list continues another (Drills' "More drills"). */
+  start?: number;
+  testID?: string;
+  /** False: no italic numbers (a lone row, where "1" would count nothing). */
+  numbered?: boolean;
+}) {
   return (
     <View testID={testID}>
       {items.map((item, i) => (
-        <KeyRow key={item.key} item={item} n={start + i} first={i === 0} />
+        <KeyRow key={item.key} item={item} n={numbered ? start + i : null} first={i === 0} />
       ))}
     </View>
   );

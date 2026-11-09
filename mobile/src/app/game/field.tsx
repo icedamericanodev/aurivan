@@ -21,6 +21,7 @@
 import { router } from 'expo-router';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { View } from 'react-native';
+import type { ItemResult } from '../../components/drillKit';
 import { GameFrame, GameIntro, MatchTile, PlayableGate, RevealCard, RoundEnd, type TileState } from '../../components/game';
 import { Button, Gap, Row, Stem, T, useFontScale } from '../../components/ui';
 import { getNotes } from '../../content/notes';
@@ -128,15 +129,31 @@ function FieldGuide() {
 
   if (b >= round.boards.length) {
     return (
-      <RoundEnd certId={cert.id} game="field" score={score} max={total} misses={misses} reviewNote={MISS_LINE} onAgain={start} news={news}>
-        <T v="small" num>{`First-try matches: ${score} of ${total}`}</T>
-        <Gap h={space.md} />
+      <RoundEnd
+        certId={cert.id}
+        game="field"
+        score={score}
+        max={total}
+        misses={misses}
+        reviewNote={MISS_LINE}
+        onAgain={start}
+        news={news}
+        results={firsts.map((f): ItemResult => (f ? 'right' : 'missed'))}
+        tierLines={FIELD_TIER_LINE}
+      >
+        {/* PHASE4B 6.6: the first-try count in meta. */}
+        <T v="meta" num>{`First-try matches: ${score} of ${total}`}</T>
       </RoundEnd>
     );
   }
 
   const board = round.boards[b];
   const n = board.terms.length;
+  // Grove 4b: the twig has a leaf per board: filled when every pair on it was matched on the first try.
+  const boardResults: ItemResult[] = round.boards
+    .map((_, j) => firsts.slice(j * n, (j + 1) * n))
+    .filter((f) => f.length === n)
+    .map((f) => (f.every(Boolean) ? 'right' : 'missed'));
   const lastBoard = b === round.boards.length - 1;
 
   /** One term settled: its card, its first-try point, a miss line if not first try. */
@@ -248,6 +265,7 @@ function FieldGuide() {
         index={b}
         total={round.boards.length}
         score={score}
+        results={boardResults}
         footer={
           boardDone ? (
             <Button label={lastBoard ? 'See results' : 'Next board'} onPress={next} />
@@ -260,7 +278,7 @@ function FieldGuide() {
           )
         }
       >
-        <T v="caption" color={c.accentText}>{`Board ${b + 1} of ${round.boards.length}`}</T>
+        <T v="caption" num color={c.accentText}>{`Board ${b + 1} of ${round.boards.length}`}</T>
         {topicName ? <T v="meta" style={{ marginTop: space.xs }}>{`One topic: ${topicName}`}</T> : null}
         <Gap h={space.md} />
         {/* Side by side when it fits; stacked (terms first) at large text or with a long word. */}
@@ -310,6 +328,7 @@ function FieldGuide() {
       index={b}
       total={round.boards.length}
       score={score}
+      results={boardResults}
       footer={
         pick !== null ? (
           <Button label={k + 1 >= n ? (lastBoard ? 'See results' : 'Next board') : 'Next meaning'} onPress={nextMeaning} />
@@ -318,7 +337,7 @@ function FieldGuide() {
         )
       }
     >
-      <T v="caption" color={c.accentText}>{`Board ${b + 1} of ${round.boards.length} · meaning ${k + 1} of ${n}`}</T>
+      <T v="caption" num color={c.accentText}>{`Board ${b + 1} of ${round.boards.length} · meaning ${k + 1} of ${n}`}</T>
       <Gap h={space.sm} />
       <Stem>{term.definition}</Stem>
       <Gap h={space.lg} />

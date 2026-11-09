@@ -1,30 +1,29 @@
 /**
- * Look (mobile 1.14, Phase 4b "Dress and Alive") — "how does my plant look?"
+ * Look (mobile 1.14; Grove Phase 4b, design-notes/grove/phase4b/PHASE4B.md 4.2): "how does my
+ * plant look?"
  *
- * A live preview at the top (it stays in view while the choices scroll),
- * then six sections: Style (mobile 1.40: Botanical, Storybook, or Storybook
- * with a face; it replaced Settings' Quiet look), Colour, Ground, Planter,
- * Visitor and Keepsakes (show up to three). A tap changes the look at once; nothing to save. Planter and
- * Keepsakes list what is open; the planters and keepsakes still to earn sit
- * in one closed "More to find" group at the end, each saying how (UX P1).
+ * The back row ("Your plant"), the page's title "Look", then a live preview of the plant on its soil
+ * line that stays in view while the choices scroll (every change previews there in place), then one
+ * column of rows: Style (Botanical, Storybook, or Storybook with a face), Colour, Ground, Planter,
+ * Visitor, then the final form (at Elder only), then Keepsakes (show up to three). A tap changes the
+ * look at once; there is nothing to save. The planters and keepsakes still to earn sit in one closed
+ * "More to find" group at the end, each saying how.
  *
  * Unlocks are derived (engine/plantLooks.ts): the three styles, every species' two colourways,
- * the Meadow, its own ground, a terracotta pot and the wren are free; the
- * rest open with growth, badges and completed badge sets. A locked choice
- * says how to open it in plain words. There is no "n of m" anywhere, no
- * purchase, and nothing here says anything about readiness: it's a look.
+ * the Meadow, its own ground, a terracotta pot and the wren are free; the rest open with growth,
+ * badges and completed badge sets. There is no "n of m" anywhere, no purchase, and nothing here
+ * says anything about readiness: it's a look. The ribbon (a keepsake for the score you needed) is
+ * not listed under More to find until the exam date has passed.
  *
- * Mobile 1.50: at Elder a botanical plant shows one more section first, its
- * final form: the line's own final or one of five flavours. The learner
- * chooses; the strongest area never decides, and nothing locked is listed
- * before Elder (no wall of forms to collect). The choice is kept on this
- * phone for now (store/seen.ts plantFinal; DESIGN_SYSTEM §8.10).
+ * Mobile 1.50: at Elder a botanical plant shows its final form group: the line's own final or one
+ * of five flavours. The learner chooses; the strongest area never decides. The choice is kept on
+ * this phone for now (store/seen.ts plantFinal; DESIGN_SYSTEM §8.10).
  *
- * Large text: one column of full-width rows (two across otherwise, when two
- * fit). Never on question, mock, lesson or game screens.
+ * The preview: 160pt, 120pt from text scale 1.3; from 1.6, or on a phone shorter than 700pt, 72pt
+ * and not sticky, so text never sits under it (UX P9). Never on question, mock, lesson or game screens.
  */
 import { router } from 'expo-router';
-import { useState } from 'react';
+import { useCallback, useLayoutEffect, useRef, useState, type ReactNode } from 'react';
 import { Pressable, ScrollView, useWindowDimensions, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { EmptyScreen } from '../components/emptyScreen';
@@ -33,45 +32,61 @@ import { Collapse, Turn } from '../components/motion';
 import { LivePlant } from '../components/plant/LivePlant';
 import { Plant } from '../components/plant/Plant';
 import { KeepsakeIcon, LookOption, PlanterIcon, Swatch } from '../components/plant/LookUI';
+import { SoilBed, soilYFor } from '../components/plant/PlantPage';
 import { ICON_SIZE, PushedHeader, Row, Section, T, useFontScale } from '../components/ui';
-import { formGrowthLine, growthShort, plantCallName, type GrowthLevel } from '../engine/plant';
-import { colourwaysFor, GROUNDS, howToOpen, skillLine, KEEPSAKE_ITEMS, lookItem, MAX_SHOWN_KEEPSAKES, plantersFor, STYLES, toggleKeepsake, VISITORS, type LookItem, type LookSlot, type PlantStyle } from '../engine/plantLooks';
+import { type GrowthLevel } from '../engine/plant';
+import { colourwaysFor, GROUNDS, skillLine, KEEPSAKE_ITEMS, lookItem, MAX_SHOWN_KEEPSAKES, plantersFor, STYLES, toggleKeepsake, VISITORS, type LookItem, type LookSlot, type PlantStyle } from '../engine/plantLooks';
 import { FINAL_IDS, finalLook, finalName, type FinalId } from '../engine/plantForms';
+import { dayKey } from '../engine/streak';
 import { haptic } from '../lib/haptics';
+import { lookCaption, lookHowToOpen } from '../lib/plantCopy';
 import { useSeen } from '../store/seen';
 import { usePlantView } from '../lib/plant';
 import { useProgress } from '../store/progress';
-import { useSettings } from '../store/settings';
+import { examDateOf, useSettings } from '../store/settings';
 import { LARGE_TEXT, plantLeaf, space } from '../theme/tokens';
 import { useTheme } from '../theme/useTheme';
 
-/** Two tiles across when each gets at least this much width (else one column of rows). */
-const MIN_TILE = 150;
-/** From this text size the preview is at its smallest, so the choices keep the screen. */
+/** From this text size the preview is at its smallest and scrolls away, so the choices keep the screen. */
 const HUGE_TEXT = 1.6;
 /** How each style is said in the preview's label ("Kai, your oak, botanical style."). */
 const STYLE_WORDS: Record<PlantStyle, string> = { botanical: 'botanical style', storybook: 'storybook style', 'storybook-face': 'storybook style with a face' };
+/** The art inside a row's 48pt thumbnail. */
+const THUMB_ART = 44;
 
 /**
- * The preview's size (UX review P9): 140pt, 96pt at large text, 72pt at
- * very large text or on a short phone (the choices need the room).
+ * The preview's size (PHASE4B 4.2; UX review P9): 160pt, 120pt at large text, 72pt at very large
+ * text or on a short phone (the choices need the room; then it is not sticky).
  */
 export function previewSizeFor(fontScale: number, windowHeight: number): number {
   if (fontScale >= HUGE_TEXT || windowHeight < 700) return 72;
-  return fontScale >= LARGE_TEXT ? 96 : 140;
+  return fontScale >= LARGE_TEXT ? 120 : 160;
 }
+/** The preview stays in view while the rows scroll, except at its smallest size. */
+export const previewSticky = (size: number) => size > 72;
 
 export default function PlantLook() {
   const { c, isDark } = useTheme();
   const view = usePlantView();
   const scale = useFontScale();
   const win = useWindowDimensions();
-  // The first frame already knows the width (UX review P10): no jump when the layout reports it.
-  const [width, setWidth] = useState(() => win.width - space.gutter * 2);
   const [moreOpen, setMoreOpen] = useState(false);
   const badgesHidden = useSettings((s) => s.badgesHidden);
+  const examDate = useSettings((s) => examDateOf(s.examDates, view.certId));
+  // "Today" is read once per visit (render stays pure).
+  const [today] = useState(() => dayKey(Date.now()));
   const p = view.plant;
   const look = view.look;
+  // Release bug hunt round 1: each row is memoised (LookOption), so its tap must be the same function
+  // every render. The rows pass "group|id" to one stable `runHandler`, which runs that row's newest
+  // handler: this render fills `rowHandlers`, and the effect hands it over once the render is on screen
+  // (before any tap can reach it), so a tap always acts on the current look.
+  const handlers = useRef(new Map<string, () => void>());
+  const runHandler = useCallback((key: string) => handlers.current.get(key)?.(), []);
+  const rowHandlers = new Map<string, () => void>();
+  useLayoutEffect(() => {
+    handlers.current = rowHandlers;
+  });
 
   if (!view.shown) {
     return (
@@ -80,7 +95,7 @@ export default function PlantLook() {
         fallback="/you"
         art="seedling"
         title="Your plant is hidden"
-        body="Its growth and look are kept. Turn on Show my plant in Settings to see it again."
+        body="Its growth and look are kept. Turn on Show my plant in Settings."
         primary={{ label: 'Open Settings', onPress: () => router.push({ pathname: '/settings', params: { section: 'plant' } }) }}
       />
     );
@@ -92,7 +107,7 @@ export default function PlantLook() {
         fallback="/you"
         art="seedling"
         title="Nothing planted yet"
-        body="Pick a plant and give it a name first. Then you can choose its colours and keepsakes."
+        body="Plant yours first. Then choose its colours and keepsakes."
         primary={{ label: 'Plant yours', onPress: () => router.replace('/plant-pick') }}
       />
     );
@@ -101,10 +116,8 @@ export default function PlantLook() {
   const certId = view.certId;
   const set = useProgress.getState().setPlantLook;
   const theme = isDark ? 'dark' : 'light';
-  const rows = scale >= LARGE_TEXT || width < MIN_TILE * 2 + space.sm;
-  const tile = rows ? undefined : Math.floor((width - space.sm) / 2);
   const open = (x: LookItem) => look.unlocked.has(x.id);
-  const how = (x: LookItem) => howToOpen(x, { badgesHidden });
+  const how = (x: LookItem) => lookHowToOpen(x, { badgesHidden });
   const r = look.resolved;
   const choose = (slot: Exclude<LookSlot, 'keepsake'>, id: string) => {
     haptic.selection();
@@ -113,6 +126,7 @@ export default function PlantLook() {
   // The preview shows the visitor whatever the day, so the learner sees their choice.
   const preview = { ...look.art, visitor: r.visitor !== 'no-visitor' ? r.visitor : undefined };
   const previewSize = previewSizeFor(scale, win.height);
+  const sticky = previewSticky(previewSize);
   // The preview's label says what it draws (code review M10a): the plant, then its visitor, planter and keepsakes.
   const named = (id: string | undefined) => (id ? lookItem(id)?.name.toLowerCase() : undefined);
   const extras = [preview.visitor ? `a ${named(preview.visitor)}` : '', r.planter !== 'native' ? `in the ${named(r.planter)}` : '', ...r.keepsakes.map((k) => `the ${named(k)}`)].filter(Boolean);
@@ -122,61 +136,54 @@ export default function PlantLook() {
   const styled = cut > 0 ? `${view.label.slice(0, cut)}, ${STYLE_WORDS[r.style]}${view.label.slice(cut)}` : view.label;
   const previewLabel = `Preview: ${styled}${extras.length ? ` With ${extras.join(', ')}.` : ''}`;
 
-  /**
-   * One section's choices. Short ones (colour, ground, visitor) sit two
-   * across when two fit; planters and keepsakes, with longer lines, are
-   * always one column of rows.
-   */
-  const group = (label: string, multi: boolean, items: LookItem[], selected: (x: LookItem) => boolean, onPress: (x: LookItem) => void, opts: { art?: (x: LookItem) => React.ReactNode; full?: boolean; asRows?: boolean; line?: (x: LookItem) => string } = {}) => {
-    const asRows = rows || !!opts.asRows;
-    return (
-      <View accessibilityRole={multi ? undefined : 'radiogroup'} accessibilityLabel={label} style={{ flexDirection: asRows ? 'column' : 'row', flexWrap: asRows ? 'nowrap' : 'wrap', alignItems: 'stretch', gap: space.sm, marginTop: space.sm }}>
-        {items.map((x) => {
-          const locked = !open(x);
-          return (
-            <LookOption
-              key={x.id}
-              testID={`look-${x.id}`}
-              name={x.name}
-              line={locked ? how(x) : (opts.line?.(x) ?? x.caption)}
-              art={opts.art?.(x)}
-              selected={selected(x)}
-              locked={locked}
-              multi={multi}
-              full={opts.full}
-              row={asRows}
-              width={asRows ? undefined : tile}
-              onPress={() => onPress(x)}
-            />
-          );
-        })}
-      </View>
-    );
-  };
-
-  const planters = plantersFor(p.species);
-  const planterArt = (x: LookItem) => <PlanterIcon id={x.id} species={p.species} size={40} theme={theme} style={r.style === 'botanical' ? 'botanical' : 'storybook'} />;
-  // Each style card shows THIS plant drawn that way (its growth and colours; no visitor or keepsakes at 56pt).
-  const styleArt = (x: LookItem) => (
-    <Plant species={p.species} stage={Math.max(3, p.growth) as GrowthLevel} organs={view.scales} size={56} theme={theme} quietLook={x.id !== 'storybook-face'} look={{ style: x.id as PlantStyle, palette: r.palette }} />
+  /** One group's rows: one column at every text size (PHASE4B 4.2), text wraps, no sideways rail. */
+  const group = (label: string, multi: boolean, items: LookItem[], selected: (x: LookItem) => boolean, onPress: (x: LookItem) => void, opts: { art?: (x: LookItem) => ReactNode; line?: (x: LookItem) => string; full?: boolean } = {}) => (
+    <View accessibilityRole={multi ? undefined : 'radiogroup'} accessibilityLabel={label} style={{ marginTop: space.xs }}>
+      {items.map((x, i) => {
+        const locked = !open(x);
+        const key = `${label}|${x.id}`;
+        // The newest handler for this row (read only when it is tapped, never while drawing).
+        rowHandlers.set(key, () => onPress(x));
+        return (
+          <LookOption
+            key={x.id}
+            testID={`look-${x.id}`}
+            name={x.name}
+            line={locked ? how(x) : (opts.line?.(x) ?? lookCaption(x))}
+            art={opts.art?.(x)}
+            selected={selected(x)}
+            locked={locked}
+            multi={multi}
+            full={opts.full}
+            divider={i < items.length - 1}
+            id={key}
+            onChoose={runHandler}
+          />
+        );
+      })}
+    </View>
   );
+
+  const growth = Math.max(3, p.growth) as GrowthLevel;
+  // This plant drawn small, in a look (a style, a ground, a visitor or a final form).
+  const plantThumb = (lk: Parameters<typeof Plant>[0]['look'], face = false) => <Plant species={p.species} stage={growth} organs={view.scales} size={THUMB_ART} theme={theme} quietLook={!face} look={lk} />;
+  const planterArt = (x: LookItem) => <PlanterIcon id={x.id} species={p.species} size={40} theme={theme} style={r.style === 'botanical' ? 'botanical' : 'storybook'} />;
   const keepsakeArt = (x: LookItem) => <KeepsakeIcon id={x.id} size={40} theme={theme} style={r.style === 'botanical' ? 'botanical' : 'storybook'} />;
-  // Planter and Keepsakes list only what is open (UX review P1). The ribbon is
-  // never listed until it is earned (it opens when you tell us you passed).
+  const plain = { ...look.art, visitor: undefined, keepsakes: [] };
+  // Planter and Keepsakes list only what is open (UX review P1). The ribbon is never listed until
+  // it is open, and stays out of More to find until the exam date has passed (PHASE4B 3.3).
+  const examPassed = Boolean(examDate && examDate < today);
+  const planters = plantersFor(p.species);
   const openPlanters = planters.filter(open);
   const openKeepsakes = KEEPSAKE_ITEMS.filter(open);
   const morePlanters = planters.filter((x) => !open(x));
-  const moreKeepsakes = KEEPSAKE_ITEMS.filter((k) => !open(k) && k.id !== 'ribbon');
+  const moreKeepsakes = KEEPSAKE_ITEMS.filter((k) => !open(k) && (k.id !== 'ribbon' || examPassed));
   const shown = r.keepsakes;
   const fullUp = shown.length >= MAX_SHOWN_KEEPSAKES;
 
-  return (
-    <SafeAreaView edges={['top', 'bottom']} style={{ flex: 1, backgroundColor: c.bg }}>
-      <View style={{ paddingHorizontal: space.gutter }}>
-        <PushedHeader title="Look" onBack={() => (router.canGoBack() ? router.back() : router.replace('/plant'))} />
-      </View>
-      {/* The live preview stays in view while the choices scroll. */}
-      <View style={{ alignItems: 'center', paddingBottom: space.sm, borderBottomWidth: 1, borderBottomColor: c.line }}>
+  const previewBed = (
+    <View testID="look-preview-bed" style={{ paddingTop: space.sm, paddingBottom: space.md }}>
+      <SoilBed size={previewSize} soilY={soilYFor(p.species, p.growth, preview, previewSize, theme)} bleed={space.gutter}>
         <LivePlant
           testID="look-preview"
           species={p.species}
@@ -184,48 +191,49 @@ export default function PlantLook() {
           organs={view.scales}
           quietLook={!view.face}
           size={previewSize}
-          fit
+          fit={false}
           // A preview: the small detail level, so each tap rebuilds quickly on a low-end phone (code review M8b).
           lod="small"
           theme={theme}
           look={preview}
           accessibilityLabel={previewLabel}
         />
-        {/* With forms on: "Your oak · Crown", the growth by name only (no count near a form, UX review H2). */}
-        <T v="meta" center style={{ marginTop: space.xs }}>{view.forms ? formGrowthLine(p.species, p.growth) : `${plantCallName(p)} · ${growthShort(p.growth)}`}</T>
-      </View>
-      <ScrollView contentContainerStyle={{ paddingHorizontal: space.gutter, paddingBottom: space.xxxl }} onLayout={(e) => setWidth(e.nativeEvent.layout.width - space.gutter * 2)}>
-        {/* With forms on, no readiness word near the form choice (UX review P3). */}
-        <T v="meta" style={{ marginTop: space.md }}>{view.forms ? 'A look is just for you: it never changes your growth.' : 'A look is just for you: it never changes your growth or your readiness.'}</T>
+      </SoilBed>
+    </View>
+  );
+  const title = (
+    <T v="display" accessibilityRole="header" style={{ marginTop: space.xs }}>
+      Look
+    </T>
+  );
 
-        {view.forms && p.growth >= 6 ? (
-          <>
-            <Section title="Its final form" meta="You choose" />
-            <View accessibilityRole="radiogroup" accessibilityLabel="Its final form" style={{ gap: space.sm, marginTop: space.sm }}>
-              {FINAL_IDS.map((id: FinalId) => (
-                <LookOption
-                  key={id}
-                  testID={`look-final-${id}`}
-                  name={finalName(p.species, id)}
-                  // One line per choice: its look (the flavour's idea is already in it, UX review P6).
-                  line={finalLook(p.species, id)}
-                  art={<Plant species={p.species} stage={6} organs={view.scales} size={56} theme={theme} quietLook look={{ ...look.art, visitor: undefined, keepsakes: [], final: id }} />}
-                  selected={view.final === id}
-                  locked={false}
-                  multi={false}
-                  row
-                  onPress={() => {
-                    haptic.selection();
-                    useSeen.getState().setPlantFinal(certId, id);
-                  }}
-                />
-              ))}
-            </View>
-          </>
+  return (
+    <SafeAreaView edges={['top', 'bottom']} style={{ flex: 1, backgroundColor: c.bg }}>
+      <View style={{ paddingHorizontal: space.gutter }}>
+        <PushedHeader backLabel="Your plant" onBack={() => (router.canGoBack() ? router.back() : router.replace('/plant'))} />
+        {/* The sticky preview: the title and the plant stay in view while the rows scroll. */}
+        {sticky ? (
+          <View style={{ borderBottomWidth: 1, borderBottomColor: c.line, marginHorizontal: -space.gutter, paddingHorizontal: space.gutter }}>
+            {title}
+            {previewBed}
+          </View>
         ) : null}
+      </View>
+      <ScrollView contentContainerStyle={{ paddingHorizontal: space.gutter, paddingBottom: space.xxxl }}>
+        {sticky ? null : (
+          <>
+            {title}
+            {previewBed}
+          </>
+        )}
+        {/* With forms on, no readiness word near the form choice (UX review P3). */}
+        <T v="meta" style={{ marginTop: space.md }}>{view.forms ? 'Looks never change your growth.' : 'Looks never change your growth or readiness.'}</T>
 
         <Section title="Style" />
-        {group('Style', false, STYLES, (x) => x.id === r.style, (x) => choose('style', x.id), { asRows: true, art: styleArt })}
+        {group('Style', false, STYLES, (x) => x.id === r.style, (x) => choose('style', x.id), {
+          // Each style shows THIS plant drawn that way (its growth and colours).
+          art: (x) => plantThumb({ style: x.id as PlantStyle, palette: r.palette }, x.id === 'storybook-face'),
+        })}
 
         <Section title="Colour" />
         {group(
@@ -245,39 +253,67 @@ export default function PlantLook() {
         )}
 
         <Section title="Ground" />
-        {group('Ground', false, GROUNDS, (x) => x.id === r.ground, (x) => choose('ground', x.id))}
+        {group('Ground', false, GROUNDS, (x) => x.id === r.ground, (x) => choose('ground', x.id), { art: (x) => plantThumb({ ...plain, ground: x.id }) })}
 
         <Section title="Planter" />
-        {group('Planter', false, openPlanters, (x) => x.id === r.planter, (x) => choose('planter', x.id), { asRows: true, art: planterArt })}
+        {group('Planter', false, openPlanters, (x) => x.id === r.planter, (x) => choose('planter', x.id), { art: planterArt })}
 
         <Section title="Visitor" meta="Comes on days you clear your plan" />
-        {group('Visitor', false, VISITORS, (x) => x.id === r.visitor, (x) => choose('visitor', x.id))}
+        {group('Visitor', false, VISITORS, (x) => x.id === r.visitor, (x) => choose('visitor', x.id), {
+          art: (x) => plantThumb({ ...plain, visitor: x.id === 'no-visitor' ? undefined : x.id }),
+        })}
 
-        <Section title="Keepsakes" meta={fullUp ? 'Three on show' : `Show up to ${MAX_SHOWN_KEEPSAKES === 3 ? 'three' : MAX_SHOWN_KEEPSAKES}`} />
-        {openKeepsakes.length ? (
+        {view.forms && p.growth >= 6 ? (
           <>
-            {/* Visible, not only spoken: why a tap does nothing once three are on show (UX review H3). */}
-            <View testID="look-keepsakes-help">
-              <T v="meta">{fullUp ? 'Tap one that’s on show to put it away, then pick another.' : badgesHidden ? 'Each one is kept by your plant.' : 'Each badge you earn leaves a keepsake here.'}</T>
+            <Section title="Its final form" meta="You choose" />
+            <View accessibilityRole="radiogroup" accessibilityLabel="Its final form" style={{ marginTop: space.xs }}>
+              {FINAL_IDS.map((id: FinalId, i) => (
+                <LookOption
+                  key={id}
+                  testID={`look-final-${id}`}
+                  name={finalName(p.species, id)}
+                  // One line per choice: its look (the flavour's idea is already in it, UX review P6).
+                  line={finalLook(p.species, id)}
+                  art={<Plant species={p.species} stage={6} organs={view.scales} size={THUMB_ART} theme={theme} quietLook look={{ ...plain, final: id }} />}
+                  selected={view.final === id}
+                  locked={false}
+                  multi={false}
+                  divider={i < FINAL_IDS.length - 1}
+                  onPress={() => {
+                    haptic.selection();
+                    useSeen.getState().setPlantFinal(certId, id);
+                  }}
+                />
+              ))}
             </View>
-            {group(
-              'Keepsakes',
-              true,
-              openKeepsakes,
-              (x) => shown.includes(x.id),
-              (x) => {
-                haptic.selection();
-                // Toggle on what is STORED, so a keepsake whose badge a restore took
-                // away stays chosen (and comes back with the badge). Only when the
-                // learner needs the room is such a hidden one let go. Never chosen
-                // yet: start from what shows now (the first three earned).
-                const stored = p.look?.keepsakes ?? shown;
-                const room = stored.includes(x.id) || stored.length < MAX_SHOWN_KEEPSAKES ? stored : stored.filter((k) => look.unlocked.has(k));
-                set(certId, { keepsakes: toggleKeepsake(room, x.id) });
-              },
-              { art: keepsakeArt, full: fullUp, asRows: true, line: skillLine },
-            )}
           </>
+        ) : null}
+
+        {/* The Section meta is the only place the limit is said (PHASE4B 4.2). */}
+        <Section title="Keepsakes" meta={fullUp ? 'Three on show' : `Show up to ${MAX_SHOWN_KEEPSAKES === 3 ? 'three' : MAX_SHOWN_KEEPSAKES}`} />
+        {openKeepsakes.length && !fullUp ? (
+          <View testID="look-keepsakes-help">
+            <T v="meta">{badgesHidden ? 'Each one is kept by your plant.' : 'Each badge you earn leaves a keepsake here.'}</T>
+          </View>
+        ) : null}
+        {openKeepsakes.length ? (
+          group(
+            'Keepsakes',
+            true,
+            openKeepsakes,
+            (x) => shown.includes(x.id),
+            (x) => {
+              haptic.selection();
+              // Toggle on what is STORED, so a keepsake whose badge a restore took
+              // away stays chosen (and comes back with the badge). Only when the
+              // learner needs the room is such a hidden one let go. Never chosen
+              // yet: start from what shows now (the first three earned).
+              const stored = p.look?.keepsakes ?? shown;
+              const room = stored.includes(x.id) || stored.length < MAX_SHOWN_KEEPSAKES ? stored : stored.filter((k) => look.unlocked.has(k));
+              set(certId, { keepsakes: toggleKeepsake(room, x.id) });
+            },
+            { art: keepsakeArt, full: fullUp, line: (x) => (x.id === 'ribbon' ? 'You got the score you needed' : skillLine(x)) },
+          )
         ) : (
           <View testID="look-keepsakes-help">
             <T v="meta">{badgesHidden ? 'Your plant keeps a small keepsake for each step you master.' : 'Each badge you earn leaves a keepsake here. Your first comes with the diagnostic.'}</T>
@@ -305,8 +341,8 @@ export default function PlantLook() {
             </Pressable>
             <Collapse open={moreOpen} rows>
               <T v="meta" key="line">{badgesHidden ? 'Your study adds more. Each one says how.' : 'Badges and finished badge sets add more. Each one says how.'}</T>
-              {morePlanters.length ? <View key="planters">{group('Planters still to earn', false, morePlanters, () => false, () => {}, { asRows: true, art: planterArt })}</View> : null}
-              {moreKeepsakes.length ? <View key="keepsakes">{group('Keepsakes still to earn', true, moreKeepsakes, () => false, () => {}, { art: keepsakeArt, asRows: true })}</View> : null}
+              {morePlanters.length ? <View key="planters">{group('Planters still to earn', false, morePlanters, () => false, () => {}, { art: planterArt })}</View> : null}
+              {moreKeepsakes.length ? <View key="keepsakes">{group('Keepsakes still to earn', true, moreKeepsakes, () => false, () => {}, { art: keepsakeArt })}</View> : null}
             </Collapse>
           </View>
         )}

@@ -106,8 +106,8 @@ const REVIEW: PlanItem = { kind: 'review', count: 12, due: 12 };
 const LESSON: PlanItem = { kind: 'lesson', lessonId: 'cisa-l-d1-charter', title: 'Business impact analysis', minutes: 8 };
 const FIRST: PlanItem = { kind: 'practice', count: 5, label: 'Your first five', why: 'first' };
 
-const storePlan = (items: PlanItem[], done: boolean[] = items.map(() => false)) => {
-  const plan: DayPlan = { day: today(), certId: 'cisa', budget: 20, items, done, start: { score: 0, domains: {} }, answered: 0, correct: 0, minutes: 0 };
+const storePlan = (items: PlanItem[], done: boolean[] = items.map(() => false), credit?: number[]) => {
+  const plan: DayPlan = { day: today(), certId: 'cisa', budget: 20, items, done, start: { score: 0, domains: {} }, answered: 0, correct: 0, minutes: 0, ...(credit ? { credit } : {}) };
   act(() => {
     useProgress.getState().startDay(plan);
   });
@@ -180,6 +180,19 @@ describe('Short on time? 5 questions', () => {
     expect(s.mode).toBe('review');
     expect(s.questionIds).toHaveLength(5);
     expect(router.push).toHaveBeenCalledWith('/session');
+  });
+
+  it('round 4: after the short set, the step shows what is left and Continue starts only that many', async () => {
+    const PRACTICE: PlanItem = { kind: 'practice', count: 8, label: 'Practice: 8 mixed questions', why: 'weak' };
+    // The saved plan after 5 short-set answers: credit [0, 5] on the 8-question step, lesson done.
+    storePlan([LESSON, PRACTICE], [true, false], [0, 5]);
+    mount(<Today />);
+    const t = allText();
+    expect(t).toContain('3 questions, most points to gain');
+    expect(t).not.toContain('8 questions');
+    expect(t).toMatch(/Today’s plan About.4.min/); // the card total: only the 3 questions left
+    await press(/^Continue$/);
+    expect(useSession.getState().active!.questionIds).toHaveLength(3);
   });
 
   it('hides once anything is done, on the first-set day and in exam week', () => {

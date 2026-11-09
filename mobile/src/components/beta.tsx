@@ -216,7 +216,7 @@ export function NameAskCard({ onGone }: { onGone?: () => void }) {
         </View>
         <Row gap={0} style={{ flexWrap: 'wrap', marginLeft: -space.sm, marginTop: space.xs }}>
           <Button kind="ghost" label="Save" accessibilityLabel="Save my name" onPress={save} />
-          <Button kind="ghost" label="Not now" accessibilityLabel="Not now, no name" onPress={notNow} />
+          <Button kind="ghostNeutral" label="Not now" accessibilityLabel="Not now, no name" onPress={notNow} />
         </Row>
       </View>
     </View>

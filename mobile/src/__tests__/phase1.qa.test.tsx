@@ -738,7 +738,7 @@ describe('Journey 7: Help and feedback from Settings and You, and the deep link'
     // Mobile 1.46: the Help row is on Help and about's own screen.
     mockParams = { category: 'help' };
     mount(<Settings />);
-    press('Get help or send feedback, Common questions, reports and what’s new');
+    press('Get help or send feedback, Questions, reports, what’s new');
     expect(mockPush).toHaveBeenCalledWith('/help');
     unmount();
     mount(<Help />);
@@ -781,7 +781,7 @@ describe('Journey 7: Help and feedback from Settings and You, and the deep link'
 
   it('You → Help → the same rows, tagged “From: Help”', async () => {
     mount(<You />);
-    press('Get help or send feedback');
+    press('Get help or send feedback, Questions, reports, what’s new');
     expect(mockPush).toHaveBeenCalledWith('/help');
     unmount();
     mount(<Help />);

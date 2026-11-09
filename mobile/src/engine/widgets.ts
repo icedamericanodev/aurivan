@@ -1247,7 +1247,8 @@ function plantFace(s: WidgetSnapshot, today: string): WidgetFace {
     ...base,
     caption: `Your ${p.name}`,
     title: word,
-    sub: `Fig. ${growth}`,
+    // No book label (labels decision, 31 Oct 2026; was "Fig. 3"): the growth in words, never a stage.
+    sub: `Growth ${growth}`,
     line: `${next}.`,
     badge: grewToday ? 'New growth today' : undefined,
     art: { type: 'plant', plant: p },

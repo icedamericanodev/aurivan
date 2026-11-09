@@ -1,0 +1,1282 @@
+{
+  "domain": 3,
+  "title": "Information Systems Acquisition, Development and Implementation",
+  "weight": "12%",
+  "count": 34,
+  "questions": [
+    {
+      "id": "d3_004",
+      "domain": 3,
+      "subtopic": "Configuration Management. Baseline Scope",
+      "principle_id": "prevent-before-detect",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "An IS auditor finds that a release's source code is baselined, but its approved design specifications can be edited freely. Which conclusion is MOST appropriate?",
+      "options": {
+        "A": "Specification edits are traceable through the tool's version history",
+        "B": "The specifications should be configuration items in the baseline",
+        "C": "The specifications should be locked against editing by the design lead",
+        "D": "Specification edits are acceptable if rebaselined at the next release review"
+      },
+      "correct": "B",
+      "key_concept": "Configuration items include code, designs, requirements and builds; all must be under formal change control as part of the baseline.",
+      "pre_read": "Ask what belongs in a product baseline. Then ask how approved changes to it should happen.",
+      "correct_explanation": "A configuration item is any identified artifact placed under formal change control as part of the product baseline, including requirements, designs, code and build files. Uncontrolled specifications mean the baseline cannot be trusted. A read-only lock is the tempting option: it stops unauthorized edits, but it gives approved changes no controlled path and rests on one person instead of a change process.",
+      "wrong_explanations": {
+        "A": "Version history shows who edited what, but no one authorizes the edit; traceability after the fact is not change control.",
+        "C": "A lock stops edits, but it offers no way to authorize, record and baseline the changes the project will still need, and it relies on one person.",
+        "D": "Rebaselining later records edits after they happen; configuration management requires authorization before a baselined item changes."
+      },
+      "tips": [
+        "Eliminate: A treats an edit history as control although nothing authorizes the edits, and D reviews edits after the fact, which detects rather than prevents.",
+        "Final two: B beats C because configuration management blocks unauthorized edits and gives approved changes a controlled path; a lock only blocks.",
+        "Exam cue: a configuration item is any controlled artifact in the baseline, not just code, and not just hardware."
+      ],
+      "framework_ref": "IEEE 828 (Configuration Management in Systems and Software Engineering); ISO/IEC 12207 (Software Life Cycle Processes); ITIL 4 Service Configuration Management; COBIT 2019 BAI10 (Managed Configuration)",
+      "related_concepts": [
+        "Configuration item",
+        "Configuration management",
+        "Baseline",
+        "IEEE 828"
+      ],
+      "_provenance": "Authored from concept: 'CI definition per IEEE 828 software-config-management sense'. Public sources: IEEE 828, ISO/IEC 12207. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Difficulty upgrade (Oct 2026, owner's rule: two options eliminable only by CISA knowledge, a hard final two): replaced 'design documents are no longer needed' with a version-history conclusion that sounds sufficient; recast all options as conclusions so they are the same type. Round 2 (Oct 2026, quality-gate fixes from the standards audit, pedagogy check and strong and weak blind tests): weak blind test: B was the only option that objected to the edits; C is now a read-only lock (rejects the edits, but outside configuration management) and is the runner-up; audit: A and D now say 'Specification' so the key no longer echoes the stem alone. Round 3 (Oct 2026, concept check, blind tests and wording-cue balance): weak blind test: 'baseline' appeared only in the key; D now says re-baselined. Cross-domain review (Oct 2026): MINOR contradiction with d3_037, d3_100, d3_101, d3_108: aligned with related items in other domains (options.D, wrong_explanations.D).",
+      "style_version": 2
+    },
+    {
+      "id": "d3_012",
+      "domain": 3,
+      "subtopic": "Data Conversion. Conversion Assurance",
+      "principle_id": "evidence-quality",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An IS auditor must confirm that customer balances migrated completely and accurately to a new core platform. Which evidence is BEST?",
+      "options": {
+        "A": "User acceptance test results for the main workflows",
+        "B": "Record counts and control totals reconciled source to target",
+        "C": "A sample of accounts compared on screen in both systems",
+        "D": "Conversion logs showing each record was read and written"
+      },
+      "correct": "B",
+      "key_concept": "Data conversion integrity is evidenced by source-to-target reconciliation of record counts and control totals, with variances investigated.",
+      "pre_read": "Focus on the words completely and accurately. Ask which evidence compares the data itself, not the system's behavior.",
+      "correct_explanation": "Completeness and accuracy of converted data are proven by reconciling source and target in full: matching record counts, control totals and hash totals, with every variance investigated. Comparing a sample of accounts on screen is the tempting option because it examines the data itself, but a sample cannot prove that every balance arrived, so missing or altered records outside it go undetected.",
+      "wrong_explanations": {
+        "A": "Acceptance testing checks that workflows function. It does not prove that every migrated record and amount matches the source.",
+        "C": "A sample checks some accounts in detail but cannot show that every record and balance transferred.",
+        "D": "The conversion program's logs report its own activity; they count records handled but cannot show balances arrived unaltered, which needs reconciled control totals."
+      },
+      "tips": [
+        "Eliminate: A tests workflows rather than the migrated data, and D relies on the conversion program's own record counts, which say nothing about amounts.",
+        "Final two: B beats C because full reconciliation covers every record and total; a sample cannot prove completeness.",
+        "Exam cue: for data conversion, completeness and accuracy evidence means counts and control totals matched between source and target."
+      ],
+      "framework_ref": "COBIT 2019 BAI07 (Managed IT Change Acceptance and Transitioning); COBIT 2019 DSS06 (Managed Business Process Controls); ISO/IEC 12207 (Software Life Cycle Processes)",
+      "related_concepts": [
+        "Data conversion",
+        "Reconciliation",
+        "Control totals",
+        "Record counts",
+        "Data migration"
+      ],
+      "_provenance": "Authored from concept: 'Data conversion reconciliation per ISACA Data Migration and Application Controls guidance'. Public sources: ISACA guidance. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Difficulty upgrade (Oct 2026, owner's rule: two options eliminable only by CISA knowledge, a hard final two): replaced the load-test and legacy-regression options with data-focused but weaker evidence; the runner-up is now an on-screen sample comparison. Round 2 (Oct 2026, quality-gate fixes from the standards audit, pedagogy check and strong and weak blind tests): audit: the runner-up loses on completeness, so the tag is evidence-quality; self-check after the weak blind test: D is now the conversion program's own logs of every record. Round 3 (Oct 2026, concept check, blind tests and wording-cue balance): cue balance: absolutes sat almost only in distractors; this one is reworded without changing meaning.",
+      "style_version": 2
+    },
+    {
+      "id": "d3_013",
+      "domain": 3,
+      "subtopic": "Release Management. Change Advisory Board (CAB)",
+      "principle_id": "prevent-before-detect",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An IS auditor finds that several failed production changes were approved by a change advisory board (CAB) that checks only each change's description and timing. What should the auditor recommend as MOST effective?",
+      "options": {
+        "A": "Route standard, normal and emergency changes to the full board",
+        "B": "Require each change to name a business owner who confirms its timing",
+        "C": "Have the board judge readiness from test and backout evidence",
+        "D": "Hold a post-implementation review of each failed change"
+      },
+      "correct": "C",
+      "key_concept": "A change advisory board assesses the risk, impact and readiness of significant changes before authorization; it neither plans nor executes them.",
+      "pre_read": "Separate who sits on a board from what it checks. Then ask whether each fix acts before or after a change.",
+      "correct_explanation": "A CAB adds value by assessing the risk, test evidence and backout plan of significant changes before authorizing them; approving on description and timing alone lets untested or unrecoverable changes through. A post-implementation review of failures is the tempting option: it captures lessons, but it acts after the damage and does not stop the next weak change from being approved.",
+      "wrong_explanations": {
+        "A": "Standard changes are pre-authorized and emergency changes follow an expedited path reviewed soon after; routing them all to the full board adds volume without deepening the check on risky ones.",
+        "B": "A business owner confirming timing adds accountability for when a change runs, but the board would still not assess its risk, testing or backout plan.",
+        "D": "Reviewing failures afterward supports learning, but it is detective; the board's main value is assessment before authorization."
+      },
+      "tips": [
+        "Eliminate: A floods the full board with pre-authorized standard and urgent emergency changes, and B adds an owner who confirms timing, which the board already checks.",
+        "Final two: C beats D because a CAB adds most assurance by assessing risk before authorization; reviewing failures afterward is detective.",
+        "Exam cue: change governance assures by checking risk, testing and backout before approval; pick the fix that strengthens the pre-approval check."
+      ],
+      "framework_ref": "ITIL 4 (Change Enablement); COBIT 2019 BAI06 (Managed IT Changes)",
+      "related_concepts": [
+        "Change Advisory Board",
+        "CAB",
+        "ITIL 4",
+        "Change enablement",
+        "Change authorization"
+      ],
+      "_provenance": "Authored from concept: 'CAB role per ITIL 4 Change Enablement and COBIT 2019 BAI06'. Public sources: ITIL 4, COBIT 2019. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Difficulty upgrade (Oct 2026, owner's rule: two options eliminable only by CISA knowledge, a hard final two): recast from the CAB's textbook role into a finding about a shallow CAB review; replaced the 'write the plan' and 'deploy personally' options with diligent-looking but wrong fixes. Round 2 (Oct 2026, quality-gate fixes from the standards audit, pedagogy check and strong and weak blind tests): weak blind test: B (more senior managers) was a throwaway; B now adds a business owner who confirms timing. Round 3 (Oct 2026, concept check, blind tests and wording-cue balance): cue balance: three-part lists pointed at the key (77% key share) and cue balance: 'risk' wording pointed at the key (62% key share); the key is now a plain single clause and A carries the list; D drops its absolute. Cross-domain review (Oct 2026): MINOR convention with d4_185, d1_195, d4_272: wording aligned with the convention used across the bank (wrong_explanations.A, options.C, correct_explanation, wrong_explanations.B, tips.2).",
+      "style_version": 2
+    },
+    {
+      "id": "d3_015",
+      "domain": 3,
+      "subtopic": "Vendor SDLC. Contract Provisions",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An organization is buying business-critical custom software from a small start-up vendor. Which contract provision should the IS auditor MOST recommend?",
+      "options": {
+        "A": "Source code escrow with defined release conditions",
+        "B": "A right-to-audit clause over the vendor's development process",
+        "C": "A performance bond payable if the vendor fails to deliver",
+        "D": "Financial backing from the vendor's parent company if the vendor defaults"
+      },
+      "correct": "A",
+      "key_concept": "Source code escrow protects continuity of business-critical custom software when the vendor may fail or stop supporting it.",
+      "pre_read": "Identify the main risk: the vendor might not survive. Ask which provision still works after the vendor is gone.",
+      "correct_explanation": "Escrow places the source code with an independent agent and releases it if defined events occur, such as vendor failure. For business-critical custom software from a vendor whose survival is uncertain, that protects continuity. A right-to-audit clause is the strongest alternative: it gives visibility into how the vendor builds software, but it does nothing if the vendor stops trading.",
+      "wrong_explanations": {
+        "B": "Audit rights help assess development quality while the vendor operates. They provide no access to source code if it fails.",
+        "C": "A bond pays compensation, but money does not keep critical software supported once the vendor is gone.",
+        "D": "Parent backing compensates for a default, but it neither supplies the source code nor keeps the software maintainable."
+      },
+      "tips": [
+        "Eliminate: C and D compensate in money, a bond or parent backing, rather than preserving the software itself.",
+        "Final two: A beats B because escrow secures source code if the vendor fails; audit rights only give visibility while it operates.",
+        "Exam cue: critical custom software plus a fragile single vendor points to escrow with clear release triggers."
+      ],
+      "framework_ref": "ISO/IEC 27002:2022 Control 8.30 (Outsourced Development); COBIT 2019 APO10 (Managed Vendors)",
+      "related_concepts": [
+        "Source code escrow",
+        "Vendor management",
+        "Continuity",
+        "Custom software"
+      ],
+      "_provenance": "Authored from concept: 'Code escrow justification per ISACA Code Escrow and Vendor Management guidance'. Public sources: ISACA guidance. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Difficulty upgrade (Oct 2026, owner's rule: two options eliminable only by CISA knowledge, a hard final two): replaced backups of the organization's own code (the wrong asset) with a performance bond, a continuity-flavored but weaker protection. Round 3 (Oct 2026, concept check, blind tests and wording-cue balance): weak blind test: dead distractor replaced with a plausible practitioner error (D was annual price caps). Final review (Oct 2026, exam developer and blind test): exam developer note: D says 'if the vendor defaults' and W-D no longer repeats W-C.",
+      "style_version": 2
+    },
+    {
+      "id": "d3_022",
+      "domain": 3,
+      "subtopic": "Application Control Categories. Input Controls",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "An IS auditor finds orders reaching processing with customer numbers that match no customer on file. Which control is MOST likely missing?",
+      "options": {
+        "A": "A range check on each customer number at entry",
+        "B": "A check digit verified on each customer number at entry",
+        "C": "A format check on each customer number's length and characters",
+        "D": "An existence check against the customer master records"
+      },
+      "correct": "D",
+      "key_concept": "Each input edit catches a different defect: check digits catch keying errors, while existence checks confirm a referenced record actually exists.",
+      "pre_read": "Ask what exactly is wrong with the customer numbers. Then pick the edit that tests that defect.",
+      "correct_explanation": "A customer number can be in range and carry a valid check digit yet belong to no customer. Only an existence check, a lookup against the customer master records, rejects numbers that match no real customer before processing. The check digit is the tempting option: it catches keying errors such as transposed digits, but a well-formed number that was never issued still passes it.",
+      "wrong_explanations": {
+        "A": "A range check confirms the number falls within allowed limits; a number inside the range can still belong to no customer.",
+        "B": "Check digits do stop most mistyped numbers at entry, yet form and existence are separate questions, and each input edit answers only one.",
+        "C": "A format check confirms the number is well formed; a well-formed number can still match no customer on file."
+      },
+      "tips": [
+        "Eliminate: A tests the number's limits and C its format; neither confirms the customer exists.",
+        "Final two: D beats B because only a lookup against the master records proves the customer exists; a check digit tests the number's form.",
+        "Exam cue: match the edit to the defect: keying errors point to check digits, references to nothing point to existence checks."
+      ],
+      "framework_ref": "COBIT 2019 DSS06 (Managed Business Process Controls); COBIT 2019 BAI03 (Managed Solutions Identification and Build)",
+      "related_concepts": [
+        "Application controls",
+        "Input controls",
+        "Processing controls",
+        "Output controls"
+      ],
+      "_provenance": "Authored from concept: 'Application input controls per ISACA Application Controls guidance and COBIT 2019 BAI03'. Public sources: ISACA guidance, COBIT 2019. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Difficulty upgrade (Oct 2026, owner's rule: two options eliminable only by CISA knowledge, a hard final two): stated the defect as an observed fact instead of 'invalid IDs'; the key is now an existence check with a check digit as the runner-up (the mirror of d3_134); replaced the output-distribution and run-to-run options with a range check. Round 2 (Oct 2026, quality-gate fixes from the standards audit, pedagogy check and strong and weak blind tests): weak blind test: C (sign-on authentication) had nothing to do with data validity; C is now a completeness check on the field. Round 3 (Oct 2026, concept check, blind tests and wording-cue balance): weak blind test: dead distractor replaced with a plausible practitioner error (C was a completeness check, but the stem says the numbers are present).",
+      "style_version": 2
+    },
+    {
+      "id": "d3_025",
+      "domain": 3,
+      "subtopic": "Feasibility Study. Study Scope",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An IS auditor finds that the feasibility study for a major enterprise resource planning (ERP) investment assesses technical fit and cost-benefit in depth. What should the auditor recommend FIRST?",
+      "options": {
+        "A": "Add a sensitivity analysis of the cost and benefit estimates",
+        "B": "Have the ERP vendor confirm the study's technical findings",
+        "C": "Add vendor stability, licensing and ongoing support costs to the study",
+        "D": "Extend the study to operational, legal and schedule feasibility"
+      },
+      "correct": "D",
+      "key_concept": "A complete feasibility study covers technical, economic, legal, operational and schedule dimensions before the go/no-go decision.",
+      "pre_read": "List the feasibility dimensions a go/no-go decision needs. Then check which ones this study covers.",
+      "correct_explanation": "A go/no-go decision needs every feasibility dimension: technical, economic, operational, legal and schedule. Any one can sink a technically sound, profitable project, so the missing dimensions should be studied before approval. A sensitivity analysis is the tempting option because it makes the economic case more rigorous, but it deepens a dimension already covered and leaves operational, legal and schedule risks unexamined.",
+      "wrong_explanations": {
+        "A": "Sensitivity analysis stress-tests the cost and benefit estimates, a dimension already covered; operational, legal and schedule risks stay unexamined.",
+        "B": "A vendor's confirmation is not independent, and technical fit is the dimension the study already covers in depth.",
+        "C": "Licensing and support costs belong to the economic dimension the study already covers, and vendor stability is a supplier-selection check; operational, legal and schedule feasibility stay unexamined."
+      },
+      "tips": [
+        "Eliminate: B relies on the vendor to confirm a dimension already covered, and C adds costs the economic study covers plus a supplier-selection check, not a missing dimension.",
+        "Final two: D beats A because the gap is missing dimensions; a sensitivity analysis only stress-tests the economic case already studied.",
+        "Exam cue: close feasibility gaps before approval, and remember TELOS: technical, economic, legal, operational, schedule."
+      ],
+      "framework_ref": "PMBOK Guide 8th Edition (2025); ISACA Systems Development and Project Management Audit Program; COBIT 2019 BAI02 (Managed Requirements Definition)",
+      "related_concepts": [
+        "Feasibility study",
+        "TELOS",
+        "Technical feasibility",
+        "Economic feasibility",
+        "Operational feasibility"
+      ],
+      "_provenance": "Authored from concept: 'Multi-dimensional feasibility (TELOS) per PMBOK 7E and ISACA Project Management guidance'. Public sources: PMBOK 7E, ISACA guidance. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Round 2 review (Oct 2026): framework_ref updated to the current edition (PMBOK Guide 8th Edition, 2025). Difficulty upgrade (Oct 2026, owner's rule: two options eliminable only by CISA knowledge, a hard final two): the auditor now finds the gap as a fact (no steering-committee framing); replaced the 'economics covers everything' strawman with a sensitivity analysis as the runner-up and the cost-validation option with a vendor confirmation. Round 2 (Oct 2026, quality-gate fixes from the standards audit, pedagogy check and strong and weak blind tests): weak blind test: the stem's 'and no other factor' pointed at the key and C ('approve now') was a throwaway; the stem clause is gone and C is now a vendor-stability check that also says 'feasibility'. Round 3 (Oct 2026, concept check, blind tests and wording-cue balance): cue balance: three-part lists pointed at the key (77% key share); C now carries a list too. Final review (Oct 2026, exam developer and blind test): exam developer note: W-C and the Eliminate tip place licensing and support costs in the economic dimension.",
+      "style_version": 2
+    },
+    {
+      "id": "d3_027",
+      "domain": 3,
+      "subtopic": "Scrum vs Kanban. Method Selection",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An IS auditor finds that a support team's urgent fixes either wait for the next two-week sprint or skip sprint planning. Which delivery method should the auditor consider the MOST suitable fit?",
+      "options": {
+        "A": "Scrum, adding each urgent fix to the current sprint on arrival",
+        "B": "Kanban, with work-in-progress limits and pull-based flow",
+        "C": "Scrum, with shorter one-week sprints and sprint commitments",
+        "D": "Waterfall releases, with an emergency change path for urgent fixes"
+      },
+      "correct": "B",
+      "key_concept": "Kanban fits continuous, variable-priority work through pull-based flow and WIP limits; Scrum fits time-boxed iterative product development.",
+      "pre_read": "Look at how the work arrives and what happens to urgent items. Ask which method keeps them inside the process.",
+      "correct_explanation": "Kanban suits work that arrives continuously: items are pulled when capacity frees up, so urgent fixes enter the process instead of waiting or going around it, and work-in-progress limits keep the flow controlled. Shorter sprints are the tempting option, but they still batch work into fixed commitments, so an urgent fix must still wait days or break the sprint.",
+      "wrong_explanations": {
+        "A": "Adding fixes mid-sprint breaks the sprint commitment each time and turns the current bypass of sprint planning into policy.",
+        "C": "Shorter sprints would win if urgent fixes could wait a few days; a delivery method follows the shape of demand, not the planning calendar.",
+        "D": "Emergency change is meant for genuine emergencies; sending routine support work through it overloads that path and weakens control, while releases still batch other work."
+      },
+      "tips": [
+        "Eliminate: A breaks the sprint commitment whenever a fix arrives, and D sends routine support work through the emergency path meant for true emergencies.",
+        "Final two: B beats C because pull-based flow lets urgent work enter the process; shorter sprints still batch work into commitments.",
+        "Exam cue: continuous, interrupt-driven work points to Kanban; when urgent work goes around a process, fix the fit so it stays inside the control."
+      ],
+      "framework_ref": "Scrum Guide 2020; Kanban Method (David Anderson); PMI Agile Practice Guide (2017)",
+      "related_concepts": [
+        "Scrum",
+        "Kanban",
+        "Continuous flow",
+        "Iteration",
+        "Agile method selection"
+      ],
+      "_provenance": "Authored from concept: 'Scrum vs Kanban method selection per Scrum Guide 2020 and Kanban Method (Anderson)'. Public sources: Scrum Guide, Anderson Kanban. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Difficulty upgrade (Oct 2026, owner's rule: two options eliminable only by CISA knowledge, a hard final two): added the control risk to the stem (urgent fixes wait or skip planning); the Scrum runner-up is now a partial fix (shorter sprints). Round 2 (Oct 2026, quality-gate fixes from the standards audit, pedagogy check and strong and weak blind tests): weak blind test: A and D (stage gates, V-model) were throwaways for a support queue; A now adds fixes mid-sprint and D routes them through emergency change.",
+      "style_version": 2
+    },
+    {
+      "id": "d3_030",
+      "domain": 3,
+      "subtopic": "Mutation Testing. Test-Suite Effectiveness",
+      "principle_id": "fit-method-to-objective",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A QA manager reports 95 percent code coverage on a payments module, yet defects keep reaching production. Which evidence would BEST show the IS auditor how effective the test suite is?",
+      "options": {
+        "A": "A coverage report showing 100 percent of statements executed by tests",
+        "B": "A count of automated tests passing on each build",
+        "C": "A count of defects found in system testing before release",
+        "D": "A mutation score showing how many seeded faults the tests detect"
+      },
+      "correct": "D",
+      "key_concept": "Mutation testing measures test-suite effectiveness by checking whether tests catch deliberately injected faults; coverage only shows what code ran.",
+      "pre_read": "Separate 'code was executed' from 'a fault would be detected'. Ask which technique measures the second.",
+      "correct_explanation": "A mutation score measures effectiveness directly: small faults are seeded into the code, and the share the tests catch shows whether they check results. Full statement coverage is the tempting option, but coverage only shows which lines ran; tests can execute every line with weak assertions, which is exactly why defects escape despite 95 percent coverage.",
+      "wrong_explanations": {
+        "A": "More coverage shows more lines executed, not that tests check results; high coverage with weak assertions already explains the escapes.",
+        "B": "A passing count shows activity, not strength; weak tests pass easily, so green builds can coexist with escaping defects.",
+        "C": "Defect counts depend on code quality and tester effort; a low count cannot show whether the automated suite would catch faults."
+      },
+      "tips": [
+        "Eliminate: B counts tests that pass, which weak tests do easily, and C counts defects, which depends on code quality, not test strength.",
+        "Final two: D beats A because mutation scores show whether tests catch faults, while coverage only shows which lines ran.",
+        "Exam cue: high coverage plus escaped defects signals weak assertions; mutation testing measures what the tests actually verify."
+      ],
+      "framework_ref": "ISO/IEC 29119 (Software Testing); ISTQB Advanced Level Test Analyst Syllabus",
+      "related_concepts": [
+        "Mutation testing",
+        "Test effectiveness",
+        "Test suite quality",
+        "Code coverage"
+      ],
+      "_provenance": "Authored from concept: 'Mutation testing measures test-suite effectiveness per ISO/IEC 29119 and ISTQB Advanced'. Public sources: ISO/IEC 29119, ISTQB Advanced. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Role-lens pass (Oct 2026): stem recast so the IS auditor recommends or judges; key and options unchanged. Difficulty upgrade (Oct 2026, owner's rule: two options eliminable only by CISA knowledge, a hard final two): recast from technique recall into an evidence question; replaced static analysis and load testing with evidence a novice trusts (passing-test counts, system-test defect counts). Round 2 (Oct 2026, quality-gate fixes from the standards audit, pedagogy check and strong and weak blind tests): audit: the runner-up answers a different question however well it is run, so the tag returns to fit-method-to-objective. Round 3 (Oct 2026, concept check, blind tests and wording-cue balance): cue balance: absolutes sat almost only in distractors; this one is reworded without changing meaning.",
+      "style_version": 2
+    },
+    {
+      "id": "d3_035",
+      "domain": 3,
+      "subtopic": "SRE Error Budgets",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "Halfway through the quarter, a customer-facing service with an agreed error-budget policy has used its entire error budget. Which release response should the IS auditor expect management to take FIRST?",
+      "options": {
+        "A": "Re-measure the SLO over a longer window before changing releases",
+        "B": "Freeze non-essential releases and prioritize reliability work",
+        "C": "Keep releasing, using canary rollouts and extra production monitoring",
+        "D": "Add on-call engineers and continue the planned release schedule"
+      },
+      "correct": "B",
+      "key_concept": "When an error budget is exhausted, non-essential releases stop and reliability work takes priority until the budget recovers.",
+      "pre_read": "Recall what an error budget is for: it decides when the team may keep shipping features and when it must stop.",
+      "correct_explanation": "An exhausted error budget means users have already absorbed the agreed amount of unreliability. The agreed policy response is to freeze non-essential changes and spend engineering effort on reliability until the budget recovers. Canary rollouts with extra monitoring reduce the risk of each release, but they still spend reliability the service no longer has and sidestep the agreed policy.",
+      "wrong_explanations": {
+        "A": "A longer window can look like better analysis, but changing how the SLO is measured after the budget runs out delays the agreed response and hides the reliability problem.",
+        "C": "Safer rollout methods reduce per-release risk but still add change to a service that has used up its tolerance for failure.",
+        "D": "Extra on-call staff speed recovery from failures, but the agreed policy pauses non-essential change once the budget is spent; releasing on schedule keeps spending reliability already used up."
+      },
+      "tips": [
+        "Eliminate: A and D, because A changes how the SLO is measured after the budget runs out, and D keeps the release schedule that the agreed policy pauses.",
+        "Final two: B beats C because the policy for an exhausted budget is to stop non-essential change, not to release more carefully.",
+        "Exam cue: once the error budget is spent, feature releases pause and reliability work takes priority until it recovers."
+      ],
+      "framework_ref": "Google SRE Book (Site Reliability Engineering); Google SRE Workbook (Service Level Objectives)",
+      "related_concepts": [
+        "SRE",
+        "Error budget",
+        "SLO",
+        "SLI",
+        "Site reliability"
+      ],
+      "_provenance": "Authored from concept: 'SRE error-budget response per Google SRE Book and Workbook'. Public sources: Google SRE Book, SRE Workbook. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): stem now states the agreed error-budget policy. Round 2 (Oct 2026, quality-gate fixes from the standards audit, pedagogy check and strong and weak blind tests): tip only: the Eliminate tip names the knowledge, not a dismissive word. Cross-domain review (Oct 2026): MINOR drift with : re-anchored the stem to its Domain 3 decision (question). Strawman pass (Oct 2026): eliminated option(s) rewritten to a plausible same-type error; blind re-tested.",
+      "style_version": 2
+    },
+    {
+      "id": "d3_037",
+      "domain": 3,
+      "subtopic": "Earned Value Management. Variance Interpretation",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "At month 8 of a 14-month ERP project, the PMO reports a cumulative CPI of 0.78 and SPI of 0.85; the team says recent rebaselining will fix this. What should the IS auditor conclude FIRST?",
+      "options": {
+        "A": "Performance is within tolerance for a complex ERP rollout",
+        "B": "A conclusion should wait until rebaselined figures mature",
+        "C": "Earned value analysis cannot yet predict outcomes at this stage",
+        "D": "Cost and schedule are materially behind and need corrective action"
+      },
+      "correct": "D",
+      "key_concept": "Cumulative CPI and SPI well below 1.0 at mid-project signal material variance that rarely self-corrects and needs corrective action.",
+      "pre_read": "CPI (cost performance index) and SPI (schedule performance index) compare earned value with actual cost and planned value; below 1.0 means behind.",
+      "correct_explanation": "Cumulative indices of 0.78 and 0.85 at month 8 mean the project earns 78 cents of value per dollar spent and is 15% behind plan; cumulative CPI rarely recovers much after mid-project. The auditor should report a material variance needing action. Waiting for rebaselined data sounds prudent, but rebaselining resets the yardstick without fixing performance and delays the decision.",
+      "wrong_explanations": {
+        "A": "A CPI of 0.78 is well below accepted tolerance. Calling it normal for ERP hides a material overrun.",
+        "B": "Rebaselining changes the plan, not the performance. Waiting delays corrective action while costs keep overrunning.",
+        "C": "By mid-project, cumulative earned value indices are reliable predictors; cumulative CPI tends to stabilize early."
+      },
+      "tips": [
+        "Eliminate: A treats earning only 78 cents of value per dollar spent as normal, and C wrongly claims earned value analysis cannot predict at mid-project.",
+        "Final two: D beats B because rebaselining resets the yardstick but does not fix performance; waiting only delays corrective action.",
+        "Exam cue: CPI or SPI well below 1.0 past the midpoint signals real variance; a rebaseline resets the plan, never the performance, so it cannot explain variance away."
+      ],
+      "framework_ref": "PMBOK Guide 8th Edition (2025); PMI Practice Standard for Earned Value Management; ISACA Systems Development and Project Management Audit Program",
+      "related_concepts": [
+        "EVM",
+        "Earned value management",
+        "CPI",
+        "SPI",
+        "Variance analysis"
+      ],
+      "_provenance": "Authored from concept: 'EVM cumulative variance interpretation per PMBOK 7E and PMI EVM Standard'. Public sources: PMBOK 7E, PMI EVM Standard. Scenario specifics (ERP, $42M, 14-month, month 8, CPI 0.78, SPI 0.85, EV/PV/AC) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): CPI and SPI expanded. Round 2 review (Oct 2026): framework_ref updated to the current edition (PMBOK Guide 8th Edition, 2025). Cross-domain review (Oct 2026): MINOR contradiction with d3_100, d3_004, d3_101, d3_108: aligned with related items in other domains (question, correct_explanation, options.B, wrong_explanations.B, tips.1, tips.2).",
+      "style_version": 2
+    },
+    {
+      "id": "d3_038",
+      "domain": 3,
+      "subtopic": "MLOps Governance. Production Model Degradation",
+      "principle_id": "root-cause-over-symptom",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "A fraud-detection model's false-positive rate has risen from 4% to 11% in eight months; its go-live plan did not cover monitoring. What should the IS auditor recommend as the BEST response?",
+      "options": {
+        "A": "Retrain the model on the most recent eight months of data",
+        "B": "Raise the alert threshold and monitor false positives weekly",
+        "C": "Put the model under lifecycle governance with drift thresholds",
+        "D": "Assign an independent validation team to revalidate the model now"
+      },
+      "correct": "C",
+      "key_concept": "Production ML needs lifecycle governance: an accountable owner, drift monitoring, retraining triggers and performance gates.",
+      "pre_read": "Separate the symptom (rising errors) from the cause. Ask why the decline went unmanaged for eight months.",
+      "correct_explanation": "The rising false-positive rate is a symptom; the root cause is that monitoring was never planned, so drift (accuracy falling as real data changes) went unaddressed for eight months. Lifecycle governance, with an accountable owner, drift thresholds and retraining triggers, keeps the model reliable over time. An independent revalidation is the tempting option, but it checks only today's model; revalidation belongs inside the lifecycle.",
+      "wrong_explanations": {
+        "A": "Retraining may correct today's drift, but an unvalidated retrained model is an uncontrolled change, and with no monitoring in place the next drift goes unnoticed.",
+        "B": "A higher threshold cuts false positives but lets more fraud through; watching the rate weekly does not address why the model drifts.",
+        "D": "Revalidation checks today's model, but without ongoing monitoring, drift thresholds or retraining triggers, the next degradation would again go unmanaged."
+      },
+      "tips": [
+        "Eliminate: A retrains and redeploys without validation, itself an uncontrolled model change, and B trades false positives for missed fraud.",
+        "Final two: C beats D because governance keeps catching drift as it happens, while a one-time revalidation only checks today's model.",
+        "Exam cue: when a symptom comes with a missing control framework, recommend the framework, not the one-time fix."
+      ],
+      "framework_ref": "NIST AI Risk Management Framework (AI RMF 1.0); ISO/IEC 42001 (AI Management System); ISO/IEC 5338:2023 (AI System Life Cycle Processes)",
+      "related_concepts": [
+        "MLOps",
+        "Model drift",
+        "AI governance",
+        "NIST AI RMF",
+        "Production ML lifecycle"
+      ],
+      "_provenance": "Authored from concept: 'MLOps governance for production ML per NIST AI RMF 1.0 and ISO/IEC 42001'. Public sources: NIST AI RMF, ISO/IEC 42001. Scenario specifics (health-insurance, 4M members, 5 states, fraud-detection model, 4%→11% FPR, 8 months in production, no re-training) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Content review (Oct 2026): stem no longer names the missing owner and retraining that only the key supplied; C reworded and D replaced with a one-time revalidation runner-up; option A no longer mentions claims. Content review round 2 (Oct 2026): stem now states that no one monitors the model, so the governance gap is given rather than inferred; explanation places revalidation inside the lifecycle. Difficulty upgrade (Oct 2026, owner's rule: two options eliminable only by CISA knowledge, a hard final two): reworded the Eliminate tip so the knowledge, not a dismissive word, rules out A. The v12.35 stem, key and revalidation runner-up are kept as they were. Round 2 (Oct 2026, quality-gate fixes from the standards audit, pedagogy check and strong and weak blind tests): weak blind test: A (decommission) was a throwaway and the key was longest; A is now retraining on recent data, B adds weekly monitoring, D shares 'assign' so the stem's gap word is not key-only, and the key is shorter. Round 3 (Oct 2026, concept check, blind tests and wording-cue balance): weak blind test: 'no one has been assigned' was echoed by 'Assign a model owner'; the stem now says monitoring was not planned, and the key names lifecycle governance rather than an owner. Final review (Oct 2026, exam developer and blind test): exam developer note: W-A and W-D refer to missing monitoring, matching the new stem.",
+      "style_version": 2
+    },
+    {
+      "id": "d3_043",
+      "domain": 3,
+      "subtopic": "Project Closure Activities",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "An IS auditor reviews the closure plan for a project whose new system is live and formally accepted by the sponsor. Which planned activity BEST belongs in formal project closure?",
+      "options": {
+        "A": "Run a final penetration test before declaring the project closed",
+        "B": "Release resources, close project accounts and archive records",
+        "C": "Measure realized business benefits before closing the project",
+        "D": "Keep the project open to fix defects during the warranty period"
+      },
+      "correct": "B",
+      "key_concept": "Project closure releases resources, completes financial closeout, archives records and captures lessons after formal acceptance.",
+      "pre_read": "Separate what ends the project now from what can only be measured after months of live operation.",
+      "correct_explanation": "Formal closure follows acceptance: the project releases staff and contracts, completes financial closeout and archives records so it stops consuming resources. Closure schedules the post-implementation review and records lessons learned; the review itself comes later. Measuring benefits before closing is the tempting option, but benefits take months of live operation to appear, so measuring them is not a closure step.",
+      "wrong_explanations": {
+        "A": "Security testing belongs before go-live and acceptance; testing after acceptance is an operational activity, not a closure step.",
+        "C": "Benefit measurement shares closure's aim of accounting for what was delivered, though projects close on outputs while the business owns and measures outcomes.",
+        "D": "Warranty defects are handled through the support or vendor contract; holding the project open keeps consuming its budget and team."
+      },
+      "tips": [
+        "Eliminate: A places security testing after acceptance, when it belongs before go-live, and D treats warranty support as project work instead of an operational or contract activity.",
+        "Final two: B beats C because closure releases resources and schedules the benefits review; benefits can only be measured months after closure.",
+        "Exam cue: closure means release, close out, archive and learn; benefits realization is measured later, after operations stabilize."
+      ],
+      "framework_ref": "PMBOK Guide 8th Edition (2025); COBIT 2019 BAI11 (Managed Projects); ISACA Systems Development and Project Management Audit Program",
+      "related_concepts": [
+        "Project closure",
+        "Lessons learned",
+        "Project archive"
+      ],
+      "_provenance": "Authored from concept: 'Project closure activities per PMBOK 7E and ISACA Project Closure guidance'. Public sources: PMBOK 7E, ISACA guidance. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Round 2 review (Oct 2026): framework_ref updated to the current edition (PMBOK Guide 8th Edition, 2025). Role-lens pass (Oct 2026): stem recast so the IS auditor recommends or judges; key and options unchanged. Second wording pass (Oct 2026): wording fixes from the blind re-test; key and options unchanged. Difficulty upgrade (Oct 2026, owner's rule: two options eliminable only by CISA knowledge, a hard final two): the auditor now reviews a closure plan; replaced the repeat-UAT and re-baseline options with activities often misplaced in closure (a final penetration test, warranty-period fixes). Round 3 (Oct 2026, concept check, blind tests and wording-cue balance): concept check (precision): C now measures benefits before closing, and the explanations say closure schedules the post-implementation review rather than holding it.",
+      "style_version": 2
+    },
+    {
+      "id": "d3_049",
+      "domain": 3,
+      "subtopic": "Parallel Run Reconciliation Tolerance",
+      "principle_id": "materiality-judgment",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An IS auditor reviews the reconciliation tolerances proposed to decide cutover after a parallel run. Which basis for the tolerances should the auditor consider BEST?",
+      "options": {
+        "A": "Zero tolerance, investigating every variance before cutover proceeds",
+        "B": "One materiality threshold for balances, rates and reference data",
+        "C": "Tolerances the migration vendor used on its past projects",
+        "D": "Per-category thresholds based on materiality and business impact"
+      },
+      "correct": "D",
+      "key_concept": "Parallel-run reconciliation tolerances should be set per data category by materiality and business impact, with documented investigation rules.",
+      "pre_read": "Notice the stem asks for a basis for tolerances. Ask which option ties acceptable variance to the impact of the error.",
+      "correct_explanation": "Tolerances should be risk-based: financial balances may need near-zero variance, while descriptive reference fields can tolerate more, each with documented investigation rules. This focuses effort where an error would matter. Zero tolerance sounds rigorous, but it treats a trivial formatting difference like a misstated balance, consumes investigation effort on immaterial items and can delay cutover without reducing meaningful risk.",
+      "wrong_explanations": {
+        "A": "Zero tolerance is defensible for cash balances, yet a threshold exists to sort errors that matter from noise, and one that sorts nothing is no threshold.",
+        "B": "One threshold for every category treats balances and reference fields alike, though materiality differs by data category and business impact.",
+        "C": "Another project's tolerances reflect different data and risks; they are not tied to the materiality of this organization's categories."
+      },
+      "tips": [
+        "Eliminate: B applies one threshold across categories whose materiality differs, and C borrows tolerances set for other organizations' data.",
+        "Final two: D beats A because materiality-based thresholds focus scrutiny where errors matter, while zero tolerance spends it everywhere equally.",
+        "Exam cue: when a threshold must be set, prefer risk-based and materiality-driven over uniform or absolute rules."
+      ],
+      "framework_ref": "COBIT 2019 BAI07 (Managed IT Change Acceptance and Transitioning); COBIT 2019 DSS06 (Managed Business Process Controls)",
+      "related_concepts": [
+        "Parallel run",
+        "Reconciliation tolerance",
+        "Materiality",
+        "Data conversion"
+      ],
+      "_provenance": "Authored from concept: 'Risk-based parallel-run tolerance per ISACA Data Migration guidance'. Public sources: ISACA guidance, COBIT 2019. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): tolerances set before the parallel run begins. Difficulty upgrade (Oct 2026, owner's rule: two options eliminable only by CISA knowledge, a hard final two): recast from the steering committee setting tolerances into the auditor evaluating proposed tolerances; replaced 'whatever keeps the date' with the vendor's past-project tolerances. Round 2 (Oct 2026, quality-gate fixes from the standards audit, pedagogy check and strong and weak blind tests): weak blind test: 'materiality' appeared only in the key; B is now a single materiality threshold set by finance. Round 3 (Oct 2026, concept check, blind tests and wording-cue balance): cue balance: three-part lists pointed at the key (77% key share); B carries a list and drops its absolute.",
+      "style_version": 2
+    },
+    {
+      "id": "d3_060",
+      "domain": 3,
+      "subtopic": "M&A IT Integration Governance",
+      "principle_id": "governance-before-technology",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "After acquiring a regional bank, the acquirer plans a 24-month core-platform migration. Which governance principle should the IS auditor recommend to the audit committee as MOST important?",
+      "options": {
+        "A": "Discover dependencies, then sequence migrations by risk",
+        "B": "Run both core platforms in parallel until migration completes",
+        "C": "Migrate shared infrastructure first, then customer-facing systems",
+        "D": "Migrate the highest-risk systems first to retire risk early"
+      },
+      "correct": "A",
+      "key_concept": "M&A IT integration should discover the acquired systems and dependencies first, then sequence migrations by risk.",
+      "pre_read": "Ask what the acquirer does not yet know about the acquired bank, and what must happen before migrations are ordered.",
+      "correct_explanation": "An acquired bank's real environment rarely matches its documentation: integrations, custom rules and in-flight projects must be discovered before migration is planned. Sequencing by risk, informed by those dependencies, avoids breaking hidden links and protects customers. Moving shared infrastructure first sounds dependency-aware, but it fixes the order before the acquired bank's real links are known.",
+      "wrong_explanations": {
+        "B": "Running both platforms for the whole program doubles operating cost and reconciliation effort, and it does not decide what moves when.",
+        "C": "An infrastructure-first order is a common migration pattern, but patterns from other estates stay hypotheses until this estate's dependencies are mapped.",
+        "D": "Moving the riskiest systems first sounds prudent, but risk cannot be ranked before dependencies are discovered, and failures would hit the most critical systems first."
+      },
+      "tips": [
+        "Eliminate: B runs two platforms for the whole program without ordering the moves, and D sends the highest-risk systems through a migration process not yet proven on anything.",
+        "Final two: A beats C because the order must follow dependencies discovered in the acquired bank, not a fixed rule set before discovery.",
+        "Exam cue: in M&A integration, discovery of the acquired environment comes before any migration sequencing."
+      ],
+      "framework_ref": "COBIT 2019 BAI07 (Managed IT Change Acceptance and Transitioning); COBIT 2019 BAI09 (Managed Assets); COBIT 2019 APO12 (Managed Risk)",
+      "related_concepts": [
+        "M&A integration",
+        "Integration office",
+        "Discovery",
+        "Key-staff retention"
+      ],
+      "_provenance": "Authored from concept: 'M&A IT integration governance per ISACA M&A IT Integration guidance and the OCC Comptroller's Licensing Manual (Business Combinations)'. Public sources: ISACA, OCC. Scenario specifics (national bank acquiring regional, 90 branches, 1.1M customers, $840M assets, 24-month integration, 14 integrations, 340 custom rules, 18 in-flight projects) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Difficulty upgrade (Oct 2026, owner's rule: two options eliminable only by CISA knowledge, a hard final two): replaced the Day-1 and 24-month-freeze options (which fell on their absolutes) with plausible governance principles (parallel platforms, smallest systems first). Round 2 (Oct 2026, quality-gate fixes from the standards audit, pedagogy check and strong and weak blind tests): weak blind test: the key was longest and C (fewest records first) was a throwaway; C is now infrastructure-first, a dependency-sounding fixed rule and the runner-up; the key is shorter. Round 3 (Oct 2026, concept check, blind tests and wording-cue balance): cue balance: 'risk' wording pointed at the key (62% key share); D is now a risk-first order set before discovery.",
+      "style_version": 2
+    },
+    {
+      "id": "d3_065",
+      "domain": 3,
+      "subtopic": "Test Pyramid. Suite Composition",
+      "principle_id": "root-cause-over-symptom",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An IS auditor finds that a nine-hour regression suite, made up mostly of end-to-end UI tests, is often skipped before urgent releases. What should the auditor recommend as BEST?",
+      "options": {
+        "A": "Rebalance to equal numbers of unit, integration and end-to-end tests",
+        "B": "Run the suite in parallel across more build agents",
+        "C": "Run the full suite weekly instead of before each release",
+        "D": "Rebalance toward many fast unit tests and few end-to-end tests"
+      },
+      "correct": "D",
+      "key_concept": "The test pyramid favors many fast unit tests, fewer integration tests and the fewest end-to-end tests for cost-effective coverage.",
+      "pre_read": "Ask why the suite is skipped. Then pick the change that removes that cause without leaving releases untested.",
+      "correct_explanation": "The suite is skipped because it is slow, so the fix is its composition: the test pyramid puts many fast unit tests at the base, fewer integration tests and few end-to-end tests, kept for critical business flows so coverage is kept. That gives quick feedback teams will not bypass. Running the suite in parallel is the tempting option because it cuts run time quickly, but the slow, brittle tests remain.",
+      "wrong_explanations": {
+        "A": "Equal counts keep many slow end-to-end tests, so run times stay long and the pressure to skip the suite remains.",
+        "B": "More agents shorten the run at extra cost, but the suite stays dominated by slow end-to-end tests, so run times and cost grow again as it expands.",
+        "C": "A weekly run avoids the delay but lets urgent releases ship without regression testing, which is the risk itself."
+      },
+      "tips": [
+        "Eliminate: A keeps many slow end-to-end tests by counting layers equally, and C removes the delay by leaving releases untested.",
+        "Final two: D beats B because a pyramid shortens the suite at its root; more agents buy speed with cost while the slow tests remain.",
+        "Exam cue: when a control is skipped because it is slow, fix its design so it fits the process; for regression suites, think pyramid."
+      ],
+      "framework_ref": "ISO/IEC 29119 (Software Testing); ISTQB Foundation Level Syllabus",
+      "related_concepts": [
+        "Test pyramid",
+        "Unit tests",
+        "Integration tests",
+        "E2E tests"
+      ],
+      "_provenance": "Authored from concept: 'Test pyramid suite composition per ISO/IEC 29119 and ISTQB'. Public sources: ISO/IEC 29119, ISTQB, ISACA guidance. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Role-lens pass (Oct 2026): stem recast so the IS auditor recommends or judges; key and options unchanged. Difficulty upgrade (Oct 2026, owner's rule: two options eliminable only by CISA knowledge, a hard final two): added the control risk (a slow suite skipped before urgent releases); reworded the end-to-end option without its rationale clause and replaced manual exploratory testing with a weekly run. Round 2 (Oct 2026, quality-gate fixes from the standards audit, pedagogy check and strong and weak blind tests): weak blind test: B (slower end-to-end tests to fix slowness) was a throwaway; B now runs the suite in parallel (treats the symptom) and is the runner-up. Round 3 (Oct 2026, concept check, blind tests and wording-cue balance): concept check (HARD): the stem now states the suite is mostly end-to-end UI tests, so the composition problem is a fact, not an assumption; the key keeps end-to-end tests for critical flows.",
+      "style_version": 2
+    },
+    {
+      "id": "d3_067",
+      "domain": 3,
+      "subtopic": "Control Design. Defining Requirements",
+      "principle_id": "risk-sets-priority",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A project team is defining security controls for a new patient-records application. Which basis should the IS auditor expect as MOST appropriate for deriving the control requirements?",
+      "options": {
+        "A": "The controls used in the vendor's previous client deployments",
+        "B": "The full control catalog of a recognized security framework",
+        "C": "A risk assessment informed by the data's classification",
+        "D": "The controls the development team can build within budget"
+      },
+      "correct": "C",
+      "key_concept": "Control requirements come from a risk assessment informed by data classification; frameworks help select controls, not decide what is needed.",
+      "pre_read": "Ask what makes this system's controls proportionate to its own risks.",
+      "correct_explanation": "Controls should be proportionate to risk, so requirements are derived from a risk assessment that considers the classification of patient data, threats and business impact, with a framework then used to select and check controls. Applying a full framework catalog is the most tempting alternative: it looks thorough, but it ignores this system's specific risks, adding unneeded controls and possibly missing context-specific ones.",
+      "wrong_explanations": {
+        "A": "Another client's controls reflect that client's risks. They may not fit this application's data, users or threats.",
+        "B": "An auditor would check coverage against a recognized framework, but a catalog lists what is possible; risk decides what is required.",
+        "D": "Budget shapes choices, but letting it define the requirements leaves high risks uncontrolled without a deliberate decision."
+      },
+      "tips": [
+        "Eliminate: A copies another client's risk profile, and D lets cost, not risk, set the requirements.",
+        "Final two: C beats B because control requirements come from this system's risks; a framework is a menu, not a decision.",
+        "Exam cue: when asked what should drive control design, choose the risk assessment, informed by data classification."
+      ],
+      "framework_ref": "COBIT 2019 BAI02 (Managed Requirements Definition); COBIT 2019 APO12 (Managed Risk); ISO/IEC 27001:2022 Annex A.5.12 (Classification of information)",
+      "related_concepts": [
+        "Control design",
+        "Risk assessment",
+        "Data classification"
+      ],
+      "_provenance": "Authored from concept: 'Application data encryption key management per NIST SP 800-57'. Public sources: NIST SP 800-57, ISACA guidance. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): HSM expanded in key and explanation. Rebalanced (Oct 2026): re-angled from 5A6 to 3A4.",
+      "style_version": 2
+    },
+    {
+      "id": "d3_070",
+      "domain": 3,
+      "subtopic": "Control Design. Duplicate Payments",
+      "principle_id": "prevent-before-detect",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A new claims system will process 50,000 payments a day, and duplicate payment is the key risk. Which control design should the IS auditor consider MOST effective?",
+      "options": {
+        "A": "A monthly review of a sample of payments by finance staff",
+        "B": "A daily report of possible duplicates for clerks to investigate",
+        "C": "A policy telling staff to check for duplicates before entry",
+        "D": "An automated check that holds payments matching earlier ones"
+      },
+      "correct": "D",
+      "key_concept": "For high-volume, well-defined risks, automated preventive controls built into the application beat manual or detective controls.",
+      "pre_read": "Compare when each control acts: before the money leaves, or after.",
+      "correct_explanation": "At 50,000 payments a day, an automated preventive control is most effective: a system check that holds payments matching earlier ones stops duplicates before money leaves, consistently and at volume. The daily duplicates report nearly wins: it is a useful detective control, but it finds duplicates after payment and depends on clerks keeping up with a high-volume queue.",
+      "wrong_explanations": {
+        "A": "Monthly sampling detects problems weeks later and examines a fraction of payments. Duplicates paid meanwhile must be recovered.",
+        "B": "A duplicates report earns its place when matches are too fuzzy to block; where a rule can be coded, prevention outranks detection.",
+        "C": "A policy relies on every clerk checking by hand. At high volume it is inconsistent and leaves no reliable evidence."
+      },
+      "tips": [
+        "Eliminate: A samples too little too late, and C relies on manual effort at high volume.",
+        "Final two: D beats B because preventing a duplicate beats detecting it after the money has gone.",
+        "Exam cue: for high-volume, well-defined risks, prefer automated preventive controls built into the application."
+      ],
+      "framework_ref": "COBIT 2019 DSS06 (Managed Business Process Controls); COBIT 2019 BAI03 (Managed Solutions Identification and Build)",
+      "related_concepts": [
+        "Control design",
+        "Preventive controls",
+        "Application controls"
+      ],
+      "_provenance": "Authored from concept: 'Third-party vulnerability management per NIST SSDF and CISA SBOM guidance'. Public sources: NIST SP 800-218, CISA, OWASP DSOMM. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. v2: retargeted to deployed-release monitoring to avoid overlap with d3_052. Rebalanced (Oct 2026): re-angled from 4A8 to 3A4.",
+      "style_version": 2
+    },
+    {
+      "id": "d3_079",
+      "domain": 3,
+      "subtopic": "Production-Like Test Environment Fidelity",
+      "principle_id": "evidence-quality",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "A query passed load testing on a 12,000-row test table but overloaded production, which holds 180 million rows. Which recommendation should the IS auditor consider BEST?",
+      "options": {
+        "A": "Requiring senior DBA code review of query performance before each release",
+        "B": "Staging with production-scale data volumes and matching database tiers",
+        "C": "Raising the load test's concurrent users to production peak levels",
+        "D": "Load testing against a 1% sample of production data"
+      },
+      "correct": "B",
+      "key_concept": "Performance tests are valid evidence only when staging matches production data volume, infrastructure tier and load patterns.",
+      "pre_read": "Compare the test table size with production, then ask what the test result really proved.",
+      "correct_explanation": "The test passed because the environment did not resemble production: a tiny data set produced misleading query behavior. Testing is valid evidence only when conditions represent production, so staging needs realistic data volumes and a matching database tier. Expert code review helps, but query performance depends on data volume and execution plans (how the database chooses to run a query) that a reviewer cannot predict from code alone.",
+      "wrong_explanations": {
+        "A": "Review can spot obvious inefficiency, but query behavior at scale depends on data volume, which only representative testing reveals.",
+        "C": "More concurrent users tests concurrency, but the failure came from data volume; a 12,000-row table stays unrepresentative.",
+        "D": "A 1% sample is far closer to production than 12,000 rows, but at about 1.8 million rows it still understates the volume that broke the query."
+      },
+      "tips": [
+        "Eliminate: C fixes concurrency when the failure came from data volume, and D scales the data up but still far below production.",
+        "Final two: B beats A because test evidence is valid only when conditions match production; review cannot reproduce scale.",
+        "Exam cue: when a test passed but production failed, question how representative the test environment was."
+      ],
+      "framework_ref": "ISACA IT Audit Standard 1205 (Evidence); COBIT 2019 BAI04 (Managed Availability and Capacity); ISTQB Certified Tester Performance Testing (CT-PT) Syllabus",
+      "related_concepts": [
+        "Test environment fidelity",
+        "Staging",
+        "Load testing",
+        "Feature flags"
+      ],
+      "_provenance": "Authored from concept: 'Production-fidelity staging per ISACA Production-Like Environment guidance and DORA research'. Public sources: ISACA, DORA. Scenario specifics (e-commerce, 15M users, $2.8B GMV, 18,000x slow query, 0.007% data volume, smaller DB tier, flash-sale outage) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Content review (Oct 2026): glossed execution plans. Difficulty upgrade (Oct 2026, owner's rule: two options eliminable only by CISA knowledge, a hard final two): replaced 'drop load tests' with raising concurrent users to peak (a concurrency fix for a data-volume problem). Round 3 (Oct 2026, concept check, blind tests and wording-cue balance): weak blind test: 'data' singled out the key and D (production monitoring) was dead; D is now a partial-volume test.",
+      "style_version": 2
+    },
+    {
+      "id": "d3_080",
+      "domain": 3,
+      "subtopic": "Continuous Compliance Evidence. Regulated High-Deploy DevOps",
+      "principle_id": "evidence-quality",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "A bank deploys to production over 30 times a day, and its external auditor says manual change evidence no longer scales. Which recommendation is BEST?",
+      "options": {
+        "A": "Generating tamper-evident records linking each deploy to its approval",
+        "B": "Reconciling deploy logs, tickets and approvals each quarter",
+        "C": "Holding a monthly change-board review of a sample of deployments",
+        "D": "Accepting the pipeline's branch-protection settings as evidence of approval"
+      },
+      "correct": "A",
+      "key_concept": "High-frequency delivery is auditable when the pipeline generates tamper-evident change evidence linking every deployment to its approval.",
+      "pre_read": "Ask which option produces reliable evidence for every change at the moment it happens.",
+      "correct_explanation": "At this volume, evidence must be produced by the pipeline itself. Automated, tamper-evident records that tie each deployment to its approval, build and approver give complete, reliable evidence the external auditor can test. A quarterly reconciliation of every deployment is the tempting option because it is complete, but it is manual and finds unapproved changes months after release.",
+      "wrong_explanations": {
+        "B": "A full reconciliation covers every change, but it is manual and quarterly; unapproved deployments run for months, and the manual effort is what no longer scales.",
+        "C": "Sampling after the fact cannot evidence every change, and unauthorized deployments may go undetected for weeks.",
+        "D": "Branch-protection settings show a control is configured, not that every deployment actually went through an approval."
+      },
+      "tips": [
+        "Eliminate: C samples part of the changes weeks later, and D accepts a configured setting as proof that approvals happened.",
+        "Final two: A beats B because evidence created as each change deploys is complete and timely; a quarterly reconciliation finds problems months later.",
+        "Exam cue: when volume outgrows manual evidence, look for evidence the pipeline creates as each change deploys, not later manual checks."
+      ],
+      "framework_ref": "ISACA IT Audit Standard 1205 (Evidence); COBIT 2019 BAI06 (Managed IT Changes); SLSA v1.0 (Supply-chain Levels for Software Artifacts)",
+      "related_concepts": [
+        "Continuous compliance",
+        "Change management evidence",
+        "SOC 1",
+        "Audit automation"
+      ],
+      "_provenance": "Authored from concept: 'Continuous compliance evidence in high-deploy regulated DevOps per ISACA Continuous Compliance guidance and SLSA framework'. Public sources: ISACA, SLSA. Scenario specifics (federally chartered bank, 30+ deploys/day, 14 service teams, SOC 1 audit, manual evidence flagged as not-scaling, audit firm's hypothetical acceptance of automation) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. v2: de-cued (options made grammatically parallel). Difficulty upgrade (Oct 2026, owner's rule: two options eliminable only by CISA knowledge, a hard final two): replaced 'exempt teams from change management' with accepting branch-protection settings as evidence (configured, not shown to operate). Round 2 (Oct 2026, quality-gate fixes from the standards audit, pedagogy check and strong and weak blind tests): weak blind test: the key was longest and B (cut to weekly releases) was a throwaway; B is now a complete but quarterly manual reconciliation and the runner-up; the key is shorter. Round 3 (Oct 2026, concept check, blind tests and wording-cue balance): cue balance: three-part lists pointed at the key (77% key share); B carries a list and drops its absolute.",
+      "style_version": 2
+    },
+    {
+      "id": "d3_083",
+      "domain": 3,
+      "subtopic": "Behavior-Driven Development (BDD). Audit Evidence",
+      "principle_id": "evidence-quality",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An IS auditor reviewing a behavior-driven development (BDD) project wants assurance that delivered features meet business requirements. Which evidence is MOST useful?",
+      "options": {
+        "A": "Given-When-Then scenarios agreed with the business, run as tests",
+        "B": "A unit-test coverage report showing most code paths are exercised",
+        "C": "Developers' test logs showing builds passed before each release",
+        "D": "Business sign-off emails sent after each release has gone live"
+      },
+      "correct": "A",
+      "key_concept": "In BDD, business-agreed Given-When-Then scenarios run as automated acceptance tests, so they show each requirement was both specified and verified.",
+      "pre_read": "Ask which evidence links each delivered feature back to a requirement the business agreed.",
+      "correct_explanation": "In behavior-driven development, business, developers and testers agree plain-language Given-When-Then scenarios before coding, and those scenarios run as automated acceptance tests. Passing scenarios therefore show, requirement by requirement, that delivered behavior matches what the business agreed. Post-release sign-off emails are the tempting option: they show business approval, but they are informal, come after go-live and do not tie approval to specific tested behavior.",
+      "wrong_explanations": {
+        "B": "Coverage shows how much code the unit tests exercise, not whether features do what the business asked for.",
+        "C": "Developer test logs show builds passed the developers' own tests; they say nothing about business requirements.",
+        "D": "An auditor would keep the emails as corroboration of business satisfaction, but satisfaction is not conformance: requirements are proven criterion by criterion."
+      },
+      "tips": [
+        "Eliminate: B and C measure developers' code testing, not whether features meet business requirements.",
+        "Final two: A beats D because agreed scenarios run as tests prove each requirement; sign-off emails after go-live are informal and untied to tests.",
+        "Exam cue: for assurance that requirements are met, look for evidence that links business-agreed criteria to executed tests."
+      ],
+      "framework_ref": "Behavior-Driven Development (Dan North); ISTQB Foundation Level Syllabus; ISACA IT Audit Standard 1205 (Evidence); COBIT 2019 BAI07 (Managed IT Change Acceptance and Transitioning)",
+      "related_concepts": [
+        "BDD",
+        "Given-When-Then",
+        "Acceptance testing evidence",
+        "Requirements traceability"
+      ],
+      "_provenance": "Authored from concept: 'BDD practice per Dan North and Cucumber/Gherkin framework'. Public sources: BDD literature, Cucumber documentation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Content review (Oct 2026): recast from a methodology-definition recall stem into an auditor evidence judgment on a BDD project. Content review round 2 (Oct 2026): added evidence and acceptance cites.",
+      "style_version": 2
+    },
+    {
+      "id": "d3_092",
+      "domain": 3,
+      "subtopic": "Post-Implementation Review. Choosing the Reviewer",
+      "principle_id": "independence-throughout",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "The project manager who delivered a new HR system proposes to lead its post-implementation review. What is the IS auditor's PRIMARY concern?",
+      "options": {
+        "A": "The review may focus on delivery process rather than business outcomes",
+        "B": "The review may rely on project status reports rather than operating data",
+        "C": "The project manager may lack the business knowledge to judge benefits",
+        "D": "The reviewer would be judging the results of their own work"
+      },
+      "correct": "D",
+      "key_concept": "A post-implementation review needs an objective reviewer; the person who delivered the system faces a self-review threat.",
+      "pre_read": "Ask who benefits if the review finds the project a success, then ask whether that person should write the verdict.",
+      "correct_explanation": "A post-implementation review must give the sponsor an objective view of whether the system delivered what was promised. A project manager reviewing their own delivery faces a self-review threat and an incentive to present results favorably, so an independent party should lead it. A process-heavy focus is the closest concern: it is a real scoping risk, but it is a symptom of the missing independence, not the root concern.",
+      "wrong_explanations": {
+        "A": "A narrow focus on delivery process is a scoping weakness, but it stems from the reviewer's conflict of interest, which is the root concern.",
+        "B": "Relying on status reports is a real evidence weakness, but it follows from who leads the review; the root concern is self-review.",
+        "C": "Business knowledge can be added through sponsors and users; a competence gap is fixable, while judging one's own work undermines every conclusion."
+      },
+      "tips": [
+        "Eliminate: B is an evidence choice an independent reviewer would correct, and C is a competence gap that business participants can fill.",
+        "Final two: D beats A because a self-review threat undermines every conclusion; drift toward process is only a symptom of it.",
+        "Exam cue: whoever built it should not be the one to judge it; look for the independence problem before the scope problem."
+      ],
+      "framework_ref": "COBIT 2019 BAI07 (Managed IT Change Acceptance and Transitioning); COBIT 2019 MEA02 (Managed System of Internal Control)",
+      "related_concepts": [
+        "Post-implementation review",
+        "Objectivity",
+        "Self-review threat"
+      ],
+      "_provenance": "Authored from concept: 'Service catalog governance per ITIL 4 and ISACA Service Catalog Governance guidance'. Public sources: ITIL 4, ISACA. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. v2: de-cued (key now a periodic owner review, so interval words also appear in keys). Rebalanced (Oct 2026): re-angled from 4A10 to 3B4. Difficulty upgrade (Oct 2026, owner's rule: two options eliminable only by CISA knowledge, a hard final two): replaced the budget-closure timing option with a competence concern, which loses to independence. Round 3 (Oct 2026, concept check, blind tests and wording-cue balance): weak blind test: dead distractor replaced with a plausible practitioner error (B was authority to access production data).",
+      "style_version": 2
+    },
+    {
+      "id": "d3_096",
+      "domain": 3,
+      "subtopic": "Business Case. Benefit Definition",
+      "principle_id": "governance-before-technology",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A business case lists benefits such as improved efficiency and better customer experience, stated only in general terms. What should the IS auditor recommend as BEST before approval?",
+      "options": {
+        "A": "Convert every benefit into a financial value before approval",
+        "B": "Ask IT to measure the benefits once the system is live",
+        "C": "Define measurable targets with a business owner for each benefit",
+        "D": "Approve now and have each benefit owner set targets after go-live"
+      },
+      "correct": "C",
+      "key_concept": "Every promised benefit needs a measurable target, a baseline and a named business owner before the investment is approved.",
+      "pre_read": "Ask how anyone could later prove these benefits arrived, and who would answer if they did not.",
+      "correct_explanation": "Benefits stated in general terms cannot be measured or managed, so the case should give each benefit a measurable target, a baseline and a named business owner accountable for realizing it. Converting every benefit into money is the tempting option: it looks rigorous, but non-financial benefits can be measured without a price, and a valuation with no owner leaves no one accountable for delivering it.",
+      "wrong_explanations": {
+        "A": "An auditor would accept money values where conversion is reliable, but a figure's precision never substitutes for someone answering for it.",
+        "B": "IT can supply measurements, but business owners are accountable for benefits, and undefined benefits give nothing to measure.",
+        "D": "Setting targets after go-live lets the review measure whatever happened; even with named owners, targets must be set before approval."
+      },
+      "tips": [
+        "Eliminate: B hands benefits to IT after go-live, and D sets targets after the results are known.",
+        "Final two: C beats A because measurable targets need not be financial, and only a named business owner makes someone accountable.",
+        "Exam cue: before approval, every benefit needs a measurable target, a baseline and a named business owner; a price tag alone is not a target."
+      ],
+      "framework_ref": "ISACA Val IT Framework; COBIT 2019 EDM02 (Ensured Benefits Delivery); COBIT 2019 APO05 (Managed Portfolio)",
+      "related_concepts": [
+        "Business case",
+        "Benefits ownership",
+        "Measurable benefits"
+      ],
+      "_provenance": "Authored from concept: 'GDPR Article 33 72-hour notification with supplemental follow-up per Article 33(4) and EDPB Guidelines'. Public sources: GDPR, EDPB. Scenario specifics (multinational consumer-services, 18M EU + 12M US subjects, internal audit script exfiltration, 14:00 Tuesday awareness, Friday 14:00 deadline) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): CPO acronym removed; options rewritten as full statements. Rebalanced (Oct 2026): re-angled from 2A6 to 3A2. Rebalance review (Oct 2026): distractor D names a role (owner-cue fix). Content review (Oct 2026): stem no longer names the missing measures and owners that only the key supplied; A replaced with a financial-valuation runner-up. Round 3 (Oct 2026, concept check, blind tests and wording-cue balance): cue balance: owner, sponsor and accountable wording pointed at the key (59% key share); D now names benefit owners but sets targets too late. Final review (Oct 2026, exam developer and blind test): blind test: 'measur-' appeared only in the key; B now says measure. Cross-domain review (Oct 2026): MINOR duplicate with d2_111: re-angled the exam cue so it no longer repeats a near-duplicate item (tips.2).",
+      "style_version": 2
+    },
+    {
+      "id": "d3_100",
+      "domain": 3,
+      "subtopic": "Product Launch Continue-vs-Scrap Decision",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "After $14M and four months, a new CRM module has won 23 of its 150 target customers. Which advice from the IS auditor to the board is MOST appropriate?",
+      "options": {
+        "A": "Stop the module, because the $14M already spent makes recovery uneconomic",
+        "B": "Continue, but rebaseline the target at 50 customers",
+        "C": "Weigh forward costs and benefits against the alternatives",
+        "D": "Weigh total cost to date and future benefits against alternatives"
+      },
+      "correct": "C",
+      "key_concept": "Investment continue-or-stop decisions compare forward costs and benefits against alternatives and exclude sunk cost.",
+      "pre_read": "Notice the $14M already spent. Ask which options let it into the decision, openly or inside a total.",
+      "correct_explanation": "Money already spent cannot be recovered whichever way the board decides, so it must not drive the choice. The decision should compare the remaining cost and expected benefits of continuing against alternatives, such as other products or a sale of the technology. Weighing total cost to date is the tempting option because it looks complete, but it brings the sunk $14M back into the comparison.",
+      "wrong_explanations": {
+        "A": "The conclusion may be right, but the stated reason is sunk cost. Past spend is irrelevant to whether future spend is worthwhile.",
+        "B": "Rebaselining lowers the target to fit results without asking whether further spend is worthwhile; it is escalation of commitment to a failing course.",
+        "D": "Both weighings set the module's future benefits beside the alternatives, yet a decision weighs only what the decision itself can still change."
+      },
+      "tips": [
+        "Eliminate: A justifies stopping by money already spent, and B moves the target instead of assessing whether further spend is worthwhile.",
+        "Final two: C beats D because only future costs and benefits differ between the choices; cost to date is sunk whichever way the board decides.",
+        "Exam cue: decide on future costs and benefits only; money already spent is the same whichever way you choose."
+      ],
+      "framework_ref": "COBIT 2019 APO05 (Managed Portfolio); ISACA Val IT Framework; COBIT 2019 EDM02 (Ensured Benefits Delivery)",
+      "related_concepts": [
+        "Product decision",
+        "Sunk cost",
+        "Opportunity cost",
+        "Forward economics"
+      ],
+      "_provenance": "Authored from concept: 'Continue-vs-scrap product decision per ISACA Product Launch Decision guidance and ISACA IT Investment guidance'. Public sources: ISACA. Scenario specifics (SaaS startup, 1.8K employees, $14M sunk, 23 vs 150 adoption gap, 43 P1/P2 bugs, $8M + 8 months to fix, 2 acquirer interest, 3 alternative products, CEO/CFO positions) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): stem simplified; options now parallel decisions. Difficulty upgrade (Oct 2026, owner's rule: two options eliminable only by CISA knowledge, a hard final two): replaced the reputation-and-morale option with extending the deadline (escalation of commitment). Round 2 (Oct 2026, quality-gate fixes from the standards audit, pedagogy check and strong and weak blind tests): weak blind test: the key was longest and said 'excluding sunk spend' outright; the key no longer names sunk cost, D now weighs total cost to date (the runner-up), and B re-baselines the target; strong blind test: the exam cue teaches the principle, not a keyword. Cross-domain review (Oct 2026): MINOR contradiction with d3_037, d3_004, d3_101, d3_108: aligned with related items in other domains (options.B, wrong_explanations.B).",
+      "style_version": 2
+    },
+    {
+      "id": "d3_108",
+      "domain": 3,
+      "subtopic": "Major Release Scope Creep",
+      "principle_id": "root-cause-over-symptom",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "In week 14 of a 20-week release, executives have added 16 features; velocity fell 28% and QA tests cover only the original scope. What should the IS auditor recommend FIRST?",
+      "options": {
+        "A": "Add QA testers so testing keeps pace with the additions",
+        "B": "Freeze further additions and defer the 16 to the next release",
+        "C": "Put each addition through formal change control and rebaseline",
+        "D": "Extend the test plan to cover the added features"
+      },
+      "correct": "C",
+      "key_concept": "Scope creep is controlled by formal change control and rebaselining, so management decides each addition on its impact.",
+      "pre_read": "Notice the word FIRST. Ask whether to fix the cause, uncontrolled scope, or one of its symptoms.",
+      "correct_explanation": "The root problem is scope entering without assessment of cost, schedule and quality impact. Routing each addition through formal change control and rebaselining the release lets management decide which features to keep, defer or fund with more time. Extending the test plan is needed, but done first it accepts every addition as given and leaves scope uncontrolled.",
+      "wrong_explanations": {
+        "A": "More testers treat a resourcing symptom; additions still enter without any assessment of their cost, schedule or quality impact.",
+        "B": "A freeze stops new additions, but deferring all 16 without assessing their value or impact is a blanket call; management should decide each through change control.",
+        "D": "Testing the added features is necessary, but it accepts the uncontrolled scope rather than deciding what should stay."
+      },
+      "tips": [
+        "Eliminate: A adds resources to absorb uncontrolled scope, and B defers every addition unassessed, a call management should make after impact analysis.",
+        "Final two: C beats D because controlling scope comes first; extending tests accepts every addition without assessment.",
+        "Exam cue: for scope creep, formal change control and rebaselining come before work that absorbs the extra scope."
+      ],
+      "framework_ref": "PMBOK Guide 8th Edition (2025); COBIT 2019 BAI11 (Managed Projects)",
+      "related_concepts": [
+        "Scope creep",
+        "Change control",
+        "Rebaselining",
+        "Release governance"
+      ],
+      "_provenance": "Authored from concept: 'Scope creep mid-release governance per ISACA Scope Creep guidance and PMBOK 7E'. Public sources: ISACA, PMBOK. Scenario specifics (retail-tech, week 14 of 20-week release, 22→38 feature scope, 28% velocity drop, 3x code-review queue, 2 deferred original-scope features, QA gap) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Round 2 review (Oct 2026): framework_ref updated to the current edition (PMBOK Guide 8th Edition, 2025). Difficulty upgrade (Oct 2026, owner's rule: two options eliminable only by CISA knowledge, a hard final two): replaced 'keep accepting requests' with adding QA testers (a resource fix for a scope-control problem). Round 2 (Oct 2026, quality-gate fixes from the standards audit, pedagogy check and strong and weak blind tests): weak blind test: B (cancel and restart in week 14) was a throwaway; B now freezes additions and defers all 16 without assessment.",
+      "style_version": 2
+    },
+    {
+      "id": "d3_115",
+      "domain": 3,
+      "subtopic": "Supply-Chain Attestation Maturity Decision",
+      "principle_id": "risk-sets-priority",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "A federal contractor's contract requires a minimum software supply-chain (SLSA) level; the CISO wants the top level, costing about $8M over 18 months. Which recommendation by the IS auditor is BEST?",
+      "options": {
+        "A": "Commit now to the top level as the lowest-risk position",
+        "B": "Meet the mandated level first, then raise levels by risk",
+        "C": "Pick a mid level matching what peer contractors report",
+        "D": "Reach the mandated level on new releases first, legacy later"
+      },
+      "correct": "B",
+      "key_concept": "Assurance targets are set by risk: meet mandatory requirements, then invest in higher maturity where risk reduction justifies the cost, with reassessment gates.",
+      "pre_read": "Separate what the contract requires now from what risk might justify later.",
+      "correct_explanation": "A maturity target should first meet the level the contract requires, then rise in phases where the risk reduction justifies the cost, with gates to reassess as requirements evolve. Committing to the top level appears thorough, but it fixes an $8M spend before the firm knows which risks justify it, and it may delay meeting the contract's requirement while the full program is built.",
+      "wrong_explanations": {
+        "A": "The top level is a legitimate long-term aim, but compliance sets the floor and risk prices each step above it.",
+        "C": "Copying peers ignores the firm's own contractual floor and risk profile, so the target is neither compliance-based nor risk-based.",
+        "D": "Phasing by release leaves legacy software delivered under the contract below the required level; the contractual minimum applies to every covered product."
+      },
+      "tips": [
+        "Eliminate: C copies peers instead of using the firm's own requirements and risk, and D phases by release, leaving legacy software below the contract's minimum.",
+        "Final two: B beats A because investment should follow risk and required compliance, not maximum maturity for its own sake.",
+        "Exam cue: contractual requirements set the floor for every covered product; risk then decides where to invest beyond it."
+      ],
+      "framework_ref": "SLSA v1.0 (Supply-chain Levels for Software Artifacts); NIST SP 800-218 (Secure Software Development Framework (SSDF) Version 1.1); NIST SP 800-161 Rev 1 (Cybersecurity Supply Chain Risk Management)",
+      "related_concepts": [
+        "SLSA",
+        "Supply-chain attestation",
+        "EO 14028",
+        "Maturity model"
+      ],
+      "_provenance": "Authored from concept: 'Supply-chain attestation maturity per SLSA framework and ISACA Supply-Chain Attestation guidance'. Public sources: SLSA, ISACA, NIST. Scenario specifics (government-services contractor, 3.2K employees, $400M annual federal contracts, four SLSA levels under consideration, $8M/18-month estimate for Level 4) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): stem now states a contractual minimum SLSA level; no federal rule mandates SLSA. Difficulty upgrade (Oct 2026, owner's rule: two options eliminable only by CISA knowledge, a hard final two): reworded the key so it no longer repeats the stem's 'contract ... required level'. Round 2 (Oct 2026, quality-gate fixes from the standards audit, pedagogy check and strong and weak blind tests): weak blind test: D (attest one product) was a throwaway; D now phases the mandated level by release, a risk-sounding order that leaves legacy noncompliant; the cue no longer teaches option shape. Round 3 (Oct 2026, concept check, blind tests and wording-cue balance): cue balance: 'risk' wording pointed at the key (62% key share); the maximal option is now framed as lowest-risk.",
+      "style_version": 2
+    },
+    {
+      "id": "d3_119",
+      "domain": 3,
+      "subtopic": "Post-Implementation Review. Missing Benefit Baseline",
+      "principle_id": "root-cause-over-symptom",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "A post-implementation review cannot confirm a promised 30% cut in claims processing time because nobody recorded processing times before the project. Which IS auditor recommendation BEST addresses the underlying weakness?",
+      "options": {
+        "A": "Reconstruct the baseline from legacy system transaction logs",
+        "B": "Make a measured starting point a condition of business case approval",
+        "C": "Measure processing times in the new system's reports from now on",
+        "D": "Estimate the baseline from a sample of the archived claim files"
+      },
+      "correct": "B",
+      "key_concept": "Benefits can only be proven against a measured starting point, so business cases should record baselines before approval.",
+      "pre_read": "Separate fixing this one review from fixing the process that let the gap happen.",
+      "correct_explanation": "The underlying weakness is that the business case was approved without a measured starting point, so no later review can prove the benefit. Making a measured baseline, with an owner and method, a condition of approval fixes this for every future project. Reconstructing the baseline from legacy logs is the tempting option: it may give solid evidence for this review, but it leaves the approval gap in place.",
+      "wrong_explanations": {
+        "A": "Legacy logs may rebuild this one baseline, but the approval process that skipped it stays unchanged, so the gap recurs.",
+        "C": "Measuring processing time from now on shows the result, but without a recorded before-figure the 30% cut still cannot be shown, and future projects repeat the gap.",
+        "D": "An estimate from sampled files patches this one review with weaker evidence than full logs, and the approval process that skipped the baseline stays unchanged."
+      },
+      "tips": [
+        "Eliminate: C measures only the after state, so no before-figure exists, and D estimates this one baseline from a sample, leaving the approval gap that caused it.",
+        "Final two: B beats A because it fixes the approval process that caused the gap; reconstructing the baseline only patches this one review.",
+        "Exam cue: when asked for the fix to an underlying weakness, choose the process change that prevents recurrence, not the one-off workaround."
+      ],
+      "framework_ref": "ISACA Val IT Framework; COBIT 2019 EDM02 (Ensured Benefits Delivery); COBIT 2019 APO05 (Managed Portfolio)",
+      "related_concepts": [
+        "Post-implementation review",
+        "Benefit baseline",
+        "Business case"
+      ],
+      "_provenance": "Authored from concept: 'Capacity shortfall during product launch per ISACA Launch Capacity Planning guidance'. Public sources: ISACA, ITIL 4. Scenario specifics (consumer services, 4.2x peak traffic, 200-instance quota cap, database pool saturation, 12% rising error rate, $8M marketing investment, 6-week competitive window) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): IS auditor named as actor. Rebalanced (Oct 2026): re-angled from 4A6 to 3B4. Difficulty upgrade (Oct 2026, owner's rule: two options eliminable only by CISA knowledge, a hard final two): stated the gap as a fact (nobody recorded processing times) and removed the 'root cause' cue; reworded the key; the runner-up is now a stronger reconstruction from transaction logs. Round 2 (Oct 2026, quality-gate fixes from the standards audit, pedagogy check and strong and weak blind tests): weak blind test: C (declare achieved on user say-so) and D (drop the benefit) were throwaways; C now adds after-state tracking and D estimates the baseline from samples. Final review (Oct 2026, exam developer and blind test): blind test: 'measur-' appeared only in the key; C now says measure.",
+      "style_version": 2
+    },
+    {
+      "id": "d3_124",
+      "domain": 3,
+      "subtopic": "Certification / Accreditation in Regulated Builds",
+      "principle_id": "management-owns-risk",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "A bank's regulated payments platform has passed independent control certification, and the CIO wants to skip formal accreditation (authorization) to protect the timeline. Which recommendation by the IS auditor is BEST?",
+      "options": {
+        "A": "Release now, relying on the certification results as approval",
+        "B": "Have the authorizing official accept residual risk before deployment",
+        "C": "Treat passing development tests as sufficient evidence for release",
+        "D": "Authorize the platform after go-live using production feedback"
+      },
+      "correct": "B",
+      "key_concept": "Authorization (accreditation) is a management decision: an authorized official accepts residual risk, based on certification evidence, before go-live.",
+      "pre_read": "Ask who owns the decision to accept risk on a regulated system, and when it must happen.",
+      "correct_explanation": "Accreditation, called authorization in current NIST guidance, is the formal management decision in which the authorizing official reviews certification evidence and accepts the residual risk before the system operates, keeping accountability with management. Releasing on the certification results sounds rigorous, but certification only evaluates whether controls work; it is evidence for the decision, not the decision, so the accountable risk acceptance would be skipped.",
+      "wrong_explanations": {
+        "A": "Certification shows the controls work, but it is evidence, not approval. No authorizing official has accepted the residual risk, so no one is accountable.",
+        "C": "Development testing shows functions work but does not document control evidence or formal risk acceptance.",
+        "D": "Authorization is a pre-deployment gate; doing it after go-live leaves customers exposed to risk nobody has accepted."
+      },
+      "tips": [
+        "Eliminate: C confuses testing with authorization, and D moves the gate to after go-live.",
+        "Final two: B beats A because certification supplies evidence, while authorization is management's accountable acceptance of residual risk.",
+        "Exam cue: certification evaluates controls; authorization (accreditation) is management formally accepting the remaining risk before go-live."
+      ],
+      "framework_ref": "NIST SP 800-37 Rev 2 (Risk Management Framework for Information Systems and Organizations); NIST SP 800-53 Rev 5 CA-6 (Authorization)",
+      "related_concepts": [
+        "Certification",
+        "Accreditation",
+        "Authorization to operate",
+        "C&A",
+        "FFIEC"
+      ],
+      "_provenance": "Authored from concept: 'Regulated certification/accreditation per FFIEC IT Examination Handbook and NIST SP 800-37'. Public sources: FFIEC, NIST SP 800-37, ISACA. Gap-closing question for D3 TOC section 3.7.5 (Certification/Accreditation). Scenario specifics (federally chartered bank, FFIEC + OCC + GLBA + SOC 1 regulatory context, three positions debated, CIO timeline concern) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): stem now says certification passed so only risk acceptance wins; NIST term authorization bridged.",
+      "style_version": 2
+    },
+    {
+      "id": "d3_125",
+      "domain": 3,
+      "subtopic": "SDLC Phases. Waterfall Sequence",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "An IS auditor finds that, to meet a regulatory date, a waterfall project plans to deploy to production before system testing is complete. What is the GREATEST risk?",
+      "options": {
+        "A": "Defects found after release will cost more to fix in production",
+        "B": "Test documentation will be finished after the system goes live",
+        "C": "The release will go live without a rehearsed rollback",
+        "D": "Unverified code will process live transactions from day one"
+      },
+      "correct": "D",
+      "key_concept": "In a waterfall life cycle, system testing gates deployment so unverified code does not reach production and process live transactions.",
+      "pre_read": "Find which phase gate the plan removes. Ask what that gate exists to prevent.",
+      "correct_explanation": "In a waterfall life cycle, system testing is the gate that stops unverified code reaching production. Deploying before testing ends removes that gate, so live transactions run on code whose defects have not been found, risking errors in business records. Higher fix costs are the tempting option: they are real, but they are a consequence for IT; the greater risk is to the business processing that relies on the code.",
+      "wrong_explanations": {
+        "A": "Late defects do cost more to fix, but that is a cost consequence; the greater risk is untested code processing live business data.",
+        "B": "Late documentation weakens the audit trail, but it does not expose business transactions to undetected defects.",
+        "C": "An unrehearsed rollback weakens recovery, but it matters only after a failure; untested code processing live transactions is the exposure itself."
+      },
+      "tips": [
+        "Eliminate: B is a documentation lag and C weakens recovery after a failure; neither is the exposure the missing test gate creates.",
+        "Final two: D beats A because removing the testing gate exposes live business processing; higher fix costs are a consequence for IT.",
+        "Exam cue: testing gates deployment; when a plan releases before testing ends, the greatest risk is unverified code in production."
+      ],
+      "framework_ref": "ISO/IEC 12207 (Software Life Cycle Processes); NIST SP 800-160 Vol 1 (Systems Security Engineering); COBIT 2019 BAI03 (Managed Solutions Identification and Build)",
+      "_provenance": "Authored from concept: 'SDLC phases (waterfall: requirements -> design -> build -> test -> deploy -> maintain)'. Foundational recall tier. Public sources: NIST SP 800-160. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): stem reframed around phase gating. Difficulty upgrade (Oct 2026, owner's rule: two options eliminable only by CISA knowledge, a hard final two): proposed for retirement as sequence recall; kept the ID (learner progress stores it) and recast it as an auditor judgment on a plan that deploys before testing ends. Round 2 (Oct 2026, quality-gate fixes from the standards audit, pedagogy check and strong and weak blind tests): weak blind test: the key was longest; 'business' is trimmed from it. Round 3 (Oct 2026, concept check, blind tests and wording-cue balance): weak blind test: dead distractor replaced with a plausible practitioner error (C was user retraining).",
+      "style_version": 2
+    },
+    {
+      "id": "d3_132",
+      "domain": 3,
+      "subtopic": "Scheduling and the Critical Path. Slippage on a Chain with Slack",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An IS auditor finds critical-path tasks on schedule, but the data conversion chain, which had five days of total float before go-live, has slipped eight days. What is the MOST LIKELY effect on go-live?",
+      "options": {
+        "A": "Go-live holds, because data conversion sits outside the critical path",
+        "B": "Go-live slips eight days, matching the full delay to conversion",
+        "C": "Go-live slips about three days, since conversion now drives the end",
+        "D": "Go-live holds if extra staff join the original critical-path tasks"
+      },
+      "correct": "C",
+      "key_concept": "A chain that slips beyond its slack becomes the critical path and moves the end date by the excess.",
+      "pre_read": "Compare the slip with the slack the chain had before it started to slip.",
+      "correct_explanation": "Slack, or total float, is how far a chain can slip without moving the end date. The conversion chain had five days, so an eight-day slip uses all of it and adds three more, making conversion the new critical path. Concluding that go-live holds because conversion was not critical comes closest, yet a chain stays non-critical only while its delay stays within its slack.",
+      "wrong_explanations": {
+        "A": "Conversion was off the critical path only while its delay stayed within five days of slack; at eight days it drives the end date.",
+        "B": "Five of the eight days are absorbed by the chain's slack, so only the excess three days move go-live.",
+        "D": "The original critical-path tasks are on schedule and no longer the longest chain, so adding staff there cannot pull go-live back."
+      },
+      "tips": [
+        "Eliminate: B counts the full delay although five days of float absorb part of it, and D adds staff to tasks that no longer set the end date.",
+        "Final two: C beats A because slack protects a chain only until it is used up; after that, the chain is critical.",
+        "Exam cue: subtract the slack from the slip; any excess moves the end date and makes that chain critical."
+      ],
+      "framework_ref": "PMBOK Guide 6th Edition, Sections 6.5 (Develop Schedule) and 6.6 (Control Schedule); COBIT 2019 BAI11.07 (Monitor and control projects)",
+      "related_concepts": [
+        "Critical path method (CPM)",
+        "Slack (float)",
+        "Schedule variance",
+        "Data conversion"
+      ],
+      "_provenance": "Authored from concept: 'Scheduling and the Critical Path. Slippage on a Chain with Slack'. Original KaiSip item (Oct 2026), written for CISA subtopic 3A1.3 (Wave 3 coverage batch Q13: thin subtopic). Distinct from d4_189 (estimating restore time from the longest dependency chain) and d4_147 (batch job critical path): tests that a chain slipping beyond its slack becomes critical and moves the end date by the excess. All scenario specifics invented for this question. Public sources: PMI PMBOK Guide 6th Edition sections 6.5 and 6.6; COBIT 2019 BAI11. Round 2 (Oct 2026, quality-gate fixes from the standards audit, pedagogy check and strong and weak blind tests): tip only: the Eliminate tip names the knowledge, not a dismissive word.",
+      "style_version": 2
+    },
+    {
+      "id": "d3_139",
+      "domain": 3,
+      "subtopic": "Reverse Engineering. Decompiling Licensed Vendor Software",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "The vendor of a licensed claims-processing engine will not share its design, so developers propose decompiling the engine to build new interfaces. What should the IS auditor recommend FIRST?",
+      "options": {
+        "A": "Have legal counsel confirm the decompiling is lawfully permitted",
+        "B": "Request the engine's source code from the software escrow agent",
+        "C": "Carry out the decompiling in an isolated, logged test environment",
+        "D": "Plan integration testing of the new interfaces before go-live"
+      },
+      "correct": "A",
+      "key_concept": "A license grants use, not ownership; reverse engineering vendor software needs legal confirmation that the license permits it.",
+      "pre_read": "Ask what the license actually lets the organization do with the vendor's code.",
+      "correct_explanation": "A software license grants the right to use the product, not rights to its code. Many licenses forbid decompiling, and many jurisdictions allow it only in narrow cases, such as interoperability, so legal review must come before any work starts. An isolated, logged environment is the strongest alternative: it controls technical risk, such as harm to production, but it does nothing to make the decompiling lawful.",
+      "wrong_explanations": {
+        "B": "Escrow releases code only on defined events such as vendor failure; refusing to share design is not one.",
+        "C": "Isolation contains technical risk, but the decompiling itself may breach the license wherever it runs.",
+        "D": "Interface testing is needed later, but it assumes the work behind the interfaces is permitted in the first place."
+      },
+      "tips": [
+        "Eliminate: B relies on escrow, which a design refusal does not trigger, and D is a later step that assumes the work is allowed.",
+        "Final two: A beats C because isolation controls technical risk, while the larger risk is legal and arises the moment decompiling starts.",
+        "Exam cue: before reverse engineering vendor software, look for legal review of the license terms first."
+      ],
+      "framework_ref": "ISO/IEC 27002:2022 Control 5.32 (Intellectual Property Rights); COBIT 2019 MEA03 (Managed Compliance with External Requirements)",
+      "related_concepts": [
+        "Reverse engineering",
+        "Decompiling",
+        "Software licensing",
+        "Source code escrow"
+      ],
+      "_provenance": "Authored from concept: 'Reverse Engineering. Decompiling Licensed Vendor Software'. Original KaiSip item (Oct 2026), written for CISA subtopic 3A3.4 (Wave 3 coverage batch Q13: thin subtopic). Distinct from d3_055 and d3_109 (microservice governance and consolidation): Review fix: escrow distractor replaces the ownership one, and the law is stated less absolutely. Tests that legal review of license terms comes before reverse engineering vendor code. All scenario specifics invented for this question. Public sources: ISO/IEC 27002:2022 control 5.32; COBIT 2019 MEA03.",
+      "style_version": 2
+    },
+    {
+      "id": "d3_142",
+      "domain": 3,
+      "subtopic": "Audit Trails. Deferring Business-Event Logging",
+      "principle_id": "prevent-before-detect",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "Requirements for a new loan-origination system specify logging of technical errors only, and the project team plans to add business-event logging after go-live. What should the IS auditor consider the GREATEST risk of this plan?",
+      "options": {
+        "A": "Adding the logging after go-live will cost more than building it now",
+        "B": "Technical error logs will fill the available storage before testing ends",
+        "C": "Performance tests will not reflect the load of later logging",
+        "D": "Early loan approvals and rate exceptions will have no audit trail"
+      },
+      "correct": "D",
+      "key_concept": "Business events must be defined for logging in requirements, because actions taken before logging exists leave no evidence.",
+      "pre_read": "Ask what happens to accountability for actions taken before the logging is added.",
+      "correct_explanation": "Business events such as loan approvals and rate exceptions are the evidence of who did what. If they are not logged from go-live, any error or fraud in the early months leaves no trail, and that history can never be recreated. Higher retrofit cost is the closest concern: building controls in early is cheaper, but cost can be absorbed, while missing evidence is lost for good.",
+      "wrong_explanations": {
+        "A": "Retrofitting costs more, but the extra cost can be funded later; months of approvals with no record cannot be recovered.",
+        "B": "Storage capacity is a routine operational matter, and nothing suggests error logs will exhaust it.",
+        "C": "The added load can be performance-tested when the logging is added; that is a manageable testing gap, not lost evidence."
+      },
+      "tips": [
+        "Eliminate: B is a routine capacity concern, and C is a testing gap that can be closed when the logging is added.",
+        "Final two: D beats A because extra cost can be absorbed, while approvals made without a record leave an evidence gap that can never be filled.",
+        "Exam cue: decide which business events to log during design; evidence not captured from day one is gone for good."
+      ],
+      "framework_ref": "NIST SP 800-53 Rev 5 AU-2 (Event Logging); OWASP ASVS 5.0 V16 (Security Logging and Error Handling)",
+      "related_concepts": [
+        "Audit logging requirements",
+        "Accountability",
+        "Controls designed in early",
+        "Business events"
+      ],
+      "_provenance": "Authored from concept: 'Audit Trails. Deferring Business-Event Logging'. Original KaiSip item (Oct 2026), written for CISA subtopic 3A4.4 (Wave 3 coverage batch Q13: thin subtopic). Distinct from d3_068 (how logs are stored and protected) and d3_084 (automated data lineage): tests that deferring business-event logging past go-live permanently loses evidence, which outweighs retrofit cost. All scenario specifics invented for this question. Public sources: NIST SP 800-53 Rev 5 AU-2; OWASP ASVS 5.0 V16.",
+      "style_version": 2
+    },
+    {
+      "id": "d3_144",
+      "domain": 3,
+      "subtopic": "Test Environments and Test Data. Cases Missing from Production",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A pension fund must test benefit rules for rare cases, such as members with three overlapping claims, that appear in no production record. Which test data should the IS auditor consider MOST appropriate?",
+      "options": {
+        "A": "A masked extract of the full production member history",
+        "B": "Test member records created in production and flagged as test",
+        "C": "Unmasked production records copied to test, then edited into the cases",
+        "D": "Synthetic records generated to cover each specified scenario"
+      },
+      "correct": "D",
+      "key_concept": "Synthetic data fits early testing and edge cases that real records lack, and it carries no personal data.",
+      "pre_read": "Ask whether any copy of production data, masked or not, could contain these cases.",
+      "correct_explanation": "Synthetic data suits cases that real data does not contain: records generated to the specified scenarios exercise the rare rules and hold no personal data. A masked production extract nearly wins because masking is the right way to use real data in test, but no extract, however large, contains cases that appear in no production record.",
+      "wrong_explanations": {
+        "A": "Masking protects real data, but these cases appear in no production record, so no extract can supply them.",
+        "B": "Flagged test accounts in production are a common shortcut, but they mix test activity with live member data and risk test runs reaching real payments or reports.",
+        "C": "Copying unmasked records into test exposes real personal data in a less controlled environment before any edit is made."
+      },
+      "tips": [
+        "Eliminate: B and C, because B stages test cases inside the live production system, and C puts unmasked personal data into test.",
+        "Final two: D beats A because a masked extract still holds only real cases, and these rare cases exist in no production record.",
+        "Exam cue: mask real data when realistic patterns matter; generate synthetic data for early tests and cases production lacks."
+      ],
+      "framework_ref": "ISO/IEC 27002:2022 Control 8.33 (Test Information); NIST SP 800-188 (De-Identifying Government Datasets: Techniques and Governance)",
+      "related_concepts": [
+        "Synthetic data",
+        "Data masking",
+        "Test data management"
+      ],
+      "_provenance": "Authored from concept: 'Test Environments and Test Data. Cases Missing from Production'. Original KaiSip item (Oct 2026), written for CISA subtopic 3B1.4 (Wave 3 coverage batch Q14: thin subtopic). Distinct from d3_010 (masking personal data before extraction): tests when synthetic data is the better source, because the cases to be tested do not exist in production at all. All scenario specifics invented for this question. Public sources: ISO/IEC 27002:2022 Control 8.33; NIST SP 800-188. Strawman pass (Oct 2026): eliminated option(s) rewritten to a plausible same-type error; blind re-tested.",
+      "style_version": 2
+    },
+    {
+      "id": "d3_153",
+      "domain": 3,
+      "subtopic": "Project Roles and Accountability. Business Staff Withheld from Requirements",
+      "principle_id": "escalate-to-decision-owner",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "Business managers will not release staff for requirements workshops on a new claims system, so IT analysts are writing the requirements alone. What should the IS auditor recommend FIRST?",
+      "options": {
+        "A": "Proceed, and rely on user acceptance testing to find any gaps",
+        "B": "Escalate to the steering committee to commit knowledgeable users",
+        "C": "Hire external consultants to stand in for the business users",
+        "D": "Have business managers formally sign off the analysts' requirements"
+      },
+      "correct": "B",
+      "key_concept": "User management owns requirements and must supply knowledgeable staff; the steering committee resolves gaps in business participation.",
+      "pre_read": "Ask who can commit business people to the project, and why their input matters.",
+      "correct_explanation": "User management owns the new system and must supply people who know the work, because requirements written by IT alone often miss how claims are really handled. The steering committee can commit those people, so escalating is the first step. Formal sign-off by business managers is the closest choice: it records ownership, but approving a document they did not help write rarely catches missing needs.",
+      "wrong_explanations": {
+        "A": "User acceptance testing finds gaps late, when fixing them means rework; missing needs should be caught while requirements are written.",
+        "C": "Consultants may know the industry but not this organization's claims process, and they cannot take on the business's ownership.",
+        "D": "Sign-off would close the loop if users had helped write the requirements; approval cannot add knowledge that was never gathered."
+      },
+      "tips": [
+        "Eliminate: A finds gaps only after the system is built, and C substitutes outsiders for the business's own knowledge.",
+        "Final two: B beats D because sign-off of a document the business did not help write records ownership without supplying its knowledge.",
+        "Exam cue: when the business will not take part, escalate; requirements need user ownership, not just user signatures."
+      ],
+      "framework_ref": "COBIT 2019 BAI02 (Managed Requirements Definition); COBIT 2019 BAI11 (Managed Projects)",
+      "related_concepts": [
+        "User management",
+        "Steering committee",
+        "Requirements ownership"
+      ],
+      "_provenance": "Authored from concept: 'Project Roles and Accountability. Business Staff Withheld from Requirements'. Original KaiSip item (Oct 2026), written for CISA subtopic 3A1.1 (Wave 3 coverage batch Q14: thin subtopic). Distinct from d3_085 (steering committee members able to commit resources) and d3_088 (sponsor owns benefit shortfalls): tests user management's duty to supply requirements staff and escalation when it does not. All scenario specifics invented for this question. Public sources: COBIT 2019 BAI02; COBIT 2019 BAI11.",
+      "style_version": 2
+    },
+    {
+      "id": "d3_154",
+      "domain": 3,
+      "subtopic": "Purpose and Timing of the Review. Scheduling the First Review",
+      "principle_id": "answer-from-the-stem",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A ski resort's new booking system went live in May, and its business case promised faster bookings during the December-to-March season. Which timing for the post-implementation review should the IS auditor recommend as BEST?",
+      "options": {
+        "A": "Three months after go-live, as the usual settling interval",
+        "B": "One week after go-live, while the project team is still assembled",
+        "C": "Soon after the first December-to-March period has ended",
+        "D": "After two full booking periods, once planned enhancements are finished"
+      },
+      "correct": "C",
+      "key_concept": "Schedule the post-implementation review once the system has run under conditions that let the promised benefits be measured.",
+      "pre_read": "Ask when the benefit promised in the business case can first be observed.",
+      "correct_explanation": "A review must wait until the system has run long enough, under representative conditions, to measure the promised benefits. Here the benefit is faster bookings from December to March, so the review belongs soon after the first such period ends, while fixes are still practical. Three months after go-live is the strongest alternative: it is a common settling period, but August data shows off-season volumes and cannot confirm the peak-season benefit.",
+      "wrong_explanations": {
+        "A": "An auditor would accept a usual settling interval as a default, but a seasonal promise can only be judged in its season.",
+        "B": "One week after go-live shows start-up problems and the learning curve, not the normal or peak results the review must measure.",
+        "D": "Two booking periods later, context is lost and changes have piled up, so findings come too late to correct cheaply."
+      },
+      "tips": [
+        "Eliminate: B is too early to show anything but start-up issues, and D is too late to act on findings cheaply.",
+        "Final two: C beats A because the promised benefit appears only at peak volume, which off-season data cannot show.",
+        "Exam cue: time the review for when the promised benefit can actually be measured, not by a fixed number of months."
+      ],
+      "framework_ref": "ISACA Val IT Framework; COBIT 2019 BAI07.08 (Perform a post-implementation review)",
+      "related_concepts": [
+        "Post-implementation review",
+        "Benefits realization",
+        "Review timing"
+      ],
+      "_provenance": "Authored from concept: 'Purpose and Timing of the Review. Scheduling the First Review'. Original KaiSip item (Oct 2026), written for CISA subtopic 3B4.1 (Wave 3 coverage batch Q14: thin subtopic). Distinct from d3_066 (review one week after go-live), d3_016 (benefits as the primary focus) and d3_097 (risk-based selection of reviews): tests timing the review to the period when the promised benefit can be measured. All scenario specifics invented for this question. Public sources: ISACA Val IT Framework; COBIT 2019 BAI07.08.",
+      "style_version": 2
+    }
+  ],
+  "free_sample": true
+}

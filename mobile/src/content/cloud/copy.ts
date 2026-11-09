@@ -292,7 +292,7 @@ export const ACCOUNT_COPY = {
   'board.more': 'Show more',
   'board.foot.contact': 'Questions or concerns: {supportEmail}',
   'board.foot.rules': 'Community guidelines',
-  'board.team': 'KaiSip team · official response',
+  'board.team': 'KaiSip team · reply',
   'board.team.badge': 'KaiSip team',
   'board.teamReplied': 'Team replied',
   'board.history': 'Status history',

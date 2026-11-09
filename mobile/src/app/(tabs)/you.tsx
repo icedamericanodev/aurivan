@@ -50,38 +50,51 @@
  * of Help and feedback is "Sync across devices" (components/account.tsx).
  * With the flag off (every build today) nothing here changes.
  * Mobile 1.51 (Field Guide, the owner's signature pick; DESIGN_SYSTEM.md §21): a running head
- * ("Field record · You", Settings on its right) over the study profile; readiness as a scale bar
+ * over the study profile. Grove Phase 1: the head shows the date only (no book labels) and the kit's
+ * 44pt Settings button (a cog in a rounded square) on its right, which opens the Settings screen; readiness as a scale bar
  * with the words "a study estimate" built in; the areas as one line of growth each on ONE scale in
  * a plate (Fig. 5, with its key); then the Herbarium row (the badges' way in, with the newest
  * pressed specimens); the stats are ruled label rows (Answered, Accuracy, Streak), not tiles.
+ * Grove You C2 (owner: "C with the improvements", 31 Oct 2026): under the profile, ONE summary
+ * sentence (this week's study days, the readiness range or the answers toward it, "Focus next" from
+ * readiness.focusDomainId, the countdown; engine/groveYou.ts, the website's own rules), a "Practice
+ * {area}" button (the same set as Practice's Weak spots row) and the plant chip (it replaces the plant
+ * row: "Your plant" over its name and growth, or "Pick your plant"). The stats follow, then readiness.
+ * The streak and accuracy rows follow Today (DECISIONS 1 and 3). The badges' way in says "Badges".
+ * Settings stays its own screen: the cog in the head and a "Settings" row near the end both open it.
  */
 import { router, useFocusEffect } from 'expo-router';
 import { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { View } from 'react-native';
 import { ringsChangeLine } from '../../components/journey';
-import { AreaRows, ReadinessBlock } from '../../components/youReadiness';
-import { FieldText, RunningHead, SpecimenLabel, SpecimenRow } from '../../components/fieldguide';
-import { HerbariumEntry } from '../../components/herbarium';
+import { AreaRows, lowEndLine, ReadinessBlock } from '../../components/youReadiness';
+import { FieldText, headDate, RunningHead } from '../../components/fieldguide';
+import { BadgeShelf, HERBARIUM, SHELF_SLOTS } from '../../components/herbarium';
 import { lastPressed } from '../../engine/fieldGuide';
-import { FadeIn, useGrowth, useScreenFocus } from '../../components/motion';
+import { FadeIn, useGrowth, useScreenFocus, type Growth } from '../../components/motion';
 import { creditSubtitle } from '../../components/help';
 import { AccountSection } from '../../components/account';
 import { BoardRow } from '../../components/board';
 import { CLOUD } from '../../cloud/flag';
 import { MindsetGrowthCard } from '../../components/moments';
-import { BadgeIcon, Bookmark, ICON_STROKE, Leaf, LifeBuoy, NotebookPen, RotateCcw, Settings, Share2, Sprout } from '../../components/icons';
+import { BadgeIcon, Bookmark, ChevronRight, Crosshair, Gauge, ICON_STROKE, Leaf, LifeBuoy, NotebookPen, RotateCcw, Settings, Share2, Sprout } from '../../components/icons';
+import { CardHead, HubCard } from '../../components/groveHub';
+import { MiniReadyRing, StatGrid, StatTile, YourPlantCard } from '../../components/groveYou';
 import { ShareProgressSheet } from '../../components/shareCard';
 import { LivePlant } from '../../components/plant/LivePlant';
 import { growthShort, plantCallName } from '../../engine/plant';
+import { youStreakRow, youSummary } from '../../engine/groveYou';
+import { accuracyTile, twigWeek } from '../../engine/groveToday';
+import { SETTINGS_ROW_NOTE, YouSummaryLine } from '../../components/youTop';
 import { usePlantView } from '../../lib/plant';
-import { Button, EmptyState, Enter, ICON_SIZE, InviteRow, Lead, ListRow, Screen, Section, T, Trail } from '../../components/ui';
+import { Button, EmptyState, Enter, ICON_SIZE, InviteRow, Lead, ListRow, Screen, T, useFontScale } from '../../components/ui';
 import { pacingStats, pacingStatsLine, spokenMin } from '../../engine/pace';
 import { mockSubtitle } from '../../components/readinessReport';
-import { readinessRange } from '../../engine/readinessRange';
+import { RANGE_MIN_ANSWERS, readinessRange, type ReadinessRange } from '../../engine/readinessRange';
 import { mockPct } from '../../engine/readinessReport';
-import { BAND_MIN_ANSWERS, BANDS_LINE, domainFigure, STUDY_BAR_LINE } from '../../engine/domainBand';
+import { BAND_MIN_ANSWERS, BANDS_LINE, domainFigure } from '../../engine/domainBand';
 import { dayKey } from '../../engine/streak';
-import { guardedStart, reviewSubtitle, startReview } from '../../lib/sessions';
+import { FOCUS_SET_SIZE, guardedStart, reviewSubtitle, startFocusPractice, startReview } from '../../lib/sessions';
 import { caseEarnedCount } from '../../engine/badgeCatalog';
 import { useNewBadge } from '../../lib/badges';
 import { backfillLine, seeBackfill } from '../../lib/milestones';
@@ -95,7 +108,7 @@ import { dailyMinutesOf, examDateOf, useSettings } from '../../store/settings';
 import { StudyProfile } from '../../components/studyProfile';
 import { firstStudyDay, nameInitial, profileLines } from '../../engine/studyProfile';
 import { FAMILIARITY_INFO } from '../../engine/fit';
-import { motion, space } from '../../theme/tokens';
+import { LARGE_TEXT, motion, space } from '../../theme/tokens';
 import { useTheme } from '../../theme/useTheme';
 
 /**
@@ -108,15 +121,18 @@ const openNameEditor = () => {
   router.push({ pathname: '/settings', params: { open: 'name' } });
 };
 
-/** The herbarium (the route keeps its old name, so links and Results still work). */
+/** The badges screen (the route keeps its old name, so links and Results still work). */
 const openHerbarium = () => router.push('/milestones');
 
 /** When You's rings have finished growing (five arcs, outer first 60 ms apart, each over `grow`): the plant breathes after. */
 const RINGS_SETTLED_MS = motion.dur.grow + 4 * motion.stagger.stat;
 
+/** A day key ("2026-10-31") at local noon, for its date words in the head (the key follows the day). */
+const dayStart = (key: string) => new Date(`${key}T12:00:00`).getTime();
+
 export default function You() {
   const { c } = useTheme();
-  const { cert, readiness, progress, streak, dueCount } = useActiveCert();
+  const { cert, readiness, progress, streak, dueCount, daysLeft } = useActiveCert();
   // One quiet line on pacing across timed mocks (engine/pace.ts; untimed mocks never count).
   const pacingLine = pacingStatsLine(pacingStats(progress.mocks));
   const range = readinessRange(cert, readiness);
@@ -132,13 +148,15 @@ export default function You() {
   const { dueItems: creditItems } = useReports();
   // Share card: the study days come from the saved streak (last 14 study days).
   const recentDays = useProgress((s) => s.streak.recentDays);
+  // C2: the last study day too, so this week's count matches Today's twig (it reads both).
+  const lastDay = useProgress((s) => s.streak.lastDay);
   // The day the sheet was opened (read in the tap handler, not during render). null = closed.
   const [shareDay, setShareDay] = useState<string | null>(null);
   // Mobile 1.10: every badge the case shows as earned (a kept key it doesn't show never counts), and the "new" dot.
   const badgeCount = caseEarnedCount(progress.milestones?.earned);
   // Mobile 1.51: the herbarium row's newest specimens, from the saved keys alone (worked out again only when they change).
   const earnedKeys = progress.milestones?.earned;
-  const pressed = useMemo(() => lastPressed(earnedKeys, cert.domains), [earnedKeys, cert.domains]);
+  const pressed = useMemo(() => lastPressed(earnedKeys, cert.domains, SHELF_SLOTS), [earnedKeys, cert.domains]);
   const newBadge = useNewBadge();
   const badgesHidden = useSettings((s) => s.badgesHidden);
   // The back-fill line shows ONCE (code review): kept in state for this
@@ -176,7 +194,6 @@ export default function You() {
   // The same object while the look is unchanged: the memoised plant skips re-rendering (performance, 1.15.x).
   const lookArt = plant.look?.art;
   const rowLook = useMemo(() => (lookArt ? { ...lookArt, keepsakes: [] } : undefined), [lookArt]);
-  const { isDark } = useTheme();
 
   // Mobile 1.44: "Your study profile", from the learner's own choices and study only.
   // Today's day, read again whenever You comes into view (render stays pure), so "Exam 14 Feb" drops off after the day.
@@ -225,15 +242,59 @@ export default function You() {
     [displayName, certName, since, examDate, minutes, familiarity, today],
   );
 
+  // ── Grove You C2: the summary sentence, its Practice button and the stats' words ──
+  // Presentation only: every number is one the app already works out (engine/groveYou.ts).
+  // This week's study days, Monday first: the same count as Today's twig (the streak keeps the last 14 days).
+  const studiedThisWeek = useMemo(
+    () => twigWeek([...(recentDays ?? []), ...(lastDay ? [lastDay] : [])], dayStart(today)).filter((d) => d.on).length,
+    [recentDays, lastDay, today],
+  );
+  // "Focus next": the same area Today and Practice pick, so the three never disagree.
+  const focus = cert.domains.find((d) => d.id === readiness.focusDomainId) ?? null;
+  const topLine = youSummary({ studyDaysThisWeek: studiedThisWeek, range, focusShort: focus?.short ?? null, answered, daysLeft });
+  // The streak row follows Today's twig (DECISIONS 3); accuracy says "Too few yet" under 30 answers (DECISIONS 1).
+  const streakRow = youStreakRow(progress.milestones?.days ?? 0, streak, studiedThisWeek);
+  const accuracyWords = accuracyTile(answered, mastered);
+  // The board's line under the streak: this week's study days (the streak tile's second line).
+  const weekLine = `${studiedThisWeek} ${studiedThisWeek === 1 ? 'study day' : 'study days'} this week`;
+
+  // The Estimated readiness card's words (PHASE4.md 7.14 item 5): before the first range, how many of
+  // the 40 answers are in; the ring shows the same count as dots.
+  const towardRange = RANGE_MIN_ANSWERS - (range.enough ? 0 : range.needed);
+  const plantArt = plant.plant ? (
+    // Mobile 1.14: one slow breath the first time You comes into view this session, then still.
+    <LivePlant
+      species={plant.plant.species}
+      stage={plant.plant.growth}
+      organs={plant.scales}
+      quietLook={!plant.face}
+      resting={plant.resting}
+      size={60}
+      // The card is forest in both themes, so the plant takes its dark palette (as in Today's ring).
+      theme="dark"
+      lod="small"
+      fit
+      // At this size keepsakes would shrink the plant to fit them: the card shows the plant and its colours.
+      look={rowLook}
+      mood={plant.look?.mood}
+      breathe="you"
+      // One thing moves at a time: the breath waits until the areas have grown.
+      breatheDelay={rings.play ? RINGS_SETTLED_MS : 0}
+    />
+  ) : null;
+
   return (
     <Screen>
       <Enter i={0}>
-        {/* Mobile 1.51 (Field Guide): the running head says where you are; Settings is its one action. */}
+        {/* Grove Phase 1: the date (said in full) and the kit's 44pt Settings button, the head's one action. */}
         <RunningHead
-          section="Field record · You"
+          section={headDate(dayStart(today)).shown}
+          sectionLabel={headDate(dayStart(today)).spoken}
           action={{
             label: 'Settings',
             hint: 'Exam date, reminders and more',
+            boxed: true,
+            // Opens the Settings screen (Settings is its own screen; the row near the end of You opens it too).
             onPress: () => router.push('/settings'),
             icon: (col) => <Settings size={ICON_SIZE.row} color={col} strokeWidth={ICON_STROKE} />,
           }}
@@ -242,107 +303,102 @@ export default function You() {
         <View style={{ marginTop: space.sm }}>
           <StudyProfile ref={profileRef} lines={profile} initial={nameInitial(displayName)} onPress={openNameEditor} />
         </View>
+        {/* Grove You C2 (kept in Phase 4): the week in one sentence and the next step. */}
+        <YouSummaryLine summary={topLine} />
+        {focus && (
+          <Button
+            label={`Practice ${focus.short}`}
+            accessibilityHint={`Starts ${FOCUS_SET_SIZE} questions in ${focus.name}`}
+            icon={(col) => <ChevronRight size={18} color={col} strokeWidth={ICON_STROKE} />}
+            // The same set as Practice's focus row (lib/sessions.ts startFocusPractice).
+            onPress={() => guardedStart(() => startFocusPractice(cert.id, focus), () => router.push('/session'))}
+            style={{ alignSelf: 'flex-start', maxWidth: '100%', marginTop: space.md, paddingHorizontal: space.lg }}
+          />
+        )}
       </Enter>
 
       <Enter i={1}>
-        {/* Readiness first (mobile 1.21): a tracked kicker, and its action opens the report. */}
-        <View style={{ flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between', alignItems: 'center', marginTop: space.lg }}>
-          {/* One kicker word on You and Today (UX review O9). */}
-          <FieldText v="head" accessibilityRole="header">Estimated readiness</FieldText>
-          <Button
-            kind="ghost"
-            label="See report"
-            // WCAG 2.5.3: the spoken name starts with the visible words.
-            accessibilityLabel="See report, your readiness report"
-            accessibilityHint="Your mock trend, each domain side by side, and what would raise your low end"
-            onPress={() => router.push('/readiness')}
-            style={{ marginRight: -space.sm }}
+        {/* Grove Phase 4 (the 04 board): the forest "Your plant" card, in place of the small chip. It opens Your
+            plant, or the picker with no plant yet. Settings → Show my plant off hides it. */}
+        {plant.plant ? (
+          <YourPlantCard
+            title={plantCallName(plant.plant)}
+            line={`${growthShort(plant.plant.growth)} · never wilts`}
+            spoken={`Your plant: ${plant.label}`}
+            hint="Opens your plant"
+            onPress={() => router.push('/plant')}
+            art={plantArt}
           />
-        </View>
-        {/* Mobile 1.51 (Field Guide): the range on a scale bar with a tick at the study bar and its words
-            built in, the study-bar line, then the areas on one scale in a plate (components/youReadiness.tsx). */}
-        <ReadinessBlock range={range} growth={rangeGrowth} />
-        <T v="meta" style={{ marginTop: space.md }}>{STUDY_BAR_LINE}</T>
-        <View style={{ marginTop: space.xl }}>
-          <AreaRows cert={cert} readiness={readiness} ups={sinceLook ? ups : undefined} play={sinceLook ? 'growth' : rings.play} run={rings.run} />
-        </View>
-        {/* What went up since the last look, said once under the areas (mobile 1.24); the rows' labels hold the figures. */}
-        {changeLine && (
-          <FadeIn rise={false} dur="select" delay={motion.dur.select + RINGS_SETTLED_MS}>
-            <T v="caption" color={c.accentText} style={{ marginTop: space.md }}>{changeLine}</T>
-          </FadeIn>
-        )}
-        {/* A number shows from 30 answers in an area: said once while any area is still thin. */}
-        {anyThin && <T v="meta" style={{ marginTop: space.sm }}>{BANDS_LINE}</T>}
-        {/* Mobile 1.51: the badges' way in, right under the plate (the herbarium; Settings → Show badges off hides it). */}
-        {!badgesHidden && (
-          <View style={{ marginTop: space.lg }}>
-            <HerbariumEntry pressed={pressed} count={badgeCount} newBadge={newBadge} onPress={openHerbarium} />
-          </View>
-        )}
+        ) : plant.shown ? (
+          <YourPlantCard
+            title="Pick your plant"
+            line="Grows with your study, never wilts"
+            spoken="Your plant: pick your plant. It grows only with your study."
+            hint="Opens the plant picker"
+            onPress={() => router.push('/plant-pick')}
+            art={<Sprout size={32} color={c.onForest} strokeWidth={ICON_STROKE} />}
+          />
+        ) : null}
+
+        {/* The stats as the board's four tiles, two by two (one column at large text). */}
+        <StatGrid testID="you-stats">
+          <StatTile key="answered" label="Answered" value={String(answered)} spoken={String(answered)} roll={statRoll(0, String(stats.from[0]))} />
+          <StatTile key="correct" label="Correct" value={String(mastered)} spoken={String(mastered)} />
+          {accuracyWords.num ? (
+            <StatTile key="accuracy" label="Accuracy" value={String(accuracy)} pct spoken={`${accuracy} percent`} roll={statRoll(1, String(stats.from[1]))} />
+          ) : (
+            // Under 30 answers a percentage has not earned its precision (DECISIONS 1): words, and when it shows.
+            <StatTile key="accuracy" label="Accuracy" word={accuracyWords.shown} note={accuracyWords.hint ?? undefined} spoken={accuracyWords.spoken.replace(/^Accuracy, /, '')} />
+          )}
+          {streakRow.count ? (
+            <StatTile
+              key="streak"
+              label={streakRow.label}
+              value={streakRow.value}
+              unit={streakRow.unit}
+              note={weekLine}
+              spoken={`${streakRow.spoken}. ${weekLine}`}
+              color={c.clay}
+              roll={statRoll(2, String(stats.from[2]))}
+            />
+          ) : streakRow.word ? (
+            // No streak yet: an invitation, never a "0" that reads as a failure.
+            <StatTile key="streak" label={streakRow.label} word={streakRow.word} spoken={streakRow.spoken} color={c.clay} />
+          ) : (
+            // From study day 14 (or a streak under 2 after the first days): this week's study days, as on Today.
+            <StatTile key="streak" label={streakRow.label} value={streakRow.value} unit={streakRow.unit} spoken={streakRow.spoken} />
+          )}
+        </StatGrid>
+        <T v="meta" style={{ marginTop: space.sm }}>Each question counts once, at your latest try.</T>
       </Enter>
 
-      <Enter i={2} style={{ marginTop: space.xl }}>
-        {/* Mobile 1.51 (Field Guide): ruled label rows, a tracked key and a serif value, never tiles. */}
-        <SpecimenLabel testID="you-stats">
-          <SpecimenRow label="Answered" value={String(answered)} roll={statRoll(0, String(stats.from[0]))} />
-          {answered ? (
-            <SpecimenRow label="Accuracy" value={String(accuracy)} pct roll={statRoll(1, String(stats.from[1]))} />
-          ) : (
-            <SpecimenRow label="Accuracy" word="Not yet" spoken="not yet, answer a question first" />
-          )}
-          {streak > 0 ? (
-            <SpecimenRow label="Streak" value={String(streak)} unit={streak === 1 ? 'day' : 'days'} color={c.clay} roll={statRoll(2, String(stats.from[2]))} />
-          ) : (
-            // No streak yet (or a new start): an invitation, never a "0" that reads as a failure.
-            <SpecimenRow label="Streak" word="Starts today" spoken="starts today, with your first answer" color={c.clay} />
-          )}
-        </SpecimenLabel>
-        {/* Two "Accuracy" stats in the app count different things (C8): say what this one counts.
-            Mobile 1.39: only when the rings' "Percentages count your latest try…" line is not already
-            on screen two blocks up (that one covers this percentage too); never both. */}
-        {/* Mobile 1.43: the areas' caption ("Right on your latest tries") already says what the percents count. */}
-        {/* Your plant, below the stats (decided 15 Oct 2026): it never leads a study screen. */}
-        {(plant.plant || plant.shown) && (
-          <View style={{ marginTop: space.lg }}>
-            {plant.plant ? (
-              // The plant opens Your plant; its growth reads in words beside it ("growth", never "stage").
-              <ListRow
-                lead={
-                  // Mobile 1.14: one slow breath the first time You comes into view this
-                  // session, once the rings have grown (one thing moves at a time), then still.
-                  <LivePlant
-                    species={plant.plant.species}
-                    stage={plant.plant.growth}
-                    organs={plant.scales}
-                    quietLook={!plant.face}
-                    resting={plant.resting}
-                    size={64}
-                    theme={isDark ? 'dark' : 'light'}
-                    // At 64pt keepsakes would shrink the plant to fit them: the row shows the plant and its colours.
-                    look={rowLook}
-                    mood={plant.look?.mood}
-                    breathe="you"
-                    breatheDelay={rings.play ? RINGS_SETTLED_MS : 0}
-                  />
-                }
-                title={plantCallName(plant.plant)}
-                subtitle={growthShort(plant.plant.growth)}
-                accessibilityLabel={`${plant.label} Your plant.`}
-                accessibilityHint="Opens your plant"
-                onPress={() => router.push('/plant')}
-                last
-              />
-            ) : plant.shown ? (
-              <ListRow
-                icon={<Sprout size={ICON_SIZE.row} color={c.accentText} strokeWidth={ICON_STROKE} />}
-                title="Plant yours"
-                subtitle="Grows only with your study"
-                onPress={() => router.push('/plant-pick')}
-                last
-              />
-            ) : null}
-          </View>
+      <Enter i={2}>
+        <ReadinessCard range={range} towardRange={towardRange} growth={rangeGrowth} />
+        {/* The areas on one scale, in one card with its Report link and key (components/youReadiness.tsx). */}
+        <View style={{ marginTop: space.lg }}>
+          <AreaRows cert={cert} readiness={readiness} ups={sinceLook ? ups : undefined} play={sinceLook ? 'growth' : rings.play} run={rings.run} onReport={() => router.push('/readiness')}>
+            {/* What went up since the last look, said once under the areas (mobile 1.24); the rows' labels hold the figures. */}
+            {changeLine && (
+              <FadeIn rise={false} dur="select" delay={motion.dur.select + RINGS_SETTLED_MS}>
+                <T v="caption" color={c.accentText} style={{ marginTop: space.sm }}>{changeLine}</T>
+              </FadeIn>
+            )}
+            {/* A number shows from 30 answers in an area: said once while any area is still thin. */}
+            {anyThin && <T v="meta" style={{ marginTop: space.sm }}>{BANDS_LINE}</T>}
+          </AreaRows>
+        </View>
+        {/* The badges, as one card (Settings → Show badges off hides it). */}
+        {!badgesHidden && (
+          <HubCard testID="you-badges" style={{ marginTop: space.lg }}>
+            <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', columnGap: space.md }}>
+              <View accessible accessibilityRole="header" accessibilityLabel={HERBARIUM}>
+                <T v="title">{HERBARIUM}</T>
+              </View>
+              <Button kind="ghost" label="All badges" accessibilityHint="Opens your badges" onPress={openHerbarium} style={{ marginRight: -space.sm }} />
+            </View>
+            {/* The kit's badge shelf (PHASE4 7.14 item 7): the newest pressed first, then empty slots, and one line. */}
+            <BadgeShelf pressed={pressed} count={badgeCount} newBadge={newBadge} onPress={openHerbarium} />
+          </HubCard>
         )}
         {growth.show && (
           <View style={{ marginTop: space.xl }}>
@@ -363,6 +419,8 @@ export default function You() {
           mocks={progress.mocks}
           pacingLine={pacingLine}
           creditItems={creditItems}
+          focus={focus}
+          hasAnswers={answered > 0}
           // The state setter is stable, so the memoised lists never re-render for it.
           onShare={setShareDay}
         />
@@ -391,9 +449,9 @@ export default function You() {
 }
 
 /**
- * You's lower half: Study tools, Mock exams, Help and the trademark line.
- * Its props are primitives and the store's own arrays, so it re-renders only
- * when one of them changes (never on focus).
+ * You's lower half, as the board's cards: Study tools, Your progress, Mock exams, then Help and feedback,
+ * Settings and the trademark line. Its props are primitives and the store's own arrays, so it re-renders
+ * only when one of them changes (never on focus).
  */
 const YouLists = memo(function YouLists({
   cert,
@@ -404,8 +462,12 @@ const YouLists = memo(function YouLists({
   mocks,
   pacingLine,
   creditItems,
+  focus,
+  hasAnswers,
   onShare,
 }: {
+  /** Any answers yet (the focus row says why only then). */
+  hasAnswers: boolean;
   /** Opens the share sheet for the day it was tapped. */
   onShare: (day: string) => void;
   cert: Certification;
@@ -416,32 +478,36 @@ const YouLists = memo(function YouLists({
   mocks: readonly MockResult[];
   pacingLine: string | null;
   creditItems: number;
+  /** The focus area (readiness.focusDomainId), or null before there is one. */
+  focus: Certification['domains'][number] | null;
 }) {
   const { c } = useTheme();
   const icon = (G: typeof Settings) => <G size={ICON_SIZE.row} color={c.accentText} strokeWidth={ICON_STROKE} />;
   // A mini mock is a third of the exam, as on Practice.
   const miniMock = Math.round(cert.exam.questions / 3);
+  const helpLine = creditItems ? creditSubtitle(creditItems) : 'Questions, reports, what’s new';
   return (
     <>
-        {summary && (
-          // Once, after the launch back-fill: one calm line, not a burst of moments.
-          // An InviteRow (mobile 1.21): an award is not the coach's voice, so no green rule or italic.
-          // Only the words are grouped for screen readers; the button stays its own stop (UX review H1).
-          <View style={{ marginTop: space.xl }}>
-            <InviteRow
-              icon={icon(BadgeIcon)}
-              title="From your study so far"
-              body={summary}
-              actions={<Button kind="ghost" label="See your badges" onPress={() => router.push('/milestones')} />}
-            />
-          </View>
-        )}
-        <Section title="Study tools" style={{ marginTop: space.xl }} />
-        {/* The review set: the same line as Practice ("16 ready today · oldest first"). */}
+      {summary && (
+        // Once, after the launch back-fill: one calm line, not a burst of moments.
+        // An InviteRow (mobile 1.21): an award is not the coach's voice, so no green rule or italic.
+        // Only the words are grouped for screen readers; the button stays its own stop (UX review H1).
+        <View style={{ marginTop: space.xl }}>
+          <InviteRow
+            icon={icon(BadgeIcon)}
+            title="From your study so far"
+            body={summary}
+            actions={<Button kind="ghost" label="See your badges" onPress={() => router.push('/milestones')} />}
+          />
+        </View>
+      )}
+      {/* Study tools (the board's card): each row says what a tap opens; counts sit at the end. */}
+      <HubCard testID="study-tools" style={{ marginTop: space.lg }}>
+        <CardHead title="Study tools" />
         <ListRow
           icon={icon(RotateCcw)}
           title="Questions to revisit"
-          // Premium pass 4.6: the subtitle names the set a tap starts; no trailing queue total.
+          // The review set: the same line as Practice ("16 ready today · oldest first"); never a queue total.
           subtitle={reviewSubtitle(dueCount)}
           accessibilityLabel={`Questions to revisit, ${dueCount ? reviewSubtitle(dueCount).replace(' · ', ', ') : 'all caught up'}`}
           onPress={() => guardedStart(() => startReview(cert.id), () => router.push('/session'), () => router.push('/caught-up'))}
@@ -457,51 +523,163 @@ const YouLists = memo(function YouLists({
         <ListRow
           icon={icon(Bookmark)}
           title="Saved questions"
-          subtitle="Your own revision set"
-          trailing={saved ? <Trail value={String(saved)} unit="saved" /> : undefined}
+          subtitle={saved ? `${saved} saved · your own revision set` : 'Your own revision set'}
           accessibilityLabel={`Saved questions, ${saved} saved`}
           onPress={() => router.push('/saved')}
         />
-        {/* Mobile 1.51: the badges' way in is the Herbarium row under the areas (it holds the Field notes
-            sheet and its "See game levels" link). With badges hidden in Settings, Field notes has its own row here. */}
+        {/* Mobile 1.51: with badges hidden in Settings, Field notes has its own row here (the badges card holds it otherwise). */}
         {badgesHidden && (
-          <ListRow
-            icon={icon(Leaf)}
-            title="Field notes"
-            subtitle="Your level in each game"
-            accessibilityLabel="Field notes. Your level in each game"
-            onPress={() => router.push('/field-notes')}
-          />
+          <ListRow icon={icon(Leaf)} title="Field notes" subtitle="Your level in each game" accessibilityLabel="Field notes. Your level in each game" onPress={() => router.push('/field-notes')} />
         )}
-        {/* Share progress as a row (it was a full-width button mid-screen). */}
         <ListRow
           icon={icon(Share2)}
           title="Share progress"
           subtitle="A card with one honest number"
+          accessibilityLabel="Share progress, A card with one honest number"
           accessibilityHint="Opens a preview of a progress card you can share"
           onPress={() => onShare(dayKey(Date.now()))}
           last
         />
+      </HubCard>
 
-        <Section title="Mock exams" />
+      <ProgressCard cert={cert} focus={focus} hasAnswers={hasAnswers} />
+      <MocksCard mocks={mocks} miniMock={miniMock} pacingLine={pacingLine} />
+      <HelpCards helpLine={helpLine} />
+      <T v="meta" center style={{ marginTop: space.xl }}>{cert.trademarkNotice}</T>
+    </>
+  );
+});
+
+
+/** The Estimated readiness card (PHASE4.md 7.14 item 5). Its own memo: it redraws only when the range does. */
+const ReadinessCard = memo(function ReadinessCard({ range, towardRange, growth }: { range: ReadinessRange; towardRange: number; growth?: Growth }) {
+  const { c } = useTheme();
+  const rangeGrowth = growth;
+  // From text scale 1.3 the header stacks (PHASE4 section 11): the ring, then the kicker and its words
+  // at full width, and "See report" moves to its own line under the range. Side by side, the kicker
+  // was squeezed to a few letters a line at 200%.
+  const large = useFontScale() >= LARGE_TEXT;
+  const seeReport = (
+    <Button
+      kind="ghost"
+      label="See report"
+      // WCAG 2.5.3: the spoken name starts with the visible words.
+      accessibilityLabel="See report, your readiness report"
+      accessibilityHint="Your mock trend, each domain side by side, and what would raise your low end"
+      onPress={() => router.push('/readiness')}
+      style={large ? { alignSelf: 'flex-start', marginLeft: -space.sm } : { marginRight: -space.sm }}
+    />
+  );
+  // Estimated readiness, as one card: the small ring, the kicker, the range (on its scale bar) or
+  // "Not enough data yet" with the count toward the first range, and the report link.
+  return (
+    <HubCard testID="you-readiness" style={{ marginTop: space.lg, paddingBottom: space.md }}>
+      <View style={large ? { alignItems: 'flex-start', gap: space.sm } : { flexDirection: 'row', alignItems: 'center', gap: space.md }}>
+        <MiniReadyRing answered={towardRange} range={range.enough ? { low: range.low, high: range.high } : null} />
+        <View style={large ? { alignSelf: 'stretch' } : { flex: 1, minWidth: 0 }}>
+          {/* One kicker word on You and Today (UX review O9). */}
+          <FieldText v="head" accessibilityRole="header">Estimated readiness</FieldText>
+          {!range.enough && (
+            // Short text (Sky, 5 Nov): one line. No scale bar is drawn before a range, so the study-bar
+            // words wait until there is one (they were said twice here).
+            <View accessible accessibilityLabel={`Not enough data yet. ${towardRange} of ${RANGE_MIN_ANSWERS} answers for your first range.`}>
+              <T v="title" style={{ marginTop: 2 }}>Not enough data yet</T>
+              <T v="meta">{`${towardRange} of ${RANGE_MIN_ANSWERS} answers for your first range.`}</T>
+            </View>
+          )}
+        </View>
+        {!large && seeReport}
+      </View>
+      {/* Mobile 1.51: the range on a scale bar with a tick at the study bar and its words built in. */}
+      {range.enough && <ReadinessBlock range={range} growth={rangeGrowth} />}
+      {/* Large text: "See report" on its own line, under the range (or under "Not enough data yet"). */}
+      {large && seeReport}
+      {/* Grove panel Q1: once there is a range, the low end is defined once, before the study-bar line. */}
+      {/* Short text (Sky, 5 Nov): the area line ("Each area has its own 70% line") went; the areas
+          card's key says it, one card below. */}
+      {range.enough && <T v="meta" color={c.ink} style={{ marginTop: space.md }}>{lowEndLine(range.low)}</T>}
+    </HubCard>
+  );
+});
+
+/** Your progress (the board's card), mapped to routes the phone has. */
+const ProgressCard = memo(function ProgressCard({ cert, focus, hasAnswers }: { cert: Certification; focus: Certification['domains'][number] | null; hasAnswers: boolean }) {
+  const { c } = useTheme();
+  const icon = (G: typeof Settings) => <G size={ICON_SIZE.row} color={c.accentText} strokeWidth={ICON_STROKE} />;
+  // Your progress (the board's card), mapped to routes the phone has: the report, and the focus area's set.
+  return (
+      <HubCard testID="you-progress" style={{ marginTop: space.lg }}>
+        <ListRow
+          icon={icon(Gauge)}
+          title="Your progress"
+          subtitle="Your range, charts and mock trend"
+          accessibilityHint="Opens your readiness report"
+          onPress={() => router.push('/readiness')}
+          last={!focus}
+        />
+        {focus && (
+          <ListRow
+            icon={<Crosshair size={ICON_SIZE.row} color={c.clay} strokeWidth={ICON_STROKE} />}
+            title={focus.short}
+            // Why this area, once there are answers to judge by (engine/groveYou.ts GAIN_MOST); before that, "Focus next".
+            subtitle={hasAnswers ? 'Where you’ll gain most' : 'Focus next'}
+            accessibilityHint={`Starts ${FOCUS_SET_SIZE} questions in ${focus.name}`}
+            onPress={() => guardedStart(() => startFocusPractice(cert.id, focus), () => router.push('/session'))}
+            last
+          />
+        )}
+      </HubCard>
+  );
+});
+
+/** Mock exams: the history (or "No mocks yet" and its start), then the pacing line. */
+const MocksCard = memo(function MocksCard({ mocks, miniMock, pacingLine }: { mocks: readonly MockResult[]; miniMock: number; pacingLine: string | null }) {
+  return (
+      <HubCard testID="you-mocks" style={{ marginTop: space.lg, paddingBottom: space.md }}>
+        <CardHead title="Mock exams" />
         <MockHistory mocks={mocks} miniMock={miniMock} />
         {/* Pacing across timed mocks only (untimed ones are left out). */}
         {pacingLine && <T v="meta" style={{ marginTop: space.md }}>{pacingLine}</T>}
+      </HubCard>
+  );
+});
 
-        {/* Cloud builds only: its own "Account" section, "Sync across devices" / "Account and sync" (one of the two ways in). */}
-        {CLOUD && <AccountSection />}
-        {/* One entry to Help and feedback (mobile 1.7); the full list is on that screen. */}
-        <Section title="Help and feedback" />
+/** Account (cloud builds), Help and feedback, and the Settings row, each in its own card. */
+const HelpCards = memo(function HelpCards({ helpLine }: { helpLine: string }) {
+  const { c } = useTheme();
+  const icon = (G: typeof Settings) => <G size={ICON_SIZE.row} color={c.accentText} strokeWidth={ICON_STROKE} />;
+  return (
+    <>
+      {/* Cloud builds only: its own "Account" section, "Sync across devices" / "Account and sync" (one of the two ways in). */}
+      {CLOUD && <AccountSection />}
+      {/* One entry to Help and feedback (mobile 1.7), in its own card; the full list is on that screen. */}
+      <HubCard testID="you-help" style={{ marginTop: space.lg }}>
+        <CardHead title="Help and feedback" />
         {/* Cloud builds only: the feedback board (Phase 8). */}
         {CLOUD && <BoardRow />}
         <ListRow
           icon={icon(LifeBuoy)}
           title="Get help or send feedback"
-          subtitle={creditItems ? creditSubtitle(creditItems) : 'Common questions, reports and what’s new'}
+          subtitle={helpLine}
+          accessibilityLabel={`Get help or send feedback, ${helpLine}`}
           onPress={() => router.push('/help')}
           last
         />
-        <T v="meta" center style={{ marginTop: space.xl }}>{cert.trademarkNotice}</T>
+      </HubCard>
+      {/* Grove You C2 (owner: Settings clearly separate from You): one row near the end that opens the
+          same Settings screen as the cog in the head. Its line says what lives there. */}
+      <HubCard style={{ marginTop: space.lg }}>
+        <ListRow
+          testID="you-settings-row"
+          icon={icon(Settings)}
+          title="Settings"
+          subtitle={SETTINGS_ROW_NOTE}
+          accessibilityLabel={`Settings, ${SETTINGS_ROW_NOTE}`}
+          accessibilityHint="Opens Settings"
+          onPress={() => router.push('/settings')}
+          last
+        />
+      </HubCard>
     </>
   );
 });
@@ -512,7 +690,7 @@ const MockHistory = memo(function MockHistory({ mocks, miniMock }: { mocks: read
     <>
       {mocks.length === 0 ? (
         <>
-          <EmptyState compact title="No mocks yet" body="A mini mock shows how the exam feels. Start one whenever you like." />
+          <EmptyState compact title="No mocks yet" body="A mini mock shows how the exam feels." />
           {/* An experienced learner shouldn't have to wait for Today (ui.md Y4): the same start sheet as Practice. */}
           <Button
             kind="ghost"

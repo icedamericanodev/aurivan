@@ -22,7 +22,7 @@
   - The learner sees at most one paywall they didn't ask for in any 7 days.
   - Copy never mentions streaks, the plant, loss, countdowns or struck-through prices.
   - It shows the store's localised price, "one payment · 6 months · never renews", Restore, Terms, Privacy and the not-affiliated line.
-- **Beta testers' 6 months free.** A RevenueCat promotional entitlement tied to the signed-in account, running from Premium launch day plus 6 months and covering every course live in that window.
+- **Beta testers' 6 months free.** A RevenueCat promotional entitlement tied to the signed-in account, running from Premium launch day plus 6 months. **Owner decision 4 Nov 2026: CISA Premium only** (other certifications not included); it was "every course live in that window". Who qualifies: 14 days in the Android test, or at least one piece of feedback. Tracked in the Beta Desk (`docs/beta/BETA_DESK.md`).
   - No promo codes, no trials, and no code-entry box.
 - **Fairness.**
   - A 14-day refund with no questions asked, handled through support.
@@ -54,7 +54,8 @@
 4. **Owner must-do.** Talk to a Philippine tax adviser about BIR registration and tax on store payouts. Optionally, ask ISACA and ISC2 to confirm the product-name wording.
 
 ## Must-dos found by the compliance review (build time)
-- Product names lead with KaiSip or a generic course name and put the exam after "for", e.g. "KaiSip IT Audit course, 6-month access (for the CISA® exam)". No exam mark at the start of a name.
+- Product names lead with KaiSip or a generic course name and put the exam after "for", e.g. "KaiSip IT Audit course, 6 months (for the CISA® exam)" (53 characters). No exam mark at the start of a name.
+  - Google Play caps a subscription name at 55 characters and Apple caps an in-app purchase display name at 30 (store-compliance review, 30 Oct 2026; Play's limit was read through search results because support.google.com is blocked here). The earlier "6-month access" form was 59 characters, too long for Play. On iOS, use a short name such as "KaiSip IT Audit, 6 months".
 - No links, buttons or price comparisons in the app that point to web checkout or Ko-fi.
 - Store listing changes: remove "free to use during the beta" and "No data collected"; set IARC "allows purchases" to Yes.
 - terms.html gets a paid-terms section, and privacy.html adds RevenueCat.

@@ -5,13 +5,14 @@ const expoConfig = require('eslint-config-expo/flat');
 
 // Design-system guard (docs/mobile/DESIGN_SYSTEM.md, "Forest"):
 // screens and components pick a <T v="…"> variant and a palette token.
-// They never set their own font size, line height, font family or hex
-// colour. Only components/ui.tsx (and theme/) may do that.
+// They never set their own font size, line height, font family, weight,
+// tracking, italic or hex colour. Only components/ui.tsx (and theme/) may do
+// that (design-notes/grove/TYPE_SCALE.md section 3 guards).
 const DESIGN_SYSTEM_GUARD = [
   'error',
   {
-    selector: 'Property[key.name=/^(fontSize|lineHeight|fontFamily)$/]',
-    message: 'Use a <T v="…"> variant from components/ui.tsx instead of fontSize/lineHeight/fontFamily (see docs/mobile/DESIGN_SYSTEM.md).',
+    selector: 'Property[key.name=/^(fontSize|lineHeight|fontFamily|fontWeight|letterSpacing|fontStyle)$/]',
+    message: 'Use a <T v="…"> variant or role from components/ui.tsx instead of fontSize/lineHeight/fontFamily/fontWeight/letterSpacing/fontStyle (see design-notes/grove/TYPE_SCALE.md).',
   },
   {
     selector: 'Literal[value=/^#([0-9A-Fa-f]{3,4}|[0-9A-Fa-f]{6}|[0-9A-Fa-f]{8})$/]',

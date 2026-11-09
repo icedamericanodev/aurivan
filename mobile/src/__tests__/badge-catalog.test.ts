@@ -375,6 +375,15 @@ describe('Next for your exam', () => {
     const m = run(spread({ '1': 0.62 }), { 'first-foothold': T0 }, 'practice').best!;
     expect(nextLine(m)).toMatch(/^Next: Firm Footing · .+, \d+% → 70% · \d+ of 20 answered$/);
   });
+
+  it('polish round 1: the words after the comma are in sentence case ("…, not yet"), names and numbers kept', () => {
+    const m = run(spread({ '1': 0.62 }), { 'first-foothold': T0 }, 'practice').best!;
+    expect(nextLine({ ...m, name: 'Dress Rehearsal · 1 mock', detail: 'Not yet' })).toBe('Next: Dress Rehearsal · 1 mock, not yet');
+    expect(nextLine({ ...m, name: 'Took Root', detail: 'A topic took root' })).toBe('Next: Took Root, a topic took root');
+    expect(nextLine({ ...m, name: 'Firm Footing · IS Operations', detail: 'IS Operations first' })).toBe('Next: Firm Footing · IS Operations, IS Operations first');
+    expect(nextLine({ ...m, name: 'Ten Topics', detail: '3 of 10 topics clear' })).toBe('Next: Ten Topics, 3 of 10 topics clear');
+    expect(nextLine({ ...m, name: 'Ten Topics', detail: '' })).toBe('Next: Ten Topics');
+  });
 });
 
 describe('Study for this', () => {

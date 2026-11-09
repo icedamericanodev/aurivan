@@ -25,12 +25,12 @@ import { findNote, subtopicOfQuestion } from '../content/notes';
 import { findPrinciple } from '../content/principles';
 import { moveFocus } from '../lib/a11y';
 import { startFromIds, startMock } from '../lib/sessions';
-import { originalToDisplay } from '../engine/shuffle';
+import { displayToOriginal, originalToDisplay } from '../engine/shuffle';
 import { useProgress } from '../store/progress';
 import { useSession } from '../store/session';
 import SessionScreen from '../app/session';
 import { AnswerMore, SHEET_GONE_MS, STEM_RECAP_CHARS, StemRecap } from '../components/quiz';
-import { moreButton, moreRowLabels } from '../../jest/answerMore';
+import { moreButton, moreRowLabels, viaMore } from '../../jest/answerMore';
 
 jest.mock('@react-native-async-storage/async-storage', () =>
   jest.requireActual('@react-native-async-storage/async-storage/jest/async-storage-mock'),
@@ -116,7 +116,7 @@ afterEach(() => {
 });
 
 describe('after a miss: one way on, in the body', () => {
-  it('one "Go deeper" row (the lesson not done yet); no principle, note or report rows in the body', () => {
+  it('one "Go deeper" row (the lesson not done yet); no principle or note rows in the body; Report a problem is the source row link', () => {
     answer([full.q.id, other.id]);
     const deeper = hosts(/^Go deeper, /);
     expect(deeper).toHaveLength(1);
@@ -125,9 +125,10 @@ describe('after a miss: one way on, in the body', () => {
     expect(hosts(/^Read the principle/)).toHaveLength(0);
     expect(hosts(/^Read the note/)).toHaveLength(0);
     expect(hosts(/^Add a note$/)).toHaveLength(0);
-    expect(hosts(/^Report /)).toHaveLength(0);
-    // The source line stays, as text.
-    expect(allText()).toMatch(/Original · Reviewed /);
+    // Grove Phase 4 (4.2 step 7): the report is the source row's text link (and still in ⋯), never a row.
+    expect(hosts(/^Report /).map((n) => n.props.testID)).toEqual(['answer-report-link']);
+    // The source line stays.
+    expect(allText()).toMatch(/Original · Checked /);
   });
 
   it('with every lesson done, the one row is the note', () => {
@@ -164,14 +165,16 @@ describe('the ⋯ "More on this question" sheet', () => {
     expect(style.height).toBeGreaterThanOrEqual(48);
   });
 
-  it('holds the four rows in order after an answer, titled "More on this question"', () => {
+  it('holds the five rows in order after an answer, titled "More on this question"', () => {
     answer([full.q.id, other.id]);
     press('More on this question');
     expect(allText()).toContain('More on this question');
     const labels = moreRowLabels(root());
-    expect(labels.map((l) => l.split(':')[0])).toEqual(['Read the note', 'Read the principle', 'Add a note', 'Report a problem with this question']);
-    const report = root().findAll((n) => n.props.accessibilityLabel === 'Report a problem with this question' && typeof n.props.onPress === 'function')[0];
-    expect(report).toBeUndefined(); // the sheet is closed again
+    // Grove Phase 4 (PHASE4.md 4.2 step 2, 4.5): "Show all options" first.
+    expect(labels.map((l) => l.split(':')[0])).toEqual(['Show all options, with your pick and the best', 'Read the note', 'Read the principle', 'Add a note', 'Report a problem with this question']);
+    // The sheet is closed again: the only report entry left is the source row's own link.
+    const report = root().findAll((n) => n.props.accessibilityLabel === 'Report a problem with this question' && typeof n.props.onPress === 'function' && n.props.testID !== 'answer-report-link');
+    expect(report).toHaveLength(0);
   });
 
   it('before the answer is checked: only the report (the rest would give the answer away)', () => {
@@ -254,9 +257,13 @@ describe('the stem recap at the top of the answer (premium pass §2.1)', () => {
     const recap = root().findByType(StemRecap);
     const t = textOf(recap);
     expect(t.startsWith('Question')).toBe(true);
-    // Clamped to two lines while closed.
-    const stemText = recap.findAll((n) => n.props.children === long.stem && n.props.numberOfLines !== undefined);
+    // Closed: shortened at a whole word with one "…" (engine/textClip.ts), two lines kept as a safety stop.
+    const stemText = recap.findAll((n) => typeof n.props.children === 'string' && n.props.numberOfLines !== undefined);
     expect(stemText[0].props.numberOfLines).toBe(2);
+    const shown = stemText[0].props.children as string;
+    expect(shown.endsWith('…')).toBe(true);
+    expect(long.stem.replace(/\s+/g, ' ').startsWith(shown.slice(0, -1))).toBe(true);
+    expect(shown).not.toMatch(/\s…$/);
     const toggle = hosts(/^Show question$/)[0];
     expect(toggle.props.accessibilityState).toMatchObject({ expanded: false });
     const style = Object.assign({}, ...[toggle.props.style].flat(5).filter(Boolean));
@@ -289,5 +296,39 @@ describe('the stem recap at the top of the answer (premium pass §2.1)', () => {
     answer([withScenario.id, other.id]);
     expect(hosts(/^Question: /)[0].props.accessibilityLabel).toBe(`Question: ${withScenario.scenario} ${withScenario.stem}`);
     expect(hosts(/^Show question$/)).toHaveLength(1);
+  });
+});
+
+// Grove Phase 4 (PHASE4.md 4.2 step 2, 4.5 "must not be lost"): the answer card shows only the pick
+// and the best answer, so More keeps every option one tap away, read-only, in DISPLAY order.
+describe('More: Show all options', () => {
+  it('lists every option in display order, looked up by original letter, with the pick and the best marked', () => {
+    answer([full.q.id, other.id]);
+    const perm = useSession.getState().active!.perms[full.q.id];
+    const pick = (['A', 'B', 'C', 'D'] as const).find((l) => l !== full.q.correct && full.q.options[l])!;
+    viaMore(root(), 'Show all options');
+    const rows = root().findAll((n) => typeof n.type === 'string' && typeof n.props.testID === 'string' && n.props.testID.startsWith('all-options-'));
+    const shown = rows.map((n) => n.props.testID.replace('all-options-', ''));
+    expect(shown).toEqual(['A', 'B', 'C', 'D'].slice(0, perm.length));
+    for (const n of rows) {
+      const d = n.props.testID.replace('all-options-', '') as 'A';
+      const original = displayToOriginal(d, perm);
+      const text = full.q.options[original];
+      const label = n.props.accessibilityLabel as string;
+      expect(label.endsWith(`: ${text}`)).toBe(true);
+      if (original === full.q.correct) expect(label.startsWith(`${d}, best answer`)).toBe(true);
+      else if (original === pick) expect(label.startsWith(`${d}, your answer, not the best`)).toBe(true);
+      else expect(label).toBe(`${d}: ${text}`);
+    }
+    // Read-only: no option in the sheet can be tapped.
+    expect(root().findAll((n) => typeof n.props.testID === 'string' && n.props.testID.startsWith('all-options-') && typeof n.props.onPress === 'function')).toHaveLength(0);
+  });
+
+  it('is not offered before the answer is checked', () => {
+    startFromIds('cisa', [full.q.id, other.id], 'T');
+    act(() => {
+      r = create(<SessionScreen />);
+    });
+    expect(moreRowLabels(root()).some((l) => l.startsWith('Show all options'))).toBe(false);
   });
 });

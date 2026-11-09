@@ -209,7 +209,7 @@ describe('Today', () => {
     mockParams = { from: 'today' };
     mount(<PlantPick />);
     // It says so before the learner taps it (review decision).
-    expect(allText()).toContain('Not now also hides the plant row on Today. You can plant one from You.');
+    expect(allText()).toContain('Not now hides this on Today. Plant one any time from You.');
     press(/^Not now$/);
     expect(useProgress.getState().plantSettings?.promptHidden).toBe(true);
   });
@@ -258,13 +258,14 @@ describe('You', () => {
     mount(<You />);
     expect(allText()).toMatch(/Pico/);
     expect(allText()).toMatch(/Seed · growth 1 of 6/);
-    press(/^Pico, your cactus/);
+    // Grove You C2: the plant chip, its name said after the visible "Your plant".
+    press(/^Your plant: Pico, your cactus/);
     expect(router.push).toHaveBeenCalledWith('/plant');
   });
 
   it('no plant: "Plant yours"; hidden: nothing', () => {
     mount(<You />);
-    press(/^Plant yours/);
+    press(/^Your plant: pick your plant/); // Grove You C2: the plant chip (was the "Plant yours" row)
     expect(router.push).toHaveBeenCalledWith('/plant-pick');
     act(() => {
       r!.unmount();
@@ -273,7 +274,7 @@ describe('You', () => {
       useProgress.getState().setPlantSettings({ showPlant: false });
     });
     mount(<You />);
-    expect(allText()).not.toMatch(/Plant yours/);
+    expect(allText()).not.toMatch(/Pick your plant/); // Grove You C2: the plant chip
   });
 });
 
@@ -284,7 +285,8 @@ describe('Your plant', () => {
     const text = allText();
     expect(text).toMatch(/Ember/);
     expect(text).toMatch(/Seed · growth 1 of 6/);
-    expect(text).toMatch(/What grows it next/);
+    // Phase 4b: the forest panel says "Next" over the next growth's name; its heading is spoken in full.
+    expect(labels()).toContain('What grows it next: Sprout');
     expect(text).toMatch(/Answer 20 questions without a hint/);
     expect(new Set(labels().filter((l) => /^Domain \d, /.test(l))).size).toBe(5);
     expect(text).not.toMatch(BANNED);
@@ -315,7 +317,9 @@ describe('Your plant', () => {
     });
     mount(<YourPlant />);
     expect(byTestID('plant-rest')).toHaveLength(1);
-    expect(allText()).toMatch(/Reed is resting\. Pick up whenever you're ready\./);
+    // Phase 4b (PHASE4B 3.4): never "you're ready"; the tag says "Resting" beside the art.
+    expect(allText()).toMatch(/Reed is resting\. Pick up whenever you like\./);
+    expect(byTestID('plant-state-tag')).toHaveLength(1);
     expect(allText()).not.toMatch(/\d+ days/);
     expect(labels().join(' ')).toMatch(/Resting\./);
   });
@@ -349,7 +353,7 @@ describe('the picker', () => {
   });
     press(/^Plant it$/);
     expect(cp().plant).toMatchObject({ species: 'sunflower', name: 'Helio', growth: 1 });
-    expect(router.replace).toHaveBeenCalledWith('/plant');
+    expect(router.replace).toHaveBeenCalledWith({ pathname: '/plant', params: { planted: '1' } });
   });
 
   it('change species keeps every bit of growth; rename cleans the name', () => {
@@ -438,11 +442,14 @@ describe('PR #43 review fixes', () => {
   const tileWidth = () => root().findAll((n) => typeof n.type === 'string' && n.props.testID === 'species-oak')[0];
 
   it('UX H1: the picker takes three, two or one column from the measured width and text size', () => {
-    expect(pickColumns(353, 1)).toBe(3); // a 393 dp phone
-    expect(pickColumns(320, 1)).toBe(2); // a 360 dp phone: names never clip
-    expect(pickColumns(353, 1.15)).toBe(2);
+    // Grove Phase 4b (PHASE4B 4.3): three across; two from text scale 1.3 or under a 360pt phone; one from 2.
+    expect(pickColumns(361, 1)).toBe(3); // a 393pt phone
+    expect(pickColumns(343, 1)).toBe(3); // a 375pt phone
+    expect(pickColumns(328, 1)).toBe(3); // a 360pt phone
+    expect(pickColumns(288, 1)).toBe(2); // a 320pt phone: names never clip
+    expect(pickColumns(353, 1.15)).toBe(3);
     expect(pickColumns(353, 1.3)).toBe(2);
-    expect(pickColumns(353, 1.6)).toBe(1);
+    expect(pickColumns(353, 1.6)).toBe(2);
     expect(pickColumns(320, 2)).toBe(1);
     expect(pickColumns(200, 1)).toBe(1);
   });
@@ -498,14 +505,15 @@ describe('PR #43 review fixes', () => {
     expect(allText()).toMatch(/Left empty, it is “Your oak”/);
   });
 
-  it('Today: the plant’s name sits under it, inside the same tap target; the prompt sits below the day’s study', () => {
+  it('Today: the plant’s name is in its button’s words and in the line under the hero; the prompt sits below the day’s study', () => {
     setPlant(plantNew('oak', 'Kai', Date.now()));
     mount(<Today />);
     const button = byTestID('today-plant')[0];
+    expect(String(button.props.accessibilityLabel)).toContain('Kai');
     const words: string[] = [];
     const walk = (n: ReactTestInstance | string) => (typeof n === 'string' ? words.push(n) : n.children.forEach(walk));
-    walk(button);
-    expect(words).toContain('Kai');
+    walk(root());
+    expect(words).toContain('Kai grows with your study.');
     act(() => {
       r?.unmount();
     });
@@ -549,11 +557,13 @@ describe('PR #43 review fixes', () => {
     expect(allText()).toMatch(/Good luck\. You've done the work\./);
   });
 
-  it('UX P7 + copy: at large text "Next to grow" joins the subtitle; "Change plant"; organs read "full", never "thick"', () => {
+  it('UX P7 + copy: at large text "Next to grow" stays a word on its row; "Change plant"; organs read "full", never "thick"', () => {
     setWindow(393, 2);
     setPlant(plantNew('oak', 'Kai', Date.now(), 4));
     mount(<YourPlant />);
-    expect(allText()).toMatch(/· Next to grow/);
+    // Phase 4b (F10): the mint "Next" pill with its word, under the area's name at every text size.
+    expect(allText()).toMatch(/Next to grow/);
+    expect(new Set(labels().filter((l) => /Next to grow/.test(l))).size).toBe(1);
     expect(allText()).toMatch(/Change plant/);
     expect(allText()).not.toMatch(/Change species|\bthick\b/);
   });

@@ -1,10 +1,12 @@
 // Build F "Milestones" screenshots (393x852 @2x): the launch back-fill
-// summary (You), the Milestones screen, a Results screen with its one
-// milestone moment, Play with level leaves, Field notes, and each new game
-// (Field Guide, Canopy Call, Stepping Stones): a round and its end screen.
+// summary (You), the badge case (mobile 1.51: the Herbarium, opened from its
+// row under You's readiness plate; the route is still /milestones), a Results
+// screen with its one badge moment, Practice's Drills with level leaves,
+// Field notes, and each new game (Field Guide, Canopy Call, Stepping Stones):
+// a round and its end screen.
 // Review fixes: Field Guide's static wrong-pair state, and Canopy Call round
 // ends with a level change ("You've grown to Sapling", "Back to Sapling") and
-// with a milestone moment (never both on one round end).
+// with a badge moment (never both on one round end).
 // Usage: node shoot_milestones.mjs <seed.json> <out> <suffix>
 // Run via: SHOTS=milestones bash scripts/screenshots/run.sh <out> <dark|light>
 import { createRequire } from 'module';
@@ -23,10 +25,12 @@ const games = path.join(here, '../../src/content/games/cisa');
 
 // Content the shots need to play rounds right (term → meaning; the decks).
 const notes = JSON.parse(fs.readFileSync(path.join(gen, 'notes.json')));
+// The game trims and collapses spaces in terms and meanings (engine/games/fieldGuide.ts:103-104).
+const squash = (x) => x.trim().replace(/\s+/g, ' ');
 const meaning = new Map();
 for (const d of notes.domains) {
-  for (const t of d.topics) for (const s of t.subtopics) for (const k of s.keyTerms) if (!meaning.has(k.term.trim())) meaning.set(k.term.trim(), k.definition.trim());
-  for (const k of d.keyTerms) if (!meaning.has(k.term.trim())) meaning.set(k.term.trim(), k.definition.trim());
+  for (const t of d.topics) for (const s of t.subtopics) for (const k of s.keyTerms) if (!meaning.has(squash(k.term))) meaning.set(squash(k.term), squash(k.definition));
+  for (const k of d.keyTerms) if (!meaning.has(squash(k.term))) meaning.set(squash(k.term), squash(k.definition));
 }
 const roles = JSON.parse(fs.readFileSync(path.join(games, 'roles.json')));
 
@@ -64,7 +68,7 @@ const scrollTo = async (page, locator, top = 110) => {
 const now = Date.now();
 const DAY = 86400000;
 
-// Some game levels and a few game rounds, so Play and Field notes show leaves.
+// Some game levels and a few game rounds, so Drills and Field notes show leaves.
 const grown = {
   gameGrowth: {
     trap: { tier: 'sapling', up: 1, down: 0, hits: [true, true, false, true, true, true, true, true, false, true] },
@@ -80,15 +84,20 @@ const grown = {
   await open(page, '/you');
   await scrollTo(page, page.getByText('From your study so far').first(), 160);
   await snap(page, 'f01-you-backfill-summary');
-  await scrollTo(page, page.getByText('Field notes', { exact: true }).first(), 300);
-  await snap(page, 'f01b-you-milestone-rows');
-  // ── 2. The Milestones screen (summary shown once, then marked seen) ──
-  await page.getByRole('button', { name: /^Milestones, / }).first().click();
+  // Mobile 1.51: the Milestones / Field notes rows are gone; the badges' way in is the
+  // Herbarium row right under the readiness plate (above the summary line).
+  await scrollTo(page, page.getByTestId('herbarium-entry').first(), 300);
+  await snap(page, 'f01b-you-herbarium-entry');
+  // ── 2. The badge case: the Herbarium, route /milestones (summary shown once, then marked seen) ──
+  await page.getByRole('button', { name: /^Herbarium: / }).first().click();
+  await page.waitForURL(/\/milestones/);
   await page.waitForTimeout(1500);
   await snap(page, 'f02-milestones');
-  await scrollTo(page, page.getByText('Closest next', { exact: true }).first(), 90);
+  // The next-badge panel: "Still to collect · for your exam" (it was "Closest next").
+  await scrollTo(page, page.getByTestId('still-to-collect').first(), 90);
   await snap(page, 'f02b-milestones-closest');
-  await scrollTo(page, page.getByText('Still ahead', { exact: true }).first(), 90);
+  // The badges still ahead now sit on numbered sheets, one per set: Sheet I is Groundwork.
+  await scrollTo(page, page.getByTestId('shelf-groundwork').first(), 90);
   await snap(page, 'f02c-milestones-ahead');
   await page.context().close();
 }
@@ -108,12 +117,13 @@ const grown = {
     await page.waitForTimeout(1200);
   }
   await page.waitForTimeout(1200);
-  await scrollTo(page, page.getByText('A quiet milestone').first(), 260);
+  // The queued badge plays as Results' badge moment, captioned "A new badge · <set>".
+  await scrollTo(page, page.getByText(/^A new badge · /).first(), 260);
   await snap(page, 'f03-results-milestone');
   await page.context().close();
 }
 
-// ── 4. Play with level leaves; 5. Field notes ──
+// ── 4. Drills (Practice; the Play tab is gone) with level leaves; 5. Field notes ──
 {
   const page = await newPage(grown);
   await open(page, '/practice?section=drills');
@@ -122,8 +132,9 @@ const grown = {
   await snap(page, 'f04b-play-levels-more');
   await open(page, '/field-notes');
   await snap(page, 'f05-field-notes');
-  await scrollTo(page, page.getByText('Pressed leaves', { exact: true }).first(), 90);
-  await snap(page, 'f05b-field-notes-leaves');
+  // "Pressed leaves" moved to the Herbarium's Field notes sheet; here it is the "Skill badges" section.
+  await scrollTo(page, page.getByText('Skill badges', { exact: true }).first(), 90);
+  await snap(page, 'f05b-field-notes-skill-badges');
   await page.context().close();
 }
 
@@ -262,11 +273,17 @@ const doneBackfill = { backfill: { at: now - DAY, count: 0, seen: true } };
   await page.context().close();
 }
 {
-  // No level change: the waiting milestone gets its one quiet moment here.
-  const page = await newPage({ milestones: { earned: { 'rooted:10': now - DAY }, queue: ['rooted:10'], ...doneBackfill, days: 12 } });
+  // No level change: a badge THIS round earns gets the round end's one moment. Since
+  // mobile 1.40 a queued older badge (Rooted here) stays queued, and Canopy Call has no
+  // skill badge of its own, so every other game is already played: this round completes
+  // Whole Grove ("Play every game at least once"; lib/gameRounds.ts, isRoundBadge).
+  const page = await newPage({
+    gameBest: { trap: 7, sprint: 14, priority: 7, daylight: 6, rumor: 10, callit: 5, field: 9, stones: 8 },
+    milestones: { earned: { 'rooted:10': now - DAY }, queue: ['rooted:10'], ...doneBackfill, days: 12 },
+  });
   await open(page, '/game/canopy');
   await playCanopy(page, 'mixed');
-  await scrollTo(page, page.getByText('Rooted', { exact: false }).first(), 260);
+  await scrollTo(page, page.getByTestId('recap-badge').first(), 260);
   await snap(page, 'f07h-canopy-milestone');
   await page.context().close();
 }

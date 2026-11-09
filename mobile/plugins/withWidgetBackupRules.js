@@ -5,9 +5,12 @@
  * The widget library keeps two things of its own on the phone:
  * - files/widget_images/: pictures of the drawn widgets (they can show the
  *   day's topic, question or rule);
- * - shared_prefs/<package>.WIDGET_SIZES.xml: the size of each placed widget.
- * Neither is needed on a new phone (the widgets redraw themselves), so both
- * are excluded. Everything else is backed up exactly as before (an "exclude
+ * - shared_prefs/<package>.WIDGET_SIZES.xml: the size of each placed widget;
+ * - shared_prefs/rnwidget.measured_sizes.xml (since 0.26, Expo SDK 58): each
+ *   placed widget's size as measured from a tap on this phone's launcher.
+ * None of them is needed on a new phone (the widgets redraw and re-measure
+ * themselves), and a size measured on another phone would be wrong, so all
+ * three are excluded. Everything else is backed up exactly as before (an "exclude
  * only" rules file keeps the default "back up everything else").
  *
  * Android 11 and older read android:fullBackupContent; Android 12+ reads
@@ -24,6 +27,7 @@ function excludes(pkg) {
   return [
     '<exclude domain="file" path="widget_images/" />',
     `<exclude domain="sharedpref" path="${pkg}.WIDGET_SIZES.xml" />`,
+    '<exclude domain="sharedpref" path="rnwidget.measured_sizes.xml" />',
   ];
 }
 

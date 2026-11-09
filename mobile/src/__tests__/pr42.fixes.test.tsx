@@ -25,7 +25,7 @@ import { setMockReducedMotion } from '../../jest/reanimated-mock';
 import LessonPlayer from '../app/lesson/[id]';
 import Learn from '../app/(tabs)/learn';
 import { LEAF_SETTLE_MS, MatchTile, RoundEnd, RoundScore, SparkScores } from '../components/game';
-import { SPARK, TierLeafMorph } from '../components/glyphs';
+import { SPARK } from '../components/glyphs';
 import { SceneView } from '../components/lesson';
 import { CheckDraw, FadeIn, Pop, resetCelebrationsForTest } from '../components/motion';
 import { PushedHeader } from '../components/ui';
@@ -382,14 +382,20 @@ describe('the round end’s level up', () => {
     <RoundEnd certId="cisa" game="stones" score={15} max={15} onAgain={() => {}} news={{ change: 'up', tier: 'sapling', best: false, moment: null }} />
   );
 
-  it('in full, the grow starts after the recap arrives and the leaf settles within the 1.2 s ceiling', () => {
+  it('in full, only the level marker changes, after the recap arrives, and settles within the 1.2 s ceiling', () => {
     setMockReducedMotion(false);
     jest.useFakeTimers();
     mount(levelUp());
-    const grow = root().findByType(TierLeafMorph).props.grow as { delay: number };
-    expect(grow.delay).toBeGreaterThanOrEqual(motion.dur.enter);
-    expect(grow.delay + LEAF_SETTLE_MS).toBeLessThanOrEqual(motion.dur.celebrate);
-    advance(grow.delay);
+    // Grove 4b (PHASE4B 6.5 item 2, section 8): the markers show the level it grew from first.
+    const markers = () => root().findAll((n) => n.props.testID === 'recap-markers' && typeof n.type !== 'string')[0];
+    expect(markers().props.level).toBe('seedling');
+    const growAt = motion.dur.celebrate - LEAF_SETTLE_MS;
+    expect(growAt).toBeGreaterThanOrEqual(motion.dur.enter);
+    advance(growAt - 1);
+    expect(markers().props.level).toBe('seedling');
+    expect(mockLight).not.toHaveBeenCalled();
+    advance(1);
+    expect(markers().props.level).toBe('sapling');
     expect(mockLight).toHaveBeenCalledTimes(1);
     advance(motion.dur.celebrate * 2);
     expect(mockLight).toHaveBeenCalledTimes(1);

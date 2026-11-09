@@ -208,7 +208,7 @@ const answersIn = (p) => Object.keys((p && p.state && p.state.byCert && p.state.
     const order = ['Learn', 'Practice', 'You', 'Today', 'Practice', 'Learn', 'You', 'Today'];
     const expect = { Today: /\/home/, Learn: /\/learn/, Practice: /\/practice/, You: /\/you/ };
     // A heading only that tab shows, so a stale screen from the last tab cannot pass.
-    const own = { Today: /days to go|Today’s study|Also today/i, Learn: /^Learn$/, Practice: /^Practice$/, You: /READINESS|^Figure/i };
+    const own = { Today: /days to go|Today’s study|Also today/i, Learn: /^Learn$/, Practice: /^Practice$/, You: /READINESS|Five areas, one scale/i };
     for (const name of order) {
       const t0 = Date.now();
       await tab(page, name);
@@ -265,6 +265,18 @@ const answersIn = (p) => Object.keys((p && p.state && p.state.byCert && p.state.
       const r = after && after.a.responses[p.id];
       c.check(r && r.display === p.disp && r.correct === want, `Q${i + 1} ${p.id}: stored response ${JSON.stringify(r)} does not match the pick (${p.disp}, correct=${want})`);
       if (i < 2) {
+        // Grove answer card (phone 1.54, commit 5562638: one card, no caption, no book label). After a
+        // miss it holds two rows, "Your answer" (the pick) and "Best answer"; after a right answer, one
+        // row, "Your answer · the best". Release bug hunt round 3: this checked the removed "Fig. 4" caption.
+        const plate = page.locator('[data-testid="answer-plate"]').first();
+        if (await visible(plate)) { await plate.evaluate((e) => e.scrollIntoView({ block: 'center' })).catch(() => {}); await sleep(400); }
+        const bestRows = await page.locator('[data-testid="answer-row-best"]').count();
+        const pickRows = await page.locator('[data-testid="answer-row-pick"]').count();
+        const body = await bodyText(page);
+        c.check(bestRows === 1, `Q${i + 1}: ${bestRows} best-answer rows on the answer card, expected 1`);
+        c.check(pickRows === (want ? 0 : 1), `Q${i + 1}: ${pickRows} "Your answer" rows on the answer card, expected ${want ? 0 : 1}`);
+        c.check(want ? /Your answer · the best/.test(body) : /Your answer/.test(body) && /Best answer/.test(body), `Q${i + 1}: the answer card does not say ${want ? '"Your answer · the best"' : '"Your answer" and "Best answer"'}`);
+        await c.shot(`m3-q${i + 1}-plate`);
         const more = page.getByRole('button', { name: /^Read more/ });
         if (await visible(more)) { await more.first().click(); await sleep(600); }
         const why = h.match(/Why ([A-D])/);
@@ -369,11 +381,12 @@ const answersIn = (p) => Object.keys((p && p.state && p.state.byCert && p.state.
       const lab = await row.getAttribute('aria-label');
       c.check(new RegExp(`^Question ${i + 1}, ${p.right ? 'Correct' : 'Missed'}`).test(lab), `review row ${i + 1} says "${lab.slice(0, 40)}", expected ${p.right ? 'Correct' : 'Missed'}`);
       await row.scrollIntoViewIfNeeded(); await row.click(); await sleep(700);
-      const txt = await ev(page2, () => [...document.querySelectorAll('[aria-label]')].map((e) => e.getAttribute('aria-label')).filter((t) => /^(Your answer|Best answer)/i.test(t)));
+      const txt = await ev(page2, () => [...document.querySelectorAll('[aria-label]')].map((e) => e.getAttribute('aria-label')).filter((t) => /^(Your answer|Your pick|Best answer)/i.test(t)));
       const best = txt.find((t) => /^Best answer/i.test(t)) || '';
-      const yours = txt.find((t) => /^Your answer/i.test(t)) || '';
+      // The review labels the learner's wrong pick "Your pick" since mobile 1.53 ("Your answer" before).
+      const yours = txt.find((t) => /^Your (answer|pick)/i.test(t)) || '';
       c.check(new RegExp(`^Best answer,? ${p.keyDisp}\\b`).test(best) || norm(best).includes(norm(bank[p.id].options[bank[p.id].correct]).slice(0, 30)), `review row ${i + 1}: best-answer line "${best.slice(0, 60)}" is not letter ${p.keyDisp}`);
-      if (!p.right) c.check(new RegExp(`^Your answer,? ${p.disp}\\b`).test(yours) || norm(yours).includes(p.optText.slice(0, 30)), `review row ${i + 1}: your-answer line "${yours.slice(0, 60)}" is not letter ${p.disp}`);
+      if (!p.right) c.check(new RegExp(`^Your (answer|pick),? ${p.disp}\\b`).test(yours) || norm(yours).includes(p.optText.slice(0, 30)), `review row ${i + 1}: your-answer line "${yours.slice(0, 60)}" is not letter ${p.disp}`);
       c.note(`review row ${i + 1}: ${[best, yours].filter(Boolean).map((t) => t.slice(0, 40)).join(' / ')}`);
       if (i === 1) await c.shot('m4-review-missed', page2);
       await row.click(); await sleep(300);
@@ -527,14 +540,15 @@ const answersIn = (p) => Object.keys((p && p.state && p.state.byCert && p.state.
   await ctx.close();
 }
 
-// ── M6 You: plant, badges, Field Guide; Settings; backup round trip ────────
+// ── M6 You: plant, badges, areas chart; Settings; backup round trip ────────
 {
   const { ctx, page } = await phone(demo);
-  await rec.run('M6', 'You: plant, badges, Field Guide render; Settings opens; backup save and restore round-trips', page, async (c) => {
+  await rec.run('M6', 'You: plant, badges, areas chart render; Settings opens; backup save and restore round-trips', page, async (c) => {
     await open(page, BASE, '/you', 2000);
     const h = (await headings(page)).join(' | ');
     const t = norm(await bodyText(page));
-    c.check(/Figure \d/.test(h), `no Field Guide plate ("Figure N") on You (headings: ${h.slice(0, 120)})`);
+    // The Grove You tab names its areas chart "Five areas, one scale" (commit 7120591; no "Figure N" any more).
+    c.check(/Five areas, one scale/i.test(h) || /Five areas, one scale/i.test(t), `no areas chart ("Five areas, one scale") on You (headings: ${h.slice(0, 120)})`);
     c.check(/Herbarium|badges/i.test(t), 'no badges (Herbarium) row on You');
     c.check(/plant/i.test(t), 'no plant row on You');
     const svgs = await ev(page, () => document.querySelectorAll('svg').length);

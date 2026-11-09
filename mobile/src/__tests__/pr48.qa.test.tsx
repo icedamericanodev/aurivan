@@ -354,8 +354,8 @@ describe('answering, then switching tabs: every tab shows fresh numbers', () => 
     const range = engineRange();
     expect(range.enough).toBe(true);
     if (range.enough) {
-      // Today says it in its clearing ("Readiness grew to 45–61%", a word joiner inside); You in its rings label.
-      expect(joined('home').replace(/\u2060/g, '')).toContain(`${range.low}–${range.high}`);
+      // Today says it in its clearing ("Readiness grew, now 45 to 61%", no-break spaces inside); You in its rings label.
+      expect(joined('home').replace(/\u00a0/g, ' ')).toContain(`${range.low} to ${range.high}`);
       expect(joined('you')).toContain(`[Estimated readiness ${range.low} to ${range.high} percent, a study estimate`);
     }
     const answered = Object.keys(cp().answers).length;
@@ -367,10 +367,11 @@ describe('answering, then switching tabs: every tab shows fresh numbers', () => 
       // Mobile 1.43: each area row says its word, its percent from 30 answers, and its line (engine/domainBand.ts areaFigure).
       // Mobile 1.51 (Field Guide): each area's line of growth says what it shows (engine/fieldGuide.ts areaStems).
       const stem = areaStems(cert.domains, rd.domains).find((x) => x.key === d.domainId)!;
-      expect(stem.spoken.startsWith(`${short}: `)).toBe(true);
+      // Grove panel Q2: a thin area reads like the website's row ("IT Governance, 22 of 30 answers, ...").
+      expect(stem.spoken.startsWith(stem.thin ? `${short}, ` : `${short}: `)).toBe(true);
       expect(joined('you')).toContain(`[${stem.spoken}`);
     }
-    // Learn's "Up next" follows the focus domain.
+    // Learn's "Next lesson" follows the focus domain.
     const focus = cert.domains.find((d) => d.id === rd.focusDomainId)!;
     expect(joined('learn')).toContain(`Up next · ${focus.short}`);
     // Today's plan: the session ticked it.
@@ -416,7 +417,7 @@ describe('answering, then switching tabs: every tab shows fresh numbers', () => 
       useProgress.getState().completeLesson('cisa', lesson.id);
       useProgress.getState().recordGame('cisa', 'trap', 7);
     });
-    expect(joined('learn')).toContain(`1 of ${lessonsFor('cisa').length} done`); // the course total, never a hard-coded count
+    expect(joined('learn')).toContain(`1 of ${lessonsFor('cisa').length} · in exam order`); // the course total, never a hard-coded count
     expectTabsFresh(['learn', 'practice']);
   });
 
@@ -557,7 +558,7 @@ describe('Reset', () => {
     expect(joined('you')).toContain('No mocks yet');
     expect(joined('you')).toContain('[Answered: 0]');
     expect(joined('practice')).toContain('[Questions to revisit, all caught up]');
-    expect(joined('learn')).toContain(`0 of ${lessonsFor('cisa').length} done`);
+    expect(joined('learn')).toContain(`0 of ${lessonsFor('cisa').length} · in exam order`);
     expect(engineDue()).toBe(0);
   });
 });
@@ -622,7 +623,7 @@ describe('a badge earned: the tab dot and the count', () => {
       dot = create(<Dot />);
     });
     expect(dot!.root.findAllByProps({ testID: 'you-new-dot' })).toHaveLength(0);
-    expect(joined('you')).toContain('[Herbarium: badges and field notes, none yet.');
+    expect(joined('you')).toContain('[Badges: your badges and field notes, none yet.');
     // A finished mock of 50 earns a badge live (after the launch back-fill).
     mockExam(40);
     const earned = caseEarnedCount(cp().milestones?.earned);
@@ -630,7 +631,7 @@ describe('a badge earned: the tab dot and the count', () => {
     expect(hasNewBadge('cisa')).toBe(true);
     expect(dot!.root.findAllByProps({ testID: 'you-new-dot' }).length).toBeGreaterThan(0);
     expectTabsFresh(['you']);
-    expect(joined('you')).not.toContain('[Herbarium: badges and field notes, none yet.');
+    expect(joined('you')).not.toContain('[Badges: your badges and field notes, none yet.');
     act(() => dot!.unmount());
   });
 });

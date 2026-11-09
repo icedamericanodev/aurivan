@@ -93,7 +93,7 @@ describe('Settings, mobile 1.46: one page, clear groups', () => {
     }
   });
 
-  it('dark: each card has a 1.5 line edge, so it stands off the night background', () => {
+  it('dark: each card has the Grove 1pt line edge, so it stands off the night background (1.5 before Grove)', () => {
     useSettings.setState({ theme: 'dark' });
     render();
     const cards = hosts((n) => StyleSheet.flatten(n.props.style ?? {}).borderRadius === 24);
@@ -102,7 +102,7 @@ describe('Settings, mobile 1.46: one page, clear groups', () => {
       const st = StyleSheet.flatten(card.props.style);
       expect(st.backgroundColor).toBe(dark.raised);
       expect(st.borderColor).toBe(dark.line);
-      expect(st.borderWidth).toBe(1.5);
+      expect(st.borderWidth).toBe(1);
     }
   });
 
@@ -122,13 +122,22 @@ describe('Settings, mobile 1.46: one page, clear groups', () => {
     expect(hosts((n) => n.props.accessibilityLabel === THEME_GROUP)).toHaveLength(1);
   });
 
-  it('one-colour marks on the card titles and the doors only (soft circle, accentText), never on rows', () => {
+  // Type pass (TYPE_SCALE.md row 1, the web's Settings page): the page opens with its own display title.
+  it('the page title is "Settings" in display, a header, under the bar', () => {
+    render();
+    const title = hosts((n) => n.props.accessibilityRole === 'header' && n.children.includes('Settings'));
+    expect(title.length).toBeGreaterThan(0);
+    expect(StyleSheet.flatten(title[0].props.style).fontSize).toBe(36);
+  });
+
+  // Type pass: a card's title is its headline alone (TYPE_SCALE.md R4, the web's Settings); the marks stay on the doors.
+  it('one-colour marks on the doors only (soft circle, accentText), never on card titles or rows', () => {
     render();
     const marks = hosts((n) => {
       const st = StyleSheet.flatten(n.props.style ?? {});
       return st.backgroundColor === light.soft && st.borderRadius === 999;
     });
-    expect(marks).toHaveLength(GROUPS.length + DOORS.length);
+    expect(marks).toHaveLength(DOORS.length);
     for (const m of marks) expect(m.props.importantForAccessibility).toBe('no-hide-descendants');
   });
 
@@ -204,7 +213,7 @@ describe('Settings, mobile 1.46: one page, clear groups', () => {
   it('Reset says what goes and what stays', () => {
     mockParams.current = { category: 'data' };
     render();
-    expect(textOf(root())).toContain('Erases your CISA answers, scores, saved questions, mock history and badges on this phone. Your settings stay.');
+    expect(textOf(root())).toContain('Erases your CISA progress on this phone. Settings stay.');
   });
 
   it('no Settings gear on Settings itself', () => {
@@ -229,7 +238,7 @@ describe('Settings, mobile 1.46: one page, clear groups', () => {
   it('hints, the exam date’s distance, and the short exam-focused line (spoken in full)', () => {
     render();
     const t = textOf(root());
-    expect(t).toContain('How much audit you know; it shapes your first weeks');
+    expect(t).toContain('How much audit you know');
     expect(t).toContain('How Practice picks your questions');
     expect(t).toMatch(/In \d+ days/);
     expect(t).toContain('Mocks and weak spots lead Today');

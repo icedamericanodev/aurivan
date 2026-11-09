@@ -130,7 +130,7 @@ const storedPlan = () => useProgress.getState().days.cisa;
 const budgetCap = (m: number) => m + planTolerance(m);
 /** The day's minutes in the panel's caption ("Today’s plan · about N min", mobile 1.21), as a number (null when absent). */
 const todayMinutesShown = () => {
-  const m = allText().match(/Today’s plan · about\u00A0(\d+)\u00A0min/);
+  const m = allText().match(/Today’s plan About\u00A0(\d+)\u00A0min/);
   return m ? Number(m[1]) : null;
 };
 
@@ -261,13 +261,13 @@ describe('J1 a new learner: onboarding, then an honest day 1', () => {
   it('the experienced learner gets Mock exams first on Practice from day 1; the others do not', () => {
     onboard('experienced', 20);
     mount(<Practice />);
-    let [mocks, more] = sectionOrder(['Mock exams', 'More ways to practice']);
+    let [mocks, more] = sectionOrder(['Timed like the real exam', 'Review and saved']);
     expect(mocks).toBeGreaterThan(-1);
     expect(mocks).toBeLessThan(more);
     unmount();
     onboard('some', 20);
     mount(<Practice />);
-    [mocks, more] = sectionOrder(['Mock exams', 'More ways to practice']);
+    [mocks, more] = sectionOrder(['Timed like the real exam', 'Review and saved']);
     expect(mocks).toBeGreaterThan(more);
   });
 
@@ -303,7 +303,7 @@ describe('J2 the Exam-focused path', () => {
     expect(items[1]).toMatchObject({ kind: 'mock', questions: 50, minutes: 80 });
     expect(allText()).toContain('Mini mock');
     expect(allText()).toContain('Optional this week · about 80 min');
-    expect(allText()).toMatch(/Today’s plan · about\u00A0\d+\u00A0min/);
+    expect(allText()).toMatch(/Today’s plan About\u00A0\d+\u00A0min/);
     // The mock is exempt; everything else fits the day.
     expect(planMinutes(items)).toBeLessThanOrEqual(budgetCap(20));
     // The stage is never "Learn the concepts" for the Exam-focused plan.
@@ -403,7 +403,7 @@ describe('J2 the Exam-focused path', () => {
     expect(allText()).toContain((lesson as { title: string }).title);
     unmount();
     mount(<Practice />);
-    const [mocks, more] = sectionOrder(['Mock exams', 'More ways to practice']);
+    const [mocks, more] = sectionOrder(['Timed like the real exam', 'Review and saved']);
     expect(mocks).toBeGreaterThan(more);
   });
 

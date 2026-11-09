@@ -26,6 +26,7 @@ import { finishSession } from './finishSession';
 import { claimWidgetStart } from './widgetStats';
 import { areaSnapshot, type AreaSnapshot } from '../engine/fieldGuide';
 import { readinessFor } from '../engine/readiness';
+import { weakDrillPool, weakDrillRanked } from '../engine/weakSpots';
 
 /**
  * Every non-mock session starts timed when Settings → Study defaults →
@@ -97,6 +98,17 @@ export function startPractice(
   const answers = selectCert(useProgress.getState(), certId).answers;
   const ids = buildPracticeQueue(pool, answers, opts.count, createRng(Date.now()));
   return newSession('practice', certId, opts.title ?? 'Practice', ids, opts.timed !== undefined ? { timed: opts.timed } : {});
+}
+
+/** How many questions "Practice {area}" starts: You's summary button and Practice's "Weak spots" row. */
+export const FOCUS_SET_SIZE = 10;
+
+/**
+ * Practice in the focus area (readiness.focusDomainId): You's "Practice Protection" button and
+ * Practice's "Weak spots: Protection" row start the same set, so the two never differ.
+ */
+export function startFocusPractice(certId: string, domain: { id: string; short: string }) {
+  return startPractice(certId, { count: FOCUS_SET_SIZE, domainId: domain.id, title: domain.short });
 }
 
 /** The title of a study-mode session: "Smart · All domains", "In order · Governance". */
@@ -229,6 +241,27 @@ export function startReview(certId: string, limit = REVIEW_SESSION_CAP) {
  */
 export function startFromIds(certId: string, ids: string[], title: string, extra: Partial<ActiveSession> = {}) {
   return newSession('practice', certId, title, [...new Set(ids)], extra);
+}
+
+/** The title of the Weak spots drill set (the website's own name for it). */
+export const WEAK_DRILL_TITLE = 'Weak spots drill';
+
+/**
+ * Grove Phase 4 (O8): the Weak spots drill, the website's `startWeakSpotsDrill` rule
+ * (engine/weakSpots.ts): questions from the three domains the learner misses most, plus up to five
+ * open missed questions, shuffled, at most 20. Null when there is nothing to drill.
+ */
+export function startWeakSpotsDrill(certId: string) {
+  const cert = getCertification(certId);
+  if (!cert) return null;
+  const cp = selectCert(useProgress.getState(), certId);
+  const ranked = weakDrillRanked(readinessFor(cert, cp.answers).domains);
+  const byDomain: Record<string, string[]> = {};
+  for (const q of getAllQuestions(certId)) (byDomain[q.domainId] ??= []).push(q.id);
+  const missed = Object.entries(cp.mistakes)
+    .filter(([, m]) => !m.resolved)
+    .map(([id]) => id);
+  return startFromIds(certId, weakDrillPool(ranked, byDomain, missed, createRng(Date.now())), WEAK_DRILL_TITLE);
 }
 
 export function startBookmarks(certId: string) {

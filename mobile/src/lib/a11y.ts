@@ -84,3 +84,54 @@ export function cancelA11yTimersForTest(): void {
 }
 /** Tests: how many helper timers are still waiting. */
 export const a11yTimersWaitingForTest = (): number => waiting.size;
+
+// ── Is a screen reader on? (VoiceOver / TalkBack) ──────────────────────
+// Phase 4b review: a celebration treats a screen reader like Reduce Motion
+// (it shows its end state at once). React Native only answers that question
+// asynchronously, so the answer is kept here, asked once at app start
+// (watchScreenReader in app/_layout.tsx) and kept live by the phone's own
+// 'screenReaderChanged' event. A screen can then read it synchronously
+// (screenReaderOn) before its first paint. `null` = not known yet.
+// Polish round 1: on the web build react-native-web's isScreenReaderEnabled() always answers true, so
+// every celebration (the Turning) took its Reduce Motion path there. The web cannot tell, so it counts as
+// off: known from the start, never asked, no listener. Phones are unchanged.
+const onWeb = () => Platform.OS === 'web';
+let screenReader: boolean | null = null;
+let watchingScreenReader = false;
+
+/** Start following the screen reader (once for the whole app; safe to call again). */
+export function watchScreenReader(): void {
+  if (watchingScreenReader || onWeb()) return;
+  watchingScreenReader = true;
+  AccessibilityInfo.addEventListener('screenReaderChanged', (on: boolean) => {
+    screenReader = on;
+  });
+  AccessibilityInfo.isScreenReaderEnabled().then(
+    (on) => {
+      // A change event that came first is newer: keep it.
+      if (screenReader === null) screenReader = on;
+    },
+    () => {},
+  );
+}
+
+/** True when a screen reader is on, false when off, null while the first answer is on its way. */
+export const screenReaderOn = (): boolean | null => (onWeb() ? false : screenReader);
+
+/** The answer now if known, else the phone's (one async question). Never rejects (no answer counts as off). */
+export function whenScreenReaderKnown(): Promise<boolean> {
+  if (onWeb()) return Promise.resolve(false);
+  if (screenReader !== null) return Promise.resolve(screenReader);
+  return AccessibilityInfo.isScreenReaderEnabled().then(
+    (on) => {
+      if (screenReader === null) screenReader = on;
+      return screenReader;
+    },
+    () => false,
+  );
+}
+
+/** Tests: set the screen reader's state (null = not known yet). */
+export function setScreenReaderForTest(on: boolean | null): void {
+  screenReader = on;
+}

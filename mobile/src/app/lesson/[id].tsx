@@ -62,10 +62,11 @@ import { haptic } from '../../lib/haptics';
 import { noteLessonFinished } from '../../lib/lessonNews';
 import { monthYear } from '../../lib/format';
 import { lessonNotes } from '../../lib/outline';
-import { openSessionFromStack, openTab } from '../../lib/actions';
+import { backOr, openSessionFromStack, openTab } from '../../lib/actions';
 import { guardedStart, startFromIds, startPractice } from '../../lib/sessions';
 import { useProgress } from '../../store/progress';
 import { useSettings } from '../../store/settings';
+import { batchSaves } from '../../store/storage';
 import { motion, space } from '../../theme/tokens';
 import { useTheme } from '../../theme/useTheme';
 
@@ -206,7 +207,7 @@ export default function LessonPlayer() {
       <SafeAreaView style={{ flex: 1, backgroundColor: c.bg, padding: space.gutter, justifyContent: 'center' }}>
         <T v="headline" center>This lesson isn’t available.</T>
         <Gap />
-        <Button label="Back" onPress={() => router.back()} />
+        <Button label="Back" onPress={() => backOr('/learn')} />
       </SafeAreaView>
     );
   }
@@ -234,8 +235,12 @@ export default function LessonPlayer() {
     // Learn draws the ✓ only for a lesson finished here, this app session (never one restored or synced).
     // Noted first: the store change below re-renders Learn.
     if (fresh) noteLessonFinished(lesson.id);
-    completeLesson(lesson.certId, lesson.id);
-    logLesson(lesson.certId, lesson.id);
+    // One save for the tap (store/storage.ts batchSaves): the lesson done and today's plan used to
+    // save the whole progress file 2 or 3 times (release bug hunt round 3).
+    batchSaves(() => {
+      completeLesson(lesson.certId, lesson.id);
+      logLesson(lesson.certId, lesson.id);
+    });
     setFinished({ fresh });
   };
   const back = () => {
@@ -273,7 +278,7 @@ export default function LessonPlayer() {
         />
         <PushedHeader
           icon="close"
-          onBack={() => router.back()}
+          onBack={() => backOr('/learn')}
           center={<SegmentBar total={total} done={showingDone ? total : shownIndex} current={showingDone ? total : shownIndex} />}
           right={
             showingDone ? undefined : (

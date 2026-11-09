@@ -140,8 +140,8 @@ export function ExamEveCard({
       <View accessible={false} importantForAccessibility="no-hide-descendants" accessibilityElementsHidden>
         <T v="caption" color={c.accentText}>{caption}</T>
       </View>
-      {/* `stem`, one step below `hero`: Today already has its one hero (the forest panel). */}
-      <T v="stem" accessibilityRole="header" accessibilityLabel={`${caption}. ${title}`} style={{ marginTop: 2 }}>
+      {/* `read` (18/26), below `hero`: Today already has its one hero (the forest panel). */}
+      <T v="read" accessibilityRole="header" accessibilityLabel={`${caption}. ${title}`} style={{ marginTop: 2 }}>
         {title}
       </T>
 

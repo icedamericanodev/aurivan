@@ -212,6 +212,13 @@ describe('what a task opens', () => {
     expect(resolveAction({ kind: 'glossary', target: 'RTO' }, ctx())).toEqual({ to: 'notes', q: 'RTO' });
   });
 
+  // Grove Phase 4 (O2): a course with a Glossary screen opens it for glossary tasks, search filled in.
+  it('the glossary opens the Glossary when the course has one', () => {
+    expect(resolveAction({ kind: 'glossary' }, ctx({ hasGlossary: true }))).toEqual({ to: 'glossary' });
+    expect(resolveAction({ kind: 'glossary', target: 'RTO' }, ctx({ hasGlossary: true }))).toEqual({ to: 'glossary', q: 'RTO' });
+    expect(resolveAction({ kind: 'glossary', target: 'RTO' }, ctx({ hasGlossary: false }))).toEqual({ to: 'notes', q: 'RTO' });
+  });
+
   it('every task in the real plan opens somewhere real', () => {
     useProgress.getState().resetCert('cisa');
     const real = actionContext(cisa, selectCert(useProgress.getState(), 'cisa'));

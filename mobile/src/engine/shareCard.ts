@@ -41,7 +41,7 @@ export interface ShareInput {
 
 export interface ShareHeadline {
   kind: ShareKind;
-  /** The big number on the card ("68–76%", "12"), or null for `start`. */
+  /** The big number on the card ("68 to 76%", "12"), or null for `start`. */
   value: string | null;
   /** The words under the number ("Estimated readiness", "day study streak"). */
   label: string;
@@ -85,7 +85,8 @@ export function shareOptions(input: ShareInput): ShareHeadline[] {
   const { range, streak, answered, certName } = input;
 
   if (range.enough) {
-    const v = `${range.low}–${range.high}%`;
+    // "68 to 78%": words, not an en dash (release prep 2.0.0; the same as Results' "Readiness is 68 to 78%").
+    const v = `${range.low} to ${range.high}%`;
     out.push({
       kind: 'range',
       value: v,

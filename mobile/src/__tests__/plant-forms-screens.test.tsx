@@ -118,7 +118,8 @@ describe('Your plant', () => {
     const text = allText();
     expect(text.indexOf(FORM_FACTS[3])).toBeGreaterThan(-1);
     expect(text.indexOf(FORM_FACTS[3])).toBeLessThan(text.indexOf('The Whip Oak'));
-    expect(text).toContain('A new form');
+    // Grove Phase 4b (PHASE4B 4.4): the label under the art says "New form" over the form's name.
+    expect(text).toContain('New form');
     // No readiness wording beside the form (the growth steps further down are their own section).
     const words = r!.root.findAll((n) => n.props.testID === 'plant-form-reveal-words')[0];
     const said: string[] = [];
@@ -174,12 +175,14 @@ describe('Your plant', () => {
 });
 
 describe('UX review fixes (1.50 forms)', () => {
-  it('H2: under the form, "Your oak · Shoot": the growth by name, no count anywhere on the screen', () => {
+  it('H2: under the form, the growth by name on the stem ("Now"), no count anywhere on the screen', () => {
     setPlant(grown(3));
     useSeen.setState({ plantForms: { cisa: { seen: 2 } } });
     mount(<YourPlant />);
     const text = allText();
-    expect(text).toContain('Your oak · Shoot');
+    // Grove Phase 4b (PHASE4B 4.1 item 4): "YOUR OAK" over the name; the growth is named on the stem.
+    expect(text).toContain('Your oak Kai The Whip Oak');
+    expect(text).toMatch(/Shoot Now · reached/);
     expect(text).not.toMatch(/growth \d|\d of 6/);
     // The spoken plant label: the form and the growth's name, no count either.
     expect(r!.root.findAll((n) => typeof n.props.accessibilityLabel === 'string' && /\d of 6/.test(n.props.accessibilityLabel))).toHaveLength(0);
@@ -197,8 +200,9 @@ describe('UX review fixes (1.50 forms)', () => {
     setPlant(grown(5));
     useSeen.setState({ plantForms: { cisa: { seen: 3 } } });
     mount(<YourPlant />);
-    expect(byTestID('plant-steps-rule')).toHaveLength(1);
-    const heading = r!.root.findAll((n) => n.props.accessibilityRole === 'header' && n.props.children === 'What grows it next');
+    // Grove Phase 4b (PHASE4B 4.1 item 7): the steps are the stem's next row, the screen's one forest panel.
+    expect(byTestID('plant-next')).toHaveLength(1);
+    const heading = r!.root.findAll((n) => n.props.accessibilityRole === 'header' && n.props.accessibilityLabel === 'What grows it next: Elder');
     expect(heading.length).toBeGreaterThan(0);
     const text = allText();
     expect(text).toContain('Your study estimate holds steady for a week');
@@ -210,9 +214,10 @@ describe('UX review fixes (1.50 forms)', () => {
     useSeen.setState({ plantForms: { cisa: { seen: 4 } } });
     mount(<PlantLook />);
     const text = allText();
-    expect(text).toContain('A look is just for you: it never changes your growth.');
+    expect(text).toContain('Looks never change your growth.');
     expect(text).not.toMatch(/readiness/i);
-    expect(text).toContain('Your oak · Elder');
+    // Grove Phase 4b (PHASE4B 4.2): the page's title and the preview; the growth is said in the preview's label.
+    expect(text).toContain('Look');
     expect(text).not.toMatch(/growth \d|\d of 6/);
     // The Moot row: its look line only (the flavour's idea is not said a second time).
     expect(text).toContain('Long level limbs roof a ring of five stones; the crown sits in tiers.');

@@ -22,7 +22,7 @@ import * as DocumentPicker from 'expo-document-picker';
 import { Directory, File, Paths } from 'expo-file-system';
 import * as Sharing from 'expo-sharing';
 import { Platform } from 'react-native';
-import { CERTIFICATIONS, getCertification } from '../content/certifications';
+import { CERTIFICATIONS, DEFAULT_CERT_ID, getCertification } from '../content/certifications';
 import { lessonsIncludingRetired } from '../content/lessons';
 import { getAllQuestionsIncludingRetired, hasContent } from '../content/loader';
 import { noteSubtopics } from '../content/notes';
@@ -46,6 +46,7 @@ import {
   type BackupSettings,
   type BackupSummary,
   type KnownIds,
+  type SummaryInput,
   type UndoSnapshot,
 } from '../engine/backup';
 import { useBackup } from '../store/backup';
@@ -53,12 +54,14 @@ import { completeCert, useProgress } from '../store/progress';
 import { useSeen } from '../store/seen';
 import { useSession } from '../store/session';
 import { useSettings } from '../store/settings';
+import { effectiveCertId } from './activeCert';
 import { ensureCatalog, syncPlanters } from './milestones';
 import { carryPlantIdentity, plantSubtopics } from './plant';
 import { cancelReminders, ensurePermission, remindersSupported } from './reminders';
 import { refreshReminders } from './reminderSync';
 import { refreshWidgets } from './widgets';
 import { REVEAL_KEY, WIDGET_KEY } from '../engine/widgets';
+import { isFinalId } from '../engine/plantForms';
 import { useWidgetStore } from '../store/widgets';
 
 // ── The data in each store (no actions) ──────────────────────────────────
@@ -90,7 +93,14 @@ const _certBack = (c: BackupProgress['byCert'][string]): Partial<CertData> => c;
 const _progressBack = (p: Omit<BackupProgress, 'byCert'>): Partial<Omit<ProgressData, 'byCert'>> => p;
 void [_settingsFits, _progressFits, _settingsBack, _certBack, _progressBack];
 
-const certName = (id: string) => getCertification(id)?.name ?? id;
+/** A course's name; never a raw id (a parked course's "cc" must not reach the screen). */
+const certName = (id: string) => getCertification(id)?.name ?? getCertification(DEFAULT_CERT_ID)!.name;
+/**
+ * The data as the app will study it (release bug hunt round 1): a parked or unknown chosen exam
+ * (CRISC, AAIA, CC, CSOE) is studied as CISA after a restore (effectiveCertId), so the preview
+ * names, dates, counts and compares THAT exam. The stored choice itself is never changed.
+ */
+const asStudied = <T extends SummaryInput>(d: T): T => ({ ...d, settings: { ...d.settings, activeCertId: effectiveCertId(d.settings.activeCertId) } });
 /**
  * This app's version, or undefined when the build doesn't say (the web build
  * has no expoConfig version). Unknown means "don't compare": the "made by a
@@ -138,12 +148,12 @@ export function currentBackup(now = Date.now()): BackupFile {
 
 /** The preview facts for the data on this phone now. */
 export function currentSummary(): BackupSummary {
-  return summarize({ settings: settingsData(), progress: progressData() }, certName);
+  return summarize(asStudied({ settings: settingsData(), progress: progressData() }), certName);
 }
 
 /** The preview facts for a backup that was read. */
 export function backupSummary(data: BackupData): BackupSummary {
-  return summarize(data, certName);
+  return summarize(asStudied(data), certName);
 }
 
 // ── Old backup files in the cache ────────────────────────────────────────
@@ -162,6 +172,22 @@ export function sweepBackupFiles(now = Date.now()) {
   } catch {
     // A cache we can't list is not the learner's problem.
   }
+}
+
+/**
+ * Settings → Reset: clear study progress on this phone for these exams (one exam from Settings,
+ * every exam for the account's "remove from this phone" fallback). A reset is a fresh start: the
+ * open session goes, an old "Undo restore" no longer applies and old backup files are tidied away.
+ * Release bug hunt round 3: the reminders are planned again right away, so the next one never
+ * says "The 12 you missed are back" when nothing is waiting for review any more.
+ */
+export function resetLocalProgress(certIds: readonly string[]) {
+  const { resetCert } = useProgress.getState();
+  for (const certId of certIds) resetCert(certId);
+  useSession.getState().clear();
+  useBackup.getState().setUndo(null);
+  sweepBackupFiles();
+  refreshReminders().catch(() => {});
 }
 
 // ── Save a backup ────────────────────────────────────────────────────────
@@ -193,7 +219,19 @@ export async function saveBackup(now = Date.now()): Promise<SaveOutcome> {
     // The app's cache folder: private to the app; the share sheet makes the copy the learner keeps.
     const file = new File(Paths.cache, name);
     file.create({ overwrite: true });
-    file.write(text);
+    // Expo SDK 58: write() is async now. Wait for it, or the share sheet could
+    // open on a file that is still empty or half-written. If it fails, remove
+    // the partial copy at once rather than leave it for the cache sweep.
+    try {
+      await file.write(text);
+    } catch (e) {
+      try {
+        file.delete();
+      } catch {
+        // Already gone, or never created: nothing to clean up.
+      }
+      throw e;
+    }
     await Sharing.shareAsync(file.uri, { mimeType: 'application/json', UTI: 'public.json', dialogTitle: 'Save your KaiSip backup' });
   }
   useBackup.getState().setLastBackup(now);
@@ -236,7 +274,7 @@ export function checkBackupText(text: string): { kind: 'error'; code: BackupErro
       now: currentSummary(),
       backup: backupSummary(data),
       fresh: isFresh(phone),
-      behind: isBehind(phone, data),
+      behind: isBehind(asStudied(phone), asStudied(data)),
       pausedSession: hasPausedSession(),
     };
   } catch (e) {
@@ -598,10 +636,36 @@ export async function wipeLocalStudy(also: WipeAlso[] = []): Promise<void> {
   await refreshWidgets({ force: true });
 }
 
+/**
+ * An undo copy that also holds the Form IV choice per exam (store/seen.ts plantFinal) when it was
+ * taken. Kept on this phone only, like importedName; a copy without it (older builds) undoes as before.
+ * Declared here, not in engine/backup.ts, so the website's cloud bundle (built from that file) is unchanged.
+ */
+export type UndoWithFinals = UndoSnapshot & { plantFinal?: Record<string, string> };
+
+/**
+ * The Form IV choices on this phone now, for an undo copy (release bug hunt round 3). The choice is not
+ * in a backup file yet (DESIGN_SYSTEM §8.10 stage 1), and a restore forgets it, so without this an
+ * "Undo restore" brought back the plant with its default final. Undefined when none was chosen.
+ */
+export function finalsForUndo(): Pick<UndoWithFinals, 'plantFinal'> {
+  const finals = useSeen.getState().plantFinal ?? {};
+  return Object.keys(finals).length > 0 ? { plantFinal: { ...finals } } : {};
+}
+
+/** Put the Form IV choices from an undo copy back, for the exams the undone data holds (valid ids only). */
+function restoreFinals(finals: UndoWithFinals['plantFinal']) {
+  if (!finals) return;
+  const byCert = useProgress.getState().byCert;
+  for (const [certId, final] of Object.entries(finals)) {
+    if (isFinalId(final) && byCert[certId]) useSeen.getState().setPlantFinal(certId, final);
+  }
+}
+
 /** The undo copy for a first sync ("Undo sync"), or null when this phone's own data couldn't be checked. */
 export function syncUndoSnapshot(now = Date.now()): UndoSnapshot | null {
   const file = currentBackup(now);
-  return checkBackupText(JSON.stringify(file)).kind === 'ok' ? { takenAt: now, file, kind: 'sync' } : null;
+  return checkBackupText(JSON.stringify(file)).kind === 'ok' ? { takenAt: now, file, kind: 'sync', ...finalsForUndo() } : null;
 }
 
 /** How reminders ended up after a restore or undo. */
@@ -658,7 +722,7 @@ export async function restoreBackup(
   if (!opts.fresh) {
     const file = currentBackup(now);
     if (checkBackupText(JSON.stringify(file)).kind !== 'ok') return { kind: 'no-snapshot' };
-    undo = { takenAt: now, file };
+    undo = { takenAt: now, file, ...finalsForUndo() };
   }
   try {
     const saved = Date.parse(data.exportedAt);
@@ -713,6 +777,8 @@ export async function undoRestore(now = Date.now()): Promise<UndoOutcome> {
   } catch {
     return { kind: 'failed' };
   }
+  // The plant's chosen final comes back too (writeAll forgot it, as for any restore).
+  restoreFinals((snap as UndoWithFinals).plantFinal);
   return { kind: 'ok', reminders: await reapplyReminders().catch((): ReminderOutcome => 'off') };
 }
 

@@ -384,13 +384,13 @@ describe('Today: the weekly mock beside the day', () => {
     start();
     mount(<Today />);
     expect(allText()).toContain('Weak spots: IS Operations');
-    expect(allText()).toContain('Mini mock Optional this week · about 80 min');
+    expect(allText()).toContain('Optional this week · about 80 min Mini mock');
     const row = root().findAll((n) => typeof n.props.accessibilityLabel === 'string' && n.props.accessibilityLabel.startsWith('Mini mock, '))[0];
     expect(row.props.accessibilityLabel).toBe('Mini mock, Optional this week · about 80 minutes');
     // The caption meta and the hero meta are spoken with "minutes" (O9, M7a).
     const labels = root().findAll((n) => typeof n.props.accessibilityLabel === 'string').map((n) => n.props.accessibilityLabel as string);
     // The optional mock is not one of the day's items (mobile 1.24): "0 of 1 done".
-    expect(labels).toContain('Today’s plan · about 19 minutes, 0 of 1 done');
+    expect(labels).toContain('Today’s plan, about 19 minutes, 0 of 1 done');
     // Mobile 1.21: the minutes are said once. The hero is the day's only timed item, so the
     // caption's total carries them. Mobile 1.24: the count and the why are the line under the title; the pill's hint is the title.
     const hints = root().findAll((n) => typeof n.props.accessibilityHint === 'string').map((n) => n.props.accessibilityHint as string);
@@ -420,7 +420,7 @@ describe('Today: the weekly mock beside the day', () => {
     });
     mount(<Today />);
     // Mobile 1.21: no day minutes in the caption (a mock is longer than any day); the mock is the hero and says its own length.
-    expect(allText()).toMatch(/Today’s plan Mini mock 50 questions · about 80 min/);
+    expect(allText()).toMatch(/Today’s plan 1 Mini mock 50 questions · about 80 min/);
   });
 });
 
@@ -429,7 +429,7 @@ describe('Practice: when mocks lead, they come straight after Timed, then the pa
     useSettings.setState({ familiarity: 'experienced', examDates: { cisa: addDays(today(), 14) } });
     mount(<Practice />);
     const t = allText();
-    const at = ['Timed', 'Mock exams', 'Practice at exam pace?', 'More ways to practice'].map((s) => t.indexOf(s));
+    const at = ['Timed counts up', 'Timed like the real exam', 'Practice at exam pace?', 'Review and saved'].map((s) => t.indexOf(s));
     expect(at.every((n) => n > -1)).toBe(true);
     expect([...at].sort((a, b) => a - b)).toEqual(at);
   });

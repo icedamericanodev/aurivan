@@ -166,6 +166,41 @@ describe('the closing screen', () => {
     expect(head.length).toBeGreaterThan(0);
   });
 
+  it('release bug hunt round 3: after a resume, the closing screen counts all five, not only the ones left', () => {
+    act(() => {
+      buildTodayPlan(CERT, false);
+    });
+    const answerAll = (ids: readonly string[], right: (i: number) => boolean) =>
+      act(() => {
+        ids.forEach((id, i) => {
+          const ok = right(i);
+          useSession.getState().answer(id, { display: 'A', correct: ok, ms: 20_000 });
+          useProgress.getState().recordAnswer(CERT, id, ok, undefined, { ms: 20_000 });
+          if (!ok) useProgress.getState().recordMistake(CERT, id, 'A');
+        });
+      });
+    // Answer 3 (2 right, 1 wrong), then X and End.
+    const first = startFirstSet(CERT)!;
+    answerAll(first.questionIds.slice(0, 3), (i) => i < 2);
+    act(() => {
+      finishSession({ celebrate: false });
+      useSession.getState().clear();
+    });
+    // Continue from Today: the 2 left, both wrong.
+    const resumed = startFirstSet(CERT)!;
+    expect(resumed.questionIds).toHaveLength(2);
+    answerAll(resumed.questionIds, () => false);
+    act(() => {
+      finishSession({ celebrate: false });
+    });
+    mount(<Results />);
+    const t = allText();
+    expect(t).toContain('2 of 5 right');
+    expect(t).not.toContain('0 of 2 right');
+    expect(t).toContain('The 3 you missed come back then.');
+    expect(root().findAll((n) => n.props.accessibilityRole === 'header' && n.props.accessibilityLabel === '2 of 5 right').length).toBeGreaterThan(0);
+  });
+
   it('all five right says so', () => {
     finishFirstSet(5);
     mount(<Results />);
@@ -208,6 +243,13 @@ describe('the closing screen', () => {
     await press(/^Plant a seed$/);
     expect(selectCert(useProgress.getState(), CERT).plant?.species).toBe('oak');
     expect(allText()).toMatch(/is planted\. It grows as you learn\./);
+    // Grove Phase 4b (PHASE4B 4.9): "Your oak is planted." on its soil line, with the planting moment
+    // (Reduce Motion is on here, so LivePlant shows the planted sprout at once).
+    const planted = r!.root.findAll((n) => n.props.testID === 'first-set-planted' && typeof n.type === 'string');
+    expect(planted).toHaveLength(1);
+    expect(r!.root.findAll((n) => n.props.testID === 'first-set-plant' && n.props.plantIn === true).length).toBeGreaterThan(0);
+    expect(r!.root.findAll((n) => n.props.testID === 'first-set-soil-soil' && typeof n.type === 'string')).toHaveLength(1);
+    expect(allText()).toContain('Your oak is planted.');
     await press(/^Choose a different plant$/);
     expect(router.push).toHaveBeenCalledWith({ pathname: '/plant-pick', params: { mode: 'species' } });
   });

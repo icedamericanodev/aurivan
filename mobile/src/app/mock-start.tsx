@@ -13,7 +13,9 @@
  * scroll, below the fold on a small phone or at large text), like every other
  * flow's main action.
  */
+import { PageTitle } from '../components/groveHub';
 import { router, useLocalSearchParams } from 'expo-router';
+import { backOr } from '../lib/actions';
 import { useState } from 'react';
 import { Pressable, ScrollView, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -112,7 +114,8 @@ export default function MockStart() {
   return (
     <SafeAreaView edges={['top', 'bottom']} style={{ flex: 1, backgroundColor: c.bg }}>
       <ScrollView contentContainerStyle={{ paddingHorizontal: space.gutter, paddingBottom: footerH + space.xl }}>
-        <PushedHeader title={full ? 'Full mock' : 'Mini mock'} onBack={() => router.back()} icon="close" />
+        <PushedHeader title={full ? 'Full mock' : 'Mini mock'} showTitle={false} onBack={() => backOr('/practice')} icon="close" />
+        <PageTitle title={full ? 'Full mock' : 'Mini mock'} />
         <T
           v="meta"
           num

@@ -44,7 +44,7 @@ import {
 } from '../engine/webImport';
 import { useBackup } from '../store/backup';
 import { useSession } from '../store/session';
-import { checkBackupText, currentBackup, knownIds, phoneStores, pickFileText, writeSynced, type PickOutcome } from './backup';
+import { checkBackupText, currentBackup, finalsForUndo, knownIds, phoneStores, pickFileText, writeSynced, type PickOutcome } from './backup';
 import { refreshReminders } from './reminderSync';
 
 /** The website teaches CISA only, so its progress goes to CISA. */
@@ -164,7 +164,7 @@ export async function importWebProgress(profile: WebProfile, opts: { now?: numbe
   if (!keepEarlier) {
     const file = currentBackup(now);
     if (checkBackupText(JSON.stringify(file)).kind !== 'ok') return { kind: 'no-snapshot' };
-    undo = { takenAt: now, file, kind: 'import', ...(importedName ? { importedName } : {}) };
+    undo = { takenAt: now, file, kind: 'import', ...(importedName ? { importedName } : {}), ...finalsForUndo() };
   } else if (importedName && existing) {
     // The earlier copy stays the one Undo goes back to; it now also knows this import set the name.
     undo = { ...existing, importedName };

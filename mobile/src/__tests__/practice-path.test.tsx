@@ -65,11 +65,14 @@ const press = (label: string | RegExp) =>
   });
 const radios = () => root().findAll((n) => n.props.accessibilityRole === 'radio' && typeof n.props.onPress === 'function');
 const radio = (name: RegExp) => radios().find((n) => name.test(String(n.props.accessibilityLabel)))!;
-const pathRow = () => byLabel(/^Your path:/)[0];
+// Grove Phase 4: the hero's Domains tile opens the path chooser (the kit has no separate summary row;
+// the mode is the hero's kicker, the domains and count are its tiles).
+const pathRow = () => byLabel(/^Domains, /)[0];
 const heroText = () => {
   const out: string[] = [];
   const walk = (n: ReactTestInstance | string) => (typeof n === 'string' ? out.push(n) : n.children.forEach(walk));
-  walk(root().findAll((n) => n.props.testID === 'hero-content')[0]);
+  // Premium round 2 (Field Guide foundation): the hero is Practice's plate (Fig. 2, the register's Learn-or-Practice number).
+  walk(root().findAll((n) => n.props.testID === 'practice-plate')[0]);
   return out.join(' ');
 };
 
@@ -85,12 +88,14 @@ afterEach(() => {
 });
 
 describe('Practice: one action, one row', () => {
-  it('starts folded: the hero, one summary row, no radios and no Build a set controls', () => {
+  it('starts folded: the hero with its tiles, no radios and no Build a set controls', () => {
     mount(<Practice />);
     expect(radios()).toHaveLength(0);
-    expect(pathRow().props.accessibilityLabel).toBe('Your path: Random, All domains, 10 questions. Change');
-    expect(pathRow().props.accessibilityState).toEqual({ expanded: false });
-    expect(allText()).toContain('Random · All domains · 10 questions');
+    expect(pathRow().props.accessibilityLabel).toBe('Domains, all domains');
+    expect(byLabel('Count, 10 questions')).toHaveLength(1);
+    // The mode, the domains and the count, said once each on the hero.
+    expect(heroText()).toContain('Your path · Random');
+    expect(heroText()).toContain('Domains All 5 Count 10');
     expect(root().findAll((n) => n.props.testID === 'build-set')).toHaveLength(0);
     expect(byLabel(/^Start \d+ questions/)).toHaveLength(0);
     // The hero's Start is still one tap.
@@ -103,7 +108,6 @@ describe('Practice: one action, one row', () => {
     act(() => {
       pathRow().props.onPress();
     });
-    expect(pathRow().props.accessibilityState).toEqual({ expanded: true });
     const text = allText();
     for (const label of ['Mode', 'Domain', 'Length']) expect(text).toContain(label);
     expect(radios().filter((n) => n.props.accessibilityRole === 'radio' && /^(Smart|Guided|In order|Random)/.test(String(n.props.accessibilityLabel)))).toHaveLength(4);
@@ -122,7 +126,7 @@ describe('Practice: one action, one row', () => {
     expect(useSettings.getState().studyMode).toBe('inOrder');
     // Mobile 1.21: the title names the path; the count leads the meta.
     expect(heroText()).toContain('Topic by topic 10 questions · ');
-    expect(pathRow().props.accessibilityLabel).toMatch(/^Your path: In order, All domains, 10 questions/);
+    expect(heroText()).toContain('Your path · In order');
     press('Start');
     expect(useSession.getState().active).toMatchObject({ path: { mode: 'inOrder' } });
   });
@@ -166,7 +170,7 @@ describe('Practice: review fixes', () => {
     useSettings.setState({ studyMode: 'smart', studySize: 20, practiceTimer: true });
     mount(<Practice />);
     expect(heroText()).toContain('20 questions · about 24 min · timed');
-    expect(heroText()).toContain('Your path');
+    expect(heroText()).toContain('Picked for you');
   });
 });
 
@@ -251,14 +255,14 @@ it('pathSummary leaves the length out for Guided', () => {
 });
 
 describe('Practice at 200% text', () => {
-  it('the summary row puts "Change" under the summary, and the length choice stacks', () => {
+  it('the hero tiles stack into a column, and the length choice stacks', () => {
     const rn = jest.requireActual('react-native');
     const spy = jest.spyOn(rn, 'useWindowDimensions').mockReturnValue({ width: 393, height: 852, scale: 3, fontScale: 2 });
     try {
       useSettings.setState({ studyMode: 'smart' });
       mount(<Practice />);
-      const rowStyle = StyleSheet.flatten(pathRow().props.style({ pressed: false }));
-      expect(rowStyle.flexWrap).toBe('wrap');
+      const tiles = pathRow().parent!.parent!;
+      expect(StyleSheet.flatten(tiles.props.style).flexDirection).toBe('column');
       act(() => {
         pathRow().props.onPress();
       });

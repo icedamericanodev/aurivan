@@ -22,7 +22,9 @@
  * under the title. An unknown id
  * shows the whole list.
  */
+import { PageTitle } from '../../components/groveHub';
 import { router, useLocalSearchParams } from 'expo-router';
+import { openTab } from '../../lib/actions';
 import { useState } from 'react';
 import { View } from 'react-native';
 import { EmptyScreen } from '../../components/emptyScreen';
@@ -51,16 +53,18 @@ export default function PrinciplesHome() {
     return (
       <EmptyScreen
         header="Principles"
+        fallback="/learn"
         title="Principles are on the way"
         body="The exam-mindset principles for this exam aren't in the app yet. Lessons and practice are ready now."
-        primary={{ label: 'Back to Learn', onPress: () => router.replace('/learn') }}
+        primary={{ label: 'Back to Learn', onPress: () => openTab('/learn') }}
       />
     );
   }
 
   return (
     <Screen edges={['top', 'bottom']}>
-      <PushedHeader title="Principles" onBack={goBack} />
+      <PushedHeader title="Principles" showTitle={false} onBack={goBack} />
+      <PageTitle title="Principles" />
       <Enter i={0}>
         <T v="meta" style={{ marginTop: space.xs }}>
           The thinking the exam rewards. Learn the rule, spot it in the question, avoid the trap.
@@ -90,7 +94,7 @@ export default function PrinciplesHome() {
                 key={p.id}
                 title={p.title}
                 subtitle={
-                  <T v="small" color={c.ink2} numberOfLines={large ? undefined : 2} style={{ marginTop: 2 }}>
+                  <T v="meta" color={c.ink2} numberOfLines={large ? undefined : 2} style={{ marginTop: 2 }}>
                     {p.rule}
                   </T>
                 }
@@ -103,7 +107,7 @@ export default function PrinciplesHome() {
           </View>
         </Enter>
       ))}
-      <T v="meta" color={c.muted} style={{ marginTop: space.xxl }}>Original content, reviewed against public frameworks.</T>
+      <T v="meta" color={c.ink2} style={{ marginTop: space.xxl }}>Original content, reviewed against public frameworks.</T>
     </Screen>
   );
 }

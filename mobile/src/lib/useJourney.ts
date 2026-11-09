@@ -22,6 +22,7 @@ import { todaysPlan } from '../engine/planner';
 import { dayKey, weekStrip, type Streak } from '../engine/streak';
 import { useProgress, type CertProgress } from '../store/progress';
 import { useDailyMinutes, useSettings } from '../store/settings';
+import { useHeld } from './holdWhileHidden';
 import { useActiveCert } from './useActiveCert';
 
 export interface JourneyInput {
@@ -129,7 +130,7 @@ function msToMidnight(ms: number): number {
  * when the app comes back to the foreground and at local midnight, so a
  * Today screen left open overnight rolls over to the new day's plan.
  */
-function useToday(): { key: string; at: number } {
+export function useToday(): { key: string; at: number } {
   const [today, setToday] = useState(() => {
     const at = Date.now();
     return { key: dayKey(at), at };
@@ -159,8 +160,9 @@ export function useJourney() {
   const dailyMinutes = useDailyMinutes();
   const familiarity = useSettings((s) => s.familiarity);
   const examFocused = useSettings((s) => s.examFocused);
-  const streakState = useProgress((s) => s.streak);
-  const storedDay = useProgress((s) => s.days[cert.id]);
+  // Held while a covered screen asks for it (lib/holdWhileHidden.ts); live everywhere else.
+  const streakState = useHeld(useProgress, (s) => s.streak, 'streak');
+  const storedDay = useHeld(useProgress, (s) => s.days[cert.id], `days:${cert.id}`);
   const startDay = useProgress((s) => s.startDay);
   const today = useToday();
 

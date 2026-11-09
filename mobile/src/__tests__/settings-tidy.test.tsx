@@ -149,7 +149,7 @@ describe('Settings is grouped, and each row says its value', () => {
     expect(t).toContain('8 Jan 2027');
     expect(row('Daily time').props.accessibilityLabel).toBe('Daily time, 30 minutes a day');
     // Mobile 1.43: each with its one-line hint.
-    expect(row('Starting point').props.accessibilityLabel).toBe('Starting point, Some IT audit experience, How much audit you know; it shapes your first weeks');
+    expect(row('Starting point').props.accessibilityLabel).toBe('Starting point, Some IT audit experience, How much audit you know');
     expect(row('Default mode').props.accessibilityLabel).toBe('Default mode, Guided, How Practice picks your questions');
     // Mobile 1.43: the theme is a one-tap radio group (System / Light / Dark), not a row.
     const dark = hosts((n) => n.props.accessibilityRole === 'radio' && n.props.accessibilityLabel === 'Dark')[0];

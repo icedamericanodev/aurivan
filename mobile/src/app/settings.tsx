@@ -46,7 +46,8 @@ import Constants from 'expo-constants';
 import { useCallback, useEffect, useRef, useState, type ReactNode, type RefObject } from 'react';
 import * as ExpoRouter from 'expo-router';
 import { router, useLocalSearchParams } from 'expo-router';
-import { Alert, Linking, Platform, View, type ScrollView } from 'react-native';
+import { backOr } from '../lib/actions';
+import { Alert, AppState, Linking, Platform, View, type ScrollView } from 'react-native';
 import { aboutLine, AccountSettingsGroup } from '../components/account';
 import { BoardSettingsGroup } from '../components/board';
 import { useSyncing } from '../lib/sync';
@@ -82,28 +83,28 @@ import { dayKey } from '../engine/streak';
 import { shortDate } from '../lib/format';
 import { DAILY_MINUTES, examFocusedOf, FAMILIARITIES, FAMILIARITY_INFO, KEEP_TODAY_LINE, minutesLabel, minutesSpoken, type DailyMinutes, type Familiarity } from '../engine/fit';
 import { MODE_INFO, STUDY_MODES, type StudyMode } from '../engine/studyModes';
-import { CERT_SCOPE_LINE, PROVENANCE_LINE, WELCOME_HEADLINE, WELCOME_LINE } from '../content/brand';
+import { AI_DISCLAIMER_LINE, CERT_SCOPE_LINE, HOW_MADE_TITLE, PROVENANCE_LINE, WELCOME_HEADLINE, WELCOME_LINE } from '../content/brand';
 import { CERTIFICATIONS, combinedTrademarkNotice, selectableCertifications } from '../content/certifications';
+import { effectiveCertId } from '../lib/activeCert';
 import { hasContent } from '../content/loader';
 import { hasNotes } from '../content/notes';
 import { examDateLabel } from '../engine/examDay';
 import { changeExamDate, changeFit } from '../lib/activity';
 import { moveFocus, sayLater } from '../lib/a11y';
-import { hideBadges, showBadgesAgain, shownAgainLine } from '../lib/badges';
+import { hideBadges, showBadgesAgain, shownAgainLine, shownAgainSpoken } from '../lib/badges';
 import { clearJustRead } from '../lib/noteNews';
-import { config } from '../lib/config';
+import { config, HOW_MADE_URL } from '../lib/config';
 import { DAY_CHIPS, localHour, localTime, MINUTE_STEP, reminderDays, reminderSummary, stepTime, toggleDay, type ReminderPrefs } from '../engine/reminders';
 import { cancelReminders, ensurePermission, remindersSupported } from '../lib/reminders';
-import { refreshReminders } from '../lib/reminderSync';
+import { notificationsBlocked, refreshReminders } from '../lib/reminderSync';
 import { runningUpdateLine, useUpdateCheck } from '../lib/updates';
 import { UPDATE_WORDS } from '../engine/updates';
 import { useActiveCert } from '../lib/useActiveCert';
 import { useReports } from '../lib/useReports';
-import { sweepBackupFiles } from '../lib/backup';
+import { resetLocalProgress } from '../lib/backup';
 import { useBackup } from '../store/backup';
 import { selectCert, useProgress } from '../store/progress';
 import { useSeen } from '../store/seen';
-import { useSession } from '../store/session';
 import { dailyMinutesOf, examDateOf, type MotionPref, type ThemePref, useSettings } from '../store/settings';
 import { space } from '../theme/tokens';
 import { useTheme } from '../theme/useTheme';
@@ -147,7 +148,6 @@ export default function Settings() {
   const phoneReduced = useSystemReducedMotion();
   // Help and feedback (mobile 1.7): the row says so when a report's update hasn't been seen yet.
   const { dueItems } = useReports();
-  const resetCert = useProgress((p) => p.resetCert);
   // Mobile 1.25: Reset reading progress (notes only), and whether there is any to reset.
   const resetNotesReading = useProgress((p) => p.resetNotesReading);
   const readingTouched = useProgress((p) => {
@@ -160,8 +160,32 @@ export default function Settings() {
   const setPlantSettings = useProgress((p) => p.setPlantSettings);
   const hasPlant = useProgress((p) => Boolean(selectCert(p, cert.id).plant));
   const plantOn = plantSettings?.showPlant !== false;
-  const clearSession = useSession((x) => x.clear);
   const [busy, setBusy] = useState(false);
+  // Release bug hunt round 1: notifications can be turned off for KaiSip in the phone's settings at any
+  // time, and the app is not told. Read it (never ask) when Settings opens and each time the app comes
+  // back to the front, so the switch never claims reminders that can't arrive. The saved choice is
+  // never changed here: reminders come back on their own once notifications are allowed again.
+  const remindOn = s.reminder.enabled;
+  const [blocked, setBlocked] = useState(false);
+  useEffect(() => {
+    if (!remindersSupported || !remindOn) return;
+    let live = true;
+    const check = () => {
+      // Never throws (lib/reminderSync.ts): if the check can't run, nothing changes on screen.
+      notificationsBlocked().then((b) => {
+        if (live) setBlocked(b);
+      });
+    };
+    check();
+    const sub = AppState.addEventListener('change', (st) => {
+      if (st === 'active') check();
+    });
+    return () => {
+      live = false;
+      sub.remove();
+    };
+  }, [remindOn]);
+  const remindBlocked = remindersSupported && remindOn && blocked;
   // Mobile 1.19: "Check for updates" (one tap = one check; nothing runs on its own).
   const updates = useUpdateCheck();
   const updateWords = UPDATE_WORDS[updates.phase];
@@ -169,6 +193,11 @@ export default function Settings() {
   const lastHelpRow = updates.available ? 'updates' : config.termsUrl !== '' ? 'terms' : config.privacyUrl !== '' ? 'privacy' : 'about';
   // "Badges are on again…": shown for this visit, right under the switch.
   const [badgesLine, setBadgesLine] = useState<string | null>(null);
+  // Type pass (TYPE_SCALE.md row 1, as the web's Settings page): the whole page opens with its own
+  // display title "Settings" under the bar; the bar's small title fades in only once that title has
+  // scrolled under it (the reading pages' collapse). A door's screen keeps its name in the bar.
+  const [titleUnder, setTitleUnder] = useState(false);
+  const titleBottom = useRef(0);
 
   // Deep links: open the calendar, or start at the plant's group.
   const params = useLocalSearchParams<{ open?: string; section?: string; category?: string }>();
@@ -305,9 +334,10 @@ export default function Settings() {
     try {
       if (enabled) {
         if (!(await ensurePermission())) {
-          Alert.alert('Notifications are off', 'Allow notifications for KaiSip in your phone settings to get reminders.');
+          Alert.alert('Notifications are off', 'Turn them on for KaiSip in your phone settings.');
           return;
         }
+        setBlocked(false);
         // Read the CURRENT choice after the permission prompt, not the one
         // captured when the switch was tapped (the learner may have changed it).
         useSettings.getState().setReminder({ ...useSettings.getState().reminder, enabled: true });
@@ -381,12 +411,9 @@ export default function Settings() {
           text: 'Reset',
           style: 'destructive',
           onPress: () => {
-            resetCert(cert.id);
-            clearSession();
-            // A reset is a fresh start: an old "Undo restore" no longer applies,
-            // and old backup files in the app's cache are tidied away.
-            useBackup.getState().setUndo(null);
-            sweepBackupFiles();
+            // A reset is a fresh start: the open session, an old "Undo restore" and old backup files
+            // go, and the reminders are planned again from the empty review queue (lib/backup.ts).
+            resetLocalProgress([cert.id]);
           },
         },
       ],
@@ -459,8 +486,8 @@ export default function Settings() {
         title="Exam date"
         value={examDate ? examDateLabel(examDate) : 'Not set'}
         spokenValue={examDate ? spokenDate(examDate) : 'not set'}
-        // Mobile 1.43: how far away it is ("In 36 days"; "Date passed" once it has gone), from the screen's "now".
-        subtitle={examDate ? (untilLabel(examDate, dayKey(now)) ?? 'Date passed') : undefined}
+        // Mobile 1.43: how far away it is ("In 36 days"; "Date has gone by" once it has gone), from the screen's "now".
+        subtitle={examDate ? (untilLabel(examDate, dayKey(now)) ?? 'Date has gone by') : undefined}
         accessibilityHint="Opens a calendar"
         onPress={open('date')}
         last
@@ -476,7 +503,7 @@ export default function Settings() {
         ref={startRow}
         title="Starting point"
         // Mobile 1.43: a one-line hint (a tester: "Starting point: Not set. I don't know what that is").
-        subtitle="How much audit you know; it shapes your first weeks"
+        subtitle="How much audit you know"
         value={s.familiarity ? START_SHORT[s.familiarity] : 'Not set'}
         spokenValue={s.familiarity ? FAMILIARITY_INFO[s.familiarity].title : 'not set'}
         onPress={open('start')}
@@ -519,7 +546,7 @@ export default function Settings() {
       />
       <ToggleRow
         title="Timed practice"
-        subtitle="A timer that counts up while you answer, never a countdown. Practice’s own switch can change it for one set."
+        subtitle="Counts up, never down. Practice can change it per set."
         value={s.practiceTimer}
         onValueChange={s.setPracticeTimer}
       />
@@ -531,12 +558,22 @@ export default function Settings() {
     <>
       <ToggleRow
         title="Study reminder"
-        subtitle={remindersSupported ? 'At most one a day. Turn it off any time.' : 'Available in the installed app, not Expo Go on Android.'}
-        value={remindersSupported && s.reminder.enabled}
+        subtitle={
+          !remindersSupported
+            ? 'Available in the installed app, not Expo Go on Android.'
+            : remindBlocked
+              ? 'Notifications are off for KaiSip on this phone.'
+              : 'At most one a day. Turn it off any time.'
+        }
+        // Blocked in the phone's settings: shown off (nothing will arrive), though the choice is kept.
+        value={remindersSupported && s.reminder.enabled && !remindBlocked}
         disabled={busy || !remindersSupported}
         onValueChange={toggleReminder}
         last={!remindersSupported}
       />
+      {remindBlocked && (
+        <SettingsRow title="Open phone settings" accessibilityHint="Opens KaiSip in your phone's settings, to allow notifications" onPress={() => Linking.openSettings().catch(() => {})} chevron={false} />
+      )}
       {remindersSupported && (
         // You can set these before turning reminders on; nothing is asked until then.
         <SettingsRow ref={remindRow} title="Time and days" subtitle={reminderSummary(s.reminder)} onPress={open('remind')} last />
@@ -549,13 +586,14 @@ export default function Settings() {
     <>
       <ToggleRow
         title="Show badges"
-        subtitle="A short moment when you earn one, and the Herbarium on You. Off: you still earn them, quietly."
+        subtitle="Off: earned quietly."
         value={!s.badgesHidden}
         onValueChange={(on) => {
           if (on) {
             const line = shownAgainLine(showBadgesAgain());
             setBadgesLine(line);
-            sayLater(line);
+            // Spoken in words: the visible "→" would be read as "right arrow".
+            sayLater(shownAgainSpoken(line));
           } else {
             setBadgesLine(null);
             hideBadges();
@@ -563,13 +601,13 @@ export default function Settings() {
         }}
       />
       {badgesLine && (
-        <T v="meta" color={c.accentText} style={{ marginTop: space.xs, marginBottom: space.sm }}>
+        <T v="meta" color={c.accentText} accessibilityLabel={shownAgainSpoken(badgesLine)} style={{ marginTop: space.xs, marginBottom: space.sm }}>
           {badgesLine}
         </T>
       )}
       <ToggleRow
         title="Show my plant"
-        subtitle="A plant on Today and You that grows only from real progress. Off: no plant and no prompts. Its growth is kept."
+        subtitle="Grows with your study. Off: hidden, growth kept."
         value={plantOn}
         onValueChange={(on) => setPlantSettings({ showPlant: on })}
         last={!plantOn}
@@ -587,7 +625,7 @@ export default function Settings() {
       <SettingsRow
         // The same words as You's row, so the way to Help reads the same everywhere.
         title="Get help or send feedback"
-        subtitle={dueItems ? creditSubtitle(dueItems) : 'Common questions, reports and what’s new'}
+        subtitle={dueItems ? creditSubtitle(dueItems) : 'Questions, reports, what’s new'}
         onPress={() => router.push('/help')}
       />
       <SettingsRow
@@ -743,7 +781,7 @@ export default function Settings() {
           {/* Destructive, so set apart from the rows above, with its own line saying what goes and what stays. */}
           <Gap h={space.xxl} />
           <Button kind="danger" label={`Reset ${cert.name} progress`} accessibilityHint="Asks first" onPress={confirmReset} />
-          <T v="meta" center style={{ marginTop: space.sm }}>{`Erases your ${cert.name} answers, scores, saved questions, mock history and badges on this phone. Your settings stay.`}</T>
+          <T v="meta" center style={{ marginTop: space.sm }}>{`Erases your ${cert.name} progress on this phone. Settings stay.`}</T>
         </View>
       ),
     },
@@ -786,16 +824,33 @@ export default function Settings() {
   );
 
   return (
-    <Screen edges={['top', 'bottom']} scrollRef={scrollRef}>
+    <Screen
+      edges={['top', 'bottom']}
+      scrollRef={scrollRef}
+      onScroll={
+        subCategory
+          ? undefined
+          : (y) => {
+              const edge = titleBottom.current;
+              // 8pt of hysteresis, so a scroll resting on the edge never flickers the bar's title.
+              const under = edge > 0 && (titleUnder ? y > edge - 8 : y > edge);
+              if (under !== titleUnder) setTitleUnder(under);
+            }
+      }
+      header={subCategory ? undefined : <PushedHeader title="Settings" showTitle={titleUnder} onBack={() => backOr('/you')} />}
+    >
       <SettingsSubScreen.Provider value={subCategory !== undefined}>
-        {/* Same pushed header as Saved and Mistakes: the title lives in the bar. A door's screen: its name
-            is the bar's title, and screen-reader focus starts there. */}
-        <PushedHeader title={subCategory ? subCategory.title : 'Settings'} titleRef={subCategory ? subHeadRef : undefined} onBack={() => router.back()} />
+        {/* A door's screen: its name is the bar's title, and screen-reader focus starts there. */}
+        {subCategory ? <PushedHeader title={subCategory.title} titleRef={subHeadRef} onBack={() => backOr('/you')} /> : null}
 
         {subCategory ? (
           subCategory.draw()
         ) : (
           <>
+            {/* The page's title, then the section heads (headline) inside each card: the web's Settings page. */}
+            <View onLayout={(e) => (titleBottom.current = space.lg + e.nativeEvent.layout.y + e.nativeEvent.layout.height)}>
+              <T v="display" accessibilityRole="header" style={{ marginTop: space.xs }}>Settings</T>
+            </View>
             {categories.filter((x) => !DOOR_CATS.includes(x.cat)).map((x) => x.draw())}
             {/* The doors (Your data, Help and about; Account and Feedback board in a cloud build), in one last card. */}
             <SettingsCard title="Data and help">{doorCats.map((x, i) => door(x, i === doorCats.length - 1))}</SettingsCard>
@@ -853,7 +908,7 @@ export default function Settings() {
           title: x.name,
           subtitle: x.fullName,
         }))}
-        value={s.activeCertId}
+        value={effectiveCertId(s.activeCertId)}
         onChange={(id) => s.setActiveCert(id)}
         after={<T v="meta" style={{ marginTop: space.md }}>{CERT_SCOPE_LINE}</T>}
       />
@@ -901,7 +956,7 @@ export default function Settings() {
         intro="What practice starts with. Practice can change it for one set."
         groupLabel="Default study mode"
         options={[
-          { value: AUTO_MODE, title: 'Let the app choose', subtitle: 'It changes as you go and fits where you’re starting from, ending with a smart mix of what you need.' },
+          { value: AUTO_MODE, title: 'Let the app choose', subtitle: 'Adapts as you go, then mixes what you need.' },
           ...STUDY_MODES.map((m) => ({ value: m, title: MODE_INFO[m].name, subtitle: MODE_INFO[m].why })),
         ]}
         value={s.studyMode ?? AUTO_MODE}
@@ -970,7 +1025,7 @@ export default function Settings() {
             title: 'Match my phone',
             subtitle: phoneReduced
               ? `Your phone’s ${phoneSetting()} is on, so movement is already reduced.`
-              : `Calm movement that shows what changed. Follows your phone’s ${phoneSetting()} setting.`,
+              : `Calm movement. Follows your phone’s ${phoneSetting()}.`,
           },
           { value: 'reduced', title: 'Reduced', subtitle: 'Short fades instead of slides; growth shows its end state.' },
         ]}
@@ -984,7 +1039,7 @@ export default function Settings() {
           <KaisipLockup height={28} />
         </View>
         {/* Mobile 1.39: the same lead as the welcome screen, one CISA story (no platform tagline). */}
-        <T v="caption" color={c.accentText} accessibilityRole="header" style={{ marginTop: space.lg }}>The KaiSip way</T>
+        <T v="headline" accessibilityRole="header" style={{ marginTop: space.lg }}>The KaiSip way</T>
         <T v="hero" style={{ marginTop: space.xs }}>{WELCOME_HEADLINE}</T>
         <T v="quote" color={c.ink2} style={{ marginTop: space.xs }}>{WELCOME_LINE}</T>
         <Gap h={space.lg} />
@@ -992,6 +1047,26 @@ export default function Settings() {
         <Gap h={space.lg} />
         <T v="meta">{CERT_SCOPE_LINE}</T>
         <T v="meta" style={{ marginTop: space.xs }}>{PROVENANCE_LINE}</T>
+        {/* Transparency (owner request, 5 Nov 2026; design-notes/grove/TRANSPARENCY.md P2): the short AI
+            disclaimer, then where to read how questions are made: the bundled Help answer (works offline)
+            and the public page on kaisip.com. */}
+        <T v="meta" style={{ marginTop: space.xs }}>{AI_DISCLAIMER_LINE}</T>
+        <Gap h={space.md} />
+        <SettingsRow
+          title={HOW_MADE_TITLE}
+          subtitle="Read it in Help"
+          accessibilityHint="Opens the answer in Common questions"
+          onPress={() => {
+            close();
+            router.push({ pathname: '/faq', params: { open: 'how-made' } });
+          }}
+        />
+        <SettingsRow
+          title="Read it on kaisip.com"
+          onPress={() => Linking.openURL(HOW_MADE_URL)}
+          accessibilityHint="Opens in your browser"
+          last
+        />
       </Sheet>
     </Screen>
   );

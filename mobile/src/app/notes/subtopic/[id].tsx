@@ -35,12 +35,12 @@
 import { router, useLocalSearchParams } from 'expo-router';
 import { useRef, useState } from 'react';
 import { View } from 'react-native';
-import { ICON_STROKE, Play } from '../../../components/icons';
+import { KeyList } from '../../../components/fieldguide';
 import { CheckDraw, useScreenFocus } from '../../../components/motion';
 import { AcronymPlate, NoteBody } from '../../../components/notes';
 import { titleAcronyms } from '../../../engine/noteAcronyms';
 import { ReportRow } from '../../../components/support';
-import { Button, Enter, Gap, ICON_SIZE, ListRow, PushedHeader, Row, Screen, Tag, T, useFontScale } from '../../../components/ui';
+import { Button, Enter, Gap, PushedHeader, Row, Screen, Tag, T, useFontScale } from '../../../components/ui';
 import { EmptyScreen } from '../../../components/emptyScreen';
 import { lessonsForSubtopic } from '../../../content/lessons';
 import { findQuestion } from '../../../content/loader';
@@ -94,6 +94,7 @@ export default function NoteSubtopicScreen() {
     return (
       <EmptyScreen
         header="Study notes"
+        fallback="/learn"
         title="Note not found"
         body="It may have moved in a content update."
         primary={{ label: 'All study notes', onPress: () => router.replace('/notes') }}
@@ -219,15 +220,20 @@ export default function NoteSubtopicScreen() {
           lead={
             lesson ? (
               // Mobile 1.20: the lesson for this idea (Play = lessons). 1.22: its status in a kicker over its own title.
+              // Premium round 2 (Field Guide foundation): an index row between hairlines, no icon circle.
               <View style={{ marginTop: space.lg, borderTopWidth: 1, borderBottomWidth: 1, borderColor: c.line }}>
-                <ListRow
-                  icon={<Play size={ICON_SIZE.row} color={c.accentText} strokeWidth={ICON_STROKE} />}
-                  kicker={`Lesson · ${lesson.minutes} min · ${lessonDone ? 'Done' : 'Not done yet'}`}
-                  title={lesson.title}
-                  accessibilityLabel={`Lesson: ${lesson.title}, ${lesson.minutes} minutes, ${lessonDone ? 'done' : 'not done yet'}`}
-                  accessibilityHint="Opens the short lesson on this topic"
-                  onPress={() => router.push(`/lesson/${lesson.id}`)}
-                  last
+                <KeyList
+                  numbered={false}
+                  items={[
+                    {
+                      key: lesson.id,
+                      kicker: `Lesson · ${lesson.minutes} min · ${lessonDone ? 'Done' : 'Not done yet'}`,
+                      title: lesson.title,
+                      spoken: `Lesson: ${lesson.title}, ${lesson.minutes} minutes, ${lessonDone ? 'done' : 'not done yet'}`,
+                      hint: 'Opens the short lesson on this topic',
+                      onPress: () => router.push(`/lesson/${lesson.id}`),
+                    },
+                  ]}
                 />
               </View>
             ) : null
@@ -252,13 +258,18 @@ export default function NoteSubtopicScreen() {
         )}
         {next && (
           <View style={{ marginTop: n > 0 ? space.xl : 0 }}>
-            <ListRow
-              kicker="Next note"
-              title={next.name}
-              accessibilityLabel={`Next note: ${next.name}`}
-              accessibilityHint="Opens the next note in this domain"
-              onPress={() => router.replace(`/notes/subtopic/${encodeURIComponent(next.id)}`)}
-              last
+            <KeyList
+              numbered={false}
+              items={[
+                {
+                  key: next.id,
+                  kicker: 'Next note',
+                  title: next.name,
+                  spoken: `Next note: ${next.name}`,
+                  hint: 'Opens the next note in this domain',
+                  onPress: () => router.replace(`/notes/subtopic/${encodeURIComponent(next.id)}`),
+                },
+              ]}
             />
           </View>
         )}

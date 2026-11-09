@@ -3,7 +3,8 @@
  *
  * - Tab/streak glyphs drawn on Lucide's 24 grid with a 1.75 stroke, so they
  *   sit next to Lucide icons without looking different: Sprout (Today tab),
- *   Rings (You tab), Pinwheel (Play tab, mobile 1.22), Sprig (streak).
+ *   SpecimenTag (You tab, premium round 2; it was Rings), Pinwheel (the old
+ *   Play tab, mobile 1.22), Sprig (streak).
  * - Leaf marks used by the answer screen: the verdict leaf, the big Key idea
  *   leaf and the small tip leaves on the vine.
  * - Botanical line art for the forest panel: one quadratic stem with
@@ -37,6 +38,47 @@ import { Pop, useCelebrationSettled, useMotion, useOncePerDay } from './motion';
 
 type GlyphProps = { size?: number; color: string; strokeWidth?: number };
 
+// ── Grove Phase 4: the hero glyphs (Learn and Practice) ─────────────────
+/**
+ * The kit's dandelion (reference/02-phone-learn.html line 39): a stem, nine seed spokes with a dot at
+ * each tip and a clay centre, on a 64 grid. Learn's Up next card draws it in its glyph tile.
+ * Decorative only: the caller hides it from screen readers.
+ */
+export function Dandelion({ size = 44, color, centre }: { size?: number; color: string; centre: string }) {
+  const tips: [number, number][] = [[32, 6], [46, 12], [52, 26], [46, 40], [18, 12], [12, 26], [18, 40], [40, 7], [24, 7]];
+  return (
+    <Svg testID="glyph-dandelion" width={size} height={size} viewBox="0 0 64 64" fill="none">
+      <Path d="M32 29V60" stroke={color} strokeWidth={1.3} />
+      {tips.map(([x, y]) => (
+        <Path key={`s${x}-${y}`} d={`M32 26L${x} ${y}`} stroke={color} strokeWidth={0.9} />
+      ))}
+      {/* The kit puts dots on seven tips (the two short spokes have none). */}
+      {tips.slice(0, 7).map(([x, y]) => (
+        <Circle key={`d${x}-${y}`} cx={x} cy={y} r={1.8} fill={color} />
+      ))}
+      <Circle cx={32} cy={26} r={3} fill={centre} />
+    </Svg>
+  );
+}
+
+/**
+ * The kit's leaf badge (reference/03-phone-practice.html line 56): a long rib with six side veins,
+ * on a 48 grid. Practice's Picked for you card draws it in its glyph tile. Decorative only.
+ */
+export function PracticeLeaf({ size = 40, color }: { size?: number; color: string }) {
+  return (
+    <Svg testID="glyph-practice-leaf" width={size} height={size} viewBox="0 0 48 48" fill="none">
+      <Path d="M10 40C18 30 28 18 40 8" stroke={color} strokeWidth={1.5} strokeLinecap="round" />
+      <Path
+        d="M16 33C14 27 15 22 18 19M22 27C20 21 21 16 25 13M28 20C27 15 29 11 32 9M18 35C24 36 28 34 31 31M24 28C30 29 34 27 36 24M30 21C35 21 38 19 40 16"
+        stroke={color}
+        strokeWidth={1.2}
+        strokeLinecap="round"
+      />
+    </Svg>
+  );
+}
+
 // ── Tab and streak glyphs ───────────────────────────────────────────────
 export function Sprout({ size = 24, color, strokeWidth = 1.75 }: GlyphProps) {
   return (
@@ -55,6 +97,25 @@ export function Rings({ size = 24, color, strokeWidth = 1.75 }: GlyphProps) {
       <Path d="M12 2.2c5.6 0 9.9 4.3 9.7 9.9-.2 5.3-4.5 9.8-9.9 9.7C6.5 21.7 2.2 17.4 2.3 12 2.4 6.6 6.6 2.2 12 2.2z" />
       <Path d="M12 6.4c3.2 0 5.7 2.4 5.6 5.7-.1 3.1-2.6 5.6-5.7 5.5-3.1-.1-5.5-2.6-5.4-5.7.1-3 2.5-5.5 5.5-5.5z" />
       <Circle cx={12} cy={12} r={1.6} />
+    </Svg>
+  );
+}
+
+/**
+ * Premium round 2 (expert ruling B): the You tab. A plain specimen tag, the
+ * label a pressed specimen wears (Field Guide `SpecimenLabel`): a tag with a
+ * notched end, an eyelet and two ruled lines. No leaf (leaves belong to stems).
+ * Stroke only, Lucide's weight, like BookOpen and ListChecks beside it. The
+ * eyelet sits at the LEFT end, away from the top-right corner where the 10pt
+ * "new badge" ring is drawn (`app/(tabs)/_layout.tsx`).
+ */
+export function SpecimenTag({ size = 24, color, strokeWidth = 1.75 }: GlyphProps) {
+  return (
+    <Svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth={strokeWidth} strokeLinecap="round" strokeLinejoin="round">
+      <Path d="M8 5.5h11.5a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H8L2.5 12z" />
+      <Circle cx={7.6} cy={12} r={1.4} />
+      <Path d="M11.5 10h6.5" />
+      <Path d="M11.5 14h4.5" />
     </Svg>
   );
 }
@@ -781,6 +842,82 @@ export function EmptyArt({ art, color, paper, size = 170 }: { art: EmptyArtKind;
         <Path key={i} d={d} opacity={SOIL_OPACITY[i]} />
       ))}
     </Svg>
+  );
+}
+
+// ── Mini stem: the clearing card's day of growth (premium round 2) ──────────
+/**
+ * Premium round 2 (item 11, retire the old ring wording): the clearing card's
+ * mini RINGS became one mini stem, the Field Guide's mark for growth (§21).
+ * A 48pt drawing: a line of soil, a stem whose height is readiness (0–100),
+ * a leaf every 9 points along it. In a full celebration it grows from this
+ * morning's height to now (the top is revealed upward, `grow` after `delay`);
+ * otherwise, and always under Reduce Motion, it is simply there. Decorative:
+ * the card's words say what grew.
+ */
+const MINI = 48;
+const MINI_SOIL = 44;
+/** The stem's top for a readiness score (0–100): never shorter than a sprout. */
+export const miniStemTop = (score: number) => MINI_SOIL - (8 + 32 * Math.max(0, Math.min(100, score)) / 100);
+
+export function MiniStem({
+  score,
+  from,
+  play = false,
+  run = 0,
+  delay = 0,
+  color,
+  soil,
+}: {
+  /** Readiness now, 0–100. */
+  score: number;
+  /** This morning's readiness, 0–100 (where the growth starts). */
+  from?: number;
+  play?: boolean;
+  run?: number;
+  delay?: number;
+  /** The stem and leaves (sap on the forest panel). */
+  color: string;
+  /** The soil line (the panel's track). */
+  soil: string;
+}) {
+  const { reduced } = useMotion();
+  const top = miniStemTop(score);
+  const shown = (y: number) => MINI - y + 3;
+  const animate = play && !reduced && from !== undefined && from < score;
+  const h = useSharedValue(animate ? shown(miniStemTop(from ?? score)) : shown(top));
+  useEffect(() => {
+    if (!animate) {
+      h.set(shown(top));
+      return;
+    }
+    h.set(shown(miniStemTop(from ?? score)));
+    h.set(withDelay(delay, withTiming(shown(top), { duration: motion.dur.grow, easing: Easing.out(Easing.cubic), reduceMotion: ReduceMotion.Never })));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [animate, run, top]);
+  const clip = useAnimatedStyle(() => ({ height: h.value }));
+  // A leaf every 9 points of the stem's height, alternating sides, below its tip.
+  const leaves: { y: number; side: 1 | -1 }[] = [];
+  for (let y = MINI_SOIL - 9, i = 0; y > top + 4; y -= 9, i++) leaves.push({ y, side: i % 2 ? -1 : 1 });
+  const leaf = (y: number, side: 1 | -1) => {
+    const x = 24 + side * 0.6;
+    const tip = x + side * 9;
+    return `M${x} ${y} C ${x + side * 3} ${y - 5}, ${tip - side * 2} ${y - 5}, ${tip} ${y - 3} C ${tip - side * 3} ${y + 1}, ${x + side * 3} ${y + 1}, ${x} ${y} Z`;
+  };
+  return (
+    <View accessible={false} importantForAccessibility="no-hide-descendants" accessibilityElementsHidden style={{ width: MINI, height: MINI }}>
+      <Animated.View style={[{ position: 'absolute', left: 0, right: 0, bottom: 0, overflow: 'hidden' }, clip]}>
+        <Svg width={MINI} height={MINI} viewBox={`0 0 ${MINI} ${MINI}`} style={{ position: 'absolute', bottom: 0, left: 0 }}>
+          <Path d={`M24 ${MINI_SOIL} C 23 ${(MINI_SOIL + top) / 2 + 4}, 25.5 ${(MINI_SOIL + top) / 2 - 4}, 24 ${top}`} fill="none" stroke={color} strokeWidth={2} strokeLinecap="round" />
+          {leaves.map((l) => (
+            <Path key={l.y} d={leaf(l.y, l.side)} fill={color} fillOpacity={0.35} stroke={color} strokeWidth={1} />
+          ))}
+        </Svg>
+      </Animated.View>
+      <Svg width={MINI} height={MINI} viewBox={`0 0 ${MINI} ${MINI}`} style={{ position: 'absolute', left: 0, top: 0 }}>
+        <Path d={`M6 ${MINI_SOIL}H42`} stroke={soil} strokeWidth={1.5} strokeLinecap="round" />
+      </Svg>
+    </View>
   );
 }
 

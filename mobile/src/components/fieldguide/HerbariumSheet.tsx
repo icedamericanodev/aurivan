@@ -66,11 +66,11 @@ export function HerbariumSheet({
         style={{ flexDirection: 'row', flexWrap: large ? 'wrap' : 'nowrap', alignItems: 'baseline', columnGap: 10, rowGap: 2 }}
       >
         <FieldText v="keyNo" color={c.clay}>{`Sheet ${no}`}</FieldText>
-        <FieldText v="value" style={{ flex: large ? undefined : 1, flexShrink: 1 }} maxScale={2}>{name}</FieldText>
+        <FieldText v="value" style={{ flex: large ? undefined : 1, flexShrink: 1 }}>{name}</FieldText>
         {counted && (
           <View style={{ flexDirection: 'row', alignItems: 'baseline', gap: 3 }}>
-            <FieldText v="value">{String(earned)}</FieldText>
-            <FieldText v="small">{complete ? `of ${total} · complete ${complete}` : `of ${total} pressed`}</FieldText>
+            <T v="numValue" num>{String(earned)}</T>
+            <T v="meta" num>{complete ? `of ${total} · complete ${complete}` : `of ${total} pressed`}</T>
           </View>
         )}
       </View>

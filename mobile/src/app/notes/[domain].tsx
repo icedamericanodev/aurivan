@@ -21,11 +21,13 @@
  * read fills its circle once when this page is back in view.
  * The domain's key terms fold away at the end.
  */
+import { HubCard } from '../../components/groveHub';
 import { router, useLocalSearchParams } from 'expo-router';
 import { useState } from 'react';
 import { Pressable, View } from 'react-native';
 import { EmptyScreen } from '../../components/emptyScreen';
-import { ChevronDown, ICON_STROKE, Play } from '../../components/icons';
+import { ChevronDown, ICON_STROKE } from '../../components/icons';
+import { KeyList } from '../../components/fieldguide';
 import { Collapse, Turn } from '../../components/motion';
 import { Bullets, ReadMark, TermList } from '../../components/notes';
 import { Button, Enter, HeroPanel, ICON_SIZE, ListRow, PushedHeader, Row, Screen, Section, T, useFontScale } from '../../components/ui';
@@ -88,7 +90,7 @@ export default function NotesDomain() {
   const [defaultOpen] = useState(() => (notes ? firstUnreadTopic(notes, progress.notesRead) : undefined));
 
   if (!info || !notes) {
-    return <EmptyScreen header="Study notes" title="Notes not found" body="This domain has no study notes yet." primary={{ label: 'All study notes', onPress: () => router.replace('/notes') }} />;
+    return <EmptyScreen header="Study notes" fallback="/learn" title="Notes not found" body="This domain has no study notes yet." primary={{ label: 'All study notes', onPress: () => router.replace('/notes') }} />;
   }
 
   const read = progress.notesRead;
@@ -153,7 +155,7 @@ export default function NotesDomain() {
 
       {notes.analogy ? (
         <Enter i={1} style={{ marginTop: space.xl }}>
-          <T v="caption" color={c.accentText}>Think of it like this</T>
+          <T v="caption" color={c.accentText}>Think of it this way</T>
           <T v="body" color={c.ink2} style={{ marginTop: space.xs }}>{notes.analogy}</T>
         </Enter>
       ) : null}
@@ -161,8 +163,10 @@ export default function NotesDomain() {
       <Enter i={1}>
         {groups.map((g) => (
           <View key={g.title}>
-            <Section title={g.title} />
-            {g.topics.map((t) => {
+            <Section variant="head" title={g.title} />
+            {/* Grove Phase 4 (PHASE4.md 7.2): each part's topics in one card. */}
+            <HubCard style={{ paddingTop: 0, paddingBottom: space.xs }}>
+            {g.topics.map((t, ti) => {
               const isOpen = isOpenTopic(t.id);
               const readHere = t.subtopics.filter((st) => read.includes(st.id)).length;
               const readText = readProgressText(readHere, t.subtopics.length);
@@ -170,7 +174,7 @@ export default function NotesDomain() {
               const lesson = topicLessons(cert.id, t.id)[0];
               const lessonDone = lesson ? progress.lessonsDone.includes(lesson.id) : false;
               return (
-                <View key={t.id} style={{ marginTop: space.sm }}>
+                <View key={t.id} style={{ marginTop: ti === 0 ? 0 : space.sm }}>
                   {/* Topic header: tap to show or hide this topic (same look as Learn's domain groups). */}
                   <Pressable
                     accessibilityRole="button"
@@ -210,16 +214,22 @@ export default function NotesDomain() {
                       </View>
                     )}
                     {lesson && (
-                      <View style={{ marginTop: space.sm }}>
-                        <ListRow
-                          icon={<Play size={ICON_SIZE.row} color={c.accentText} strokeWidth={ICON_STROKE} />}
-                          // The lesson's own title on screen (no double colon); the spoken label keeps "Lesson:".
-                          title={lesson.title}
-                          subtitle={`Lesson · ${lesson.minutes} min · ${lessonDone ? 'Done' : 'Not done yet'}`}
-                          accessibilityLabel={`Lesson: ${lesson.title}, ${lesson.minutes} minutes, ${lessonDone ? 'done' : 'not done yet'}`}
-                          accessibilityHint="Opens the short lesson on this topic"
-                          onPress={() => router.push(`/lesson/${lesson.id}`)}
-                          last
+                      // Premium round 2 (Field Guide foundation): an index row, its state as the kicker over
+                      // the lesson's own title (no icon circle), between hairlines (as on a note); the spoken
+                      // label keeps "Lesson:".
+                      <View style={{ marginTop: space.sm, borderTopWidth: 1, borderBottomWidth: 1, borderColor: c.line }}>
+                        <KeyList
+                          numbered={false}
+                          items={[
+                            {
+                              key: lesson.id,
+                              kicker: `Lesson · ${lesson.minutes} min · ${lessonDone ? 'Done' : 'Not done yet'}`,
+                              title: lesson.title,
+                              spoken: `Lesson: ${lesson.title}, ${lesson.minutes} minutes, ${lessonDone ? 'done' : 'not done yet'}`,
+                              hint: 'Opens the short lesson on this topic',
+                              onPress: () => router.push(`/lesson/${lesson.id}`),
+                            },
+                          ]}
                         />
                       </View>
                     )}
@@ -255,6 +265,7 @@ export default function NotesDomain() {
                 </View>
               );
             })}
+            </HubCard>
           </View>
         ))}
 

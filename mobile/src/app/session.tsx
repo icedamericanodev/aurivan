@@ -26,6 +26,8 @@
  *   lines come first. A right answer keeps the old order.
  * - The coach line under "Not quite" is specific only when the learner tagged
  *   why they slipped (engine/slipCoach.ts missCoachLine); otherwise neutral.
+ *   (Premium round 2 adds the pick-aware line first; a tagged slip still wins unless the pick
+ *   reached the final two. See below.)
  * - A right answer given less than 4 hours after a MISS on the same question
  *   is a retest: it counts half and says "Back in your review tomorrow."
  * - A wrong answer gets the neutral tap, not the "error" buzz.
@@ -45,10 +47,23 @@
  * - The source line stays, as text only.
  * - The answer opens with the question recapped in two lines ("Show question"
  *   opens it whole); a screen reader hears the whole question there.
+ *
+ * Premium round 2 (REPORT spec 2; Fig. 4 = the answer in the figure register the web shares), practice and review only:
+ * - A running head ("Practice · IS Audit" / "Question 4 of 10") over the recap.
+ * - The verdict word in ink; the leaf keeps its colour and its ✗ / ✓.
+ * - One plate, "Fig. 4 · Your pick, and the best answer" (a right answer: "Fig. 4 · Your answer",
+ *   one ✓ row). "Your pick" replaces "Your answer" on this screen.
+ * - "KEY IDEA" over the quotation and the Exam cue as a label (no vine rule), on the vine's timing,
+ *   after a miss and after a right answer (where it follows Why; Eliminate / Final two stay on the vine).
+ * - The coach line names the learner's own pick when the tips do ("Your pick, B, is one of the two
+ *   to rule out first." / "You reached the final two: B against D."; engine/pickCoach.ts). A slip
+ *   the learner tagged themselves still wins over "rule out first" (their own words come first);
+ *   only reaching the final two outranks it.
+ * - "Next question" is the plate button over a hairline. A mock is unchanged.
  */
 import * as Router from 'expo-router';
 import { router, useFocusEffect } from 'expo-router';
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import {
   AccessibilityInfo,
   Alert,
@@ -67,37 +82,42 @@ import {
 import { CrossFade, PageTurn, Pop, useMotion } from '../components/motion';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { LeafSmall } from '../components/glyphs';
-import { ArrowRight, BookOpen, Bookmark, BookmarkCheck, ChevronLeft, Compass, Flag, ICON_STROKE, LayoutGrid, Lightbulb, PencilLine, Play, X } from '../components/icons';
+import { ArrowRight, BookOpen, Bookmark, BookmarkCheck, ChevronLeft, Compass, Flag, ICON_STROKE, LayoutGrid, Lightbulb, ListChecks, PencilLine, Play, X } from '../components/icons';
 import {
+  AllOptionsSheet,
   AnswerMore,
+  AnswerPlate,
   AnswerRecap,
+  KeyIdea,
   MORE_FOCUS_BACK_MS,
   ConfidenceRow,
   FEEDBACK_DELAY,
   OptionCard,
+  PLATE_ROW_STAGGER,
   VINE_ARRIVES,
-  PickNote,
   Rise,
   ScenarioBlock,
   SourceLine,
   StemRecap,
   StickyFooter,
+  TipsCard,
+  TipsHeading,
   useVerdictIndent,
   Verdict,
-  Vine,
   WhyBlock,
   type MoreRow,
   type OptionState,
 } from '../components/quiz';
 import { addMs } from '../engine/answerClock';
-import { aboutMin, dueCheckpoints, formatClock, mockPace, paceMessage, paceShort, practiceElapsedMs, SOFT_CUE_LINE, softCue, spokenClockCoarse, spokenMin, statusOf } from '../engine/pace';
+import { aboutMin, dueCheckpoints, formatClock, mockPace, paceMessage, paceShort, practiceElapsedMs, SOFT_CUE_LINE, softCue, spokenClockCoarse, spokenMin, statusOf, type Checkpoint } from '../engine/pace';
 import { PaceStrip, type PaceStripProps } from '../components/pace';
 import { QuestionNote, useHasQuestionNote, type QuestionNoteHandle } from '../components/questionNote';
 import { useReportFlow } from '../components/support';
+import { openTab } from '../lib/actions';
 import { moveFocus, sayLater } from '../lib/a11y';
 import { haptic } from '../lib/haptics';
 import { questionTarget, sessionWhere } from '../lib/support';
-import { Button, Gap, ICON_SIZE, ListRow, Row, SegmentBar, Stem, T, Tag } from '../components/ui';
+import { Button, Gap, groveCard, ICON_SIZE, IconButton, ListRow, Row, SegmentBar, Stem, T, Tag, useFontScale } from '../components/ui';
 import { getCertification, getDomain } from '../content/certifications';
 import { missLessons } from '../content/lessons';
 import { findQuestion } from '../content/loader';
@@ -110,12 +130,16 @@ import { RETEST_LINE, type Confidence } from '../engine/srs';
 import { shortDate } from '../lib/format';
 import { priorityWord } from '../engine/games/priorityLens';
 import { missCoachLine } from '../engine/slipCoach';
-import { eliminateTip, runnerUp, splitMissTips, tipParts } from '../engine/tips';
+import { pickCoachKind, pickCoachLine, tipPickLetter } from '../engine/pickCoach';
+import { RunningHead } from '../components/fieldguide';
+import { eliminateTip, runnerUp, tipParts } from '../engine/tips';
 import { finishSession } from '../lib/finishSession';
+import { QUICK_TITLE, RECALL_TITLE } from '../lib/widgetOpen';
 import { advancePath } from '../lib/sessions';
 import { HINT_AFTER_LINE, HINT_BEFORE_LINE } from '../engine/readiness';
 import { useAnswerClock } from '../lib/useAnswerClock';
 import { selectCert, useProgress } from '../store/progress';
+import { batchSaves } from '../store/storage';
 import { useSession } from '../store/session';
 import { LARGE_TEXT, motion, radius, space } from '../theme/tokens';
 import { useTheme } from '../theme/useTheme';
@@ -130,12 +154,128 @@ const NO_LESSONS: string[] = [];
 const useInView: () => boolean = (Router as { useIsFocused?: () => boolean }).useIsFocused ?? (() => true);
 /** At this text size the confidence chips move out of the sticky footer (spec §10.7). */
 const HUGE_TEXT = 1.6;
+/** The mock's first pace note at large text ("Pace checks at 25, 50 and 75% of the time." in full). */
+export const FIRST_PACE_SHORT = 'Checks at 25, 50, 75%';
 
 /** The header recap's hysteresis (pt): it hides only once the verdict is 8pt back below the header. */
 const RECAP_HYSTERESIS = 8;
 
 /** The mock clock's last stretch: shown in clay (never the error colour). */
 const LOW_TIME_MS = 5 * 60_000;
+
+const NO_CHECKPOINTS: Checkpoint[] = [];
+
+/**
+ * A timed mock's clock and pace line (release bug hunt round 1). It holds the ticking time itself,
+ * so the once-a-second tick redraws only this strip: before, the whole question screen (and, with
+ * the navigator open, all of its cells) redrew every second for the whole exam.
+ *
+ * Its effects do what the screen did on each tick: the pace checks at 25 / 50 / 75% of the time
+ * (recorded ONCE in the session, so a reload keeps the line, and announced once), "Less than 5
+ * minutes left." said once (clock shown or hidden), and the submit at zero (Results says "Time's up";
+ * the screen's finishedAt effect opens it). A mock reopened after its deadline submits at once.
+ */
+const MockClock = memo(function MockClock({ deadline, hideClock, finished }: { deadline: number; hideClock: boolean; finished: boolean }) {
+  // Lazy initialiser: read the clock once on mount, not on every render.
+  const [now, setNow] = useState(() => Date.now());
+  const checkpoints = useSession((s) => s.active?.checkpoints ?? NO_CHECKPOINTS);
+  useEffect(() => {
+    if (finished) return;
+    const t = setInterval(() => setNow(Date.now()), 1000);
+    return () => clearInterval(t);
+  }, [finished]);
+  const remaining = deadline - now;
+
+  // The pace checks, read from the session as it is at this tick ("done" = answered or flagged, parked).
+  useEffect(() => {
+    const a = useSession.getState().active;
+    if (finished || !a || a.mode !== 'mock' || !a.deadline || a.finishedAt) return;
+    const cert0 = getCertification(a.certId);
+    if (!cert0) return;
+    const done = a.questionIds.filter((id) => a.responses[id] || a.flagged.includes(id)).length;
+    const { targetSec } = mockPace(cert0.exam, a.questionIds.length, a.timing ?? 'standard');
+    const before = a.checkpoints ?? [];
+    const next = dueCheckpoints(before, a.deadline - a.startedAt, now - a.startedAt, done, targetSec);
+    if (next.length > before.length) {
+      useSession.getState().setCheckpoints(next);
+      const last = next[next.length - 1];
+      AccessibilityInfo.announceForAccessibility(`Pace check. ${paceMessage({ status: statusOf(last.deviation), minutes: last.minutes })}`);
+    }
+  }, [now, finished]);
+
+  // Say once when the last 5 minutes start, clock shown or hidden (P4).
+  const lowAnnounced = useRef(false);
+  const lowNow = !finished && remaining > 0 && remaining < LOW_TIME_MS;
+  useEffect(() => {
+    if (!lowNow || lowAnnounced.current) return;
+    lowAnnounced.current = true;
+    AccessibilityInfo.announceForAccessibility('Less than 5 minutes left.');
+  }, [lowNow]);
+  useEffect(() => {
+    // Results says "Time’s up" in words and out loud (mobile 1.24, engine/resultsCopy.ts).
+    if (!finished && remaining <= 0) finishSession(); // the screen's finishedAt effect navigates to /results
+  }, [finished, remaining]);
+
+  const lowTime = remaining < LOW_TIME_MS;
+  const lastCheck = checkpoints[checkpoints.length - 1];
+  return (
+    <PaceStrip
+      clock={hideClock ? 'hidden' : { text: formatClock(remaining), spoken: `Time left ${spokenClockCoarse(remaining)}`, low: lowTime }}
+      clockUnit="left"
+      line={
+        hideClock && lowTime
+          ? { text: 'Less than 5 minutes left.', tone: 'soon' }
+          : lastCheck
+            ? { text: paceMessage({ status: statusOf(lastCheck.deviation), minutes: lastCheck.minutes }), tone: statusOf(lastCheck.deviation) }
+            : { text: 'Pace checks at 25, 50 and 75% of the time.', tone: 'note' }
+      }
+      // The strip shows this at very large text instead of the full advice (P6). The first note has a
+      // short form too (release bug hunt round 3): in full it took 3 lines at 200% text on a narrow phone.
+      lineShort={
+        hideClock && lowTime ? undefined : lastCheck ? paceShort({ status: statusOf(lastCheck.deviation), minutes: lastCheck.minutes }) : FIRST_PACE_SHORT
+      }
+    />
+  );
+});
+
+/**
+ * Timed practice's clock strip (release bug hunt round 2). Like MockClock, it holds the once-a-second
+ * tick itself, so only this strip redraws each second: before, the whole question screen (the stem,
+ * all four options and the progress segments) redrew every second while the learner read.
+ *
+ * It counts UP: the answered questions' times (`answeredMs`, a number, so the screen's own redraws
+ * don't reach it) plus the running time on the question on screen, read from the same answer clock
+ * (no second timing system). While the explanation shows (`answering` false) the clock stands still.
+ * The soft cue ("take a breath, you can come back") shows and is said once per question; the screen
+ * mounts one strip per question (key = the question id), so it starts fresh on each.
+ */
+const PracticeClock = memo(function PracticeClock({ readClock, answering, answeredMs }: { readClock: () => number; answering: boolean; answeredMs: number }) {
+  const [curMs, setCurMs] = useState(0);
+  useEffect(() => {
+    if (!answering) return;
+    const t = setInterval(() => setCurMs(readClock()), 1000);
+    return () => clearInterval(t);
+  }, [answering, readClock]);
+  // The soft cue is announced once per question.
+  const cueSaid = useRef(false);
+  const cueNow = answering && softCue(curMs);
+  useEffect(() => {
+    if (!cueNow || cueSaid.current) return;
+    cueSaid.current = true;
+    AccessibilityInfo.announceForAccessibility(SOFT_CUE_LINE);
+  }, [cueNow]);
+  // Answered questions' times plus the one on screen (none while the explanation shows).
+  const ms = answeredMs + (answering ? Math.max(0, curMs) : 0);
+  return (
+    <PaceStrip
+      // Spoken in whole minutes (U-H2), so the label doesn't change every second.
+      clock={{ text: formatClock(ms), spoken: `Session time ${spokenClockCoarse(ms)}${answering ? ' so far' : ', paused'}` }}
+      clockUnit={answering ? 'so far' : 'paused'}
+      // Practice has no Flag button: the cue talks about the exam, clock icon in clay (U-H1).
+      line={cueNow ? { text: SOFT_CUE_LINE, tone: 'soon' } : null}
+    />
+  );
+});
 
 export default function SessionScreen() {
   const { c } = useTheme();
@@ -146,7 +286,9 @@ export default function SessionScreen() {
   const bookmarks = useProgress((s) => (active ? selectCert(s, active.certId).bookmarks : NO_BOOKMARKS));
   // Lessons already done: a done lesson is not offered again after a miss (mobile 1.20).
   const lessonsDone = useProgress((s) => (active ? selectCert(s, active.certId).lessonsDone : NO_LESSONS));
-  const { fontScale } = useWindowDimensions();
+  // The phone's text size through useFontScale (the screenshot harness can set it on web too).
+  const fontScale = useFontScale();
+  const { width: screenW } = useWindowDimensions();
   // Lines under the verdict start under its word; at ×1.3 text, at the gutter (mobile 1.43).
   const verdictIndent = useVerdictIndent();
   // Reduce Motion: the navigator sheet fades in instead of sliding.
@@ -158,8 +300,6 @@ export default function SessionScreen() {
   // Counts taps that SAVE a question, so the bookmark pops only for that tap
   // (never when moving to a question that was already saved).
   const [savedTaps, setSavedTaps] = useState(0);
-  // Lazy initialiser: read the clock once on mount, not on every render.
-  const [now, setNow] = useState(() => Date.now());
   // Layout bookkeeping for the sticky footer and the vine reveal.
   const [footerH, setFooterH] = useState(120);
   // The navigator sheet's own sticky footer ("Submit exam").
@@ -174,9 +314,8 @@ export default function SessionScreen() {
   // The question whose vine may draw: armed once its entrance has landed (VINE_ARRIVES), never at the
   // tap while it is still invisible (UX H1). Keyed by question, so a new question starts unarmed.
   const vineArmedFor = useRef<string | null>(null);
-  // Mobile 1.24: after a miss the tips come in two parts (Key idea + Exam cue, then
-  // Eliminate / Final two after the folded "Why"); the second part draws on its own.
-  const [vine2Visible, setVine2Visible] = useState(false);
+  // Grove Phase 4: More's "Show all options" sheet (the four options, read-only).
+  const [allOptionsOpen, setAllOptionsOpen] = useState(false);
   // Screen-reader focus lands on the verdict after "Check answer".
   const verdictRef = useRef<View>(null);
   // Coach me: the first line of the hint, and a flag saying "the learner just
@@ -233,24 +372,9 @@ export default function SessionScreen() {
   // (the last answer's time plus visits that ended without an answer), so
   // going back and answering adds to it instead of replacing it.
   const [visitBase, setVisitBase] = useState<number | undefined>(undefined);
-  // Timed practice: the running time on the current question, refreshed
-  // once a second from the same answer clock (no second timing system).
+  // Timed practice: its once-a-second clock and the soft cue live in PracticeClock (above), so the
+  // tick redraws only the strip (release bug hunt round 2).
   const timedPractice = !isMock && Boolean(active?.timed);
-  const answering = !response; // false once submitted: the explanation is showing
-  const [curMs, setCurMs] = useState(0);
-  useEffect(() => {
-    if (!timedPractice || !answering) return;
-    const t = setInterval(() => setCurMs(readClock()), 1000);
-    return () => clearInterval(t);
-  }, [timedPractice, answering, qid, readClock]);
-  // The soft cue is announced once per question.
-  const cueSaidFor = useRef<string | undefined>(undefined);
-  const cueNow = timedPractice && answering && softCue(curMs);
-  useEffect(() => {
-    if (!cueNow || cueSaidFor.current === qid) return;
-    cueSaidFor.current = qid;
-    AccessibilityInfo.announceForAccessibility(SOFT_CUE_LINE);
-  }, [cueNow, qid]);
   // Mock exams: did this visit end with a tap on an option? If not, its time
   // is kept in the session store when the learner moves on (effect below).
   const pickedThisVisit = useRef(false);
@@ -273,10 +397,9 @@ export default function SessionScreen() {
     setResetFor(qid);
     setSelected(isMock && response ? response.display : null);
     setVisitBase(isMock ? (response?.ms ?? 0) + (active?.visitMs?.[qid ?? ''] ?? 0) : undefined);
-    setCurMs(0);
     setConfidence(undefined);
     setVineVisible(false);
-    setVine2Visible(false);
+    setAllOptionsOpen(false);
   }
   // At the swap (PageTurn calls this before the new page is painted): back to
   // the top, so the jump is never seen, and tell screen readers where they are
@@ -327,51 +450,12 @@ export default function SessionScreen() {
     return () => clearTimeout(t);
   }, [coached, qid]);
 
-  // Mock-exam clock: tick every second; auto-submit at zero.
-  useEffect(() => {
-    if (!isMock || !active?.deadline || active.finishedAt) return;
-    const t = setInterval(() => setNow(Date.now()), 1000);
-    return () => clearInterval(t);
-  }, [isMock, active?.deadline, active?.finishedAt]);
-
-  const remaining = active?.deadline ? active.deadline - now : 0;
-
-  // Pace checks at 25 / 50 / 75% of the time (engine/pace.ts). Each is
-  // recorded ONCE in the session (so a reload keeps the line) and announced
-  // once to screen readers. "Done" = answered or flagged (parked).
-  useEffect(() => {
-    if (!isMock || !active?.deadline || active.finishedAt) return;
-    const cert0 = getCertification(active.certId);
-    if (!cert0) return;
-    const done = active.questionIds.filter((id) => active.responses[id] || active.flagged.includes(id)).length;
-    const { targetSec } = mockPace(cert0.exam, active.questionIds.length, active.timing ?? 'standard');
-    const before = active.checkpoints ?? [];
-    const next = dueCheckpoints(before, active.deadline - active.startedAt, now - active.startedAt, done, targetSec);
-    if (next.length > before.length) {
-      useSession.getState().setCheckpoints(next);
-      const last = next[next.length - 1];
-      AccessibilityInfo.announceForAccessibility(`Pace check. ${paceMessage({ status: statusOf(last.deviation), minutes: last.minutes })}`);
-    }
-  }, [isMock, now, active]);
-
-  // Say once when the last 5 minutes start, clock shown or hidden (P4).
-  const lowAnnounced = useRef(false);
-  const lowNow = isMock && Boolean(active?.deadline) && !active?.finishedAt && remaining > 0 && remaining < LOW_TIME_MS;
-  useEffect(() => {
-    if (!lowNow || lowAnnounced.current) return;
-    lowAnnounced.current = true;
-    AccessibilityInfo.announceForAccessibility('Less than 5 minutes left.');
-  }, [lowNow]);
-  useEffect(() => {
-    if (isMock && active?.deadline && !active.finishedAt && remaining <= 0) {
-      // Results says "Time’s up" in words and out loud (mobile 1.24, engine/resultsCopy.ts).
-      finishSession(); // the finishedAt effect below navigates to /results
-    }
-  }, [isMock, remaining, active?.deadline, active?.finishedAt]);
+  // The mock clock (its tick, the pace checks, the 5-minute line and the auto-submit) lives in MockClock
+  // below (release bug hunt round 1): its once-a-second tick redraws only the clock, never this screen.
 
   // Android hardware back button runs the same "End/Pause?" confirmation
   // as the on-screen button, instead of silently leaving the quiz.
-  const leaveRef = useRef<() => void>(() => router.replace('/home'));
+  const leaveRef = useRef<() => void>(() => openTab('/home'));
   useFocusEffect(
     useCallback(() => {
       const sub = BackHandler.addEventListener('hardwareBackPress', () => {
@@ -421,7 +505,7 @@ export default function SessionScreen() {
           label="Back to Today"
           onPress={() => {
             useSession.getState().clear();
-            router.replace('/home');
+            openTab('/home');
           }}
         />
       </SafeAreaView>
@@ -464,17 +548,22 @@ export default function SessionScreen() {
     // "Not quite. Best answer D." itself. An announcement as well was cut off on iOS and doubled on Android.
     // Time from the question appearing to "Check answer" (background excluded).
     const ms = readClock();
-    // Progress first: the store decides whether this was a RETEST (a right answer under 4 hours after
-    // a miss on this question, engine/srs.ts): it counts half and is not promoted.
-    recordAnswer(active.certId, qid, ok, confidence, { assisted: coached, ms });
-    const retest = ok && selectCert(useProgress.getState(), active.certId).answers[qid]?.lastRetest === true;
-    // Answers after Coach me are "assisted": half weight toward readiness.
-    answer(qid, { display: selected, correct: ok, confidence, ms, ...(coached ? { assisted: true } : {}), ...(retest ? { retest: true } : {}) });
-    // In order (Build E): remember the place (never from the mixed tail).
-    advancePath(active, qid);
-    // File every miss in the Mistake Journal, with the ORIGINAL letter picked
-    // (and how sure they felt, for the slip coach's "over-confident" pattern).
-    if (!ok) useProgress.getState().recordMistake(active.certId, qid, displayToOriginal(selected, perm), confidence);
+    // Release bug hunt round 2: every store write below is saved ONCE, with its final state
+    // (store/storage.ts batchSaves). A miss used to save the whole progress file twice (the answer,
+    // then the mistake). The state itself still changes at once, so the retest read sees the answer.
+    batchSaves(() => {
+      // Progress first: the store decides whether this was a RETEST (a right answer under 4 hours after
+      // a miss on this question, engine/srs.ts): it counts half and is not promoted.
+      recordAnswer(active.certId, qid, ok, confidence, { assisted: coached, ms });
+      const retest = ok && selectCert(useProgress.getState(), active.certId).answers[qid]?.lastRetest === true;
+      // Answers after Coach me are "assisted": half weight toward readiness.
+      answer(qid, { display: selected, correct: ok, confidence, ms, ...(coached ? { assisted: true } : {}), ...(retest ? { retest: true } : {}) });
+      // In order (Build E): remember the place (never from the mixed tail).
+      advancePath(active, qid);
+      // File every miss in the Mistake Journal, with the ORIGINAL letter picked
+      // (and how sure they felt, for the slip coach's "over-confident" pattern).
+      if (!ok) useProgress.getState().recordMistake(active.certId, qid, displayToOriginal(selected, perm), confidence);
+    });
     // Start the answer screen at the top, so the verdict is the first thing seen,
     // and move the screen reader there (the footer button it was on sits below the explanation).
     scrollRef.current?.scrollTo({ y: 0, animated: false });
@@ -487,17 +576,24 @@ export default function SessionScreen() {
   // or "Practice the one you missed" (all of them go back to the screen they came from).
   // Today's plan and the streak still count it (finishSession logs the activity); a badge moment
   // is left for a later full session (celebrate: false).
-  const singleQuestion = !isMock && total === 1;
+  // Not a widget's one question (the Recall card, Today's rule's "Try one"): those go on to Results,
+  // which hands back to today's plan ("Today's plan · about N min left", Continue or Done for now).
+  // Not the first set either: a first set resumed with one question left still ends on its own
+  // closing screen ("See results"), and X still asks "End session?" (release bug hunt round 3).
+  const widgetQuestion = active.title === RECALL_TITLE || active.title === QUICK_TITLE;
+  const singleQuestion = !isMock && total === 1 && !widgetQuestion && !active.firstSet;
   const exitSingle = () => {
     if (Object.keys(active.responses).length > 0) finishSession({ celebrate: false });
     useSession.getState().clear();
     if (router.canGoBack()) router.back();
-    else router.replace('/home');
+    else openTab('/home');
   };
   const next = () => {
     if (!isLast) goTo(active.index + 1);
     else if (isMock) confirmSubmitExam();
     else if (singleQuestion) exitSingle();
+    // A widget's one question: Results (the plan handoff), but no badge moment for one question.
+    else if (widgetQuestion) finishSession({ celebrate: false });
     // The first set ends on its own closing screen, which shows no badge moment: a badge it earns waits for the next Results.
     else finishSession({ celebrate: !active.firstSet }); // the finishedAt effect navigates to /results
   };
@@ -524,12 +620,18 @@ export default function SessionScreen() {
       exitSingle();
       return;
     }
+    if (widgetQuestion) {
+      // A widget's one question: answered goes to Results (the plan handoff), unanswered just leaves.
+      if (Object.keys(active.responses).length > 0) finishSession({ celebrate: false });
+      else exitSingle();
+      return;
+    }
     if (isMock) {
       // An untimed mock has no clock to keep running.
-      const body = active.deadline ? 'Your answers are saved. The clock keeps running — resume from Today.' : 'Your answers are saved. Resume from Today.';
+      const body = active.deadline ? 'Your answers are saved. The clock keeps running. Resume from Today.' : 'Your answers are saved. Resume from Today.';
       Alert.alert('Pause exam?', body, [
         { text: 'Stay', style: 'cancel' },
-        { text: 'Pause', onPress: () => router.replace('/home') },
+        { text: 'Pause', onPress: () => openTab('/home') },
       ]);
     } else {
       const answered = Object.keys(active.responses).length;
@@ -542,7 +644,7 @@ export default function SessionScreen() {
               finishSession({ celebrate: !active.firstSet });
             } else {
               useSession.getState().clear();
-              router.replace('/home');
+              openTab('/home');
             }
           },
         },
@@ -571,11 +673,20 @@ export default function SessionScreen() {
   const pickedOriginal = response ? displayToOriginal(response.display, perm) : undefined;
   const whyWrong = pickedOriginal && pickedOriginal !== q.correct ? q.wrongExplanations[pickedOriginal] : undefined;
   const correctDisplay = originalToDisplay(q.correct, perm);
+  // Premium round 2 (web v12.47 parity): after a miss, a line about the learner's OWN pick, read
+  // from the tips on ORIGINAL letters and said in DISPLAY letters ("Your pick, B, is one of the two to
+  // rule out first." / "You reached the final two: B against D."). Only when the tips name the pick
+  // exactly; otherwise the usual line (the closest wrong choice, a tagged slip, or the neutral line).
+  // UX review P1: a slip the learner TAGGED themselves ("I misread it") is their own words, so it still
+  // wins, except when the pick reached the final two (that line is the more useful news).
   const coach = !response
     ? ''
     : response.correct
       ? 'Clean read.'
-      : missCoachLine(Boolean(pickedOriginal && pickedOriginal === runnerUp(q.tips, q.correct)), taggedSlip);
+      : taggedSlip && pickCoachKind(q.tips, q.correct, pickedOriginal) !== 'final-two'
+        ? missCoachLine(false, taggedSlip)
+        : (pickCoachLine(q.tips, q.correct, pickedOriginal, perm) ??
+          missCoachLine(Boolean(pickedOriginal && pickedOriginal === runnerUp(q.tips, q.correct)), taggedSlip));
   const flagged = active.flagged.includes(qid);
   const shownFlagged = active.flagged.includes(shownQid);
   // Build E: why this question is here ("Weak spot", "Mixed review"…).
@@ -643,52 +754,60 @@ export default function SessionScreen() {
     hint: 'Opens a short form, then your email app',
     run: report.open,
   };
-  // AnswerMore drops the nulls (the rows that don't apply here), in this order.
-  const moreRows = [noteRow, principleRow, yourNoteRow, reportRow];
-  const lowTime = isMock && remaining < LOW_TIME_MS;
-  // The shared pace strip (components/pace.tsx): mock clock and pace line.
-  const lastCheck = active.checkpoints?.[active.checkpoints.length - 1];
-  // Timed practice: answered questions' times plus the one on screen (none
-  // while the explanation shows, so the clock stands still there).
-  const practiceMs = timedPractice
-    ? practiceElapsedMs(Object.values(active.responses).map((r) => r.ms), submitted ? null : curMs)
-    : 0;
-  const strip: PaceStripProps | null = !isMock
-    ? timedPractice
+  // Grove Phase 4 (PHASE4.md 4.2 step 2, 4.5): the answer card shows only the pick and the best answer,
+  // so every option stays one tap away here. Only after the answer is checked (before it, the options
+  // are on screen anyway). Read-only: it never grades.
+  const optionsRow: MoreRow | null =
+    submitted && response
       ? {
-          // Spoken in whole minutes (U-H2), so the label doesn't change every second.
-          clock: { text: formatClock(practiceMs), spoken: `Session time ${spokenClockCoarse(practiceMs)}${submitted ? ', paused' : ' so far'}` },
-          clockUnit: submitted ? 'paused' : 'so far',
-          // Practice has no Flag button: the cue talks about the exam, clock icon in clay (U-H1).
-          line: cueNow ? { text: SOFT_CUE_LINE, tone: 'soon' } : null,
+          key: 'options',
+          icon: (col) => <ListChecks size={ICON_SIZE.row} color={col} strokeWidth={ICON_STROKE} />,
+          title: 'Show all options',
+          subtitle: 'With your pick and the best',
+          label: 'Show all options, with your pick and the best',
+          hint: 'Opens every option for this question.',
+          run: () => setAllOptionsOpen(true),
         }
-      : null
+      : null;
+  // The sheet's rows, in DISPLAY order. Each text is looked up by its ORIGINAL letter through the
+  // shuffle (displayToOriginal); the pick and the best are compared on ORIGINAL letters too.
+  const allOptionRows =
+    submitted && response
+      ? displayLetters.map((d) => {
+          const original = displayToOriginal(d, perm);
+          return { letter: d, text: q.options[original] ?? '', pick: original === pickedOriginal, best: original === q.correct };
+        })
+      : [];
+  // AnswerMore drops the nulls (the rows that don't apply here), in this order.
+  const moreRows = [optionsRow, noteRow, principleRow, yourNoteRow, reportRow];
+  // The shared pace strip (components/pace.tsx): mock clock and pace line.
+  // Timed practice: the answered questions' times, as one number (PracticeClock adds the running time
+  // on the question on screen, and draws the strip).
+  const practiceAnsweredMs = timedPractice ? practiceElapsedMs(Object.values(active.responses).map((r) => r.ms), null) : 0;
+  const strip: PaceStripProps | null = !isMock
+    ? null // untimed practice has no strip; timed practice: PracticeClock draws it (below)
     : !active.deadline
       ? { clock: 'untimed' }
-      : {
-          clock: active.hideClock ? 'hidden' : { text: formatClock(remaining), spoken: `Time left ${spokenClockCoarse(remaining)}`, low: lowTime },
-          clockUnit: 'left',
-          line:
-            active.hideClock && lowTime
-              ? { text: 'Less than 5 minutes left.', tone: 'soon' }
-              : lastCheck
-                ? {
-                    text: paceMessage({ status: statusOf(lastCheck.deviation), minutes: lastCheck.minutes }),
-                    tone: statusOf(lastCheck.deviation),
-                  }
-                : { text: 'Pace checks at 25, 50 and 75% of the time.', tone: 'note' },
-          // The strip shows this at very large text instead of the full advice (P6).
-          lineShort: lastCheck && !(active.hideClock && lowTime) ? paceShort({ status: statusOf(lastCheck.deviation), minutes: lastCheck.minutes }) : undefined,
-        };
+      : null; // a timed mock: MockClock draws the strip (below)
   const largeText = fontScale >= LARGE_TEXT;
   const confidenceInScroll = fontScale >= HUGE_TEXT;
+  // Release bug hunt round 3: a narrow phone (under 360 wide) with large text stacked the mock footer
+  // in 4 rows, leaving about 2 lines of the question. There, Previous, Flag and Questions share one
+  // row as square icon buttons (their spoken names unchanged) and Next has its own: 2 rows.
+  const compactMockFooter = isMock && largeText && screenW < 360;
   // Coach me content: the Eliminate tip (letters mapped to what's on screen)
   // and the stem's capitalised priority word.
   const hintTip = eliminateTip(q.tips);
   const hintWord = priorityWord(q.stem);
   const canCoach = !isMock && Boolean(hintTip || hintWord);
-  // After a miss: which tips lead (Exam cue) and which follow the folded "Why" (Eliminate, Final two).
-  const missTips = splitMissTips(q.tips);
+  // Grove Phase 4, owner answer O1 (5 Nov 2026; PHASE4.md 4.2 step 4): every tip is open in every
+  // state, right, miss or Time's up, in the written order. Only a long Why folds after a miss.
+  // (engine/tips.ts splitMissTips and engine/answerTips.ts answerTipRows, the 1.43 fold, are no
+  // longer called here; tips.ts is bundled into the website, so it stays as it is.)
+  const tipRows = { open: q.tips.map((_, i) => i), folded: [] as number[] };
+  // One tip row: its label and words in DISPLAY letters, plus the "Your pick, B" chip when the tip
+  // names the learner's pick (PHASE4 4.2 step 4). The chip's rule compares ORIGINAL letters.
+  const tipRow = (i: number) => ({ ...tipParts(renderText(q.tips[i], perm), i), pick: tipPickLetter(q.tips[i], q.correct, pickedOriginal, perm) });
   // The navigator's summary: how many answered, flagged and left (the exam's own length, not the bank's).
   const answeredCount = Object.keys(active.responses).length;
   const navSummary = `${answeredCount} answered · ${active.flagged.length} flagged · ${total - answeredCount} left`;
@@ -697,6 +816,12 @@ export default function SessionScreen() {
   // never labels topics. It appears only after the reveal, in the "Read the note" row, and
   // never in a mock (a mock has no answer screen).
   const metaLine = [domain?.short, `${active.index + 1} of ${total}`].filter(Boolean).join(' · ');
+  // Type pass (TYPE_SCALE.md row 15, kicker = running heads): practice and review show ONE header
+  // before and after the answer, the running head "Practice · IS Audit" over "Question 1 of 3", so
+  // it no longer changes style when the answer opens. Still only the domain and the place, never
+  // the subtopic (1.39). A mock keeps its quiet domain tag: it has no answer screen to match.
+  const headSection = [active.mode === 'review' ? 'Review' : 'Practice', domain?.short].filter(Boolean).join(' · ');
+  const headAside = `Question ${active.index + 1} of ${total}`;
 
   // The vine draws itself the first time it scrolls into view: on each
   // scroll we ask where it sits on screen (measureInWindow works on phones
@@ -786,10 +911,21 @@ export default function SessionScreen() {
         {!isMock && (
           <View style={{ marginRight: -12 }}>
             <AnswerMore rows={moreRows} buttonRef={moreRef} />
+            {/* More's "Show all options": closing it puts screen-reader focus back on ⋯. */}
+            <AllOptionsSheet
+              visible={allOptionsOpen}
+              rows={allOptionRows}
+              onClose={() => {
+                setAllOptionsOpen(false);
+                moveFocus(moreRef, MORE_FOCUS_BACK_MS);
+              }}
+            />
           </View>
         )}
       </Row>
       {strip && <PaceStrip {...strip} />}
+      {timedPractice && qid && <PracticeClock key={qid} readClock={readClock} answering={!submitted} answeredMs={practiceAnsweredMs} />}
+      {isMock && active.deadline !== undefined && <MockClock deadline={active.deadline} hideClock={Boolean(active.hideClock)} finished={Boolean(active.finishedAt)} />}
 
       <View style={{ flex: 1 }}>
         <ScrollView
@@ -809,17 +945,22 @@ export default function SessionScreen() {
               {/* Question */}
               {/* Large text: the row wraps, the domain tag takes the full width and
                   "Flagged" / the reason tag drop under it (UX review P3). */}
-              <Row gap={space.sm} style={{ marginTop: space.md, alignItems: 'flex-start', flexWrap: largeText ? 'wrap' : 'nowrap' }}>
-                <View style={largeText ? { flexBasis: '100%' } : { flex: 1 }}>
-                  {domain ? <Tag label={metaLine} domain={domain} /> : <T v="meta">{metaLine}</T>}
-                </View>
-                {flagged && <T v="caption" color={c.tip}>Flagged</T>}
-                {reason && (
-                  <T v="caption" color={c.accentText} accessibilityLabel={`Why this question: ${REASON_LABEL[reason]}`}>
-                    {REASON_LABEL[reason]}
-                  </T>
-                )}
-              </Row>
+              {!isMock && <RunningHead section={headSection} aside={headAside} style={{ marginTop: space.sm }} />}
+              {(isMock || flagged || reason) && (
+                <Row gap={space.sm} style={{ marginTop: isMock ? space.md : space.sm, alignItems: 'flex-start', flexWrap: largeText || !isMock ? 'wrap' : 'nowrap' }}>
+                  {isMock && (
+                    <View style={largeText ? { flexBasis: '100%' } : { flex: 1 }}>
+                      {domain ? <Tag label={metaLine} domain={domain} /> : <T v="meta">{metaLine}</T>}
+                    </View>
+                  )}
+                  {flagged && <T v="caption" color={c.tip}>Flagged</T>}
+                  {reason && (
+                    <T v="caption" color={c.accentText} accessibilityLabel={`Why this question: ${REASON_LABEL[reason]}`}>
+                      {REASON_LABEL[reason]}
+                    </T>
+                  )}
+                </Row>
+              )}
               {q.scenario && (
                 <>
                   <Gap h={space.md} />
@@ -895,101 +1036,65 @@ export default function SessionScreen() {
           ) : (
             response && (
               <>
-                {/* Answer: recap → verdict → your pick → best answer → (after a miss: Key idea + Exam cue → Why, folded →
-                    Eliminate / Final two; after a right answer: Why → the whole vine) → source */}
+                {/* Answer (premium round 2, the Field Guide answer): running head → recap → verdict →
+                    Fig. 4 (your pick against the best answer) → (after a miss: Key idea + Exam cue → Why, folded →
+                    Eliminate / Final two; after a right answer: Why → Key idea + Exam cue → Eliminate / Final two
+                    on the vine) → source */}
+                {/* Where you are: "Practice · IS Audit" and "Question 4 of 10" (the set's own length, never the bank's). */}
+                <RunningHead section={headSection} aside={headAside} style={{ marginTop: space.sm }} />
                 {/* Mobile 1.49 (premium pass §2.1): the question in two lines, with "Show question". */}
-                <StemRecap key={qid} stem={q.stem} scenario={q.scenario} />
+                <StemRecap key={qid} stem={q.stem} scenario={q.scenario} field />
                 <View onLayout={(e) => (verdictBottom.current = e.nativeEvent.layout.y + e.nativeEvent.layout.height)}>
-                  <Verdict ref={verdictRef} correct={response.correct} coach={coach} best={response.correct ? undefined : correctDisplay} />
+                  <Verdict ref={verdictRef} correct={response.correct} coach={coach} best={response.correct ? undefined : correctDisplay} field />
                 </View>
                 {/* Lined up with the coach line above it (left 50, under "Correct"). */}
                 {/* Only after a RIGHT hinted answer (UX H1): a wrong one counts nothing, so "half" would be untrue. */}
                 {response.assisted && response.correct && <T v="meta" style={{ marginTop: space.xs, marginLeft: verdictIndent }}>{HINT_AFTER_LINE}</T>}
                 {/* A right retest (under 4 hours after a miss) is not promoted: say when it is back. */}
                 {response.retest && response.correct && <T v="meta" style={{ marginTop: space.xs, marginLeft: verdictIndent }}>{RETEST_LINE}</T>}
-                <Rise delay={FEEDBACK_DELAY.rows}>
-                  {/* Mobile 1.43: the DISPLAY letter sits in each row's badge (no ✓ / ✗ discs: the verdict leaf is
-                      the screen's one mark) and in every spoken label. The pick's own note sits under its red row. */}
-                  <View style={{ marginTop: space.lg }}>
-                    {!response.correct && pickedOriginal && (
-                      <>
-                        <OptionCard
-                          letter={response.display}
-                          text={q.options[pickedOriginal] ?? ''}
-                          state="wrong"
-                          mark="letter"
-                          tag="Your answer"
-                          spoken={`Your answer, ${response.display}, not correct: ${q.options[pickedOriginal] ?? ''}`}
-                        />
-                        {whyWrong && <PickNote letter={response.display} text={renderText(whyWrong, perm)} />}
-                      </>
-                    )}
-                    <OptionCard
-                      letter={correctDisplay}
-                      text={q.options[q.correct] ?? ''}
-                      state="correct"
-                      mark="letter"
-                      tag="Best answer"
-                      spoken={`Best answer, ${correctDisplay}: ${q.options[q.correct] ?? ''}`}
-                    />
+                {/* Grove Phase 4 (PHASE4.md 4.2, owner answer O1): one order in every state. The card (your
+                    answer, "Why not B", the best answer), then Key idea, then "How to think about it" with
+                    every tip open, then "Why D". After a miss a long Why folds to two lines, and "Read more"
+                    opens only the rest of that paragraph. DISPLAY letters on screen and in every spoken
+                    label; the options are looked up by their ORIGINAL letters. */}
+                <AnswerPlate
+                  key={`${qid}:plate`}
+                  delay={FEEDBACK_DELAY.rows}
+                  pick={
+                    !response.correct && pickedOriginal
+                      ? { letter: response.display, text: q.options[pickedOriginal] ?? '', why: whyWrong ? renderText(whyWrong, perm) : undefined }
+                      : undefined
+                  }
+                  best={{ letter: correctDisplay, text: q.options[q.correct] ?? '' }}
+                />
+                {/* Key idea and every tip, then the Why, arrive in reading order after the card: opacity only,
+                    200ms each, 30ms apart (PHASE4.md 4.4). Their arrival is still the vine's (VINE_ARRIVES):
+                    `visible`, the one tick and the stem's draw wait for it. */}
+                <Rise delay={FEEDBACK_DELAY.why} rise={false}>
+                  <View ref={vineRef} collapsable={false} onLayout={checkVine} testID="feedback-vine">
+                    <KeyIdea key={`${qid}:a`} text={q.keyConcept} visible={vineVisible} />
+                    {tipRows.open.length > 0 && <TipsHeading />}
+                    <TipsCard key={`${qid}:tips`} rows={tipRows.open.map(tipRow)} visible={vineVisible} />
                   </View>
                 </Rise>
-                {response.correct ? (
-                  <>
-                    <Rise delay={FEEDBACK_DELAY.why}>
-                      <WhyBlock letter={correctDisplay} text={renderText(q.explanation, perm)} fold={false} />
-                    </Rise>
-                    {/* In reading order: the vine's words arrive after the Why above them (motion round 2, 3a). */}
-                    <Rise delay={FEEDBACK_DELAY.why + motion.stagger.group}>
-                      <View ref={vineRef} collapsable={false} onLayout={checkVine} testID="feedback-vine">
-                        <Vine key={qid} keyIdea={q.keyConcept} tips={q.tips.map((t) => renderText(t, perm))} visible={vineVisible} />
-                      </View>
-                    </Rise>
-                  </>
-                ) : (
-                  <>
-                    {/* The short, memorable lines first: the Key idea and the Exam cue. They arrive in reading order,
-                        after the rows above them (motion round 2, 3a: they used to show at the tap, before the rows). */}
-                    <Rise delay={FEEDBACK_DELAY.why}>
-                      <View ref={vineRef} collapsable={false} onLayout={checkVine} testID="feedback-vine">
-                        <Vine
-                          key={`${qid}:a`}
-                          keyIdea={q.keyConcept}
-                          tips={missTips.first.map((i) => renderText(q.tips[i], perm))}
-                          tipIndex={missTips.first}
-                          visible={vineVisible}
-                        />
-                      </View>
-                    </Rise>
-                    {/* Then the long "Why", folded to two lines, with Eliminate two / Final two inside the fold
-                        (mobile 1.43, owner decision): "Read more" opens all three, "Show less" closes them. */}
-                    <Rise delay={FEEDBACK_DELAY.why + motion.stagger.group}>
-                      <WhyBlock
-                        key={qid}
-                        letter={correctDisplay}
-                        text={renderText(q.explanation, perm)}
-                        fold
-                        more={missTips.rest.map((i) => tipParts(q.tips[i], i).label)}
-                        // The vine inside draws as the fold opens (it is on screen right under the toggle).
-                        onOpen={() => setVine2Visible(true)}
-                      >
-                        <Vine
-                          key={`${qid}:b`}
-                          tips={missTips.rest.map((i) => renderText(q.tips[i], perm))}
-                          tipIndex={missTips.rest}
-                          visible={vine2Visible}
-                        />
-                      </WhyBlock>
-                    </Rise>
-                  </>
-                )}
+                <Rise delay={FEEDBACK_DELAY.why + PLATE_ROW_STAGGER} rise={false}>
+                  {/* O1: the fold holds the long Why paragraph and nothing else ("Read more of the explanation"). */}
+                  <WhyBlock
+                    key={qid}
+                    letter={correctDisplay}
+                    text={renderText(q.explanation, perm)}
+                    // After a right answer nothing folds (4.2 step 5).
+                    fold={!response.correct}
+                    more={[]}
+                  />
+                </Rise>
                 {/* Mobile 1.49 (premium pass §2.2): ONE "Go deeper" row after a miss, after a hairline.
                     The lesson when it is not done yet (Play = lessons), otherwise the note (BookOpen =
                     notes). Never more than one: the principle, the note and the rest are in ⋯. Both PUSH,
                     so Back lands here again, on this same answer with its explanation. */}
                 {missed && (reviewLesson || (missNote && missNoteName)) && (
-                  <>
-                    <View style={{ height: 1, backgroundColor: c.line, marginTop: space.md }} />
+                  // Grove Phase 4 (4.2 step 6): the Go deeper row in one card.
+                  <View testID="go-deeper-card" style={[groveCard(c), { marginTop: space.lg, paddingHorizontal: space.lg }]}>
                     {reviewLesson ? (
                       // Only a lesson not done yet is offered, so it is "take", never "Replay" (1.22 review).
                       <ListRow
@@ -1020,15 +1125,15 @@ export default function SessionScreen() {
                         />
                       )
                     )}
-                  </>
+                  </View>
                 )}
                 {/* "Your note" (components/questionNote.tsx): only on a CHECKED practice or review
                     answer (this branch never renders in a mock), never on the very first set. Mobile
                     1.49: a saved note still shows here; "Add a note" moved into ⋯, which opens it. */}
                 {!active.firstSet && <QuestionNote ref={noteRef} certId={active.certId} questionId={qid} quietAdd returnFocus={moreRef} />}
-                {/* The source line, text only (premium pass §2.4); "Report a problem" is in ⋯. The note after a
-                    report's email app opened sits under it, as before. */}
-                <SourceLine reference={q.reference}>{report.block}</SourceLine>
+                {/* The source row (4.2 step 7): "Original · Checked", the source, and "Report a problem" at its
+                    right (it stays in ⋯ too). The note after a report's email app opened sits under it, as before. */}
+                <SourceLine reference={q.reference} onReport={report.open}>{report.block}</SourceLine>
               </>
             )
           )}
@@ -1036,8 +1141,35 @@ export default function SessionScreen() {
         </ScrollView>
 
         {/* Sticky bottom action, within thumb reach */}
-        <StickyFooter onHeight={setFooterH}>
-          {isMock ? (
+        {/* Practice and review (premium round 2): the plate button over a hairline. A mock keeps its footer. */}
+        <StickyFooter onHeight={setFooterH} rule={!isMock}>
+          {compactMockFooter ? (
+            <View style={{ gap: space.sm }}>
+              <Row gap={space.sm}>
+                <IconButton
+                  outline
+                  label="Previous question"
+                  disabled={active.index === 0}
+                  onPress={settled(() => goTo(active.index - 1))}
+                  icon={(col) => <ChevronLeft size={ICON_SIZE.inline} color={col} strokeWidth={ICON_STROKE} />}
+                />
+                <IconButton
+                  outline
+                  label={shownFlagged ? 'Unflag question' : 'Flag question'}
+                  selected={shownFlagged}
+                  onPress={settled(() => toggleFlag(qid))}
+                  icon={(col) => <Flag size={ICON_SIZE.inline} color={col} strokeWidth={ICON_STROKE} fill={shownFlagged ? col : 'none'} />}
+                />
+                <IconButton
+                  outline
+                  label="Questions, question navigator"
+                  onPress={settled(() => setNavOpen(true))}
+                  icon={(col) => <LayoutGrid size={ICON_SIZE.inline} color={col} strokeWidth={ICON_STROKE} />}
+                />
+              </Row>
+              <Button label={isLast ? 'Finish' : 'Next'} onPress={settled(next)} />
+            </View>
+          ) : isMock ? (
             // Icon AND word on every button (mobile 1.24), each at least 56 tall (Button) and 56 wide.
             // Wraps at large text; Next then takes a full row of its own.
             <Row gap={space.sm} style={{ flexWrap: 'wrap' }}>
@@ -1051,15 +1183,20 @@ export default function SessionScreen() {
                 iconLeading
                 style={{ paddingHorizontal: space.md, minWidth: 56 }}
               />
+              {/* Release prep 2.0.0 (final screenshot review): the visible word stays "Flag" in both states.
+                  "Unflag" was wider, so tapping Flag reflowed the row onto two lines and shrank Next. The
+                  filled flag and the selected look show it is on; the spoken name still changes
+                  ("Flag question" / "Unflag question") and is announced as selected. */}
               <Button
                 kind="secondary"
-                label={shownFlagged ? 'Unflag' : 'Flag'}
+                label="Flag"
                 accessibilityLabel={shownFlagged ? 'Unflag question' : 'Flag question'}
                 selected={shownFlagged}
                 onPress={settled(() => toggleFlag(qid))}
                 icon={(col) => <Flag size={ICON_SIZE.inline} color={col} strokeWidth={ICON_STROKE} fill={shownFlagged ? col : 'none'} />}
                 iconLeading
-                style={{ paddingHorizontal: space.md, minWidth: 56 }}
+                // On: the ink edge, Grove's one selected look (only the colour changes, so the size never does).
+                style={{ paddingHorizontal: space.md, minWidth: 56, ...(shownFlagged ? { borderColor: c.ink } : null) }}
               />
               <Button
                 kind="secondary"
@@ -1082,6 +1219,8 @@ export default function SessionScreen() {
                   (the answer screen): "Next question", and inert. */}
               <Button
                 key="primary"
+                // The Field Guide's plate button (52 tall, 12pt corners), set here so it holds whatever Button's default is.
+                shape="plate"
                 label={turning ? 'Next question' : submitted ? (isLast ? (singleQuestion ? 'Done' : 'See results') : 'Next question') : 'Check answer'}
                 onPress={() => {
                   if (turning) return;
@@ -1103,11 +1242,11 @@ export default function SessionScreen() {
         <SafeAreaView style={{ flex: 1, backgroundColor: c.raised2 }}>
           <ScrollView contentContainerStyle={{ padding: space.lg, paddingBottom: navFooterH + space.xl }}>
             <Row style={{ justifyContent: 'space-between' }}>
-              <T v="display" accessibilityRole="header">Questions</T>
+              <T v="hero" accessibilityRole="header">Questions</T>
               <Button kind="ghost" label="Close" onPress={() => setNavOpen(false)} />
             </Row>
             <T v="small" num color={c.ink}>{navSummary}</T>
-            <T v="meta" style={{ marginTop: space.xs }}>● answered · ○ not answered · ⚑ flagged</T>
+            <T v="meta" style={{ marginTop: space.xs }} accessibilityLabel="Filled means answered, empty means not answered, a flag means flagged">● answered · ○ not answered · ⚑ flagged</T>
             {/* No report button during a live mock (it stays exam-like); the review has one. */}
             <T v="meta" style={{ marginTop: space.xs }}>To report a question, open it in the review after you submit.</T>
             <Gap />

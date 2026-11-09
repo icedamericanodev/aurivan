@@ -20,11 +20,9 @@ import { CLOUD, PROVIDERS } from '../cloud/flag';
 import { errorCode, CloudError, type AccountInfo, type CloudErrorCode } from '../cloud/types';
 import { accountExportFileName, deleteGate, deleteStep, providersFor, TERMS_VERSION, type Provider } from '../engine/account';
 import { SIGNED_OUT, useAccount } from '../store/account';
-import { useBackup } from '../store/backup';
 import { useProgress } from '../store/progress';
-import { useSession } from '../store/session';
 import { SYNC_OFF, useSyncMeta } from '../store/sync';
-import { sweepBackupFiles, wipeLocalStudy, type WipeAlso } from './backup';
+import { resetLocalProgress, wipeLocalStudy, type WipeAlso } from './backup';
 import { refreshWidgets } from './widgets';
 import { REVEAL_KEY, WIDGET_KEY } from '../engine/widgets';
 import { useWidgetStore } from '../store/widgets';
@@ -373,11 +371,7 @@ const pickFacts = (s: ReturnType<typeof useAccount.getState>) => ({
 
 /** Clear study progress on this phone for every exam: Settings → Reset's path, for each one (removeAllLocal's fallback). */
 function removeLocalProgress() {
-  const { byCert, resetCert } = useProgress.getState();
-  for (const certId of Object.keys(byCert)) resetCert(certId);
-  useSession.getState().clear();
-  useBackup.getState().setUndo(null);
-  sweepBackupFiles();
+  resetLocalProgress(Object.keys(useProgress.getState().byCert));
 }
 
 // ── Download my data ──────────────────────────────────────────────────
@@ -416,7 +410,19 @@ export async function downloadMyData(now = Date.now()): Promise<Result<{ outcome
     if (!(await Sharing.isAvailableAsync())) return { ok: true, outcome: 'unavailable' };
     const file = new File(Paths.cache, name);
     file.create({ overwrite: true });
-    file.write(text);
+    // Expo SDK 58: write() is async now. Wait for it, or the share sheet could
+    // open on a file that is still empty or half-written. If it fails, remove
+    // the partial copy at once rather than leave it for the cache sweep.
+    try {
+      await file.write(text);
+    } catch (e) {
+      try {
+        file.delete();
+      } catch {
+        // Already gone, or never created: nothing to clean up.
+      }
+      throw e;
+    }
     await Sharing.shareAsync(file.uri, { mimeType: 'application/json', UTI: 'public.json', dialogTitle: 'Save your KaiSip account data' });
     return { ok: true, outcome: 'shared' };
   } catch {

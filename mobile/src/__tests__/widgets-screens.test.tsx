@@ -198,6 +198,22 @@ describe('the "choose" screen when Readiness or Exam countdown is added', () => 
     }
   });
 
+  it('round 4: a parked course saved as the choice still reads the CISA exam date (no "No exam date yet")', async () => {
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
+    const { useSettings } = require('../store/settings') as typeof import('../store/settings');
+    const before = useSettings.getState();
+    try {
+      useSettings.setState({ activeCertId: 'crisc', examDates: { cisa: '2026-12-10' } });
+      const r = await render(<WidgetConfigScreen widgetInfo={info('ExamCountdown')} setResult={jest.fn()} renderWidget={jest.fn()} />);
+      expect(textOf(r.root)).not.toContain('No exam date yet');
+      useSettings.setState({ activeCertId: 'cisa', examDates: {} });
+      const r2 = await render(<WidgetConfigScreen widgetInfo={info('ExamCountdown')} setResult={jest.fn()} renderWidget={jest.fn()} />);
+      expect(textOf(r2.root)).toContain('No exam date yet');
+    } finally {
+      useSettings.setState(before, true);
+    }
+  });
+
   it('any other widget closes at once', async () => {
     const setResult = jest.fn();
     await render(<WidgetConfigScreen widgetInfo={info('TodayPlan')} setResult={setResult} renderWidget={jest.fn()} />);

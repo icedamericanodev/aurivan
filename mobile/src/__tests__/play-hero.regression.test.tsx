@@ -98,28 +98,31 @@ afterEach(() => {
 });
 
 // Mobile 1.51: the Play tab is gone (its games are Drills, a list inside Practice), so the tab hero checked
-// here is Practice's: the same HeroPanel with its seal.
+// here is Practice's. Premium round 2 (Field Guide foundation): its white seal card became a plate (Fig. 4),
+// with the plate button under it; no art shares the plate with the words.
 describe('the tab hero renders its content (Android blank-hero regression)', () => {
   const cases: [string, 'light' | 'dark', number][] = [
     ['light', 'light', 1],
     ['dark', 'dark', 1],
     ['light at 200% text', 'light', 2],
   ];
-  it.each(cases)('%s: caption, title, text and the Start button are inside the hero', (_name, theme, scale) => {
+  it.each(cases)('%s: the plate holds its caption, title and text; the Start button follows it', (_name, theme, scale) => {
     useSettings.setState({ theme });
     setFontScale(scale);
     mount(<Practice />);
-    const [content] = byTestId('hero-content');
+    const [content] = byTestId('practice-plate');
     expect(content).toBeDefined();
     const text = textOf(content);
-    // The path's title, its one-line text and the button label.
+    // Grove Phase 4 (the 03 board): one kicker header naming the path ("Your path · Random").
     const header = content.findAll((n) => n.props.accessibilityRole === 'header' && typeof n.type === 'string');
+    expect(header.map((h) => h.props.accessibilityLabel ?? textOf(h))).toContain('Your path, Random');
     expect(header.length).toBe(1);
-    expect(textOf(header[0]).length).toBeGreaterThan(3);
-    expect(text).toMatch(/min/); // the caption carries the honest length
-    const button = content.findAll((n) => n.props.accessibilityRole === 'button' && typeof n.props.onPress === 'function');
-    expect(button.length).toBe(1);
-    expect(textOf(button[0])).toBe('Start');
+    expect(text).toMatch(/min/); // the meta carries the honest length
+    // The card itself is never a button: its controls are the tiles and the mint Start inside it.
+    expect(content.props.accessibilityRole).toBeUndefined();
+    const start = content.findAll((n) => typeof n.type === 'string' && n.props.accessibilityRole === 'button' && n.props.accessibilityLabel === 'Start');
+    expect(start).toHaveLength(1);
+    expect(byTestId('hero-seal')).toHaveLength(0);
   });
 
   // Mobile 1.43 (tab header C): Play, Learn and Practice lead with a white seal card. Mobile 1.51 (Field
@@ -161,42 +164,42 @@ describe('the tab hero renders its content (Android blank-hero regression)', () 
     expect(s).toMatchObject(botanySize('frond'));
   });
 
-  it('Practice: a white card with the tab seal, no forest art layer (mobile 1.43, tab header C); Drills adds no second hero', () => {
+  it('Practice: a plate, no seal and no forest art layer (premium round 2, Field Guide foundation); Drills adds no second hero', () => {
     mount(<Practice />);
     expect(byTestId('hero-art')).toHaveLength(0);
-    expect(byTestId('hero-seal')).toHaveLength(1);
-    expect(byTestId('hero-content')).toHaveLength(1);
-    // The seal is decorative: hidden from screen readers.
-    expect(byTestId('hero-seal')[0].props.importantForAccessibility).toBe('no-hide-descendants');
-    const [content] = byTestId('hero-content');
-    // Build E: the hero starts the learner's study path (a new learner: Random, 10 questions).
+    expect(byTestId('hero-seal')).toHaveLength(0);
+    expect(byTestId('practice-plate')).toHaveLength(1);
+    const [content] = byTestId('practice-plate');
+    // Build E: the plate shows the learner's study path (a new learner: Random, 10 questions).
     // Mobile 1.21: the title names the path ("A mixed set"); the count is the meta.
     expect(textOf(content)).toContain('A mixed set');
     expect(textOf(content)).toContain('10 questions · ');
   });
 
-  it('beside the seal the title stops short of it by its width and a gap, not a fixed 250 (QA bug 2: 360pt phones)', () => {
+  it('Grove Phase 4: the forest hero card, 24 corners, the 1px top light and no outer shadow', () => {
     mount(<Practice />);
-    const [content] = byTestId('hero-content');
-    const [title] = content.findAll((n) => n.props.accessibilityRole === 'header' && typeof n.type === 'string');
-    expect(flat(title).marginRight).toBe(56 + 12);
-    expect(flat(title).maxWidth).toBeUndefined();
+    const [plateEl] = byTestId('practice-plate');
+    expect(String(flat(plateEl).boxShadow)).toMatch(/^inset 0 1px 0 /);
+    expect(flat(plateEl).borderRadius).toBe(24);
   });
 });
 
-describe('Settings gear in the Today and You headers', () => {
-  it.each([
-    ['Today', Today],
-    ['You', You],
-  ] as const)('%s: a 48pt button spoken as "Settings" opens Settings', (_name, Screen) => {
+describe('Settings in the headers (Grove: on You only)', () => {
+  it('Today has no Settings gear (Settings is on You; the exam date is the hero tile)', () => {
+    mount(<Today />);
+    expect(root().findAll((n) => n.props.accessibilityLabel === 'Settings' && typeof n.props.onPress === 'function')).toHaveLength(0);
+  });
+
+  it('You: one 44pt rounded-square button spoken "Settings", 48pt to the finger, opens Settings', () => {
     (router.push as jest.Mock).mockClear();
-    mount(<Screen />);
-    const gear = root().findAll((n) => n.props.accessibilityLabel === 'Settings' && n.props.accessibilityRole === 'button' && typeof n.props.onPress === 'function');
-    expect(gear.length).toBe(1);
-    const style = StyleSheet.flatten(typeof gear[0].props.style === 'function' ? gear[0].props.style({ pressed: false }) : gear[0].props.style);
-    // Mobile 1.51: You's gear is the running head's action (at least 48pt, grown by its "Settings" word).
-    expect(style.width ?? style.minWidth).toBeGreaterThanOrEqual(44);
-    expect(style.height ?? style.minHeight).toBeGreaterThanOrEqual(44);
+    mount(<You />);
+    const host = root().findAll((n) => typeof n.type === 'string' && n.props.accessibilityLabel === 'Settings' && n.props.accessibilityRole === 'button');
+    expect(host).toHaveLength(1);
+    const style = flat(host[0]);
+    expect(style).toMatchObject({ width: 44, height: 44, borderRadius: 14, borderWidth: 1 });
+    expect(host[0].props.accessibilityHint).toBe('Exam date, reminders and more');
+    const gear = root().findAll((n) => n.props.accessibilityLabel === 'Settings' && typeof n.props.onPress === 'function');
+    expect(gear[0].props.hitSlop).toBe(2);
     act(() => {
       gear[0].props.onPress();
     });
@@ -209,9 +212,20 @@ describe('Settings gear in the Today and You headers', () => {
     expect(row.length).toBeGreaterThan(0);
   });
 
-  it('You reaches Settings through the gear only (no duplicate Study tools row)', () => {
+  // Grove You C2 (owner, 31 Oct 2026: Settings clearly separate from You): the gear, plus ONE "Settings" row
+  // near the end, after Help and before the trademark line (never inside Study tools). Both open the same screen.
+  it('You reaches Settings through the gear and one Settings row near the end (not a Study tools row)', () => {
+    (router.push as jest.Mock).mockClear();
     mount(<You />);
-    expect(root().findAll((n) => n.props.title === 'Settings').length).toBe(0);
+    const rows = root().findAll((n) => n.props.title === 'Settings' && typeof n.props.onPress === 'function');
+    expect(rows).toHaveLength(1);
+    expect(rows[0].props.subtitle).toBe('Name, exam date, theme, your data');
+    const tools = root().findAll((n) => n.props.testID === 'study-tools');
+    expect(tools[0].findAll((n) => n.props.title === 'Settings')).toHaveLength(0);
+    act(() => {
+      rows[0].props.onPress();
+    });
+    expect(router.push).toHaveBeenCalledWith('/settings');
   });
 });
 
@@ -220,7 +234,7 @@ describe('Drills when no game is playable for this exam', () => {
     const spy = jest.spyOn(registry, 'isPlayable').mockReturnValue(false);
     (router.push as jest.Mock).mockClear();
     mount(<Drills />);
-    expect(textOf(root())).toContain('Drills arrive once this exam has enough practice questions for them.');
+    expect(textOf(root())).toContain('Drills come once this exam has enough questions.');
     expect(byTestId('drills-list')).toHaveLength(0);
     expect(textOf(root())).not.toMatch(/\d+ (questions|more)/);
     expect(router.push).not.toHaveBeenCalled();
@@ -243,9 +257,9 @@ describe("Today's review card: the 'N today' line only when more are due than to
   });
 });
 
-// A seal hero with art and a meta line, as the Play tab's featured game was (mobile 1.51: that tab is gone, the
-// HeroPanel rule stays).
-const SEAL_HERO = <HeroPanel seal="sprig" caption="Beating distractors · 6 min" title="Snare Spotter" meta="Find the answer built to fool you." art="frond" />;
+// A forest hero with art and a meta line, as the Play tab's featured game was (mobile 1.51: that tab is gone;
+// premium round 2: the white seal variant is retired, the HeroPanel rule stays for the forest panel).
+const SEAL_HERO = <HeroPanel caption="Beating distractors · 6 min" title="Snare Spotter" meta="Find the answer built to fool you." art="frond" />;
 
 describe('hero meta line keeps clear of the art', () => {
   const metaOf = () => {

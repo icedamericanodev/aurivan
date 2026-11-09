@@ -181,7 +181,7 @@ export function WidgetOfferCard({ onGone }: { onGone?: () => void }) {
               );
             }}
           />
-          <Button kind="ghost" label="Not now" accessibilityLabel="Not now. This won’t be suggested again." onPress={() => answer('not-now', 'Hidden. You can add a widget from Settings any time.')} />
+          <Button kind="ghostNeutral" label="Not now" accessibilityLabel="Not now. This won’t be suggested again." onPress={() => answer('not-now', 'Hidden. You can add a widget from Settings any time.')} />
         </>
       }
     />
