@@ -84,7 +84,7 @@ import { shortDate } from '../lib/format';
 import { DAILY_MINUTES, examFocusedOf, FAMILIARITIES, FAMILIARITY_INFO, KEEP_TODAY_LINE, minutesLabel, minutesSpoken, type DailyMinutes, type Familiarity } from '../engine/fit';
 import { MODE_INFO, STUDY_MODES, type StudyMode } from '../engine/studyModes';
 import { AI_DISCLAIMER_LINE, CERT_SCOPE_LINE, HOW_MADE_TITLE, PROVENANCE_LINE, WELCOME_HEADLINE, WELCOME_LINE } from '../content/brand';
-import { CERTIFICATIONS, combinedTrademarkNotice, selectableCertifications } from '../content/certifications';
+import { CERTIFICATIONS, DEFAULT_CERT_ID, combinedTrademarkNotice, selectableCertifications } from '../content/certifications';
 import { effectiveCertId } from '../lib/activeCert';
 import { hasContent } from '../content/loader';
 import { hasNotes } from '../content/notes';
@@ -101,7 +101,7 @@ import { runningUpdateLine, useUpdateCheck } from '../lib/updates';
 import { UPDATE_WORDS } from '../engine/updates';
 import { useActiveCert } from '../lib/useActiveCert';
 import { useReports } from '../lib/useReports';
-import { resetLocalProgress } from '../lib/backup';
+import { resetStudyProgress } from '../lib/backup';
 import { useBackup } from '../store/backup';
 import { selectCert, useProgress } from '../store/progress';
 import { useSeen } from '../store/seen';
@@ -138,6 +138,8 @@ const useOwnNavigation: () => TransitionEvents | undefined =
 const useScreenFocus: (effect: () => void) => void = (ExpoRouter as { useFocusEffect?: (effect: () => void) => void }).useFocusEffect ?? (() => {});
 
 export default function Settings() {
+  const resetting = useRef(false);
+  const [resetBusy, setResetBusy] = useState(false);
   // Cloud builds only: true while this phone syncs (About says so). Always false with the flag off.
   const syncing = useSyncing();
   const { cert } = useActiveCert();
@@ -404,16 +406,28 @@ export default function Settings() {
   const confirmReset = () =>
     Alert.alert(
       `Reset ${cert.name} progress?`,
-      `This deletes your answers, reviews, saved questions, mock history, badges and game levels for this exam. It cannot be undone. Save a backup first if you might want it back.${hasPlant && plantOn ? ' Your plant goes back to a seed. It keeps its name and look.' : ''}${resetCloudNote()}`,
+      `This deletes your answers, reviews, saved questions, mock history, badges and game levels for this exam.${cert.id === DEFAULT_CERT_ID ? ' You will return to setup. Your name, preferences and other exams stay.' : ' Your settings and other exams stay.'} It cannot be undone. Save a backup first if you might want it back.${hasPlant && plantOn ? ' Your plant goes back to a seed. It keeps its name and look.' : ''}${resetCloudNote()}`,
       [
         { text: 'Cancel', style: 'cancel' },
         {
           text: 'Reset',
           style: 'destructive',
-          onPress: () => {
-            // A reset is a fresh start: the open session, an old "Undo restore" and old backup files
-            // go, and the reminders are planned again from the empty review queue (lib/backup.ts).
-            resetLocalProgress([cert.id]);
+          onPress: async () => {
+            if (resetting.current) return;
+            resetting.current = true;
+            setResetBusy(true);
+            try {
+              await resetStudyProgress(cert.id);
+              if (cert.id === DEFAULT_CERT_ID) {
+                if (router.canDismiss()) router.dismissAll();
+                router.replace('/onboarding');
+              } else sayLater(`${cert.name} progress reset.`);
+            } catch {
+              Alert.alert('Reset could not be saved', 'Please try again. Setup has not been restarted.');
+            } finally {
+              resetting.current = false;
+              setResetBusy(false);
+            }
           },
         },
       ],
@@ -780,8 +794,8 @@ export default function Settings() {
           <YourData />
           {/* Destructive, so set apart from the rows above, with its own line saying what goes and what stays. */}
           <Gap h={space.xxl} />
-          <Button kind="danger" label={`Reset ${cert.name} progress`} accessibilityHint="Asks first" onPress={confirmReset} />
-          <T v="meta" center style={{ marginTop: space.sm }}>{`Erases your ${cert.name} progress on this phone. Settings stay.`}</T>
+          <Button kind="danger" label={`Reset ${cert.name} progress`} accessibilityHint="Asks first" disabled={resetBusy} onPress={confirmReset} />
+          <T v="meta" center style={{ marginTop: space.sm }}>{`Erases your ${cert.name} progress on this phone.${cert.id === DEFAULT_CERT_ID ? ' Returns to setup.' : ''} Your preferences and other exams stay.`}</T>
         </View>
       ),
     },

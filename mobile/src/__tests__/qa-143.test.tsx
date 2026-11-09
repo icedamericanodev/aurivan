@@ -28,7 +28,7 @@ import { startFromIds, startMock, startReview } from '../lib/sessions';
 import { selectCert, useProgress } from '../store/progress';
 import { useSession } from '../store/session';
 import Results from '../app/results';
-import { OptionCard, PickNote } from '../components/quiz';
+import { OptionCard, AnswerContext } from '../components/quiz';
 import { LeafStrip } from '../components/leafStrip';
 
 jest.mock('@react-native-async-storage/async-storage', () =>
@@ -195,9 +195,10 @@ describe('Results review on a non-identity shuffle', () => {
     // Premium round 2 (UX review P3): "Your pick" here too, as on the answer screen.
     expect(hostLabelled(/^Your pick, B, not the best answer: /)).toHaveLength(1);
     expect(hostLabelled(/^Best answer, D: /)).toHaveLength(1);
-    const note = root().findByType(PickNote);
-    expect(note.props.letter).toBe('B');
-    expect(note.props.text).toBe(renderText(q.wrongExplanations.C!, perm));
+    const context = root().findByType(AnswerContext);
+    expect(context.props.perm).toEqual(perm);
+    expect(context.props.picked).toBe('B');
+    expect(hostLabelled(/^Why not B: /)[0].props.accessibilityLabel).toBe(`Why not B: ${renderText(q.wrongExplanations.C!, perm)}`);
     expect(allText()).toContain('Why D');
   });
 });

@@ -3,8 +3,8 @@
  *
  * moveFocus: put VoiceOver / TalkBack focus on a control after the screen
  * changes under the learner's finger (Pause → Resume, a card closing), so
- * they never land on nothing. Native only: findNodeHandle doesn't exist on
- * the web build. The delay lets the new control mount first.
+ * they never land on nothing. Native only. The delay lets the new control
+ * mount first; the returned callback cancels a pending move on cleanup.
  *
  * sayLater: announce after a short pause (~350 ms), so the announcement
  * doesn't cut off the tap's own feedback. `queue` (iOS): wait behind other
@@ -20,7 +20,7 @@
  * (often the long new-games suite) then showed as "failed" with every test
  * passing.
  */
-import { AccessibilityInfo, findNodeHandle, Platform } from 'react-native';
+import { AccessibilityInfo, Platform } from 'react-native';
 import type { Component, RefObject } from 'react';
 
 type Timer = ReturnType<typeof setTimeout>;
@@ -35,13 +35,18 @@ function later(fn: () => void, delay: number): Timer {
   return t;
 }
 
-export function moveFocus(ref: RefObject<Component | null | unknown>, delay = 300): void {
-  if (Platform.OS === 'web') return;
-  later(() => {
-    const node = ref.current as Component | null;
-    const tag = node ? findNodeHandle(node) : null;
-    if (tag) AccessibilityInfo.setAccessibilityFocus(tag);
+export function moveFocus(ref: RefObject<Component | null | unknown>, delay = 300): () => void {
+  if (Platform.OS === 'web') return () => {};
+  const timer = later(() => {
+    // RN 0.88/Fabric needs the native host instance, not the deprecated
+    // numeric-tag lookup (which can no longer find a view after remounts).
+    const node = ref.current as Parameters<typeof AccessibilityInfo.sendAccessibilityEvent>[0] | null;
+    if (node) AccessibilityInfo.sendAccessibilityEvent(node, 'focus');
   }, delay);
+  return () => {
+    clearTimeout(timer);
+    waiting.delete(timer);
+  };
 }
 
 export const ANNOUNCE_DELAY = 350;

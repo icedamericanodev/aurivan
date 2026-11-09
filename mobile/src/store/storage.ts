@@ -163,3 +163,8 @@ export function resetSavedForTest() {
   asked.clear();
   held.clear();
 }
+
+/** Wait for already-started writes before a deliberate multi-store replacement. */
+export async function flushPendingSaves(): Promise<void> {
+  while (pending.size > 0) await Promise.all([...pending.values()].map((entry) => entry.done));
+}

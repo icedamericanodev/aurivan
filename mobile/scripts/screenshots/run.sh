@@ -270,6 +270,8 @@ elif [ "${SHOTS:-}" = store ]; then
   # Copies for the listing live in design-notes/brand-kaisip/store/screenshots/.
   node scripts/screenshots/shoot_store.mjs "$TMP/seed.json" "$OUT"
   python3 scripts/screenshots/flatten_png.py "$OUT"/store-0*.png
+elif [ "${SHOTS:-}" = fb001 ]; then
+  node scripts/screenshots/shoot_fb001.mjs "$TMP/seed.json" "$OUT"
 elif [ "${SHOTS:-}" = m149 ]; then
   # Mobile 1.49 (premium pass): the answer after a miss (recap, Show question, Go deeper, the ⋯
   # sheet) and an answered lesson quick check, in light and dark (shoot_m149.mjs; THEMES=light for one).

@@ -69,7 +69,7 @@ import { scaledScoreNote } from '../content/scoreNote';
 import { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Alert, BackHandler, Pressable, View } from 'react-native';
 import { LeafStrip } from '../components/leafStrip';
-import { OptionCard, PickNote, TrustLine } from '../components/quiz';
+import { AnswerContext, OptionCard, TrustLine } from '../components/quiz';
 import { QuestionNote } from '../components/questionNote';
 import { useReportFlow } from '../components/support';
 import { nextStepIndex, todayMinutes } from '../components/journey';
@@ -211,8 +211,7 @@ const ReviewRow = memo(function ReviewRow({
       </Pressable>
       {open && (
         <View style={{ paddingBottom: space.lg }}>
-          {/* The same rows as the answer screen (mobile 1.43): the DISPLAY letter in each badge and spoken
-              label, and the pick's own note under its red row. */}
+          {/* Compact verdict first, then every option and its rationale in saved display order. */}
           {r && !r.correct && picked && (
             <>
               <OptionCard
@@ -223,7 +222,6 @@ const ReviewRow = memo(function ReviewRow({
                 tag="Your pick"
                 spoken={`Your pick, ${r.display}, not the best answer: ${q.options[picked] ?? ''}`}
               />
-              {q.wrongExplanations[picked] ? <PickNote letter={r.display} text={renderText(q.wrongExplanations[picked]!, perm)} /> : null}
             </>
           )}
           <OptionCard
@@ -234,8 +232,7 @@ const ReviewRow = memo(function ReviewRow({
             tag="Best answer"
             spoken={`Best answer, ${correctDisplay}: ${q.options[q.correct] ?? ''}`}
           />
-          <T v="headline">{`Why ${correctDisplay}`}</T>
-          <T v="body" style={{ marginBottom: space.sm }}>{renderText(q.explanation, perm)}</T>
+          <AnswerContext question={q} perm={perm} picked={r?.display} />
           {trapTip(q) !== '' && (
             <T v="small" color={c.ink2}>
               {trapTip(q).startsWith('Final two:') ? '' : 'Trap: '}

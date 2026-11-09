@@ -111,47 +111,45 @@ const ruledOut = () => [...eliminateTipText.matchAll(/\{\{([A-D])\}\}/g)].map((m
 
 describe('the answer screen order (Grove Phase 4)', () => {
   // Owner answer O1 (5 Nov 2026): after a miss all three tips are open; only a long Why folds.
-  it('a miss on an option to rule out: card, Key idea, every tip in the written order, then Why', () => {
+  it('a miss on an option to rule out: card, complete comparison, Key idea, then every tip', () => {
     const { picked, best } = miss(ruledOut());
     const t = allText();
-    const order = ['Not quite', '✗ Your answer', `Why not ${picked}`, '✓ Best answer', 'Key idea', 'How to think about it', 'Eliminate two', 'Final two', 'Exam cue', `Why ${best}`].map((s) => t.indexOf(s));
+    const order = ['Not quite', '✗ Your answer', '✓ Best answer', 'Compare all options', 'Key idea', 'How to think about it', 'Eliminate two', 'Final two', 'Exam cue'].map((s) => t.indexOf(s));
     expect(order.every((i) => i >= 0)).toBe(true);
     expect([...order].sort((a, b) => a - b)).toEqual(order);
     // The fold holds only the paragraph, and says so.
-    expect(labelled(/^Read more of the explanation$/).length).toBeGreaterThan(0);
+    expect(labelled(/^Read more of the explanation$/)).toHaveLength(0);
+    expect(t).toContain(`Why not ${picked}`);
+    expect(t).toContain(`Why ${best}`);
     expect(labelled(/^Read more: /)).toHaveLength(0);
   });
 
-  it('a miss on the closest wrong choice: Eliminate two, Final two and the Exam cue are all open before the Why', () => {
+  it('a miss on the closest wrong choice: the full rationale precedes Eliminate two, Final two and Exam cue', () => {
     const { best } = miss(runnerUpOf());
     const t = allText();
     expect(t.indexOf('How to think about it')).toBeLessThan(t.indexOf('Eliminate two'));
     expect(t.indexOf('Eliminate two')).toBeLessThan(t.indexOf('Final two'));
     expect(t.indexOf('Final two')).toBeLessThan(t.indexOf('Exam cue'));
-    expect(t.indexOf('Exam cue')).toBeLessThan(t.indexOf(`Why ${best}`));
+    expect(t.indexOf('Exam cue')).toBeGreaterThan(t.indexOf(`Why ${best}`));
     // One tips card, no second card in a fold.
     expect(root().findAllByType(TipsCard)).toHaveLength(1);
   });
 
-  it('Read more opens only the rest of the Why; Show less folds it again; the tips never move', () => {
-    miss(runnerUpOf());
-    const before = allText();
-    pressStarting('Read more of the explanation');
-    // The whole explanation, no line limit.
-    expect(root().findAll((n) => n.props.numberOfLines === 2 && typeof n.props.children === 'string' && n.props.children.length > 150)).toHaveLength(0);
-    expect(labelled(/^Show less of the explanation$/).length).toBeGreaterThan(0);
-    pressStarting('Show less of the explanation');
-    expect(allText()).toBe(before);
+  it('all rationale text stays open with the tips', () => {
+    const { perm } = miss(runnerUpOf());
+    const full = renderText(rich.explanation, perm);
+    expect(allText().split(full)).toHaveLength(2);
+    expect(labelled(/^Read more of the explanation$/)).toHaveLength(0);
     expect(allText()).toContain('Eliminate two');
   });
 
-  it('a long Why is cut to two lines on screen only: the screen reader gets the whole text', () => {
-    miss(runnerUpOf());
-    const folded = root().findAll((n) => typeof n.type === 'string' && n.props.numberOfLines === 2 && typeof n.props.accessibilityLabel === 'string' && n.props.accessibilityLabel.length > 150);
-    expect(folded.length).toBeGreaterThan(0);
+  it('the screen reader gets the full inline rationale exactly once', () => {
+    const { best, perm } = miss(runnerUpOf());
+    const label = `Why ${best}: ${renderText(rich.explanation, perm)}`;
+    expect(root().findAll(n => typeof n.type === 'string' && n.props.accessibilityLabel === label)).toHaveLength(1);
   });
 
-  it('a right answer: every tip open in the written order, then the whole Why; nothing folds', () => {
+  it('a right answer: the full rationale and every tip are open; nothing folds', () => {
     startFromIds('cisa', [rich.id, other.id], 'T');
     act(() => {
       r = create(<SessionScreen />);
@@ -164,7 +162,7 @@ describe('the answer screen order (Grove Phase 4)', () => {
     });
     pressStarting('Check answer');
     const t = allText();
-    const order = ['Correct', '✓ Your answer · the best', 'Key idea', 'How to think about it', 'Eliminate two', 'Final two', 'Exam cue', `Why ${best}`].map((s) => t.indexOf(s));
+    const order = ['Correct', '✓ Your answer · the best', 'Key idea', 'How to think about it', 'Eliminate two', 'Final two', 'Exam cue'].map((s) => t.indexOf(s));
     expect(order.every((i) => i >= 0)).toBe(true);
     expect([...order].sort((a, b) => a - b)).toEqual(order);
     expect(labelled(/^Read more/)).toHaveLength(0);
@@ -187,7 +185,8 @@ describe('the answer card (Grove Phase 4, 4.2 step 2)', () => {
     expect(labelled(new RegExp(`^Best answer, ${best}: `)).length).toBe(1);
     // The note of the option the learner picked: found by its ORIGINAL letter, shown with display letters.
     const note = renderText(rich.wrongExplanations[displayToOriginal(picked, perm)]!, perm);
-    expect(plate.props.pick.why).toBe(note);
+    expect(plate.props.pick.why).toBeUndefined();
+    expect(labelled(new RegExp(`^Why not ${picked}: `))[0].props.accessibilityLabel).toBe(`Why not ${picked}: ${note}`);
     expect(labelled(new RegExp(`^Why not ${picked}: `)).length).toBe(1);
     // "Why not B" is never a heading: "Why D" is the one Why heading.
     const whyHeaders = root().findAll((n) => typeof n.type === 'string' && n.props.accessibilityRole === 'header' && typeof n.props.children === 'string' && /^Why /.test(n.props.children));

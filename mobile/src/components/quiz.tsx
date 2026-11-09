@@ -34,7 +34,8 @@ import { useEffect, useRef, useState, type ReactNode, type Ref, type RefObject }
 import { Platform, Pressable, useWindowDimensions, View, type LayoutChangeEvent } from 'react-native';
 import Animated, { useAnimatedStyle, useSharedValue, withDelay } from 'react-native-reanimated';
 import Svg, { Defs, LinearGradient, Rect, Stop } from 'react-native-svg';
-import type { Letter } from '../content/types';
+import { LETTERS, type Letter, type PackQuestion } from '../content/types';
+import { renderText, type Permutation } from '../engine/shuffle';
 import type { Confidence } from '../engine/srs';
 import type { ReportTarget } from '../engine/support';
 import { lineBudget, shortenAtWord } from '../engine/textClip';
@@ -1014,6 +1015,41 @@ export function AllOptionsSheet({ visible, onClose, rows }: { visible: boolean; 
         })}
       </View>
     </Sheet>
+  );
+}
+
+/** Full answer context, only mounted after checking an answer or finishing a mock.
+ * Keep the saved permutation: a new shuffle here would change the meaning of every tip.
+ * The compact verdict stays above this section; comparison never needs a sheet or memory.
+ */
+export function AnswerContext({ question, perm, picked }: { question: PackQuestion; perm: Permutation; picked?: Letter }) {
+  const { c } = useTheme();
+  return (
+    <View testID="answer-context" style={{ marginTop: space.xl }}>
+      <T v="headline" accessibilityRole="header">Compare all options</T>
+      {perm.map((original, i) => {
+        const letter = LETTERS[i];
+        const best = original === question.correct;
+        const chosen = letter === picked;
+        const caption = best ? (chosen ? 'Your answer · the best' : 'Best answer') : chosen ? 'Your answer · not the best' : 'Not the best';
+        const why = renderText(best ? question.explanation : question.wrongExplanations[original], perm);
+        const wording = question.options[original] ?? '';
+        return (
+          <View key={letter} testID={`answer-context-${letter}`} style={{ borderBottomWidth: 1, borderBottomColor: c.line, paddingVertical: space.md }}>
+            <View accessible accessibilityLabel={`${letter}, ${caption}: ${wording}`}>
+              <T v="caption" color={best ? c.correct : chosen ? c.wrong : c.ink2}>{`${letter} · ${best ? '✓' : '✗'} ${caption}`}</T>
+              <FieldText v={best ? 'best' : 'option'}>{wording}</FieldText>
+            </View>
+            {why ? (
+              <View accessible accessibilityLabel={`${best ? 'Why' : 'Why not'} ${letter}: ${why}`} style={{ marginTop: space.sm }}>
+                <T v={best ? "headline" : "caption"} accessibilityRole={best ? "header" : undefined} color={c.ink2}>{`${best ? 'Why' : 'Why not'} ${letter}`}</T>
+                <T v="small">{why}</T>
+              </View>
+            ) : null}
+          </View>
+        );
+      })}
+    </View>
   );
 }
 

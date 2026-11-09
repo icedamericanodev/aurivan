@@ -18,7 +18,7 @@
 import appJson from '../../app.json';
 import { Alert, Linking } from 'react-native';
 import { act, create, type ReactTestInstance, type ReactTestRenderer } from 'react-test-renderer';
-import { RadioRow } from '../components/ui';
+import { Chip } from '../components/ui';
 import { FAQ } from '../content/support';
 import { getAllQuestions } from '../content/loader';
 import type { Fix, ReportEntry } from '../engine/support';
@@ -101,7 +101,14 @@ const lastEmail = () => {
   const url = String(openUrl.mock.calls.at(-1)![0]);
   return { subject: decodeURIComponent(url.split('subject=')[1].split('&body=')[0]), body: decodeURIComponent(url.split('&body=')[1]).replace(/\r\n/g, '\n') };
 };
-const checkedRadio = () => root().findAllByType(RadioRow).find((n) => n.props.checked)?.props.title;
+const checkedCategory = () => root().findAllByType(Chip).find((n) => n.props.selected)?.props.label;
+const typeSupportMessage = (message = 'Please help with this issue.') => act(() => {
+  root().findAll((n) => n.props.accessibilityLabel === 'Your message' && typeof n.props.onChangeText === 'function')[0].props.onChangeText(message);
+});
+const sendSupport = async (category: string) => {
+  press(category); typeSupportMessage(); await pressAsync('Review message'); await pressAsync('Email support');
+};
+
 
 const q = getAllQuestions('cisa')[30];
 const report = (over: Partial<ReportEntry> = {}): ReportEntry => ({ ref: 'R-7K2Q', item: `q:${q.id}`, reason: 'key', at: NOW - 20 * DAY, cert: 'cisa', ...over });
@@ -145,9 +152,9 @@ describe('the Help screen', () => {
     mount(<Help />);
     const text = allText();
     expect(text.indexOf('Get help')).toBeLessThan(text.indexOf('Common questions'));
-    expect(text.indexOf('Suggest an idea')).toBeLessThan(text.indexOf('Updates'));
+    expect(text.indexOf('Support and feedback')).toBeLessThan(text.indexOf('Updates'));
     expect(text.indexOf('Updates')).toBeLessThan(text.indexOf('Your reports'));
-    for (const t of ['Common questions', 'Contact support', 'Report a problem with the app', 'Suggest an idea', 'Your reports', 'What’s new']) {
+    for (const t of ['Common questions', 'Support and feedback', 'Your reports', 'What’s new']) {
       expect(pressables(t).length).toBeGreaterThan(0);
     }
     // What's next was removed in 1.17.1: no row, and no copy that mentions it.
@@ -173,69 +180,42 @@ describe('the Help screen', () => {
     expect(mockPush.mock.calls.map((c) => c[0])).toEqual(['/faq', '/reports', '/whats-new']);
   });
 
-  it('Report a problem with the app reports the app itself, and the note shows under that row', async () => {
-    mount(<Help />);
-    press('Report a problem with the app');
-    expect(allText()).toContain('Something didn’t load or froze');
-    press('Text is cut off or hard to read');
-    await pressAsync('Write the email');
-    expect(lastEmail().subject).toBe('KaiSip · Report · CISA · app:help · display');
+  it('central support reports the app and shows the email-opened note under its row', async () => {
+    mount(<Help />); press('Support and feedback'); await sendSupport('Bug or error');
+    expect(lastEmail().subject).toBe('KaiSip · Report · CISA · app:help · Bug or error');
     expect(lastEmail().body).toContain('Item: The app (Help)');
-    const text = allText();
-    expect(text.indexOf('Finished in your email app?')).toBeGreaterThan(text.indexOf('Report a problem with the app'));
-    expect(text.indexOf('Finished in your email app?')).toBeLessThan(text.indexOf('Suggest an idea'));
+    expect(allText().indexOf('Finished in your email app?')).toBeLessThan(allText().indexOf('Updates'));
   });
 
-  it('Suggest an idea opens a sheet called “Suggest an idea” with “An idea” chosen', async () => {
-    mount(<Help />);
-    press('Suggest an idea');
-    expect(allText()).toContain('Tell us what helps');
-    expect(root().findAll((n) => typeof n.type === 'string' && n.props.accessibilityRole === 'header' && n.props.children === 'Suggest an idea')).toHaveLength(1);
-    expect(pressables('An idea')[0].props.selected).toBe(true);
-    act(() => { root().findAll((n) => n.props.accessibilityLabel === 'Your message' && typeof n.props.onChangeText === 'function')[0].props.onChangeText('A dark-mode timer'); });
-    await pressAsync('Write the email');
-    expect(lastEmail().subject).toBe('KaiSip · Feedback · Idea · CISA');
-    expect(lastEmail().body).toContain('A dark-mode timer');
-    expect(lastEmail().body).not.toContain('Display:'); // only if ticked
-    expect(lastEmail().body).toContain('From: Help');
-    expect(allText()).toContain('If you sent it, thank you. We read every message.');
+  it('central support offers new features without automatic diagnostics', async () => {
+    mount(<Help />); press('Support and feedback'); await sendSupport('New feature');
+    expect(lastEmail().body).toContain('Reason: New feature');
+    expect(lastEmail().body).not.toContain('Display:');
+    expect(lastEmail().body).toContain('Where: Help');
   });
 
-  it('Cancel keeps what the learner typed; a sent message starts fresh next time (UX P3)', async () => {
-    mount(<Help />);
-    const typeMessage = (t: string) =>
-      act(() => { root().findAll((n) => n.props.accessibilityLabel === 'Your message' && typeof n.props.onChangeText === 'function')[0].props.onChangeText(t); });
-    const message = () => root().findAll((n) => n.props.accessibilityLabel === 'Your message' && typeof n.props.onChangeText === 'function')[0].props.value;
-    press('Suggest an idea');
-    typeMessage('Half an idea');
-    press('Cancel');
-    expect(allText()).not.toContain('What kind?');
-    press('Suggest an idea');
-    expect(message()).toBe('Half an idea');
-    await pressAsync('Write the email');
-    press('Suggest an idea');
-    expect(message()).toBe('');
+  it('Cancel keeps the draft and opening email starts a fresh draft', async () => {
+    mount(<Help />); press('Support and feedback'); press('New feature'); typeSupportMessage('Half an idea');
+    press('Cancel'); press('Support and feedback');
+    expect(root().findAll((n) => n.props.accessibilityLabel === 'Your message' && typeof n.props.onChangeText === 'function')[0].props.value).toBe('Half an idea');
+    await pressAsync('Review message'); await pressAsync('Email support'); press('Support and feedback');
+    expect(root().findAll((n) => n.props.accessibilityLabel === 'Your message' && typeof n.props.onChangeText === 'function')[0].props.value).toBe('');
   });
 
-  it('Contact support waits for a topic (and says so), then writes a tagged email', async () => {
-    mount(<Help />);
-    press('Contact support');
-    expect(allText()).toContain('We’re a small independent team. We read every message.');
-    expect(pressables('Write the email')[0].props.disabled).toBe(true);
-    expect(allText()).toContain('Choose what it’s about to continue.');
-    press('Backup, restore or a new phone');
-    await pressAsync('Write the email');
-    expect(lastEmail().subject).toBe('KaiSip · Support · Backup · CISA');
-    expect(lastEmail().body).toContain('Topic: Backup, restore or a new phone');
+  it('central support waits for category and message before review', async () => {
+    mount(<Help />); press('Support and feedback');
+    expect(pressables('Review message')[0].props.disabled).toBe(true);
+    expect(allText()).toContain('Choose a category and add a message to continue.');
+    await sendSupport('Data or privacy'); expect(lastEmail().body).toContain('Reason: Data or privacy');
   });
 });
 
 describe('the Help deep link: kaisip://help?open=…', () => {
   it.each([
-    ['support', 'Contact support', 'We’re a small independent team.'],
-    ['idea', 'Suggest an idea', 'Tell us what helps'],
-    ['feedback', 'Send feedback', 'Tell us what helps'],
-    ['report', 'Report a problem', 'Something didn’t load or froze'],
+    ['support', 'Support and feedback', 'What’s it about?'],
+    ['idea', 'Support and feedback', 'What’s it about?'],
+    ['feedback', 'Support and feedback', 'What’s it about?'],
+    ['report', 'Support and feedback', 'What’s it about?'],
   ])('open=%s opens %s', (open, _title, text) => {
     mockParams = { open };
     mount(<Help />);
@@ -279,9 +259,9 @@ describe('Common questions', () => {
     const backup = FAQ.find((f) => f.topic === 'backup')!;
     press(backup.question);
     press('Still stuck? Email us');
-    expect(checkedRadio()).toBe('Backup, restore or a new phone');
-    await pressAsync('Write the email');
-    expect(lastEmail().body).toContain(`From: Common questions: ${backup.question}`);
+    expect(checkedCategory()).toBe('Data or privacy');
+    typeSupportMessage(); await pressAsync('Review message'); await pressAsync('Email support');
+    expect(lastEmail().body).toContain(`Where: Common questions: ${backup.question}`);
     // The note sits under that entry, before the next question (UX O3).
     const text = allText();
     const next = FAQ[FAQ.indexOf(backup) + 1];
@@ -300,12 +280,9 @@ describe('What’s next is gone (1.17.1)', () => {
     expect(text).not.toMatch(/What[’']s next|In progress|Recently shipped/);
   });
 
-  it('Help’s Suggest an idea still opens Send feedback with “An idea”', async () => {
-    mount(<Help />);
-    press('Suggest an idea');
-    expect(pressables('An idea')[0].props.selected).toBe(true);
-    await pressAsync('Write the email');
-    expect(lastEmail().body).toContain('From: Help');
+  it('Help’s unified form retains idea feedback', async () => {
+    mount(<Help />); press('Support and feedback'); await sendSupport('New feature');
+    expect(lastEmail().body).toContain('Where: Help');
   });
 });
 

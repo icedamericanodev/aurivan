@@ -22,7 +22,7 @@ import { originalToDisplay } from '../engine/shuffle';
 import { useProgress } from '../store/progress';
 import { useSession } from '../store/session';
 import SessionScreen from '../app/session';
-import { AnswerPlate, FEEDBACK_DELAY, PLATE_ROW_STAGGER, Rise, StemRecap, StickyFooter, Verdict, VINE_ARRIVES, DISC_ABOVE_FROM, WhyBlock, KeyIdea, TipsCard } from '../components/quiz';
+import { AnswerContext, AnswerPlate, FEEDBACK_DELAY, PLATE_ROW_STAGGER, Rise, StemRecap, StickyFooter, Verdict, VINE_ARRIVES, DISC_ABOVE_FROM, WhyBlock, KeyIdea, TipsCard } from '../components/quiz';
 import type { Letter } from '../content/types';
 import { finalTwoLine, pickCoachKind, ruleOutLine } from '../engine/pickCoach';
 import { SLIP_LINE } from '../engine/slipCoach';
@@ -190,13 +190,13 @@ describe('after a right answer', () => {
   });
 
   // Grove Phase 4 (4.2): one order in every state, so a right answer reads Key idea, the tips, then Why.
-  it('Key idea, then every tip in one card, then the whole Why', () => {
+  it('Full comparison, then Key idea and every tip in one card', () => {
     answer(true);
     // Tree order is reading order.
     const order = root()
-      .findAll((n) => n.type === WhyBlock || n.type === KeyIdea || n.type === TipsCard)
-      .map((n) => (n.type === WhyBlock ? 'why' : n.type === KeyIdea ? 'key' : 'tips'));
-    expect(order).toEqual(['key', 'tips', 'why']);
+      .findAll((n) => n.type === AnswerContext || n.type === KeyIdea || n.type === TipsCard)
+      .map((n) => (n.type === AnswerContext ? 'context' : n.type === KeyIdea ? 'key' : 'tips'));
+    expect(order).toEqual(['context', 'key', 'tips']);
     const tips = root().findAllByType(TipsCard)[0];
     expect(tips.props.rows.map((t: { label: string }) => t.label)).toEqual(['Eliminate two', 'Final two', 'Exam cue']);
     // Both live in the one feedback-vine view that carries the vine's timing (one tick).
@@ -206,25 +206,23 @@ describe('after a right answer', () => {
   });
 
   // Owner answer O1: after a miss the same order and the same one tips card, every tip open.
-  it('after a miss: Key idea, every tip in one card, then the Why; the fold holds nothing else', () => {
+  it('after a miss: full comparison, Key idea, then every tip; no duplicate rationale', () => {
     answer(false);
     const order = root()
-      .findAll((n) => n.type === WhyBlock || n.type === KeyIdea || n.type === TipsCard)
-      .map((n) => (n.type === WhyBlock ? 'why' : n.type === KeyIdea ? 'key' : 'tips'));
-    expect(order).toEqual(['key', 'tips', 'why']);
+      .findAll((n) => n.type === AnswerContext || n.type === KeyIdea || n.type === TipsCard)
+      .map((n) => (n.type === AnswerContext ? 'context' : n.type === KeyIdea ? 'key' : 'tips'));
+    expect(order).toEqual(['context', 'key', 'tips']);
     expect(root().findAllByType(TipsCard)[0].props.rows.map((t: { label: string }) => t.label)).toEqual(['Eliminate two', 'Final two', 'Exam cue']);
-    const why = root().findByType(WhyBlock);
-    expect(why.props.more).toEqual([]);
-    expect(why.props.children).toBeUndefined();
+    expect(root().findAllByType(WhyBlock)).toHaveLength(0);
   });
 
   // PHASE4.md 4.4: the blocks after the card fade in reading order, opacity only, 30 ms apart.
-  it('Key idea with the tips, then the Why: opacity only, 30 ms apart', () => {
+  it('Key idea and tips arrive together with opacity only', () => {
     answer(false);
     const rises = root().findAllByType(Rise);
-    expect(rises).toHaveLength(2);
-    expect(rises.map((n) => n.props.rise)).toEqual([false, false]);
-    expect(rises[1].props.delay - rises[0].props.delay).toBe(PLATE_ROW_STAGGER);
+    expect(rises).toHaveLength(1);
+    expect(rises.map((n) => n.props.rise)).toEqual([false]);
+    expect(rises[0].props.delay).toBe(FEEDBACK_DELAY.why);
   });
 });
 

@@ -483,7 +483,7 @@ describe('Deep links into Settings', () => {
 
   it('with no screen to go back to, Save stays in Settings and focus returns to the row', () => {
     jest.spyOn(router, 'canGoBack').mockReturnValue(false);
-    const focus = jest.spyOn(a11y, 'moveFocus').mockImplementation(() => {});
+    const focus = jest.spyOn(a11y, 'moveFocus').mockImplementation(() => () => {});
     mockParams = { open: 'exam-date' };
     mount(<Settings />);
     emit('transitionEnd');
@@ -513,7 +513,7 @@ describe('"Now" is read when the calendar opens (code review 2, QA 4)', () => {
 
   it('Save from the row says nothing extra: focus returns to the row, which reads the new date (UX O4)', () => {
     const say = jest.spyOn(AccessibilityInfo, 'announceForAccessibility').mockImplementation(() => {});
-    const focus = jest.spyOn(a11y, 'moveFocus').mockImplementation(() => {});
+    const focus = jest.spyOn(a11y, 'moveFocus').mockImplementation(() => () => {});
     mount(<Settings />);
     openRow('Exam date');
     press('Friday 22 January 2027');
@@ -531,7 +531,7 @@ describe('Onboarding: the same calendar on the date step', () => {
     useSettings.setState({ onboarded: false, examDates: {} });
     mount(<Onboarding />);
     press('Get started');
-    press('Skip this question'); // mobile 1.24: no exam step, so this is "Where are you starting from?"
+    press('Skip starting point'); // mobile 1.24: no exam step, so this is "Where are you starting from?"
     expect(allText()).toContain('When is your exam?');
     press('Pick the exact date');
     press('Next month');
@@ -548,7 +548,7 @@ describe('Onboarding: the same calendar on the date step', () => {
     useSettings.setState({ onboarded: false, examDates: {} });
     mount(<Onboarding />);
     press('Get started');
-    press('Skip this question'); // mobile 1.24: no exam step, so this is "Where are you starting from?"
+    press('Skip starting point'); // mobile 1.24: no exam step, so this is "Where are you starting from?"
     jest.setSystemTime(new Date(2026, 9, 13, 0, 5));
     press('In 1 month');
     expect(byLabel('In 1 month')[0].props.accessibilityState).toMatchObject({ selected: true });
@@ -567,8 +567,8 @@ describe('Onboarding: the same calendar on the date step', () => {
     useSettings.setState({ onboarded: false, examDates: {} });
     mount(<Onboarding />);
     press('Get started');
-    press('Skip this question'); // mobile 1.24: no exam step, so this is "Where are you starting from?"
-    const focus = jest.spyOn(a11y, 'moveFocus').mockImplementation(() => {});
+    press('Skip starting point'); // mobile 1.24: no exam step, so this is "Where are you starting from?"
+    const focus = jest.spyOn(a11y, 'moveFocus').mockImplementation(() => () => {});
     const pickButton = () => root().findAll((n) => n.props.accessibilityLabel === 'Pick the exact date');
     const isPick = (ref: unknown) => pickButton().some((n) => n.instance !== null && n.instance === (ref as { current: unknown }).current);
     for (const close of ['Cancel, Exam date', 'Save']) {
@@ -584,7 +584,7 @@ describe('Onboarding: the same calendar on the date step', () => {
     useSettings.setState({ onboarded: false, examDates: {} });
     mount(<Onboarding />);
     press('Get started');
-    press('Skip this question'); // mobile 1.24: no exam step, so this is "Where are you starting from?"
+    press('Skip starting point'); // mobile 1.24: no exam step, so this is "Where are you starting from?"
     expect(byLabel('Not sure yet')[0].props.accessibilityState).toMatchObject({ selected: true });
     press('Start my first questions');
     expect(useSettings.getState().examDates.cisa).toBeUndefined();

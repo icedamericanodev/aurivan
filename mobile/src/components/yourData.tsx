@@ -18,8 +18,8 @@
  * "Undo sync" (it turns sync off). With the flag off this screen is exactly
  * what it was: the old intro, and only ever "Undo restore".
  */
-import { useEffect, useState } from 'react';
-import { Alert, Modal, ScrollView, View } from 'react-native';
+import { useEffect, useRef, useState } from 'react';
+import { Alert, Modal, Platform, ScrollView, View } from 'react-native';
 import { useMotion } from './motion';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { previewRows, UNDO_DAYS, undoAvailable, undoExpiresAt } from '../engine/backup';
@@ -29,6 +29,7 @@ import { shortDate } from '../lib/format';
 import { CLOUD } from '../cloud/flag';
 import { copy } from '../content/cloud/copy';
 import { pruneUndo, saveBackup, sweepBackupFiles, undoRestore, type ReadyToRestore } from '../lib/backup';
+import { saveBackupOnDevice } from '../lib/backupDevice';
 import { undoSync, useSyncing } from '../lib/sync';
 import { reminderLine, useRestoreFlow, type FlowMessage } from '../lib/useRestoreFlow';
 import { useBackup } from '../store/backup';
@@ -67,7 +68,32 @@ export function YourData() {
     sweepBackupFiles();
   }, []);
 
+  const saving = useRef(false);
+  const [deviceSaving, setDeviceSaving] = useState(false);
+  const saveOnDevice = async () => {
+    if (saving.current || busy !== null) return;
+    saving.current = true;
+    setDeviceSaving(true);
+    flow.setMessage(null);
+    setBusy('save');
+    try {
+      const out = await saveBackupOnDevice();
+      if (out === 'saved') say({ tone: 'ok', title: 'Backup saved', text: 'Your backup was written and checked in the folder you chose. To restore it later, choose “Restore from a backup” and pick the file.' });
+      else if (out === 'cancelled') say({ tone: 'ok', title: 'Save cancelled', text: 'No backup was saved. Your progress is unchanged.' });
+      else if (out === 'too-big') say({ tone: 'problem', title: 'Backup not made', text: BACKUP_TOO_BIG_LINE });
+      else say({ tone: 'problem', title: 'Device save unavailable', text: 'This app cannot open the folder picker here. You can still use the share option below.' });
+    } catch {
+      say({ tone: 'problem', title: 'Backup could not be saved', text: 'Please try another folder. An incomplete file may remain in the folder you chose; do not use it to restore. Your progress is unchanged.' });
+    } finally {
+      saving.current = false;
+      setDeviceSaving(false);
+      setBusy(null);
+    }
+  };
+
   const save = async () => {
+    if (saving.current || busy !== null) return;
+    saving.current = true;
     flow.setMessage(null);
     setBusy('save');
     try {
@@ -84,6 +110,7 @@ export function YourData() {
     } catch {
       say({ tone: 'problem', title: 'Backup not made', text: 'Something went wrong while making the backup file. Please try again.' });
     } finally {
+      saving.current = false;
       setBusy(null);
     }
   };
@@ -149,7 +176,7 @@ export function YourData() {
       : lastBackupAt
         ? `Last backup file made: ${dateOf(lastBackupAt)}`
         : 'No backup file yet';
-  const saveLabel = busy === 'save' ? 'Saving…' : 'Save a backup';
+  const saveLabel = busy === 'save' && !deviceSaving ? 'Saving…' : 'Save a backup';
   const pickLabel = busy === 'pick' ? 'Opening…' : 'Restore from a backup';
   return (
     <>
@@ -164,9 +191,19 @@ export function YourData() {
       >
         {/* Action rows: no chevron (they act; they don't open a list). The status is part of the
             name, so it is read even with hints off; the hint says only what a tap does. */}
+        {Platform.OS === 'android' && (
+          <SettingsRow
+            title={deviceSaving ? 'Saving…' : 'Save on this device'}
+            subtitle="Choose this device’s storage in the folder picker. Create or select a folder for your backup."
+            accessibilityHint="Opens Android’s folder picker. No file is saved if you cancel."
+            disabled={busy !== null}
+            onPress={saveOnDevice}
+            chevron={false}
+          />
+        )}
         <SettingsRow
           title={saveLabel}
-          subtitle={status}
+          subtitle={Platform.OS === 'android' ? `Share to another app. ${status}` : status}
           accessibilityLabel={`${saveLabel}, ${status}`}
           accessibilityHint="Opens the share sheet to save a file with your progress."
           disabled={busy !== null}

@@ -34,7 +34,7 @@ describe('a11y timers are tracked and cancelled', () => {
 
   it('they still do their job when they fire: focus, then speech (queued on iOS for the backup message)', () => {
     jest.useFakeTimers();
-    const focus = jest.spyOn(AccessibilityInfo, 'setAccessibilityFocus').mockImplementation(() => {});
+    const focus = jest.spyOn(AccessibilityInfo, 'sendAccessibilityEvent').mockImplementation(() => {});
     const said = jest.spyOn(AccessibilityInfo, 'announceForAccessibility').mockImplementation(() => {});
     const queued = jest.spyOn(AccessibilityInfo, 'announceForAccessibilityWithOptions').mockImplementation(() => {});
     try {
@@ -71,5 +71,48 @@ describe('a11y timers are tracked and cancelled', () => {
     } finally {
       said.mockRestore();
     }
+  });
+});
+
+
+describe('Fabric focus uses the current native host instance', () => {
+  beforeEach(() => jest.useFakeTimers());
+  afterEach(() => { cancelA11yTimersForTest(); jest.useRealTimers(); });
+
+  it('passes the host directly instead of resolving a deprecated numeric tag', () => {
+    const focus = jest.spyOn(AccessibilityInfo, 'sendAccessibilityEvent').mockImplementation(() => {});
+    const legacy = jest.spyOn(AccessibilityInfo, 'setAccessibilityFocus').mockImplementation(() => {});
+    const node = { nativeHost: true };
+    try {
+      moveFocus({ current: node }, 250);
+      jest.advanceTimersByTime(249);
+      expect(focus).not.toHaveBeenCalled();
+      jest.advanceTimersByTime(1);
+      expect(focus).toHaveBeenCalledWith(node, 'focus');
+      expect(legacy).not.toHaveBeenCalled();
+    } finally { focus.mockRestore(); legacy.mockRestore(); }
+  });
+
+  it('does not focus a target unmounted before the delay', () => {
+    const focus = jest.spyOn(AccessibilityInfo, 'sendAccessibilityEvent').mockImplementation(() => {});
+    const ref: { current: object | null } = { current: { nativeHost: true } };
+    try {
+      moveFocus(ref, 250);
+      ref.current = null;
+      jest.advanceTimersByTime(250);
+      expect(focus).not.toHaveBeenCalled();
+      expect(a11yTimersWaitingForTest()).toBe(0);
+    } finally { focus.mockRestore(); }
+  });
+
+  it('cleanup cancels a pending focus even while the screen ref still exists', () => {
+    const focus = jest.spyOn(AccessibilityInfo, 'sendAccessibilityEvent').mockImplementation(() => {});
+    try {
+      const cancel = moveFocus({ current: { nativeHost: true } }, 250);
+      cancel(); cancel();
+      jest.advanceTimersByTime(250);
+      expect(focus).not.toHaveBeenCalled();
+      expect(a11yTimersWaitingForTest()).toBe(0);
+    } finally { focus.mockRestore(); }
   });
 });

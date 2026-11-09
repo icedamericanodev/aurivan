@@ -6,15 +6,15 @@
  *                   says in four literal lines what you will do and what the
  *                   app does with your data, starting with the best feature:
  *                   every option is explained, the trap included. No metaphors.
- *   1  Step 1 of 2  Where are you starting from? (optional; "Skip this
- *                   question" leaves it unset)
+ *   1  Step 1 of 2  Optional nickname and starting point. Skipping the
+ *                   starting point leaves only that choice unset.
  *   2  Step 2 of 2  Your exam date and how long you can study most days, with
  *                   a plain line saying what the two add up to.
  *
  * What changed in 1.41, and why (pre-beta review: testers decide in the first minute):
- * - The name step is gone from here. Today asks once, quietly, from the day
- *   after the first study day (engine/firstRun.ts nameAskDue), and Settings →
- *   Your name keeps it. Learners who already gave a name keep it.
+ * - The separate name step was removed. The optional nickname now sits on
+ *   the starting-point screen. If left blank, Today still asks once after
+ *   the first study day. Settings → Your name keeps it editable.
  * - No seed is planted for you any more: the first set's closing screen offers
  *   one, with "Not now" (You and Your plant keep "Plant yours").
  *
@@ -40,6 +40,8 @@ import { Redirect, router } from 'expo-router';
 import { useEffect, useRef, useState, type RefObject } from 'react';
 import { BackHandler, KeyboardAvoidingView, Platform, ScrollView, useWindowDimensions, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { DisplayNameField } from '../components/displayName';
+import { cleanDisplayName } from '../engine/displayName';
 import { KaisipLockup } from '../components/brand';
 import { FamiliarityRows, FAMILIARITY_QUESTION, MinutesControl } from '../components/fit';
 import { FieldText, Plate, SeedSketch } from '../components/fieldguide';
@@ -95,11 +97,13 @@ function OnboardingFlow() {
   const complete = useSettings((s) => s.completeOnboarding);
   const { width } = useWindowDimensions();
   const [step, setStep] = useState<Step>(0);
+  // Draft only: leaving onboarding never changes a saved or restored name.
+  const [nickname, setNickname] = useState(() => cleanDisplayName(useSettings.getState().displayName));
   // Step 1 of 2: nothing chosen to start (no default biases the answer); skip leaves it unset.
   const [familiarity, setFamiliarity] = useState<Familiarity | undefined>(undefined);
   // Step 2 of 2: minutes most days, 20 to start.
   const [minutes, setMinutes] = useState<DailyMinutes>(DEFAULT_MINUTES);
-  // The keyboard and the sticky footer never cover a field (UX review H2). No step types today; kept for safety.
+  // The keyboard and the sticky footer never cover a field (UX review H2). The nickname uses the shared accessible field.
   const typing = useKeyboardShown();
   // CISA is the only exam today, so it is chosen for the learner (no exam step).
   const certId = DEFAULT_CERT_ID;
@@ -199,8 +203,8 @@ function OnboardingFlow() {
 
   // One tap saves everything and starts the first five questions. CISA is chosen for the learner.
   const finish = () => {
-    // No name here since 1.41: a name already saved (a restore) is kept, and Today asks later if there is none.
-    complete(certId, examDate, { familiarity, dailyMinutes: minutes });
+    // Empty or rejected drafts never erase a saved/restored name. Settings can clear it.
+    complete(certId, examDate, { familiarity, dailyMinutes: minutes }, cleanDisplayName(nickname) || undefined);
     if (!useSettings.getState().displayName) useSeen.getState().setNameAsk('due');
     // No plant question in onboarding: the first set's closing screen offers one, and You keeps "Plant yours".
     // Today's own plant line stays hidden, so the first days have one setup line at a time.
@@ -231,6 +235,11 @@ function OnboardingFlow() {
         <T v="meta" style={{ marginTop: space.sm }}>This shapes your first week. You can change it any time in Settings.</T>
         <Gap h={space.xl} />
         <FamiliarityRows look="raised" value={familiarity} onChange={setFamiliarity} />
+        <T v="headline" accessibilityRole="header" style={{ marginTop: space.xl }}>What should we call you?</T>
+        <T v="meta" style={{ marginTop: space.sm }}>Optional. Add a nickname, or leave it blank. You can change it in Settings.</T>
+        <View style={{ marginTop: space.md }}>
+          <DisplayNameField value={nickname} onChange={setNickname} label="Name or nickname" />
+        </View>
       </Enter>
     ) : (
       <Enter key="s2">
@@ -322,14 +331,14 @@ function OnboardingFlow() {
                 label="Continue"
                 onPress={() => setStep(2)}
                 disabled={!familiarity}
-                accessibilityHint={familiarity ? undefined : 'Choose one, or skip this question.'}
+                accessibilityHint={familiarity ? undefined : 'Choose one, or skip the starting point.'}
               />
               <View style={{ flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'center' }}>
                 <Button kind="ghost" label="Back" onPress={() => setStep(0)} />
                 <Button
                   kind="ghost"
-                  label="Skip this question"
-                  accessibilityHint="Leaves it unset. You can answer it later in Settings."
+                  label="Skip starting point"
+                  accessibilityHint="Leaves your starting point unset and keeps any nickname you entered. You can answer it later in Settings."
                   onPress={() => {
                     setFamiliarity(undefined);
                     setStep(2);
