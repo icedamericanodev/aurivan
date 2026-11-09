@@ -16,7 +16,7 @@ Related practice uses the existing guarded session starter, so optional real pra
 
 ## Validation record
 
-- Typecheck and ESLint passed. Full `npm run check` is running; its aggregate Jest result is pending.
+- Full `npm run check` passed: typecheck, ESLint, 362 Jest suites / 7,173 passed tests / 2 existing skips, and generated web-bundle checks. Aggregate Jest runtime was 301.643 seconds.
 - Focused pilot/expansion regression passed 89 tests initially. Final expanded content/UI suites passed 25 tests; engine/content specialist rerun passed 11 tests. See [specialist review](SPECIALIST_REVIEW.md).
 - Final Android export passed, along with OFF-cloud bundle, release-channel, shared-source and size guards. Bundle: 11.40 MB / 14 MB; CISA content: 4.68 MB / 6 MB.
 - Repository health passed with a writable temporary npm cache. An initial attempt failed because npm tried to create its cache under the unavailable home path; no source change was needed. Expo telemetry was disabled to avoid the same home-directory issue during lint.
