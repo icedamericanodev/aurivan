@@ -19,7 +19,9 @@ it from the site.
 
 ## Signing in (two steps)
 
-1. Your email → an 8-digit code arrives by email.
+1. Enter your admin email and complete the human-verification check. The server
+   checks eligibility before sending an 8-digit email code. Other addresses
+   receive “This is not an admin account” and no code from Beta Desk.
 2. A 6-digit code from an authenticator app (Google Authenticator, Microsoft
    Authenticator, 1Password…). The first time, the desk shows a QR code to scan
    once; after that it just asks for the code.
@@ -33,9 +35,10 @@ there. On a shared computer, still press **Sign out** when you finish.
 
 ## Adding an admin
 
-Admins are listed by account, not by email. The person signs in at
-`kaisip.com/beta-desk` once (they will see "No access"); then, in the
-Supabase SQL editor:
+Admins are listed by account, not by email. Use an existing confirmed KaiSip
+account, or invite the person through Supabase Authentication and have them
+complete email verification first. Beta Desk no longer creates accounts or
+provides a first-sign-in bootstrap. Then, in the Supabase SQL editor:
 
 ```sql
 insert into private.beta_desk_admins (user_id)
@@ -173,6 +176,33 @@ the hosted project.
 
 ## If the sign-in check (captcha) is switched on
 
-When Supabase Auth's captcha is turned on (go-live gate F30), the page shows
-the Cloudflare Turnstile check after the first refused attempt. The hosts are
+Beta Desk always requires Cloudflare Turnstile before checking eligibility,
+independently of the general Supabase Auth captcha setting. The hosts are
 already allowed in `_headers`.
+
+
+## Deploying the pre-email admin check (9 Nov 2026)
+
+Deploy the backend BEFORE publishing the new page code:
+
+1. Apply `supabase/migrations/20261109000000_beta_desk_sign_in.sql`.
+2. Set `BETA_DESK_TURNSTILE_SECRET` in Supabase Edge Function secrets to the
+   secret matching the page's existing Turnstile site key. Never commit it.
+3. Deploy `beta-desk-sign-in` with JWT verification disabled, as configured
+   in `supabase/config.toml`. It is pre-login; CAPTCHA is checked on the server.
+4. Test the function with fresh Turnstile tokens from kaisip.com: a non-admin
+   receives `not_admin` and no email; an existing admin receives one code.
+5. Publish the page and script; verify email-code sign-in followed by MFA.
+   Do not merge the frontend until backend deployment is confirmed. Missing
+   configuration fails closed and would otherwise block admin sign-in.
+
+The RPC is executable only by service_role, not by anon or authenticated.
+The function returns fixed errors, never admin records or setup instructions.
+An explicit rejection necessarily reveals eligibility for the submitted email;
+mandatory single-use CAPTCHA limits automated probing. It does not disclose
+an admin list. Existing MFA and tester-table RLS remain the authority after
+sign-in (including removal of an admin during sign-in).
+
+The shared Supabase Auth endpoint remains available for ordinary KaiSip
+accounts; this gate prevents non-admin email delivery through Beta Desk, not
+all email authentication across the project.
