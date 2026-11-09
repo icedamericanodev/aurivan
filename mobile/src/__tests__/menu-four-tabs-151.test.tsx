@@ -241,9 +241,7 @@ describe('the jump moves screen-reader focus to Drills (UX review P2)', () => {
   it('once, after Drills is laid out (not on a fixed timer)', () => {
     jest.useFakeTimers();
     expect(Platform.OS).not.toBe('web');
-    const RN = jest.requireActual('react-native');
-    const handle = jest.spyOn(RN, 'findNodeHandle').mockReturnValue(7);
-    const focus = jest.spyOn(AccessibilityInfo, 'setAccessibilityFocus').mockImplementation(() => {});
+    const focus = jest.spyOn(AccessibilityInfo, 'sendAccessibilityEvent').mockImplementation(() => {});
     mockParams.current = { section: 'drills' };
     mountMeasured(<Practice />);
     act(() => {
@@ -264,7 +262,6 @@ describe('the jump moves screen-reader focus to Drills (UX review P2)', () => {
     });
     expect(focus).toHaveBeenCalledTimes(1);
     focus.mockRestore();
-    handle.mockRestore();
   });
 });
 

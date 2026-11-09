@@ -483,7 +483,7 @@ describe('Deep links into Settings', () => {
 
   it('with no screen to go back to, Save stays in Settings and focus returns to the row', () => {
     jest.spyOn(router, 'canGoBack').mockReturnValue(false);
-    const focus = jest.spyOn(a11y, 'moveFocus').mockImplementation(() => {});
+    const focus = jest.spyOn(a11y, 'moveFocus').mockImplementation(() => () => {});
     mockParams = { open: 'exam-date' };
     mount(<Settings />);
     emit('transitionEnd');
@@ -513,7 +513,7 @@ describe('"Now" is read when the calendar opens (code review 2, QA 4)', () => {
 
   it('Save from the row says nothing extra: focus returns to the row, which reads the new date (UX O4)', () => {
     const say = jest.spyOn(AccessibilityInfo, 'announceForAccessibility').mockImplementation(() => {});
-    const focus = jest.spyOn(a11y, 'moveFocus').mockImplementation(() => {});
+    const focus = jest.spyOn(a11y, 'moveFocus').mockImplementation(() => () => {});
     mount(<Settings />);
     openRow('Exam date');
     press('Friday 22 January 2027');
@@ -568,7 +568,7 @@ describe('Onboarding: the same calendar on the date step', () => {
     mount(<Onboarding />);
     press('Get started');
     press('Skip starting point'); // mobile 1.24: no exam step, so this is "Where are you starting from?"
-    const focus = jest.spyOn(a11y, 'moveFocus').mockImplementation(() => {});
+    const focus = jest.spyOn(a11y, 'moveFocus').mockImplementation(() => () => {});
     const pickButton = () => root().findAll((n) => n.props.accessibilityLabel === 'Pick the exact date');
     const isPick = (ref: unknown) => pickButton().some((n) => n.instance !== null && n.instance === (ref as { current: unknown }).current);
     for (const close of ['Cancel, Exam date', 'Save']) {

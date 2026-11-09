@@ -70,3 +70,13 @@ Completed against commit `f4a99e3` on a newly created blank `KaiSip_Acceptance` 
 - Opened the saved file through the native restore picker. Preview correctly showed zero current questions versus one backup question. Confirmed restore: Home greeted Acceptance and showed one answer. Persisted restored answer records exactly matched the native saved JSON; `onboarded:true`.
 - Visually inspected saved, post-restart onboarding, and restored screenshots. Evidence is in the Codex task `review-evidence/isolated-native-{saved,reset,restart,restore-preview,restored}.png`.
 - Owner progress and existing files were not modified. No code changes were needed; prior full checks (355 suites, 7,250 passed, 2 skipped) and Android export remain applicable. This verifies the local Android Documents provider; external/cloud providers, Samsung-specific accessibility, and the other release gates remain separate. No AAB built or release published.
+
+## Integrated PR review · 2026-11-09
+
+PR #238 reconciles #233–236 into one 2.1 integration and retains main's already-merged Beta Desk #232. Source drafts are to be closed as superseded only after integration merges; their branches remain preserved. Independent QA/UX/security review found no blocking implementation issue with default full content and direct support disabled.
+
+Pre-fix integration `9699a5b`: repository health, 21 web smoke journeys, 8 mobile browser journeys, typecheck and lint passed. A parallel backup UI timeout passed unchanged in isolation; full serial tests passed (355 suites, 7,250 passed, 2 skipped), followed by the generated asset guard. No assertions or timeouts were weakened.
+
+Native Coach me evidence on the isolated emulator: readable single question layer in high-contrast light at normal size and dark at 200% text; options reachable by scrolling; coached answer and next-question transition worked. Screenshots: `review-evidence/native-coach-highcontrast-light.png` and `native-coach-highcontrast-dark-200.png` in the Codex task directory. Samsung-specific and TalkBack/VoiceOver acceptance remain separate release checks.
+
+Native testing exposed an existing deprecated numeric-tag focus warning after display configuration changes. The shared focus helper and Coach effect now use React Native's host-instance focus API with cancellation on cleanup. Independent parent diff review found no blocker; six targeted suites (99 tests) and typecheck passed. Repeating Coach me and display changes on the patched emulator showed no warning. Final integrated gates must pass on this added change before merge.

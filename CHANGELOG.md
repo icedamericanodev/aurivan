@@ -13,6 +13,9 @@ For internal/technical history, see git log and PR descriptions.
 - Compare every option beside its explanation.
 - Find support and feedback options together.
 
+### Fixed
+- Keep screen-reader focus on newly opened hints without relying on stale view identifiers.
+
 ### Fixed after learner reports
 - Learners could only find backup sharing options; Android now also offers a device-folder picker with verified saves and clear cancellation.
 - Learners expected setup after resetting CISA; confirmed resets now save the fresh start and return to setup while preserving other exams.
@@ -20,7 +23,7 @@ For internal/technical history, see git log and PR descriptions.
 - Learners reported missing options in explanations; each option now stays beside its explanation.
 - Learners reported unreadable questions after Coach me; question text now uses one readable layer.
 
-These fixes are in development review; native acceptance checks remain pending.
+These fixes are in development review. Isolated Android reset, restart, and local backup save/restore checks passed. Coach me was readable in the checked native high-contrast light and 200% dark views; Samsung-specific and screen-reader acceptance remain pending.
 
 ## [v13] Welcome to the new KaiSip
 

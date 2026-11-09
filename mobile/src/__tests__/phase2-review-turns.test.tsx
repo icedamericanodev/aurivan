@@ -115,7 +115,7 @@ beforeEach(() => {
   useSession.getState().clear();
   useSettings.setState({ onboarded: true, activeCertId: 'cisa', theme: 'light', motion: 'system', haptics: true, shuffleOptions: true });
   announce = jest.spyOn(AccessibilityInfo, 'announceForAccessibility').mockImplementation(() => {});
-  focus = jest.spyOn(AccessibilityInfo, 'setAccessibilityFocus').mockImplementation(() => {});
+  focus = jest.spyOn(AccessibilityInfo, 'sendAccessibilityEvent').mockImplementation(() => {});
   mockMoveFocus.mockClear();
 });
 afterEach(() => {
@@ -244,4 +244,17 @@ describe('a lesson’s Back on scene 2', () => {
     tick(motion.dur.select);
     expect(mockMoveFocus).toHaveBeenCalledTimes(1);
   });
+});
+
+
+it('Coach me schedules host focus and cancels it when the session unmounts', () => {
+  act(() => { startFromIds('cisa', ['d1_002'], 'Focus regression'); });
+  mount(<SessionScreen />);
+  const cancel = jest.fn();
+  mockMoveFocus.mockReturnValueOnce(cancel);
+  press('Coach me');
+  expect(mockMoveFocus).toHaveBeenCalledWith(expect.objectContaining({ current: expect.anything() }), 250);
+  act(() => { r?.unmount(); });
+  r = undefined;
+  expect(cancel).toHaveBeenCalledTimes(1);
 });

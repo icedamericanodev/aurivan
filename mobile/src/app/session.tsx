@@ -70,11 +70,9 @@ import {
   BackHandler,
   Dimensions,
   Modal,
-  Platform,
   Pressable,
   ScrollView,
   View,
-  findNodeHandle,
   useWindowDimensions,
   type NativeScrollEvent,
   type NativeSyntheticEvent,
@@ -439,14 +437,9 @@ export default function SessionScreen() {
   // Then move screen-reader focus onto it, so VoiceOver / TalkBack read the
   // hint straight away instead of staying on a button that has vanished.
   useEffect(() => {
-    // Native only: findNodeHandle does not exist on web (the screenshot build).
-    if (!coached || !focusHint.current || Platform.OS === 'web') return;
+    if (!coached || !focusHint.current) return;
     focusHint.current = false;
-    const t = setTimeout(() => {
-      const tag = hintRef.current ? findNodeHandle(hintRef.current) : null;
-      if (tag) AccessibilityInfo.setAccessibilityFocus(tag);
-    }, 250);
-    return () => clearTimeout(t);
+    return moveFocus(hintRef, 250);
   }, [coached, qid]);
 
   // The mock clock (its tick, the pace checks, the 5-minute line and the auto-submit) lives in MockClock

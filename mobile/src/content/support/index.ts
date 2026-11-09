@@ -61,7 +61,7 @@ export const WHATS_NEW: readonly WhatsNewEntry[] = [
   {
     version: '2.1.0',
     improved: ['Compare all options and their explanations after checking an answer or finishing a mock.', 'Find support and feedback options together.', 'Save an Android backup in a folder you choose, or share it through another app.'],
-    fixed: ['Question text stays readable when you open Coach me.', 'Resetting CISA progress returns to setup after the reset is saved.'],
+    fixed: ['Question text stays readable when you open Coach me.', 'Resetting CISA progress returns to setup after the reset is saved.', 'Screen-reader focus follows newly opened hints more reliably.'],
     date: '2026-11-09',
     new: ['Add an optional nickname during setup for a personal greeting. It stays on your phone, and you can change it in Settings.'],
   },

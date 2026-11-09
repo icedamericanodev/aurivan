@@ -135,7 +135,7 @@ describe('P3 Help → Common questions', () => {
   // Release bug hunt round 1: the opened entry is the last of ten, below the fold on a small phone.
   it('faq?open=how-made scrolls that entry into view and moves the screen reader to it, once; a plain visit does neither', () => {
     const scroll = jest.spyOn(ScrollView.prototype, 'scrollTo').mockImplementation(() => {});
-    const focus = jest.spyOn(a11y, 'moveFocus').mockImplementation(() => {});
+    const focus = jest.spyOn(a11y, 'moveFocus').mockImplementation(() => () => {});
     const question = FAQ.find((f) => f.id === 'how-made')!.question;
     const laidOut = () => r!.root.findAll((n) => typeof n.props.onLayout === 'function' && n.findAll((x) => x.props.title === question).length > 0);
     mockParams.current = { open: 'how-made' };
