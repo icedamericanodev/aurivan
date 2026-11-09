@@ -110,7 +110,13 @@ async function handle(route) {
   const text = req.postData();
   calls.push({ method, path: u.pathname + u.search, auth: !!h.authorization });
   const send = (status, body) => route.fulfill({ status, headers: cors, body: body === undefined ? '' : JSON.stringify(body) });
-  if (u.pathname === '/auth/v1/otp') return send(200, {});
+  if (u.pathname === '/auth/v1/otp') throw new Error('Desk must not call unrestricted OTP');
+  if (u.pathname === '/functions/v1/beta-desk-sign-in') {
+    const b = JSON.parse(text);
+    if (!b.captcha_token) return send(400, { error: 'captcha_failed' });
+    const allowed = psql(`select public.beta_desk_email_is_allowed(:'email');`, { email: b.email });
+    return allowed.ok && allowed.out === 't' ? send(200, { sent: true }) : send(403, { error: 'not_admin' });
+  }
   if (u.pathname === '/auth/v1/verify') {
     const b = JSON.parse(text);
     if (b.token !== CODE) return send(403, { code: 403, error_code: 'otp_expired', msg: 'Token has expired or is invalid' });
@@ -184,6 +190,13 @@ const consoleErrors = [];
 async function newPage(opts = {}) {
   const ctx = await browser.newContext({ viewport: opts.viewport || { width: 1440, height: 900 }, colorScheme: opts.dark ? 'dark' : 'light', acceptDownloads: true, deviceScaleFactor: opts.dsf || 1 });
   await ctx.route(SUPA + '/**', handle);
+  await ctx.addInitScript(() => {
+    let callback;
+    window.turnstile = {
+      render(_selector, opts) { callback = opts.callback; setTimeout(() => callback('test-captcha'), 0); return 'test-widget'; },
+      reset() { setTimeout(() => callback('test-captcha'), 0); }
+    };
+  });
   const page = await ctx.newPage();
   page.on('pageerror', (e) => consoleErrors.push(String(e)));
   // Expected 4xx answers (the wrong-code test) log 'Failed to load resource': not a script error.
@@ -193,6 +206,8 @@ async function newPage(opts = {}) {
 async function signIn(page, email, totp = null) {
   await page.goto(BASE);
   await page.fill('#emailInput', email);
+  await page.click('#sendCodeBtn');
+  await page.waitForFunction(() => captcha.token);
   await page.click('#sendCodeBtn');
   await page.waitForSelector('#codeForm:not([hidden])');
   await page.fill('#codeInput', CODE);
@@ -220,6 +235,7 @@ const toastText = (page) => page.$$eval('.toast', (els) => els.map((e) => e.text
 
   // A wrong code is refused.
   await page.fill('#emailInput', ADMIN); await page.click('#sendCodeBtn');
+  await page.waitForFunction(() => captcha.token); await page.click('#sendCodeBtn');
   await page.waitForSelector('#codeForm:not([hidden])');
   await page.fill('#codeInput', '00000000'); await page.click('#verifyBtn');
   await page.waitForSelector('#gateError:not([hidden])');
@@ -230,8 +246,13 @@ const toastText = (page) => page.$$eval('.toast', (els) => els.map((e) => e.text
 asUser(uuidFor(ADMIN), `insert into public.beta_testers (full_name, email) values ('Seed Person', 'seed@test.invalid');`);
 {
   const { ctx, page } = await newPage();
-  await signIn(page, LEARNER);
-  await page.waitForSelector('#notAdmin:not([hidden])');
+  await page.goto(BASE);
+  await page.fill('#emailInput', LEARNER); await page.click('#sendCodeBtn');
+  await page.waitForFunction(() => captcha.token); await page.click('#sendCodeBtn');
+  await page.waitForFunction(() => document.getElementById('gateError').textContent.includes('not an admin account'));
+  check('non-admin stays on email form without a code', await page.isVisible('#emailForm') && await page.isHidden('#codeForm'));
+  check('no internal admin instructions in public HTML', !(await page.content()).includes('Adding an admin'));
+  check('non-admin gets no local session', await page.evaluate(() => sessionStorage.getItem('kaisip_desk_session_v1') === null));
   check('a learner (not an admin) gets "No access"', await page.isHidden('#app'));
   check('a learner is never asked to set up an authenticator', await page.isHidden('#mfaForm'));
   check('the learner page holds no tester details', !(await page.content()).includes('seed@test.invalid'));
@@ -544,3 +565,4 @@ server.close();
 fs.writeFileSync(path.join(OUT, 'results.json'), JSON.stringify({ failed, results }, null, 2));
 console.log(`\n${results.length - failed}/${results.length} passed · screenshots in ${OUT}`);
 process.exit(failed ? 1 : 0);
+

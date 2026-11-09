@@ -67,6 +67,27 @@ Advisors (no ERROR, no WARN):
 
 The Supabase MCP asks the owner to confirm any SQL containing DROP, DELETE, TRUNCATE or an UPDATE without WHERE. Its check is keyword-based, so comments and function bodies set it off. Future applies must run with Sky present.
 
+### Beta Desk sign-in apply (9 Nov 2026, dashboard SQL editor)
+
+Applied the SQL in `20261109000000_beta_desk_sign_in.sql` to project
+`ziadnvepttlgcowvqvom` (comments omitted in the editor). Source file md5:
+`5258c2197f7c6574dce1366364e28898`. This manual apply did **not** insert a
+migration-history version. Before a future CLI db push, verify the two
+function definitions and mark repo version `20261109000000` applied with
+migration repair, alongside the earlier MCP mappings above; do not rerun
+CREATE FUNCTION against the existing functions.
+
+Verified live: anon and authenticated cannot execute the public eligibility
+RPC; service_role can; an unknown email returns false. The owner saved
+`BETA_DESK_TURNSTILE_SECRET` directly in Supabase. Deployed
+`beta-desk-sign-in` through the dashboard using a single-file concatenation
+of the unchanged shared HTTP/key helpers, handler and entrypoint from PR #232
+(local imports removed). JWT verification is off with owner approval; the
+function enforces CAPTCHA and private admin eligibility before email delivery.
+Live smoke: a request without CAPTCHA returns HTTP 400 `captcha_failed` with
+CORS restricted to kaisip.com. Full email/MFA acceptance remains an owner
+browser test after the frontend release. No Android release is needed.
+
 ## Security audit (27 Oct 2026) and the go-live gates
 
 A security audit of ticket 1 found 0 critical, 2 high, 4 medium and 9 low
