@@ -34,7 +34,9 @@ jobs:
   check:
     name: Typecheck + tests
     runs-on: ubuntu-latest
-    timeout-minutes: 25
+    # Both full test modes plus Android export can exceed 25 minutes on hosted runners.
+    # Keep all guards mandatory; allow the complete verification chain to finish.
+    timeout-minutes: 40
     defaults:
       run:
         working-directory: mobile
