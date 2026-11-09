@@ -197,6 +197,9 @@ kill %1
 
 ## Mobile app workflow (added with `mobile/`)
 
+- **Next Android bundle: version name exactly `2.1` (owner requirement, 9 Nov 2026).** Maintain `docs/mobile/RELEASE_2_1.md` as work completes. Include all completed changes from this cycle and those completed before the build. Before bundle handoff, inspect the actual AAB version name/code, compare the code with the highest previously uploaded Play build, and verify its commit and intended changes. Keep a separate **Fixed after learner reports** section with anonymous reported-problem/change summaries. Do not infer a verified version code from auto-increment alone.
+
+
 - `npm run shots` inside `mobile/` captures phone-size screenshots of the key screens with demo data (`mobile/scripts/screenshots/`). Send them to the maintainer after UI changes.
   CI (`.github/workflows/mobile-shots.yml`) runs the default, `settings` and `data` sets on every pull request that changes `mobile/src/` or the scripts; when a screen changes, update the `shoot_*.mjs` steps that point at it in the same pull request. The pictures are a download on each run.
 - Run `npm run check` inside `mobile/` after touching `mobile/` or `data/domain*.json`

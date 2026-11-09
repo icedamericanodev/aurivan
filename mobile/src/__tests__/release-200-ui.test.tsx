@@ -186,8 +186,8 @@ describe('f. the drill intro level line', () => {
 
 describe('the launch entry in What’s new', () => {
   it('is 2.0.0, named "The KaiSip launch", in plain words with no dashes or banned words', () => {
-    const launch = WHATS_NEW[0];
-    expect(launch.version).toBe(appJson.expo.version);
+    const launch = WHATS_NEW.find((entry) => entry.version === '2.0.0')!;
+    expect(WHATS_NEW[0].version).toBe(appJson.expo.version);
     expect(launch.version).toBe('2.0.0');
     expect(launch.title).toBe('The KaiSip launch');
     expect(launch.needsUpdates).toBeUndefined();
@@ -198,6 +198,6 @@ describe('the launch entry in What’s new', () => {
       expect(l).not.toMatch(/\b(pass|passed|passing|guarantee\w*|official|evolve\w*|runner-up)\b|you[’']re ready/i);
     }
     // Only the launch has a name; every other entry keeps its "Version" heading.
-    expect(WHATS_NEW.slice(1).every((e) => e.title === undefined)).toBe(true);
+    expect(WHATS_NEW.filter((e) => e.version !== '2.0.0').every((e) => e.title === undefined)).toBe(true);
   });
 });

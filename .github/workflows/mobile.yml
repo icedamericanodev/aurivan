@@ -20,10 +20,10 @@ name: Mobile
 on:
   pull_request:
     branches: [main]
-    paths: ['mobile/**', 'data/domain*.json', 'data/cisa_notes.json', 'data/mindset/**', 'data/exam/**', 'data/lessons/**', 'assets/kaisip-plant.js', 'assets/kaisip-cloud.js', 'supabase/functions/_shared/**', '.github/workflows/mobile.yml']
+    paths: ['mobile/**', 'data/domain*.json', 'data/free/**', 'data/cisa_notes.json', 'data/mindset/**', 'data/exam/**', 'data/lessons/**', 'assets/kaisip-plant.js', 'assets/kaisip-cloud.js', 'supabase/functions/_shared/**', '.github/workflows/mobile.yml']
   push:
     branches: [main]
-    paths: ['mobile/**', 'data/domain*.json', 'data/cisa_notes.json', 'data/mindset/**', 'data/exam/**', 'data/lessons/**', 'assets/kaisip-plant.js', 'assets/kaisip-cloud.js', 'supabase/functions/_shared/**', '.github/workflows/mobile.yml']
+    paths: ['mobile/**', 'data/domain*.json', 'data/free/**', 'data/cisa_notes.json', 'data/mindset/**', 'data/exam/**', 'data/lessons/**', 'assets/kaisip-plant.js', 'assets/kaisip-cloud.js', 'supabase/functions/_shared/**', '.github/workflows/mobile.yml']
 
 # Read-only token: `npm ci` runs third-party install scripts, which must not
 # be able to push to the repo.
@@ -47,6 +47,8 @@ jobs:
           cache-dependency-path: mobile/package-lock.json
       - name: Install (also builds the content pack)
         run: npm ci
+      - name: Opt-in sample question pack regression tests (restores full pack)
+        run: node --test scripts/check-sample-content.mjs
       - name: Typecheck
         run: npm run typecheck
       - name: Release channels (a store build never listens on preview)

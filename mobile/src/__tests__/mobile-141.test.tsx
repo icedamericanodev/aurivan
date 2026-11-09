@@ -235,20 +235,21 @@ describe('Help: I’m a beta tester', () => {
     expect(useSeen.getState().tester).toEqual({});
   });
 
-  it('review 1.41: "Something confused me" is its own Help row and opens feedback with that kind chosen', async () => {
+  it('opens one support form with an improvement category for confusing experiences', async () => {
     mount(<Help />);
-    expect(allText()).toContain('Or tell us what works for you');
-    await press(/^Something confused me/);
-    expect(allText()).toContain('What confused you?');
-    const chips = root().findAll((n) => n.props.accessibilityRole === 'button' && /^(Something confused me|An idea|Something I like|Something else)$/.test(String(n.props.accessibilityLabel)));
-    expect(chips[0]?.props.accessibilityLabel).toBe('Something confused me');
-    expect(chips[0]?.props.accessibilityState?.selected).toBe(true);
+    await press(/^Support and feedback/);
+    await press(/^Improve something$/);
+    expect(allText()).toContain('What could work better? Tell us how you use it.');
+    expect(buttons(/^Improve something$/)[0].props.accessibilityState?.selected).toBe(true);
   });
 
-  it('Report a problem with the app offers "I couldn’t find something"', async () => {
+  it('lets learners describe an app problem through the unified bug category', async () => {
     mount(<Help />);
-    await press(/^Report a problem with the app/);
-    expect(allText()).toContain('I couldn’t find something');
+    await press(/^Support and feedback/);
+    await press(/^Bug or error$/);
+    expect(allText()).toContain('What happened, and what did you expect? What steps led to it?');
+    expect(buttons(/^Bug or error$/)[0].props.accessibilityState?.selected).toBe(true);
+    expect(openUrl).not.toHaveBeenCalled();
   });
 });
 

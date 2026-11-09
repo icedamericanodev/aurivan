@@ -29,8 +29,8 @@ import { config } from '../lib/config';
 import { reportsSubtitle, useReports } from '../lib/useReports';
 import { space } from '../theme/tokens';
 import { useTheme } from '../theme/useTheme';
-import { CircleQuestionMark, Flag, ICON_STROKE, Inbox, Info, Lightbulb, Mail, MessagesSquare, Sparkles } from './icons';
-import { useContactFlow, useReportFlow } from './support';
+import { CircleQuestionMark, ICON_STROKE, Inbox, Info, Mail, Sparkles } from './icons';
+import { useUnifiedSupportFlow } from './support';
 import { ICON_SIZE, ListRow, Section, T, ToggleRow } from './ui';
 import { switchTester } from '../engine/betaTester';
 import { widgetsSupported } from '../lib/widgets';
@@ -67,8 +67,7 @@ const WHERE = 'Help';
 export function HelpRows({ certId }: { certId: string }) {
   const { c } = useTheme();
   const { counts, dueItems } = useReports();
-  const contact = useContactFlow(certId);
-  const report = useReportFlow(certId, { kind: 'app', id: 'help', name: WHERE, where: WHERE });
+  const support = useUnifiedSupportFlow(certId, WHERE);
   const testerOn = useSeen((s) => Boolean(s.tester?.since));
   const icon = (G: typeof Mail) => <G size={ICON_SIZE.row} color={c.accentText} strokeWidth={ICON_STROKE} />;
   return (
@@ -91,34 +90,12 @@ export function HelpRows({ certId }: { certId: string }) {
       )}
       <ListRow
         icon={icon(Mail)}
-        title="Contact support"
-        subtitle="A question about the app or your data"
-        onPress={() => contact.openSupport(undefined, WHERE)}
-      />
-      {contact.blockFor('support', WHERE)}
-      <ListRow
-        icon={icon(Flag)}
-        title="Report a problem with the app"
-        subtitle="Something isn’t working or looks wrong"
-        accessibilityHint="For a question or note, use the Report a problem link under it."
-        onPress={report.open}
-      />
-      {report.block}
-      {/* Mobile 1.41 review: confusion is the beta's main quality measure, so it has its own row. */}
-      <ListRow
-        icon={icon(MessagesSquare)}
-        title="Something confused me"
-        subtitle="A screen, a word or an answer that didn’t make sense"
-        onPress={() => contact.openFeedback('confused', WHERE)}
-      />
-      <ListRow
-        icon={icon(Lightbulb)}
-        title="Suggest an idea"
-        subtitle="Or tell us what works for you"
-        onPress={() => contact.openFeedback('idea', WHERE)}
+        title="Support and feedback"
+        subtitle="Report a problem, ask for help or suggest an idea"
+        onPress={support.open}
         last
       />
-      {contact.blockFor('feedback', WHERE)}
+      {support.block}
 
       <Section title="Updates" />
       <ListRow icon={icon(Inbox)} title="Your reports" subtitle={reportsSubtitle(counts)} onPress={() => router.push('/reports')} />
@@ -140,8 +117,7 @@ export function HelpRows({ certId }: { certId: string }) {
       <T v="small" color={c.ink2} style={{ marginTop: space.lg }}>{HELP_FOOTER_LEAD}</T>
       <T v="label" selectable color={c.accentText}>{config.feedbackEmail}</T>
       <T v="small" color={c.ink2} style={{ marginTop: space.xs }}>{NOT_AFFILIATED}</T>
-      {report.sheet}
-      {contact.sheets}
+      {support.sheet}
     </View>
   );
 }

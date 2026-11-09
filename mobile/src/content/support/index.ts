@@ -59,6 +59,13 @@ export function whatsNewFor(updatesOn: boolean, list: readonly WhatsNewEntry[] =
 /** Newest first. The first entry must match app.json (a test checks it). */
 export const WHATS_NEW: readonly WhatsNewEntry[] = [
   {
+    version: '2.1.0',
+    improved: ['Compare all options and their explanations after checking an answer or finishing a mock.', 'Find support and feedback options together.'],
+    fixed: ['Question text stays readable when you open Coach me.'],
+    date: '2026-11-09',
+    new: ['Add an optional nickname during setup for a personal greeting. It stays on your phone, and you can change it in Settings.'],
+  },
+  {
     version: '2.0.0',
     date: '2026-11-06',
     title: 'The KaiSip launch',

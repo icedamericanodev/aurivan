@@ -212,7 +212,7 @@ function onboard(start: Start, minutes: DailyMinutes) {
   mount(<Onboarding />);
   press(/^Get started$/);
   // Mobile 1.24: no exam step (CISA is chosen) and no plant step; the last button starts the first set.
-  if (start === 'skipped') press(/^Skip this question$/);
+  if (start === 'skipped') press(/^Skip starting point$/);
   else {
     press(ROW[start]);
     press(/^Continue$/);

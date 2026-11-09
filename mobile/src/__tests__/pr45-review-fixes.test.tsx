@@ -477,7 +477,7 @@ describe('Onboarding: each step\u2019s header takes focus (UX review P7, O7)', (
     const steps: [RegExp, string][] = [
       // Mobile 1.41: no name step.
       [/^Get started$/, 'Where are you starting from?'],
-      [/^Skip this question$/, 'When is your exam?'],
+      [/^Skip starting point$/, 'When is your exam?'],
     ];
     steps.forEach(([button, title], k) => {
       press(button);

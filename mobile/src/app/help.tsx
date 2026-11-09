@@ -19,7 +19,7 @@ import { router, useLocalSearchParams } from 'expo-router';
 import { useEffect } from 'react';
 import { View } from 'react-native';
 import { HelpRows } from '../components/help';
-import { useContactFlow, useReportFlow } from '../components/support';
+import { useContactFlow } from '../components/support';
 import { PushedHeader, Screen, T } from '../components/ui';
 import { helpOpenParam } from '../lib/support';
 import { useActiveCert } from '../lib/useActiveCert';
@@ -34,7 +34,6 @@ export default function Help() {
   const { open } = useLocalSearchParams<{ open?: string }>();
   // The deep link's sheet: its own flows, so HelpRows stays the same list everywhere.
   const contact = useContactFlow(cert.id);
-  const report = useReportFlow(cert.id, { kind: 'app', id: 'help', name: 'Help', where: 'Help' });
   // A strict allowlist: arrays, other words and missing values are null.
   const want = helpOpenParam(open);
   const navigation = useOwnNavigation();
@@ -43,7 +42,7 @@ export default function Help() {
     if (want === 'support') contact.openSupport(undefined, 'Link');
     else if (want === 'feedback') contact.openFeedback('other', 'Link');
     else if (want === 'idea') contact.openFeedback('idea', 'Link');
-    else report.open();
+    else contact.openSupport(undefined, 'Link');
     if (navigation?.setParams) navigation.setParams({ open: undefined });
     else router.setParams({ open: undefined });
     // Only a NEW value should open a sheet: the flows' functions change every render.
@@ -57,9 +56,7 @@ export default function Help() {
         <HelpRows certId={cert.id} />
       </View>
       {contact.block}
-      {report.block}
       {contact.sheets}
-      {report.sheet}
     </Screen>
   );
 }

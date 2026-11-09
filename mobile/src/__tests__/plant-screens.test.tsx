@@ -417,7 +417,7 @@ describe('onboarding', () => {
     useSettings.setState({ onboarded: false });
     mount(<Onboarding />);
     press(/^Get started$/);
-    press(/^Skip this question$/);
+    press(/^Skip starting point$/);
     expect(allText()).not.toMatch(/Plant it|Planted|never wilts/);
     press(/^Start my first questions$/);
     expect(useSettings.getState().onboarded).toBe(true);

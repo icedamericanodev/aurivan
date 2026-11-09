@@ -153,6 +153,14 @@ const pressAsync = async (label: string | RegExp) => {
     await pressables(label)[0].props.onPress();
   });
 };
+
+const typeSupportMessage = (message = 'Please help with this issue.') => act(() => {
+  root().findAll((n) => n.props.accessibilityLabel === 'Your message' && typeof n.props.onChangeText === 'function')[0].props.onChangeText(message);
+});
+const sendSupport = async (category: string) => {
+  press(category); typeSupportMessage(); await pressAsync('Review message'); await pressAsync('Email support');
+};
+
 const sheetOpen = () => allText().includes('What’s wrong?');
 const openUrl = Linking.openURL as jest.Mock;
 const lastEmail = () => {
@@ -531,22 +539,14 @@ describe('Journey 4: no email app', () => {
     share.mockRestore();
   });
 
-  it('Contact support and Send feedback fall back the same way', async () => {
+  it('central support retains a selectable share fallback', async () => {
     const share = jest.spyOn(Share, 'share').mockResolvedValue({ action: 'sharedAction' });
-    mount(<Help />);
-    press('Contact support');
-    press('Your data and privacy');
-    await pressAsync('Write the email');
+    mount(<Help />); press('Support and feedback'); await sendSupport('Data or privacy');
     expect(allText()).toContain('We couldn’t open an email app.');
-    expect(allText()).toContain('Subject: KaiSip · Support · Privacy · CISA');
+    expect(allText()).toContain('Reason: Data or privacy');
     expect(allText()).not.toMatch(/\bsent\b/i);
-    press('Close');
-    press('Suggest an idea');
-    await pressAsync('Write the email');
-    expect(allText()).toContain('Subject: KaiSip · Feedback · Idea · CISA');
     await pressAsync('Share details');
-    expect((share.mock.calls.at(-1)![0] as { message: string }).message).toContain('Kind: An idea');
-    expect(allText()).not.toMatch(/\bsent\b/i);
+    expect((share.mock.calls.at(-1)![0] as {message: string}).message).toContain('Reason: Data or privacy');
     share.mockRestore();
   });
 
@@ -640,9 +640,8 @@ describe('Journey 5: Your reports', () => {
     unmount();
     mount(<Help />);
     expect(allText()).toContain('None yet. They’re listed here once you report one.');
-    press('Report a problem with the app');
-    press('Something didn’t load or froze');
-    await pressAsync('Write the email');
+    press('Support and feedback');
+    await sendSupport('Bug or error');
     expect(useProgress.getState().reports).toHaveLength(1);
     expect(allText()).toContain('1 started on this phone');
   });
@@ -734,75 +733,23 @@ describe('Journey 6: a fix shipped after a report', () => {
 
 // ─────────────────────────────────────────────────────────────────────────
 describe('Journey 7: Help and feedback from Settings and You, and the deep link', () => {
-  it('Settings → Help: Contact support writes a tagged email, from Help, nothing personal', async () => {
-    // Mobile 1.46: the Help row is on Help and about's own screen.
-    mockParams = { category: 'help' };
-    mount(<Settings />);
-    press('Get help or send feedback, Questions, reports, what’s new');
-    expect(mockPush).toHaveBeenCalledWith('/help');
-    unmount();
-    mount(<Help />);
-    expect(allText()).toContain('Write to us any time at certprep.support@gmail.com KaiSip is independent and not affiliated with or endorsed by ISACA.');
-    press('Contact support');
-    expect(pressables('Write the email')[0].props.disabled).toBe(true);
-    press('Reminders');
-    await pressAsync('Write the email');
-    const { subject, body, to } = lastEmail();
-    expect(to).toBe('certprep.support@gmail.com');
-    expect(subject).toBe('KaiSip · Support · Reminders · CISA');
-    expect(body).toContain('Topic: Reminders');
-    expect(body).toContain('From: Help');
-    expect(body).toContain('App: KaiSip 1.7.0 (');
-    expect(body).not.toMatch(/backup file/i);
-    expectNothingPersonal(body, subject);
-    expect(allText()).toContain('If you sent it, thank you. We read every message.');
-  });
-
-  it('Help: Suggest an idea opens its sheet; another kind and display details go in only when chosen', async () => {
-    mount(<Help />);
-    press('Suggest an idea');
-    expect(allText()).toContain('Tell us what helps');
-    expect(pressables('An idea')[0].props.selected).toBe(true);
-    await pressAsync('Write the email');
-    expect(lastEmail().subject).toBe('KaiSip · Feedback · Idea · CISA');
-    expect(lastEmail().body).not.toContain('Display:');
-
-    press('Suggest an idea');
-    press('Something I like');
-    act(() => { root().findAll((n) => n.props.title === 'Include display details' && typeof n.props.onValueChange === 'function')[0].props.onValueChange(true); });
-    act(() => { root().findAll((n) => n.props.accessibilityLabel === 'Your message' && typeof n.props.onChangeText === 'function')[0].props.onChangeText('The lessons are great.'); });
-    await pressAsync('Write the email');
-    const { subject, body } = lastEmail();
-    expect(subject).toBe('KaiSip · Feedback · Like · CISA');
-    expect(body.split('\n')[2]).toBe('The lessons are great.');
-    expect(body).toMatch(/Display: Theme (light|dark) · Text size \d+% · Reduce Motion (on|off)/);
-    expectNothingPersonal(body, subject);
-  });
-
-  it('You → Help → the same rows, tagged “From: Help”', async () => {
-    mount(<You />);
-    press('Get help or send feedback, Questions, reports, what’s new');
-    expect(mockPush).toHaveBeenCalledWith('/help');
-    unmount();
-    mount(<Help />);
-    for (const row of ['Common questions', 'Report a problem with the app', 'Suggest an idea', 'Contact support', 'Your reports', 'What’s new']) {
-      expect(pressables(row).length).toBeGreaterThan(0);
-    }
-    expect(pressables('What’s next')).toHaveLength(0);
-    press('Contact support');
-    press('A study question or topic');
-    await pressAsync('Write the email');
-    expect(lastEmail().body).toContain('From: Help');
-    press('Suggest an idea');
-    await pressAsync('Write the email');
-    expect(lastEmail().body).toContain('From: Help');
+  it('Settings and You lead to the single support entry with a reviewed private email', async () => {
+    mockParams = { category: 'help' }; mount(<Settings />);
+    press('Get help or send feedback, Questions, reports, what’s new'); expect(mockPush).toHaveBeenCalledWith('/help');
+    unmount(); mount(<You />); press('Get help or send feedback, Questions, reports, what’s new');
+    unmount(); mount(<Help />);
+    for (const row of ['Common questions', 'Support and feedback', 'Your reports', 'What’s new']) expect(pressables(row).length).toBeGreaterThan(0);
+    for (const old of ['Contact support', 'Suggest an idea', 'Report a problem with the app']) expect(pressables(old)).toHaveLength(0);
+    press('Support and feedback'); await sendSupport('Bug or error');
+    const {body, subject, to} = lastEmail(); expect(to).toBe('certprep.support@gmail.com');
+    expect(body).toContain('Where: Help'); expect(body).not.toContain('Display:'); expectNothingPersonal(body, subject);
   });
 
   it.each([
     ['support', 'What’s it about?'],
-    ['feedback', 'What kind?'],
-    ['idea', 'What kind?'],
-    ['report', 'What’s wrong?'],
+    ['feedback', 'What’s it about?'],
+    ['idea', 'What’s it about?'],
+    ['report', 'What’s it about?'],
   ])('deep link open=%s opens its sheet', (open, marker) => {
     mockParams = { open };
     mount(<Help />);
@@ -816,7 +763,7 @@ describe('Journey 7: Help and feedback from Settings and You, and the deep link'
     unmount();
     mockParams = { open: 'idea' };
     mount(<Help />);
-    expect(pressables('An idea')[0].props.selected).toBe(true);
+    expect(pressables('New feature')[0].props.selected).toBe(true);
   });
 
   it.each([
@@ -919,9 +866,8 @@ describe('Journey 8: What’s new and Common questions; no bank size anywhere', 
     unmount();
     mount(<Help />);
     expectNoBankSize(allText());
-    press('Report a problem with the app');
-    press('A score or result looks wrong');
-    await pressAsync('Write the email');
+    press('Support and feedback');
+    await sendSupport('Bug or error');
     expectNoBankSize(lastEmail().body);
     unmount();
     mount(<Reports />);

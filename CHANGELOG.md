@@ -4,6 +4,21 @@ All notable user-facing changes to this app. The in-app **What's New** modal mir
 
 For internal/technical history, see git log and PR descriptions.
 
+## Phone [2.1] · Integrated development preview
+
+### New
+- Add an optional local nickname during setup.
+
+### Improved
+- Compare every option beside its explanation.
+- Find support and feedback options together.
+
+### Fixed after learner reports
+- Learners reported missing options in explanations; each option now stays beside its explanation.
+- Learners reported unreadable questions after Coach me; question text now uses one readable layer.
+
+These fixes are in development review; native acceptance checks remain pending.
+
 ## [v13] Welcome to the new KaiSip
 
 ### New

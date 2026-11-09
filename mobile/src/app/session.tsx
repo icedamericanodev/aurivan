@@ -87,13 +87,13 @@ import {
   AllOptionsSheet,
   AnswerMore,
   AnswerPlate,
+  AnswerContext,
   AnswerRecap,
   KeyIdea,
   MORE_FOCUS_BACK_MS,
   ConfidenceRow,
   FEEDBACK_DELAY,
   OptionCard,
-  PLATE_ROW_STAGGER,
   VINE_ARRIVES,
   Rise,
   ScenarioBlock,
@@ -104,7 +104,6 @@ import {
   TipsHeading,
   useVerdictIndent,
   Verdict,
-  WhyBlock,
   type MoreRow,
   type OptionState,
 } from '../components/quiz';
@@ -671,7 +670,6 @@ export default function SessionScreen() {
 
   // ── answer-screen facts (all compared on ORIGINAL letters) ───────────
   const pickedOriginal = response ? displayToOriginal(response.display, perm) : undefined;
-  const whyWrong = pickedOriginal && pickedOriginal !== q.correct ? q.wrongExplanations[pickedOriginal] : undefined;
   const correctDisplay = originalToDisplay(q.correct, perm);
   // Premium round 2 (web v12.47 parity): after a miss, a line about the learner's OWN pick, read
   // from the tips on ORIGINAL letters and said in DISPLAY letters ("Your pick, B, is one of the two to
@@ -1052,22 +1050,19 @@ export default function SessionScreen() {
                 {response.assisted && response.correct && <T v="meta" style={{ marginTop: space.xs, marginLeft: verdictIndent }}>{HINT_AFTER_LINE}</T>}
                 {/* A right retest (under 4 hours after a miss) is not promoted: say when it is back. */}
                 {response.retest && response.correct && <T v="meta" style={{ marginTop: space.xs, marginLeft: verdictIndent }}>{RETEST_LINE}</T>}
-                {/* Grove Phase 4 (PHASE4.md 4.2, owner answer O1): one order in every state. The card (your
-                    answer, "Why not B", the best answer), then Key idea, then "How to think about it" with
-                    every tip open, then "Why D". After a miss a long Why folds to two lines, and "Read more"
-                    opens only the rest of that paragraph. DISPLAY letters on screen and in every spoken
-                    label; the options are looked up by their ORIGINAL letters. */}
+                {/* Keep the verdict compact; each option rationale appears once in the comparison below. */}
                 <AnswerPlate
                   key={`${qid}:plate`}
                   delay={FEEDBACK_DELAY.rows}
                   pick={
                     !response.correct && pickedOriginal
-                      ? { letter: response.display, text: q.options[pickedOriginal] ?? '', why: whyWrong ? renderText(whyWrong, perm) : undefined }
+                      ? { letter: response.display, text: q.options[pickedOriginal] ?? '' }
                       : undefined
                   }
                   best={{ letter: correctDisplay, text: q.options[q.correct] ?? '' }}
                 />
-                {/* Key idea and every tip, then the Why, arrive in reading order after the card: opacity only,
+                <AnswerContext question={q} perm={perm} picked={response.display} />
+                {/* Key idea and every tip arrive after the complete option comparison: opacity only,
                     200ms each, 30ms apart (PHASE4.md 4.4). Their arrival is still the vine's (VINE_ARRIVES):
                     `visible`, the one tick and the stem's draw wait for it. */}
                 <Rise delay={FEEDBACK_DELAY.why} rise={false}>
@@ -1076,17 +1071,6 @@ export default function SessionScreen() {
                     {tipRows.open.length > 0 && <TipsHeading />}
                     <TipsCard key={`${qid}:tips`} rows={tipRows.open.map(tipRow)} visible={vineVisible} />
                   </View>
-                </Rise>
-                <Rise delay={FEEDBACK_DELAY.why + PLATE_ROW_STAGGER} rise={false}>
-                  {/* O1: the fold holds the long Why paragraph and nothing else ("Read more of the explanation"). */}
-                  <WhyBlock
-                    key={qid}
-                    letter={correctDisplay}
-                    text={renderText(q.explanation, perm)}
-                    // After a right answer nothing folds (4.2 step 5).
-                    fold={!response.correct}
-                    more={[]}
-                  />
                 </Rise>
                 {/* Mobile 1.49 (premium pass §2.2): ONE "Go deeper" row after a miss, after a hairline.
                     The lesson when it is not done yet (Play = lessons), otherwise the note (BookOpen =

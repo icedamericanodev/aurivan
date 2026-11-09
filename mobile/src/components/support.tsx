@@ -28,14 +28,13 @@
 import { useEffect, useRef, useState, type ReactNode } from 'react';
 import { AppState, KeyboardAvoidingView, Modal, Platform, Pressable, ScrollView, useWindowDimensions, View } from 'react-native';
 import { useMotion } from './motion';
+import { directSupportAvailable, newSupportRequestId, type SupportSubmission, type SupportSubmitResult } from '../lib/supportSubmit';
 import { CLOUD } from '../cloud/flag';
 import { PostPubliclyLine } from './boardLink';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import {
   ASKS_FOR_ANSWER,
-  buildFeedbackEmail,
-  buildSupportEmail,
-  FEEDBACK_KINDS,
+  EMAIL_RE,
   fitReport,
   itemRef,
   lastReportFor,
@@ -44,7 +43,6 @@ import {
   parseVersion,
   REASONS,
   reportDetails,
-  SUPPORT_TOPICS,
   type DisplayDetails,
   type Email,
   type FeedbackKind,
@@ -61,7 +59,7 @@ import { useProgress } from '../store/progress';
 import { radius, space } from '../theme/tokens';
 import { useTheme } from '../theme/useTheme';
 import { Check, ChevronDown, ICON_STROKE } from './icons';
-import { Button, Chip, Gap, NoteField, PushedHeader, RadioRow, T, ToggleRow } from './ui';
+import { Button, Chip, Gap, NoteField, PushedHeader, RadioRow, T, TextField, ToggleRow } from './ui';
 
 // ── Copy (support.md §15) ────────────────────────────────────────────────
 export const REPORT_LABEL = 'Report a problem';
@@ -648,157 +646,6 @@ export function ReportRow({
 }
 
 // ── Send feedback and Contact support ────────────────────────────────────
-function FeedbackSheet({
-  visible,
-  certId,
-  kind: initialKind,
-  from,
-  onClose,
-  onOpened,
-}: {
-  visible: boolean;
-  certId: string;
-  kind: FeedbackKind;
-  from?: string;
-  onClose: (restart: boolean) => void;
-  onOpened: () => void;
-}) {
-  const { c } = useTheme();
-  const display = useDisplayDetails();
-  const [kind, setKind] = useState<FeedbackKind>(initialKind);
-  const [message, setMessage] = useState('');
-  const [withDisplay, setWithDisplay] = useState(false);
-  const [panel, setPanel] = useState<{ email: Email; why: 'failed' | 'chosen' } | null>(null);
-  const [busy, run] = useOneAtATime();
-  const email = () => buildFeedbackEmail({ kind, message, certName: certName(certId), app: appInfo(), from, display: withDisplay ? display : undefined });
-  const send = () =>
-    run(async () => {
-      const e = email();
-      const result = await openEmail(e);
-      if (result === 'opened') onOpened();
-      else setPanel({ email: e, why: 'failed' });
-    });
-  return (
-    <SheetFrame visible={visible} onClose={() => onClose(panel !== null)}>
-      {/* "Suggest an idea" opens this sheet with "An idea" chosen: the title says so. */}
-      <T v="hero" accessibilityRole="header">{initialKind === 'idea' ? 'Suggest an idea' : initialKind === 'confused' ? 'What confused you?' : 'Send feedback'}</T>
-      <T v="body" color={c.ink2} style={{ marginTop: space.sm }}>
-        Tell us what helps, what’s missing, or what feels off. It goes to the people who build KaiSip.
-      </T>
-      {panel ? (
-        <FallbackPanel email={panel.email} why={panel.why} onRetry={() => setPanel(null)} onClose={() => onClose(true)} />
-      ) : (
-        <>
-          <GroupLabel>What kind?</GroupLabel>
-          <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: space.sm }}>
-            {FEEDBACK_KINDS.map((k) => (
-              <Chip key={k.code} label={k.label} selected={kind === k.code} onPress={() => setKind(k.code)} />
-            ))}
-          </View>
-          <GroupLabel>Your message (optional)</GroupLabel>
-          <NoteField
-            value={message}
-            onChangeText={setMessage}
-            placeholder={
-              kind === 'idea' ? 'What would help you most?' : kind === 'confused' ? 'What confused you, and on which screen?' : 'What would you like to tell us?'
-            }
-            accessibilityLabel="Your message"
-            maxLength={MAX_NOTE}
-          />
-          <T v="meta" style={{ marginTop: space.xs }}>{NO_EXAM_CONTENT}</T>
-          <ToggleRow
-            title="Include display details"
-            subtitle="Theme, text size and Reduce Motion. Helps with layout problems."
-            value={withDisplay}
-            onValueChange={setWithDisplay}
-            last
-          />
-          <T v="small" color={c.ink2} style={{ marginTop: space.md }}>
-            Your email app opens with this filled in. You can read and change it before sending. Please leave out personal details we don’t need.
-          </T>
-          <Gap h={space.xl} />
-          <Button label="Write the email" accessibilityHint="Opens your email app with your message filled in." disabled={busy} onPress={send} />
-          <Gap h={space.sm} />
-          <Button kind="secondary" label="Cancel" onPress={() => onClose(false)} />
-          <OwnWayButton disabled={busy} onPress={() => setPanel({ email: email(), why: 'chosen' })} />
-          {/* Cloud builds, signed in, an idea: it can go on the feedback board instead (Phase 8). */}
-          {CLOUD && kind === 'idea' && <PostPubliclyLine kind="idea" text={message} onGo={() => onClose(false)} />}
-        </>
-      )}
-    </SheetFrame>
-  );
-}
-
-function SupportSheet({
-  visible,
-  certId,
-  topic: initialTopic,
-  from,
-  onClose,
-  onOpened,
-}: {
-  visible: boolean;
-  certId: string;
-  topic?: SupportTopic;
-  from?: string;
-  onClose: (restart: boolean) => void;
-  onOpened: () => void;
-}) {
-  const { c } = useTheme();
-  const [topic, setTopic] = useState<SupportTopic | null>(initialTopic ?? null);
-  const [panel, setPanel] = useState<{ email: Email; why: 'failed' | 'chosen' } | null>(null);
-  const [busy, run] = useOneAtATime();
-  const send = () =>
-    run(async () => {
-      if (!topic) return;
-      const email = buildSupportEmail({ topic, certName: certName(certId), app: appInfo(), from });
-      const result = await openEmail(email);
-      if (result === 'opened') onOpened();
-      else setPanel({ email, why: 'failed' });
-    });
-  return (
-    <SheetFrame visible={visible} onClose={() => onClose(panel !== null)}>
-      <T v="hero" accessibilityRole="header">Contact support</T>
-      <T v="body" color={c.ink2} style={{ marginTop: space.sm }}>We’re a small independent team. We read every message.</T>
-      {panel ? (
-        <FallbackPanel email={panel.email} why={panel.why} onRetry={() => setPanel(null)} onClose={() => onClose(true)} />
-      ) : (
-        <>
-          <GroupLabel>What’s it about?</GroupLabel>
-          <View accessibilityRole="radiogroup" accessibilityLabel="What’s it about?">
-            {SUPPORT_TOPICS.map((t, i) => (
-              <RadioRow key={t.code} title={t.label} checked={topic === t.code} onPress={() => setTopic(t.code)} last={i === SUPPORT_TOPICS.length - 1} />
-            ))}
-          </View>
-          <T v="small" color={c.ink2} style={{ marginTop: space.lg }}>
-            Your email app opens with the topic and the app version filled in. You write the rest.
-          </T>
-          <T v="meta" style={{ marginTop: space.sm }}>{NO_EXAM_CONTENT}</T>
-          <Gap h={space.xl} />
-          <Button
-            label="Write the email"
-            accessibilityHint={topic ? 'Opens your email app.' : 'Choose what it’s about first.'}
-            disabled={!topic || busy}
-            onPress={send}
-          />
-          {!topic && (
-            <T v="meta" center style={{ marginTop: space.xs }}>Choose what it’s about to continue.</T>
-          )}
-          <T v="meta" style={{ marginTop: space.md }}>
-            Or write to us at
-          </T>
-          <T v="label" selectable color={c.accentText}>{config.feedbackEmail}</T>
-          <T v="meta" style={{ marginTop: space.lg }}>
-            Found a problem in a question or note? Use “Report a problem” under it, so we know exactly which one.
-          </T>
-          <Gap h={space.lg} />
-          <Button kind="secondary" label="Cancel" onPress={() => onClose(false)} />
-        </>
-      )}
-    </SheetFrame>
-  );
-}
-
 export interface ContactFlow {
   openFeedback: (kind?: FeedbackKind, from?: string) => void;
   openSupport: (topic?: SupportTopic, from?: string) => void;
@@ -860,28 +707,176 @@ export function useContactFlow(certId: string): ContactFlow {
     sheets: (
       <>
         {feedback && (
-          <FeedbackSheet
+          <UnifiedSupportSheet
             key={`f${feedback.round}`}
             visible={open === 'feedback'}
             certId={certId}
-            kind={feedback.req.kind}
+            initialCategory={feedback.req.kind === 'idea' ? 'feature' : 'other'}
             from={feedback.req.from}
             onClose={close('feedback')}
             onOpened={opened(feedback.req)}
           />
         )}
         {support && (
-          <SupportSheet
+          <UnifiedSupportSheet
             key={`s${support.round}`}
             visible={open === 'support'}
             certId={certId}
-            topic={support.req.topic}
-            from={support.req.from}
+            initialCategory={support.req.topic === 'privacy' || support.req.topic === 'backup' ? 'data' : support.req.topic === 'reminders' ? 'bug' : support.req.topic ? 'other' : undefined}
+            from={[support.req.from, support.req.topic].filter(Boolean).join(' · ')}
             onClose={close('support')}
             onOpened={opened(support.req)}
           />
         )}
       </>
     ),
+  };
+}
+
+
+/** One support composer. Email stays in the learner’s own email app; no backend transmission. */
+export const SUPPORT_CATEGORIES = [
+  { code: 'bug', label: 'Bug or error', prompt: 'What happened, and what did you expect? What steps led to it?' },
+  { code: 'enhancement', label: 'Improve something', prompt: 'What could work better? Tell us how you use it.' },
+  { code: 'feature', label: 'New feature', prompt: 'What would you like to do, and how would it help you?' },
+  { code: 'data', label: 'Data or privacy', prompt: 'What do you need help with? Please leave out passwords and private account details.' },
+  { code: 'other', label: 'Something else', prompt: 'Tell us what you need help with or what confused you.' },
+] as const;
+type SupportCategory = typeof SUPPORT_CATEGORIES[number]['code'];
+
+export function UnifiedSupportSheet({ visible, certId, from = 'Help', initialCategory, onClose, onOpened, submitDirect }: {
+  visible: boolean; certId: string; from?: string; initialCategory?: SupportCategory;
+  /** Test/preview injection; production uses the configured private endpoint. */
+  submitDirect?: (payload: SupportSubmission) => Promise<SupportSubmitResult>;
+  onClose: (restart: boolean) => void; onOpened: () => void;
+}) {
+  const { c, isDark } = useTheme();
+  const display = useDisplayDetails();
+  const [category, setCategory] = useState<SupportCategory | undefined>(initialCategory);
+  const [message, setMessage] = useState('');
+  const [replyTo, setReplyTo] = useState('');
+  const [directResult, setDirectResult] = useState<SupportSubmitResult | null>(null);
+  const request = useRef<{ fingerprint: string; id: string } | null>(null);
+  const [withDisplay, setWithDisplay] = useState(false);
+  const [reviewing, setReviewing] = useState(false);
+  const [panel, setPanel] = useState<{ email: Email; why: 'failed' | 'chosen' } | null>(null);
+  const [ref] = useState(makeRef);
+  const [busy, run] = useOneAtATime();
+  const logged = useRef(false);
+  const logReport = useProgress((state) => state.logReport);
+  const titleRef = useRef<View>(null);
+  useEffect(() => { if (visible) moveFocus(titleRef, 500); }, [visible, reviewing, panel]);
+  const selected = SUPPORT_CATEGORIES.find((item) => item.code === category);
+  const input = {
+    target: { kind: 'app' as const, id: from === 'Help' ? 'help' : 'support', name: from, where: from },
+    reason: selected?.label ?? 'not chosen yet', certName: certName(certId), app: appInfo(), ref,
+    display: withDisplay && category === 'bug' ? display : undefined, note: message.trim(),
+  };
+  const fitted = fitReport(config.feedbackEmail, input);
+  const ready = Boolean(selected && message.trim() && (!replyTo.trim() || EMAIL_RE.test(replyTo.trim())));
+  const directEnabled = Boolean(submitDirect || directSupportAvailable);
+  const uncertain = directResult?.status === 'pending' || directResult?.status === 'offline';
+  const directSend = () => run(async () => {
+    if (!ready || !reviewing || !category || !directEnabled || directResult?.status === 'accepted') return;
+    const draft = { category, message: message.trim(), context: { item: itemRef(input.target), where: from,
+      certification: input.certName, appVersion: input.app.version, os: input.app.os, ref,
+      ...(input.display ? { display: input.display } : {}) }, ...(replyTo.trim() ? { replyTo: replyTo.trim() } : {}) };
+    const fingerprint = JSON.stringify(draft);
+    if (!request.current || request.current.fingerprint !== fingerprint) request.current = { fingerprint, id: newSupportRequestId() };
+    try {
+      const submit = submitDirect ?? (await import('../lib/supportSubmit')).submitSupport;
+      const result = await submit({ requestId: request.current.id, ...draft });
+      setDirectResult(result);
+      if (result.status === 'accepted') log();
+    } catch { setDirectResult({ status: 'offline' }); }
+  });
+  const log = () => {
+    if (logged.current || !category) return;
+    logged.current = true;
+    logReport({ ref, item: itemRef(input.target), reason: category, cert: certId, version: input.app.version });
+  };
+  const send = () => run(async () => {
+    if (!ready || !reviewing) return;
+    const result = await openEmail(fitted.email, fitted.url);
+    log();
+    if (result === 'opened') onOpened();
+    else setPanel({ email: fitted.email, why: 'failed' });
+  });
+  return (
+    <SheetFrame visible={visible} onClose={() => onClose(false)}>
+      <View ref={titleRef} accessible accessibilityRole="header" accessibilityLabel={reviewing ? "Review your message" : "Support and feedback"}><T v="hero">Support and feedback</T></View>
+      <T v="body" color={c.ink2} style={{ marginTop: space.sm }}>One place for problems, questions and ideas.</T>
+      {directResult?.status === 'accepted' ? <>
+        <SentNote title="Accepted by support delivery" body="Your message was accepted for delivery to KaiSip support. This does not confirm inbox delivery or that someone has read it." />
+        <T v="meta" selectable style={{ marginTop: space.md }}>{`Receipt: ${directResult.receiptId}`}</T>
+        <Gap h={space.lg} /><Button label="Done" onPress={() => onClose(true)} />
+      </> : panel ? <FallbackPanel email={panel.email} why={panel.why} onRetry={() => setPanel(null)} onClose={() => onClose(false)} /> : reviewing ? (
+        <>
+          {directEnabled && <>
+            <GroupLabel>In-app message preview</GroupLabel>
+            <T v="small" color={c.ink2}>This full message will be sent with the details and optional reply email shown below.</T>
+            <View style={{ marginTop: space.md, borderRadius: radius.md, borderWidth: 1.5, borderColor: isDark ? c.line : c.control, backgroundColor: c.raised, padding: space.md }}>
+              <T v="meta" selectable color={c.ink} accessibilityLabel="Full in-app support message">{message.trim()}</T>
+            </View>
+          </>}
+          <GroupLabel>Email preview</GroupLabel>
+          <T v="small" color={c.ink2}>Only the message below goes into your email. You can edit it before sending.</T>
+          {fitted.shortened && <T v="small" color={c.ink2}>The email version is shortened to fit your email app.</T>}
+          <View style={{ marginTop: space.md, borderRadius: radius.md, borderWidth: 1.5, borderColor: isDark ? c.line : c.control, backgroundColor: c.raised, padding: space.md }}>
+            <T v="meta" selectable color={c.ink}>{emailAsText(fitted.email)}</T>
+          </View>
+          <GroupLabel>How would you like to send it?</GroupLabel>
+          {replyTo.trim() ? <T v="small" selectable style={{ marginBottom: space.sm }}>{`Reply email: ${replyTo.trim()}`}</T> : <T v="small" style={{ marginBottom: space.sm }}>No reply email included. You can send feedback without one.</T>}
+          <Button label={busy ? 'Sending…' : uncertain ? 'Check submission again' : 'Send in KaiSip'} disabled={busy || !directEnabled} onPress={directSend} />
+          <T v="meta" style={{ marginTop: space.sm }}>{directEnabled ? 'Sends your message, the details shown above and optional reply email privately to KaiSip support. Nothing is posted publicly.' : 'Direct sending is not enabled in this preview. Email support is available below.'}</T>
+          {directResult && <T v="small" style={{ marginTop: space.md }}>{
+            directResult.status === 'pending' || directResult.status === 'offline' ? 'We can’t confirm delivery yet. Check again with the same request. Sending by email too could create a duplicate.' :
+            directResult.status === 'rate_limited' ? 'Too many requests. Please wait before trying again, or use email support.' :
+            directResult.status === 'invalid' ? 'Please check your message and reply email, then try again.' :
+            directResult.status === 'conflict' ? 'This request changed. Close this form and start a new report, or use email support.' :
+            'Direct sending is unavailable right now. Your message is still here. You can use email support.'
+          }</T>}
+          <Gap h={space.md} />
+          <Button kind="secondary" label="Email support" disabled={busy} onPress={send} accessibilityHint="Opens your email app with the reviewed message. You send it there." />
+          <T v="meta" style={{ marginTop: space.sm }}>You choose when to send in your email app. We’ll see your email address so we can reply.</T>
+          <OwnWayButton disabled={busy} onPress={() => { log(); setPanel({ email: fitted.email, why: 'chosen' }); }} />
+          <Button kind="ghost" label="Back to edit" disabled={busy || uncertain} onPress={() => { setDirectResult(null); setReviewing(false); }} />
+        </>
+      ) : (
+        <>
+          <GroupLabel>What’s it about?</GroupLabel>
+          <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: space.sm }}>
+            {SUPPORT_CATEGORIES.map((item) => <Chip key={item.code} label={item.label} selected={category === item.code} onPress={() => setCategory(item.code)} />)}
+          </View>
+          <GroupLabel>Your message</GroupLabel>
+          <T v="small" color={c.ink2} style={{ marginBottom: space.sm }}>{selected?.prompt ?? 'Choose a category, then tell us what’s on your mind.'}</T>
+          <NoteField value={message} onChangeText={setMessage} placeholder="Tell us a little more…" accessibilityLabel="Your message" maxLength={MAX_NOTE} />
+          <T v="meta" style={{ marginTop: space.xs }}>{NO_EXAM_CONTENT}</T>
+          {category === 'bug' && <ToggleRow title="Include display details" subtitle="Theme, text size and Reduce Motion. You can review them next." value={withDisplay} onValueChange={setWithDisplay} last />}
+          <TextField label="Reply email (optional)" value={replyTo} onChangeText={setReplyTo} keyboardType="email-address" autoCapitalize="none" maxLength={254} help="Only include this if you want a reply to an in-app report." problem={replyTo.trim() && !EMAIL_RE.test(replyTo.trim()) ? 'Enter a valid email address, or leave it blank.' : null} />
+          <GroupLabel>Details included</GroupLabel>
+          <T v="small" color={c.ink2}>App version, system, certification and where you opened this form. No scores, progress or account details are added.</T>
+          <T v="meta" style={{ marginTop: space.sm }}>For a specific question or note, use “Report a problem” on that item to include its reference.</T>
+          <Gap h={space.lg} />
+          <Button label="Review message" disabled={!ready} onPress={() => setReviewing(true)} />
+          {!ready && <T v="meta" center style={{ marginTop: space.sm }}>Choose a category and add a message to continue.</T>}
+          <Button kind="ghost" label="Cancel" onPress={() => onClose(false)} />
+          {CLOUD && category === 'feature' && <PostPubliclyLine kind="idea" text={message} onGo={() => onClose(false)} />}
+        </>
+      )}
+    </SheetFrame>
+  );
+}
+
+export function useUnifiedSupportFlow(certId: string, from = 'Help') {
+  const [visible, setVisible] = useState(false);
+  const [mounted, setMounted] = useState(false);
+  const [done, setDone] = useState(false);
+  const [round, setRound] = useState(0);
+  return {
+    open: () => { setDone(false); setMounted(true); setVisible(true); },
+    block: done ? <SentNote {...MESSAGE_DONE} /> : null,
+    sheet: mounted ? <UnifiedSupportSheet key={round} certId={certId} from={from} visible={visible}
+      onClose={(restart) => { setVisible(false); if (restart) setRound((n) => n + 1); }} onOpened={() => { setVisible(false); setDone(true); setRound((n) => n + 1); }} /> : null,
   };
 }

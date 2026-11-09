@@ -220,7 +220,7 @@ describe('J1 a new learner and the plant', () => {
     useSettings.setState({ onboarded: false });
     mount(<Onboarding />);
     press(/^Get started$/);
-    press(/^Skip this question$/);
+    press(/^Skip starting point$/);
     expect(allText()).not.toMatch(/Plant|plant/);
     press(/^Start my first questions$/);
     expect(useSettings.getState().onboarded).toBe(true);

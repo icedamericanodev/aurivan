@@ -54,6 +54,7 @@
  *
  * No third-party packages: only Node's built-in fs/path modules.
  */
+import { sampleSelection, filterSamplePack, checkSamplePack } from './sample-content.mjs';
 import { execFileSync } from 'node:child_process';
 import fs from 'node:fs';
 import { createRequire } from 'node:module';
@@ -79,7 +80,8 @@ const PACK_SCHEMA_VERSION = 1;
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 const MOBILE_ROOT = path.resolve(HERE, '..');
 const REPO_ROOT = path.resolve(MOBILE_ROOT, '..');
-const OUT_ROOT = path.join(MOBILE_ROOT, 'src', 'content', 'generated');
+const FINAL_ROOT = path.join(MOBILE_ROOT, 'src', 'content', 'generated');
+let OUT_ROOT;
 
 // One entry per certification that has content today. Adding CISM later =
 // add a line here pointing at its data files (and a descriptor in
@@ -464,7 +466,15 @@ function packRev() {
 }
 
 function main() {
-  fs.mkdirSync(OUT_ROOT, { recursive: true });
+  const mode = process.env.KAISIP_QUESTION_PACK ?? 'full';
+  // Generated files only. Never leave an old full pack or an extra cert behind.
+  fs.rmSync(FINAL_ROOT, { recursive: true, force: true });
+  if (!['full', 'sample'].includes(mode)) throw new Error('KAISIP_QUESTION_PACK must be full or sample');
+  const selection = mode === 'sample' ? sampleSelection(REPO_ROOT) : null;
+  if (selection && (PACKS.length !== 1 || PACKS[0].certId !== 'cisa')) {
+    throw new Error('Sample mode needs an explicit reviewed manifest for every certification');
+  }
+  OUT_ROOT = fs.mkdtempSync(path.join(path.dirname(FINAL_ROOT), '.generated-'));
   const notesLines = [];
   const principlesLines = [];
   const examLines = [];
@@ -557,15 +567,32 @@ function main() {
   indexLines.push('export const generatedInfo: Record<string, { certId: string; rev: number; schemaVersion: number }> = {', ...infoLines, '};', '');
   fs.writeFileSync(path.join(OUT_ROOT, 'index.ts'), indexLines.join('\n'));
 
+  // First validate all source links against the full bank, then filter only
+  // known question references. Broken authoring must not be hidden by filtering.
+  if (selection && !errors && !process.exitCode) {
+    filterSamplePack(OUT_ROOT, selection);
+    checkSamplePack(OUT_ROOT, selection);
+    console.log(`✓ sample question pack verified: ${selection.ids.size} questions (not a release authorization gate)`);
+  }
   if (errors) {
     console.error(`✗ content pack built with ${errors} invalid question(s)`);
     process.exitCode = 1;
-  } else {
-    console.log(`✓ content pack built: ${total} questions → src/content/generated/`);
+  } else if (!process.exitCode) {
+    // Same-filesystem rename publishes only fully checked content. An interrupt
+    // can leave a hidden staging directory, never a full sample output tree.
+    fs.renameSync(OUT_ROOT, FINAL_ROOT);
+    console.log(`✓ content pack built: ${selection ? selection.ids.size : total} questions → src/content/generated/`);
   }
 }
 
 // Only run when executed directly (not when imported by tests).
 if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
-  main();
+  try {
+    main();
+  } catch (error) {
+    console.error(`✗ ${error.message}`);
+    process.exitCode = 1;
+  }
+  // Failed staging is never an importable generated pack.
+  if (OUT_ROOT && fs.existsSync(OUT_ROOT)) fs.rmSync(OUT_ROOT, { recursive: true, force: true });
 }
