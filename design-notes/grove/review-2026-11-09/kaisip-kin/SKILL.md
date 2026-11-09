@@ -1,6 +1,6 @@
 ---
 name: kaisip-kin
-description: Design original collectible organisms for KaiSip's in-app companion pages, with Grove SVG artwork, three connected forms, calm motion and reviewable collection prototypes. Use for KaiSip Kin concepts and companion implementation briefs.
+description: Design original collectible organisms for KaiSip's in-app companion pages, with reference-matched Grove artwork, three connected forms, calm motion and reviewable collection prototypes. Use for KaiSip Kin concepts and companion implementation briefs.
 ---
 
 Create original Kin for the existing KaiSip companion experience. This skill concerns the app's own collection and companion pages. ChatGPT Work pets use a separate product and tool lifecycle.
@@ -21,7 +21,7 @@ Give every Kin a stable ID, short name, organism inspiration, silhouette, defini
 
 Keep each Kin recognizable across all three forms. Preserve its defining face, appendage or marking while developing its posture, shape and detail. Prefer continuity over replacing the character with an unrelated adult. Make the middle form visually substantive. Design original art and names, informed by the supplied reference's qualities without copying another product's character.
 
-Draw reusable SVG parts with stable groups and a consistent viewBox. Separate body, eyes, limbs, wings or antennae, accessory growth and ground shadow as appropriate. Use the fewest paths that preserve silhouette and expression. Keep small thumbnails simpler than the selected hero. Evaluate at thumbnail and hero sizes in both themes. State boundaries between final art, placeholder sketches and generated concept references.
+Let the approved reference determine the medium before optimizing size. Lumi was resolved as the user’s actual custom Dot pet and has dimensional plush texture, large glossy eyes, stitching and pose-specific animation. For this direction, use image generation for original character assets and coherent pose strips grounded in a canonical base. Inspect the actual referenced pet when accessible. A flat procedural SVG must not substitute for an approved plush reference. SVG remains appropriate only for a separately approved vector direction. Crop, align, encode and preview generated pixels deterministically without redrawing the character. Evaluate at thumbnail and hero sizes. State boundaries between final art, style trials and generated references.
 
 ## Interaction and rewards
 
@@ -37,7 +37,7 @@ Interpret references such as “like Lumi” through observable qualities in the
 
 Use a subtle breathing or sway cycle for the visible selected hero, occasional organism-specific movement and a short earned reaction. Give winged, rooted, crawling and soft-bodied Kin different movement signatures. Collection thumbnails can remain still. Stop recurring motion when the screen is hidden or app is backgrounded.
 
-Keep motion in transforms and opacity where practical. Use the app's installed animation and SVG stack before adding a runtime. Current source declares Reanimated 4.7.1 and react-native-svg 15.16.0. Confirm versions again for implementation. Keep taps responsive during animation and provide the same final state and information with Reduce Motion. A form change can crossfade between full drawings while stable features align.
+Keep motion in transforms and opacity where practical. Use the app's installed rendering and animation stack where it can preserve the approved material. Baked plush frames can use a small compressed atlas and frame selection; whole-image transforms alone cannot reproduce eye blinks or articulated poses. Current source declares Reanimated 4.7.1 and react-native-svg 15.16.0. Confirm versions again for implementation. Keep taps responsive during animation and provide the same final state and information with Reduce Motion. A form change can crossfade between full drawings while stable features align.
 
 ## Verification and size
 
