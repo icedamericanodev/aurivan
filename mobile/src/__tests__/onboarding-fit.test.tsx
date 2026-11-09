@@ -135,7 +135,7 @@ describe('the welcome screen: literal, names the exam, no metaphors', () => {
     expect(pressable(/^Restore from a backup$/)[0].props.accessibilityHint).toBe('Studied on another phone or on the KaiSip website? Pick your backup or progress file to bring your progress here.');
     press(/^Get started$/);
     expect(allText()).toContain('Where are you starting from?');
-    expect(allText()).not.toContain('What should we call you?');
+    expect(allText()).toContain('What should we call you?');
   });
 });
 
@@ -150,7 +150,7 @@ describe('onboarding: where you start and how long you have', () => {
     expect(allText()).toContain('This shapes your first week. You can change it any time in Settings.');
     // CISA is chosen for the learner: there are no "coming soon" exams to look at.
     expect(allText()).not.toMatch(/Which exam|coming soon/i);
-    press(/^Skip this question$/);
+    press(/^Skip starting point$/);
     expect(caption()).toBe('Step 2 of 2');
     expect(allText()).toContain('How long can you study most days?');
     expect(allText()).not.toMatch(/Plant|Planted|Step \d of 4/);
@@ -162,7 +162,7 @@ describe('onboarding: where you start and how long you have', () => {
     toStartingPoint();
     expect(checkedRadio('Where are you starting from?')).toEqual([]);
     expect(continueBtn().props.disabled).toBe(true);
-    expect(continueBtn().props.accessibilityHint).toBe('Choose one, or skip this question.');
+    expect(continueBtn().props.accessibilityHint).toBe('Choose one, or skip the starting point.');
     press(/^New to audit/);
     expect(checkedRadio('Where are you starting from?')).toEqual(['New to audit, I’m new to IT audit, or I’ve just graduated.']);
     expect(continueBtn().props.disabled).toBe(false);
@@ -172,7 +172,7 @@ describe('onboarding: where you start and how long you have', () => {
   it('the minutes default to 20, spoken "20 minutes a day"; nothing saves before the last step', () => {
     mount(<Onboarding />);
     toStartingPoint();
-    press(/^Skip this question$/);
+    press(/^Skip starting point$/);
     expect(checkedRadio('Daily time')).toEqual(['20 minutes a day']);
     press(/^45 minutes a day$/);
     expect(checkedRadio('Daily time')).toEqual(['45 minutes a day']);
@@ -185,7 +185,7 @@ describe('onboarding: where you start and how long you have', () => {
   it('a plain line says what the date and the minutes add up to, and follows both choices', () => {
     mount(<Onboarding />);
     toStartingPoint();
-    press(/^Skip this question$/);
+    press(/^Skip starting point$/);
     // No date yet: says what the plan does instead.
     expect(allText()).toMatch(/No date yet: your plan starts at about 20 min a day\./);
     press(/^In 3 months$/);
@@ -219,12 +219,12 @@ describe('onboarding: where you start and how long you have', () => {
     expect(useProgress.getState().plantSettings?.promptHidden).toBe(true);
   });
 
-  it('"Skip this question" leaves familiarity unset (it plans like "some"); the same tap saves the rest', () => {
+  it('"Skip starting point" leaves familiarity unset (it plans like "some"); the same tap saves the rest', () => {
     mount(<Onboarding />);
     toStartingPoint();
     press(/^New to audit/);
     // Skipping after choosing clears the choice: skip means "not said".
-    press(/^Skip this question$/);
+    press(/^Skip starting point$/);
     press(/^Start my first questions$/);
     expect(useSettings.getState()).toMatchObject({ onboarded: true, dailyMinutes: 20, fitPrompt: 'answered' });
     expect(useSettings.getState().familiarity).toBeUndefined();
@@ -289,7 +289,7 @@ describe('200% text and dark mode', () => {
     expect(pressable(/^Get started$/)).toHaveLength(1);
     expect(pressable(/^Restore from a backup$/)).toHaveLength(1);
     toStartingPoint();
-    press(/^Skip this question$/);
+    press(/^Skip starting point$/);
     expect(allText()).toMatch(/No date yet: your plan starts at about 20 min a day\./);
     expect(pressable(/^Start my first questions$/)).toHaveLength(1);
     // The numbered steps are headers a screen reader can jump to.

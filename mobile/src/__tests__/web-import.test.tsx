@@ -372,7 +372,7 @@ describe('the welcome screen with a website file (review 1.42)', () => {
     expect(useSettings.getState().onboarded).toBe(false);
     expect(allText()).toContain('Where are you starting from?');
     expect(allText()).toContain('Your website progress is on this phone now');
-    await press('Skip this question');
+    await press('Skip starting point');
     await press('Start my first questions');
     expect(useSettings.getState().onboarded).toBe(true);
     expect(router.replace).toHaveBeenCalledWith('/home');
@@ -453,7 +453,7 @@ describe('the exam date comes along (mobile 1.42.1, website v12.34.1)', () => {
     expect(allText()).toContain('Next, you choose your starting point and daily time, and check your exam date.');
     await press('Add to my progress');
     expect(useSettings.getState().examDates.cisa).toBe(date);
-    await press('Skip this question');
+    await press('Skip starting point');
     await press('Start my first questions');
     expect(useSettings.getState().onboarded).toBe(true);
     expect(useSettings.getState().examDates.cisa).toBe(date);

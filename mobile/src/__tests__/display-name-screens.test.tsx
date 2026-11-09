@@ -1,6 +1,6 @@
 /**
  * Mobile 1.23, "What should we call you?", on screen:
- * - onboarding (mobile 1.41): no name step any more. Today asks once, from
+ * - onboarding: optional nickname on the starting-point screen. If skipped, Today asks once, from
  *   the day after the first study day. Mobile 1.44: the field is in the card
  *   ("Name or nickname", Save, Not now) and "Saved on this device" stays for
  *   the visit; learners from before 1.41 with no name are asked once too;
@@ -180,7 +180,7 @@ describe('mobile 1.41: the name is asked later, on Today, once', () => {
   const onboard = () => {
     mount(<Onboarding />);
     press('Get started');
-    press('Skip this question'); // starting point → date and minutes
+    press('Skip starting point'); // starting point → date and minutes
     press('Start my first questions');
     act(() => {
       r?.unmount();
@@ -202,18 +202,63 @@ describe('mobile 1.41: the name is asked later, on Today, once', () => {
     });
   const saveButton = () => root().findAll((n) => n.props.accessibilityLabel === 'Save my name' && n.props.accessibilityRole === 'button')[0];
 
-  it('onboarding has no name step, and CISA is still chosen; Today will ask later', () => {
+  it('onboarding offers an optional nickname, and skipping keeps the later ask', () => {
     mount(<Onboarding />);
     press('Get started');
-    expect(allText()).not.toContain('What should we call you?');
-    expect(field()).toBeUndefined();
-    press('Skip this question');
+    expect(allText()).toContain('What should we call you?');
+    expect(cardField().props.accessibilityHint).toContain('Optional.');
+    expect(cardField().props.maxLength).toBe(MAX_DISPLAY_NAME);
+    press('Skip starting point');
     press('Start my first questions');
     expect(useSettings.getState()).toMatchObject({ onboarded: true, activeCertId: 'cisa' });
     expect(useSettings.getState().displayName).toBeUndefined();
     expect(useSeen.getState().nameAsk).toBe('due');
     // Straight into the first five questions.
     expect(router.replace).toHaveBeenCalledWith('/session');
+  });
+
+  it('saves a cleaned nickname only on completion, retains it across Back, and does not ask later', () => {
+    mount(<Onboarding />);
+    press('Get started');
+    typeIn(cardField, '  Maya   Jane ');
+    expect(useSettings.getState().displayName).toBeUndefined();
+    press('Back');
+    press('Get started');
+    expect(cardField().props.value).toBe('  Maya   Jane ');
+    press('Skip starting point');
+    press('Back');
+    expect(cardField().props.value).toBe('  Maya   Jane ');
+    press('Skip starting point');
+    press('Start my first questions');
+    expect(useSettings.getState().displayName).toBe('Maya Jane');
+    expect(useSeen.getState().nameAsk).toBeUndefined();
+    act(() => { r?.unmount(); });
+    studied(2, 1);
+    mount(<Today />);
+    expect(card()).toHaveLength(0);
+  });
+
+  it.each(['', '   ', 'maya@example.com', 'https://example.com'])('does not erase a restored name with %p', (draft) => {
+    useSettings.setState({ displayName: 'Maya' });
+    mount(<Onboarding />);
+    press('Get started');
+    expect(cardField().props.value).toBe('Maya');
+    typeIn(cardField, draft);
+    press('Skip starting point');
+    press('Start my first questions');
+    expect(useSettings.getState().displayName).toBe('Maya');
+  });
+
+  it('discarding an unfinished nickname leaves settings untouched', () => {
+    mount(<Onboarding />);
+    press('Get started');
+    typeIn(cardField, 'Maya');
+    act(() => { r?.unmount(); });
+    mount(<Onboarding />);
+    press('Get started');
+    expect(cardField().props.value).toBe('');
+    expect(useSettings.getState().displayName).toBeUndefined();
+    expect(useSettings.getState().onboarded).toBe(false);
   });
 
   it('a name already saved (a restore) is kept, and is never asked for', () => {

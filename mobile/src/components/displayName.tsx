@@ -1,7 +1,7 @@
 /**
- * The "What should we call you?" text field, used twice: in Settings → Your
+ * The "What should we call you?" text field, shared by onboarding, Settings → Your
  * name (mobile 1.23) and, since mobile 1.44, inline in Today's one name card
- * ("Name or nickname", components/beta.tsx). Onboarding no longer has it (1.41).
+ * ("Name or nickname", components/beta.tsx).
  *
  * Plain English:
  * - The learner types a first name or nickname. It is optional and stays on

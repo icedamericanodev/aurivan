@@ -4,6 +4,11 @@ All notable user-facing changes to this app. The in-app **What's New** modal mir
 
 For internal/technical history, see git log and PR descriptions.
 
+## [Mobile 2.1.0] A personal hello
+
+### New
+- Add an optional nickname during setup for a personal greeting. It stays on your phone, and you can change it in Settings.
+
 ## [v13] Welcome to the new KaiSip
 
 ### New

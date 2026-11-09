@@ -131,7 +131,7 @@ describe('welcome screen', () => {
   it('"Get started" leads straight to the starting point (mobile 1.41: no name step), and Back returns', () => {
     mount(<Onboarding />);
     press('Get started');
-    expect(allText()).not.toContain('What should we call you?');
+    expect(allText()).toContain('What should we call you?');
     expect(allText()).toContain('Where are you starting from?');
     expect(allText()).not.toContain(WELCOME_HEADLINE);
     press('Back');
@@ -149,7 +149,7 @@ describe('welcome screen', () => {
     mount(<Onboarding />);
     expect(handler!()).toBe(false); // welcome: default behaviour
     press('Get started');
-    press('Skip this question');
+    press('Skip starting point');
     let handled: boolean | null | undefined;
     act(() => {
       handled = handler!();
