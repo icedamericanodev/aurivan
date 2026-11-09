@@ -1,5 +1,4 @@
-/* KaiSip Beta Desk: the page's code (loaded by beta-desk.html). See that page and
-   docs/beta/BETA_DESK.md. Plain JavaScript, no libraries, no build step. */
+/* KaiSip Beta Desk. Plain JavaScript, no libraries, no build step. */
 'use strict';
 /* ───────────────────────────────────────────────────────────────────────
    KaiSip Beta Desk (plain JavaScript, no libraries).
@@ -11,10 +10,10 @@
      visitor has.
    - Tester rows come from the database only after an admin signs in with an
      emailed code. The database's row rules (RLS) check, on every request,
-     that the signed-in email is on the Beta Desk admin list. A non-admin
+     that the signed-in account is an admin with MFA. A non-admin
      simply reads nothing.
-   - The sign-in is kept in this tab only (sessionStorage) unless "Keep me
-     signed in" is ticked (localStorage). Its key is new and touches no
+   - The sign-in is kept in this tab only (sessionStorage) and never in
+     localStorage. Its key is new and touches no
      learner's saved progress.
    - Everything a tester typed is shown with textContent / escaped HTML, so a
      name that looks like HTML is shown as plain text.
@@ -398,6 +397,7 @@ var Auth = (function () {
     return data;
   }
   function authMessage(status, code, msg) {
+    if (code === 'not_admin') return 'This is not an admin account. Please use your Beta Desk admin email.';
     if (/captcha/i.test(code + ' ' + msg)) return 'Please complete the check below, then try again.';
     if (status === 429 || /rate.?limit/i.test(code)) return 'Too many tries. Wait a few minutes, then try again.';
     if (/mfa_verification_failed|invalid totp|mfa/i.test(code + ' ' + msg)) return 'That authenticator code didn’t match. Check the time on your phone and try the newest code.';
@@ -406,9 +406,9 @@ var Auth = (function () {
     return 'Sign-in failed (code ' + status + '). Try again in a moment.';
   }
   async function sendCode(email, captchaToken) {
-    var body = { email: email, create_user: true };
-    if (captchaToken) body.gotrue_meta_security = { captcha_token: captchaToken };
-    await call('/auth/v1/otp', body);
+    // The server checks the private admin list before requesting an email.
+    // Never fall back to the unrestricted Auth OTP endpoint on failure.
+    await call('/functions/v1/beta-desk-sign-in', { email: email, captcha_token: captchaToken });
   }
   async function verify(email, code) {
     var s = fromBody(await call('/auth/v1/verify', { type: 'email', email: email, token: code }));
@@ -629,7 +629,7 @@ async function showCaptcha() {
   try {
     var ts = await loadTurnstile();
     if (captcha.widget !== null) { ts.reset(captcha.widget); return; }
-    captcha.widget = ts.render('#captchaBox', { sitekey: TURNSTILE_SITE_KEY, callback: function (t) { captcha.token = t; }, 'expired-callback': function () { captcha.token = ''; } });
+    captcha.widget = ts.render('#captchaBox', { sitekey: TURNSTILE_SITE_KEY, action: 'beta-desk-sign-in', callback: function (t) { captcha.token = t; }, 'expired-callback': function () { captcha.token = ''; } });
   } catch (e) { setGateError('The sign-in check could not load. Refresh the page and try again.'); }
 }
 
@@ -637,6 +637,7 @@ $('emailForm').addEventListener('submit', async function (ev) {
   ev.preventDefault();
   var email = $('emailInput').value.trim();
   if (!BD.validEmail(email)) { setGateError('Enter a valid email address.'); return; }
+  if (!captcha.needed) { await showCaptcha(); setGateError('Complete the check below, then select Email me a code again.'); return; }
   if (captcha.needed && !captcha.token) { setGateError('Please complete the check first.'); return; }
   var btn = $('sendCodeBtn'); btn.disabled = true; btn.textContent = 'Sending…'; setGateError('');
   try {
@@ -1336,3 +1337,4 @@ $('exportBtn').addEventListener('click', function () {
 /* ── Start ─────────────────────────────────────────────────────────── */
 window.KaiSipDesk = { BD: BD };  // the pure helpers, for the automated tests
 boot();
+
