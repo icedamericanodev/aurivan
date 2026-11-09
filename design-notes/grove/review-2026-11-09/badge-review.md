@@ -1,3 +1,5 @@
+> Superseded: use `grove-badges-review.md` and `grove-badges.html`. The six invented sample badges below do not represent KaiSip’s existing catalogue and must not be implemented.
+
 # KaiSip milestone badges
 
 Current direction: remove plants, pets, and Pocket Groves from the proposed learner experience. A quiet badge collection records work already completed during review. Earlier Grove and Kin artifacts in this review branch are superseded design history.
