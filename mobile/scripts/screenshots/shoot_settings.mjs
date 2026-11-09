@@ -165,7 +165,9 @@ await shot('st14-calendar-no-date');
 // ── 5. Onboarding's date step: quick choices + the same calendar ──────
 await edit(S, `v.state.onboarded = false;`);
 await go('/onboarding', 1800);
-await press('Get started'); // mobile 1.24 (was "Start my plan"; the exam step after the name is gone)
+await press('Get started'); // The nickname shares the starting-point screen.
+await toTop('What should we call you?');
+await shot('st14-onboarding-nickname');
 await press('Skip starting point');
 await shot('st15-onboarding-date');
 await press('Pick the exact date');
