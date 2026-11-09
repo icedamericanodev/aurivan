@@ -2,7 +2,7 @@ import { router, useLocalSearchParams } from 'expo-router';
 import { useEffect, useRef, useState } from 'react';
 import { ScrollView, View } from 'react-native';
 import { EmptyScreen } from '../../components/emptyScreen';
-import { LabChoice, LabRange, LabTimeline } from '../../components/conceptLab';
+import { LabChoice, LabOutcomes, LabRange, LabTimeline } from '../../components/conceptLab';
 import { CardHead, HubCard, PageTitle } from '../../components/groveHub';
 import { Button, PushedHeader, Screen, T } from '../../components/ui';
 import { findLab, type ConceptLab } from '../../content/labs';
@@ -36,6 +36,8 @@ function RecoveryLab({ lab }: { lab: ConceptLab }) {
   const [prediction, setPrediction] = useState<number | null>(null);
   const [reveal, setReveal] = useState(false);
   const [answer, setAnswer] = useState<number | null>(null);
+  const [details, setDetails] = useState(false);
+  const [precise, setPrecise] = useState(false);
   const [checked, setChecked] = useState(false);
   const challengeResult = evaluateRecovery(lab.challenge.recovery, lab.challenge.gap, lab.config);
   const result = evaluateRecovery(values.recovery, values.gap, lab.config);
@@ -59,24 +61,13 @@ function RecoveryLab({ lab }: { lab: ConceptLab }) {
         <T v="body">{lab.explore.rto}</T>
         <T v="body">{lab.explore.rpo}</T>
       </>}
-      {stage !== 2 && <>
+      {stage === 0 && <>
         <HubCard style={{ gap: space.md, paddingBottom: space.md }}>
           <CardHead title="A retailer goes offline" meta={`Outage · ${formatClock(lab.config.outageMinutes)}`} />
           <T v="body">{`Business-approved objectives: RTO ${lab.config.rto} minutes; RPO ${lab.config.rpo} minutes. Service must return by ${formatClock(lab.config.outageMinutes + lab.config.rto)}, with usable data from ${formatClock(lab.config.outageMinutes - lab.config.rpo)} or later.`}</T>
           {stage === 0 && <LabTimeline recovery={values.recovery} gap={values.gap} {...lab.config} />}
           <T v="meta">{`Restoration: ${result.restorationTime}. Latest usable data: ${result.recoveryPointTime}.`}</T>
         </HubCard>
-        {stage === 1 && <>
-          <T v="body">Move either control. Restoring faster changes downtime; recovering newer usable data changes the data gap. Each objective is evaluated separately.</T>
-          <LabRange
-            visual={<LabTimeline part="service" recovery={values.recovery} gap={values.gap} {...lab.config} />}
-            detail={`Restored ${result.restorationTime}. ${result.rtoMet ? 'RTO met' : 'RTO missed'}: ${values.recovery} minutes downtime / ${lab.config.rto} allowed.`}
-            label="Actual recovery time" value={values.recovery} max={lab.config.maxRecovery} onChange={(recovery) => setValues(v => ({ ...v, recovery }))} />
-          <LabRange
-            visual={<LabTimeline part="data" recovery={values.recovery} gap={values.gap} {...lab.config} />}
-            detail={`Latest usable data ${result.recoveryPointTime}. ${result.rpoMet ? 'RPO met' : 'RPO missed'}: ${values.gap} minutes potential data loss / ${lab.config.rpo} allowed.`}
-            label="Recoverable data gap" value={values.gap} max={lab.config.maxGap} onChange={(gap) => setValues(v => ({ ...v, gap }))} />
-        </>}
         <HubCard style={{ gap: space.md, paddingBottom: space.md }}>
           <CardHead title="Recovery result" />
           <View testID="lab-result">
@@ -89,8 +80,25 @@ function RecoveryLab({ lab }: { lab: ConceptLab }) {
           <T v="body">{result.summary}</T>
           <T v="meta">A successful backup job alone does not prove recovery. Validate that the restored service and recovered data are usable. Reconcile transaction records to determine any actual loss.</T>
         </HubCard>
-        {stage === 1 && <>
-          <Button kind="ghost" label="Reset scenario" onPress={reset} />
+      </>}
+      {stage === 1 && <>
+        <HubCard testID="lab-experiment" style={{ gap: space.lg, paddingBottom: space.md }}>
+          <CardHead title="Try the concept" />
+          <LabRange meaning="Minutes from outage to restored service" label="Actual recovery time" value={values.recovery} max={lab.config.maxRecovery} target={`Target RTO: ${lab.config.rto} minutes`} precise={precise} onChange={recovery => setValues(v => ({ ...v, recovery }))} />
+          <LabRange meaning="Minutes before the outage" label="Age of latest usable data" value={values.gap} max={lab.config.maxGap} target={`Target RPO: ${lab.config.rpo} minutes`} precise={precise} onChange={gap => setValues(v => ({ ...v, gap }))} />
+          <LabOutcomes recovery={values.recovery} gap={values.gap} rto={lab.config.rto} rpo={lab.config.rpo} />
+          <T v="meta">Change recovery results; business limits stay fixed. At or below a limit means met.</T>
+          <T v="meta">The data gap is potential loss, not confirmed missing orders.</T>
+          <Button kind="ghost" label={precise ? 'Hide precise controls' : 'Show precise controls'} expanded={precise} onPress={() => setPrecise(v => !v)} />
+          <Button kind="ghost" label={details ? 'Hide timeline and explanation' : 'Show timeline and explanation'} expanded={details} onPress={() => setDetails(v => !v)} />
+          {details && <View style={{ gap: space.md }}>
+            <T v="body">{`Outage: ${formatClock(lab.config.outageMinutes)}. Service restored: ${result.restorationTime}. Latest usable data: ${result.recoveryPointTime}.`}</T>
+            <LabTimeline recovery={values.recovery} gap={values.gap} {...lab.config} />
+            <T v="body">{result.summary}</T>
+            <T v="meta">{`Orders from the last ${values.gap} minutes before the outage may be missing. Check transaction records to find any actual loss. This model assumes usable recovery data and service restoration are verified; a successful backup job alone is insufficient.`}</T>
+          </View>}
+        </HubCard>
+        <Button kind="ghost" label="Reset scenario" onPress={reset} />
           <HubCard style={{ gap: space.md, paddingBottom: space.md }}>
             <CardHead title="Try this situation" meta="Optional prediction" />
             <T v="body">{`Before revealing: service returns after ${lab.challenge.recovery} minutes and the usable data gap is ${lab.challenge.gap} minutes. Which objectives are met?`}</T>
@@ -98,7 +106,6 @@ function RecoveryLab({ lab }: { lab: ConceptLab }) {
             <Button kind="secondary" label="Reveal outcome" disabled={prediction === null} onPress={() => { setReveal(true); sayLater(challengeResult.summary); }} />
             {reveal && <T v="body">{prediction === lab.challenge.correctIndex ? 'Correct. ' : 'Compare each limit separately. '}{challengeResult.summary} This prediction does not change your experiment.</T>}
           </HubCard>
-        </>}
       </>}
       {stage === 2 && <>
         <T v="body">{lab.apply.scenario}</T>

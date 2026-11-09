@@ -81,8 +81,8 @@ describe('authored lab stages', () => {
   test.each(labsFor('cisa'))('$id supplies usable explanations and complete audit reasoning', (lab) => {
     expect(lab.explore.rto).toContain('Recovery Time Objective');
     expect(lab.explore.rpo).toContain('Recovery Point Objective');
-    expect(lab.explore.rpo).toContain('potential data loss');
-    expect(lab.explore.rpo).toContain('actual loss');
+    expect(lab.explore.rpo).toContain('risk losing');
+    expect(lab.explore.rpo).toContain('actually missing');
     expect(lab.apply.scenario.trim().length).toBeGreaterThan(80);
     expect(lab.apply.options.length).toBeGreaterThanOrEqual(3);
     expect(Number.isInteger(lab.apply.correctIndex)).toBe(true);

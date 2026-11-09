@@ -50,7 +50,7 @@ const labs: readonly ConceptLab[] = [{
   config: DEFAULT_RECOVERY_CONFIG,
   explore: {
     rto: 'RTO (Recovery Time Objective) is the business-approved limit for how long a service may be unavailable. Measure downtime forward from the outage until the service is restored.',
-    rpo: 'RPO (Recovery Point Objective) is the business-approved tolerance for potential data loss, expressed as a time interval. Measure the gap backward from the outage to the latest usable recovery point. The gap describes exposure; transaction reconciliation determines actual loss.',
+    rpo: 'RPO (Recovery Point Objective) limits how much recent data the business can risk losing, measured in minutes. Count backward from the outage to the latest usable data. Check transaction records to find what is actually missing.',
   },
   challenge: {
     recovery: 140,
@@ -63,15 +63,15 @@ const labs: readonly ConceptLab[] = [{
     correctIndex: 1,
     options: [
       {
-        text: 'Accept recovery because the service returned within the RTO.',
+        text: 'Accept the exercise because service returned within the approved RTO.',
         feedback: 'Restoring service on time meets the RTO only. A 25-minute data gap exceeds the 10-minute RPO. A green backup-job status does not prove that usable data meets the objective.',
       },
       {
-        text: 'Report the RPO exception, corroborate the usable data point, and recommend remediation and retesting against approved objectives.',
+        text: 'Report the missed RPO, verify the usable data, and recommend a fix and retest.',
         feedback: 'Yes. The 70-minute restoration meets the 90-minute RTO, but the 25-minute gap misses the 10-minute RPO. Verify recovery and transaction-reconciliation evidence, report the exception and recommend corrective action and a retest. Management owns the risk and any change to approved objectives.',
       },
       {
-        text: 'Ask IT to increase the RPO to match the test result.',
+        text: 'Ask IT to increase the RPO so it matches the recovery exercise.',
         feedback: 'Changing the target to fit the result hides the exception. Business owners approve tolerances based on business impact; the auditor evaluates evidence, reports gaps and recommends action rather than setting recovery objectives.',
       },
     ],

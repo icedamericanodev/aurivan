@@ -1,6 +1,6 @@
 /** Synthetic, in-memory lab journeys: no existing tester save is read or mutated. */
 import { act, create, type ReactTestInstance, type ReactTestRenderer } from 'react-test-renderer';
-import { Dimensions } from 'react-native';
+import { Dimensions, PanResponder, type GestureResponderEvent, type PanResponderGestureState } from 'react-native';
 import { router } from 'expo-router';
 import LabCatalog from '../app/labs';
 import LabDetail from '../app/labs/[id]';
@@ -36,7 +36,7 @@ it('opens the catalog lab and leaves existing progress untouched through explora
   expect(text()).toContain('3:20 PM'); expect(text()).toContain('1:30 PM');
   press('Experiment with recovery'); adjust(121, 15); expect(text()).toContain('RTO missed');
   press('Apply your judgment');
-  press('Report the RPO exception, corroborate the usable data point, and recommend remediation and retesting against approved objectives.');
+  press('Report the missed RPO, verify the usable data, and recommend a fix and retest.');
   press('Check reasoning'); expect(text()).toContain('Management owns the risk');
   press('Read the related lesson'); expect(router.push).toHaveBeenCalledWith('/lesson/cisa-l-d4-rpo-rto');
   press('Open the recovery study note'); expect(router.push).toHaveBeenCalledWith('/notes/subtopic/4B1.2');
@@ -58,7 +58,7 @@ it('adjustable actions and increment alternatives are bounded and labelled', () 
   const slider = () => r!.root.findAll(n => n.props.accessibilityRole === 'adjustable' && n.props.accessibilityLabel === 'Actual recovery time')[0];
   expect(slider().props.accessibilityValue).toMatchObject({ min: 0, max: 180, now: 80 });
   act(() => { slider().props.onAccessibilityAction({ nativeEvent: { actionName: 'increment' } }); });
-  expect(slider().props.accessibilityValue.now).toBe(81); press('Decrease Actual recovery time'); expect(slider().props.accessibilityValue.now).toBe(80);
+  expect(slider().props.accessibilityValue.now).toBe(81); press('Show precise controls'); press('Decrease Actual recovery time'); expect(slider().props.accessibilityValue.now).toBe(80);
   adjust(0, 60); const decrease = r!.root.findAll(n => n.props.accessibilityLabel === 'Decrease Actual recovery time' && n.props.disabled === true); expect(decrease.length).toBeGreaterThan(0);
 });
 it.each([undefined, '%', 'missing', '__proto__'])('handles invalid or absent lab ID %s', id => { mockParams = { id }; mount(<LabDetail />); expect(text()).toContain('Lab not found'); press('Browse labs'); expect(router.replace).toHaveBeenCalledWith('/labs'); });
@@ -79,7 +79,7 @@ it.each(['light', 'dark'] as const)('renders controls and all stages at 200%% te
   useSettings.setState({ theme, motion: 'reduced' }); const w = Dimensions.get('window'); act(() => { Dimensions.set({ window: { ...w, width: 360, fontScale: 2 }, screen: { ...w, width: 360, fontScale: 2 } }); });
   mount(<LabDetail />); press('Experiment with recovery'); expect(r!.root.findAllByType(LabRange)).toHaveLength(2); press('Apply your judgment'); expect(text()).toContain('Source references');
 });
-it.each(['Accept recovery because the service returned within the RTO.', 'Ask IT to increase the RPO to match the test result.'])('explains why the plausible action is insufficient: %s', option => {
+it.each(['Accept the exercise because service returned within the approved RTO.', 'Ask IT to increase the RPO so it matches the recovery exercise.'])('explains why the plausible action is insufficient: %s', option => {
   mount(<LabDetail />); press('3. Apply'); press(option); press('Check reasoning');
   expect(text()).toContain('Look at both objectives');
   expect(text()).toMatch(/RTO only|hides the exception/);
@@ -93,4 +93,55 @@ it('offers a verified optional practice set without requiring it for the lab', (
   expect(router.push).toHaveBeenCalledWith('/session');
   expect(useProgress.getState()).toBe(before);
   useSession.setState({ active: null });
+});
+
+it('keeps the experiment concise and reveals timelines only on request', () => {
+  mount(<LabDetail />); press('Experiment with recovery');
+  expect(text()).toContain('Target RTO: 120 minutes');
+  expect(text()).not.toMatch(/successful backup job alone/i);
+  expect(r!.root.findAll(n => n.props.testID === 'lab-service-marker')).toHaveLength(0);
+  press('Show timeline and explanation');
+  expect(text()).toContain('3:20 PM');
+  expect(text()).toContain('1:30 PM');
+  expect(text()).toMatch(/successful backup job alone/i);
+});
+
+it.each([180, 60])('preserves vertical scrolling on the %i-minute range while allowing intentional input', max => {
+  const spy = jest.spyOn(PanResponder, 'create');
+  const change = jest.fn();
+  try {
+    mount(<LabRange label="Gesture range" value={Math.round(max / 2)} max={max} onChange={change} />);
+    const config = spy.mock.calls[0][0];
+    const e = (x: number) => ({ nativeEvent: { locationX: x } }) as GestureResponderEvent;
+    const g = (dx = 0, dy = 0) => ({ dx, dy }) as PanResponderGestureState;
+    const layout = r!.root.findAll(n => typeof n.type === 'string' && typeof n.props.onLayout === 'function')[0];
+    act(() => layout.props.onLayout({ nativeEvent: { layout: { width: 300 } } }));
+    expect(config.onStartShouldSetPanResponderCapture!(e(90), g())).toBe(false);
+    expect(config.onStartShouldSetPanResponder!(e(90), g())).toBe(false);
+    expect(change).not.toHaveBeenCalled(); // touch-down is not a value change
+    expect(config.onMoveShouldSetPanResponderCapture!(e(90), g(2, 30))).toBe(false);
+    expect(config.onMoveShouldSetPanResponderCapture!(e(90), g(100, 1))).toBe(false); // vertical intent stays locked
+    const pressable = () => r!.root.findAll(n => n.props.testID === `lab-range-${max}` && typeof n.props.onPress === 'function')[0];
+    act(() => pressable().props.onPress(e(90))); // even an uncancelled release after vertical motion is ignored
+    expect(change).not.toHaveBeenCalled();
+    config.onStartShouldSetPanResponderCapture!(e(150), g());
+    expect(config.onMoveShouldSetPanResponderCapture!(e(150), g(3, 1))).toBe(false); // jitter is not a drag
+    act(() => pressable().props.onPress(e(150)));
+    expect(change).toHaveBeenLastCalledWith(max / 2); // deliberate tap
+    expect(config.onMoveShouldSetPanResponderCapture!(e(225), g(25, 2))).toBe(true);
+    act(() => config.onPanResponderGrant!(e(225), g(25, 2)));
+    expect(change).toHaveBeenLastCalledWith(Math.round(max * 0.75));
+    act(() => config.onPanResponderMove!(e(-20), g(-20, 0)));
+    expect(change).toHaveBeenLastCalledWith(0);
+    act(() => config.onPanResponderMove!(e(330), g(330, 0)));
+    expect(change).toHaveBeenLastCalledWith(max);
+  } finally { spy.mockRestore(); }
+});
+
+it('ignores a malformed tap rather than putting NaN into the scenario', () => {
+  const change = jest.fn();
+  mount(<LabRange label="Touch tap" value={80} max={180} onChange={change} />);
+  const pressable = r!.root.findAll(n => n.props.testID === 'lab-range-180' && typeof n.props.onPress === 'function')[0];
+  act(() => pressable.props.onPress({ nativeEvent: {} }));
+  expect(change).not.toHaveBeenCalled();
 });
