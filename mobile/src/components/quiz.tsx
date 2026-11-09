@@ -1042,7 +1042,7 @@ export function AnswerContext({ question, perm, picked }: { question: PackQuesti
             </View>
             {why ? (
               <View accessible accessibilityLabel={`${best ? 'Why' : 'Why not'} ${letter}: ${why}`} style={{ marginTop: space.sm }}>
-                <T v="caption" color={c.ink2}>{best ? 'Why this is best' : `Why not ${letter}`}</T>
+                <T v={best ? "headline" : "caption"} accessibilityRole={best ? "header" : undefined} color={c.ink2}>{`${best ? 'Why' : 'Why not'} ${letter}`}</T>
                 <T v="small">{why}</T>
               </View>
             ) : null}

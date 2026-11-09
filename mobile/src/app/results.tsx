@@ -211,8 +211,7 @@ const ReviewRow = memo(function ReviewRow({
       </Pressable>
       {open && (
         <View style={{ paddingBottom: space.lg }}>
-          {/* The same rows as the answer screen (mobile 1.43): the DISPLAY letter in each badge and spoken
-              label, and the pick's own note under its red row. */}
+          {/* Compact verdict first, then every option and its rationale in saved display order. */}
           {r && !r.correct && picked && (
             <>
               <OptionCard
@@ -234,8 +233,6 @@ const ReviewRow = memo(function ReviewRow({
             spoken={`Best answer, ${correctDisplay}: ${q.options[q.correct] ?? ''}`}
           />
           <AnswerContext question={q} perm={perm} picked={r?.display} />
-          <T v="headline">{`Why ${correctDisplay}`}</T>
-          <T v="body" style={{ marginBottom: space.sm }}>{renderText(q.explanation, perm)}</T>
           {trapTip(q) !== '' && (
             <T v="small" color={c.ink2}>
               {trapTip(q).startsWith('Final two:') ? '' : 'Trap: '}

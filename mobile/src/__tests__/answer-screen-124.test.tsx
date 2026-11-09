@@ -83,14 +83,6 @@ const press = (label: string) => {
     b.props.onPress();
   });
 };
-/** Press the first button whose spoken label starts with `prefix` ("Read more: the full explanation, …"). */
-const pressStarting = (prefix: string) => {
-  const b = root().findAll((n) => typeof n.props.accessibilityLabel === 'string' && n.props.accessibilityLabel.startsWith(prefix) && typeof n.props.onPress === 'function')[0];
-  if (!b) throw new Error(`no button starting "${prefix}"`);
-  act(() => {
-    b.props.onPress();
-  });
-};
 const optionCards = () => root().findAll((n) => n.props.letter !== undefined && n.props.state !== undefined && typeof n.props.text === 'string');
 /** Tap the first option whose ORIGINAL letter is right (or wrong). */
 function pickBy(right: boolean) {
@@ -132,20 +124,19 @@ describe('the answer screen after a miss', () => {
   };
 
   // Grove Phase 4 (PHASE4.md 4.2, owner answer O1): one order in every state, every tip open before the Why.
-  it('order: Not quite, your answer, best answer, Key idea, How to think about it, every tip, Why, then Read more', () => {
+  it('order: verdict, all options with rationale, Key idea, then every tip', () => {
     missRich();
     // Every tip is open before Read more is touched.
     for (const label of ['Eliminate two', 'Final two', 'Exam cue']) expect(allText()).toContain(label);
-    pressStarting('Read more');
     const t = allText();
     // "Why D" (the heading), not the pick's own "Why not B" note under its row (mobile 1.43).
     const why = t.search(/Why [A-D]\b/);
-    const order = [t.indexOf('Not quite'), t.indexOf('✗ Your answer'), t.indexOf('✓ Best answer'), t.indexOf('Key idea'), t.indexOf('How to think about it'), why, t.indexOf('Show less')];
+    const order = [t.indexOf('Not quite'), t.indexOf('✗ Your answer'), t.indexOf('✓ Best answer'), t.indexOf('Compare all options'), why, t.indexOf('Key idea'), t.indexOf('How to think about it')];
     expect(order.every((i) => i >= 0)).toBe(true);
     expect([...order].sort((a, b) => a - b)).toEqual(order);
     // Every tip is on screen once the fold is open, and the Exam cue is above the Why.
     for (const label of ['Eliminate two', 'Final two', 'Exam cue']) expect(t).toContain(label);
-    expect(t.indexOf('Exam cue')).toBeLessThan(why);
+    expect(t.indexOf('Exam cue')).toBeGreaterThan(why);
   });
 
   // Grove Phase 4 (PHASE4 4.2 step 4, 4.3): the "Your pick, B" chip, on ORIGINAL letters, shown in DISPLAY letters.
@@ -207,23 +198,20 @@ describe('the answer screen after a miss', () => {
     });
   });
 
-  it('a right answer: Key idea and the tips first, then the whole Why; nothing folds', () => {
+  it('a right answer: full comparison first, then Key idea and tips; nothing folds', () => {
     startFromIds('cisa', [rich.id, ...others.map((o) => o.id)], 'T');
     mount(<SessionScreen />);
     pickBy(true);
     press('Check answer');
     const t = allText();
     expect(t.indexOf('Key idea')).toBeGreaterThan(-1);
-    expect(t.indexOf('Key idea')).toBeLessThan(t.search(/Why [A-D]\b/));
+    expect(t.indexOf('Key idea')).toBeGreaterThan(t.search(/Why [A-D]\b/));
     expect(t).not.toContain('Read more');
   });
 
-  it('the long Why is folded to two lines with Read more, and opens in place', () => {
+  it('the complete rationale is available inline without a fold', () => {
     missRich();
-    const why = root().findAll((n) => n.props.numberOfLines === 2 && typeof n.props.children === 'string' && n.props.children.length > 150);
-    expect(why.length).toBeGreaterThan(0);
-    pressStarting('Read more');
-    expect(root().findAll((n) => typeof n.props.accessibilityLabel === 'string' && n.props.accessibilityLabel.startsWith('Show less') && typeof n.props.onPress === 'function').length).toBeGreaterThan(0);
+    expect(allText()).not.toContain('Read more of the explanation');
     expect(root().findAll((n) => n.props.numberOfLines === 2 && typeof n.props.children === 'string' && n.props.children.length > 150)).toHaveLength(0);
   });
 

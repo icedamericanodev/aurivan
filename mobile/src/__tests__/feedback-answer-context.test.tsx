@@ -40,6 +40,12 @@ it.each(['A', 'B', 'C', 'D', undefined] as const)('keeps reported shuffled wordi
   expect(rows.map(n => n.props.testID)).toEqual(['answer-context-A', 'answer-context-B', 'answer-context-C', 'answer-context-D']);
   rows.forEach((row, i) => {
     const original = perm[i];
+    const letter = ['A', 'B', 'C', 'D'][i];
+    const best = original === q.correct;
+    const caption = best ? (letter === picked ? 'Your answer · the best' : 'Best answer') : letter === picked ? 'Your answer · not the best' : 'Not the best';
+    const spoken = `${letter}, ${caption}: ${q.options[original]}`;
+    expect(row.findAll(n => typeof n.type === 'string' && n.props.accessibilityLabel === spoken)).toHaveLength(1);
+    expect(textOf(row)).toContain(`${letter} · ${best ? '✓' : '✗'} ${caption}`);
     expect(textOf(row)).toContain(q.options[original]);
     expect(textOf(row)).toContain(renderText(original === q.correct ? q.explanation : q.wrongExplanations[original], perm));
     expect(textOf(row)).not.toMatch(/\{\{[A-D]\}\}/);
