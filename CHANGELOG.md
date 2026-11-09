@@ -4,6 +4,11 @@ All notable user-facing changes to this app. The in-app **What's New** modal mir
 
 For internal/technical history, see git log and PR descriptions.
 
+## Phone [2.0.1] · Coach me readability
+
+### Fixed
+- Question text stays readable when you open Coach me.
+
 ## [v13] Welcome to the new KaiSip
 
 ### New

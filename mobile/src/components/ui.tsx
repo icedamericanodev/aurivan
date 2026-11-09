@@ -40,7 +40,7 @@ import {
   type TextStyle,
   type ViewStyle,
 } from 'react-native';
-import Animated, { ReduceMotion, useAnimatedStyle, useSharedValue, withSpring, type SharedValue } from 'react-native-reanimated';
+import Animated, { interpolateColor, ReduceMotion, useAnimatedStyle, useSharedValue, withSpring, type SharedValue } from 'react-native-reanimated';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Svg, { Defs, LinearGradient, Path, Rect, Stop } from 'react-native-svg';
 import { sayLater } from '../lib/a11y';
@@ -390,14 +390,16 @@ export function Stem({
   // looks like a link or like an answered (tinted) state.
   const at = highlight ? lastWholeWordIndex(children, highlight) : -1;
   // The wash (mobile 1.8): when Coach me opens, the word's colour washes from
-  // ink to the tip colour (200 ms; 120 ms reduced). Colour, not motion. A
-  // second, identical copy of the stem sits on top with only the word
-  // visible, and fades in; identical text means identical line breaks.
+  // ink to the tip colour (200 ms; 120 ms reduced). Animate only the inline
+  // word: Android high-contrast text can paint transparent glyphs, so a
+  // transparent duplicate of the stem can obscure the readable question.
   const wash = useSharedValue(at >= 0 ? 1 : 0);
   useEffect(() => {
     wash.set(at >= 0 ? tween(1, reduced ? 'reduced' : 'reveal') : 0);
   }, [at, reduced, wash]);
-  const washStyle = useAnimatedStyle(() => ({ opacity: wash.value }));
+  const washStyle = useAnimatedStyle(() => ({
+    color: interpolateColor(wash.value, [0, 1], [color ?? c.ink, c.tip]),
+  }));
   if (!highlight || at < 0) {
     return (
       <T v="stem" color={color} style={style}>
@@ -417,25 +419,11 @@ export function Stem({
     );
   }
   return (
-    <View>
-      <T v="stem" color={color} style={style}>
-        {before}
-        <Text style={groveEmphasis}>{highlight}</Text>
-        {after}
-      </T>
-      <Animated.View
-        style={[StyleSheet.absoluteFill, styles.noTouch, washStyle]}
-        accessible={false}
-        accessibilityElementsHidden
-        importantForAccessibility="no-hide-descendants"
-      >
-        <T v="stem" color="transparent" style={style}>
-          {before}
-          <Text style={[groveEmphasis, { color: c.tip }]}>{highlight}</Text>
-          {after}
-        </T>
-      </Animated.View>
-    </View>
+    <T v="stem" color={color} style={style}>
+      {before}
+      <Animated.Text style={[groveEmphasis, washStyle]}>{highlight}</Animated.Text>
+      {after}
+    </T>
   );
 }
 

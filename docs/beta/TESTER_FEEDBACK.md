@@ -29,6 +29,7 @@ cause in the app, and slots it into the plan below.
 
 | ID | Date | Ref | Where | Type | Severity | Reach | Status | Plan |
 |---|---|---|---|---|---|---|---|---|
+| FB-002 | 2026-11-09 | Screenshot (no report code) | Phone · Coach me question text | Bug | High | Highlighted question stems on affected Android settings | Fix in review | Next update |
 | FB-001 | 2026-11-06 | R-D28Q | Phone · Practice answer screen | UX | High | Whole app (every answered question) | Planned | Next update |
 
 ## Next update plan (phone app, proposed 2.1.0)
@@ -36,6 +37,7 @@ cause in the app, and slots it into the plan below.
 | # | Change | From | Size |
 |---|---|---|---|
 | 1 | Show all four options with their wording on the answer screen, each with its ✓/✗ and its own "why" line, so the explanation and tips can be read against the actual text | FB-001 | Medium (app only, no content change) |
+| 2 | Keep the question readable after Coach me, including Android high-contrast text | FB-002 | Small (app only) |
 
 ## Later
 
@@ -96,3 +98,35 @@ Your first five · KaiSip 2.0.0 (Android 17) · Ref R-D28Q.
 **Reply to the tester when shipped:** "Thanks for report R-D28Q. In 2.1 the
 answer screen shows all four options with their full wording next to the
 explanation, so you can compare them without going back."
+
+### FB-002 · Question becomes unreadable after Coach me
+
+**Tester said (screenshots supplied 9 Nov 2026):**
+
+> Kapag napindot ko ung "coach me"
+> Wala lng ung font sa taas ganyan
+> Not sure if sa specific question lng
+
+The tester identified the phone as **Samsung S25**. In English: after
+tapping Coach me, the question text above becomes unreadable; they are
+unsure whether it affects only a particular question.
+
+The attached screenshot shows d1_002 in dark mode: the ordinary question
+text is nearly black with an outline, while MOST remains gold and the
+hint and answer choices remain readable. App version, Android version and
+accessibility settings were not supplied.
+
+**Cause and scope:** Coach me paints a second full question over the first,
+with transparent ordinary text and an opaque highlighted word. Android
+high-contrast text can paint otherwise transparent glyphs; this matches the
+screenshot, but the tester's setting has not been confirmed. The rendering
+pattern is shared by highlighted question stems, not just d1_002.
+
+**Fix in review:** Remove the duplicate text layer and animate only the
+inline priority word. Preserve theme colours, emphasis, timing, long-stem
+sizing, and the underlined Signpost variant. No grading or content changes.
+
+**Acceptance:** Check d1_002 before and after Coach me in light/dark modes,
+with high-contrast text on/off and large text on Samsung S25 or an Android
+device. Repeat Coach me, resume a hinted question, and move to a new
+question. The full stem must remain readable and spoken only once.
