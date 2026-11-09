@@ -31,8 +31,8 @@ cause in the app, and slots it into the plan below.
 |---|---|---|---|---|---|---|---|---|
 | FB-001 | 2026-11-06 | R-D28Q | Phone · Practice answer screen | UX | High | Whole app (every answered question) | Implemented, release checks pending | 2.1 |
 | FB-002 | 2026-11-09 | Owner-provided screenshots | Phone · Coach me | Bug | High | Highlighted question stems | Implemented, native acceptance pending | 2.1 |
-| FB-005 | 2026-11-09 | Owner emulator review | Phone · Save backup | UX | Medium | Android backup export | Implemented; picker/cancel verified, write acceptance pending | 2.1 |
-| FB-004 | 2026-11-09 | Owner emulator review | Phone · Reset CISA progress | Bug/UX | High | Confirmed full CISA reset | Implemented; integrated checks passed | 2.1 |
+| FB-005 | 2026-11-09 | Owner emulator review | Phone · Save backup | UX | Medium | Android backup export | Implemented; isolated native save/restore passed | 2.1 |
+| FB-004 | 2026-11-09 | Owner emulator review | Phone · Reset CISA progress | Bug/UX | High | Confirmed full CISA reset | Implemented; isolated native reset/restart passed | 2.1 |
 | FB-003 | 2026-11-06 | Beta reply email | Phone · Nickname setup | UX | Medium | New learners | Implemented, native keyboard/a11y checks pending | 2.1 |
 
 ## Next update plan (phone app, proposed 2.1.0)
@@ -126,3 +126,5 @@ FB-004 implementation checkpoint: reset now commits scoped state before clearing
 FB-005 implementation checkpoint: explicit Android folder-picker save added alongside sharing, using the installed SDK 58 SAF API without broad permissions. A newly created file is written and read back before success. Cancellation, provider/create/write/read failures, partial-file cleanup, duplicate taps and restore compatibility have regression coverage. No real emulator files were created or overwritten. Android may restrict selecting Downloads root; choose/create a subfolder, and choose device storage rather than cloud providers when local storage is intended.
 
 Verification checkpoint (2026-11-09): integrated check passed (355 suites, 7,250 tests, 2 skipped), Android export passed. Native Android folder picker and truthful cancellation verified; no backup file written or user progress reset. Native provider write/restore and destructive reset acceptance remain outstanding.
+
+Isolated native follow-up: FB-004 reset and restart and FB-005 local Documents save/restore passed on a new blank emulator-5556, using synthetic nickname Acceptance and one answered question. Persisted reset state and restored answer equality were checked. Owner emulator-5554 data/files untouched. See docs/mobile/RELEASE_2_1.md for scope and screenshots; these fixes are not yet shipped.

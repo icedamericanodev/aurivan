@@ -17,7 +17,7 @@ Owner requirement recorded 9 Nov 2026: the next Android App Bundle must have ver
 
 ## Work in progress
 
-- FB-005: explicit Android folder-picker backup save implemented alongside sharing; 32 focused tests and independent review passed. Native folder-picker opening and cancellation verified on the Android emulator; actual provider write/restore acceptance remains pending; no real files created or overwritten.
+- FB-005: explicit Android folder-picker backup save implemented alongside sharing; 32 focused tests and independent review passed. Native folder-picker opening and cancellation verified on the Android emulator; local Documents provider write/restore acceptance passed on the isolated Android emulator; no real files created or overwritten.
 
 - FB-004: scoped durable reset and onboarding return implemented; cancellation, confirmation, restart, failure, duplicate-action and unrelated-data tests passed. Independent review clear; integrated check and Android export passed. No emulator progress was reset.
 
@@ -59,3 +59,14 @@ Original checkout staged edits and all source worktrees remain preserved. The em
 - Native Android review: Your data shows the separate local-save and share actions and scoped reset explanation. Folder picker opens device storage; Android requires a subfolder instead of the storage root. Cancelling returns “Save cancelled — No backup was saved. Your progress is unchanged.”
 - No native reset, provider write or restore was performed against the owner’s data. Reset/persistence/restart and backup roundtrip/failures are covered by isolated regression tests; native destructive acceptance remains outstanding.
 - Native screenshots: `review-evidence/native-your-data-final.png`, `review-evidence/native-backup-picker.png`, `review-evidence/native-backup-cancelled.png` in the Codex task documents directory. Dedicated Metro port 8082 is running for interactive review.
+
+## Isolated native acceptance · 2026-11-09
+
+Completed against commit `f4a99e3` on a newly created blank `KaiSip_Acceptance` AVD (`emulator-5556`), separate from the owner’s `emulator-5554`. AVD files are under `/tmp/kaisip-native-acceptance/avd`. Only the installed APK was copied; no owner app data or files were copied. Both use the live Metro workspace on port 8082.
+
+- Onboarded a synthetic learner named Acceptance and recorded one correct practice answer (`d1_002`).
+- Saved through Android’s folder picker into the blank emulator’s Documents folder. Native UI reported the backup was written and checked. Pulled the resulting JSON and verified the nickname and one answer were present.
+- Confirmed CISA reset on this disposable data. App returned to onboarding. Force-stopped and reopened only the isolated app: onboarding remained. Read the isolated persisted store: `onboarded:false`, CISA answers empty, paused session null, nickname retained.
+- Opened the saved file through the native restore picker. Preview correctly showed zero current questions versus one backup question. Confirmed restore: Home greeted Acceptance and showed one answer. Persisted restored answer records exactly matched the native saved JSON; `onboarded:true`.
+- Visually inspected saved, post-restart onboarding, and restored screenshots. Evidence is in the Codex task `review-evidence/isolated-native-{saved,reset,restart,restore-preview,restored}.png`.
+- Owner progress and existing files were not modified. No code changes were needed; prior full checks (355 suites, 7,250 passed, 2 skipped) and Android export remain applicable. This verifies the local Android Documents provider; external/cloud providers, Samsung-specific accessibility, and the other release gates remain separate. No AAB built or release published.
