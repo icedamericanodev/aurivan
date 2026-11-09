@@ -110,7 +110,10 @@ async function handle(route) {
   const text = req.postData();
   calls.push({ method, path: u.pathname + u.search, auth: !!h.authorization });
   const send = (status, body) => route.fulfill({ status, headers: cors, body: body === undefined ? '' : JSON.stringify(body) });
-  if (u.pathname === '/auth/v1/otp') return send(200, {});
+  if (u.pathname === '/functions/v1/beta-desk-sign-in') {
+    return JSON.parse(text).email.toLowerCase() === ADMIN.toLowerCase()
+      ? send(200, { sent: true }) : send(403, { error: 'not_admin' });
+  }
   if (u.pathname === '/auth/v1/verify') {
     const b = JSON.parse(text);
     if (b.token !== CODE) return send(403, { code: 403, error_code: 'otp_expired', msg: 'Token has expired or is invalid' });
@@ -230,8 +233,14 @@ const toastText = (page) => page.$$eval('.toast', (els) => els.map((e) => e.text
 asUser(uuidFor(ADMIN), `insert into public.beta_testers (full_name, email) values ('Seed Person', 'seed@test.invalid');`);
 {
   const { ctx, page } = await newPage();
-  await signIn(page, LEARNER);
-  await page.waitForSelector('#notAdmin:not([hidden])');
+  await page.goto(BASE);
+  await page.fill('#emailInput', LEARNER);
+  calls.length = 0;
+  await page.click('#sendCodeBtn');
+  await page.waitForSelector('#gateError:not([hidden])');
+  check('non-admin is rejected before code entry', await page.isHidden('#codeForm'));
+  check('non-admin never calls Auth OTP or verify', !calls.some((c) => c.path.startsWith('/auth/')));
+  check('rejection explains admin-only access', /not an admin account/.test(await page.textContent('#gateError')));
   check('a learner (not an admin) gets "No access"', await page.isHidden('#app'));
   check('a learner is never asked to set up an authenticator', await page.isHidden('#mfaForm'));
   check('the learner page holds no tester details', !(await page.content()).includes('seed@test.invalid'));
@@ -544,3 +553,4 @@ server.close();
 fs.writeFileSync(path.join(OUT, 'results.json'), JSON.stringify({ failed, results }, null, 2));
 console.log(`\n${results.length - failed}/${results.length} passed · screenshots in ${OUT}`);
 process.exit(failed ? 1 : 0);
+

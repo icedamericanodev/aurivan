@@ -19,7 +19,7 @@ it from the site.
 
 ## Signing in (two steps)
 
-1. Your email → an 8-digit code arrives by email.
+1. Your email is checked server-side against the admin list. Only an eligible admin receives an 8-digit email code.
 2. A 6-digit code from an authenticator app (Google Authenticator, Microsoft
    Authenticator, 1Password…). The first time, the desk shows a QR code to scan
    once; after that it just asks for the code.
@@ -34,8 +34,8 @@ there. On a shared computer, still press **Sign out** when you finish.
 ## Adding an admin
 
 Admins are listed by account, not by email. The person signs in at
-`kaisip.com/beta-desk` once (they will see "No access"); then, in the
-Supabase SQL editor:
+through the regular KaiSip account sign-in first, to create and confirm their account.
+Beta Desk does not create accounts. Then, in the private Supabase SQL editor:
 
 ```sql
 insert into private.beta_desk_admins (user_id)
@@ -176,3 +176,23 @@ the hosted project.
 When Supabase Auth's captcha is turned on (go-live gate F30), the page shows
 the Cloudflare Turnstile check after the first refused attempt. The hosts are
 already allowed in `_headers`.
+
+
+## Deploying the pre-email admin check
+
+Deploy in this order (the website fails closed if the endpoint is missing):
+
+1. Apply `20261109000000_beta_desk_sign_in.sql` to the hosted project.
+2. Deploy `beta-desk-sign-in` with JWT verification disabled as in config.toml.
+   It needs platform-provided SUPABASE_URL, SUPABASE_ANON_KEY, and the existing
+   server key supported by `_shared/serviceKey.ts`. Never put server keys in the website.
+3. Deploy the website. Check a non-admin email is rejected without an email being
+   sent; check an existing admin receives a code and still completes TOTP.
+
+The public endpoint returns only an eligibility result; it necessarily reveals
+whether the submitted email is an eligible admin. A persistent shared limit of
+60 checks per 5 minutes bounds probing, with no stored email or IP history.
+This global limit can temporarily block legitimate sign-ins during abuse; add
+gateway throttling if needed. Auth still enforces its own email/CAPTCHA limits.
+The regular learner login is unchanged. Database authorization and MFA remain
+authoritative even if membership changes after the pre-email check.

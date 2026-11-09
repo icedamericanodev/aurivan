@@ -208,3 +208,8 @@ verify_jwt = false
 
 [analytics]
 enabled = false
+
+
+# Public entry point; eligibility is checked by a service-only RPC before OTP.
+[functions.beta-desk-sign-in]
+verify_jwt = false

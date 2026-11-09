@@ -10,12 +10,11 @@
      and the publishable key. They give no more access than a signed-out
      visitor has.
    - Tester rows come from the database only after an admin signs in with an
-     emailed code. The database's row rules (RLS) check, on every request,
-     that the signed-in email is on the Beta Desk admin list. A non-admin
-     simply reads nothing.
-   - The sign-in is kept in this tab only (sessionStorage) unless "Keep me
-     signed in" is ticked (localStorage). Its key is new and touches no
-     learner's saved progress.
+     emailed code and authenticator code. The database's row rules (RLS)
+     check the account ID against the admin list on every request.
+     A server-side check also rejects non-admins before sending an email.
+   - The sign-in is kept in this tab only (sessionStorage). Its key is new
+     and touches no learner's saved progress.
    - Everything a tester typed is shown with textContent / escaped HTML, so a
      name that looks like HTML is shown as plain text.
    ─────────────────────────────────────────────────────────────────────── */
@@ -398,6 +397,7 @@ var Auth = (function () {
     return data;
   }
   function authMessage(status, code, msg) {
+    if (code === 'not_admin') return 'This email is not an admin account. Please use your authorized admin email.';
     if (/captcha/i.test(code + ' ' + msg)) return 'Please complete the check below, then try again.';
     if (status === 429 || /rate.?limit/i.test(code)) return 'Too many tries. Wait a few minutes, then try again.';
     if (/mfa_verification_failed|invalid totp|mfa/i.test(code + ' ' + msg)) return 'That authenticator code didn’t match. Check the time on your phone and try the newest code.';
@@ -406,9 +406,9 @@ var Auth = (function () {
     return 'Sign-in failed (code ' + status + '). Try again in a moment.';
   }
   async function sendCode(email, captchaToken) {
-    var body = { email: email, create_user: true };
-    if (captchaToken) body.gotrue_meta_security = { captcha_token: captchaToken };
-    await call('/auth/v1/otp', body);
+    var body = { email: email };
+    if (captchaToken) body.captcha_token = captchaToken;
+    await call('/functions/v1/beta-desk-sign-in', body);
   }
   async function verify(email, code) {
     var s = fromBody(await call('/auth/v1/verify', { type: 'email', email: email, token: code }));
@@ -1336,3 +1336,4 @@ $('exportBtn').addEventListener('click', function () {
 /* ── Start ─────────────────────────────────────────────────────────── */
 window.KaiSipDesk = { BD: BD };  // the pure helpers, for the automated tests
 boot();
+
