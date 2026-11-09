@@ -86,7 +86,11 @@ export function simplify(pts, tol = 0.12) {
     const ab = sub(B, A), L = len(ab) || 1;
     for (let i = a + 1; i < b; i++) {
       const d = Math.abs((arr[i].x - A.x) * ab.y - (arr[i].y - A.y) * ab.x) / L;
-      if (d > dmax) { dmax = d; idx = i; }
+      // Symmetric vertices can differ by a few ulps between JS engines/CPUs.
+      // Treat sub-nanounit distance differences as ties and keep the first
+      // vertex. This is far below both the 0.08 minimum path tolerance and
+      // the 0.1-unit SVG rounding, but prevents a different RDP split.
+      if (d > dmax + 1e-9) { dmax = d; idx = i; }
     }
     if (dmax > tol) return [...rdp(a, idx, arr).slice(0, -1), ...rdp(idx, b, arr)];
     return [A, B];
