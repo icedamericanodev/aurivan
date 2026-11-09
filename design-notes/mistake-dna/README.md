@@ -40,7 +40,7 @@ Fixed all findings: actionless corrected knowledge-gap state, different spoken/v
 - Android Metro/Hermes export: passed. Cloud-OFF guard G2, release-channel guard, shared-source guard and size budget passed. Bundle: 11,849,637 bytes (11.85 MB of 14 MB); CISA content 4.68 MB of 6 MB. Exact increase from a fresh baseline export was not measured; no dependencies changed.
 - Synthetic Node v24 benchmark: 5,000 distinct observations, 50 timed analyses after 10 warmups, median 8.66 ms, p95 20.93 ms. This is not a native/Hermes performance measurement.
 - Dedicated screenshot run: light/dark/expanded evidence/trend/empty/enlarged text captured, zero page errors and no horizontal viewport overflow. UX reviewer inspected screenshots; the trend capture was corrected to include its explanation and counts.
-- Cloud-enabled full regression: running separately; final outcome will be added before owner handoff.
+- Cloud-enabled full regression (`EXPO_PUBLIC_AURIVAN_CLOUD=1 EXPO_PUBLIC_AURIVAN_CLOUD_BACKEND=memory npm test -- --runInBand`): passed; 356 suites passed, 1 skipped; 7,249 tests passed, 31 skipped for this configuration.
 - Native Android acceptance remains pending because `adb` is unavailable. Browser screenshots and render tests do not replace TalkBack/real font-scale testing. Repository pa11y was skipped because its optional website server was not running; this feature does not edit website markup.
 
 Android export is a local compilation check only; no Android package was built, uploaded or released.
@@ -72,3 +72,9 @@ Android export is a local compilation check only; no Android package was built, 
 - `mobile/src/engine/mistakeDNA.ts`
 - `mobile/src/engine/slipCoach.ts`
 - `mobile/src/engine/tips.ts`
+
+## Emulator handoff requested by owner
+
+The owner asked for screenshots and an emulator update. This task runs in a cloud Linux workspace; there is no `adb`, Android SDK, emulator process or connected device. The coordinating chat “Coordinate KaiSip feature development” runs locally on the owner’s Mac and can perform that update from its existing Android development setup.
+
+Use branch `codex/kaisip-mistake-dna` / PR #240 in an isolated local checkout. No native dependencies or configuration changed, so the existing compatible KaiSip development client can receive the branch with `npx expo start --dev-client --android` from `mobile/`, following `docs/mobile/RUN_ON_ANDROID_EMULATOR.md`. Coordinate with the Lab branch before choosing which feature(s) to show. Keep the existing emulator app data: do not uninstall, clear storage, reset progress, or import these synthetic fixtures into a tester profile. The cloud task has **not** updated the emulator. This is a local development handoff, not production release authorization.

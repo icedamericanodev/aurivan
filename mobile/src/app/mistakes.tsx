@@ -1,40 +1,11 @@
 /**
- * Mistake Journal — every miss filed automatically, with why.
- *
- * The learner tags the THINKING slip behind each miss (wrong role, missed
- * the priority word, chose tech before governance…). Patterns across tags
- * are the real coaching: they show HOW someone gets questions wrong, which
- * transfers to questions they've never seen. Answering a question correctly
- * later marks its mistake fixed.
- *
- * "Your pattern" (the slip coach, engine/slipCoach.ts): once 5+ mistakes
- * are tagged, it names the most frequent slip and offers the mini-game
- * that drills it in one tap. Below 5, a quiet line says when it appears.
- *
- * Nothing open → the seedling empty state (spec §11), with teaching tags
- * that preview the trap types that will be filed here.
- *
- * Mobile 1.15 (PHASE5.md J9–J13): the tags in plain words, and "What do
- * these mean?" opens one example for each, so a learner new to audit can tag
- * honestly. The stored slip ids never change (no migration). The button
- * says how many of the open mistakes one set takes ("Practice 20 of 55").
- *
- * Mobile 1.20: each open mistake whose question a study note covers gets a
- * small "Read the note" (BookOpen = notes), so the fix starts with the idea.
- *
- * Principles: "Your pattern" links to the exam-mindset principle that
- * coaches it ("Read the principle", Compass), looked up through the shared
- * file's slip map (content/principles principleForSlip). No link for "Didn't
- * know it": a content gap has no thinking rule to read.
- *
- * Mobile 1.24 (accessibility): the question is shown whole (the ask, FIRST or
- * BEST, is at the END of most stems, and the options are no longer cut to two
- * lines); "Your pick" (premium round 2, the answer screen's word; "Your answer"
- * before) / "Best answer" are plain words (no ✓ / ✗ glyphs read
- * aloud as "check mark"); and the six tag chips are not repeated under every
- * mistake: an untagged mistake has one "Tag why you slipped" button, a tagged
- * one shows its tag as a line with "Change", and the chips (one labelled radio
- * group, each spoken as "Tag: ...") open only on tap.
+ * Mistake Journal with Mistake DNA: reflect on recent saved misses, then
+ * follow an existing principle, note, drill or independent practice set.
+ * Analytics and thresholds live in engine/mistakeDNA.ts; no diagnostic
+ * result is persisted. Stable slip ids, tagging/focus announcements,
+ * fixed/open filtering, original-letter picks and review controls remain.
+ * A virtualised list keeps a large journal usable. Even an empty or fully
+ * corrected journal retains its honest evidence summary and next actions.
  */
 import { router } from 'expo-router';
 import { backOr } from '../lib/actions';

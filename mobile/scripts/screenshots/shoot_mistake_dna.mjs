@@ -37,7 +37,6 @@ for (const theme of ['light', 'dark']) {
   await page.screenshot({ path: `${out}/${theme}-trend.png` });
   await page.evaluate(() => {
     const style = document.createElement('style');
-    style.textContent = '* { font-size: 200% !important; line-height: 1.35 !important; }';
     // Scale text nodes only, avoiding compounded parent scaling.
     style.textContent = '[dir="auto"] { font-size: 200% !important; line-height: 1.35 !important; }';
     document.head.appendChild(style);
