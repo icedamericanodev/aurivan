@@ -93,7 +93,7 @@ export function milestoneFacts(certId: string, cp: CertProgress, opts: { now: nu
     answered: d.answered,
     mastery: d.mastery,
   }));
-  // Topic Clear: each topic's status from clean answers, and the closest one for the progress line.
+  // Topic Complete: each topic's status from clean answers, and the closest one for the progress line.
   const statuses = certOutline(certId).topics.map((t) => guidedStatus(certId, t, cleanCp));
   const topicsClear = statuses.filter((s) => s.clear).length;
   const score = (s: { right: number; studied: boolean }) => Math.min(s.right, CLEAR_RIGHT) + (s.studied ? 1 : 0);
@@ -121,7 +121,7 @@ export function milestoneFacts(certId: string, cp: CertProgress, opts: { now: nu
     ...(m?.earned['whole-map'] !== undefined ? { wholeMapAt: m.earned['whole-map'] } : {}),
     tookRoot: tookRootShare(certId, cp.mastery),
     studyDays: m?.days ?? 0,
-    // Fresh Start: back after a week or more away, and a session just finished
+    // Study Return: back after a week or more away, and a session just finished
     // today. Live only: the back-fill never awards it.
     freshStart: Boolean(opts.finished) && Boolean(m?.returnedOn) && m?.returnedOn === dayKey(opts.now),
     gamesPlayed: played,
@@ -147,7 +147,7 @@ const caseContext = (cert: Certification) => ({
   exam: { questions: cert.exam.questions, minutes: cert.exam.minutes },
 });
 
-/** The badge case: every medallion, the shelves, and each domain's mastery as Firm Footing reads it (clean answers only). */
+/** The badge case: every medallion, the shelves, and each domain's mastery as Domain Mastery reads it (clean answers only). */
 export interface BadgeCase {
   marks: CaseMark[];
   sets: SetView[];
@@ -248,7 +248,7 @@ export interface MilestoneMoment {
   tierUp?: boolean;
   /** The one "Next:" line for Results (the best next badge for the exam), if any. */
   next?: string;
-  /** For the medallion: a tiered badge's tier (1–3), Firm Footing's domain leaf and emblem. */
+  /** For the medallion: a tiered badge's tier (1–3), Domain Mastery's domain leaf and emblem. */
   tier?: number;
   domain?: { index: number; count: number };
   emblem?: string;
@@ -383,8 +383,8 @@ export function ensureBackfill(certId: string, now = Date.now()): number | null 
  * catalogue (mobile 1.10 or a 1.10 backup): earn what the saved study already
  * shows under this one (a higher tier, Took Root) QUIETLY, stamped with one
  * time (so each reads "By 11 Oct", never "new"), and keep ONE summary line.
- * Higher tiers start from honest data: Long Memory's count stopped at 25
- * before, so Long Memory · 75 is never earned here from older recalls.
+ * Higher tiers start from honest data: Lasting Recall's count stopped at 25
+ * before, so Lasting Recall · 75 is never earned here from older recalls.
  * Returns how many badges it found, or null when there was nothing to do.
  */
 export function ensureCatalog(certId: string, now = Date.now()): number | null {
@@ -418,10 +418,10 @@ export function seeCatalogFill(certId: string) {
   );
 }
 
-/** "Badges now have higher tiers, plus a new one: Took Root. Your study so far already earned 2 of them." (null: nothing to say). */
+/** "Badges now have higher tiers, plus a new one: Topic Recall. Your study so far already earned 2 of them." (null: nothing to say). */
 export function catalogFillLine(count: number): string | null {
   if (count <= 0) return null;
-  return `Badges now have higher tiers, plus a new one: Took Root. Your study so far already earned ${count} of them.`;
+  return `Badges now have higher tiers, plus a new one: Topic Recall. Your study so far already earned ${count} of them.`;
 }
 
 /** The learner has seen the back-fill summary (it shows once). */

@@ -65,7 +65,7 @@ describe('the catalogue', () => {
     }
   });
 
-  it('every badge that gives a keepsake exists; Firm Footing and Rooted give none (part marks and undergrowth instead)', () => {
+  it('every badge that gives a keepsake exists; Domain Mastery and Rooted give none (part marks and undergrowth instead)', () => {
     const ids = new Set(BADGES.map((b) => b.id));
     for (const k of KEEPSAKE_ITEMS) if (k.unlock.kind === 'badge') expect(ids.has(k.unlock.badge as (typeof BADGES)[number]['id'])).toBe(true);
     expect(keepsakeForBadge('firm-footing')).toBeUndefined();
@@ -236,8 +236,8 @@ describe('copy', () => {
   it('a locked item says how to open it, in plain words', () => {
     expect(howToOpen(lookItem('stone-ring')!)).toBe('Opens when your plant reaches Crown.');
     // UX review P2: what to do, then the badge in brackets.
-    expect(howToOpen(lookItem('lantern')!)).toBe('Sit a full, timed mock (the Dress Rehearsal badge).');
-    expect(howToOpen(lookItem('stepping-stone')!)).toBe('Answer your first 20 questions (the First Foothold badge).');
+    expect(howToOpen(lookItem('lantern')!)).toBe('Sit a full, timed mock (the Mock Complete badge).');
+    expect(howToOpen(lookItem('stepping-stone')!)).toBe('Answer your first 20 questions (the First Review badge).');
     // Code review M9c: the Domains set is four, five or eight domains, so it is named neutrally.
     expect(howToOpen(lookItem('five-stone')!)).toBe('Opens when you finish the Domains set in the Herbarium.');
     expect(howToOpen(lookItem('ribbon')!)).toBe('Opens when you tell us you passed.');

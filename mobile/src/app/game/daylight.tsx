@@ -443,7 +443,7 @@ function Daylight() {
               <Button
                 kind="ghost"
                 label="Add a minute"
-                accessibilityHint="Seedling only: adds a minute of light."
+                accessibilityHint="Beginner only: adds a minute to the timer."
                 onPress={() => {
                   setState(extendBudget(state));
                   say('A minute of light added.');

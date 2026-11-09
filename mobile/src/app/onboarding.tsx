@@ -1,50 +1,14 @@
-/**
- * Onboarding — a plain welcome, then 2 quick steps, then straight into the
- * first five questions (mobile 1.24, "first five minutes"; 1.41, one screen fewer).
- *
- *   0  Welcome      "Think like an IS auditor." It names the exam (CISA) and
- *                   says in four literal lines what you will do and what the
- *                   app does with your data, starting with the best feature:
- *                   every option is explained, the trap included. No metaphors.
- *   1  Step 1 of 2  Optional nickname and starting point. Skipping the
- *                   starting point leaves only that choice unset.
- *   2  Step 2 of 2  Your exam date and how long you can study most days, with
- *                   a plain line saying what the two add up to.
- *
- * What changed in 1.41, and why (pre-beta review: testers decide in the first minute):
- * - The separate name step was removed. The optional nickname now sits on
- *   the starting-point screen. If left blank, Today still asks once after
- *   the first study day. Settings → Your name keeps it editable.
- * - No seed is planted for you any more: the first set's closing screen offers
- *   one, with "Not now" (You and Your plant keep "Plant yours").
- *
- * What changed in 1.24, and why (the panel's first-ten-minutes review):
- * - The exam step is gone. CISA is the only exam, so it is chosen for you
- *   (no greyed-out "coming soon" tiles; since 1.39 Settings lists only CISA too,
- *   with "Starting with CISA. More certifications later.").
- * - The plant step and the "Planted" screen are gone. A seed is planted for you
- *   after the first five questions, and You keeps "Plant yours".
- * - The line about moving from the old app is gone from the welcome. "Restore
- *   from a backup" stays: it is also how you move to a new phone.
- * - The last button saves everything in one tap and starts the first set (the
- *   same five questions for everyone, lib/firstSet.ts). Nothing is saved
- *   before that tap, so leaving halfway loses nothing.
- *
- * Earlier notes still true:
- * - Step 3 keeps "Pick the exact date" (the same calendar as Settings → Exam date).
- * - Step 2 has no preselected answer; it shapes the first week.
- * - Grove: choices are raised rows (selected = ink border, never green) and the
- *   action sits in a sticky footer.
- */
+/** Set up study preferences and start the first questions. */
+import { FeatureInfo } from '../components/featureInfo';
 import { Redirect, router } from 'expo-router';
 import { useEffect, useRef, useState, type RefObject } from 'react';
-import { BackHandler, KeyboardAvoidingView, Platform, ScrollView, useWindowDimensions, View } from 'react-native';
+import { BackHandler, KeyboardAvoidingView, Platform, ScrollView, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { DisplayNameField } from '../components/displayName';
 import { cleanDisplayName } from '../engine/displayName';
 import { KaisipLockup } from '../components/brand';
 import { FamiliarityRows, FAMILIARITY_QUESTION, MinutesControl } from '../components/fit';
-import { FieldText, Plate, SeedSketch } from '../components/fieldguide';
+import { FieldText } from '../components/fieldguide';
 import { StickyFooter } from '../components/quiz';
 import { Button, Chip, Enter, Gap, T } from '../components/ui';
 import { DataMessage, RestorePreview } from '../components/yourData';
@@ -64,7 +28,6 @@ import { dayKey } from '../engine/streak';
 import { selectCert, useProgress } from '../store/progress';
 import { useSeen } from '../store/seen';
 import { examDateOf, useSettings } from '../store/settings';
-import { grovePlate } from '../theme/grove';
 import { space } from '../theme/tokens';
 import { useTheme } from '../theme/useTheme';
 
@@ -95,7 +58,6 @@ export default function Onboarding() {
 function OnboardingFlow() {
   const { c } = useTheme();
   const complete = useSettings((s) => s.completeOnboarding);
-  const { width } = useWindowDimensions();
   const [step, setStep] = useState<Step>(0);
   // Draft only: leaving onboarding never changes a saved or restored name.
   const [nickname, setNickname] = useState(() => cleanDisplayName(useSettings.getState().displayName));
@@ -156,15 +118,7 @@ function OnboardingFlow() {
     return () => sub.remove();
   }, [step]);
 
-  // Welcome (premium round 2, expert ruling C): a title page on the paper, like the first page of a
-  // field guide. The Kasama mark and "kaisip", the headline, the sub ("Your CISA® exam study, one day at a
-  // time."), an unnumbered seed plate ("Seed, before Day 1": Fig. 1 belongs to Day 1), then the four
-  // plain lines and the not-affiliated line. Screen readers hear "Welcome to KaiSip. Think like an IS
-  // auditor." as one header; the lockup and the plate are hidden (the words carry them).
-  // Release prep for 2.0.0 (final screenshot review): the gaps are one step tighter (16 not 24 above
-  // the headline and the plate, 10 not 12 inside each ruled line), so on a 390x844 phone the whole
-  // page, down to the trademark line, sits above Get started without scrolling. The scroll's bottom
-  // padding still equals the footer's height, so at 200% text every line can be scrolled into view.
+  // A direct welcome with the course promise and first action.
   const welcome = (
     <Enter key="s0">
       <View testID="welcome-page" style={{ paddingHorizontal: space.gutter, paddingTop: space.lg }}>
@@ -173,13 +127,7 @@ function OnboardingFlow() {
           {WELCOME_HEADLINE}
         </T>
         <FieldText v="sub" style={{ marginTop: space.xs }}>{WELCOME_LINE}</FieldText>
-        <View testID="welcome-plate" accessibilityElementsHidden importantForAccessibility="no-hide-descendants" style={{ marginTop: space.lg }}>
-          <Plate fig={{ title: 'Seed, before Day 1' }}>
-            <View style={{ alignItems: 'center' }}>
-              <SeedSketch width={Math.min(240, width - 2 * space.gutter - 2 * (grovePlate.edge + grovePlate.pad))} />
-            </View>
-          </Plate>
-        </View>
+
       </View>
       <View style={{ paddingHorizontal: space.gutter, paddingTop: space.sm }}>
         {/* Ruled lines on the paper (no icon circles): one stop each. */}
@@ -206,9 +154,6 @@ function OnboardingFlow() {
     // Empty or rejected drafts never erase a saved/restored name. Settings can clear it.
     complete(certId, examDate, { familiarity, dailyMinutes: minutes }, cleanDisplayName(nickname) || undefined);
     if (!useSettings.getState().displayName) useSeen.getState().setNameAsk('due');
-    // No plant question in onboarding: the first set's closing screen offers one, and You keeps "Plant yours".
-    // Today's own plant line stays hidden, so the first days have one setup line at a time.
-    useProgress.getState().setPlantSettings({ promptHidden: true });
     // A 1.24+ learner: the only kind that may get the reminder ask's second chance (engine/firstRun.ts).
     useSeen.getState().noteReminderFlag('newLearner');
     // Day 1's plan (the first set) is made now, BEFORE any answer, so the five answers tick it off.
@@ -232,11 +177,11 @@ function OnboardingFlow() {
         )}
         <T v="caption" color={c.accentText} style={{ marginTop: space.xxl }}>Step 1 of 2</T>
         <StepHeader title={FAMILIARITY_QUESTION} headRef={headRef} />
-        <T v="meta" style={{ marginTop: space.sm }}>This shapes your first week. You can change it any time in Settings.</T>
+        <View style={{ alignItems: 'flex-end' }}><FeatureInfo title="Your starting point"><T v="body">This shapes your first week. You can change it any time in Settings.</T></FeatureInfo></View>
         <Gap h={space.xl} />
         <FamiliarityRows look="raised" value={familiarity} onChange={setFamiliarity} />
         <T v="headline" accessibilityRole="header" style={{ marginTop: space.xl }}>What should we call you?</T>
-        <T v="meta" style={{ marginTop: space.sm }}>Optional. Add a nickname, or leave it blank. You can change it in Settings.</T>
+        <T v="meta" style={{ marginTop: space.sm }}>Optional. You can leave this blank.</T>
         <View style={{ marginTop: space.md }}>
           <DisplayNameField value={nickname} onChange={setNickname} label="Name or nickname" />
         </View>

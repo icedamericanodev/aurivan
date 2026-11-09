@@ -15,7 +15,7 @@
  * - Guided ignores retests; a first set ended early is honest and resumes with only the rest;
  * - Day 1 shows no percent; "Also today" never repeats a checklist row; Back on the closing screen;
  * - every reminder path skips today once the plan is cleared; the ask never sticks on "working";
- * - You: "+N" only for domains that show a number; both labels when words and numbers mix.
+ * - You: summary counts remain; the retired domain chart and its deltas stay absent.
  */
 import { act, create, type ReactTestInstance, type ReactTestRenderer } from 'react-test-renderer';
 import { Alert, BackHandler } from 'react-native';
@@ -171,7 +171,7 @@ describe('Day 1 on Today, after "Done for today"', () => {
       useSession.getState().clear();
     });
     mount(<Today />);
-    expect(allText()).toContain('Today’s clearing');
+    expect(allText()).toContain('Today complete');
     expect(allText()).not.toMatch(/Accuracy \d+ ?%/);
     // The count, as Results names it: "Correct 3 of 5" (UX review S4: one line, the row's shared baseline).
     expect(allText()).toContain('Correct 3 of 5');
@@ -531,22 +531,24 @@ describe('You: words and numbers', () => {
         .forEach((q, i) => useProgress.getState().recordAnswer(CERT, q.id, i < right, undefined, { at: NOW.getTime() - 3 * 86_400_000 }));
     });
 
-  it('mixed: the band line while an area is thin, and the "latest tries" caption (mobile 1.43)', () => {
+  it('mixed domain data keeps the summary and report link without the retired chart legend', () => {
     seedDomain('1', 10, 9); // thin: a word and "10 answered"
     seedDomain('4', 40, 30); // a word and a number
     mount(<You />);
-    expect(allText()).toContain(BANDS_LINE);
-    expect(allText()).toContain('Right on your latest tries');
+    expect(allText()).not.toContain(BANDS_LINE);
+    expect(allText()).toContain('See report');
+    expect(allText()).toContain('a study estimate, not a prediction');
     expect(allText()).not.toContain(LATEST_TRIES_LABEL);
   });
 
-  it('"Since you last looked" leaves out a domain shown as a word', () => {
+  it('saved domain deltas remain stored without appearing on You', () => {
     seedDomain('1', 10, 9);
     seedDomain('4', 40, 30);
     useSeen.setState({ values: { 'you:rings:cisa': [0, 0, 0, 0, 0] } });
     mount(<You />);
     const t = allText();
-    expect(t).toMatch(/Since you last looked: IS Operations \+\d+/);
+    expect(t).not.toContain('Since you last looked');
+    expect(useSeen.getState().values['you:rings:cisa']).toEqual([0, 0, 0, 0, 0]);
     expect(t).not.toMatch(/IS Audit \+\d+/);
   });
 });

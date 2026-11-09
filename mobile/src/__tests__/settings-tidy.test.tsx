@@ -139,7 +139,7 @@ describe('Settings is grouped, and each row says its value', () => {
     const t = allText();
     // Mobile 1.46 (owner): one page in the order learners change things, Appearance (the theme) first;
     // Your data and Help and about are doors at the end. ("You" is last of the cards; its word is inside "Your".)
-    const at = ['Appearance', 'Exam', 'Your study', 'Reminders', 'Practice', 'Badges and your plant', 'Your data', 'Help and about'].map((g) => t.indexOf(g));
+    const at = ['Appearance', 'Exam', 'Your study', 'Reminders', 'Practice', 'Badges', 'Your data', 'Help and about'].map((g) => t.indexOf(g));
     expect(at.every((n) => n > -1)).toBe(true);
     expect([...at].sort((a, b) => a - b)).toEqual(at);
     expect(row('Certification').props.accessibilityLabel).toBe('Certification, CISA');
@@ -156,12 +156,12 @@ describe('Settings is grouped, and each row says its value', () => {
     expect(dark.props.accessibilityState.checked).toBe(true);
     expect(row('Motion').props.accessibilityLabel).toBe('Motion, Reduced');
     // The on/off settings stay switches on the screen.
-    for (const name of ['Exam-focused plan', 'Timed practice', 'Shuffle answer options', 'Study reminder', 'Haptics', 'Show badges', 'Show my plant']) {
+    for (const name of ['Exam-focused plan', 'Timed practice', 'Shuffle answer options', 'Study reminder', 'Haptics', 'Show badges']) {
       expect(root().findAll((n) => typeof n.props.onValueChange === 'function' && n.props.accessibilityLabel === name).length).toBeGreaterThan(0);
     }
     // Mobile 1.40: Quiet look moved into the Look screen's Style choice; Settings links there instead.
     expect(root().findAll((n) => typeof n.props.onValueChange === 'function' && n.props.accessibilityLabel === 'Quiet look')).toEqual([]);
-    expect(t).toContain('Change its look');
+    expect(t).not.toMatch(/Show my plant|Change its look/);
     // The old ±day/week buttons are gone (the calendar replaces them).
     expect(t).not.toMatch(/week earlier|day later/);
   });

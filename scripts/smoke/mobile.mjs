@@ -208,7 +208,7 @@ const answersIn = (p) => Object.keys((p && p.state && p.state.byCert && p.state.
     const order = ['Learn', 'Practice', 'You', 'Today', 'Practice', 'Learn', 'You', 'Today'];
     const expect = { Today: /\/home/, Learn: /\/learn/, Practice: /\/practice/, You: /\/you/ };
     // A heading only that tab shows, so a stale screen from the last tab cannot pass.
-    const own = { Today: /days to go|Today’s study|Also today/i, Learn: /^Learn$/, Practice: /^Practice$/, You: /READINESS|Five areas, one scale/i };
+    const own = { Today: /days to go|Today’s study|Also today/i, Learn: /^Learn$/, Practice: /^Practice$/, You: /Estimated readiness/i };
     for (const name of order) {
       const t0 = Date.now();
       await tab(page, name);
@@ -540,37 +540,31 @@ const answersIn = (p) => Object.keys((p && p.state && p.state.byCert && p.state.
   await ctx.close();
 }
 
-// ── M6 You: plant, badges, areas chart; Settings; backup round trip ────────
+// ── M6 You: readiness, report, badges; Settings; backup round trip ────────
 {
   const { ctx, page } = await phone(demo);
-  await rec.run('M6', 'You: plant, badges, areas chart render; Settings opens; backup save and restore round-trips', page, async (c) => {
+  await rec.run('M6', 'You: readiness, report and badges render; Settings opens; backup save and restore round-trips', page, async (c) => {
     await open(page, BASE, '/you', 2000);
     const h = (await headings(page)).join(' | ');
     const t = norm(await bodyText(page));
-    // The Grove You tab names its areas chart "Five areas, one scale" (commit 7120591; no "Figure N" any more).
-    c.check(/Five areas, one scale/i.test(h) || /Five areas, one scale/i.test(t), `no areas chart ("Five areas, one scale") on You (headings: ${h.slice(0, 120)})`);
-    c.check(/Herbarium|badges/i.test(t), 'no badges (Herbarium) row on You');
-    c.check(/plant/i.test(t), 'no plant row on You');
-    const svgs = await ev(page, () => document.querySelectorAll('svg').length);
-    c.check(svgs > 3, `only ${svgs} drawings on You`);
+    c.check(/Estimated readiness/i.test(h) || /Estimated readiness/i.test(t), `no readiness summary on You (headings: ${h.slice(0, 120)})`);
+    c.check(/badges/i.test(t), 'no badges card on You');
+    c.check(!/Five areas, one scale|Plant yours|Your plant/i.test(t), 'retired chart or plant card is still on You');
     await c.shot('m6-you');
     await page.mouse.move(195, 500); await page.mouse.wheel(0, 900); await sleep(500);
     await c.shot('m6-you-more');
     c.step('See your badges');
-    await page.getByRole('button', { name: /^(See your badges|Herbarium)/ }).first().click(); await sleep(1800);
+    await page.getByRole('button', { name: /^All badges$/ }).first().click(); await sleep(1800);
     const bt = norm(await bodyText(page));
     c.check(bt.length > 200 && !/\/you$/.test(page.url()), `badges screen did not open or is near-empty (${page.url()})`);
     await c.shot('m6-badges');
-    c.step('Plant yours (the demo learner has no plant yet)');
+    c.step('You → readiness report');
     await open(page, BASE, '/you', 1500);
-    const plantBtn = page.getByRole('button', { name: /^(Plant yours|Your plant)/ });
-    if (await visible(plantBtn)) {
-      await plantBtn.first().click(); await sleep(1800);
-      const pt = norm(await bodyText(page));
-      const ps = await ev(page, () => document.querySelectorAll('svg').length);
-      c.check(pt.length > 80 && ps > 0, `the plant screen is near-empty (${page.url()})`);
-      await c.shot('m6-plant');
-    } else c.check(false, 'no plant row (Plant yours / Your plant) on You');
+    await page.getByRole('button', { name: 'See report, your readiness report', exact: true }).click(); await sleep(1800);
+    c.check(/\/readiness/.test(page.url()), `readiness report opened ${page.url()}`);
+    const report = await notBlank(page);
+    c.check(report.ok, 'readiness report is blank');
+    await c.shot('m6-readiness-report');
     c.step('You → Settings');
     await open(page, BASE, '/you', 1500);
     await page.getByRole('button', { name: 'Settings', exact: true }).first().click(); await sleep(1500);

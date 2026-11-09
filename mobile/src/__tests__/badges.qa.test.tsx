@@ -214,7 +214,7 @@ describe('1. upgrade from a 1.9 save with earned milestones', () => {
     act(() => {
       useProgress.setState((s) => ({ byCert: { ...s.byCert, cisa: { ...selectCert(s, 'cisa'), lessonsDone: [lessonsFor('cisa')[0].id] } } }));
     });
-    // A real Snare-wise round (its 10 hits are the evidence a restore checks).
+    // A real Trap Spotter round (its 10 hits are the evidence a restore checks).
     jest.setSystemTime(A + 26 * DAY);
     finishGameRound('cisa', 'trap', { score: 10, rate: 1, tier: 'seedling', hits: Array(10).fill(true) });
     jest.setSystemTime(T0);
@@ -255,7 +255,7 @@ describe('1. upgrade from a 1.9 save with earned milestones', () => {
     expect(hasNewBadge('cisa')).toBe(false);
     mount(<You />);
     expect(root().findAll((n) => n.props.testID === 'new-badge-dot')).toHaveLength(0);
-    expect(labels().some((l) => l.startsWith(`Badges: your badges and field notes, ${Object.keys(SAVED).length} earned.`))).toBe(true);
+    expect(labels().some((l) => l.startsWith(`Badges: your study badges, ${Object.keys(SAVED).length} earned.`))).toBe(true);
     unmount();
     mount(<TabsLayout />);
     expect(root().findAll((n) => n.props.testID === 'you-new-dot')).toHaveLength(0);
@@ -270,7 +270,7 @@ describe('1. upgrade from a 1.9 save with earned milestones', () => {
     expect(line).toEqual({
       groundwork: '3 of 3 · Complete',
       domains: '1 of 6',
-      // Mobile 1.11: Evergreen gains Long Memory · 75 and Took Root, Exam Day gains Dress Rehearsal · 2.
+      // Mobile 1.11: Evergreen gains Lasting Recall · 75 and Topic Recall, Exam Day gains Mock Complete · 2.
       evergreen: '0 of 5',
       judgement: '0 of 3',
       examDay: '0 of 3',
@@ -297,7 +297,7 @@ describe('1. upgrade from a 1.9 save with earned milestones', () => {
   it('the next badge earned saves the planter of every complete set, dated by its last badge (and says "That completes")', () => {
     nineSave();
     launch();
-    // Rooted · 30 and · 60 were earned in 1.9 too; the 60th study day lands now.
+    // Study Days · 30 and · 60 were earned in 1.9 too; the 60th study day lands now.
     setMilestones({ earned: { ...SAVED, 'rooted:30': A + 28 * DAY }, days: 60 });
     jest.setSystemTime(T0 + DAY);
     act(() => {
@@ -309,7 +309,7 @@ describe('1. upgrade from a 1.9 save with earned milestones', () => {
     const moment = momentFor('cisa', 'rooted:60')!;
     expect(moment.completes).toBe(true);
     expect(moment.tierUp).toBe(true);
-    expect(moment.setName).toBe('Rooted');
+    expect(moment.setName).toBe('Study Habits');
   });
 
   it('nothing is lost on a backup round trip: every badge, date and planter', async () => {
@@ -365,7 +365,7 @@ describe('1. upgrade from a 1.9 save with earned milestones', () => {
 
 // ── 2. Earning a new badge in a session ──────────────────────────────────
 describe('2. earning a new badge in a session', () => {
-  /** A 20-question session, all right: First Foothold (and Firm Footing · IS Operations) are earned. */
+  /** A 20-question session, all right: First Review (and Domain Mastery · IS Operations) are earned. */
   const diagnosticSession = () => {
     ensureBackfill('cisa', T0 - DAY);
     initCaseSeen('cisa', T0 - DAY);
@@ -402,7 +402,7 @@ describe('2. earning a new badge in a session', () => {
     const at = (s: string) => t.indexOf(s);
     expect(at('A new badge · Groundwork')).toBeGreaterThan(at('Done'));
     expect(at('A new badge · Groundwork')).toBeLessThan(at('Review answers'));
-    expect(t).toContain('First Foothold');
+    expect(t).toContain('First Review');
     expect(t).toContain('You’ve mapped where you stand.');
     press(/^See it in your badges/);
     // It opens the case with this badge's sheet up (UX O7).
@@ -427,7 +427,7 @@ describe('2. earning a new badge in a session', () => {
     act(() => {
     screen().props.onScroll(700, 700);
   }); // 1200 < 700 + 700 − 96: in view
-    // Grove 4b (5.4): the one success tap comes as the tile is pressed, 320 ms into the press.
+    // Grove 4b (5.4): the one success tap comes as the tile is earned, 320 ms into the press.
     expect(mockSuccess).not.toHaveBeenCalled();
     act(() => {
       jest.advanceTimersByTime(320);
@@ -448,7 +448,7 @@ describe('2. earning a new badge in a session', () => {
     expect(hasNewBadge('cisa')).toBe(true);
     mount(<You />);
     expect(root().findAll((n) => n.props.testID === 'new-badge-dot').length).toBeGreaterThan(0);
-    expect(labels().some((l) => l.startsWith('Badges: your badges and field notes, new badge, 2 earned.'))).toBe(true);
+    expect(labels().some((l) => l.startsWith('Badges: your study badges, new badge, 2 earned.'))).toBe(true);
     unmount();
     mount(<TabsLayout />);
     expect(root().findAll((n) => n.props.testID === 'you-new-dot').length).toBeGreaterThan(0);
@@ -469,7 +469,7 @@ describe('2. earning a new badge in a session', () => {
     useSeen.setState({ badgeMoments: [T0 - 6 * DAY, T0 - 2 * DAY, T0 - DAY] });
     diagnosticSession();
     mount(<Results />);
-    expect(allText()).toContain('New in your badges: First Foothold');
+    expect(allText()).toContain('New in your badges: First Review');
     expect(allText()).not.toContain('A new badge');
     expect(allText()).toContain('See it in your badges ›');
     expect(mockSuccess).not.toHaveBeenCalled();
@@ -492,7 +492,7 @@ describe('2. earning a new badge in a session', () => {
     for (const d of ['1', '2', '3', '4', '5']) answerDomain(d, 20);
     setMilestones({ earned: { 'firm-footing:1': T0 - 9 * DAY, 'firm-footing:2': T0 - 8 * DAY, 'firm-footing:3': T0 - 7 * DAY } });
     act(() => {
-      checkMilestones('cisa'); // Firm Footing · IS Operations and · Info Protection, and Whole Map, at once
+      checkMilestones('cisa'); // Domain Mastery · IS Operations and · Info Protection, and All Domains, at once
     });
     const done = ['firm-footing:4', 'firm-footing:5', 'whole-map'].filter((k) => momentFor('cisa', k)?.completes);
     expect(done).toHaveLength(1);
@@ -538,14 +538,14 @@ describe('3. "Next for your exam" at each journey stage', () => {
     }
   };
 
-  it('diagnose (nothing answered): First Foothold', () => {
+  it('diagnose (nothing answered): First Review', () => {
     const n = next();
     expect(n.stage).toBe('diagnose');
     expect(n.best?.key).toBe('first-foothold');
     sane(n);
   });
 
-  it('learn (20+ answered, lessons to do, readiness low): the heaviest domain’s Firm Footing gap (IS Operations wins the tie with Info Protection)', () => {
+  it('learn (20+ answered, lessons to do, readiness low): the heaviest domain’s Domain Mastery gap (IS Operations wins the tie with Info Protection)', () => {
     for (const d of ['1', '2', '3', '4', '5']) answerDomain(d, 5, 0);
     const n = next();
     expect(n.stage).toBe('learn');
@@ -554,7 +554,7 @@ describe('3. "Next for your exam" at each journey stage', () => {
     sane(n);
   });
 
-  it('practice (one domain under 65%): Firm Footing where weight × gap is largest', () => {
+  it('practice (one domain under 65%): Domain Mastery where weight × gap is largest', () => {
     // IS Operations and Info Protection strong; IT Governance weakest of the 18% domains.
     answerDomain('4', 10);
     answerDomain('5', 10);
@@ -568,7 +568,7 @@ describe('3. "Next for your exam" at each journey stage', () => {
     sane(n);
   });
 
-  it('mock (every domain at 65%, fewer than 2 mocks): Dress Rehearsal, then On Pace once it is earned', () => {
+  it('mock (every domain at 65%, fewer than 2 mocks): Mock Complete, then On Pace once it is earned', () => {
     for (const d of ['1', '2', '3', '4', '5']) answerDomain(d, 10);
     let n = next();
     expect(n.stage).toBe('mock');
@@ -582,7 +582,7 @@ describe('3. "Next for your exam" at each journey stage', () => {
     sane(n);
   });
 
-  it('ready (2 mocks, readiness 80+): Long Memory, then Graduate', () => {
+  it('ready (2 mocks, readiness 80+): Lasting Recall, then Graduate', () => {
     for (const d of ['1', '2', '3', '4', '5']) answerDomain(d, 20);
     addMocks(fullMock('m1', T0 - 9 * DAY), fullMock('m2', T0 - DAY));
     const n = next();
@@ -609,7 +609,7 @@ describe('3. "Next for your exam" at each journey stage', () => {
     sane(n);
   });
 
-  // Fixed in review; was a bug (Minor, spec reading): §4.3 lists `stage 'diagnose' → First Foothold`
+  // Fixed in review; was a bug (Minor, spec reading): §4.3 lists `stage 'diagnose' → First Review`
   // first; the code checks "daysLeft ≤ 21" first, so a learner who starts two
   // weeks before the exam is told the best thing for the exam is a 4-hour mock,
   // before the 20-question diagnostic.
@@ -638,7 +638,7 @@ describe('3. "Next for your exam" at each journey stage', () => {
     const panel = root().findByType(NextPanel);
     expect(panel.props.best.key).toBe('firm-footing:4');
     expect(textOf(panel)).toContain('Still to collect · for your exam'); // mobile 1.51: the herbarium's ruled rows
-    expect(textOf(panel)).toContain('Firm Footing · IS Operations');
+    expect(textOf(panel)).toContain('Domain Mastery · IS Operations');
     expect(textOf(panel)).toContain('26% of the exam');
     expect(panel.props.nearest.map((m: CaseMark) => m.badge)).not.toContain('firm-footing');
   });
@@ -700,8 +700,8 @@ describe('3. "Next for your exam" at each journey stage', () => {
     expect(results['topic-clear']).toBe('/guided');
     expect(results['long-memory']).toBe('session:Questions to revisit'); // two misses are due
     expect(results['know-what-you-know']).toBe('session:Smart · All domains');
-    // Every badge but Fresh Start (a moment), Mindset Shift and the tiers that open at Whole Map
-    // (gated); mobile 1.11 adds Long Memory · 75 and · 150 and Took Root.
+    // Every badge but Study Return (a moment), Better Judgement and the tiers that open at All Domains
+    // (gated); mobile 1.11 adds Lasting Recall · 75 and · 150 and Topic Recall.
     expect(Object.keys(results)).toHaveLength(29);
     expect(results['took-root']).toBe('/guided');
     expect(results['long-memory:75']).toBe('session:Questions to revisit');
@@ -734,7 +734,7 @@ describe('4. the case', () => {
       expect(labels()).toContain(`Sort badges, ${SORT_LABEL[sort]}`);
       const { marks } = badgeCase('cisa', cp());
       const want = marks.filter((m) => passesFilter(m, filter));
-      // A Fresh Start not yet earned may stay off the case (it is a moment, never a goal).
+      // A Study Return not yet earned may stay off the case (it is a moment, never a goal).
       const must = want.filter((m) => !(m.set === 'moments' && m.status !== 'earned')).map((m) => m.key);
       const shown = root().findAllByType(BadgeCell).map((c) => c.props.mark.key as string);
       expect(new Set(shown).size).toBe(shown.length); // each once
@@ -778,27 +778,29 @@ describe('4. the case', () => {
     press(/^Badges not yet earned$/);
     expect(allText()).toContain('All earned.');
     press(/^Earned badges$/);
-    expect(allText()).toContain('Nothing pressed in this set yet.');
+    expect(allText()).toContain('No badges earned in this set yet.');
   });
 
   it('detail sheet, not yet: rule, progress, how to earn it, effort, and Study for this', () => {
     midLearner();
     mount(<Badges />);
-    press(/^Firm Footing · Info Protection, Clay\. Not yet/);
+    press(/^Domain Mastery · Info Protection, Bronze\. Not yet/);
     const sheet = root().findByType(Modal);
+    expect(textOf(sheet)).not.toContain('Info Protection is 26% of the exam.');
+    press(/^About earning Domain Mastery · Info Protection$/);
     const t = textOf(sheet);
     expect(t).toContain('The rule');
     // 9 of 12 right is already past 70%: what's left is the answers.
     expect(t).toContain('12 of 20 answered · at 70%+');
-    expect(t).toContain('How to earn it');
+    expect(t).toContain('About this milestone');
     expect(t).toContain('Info Protection is 26% of the exam.');
-    expect(sheet.findAll((n) => n.props.accessibilityLabel === 'Study for Firm Footing · Info Protection' && typeof n.props.onPress === 'function').length).toBeGreaterThan(0);
+    expect(sheet.findAll((n) => n.props.accessibilityLabel === 'Study for Domain Mastery · Info Protection' && typeof n.props.onPress === 'function').length).toBeGreaterThan(0);
   });
 
-  it('detail sheet, gated (Mindset Shift): when it opens, no progress bar, no Study button, never a padlock or "?"', () => {
+  it('detail sheet, gated (Better Judgement): when it opens, no progress bar, no Study button, never a padlock or "?"', () => {
     midLearner();
     mount(<Badges />);
-    press(/^Mindset Shift\. Not yet/);
+    press(/^Better Judgement\. Not yet/);
     const sheet = root().findByType(Modal);
     const t = textOf(sheet);
     expect(t).toContain('Opens after 100 first tries spread over 2 weeks or more.');
@@ -810,10 +812,10 @@ describe('4. the case', () => {
   it('detail sheet, earned: the date and what it means, no How to earn, no Study button', () => {
     midLearner();
     mount(<Badges />);
-    press(/^First Foothold\. Earned 22 September/);
+    press(/^First Review\. Earned 22 September/);
     const sheet = root().findByType(Modal);
     const t = textOf(sheet);
-    expect(t).toContain('Pressed 22 Sep');
+    expect(t).toContain('Earned 22 Sep');
     expect(t).toContain('You’ve mapped where you stand.');
     expect(t).not.toContain('How to earn it');
     expect(sheet.findAll((n) => /^Study for/.test(n.props.accessibilityLabel ?? ''))).toHaveLength(0);
@@ -822,25 +824,25 @@ describe('4. the case', () => {
   it('the Rooted ladder: three tiers in shape and words, the earned one dated, progress on the rest', () => {
     midLearner();
     mount(<Badges />);
-    press(/^Rooted · 30 days, Lichen\. Not yet/);
+    press(/^Study Days · 30 days, Silver\. Not yet/);
     const sheet = root().findByType(BadgeSheet);
     expect(sheet.props.ladder.map((m: CaseMark) => m.key)).toEqual(['rooted:10', 'rooted:30', 'rooted:60']);
-    const spoken = labels().find((l) => l.startsWith('10 days, Clay: '))!;
-    expect(spoken).toContain('10 days, Clay: earned 2 Oct');
-    expect(spoken).toContain('30 days, Lichen: 15 of 30 study days');
-    expect(spoken).toContain('60 days, Gold leaf: 15 of 60 study days');
-    expect(textOf(sheet)).toContain('Lichen, tier 2 of 3');
+    const spoken = labels().find((l) => l.startsWith('10 days, Bronze: '))!;
+    expect(spoken).toContain('10 days, Bronze: earned 2 Oct');
+    expect(spoken).toContain('30 days, Silver: 15 of 30 study days');
+    expect(spoken).toContain('60 days, Gold: 15 of 60 study days');
+    expect(textOf(sheet)).toContain('Silver, tier 2 of 3');
     // Mobile 1.11: each tier's state sits on its own line ("30 days" / "Next").
     expect(textOf(sheet)).toMatch(/30 days\s+Next/);
   });
 
   // Fixed in review; was a bug (Minor, copy): the ladder tags the tier you OPENED as "next", not the
-  // next tier to earn. Opening Rooted · 60 days with only 10 days earned says
+  // next tier to earn. Opening Study Days · 60 days with only 10 days earned says
   // "60 days · next" while 30 days is the real next step.
   it('the ladder marks the real next tier, whichever tier was opened', () => {
     midLearner();
     mount(<Badges />);
-    press(/^Rooted · 60 days, Gold leaf\. Not yet/);
+    press(/^Study Days · 60 days, Gold\. Not yet/);
     const t = textOf(root().findByType(BadgeSheet));
     expect(t).toMatch(/30 days\s+Next/);
     expect(t).not.toMatch(/60 days\s+Next/);
@@ -880,10 +882,10 @@ describe('4. the case', () => {
     expect(allText()).not.toContain('Next for your exam');
     for (const c of root().findAllByType(BadgeCell)) expect(c.props.showProgress).toBe(false);
     expect(allText()).not.toMatch(/\d+ of \d+ (answered|study days)/);
-    press(/^Firm Footing · Info Protection, Clay\. Not yet/);
+    press(/^Domain Mastery · Info Protection, Bronze\. Not yet/);
     const sheet = root().findByType(Modal);
     expect(textOf(sheet)).not.toContain('12 of 20 answered');
-    // Premium round 2: the sheet draws a pressed specimen (no progress trace at all); nothing in it shows progress.
+    // Premium round 2: the sheet draws a earned specimen (no progress trace at all); nothing in it shows progress.
     expect(medallions(sheet).length).toBeGreaterThan(0);
     expect(medallions(sheet).some((m) => (m.props.progress ?? 0) > 0)).toBe(false);
   });
@@ -985,7 +987,7 @@ describe('5. Settings → Show badges', () => {
     // And the row is back, with its dot (two badges arrived since the case was last opened).
     jest.setSystemTime(T0 + 60_000);
     mount(<You />);
-    expect(labels().some((l) => l.startsWith('Badges: your badges and field notes, new badge, 2 earned.'))).toBe(true);
+    expect(labels().some((l) => l.startsWith('Badges: your study badges, new badge, 2 earned.'))).toBe(true);
   });
 
   it('the choice travels in a backup; an older backup (no such field) keeps this phone’s choice', async () => {
@@ -1087,7 +1089,7 @@ describe('6. restore validation: edited backups', () => {
 
   it('fake planters are refused; a genuine one is kept', async () => {
     genuine();
-    // Genuine: every domain at Firm Footing plus Whole Map (earned in genuine()), and all three Rooted tiers.
+    // Genuine: every domain at Domain Mastery plus All Domains (earned in genuine()), and all three Rooted tiers.
     expect(cp().milestones!.planters?.domains).toBe(T0);
     setMilestones({ earned: { ...cp().milestones!.earned, 'rooted:10': T0 - 50 * DAY, 'rooted:30': T0 - 30 * DAY, 'rooted:60': T0 - DAY }, planters: { ...cp().milestones!.planters, rooted: T0 - DAY } });
     const m = await restoreEdited((x) => {
@@ -1109,11 +1111,11 @@ describe('6. restore validation: edited backups', () => {
     expect(m.planters ?? {}).toEqual({});
   });
 
-  // Fixed in review; was a bug (Minor): the Five Domains planter is checked against "Firm Footing in
+  // Fixed in review; was a bug (Minor): the Five Domains planter is checked against "Domain Mastery in
   // every domain the ANSWERS cover", not every domain of the exam. An edited
-  // backup with 20 answers in ONE domain can claim Whole Map (whose own check
-  // is only 20 answers), that domain's Firm Footing, and the planter.
-  it('the Five Domains planter needs Firm Footing in every exam domain, not just the domains answered', async () => {
+  // backup with 20 answers in ONE domain can claim All Domains (whose own check
+  // is only 20 answers), that domain's Domain Mastery, and the planter.
+  it('the Five Domains planter needs Domain Mastery in every exam domain, not just the domains answered', async () => {
     answerDomain('4', 25);
     act(() => {
       checkMilestones('cisa');
@@ -1125,7 +1127,7 @@ describe('6. restore validation: edited backups', () => {
     expect(m.planters?.domains).toBeUndefined();
   });
 
-  // Fixed in review; was a bug (Minor): Dress Rehearsal · 2 is checked as "2 mock records", but the
+  // Fixed in review; was a bug (Minor): Mock Complete · 2 is checked as "2 mock records", but the
   // rule needs 2 FULL, timed, fully answered mocks 7+ days apart (after Whole
   // Map). Two 10-question minis on the same day pass. The mock records hold
   // total, timing, unanswered and finishedAt, so the check could read them.
@@ -1163,7 +1165,7 @@ describe('7. reset', () => {
     expect(sets.every((s) => s.earned === 0)).toBe(true);
     expect(hasNewBadge('cisa')).toBe(false);
     mount(<You />);
-    expect(labels().some((l) => l.startsWith('Badges: your badges and field notes, none yet.'))).toBe(true);
+    expect(labels().some((l) => l.startsWith('Badges: your study badges, none yet.'))).toBe(true);
     unmount();
     // The phone's own choices (the Sort) stay; a new badge after the reset is new.
     expect(useSeen.getState().badgeSort).toBe('effort');
@@ -1187,10 +1189,10 @@ describe('8. regressions', () => {
     finishGameRound('cisa', 'daylight', { score: 6, rate: 0.6, tier: 'sapling', counts: { paceRounds: 3 } });
     mount(<FieldNotes />);
     const t = allText();
-    expect(t).toContain('Game levels');
+    expect(t).toContain('Drill levels');
     // Grove 4b (PHASE4B 6.6): each row shows its level in words, and says the three markers in one label.
-    expect(t).toContain('Snare Spotter Seedling');
-    expect(labels()).toContain('Snare Spotter. Level: Seedling. Sapling and Heartwood not reached. Two rounds in a row at 80% or more, at your level, grow it to Sapling.');
+    expect(t).toContain('Snare Spotter Beginner');
+    expect(labels()).toContain('Snare Spotter. Level: Beginner. Practised and Skilled not reached. Two rounds in a row at 80% or more, at your level, move you to Practised.');
     const shelf = badgeCase('cisa', cp()).sets.find((s) => s.info.id === 'fieldNotes')!;
     expect(t).toContain(`${shelf.earned} of ${shelf.total} earned, in your badges`);
     press(/^Your skill badges/);
@@ -1203,9 +1205,10 @@ describe('8. regressions', () => {
     expect(readFileSync(join(__dirname, '..', 'app', '_layout.tsx'), 'utf8')).toMatch(/<Stack\.Screen name="milestones"/);
     mount(<Badges />);
     // Grove 4b (F2, 5.1 item 1): the back row "You", then the title "Badges" (never "Herbarium", labels decision 8).
-    expect(allText()).toMatch(/^You Badges Every set counts on its own\. /);
+    expect(allText()).toMatch(/^You Badges /);
     expect(allText()).not.toMatch(/Herbarium/);
-    expect(allText()).toContain('Earned by what you’ve mastered. Once earned, a badge stays.');
+    press(/^About badges$/);
+    expect(allText()).toContain('Each set counts on its own. Once earned, a badge stays.');
   });
 
   it('every link to the badges in the app uses /milestones (nothing points at a /badges route that does not exist)', () => {

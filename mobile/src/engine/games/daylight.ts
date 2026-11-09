@@ -33,7 +33,7 @@ export const DAYLIGHT_SIZE = 5;
 
 export type DaylightTier = 'seedling' | 'sapling' | 'heartwood';
 export const DAYLIGHT_TIERS: DaylightTier[] = ['seedling', 'sapling', 'heartwood'];
-export const TIER_NAME: Record<DaylightTier, string> = { seedling: 'Seedling', sapling: 'Sapling', heartwood: 'Heartwood' };
+export const TIER_NAME: Record<DaylightTier, string> = { seedling: 'Beginner', sapling: 'Practised', heartwood: 'Skilled' };
 /** Time per question as a multiple of the exam pace. */
 export const TIER_FACTOR: Record<DaylightTier, number> = { seedling: 1.25, sapling: 1, heartwood: 5 / 6 };
 

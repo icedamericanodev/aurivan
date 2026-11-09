@@ -1,5 +1,5 @@
 /**
- * Mobile 1.51 Field Guide, UX review fixes (pure helpers):
+ * Mobile 1.51 Term Match, UX review fixes (pure helpers):
  * - P1: dates are said in full ("6 December", never "6 Dec");
  * - P5: the plan caption keeps "19 min" together (a no-break space before the unit),
  *   and the spoken line still says "minutes" either way.

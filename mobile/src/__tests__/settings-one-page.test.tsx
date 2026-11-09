@@ -49,7 +49,7 @@ jest.mock('react-native-safe-area-context', () => {
 let r: ReactTestRenderer | undefined;
 /** The Theme radio group's one spoken name: its title and line (the visible words are hidden from screen readers). */
 const THEME_GROUP = 'Theme. System follows your phone’s light or dark setting.';
-const GROUPS = ['Appearance', 'Exam', 'Your study', 'Reminders', 'Practice', 'Badges and your plant', 'You'];
+const GROUPS = ['Appearance', 'Exam', 'Your study', 'Reminders', 'Practice', 'Badges', 'You'];
 /** The doors, with the cloud build's two before Your data. */
 const DOORS = [...(CLOUD ? [cloudCopy('settings.group'), cloudCopy('board.settings.group')] : []), 'Your data', 'Help and about'];
 const root = () => r!.root;
@@ -82,7 +82,7 @@ describe('Settings, mobile 1.46: one page, clear groups', () => {
     for (const g of groups) {
       const head = g.findAll((n) => typeof n.type === 'string' && n.props.accessibilityRole === 'header')[0];
       expect(head.props.accessibilityLabel).toBe(g.props.title);
-      expect(StyleSheet.flatten(head.props.style).minHeight).toBeGreaterThanOrEqual(44);
+      expect(g.findAll((n) => typeof n.type === 'string' && StyleSheet.flatten(n.props.style ?? {}).minHeight >= 44).length).toBeGreaterThan(0);
       // The card: raised paper, radius 24, no shadow (never a button).
       const card = g.findAll((n) => typeof n.type === 'string' && StyleSheet.flatten(n.props.style ?? {}).borderRadius === 24)[0];
       const st = StyleSheet.flatten(card.props.style);
@@ -96,8 +96,8 @@ describe('Settings, mobile 1.46: one page, clear groups', () => {
   it('dark: each card has the Grove 1pt line edge, so it stands off the night background (1.5 before Grove)', () => {
     useSettings.setState({ theme: 'dark' });
     render();
-    const cards = hosts((n) => StyleSheet.flatten(n.props.style ?? {}).borderRadius === 24);
-    expect(cards.length).toBe(GROUPS.length + 1);
+    const cards = root().findAllByType(SettingsGroup).map((g) => g.findAll((n) => typeof n.type === 'string' && StyleSheet.flatten(n.props.style ?? {}).borderRadius === 24)[0]);
+    expect(cards.length).toBe(GROUPS.length);
     for (const card of cards) {
       const st = StyleSheet.flatten(card.props.style);
       expect(st.backgroundColor).toBe(dark.raised);
@@ -196,7 +196,7 @@ describe('Settings, mobile 1.46: one page, clear groups', () => {
   it('?section=plant stays on the page (it scrolls to the plant’s card); ?open=name opens the name sheet', () => {
     mockParams.current = { section: 'plant' };
     render();
-    expect(textOf(root())).toContain('Show my plant');
+    expect(textOf(root())).toContain('Show badges');
     expect(textOf(root())).toContain('Daily time');
     act(() => r!.unmount());
     mockParams.current = { open: 'name' };

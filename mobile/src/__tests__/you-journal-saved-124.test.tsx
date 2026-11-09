@@ -116,51 +116,26 @@ afterEach(() => {
   jest.restoreAllMocks();
 });
 
-describe('You: bands below 30 answers, numbers from 30', () => {
-  it('10 answers in a domain show "too few yet" and "10 of 30" answers, never a number (mobile 1.51: thin data looks thin)', () => {
+describe('You: summary accuracy and detailed report', () => {
+  it('keeps thin-data uncertainty before 30 answers without a domain chart', () => {
     seedDomain('1', 10, 9);
     mount(<You />);
-    const t = allText();
-    // 9 of 10 right: words under its line of growth, never "90" (the chart's own spoken stop is checked below).
-    // (The chart sets it on two lines, like the names: "too few" / "yet".)
-    expect(t.replace(/\n/g, ' ')).toContain('too few yet');
-    // Grove panel Q2: under the soil, "10 of 30" over "answers", as the list rows say it.
-    expect(t).toMatch(/10 of 30\s+answers/);
-    expect(t.slice(t.indexOf('Five areas, one scale'), t.indexOf('KEY'))).not.toMatch(/\b90\b/);
-    expect(t).toMatch(/Building is under 70, Steady 70 to 79, Strong 80 and up/);
+    expect(allText()).toContain('Too few yet');
+    expect(allText()).toContain('Shows at 30 answers');
+    expect(allText()).toContain('10 of 40 answers for your first range.');
+    expect(allText()).not.toContain('Five areas, one scale');
+    expect(allText()).not.toMatch(/\b90\s*%/);
+    press(/^See report, your readiness report$/);
+    expect(router.push).toHaveBeenCalledWith('/readiness');
   });
 
-  it('the bands: Building under 70, Steady 70 to 79', () => {
-    seedDomain('1', 10, 5); // 50
-    seedDomain('2', 10, 7); // 70
-    seedDomain('3', 10, 8); // 80
+  it('shows overall accuracy after 30 answers and explains the count on demand', () => {
+    seedDomain('4', 40, 30);
     mount(<You />);
-    const t = allText();
-    expect(t).toContain('Building');
-    expect(t).toContain('Steady');
-    expect(t).toContain('Strong');
-  });
-
-  it('from 30 answers: the word AND the number with %, under the "Right on your latest tries" caption', () => {
-    seedDomain('4', 40, 30); // 30/40 -> mastery 75
-    mount(<You />);
-    const t = allText();
-    expect(t).toMatch(/\b75\s+%/);
-    expect(t).toContain('steady');
-    // Mobile 1.43: the caption over the areas says what the percents count, once.
-    expect(t.match(/latest tries/g)).toHaveLength(1);
-    // Mobile 1.51 (UX review P3): the bands line stays while any area is under 30 answers (four here have none).
-    expect(t).toMatch(/Building is under/);
-  });
-
-  it('each area is one spoken stop with its word, and its thin data said as thin', () => {
-    seedDomain('1', 10, 9);
-    mount(<You />);
-    const row = root().findAll((n) => typeof n.type === 'string' && typeof n.props.accessibilityLabel === 'string' && n.props.accessibilityLabel.startsWith('IS Audit, '))[0];
-    // Mobile 1.51 (Field Guide): it says what it shows, "too few yet", never a band word for 10 answers.
-    // Grove panel Q2: said like the website's row.
-    expect(row.props.accessibilityLabel).toBe('IS Audit, 10 of 30 answers, too few yet for a score.');
-    expect(row.props.accessibilityLabel).not.toContain('90');
+    expect(allText()).toMatch(/\b75\s+%/);
+    expect(allText()).not.toContain('Each question counts once');
+    press(/^About Study progress$/);
+    expect(allText()).toContain('Each question counts once, at your latest try. Accuracy appears after 30 answers.');
   });
 
   it('Badges and Field notes are one row: Badges (mobile 1.51; Grove You C2 says "Badges", never "Herbarium")', () => {
@@ -168,11 +143,11 @@ describe('You: bands below 30 answers, numbers from 30', () => {
     const labels = root()
       .findAll((n) => typeof n.props.accessibilityLabel === 'string')
       .map((n) => n.props.accessibilityLabel as string);
-    expect(labels.some((l) => l.startsWith('Badges: your badges and field notes'))).toBe(true);
+    expect(labels.some((l) => l.startsWith('Badges: your study badges'))).toBe(true);
     expect(labels.some((l) => l.includes('Herbarium'))).toBe(false);
-    expect(labels.some((l) => l.startsWith('Field notes'))).toBe(false);
+    expect(labels.some((l) => l.startsWith('Drill progress'))).toBe(false);
     expect(labels.some((l) => l.startsWith('Badges,'))).toBe(false);
-    press(/^Badges: your badges and field notes/);
+    press(/^Badges: your study badges/);
     expect(router.push).toHaveBeenCalledWith('/milestones');
   });
 
@@ -182,7 +157,7 @@ describe('You: bands below 30 answers, numbers from 30', () => {
     const labels = root()
       .findAll((n) => typeof n.props.accessibilityLabel === 'string')
       .map((n) => n.props.accessibilityLabel as string);
-    expect(labels.some((l) => l.startsWith('Field notes'))).toBe(true);
+    expect(labels.some((l) => l.startsWith('Drill progress'))).toBe(true);
     expect(labels.some((l) => l.startsWith('Herbarium'))).toBe(false);
   });
 });

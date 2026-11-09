@@ -33,7 +33,7 @@ export const CANOPY_MIN_POOL = CANOPY_SIZE * 2;
 
 export type CanopyTier = 'seedling' | 'sapling' | 'heartwood';
 export const CANOPY_TIERS: CanopyTier[] = ['seedling', 'sapling', 'heartwood'];
-export const CANOPY_TIER_NAME: Record<CanopyTier, string> = { seedling: 'Seedling', sapling: 'Sapling', heartwood: 'Heartwood' };
+export const CANOPY_TIER_NAME: Record<CanopyTier, string> = { seedling: 'Beginner', sapling: 'Practised', heartwood: 'Skilled' };
 export const CANOPY_TIER_LINE: Record<CanopyTier, string> = {
   seedling: 'Governance or management? Four roles to choose from.',
   sapling: 'Owner, custodian or auditor? Near neighbours.',

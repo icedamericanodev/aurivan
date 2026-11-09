@@ -1,5 +1,5 @@
 /**
- * Canopy Call (games review §3.7): the reviewed roles deck, exclude_chips
+ * Role Check (games review §3.7): the reviewed roles deck, exclude_chips
  * honoured on every card at every level, levels by card tier, scoring,
  * confusion pairs, and the slip coach's "wrong role" pattern drilling here.
  */
@@ -39,7 +39,7 @@ describe('chips', () => {
     expect(allowedRoles(deck.cards.find((c) => c.id === 'r001')!, deck)).not.toContain('board');
   });
 
-  it('always include the key, with no repeats: 4 chips, 5 at Heartwood', () => {
+  it('always include the key, with no repeats: 4 chips, 5 at Skilled', () => {
     for (const card of deck.cards) {
       for (const tier of TIERS) {
         const chips = chipsFor(card, deck, tier, createRng(card.id.length + tier.length));
@@ -50,13 +50,13 @@ describe('chips', () => {
     }
   });
 
-  it('Seedling spreads the chips across layers of authority', () => {
+  it('Beginner spreads the chips across layers of authority', () => {
     const card = deck.cards.find((c) => c.role === 'audit_committee' && !c.excludeChips.length)!;
     const chips = chipsFor(card, deck, 'seedling', createRng(5));
     expect(new Set(chips.map((id) => ROLE_LAYER[id])).size).toBe(4);
   });
 
-  it('Sapling and Heartwood always offer the IS auditor as a near neighbour', () => {
+  it('Practised and Skilled always offer the IS auditor as a near neighbour', () => {
     for (const card of deck.cards.filter((c) => c.role !== 'is_auditor' && !c.excludeChips.includes('is_auditor'))) {
       expect(chipsFor(card, deck, 'sapling', createRng(3))).toContain('is_auditor');
       expect(chipsFor(card, deck, 'heartwood', createRng(4))).toContain('is_auditor');
@@ -123,14 +123,14 @@ describe('scoring and the end screen', () => {
 
 describe('wiring', () => {
   it('is in the registry with its name and tagline, and needs the deck', () => {
-    expect(GAMES.canopy.name).toBe('Canopy Call');
+    expect(GAMES.canopy.name).toBe('Role Check');
     expect(GAMES.canopy.tagline).toBe('Choose who has the authority to decide.');
     expect(isPlayable('canopy', [], null, { roles: deck })).toBe(true);
     expect(isPlayable('canopy', [], null, {})).toBe(false);
     expect(isPlayable('canopy', [], null, { roles: { ...deck, cards: deck.cards.slice(0, 19) } })).toBe(false);
   });
 
-  it('the slip coach’s "wrong role" pattern drills in Canopy Call', () => {
+  it('the slip coach’s "wrong role" pattern drills in Role Check', () => {
     expect(PATTERN_COPY.role.game).toBe('canopy');
   });
 });

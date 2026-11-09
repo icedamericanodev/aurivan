@@ -105,21 +105,21 @@ describe('a widget tap while a quiz is open (busy path, lib/widgetOpen.ts)', () 
     expect(stack[stack.length - 1]).toBe('/home');
   });
 
-  it('a screen goal (Your plant) opened over a quiz: Back goes to the quiz, not a blank screen', () => {
+  it('a retired plant goal resumes an open quiz without adding a screen', () => {
     onboard();
     openQuiz();
     stack.push('/home', '/session');
     link('kind=plant&go=plant&from=widget');
-    expect(stack[stack.length - 1]).toBe('/plant');
-    mockRouter.back();
     expect(stack[stack.length - 1]).toBe('/session');
+    mockRouter.back();
+    expect(stack[stack.length - 1]).toBe('/home');
   });
 
   it('control: with no quiz open, /widget is replaced by Today and the place opens on top', () => {
     onboard();
     stack.push('/home', '/bank');
     link('kind=plant&go=plant&from=widget');
-    expect(stack).toEqual(['/home', '/plant']);
+    expect(stack).toEqual(['/home']);
   });
 });
 

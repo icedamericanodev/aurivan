@@ -397,7 +397,7 @@ describe('the lesson player', () => {
     expect(useProgress.getState().byCert.cisa.lessonsDone).toContain(charter.id);
     expect(allText()).toContain('Lesson complete');
     const inDomain = CISA_LESSONS.filter((l) => l.domainId === charter.domainId).length;
-    expect(allText()).toContain(`A new leaf on your IS Audit branch: 1 of ${inDomain} lessons.`);
+    expect(allText()).toContain(`IS Audit: 1 of ${inDomain} lessons completed.`);
     expect(root().findByType(LessonBranch).props.fresh).toBe(0);
     expect(useSeen.getState().moments['lesson-done']).toBe(1);
     expect(mockLight).toHaveBeenCalledTimes(1);
@@ -476,7 +476,7 @@ describe('Play identity', () => {
     }
   });
 
-  // Mobile 1.51: the games are Drills, a numbered key list in Practice (Field Guide: no icon tiles). Each
+  // Mobile 1.51: the games are Drills, a numbered key list in Practice (Term Match: no icon tiles). Each
   // game keeps its glyph on its intro, its round header and its recap (checked below).
   it('Drills list the games by name and number, no icon tiles; the Sure Footing game is now Forecast, same id', () => {
     mount(<Drills />);
@@ -513,7 +513,7 @@ describe('the round end’s level up', () => {
     mount(<RoundEnd certId="cisa" game="stones" score={15} max={15} onAgain={() => {}} news={{ change: 'up', tier: 'sapling', best: true, moment: null }} />);
     expect(useSeen.getState().moments['level-up']).toBe(1);
     expect(root().findByType(TierLeaf).props.tier).toBe('sapling');
-    expect(allText()).toContain('Sapling');
+    expect(allText()).toContain('Practised');
     expect(mockLight).toHaveBeenCalledTimes(1);
   });
 
@@ -543,7 +543,7 @@ describe('the round end’s level up', () => {
         score={9}
         max={10}
         onAgain={() => {}}
-        news={{ change: 'up', tier: 'sapling', best: false, moment: { key: 'snare-wise', label: 'Snare-wise', rule: 'Spot the snare.', kind: 'skill', set: 'fieldNotes', setName: 'Field notes', unlock: 'You spot the snare 8 times in 10.' } }}
+        news={{ change: 'up', tier: 'sapling', best: false, moment: { key: 'snare-wise', label: 'Trap Spotter', rule: 'Spot the snare.', kind: 'skill', set: 'fieldNotes', setName: 'Field notes', unlock: 'You spot the snare 8 times in 10.' } }}
       />,
     );
     expect(useSeen.getState().moments['level-up']).toBeUndefined();
@@ -560,6 +560,6 @@ describe('Lesson complete for screen readers', () => {
     press(/^Option [A-D]: The audit committee/);
     press('Finish lesson');
     const head = root().find((n) => n.props.accessible === true && n.props.accessibilityRole === 'header' && String(n.props.accessibilityLabel).startsWith('Lesson complete: '));
-    expect(head.props.accessibilityLabel).toMatch(/^Lesson complete: The audit charter.*\. A new leaf on your IS Audit branch: 1 of \d+ lessons\.$/);
+    expect(head.props.accessibilityLabel).toMatch(/^Lesson complete: The audit charter.*\. IS Audit: 1 of \d+ lessons completed\.$/);
   });
 });

@@ -111,7 +111,7 @@ describe("this week's twig", () => {
     const w = twigWeek(['2026-10-20', '2026-10-26', '2026-10-28', '2026-10-30'], WED);
     expect(w.map((d) => d.on)).toEqual([true, false, true, false, false, false, false]);
     expect(w.map((d) => d.today)).toEqual([false, false, true, false, false, false, false]);
-    expect(twigSpoken(w)).toBe('Studied on Monday and Wednesday. One leaf per day studied. Today is Wednesday.');
+    expect(twigSpoken(w)).toBe('Studied on Monday and Wednesday. Today is Wednesday.');
     expect(twigSpoken(twigWeek([], WED))).toBe('No study days yet this week. Today is Wednesday.');
   });
 

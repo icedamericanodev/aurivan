@@ -45,7 +45,7 @@ const S = 1000;
 const IDS = ['a', 'b', 'c', 'd', 'e'];
 
 describe('tiers come from the exam pace', () => {
-  it('CISA: Seedling 120 s, Sapling 96 s, Heartwood 80 s', () => {
+  it('CISA: Beginner 120 s, Practised 96 s, Skilled 80 s', () => {
     expect(tierSeconds('seedling', CISA)).toBe(120);
     expect(tierSeconds('sapling', CISA)).toBe(96);
     expect(tierSeconds('heartwood', CISA)).toBe(80);
@@ -57,7 +57,7 @@ describe('tiers come from the exam pace', () => {
     expect(tierSeconds('seedling', aaia)).toBe(125);
   });
 
-  it('only Seedling can be extended', () => {
+  it('only Beginner can be extended', () => {
     expect(tierCanExtend('seedling')).toBe(true);
     expect(tierCanExtend('sapling')).toBe(false);
     expect(tierCanExtend('heartwood')).toBe(false);
@@ -65,7 +65,7 @@ describe('tiers come from the exam pace', () => {
 });
 
 describe('the registry', () => {
-  it('lists Daylight with its name, tagline and honest length (the Sapling budget)', () => {
+  it('lists Daylight with its name, tagline and honest length (the Practised budget)', () => {
     expect(GAME_ORDER).toContain('daylight');
     expect(GAMES.daylight).toMatchObject({ id: 'daylight', name: 'Daylight', tagline: 'Answer at exam pace.', size: 5 });
     expect(DAYLIGHT_MINUTES).toBe(8);
@@ -81,7 +81,7 @@ describe('the registry', () => {
 });
 
 describe('one shared budget', () => {
-  it('5 × the tier: 8 minutes at Sapling, 10 at Seedling', () => {
+  it('5 × the tier: 8 minutes at Practised, 10 at Beginner', () => {
     expect(newDaylightRound(IDS, 'sapling', 96).budgetMs).toBe(480 * S);
     expect(newDaylightRound(IDS, 'seedling', 120).budgetMs).toBe(600 * S);
   });
@@ -92,7 +92,7 @@ describe('one shared budget', () => {
     expect(budgetGone(r, 480 * S)).toBe(true);
   });
 
-  it('Seedling: "Add a minute" grows the budget; other tiers and finished rounds stay', () => {
+  it('Beginner: "Add a minute" grows the budget; other tiers and finished rounds stay', () => {
     const r = newDaylightRound(IDS, 'seedling', 120);
     expect(extendBudget(r).budgetMs).toBe(660 * S);
     const sapling = newDaylightRound(IDS, 'sapling', 96);
@@ -234,7 +234,7 @@ describe('pace line', () => {
 
 describe('the suggested tier', () => {
   const answers = (sec: number, n = 12) => Array.from({ length: n }, (_, i) => ({ ms: sec * S, lastAt: 1_800_000_000_000 + i }));
-  it('Seedling with too few timed answers', () => {
+  it('Beginner with too few timed answers', () => {
     expect(suggestTier(answers(50, 9), CISA)).toBe('seedling');
     expect(suggestTier([{ lastAt: 1 }], CISA)).toBe('seedling');
   });
@@ -280,12 +280,12 @@ describe('Build F review: pace only counts with right answers', () => {
     expect(daylightHits(play('sapling', [true, true]))).toEqual([true, true, false, false, false]);
   });
 
-  it('Sure-Footed Pace needs 4 of 5 right, inside the light, at Sapling or faster', () => {
+  it('Sure-Footed Pace needs 4 of 5 right, inside the light, at Practised or faster', () => {
     expect(atSurePace(play('sapling', [true, true, true, true, false]))).toBe(true);
     expect(atSurePace(play('heartwood', [true, true, true, true, true]))).toBe(true);
     // Fast random taps: on pace but only 3 right.
     expect(atSurePace(play('heartwood', [true, false, true, false, true]))).toBe(false);
-    // Seedling never counts; nor does a round the light set on.
+    // Beginner never counts; nor does a round the light set on.
     expect(atSurePace(play('seedling', [true, true, true, true, true]))).toBe(false);
     expect(atSurePace(play('sapling', [true, true, true, true]))).toBe(false);
   });

@@ -51,6 +51,8 @@ function home() {
 
 /** Open the place a widget tap names. Returns whether it asked for a session (the count waits for a real start). */
 export function openFromWidget(tap: WidgetTap): boolean {
+  // Old home-screen links open the study plan; an unfinished quiz still resumes safely.
+  if (tap.go === 'plant' || tap.go === 'plant-pick' || tap.go === 'plant-settings') tap = { ...tap, go: 'today' };
   const settings = useSettings.getState();
   if (!settings.onboarded) {
     router.replace('/');

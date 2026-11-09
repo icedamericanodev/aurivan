@@ -211,7 +211,7 @@ export const Drills = memo(function Drills({
       <Enter i={enter}>
       {/* Grove Phase 4 (PHASE4.md 7.8 item 9): Drills is one card with its kicker inside. */}
       <HubCard testID="drills-card" style={{ paddingBottom: space.md }}>
-      <CardHead title="Drills" headRef={head} meta={allSeedling ? 'All at Seedling' : undefined} />
+      <CardHead title="Drills" headRef={head} meta={allSeedling ? 'All at Beginner' : undefined} />
       {!plan.drill ? (
         // No game has enough questions for this exam yet: said calmly, no numbers.
         <T v="meta">Drills come once this exam has enough questions.</T>

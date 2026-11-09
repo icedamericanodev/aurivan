@@ -13,12 +13,13 @@
  *   in `meta`, and the three level markers (one screen-reader stop per row: "Snare Spotter. Level:
  *   Sapling. Heartwood not reached."). How a level grows is said once, above the card.
  */
+import { FeatureInfo } from '../components/featureInfo';
 import { router } from 'expo-router';
 import { backOr } from '../lib/actions';
 import { useMemo } from 'react';
 import { ScrollView, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { ICON_STROKE, Leaf } from '../components/icons';
+import { ICON_STROKE, BadgeIcon } from '../components/icons';
 import { LevelMarkers, levelSpoken } from '../components/drillKit';
 import { groveCard, ICON_SIZE, ListRow, PushedHeader, T } from '../components/ui';
 import { drillName } from '../lib/drillNames';
@@ -35,8 +36,8 @@ import { useTheme } from '../theme/useTheme';
 // Only rounds played at the learner's own level move it (engine/games/growth.ts),
 // and the top level is just a fact, never a warning (behaviour review).
 const HOW: Record<'seedling' | 'sapling' | 'heartwood', string> = {
-  seedling: 'Two rounds in a row at 80% or more, at your level, grow it to Sapling.',
-  sapling: 'Two rounds in a row at 80% or more, at your level, grow it to Heartwood.',
+  seedling: `Two rounds in a row at 80% or more, at your level, move you to ${GAME_TIER_NAME.sapling}.`,
+  sapling: `Two rounds in a row at 80% or more, at your level, move you to ${GAME_TIER_NAME.heartwood}.`,
   heartwood: 'The top level.',
 };
 
@@ -51,12 +52,10 @@ export default function FieldNotes() {
   return (
     <SafeAreaView edges={['top', 'bottom']} style={{ flex: 1, backgroundColor: c.bg }}>
       <ScrollView contentContainerStyle={{ paddingHorizontal: space.gutter, paddingBottom: space.xxl }}>
-        <PushedHeader backLabel="You" onBack={() => backOr('/you')} />
-        <T v="display" accessibilityRole="header" style={{ marginTop: space.sm }}>Field notes</T>
-        {/* How a level grows, said once for every game (it is the same rule for each). */}
-        <T v="small" color={c.ink2} style={{ marginTop: space.md }}>Two rounds in a row at 80% or more, at your level, grow it.</T>
+        <PushedHeader right={<FeatureInfo title="How levels work"><T v="body">Two rounds in a row at 80% or more, at your level, move you up. Two rounds in a row under 50% at your level move it back one level. Two strong rounds move you up again.</T></FeatureInfo>} backLabel="You" onBack={() => backOr('/you')} />
+        <T v="display" accessibilityRole="header" style={{ marginTop: space.sm }}>Drill progress</T>
 
-        <T v="headline" accessibilityRole="header" style={{ marginTop: space.xl }}>Game levels</T>
+        <T v="headline" accessibilityRole="header" style={{ marginTop: space.xl }}>Drill levels</T>
         <View testID="field-notes-levels" style={[groveCard(c), { marginTop: space.sm, paddingHorizontal: grovePlate.pad }]}>
           {games.map((id, k) => {
             const tier = growthTier(progress.gameGrowth?.[id]);
@@ -80,14 +79,13 @@ export default function FieldNotes() {
             );
           })}
         </View>
-        <T v="meta" style={{ marginTop: space.sm }}>Two rounds in a row under 50% at your level move it back one level. Two strong rounds grow it again.</T>
 
         {!hidden && (
           <>
             <T v="headline" accessibilityRole="header" style={{ marginTop: space.xl, marginBottom: space.sm }}>Skill badges</T>
             {/* The 7 skill badges live in the badge case, on their own shelf (counted on their own). */}
             <ListRow
-              icon={<Leaf size={ICON_SIZE.row} color={c.accentText} strokeWidth={ICON_STROKE} />}
+              icon={<BadgeIcon size={ICON_SIZE.row} color={c.accentText} strokeWidth={ICON_STROKE} />}
               title="Your skill badges"
               subtitle={earned ? `${earned} of ${skills.length} earned, in your badges` : 'In your badges, with what each needs'}
               accessibilityLabel={`Your skill badges. ${earned ? `${earned} of ${skills.length} earned` : 'None yet'}. Opens your badges.`}

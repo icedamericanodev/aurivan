@@ -250,3 +250,6 @@ export const fieldRole: Partial<Record<FieldVariant, TypeRole>> = {
   keyNo: role.aside,
   why: role.aside,
 };
+
+/** Fixed warm paper for badge art, readable with the light emblem inks in either theme. */
+export const badgePaper = { top: "#FFFDF7", bottom: "#EAEFDF", edge: "#C8D0BB", inset: "#D9E1CF" } as const;

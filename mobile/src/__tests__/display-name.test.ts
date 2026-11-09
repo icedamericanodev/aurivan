@@ -309,7 +309,7 @@ describe('the name stays on the phone', () => {
     useSettings.setState({ displayName: NAME });
     const cisa = getCertification('cisa')!;
     const t = badgeCardText(
-      { badge: 'long-memory', name: 'Long Memory', tierLine: 'Lichen · tier 2 of 3', skill: 'Recalled 75 answers a week or more later', set: 'evergreen', status: 'earned', earnedOn: '3 Nov 2026' },
+      { badge: 'long-memory', name: 'Lasting Recall', tierLine: 'Silver · tier 2 of 3', skill: 'Recalled 75 answers a week or more later', set: 'evergreen', status: 'earned', earnedOn: '3 Nov 2026' },
       cisa,
     );
     expect(JSON.stringify(t)).not.toContain('Zyxwvut');

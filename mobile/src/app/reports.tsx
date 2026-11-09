@@ -36,12 +36,12 @@ import { useTheme } from '../theme/useTheme';
 
 /** Which game a card belongs to, by its id's first part ("rumor:4B1.2:…"). */
 const CARD_GAME: Record<string, string> = {
-  rumor: 'Root or Rumor',
-  root: 'Root or Rumor',
+  rumor: 'Fact or Myth',
+  root: 'Fact or Myth',
   kt: TERM_MATCH,
-  role: 'Canopy Call',
-  seq: 'Stepping Stones',
-  flow: 'Stepping Stones',
+  role: 'Role Check',
+  seq: 'Sequence Check',
+  flow: 'Sequence Check',
 };
 
 /** A report's title (names, not codes), its code, and whether the item is gone from the app. */

@@ -7,13 +7,12 @@
  * plants, marks and looks, for the exam that is reset AND for every other
  * exam's plant (M6), with the default "first three earned" keepsakes (H1).
  */
-import { act, create, type ReactTestRenderer } from 'react-test-renderer';
+import { act, type ReactTestRenderer } from 'react-test-renderer';
 import { setMockReducedMotion } from '../../jest/reanimated-mock';
-import YourPlant from '../app/plant';
-import { previewSizeFor } from '../app/plant-look';
-import { resetCelebrationsForTest, resetOncePerDayForTest, setSystemReducedMotionForTest, type Celebration } from '../components/motion';
+
+import { resetCelebrationsForTest, resetOncePerDayForTest, setSystemReducedMotionForTest } from '../components/motion';
 import { bandHalfWidth, buildPlant, bounds, builtCacheSize, groupNames, keepsakeIcon, keepsakeShape, planterIcon, type GNode, type PNode } from '../components/plant/art';
-import { claimReaction, LivePlant, reactionMs, resetPlantReactionsForTest } from '../components/plant/LivePlant';
+import { claimReaction, reactionMs, resetPlantReactionsForTest } from '../components/plant/LivePlant';
 import { freezeKeepsakes, isValidPlantState, keepThroughOtherReset, repairPlant, resetPlant, withLook, type CertPlant, type GrowthLevel } from '../engine/plant';
 import { defaultKeepsakes, isKeepable, isUnlocked, keepOnReset, KEEPSAKE_ITEMS, lookItem, LOOK_ITEMS, resolveLook, unlockedLooks, type CertMarks } from '../engine/plantLooks';
 import { createRng } from '../engine/random';
@@ -22,7 +21,7 @@ import { allCertMarks, newKeepsakeOn, plantLookView } from '../lib/plant';
 import { selectCert, useProgress } from '../store/progress';
 import { useSeen } from '../store/seen';
 import { useSettings } from '../store/settings';
-import { motion, LARGE_TEXT } from '../theme/tokens';
+import { motion } from '../theme/tokens';
 // Mobile 1.40: these tests check the storybook plant, so they plant as an app from before 1.40 did (no style).
 import { legacyPlantNew as plantNew } from '../../jest/legacyPlant';
 
@@ -215,16 +214,6 @@ describe('proud is earned today (code review M5, QA BUG-2/3)', () => {
 
 // ── M3, M7a: reactions ─────────────────────────────────────────────────
 describe('reactions (code review M3 and M7a; probe P2)', () => {
-  const full: Celebration = { mode: 'full', first: true, settled: false, run: 1, skip: () => {} };
-  it('with the growth sequence, the proud reaction is spent without playing (one move at a time)', () => {
-    setMockReducedMotion(false);
-    setSystemReducedMotionForTest(false);
-    act(() => {
-      r = create(<LivePlant testID="live" species="oak" stage={4} size={104} theme="light" reaction={{ id: 'cisa:proud:d', mood: 'proud' }} growth={{ from: 3, celebration: full }} />);
-    });
-    // Spent: it never plays later the same session (Your plant), and it charged nothing.
-    expect(claimReaction('cisa:proud:d')).toBe(false);
-  });
   it('curious is charged its whole lean (900 ms), the others their 600 ms', () => {
     expect(reactionMs('curious')).toBe(motion.plant.lean);
     expect(reactionMs('happy')).toBe(motion.plant.react);
@@ -322,36 +311,8 @@ describe('the proud face (UX review P3, option a) and the build cache (M8c)', ()
 });
 
 describe('the Look preview size (UX review P9)', () => {
-  it('160pt, 120pt at large text, 72pt at very large text or on a short phone (Grove Phase 4b, PHASE4B 4.2)', () => {
-    expect(previewSizeFor(1, 852)).toBe(160);
-    expect(previewSizeFor(LARGE_TEXT, 852)).toBe(120);
-    expect(previewSizeFor(2, 852)).toBe(72);
-    expect(previewSizeFor(1, 640)).toBe(72);
-  });
 });
 
 // ── M1 (Your plant side): the quiet grow-up line ──────────────────────
 describe('a growth applied quietly on Today is said on Your plant, once (code review M1)', () => {
-  it('"Kai grew to Elder." once, then never again', () => {
-    act(() => {
-      useProgress.getState().updatePlant('cisa', () => ({ ...plantNew('oak', 'Kai', Date.now() - 30 * DAY, 6) }));
-    });
-    useSeen.setState({ quietGrowth: { cisa: 6 } });
-    act(() => {
-      r = create(<YourPlant />);
-    });
-    const line = () => r!.root.findAll((n) => n.props.testID === 'plant-grew-quietly' && typeof n.type === 'string');
-    expect(line()).toHaveLength(1);
-    const text: string[] = [];
-    const walk = (n: unknown) => (typeof n === 'string' ? text.push(n) : (n as { children: unknown[] }).children.forEach(walk));
-    walk(line()[0]);
-    // Phase 4b (PHASE4B 4.1 item 5): one quiet line above the stem, no caption.
-    expect(text.join(' ')).toMatch(/^Kai grew to Elder\.$/);
-    expect(useSeen.getState().quietGrowth.cisa).toBeUndefined();
-    act(() => r!.unmount());
-    act(() => {
-      r = create(<YourPlant />);
-    });
-    expect(line()).toHaveLength(0);
-  });
 });

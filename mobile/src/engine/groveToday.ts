@@ -156,5 +156,5 @@ export function twigSpoken(week: readonly TwigDay[]): string {
   const names = week.filter((d) => d.on).map((d) => WEEKDAYS[d.i]);
   const list = names.length < 2 ? names.join('') : `${names.slice(0, -1).join(', ')} and ${names[names.length - 1]}`;
   const today = week.find((d) => d.today);
-  return `${names.length ? `Studied on ${list}. One leaf per day studied.` : 'No study days yet this week.'} Today is ${WEEKDAYS[today ? today.i : 0]}.`;
+  return `${names.length ? `Studied on ${list}.` : 'No study days yet this week.'} Today is ${WEEKDAYS[today ? today.i : 0]}.`;
 }

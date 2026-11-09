@@ -1,5 +1,5 @@
 /**
- * Canopy Call screen against the real stores: a decision, role rows in a
+ * Role Check screen against the real stores: a decision, role rows in a
  * radio group, the why and the auditor's move, review cards (never
  * answers), and the round end's confusion pairs.
  */
@@ -98,7 +98,7 @@ it('plays ten decisions: right and wrong calls, reveal, cards, confusion pairs, 
   expect(cp().gameGrowth?.canopy).toEqual(expect.objectContaining({ tier: 'seedling', up: 1 }));
 });
 
-it('Heartwood offers five roles and asks who acts first', () => {
+it('Skilled offers five roles and asks who acts first', () => {
   useProgress.setState({ byCert: { cisa: { ...cp(), gameGrowth: { canopy: { tier: 'heartwood', up: 0, down: 0 } } } } });
   act(() => {
     r = create(<CanopyCall />);
@@ -109,7 +109,7 @@ it('Heartwood offers five roles and asks who acts first', () => {
 });
 
 it('after the level grows, "Play again" plays the NEW level (code review)', () => {
-  // One strong round at Sapling already: the next strong one grows it to Heartwood.
+  // One strong round at Practised already: the next strong one grows it to Skilled.
   useProgress.setState({ byCert: { cisa: { ...cp(), gameGrowth: { canopy: { tier: 'sapling', up: 1, down: 0 } } } } });
   act(() => {
     r = create(<CanopyCall />);
@@ -126,7 +126,7 @@ it('after the level grows, "Play again" plays the NEW level (code review)', () =
     pressLabel(k === 9 ? 'See results' : 'Next decision');
   }
   expect(cp().gameGrowth?.canopy?.tier).toBe('heartwood');
-  expect(allText()).toContain('You’ve grown to Heartwood.');
+  expect(allText()).toContain('You’ve reached Skilled.');
   pressLabel('Play again');
   expect(byLabel(/^Role \d of 5: /)).toHaveLength(5);
 });

@@ -151,7 +151,7 @@ describe('Drills: Today’s drill', () => {
     expect(textOf(root())).not.toContain(GAMES.canopy.name);
   });
 
-  it('five tagged "wrong person" mistakes make Canopy Call the drill, and say why', () => {
+  it('five tagged "wrong person" mistakes make Role Check the drill, and say why', () => {
     answerN(50);
     tagFive('role');
     mount();

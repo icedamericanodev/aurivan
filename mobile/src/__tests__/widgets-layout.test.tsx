@@ -23,7 +23,7 @@ import type { JSX } from 'react';
 import { addDays } from '../engine/examDay';
 import { buildSnapshot, DEFAULT_WIDGET_PREFS, FINAL_DAY_PLAIN, sizeClass, widgetFace, WIDGET_KINDS, type DrawContext, type SnapshotInput, type WidgetFace, type WidgetKind, type WidgetPrefs, type WidgetSnapshot } from '../engine/widgets';
 import { dark, light } from '../theme/tokens';
-import { markSvg, plantSvg, ringsSvg, ruledSvg, widgetColors } from '../widgets/art';
+import { markSvg, ringsSvg, ruledSvg, widgetColors } from '../widgets/art';
 import { CAPTION_SHORT, captionFit, fitText, forLargeText, forNarrowStrip, TAP_MIN, WIDGET_ACTIONS, WidgetLayout } from '../widgets/layouts.android';
 import { renderKind } from '../widgets/render.android';
 
@@ -268,7 +268,7 @@ describe('the words and taps a learner sees', () => {
       if (kind === 'plan') continue;
       for (const s of [snap({ prefs: ON }), snap({ prefs: ON, examDay: addDays(TODAY, 1) })]) expect(JSON.stringify(build(kind, s, 376, 184, 'dark'))).not.toContain(dark.forest);
     }
-    expect(props(build('plant', snap(), 182, 184, 'light')).backgroundColor).toBe(light.tipBg);
+    expect(props(build('plant', snap(), 182, 184, 'light')).backgroundColor).toBe(widgetColors('paper', 'light').bg);
     expect(props(build('week', snap(), 182, 184, 'light')).backgroundColor).toBe(light.raised2);
     expect(props(build('countdown', snap({ prefs: ON }), 182, 184, 'light')).backgroundColor).toBe(light.ink);
     // The ruled index card: an underlay of rules behind the words.
@@ -418,12 +418,13 @@ describe('the words and taps a learner sees', () => {
     expect(priv).toContain('Rings growing');
   });
 
-  it('Your plant, 2×2: the plant is the hero on its plate, "Growth 3 · Shoot", and the stage word stays at 200%', () => {
-    const tree = build('plant', snap(), 182, 184);
-    const hero = svgs(tree).reduce((m, p) => Math.max(m, (p.width as number) ?? 0), 0);
-    expect(hero).toBeGreaterThanOrEqual(100);
-    expect(texts(tree)).toContain('Growth 3 · Shoot');
-    expect(texts(build('plant', snap(), 182, 184, 'light', 2)).join(' ')).toContain('Shoot');
+  it('the retired provider shows a study shortcut at normal and enlarged text sizes', () => {
+    for (const scale of [1, 1.3, 2]) {
+      const tree = build('plant', snap(), 182, 184, 'light', scale);
+      const copy = texts(tree).join(' ');
+      expect(copy).toMatch(/Study|study/);
+      expect(copy).not.toMatch(/Growth|Shoot|plant/);
+    }
   });
 
   it('Road to exam: the weeks as a road and this week’s focus; at 200% the weeks still show', () => {
@@ -532,17 +533,6 @@ describe('the words and taps a learner sees', () => {
 });
 
 describe('art', () => {
-  it('the plant is drawn awake from the app’s own art, for every growth and both themes', () => {
-    for (const growth of [1, 2, 3, 4, 5, 6]) {
-      for (const theme of ['light', 'dark'] as const) {
-        const svg = plantSvg({ species: 'narra', name: 'narra', growth, grew: null }, theme)!;
-        expect(svg).toMatch(/^<svg [^>]*viewBox="[-\d. ]+">/);
-        expect(svg.length).toBeGreaterThan(200);
-      }
-    }
-    expect(plantSvg({ species: 'not-a-plant', name: 'x', growth: 3, grew: null }, 'light')).toBeNull();
-  });
-
   it('the rings are one colour (no domain colours); before the first estimate they still show (no fading)', () => {
     const c = widgetColors('paper', 'light');
     const rings = ringsSvg([70, 0, 55, 80, 66], [18, 18, 12, 26, 26], c);

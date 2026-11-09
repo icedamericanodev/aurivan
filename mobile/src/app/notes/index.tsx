@@ -10,6 +10,7 @@
  * (engine/noteReadState.ts groupReadState). It fills once, in view, when
  * the domain's last note was just read.
  */
+import { FeatureInfo } from '../../components/featureInfo';
 import { CardHead, HubCard, PageTitle } from '../../components/groveHub';
 import { useTheme } from '../../theme/useTheme';
 import { router, useLocalSearchParams } from 'expo-router';
@@ -72,7 +73,7 @@ export default function NotesHome() {
 
   return (
     <Screen edges={['top', 'bottom']}>
-      <PushedHeader title="Study notes" showTitle={false} onBack={goBack} />
+      <PushedHeader right={<FeatureInfo title="About study notes"><T v="body">Original content, reviewed against public frameworks.</T></FeatureInfo>} title="Study notes" showTitle={false} onBack={goBack} />
       <PageTitle title="Study notes" />
       <Enter i={0}>
         <T v="meta" style={{ marginTop: space.xs }}>
@@ -178,7 +179,6 @@ export default function NotesHome() {
               ))}
             </HubCard>
           )}
-          <T v="meta" style={{ marginTop: space.md }}>Original content, reviewed against public frameworks.</T>
         </Enter>
       )}
     </Screen>

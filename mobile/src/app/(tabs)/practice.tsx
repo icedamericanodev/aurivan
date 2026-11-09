@@ -26,6 +26,7 @@
  * place with topic and difficulty; every old Play link opens `/practice?section=drills`, which scrolls
  * to Drills and moves screen-reader focus to its head, once.
  */
+import { FeatureInfo } from '../../components/featureInfo';
 import * as Router from 'expo-router';
 import { router } from 'expo-router';
 import { Children, memo, useCallback, useEffect, useRef, useState, type ReactNode, type RefObject } from 'react';
@@ -35,7 +36,7 @@ import { PracticeLeaf } from '../../components/glyphs';
 import { AreaDot, CardDivider, CardHead, CountChip, GlyphTile, HeroKicker, HubCard } from '../../components/groveHub';
 import { HeroCard, HeroTile } from '../../components/groveToday';
 import { AnimatedPressable, Collapse, usePressScale } from '../../components/motion';
-import { Drills, DRILLS_MOVED, playedAnyGame } from '../../components/drills';
+import { Drills } from '../../components/drills';
 import { DRILLS_SECTION } from '../../lib/actions';
 import { DisclosureRow, FieldLabel, PathChooser } from '../../components/pathChooser';
 import { Button, Chip, ChipRow, Enter, Gap, ICON_SIZE, IconCircle, Screen, SEG_ON_DARK, Segmented, T, useFontScale, useScreenScroll, type ScreenScroll } from '../../components/ui';
@@ -57,7 +58,6 @@ import { moveFocus } from '../../lib/a11y';
 import { useJourney, useToday } from '../../lib/useJourney';
 import { useDailyMinutes, useSettings } from '../../store/settings';
 import { selectCert, useProgress } from '../../store/progress';
-import { useSeen } from '../../store/seen';
 import { groveRadius } from '../../theme/grove';
 import { LARGE_TEXT, space } from '../../theme/tokens';
 import { useTheme } from '../../theme/useTheme';
@@ -122,14 +122,6 @@ export default function Practice() {
     if (navigation?.setParams) navigation.setParams({ section: undefined });
     else (router as { setParams?: (p: object) => void }).setParams?.({ section: undefined });
   }, [navigation]);
-  // Mobile 1.51 (UX review P4): one quiet line for a learner who played games on the old Play tab, once.
-  // Seen on "Go to Drills" or the first time Drills is on screen; kept in the seen store's `moments`.
-  const playedBefore = useProgress(playedAnyGame);
-  const movedSeen = useSeen((s) => (s.moments[DRILLS_MOVED] ?? 0) > 0);
-  const movedHint = playedBefore && !movedSeen;
-  const seeMoved = useCallback(() => {
-    if (!((useSeen.getState().moments[DRILLS_MOVED] ?? 0) > 0)) useSeen.getState().played(DRILLS_MOVED);
-  }, []);
   const familiarity = useSettings((s) => s.familiarity);
   // Mock exams right under the hero for the Exam-focused plan and at the mock / ready stages.
   const mocksFirst = examFocused || stage === 'mock' || stage === 'ready';
@@ -266,25 +258,10 @@ export default function Practice() {
   return (
     <Screen>
       <Enter i={0}>
-        <T v="display" accessibilityRole="header" style={{ marginTop: space.xs }}>Practice</T>
-        <T v="meta" style={{ marginTop: space.xs }}>Every option explained, every trap named.</T>
-        {movedHint && (
-          // Once, for those who played on the old Play tab: where the games went (no modal, no toast).
-          <View testID="drills-moved" style={{ flexDirection: 'row', flexWrap: 'wrap', alignItems: 'center', columnGap: space.sm, marginTop: space.xs }}>
-            <T v="meta">The games are now Drills.</T>
-            {/* A label-size text button (R6), so it reads as a control, not as part of the sentence. */}
-            <Button
-              kind="ghost"
-              label="Go to Drills"
-              accessibilityHint="Scrolls to Drills on this page"
-              onPress={() => {
-                seeMoved();
-                setJumpKey((k) => k + 1);
-              }}
-              style={{ marginLeft: -space.sm }}
-            />
-          </View>
-        )}
+        <View style={{ flexDirection: 'row', alignItems: 'center', gap: space.sm }}>
+          <T v="display" accessibilityRole="header" style={{ flex: 1, marginTop: space.xs }}>Practice</T>
+          <FeatureInfo title="Practice"><T v="body">Choose a study path or build a one-off set by domain, topic and difficulty. Drills are short games that practice specific skills.</T></FeatureInfo>
+        </View>
         <JumpBar onJump={jump} inView={sectionInView} />
         <MindsetStrip tips={mindsetTipsFor(cert.id)} />
       </Enter>
@@ -365,7 +342,7 @@ export default function Practice() {
       {/* The brain games (mobile 1.51: the Play tab moved here). Its own outer view sits right in the page, so
           its layout follows the sections above (the jump runs from it). */}
       <View ref={drillsBox} collapsable={false} style={{ marginTop: space.lg }}>
-        <Drills enter={5} jumpKey={jumpKey} onJumped={section === DRILLS_SECTION ? jumped : undefined} onSeen={movedHint ? seeMoved : undefined} />
+        <Drills enter={5} jumpKey={jumpKey} onJumped={section === DRILLS_SECTION ? jumped : undefined} />
       </View>
 
       {!mocksFirst && <Enter i={6}>{mockCard}</Enter>}
@@ -876,7 +853,6 @@ const ReviewSaved = memo(function ReviewSaved({ cert, timed, weakLine }: { cert:
       <DisclosureRow
         icon={<SlidersHorizontal size={ICON_SIZE.row} color={c.accentText} strokeWidth={ICON_STROKE} />}
         title="Build a set"
-        subtitle="Pick a domain, topic and difficulty"
         expanded={setOpen}
         onPress={() => setSetOpen((o) => !o)}
         accessibilityHint="Shows the choices for a one-off set. Your path doesn't change."

@@ -76,14 +76,6 @@ const press = (label: RegExp) => {
     n.props.onPress();
   });
 };
-
-/** Mobile 1.21: Today's plant row hides with a long press or the screen-reader action "Hide from Today". */
-const hidePlantRow = () => {
-  const row = root().findAll((n) => Array.isArray(n.props.accessibilityActions) && n.props.accessibilityActions.some((a: { name: string }) => a.name === 'hide') && typeof n.props.onAccessibilityAction === 'function')[0];
-  act(() => {
-    row.props.onAccessibilityAction({ nativeEvent: { actionName: 'hide' } });
-  });
-};
 const switchValue = (name: string) => root().findAll((x) => typeof x.props.onValueChange === 'function' && x.props.accessibilityLabel === name)[0]?.props.value;
 const checkedRadio = (group: string) => {
   const g = root().findAll((x) => x.props.accessibilityRole === 'radiogroup' && x.props.accessibilityLabel === group && typeof x.type !== 'string')[0];
@@ -180,7 +172,7 @@ describe('Today: the day in minutes', () => {
     expect(allText()).toContain(`Today’s plan About\u00A0${first.minutes + 12}\u00A0min`);
     expect(allText()).not.toMatch(/Starting check/);
     // Still no range on day 2: the goal is the countdown.
-    expect(allText()).toContain('5 of 40 answers until your first readiness range');
+    expect(byTestID('today-hero')).toHaveLength(0);
   });
 
   it('a plan saved before 1.15 (no budget) shows no "today" total, and is kept for the day', () => {
@@ -274,7 +266,7 @@ describe('Today: the one "Fit your plan" card', () => {
     expect(byTestID('fit-card')).toHaveLength(0);
   });
 
-  it('never for a learner who onboarded on 1.15, in exam week, or with the plant’s line', () => {
+  it('never after setup or in exam week; legacy plant preferences no longer delay it', () => {
     useSettings.setState({ onboarded: true, fitPrompt: 'answered' });
     mount(<Today />);
     expect(byTestID('fit-card')).toHaveLength(0);
@@ -292,15 +284,7 @@ describe('Today: the one "Fit your plan" card', () => {
       useProgress.setState({ plantSettings: undefined });
     });
     mount(<Today />);
-    expect(byTestID('plant-prompt')).toHaveLength(1);
-    expect(byTestID('fit-card')).toHaveLength(0);
-    // "No thanks" on the plant's line: still not on the same visit (one setup line per visit).
-    hidePlantRow();
     expect(byTestID('plant-prompt')).toHaveLength(0);
-    expect(byTestID('fit-card')).toHaveLength(0);
-    unmount();
-    // The next visit may ask.
-    mount(<Today />);
     expect(byTestID('fit-card')).toHaveLength(1);
   });
 });

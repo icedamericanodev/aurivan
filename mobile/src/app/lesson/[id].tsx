@@ -425,7 +425,7 @@ function LessonComplete({ lesson, domain, fresh }: { lesson: Lesson; domain: Dom
     count >= inDomain.length
       ? `Every ${name} lesson is done.`
       : fresh
-        ? `A new leaf on your ${name} branch: ${count} of ${inDomain.length} lessons.`
+        ? `${name}: ${count} of ${inDomain.length} lessons completed.`
         : `${name}: ${count} of ${inDomain.length} lessons done.`;
   // Screen readers: the Finish button is gone at the swap, so focus moves to
   // this block, which says the whole moment in one stop (no separate

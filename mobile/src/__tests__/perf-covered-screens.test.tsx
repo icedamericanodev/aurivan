@@ -16,7 +16,7 @@ import { FocusEmitter, FocusScope, routeParams } from '../../jest/perf/focusRout
 import { buildHeavySave } from '../../jest/perf/heavySave';
 import BankDomain from '../app/bank/[domain]';
 import BankDomains from '../app/bank/index';
-import YourPlant from '../app/plant';
+
 import ReadinessReport from '../app/readiness';
 import { getAllQuestions } from '../content/loader';
 import { selectCert, useProgress } from '../store/progress';
@@ -103,7 +103,6 @@ const cases: [string, () => ReactElement, Check, (() => void)?][] = [
   ['the Readiness report', () => <ReadinessReport />, 'answers'],
   ['the Question bank index', () => <BankDomains />, 'fresh'],
   ['a Question bank domain list', () => <BankDomain />, 'fresh', () => Object.assign(routeParams, { domain: '4' })],
-  ['Your plant', () => <YourPlant />, 'drawn'],
 ];
 
 describe.each(cases)('%s on a large save', (_name, el, check, setup) => {

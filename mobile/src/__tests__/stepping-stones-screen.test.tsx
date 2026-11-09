@@ -1,7 +1,7 @@
 /**
- * Stepping Stones screen against the real stores: tap to place, tap a
+ * Sequence Check screen against the real stores: tap to place, tap a
  * placed stone to take it back (no drag), check marks each stone and says
- * where a misplaced one goes, review cards (never answers), Heartwood's
+ * where a misplaced one goes, review cards (never answers), Skilled's
  * missing step, and the shared round end with the level saved.
  */
 import { act, create, type ReactTestInstance, type ReactTestRenderer } from 'react-test-renderer';
@@ -68,7 +68,7 @@ afterEach(() => {
   jest.useRealTimers();
 });
 
-it('Seedling: the first step given, tap to place, tap again to take back, check and explain', () => {
+it('Beginner: the first step given, tap to place, tap again to take back, check and explain', () => {
   act(() => {
     r = create(<SteppingStones />);
   });
@@ -112,7 +112,7 @@ it('Seedling: the first step given, tap to place, tap again to take back, check 
   expect(cp().gameGrowth?.stones).toEqual(expect.objectContaining({ tier: 'seedling' }));
 });
 
-it('Heartwood: which step is missing, from three', () => {
+it('Skilled: which step is missing, from three', () => {
   useProgress.setState({ byCert: { cisa: { ...cp(), gameGrowth: { stones: { tier: 'heartwood', up: 0, down: 0 } } } } });
   act(() => {
     r = create(<SteppingStones />);

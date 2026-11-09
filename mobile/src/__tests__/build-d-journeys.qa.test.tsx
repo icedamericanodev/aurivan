@@ -463,9 +463,9 @@ describe('journey 7: Daylight', () => {
   const right = () => Object.values(cp().answers).filter((a) => a.lastCorrect).length;
   const scoreLabel = () => labels().find((t) => t.startsWith('Score '))!;
 
-  it('Seedling: flag, pause, add a minute, then the light sets; timed-out questions go to review unanswered', () => {
+  it('Beginner: flag, pause, add a minute, then the light sets; timed-out questions go to review unanswered', () => {
     mount(<DaylightScreen />);
-    press('Start'); // Seedling suggested: 10:00
+    press('Start'); // Beginner suggested: 10:00
     tickSeconds(10 * S);
     press('Flag & move on');
     press('Pause');
@@ -497,9 +497,9 @@ describe('journey 7: Daylight', () => {
     expect(cp().gameBest.daylight).toBe(right());
   });
 
-  it('Sapling: a flagged question comes back last with its time kept; all answered in time earns the +1', () => {
+  it('Practised: a flagged question comes back last with its time kept; all answered in time earns the +1', () => {
     mount(<DaylightScreen />);
-    press('Sapling, 96 seconds a question');
+    press('Practised, 96 seconds a question');
     press('Start');
     const firstText = root().findAllByType(OptionCard)[0].props.text;
     tickSeconds(15 * S);
@@ -522,9 +522,9 @@ describe('journey 7: Daylight', () => {
     expect(scoreLabel()).toBe(`Score ${right() + 1} out of 6`);
   });
 
-  it('Heartwood: 6:40 of light, no "Add a minute", and the light sets on an unanswered round with a score of 0', () => {
+  it('Skilled: 6:40 of light, no "Add a minute", and the light sets on an unanswered round with a score of 0', () => {
     mount(<DaylightScreen />);
-    press('Heartwood, 80 seconds a question');
+    press('Skilled, 80 seconds a question');
     press('Start');
     expect(strip().clock.text).toBe('06:40');
     expect(has('Add a minute')).toBe(false);

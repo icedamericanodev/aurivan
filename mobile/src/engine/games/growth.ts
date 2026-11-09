@@ -8,7 +8,7 @@
  *   with the share of that step done right, 0 to 1 (the "rate").
  * - Two rounds IN A ROW at 80% or more, played at your level, move you up
  *   one level. Two rounds in a row under 50% move you back one, worded
- *   "Back to Sapling. Two strong rounds grow it again.": never as a loss, never a warning.
+ *   "Back to Sapling. Two strong rounds move you up again.": never as a loss, never a warning.
  * - Only rounds played AT your level count toward moving. A learner may
  *   still pick any level on a game's first screen (it starts on theirs);
  *   trying a harder one never knocks them back.
@@ -22,7 +22,7 @@
 
 export type GameTier = 'seedling' | 'sapling' | 'heartwood';
 export const GAME_TIERS: GameTier[] = ['seedling', 'sapling', 'heartwood'];
-export const GAME_TIER_NAME: Record<GameTier, string> = { seedling: 'Seedling', sapling: 'Sapling', heartwood: 'Heartwood' };
+export const GAME_TIER_NAME: Record<GameTier, string> = { seedling: 'Beginner', sapling: 'Practised', heartwood: 'Skilled' };
 
 /** A round at this share or more counts toward moving up. */
 export const PROMOTE_AT = 0.8;
@@ -95,8 +95,8 @@ export function noteRound(prev: GameGrowth | undefined, r: RoundOutcome): { grow
  * news; stepping back is framed as practice, never as a loss.
  */
 export function tierChangeLine(change: TierChange, tier: GameTier): string | null {
-  if (change === 'up') return `You’ve grown to ${GAME_TIER_NAME[tier]}. Your next round starts there.`;
-  if (change === 'down') return `Back to ${GAME_TIER_NAME[tier]}. Two strong rounds grow it again.`;
+  if (change === 'up') return `You’ve reached ${GAME_TIER_NAME[tier]}. Your next round starts there.`;
+  if (change === 'down') return `Back to ${GAME_TIER_NAME[tier]}. Two strong rounds move you up again.`;
   return null;
 }
 

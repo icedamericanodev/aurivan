@@ -273,7 +273,7 @@ describe('celebrations', () => {
     const say = jest.spyOn(AccessibilityInfo, 'announceForAccessibility').mockImplementation(() => {});
     let cel: Celebration | null = null;
     function Moment() {
-      cel = useCelebration('clearing', true, 'Today’s clearing. Two of two, done.');
+      cel = useCelebration('clearing', true, 'Today complete. Two of two, done.');
       return (
         <Celebrate celebration={cel}>
           <FadeIn delay={900}>

@@ -8,6 +8,7 @@
  * Each row shows only the learner's own progress ("42 answered · 7 missed").
  * The summary text comes from engine/bank.ts, which is tested for this.
  */
+import { FeatureInfo } from '../../components/featureInfo';
 import { HoldContext } from '../../lib/holdWhileHidden';
 import { useScreenFocus } from '../../components/motion';
 import { PageTitle } from '../../components/groveHub';
@@ -58,10 +59,9 @@ function BankDomainsScreen() {
   return (
     <SafeAreaView edges={['top', 'bottom']} style={{ flex: 1, backgroundColor: c.bg }}>
       <ScrollView contentContainerStyle={{ paddingHorizontal: space.gutter, paddingBottom: space.xxxl }}>
-        <PushedHeader title="Question bank" showTitle={false} onBack={() => (router.canGoBack() ? router.back() : router.replace('/practice'))} />
+        <PushedHeader right={<FeatureInfo title="Question bank"><T v="body">Browse a domain or topic, then open a question to answer it.</T></FeatureInfo>} title="Question bank" showTitle={false} onBack={() => (router.canGoBack() ? router.back() : router.replace('/practice'))} />
         <PageTitle title="Question bank" />
         <Enter i={0}>
-          <T v="body" color={c.ink2} style={{ marginTop: space.sm }}>Browse by domain and topic. Tap any question to answer it.</T>
           <T v="meta" num style={{ marginTop: space.sm }}>{overall}</T>
         </Enter>
         <Enter i={1}>

@@ -325,7 +325,7 @@ describe('the session’s moment already spent', () => {
     expect(byTestID('rv-play')).toHaveLength(0);
   });
 
-  it('on Your plant, after the session’s moment: "See Kai’s new form", and the screen still scrolls', () => {
+  it('a retired plant route preserves unseen forms without presenting a reveal', () => {
     motionOn();
     const T0 = Date.now() - 10 * 86_400_000;
     const p: CertPlant = { ...plantNew('oak', 'Kai', T0, 3), backfill: { at: T0, growth: 3, seen: true } };
@@ -336,10 +336,10 @@ describe('the session’s moment already spent', () => {
     useSeen.setState({ plantForms: { cisa: { seen: 1 } } });
     claimMoment();
     mount(<YourPlant />);
-    expect(byTestID('plant-form-reveal-wait')).toHaveLength(1);
-    expect(textOf(byTestID('plant-form-reveal-play')[0])).toContain('See Kai’s new form');
+    expect(byTestID('plant-form-reveal-wait')).toHaveLength(0);
+    expect(byTestID('plant-moved')).toHaveLength(1);
     // Written down as shown at once (leaving without tapping still counts).
-    expect(useSeen.getState().plantForms?.cisa).toEqual({ seen: 2 });
+    expect(useSeen.getState().plantForms?.cisa).toEqual({ seen: 1 });
   });
 });
 

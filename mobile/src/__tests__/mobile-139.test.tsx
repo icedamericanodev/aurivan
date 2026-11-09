@@ -283,7 +283,7 @@ describe('#15 short lesson scenes (1.39 centred them; 1.43 puts every scene on t
 });
 
 // ── Results: the rings only where they tell something ─────────────────────
-// Mobile 1.51 (Field Guide): the rings gave way to the growth plate (Fig. 6), drawn for every set,
+// Mobile 1.51 (Term Match): the rings gave way to the growth plate (Fig. 6), drawn for every set,
 // one area or many; it is the empty mount while no area in the set has a number yet.
 describe('Results: the growth plate, not rings', () => {
   const finish = () =>

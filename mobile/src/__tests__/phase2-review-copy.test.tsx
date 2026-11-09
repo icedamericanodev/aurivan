@@ -109,7 +109,7 @@ const openMotionRow = (at: ReactTestInstance) =>
     mount(<Settings />);
     openMotionRow(root());
     const reduced = root().findAll((n) => n.props.accessibilityRole === 'radio' && typeof n.props.accessibilityLabel === 'string' && n.props.accessibilityLabel.startsWith('Reduced'))[0];
-    expect(reduced.props.accessibilityLabel).toContain('Short fades instead of slides; growth shows its end state.');
+    expect(reduced.props.accessibilityLabel).toContain('Short fades instead of slides; progress changes appear immediately.');
   });
 });
 

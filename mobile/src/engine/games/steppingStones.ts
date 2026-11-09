@@ -39,7 +39,7 @@ export const MISSING_CHOICES = 3;
 
 export type StonesTier = 'seedling' | 'sapling' | 'heartwood';
 export const STONES_TIERS: StonesTier[] = ['seedling', 'sapling', 'heartwood'];
-export const STONES_TIER_NAME: Record<StonesTier, string> = { seedling: 'Seedling', sapling: 'Sapling', heartwood: 'Heartwood' };
+export const STONES_TIER_NAME: Record<StonesTier, string> = { seedling: 'Beginner', sapling: 'Practised', heartwood: 'Skilled' };
 export const STONES_TIER_LINE: Record<StonesTier, string> = {
   seedling: 'Four steps, the first one given.',
   sapling: 'Five or six steps, all yours to place.',

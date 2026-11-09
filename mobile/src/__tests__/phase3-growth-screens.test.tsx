@@ -98,16 +98,16 @@ function clearToday() {
   mockSuccess.mockClear();
 }
 
-describe('Today’s clearing (T2)', () => {
+describe('Today complete (T2)', () => {
   it('full motion: plays once, its numbers roll, the words are there and spoken once, one success haptic', () => {
     setMockReducedMotion(false);
     const say = jest.spyOn(AccessibilityInfo, 'announceForAccessibility').mockImplementation(() => {});
     clearToday();
     mount(<Today />);
-    expect(allText()).toContain('Today’s clearing');
+    expect(allText()).toContain('Today complete');
     expect(columns().length).toBeGreaterThan(0); // the day's numbers rolled
     flushSayLaterForTest(); // spoken after a short pause (a screen change must not cut it off)
-    expect(say.mock.calls.filter(([t]) => String(t).startsWith('Today’s clearing.'))).toHaveLength(1);
+    expect(say.mock.calls.filter(([t]) => String(t).startsWith('Today complete.'))).toHaveLength(1);
     expect(mockSuccess).toHaveBeenCalledTimes(1);
     expect(useProgress.getState().days.cisa!.celebrated).toBe(true);
     expect(useSeen.getState().moments.clearing).toBe(1);
@@ -122,7 +122,7 @@ describe('Today’s clearing (T2)', () => {
   it('Reduce Motion: the same words and numbers at once, nothing rolls; the haptic is kept', () => {
     clearToday();
     mount(<Today />);
-    expect(allText()).toContain('Today’s clearing');
+    expect(allText()).toContain('Today complete');
     expect(allText()).toContain('31');
     expect(columns()).toHaveLength(0);
     expect(mockSuccess).toHaveBeenCalledTimes(1);
@@ -181,23 +181,18 @@ describe('Results growth', () => {
   });
 });
 
-describe('You: what went up since the last look', () => {
-  it('a domain that rose since You was last seen gets a quiet "+N" beside it; nothing else is marked', () => {
-    // Some answers in IS Audit, seen at a lower value. 30 of them: from 30 a domain shows its number, and
-    // only a domain that shows a number gets a "+N" (mobile 1.24; a word like "Building" gets none).
+describe('You: summary without the retired area chart', () => {
+  it('old saved domain deltas do not bring back the chart or its +N labels', () => {
     const ids = getAllQuestions('cisa').filter((q) => q.domainId === '1').slice(0, 30).map((q) => q.id);
     act(() => {
       for (const id of ids) useProgress.getState().recordAnswer('cisa', id, true);
     });
+    useSeen.setState((s) => ({ values: { ...s.values, 'you:rings:cisa': [93, 0, 0, 0, 0] } }));
     mount(<You />);
-    const now = useSeen.getState().values['you:rings:cisa'];
-    act(() => {
-      r!.unmount();
-    });
-    useSeen.setState((s) => ({ values: { ...s.values, 'you:rings:cisa': now.map((v, i) => (i === 0 ? Math.max(0, v - 7) : v)) } }));
-    mount(<You />);
-    const tags = allText().match(/\+\d+/g) ?? [];
-    expect(tags).toEqual(['+7']);
+    expect(allText().match(/\+\d+/g) ?? []).toEqual([]);
+    expect(allText()).not.toContain('Five areas, one scale');
+    expect(allText()).toContain('See report');
+    expect(useSeen.getState().values['you:rings:cisa']).toEqual([93, 0, 0, 0, 0]);
   });
 });
 
@@ -206,11 +201,11 @@ describe('the milestone moment', () => {
     jest.useFakeTimers({ doNotFake: ['nextTick', 'setImmediate', 'queueMicrotask'] });
     setMockReducedMotion(false);
     const say = jest.spyOn(AccessibilityInfo, 'announceForAccessibility').mockImplementation(() => {});
-    const moment = { key: 'rooted:10', kind: 'milestone' as const, label: 'Rooted · 10 days', rule: 'Study on 10 days in all.', set: 'rooted', setName: 'Rooted', unlock: 'Ten study days.', tier: 1 };
+    const moment = { key: 'rooted:10', kind: 'milestone' as const, label: 'Study Days · 10 days', rule: 'Study on 10 days in all.', set: 'rooted', setName: 'Rooted', unlock: 'Ten study days.', tier: 1 };
     mount(<MilestoneMomentView moment={moment as never} once="s1" inView={false} />);
     expect(mockSuccess).not.toHaveBeenCalled();
     flushSayLaterForTest();
-    expect(say.mock.calls.filter(([t]) => String(t).startsWith('A new badge, Rooted: Rooted · 10 days · Clay. Ten study days.'))).toHaveLength(1);
+    expect(say.mock.calls.filter(([t]) => String(t).startsWith('A new badge, Rooted: Study Days · 10 days · Bronze. Ten study days.'))).toHaveLength(1);
     expect(useSeen.getState().moments.milestone).toBeUndefined(); // not played yet
     act(() => {
       r!.update(<MilestoneMomentView moment={moment as never} once="s1" inView />);

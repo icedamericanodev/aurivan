@@ -307,44 +307,30 @@ describe('what would raise the low end: each button starts its session', () => {
 
 describe('the ways in', () => {
   it('Today: the readiness words are a button to the report, with a hint', () => {
-    setCert({ answers: seedAnswers(30, 0.7) });
+    setCert({ answers: seedAnswers(30, 0.7), plant: { species: 'oak', name: 'Kai', plantedAt: Date.now() - 3 * DAY, growth: 2 } });
     mount(<Today />);
-    const tap = root().findAll((n) => n.props.testID === 'readiness-tap' && typeof n.props.onPress === 'function' && n.props.accessibilityRole === 'button')[0];
-    expect(tap.props.accessibilityRole).toBe('button');
-    expect(tap.props.accessibilityHint).toBe('Opens your readiness report');
-    // Grove: the ring and its caption are the button, said in words with the estimate line word for word.
-    expect(tap.props.accessibilityLabel).toMatch(/^Estimated readiness range \d+ to \d+ out of 100\. The study bar is 80\. A study estimate, not a prediction\.$/);
-    act(() => {
-      tap.props.onPress();
-    });
-    expect(router.push).toHaveBeenCalledWith('/readiness');
+    expect(byTestID('readiness-tap')).toHaveLength(0);
+    expect(byTestID('today-plant')).toHaveLength(0);
+    expect(byTestID('readiness-focus-ring')).toHaveLength(0);
+    expect(allText()).toContain('Today’s plan');
   });
 
   it('Today with a plant: the plant opens Your plant, the words open the report (two stops)', () => {
     setCert({ answers: seedAnswers(30, 0.7), plant: { species: 'oak', name: 'Kai', plantedAt: Date.now() - 3 * DAY, growth: 2 } });
     mount(<Today />);
-    const tap = root().findAll((n) => n.props.testID === 'readiness-tap' && typeof n.props.onPress === 'function')[0];
-    expect(tap).toBeDefined();
-    act(() => {
-      tap.props.onPress();
-    });
-    expect(router.push).toHaveBeenLastCalledWith('/readiness');
-    expect(root().findAll((n) => n.props.testID === 'today-plant').length).toBeGreaterThan(0);
+    expect(byTestID('readiness-tap')).toHaveLength(0);
+    expect(byTestID('today-plant')).toHaveLength(0);
+    expect(byTestID('readiness-focus-ring')).toHaveLength(0);
+    expect(allText()).toContain('Today’s plan');
   });
 
   it('the tap target shows a ring while it has keyboard focus, and drops it on blur', () => {
-    setCert({ answers: seedAnswers(30, 0.7) });
+    setCert({ answers: seedAnswers(30, 0.7), plant: { species: 'oak', name: 'Kai', plantedAt: Date.now() - 3 * DAY, growth: 2 } });
     mount(<Today />);
-    const tap = () => root().findAll((n) => n.props.testID === 'readiness-tap' && typeof n.props.onFocus === 'function')[0];
+    expect(byTestID('readiness-tap')).toHaveLength(0);
+    expect(byTestID('today-plant')).toHaveLength(0);
     expect(byTestID('readiness-focus-ring')).toHaveLength(0);
-    act(() => {
-      tap().props.onFocus();
-    });
-    expect(byTestID('readiness-focus-ring')).toHaveLength(1);
-    act(() => {
-      tap().props.onBlur();
-    });
-    expect(byTestID('readiness-focus-ring')).toHaveLength(0);
+    expect(allText()).toContain('Today’s plan');
   });
 
   it('You: the Readiness section\'s "See report", and each mock row opens the report with that mock', () => {

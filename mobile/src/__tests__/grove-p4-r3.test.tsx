@@ -150,31 +150,6 @@ describe('the Glossary screen (PHASE4.md 7.3 phone, O2)', () => {
     expect(['/notes/subtopic/[id]', '/notes/[domain]', '/notes']).toContain(path);
   });
 
-  it('the plant figure: the quiet oak, hidden from screen readers; never with Show my plant off or on a narrow phone', () => {
-    mount(<Glossary />);
-    const fig = byTestId('glossary-plant');
-    expect(fig).toHaveLength(1);
-    expect(fig[0].props.importantForAccessibility).toBe('no-hide-descendants');
-    act(() => r!.unmount());
-    act(() => {
-      useProgress.setState({ plantSettings: { promptHidden: true, showPlant: false } });
-    });
-    mount(<Glossary />);
-    expect(byTestId('glossary-plant')).toHaveLength(0);
-    act(() => r!.unmount());
-    act(() => {
-      useProgress.setState({ plantSettings: { promptHidden: true } });
-    });
-    setWidth(340);
-    mount(<Glossary />);
-    expect(byTestId('glossary-plant')).toHaveLength(0);
-    // From text scale 1.3 it is not drawn either: decoration never pushes text.
-    act(() => r!.unmount());
-    setWidth(393, 1.3);
-    mount(<Glossary />);
-    expect(byTestId('glossary-plant')).toHaveLength(0);
-  });
-
   it('Learn shows the Glossary tile after Study notes, and it opens the Glossary', () => {
     mount(<Learn />);
     const tiles = root()

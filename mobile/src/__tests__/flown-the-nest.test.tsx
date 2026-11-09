@@ -1,5 +1,5 @@
 /**
- * Mobile 1.18: the "Graduate" badge is now "Flown the Nest", and it can be
+ * Mobile 1.18: the "Graduate" badge is now "Review Complete", and it can be
  * shared. Plain English for the founder: the badge's saved id (`graduate`),
  * its counter (`graduated`) and the planter rules are NOT renamed, so a
  * phone that already earned it on 1.17 opens 1.18 and simply sees the new
@@ -117,9 +117,9 @@ describe('a 1.17 save with Graduate earned, opened on 1.18', () => {
     expect(PLANTER_NEEDS.evergreen).toContain('graduate');
   });
 
-  it('shows "Flown the Nest" earned, with a Share that builds an honest card', () => {
+  it('shows "Review Complete" earned, with a Share that builds an honest card', () => {
     const mark = badgeCase('cisa', selectCert(useProgress.getState(), 'cisa')).marks.find((x) => x.key === 'graduate')!;
-    expect(mark.name).toBe('Flown the Nest');
+    expect(mark.name).toBe('Review Complete');
     expect(mark.status).toBe('earned');
     expect(mark.earnedAt).toBe(EARNED);
     expect(badgeShareable({ ...mark, badge: 'graduate' })).toBe(true);
@@ -130,18 +130,18 @@ describe('a 1.17 save with Graduate earned, opened on 1.18', () => {
     act(() => {
       r = create(<Badges />);
     });
-    press(/^Flown the Nest\. Earned/);
+    press(/^Review Complete\. Earned/);
     const sheet = () => root().findByType(Modal);
     expect(textOf(sheet())).toContain('Answer 50 questions right from the last review box, so they leave review.');
-    press(/^Share this badge: Flown the Nest$/);
+    press(/^Share this badge: Review Complete$/);
     const shown = textOf(root().findByType(BadgeShareCard));
-    expect(shown).toContain('Flown the Nest');
+    expect(shown).toContain('Review Complete');
     expect(shown).toContain('Moved 50 questions out of review');
     expect(shown).toContain('Not affiliated with or endorsed by ISACA®. CISA® is a registered trademark of ISACA.');
     expect(textOf(sheet())).not.toMatch(/graduat/i);
   });
 
-  it('an unearned Flown the Nest keeps its "n of 50" progress visible', () => {
+  it('an unearned Review Complete keeps its "n of 50" progress visible', () => {
     act(() => {
       useProgress.getState().updateMilestones('cisa', (m) => ({ milestones: { ...m!, earned: { 'long-memory': EARNED - 10 * DAY }, counts: { longRecall: 25, graduated: 12 } } }));
     });

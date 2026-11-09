@@ -314,33 +314,21 @@ describe('Today, top to bottom', () => {
     expect(allText()).not.toMatch(/Today’s plan · about/);
   });
 
-  it('the ring: the range under it in words, the estimate line word for word, the 80 study bar; it opens the report', () => {
+  it('the plan takes priority with no readiness hero or ring', () => {
     storePlan([WARM, REVIEW, LESSON], [false, false, false]);
     mount(<Today />);
-    expect(allText()).toMatch(/\d+ to \d+ estimated range/);
-    expect(allText()).toContain('A study estimate, not a prediction.');
-    expect(allText()).not.toMatch(/\d+\u2013\d+/);
-    expect(allText()).not.toContain('a range not a promise');
-    expect(byTestID('ring-ticks')).toHaveLength(1);
-    expect(byTestID('ring-study-bar')).toHaveLength(1);
-    expect(byTestID('ring-dots')).toHaveLength(0);
-    // The journey's stage keeps its words, without a second numbered ladder beside the plant's "Growth 1 of 6" (Phase 4b: growth, never stage, for the plant).
-    expect(allText()).not.toMatch(/Stage \d ·/);
-    expect(allText()).toContain('Growth 1 of 6');
-    const j = root().findAll((n) => n.props.testID === 'readiness-tap' && typeof n.props.onPress === 'function')[0];
-    expect(j.props.accessibilityLabel).toMatch(/^Estimated readiness range \d+ to \d+ out of 100\. The study bar is 80\. A study estimate, not a prediction\.$/);
-    act(() => {
-      j.props.onPress();
-    });
-    expect(router.push).toHaveBeenCalledWith('/readiness');
-    expect(byTestID('scale-bar')).toHaveLength(0);
+    expect(byTestID("today-hero")).toHaveLength(0);
+    expect(byTestID("readiness-tap")).toHaveLength(0);
+    expect(byTestID("ring-ticks")).toHaveLength(0);
+    expect(allText()).toContain("Today’s plan");
+    expect(pill().props.accessibilityLabel).toBe("Start");
   });
   it('the hero’s two tiles: Accuracy (latest tries, as on You) and the exam date; the weakest-area line stays', () => {
     storePlan([WARM, REVIEW, LESSON], [false, false, false]);
     mount(<Today />);
     expect(byTestID('today-tiles')).toHaveLength(0);
-    expect(stops()).toContain('Accuracy, 73 percent, latest tries');
-    expect(stops()).toContain('Exam date, 22 November');
+    expect(stops()).not.toContain('Accuracy, 73 percent, latest tries');
+    expect(stops()).not.toContain('Exam date, 22 November');
     expect(allText()).not.toMatch(/Not yet/);
     const line = allText().match(/200 answered · where you’ll gain most: ([^A]+?)(?= Also|$)/);
     expect(line).not.toBeNull();
@@ -362,46 +350,44 @@ describe('Today, top to bottom', () => {
     mount(<Today />);
     const t = allText();
     const at = (x: string) => t.indexOf(x);
-    const order = ['Thu 15 Oct', '38 days to go', 'CISA exam 22 Nov', 'Growth 1 of 6', 'estimated range', 'Accuracy', 'Today’s plan', 'This week’s twig', 'gain most:'];
+    const order = ['Thu 15 Oct', '38 days to go', 'CISA exam 22 Nov', 'Today’s plan', 'This week', 'gain most:'];
     const idx = order.map(at);
     expect(idx.every((i) => i >= 0)).toBe(true);
     expect([...idx].sort((a, b) => a - b)).toEqual(idx);
     const s = stops();
     const first = (re: RegExp) => s.findIndex((l) => re.test(l));
-    const seq = [first(/^Thursday 15 October$/), first(/^Estimated readiness range/), first(/^Today’s plan/), first(/^Studied on /)];
+    const seq = [first(/^Thursday 15 October$/), first(/^Today’s plan/), first(/^Studied on /)];
     expect(seq.every((i) => i >= 0)).toBe(true);
     expect([...seq].sort((a, b) => a - b)).toEqual(seq);
   });
 });
 
 describe('Today: states with little data', () => {
-  it('a brand-new learner (nothing answered): the seed, "Answer 40 questions", Accuracy not started, no range', () => {
-    storePlan([LESSON, { kind: 'practice', count: 5, label: '5 questions · IS Audit', why: 'learn' }], [false, false]);
+  it('a brand-new learner sees the study action without an empty stats hero', () => {
+
+    storePlan([WARM], [false]);
     mount(<Today />);
-    expect(byTestID('today-tiles')).toHaveLength(0);
-    expect(allText()).toContain('Answer 40 questions');
-    expect(allText()).toContain('to see your first readiness range');
-    expect(stops()).toContain('Accuracy, not started');
-    expect(byTestID('ring-dots')).toHaveLength(1);
-    expect(allText()).not.toMatch(/Not yet|Not enough data yet|\d+\u2013\d+|\d+ to \d+/);
+    expect(allText()).toContain("Today’s plan");
+    expect(byTestID("today-hero")).toHaveLength(0);
+    expect(byTestID("ring-dots")).toHaveLength(0);
+    expect(allText()).not.toMatch(/Accuracy|Too few yet|Answer 40/);
+    expect(pill().props.accessibilityLabel).toBe("Start");
   });
-  it('with a few answers the ring counts them: "5 of 40 answers", seed dots, Accuracy "Too few yet"', () => {
+  it('a few answers do not add the retired stats hero', () => {
     seedAnswers(5, 3);
     storePlan([WARM], [false]);
     mount(<Today />);
-    expect(allText()).toContain('5 of 40 answers');
-    expect(allText()).toContain('until your first readiness range');
-    expect(allText()).toContain('Too few yet');
-    expect(allText()).toMatch(/Shows at 30\sanswers/); // "30 answers" kept together by a no-break space
-    expect(allText()).not.toMatch(/Stage \d ·/);
-    expect(stops()).toContain('5 of 40 answers toward your first readiness range.');
-    expect(byTestID('ring-dots')).toHaveLength(1);
+    expect(allText()).toContain("Today’s plan");
+    expect(byTestID("today-hero")).toHaveLength(0);
+    expect(byTestID("ring-dots")).toHaveLength(0);
+    expect(allText()).not.toMatch(/Accuracy|Too few yet|Answer 40/);
+    expect(pill().props.accessibilityLabel).toBe("Start");
   });
   it('a cleared day shows the clearing, not the checklist', () => {
     seedAnswers(200, 146);
     storePlan([WARM, REVIEW], [true, true]);
     mount(<Today />);
-    expect(allText()).toContain('Today’s clearing');
+    expect(allText()).toContain('Today complete');
     expect(byTestID('plan-steps')).toHaveLength(0);
     expect(byTestID('today-hero')).toHaveLength(0);
   });
@@ -423,7 +409,7 @@ describe('Today at large text (200%)', () => {
     storePlan([WARM, REVIEW, LESSON], [true, false, false]);
     setScale(2);
     mount(<Today />);
-    expect(allText()).toContain('estimated range');
+    expect(byTestID('today-hero')).toHaveLength(0);
     expect(allText()).toContain('200 answered · where you’ll gain most');
     // The steps still wrap rather than clip: no fixed heights or line caps.
     const lines = byTestID('plan-steps')[0].findAll((n) => typeof n.type === 'string' && n.props.accessible === true);
@@ -437,13 +423,10 @@ describe('Today at large text (200%)', () => {
 // Release bug hunt round 2: without a plant, the hero's stage line was a disabled Pressable, so its
 // accessibility state said disabled and TalkBack read "disabled" after "Seed, growth 1 of 6".
 describe('the hero stage line without a plant', () => {
-  it('is plain text: not disabled, no tap, one stop said as words', () => {
+  it('the retired growth stage is absent while Start stays available', () => {
     mount(<Today />);
-    const line = byTestID('today-stage');
-    expect(line).toHaveLength(1);
-    expect(line[0].props.accessibilityState?.disabled).not.toBe(true);
-    expect(line[0].props['aria-disabled']).not.toBe(true);
-    expect(line[0].props.accessibilityRole).toBe('text');
-    expect(line[0].props.accessibilityLabel).toMatch(/^.+, growth \d of \d$/);
+    expect(byTestID("today-stage")).toHaveLength(0);
+    expect(allText()).not.toMatch(/Seed|Growth \d of \d/);
+    expect(pill()).toBeDefined();
   });
 });

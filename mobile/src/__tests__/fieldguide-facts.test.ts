@@ -1,6 +1,6 @@
 /**
  * engine/fieldGuide.ts (mobile 1.51, DESIGN_SYSTEM.md §21): the facts the
- * Field Guide plates draw. Honest by construction:
+ * Term Match plates draw. Honest by construction:
  *  - a stem's number only from 30 answers; below the line said in words;
  *  - growth only where both ends of a set have a number;
  *  - the herbarium's newest specimens from the saved keys the case shows;
@@ -56,7 +56,7 @@ describe('setStems and the growth plate', () => {
       ['IS Acquisition', null, 0, '3 of 4 this set'],
       ['IS Operations', 61, 3, '7 of 10 this set'],
     ]);
-    expect(growthFigure(stems[1])).toEqual({ shown: '58 → 61%', line: 'IS Operations grew 3 points in this set', spoken: 'IS Operations, from 58 to 61 percent on latest tries', down: false });
+    expect(growthFigure(stems[1])).toEqual({ shown: '58 → 61%', line: 'IS Operations improved by 3 points in this set', spoken: 'IS Operations, from 58 to 61 percent on latest tries', down: false });
     expect(growthFigure(stems[0])).toBeNull();
     expect(stems[0].spoken).toBe('IS Acquisition, 18 of 30 answers, too few yet for a score. 3 of 4 this set');
   });
@@ -91,9 +91,9 @@ describe('setStems and the growth plate', () => {
 });
 
 describe('lastPressed', () => {
-  it('newest first, named as the case names them, with the domain emblem for Firm Footing', () => {
+  it('newest first, named as the case names them, with the domain emblem for Domain Mastery', () => {
     const got = lastPressed({ 'first-foothold': 1, 'rooted:10': 5, 'firm-footing:4': 9, 'know-what-you-know': 7, 'not-a-badge': 99 }, DOMAINS);
-    expect(got.map((g) => g.name)).toEqual(['Firm Footing · IS Operations', 'Know What You Know', 'Rooted · 10 days']);
+    expect(got.map((g) => g.name)).toEqual(['Domain Mastery · IS Operations', 'Confidence Check', 'Study Days · 10 days']);
     expect(got[0].emblem).toBe('domain-operations');
     expect(got[2].tier).toBe(1);
     expect(lastPressed(undefined, DOMAINS)).toEqual([]);

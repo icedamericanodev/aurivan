@@ -71,7 +71,7 @@ const pathRow = () => byLabel(/^Domains, /)[0];
 const heroText = () => {
   const out: string[] = [];
   const walk = (n: ReactTestInstance | string) => (typeof n === 'string' ? out.push(n) : n.children.forEach(walk));
-  // Premium round 2 (Field Guide foundation): the hero is Practice's plate (Fig. 2, the register's Learn-or-Practice number).
+  // Premium round 2 (Term Match foundation): the hero is Practice's plate (Fig. 2, the register's Learn-or-Practice number).
   walk(root().findAll((n) => n.props.testID === 'practice-plate')[0]);
   return out.join(' ');
 };
@@ -145,7 +145,7 @@ describe('Practice: review fixes', () => {
     expect(useSettings.getState().studyMode).toBeUndefined();
   });
 
-  it('O2: the hero never repeats the mode\'s why, and the suggestion is said once', () => {
+  it('mode rationale is available in contextual help and the suggested choice remains visible', () => {
     for (const m of ['smart', 'guided', 'inOrder', 'random'] as const) {
       useSettings.setState({ studyMode: m });
       mount(<Practice />);
@@ -153,8 +153,13 @@ describe('Practice: review fixes', () => {
       act(() => {
         pathRow().props.onPress();
       });
-      // Once on screen: under its radio.
+      // Choices keep short differentiators; the full rationale stays available on demand.
+      expect(radio(new RegExp(`^${MODE_INFO[m].name}`)).props.accessibilityLabel).toContain(MODE_INFO[m].name);
+      expect(allText()).not.toContain(MODE_INFO[m].why);
+      act(() => byLabel('About Study modes')[0].props.onPress());
       expect(allText().split(MODE_INFO[m].why).length - 1).toBe(1);
+      act(() => byLabel('Close, Study modes')[0].props.onPress());
+      expect(allText()).not.toContain(MODE_INFO[m].why);
       act(() => r?.unmount());
     }
     useSettings.setState({ studyMode: undefined });

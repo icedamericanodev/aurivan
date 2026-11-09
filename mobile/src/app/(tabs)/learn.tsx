@@ -14,7 +14,7 @@
  *      and The CISA exam (two columns, so the kit's 2 by 2 grid, or one column of rows from text
  *      scale 1.3 or on a narrow phone; an odd last tile spans the width). Each tile shows only when
  *      the course has its content: never a tile that opens nothing.
- *   5. Final review week, a full-width row.
+ *   5. Interactive Concept Lab (supported exams only), then Final review week, full-width rows.
  *   6. The Lessons card: "Lessons" with "0 of 66 · in exam order · each ends with a check", one
  *      row per area (its ring, number, short name, a mint "Next" on the Up next area, the count
  *      and a chevron) that opens the area's lesson trail in place, then "Prefer a guided path?".
@@ -26,6 +26,7 @@
  * back; the trail joins the numerals and the walked part is green; the Up next row has a filled play
  * disc; status marks are shapes (ring, arc, filled tick), never colour alone.
  */
+import { FeatureInfo } from '../../components/featureInfo';
 import * as Router from 'expo-router';
 import { router, useFocusEffect, useLocalSearchParams } from 'expo-router';
 import { memo, useCallback, useDeferredValue, useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
@@ -37,6 +38,7 @@ import { BookOpen, BookText, CalendarCheck, ChevronDown, Compass, ICON_STROKE, I
 import { AnimatedPressable, CheckDraw, Collapse, Turn, usePressScale, useScreenFocus } from '../../components/motion';
 import { BigNum, Button, EmptyState, Enter, ICON_SIZE, ListRow, ProgressBar, Screen, SearchField, T, useFontScale } from '../../components/ui';
 import { CERTIFICATIONS, domainColor, getCertification } from '../../content/certifications';
+import { labsFor } from '../../content/labs';
 import { lessonsFor, nextLesson } from '../../content/lessons';
 import type { Lesson } from '../../content/lessons/types';
 import { getNotes, hasNotes, noteSubtopics } from '../../content/notes';
@@ -521,6 +523,14 @@ const LookItUp = memo(function LookItUp({
             ))}
           </View>
         ))}
+        {labsFor(cert.id).length > 0 && <HubTile
+          testID="learn-concept-lab"
+          icon={(color) => <Compass size={24} color={color} strokeWidth={ICON_STROKE} />}
+          title="Interactive Concept Lab"
+          line="Change the variables. See what happens. · Featured: RTO vs. RPO"
+          spoken="Interactive Concept Lab. Change the variables. See what happens. Featured: Understand RTO versus RPO."
+          hint="Opens the concept lab catalog" onPress={() => router.push('/labs')} row
+        />}
         {week && <HubTile testID="learn-tile-week" icon={TILE_ICON.week} title={week.title} line={week.line} spoken={week.spoken} hint={week.hint} onPress={week.onPress} row />}
       </View>
     </View>
@@ -673,14 +683,16 @@ const LessonGroups = memo(function LessonGroups({
       })}
       {/* Guided: the step-by-step path (Practice, Change, Guided), pointed at from the course. The
           outline edge is `control`, 3:1 or more in both themes. */}
-      <Button
-        kind="secondary"
-        label="Prefer a guided path?"
-        accessibilityHint="Guided pairs each lesson with practice. Opens Guided."
-        onPress={() => router.push('/guided')}
-        style={{ marginTop: space.md }}
-      />
-      <T v="meta" center style={{ marginTop: space.xs, marginBottom: space.md }}>Guided pairs each lesson with practice</T>
+      <View style={{ flexDirection: 'row', alignItems: 'center', gap: space.sm, marginTop: space.md }}>
+        <Button
+          kind="secondary"
+          label="Guided"
+          accessibilityHint="Guided pairs each lesson with practice. Opens Guided."
+          onPress={() => router.push('/guided')}
+          style={{ flex: 1 }}
+        />
+        <FeatureInfo title="Guided"><T v="body">Guided pairs a lesson with practice on the same topic.</T></FeatureInfo>
+      </View>
     </HubCard>
   );
 });

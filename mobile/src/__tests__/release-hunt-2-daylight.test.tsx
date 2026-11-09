@@ -83,7 +83,7 @@ afterEach(() => {
 
 describe('bug 5: a round redraws only the light strip each second', () => {
   it('no option card or question redraw across 10 ticks; the strip still moves', () => {
-    press('Heartwood, 80 seconds a question');
+    press('Skilled, 80 seconds a question');
     press('Start');
     expect(root().findByType(PaceStrip).props.clock.text).toBe('06:40');
     resetRenders({ names: true });

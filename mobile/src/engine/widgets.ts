@@ -45,8 +45,7 @@
 import { addDays, daysToExam } from './examDay';
 import { aboutMin, spokenMin } from './pace';
 import { daysBetween, dayKey } from './streak';
-import { isPlantSpecies } from './plant';
-import { formName, isFinalId } from './plantForms';
+import { isFinalId } from './plantForms';
 
 // ── Keys, kinds and names ────────────────────────────────────────────────
 /** The snapshot's AsyncStorage key (the app's usual key style; never renamed once shipped). */
@@ -64,8 +63,10 @@ export const SNAPSHOT_VERSION = 1;
  */
 export const WIDGET_KINDS = ['plan', 'plant', 'think', 'week', 'question', 'revisit', 'countdown', 'readiness'] as const;
 export type WidgetKind = (typeof WIDGET_KINDS)[number];
-/** The four the app recommends (the one suggestion offers the first). */
-export const RECOMMENDED_KINDS: readonly WidgetKind[] = ['plan', 'plant', 'think', 'week'];
+/** Current recommendations (the one suggestion offers the first). */
+export const RECOMMENDED_KINDS: readonly WidgetKind[] = ['plan', 'think', 'week'];
+/** New choices exclude the retired provider; its id remains for placed widgets. */
+export const AVAILABLE_WIDGET_KINDS: readonly WidgetKind[] = WIDGET_KINDS.filter((kind) => kind !== 'plant');
 
 /** The Android widget provider names (app.json plugin entries). Never rename once shipped: launchers keep placed widgets by name. */
 export const WIDGET_NAMES: Record<WidgetKind, string> = {
@@ -82,7 +83,7 @@ export const WIDGET_NAMES: Record<WidgetKind, string> = {
 /** Each widget's name in the app (Settings → Add a widget, the tester numbers), since 1.48. */
 export const WIDGET_TITLES: Record<WidgetKind, string> = {
   plan: 'Today’s plan',
-  plant: 'Your plant',
+  plant: 'Study shortcut',
   think: 'Today’s rule',
   week: 'This week',
   question: 'Recall card',
@@ -545,9 +546,9 @@ export const GOAL_ROUTES: Record<Exclude<WidgetGoal, 'start' | 'short' | 'review
   today: '/home',
   principles: '/principles',
   notes: '/notes',
-  plant: '/plant',
-  'plant-pick': '/plant-pick',
-  'plant-settings': '/settings?section=plant',
+  plant: '/you',
+  'plant-pick': '/you',
+  'plant-settings': '/you',
   readiness: '/readiness',
   'exam-week': '/exam-week',
   settings: '/settings?section=widgets',
@@ -763,7 +764,7 @@ export function widgetFace(kind: WidgetKind, s: WidgetSnapshot | null, ctx: Draw
     case 'revisit':
       return termFace(s, today, ctx);
     case 'plant':
-      return plantFace(s, today);
+      return retiredPlantFace();
     case 'countdown':
       return roadFace(s, today);
   }
@@ -919,10 +920,10 @@ function planFace(s: WidgetSnapshot, today: string): WidgetFace {
 /** The week's line: it changes as the week fills, and is only ever neutral or kind. */
 export function weekLine(count: number, studiedToday: boolean): string {
   if (count >= 6 && !studiedToday) return 'Today can be your rest day.';
-  if (count >= 6) return 'A full week of leaves.';
+  if (count >= 6) return 'A full week of study.';
   if (count >= 4) return 'A steady week.';
   if (count >= 2) return 'Short days count too.';
-  return 'A first leaf this week.';
+  return 'Your first study day this week.';
 }
 
 function weekFace(s: WidgetSnapshot, today: string): WidgetFace {
@@ -955,7 +956,7 @@ function weekFace(s: WidgetSnapshot, today: string): WidgetFace {
   const leaves: FaceArt = { type: 'leaves', filled, today: ti };
   const studied = DAY_NAMES.filter((_, i) => filled[i]);
   if (hidden(s)) {
-    return { ...base, title: 'Your week', short: 'Week', line: 'A leaf for each day you studied.', shortLine: 'Leaf = a study day', art: leaves, key: 'week', label: `This week: you studied ${listWords(studied)}.` };
+    return { ...base, title: 'Your week', short: 'Week', line: 'Each mark is a day you studied.', shortLine: 'Mark = a study day', art: leaves, key: 'week', label: `This week: you studied ${listWords(studied)}.` };
   }
   const line = weekLine(count, filled[ti]);
   return {
@@ -1221,41 +1222,13 @@ function termFace(s: WidgetSnapshot, today: string, ctx: DrawContext): WidgetFac
   };
 }
 
-// 7. Your plant (never the resting look) ──────────────────────────────────
-export const GROWTH_WORDS = ['Seed', 'Sprout', 'Shoot', 'Bough', 'Crown', 'Elder'] as const;
-/** The plant's one line, said at most once on a face. */
-export const PLANT_LINE = 'Grows as answers stick';
-
-function plantFace(s: WidgetSnapshot, today: string): WidgetFace {
-  const kind: WidgetKind = 'plant';
-  const base = { kind, tone: 'plate' as const, titleStyle: 'serif' as const, caption: 'Your plant' };
-  const p = s.plant;
-  if (!p) {
-    return { ...base, title: 'Choose your plant', short: 'Choose a plant', line: 'It grows only from real progress.', art: { type: 'mark' }, link: widgetLink(kind, 'plant-pick'), key: 'plant', label: 'Your plant. Choose your plant: it grows only from real progress.' };
-  }
-  if ('off' in p) {
-    return { ...base, title: 'Plant is off', short: 'Plant off', line: 'You can turn it on in Settings.', art: { type: 'mark' }, link: widgetLink(kind, 'plant-settings'), key: 'off', label: 'Your plant is off. You can turn it on in Settings.' };
-  }
-  const growth = Math.max(1, Math.min(6, p.growth));
-  const word = GROWTH_WORDS[growth - 1];
-  const grewToday = p.grew === today;
-  // The line moves with the plant: the next growth, and the day it grew.
-  const next = growth < 6 ? `${GROWTH_WORDS[growth]} is next` : 'Fully grown';
-  // Mobile 1.50: a botanical plant is in its form; the form is a name in the spoken label, never a second number.
-  const form = p.style === 'botanical' && isPlantSpecies(p.species) ? ` ${formName(p.species, growth, p.final)} form.` : '';
+// Compatibility face: keep the native provider so placed widgets survive retirement.
+function retiredPlantFace(): WidgetFace {
   return {
-    ...base,
-    caption: `Your ${p.name}`,
-    title: word,
-    // No book label (labels decision, 31 Oct 2026; was "Fig. 3"): the growth in words, never a stage.
-    sub: `Growth ${growth}`,
-    line: `${next}.`,
-    badge: grewToday ? 'New growth today' : undefined,
-    art: { type: 'plant', plant: p },
-    link: widgetLink(kind, 'plant'),
-    key: word,
-    // Growth, never "stage" (the plant's copy rule), and no "n of 6" on a widget: "Your oak, at growth 4, bough. Standard Oak form."
-    label: `Your ${p.name}, at growth ${growth}, ${word.toLowerCase()}.${form}${grewToday ? ' New growth today.' : ''} ${next}. ${PLANT_LINE}.`,
+    kind: 'plant', tone: 'paper', titleStyle: 'serif', caption: 'KaiSip',
+    title: 'Your study plan', short: 'Study', line: 'Open KaiSip to continue.',
+    art: { type: 'mark' }, link: widgetLink('plant', 'today'), key: 'Study',
+    label: 'Study shortcut. Open KaiSip to continue your study plan.',
   };
 }
 

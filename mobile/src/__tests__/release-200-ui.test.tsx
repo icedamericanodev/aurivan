@@ -178,9 +178,9 @@ describe('f. the drill intro level line', () => {
   it('is two lines, one sentence each, said as one stop', () => {
     mount(<LevelNote level="seedling" />);
     const note = r!.root.findAll((n) => n.props.testID === 'level-note' && typeof n.type === 'string')[0];
-    expect(note.props.accessibilityLabel).toBe('Your level: Seedling. Two strong rounds in a row grow it.');
+    expect(note.props.accessibilityLabel).toBe('Your level: Beginner. Two strong rounds in a row move you up.');
     const lines = note.findAllByType(Text).map((t) => textOf(t));
-    expect(lines).toEqual(['Your level: Seedling.', 'Two strong rounds in a row grow it.']);
+    expect(lines).toEqual(['Your level: Beginner.', 'Two strong rounds in a row move you up.']);
   });
 });
 

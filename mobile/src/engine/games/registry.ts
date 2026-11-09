@@ -124,7 +124,7 @@ export const GAMES: Record<GameId, GameInfo> = {
   // short reveal), so its honest length is a few minutes, not 12 questions' worth.
   rumor: make({
     id: 'rumor',
-    name: 'Root or Rumor',
+    name: 'Fact or Myth',
     tagline: 'Tell a sound principle from an exam myth.',
     plain: 'Sound principle or exam myth',
     skill: 'Rejecting exam myths',
@@ -147,7 +147,7 @@ export const GAMES: Record<GameId, GameInfo> = {
   // about 6 seconds a pair plus reading, so a few minutes.
   field: make({
     id: 'field',
-    name: 'Field Guide',
+    name: 'Term Match',
     tagline: 'Match each term to what it means.',
     plain: 'Match terms to meanings',
     skill: 'Exact meanings',
@@ -161,7 +161,7 @@ export const GAMES: Record<GameId, GameInfo> = {
   // about 5 seconds each plus a one-line why.
   canopy: make({
     id: 'canopy',
-    name: 'Canopy Call',
+    name: 'Role Check',
     tagline: 'Choose who has the authority to decide.',
     plain: 'Who has the authority to decide',
     skill: 'The right level of authority',
@@ -175,7 +175,7 @@ export const GAMES: Record<GameId, GameInfo> = {
   // followed by its step notes: about a minute each.
   stones: make({
     id: 'stones',
-    name: 'Stepping Stones',
+    name: 'Sequence Check',
     tagline: 'Put each process in the right order.',
     plain: 'Put the steps in order',
     skill: 'What comes first',

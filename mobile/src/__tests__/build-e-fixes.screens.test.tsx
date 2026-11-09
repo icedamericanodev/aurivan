@@ -2,7 +2,7 @@
  * Build E review fixes, on the screens (everything outside the Practice tab):
  * - Results: "Back to your Guided step" goes back to the Guided screen
  *   already in the stack (no second copy) and keeps the step's Timed choice.
- * - Root or Rumor (UX review H1, P7, O4): the Heartwood Why step is
+ * - Fact or Myth (UX review H1, P7, O4): the Skilled Why step is
  *   announced and grouped, the reveal is spoken with the verdict, and a
  *   missed myth offers its note.
  * - Call It First (UX review P5, P6; code review): principle cards are never
@@ -116,7 +116,7 @@ describe('Results: back to the Guided step', () => {
   });
 });
 
-describe('Root or Rumor: what a screen reader hears, and the note after a missed myth', () => {
+describe('Fact or Myth: what a screen reader hears, and the note after a missed myth', () => {
   const all = rumorStatements(getNotes('cisa'));
   const shown = (): Statement => {
     const text = allText();
@@ -133,19 +133,19 @@ describe('Root or Rumor: what a screen reader hears, and the note after a missed
   const toRumor = () => {
     for (let k = 0; k < 12; k++) {
       if (shown().kind === 'rumor') return shown();
-      press('Root, a sound principle');
+      press('Fact, a sound principle');
       press('Next statement');
     }
     throw new Error('no Rumor in the round');
   };
 
-  it('Heartwood: the Why step is announced with the verdict and grouped; the reveal is spoken with the verdict', () => {
+  it('Skilled: the Why step is announced with the verdict and grouped; the reveal is spoken with the verdict', () => {
     mount(<RootOrRumor />);
-    press('Heartwood. All domains, plus “Why?” on each myth.');
+    press('Skilled. All domains, plus “Why?” on each myth.');
     press('Start');
     const st = toRumor();
-    press('Rumor, an exam myth');
-    expect(said()).toContain('You said Rumor, right. Why is it a myth? Pick the reason.');
+    press('Myth, an exam myth');
+    expect(said()).toContain('You said Myth, right. Why is it a myth? Pick the reason.');
     const group = root().findAll((n) => n.props.accessibilityRole === 'radiogroup' && n.props.accessibilityLabel === 'Why is it a myth?');
     expect(group.length).toBeGreaterThan(0);
     const choices = group[0].findAll((n) => n.props.accessibilityRole === 'radio' && typeof n.props.onPress === 'function');
@@ -153,18 +153,18 @@ describe('Root or Rumor: what a screen reader hears, and the note after a missed
     act(() => {
       choices[0].props.onPress();
     });
-    expect(said()).toContain('You said Rumor, right. Rumor: myth spotted');
+    expect(said()).toContain('You said Myth, right. Myth spotted');
     expect(st.kind).toBe('rumor');
   });
 
   it('a missed myth says what it really is and offers "Read the note"', () => {
     mount(<RootOrRumor />);
-    press('Sapling. All domains, mixed.');
+    press('Practised. All domains, mixed.');
     press('Start');
     const st = toRumor();
-    press('Root, a sound principle');
-    expect(allText()).toContain('This one is a Rumor: a myth the exam counts on');
-    expect(said()).toContain('You said Root, not quite. This one is a Rumor: a myth the exam counts on');
+    press('Fact, a sound principle');
+    expect(allText()).toContain('This is a myth, not a sound principle');
+    expect(said()).toContain('You said Fact, not quite. This is a myth, not a sound principle');
     // Grove 4b (PHASE4B 6.6): "Read the note" is the answer screen's Go deeper row, named for the note.
     press(`Read the note: ${st.subtopicName}`);
     expect(router.push).toHaveBeenCalledWith(`/notes/subtopic/${encodeURIComponent(st.subtopicId)}`);
@@ -172,10 +172,10 @@ describe('Root or Rumor: what a screen reader hears, and the note after a missed
 
   it('a myth spotted right needs no note button', () => {
     mount(<RootOrRumor />);
-    press('Sapling. All domains, mixed.');
+    press('Practised. All domains, mixed.');
     press('Start');
     toRumor();
-    press('Rumor, an exam myth');
+    press('Myth, an exam myth');
     expect(root().findAll((n) => n.props.label === 'Read the note' || String(n.props.accessibilityLabel).startsWith('Read the note'))).toHaveLength(0);
   });
 });

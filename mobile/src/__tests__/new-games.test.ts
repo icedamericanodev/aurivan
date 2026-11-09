@@ -1,7 +1,7 @@
 /**
  * Build E games, engine rules.
- * Root or Rumor: the content filter (on the real notes too), same-subtopic
- * pairing, due cards first, Seedling's one domain, scoring, "Why?" choices
+ * Fact or Myth: the content filter (on the real notes too), same-subtopic
+ * pairing, due cards first, Beginner's one domain, scoring, "Why?" choices
  * and the "Read again" rule.
  * Call It First: the 60% leak exclusion (on the real bank too), fair
  * decoys per tier, scoring, and assisted handling.
@@ -47,7 +47,7 @@ import { DAY_MS } from '../engine/srs';
 
 const NOW = Date.UTC(2026, 9, 10);
 
-describe('Root or Rumor: the content filter', () => {
+describe('Fact or Myth: the content filter', () => {
   it('keeps whole, standalone sentences of 8–30 words and drops the rest', () => {
     expect(cleanStatement('Standards are mandatory minimum requirements for every audit and assurance engagement.')).toBe(true);
     expect(cleanStatement('Scope follows risk.')).toBe(false); // under 8 words
@@ -187,7 +187,7 @@ function pack(): NotesPack {
   };
 }
 
-describe('Root or Rumor: rounds', () => {
+describe('Fact or Myth: rounds', () => {
   const all = statementsFromNotes(pack());
   it('takes roots from the rule’s first sentence and How it works, rumors from the traps', () => {
     expect(all.filter((s) => s.kind === 'root')).toHaveLength(2 * 4 * 3);
@@ -204,7 +204,7 @@ describe('Root or Rumor: rounds', () => {
       for (const sub of subs) expect(new Set(round.filter((s) => s.subtopicId === sub).map((s) => s.kind)).size).toBe(2);
     }
   });
-  it('Seedling keeps one domain; missed cards that are due come first', () => {
+  it('Beginner keeps one domain; missed cards that are due come first', () => {
     const seedling = buildRumorRound(all, {}, 'seedling', createRng(3), NOW);
     expect(new Set(seedling.map((s) => s.domainId)).size).toBe(1);
     const missed = all.find((s) => s.domainId === '2' && s.kind === 'rumor')!;
@@ -225,11 +225,11 @@ describe('Root or Rumor: rounds', () => {
     expect(isRightTap(s, 'root')).toBe(false);
     expect(rumorScore([true, false, true, true])).toBe(3);
     expect(longestRun([true, true, false, true, true, true, false])).toBe(3);
-    expect(tapTitle(s, false)).toBe('This one is a Rumor: a myth the exam counts on');
-    expect(tapVerdict('rumor', true)).toBe('You said Rumor, right.');
-    expect(tapVerdict('root', false)).toBe('You said Root, not quite.');
+    expect(tapTitle(s, false)).toBe('This is a myth, not a sound principle');
+    expect(tapVerdict('rumor', true)).toBe('You said Myth, right.');
+    expect(tapVerdict('root', false)).toBe('You said Fact, not quite.');
   });
-  it('Heartwood "Why?": the real reason plus 2 sibling reasons', () => {
+  it('Skilled "Why?": the real reason plus 2 sibling reasons', () => {
     const rumor = all.find((x) => x.kind === 'rumor')!;
     const { choices, correct } = whyChoices(rumor, all, createRng(1));
     expect(choices).toHaveLength(3);
@@ -297,7 +297,7 @@ describe('Call It First: decoys, scoring and assisted answers', () => {
       }
     }
   });
-  it('Seedling decoys come from other topics; Sapling decoys are near-topic', () => {
+  it('Beginner decoys come from other topics; Practised decoys are near-topic', () => {
     const q = callPool(bank).find((x) => x.domainId === '4' && ctx.topicOf(x.id))!;
     const byConcept = new Map(bank.map((x) => [x.keyConcept, x]));
     const seed = decoysFor(q, ctx, 'seedling', createRng(2)).map((k) => byConcept.get(k)!);
@@ -309,7 +309,7 @@ describe('Call It First: decoys, scoring and assisted answers', () => {
     }
     expect(near).toBeGreaterThan(30); // nearly always the same domain or closer
   });
-  it('builds a round of 5 with 3 cards each (none in Heartwood), domains interleaved', () => {
+  it('builds a round of 5 with 3 cards each (none in Skilled), domains interleaved', () => {
     const round = buildCallRound(bank, ctx, 'sapling', createRng(5));
     expect(round).toHaveLength(5);
     for (const it of round) {
@@ -321,7 +321,7 @@ describe('Call It First: decoys, scoring and assisted answers', () => {
     expect(Math.max(...per.values())).toBeLessThanOrEqual(2);
     expect(buildCallRound(bank, ctx, 'heartwood', createRng(5)).every((it) => it.cards.length === 0 && it.correct === -1)).toBe(true);
   });
-  it('scores principle + answer (Heartwood: answer only)', () => {
+  it('scores principle + answer (Skilled: answer only)', () => {
     expect(callPoints('sapling', true, true)).toBe(2);
     expect(callPoints('sapling', false, true)).toBe(1);
     expect(callPoints('heartwood', true, true)).toBe(1);

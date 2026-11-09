@@ -7,6 +7,7 @@
  * A virtualised list keeps a large journal usable. Even an empty or fully
  * corrected journal retains its honest evidence summary and next actions.
  */
+import { FeatureInfo } from '../components/featureInfo';
 import { router } from 'expo-router';
 import { backOr } from '../lib/actions';
 import { moveFocus, sayLater } from '../lib/a11y';
@@ -281,8 +282,7 @@ export default function Mistakes() {
 
   const header = (
     <View>
-      <PushedHeader title="Mistake journal" onBack={() => backOr('/you')} />
-      <T v="meta" style={{ marginTop: space.sm }}>Tag why you slipped. Find your pattern.</T>
+      <PushedHeader right={<FeatureInfo title="Mistake journal"><T v="body">Tag why you slipped to find recurring patterns. Use “What do these mean?” beside the tags for examples.</T></FeatureInfo>} title="Mistake journal" onBack={() => backOr('/you')} />
 
       <MistakeDNASummary dna={dna} />
       {pattern.ready && (

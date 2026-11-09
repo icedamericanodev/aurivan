@@ -7,16 +7,11 @@
  * - Colours are the Grove tokens (theme/tokens.ts), light and dark, one set per
  *   card (1.48 "Study card": forest, paper, ruled card, plate, ink). Material
  *   You wallpaper colours are a later option (they need a small native module).
- * - The Kasama mark, the leaves, the growth rings and the plant are the app's
- *   own drawings: the same paths (theme/kasama.ts), the same ring maths
- *   (engine/ringGeometry.ts) and the same plant art (components/plant/art.ts).
- * - The plant is ALWAYS drawn awake: never the resting look, never a face.
+ * - The Kasama mark, leaves and rings reuse the app's own brand paths and
+ *   ring geometry. Widgets no longer load retired companion artwork.
  */
-import { isPlantSpecies } from '../engine/plant';
 import { ringArc, ringGeometry } from '../engine/ringGeometry';
-import type { FaceTone, PlantSnap } from '../engine/widgets';
-import { isFinalId } from '../engine/plantForms';
-import { buildPlant, plantLayers, type ArtLook, type PNode } from '../components/plant/art';
+import type { FaceTone } from '../engine/widgets';
 import { KAI_LEAF, KAI_PAIR_DOWN, KAI_PAIR_UP, KAI_VEIN } from '../theme/kasama';
 import { dark, font, kaisip, light } from '../theme/tokens';
 import { groveDark, groveLight } from '../theme/grove';
@@ -219,47 +214,6 @@ export function ruledSvg(width: number, height: number, top: number, c: Pick<Wid
 /** The play mark inside Today's plan's round button on a 2×1 (the whole widget is the Start tap). */
 export function playSvg(color: string): string {
   return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 12"><path d="M3.2 1.6 L10.4 6 L3.2 10.4Z" fill="${attr(color)}"/></svg>`;
-}
-
-function nodeSvg(n: PNode | null | undefined): string {
-  if (!n) return '';
-  let a = '';
-  if (n.fill !== undefined) a += ` fill="${attr(n.fill)}"`;
-  if (n.opacity !== undefined) a += ` opacity="${attr(n.opacity)}"`;
-  if (n.transform) a += ` transform="${attr(n.transform)}"`;
-  if (n.stroke) a += ` stroke="${attr(n.stroke)}" stroke-width="${attr(n.sw)}" stroke-linecap="round" stroke-linejoin="round"`;
-  switch (n.t) {
-    case 'g':
-      return `<g${a}>${n.children.map(nodeSvg).join('')}</g>`;
-    case 'path':
-      return `<path d="${attr(n.d)}"${a}/>`;
-    case 'circle':
-      return `<circle cx="${n.cx}" cy="${n.cy}" r="${n.r}"${a}/>`;
-    case 'ellipse':
-      return `<ellipse cx="${n.cx}" cy="${n.cy}" rx="${n.rx}" ry="${n.ry}"${a}/>`;
-  }
-}
-
-/**
- * The learner's plant at its growth, in its look, as one SVG. Always awake
- * (resting is never passed), never a face, no visitor and no keepsakes: a
- * widget shows the plant, not a mood. Null for a species this build doesn't know.
- */
-export function plantSvg(p: PlantSnap, theme: WidgetTheme): string | null {
-  if (!isPlantSpecies(p.species)) return null;
-  const look: ArtLook = {
-    ...(p.style === 'botanical' || p.style === 'storybook' ? { style: p.style } : {}),
-    ...(p.palette ? { palette: p.palette as ArtLook['palette'] } : {}),
-    ...(p.ground ? { ground: p.ground } : {}),
-    ...(p.planter ? { planter: p.planter } : {}),
-    // Mobile 1.50: the Form IV final the learner chose.
-    ...(isFinalId(p.final) ? { final: p.final } : {}),
-    keepsakes: [],
-  };
-  const built = buildPlant({ species: p.species, stage: Math.max(1, Math.min(6, p.growth)), quietLook: true, lod: 'small', theme, resting: false, mood: 'idle', drift: false, look, px: 120, fit: true });
-  const L = plantLayers(built.root);
-  const kids = (g: { children: PNode[] }) => g.children.map(nodeSvg).join('');
-  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${attr(built.frame)}">${soilLine(built.frame, built.anchors.base.y, theme)}${kids(L.back)}${kids(L.plant)}${kids(L.front)}</svg>`;
 }
 
 /**

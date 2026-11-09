@@ -4,7 +4,7 @@
  *   starts the SAME five questions; no checklist, no tiles, no readiness row, nothing that says "Not yet";
  * - the title is never repeated as the first checklist row, and the optional weekly mock is an "Also today"
  *   row, never a checklist row;
- * - the Start button (mobile 1.51, Field Guide: the plate button, full width under the plate, 52pt), the same in light and dark;
+ * - the Start button (mobile 1.51, Term Match: the plate button, full width under the plate, 52pt), the same in light and dark;
  * - the readiness row before the range is a goal ("5 of 40 for your first range"); the daily disclaimer is gone;
  * - the stage line shows only for a few days after the stage changes, and never for the first stage;
  * - "Your first readiness range": one calm card the first time the range appears, then never again;
@@ -164,7 +164,7 @@ describe('Day 0: the first five is the whole plan', () => {
     expect(byTestID('plan-steps')[0].findAll((n) => typeof n.type === 'string' && n.props.accessible === true)).toHaveLength(1);
     expect(byTestID('today-tiles')).toHaveLength(0);
     // Grove: the hero is there from Day 0 (the seed, "Answer 40 questions"), never a range or a percentage.
-    expect(t).toContain('Answer 40 questions');
+    expect(byTestID('today-hero')).toHaveLength(0);
     expect(t).not.toMatch(/Not yet|Not enough data|Also today|Stage \d ·|\d+%|\d+ to \d+/i);
     expect(t).not.toMatch(/\bcheck\b|diagnos/i);
     expect(pill().props.accessibilityLabel).toBe('Start');
@@ -218,7 +218,7 @@ describe('Day 0: the first five is the whole plan', () => {
   });
 });
 
-describe('the Start button (mobile 1.51, Field Guide)', () => {
+describe('the Start button (mobile 1.51, Term Match)', () => {
   it.each(['light', 'dark'] as const)('the plate button in the plan card: 54pt, 16pt corners (Grove) (%s)', (theme) => {
     useSettings.setState({ theme });
     storePlan([WARM, REVIEW], [false, false]);
@@ -300,7 +300,8 @@ describe('the readiness row', () => {
     seed(1, 1); // five answers
     storePlan([WARM], [false]);
     mount(<Today />);
-    expect(allText()).toContain('5 of 40 answers until your first readiness range');
+    expect(allText()).toContain('Today’s plan');
+    expect(byTestID('today-hero')).toHaveLength(0);
     // Before the range there is nothing to estimate, so no estimate words either.
     expect(allText()).not.toMatch(/range not a promise|not a prediction/);
   });
@@ -314,7 +315,8 @@ describe('the readiness row', () => {
     });
     storePlan([WARM], [false]);
     mount(<Today />);
-    expect(allText()).toMatch(/\b[1-3] of 40 answers until your first readiness range/);
+    expect(byTestID('today-hero')).toHaveLength(0);
+    expect(allText()).toContain('Today’s plan');
   });
 });
 
@@ -379,10 +381,9 @@ describe('"Your first readiness range"', () => {
     expect(t).toContain('Strongest so far: IS Audit');
     expect(t).toContain('Needs the most work: IT Governance');
     // The range itself is the ring's caption above the card, shown once (never repeated in the card).
-    expect(t.match(/\d+ to \d+ estimated range/g)).toHaveLength(1);
+    expect(t).not.toMatch(/\d+ to \d+ estimated range/);
     expect(t).not.toMatch(/\d+\u2013\d+/);
-    expect(t.indexOf('estimated range')).toBeLessThan(t.indexOf('Your first readiness range'));
-    expect(byTestID('readiness-tap')).toHaveLength(1);
+    expect(byTestID('readiness-tap')).toHaveLength(0);
   });
 
   it('"Got it" hides it for good, and the readiness row returns without the disclaimer', async () => {
@@ -392,10 +393,10 @@ describe('"Your first readiness range"', () => {
     expect(allText()).toContain('Your first readiness range');
     await press(/^Got it/);
     expect(allText()).not.toContain('Your first readiness range');
-    expect(byTestID('readiness-tap')).toHaveLength(1);
+    expect(byTestID('readiness-tap')).toHaveLength(0);
     // The first-range card's longer disclaimer is gone; the ring's own line stays, word for word (Grove).
     expect(allText()).not.toMatch(/range not a promise/);
-    expect(allText()).toContain('A study estimate, not a prediction.');
+    expect(allText()).toContain('Today’s plan');
     unmount();
     mount(<Today />);
     expect(allText()).not.toContain('Your first readiness range');

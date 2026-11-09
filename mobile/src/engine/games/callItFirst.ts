@@ -41,7 +41,7 @@ export const DECOY_SIMILAR = 0.5;
 
 export type CallTier = 'seedling' | 'sapling' | 'heartwood';
 export const CALL_TIERS: CallTier[] = ['seedling', 'sapling', 'heartwood'];
-export const CALL_TIER_NAME: Record<CallTier, string> = { seedling: 'Seedling', sapling: 'Sapling', heartwood: 'Heartwood' };
+export const CALL_TIER_NAME: Record<CallTier, string> = { seedling: 'Beginner', sapling: 'Practised', heartwood: 'Skilled' };
 export const CALL_TIER_LINE: Record<CallTier, string> = {
   seedling: 'Decoys from other topics.',
   sapling: 'Decoys from nearby ideas.',

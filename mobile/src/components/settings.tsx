@@ -163,11 +163,13 @@ export function SettingsCard({ children, title }: { children: ReactNode; /** A p
 export function SettingsGroup({
   title,
   intro,
+  info,
   children,
   headRef,
 }: {
   title: string;
   intro?: string;
+  info?: ReactNode;
   children: ReactNode;
   /** Which category it is. Its mark is drawn on the door rows only since the type pass (heads are words alone). */
   cat?: SettingsCat;
@@ -180,6 +182,7 @@ export function SettingsGroup({
   if (sub)
     return (
       <View style={{ marginTop: space.lg }}>
+        {info ? <View style={{ alignItems: 'flex-end' }}>{info}</View> : null}
         {intro ? <T v="meta" style={{ marginBottom: space.md }}>{intro}</T> : null}
         <View style={[styles.groupRule, { borderColor: c.line }]}>{children}</View>
       </View>
@@ -188,8 +191,11 @@ export function SettingsGroup({
     <SettingsCard>
       {/* Type pass (TYPE_SCALE.md R4): a section head on Settings is the headline alone, as on the web's
           Settings page; the category marks stay on the door rows, which are rows, not heads. */}
-      <View ref={headRef} accessible accessibilityRole="header" accessibilityLabel={title} style={[styles.cardHead, { borderBottomColor: c.line }]}>
-        <T v="headline" style={{ flexShrink: 1 }}>{title}</T>
+      <View style={[styles.cardHead, { borderBottomColor: c.line, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }]}>
+        <View ref={headRef} accessible accessibilityRole="header" accessibilityLabel={title} style={{ flex: 1 }}>
+          <T v="headline" style={{ flexShrink: 1 }}>{title}</T>
+        </View>
+        {info}
       </View>
       {intro ? <T v="meta" style={{ marginTop: space.sm }}>{intro}</T> : null}
       {children}
@@ -315,7 +321,7 @@ export function Sheet({
   // The title takes screen-reader focus as the sheet opens.
   const titleRef = useRef<View>(null);
   useEffect(() => {
-    if (visible) moveFocus(titleRef, 350);
+    if (visible) return moveFocus(titleRef, 350);
   }, [visible]);
   return (
     <Modal visible={visible} transparent animationType="fade" onRequestClose={onClose} statusBarTranslucent navigationBarTranslucent>

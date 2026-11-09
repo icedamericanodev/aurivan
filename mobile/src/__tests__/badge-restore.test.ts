@@ -16,18 +16,18 @@ describe('markSupported reads the whole key (the restore bug)', () => {
   const e = (over: Partial<MarkEvidence> = {}): MarkEvidence => ({ answers: answered(ids('4', 25)), ...over });
 
   it('tiered keys need THEIR evidence, never tier 1’s', () => {
-    // Firm Footing · 80% needs 40 of the domain's answers; 20 (tier 1's) is not enough.
+    // Domain Mastery · 80% needs 40 of the domain's answers; 20 (tier 1's) is not enough.
     expect(markSupported('firm-footing:4', e())).toBe(true);
     expect(markSupported('firm-footing:4:80', e())).toBe(false);
     expect(markSupported('firm-footing:4:80', e({ answers: answered(ids('4', 40)) }))).toBe(true);
-    // Long Memory · 75 needs 75 recalls; the 25 that earn "long-memory" are not enough.
+    // Lasting Recall · 75 needs 75 recalls; the 25 that earn "long-memory" are not enough.
     // A genuine save's counter and its counted questions grow together.
     const counts = (longRecall: number) => ({ milestones: { counts: { longRecall }, longIds: ids('9', longRecall) } });
     expect(markSupported('long-memory', e(counts(25)))).toBe(true);
     expect(markSupported('long-memory:75', e(counts(25)))).toBe(false);
     expect(markSupported('long-memory:75', e(counts(75)))).toBe(true);
     expect(markSupported('long-memory:150', e(counts(149)))).toBe(false);
-    // Dress Rehearsal · 2 needs two mocks.
+    // Mock Complete · 2 needs two mocks.
     expect(markSupported('dress-rehearsal', e({ mocks: [{}] }))).toBe(true);
     expect(markSupported('dress-rehearsal:2', e({ mocks: [{}] }))).toBe(false);
     expect(markSupported('dress-rehearsal:2', e({ mocks: [{}, {}] }))).toBe(true);
@@ -106,12 +106,12 @@ describe('markSupported reads the whole key (the restore bug)', () => {
   });
 });
 
-describe('the exam the cert is for (QA: Whole Map and Dress Rehearsal’s tiers)', () => {
+describe('the exam the cert is for (QA: All Domains and Mock Complete’s tiers)', () => {
   const exam = { domains: ['1', '2', '3', '4', '5'], fullMockSize: 150 };
   const DAY = 86_400_000;
   const mock = (at: number, over: object = {}) => ({ total: 150, finishedAt: at, timing: 'standard', unanswered: 0, ...over });
 
-  it('Whole Map needs answers in every exam domain, so one domain’s answers can’t claim it', () => {
+  it('All Domains needs answers in every exam domain, so one domain’s answers can’t claim it', () => {
     expect(markSupported('whole-map', { answers: answered(ids('4', 25)), exam })).toBe(false);
     const all = answered(['1', '2', '3', '4', '5'].flatMap((d) => ids(d, 5)));
     expect(markSupported('whole-map', { answers: all, exam })).toBe(true);
@@ -119,7 +119,7 @@ describe('the exam the cert is for (QA: Whole Map and Dress Rehearsal’s tiers)
     expect(markSupported('whole-map', { answers: answered(ids('4', 25)) })).toBe(true);
   });
 
-  it('Dress Rehearsal · 2 and · 3 need full, timed, fully answered mocks a week apart', () => {
+  it('Mock Complete · 2 and · 3 need full, timed, fully answered mocks a week apart', () => {
     const e = (mocks: object[]) => ({ answers: {}, mocks, exam });
     expect(dressChain([mock(T0), mock(T0 + 7 * DAY)], 150)).toEqual([T0, T0 + 7 * DAY]);
     expect(markSupported('dress-rehearsal:2', e([mock(T0), mock(T0 + 7 * DAY)]))).toBe(true);
@@ -130,7 +130,7 @@ describe('the exam the cert is for (QA: Whole Map and Dress Rehearsal’s tiers)
     expect(markSupported('dress-rehearsal:3', e([mock(T0 + 14 * DAY), mock(T0), mock(T0 + 7 * DAY)]))).toBe(true); // any order
     // Damaged records are skipped, never trusted.
     expect(markSupported('dress-rehearsal:2', e([mock(T0), { total: '150', finishedAt: T0 + 9 * DAY }, null as unknown as object]))).toBe(false);
-    // A Stretch or higher tier opens only after Whole Map: dropped on restore without it.
+    // A Stretch or higher tier opens only after All Domains: dropped on restore without it.
     const genuineMocks = { answers: answered(ids('4', 45)), mocks: [mock(T0), mock(T0 + 7 * DAY)], exam };
     const strip = (earned: Record<string, number>) => Object.keys(keepSupported({ earned }, genuineMocks).earned).sort();
     expect(strip({ 'dress-rehearsal:2': T0, 'firm-footing:4:80': T0 })).toEqual([]);
@@ -170,7 +170,7 @@ describe('planters (a completed set’s reward, Phase 4)', () => {
     const m = { earned: { 'rooted:10': T0, 'rooted:30': T0, 'rooted:60': T0 }, planters: { rooted: T0, examDay: T0 } };
     const kept = keepSupported(m, { milestones: { days: 60 } });
     expect(kept.planters).toEqual({ rooted: T0 });
-    const short = keepSupported(m, { milestones: { days: 30 } }); // Rooted · 60 can't be backed by 30 days
+    const short = keepSupported(m, { milestones: { days: 30 } }); // Study Days · 60 can't be backed by 30 days
     expect(short.earned['rooted:60']).toBeUndefined();
     expect(short.planters).toEqual({});
   });
