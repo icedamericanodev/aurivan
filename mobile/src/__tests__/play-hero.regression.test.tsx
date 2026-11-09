@@ -184,10 +184,16 @@ describe('the tab hero renders its content (Android blank-hero regression)', () 
   });
 });
 
-describe('Settings in the headers (Grove: on You only)', () => {
-  it('Today has no Settings gear (Settings is on You; the exam date is the hero tile)', () => {
+describe('Settings in the headers (Today and You)', () => {
+  it('Today has one accessible Settings gear that opens the existing Settings route', () => {
+    (router.push as jest.Mock).mockClear();
     mount(<Today />);
-    expect(root().findAll((n) => n.props.accessibilityLabel === 'Settings' && typeof n.props.onPress === 'function')).toHaveLength(0);
+    const gear = root().findAll((n) => n.props.accessibilityLabel === 'Settings' && typeof n.props.onPress === 'function');
+    expect(gear).toHaveLength(1);
+    expect(gear[0].props.accessibilityRole).toBe('button');
+    expect(gear[0].props.hitSlop).toBe(2);
+    act(() => { gear[0].props.onPress(); });
+    expect(router.push).toHaveBeenCalledWith('/settings');
   });
 
   it('You: one 44pt rounded-square button spoken "Settings", 48pt to the finger, opens Settings', () => {

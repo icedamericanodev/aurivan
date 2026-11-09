@@ -25,6 +25,10 @@ Share feedback opens the existing email workflow. The result says only that the 
 
 ## Review and evidence
 
-Validation results and native screenshot evidence will be recorded after the final implementation and review pass. Fixtures are synthetic and must remain separate from learner data.
+The current validation results, native screenshot links and remaining acceptance limits are recorded in [draft PR #243](https://github.com/icedamericanodev/aurivan/pull/243). Treat the PR's checked head and CI results as authoritative rather than assuming a screenshot proves a release.
+
+Independent product/accessibility review corrected an initial raw-accuracy mapping to the existing weighted domain measure. Independent security/performance review found no new data/network surface and corrected unstable presentation callbacks: focus render calls on the heavy fixture dropped from 309 to 170 (main baseline 169). These are test render counts, not release-device frame-time measurements. Existing dependency advisories are unchanged (zero high/critical in the local audit).
+
+The native harness is `mobile/scripts/screenshots/today_native_qa.py`. It refuses any AVD not named `KaiSipTodayQA`, uses only synthetic fixtures, and captures actual Android pixels plus accessibility hierarchy. It must never target a learner's device. Tests cover first-five resume, latest-try denominators and evidence gates, local-date activity, real suggestion destinations and stale-action session protection, and feedback dismissal/preferences after rehydration.
 
 The branch was created from `5e3fad1` (Concept Lab #241 already merged). Mistake DNA #240 remains separate; its app changes do not overlap Today. Shared release documentation and screenshot anchors require normal merge reconciliation if other work changes them first.
