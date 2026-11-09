@@ -476,6 +476,13 @@ PY
   fi
 fi
 
+# Beta Desk sign-in regressions (no network or real accounts).
+if command -v node >/dev/null 2>&1; then
+  node --test scripts/beta_desk/sign_in.test.cjs || status=1
+else
+  printf '\nBeta Desk sign-in tests skipped (node not available)\n'
+fi
+
 # Summary --------------------------------------------------------------------
 echo
 if [ $status -eq 0 ]; then
@@ -485,3 +492,4 @@ else
 fi
 
 exit $status
+

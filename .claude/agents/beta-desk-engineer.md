@@ -52,7 +52,9 @@ English, give exact clicks, never paste their secrets back to them.
    what changed, and the exact clicks to do now (usually a hard refresh).
 
 ## Admin runbook (Supabase MCP `execute_sql`, project `ziadnvepttlgcowvqvom`)
-- **Add an admin** (they must have signed in once and seen "No access"):
+- **Add an admin** (use an existing confirmed KaiSip account, or invite them
+  through Supabase Authentication and have them finish email verification
+  outside Beta Desk first; Beta Desk rejects unlisted accounts before OTP):
   `insert into private.beta_desk_admins (user_id) select id from auth.users where lower(email) = '<email>' and email_confirmed_at is not null on conflict do nothing;`
 - **Remove an admin:** `delete from private.beta_desk_admins where user_id = (select id from auth.users where lower(email) = '<email>');`
 - **Lost phone / reset the authenticator** (only when the owner asks, in this chat):
@@ -65,3 +67,4 @@ English, give exact clicks, never paste their secrets back to them.
 - Approve, merge, or change rules people were promised (who qualifies, the reward,
   retention) without the owner's decision; the form and the privacy policy must agree.
 - Escalate only the "major" list in CLAUDE.md (product/legal/privacy decisions, costs).
+

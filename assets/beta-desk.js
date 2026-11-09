@@ -625,19 +625,27 @@ function loadTurnstile() {
   });
 }
 async function showCaptcha() {
-  captcha.needed = true; $('captchaBox').hidden = false;
+  captcha.needed = true; captcha.token = ''; $('captchaBox').hidden = false;
   try {
     var ts = await loadTurnstile();
-    if (captcha.widget !== null) { ts.reset(captcha.widget); return; }
+    if (captcha.widget !== null) { ts.reset(captcha.widget); return true; }
     captcha.widget = ts.render('#captchaBox', { sitekey: TURNSTILE_SITE_KEY, action: 'beta-desk-sign-in', callback: function (t) { captcha.token = t; }, 'expired-callback': function () { captcha.token = ''; } });
-  } catch (e) { setGateError('The sign-in check could not load. Refresh the page and try again.'); }
+    return true;
+  } catch (e) {
+    captcha.needed = false;
+    setGateError('The sign-in check could not load. Select Email me a code to try again.');
+    return false;
+  }
 }
 
 $('emailForm').addEventListener('submit', async function (ev) {
   ev.preventDefault();
   var email = $('emailInput').value.trim();
   if (!BD.validEmail(email)) { setGateError('Enter a valid email address.'); return; }
-  if (!captcha.needed) { await showCaptcha(); setGateError('Complete the check below, then select Email me a code again.'); return; }
+  if (!captcha.needed) {
+    if (await showCaptcha()) setGateError('Complete the check below, then select Email me a code again.');
+    return;
+  }
   if (captcha.needed && !captcha.token) { setGateError('Please complete the check first.'); return; }
   var btn = $('sendCodeBtn'); btn.disabled = true; btn.textContent = 'Sending…'; setGateError('');
   try {
