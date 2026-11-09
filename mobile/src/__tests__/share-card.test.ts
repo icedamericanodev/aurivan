@@ -193,8 +193,8 @@ describe('share card headline: edge cases (QA)', () => {
 describe('badge share cards', () => {
   const badge = (over: Partial<ShareBadge> = {}): ShareBadge => ({
     badge: 'long-memory',
-    name: 'Long Memory',
-    tierLine: 'Lichen · tier 2 of 3',
+    name: 'Lasting Recall',
+    tierLine: 'Silver · tier 2 of 3',
     skill: 'Recalled 75 answers a week or more later',
     set: 'evergreen',
     status: 'earned',
@@ -218,7 +218,7 @@ describe('badge share cards', () => {
     // The share text and the spoken label carry the notice too.
     expect(t.message).toContain(t.notice);
     expect(t.spoken).toContain(t.notice);
-    expect(t.spoken).toContain('Long Memory (Lichen · tier 2 of 3)');
+    expect(t.spoken).toContain('Lasting Recall (Silver · tier 2 of 3)');
     // No verification id, no URL (no store listing yet), no profile or credential wording.
     expect(t.message).not.toMatch(/https?:|www\.|utm|ref=|LinkedIn|Licenses|certificat|credential|verif/i);
   });
@@ -238,10 +238,10 @@ describe('badge share cards', () => {
     expect(badgeCardText(badge(), cisa).notice).toMatch(/endorsed/);
   });
 
-  it('Flown the Nest (id `graduate`, mobile 1.18) is shareable: no badge is on the never-share list', () => {
+  it('Review Complete (id `graduate`, mobile 1.18) is shareable: no badge is on the never-share list', () => {
     expect(NEVER_SHARED_BADGES.has('graduate')).toBe(false);
     expect(NEVER_SHARED_BADGES.size).toBe(0);
-    const nest = badge({ badge: 'graduate', name: 'Flown the Nest', tierLine: undefined, skill: 'Moved 50 questions out of spaced review' });
+    const nest = badge({ badge: 'graduate', name: 'Review Complete', tierLine: undefined, skill: 'Moved 50 questions out of spaced review' });
     expect(badgeShareable(nest)).toBe(true);
     const t = badgeCardText(nest, cisa);
     // Every line we write passes the guard; the old credential-like word appears nowhere.
@@ -262,14 +262,14 @@ describe('badge share cards', () => {
 
   it('the guard reads the badge name too, and still refuses "graduat" anywhere we write', () => {
     expect(badgeShareable({ status: 'earned', set: 'evergreen', skill: 'Made a whole topic stick', name: 'Graduate' })).toBe(false);
-    expect(badgeShareable({ status: 'earned', set: 'evergreen', skill: 'Graduated 50 questions', name: 'Flown the Nest' })).toBe(false);
-    expect(isHonestShareText('Flown the Nest')).toBe(true);
+    expect(badgeShareable({ status: 'earned', set: 'evergreen', skill: 'Graduated 50 questions', name: 'Review Complete' })).toBe(false);
+    expect(isHonestShareText('Review Complete')).toBe(true);
     expect(() => badgeCardText(badge({ badge: undefined, name: 'Certified Auditor' }), cisa)).toThrow();
     // A cert or date that trips the guard throws here; the sheet catches it and hides Share.
     expect(() => badgeCardText(badge(), { ...cisa, name: 'Official' })).toThrow();
   });
 
-  it('never shareable: Moments (Fresh Start, a self-reported "Passed"), not yet earned, or an empty skill line', () => {
+  it('never shareable: Moments (Study Return, a self-reported "Passed"), not yet earned, or an empty skill line', () => {
     expect(badgeShareable({ status: 'earned', set: 'moments', skill: 'Picked up again' })).toBe(false);
     expect(badgeShareable({ status: 'earned', set: 'moments', skill: 'Passed' })).toBe(false);
     expect(badgeShareable({ status: 'open', set: 'evergreen', skill: 'Recalls answers a week or more later' })).toBe(false);

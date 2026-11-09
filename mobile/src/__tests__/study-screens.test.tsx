@@ -77,7 +77,7 @@ describe('Practice: the mode picker', () => {
     // A new learner is diagnosing: Random is suggested and selected.
     expect(radio(/^Random/).props.accessibilityState).toEqual({ checked: true });
     expect(String(radio(/^Random/).props.accessibilityLabel)).toContain('Suggested');
-    expect(allText()).toContain('A mix like the real exam.');
+    expect(allText()).toContain('A mix like the exam.');
     act(() => {
       radio(/^In order/).props.onPress();
     });

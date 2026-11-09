@@ -131,7 +131,7 @@ describe('a 1.4 save in 1.5', () => {
     expect(cp().cards).toBeUndefined();
   });
 
-  it('every study mode, Guided and Root or Rumor work on it (timed, as its default says)', async () => {
+  it('every study mode, Guided and Fact or Myth work on it (timed, as its default says)', async () => {
     await loadSave(SETTINGS_1_4, PROGRESS_1_4);
     for (const mode of ['smart', 'inOrder', 'random'] as const) {
       const s = startStudy('cisa', { mode, count: 10 })!;

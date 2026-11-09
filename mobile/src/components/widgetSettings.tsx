@@ -19,7 +19,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useEffect, useRef, useState, type Ref } from 'react';
 import { View } from 'react-native';
-import { PICKER_LABELS, readReveal, REVEAL_KEY, WIDGET_KINDS, WIDGET_TITLES, type ReadinessPref, type WidgetKind } from '../engine/widgets';
+import { PICKER_LABELS, readReveal, REVEAL_KEY, AVAILABLE_WIDGET_KINDS, WIDGET_TITLES, type ReadinessPref, type WidgetKind } from '../engine/widgets';
 import { widgetNumbers, widgetTesterEmail, type WidgetTesterCard as TesterCardData } from '../engine/widgetTester';
 import { mailtoUrl } from '../engine/support';
 import { dayKey } from '../engine/streak';
@@ -43,7 +43,7 @@ export const TIMING_SUBTITLE = 'Weeks to your exam, the final week, the eve and 
 /** One line per widget kind in the "Add a widget" list (what it shows, in plain words). */
 const ADD_LINES: Record<WidgetKind, string> = {
   plan: 'What to study today, and one tap to start',
-  plant: 'Your plant, growing as answers stick',
+  plant: 'Open your study plan',
   think: 'One exam rule a day: think, then check',
   week: 'The days you studied this week, as leaves',
   question: 'A question you got right before: recall it, then check',
@@ -128,14 +128,14 @@ export function WidgetSettingsGroup({ openOnMount, onLinkDone, headRef }: { open
       />
       {/* A list of actions, not a choice: buttons, not radio buttons. Recommended first. */}
       <Sheet visible={sheet === 'add'} onClose={close} title="Add a widget" intro="Your launcher asks before it adds one. You can also long-press your home screen and choose Widgets.">
-        {WIDGET_KINDS.map((k, i) => (
+        {AVAILABLE_WIDGET_KINDS.map((k, i) => (
           <SettingsRow
             key={k}
             title={WIDGET_TITLES[k]}
             subtitle={addWidgetLine(k)}
             accessibilityLabel={`Add ${WIDGET_TITLES[k]}. ${addWidgetLine(k)}`}
             chevron={false}
-            last={i === WIDGET_KINDS.length - 1}
+            last={i === AVAILABLE_WIDGET_KINDS.length - 1}
             onPress={() => {
               setSheet(null);
               void pinWidget(k).then((asked) => {

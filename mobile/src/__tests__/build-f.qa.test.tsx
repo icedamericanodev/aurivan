@@ -10,8 +10,8 @@
  *    session, Coach me never earns, bad sessions never take a badge away.
  * 3. Reset and restore: reset clears milestones; an older backup re-backfills
  *    quietly; a backup's unsupported badges are dropped, only those.
- * 4. Game levels through Field Guide, Canopy Call and Stepping Stones.
- * 5. Field Guide, Canopy Call and Stepping Stones on real content.
+ * 4. Game levels through Term Match, Role Check and Sequence Check.
+ * 5. Term Match, Role Check and Sequence Check on real content.
  * 6. None of the three new games moves readiness or mastery.
  *
  * Bugs found are pinned with it.failing (they flip to failures once fixed).
@@ -167,8 +167,8 @@ function save15(): { cert: CertProgress; streak: { current: number; best: number
   };
 }
 /**
- * The 10 marks (9 milestones: Firm Footing has two leaves) that 1.5 save shows.
- * Fresh Start is earned live only (code review Build F): old data can't show a return AND a finished session.
+ * The 10 marks (9 milestones: Domain Mastery has two leaves) that 1.5 save shows.
+ * Study Return is earned live only (code review Build F): old data can't show a return AND a finished session.
  */
 const EXPECTED_MARKS = [
   'dress-rehearsal',
@@ -193,7 +193,7 @@ describe('Journey 1: a 1.5 learner upgrades', () => {
     const n = ensureBackfill('cisa', T0);
     const m = cp().milestones!;
     expect(Object.keys(m.earned).sort()).toEqual(EXPECTED_MARKS);
-    // Firm Footing's two leaves count once: 9 milestones, not 10.
+    // Domain Mastery's two leaves count once: 9 milestones, not 10.
     expect(n).toBe(9);
     expect(badgeCount(Object.keys(m.earned))).toBe(9);
     expect(m.backfill).toEqual({ at: T0, count: 9 });
@@ -243,7 +243,7 @@ describe('Journey 1: a 1.5 learner upgrades', () => {
     // Per-set counts, never a grand total.
     expect(text).not.toMatch(/\bof 15\b/);
     expect(labels()).toContain('Groundwork, 2 of 3');
-    // Mobile 1.11: Exam Day gained Dress Rehearsal · 2 (gated until Whole Map), so 2 of 3 now.
+    // Mobile 1.11: Exam Day gained Mock Complete · 2 (gated until All Domains), so 2 of 3 now.
     expect(labels()).toContain('Exam Day, 2 of 3');
     // Completed by the back-fill: "by" that date (it was already complete then).
     expect(labels()).toContain('Sound Judgement, 2 of 3');
@@ -251,15 +251,15 @@ describe('Journey 1: a 1.5 learner upgrades', () => {
     const { marks } = badgeCase('cisa', cp(), T0);
     const earnedKeys = Object.keys(cp().milestones!.earned);
     for (const k of earnedKeys) expect(marks.find((m) => m.key === k)?.status).toBe('earned');
-    expect(labels().some((l) => l.startsWith('Firm Footing · IS Audit, Clay. Earned'))).toBe(true);
-    expect(labels().some((l) => l.startsWith('Rooted · 10 days, Clay. Earned'))).toBe(true);
+    expect(labels().some((l) => l.startsWith('Domain Mastery · IS Audit, Bronze. Earned'))).toBe(true);
+    expect(labels().some((l) => l.startsWith('Study Days · 10 days, Bronze. Earned'))).toBe(true);
     // Every open badge says "Not yet" with its progress (or when it opens): nothing hidden.
-    // (Fresh Start, a moment, stays off the case until it happens: it is never a goal.)
+    // (Study Return, a moment, stays off the case until it happens: it is never a goal.)
     for (const m of marks.filter((x) => x.status !== 'earned' && x.set !== 'moments')) {
       expect(labels().some((l) => l.startsWith(`${m.name}${m.tier ? ',' : '.'}`) && l.includes('Not yet'))).toBe(true);
     }
     // A completed set saves its planter (the plant shows it in Phase 4): Sound Judgement is not
-    // complete here, Exam Day no longer is (Dress Rehearsal · 2, mobile 1.11), so neither has one.
+    // complete here, Exam Day no longer is (Mock Complete · 2, mobile 1.11), so neither has one.
     expect(cp().milestones!.planters?.examDay).toBeUndefined();
     // Seen once: a second visit has no summary.
     expect(cp().milestones!.backfill!.seen).toBe(true);
@@ -273,7 +273,7 @@ describe('Journey 2: earning a badge', () => {
     startFromIds('cisa', d4.slice(0, 20), 'Twenty');
     d4.slice(0, 20).forEach((id) => useProgress.getState().recordAnswer('cisa', id, true));
     finishSession();
-    // First Foothold and Firm Footing · IS Operations both met; Results shows the first.
+    // First Review and Domain Mastery · IS Operations both met; Results shows the first.
     expect(useSession.getState().active!.milestone).toBe('first-foothold');
     expect(cp().milestones!.queue).toEqual(['firm-footing:4']);
     // Next session: the waiting one, and nothing else.
@@ -317,7 +317,7 @@ describe('Journey 2: earning a badge', () => {
 
   // BUG: the Milestones screen says "game answers don't count toward
   // milestones", but game answers (recorded with mastery: false) count as
-  // clean answers for First Foothold, Firm Footing, Whole Map and Topic Clear.
+  // clean answers for First Review, Domain Mastery, All Domains and Topic Complete.
   it('game answers (Daylight, Trap Spotter, Priority Lens, Sure Footing) never earn a milestone', () => {
     d4.slice(0, 20).forEach((id) => useProgress.getState().recordAnswer('cisa', id, true, undefined, { mastery: false }));
     checkMilestones('cisa', { finished: true });
@@ -403,19 +403,19 @@ describe('Journey 3: reset and restore', () => {
 });
 
 describe('Journey 4: game levels through the three new games', () => {
-  it('Field Guide: two rounds at 80% or more grow Seedling to Sapling', () => {
+  it('Term Match: two rounds at 80% or more grow Beginner to Practised', () => {
     const a = finishGameRound('cisa', 'field', { score: 10, rate: 10 / 12, tier: 'seedling' });
     expect(a.change).toBeNull();
     const b = finishGameRound('cisa', 'field', { score: 12, rate: 1, tier: 'seedling' });
     expect(b.change).toBe('up');
     expect(b.tier).toBe('sapling');
-    expect(tierChangeLine(b.change, b.tier)).toBe('You’ve grown to Sapling. Your next round starts there.');
+    expect(tierChangeLine(b.change, b.tier)).toBe('You’ve reached Practised. Your next round starts there.');
     // 9 of 12 (75%) is not a promoting round.
     finishGameRound('cisa', 'field', { score: 9, rate: 9 / 12, tier: 'sapling' });
     expect(finishGameRound('cisa', 'field', { score: 9, rate: 9 / 12, tier: 'sapling' }).change).toBeNull();
   });
 
-  it('Canopy Call: two rounds under 50% step back, in kind words; exactly 5 of 10 does not', () => {
+  it('Role Check: two rounds under 50% step back, in kind words; exactly 5 of 10 does not', () => {
     useProgress.setState({ byCert: { cisa: { ...cp(), gameGrowth: { canopy: { tier: 'sapling', up: 0, down: 0 } } } } });
     finishGameRound('cisa', 'canopy', { score: 5, rate: 0.5, tier: 'sapling' });
     expect(finishGameRound('cisa', 'canopy', { score: 5, rate: 0.5, tier: 'sapling' }).change).toBeNull();
@@ -424,30 +424,30 @@ describe('Journey 4: game levels through the three new games', () => {
     expect(down.change).toBe('down');
     expect(down.tier).toBe('seedling');
     const line = tierChangeLine(down.change, down.tier)!;
-    expect(line).toBe('Back to Seedling. Two strong rounds grow it again.');
+    expect(line).toBe('Back to Beginner. Two strong rounds move you up again.');
     expect(line).not.toMatch(/lost|lose|fail|demot|drop|wrong|bad/i);
   });
 
-  it('Stepping Stones: rounds at another level never move the learner’s level', () => {
-    // A Seedling learner tries Heartwood and does badly, twice.
+  it('Sequence Check: rounds at another level never move the learner’s level', () => {
+    // A Beginner learner tries Skilled and does badly, twice.
     for (let k = 0; k < 3; k++) {
       const n = finishGameRound('cisa', 'stones', { score: 0, rate: 0, tier: 'heartwood', hits: [false, false, false] });
       expect(n.change).toBeNull();
       expect(n.tier).toBe('seedling');
     }
-    // Then aces Sapling twice: still Seedling (only rounds AT your level move you).
+    // Then aces Practised twice: still Beginner (only rounds AT your level move you).
     finishGameRound('cisa', 'stones', { score: 21, rate: 1, tier: 'sapling' });
     expect(finishGameRound('cisa', 'stones', { score: 21, rate: 1, tier: 'sapling' }).tier).toBe('seedling');
     expect(cp().gameGrowth!.stones).toEqual(expect.objectContaining({ tier: 'seedling', up: 0, down: 0 }));
     // The off-level hits are still kept for the skill record.
     expect(cp().gameGrowth!.stones!.hits!.length).toBe(9);
-    // Two good rounds at Seedling: grow.
+    // Two good rounds at Beginner: grow.
     finishGameRound('cisa', 'stones', { score: 15, rate: 1, tier: 'seedling' });
     expect(finishGameRound('cisa', 'stones', { score: 15, rate: 1, tier: 'seedling' }).change).toBe('up');
   });
 });
 
-describe('Journey 5a: Field Guide on the real notes', () => {
+describe('Journey 5a: Term Match on the real notes', () => {
   const all = fieldTerms(getNotes('cisa'));
   const bigTopic = (topicId: string) => all.filter((t) => t.topicId === topicId).length >= 4;
 
@@ -506,7 +506,7 @@ describe('Journey 5a: Field Guide on the real notes', () => {
   });
 });
 
-describe('Journey 5b: Canopy Call on the reviewed deck', () => {
+describe('Journey 5b: Role Check on the reviewed deck', () => {
   const deck = getRoleDeck('cisa')!;
   const TIERS: CanopyTier[] = ['seedling', 'sapling', 'heartwood'];
 
@@ -557,7 +557,7 @@ describe('Journey 5b: Canopy Call on the reviewed deck', () => {
     }
   });
 
-  it('the slip coach’s “wrong role” pattern offers Drill it: Canopy Call', () => {
+  it('the slip coach’s “wrong role” pattern offers Drill it: Role Check', () => {
     const ids = d1.slice(30, 36);
     for (const id of ids) {
       useProgress.getState().recordMistake('cisa', id, plainWrong(id));
@@ -579,11 +579,11 @@ describe('Journey 5b: Canopy Call on the reviewed deck', () => {
       r = create(<Mistakes />);
     });
     expect(allText()).toContain('You answer as the wrong person');
-    expect(root().findAll((n) => n.props.label === 'Drill it: Canopy Call' && typeof n.props.onPress === 'function').length).toBeGreaterThan(0);
+    expect(root().findAll((n) => n.props.label === 'Drill it: Role Check' && typeof n.props.onPress === 'function').length).toBeGreaterThan(0);
   });
 });
 
-describe('Journey 5c: Stepping Stones on the real processes', () => {
+describe('Journey 5c: Sequence Check on the real processes', () => {
   const all = getStepSequences('cisa');
   const TIERS: StonesTier[] = ['seedling', 'sapling', 'heartwood'];
 
@@ -606,7 +606,7 @@ describe('Journey 5c: Stepping Stones on the real processes', () => {
     expect(checkPath(item, Array.from({ length: n }, (_, k) => k))).toEqual(expect.objectContaining({ right: n, perfect: true }));
   });
 
-  it('Heartwood: the missing step is among 3 different choices, and no decoy fits the path', () => {
+  it('Skilled: the missing step is among 3 different choices, and no decoy fits the path', () => {
     for (let seed = 1; seed <= 40; seed++) {
       for (const it of buildStonesRound(all, undefined, 'heartwood', createRng(seed), T0)) {
         const m = it.missing!;
@@ -651,17 +651,17 @@ describe('Journey 6: readiness and mastery are unchanged by the three new games'
       });
     };
     const before = snap();
-    // Field Guide: 12 terms, 3 missed.
+    // Term Match: 12 terms, 3 missed.
     const terms = buildFieldRound(fieldTerms(getNotes('cisa')), cp().cards, 'seedling', createRng(5), Date.now()).flatMap((b) => b.terms);
     const firsts = terms.map((_, k) => k % 4 !== 0);
     terms.forEach((t, k) => useProgress.getState().recordCard('cisa', t.id, firsts[k]));
     finishGameRound('cisa', 'field', { score: 9, rate: 0.75, tier: 'seedling', hits: firsts });
-    // Canopy Call: 10 decisions, half wrong.
+    // Role Check: 10 decisions, half wrong.
     const deck = getRoleDeck('cisa')!;
     const items = buildCanopyRound(deck, cp().cards, 'seedling', createRng(5), Date.now());
     items.forEach((it, k) => useProgress.getState().recordCard('cisa', canopyCardId(it.card), k % 2 === 0));
     finishGameRound('cisa', 'canopy', { score: 5, rate: 0.5, tier: 'seedling' });
-    // Stepping Stones: 3 processes, one perfect.
+    // Sequence Check: 3 processes, one perfect.
     const stones = buildStonesRound(getStepSequences('cisa'), cp().cards, 'sapling', createRng(5), Date.now());
     stones.forEach((it, k) => useProgress.getState().recordCard('cisa', stonesCardId(it.seq), k === 0));
     finishGameRound('cisa', 'stones', { score: 8, rate: 0.6, tier: 'sapling' });

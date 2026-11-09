@@ -17,7 +17,7 @@ import path from 'node:path';
 import { lookUpItems, upNextMeta } from '../app/(tabs)/learn';
 import { SETTINGS_ROW_NOTE } from '../components/youTop';
 import { shelfLine } from '../components/herbarium';
-import { AREAS_KEY, lowEndLine } from '../components/youReadiness';
+import { lowEndLine } from '../components/youReadiness';
 import { EXAM_FOCUSED_SUBTITLE } from '../components/fit';
 import { getCertification } from '../content/certifications';
 import { mindsetTipsFor } from '../content/mindset';
@@ -119,10 +119,9 @@ describe('short interface text (Sky, 5 Nov 2026)', () => {
     for (const sentence of line.split(/(?<=\.) /)) expect(words(sentence)).toBeLessThanOrEqual(12);
   });
 
-  it('You: the areas key names each mark once, briefly; the badge shelf uses the kit’s line', () => {
-    expect(AREAS_KEY).toBe('Right on your latest tries. Dashed line: 70, each area’s target. ↑: growth since you last looked. Clay: below 70.');
-    expect(shelfLine(9, { name: 'Firm Footing', at: new Date(2026, 10, 5).getTime() } as Parameters<typeof shelfLine>[1])).toBe('9 pressed · Firm Footing, 5 Nov');
-    expect(shelfLine(0)).toBe('None pressed yet');
+  it('You: the badge shelf uses the kit’s line', () => {
+    expect(shelfLine(9, { name: 'Domain Mastery', at: new Date(2026, 10, 5).getTime() } as Parameters<typeof shelfLine>[1])).toBe('9 earned · Domain Mastery');
+    expect(shelfLine(0)).toBe('No badges yet');
     expect(words(SETTINGS_ROW_NOTE)).toBeLessThanOrEqual(6);
   });
 
@@ -134,7 +133,6 @@ describe('short interface text (Sky, 5 Nov 2026)', () => {
     const lines = [
       lowEndLine(68),
       lowEndLine(85),
-      AREAS_KEY,
       SETTINGS_ROW_NOTE,
       EXAM_FOCUSED_SUBTITLE,
       shelfLine(0),

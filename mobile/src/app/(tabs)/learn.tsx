@@ -26,6 +26,7 @@
  * back; the trail joins the numerals and the walked part is green; the Up next row has a filled play
  * disc; status marks are shapes (ring, arc, filled tick), never colour alone.
  */
+import { FeatureInfo } from '../../components/featureInfo';
 import * as Router from 'expo-router';
 import { router, useFocusEffect, useLocalSearchParams } from 'expo-router';
 import { memo, useCallback, useDeferredValue, useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
@@ -673,14 +674,16 @@ const LessonGroups = memo(function LessonGroups({
       })}
       {/* Guided: the step-by-step path (Practice, Change, Guided), pointed at from the course. The
           outline edge is `control`, 3:1 or more in both themes. */}
-      <Button
-        kind="secondary"
-        label="Prefer a guided path?"
-        accessibilityHint="Guided pairs each lesson with practice. Opens Guided."
-        onPress={() => router.push('/guided')}
-        style={{ marginTop: space.md }}
-      />
-      <T v="meta" center style={{ marginTop: space.xs, marginBottom: space.md }}>Guided pairs each lesson with practice</T>
+      <View style={{ flexDirection: 'row', alignItems: 'center', gap: space.sm, marginTop: space.md }}>
+        <Button
+          kind="secondary"
+          label="Guided"
+          accessibilityHint="Guided pairs each lesson with practice. Opens Guided."
+          onPress={() => router.push('/guided')}
+          style={{ flex: 1 }}
+        />
+        <FeatureInfo title="Guided"><T v="body">Guided pairs a lesson with practice on the same topic.</T></FeatureInfo>
+      </View>
     </HubCard>
   );
 });

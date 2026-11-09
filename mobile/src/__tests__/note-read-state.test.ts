@@ -243,7 +243,7 @@ describe('backup: started notes', () => {
 
 // ── Review fix (1.25 QA): a reading reset never costs a badge ─────────
 describe('badges survive Reset reading progress (notesEverRead)', () => {
-  // The reviewer's repro: 4 correct answers, one note read, no lessons, Topic Clear earned.
+  // The reviewer's repro: 4 correct answers, one note read, no lessons, Topic Complete earned.
   const earnTopicClear = () => {
     const p = useProgress.getState();
     for (const id of ['d1_001', 'd1_002', 'd1_003', 'd1_004']) p.recordAnswer('cisa', id, true);
@@ -257,7 +257,7 @@ describe('badges survive Reset reading progress (notesEverRead)', () => {
     return readBackup(JSON.stringify(file), CERT_IDS).progress.byCert.cisa.milestones?.earned;
   };
 
-  it('after the reset, a backup and restore keeps Topic Clear', () => {
+  it('after the reset, a backup and restore keeps Topic Complete', () => {
     earnTopicClear();
     useProgress.getState().resetNotesReading('cisa');
     expect(cert().notesRead).toEqual([]);

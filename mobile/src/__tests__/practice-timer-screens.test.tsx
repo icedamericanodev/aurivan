@@ -192,7 +192,7 @@ describe('Practice: the Timed switch and the one-time offer', () => {
     mount(<Practice />);
     expect(toggleValue('Timed')).toBe(false);
     toggle('Timed', true);
-    press('Build a set, Pick a domain, topic and difficulty'); // folded under its row (practice redesign)
+    press('Build a set'); // folded under its row (practice redesign)
     press('Start 10 questions, timed');
     expect(active().timed).toBe(true);
     // The screen's switch never changes the saved default.

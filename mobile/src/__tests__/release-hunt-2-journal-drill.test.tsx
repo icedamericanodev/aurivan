@@ -1,7 +1,7 @@
 /**
  * Release bug hunt round 2: the Mistake journal's "Drill it" follows the same unlock rule as Practice >
  * Drills. Before the fix a learner under 50 answers with a "wrong person" pattern was offered
- * "Drill it: Canopy Call", a drill Drills still kept locked (opening it quietly unlocked it for good).
+ * "Drill it: Role Check", a drill Drills still kept locked (opening it quietly unlocked it for good).
  */
 import { act, create, type ReactTestInstance, type ReactTestRenderer } from 'react-test-renderer';
 import Mistakes from '../app/mistakes';
@@ -56,17 +56,17 @@ function seed(answered: number, played: Record<string, number> = {}) {
 }
 
 describe('the journal offers a drill only when Drills has it open', () => {
-  it('12 answers, no games played: no "Drill it: Canopy Call", the review button instead', () => {
+  it('12 answers, no games played: no "Drill it: Role Check", the review button instead', () => {
     seed(12);
     expect(labels().some((l) => /^Drill it/.test(l))).toBe(false);
     expect(labels()).toContain('Review these mistakes');
   });
   it('50 answers: the drill is offered', () => {
     seed(50);
-    expect(labels()).toContain('Drill it: Canopy Call');
+    expect(labels()).toContain('Drill it: Role Check');
   });
-  it('under 50 answers but Canopy Call already played: offered (a played game is never taken away)', () => {
+  it('under 50 answers but Role Check already played: offered (a played game is never taken away)', () => {
     seed(12, { canopy: 3 });
-    expect(labels()).toContain('Drill it: Canopy Call');
+    expect(labels()).toContain('Drill it: Role Check');
   });
 });

@@ -11,7 +11,7 @@
  *   Your study            Daily time · Starting point · Exam-focused plan · Reset reading progress (1.25)
  *   Reminders             Study reminder · Time and days
  *   Practice              Default mode · Timed practice · Shuffle answer options
- *   Badges and your plant Show badges · Show my plant · Change its look
+ *   Badges Show badges
  *   You                   Your name (mobile 1.23: what Today calls you; optional, only on this phone)
  *   (doors)               Your data: Save a backup · Restore · (Undo restore), then Reset, set apart
  *                         Help and about: Get help or send feedback · About KaiSip · Privacy · Terms ·
@@ -31,7 +31,7 @@
  * Save or Cancel goes back to where the learner came from. `?open=name`
  * (mobile 1.44, You's study profile) opens Your name the same way: one name
  * editor in the app, never a second one. `?section=plant`
- * opens at Badges and your plant (the plant screens' "Open Settings").
+ * opens at Badges (the plant screens' "Open Settings").
  * `settings-section?category=data|help` (and account|board in a cloud build) is a door's screen: the
  * same screen showing only that category, its name in the bar.
  *
@@ -45,6 +45,7 @@
 import Constants from 'expo-constants';
 import { useCallback, useEffect, useRef, useState, type ReactNode, type RefObject } from 'react';
 import * as ExpoRouter from 'expo-router';
+import { FeatureInfo } from '../components/featureInfo';
 import { router, useLocalSearchParams } from 'expo-router';
 import { backOr } from '../lib/actions';
 import { Alert, AppState, Linking, Platform, View, type ScrollView } from 'react-native';
@@ -157,11 +158,6 @@ export default function Settings() {
     return cp.notesRead.length > 0 || (cp.notesViewed ?? []).length > 0;
   });
   const showReading = hasNotes(cert.id);
-  // Mobile 1.13: the plant switches (for every exam), and whether this exam has a plant (the Reset line).
-  const plantSettings = useProgress((p) => p.plantSettings);
-  const setPlantSettings = useProgress((p) => p.setPlantSettings);
-  const hasPlant = useProgress((p) => Boolean(selectCert(p, cert.id).plant));
-  const plantOn = plantSettings?.showPlant !== false;
   const [busy, setBusy] = useState(false);
   // Release bug hunt round 1: notifications can be turned off for KaiSip in the phone's settings at any
   // time, and the app is not told. Read it (never ask) when Settings opens and each time the app comes
@@ -253,7 +249,7 @@ export default function Settings() {
   // then goes back to where the learner came from; ?section=widgets starts at the widgets card.
   const widgetLink = params.open === 'widget-readiness' ? 'readiness' : params.open === 'widget-timing' ? 'timing' : undefined;
   const widgetsHeadRef = useRef<View>(null);
-  const plantHeadRef = useRef<View>(null);
+  const badgeHeadRef = useRef<View>(null);
   // Each row that opens a sheet gets screen-reader focus back when its sheet closes.
   const nameRow = useRef<View>(null);
   const examRow = useRef<View>(null);
@@ -406,7 +402,7 @@ export default function Settings() {
   const confirmReset = () =>
     Alert.alert(
       `Reset ${cert.name} progress?`,
-      `This deletes your answers, reviews, saved questions, mock history, badges and game levels for this exam.${cert.id === DEFAULT_CERT_ID ? ' You will return to setup. Your name, preferences and other exams stay.' : ' Your settings and other exams stay.'} It cannot be undone. Save a backup first if you might want it back.${hasPlant && plantOn ? ' Your plant goes back to a seed. It keeps its name and look.' : ''}${resetCloudNote()}`,
+      `This deletes your answers, reviews, saved questions, mock history, badges and game levels for this exam.${cert.id === DEFAULT_CERT_ID ? ' You will return to setup. Your name, preferences and other exams stay.' : ' Your settings and other exams stay.'} It cannot be undone. Save a backup first if you might want it back.${resetCloudNote()}`,
       [
         { text: 'Cancel', style: 'cancel' },
         {
@@ -487,7 +483,7 @@ export default function Settings() {
         value={MOTION_NAME[s.motion === 'reduced' ? 'reduced' : 'system']}
         onPress={open('motion')}
       />
-      <ToggleRow title="Haptics" subtitle="Gentle taps when you answer." value={s.haptics} onValueChange={s.setHaptics} last />
+      <ToggleRow title="Haptics" value={s.haptics} onValueChange={s.setHaptics} last />
     </>
   );
 
@@ -560,11 +556,11 @@ export default function Settings() {
       />
       <ToggleRow
         title="Timed practice"
-        subtitle="Counts up, never down. Practice can change it per set."
+        subtitle="Counts up, never down."
         value={s.practiceTimer}
         onValueChange={s.setPracticeTimer}
       />
-      <ToggleRow title="Shuffle answer options" subtitle="Stops you memorizing letters." value={s.shuffleOptions} onValueChange={s.setShuffle} last />
+      <ToggleRow title="Shuffle answer options" value={s.shuffleOptions} onValueChange={s.setShuffle} last />
     </>
   );
 
@@ -595,12 +591,13 @@ export default function Settings() {
     </>
   );
 
-  // Mobile 1.10: badges are optional. Mobile 1.13: so is the plant.
-  const plantRows = (
+  // Badges remain optional and continue to be earned while hidden.
+  const badgeRows = (
     <>
       <ToggleRow
         title="Show badges"
         subtitle="Off: earned quietly."
+        last
         value={!s.badgesHidden}
         onValueChange={(on) => {
           if (on) {
@@ -619,17 +616,6 @@ export default function Settings() {
           {badgesLine}
         </T>
       )}
-      <ToggleRow
-        title="Show my plant"
-        subtitle="Grows with your study. Off: hidden, growth kept."
-        value={plantOn}
-        onValueChange={(on) => setPlantSettings({ showPlant: on })}
-        last={!plantOn}
-      />
-      {/* Mobile 1.40: the Quiet look switch moved into the Look screen's Style choice (botanical,
-          storybook, or storybook with a face). Old saves keep their quietLook; it still decides
-          how a plant planted before 1.40 looks until a style is picked there. */}
-      {plantOn && <SettingsRow title="Change its look" subtitle="Its style, colours and keepsakes" onPress={() => router.push('/plant-look')} last />}
     </>
   );
 
@@ -677,10 +663,15 @@ export default function Settings() {
 
   /** One category: its title, and how it draws; a door also has what it holds now, in plain words. */
   type Category = { cat: SettingsCat; title: string; summary?: string; draw: () => ReactNode };
+  const groupHelp: Partial<Record<SettingsCat, string>> = {
+    appearance: 'Haptics are gentle taps when you answer. Motion follows your phone or can be reduced here.',
+    study: 'Daily time and your starting point shape Today’s plan. You can change them as your study routine changes.',
+    practice: 'The default mode chooses how Practice picks questions. You can change the mode and timer for one set. Shuffling options helps you avoid memorizing answer letters.',
+  };
   const group = (cat: SettingsCat, title: string, rows: ReactNode) =>
     function drawGroup() {
       return (
-        <SettingsGroup key={cat} title={title} cat={cat}>
+        <SettingsGroup key={cat} title={title} cat={cat} info={groupHelp[cat] ? <FeatureInfo title={title}><T v="body">{groupHelp[cat]}</T></FeatureInfo> : undefined}>
           {rows}
         </SettingsGroup>
       );
@@ -734,7 +725,7 @@ export default function Settings() {
     { cat: 'practice', title: 'Practice', draw: group('practice', 'Practice', practiceRows) },
     {
       cat: 'plant',
-      title: 'Badges and your plant',
+      title: 'Badges',
       draw: () => (
         <View
           key="plant"
@@ -743,11 +734,11 @@ export default function Settings() {
             scrolled.current = true;
             scrollRef.current?.scrollTo({ y: Math.max(0, e.nativeEvent.layout.y - space.md), animated: !reduced });
             // Screen-reader focus follows the scroll (mobile 1.47, UX review P6).
-            moveFocus(plantHeadRef, 400);
+            moveFocus(badgeHeadRef, 400);
           }}
         >
-          <SettingsGroup title="Badges and your plant" cat="plant" headRef={plantHeadRef}>
-            {plantRows}
+          <SettingsGroup title="Badges" cat="plant" headRef={badgeHeadRef}>
+            {badgeRows}
           </SettingsGroup>
         </View>
       ),
@@ -1041,7 +1032,7 @@ export default function Settings() {
               ? `Your phone’s ${phoneSetting()} is on, so movement is already reduced.`
               : `Calm movement. Follows your phone’s ${phoneSetting()}.`,
           },
-          { value: 'reduced', title: 'Reduced', subtitle: 'Short fades instead of slides; growth shows its end state.' },
+          { value: 'reduced', title: 'Reduced', subtitle: 'Short fades instead of slides; progress changes appear immediately.' },
         ]}
         value={s.motion === 'reduced' ? 'reduced' : 'system'}
         onChange={s.setMotion}

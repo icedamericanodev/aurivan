@@ -1,7 +1,7 @@
 /**
- * Mobile 1.11, badges_game.md slice C: tiers (Long Memory 25/75/150, Dress
- * Rehearsal ×1/×2/×3 spaced a week, Firm Footing · 80% after Whole Map),
- * Stretch rows, Took Root, the one-time quiet catalogue fill, "New in
+ * Mobile 1.11, badges_game.md slice C: tiers (Lasting Recall 25/75/150, Dress
+ * Rehearsal ×1/×2/×3 spaced a week, Domain Mastery · 80% after All Domains),
+ * Stretch rows, Topic Recall, the one-time quiet catalogue fill, "New in
  * <set>" for a set that grew, and the catalogue and the restore check
  * agreeing on every key.
  */
@@ -88,7 +88,7 @@ const caseOf = (f: MilestoneFacts, earned: Record<string, number> = {}) => {
 };
 const find = (marks: CaseMark[], key: string) => marks.find((m) => m.key === key)!;
 
-describe('Long Memory · 25, · 75, · 150', () => {
+describe('Lasting Recall · 25, · 75, · 150', () => {
   it('each tier is its own mark, met at its own count; 150 is a Stretch tier', () => {
     expect(met(facts({ longRecall: 24 }))).not.toContain('long-memory');
     expect(met(facts({ longRecall: 25 }))).toEqual(expect.arrayContaining(['long-memory']));
@@ -117,20 +117,20 @@ describe('Long Memory · 25, · 75, · 150', () => {
   });
 });
 
-describe('Dress Rehearsal · 2 and · 3', () => {
+describe('Mock Complete · 2 and · 3', () => {
   const at = (days: number) => ({ ...FULL, finishedAt: T0 + days * DAY });
-  it('count only full mocks finished once Whole Map is earned, each a week or more after the last', () => {
+  it('count only full mocks finished once All Domains is earned, each a week or more after the last', () => {
     const wm = T0;
-    // Before Whole Map: never, however many mocks.
+    // Before All Domains: never, however many mocks.
     expect(met(facts({ mocks: [at(1), at(9), at(17)] }))).not.toContain('dress-rehearsal:2');
     // After: two a week apart → · 2; three → · 3.
     expect(met(facts({ wholeMapAt: wm, mocks: [at(1), at(8)] }))).toEqual(expect.arrayContaining(['dress-rehearsal', 'dress-rehearsal:2']));
     expect(met(facts({ wholeMapAt: wm, mocks: [at(1), at(8), at(15)] }))).toContain('dress-rehearsal:3');
     // Six days apart is not a week: the chain stays at one.
     expect(met(facts({ wholeMapAt: wm, mocks: [at(1), at(7)] }))).not.toContain('dress-rehearsal:2');
-    // A mock from before Whole Map is not part of the chain.
+    // A mock from before All Domains is not part of the chain.
     expect(met(facts({ wholeMapAt: wm, mocks: [at(-10), at(1)] }))).not.toContain('dress-rehearsal:2');
-    // Whole Map met right now but not yet saved: there is no date to count
+    // All Domains met right now but not yet saved: there is no date to count
     // from, so none of the older mocks count (they all came before it).
     const now = facts({ domains: every(40, 0.7), mocks: [at(-30), at(-20), at(-10)] });
     expect(met(now)).toEqual(expect.arrayContaining(['whole-map', 'dress-rehearsal']));
@@ -148,7 +148,7 @@ describe('Dress Rehearsal · 2 and · 3', () => {
     expect(DRESS_GAP_DAYS).toBe(7);
   });
 
-  it('gated until Whole Map ("Opens when every domain reaches 65%"), then a progress line', () => {
+  it('gated until All Domains ("Opens when every domain reaches 65%"), then a progress line', () => {
     const gated = caseOf(facts()).marks;
     expect(find(gated, 'dress-rehearsal:2')).toMatchObject({ status: 'gated', gateLine: 'Opens when every domain reaches 65%.', progress: 0 });
     expect(find(gated, 'dress-rehearsal:3')).toMatchObject({ status: 'gated', stretch: true });
@@ -158,12 +158,12 @@ describe('Dress Rehearsal · 2 and · 3', () => {
   });
 });
 
-describe('Firm Footing · 80% (Stretch)', () => {
-  it('needs Whole Map, 40 of the domain’s answers and 80% mastery', () => {
+describe('Domain Mastery · 80% (Stretch)', () => {
+  it('needs All Domains, 40 of the domain’s answers and 80% mastery', () => {
     const deep = every(40, 0.8);
     expect(met(facts({ domains: deep }))).toContain('whole-map'); // met now: the tier opens with it
     expect(met(facts({ domains: deep }))).toContain('firm-footing:4:80');
-    // Without Whole Map (another domain under 65%), never.
+    // Without All Domains (another domain under 65%), never.
     const lopsided = deep.map((d) => (d.id === '3' ? { ...d, mastery: 0.5 } : d));
     expect(met(facts({ domains: lopsided }))).not.toContain('firm-footing:4:80');
     // 39 answers, or 79%: not yet.
@@ -171,14 +171,14 @@ describe('Firm Footing · 80% (Stretch)', () => {
     expect(met(facts({ domains: every(60, 0.79), wholeMapAt: T0 }))).not.toContain('firm-footing:4:80');
   });
 
-  it('a two-step ladder per domain (70% Clay, 80% Lichen), gated and labelled until Whole Map', () => {
+  it('a two-step ladder per domain (70% Bronze, 80% Silver), gated and labelled until All Domains', () => {
     const { marks } = caseOf(facts({ domains: every(30, 0.7) }));
     const ff = find(marks, 'firm-footing:4');
     const deep = find(marks, 'firm-footing:4:80');
     expect(ff).toMatchObject({ tier: 1, tiers: 2, tierLabel: '70%', ladder: 'firm-footing:4' });
     expect(deep).toMatchObject({ tier: 2, tiers: 2, tierLabel: '80%', ladder: 'firm-footing:4', stretch: true, status: 'gated', set: 'domains' });
     expect(deep.domain!.emblem).toBe('domain-operations');
-    expect(deep.name).toBe('Firm Footing · IS Operations · 80%');
+    expect(deep.name).toBe('Domain Mastery · IS Operations · 80%');
   });
 });
 
@@ -193,13 +193,13 @@ describe('the five domains each wear their own emblem', () => {
   });
 });
 
-describe('Took Root', () => {
+describe('Topic Recall', () => {
   it('met when every part of one topic took root; progress is a percentage, never "n of m parts"', () => {
     expect(met(facts({ tookRoot: 1 }))).toContain('took-root');
     expect(met(facts({ tookRoot: 0.99 }))).not.toContain('took-root');
     const { marks } = caseOf(facts({ tookRoot: 0.6 }));
     const m = find(marks, 'took-root');
-    expect(m).toMatchObject({ set: 'evergreen', status: 'started', detail: 'Closest topic: 60% rooted', minDays: 2 });
+    expect(m).toMatchObject({ set: 'evergreen', status: 'started', detail: 'Closest topic: 60% recalled', minDays: 2 });
     expect(m.detail).not.toMatch(/\d+ of \d+/);
     expect(m.skill).toBe('Made a whole topic stick');
   });
@@ -232,7 +232,7 @@ describe('sets: Stretch rows and sets that grew', () => {
     const { sets } = caseOf(facts(), earned);
     const evergreen = sets.find((s) => s.info.id === 'evergreen')!;
     expect(setCountLine(evergreen)).toBe('3 of 5');
-    expect(grownLine(evergreen, { evergreen: T0 - DAY })).toBe('New in Evergreen: 2 badges added since you completed it.');
+    expect(grownLine(evergreen, { evergreen: T0 - DAY })).toBe('New in Recall: 2 badges added since you completed it.');
     // First shown 13 days ago: still news. 14 days on: gone (the set's count still says 3 of 5).
     expect(grownLine(evergreen, { evergreen: T0 - DAY }, T0 - 13 * DAY, T0)).toBeDefined();
     expect(grownLine(evergreen, { evergreen: T0 - DAY }, T0 - 14 * DAY, T0)).toBeUndefined();
@@ -284,13 +284,13 @@ describe('the catalogue and the restore check agree on every key', () => {
     }
   });
 
-  it('no plain "firm-footing" key: every Firm Footing mark is a domain’s leaf, for the case and the restore alike', () => {
+  it('no plain "firm-footing" key: every Domain Mastery mark is a domain’s leaf, for the case and the restore alike', () => {
     expect(caseKey('firm-footing')).toBe(false);
     expect(markSupported('firm-footing', evidence)).toBe(false);
     expect(caseKey('rooted')).toBe(false);
   });
 
-  it('Long Memory’s tiers need the counted questions too, not only the counter', () => {
+  it('Lasting Recall’s tiers need the counted questions too, not only the counter', () => {
     const lm = (longRecall: number, ids: number): MarkEvidence => ({ ...evidence, milestones: { ...evidence.milestones, counts: { longRecall }, longIds: Array.from({ length: ids }, (_, i) => `q${i}`) } });
     // A genuine save: the counter and the list grow together.
     expect(markSupported('long-memory:150', lm(150, 150))).toBe(true);
@@ -331,7 +331,7 @@ describe('Next for your exam never pushes a Stretch tier or a gated one', () => 
     expect(find(marks, 'firm-footing:4').detail).toBe('20 of 20 answered · at 70%+');
   });
 
-  it('after Whole Map, with Firm Footing done, the mocks lead and no 80% tier is slot 1', () => {
+  it('after All Domains, with Domain Mastery done, the mocks lead and no 80% tier is slot 1', () => {
     const f = facts({ cleanAnswered: 300, domains: every(45, 0.82), wholeMapAt: T0 });
     const earned = { 'first-foothold': T0, 'whole-map': T0, ...Object.fromEntries(cisa.domains.map((d) => [`firm-footing:${d.id}`, T0])) };
     const marks = caseMarks(input(f, earned));
@@ -342,7 +342,7 @@ describe('Next for your exam never pushes a Stretch tier or a gated one', () => 
 });
 
 describe('copy for the new marks', () => {
-  it('every shareable skill line passes the honesty guard; Fresh Start is never shareable', () => {
+  it('every shareable skill line passes the honesty guard; Study Return is never shareable', () => {
     const { marks } = caseOf(facts());
     for (const m of marks) {
       if (m.skill) expect([m.key, isHonestShareText(m.skill)]).toEqual([m.key, true]);
@@ -350,7 +350,7 @@ describe('copy for the new marks', () => {
     expect(badgeShareable({ status: 'earned', set: 'moments', skill: 'Came back' })).toBe(false);
     expect(badgeShareable(find(marks, 'fresh-start'))).toBe(false);
     expect(find(marks, 'graduate').skill).toBe('Moved 50 questions out of review');
-    // PR #51 review (honesty): Flown the Nest's words claim only what the rule counts
+    // PR #51 review (honesty): Review Complete's words claim only what the rule counts
     // (a right answer from the last box), never a time gap the count does not check.
     expect(find(marks, 'graduate').unlock).toContain('box after box');
     expect(`${find(marks, 'graduate').unlock} ${find(marks, 'graduate').skill}`).not.toMatch(/weeks apart/);
@@ -369,7 +369,7 @@ describe('the catalogue fill (a 1.10 save meets 1.11)', () => {
   });
   afterEach(() => jest.useRealTimers());
 
-  /** A 1.10 save: back-filled, no catalogue version; a whole topic mastered; 25 recalls kept; Whole Map and two spaced mocks after it. */
+  /** A 1.10 save: back-filled, no catalogue version; a whole topic mastered; 25 recalls kept; All Domains and two spaced mocks after it. */
   function save110() {
     const topic = certOutline('cisa').topics.find((t) => t.subtopics.some((s) => s.questionIds.some(questionExists('cisa'))))!;
     const mastery = Object.fromEntries(topic.subtopics.filter((s) => s.questionIds.some(questionExists('cisa'))).map((s) => [s.id, { firstDay: '2026-09-01', masteredAt: '2026-09-03' }]));
@@ -380,7 +380,7 @@ describe('the catalogue fill (a 1.10 save meets 1.11)', () => {
         cisa: {
           ...selectCert(s, 'cisa'),
           mastery,
-          // Answers in every domain (Whole Map's own restore evidence).
+          // Answers in every domain (All Domains's own restore evidence).
           answers: Object.fromEntries(cisa.domains.flatMap((d) => getDomainQuestions('cisa', d.id).slice(0, 6).map((q) => [q.id, { attempts: 1, correctCount: 1, lastCorrect: true, lastAt: T0 - 40 * DAY }]))),
           mocks: [mock(20), mock(10)],
           milestones: {
@@ -397,7 +397,7 @@ describe('the catalogue fill (a 1.10 save meets 1.11)', () => {
 
   it('earns what the saved study shows, ONCE and quietly (no moments), with one summary line', () => {
     save110();
-    expect(ensureCatalog('cisa', T0)).toBe(2); // Took Root and Dress Rehearsal · 2
+    expect(ensureCatalog('cisa', T0)).toBe(2); // Topic Recall and Mock Complete · 2
     const m = cp().milestones!;
     expect(m.earned['took-root']).toBe(T0);
     expect(m.earned['dress-rehearsal:2']).toBe(T0);
@@ -412,7 +412,7 @@ describe('the catalogue fill (a 1.10 save meets 1.11)', () => {
     expect(m.planters!.evergreen).toBe(T0 - 30 * DAY);
     // Once: a second run does nothing.
     expect(ensureCatalog('cisa', T0 + DAY)).toBeNull();
-    expect(catalogFillLine(2)).toBe('Badges now have higher tiers, plus a new one: Took Root. Your study so far already earned 2 of them.');
+    expect(catalogFillLine(2)).toBe('Badges now have higher tiers, plus a new one: Topic Recall. Your study so far already earned 2 of them.');
     expect(catalogFillLine(0)).toBeNull();
     seeCatalogFill('cisa');
     expect(cp().milestones!.catalogFill!.seen).toBe(true);
@@ -460,20 +460,20 @@ describe('the catalogue fill (a 1.10 save meets 1.11)', () => {
 
   it('the summary counts badges the way the back-fill does: each badge once, milestones only', () => {
     save110();
-    // Two more Firm Footing · 80% leaves in the save: one badge, not two marks.
+    // Two more Domain Mastery · 80% leaves in the save: one badge, not two marks.
     useProgress.setState((s) => {
       const c = selectCert(s, 'cisa');
       const deep = Object.fromEntries(['1', '4'].flatMap((d) => getDomainQuestions('cisa', d).slice(0, 45).map((q) => [q.id, { attempts: 1, correctCount: 1, lastCorrect: true, lastAt: T0 - 40 * DAY }])));
       return { byCert: { ...s.byCert, cisa: { ...c, answers: { ...c.answers, ...deep } } } };
     });
-    expect(ensureCatalog('cisa', T0)).toBe(3); // Took Root, Dress Rehearsal, Firm Footing
+    expect(ensureCatalog('cisa', T0)).toBe(3); // Topic Recall, Mock Complete, Domain Mastery
     const m = cp().milestones!;
     expect(m.earned['firm-footing:1:80']).toBe(T0);
     expect(m.earned['firm-footing:4:80']).toBe(T0);
     expect(m.catalogFill).toEqual({ at: T0, count: 3 });
   });
 
-  it('the facts read Whole Map’s date and the topics’ mastery from the save', () => {
+  it('the facts read All Domains’s date and the topics’ mastery from the save', () => {
     save110();
     const f = milestoneFacts('cisa', cp(), { now: T0 })!;
     expect(f.wholeMapAt).toBe(T0 - 30 * DAY);
@@ -481,8 +481,8 @@ describe('the catalogue fill (a 1.10 save meets 1.11)', () => {
   });
 });
 
-// ── Dress Rehearsal counts from the day Whole Map is SAVED (CR B1) ─────────
-describe('Dress Rehearsal · 2 and · 3 never count mocks from before Whole Map', () => {
+// ── Mock Complete counts from the day All Domains is SAVED (CR B1) ─────────
+describe('Mock Complete · 2 and · 3 never count mocks from before All Domains', () => {
   beforeEach(() => {
     jest.useFakeTimers({ now: T0 });
     useProgress.setState({ byCert: {}, streak: { current: 0, best: 0, lastDay: null }, today: { day: '', answered: 0 }, days: {} });
@@ -491,7 +491,7 @@ describe('Dress Rehearsal · 2 and · 3 never count mocks from before Whole Map'
   afterEach(() => jest.useRealTimers());
 
   const mock = (id: string, at: number): MockResult => ({ id, finishedAt: at, total: 150, correct: 110, minutesUsed: 200, byDomain: {}, timing: 'standard', unanswered: 0 });
-  /** Every domain at 100% (Whole Map met), three full mocks a week apart, all BEFORE now. */
+  /** Every domain at 100% (All Domains met), three full mocks a week apart, all BEFORE now. */
   function seed(milestones?: CertMilestones) {
     useProgress.setState((s) => ({
       byCert: {
@@ -506,18 +506,18 @@ describe('Dress Rehearsal · 2 and · 3 never count mocks from before Whole Map'
     }));
   }
 
-  it('live: the session that first meets Whole Map earns it (and Dress Rehearsal), never · 2 or · 3', () => {
+  it('live: the session that first meets All Domains earns it (and Mock Complete), never · 2 or · 3', () => {
     seed({ earned: { 'first-foothold': T0 - 40 * DAY }, backfill: { at: T0 - 50 * DAY, count: 1, seen: true }, catalog: CATALOG_VERSION });
     const fresh = checkMilestones('cisa', { now: T0, finished: true });
     expect(fresh).toEqual(expect.arrayContaining(['whole-map', 'dress-rehearsal']));
     expect(fresh).not.toContain('dress-rehearsal:2');
     expect(fresh).not.toContain('dress-rehearsal:3');
-    // Mocks from the day Whole Map was saved on do count, a week apart.
+    // Mocks from the day All Domains was saved on do count, a week apart.
     useProgress.setState((s) => ({ byCert: { ...s.byCert, cisa: { ...cp(), mocks: [...cp().mocks, mock('d', T0 + DAY), mock('e', T0 + 8 * DAY)] } } }));
     expect(checkMilestones('cisa', { now: T0 + 8 * DAY, finished: true })).toEqual(['dress-rehearsal:2']);
   });
 
-  it('back-fill: an older save meets Whole Map now; its older mocks never make · 2 or · 3', () => {
+  it('back-fill: an older save meets All Domains now; its older mocks never make · 2 or · 3', () => {
     seed();
     ensureBackfill('cisa', T0);
     const m = cp().milestones!;
@@ -560,7 +560,7 @@ describe('a save that skips 1.10 keeps the planters its sets had won', () => {
     const m = cp().milestones!;
     expect(m.planters).toEqual({ evergreen: T0 - 3 * DAY });
     expect(m.catalog).toBe(CATALOG_VERSION);
-    // Evergreen itself now reads 3 of 5 (Long Memory · 75 and Took Root are new), and says so.
+    // Evergreen itself now reads 3 of 5 (Lasting Recall · 75 and Topic Recall are new), and says so.
     const evergreen = caseOf(facts({ longRecall: 25, graduated: 50, loopFixed: 10 }), m.earned).sets.find((x) => x.info.id === 'evergreen')!;
     expect(setCountLine(evergreen)).toBe('3 of 5');
     expect(grownLine(evergreen, m.planters)).toBeDefined();

@@ -74,7 +74,7 @@ for (const cert of CERTIFICATIONS.filter((c) => c.status === 'available')) {
   });
 }
 
-// Mobile 1.11 (badges_game.md §9.4): Firm Footing · 80% needs 40 of a domain's
+// Mobile 1.11 (badges_game.md §9.4): Domain Mastery · 80% needs 40 of a domain's
 // answers. Each available cert's bank must hold at least twice that per domain,
 // or the tier would be out of reach (it would have to leave that cert's catalogue).
 describe('the bank supports every badge tier', () => {
@@ -89,11 +89,11 @@ describe('the bank supports every badge tier', () => {
   });
 });
 
-// Mobile 1.11: Took Root (a whole study-notes topic, every part mastered) is
+// Mobile 1.11: Topic Recall (a whole study-notes topic, every part mastered) is
 // Evergreen core. An exam whose pack has no topic with questions could never
 // earn it, so its Evergreen could never complete: the badge leaves that
 // exam's catalogue, decided by the pack itself.
-describe('Took Root is offered only where the pack can earn it', () => {
+describe('Topic Recall is offered only where the pack can earn it', () => {
   it('in the catalogue exactly when the exam has a study-notes topic with questions', () => {
     for (const cert of CERTIFICATIONS) {
       const has = questionExists(cert.id);

@@ -235,15 +235,15 @@ function RootOrRumor() {
           <Row gap={space.sm} style={{ flexWrap: 'wrap' }}>
             <Button
               kind="secondary"
-              label="Root"
-              accessibilityLabel="Root, a sound principle"
+              label="Fact"
+              accessibilityLabel="Fact, a sound principle"
               onPress={() => choose('root')}
               style={large ? { flexBasis: '100%' } : { flex: 1 }}
             />
             <Button
               kind="secondary"
-              label="Rumor"
-              accessibilityLabel="Rumor, an exam myth"
+              label="Myth"
+              accessibilityLabel="Myth, an exam myth"
               onPress={() => choose('rumor')}
               style={large ? { flexBasis: '100%' } : { flex: 1 }}
             />
@@ -258,9 +258,9 @@ function RootOrRumor() {
       <Gap h={space.sm} />
       <Stem>{s.text}</Stem>
       <Gap h={space.lg} />
-      {tap === null && <T v="meta">Root: a sound principle. Rumor: an exam myth.</T>}
+      {tap === null && <T v="meta">Fact: a sound principle. Myth: an exam myth.</T>}
       {tap !== null && (
-        <T v="caption" color={right ? c.correct : c.wrong}>{`You said ${tap === 'root' ? 'Root' : 'Rumor'} · ${right ? 'right' : 'not quite'}`}</T>
+        <T v="caption" color={right ? c.correct : c.wrong}>{`You said ${tap === 'root' ? 'Fact' : 'Myth'} · ${right ? 'right' : 'not quite'}`}</T>
       )}
       {asking && why && (
         <View accessibilityRole="radiogroup" accessibilityLabel="Why is it a myth?" style={{ marginTop: space.md }}>

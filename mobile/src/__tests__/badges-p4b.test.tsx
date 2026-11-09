@@ -1,5 +1,5 @@
 /**
- * Grove Phase 4b, the phone badges (design-notes/grove/phase4b/PHASE4B.md 5.1 to 5.6): "the pressed
+ * Grove Phase 4b, the phone badges (design-notes/grove/phase4b/PHASE4B.md 5.1 to 5.6): "the earned
  * paper tile".
  *
  * Plain English for the founder: these tests check
@@ -9,27 +9,26 @@
  *   full (glassine, press, tape) by 1080 ms, any tap ends it, and under Reduce Motion the taped tile
  *   is there at once with the same words and the same one success tap;
  * - the case: back row "You", "Every set counts on its own.", one card per set ("Groundwork" with
- *   "2 of 3 pressed"), no roman numbers, tile sizes at 320 / 375 / 390, the planter line, the list
+ *   "2 of 3 earned"), no roman numbers, tile sizes at 320 / 375 / 390, the planter line, the list
  *   at text scale 2 with "Study for this";
- * - the sheet: the 120pt tile, "Pressed 11 Oct", "Share this badge", the vignette;
+ * - the sheet: the 120pt tile, "Earned 11 Oct", "Share this badge", the vignette;
  * - the after-exam album opens with the plant; You's shelf tiles wear two strips of tape.
  */
 import { act, create, type ReactTestInstance, type ReactTestRenderer } from 'react-test-renderer';
 import { Dimensions, Modal } from 'react-native';
 import { setMockReducedMotion } from '../../jest/reanimated-mock';
 import Badges from '../app/milestones';
-import { BadgeCell, BadgeListRow, caseTileSize, PLANTER_SET_NAMES, planterLine } from '../components/badges';
+import { BadgeCell, BadgeListRow, caseTileSize } from '../components/badges';
 import { MilestoneMomentView, MOMENT_TILE, resetBadgeMomentsForTest } from '../components/milestones';
 import { resetCelebrationsForTest } from '../components/motion';
 import { outlineLength, PRESS_TIMELINE, PressedTile } from '../components/pressedTile';
 import { plantNew } from '../engine/plant';
-import { plantersFor } from '../engine/plantLooks';
 import type { MilestoneMoment } from '../lib/milestones';
 import { selectCert, useProgress } from '../store/progress';
 import { useSeen } from '../store/seen';
 import { useSession } from '../store/session';
 import { useSettings } from '../store/settings';
-import { glassine, grovePlate, specimenTape } from '../theme/grove';
+import { grovePlate } from '../theme/grove';
 import { motion, space } from '../theme/tokens';
 
 jest.mock('@react-native-async-storage/async-storage', () =>
@@ -95,7 +94,7 @@ const setPlant = () =>
   act(() => {
     useProgress.getState().updatePlant('cisa', () => plantNew('oak', 'Kai', Date.now() - 9 * DAY, 4));
   });
-/** The pressed tiles under a node (PressedTile is memoised, so it is found by its props). */
+/** The earned tiles under a node (PressedTile is memoised, so it is found by its props). */
 const tilesIn = (n: ReactTestInstance) => n.findAll((x) => typeof x.type !== 'string' && typeof x.props.badge === 'string' && typeof x.props.size === 'number' && typeof x.props.state === 'string' && x.props.mark === undefined);
 
 beforeEach(() => {
@@ -116,39 +115,27 @@ afterEach(() => {
   jest.useRealTimers();
 });
 
-// ── 5.2 The pressed tile ────────────────────────────────────────────────
-describe('the pressed tile (5.2)', () => {
-  it('earned: cream paper (g.specimen), the emblem, two strips of tape at opposite corners; hidden from screen readers', () => {
+// ── 5.2 The earned tile ────────────────────────────────────────────────
+describe('the earned tile (5.2)', () => {
+  it('earned tiles keep original emblem artwork without tape and hide decorative art from screen readers', () => {
     mount(<PressedTile badge="first-foothold" state="earned" size={84} />);
-    const paper = root().findAll((n) => n.props.testID === 'tile-paper' && typeof n.type === 'string')[0];
-    expect(styleOf(paper)).toMatchObject({ backgroundColor: '#E9E6DC', borderRadius: 16, opacity: 1 });
-    const tapes = root().findAll((n) => n.props.testID === 'tile-tape' && typeof n.type === 'string');
-    expect(tapes).toHaveLength(2);
-    expect(tapes.map((t) => styleOf(t).backgroundColor)).toEqual([specimenTape, specimenTape]);
-    // Opposite corners: one at the top right, one at the bottom left.
-    expect(styleOf(tapes[0])).toEqual(expect.objectContaining({ top: expect.any(Number), right: expect.any(Number) }));
-    expect(styleOf(tapes[1])).toEqual(expect.objectContaining({ bottom: expect.any(Number), left: expect.any(Number) }));
-    // The glassine is gone at rest.
-    const glass = root().findAll((n) => n.props.testID === 'tile-glassine' && typeof n.type === 'string')[0];
-    expect(styleOf(glass)).toMatchObject({ backgroundColor: glassine, opacity: 0 });
-    // A picture only.
+    expect(root().findAll((n) => n.props.testID === 'tile-paper').length).toBeGreaterThan(0);
+    expect(root().findAll((n) => n.props.testID === 'tile-tape')).toHaveLength(0);
     const box = root().findAll((n) => n.props.importantForAccessibility === 'no-hide-descendants' && typeof n.type === 'string')[0];
     expect(box.props.accessible).toBe(false);
-    expect(box.props.accessibilityElementsHidden).toBe(true);
   });
 
-  it('the cream is the same paper in dark (never a dark tile), and the emblem keeps its light inks', () => {
+  it('the warm badge artwork remains present in dark theme', () => {
     useSettings.setState({ theme: 'dark' });
     mount(<PressedTile badge="first-foothold" state="earned" size={84} />);
-    const paper = root().findAll((n) => n.props.testID === 'tile-paper' && typeof n.type === 'string')[0];
-    expect(String(styleOf(paper).backgroundColor).toUpperCase()).toBe('#E9E2D2');
+    expect(root().findAll((n) => n.props.testID === 'tile-paper').length).toBeGreaterThan(0);
   });
 
   it('not yet: a dashed control outline, its solid accent part as long as the progress; no tape', () => {
     mount(<PressedTile badge="long-memory" tier={2} state="open" size={84} progress={31 / 75} />);
     const solid = root().findAll((n) => n.props.testID === 'tile-progress')[0];
     const w = 84 - 1.5;
-    const len = outlineLength(w, 16 - 0.75);
+    const len = outlineLength(w, Math.round(84 * 0.27) - 0.75);
     expect(solid.props.strokeDasharray).toBe(`${((31 / 75) * len).toFixed(1)} ${len.toFixed(1)}`);
     expect(solid.props.stroke).toBe('#2B6E4A'); // accent (light)
     expect(root().findAll((n) => n.props.testID === 'tile-tape')).toHaveLength(0);
@@ -165,39 +152,33 @@ describe('the pressed tile (5.2)', () => {
     expect(dotted.length).toBeGreaterThan(0);
   });
 
-  it('the press timeline: glassine at 120, pressed at 320, lifted by 760, tapes at 760 and 960, done by 1080 (inside the 1.2 s ceiling)', () => {
-    const T = PRESS_TIMELINE;
-    expect([T.glassIn, T.pressAt, T.glassOut, T.tape1, T.tape2]).toEqual([120, 320, 560, 760, 960]);
-    expect(T.tape2 + T.tapeDur).toBe(T.done);
-    expect(T.done).toBe(1080);
-    expect(T.done).toBeLessThanOrEqual(motion.dur.celebrate);
-    expect(T.glassOut + T.glassOutDur).toBeLessThanOrEqual(T.tape1);
+  it('the brief press ends within the existing celebration ceiling', () => {
+    expect(PRESS_TIMELINE.pressAt).toBeLessThan(PRESS_TIMELINE.done);
+    expect(PRESS_TIMELINE.done).toBeLessThanOrEqual(motion.dur.celebrate);
   });
 
-  it('waiting at the mount: no paper, no tape yet (the pencilled outline shows)', () => {
+  it('a pending badge waits as an outline until its moment is visible', () => {
     setMockReducedMotion(false);
     mount(<PressedTile badge="took-root" state="earned" size={MOMENT_TILE} motion="pending" />);
-    const paper = root().findAll((n) => n.props.testID === 'tile-paper' && typeof n.type === 'string')[0];
-    expect(styleOf(paper).opacity).toBe(0);
-    for (const t of root().findAll((n) => n.props.testID === 'tile-tape' && typeof n.type === 'string')) expect(styleOf(t).opacity).toBe(0);
+    expect(root().findAll((n) => n.props.testID === 'tile-paper')).toHaveLength(0);
   });
 });
 
 // ── 5.4 The press on Results ─────────────────────────────────────────────
 describe('the unlock: the press (5.4)', () => {
-  const m: MilestoneMoment = { key: 'took-root', label: 'Took Root', rule: 'r', kind: 'milestone', set: 'evergreen', setName: 'Evergreen', unlock: 'You cleared a whole topic.' };
+  const m: MilestoneMoment = { key: 'took-root', label: 'Topic Recall', rule: 'r', kind: 'milestone', set: 'evergreen', setName: 'Evergreen', unlock: 'You cleared a whole topic.' };
   const tile = () => byTestID('moment-tile')[0];
-  const paperOpacity = () => styleOf(root().findAll((n) => n.props.testID === 'tile-paper' && typeof n.type === 'string')[0]).opacity;
+  const paperOpacity = () => { const p = root().findAll((n) => n.props.testID === 'tile-paper' && typeof n.type === 'string')[0]; return p ? styleOf(p).opacity : 0; };
 
   it('same words from the first frame: caption, the name in label, the line; no medallion and no leaves', () => {
     setMockReducedMotion(false);
     mount(<MilestoneMomentView moment={m} once="w1" inView={false} />);
     const t = allText();
     expect(t).toContain('A new badge · Evergreen');
-    expect(t).toContain('Took Root');
+    expect(t).toContain('Topic Recall');
     expect(t).toContain('You cleared a whole topic.');
     expect(root().findAll((n) => typeof n.type === 'function' && /^(Medallion|LeafFall)$/.test((n.type as { name?: string }).name ?? ''))).toHaveLength(0);
-    expect(labels()).toContain('A new badge, Evergreen: Took Root. You cleared a whole topic.');
+    expect(labels()).toContain('A new badge, Evergreen: Topic Recall. You cleared a whole topic.');
     // The tile's own 76pt column.
     const col = root().findAll((n) => typeof n.type === 'string' && styleOf(n).width === 76);
     expect(col.length).toBeGreaterThan(0);
@@ -219,13 +200,13 @@ describe('the unlock: the press (5.4)', () => {
     expect(mockSuccess).toHaveBeenCalledTimes(1);
   });
 
-  it('the press lands on its last frame: the paper on, pressed flat (scale 1), the glassine lifted away, both tapes down', () => {
+  it('the press lands on its last frame: the paper on, earned flat (scale 1), the glassine lifted away, both tapes down', () => {
     mount(<PressedTile testID="a" badge="took-root" state="earned" size={MOMENT_TILE} motion="moment" run={1} />);
     // The test clock lands every animation on its end value; a re-render shows it.
     act(() => r!.update(<PressedTile testID="b" badge="took-root" state="earned" size={MOMENT_TILE} motion="moment" run={1} />));
     const host = (id: string) => root().findAll((n) => n.props.testID === id && typeof n.type === 'string');
     expect(styleOf(host('tile-paper')[0])).toMatchObject({ opacity: 1, transform: [{ scale: 1 }] });
-    expect(styleOf(host('tile-glassine')[0]).opacity).toBe(0);
+    expect(host('tile-glassine')).toHaveLength(0);
     for (const t of host('tile-tape')) expect(styleOf(t)).toMatchObject({ opacity: 1 });
   });
 
@@ -255,27 +236,28 @@ describe('the unlock: the press (5.4)', () => {
     setMockReducedMotion(false);
     mount(<MilestoneMomentView moment={m} once="a1" />);
     unmount();
-    mount(<MilestoneMomentView moment={{ ...m, key: 'loop-closed', label: 'Loop Closed' }} once="a2" />);
+    mount(<MilestoneMomentView moment={{ ...m, key: 'loop-closed', label: 'Mistakes Fixed' }} once="a2" />);
     const cel = root().findAll((n) => n.props.celebration !== undefined)[0].props.celebration as { mode: string };
     expect(cel.mode).not.toBe('full');
     expect(tile().props.motion).toBe('end');
     unmount();
     resetCelebrationsForTest();
-    mount(<MilestoneMomentView moment={{ ...m, key: 'rooted:30', label: 'Rooted · 30 days', tier: 2, tierUp: true }} once="a3" inView={false} />);
+    mount(<MilestoneMomentView moment={{ ...m, key: 'rooted:30', label: 'Study Days · 30 days', tier: 2, tierUp: true }} once="a3" inView={false} />);
     expect(tile().props.motion).toBe('end');
   });
 });
 
 // ── 5.1 The case ─────────────────────────────────────────────────────────
 describe('the case (5.1)', () => {
-  it('back row "You", the title, the italic line and the promise; one card per set with "2 of 3 pressed"; no roman numbers', () => {
+  it('back row "You", the title, the italic line and the promise; one card per set with "2 of 3 earned"; no roman numbers', () => {
     earn('first-foothold', T0 - 2 * DAY);
     earn('topic-clear', T0 - DAY);
     mount(<Badges />);
     expect(labels()).toContain('Back to You');
     const t = allText();
-    expect(t).toMatch(/^You Badges Every set counts on its own\. Earned by what you’ve mastered\. Once earned, a badge stays\./);
-    expect(t).toContain('Groundwork 2 of 3 pressed');
+    expect(t).toContain('You Badges');
+    expect(labels()).toContain('About badges');
+    expect(t).toContain('Groundwork 2 of 3 earned');
     expect(t).not.toMatch(/\bSheet\b|\bSheet [IVX]+\b|Herbarium|Fig\.|Plate|Field guide|Field record/);
     expect(t).not.toMatch(/[–—]/);
     // Said as before, the set and its own count, never a total across sets.
@@ -313,92 +295,60 @@ describe('the case (5.1)', () => {
     const rows = root().findAllByType(BadgeListRow);
     expect(rows.length).toBeGreaterThan(20);
     expect(tilesIn(rows[0])[0].props.size).toBe(56);
-    expect(labels()).toContain('Study for this: First Foothold');
+    expect(labels()).toContain('Study for this: First Review');
   });
 
-  it('the planter line ends each counted set, from data; "is in Look" once complete; none for Field notes or with the plant hidden', () => {
+  it('existing plant owners see badges without planter rewards and keep their saved data', () => {
     setPlant();
-    mount(<Badges />);
-    expect(textOf(root().findAll((n) => n.props.testID === 'planter-line-groundwork')[0])).toContain("Completing Groundwork adds the fieldstone planter to your plant's looks.");
-    expect(root().findAll((n) => n.props.testID === 'planter-line-fieldNotes')).toHaveLength(0);
-    unmount();
-    earn('first-foothold', T0 - 3 * DAY);
-    earn('topic-clear', T0 - 2 * DAY);
-    earn('ten-topics', T0 - DAY);
-    mount(<Badges />);
-    expect(allText()).toContain('The fieldstone planter is in Look.');
-    unmount();
-    act(() => {
-      useProgress.getState().setPlantSettings({ showPlant: false });
-    });
+    earn('first-foothold', T0 - DAY);
     mount(<Badges />);
     expect(root().findAll((n) => typeof n.props.testID === 'string' && n.props.testID.startsWith('planter-line-'))).toHaveLength(0);
+    expect(cp().plant?.name).toBe('Kai');
+    expect(cp().milestones?.earned['first-foothold']).toBe(T0 - DAY);
   });
 
-  it('planterLine follows the formula; the phone’s set names match the planters’ own captions', () => {
-    expect(planterLine('oak', 'groundwork', false)!.line).toBe("Completing Groundwork adds the fieldstone planter to your plant's looks.");
-    expect(planterLine('oak', 'groundwork', true)!.line).toBe('The fieldstone planter is in Look.');
-    expect(planterLine('oak', 'moments', false)).toBeNull();
-    expect(planterLine('oak', 'fieldNotes', false)).toBeNull();
-    for (const item of plantersFor('oak')) {
-      if (item.unlock.kind !== 'set') continue;
-      expect(item.caption).toContain(PLANTER_SET_NAMES[item.unlock.set]);
-    }
+  it('badge guidance is accessible through the information button', () => {
+    mount(<Badges />);
+    press(/^About badges$/);
+    expect(allText()).toContain('Once earned, a badge stays.');
+    expect(allText()).toContain('retests within four hours');
   });
 });
 
 // ── 5.3 The sheet ────────────────────────────────────────────────────────
 describe('the sheet (5.3)', () => {
-  it('earned: the 120pt tile, "Pressed 11 Oct" (said "Earned 11 October"), the line, headline "The rule", "Share this badge"', () => {
+  it('earned: the 120pt tile, "Earned 11 Oct" (said "Earned 11 October"), the line, headline "The rule", "Share this badge"', () => {
     earn('first-foothold', T0 - DAY);
     mount(<Badges />);
-    press(/^First Foothold\. Earned 11 October/);
+    press(/^First Review\. Earned 11 October/);
     const sheet = root().findByType(Modal);
     expect(tilesIn(sheet).find((t) => t.props.testID === 'sheet-tile')!.props.size).toBe(120);
     const t = textOf(sheet);
-    expect(t).toContain('Pressed 11 Oct');
+    expect(t).toContain('Earned 11 Oct');
     expect(t).not.toMatch(/\bSheet [IVX]+\b/);
     const rule = sheet.findAll((n) => n.props.v === 'headline' && n.props.children === 'The rule');
     expect(rule.length).toBeGreaterThan(0);
   });
 
-  it('the vignette: the tile beside the plant wearing the keepsake, with "On your plant: the jay."; none when it is not on show', () => {
+  it('earned badge details show the requirement without a plant vignette', () => {
     setPlant();
     earn('long-memory', T0 - DAY);
-    // The learner shows the jay (Your plant, Change its look).
-    act(() => {
-      useProgress.getState().updatePlant('cisa', (p) => (p ? { ...p, look: { ...(p.look ?? {}), keepsakes: ['jay'] } } : p));
-    });
     mount(<Badges />);
-    press(/^Long Memory · 25 recalls, Clay\. Earned/);
-    expect(allText()).toContain('On your plant: the jay.');
-    expect(root().findAll((n) => n.props.testID === 'sheet-vignette').length).toBeGreaterThan(0);
-    unmount();
-    act(() => {
-      useProgress.getState().updatePlant('cisa', (p) => (p ? { ...p, look: { ...(p.look ?? {}), keepsakes: [] } } : p));
-    });
-    mount(<Badges />);
-    press(/^Long Memory · 25 recalls, Clay\. Earned/);
+    press(/^Lasting Recall · 25 recalls, Bronze\. Earned/);
     expect(root().findAll((n) => n.props.testID === 'sheet-vignette')).toHaveLength(0);
+    expect(allText()).not.toContain('On your plant:');
   });
 });
 
 // ── 5.5 The album ────────────────────────────────────────────────────────
 describe('the after-exam album (5.5)', () => {
-  it('opens with the plant on its soil line and its name in title; no Next panel; with Show my plant off it opens with the sets', () => {
+  it('after the exam opens with badge sets and preserves the existing plant save', () => {
     setPlant();
     useSettings.setState({ examDates: { cisa: '2026-10-01' } });
     mount(<Badges />);
-    const album = root().findAll((n) => n.props.testID === 'album-plant' && typeof n.type === 'string');
-    expect(album).toHaveLength(1);
-    expect(album[0].findAll((n) => n.props.v === 'title' && n.props.children === 'Kai').length).toBeGreaterThan(0);
-    expect(root().findAll((n) => n.props.testID === 'still-to-collect')).toHaveLength(0);
-    unmount();
-    act(() => {
-      useProgress.getState().setPlantSettings({ showPlant: false });
-    });
-    mount(<Badges />);
     expect(root().findAll((n) => n.props.testID === 'album-plant')).toHaveLength(0);
+    expect(root().findAll((n) => n.props.testID === 'still-to-collect')).toHaveLength(0);
+    expect(cp().plant?.name).toBe('Kai');
   });
 
   it('before the exam there is no album plant', () => {
@@ -417,13 +367,13 @@ describe('Reduce Motion end states everywhere a tile moves', () => {
       mount(<PressedTile badge="first-foothold" state="earned" size={84} motion={kind} run={1} delay={200} />);
       const host = (id: string) => root().findAll((n) => n.props.testID === id && typeof n.type === 'string');
       expect(styleOf(host('tile-paper')[0])).toMatchObject({ opacity: 1, transform: [{ scale: 1 }] });
-      expect(styleOf(host('tile-glassine')[0]).opacity).toBe(0);
+      expect(host('tile-glassine')).toHaveLength(0);
       for (const t of host('tile-tape')) expect(styleOf(t).opacity).toBe(1);
       unmount();
     }
   });
 
-  it('the case under Reduce Motion: a badge new since the last visit is simply there, pressed and taped', () => {
+  it('the case under Reduce Motion: a badge new since the last visit is simply there, earned and taped', () => {
     setMockReducedMotion(true);
     useSeen.setState({ caseSeen: { cisa: T0 - 2 * DAY } });
     earn('first-foothold', T0 - DAY);

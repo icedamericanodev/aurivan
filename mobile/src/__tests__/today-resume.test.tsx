@@ -129,7 +129,7 @@ describe('Today: a paused session can always be resumed', () => {
     mount(<Today />);
     const t = allText();
     // The day is cleared: the clearing and the Tomorrow preview show.
-    expect(t).toContain('Today’s clearing');
+    expect(t).toContain('Today complete');
     expect(t).toContain('Tomorrow');
     // ONE Resume entry, in the plan's own words.
     const rows = resumeRows();
@@ -154,7 +154,7 @@ describe('Today: a paused session can always be resumed', () => {
     mount(<Today />);
     expect(resumeRows()).toHaveLength(1);
     expect(byTestID('also-today')).toHaveLength(1);
-    expect(allText()).not.toContain('Today’s clearing');
+    expect(allText()).not.toContain('Today complete');
     expect(allText()).not.toContain('Tomorrow');
   });
 
@@ -180,7 +180,7 @@ describe('Today: a paused session can always be resumed', () => {
     storePlan([REVIEW, MINI, WARM], [true, false, true]);
     pauseMiniMock();
     mount(<Today />);
-    expect(allText()).toContain('Today’s clearing');
+    expect(allText()).toContain('Today complete');
     const list = byTestID('also-today');
     expect(list).toHaveLength(1);
     expect(resumeRows()).toHaveLength(1);

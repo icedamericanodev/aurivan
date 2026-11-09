@@ -158,7 +158,7 @@ export const ACCOUNT_COPY = {
   'sync.what.title': 'What syncs',
   // Everything that syncs (security review P7 S7: matches the privacy notice).
   'sync.what.body':
-    'Your answers (whether right, how sure you were and how long you took), reviews, your mistake journal, saved questions, the notes you write on questions, mocks, lessons and notes done, your study days and streak, badges, game levels, your readiness log and exam-week checklist, your plant, the questions you reported to us, your exam date and study settings. These stay on this phone: reminders, theme, motion, haptics, plant display choices and a quiz in progress.',
+    'Your answers (whether right, how sure you were and how long you took), reviews, your mistake journal, saved questions, the notes you write on questions, mocks, lessons and notes done, your study days and streak, badges, game levels, your readiness log and exam-week checklist, the questions you reported to us, your exam date and study settings. Saved plant data from older versions is retained for compatibility. These stay on this phone: reminders, theme, motion, haptics, display preferences and a quiz in progress.',
   'sync.what.limits': 'Removals don’t sync yet: a question you unsave, or progress you reset, on one device can come back from another. Deleting a note does sync.',
   'sync.what.kept': 'Turning sync off stops syncing. The copy in your account stays until you use Delete synced progress.',
   'sync.what.done': 'Done',
@@ -225,7 +225,7 @@ export const ACCOUNT_COPY = {
   // Sign out (account/sign-out).
   'signout.body.sync': 'Your progress stays on this phone, and KaiSip keeps working without an account. Sync stops until you sign in again.',
   'signout.remove': 'Remove my progress from this phone (for shared devices)',
-  'signout.remove.confirm': 'This removes all your study progress, your plant and your study settings from this phone. Your account’s copy isn’t affected.',
+  'signout.remove.confirm': 'This removes all your study progress and your study settings from this phone. Your account’s copy isn’t affected.',
   // Some of it is only on this phone: sync is off, paused, or the last changes didn’t reach the account (UX review H1).
   'signout.remove.confirm.unsynced': 'Some of this phone’s progress isn’t in your account yet. Removing it deletes it for good. Save a backup first if you might want it.',
   'signout.remove.go': 'Remove and sign out',

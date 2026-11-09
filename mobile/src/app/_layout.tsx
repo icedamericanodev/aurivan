@@ -40,7 +40,7 @@ import { initAccount } from '../lib/account';
 import { initSync, setRoute } from '../lib/sync';
 import { pruneUndo } from '../lib/backup';
 import { initCaseSeen } from '../lib/badges';
-import { ensureBackfill, ensureCatalog, syncPlanters } from '../lib/milestones';
+import { ensureBackfill, ensureCatalog } from '../lib/milestones';
 import { selectCert, useProgress } from '../store/progress';
 import { cancelReminders, initNotifications } from '../lib/reminders';
 import { refreshReminders } from '../lib/reminderSync';
@@ -178,7 +178,6 @@ export default function RootLayout() {
     if (!hydrated || !installed) return;
     ensureCatalog(activeCertId);
     initCaseSeen(activeCertId);
-    syncPlanters(activeCertId);
   }, [hydrated, installed, activeCertId]);
 
   // "Try again" puts the status back to 'loading' (the splash is already hidden): keep the recovery screen
@@ -274,7 +273,7 @@ export default function RootLayout() {
         <Stack.Screen name="cheat-sheet" />
         {/* Grove Phase 4 (O2): the Glossary, read-only (Learn's Glossary tile, Final review week's look-ups). */}
         <Stack.Screen name="glossary" />
-        {/* Mobile 1.13: Your plant, and its picker (plant, change species, rename). */}
+        {/* Compatibility destinations redirect retired plant links to You. */}
         <Stack.Screen name="plant" />
         <Stack.Screen name="plant-pick" options={{ animation: rise }} />
         <Stack.Screen name="plant-look" />

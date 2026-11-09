@@ -5,7 +5,7 @@
  * Plain English for the founder, what these tests pin:
  * - Proud only for something earned TODAY: a growth step (never a quiet
  *   back-fill) or a new keepsake from a LEARNING badge (never a game-only
- *   badge like Whole Grove, never Fresh Start, never a quiet fill).
+ *   badge like All Drills, never Study Return, never a quiet fill).
  * - Each proud occasion plays its "stand tall" once, EVER: it is saved on the
  *   phone, so closing and reopening the app never replays it.
  * - At most 3 keepsake occasions in any 7 days make the plant proud (seeded
@@ -16,19 +16,19 @@
  * - No answering screen (practice, review, mock, lesson steps, games in play,
  *   answer feedback) can draw the plant, its face or any looping art.
  */
-import AsyncStorage from '@react-native-async-storage/async-storage';
+
 import { existsSync, readdirSync, readFileSync } from 'fs';
 import { dirname, join, resolve } from 'path';
-import { act, create, type ReactTestInstance, type ReactTestRenderer } from 'react-test-renderer';
-import * as Reanimated from 'react-native-reanimated';
+import { act, type ReactTestRenderer } from 'react-test-renderer';
+
 import { setMockReducedMotion } from '../../jest/reanimated-mock';
-import Today from '../app/(tabs)/home';
-import You from '../app/(tabs)/you';
-import YourPlant from '../app/plant';
+
+
+
 import { claimDecor, resetCelebrationsForTest, resetOncePerDayForTest, setSystemReducedMotionForTest } from '../components/motion';
 import { buildPlant, type GNode, type Lod, type PNode } from '../components/plant/art';
 import { breathDepth, claimReaction, relaunchPlantForTest, resetPlantReactionsForTest } from '../components/plant/LivePlant';
-import { PLANT_SPECIES, resetPlant, withLook, type CertPlant } from '../engine/plant';
+import { PLANT_SPECIES } from '../engine/plant';
 import { keepsakeForBadge } from '../engine/plantLooks';
 import {
   admitProud,
@@ -42,7 +42,7 @@ import {
   type ProudOccasion,
 } from '../engine/proud';
 import { dayKey } from '../engine/streak';
-import { selectCert, useProgress } from '../store/progress';
+import { useProgress } from '../store/progress';
 import { useSeen } from '../store/seen';
 import { useSession } from '../store/session';
 import { useSettings } from '../store/settings';
@@ -88,45 +88,12 @@ const DAY = 86_400_000;
 /** A seeded clock: Monday 12 Oct 2026, 10:00 local time. */
 const T0 = new Date(2026, 9, 12, 10, 0, 0).getTime();
 let r: ReactTestRenderer | undefined;
-const mount = (el: React.ReactElement) => {
-  act(() => {
-    r = create(el);
-  });
-};
 const unmount = () => {
   act(() => {
     r?.unmount();
   });
   r = undefined;
 };
-const root = () => r!.root;
-const plants = () => root().findAll((n) => typeof n.type !== 'string' && typeof n.props.species === 'string' && typeof n.props.stage === 'number' && typeof n.props.size === 'number');
-const hero = () => plants().find((x: ReactTestInstance) => x.props.testID === 'plant-hero')!;
-/** The hero's spoken label (the accessible View around the drawing). */
-const heroLabel = (): string => r!.root.findAll((n) => n.props.testID === 'plant-hero' && typeof n.type === 'string')[0].props.accessibilityLabel;
-/** The stand-tall reactions started (their first tween is 30% of motion.plant.react; happy's too). */
-const reactCalls = (spy: jest.SpyInstance) => spy.mock.calls.filter((c) => (c[1] as { duration?: number } | undefined)?.duration === motion.plant.react * 0.3).length;
-/** The Breathe burst's out-breaths (only the breath uses motion.plant.breathOut). */
-const breathCalls = (spy: jest.SpyInstance) => spy.mock.calls.filter((c) => (c[1] as { duration?: number } | undefined)?.duration === motion.plant.breathOut).length;
-const setPlant = (p: CertPlant | undefined, cert = 'cisa') =>
-  act(() => {
-    useProgress.getState().updatePlant(cert, () => p);
-  });
-const earn = (key: string, at = Date.now(), certId = 'cisa') =>
-  act(() => {
-    useProgress.setState((s) => {
-      const c = selectCert(s, certId);
-      const m = { ...(c.milestones ?? { earned: {} }), earned: { ...(c.milestones?.earned ?? {}), [key]: at } };
-      return { byCert: { ...s.byCert, [certId]: { ...c, milestones: m } } };
-    });
-  });
-const motionOn = () => {
-  setMockReducedMotion(false);
-  setSystemReducedMotionForTest(false);
-};
-/** A plant grown some days ago (no growth today). */
-const grownAgo = (growth: CertPlant['growth']) => plantNew('oak', 'Kai', Date.now() - 5 * DAY, growth);
-const setNow = (ms: number) => jest.setSystemTime(ms);
 
 beforeEach(() => {
   jest.useFakeTimers({ now: T0, doNotFake: ['nextTick', 'setImmediate', 'queueMicrotask'] });
@@ -158,7 +125,7 @@ afterEach(() => {
 describe('what may make the plant proud (engine)', () => {
   const today = dayKey(T0);
 
-  it('only learning badges that give a keepsake: never games alone, Fresh Start, or a badge without a keepsake', () => {
+  it('only learning badges that give a keepsake: never games alone, Study Return, or a badge without a keepsake', () => {
     for (const b of ['first-foothold', 'topic-clear', 'whole-map', 'long-memory', 'graduate', 'loop-closed', 'took-root', 'slip-spotter', 'dress-rehearsal', 'on-pace'])
       expect([b, isLearningKeepsakeBadge(b)]).toEqual([b, true]);
     for (const b of ['whole-grove', 'snare-wise', 'even-keel', 'signpost-reader', 'myth-clearer', 'sure-footed-pace', 'back-on-path', 'fresh-start', 'firm-footing', 'rooted', 'made-up'])
@@ -221,128 +188,6 @@ describe('what may make the plant proud (engine)', () => {
 });
 
 // ── On the screens ──────────────────────────────────────────────────────
-describe('proud on the screens', () => {
-  it('a new learning keepsake: proud and one stand-tall on Your plant; a game-only badge: neither', () => {
-    motionOn();
-    const spy = jest.spyOn(Reanimated, 'withTiming');
-    setPlant(grownAgo(3));
-    earn('whole-grove', T0 - 60_000);
-    mount(<YourPlant />);
-    expect(hero().props.mood).toBe('idle');
-    expect(reactCalls(spy)).toBe(0);
-    unmount();
-    earn('dress-rehearsal', T0 - 30_000);
-    mount(<YourPlant />);
-    expect(hero().props.mood).toBe('proud');
-    expect(reactCalls(spy)).toBe(1);
-  });
-
-  it('a relaunch never replays the proud reaction: the occasion is saved on the phone and loaded back', async () => {
-    motionOn();
-    const spy = jest.spyOn(Reanimated, 'withTiming');
-    setPlant(grownAgo(3));
-    earn('dress-rehearsal', T0 - 30_000);
-    mount(<YourPlant />);
-    expect(reactCalls(spy)).toBe(1);
-    unmount();
-    // Let the seen store's save reach the phone's storage.
-    await act(async () => {
-      await Promise.resolve();
-    });
-    const raw = (await AsyncStorage.getItem('aurivan.seen.v1')) ?? '{}';
-    expect(Object.keys(JSON.parse(raw).state.reactions)).toEqual([`proud:keepsake:dress-rehearsal:${T0 - 30_000}`]);
-    // The relaunch: memory gone, the seen store emptied, then loaded back from
-    // what the phone saved (put back, since emptying the store saves too).
-    relaunchPlantForTest();
-    resetCelebrationsForTest();
-    useSeen.setState({ reactions: {}, proud: {} });
-    await AsyncStorage.setItem('aurivan.seen.v1', raw);
-    await act(async () => {
-      await useSeen.persist.rehydrate();
-    });
-    expect(Object.keys(useSeen.getState().reactions)).toHaveLength(1);
-    mount(<YourPlant />);
-    expect(hero().props.mood).toBe('proud'); // the face stays for the day
-    expect(reactCalls(spy)).toBe(1); // no second stand-tall
-    unmount();
-    mount(<Today />);
-    expect(reactCalls(spy)).toBe(1);
-  });
-
-  it('the cap on the screens: a 4th keepsake within 7 days leaves the plant as it was (no face, no stand-tall)', () => {
-    motionOn();
-    const spy = jest.spyOn(Reanimated, 'withTiming');
-    setPlant(grownAgo(3));
-    ['first-foothold', 'topic-clear', 'loop-closed', 'slip-spotter'].forEach((b, i) => {
-      setNow(T0 + i * DAY);
-      earn(b, T0 + i * DAY);
-      mount(<YourPlant />);
-      expect([b, hero().props.mood]).toEqual([b, i < 3 ? 'proud' : 'idle']);
-      unmount();
-    });
-    expect(reactCalls(spy)).toBe(3);
-    // Growth that same day always makes it proud.
-    const p = grownAgo(3);
-    setPlant({ ...p, growth: 4, reached: { ...p.reached, bough: Date.now() } });
-    mount(<YourPlant />);
-    expect(hero().props.mood).toBe('proud');
-    expect(reactCalls(spy)).toBe(4);
-  });
-
-  it('the proud face lasts until local midnight, then idle', () => {
-    setPlant(grownAgo(3));
-    earn('dress-rehearsal', T0);
-    mount(<YourPlant />);
-    expect(hero().props.mood).toBe('proud');
-    unmount();
-    setNow(new Date(2026, 9, 12, 23, 59, 0).getTime());
-    mount(<YourPlant />);
-    expect(hero().props.mood).toBe('proud');
-    unmount();
-    setNow(new Date(2026, 9, 13, 0, 1, 0).getTime());
-    mount(<YourPlant />);
-    expect(hero().props.mood).toBe('idle');
-  });
-
-  // Mobile 1.40 (spec §3.5): the posture plays for EVERY style, so a faceless plant still answers
-  // a good day; the face and its words are the "Storybook with a face" style's alone.
-  it('Quiet look: no face and no mood words, but the proud posture still plays once; the single breath stays', () => {
-    motionOn();
-    const spy = jest.spyOn(Reanimated, 'withTiming');
-    act(() => {
-      useProgress.getState().setPlantSettings({ quietLook: true });
-    });
-    setPlant(grownAgo(3));
-    earn('dress-rehearsal', T0);
-    mount(<YourPlant />);
-    expect(hero().props.mood).toBe('proud');
-    expect(hero().props.quietLook).toBe(true);
-    expect(heroLabel()).not.toMatch(/Looking/);
-    expect(reactCalls(spy)).toBe(1);
-    expect(breathCalls(spy)).toBe(1);
-  });
-
-  it('botanical (a new plant): the proud posture plays, with no face and no mood words', () => {
-    motionOn();
-    const spy = jest.spyOn(Reanimated, 'withTiming');
-    setPlant(withLook(grownAgo(3), { style: 'botanical' }));
-    earn('dress-rehearsal', T0);
-    mount(<YourPlant />);
-    expect(hero().props.mood).toBe('proud');
-    expect(hero().props.look.style).toBe('botanical');
-    expect(heroLabel()).not.toMatch(/Looking/);
-    expect(reactCalls(spy)).toBe(1);
-  });
-
-  it('storybook with a face: unchanged, the proud face and its words', () => {
-    setPlant(withLook(grownAgo(3), { style: 'storybook-face' }));
-    earn('dress-rehearsal', T0);
-    mount(<YourPlant />);
-    expect(hero().props.mood).toBe('proud');
-    expect(hero().props.quietLook).toBe(false);
-    expect(heroLabel()).toMatch(/Looking proud\./);
-  });
-});
 
 // ── The breath ──────────────────────────────────────────────────────────
 describe('the breath', () => {
@@ -362,58 +207,6 @@ describe('the breath', () => {
 
   it('one breath, 2 s in and 2.4 s out, never looped', () => {
     expect(motion.plant).toMatchObject({ breath: 2000, breathOut: 2400, breaths: 1 });
-  });
-
-  it('once per surface per app session: Your plant breathes once, then not on the next visit; a new session breathes again', () => {
-    motionOn();
-    const spy = jest.spyOn(Reanimated, 'withTiming');
-    setPlant(grownAgo(3));
-    mount(<YourPlant />);
-    expect(breathCalls(spy)).toBe(1);
-    unmount();
-    mount(<YourPlant />);
-    expect(breathCalls(spy)).toBe(1);
-    unmount();
-    relaunchPlantForTest();
-    mount(<YourPlant />);
-    expect(breathCalls(spy)).toBe(2);
-  });
-
-  it('Today never breathes; You does once; nothing breathes under Reduce Motion', () => {
-    motionOn();
-    const spy = jest.spyOn(Reanimated, 'withTiming');
-    setPlant(grownAgo(3));
-    mount(<Today />);
-    expect(breathCalls(spy)).toBe(0);
-    unmount();
-    mount(<You />);
-    act(() => {
-      jest.advanceTimersByTime(2000);
-    });
-    expect(breathCalls(spy)).toBe(1);
-    unmount();
-    relaunchPlantForTest();
-    setMockReducedMotion(true);
-    setSystemReducedMotionForTest(true);
-    mount(<YourPlant />);
-    expect(breathCalls(spy)).toBe(1);
-  });
-
-  it('only You and Your plant pass `breathe` to the plant; no other screen can', () => {
-    const SRC = join(__dirname, '..');
-    const files = readdirSync(SRC, { recursive: true })
-      .map(String)
-      .filter((f) => /\.tsx$/.test(f) && !f.startsWith('__tests__'));
-    const surfaces: string[] = [];
-    for (const f of files) {
-      const src = readFileSync(join(SRC, f), 'utf8');
-      // Every <LivePlant …/> element, up to its end.
-      for (const m of src.matchAll(/<LivePlant\b[\s\S]*?\/>/g)) {
-        const b = /\bbreathe=\{?["'`]?([\w-]*)/.exec(m[0]);
-        if (b) surfaces.push(`${f}:${b[1]}`);
-      }
-    }
-    expect(surfaces.sort()).toEqual(['app/(tabs)/you.tsx:you', 'app/plant.tsx:plant']);
   });
 });
 
@@ -553,48 +346,5 @@ describe('PR #51 review: a proud moment only counts when it is really seen or ne
     expect(keepsakeOccasions([{ earned: { 'dress-rehearsal': T0 } }], today, kept)).toEqual([]);
     // A badge whose keepsake was never kept still counts.
     expect(keepsakeOccasions([{ earned: { 'dress-rehearsal': T0, 'loop-closed': T0 + 1 } }], today, kept)).toEqual([{ id: `keepsake:loop-closed:${T0 + 1}`, kind: 'keepsake', at: T0 + 1 }]);
-  });
-
-  it('on the screen: a Reset plant that kept the keepsake is not proud when its badge is re-earned; a truly new one is', () => {
-    motionOn();
-    const spy = jest.spyOn(Reanimated, 'withTiming');
-    // Reset three days ago: the dress-rehearsal keepsake was carried over.
-    setPlant(resetPlant(grownAgo(4), T0 - 3 * DAY, [keepsakeForBadge('dress-rehearsal')!.id]));
-    expect(selectCert(useProgress.getState(), 'cisa').plant?.kept).toContain(keepsakeForBadge('dress-rehearsal')!.id);
-    earn('dress-rehearsal', T0 - 30_000);
-    mount(<YourPlant />);
-    expect(hero().props.mood).toBe('idle');
-    expect(reactCalls(spy)).toBe(0);
-    expect(useSeen.getState().proud).toEqual({});
-    unmount();
-    earn('loop-closed', T0 - 10_000);
-    mount(<YourPlant />);
-    expect(hero().props.mood).toBe('proud');
-    expect(reactCalls(spy)).toBe(1);
-  });
-
-  // Mobile 1.40: Quiet look's plant stands tall too (the posture plays for every style), so it
-  // counts like any shown moment; what never counts is a moment nobody sees (the plant hidden).
-  it('a hidden plant writes no proud log, so unseen moments never use up the 3-in-7-days cap', () => {
-    setPlant(grownAgo(3));
-    act(() => {
-      useProgress.getState().setPlantSettings({ showPlant: false });
-    });
-    ['first-foothold', 'topic-clear', 'loop-closed'].forEach((b, i) => {
-      setNow(T0 + i * DAY);
-      earn(b, T0 + i * DAY);
-      mount(<YourPlant />);
-      unmount();
-    });
-    expect(useSeen.getState().proud).toEqual({});
-    // The plant shown again: the next keepsake within the same 7 days still makes it proud (none of the 3 were used).
-    act(() => {
-      useProgress.getState().setPlantSettings({ showPlant: true });
-    });
-    setNow(T0 + 3 * DAY);
-    earn('slip-spotter', T0 + 3 * DAY);
-    mount(<YourPlant />);
-    expect(hero().props.mood).toBe('proud');
-    expect(Object.keys(useSeen.getState().proud ?? {})).toEqual([`keepsake:slip-spotter:${T0 + 3 * DAY}`]);
   });
 });

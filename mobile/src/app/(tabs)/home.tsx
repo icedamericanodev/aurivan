@@ -1,124 +1,19 @@
-/**
- * Today — "what is my one next step, and how am I growing?"
- * Spec: docs/mobile/DESIGN_SYSTEM.md §11 "Today" and "Daily clearing card".
- *
- * Mobile 1.23 (the owner's mockup A). Top to bottom, in screen-reader order:
- *   header     KaiSip lockup | streak pill + Settings gear
- *   meta line  "Thursday · 38 days to CISA", then the greeting by the hour ("Good morning, Maya" when the learner gave a name; Settings → Your name)
- *   forest     "Today’s plan · about N min", the current item's title, the rest of the plan as a
- *              checklist (done struck through, later quiet; nothing when the plan is one item),
- *              ONE hugging pill ("Start", or "Continue" once something is done or the first set is
- *              begun; Play only for a lesson)
- *   readiness  rings + the honest range + "Estimated readiness" (Day 0: nothing; before the range:
- *              "5 of 40 for your first range"); the stage line only for a few days after it changes
- *   below      your plant, "Also today" (ONLY the optional mock and anything paused: every other open item
- *              is already a checklist row), quiet cards
- *
- * Mobile 1.24 (first five minutes): the three stat tiles are gone (they said "Not yet" on Day 0 and put
- * a second percentage beside the range); the optional mock is an "Also today" row, not a checklist row;
- * the hero title is never repeated as the first checklist row; the readiness disclaimer is on the
- * report and on one calm card, "Your first readiness range", the first time the range appears; and the
- * reminder ask gets one second chance here, the day the 3rd study day is done.
- *
- * Your plant (mobile 1.13, Phase 4a): it grows only from real learning. A
- * grow-up gets ONE calm line here (the celebration budget, never Results),
- * and a learner with no plant gets one quiet "Plant a companion" line until
- * they plant or dismiss it. Settings → Show my plant off: none of this.
- *
- * Fit (mobile 1.15, PHASE5.md §2.3, §2.5): the plan is sized to the learner's
- * minutes. Under the leaf marks, "About 20 min today" (the open items; a mock
- * adds "+ mock"); "Also today" and "Tomorrow" say "About N min". A learner
- * from before 1.15 sees ONE quiet "Fit your plan" card below the day's study,
- * once (never in exam week, never beside another moment or the plant's line).
- *
- * When every plan item is done, the forest panel becomes the clearing card
- * (today's numbers + how readiness moved) and "Tomorrow" previews what's next.
- *
- * Proof (mobile 1.16, PHASE5.md §3.1–3.2): tapping the readiness words opens
- * the readiness report (the plant beside them still opens Your plant). From 7
- * to 2 days before the exam, one quiet "Exam week" card sits under the
- * readiness row, above "Also today": the checklist, or Hide.
- *
- * Final review week (Oct 2026): when the exam has a final-week plan, that
- * same card (same place, same Hide, same saved record) shows from 8 days
- * out to the eve, names today's day ("Today: Pace check"), counts the days
- * marked done, and opens the plan (app/exam-week.tsx).
- *
- * Mobile 1.21 (one focal element): the forest panel's title names the
- * activity and never holds a count ("Spaced review"; the counts go to its
- * meta line), and the day's minutes are said once, in the caption ("Start
- * here · about 19 min"; the meta leaves them out when they are this item's).
- * The readiness row under it is one condensed row (small rings or the plant,
- * the range, the short estimate line, the labelled stage). The plant's
- * invitation is one plain row (no ghost pair beside Start; it hides on a long
- * press); "Updated after your report" is an InviteRow, not the coach's rule.
- *
- * Mobile 1.41 (pre-beta review):
- *   - "Short on time? 5 questions": one ghost button under the hero, only before the day's plan has
- *     started (engine/dayPlan.ts shortSetItem). It starts the plan's first review or practice item at
- *     five questions, so those answers count toward it. Never in exam week, never on the first-set day.
- *   - Two more quiet cards in the setup slot below the day's study, still one setup line per visit:
- *     the name ask (onboarding no longer asks; engine/firstRun.ts nameAskDue) and, only for learners
- *     who turned on "I'm a beta tester" in Help, the Tester question (engine/betaTester.ts). The
- *     reminder's second chance, Fit and the plant line go first; the name ask goes before the tester card.
- *
- * Mobile 1.44 (the owner's "Version 3"): the name card has its field inside ("Name or nickname", Save, Not
- * now); after Save the greeting says the name and "Saved on this device" stays for the visit. It never
- * shows beside another Today invitation, on a welcome-back day (3+ days away) or in exam week. Learners
- * from before 1.41 (onboarded, no name, never asked) get the one ask set up once (engine/firstRun.ts).
- *
- * Mobile 1.47: on Android, ONE suggestion to add the Today's plan widget, once ever (a cleared day from the
- * 3rd study day, never in exam week, never beside another invitation; components/widgetSettings.tsx).
- * In the same slot, one per visit: the readiness widget's one re-ask (30 days after choosing to show the
- * range) and, for beta testers only, the widget check-in cards (engine/widgetTester.ts).
- *
- * Grove (Phase 1 and the Today phase; design-notes/grove, the kit's 01-phone-today, ring first by the
- * owner's decision). Top to bottom:
- *   head       the date only (said in full). No book label, no gear: Settings is on You's header.
- *   title      the countdown is the news: "Maya, 38 days to go" (engine/fieldGuide.ts todayTitle; with
- *              no date, the greeting), then "CISA exam 6 Dec" on one quiet line (the twig says the study days)
- *   hero       ONE forest card: the plant's growth in words ("Seed", "Growth 1 of 6"; Phase 4b: "growth", never "stage", for the plant; the button to Your
- *              plant), the readiness ring with the plant full size inside (40 seed dots before the first
- *              range, then 50 ticks with the range in gold and the clay 80 mark), the caption under it
- *              ("63 to 73 estimated range", "A study estimate, not a prediction."), and the Accuracy and
- *              Exam date tiles. The ring and caption are the readiness report's button.
- *   plan       "Today's plan" card: the minutes, numbered steps, the ONE Start (54pt, 16pt corners),
- *              "Stop any time; your place is saved." and "Short on time? 5 questions".
- *   twig       "This week's twig": seven leaves, the streak in clay from 2 days, none from study day 14.
- *              Not in exam week or on a welcome-back day.
- *   below      everything Today had before, in the same order (components/groveToday.tsx draws the new parts).
- * The clearing and "Your readiness is holding" stay forest moments and take the hero's place on their days.
- *
- * Signature moments (Phase 5b, components/moments.tsx):
- *   - the day before the exam / exam day: a calm card above the panel;
- *   - "Your readiness is holding" (lower bound ≥ 80% for 7 days): the forest
- *     panel, once per cert, until dismissed. Its plan item moves to "Also today".
- */
+/** Today shows the study plan, readiness and study progress. Retired companion data is never read or changed by this screen. */
+import { FeatureInfo } from '../../components/featureInfo';
 import { router, useFocusEffect } from 'expo-router';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { Pressable, useWindowDimensions, View } from 'react-native';
+import { useWindowDimensions, View } from 'react-native';
 import { ExamEveCard, ExamReadyPanel } from '../../components/moments';
 import { ClearingBody, clearingLine, clearingTitle, nextStepIndex, PlanLeaves, planHero, planText, ReadinessRow, reviewIdle, todayMinutes } from '../../components/journey';
 import { FieldText, headDate, KeyList, Plate, RunningHead } from '../../components/fieldguide';
 import {
-  AccuracyHeroTile,
-  ExamDateHeroTile,
-  HeroCard,
-  HeroTiles,
   PlanCard,
   PlanSteps,
-  plantInRing,
-  ReadinessRing,
-  RingCaptionText,
-  RingSeed,
-  RingTap,
-  ringSize,
   WeekTwig,
   type PlanStep,
 } from '../../components/groveToday';
-import { accuracyTile, HERO_STAGES, ringCaption, ringMode, seedDotsOn, studyDaysWords, twigSpoken, twigStreak, twigWeek } from '../../engine/groveToday';
+import { studyDaysWords, twigSpoken, twigStreak, twigWeek } from '../../engine/groveToday';
 import { todayTitle } from '../../engine/fieldGuide';
-import { GROWTH_NAMES } from '../../engine/plant';
 import { shortDate, spokenShortDate } from '../../lib/format';
 import { FirstRangePanel, SecondAskCard } from '../../components/firstSet';
 import { FitCard } from '../../components/fit';
@@ -135,9 +30,8 @@ import type { FinalWeek } from '../../content/exam/types';
 import { examWeekCardDue, examWeekCount, examWeekOf, FINAL_WEEK_WINDOW, weekDaysCount, weekDaysOf } from '../../engine/examWeek';
 import { dayForToday } from '../../engine/finalWeek';
 import { Celebrate, useCelebration, useGrowth, useScreenFocus } from '../../components/motion';
-import { ArrowRight, ICON_STROKE, Inbox, Play, Settings, Sprout } from '../../components/icons';
-import { PlantButton, PlantNote } from '../../components/plant/PlantUI';
-import { Button, Enter, groveTile, HeroPanel, ICON_SIZE, InviteRow, ListRow, Row, Screen, Section, T } from '../../components/ui';
+import { ArrowRight, ICON_STROKE, Inbox, Play, Settings } from '../../components/icons';
+import { Button, Enter, groveTile, HeroPanel, ICON_SIZE, InviteRow, Screen, Section, T } from '../../components/ui';
 import { countedDone, isOptional, itemMinutes, MINUTES_PER_QUESTION, planComplete, planLeft, SHORT_SET_SIZE, shortSetItem } from '../../engine/dayPlan';
 import { shouldAskFit } from '../../engine/fit';
 import { firstRangePanelDue, NAME_ASK_AWAY_DAYS, nameAskDue, nameNudgeDue, secondAskDue, studyDaysAway } from '../../engine/firstRun';
@@ -155,10 +49,6 @@ import { remindersSupported } from '../../lib/reminders';
 import { haptic } from '../../lib/haptics';
 import { useTodayMoments } from '../../lib/moments';
 import { useJourney } from '../../lib/useJourney';
-import { checkPlant, growQuietly, seeGrowth, usePlantView } from '../../lib/plant';
-import { LivePlant, markReacted } from '../../components/plant/LivePlant';
-import { grewLabel, growthBefore, plantCallName, type GrowthLevel } from '../../engine/plant';
-import { baselineForms, formMoment, SEE_NEW_FORM } from '../../engine/plantForms';
 import { dayKey } from '../../engine/streak';
 import { useReports } from '../../lib/useReports';
 import { useProgress } from '../../store/progress';
@@ -204,9 +94,6 @@ const STAGE_NOTE_DAYS = 3;
 /** A local day key ("2026-10-15") as a whole day number, for counting days between two views. */
 const dayNumber = (key: string) => Math.floor(Date.parse(`${key}T00:00:00Z`) / DAY_MS);
 
-/** The growth's haptic stays silent this soon after the clearing's (one haptic for one return to Today). */
-const CLEARING_TAP_MS = 5000;
-
 /**
  * Today's card words for the final review week: today's day by name, or
  * "Starts tomorrow" 8 days out. Exported for tests.
@@ -244,8 +131,6 @@ export default function Today() {
   // showed; when it comes back into view it reads the live one again.
   const active = useHeldWhen(!focused, useSession, (s) => s.active, 'active');
   const markCelebrated = useProgress((s) => s.markCelebrated);
-  // When the clearing's haptic last played: the plant's growth stays silent right after it (one haptic only).
-  const clearingTapAt = useRef(0);
   // The heading under the exam-week card: focus lands there when the card is hidden (code review M3b).
   const nextHeadRef = useRef<View>(null);
   // Mobile 1.7: a fix shipped after something this learner reported. One quiet
@@ -274,18 +159,15 @@ export default function Today() {
   const showReady = moments.ready && plan.items.length > 0 && !allDone;
   // The clock for a paused mock's minutes left: read when Today opens or comes back into view.
   const [now, setNow] = useState(() => Date.now());
-  const certId = j.cert.id;
   useFocusEffect(
     useCallback(() => {
       // Only a new clock that changes what Today shows re-renders it (performance,
-      // 1.15.x): a new day (the plant's reaction), or a paused timed mock's minutes left.
+      // 1.15.x): a new day, or a paused timed mock's minutes left.
       // Read outside the updater, so the updater stays pure.
       const at = Date.now();
       const keep = !useSession.getState().active?.deadline;
       setNow((was) => (keep && dayKey(was) === dayKey(at) ? was : at));
-      // The plant's exam-ready gate changes with the date: check it whenever Today comes into view.
-      checkPlant(certId);
-    }, [certId]),
+    }, []),
   );
   // The Start pill's glyph says what starts (mobile 1.22, the 1.20 icon rule): Play only for a
   // lesson (leading, as on Learn); reviews, practice, mocks and games go forward with a TRAILING
@@ -308,7 +190,7 @@ export default function Today() {
   const clearing = useCelebration(
     'clearing',
     allDone && focused && !plan.celebrated,
-    `Today’s clearing. ${clearingTitle(plan)} ${clearingLine(plan, j.readiness, j.range)}.`,
+    `Today complete. ${clearingTitle(plan)} ${clearingLine(plan, j.readiness, j.range)}.`,
     `${cert}:${plan.day}`,
   );
   // The clearing's one success tap, once a day (respects the Haptics setting),
@@ -316,98 +198,17 @@ export default function Today() {
   useEffect(() => {
     if (allDone && focused && !plan.celebrated) {
       haptic.success();
-      clearingTapAt.current = Date.now();
       markCelebrated(j.cert.id);
     }
   }, [allDone, focused, plan.celebrated, markCelebrated, j.cert.id]);
   // The exam-ready moment (T3): the rings grow and the frond breathes once,
   // once EVER per cert (saved): later launches show the panel still, unannounced.
   const ready = useCelebration('exam-ready', showReady && focused, 'A quiet milestone. Your readiness is holding.', `exam-ready:${cert}`, true);
-  // Your plant (mobile 1.13). A grow-up is kept for this visit (the pending
-  // mark is cleared as soon as it shows, so it plays once), then one calm
-  // line through the celebration budget. Hidden plant: no line, no prompt.
-  const plantView = usePlantView();
-  const pending = plantView.plant?.pending;
-  const [grown, setGrown] = useState<{ growth: GrowthLevel; line: string } | null>(null);
-  // Code review M1: the exam-ready panel and Elder usually arrive on the same
-  // visit (both come from a week held at 80%+). ONE moment: the panel keeps
-  // it, and the growth is applied silently (no sequence on the hidden plant,
-  // no second haptic); Your plant says it in a calm line next time.
-  const quietly = !!pending && showReady;
-  // QA-TURN-2: what this phone has already shown of the forms. The pointer to Your plant is said only when
-  // Your plant will really play a reveal (formMoment), never from the growth alone: after Reset progress a
-  // re-earned form was already revealed here, so Today must not promise one.
-  const formsSeen = useSeen((x) => x.plantForms?.[cert]);
-  // Set during render (React's pattern for state that follows the store).
-  // Mobile 1.50: when it grew into a new form, the line says where to see it (the reveal plays on Your plant, never here).
-  if (pending && plantView.plant && !quietly && grown?.growth !== pending)
-    setGrown({ growth: pending, line: `${grewLabel(plantView.plant, pending)}${plantView.forms && formMoment(pending, formsSeen ?? baselineForms(growthBefore(plantView.plant, pending)))?.kind === 'reveal' ? ` ${SEE_NEW_FORM}` : ''}` });
-  useEffect(() => {
-    if (!pending || !focused) return;
-    if (quietly) growQuietly(cert, pending);
-    else seeGrowth(cert);
-  }, [pending, focused, cert, quietly]);
-  // Shown for this visit only: leaving Today puts the line away (Today stays mounted for days).
-  useFocusEffect(useCallback(() => () => setGrown(null), []));
-  // Mobile 1.14: the growth sequence (≤ 900 ms) plays in the plant's own
-  // slot, through the celebration budget: one full moment per session. A
-  // milestone keeps its Results moment; then the growth shows here in its
-  // short form (a cross-fade), never competing. Static under Reduce Motion.
-  const growthMoment = useCelebration('plant-growth', Boolean(grown) && focused, grown?.line, `${cert}:plant:${grown?.growth ?? 0}`);
-  // One success haptic for the growth, once, unless the clearing plays its own this visit (one haptic only).
-  const growRun = growthMoment.run;
-  useEffect(() => {
-    if (growRun > 0 && Date.now() - clearingTapAt.current > CLEARING_TAP_MS) haptic.success();
-  }, [growRun]);
-  const growFrom = grown && plantView.plant ? growthBefore(plantView.plant, grown.growth) : null;
-  // The plant's one reaction for this occasion (its mood and the day), wherever
-  // it is first seen this session. Never on a growth visit (UX review H4: the
-  // growth IS that day's proud moment, so the occasion is spent), and it waits
-  // while the clearing plays (one thing moves at a time).
-  // Mobile 1.18: the id comes from usePlantView (proud: its earned occasions, saved once played).
-  const reactionId = plantView.reactionId;
-  useEffect(() => {
-    if (grown && reactionId) markReacted(reactionId);
-  }, [grown, reactionId]);
-  // The same objects while nothing changes (performance, 1.15.x): the plant is
-  // memoised and skips a re-render of its ~200-shape drawing and its motion hooks.
-  const reactionMood = plantView.look && reactionId && focused && !grown && clearing.settled ? plantView.look.mood : null;
-  const reaction = useMemo(() => (reactionMood && reactionId ? { id: reactionId, mood: reactionMood } : null), [reactionMood, reactionId]);
-  // Today is study-first: the plant and its visitor, never the keepsakes (UX review, decided).
-  const lookArt = plantView.look?.art;
-  const todayLook = useMemo(() => (lookArt ? { ...lookArt, keepsakes: [] } : undefined), [lookArt]);
-  const todayPlant = (size: number, testID: string) =>
-    plantView.plant ? (
-      <PlantButton
-        testID={testID}
-        species={plantView.plant.species}
-        growth={plantView.plant.growth}
-        scales={plantView.scales}
-        quietLook={!plantView.face}
-        resting={plantView.resting}
-        size={size}
-        // Small detail at Today's sizes: the full level's extra marks don't read there (code review M6d).
-        lod="small"
-        // The name under the plant says "this is yours, tap it" (UX review).
-        caption={plantCallName(plantView.plant)}
-        label={plantView.label}
-        onPress={() => router.push('/plant')}
-        look={todayLook}
-        mood={plantView.look?.mood}
-        reaction={reaction}
-        grows={grown && growFrom ? { from: growFrom, celebration: growthMoment } : null}
-      />
-    ) : null;
-  // One quiet line for a learner with no plant yet, until they plant or dismiss it.
-  const setPlantSettings = useProgress((s) => s.setPlantSettings);
-  const plantPrompt = plantView.shown && !plantView.plant && !plantView.settings.promptHidden;
-
   // Any touch on Today ends a moment at once (it never blocks the next tap).
-  const live = !clearing.settled || !ready.settled || !growthMoment.settled;
+  const live = !clearing.settled || !ready.settled;
   const skipAll = () => {
     clearing.skip();
     ready.skip();
-    growthMoment.skip();
   };
 
   // "Also today": an unfinished session first, then the optional mock (mobile 1.24: only those).
@@ -516,14 +317,6 @@ export default function Today() {
     if (focused) refreshReminders().catch(() => {});
   }, [focused, allDone, plan.day, reminderEnabled]);
 
-  // Mobile 1.15: the one "Fit your plan" card for learners from before 1.15.
-  // One setup line on Today at a time, and the plant's goes first: on a visit
-  // that showed the plant's line, the card waits (even after "No thanks"),
-  // so one setup line is never swapped for another mid-visit.
-  const plantLineNow = Boolean(!grown && plantPrompt);
-  const [plantVisit, setPlantVisit] = useState(plantLineNow);
-  if (plantLineNow && !plantVisit) setPlantVisit(true);
-  useFocusEffect(useCallback(() => () => setPlantVisit(false), []));
   const onboarded = useSettings((x) => x.onboarded);
   const displayName = useSettings((x) => x.displayName);
   const fitPrompt = useSettings((x) => x.fitPrompt);
@@ -538,7 +331,7 @@ export default function Today() {
     daysLeft: j.daysLeft,
     examMoment: Boolean(moments.moment),
     readyPanel: showReady,
-    plantLine: plantLineNow || plantVisit,
+    plantLine: false,
     askedDays: fitAskDays,
     today: plan.day,
     finalWeek: Boolean(finalWeek),
@@ -553,8 +346,8 @@ export default function Today() {
   }, [askFit, plan.day]);
 
   // Mobile 1.41: the name ask and the Tester question share the setup slot, one line per visit.
-  // Both wait for the second ask, Fit and the plant line; each is latched for the visit it first shows on.
-  const otherSetup = secondVisit || askFit || plantLineNow || plantVisit;
+  // Both wait for the second ask, Fit; each is latched for the visit it first shows on.
+  const otherSetup = secondVisit || askFit;
   const nameAsk = useSeen((x) => x.nameAsk);
   // Mobile 1.44 (pm.md S3, behavior.md §7.4): a learner who onboarded before 1.24 (no name step, so never
   // asked; no `newLearner` flag) gets the one ask set up once, so it shows on a later study day under the
@@ -565,9 +358,9 @@ export default function Today() {
     if (nudge) useSeen.getState().setNameAsk('due');
   }, [nudge]);
   // Mobile 1.44: the name card never sits beside another Today invitation (a moment, the exam-ready panel,
-  // the first range card, the exam-week card, the plant's growth, the report note), on top of the setup lines.
+  // the first range card, the exam-week card and report note), on top of the setup lines.
   const nameOther =
-    otherSetup || Boolean(moments.moment) || showReady || firstRangeDue || examWeekDue || Boolean(grown) || (credit.items > 0 && !credit.hidden);
+    otherSetup || Boolean(moments.moment) || showReady || firstRangeDue || examWeekDue || (credit.items > 0 && !credit.hidden);
   const studyStreak = useProgress((x) => x.streak);
   const nameDue = nameAskDue({
     offered: nameAsk === 'due' || nudge,
@@ -608,7 +401,7 @@ export default function Today() {
     cleared: allDone,
     daysLeft: j.daysLeft,
     placed: widgetPlaced,
-    otherSetup: otherSetup || nameVisit || Boolean(testerShown) || Boolean(moments.moment) || Boolean(grown) || (credit.items > 0 && !credit.hidden),
+    otherSetup: otherSetup || nameVisit || Boolean(testerShown) || Boolean(moments.moment) || (credit.items > 0 && !credit.hidden),
   });
   const [offerVisit, setOfferVisit] = useState(false);
   if (offerDue && !offerVisit) setOfferVisit(true);
@@ -625,7 +418,7 @@ export default function Today() {
   const readinessPlaced = useWidgetStore((x) => Boolean(x.stats.seen.readiness && !x.stats.seen.readiness.gone));
   const widgetStats = useWidgetStore((x) => x.stats);
   const widgetTester = useWidgetStore((x) => x.tester);
-  const slotBusy = otherSetup || nameVisit || Boolean(testerShown) || offerVisit || Boolean(moments.moment) || Boolean(grown) || (credit.items > 0 && !credit.hidden);
+  const slotBusy = otherSetup || nameVisit || Boolean(testerShown) || offerVisit || Boolean(moments.moment) || (credit.items > 0 && !credit.hidden);
   const reaskDue =
     widgetsSupported && !slotBusy && readinessReaskDue({ pref: widgetPrefs.readiness, shownSince: readinessSince, asked: readinessAsked, today: plan.day, placed: readinessPlaced });
   const [reaskVisit, setReaskVisit] = useState(false);
@@ -678,39 +471,6 @@ export default function Today() {
   // The hero is Today's one forest card. The clearing (a finished day) and the exam-ready panel are
   // forest moments of their own, so on those days they take its place, as before.
   const heroShown = !allDone && !showReady;
-  const ring = ringSize(width);
-  const mode = ringMode(j.range, examWeekNow);
-  const caption = ringCaption(j.range, examWeekNow);
-  const mastered = j.readiness.domains.reduce((n, d) => n + d.mastered, 0);
-  const accuracy = accuracyTile(answeredTotal, mastered);
-  // The plant's growth in words ("Seed", "Growth 1 of 6"; PHASE4B 3.2: "stage" is only the study journey's); with no plant shown, the kit's seed.
-  const growth = plantView.plant?.growth ?? 1;
-  const stageName = GROWTH_NAMES[growth];
-  const examShown = j.examDate && j.daysLeft !== null ? shortDate(new Date(`${j.examDate}T12:00:00`).getTime()) : null;
-  const examSaid = j.examDate && j.daysLeft !== null ? spokenShortDate(new Date(`${j.examDate}T12:00:00`).getTime()) : undefined;
-  // The plant, full size inside the ring's disc (the disc is forest in both themes, so the plant takes
-  // its dark palette). It keeps its growth moment and its one reaction; it is part of the ring's picture,
-  // and the stage line above it is the button that opens Your plant.
-  const ringPlant = plantView.plant ? (
-    <LivePlant
-      testID="today-ring-plant"
-      species={plantView.plant.species}
-      stage={plantView.plant.growth}
-      organs={plantView.scales}
-      quietLook={!plantView.face}
-      resting={plantView.resting}
-      size={plantInRing(ring)}
-      theme="dark"
-      lod="small"
-      fit
-      look={todayLook}
-      mood={plantView.look?.mood}
-      reaction={reaction}
-      growth={grown && growFrom ? { from: growFrom, celebration: growthMoment } : null}
-    />
-  ) : (
-    <RingSeed width={Math.round(ring * 0.5)} />
-  );
   // The plan's numbered steps: every item but the optional weekly mock (it waits under "Also today").
   const steps: PlanStep[] = plan.items
     .map((item, i) => ({ item, i }))
@@ -747,16 +507,6 @@ export default function Today() {
   // screen): this week's study days left this line, because the twig card says them whenever it shows.
   const subLine = examLine ?? '';
   const subSpoken = examSpoken ?? '';
-  // The line under the hero, in the guide's italic: what grows the plant (no book label).
-  // With a plant, its name ("Kai grows with your study."), as the web's line does.
-  const plantName = plantView.plant ? plantCallName(plantView.plant) : '';
-  const grows = plantName ? `${plantName.charAt(0).toUpperCase()}${plantName.slice(1)} grows with your study.` : '';
-  const plantLine = plantView.plant
-    ? plantView.look?.visiting
-      ? `A ${plantView.look.resolved.visitor} came by. ${grows}`
-      : grows
-    : 'Your progress grows from what you practice here.';
-
   return (
     // Mobile 1.44 (UX review H1): the name card has a text field, so the keyboard never covers it or Save.
     <Screen keyboard={nameVisit}>
@@ -799,13 +549,13 @@ export default function Today() {
         </Enter>
       )}
 
-      <Enter i={1} style={{ marginTop: space.lg }}>
+      {(showReady || allDone) && <Enter i={1} style={{ marginTop: space.lg }}>
         {showReady ? (
           <ExamReadyPanel cert={j.cert} readiness={j.readiness} onDismiss={moments.dismissReady} celebration={ready} />
         ) : allDone ? (
           <Celebrate celebration={clearing}>
             <HeroPanel
-              caption="Today’s clearing"
+              caption="Today complete"
               // An optional mock left for another day is not a leaf of the clearing.
               captionExtra={<PlanLeaves done={countedDone(plan)} focused={focused} seenKey={`${cert}:${plan.day}:cleared`} />}
               title={clearingTitle(plan)}
@@ -815,63 +565,8 @@ export default function Today() {
               <ClearingBody plan={plan} readiness={j.readiness} range={j.range} cert={j.cert} celebration={clearing} />
             </HeroPanel>
           </Celebrate>
-        ) : (
-          // Grove (the kit's 01-phone-today, ring first): the stage in words, the readiness ring with the plant
-          // full size inside, the caption under it, then the Accuracy and Exam date tiles. One forest card.
-          <View>
-            <HeroCard testID="today-hero">
-              {/* The plant's stage in words; with a plant, the button to Your plant. */}
-              {plantView.plant ? (
-                <Pressable
-                  // With a plant, this is the plant's button (it keeps the plant's old test id).
-                  testID="today-plant"
-                  accessibilityRole="button"
-                  // The plant's own words (its name, form, growth and mood). They already say
-                  // the growth, so it is not added again (TalkBack read it twice before).
-                  accessibilityLabel={plantView.label}
-                  accessibilityHint="Opens your plant"
-                  onPress={() => router.push('/plant')}
-                  style={{ flexDirection: 'row', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'space-between', columnGap: space.md, minHeight: 48, marginVertical: -space.sm }}
-                >
-                  <FieldText v="sub" color={c.onForest}>{stageName}</FieldText>
-                  <T v="meta" num color={c.onForest2}>{`Growth ${growth} of ${HERO_STAGES}`}</T>
-                </Pressable>
-              ) : (
-                // Release bug hunt round 2: without a plant, plain words in a View, not a disabled Pressable
-                // (Pressable copies `disabled` into the accessibility state, so TalkBack said "disabled").
-                <View
-                  testID="today-stage"
-                  accessible
-                  accessibilityRole="text"
-                  accessibilityLabel={`${stageName}, growth ${growth} of ${HERO_STAGES}`}
-                  style={{ flexDirection: 'row', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'space-between', columnGap: space.md, minHeight: 32 }}
-                >
-                  <FieldText v="sub" color={c.onForest}>{stageName}</FieldText>
-                  <T v="meta" num color={c.onForest2}>{`Growth ${growth} of ${HERO_STAGES}`}</T>
-                </View>
-              )}
-              {/* The ring and its caption are one button to the readiness report, said in words. */}
-              <RingTap label={caption.spoken} onPress={() => router.push('/readiness')}>
-                <ReadinessRing mode={mode} on={seedDotsOn(j.range)} low={j.range.enough ? j.range.low : 0} high={j.range.enough ? j.range.high : 0} size={ring} growth={rangeGrowth}>
-                  {ringPlant}
-                </ReadinessRing>
-                <RingCaptionText caption={caption} />
-              </RingTap>
-              <HeroTiles>
-                <AccuracyHeroTile tile={accuracy} />
-                <ExamDateHeroTile
-                  shown={examShown}
-                  spoken={examSaid}
-                  // Settings opens with "Exam date" near the top, right under Certification.
-                  onSet={() => router.push({ pathname: '/settings', params: { open: 'exam-date' } })}
-                />
-              </HeroTiles>
-            </HeroCard>
-            {/* What grows the plant, in the guide's italic (no book label). */}
-            <FieldText v="fig" style={{ marginTop: space.sm }}>{plantLine}</FieldText>
-          </View>
-        )}
-      </Enter>
+        ) : null}
+      </Enter>}
 
       {heroShown && (
         <Enter i={2} style={{ marginTop: space.lg }}>
@@ -899,6 +594,7 @@ export default function Today() {
             <PlanCard
               testID="today-plate"
               title="Today’s plan"
+              info={<FeatureInfo title="Today’s plan"><T v="body">Your plan fits your study time. Stop any time and continue where you left off. Use Short on time for a smaller set.</T></FeatureInfo>}
               minutes={dayMinutes > 0 ? keepUnits(aboutMin(dayMinutes)) : undefined}
               spoken={`Today’s plan, ${dayMinutes > 0 ? `${spokenMin(aboutMin(dayMinutes, true))}, ` : ''}${doneCount} of ${countedDone(plan).length} done`}
             >
@@ -914,7 +610,6 @@ export default function Today() {
                 accessibilityHint={startItem === curItem ? hero!.title : planHero(startItem, j.dueCount).title}
                 style={{ marginTop: space.xs }}
               />
-              <T v="meta" center>Stop any time; your place is saved.</T>
               {shortIdx >= 0 && (
                 // The short path (mobile 1.41): a quiet ghost button in the plan, never a second Start.
                 <View testID="short-set" style={{ alignItems: 'center' }}>
@@ -996,42 +691,10 @@ export default function Today() {
           )}
           {/* "Your first readiness range": one calm card, right under the range it explains (mobile 1.24). */}
           {firstRangeDue && <View style={{ marginTop: space.lg }}>{firstRangeCard}</View>}
-          {plantView.plant && showReady && (
-            // The exam-ready day has no ring: the plant sits here, as before.
-            <Row gap={space.lg} style={{ alignItems: 'center', marginTop: space.xl }}>
-              {todayPlant(72, 'today-plant')}
-              <T v="meta" style={{ flex: 1 }}>
-                {plantView.look?.visiting ? `A ${plantView.look.resolved.visitor} came by.` : 'Your plant grows with your study.'}
-              </T>
-            </Row>
-          )}
-        </Enter>
-      )}
-
-      {allDone && plantView.plant && (
-        // A cleared day (QA O-1): the plant, happy, with its visitor if one came,
-        // at a modest size under the clearing. The clearing stays the day's moment.
-        <Enter i={2} style={{ marginTop: space.lg }}>
-          <Row gap={space.md} style={{ alignItems: 'center' }}>
-            {todayPlant(88, 'today-plant-cleared')}
-            {plantView.look?.visiting ? (
-              <T v="meta" style={{ flex: 1 }}>{`A ${plantView.look.resolved.visitor} came by: you cleared today’s plan.`}</T>
-            ) : null}
-          </Row>
         </Enter>
       )}
 
       {allDone && firstRangeDue && <View style={{ marginTop: space.xl }}>{firstRangeCard}</View>}
-
-      {grown && (
-        <Enter i={2} style={{ marginTop: space.xl }}>
-          <Celebrate celebration={growthMoment}>
-            <PlantNote caption="Your plant grew" line={grown.line} testID="plant-grew">
-              <Button kind="ghost" label="What grows it next" onPress={() => router.push('/plant')} />
-            </PlantNote>
-          </Celebrate>
-        </Enter>
-      )}
 
       <Enter i={3}>
         {/* Mobile 1.16: exam week (7 to 2 days out): one calm card, under the readiness row. */}
@@ -1131,31 +794,6 @@ export default function Today() {
               onNotNow={() => {
                 useSettings.getState().dismissFitPrompt();
                 sayLater('Hidden. Settings, Your study, keeps these choices.');
-              }}
-            />
-          </View>
-        )}
-        {/* One quiet row for a learner with no plant, below the day's study (UX review P6): never ahead
-            of it. Mobile 1.21 (design spec §5): one row with a chevron, no ghost pair beside the panel's
-            Start. It hides with the screen-reader action "Hide from Today", or "Not now" on the picker (which
-            says so). Its own space above, so it never reads as a third "Also today" item. */}
-        {!grown && plantPrompt && (
-          <View style={{ marginTop: space.xl }}>
-            <ListRow
-              testID="plant-prompt"
-              icon={<Sprout size={ICON_SIZE.row} color={c.accentText} strokeWidth={ICON_STROKE} />}
-              title="Your plant"
-              subtitle="A companion that grows with your study"
-              accessibilityLabel="Your plant. A companion that grows with your study"
-              last
-              accessibilityHint="Opens the plant picker"
-              onPress={() => router.push({ pathname: '/plant-pick', params: { from: 'today' } })}
-              onHide={{
-                label: 'Hide from Today',
-                run: () => {
-                  setPlantSettings({ promptHidden: true });
-                  sayLater('Hidden. You can plant one from You.');
-                },
               }}
             />
           </View>

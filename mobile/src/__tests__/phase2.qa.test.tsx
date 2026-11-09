@@ -800,9 +800,9 @@ describe('J5 quick fixes', () => {
     }
   });
 
-  it('Drills (the old Play tab) say "All at Seedling" exactly once for a new learner', () => {
+  it('Drills (the old Play tab) say "All at Beginner" exactly once for a new learner', () => {
     mount(<Drills />);
-    expect(allText().match(/All at Seedling/g)).toHaveLength(1);
+    expect(allText().match(/All at Beginner/g)).toHaveLength(1);
   });
 });
 
@@ -870,7 +870,7 @@ describe.each([
   const xOf = (t: ReactTestInstance) =>
     (flat(t.findAllByType(View)[0]).transform as Record<string, number>[] | undefined)?.find((s) => 'translateX' in s)?.translateX ?? 0;
 
-  it('Field Guide: the picked term shows its ring (a layer), the tile never resizes, and a wrong pair shakes and settles at rest', () => {
+  it('Term Match: the picked term shows its ring (a layer), the tile never resizes, and a wrong pair shakes and settles at rest', () => {
     const defOf = new Map(fieldTerms(getNotes('cisa')).map((t) => [t.term, t.definition]));
     mount(<FieldGuide />);
     press('Start');
@@ -921,7 +921,7 @@ describe.each([
     for (const t of after) expect(t.findAllByType(StateLayer)[0].props.on).toBe(false);
   });
 
-  it('Stepping Stones: placing a stone by tap still works through the press feedback', () => {
+  it('Sequence Check: placing a stone by tap still works through the press feedback', () => {
     mount(<SteppingStones />);
     press('Start');
     const place = btn(/^Place next: /)!;

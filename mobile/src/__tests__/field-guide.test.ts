@@ -1,5 +1,5 @@
 /**
- * Field Guide (games review §3.4): terms from the notes' key terms and the
+ * Term Match (games review §3.4): terms from the notes' key terms and the
  * domains' key terms, the leak filter, the three levels, scoring and cards.
  */
 import { getNotes } from '../content/notes';
@@ -109,7 +109,7 @@ describe('the term pool', () => {
   });
 
   it('the registry offers it from the notes pool, never without notes', () => {
-    expect(GAMES.field.name).toBe('Field Guide');
+    expect(GAMES.field.name).toBe('Term Match');
     expect(GAMES.field.tagline).toBe('Match each term to what it means.');
     expect(isPlayable('field', [], notes)).toBe(true);
     expect(isPlayable('field', [], null)).toBe(false);
@@ -117,7 +117,7 @@ describe('the term pool', () => {
 });
 
 describe('rounds', () => {
-  it('Seedling: 3 boards of 4 terms, each from a different topic', () => {
+  it('Beginner: 3 boards of 4 terms, each from a different topic', () => {
     const r = buildFieldRound(all, undefined, 'seedling', createRng(1), T0);
     expect(r).toHaveLength(FIELD_BOARDS);
     for (const b of r) {
@@ -130,7 +130,7 @@ describe('rounds', () => {
     expect(new Set(ids).size).toBe(ids.length);
   });
 
-  it('Sapling: each board is one topic (near neighbours), boards from different domains', () => {
+  it('Practised: each board is one topic (near neighbours), boards from different domains', () => {
     for (let seed = 1; seed <= 20; seed++) {
       const r = buildFieldRound(all, undefined, 'sapling', createRng(seed), T0);
       expect(r).toHaveLength(FIELD_BOARDS);
@@ -139,7 +139,7 @@ describe('rounds', () => {
     }
   });
 
-  it('Heartwood: each term is recalled from 6 choices that include it, no repeats', () => {
+  it('Skilled: each term is recalled from 6 choices that include it, no repeats', () => {
     const r = buildFieldRound(all, undefined, 'heartwood', createRng(3), T0);
     for (const b of r) {
       expect(b.choices).toHaveLength(BOARD_SIZE);

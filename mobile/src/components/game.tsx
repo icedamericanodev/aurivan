@@ -268,7 +268,7 @@ export function QuestionHead({ q, highlight, ink }: { q: PackQuestion; highlight
  * 3. A badge this round earned (never on a level-up round: one celebration per round end).
  * 4. "What caught you" (a card, when the round had misses), then "Missed questions are in your review."
  * 5. "Last 5 rounds" (a card): the sparkline, and on a round with no level change the level line
- *    ("One more strong round grows it to Sapling." with two dots, by shape).
+ *    ("One more strong round moves you to Sapling." with two dots, by shape).
  * 6. The game's own end note (children), one "Report a problem", and Play again / Done in a sticky footer.
  */
 export function RoundEnd({
@@ -360,8 +360,8 @@ export function RoundEnd({
   const levelLine =
     news && !news.change && next
       ? (growth?.up ?? 0) >= 1
-        ? { text: `One more strong round grows it to ${GAME_TIER_NAME[next]}.`, dots: true }
-        : { text: `Two strong rounds in a row grow it to ${GAME_TIER_NAME[next]}.`, dots: false }
+        ? { text: `One more strong round moves you to ${GAME_TIER_NAME[next]}.`, dots: true }
+        : { text: `Two strong rounds in a row move you to ${GAME_TIER_NAME[next]}.`, dots: false }
       : null;
   const theme = isDark ? 'dark' : 'light';
   const [footerH, setFooterH] = useState(140);
@@ -677,11 +677,11 @@ export function GameIntro<V extends string>({
 export const STRONG_ROUND = 'A strong round: 80% or more.';
 
 /**
- * "Your level: Sapling. Two strong rounds in a row grow it." under a level picker (Build F; one meta
+ * "Your level: Sapling. Two strong rounds in a row move you up." under a level picker (Build F; one meta
  * line in Grove 4b). Rounds at your level move it; any level can be tried.
  */
 export function LevelNote({ level }: { level: GameTier }) {
-  const how = level === 'heartwood' ? 'The top level.' : 'Two strong rounds in a row grow it.';
+  const how = level === 'heartwood' ? 'The top level.' : 'Two strong rounds in a row move you up.';
   const name = `Your level: ${GAME_TIER_NAME[level]}.`;
   const line = `${name} ${how}`;
   // Release prep 2.0.0: one sentence per line. As one centred line it wrapped at 390pt with "it."

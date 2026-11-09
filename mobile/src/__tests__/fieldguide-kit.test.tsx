@@ -1,5 +1,5 @@
 /**
- * The Field Guide kit (mobile 1.51, DESIGN_SYSTEM.md §21): each component's
+ * The Term Match kit (mobile 1.51, DESIGN_SYSTEM.md §21): each component's
  * words, spoken labels and large-text fallback.
  *  - ScaleBar always carries "a study estimate, not a prediction"; no pass / ready words.
  *  - StemChart: one stop per area; too few yet is an outline with no number; below the line
@@ -225,22 +225,22 @@ describe('Specimen', () => {
     act(() => {
       r = create(
         <>
-          <Specimen {...base} state="earned" name="First Foothold" line="Pressed 3 Oct" spoken="First Foothold. Earned 3 Oct." />
-          <Specimen {...base} badge="rooted" tier={1} state="earned" name="Rooted" tierCaption="10 days" line="Pressed 14 Oct" spoken="Rooted, Clay. Earned 14 Oct." />
-          <Specimen {...base} badge="ten-topics" state="open" name="Ten Topics Clear" line="7 of 10 topics" spoken="Ten Topics Clear. Not yet." />
-          <Specimen {...base} badge="mindset-shift" state="gated" name="Mindset Shift" line="Opens after 3 weeks of first tries" spoken="Mindset Shift. Not yet. Opens after 3 weeks of first tries." />
+          <Specimen {...base} state="earned" name="First Review" line="Pressed 3 Oct" spoken="First Review. Earned 3 Oct." />
+          <Specimen {...base} badge="rooted" tier={1} state="earned" name="Rooted" tierCaption="10 days" line="Pressed 14 Oct" spoken="Rooted, Bronze. Earned 14 Oct." />
+          <Specimen {...base} badge="ten-topics" state="open" name="Ten Topics" line="7 of 10 topics" spoken="Ten Topics. Not yet." />
+          <Specimen {...base} badge="mindset-shift" state="gated" name="Better Judgement" line="Opens after 3 weeks of first tries" spoken="Better Judgement. Not yet. Opens after 3 weeks of first tries." />
         </>,
       );
     });
     const buttons = root().findAll((n) => typeof n.type === 'string' && n.props.accessibilityRole === 'button');
     expect(buttons.map((b) => b.props.accessibilityLabel)).toEqual([
-      'First Foothold. Earned 3 Oct.',
-      'Rooted, Clay. Earned 14 Oct.',
-      'Ten Topics Clear. Not yet.',
-      'Mindset Shift. Not yet. Opens after 3 weeks of first tries.',
+      'First Review. Earned 3 Oct.',
+      'Rooted, Bronze. Earned 14 Oct.',
+      'Ten Topics. Not yet.',
+      'Better Judgement. Not yet. Opens after 3 weeks of first tries.',
     ]);
     const t = allText();
-    expect(t).toContain('Clay · 10 days');
+    expect(t).toContain('Bronze · 10 days');
     expect(t).toContain('Opens after 3 weeks of first tries');
     expect(t).not.toMatch(/lock|\?/i);
   });

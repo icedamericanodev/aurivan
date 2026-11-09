@@ -43,7 +43,6 @@ export default function Faq() {
   return (
     <Screen edges={['top', 'bottom']} scrollRef={scrollRef}>
       <PushedHeader title="Common questions" onBack={() => (router.canGoBack() ? router.back() : router.replace('/you'))} />
-      <T v="meta" style={{ marginTop: space.sm, marginBottom: space.md }}>Tap a question to read the answer.</T>
       {FAQ.map((f, i) => {
         const open = openId === f.id;
         const last = i === FAQ.length - 1;

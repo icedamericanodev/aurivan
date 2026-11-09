@@ -135,7 +135,7 @@ const PLATE_GROUP = 1;
  * after a mock).
  */
 export function resultsKey(isMock: boolean): string {
-  return `Dashed line: ${STEADY_FROM}, the target for each area. ↑: growth from this ${isMock ? 'mock' : 'set'}. Clay: an area below ${STEADY_FROM}.`;
+  return `Dashed line: ${STEADY_FROM}, the target for each domain. ↑: improvement from this ${isMock ? 'mock' : 'set'}. Highlighted: below ${STEADY_FROM}.`;
 }
 
 /** The key in words for screen readers: the "↑" glyph said as "Up arrow" (release bug hunt round 2). */
@@ -484,10 +484,10 @@ export default function Results() {
   // Grove Phase 4 (PHASE4.md 7.13): after a mock the caption says so ("Your five areas after this mock").
   const plateTitle =
     active.mode === 'mock'
-      ? `Your ${areasTitle(stems.length).split(' ')[0].toLowerCase()} ${stems.length === 1 ? 'area' : 'areas'} after this mock`
+      ? `Your ${areasTitle(stems.length).split(' ')[0].toLowerCase()} ${stems.length === 1 ? 'domain' : 'domains'} after this mock`
       : stems.length === 1
-        ? `${stems[0].name}, ${figure && !figure.down ? 'new growth' : 'after this set'}`
-        : 'Your areas after this set';
+        ? `${stems[0].name}, after this set`
+        : 'Your domains after this set';
 
   return (
     <Screen edges={['top', 'bottom']} onScroll={moment && !momentSeen ? watch : undefined} onScrollBeginDrag={moment ? () => skipMoment.current?.() : undefined}>

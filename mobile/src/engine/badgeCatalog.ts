@@ -8,7 +8,7 @@
  *   "2 of 3". There is NO grand total and no "collect them all" trophy:
  *   a global count would pull study toward whichever badge is cheapest.
  * - Two shelves that are not counted with them:
- *   - Moments (Fresh Start): under a collection, counting it would reward a
+ *   - Moments (Study Return): under a collection, counting it would reward a
  *     week away, so it is a personal moment, never a target.
  *   - Field notes (the 7 game skill badges): counted on their own, so play
  *     never pulls study off the exam's blueprint.
@@ -84,7 +84,7 @@ export const BADGE_SET: Record<BadgeId, SetId> = {
   'back-on-path': 'fieldNotes',
 };
 
-/** Badge order inside its set (exam value first). Firm Footing's leaves sort by domain weight. */
+/** Badge order inside its set (exam value first). Domain Mastery's leaves sort by domain weight. */
 const BADGE_ORDER: BadgeId[] = [
   'first-foothold',
   'topic-clear',
@@ -124,7 +124,7 @@ export interface CaseDomain {
   /** Blueprint weight, in percent. */
   weight: number;
   tone: number;
-  /** Firm Footing's own emblem for this domain (components/medallion.tsx), when the exam has one. */
+  /** Domain Mastery's own emblem for this domain (components/medallion.tsx), when the exam has one. */
   emblem?: string;
 }
 
@@ -169,7 +169,7 @@ export function setInfo(id: SetId, exam: ExamFacts, domainCount: number): SetInf
         counter: true,
       };
     case 'evergreen':
-      return { id, name: 'Evergreen', purpose: 'Remember it on exam day, not just today.', counted, counter: true };
+      return { id, name: 'Recall', purpose: 'Remember it on exam day, not just today.', counted, counter: true };
     case 'judgement':
       return { id, name: 'Sound Judgement', purpose: 'Choose the exam’s best answer, and know when you’re sure.', counted, counter: true };
     case 'examDay':
@@ -181,17 +181,17 @@ export function setInfo(id: SetId, exam: ExamFacts, domainCount: number): SetInf
         counter: true,
       };
     case 'rooted':
-      return { id, name: 'Rooted', purpose: 'Little and often beats cramming.', counted, counter: true };
+      return { id, name: 'Study Habits', purpose: 'Little and often beats cramming.', counted, counter: true };
     case 'moments':
       return { id, name: 'Moments', purpose: 'Personal moments. Not counted.', counted, counter: false };
     case 'fieldNotes':
-      return { id, name: 'Field notes', purpose: 'Game skills, counted on their own.', counted, counter: true };
+      return { id, name: 'Drill Skills', purpose: 'Game skills, counted on their own.', counted, counter: true };
   }
 }
 
 // ── Copy and effort (badges_game.md §3 and §8) ───────────────────────────
 /**
- * What a badge needs that isn't the rule itself: Mindset Shift needs enough
+ * What a badge needs that isn't the rule itself: Better Judgement needs enough
  * answers to judge; the Stretch tiers and the spaced mocks open once Whole
  * Map is earned (every domain at the floor).
  */
@@ -328,7 +328,7 @@ function copyFor(key: string, badge: BadgeId, exam: ExamFacts, domain?: CaseDoma
     case 'took-root':
       return {
         howTo: 'Clear a topic, then come back to it on another day. Review brings it back.',
-        unlock: 'A whole topic took root: every part of it right, on two different days.',
+        unlock: 'A whole topic recalled: every part of it right, on two different days.',
         effort: 'Needs 2 days or more: every part right on two different days.',
         skill: 'Made a whole topic stick',
         minDays: 2,
@@ -444,7 +444,7 @@ function copyFor(key: string, badge: BadgeId, exam: ExamFacts, domain?: CaseDoma
       };
     case 'sure-footed-pace':
       return {
-        howTo: `Play ${g('daylight')} at Sapling or faster, and keep most answers right.`,
+        howTo: `Play ${g('daylight')} at Practised or faster, and keep most answers right.`,
         unlock: 'Three rounds at pace, inside the light. Speed without guessing.',
         effort: `Needs 3 ${g('daylight')} rounds.`,
         skill: 'Answers at exam pace',
@@ -487,16 +487,16 @@ export interface CaseMark {
   key: string;
   badge: BadgeId;
   set: SetId;
-  /** "Firm Footing · IS Operations", "Rooted · 30 days", or the badge name. */
+  /** "Domain Mastery · IS Operations", "Rooted · 30 days", or the badge name. */
   name: string;
   /** The grid caption (≤ 2 lines): "IS Operations", "Rooted · 30 days", or the badge name. */
   caption: string;
   /**
-   * A tiered badge's step (Rooted, Long Memory, Dress Rehearsal, Firm Footing):
+   * A tiered badge's step (Rooted, Lasting Recall, Mock Complete, Domain Mastery):
    * 1, 2 or 3, with its metal; always printed and spoken with its number.
    */
   tier?: number;
-  /** How many tiers its ladder has (3; Firm Footing: 2). */
+  /** How many tiers its ladder has (3; Domain Mastery: 2). */
   tiers?: number;
   /** The tier in words: "30 days", "75 recalls", "2 mocks", "80%". */
   tierLabel?: string;
@@ -518,7 +518,7 @@ export interface CaseMark {
   effort: string;
   skill: string;
   minDays: number;
-  /** Firm Footing's domain (its weight, tone dot and emblem). */
+  /** Domain Mastery's domain (its weight, tone dot and emblem). */
   domain?: CaseDomain;
   /** Counted in its set's "n of m" (false: an earned mark the catalogue no longer lists). */
   counted: boolean;
@@ -543,11 +543,11 @@ export interface CaseInput {
   earned: Record<string, number> | undefined;
   domains: readonly CaseDomain[];
   exam: ExamFacts;
-  /** Mindset Shift has enough answers to be judged (100 first tries, 2+ weeks apart). */
+  /** Better Judgement has enough answers to be judged (100 first tries, 2+ weeks apart). */
   mindsetData: boolean;
 }
 
-/** Firm Footing's leaves, heaviest domain first (ties: the domain order). */
+/** Domain Mastery's leaves, heaviest domain first (ties: the domain order). */
 function domainRank(domains: readonly CaseDomain[]): Map<string, number> {
   const sorted = domains.map((d, i) => ({ d, i })).sort((a, b) => b.d.weight - a.d.weight || a.i - b.i);
   return new Map(sorted.map((x, k) => [x.d.id, k]));
@@ -595,9 +595,9 @@ export function tierOf(key: string): TierInfo | undefined {
 
 /**
  * Does the case show this earned key? Exactly the keys some catalogue mark
- * has: plain badges, a Firm Footing leaf (70%) and its 80% Stretch tier, a
- * Rooted tier, Long Memory's 75 and 150, Dress Rehearsal's 2 and 3, Took
- * Root, plus an earned plain or Firm Footing key the list no longer has (a
+ * has: plain badges, a Domain Mastery leaf (70%) and its 80% Stretch tier, a
+ * Rooted tier, Lasting Recall's 75 and 150, Mock Complete's 2 and 3, Took
+ * Root, plus an earned plain or Domain Mastery key the list no longer has (a
  * dropped domain). Anything else (a key from a newer version, a malformed
  * one) is kept, but never shown, counted on You, or lights the "new" dot.
  * It accepts the same key shapes as engine/milestones.ts markSupported.
@@ -606,7 +606,7 @@ export function caseKey(key: string): boolean {
   const parts = key.split(':');
   const def = badgeDef(markBadge(key));
   if (!def || parts.some((p) => p === '')) return false;
-  // Rooted and Firm Footing have no plain key: every Rooted mark is a tier, every Firm Footing mark a domain's leaf.
+  // Rooted and Domain Mastery have no plain key: every Rooted mark is a tier, every Domain Mastery mark a domain's leaf.
   if (parts.length === 1) return def.id !== 'rooted' && def.id !== 'firm-footing';
   if (parts.length > 3) return false;
   return tierOf(key) !== undefined;
@@ -626,7 +626,7 @@ export function caseMarks(input: CaseInput): CaseMark[] {
     const domain = domainId ? byId.get(domainId) : undefined;
     const copy = copyFor(key, badge, exam, domain);
     const t = tierOf(key);
-    // Firm Footing's leaves sort by domain weight, its Stretch row after them; ladders by tier.
+    // Domain Mastery's leaves sort by domain weight, its Stretch row after them; ladders by tier.
     const within = domainId !== undefined ? (t?.stretch ? 50 : 0) + (rank.get(domainId) ?? 40) : (t?.tier ?? 0);
     return {
       copy,
@@ -679,7 +679,7 @@ export function caseMarks(input: CaseInput): CaseMark[] {
   return out.sort((a, b) => a.order - b.order);
 }
 
-/** The case's progress line for a mark (Firm Footing: its weight and gap; the rest as the rule engine says). */
+/** The case's progress line for a mark (Domain Mastery: its weight and gap; the rest as the rule engine says). */
 function markDetail(m: MarkState, domain?: CaseDomain): string {
   if (m.badge === 'firm-footing' && domain) {
     // "62% → 70% · 14 of 20 answered": the gap first (it is what Smart closes).
@@ -778,7 +778,7 @@ export const CASE_SORTS: readonly CaseSort[] = ['set', 'recent', 'closest', 'eff
 
 /**
  * Is this mark on the case at all? A Moments mark only once it happened:
- * an unearned Fresh Start would read as a goal (a week away), so the Moments
+ * an unearned Study Return would read as a goal (a week away), so the Moments
  * shelf appears with its first moment, and never in Closest, Effort or Not yet.
  */
 export function onCase(m: CaseMark): boolean {
@@ -846,7 +846,7 @@ export function suggestable(m: CaseMark, stage: Stage, daysLeft: number | null, 
 
 /**
  * Mock badges are suggested from the mock stage on, in the final three weeks,
- * or once Whole Map is earned (every domain at the floor: the mock gate itself,
+ * or once All Domains is earned (every domain at the floor: the mock gate itself,
  * so a learner past it keeps the mock badges even if the stage reads
  * "practice" again after a couple of mocks).
  */
@@ -855,7 +855,7 @@ export function mockTime(stage: Stage, daysLeft: number | null, wholeMap = false
   return wholeMap || late || stage === 'mock' || stage === 'ready' || stage === 'examDay';
 }
 
-/** Whole Map is earned: every domain reached the mock floor. */
+/** All Domains is earned: every domain reached the mock floor. */
 export const hasWholeMap = (marks: readonly CaseMark[]) => marks.some((m) => m.badge === 'whole-map' && m.status === 'earned');
 
 /**
@@ -886,7 +886,7 @@ export function nextForExam({ marks, stage, daysLeft, mastery }: NextInput): Nex
     firmFooting,
     // Exam Day: the first full mock, then pace, then the second spaced mock.
     () => findKey('dress-rehearsal') ?? find('on-pace') ?? findKey('dress-rehearsal:2'),
-    // The next Long Memory tier (Stretch only once Evergreen's core is done), then Flown the Nest.
+    // The next Lasting Recall tier (Stretch only once Evergreen's core is done), then Flown the Nest.
     () => find('long-memory') ?? find('graduate'),
   ];
   // The mock rule leads at the mock stage and in the final three weeks; once
@@ -915,15 +915,15 @@ export function suggestLine(m: CaseMark, stage: Stage, daysLeft: number | null, 
   return m.status !== 'earned' && MOCK_BADGES.has(m.badge) && !mockTime(stage, daysLeft, wholeMap) ? MOCK_SUGGEST_LINE : undefined;
 }
 
-/** The one Results line under a moment: "Next: Firm Footing · IS Operations, 62% → 70% · 14 of 20 answered". */
+/** The one Results line under a moment: "Next: Domain Mastery · IS Operations, 62% → 70% · 14 of 20 answered". */
 export function nextLine(m: CaseMark): string {
   return m.detail ? `Next: ${m.name}, ${afterComma(m.detail)}` : `Next: ${m.name}`;
 }
 
 /**
- * Polish round 1: a detail that follows a comma is in sentence case ("Next: Dress Rehearsal · 1 mock,
+ * Polish round 1: a detail that follows a comma is in sentence case ("Next: Mock Complete · 1 mock,
  * not yet"). Only a first word in plain capitals-then-lowercase ("Not yet", "Closest topic", "Opens
- * when…", "A topic took root") is lowered; "IS Operations" and numbers stay as they are.
+ * when…", "Topic recall complete") is lowered; "IS Operations" and numbers stay as they are.
  */
 function afterComma(detail: string): string {
   return /^[A-Z](?:[a-z]|\s)/.test(detail) ? detail.charAt(0).toLowerCase() + detail.slice(1) : detail;
@@ -964,7 +964,7 @@ export function isRoundBadge(game: GameId, key: string): boolean {
 
 /**
  * Where "Study for this" goes. `weakest`: the domain with the lowest mastery
- * (Whole Map). Earned, gated and Moments marks have none.
+ * (All Domains). Earned, gated and Moments marks have none.
  */
 export function studyTarget(m: CaseMark, weakest?: string): StudyTarget | null {
   if (m.status === 'earned' || m.status === 'gated') return null;

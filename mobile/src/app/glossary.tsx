@@ -1,48 +1,21 @@
-/**
- * Glossary (Learn → Glossary): the course's key terms, read-only.
- *
- * Grove Phase 4 (design-notes/grove/PHASE4.md 7.3 phone and section 8). Sky answered O2 YES on
- * 5 Nov 2026: "Build the phone Glossary now: read-only, search, area chips, A to Z rows, each meaning
- * and Read the note. No flashcards or mastered mark this round." Top to bottom:
- *   1. "Glossary" (display, the page's heading, where screen-reader focus starts) with the plant
- *      figure at its right: the oak at stage 2 in the quiet look, the same for every learner, never
- *      the learner's own plant. Decoration only (hidden from screen readers), and not drawn when
- *      Show my plant is off, on a phone narrower than 360pt or from text scale 1.3, so it never
- *      pushes text.
- *   2. One short line, then the search ("Search terms or acronyms", as on the website).
- *   3. The area chips: "All" and each domain's short name (one selected look, PHASE4.md section 5).
- *   4. "{n} terms match" with "Clear filters" once a search or a chip narrows the list.
- *   5. One card per first letter, A to Z. Each term: its name, a meta line with its short form and
- *      area ("RTO · Info Protection"), its meaning in full, and "Read the note" (48pt), which opens
- *      the study note that teaches it (or its domain's notes).
- *
- * Content: the terms pack (content/terms.ts, the study notes' domain glossaries). No new saved store:
- * the mastered mark ships later with backup, sync and the website import (PHASE4.md O2).
- * ?q=RTO (Final review week's "Look up" tasks) opens with that search filled in.
- */
+/** Search course terms, filter by area, and open the relevant study note. */
+import { FeatureInfo } from '../components/featureInfo';
 import { router, useLocalSearchParams } from 'expo-router';
 import { memo, useDeferredValue, useEffect, useMemo, useState } from 'react';
-import { AccessibilityInfo, Pressable, useWindowDimensions, View } from 'react-native';
+import { AccessibilityInfo, Pressable, View } from 'react-native';
 import { EmptyScreen } from '../components/emptyScreen';
 import { CardDivider, CardHead, HubCard, PageTitle } from '../components/groveHub';
-import { Plant } from '../components/plant/Plant';
-import { Chip, ChipRow, EmptyState, Enter, PushedHeader, Screen, SearchField, T, useFontScale } from '../components/ui';
+import { Chip, ChipRow, EmptyState, Enter, PushedHeader, Screen, SearchField, T } from '../components/ui';
 import { CERTIFICATIONS, getCertification } from '../content/certifications';
 import { findNote, noteDomain } from '../content/notes';
 import { getTerms, type KeyTerm } from '../content/terms';
 import { glossaryGroups, matchTerms, type GlossaryGroup } from '../engine/glossary';
 import { openTab } from '../lib/actions';
 import { useActiveCertId } from '../lib/activeCert';
-import { useProgress } from '../store/progress';
-import { LARGE_TEXT, space } from '../theme/tokens';
+import { space } from '../theme/tokens';
 import { useTheme } from '../theme/useTheme';
 
 const goBack = () => (router.canGoBack() ? router.back() : router.replace('/learn'));
-
-/** The plant figure is not drawn on a phone narrower than this (PHASE4.md section 8). */
-const PLANT_MIN_WIDTH = 360;
-/** The figure's size in points (section 8, phone). */
-const PLANT_SIZE = 56;
 
 /** Open the study note that teaches a term: its subtopic page, else its domain's notes, else Study notes. */
 function openTermNote(certId: string, note: KeyTerm['note']) {
@@ -123,15 +96,11 @@ const TermRow = memo(function TermRow({
 });
 
 export default function Glossary() {
-  const { c, isDark } = useTheme();
+  const { c } = useTheme();
   // Release bug hunt round 2: only the exam's id, so a recorded answer (the glossary can stay open under a
   // practice set) never redraws it. The glossary shows no progress.
   const certId = useActiveCertId();
   const cert = getCertification(certId) ?? CERTIFICATIONS[0];
-  const { width } = useWindowDimensions();
-  const large = useFontScale() >= LARGE_TEXT;
-  const plantOn = useProgress((p) => p.plantSettings?.showPlant !== false);
-  const showFigure = plantOn && !large && width >= PLANT_MIN_WIDTH;
   // ?q= from Final review week fills the search once.
   const { q } = useLocalSearchParams<{ q?: string }>();
   const [query, setQuery] = useState(typeof q === 'string' ? q : '');
@@ -171,19 +140,8 @@ export default function Glossary() {
   return (
     <Screen edges={['top', 'bottom']}>
       <PushedHeader title="Glossary" showTitle={false} onBack={goBack} />
-      {/* The title, with the plant figure at its right, top-aligned; the title wraps first. */}
-      <View style={{ flexDirection: 'row', alignItems: 'flex-start', gap: space.md }}>
-        <View style={{ flex: 1, minWidth: 0 }}>
-          <PageTitle title="Glossary" />
-        </View>
-        {showFigure && (
-          <View testID="glossary-plant" accessible={false} importantForAccessibility="no-hide-descendants" accessibilityElementsHidden>
-            <Plant species="oak" stage={2} size={PLANT_SIZE} quietLook theme={isDark ? 'dark' : 'light'} />
-          </View>
-        )}
-      </View>
+      <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}><View style={{ flex: 1 }}><PageTitle title="Glossary" /></View><FeatureInfo title="Glossary"><T v="body">Search terms or acronyms, or filter by area. Open a term to read its definition and related study note.</T></FeatureInfo></View>
       <Enter i={0}>
-        <T v="meta" style={{ marginTop: space.xs }}>Key terms in plain words.</T>
         <View style={{ marginTop: space.lg }}>
           <SearchField value={query} onChangeText={setQuery} placeholder="Search terms or acronyms" accessibilityLabel="Search the glossary" accessibilityHint="Matching terms show below as you type" />
         </View>

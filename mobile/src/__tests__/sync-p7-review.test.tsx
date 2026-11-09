@@ -740,7 +740,7 @@ describe('review fixes beyond the repros', () => {
       await press('Remove and sign out');
       await flush(60);
       expect(progressAnswers(MAYA.userId).sort()).toEqual([ids[0], ids[4]].sort());
-      expect(alert.mock.calls[0][1]).toBe('This removes all your study progress, your plant and your study settings from this phone. Your account’s copy isn’t affected.');
+      expect(alert.mock.calls[0][1]).toBe('This removes all your study progress and your study settings from this phone. Your account’s copy isn’t affected.');
       // Offline: the latest answer can't reach the account, so it warns.
       answer(ids[5]);
       memory.control.setOffline(true);

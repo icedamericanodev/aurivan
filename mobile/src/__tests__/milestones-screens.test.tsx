@@ -92,13 +92,13 @@ describe('Results: one quiet moment', () => {
     mount(<Results />);
     const text = allText();
     expect(text).toContain('A new badge · Groundwork');
-    expect(text).toContain('First Foothold');
+    expect(text).toContain('First Review');
     // What the learner can now do, not the rule again.
     expect(text).toContain('You’ve mapped where you stand. Your plan now starts from it.');
     // The second badge met in this session waits for a later one (only the "Next:" line names a badge to come).
     expect(text.match(/A new badge/g)).toHaveLength(1);
-    expect(text).not.toContain('Firm Footing · IS Operations');
-    expect(text).toContain('Next: Firm Footing · Info Protection');
+    expect(text).not.toContain('Domain Mastery · IS Operations');
+    expect(text).toContain('Next: Domain Mastery · Info Protection');
     // Its one success tap comes with its motion: once the rings have grown and it is on screen.
     expect(mockSuccess).not.toHaveBeenCalled();
     act(() => {
@@ -112,7 +112,7 @@ describe('Results: one quiet moment', () => {
     expect(mockSuccess).toHaveBeenCalledTimes(1);
     act(() => r!.update(<Results />));
     expect(mockSuccess).toHaveBeenCalledTimes(1);
-    expect(labels().some((l) => l.startsWith('A new badge, Groundwork: First Foothold.'))).toBe(true);
+    expect(labels().some((l) => l.startsWith('A new badge, Groundwork: First Review.'))).toBe(true);
   });
 
   it('a session with nothing new shows no moment and no haptic', () => {
@@ -131,8 +131,8 @@ describe('Badges screen', () => {
     ensureBackfill('cisa', T0);
     mount(<Milestones />);
     const text = allText();
-    for (const shelf of ['Groundwork', 'The Five Domains', 'Evergreen', 'Sound Judgement', 'Exam Day', 'Rooted', 'Field notes']) expect(text).toContain(shelf);
-    // Moments appears only once something on it happened (a Fresh Start is never a goal).
+    for (const shelf of ['Groundwork', 'The Five Domains', 'Recall', 'Sound Judgement', 'Exam Day', 'Study Habits', 'Drill Skills']) expect(text).toContain(shelf);
+    // Moments appears only once something on it happened (a Study Return is never a goal).
     expect(text).not.toContain('Moments');
     // Per-set counts only ("1 of 3"), and no "n of 22"-style total.
     expect(labels()).toContain('Groundwork, 1 of 3');
@@ -142,8 +142,8 @@ describe('Badges screen', () => {
     // Every badge is one button whose label holds its exact rule: no mystery badges.
     const buttons = labels();
     for (const b of [...MILESTONES, ...SKILL_BADGES].filter((x) => x.id !== 'fresh-start')) expect(buttons.some((l) => l.includes(b.rule.replace(/\.$/, '')))).toBe(true);
-    expect(buttons.some((l) => l.startsWith('Firm Footing · IS Operations, Clay. Earned'))).toBe(true);
-    // No bank size anywhere (the only 3-digit target is Long Memory's own top tier, 150 recalls).
+    expect(buttons.some((l) => l.startsWith('Domain Mastery · IS Operations, Bronze. Earned'))).toBe(true);
+    // No bank size anywhere (the only 3-digit target is Lasting Recall's own top tier, 150 recalls).
     expect(text.replace(/of 150 remembered/g, '')).not.toMatch(/of \d{3,}/);
   });
 
@@ -165,7 +165,7 @@ describe('You', () => {
     d4.slice(0, 20).forEach(answer);
     ensureBackfill('cisa', T0);
     mount(<You />);
-    expect(labels().some((l) => /^Badges: your badges and field notes, 2 earned\. Last pressed: .+, \d+ \w+\.$/.test(l))).toBe(true);
+    expect(labels().some((l) => /^Badges: your study badges, 2 earned\. Latest: .+, \d+ \w+\.$/.test(l))).toBe(true);
     expect(labels().some((l) => l.startsWith('Field notes'))).toBe(false); // merged into the row above
     expect(allText()).toContain('You’d already earned 2 badges.');
     // Shown once: You marks it seen, and the line stays for this visit.
@@ -182,7 +182,7 @@ describe('You', () => {
     ensureBackfill('cisa', T0);
     mount(<You />);
     expect(allText()).not.toContain('already earned');
-    expect(labels()).toContain('Badges: your badges and field notes, none yet.');
+    expect(labels()).toContain('Badges: your study badges, none yet.');
   });
 });
 
@@ -191,8 +191,8 @@ describe('Field notes', () => {
     useProgress.setState({ byCert: { cisa: { ...cp(), gameGrowth: { trap: { tier: 'sapling', up: 0, down: 0 } } } } });
     mount(<FieldNotes />);
     // Grove 4b (PHASE4B 6.6): one stop per row, the three markers said in words.
-    expect(labels()).toContain('Snare Spotter. Level: Sapling. Heartwood not reached. Two rounds in a row at 80% or more, at your level, grow it to Heartwood.');
-    expect(labels()).toContain('Signpost. Level: Seedling. Sapling and Heartwood not reached. Two rounds in a row at 80% or more, at your level, grow it to Sapling.');
+    expect(labels()).toContain('Snare Spotter. Level: Practised. Skilled not reached. Two rounds in a row at 80% or more, at your level, move you to Skilled.');
+    expect(labels()).toContain('Signpost. Level: Beginner. Practised and Skilled not reached. Two rounds in a row at 80% or more, at your level, move you to Practised.');
     expect(labels()).toContain('Your skill badges. None yet. Opens your badges.');
   });
 
@@ -214,11 +214,11 @@ describe('Drills (the old Play tab, mobile 1.51)', () => {
     });
     const rows = labels().filter((l) => / About \d+ minutes\./.test(l));
     expect(rows.length).toBeGreaterThan(0);
-    for (const l of rows) expect(l).toMatch(/Your level: (Seedling|Sapling|Heartwood)\./);
-    expect(rows.find((l) => l.startsWith('Forecast'))).toMatch(/Your level: Heartwood\./);
+    for (const l of rows) expect(l).toMatch(/Your level: (Beginner|Practised|Skilled)\./);
+    expect(rows.find((l) => l.startsWith('Forecast'))).toMatch(/Your level: Skilled\./);
     // Today's drill (the first row) says its level too, and a grown level is printed on its row.
-    expect(rows[0]).toMatch(/^Today’s drill: .*Your level: Seedling\./);
-    expect(allText()).toContain('Heartwood');
+    expect(rows[0]).toMatch(/^Today’s drill: .*Your level: Beginner\./);
+    expect(allText()).toContain('Skilled');
   });
 });
 
@@ -227,12 +227,12 @@ describe('Round end', () => {
     mount(
       <RoundEnd certId="cisa" game="rumor" score={12} max={12} onAgain={() => {}} news={{ change: 'up', tier: 'sapling', best: true, moment: null }} />,
     );
-    expect(allText()).toContain('You’ve grown to Sapling. Your next round starts there.');
+    expect(allText()).toContain('You’ve reached Practised. Your next round starts there.');
     expect(allText()).toContain('New personal best');
     act(() =>
       r!.update(<RoundEnd certId="cisa" game="rumor" score={3} max={12} onAgain={() => {}} news={{ change: 'down', tier: 'seedling', best: false, moment: null }} />),
     );
-    expect(allText()).toContain('Back to Seedling. Two strong rounds grow it again.');
+    expect(allText()).toContain('Back to Beginner. Two strong rounds move you up again.');
     expect(allText()).not.toMatch(/lose|lost/i);
   });
 
@@ -245,15 +245,15 @@ describe('Round end', () => {
         score={9}
         max={10}
         onAgain={() => {}}
-        news={{ change: null, tier: 'seedling', best: false, moment: { key: 'snare-wise', label: 'Snare-wise', rule: 'Spot the snare.', kind: 'skill', set: 'fieldNotes', setName: 'Field notes', unlock: 'You spot the snare 8 times in 10.' } }}
+        news={{ change: null, tier: 'seedling', best: false, moment: { key: 'snare-wise', label: 'Trap Spotter', rule: 'Spot the snare.', kind: 'skill', set: 'fieldNotes', setName: 'Field notes', unlock: 'You spot the snare 8 times in 10.' } }}
       />,
     );
-    expect(allText()).toContain('A new badge: Snare-wise');
+    expect(allText()).toContain('A new badge: Trap Spotter');
     expect(allText()).toContain('You spot the snare 8 times in 10.');
     expect(mockSuccess).toHaveBeenCalledTimes(1);
     const row = r!.root.findAll((n) => n.props.testID === 'recap-badge' && n.props.accessibilityRole === 'button')[0];
     expect(row.props.accessibilityRole).toBe('button');
-    expect(row.props.accessibilityLabel).toBe('A new badge: Snare-wise. You spot the snare 8 times in 10.');
+    expect(row.props.accessibilityLabel).toBe('A new badge: Trap Spotter. You spot the snare 8 times in 10.');
     // No coach rule: nothing on the recap draws the 3pt accent left rule.
     expect(r!.root.findAll((n) => typeof n.type === 'string' && JSON.stringify(n.props.style ?? {}).includes('"borderLeftWidth":3'))).toHaveLength(0);
   });

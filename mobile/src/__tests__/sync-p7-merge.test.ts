@@ -34,7 +34,7 @@ const short = (i: number, at: number) => ({ id: `short-${i}`, finishedAt: at, to
 const canon = (x: unknown) => stableStringify(x);
 
 describe('CR-P7 merge repros', () => {
-  it('B4: an earned Dress Rehearsal tier survives a merge whose mocks pass the 50 cap', () => {
+  it('B4: an earned Mock Complete tier survives a merge whose mocks pass the 50 cap', () => {
     const earned = { 'whole-map': T0 - 150 * DAY, 'dress-rehearsal': T0 - 150 * DAY, 'dress-rehearsal:2': T0 - 143 * DAY, 'dress-rehearsal:3': T0 - 136 * DAY };
     const A = { byCert: { cisa: { answers, mocks: [full(1, T0 - 150 * DAY), full(2, T0 - 143 * DAY), full(3, T0 - 136 * DAY)], milestones: { earned } } }, streak: { current: 0, best: 3, lastDay: null } } as unknown as SyncedProgress;
     const B = { byCert: { cisa: { answers, mocks: Array.from({ length: 50 }, (_, i) => short(i, T0 - i * DAY)), milestones: { earned: { 'whole-map': T0 - 150 * DAY } } } }, streak: { current: 0, best: 3, lastDay: null } } as unknown as SyncedProgress;

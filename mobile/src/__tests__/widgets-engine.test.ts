@@ -27,7 +27,6 @@ import {
   parseSnapshot,
   parseWidgetTap,
   PICKER_LABELS,
-  PLANT_LINE,
   readinessConfigCopy,
   recallDueFrom,
   recallIdFor,
@@ -35,6 +34,7 @@ import {
   readinessReaskDue,
   readReveal,
   RECOMMENDED_KINDS,
+  AVAILABLE_WIDGET_KINDS,
   REVEAL_TAP_GUARD_MS,
   ruleDueFrom,
   showsTiming,
@@ -150,7 +150,8 @@ describe('names and kinds', () => {
   it('declares eight kinds, recommended first, each with a stable Android name and a plain title', () => {
     expect(WIDGET_KINDS).toHaveLength(8);
     expect(WIDGET_KINDS.slice(0, 4)).toEqual(['plan', 'plant', 'think', 'week']);
-    expect(RECOMMENDED_KINDS).toEqual(['plan', 'plant', 'think', 'week']);
+    expect(RECOMMENDED_KINDS).toEqual(['plan', 'think', 'week']);
+    expect(AVAILABLE_WIDGET_KINDS).not.toContain('plant');
     expect(new Set(Object.values(WIDGET_NAMES)).size).toBe(8);
     for (const k of WIDGET_KINDS) expect(kindOfName(WIDGET_NAMES[k])).toBe(k);
     expect(kindOfName('Nope')).toBeNull();
@@ -510,7 +511,7 @@ describe('This week', () => {
     expect(f.link).toBe(widgetLink('week', 'today'));
     expect(f.label).toBe('This week: 3 study days. You studied Monday, Tuesday and Wednesday. Short days count too.');
     expect(words(f)).not.toMatch(/ of |\/|streak/i);
-    expect(face('week', snap({ studyDays: ['2026-10-26'] })).line).toBe('A first leaf this week.');
+    expect(face('week', snap({ studyDays: ['2026-10-26'] })).line).toBe('Your first study day this week.');
     expect(face('week', snap({ studyDays: ['2026-10-26', '2026-10-27', '2026-10-28', '2026-10-29'] })).line).toBe('A steady week.');
   });
 
@@ -546,7 +547,7 @@ describe('This week', () => {
   it('details off: leaves with a plain caption, no number', () => {
     const f = face('week', snap({ prefs: prefs({ details: 'hide' }) }));
     expect(f.title).toBe('Your week');
-    expect(f.line).toBe('A leaf for each day you studied.');
+    expect(f.line).toBe('Each mark is a day you studied.');
     expect(f.art?.type).toBe('leaves');
   });
 });
@@ -803,31 +804,16 @@ describe('Key term (1.48; was Questions to revisit): one term a day, its meaning
   });
 });
 
-describe('Your plant', () => {
-  it('the friendly name and stage word; the plant line at most once; a chip only on a growth day', () => {
-    const f = face('plant');
-    expect(f.tone).toBe('plate');
-    expect(f.caption).toBe('Your narra');
-    expect(f.title).toBe('Shoot');
-    expect(f.sub).toBe('Growth 3');
-    expect(f.line).toBe('Bough is next.');
-    expect(face('plant', snap({ plant: { species: 'narra', name: 'narra', growth: 6, grew: null } })).line).toBe('Fully grown.');
-    expect(shown(f).split(PLANT_LINE).length - 1).toBeLessThanOrEqual(1);
-    expect(words(f)).not.toMatch(/of 6|rest|sleep|away/i);
-    const grew = face('plant', snap({ plant: { species: 'narra', name: 'narra', growth: 3, grew: TODAY } }));
-    expect(grew.badge).toBe('New growth today');
-    expect(shown(grew)).not.toContain(PLANT_LINE);
-    expect(grew.label).toMatch(/New growth today/);
-  });
-
-  it('1.48: the week’s leaves no longer ride along (This week is the one place with leaves)', () => {
-    for (const k of WIDGET_KINDS) if (k !== 'week') expect(face(k).art?.type).not.toBe('leaves');
-    expect(face('plant').art).toEqual({ type: 'plant', plant: expect.objectContaining({ species: 'narra' }) });
-  });
-
-  it('no plant yet, or the plant switched off', () => {
-    expect(face('plant', snap({ plant: null })).title).toBe('Choose your plant');
-    expect(face('plant', snap({ plant: { off: true } })).title).toBe('Plant is off');
+describe('retired plant widget compatibility', () => {
+  it('keeps a useful shortcut for old native ids without exposing old plant data', () => {
+    const normal = face('plant');
+    expect(normal.title).toBe('Your study plan');
+    expect(normal.art).toEqual({ type: 'mark' });
+    expect(normal.link).toContain('go=today');
+    expect(normal.label).not.toMatch(/plant|growth|narra/i);
+    expect(face('plant', snap({ plant: null }))).toEqual(normal);
+    expect(face('plant', snap({ plant: { off: true } }))).toEqual(normal);
+    expect(face('plant', snap({ plant: { species: 'narra', name: 'narra', growth: 6, grew: TODAY } }))).toEqual(normal);
   });
 });
 

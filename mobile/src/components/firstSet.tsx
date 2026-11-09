@@ -1,38 +1,4 @@
-/**
- * The first day's closing pieces (mobile 1.24, "first five minutes").
- *
- * Plain English for the founder:
- * - `FirstSetDone` is the screen a new learner sees right after their first
- *   five questions. It replaces the normal Results page for that one set
- *   (results.tsx hands over to it). Short and kind, one bounded finish:
- *     1. "3 of 5 right" with no percentage ring, plus one fact (the topic most
- *        missed, or "All five right.") and how close the first readiness
- *        range is;
- *     2. a closing plate: tomorrow in one line, "The 2 you missed come back then.",
- *        and (mobile 1.41) an OFFER of a plant: "Plant a seed" plants an oak
- *        (drawn as a seed, "Choose a different plant" opens the picker), "Not
- *        now" is remembered and points to You. Before 1.41 a seed was planted
- *        for every new learner; plants planted that way stay exactly as they
- *        are. Then, under the plate (mobile 1.39), the reminder ask;
- *     3. "Done for today" (the one solid button) and a quiet "Do 5 more".
- *   A set ended early (X → End after 2 answers) is not "done": the headline
- *   is the honest count ("2 answered"), one line says how many are left, the
- *   button says "Back to Today" (Today's Continue asks only those left) and
- *   "Do 5 more" is not offered.
- *   It never says "check" or "diagnose", never offers "Practice the ones you
- *   missed" (a miss is meant to come back tomorrow, not a minute later), and
- *   never shows a badge moment.
- * - `ReminderAsk` is the one reminder question, used on that screen and (once
- *   more, by `SecondAskCard`) on Today the day the learner finishes their 3rd
- *   study day. Mobile 1.39: one row, "Remind me tomorrow at [7:00 PM]": the
- *   button is the only one with emphasis, the time chip opens the hour and
- *   minute steppers. The phone's own permission box appears only when the
- *   button is tapped; "Not now" is respected and never asked again after the
- *   second chance.
- * - `FirstRangePanel` is the calm card on Today, right under the readiness
- *   range, the first time that range appears: what it is (an estimate), the
- *   strongest and the weakest domain. Still, no confetti.
- */
+/** First-set completion, reminder choices and first-readiness guidance. Completion keeps the next study action visible without a plant setup step. */
 import { router, useFocusEffect } from 'expo-router';
 import { openTab } from '../lib/actions';
 import { useCallback, useEffect, useMemo, useRef, useState, type Ref } from 'react';
@@ -45,15 +11,12 @@ import { findNote, subtopicOfQuestion } from '../content/notes';
 import { FIRST_SET_SIZE, firstSetIds } from '../content/firstSet';
 import { comeBackLine, defaultReminderTime, firstRange, firstSetFact, REMINDER_ASK_LEAD, reminderAskLine, tomorrowPreview } from '../engine/firstRun';
 import { missedSubtopics } from '../engine/outline';
-import { plantCallName, plantShown, type GrowthLevel, type PlantSpecies } from '../engine/plant';
-import { NEW_PLANT_STYLE } from '../engine/plantLooks';
 import type { Readiness } from '../engine/readiness';
 import { RANGE_MIN_ANSWERS } from '../engine/readinessRange';
 import { localHour, localTime, MINUTE_STEP, stepTime } from '../engine/reminders';
 import { ANNOUNCE_DELAY, moveFocus, sayLater } from '../lib/a11y';
 import { firstSetLeftOf } from '../lib/firstSet';
 import { scoreSession } from '../lib/finishSession';
-import { plantFor } from '../lib/plant';
 import { refreshReminders } from '../lib/reminderSync';
 import { ensurePermission, remindersSupported } from '../lib/reminders';
 import { startPractice, guardedStart } from '../lib/sessions';
@@ -65,9 +28,6 @@ import { useSettings } from '../store/settings';
 import { grovePlate } from '../theme/grove';
 import { LARGE_TEXT, space } from '../theme/tokens';
 import { useTheme } from '../theme/useTheme';
-import { Seedling } from './glyphs';
-import { LivePlant } from './plant/LivePlant';
-import { SoilBed, soilYFor } from './plant/PlantPage';
 import { ChevronDown, ICON_STROKE } from './icons';
 import { AnimatedPressable, usePressScale } from './motion';
 import { StickyFooter } from './quiz';
@@ -339,27 +299,6 @@ export function FirstSetDone({ session }: { session: ActiveSession }) {
     return undefined;
   }, [missed, certId]);
 
-  // Mobile 1.41 (owner decision A): the plant is OFFERED here, never planted for the learner. A learner
-  // who turned plants off, or already has one, is not asked; "Not now" is remembered (store/seen.ts).
-  const plantOn = useProgress((s) => plantShown(s.plantSettings));
-  const plant = useProgress((s) => selectCert(s, certId).plant);
-  const plantLater = useSeen((s) => s.plantOffer === 'later');
-  // Kept for this visit, so "Not now" can say where planting lives instead of vanishing.
-  const [offerAnswer, setOfferAnswer] = useState<'later' | null>(null);
-  const offerRef = useRef<View>(null);
-  // One decision at a time (review 1.41): the plant is offered only once the reminder ask is answered,
-  // or when there is none to show (reminders already on, or not possible on this phone).
-  const reminderOn = useSettings((s) => s.reminder.enabled);
-  const reminderAnswered = useSeen((s) => s.reminderAsk?.first !== undefined);
-  const askSettled = !remindersSupported || reminderOn || reminderAnswered;
-  const offerPlant = plantOn && !plant && askSettled && (!plantLater || offerAnswer === 'later');
-  // Grove Phase 4b (PHASE4B 4.9): planted HERE, on this visit: the closing screen shows it planted
-  // on its soil line (the seed settles, the sprout pops), in the offer's place.
-  const [justPlanted, setJustPlanted] = useState(false);
-  const { isDark } = useTheme();
-  // At large text the seedling sits above the words, so the words keep the full width.
-  const large = useFontScale() >= LARGE_TEXT;
-
   useEffect(() => {
     moveFocus(headRef, 500);
   }, []);
@@ -417,7 +356,7 @@ export function FirstSetDone({ session }: { session: ActiveSession }) {
           <T v="small" color={c.ink2} style={{ marginTop: space.xs }}>{fact}</T>
           {endedEarly && <T v="body" style={{ marginTop: space.sm }}>{`${left} left. Continue them from Today when you are ready.`}</T>}
           <T v="meta" style={{ marginTop: space.md }}>
-            {j.range.enough ? 'Your readiness range is on Today.' : `${toward} of ${RANGE_MIN_ANSWERS} for your first range`}
+            {j.range.enough ? 'Your readiness range is on You.' : `${toward} of ${RANGE_MIN_ANSWERS} for your first range`}
           </T>
         </Enter>
 
@@ -427,24 +366,6 @@ export function FirstSetDone({ session }: { session: ActiveSession }) {
             <T v="caption" color={c.accentText}>Tomorrow</T>
             {tomorrow ? <T v="body">{tomorrow}</T> : <T v="body">Your next plan is ready when you open the app.</T>}
             {comeBack && <T v="body">{comeBack}</T>}
-            {plantOn && plant && !justPlanted && (
-              <Row gap={space.md} style={large ? { flexDirection: 'column', alignItems: 'flex-start' } : { alignItems: 'center' }}>
-                {/* A seed, not the plant drawing: Results stays light and the plant keeps its own screens.
-                    Decorative: hidden from TalkBack (importantForAccessibility) and VoiceOver (accessibilityElementsHidden). */}
-                <View accessible={false} importantForAccessibility="no-hide-descendants" accessibilityElementsHidden style={{ marginLeft: -space.sm }}>
-                  <Seedling color={c.accent} size={64} />
-                </View>
-                <View style={{ flex: 1 }}>
-                  <T v="small">{`${plantCallName(plant)} is planted. It grows as you learn.`}</T>
-                  <Button
-                    kind="ghost"
-                    label="Choose a different plant"
-                    onPress={() => router.push({ pathname: '/plant-pick', params: { mode: 'species' } })}
-                    style={{ alignSelf: 'flex-start', marginLeft: -space.sm }}
-                  />
-                </View>
-              </Row>
-            )}
           </Card>
         </Enter>
         {/* Mobile 1.39: the reminder ask is its own block under the plate (one job per block), with the
@@ -453,32 +374,6 @@ export function FirstSetDone({ session }: { session: ActiveSession }) {
           {/* The margin is the ask's own, so a closing screen with nothing to ask has no empty gap. */}
           <ReminderAsk which="first" style={{ marginTop: space.xl }} onNotNow={() => moveFocus(doneRef, ANNOUNCE_DELAY + 50)} />
         </Enter>
-        {/* Then the plant, in its own block under the ask (one decision at a time). */}
-        {plantOn && plant && justPlanted && (
-          <Card variant="plate" style={{ marginTop: space.xl }}>
-            <PlantedHere species={plant.species} growth={plant.growth} name={plantCallName(plant)} theme={isDark ? 'dark' : 'light'} />
-          </Card>
-        )}
-        {offerPlant && (
-          <Card variant="plate" style={{ marginTop: space.xl }}>
-            <PlantOffer
-              answered={offerAnswer === 'later'}
-              large={large}
-              lineRef={offerRef}
-              onPlant={() => {
-                plantFor(certId, 'oak', '');
-                setJustPlanted(true);
-                sayLater('Seed planted. It grows as you learn.');
-              }}
-              onNotNow={() => {
-                useSeen.getState().setPlantOffer('later');
-                setOfferAnswer('later');
-                // The buttons go: focus moves to the line that says where planting lives.
-                moveFocus(offerRef, ANNOUNCE_DELAY);
-              }}
-            />
-          </Card>
-        )}
       </ScrollView>
       <StickyFooter onHeight={setFooterH}>
         <Button ref={doneRef} label={endedEarly ? 'Back to Today' : 'Done for today'} onPress={done} />
@@ -493,74 +388,6 @@ export function FirstSetDone({ session }: { session: ActiveSession }) {
         )}
       </StickyFooter>
     </SafeAreaView>
-  );
-}
-
-/**
- * Grove Phase 4b (PHASE4B 4.9): "{Name} is planted." The plant on its soil line plays `plantIn`
- * (820 ms: the seed settles, the sprout pops; the planted sprout at once under Reduce Motion), then
- * one short line and "Choose a different plant" (opens the picker in Change plant mode).
- */
-const PLANTED_ART = 120;
-function PlantedHere({ species, growth, name, theme }: { species: PlantSpecies; growth: GrowthLevel; name: string; theme: 'light' | 'dark' }) {
-  return (
-    <View testID="first-set-planted">
-      <SoilBed testID="first-set-soil" size={PLANTED_ART} soilY={soilYFor(species, growth, { style: NEW_PLANT_STYLE }, PLANTED_ART, theme)} bleed={0}>
-        <LivePlant testID="first-set-plant" species={species} stage={growth} size={PLANTED_ART} fit={false} quietLook theme={theme} look={{ style: NEW_PLANT_STYLE }} plantIn accessibilityLabel={`${name}, planted.`} />
-      </SoilBed>
-      <T v="title" style={{ marginTop: space.md }}>{`${name} is planted.`}</T>
-      <T v="small" style={{ marginTop: space.xs }}>It grows as you learn.</T>
-      <Button
-        kind="ghost"
-        label="Choose a different plant"
-        onPress={() => router.push({ pathname: '/plant-pick', params: { mode: 'species' } })}
-        style={{ alignSelf: 'flex-start', marginLeft: -space.sm, marginTop: space.xs }}
-      />
-    </View>
-  );
-}
-
-/**
- * Mobile 1.41: the plant, offered (never planted for the learner). Two quiet ghost buttons: the
- * closing screen's one solid button stays "Done for today". "Maybe later" (not "Not now": that is the
- * reminder's) swaps the buttons for one line saying where planting lives, so the choice is respected
- * and still easy to undo. At large text the seedling sits above the words.
- */
-function PlantOffer({
-  answered,
-  large,
-  lineRef,
-  onPlant,
-  onNotNow,
-}: {
-  answered: boolean;
-  large: boolean;
-  lineRef: Ref<View>;
-  onPlant: () => void;
-  onNotNow: () => void;
-}) {
-  const { c } = useTheme();
-  return (
-    <Row gap={space.md} style={large ? { flexDirection: 'column', alignItems: 'flex-start' } : { alignItems: 'center' }}>
-      <View accessible={false} importantForAccessibility="no-hide-descendants" accessibilityElementsHidden style={{ marginLeft: -space.sm }}>
-        <Seedling color={c.accent} size={64} />
-      </View>
-      <View style={large ? { alignSelf: 'stretch' } : { flex: 1 }} testID="plant-offer">
-        {answered ? (
-          <View ref={lineRef} accessible accessibilityLabel="No plant for now. You can plant one any time from You.">
-            <T v="small">No plant for now. You can plant one any time from You.</T>
-          </View>
-        ) : (
-          <>
-            <T v="small">Want a plant that grows as you learn? It’s optional.</T>
-            <Row gap={0} style={{ flexWrap: 'wrap', marginLeft: -space.sm }}>
-              <Button kind="ghost" label="Plant a seed" accessibilityHint="Plants an oak. You can choose a different plant after." onPress={onPlant} />
-              <Button kind="ghostNeutral" label="Maybe later" accessibilityLabel="Maybe later, no plant for now" onPress={onNotNow} />
-            </Row>
-          </>
-        )}
-      </View>
-    </Row>
   );
 }
 

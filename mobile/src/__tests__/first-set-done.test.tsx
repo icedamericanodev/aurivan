@@ -11,7 +11,7 @@
  * - the fixed set runs with no timer and no confidence chips.
  */
 import { act, create, type ReactTestInstance, type ReactTestRenderer } from 'react-test-renderer';
-import { AccessibilityInfo, BackHandler, Dimensions, StyleSheet } from 'react-native';
+import { AccessibilityInfo, BackHandler, Dimensions } from 'react-native';
 import { router } from 'expo-router';
 import { setMockReducedMotion } from '../../jest/reanimated-mock';
 import Results from '../app/results';
@@ -223,51 +223,13 @@ describe('the closing screen', () => {
     expect(t).not.toMatch(/Spaced review|Questions to revisit/i);
   });
 
-  it('mobile 1.41 review: one decision at a time: the plant is offered only after the reminder ask is answered', async () => {
+  it('finishing the reminder choice never offers or creates a retired plant', async () => {
     finishFirstSet(3);
     mount(<Results />);
-    expect(allText()).not.toContain('Want a plant');
     await press(/^Not now$/);
-    expect(allText()).toContain('Want a plant that grows as you learn? It’s optional.');
-    // Its decline is worded apart from the reminder's.
-    expect(pressable(/^Maybe later, no plant for now$/).length).toBeGreaterThan(0);
-  });
-
-  it('mobile 1.41: OFFERS a plant instead of planting one; "Plant a seed" plants an oak, then offers a different plant', async () => {
-    finishFirstSet(3);
-    mount(<Results />);
-    await press(/^Not now$/); // the reminder ask first
-    // Nothing is planted for the learner.
     expect(selectCert(useProgress.getState(), CERT).plant).toBeUndefined();
-    expect(allText()).toContain('Want a plant that grows as you learn? It’s optional.');
-    await press(/^Plant a seed$/);
-    expect(selectCert(useProgress.getState(), CERT).plant?.species).toBe('oak');
-    expect(allText()).toMatch(/is planted\. It grows as you learn\./);
-    // Grove Phase 4b (PHASE4B 4.9): "Your oak is planted." on its soil line, with the planting moment
-    // (Reduce Motion is on here, so LivePlant shows the planted sprout at once).
-    const planted = r!.root.findAll((n) => n.props.testID === 'first-set-planted' && typeof n.type === 'string');
-    expect(planted).toHaveLength(1);
-    expect(r!.root.findAll((n) => n.props.testID === 'first-set-plant' && n.props.plantIn === true).length).toBeGreaterThan(0);
-    expect(r!.root.findAll((n) => n.props.testID === 'first-set-soil-soil' && typeof n.type === 'string')).toHaveLength(1);
-    expect(allText()).toContain('Your oak is planted.');
-    await press(/^Choose a different plant$/);
-    expect(router.push).toHaveBeenCalledWith({ pathname: '/plant-pick', params: { mode: 'species' } });
-  });
-
-  it('mobile 1.41: "Maybe later" plants nothing, says where planting lives, and is never offered here again', async () => {
-    finishFirstSet(3);
-    mount(<Results />);
-    await press(/^Not now$/); // the reminder ask first
-    await press(/^Maybe later, no plant for now$/);
-    expect(selectCert(useProgress.getState(), CERT).plant).toBeUndefined();
-    expect(useSeen.getState().plantOffer).toBe('later');
-    expect(allText()).toContain('No plant for now. You can plant one any time from You.');
-    expect(pressable(/^Plant a seed$/)).toHaveLength(0);
-    act(() => {
-      r?.unmount();
-    });
-    mount(<Results />);
-    expect(allText()).not.toMatch(/Want a plant|No plant for now/);
+    expect(allText()).not.toMatch(/plant|companion/i);
+    expect(pressable(/^Done for today$/).length).toBeGreaterThan(0);
   });
 
   it('mobile 1.41: a learner who already has a plant keeps it exactly as it is, and is not asked', () => {
@@ -279,7 +241,7 @@ describe('the closing screen', () => {
     mount(<Results />);
     expect(selectCert(useProgress.getState(), CERT).plant).toBe(before);
     expect(allText()).not.toContain('Want a plant');
-    expect(allText()).toMatch(/Kai is planted/);
+    expect(allText()).not.toMatch(/Kai is planted|Choose a different plant/);
   });
 
   it('a learner who turned plants off gets no seed and no plant words', () => {
@@ -482,17 +444,12 @@ describe('light, dark and 200% text', () => {
     expect(capped).toHaveLength(0);
   });
 
-  it.each([1, 2])('at %sx text, once the reminder is answered, the plant offer has both buttons (stacked at large text)', async (scale) => {
+  it.each([1, 2])('at %sx text completion stays focused on study without a plant offer', async (scale) => {
     setScale(scale);
     finishFirstSet(3);
     mount(<Results />);
     await press(/^Not now$/);
-    const names = new Set(pressable(/./).map((p) => String(p.props.accessibilityLabel)));
-    for (const name of ['Plant a seed', 'Maybe later, no plant for now']) expect(names).toContain(name);
-    const offer = root().findAll((n) => n.props.testID === 'plant-offer' && typeof n.type === 'string')[0];
-    let row = offer.parent!;
-    while (typeof row.type !== 'string') row = row.parent!;
-    const style = StyleSheet.flatten(row.props.style);
-    expect(style.flexDirection).toBe(scale === 2 ? 'column' : 'row');
+    expect(allText()).not.toMatch(/Plant a seed|Maybe later|Choose a different plant/);
+    expect(pressable(/^Done for today$/).length).toBeGreaterThan(0);
   });
 });

@@ -147,7 +147,10 @@ describe('onboarding: where you start and how long you have', () => {
     toStartingPoint();
     expect(caption()).toBe('Step 1 of 2');
     expect(allText()).toContain('Where are you starting from?');
+    expect(allText()).not.toContain('This shapes your first week. You can change it any time in Settings.');
+    press(/^About Your starting point$/);
     expect(allText()).toContain('This shapes your first week. You can change it any time in Settings.');
+    press(/^Close, Your starting point$/);
     // CISA is chosen for the learner: there are no "coming soon" exams to look at.
     expect(allText()).not.toMatch(/Which exam|coming soon/i);
     press(/^Skip starting point$/);

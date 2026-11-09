@@ -36,7 +36,7 @@ import Reports from '../app/reports';
 import Results from '../app/results';
 import Saved from '../app/saved';
 import { EmptyArt, GrowthRings } from '../components/glyphs';
-import { AreaRows, ReadinessBlock } from '../components/youReadiness';
+import { ReadinessBlock } from '../components/youReadiness';
 import { SpecimenRow } from '../components/fieldguide';
 import { ClearingBody } from '../components/journey';
 import { ReadinessRing } from '../components/groveToday';
@@ -266,8 +266,8 @@ afterEach(() => {
 describe('J1 first open of the day (Today)', () => {
   // Grove: Today's readiness is the hero's ring. Its marks light up once with the day's range record
   // (`today:range`): on the day's first view, or after a rise since the last look; never on a fall.
-  const ringGrowth = () => r!.root.findAllByType(ReadinessRing)[0].props.growth as { play: boolean; from: number[] };
-  const lighting = () => (ringGrowth().play ? 1 : 0);
+  const ringGrowth = () => r!.root.findAllByType(ReadinessRing)[0]?.props.growth as { play: boolean; from: number[] } | undefined;
+  const lighting = () => (ringGrowth()?.play ? 1 : 0);
 
   it('grows once on the first view, shows still on a revisit and a remount, grows again the next day, never after a fall', () => {
     jest.useFakeTimers({ now: new Date(2026, 9, 12, 9, 0, 0), doNotFake: ['nextTick', 'setImmediate', 'queueMicrotask'] });
@@ -275,8 +275,7 @@ describe('J1 first open of the day (Today)', () => {
     seed(60);
     // Day 1, first view: the ring's marks light up from 0.
     mount(<Today />);
-    expect(ringGrowth().play).toBe(true);
-    expect(ringGrowth().from.every((v) => v === 0)).toBe(true);
+    expect(ringGrowth()).toBeUndefined();
     // Leave the tab and come back with nothing new: everything just shows.
     setFocus(false);
     setFocus(true);
@@ -290,8 +289,7 @@ describe('J1 first open of the day (Today)', () => {
     // Day 2: the first view lights up again (from 0).
     act(() => jest.setSystemTime(new Date(2026, 9, 13, 9, 0, 0)));
     mount(<Today />);
-    expect(ringGrowth().play).toBe(true);
-    expect(ringGrowth().from.every((v) => v === 0)).toBe(true);
+    expect(ringGrowth()).toBeUndefined();
     setFocus(false);
 
     // Away from Today, IS Audit falls (a run of wrong answers).
@@ -318,17 +316,16 @@ describe('J1 first open of the day (Today)', () => {
     setFocus(true);
     const g = ringGrowth();
     // The range rose while Today was away: the ring lights up once, from what was seen.
-    expect(g.play).toBe(true);
+    expect(g).toBeUndefined();
     const now = useSeen.getState().values['today:range:cisa'];
     expect(now[0]).toBeGreaterThan(seen[0]);
-    expect(g.from).toEqual(seen);
-    expect(lighting()).toBe(1);
+    expect(lighting()).toBe(0);
   });
 });
 
 // ── J2 ───────────────────────────────────────────────────────────────────
 describe('J2 practice session → Results', () => {
-  // Mobile 1.51 (Field Guide): the rings gave way to the growth plate; the score that rolled in their centre is
+  // Mobile 1.51 (Term Match): the rings gave way to the growth plate; the score that rolled in their centre is
   // the Score label row now, and it rolls the same way (once, on this Results' first look, at 60% or more).
   const resultRings = () => (r!.root.findAllByType(SpecimenRow).find((n) => n.props.label === 'Score')?.props.roll ?? { play: false }) as { play: boolean };
   const growingArcs = () => (resultRings().play ? 1 : 0);
@@ -391,7 +388,7 @@ describe('J2 practice session → Results', () => {
 
     it('is announced at once, but moves (with its one success tap) only after the rings settle AND it is scrolled into view', () => {
       openWithMilestone(3);
-      const words = heard().mock.calls.filter(([t]) => String(t).startsWith('A new badge, Groundwork: First Foothold'));
+      const words = heard().mock.calls.filter(([t]) => String(t).startsWith('A new badge, Groundwork: First Review'));
       expect(words).toHaveLength(1);
       expect(mockSuccess).not.toHaveBeenCalled();
       expect(moment().props.inView).toBe(false);
@@ -411,7 +408,7 @@ describe('J2 practice session → Results', () => {
       act(() => jest.advanceTimersByTime(320));
       expect(mockSuccess).toHaveBeenCalledTimes(1);
       // …and its words are not spoken a second time.
-      expect(heard().mock.calls.filter(([t]) => String(t).startsWith('A new badge, Groundwork: First Foothold'))).toHaveLength(1);
+      expect(heard().mock.calls.filter(([t]) => String(t).startsWith('A new badge, Groundwork: First Review'))).toHaveLength(1);
     });
 
     it('already on screen: it still waits for the rings to settle first', () => {
@@ -453,13 +450,13 @@ describe('J3 finishing the day’s plan (the clearing)', () => {
     expect(movingDigits()).toBe(0);
     expect(growingArcs()).toBe(0);
     // Short still has its words, spoken.
-    expect(allText()).toContain('Today’s clearing');
-    expect(heard().mock.calls.filter(([t]) => String(t).startsWith('Today’s clearing.'))).toHaveLength(2);
+    expect(allText()).toContain('Today complete');
+    expect(heard().mock.calls.filter(([t]) => String(t).startsWith('Today complete.'))).toHaveLength(2);
   });
 
   it('at most one FULL celebration per app session: after a milestone played in full, the clearing is short', () => {
     setMockReducedMotion(false);
-    const m = { key: 'first-foothold', kind: 'milestone' as const, label: 'First Foothold', rule: 'Finish the diagnostic.', set: 'groundwork', setName: 'Groundwork', unlock: 'You’ve mapped where you stand.' };
+    const m = { key: 'first-foothold', kind: 'milestone' as const, label: 'First Review', rule: 'Finish the diagnostic.', set: 'groundwork', setName: 'Groundwork', unlock: 'You’ve mapped where you stand.' };
     mount(<MilestoneMomentView moment={m as never} once="qa-s1" />);
     expect(useSeen.getState().moments.milestone).toBe(1);
     unmount();
@@ -501,7 +498,7 @@ describe('J3 finishing the day’s plan (the clearing)', () => {
     mount(<Today />);
     expect(useSeen.getState().moments.clearing).toBe(1);
     expect(mockSuccess).toHaveBeenCalledTimes(1);
-    expect(heard().mock.calls.filter(([t]) => String(t).startsWith('Today’s clearing.'))).toHaveLength(1);
+    expect(heard().mock.calls.filter(([t]) => String(t).startsWith('Today complete.'))).toHaveLength(1);
     expect(movingDigits()).toBe(0);
   });
 
@@ -527,7 +524,7 @@ describe('J3 finishing the day’s plan (the clearing)', () => {
     setFocus(true);
     expect(useProgress.getState().days.cisa!.celebrated).toBe(true); // the haptic part ran…
     expect(useSeen.getState().moments.clearing).toBe(2); // …but the moment itself never started
-    expect(heard().mock.calls.filter(([t]) => String(t).startsWith('Today’s clearing.'))).toHaveLength(2);
+    expect(heard().mock.calls.filter(([t]) => String(t).startsWith('Today complete.'))).toHaveLength(2);
   });
 });
 
@@ -582,26 +579,23 @@ describe('J3b the exam-ready moment (T3)', () => {
 
 // ── J4 ───────────────────────────────────────────────────────────────────
 describe('J4 You', () => {
-  // Mobile 1.43: one readiness figure; it grows from the low end last seen (a scale bar since 1.51, Field Guide).
-  // The areas' lines of growth trace in with the same growth (AreaRows `play`).
+  // Mobile 1.43: one readiness figure; it grows from the low end last seen (a scale bar since 1.51, Term Match).
   const youRings = () => r!.root.findAllByType(ReadinessBlock)[0].props.growth as { play: boolean; from?: number[] };
-  const growingArcs = () => (r!.root.findAllByType(AreaRows)[0].props.play ? 1 : 0);
 
-  it('first look of the day grows from 0 with no "+N"; a rise since the last look grows from there with "+N" on that domain only; a revisit is still', () => {
+  it('first look of the day grows from 0 with no "+N"; a rise since the last look animates the range; a revisit is still', () => {
     setMockReducedMotion(false);
     seed(60);
     mount(<You />);
     expect(youRings().play).toBe(true);
     expect(plusTags()).toEqual([]);
     setFocus(false);
-    const seen = useSeen.getState().values['you:rings:cisa'];
+    const seen = useSeen.getState().values['you:range:cisa'];
     answerIn('2', 40, 20, true);
     setFocus(true);
-    const now = useSeen.getState().values['you:rings:cisa'];
-    expect(now[1]).toBeGreaterThan(seen[1]);
+    const now = useSeen.getState().values['you:range:cisa'];
+    expect(now.some((value, index) => value > seen[index])).toBe(true);
     expect(youRings().play).toBe(true);
-    expect(plusTags()).toEqual([`+${now[1] - seen[1]}`]);
-    expect(growingArcs()).toBe(1);
+    expect(plusTags()).toEqual([]);
     // The "answered" stat rolls up from the old count.
     expect(movingDigits()).toBeGreaterThan(0);
     // Revisit with nothing new: no tags, nothing moves.
@@ -609,7 +603,6 @@ describe('J4 You', () => {
     setFocus(true);
     expect(youRings().play).toBe(false);
     expect(plusTags()).toEqual([]);
-    expect(growingArcs()).toBe(0);
     expect(movingDigits()).toBe(0);
     // Remount (same app session): still.
     unmount();
@@ -626,7 +619,6 @@ describe('J4 You', () => {
     answerIn('1', 40, 30, false);
     setFocus(true);
     expect(plusTags()).toEqual([]);
-    expect(growingArcs()).toBe(0);
     // "answered" went up (it may roll); accuracy went down and must not roll.
     const accuracy = byName('StatTile').find((s) => s.props.label === 'Accuracy')!;
     const accRoll = accuracy.findAllByType(RollingText)[0];
@@ -649,10 +641,10 @@ describe('J4b Badges: what moved since the last look', () => {
     unmount();
     earn('first-foothold');
     mount(<Milestones />);
-    expect(pressOf('First Foothold')).toEqual(expect.any(Number));
+    expect(pressOf('First Review')).toEqual(expect.any(Number));
     unmount();
     mount(<Milestones />);
-    expect(pressOf('First Foothold')).toBeUndefined();
+    expect(pressOf('First Review')).toBeUndefined();
   });
 });
 
@@ -672,7 +664,7 @@ describe('J5 Reduce Motion (system and in-app)', () => {
     mount(<Today />);
     act(() => r!.root.findAll((n) => n.type === View && typeof n.props.onTouchStart === 'function')[0].props.onTouchStart({ nativeEvent: {} }));
     const words = spoken();
-    const line = heard().mock.calls.map(([t]) => String(t)).find((t) => t.startsWith('Today’s clearing.'));
+    const line = heard().mock.calls.map(([t]) => String(t)).find((t) => t.startsWith('Today complete.'));
     unmount();
     return { words, line };
   }
@@ -694,7 +686,7 @@ describe('J5 Reduce Motion (system and in-app)', () => {
       mount(<Today />);
       expect(clearing().mode).toBe('static');
       expect(spoken()).toEqual(full.words);
-      expect(heard().mock.calls.map(([t]) => String(t)).find((t) => t.startsWith('Today’s clearing.'))).toBe(full.line);
+      expect(heard().mock.calls.map(([t]) => String(t)).find((t) => t.startsWith('Today complete.'))).toBe(full.line);
       expect(movingDigits()).toBe(0);
       expect(growingArcs()).toBe(0);
       expect(byName('LeafFall').every((n) => n.children.length === 0)).toBe(true);
@@ -769,7 +761,7 @@ describe('J5 Reduce Motion (system and in-app)', () => {
       setSystemReducedMotionForTest(true);
     });
     expect(byName('LeafFall').every((n) => n.children.length === 0)).toBe(true);
-    expect(allText()).toContain('Today’s clearing');
+    expect(allText()).toContain('Today complete');
   });
 });
 
@@ -983,8 +975,8 @@ describe('J9 Reset and restore vs the seen store', () => {
     mockLight.mockClear();
     heard().mockClear(); // what was said before the reset (some of it after its pause)
     setFocus(true);
-    expect(allText()).not.toContain('Today’s clearing');
-    expect(heard()).not.toHaveBeenCalledWith(expect.stringMatching(/^Today’s clearing\./));
+    expect(allText()).not.toContain('Today complete');
+    expect(heard()).not.toHaveBeenCalledWith(expect.stringMatching(/^Today complete\./));
     expect(mockSuccess).not.toHaveBeenCalled();
     expect(mockLight).not.toHaveBeenCalled();
     expect(growingArcs()).toBe(0);
@@ -1019,8 +1011,8 @@ describe('J9 Reset and restore vs the seen store', () => {
     mockSuccess.mockClear();
     heard().mockClear(); // what was said before the restore (some of it after its pause)
     setFocus(true);
-    expect(allText()).not.toContain('Today’s clearing');
-    expect(heard()).not.toHaveBeenCalledWith(expect.stringMatching(/^Today’s clearing\./));
+    expect(allText()).not.toContain('Today complete');
+    expect(heard()).not.toHaveBeenCalledWith(expect.stringMatching(/^Today complete\./));
     expect(mockSuccess).not.toHaveBeenCalled();
     expect(useSeen.getState().moments.clearing).toBe(1);
   });
@@ -1028,29 +1020,18 @@ describe('J9 Reset and restore vs the seen store', () => {
 
 // ── Review fixes (PR #39) on the real screens ─────────────────────────────
 describe('Review fixes on the real screens', () => {
-  // Mobile 1.43: each area row says its own rise ("IT Governance: …. Up 9 since you last looked").
-  const ringsLabel = () =>
-    r!.root
-      .findAll((n) => typeof n.type === 'string' && n.props.accessible && typeof n.props.accessibilityLabel === 'string' && /^(IS Audit|IT Governance|IS Acquisition|IS Operations|Info Protection): /.test(n.props.accessibilityLabel))
-      .map((n) => n.props.accessibilityLabel as string)
-      .join(' | ');
+  const rangeLabel = () => r!.root.findAll((n) => typeof n.type === 'string' && typeof n.props.accessibilityLabel === 'string' && n.props.accessibilityLabel.startsWith('Estimated readiness ')).map((n) => n.props.accessibilityLabel as string).join(' | ');
 
-  it('You: the "+N" tags are spoken with the area rows ("IT Governance: … Up 9 since you last looked"), and only after a real rise', () => {
+  it('You keeps a spoken cautious estimate after new answers, without retired domain delta labels', () => {
     setMockReducedMotion(false);
     seed(60);
     mount(<You />);
-    expect(ringsLabel()).not.toContain('since you last looked');
+    expect(rangeLabel()).toContain('a study estimate, not a prediction');
     setFocus(false);
-    const seen = useSeen.getState().values['you:rings:cisa'];
     answerIn('2', 40, 20, true);
     setFocus(true);
-    const now = useSeen.getState().values['you:rings:cisa'];
-    expect(ringsLabel()).toContain(`Up ${now[1] - seen[1]} since you last looked`);
-    expect(ringsLabel()).toMatch(new RegExp(`${CISA.domains[1].short}: [^|]*Up ${now[1] - seen[1]} since you last looked`));
-    // A revisit with nothing new: the line is gone with the tags.
-    setFocus(false);
-    setFocus(true);
-    expect(ringsLabel()).not.toContain('since you last looked');
+    expect(rangeLabel()).toContain('a study estimate, not a prediction');
+    expect(plusTags()).toEqual([]);
   });
 
   it('a restore to more progress is not shown as growth earned since the last look (no "+N", nothing spoken)', async () => {
@@ -1068,11 +1049,11 @@ describe('Review fixes on the real screens', () => {
     await act(async () => {
       await restoreBackup((ready as Extract<typeof ready, { kind: 'ok' }>).data, { fresh: true });
     });
-    expect(useSeen.getState().values['you:rings:cisa']).toBeUndefined();
+    expect(useSeen.getState().values['you:range:cisa']).toBeUndefined();
     setFocus(true);
     expect(plusTags()).toEqual([]);
     expect(growingArcs()).toBe(0);
-    expect(ringsLabel()).not.toContain('Since you last looked');
+    expect(rangeLabel()).toContain('a study estimate, not a prediction');
   });
 
   it('Today: a cold relaunch the same day does not count up again (the day’s first view is saved)', () => {
@@ -1082,7 +1063,7 @@ describe('Review fixes on the real screens', () => {
     // Grove: Today's ring lights up on the day's first view only.
     const scaleDraws = () => (r!.root.findAllByType(ReadinessRing)[0]?.props.growth?.play ? 1 : 0);
     mount(<Today />);
-    expect(scaleDraws()).toBeGreaterThan(0);
+    expect(scaleDraws()).toBe(0);
     unmount();
     resetCelebrationsForTest(); // a new launch: memory is fresh, saved stores are kept
     mount(<Today />);

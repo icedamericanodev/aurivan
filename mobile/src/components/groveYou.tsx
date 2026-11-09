@@ -1,71 +1,11 @@
-/**
- * Grove Phase 4: the parts of the phone You tab rebuilt to the owner's 04 board
- * (design-notes/grove/PHASE4.md 7.14, screens/04-phone-you.png, reference/04-phone-you.html).
- *
- * Plain English:
- * - YourPlantCard: the forest "Your plant" card. The plant, its name, "Seed · growth 1 of 6 · grows
- *   only from real progress, never wilts" and a chevron; one button to the plant page. With no plant
- *   yet it says "Pick your plant" and opens the picker.
- * - StatTile and StatGrid: the four stat tiles (Answered, Correct, Accuracy, Streak), two by two, one
- *   column at large text. Each tile is one screen-reader stop.
- * - MiniReadyRing: the small ring on the Estimated readiness card. Before the first range it is 20 dots,
- *   each worth 2 answers toward 40; after, 20 ticks lit to the low end with the range in gold. A
- *   drawing only: the card's words say the same thing.
- *
- * Every number comes from values the app already works out; nothing here reads or writes saved data.
- */
+/** Grove progress primitives for You. Stat tiles adapt to large text; the readiness ring is decorative and explained by its visible caption. */
 import { type ReactNode } from 'react';
 import { View } from 'react-native';
 import Svg, { Circle, Line } from 'react-native-svg';
-import { groveRadius } from '../theme/grove';
 import { LARGE_TEXT, space } from '../theme/tokens';
 import { useTheme } from '../theme/useTheme';
 import { FieldText } from './fieldguide';
-import { HeroCard } from './groveToday';
-import { ChevronRight, ICON_STROKE } from './icons';
-import { AnimatedPressable, usePressScale } from './motion';
 import { BigNum, groveTile, T, useFontScale, type Roll } from './ui';
-
-/** The forest Your plant card (PHASE4.md 7.14 item 3): one button, with the plant drawn on the left. */
-export function YourPlantCard({ art, title, line, spoken, hint, onPress }: { art: ReactNode; title: string; line: string; spoken: string; hint: string; onPress: () => void }) {
-  const { c } = useTheme();
-  const press = usePressScale({ scale: 0.98 });
-  return (
-    <AnimatedPressable
-      testID="you-plant-chip"
-      accessibilityRole="button"
-      accessibilityLabel={spoken}
-      accessibilityHint={hint}
-      onPress={() => {
-        // It opens another screen: the pressed tint rests at once (the 1.43 gear rule).
-        press.settle();
-        onPress();
-      }}
-      onPressIn={press.onPressIn}
-      onPressOut={press.onPressOut}
-      style={[{ marginTop: space.lg, minHeight: 56, alignSelf: 'stretch', borderRadius: groveRadius.card }, press.style]}
-    >
-      {/* Pressed: the card eases down a little (no tint layer: it would sit under the forest fill). */}
-      <HeroCard testID="you-plant-card">
-        <View style={{ flexDirection: 'row', alignItems: 'center', gap: space.md }}>
-          <View
-            accessibilityElementsHidden
-            importantForAccessibility="no-hide-descendants"
-            style={{ width: 64, height: 64, borderRadius: groveRadius.tile, alignItems: 'center', justifyContent: 'center', overflow: 'hidden' }}
-          >
-            {art}
-          </View>
-          <View style={{ flex: 1, minWidth: 0, gap: 2 }}>
-            <FieldText v="head" color={c.onForest2}>Your plant</FieldText>
-            <T v="title" color={c.onForest}>{title}</T>
-            <T v="meta" color={c.onForest2}>{line}</T>
-          </View>
-          <ChevronRight size={18} color={c.onForest2} strokeWidth={ICON_STROKE} />
-        </View>
-      </HeroCard>
-    </AnimatedPressable>
-  );
-}
 
 /**
  * One stat tile: a tracked key, then a serif number (or a value in words), then an optional line. One stop,

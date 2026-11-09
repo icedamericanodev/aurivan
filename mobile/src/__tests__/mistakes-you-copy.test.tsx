@@ -1,7 +1,7 @@
 /**
  * Mobile 1.15 consistency and plain words on the Mistake journal and You
  * (PHASE5.md C6, C8, C10, J9–J13): plain tags with an example each, "Practice
- * 20 of 55", the ring legend 1 → 5 with its note, and what Accuracy counts.
+ * 20 of 55", report navigation, and what Accuracy counts.
  */
 import { act, create, type ReactTestInstance, type ReactTestRenderer } from 'react-test-renderer';
 import { Dimensions } from 'react-native';
@@ -9,7 +9,6 @@ import { router } from 'expo-router';
 import { setMockReducedMotion } from '../../jest/reanimated-mock';
 import You from '../app/(tabs)/you';
 import Mistakes from '../app/mistakes';
-import { RINGS_NOTE } from '../components/journey';
 import { resetCelebrationsForTest, resetOncePerDayForTest, setSystemReducedMotionForTest } from '../components/motion';
 import { getAllQuestions } from '../content/loader';
 import { useProgress } from '../store/progress';
@@ -153,20 +152,19 @@ describe('Mistake journal: tags in plain words, with an example each', () => {
   });
 });
 
-describe('You: the legend 1 → 5, and what Accuracy counts', () => {
-  it('lists domains 1 to 5 under the one ring (mobile 1.43: no ring legend to decode, the caption says what the figures count)', () => {
+describe('You: readiness summary and detailed report', () => {
+  it('keeps uncertainty and report navigation without the removed domain chart', () => {
     act(() => {
       for (const q of getAllQuestions('cisa').slice(0, 3)) useProgress.getState().recordAnswer('cisa', q.id, true);
     });
     mount(<You />);
-    // The chart may break a name over two lines ("IS" / "Audit"): read it as words.
-    // Grove You C2: the summary sentence above names the focus area too, so read from the chart on.
-    const all = allText().replace(/\s+/g, ' ');
-    const t = all.slice(all.indexOf('Estimated readiness'));
-    const at = ['IS Audit', 'IT Governance', 'IS Acquisition', 'IS Operations', 'Info Protection'].map((n) => t.indexOf(n));
-    expect(at.every((i) => i > -1)).toBe(true);
-    expect([...at].sort((a, b) => a - b)).toEqual(at);
-    expect(t).not.toContain(RINGS_NOTE);
-    expect(t).toContain('Right on your latest tries');
+    const t = allText();
+    expect(t).toContain('Estimated readiness');
+    expect(t).toContain('Not enough data yet');
+    expect(t).toContain('3 of 40 answers for your first range.');
+    expect(t).not.toContain('Five areas, one scale');
+    expect(t).not.toContain('Right on your latest tries');
+    press(/^See report, your readiness report$/);
+    expect(router.push).toHaveBeenCalledWith('/readiness');
   });
 });

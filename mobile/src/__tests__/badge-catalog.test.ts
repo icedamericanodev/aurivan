@@ -88,7 +88,7 @@ describe('sets and shelves', () => {
   it('every badge sits in exactly one set; six are counted, Moments and Field notes are not', () => {
     for (const b of BADGES) expect(SET_ORDER).toContain(BADGE_SET[b.id]);
     expect(COUNTED_SETS).toEqual(['groundwork', 'domains', 'evergreen', 'judgement', 'examDay', 'rooted']);
-    // Under a collection, counting Fresh Start would reward a week away; play must not pull study off the blueprint.
+    // Under a collection, counting Study Return would reward a week away; play must not pull study off the blueprint.
     expect(COUNTED_SETS).not.toContain(BADGE_SET['fresh-start']);
     for (const b of BADGES.filter((x) => x.kind === 'skill')) {
       expect(BADGE_SET[b.id]).toBe('fieldNotes');
@@ -100,9 +100,9 @@ describe('sets and shelves', () => {
     const { sets } = caseOf(facts(), { 'first-foothold': T0, 'firm-footing:4': T0, 'snare-wise': T0, 'fresh-start': T0 });
     const line = (id: string) => setCountLine(sets.find((s) => s.info.id === id)!);
     expect(line('groundwork')).toBe('1 of 3');
-    expect(line('domains')).toBe('1 of 6'); // 5 domains + Whole Map
-    // Mobile 1.11: Evergreen's core is Long Memory 25 and 75, Graduate, Loop Closed and Took Root;
-    // Exam Day's is Dress Rehearsal 1 and 2 and On Pace. Stretch tiers are counted on their own.
+    expect(line('domains')).toBe('1 of 6'); // 5 domains + All Domains
+    // Mobile 1.11: Evergreen's core is Lasting Recall 25 and 75, Graduate, Mistakes Fixed and Topic Recall;
+    // Exam Day's is Mock Complete 1 and 2 and On Pace. Stretch tiers are counted on their own.
     expect(line('evergreen')).toBe('0 of 5');
     expect(line('judgement')).toBe('0 of 3');
     expect(line('examDay')).toBe('0 of 3');
@@ -160,7 +160,7 @@ describe('sets and shelves', () => {
     expect(examLength(90)).toBe('1 hour 30 minutes');
   });
 
-  it('Firm Footing leaves go heaviest domain first, each with its weight and a gap line', () => {
+  it('Domain Mastery leaves go heaviest domain first, each with its weight and a gap line', () => {
     const f = facts({ domains: cisa.domains.map((d) => ({ id: d.id, short: d.short, answered: 14, mastery: 0.62 })) });
     const leaves = caseOf(f).marks.filter((m) => m.badge === 'firm-footing' && !m.stretch);
     expect(leaves.map((m) => m.domain!.weight)).toEqual([26, 26, 18, 18, 12]);
@@ -175,9 +175,9 @@ describe('sets and shelves', () => {
   it('Rooted is three marks, labelled by number with a tier (never a metal name alone)', () => {
     const rooted = caseOf(facts({ studyDays: 12 }), { 'rooted:10': T0 }).marks.filter((m) => m.badge === 'rooted');
     expect(rooted.map((m) => [m.caption, m.tier])).toEqual([
-      ['Rooted · 10 days', 1],
-      ['Rooted · 30 days', 2],
-      ['Rooted · 60 days', 3],
+      ['Study Days · 10 days', 1],
+      ['Study Days · 30 days', 2],
+      ['Study Days · 60 days', 3],
     ]);
     expect(rooted[1].status).toBe('started');
     expect(rooted[1].detail).toBe('12 of 30 study days');
@@ -185,7 +185,7 @@ describe('sets and shelves', () => {
 });
 
 describe('states, gates and effort', () => {
-  it('earned, started, open, and gated (Mindset Shift until there is enough data)', () => {
+  it('earned, started, open, and gated (Better Judgement until there is enough data)', () => {
     const { marks } = caseOf(facts({ cleanAnswered: 5 }), { 'slip-spotter': T0 });
     expect(find(marks, 'slip-spotter').status).toBe('earned');
     expect(find(marks, 'first-foothold').status).toBe('started');
@@ -249,14 +249,14 @@ describe('filter and sort', () => {
       expect([...kinds].sort()).toEqual(kinds);
     }
   });
-  it('closest and effort: the exam’s own badges first, then Field notes; an unearned Fresh Start never shows as a target', () => {
+  it('closest and effort: the exam’s own badges first, then Field notes; an unearned Study Return never shows as a target', () => {
     for (const sort of ['closest', 'effort'] as const) {
       const list = sortMarks(marks, sort);
       const firstGame = list.findIndex((m) => !COUNTED_SETS.includes(m.set));
       expect(firstGame).toBeGreaterThan(0);
       expect(list.slice(firstGame).every((m) => !COUNTED_SETS.includes(m.set))).toBe(true);
       expect(list.some((m) => m.badge === 'fresh-start')).toBe(false);
-      // Field notes' Whole Grove (0 days) never outranks a study badge.
+      // Field notes' All Drills (0 days) never outranks a study badge.
       expect(list.findIndex((m) => m.badge === 'whole-grove')).toBeGreaterThan(firstGame - 1);
     }
     // Nor in Recently earned, until it happens; then it shows like any badge.
@@ -276,11 +276,11 @@ describe('Next for your exam', () => {
   };
   const spread = (m: Record<string, number>, answered = 30) => facts({ cleanAnswered: 100, domains: cisa.domains.map((d) => ({ id: d.id, short: d.short, answered, mastery: m[d.id] ?? 0.5 })) });
 
-  it('diagnose: First Foothold', () => {
+  it('diagnose: First Review', () => {
     expect(run(facts({ cleanAnswered: 8 }), {}, 'diagnose').best?.key).toBe('first-foothold');
   });
 
-  it('learn and practice: the Firm Footing leaf with the largest weight × gap to 70%', () => {
+  it('learn and practice: the Domain Mastery leaf with the largest weight × gap to 70%', () => {
     // IS Audit (18%) at 40% → .054; IS Operations (26%) at 60% → .026; Info Protection (26%) at 55% → .039.
     const f = spread({ '1': 0.4, '4': 0.6, '5': 0.55, '2': 0.69, '3': 0.69 });
     expect(run(f, { 'first-foothold': T0 }, 'practice').best?.key).toBe('firm-footing:1');
@@ -289,28 +289,28 @@ describe('Next for your exam', () => {
     expect(['firm-footing:4', 'firm-footing:5']).toContain(run(tie, { 'first-foothold': T0 }, 'learn').best?.key);
   });
 
-  it('mock stage, or the final three weeks: Dress Rehearsal, then On Pace, then Dress Rehearsal · 2 (once it opens)', () => {
+  it('mock stage, or the final three weeks: Mock Complete, then On Pace, then Mock Complete · 2 (once it opens)', () => {
     const f = spread({}, 40);
     expect(run(f, { 'first-foothold': T0 }, 'mock').best?.key).toBe('dress-rehearsal');
     expect(run(f, { 'first-foothold': T0, 'dress-rehearsal': T0 }, 'mock').best?.key).toBe('on-pace');
-    // Dress Rehearsal · 2 is gated until Whole Map: never pushed before it opens.
+    // Mock Complete · 2 is gated until All Domains: never pushed before it opens.
     expect(run(f, { 'first-foothold': T0, 'dress-rehearsal': T0, 'on-pace': T0 }, 'mock').best?.key).not.toBe('dress-rehearsal:2');
     expect(run(f, { 'first-foothold': T0, 'dress-rehearsal': T0, 'on-pace': T0, 'whole-map': T0 }, 'mock').best?.key).toBe('dress-rehearsal:2');
     expect(run(f, { 'first-foothold': T0 }, 'practice', 20).best?.key).toBe('dress-rehearsal');
   });
 
-  it('ready: the next Long Memory tier, then Graduate; the Stretch tier (150) only once Evergreen’s core is done', () => {
+  it('ready: the next Lasting Recall tier, then Graduate; the Stretch tier (150) only once Evergreen’s core is done', () => {
     const f = spread({}, 40);
     expect(run(f, { 'first-foothold': T0 }, 'ready').best?.key).toBe('long-memory');
     expect(run(f, { 'first-foothold': T0, 'long-memory': T0 }, 'ready').best?.key).toBe('long-memory:75');
     expect(run(f, { 'first-foothold': T0, 'long-memory': T0, 'long-memory:75': T0 }, 'ready').best?.key).toBe('graduate');
-    // Graduate, Loop Closed and Took Root still open: 150 is never suggested yet.
+    // Graduate, Mistakes Fixed and Topic Recall still open: 150 is never suggested yet.
     const n = run(f, { 'first-foothold': T0, 'long-memory': T0, 'long-memory:75': T0 }, 'ready');
     expect([n.best, ...n.nearest].some((m) => m?.key === 'long-memory:150')).toBe(false);
   });
 
   it('a Stretch tier is never slot 1, and waits while its set’s core is open', () => {
-    // Every domain at 85% with 45 answers: the 80% tiers are met-able, Whole Map earned, core complete.
+    // Every domain at 85% with 45 answers: the 80% tiers are met-able, All Domains earned, core complete.
     const f = spread({ '1': 0.85, '2': 0.85, '3': 0.85, '4': 0.85, '5': 0.85 }, 45);
     const leaves = Object.fromEntries(cisa.domains.map((d) => [`firm-footing:${d.id}`, T0]));
     for (const stage of ['learn', 'practice', 'mock', 'ready'] as const) {
@@ -336,7 +336,7 @@ describe('Next for your exam', () => {
     expect(suggestLine(dr, 'mock', null)).toBeUndefined();
   });
 
-  it('once Whole Map is earned the mocks stay suggested, even if the stage reads practice again', () => {
+  it('once All Domains is earned the mocks stay suggested, even if the stage reads practice again', () => {
     // Two mocks below the ready score: journeyStage reads "practice" again.
     const f = spread({ '1': 0.75, '2': 0.75, '3': 0.75, '4': 0.75, '5': 0.75 }, 40);
     const leaves = Object.fromEntries(cisa.domains.map((d) => [`firm-footing:${d.id}`, T0]));
@@ -373,14 +373,14 @@ describe('Next for your exam', () => {
 
   it('Results gets one "Next:" line', () => {
     const m = run(spread({ '1': 0.62 }), { 'first-foothold': T0 }, 'practice').best!;
-    expect(nextLine(m)).toMatch(/^Next: Firm Footing · .+, \d+% → 70% · \d+ of 20 answered$/);
+    expect(nextLine(m)).toMatch(/^Next: Domain Mastery · .+, \d+% → 70% · \d+ of 20 answered$/);
   });
 
   it('polish round 1: the words after the comma are in sentence case ("…, not yet"), names and numbers kept', () => {
     const m = run(spread({ '1': 0.62 }), { 'first-foothold': T0 }, 'practice').best!;
-    expect(nextLine({ ...m, name: 'Dress Rehearsal · 1 mock', detail: 'Not yet' })).toBe('Next: Dress Rehearsal · 1 mock, not yet');
-    expect(nextLine({ ...m, name: 'Took Root', detail: 'A topic took root' })).toBe('Next: Took Root, a topic took root');
-    expect(nextLine({ ...m, name: 'Firm Footing · IS Operations', detail: 'IS Operations first' })).toBe('Next: Firm Footing · IS Operations, IS Operations first');
+    expect(nextLine({ ...m, name: 'Mock Complete · 1 mock', detail: 'Not yet' })).toBe('Next: Mock Complete · 1 mock, not yet');
+    expect(nextLine({ ...m, name: 'Topic Recall', detail: 'Topic recall complete' })).toBe('Next: Topic Recall, topic recall complete');
+    expect(nextLine({ ...m, name: 'Domain Mastery · IS Operations', detail: 'IS Operations first' })).toBe('Next: Domain Mastery · IS Operations, IS Operations first');
     expect(nextLine({ ...m, name: 'Ten Topics', detail: '3 of 10 topics clear' })).toBe('Next: Ten Topics, 3 of 10 topics clear');
     expect(nextLine({ ...m, name: 'Ten Topics', detail: '' })).toBe('Next: Ten Topics');
   });
@@ -418,11 +418,11 @@ describe('spoken labels and the new dot', () => {
   it('name, state, rule, progress or date, set', () => {
     const { marks } = caseOf(facts({ longRecall: 12 }), { 'first-foothold': T0 });
     expect(markSpoken(find(marks, 'long-memory'), 'Evergreen')).toBe(
-      'Long Memory · 25 recalls. Not yet. Get 25 questions right, without a hint, a week or more after you last saw them. 12 of 25 remembered. Evergreen.',
+      'Lasting Recall · 25 recalls. Not yet. Get 25 questions right, without a hint, a week or more after you last saw them. 12 of 25 remembered. Evergreen.',
     );
     // A Stretch tier says so, in words, right after its name.
-    expect(markSpoken(find(marks, 'long-memory:150'), 'Evergreen')).toMatch(/^Long Memory · 150 recalls\. Stretch, beyond exam need\. Not yet\. Get 150 questions right/);
-    expect(markSpoken(find(marks, 'first-foothold'), 'Groundwork', '12 Oct')).toBe('First Foothold. Earned 12 Oct. Answer your first 20 questions. Groundwork.');
+    expect(markSpoken(find(marks, 'long-memory:150'), 'Evergreen')).toMatch(/^Lasting Recall · 150 recalls\. Stretch, beyond exam need\. Not yet\. Get 150 questions right/);
+    expect(markSpoken(find(marks, 'first-foothold'), 'Groundwork', '12 Oct')).toBe('First Review. Earned 12 Oct. Answer your first 20 questions. Groundwork.');
     expect(markSpoken(find(marks, 'mindset-shift'), 'Sound Judgement')).toContain('Opens after 100 first tries spread over 2 weeks or more. Sound Judgement.');
   });
   it('a progress arrow is spoken as "now, aiming for", never "of"', () => {
@@ -445,7 +445,7 @@ describe('spoken labels and the new dot', () => {
   it('a kept key the case does not show (a tier no version defines, an unknown badge) never lights the dot or the count', () => {
     for (const k of ['long-memory:999', 'long-memory:25', 'firm-footing:4:90', 'firm-footing:4:80:x', 'dress-rehearsal:4', 'dress-rehearsal:1', 'rooted', 'rooted:20', 'took-root:2', 'on-pace:2', 'nope', 'firm-footing::80'])
       expect(caseKey(k)).toBe(false);
-    // Every key the catalogue lists is shown (mobile 1.11: the tiers and Took Root too).
+    // Every key the catalogue lists is shown (mobile 1.11: the tiers and Topic Recall too).
     for (const m of allMarks(facts())) expect(caseKey(m.key)).toBe(true);
     for (const k of ['long-memory:75', 'long-memory:150', 'firm-footing:4:80', 'dress-rehearsal:2', 'dress-rehearsal:3', 'took-root']) expect(caseKey(k)).toBe(true);
     expect(caseKey('firm-footing:9')).toBe(true); // a domain the exam dropped still shows, earned

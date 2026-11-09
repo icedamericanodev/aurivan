@@ -6198,7 +6198,7 @@ exports.THINK_MS = 10000;
 exports.LEAK_LIMIT = 0.6;
 exports.DECOY_SIMILAR = 0.5;
 exports.CALL_TIERS = ['seedling', 'sapling', 'heartwood'];
-exports.CALL_TIER_NAME = { seedling: 'Seedling', sapling: 'Sapling', heartwood: 'Heartwood' };
+exports.CALL_TIER_NAME = { seedling: 'Beginner', sapling: 'Practised', heartwood: 'Skilled' };
 exports.CALL_TIER_LINE = {
     seedling: 'Decoys from other topics.',
     sapling: 'Decoys from nearby ideas.',
@@ -6326,7 +6326,7 @@ const random_1 = require("../random");
 exports.CANOPY_SIZE = 10;
 exports.CANOPY_MIN_POOL = exports.CANOPY_SIZE * 2;
 exports.CANOPY_TIERS = ['seedling', 'sapling', 'heartwood'];
-exports.CANOPY_TIER_NAME = { seedling: 'Seedling', sapling: 'Sapling', heartwood: 'Heartwood' };
+exports.CANOPY_TIER_NAME = { seedling: 'Beginner', sapling: 'Practised', heartwood: 'Skilled' };
 exports.CANOPY_TIER_LINE = {
     seedling: 'Governance or management? Four roles to choose from.',
     sapling: 'Owner, custodian or auditor? Near neighbours.',
@@ -6468,7 +6468,7 @@ const pace_1 = require("../pace");
 const random_1 = require("../random");
 exports.DAYLIGHT_SIZE = 5;
 exports.DAYLIGHT_TIERS = ['seedling', 'sapling', 'heartwood'];
-exports.TIER_NAME = { seedling: 'Seedling', sapling: 'Sapling', heartwood: 'Heartwood' };
+exports.TIER_NAME = { seedling: 'Beginner', sapling: 'Practised', heartwood: 'Skilled' };
 exports.TIER_FACTOR = { seedling: 1.25, sapling: 1, heartwood: 5 / 6 };
 function tierSeconds(tier, exam) {
     return Math.round((0, pace_1.examPaceSeconds)(exam) * exports.TIER_FACTOR[tier]);
@@ -6653,7 +6653,7 @@ exports.RECALL_CHOICES = 6;
 exports.FIELD_SIZE = exports.FIELD_BOARDS * exports.BOARD_SIZE;
 exports.FIELD_MIN_POOL = exports.FIELD_SIZE * 2;
 exports.FIELD_TIERS = ['seedling', 'sapling', 'heartwood'];
-exports.FIELD_TIER_NAME = { seedling: 'Seedling', sapling: 'Sapling', heartwood: 'Heartwood' };
+exports.FIELD_TIER_NAME = { seedling: 'Beginner', sapling: 'Practised', heartwood: 'Skilled' };
 exports.FIELD_TIER_LINE = {
     seedling: 'Four terms from four different topics.',
     sapling: 'Four terms from the same topic: near neighbours.',
@@ -6821,7 +6821,7 @@ exports.noteRound = noteRound;
 exports.tierChangeLine = tierChangeLine;
 exports.share = share;
 exports.GAME_TIERS = ['seedling', 'sapling', 'heartwood'];
-exports.GAME_TIER_NAME = { seedling: 'Seedling', sapling: 'Sapling', heartwood: 'Heartwood' };
+exports.GAME_TIER_NAME = { seedling: 'Beginner', sapling: 'Practised', heartwood: 'Skilled' };
 exports.PROMOTE_AT = 0.8;
 exports.STEP_BACK_BELOW = 0.5;
 exports.ROUNDS_IN_A_ROW = 2;
@@ -6852,9 +6852,9 @@ function noteRound(prev, r) {
 }
 function tierChangeLine(change, tier) {
     if (change === 'up')
-        return `You’ve grown to ${exports.GAME_TIER_NAME[tier]}. Your next round starts there.`;
+        return `You’ve reached ${exports.GAME_TIER_NAME[tier]}. Your next round starts there.`;
     if (change === 'down')
-        return `Back to ${exports.GAME_TIER_NAME[tier]}. Two strong rounds grow it again.`;
+        return `Back to ${exports.GAME_TIER_NAME[tier]}. Two strong rounds move you up again.`;
     return null;
 }
 function share(hits) {
@@ -7023,7 +7023,7 @@ exports.GAMES = {
     }),
     rumor: make({
         id: 'rumor',
-        name: 'Root or Rumor',
+        name: 'Fact or Myth',
         tagline: 'Tell a sound principle from an exam myth.',
         plain: 'Sound principle or exam myth',
         skill: 'Rejecting exam myths',
@@ -7044,7 +7044,7 @@ exports.GAMES = {
     }),
     field: make({
         id: 'field',
-        name: 'Field Guide',
+        name: 'Term Match',
         tagline: 'Match each term to what it means.',
         plain: 'Match terms to meanings',
         skill: 'Exact meanings',
@@ -7056,7 +7056,7 @@ exports.GAMES = {
     }),
     canopy: make({
         id: 'canopy',
-        name: 'Canopy Call',
+        name: 'Role Check',
         tagline: 'Choose who has the authority to decide.',
         plain: 'Who has the authority to decide',
         skill: 'The right level of authority',
@@ -7068,7 +7068,7 @@ exports.GAMES = {
     }),
     stones: make({
         id: 'stones',
-        name: 'Stepping Stones',
+        name: 'Sequence Check',
         tagline: 'Put each process in the right order.',
         plain: 'Put the steps in order',
         skill: 'What comes first',
@@ -7126,7 +7126,7 @@ exports.RUMOR_MIN_POOL = exports.RUMOR_SIZE * 2;
 exports.MIN_WORDS = 8;
 exports.MAX_WORDS = 30;
 exports.RUMOR_TIERS = ['seedling', 'sapling', 'heartwood'];
-exports.RUMOR_TIER_NAME = { seedling: 'Seedling', sapling: 'Sapling', heartwood: 'Heartwood' };
+exports.RUMOR_TIER_NAME = { seedling: 'Beginner', sapling: 'Practised', heartwood: 'Skilled' };
 exports.RUMOR_TIER_LINE = {
     seedling: 'One domain per round.',
     sapling: 'All domains, mixed.',
@@ -7379,11 +7379,11 @@ function whyChoices(rumor, all, rng) {
 }
 function tapTitle(s, right) {
     if (s.kind === 'rumor')
-        return right ? 'Rumor: myth spotted' : 'This one is a Rumor: a myth the exam counts on';
-    return right ? 'Root: a sound principle' : 'This one is a Root: a sound principle';
+        return right ? 'Myth spotted' : 'This is a myth, not a sound principle';
+    return right ? 'Fact: a sound principle' : 'This is a fact: a sound principle';
 }
 function tapVerdict(tap, right) {
-    return `You said ${tap === 'root' ? 'Root' : 'Rumor'}, ${right ? 'right' : 'not quite'}.`;
+    return `You said ${tap === 'root' ? 'Fact' : 'Myth'}, ${right ? 'right' : 'not quite'}.`;
 }
 exports.READ_AGAIN_AT = 2;
 function readAgain(cards, at = exports.READ_AGAIN_AT) {
@@ -7421,7 +7421,7 @@ exports.STONES_MIN_POOL = exports.STONES_PER_ROUND * 2;
 exports.PERFECT_BONUS = 2;
 exports.MISSING_CHOICES = 3;
 exports.STONES_TIERS = ['seedling', 'sapling', 'heartwood'];
-exports.STONES_TIER_NAME = { seedling: 'Seedling', sapling: 'Sapling', heartwood: 'Heartwood' };
+exports.STONES_TIER_NAME = { seedling: 'Beginner', sapling: 'Practised', heartwood: 'Skilled' };
 exports.STONES_TIER_LINE = {
     seedling: 'Four steps, the first one given.',
     sapling: 'Five or six steps, all yours to place.',
@@ -7726,59 +7726,59 @@ const DAY_MS = 86400000;
 exports.WINDOW_SIZE = { myths: exports.MYTH_WINDOW, signposts: exports.SIGNPOST_WINDOW };
 const g = (id) => registry_1.GAMES[id].name;
 exports.BADGES = [
-    { id: 'first-foothold', kind: 'milestone', name: 'First Foothold', rule: `Answer your first ${journey_1.DIAGNOSTIC_SIZE} questions.` },
-    { id: 'topic-clear', kind: 'milestone', name: 'Topic Clear', rule: 'Clear your first topic: its lesson done, and 4 of your last 5 answers there right.' },
-    { id: 'ten-topics', kind: 'milestone', name: 'Ten Topics Clear', rule: `Clear ${exports.TEN_TOPICS} topics.` },
+    { id: 'first-foothold', kind: 'milestone', name: 'First Review', rule: `Answer your first ${journey_1.DIAGNOSTIC_SIZE} questions.` },
+    { id: 'topic-clear', kind: 'milestone', name: 'Topic Complete', rule: 'Clear your first topic: its lesson done, and 4 of your last 5 answers there right.' },
+    { id: 'ten-topics', kind: 'milestone', name: 'Ten Topics', rule: `Clear ${exports.TEN_TOPICS} topics.` },
     {
         id: 'firm-footing',
         kind: 'milestone',
-        name: 'Firm Footing',
-        rule: `Reach ${Math.round(exports.FIRM_MASTERY * 100)}% mastery in a domain, with ${exports.FIRM_ANSWERS} or more of its questions answered. One leaf per domain.`,
+        name: 'Domain Mastery',
+        rule: `Reach ${Math.round(exports.FIRM_MASTERY * 100)}% mastery in a domain, with ${exports.FIRM_ANSWERS} or more of its questions answered. One badge per domain.`,
     },
-    { id: 'whole-map', kind: 'milestone', name: 'Whole Map', rule: `Reach ${Math.round(exports.WHOLE_MAP_FLOOR * 100)}% mastery in every domain.` },
-    { id: 'loop-closed', kind: 'milestone', name: 'Loop Closed', rule: `Fix ${exports.LOOP_FIXES} logged mistakes: answer each one right, without a hint, on a later day.` },
-    { id: 'slip-spotter', kind: 'milestone', name: 'Slip Spotter', rule: `Tag ${exports.SLIP_TAGS} mistakes with the thinking slip behind them.` },
-    { id: 'long-memory', kind: 'milestone', name: 'Long Memory', rule: `Get ${exports.LONG_RECALLS} questions right, without a hint, a week or more after you last saw them.` },
-    { id: 'graduate', kind: 'milestone', name: 'Flown the Nest', rule: `Answer ${exports.GRADUATES} questions right from the last review box, so they leave review.` },
+    { id: 'whole-map', kind: 'milestone', name: 'All Domains', rule: `Reach ${Math.round(exports.WHOLE_MAP_FLOOR * 100)}% mastery in every domain.` },
+    { id: 'loop-closed', kind: 'milestone', name: 'Mistakes Fixed', rule: `Fix ${exports.LOOP_FIXES} logged mistakes: answer each one right, without a hint, on a later day.` },
+    { id: 'slip-spotter', kind: 'milestone', name: 'Error Insight', rule: `Tag ${exports.SLIP_TAGS} mistakes with the thinking slip behind them.` },
+    { id: 'long-memory', kind: 'milestone', name: 'Lasting Recall', rule: `Get ${exports.LONG_RECALLS} questions right, without a hint, a week or more after you last saw them.` },
+    { id: 'graduate', kind: 'milestone', name: 'Review Complete', rule: `Answer ${exports.GRADUATES} questions right from the last review box, so they leave review.` },
     {
         id: 'know-what-you-know',
         kind: 'milestone',
-        name: 'Know What You Know',
+        name: 'Confidence Check',
         rule: `Of your last ${exports.SURE_WINDOW} “sure” answers, get ${Math.round(exports.SURE_RIGHT * 100)}% or more right (after at least ${exports.SURE_MIN}).`,
     },
-    { id: 'dress-rehearsal', kind: 'milestone', name: 'Dress Rehearsal', rule: 'Finish a full, timed mock with every question answered.' },
+    { id: 'dress-rehearsal', kind: 'milestone', name: 'Mock Complete', rule: 'Finish a full, timed mock with every question answered.' },
     { id: 'on-pace', kind: 'milestone', name: 'On Pace', rule: `Finish a timed mock with every pace check within ${Math.round(pace_1.PACE_TOLERANCE * 100)}% of the target.` },
-    { id: 'mindset-shift', kind: 'milestone', name: 'Mindset Shift', rule: 'Pick the closest wrong choice clearly less often than in your first weeks.' },
+    { id: 'mindset-shift', kind: 'milestone', name: 'Better Judgement', rule: 'Pick the closest wrong choice clearly less often than in your first weeks.' },
     {
         id: 'rooted',
         kind: 'milestone',
-        name: 'Rooted',
+        name: 'Study Days',
         rule: `Study on ${exports.ROOTED_DAYS[0]} days in all, then ${exports.ROOTED_DAYS[1]}, then ${exports.ROOTED_DAYS[2]}. Days add up; they don’t need to be in a row.`,
     },
     {
         id: 'took-root',
         kind: 'milestone',
-        name: 'Took Root',
+        name: 'Topic Recall',
         rule: 'Make one whole topic stick: every part of it answered right, without a hint, on two different days.',
     },
-    { id: 'fresh-start', kind: 'milestone', name: 'Fresh Start', rule: `Come back after ${exports.FRESH_GAP_DAYS} days or more away and finish a session.` },
-    { id: 'snare-wise', kind: 'skill', name: 'Snare-wise', rule: `Spot the snare in ${exports.SNARE_RIGHT} of your last ${exports.SNARE_WINDOW} ${g('trap')} questions.` },
-    { id: 'even-keel', kind: 'skill', name: 'Even Keel', rule: `${g('sprint')} says “well calibrated” ${exports.KEEL_ROUNDS} rounds in a row.` },
+    { id: 'fresh-start', kind: 'milestone', name: 'Study Return', rule: `Come back after ${exports.FRESH_GAP_DAYS} days or more away and finish a session.` },
+    { id: 'snare-wise', kind: 'skill', name: 'Trap Spotter', rule: `Spot the snare in ${exports.SNARE_RIGHT} of your last ${exports.SNARE_WINDOW} ${g('trap')} questions.` },
+    { id: 'even-keel', kind: 'skill', name: 'Calibration', rule: `${g('sprint')} says “well calibrated” ${exports.KEEL_ROUNDS} rounds in a row.` },
     {
         id: 'signpost-reader',
         kind: 'skill',
-        name: 'Signpost Reader',
+        name: 'Priority Reader',
         rule: `Read the deciding word right in ${exports.SIGNPOST_RIGHT} of your last ${exports.SIGNPOST_WINDOW} different FIRST questions in ${g('priority')}.`,
     },
-    { id: 'myth-clearer', kind: 'skill', name: 'Myth Clearer', rule: `Clear ${exports.MYTH_RIGHT} of your last ${exports.MYTH_WINDOW} different rumors in ${g('rumor')}.` },
+    { id: 'myth-clearer', kind: 'skill', name: 'Fact Check', rule: `Clear ${exports.MYTH_RIGHT} of your last ${exports.MYTH_WINDOW} different rumors in ${g('rumor')}.` },
     {
         id: 'sure-footed-pace',
         kind: 'skill',
-        name: 'Sure-Footed Pace',
-        rule: `Finish ${exports.PACE_ROUNDS} ${g('daylight')} rounds at Sapling pace or faster, inside the light, with ${daylight_1.PACE_RIGHT} of ${daylight_1.DAYLIGHT_SIZE} right.`,
+        name: 'Timed Accuracy',
+        rule: `Finish ${exports.PACE_ROUNDS} ${g('daylight')} rounds at Practised pace or faster, inside the light, with ${daylight_1.PACE_RIGHT} of ${daylight_1.DAYLIGHT_SIZE} right.`,
     },
-    { id: 'whole-grove', kind: 'skill', name: 'Whole Grove', rule: 'Play every game at least once.' },
-    { id: 'back-on-path', kind: 'skill', name: 'Back on the Path', rule: `Fix ${exports.GAME_FIXES} game misses later: right on a later day, in review or a later round.` },
+    { id: 'whole-grove', kind: 'skill', name: 'All Drills', rule: 'Play every game at least once.' },
+    { id: 'back-on-path', kind: 'skill', name: 'Drill Recovery', rule: `Fix ${exports.GAME_FIXES} game misses later: right on a later day, in review or a later round.` },
 ];
 exports.MILESTONES = exports.BADGES.filter((b) => b.kind === 'milestone');
 exports.SKILL_BADGES = exports.BADGES.filter((b) => b.kind === 'skill');
@@ -7837,7 +7837,7 @@ function allMarks(f) {
         out.push({
             key: `firm-footing:${d.id}`,
             badge: 'firm-footing',
-            label: `Firm Footing · ${d.short}`,
+            label: `Domain Mastery · ${d.short}`,
             met,
             progress: met ? 1 : Math.min(frac(d.answered, exports.FIRM_ANSWERS), frac(d.mastery, exports.FIRM_MASTERY)),
             detail: `${pct(d.mastery)} mastery · ${of(d.answered, exports.FIRM_ANSWERS, 'answered')}`,
@@ -7853,7 +7853,7 @@ function allMarks(f) {
         out.push({
             key: `firm-footing:${d.id}:80`,
             badge: 'firm-footing',
-            label: `Firm Footing · ${d.short} · 80%`,
+            label: `Domain Mastery · ${d.short} · 80%`,
             met,
             progress: met ? 1 : Math.min(frac(d.answered, exports.FIRM_DEEP_ANSWERS), frac(d.mastery, exports.FIRM_DEEP)),
             detail: `${pct(d.mastery)} mastery · ${of(d.answered, exports.FIRM_DEEP_ANSWERS, 'answered')}`,
@@ -7867,7 +7867,7 @@ function allMarks(f) {
         out.push({
             key: i === 0 ? 'long-memory' : `long-memory:${n}`,
             badge: 'long-memory',
-            label: `Long Memory · ${n} recalls`,
+            label: `Lasting Recall · ${n} recalls`,
             met,
             progress: met ? 1 : frac(f.longRecall, n),
             detail: of(f.longRecall, n, 'remembered'),
@@ -7878,13 +7878,13 @@ function allMarks(f) {
     if (f.tookRoot !== null) {
         const root = Math.max(0, Math.min(1, (_b = f.tookRoot) !== null && _b !== void 0 ? _b : 0));
         const rootMet = root >= 1 - 1e-9;
-        out.push(...one('took-root', rootMet, root, rootMet ? 'A topic took root' : root > 0 ? `Closest topic: ${pct(root)} rooted` : 'No whole topic yet'));
+        out.push(...one('took-root', rootMet, root, rootMet ? 'Topic recall complete' : root > 0 ? `Closest topic: ${pct(root)} recalled` : 'No whole topic yet'));
     }
     const s = sureShare(f.sure);
     const kwyk = s.n >= exports.SURE_MIN && s.right >= exports.SURE_RIGHT - 1e-9;
     out.push(...one('know-what-you-know', kwyk, s.n < exports.SURE_MIN ? frac(s.n, exports.SURE_MIN) * 0.5 : 0.5 + 0.5 * frac(s.right, exports.SURE_RIGHT), s.n < exports.SURE_MIN ? of(s.n, exports.SURE_MIN, '“sure” answers so far') : `${pct(s.right)} right on your last ${s.n} “sure” answers`));
     const dress = f.mocks.some((m) => isDressRehearsal(m, f.fullMockSize));
-    out.push({ ...one('dress-rehearsal', dress, 0, dress ? 'Done' : 'Not yet')[0], label: 'Dress Rehearsal · 1 mock' });
+    out.push({ ...one('dress-rehearsal', dress, 0, dress ? 'Done' : 'Not yet')[0], label: 'Mock Complete · 1 mock' });
     const wholeMapAt = f.wholeMapAt;
     const chain = wholeMapAt !== undefined
         ? spacedChain(f.mocks.filter((m) => isDressRehearsal(m, f.fullMockSize) && m.finishedAt !== undefined && m.finishedAt >= wholeMapAt).map((m) => m.finishedAt))
@@ -7894,7 +7894,7 @@ function allMarks(f) {
         out.push({
             key: `dress-rehearsal:${n}`,
             badge: 'dress-rehearsal',
-            label: `Dress Rehearsal · ${n} mocks`,
+            label: `Mock Complete · ${n} mocks`,
             met,
             progress: met ? 1 : frac(chain.length, n),
             detail: met ? 'Done' : `${Math.min(chain.length, n)} of ${n} full mocks, a week apart`,
@@ -7905,7 +7905,7 @@ function allMarks(f) {
     out.push(...one('on-pace', onPace, 0, onPace ? 'Done' : 'Not yet'));
     out.push(...one('mindset-shift', f.mindsetShift, 0, f.mindsetShift ? 'Done' : 'Not yet'));
     for (const n of exports.ROOTED_DAYS) {
-        out.push({ key: `rooted:${n}`, badge: 'rooted', label: `Rooted · ${n} days`, met: f.studyDays >= n, progress: frac(f.studyDays, n), detail: of(f.studyDays, n, 'study days') });
+        out.push({ key: `rooted:${n}`, badge: 'rooted', label: `${badgeDef('rooted').name} · ${n} days`, met: f.studyDays >= n, progress: frac(f.studyDays, n), detail: of(f.studyDays, n, 'study days') });
     }
     out.push(...one('fresh-start', f.freshStart, 0, f.freshStart ? 'Done' : 'Not yet'));
     const snares = f.snareHits.slice(-exports.SNARE_WINDOW);
@@ -11098,9 +11098,9 @@ exports.cardInk = {
     line: exports.light.forestTrack,
 };
 exports.badgeMetal = {
-    1: { name: 'Clay', light: '#F7D3B8', mid: '#D58A5C', dark: '#A2552B', edge: '#6B3216', bead: '#FBE5D3' },
-    2: { name: 'Lichen', light: '#FAFBF8', mid: '#C9D5CC', dark: '#8E9C92', edge: '#46544A', bead: '#FFFFFF' },
-    3: { name: 'Gold leaf', light: '#FBE9B4', mid: '#E2B653', dark: '#A87A1F', edge: '#7A5100', bead: '#FFF5D6' },
+    1: { name: 'Bronze', light: '#F7D3B8', mid: '#D58A5C', dark: '#A2552B', edge: '#6B3216', bead: '#FBE5D3' },
+    2: { name: 'Silver', light: '#FAFBF8', mid: '#C9D5CC', dark: '#8E9C92', edge: '#46544A', bead: '#FFFFFF' },
+    3: { name: 'Gold', light: '#FBE9B4', mid: '#E2B653', dark: '#A87A1F', edge: '#7A5100', bead: '#FFF5D6' },
 };
 exports.badgeStruck = { name: '', light: '#E8EFE6', mid: '#AFC2B2', dark: '#77897B', edge: '#3A4A3F', bead: '#F4F8F2' };
 exports.badgeLeafPip = { on: '#1E4A34', rib: '#A9D9BA' };
@@ -11443,6 +11443,6 @@ exports.fieldInk = {
   api["domainBand"] = load("src/engine/domainBand.ts");
   api["pace"] = load("src/engine/pace.ts");
   api["readySigns"] = load("src/engine/readySigns.ts");
-  api.sourceHash = "b3531ab7eacad049";
+  api.sourceHash = "c12d85b263bde86b";
   root.KaiSipPlant = Object.freeze(api);
 })(typeof window !== 'undefined' ? window : globalThis);

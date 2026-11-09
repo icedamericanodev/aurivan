@@ -1,98 +1,30 @@
-/**
- * You — your growth rings, your numbers, your study tools.
- * Spec: DESIGN_SYSTEM.md §11 "You". The rings (one per domain, thicker =
- * heavier on the exam) replace the old per-domain bars; the legend lists
- * domains 1 → 5 like every other list (mobile 1.15), with one line saying
- * Domain 1 is the inner ring.
- * Mobile 1.17: no appearance switch here any more. It lives only in
- * Settings → Appearance → Theme (owner request: once Settings was tidy, the
- * copy on You was redundant). The gear beside the title opens Settings.
- * Mindset growth (Phase 5b): under the stats, only when the learner picks the
- * tempting runner-up less often than in their first weeks (engine/mindsetGrowth.ts).
- * Share progress: opens a preview of a share card (components/shareCard.tsx)
- * with one honest number (engine/shareCard.ts picks it).
- * Build F: "Milestones" and "Field notes" rows under Study tools, and ONE
- * quiet line the first time after the launch back-fill ("You'd already
- * earned 4 badges.") instead of a burst of celebrations.
- * Mobile 1.10: the row is "Badges" (the badge case), with a count only
- * (never "of N") and a small "new" dot until a newly earned badge has been
- * seen. Settings → Show badges off hides the row, the dot and the line.
- * Mobile 1.7: one "Help and feedback" row at the end (app/help.tsx).
- * Mobile 1.13: your plant in the header (opens Your plant), or a "Plant
- * yours" entry when there is none. Settings → Show my plant off hides both.
- * Mobile 1.16: "See your readiness report" under the rings; each Mock exams
- * row opens the report with that mock's domains shown, and the section has
- * a "See report" button.
- * Mobile 1.21 (decided 15 Oct 2026: an exam app leads with readiness): the
- * "Readiness" section comes first (its "See report" action, the rings, the
- * note), then the stats, THEN the plant (its row, or the "Plant yours" row).
- * Share progress is a row at the end of Study tools (it was a full-width
- * button mid-screen). The back-fill line is an InviteRow (the green rule is
- * the coach's voice only). Mock exams has no "See report" of its own any
- * more: the Readiness section's is the one, and each mock row opens it too.
- * Mobile 1.24 (honest readiness): under 30 answers in a domain its legend shows a
- * word (Building under 70, Steady 70 to 79, Strong 80 and up) instead of a number
- * that has not earned its precision; from 30 answers it is the number with "%" and
- * "latest tries" (engine/domainBand.ts). What went up since the last look is said
- * ONCE under the rings, not on every row. "Badges" and "Field notes" are one row.
- * Mobile 1.43 (board 3, owner decision "one ring"): the five domain rings and
- * their legend give way to ONE readiness ring (the range, with a notch at the
- * 80% study bar) and one row per area with a word, a bar with its 70% line and
- * the percent from 30 answers (components/youReadiness.tsx). The plant, the
- * badges and Study tools stay where they were.
- * Mobile 1.44 (the owner's "Version 3"): "Your study profile" comes first,
- * above Readiness (components/studyProfile.tsx): the leaf initial, the name
- * (or "Your study profile" with "Add your name"), "Studying for CISA since …",
- * the exam date and daily time, and the starting point. Built only from the
- * learner's own choices and study; one button that opens Settings → Your name.
- * The name is used here and in Today's greeting only (display-name.test.ts).
- * Uplift Phase 6 (accounts, built OFF): in a cloud build only, the first row
- * of Help and feedback is "Sync across devices" (components/account.tsx).
- * With the flag off (every build today) nothing here changes.
- * Mobile 1.51 (Field Guide, the owner's signature pick; DESIGN_SYSTEM.md §21): a running head
- * over the study profile. Grove Phase 1: the head shows the date only (no book labels) and the kit's
- * 44pt Settings button (a cog in a rounded square) on its right, which opens the Settings screen; readiness as a scale bar
- * with the words "a study estimate" built in; the areas as one line of growth each on ONE scale in
- * a plate (Fig. 5, with its key); then the Herbarium row (the badges' way in, with the newest
- * pressed specimens); the stats are ruled label rows (Answered, Accuracy, Streak), not tiles.
- * Grove You C2 (owner: "C with the improvements", 31 Oct 2026): under the profile, ONE summary
- * sentence (this week's study days, the readiness range or the answers toward it, "Focus next" from
- * readiness.focusDomainId, the countdown; engine/groveYou.ts, the website's own rules), a "Practice
- * {area}" button (the same set as Practice's Weak spots row) and the plant chip (it replaces the plant
- * row: "Your plant" over its name and growth, or "Pick your plant"). The stats follow, then readiness.
- * The streak and accuracy rows follow Today (DECISIONS 1 and 3). The badges' way in says "Badges".
- * Settings stays its own screen: the cog in the head and a "Settings" row near the end both open it.
- */
+/** Study summary, progress, badges and personal tools. Plant links are retired; saved study and legacy companion data remain intact. */
+import { FeatureInfo } from '../../components/featureInfo';
 import { router, useFocusEffect } from 'expo-router';
 import { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { View } from 'react-native';
-import { ringsChangeLine } from '../../components/journey';
-import { AreaRows, lowEndLine, ReadinessBlock } from '../../components/youReadiness';
+import { lowEndLine, ReadinessBlock } from '../../components/youReadiness';
 import { FieldText, headDate, RunningHead } from '../../components/fieldguide';
 import { BadgeShelf, HERBARIUM, SHELF_SLOTS } from '../../components/herbarium';
 import { lastPressed } from '../../engine/fieldGuide';
-import { FadeIn, useGrowth, useScreenFocus, type Growth } from '../../components/motion';
+import { useGrowth, useScreenFocus, type Growth } from '../../components/motion';
 import { creditSubtitle } from '../../components/help';
 import { AccountSection } from '../../components/account';
 import { BoardRow } from '../../components/board';
 import { CLOUD } from '../../cloud/flag';
 import { MindsetGrowthCard } from '../../components/moments';
-import { BadgeIcon, Bookmark, ChevronRight, Crosshair, Gauge, ICON_STROKE, Leaf, LifeBuoy, NotebookPen, RotateCcw, Settings, Share2, Sprout } from '../../components/icons';
+import { BadgeIcon, Bookmark, ChevronRight, Crosshair, Gauge, ICON_STROKE, LifeBuoy, NotebookPen, RotateCcw, Settings, Share2 } from '../../components/icons';
 import { CardHead, HubCard } from '../../components/groveHub';
-import { MiniReadyRing, StatGrid, StatTile, YourPlantCard } from '../../components/groveYou';
+import { MiniReadyRing, StatGrid, StatTile } from '../../components/groveYou';
 import { ShareProgressSheet } from '../../components/shareCard';
-import { LivePlant } from '../../components/plant/LivePlant';
-import { growthShort, plantCallName } from '../../engine/plant';
 import { youStreakRow, youSummary } from '../../engine/groveYou';
 import { accuracyTile, twigWeek } from '../../engine/groveToday';
 import { SETTINGS_ROW_NOTE, YouSummaryLine } from '../../components/youTop';
-import { usePlantView } from '../../lib/plant';
 import { Button, EmptyState, Enter, ICON_SIZE, InviteRow, Lead, ListRow, Screen, T, useFontScale } from '../../components/ui';
 import { pacingStats, pacingStatsLine, spokenMin } from '../../engine/pace';
 import { mockSubtitle } from '../../components/readinessReport';
 import { RANGE_MIN_ANSWERS, readinessRange, type ReadinessRange } from '../../engine/readinessRange';
 import { mockPct } from '../../engine/readinessReport';
-import { BAND_MIN_ANSWERS, BANDS_LINE, domainFigure } from '../../engine/domainBand';
 import { dayKey } from '../../engine/streak';
 import { FOCUS_SET_SIZE, guardedStart, reviewSubtitle, startFocusPractice, startReview } from '../../lib/sessions';
 import { caseEarnedCount } from '../../engine/badgeCatalog';
@@ -124,9 +56,6 @@ const openNameEditor = () => {
 /** The badges screen (the route keeps its old name, so links and Results still work). */
 const openHerbarium = () => router.push('/milestones');
 
-/** When You's rings have finished growing (five arcs, outer first 60 ms apart, each over `grow`): the plant breathes after. */
-const RINGS_SETTLED_MS = motion.dur.grow + 4 * motion.stagger.stat;
-
 /** A day key ("2026-10-31") at local noon, for its date words in the head (the key follows the day). */
 const dayStart = (key: string) => new Date(`${key}T12:00:00`).getTime();
 
@@ -138,11 +67,6 @@ export default function You() {
   const range = readinessRange(cert, readiness);
   const answered = readiness.domains.reduce((s, d) => s + d.answered, 0);
   const mastered = readiness.domains.reduce((s, d) => s + d.mastered, 0);
-  // Mobile 1.24: a word below 30 answers in a domain, the number from 30 (engine/domainBand.ts).
-  const figures = readiness.domains.map((d) => domainFigure(d.answered, Math.round(d.mastery * 100)));
-  // Mobile 1.43: an area with some answers but under 30 is "thin" (its bar is lighter, "N answered" shows).
-  // UX review P3: any area under 30 answers (a brand-new learner's five too) shows the bands line.
-  const anyThin = readiness.domains.some((d) => d.answered < BAND_MIN_ANSWERS);
   const growth = useMindsetGrowth(cert.id, progress);
   // Help and feedback (mobile 1.7): the row says so when a report's update hasn't been seen yet.
   const { dueItems: creditItems } = useReports();
@@ -172,29 +96,11 @@ export default function You() {
     if (backfill && !backfill.seen) seeBackfill(cert.id);
   }, [backfill, cert.id]);
 
-  // Mobile 1.9 motion, when You is on view: the rings grow from what you last
-  // saw here (the first view of the day grows from 0), each domain that went
-  // up gets a quiet "+4", and the numbers that went up roll. A fall is just
-  // shown; coming back with nothing new shows everything still.
   const focused = useScreenFocus();
-  const ringValues = readiness.domains.map((d) => (d.answered ? Math.round(d.mastery * 100) : 0));
-  const rings = useGrowth(`you:rings:${cert.id}`, ringValues, { active: focused, firstOfDay: true });
   const rangeGrowth = useGrowth(`you:range:${cert.id}`, range.enough ? [range.low, range.high] : [], { active: focused, firstOfDay: true });
   const accuracy = answered ? Math.round((mastered / answered) * 100) : 0;
   const stats = useGrowth(`you:stats:${cert.id}`, [answered, accuracy, streak], { active: focused });
-  // "+4" only for what went up since a real last look (not the day's count-up
-  // from 0; a first rise from all zeros does count).
-  const sinceLook = rings.play && rings.since === true;
-  // What went up, per domain. A domain shown as a word only ("Building", under 30 answers) shows no number,
-  // so it gets no "+12" either (mobile 1.24): only the domains that show a number are counted.
-  const ups = ringValues.map((v, i) => (figures[i].banded ? 0 : v - rings.from[i]));
-  const changeLine = sinceLook ? ringsChangeLine(cert, ups) : null;
   const statRoll = (k: number, from: string) => ({ play: stats.play, from, run: stats.run, delay: motion.dur.select + k * motion.stagger.stat });
-  const plant = usePlantView();
-  // The same object while the look is unchanged: the memoised plant skips re-rendering (performance, 1.15.x).
-  const lookArt = plant.look?.art;
-  const rowLook = useMemo(() => (lookArt ? { ...lookArt, keepsakes: [] } : undefined), [lookArt]);
-
   // Mobile 1.44: "Your study profile", from the learner's own choices and study only.
   // Today's day, read again whenever You comes into view (render stays pure), so "Exam 14 Feb" drops off after the day.
   const [today, setToday] = useState(() => dayKey(Date.now()));
@@ -261,28 +167,6 @@ export default function You() {
   // The Estimated readiness card's words (PHASE4.md 7.14 item 5): before the first range, how many of
   // the 40 answers are in; the ring shows the same count as dots.
   const towardRange = RANGE_MIN_ANSWERS - (range.enough ? 0 : range.needed);
-  const plantArt = plant.plant ? (
-    // Mobile 1.14: one slow breath the first time You comes into view this session, then still.
-    <LivePlant
-      species={plant.plant.species}
-      stage={plant.plant.growth}
-      organs={plant.scales}
-      quietLook={!plant.face}
-      resting={plant.resting}
-      size={60}
-      // The card is forest in both themes, so the plant takes its dark palette (as in Today's ring).
-      theme="dark"
-      lod="small"
-      fit
-      // At this size keepsakes would shrink the plant to fit them: the card shows the plant and its colours.
-      look={rowLook}
-      mood={plant.look?.mood}
-      breathe="you"
-      // One thing moves at a time: the breath waits until the areas have grown.
-      breatheDelay={rings.play ? RINGS_SETTLED_MS : 0}
-    />
-  ) : null;
-
   return (
     <Screen>
       <Enter i={0}>
@@ -318,28 +202,6 @@ export default function You() {
       </Enter>
 
       <Enter i={1}>
-        {/* Grove Phase 4 (the 04 board): the forest "Your plant" card, in place of the small chip. It opens Your
-            plant, or the picker with no plant yet. Settings → Show my plant off hides it. */}
-        {plant.plant ? (
-          <YourPlantCard
-            title={plantCallName(plant.plant)}
-            line={`${growthShort(plant.plant.growth)} · never wilts`}
-            spoken={`Your plant: ${plant.label}`}
-            hint="Opens your plant"
-            onPress={() => router.push('/plant')}
-            art={plantArt}
-          />
-        ) : plant.shown ? (
-          <YourPlantCard
-            title="Pick your plant"
-            line="Grows with your study, never wilts"
-            spoken="Your plant: pick your plant. It grows only with your study."
-            hint="Opens the plant picker"
-            onPress={() => router.push('/plant-pick')}
-            art={<Sprout size={32} color={c.onForest} strokeWidth={ICON_STROKE} />}
-          />
-        ) : null}
-
         {/* The stats as the board's four tiles, two by two (one column at large text). */}
         <StatGrid testID="you-stats">
           <StatTile key="answered" label="Answered" value={String(answered)} spoken={String(answered)} roll={statRoll(0, String(stats.from[0]))} />
@@ -369,24 +231,11 @@ export default function You() {
             <StatTile key="streak" label={streakRow.label} value={streakRow.value} unit={streakRow.unit} spoken={streakRow.spoken} />
           )}
         </StatGrid>
-        <T v="meta" style={{ marginTop: space.sm }}>Each question counts once, at your latest try.</T>
+        <View style={{ alignItems: 'flex-end' }}><FeatureInfo title="Study progress"><T v="body">Each question counts once, at your latest try. Accuracy appears after 30 answers.</T></FeatureInfo></View>
       </Enter>
 
       <Enter i={2}>
         <ReadinessCard range={range} towardRange={towardRange} growth={rangeGrowth} />
-        {/* The areas on one scale, in one card with its Report link and key (components/youReadiness.tsx). */}
-        <View style={{ marginTop: space.lg }}>
-          <AreaRows cert={cert} readiness={readiness} ups={sinceLook ? ups : undefined} play={sinceLook ? 'growth' : rings.play} run={rings.run} onReport={() => router.push('/readiness')}>
-            {/* What went up since the last look, said once under the areas (mobile 1.24); the rows' labels hold the figures. */}
-            {changeLine && (
-              <FadeIn rise={false} dur="select" delay={motion.dur.select + RINGS_SETTLED_MS}>
-                <T v="caption" color={c.accentText} style={{ marginTop: space.sm }}>{changeLine}</T>
-              </FadeIn>
-            )}
-            {/* A number shows from 30 answers in an area: said once while any area is still thin. */}
-            {anyThin && <T v="meta" style={{ marginTop: space.sm }}>{BANDS_LINE}</T>}
-          </AreaRows>
-        </View>
         {/* The badges, as one card (Settings → Show badges off hides it). */}
         {!badgesHidden && (
           <HubCard testID="you-badges" style={{ marginTop: space.lg }}>
@@ -529,7 +378,7 @@ const YouLists = memo(function YouLists({
         />
         {/* Mobile 1.51: with badges hidden in Settings, Field notes has its own row here (the badges card holds it otherwise). */}
         {badgesHidden && (
-          <ListRow icon={icon(Leaf)} title="Field notes" subtitle="Your level in each game" accessibilityLabel="Field notes. Your level in each game" onPress={() => router.push('/field-notes')} />
+          <ListRow icon={icon(Gauge)} title="Drill progress" subtitle="Your level in each drill" accessibilityLabel="Drill progress. Your level in each drill" onPress={() => router.push('/field-notes')} />
         )}
         <ListRow
           icon={icon(Share2)}

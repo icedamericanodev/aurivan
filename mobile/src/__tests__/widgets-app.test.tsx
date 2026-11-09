@@ -215,11 +215,11 @@ describe('collectSnapshot', () => {
     expect(collectSnapshot(NOW).road).toBeNull();
   });
 
-  it('the plant: none, off, and its growth', () => {
+  it('retired plant data is never collected', () => {
     setUp();
     expect(collectSnapshot(NOW).plant).toBeNull();
     useProgress.getState().setPlantSettings({ showPlant: false });
-    expect(collectSnapshot(NOW).plant).toEqual({ off: true });
+    expect(collectSnapshot(NOW).plant).toBeNull();
   });
 });
 
@@ -310,6 +310,12 @@ describe('lib/widgets on Android', () => {
     expect(requestPinWidget).toHaveBeenCalledWith({ widgetName: 'TodayPlan' });
     (getWidgetInfo as jest.Mock).mockImplementation(async (name: string) => (name === 'YourPlant' ? [{ widgetId: 3 }] : []));
     await expect(android.placedKinds()).resolves.toEqual(['plant']);
+  });
+
+  it('does not offer to pin a retired plant provider', async () => {
+    (requestPinWidget as jest.Mock).mockClear();
+    await expect(android.pinWidget('plant')).resolves.toBe(false);
+    expect(requestPinWidget).not.toHaveBeenCalled();
   });
 
   it('Think first reveal marks live in their own key, never in a study store', async () => {
@@ -435,7 +441,7 @@ describe('a widget tap', () => {
   it('plain goals open their screen; a principle by id, else the list', () => {
     setUp();
     openFromWidget(tap({ kind: 'plant', go: 'plant' }));
-    expect(mockRouter.push).toHaveBeenLastCalledWith('/plant');
+    expect(mockRouter.replace).toHaveBeenLastCalledWith('/home');
     openFromWidget(tap({ kind: 'think', go: 'principle', id: 'final-two' }));
     expect(mockRouter.push).toHaveBeenLastCalledWith({ pathname: '/principles/[id]', params: { id: 'final-two' } });
     openFromWidget(tap({ kind: 'think', go: 'principle', id: 'not-a-principle' }));

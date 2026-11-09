@@ -1,6 +1,6 @@
 /**
- * Owner decision (1.6.1): a round of a note-card game (Field Guide, Canopy
- * Call, Stepping Stones, Root or Rumor) is study, so it counts as a study day
+ * Owner decision (1.6.1): a round of a note-card game (Term Match, Canopy
+ * Call, Sequence Check, Fact or Myth) is study, so it counts as a study day
  * for the streak and for Rooted. It still records no question answer.
  */
 import { dayKey } from '../engine/streak';

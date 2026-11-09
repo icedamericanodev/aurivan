@@ -12,7 +12,7 @@ import { join } from 'path';
 const harness = readFileSync(join(__dirname, '../../../scripts/smoke/mobile.mjs'), 'utf8');
 const quiz = readFileSync(join(__dirname, '../components/quiz.tsx'), 'utf8');
 // Read as text: the screen modules pull in the icon set, which plain Jest can't load here.
-const readiness = readFileSync(join(__dirname, '../components/youReadiness.tsx'), 'utf8');
+const you = readFileSync(join(__dirname, '../app/(tabs)/you.tsx'), 'utf8');
 
 it('the smoke harness no longer asks for the removed "Fig. 4" caption or a "Figure N" plate', () => {
   expect(harness).not.toMatch(/Fig\\\.\\s\*4|Fig\. 4 ·/);
@@ -28,8 +28,9 @@ it('what the harness checks is what the app draws', () => {
   expect(quiz).toContain("'Your answer · the best'");
   expect(quiz).toContain("'Best answer'");
   expect(harness).toContain('Your answer · the best');
-  // You's areas chart title: areasTitle(5) = "Five areas, one scale".
-  expect(readiness).toContain("'Five'");
-  expect(readiness).toContain("'areas'}, one scale`");
-  expect(harness).toContain('Five areas, one scale');
+  // The retired chart is replaced by the existing summary and its report link.
+  expect(you).toContain('See report, your readiness report');
+  expect(harness).toContain('See report, your readiness report');
+  expect(harness).toContain('no readiness summary on You');
+  expect(harness).not.toContain('no areas chart');
 });

@@ -15,7 +15,7 @@ import { getCertification } from '../content/certifications';
 import { selectCert, useProgress } from '../store/progress';
 import { useSession } from '../store/session';
 import { useSettings } from '../store/settings';
-import { plantNew } from '../engine/plant';
+
 import { headDate } from '../components/fieldguide';
 import { FOCUS_SET_SIZE } from '../lib/sessions';
 import { readinessFor } from '../engine/readiness';
@@ -140,48 +140,6 @@ describe('the head and the summary sentence', () => {
   });
 });
 
-describe('the plant chip', () => {
-  it('with a plant: "Your plant" over its name and growth; it opens Your plant', () => {
-    act(() => {
-      useProgress.getState().updatePlant('cisa', () => plantNew('oak', 'Bayani', Date.now()));
-    });
-    mount();
-    const chip = root().findAll((n) => n.props.testID === 'you-plant-chip' && typeof n.type === 'string');
-    expect(chip).toHaveLength(1);
-    expect(textOf(chip[0])).toContain('Your plant');
-    // Grove Phase 4 (the 04 board): a forest card, the name over its growth and the plant's promise.
-    expect(textOf(chip[0])).toContain('Bayani');
-    expect(textOf(chip[0])).toContain('Seed · growth 1 of 6 · never wilts');
-    expect(chip[0].props.accessibilityLabel).toMatch(/^Your plant: /);
-    press(/^Your plant: /);
-    expect(router.push).toHaveBeenCalledWith('/plant');
-  });
-
-  it('no plant: "Pick your plant" opens the picker; Show my plant off: no chip', () => {
-    mount();
-    expect(allText()).toContain('Pick your plant');
-    press(/^Your plant: pick your plant/);
-    expect(router.push).toHaveBeenCalledWith('/plant-pick');
-    act(() => {
-      r!.unmount();
-    });
-    act(() => {
-      useProgress.getState().setPlantSettings({ showPlant: false });
-    });
-    mount();
-    expect(root().findAll((n) => n.props.testID === 'you-plant-chip')).toHaveLength(0);
-    act(() => {
-      useProgress.getState().setPlantSettings({ showPlant: true });
-    });
-  });
-
-  it('the chip is at least 48pt to the finger', () => {
-    mount();
-    const chip = root().findAll((n) => n.props.testID === 'you-plant-chip' && typeof n.type === 'string')[0];
-    const flat = [chip.props.style].flat(Infinity).reduce((a: Record<string, unknown>, s) => ({ ...a, ...(s ?? {}) }), {});
-    expect(flat.minHeight).toBeGreaterThanOrEqual(48);
-  });
-});
 
 describe('the stats follow Today (DECISIONS 1 and 3)', () => {
   const stats = () => labels().filter((l) => /^(Answered|Accuracy|Streak|This week): /.test(l));
@@ -203,7 +161,7 @@ describe('the stats follow Today (DECISIONS 1 and 3)', () => {
 describe('Badges, never "Herbarium", and the Settings row', () => {
   it('the badges row says and shows "Badges"', () => {
     mount();
-    expect(labels().some((l) => l.startsWith('Badges: your badges and field notes'))).toBe(true);
+    expect(labels().some((l) => l.startsWith('Badges: your study badges'))).toBe(true);
     expect(allText()).not.toMatch(/Herbarium|Field guide|Field record|Plate|Fig\./);
     expect(labels().join(' ')).not.toMatch(/Herbarium|Field guide|Field record|Fig\./);
   });
@@ -219,16 +177,14 @@ describe('Badges, never "Herbarium", and the Settings row', () => {
     expect(router.push).toHaveBeenCalledWith('/settings');
   });
 
-  it('at 200% text nothing is cut: the summary, the chip and the Settings row keep every word', () => {
+  it('at 200% text nothing is cut: the summary and the Settings row keep every word', () => {
     const w = Dimensions.get('window');
     act(() => Dimensions.set({ window: { ...w, fontScale: 2 }, screen: { ...w, fontScale: 2 } }));
     try {
       mount();
-      const cut = root().findAll((n) => typeof n.type === 'string' && typeof n.props.numberOfLines === 'number' && /study days|Pick your plant|Name, exam date/.test(textOf(n)));
+      const cut = root().findAll((n) => typeof n.type === 'string' && typeof n.props.numberOfLines === 'number' && /study days|Name, exam date/.test(textOf(n)));
       expect(cut).toHaveLength(0);
-      const chip = root().findAll((n) => n.props.testID === 'you-plant-chip' && typeof n.type === 'string')[0];
-      const flat = [chip.props.style].flat(Infinity).reduce((a: Record<string, unknown>, s) => ({ ...a, ...(s ?? {}) }), {});
-      expect(flat.alignSelf).toBe('stretch');
+      expect(root().findAll((n) => n.props.testID === 'you-plant-chip')).toHaveLength(0);
     } finally {
       act(() => Dimensions.set({ window: { ...w, fontScale: w.fontScale }, screen: { ...w, fontScale: w.fontScale } }));
     }
