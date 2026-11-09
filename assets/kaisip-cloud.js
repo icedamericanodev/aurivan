@@ -5952,12 +5952,15 @@ function isCheckCorrect(correctIndex, displayChoice, perm) {
   defs["src/engine/slipCoach.ts"] = function (module, exports, require) {
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.SLIP_LINE = exports.RUNNER_UP_LINE = exports.NEUTRAL_MISS_LINE = exports.PATTERN_ORDER = exports.PATTERN_COPY = exports.SLIP_COACH_MIN = void 0;
+exports.SLIP_LINE = exports.RUNNER_UP_LINE = exports.NEUTRAL_MISS_LINE = exports.PATTERN_ORDER = exports.PATTERN_COPY = exports.SLIP_COACH_MIN = exports.isThinkingSlip = exports.THINKING_SLIPS = void 0;
 exports.missCoachLine = missCoachLine;
 exports.patternsOf = patternsOf;
 exports.slipCoach = slipCoach;
 const priorityLens_1 = require("./games/priorityLens");
 const tips_1 = require("./tips");
+exports.THINKING_SLIPS = ['role', 'priority', 'tech-first', 'symptom', 'misread', 'knowledge'];
+const isThinkingSlip = (value) => exports.THINKING_SLIPS.includes(value);
+exports.isThinkingSlip = isThinkingSlip;
 exports.SLIP_COACH_MIN = 5;
 exports.PATTERN_COPY = {
     'runner-up': { title: 'You often pick the closest wrong choice', coach: 'Two options look right. Say why the best one wins before you tap.', game: 'trap' },
@@ -5987,19 +5990,20 @@ function missCoachLine(pickedRunnerUp, slip) {
 }
 function patternsOf(m) {
     const out = [];
-    if (m.picked && m.picked !== m.correct && m.picked === (0, tips_1.runnerUp)(m.tips, m.correct))
+    const wrongPick = !!m.picked && /^[A-D]$/.test(m.picked) && /^[A-D]$/.test(m.correct) && m.picked !== m.correct;
+    if (wrongPick && m.picked === (0, tips_1.runnerUp)(m.tips, m.correct))
         out.push('runner-up');
     if (m.slip === 'priority' || (m.slip === 'misread' && (0, priorityLens_1.priorityWord)(m.stem) !== null))
         out.push('priority');
-    if (m.confidence === 'sure')
+    if (wrongPick && m.confidence === 'sure')
         out.push('overconfident');
-    if (m.slip && m.slip !== 'priority')
+    if (m.slip && (0, exports.isThinkingSlip)(m.slip) && m.slip !== 'priority')
         out.push(m.slip);
     return out;
 }
 function slipCoach(mistakes) {
     var _a, _b;
-    const tagged = mistakes.filter((m) => m.slip);
+    const tagged = mistakes.filter((m) => (0, exports.isThinkingSlip)(m.slip));
     if (tagged.length < exports.SLIP_COACH_MIN) {
         return { ready: false, tagged: tagged.length, needed: exports.SLIP_COACH_MIN - tagged.length };
     }
@@ -7521,7 +7525,9 @@ function runnerUp(tips, correct) {
     const finalTwo = tips.find((t) => /^Final two:/.test(t));
     if (!finalTwo)
         return undefined;
-    const letters = [...finalTwo.matchAll(/\{\{([A-D])\}\}/g)].map((m) => m[1]);
+    const letters = [...new Set([...finalTwo.matchAll(/\{\{([A-D])\}\}/g)].map((m) => m[1]))];
+    if (letters.length !== 2 || !letters.includes(correct))
+        return undefined;
     return letters.find((l) => l !== correct);
 }
 function eliminateTip(tips) {
@@ -10502,7 +10508,7 @@ function decodeUtf8(bytes) {
   var api = {};
   api["browser"] = load("src/webcloud/browser.ts");
   api["config"] = load("src/webcloud/config.ts");
-  api.sourceHash = "4baef9f04851a369";
+  api.sourceHash = "8f195dbb38fc2d84";
   var cloud = load("src/webcloud/index.ts");
   var liveVersion = "1.48.0";
   var liveStoreVersions = {"progress":2,"settings":1};
