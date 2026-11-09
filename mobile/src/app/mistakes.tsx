@@ -212,6 +212,8 @@ const MistakeCard = memo(function MistakeCard({
                 {SLIPS.map((s) => (
                   <Chip
                     key={s.id}
+                    shape="rounded"
+                    fullWidth
                     label={s.label}
                     accessibilityLabel={`Tag: ${s.label}`}
                     accessibilityHint={`For example: ${s.example}`}

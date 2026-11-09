@@ -1451,6 +1451,8 @@ export function Chip({
   accessibilityHint,
   disabled,
   checkbox,
+  shape = 'pill',
+  fullWidth = false,
 }: {
   label: string;
   selected: boolean;
@@ -1461,9 +1463,14 @@ export function Chip({
   disabled?: boolean;
   /** One of several independent on/off choices (e.g. reminder days): spoken as checkbox, checked / not checked. */
   checkbox?: boolean;
+  /** Long reading labels need corners that stay clear of wrapped text. */
+  shape?: 'pill' | 'rounded';
+  /** Give long native labels a stable width before measuring wrapped lines. */
+  fullWidth?: boolean;
 }) {
   const { c } = useTheme();
-  const press = usePressScale({ tint: c.soft, tintRadius: radius.pill });
+  const corner = shape === 'rounded' ? radius.md : radius.pill;
+  const press = usePressScale({ tint: c.soft, tintRadius: corner });
   // A disabled chip: muted words and a quiet edge; a chosen and disabled chip keeps its tick, in muted.
   const ink = disabled ? c.muted : c.ink;
   return (
@@ -1478,13 +1485,13 @@ export function Chip({
       hitSlop={4} // 40pt chip + 4pt each side = 48pt touch target
       onPressIn={press.onPressIn}
       onPressOut={press.onPressOut}
-      style={[styles.chip, { backgroundColor: c.raised, borderColor: disabled ? c.line : c.control }, press.style]}
+      style={[styles.chip, { backgroundColor: c.raised, borderColor: disabled ? c.line : c.control, borderRadius: corner }, fullWidth && { width: '100%', justifyContent: 'flex-start' }, press.style]}
     >
       {press.layer}
       {/* The 2pt ink edge, drawn over the 1.5pt rest edge (it cross-fades in over 120 ms). */}
-      <StateLayer on={selected} style={[styles.chipFill, { borderWidth: 2, borderColor: ink }]} />
+      <StateLayer on={selected} style={[styles.chipFill, { borderWidth: 2, borderColor: ink, borderRadius: corner }]} />
       {selected && <Check testID="chip-tick" size={14} color={ink} strokeWidth={2.5} />}
-      <Text maxFontSizeMultiplier={role.chip.max} style={[role.chip.style, styles.chipLabel, { color: ink }]}>{label}</Text>
+      <Text maxFontSizeMultiplier={role.chip.max} style={[role.chip.style, styles.chipLabel, fullWidth && { flex: 1, minWidth: 0 }, { color: ink }]}>{label}</Text>
     </AnimatedPressable>
   );
 }
