@@ -213,7 +213,7 @@ describe('Settings, mobile 1.46: one page, clear groups', () => {
   it('Reset says what goes and what stays', () => {
     mockParams.current = { category: 'data' };
     render();
-    expect(textOf(root())).toContain('Erases your CISA progress on this phone. Settings stay.');
+    expect(textOf(root())).toContain('Erases your CISA progress on this phone. Returns to setup. Your preferences and other exams stay.');
   });
 
   it('no Settings gear on Settings itself', () => {

@@ -11,7 +11,7 @@
  * Gotcha (see session-screen.regression.test.tsx): never write
  * `act(() => store.action())` — use braces.
  */
-import { Alert, Dimensions } from 'react-native';
+import { Alert, Dimensions, Platform } from 'react-native';
 import { act, create, type ReactTestInstance, type ReactTestRenderer } from 'react-test-renderer';
 import { ChevronRight } from '../components/icons';
 import { Button } from '../components/ui';
@@ -20,10 +20,13 @@ import { useRestoreFlow } from '../lib/useRestoreFlow';
 import { getAllQuestions } from '../content/loader';
 import { BACKUP_ERROR_COPY } from '../engine/backup';
 import { currentBackup } from '../lib/backup';
+import { saveBackupOnDevice } from '../lib/backupDevice';
 import { selectCert, useProgress } from '../store/progress';
 import { useBackup } from '../store/backup';
 import { useSession } from '../store/session';
 import { useSettings } from '../store/settings';
+
+jest.mock('../lib/backupDevice', () => ({ saveBackupOnDevice: jest.fn() }));
 
 jest.mock('@react-native-async-storage/async-storage', () =>
   jest.requireActual('@react-native-async-storage/async-storage/jest/async-storage-mock'),
@@ -305,5 +308,49 @@ describe('Settings → Your data', () => {
     expect(allText()).toContain('Your paused session will end.');
     await press('Replace my progress');
     expect(useSession.getState().active).toBeNull();
+  });
+});
+
+// Android exposes an explicit device-local save, with independent, truthful outcomes.
+describe('Android device save', () => {
+  const originalOS = Platform.OS;
+  beforeEach(() => {
+    Object.defineProperty(Platform, 'OS', { configurable: true, value: 'android' });
+    jest.mocked(saveBackupOnDevice).mockReset();
+    act(() => { r = create(<YourData />); });
+  });
+  afterEach(() => Object.defineProperty(Platform, 'OS', { configurable: true, value: originalOS }));
+  it('offers both local save and existing sharing', async () => {
+    expect(button('Save on this device')).toBeDefined();
+    expect(button('Save a backup')).toBeDefined();
+    jest.mocked(saveBackupOnDevice).mockResolvedValue('saved');
+    await press('Save on this device');
+    expect(allText()).toContain('Backup saved');
+    expect(allText()).toContain('written and checked in the folder you chose');
+  });
+  it('announces cancellation without claiming a saved file', async () => {
+    jest.mocked(saveBackupOnDevice).mockResolvedValue('cancelled');
+    await press('Save on this device');
+    expect(allText()).toContain('No backup was saved. Your progress is unchanged.');
+    expect(allText()).not.toContain('Backup saved');
+  });
+  it('shows a retryable error without claiming success', async () => {
+    jest.mocked(saveBackupOnDevice).mockRejectedValue(new Error('Write failed'));
+    await press('Save on this device');
+    expect(allText()).toContain('Backup could not be saved');
+    expect(allText()).toContain('An incomplete file may remain');
+    expect(button('Save on this device').props.disabled).toBe(false);
+  });
+  it('guards double taps before a rerender opens two folder pickers', async () => {
+    let finish!: (value: 'cancelled') => void;
+    jest.mocked(saveBackupOnDevice).mockImplementation(() => new Promise((resolve) => { finish = resolve; }));
+    const onPress = button('Save on this device').props.onPress;
+    await act(async () => {
+      const first = onPress();
+      const second = onPress();
+      finish('cancelled');
+      await Promise.all([first, second]);
+    });
+    expect(saveBackupOnDevice).toHaveBeenCalledTimes(1);
   });
 });

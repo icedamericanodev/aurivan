@@ -353,6 +353,45 @@ export interface ProgressState {
   setPlantLook: (certId: string, change: { [K in keyof PlantLook]?: PlantLook[K] | null }) => void;
 }
 
+/** Compute a per-exam reset without changing live stores or writing storage. */
+export function progressAfterCertReset(s: ProgressState, certId: string): Pick<ProgressState, 'byCert' | 'days'> {
+  const days = { ...s.days };
+  delete days[certId];
+  // "Shows once per certification": a reset keeps the dismissed flag.
+  const seen = ownOf(s.byCert, certId)?.moments?.readySeenAt;
+  // Mobile 1.16: the exam-week checklist is about the exam itself (the
+  // booking, the route, sleep), not study progress: a reset keeps it.
+  const examWeek = ownOf(s.byCert, certId)?.moments?.examWeek;
+  // Build F: a reset is a fresh start for milestones too. The launch
+  // back-fill is marked as already done (nothing found, summary seen),
+  // so it never runs again and re-awards from older data.
+  // The catalogue fill is marked done too (mobile 1.11), for the same reason.
+  const milestones: CertMilestones = { earned: {}, backfill: { at: Date.now(), count: 0, seen: true }, catalog: CATALOG_VERSION };
+  const base: CertProgress = { ...emptyCert(), milestones };
+  const fresh: CertProgress = seen || examWeek ? { ...base, moments: { ...(seen ? { readySeenAt: seen } : {}), ...(examWeek ? { examWeek } : {}) } } : base;
+  // Mobile 1.13: the plant goes back to a seed, but keeps its name,
+  // species, look and unlocks (cosmetics carry no readiness claim).
+  // `replantedAt` stops an old exam-ready moment helping it bloom.
+  // Mobile 1.14: every unlock open now (growth, badges and planters from
+  // ANY exam, and what was kept before) goes into `kept`, so the look
+  // the learner earned survives the seed.
+  // The keepsakes on show are written down first (freezeKeepsakes), so a
+  // default "first three earned" never reshuffles when badges go.
+  const plant = ownOf(s.byCert, certId)?.plant;
+  const marks = Object.values(s.byCert).map((c) => ({ earned: c?.milestones?.earned, planters: c?.milestones?.planters }));
+  if (plant) fresh.plant = resetPlant(freezeKeepsakes(plant, marks), Date.now(), keepOnReset(plant, marks));
+  // Code review M6: another exam's plant never loses a keepsake or a
+  // planter because THIS exam's badges were cleared.
+  const byCert = { ...s.byCert, [certId]: fresh };
+  const resetMarks = { earned: ownOf(s.byCert, certId)?.milestones?.earned, planters: ownOf(s.byCert, certId)?.milestones?.planters };
+  for (const [id, c] of Object.entries(s.byCert)) {
+    if (id === certId || !c?.plant) continue;
+    const kept = keepThroughOtherReset(c.plant, marks, resetMarks);
+    if (kept !== c.plant) byCert[id] = { ...c, plant: kept };
+  }
+  return { byCert, days };
+}
+
 export const useProgress = create<ProgressState>()(
   persist(
     (set, get) => ({
@@ -707,44 +746,7 @@ export const useProgress = create<ProgressState>()(
 
       // A reset is per exam and leaves "Your reports" alone: those are the
       // learner's messages to us, not study progress.
-      resetCert: (certId) =>
-        set((s) => {
-          const days = { ...s.days };
-          delete days[certId];
-          // "Shows once per certification": a reset keeps the dismissed flag.
-          const seen = ownOf(s.byCert, certId)?.moments?.readySeenAt;
-          // Mobile 1.16: the exam-week checklist is about the exam itself (the
-          // booking, the route, sleep), not study progress: a reset keeps it.
-          const examWeek = ownOf(s.byCert, certId)?.moments?.examWeek;
-          // Build F: a reset is a fresh start for milestones too. The launch
-          // back-fill is marked as already done (nothing found, summary seen),
-          // so it never runs again and re-awards from older data.
-          // The catalogue fill is marked done too (mobile 1.11), for the same reason.
-          const milestones: CertMilestones = { earned: {}, backfill: { at: Date.now(), count: 0, seen: true }, catalog: CATALOG_VERSION };
-          const base: CertProgress = { ...emptyCert(), milestones };
-          const fresh: CertProgress = seen || examWeek ? { ...base, moments: { ...(seen ? { readySeenAt: seen } : {}), ...(examWeek ? { examWeek } : {}) } } : base;
-          // Mobile 1.13: the plant goes back to a seed, but keeps its name,
-          // species, look and unlocks (cosmetics carry no readiness claim).
-          // `replantedAt` stops an old exam-ready moment helping it bloom.
-          // Mobile 1.14: every unlock open now (growth, badges and planters from
-          // ANY exam, and what was kept before) goes into `kept`, so the look
-          // the learner earned survives the seed.
-          // The keepsakes on show are written down first (freezeKeepsakes), so a
-          // default "first three earned" never reshuffles when badges go.
-          const plant = ownOf(s.byCert, certId)?.plant;
-          const marks = Object.values(s.byCert).map((c) => ({ earned: c?.milestones?.earned, planters: c?.milestones?.planters }));
-          if (plant) fresh.plant = resetPlant(freezeKeepsakes(plant, marks), Date.now(), keepOnReset(plant, marks));
-          // Code review M6: another exam's plant never loses a keepsake or a
-          // planter because THIS exam's badges were cleared.
-          const byCert = { ...s.byCert, [certId]: fresh };
-          const resetMarks = { earned: ownOf(s.byCert, certId)?.milestones?.earned, planters: ownOf(s.byCert, certId)?.milestones?.planters };
-          for (const [id, c] of Object.entries(s.byCert)) {
-            if (id === certId || !c?.plant) continue;
-            const kept = keepThroughOtherReset(c.plant, marks, resetMarks);
-            if (kept !== c.plant) byCert[id] = { ...c, plant: kept };
-          }
-          return { byCert, days };
-        }),
+      resetCert: (certId) => set((s) => progressAfterCertReset(s, certId)),
     }),
     {
       name: 'aurivan.progress.v1',

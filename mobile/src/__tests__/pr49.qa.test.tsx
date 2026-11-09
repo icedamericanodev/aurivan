@@ -46,7 +46,7 @@ jest.mock('../components/icons', () => {
 jest.mock('../components/brand', () => ({ KaisipLockup: () => null, KaisipMark: () => null, PillarList: () => null }));
 let mockParams: Record<string, string> = {};
 jest.mock('expo-router', () => ({
-  router: { push: jest.fn(), replace: jest.fn(), back: jest.fn(), navigate: jest.fn(), canGoBack: () => true, canDismiss: () => false },
+  router: { push: jest.fn(), replace: jest.fn(), back: jest.fn(), navigate: jest.fn(), canGoBack: () => true, canDismiss: () => false, dismissAll: jest.fn() },
   useFocusEffect: (cb: () => void | (() => void)) => jest.requireActual('react').useEffect(() => cb(), [cb]),
   useLocalSearchParams: () => mockParams,
 }));
@@ -429,7 +429,7 @@ describe('D. Options through sheets', () => {
 
 // ══ E. Reset progress ═════════════════════════════════════════════════
 describe('E. Reset progress', () => {
-  it('asks first; Cancel keeps everything; Reset clears study but keeps the exam date and theme', () => {
+  it('asks first; Cancel keeps everything; Reset clears study but keeps the exam date and theme', async () => {
     act(() => {
       useProgress.getState().tickExamWeek('cisa', '2027-01-08', 'guide');
     });
@@ -441,12 +441,14 @@ describe('E. Reset progress', () => {
     expect(alert).toHaveBeenCalledTimes(1);
     const [title, , buttons] = alert.mock.calls[0];
     expect(title).toBe('Reset CISA progress?');
-    const btns = buttons as { text: string; style?: string; onPress?: () => void }[];
+    const btns = buttons as { text: string; style?: string; onPress?: () => void | Promise<void> }[];
     expect(btns.map((b) => b.text)).toEqual(['Cancel', 'Reset']);
     expect(btns[1].style).toBe('destructive');
     // Nothing happened yet.
     expect(useSettings.getState().examDates.cisa).toBe('2027-01-08');
-    act(() => btns[1].onPress!());
+    await act(async () => { await btns[1].onPress!(); });
+    expect(useSettings.getState().onboarded).toBe(false);
+    expect(router.replace).toHaveBeenCalledWith('/onboarding');
     expect(useSettings.getState().examDates.cisa).toBe('2027-01-08');
     expect(useSettings.getState().theme).toBe('light');
     // Back on Settings' page, the exam date is still there.

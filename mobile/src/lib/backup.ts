@@ -50,10 +50,11 @@ import {
   type UndoSnapshot,
 } from '../engine/backup';
 import { useBackup } from '../store/backup';
-import { completeCert, useProgress } from '../store/progress';
+import { completeCert, progressAfterCertReset, useProgress } from '../store/progress';
 import { useSeen } from '../store/seen';
 import { useSession } from '../store/session';
 import { useSettings } from '../store/settings';
+import { batchSaves, flushPendingSaves } from '../store/storage';
 import { effectiveCertId } from './activeCert';
 import { ensureCatalog, syncPlanters } from './milestones';
 import { carryPlantIdentity, plantSubtopics } from './plant';
@@ -188,6 +189,52 @@ export function resetLocalProgress(certIds: readonly string[]) {
   useBackup.getState().setUndo(null);
   sweepBackupFiles();
   refreshReminders().catch(() => {});
+}
+
+/**
+ * Settings reset: save the scoped fresh start before showing onboarding.
+ * Account removal still uses resetLocalProgress and keeps its existing semantics.
+ * Unrelated sessions, shared daily/streak history, settings and account stores stay.
+ */
+export async function resetStudyProgress(certId: string): Promise<void> {
+  await whenHydrated();
+  await flushPendingSaves();
+  const storesBefore = [useSettings.getState(), useProgress.getState(), useSession.getState(), useBackup.getState()];
+  const progress = { ...progressData(), ...progressAfterCertReset(useProgress.getState(), certId) };
+  // Today's onboarding is CISA-only. Other exams must not be routed into CISA setup.
+  const settings = { ...settingsData(), ...(certId === DEFAULT_CERT_ID ? { onboarded: false, activeCertId: certId } : {}) };
+  const session = useSession.getState().active;
+  const backup = useBackup.getState();
+  try {
+    await AsyncStorage.multiSet([
+      row(useSettings, settings),
+      row(useProgress, progress),
+      row(useSession, { active: session?.certId === certId ? null : session }),
+      row(useBackup, { lastBackupAt: backup.lastBackupAt, restoredSavedAt: backup.restoredSavedAt ?? null, undo: null }),
+    ]);
+  } catch (error) {
+    // Restore today's live rows, never an old snapshot over an unrelated edit.
+    await AsyncStorage.multiSet(currentRows()).catch(() => {});
+    throw error;
+  }
+  const storesNow = [useSettings.getState(), useProgress.getState(), useSession.getState(), useBackup.getState()];
+  if (storesNow.some((state, i) => state !== storesBefore[i])) {
+    // A sync or another screen changed data during the write. Keep those edits and ask for a retry.
+    await AsyncStorage.multiSet(currentRows());
+    throw new Error('Study data changed while resetting');
+  }
+  // Do not rehydrate: Zustand swallows read failures. Apply the exact state just saved instead.
+  batchSaves(() => {
+    useSettings.setState(settings);
+    useProgress.setState(progress);
+    useSession.setState({ active: session?.certId === certId ? null : session });
+    useBackup.setState({ undo: null });
+  });
+  // The multiSet above is the commit. Redundant Zustand saves must not turn a
+  // completed reset into a false failure; batchSaves handles their rejections.
+  sweepBackupFiles();
+  refreshReminders().catch(() => {});
+  refreshWidgets().catch(() => {});
 }
 
 // ── Save a backup ────────────────────────────────────────────────────────

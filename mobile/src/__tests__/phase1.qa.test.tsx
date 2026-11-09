@@ -84,7 +84,7 @@ jest.mock('../components/shareCard', () => ({ ShareProgressSheet: () => null }))
 const mockPush = jest.fn();
 let mockParams: Record<string, string | string[] | undefined> = {};
 jest.mock('expo-router', () => ({
-  router: { push: (...a: unknown[]) => mockPush(...a), replace: jest.fn(), back: jest.fn(), canGoBack: () => true, canDismiss: () => false, dismissTo: jest.fn(), setParams: jest.fn() },
+  router: { push: (...a: unknown[]) => mockPush(...a), replace: jest.fn(), back: jest.fn(), canGoBack: () => true, canDismiss: () => false, dismissAll: jest.fn(), dismissTo: jest.fn(), setParams: jest.fn() },
   useFocusEffect: jest.fn(),
   useLocalSearchParams: () => mockParams,
 }));
@@ -646,7 +646,7 @@ describe('Journey 5: Your reports', () => {
     expect(allText()).toContain('1 started on this phone');
   });
 
-  it('Settings → Reset keeps Your reports (they are messages, not study progress)', () => {
+  it('Settings → Reset keeps Your reports (they are messages, not study progress)', async () => {
     const alert = jest.spyOn(Alert, 'alert').mockImplementation(() => {});
     useProgress.setState({ reports: [{ ...entry(2), at: NOW - DAY }] });
     act(() => { useProgress.getState().recordMistake('cisa', getAllQuestions('cisa')[0].id, 'A'); });
@@ -655,7 +655,7 @@ describe('Journey 5: Your reports', () => {
     mount(<Settings />);
     press('Reset CISA progress');
     const buttons = alert.mock.calls.at(-1)![2]!;
-    act(() => { buttons.find((b) => b.text === 'Reset')!.onPress!(); });
+    await act(async () => { await buttons.find((b) => b.text === 'Reset')!.onPress!(); });
     expect(Object.keys(useProgress.getState().byCert.cisa?.mistakes ?? {})).toHaveLength(0);
     expect(useProgress.getState().reports).toHaveLength(1);
     // Settings has one Help row now; the count lives on the Help screen.
