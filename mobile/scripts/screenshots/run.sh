@@ -76,7 +76,9 @@ if [ -x /opt/pw-browsers/chromium-1194/chrome-linux/chrome ]; then export CHROME
 # SHOTS=data captures Settings → Your data: backup, restore preview, errors (shoot_data.mjs).
 # SHOTS=pace captures the Build D timer screens: mock start sheet, pace checks,
 # pacing results, timed practice, Study defaults and Daylight (shoot_pace.mjs).
-if [ "${SHOTS:-}" = notes ]; then
+if [ "${SHOTS:-}" = labs ]; then
+  node scripts/screenshots/shoot_labs.mjs "$TMP/seed.json" "$OUT" "$THEME"
+elif [ "${SHOTS:-}" = notes ]; then
   node scripts/screenshots/shoot_notes.mjs "$TMP/seed.json" "$OUT" "$THEME"
 elif [ "${SHOTS:-}" = data ]; then
   node scripts/screenshots/shoot_data.mjs "$TMP/seed.json" "$OUT" "$THEME"

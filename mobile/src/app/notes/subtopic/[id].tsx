@@ -42,6 +42,7 @@ import { titleAcronyms } from '../../../engine/noteAcronyms';
 import { ReportRow } from '../../../components/support';
 import { Button, Enter, Gap, PushedHeader, Row, Screen, Tag, T, useFontScale } from '../../../components/ui';
 import { EmptyScreen } from '../../../components/emptyScreen';
+import { labForNote } from '../../../content/labs';
 import { lessonsForSubtopic } from '../../../content/lessons';
 import { findQuestion } from '../../../content/loader';
 import { findNote, noteDomain, noteSubtopics } from '../../../content/notes';
@@ -110,6 +111,7 @@ export default function NoteSubtopicScreen() {
   const next = inDomain[inDomain.findIndex((s) => s.id === note.id) + 1];
 
   // The lesson that teaches this subtopic (the first in course order), if any.
+  const lab = labForNote(cert.id, note.id);
   const lesson = lessonsForSubtopic(cert.id, note.id)[0];
   const lessonDone = lesson ? progress.lessonsDone.includes(lesson.id) : false;
 
@@ -256,6 +258,7 @@ export default function NoteSubtopicScreen() {
             </T>
           </View>
         )}
+        {lab && <Button kind="ghost" label="Explore in Concept Lab" accessibilityHint={lab.title} onPress={() => router.push(`/labs/${lab.id}`)} style={{ marginTop: space.md }} />}
         {next && (
           <View style={{ marginTop: n > 0 ? space.xl : 0 }}>
             <KeyList
