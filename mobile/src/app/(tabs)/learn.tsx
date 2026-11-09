@@ -527,8 +527,8 @@ const LookItUp = memo(function LookItUp({
           testID="learn-concept-lab"
           icon={(color) => <Compass size={24} color={color} strokeWidth={ICON_STROKE} />}
           title="Interactive Concept Lab"
-          line="Change the variables. See what happens. · Featured: RTO vs. RPO"
-          spoken="Interactive Concept Lab. Change the variables. See what happens. Featured: Understand RTO versus RPO."
+          line={`Explore ${labsFor(cert.id).length} hands-on labs. Change decisions and see their consequences.`}
+          spoken={`Interactive Concept Lab. ${labsFor(cert.id).length} hands-on labs. Change decisions and see their consequences.`}
           hint="Opens the concept lab catalog" onPress={() => router.push('/labs')} row
         />}
         {week && <HubTile testID="learn-tile-week" icon={TILE_ICON.week} title={week.title} line={week.line} spoken={week.spoken} hint={week.hint} onPress={week.onPress} row />}

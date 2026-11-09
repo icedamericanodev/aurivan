@@ -53,8 +53,8 @@ describe('recovery objectives, independent of progress and storage', () => {
 });
 
 describe('certification-scoped concept lab content', () => {
-  test('only CISA has a pilot; unknown and other certifications stay unaffected', () => {
-    expect(labsFor('cisa')).toHaveLength(1);
+  test('only CISA has labs; unknown and other certifications stay unaffected', () => {
+    expect(labsFor('cisa')).toHaveLength(6);
     for (const cert of ['aaia', 'crisc', 'cc', 'csoe', '', 'missing']) {
       expect(labsFor(cert)).toEqual([]);
       expect(findLab(cert, 'cisa-lab-rto-rpo')).toBeUndefined();
@@ -66,6 +66,7 @@ describe('certification-scoped concept lab content', () => {
   });
   test('stable links resolve to the original lesson, note, questions, and current domain', () => {
     const lab = findLab('cisa', 'cisa-lab-rto-rpo')!;
+    if (lab.interaction !== 'recovery-timeline') throw new Error('Pilot interaction changed');
     expect(labForNote('cisa', '4B1.2')).toBe(lab);
     expect(getCertification(lab.certId)!.domains.some((domain) => domain.id === lab.domainId)).toBe(true);
     expect(findLesson(lab.lessonId)?.certId).toBe(lab.certId);
@@ -78,7 +79,7 @@ describe('certification-scoped concept lab content', () => {
 
 
 describe('authored lab stages', () => {
-  test.each(labsFor('cisa'))('$id supplies usable explanations and complete audit reasoning', (lab) => {
+  test.each(labsFor('cisa').filter(lab => lab.interaction === 'recovery-timeline'))('$id supplies usable explanations and complete audit reasoning', (lab) => {
     expect(lab.explore.rto).toContain('Recovery Time Objective');
     expect(lab.explore.rpo).toContain('Recovery Point Objective');
     expect(lab.explore.rpo).toContain('risk losing');
@@ -94,7 +95,7 @@ describe('authored lab stages', () => {
     }
     expect(lab.apply.options[lab.apply.correctIndex].feedback).toContain('Management owns the risk');
   });
-  test.each(labsFor('cisa'))('$id prediction key agrees with the pure recovery model', (lab) => {
+  test.each(labsFor('cisa').filter(lab => lab.interaction === 'recovery-timeline'))('$id prediction key agrees with the pure recovery model', (lab) => {
     const result = evaluateRecovery(lab.challenge.recovery, lab.challenge.gap, lab.config);
     const index = result.rtoMet ? (result.rpoMet ? 0 : 1) : (result.rpoMet ? 2 : 3);
     expect(lab.challenge.options).toHaveLength(4);
