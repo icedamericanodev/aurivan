@@ -517,7 +517,7 @@ describe('the sign-out sheet and What syncs', () => {
     });
     try {
       await press('Remove and sign out');
-      expect(alert.mock.calls[0][1]).toBe('This removes all your study progress, your plant and your study settings from this phone. Your account’s copy isn’t affected.');
+      expect(alert.mock.calls[0][1]).toBe('This removes all your study progress and your study settings from this phone. Your account’s copy isn’t affected.');
     } finally {
       alert.mockRestore();
     }
@@ -531,7 +531,7 @@ describe('the sign-out sheet and What syncs', () => {
 
   it('What syncs lists what travels and what stays, and the one limit', () => {
     mount(<>{(() => { const W = screen('what-syncs'); return <W />; })()}</>);
-    expect(allText()).toContain('These stay on this phone: reminders, theme, motion, haptics, plant display choices and a quiz in progress.');
+    expect(allText()).toContain('These stay on this phone: reminders, theme, motion, haptics, display preferences and a quiz in progress.');
     expect(allText()).toContain('Removals don’t sync yet');
   });
 });

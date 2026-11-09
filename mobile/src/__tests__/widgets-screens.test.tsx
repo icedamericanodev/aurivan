@@ -81,11 +81,12 @@ describe('Settings → Home-screen widgets', () => {
     const rows = r.root.findAll((n) => typeof n.props.accessibilityLabel === 'string' && n.props.accessibilityLabel.startsWith('Add ') && n.props.accessibilityRole === 'button');
     const order = [...new Set(rows.map((n) => n.props.accessibilityLabel as string))].map((l) => WIDGET_KINDS.find((k) => l.startsWith(`Add ${WIDGET_TITLES[k]}.`)))
       .filter(Boolean);
-    expect(order).toHaveLength(8);
-    expect(order.slice(0, 4)).toEqual(['plan', 'plant', 'think', 'week']);
+    expect(order).toHaveLength(7);
+    expect(order).not.toContain('plant');
+    expect(order.slice(0, 3)).toEqual(['plan', 'think', 'week']);
     expect(r.root.findAll((n) => n.props.accessibilityRole === 'radio')).toHaveLength(0);
-    await act(async () => rows.find((n) => n.props.accessibilityLabel.startsWith('Add Your plant.'))!.props.onPress());
-    expect(mockPin).toHaveBeenCalledWith('plant');
+    await act(async () => rows.find((n) => n.props.accessibilityLabel.startsWith('Add Today’s plan.'))!.props.onPress());
+    expect(mockPin).toHaveBeenCalledWith('plan');
   });
 });
 

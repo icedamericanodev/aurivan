@@ -22,11 +22,9 @@ import { RULE_PROMPTS } from '../content/principles/widgetPrompts';
 import { planHero, todayMinutes } from '../components/journey';
 import { currentIndex, isOptional, itemMinutes, newDayPlan, planComplete, planLeft, shortSetItem, type DayPlan } from '../engine/dayPlan';
 import { addDays, daysToExam } from '../engine/examDay';
-import { growthBefore, plantShown, SPECIES_INFO, isPlantSpecies } from '../engine/plant';
 import type { PlanItem } from '../engine/planner';
 import { readinessFor } from '../engine/readiness';
 import { readinessRange } from '../engine/readinessRange';
-import { resolveStyle } from '../engine/plantLooks';
 import { dueIds } from '../engine/srs';
 import { dayKey, daysBetween } from '../engine/streak';
 import {
@@ -39,7 +37,6 @@ import {
   ROAD_STAGES,
   ruleDueFrom,
   type PlanSnap,
-  type PlantSnap,
   type ReadySnap,
   type RecallSnap,
   type RevealState,
@@ -50,13 +47,11 @@ import {
   type WidgetSnapshot,
 } from '../engine/widgets';
 import type { AnswerRecord } from '../engine/readiness';
-import { useSeen } from '../store/seen';
 import { selectCert, useProgress } from '../store/progress';
 import { dailyMinutesOf, examDateOf, useSettings } from '../store/settings';
 import { effectiveCertId } from './activeCert';
 import { useWidgetStore } from '../store/widgets';
 import { questionExists } from './outline';
-import { allCertMarks, plantLookView } from './plant';
 import { questionsForPrinciple } from './principleQuestions';
 import { daysUntil } from './useActiveCert';
 import { buildJourney } from './useJourney';
@@ -196,39 +191,6 @@ function planSnap(certId: string, now: number): PlanSnap | null {
 export function planSteps(plan: DayPlan): { steps: number; stepsDone: number } {
   const idx = plan.items.map((_, i) => i).filter((i) => !isOptional(plan.items, i));
   return { steps: idx.length, stepsDone: idx.filter((i) => plan.done[i]).length };
-}
-
-function plantSnap(certId: string, today: string): PlantSnap | { off: true } | null {
-  const state = useProgress.getState();
-  if (!plantShown(state.plantSettings)) return { off: true };
-  const plant = selectCert(state, certId).plant;
-  if (!plant) return null;
-  // A growth the learner hasn't seen yet in the app stays off the widget until they have (the moment is the app's).
-  const growth = plant.pending ? growthBefore(plant, plant.pending) : plant.growth;
-  const reachedAt = !plant.pending ? Object.values(plant.reached ?? {}).filter((t): t is number => typeof t === 'number' && t !== plant.backfill?.at) : [];
-  const grewAt = reachedAt.length ? Math.max(...reachedAt) : null;
-  const look = plantLookView(plant, {
-    marks: allCertMarks(state.byCert),
-    style: resolveStyle(plant.look, state.plantSettings),
-    resting: false,
-    planCleared: false,
-    newTopicToday: false,
-    newKeepsakeToday: false,
-    today,
-    // Mobile 1.50: the Form IV choice kept on this phone.
-    final: useSeen.getState().plantFinal?.[certId],
-  }).art;
-  return {
-    species: plant.species,
-    name: isPlantSpecies(plant.species) ? SPECIES_INFO[plant.species].lower : 'plant',
-    growth,
-    grew: grewAt !== null ? dayKey(grewAt) : null,
-    ...(look.style ? { style: look.style } : {}),
-    ...(look.palette ? { palette: look.palette } : {}),
-    ...(look.ground ? { ground: look.ground } : {}),
-    ...(look.planter ? { planter: look.planter } : {}),
-    ...(look.final ? { final: look.final } : {}),
-  };
 }
 
 /** Rules a recent miss tested (last 14 days), most missed first: they lead the rotation. */
@@ -561,7 +523,8 @@ export function collectSnapshot(now = Date.now(), reveal: RevealState = readReve
     studyDays,
     studyDaysTotal: progress.milestones?.days ?? studyDays.length,
     answeredAny: Object.keys(progress.answers).length > 0,
-    plant: plantSnap(cert.id, today),
+    // Keep the old snapshot shape without collecting retired artwork.
+    plant: null,
     think: rules.think,
     recall,
     terms,

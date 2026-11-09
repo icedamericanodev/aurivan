@@ -189,7 +189,7 @@ describe('Practice opened at Drills', () => {
     expect(first.length).toBeGreaterThan(0);
     // After "More ways to practice" (the hero stays the one primary action).
     const t = textOf(root());
-    expect(t.indexOf('Review and saved')).toBeLessThan(t.indexOf('All at Seedling'));
+    expect(t.indexOf('Review and saved')).toBeLessThan(t.indexOf('All at Beginner'));
     expect(mockSetParams).not.toHaveBeenCalled();
     // The jump runs from Drills' own layout (no fixed delay), then the param is cleared.
     layDrills();
@@ -265,47 +265,17 @@ describe('the jump moves screen-reader focus to Drills (UX review P2)', () => {
   });
 });
 
-describe('the one-time "games moved" line (UX review P4)', () => {
-  const moved = () => root().findAll((n) => n.props.testID === 'drills-moved' && typeof n.type === 'string');
-  const played = () =>
-    act(() => {
-      useProgress.setState((s) => ({ byCert: { ...s.byCert, cisa: { ...s.byCert.cisa, gameBest: { trap: 5 } } } }));
-    });
-  beforeEach(() => {
+describe('the retired games-moved announcement', () => {
+  it.each([false, true])('stays retired when prior game history is %s, while Drills remains available', (playedBefore) => {
     act(() => {
       useSeen.setState((s) => ({ moments: Object.fromEntries(Object.entries(s.moments).filter(([k]) => k !== DRILLS_MOVED)) }));
+      if (playedBefore) useProgress.setState((s) => ({ byCert: { ...s.byCert, cisa: { ...s.byCert.cisa, gameBest: { trap: 5 } } } }));
     });
-  });
-
-  it('a learner who never played a game: no line', () => {
-    mount(<Practice />);
-    expect(moved()).toHaveLength(0);
-  });
-
-  it('one who played: a meta line and a ghost "Go to Drills" (no second solid button); the tap jumps and it never shows again', () => {
-    played();
     mountMeasured(<Practice />);
-    expect(moved()).toHaveLength(1);
-    expect(textOf(moved()[0])).toContain('The games are now Drills.');
-    const go = moved()[0].findAll((n) => n.props.accessibilityRole === 'button' && typeof n.props.onPress === 'function')[0];
-    expect(go.props.accessibilityLabel ?? textOf(go)).toContain('Go to Drills');
-    expect(go.props.accessibilityHint).toBe('Scrolls to Drills on this page');
-    act(() => {
-      go.props.onPress();
-    });
-    expect(useSeen.getState().moments[DRILLS_MOVED]).toBe(1);
-    expect(moved()).toHaveLength(0);
-    act(() => r?.unmount());
-    mount(<Practice />);
-    expect(moved()).toHaveLength(0);
-  });
-
-  it('or the first time Drills is on screen', () => {
-    played();
-    mountMeasured(<Practice />);
-    expect(moved()).toHaveLength(1);
+    expect(root().findAll((n) => n.props.testID === 'drills-moved')).toHaveLength(0);
+    expect(textOf(root())).toContain('Drills');
     layDrills();
-    expect(useSeen.getState().moments[DRILLS_MOVED]).toBe(1);
-    expect(moved()).toHaveLength(0);
+    expect(useSeen.getState().moments[DRILLS_MOVED]).toBeUndefined();
+    if (playedBefore) expect(useProgress.getState().byCert.cisa.gameBest?.trap).toBe(5);
   });
 });

@@ -37,7 +37,7 @@ export const FIELD_MIN_POOL = FIELD_SIZE * 2;
 
 export type FieldTier = 'seedling' | 'sapling' | 'heartwood';
 export const FIELD_TIERS: FieldTier[] = ['seedling', 'sapling', 'heartwood'];
-export const FIELD_TIER_NAME: Record<FieldTier, string> = { seedling: 'Seedling', sapling: 'Sapling', heartwood: 'Heartwood' };
+export const FIELD_TIER_NAME: Record<FieldTier, string> = { seedling: 'Beginner', sapling: 'Practised', heartwood: 'Skilled' };
 export const FIELD_TIER_LINE: Record<FieldTier, string> = {
   seedling: 'Four terms from four different topics.',
   sapling: 'Four terms from the same topic: near neighbours.',

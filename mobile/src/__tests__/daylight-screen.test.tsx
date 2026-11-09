@@ -4,7 +4,7 @@
  * - answers feed progress with their time (never mastery);
  * - the light waits while the explanation shows, and while paused (the
  *   question is hidden then);
- * - flag & move on; Seedling's "Add a minute";
+ * - flag & move on; Beginner's "Add a minute";
  * - when the light sets: unanswered questions are revealed, go to review
  *   WITHOUT counting as answered, and the round is saved;
  * - the pace is announced at half the light and 10% left, once each.
@@ -99,18 +99,18 @@ afterEach(() => {
 });
 
 describe('picking a light', () => {
-  it('suggests Seedling to a new learner and explains the round', () => {
+  it('suggests Beginner to a new learner and explains the round', () => {
     expect(allText()).toContain('Answer at exam pace.');
-    expect(allText()).toContain('Suggested: Seedling, from your recent answer times.');
+    expect(allText()).toContain('Suggested: Beginner, from your recent answer times.');
     // Mobile 1.15 (C2): seconds in words, never a bare "s".
     expect(allText()).toContain('120 seconds a question · 10 min of light');
     // Release prep 2.0.0: the extend note is its own line, so no word sits alone at 390pt.
     expect(allText()).toContain('You can add time.');
     const radios = root().findAll((n) => n.props.accessibilityRole === 'radio' && typeof n.props.onPress === 'function');
     expect(radios.map((n) => n.props.accessibilityLabel)).toEqual([
-      'Seedling, 120 seconds a question, suggested',
-      'Sapling, 96 seconds a question',
-      'Heartwood, 80 seconds a question',
+      'Beginner, 120 seconds a question, suggested',
+      'Practised, 96 seconds a question',
+      'Skilled, 80 seconds a question',
     ]);
     act(() => {
       radios[2].props.onPress();
@@ -121,7 +121,7 @@ describe('picking a light', () => {
 
 describe('a round', () => {
   it('answers feed progress with their time; the light waits while reading', () => {
-    press('Heartwood, 80 seconds a question');
+    press('Skilled, 80 seconds a question');
     press('Start');
     expect(strip().clock.text).toBe('06:40');
     tick(20 * S);
@@ -141,7 +141,7 @@ describe('a round', () => {
   });
 
   it('flag & move on parks the question; pause hides it and holds the light', () => {
-    press('Start'); // Seedling
+    press('Start'); // Beginner
     const firstStem = cards()[0].props.text;
     tick(10 * S);
     press('Flag & move on');
@@ -156,21 +156,21 @@ describe('a round', () => {
     expect(cards().length).toBeGreaterThan(0);
   });
 
-  it('Seedling can add a minute', () => {
+  it('Beginner can add a minute', () => {
     press('Start');
     expect(strip().clock.text).toBe('10:00');
     press('Add a minute');
     expect(strip().clock.text).toBe('11:00');
   });
 
-  it('Sapling and Heartwood have no "Add a minute"', () => {
-    press('Sapling, 96 seconds a question');
+  it('Practised and Skilled have no "Add a minute"', () => {
+    press('Practised, 96 seconds a question');
     press('Start');
     expect(has('Add a minute')).toBe(false);
   });
 
   it('when the light sets: unanswered questions go to review unanswered, revealed on the end screen', () => {
-    press('Sapling, 96 seconds a question');
+    press('Practised, 96 seconds a question');
     press('Start');
     tapFirst();
     const answeredId = Object.keys(cp().answers)[0];
@@ -195,7 +195,7 @@ describe('a round', () => {
   });
 
   it('the pace is said at half the light and with 10% left, once each', () => {
-    press('Sapling, 96 seconds a question');
+    press('Practised, 96 seconds a question');
     press('Start');
     tick(250 * S);
     const half = announce.mock.calls.filter(([t]) => String(t).startsWith('Half the light is gone.'));

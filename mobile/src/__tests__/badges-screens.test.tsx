@@ -60,7 +60,7 @@ jest.mock('react-native-safe-area-context', () => {
 const mockSuccess = jest.fn();
 jest.mock('../lib/haptics', () => ({ haptic: { success: () => mockSuccess(), selection: () => {}, error: () => {}, light: () => {} } }));
 
-/** The pressed tiles under a node (PressedTile is memoised, so it is found by its props). */
+/** The earned tiles under a node (PressedTile is memoised, so it is found by its props). */
 const tilesIn = (n: ReactTestInstance) => n.findAll((x) => typeof x.type !== 'string' && typeof x.props.badge === 'string' && typeof x.props.size === 'number' && typeof x.props.state === 'string' && x.props.testID !== 'sheet-tile' && x.props.onPress === undefined);
 
 let r: ReactTestRenderer | undefined;
@@ -117,13 +117,13 @@ afterEach(() => {
 });
 
 describe('the case', () => {
-  it('a grid of pressed tile buttons, three across; each spoken in full, the art hidden', () => {
+  it('a grid of earned tile buttons, three across; each spoken in full, the art hidden', () => {
     d4.slice(0, 20).forEach(answer);
     ensureBackfill('cisa', T0);
     mount(<Badges />);
     const cells = root().findAllByType(BadgeCell);
     // The six counted sets hold 23 core marks in CISA (3 + 6 + 5 + 3 + 3 + 3) and 7 Stretch tiers
-    // (5 + 1 + 1), then the 7 skills. Fresh Start (Moments) is not on the case until it happens:
+    // (5 + 1 + 1), then the 7 skills. Study Return (Moments) is not on the case until it happens:
     // a week away is never shown as a goal.
     expect(cells.length).toBe(23 + 7 + 7);
     expect(cells.filter((c) => c.props.mark.stretch).length).toBe(7);
@@ -136,7 +136,7 @@ describe('the case', () => {
       const button = c.findAll((n) => n.props.accessibilityRole === 'button')[0];
       expect(button.props.accessibilityHint).toBe('Opens its details');
     }
-    // Grove 4b: the tile is a pressed paper tile (3 across at 84pt or less), decorative to screen readers.
+    // Grove 4b: the tile is a earned paper tile (3 across at 84pt or less), decorative to screen readers.
     const tiles = tilesIn(root());
     expect(tiles.length).toBeGreaterThan(30);
     expect(Math.max(...tiles.slice(0, 30).map((t) => t.props.size as number))).toBeLessThanOrEqual(84);
@@ -145,11 +145,11 @@ describe('the case', () => {
       expect(box.props.accessible).toBe(false);
     }
     // Back-filled (saved quietly when badges arrived): "by" that date, never as if earned that day (UX P6).
-    // Shown "Pressed by 12 Oct", said "Earned by 12 October" (PHASE4B 3.4).
-    expect(labels()).toContain('First Foothold. Earned by 12 October. Answer your first 20 questions. Groundwork.');
-    expect(labels().some((l) => l.startsWith('Firm Footing · IS Operations, Clay. Earned by 12 October.') && l.endsWith('26% of the exam. The Five Domains.'))).toBe(true);
-    expect(allText()).toContain('Pressed by 12 Oct');
-    expect(labels().some((l) => l.startsWith('Mindset Shift. Not yet.') && l.includes('Opens after 100 first tries'))).toBe(true);
+    // Shown "Earned by 12 Oct", said "Earned by 12 October" (PHASE4B 3.4).
+    expect(labels()).toContain('First Review. Earned by 12 October. Answer your first 20 questions. Groundwork.');
+    expect(labels().some((l) => l.startsWith('Domain Mastery · IS Operations, Bronze. Earned by 12 October.') && l.endsWith('26% of the exam. The Five Domains.'))).toBe(true);
+    expect(allText()).toContain('Earned by 12 Oct');
+    expect(labels().some((l) => l.startsWith('Better Judgement. Not yet.') && l.includes('Opens after 100 first tries'))).toBe(true);
   });
 
   it('two columns at ×1.3 text (still at ×1.6), a list of rows at ×2', () => {
@@ -178,7 +178,7 @@ describe('the case', () => {
     press(/^Earned badges$/);
     const shown = root().findAllByType(BadgeCell).map((c) => c.props.mark.key).sort();
     expect(shown).toEqual(Object.keys(cp().milestones!.earned).sort());
-    expect(allText()).toContain('Nothing pressed in this set yet.');
+    expect(allText()).toContain('No badges earned in this set yet.');
   });
 
   it('Sort: by set, recently earned, closest, effort; the choice is kept on this phone', () => {
@@ -212,7 +212,7 @@ describe('the detail sheet', () => {
   it('not yet: the rule, progress, how to earn it, effort, and "Study for this" that starts Smart on that domain', () => {
     d4.slice(0, 12).forEach(answer);
     mount(<Badges />);
-    press(/^Firm Footing · IS Operations, Clay\. Not yet/);
+    press(/^Domain Mastery · IS Operations, Bronze\. Not yet/);
     const sheet = root().findByType(Modal);
     const text = () => {
       const out: string[] = [];
@@ -221,16 +221,17 @@ describe('the detail sheet', () => {
       return out.join(' ');
     };
     expect(text()).toContain('The rule');
-    expect(text()).toContain('Reach 70% mastery in a domain, with 20 or more of its questions answered. One leaf per domain.');
+    expect(text()).toContain('Reach 70% mastery in a domain, with 20 or more of its questions answered. One badge per domain.');
     expect(text()).toContain('12 of 20 answered');
-    expect(text()).toContain('How to earn it');
+    expect(text()).not.toContain('IS Operations is 26% of the exam. Practise it in Smart until 70% holds.');
+    press(/^About earning Domain Mastery · IS Operations$/);
     expect(text()).toContain('IS Operations is 26% of the exam. Practise it in Smart until 70% holds.');
     expect(text()).toContain('Needs 20 or more of its questions answered, at 70% mastery.');
     // The title is the sheet's header, spoken with its state.
-    expect(sheet.findAll((n) => typeof n.type === 'string' && n.props.accessibilityRole === 'header' && /^Firm Footing · IS Operations\. Not yet\./.test(n.props.accessibilityLabel ?? '')).length).toBe(1);
-    // Its ladder: 70% (Clay) and the 80% Stretch tier (Lichen), in words.
-    expect(labels().some((l) => l.startsWith('70%, Clay: ') && l.includes('80%, Lichen, Stretch: opens when every domain reaches 65%'))).toBe(true);
-    const study = sheet.findAll((n) => n.props.accessibilityLabel === 'Study for Firm Footing · IS Operations' && typeof n.props.onPress === 'function')[0];
+    expect(sheet.findAll((n) => typeof n.type === 'string' && n.props.accessibilityRole === 'header' && /^Domain Mastery · IS Operations\. Not yet\./.test(n.props.accessibilityLabel ?? '')).length).toBe(1);
+    // Its ladder: 70% (Bronze) and the 80% Stretch tier (Silver), in words.
+    expect(labels().some((l) => l.startsWith('70%, Bronze: ') && l.includes('80%, Silver, Stretch: opens when every domain reaches 65%'))).toBe(true);
+    const study = sheet.findAll((n) => n.props.accessibilityLabel === 'Study for Domain Mastery · IS Operations' && typeof n.props.onPress === 'function')[0];
     act(() => study.props.onPress());
     // The sheet slides away first; only then does the session open (a push under a closing sheet can stall on iOS).
     expect(root().findByType(Modal).props.visible).toBe(false);
@@ -244,11 +245,11 @@ describe('the detail sheet', () => {
   it('earned: what it means (not how to earn it), its date, and no Study button', () => {
     earn('first-foothold', T0 - DAY);
     mount(<Badges />);
-    press(/^First Foothold\. Earned/);
+    press(/^First Review\. Earned/);
     const sheet = root().findByType(Modal);
     const words = sheet.findAll((n) => typeof n.props.children === 'string').map((n) => n.props.children as string);
-    // PHASE4B 3.4: "Pressed 11 Oct" on the sheet, said "Earned 11 October".
-    expect(words).toContain('Pressed 11 Oct');
+    // PHASE4B 3.4: "Earned 11 Oct" on the sheet, said "Earned 11 October".
+    expect(words).toContain('Earned 11 Oct');
     expect(words).toContain('You’ve mapped where you stand. Your plan now starts from it.');
     expect(words).not.toContain('How to earn it');
     expect(sheet.findAll((n) => /^Study for/.test(n.props.accessibilityLabel ?? ''))).toHaveLength(0);
@@ -258,13 +259,14 @@ describe('the detail sheet', () => {
 
   it('a mock badge opens the full mock’s start sheet; Rooted shows its tiers in words', () => {
     mount(<Badges />);
-    press(/^Dress Rehearsal · 1 mock, Clay\. Not yet/);
+    press(/^Mock Complete · 1 mock, Bronze\. Not yet/);
+    press(/^About earning Mock Complete · 1 mock$/);
     expect(allText()).toContain('Best once every domain reaches 65%. It counts whenever you do it.');
-    press(/^Study for Dress Rehearsal · 1 mock$/);
+    press(/^Study for Mock Complete · 1 mock$/);
     act(() => jest.advanceTimersByTime(700));
     expect(router.push).toHaveBeenCalledWith({ pathname: '/mock-start', params: { questions: '150' } });
-    press(/^Rooted · 30 days, Lichen\. Not yet/);
-    expect(labels().some((l) => l.startsWith('10 days, Clay: ') && l.includes('30 days, Lichen: ') && l.includes('60 days, Gold leaf: '))).toBe(true);
+    press(/^Study Days · 30 days, Silver\. Not yet/);
+    expect(labels().some((l) => l.startsWith('10 days, Bronze: ') && l.includes('30 days, Silver: ') && l.includes('60 days, Gold: '))).toBe(true);
   });
 });
 
@@ -274,7 +276,7 @@ describe('the "new" dot', () => {
     earn('first-foothold', T0);
     expect(hasNewBadge('cisa')).toBe(true);
     mount(<You />);
-    expect(labels().some((l) => l.startsWith('Badges: your badges and field notes, new badge, 1 earned.'))).toBe(true);
+    expect(labels().some((l) => l.startsWith('Badges: your study badges, new badge, 1 earned.'))).toBe(true);
     expect(root().findAll((n) => n.props.testID === 'new-badge-dot').length).toBeGreaterThan(0);
     act(() => r!.unmount());
     jest.setSystemTime(T0 + 1000);
@@ -299,7 +301,7 @@ describe('Settings → Show badges', () => {
     act(() => sw().props.onValueChange(false));
     expect(useSettings.getState().badgesHidden).toBe(true);
     act(() => r!.unmount());
-    // Earned quietly: First Foothold from a 20-question session, with no moment.
+    // Earned quietly: First Review from a 20-question session, with no moment.
     startFromIds('cisa', d4.slice(0, 20), 'Twenty');
     d4.slice(0, 20).forEach(answer);
     finishSession();
@@ -312,7 +314,7 @@ describe('Settings → Show badges', () => {
     act(() => r!.unmount());
     // Back on: the waiting moments are cleared (no burst) and counted in one line.
     const n = showBadgesAgain();
-    expect(n).toBe(2); // First Foothold and Firm Footing · IS Operations
+    expect(n).toBe(2); // First Review and Domain Mastery · IS Operations
     expect(cp().milestones!.queue).toEqual([]);
     expect(shownAgainLine(n)).toBe('Badges are on again. 2 badges arrived while they were hidden: see You → Badges.');
     expect(useSettings.getState().badgesHidden).toBe(false);
@@ -322,7 +324,7 @@ describe('Settings → Show badges', () => {
 describe('the unlock moment', () => {
   const moment = (over: Partial<MilestoneMoment> = {}): MilestoneMoment => ({
     key: 'long-memory',
-    label: 'Long Memory',
+    label: 'Lasting Recall',
     rule: 'Get 25 questions right…',
     kind: 'milestone',
     set: 'evergreen',
@@ -341,7 +343,7 @@ describe('the unlock moment', () => {
     expect(text.indexOf('Done')).toBeLessThan(text.indexOf('A new badge · Groundwork'));
     expect(text.indexOf('A new badge · Groundwork')).toBeLessThan(text.indexOf('Review answers'));
     expect(text).toContain('See it in your badges ›');
-    expect(text).toMatch(/Next: Firm Footing · /);
+    expect(text).toMatch(/Next: Domain Mastery · /);
   });
 
   it('at most three moments in any 7 days: the fourth is a quiet line, with no tap', () => {
@@ -366,10 +368,10 @@ describe('the unlock moment', () => {
 
   it('a higher tier always plays short; it names its tier in words', () => {
     setMockReducedMotion(false);
-    mount(<MilestoneMomentView moment={moment({ key: 'rooted:30', label: 'Rooted · 30 days', set: 'rooted', setName: 'Rooted', tier: 2, tierUp: true })} once="t1" />);
+    mount(<MilestoneMomentView moment={moment({ key: 'rooted:30', label: 'Study Days · 30 days', set: 'rooted', setName: 'Rooted', tier: 2, tierUp: true })} once="t1" />);
     const cel = root().findAll((n) => n.props.celebration !== undefined)[0].props.celebration as { mode: string };
     expect(cel.mode).toBe('short');
-    expect(allText()).toContain('Rooted · 30 days · Lichen');
+    expect(allText()).toContain('Study Days · 30 days · Silver');
   });
 
   it('says "That completes Evergreen." only when it does', () => {
@@ -417,12 +419,12 @@ describe('review fixes (PR #40)', () => {
     expect(labels()).toEqual(expect.arrayContaining(['All badges', 'Earned badges', 'Badges not yet earned']));
   });
 
-  it('flat sorts keep Firm Footing’s name; Closest and Effort put the exam’s badges before Field notes', () => {
+  it('flat sorts keep Domain Mastery’s name; Closest and Effort put the exam’s badges before Field notes', () => {
     d4.slice(0, 20).forEach(answer);
     ensureBackfill('cisa', T0);
     useSeen.setState({ badgeSort: 'effort' });
     mount(<Badges />);
-    expect(allText()).toContain('Firm Footing · IS Operations');
+    expect(allText()).toContain('Domain Mastery · IS Operations');
     const sets = root().findAllByType(BadgeCell).map((c) => c.props.mark.set as string);
     const firstGame = sets.indexOf('fieldNotes');
     expect(firstGame).toBeGreaterThan(0);
@@ -457,7 +459,7 @@ describe('review fixes (PR #40)', () => {
     for (const m of root().findAll((n) => typeof n.type !== 'string' && typeof n.props.badge === 'string' && typeof n.props.state === 'string')) expect(m.props.progress ?? 0).toBe(0);
     press(/^Sort badges/);
     expect(labels().some((l) => /^Closest/.test(l))).toBe(false);
-    press(/^Firm Footing · IS Operations, Clay\. Not yet/);
+    press(/^Domain Mastery · IS Operations, Bronze\. Not yet/);
     expect(sheetText()).not.toContain('How to earn it');
     expect(root().findByType(Modal).findAll((n) => /^Study for/.test(n.props.accessibilityLabel ?? ''))).toHaveLength(0);
   });
@@ -466,7 +468,7 @@ describe('review fixes (PR #40)', () => {
     d4.slice(0, 20).forEach(answer);
     ensureBackfill('cisa', T0);
     mount(<Badges />);
-    press(/^First Foothold\. Earned by/);
+    press(/^First Review\. Earned by/);
     expect(sheetText()).toContain('Already earned when this badge arrived (by 12 Oct)');
     expect(sheetText()).not.toContain('This completed');
   });
@@ -501,7 +503,7 @@ describe('review fixes (PR #40)', () => {
     earn('first-foothold', T0 - DAY);
     earn('long-memory:999', T0 - DAY);
     mount(<You />);
-    expect(labels().some((l) => l.startsWith('Badges: your badges and field notes, 1 earned.'))).toBe(true);
+    expect(labels().some((l) => l.startsWith('Badges: your study badges, 1 earned.'))).toBe(true);
   });
 
   it('Show badges back on counts the active exam’s waiting moments only', () => {
@@ -515,7 +517,7 @@ describe('review fixes (PR #40)', () => {
 
   it('a moment already on screen before it plays waits at its pencilled mount, then presses; Reduce Motion: the taped tile at once', () => {
     setMockReducedMotion(false);
-    const m: MilestoneMoment = { key: 'long-memory', label: 'Long Memory', rule: 'r', kind: 'milestone', set: 'evergreen', setName: 'Evergreen', unlock: 'u' };
+    const m: MilestoneMoment = { key: 'long-memory', label: 'Lasting Recall', rule: 'r', kind: 'milestone', set: 'evergreen', setName: 'Evergreen', unlock: 'u' };
     mount(<MilestoneMomentView moment={m} once="p1" inView={false} />);
     const tile = () => root().findAll((n) => n.props.testID === 'moment-tile' && typeof n.type !== 'string')[0];
     expect(tile().props.motion).toBe('pending');
@@ -536,30 +538,30 @@ describe('You: the badge shelf (Grove PHASE4 7.14 item 7, board 04-phone-you)', 
   const shelfRows = () =>
     shelf()[0].findAll((n) => typeof n.type === 'string' && n.children.some((k) => typeof k !== 'string' && /^shelf-/.test(String(k.props.testID))));
 
-  it('four square slots: the pressed badge first, then dashed empty slots; one line; one button besides All badges', () => {
+  it('four square slots: the earned badge first, then dashed empty slots; one line; one button besides All badges', () => {
     earn('first-foothold', T0 - DAY);
     mount(<You />);
     const [card] = hostsWith('you-badges');
     expect(card.findAll((n) => n.props.testID === 'shelf-tile' && typeof n.type === 'string')).toHaveLength(1);
     expect(card.findAll((n) => n.props.testID === 'shelf-empty' && typeof n.type === 'string')).toHaveLength(3);
     // The kit's line (short text, Sky, 5 Nov: the card's title already says Badges).
-    expect(allText()).toContain('1 pressed · First Foothold, 11 Oct');
-    expect(allText()).not.toContain('Your badges and field notes.');
+    expect(allText()).toContain('1 earned · First Review');
+    expect(allText()).not.toContain('Your study badges.');
     // Two controls only: All badges and the shelf.
     expect(card.findAll((n) => n.props.accessibilityRole === 'button' && typeof n.type === 'string')).toHaveLength(2);
     expect(shelf()).toHaveLength(1);
-    expect(shelf()[0].props.accessibilityLabel).toMatch(/^Badges: your badges and field notes, 1 earned\./);
+    expect(shelf()[0].props.accessibilityLabel).toMatch(/^Badges: your study badges, 1 earned\./);
     // The tiles are pictures only: hidden from screen readers.
     expect(shelf()[0].findAll((n) => n.props.importantForAccessibility === 'no-hide-descendants' && typeof n.type === 'string').length).toBeGreaterThan(0);
     expect(shelfRows()).toHaveLength(1);
-    press(/^Badges: your badges and field notes/);
+    press(/^Badges: your study badges/);
     expect(router.push).toHaveBeenCalledWith('/milestones');
   });
 
-  it('none pressed yet: four empty slots and the line says so', () => {
+  it('none earned yet: four empty slots and the line says so', () => {
     mount(<You />);
     expect(hostsWith('shelf-empty')).toHaveLength(4);
-    expect(allText()).toContain('None pressed yet');
+    expect(allText()).toContain('No badges yet');
   });
 
   it('from text scale 1.3 the shelf wraps 2 by 2', () => {

@@ -1,5 +1,5 @@
 /**
- * Field Guide screen against the real stores: tap a term then its meaning
+ * Term Match screen against the real stores: tap a term then its meaning
  * (no drag), a wrong pair stays open and loses its first-try point, each
  * term is a review card (never an answer), and the round ends through the
  * shared recap with the game's level saved.
@@ -126,7 +126,7 @@ it('plays a whole round to the shared recap and saves the level', () => {
   expect(cp().gameGrowth?.field).toEqual(expect.objectContaining({ tier: 'seedling', up: 1 }));
 });
 
-it('Heartwood: one meaning at a time, pick its term from six', () => {
+it('Skilled: one meaning at a time, pick its term from six', () => {
   useProgress.setState({ byCert: { cisa: { ...cp(), gameGrowth: { field: { tier: 'heartwood', up: 0, down: 0 } } } } });
   act(() => {
     r = create(<FieldGuide />);

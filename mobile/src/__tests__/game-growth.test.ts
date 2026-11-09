@@ -1,10 +1,16 @@
 /**
- * Build F: per-game levels (Seedling → Sapling → Heartwood), games review §5.
+ * Build F: per-game levels (Beginner → Practised → Skilled), games review §5.
  * Promote after 2 rounds in a row at 80%+ on the skill step; step back one
  * level after 2 rounds in a row under 50%, worded as practice, never a loss.
  */
 import { readBackup } from '../engine/backup';
-import { growthTier, HITS_CAP, noteRound, share, tierChangeLine, type GameGrowth } from '../engine/games/growth';
+import { GAME_TIER_NAME, growthTier, HITS_CAP, noteRound, share, tierChangeLine, type GameGrowth } from '../engine/games/growth';
+import { TIER_NAME } from '../engine/games/daylight';
+import { CALL_TIER_NAME } from '../engine/games/callItFirst';
+import { FIELD_TIER_NAME } from '../engine/games/fieldGuide';
+import { RUMOR_TIER_NAME } from '../engine/games/rootOrRumor';
+import { CANOPY_TIER_NAME } from '../engine/games/canopyCall';
+import { STONES_TIER_NAME } from '../engine/games/steppingStones';
 import { checkBackupText, currentBackup } from '../lib/backup';
 import { selectCert, useProgress } from '../store/progress';
 
@@ -23,8 +29,15 @@ const play = (g: GameGrowth | undefined, rates: number[], tier?: GameGrowth['tie
   return { g: cur!, changes };
 };
 
+test('every drill uses direct level labels without changing saved tier keys', () => {
+  const names = { seedling: 'Beginner', sapling: 'Practised', heartwood: 'Skilled' };
+  for (const labels of [GAME_TIER_NAME, TIER_NAME, CALL_TIER_NAME, FIELD_TIER_NAME, RUMOR_TIER_NAME, CANOPY_TIER_NAME, STONES_TIER_NAME]) {
+    expect(labels).toEqual(names);
+  }
+});
+
 describe('promote', () => {
-  it('starts at Seedling', () => {
+  it('starts at Beginner', () => {
     expect(growthTier(undefined)).toBe('seedling');
   });
 
@@ -41,7 +54,7 @@ describe('promote', () => {
     expect(play(undefined, [0.79, 0.95]).g.tier).toBe('seedling');
   });
 
-  it('climbs to Heartwood and stays there', () => {
+  it('climbs to Skilled and stays there', () => {
     const { g } = play(undefined, [1, 1, 1, 1, 1, 1, 1, 1]);
     expect(g.tier).toBe('heartwood');
     expect(g.up).toBeLessThanOrEqual(2);
@@ -60,7 +73,7 @@ describe('step back', () => {
     expect(play({ tier: 'sapling', up: 0, down: 0 }, [0.2, 0.6, 0.2]).g.tier).toBe('sapling');
   });
 
-  it('never goes below Seedling', () => {
+  it('never goes below Beginner', () => {
     const { g, changes } = play(undefined, [0, 0, 0, 0]);
     expect(g.tier).toBe('seedling');
     expect(changes.every((c) => c === null)).toBe(true);
@@ -68,9 +81,9 @@ describe('step back', () => {
 
   it('is worded as practice, never as a loss', () => {
     const line = tierChangeLine('down', 'sapling')!;
-    expect(line).toBe('Back to Sapling. Two strong rounds grow it again.');
+    expect(line).toBe('Back to Practised. Two strong rounds move you up again.');
     expect(line).not.toMatch(/lose|lost|demot|fail/i);
-    expect(tierChangeLine('up', 'heartwood')).toMatch(/grown to Heartwood/);
+    expect(tierChangeLine('up', 'heartwood')).toMatch(/reached Skilled/);
     expect(tierChangeLine(null, 'sapling')).toBeNull();
   });
 });

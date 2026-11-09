@@ -345,23 +345,6 @@ describe('QA 1: past mocks open, and ?mock= deep links', () => {
 
 // ── 2. The ways in ───────────────────────────────────────────────────────
 describe('QA 2: entry points', () => {
-  it('Today: the readiness words open the report; with a plant, the plant still opens Your plant', () => {
-    setCert({ answers: seedAnswers(30, 0.7), plant: { species: 'oak', name: 'Kai', plantedAt: Date.now() - 3 * DAY, growth: 2 } });
-    mount(<Today />);
-    const words = root().findAll((n) => n.props.testID === 'readiness-tap' && typeof n.props.onPress === 'function')[0];
-    act(() => {
-      words.props.onPress();
-    });
-    expect(router.push).toHaveBeenLastCalledWith('/readiness');
-    // The plant is NOT inside the report's tap target (two separate stops).
-    expect(words.findAll((n) => n.props.testID === 'today-plant')).toHaveLength(0);
-    const plant = root().findAll((n) => n.props.testID === 'today-plant' && typeof n.props.onPress === 'function')[0];
-    expect(plant).toBeDefined();
-    act(() => {
-      plant.props.onPress();
-    });
-    expect(router.push).toHaveBeenLastCalledWith('/plant');
-  });
 
   it('You: "See report" on the Readiness section (mobile 1.21: the one way in, no duplicate on Mock exams), and a mock row with its id', () => {
     const mocks = series([60, 66]);

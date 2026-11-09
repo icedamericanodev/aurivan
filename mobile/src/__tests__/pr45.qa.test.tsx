@@ -849,14 +849,14 @@ describe('J7 the plant and the badges are unaffected by the fit', () => {
     }
   });
 
-  it('the plant’s setup line still goes first; the fit card waits for another visit', () => {
+  it('legacy plant preferences do not delay the study setup card', () => {
     useSettings.setState({ onboarded: true, dailyGoal: 20 });
     act(() => {
       useProgress.setState({ plantSettings: undefined });
     });
     mount(<Today />);
-    expect(byTestID('plant-prompt')).toHaveLength(1);
-    expect(byTestID('fit-card')).toHaveLength(0);
+    expect(byTestID('plant-prompt')).toHaveLength(0);
+    expect(byTestID('fit-card')).toHaveLength(1);
   });
 
   it('onboarding saves the fit in one tap and asks nothing about a plant (a seed comes after the first set)', () => {

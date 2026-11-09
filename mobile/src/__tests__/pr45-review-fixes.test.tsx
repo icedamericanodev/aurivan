@@ -439,7 +439,7 @@ describe('Settings: Your study and Practice together; the kept line is said (UX 
   it('section order (mobile 1.46: one page, in the order learners change things; two doors at the end)', () => {
     mount(<Settings />);
     const t = allText();
-    const at = ['Appearance', 'Your study', 'Reminders', 'Practice', 'Badges and your plant', 'Your data', 'Help and about'].map((s) => t.indexOf(s));
+    const at = ['Appearance', 'Your study', 'Reminders', 'Practice', 'Badges', 'Your data', 'Help and about'].map((s) => t.indexOf(s));
     expect(at.every((n) => n > -1)).toBe(true);
     expect([...at].sort((a, b) => a - b)).toEqual(at);
   });

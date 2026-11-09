@@ -9,6 +9,7 @@
  *
  * DisclosureRow is the shared "row that opens a panel" (also Build a set).
  */
+import { FeatureInfo } from './featureInfo';
 import type { ReactNode, Ref } from 'react';
 import { Pressable, StyleSheet, View } from 'react-native';
 import type { DomainInfo } from '../content/types';
@@ -97,6 +98,13 @@ export function pathSummary(mode: StudyMode, domain: DomainInfo | undefined, siz
   return parts.join(' · ');
 }
 
+const MODE_SUMMARY: Record<StudyMode, string> = {
+  smart: 'Reviews and questions picked for you.',
+  guided: 'A lesson, then practice.',
+  inOrder: 'Topics in order, then a mixed review.',
+  random: 'A mix like the exam.',
+};
+
 // ── PathChooser: the opened panel ─────────────────────────────────────
 export function PathChooser({
   mode,
@@ -122,13 +130,18 @@ export function PathChooser({
   const { c } = useTheme();
   return (
     <View testID="path-chooser" style={[styles.panel, { borderBottomColor: c.line }]}>
-      <FieldLabel>Mode</FieldLabel>
+      <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+        <FieldLabel>Mode</FieldLabel>
+        <FeatureInfo title="Study modes">
+          {STUDY_MODES.map((m) => <View key={m} style={{ marginBottom: space.md }}><T v="label">{MODE_INFO[m].name}</T><T v="body">{MODE_INFO[m].why}</T></View>)}
+        </FeatureInfo>
+      </View>
       <View accessibilityRole="radiogroup" accessibilityLabel="Study mode">
         {STUDY_MODES.map((m, i) => (
           <RadioRow
             key={m}
             title={MODE_INFO[m].name}
-            subtitle={MODE_INFO[m].why}
+            subtitle={MODE_SUMMARY[m]}
             badge={m === suggested ? 'Suggested' : undefined}
             checked={m === mode}
             // P2: re-tapping the chosen mode saves nothing, so "Let the app choose" survives.

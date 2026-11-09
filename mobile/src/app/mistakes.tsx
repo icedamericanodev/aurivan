@@ -36,6 +36,7 @@
  * one shows its tag as a line with "Change", and the chips (one labelled radio
  * group, each spoken as "Tag: ...") open only on tap.
  */
+import { FeatureInfo } from '../components/featureInfo';
 import { router } from 'expo-router';
 import { backOr } from '../lib/actions';
 import { moveFocus, sayLater } from '../lib/a11y';
@@ -315,8 +316,7 @@ export default function Mistakes() {
 
   const header = (
     <View>
-      <PushedHeader title="Mistake journal" onBack={() => backOr('/you')} />
-      <T v="meta" style={{ marginTop: space.sm }}>Tag why you slipped. Find your pattern.</T>
+      <PushedHeader right={<FeatureInfo title="Mistake journal"><T v="body">Tag why you slipped to find recurring patterns. Use “What do these mean?” beside the tags for examples.</T></FeatureInfo>} title="Mistake journal" onBack={() => backOr('/you')} />
 
       {pattern.ready ? (
         // Not a card: a green left rule, like the key idea (spec §5).

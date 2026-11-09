@@ -772,7 +772,7 @@ describe('restore clamp: live growth is always supported (code review B1)', () =
     expect([...seen].sort()).toEqual([1, 2, 3, 4, 5, 6]);
   });
 
-  it('a full mock history, a Dress Rehearsal mark or study older than the readiness log never refutes (P1b)', () => {
+  it('a full mock history, a Mock Complete mark or study older than the readiness log never refutes (P1b)', () => {
     const answers: Record<string, AnswerRecord> = {};
     for (let d = 1; d <= 5; d++) for (let k = 0; k < 40; k++) answers[`d${d}_${String(k).padStart(3, '0')}`] = rec({});
     const mastery = Object.fromEntries(subs.flat().map((s) => [s, { firstDay: '2026-08-01', masteredAt: '2026-08-03' }]));
@@ -781,7 +781,7 @@ describe('restore clamp: live growth is always supported (code review B1)', () =
     expect(maxSupportedGrowth(supportEvidence({ ...base, mocks: minis.slice(0, 49) }))).toBe(4);
     // 50 mocks: the history is full, so an older 50+ or full mock may have scrolled away.
     expect(maxSupportedGrowth(supportEvidence({ ...base, mocks: minis }))).toBe(6);
-    // The Dress Rehearsal badge proves a full, timed mock (and, at 150 questions, a 50+ one).
+    // The Mock Complete badge proves a full, timed mock (and, at 150 questions, a 50+ one).
     expect(maxSupportedGrowth(supportEvidence({ ...base, mocks: [], earned: { 'dress-rehearsal': T0 } }))).toBe(6);
     // Study older than the log's oldest day: an 80+ day may have scrolled out of the log.
     const recent = { ...base, mastery: Object.fromEntries(subs.flat().map((s) => [s, { firstDay: '2026-10-10', masteredAt: '2026-10-11' }])) };

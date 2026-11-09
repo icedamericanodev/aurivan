@@ -1,7 +1,7 @@
 /**
  * The badges' way in from You (mobile 1.51, Field Guide §21): one row
  * with the three newest pressed specimens, "Badges", "Your badges and field
- * notes · Last pressed: Know What You Know, 28 Oct", a small "new" dot (shape,
+ * notes · Latest: Know What You Know, 28 Oct", a small "new" dot (shape,
  * and said) and the count earned (never "of N"). One button to the badges screen.
  * Settings → Show badges off hides it (You keeps a Field notes row instead).
  * Grove You C2: the row says and shows "Badges", never "Herbarium" (labels decision 8);
@@ -17,19 +17,19 @@ import { useTheme } from '../theme/useTheme';
 import { ChevronRight, ICON_STROKE } from './icons';
 import { EmblemArt } from './medallion';
 import { AnimatedPressable, usePressScale } from './motion';
-import { TapeStrips } from './pressedTile';
+import { PressedTile } from './pressedTile';
 import { Row, T, Trail, useFontScale } from './ui';
 
 /** The row's title, shown and said. The code name stays; the words are "Badges" (labels decision 8). */
 export const HERBARIUM = 'Badges';
 
-/** "Your badges and field notes · Last pressed: Know What You Know, 28 Oct". */
+/** "Your study badges · Latest: Know What You Know, 28 Oct". */
 export function herbariumLine(last?: LastPressed): string {
-  return last ? `Your badges and field notes · Last pressed: ${last.name}, ${shortDate(last.at)}` : 'Your badges and field notes · none pressed yet';
+  return last ? `Your study badges · Latest: ${last.name}, ${shortDate(last.at)}` : 'Your study badges · none earned yet';
 }
 
 export function herbariumSpoken(count: number, newBadge: boolean, last?: LastPressed): string {
-  return `${HERBARIUM}: your badges and field notes${newBadge ? ', new badge' : ''}, ${count ? `${count} earned` : 'none yet'}.${last ? ` Last pressed: ${last.name}, ${spokenShortDate(last.at)}.` : ''}`;
+  return `${HERBARIUM}: your study badges${newBadge ? ', new badge' : ''}, ${count ? `${count} earned` : 'none yet'}.${last ? ` Latest: ${last.name}, ${spokenShortDate(last.at)}.` : ''}`;
 }
 
 export const HerbariumEntry = memo(function HerbariumEntry({
@@ -91,12 +91,12 @@ export const HerbariumEntry = memo(function HerbariumEntry({
 export const SHELF_SLOTS = 4;
 
 /**
- * The line under the shelf, the kit's words: "1 pressed · Fresh Start, 26 Oct". It was led by
- * "Your badges and field notes" (PHASE4 7.14 item 7) until the short-text rule (5 Nov).
+ * The line under the shelf, the kit's words: "1 pressed · Study Return, 26 Oct". It was led by
+ * "Your study badges" (PHASE4 7.14 item 7) until the short-text rule (5 Nov).
  */
 export function shelfLine(count: number, last?: LastPressed): string {
   // Short text (Sky, 5 Nov): the kit's own line; the card's title already says Badges.
-  return last && count ? `${count} pressed · ${last.name}, ${shortDate(last.at)}` : 'None pressed yet';
+  return last && count ? `${count} earned · ${last.name}` : 'No badges yet';
 }
 
 /**
@@ -156,9 +156,8 @@ export const BadgeShelf = memo(function BadgeShelf({
                   style={{ flex: 1, aspectRatio: 1, minWidth: 48, borderRadius: groveRadius.tile, backgroundColor: g.specimen, alignItems: 'center', justifyContent: 'center' }}
                 >
                   {/* Grove 4b (5.2, 5.6): the pressed paper tile's two strips of tape, at opposite corners. */}
-                  <TapeStrips size={large ? 120 : 72} />
                   {/* The art sits on a light sheet in both themes, so it keeps the light-sheet inks. */}
-                  <EmblemArt badge={p.badge} tier={p.tier} emblem={p.emblem} palette={fieldInk.light.pressed} size={large ? 64 : 44} />
+                  <PressedTile badge={p.badge} tier={p.tier} emblem={p.emblem} state="earned" size={large ? 100 : 48} />
                 </View>
               ) : (
                 <View

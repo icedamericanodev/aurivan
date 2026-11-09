@@ -170,8 +170,8 @@ describe('report email: only what we need, nothing about the learner', () => {
     expect(lines({ kind: 'lesson', id: 'cisa-l-d1-charter', name: 'The audit charter', step: 3, steps: 7, where: 'Lesson' }, 'order')).toBe(
       'Item: Lesson cisa-l-d1-charter, step 3 of 7 (The audit charter)',
     );
-    expect(lines({ kind: 'card', id: 'rumor:4B1.2:k1x9', name: 'Root or Rumor', where: 'Game recap' }, 'key')).toBe(
-      'Item: Game card rumor:4B1.2:k1x9 (Root or Rumor)',
+    expect(lines({ kind: 'card', id: 'rumor:4B1.2:k1x9', name: 'Fact or Myth', where: 'Game recap' }, 'key')).toBe(
+      'Item: Game card rumor:4B1.2:k1x9 (Fact or Myth)',
     );
   });
 

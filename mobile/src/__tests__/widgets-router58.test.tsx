@@ -87,8 +87,8 @@ describe('a widget tap on expo-router 58 (app/widget.tsx)', () => {
   it('cold start (app closed): opens the place with Today under it, and never throws', async () => {
     const r = await renderRouter(APP, { initialUrl: PLANT });
     await settle();
-    expect(names(r)).toEqual(['(tabs)', 'plant']);
-    expect(r.getPathname()).toBe('/plant');
+    expect(names(r)).toEqual(['(tabs)']);
+    expect(r.getPathname()).toBe('/home');
   });
 
   it('warm start (app open on another screen): ONE tab navigator, the place on top, no blank screen', async () => {
@@ -101,7 +101,7 @@ describe('a widget tap on expo-router 58 (app/widget.tsx)', () => {
       router.navigate(PLANT);
     });
     await settle();
-    expect(names(r)).toEqual(['(tabs)', 'plant']);
+    expect(names(r)).toEqual(['(tabs)']);
   });
 
   it('"Today" from a widget lands on Today, with nothing above it', async () => {
@@ -115,6 +115,6 @@ describe('a widget tap on expo-router 58 (app/widget.tsx)', () => {
     openQuiz();
     const r = await renderRouter(APP, { initialUrl: PLANT });
     await settle();
-    expect(names(r)).toEqual(['(tabs)', 'session', 'plant']);
+    expect(names(r)).toEqual(['(tabs)', 'session']);
   });
 });

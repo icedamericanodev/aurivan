@@ -11,7 +11,7 @@
  * - In order: resumes per domain; the mixed tail is there at every place.
  * - Random: the spread follows the blueprint.
  * - Timer: the Study default reaches every non-mock way in.
- * - Root or Rumor: 12 per round, missed cards come back, readiness and
+ * - Fact or Myth: 12 per round, missed cards come back, readiness and
  *   mastery never move.
  *
  * Bugs found in this pass are pinned with `it.failing`: each passes while
@@ -430,11 +430,11 @@ describe('Timed practice (Settings default on) reaches every non-mock way in', (
   });
 });
 
-// ── Root or Rumor ────────────────────────────────────────────────────────
-describe('Root or Rumor', () => {
+// ── Fact or Myth ────────────────────────────────────────────────────────
+describe('Fact or Myth', () => {
   const all = rumorStatements(getNotes('cisa'));
 
-  it('every round is 12 distinct statements, 6 Roots and 6 Rumors; Seedling stays in one domain', () => {
+  it('every round is 12 distinct statements, 6 Roots and 6 Rumors; Beginner stays in one domain', () => {
     for (const tier of ['seedling', 'sapling', 'heartwood'] as const) {
       for (let seed = 0; seed < 100; seed++) {
         const r = buildRumorRound(all, {}, tier, createRng(seed), NOW);
@@ -457,7 +457,7 @@ describe('Root or Rumor', () => {
       const r2 = buildRumorRound(all, cp().cards, tier, createRng(2), Date.now() + 1);
       expect(missed.every((m) => r2.some((s) => s.id === m.id))).toBe(true);
     }
-    // Seedling brings back the missed cards of the domain it picks.
+    // Beginner brings back the missed cards of the domain it picks.
     const r3 = buildRumorRound(all, cp().cards, 'seedling', createRng(3), Date.now() + 1);
     const back = missed.filter((m) => m.domainId === r3[0].domainId);
     expect(back.length).toBeGreaterThan(0);

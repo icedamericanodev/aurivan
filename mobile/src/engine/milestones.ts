@@ -3,7 +3,7 @@
  * games review §5, Build F).
  *
  * Plain English for the founder:
- * - 15 milestone badges (You → Milestones) and 7 game skill badges
+ * - 16 milestone badges (You → Milestones) and 7 game skill badges
  *   (You → Field notes). Each has ONE plain rule, shown before it is earned.
  *   No mystery badges, no rarity, no leaderboards.
  * - Rules, from the behaviour review:
@@ -16,7 +16,7 @@
  *      are the one fixed number, and it is the diagnostic itself.
  *   3. Once earned, never taken away. Live state (a domain dipping) shows
  *      elsewhere; the badge stays.
- * - Some badges have leaves or tiers: Firm Footing has one leaf per domain
+ * - Some badges have leaves or tiers: Domain Mastery has one leaf per domain
  *   ("firm-footing:4"), Rooted has 10, 30 and 60 study days ("rooted:30").
  *   Each leaf or tier is a "mark"; a badge is earned once any mark is.
  * - This file only decides. The numbers it needs (MilestoneFacts) are worked
@@ -65,19 +65,19 @@ export const GAME_FIXES = 10;
 // The higher tiers (mobile 1.11, badges_game.md §2.3, slice C). Each tier is
 // its own mark, earned once and kept; a restored backup is checked against
 // the RIGHT evidence for each tier (markSupported), never tier 1's.
-/** Firm Footing · 80%: a Stretch tier, opening once Whole Map is earned. */
+/** Domain Mastery · 80%: a Stretch tier, opening once All Domains is earned. */
 export const FIRM_DEEP = 0.8;
-/** Firm Footing · 80%: its answers. */
+/** Domain Mastery · 80%: its answers. */
 export const FIRM_DEEP_ANSWERS = 40;
-/** Long Memory's tiers beyond the first (25): 75, then 150 (a Stretch tier). */
+/** Lasting Recall's tiers beyond the first (25): 75, then 150 (a Stretch tier). */
 export const LONG_TIERS = [75, 150] as const;
-/** Long Memory's three tiers, lowest first. The question list it keeps stops at the top one. */
+/** Lasting Recall's three tiers, lowest first. The question list it keeps stops at the top one. */
 export const LONG_LADDER = [LONG_RECALLS, ...LONG_TIERS] as const;
-/** Long Memory's question list stops at its top tier (it stopped at 25 before 1.11). */
+/** Lasting Recall's question list stops at its top tier (it stopped at 25 before 1.11). */
 export const LONG_IDS_CAP = LONG_LADDER[LONG_LADDER.length - 1];
-/** Dress Rehearsal's tiers beyond the first: 2 and 3 spaced mocks (3 is a Stretch tier). */
+/** Mock Complete's tiers beyond the first: 2 and 3 spaced mocks (3 is a Stretch tier). */
 export const DRESS_TIERS = [2, 3] as const;
-/** Dress Rehearsal · 2 and · 3: each full mock this many days or more after the one before. */
+/** Mock Complete · 2 and · 3: each full mock this many days or more after the one before. */
 export const DRESS_GAP_DAYS = 7;
 
 const DAY_MS = 86_400_000;
@@ -129,12 +129,12 @@ export interface CertMilestones {
   /** The last SURE_WINDOW unassisted, non-game "sure" answers, oldest first (true = right). */
   sure?: boolean[];
   /**
-   * Long Memory: the questions already counted (each counts once). At most
+   * Lasting Recall: the questions already counted (each counts once). At most
    * 150 (the top tier) since mobile 1.11; it stopped at 25 before, so the
    * count for the higher tiers starts from there (never inflated).
    */
   longIds?: string[];
-  /** Myth Clearer: the last MYTH_WINDOW different rumors (note cards) and whether each was cleared. */
+  /** Fact Check: the last MYTH_WINDOW different rumors (note cards) and whether each was cleared. */
   myths?: WindowHit[];
   /** Signpost Reader: the last SIGNPOST_WINDOW different FIRST questions and whether the word was read right. */
   signposts?: WindowHit[];
@@ -171,7 +171,7 @@ export interface CertMilestones {
 /** A mock result, as far as the milestones need it. */
 export interface MockFacts {
   total: number;
-  /** When it ended (Dress Rehearsal's spaced tiers). Optional for older test data. */
+  /** When it ended (Mock Complete's spaced tiers). Optional for older test data. */
   finishedAt?: number;
   timing?: MockTiming;
   unanswered?: number;
@@ -183,7 +183,7 @@ export interface MilestoneFacts {
   /** Unique questions whose last answer was given without Coach me, outside games. */
   cleanAnswered: number;
   topicsClear: number;
-  /** The topic closest to clear (Topic Clear's progress line); none when no topic exists. */
+  /** The topic closest to clear (Topic Complete's progress line); none when no topic exists. */
   topicBest?: { right: number; studied: boolean };
   /** Per domain, from unassisted answers only. */
   domains: { id: string; short: string; answered: number; mastery: number }[];
@@ -197,15 +197,15 @@ export interface MilestoneFacts {
   fullMockSize: number;
   mindsetShift: boolean;
   /**
-   * Mobile 1.10: Mindset Shift has enough answers to be judged (100 first
+   * Mobile 1.10: Better Judgement has enough answers to be judged (100 first
    * tries, the newest 50 two weeks or more after the first 50). Until then
    * its badge is "gated": it says when it opens, never an empty bar.
    */
   mindsetData?: boolean;
   /**
-   * Mobile 1.11: when Whole Map was earned (none: not yet). Firm Footing ·
-   * 80% and Dress Rehearsal · 2 and · 3 open then, and only mocks finished
-   * from then on count toward the spaced Dress Rehearsals.
+   * Mobile 1.11: when All Domains was earned (none: not yet). Domain Mastery ·
+   * 80% and Mock Complete · 2 and · 3 open then, and only mocks finished
+   * from then on count toward the spaced Mock Completes.
    */
   wholeMapAt?: number;
   /**
@@ -241,7 +241,7 @@ export interface BadgeDef {
 export interface MarkState {
   key: string;
   badge: BadgeId;
-  /** "Firm Footing · IS Operations", "Rooted · 30 days", or the badge name. */
+  /** "Domain Mastery · IS Operations", "Rooted · 30 days", or the badge name. */
   label: string;
   met: boolean;
   progress: number;
@@ -252,65 +252,65 @@ export interface MarkState {
 
 const g = (id: keyof typeof GAMES) => GAMES[id].name;
 
-/** The 15 milestones, then the 7 skill badges, in display order. */
+/** The 16 milestones, then the 7 skill badges, in display order. */
 export const BADGES: BadgeDef[] = [
-  { id: 'first-foothold', kind: 'milestone', name: 'First Foothold', rule: `Answer your first ${DIAGNOSTIC_SIZE} questions.` },
-  { id: 'topic-clear', kind: 'milestone', name: 'Topic Clear', rule: 'Clear your first topic: its lesson done, and 4 of your last 5 answers there right.' },
-  { id: 'ten-topics', kind: 'milestone', name: 'Ten Topics Clear', rule: `Clear ${TEN_TOPICS} topics.` },
+  { id: 'first-foothold', kind: 'milestone', name: 'First Review', rule: `Answer your first ${DIAGNOSTIC_SIZE} questions.` },
+  { id: 'topic-clear', kind: 'milestone', name: 'Topic Complete', rule: 'Clear your first topic: its lesson done, and 4 of your last 5 answers there right.' },
+  { id: 'ten-topics', kind: 'milestone', name: 'Ten Topics', rule: `Clear ${TEN_TOPICS} topics.` },
   {
     id: 'firm-footing',
     kind: 'milestone',
-    name: 'Firm Footing',
-    rule: `Reach ${Math.round(FIRM_MASTERY * 100)}% mastery in a domain, with ${FIRM_ANSWERS} or more of its questions answered. One leaf per domain.`,
+    name: 'Domain Mastery',
+    rule: `Reach ${Math.round(FIRM_MASTERY * 100)}% mastery in a domain, with ${FIRM_ANSWERS} or more of its questions answered. One badge per domain.`,
   },
-  { id: 'whole-map', kind: 'milestone', name: 'Whole Map', rule: `Reach ${Math.round(WHOLE_MAP_FLOOR * 100)}% mastery in every domain.` },
-  { id: 'loop-closed', kind: 'milestone', name: 'Loop Closed', rule: `Fix ${LOOP_FIXES} logged mistakes: answer each one right, without a hint, on a later day.` },
-  { id: 'slip-spotter', kind: 'milestone', name: 'Slip Spotter', rule: `Tag ${SLIP_TAGS} mistakes with the thinking slip behind them.` },
-  { id: 'long-memory', kind: 'milestone', name: 'Long Memory', rule: `Get ${LONG_RECALLS} questions right, without a hint, a week or more after you last saw them.` },
+  { id: 'whole-map', kind: 'milestone', name: 'All Domains', rule: `Reach ${Math.round(WHOLE_MAP_FLOOR * 100)}% mastery in every domain.` },
+  { id: 'loop-closed', kind: 'milestone', name: 'Mistakes Fixed', rule: `Fix ${LOOP_FIXES} logged mistakes: answer each one right, without a hint, on a later day.` },
+  { id: 'slip-spotter', kind: 'milestone', name: 'Error Insight', rule: `Tag ${SLIP_TAGS} mistakes with the thinking slip behind them.` },
+  { id: 'long-memory', kind: 'milestone', name: 'Lasting Recall', rule: `Get ${LONG_RECALLS} questions right, without a hint, a week or more after you last saw them.` },
   // Mobile 1.18 (owner-delegated panel): named for the questions, not the
   // learner ("Graduate" read like a credential). The id stays `graduate` and
   // the counter `graduated`, so saved progress and backups load unchanged.
-  { id: 'graduate', kind: 'milestone', name: 'Flown the Nest', rule: `Answer ${GRADUATES} questions right from the last review box, so they leave review.` },
+  { id: 'graduate', kind: 'milestone', name: 'Review Complete', rule: `Answer ${GRADUATES} questions right from the last review box, so they leave review.` },
   {
     id: 'know-what-you-know',
     kind: 'milestone',
-    name: 'Know What You Know',
+    name: 'Confidence Check',
     rule: `Of your last ${SURE_WINDOW} “sure” answers, get ${Math.round(SURE_RIGHT * 100)}% or more right (after at least ${SURE_MIN}).`,
   },
-  { id: 'dress-rehearsal', kind: 'milestone', name: 'Dress Rehearsal', rule: 'Finish a full, timed mock with every question answered.' },
+  { id: 'dress-rehearsal', kind: 'milestone', name: 'Mock Complete', rule: 'Finish a full, timed mock with every question answered.' },
   { id: 'on-pace', kind: 'milestone', name: 'On Pace', rule: `Finish a timed mock with every pace check within ${Math.round(PACE_TOLERANCE * 100)}% of the target.` },
-  { id: 'mindset-shift', kind: 'milestone', name: 'Mindset Shift', rule: 'Pick the closest wrong choice clearly less often than in your first weeks.' },
+  { id: 'mindset-shift', kind: 'milestone', name: 'Better Judgement', rule: 'Pick the closest wrong choice clearly less often than in your first weeks.' },
   {
     id: 'rooted',
     kind: 'milestone',
-    name: 'Rooted',
+    name: 'Study Days',
     rule: `Study on ${ROOTED_DAYS[0]} days in all, then ${ROOTED_DAYS[1]}, then ${ROOTED_DAYS[2]}. Days add up; they don’t need to be in a row.`,
   },
   {
     id: 'took-root',
     kind: 'milestone',
-    name: 'Took Root',
+    name: 'Topic Recall',
     rule: 'Make one whole topic stick: every part of it answered right, without a hint, on two different days.',
   },
-  { id: 'fresh-start', kind: 'milestone', name: 'Fresh Start', rule: `Come back after ${FRESH_GAP_DAYS} days or more away and finish a session.` },
+  { id: 'fresh-start', kind: 'milestone', name: 'Study Return', rule: `Come back after ${FRESH_GAP_DAYS} days or more away and finish a session.` },
   // Skill badges: "pressed leaves" in You → Field notes.
-  { id: 'snare-wise', kind: 'skill', name: 'Snare-wise', rule: `Spot the snare in ${SNARE_RIGHT} of your last ${SNARE_WINDOW} ${g('trap')} questions.` },
-  { id: 'even-keel', kind: 'skill', name: 'Even Keel', rule: `${g('sprint')} says “well calibrated” ${KEEL_ROUNDS} rounds in a row.` },
+  { id: 'snare-wise', kind: 'skill', name: 'Trap Spotter', rule: `Spot the snare in ${SNARE_RIGHT} of your last ${SNARE_WINDOW} ${g('trap')} questions.` },
+  { id: 'even-keel', kind: 'skill', name: 'Calibration', rule: `${g('sprint')} says “well calibrated” ${KEEL_ROUNDS} rounds in a row.` },
   {
     id: 'signpost-reader',
     kind: 'skill',
-    name: 'Signpost Reader',
+    name: 'Priority Reader',
     rule: `Read the deciding word right in ${SIGNPOST_RIGHT} of your last ${SIGNPOST_WINDOW} different FIRST questions in ${g('priority')}.`,
   },
-  { id: 'myth-clearer', kind: 'skill', name: 'Myth Clearer', rule: `Clear ${MYTH_RIGHT} of your last ${MYTH_WINDOW} different rumors in ${g('rumor')}.` },
+  { id: 'myth-clearer', kind: 'skill', name: 'Fact Check', rule: `Clear ${MYTH_RIGHT} of your last ${MYTH_WINDOW} different rumors in ${g('rumor')}.` },
   {
     id: 'sure-footed-pace',
     kind: 'skill',
-    name: 'Sure-Footed Pace',
-    rule: `Finish ${PACE_ROUNDS} ${g('daylight')} rounds at Sapling pace or faster, inside the light, with ${PACE_RIGHT} of ${DAYLIGHT_SIZE} right.`,
+    name: 'Timed Accuracy',
+    rule: `Finish ${PACE_ROUNDS} ${g('daylight')} rounds at Practised pace or faster, inside the light, with ${PACE_RIGHT} of ${DAYLIGHT_SIZE} right.`,
   },
-  { id: 'whole-grove', kind: 'skill', name: 'Whole Grove', rule: 'Play every game at least once.' },
-  { id: 'back-on-path', kind: 'skill', name: 'Back on the Path', rule: `Fix ${GAME_FIXES} game misses later: right on a later day, in review or a later round.` },
+  { id: 'whole-grove', kind: 'skill', name: 'All Drills', rule: 'Play every game at least once.' },
+  { id: 'back-on-path', kind: 'skill', name: 'Drill Recovery', rule: `Fix ${GAME_FIXES} game misses later: right on a later day, in review or a later round.` },
 ];
 
 export const MILESTONES = BADGES.filter((b) => b.kind === 'milestone');
@@ -362,7 +362,7 @@ export function isOnPace(m: MockFacts): boolean {
 }
 
 /**
- * A spaced chain (Dress Rehearsal · 2 and · 3): the times, oldest first, each
+ * A spaced chain (Mock Complete · 2 and · 3): the times, oldest first, each
  * DRESS_GAP_DAYS or more after the last one kept (taken greedily).
  */
 export function spacedChain(times: readonly number[]): number[] {
@@ -376,7 +376,7 @@ export function allMarks(f: MilestoneFacts): MarkState[] {
   const out: MarkState[] = [];
   const firstFoothold = f.cleanAnswered >= DIAGNOSTIC_SIZE;
   out.push(...one('first-foothold', firstFoothold, frac(f.cleanAnswered, DIAGNOSTIC_SIZE), of(f.cleanAnswered, DIAGNOSTIC_SIZE, 'answered without a hint')));
-  // Topic Clear: how close the nearest topic is (its lesson, and right answers out of the 4 needed).
+  // Topic Complete: how close the nearest topic is (its lesson, and right answers out of the 4 needed).
   const tb = f.topicBest;
   const tbRight = Math.min(tb?.right ?? 0, CLEAR_RIGHT);
   out.push(
@@ -397,7 +397,7 @@ export function allMarks(f: MilestoneFacts): MarkState[] {
     out.push({
       key: `firm-footing:${d.id}`,
       badge: 'firm-footing',
-      label: `Firm Footing · ${d.short}`,
+      label: `Domain Mastery · ${d.short}`,
       met,
       progress: met ? 1 : Math.min(frac(d.answered, FIRM_ANSWERS), frac(d.mastery, FIRM_MASTERY)),
       detail: `${pct(d.mastery)} mastery · ${of(d.answered, FIRM_ANSWERS, 'answered')}`,
@@ -407,16 +407,16 @@ export function allMarks(f: MilestoneFacts): MarkState[] {
   const wholeMap = f.domains.length > 0 && atFloor === f.domains.length;
   const mapProgress = f.domains.length ? f.domains.reduce((s, d) => s + frac(d.mastery, WHOLE_MAP_FLOOR), 0) / f.domains.length : 0;
   out.push(...one('whole-map', wholeMap, mapProgress, `${atFloor} of ${f.domains.length} domains at ${pct(WHOLE_MAP_FLOOR)}`));
-  // Firm Footing · 80% opens once Whole Map is earned or is met right now
+  // Domain Mastery · 80% opens once All Domains is earned or is met right now
   // (the domain's own answers are the evidence, whenever they were given).
   const mapOpen = f.wholeMapAt !== undefined || wholeMap;
-  // Firm Footing · 80% (a Stretch tier), one per domain.
+  // Domain Mastery · 80% (a Stretch tier), one per domain.
   for (const d of f.domains) {
     const met = mapOpen && d.answered >= FIRM_DEEP_ANSWERS && d.mastery >= FIRM_DEEP - 1e-9;
     out.push({
       key: `firm-footing:${d.id}:80`,
       badge: 'firm-footing',
-      label: `Firm Footing · ${d.short} · 80%`,
+      label: `Domain Mastery · ${d.short} · 80%`,
       met,
       progress: met ? 1 : Math.min(frac(d.answered, FIRM_DEEP_ANSWERS), frac(d.mastery, FIRM_DEEP)),
       detail: `${pct(d.mastery)} mastery · ${of(d.answered, FIRM_DEEP_ANSWERS, 'answered')}`,
@@ -425,13 +425,13 @@ export function allMarks(f: MilestoneFacts): MarkState[] {
   }
   out.push(...one('loop-closed', f.loopFixed >= LOOP_FIXES, frac(f.loopFixed, LOOP_FIXES), of(f.loopFixed, LOOP_FIXES, 'fixed')));
   out.push(...one('slip-spotter', f.slipsTagged >= SLIP_TAGS, frac(f.slipsTagged, SLIP_TAGS), of(f.slipsTagged, SLIP_TAGS, 'tagged')));
-  // Long Memory · 25, · 75, · 150: each tier its own mark ("long-memory" stays 25).
+  // Lasting Recall · 25, · 75, · 150: each tier its own mark ("long-memory" stays 25).
   LONG_LADDER.forEach((n, i) => {
     const met = f.longRecall >= n;
     out.push({
       key: i === 0 ? 'long-memory' : `long-memory:${n}`,
       badge: 'long-memory',
-      label: `Long Memory · ${n} recalls`,
+      label: `Lasting Recall · ${n} recalls`,
       met,
       progress: met ? 1 : frac(f.longRecall, n),
       detail: of(f.longRecall, n, 'remembered'),
@@ -444,7 +444,7 @@ export function allMarks(f: MilestoneFacts): MarkState[] {
   if (f.tookRoot !== null) {
     const root = Math.max(0, Math.min(1, f.tookRoot ?? 0));
     const rootMet = root >= 1 - 1e-9;
-    out.push(...one('took-root', rootMet, root, rootMet ? 'A topic took root' : root > 0 ? `Closest topic: ${pct(root)} rooted` : 'No whole topic yet'));
+    out.push(...one('took-root', rootMet, root, rootMet ? 'Topic recall complete' : root > 0 ? `Closest topic: ${pct(root)} recalled` : 'No whole topic yet'));
   }
   const s = sureShare(f.sure);
   const kwyk = s.n >= SURE_MIN && s.right >= SURE_RIGHT - 1e-9;
@@ -457,12 +457,12 @@ export function allMarks(f: MilestoneFacts): MarkState[] {
     ),
   );
   const dress = f.mocks.some((m) => isDressRehearsal(m, f.fullMockSize));
-  out.push({ ...one('dress-rehearsal', dress, 0, dress ? 'Done' : 'Not yet')[0], label: 'Dress Rehearsal · 1 mock' });
-  // Dress Rehearsal · 2 and · 3: full mocks finished on or after the day Whole
+  out.push({ ...one('dress-rehearsal', dress, 0, dress ? 'Done' : 'Not yet')[0], label: 'Mock Complete · 1 mock' });
+  // Mock Complete · 2 and · 3: full mocks finished on or after the day Whole
   // Map was EARNED (its saved date), each a week or more after the one before.
-  // Not `mapOpen`: while Whole Map is met but not yet saved there is no date
+  // Not `mapOpen`: while All Domains is met but not yet saved there is no date
   // to count from, so no mock counts yet (otherwise every older mock would,
-  // and the session that earns Whole Map would earn the spaced tiers with it).
+  // and the session that earns All Domains would earn the spaced tiers with it).
   const wholeMapAt = f.wholeMapAt;
   const chain =
     wholeMapAt !== undefined
@@ -473,7 +473,7 @@ export function allMarks(f: MilestoneFacts): MarkState[] {
     out.push({
       key: `dress-rehearsal:${n}`,
       badge: 'dress-rehearsal',
-      label: `Dress Rehearsal · ${n} mocks`,
+      label: `Mock Complete · ${n} mocks`,
       met,
       progress: met ? 1 : frac(chain.length, n),
       detail: met ? 'Done' : `${Math.min(chain.length, n)} of ${n} full mocks, a week apart`,
@@ -484,7 +484,7 @@ export function allMarks(f: MilestoneFacts): MarkState[] {
   out.push(...one('on-pace', onPace, 0, onPace ? 'Done' : 'Not yet'));
   out.push(...one('mindset-shift', f.mindsetShift, 0, f.mindsetShift ? 'Done' : 'Not yet'));
   for (const n of ROOTED_DAYS) {
-    out.push({ key: `rooted:${n}`, badge: 'rooted', label: `Rooted · ${n} days`, met: f.studyDays >= n, progress: frac(f.studyDays, n), detail: of(f.studyDays, n, 'study days') });
+    out.push({ key: `rooted:${n}`, badge: 'rooted', label: `${badgeDef('rooted')!.name} · ${n} days`, met: f.studyDays >= n, progress: frac(f.studyDays, n), detail: of(f.studyDays, n, 'study days') });
   }
   out.push(...one('fresh-start', f.freshStart, 0, f.freshStart ? 'Done' : 'Not yet'));
   // Skill badges.
@@ -514,7 +514,7 @@ export function newlyMet(marks: readonly MarkState[], earned: Record<string, num
   return marks.filter((m) => m.met && !earned?.[m.key]).map((m) => m.key);
 }
 
-/** How many different badges a list of marks belongs to (Firm Footing's leaves count once). */
+/** How many different badges a list of marks belongs to (Domain Mastery's leaves count once). */
 export function badgeCount(keys: readonly string[]): number {
   return new Set(keys.map(markBadge)).size;
 }
@@ -559,7 +559,7 @@ export function nearest(views: readonly BadgeView[], n = 3): BadgeView[] {
     .map((x) => x.v);
 }
 
-/** What a mark is called in its moment ("Firm Footing · IS Operations"). */
+/** What a mark is called in its moment ("Domain Mastery · IS Operations"). */
 export function markLabel(key: string, marks: readonly MarkState[]): string {
   return marks.find((m) => m.key === key)?.label ?? badgeDef(markBadge(key))?.name ?? key;
 }
@@ -605,7 +605,7 @@ export function afterAnswer(prev: CertMilestones | undefined, a: AnswerEvent): {
   let fixedLater = false;
   const clean = !a.game && !a.assisted;
   if (clean && a.correct) {
-    // Long Memory counts QUESTIONS, so each question counts once (the rule says "25 questions").
+    // Lasting Recall counts QUESTIONS, so each question counts once (the rule says "25 questions").
     const longIds = m.longIds ?? [];
     if (a.prevLastAt !== undefined && a.at - a.prevLastAt >= LONG_GAP_DAYS * DAY_MS && !longIds.includes(a.questionId) && longIds.length < LONG_IDS_CAP) {
       m = bump({ ...m, longIds: [...longIds, a.questionId] }, 'longRecall');
@@ -719,7 +719,7 @@ export interface BackfillInput {
  *   recent days are left out on purpose: they are shared by every exam and
  *   survive a Reset, so they could hand back days the learner cleared.
  * Answer counts that were never kept (long gaps, graduations) start at 0.
- * Fresh Start is never back-filled: a gap in old data can't show the
+ * Study Return is never back-filled: a gap in old data can't show the
  * learner came back and finished a session, so it is earned live only.
  */
 export function inferFromSaves(i: BackfillInput): { loopFixed: string[]; sure: boolean[]; days: string[] } {
@@ -754,7 +754,7 @@ export interface MarkEvidence {
   notesRead?: string[];
   /**
    * Mobile 1.25: how many notes were ever read (only goes up). "Reset reading
-   * progress" empties notesRead, but the reading happened: Topic Clear and
+   * progress" empties notesRead, but the reading happened: Topic Complete and
    * Ten Topics keep their evidence. Older data has none (notesRead counts).
    */
   notesEverRead?: number;
@@ -765,31 +765,31 @@ export interface MarkEvidence {
   mastery?: Record<string, { masteredAt?: string }>;
   /**
    * The exam the cert is for, when known (a restore always knows it): its
-   * domain ids and a full mock's size. Whole Map, the Five Domains planter
-   * and Dress Rehearsal's higher tiers read it.
+   * domain ids and a full mock's size. All Domains, the Five Domains planter
+   * and Mock Complete's higher tiers read it.
    */
   exam?: { domains: readonly string[]; fullMockSize: number };
   /**
    * The restored marks already checked (keepSupported's first pass): the
-   * Stretch and higher tiers that open only after Whole Map need it there.
+   * Stretch and higher tiers that open only after All Domains need it there.
    */
   earned?: Record<string, number>;
   /**
    * Sync only (Uplift Phase 7 review, CR B4): the mock list may have been cut
    * to the newest MAX_MOCKS by a merge, so a full list can have lost an older
-   * Dress Rehearsal chain the learner really took. Then a full list counts as
+   * Mock Complete chain the learner really took. Then a full list counts as
    * enough for its higher tiers (the plant's support check reads it the same
    * way). A backup file never sets this, so a restore checks exactly as before.
    */
   mocksMayBeCut?: boolean;
 }
 
-/** Keys that open only once Whole Map is earned (badges_game.md §2.3): Firm Footing · 80% and Dress Rehearsal · 2 / · 3. */
+/** Keys that open only once All Domains is earned (badges_game.md §2.3): Domain Mastery · 80% and Mock Complete · 2 / · 3. */
 const afterWholeMap = (key: string) => /^firm-footing:[^:]+:80$/.test(key) || /^dress-rehearsal:\d+$/.test(key);
 
 
 /**
- * Dress Rehearsal's chain (badges_game.md §2.3): the full, timed, fully
+ * Mock Complete's chain (badges_game.md §2.3): the full, timed, fully
  * answered mocks, oldest first, each 7 days or more after the last one kept.
  * Read from restored records, so each field is checked, never trusted.
  */
@@ -816,7 +816,7 @@ export function dressChain(mocks: readonly unknown[], fullSize: number): number[
  * key with a part its badge doesn't have ("first-foothold:x"), a tier no
  * version defines ("long-memory:999") or extra parts is refused, and each
  * higher tier needs ITS evidence: "long-memory:75" needs 75 recalls, not
- * Long Memory's 25; "dress-rehearsal:2" two mocks; "firm-footing:4:80" 40
+ * Lasting Recall's 25; "dress-rehearsal:2" two mocks; "firm-footing:4:80" 40
  * of that domain's answers. So an edited backup can't claim a higher tier
  * on a lower tier's data.
  */
@@ -920,7 +920,7 @@ export function markSupported(key: string, e: MarkEvidence): boolean {
 /** A restored cert's milestones with only the marks its data supports (and a queue of earned marks only). */
 export function keepSupported(m: CertMilestones, e: MarkEvidence): CertMilestones {
   // Two passes: every key on its own evidence, then the keys that open only
-  // after Whole Map need Whole Map to have survived the first pass.
+  // after All Domains need All Domains to have survived the first pass.
   const first = Object.fromEntries(Object.entries(m.earned).filter(([k]) => markSupported(k, { ...e, earned: undefined })));
   const earned = Object.fromEntries(Object.entries(first).filter(([k]) => !afterWholeMap(k) || markSupported(k, { ...e, earned: first })));
   const queue = m.queue?.filter((k) => earned[k] !== undefined);
@@ -934,7 +934,7 @@ export function keepSupported(m: CertMilestones, e: MarkEvidence): CertMilestone
  * 1.10), FROZEN. A restored planter is kept only when all of these marks are
  * earned (and supported). A later version that adds a badge to a set keeps
  * this list as it is, so a planter earned before never fails a restore.
- * 'domains': Whole Map plus Firm Footing for every domain of the exam (or,
+ * 'domains': All Domains plus Domain Mastery for every domain of the exam (or,
  * when the exam isn't known, every domain the answers cover).
  */
 export const PLANTER_NEEDS: Readonly<Record<string, readonly string[] | 'domains'>> = {
@@ -965,7 +965,7 @@ export function planterSupported(set: string, earned: Record<string, number>, e:
  * The planters a save from before mobile 1.11 had already won: every counted
  * set whose FROZEN 1.10 list (PLANTER_NEEDS) is earned, dated when the last
  * of those marks was. A 1.9 save that skips 1.10 never ran 1.10's planter
- * check, and 1.11's sets are bigger (Evergreen gained Long Memory · 75 and
+ * check, and 1.11's sets are bigger (Evergreen gained Lasting Recall · 75 and
  * Took Root), so without this its Evergreen planter would wait for marks it
  * never needed. Run once, by the catalogue fill (lib/milestones.ts
  * ensureCatalog), never for a learner who starts on 1.11: their sets are the

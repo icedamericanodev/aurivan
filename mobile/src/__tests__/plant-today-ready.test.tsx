@@ -91,18 +91,18 @@ it('Elder with the exam-ready panel: one moment (the panel), one haptic, no grow
   expect(growingPlants()).toHaveLength(0);
   expect(r!.root.findAll((n) => n.props.testID === 'plant-grew' && typeof n.type === 'string')).toHaveLength(0);
   // Applied silently: nothing pending on Today, and Your plant has its calm line waiting.
-  expect(useProgress.getState().byCert.cisa!.plant!.pending).toBeUndefined();
+  expect(useProgress.getState().byCert.cisa!.plant!.pending).toBe(6);
   expect(useProgress.getState().byCert.cisa!.plant!.growth).toBe(6);
-  expect(useSeen.getState().quietGrowth.cisa).toBe(6);
+  expect(useSeen.getState().quietGrowth.cisa).toBeUndefined();
 });
 
-it('without the panel, the growth plays on Today as before (and nothing waits for Your plant)', () => {
+it('without the panel, saved plant state stays intact without a growth celebration', () => {
   mockReady = false;
   elderToday();
   act(() => {
     r = create(<Today />);
   });
-  expect(growingPlants()).toHaveLength(1);
-  expect(jest.mocked(haptic.success).mock.calls.length).toBe(1);
+  expect(growingPlants()).toHaveLength(0);
+  expect(jest.mocked(haptic.success).mock.calls.length).toBe(0);
   expect(useSeen.getState().quietGrowth.cisa).toBeUndefined();
 });

@@ -14,7 +14,7 @@
  *   means), one honest effort fact and the button.
  * - Grove Phase 4b (PHASE4B.md 5.1 to 5.3, 5.6): every badge is a pressed paper
  *   tile (components/pressedTile.tsx); each set is ONE card (its name, "2 of 3
- *   pressed", the tiles, its planter line); no roman numbers; "Pressed 4 Nov" on
+ *   pressed", the tiles, its planter line); no roman numbers; "Earned 4 Nov" on
  *   tiles and sheets, said "Earned 4 November"; "Share this badge".
  */
 import { memo, useEffect, useRef, useState } from 'react';
@@ -29,8 +29,6 @@ import { badgeDef } from '../engine/milestones';
 import { badgeCardText, badgeShareable, type BadgeCardText, type ShareCert } from '../engine/shareCard';
 import { STORE_LINK } from '../content/storeLinks';
 import { BadgeSharePanel } from './shareCard';
-import { plantersFor } from '../engine/plantLooks';
-import type { PlantSpecies } from '../engine/plant';
 import { grovePlate } from '../theme/grove';
 import { badgeMetal, LARGE_TEXT, motion, space } from '../theme/tokens';
 import { useTheme } from '../theme/useTheme';
@@ -39,6 +37,7 @@ import { AnimatedPressable, useMotion, usePressScale } from './motion';
 import { ChevronRight, ICON_STROKE, Share2 } from './icons';
 import { Button, DomainDot, groveCard, ICON_SIZE, ProgressBar, Row, T, useFontScale } from './ui';
 import { TierLine } from './fieldguide';
+import { FeatureInfo } from './featureInfo';
 import { PressedTile, type TileState } from './pressedTile';
 
 /** The medallion state for a mark (started and open both draw "not yet"; gated is dotted). */
@@ -89,13 +88,13 @@ export function cellLine(m: CaseMark, showProgress: boolean, quiet: Quiet = NO_Q
   }
   if (m.status === 'gated') return 'Opens later';
   if (!showProgress) return undefined;
-  // Firm Footing: its gap ("62% → 70%"); the weight has its own line.
+  // Domain Mastery: its gap ("62% → 70%"); the weight has its own line.
   if (m.domain) return m.detail.split(' · ')[0];
   return m.detail;
 }
 
 /**
- * How a tile's date is said (PHASE4B 3.4): shown "Pressed 4 Nov", said "Earned 4 November"
+ * How a tile's date is said (PHASE4B 3.4): shown "Earned 4 Nov", said "Earned 4 November"
  * ("Earned by 11 October" for a back-filled badge), so the state is in plain words.
  */
 export function pressedSpoken(m: CaseMark, quiet: Quiet = NO_QUIET): string {
@@ -116,7 +115,7 @@ export const tierCaption = (m: CaseMark) => m.tierLabel ?? m.caption;
 export function cellSpoken(m: CaseMark, setName: string, showProgress: boolean, quiet: Quiet = NO_QUIET): string {
   const parts = [m.name + (m.tier ? `, ${tierName(m)}` : '')];
   if (m.stretch) parts.push('Stretch, beyond exam need');
-  // Grove 4b: shown "Pressed 3 Oct", said "Earned 3 October" (or "Earned by 3 October"), the date in full.
+  // Grove 4b: shown "Earned 3 Oct", said "Earned 3 October" (or "Earned by 3 October"), the date in full.
   parts.push(m.status === 'earned' ? pressedSpoken(m, quiet) : 'Not yet');
   parts.push(m.rule.replace(/\.$/, ''));
   if (m.status === 'gated') parts.push(m.gateLine!.replace(/\.$/, ''));
@@ -130,18 +129,18 @@ export function cellSpoken(m: CaseMark, setName: string, showProgress: boolean, 
 type OnOpen = (key: string) => void;
 
 // ── One pressed tile on a set's card (Grove Phase 4b, PHASE4B 5.1 and 5.2) ──
-/** The tile's name: a Firm Footing leaf by its domain, a ladder by its badge ("Rooted"), else the caption. */
+/** The tile's name: a Domain Mastery leaf by its domain, a ladder by its badge ("Rooted"), else the caption. */
 function specimenName(m: CaseMark, domain: DomainInfo | undefined, showSet?: boolean): string {
   if (domain) return showSet ? m.name : domain.short;
   if (m.tier && !showSet) return m.name.split(' · ')[0];
   return m.caption;
 }
 
-/** The label's last line: "Pressed 3 Oct" (or "Pressed by 3 Oct"), the gate, or how close it is. */
+/** The label's last line: "Earned 3 Oct" (or "Earned by 3 Oct"), the gate, or how close it is. */
 export function specimenLine(m: CaseMark, showProgress: boolean, quiet: Quiet = NO_QUIET): string | undefined {
   if (m.status === 'earned') {
     const when = earnedWhen(m, quiet);
-    return when ? `Pressed ${when.replace(/^By /, 'by ')}` : 'Pressed';
+    return when ? `Earned ${when.replace(/^By /, 'by ')}` : 'Pressed';
   }
   if (m.status === 'gated') return m.gateLine?.replace(/\.$/, '') ?? 'Opens later';
   if (!showProgress) return undefined;
@@ -186,7 +185,7 @@ export function BadgeCell({
   /** Flat sorts: the set's name under the label. */
   showSet?: boolean;
   showProgress?: boolean;
-  /** When the back-fill ran: badges stamped then read "Pressed by 11 Oct". */
+  /** When the back-fill ran: badges stamped then read "Earned by 11 Oct". */
   quiet?: Quiet;
   /** Kept for callers (the old sheet varied sizes by place); every tile is the same size now. */
   index?: number;
@@ -272,7 +271,7 @@ export function BadgeListRow({
   size?: number;
   /** Under the text (a progress bar). */
   extra?: React.ReactNode;
-  /** For the row's "Study for this" link (the weakest area for a Firm Footing leaf). */
+  /** For the row's "Study for this" link (the weakest area for a Domain Mastery leaf). */
   weakest?: string;
   /** Not yet, before the exam: "Study for this" as a text link on the row (PHASE4B 5.1 item 5). */
   onStudy?: (target: StudyTarget) => void;
@@ -335,37 +334,8 @@ export const BadgeListRowMemo = memo(BadgeListRow);
 /** "2 of 3 pressed", or "3 of 3 · complete 20 Nov". Never a total across sets. */
 export function setCountWords(set: SetView, quiet: Quiet = NO_QUIET): string | undefined {
   if (!set.info.counter || set.total <= 0) return undefined;
-  if (set.completeAt === undefined) return `${set.earned} of ${set.total} pressed`;
+  if (set.completeAt === undefined) return `${set.earned} of ${set.total} earned`;
   return `${set.earned} of ${set.total} · complete ${quiet.includes(set.completeAt) ? 'by ' : ''}${shortDate(set.completeAt)}`;
-}
-
-/**
- * The counted sets' names as the look screens say them (engine/plantLooks.ts SET_NAMES, word for
- * word). That map is module-local in a file bundled into the website; PHASE4B section 11 exports
- * it in the bundle release. Until then the phone keeps this copy (the badges-p4b test checks it
- * against the planters' own captions).
- */
-export const PLANTER_SET_NAMES: Record<string, string> = {
-  groundwork: 'Groundwork',
-  domains: 'Domains',
-  evergreen: 'Evergreen',
-  judgement: 'Sound Judgement',
-  examDay: 'Exam Day',
-  rooted: 'Rooted',
-};
-
-/**
- * The planter line (PHASE4B 5.1 item 5): "Completing Groundwork adds the fieldstone planter to your
- * plant's looks.", or once the set is complete "The fieldstone planter is in Look.". Built from
- * the plant's own planters; null when that species has none for the set (and for Moments and
- * Field notes, which have none).
- */
-export function planterLine(species: PlantSpecies, set: string, complete: boolean): { id: string; line: string } | null {
-  const item = plantersFor(species).find((x) => x.unlock.kind === 'set' && x.unlock.set === set);
-  const setName = PLANTER_SET_NAMES[set];
-  if (!item || !setName) return null;
-  const name = item.name.toLowerCase();
-  return { id: item.id, line: complete ? `The ${name} is in Look.` : `Completing ${setName} adds the ${name} to your plant's looks.` };
 }
 
 /**
@@ -377,7 +347,6 @@ export function ShelfHeader({
   set,
   quiet = NO_QUIET,
   grown,
-  planter,
   children,
 }: {
   set: SetView;
@@ -386,8 +355,6 @@ export function ShelfHeader({
   line?: string;
   quiet?: Quiet;
   grown?: string;
-  /** The planter row: the small planter drawing and its line (null: none). */
-  planter?: { art: React.ReactNode; line: string } | null;
   children?: React.ReactNode;
 }) {
   const { c } = useTheme();
@@ -397,27 +364,18 @@ export function ShelfHeader({
   const count = setCountWords(set, quiet);
   return (
     <View style={[groveCard(c), { padding: grovePlate.pad, marginTop: space.md }]}>
-      <View
-        accessible
-        accessibilityRole="header"
-        accessibilityLabel={spoken}
-        style={{ flexDirection: large ? 'column' : 'row', alignItems: large ? 'flex-start' : 'baseline', justifyContent: 'space-between', columnGap: space.md, rowGap: 2 }}
-      >
-        <T v="headline" style={{ flexShrink: 1 }}>{set.info.name}</T>
-        {count ? <T v="meta" num color={c.ink2}>{count}</T> : null}
+      <View style={{ flexDirection: 'row', alignItems: 'center', gap: space.sm }}>
+        <View accessible accessibilityRole="header" accessibilityLabel={spoken}
+          style={{ flex: 1, flexDirection: large ? 'column' : 'row', alignItems: large ? 'flex-start' : 'baseline', justifyContent: 'space-between', columnGap: space.md, rowGap: 2 }}>
+          <T v="headline" style={{ flexShrink: 1 }}>{set.info.name}</T>
+          {count ? <T v="meta" num color={c.ink2}>{count}</T> : null}
+        </View>
+        <FeatureInfo title={set.info.name} label={`About ${set.info.name}`}><T v="body">{set.info.purpose}</T></FeatureInfo>
       </View>
-      <T v="aside" color={c.ink2} style={{ marginTop: 2 }}>{set.info.purpose}</T>
       {/* A set that was complete and has since gained badges (UX O3): said plainly, never as a loss. */}
       {grown ? <T v="meta" color={c.accentText} style={{ marginTop: space.xs }}>{grown}</T> : null}
       <View style={{ marginTop: space.sm }}>{children}</View>
-      {planter ? (
-        <View testID={`planter-line-${set.info.id}`} accessible style={{ flexDirection: 'row', alignItems: 'center', gap: space.md, marginTop: space.sm, paddingTop: space.md, borderTopWidth: 1, borderTopColor: c.line }}>
-          <View accessibilityElementsHidden importantForAccessibility="no-hide-descendants" style={{ width: 40, height: 40 }}>
-            {planter.art}
-          </View>
-          <T v="small" color={c.ink2} style={{ flex: 1, minWidth: 0 }}>{planter.line}</T>
-        </View>
-      ) : null}
+
     </View>
   );
 }
@@ -560,7 +518,7 @@ function CollectTileRow({ mark, name, why, spoken, onPress, children }: { mark: 
  * shared (a Moment, a badge on the never-share list, an empty skill line, or a line that fails the
  * honesty check). Built BEFORE Share is offered, inside a try, so a future
  * cert name or date that trips the check hides Share instead of crashing
- * the sheet. The card carries the plain badge name ("Firm Footing"); its
+ * the sheet. The card carries the plain badge name ("Domain Mastery"); its
  * tier line and skill line carry the domain and the numbers.
  */
 export function cardText(mark: CaseMark, cert: ShareCert, quiet: Quiet = NO_QUIET): BadgeCardText | null {
@@ -596,8 +554,6 @@ export function BadgeSheet({
   quiet = NO_QUIET,
   visible = true,
   cert,
-  plantLine,
-  vignette,
   onClose,
   onDismissed,
   onStudy,
@@ -611,7 +567,7 @@ export function BadgeSheet({
   daysLeft: number | null;
   dueCount: number;
   weakest?: string;
-  /** Whole Map is earned (mock badges are then suggested at any stage). */
+  /** All Domains is earned (mock badges are then suggested at any stage). */
   wholeMap?: boolean;
   showProgress: boolean;
   /** When the back-fill ran (a badge stamped then: "Already earned when badges arrived"). */
@@ -624,17 +580,6 @@ export function BadgeSheet({
   onStudy: (target: StudyTarget) => void;
   /** The exam, for the share card's "Studying for the CISA® exam" and its notice. */
   cert?: ShareCert;
-  /**
-   * Mobile 1.14: the badge's keepsake on the learner's plant ("On your plant:
-   * the lantern."), one quiet line on an earned badge. Unset: no plant, the
-   * plant is hidden, or the badge gives no keepsake.
-   */
-  plantLine?: string | null;
-  /**
-   * Grove Phase 4b (5.3, the earned-sheet vignette): the learner's plant wearing this badge's
-   * keepsake, drawn beside the pressed tile. Only when the badge gives a keepsake and it is on show.
-   */
-  vignette?: React.ReactNode;
 }) {
   const { c } = useTheme();
   const { reduced } = useMotion();
@@ -666,8 +611,8 @@ export function BadgeSheet({
     mark.tier ? `${tierName(mark)}, tier ${mark.tier} of ${mark.tiers ?? ladder?.length ?? 3}` : undefined,
     mark.domain ? `${mark.domain.weight}% of the exam` : undefined,
   ].filter(Boolean);
-  // Grove 4b (3.4): "Pressed 2 Nov" on the sheet as on the tile (said "Earned 2 November"); a quiet back-fill keeps its own words.
-  const earnedCaption = quietly ? `Already earned when this badge arrived (by ${shortDate(mark.earnedAt!)})` : mark.earnedAt !== undefined ? `Pressed ${shortDate(mark.earnedAt)}` : 'Pressed';
+  // Grove 4b (3.4): "Earned 2 Nov" on the sheet as on the tile (said "Earned 2 November"); a quiet back-fill keeps its own words.
+  const earnedCaption = quietly ? `Already earned when this badge arrived (by ${shortDate(mark.earnedAt!)})` : mark.earnedAt !== undefined ? `Earned ${shortDate(mark.earnedAt)}` : 'Pressed';
   // Said with the dates in full ("Earned 11 October … This completed Groundwork on 4 October."; UX review P1).
   const earnedSpoken = earned
     ? [
@@ -724,7 +669,7 @@ export function BadgeSheet({
 
               {earned && (
                 // No 3pt accent rule: that rule is the coach's voice only (spec §5); this is an award.
-                <View style={{ marginTop: space.xl }} accessible accessibilityLabel={plantLine ? `${earnedSpoken} ${plantLine}` : earnedSpoken}>
+                <View style={{ marginTop: space.xl }} accessible accessibilityLabel={earnedSpoken}>
                   <T v="caption" color={c.accentText}>{earnedCaption}</T>
                   <T v="aside" style={{ marginTop: space.xs }}>{mark.unlock}</T>
                   {completedHere && (
@@ -732,18 +677,7 @@ export function BadgeSheet({
                       {`This completed ${set.info.name} on ${shortDate(set.completeAt!)}.`}
                     </T>
                   )}
-                  {/* Grove 4b (5.3): the vignette, the pressed tile beside the plant wearing its keepsake, over
-                      "On your plant: the jay.". Otherwise the one quiet line, no banner, no count (mobile 1.14). */}
-                  {vignette ? (
-                    <View testID="sheet-vignette" style={{ marginTop: space.md, alignItems: 'center' }}>
-                      {vignette}
-                    </View>
-                  ) : null}
-                  {plantLine ? (
-                    <T v="meta" color={c.ink2} style={{ marginTop: space.sm }}>
-                      {plantLine}
-                    </T>
-                  ) : null}
+
                 </View>
               )}
 
@@ -793,16 +727,13 @@ export function BadgeSheet({
                 )}
               </View>
 
-              {/* After the exam the case is a keepsake album: no "how to earn it", no Study button (UX P8). */}
-              {!earned && showProgress && mark.howTo !== '' && (
-                <View style={{ marginTop: space.xl }}>
-                  <T v="headline" accessibilityRole="header">How to earn it</T>
-                  <T v="body" style={{ marginTop: space.xs }}>{mark.howTo}</T>
-                  {best && <T v="meta" color={c.ink2} style={{ marginTop: space.sm }}>{best === MOCK_SUGGEST_LINE ? `${best} It counts whenever you do it.` : best}</T>}
-                </View>
-              )}
-
-              <T v="meta" color={c.ink2} style={{ marginTop: space.xl }}>{mark.effort}</T>
+              <View style={{ marginTop: space.md }}>
+                <FeatureInfo inline title="About this milestone" label={`About earning ${mark.name}`}>
+                  {!earned && showProgress && mark.howTo !== '' && <T v="body">{mark.howTo}</T>}
+                  {best && <T v="body">{best === MOCK_SUGGEST_LINE ? `${best} It counts whenever you do it.` : best}</T>}
+                  <T v="body">{mark.effort}</T>
+                </FeatureInfo>
+              </View>
 
               {!earned && showProgress && target && (
                 <View style={{ marginTop: space.xl }}>
@@ -811,7 +742,7 @@ export function BadgeSheet({
                 </View>
               )}
 
-              {/* Earned and shareable only (never Fresh Start or a Moment), on the learner's tap: nothing opens it on its own. */}
+              {/* Earned and shareable only (never Study Return or a Moment), on the learner's tap: nothing opens it on its own. */}
               {shareText && (
                 <View style={{ marginTop: space.xl }}>
                   <Button

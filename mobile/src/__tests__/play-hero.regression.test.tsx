@@ -98,7 +98,7 @@ afterEach(() => {
 });
 
 // Mobile 1.51: the Play tab is gone (its games are Drills, a list inside Practice), so the tab hero checked
-// here is Practice's. Premium round 2 (Field Guide foundation): its white seal card became a plate (Fig. 4),
+// here is Practice's. Premium round 2 (Term Match foundation): its white seal card became a plate (Fig. 4),
 // with the plate button under it; no art shares the plate with the words.
 describe('the tab hero renders its content (Android blank-hero regression)', () => {
   const cases: [string, 'light' | 'dark', number][] = [
@@ -129,7 +129,7 @@ describe('the tab hero renders its content (Android blank-hero regression)', () 
   // Guide): Today's plan is a plate too; the forest panel with its swaying frond is now only Today's moments
   // (the clearing, "Your readiness is holding"), so the layering checks run on the panel itself.
   it('the forest panel: draws the art in its own clipped layer BELOW the content, with explicit sizes', () => {
-    mount(<HeroPanel caption="Today’s clearing" title="Two done" art="frond" />);
+    mount(<HeroPanel caption="Today complete" title="Two done" art="frond" />);
     const [art] = byTestId('hero-art');
     const [content] = byTestId('hero-content');
     // Art layer: absolute fill, does its own rounded clipping, never takes touches.
@@ -154,7 +154,7 @@ describe('the tab hero renders its content (Android blank-hero regression)', () 
   });
 
   it('the forest panel: the swaying frond has an explicit size and a pivot in points, not percentages', () => {
-    mount(<HeroPanel caption="Today’s clearing" title="Two done" art="frond" />);
+    mount(<HeroPanel caption="Today complete" title="Two done" art="frond" />);
     const [art] = byTestId('hero-art');
     const sway = art.findAll((n) => typeof n.type === 'string' && typeof flat(n).transformOrigin === 'string');
     expect(sway.length).toBe(1);
@@ -164,7 +164,7 @@ describe('the tab hero renders its content (Android blank-hero regression)', () 
     expect(s).toMatchObject(botanySize('frond'));
   });
 
-  it('Practice: a plate, no seal and no forest art layer (premium round 2, Field Guide foundation); Drills adds no second hero', () => {
+  it('Practice: a plate, no seal and no forest art layer (premium round 2, Term Match foundation); Drills adds no second hero', () => {
     mount(<Practice />);
     expect(byTestId('hero-art')).toHaveLength(0);
     expect(byTestId('hero-seal')).toHaveLength(0);

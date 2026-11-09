@@ -143,7 +143,7 @@ export function setStems(
 }
 
 /**
- * The growth plate's one-area figure: "58 → 61%" and "IS Operations grew 3 points in this set", or
+ * The growth plate's one-area figure: "58 → 61%" and "IS Operations improved by 3 points in this set", or
  * a drop said as plainly ("61 → 58%", "IS Operations is 3 points lower after this set"); only when
  * that area has a number at both ends and it moved.
  */
@@ -155,7 +155,7 @@ export function growthFigure(stem: Stem | undefined): { shown: string; line: str
   const pts = `${n} ${n === 1 ? 'point' : 'points'}`;
   return {
     shown: `${from} → ${stem.pct}%`,
-    line: move > 0 ? `${stem.name} grew ${pts} in this set` : `${stem.name} is ${pts} lower after this set`,
+    line: move > 0 ? `${stem.name} improved by ${pts} in this set` : `${stem.name} is ${pts} lower after this set`,
     spoken: `${stem.name}, from ${from} to ${stem.pct} percent on latest tries`,
     down: move < 0,
   };

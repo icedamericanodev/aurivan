@@ -285,7 +285,7 @@ describe('Journey 1: a lesson from cover to Lesson complete', () => {
     expect(cel.mode).toBe('static');
     expect(cel.settled).toBe(true);
     expect(root().findByType(LessonBranch).props.play).toBe(false);
-    expect(allText()).toMatch(/A new leaf on your IS Audit branch: 1 of \d+ lessons\./);
+    expect(allText()).toMatch(/IS Audit: 1 of \d+ lessons completed\./);
     expect(mockLight).toHaveBeenCalledTimes(1);
   });
 
@@ -669,7 +669,7 @@ describe('Journey 6: the round-end level up goes through the celebration budget'
   it('Reduce Motion: static, the words on screen, one haptic', () => {
     mount(levelUp());
     expect(mode()).toBe('static');
-    expect(allText()).toContain('Sapling');
+    expect(allText()).toContain('Practised');
     expect(mockLight).toHaveBeenCalledTimes(1);
   });
 
@@ -779,10 +779,10 @@ describe('Journey 7: an old 1.11 save and a backup restore', () => {
     // Today's drill or a later row: either way one key row, its best and its level shown and said.
     const row = root().findAll((n) => typeof n.props.accessibilityLabel === 'string' && /^(Today’s drill: )?Forecast\./.test(n.props.accessibilityLabel));
     expect(row.length).toBeGreaterThan(0);
-    expect(row[0].props.accessibilityLabel).toContain('Your level: Sapling');
+    expect(row[0].props.accessibilityLabel).toContain('Your level: Practised');
     expect(row[0].props.accessibilityLabel).toContain('Best score 13');
     expect(allText()).toContain('best 13');
-    expect(allText()).toContain('Sapling');
+    expect(allText()).toContain('Practised');
   });
 
   it('a 1.11 learner who saw the rules goes straight into the round; the old plan label shows the new name', async () => {

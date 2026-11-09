@@ -1,6 +1,6 @@
 /**
- * Build F game content: the reviewed Canopy Call deck (roles.json), the
- * Stepping Stones sequences (sequences.json) and the audited lesson flows
+ * Build F game content: the reviewed Role Check deck (roles.json), the
+ * Sequence Check sequences (sequences.json) and the audited lesson flows
  * (flows.json) load, and every id they point at exists in the app.
  */
 import { flowAudit, flowPlays, getRoleDeck, getStepSequences, shortRole, tierForSteps } from '../content/games';
@@ -9,7 +9,7 @@ import { findNote } from '../content/notes';
 
 const TIERS = ['seedling', 'sapling', 'heartwood'];
 
-describe('Canopy Call deck (roles.json)', () => {
+describe('Role Check deck (roles.json)', () => {
   const deck = getRoleDeck('cisa')!;
 
   it('loads the reviewed deck: 10 roles and 84 cards with unique ids', () => {
@@ -63,7 +63,7 @@ describe('Canopy Call deck (roles.json)', () => {
   });
 });
 
-describe('Stepping Stones (sequences.json + audited lesson flows)', () => {
+describe('Sequence Check (sequences.json + audited lesson flows)', () => {
   const all = getStepSequences('cisa');
   const authored = all.filter((s) => !s.lessonId);
   const flows = all.filter((s) => s.lessonId);

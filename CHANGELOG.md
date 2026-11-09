@@ -4,6 +4,13 @@ All notable user-facing changes to this app. The in-app **What's New** modal mir
 
 For internal/technical history, see git log and PR descriptions.
 
+## Phone [2.2] · 2026-11-09
+
+### Improved
+- Collect your milestones with refreshed badges and shorter names.
+- Focus on your review with clearer study progress and fewer distractions.
+- Find feature guidance behind information buttons for calmer screens.
+
 ## Phone [2.1] · Integrated development preview
 
 ### New

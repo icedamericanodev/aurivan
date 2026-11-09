@@ -122,7 +122,7 @@ describe('Learn (7.1, the 02 board)', () => {
     mount(<Learn />);
     const t = textOf(root());
     // The kit's tile order: Study notes, Glossary (O2, Sky's yes on 5 Nov 2026), Principles, The CISA exam.
-    const order = ['Learn', 'Lessons start each topic. Notes go deeper.', 'Up next ·', 'Start lesson', 'Study notes', 'Glossary', 'Principles', 'The CISA exam', 'Final review week', 'Lessons 0 of', 'Prefer a guided path?', 'IS means information systems.'].map((s) => t.indexOf(s));
+    const order = ['Learn', 'Up next ·', 'Start lesson', 'Study notes', 'Glossary', 'Principles', 'The CISA exam', 'Final review week', 'Lessons 0 of', 'Guided', 'IS means information systems.'].map((s) => t.indexOf(s));
     expect(order.every((i) => i >= 0)).toBe(true);
     expect([...order].sort((a, b) => a - b)).toEqual(order);
   });

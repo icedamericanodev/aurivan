@@ -8,14 +8,14 @@
  * - the twig: one leaf per item (right filled, missed an outline with a notch, still to come dashed),
  *   one spoken sentence, squares from text scale 1.3, a counter past 8 items; a right leaf fills over
  *   160 ms, and under Reduce Motion it is filled at once;
- * - a Snare Spotter round: the two steps as step squares (the engine's words), the Seedling hint for
+ * - a Snare Spotter round: the two steps as step squares (the engine's words), the Beginner hint for
  *   the first two rounds only, the answer screen (verdict, answer card with the Snare row, tips, the
  *   folded "Why A, and the key idea"); a right answer plays the reveal, a miss animates nothing;
  * - the intro: back row "Practice", the name as the one display title, "A strong round: 80% or more.",
  *   the three level markers as a radiogroup;
  * - the recap: one forest panel with the score, squares and "New personal best"; the level band on a
  *   level-up (and under Reduce Motion the new level at once, with its one haptic); the level line on a
- *   round with no change ("One more strong round grows it to Sapling." with two dots);
+ *   round with no change ("One more strong round moves you to Practised." with two dots);
  * - Call It First's folded options; Field notes; Term Match on the Drills card; Daylight's stepped bar.
  */
 import { act, create, type ReactTestInstance, type ReactTestRenderer } from 'react-test-renderer';
@@ -227,16 +227,16 @@ describe('the steps, the hint and the level words', () => {
     expect(stepSpoken({ label: 'Step 1: tap the snare', state: 'done', result: 'You marked D' })).toBe('Step 1: tap the snare. Done. You marked D.');
     expect(stepSpoken({ label: 'Step 1: what does this question ask for?', state: 'now' })).toBe('Step 1: what does this question ask for?');
   });
-  it('the Seedling hint shows for the first two rounds at Seedling only', () => {
+  it('the Beginner hint shows for the first two rounds at Beginner only', () => {
     expect(seedlingHintDue('seedling', 0)).toBe(true);
     expect(seedlingHintDue('seedling', 1)).toBe(true);
     expect(seedlingHintDue('seedling', 2)).toBe(false);
     expect(seedlingHintDue('sapling', 0)).toBe(false);
   });
-  it('the markers are said as one sentence: "Level: Sapling. Heartwood not reached."', () => {
-    expect(levelSpoken('sapling')).toBe('Level: Sapling. Heartwood not reached.');
-    expect(levelSpoken('seedling')).toBe('Level: Seedling. Sapling and Heartwood not reached.');
-    expect(levelSpoken('heartwood')).toBe('Level: Heartwood.');
+  it('the markers are said as one sentence: "Level: Practised. Skilled not reached."', () => {
+    expect(levelSpoken('sapling')).toBe('Level: Practised. Skilled not reached.');
+    expect(levelSpoken('seedling')).toBe('Level: Beginner. Practised and Skilled not reached.');
+    expect(levelSpoken('heartwood')).toBe('Level: Skilled.');
   });
   it('reached, current and not reached look different by shape (tick, filled leaf, dashed outline)', () => {
     mount(<LevelMarkers level="sapling" />);
@@ -244,18 +244,18 @@ describe('the steps, the hint and the level words', () => {
     expect(host('marker-current-sapling')).toHaveLength(1);
     const later = host('marker-later-heartwood')[0];
     expect(styleOf(later)).toMatchObject({ borderStyle: 'dashed' });
-    expect(labels()).toContain('Level: Sapling. Heartwood not reached.');
+    expect(labels()).toContain('Level: Practised. Skilled not reached.');
   });
   it('Term Match is the renamed game: only its name changes', () => {
     expect(drillName('field')).toBe(TERM_MATCH);
     expect(drillName('trap')).toBe('Snare Spotter');
-    expect(drillTitle('field', 'Field Guide · 3 min')).toBe('Term Match');
+    expect(drillTitle('field', 'Term Match · 3 min')).toBe('Term Match');
   });
 });
 
 // ── A Snare Spotter round ────────────────────────────────────────────────
 describe('a Snare Spotter round (6.3, 6.4)', () => {
-  it('step squares with the engine words, the Seedling hint, the twig and the Score caption', () => {
+  it('step squares with the engine words, the Beginner hint, the twig and the Score caption', () => {
     mount(<TrapSpotter />);
     expect(labels()).toContain('Step 1: tap the snare.');
     expect(allText()).toContain('Step 2: tap the BEST answer');
@@ -349,7 +349,7 @@ describe('a Snare Spotter round (6.3, 6.4)', () => {
 describe('Call It First: the folded options', () => {
   it('folded bars with their line until the principle is named; one labelled group', () => {
     mount(<CallItFirst />);
-    expect(labels()).toContain('Sapling. Decoys from nearby ideas.');
+    expect(labels()).toContain('Practised. Decoys from nearby ideas.');
     act(() => {
       root().findAll((n) => n.props.accessibilityLabel === 'Start' && typeof n.props.onPress === 'function')[0].props.onPress();
     });
@@ -366,17 +366,17 @@ describe('the intro (6.2)', () => {
   it('back row "Practice", the name as the one display title, the strong-round line, the markers as radios', () => {
     const onTier = jest.fn();
     mount(
-      <GameIntro game="callit" rules="Rules." tiers={['seedling', 'sapling', 'heartwood']} tier="sapling" onTier={onTier} tierName={{ seedling: 'Seedling', sapling: 'Sapling', heartwood: 'Heartwood' }} tierLine={CALL_TIER_LINE} level="seedling" onStart={() => {}} />,
+      <GameIntro game="callit" rules="Rules." tiers={['seedling', 'sapling', 'heartwood']} tier="sapling" onTier={onTier} tierName={{ seedling: 'Beginner', sapling: 'Practised', heartwood: 'Skilled' }} tierLine={CALL_TIER_LINE} level="seedling" onStart={() => {}} />,
     );
     expect(labels()).toContain('Back to Practice');
     expect(allText()).toContain('Call It First');
     expect(allText()).toContain(STRONG_ROUND);
     const radios = root().findAll((n) => typeof n.type === 'string' && n.props.accessibilityRole === 'radio');
-    expect(radios.map((n) => n.props.accessibilityLabel)).toEqual(['Seedling, your level. Decoys from other topics.', 'Sapling. Decoys from nearby ideas.', 'Heartwood. No cards: think for 10 seconds, then answer.']);
+    expect(radios.map((n) => n.props.accessibilityLabel)).toEqual(['Beginner, your level. Decoys from other topics.', 'Practised. Decoys from nearby ideas.', 'Skilled. No cards: think for 10 seconds, then answer.']);
     expect(radios.map((n) => n.props.accessibilityState.checked)).toEqual([false, true, false]);
     for (const n of radios) expect(styleOf(n).minHeight).toBeGreaterThanOrEqual(48);
     act(() => {
-      root().findAll((n) => typeof n.props.onPress === 'function' && String(n.props.accessibilityLabel).startsWith('Heartwood.'))[0].props.onPress();
+      root().findAll((n) => typeof n.props.onPress === 'function' && String(n.props.accessibilityLabel).startsWith('Skilled.'))[0].props.onPress();
     });
     expect(onTier).toHaveBeenCalledWith('heartwood');
   });
@@ -402,20 +402,20 @@ describe('the recap (6.5)', () => {
     expect(labels()).toContain('Score 8 out of 10');
   });
 
-  it('a round with no level change: "Two strong rounds in a row grow it to Sapling." (no dots), then one in a row with two dots', () => {
+  it('a round with no level change: "Two strong rounds in a row move you to Practised." (no dots), then one in a row with two dots', () => {
     mount(recap({ news: { change: null, tier: 'seedling', best: false, moment: null } }));
-    expect(textOf(host('recap-level-line')[0])).toContain('Two strong rounds in a row grow it to Sapling.');
+    expect(textOf(host('recap-level-line')[0])).toContain('Two strong rounds in a row move you to Practised.');
     expect(host('recap-level-dots')).toHaveLength(0);
     unmount();
     act(() => {
       useProgress.getState().noteGameRound('cisa', 'trap', { rate: 0.9, tier: 'seedling' });
     });
     mount(recap({ news: { change: null, tier: 'seedling', best: false, moment: null } }));
-    expect(textOf(host('recap-level-line')[0])).toContain('One more strong round grows it to Sapling.');
+    expect(textOf(host('recap-level-line')[0])).toContain('One more strong round moves you to Practised.');
     expect(host('recap-level-dots')).toHaveLength(1);
   });
 
-  it('no level line at Heartwood, and none on a round whose level changed', () => {
+  it('no level line at Skilled, and none on a round whose level changed', () => {
     act(() => {
       useProgress.setState((s) => ({ byCert: { ...s.byCert, cisa: { ...selectCert(s, 'cisa'), gameGrowth: { trap: { tier: 'heartwood', up: 0, down: 0 } } } } }));
     });
@@ -427,9 +427,9 @@ describe('the recap (6.5)', () => {
     mount(recap({ game: 'callit', tierLines: CALL_TIER_LINE, news: { change: 'up', tier: 'sapling', best: false, moment: null } }));
     expect(comp('recap-markers')[0].props.level).toBe('sapling');
     const band = textOf(host('recap-level')[0]);
-    expect(band).toContain('You’ve grown to Sapling. Your next round starts there.');
+    expect(band).toContain('You’ve reached Practised. Your next round starts there.');
     expect(band).toContain('What changes: decoys from nearby ideas.');
-    expect(labels()).toContain('Level: Sapling. Heartwood not reached.');
+    expect(labels()).toContain('Level: Practised. Skilled not reached.');
     expect(mockLight).toHaveBeenCalledTimes(1);
     expect(host('recap-level-line')).toHaveLength(0);
   });
@@ -438,7 +438,7 @@ describe('the recap (6.5)', () => {
     setMockReducedMotion(false);
     mount(recap({ news: { change: 'down', tier: 'seedling', best: false, moment: null } }));
     expect(comp('recap-markers')[0].props).toMatchObject({ level: 'seedling', play: false });
-    expect(textOf(host('recap-level')[0])).toContain('Back to Seedling. Two strong rounds grow it again.');
+    expect(textOf(host('recap-level')[0])).toContain('Back to Beginner. Two strong rounds move you up again.');
     expect(mockLight).not.toHaveBeenCalled();
   });
 
@@ -458,8 +458,8 @@ describe('Field notes and the Drills card', () => {
     });
     mount(<FieldNotes />);
     expect(labels()).toContain('Back to You');
-    expect(allText()).toContain('Field notes');
-    expect(labels()).toContain('Snare Spotter. Level: Sapling. Heartwood not reached. Two rounds in a row at 80% or more, at your level, grow it to Heartwood.');
+    expect(allText()).toContain('Drill progress');
+    expect(labels()).toContain('Snare Spotter. Level: Practised. Skilled not reached. Two rounds in a row at 80% or more, at your level, move you to Skilled.');
     expect(allText()).toContain('Term Match');
     expect(allText()).not.toContain('Field Guide');
   });
@@ -469,7 +469,7 @@ describe('Field notes and the Drills card', () => {
       useProgress.setState((s) => ({ byCert: { ...s.byCert, cisa: { ...selectCert(s, 'cisa'), gameGrowth: { trap: { tier: 'sapling', up: 0, down: 0 } } } } }));
     });
     mount(<Drills />);
-    expect(allText()).toContain('Sapling');
+    expect(allText()).toContain('Practised');
     expect(allText()).not.toContain('Field Guide');
   });
 });
@@ -479,7 +479,7 @@ describe('Daylight and Forecast', () => {
   it('Daylight: "Pick your light" with the markers; the pace bar steps once a second (no tween)', () => {
     mount(<Daylight />);
     expect(allText()).toContain('Pick your light');
-    expect(labels()).toContain('Seedling, 120 seconds a question, suggested');
+    expect(labels()).toContain('Beginner, 120 seconds a question, suggested');
     act(() => {
       root().findAll((n) => n.props.accessibilityLabel === 'Start' && typeof n.props.onPress === 'function')[0].props.onPress();
     });

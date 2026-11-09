@@ -1,5 +1,5 @@
 /**
- * Premium round 2, spec 2: the answer as a Field Guide plate (Fig. 4).
+ * Premium round 2, spec 2: the answer as a Term Match plate (Fig. 4).
  *
  *  - a running head: "Practice · IS Audit" / "Question 1 of 2" ("Review ·" in a review set);
  *  - the recap's "Question" head and two-line stem with "Show question";

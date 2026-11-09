@@ -65,7 +65,7 @@ function answerClean(perDomain: number[], at = T0 - 20 * DAY) {
 }
 /**
  * Study that opens Crown under the 1.49 rules, with NO delayed recalls: what a
- * learner's saved data looks like when the Long Memory list is short (it only
+ * learner's saved data looks like when the Lasting Recall list is short (it only
  * started counting with Build F, and many learners never come back to a
  * question a week later). Every outline subtopic mastered on two days.
  */
@@ -275,7 +275,7 @@ describe('QA-150-6: Android widget and the Form IV choice', () => {
     for (let i = 0; i < 20; i++) await Promise.resolve();
   };
 
-  it('choosing a final redraws the plant widget (the snapshot carries the new final)', async () => {
+  it('legacy form choices no longer refresh widgets or enter their snapshots', async () => {
     jest.useFakeTimers({ now: NOW });
     await AsyncStorage.clear();
     android.resetWidgetsForTest();
@@ -293,10 +293,10 @@ describe('QA-150-6: Android widget and the Form IV choice', () => {
     useSeen.getState().setPlantFinal('cisa', 'moot'); // the Look screen's "Moot Oak"
     await jest.advanceTimersByTimeAsync(3000);
     await settle();
-    // Was: no redraw. startWidgetSync now also listens for useSeen's plantFinal.
-    expect((requestWidgetUpdate as jest.Mock).mock.calls.length).toBeGreaterThan(0);
+    // The retired provider is a study shortcut, independent of plant choices.
+    expect(requestWidgetUpdate).not.toHaveBeenCalled();
     const snap = JSON.parse((await AsyncStorage.getItem('aurivan.widget.v1')) ?? '{}') as { plant?: { final?: string } };
-    expect(snap.plant?.final).toBe('moot');
+    expect(snap.plant).toBeNull();
     stop();
   });
 });

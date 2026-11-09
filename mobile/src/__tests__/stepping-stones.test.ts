@@ -1,5 +1,5 @@
 /**
- * Stepping Stones (games review §3.5): the reviewed sequences plus the
+ * Sequence Check (games review §3.5): the reviewed sequences plus the
  * lesson flows ordered as shipped, three processes a round, tap to place
  * (checked when the path is full), the three levels, scoring and cards.
  */
@@ -25,19 +25,19 @@ const T0 = Date.UTC(2026, 9, 12);
 const TIERS: StonesTier[] = ['seedling', 'sapling', 'heartwood'];
 
 describe('the pool', () => {
-  it('Seedling plays 4-step processes; Sapling and Heartwood the longer ones', () => {
+  it('Beginner plays 4-step processes; Practised and Skilled the longer ones', () => {
     expect(stonesPool(all, 'seedling').every((s) => s.steps.length === 4)).toBe(true);
     expect(stonesPool(all, 'sapling').every((s) => s.steps.length >= 5)).toBe(true);
     expect(stonesPool(all, 'seedling').length).toBeGreaterThanOrEqual(STONES_PER_ROUND * 2);
   });
 
-  it('a process never plays below its deck tier (Heartwood stays Heartwood)', () => {
+  it('a process never plays below its deck tier (Skilled stays Skilled)', () => {
     const rank = { seedling: 0, sapling: 1, heartwood: 2 };
     for (const tier of TIERS) expect(stonesPool(all, tier).every((s) => rank[s.tier] <= rank[tier])).toBe(true);
     const hw = all.filter((s) => s.tier === 'heartwood');
     expect(hw.length).toBeGreaterThan(0);
     expect(stonesPool(all, 'heartwood')).toEqual(expect.arrayContaining(hw));
-    // Sapling still has plenty to play.
+    // Practised still has plenty to play.
     expect(stonesPool(all, 'sapling').length).toBeGreaterThanOrEqual(STONES_PER_ROUND * 2);
   });
 
@@ -64,7 +64,7 @@ describe('rounds', () => {
     }
   });
 
-  it('Seedling gives the first step; the rest are shuffled, never already in order', () => {
+  it('Beginner gives the first step; the rest are shuffled, never already in order', () => {
     for (let seed = 1; seed <= 30; seed++) {
       for (const it of buildStonesRound(all, undefined, 'seedling', createRng(seed), T0)) {
         expect(it.given).toBe(1);
@@ -74,14 +74,14 @@ describe('rounds', () => {
     }
   });
 
-  it('Sapling places every step', () => {
+  it('Practised places every step', () => {
     for (const it of buildStonesRound(all, undefined, 'sapling', createRng(4), T0)) {
       expect(it.given).toBe(0);
       expect([...it.shown].sort((a, b) => a - b)).toEqual(it.seq.steps.map((_, k) => k));
     }
   });
 
-  it('Heartwood asks for the missing step from 3, with decoys that cannot fit', () => {
+  it('Skilled asks for the missing step from 3, with decoys that cannot fit', () => {
     for (let seed = 1; seed <= 20; seed++) {
       for (const it of buildStonesRound(all, undefined, 'heartwood', createRng(seed), T0)) {
         const m = it.missing!;
@@ -129,13 +129,13 @@ describe('checking and scoring', () => {
     expect(pathPoints(r.right, r.perfect)).toBe(n - 2);
   });
 
-  it('Seedling paths are checked after the given step', () => {
+  it('Beginner paths are checked after the given step', () => {
     const seed = buildStonesRound(all, undefined, 'seedling', createRng(3), T0)[0];
     expect(checkPath(seed, [1, 2, 3]).perfect).toBe(true);
     expect(checkPath(seed, [2, 1, 3]).marks[0]).toEqual({ step: 2, right: false, goes: 3 });
   });
 
-  it('the round’s best score counts each stone and each bonus; Heartwood 1 a process', () => {
+  it('the round’s best score counts each stone and each bonus; Skilled 1 a process', () => {
     const r = buildStonesRound(all, undefined, 'seedling', createRng(5), T0);
     expect(stonesMax(r)).toBe(3 * (3 + 2));
     expect(stonesMax(buildStonesRound(all, undefined, 'heartwood', createRng(5), T0))).toBe(3);
@@ -145,7 +145,7 @@ describe('checking and scoring', () => {
 
 describe('wiring', () => {
   it('is in the registry with its name and tagline, and needs the processes', () => {
-    expect(GAMES.stones.name).toBe('Stepping Stones');
+    expect(GAMES.stones.name).toBe('Sequence Check');
     expect(GAMES.stones.tagline).toBe('Put each process in the right order.');
     expect(isPlayable('stones', [], null, { steps: all })).toBe(true);
     expect(isPlayable('stones', [], null, { steps: all.slice(0, 5) })).toBe(false);

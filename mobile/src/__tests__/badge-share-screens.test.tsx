@@ -94,11 +94,11 @@ describe('sharing a badge', () => {
     act(() => {
       r = create(<Badges />);
     });
-    press(/^Long Memory · 25 recalls, Clay\. Earned/);
+    press(/^Lasting Recall · 25 recalls, Bronze\. Earned/);
     const sheet = () => root().findByType(Modal);
     // Nothing opened on its own: the details first.
     expect(textOf(sheet())).not.toContain('Only what is on the card is shared.');
-    press(/^Share this badge: Long Memory · 25 recalls$/);
+    press(/^Share this badge: Lasting Recall · 25 recalls$/);
     expect(root().findAllByType(Modal)).toHaveLength(1); // never a sheet over a sheet
     const t = textOf(sheet());
     expect(t).toContain('Share this badge');
@@ -106,9 +106,9 @@ describe('sharing a badge', () => {
     expect(t).toContain('KaiSip study badge · Earned 3 Nov 2026');
     // The card's title is the plain badge name; the tier line and skill line carry the numbers.
     const cardText = textOf(root().findByType(BadgeShareCard));
-    expect(cardText).toContain('Long Memory');
-    expect(cardText).not.toContain('Long Memory · 25 recalls');
-    expect(t).toContain('Clay · tier 1 of 3');
+    expect(cardText).toContain('Lasting Recall');
+    expect(cardText).not.toContain('Lasting Recall · 25 recalls');
+    expect(t).toContain('Bronze · tier 1 of 3');
     expect(t).toContain('Recalled 25 answers a week or more later');
     expect(t).toContain('Studying for the CISA® exam');
     expect(t).toContain('Not affiliated with or endorsed by ISACA®. CISA® is a registered trademark of ISACA.');
@@ -137,8 +137,8 @@ describe('sharing a badge', () => {
     act(() => {
       r = create(<Badges />);
     });
-    press(/^Long Memory · 25 recalls, Clay\. Earned/);
-    press(/^Share this badge: Long Memory · 25 recalls$/);
+    press(/^Lasting Recall · 25 recalls, Bronze\. Earned/);
+    press(/^Share this badge: Lasting Recall · 25 recalls$/);
     const modal = () => root().findByType(Modal);
     expect(textOf(modal())).toContain('Share this badge');
     act(() => modal().props.onRequestClose());
@@ -150,37 +150,37 @@ describe('sharing a badge', () => {
     expect(root().findAllByType(Modal).every((m) => m.props.visible === false)).toBe(true);
   });
 
-  it('a Firm Footing card: "Firm Footing", its tier, then the domain and the number in the skill line', () => {
+  it('a Domain Mastery card: "Domain Mastery", its tier, then the domain and the number in the skill line', () => {
     earn('firm-footing:4', T0 - DAY);
     act(() => {
       r = create(<Badges />);
     });
-    press(/^Firm Footing · IS Operations, Clay\. Earned/);
-    press(/^Share this badge: Firm Footing · IS Operations$/);
+    press(/^Domain Mastery · IS Operations, Bronze\. Earned/);
+    press(/^Share this badge: Domain Mastery · IS Operations$/);
     const card = textOf(root().findByType(BadgeShareCard));
-    expect(card).toContain('Firm Footing Clay · tier 1 of 2 Reached 70% in IS Operations in practice');
-    expect(card).not.toContain('Firm Footing · IS Operations');
+    expect(card).toContain('Domain Mastery Bronze · tier 1 of 2 Reached 70% in IS Operations in practice');
+    expect(card).not.toContain('Domain Mastery · IS Operations');
   });
 
   it('card words that fail the honesty check hide Share (built in a try), never crash the sheet', () => {
     earn('long-memory', T0 - DAY);
     const cisa = getCertification('cisa')!;
     const mark = badgeCase('cisa', selectCert(useProgress.getState(), 'cisa')).marks.find((m) => m.key === 'long-memory')!;
-    expect(cardText(mark, cisa)?.name).toBe('Long Memory');
+    expect(cardText(mark, cisa)?.name).toBe('Lasting Recall');
     expect(cardText(mark, { ...cisa, name: 'Official' })).toBeNull();
     expect(cardText({ ...mark, status: 'started' }, cisa)).toBeNull();
   });
 
-  it('Flown the Nest (renamed from Graduate in 1.18) is shareable: its sheet offers Share and the card passes every check', () => {
+  it('Review Complete (renamed from Graduate in 1.18) is shareable: its sheet offers Share and the card passes every check', () => {
     earn('graduate', new Date(2026, 10, 3, 9).getTime());
     act(() => {
       r = create(<Badges />);
     });
-    press(/^Flown the Nest\. Earned/);
+    press(/^Review Complete\. Earned/);
     const sheet = () => root().findByType(Modal);
-    expect(textOf(sheet())).toContain('Flown the Nest');
+    expect(textOf(sheet())).toContain('Review Complete');
     expect(textOf(sheet())).not.toMatch(/graduat/i);
-    press(/^Share this badge: Flown the Nest$/);
+    press(/^Share this badge: Review Complete$/);
     const t = textOf(sheet());
     expect(t).toContain('Moved 50 questions out of review');
     expect(t).toContain('KaiSip study badge · Earned 3 Nov 2026');
@@ -189,16 +189,16 @@ describe('sharing a badge', () => {
     expect(t).not.toMatch(/graduat|certificat|credential|official/i);
   });
 
-  it('no Share on a badge not yet earned, nor on Fresh Start (a moment, never shared)', () => {
+  it('no Share on a badge not yet earned, nor on Study Return (a moment, never shared)', () => {
     earn('fresh-start', T0 - DAY);
     act(() => {
       r = create(<Badges />);
     });
-    press(/^Fresh Start\. Earned/);
+    press(/^Study Return\. Earned/);
     expect(buttons(/^Share /)).toHaveLength(0);
-    press(/^Close Fresh Start$/);
+    press(/^Close Study Return$/);
     act(() => jest.advanceTimersByTime(700));
-    press(/^Flown the Nest\. Not yet/);
+    press(/^Review Complete\. Not yet/);
     expect(buttons(/^Share /)).toHaveLength(0);
   });
 });

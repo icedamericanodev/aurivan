@@ -391,7 +391,7 @@ describe('game recaps', () => {
     press('Report a problem with the app');
     for (const reason of REASONS.app) expect(allText()).toContain(reason.label);
     await sendReport('A score or result looks wrong');
-    expect(lastBody()).toContain(`Where: Game recap · Root or Rumor · missed ${q.id}, rumor:4B1.2:k1x9`);
+    expect(lastBody()).toContain(`Where: Game recap · Fact or Myth · missed ${q.id}, rumor:4B1.2:k1x9`);
   });
 
   it('one link at the foot: with one miss it reports that question by its code', async () => {
@@ -406,11 +406,11 @@ describe('game recaps', () => {
     press('Report a problem with this card');
     for (const reason of REASONS.card) expect(allText()).toContain(reason.label);
     await sendReport('The game marked me wrong, but I was right');
-    expect(lastBody()).toContain('Item: Game card rumor:4B1.2:k1x9 (Root or Rumor)');
-    expect(lastBody()).toContain('Where: Game recap · Root or Rumor');
+    expect(lastBody()).toContain('Item: Game card rumor:4B1.2:k1x9 (Fact or Myth)');
+    expect(lastBody()).toContain('Where: Game recap · Fact or Myth');
   });
 
-  it('Canopy Call and Stepping Stones misses report the STABLE card id, and Your reports names the game', async () => {
+  it('Role Check and Sequence Check misses report the STABLE card id, and Your reports names the game', async () => {
     const card = getRoleDeck('cisa')!.cards[0];
     const seq = getStepSequences('cisa').find((x) => !x.lessonId)!;
     mount(
@@ -426,7 +426,7 @@ describe('game recaps', () => {
     );
     press('Report a problem with this card');
     await sendReport('Something on this card is wrong');
-    expect(lastBody()).toContain(`Item: Game card ${canopyCardId(card)} (Canopy Call)`);
+    expect(lastBody()).toContain(`Item: Game card ${canopyCardId(card)} (Role Check)`);
     expect(useProgress.getState().reports![0].item).toBe(`card:role:${card.subtopicId}:${card.id}`);
     unmount();
 
@@ -445,15 +445,15 @@ describe('game recaps', () => {
     expect(useProgress.getState().reports![0].item).toBe(`card:seq:${seq.subtopicId}:${seq.id}`);
     unmount();
 
-    // Your reports names each game, Root or Rumor's "root:" cards included.
+    // Your reports names each game, Fact or Myth's "root:" cards included.
     act(() => {
       useProgress.getState().logReport({ ref: 'R-7K2Q', item: 'card:root:4B1.2:2kku2i', reason: 'incorrect', cert: 'cisa' });
     });
     mount(<Reports />);
     const text = allText();
-    expect(text).toContain('Game card: Canopy Call');
-    expect(text).toContain('Game card: Stepping Stones');
-    expect(text).toContain('Game card: Root or Rumor');
+    expect(text).toContain('Game card: Role Check');
+    expect(text).toContain('Game card: Sequence Check');
+    expect(text).toContain('Game card: Fact or Myth');
     expect(text).not.toContain('Game card: a game');
   });
 });

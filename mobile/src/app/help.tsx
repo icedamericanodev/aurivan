@@ -20,10 +20,9 @@ import { useEffect } from 'react';
 import { View } from 'react-native';
 import { HelpRows } from '../components/help';
 import { useContactFlow } from '../components/support';
-import { PushedHeader, Screen, T } from '../components/ui';
+import { PushedHeader, Screen } from '../components/ui';
 import { helpOpenParam } from '../lib/support';
 import { useActiveCert } from '../lib/useActiveCert';
-import { space } from '../theme/tokens';
 
 /** This screen's own navigation (absent where a test's expo-router stand-in has none). */
 const useOwnNavigation: () => { setParams?: (p: { open?: string }) => void } | undefined =
@@ -51,7 +50,6 @@ export default function Help() {
   return (
     <Screen edges={['top', 'bottom']}>
       <PushedHeader title="Help and feedback" onBack={() => (router.canGoBack() ? router.back() : router.replace('/you'))} />
-      <T v="meta" style={{ marginTop: space.sm }}>Quick answers, and an easy way to reach the people who build KaiSip.</T>
       <View>
         <HelpRows certId={cert.id} />
       </View>

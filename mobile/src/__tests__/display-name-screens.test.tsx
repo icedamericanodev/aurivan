@@ -116,7 +116,7 @@ afterEach(() => {
   jest.useRealTimers();
 });
 
-// Mobile 1.51 (Field Guide, the owner's option A): the countdown is Today's title ("Maya, 38 days to go");
+// Mobile 1.51 (Term Match, the owner's option A): the countdown is Today's title ("Maya, 38 days to go");
 // with no exam date the title is still the greeting by the hour.
 describe('Today greets by name', () => {
   it.each([

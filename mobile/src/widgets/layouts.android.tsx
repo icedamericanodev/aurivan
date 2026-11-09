@@ -15,7 +15,7 @@
  * - Today's plan: the forest card (the only one), "12 questions", the day's
  *   step pips and the one Start button on the home screen.
  * - This week: paper, a big "3" and the week's leaves (the only leaves).
- * - Your plant: the botanical plate, "Growth 3 · Shoot" (no book label since Grove).
+ * - The legacy YourPlant receiver now draws a study shortcut.
  * - Today's rule and the Recall card: ruled index cards with a clay margin.
  * - Key term and Readiness: paper. Road to exam: the ink card.
  *
@@ -38,7 +38,7 @@ import type { JSX } from 'react';
 import { FlexWidget, OverlapWidget, SvgWidget, TextWidget } from 'react-native-android-widget';
 import { spokenMin } from '../engine/pace';
 import { BIG_TEXT, LEAF_LETTERS, sizeClass, type FaceAction, type SizeClass, type WidgetFace } from '../engine/widgets';
-import { leafSvg, markSvg, plantSvg, playSvg, ruledSvg, ringsSvg, widgetColors, WIDGET_FONTS as F, type WidgetColors, type WidgetTheme } from './art';
+import { leafSvg, markSvg, playSvg, ruledSvg, ringsSvg, widgetColors, WIDGET_FONTS as F, type WidgetColors, type WidgetTheme } from './art';
 
 /** The custom clicks a reveal card sends to its own task (it redraws, no app opens). */
 export const REVEAL_ACTION = 'REVEAL';
@@ -408,7 +408,7 @@ function roadRow(behind: number, ahead: number, c: WidgetColors, h: number, max:
 // ── The kinds ─────────────────────────────────────────────────────────────
 /** 1×1: the picture and one short word (This week's dot: a leaf and the count). */
 function tiny(x: X, micro: boolean): El {
-  const { face, c, theme } = x;
+  const { face, c } = x;
   const isWeek = face.art?.type === 'leaves' && face.titleStyle === 'number';
   const word = face.short ?? face.title.split(' ').slice(0, 3).join(' ');
   if (micro) {
@@ -420,11 +420,6 @@ function tiny(x: X, micro: boolean): El {
   }
   const pic = x.huge ? null : isWeek ? (
     <SvgWidget svg={leafSvg(true, false, c)} style={{ width: 14, height: 19 }} />
-  ) : face.art?.type === 'plant' ? (
-    (() => {
-      const svg = plantSvg(face.art.plant, theme);
-      return svg ? <SvgWidget svg={svg} style={{ width: 44, height: 44 }} /> : mark(c, 18);
-    })()
   ) : face.art?.type === 'rings' ? (
     <SvgWidget svg={ringsSvg(face.art.rings, face.art.weights, c, face.art.faint)} style={{ width: 44, height: 44 }} />
   ) : (
@@ -636,66 +631,6 @@ function week(x: X): El {
       </FlexWidget>
       {leaves(filled, today, c, fit, letters, scale)}
       {lineShown ? txt(face.line as string, F.serifItalic, linePx, c.ink2, { mt: 6, lines: weekLines }) : null}
-    </FlexWidget>
-  );
-}
-
-// 3. Your plant (the botanical plate) ───────────────────────────────────────
-function plant(x: X): El {
-  const { face, c, theme, size, iw, ih, scale } = x;
-  if (face.art?.type !== 'plant') return plain(x);
-  const svg = plantSvg(face.art.plant, theme);
-  const pic = (d: number) => (svg ? <SvgWidget svg={svg} style={{ width: d, height: d }} /> : mark(c, Math.round(d * 0.5)));
-  const figLine = `${face.sub ?? ''} · ${face.title}`;
-  if (size === 'strip') {
-    const narrow = isNarrow(x);
-    const d = Math.min(ih + 8, 64);
-    const sub = x.big || ih < LOW_STRIP - 2 * W.padStrip ? '' : narrow ? (face.sub ?? '') : `${face.caption} · ${face.badge ?? face.line ?? ''}`.replace(/\.$/, '');
-    return (
-      <FlexWidget style={{ width: 'match_parent', height: 'match_parent', flexDirection: 'row', alignItems: 'center' }}>
-        {pic(d)}
-        <FlexWidget style={{ flex: 1, flexDirection: 'column', marginLeft: 8 }}>
-          {heroText(narrow ? face.title : figLine, face.title, F.serifItalic, sz(17, scale, SMALL_TITLE_CAP), SERIF_MIN, iw - d - 8, ih - (sub ? tall(11.5) : 0), c.ink)}
-          {sub ? txt(sub, F.sans, 11.5, c.ink2, { mt: 2 }) : null}
-        </FlexWidget>
-      </FlexWidget>
-    );
-  }
-  if (size === 'small') {
-    const top = x.huge ? 0 : capH(x) + 6;
-    const titlePx = sz(15, scale, SMALL_TITLE_CAP);
-    const titleLines = fitsLines(figLine, titlePx, iw, 1) ? 1 : 2;
-    const d = Math.max(56, Math.min(iw, ih - top - tall(titlePx, titleLines) - 2));
-    return (
-      <FlexWidget style={{ width: 'match_parent', height: 'match_parent', flexDirection: 'column', alignItems: 'center' }}>
-        {x.huge ? null : topRow(x, face.badge ?? face.caption, null, 0)}
-        <FlexWidget style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>{pic(d)}</FlexWidget>
-        {txt(figLine, F.serifItalic, titlePx, c.ink, { lines: titleLines, align: 'center' })}
-      </FlexWidget>
-    );
-  }
-  // 4×2 and up: the plate's figure on the left, the stage as the words.
-  const d = Math.min(ih + 6, Math.round(iw * 0.42));
-  const head = x.huge ? 0 : capH(x) + HAIR;
-  const linePx = sz(13, scale, 1.4);
-  const lineText = `${face.sub ?? ''}. ${face.line ?? ''}`.trim();
-  const room = ih - head - tall(linePx, 2) - (face.badge && !x.big ? 26 : 0);
-  return (
-    <FlexWidget style={{ width: 'match_parent', height: 'match_parent', flexDirection: 'row', alignItems: 'flex-end' }}>
-      {pic(d)}
-      <FlexWidget style={{ flex: 1, height: 'match_parent', flexDirection: 'column', marginLeft: 12 }}>
-        {x.huge ? null : topRow(x, face.caption, null, 0)}
-        {x.huge ? null : hair(c)}
-        <FlexWidget style={{ flex: 1, flexDirection: 'column', justifyContent: 'center' }}>
-          {txt(face.title, F.serif, figPx(42, x, Math.max(30, room), 22), c.ink)}
-          {txt(lineText, F.serifItalic, linePx, c.ink2, { lines: 2, mt: 4 })}
-          {face.badge && !x.big ? (
-            <FlexWidget style={{ backgroundColor: c.bg === c.soft ? c.track : c.soft, borderRadius: 10, paddingHorizontal: 8, paddingVertical: 3, marginTop: 6 }}>
-              {txt(face.badge, F.sansMedium, 11, c.accentText)}
-            </FlexWidget>
-          ) : null}
-        </FlexWidget>
-      </FlexWidget>
     </FlexWidget>
   );
 }
@@ -1111,7 +1046,7 @@ export function WidgetLayout({ face: given, theme, width, height, fontScale }: L
         : face.kind === 'week'
           ? week(x)
           : face.kind === 'plant'
-            ? plant(x)
+            ? plain(x)
             : face.kind === 'readiness'
               ? readiness(x)
               : face.kind === 'countdown'

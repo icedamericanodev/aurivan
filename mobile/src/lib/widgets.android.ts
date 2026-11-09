@@ -27,10 +27,9 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { isRunningInExpoGo } from 'expo';
 import { AppState } from 'react-native';
 import { getWidgetInfo, requestPinWidget, requestWidgetUpdate } from 'react-native-android-widget';
-import { msToNextMidnight, readReveal, REVEAL_KEY, WIDGET_KEY, WIDGET_KINDS, WIDGET_NAMES, type WidgetKind } from '../engine/widgets';
+import { msToNextMidnight, readReveal, REVEAL_KEY, WIDGET_KEY, WIDGET_KINDS, AVAILABLE_WIDGET_KINDS, WIDGET_NAMES, type WidgetKind } from '../engine/widgets';
 import { dayKey } from '../engine/streak';
 import { useProgress } from '../store/progress';
-import { useSeen } from '../store/seen';
 import { useSession } from '../store/session';
 import { useSettings } from '../store/settings';
 import { useWidgetStore } from '../store/widgets';
@@ -145,7 +144,7 @@ async function noteSeen(): Promise<void> {
 
 /** Ask the launcher to add a widget (Android 8+ launchers that support pinning). */
 export async function pinWidget(kind: WidgetKind): Promise<boolean> {
-  if (!widgetsSupported) return false;
+  if (!widgetsSupported || !AVAILABLE_WIDGET_KINDS.includes(kind)) return false;
   try {
     return await requestPinWidget({ widgetName: WIDGET_NAMES[kind] });
   } catch {
@@ -171,11 +170,6 @@ export function startWidgetSync(): () => void {
     // Only the learner's widget choices (the day's pick and counters change during a refresh itself).
     useWidgetStore.subscribe((s, prev) => {
       if (s.prefs !== prev.prefs) scheduleRefresh(0);
-    }),
-    // Mobile 1.50: the Form IV final the learner chose lives on this phone (store/seen.ts
-    // plantFinal), not in progress, so the plant widget redraws when it changes (QA-150-6).
-    useSeen.subscribe((s, prev) => {
-      if (s.plantFinal !== prev.plantFinal) scheduleRefresh();
     }),
     // A quiz ended (finished, or cleared): its answers now count.
     useSession.subscribe((s, prev) => {

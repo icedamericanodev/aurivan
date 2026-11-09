@@ -46,7 +46,7 @@ describe('type scale roles (TYPE_SCALE.md section 3)', () => {
     expect(rangeStep(2, 320)).toBe(22);
   });
 
-  it('the Field Guide cuts the scale retired draw their role', () => {
+  it('the Term Match cuts the scale retired draw their role', () => {
     expect(fieldRole.value).toBe(role.title);
     expect(fieldRole.verdict?.style).toBe(type.hero);
     expect(fieldRole.verdict?.max).toBe(maxScale.hero);

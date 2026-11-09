@@ -1,9 +1,9 @@
 /**
  * Build E game screens, rendered against the real stores.
- * Root or Rumor: pick a level, tap through a round, cards are recorded (not
+ * Fact or Myth: pick a level, tap through a round, cards are recorded (not
  * answers), the recap uses the statement line. Call It First: principle
  * cards first with the options hidden, then the options; the hint makes the
- * answer assisted; answers never set a mastery date; Heartwood hides the
+ * answer assisted; answers never set a mastery date; Skilled hides the
  * options for 10 seconds.
  */
 import { act, create, type ReactTestInstance, type ReactTestRenderer } from 'react-test-renderer';
@@ -65,8 +65,8 @@ afterEach(() => {
   jest.useRealTimers();
 });
 
-describe('Root or Rumor screen', () => {
-  // The screen seeds each round with Date.now() (and Heartwood's "Why?"
+describe('Fact or Myth screen', () => {
+  // The screen seeds each round with Date.now() (and Skilled's "Why?"
   // choices too), so without this every run plays different statements.
   // Pinning the clock makes each test play the same round every run, so a
   // failure always reproduces. Only here: Call It First's 10-second countdown
@@ -87,7 +87,7 @@ describe('Root or Rumor screen', () => {
     // Guard for the "cards recorded" check below. A right tap on a brand-new
     // card stores nothing (engine/srs.ts); only a miss stores a card. About 1
     // round in 1,000 these taps are all right, which made this test fail at
-    // random. Rebuild the pinned round the way the screen does (Seedling is
+    // random. Rebuild the pinned round the way the screen does (Beginner is
     // a new learner's level) and check the taps miss at least once.
     const round = buildRumorRound(rumorStatements(getNotes('cisa')), undefined, 'seedling', createRng(ROUND_SEED), ROUND_SEED);
     expect(round.filter((s, k) => s.kind !== tapFor(k)).length).toBeGreaterThan(0);
@@ -97,14 +97,14 @@ describe('Root or Rumor screen', () => {
     expect(allText()).toContain('Pick your level');
     press('Start');
     expect(allText()).toContain('1 of 12');
-    expect(pressable('Root, a sound principle').length).toBeGreaterThan(0);
-    expect(pressable('Rumor, an exam myth').length).toBeGreaterThan(0);
+    expect(pressable('Fact, a sound principle').length).toBeGreaterThan(0);
+    expect(pressable('Myth, an exam myth').length).toBeGreaterThan(0);
     for (let k = 0; k < 12; k++) {
       // The screen plays the round the guard checked. If it stops seeding
       // from the clock, this fails instead of the test going flaky again.
       expect(allText()).toContain(round[k].text);
-      press(tapFor(k) === 'rumor' ? 'Rumor, an exam myth' : 'Root, a sound principle');
-      expect(allText()).toMatch(/Root: a sound principle|This one is a Root|Rumor: myth spotted|This one is a Rumor: a myth the exam counts on/);
+      press(tapFor(k) === 'rumor' ? 'Myth, an exam myth' : 'Fact, a sound principle');
+      expect(allText()).toMatch(/Fact: a sound principle|This is a fact|Myth spotted|This is a myth, not a sound principle/);
       press(k === 11 ? 'See results' : 'Next statement');
     }
     expect(allText()).toContain('Round complete');
@@ -116,15 +116,15 @@ describe('Root or Rumor screen', () => {
     if (cp().gameBest.rumor! < 12) expect(allText()).toContain('Missed statements come back in a later round.');
   });
 
-  it('Heartwood asks "Why?" after a Rumor tap', () => {
+  it('Skilled asks "Why?" after a Rumor tap', () => {
     mount(<RootOrRumor />);
-    press('Heartwood. All domains, plus “Why?” on each myth.');
+    press('Skilled. All domains, plus “Why?” on each myth.');
     press('Start');
     // Tap Rumor until a statement really is a rumor (half of them are). The
-    // pinned clock fixes the round; every Heartwood round has a myth with a
+    // pinned clock fixes the round; every Skilled round has a myth with a
     // "Why?" (checked over 20,000 seeds), so any seed would pass.
     for (let k = 0; k < 12; k++) {
-      press('Rumor, an exam myth');
+      press('Myth, an exam myth');
       if (allText().includes('Why is it a myth?')) break;
       press('Next statement');
     }
@@ -133,7 +133,7 @@ describe('Root or Rumor screen', () => {
     act(() => {
       options()[0].props.onPress();
     });
-    expect(allText()).toContain('Rumor: myth spotted');
+    expect(allText()).toContain('Myth spotted');
   });
 });
 
@@ -174,10 +174,10 @@ describe('Call It First screen', () => {
     expect(Object.values(cp().answers)[0].lastAssisted).toBe(true);
   });
 
-  it('Heartwood: no cards, options hidden for 10 seconds', () => {
+  it('Skilled: no cards, options hidden for 10 seconds', () => {
     jest.useFakeTimers();
     mount(<CallItFirst />);
-    press('Heartwood. No cards: think for 10 seconds, then answer.');
+    press('Skilled. No cards: think for 10 seconds, then answer.');
     press('Start');
     expect(allText()).toContain('Options hidden');
     expect(options()).toHaveLength(0);

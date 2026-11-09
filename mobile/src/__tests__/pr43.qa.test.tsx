@@ -26,11 +26,11 @@ import { act, create, type ReactTestInstance, type ReactTestRenderer } from 'rea
 import { Dimensions } from 'react-native';
 import { router } from 'expo-router';
 import { setMockReducedMotion } from '../../jest/reanimated-mock';
-import Today from '../app/(tabs)/home';
+
 import You from '../app/(tabs)/you';
-import Onboarding from '../app/onboarding';
-import YourPlant from '../app/plant';
-import PlantPick from '../app/plant-pick';
+
+
+
 import { resetCelebrationsForTest, resetOncePerDayForTest, setSystemReducedMotionForTest } from '../components/motion';
 import { buildPlant, type PNode } from '../components/plant/art';
 import { getCertification } from '../content/certifications';
@@ -44,7 +44,6 @@ import {
   maxSupportedGrowth,
   plantCallName,
   plantFacts,
-  plantLabel,
   restLine,
   supportEvidence,
   type CertPlant,
@@ -62,7 +61,7 @@ import { useSession } from '../store/session';
 import { useSettings } from '../store/settings';
 // Mobile 1.40: these tests check the storybook plant, so they plant as an app from before 1.40 did (no style).
 import { legacyPlantNew as plantNew } from '../../jest/legacyPlant';
-import { installFakePack } from '../../jest/fakePack';
+
 
 jest.mock('@react-native-async-storage/async-storage', () =>
   jest.requireActual('@react-native-async-storage/async-storage/jest/async-storage-mock'),
@@ -119,39 +118,8 @@ const allText = () => {
   walk(root());
   return out.join(' ');
 };
-const labels = () => root().findAll((n) => typeof n.props.accessibilityLabel === 'string').map((n) => n.props.accessibilityLabel as string);
-const byTestID = (id: string) => root().findAll((n) => n.props.testID === id && typeof n.type === 'string');
-const pressable = (label: RegExp) =>
-  root().findAll((x) => typeof x.props.onPress === 'function' && typeof x.props.accessibilityLabel === 'string' && label.test(x.props.accessibilityLabel));
-const press = (label: RegExp) => {
-  const n = pressable(label)[0];
-  if (!n) throw new Error(`no button ${label}`);
-  act(() => {
-    n.props.onPress();
-  });
-};
-
-/** Mobile 1.21: Today's plant row hides with a long press or the screen-reader action "Hide from Today". */
-const hidePlantRow = () => {
-  const row = root().findAll((n) => Array.isArray(n.props.accessibilityActions) && n.props.accessibilityActions.some((a: { name: string }) => a.name === 'hide') && typeof n.props.onAccessibilityAction === 'function')[0];
-  act(() => {
-    row.props.onAccessibilityAction({ nativeEvent: { actionName: 'hide' } });
-  });
-};
 /** Every <Plant> drawn on screen (the composite, found by its props). */
 const plants = () => root().findAll((n) => typeof n.type !== 'string' && typeof n.props.species === 'string' && typeof n.props.stage === 'number' && typeof n.props.size === 'number');
-/** Is a growth-ring drawing on screen? (GrowthRings takes `preset`.) */
-// Mobile 1.21: Today's condensed readiness row draws the small `row` rings (the exam-ready panel keeps `today`).
-// The readiness picture: the rings, or (mobile 1.51, Field Guide) Today's scale bar.
-// Grove: Today's readiness is the hero's ring (the kit's seed inside it when the plant is off).
-const ringsShown = () => root().findAll((n) => (typeof n.type !== 'string' && (n.props.preset === 'today' || n.props.preset === 'row')) || (typeof n.type === 'string' && (n.props.testID === 'scale-bar' || n.props.testID === 'today-ring'))).length > 0;
-const layoutGrid = () => {
-  const grid = root().findAll((n) => n.props.accessibilityRole === 'radiogroup')[0];
-  act(() => {
-    grid.props.onLayout({ nativeEvent: { layout: { width: 353, height: 0 } } });
-  });
-};
-const nameInput = () => root().findAll((n) => n.props.accessibilityLabel === 'Your plant’s name' && typeof n.props.onChangeText === 'function')[0];
 const cp = (cert = 'cisa') => selectCert(useProgress.getState(), cert);
 const setPlant = (p: CertPlant | undefined, cert = 'cisa') => {
   act(() => {
@@ -178,10 +146,6 @@ const groupIds = (n: PNode, out: string[] = []): string[] => {
   }
   return out;
 };
-/** No guilt, no needs, no "stage", no days counted, no trademark echo. */
-const BANNED = /\bstage\b|(?<!never )wilt(ed|ing|s)?\b|thirsty|hungry|misses you|miss(ed)? you|neglect|dying|died|\bsad\b|lonely|water (it|me)|feed|\d+ days?\b|Pokémon|Pokemon/i;
-/** The words the plant itself adds to a screen: its spoken label and its notes. */
-const plantWords = () => [...plants().map((x) => String(x.props.accessibilityLabel ?? '')), ...labels().filter((l) => /plant|resting|grew|kept your place/i.test(l))].join(' ');
 
 beforeEach(() => {
   const w = Dimensions.get('window');
@@ -215,91 +179,6 @@ afterEach(() => {
 // Mobile 1.24: onboarding no longer has a plant step. The learner finishes with no plant and no prompt; a seed
 // (oak) is planted on the Day-1 closing screen (first-set-done.test.tsx), and the same picker is reachable from
 // there and from You. The picker's own journeys are tested here as they always were.
-describe('J1 a new learner and the plant', () => {
-  it('onboarding asks nothing about a plant: no plant, no prompt on Today, and You offers "Plant yours"', () => {
-    useSettings.setState({ onboarded: false });
-    mount(<Onboarding />);
-    press(/^Get started$/);
-    press(/^Skip starting point$/);
-    expect(allText()).not.toMatch(/Plant|plant/);
-    press(/^Start my first questions$/);
-    expect(useSettings.getState().onboarded).toBe(true);
-    expect(cp().plant).toBeUndefined();
-    expect(router.replace).toHaveBeenCalledWith('/session');
-    unmount();
-    useSession.getState().clear();
-
-    mount(<Today />);
-    expect(byTestID('today-plant')).toHaveLength(0);
-    expect(byTestID('plant-prompt')).toHaveLength(0);
-    unmount();
-
-    mount(<You />);
-    press(/^Your plant: pick your plant/); // Grove You C2: the plant chip (was the "Plant yours" row)
-    expect(router.push).toHaveBeenCalledWith('/plant-pick');
-  });
-
-  it('pick a plant, name it, plant it: Today shows it under the facts (no prompt), You names it', () => {
-    mount(<PlantPick />);
-    expect(allText()).not.toMatch(BANNED);
-    layoutGrid();
-    // Every species is previewed at Crown (growth 5), with the face by default.
-    expect(plants().filter((p) => p.props.stage === 5).length).toBeGreaterThanOrEqual(13);
-    press(/^Pine\./);
-    act(() => {
-      nameInput().props.onChangeText('Summit Lee');
-    });
-    // A typed name is the learner's: changing species again must not replace it.
-    press(/^Bamboo\./);
-    expect(nameInput().props.value).toBe('Summit Lee');
-    press(/^Pine\./);
-    press(/^Plant it$/);
-    expect(cp().plant).toMatchObject({ species: 'pine', name: 'Summit Lee', growth: 1 });
-    expect(cp().plant!.pending).toBeUndefined();
-    expect(router.replace).toHaveBeenCalledWith({ pathname: '/plant', params: { planted: '1' } });
-    unmount();
-
-    mount(<Today />);
-    expect(byTestID('today-plant')).toHaveLength(1);
-    // The plant's own words only (round 4: the growth was read twice before).
-    expect(byTestID('today-plant')[0].props.accessibilityLabel).toBe('Summit Lee, your pine. Starburst Pine form. Growth: Seed.');
-    expect(String(byTestID('today-plant')[0].props.accessibilityLabel).match(/Growth/g)).toHaveLength(1);
-    expect(byTestID('plant-prompt')).toHaveLength(0);
-    expect(byTestID('plant-grew')).toHaveLength(0); // planting is not a "grew" moment
-    unmount();
-
-    mount(<You />);
-    expect(allText()).toMatch(/Summit Lee/);
-    expect(allText()).toMatch(/Seed · growth 1 of 6/);
-    expect(allText()).not.toMatch(/Pick your plant/); // Grove You C2: the plant chip
-  });
-
-  it('the name starts empty with an idea as its placeholder; "Another idea" fills one in, and it follows the species until the learner types one', () => {
-    // UX review P1: nothing is chosen for the learner; an empty name is "Your oak".
-    mount(<PlantPick />);
-    layoutGrid();
-    expect(nameInput().props.value).toBe('');
-    expect(['Ledger', 'Atlas', 'Bracken', 'North']).toContain(nameInput().props.placeholder);
-    press(/^Lotus\./);
-    expect(nameInput().props.value).toBe('');
-    expect(['Padma', 'Lumi', 'Nila', 'Still']).toContain(nameInput().props.placeholder);
-    press(/^Suggest another name$/);
-    expect(['Padma', 'Lumi', 'Nila', 'Still']).toContain(nameInput().props.value);
-    press(/^Cactus\./);
-    expect(['Pico', 'Nopal', 'Rio', 'Sable']).toContain(nameInput().props.value);
-  });
-
-  it('a cleared name plants a nameless plant, called "Your oak"', () => {
-    mount(<PlantPick />);
-    layoutGrid();
-    act(() => {
-      nameInput().props.onChangeText('   ');
-    });
-    press(/^Plant it$/);
-    expect(cp().plant).toMatchObject({ species: 'oak', name: '' });
-    expect(plantCallName(cp().plant!)).toBe('Your oak');
-  });
-});
 
 // ── J2 A 1.12 save upgrading ─────────────────────────────────────────────
 describe('J2 an existing 1.12 save upgrading', () => {
@@ -328,62 +207,6 @@ describe('J2 an existing 1.12 save upgrading', () => {
     expect(Object.keys(cp().answers)).toHaveLength(25);
     expect(cp().plant).toBeUndefined();
     expect(useProgress.getState().plantSettings).toBeUndefined();
-  });
-
-  it('Today shows the one quiet prompt; "No thanks" hides it for good (saved); You still offers "Plant yours"', async () => {
-    await loadOldSave();
-    mount(<Today />);
-    expect(byTestID('plant-prompt')).toHaveLength(1);
-    expect(allText()).toMatch(/A companion that grows with your study/);
-    hidePlantRow();
-    expect(byTestID('plant-prompt')).toHaveLength(0);
-    unmount();
-    // It is saved: a cold start (rehydrate from storage) keeps it hidden.
-    await act(async () => {
-      await new Promise((res) => setImmediate(res));
-    });
-    const saved = JSON.parse((await AsyncStorage.getItem(KEY))!);
-    expect(saved.state.plantSettings).toEqual({ promptHidden: true });
-    await act(async () => {
-      await useProgress.persist.rehydrate();
-    });
-    expect(useProgress.getState().plantSettings).toEqual({ promptHidden: true });
-    mount(<Today />);
-    expect(byTestID('plant-prompt')).toHaveLength(0);
-    unmount();
-    mount(<You />);
-    expect(allText()).toMatch(/Pick your plant/); // Grove You C2: the plant chip
-    expect(allText()).toMatch(/Your plant/);
-  });
-
-  it('"Plant yours" from the prompt: the study so far sets growth quietly (no Today moment), one back-fill line', async () => {
-    await loadOldSave();
-    mount(<Today />);
-    // Mobile 1.21: the prompt is one row (no inline ghost pair); it opens the picker.
-    press(/^Your plant\. /);
-    expect(router.push).toHaveBeenCalledWith({ pathname: '/plant-pick', params: { from: 'today' } });
-    unmount();
-    mount(<PlantPick />);
-    // Grove Phase 4b (PHASE4B 4.3): the picker's title is the page's own.
-    expect(allText()).toMatch(/Choose what you’ll grow/);
-    layoutGrid();
-    press(/^Mango\./);
-    press(/^Plant it$/);
-    expect(router.replace).toHaveBeenCalledWith({ pathname: '/plant', params: { planted: '1' } });
-    // 25 clean answers: past the diagnostic, so Sprout, quietly.
-    expect(cp().plant).toMatchObject({ species: 'mango', growth: 2 });
-    expect(cp().plant!.pending).toBeUndefined();
-    expect(cp().plant!.backfill).toMatchObject({ growth: 2 });
-    expect(useProgress.getState().plantSettings?.promptHidden).toBe(true);
-    unmount();
-    mount(<Today />);
-    expect(byTestID('plant-grew')).toHaveLength(0);
-    expect(byTestID('plant-prompt')).toHaveLength(0);
-    expect(byTestID('today-plant')).toHaveLength(1);
-    unmount();
-    mount(<YourPlant />);
-    // Mobile 1.50: with its form's name ("…to Sprout: the Kernel Mango.").
-    expect(allText()).toMatch(/Your study so far grew .+ to Sprout: the .+ Mango\./);
   });
 });
 
@@ -485,75 +308,12 @@ describe('J3 growth: up from real learning, never down, never from games or minu
 
 // ── J4 Change species and rename ─────────────────────────────────────────
 describe('J4 change species keeps growth; rename validation', () => {
-  it('change species through the picker keeps growth, reached, name, look (except the colourway)', () => {
-    const p: CertPlant = { ...plantNew('oak', 'Kai', Date.now() - DAY, 4), backfill: undefined, look: { colourway: 'autumn', ground: 'meadow', keepsakes: ['fox'] }, kept: ['robin'] };
-    setPlant(p);
-    mockParams = { mode: 'species' };
-    mount(<PlantPick />);
-    expect(allText()).toMatch(/Same growth, new look\./);
-    layoutGrid();
-    press(/^Sunflower\./);
-    press(/^Use this plant$/);
-    expect(router.back).toHaveBeenCalled();
-    expect(cp().plant).toEqual({ ...p, species: 'sunflower', look: { ground: 'meadow', keepsakes: ['fox'] } });
-    expect(isValidPlantState(cp().plant)).toBe(true);
-  });
-
-  it('Cancel changes nothing', () => {
-    const p = plantNew('oak', 'Kai', Date.now(), 2);
-    setPlant(p);
-    mockParams = { mode: 'species' };
-    mount(<PlantPick />);
-    layoutGrid();
-    press(/^Bonsai\./);
-    press(/^Cancel$/);
-    expect(cp().plant).toBe(p);
-  });
-
-  it.each([
-    ['empty', '', ''],
-    ['spaces only', '   \t ', ''],
-    ['very long', 'A'.repeat(60), 'A'.repeat(20)],
-    ['very long with a space at the cut', `${'B'.repeat(19)} C`, 'B'.repeat(19)],
-    ['emoji', 'Hana 🌸', 'Hana 🌸'],
-    ['many emoji (cut by code point, no broken surrogate)', '🌳'.repeat(25), '🌳'.repeat(20)],
-    ['a right-to-left override', '‮evil‬', 'evil'],
-    ['bidi isolates', '⁦Kai⁩', 'Kai'],
-    ['LRM / RLM marks', '‎Kai‏', 'Kai'],
-    ['zero-width space', 'Ku​mo', 'Kumo'],
-    ['a BOM', '﻿Kai', 'Kai'],
-    ['controls', 'K\u0000a\u0007i', 'Kai'],
-    ['decomposed accents (NFC)', 'José', 'José'],
-    ['non-Latin', 'ナラ', 'ナラ'],
-  ])('rename: %s', (_why, raw, want) => {
-    setPlant(plantNew('oak', 'Kai', Date.now()));
-    mockParams = { mode: 'name' };
-    mount(<PlantPick />);
-    act(() => {
-      nameInput().props.onChangeText(raw);
-    });
-    press(/^Save name$/);
-    const p = cp().plant!;
-    expect(p.name).toBe(want);
-    expect(isValidPlantState(p)).toBe(true);
-    // The name a screen shows and speaks is never blank.
-    expect(plantCallName(p).trim().length).toBeGreaterThan(0);
-    expect(plantLabel({ name: p.name, species: p.species, growth: p.growth })).toMatch(/your oak|Your oak/);
-  });
 
   it('a newline or tab between words becomes one space', () => {
     // QA-BUG (fixed): whitespace controls (newline, tab) now become a space
     // BEFORE the other controls are stripped, so "Kai<newline>Lee" saves as "Kai Lee".
     expect(cleanPlantName('Kai\n\tLee')).toBe('Kai Lee');
     expect(cleanPlantName('Kai\u2028Lee')).toBe('Kai Lee'); // a line separator is already a space
-  });
-
-  it('the name field caps typing and says the limit', () => {
-    setPlant(plantNew('oak', 'Kai', Date.now()));
-    mockParams = { mode: 'name' };
-    mount(<PlantPick />);
-    expect(nameInput().props.maxLength).toBeGreaterThanOrEqual(20);
-    expect(nameInput().props.accessibilityHint).toMatch(/Up to 20 characters/);
   });
 
   it('an emoji ZWJ sequence stays whole', () => {
@@ -598,71 +358,12 @@ describe('J5 Show my plant OFF', () => {
       useProgress.getState().setPlantSettings({ showPlant: false });
     });
 
-  it('Today: no plant, no prompt, no grow-up line; the rings are back; growth is still worked out', () => {
-    setPlant(plantNew('oak', 'Kai', Date.now()));
-    hide();
-    answer(5);
-    mount(<Today />);
-    expect(byTestID('today-plant')).toHaveLength(0);
-    expect(byTestID('plant-prompt')).toHaveLength(0);
-    expect(byTestID('plant-grew')).toHaveLength(0);
-    expect(plants()).toHaveLength(0);
-    expect(ringsShown()).toBe(true);
-    // Growth was checked quietly, and its one moment waits for when it shows again.
-    expect(cp().plant).toMatchObject({ growth: 2, pending: 2 });
-    unmount();
-    act(() => {
-      useProgress.getState().setPlantSettings({ showPlant: true });
-    });
-    mount(<Today />);
-    expect(byTestID('plant-grew')).toHaveLength(1);
-  });
-
-  it('Today with no plant: no prompt either', () => {
-    hide();
-    mount(<Today />);
-    expect(byTestID('plant-prompt')).toHaveLength(0);
-  });
-
   it('You: no plant row and no "Plant yours"', () => {
     setPlant(plantNew('cactus', 'Pico', Date.now()));
     hide();
     mount(<You />);
     expect(plants()).toHaveLength(0);
     expect(allText()).not.toMatch(/Pico|Plant yours|growth \d of 6/);
-  });
-
-  it('the Your plant route says it is hidden and opens Settings; the plant is kept', () => {
-    const p = plantNew('cactus', 'Pico', Date.now(), 2);
-    setPlant(p);
-    hide();
-    mount(<YourPlant />);
-    expect(allText()).toMatch(/Your plant is hidden/);
-    expect(allText()).toMatch(/Its growth is kept/);
-    expect(plants()).toHaveLength(0);
-    expect(allText()).not.toMatch(/Pico/);
-    press(/^Open Settings$/);
-    // Mobile 1.17: Settings opens at Badges and your plant, where Show my plant is.
-    expect(router.push).toHaveBeenCalledWith({ pathname: '/settings', params: { section: 'plant' } });
-    expect(cp().plant).toBe(p);
-  });
-
-  it('the picker route while hidden says the plant is hidden and opens Settings, like Your plant', () => {
-    // QA-BUG (fixed): /plant-pick with the plant hidden offered a new plant
-    // whose pick was silently ignored. It now shows the same "hidden" screen
-    // as /plant, with Open Settings, and the plant is kept.
-    const p = plantNew('cactus', 'Pico', Date.now(), 2);
-    setPlant(p);
-    hide();
-    mockParams = { mode: 'species' };
-    mount(<PlantPick />);
-    expect(allText()).toMatch(/Your plant is hidden/);
-    expect(allText()).not.toMatch(/Choose what you’ll grow|Plant it/);
-    expect(plants()).toHaveLength(0);
-    press(/^Open Settings$/);
-    // Mobile 1.17: Settings opens at Badges and your plant, where Show my plant is.
-    expect(router.push).toHaveBeenCalledWith({ pathname: '/settings', params: { section: 'plant' } });
-    expect(cp().plant).toBe(p);
   });
 });
 
@@ -680,24 +381,6 @@ describe('J6 Quiet look: no face', () => {
       }
   });
 
-  it('Today, You and Your plant all draw it without a face; the picker previews without one too', () => {
-    setPlant(plantNew('oak', 'Kai', Date.now()));
-    act(() => {
-      useProgress.getState().setPlantSettings({ quietLook: true });
-    });
-    for (const Screen of [Today, You, YourPlant]) {
-      mount(<Screen />);
-      expect(plants().length).toBeGreaterThan(0);
-      expect(plants().every((x) => x.props.quietLook === true)).toBe(true);
-      unmount();
-    }
-    mockParams = { mode: 'species' };
-    mount(<PlantPick />);
-    layoutGrid();
-    expect(plants().length).toBeGreaterThanOrEqual(13);
-    expect(plants().every((x) => x.props.quietLook === true)).toBe(true);
-  });
-
   it('the face is back when Quiet look is off', () => {
     setPlant(plantNew('oak', 'Kai', Date.now()));
     mount(<You />);
@@ -711,45 +394,6 @@ describe('J7 resting', () => {
     act(() => {
       useProgress.getState().updateMilestones('cisa', (m) => ({ milestones: { earned: {}, ...m, lastDay: dayKey(Date.now() - daysAgo * DAY) } }));
     });
-
-  it('2 days away: not resting', () => {
-    setPlant(plantNew('bamboo', 'Reed', Date.now()));
-    lastStudied(2);
-    mount(<YourPlant />);
-    expect(byTestID('plant-rest')).toHaveLength(0);
-    expect(plants().every((x) => !x.props.resting)).toBe(true);
-  });
-
-  it('3+ days away: the calm look on Today, You and Your plant, a kind line, growth unchanged', () => {
-    const p = plantNew('bamboo', 'Reed', Date.now(), 3);
-    setPlant({ ...p, backfill: undefined });
-    lastStudied(4);
-    for (const Screen of [Today, You]) {
-      mount(<Screen />);
-      expect(plants().length).toBeGreaterThan(0);
-      expect(plants().every((x) => x.props.resting === true && x.props.stage === 3)).toBe(true);
-      // Today keeps its own countdown ("N days to exam") and journey stage line: only the plant's words are checked.
-      // Grove (owner's labels decision, 31 Oct 2026): Today's hero says the plant's stage in words, "Stage 3 of 6",
-      // shown and said, as the website does. That one phrase is allowed; every other banned word still is not.
-      expect(plantWords().replace(/ Stage \d of 6\./g, '')).not.toMatch(BANNED);
-      unmount();
-    }
-    mount(<YourPlant />);
-    // Phase 4b (PHASE4B 3.4): never "you're ready".
-    expect(allText()).toMatch(/Reed is resting\. Pick up whenever you like\./);
-    expect(labels().join(' ')).toMatch(/Resting\./);
-    expect(allText()).not.toMatch(BANNED);
-    expect(labels().join(' ')).not.toMatch(BANNED);
-    expect(cp().plant!.growth).toBe(3);
-  });
-
-  it('a week or more away: "kept your place", never the number of days', () => {
-    setPlant(plantNew('oak', 'Kai', Date.now()));
-    lastStudied(40);
-    mount(<YourPlant />);
-    expect(allText()).toMatch(/Kai kept your place\. Pick up where you left off\./);
-    expect(allText()).not.toMatch(/40|weeks?|months?/);
-  });
 
   it('the exam eve is planned rest (calm look), with no study gap at all', () => {
     setPlant(plantNew('oak', 'Kai', Date.now()));
@@ -766,52 +410,10 @@ describe('J7 resting', () => {
     expect(rest).toContain('dusk');
     expect(restLine({ name: '', species: 'oak' }, '2026-01-01', '2026-01-04')).toBe("Your oak is resting. Pick up whenever you're ready.");
   });
-
-  it('a plant with no study day yet is new, not resting', () => {
-    setPlant(plantNew('oak', 'Kai', Date.now()));
-    mount(<YourPlant />);
-    expect(byTestID('plant-rest')).toHaveLength(0);
-  });
 });
 
 // ── J8 Reset ─────────────────────────────────────────────────────────────
 describe('J8 Reset', () => {
-  it('back to a seed; species, name, look, planted date, unlocks and the pass date kept; no moment after', () => {
-    const plantedAt = Date.now() - 30 * DAY;
-    act(() => {
-      useProgress.getState().updatePlant('cisa', () => ({
-        ...plantNew('narra', 'Tala', plantedAt, 4),
-        pending: 4,
-        look: { ground: 'meadow', keepsakes: ['fox'] },
-        kept: ['robin'],
-        passedOn: '2026-09-30',
-      }));
-    });
-    answer(15);
-    act(() => {
-      useProgress.getState().resetCert('cisa');
-    });
-    const p = cp().plant!;
-    expect(p).toMatchObject({ species: 'narra', name: 'Tala', plantedAt, growth: 1, look: { ground: 'meadow', keepsakes: ['fox'] }, passedOn: '2026-09-30' });
-    // Mobile 1.14: every unlock open at the Reset is kept too (here growth's), the old ones first.
-    expect(p.kept?.[0]).toBe('robin');
-    expect(p.kept).toEqual(expect.arrayContaining(['robin', 'narra-silver']));
-    // PR #44 code review M4: the ribbon is never kept (passedOn survives a Reset and opens it).
-    expect(p.kept).not.toContain('ribbon');
-    expect(p.kept).not.toContain('stone-ring'); // Crown's ground: never reached
-    expect(p.pending).toBeUndefined();
-    expect(p.reached).toBeUndefined();
-    expect(p.replantedAt).toBeGreaterThan(plantedAt);
-    expect(isValidPlantState(p)).toBe(true);
-    expect(Object.keys(cp().answers)).toHaveLength(0);
-    mount(<Today />);
-    expect(byTestID('plant-grew')).toHaveLength(0);
-    expect(cp().plant!.growth).toBe(1);
-    unmount();
-    mount(<YourPlant />);
-    expect(allText()).not.toMatch(/Your study so far/); // a reset plant never back-fills
-    expect(allText()).toMatch(/Seed · growth 1 of 6/);
-  });
 
   it('an exam-ready moment seen before the Reset cannot help the replanted plant bloom', () => {
     act(() => {
@@ -873,16 +475,6 @@ describe('J9 backup export and restore', () => {
     });
     expect(cp().plant).toEqual(before);
     expect(useProgress.getState().plantSettings).toEqual({ quietLook: true });
-  });
-
-  it('restoring an old (1.12) backup with no plant, on a phone with none: no plant, the prompt still offered', async () => {
-    const read = okRead(fileWith({ cisa: { answers: {} } }));
-    await act(async () => {
-      await restoreBackup(read.data, { fresh: true });
-    });
-    expect(cp().plant).toBeUndefined();
-    mount(<Today />);
-    expect(byTestID('plant-prompt')).toHaveLength(1);
   });
 
   it('restoring an old backup keeps the phone’s plant; growth is recomputed quietly from the restored data', async () => {
@@ -1028,38 +620,6 @@ describe('J10 a separate plant per certification', () => {
     checkPlant('cism');
     expect(cp().plant).toMatchObject({ species: 'oak', name: 'Kai', growth: 2 });
     expect(cp('cism').plant).toMatchObject({ species: 'lotus', name: 'Nila', growth: 1 });
-  });
-
-  it('You follows the active exam: its plant, or "Plant yours" for an exam without one', () => {
-    // CISM's content must be on the phone for the app to study it (lib/activeCert.ts): a stand-in pack.
-    undoPack = installFakePack('cism');
-    setPlant(plantNew('oak', 'Kai', Date.now()));
-    mount(<You />);
-    expect(allText()).toMatch(/Kai/);
-    unmount();
-    useSettings.setState({ activeCertId: 'cism' });
-    mount(<You />);
-    expect(allText()).not.toMatch(/Kai/);
-    expect(allText()).toMatch(/Pick your plant/); // Grove You C2: the plant chip
-    unmount();
-    setPlant(plantNew('lotus', 'Nila', Date.now()), 'cism');
-    mount(<You />);
-    expect(allText()).toMatch(/Nila/);
-    unmount();
-    useSettings.setState({ activeCertId: 'cisa' });
-    mount(<You />);
-    expect(allText()).toMatch(/Kai/);
-  });
-
-  it('planting from the picker plants for the ACTIVE exam only', () => {
-    undoPack = installFakePack('cism');
-    useSettings.setState({ activeCertId: 'cism' });
-    mount(<PlantPick />);
-    layoutGrid();
-    press(/^Cactus\./);
-    press(/^Plant it$/);
-    expect(cp('cism').plant).toMatchObject({ species: 'cactus' });
-    expect(cp().plant).toBeUndefined();
   });
 
   it('a cert with 4 domains still draws exactly five organ slots, and lists its own 4 domains', () => {

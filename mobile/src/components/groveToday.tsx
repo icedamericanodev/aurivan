@@ -356,46 +356,31 @@ export function PlanSteps({ steps }: { steps: readonly PlanStep[] }) {
 }
 
 /** The plan card's frame: the Grove card with "Today's plan" and its minutes on one line. */
-export function PlanCard({ title, minutes, spoken, children, testID }: { title: string; minutes?: string; spoken: string; children: ReactNode; testID?: string }) {
+export function PlanCard({ title, minutes, spoken, children, info, testID }: { title: string; minutes?: string; spoken: string; children: ReactNode; info?: ReactNode; testID?: string }) {
   const { c } = useTheme();
   return (
     <View testID={testID} style={[groveCard(c), { padding: space.lg, gap: space.md }]}>
       {/* "Today's plan, about 17 minutes, 1 of 3 done": one header stop. */}
-      <View accessible accessibilityRole="header" accessibilityLabel={spoken} style={{ flexDirection: 'row', flexWrap: 'wrap', alignItems: 'baseline', justifyContent: 'space-between', columnGap: space.md }}>
-        <FieldText v="value">{title}</FieldText>
-        {minutes ? <T v="meta">{minutes}</T> : null}
+      <View style={{ flexDirection: 'row', alignItems: 'center', gap: space.sm }}>
+        <View accessible accessibilityRole="header" accessibilityLabel={spoken} style={{ flex: 1, flexDirection: 'row', flexWrap: 'wrap', alignItems: 'baseline', justifyContent: 'space-between', gap: space.sm }}>
+          <FieldText v="value">{title}</FieldText>
+          {minutes ? <T v="meta">{minutes}</T> : null}
+        </View>
+        {info}
       </View>
       {children}
     </View>
   );
 }
 
-// ── This week's twig ──────────────────────────────────────────────────
-
-/** The web's seven leaves on the 330 by 60 twig (index.html TODAY_TWIG_LEAVES), Monday first. */
-const TWIG_LEAVES = [
-  'M23.6 36.7C27 28 37 23 44 25C41 32 32 36 23.6 36.7Z',
-  'M70.7 34.6C74 43 84 48 91 46C88 39 79 35 70.7 34.6Z',
-  'M117.9 33.4C121 25 131 20 138 22C135 29 126 33 117.9 33.4Z',
-  'M165 33C168 41 178 46 185 44C182 37 173 33 165 33Z',
-  'M212 33.4C215 25 225 20 232 22C229 29 220 33 212 33.4Z',
-  'M259 34.6C262 43 272 48 279 46C276 39 267 35 259 34.6Z',
-  'M306 36.7C309 28 319 23 326 25C323 32 314 36 306 36.7Z',
-];
-
-/**
- * "This week's twig": a branch in soil with seven leaves, Monday to Sunday, alternating above and
- * below; filled on a day studied, an empty outline otherwise (missed and later days look the same).
- * The right side is the streak in clay (engine/groveToday.ts twigStreak). The leaves are one image
- * with its words; the days studied are also said in "N study days this week".
- */
+/** Seven study-day dots, Monday first, with a complete spoken summary. */
 export function WeekTwig({ week, streak, spoken, studied }: { week: readonly TwigDay[]; streak: string; spoken: string; studied: string | null }) {
-  const { c, g } = useTheme();
+  const { c } = useTheme();
   return (
     <View testID="week-twig" style={[groveCard(c), { padding: space.lg, gap: space.sm }]}>
       <View style={{ flexDirection: 'row', flexWrap: 'wrap', alignItems: 'baseline', justifyContent: 'space-between', columnGap: space.md }}>
         <FieldText v="value" accessibilityRole="header">
-          This week’s twig
+          This week
         </FieldText>
         {streak ? (
           <T v="caption" color={c.clay}>
@@ -405,9 +390,8 @@ export function WeekTwig({ week, streak, spoken, studied }: { week: readonly Twi
       </View>
       <View accessible accessibilityRole="image" accessibilityLabel={spoken} style={{ width: '100%', aspectRatio: 330 / 60 }}>
         <Svg width="100%" height="100%" viewBox="0 0 330 60">
-          <Path d="M0 38Q165 28 330 38" fill="none" stroke={g.soil} strokeWidth={2} strokeLinecap="round" />
           {week.map((d) => (
-            <Path key={d.i} d={TWIG_LEAVES[d.i]} fill={d.on ? c.accent : 'none'} stroke={d.on ? c.btn : g.leafEmpty} strokeWidth={1.3} />
+            <Circle key={d.i} cx={(d.i + 0.5) * 330 / 7} cy={30} r={10} fill={d.on ? c.accent : 'none'} stroke={d.on ? c.accent : c.control} strokeWidth={1.5} />
           ))}
         </Svg>
       </View>

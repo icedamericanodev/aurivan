@@ -46,7 +46,7 @@ export const MAX_WORDS = 30;
 export type StatementKind = 'root' | 'rumor';
 export type RumorTier = 'seedling' | 'sapling' | 'heartwood';
 export const RUMOR_TIERS: RumorTier[] = ['seedling', 'sapling', 'heartwood'];
-export const RUMOR_TIER_NAME: Record<RumorTier, string> = { seedling: 'Seedling', sapling: 'Sapling', heartwood: 'Heartwood' };
+export const RUMOR_TIER_NAME: Record<RumorTier, string> = { seedling: 'Beginner', sapling: 'Practised', heartwood: 'Skilled' };
 export const RUMOR_TIER_LINE: Record<RumorTier, string> = {
   seedling: 'One domain per round.',
   sapling: 'All domains, mixed.',
@@ -378,13 +378,13 @@ export function whyChoices(rumor: Statement, all: Statement[], rng: Rng): { choi
  * what the statement really is, the same way for both kinds (UX review P7).
  */
 export function tapTitle(s: Statement, right: boolean): string {
-  if (s.kind === 'rumor') return right ? 'Rumor: myth spotted' : 'This one is a Rumor: a myth the exam counts on';
-  return right ? 'Root: a sound principle' : 'This one is a Root: a sound principle';
+  if (s.kind === 'rumor') return right ? 'Myth spotted' : 'This is a myth, not a sound principle';
+  return right ? 'Fact: a sound principle' : 'This is a fact: a sound principle';
 }
 
 /** What the learner said, as spoken: "You said Rumor, right." / "You said Root, not quite." */
 export function tapVerdict(tap: StatementKind, right: boolean): string {
-  return `You said ${tap === 'root' ? 'Root' : 'Rumor'}, ${right ? 'right' : 'not quite'}.`;
+  return `You said ${tap === 'root' ? 'Fact' : 'Myth'}, ${right ? 'right' : 'not quite'}.`;
 }
 
 /** The number of missed cards that triggers "Read again" for a subtopic. */

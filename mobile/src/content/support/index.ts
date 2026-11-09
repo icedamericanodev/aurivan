@@ -59,6 +59,15 @@ export function whatsNewFor(updatesOn: boolean, list: readonly WhatsNewEntry[] =
 /** Newest first. The first entry must match app.json (a test checks it). */
 export const WHATS_NEW: readonly WhatsNewEntry[] = [
   {
+    version: '2.2.0',
+    date: '2026-11-09',
+    improved: [
+      'Collect your milestones with refreshed badges and shorter names.',
+      'Focus on your review with clearer study progress and fewer distractions.',
+      'Find feature guidance behind information buttons for calmer screens.',
+    ],
+  },
+  {
     version: '2.1.0',
     improved: ['Compare all options and their explanations after checking an answer or finishing a mock.', 'Find support and feedback options together.', 'Save an Android backup in a folder you choose, or share it through another app.'],
     fixed: ['Question text stays readable when you open Coach me.', 'Resetting CISA progress returns to setup after the reset is saved.', 'Screen-reader focus follows newly opened hints more reliably.'],

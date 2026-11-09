@@ -9,6 +9,7 @@
  * before the learner saves). Cancel changes nothing, and the card stays
  * until it is answered or dismissed.
  */
+import { FeatureInfo } from '../components/featureInfo';
 import { backOr } from '../lib/actions';
 import { useState } from 'react';
 import { ScrollView } from 'react-native';
@@ -47,8 +48,7 @@ export default function Fit() {
   return (
     <SafeAreaView edges={['top', 'bottom']} style={{ flex: 1, backgroundColor: c.bg }}>
       <ScrollView contentContainerStyle={{ paddingHorizontal: space.gutter, paddingBottom: footerH + space.xl }}>
-        <PushedHeader title="Your study" onBack={() => backOr('/home')} />
-        <T v="meta" style={{ marginTop: space.sm }}>Fit Today’s plan to your time. Change it any time in Settings.</T>
+        <PushedHeader right={<FeatureInfo title="Your study"><T v="body">Fit Today’s plan to your time. You can change these choices in Settings.</T></FeatureInfo>} title="Your study" onBack={() => backOr('/home')} />
         <YourStudy
           minutes={minutes}
           familiarity={familiarity}

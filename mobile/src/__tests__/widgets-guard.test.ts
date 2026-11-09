@@ -128,7 +128,7 @@ describe('widget source guards', () => {
       const w = widgets.find((x: { name: string }) => x.name === WIDGET_NAMES[k]);
       // The picker's labels are native (a new store build): 1.48 keeps 1.47's until then (PICKER_LABELS).
       expect(w.label).toBe(PICKER_LABELS[k]);
-      expect(w.previewImage).toBe(`./assets/widgets/${k}.png`);
+      expect(w.previewImage).toBe(`./assets/widgets/${k === 'plant' ? 'plan' : k}.png`);
       expect(w.description.length).toBeLessThanOrEqual(70);
       expect(`${w.label} ${w.description}`).not.toMatch(/never the date|no streak to lose|Reviews|came back|Think first|\bpass\b|guarantee|you're ready/i);
     }

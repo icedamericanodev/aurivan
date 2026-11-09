@@ -26,7 +26,6 @@
  * Gotcha: never `act(() => store.action())` — use braces.
  */
 /* eslint-disable @typescript-eslint/no-require-imports */
-import { areaStems } from '../engine/fieldGuide';
 import { type ComponentType } from 'react';
 import { AppState, View } from 'react-native';
 import { act, create, type ReactTestInstance, type ReactTestRenderer } from 'react-test-renderer';
@@ -360,17 +359,10 @@ describe('answering, then switching tabs: every tab shows fresh numbers', () => 
     }
     const answered = Object.keys(cp().answers).length;
     expect(joined('you')).toContain(`[Answered: ${answered}]`);
-    // Rings: each domain's mastery, spoken.
+    // Detailed domain statistics remain in the report, reached from the summary.
     const rd = computeReadiness(cert, cp().answers);
-    for (const d of rd.domains) {
-      const short = cert.domains.find((x) => x.id === d.domainId)!.short;
-      // Mobile 1.43: each area row says its word, its percent from 30 answers, and its line (engine/domainBand.ts areaFigure).
-      // Mobile 1.51 (Field Guide): each area's line of growth says what it shows (engine/fieldGuide.ts areaStems).
-      const stem = areaStems(cert.domains, rd.domains).find((x) => x.key === d.domainId)!;
-      // Grove panel Q2: a thin area reads like the website's row ("IT Governance, 22 of 30 answers, ...").
-      expect(stem.spoken.startsWith(stem.thin ? `${short}, ` : `${short}: `)).toBe(true);
-      expect(joined('you')).toContain(`[${stem.spoken}`);
-    }
+    expect(joined('you')).toContain('[See report, your readiness report]');
+    expect(joined('you')).not.toContain('Five areas, one scale');
     // Learn's "Next lesson" follows the focus domain.
     const focus = cert.domains.find((d) => d.id === rd.focusDomainId)!;
     expect(joined('learn')).toContain(`Up next · ${focus.short}`);
@@ -623,7 +615,7 @@ describe('a badge earned: the tab dot and the count', () => {
       dot = create(<Dot />);
     });
     expect(dot!.root.findAllByProps({ testID: 'you-new-dot' })).toHaveLength(0);
-    expect(joined('you')).toContain('[Badges: your badges and field notes, none yet.');
+    expect(joined('you')).toContain('[Badges: your study badges, none yet.');
     // A finished mock of 50 earns a badge live (after the launch back-fill).
     mockExam(40);
     const earned = caseEarnedCount(cp().milestones?.earned);
@@ -631,14 +623,14 @@ describe('a badge earned: the tab dot and the count', () => {
     expect(hasNewBadge('cisa')).toBe(true);
     expect(dot!.root.findAllByProps({ testID: 'you-new-dot' }).length).toBeGreaterThan(0);
     expectTabsFresh(['you']);
-    expect(joined('you')).not.toContain('[Badges: your badges and field notes, none yet.');
+    expect(joined('you')).not.toContain('[Badges: your study badges, none yet.');
     act(() => dot!.unmount());
   });
 });
 
 // ══════════════════════════════════════════════════════════════════════════
 describe('the plant growing', () => {
-  it('Today’s growth line shows once, then never again on later visits', () => {
+  it('legacy plant progress never adds a growth line to Today or You', () => {
     mountAll();
     // 20 clean answers open Sprout; finishing the session checks the plant (Results on top).
     studySession(20, () => true);
@@ -646,8 +638,8 @@ describe('the plant growing', () => {
     const line = grewLabel(cp().plant!, 2);
     tap('home');
     const shows = textOf('home').filter((x) => x.includes(line)).length;
-    expect(shows).toBeGreaterThan(0);
-    expect(cp().plant!.pending).toBeUndefined();
+    expect(shows).toBe(0);
+    expect(cp().plant!.pending).toBe(2);
     tap('you');
     tap('home');
     expect(textOf('home').filter((x) => x.includes(line))).toHaveLength(0);
@@ -655,7 +647,7 @@ describe('the plant growing', () => {
     tap('home');
     expect(textOf('home').filter((x) => x.includes(line))).toHaveLength(0);
     // The plant on You shows the new growth.
-    expect(joined('you')).toContain('Sprout');
+    expect(joined('you')).not.toContain('Sprout');
   });
 });
 

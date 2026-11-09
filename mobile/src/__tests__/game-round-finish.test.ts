@@ -51,19 +51,19 @@ describe('the round end', () => {
   });
 
   it('shows at most one milestone per round; others wait', () => {
-    // Two badges arrive in one round: Signpost Reader (window already full)
-    // and Myth Clearer (25 different rumors, all cleared, this round).
+    // Two badges arrive in one round: Priority Reader (window already full)
+    // and Fact Check (25 different rumors, all cleared, this round).
     useProgress.getState().updateMilestones('cisa', (m) => ({ milestones: { ...m!, signposts: hitsOf('f', 10, 10) } }));
     const r = finishGameRound('cisa', 'rumor', { score: 12, rate: 0.6, tier: 'seedling', windows: { myths: hitsOf('m', 25, 25) } });
-    // Mobile 1.40 (code review #2): the Root or Rumor recap shows ITS badge, Myth Clearer;
-    // Signpost Reader (Signpost's badge) is not this game's news and stays queued for You.
+    // Mobile 1.40 (code review #2): the Fact or Myth recap shows ITS badge, Fact Check;
+    // Priority Reader (Signpost's badge) is not this game's news and stays queued for You.
     expect(r.moment?.key).toBe('myth-clearer');
     const earned = Object.keys(cp().milestones!.earned);
     expect(earned).toEqual(expect.arrayContaining(['signpost-reader', 'myth-clearer']));
     expect(cp().milestones!.queue).toEqual(['signpost-reader']);
   });
 
-  it('isRoundBadge: a game’s own skill badge, or Whole Grove; never another game’s badge or a milestone', () => {
+  it('isRoundBadge: a game’s own skill badge, or All Drills; never another game’s badge or a milestone', () => {
     expect(isRoundBadge('trap', 'snare-wise')).toBe(true);
     expect(isRoundBadge('priority', 'signpost-reader')).toBe(true);
     expect(isRoundBadge('rumor', 'signpost-reader')).toBe(false);
@@ -74,7 +74,7 @@ describe('the round end', () => {
   });
 
   it('a round that tips over a milestone (not a game badge) shows no badge; the milestone waits for You', () => {
-    // Signpost Reader's window is full, so ANY round's milestone check earns it; a Snare Spotter round must not show it.
+    // Priority Reader's window is full, so ANY round's milestone check earns it; a Snare Spotter round must not show it.
     useProgress.getState().updateMilestones('cisa', (m) => ({ milestones: { ...m!, signposts: hitsOf('f', 10, 10) } }));
     const r = finishGameRound('cisa', 'trap', { score: 3, rate: 0.6, tier: 'seedling' });
     expect(cp().milestones!.earned['signpost-reader']).toBe(T0);
@@ -86,7 +86,7 @@ describe('the round end', () => {
 describe('one celebration at a time', () => {
   it('a level-up line and a milestone never stack: the milestone waits in the queue', () => {
     finishGameRound('cisa', 'trap', { score: 9, rate: 0.9, tier: 'seedling', hits: [true, true, true, true, false] });
-    // Round 2: the level grows AND Snare-wise (8 of 10) is earned.
+    // Round 2: the level grows AND Trap Spotter (8 of 10) is earned.
     const r = finishGameRound('cisa', 'trap', { score: 9, rate: 0.9, tier: 'seedling', hits: [true, true, true, true, false] });
     expect(r.change).toBe('up');
     expect(r.moment).toBeNull();
@@ -114,7 +114,7 @@ describe('one celebration at a time', () => {
 describe('the recap shows a new badge only when this round earned it', () => {
   it('an older queued badge ahead of it is skipped (and kept); the round’s own badge is the one shown', () => {
     useProgress.getState().updateMilestones('cisa', () => ({ milestones: { earned: { 'rooted:10': T0 - 1000 }, queue: ['rooted:10'] } }));
-    // Snare-wise needs 8 of the last 10 snares; rate under 80% so the level holds (no level-up line).
+    // Trap Spotter needs 8 of the last 10 snares; rate under 80% so the level holds (no level-up line).
     finishGameRound('cisa', 'trap', { score: 8, rate: 0.7, tier: 'seedling', hits: [true, true, true, true, false] });
     const r = finishGameRound('cisa', 'trap', { score: 9, rate: 0.7, tier: 'seedling', hits: [true, true, true, true, false] });
     expect(r.moment?.key).toBe('snare-wise');
@@ -137,17 +137,17 @@ describe('the recap shows a new badge only when this round earned it', () => {
 });
 
 describe('skill badges through real rounds', () => {
-  it('Snare-wise: 8 of the last 10 snares', () => {
+  it('Trap Spotter: 8 of the last 10 snares', () => {
     finishGameRound('cisa', 'trap', { score: 8, rate: 0.8, tier: 'seedling', hits: [true, true, true, true, false] });
     expect(cp().milestones?.earned?.['snare-wise']).toBeUndefined();
     // Rate under 80%, so the level doesn't grow this round (a level-up would hold the moment back).
     const r = finishGameRound('cisa', 'trap', { score: 9, rate: 0.7, tier: 'seedling', hits: [true, true, true, true, false] });
     expect(cp().milestones!.earned['snare-wise']).toBe(T0);
-    expect(r.moment?.label).toBe('Snare-wise');
+    expect(r.moment?.label).toBe('Trap Spotter');
     expect(r.moment?.kind).toBe('skill');
   });
 
-  it('Even Keel: three "well calibrated" rounds in a row', () => {
+  it('Calibration: three "well calibrated" rounds in a row', () => {
     finishGameRound('cisa', 'sprint', { score: 10, rate: 1, tier: 'seedling', good: true });
     finishGameRound('cisa', 'sprint', { score: 10, rate: 1, tier: 'seedling', good: false });
     finishGameRound('cisa', 'sprint', { score: 10, rate: 1, tier: 'seedling', good: true });
@@ -165,7 +165,7 @@ describe('skill badges through real rounds', () => {
     expect(wellJudged({ footing: 'lean', correct: false })).toBe(true);
   });
 
-  it('Signpost Reader and Myth Clearer: rolling windows of DIFFERENT items', () => {
+  it('Priority Reader and Fact Check: rolling windows of DIFFERENT items', () => {
     // 5 FIRST questions, all read right, twice: the same 5 never fill the window.
     for (let k = 0; k < 2; k++) finishGameRound('cisa', 'priority', { score: 10, rate: 0.6, tier: 'seedling', windows: { signposts: hitsOf('f', 5, 5) } });
     expect(cp().milestones?.signposts).toHaveLength(5);
@@ -173,7 +173,7 @@ describe('skill badges through real rounds', () => {
     // 5 new ones, 3 read right: 8 of the last 10 different.
     finishGameRound('cisa', 'priority', { score: 10, rate: 0.6, tier: 'seedling', windows: { signposts: hitsOf('g', 5, 3) } });
     expect(cp().milestones!.earned['signpost-reader']).toBeDefined();
-    // Myth Clearer: 24 different rumors cleared is not yet 25 played.
+    // Fact Check: 24 different rumors cleared is not yet 25 played.
     finishGameRound('cisa', 'rumor', { score: 10, rate: 0.6, tier: 'seedling', windows: { myths: hitsOf('m', 24, 24) } });
     expect(cp().milestones?.earned?.['myth-clearer']).toBeUndefined();
     // Replaying a rumor already in the window doesn't fill it either.
@@ -184,7 +184,7 @@ describe('skill badges through real rounds', () => {
     expect(cp().milestones!.earned['myth-clearer']).toBeDefined();
   });
 
-  it('Myth Clearer needs 20 right of the last 25, not 25 cleared over time', () => {
+  it('Fact Check needs 20 right of the last 25, not 25 cleared over time', () => {
     finishGameRound('cisa', 'rumor', { score: 10, rate: 0.6, tier: 'seedling', windows: { myths: hitsOf('m', 25, 19) } });
     expect(cp().milestones?.earned?.['myth-clearer']).toBeUndefined();
   });
@@ -196,7 +196,7 @@ describe('skill badges through real rounds', () => {
     expect(cp().milestones!.earned['sure-footed-pace']).toBeDefined();
   });
 
-  it('Whole Grove: every game this exam can play, played once', () => {
+  it('All Drills: every game this exam can play, played once', () => {
     const games = playableGames('cisa');
     games.slice(0, -1).forEach((g) => finishGameRound('cisa', g, { score: 1, rate: 0.5, tier: 'seedling' }));
     expect(cp().milestones?.earned?.['whole-grove']).toBeUndefined();

@@ -463,7 +463,7 @@ describe('Journey 3: notes, lesson steps and game recaps', () => {
   });
 
   // Mobile 1.40: the recap has ONE report link at its foot; with a single miss it reports that item.
-  it('a game recap: a real Root or Rumor card and a real question each report as themselves', async () => {
+  it('a game recap: a real Fact or Myth card and a real question each report as themselves', async () => {
     const card = rumorStatements(getNotes('cisa'))[5];
     const q = getAllQuestions('cisa')[40];
     mount(<RoundEnd certId="cisa" game="rumor" score={11} max={12} onAgain={() => {}} misses={[{ questionId: card.id, stem: card.text, tag: 'Rumor', why: 'Why.', answerWrong: true }]} />);
@@ -472,7 +472,7 @@ describe('Journey 3: notes, lesson steps and game recaps', () => {
     await pressAsync('Write the email');
     let email = lastEmail();
     expect(email.subject).toBe(`KaiSip · Report · CISA · card:${card.id} · incorrect`);
-    expect(keptLines(email.body)).toContain(`Item: Game card ${card.id} (Root or Rumor)`);
+    expect(keptLines(email.body)).toContain(`Item: Game card ${card.id} (Fact or Myth)`);
     // The card's own text is not sent.
     expect(email.body).not.toContain(card.text.slice(0, 30));
     unmount();
@@ -485,10 +485,10 @@ describe('Journey 3: notes, lesson steps and game recaps', () => {
     await pressAsync('Write the email');
     email = lastEmail();
     expect(email.subject).toBe(`KaiSip · Report · CISA · ${q.id} · key`);
-    expect(keptLines(email.body)).toContain('Where: Game recap · Root or Rumor');
+    expect(keptLines(email.body)).toContain('Where: Game recap · Fact or Myth');
     unmount();
     mount(<Reports />);
-    expect(allText()).toContain('Game card: Root or Rumor');
+    expect(allText()).toContain('Game card: Fact or Myth');
     expect(allText()).toContain(`Question in ${domainShort(q)}`);
   });
 });

@@ -458,7 +458,7 @@ describe('Journey 1 · Today clearing card', () => {
 });
 
 // ═════════════════════════════════════════════════════════════════════════
-// Journey 2: a 1.10 save meets 1.11 (badges, Long Memory at 25)
+// Journey 2: a 1.10 save meets 1.11 (badges, Lasting Recall at 25)
 // ═════════════════════════════════════════════════════════════════════════
 /** A topic with 2+ parts that have questions, and one question per part. */
 function topicParts() {
@@ -470,10 +470,10 @@ function topicParts() {
 
 /**
  * A learner on 1.10: back-filled (summary seen), no catalogue version yet.
- * 20 right answers in every domain (Whole Map and all five Firm Footings),
- * Long Memory at 25 (its counted list full at the old cap), Graduate and
- * Loop Closed: Evergreen complete with its planter. Two full timed mocks 10
- * days apart after Whole Map (Exam Day complete), and a whole topic mastered.
+ * 20 right answers in every domain (All Domains and all five Domain Masterys),
+ * Lasting Recall at 25 (its counted list full at the old cap), Graduate and
+ * Mistakes Fixed: Evergreen complete with its planter. Two full timed mocks 10
+ * days apart after All Domains (Exam Day complete), and a whole topic mastered.
  */
 function save110() {
   seedAnswers(perDomain(20), T0 - 40 * DAY);
@@ -509,7 +509,7 @@ function save110() {
 }
 
 describe('Journey 2 · upgrading a 1.10 save', () => {
-  it('the quiet fill runs once: Took Root and Dress Rehearsal · 2, no moments, no inflation, planters kept', () => {
+  it('the quiet fill runs once: Topic Recall and Mock Complete · 2, no moments, no inflation, planters kept', () => {
     save110();
     const before = ms();
     expect(before.catalog).toBeUndefined();
@@ -544,7 +544,7 @@ describe('Journey 2 · upgrading a 1.10 save', () => {
     expect(hasNewBadge('cisa')).toBe(false);
   });
 
-  it('the case shows ONE summary line, once; Evergreen says "New in Evergreen: 1 badge added since you completed it."', () => {
+  it('the case shows ONE summary line, once; Evergreen says "New in Recall: 1 badge added since you completed it."', () => {
     save110();
     act(() => {
       ensureCatalog('cisa', T0);
@@ -554,8 +554,8 @@ describe('Journey 2 · upgrading a 1.10 save', () => {
     const t = allText();
     expect(t.split(line).length - 1).toBe(1);
     expect(t).not.toContain('You’d already earned');
-    expect(t).toContain('New in Evergreen: 1 badge added since you completed it.');
-    // Exam Day grew too, but Dress Rehearsal · 2 is already earned: complete again, no line.
+    expect(t).toContain('New in Recall: 1 badge added since you completed it.');
+    // Exam Day grew too, but Mock Complete · 2 is already earned: complete again, no line.
     expect(t).not.toContain('New in Exam Day');
     act(() => r!.unmount());
     mount(<Badges />);
@@ -657,7 +657,7 @@ const met = (f: MilestoneFacts) => allMarks(f).filter((m) => m.met).map((m) => m
 const full = (days: number, over: Partial<MockFacts> = {}): MockFacts => ({ total: 150, timing: 'standard', unanswered: 0, finishedAt: T0 + days * DAY, ...over });
 const celebration = () => root().findAll((n) => n.props.celebration !== undefined)[0].props.celebration as { mode: string };
 
-describe('Journey 3 · Long Memory · 75', () => {
+describe('Journey 3 · Lasting Recall · 75', () => {
   it('74 long recalls: not yet; the 75th earns it, as a short tier-up moment', () => {
     const ids = ALL.slice(200, 250);
     filled({ earned: { 'first-foothold': T0 - 30 * DAY, 'long-memory': T0 - 30 * DAY }, counts: { longRecall: 25 }, longIds: Array.from({ length: 25 }, (_, i) => ALL[400 + i]) });
@@ -684,17 +684,17 @@ describe('Journey 3 · Long Memory · 75', () => {
     expect(fresh).not.toContain('long-memory:150');
     expect(ms().queue).toContain('long-memory:75');
     const moment = momentFor('cisa', 'long-memory:75')!;
-    expect(moment).toMatchObject({ label: 'Long Memory · 75 recalls', tier: 2, tierUp: true, set: 'evergreen' });
+    expect(moment).toMatchObject({ label: 'Lasting Recall · 75 recalls', tier: 2, tierUp: true, set: 'evergreen' });
     expect(moment.stretch).toBeUndefined();
     setMockReducedMotion(false);
     mount(<MilestoneMomentView moment={moment} once="lm75" />);
     expect(celebration().mode).toBe('short');
-    expect(allText()).toContain('Long Memory · 75 recalls');
+    expect(allText()).toContain('Lasting Recall · 75 recalls');
   });
 });
 
-describe('Journey 3 · Dress Rehearsal · 2', () => {
-  it('needs two full timed mocks 7+ days apart, both after Whole Map; 6.9 days is not a week', () => {
+describe('Journey 3 · Mock Complete · 2', () => {
+  it('needs two full timed mocks 7+ days apart, both after All Domains; 6.9 days is not a week', () => {
     const wm = { wholeMapAt: T0, domains: domainsAt(30, 0.7) };
     expect(met(facts({ ...wm, mocks: [full(1), full(1 + 6.9)] }))).not.toContain('dress-rehearsal:2');
     expect(met(facts({ ...wm, mocks: [full(1), full(8)] }))).toContain('dress-rehearsal:2'); // exactly 7 days
@@ -703,7 +703,7 @@ describe('Journey 3 · Dress Rehearsal · 2', () => {
     expect(met(facts({ ...wm, mocks: [full(1), full(9, { timing: 'untimed' })] }))).not.toContain('dress-rehearsal:2');
     expect(met(facts({ ...wm, mocks: [full(1), full(9, { total: 50 })] }))).not.toContain('dress-rehearsal:2');
     expect(met(facts({ ...wm, mocks: [full(1), full(9, { unanswered: 1 })] }))).not.toContain('dress-rehearsal:2');
-    // A mock finished before Whole Map was earned never counts.
+    // A mock finished before All Domains was earned never counts.
     expect(met(facts({ ...wm, mocks: [full(-8), full(1)] }))).not.toContain('dress-rehearsal:2');
     // Three, each a week on: · 3 (Stretch).
     expect(met(facts({ ...wm, mocks: [full(1), full(8), full(15)] }))).toContain('dress-rehearsal:3');
@@ -719,19 +719,19 @@ describe('Journey 3 · Dress Rehearsal · 2', () => {
     });
     expect(fresh).toContain('dress-rehearsal:2');
     expect(fresh).not.toContain('dress-rehearsal:3');
-    expect(momentFor('cisa', 'dress-rehearsal:2')).toMatchObject({ tier: 2, tierUp: true, label: 'Dress Rehearsal · 2 mocks' });
+    expect(momentFor('cisa', 'dress-rehearsal:2')).toMatchObject({ tier: 2, tierUp: true, label: 'Mock Complete · 2 mocks' });
   });
 
-  // BUG (Major): "nothing before Whole Map counts" only holds once Whole Map is
-  // SAVED. In the check where Whole Map is first met, wholeMapAt is still
+  // BUG (Major): "nothing before All Domains counts" only holds once All Domains is
+  // SAVED. In the check where All Domains is first met, wholeMapAt is still
   // undefined and engine/milestones.ts:454 filters with `?? 0`, so every
-  // older mock counts and Dress Rehearsal · 2 is earned in the same moment.
-  it('engine: Whole Map met for the first time; two spaced mocks from before it do not count', () => {
+  // older mock counts and Mock Complete · 2 is earned in the same moment.
+  it('engine: All Domains met for the first time; two spaced mocks from before it do not count', () => {
     expect(met(facts({ domains: domainsAt(30, 0.7), mocks: [full(-20), full(-10)] }))).not.toContain('dress-rehearsal:2');
   });
 
-  it('stores: the session that first reaches Whole Map does not also hand out Dress Rehearsal · 2', () => {
-    seedAnswers(perDomain(12), T0 - 40 * DAY); // every domain at 100%: Whole Map met, not yet saved
+  it('stores: the session that first reaches All Domains does not also hand out Mock Complete · 2', () => {
+    seedAnswers(perDomain(12), T0 - 40 * DAY); // every domain at 100%: All Domains met, not yet saved
     seedMocks([fullMock('a', T0 - 20 * DAY), fullMock('b', T0 - 10 * DAY)]);
     filled({ earned: { 'first-foothold': T0 - 40 * DAY, 'dress-rehearsal': T0 - 20 * DAY } });
     let fresh: string[] = [];
@@ -743,8 +743,8 @@ describe('Journey 3 · Dress Rehearsal · 2', () => {
   });
 });
 
-describe('Journey 3 · Firm Footing · 80% (Stretch)', () => {
-  it('needs Whole Map, 40 answers and 80% in that domain; plays short and says Stretch', () => {
+describe('Journey 3 · Domain Mastery · 80% (Stretch)', () => {
+  it('needs All Domains, 40 answers and 80% in that domain; plays short and says Stretch', () => {
     const d4 = getDomainQuestions('cisa', '4').slice(0, 40).map((q) => q.id);
     seedAnswers(d4, T0 - 10 * DAY);
     seedAnswers(cisa.domains.filter((d) => d.id !== '4').flatMap((d) => getDomainQuestions('cisa', d.id).slice(0, 12).map((q) => q.id)), T0 - 10 * DAY);
@@ -762,13 +762,13 @@ describe('Journey 3 · Firm Footing · 80% (Stretch)', () => {
     expect(celebration().mode).toBe('short');
   });
 
-  it('never before Whole Map (one domain under 65%), however deep the domain', () => {
+  it('never before All Domains (one domain under 65%), however deep the domain', () => {
     const lopsided = domainsAt(60, 0.9).map((d) => (d.id === '3' ? { ...d, mastery: 0.5 } : d));
     expect(met(facts({ domains: lopsided })).filter((k) => k.endsWith(':80'))).toEqual([]);
   });
 });
 
-describe('Journey 3 · Took Root', () => {
+describe('Journey 3 · Topic Recall', () => {
   it('every part of one topic right on two different days earns it (a full moment, not a tier)', () => {
     const { oneEach } = topicParts();
     filled({ earned: { 'first-foothold': T0 - 20 * DAY } });
@@ -791,7 +791,7 @@ describe('Journey 3 · Took Root', () => {
     });
     expect(fresh).toContain('took-root');
     const moment = momentFor('cisa', 'took-root')!;
-    expect(moment).toMatchObject({ set: 'evergreen', label: 'Took Root' });
+    expect(moment).toMatchObject({ set: 'evergreen', label: 'Topic Recall' });
     expect(moment.tierUp).toBeUndefined();
   });
 
@@ -852,7 +852,7 @@ describe('Journey 3 · Stretch is never slot 1 of "Next for your exam"', () => {
     }
   });
 
-  it('random learners (seeded, 400 runs): slot 1 is never a Stretch tier, a gated mark, or Fresh Start', () => {
+  it('random learners (seeded, 400 runs): slot 1 is never a Stretch tier, a gated mark, or Study Return', () => {
     let seed = 41;
     const rnd = () => ((seed = (seed * 1_103_515_245 + 12_345) % 2_147_483_648) / 2_147_483_648);
     for (let run = 0; run < 400; run++) {
@@ -907,8 +907,8 @@ describe('Journey 4 · a set grows after completing', () => {
       return caseSets(marks, cisa.exam, cisa.domains.length).find((s) => s.info.id === 'evergreen')!;
     };
     expect(setCountLine(caseNow())).toBe('4 of 5');
-    expect(grownLine(caseNow(), ms().planters)).toBe('New in Evergreen: 1 badge added since you completed it.');
-    // Earn Long Memory · 75 later: Evergreen is complete again, the line goes, the planter's date stays.
+    expect(grownLine(caseNow(), ms().planters)).toBe('New in Recall: 1 badge added since you completed it.');
+    // Earn Lasting Recall · 75 later: Evergreen is complete again, the line goes, the planter's date stays.
     act(() => {
       useProgress.getState().updateMilestones('cisa', (m) => ({ milestones: { ...m!, counts: { ...m!.counts, longRecall: 75 } } }));
     });
@@ -946,9 +946,9 @@ describe('Journey 5 · share card', () => {
   };
   const shareOf = (m: CaseMark) => ({ name: m.name, skill: m.skill, set: m.set, status: m.status, earnedOn: '3 Nov 2026' });
 
-  it('only earned badges are shareable; Fresh Start never; unearned never', () => {
+  it('only earned badges are shareable; Study Return never; unearned never', () => {
     const marks = everyMark();
-    // Mobile 1.18: "Graduate" became "Flown the Nest" and is shared like the rest; only Fresh Start (a Moment) never is.
+    // Mobile 1.18: "Graduate" became "Review Complete" and is shared like the rest; only Study Return (a Moment) never is.
     for (const m of marks) expect([m.key, badgeShareable(m)]).toEqual([m.key, m.key !== 'fresh-start']);
     const unearned = caseMarks({ marks: allMarks(facts()), earned: {}, domains: DOMAINS, exam: cisa.exam, mindsetData: true });
     expect(unearned.filter((m) => badgeShareable(m))).toEqual([]);
@@ -976,7 +976,7 @@ describe('Journey 5 · share card', () => {
 
   it('on the card, the cert name sits only at the foot, after the medallion, caption, name and skill line', () => {
     const lm = everyMark().find((m) => m.key === 'long-memory:75')!;
-    const text = badgeCardText({ ...shareOf(lm), tierLine: 'Lichen · tier 2 of 3' }, cisa, null);
+    const text = badgeCardText({ ...shareOf(lm), tierLine: 'Silver · tier 2 of 3' }, cisa, null);
     mount(<BadgeShareCard text={text} art={null} />);
     const strings: string[] = [];
     const walk = (x: ReactTestInstance | string) => (typeof x === 'string' ? strings.push(x) : x.children.forEach(walk));
@@ -994,8 +994,8 @@ describe('Journey 5 · share card', () => {
   function openShare() {
     filled({ earned: { 'long-memory': new Date(2026, 10, 3, 9).getTime() } });
     mount(<Badges />);
-    press(/^Long Memory · 25 recalls, Clay\. Earned/);
-    press(/^Share this badge: Long Memory · 25 recalls$/);
+    press(/^Lasting Recall · 25 recalls, Bronze\. Earned/);
+    press(/^Share this badge: Lasting Recall · 25 recalls$/);
     expect(root().findAllByType(Modal)).toHaveLength(1);
   }
   const shareButton = () => buttons(/^Share image$|^Share$/).find((b) => typeof b.props.accessibilityHint === 'string' && b.props.accessibilityHint.includes('share sheet'))!;
@@ -1047,7 +1047,7 @@ describe('Journey 5 · share card', () => {
 // ═════════════════════════════════════════════════════════════════════════
 describe('Journey 6 · restore validation', () => {
   const answers = Object.fromEntries(perDomain(60).map((id) => [id, {}]));
-  // A real save keeps Long Memory's counted questions beside its counter (both since 1.6), so the evidence does too.
+  // A real save keeps Lasting Recall's counted questions beside its counter (both since 1.6), so the evidence does too.
   const richMilestones: CertMilestones = {
     earned: {},
     counts: { longRecall: 150, graduated: 60, loopFixed: 12, gameFixes: 12, paceRounds: 3 },
@@ -1096,7 +1096,7 @@ describe('Journey 6 · restore validation', () => {
 
   it('forged tiers in a backup are refused on their own evidence; genuine ones survive', () => {
     filled();
-    seedAnswers(perDomain(25), T0 - 30 * DAY); // 25 per domain: Firm Footing 70% evidence, not 80%'s 40
+    seedAnswers(perDomain(25), T0 - 30 * DAY); // 25 per domain: Domain Mastery 70% evidence, not 80%'s 40
     seedMocks([fullMock('a', T0 - 10 * DAY), fullMock('b', T0 - 7 * DAY)]); // 3 days apart
     act(() => {
       useProgress.getState().updateMilestones('cisa', (m) => ({
@@ -1131,7 +1131,7 @@ describe('Journey 6 · restore validation', () => {
     expect(back.queue).toEqual(['rooted:30']);
   });
 
-  it('a Stretch 80% tier without Whole Map is refused even with 40+ answers in the domain', () => {
+  it('a Stretch 80% tier without All Domains is refused even with 40+ answers in the domain', () => {
     const e: MarkEvidence = { ...rich, earned: undefined };
     const kept = keepSupported({ earned: { 'firm-footing:4': T0, 'firm-footing:4:80': T0, 'dress-rehearsal': T0, 'dress-rehearsal:2': T0 } }, e);
     expect(Object.keys(kept.earned).sort()).toEqual(['dress-rehearsal', 'firm-footing:4']);

@@ -3,7 +3,7 @@
  * T3 one set of rings on Today with the Exam-ready panel · T4 "Also today"
  * says the time, not a count · Y1 the theme switch stays on You · Y3 one phrasing
  * for the review queue · Y4 a way to start a mini mock from You · G2 the
- * Seedling tag said once on Play · R1/R2 Results for a one-domain session
+ * Beginner tag said once on Play · R1/R2 Results for a one-domain session
  * (one ring, plain copy) · Q1 the "Assisted" line lines up with the coach
  * line · LP5 no disabled Back on a lesson's first scene (session-screen
  * regression test).
@@ -110,12 +110,12 @@ describe('Today', () => {
     expect(root().findAll((n) => typeof n.props.accessibilityLabel === 'string' && n.props.accessibilityLabel.startsWith('Estimated readiness'))).not.toHaveLength(0);
   });
 
-  it('T3: without the panel, readiness is the Grove ring with the plant inside (no rings, no scale bar)', () => {
+  it('T3: without the milestone panel, Today has no readiness hero', () => {
     answeredEnough();
     mount(<Today />);
     expect(root().findAllByType(GrowthRings)).toHaveLength(0);
     expect(root().findAll((n) => typeof n.type === 'string' && n.props.testID === 'scale-bar')).toHaveLength(0);
-    expect(root().findAll((n) => typeof n.type === 'string' && n.props.testID === 'today-ring')).toHaveLength(1);
+    expect(root().findAll((n) => typeof n.type === 'string' && n.props.testID === 'today-ring')).toHaveLength(0);
   });
 
   it('T4: "Also today" says how long the rest takes, not a count of a list that shows every item', () => {
@@ -163,13 +163,13 @@ describe('Y3: one phrasing for the review queue', () => {
 });
 
 describe('Drills (the old Play tab, mobile 1.51)', () => {
-  it('G2: every game at Seedling is said once, in the section line, not on each row; rows still speak it', () => {
+  it('G2: every game at Beginner is said once, in the section line, not on each row; rows still speak it', () => {
     mount(<Drills />);
-    expect(allText()).toMatch(/All at Seedling/);
-    const rows = root().findAll((n) => n.props.accessibilityRole === 'button' && typeof n.props.onPress === 'function' && /Your level: Seedling/.test(n.props.accessibilityLabel ?? ''));
+    expect(allText()).toMatch(/All at Beginner/);
+    const rows = root().findAll((n) => n.props.accessibilityRole === 'button' && typeof n.props.onPress === 'function' && /Your level: Beginner/.test(n.props.accessibilityLabel ?? ''));
     expect(rows.length).toBeGreaterThan(1);
-    // The rows show no visible "Seedling" tag: only the section line says it (no hero since 1.51).
-    expect(allText().match(/Seedling/g)!.length).toBe(1);
+    // The rows show no visible "Beginner" tag: only the section line says it (no hero since 1.51).
+    expect(allText().match(/Beginner/g)!.length).toBe(1);
   });
 });
 

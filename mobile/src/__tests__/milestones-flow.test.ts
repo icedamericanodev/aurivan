@@ -44,7 +44,7 @@ beforeEach(() => {
 afterEach(() => jest.useRealTimers());
 
 describe('assisted (Coach me) answers never count', () => {
-  it('First Foothold: 20 hinted answers do not finish the diagnostic; 20 clean ones do', () => {
+  it('First Review: 20 hinted answers do not finish the diagnostic; 20 clean ones do', () => {
     d4.slice(0, 20).forEach((id) => answer(id, true, { assisted: true }));
     expect(facts().cleanAnswered).toBe(0);
     expect(met()).not.toContain('first-foothold');
@@ -52,7 +52,7 @@ describe('assisted (Coach me) answers never count', () => {
     expect(met()).toContain('first-foothold');
   });
 
-  it('Firm Footing reads clean answers only', () => {
+  it('Domain Mastery reads clean answers only', () => {
     d4.slice(0, 20).forEach((id) => answer(id, true, { assisted: true }));
     expect(facts().domains.find((d) => d.id === '4')!.answered).toBe(0);
     jest.setSystemTime(T0 + LATER);
@@ -60,7 +60,7 @@ describe('assisted (Coach me) answers never count', () => {
     expect(met()).toContain('firm-footing:4');
   });
 
-  it('Topic Clear uses the Guided rule: lesson done + 4 of the last 5 unhinted right', () => {
+  it('Topic Complete uses the Guided rule: lesson done + 4 of the last 5 unhinted right', () => {
     const topic = certOutline('cisa').topics.find((t) => topicLessons('cisa', t.id).length && t.subtopics.flatMap((s) => s.questionIds).length >= 5)!;
     const ids = topic.subtopics.flatMap((s) => s.questionIds).slice(0, 5);
     useProgress.getState().completeLesson('cisa', topicLessons('cisa', topic.id)[0].id);
@@ -77,7 +77,7 @@ describe('assisted (Coach me) answers never count', () => {
     expect(met()).toContain('topic-clear');
   });
 
-  it('Know What You Know ignores hinted and game "sure" answers', () => {
+  it('Confidence Check ignores hinted and game "sure" answers', () => {
     d4.slice(0, 25).forEach((id) => answer(id, true, { assisted: true, confidence: 'sure' }));
     d4.slice(25, 50).forEach((id) => answer(id, true, { game: true, confidence: 'sure' }));
     expect(cp().milestones?.sure ?? []).toEqual([]);
@@ -85,7 +85,7 @@ describe('assisted (Coach me) answers never count', () => {
     expect(met()).toContain('know-what-you-know');
   });
 
-  it('Slip Spotter counts tagged mistakes', () => {
+  it('Error Insight counts tagged mistakes', () => {
     d4.slice(0, 10).forEach((id) => {
       useProgress.getState().recordMistake('cisa', id, 'A');
       useProgress.getState().tagMistake('cisa', id, 'role');
@@ -95,7 +95,7 @@ describe('assisted (Coach me) answers never count', () => {
 });
 
 describe('game answers never count toward milestones (lastGame)', () => {
-  it('20 game answers do not earn First Foothold; the record carries lastGame', () => {
+  it('20 game answers do not earn First Review; the record carries lastGame', () => {
     d4.slice(0, 20).forEach((id) => answer(id, true, { game: true }));
     expect(cp().answers[d4[0]].lastGame).toBe(true);
     expect(facts().cleanAnswered).toBe(0);
@@ -117,7 +117,7 @@ describe('game answers never count toward milestones (lastGame)', () => {
     expect(facts().cleanAnswered).toBe(0);
   });
 
-  it('Firm Footing and Topic Clear skip game answers', () => {
+  it('Domain Mastery and Topic Complete skip game answers', () => {
     d4.slice(0, 20).forEach((id) => answer(id, true, { game: true }));
     expect(facts().domains.find((d) => d.id === '4')!.answered).toBe(0);
     const topic = certOutline('cisa').topics.find((t) => topicLessons('cisa', t.id).length && t.subtopics.flatMap((s) => s.questionIds).length >= 5)!;
@@ -132,7 +132,7 @@ describe('game answers never count toward milestones (lastGame)', () => {
     expect(facts().topicsClear).toBe(0);
   });
 
-  it('Topic Clear shows the closest topic’s progress before it is earned', () => {
+  it('Topic Complete shows the closest topic’s progress before it is earned', () => {
     const topic = certOutline('cisa').topics.find((t) => topicLessons('cisa', t.id).length && t.subtopics.flatMap((s) => s.questionIds).length >= 5)!;
     useProgress.getState().completeLesson('cisa', topicLessons('cisa', topic.id)[0].id);
     topic.subtopics
@@ -150,7 +150,7 @@ describe('game answers never count toward milestones (lastGame)', () => {
 });
 
 describe('counters through the store', () => {
-  it('Loop Closed: a logged miss fixed the next day counts once; same-day or hinted fixes do not', () => {
+  it('Mistakes Fixed: a logged miss fixed the next day counts once; same-day or hinted fixes do not', () => {
     const [a, b] = d4;
     useProgress.getState().recordMistake('cisa', a, 'A');
     useProgress.getState().recordMistake('cisa', b, 'A');
@@ -182,14 +182,14 @@ describe('counters through the store', () => {
     expect(cp().review[a]).toBeUndefined();
   });
 
-  it('Long Memory: right a week after last seen', () => {
+  it('Lasting Recall: right a week after last seen', () => {
     answer(d4[0]);
     jest.setSystemTime(T0 + 7 * DAY);
     answer(d4[0]);
     expect(cp().milestones?.counts?.longRecall).toBe(1);
   });
 
-  it('Rooted and Fresh Start: study days add up; a week away then a finished session', () => {
+  it('Rooted and Study Return: study days add up; a week away then a finished session', () => {
     answer(d4[0]);
     jest.setSystemTime(T0 + DAY);
     answer(d4[1]);
@@ -206,7 +206,7 @@ describe('counters through the store', () => {
 describe('one celebration per session', () => {
   it('Results gets ONE milestone; the rest wait for later sessions', () => {
     // 20 clean, right answers in one domain on a full mock-free day: First
-    // Foothold and Firm Footing (domain 4) are both met at once.
+    // Foothold and Domain Mastery (domain 4) are both met at once.
     ensureBackfill('cisa', T0); // app launch: a new learner's back-fill finds nothing
     startFromIds('cisa', d4.slice(0, 20), 'Twenty');
     d4.slice(0, 20).forEach((id) => answer(id));
@@ -214,14 +214,14 @@ describe('one celebration per session', () => {
     const first = useSession.getState().active!.milestone;
     expect(first).toBe('first-foothold');
     expect(cp().milestones!.queue).toEqual(['firm-footing:4']);
-    expect(momentFor('cisa', first!)).toEqual(expect.objectContaining({ label: 'First Foothold', kind: 'milestone' }));
+    expect(momentFor('cisa', first!)).toEqual(expect.objectContaining({ label: 'First Review', kind: 'milestone' }));
 
     useSession.getState().clear();
     startFromIds('cisa', [d4[30]], 'Next');
     answer(d4[30]);
     finishSession();
     expect(useSession.getState().active!.milestone).toBe('firm-footing:4');
-    expect(momentFor('cisa', 'firm-footing:4')!.label).toBe('Firm Footing · IS Operations');
+    expect(momentFor('cisa', 'firm-footing:4')!.label).toBe('Domain Mastery · IS Operations');
     expect(cp().milestones!.queue).toEqual([]);
 
     // Nothing left: the next session shows none.
@@ -253,7 +253,7 @@ describe('one celebration per session', () => {
 });
 
 describe('never revoked', () => {
-  it('a domain that drops keeps its Firm Footing leaf', () => {
+  it('a domain that drops keeps its Domain Mastery leaf', () => {
     d4.slice(0, 20).forEach((id) => answer(id));
     checkMilestones('cisa');
     const at = cp().milestones!.earned['firm-footing:4'];
@@ -288,7 +288,7 @@ describe('back-fill at launch', () => {
     useProgress.setState({ byCert: { cisa: oldSave() } });
     const n = ensureBackfill('cisa', T0);
     const m = cp().milestones!;
-    // First Foothold, Firm Footing (D4: 25 clean answers, all right), Dress Rehearsal, On Pace, Rooted 10.
+    // First Review, Domain Mastery (D4: 25 clean answers, all right), Mock Complete, On Pace, Rooted 10.
     expect(Object.keys(m.earned).sort()).toEqual(['dress-rehearsal', 'firm-footing:4', 'first-foothold', 'on-pace', 'rooted:10']);
     expect(n).toBe(5);
     expect(m.backfill).toEqual({ at: T0, count: 5 });
