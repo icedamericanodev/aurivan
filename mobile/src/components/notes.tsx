@@ -3,7 +3,7 @@
  * fixed schema-v2 order (docs/content/NOTES_SCHEMA_V2.md), drawn with the
  * Grove v2 primitives (docs/mobile/DESIGN_SYSTEM.md).
  *
- * Surface rules used here: text sits on the paper; lists use hairlines;
+ * The reader groups this content in one TopicCard; lists use hairlines;
  * "The IS auditor’s lens" is the key-idea recipe (3px accent rule + italic
  * quote, never a card); exam traps are the one tinted block (tipBg).
  *

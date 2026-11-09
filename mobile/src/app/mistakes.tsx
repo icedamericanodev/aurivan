@@ -200,7 +200,7 @@ const MistakeCard = memo(function MistakeCard({
             <>
               <Row gap={space.xs} style={{ flexWrap: 'wrap', justifyContent: 'space-between' }}>
                 <T v="meta">Why did you slip?</T>
-                <Button kind="ghost" label="What do these mean?" accessibilityHint="Shows one example for each tag" onPress={onOpenTags} style={{ marginRight: -space.sm }} />
+                <Button kind="ghost" label="What do these mean?" accessibilityHint="Shows one example for each tag" onPress={onOpenTags} style={{ maxWidth: '100%', flexShrink: 1 }} />
               </Row>
               {/* One group with a name, so a screen reader says which question the six tags are for. */}
               <View
