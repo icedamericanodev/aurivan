@@ -116,8 +116,7 @@ afterEach(() => {
   jest.useRealTimers();
 });
 
-// Mobile 1.51 (Term Match, the owner's option A): the countdown is Today's title ("Maya, 38 days to go");
-// with no exam date the title is still the greeting by the hour.
+// Today greets by the local hour and optional nickname; the exam countdown remains below it.
 describe('Today greets by name', () => {
   it.each([
     [9, 'Good morning'],
@@ -135,12 +134,12 @@ describe('Today greets by name', () => {
     expect(allText()).not.toContain(`${words},`);
   });
 
-  it('the heading is one stop that reads the whole title: "Maya, 38 days to go"', () => {
+  it('the heading is one stop that reads the whole title: "Good morning, Maya"', () => {
     useSettings.setState({ displayName: 'Maya' });
     mount(<Today />);
     const h = heading();
-    expect(h.props.accessibilityLabel).toBe('Maya, 38 days to go');
-    expect(textOf(h)).toBe('Maya, 38 days to go');
+    expect(h.props.accessibilityLabel).toBe('Good morning, Maya');
+    expect(textOf(h)).toBe('Good morning, Maya');
   });
 
   it('a name changed in Settings shows on Today at once', () => {
@@ -149,18 +148,18 @@ describe('Today greets by name', () => {
     act(() => {
       useSettings.getState().setDisplayName('  Maya  ');
     });
-    expect(allText()).toContain('Maya, 38 days to go');
+    expect(allText()).toContain('Good morning, Maya');
   });
 
-  it('a long name at 200% text wraps and stops at four lines, and screen readers still hear all of it', () => {
+  it('a long name at 200% text wraps without truncation, and screen readers hear all of it', () => {
     setScale(2);
     const name = 'Wolfeschlegelstein Hausen';
     useSettings.setState({ displayName: name });
     mount(<Today />);
     const h = heading();
-    // Mobile 1.51: the countdown title takes up to four lines (UX review P7).
-    expect(h.props.numberOfLines).toBe(4);
-    expect(h.props.accessibilityLabel).toBe(`${name.slice(0, MAX_DISPLAY_NAME)}, 38 days to go`);
+    // The approved dashboard greeting remains untruncated at 200% text.
+    expect(h.props.numberOfLines).toBeUndefined();
+    expect(h.props.accessibilityLabel).toBe(`Good morning, ${name.slice(0, MAX_DISPLAY_NAME)}`);
   });
 
   it('a bad value in the save (a link) never shows', () => {

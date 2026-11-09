@@ -4,13 +4,14 @@
  *   plan's own item at five questions, so the answers count toward it; never on the first-set day or in
  *   exam week;
  * - Help: "I'm a beta tester", off by default;
- * - Today: the Tester question only with the switch on; "Answer by email" opens a mailto with the
- *   subject tag and the question, and nothing else is sent; "Not today" hides it until tomorrow; the
+ * - Today: the Tester question only with the switch on; "Share feedback" opens a mailto with the
+ *   subject tag and the question, and nothing else is sent; "Maybe later" hides it until tomorrow; the
  *   week check-in shows the study-day count on screen only; one setup line per visit;
  * - Send feedback offers "Something confused me" first; Report a problem (app) offers "I couldn't find
  *   something".
  */
 import { Linking } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { act, create, type ReactTestInstance, type ReactTestRenderer } from 'react-test-renderer';
 import { router } from 'expo-router';
 import { setMockReducedMotion } from '../../jest/reanimated-mock';
@@ -254,6 +255,19 @@ describe('Help: I’m a beta tester', () => {
 });
 
 describe('the Tester question on Today', () => {
+  it.each(['light', 'dark'] as const)('offers independent named feedback actions in %s mode', (theme) => {
+    act(() => { useSettings.setState({ theme }); });
+    mount(<TesterQuestionCard card={{ id: 'expect', day: 1, caption: 'Tester question', body: "What's one thing you expected KaiSip to do differently?" }} today={today()} />);
+    const share = buttons(/^Share feedback$/).find((n) => n.props.accessibilityRole === 'button');
+    const later = buttons(/^Maybe later$/).find((n) => n.props.accessibilityRole === 'button');
+    expect(share).toBeDefined();
+    expect(later).toBeDefined();
+    expect(share).not.toBe(later);
+    expect(share!.props.accessibilityHint).toContain('Nothing is sent until you press Send.');
+    expect(later!.props.accessibilityHint).toBe('Hides this question until tomorrow');
+    expect(allText()).toContain('Help shape KaiSip');
+  });
+
   it('never shows with the switch off', () => {
     studiedDaysAgo(1, 0);
     storePlan([LESSON]);
@@ -261,16 +275,16 @@ describe('the Tester question on Today', () => {
     expect(byTestID('tester-card')).toHaveLength(0);
   });
 
-  it('day 3: the question, below the day’s study; "Answer by email" opens a mailto with the tag and the question', async () => {
+  it('day 3: the question, below the day’s study; "Share feedback" opens a mailto with the tag and the question', async () => {
     testerOn(2);
     studiedDaysAgo(2, 1);
     storePlan([LESSON]);
     mount(<Today />);
     expect(byTestID('tester-card')).toHaveLength(1);
-    expect(allText()).toContain('Tester question');
+    expect(allText()).toContain('Help shape KaiSip');
     expect(allText()).toContain('Was today’s plan the right size for your day: too long, about right, or too short?');
     expect(allText()).not.toMatch(/Day \d+ of 14|of 14/);
-    await press(/^Answer by email$/);
+    await press(/^Share feedback$/);
     const e = lastEmail();
     expect(e.to).toBe('certprep.support@gmail.com');
     expect(e.subject).toBe('[KaiSip beta D3]');
@@ -284,19 +298,67 @@ describe('the Tester question on Today', () => {
     expect(byTestID('tester-card')).toHaveLength(0);
   });
 
-  it('"Not today" hides it until tomorrow; it never touches the streak, the plant or badges', async () => {
+  it('"Maybe later" hides it until tomorrow; it never touches the streak, the plant or badges', async () => {
     testerOn(2);
     studiedDaysAgo(2, 1);
     storePlan([LESSON]);
     mount(<Today />);
     const before = { streak: useProgress.getState().streak, cert: selectCert(useProgress.getState(), 'cisa') };
-    await press(/^Not today, hide this question$/);
+    await press(/^Maybe later$/);
     expect(byTestID('tester-card')).toHaveLength(0);
     expect(useSeen.getState().tester?.skipped).toBe(today());
     expect(openUrl).not.toHaveBeenCalled();
     expect(useProgress.getState().streak).toBe(before.streak);
     expect(selectCert(useProgress.getState(), 'cisa').plant).toBe(before.cert.plant);
     expect(selectCert(useProgress.getState(), 'cisa').milestones).toBe(before.cert.milestones);
+  });
+
+  it('restores Maybe later after a restart using the existing saved preference', async () => {
+    testerOn(0);
+    studiedDaysAgo(0);
+    storePlan([LESSON]);
+    mount(<Today />);
+    await press(/^Maybe later$/);
+    unmount();
+    const saved = await AsyncStorage.getItem('aurivan.seen.v1');
+    expect(JSON.parse(saved!).state.tester.skipped).toBe(today());
+    useSeen.setState({ tester: undefined });
+    await AsyncStorage.setItem('aurivan.seen.v1', saved!);
+    await act(async () => { await useSeen.persist.rehydrate(); });
+    mount(<Today />);
+    expect(byTestID('tester-card')).toHaveLength(0);
+    expect(useSeen.getState().tester?.skipped).toBe(today());
+  });
+
+  it('keeps tester questions disabled after a restart', async () => {
+    testerOn(0);
+    studiedDaysAgo(0);
+    storePlan([LESSON]);
+    mount(<Today />);
+    const card = byTestID('tester-card')[0];
+    act(() => card.props.onAccessibilityAction({ nativeEvent: { actionName: 'stop' } }));
+    unmount();
+    const saved = await AsyncStorage.getItem('aurivan.seen.v1');
+    useSeen.setState({ tester: { since: today() } });
+    await AsyncStorage.setItem('aurivan.seen.v1', saved!);
+    await act(async () => { await useSeen.persist.rehydrate(); });
+    mount(<Today />);
+    expect(useSeen.getState().tester).toEqual({});
+    expect(byTestID('tester-card')).toHaveLength(0);
+  });
+
+  it('failed email opening preserves eligibility and offers the existing fallback', async () => {
+    testerOn(0);
+    studiedDaysAgo(0);
+    storePlan([LESSON]);
+    openUrl.mockRejectedValue(new Error('No email app'));
+    mount(<Today />);
+    await press(/^Share feedback$/);
+    expect(useSeen.getState().tester?.answered).toBeUndefined();
+    expect(allText()).toContain('No email app opened.');
+    expect(buttons(/^Share instead$/).length).toBeGreaterThan(0);
+    expect(buttons(/^Try again$/).length).toBeGreaterThan(0);
+    expect(allText()).not.toContain('Your email app opened');
   });
 
   it('week 1 check-in: the study-day count on screen, never in the email', async () => {
@@ -307,7 +369,7 @@ describe('the Tester question on Today', () => {
     expect(allText()).toContain('Week 1 check-in');
     expect(allText()).toContain('You studied on 5 of the last 7 days.');
     expect(allText()).toContain('Counted on this phone only, and not put in the email.');
-    await press(/^Answer by email$/);
+    await press(/^Share feedback$/);
     const e = lastEmail();
     expect(e.subject).toBe('[KaiSip beta D7]');
     expect(e.body).not.toMatch(/studied|of the last 7/);

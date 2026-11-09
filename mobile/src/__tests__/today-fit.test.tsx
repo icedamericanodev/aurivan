@@ -128,7 +128,7 @@ describe('Today: the day in minutes', () => {
     useSettings.setState({ fitPrompt: 'answered', dailyMinutes: 20 });
     mount(<Today />);
     expect(allText()).toContain('Today’s plan About\u00A06\u00A0min');
-    expect(allText()).toContain('Your first five 5 questions, no timer');
+    expect(allText()).toContain('Your first five. 5 questions remaining · No timer');
     expect(allText()).not.toMatch(/\bcheck\b|Starting/);
     expect(storedPlan().budget).toBe(20);
   });

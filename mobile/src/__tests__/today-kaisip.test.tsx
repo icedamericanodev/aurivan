@@ -206,16 +206,16 @@ describe('planCheckLabel: the plan as checklist lines, in the plan’s own words
 describe('Today, top to bottom', () => {
   beforeEach(() => seedAnswers(200, 146));
 
-  it('header (Grove): the head is the day said in full, no gear on Today, and the streak is on the twig', () => {
+  it('header: the local date, Settings and a supported weekly activity summary', () => {
     storePlan([WARM, REVIEW, LESSON], [false, false, false]);
     mount(<Today />);
     const s = stops();
     expect(s[0]).toBe('Thursday 15 October');
     expect(s.join(' ')).not.toMatch(/Field guide|Field record/);
-    // Settings lives on You now (its header button); the exam date is the hero's Exam date tile.
-    expect(root().findAll((n) => n.props.accessibilityLabel === 'Settings' && typeof n.props.onPress === 'function')).toHaveLength(0);
-    expect(byTestID('week-twig')).toHaveLength(1);
-    expect(allText()).toContain('6 day streak');
+    // The compact Settings control remains independently reachable above the plan.
+    expect(root().findAll((n) => n.props.accessibilityLabel === 'Settings' && typeof n.props.onPress === 'function')).toHaveLength(1);
+    expect(byTestID('today-weekly-activity')).toHaveLength(1);
+    expect(allText()).not.toContain('6 day streak');
     expect(allText()).toContain('1 study day this week');
     // Short text (Sky, 5 Nov: nothing repeated on a screen): said once, on the twig, not again under the title.
     expect(allText().split('1 study day this week')).toHaveLength(2);
@@ -229,13 +229,14 @@ describe('Today, top to bottom', () => {
     expect(stops().some((l) => /-day streak/.test(l))).toBe(false);
   });
 
-  it('the countdown is the title (the owner’s option A): the real days to the exam, the cert and its date under it, no name until the learner gives one', () => {
+  it('the greeting is the title and the real countdown stays beside the exam date', () => {
     storePlan([WARM, REVIEW, LESSON], [false, false, false]);
     mount(<Today />);
     expect(allText()).toContain('CISA exam 22 Nov');
-    expect(allText()).not.toMatch(/Good morning/);
-    // The countdown is the screen's heading.
-    const heading = root().findAll((n) => n.props.accessibilityRole === 'header' && textOf(n) === '38 days to go');
+    expect(allText()).toContain('Good morning');
+    expect(allText()).toContain('38 days to go');
+    // The local greeting is the screen's heading.
+    const heading = root().findAll((n) => n.props.accessibilityRole === 'header' && textOf(n) === 'Good morning');
     expect(heading.length).toBeGreaterThan(0);
   });
 
@@ -330,7 +331,7 @@ describe('Today, top to bottom', () => {
     expect(stops()).not.toContain('Accuracy, 73 percent, latest tries');
     expect(stops()).not.toContain('Exam date, 22 November');
     expect(allText()).not.toMatch(/Not yet/);
-    const line = allText().match(/200 answered · where you’ll gain most: ([^A]+?)(?= Also|$)/);
+    const line = allText().match(/200 answered · where you’ll gain most: ([^A]+?)(?= Also| Your progress|$)/);
     expect(line).not.toBeNull();
     // The domain's short name ("IS Operations"), never the tile abbreviation ("IS Ops"): UX review S6.
     // No-break spaces hold the area's name together, so a narrow phone never splits it (DECISIONS 11).
@@ -350,7 +351,7 @@ describe('Today, top to bottom', () => {
     mount(<Today />);
     const t = allText();
     const at = (x: string) => t.indexOf(x);
-    const order = ['Thu 15 Oct', '38 days to go', 'CISA exam 22 Nov', 'Today’s plan', 'This week', 'gain most:'];
+    const order = ['Thu 15 Oct', 'Good morning', 'CISA exam 22 Nov', 'Today’s plan', 'gain most:', 'Your progress', 'Weekly activity', 'CISA domains'];
     const idx = order.map(at);
     expect(idx.every((i) => i >= 0)).toBe(true);
     expect([...idx].sort((a, b) => a - b)).toEqual(idx);
@@ -380,7 +381,9 @@ describe('Today: states with little data', () => {
     expect(allText()).toContain("Today’s plan");
     expect(byTestID("today-hero")).toHaveLength(0);
     expect(byTestID("ring-dots")).toHaveLength(0);
-    expect(allText()).not.toMatch(/Accuracy|Too few yet|Answer 40/);
+    expect(allText()).not.toMatch(/Accuracy|Answer 40/);
+    expect(allText()).toContain('Too few yet');
+    expect(byTestID('today-domains')).toHaveLength(1);
     expect(pill().props.accessibilityLabel).toBe("Start");
   });
   it('a cleared day shows the clearing, not the checklist', () => {

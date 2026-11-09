@@ -160,8 +160,11 @@ describe('Day 0: the first five is the whole plan', () => {
     mount(<Today />);
     const t = allText();
     expect(t).toContain('Today’s plan About\u00A06\u00A0min');
-    expect(t).toContain('Your first five 5 questions, no timer');
-    expect(byTestID('plan-steps')[0].findAll((n) => typeof n.type === 'string' && n.props.accessible === true)).toHaveLength(1);
+    expect(t).toContain('Your first five. 5 questions remaining · No timer');
+    expect(byTestID('first-five-progress')[0].props.accessibilityValue).toMatchObject({ now: 0, max: 5 });
+    expect(byTestID('today-progress')).toHaveLength(0);
+    expect(byTestID('today-domains')).toHaveLength(0);
+    expect(byTestID('today-weekly-activity')).toHaveLength(0);
     expect(byTestID('today-tiles')).toHaveLength(0);
     // Grove: the hero is there from Day 0 (the seed, "Answer 40 questions"), never a range or a percentage.
     expect(byTestID('today-hero')).toHaveLength(0);
@@ -208,6 +211,8 @@ describe('Day 0: the first five is the whole plan', () => {
     jest.mocked(router.push).mockClear();
     mount(<Today />);
     expect(allText()).not.toMatch(/Resume:|Also today/);
+    expect(byTestID('first-five-progress')[0].props.accessibilityValue).toMatchObject({ now: 1, max: 5 });
+    expect(allText()).toContain('4 questions remaining · No timer');
     await act(async () => {
       pill().props.onPress();
     });
@@ -288,6 +293,7 @@ describe('the title is said once, and the optional mock is not a checklist row',
     mount(<Today />);
     // One required step; the mock is not a step.
     expect(byTestID('plan-steps')[0].findAll((n) => typeof n.type === 'string' && n.props.accessible === true)).toHaveLength(1);
+    expect(byTestID('first-five-progress')).toHaveLength(0);
     expect(allText()).toContain('Also today');
     expect(allText()).toContain('Optional this week · about 80 min Mini mock');
     const caption = root().findAll((n) => typeof n.props.accessibilityLabel === 'string' && /^Today’s plan/.test(n.props.accessibilityLabel))[0];

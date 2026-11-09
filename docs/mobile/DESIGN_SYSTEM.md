@@ -2229,3 +2229,9 @@ Built from `design-notes/grove/phase4b/PHASE4B.md` 4.12 and 5.7 ("Web B, the lin
 - **You's plant card:** growth wording, the six-growth strip in the real species art for reached growths and dashed `--hero-leaf-line` squares for the rest, and one row to Your plant. The count shows once per screen (the chip below 1240px, the card line from 1240px).
 - **Badges on the web:** "Badges", "Labelled the day you earn them.", three empty dashed `--leaf-line` mounts (aria-hidden, always three, never art), "Nothing here yet", "Badges are earned in the phone app for now." and the app link at 44px. Never a count.
 
+
+### Today dashboard refinement (9 Nov 2026)
+
+The approved Today brief supersedes the older ring-first header and companion entries above. The plant remains retired. Today opens with the local greeting/date, a compact Settings control, and the existing exam date/countdown or a Set a target action. Today's plan remains first: its saved calculations and start/resume routes are unchanged. The first five show their real remaining count, no-timer wording, and five progress segments; first-time learners see no analytics grid.
+
+After the study/resume content, returning learners can see up to two real progress counts, a seven-day study-date visualization, and the five certification domains. Weekly bars are binary recorded study days, never question volumes or hours; they remain hidden in exam week, on welcome-back days, and when this week has no activity. Domain figures use the established weighted latest-try measure and 30-answer evidence gate. At most two quiet suggestions reuse the existing next lesson and focus domain. The Help shape KaiSip card stays secondary near the bottom and uses the existing feedback eligibility, workflow and durable preferences. All additions use Grove tokens, reflow at large text, and add no continuous animation. See [Today dashboard review](TODAY_DASHBOARD.md) for metric sources and validation evidence.

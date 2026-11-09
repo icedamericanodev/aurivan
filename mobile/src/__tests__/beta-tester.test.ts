@@ -63,6 +63,12 @@ describe('the schedule: days 1–2, 3, 5, 7, 9, 12, 14', () => {
     expect(map).toEqual(['expect', 'expect', 'size', null, 'doubt', null, 'week1', null, 'skip', null, null, 'change', null, 'week2', null, null]);
   });
 
+  it('uses the requested expectation wording in the card and existing email', () => {
+    const c = card(ON, 1, studied(1))!;
+    expect(c.body).toBe("What's one thing you expected KaiSip to do differently?");
+    expect(testerEmail(c, APP).body).toContain(c.body);
+  });
+
   it('shows the day’s question, and nothing after day 14', () => {
     expect(card(ON, 1, studied(1))?.id).toBe('expect');
     expect(card(ON, 3)?.body).toMatch(/too long, about right, or too short/);

@@ -17,6 +17,8 @@ Owner requirement recorded 9 Nov 2026: the next Android App Bundle must have ver
 
 ## Work in progress
 
+- Today dashboard: draft review adds explicit first-five progress, recorded study-day activity, existing CISA domain indicators, deterministic next actions, and the refined Help shape KaiSip prompt. Planner, saved progress and tester preferences are preserved; plant UI remains retired. See `TODAY_DASHBOARD.md` for data sources and acceptance evidence. This is not a release or an authorized merge; final bundle inventory must reconcile the current main version separately.
+
 - FB-005: explicit Android folder-picker backup save implemented alongside sharing; 32 focused tests and independent review passed. Native folder-picker opening and cancellation verified on the Android emulator; local Documents provider write/restore acceptance passed on the isolated Android emulator; no real files created or overwritten.
 
 - FB-004: scoped durable reset and onboarding return implemented; cancellation, confirmation, restart, failure, duplicate-action and unrelated-data tests passed. Independent review clear; integrated check and Android export passed. No emulator progress was reset.

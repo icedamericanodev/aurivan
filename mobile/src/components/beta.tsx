@@ -4,9 +4,9 @@
  * Plain English for the founder:
  * - `TesterQuestionCard`: only for learners who turned on "I'm a beta tester"
  *   in Help. One short question on some test days (engine/betaTester.ts has
- *   the schedule). "Answer by email" opens the learner's own email app with
+ *   the schedule). "Share feedback" opens the learner's own email app with
  *   the question filled in; nothing is sent until they press Send there.
- *   "Not today" hides it until tomorrow. On the week check-ins it shows "You
+ *   "Maybe later" hides it until tomorrow. On the week check-ins it shows "You
  *   studied on N of the last 7 days", on this screen only (never in the email).
  *   No badge, no plant growth, no streak for answering.
  * - `NameAskCard`: onboarding no longer asks for a name. This card asks once,
@@ -28,10 +28,10 @@ import { useSettings } from '../store/settings';
 import { space } from '../theme/tokens';
 import { useTheme } from '../theme/useTheme';
 import { DisplayNameField } from './displayName';
-import { Check, ICON_STROKE, UserRound } from './icons';
+import { Check, ICON_STROKE, MessagesSquare, UserRound } from './icons';
 import { Button, Card, ICON_SIZE, IconCircle, Row, T } from './ui';
 
-/** What the card shows after "Answer by email" (for this visit). */
+/** What the card shows after "Share feedback" (for this visit). */
 type Sent = 'idle' | 'opened' | 'failed';
 
 export function TesterQuestionCard({
@@ -40,7 +40,7 @@ export function TesterQuestionCard({
   onGone,
 }: {
   card: TesterCard;
-  /** Today's local day ("YYYY-MM-DD"), for "Not today". */
+  /** Today's local day ("YYYY-MM-DD"), for "Maybe later". */
   today: string;
   /** The card went away under the focused button: move screen-reader focus somewhere that still exists. */
   onGone?: () => void;
@@ -83,10 +83,19 @@ export function TesterQuestionCard({
         if (e.nativeEvent.actionName === 'stop') stop();
       }}
     >
-      {/* An L1 plate: an invitation, not a choice (spec §5 rule 3). */}
-      <Card variant="plate" style={{ gap: space.sm }}>
-        <T v="caption" color={c.accentText} accessibilityRole="header">{card.caption}</T>
-        <T v="body">{card.body}</T>
+      {/* A quiet invitation below the plan; the card itself is not a touch target. */}
+      <Card variant="plate" style={{ gap: space.md, borderWidth: 1, borderColor: c.line, padding: space.lg }}>
+        <View style={{ flexDirection: 'row', alignItems: 'flex-start', gap: space.md }}>
+          <View accessibilityElementsHidden importantForAccessibility="no-hide-descendants">
+            <IconCircle><MessagesSquare size={ICON_SIZE.row} color={c.accentText} strokeWidth={ICON_STROKE} /></IconCircle>
+          </View>
+          <View style={{ flex: 1, minWidth: 0, gap: space.xs }}>
+            <T v="label" accessibilityRole="header">Help shape KaiSip</T>
+            {/* Preserve the scheduled check-in context without replacing the section heading. */}
+            {card.caption !== 'Tester question' && <T v="meta" color={c.ink2}>{card.caption}</T>}
+          </View>
+        </View>
+        <T v="small">{card.body}</T>
         {/* Never "You studied on 0 of the last 7 days" (review 1.41): the line is left out at 0. */}
         {card.studiedOfLast7 !== undefined && card.studiedOfLast7 > 0 && (
           // On screen only: the email never carries it.
@@ -112,8 +121,8 @@ export function TesterQuestionCard({
           </View>
         ) : (
           <Row gap={space.sm} style={{ flexWrap: 'wrap', marginTop: space.xs }}>
-            <Button kind="secondary" label="Answer by email" accessibilityHint="Opens your email app with this question. Nothing is sent until you press Send." onPress={answer} />
-            <Button kind="ghost" label="Not today" accessibilityLabel="Not today, hide this question" onPress={notToday} />
+            <Button kind="secondary" label="Share feedback" style={{ maxWidth: '100%' }} accessibilityHint="Opens your email app with this question. Nothing is sent until you press Send." onPress={answer} />
+            <Button kind="ghostNeutral" label="Maybe later" style={{ maxWidth: '100%' }} accessibilityHint="Hides this question until tomorrow" onPress={notToday} />
           </Row>
         )}
         <T v="meta">Turn these off any time in Help.</T>

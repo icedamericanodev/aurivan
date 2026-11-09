@@ -52,7 +52,7 @@ export const AWAY_DAYS = 3;
 const MAX_ANSWERED = 40;
 
 export const TESTER_QUESTIONS: readonly Question[] = [
-  { id: 'expect', days: [1, 2], caption: 'Tester question', body: 'What did you expect KaiSip to do that it didn’t?' },
+  { id: 'expect', days: [1, 2], caption: 'Tester question', body: "What's one thing you expected KaiSip to do differently?" },
   { id: 'size', days: [3], caption: 'Tester question', body: 'Was today’s plan the right size for your day: too long, about right, or too short?' },
   {
     id: 'doubt',

@@ -175,7 +175,7 @@ await shot('m06-help-beta-switch');
 await edit(SEEN, `v.state.tester = { since: a };`, dk(now - 2 * DAY));
 await edit(P, `v.state.days = {};`);
 await go('/home', 2800);
-await into('Tester question', 'm07');
+await into('Help shape KaiSip', 'm07');
 await shot('m07-today-tester-question');
 
 // ── 7. The Week 1 check-in (day 7), with the study-day count ────────────

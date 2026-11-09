@@ -241,7 +241,7 @@ describe('J1 a new learner: onboarding, then an honest day 1', () => {
     // Mobile 1.24: no lesson first, no 20-question check, whatever the start and the minutes.
     expect(plan.items).toEqual([{ kind: 'practice', count: 5, label: 'Your first five', why: 'first' }]);
     expect(allText()).toContain('Your first five');
-    expect(allText()).toContain('5 questions, no timer');
+    expect(allText()).toContain('5 questions remaining · No timer');
     expect(allText()).not.toMatch(/\bcheck\b|diagnos/i);
     // No score and no empty tiles on day 1: nothing about the range until there is an answer.
     expect(allText()).not.toMatch(/Not yet|until your readiness range|for your first range/);

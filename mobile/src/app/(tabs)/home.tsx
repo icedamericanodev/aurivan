@@ -9,11 +9,11 @@ import { FieldText, headDate, KeyList, Plate, RunningHead } from '../../componen
 import {
   PlanCard,
   PlanSteps,
-  WeekTwig,
   type PlanStep,
 } from '../../components/groveToday';
-import { studyDaysWords, twigSpoken, twigStreak, twigWeek } from '../../engine/groveToday';
-import { todayTitle } from '../../engine/fieldGuide';
+import { twigWeek } from '../../engine/groveToday';
+import { firstFiveProgress } from '../../engine/todayDashboard';
+import { FirstFiveProgress, TodayDomains, TodayProgress, WeeklyActivity } from '../../components/todayDashboard';
 import { shortDate, spokenShortDate } from '../../lib/format';
 import { FirstRangePanel, SecondAskCard } from '../../components/firstSet';
 import { FitCard } from '../../components/fit';
@@ -42,6 +42,7 @@ import { ANNOUNCE_DELAY, moveFocus, sayLater } from '../../lib/a11y';
 import { greetingWithName } from '../../engine/displayName';
 import { useSettings } from '../../store/settings';
 import { runPlanItem, runShortSet } from '../../lib/actions';
+import { guardedStart, startFocusPractice } from '../../lib/sessions';
 import { firstSetLeftOf } from '../../lib/firstSet';
 import { firstSetIds, firstSetNextLine } from '../../content/firstSet';
 import { refreshReminders } from '../../lib/reminderSync';
@@ -445,8 +446,10 @@ export default function Today() {
 
   // Mobile 1.51: the countdown is the title, "Maya, 38 days to go" (with no date, "Good morning, Maya"). Read again
   // each render, so a name changed in Settings shows at once.
-  const titleText = todayTitle(j.daysLeft, displayName, new Date().getHours());
-  const headDay = headDate(now);
+  const titleText = greeting(new Date().getHours(), displayName);
+  // useJourney rolls over at local midnight even when Today stays open.
+  const todayAt = dayKey(now) === plan.day ? now : new Date(`${plan.day}T12:00:00`).getTime();
+  const headDay = headDate(todayAt);
   // The quiet line under the title: "CISA exam 6 Dec" (the countdown is the title), "No exam date set", "CISA exam today";
   // nothing after the exam (the plate asks how it went).
   const examLine =
@@ -498,30 +501,45 @@ export default function Today() {
   // This week's twig: the study days the streak keeps (the last 14, so the whole week), Monday first.
   // Not in exam week, and not on a welcome-back day (3 or more days away): those days keep one calm focus.
   const studyDays = [...(studyStreak.recentDays ?? []), ...(studyStreak.lastDay ? [studyStreak.lastDay] : [])];
-  const week = twigWeek(studyDays, now);
-  const studiedThisWeek = week.filter((d) => d.on).length;
+  const week = useMemo(() => twigWeek([...(studyStreak.recentDays ?? []), ...(studyStreak.lastDay ? [studyStreak.lastDay] : [])], todayAt), [studyStreak, todayAt]);
+  const openProgress = useCallback(() => router.push('/you'), []);
+  const openReadiness = useCallback(() => router.push('/readiness'), []);
   const awayNow = studyDaysAway(studyDays, plan.day);
-  const twigShown = !examWeekNow && awayNow < NAME_ASK_AWAY_DAYS;
-  const twigRight = twigStreak(j.progress.milestones?.days ?? 0, j.streak);
+  const dashboardShown = !firstNow && (answeredTotal > 0 || j.progress.lessonsDone.length > 0);
+  const activityShown = dashboardShown && !examWeekNow && awayNow < NAME_ASK_AWAY_DAYS;
+  const firstProgress = firstFiveProgress(firstSetIds(cert), j.progress.answers, active?.firstSet && active.certId === cert ? active.responses : {});
+  // Reuse the existing next lesson and weighted focus; do not create another recommendation engine.
+  // Exam week and paused sessions keep their existing single, calm path.
+  const suggestions = !dashboardShown || examWeekNow || resume ? [] : [
+    ...(j.upNext && !plan.items.some((item, i) => !plan.done[i] && item.kind === 'lesson' && item.lessonId === j.upNext!.id) ? [{
+      key: 'lesson', title: `Continue learning: ${j.upNext.title}`,
+      kicker: 'Your next unfinished lesson',
+      spoken: `Continue learning: ${j.upNext.title}. Your next unfinished lesson.`,
+      onPress: () => router.push({ pathname: '/lesson/[id]', params: { id: j.upNext!.id } }),
+    }] : []),
+    ...(j.focus && answeredTotal > 0 && !plan.items.some((item, i) => !plan.done[i] && item.kind === 'practice' && item.domainId === j.focus!.id) ? [{
+      key: 'focus', title: `Practice ${j.focus.short}`,
+      kicker: 'Where you’ll gain most, based on your answers',
+      spoken: `Practice ${j.focus.short}. Where you’ll gain most, based on your answers.`,
+      onPress: () => guardedStart(() => startFocusPractice(cert, j.focus!), () => router.push('/session')),
+    }] : []),
+  ].slice(0, 2);
   // The quiet line under the title: the exam's date. Short text (Sky, 5 Nov: nothing repeated on a
   // screen): this week's study days left this line, because the twig card says them whenever it shows.
   const subLine = examLine ?? '';
-  const subSpoken = examSpoken ?? '';
+  const subSpoken = `${examSpoken ?? ''}${j.daysLeft !== null && j.daysLeft > 0 ? `, ${j.daysLeft} ${j.daysLeft === 1 ? 'day' : 'days'} to go` : ''}`;
   return (
     // Mobile 1.44 (UX review H1): the name card has a text field, so the keyboard never covers it or Save.
     <Screen keyboard={nameVisit}>
       <View onTouchStart={live ? skipAll : undefined}>
       <Enter i={0}>
-        {/* Grove Phase 1: the head shows the day only (said in full). No book label, and no gear: Settings
-            is on You (its header button), and the exam date is one tap away in the hero's Exam date tile. */}
-        <RunningHead section={headDay.shown} sectionLabel={headDay.spoken} />
-        {/* One header stop that reads the whole title. A long name steps the title down to hero (above);
-            four lines is only a safety stop at the largest text sizes, never how a long name is handled. */}
+        {/* Date and Settings stay reachable without scrolling past the study plan. */}
+        <RunningHead section={headDay.shown} sectionLabel={headDay.spoken} action={{ label: 'Settings', boxed: true, onPress: () => router.push('/settings'), icon: (color) => <Settings size={ICON_SIZE.row} color={color} strokeWidth={ICON_STROKE} /> }} />
+        {/* A long name steps down to hero; text remains untruncated at large font sizes. */}
         <T
           v={titleStep}
           accessibilityRole="header"
           accessibilityLabel={titleText}
-          numberOfLines={4}
           onTextLayout={(e) => {
             if (titleStep === 'display' && e.nativeEvent.lines.length > 2) setLongTitle(titleText);
           }}
@@ -532,9 +550,10 @@ export default function Today() {
         {/* The exam's day and this week's study days on one quiet line (the streak itself is on the twig). */}
         {subLine ? (
           <T v="meta" num accessibilityLabel={subSpoken} style={{ marginTop: space.xs }}>
-            {subLine}
+            {subLine}{j.daysLeft !== null && j.daysLeft > 0 ? ` · ${j.daysLeft} ${j.daysLeft === 1 ? 'day' : 'days'} to go` : ''}
           </T>
         ) : null}
+        {j.daysLeft === null && <Button kind="ghost" label="Set a target" accessibilityHint="Opens Settings at your exam date" onPress={() => router.push({ pathname: '/settings', params: { open: 'exam-date' } })} style={{ alignSelf: 'flex-start', marginLeft: -space.sm }} />}
       </Enter>
 
       {moments.moment && (
@@ -598,7 +617,16 @@ export default function Today() {
               minutes={dayMinutes > 0 ? keepUnits(aboutMin(dayMinutes)) : undefined}
               spoken={`Today’s plan, ${dayMinutes > 0 ? `${spokenMin(aboutMin(dayMinutes, true))}, ` : ''}${doneCount} of ${countedDone(plan).length} done`}
             >
-              <PlanSteps steps={steps} />
+              {firstNow && firstProgress.total > 0 ? (
+                <View style={{ gap: space.md }}>
+                  <T v="title">Your first five.</T>
+                  <T v="meta">{`${firstProgress.left} ${firstProgress.left === 1 ? 'question' : 'questions'} remaining · No timer`}</T>
+                  <FirstFiveProgress done={firstProgress.done} total={firstProgress.total} />
+                </View>
+              ) : <>
+                <PlanSteps steps={steps} />
+                <T v="meta">{`${doneCount} of ${countedDone(plan).length} steps complete`}</T>
+              </>}
               <Button
                 shape="plate"
                 // Answers already banked on a step (the short set) mean the day has begun: Continue.
@@ -627,13 +655,6 @@ export default function Today() {
               )}
             </PlanCard>
           )}
-        </Enter>
-      )}
-
-      {twigShown && (
-        // This week's twig (owner decision: with the ring on every day, never one or the other).
-        <Enter i={2} style={{ marginTop: space.lg }}>
-          <WeekTwig week={week} streak={twigRight} spoken={twigSpoken(week)} studied={studiedThisWeek > 0 ? studyDaysWords(studiedThisWeek) : null} />
         </Enter>
       )}
 
@@ -775,6 +796,17 @@ export default function Today() {
               />
             </View>
           </>
+        )}
+        {dashboardShown && (
+          <View style={{ marginTop: space.xl, gap: space.lg }}>
+            <TodayProgress lessons={j.progress.lessonsDone.length} answered={answeredTotal} onOpen={openProgress} />
+            {activityShown && <WeeklyActivity week={week} />}
+            {answeredTotal > 0 && !showReady && <TodayDomains cert={j.cert} readiness={j.readiness} onOpen={openReadiness} />}
+            {suggestions.length > 0 && <View testID="today-suggestions">
+              <Section variant="head" title="Smart suggestions" />
+              <KeyList items={suggestions} />
+            </View>}
+          </View>
         )}
         {/* Mobile 1.24: the reminder ask's one second chance (the day the 3rd study day is done). */}
         {secondVisit && (
