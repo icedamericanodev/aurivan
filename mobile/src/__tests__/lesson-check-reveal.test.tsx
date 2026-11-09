@@ -19,6 +19,7 @@ import { setMockReducedMotion } from '../../jest/reanimated-mock';
 import { REVEAL_GAP, revealScrollY } from '../components/lesson';
 import { setSystemReducedMotionForTest } from '../components/motion';
 import { StickyFooter, Verdict } from '../components/quiz';
+import { TOPIC_CARD_INSET } from '../components/topicCard';
 import { CISA_LESSONS } from '../content/lessons/cisa';
 import { space } from '../theme/tokens';
 import { useProgress } from '../store/progress';
@@ -54,8 +55,8 @@ jest.mock('../lib/a11y', () => ({
 }));
 jest.mock('../lib/haptics', () => ({ haptic: { success: () => {}, selection: () => {}, error: () => {}, light: () => {} } }));
 
-/** The player's anchor line: every non-cover scene starts this far down the scroll content. */
-const ANCHOR = space.xxl + space.md;
+/** Check content starts after the player's anchor and the topic card inset. */
+const ANCHOR = space.xxl + space.md + TOPIC_CARD_INSET;
 /** A phone-ish scroll view and footer for the maths below. */
 const VIEWPORT = 700;
 const FOOTER = 100;

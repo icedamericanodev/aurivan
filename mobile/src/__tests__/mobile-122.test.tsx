@@ -33,6 +33,7 @@ import { NATIVE_FIGURE_IDS, nativeFigureFor, RecoveryTimeline } from '../compone
 import { AnswerRecap } from '../components/quiz';
 import { moreRowLabels } from '../../jest/answerMore';
 import { IconButton, PushedHeader, Screen } from '../components/ui';
+import { TOPIC_CARD_INSET } from '../components/topicCard';
 import { CISA_LESSONS } from '../content/lessons/cisa';
 import type { Scene } from '../content/lessons/types';
 import { findQuestion } from '../content/loader';
@@ -44,6 +45,7 @@ import { monthYear } from '../lib/format';
 import { startFromIds } from '../lib/sessions';
 import { selectCert, useProgress } from '../store/progress';
 import { useSession } from '../store/session';
+import { space } from '../theme/tokens';
 
 jest.mock('@react-native-async-storage/async-storage', () =>
   jest.requireActual('@react-native-async-storage/async-storage/jest/async-storage-mock'),
@@ -414,14 +416,16 @@ describe('note page: title collapse and reading to the end', () => {
     expect(allText()).not.toContain('IS Operations · 4B1');
     expect(allText()).toContain(`About ${findNote('cisa', '4B1.2')!.minutes} min read`);
     layoutAll({ y: 0, height: 100 });
-    scrollTo(50);
+    // The title's bottom includes the screen gutter and its new reading-card inset.
+    const titleEdge = space.lg + TOPIC_CARD_INSET + 100;
+    scrollTo(titleEdge);
     expect(header().props.showTitle).toBe(false);
-    scrollTo(300);
+    scrollTo(titleEdge + 1);
     expect(header().props.showTitle).toBe(true);
     // 8pt of hysteresis on the way back up.
-    scrollTo(110);
+    scrollTo(titleEdge - 7);
     expect(header().props.showTitle).toBe(true);
-    scrollTo(100);
+    scrollTo(titleEdge - 8);
     expect(header().props.showTitle).toBe(false);
     // The collapsed title never reaches a screen reader: it repeats the hero heading.
     const hidden = root().findByType(PushedHeader).findAll((n) => n.props.accessibilityElementsHidden === true && n.props.importantForAccessibility === 'no-hide-descendants');

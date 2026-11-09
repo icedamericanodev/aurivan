@@ -42,6 +42,7 @@ import { titleAcronyms } from '../../../engine/noteAcronyms';
 import { ReportRow } from '../../../components/support';
 import { Button, Enter, Gap, PushedHeader, Row, Screen, Tag, T, useFontScale } from '../../../components/ui';
 import { EmptyScreen } from '../../../components/emptyScreen';
+import { TopicCard, TOPIC_CARD_INSET } from '../../../components/topicCard';
 import { labForNote } from '../../../content/labs';
 import { lessonsForSubtopic } from '../../../content/lessons';
 import { findQuestion } from '../../../content/loader';
@@ -186,110 +187,113 @@ export default function NoteSubtopicScreen() {
       onJump={() => (dragged.current = false)}
       header={<PushedHeader title={note.name} showTitle={titleUnder} onBack={goBack} />}
     >
-      <Enter i={0}>
-        {/* The tag and the title: the header's title appears once this has scrolled under it. */}
-        <View onLayout={(e) => (titleBottom.current = space.lg + e.nativeEvent.layout.y + e.nativeEvent.layout.height)}>
-          {/* Mobile 1.43: words, not codes ("IS Operations · Business Impact Analysis"); the code stays in the source row. */}
-          <Tag domain={domain} numberOfLines={large ? undefined : 1} label={topic ? `${domain.short} · ${topic.name}` : domain.short} />
-          <T v="hero" accessibilityRole="header" style={{ marginTop: space.sm }}>{note.name}</T>
-        </View>
-        <View accessible accessibilityLabel={`${spokenMin(aboutMin(minutes))} to read${isRead ? '. Marked as read' : ''}`} style={{ marginTop: space.xs }}>
-          <Row gap={space.xs} style={{ flexWrap: 'wrap' }}>
-            <T v="meta">{readLine}</T>
-            {isRead && (
-              <>
-                <T v="meta">·</T>
-                <T v="meta" color={c.accentText}>Read</T>
-                {/* Marking it read draws the ✓ (motion.md M4: what changed); a note opened already read just shows it. */}
-                <CheckDraw play={justRead} size={14} color={c.accentText} strokeWidth={2.25} />
-              </>
-            )}
-          </Row>
-        </View>
-        {/* Mobile 1.43: the title's acronyms spelled out, before the reader needs them. */}
-        {acronyms ? (
-          <View style={{ marginTop: space.lg }}>
-            <AcronymPlate items={acronyms} />
+      <TopicCard testID="study-note-topic-card">
+        <Enter i={0}>
+          {/* The tag and the title: the header's title appears once this has scrolled under it. */}
+          <View onLayout={(e) => (titleBottom.current = space.lg + TOPIC_CARD_INSET + e.nativeEvent.layout.y + e.nativeEvent.layout.height)}>
+            {/* Mobile 1.43: words, not codes ("IS Operations · Business Impact Analysis"); the code stays in the source row. */}
+            <Tag domain={domain} numberOfLines={large ? undefined : 1} label={topic ? `${domain.short} · ${topic.name}` : domain.short} />
+            <T v="hero" accessibilityRole="header" style={{ marginTop: space.sm }}>{note.name}</T>
           </View>
-        ) : null}
-        <Gap h={space.xl} />
-      </Enter>
+          <View accessible accessibilityLabel={`${spokenMin(aboutMin(minutes))} to read${isRead ? '. Marked as read' : ''}`} style={{ marginTop: space.xs }}>
+            <Row gap={space.xs} style={{ flexWrap: 'wrap' }}>
+              <T v="meta">{readLine}</T>
+              {isRead && (
+                <>
+                  <T v="meta">·</T>
+                  <T v="meta" color={c.accentText}>Read</T>
+                  {/* Marking it read draws the ✓ (motion.md M4: what changed); a note opened already read just shows it. */}
+                  <CheckDraw play={justRead} size={14} color={c.accentText} strokeWidth={2.25} />
+                </>
+              )}
+            </Row>
+          </View>
+          {/* Mobile 1.43: the title's acronyms spelled out, before the reader needs them. */}
+          {acronyms ? (
+            <View style={{ marginTop: space.lg }}>
+              <AcronymPlate items={acronyms} />
+            </View>
+          ) : null}
+          <Gap h={space.xl} />
+        </Enter>
 
-      <Enter i={1}>
-        {/* Mobile 1.43: "In one line" leads; the lesson for this idea follows it. */}
-        <NoteBody
-          note={note}
-          lead={
-            lesson ? (
-              // Mobile 1.20: the lesson for this idea (Play = lessons). 1.22: its status in a kicker over its own title.
-              // Premium round 2 (Field Guide foundation): an index row between hairlines, no icon circle.
-              <View style={{ marginTop: space.lg, borderTopWidth: 1, borderBottomWidth: 1, borderColor: c.line }}>
-                <KeyList
-                  numbered={false}
-                  items={[
-                    {
-                      key: lesson.id,
-                      kicker: `Lesson · ${lesson.minutes} min · ${lessonDone ? 'Done' : 'Not done yet'}`,
-                      title: lesson.title,
-                      spoken: `Lesson: ${lesson.title}, ${lesson.minutes} minutes, ${lessonDone ? 'done' : 'not done yet'}`,
-                      hint: 'Opens the short lesson on this topic',
-                      onPress: () => router.push(`/lesson/${lesson.id}`),
-                    },
-                  ]}
-                />
-              </View>
-            ) : null
-          }
-        />
-      </Enter>
-
-      {/* The ending: one primary, one quiet row, the source row (design spec §3.9). */}
-      <View onLayout={(e) => (endTop.current = e.nativeEvent.layout.y)} style={{ marginTop: space.xxl }}>
-        {n > 0 && (
-          // The helper line sits right under its button, so they read as one.
-          <View style={{ gap: space.xs }}>
-            <Button
-              label="Practice this concept"
-              accessibilityHint={`Starts a practice set on ${note.name} and marks this note as read`}
-              onPress={practiseConcept}
-            />
-            <T v="meta" center>
-              {`${n} ${n === 1 ? 'question' : 'questions'} on this idea. Your answers count toward your progress.`}
-            </T>
-          </View>
-        )}
-        {lab && <Button kind="ghost" label="Explore in Concept Lab" accessibilityHint={lab.title} onPress={() => router.push(`/labs/${lab.id}`)} style={{ marginTop: space.md }} />}
-        {next && (
-          <View style={{ marginTop: n > 0 ? space.xl : 0 }}>
-            <KeyList
-              numbered={false}
-              items={[
-                {
-                  key: next.id,
-                  kicker: 'Next note',
-                  title: next.name,
-                  spoken: `Next note: ${next.name}`,
-                  hint: 'Opens the next note in this domain',
-                  onPress: () => router.replace(`/notes/subtopic/${encodeURIComponent(next.id)}`),
-                },
-              ]}
-            />
-          </View>
-        )}
-        {/* Report a problem with this note (mobile 1.7), and the read toggle (1.22). Notes carry no review date. */}
-        <View style={{ marginTop: next ? space.xs : space.xl }}>
-          <ReportRow
-            certId={cert.id}
-            meta={`Code ${note.id}`}
-            action={{
-              label: isRead ? 'Mark as not read' : 'Mark as read',
-              hint: isRead ? 'Your study notes will show this note as not read' : 'Saves that you have read this note',
-              onPress: () => markRead(!isRead),
-            }}
-            target={{ kind: 'note', id: note.id, name: note.name, where: 'Study note' }}
+        <Enter i={1}>
+          {/* Mobile 1.43: "In one line" leads; the lesson for this idea follows it. */}
+          <NoteBody
+            note={note}
+            lead={
+              lesson ? (
+                // Mobile 1.20: the lesson for this idea (Play = lessons). 1.22: its status in a kicker over its own title.
+                // Premium round 2 (Field Guide foundation): an index row between hairlines, no icon circle.
+                <View style={{ marginTop: space.lg, borderTopWidth: 1, borderBottomWidth: 1, borderColor: c.line }}>
+                  <KeyList
+                    numbered={false}
+                    items={[
+                      {
+                        key: lesson.id,
+                        kicker: `Lesson · ${lesson.minutes} min · ${lessonDone ? 'Done' : 'Not done yet'}`,
+                        title: lesson.title,
+                        spoken: `Lesson: ${lesson.title}, ${lesson.minutes} minutes, ${lessonDone ? 'done' : 'not done yet'}`,
+                        hint: 'Opens the short lesson on this topic',
+                        onPress: () => router.push(`/lesson/${lesson.id}`),
+                      },
+                    ]}
+                  />
+                </View>
+              ) : null
+            }
           />
+        </Enter>
+
+        {/* The ending: one primary, one quiet row, the source row (design spec §3.9). */}
+        {/* This ending is now inside the card: include its inset and the screen's top gutter. */}
+        <View onLayout={(e) => (endTop.current = space.lg + TOPIC_CARD_INSET + e.nativeEvent.layout.y)} style={{ marginTop: space.xxl }}>
+          {n > 0 && (
+            // The helper line sits right under its button, so they read as one.
+            <View style={{ gap: space.xs }}>
+              <Button
+                label="Practice this concept"
+                accessibilityHint={`Starts a practice set on ${note.name} and marks this note as read`}
+                onPress={practiseConcept}
+              />
+              <T v="meta" center>
+                {`${n} ${n === 1 ? 'question' : 'questions'} on this idea. Your answers count toward your progress.`}
+              </T>
+            </View>
+          )}
+          {lab && <Button kind="ghost" label="Explore in Concept Lab" accessibilityHint={lab.title} onPress={() => router.push(`/labs/${lab.id}`)} style={{ marginTop: space.md }} />}
+          {next && (
+            <View style={{ marginTop: n > 0 ? space.xl : 0 }}>
+              <KeyList
+                numbered={false}
+                items={[
+                  {
+                    key: next.id,
+                    kicker: 'Next note',
+                    title: next.name,
+                    spoken: `Next note: ${next.name}`,
+                    hint: 'Opens the next note in this domain',
+                    onPress: () => router.replace(`/notes/subtopic/${encodeURIComponent(next.id)}`),
+                  },
+                ]}
+              />
+            </View>
+          )}
+          {/* Report a problem with this note (mobile 1.7), and the read toggle (1.22). Notes carry no review date. */}
+          <View style={{ marginTop: next ? space.xs : space.xl }}>
+            <ReportRow
+              certId={cert.id}
+              meta={`Code ${note.id}`}
+              action={{
+                label: isRead ? 'Mark as not read' : 'Mark as read',
+                hint: isRead ? 'Your study notes will show this note as not read' : 'Saves that you have read this note',
+                onPress: () => markRead(!isRead),
+              }}
+              target={{ kind: 'note', id: note.id, name: note.name, where: 'Study note' }}
+            />
+          </View>
         </View>
-      </View>
+      </TopicCard>
     </Screen>
   );
 }

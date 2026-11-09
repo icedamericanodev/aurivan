@@ -36,11 +36,13 @@ import { ICON_STROKE, Maximize2, X } from './icons';
 import { tween, useMotion, useScreenFocus } from './motion';
 import { nativeFigureFor, NativeFigureView } from './noteFigures';
 import { BigNum, Card, Gap, IconButton, ICON_SIZE, Section, T, useFontScale, useScreenScroll } from './ui';
+import { useTopicCardWidth } from './topicCard';
 
 /** Content column: screen minus the 20pt gutters, never wider than 560 (spec §2). */
 export function useColumnWidth(): number {
   const { width } = useWindowDimensions();
-  return Math.min(width - space.gutter * 2, 560);
+  const cardWidth = useTopicCardWidth();
+  return Math.min(cardWidth ?? width - space.gutter * 2, 560);
 }
 
 // ── Small pieces ───────────────────────────────────────────────────────

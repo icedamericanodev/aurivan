@@ -36,7 +36,7 @@
  * moves to the verdict (components/lesson.tsx), as on the practice screen.
  */
 import { router, useLocalSearchParams } from 'expo-router';
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
 import { ScrollView, useWindowDimensions, View } from 'react-native';
 import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -46,6 +46,7 @@ import { revealScrollY, SceneView, type RevealBox } from '../../components/lesso
 import { Celebrate, PageTurn, useCelebration, useMotion } from '../../components/motion';
 import { StickyFooter } from '../../components/quiz';
 import { useReportFlow } from '../../components/support';
+import { TopicCard, TOPIC_CARD_INSET } from '../../components/topicCard';
 import { Button, Gap, ICON_SIZE, IconButton, PushedHeader, Row, SegmentBar, T, useFontScale } from '../../components/ui';
 import { domainColor, getCertification } from '../../content/certifications';
 import { findQuestion } from '../../content/loader';
@@ -254,11 +255,12 @@ export default function LessonPlayer() {
   // cover and Lesson complete keep the closer 24 (a forest panel and a moment, not a page of text).
   const anchor = showingDone || scene.type === 'title' ? space.xl : ANCHOR;
   // Mobile 1.37: a check was answered and its verdict + explanation laid out. The scene starts
-  // `anchor` below the top of the scroll content (the page turn adds no offset), so add it to
+  // `anchor` plus the topic card inset below the scroll content, so add both to
   // get scroll positions, then scroll just enough to show the explanation above the bar.
   const revealAnswer = (box: RevealBox) => {
+    const sceneTop = anchor + TOPIC_CARD_INSET;
     const y = revealScrollY(
-      { top: anchor + box.top, bottom: anchor + box.bottom, ...(box.pick === undefined ? {} : { pick: anchor + box.pick }), ...(box.lead ? { lead: true } : {}) },
+      { top: sceneTop + box.top, bottom: sceneTop + box.bottom, ...(box.pick === undefined ? {} : { pick: sceneTop + box.pick }), ...(box.lead ? { lead: true } : {}) },
       viewportH.current,
       footerH,
       scrollY.current,
@@ -343,18 +345,20 @@ export default function LessonPlayer() {
               // Mobile 1.43: every scene starts on the anchor line (design spec §4.2; 1.39's centring of short
               // scenes is undone: it floated them a third of the way down and broke the shared line).
               <View style={{ flexGrow: 1, justifyContent: 'flex-start' }}>
-                <SceneView
-                  scene={lesson.scenes[index]}
-                  lesson={lesson}
-                  onCheck={(_ok, letter) => {
-                    setChecked(true);
-                    setPicked(letter);
-                  }}
-                  onReveal={revealAnswer}
-                  perm={perms[index]}
-                  art={`branch${toneIndex % 5}` as BotanyKind}
-                  tone={domainColor(toneIndex, true)}
-                />
+                <LessonSceneCard scene={lesson.scenes[index]}>
+                  <SceneView
+                    scene={lesson.scenes[index]}
+                    lesson={lesson}
+                    onCheck={(_ok, letter) => {
+                      setChecked(true);
+                      setPicked(letter);
+                    }}
+                    onReveal={revealAnswer}
+                    perm={perms[index]}
+                    art={`branch${toneIndex % 5}` as BotanyKind}
+                    tone={domainColor(toneIndex, true)}
+                  />
+                </LessonSceneCard>
                 {/* Mobile 1.49 (premium pass §5.4): no "Report a problem" row in a check's body; the
                     header's flag reports every scene. The calm note after a report's email app opened
                     still shows under an answered check. */}
@@ -404,6 +408,11 @@ export default function LessonPlayer() {
       {report.sheet}
     </SafeAreaView>
   );
+}
+
+/** Keep the existing cover; give each learning scene one bounded reading surface. */
+function LessonSceneCard({ scene, children }: { scene: Lesson['scenes'][number]; children: ReactNode }) {
+  return scene.type === 'title' ? <>{children}</> : <TopicCard testID="lesson-topic-card">{children}</TopicCard>;
 }
 
 /**

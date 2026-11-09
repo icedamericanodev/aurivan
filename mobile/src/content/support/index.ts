@@ -59,6 +59,11 @@ export function whatsNewFor(updatesOn: boolean, list: readonly WhatsNewEntry[] =
 /** Newest first. The first entry must match app.json (a test checks it). */
 export const WHATS_NEW: readonly WhatsNewEntry[] = [
   {
+    version: '2.3.0',
+    date: '2026-11-09',
+    improved: ['Read each topic in a clear card, with its explanation and related actions together.'],
+  },
+  {
     version: '2.2.0',
     date: '2026-11-09',
     improved: [
