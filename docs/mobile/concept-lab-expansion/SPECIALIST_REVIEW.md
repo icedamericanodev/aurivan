@@ -30,3 +30,9 @@ npm test -- --runInBand src/__tests__/conceptLabExpansion.test.ts src/__tests__/
 Both the initial corrected-code run and final-source rerun passed: **2 suites, 11 tests**. Final local output: `/tmp/specialist-lab-final-tests.log`.
 
 **No further blocking code/content finding in the reviewed scope. Conditional acceptance for a draft PR:** require the implementation team's full automated gates and visual QA, plus owner review. Native Android TalkBack, native 200% font scale, VoiceOver and lower-end device performance were not tested by this reviewer; browser or source review cannot establish those outcomes. This review authorizes no merge, deployment, OTA publication or production package upload.
+
+## Topic-card design correction
+
+Development review correctly identified that the earlier combined checks did not prove the new labs inherited #242's layout. The expansion renderer was separate from the pilot route. This is now corrected using the exact `TopicCard` component from #242 head `3ce4bec` (blob `151d7157114c98b21a3934e65b498ddd47ca2227`). Each expansion stage is one continuous surface; internal sections use dividers and no nested `HubCard`s.
+
+Independent source review verified stable state/reset/heading and scroll refs, separate accessible controls, and byte-identical shared source. The independent screen suite passed 24 tests. Visual inspection covered light Experiment/Apply, light enlarged controls, and dark BIA/Apply captures: consistent surfaces, readable wrapping, no visible clipping in the inspected views. No design-parity blocker remains. This supersedes the earlier merge-compatibility-only assessment; native accessibility remains unverified.

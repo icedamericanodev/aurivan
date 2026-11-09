@@ -17,7 +17,8 @@ import { openSessionFromStack } from '../lib/actions';
 import { space } from '../theme/tokens';
 import { useTheme } from '../theme/useTheme';
 import { Button, PushedHeader, Screen, T } from './ui';
-import { CardHead, HubCard, PageTitle } from './groveHub';
+import { CardHead, CardDivider, PageTitle } from './groveHub';
+import { TopicCard } from './topicCard';
 import { LabChoice } from './conceptLab';
 
 const stages = ['Explore', 'Experiment', 'Apply'] as const;
@@ -44,51 +45,53 @@ export function ExpansionLabScreen({ lab }: { lab: ExpansionLab }) {
     <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: space.xs, marginVertical: space.lg }}>
       {stages.map((name, i) => <Button key={name} kind="ghost" label={`${i + 1}. ${name}`} selected={stage === i} onPress={() => setStage(i)} />)}
     </View>
-    <View style={{ gap: space.lg }}>
-      <View ref={heading} accessible accessibilityRole="header" accessibilityLabel={`Part ${stage + 1} of 3. ${stages[stage]}`}><T v="title">{`Part ${stage + 1} · ${stages[stage]}`}</T></View>
-      {stage === 0 && <>
-        <T v="body">{lab.objective}</T>
-        {lab.explore.map(p => <T key={p} v="body">{p}</T>)}
-        <Panel title="Your workplace scenario"><T v="body">{lab.scenario}</T>{lab.interaction === 'authority-mapping' && <T v="label">Flawed draft assignments — correct these in Experiment</T>}<ModelPreview lab={lab} /></Panel>
-      </>}
-      {/* Keep the experiment mounted across stages so a learner can compare their decisions. */}
-      <View style={{ display: stage === 1 ? 'flex' : 'none', gap: space.lg }}>
-        <Panel title="Your challenge"><T v="body">{lab.challenge}</T></Panel>
-        <Experiment key={`${lab.id}:${attempt}`} lab={lab} />
-        <Button kind="ghost" label="Reset scenario" onPress={() => { setAttempt(n => n + 1); sayLater('Scenario reset to its starting conditions.'); }} />
+    <TopicCard testID="lab-topic-card">
+      <View style={{ gap: space.lg }}>
+        <View ref={heading} accessible accessibilityRole="header" accessibilityLabel={`Part ${stage + 1} of 3. ${stages[stage]}`}><T v="title">{`Part ${stage + 1} · ${stages[stage]}`}</T></View>
+        {stage === 0 && <>
+          <T v="body">{lab.objective}</T>
+          {lab.explore.map(p => <T key={p} v="body">{p}</T>)}
+          <Section title="Your workplace scenario"><T v="body">{lab.scenario}</T>{lab.interaction === 'authority-mapping' && <T v="label">Flawed draft assignments — correct these in Experiment</T>}<ModelPreview lab={lab} /></Section>
+        </>}
+        {/* Keep the experiment mounted across stages so a learner can compare their decisions. */}
+        <View style={{ display: stage === 1 ? 'flex' : 'none', gap: space.lg }}>
+          <Section title="Your challenge"><T v="body">{lab.challenge}</T></Section>
+          <Experiment key={`${lab.id}:${attempt}`} lab={lab} />
+          <Button kind="ghost" label="Reset scenario" onPress={() => { setAttempt(n => n + 1); sayLater('Scenario reset to its starting conditions.'); }} />
+        </View>
+        {stage === 2 && <>
+          <T v="body">{lab.apply.scenario}</T>
+          {lab.apply.options.map((option, i) => <LabChoice key={option.text} text={option.text} selected={answer === i} onPress={() => { setAnswer(i); setChecked(false); }} />)}
+          <Button label="Check reasoning" disabled={answer === null} onPress={() => { setChecked(true); if (answer !== null) sayLater(lab.apply.options[answer].feedback); }} />
+          {checked && answer !== null && <Section title={answer === lab.apply.correctIndex ? 'Reasoning supported' : 'Review the evidence'}>
+            <T v="body">{lab.apply.options[answer].feedback}</T>
+            <Button kind="ghost" label="Try the application again" onPress={() => { setAnswer(null); setChecked(false); }} />
+          </Section>}
+          <Section title="Takeaway"><T v="body">{lab.takeaway}</T><T v="meta">Lab exploration does not record a practice answer, change readiness or complete a lesson.</T></Section>
+          <T v="title" accessibilityRole="header">Keep exploring</T>
+          {lesson?.certId === lab.certId && <Button kind="secondary" label="Read the related lesson" onPress={() => router.push(`/lesson/${lab.lessonId}`)} />}
+          {note && <Button kind="secondary" label="Open the related study note" onPress={() => router.push(`/notes/subtopic/${lab.noteId}`)} />}
+          {principles.map(p => <Button key={p.id} kind="secondary" label={`Read principle: ${p.title}`} onPress={() => router.push(`/principles/${p.id}`)} />)}
+          {practice.length > 0 && <Button kind="secondary" label="Practice this concept" accessibilityHint="Optional practice using existing questions. Answers count toward progress." onPress={() => guardedStart(() => startFromIds(lab.certId, practice, lab.title), openSessionFromStack)} />}
+          {lab.interaction === 'dependency-simulation' && <Button kind="secondary" label="Explore RTO versus RPO" onPress={() => router.push('/labs/cisa-lab-rto-rpo')} />}
+          <T v="meta">{`Original KaiSip scenario. Content review: ${lab.lastReviewed}. Source references:`}</T>
+          {lab.references.map(r => <T key={r.url} v="meta">{`${r.title}\n${r.section}\n${r.url}`}</T>)}
+        </>}
+        {stage < 2 && <Button label={stage === 0 ? 'Try the experiment' : 'Apply your judgment'} onPress={() => setStage(stage + 1)} />}
       </View>
-      {stage === 2 && <>
-        <T v="body">{lab.apply.scenario}</T>
-        {lab.apply.options.map((option, i) => <LabChoice key={option.text} text={option.text} selected={answer === i} onPress={() => { setAnswer(i); setChecked(false); }} />)}
-        <Button label="Check reasoning" disabled={answer === null} onPress={() => { setChecked(true); if (answer !== null) sayLater(lab.apply.options[answer].feedback); }} />
-        {checked && answer !== null && <Panel title={answer === lab.apply.correctIndex ? 'Reasoning supported' : 'Review the evidence'}>
-          <T v="body">{lab.apply.options[answer].feedback}</T>
-          <Button kind="ghost" label="Try the application again" onPress={() => { setAnswer(null); setChecked(false); }} />
-        </Panel>}
-        <Panel title="Takeaway"><T v="body">{lab.takeaway}</T><T v="meta">Lab exploration does not record a practice answer, change readiness or complete a lesson.</T></Panel>
-        <T v="title" accessibilityRole="header">Keep exploring</T>
-        {lesson?.certId === lab.certId && <Button kind="secondary" label="Read the related lesson" onPress={() => router.push(`/lesson/${lab.lessonId}`)} />}
-        {note && <Button kind="secondary" label="Open the related study note" onPress={() => router.push(`/notes/subtopic/${lab.noteId}`)} />}
-        {principles.map(p => <Button key={p.id} kind="secondary" label={`Read principle: ${p.title}`} onPress={() => router.push(`/principles/${p.id}`)} />)}
-        {practice.length > 0 && <Button kind="secondary" label="Practice this concept" accessibilityHint="Optional practice using existing questions. Answers count toward progress." onPress={() => guardedStart(() => startFromIds(lab.certId, practice, lab.title), openSessionFromStack)} />}
-        {lab.interaction === 'dependency-simulation' && <Button kind="secondary" label="Explore RTO versus RPO" onPress={() => router.push('/labs/cisa-lab-rto-rpo')} />}
-        <T v="meta">{`Original KaiSip scenario. Content review: ${lab.lastReviewed}. Source references:`}</T>
-        {lab.references.map(r => <T key={r.url} v="meta">{`${r.title}\n${r.section}\n${r.url}`}</T>)}
-      </>}
-      {stage < 2 && <Button label={stage === 0 ? 'Try the experiment' : 'Apply your judgment'} onPress={() => setStage(stage + 1)} />}
-    </View>
+    </TopicCard>
   </Screen>;
 }
 
-function Panel({ title, children }: { title: string; children: ReactNode }) {
-  return <HubCard style={{ gap: space.md, paddingBottom: space.md }}><CardHead title={title} />{children}</HubCard>;
+function Section({ title, children }: { title: string; children: ReactNode }) {
+  return <View style={{ gap: space.md }}><CardDivider /><CardHead title={title} />{children}</View>;
 }
 function Feedback({ summary, findings }: { summary: string; findings: readonly string[] }) {
-  return <Panel title="What your decisions change">
+  return <Section title="What your decisions change">
     <View testID="expansion-outcome" accessibilityLiveRegion="polite" style={stack}><T v="label">{summary}</T>
       {findings.map((f, i) => <T key={`${i}:${f}`} v="body">{f}</T>)}
     </View>
-  </Panel>;
+  </Section>;
 }
 function NumberControl({ label, value, min = 0, max, step = 1, onChange, unit = '' }: { label: string; value: number; min?: number; max: number; step?: number; unit?: string; onChange: (value: number) => void }) {
   return <View style={stack}>
@@ -138,11 +141,11 @@ function Roles({ config }: { config: RoleConfig }) {
   const result = evaluateRoles(assignments, review, config);
   return <View style={{ gap: space.lg }}>
     <Feedback {...result} />
-    <Panel title="Assign purchasing duties">
+    <Section title="Assign purchasing duties">
       {config.duties.map((d, i) => <Assignment key={d} label={d} choices={config.people} value={assignments[i]} onChange={value => setAssignments(a => a.map((old, j) => j === i ? value : old))} />)}
       <Toggle label="Add an independent detective review" value={review} onChange={setReview} />
       <T v="meta">The assigned transaction reviewer examines exception reports and supporting evidence. To be independent, that person must have no other purchasing duty. Detective review may reduce exposure; it does not prevent the transaction.</T>
-    </Panel>
+    </Section>
   </View>;
 }
 function Risk({ config }: { config: RiskConfig }) {
@@ -153,23 +156,23 @@ function Risk({ config }: { config: RiskConfig }) {
   const result = evaluateRisk(areas, selected, budget);
   return <View style={{ gap: space.lg }}>
     <Feedback {...result} />
-    <Panel title="Your audit resources"><NumberControl label="Available audit hours" value={budget} max={200} step={10} unit="hours" onChange={setBudget} /><T v="meta">Educational scoring model: compare assumptions and mandatory coverage as well as scores. Selection proposes a plan; the charter-designated authority must approve the plan.</T><T v="label">{`${result.hours} / ${budget} hours allocated`}</T></Panel>
-    {areas.map((a, i) => <Panel key={a.name} title={a.name}>
+    <Section title="Your audit resources"><NumberControl label="Available audit hours" value={budget} max={200} step={10} unit="hours" onChange={setBudget} /><T v="meta">Educational scoring model: compare assumptions and mandatory coverage as well as scores. Selection proposes a plan; the charter-designated authority must approve the plan.</T><T v="label">{`${result.hours} / ${budget} hours allocated`}</T></Section>
+    {areas.map((a, i) => <Section key={a.name} title={a.name}>
       <T v="label">{`Educational priority: ${result.scores[i]} · Cost: ${a.hours} hours`}</T>
       <Toggle label={`Include ${a.name}`} value={selected[i]} onChange={value => setSelected(s => s.map((old, j) => j === i ? value : old))} />
       <Button kind="ghost" label={`Adjust ${a.name} assumptions`} expanded={editing === i} onPress={() => setEditing(old => old === i ? null : i)} />
       {editing === i && (['impact', 'likelihood', 'control', 'incidents'] as const).map(key => <NumberControl key={key} label={`${a.name} ${key === 'control' ? 'control effectiveness' : key === 'incidents' ? 'prior incidents' : key === 'impact' ? 'business impact' : 'threat likelihood'}`} value={a[key]} min={key === 'incidents' || key === 'control' ? 0 : 1} max={key === 'control' ? 4 : 5} onChange={value => setAreas(old => old.map((area, j) => j === i ? { ...area, [key]: value } : area))} />)}
       <Toggle label={`Mandatory coverage for ${a.name}`} value={a.mandatory} onChange={value => setAreas(old => old.map((area, j) => j === i ? { ...area, mandatory: value } : area))} />
-    </Panel>)}
+    </Section>)}
   </View>;
 }
 function Authority({ config }: { config: AuthorityConfig }) {
   const [assignments, setAssignments] = useState(() => [...config.initialAssignments]);
   const result = evaluateAuthority(assignments, config);
-  return <View style={{ gap: space.lg }}><Feedback {...result} /><Panel title="Map decision authority">
+  return <View style={{ gap: space.lg }}><Feedback {...result} /><Section title="Map decision authority">
     <T v="meta">Use this fictional company’s stated governance structure. Other organizations may delegate authority differently.</T>
     {config.decisions.map((d, i) => <Assignment key={d.label} label={d.label} choices={config.roles} value={assignments[i]} onChange={value => setAssignments(a => a.map((old, j) => j === i ? value : old))} />)}
-  </Panel></View>;
+  </Section></View>;
 }
 function Workflow({ config }: { config: WorkflowConfig }) {
   const [order, setOrder] = useState(() => [...config.initialOrder]);
@@ -180,8 +183,8 @@ function Workflow({ config }: { config: WorkflowConfig }) {
   }
   return <View style={{ gap: space.lg }}>
     <Feedback {...result} />
-    <Panel title="Choose the change procedure"><Toggle label="Use the documented emergency procedure" value={emergency} onChange={setEmergency} /><T v="meta">Move steps with the buttons; dragging is not required. Emergency handling can defer selected normal steps, with appropriate emergency authorization and subsequent review.</T></Panel>
-    <Panel title="Enabled workflow">
+    <Section title="Choose the change procedure"><Toggle label="Use the documented emergency procedure" value={emergency} onChange={setEmergency} /><T v="meta">Move steps with the buttons; dragging is not required. Emergency handling can defer selected normal steps, with appropriate emergency authorization and subsequent review.</T></Section>
+    <Section title="Enabled workflow">
       {order.map((id, i) => <View key={id} style={stack}>
         <T v="label">{`${i + 1}. ${config.steps[id]}`}</T>
         <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: space.sm }}>
@@ -192,7 +195,7 @@ function Workflow({ config }: { config: WorkflowConfig }) {
       </View>)}
       {!order.length && <T v="body">No steps enabled. Add a step below.</T>}
       {config.steps.map((step, i) => !order.includes(i) && <Button key={step} kind="secondary" label={`Add ${step}`} onPress={() => setOrder(old => [...old, i])} />)}
-    </Panel>
+    </Section>
   </View>;
 }
 function Dependencies({ config }: { config: DependencyConfig }) {
@@ -203,21 +206,21 @@ function Dependencies({ config }: { config: DependencyConfig }) {
   const result = evaluateDependencies(processes, restored, budget, duration, config);
   return <View style={{ gap: space.lg }}>
     <Feedback {...result} />
-    <Panel title="Illustrative recovery priority"><T v="body">{result.priorityOrder.map((index, rank) => `${rank + 1}. ${processes[index].name}`).join("\n")}</T><T v="meta">Criticality first, then modeled unserved financial exposure. Document business judgment, safety obligations and shared dependencies before deciding.</T></Panel>
-    <Panel title="Outage and recovery resources">
+    <Section title="Illustrative recovery priority"><T v="body">{result.priorityOrder.map((index, rank) => `${rank + 1}. ${processes[index].name}`).join("\n")}</T><T v="meta">Criticality first, then modeled unserved financial exposure. Document business judgment, safety obligations and shared dependencies before deciding.</T></Section>
+    <Section title="Outage and recovery resources">
       <NumberControl label="Interruption duration" value={duration} min={1} max={24} unit="hours" onChange={setDuration} />
       <NumberControl label="Recovery resource budget" value={budget} max={20} unit="units" onChange={setBudget} />
       <T v="label">{`${result.cost} / ${budget} resource units selected`}</T>
       <T v="meta">Compare a prospective period of disruption. A recovered service has zero unserved exposure for that period; recovery does not erase losses already incurred.</T>
       {config.systems.map((s, i) => <Toggle key={s.name} label={`Recover ${s.name} (${s.cost} units)`} value={restored[i]} onChange={value => setRestored(old => old.map((v, j) => j === i ? value : v))} />)}
-    </Panel>
-    {processes.map((p, i) => <Panel key={p.name} title={p.name}>
+    </Section>
+    {processes.map((p, i) => <Section key={p.name} title={p.name}>
       <T v="label">{result.available[i] ? 'Dependencies ready' : 'Waiting for dependencies'}</T>
       <T v="body">{`Prospective unserved exposure: $${result.impacts[i].toLocaleString()} for the next ${duration} hours under this recovery selection.`}</T>
       <NumberControl label={`${p.name} operational criticality`} value={p.criticality} min={1} max={5} onChange={value => setProcesses(old => old.map((v, j) => j === i ? { ...v, criticality: value } : v))} />
       <NumberControl label={`${p.name} hourly financial impact`} value={p.hourlyLoss} max={10000} step={500} unit="dollars" onChange={value => setProcesses(old => old.map((v, j) => j === i ? { ...v, hourlyLoss: value } : v))} />
       <T v="meta">Required supporting systems (keep at least one; all selected dependencies must be restored):</T>
       {config.systems.map((s, index) => <Toggle key={s.name} label={`${p.name} needs ${s.name}`} value={p.dependencies.includes(index)} onChange={value => { if (!value && p.dependencies.length === 1) { sayLater('Keep at least one supporting system. Add another dependency before removing this one.'); return; } setProcesses(old => old.map((v, j) => j === i ? { ...v, dependencies: value ? [...v.dependencies, index] : v.dependencies.filter(d => d !== index) } : v)); }} />)}
-    </Panel>)}
+    </Section>)}
   </View>;
 }

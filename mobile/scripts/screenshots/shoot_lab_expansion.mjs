@@ -35,6 +35,7 @@ try {
         style.textContent = 'div[dir="auto"] { zoom: 2; }'; document.head.append(style);
       });
       const save = async stage => {
+        if (await page.getByTestId('lab-topic-card').count() !== 1) throw new Error(`${id} must have one topic surface at ${stage}`);
         await page.screenshot({ path: `${out}/${id}-${stage}-${theme}-${scale}x.png` });
         const overflow = await page.evaluate(() => document.documentElement.scrollWidth > innerWidth + 1);
         if (overflow) throw new Error(`${id} horizontal overflow at ${scale}x ${stage}`);
@@ -81,7 +82,7 @@ try {
       await page.getByRole('button', { name: 'Try the application again', exact: true }).click();
       if (await page.getByRole('button', { name: 'Check reasoning', exact: true }).isEnabled()) throw new Error(`${id} failed retry`);
       if (await page.evaluate(() => localStorage.getItem('aurivan.progress.v1')) !== progressBefore) throw new Error(`${id} mutated progress`);
-      results.push({ id, theme, scale, offlineInteraction: 'passed', reset: 'passed', retry: 'passed', progressUnchanged: true });
+      results.push({ id, theme, scale, topicSurface: 'single shared card', offlineInteraction: 'passed', reset: 'passed', retry: 'passed', progressUnchanged: true });
     }
     await ctx.close();
   }

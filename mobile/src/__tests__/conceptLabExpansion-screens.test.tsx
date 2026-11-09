@@ -3,6 +3,8 @@ import { act, create, type ReactTestInstance, type ReactTestRenderer } from 'rea
 import { Dimensions } from 'react-native';
 import { router } from 'expo-router';
 import LabDetail from '../app/labs/[id]';
+import { TopicCard } from '../components/topicCard';
+import { HubCard } from '../components/groveHub';
 import { useSettings } from '../store/settings';
 import { useProgress } from '../store/progress';
 import { useSession } from '../store/session';
@@ -125,4 +127,26 @@ it('dependency controls keep at least one supporting system and explain the cons
   for (const system of process.dependencies) press(`✓ ${process.name} needs ${lab.config.systems[system].name}`);
   expect(text()).toMatch(/keep at least one/i);
   expect(outcome().length).toBeGreaterThan(20);
+});
+
+
+it.each(expansionLabs)('$id keeps every stage and its feedback in one shared topic surface', lab => {
+  mockParams = { id: lab.id }; mount(<LabDetail />);
+  const assertSurface = () => {
+    expect(r!.root.findAllByType(TopicCard)).toHaveLength(1);
+    expect(r!.root.findAllByType(HubCard)).toHaveLength(0);
+    const card = r!.root.findByType(TopicCard);
+    expect(card.props.testID).toBe('lab-topic-card');
+    // The surface must not group its interactive descendants into one accessibility element.
+    expect(card.props.accessible).not.toBe(true);
+    expect(card.props.accessibilityRole).toBeUndefined();
+    return card;
+  };
+  const surface = assertSurface();
+  for (const label of ['2. Experiment', '3. Apply', '1. Explore']) {
+    press(label); expect(assertSurface()).toBe(surface);
+  }
+  press('3. Apply'); press(lab.apply.options[lab.apply.correctIndex].text); press('Check reasoning');
+  expect(textOf(assertSurface())).toContain(lab.apply.options[lab.apply.correctIndex].feedback);
+  press('Try the application again'); assertSurface();
 });

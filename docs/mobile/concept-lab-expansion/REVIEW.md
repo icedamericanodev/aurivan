@@ -16,15 +16,15 @@ Related practice uses the existing guarded session starter, so optional real pra
 
 ## Validation record
 
-- Full `npm run check` passed: typecheck, ESLint, 362 Jest suites / 7,173 passed tests / 2 existing skips, and generated web-bundle checks. Aggregate Jest runtime was 301.643 seconds.
-- Focused pilot/expansion regression passed 89 tests initially. Final expanded content/UI suites passed 25 tests; engine/content specialist rerun passed 11 tests. See [specialist review](SPECIALIST_REVIEW.md).
+- Full `npm run check` passed: typecheck, ESLint, 362 Jest suites / 7,178 passed tests / 2 existing skips, and generated web-bundle checks. Aggregate Jest runtime was 270.707 seconds.
+- Final focused pilot/expansion regression passed 101 tests, including the topic-card layout checks. The independent screen rerun passed 24 tests; earlier engine/content specialist checks passed 11 tests. See [specialist review](SPECIALIST_REVIEW.md).
 - Final Android export passed, along with OFF-cloud bundle, release-channel, shared-source and size guards. Bundle: 11.40 MB / 14 MB; CISA content: 4.68 MB / 6 MB.
 - Repository health passed with a writable temporary npm cache. An initial attempt failed because npm tried to create its cache under the unavailable home path; no source change was needed. Expo telemetry was disabled to avoid the same home-directory issue during lint.
 - Browser QA passed 20 combinations (five labs × light/dark × normal/320px approximate 200% text), covering offline interaction, reset, retry and progress isolation. Zero browser page errors. Existing RTO/RPO light/dark browser regression passed, including drag/tap bounds and vertical-scroll protection.
 - [Screenshots and matrix](screenshots/README.md): 22 selected captures committed; 80 expansion captures plus 16 pilot captures generated locally. Visual inspection confirmed readable wrapped controls and scrollable enlarged text.
 - Public source and relevant study-link review is recorded in [SOURCES.md](SOURCES.md). Review corrected emergency testing order, governance-preview labeling, approval-authority wording, screen-reader value feedback, practice relevance and prospective BIA exposure wording.
 
-App-size/performance: approximately 46 KB of new uncompressed production TypeScript across content, engine and renderer, no new binary assets/dependencies. The measured final Android JavaScript bundle is 11.40 MB; this is not an APK/AAB size delta. Small bounded arrays are evaluated on control changes/render; no animation loops or network requests were added. Physical-device startup, frame timing and low-end responsiveness were not benchmarked.
+App-size/performance: approximately 47 KB of new uncompressed production TypeScript across content, engine and renderer, no new binary assets/dependencies. The measured final Android JavaScript bundle is 11.40 MB; this is not an APK/AAB size delta. Small bounded arrays are evaluated on control changes/render; no animation loops or network requests were added. Physical-device startup, frame timing and low-end responsiveness were not benchmarked.
 
 Native Android TalkBack, native 200% font scaling, VoiceOver, and lower-end device performance require a native device/emulator. Browser enlarged text is an approximation, not a substitute. No adb is available in this cloud environment.
 
@@ -48,6 +48,7 @@ Create a separate branch from the reviewed batch-1 baseline (stacked explicitly 
 - `mobile/src/content/labs/expansion.ts`
 - `mobile/src/engine/conceptLabExpansion.ts`
 - `mobile/src/components/conceptLabExpansion.tsx`
+- `mobile/src/components/topicCard.tsx`
 - `mobile/src/app/labs/[id].tsx`
 - `mobile/src/app/labs/index.tsx`
 - `mobile/src/app/(tabs)/learn.tsx`
@@ -61,3 +62,15 @@ Create a separate branch from the reviewed batch-1 baseline (stacked explicitly 
 - `mobile/scripts/screenshots/shoot_lab_expansion.mjs`
 
 Review documents and selected screenshots are under `docs/mobile/concept-lab-expansion/`.
+
+## Topic-card reconciliation after development review
+
+The initial integration tests at expansion `adb4d5b` and topic cards `3ce4bec` verified behavior and merge compatibility, but did **not** establish that all new labs inherited the topic-card layout. Development review correctly found that the expansion renderer still used separate nested `HubCard` sections while #242 changed only the recovery pilot route.
+
+The expansion now uses the exact shared `TopicCard` primitive from #242 (`3ce4beca2c8d836a10583697c35395dadc09bf44`), with one reading surface containing the current stage's explanation, controls, feedback and actions. Internal sections use dividers rather than nested cards. The component is copied byte-for-byte so #244 remains independently buildable and its eventual combination with #242 has identical shared source; no other #242 implementation, release setting or branch is brought into this PR.
+
+Regression coverage explicitly checks the shared surface in every stage of all five new labs, in addition to existing state preservation, reset, feedback and progress-isolation checks. Screenshots are refreshed for this layout. Native accessibility/performance remains pending as documented in `NATIVE_ACCEPTANCE.md`.
+
+Reconciliation validation: full `npm run check` passed **362 suites / 7,178 tests**, with 2 existing skips; typecheck, lint and generated web-asset checks passed. Focused lab checks passed 101 tests. Android export and cloud-OFF/size guards passed (11.40 MB / 14 MB; CISA 4.68 MB / 6 MB).
+
+A fresh temporary combination with topic cards `3ce4bec`, Today `e18cba4` and Mistake DNA `a8ad2a0` passed typecheck and **21 suites / 353 tests** (tree `8f7dc1d7724770d357a0ca62119a92ec6484c0e5`). All code combined automatically; only the known release-tracker note conflict required retaining both notes in the temporary checkout. No actual PR branches were merged. The earlier combined screenshots/tree were behavior evidence for the old layout and are not presented as evidence of this visual correction.
