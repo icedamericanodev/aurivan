@@ -1,23 +1,19 @@
 # Beta social posts (LinkedIn and Threads)
 
-Five ready-to-paste posts announcing the KaiSip beta, built around the Turning.
-Who the beta is for, and how to join: `marketing/BETA_PROGRAM.md` section 1.
+Five draft posts for the Android beta, built around the Turning. Recheck availability, the form link and the final media before posting. No publication is authorized by this pack.
+Who can join, applicable reward terms and registration: the live-form summary in `marketing/BETA_PROGRAM.md`; earlier registrants retain the conditions they received.
+
+**Reconciled 9 Nov 2026 with the owner decisions recorded on main.** The Android-only live form takes precedence over the earlier program plan; `docs/WEBSITE_DEPLOY.md` records that the public website is a landing page, not the study app.
 
 **Before you post:**
-- Replace `<BETA_FORM_URL>` with the Google Form link (Android testers and the iPhone waitlist both sign up there).
-- kaisip.com is already the right address.
-- Add **LinkedIn** to the form's "How did you find us?" choices (today it lists Instagram, Reddit, Threads, A friend, Other). Without it you can't tell which posts work.
+- Replace `<BETA_FORM_URL>` with the current Android registration form link and verify it opens. Do not add an iPhone waitlist or browser-study offer: those are paused.
+- Confirm the form's current discovery choices before relying on them for attribution.
+- Use “free to use during the beta”, never “free forever”. Ask for honest feedback without making it a new reward condition. Never request ratings or reviews in return for a reward.
+- Preserve the eligibility, benefit and activation terms each tester received. For current registrants, the recorded form offers 6 months of CISA premium content and mobile app study features only, with the six-month period starting when CISA access is activated after the qualifying 14 days; other certifications are excluded. Earlier registrants retain their own offered conditions. Do not replace these with a blanket “when Premium launches” promise.
+- If featuring a tester's words, disclose the incentive accurately for that tester. Check their applicable terms before drafting the disclosure; do not assume all testers have identical terms.
+- This pack does not change the form, reward rules, privacy terms or individual commitments. The live-form summary in `marketing/BETA_PROGRAM.md` governs where its older sections differ.
 
-**Beta facts every post must match:**
-- Android: a Google Play closed test. Sign up on the form; the test link comes by email once the test opens, usually within a few days (closed-test approval takes 2–7 days after T0, `BETA_PROGRAM.md`).
-- iPhone: use kaisip.com in the browser and join the waitlist on the same form.
-- Wording: "free to use during the beta". Never "free app", "free forever" or "completely free".
-- No tester reward in these posts. (If you ever add it, use only the exact words in `BETA_PROGRAM.md` section 4, and never link it to reviews.)
-- Never ask for reviews or ratings.
-- If you quote, reshare or feature anything a tester says about KaiSip, say they are a beta tester who gets 6 months of Premium free once it launches (incentive disclosure).
-- The sign-up form the posts link to must match these posts. Two lines in `marketing/BETA_PROGRAM.md` need the owner's fix before T0 (outside this pack): the form intro says "a free CISA exam-prep app" (use "Help test KaiSip, a CISA exam-prep app that is free to use during the beta, before it launches on Google Play."), and the Android thank-you says "Within 2 days" (use "once the test opens, usually within a few days").
-
-**T0** = the day the form is published (`BETA_PROGRAM.md` section 6). Post at about 8:00 a.m. Manila / Singapore time; it reaches India and the Middle East in their morning and the UK at night. For LinkedIn, Tuesday to Thursday works best; if T0 falls on a weekend, move the LinkedIn posts to the next Tuesday.
+**T0** below means the chosen start of a future posting sequence, not a promised beta opening date. Timing is a suggested sequence only; confirm the current beta status and schedule before publishing.
 
 ---
 
@@ -26,10 +22,10 @@ Who the beta is for, and how to join: `marketing/BETA_PROGRAM.md` section 1.
 **Angle:** a practitioner built a calm tool for the judgment the exam tests. Audit-minded, not salesy.
 **Visual:** the 60 s cut, 1:1 square crop, captions burned in (`TURNING_VIDEO_PLAN.md` section 4).
 **CTA:** <BETA_FORM_URL> and kaisip.com.
-**Length:** about 1,450 characters (LinkedIn limit 3,000).
+**Length:** Recount after substituting the real link and any final edits.
 
 ```
-Today the Android beta of KaiSip opens. It's a calm study app for people preparing for the CISA® exam.
+KaiSip is welcoming Android beta testers. It's a calm study app for people preparing for the CISA® exam.
 
 Why I built it: most CISA candidates study on their phones, in ten-minute gaps between meetings, fieldwork and commutes. And the hard part of the exam isn't recall. It's judgment: choosing what an IS auditor would do when two answers both sound right.
 
@@ -42,10 +38,9 @@ So KaiSip is built around the why:
 
 And one quieter thing: a plant that grows only from real study. It never wilts while you're away. More on that this week.
 
-The beta is a Google Play closed test, and KaiSip is free to use during the beta. I'm looking for CISA candidates on Android who will use it for at least 14 days and tell me honestly what confuses them, and especially any answer they think is wrong.
+The beta is a Google Play closed test, and KaiSip is free to use during the beta. I'm looking for CISA candidates on Android to try the app during the closed test. Honest feedback is welcome, especially anything confusing or an answer you think is wrong.
 
-Android: sign up here. Your Google Play test link comes by email once the test opens, usually within a few days: <BETA_FORM_URL>
-On iPhone? Use kaisip.com in your browser for now, and join the waitlist on the same form.
+Android: sign up here. Test access instructions come by email: <BETA_FORM_URL>
 
 KaiSip is independent. CISA® and ISACA® are registered trademarks of ISACA; KaiSip is not affiliated with or endorsed by ISACA. All practice questions are original.
 
@@ -61,7 +56,7 @@ KaiSip is independent. CISA® and ISACA® are registered trademarks of ISACA; Ka
 **Angle:** warm and short; the plant as the hook.
 **Visual:** the 30 s cut, 9:16, captions burned in (`TURNING_VIDEO_PLAN.md` section 3, Play/social end card).
 **CTA:** <BETA_FORM_URL> and kaisip.com.
-**Characters:** 408 / 500 with the 15-character placeholder. A real form link is usually 25–45 characters, so expect about 420–440. Check the counter in Threads before posting.
+**Characters:** Count the final post after substituting the real link; keep it within the platform limit.
 
 ```
 KaiSip is open for beta testers.
@@ -69,7 +64,6 @@ KaiSip is open for beta testers.
 It's a calm study app for the CISA® exam. Short sessions, the why behind every answer, and a plant that grows only when you really learn.
 
 Android: free to use during the beta. Join here: <BETA_FORM_URL>
-On iPhone? Use kaisip.com for now and join the waitlist with the same link.
 
 Practice questions across all 5 CISA domains. Not affiliated with ISACA®.
 
@@ -85,7 +79,7 @@ Practice questions across all 5 CISA domains. Not affiliated with ISACA®.
 **Angle:** show the moment; the learning comes first.
 **Visual:** a 12–15 s clip cut from the 60 s master: the Form IV fact on screen (hold 3 s), the full Form III → IV Turning at real speed, the name settling. Captions burned in. Fallback image: `forms-reveal-grand-light.png` (the 8-frame strip).
 **CTA:** <BETA_FORM_URL> and kaisip.com.
-**Characters:** 443 / 500 with the placeholder (about 455–475 with a real link). Check in Threads. If it runs over, drop the hashtag line (20 characters with its line breaks).
+**Characters:** Count the final post after substituting the real link; keep it within the platform limit.
 
 ```
 This is The Turning.
@@ -95,7 +89,7 @@ Your plant grows into a new form only after real learning. The screen starts wit
 Then the light gathers, and the oak becomes the Broadcrown Oak.
 It never wilts while you're away.
 
-KaiSip is free to use during the beta (Android). Join: <BETA_FORM_URL> · iPhone: kaisip.com
+KaiSip is free to use during the beta (Android). Join: <BETA_FORM_URL>
 
 Practice for the CISA® exam. Not affiliated with ISACA®.
 
@@ -130,7 +124,6 @@ It isn't a pass mark, and it doesn't predict your exam result. It's a quiet reco
 
 KaiSip is in a Google Play beta, free to use during the beta.
 Android: <BETA_FORM_URL>
-iPhone: kaisip.com, and join the waitlist on the same form.
 
 Not affiliated with or endorsed by ISACA®.
 
@@ -146,7 +139,7 @@ Not affiliated with or endorsed by ISACA®.
 **Angle:** warm, a little playful: you plant one; it grows as you learn; at the end you choose its shape. Not a collection.
 **Visual:** an image carousel: `forms13-narra-formIV-light.png` (Gold-rain Narra), `forms13-bamboo-formIV-light.png` (Moon-gate Bamboo), `forms13-cherry-blossom-formIV-light.png` (Cascade Cherry), `forms13-lotus-formIV-light.png` (Open Lotus), then `forms-oak-formIV-moot-light.png` (the Moot Oak). Or the 13-species social clip (`TURNING_VIDEO_PLAN.md` section 4).
 **CTA:** <BETA_FORM_URL> and kaisip.com.
-**Characters:** 449 / 500 with the placeholder (about 460–480 with a real link). Check in Threads. If it runs over, change "lotus, sampaguita and more" to "lotus and more" (saves 12).
+**Characters:** Count the final post after substituting the real link; keep it within the platform limit.
 
 ```
 Which would you plant?
@@ -158,7 +151,6 @@ At the last form you can pick its shape. Kai's is the Moot Oak: level limbs over
 It only grows from real study, and it never wilts.
 
 Free to use during the beta. Android: <BETA_FORM_URL>
-iPhone: kaisip.com
 
 Practice for the CISA® exam. Not affiliated with ISACA®.
 ```
@@ -188,4 +180,4 @@ Reply to every comment within a day, in the same calm voice. If someone asks "wi
 
 ## A/B variant
 
-Post 1's first line. Control (A): "Today the Android beta of KaiSip opens. It's a calm study app for people preparing for the CISA® exam." Variant (B): "The hardest part of the CISA® exam isn't recall. It's judgment." (then the rest of the post, with the "Why I built it" paragraph cut to its first sentence). Run them a week apart. Metric: form sign-ups that answer "LinkedIn" to "How did you find us?", and link clicks.
+Post 1's first line. Control (A): "KaiSip is welcoming Android beta testers. It's a calm study app for people preparing for the CISA® exam." Variant (B): "The hardest part of the CISA® exam isn't recall. It's judgment." (then the rest of the post, with the "Why I built it" paragraph cut to its first sentence). Run them a week apart. Metric: link clicks and completed registrations; use a LinkedIn discovery response only if the current form offers it.

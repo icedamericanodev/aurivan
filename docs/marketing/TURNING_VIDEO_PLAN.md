@@ -1,5 +1,7 @@
 # The Turning: video plan (30 s and 60 s)
 
+> Draft plan: the footage predates the current release. Revalidate visible UI, claims and current store requirements before production or upload. The approved brand line is “Know why the best answer wins.” (`docs/mobile/STORE_LISTING.md`); this plan does not authorize a brand change or publication.
+
 Owner request (29 Oct 2026, `docs/MARKETING_PLAN.md` section 1): feature the plant's form change, "The Turning", in the store preview, the website hero and social clips.
 
 This file has:
@@ -245,7 +247,7 @@ Voice: one calm, warm voice, mid pace. No hype, no "you've got this!" energy.
 
 Source clips: `footage/turning-oak-formIV-light-4x5.mp4` and `footage/turning-oak-formIV-dark-4x5.mp4` (web-build capture, cropped above the domain list). Poster: as in the table (the settled Broadcrown Oak cropped to the plant and its name), never a frame with the Form IV fact line.
 
-The website already has the plant and its forms, so the loop shows something a visitor can really find there. Before any website copy says the Turning plays on kaisip.com, check it in the browser (the phone app is where it was built first).
+The public website currently serves a beta landing page, not the study app (`docs/WEBSITE_DEPLOY.md`, owner decision 4 Nov 2026). A future promotional loop may show clearly identified app footage; do not claim visitors can study or trigger the Turning on kaisip.com. Adding the loop is a separate website change, not included or authorized here.
 
 Building it into the site is a `web-app-engineer` task (not part of this pack).
 

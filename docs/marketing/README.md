@@ -1,14 +1,14 @@
 # docs/marketing: the Turning marketing pack
 
-Ready-to-shoot materials built around the plant's form change, "The Turning" (owner request, 29 Oct 2026). Read `docs/MARKETING_PLAN.md` first; the store listing itself lives in `docs/mobile/STORE_LISTING.md`.
+Draft recording and marketing materials built around the plant's form change, "The Turning" (owner request, 29 Oct 2026). Read `docs/MARKETING_PLAN.md` first; the current documented store listing itself lives in `docs/mobile/STORE_LISTING.md`.
 
 ## Files
 
 | File | What it is |
 |---|---|
 | `TURNING_VIDEO_PLAN.md` | The 30 s and 60 s video scripts and storyboards, the phone recording recipe, crops, music, the website hero loop and the claims checklist |
-| `STORE_SCREENSHOTS_AND_FEATURE_GRAPHIC.md` | The 8 store screenshots with captions, the screenshot-1 A/B test, and the Play feature graphic brief |
-| `BETA_SOCIAL_POSTS.md` | 5 beta posts (2 LinkedIn, 3 Threads) with visuals, links, timing and character counts |
+| `STORE_SCREENSHOTS_AND_FEATURE_GRAPHIC.md` | Historical Turning-led alternatives, reconciled with the current eight-shot listing and brand line |
+| `BETA_SOCIAL_POSTS.md` | 5 beta posts (2 LinkedIn, 3 Threads) with visuals, links, suggested timing and final-length checks |
 | `README.md` | This file |
 | `footage/` | Real-speed clips of the Turning, its end frame, and all 13 species at Form IV (made by `tools/capture.sh`) |
 | `tools/capture.sh` | One command that re-makes everything in `footage/` from the app's own web build |
@@ -30,9 +30,10 @@ Ready-to-shoot materials built around the plant's form change, "The Turning" (ow
   "gotta catch", collecting language, "level up" monster talk.
 - No hype words: ultimate, guaranteed, best, #1, revolutionary.
 - Beta: "free to use during the beta" (never "free app", "free forever",
-  "completely free"). Android = Google Play closed test; iPhone = kaisip.com
-  plus the waitlist. No tester reward in posts unless it is word for word
-  from marketing/BETA_PROGRAM.md section 4. Never ask for reviews.
+  "completely free"). Android = Google Play closed test. The public website
+  is a landing page; the iPhone waitlist is paused. Preserve each tester’s
+  applicable reward terms; use the live-form summary over superseded program
+  sections. Never ask for ratings or reviews in exchange for a reward.
 - App Store media: no "beta" and no "Google Play".
 - Store name: "KaiSip: Cyber & IT Audit Prep". Screenshot captions: 2–5 words,
   no "CISA".
@@ -58,7 +59,7 @@ SHOTS=forms bash scripts/screenshots/run.sh /tmp/kaisip-shots/forms dark
 # Only the Turning, with every strip frame kept as its own PNG:
 FRAMES=1 REVEAL_ONLY=1 SHOTS=forms bash scripts/screenshots/run.sh /tmp/kaisip-shots/turning light
 
-# The six store screenshots (always light, 1080×1920, flattened for Play):
+# Legacy six-shot harness (not the current eight-shot listing set):
 SHOTS=store bash scripts/screenshots/run.sh /tmp/kaisip-shots/store
 
 # Other screens for the video storyboard:
@@ -115,7 +116,7 @@ Add species ids after the folder to choose which Turnings to film (default: oak,
 
 ### What's in `footage/` now (made 30 Oct 2026, mobile 1.52.0)
 
-A small starter set, so the edit can begin today. Re-make it with `capture.sh` after any change to the plant art.
+A historical starter set for draft editing; recheck it against the current app before use. Re-make it with `capture.sh` after any change to the plant art.
 
 | File | What it is |
 |---|---|
