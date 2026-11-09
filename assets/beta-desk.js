@@ -1,5 +1,5 @@
-/* KaiSip Beta Desk: the page's code (loaded by beta-desk.html). See that page and
-   docs/beta/BETA_DESK.md. Plain JavaScript, no libraries, no build step. */
+/* KaiSip Beta Desk: the page's code (loaded by beta-desk.html).
+   Plain JavaScript, no libraries, no build step. */
 'use strict';
 /* ───────────────────────────────────────────────────────────────────────
    KaiSip Beta Desk (plain JavaScript, no libraries).

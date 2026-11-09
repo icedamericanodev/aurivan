@@ -23,4 +23,5 @@ for (const [status, body] of [[403, { error: 'not_admin' }], [503, { error: 'ser
 test('public denial contains no internal onboarding instructions', () => {
   const html = fs.readFileSync(new URL('../../beta-desk.html', import.meta.url), 'utf8');
   assert(!html.includes('docs/beta/') && !html.includes('Adding an admin'));
+  assert(!source.includes('docs/beta/') && !source.includes('Adding an admin'));
 });
