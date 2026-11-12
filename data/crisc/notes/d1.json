@@ -251,7 +251,8 @@
             "crisc_d1_022",
             "crisc_d1_060",
             "crisc_d1_093",
-            "crisc_d1_157"
+            "crisc_d1_157",
+            "crisc_d1_184"
           ],
           "definition": "The risk owner is accountable for a risk; the control owner is accountable for a control being in place and working; the risk practitioner identifies, analyzes, recommends, monitors and reports.",
           "why_it_matters": "Clear ownership means someone with authority and budget acts on each risk. When IT or the risk function is treated as owner, decisions are made by people who cannot fund them or live with the loss.",
@@ -259,8 +260,8 @@
             "The risk owner is a business manager with authority over the affected objective who accepts, mitigates, transfers or avoids the risk.",
             "Control owners are often the managers whose teams run the controls; when a supplier runs a control, an internal manager stays its owner, often the one managing the contract.",
             "One person can own a risk while several control owners answer for its controls; a change weakening a control goes to the risk owner.",
-            "The risk practitioner validates ownership, facilitates assessments and brings options with cost and benefit to the owner.",
-            "Ownership is recorded in the risk register and reviewed when people or structures change.",
+            "The risk practitioner facilitates assessments and brings the owner options with cost and benefit.",
+            "Ownership is recorded in the register, written into owners' role descriptions and reviewed when people or structures change.",
             "The practitioner proposes and validates owners; ownership holds once senior management confirms it and the owner acknowledges the risk, such as by signing its entry."
           ],
           "compare": {
@@ -296,7 +297,7 @@
               }
             ]
           },
-          "example": "A hospital's patient billing risk shows more errors after a system change, and the IT manager offers to own it because IT made the change. Ravi, the risk analyst, proposes the head of revenue cycle as risk owner, since billing outcomes are theirs, and the IT manager as owner of the change control; once senior management confirms, Ravi records both and asks the owner to choose a response.",
+          "example": "A hospital's patient billing risk shows more errors after a system change, and the IT manager offers to own it. Ravi, the risk analyst, proposes the head of revenue cycle as risk owner, since billing outcomes are theirs, and the IT manager as owner of the change control; once senior management confirms, Ravi records both and asks the owner to choose a response.",
           "audit_focus": {
             "review": [
               "Sample register entries and confirm each names a business risk owner",
@@ -1044,12 +1045,13 @@
             "crisc_d1_031",
             "crisc_d1_058",
             "crisc_d1_119",
-            "crisc_d1_165"
+            "crisc_d1_165",
+            "crisc_d1_185"
           ],
           "definition": "Asset classification labels assets by sensitivity and criticality; valuation estimates what an asset is worth to the business. Both are inputs to rating risk.",
           "why_it_matters": "Impact cannot be rated without knowing an asset's value. Purchase cost understates assets such as customer data, whose loss can cost far more in fines, lost trust and downtime.",
           "how_it_works": [
-            "The owner classifies the asset with the enterprise scheme, such as public, internal, confidential and restricted.",
+            "The owner classifies the asset with the enterprise scheme, such as public, internal, confidential and restricted; a system takes the class of the most sensitive data it holds.",
             "Valuation considers replacement cost, revenue dependence, legal exposure, reputation and the processes the asset supports.",
             "Higher classification and value drive stronger protection and higher impact ratings in risk analysis.",
             "Values and classes are reviewed when an asset's use, data or regulation changes.",
@@ -1221,7 +1223,8 @@
             "crisc_d1_088",
             "crisc_d1_120",
             "crisc_d1_134",
-            "crisc_d1_169"
+            "crisc_d1_169",
+            "crisc_d1_183"
           ],
           "definition": "A risk taxonomy is a shared set of risk categories, and common rating scales define likelihood and impact the same way in every unit, so risks can be compared.",
           "why_it_matters": "If IT rates impact on a 1 to 5 technical scale and finance uses money bands, their high risks cannot be ranked against each other or combined into one profile.",
@@ -1229,7 +1232,7 @@
             "The enterprise defines categories, such as strategic, operational, financial, compliance and technology, with subcategories.",
             "Impact scales use business measures, such as money, customers affected, safety and regulatory standing, defined once for everyone; bands follow the enterprise's current size and capacity.",
             "Likelihood scales use the same time frame and ranges in every unit.",
-            "Local scales are mapped to the enterprise scale before risks are rolled up.",
+            "Local scales are mapped to the enterprise scale before risks are rolled up; AI risks use the enterprise method too, not each unit's own method or an AI-only scale.",
             "Senior management approves the taxonomy and scales as part of the risk framework, which sets when bands are re-based; a change that meets no trigger waits for the scheduled review.",
             "Local risks rise to the enterprise register by thresholds on the enterprise scale, not by a quota per unit or by local ratings."
           ],
@@ -1602,7 +1605,8 @@
             "crisc_d1_142",
             "crisc_d1_153",
             "crisc_d1_162",
-            "crisc_d1_174"
+            "crisc_d1_174",
+            "crisc_d1_186"
           ],
           "definition": "Risk aggregation combines related risks into an enterprise view, allowing for shared causes and dependencies; the profile is refreshed whenever the business or threat landscape changes.",
           "why_it_matters": "Several moderate risks with a common cause can add up to a severe exposure that no single entry shows. A yearly profile misses acquisitions, new products and new threats.",
@@ -1676,7 +1680,8 @@
             "crisc_d1_091",
             "crisc_d1_143",
             "crisc_d1_159",
-            "crisc_d1_175"
+            "crisc_d1_175",
+            "crisc_d1_187"
           ],
           "definition": "Appetite is the overall risk the enterprise chooses to take on; tolerance, how far one risk may move before escalation; capacity, the most loss it can survive.",
           "why_it_matters": "These thresholds turn analysis into decisions: a risk inside appetite can be accepted, one outside needs a response, and limits beyond capacity put survival at stake.",
@@ -1684,7 +1689,7 @@
             "Capacity is the outer limit: the loss the enterprise could survive, bounded by finances, regulation and reputation; insurance adds only for covered events, within its limits.",
             "Appetite sits inside capacity and reflects strategy and culture, such as low appetite for safety risk.",
             "Tolerance sets measurable limits per objective or metric, such as four hours of outage a month, monitored monthly: a yearly figure can hide a breach.",
-            "Tolerance must never extend past capacity.",
+            "Tolerance must never extend past capacity; a rare scenario whose worst case exceeds capacity still goes to leaders.",
             "Appetite can differ by risk type: an enterprise may welcome innovation risk but avoid compliance risk.",
             "A risk owner may set a limit stricter than tolerance within their authority and budget; a looser one goes to whoever set it."
           ],
@@ -1721,7 +1726,7 @@
               }
             ]
           },
-          "example": "An insurer could absorb a three-day claims outage before regulators intervene. Its appetite for service disruption is low, and its tolerance for the claims system is eight hours a month. When a unit proposes a five-day tolerance, Wei, the risk practitioner, tells the chief operating officer it exceeds capacity.",
+          "example": "An insurer could survive a three-day claims outage. Its appetite for disruption is low; its claims-system tolerance, eight hours a month. When a unit proposes a five-day tolerance, Wei, the risk practitioner, flags that it exceeds capacity.",
           "audit_focus": {
             "review": [
               "Compare each tolerance with the enterprise's documented capacity",
@@ -1896,7 +1901,8 @@
             "crisc_d1_044",
             "crisc_d1_092",
             "crisc_d1_124",
-            "crisc_d1_133"
+            "crisc_d1_133",
+            "crisc_d1_188"
           ],
           "definition": "A risk framework is a published structure for managing risk, such as Risk IT, COBIT 2019, NIST CSF 2.0 or ISO 31000, that an enterprise adapts to fit.",
           "why_it_matters": "Frameworks give a tested structure and a common language. Adopted wholesale, they create paperwork that does not fit the enterprise's size, sector, appetite or obligations, and people stop using them.",
@@ -1905,7 +1911,7 @@
             "Tailor it: keep what addresses the enterprise's risks, scale it to its size and map it to ERM; reopen the tailoring if a top risk falls outside it.",
             "Frameworks can be combined, such as COBIT 2019 for governance with NIST CSF 2.0 for cybersecurity outcomes.",
             "ISO 31000:2018 and COSO ERM (2017) are common enterprise-level references that IT frameworks align with.",
-            "Senior management approves the tailored framework as part of the enterprise's risk governance.",
+            "Senior management approves the tailored framework; a new version of a framework followed by choice is weighed at its scheduled review unless an obligation or major change makes it urgent.",
             "In NIST CSF 2.0, tailoring runs through Current and Target Profiles shaped by the mission, risks and requirements; a sector Community Profile can be the Target Profile's starting point."
           ],
           "types": [

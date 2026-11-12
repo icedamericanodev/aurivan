@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "comment": "Original CRISC practice questions for Domain 1 (Governance), written to the CRISC exam content outline effective 2025 (delivered since 3 Nov 2025). Every item is authored from public concepts and KaiSip's own CRISC study notes (data/crisc/notes/d1.json), with no reference to the CRISC Review Manual, ISACA's QAE database, ISACA's practice quiz or any prep bank. Schema: docs/content/QUESTION_SCHEMA.md; writing rules: docs/content/EXAM_STYLE_V2.md and .claude/agents/crisc-standards-auditor.md. Not affiliated with or endorsed by ISACA®. CRISC® is a registered trademark of ISACA. Pilot batch crisc_d1_001 to crisc_d1_020, 30 Oct 2026. Round 7 crisc_d1_104 to crisc_d1_110, 4 Nov 2026. Round 8 crisc_d1_111 to crisc_d1_117, 5 Nov 2026. Round 9 crisc_d1_118 to crisc_d1_124, 5 Nov 2026. Round 10 crisc_d1_125 to crisc_d1_130, 5 Nov 2026. Round 12 crisc_d1_138 to crisc_d1_143, 5 Nov 2026. Round 13 crisc_d1_144 to crisc_d1_150, 12 Nov 2026. Round 14 crisc_d1_151 to crisc_d1_156, 12 Nov 2026. Round 15 crisc_d1_157 to crisc_d1_163, 12 Nov 2026. Round 17 crisc_d1_170 to crisc_d1_176, 12 Nov 2026. Round 18 crisc_d1_177 to crisc_d1_182, 12 Nov 2026.",
+    "comment": "Original CRISC practice questions for Domain 1 (Governance), written to the CRISC exam content outline effective 2025 (delivered since 3 Nov 2025). Every item is authored from public concepts and KaiSip's own CRISC study notes (data/crisc/notes/d1.json), with no reference to the CRISC Review Manual, ISACA's QAE database, ISACA's practice quiz or any prep bank. Schema: docs/content/QUESTION_SCHEMA.md; writing rules: docs/content/EXAM_STYLE_V2.md and .claude/agents/crisc-standards-auditor.md. Not affiliated with or endorsed by ISACA®. CRISC® is a registered trademark of ISACA. Pilot batch crisc_d1_001 to crisc_d1_020, 30 Oct 2026. Round 7 crisc_d1_104 to crisc_d1_110, 4 Nov 2026. Round 8 crisc_d1_111 to crisc_d1_117, 5 Nov 2026. Round 9 crisc_d1_118 to crisc_d1_124, 5 Nov 2026. Round 10 crisc_d1_125 to crisc_d1_130, 5 Nov 2026. Round 12 crisc_d1_138 to crisc_d1_143, 5 Nov 2026. Round 13 crisc_d1_144 to crisc_d1_150, 12 Nov 2026. Round 14 crisc_d1_151 to crisc_d1_156, 12 Nov 2026. Round 15 crisc_d1_157 to crisc_d1_163, 12 Nov 2026. Round 17 crisc_d1_170 to crisc_d1_176, 12 Nov 2026. Round 18 crisc_d1_177 to crisc_d1_182, 12 Nov 2026. Round 19 crisc_d1_183 to crisc_d1_188, 12 Nov 2026.",
     "schema_version": 1
   },
   "domain": 1,
@@ -6739,6 +6739,228 @@
         "Access review"
       ],
       "_provenance": "Authored from concept: notes 1B2.1 (The Three Lines and Their Jobs: the first line owns risks and runs controls day to day; bullet extended in round 18: other lines' tests check these controls and never replace them). Round 18, 12 Nov 2026: original scenario (a quarry operator's site managers want to drop their reviews of who can edit weighbridge records, since the risk team and internal audit each test them yearly) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Round 18 asks covered: owner shape k=1 with the lone owner option wrong and on an easy distractor (D); 'Keep' key; no Have/Ask on wrong options; 'site managers' and 'weighbridge' also on wrong options so the key does not echo the stem alone; no wait or defer option; no incidental periods on options (the stem's yearly tests are the deciding fact); setting quarry operator. Neighbours checked: crisc_d1_036 (second line running firewall reviews), crisc_d1_035 (overlapping second- and third-line tests; combined assurance), crisc_d1_065 (unchallenged self-assessments), crisc_d1_121 (a control team inside IT), crisc_d1_128 (audit relying on second-line tests), crisc_d1_150 (second line asked to write management's audit response), crisc_d1_014 (audit offering to design controls), crisc_d1_078 (assurance over the risk process), CISA d2_002 (three lines role assignment). Wrong options read against older Exam cues: crisc_d1_035's cue (coordinate coverage instead of moving work to one line) and crisc_d1_036's cue support the key and rule out B. None keys keeping a first-line control when the other lines' periodic tests are offered in its place.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d1_183",
+      "domain": 1,
+      "subtopic": "1B1 Enterprise risk management (ERM). AI risks rated by each unit's method",
+      "principle_id": "rate-on-common-terms",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An egg producer's farm, grading and sales units rate AI risks by their own methods, so its enterprise report cannot compare or combine them with other risks. What is the risk analyst's BEST recommendation?",
+      "options": {
+        "A": "Rate the AI risks by each tool owner's judgment",
+        "B": "Have the three units rate AI risks on the enterprise method",
+        "C": "Create a separate AI rating method for the three units",
+        "D": "Use the AI vendors' own risk scores in the enterprise report"
+      },
+      "correct": "B",
+      "key_concept": "AI risks are rated on the enterprise's common method, so they can be ranked and combined with the enterprise's other risks.",
+      "pre_read": "Note what the enterprise report must be able to do with the AI ratings.",
+      "correct_explanation": "AI risks are business risks, so they belong on the enterprise's common rating method, with AI-specific scenarios, where they can be ranked and combined with the other risks against appetite. A separate AI rating method is the runner-up: it would let the three units compare AI risks with each other, but AI exposure would still sit on its own scale, apart from the other enterprise risks the report must rank.",
+      "wrong_explanations": {
+        "A": "Tool owners' judgments differ by person and unit, so the ratings still could not be compared or combined with the enterprise's other risks.",
+        "C": "A separate AI method lets the units compare AI risks with each other, but not with the other enterprise risks the report must rank and combine.",
+        "D": "Vendors score their tools on their own methods and without the producer's context, so the scores still sit outside the enterprise scale."
+      },
+      "tips": [
+        "Eliminate: A leaves ratings to each tool owner's judgment, and D takes vendors' scores built on their own methods; neither puts AI risks on one scale.",
+        "Final two: B beats C because a separate AI method still leaves AI risks unable to sit beside the enterprise's other risks; the enterprise method lets them be ranked and combined.",
+        "Exam cue: when AI risks cannot be compared with other risks, rate them on the enterprise's common method; AI-specific factors shape the scenario, not a separate scale."
+      ],
+      "framework_ref": "NIST AI 100-1 (AI RMF 1.0) Section 1.2.4 (Organizational Integration and Management of Risk: AI risks are not considered in isolation, and AI risk management is integrated into broader enterprise risk management); NIST CSF 2.0 GV.RM-06 (a standardized method for calculating, documenting, categorizing and prioritizing cybersecurity risks is established and communicated); NIST IR 8286 Rev. 1 Section 3.1.2 (Risk Management Strategy: leaders give guidance on risk calculation, including a common scale for assessing levels of risk and the mechanisms and frequency of risk reporting)",
+      "related_concepts": [
+        "AI risk in ERM",
+        "Common rating method",
+        "Risk aggregation"
+      ],
+      "_provenance": "Authored from concept: notes 1B1.2 (Common Taxonomy and Rating Scales: one set of business-based scales before risks are combined or ranked; bullet extended in round 19: AI risks use the enterprise method too, not a unit's own method or an AI-only scale). Round 19, 12 Nov 2026: original scenario (an egg producer's farm, grading and sales units rate AI risks by their own methods, so its enterprise report cannot compare or combine them with other risks) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Round 19 asks covered: the batch's AI item, on the assigned 1B1 angle (one enterprise method for AI risk ratings); a 'Have' key; owner shape k=1 with the lone owner option wrong and on an easy distractor (A); no Have/Ask on wrong options; 'rate', 'units', 'method' and 'enterprise' also on wrong options so the key does not echo the stem alone; no wait or defer option; no incidental periods; setting egg producer. Neighbours checked: crisc_d1_012 (IT ratings not normalized to the enterprise scale; a cause question), crisc_d1_051 (one group taxonomy for senior management approval), crisc_d1_088 (thresholds on one common scale for roll-up), crisc_d1_127 (a unit refusing the approved method goes to the executive sponsor; here units were never on it), crisc_d1_120 (fixing the shared impact scale), crisc_d1_134 (impact bands after growth), crisc_d1_169 (wider bands at the scheduled review), crisc_d1_181 (one IT entry recast as business scenarios), crisc_d1_038 (AI exposure in the profile by objective), crisc_d2_142 (a common category field from one agreed list), crisc_d3_071 (one KRI definition before combining), aaia_d1_093 (an AI register missing harms to affected people) and aaia_d2_088 (an AI incident scale missing harm to people; neither keys one enterprise rating method), and the round 19 D2 AI angle (a vendor's generic model rating against the firm's own context; D's wrong option agrees with it). Wrong options read against older Exam cues: crisc_d1_051's and crisc_d1_088's cues (one common scale) support the key and rule out C; crisc_d1_012's cue (normalize to the enterprise scale) does not key C, which builds a second scale. None keys rating AI risks on the enterprise method when units use their own.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d1_184",
+      "domain": 1,
+      "subtopic": "1A2 Organizational structure, roles and responsibilities. Risk reviews that run late",
+      "principle_id": "root-cause-over-symptom",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A school bus operator's risk analyst finds managers named as risk owners finished 40% of their reviews on time; their role descriptions set no risk duties. Which of the following is the analyst's BEST recommendation?",
+      "options": {
+        "A": "Report each late review to the risk committee",
+        "B": "Give the review role to the second-line risk team as owner",
+        "C": "Add risk-owner duties to the managers' role descriptions",
+        "D": "Set longer deadlines for the managers' review duties"
+      },
+      "correct": "C",
+      "key_concept": "Risk ownership holds when its duties are written into the owners' roles; escalating each lapse treats the symptom while the cause stays.",
+      "pre_read": "Ask why the reviews run late before choosing how to respond to them.",
+      "correct_explanation": "The stem gives the cause of the late reviews: the managers' role descriptions set no risk duties, so the reviews lose out to work their roles do require. Writing risk-owner duties into those descriptions makes ownership part of the job they answer for. Reporting each late review to the committee is the runner-up: escalation chases each slip, but the next round runs late again while the roles say nothing about risk.",
+      "wrong_explanations": {
+        "A": "Escalation answers each slip, but the roles still set no risk duties, so the next round of reviews would run late the same way.",
+        "B": "The risk team challenges owners' reviews; running them itself would take ownership away from the managers whose areas carry the risks.",
+        "D": "Longer deadlines raise the on-time figure without making anyone answer for the reviews; the risks would simply be reviewed later."
+      },
+      "tips": [
+        "Eliminate: B moves the owners' reviews to the second line that must challenge them, and D lifts the on-time figure by allowing more time, not by fixing who answers.",
+        "Final two: C beats A because the stem shows the cause, no role sets the duty; escalating each late review treats the symptom while the roles stay silent.",
+        "Exam cue: when people named in a risk role keep missing its duties, check whether the duties are written into their roles; accountability needs a place in the job itself."
+      ],
+      "framework_ref": "NIST CSF 2.0 GV.RR-02 (roles, responsibilities and authorities related to cybersecurity risk management are established, communicated, understood and enforced); NIST CSF 2.0 GV.RR-04 (cybersecurity is included in human resources practices); ISACA Glossary (risk owner)",
+      "related_concepts": [
+        "Risk ownership",
+        "Role descriptions",
+        "Root cause"
+      ],
+      "_provenance": "Authored from concept: notes 1A2.2 (Risk Owner, Control Owner and Risk Practitioner: ownership is recorded and reviewed; bullet extended in round 19: owners' duties are written into their role descriptions). Round 19, 12 Nov 2026: original scenario (a school bus operator's risk analyst finds managers named as risk owners finished 40% of their reviews on time, and their role descriptions set no risk duties) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Round 19 asks covered: owner shape k=2 split, with the key (C) and an easy distractor (B) naming an owner and the runner-up (A) naming none; one of the batch's two 'Which of the following' stems; 'each' on a wrong option (A) while the key carries none; no Have/Ask on wrong options; 'managers' and 'duties' also on wrong options; no wait or defer option; no incidental periods; setting school bus operator. Neighbours checked: crisc_d4_129 (new risk owners hand decisions back; training fixes a misread role; here the roles never set the duty; keep apart in practice sets), crisc_d1_117 (an owner who will not decide on a risk above appetite is escalated), crisc_d1_093 (signed acknowledgment as evidence of ownership), crisc_d1_144 (owner without budget authority), crisc_d1_150 (second line asked to write management's response), crisc_d1_036 (second line running a first-line control), crisc_d2_075 (risk team updating entries owners never review), crisc_d1_006 and crisc_d1_122 (incentives), crisc_d3_095 (late findings escalated by policy). Wrong options read against older Exam cues: crisc_d4_129's cue (teach the role before escalating) agrees that A is not the first fix; crisc_d1_117's cue (escalate an owner who will not decide) applies to an undecided risk above appetite, not to duties no role sets. None keys writing risk-owner duties into role descriptions.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d1_185",
+      "domain": 1,
+      "subtopic": "1A6 Organizational asset management. Class of a system holding mixed data",
+      "principle_id": "final-two",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "A dry-cleaning chain's booking system, mostly price lists but also saved card details, was classified public by its owner. Which of the following should the risk analyst advise as the BEST basis for its class?",
+      "options": {
+        "A": "The most sensitive type of data the system holds",
+        "B": "The owner's view of sensitivity once card details are protected",
+        "C": "The type of data that fills most of the system",
+        "D": "The owner's view of what the system is mainly used for"
+      },
+      "correct": "A",
+      "key_concept": "A system takes the class of the most sensitive data it holds; classification sets the protection data needs and is not judged net of it.",
+      "pre_read": "List the kinds of data the system holds before weighing how it was classified.",
+      "correct_explanation": "A system is classified at the level of the most sensitive data it holds, the high water mark, because its access, backup and handling rules cover all its data together. The owner's view of sensitivity once the card details are protected is the runner-up: classification is what decides the protection data needs, so setting it net of that protection is circular, and the card controls would lose the class they rest on.",
+      "wrong_explanations": {
+        "B": "Classification decides the protection data needs; setting it net of that protection is circular and drops the requirement the card controls rest on.",
+        "C": "Most records being price lists does not lower the harm of exposing card details; one sensitive data type sets the level for the system.",
+        "D": "The owner decides the class, but by the data's sensitivity under the scheme, not by what the system is mostly used for."
+      },
+      "tips": [
+        "Eliminate: C classifies by volume and D by the system's main use; the class follows the sensitivity of the data held, whatever its share of the records.",
+        "Final two: A beats B because a class sets the protection required; rating sensitivity after that protection is in place makes the requirement disappear.",
+        "Exam cue: a system holding several kinds of data takes the class of its most sensitive data, the high water mark; controls follow the class rather than set it."
+      ],
+      "framework_ref": "NIST FIPS 199 Section 3 (Security Categorization Applied to Information Systems: a system's impact values are the highest values, the high water mark, among the information types it holds); ISACA Glossary (data classification); ISACA Glossary (data owner)",
+      "related_concepts": [
+        "Data classification",
+        "High water mark",
+        "Asset owner"
+      ],
+      "_provenance": "Authored from concept: notes 1A6.2 (Classification and Valuation as Risk Input: the owner classifies with the enterprise scheme; bullet extended in round 19: a system takes the class of the most sensitive data it holds). Round 19, 12 Nov 2026: original scenario (a dry-cleaning chain's booking system, mostly price lists but also saved card details, was classified public by its owner) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Round 19 asks covered: the batch's foundational item and one of its two 'Which of the following' stems, with short noun-phrase options; owner shape k=2 split as runner-up (B) plus an eliminated option (D), the key naming none, as the round 19 brief allows; no Have/Ask options; no wait or defer option; no incidental periods; setting dry-cleaning chain. Neighbours checked: crisc_d1_031 (the owner reviews a class after new data arrives; a FIRST item with action options; this item keys the high water mark basis), crisc_d1_058 (owners over-classify; reapply the criteria), crisc_d1_030 (value by business impact), crisc_d1_076 (custodian decisions), crisc_d4_093 (research data held without a class), cc_d5_057 (a report embedding restricted scans takes the restricted level; the same high water mark rule for a document; keep apart in practice sets), CISA d2_016 and d2_073 (classification scheme design; impact as the basis for levels). Wrong options read against older Exam cues: crisc_d1_031's cue (the owner revisits class first, controls follow) and crisc_d1_058's cue (classification against the scheme's criteria) support the key and rule out B and D. None in CRISC keys the most sensitive data as the basis for a system's class.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d1_186",
+      "domain": 1,
+      "subtopic": "1B3 Risk profile. Profile refreshed on the calendar alone",
+      "principle_id": "root-cause-over-symptom",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A glass recycler updates its risk profile only in December, so its board has not seen a new plant's risks, and saw last year's cloud move months late. What is the risk analyst's BEST recommendation?",
+      "options": {
+        "A": "Refresh the profile now with the new plant's risk owners",
+        "B": "Automate the profile's December build from the register",
+        "C": "Report each business change to the board as it occurs",
+        "D": "Set events that trigger a profile update between cycles"
+      },
+      "correct": "D",
+      "key_concept": "A profile tied only to the calendar lags business change; set the events that trigger an update between scheduled cycles.",
+      "pre_read": "Look for what the two gaps in the board's view have in common.",
+      "correct_explanation": "The new plant's risks and last year's cloud move share one cause: the profile is updated only on the calendar. Setting the events that trigger an update between cycles, such as a new site, a platform move or a major incident, keeps the profile current as the business changes. Refreshing now with the new plant's risk owners is the runner-up: it closes today's gap, but the next change would again wait for December.",
+      "wrong_explanations": {
+        "A": "Refreshing now closes this gap, but the profile would again wait for December the next time the business changes.",
+        "B": "Automating the build makes December's profile faster to produce, but it still appears once a year, after the changes it should show.",
+        "C": "The board needs changes in exposure against appetite, not a stream of business changes; the updated profile is what turns change into that view."
+      },
+      "tips": [
+        "Eliminate: B speeds up a profile that still appears once a year, and C sends the board raw business changes rather than an updated profile against appetite.",
+        "Final two: D beats A because both gaps share one cause, a profile tied to the calendar; refreshing now fixes this one, while triggers fix the next.",
+        "Exam cue: when a profile keeps missing major changes, fix the process: set the business events that trigger an update between scheduled cycles."
+      ],
+      "framework_ref": "NIST IR 8286 Rev. 1 Section 3.6 (Monitor, Evaluate, and Adjust: risk parameters are continually monitored, evaluated for their relevance to organizational objectives and acted on when necessary); NIST IR 8286 Rev. 1 Section 4.3 (Information and Decision Flows in Support of ERM: enterprise risk officers and committees maintain a risk profile that includes recent trends); ISACA Glossary (IT risk profile)",
+      "related_concepts": [
+        "Risk profile",
+        "Update triggers",
+        "Root cause"
+      ],
+      "_provenance": "Authored from concept: notes 1B3.2 (Aggregation and Keeping the Profile Current: refresh on schedule and on triggers, and the practitioner's recommendation that the triggers requiring a profile update be defined; a calendar-only profile is the governance gap its rule names). Round 19, 12 Nov 2026: original scenario (a glass recycler updates its risk profile only in December, so its board has not seen a new plant's risks, and saw last year's cloud move months late) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Round 19 asks covered: owner shape k=1 with the lone owner option wrong and on the runner-up (A), the key naming none; 'each' on a wrong option (C) while the key carries none; no Have/Ask on wrong options; no wait or defer option; setting glass recycler. Neighbours checked: crisc_d1_016 (an acquisition triggers an update now), crisc_d1_162 (which event calls for an early refresh; this item keys setting the triggers), crisc_d1_174 (a sold division), crisc_d1_079 (ratings older than a cloud move), crisc_d3_076 (scheduled reviews kept beside trigger-based ones; consistent), crisc_d3_207 (a change meeting none of the policy's triggers), crisc_d1_077 (risk input built into investment approvals; the same process-fix lesson for a different process, so this item drops its more-frequent-review decoy), crisc_d1_056 (the full register is not the profile; a register-dump decoy was drafted for B and dropped as too close to its distractor), crisc_d3_079 (averaged heat-map scores; an aggregation angle first drafted here and dropped as too close), crisc_d1_150 (a glassworks setting; different topic). Wrong options read against older Exam cues: crisc_d1_016's cue (update the profile now after an acquisition) and crisc_d1_162's cue (refresh off-cycle when the business changes) explain why A looks right; they key a one-off update, while this stem shows a repeated lag, so the process fix wins. No older cue keys B or C. None keys setting the events that trigger an off-cycle profile update.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d1_187",
+      "domain": 1,
+      "subtopic": "1B4 Risk appetite and risk tolerance. Rare scenario with a worst case beyond capacity",
+      "principle_id": "escalate-to-the-limit-setter",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "A spice importer rates ransomware on its lot-traceability system rare and so within appetite, though its worst case, a six-week import halt, would exceed its risk capacity. What is the risk analyst's BEST recommendation?",
+      "options": {
+        "A": "Make the IT manager owner of the ransomware scenario",
+        "B": "Escalate the worst case against capacity to senior management",
+        "C": "Add standby capacity at a second site for traceability",
+        "D": "Transfer the worst case to a cyber insurer"
+      },
+      "correct": "B",
+      "key_concept": "A rare scenario rated within appetite still goes to leaders when its worst case would exceed the enterprise's risk capacity.",
+      "pre_read": "Compare the scenario's rating with its worst-case loss and the firm's limits.",
+      "correct_explanation": "Capacity is the loss the firm could absorb and survive; a worst case beyond it threatens the firm itself, whatever a rare likelihood does to the matrix rating. Leaders who set appetite need to see that and decide how to respond. Adding standby capacity at a second site is the runner-up: it may prove the right response, but choosing it now commits money to one treatment before senior management has weighed the threat to capacity.",
+      "wrong_explanations": {
+        "A": "Naming IT as owner moves a business risk away from the managers whose imports would stop, and the threat to capacity stays unreported.",
+        "C": "A standby site may be the right response later, but choosing it now picks a costly treatment before the leaders who set appetite have weighed the worst case.",
+        "D": "Insurance can pay part of the cost, but accountability for the risk stays with the importer, and a policy does not restart imports during a halt."
+      },
+      "tips": [
+        "Eliminate: A gives a business risk to IT, and D treats insurance as moving the risk itself; accountability stays with the importer.",
+        "Final two: B beats C because a worst case beyond capacity is for the leaders who set appetite to weigh; the analyst reports it before anyone picks a treatment.",
+        "Exam cue: a rating within appetite does not clear a scenario whose worst case exceeds capacity; take that worst case to leaders before a treatment is chosen."
+      ],
+      "framework_ref": "ISACA Glossary (risk capacity); NIST SP 800-30 Rev. 1 Section 3.2 Task 2-5 (Determine Impact: assess the maximum impact associated with the affected assets); NIST IR 8286 Rev. 1 Section 2.1 (Overview of ERM: risk appetite and risk tolerance)",
+      "related_concepts": [
+        "Risk capacity",
+        "Worst-case impact",
+        "Escalation"
+      ],
+      "_provenance": "Authored from concept: notes 1B4.1 (Appetite, Tolerance and Capacity: capacity is the outer bound; bullet extended in round 19: a rare scenario whose worst case exceeds capacity still goes to leaders). Round 19, 12 Nov 2026: original scenario (a spice importer rates ransomware on its lot-traceability system rare and so within appetite, though its worst case, a six-week import halt, would exceed its risk capacity) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Round 19 asks covered: the batch's analysis item; owner shape k=1 with the lone owner option wrong and on an easy distractor (A), the key naming none; the batch's one key naturally longest by characters (61 against 54); 'capacity' and 'worst case' also on wrong options so the key does not echo the stem alone; no Have/Ask on wrong options; no wait or defer option; no incidental periods; setting spice importer. Neighbours checked: crisc_d1_041 (a tolerance beyond capacity), crisc_d1_091 (capacity falls below appetite after a fine; the board reviews appetite), crisc_d1_175 (the basis for capacity; a paused family not used here), crisc_d1_134 (impact bands after growth), crisc_d1_149 (unlimited liability sized before signing), crisc_d2_078 (the most severe harm sets the impact level), crisc_d2_059 (impact over outage time), crisc_d1_081 and crisc_d1_103 (contract caps and insurance conditions). Wrong options read against older Exam cues: crisc_d1_114's cue (inside both limits with no change, the owner decides) does not apply, since the worst case breaches capacity; crisc_d1_091's cue (when capacity is breached, escalate without waiting) supports the key. None keys escalating a within-appetite scenario whose worst case exceeds capacity.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d1_188",
+      "domain": 1,
+      "subtopic": "1B5 Risk frameworks, legal, regulatory and contractual requirements. New version of a voluntary framework",
+      "principle_id": "answer-from-the-stem",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A uniform supplier's yearly review of its voluntary security framework is four months away; a new version is out, and no contract, law or other change requires it. What is the risk analyst's BEST advice?",
+      "options": {
+        "A": "Start a gap review of the current controls against the new version",
+        "B": "Add the new version to the obligations register",
+        "C": "Have the framework's owner weigh it at the next scheduled review",
+        "D": "Move every control to the framework's new version as published"
+      },
+      "correct": "C",
+      "key_concept": "A new version of a voluntary framework creates no obligation; its owner weighs it at the next scheduled framework review.",
+      "pre_read": "Check whether anything in the stem makes the new version binding or urgent.",
+      "correct_explanation": "A framework followed by choice is a reference, not an obligation, so its new version is not itself a reason to act off-cycle. The scheduled review, four months away, is where the framework's owner weighs what the version changes and whether to adopt it. A gap review now is the runner-up: it is the right work, but with no contract, law or other change behind it, it belongs in the planned review.",
+      "wrong_explanations": {
+        "A": "The comparison belongs in the review; doing it now, with no obligation or business change behind it, spends effort the scheduled review will repeat.",
+        "B": "No contract or law requires the framework, so its new version creates no obligation; listing it as one misstates what the firm must meet.",
+        "D": "Moving every control to the version as published skips tailoring it to the firm's risks and the approval a framework change needs."
+      },
+      "tips": [
+        "Eliminate: B treats a voluntary framework as a legal duty, and D adopts the new version wholesale without tailoring it to the firm's risks.",
+        "Final two: C beats A because a new version of a voluntary framework is not a trigger; with no obligation or change, weighing it waits for the scheduled review.",
+        "Exam cue: a new edition of a framework the firm follows by choice is not an obligation; weigh it at the next scheduled review unless a law, contract or major change makes it urgent."
+      ],
+      "framework_ref": "NIST CSF 2.0 GV.OC-03 (legal, regulatory and contractual requirements, including privacy obligations, are understood and managed); NIST CSF 2.0 GV.OV-02 (the cybersecurity risk management strategy is reviewed and adjusted to ensure coverage of organizational requirements and risks)",
+      "related_concepts": [
+        "Voluntary frameworks",
+        "Scheduled review",
+        "Obligations"
+      ],
+      "_provenance": "Authored from concept: notes 1B5.1 (Choosing and Tailoring a Framework: tailor, integrate and have senior management approve; bullet extended in round 19: a new version of a voluntary framework is weighed at the scheduled review unless an obligation or major change makes it urgent). Round 19, 12 Nov 2026: original scenario (a uniform supplier's yearly review of its voluntary security framework is four months away; a new version is out, and no contract, law or other change requires it) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Round 19 asks covered: the batch's one keyed wait, a genuine wait for the next scheduled review with the no-trigger fact in the stem (no contract, law or other change requires the new version) and 'next' and 'scheduled' in the key, on a lesson the ten keyed waits do not teach (a new edition of a voluntary framework is not an obligation or a trigger); a 'Have' key; owner shape k=1 with the lone owner option keyed (C), neither the longest nor the shortest option; 'every' on a wrong option (D) while the key carries none; no new wrong defer option; no Have/Ask on wrong options; 'framework' and 'review' also on wrong options; setting uniform supplier. Neighbours checked: the ten keyed waits crisc_d1_123 (a change within thresholds), crisc_d1_139 (a trained staff change), crisc_d1_169 (wider bands inside the framework's trigger; keep apart in practice sets), crisc_d2_147 (BIA triggers), crisc_d2_152 (a request with nothing new), crisc_d3_146 (an exception in date), crisc_d3_161 (waiting for root-cause findings), crisc_d3_207 (a change meeting no reassessment trigger), crisc_d4_132 (a standard change), crisc_d4_138 (an outside outage whose cause does not apply); also crisc_d1_044 (tailor CSF 2.0 rather than adopt as written), crisc_d1_092 (combine frameworks), crisc_d1_124 (a Community Profile as a starting point), crisc_d1_133 (reopen tailoring that misses a top risk), crisc_d1_045, crisc_d1_095, crisc_d1_149 and crisc_d1_163 (new laws, rules and contract terms are assessed before they take effect; this item is the voluntary counterpart). Wrong options read against older Exam cues: crisc_d1_045's and crisc_d1_149's cues (a new law, rule or contract term triggers an impact assessment) do not key A, since the stem says no contract or law requires the version; crisc_d1_044's cue rules out D. None keys a new version of a voluntary framework waiting for the scheduled review.",
       "style_version": 2
     }
   ]
