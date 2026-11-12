@@ -4760,9 +4760,9 @@
       "correct": "A",
       "key_concept": "A limit is tested on its own terms: a yearly probability limit is compared with the simulated yearly loss at the same probability point.",
       "pre_read": "Note the period and the probability point the board's limit uses before choosing a simulation output.",
-      "correct_explanation": "The board's limit is a chance over 12 months, so it is compared with the simulated spread of yearly losses: the 95th-percentile yearly loss is the amount exceeded in 5% of simulated years, set against $2,000,000. The 95th-percentile loss from one attack is the runner-up: it shows a single event's tail, but a year may bring no attack or several, so it misstates the yearly chance.",
+      "correct_explanation": "The board's limit is a chance over 12 months, so it is compared with the simulated spread of yearly losses: the 95th-percentile yearly loss is the amount exceeded in 5% of simulated years, set against $2,000,000. The 95th-percentile loss from one attack is the runner-up: it shows a single event's tail, but a year may bring no attack or several, so it misstates the yearly figure.",
       "wrong_explanations": {
-        "B": "One attack's tail ignores how many attacks a year brings; when attacks are rare it overstates the yearly chance, and when several strike in a year it understates it.",
+        "B": "One attack's tail ignores how many attacks a year brings; with rare attacks it overstates the yearly loss at the 5% point, and with several a year it understates it.",
         "C": "Attack frequency is one input to yearly losses; without the size of each loss it cannot show the chance of losses over $2,000,000 within 12 months.",
         "D": "The largest loss in any trial is one extreme outcome that grows as more trials are run; the board's limit is set at the 5% point."
       },
@@ -4790,22 +4790,22 @@
       "question": "A critical flaw is published for a canal authority's lock-gate controllers; the register rates the scenario low because a 2019 network diagram shows the controllers isolated. What should the risk analyst do FIRST?",
       "options": {
         "A": "Keep the low rating that the 2019 network diagram supports",
-        "B": "Recommend patching the controllers at the next maintenance closure",
+        "B": "Have the system owner schedule a patch for the next canal closure",
         "C": "Re-rate the scenario critical from the flaw's CVSS Base score",
-        "D": "Have the system owner confirm who can reach the controllers"
+        "D": "Obtain current evidence of who can reach the controllers"
       },
       "correct": "D",
       "key_concept": "A rating that credits isolation needs current evidence of it; confirm the condition holds before rating a new flaw or choosing a fix.",
       "pre_read": "Look at what the current rating rests on before weighing the new flaw.",
-      "correct_explanation": "The low rating rests on isolation shown in a 2019 diagram, and networks change; a critical flaw makes reachability the deciding factor, so the system owner should first confirm who can reach the controllers today. Recommending a patch at the next maintenance closure is the runner-up: patching may well be needed, but whether waiting for the closure is safe depends on the exposure that check reveals.",
+      "correct_explanation": "The low rating rests on isolation shown in a 2019 diagram, and networks change; a critical flaw makes reachability the deciding factor, so current evidence of who can reach the controllers comes first. Having the system owner schedule a patch for the next canal closure is the runner-up: patching may well be needed, but whether waiting for the closure is safe depends on the exposure that evidence reveals.",
       "wrong_explanations": {
         "A": "The diagram is seven years old; keeping a rating that rests on it credits isolation nobody has confirmed since, just when a critical flaw makes reach decisive.",
-        "B": "Patching may be right, but its timing is the owner's call once exposure is known; if the controllers are reachable, waiting for the closure could be far too slow.",
+        "B": "Patching may be right, but scheduling it now picks the response and its timing before exposure is known; if the controllers are reachable, the closure could be too late.",
         "C": "A Base score rates the flaw in general, not on this network; the risk depends on whether attackers can reach the controllers and what a failure would do."
       },
       "tips": [
         "Eliminate: A keeps a rating resting on a 2019 diagram nobody has rechecked, and C treats a general Base score as the risk on this network.",
-        "Final two: D beats B because exposure must be known before the response; only a confirmed picture of who can reach the controllers shows whether waiting for the closure is safe.",
+        "Final two: D beats B because exposure must be known before the response; only current evidence of who can reach the controllers shows whether waiting for the closure is safe.",
         "Exam cue: when a rating rests on a condition such as isolation, confirm the condition still holds before rating a new flaw or choosing a fix."
       ],
       "framework_ref": "NIST CSF 2.0 ID.RA-01 (vulnerabilities in assets are identified, validated and recorded); NIST SP 800-30 Rev. 1 Section 3.1 Task 1-3 (Identify Assumptions and Constraints: uncertainty in assumptions and information is considered); FIRST Common Vulnerability Scoring System (CVSS) v4.0 Specification Document Section 1 (Introduction)",
@@ -4814,51 +4814,51 @@
         "Assumptions in a rating",
         "CVSS Base score"
       ],
-      "_provenance": "Authored from concept: notes 2A3.3 (Risk-Based Remediation Priority: reachability, with claimed isolation confirmed as current, before ranking a fix). Round 14, 12 Nov 2026: original scenario (a canal authority's register rates its lock-gate controller scenario low on a 2019 diagram showing isolation, and a critical flaw is published) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Round 14 asks: a keyed 'Have' option and a keyed lone owner option. Owner shape: k=1, only the key D names an owner (the system owner); the runner-up B and the easy distractors A and C name none. Neighbours checked (stems and options): crisc_d2_005 (CVSS Base score copied as the rating), crisc_d2_051 (find which services rely on a flawed component), crisc_d2_070 (exploit code and CVSS threat metrics), crisc_d2_093 (uncredentialed scans understate exposure), crisc_d2_105 (verify a sample of disputed findings), crisc_d2_114 (late flaws on a reachable portal), crisc_d2_116 (a retiring engineer), crisc_d2_019 (credit for an untested control, 2B5), CC cc_d4_007 (hospital ventilation controllers with a new critical flaw: the analyst asks the owner to test and schedule the patch) and cc_d4_145 (no internet link is no malware defense); no mirror. Keep apart from cc_d4_007 and crisc_d2_114 in practice sets.",
+      "_provenance": "Authored from concept: notes 2A3.3 (Risk-Based Remediation Priority: reachability, with claimed isolation confirmed as current, before ranking a fix). Round 14, 12 Nov 2026: original scenario (a canal authority's register rates its lock-gate controller scenario low on a 2019 diagram showing isolation, and a critical flaw is published) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Round 14 asks: a lone owner option on the runner-up, left unkeyed (rule 22). Owner shape: k=1, only the runner-up B names an owner (the system owner); the key D and the easy distractors A and C name none. Neighbours checked (stems and options): crisc_d2_005 (CVSS Base score copied as the rating), crisc_d2_051 (find which services rely on a flawed component), crisc_d2_070 (exploit code and CVSS threat metrics), crisc_d2_093 (uncredentialed scans understate exposure), crisc_d2_105 (verify a sample of disputed findings), crisc_d2_114 (late flaws on a reachable portal), crisc_d2_116 (a retiring engineer), crisc_d2_019 (credit for an untested control, 2B5), crisc_d1_140 (plant controllers missing from the inventory), CC cc_d4_007 (hospital ventilation controllers with a new critical flaw: the analyst asks the owner to test and schedule the patch) and cc_d4_145 (no internet link is no malware defense); no mirror. Keep apart from cc_d4_007 and crisc_d2_114 in practice sets.",
       "style_version": 2
     },
     {
       "id": "crisc_d2_131",
       "domain": 2,
-      "subtopic": "2B1 Risk assessment concepts and standards. Impact of stolen design laptops",
-      "principle_id": "objectives-first",
-      "difficulty": "application",
-      "bloom_level": "Application",
-      "question": "A shoe factory's risk analyst is rating the impact if a designer's laptop holding next season's unreleased designs is stolen. Which of the following is the BEST basis for the impact rating?",
+      "subtopic": "2B1 Risk assessment concepts and standards. Order-system outage rated low impact",
+      "principle_id": "evidence-before-credit",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "A shoe factory's risk assessment rates an order-system outage as low impact, assuming retailers would accept a week's delay; no one has checked this. What should the risk analyst do FIRST?",
       "options": {
-        "A": "The cost of replacing the laptop and its software",
-        "B": "The design owner's estimate of rework and lost design time",
-        "C": "The sales lost if rivals copied the range first",
-        "D": "The number of laptops stolen from the factory before"
+        "A": "Report the rating with the untested assumption stated beside it",
+        "B": "Rate the impact as high until retailers' tolerance is known",
+        "C": "Have the process owner confirm how long retailers would wait",
+        "D": "Rate the outage's likelihood from the order system's history"
       },
       "correct": "C",
-      "key_concept": "Impact is the effect on business objectives: rate an asset by what its loss would do to the business, not by its replacement cost.",
-      "pre_read": "Sort the options into likelihood and impact measures, then ask where the real harm lies.",
-      "correct_explanation": "Impact is the effect on objectives, and this laptop matters for what it holds: next season's unreleased designs. If rivals copied the range and reached shops first, the factory would lose the sales those designs were meant to win, the harm that sets the rating. The design owner's estimate of rework and lost design time is the runner-up: it is a real cost from the right person, but it misses the competitive harm.",
+      "key_concept": "Assessments state their assumptions; one that decides a rating and can be checked is confirmed with the business before the rating is used.",
+      "pre_read": "Note what the rating depends on before choosing between reporting, re-rating and checking.",
+      "correct_explanation": "The low impact rests on one belief, that retailers would accept a week's delay, and nobody has tested it. The order process owner knows the retailers' terms and expectations, so confirming it with them first shows whether the rating stands. Reporting the rating with the assumption stated is the runner-up: stating assumptions is sound practice, but when one decides the rating and can be checked, it is checked before decision makers rely on it.",
       "wrong_explanations": {
-        "A": "Replacement cost values the hardware, the smallest part of the harm; the scenario's impact comes from what the laptop holds, not from what it costs.",
-        "B": "Rework and lost time are real costs and the owner's view helps, but they leave out the main harm: rivals using the designs to take the season's sales.",
-        "D": "Past thefts inform likelihood, how often a laptop may be lost; they say nothing about the harm when one holds unreleased designs."
+        "A": "Stating assumptions is good practice, but this one decides the rating and can be checked quickly; reporting first hands decision makers a rating that may be wrong.",
+        "B": "Defaulting to high swaps one unsupported rating for another; the rating should rest on what retailers would actually accept, which can be found out.",
+        "D": "Likelihood is not in question; the weak point is the impact, which rests on an untested belief about what retailers would accept."
       },
       "tips": [
-        "Eliminate: A values the hardware rather than what it holds, and D counts past thefts, which inform likelihood, not impact.",
-        "Final two: C beats B because impact follows business objectives; rework is a cost of the theft, but rivals launching the designs first is the harm that matters most.",
-        "Exam cue: rate impact by what an asset enables for the business, such as sales or secrets, not by what the asset costs to replace."
+        "Eliminate: B swaps one unsupported rating for another, and D rates likelihood, which is not in doubt; the weak point is the impact assumption.",
+        "Final two: C beats A because an assumption that decides a rating and can be tested is tested first; stating it only warns readers the rating may be wrong.",
+        "Exam cue: when a rating hangs on an untested business assumption, confirm it with the owner who knows the business before the rating is reported or used."
       ],
-      "framework_ref": "NIST SP 800-30 Rev. 1 Section 3.2 Task 2-5 (Determine Impact: assess the maximum impact associated with the affected assets); NIST SP 800-30 Rev. 1 Appendix H Table H-2 (Examples of Adverse Impacts: harm to operations, assets, individuals, other organizations and the Nation); ISACA Glossary (risk)",
+      "framework_ref": "NIST SP 800-30 Rev. 1 Section 3.1 Task 1-3 (Identify Assumptions and Constraints: uncertainty in assumptions and information is considered); NIST SP 800-30 Rev. 1 Section 2.3 (Key Risk Concepts: a rationale for the assessed values of risk factors increases reproducibility and repeatability); NIST SP 800-30 Rev. 1 Section 3.3 (Communicating and Sharing Risk Assessment Information)",
       "related_concepts": [
-        "Impact on objectives",
-        "Asset value",
-        "Competitive harm"
+        "Assessment assumptions",
+        "Uncertainty",
+        "Business validation of impact"
       ],
-      "_provenance": "Authored from concept: notes 2B1.1 (Likelihood, Impact and Risk: impact is the effect on objectives, not what a lost asset costs to replace). Round 14, 12 Nov 2026: original scenario (a shoe factory rates the impact if a designer's laptop holding next season's unreleased designs) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Round 14 asks: a lone owner option on the runner-up, left unkeyed. Owner shape: k=1, only the runner-up B names an owner (the design owner); the key C and the easy distractors A and D name none. Neighbours checked (stems and options): crisc_d2_078 (health harm with little money lost), crisc_d2_087 (lost orders and customers missing from an event record), crisc_d2_097 (a recovery rank cited for a data leak), crisc_d2_117 (BIA figures as the source of impact ratings: its wrong option is an owner's cost estimate, a different lesson), crisc_d2_096 (likelihood from fault records), CC cc_d1_030 (laptop theft re-rated after encryption: this item has no encryption option, so the two do not conflict), crisc_d4_099 (unreleased artwork in AI tools); no mirror in CISA or AAIA. Keep apart from crisc_d2_087 and crisc_d2_078 in practice sets.",
+      "_provenance": "Authored from concept: notes 2B1.2 (The Risk Assessment Process and Scope: assumptions are set in preparation, and any that decide a rating are checked with the business when they can be). Round 14, 12 Nov 2026: original scenario (a shoe factory's assessment rates an order-system outage low impact on an unchecked belief that retailers would accept a week's delay) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Round 14 asks: a keyed 'Have' option and a keyed lone owner option (rule 22). Owner shape: k=1, only the key C names an owner (the order process owner); the runner-up A and the easy distractors B and D name none. Neighbours checked (stems and options): crisc_d2_057 (a vendor refuses its audit report: there the evidence cannot be had, so reporting the limit is right; here the assumption can be checked, so reporting first is the runner-up), crisc_d2_102 (an untried paper fallback raised in a tabletop), crisc_d2_124 (an RTO set without a paper workaround), crisc_d2_117 (BIA figures as the source of impact ratings), crisc_d2_009 (scope and criteria first), crisc_d2_123 (scope gap back to the risk owner), crisc_d1_030 (asset value from business impact); no mirror in CISA, CC or AAIA. Keep apart from crisc_d2_057 in practice sets. Replaced before review: a first draft on the impact of a stolen designer laptop mirrored crisc_d1_030 (business impact over book or replacement value) and was dropped.",
       "style_version": 2
     },
     {
       "id": "crisc_d2_132",
       "domain": 2,
       "subtopic": "2A1 Risk events. Outage logs kept by two teams",
-      "principle_id": "evidence-before-credit",
+      "principle_id": "answer-from-the-stem",
       "difficulty": "foundational",
       "bloom_level": "Foundational",
       "question": "A food bank's IT help desk and warehouse team each log inventory-system outages; the two logs overlap, and each holds outages the other missed. What should the risk analyst do FIRST to rate likelihood?",
