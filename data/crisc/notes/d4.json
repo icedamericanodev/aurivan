@@ -49,7 +49,8 @@
             "crisc_d4_046",
             "crisc_d4_066",
             "crisc_d4_080",
-            "crisc_d4_111"
+            "crisc_d4_111",
+            "crisc_d4_136"
           ],
           "definition": "Enterprise architecture (EA) is the documented model of how business processes, data, applications and technology fit together to deliver the organization's strategy.",
           "why_it_matters": "EA shows where a new system, vendor or AI service touches critical data and processes, so risk can be judged before money is committed. Without it, risk decisions are made one project at a time.",
@@ -57,11 +58,11 @@
             "EA describes layers: business processes, data, applications and technology, and the links between them; before an assessment relies on it, links changed since its last update are confirmed.",
             "An architecture review board checks proposed solutions against approved principles, standards and the target architecture before funding.",
             "Security and privacy requirements are built into the architecture, so each new system inherits them instead of reinventing them.",
-            "AI services are architecture components too: their data flows, model hosting and integrations belong in the EA.",
+            "AI services are EA components: data flows, model hosting and integrations belong in it; one added outside can escape its rules, such as no vendor training on inputs.",
             "Deviations from the architecture are recorded as exceptions with an owner, a reason and an expiry date.",
             "A major architecture change, such as a cloud move or new integrations, leaves earlier ratings out of date, so affected risks are reassessed before any acceptance is renewed."
           ],
-          "example": "A regional utility plans to connect a vendor's AI chatbot directly to its customer billing database. Mateo, the IT risk analyst, compares the design with the enterprise architecture and finds the chatbot would bypass the approved integration layer that logs and filters customer data. Mateo documents the deviation and its risk, and takes it to the architecture review board with options.",
+          "example": "A regional utility plans to connect a vendor's AI chatbot straight to its billing database. Mateo, the risk analyst, finds in the enterprise architecture that the chatbot would bypass the integration layer that logs and filters customer data. Mateo takes the deviation and its risk to the review board with options.",
           "audit_focus": {
             "review": [
               "Compare recent projects with the target architecture and approved standards",
@@ -459,7 +460,8 @@
             "crisc_d4_028",
             "crisc_d4_059",
             "crisc_d4_068",
-            "crisc_d4_086"
+            "crisc_d4_086",
+            "crisc_d4_137"
           ],
           "definition": "The system development life cycle (SDLC) is the sequence of phases from initiation through design, build, testing, implementation, operation and disposal, each with its own risk activities.",
           "why_it_matters": "A design flaw costs little to fix; after go-live it costs far more and may have caused harm. Risk work in every phase keeps the project within appetite.",
@@ -468,10 +470,10 @@
             "Requirements and design: define security, privacy and control requirements alongside functional ones; for a purchased system, put them in the selection criteria and contract.",
             "Build and test: verify requirements are met; business users, not developers, sign off acceptance testing.",
             "Implementation: before go-live, the owner accepts residual risk within appetite or orders more treatment; the assessment is updated first only if scope, data or threats changed.",
-            "Post-implementation review: check whether benefits arrived and risks stayed within appetite.",
+            "Post-implementation review: check whether benefits arrived, risks stayed within appetite and assumed controls work; quiet months do not show that.",
             "Disposal is planned: the data owner has old data archived or securely destroyed, and servers and access are retired."
           ],
-          "example": "A retailer is rebuilding its loyalty app, and the plan schedules the only security review two weeks before launch. Teo, the risk analyst, shows the sponsor that a late finding could force a costly redesign or a launch with open risk, and proposes adding security and privacy requirements to the design phase gate.",
+          "example": "A retailer is rebuilding its loyalty app, and its only security review is two weeks before launch. Teo, the risk analyst, shows the sponsor that a late finding could force a costly redesign or a launch with open risk, and proposes security and privacy requirements at the design phase gate.",
           "audit_focus": {
             "review": [
               "Trace each project phase gate to a completed risk assessment",
@@ -488,11 +490,11 @@
           "exam_traps": [
             {
               "trap": "Treating a small change as too minor to need a risk assessment.",
-              "why": "Small code changes can touch critical data or controls. The depth of assessment can scale with risk, but every change gets one."
+              "why": "Small changes can touch critical data or controls; assessment depth scales with risk, but every change gets one."
             },
             {
               "trap": "Letting developers perform user acceptance testing.",
-              "why": "Developers test what they built against their own understanding. Business users confirm the system meets their needs, which keeps the check independent."
+              "why": "Developers test against their own understanding; business users confirm the system meets their needs, keeping the check independent."
             }
           ],
           "key_terms": [
@@ -1154,14 +1156,15 @@
           "practice_ids": [
             "crisc_d4_034",
             "crisc_d4_056",
-            "crisc_d4_127"
+            "crisc_d4_127",
+            "crisc_d4_138"
           ],
           "definition": "Recovery testing checks that disaster recovery capability, and the technology side of continuity plans, works, using methods that range from checklist reviews and tabletop exercises to full interruption tests.",
           "why_it_matters": "An untested plan is an assumption. Tests show whether RTO and RPO are met, whether people know their roles and where the gaps are, so owners can decide on fixes before a real event.",
           "how_it_works": [
             "Tests are chosen by risk and plan maturity, starting with low-disruption methods and building to realistic ones that cover the whole cycle, including the return to the main site.",
             "A test that could disrupt operations is a business decision: the owner of the affected process accepts or limits the disruption, informed by what a failed test could cost.",
-            "Each test has objectives tied to RTO, RPO and the scenarios in the risk register.",
+            "Each test has objectives tied to RTO, RPO and register scenarios; tests run on schedule and after set triggers, not after unrelated outside outages.",
             "Observers record what worked, what failed and how long recovery actually took.",
             "Findings go into a corrective action plan with owners and dates, and the plan is retested.",
             "A restore test times only the restore; under ransomware, containment and malware checks come first, so real recovery takes longer than the test shows."
@@ -1188,7 +1191,7 @@
               "meaning": "Production is actually moved to recovery systems; the most realistic and most disruptive test."
             }
           ],
-          "example": "A city water utility runs its first tabletop exercise on a ransomware scenario. Within an hour the team finds that no one knows who may authorize switching treatment controls to manual operation. Aiko, the risk analyst, records the gap, links it to the ransomware scenario in the register and asks the operations director to assign the decision authority.",
+          "example": "A city water utility runs its first ransomware tabletop exercise. Within an hour the team finds that no one knows who may authorize switching treatment controls to manual operation. Aiko, the risk analyst, records the gap, links it to the ransomware scenario in the register and asks the operations director to assign the decision authority.",
           "audit_focus": {
             "review": [
               "Compare tested scenarios with the top-rated scenarios in the register",
@@ -1455,7 +1458,8 @@
             "crisc_d4_040",
             "crisc_d4_062",
             "crisc_d4_098",
-            "crisc_d4_128"
+            "crisc_d4_128",
+            "crisc_d4_139"
           ],
           "definition": "Zero Trust is a security approach that grants no implicit trust based on network location; each access request is checked using identity, device state and policy.",
           "why_it_matters": "Remote work, cloud and partners have dissolved the network edge. Zero Trust limits how far a stolen account or infected device can reach, lowering the impact of the most common attack paths.",
@@ -1463,7 +1467,7 @@
             "NIST SP 800-207 tenets include that network location alone grants no trust and access to each resource is granted per session, so one stolen login cannot roam to other systems.",
             "Decisions use identity, device health, behavior and data sensitivity, and are re-checked over time.",
             "Least privilege and micro-segmentation keep each user, workload or AI agent to what it needs; a segment narrows reach, but each request is still verified.",
-            "Monitoring of assets and access feeds back into policy decisions.",
+            "Monitoring of assets and access feeds back into policy; per-session checks enforce granted rights without judging them, so access reviews still matter.",
             "Adoption is incremental: NIST SP 800-207 describes moving one business process at a time, often piloting on a lower-risk process, to protect the highest-value data.",
             "Until a rollout covers a scenario's users and assets, the register credits only the coverage that is live and working; the finished rollout is target risk."
           ],
@@ -1639,13 +1643,14 @@
             "crisc_d4_018",
             "crisc_d4_057",
             "crisc_d4_099",
-            "crisc_d4_109"
+            "crisc_d4_109",
+            "crisc_d4_140"
           ],
           "definition": "Measuring awareness means tracking whether behavior changes after training, using measures such as reporting rates and simulation results, not just course completion.",
           "why_it_matters": "Completion rates show who clicked through a course, not who acts safely. Behavior measures show whether training reduces risk and where to focus, including new risks such as staff pasting data into public AI tools.",
           "how_it_works": [
             "Outcome measures include phishing report rates, repeat-click rates, policy exceptions, incidents caused by error and the share of independently detected mistakes that staff reported themselves.",
-            "Fair simulations are announced as a program, avoid cruel lures, coach rather than shame and report trends, not names.",
+            "Fair simulations are announced as a program but not by date, avoid cruel lures, coach rather than shame and report trends, not names; random timing keeps results honest.",
             "Results are compared over time and by role to target follow-up training.",
             "Shadow AI, staff using unapproved AI tools, is an awareness topic: what data may go where and which tools are approved.",
             "Awareness works best paired with an approved alternative, because bans without options push use underground.",

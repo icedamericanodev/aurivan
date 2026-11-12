@@ -484,17 +484,18 @@
             "crisc_d2_093",
             "crisc_d2_095",
             "crisc_d2_116",
-            "crisc_d2_138"
+            "crisc_d2_138",
+            "crisc_d2_149"
           ],
           "definition": "A vulnerability is a weakness in the design, implementation, operation or internal control of a process or system that a threat could exploit.",
           "why_it_matters": "Many serious losses combine a technical flaw with a process gap or human error; scanner output alone leaves process and people weaknesses unmanaged.",
           "how_it_works": [
-            "People weaknesses include missing skills, weak awareness, key-person dependency and too few staff for critical tasks.",
+            "People weaknesses include weak awareness, missing skills, key-person dependency and too few staff, weighed by what those people can reach.",
             "Process weaknesses include missing approvals, poor segregation of duties, untested recovery plans and undocumented procedures.",
-            "Technology weaknesses include unpatched software, misconfigurations, default passwords, unsupported systems and over-broad access, which an AI assistant searching with users' rights makes easy to reach.",
+            "Technology weaknesses include unpatched software, misconfigurations, default passwords, unsupported systems and over-broad access, easy to reach through an AI assistant using users' rights.",
             "A control deficiency found in testing or audit is a vulnerability; one with a shared cause, such as a standard install, is recorded against that cause.",
             "Predisposing conditions, such as a flood-prone site, change likelihood even when nothing is broken.",
-            "Walkthroughs and control tests find process and people weaknesses; documents and self-assessments show intent; uncredentialed scans miss many installed-software flaws; a rare-item AI detector is judged by its misses."
+            "Walkthroughs and control tests find process and people weaknesses; documents and self-assessments show intent; uncredentialed scans miss many installed-software flaws; rare-item AI detectors are judged by misses."
           ],
           "compare": {
             "columns": [
@@ -691,14 +692,15 @@
             "crisc_d2_054",
             "crisc_d2_119",
             "crisc_d2_128",
-            "crisc_d2_139"
+            "crisc_d2_139",
+            "crisc_d2_150"
           ],
           "definition": "A risk scenario is a specific, assessable description of how a threat could cause an event that affects an asset and harms business objectives.",
           "why_it_matters": "A vague entry such as 'cyberattack' cannot be rated, owned or treated. A specific scenario shows which controls matter and lets the owner compare it with appetite.",
           "how_it_works": [
             "Actor: who or what causes it, such as a criminal group, a careless user or a failed cooling unit.",
             "Event: what happens, such as malicious encryption, disclosure, an error or an outage.",
-            "Asset: the process, system, data or people affected.",
+            "Asset: the process, system, data or people affected; an AI bias scenario names the group the model treats unfairly, not just 'some applicants'.",
             "Time: when or how long, such as payroll week or outages over four hours; when harm depends on timing, rate the credible time that hurts most.",
             "Consequence: the effect on objectives in business terms, such as lost revenue, fines or harm to patients; harm from altered data grows until someone notices.",
             "NIST IR 8286A Rev. 1 suggests a cause-and-effect sentence: an actor exploits a weakness in an asset, resulting in a business impact."
@@ -962,7 +964,8 @@
             "crisc_d2_079",
             "crisc_d2_117",
             "crisc_d2_123",
-            "crisc_d2_131"
+            "crisc_d2_131",
+            "crisc_d2_151"
           ],
           "definition": "A risk assessment identifies, estimates and prioritizes risk. NIST SP 800-30 runs it in four steps: prepare, conduct, communicate the results and maintain the assessment.",
           "why_it_matters": "Skipping preparation means assessing the wrong things against the wrong criteria. Skipping communication or maintenance leaves decisions resting on unseen or outdated results.",
@@ -970,7 +973,7 @@
             "Prepare: set purpose, scope, assumptions (checking with owners any that decide a rating), constraints, sources, risk model and approach (threat-, impact- or vulnerability-oriented), chosen partly by where information is strongest.",
             "Conduct: identify threat sources and events, vulnerabilities and predisposing conditions, then determine likelihood, impact and risk.",
             "Communicate: give results to decision makers in a form they can act on, like a briefing, report or dashboard.",
-            "Maintain: monitor risk factors and update the assessment when systems, threats or the business change.",
+            "Maintain: monitor risk factors; without a significant change, update just the factors that changed.",
             "The official requesting the assessment sets its scope; a third-party part of the process found outside it goes back to that official to decide.",
             "In ISO 31000, ISO/IEC 27005 and the ISACA Glossary, risk evaluation compares each rating with the criteria and appetite; NIST SP 800-30 leaves this to decision makers."
           ],
@@ -1292,7 +1295,8 @@
             "crisc_d2_038",
             "crisc_d2_039",
             "crisc_d2_061",
-            "crisc_d2_075"
+            "crisc_d2_075",
+            "crisc_d2_152"
           ],
           "definition": "Keeping the register current means updating ratings, controls, responses and status whenever events, assessments, control tests or business changes alter a risk.",
           "why_it_matters": "Decisions are only as good as the register behind them. A stale register reports risks as treated that are not, and hides risks that have grown.",
@@ -1300,7 +1304,7 @@
             "Update triggers include incidents, near misses, control test results, audit findings, new threats, projects and reorganizations.",
             "Status follows evidence: an entry moves to treated only when the response is implemented and working, not when it is planned.",
             "Current and residual ratings credit a control only after it is implemented and tested, not on the day it is approved.",
-            "Each owner reviews their entries on a set cycle, and KRIs flag when an earlier review is needed.",
+            "Each owner reviews their entries on a set cycle; a stated trigger, such as a KRI breach, calls for an earlier review, and a request alone is not one.",
             "Closing an entry needs a reason, such as the asset being retired or the risk avoided, and the owner's approval; closed entries stay in the register as history.",
             "A new or emerging risk, such as a newly launched AI system, is entered early with its rating's uncertainty stated and an early review date."
           ],
@@ -1560,7 +1564,8 @@
             "crisc_d2_083",
             "crisc_d2_099",
             "crisc_d2_115",
-            "crisc_d2_129"
+            "crisc_d2_129",
+            "crisc_d2_153"
           ],
           "definition": "Choosing a method means matching the analysis to the decision it must support and the quality of the data available, from simple scales to FAIR models and Monte Carlo simulation.",
           "why_it_matters": "A precise-looking number built on guesses misleads decision makers more than an honest qualitative rating. The method must fit the data and the decision.",
@@ -1723,12 +1728,13 @@
             "crisc_d2_086",
             "crisc_d2_110",
             "crisc_d2_135",
-            "crisc_d2_144"
+            "crisc_d2_144",
+            "crisc_d2_154"
           ],
           "definition": "Control effectiveness is how well a control actually reduces a risk's likelihood or impact; it sets the gap between inherent and residual risk.",
           "why_it_matters": "A residual rating that assumes controls work, without evidence, can hide a risk far above appetite. Effectiveness must be shown, not assumed.",
           "how_it_works": [
-            "Design effectiveness asks whether the control, run as intended, would address the scenario's cause.",
+            "Design effectiveness asks whether the control, run as intended, would cut the scenario's likelihood or impact, and which: backups cut an attack's impact, not its likelihood.",
             "Operating effectiveness asks whether it actually ran as designed over the period, shown by testing or monitoring.",
             "Evidence includes control test results, key control indicators (KCIs), audit findings and incident history; a detective control's clean record proves little until a test shows it would catch an event.",
             "An untested or failed control earns little or no reduction in the current rating; one that repeated tests show working earns its credit without waiting for a review.",

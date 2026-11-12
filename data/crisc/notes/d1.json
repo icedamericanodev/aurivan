@@ -117,19 +117,20 @@
             "crisc_d1_104",
             "crisc_d1_111",
             "crisc_d1_138",
-            "crisc_d1_164"
+            "crisc_d1_164",
+            "crisc_d1_177"
           ],
           "definition": "The COBIT 2019 goals cascade links stakeholder needs to enterprise goals, then to technology alignment goals, so every technology goal serves a business goal.",
-          "why_it_matters": "IT goals set alone let technology spend drift from business needs, and strategic change shifts the risk profile, so it is assessed early.",
+          "why_it_matters": "IT goals set alone let spending drift from business needs; strategic change shifts the risk profile.",
           "how_it_works": [
-            "Stakeholder needs and drivers shape enterprise goals, such as customer trust or compliance with laws.",
-            "Enterprise goals cascade to alignment goals for information and technology (I&T), which point to the governance and management objectives that deliver them.",
+            "Stakeholder needs shape enterprise goals; appetite guides strategy, so a strategy that planned treatment cannot bring within appetite goes back to the board.",
+            "Enterprise goals cascade to alignment goals for information and technology (I&T), which point to the objectives that deliver them.",
             "Risk to an alignment goal is reported through the enterprise goal above; an IT goal that harms it is revisited with business owners.",
-            "A new strategy, merger, market, technology or failed key assumption triggers a fresh look at each affected goal's risks and planned treatments.",
+            "A new strategy, merger, market, technology or failed assumption triggers a fresh look at affected goals' risks and planned treatments.",
             "AI initiatives start from a business purpose, with a risk owner and appetite fit agreed before scaling; their risk is rated against that purpose, not the tool's own metric.",
-            "Risk input counts most while leaders compare strategic options; each chosen objective then needs a measure, set by its owner, before risk to it is rated."
+            "Risk input counts most while leaders compare strategic options; each chosen objective then needs a measure, set by its owner, before its risk is rated."
           ],
-          "example": "A university plans to grow online enrollment by 20%. The IT director proposes moving every system to the cloud. Kenji, the risk practitioner, maps the cloud goal to the enrollment goal, finds that only the student portal and learning platform support it, and asks the provost's office to confirm priorities before assessing a full migration.",
+          "example": "A university aims to grow online enrollment 20%, and the IT director proposes moving every system to the cloud. Kenji, the risk practitioner, maps the cloud goal to the enrollment goal, finds only the student portal and learning platform support it, and asks the provost's office to confirm priorities.",
           "audit_focus": {
             "review": [
               "Map each major IT goal to the enterprise goal it supports",
@@ -142,11 +143,11 @@
             "recommend": "Have senior management confirm which enterprise goal each IT goal and new initiative supports.",
             "decides": "Senior management sets enterprise goals and approves new strategic initiatives"
           },
-          "isaca_rule": "IT goals are means, not ends. For any technology goal or initiative, ask which enterprise goal it serves, assess and report its risk through that goal, and reassess whenever strategy changes, AI adoption included.",
+          "isaca_rule": "IT goals are means, not ends. Ask which enterprise goal any technology goal serves, assess and report its risk through that goal, and reassess whenever strategy changes, AI adoption included.",
           "exam_traps": [
             {
               "trap": "IT goals such as 99.99% uptime are worth pursuing for their own sake.",
-              "why": "Uptime matters only as far as a business goal needs it; unneeded targets add cost and crowd out bigger risks."
+              "why": "Uptime matters only as far as a business goal needs it; unneeded targets add cost."
             },
             {
               "trap": "A new AI tool is only a technology project, so the IT team owns its risk.",
@@ -156,7 +157,7 @@
           "key_terms": [
             {
               "term": "Enterprise goal",
-              "definition": "A business-level goal in the COBIT 2019 cascade, such as customer-oriented service or compliance with external laws."
+              "definition": "A business-level goal in the COBIT 2019 cascade, such as customer-oriented service or legal compliance."
             },
             {
               "term": "Alignment goal",
@@ -411,19 +412,20 @@
             "crisc_d1_046",
             "crisc_d1_055",
             "crisc_d1_109",
-            "crisc_d1_137"
+            "crisc_d1_137",
+            "crisc_d1_178"
           ],
           "definition": "Risk culture is the values and beliefs people share about risk and the behavior they drive, such as raising risks openly; tone at the top is how leaders model it.",
-          "why_it_matters": "Policies work only if people follow them when no one is watching. A risk strategy that clashes with culture is hard to carry out, so culture is a root cause behind many control failures.",
+          "why_it_matters": "Policies work only if people follow them unobserved. A risk strategy that clashes with culture is hard to carry out, so culture lies behind many control failures.",
           "how_it_works": [
-            "Leaders signal priorities through what they reward, question, fund and tolerate, more than through what they write.",
+            "Leaders signal priorities through what they reward, question, punish, fund and tolerate, more than what they write; punishing well-judged failures teaches staff to avoid risks the appetite welcomes.",
             "A healthy risk culture shows in early reporting of near misses and honest discussion of losses.",
             "A weak culture shows in hidden issues, repeated exceptions and blame; a unit with no near misses beside similar units' many is a warning sign.",
             "Culture is assessed with surveys, interviews, incident reporting rates and the way exceptions are handled.",
             "Changing culture takes leadership action, aligned incentives and consequences, supported by training and communication.",
             "Consequences apply equally at every level: when a top performer's breaches go unpunished, staff learn the rule is optional."
           ],
-          "example": "At a manufacturer, findings on unsafe changes to plant safety systems keep recurring after two rounds of training. Omar, the risk practitioner, reviews exception logs and finds plant managers routinely approve skipped checks to meet output targets, with no follow-up from executives. They report the pattern to the operations executive as a culture issue tied to targets and propose leadership actions, not another course.",
+          "example": "At a manufacturer, unsafe changes to plant safety systems keep recurring after two rounds of training. Omar, the risk practitioner, finds in exception logs that plant managers routinely approve skipped checks to meet output targets, and executives never follow up. They report it to the operations executive as a culture issue tied to targets and propose leadership actions, not another course.",
           "audit_focus": {
             "review": [
               "Compare incident and near-miss reporting rates across business units",
@@ -600,7 +602,8 @@
             "crisc_d1_098",
             "crisc_d1_126",
             "crisc_d1_147",
-            "crisc_d1_167"
+            "crisc_d1_167",
+            "crisc_d1_179"
           ],
           "definition": "The policy hierarchy runs from policies (management intent) to standards (mandatory specifics), procedures (step-by-step tasks) and guidelines (advisory good practice).",
           "why_it_matters": "Each layer has a different approver and force. Confusing them leads to treating advice as a rule, or to IT approving what only senior management can.",
@@ -609,7 +612,7 @@
             "Standards make a policy measurable, such as a minimum encryption strength, and are mandatory.",
             "Procedures give the steps to meet a standard and are owned by the teams that perform them; a rewrite that still meets the standard is approved by their manager.",
             "Guidelines recommend good practice; people may depart from them for a sound reason, and such a departure is not a compliance finding.",
-            "Every layer should trace back to risk appetite, so rules are as strict as the risk requires.",
+            "Every layer traces back to risk appetite, so rules are as strict as the risk requires; when the board changes its appetite, owners realign their layers, looser or stricter.",
             "A lower layer may tighten a higher one, still meeting every higher requirement, but not relax it; a team owns its procedure, but changing a standard is its owner's decision."
           ],
           "compare": {
@@ -649,7 +652,7 @@
               }
             ]
           },
-          "example": "A software company's security team publishes a guideline recommending password managers, and an internal review flags a team that does not use one as non-compliant. Noor, the risk practitioner, points out that a guideline is advisory, checks that the mandatory password standard was met, and suggests the policy owner decide whether the practice should become a standard.",
+          "example": "A software company's security team publishes a guideline recommending password managers, and a review flags a team that uses none as non-compliant. Noor, the risk practitioner, notes that guidelines are advisory, checks that the mandatory password standard was met, and suggests the policy owner decide whether the practice should become a standard.",
           "audit_focus": {
             "review": [
               "Trace each standard and procedure back to a parent policy",
@@ -817,7 +820,8 @@
             "crisc_d1_099",
             "crisc_d1_107",
             "crisc_d1_131",
-            "crisc_d1_152"
+            "crisc_d1_152",
+            "crisc_d1_180"
           ],
           "definition": "A business process is a set of activities that produces a business outcome; its process owner is accountable for its performance, risks and controls from end to end.",
           "why_it_matters": "Risk lands on processes, not on servers. Knowing which processes are critical, and who owns them, shows where disruption hurts most and who decides on resilience spending.",
@@ -825,7 +829,7 @@
             "Each critical process has one owner who answers for its outcome across departments.",
             "Critical processes are those whose failure most harms objectives, customers, safety or compliance; the business impact analysis (BIA, see 2B2) ranks them.",
             "Processes depend on people, suppliers, data and systems; mapping them end to end with the owner shows single points of failure a plan built around one system misses.",
-            "Process owners set recovery needs that IT and suppliers meet; when owners' priorities clash, the plan's owner sets the order by impact.",
+            "Process owners set recovery needs, including the manual fallback if an AI service fails, that IT and suppliers meet; when owners clash, the plan's owner orders recovery by impact.",
             "A tested recovery slower than the target but within appetite can be accepted by the process owner on record, with the RTO and the plan updated to match.",
             "A workaround that drops a control, such as an approval step, keeps the process going but adds risk; assess it with the process owner before relying on it."
           ],
@@ -1164,14 +1168,15 @@
             "crisc_d1_033",
             "crisc_d1_106",
             "crisc_d1_148",
-            "crisc_d1_158"
+            "crisc_d1_158",
+            "crisc_d1_181"
           ],
           "definition": "Enterprise risk management (ERM) identifies, assesses, responds to and monitors risk of every type, upside included, so risk-taking supports strategy and adds stakeholder value; IT risk is one part.",
           "why_it_matters": "When IT risk sits in its own register with its own language, leaders cannot weigh it against financial, operational or strategic risk, and it competes poorly for attention and budget.",
           "how_it_works": [
             "Enterprise leaders set the strategy, appetite and methods; each discipline, including IT, applies them.",
             "System and business unit risk registers roll up into enterprise-level registers through aggregation and normalization.",
-            "IT risk is expressed by its effect on enterprise objectives: strategic, operations, reporting and compliance.",
+            "IT risk is expressed by its effect on enterprise objectives: strategic, operations, reporting and compliance; one 'IT failure' entry held by IT is recast as business scenarios with business owners.",
             "Decisions on IT risk flow back down as guidance, so local teams act within enterprise appetite; IT ranks and funds treatments by the enterprise risks they reduce.",
             "ERM covers upside as well as loss: exploiting a well-judged risk to pursue an opportunity is part of increasing value.",
             "IT risk is wider than failure: Risk IT's categories are benefit or value enablement (missed chances to use technology), program and project delivery, and operations and service delivery."
@@ -1337,12 +1342,13 @@
             "crisc_d1_065",
             "crisc_d1_078",
             "crisc_d1_102",
-            "crisc_d1_121"
+            "crisc_d1_121",
+            "crisc_d1_182"
           ],
           "definition": "The lines of defense model separates who owns and manages risk (first line), who oversees and challenges it (second line) and who gives independent assurance (third line).",
           "why_it_matters": "Clear lines prevent gaps and overlaps. When audit designs controls or the risk function owns business risk, independence and accountability are both lost.",
           "how_it_works": [
-            "First line: business and operational management own risks and run controls day to day; their own control-testing teams are first line too.",
+            "First line: business and operational management own risks and run controls day to day, their own control testers included; other lines' tests check these controls but do not replace them.",
             "Second line: risk management, compliance and similar functions set methods, monitor, challenge and report; challenge shows it works when ratings or plans change because of it.",
             "Third line: internal audit gives independent, objective assurance to the board or audit committee.",
             "The board oversees all three; senior management is accountable for the first and second lines.",
@@ -1382,7 +1388,7 @@
               }
             ]
           },
-          "example": "At an airline, the risk team has started writing access procedures for the maintenance systems, and the maintenance manager now calls access risk the risk team's job. Chen, the second-line risk analyst, hands the procedures back to the maintenance manager as owner, keeps the role of setting the method and reviewing results, and asks senior management to confirm the maintenance manager as risk owner in the register.",
+          "example": "At an airline, the risk team has started writing access procedures for the maintenance systems, and the maintenance manager now calls access risk the risk team's job. Chen, the second-line risk analyst, hands the procedures back to the manager as owner, keeps setting the method and reviewing results, and asks senior management to confirm the manager as risk owner.",
           "audit_focus": {
             "review": [
               "Compare role descriptions with the line each function actually works in",
