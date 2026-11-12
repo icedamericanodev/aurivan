@@ -966,9 +966,9 @@
             "crisc_d3_237"
           ],
           "definition": "Control frameworks are published models and catalogs, such as COBIT 2019, NIST SP 800-53 Rev. 5 and NIST CSF 2.0, that organizations tailor into their own control set.",
-          "why_it_matters": "A framework gives a tested starting point and a common language with auditors and regulators. Adopting it whole, without tailoring, spends money on controls that do not fit the risks.",
+          "why_it_matters": "A framework gives a tested starting point and a common language with auditors and regulators. Adopting it whole spends money on controls that do not fit the risks.",
           "how_it_works": [
-            "COBIT 2019 sets governance and management objectives, tailored through design factors, such as strategy and threat landscape, that set objective priorities and target capability levels.",
+            "COBIT 2019 sets governance and management objectives for enterprise I&T, tailored through design factors, such as strategy and threat landscape, that set objective priorities and target capability levels.",
             "NIST SP 800-53 Rev. 5 is a security and privacy control catalog; SP 800-53B holds its baselines, and overlays, such as SP 800-82's for OT, tailor them.",
             "CSF 2.0 lists outcomes under six functions, Govern among them, without prescribing the controls that achieve them.",
             "Tailor by scoping out what does not apply, setting parameter values from the organization's own risk and operations, and adding controls for risks the baseline misses.",
@@ -998,7 +998,7 @@
           "key_terms": [
             {
               "term": "Control baseline",
-              "definition": "A starting set of controls for a system of a given impact level, which is then tailored to its risks."
+              "definition": "A starting set of controls for a system of a given impact level, then tailored to its risks."
             },
             {
               "term": "Tailoring",
@@ -1292,7 +1292,7 @@
           "definition": "Design testing asks whether a control could meet its objective as built; operating testing asks whether it actually worked consistently over a period, usually by sampling.",
           "why_it_matters": "A well-designed control can still be skipped in practice. Reporting a design test as proof of operation overstates assurance and leaves the risk owner relying on a control that may not run.",
           "how_it_works": [
-            "Test design first, by walking through one transaction; a badly designed control needs no operating test, and a new one waits for enough runs to sample.",
+            "Test design first, often by walking through one transaction; a badly designed control needs no operating test, and a new one waits for enough runs to sample.",
             "Test operation over a period, covering the sites where people run it, with a sample sized to frequency and risk; sample each control version changed mid-period.",
             "Draw the sample from the complete population, ideally system-generated, with the tester choosing the items; test any system report the control relies on for completeness.",
             "Evaluate each failure: find its cause and decide whether the control can still be relied on.",
@@ -1328,7 +1328,7 @@
               }
             ]
           },
-          "example": "A shipping company's quarterly user-access review has a sound written procedure. Kofi, a risk analyst, walks through the March review and confirms the design. For operation, they pull four quarters of reviews from system records and find September's was never signed off. Kofi reports it as well designed but not operating consistently.",
+          "example": "A shipping company's quarterly user-access review has a sound written procedure. Kofi, a risk analyst, walks through the March review and confirms the design. For operation, they pull four quarters of reviews from system records; September's was never signed off. Kofi reports it as well designed but not operating consistently.",
           "audit_focus": {
             "review": [
               "Confirm design was tested before operating effectiveness",
@@ -1851,7 +1851,7 @@
             "Measurable: the data is available, consistent and cheap enough to collect regularly.",
             "Predictive: a leading indicator changes before the risk event, not after it.",
             "Thresholds and owner: each KRI has limits tied to tolerance and a person who acts on a breach.",
-            "Keep the set small, focused on the top risks and reviewed as they change; a KRI that stayed green while its risk occurred is replaced, not retuned.",
+            "Keep the set small, focused on the top risks and reviewed as they change; a KRI green while its risk occurred is replaced if off the losses' path, otherwise retuned.",
             "Check the KRI sits on the scenario's own path: for data copied before staff leave, watch downloads during notice, not account removal afterward."
           ],
           "types": [
