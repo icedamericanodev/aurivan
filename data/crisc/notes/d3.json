@@ -632,8 +632,7 @@
             "crisc_d3_136",
             "crisc_d3_163",
             "crisc_d3_171",
-            "crisc_d3_202",
-            "crisc_d3_218"
+            "crisc_d3_202"
           ],
           "definition": "Issue management is logging each control weakness, audit finding or incident lesson with an owner, an action and a due date, then tracking it until closure is validated.",
           "why_it_matters": "Findings that are logged but never really fixed leave the same risk open while reports show progress. Overdue items are often where the next incident comes from.",
@@ -641,7 +640,7 @@
             "Log every issue in one tracker, linked to the risk it affects and ranked by that risk's rating, since audits, regulators and reviews each rate on their own scale.",
             "Give each issue one owner, an agreed action and a realistic due date.",
             "Escalate overdue or slipping items to the risk owner and, past a set point, to senior management.",
-            "Close an issue on evidence the fix works, not the owner's word, or, within appetite, on the risk owner's recorded acceptance; above appetite, the level that set it decides.",
+            "Close an issue on evidence the fix works, not the owner's word, or, within appetite, on the risk owner's recorded acceptance.",
             "Re-rate the risk once a fix is validated; a fix that differs from the agreed action is first evaluated for the risk it leaves, then agreed with the risk owner.",
             "When teams dispute who should fix an issue, the owner of the affected risk names one action owner; the practitioner escalates to that owner rather than choosing a team."
           ],
@@ -691,12 +690,13 @@
             "crisc_d3_119",
             "crisc_d3_146",
             "crisc_d3_186",
-            "crisc_d3_211"
+            "crisc_d3_211",
+            "crisc_d3_218"
           ],
           "definition": "An exception is a temporary, approved deviation from a policy or standard; an exemption is an approved exclusion from a requirement that does not apply or cannot apply.",
-          "why_it_matters": "Business sometimes cannot meet a requirement on time. A managed deviation keeps that risk visible, compensated and time-bound; an unmanaged one becomes a permanent, hidden gap.",
+          "why_it_matters": "Business sometimes cannot meet a requirement on time. Managed, a deviation stays visible, compensated and time-bound; unmanaged, it becomes a permanent, hidden gap.",
           "how_it_works": [
-            "The requester states the requirement, the reason it cannot be met and the risk this creates.",
+            "Requests come before deviating and state the requirement, reason and risk; a deviation already running is logged as an issue, not a backdated exception.",
             "The practitioner assesses the risk and proposes compensating controls to keep it within appetite.",
             "The risk owner approves, at a level that matches the risk; policy may require senior management for high ratings.",
             "Exceptions carry an expiry date and a plan to comply; exemptions are reviewed periodically. One in date, within authority and compensated is reviewed then, not escalated early.",
@@ -732,7 +732,7 @@
               }
             ]
           },
-          "example": "A hotel group's new standard requires multifactor sign-in for staff, but the night reception software cannot support it until a March upgrade. Mei, the risk analyst, rates the risk, proposes restricting the software to reception terminals with daily log review, and drafts an exception expiring in March for the hotel operations director to approve.",
+          "example": "A hotel group's new standard requires multifactor sign-in, but its night reception software cannot support it until a March upgrade. Mei, the risk analyst, rates the risk, proposes restricting the software to reception terminals with daily log review, and drafts an exception to March for the operations director to approve.",
           "audit_focus": {
             "review": [
               "Sample exceptions and confirm approval, compensating controls and expiry dates",
@@ -755,7 +755,7 @@
             },
             {
               "trap": "An exception can stay open until the business is ready.",
-              "why": "An exception with no end date becomes a permanent, unmonitored gap. It needs an expiry date, a plan to comply and a review."
+              "why": "With no end date, an exception becomes a permanent, unmonitored gap; it needs an expiry, a plan to comply and a review."
             }
           ],
           "key_terms": [
@@ -1287,7 +1287,7 @@
             "Test operation over a defined period, covering the sites where people run it, with a sample sized to frequency and risk; sample each version of a control changed mid-period.",
             "Draw the sample from the complete population, ideally system-generated, with the tester choosing the items; test any system report the control relies on for completeness.",
             "Evaluate each failure: find its cause and decide whether the control can still be relied on.",
-            "Owner-only tests are self-assessment; for independent assurance, internal audit tests, as the second line is objective, not independent.",
+            "Owner-only tests are self-assessment, useful for monitoring; independent assurance needs internal audit or outside assessors; second-line tests are objective, not independent.",
             "Start from recent internal audit results as independent evidence: check their scope and date fit, then aim further testing at their exceptions rather than repeating audit's work."
           ],
           "compare": {
