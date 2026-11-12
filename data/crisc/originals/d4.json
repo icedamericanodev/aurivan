@@ -6693,6 +6693,196 @@
       ],
       "_provenance": "Authored from concept: notes 4B3.1 (Privacy Principles: only data the purpose needs is collected, kept or disclosed; consent counts only if people can refuse; security protects data from unauthorized access, privacy also governs authorized use; bullet extended in round 26: staff see the personal data their task uses). Round 26, 12 Nov 2026: original scenario (an almond grower whose crew supervisors plan shifts from absence records that show each worker's medical reason, in an HR system that passed its last security review) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Neighbours checked: crisc_d4_130 (third-party tracking code receiving taxpayer data; disclosure beyond purpose to an outside party, where this item is internal staff), crisc_d4_043 (privacy by design defaults), crisc_d4_150 and crisc_d4_019 (purpose before collection, paused family; this item's purpose is set and turns on disclosure within it), crisc_d4_100 and crisc_d4_160 (consent keyed where an extra use or a bought list needs it), crisc_d4_120; CISA d1_118; AAIA aaia_d2_205. Runner-up B (workers' consent): closest older cues in lesson are crisc_d4_100 (unbundle an extra use so people can refuse and still be served) and crisc_d4_160 (check what people agreed to before using data from elsewhere); the stem facts that supervisors plan shifts from the absence records, and that the request would come from their employer, rule B out: consent may not be freely given and the reasons are not needed. Owner pattern: no option names an owner. Round 26 asks: D4's 4B3 item; 'Which of the following' stem (2 of 2); key A not strictly longest or shortest by words (8 against 9, 8 and 8) or characters (59 against 61, 43 and 49); the key no longer the only option echoing 'absence records' (D says it too). Review 12 Nov 2026 (round 26 concept and blind review): wrong C no longer says a security review 'does not address' authorized users seeing more than they need (need-to-know access reviews are part of security reviews); it now says repeating that review would not change it (concept PRECISION 7). Options unchanged.",
       "style_version": 2
+    },
+    {
+      "id": "crisc_d4_181",
+      "domain": 4,
+      "subtopic": "4A1 Technology roadmaps and enterprise architecture (EA). A database version in the approved standards",
+      "principle_id": "root-cause-over-symptom",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A tunnel operator's two new systems run a database version losing vendor support next year; both teams chose it from the approved technology standards. What should the risk practitioner recommend to BEST prevent a repeat?",
+      "options": {
+        "A": "Extended vendor support bought for the version the two systems run",
+        "B": "Risk reviews of the database versions new projects choose",
+        "C": "Vendor support end dates kept current in the approved standards",
+        "D": "Vulnerability scans of systems built to the approved standards"
+      },
+      "correct": "C",
+      "key_concept": "Approved technology standards carry vendor support end dates, so new systems are not built on products about to lose support.",
+      "pre_read": "Ask why both teams made the same choice before judging the fixes.",
+      "correct_explanation": "Both teams chose the version because the standards approved it, and nothing in them showed its support was ending, so the next project could choose it too. Keeping support end dates current in the standards fixes that source, so expiring products stop being offered for new systems. Risk reviews of each project's choice are the runner-up: a review could catch the version, but the standards would keep steering teams to it.",
+      "wrong_explanations": {
+        "A": "Extended support covers the two systems already running the version; it does nothing to stop the standards offering it to the next project.",
+        "B": "A project review might catch the choice, but it depends on each reviewer spotting the date while the standards still mark the version approved.",
+        "D": "Scans find flaws after systems are built, and an unsupported version's flaws may stay unpatched; the standards would still offer it to new projects."
+      },
+      "tips": [
+        "Eliminate: A buys time for the two running systems and D finds flaws after systems are built; neither stops the standards offering an expiring version to new projects.",
+        "Final two: C beats B because both teams chose the version from the approved standards; project reviews must each catch it, while dated standards stop it being offered.",
+        "Exam cue: when teams build on an expiring product because the approved standards list it, add support end dates to the standards; fixing the list that steers choices beats catching each one."
+      ],
+      "framework_ref": "NIST SP 800-53 Rev. 5 SA-22 (Unsupported System Components); NIST CSF 2.0 ID.AM-08 (systems, hardware, software, services and data are managed throughout their life cycles); NIST SP 800-53 Rev. 5 PM-7 (Enterprise Architecture)",
+      "related_concepts": [
+        "Technology standards",
+        "End of support",
+        "Enterprise architecture",
+        "Root cause"
+      ],
+      "_provenance": "Authored from concept: notes 4A1.1 (Enterprise Architecture and Architecture Review: the review board checks proposals against approved standards; bullet extended in round 27: standards carry support end dates, so expiring products drop out) and 4A1.2 (roadmaps flag vendor end of support in advance). Round 27, 12 Nov 2026: original scenario (a tunnel operator whose two new systems run a database version losing vendor support next year, both chosen from the approved technology standards) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Neighbours checked: crisc_d4_151 (standards silent on generative AI: approved patterns through the review board), crisc_d4_066 (a logging standard set in the architecture), crisc_d1_204 (standards reissued under a replaced policy), crisc_d4_161 (count of systems whose support ends before their planned replacement), crisc_d4_101 and crisc_d4_002 (legacy exposure on running systems), crisc_d1_064 (new tools recorded at purchase approval); cross-bank mirrors: CISA d2_152 (many waivers suggest outdated architecture standards), CISA d2_053 (waiver register with sunset dates) and CISA d4_060 (extended support plus compensating controls for a gap before replacement). This item differs: the standards exist and still approve a version whose support is ending, and the question asks how to prevent a repeat, so extended support for the two running systems (CISA d4_060's key, for a live gap) is wrong here, as its explanation says. The same-code keys in crisc_d4_066 and crisc_d4_151 fix a missing standard; this one fixes a stale entry with lifecycle dates. Runner-up B (risk reviews of each project's choice): closest older cues in lesson are crisc_d4_066 and crisc_d4_151 (fix the standard rather than one team at a time), which agree with the key; the stem fact 'both teams chose it from the approved technology standards' decides. Owner pattern: no option names an owner. Round 27 asks: D4's 4A1 item; key C in file order; application; no restrictive or each/every/any words; key not strictly longest or shortest by words (10 against 11, 9 and 9) or characters (63 against 66, 57 and 62); no Have/Ask, Tell, Take, Share of or Number of option.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d4_182",
+      "domain": 4,
+      "subtopic": "4A2 Operations management. Findings in a deployment pipeline",
+      "principle_id": "priority-word-decides",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "A gold mine operator's pipeline deploys its plant scheduling app several times a day once peer review and automated tests pass. Which of the following findings should concern the risk practitioner MOST?",
+      "options": {
+        "A": "Releases reaching production with no change board meeting",
+        "B": "Test coverage below target in a rarely changed module",
+        "C": "Peer reviews that some engineers approve within minutes",
+        "D": "Build server administrators able to alter reviewed code"
+      },
+      "correct": "D",
+      "key_concept": "Whoever can change code after review controls production, so access to the build tools outranks a weakness inside one gate.",
+      "pre_read": "Ask which finding lets code reach production without passing the gates.",
+      "correct_explanation": "Peer review and tests are the pipeline's gates, but an administrator who can alter code on the build server after review can ship code nobody reviewed, unseen. That finding undoes the whole set of gates, so it concerns the practitioner most. Quick approvals are the runner-up: they may mean shallow reviews, a weakness in one gate, but the code still passes review and the tests on its way to production.",
+      "wrong_explanations": {
+        "A": "In a pipeline, controls move into automated gates; releases without a board meeting are expected when peer review and tests gate each release.",
+        "B": "Low coverage in a module that rarely changes lets little untested change through; it weakens a gate where little code passes.",
+        "C": "Fast approvals may mean shallow reviews, a weakness in one gate; code altered after review skips the review altogether, and no one sees it."
+      },
+      "tips": [
+        "Eliminate: A expects board meetings that pipeline gates replace, and B points at a module that rarely changes; neither lets unreviewed code reach production.",
+        "Final two: D beats C because code altered on the build server after review reaches production unreviewed; quick approvals may weaken one gate, but code still passes through it.",
+        "Exam cue: in a CI/CD pipeline, access that can change code after the gates outranks weak spots inside a gate; whoever controls the pipeline controls production."
+      ],
+      "framework_ref": "NIST SP 800-53 Rev. 5 CM-5 (Access Restrictions for Change); NIST SP 800-218 Version 1.1 PS.1 (Protect All Forms of Code from Unauthorized Access and Tampering: prevent unauthorized changes to code that could circumvent its intended security, storing code so that only authorized personnel, tools and services have access)",
+      "related_concepts": [
+        "CI/CD pipeline",
+        "Build integrity",
+        "Access restrictions for change",
+        "Separation of duties"
+      ],
+      "_provenance": "Authored from concept: notes 4A2.3 (DevOps and Pipeline Controls: pipeline accounts, secrets and build tools are protected, because whoever controls the pipeline controls production; bullet extended in round 27: access that changes code after review bypasses every gate). Round 27, 12 Nov 2026: original scenario (a gold mine operator whose pipeline deploys its plant scheduling app several times a day once peer review and automated tests pass, and whose build server administrators can alter code after review) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Neighbours checked: crisc_d4_067 (evidence that a peer-review gate works where pipeline administrators can switch it off; this item ranks that kind of access as the top concern, consistent with it), crisc_d4_050 (the risk function monitors gates rather than approving releases; agrees with eliminated A), crisc_d4_112 (an AI agent merging its own fixes), crisc_d4_172 (tested rollback for a retraining pipeline), crisc_d4_003 (change process findings: emergency changes with no review afterward; a findings stem on a different process), crisc_d4_024 and crisc_d4_082 (change volume and board workload); cross-bank mirrors: CISA d3_009 (automated gates give the greatest assurance over build quality), CISA d3_080 (tamper-evident deploy records), CISA d5_070 (a signing key on a build server all developers access) and CISA d1_104 (changes migrated by staff outside development). This item differs: the gates exist and work; the concern is access that alters code after them. Runner-up C (quick peer approvals): closest older cues in lesson are crisc_d4_067 (prefer an independent test of what happened) and crisc_d4_112 (the writer of a change does not approve it); neither keys C, and the stem fact 'once peer review and automated tests pass' shows review still runs, while D bypasses it. Owner pattern: no option names an owner. Round 27 asks: D4's 4A2 item; key D; analysis; 'Which of the following' stem (1 of D4's 2); key not strictly longest or shortest by words (8 against 8, 9 and 8) or characters (55 against 57, 53 and 55).",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d4_183",
+      "domain": 4,
+      "subtopic": "4A3 System development life cycle (SDLC). Requirements for an online sign-up portal",
+      "principle_id": "root-cause-over-symptom",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A merchant acquirer is designing a portal where small businesses open card-acceptance accounts online; its requirements describe the sign-up steps for genuine merchants. What should the risk practitioner recommend as BEST?",
+      "options": {
+        "A": "Penetration test of the portal before it launches",
+        "B": "Misuse cases written into the requirements for the portal",
+        "C": "Fraud monitoring of new merchants once they have signed up",
+        "D": "User acceptance tests run by the portal's product owner"
+      },
+      "correct": "B",
+      "key_concept": "Requirements cover how a feature could be misused as well as how genuine users use it, so checks against misuse are designed in.",
+      "pre_read": "Ask who else, besides genuine merchants, might use the sign-up.",
+      "correct_explanation": "Requirements written for genuine merchants leave out how a criminal could open an account to put laundered card payments through, so the design may hold no checks against it. Misuse cases written into the requirements while the portal is in design make those checks part of what gets built. Fraud monitoring is the runner-up: it is a sound detective control, but it acts after a fake merchant is already taking payments.",
+      "wrong_explanations": {
+        "A": "A penetration test seeks technical ways in; a fake merchant uses the sign-up as designed, so the test could pass while the gap remains.",
+        "C": "Monitoring is a sound detective control, but it finds fake merchants after they are taking payments; the portal is still in design, where checks cost least.",
+        "D": "Acceptance tests confirm the portal does what its requirements say; with no misuse in them, the product owner's tests would pass a portal open to fake merchants."
+      },
+      "tips": [
+        "Eliminate: A seeks technical flaws a criminal using the sign-up as designed does not need, and D tests against requirements that leave misuse out; neither adds how sign-up could be misused.",
+        "Final two: B beats C because the portal is still in design; monitoring catches fake merchants after they take payments, while misuse cases build sign-up checks in.",
+        "Exam cue: when requirements describe how genuine users use a feature but not how it could be abused, add misuse cases while the design can still change."
+      ],
+      "framework_ref": "NIST SP 800-218 Version 1.1 PW.1.1 (use forms of risk modeling, such as threat modeling, attack modeling or attack surface mapping, to help assess the security risk for the software); NIST SP 800-53 Rev. 5 SA-3 (System Development Life Cycle)",
+      "related_concepts": [
+        "Security requirements",
+        "Misuse cases",
+        "Threat modeling",
+        "Merchant fraud"
+      ],
+      "_provenance": "Authored from concept: notes 4A3.1 (Risk Across the SDLC Phases: requirements and design define security, privacy and business control requirements; bullet extended in round 27: including misuse cases for how features could be abused) and 4A3.2 (requirements checked through threat modeling). Round 27, 12 Nov 2026: original scenario (a merchant acquirer designing a portal where small businesses open card-acceptance accounts online, whose requirements describe the sign-up steps for genuine merchants) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Neighbours checked: crisc_d4_096 (requirements from the new game's own risk assessment; its wrong option 'the product owner's sign-off on the copied requirements' is not repeated here: this item's owner option is acceptance testing), crisc_d4_163 (business control requirements before coding; its cue 'acceptance testing confirms requirements, it does not create them' agrees with eliminated D), crisc_d4_144 (tests written from security requirements; pen test as its runner-up, a paused family, so the pen test here is an eliminated option only), crisc_d4_027 (requirements in vendor selection), crisc_d4_052 and crisc_d4_116 (secure development root causes), crisc_d1_057 (an account-opening sign-up design chosen by its owner on each design's risk), crisc_d2_141 (a BIA before design); cross-bank: no CISA, CC or AAIA item on misuse cases found (searched 'misuse case' and 'abuse case'); CC cc_d1_043 (pen test scope) differs. Runner-up C (fraud monitoring of signed-up merchants): closest older cues in lesson are crisc_d4_163 and crisc_d4_096 (set requirements before build), which agree with the key; the stem fact 'is designing' decides. Owner pattern: one lone owner, on eliminated D (the portal's product owner), the D4 share of the round's eliminated lone owners. Round 27 asks: D4's 4A3 item; key B; application; 'Fraud' (2 of 2 keyed before) now opens a wrong option; key not strictly longest or shortest by words (9 against 8, 10 and 9) or characters (57 against 49, 58 and 55).",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d4_184",
+      "domain": 4,
+      "subtopic": "4A4 Data lifecycle management. Records held after a settled dispute",
+      "principle_id": "match-decision-to-role",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "An ice cream maker's legal hold froze deletion of supplier records for a contract dispute that settled last year; their retention periods have ended. Which of the following should the risk practitioner recommend as BEST?",
+      "options": {
+        "A": "Records kept under the legal hold in case new claims arise",
+        "B": "Deletion of the records by IT under the retention schedule",
+        "C": "Release of the records' legal hold by legal counsel",
+        "D": "Records moved to a cheaper archive storage tier"
+      },
+      "correct": "C",
+      "key_concept": "When the matter behind a legal hold ends, legal counsel releases the hold, and the retention schedule applies to the records again.",
+      "pre_read": "Notice what the settlement changed and what it left in place.",
+      "correct_explanation": "A legal hold pauses scheduled deletion while a dispute needs the records; once it settled, a hold left in place keeps expired records with no purpose. Legal counsel, who sets legal holds, releases it, and the retention schedule then applies again. Deletion by IT is the runner-up: it follows the schedule, but the hold is still in force, and its release is what lets IT dispose of the records safely.",
+      "wrong_explanations": {
+        "A": "Keeping records in case of claims nobody has made is the keep-just-in-case trap; their retention periods have ended, so each extra year adds exposure.",
+        "B": "IT would be applying the schedule, but the hold is still in force; deleting held records before counsel releases the hold breaks it.",
+        "D": "Archiving cuts storage cost but keeps every expired record, so the exposure of holding them past their retention periods stays the same."
+      },
+      "tips": [
+        "Eliminate: A keeps expired records for claims nobody has made, and D moves them to cheaper storage; both keep records whose retention periods have ended.",
+        "Final two: C beats B because the hold is still in force after the settlement; IT can delete under the schedule once legal counsel has released the hold.",
+        "Exam cue: a legal hold ends when its matter ends; have legal counsel release it so the retention schedule applies again, rather than keeping records or deleting around it."
+      ],
+      "framework_ref": "NIST SP 800-53 Rev. 5 SI-12 (Information Management and Retention); ISACA Glossary (data retention)",
+      "related_concepts": [
+        "Legal hold",
+        "Data retention",
+        "Disposal",
+        "Records management"
+      ],
+      "_provenance": "Authored from concept: notes 4A4.2 (Retention and Sanitization: at the period's end, data is disposed of unless a legal hold pauses deletion; bullet extended in round 27: legal counsel releases the hold when the matter ends). Round 27, 12 Nov 2026: original scenario (an ice cream maker whose legal hold still freezes deletion of supplier records after the contract dispute settled, though their retention periods have ended) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Neighbours checked: crisc_d4_174 (a legal hold placed when a lawsuit starts; this item is its end), crisc_d4_164 (retention clock from an event; a legal hold is wrong there as an open-ended keep), crisc_d4_008 (recordings kept with deletion never set up), crisc_d4_078 (a legal minimum the owner cannot shorten), crisc_d4_045 and crisc_d1_163 (ask legal counsel to confirm FIRST, a paused family: this key is counsel's own release of a hold counsel set, not a confirmation step before the practitioner acts), crisc_d4_030; cross-bank mirrors: CC cc_d5_021 (a hold covers the records it names; the rest are destroyed on schedule) and CISA d2_098 (retention periods per data category). This item differs: the matter has ended and the hold is still in force, so the decision is the hold's release by the role that sets holds. Runner-up B (deletion by IT under the schedule): closest older cues in lesson are crisc_d4_174 (a hold pauses deletion of the records it concerns) and CC cc_d5_021; both agree that held records are not deleted while the hold stands. Owner pattern: no option names an owner. Round 27 asks: D4's 4A4 item; key C; foundational; 'Which of the following' stem (2 of D4's 2); D4's one same-opener pair, 'Records', on two eliminated options (A and D); 'Records' keyed nowhere; key not strictly longest or shortest by words (9 against 11, 10 and 8) or characters (51 against 58, 58 and 47).",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d4_185",
+      "domain": 4,
+      "subtopic": "4A5 Portfolio and project management. An AI story added mid-project",
+      "principle_id": "analyze-before-acting",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "Mid-project, a planning department's Agile team added a story for an AI service summarizing residents' objection letters, names and addresses included; the project's risk assessment predates it. What should the risk practitioner recommend as BEST?",
+      "options": {
+        "A": "Project risk assessment revised to cover the AI summaries",
+        "B": "Privacy criteria for the AI story in the definition of done",
+        "C": "Ban on AI services handling residents' personal data",
+        "D": "Vendor risk assessment of the AI service's hosting"
+      },
+      "correct": "A",
+      "key_concept": "A story adding AI processing of personal data changes the project's scope, so its risk assessment is revised before the story ships.",
+      "pre_read": "Ask what the earlier assessment could not have covered.",
+      "correct_explanation": "The story changes the project's scope: residents' personal data will now go to an AI service, a risk the earlier assessment never weighed. Revising the project risk assessment before the story ships analyzes that new risk, so controls and the owner's decision rest on it. Privacy criteria in the definition of done are the runner-up: Agile teams hold checks there, but which criteria fit is known once the new risk is analyzed.",
+      "wrong_explanations": {
+        "B": "The definition of done is where Agile teams hold checks, but criteria chosen before the new processing is analyzed are a guess at what it needs.",
+        "C": "A ban forgoes the summaries' value without weighing the risk; the response to new technology is to assess it, then let the owner decide.",
+        "D": "A vendor review covers the provider's hosting, not the department's new use of residents' personal data, which the project's assessment never weighed."
+      },
+      "tips": [
+        "Eliminate: C bans the technology without weighing it, and D reviews the provider's hosting; neither analyzes the department's new use of residents' names and addresses.",
+        "Final two: A beats B because the project's assessment predates the AI story; definition-of-done criteria matter, but they are chosen well once the new risk is analyzed.",
+        "Exam cue: when an Agile project adds a story that changes its data or technology, such as AI on personal data, revise the project's risk assessment before that story ships."
+      ],
+      "framework_ref": "NIST SP 800-37 Rev. 2 Task P-14 (Risk Assessment for the System: conduct a system-level risk assessment from initiation and update it on an ongoing basis); NIST CSF 2.0 ID.RA-07 (changes and exceptions are managed, assessed for risk impact, recorded and tracked)",
+      "related_concepts": [
+        "Agile delivery",
+        "Scope change",
+        "AI and personal data",
+        "Project risk assessment"
+      ],
+      "_provenance": "Authored from concept: notes 4A5.2 (Project Risk and Agile Delivery: sprint reviews update risk status; bullet extended in round 27: a story adding AI or personal data revises the project's risk assessment before it ships) and 4A3.1 (the initial risk assessment is updated when scope or data change). Round 27, 12 Nov 2026: original scenario (a planning department whose Agile team added a story, due next sprint, for an AI service to summarize residents' objection letters with their names and addresses, after the project risk assessment was done) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Neighbours checked: crisc_d4_028 (a scope change in design: update the risk assessment before the next phase gate; this is its Agile and AI form, before a story ships, with a definition-of-done runner-up in place of backlog controls), crisc_d4_020 (a privacy impact assessment updated for new sharing), crisc_d4_031 (security criteria in the definition of done; its cue keeps one-off risk work out of the definition of done, consistent with B being wrong here), crisc_d4_165 (AI project risks rated before portfolio ranking), crisc_d4_141 (builders deciding their own gate, paused, not used), crisc_d4_154, crisc_d4_134 and crisc_d4_084 (Agile risk decisions), crisc_d1_031 (an owner revisits the class when an asset's data changes); cross-bank mirrors: AAIA aaia_d1_131 (a privacy assessment that does not reach an agent's outside services) and CISA d2_097 (early screening of each project, scaled to risk). Runner-up B (privacy criteria in the definition of done): closest older cues in lesson are crisc_d4_031 (definition of done for recurring criteria) and crisc_d4_028 (assess before choosing controls); the stem fact 'the project's risk assessment predates it' decides. Owner pattern: no option names an owner. Lens word 'assessment' sits in the key and in eliminated D. Round 27 asks: D4's AI item, in 4A5 on the plan's angle (AI processing of personal data added mid-project; the project's risk assessment revised before the story ships), avoiding crisc_d4_141 and crisc_d4_165; key A; application; key not strictly longest or shortest by words (9 against 11, 8 and 8) or characters (57 against 59, 52 and 50).",
+      "style_version": 2
     }
   ]
 }
