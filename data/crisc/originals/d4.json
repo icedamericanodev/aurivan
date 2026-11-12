@@ -5604,7 +5604,7 @@
       "bloom_level": "Application",
       "question": "An appliance maker's marketing team built a recipe app outside the SDLC as a trade-show demo, then published it; it now holds 40,000 customer accounts. What should the risk practitioner recommend as BEST?",
       "options": {
-        "A": "A demo label on the app, approved by its business owner",
+        "A": "An SDLC exemption for the demo, approved by its business owner",
         "B": "Support for the app handed over from marketing to IT operations",
         "C": "The live app taken through the formal design and test gates",
         "D": "Multifactor sign-in added to the app's customer accounts"
@@ -5614,12 +5614,12 @@
       "pre_read": "Ask what the app was built as, what it is now and which steps it missed on the way.",
       "correct_explanation": "A demo became a live system holding 40,000 customers' accounts without the design and test gates that set its security requirements and check them. Taking it through those gates now assesses its risks, sets requirements and tests the app, with its business owner deciding on what remains. Adding multifactor sign-in is the runner-up: it may prove to be one of the right controls, but it is chosen before anyone knows the app's risks.",
       "wrong_explanations": {
-        "A": "A demo label lowers what users expect but changes nothing about the app's untested design; 40,000 customers' accounts sit behind it either way.",
+        "A": "An exemption keeps a live app holding 40,000 customers' accounts outside the gates; how it started does not change its untested design.",
         "B": "IT operations can run the app day to day, but running it neither assesses nor tests its design; the gates it skipped stay skipped.",
         "D": "Multifactor sign-in may suit the accounts, but it is one control picked before the app's risks are known; flaws in an untested design stay open."
       },
       "tips": [
-        "Eliminate: A labels the app a demo without changing its risk, and B moves day-to-day running to IT operations, which neither assesses nor tests the design.",
+        "Eliminate: A exempts the app as a demo without changing its risk, and B moves day-to-day running to IT operations, which neither assesses nor tests the design.",
         "Final two: C beats D because the gates find what the app needs before controls are chosen; multifactor sign-in is one guess at a control for an app nobody has assessed.",
         "Exam cue: when a demo, prototype or trial build becomes a live system, it enters the SDLC gates it skipped; how it started does not exempt it from assessment and testing."
       ],
@@ -5629,19 +5629,19 @@
         "Phase gate",
         "Prototype"
       ],
-      "_provenance": "Authored from concept: notes 4A3.1 (Risk Across the SDLC Phases: a demo that goes live enters the gates it skipped). Round 21, 12 Nov 2026: original scenario (an appliance maker's marketing team built a recipe app outside the SDLC as a trade-show demo, then published it, and it now holds 40,000 customer accounts) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Neighbours checked: crisc_d4_059 (a change called too small for review: assess what it exposes before approval), crisc_d4_028 (scope change mid-design), crisc_d4_096 (requirements from the new system's own assessment), crisc_d4_144 (requirement-based tests; that paused family is not used: the runner-up is a control chosen early, not a penetration test), crisc_d4_137, crisc_d4_141 (an AI pilot's gate; paused family not used), crisc_d4_068, crisc_d4_115 (long-lived devices bought with short patch support; an earlier draft of this item on a maker's update support was dropped as its mirror); CISA d3_093 (a machine-learning proof of concept promoted with no readiness gates: before release; here the demo is already live), d3_122; CC cc_d1_010. Judged distinct: no CRISC item keys taking a live system that began as a demo through the SDLC gates it skipped. Owner pattern: lone owner on eliminated A. Round 21 asks: IT on a wrong option (B) only; no period word; no defer option. Audit 12 Nov 2026 (round 21 standards audit): key changed from 'taken through the SDLC's design and test gates' to 'taken through the formal design and test gates': the stem's 'outside the SDLC' was echoed only in the key. Key stays neither longest nor shortest by words (11, tied with A and B) or characters (59, against 55 to 63).",
+      "_provenance": "Authored from concept: notes 4A3.1 (Risk Across the SDLC Phases: a demo that goes live enters the gates it skipped). Round 21, 12 Nov 2026: original scenario (an appliance maker's marketing team built a recipe app outside the SDLC as a trade-show demo, then published it, and it now holds 40,000 customer accounts) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Neighbours checked: crisc_d4_059 (a change called too small for review: assess what it exposes before approval), crisc_d4_028 (scope change mid-design), crisc_d4_096 (requirements from the new system's own assessment), crisc_d4_144 (requirement-based tests; that paused family is not used: the runner-up is a control chosen early, not a penetration test), crisc_d4_137, crisc_d4_141 (an AI pilot's gate; paused family not used), crisc_d4_068, crisc_d4_115 (long-lived devices bought with short patch support; an earlier draft of this item on a maker's update support was dropped as its mirror); CISA d3_093 (a machine-learning proof of concept promoted with no readiness gates: before release; here the demo is already live), d3_122; CC cc_d1_010. Judged distinct: no CRISC item keys taking a live system that began as a demo through the SDLC gates it skipped. Owner pattern: lone owner on eliminated A. Round 21 asks: IT on a wrong option (B) only; no period word; no defer option. Audit 12 Nov 2026 (round 21 standards audit): key changed from 'taken through the SDLC's design and test gates' to 'taken through the formal design and test gates': the stem's 'outside the SDLC' was echoed only in the key. Key stays neither longest nor shortest by words (11, tied with A and B) or characters (59, against 55 to 63). Review 12 Nov 2026 (round 21 concept and blind review): option A is now an SDLC exemption for the demo (the stem's 'SDLC' now sits on a wrong option as well), with wrong explanation A and the Eliminate tip to match.",
       "style_version": 2
     },
     {
       "id": "crisc_d4_153",
       "domain": 4,
       "subtopic": "4A4 Data lifecycle management. Personal data left in resold trade-ins",
-      "principle_id": "transfer-keeps-accountability",
+      "principle_id": "root-cause-over-symptom",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "A car dealer resold a trade-in whose dashboard screen still held the seller's contacts and home address; its resale checks cover only mechanical faults. Which of the following should the risk practitioner recommend as BEST?",
+      "question": "A car dealer resold a trade-in whose dashboard screen still held the seller's contacts and home address; its pre-sale inspection covers only mechanical faults. Which of the following should the risk practitioner recommend as BEST?",
       "options": {
-        "A": "A recorded wipe of personal data in the resale checks",
+        "A": "A recorded wipe of personal data in the resale process",
         "B": "A one-time wipe of stored data from every used car in stock",
         "C": "A trade-in form asking sellers to clear their data before resale",
         "D": "A confidentiality clause in the buyer's sale contract"
@@ -5649,9 +5649,9 @@
       "correct": "A",
       "key_concept": "Storage in any device the organization releases, such as a resold car, is wiped and recorded as a step in the release process.",
       "pre_read": "Note where the personal data was stored and what the dealer checks before a car is sold.",
-      "correct_explanation": "Each trade-in leaves the dealer's control at resale, so personal data stored in it must be removed first, as with any device the dealer releases. A recorded wipe in the resale checks makes that happen for every car and leaves evidence it was done. A trade-in form asking sellers to clear their data is the runner-up: it helps, but the dealer releases the car and cannot rely on sellers remembering or knowing how.",
+      "correct_explanation": "Each trade-in leaves the dealer's control at resale, so personal data stored in it must be removed first, as with any device the dealer releases. A recorded wipe in the resale process makes that happen for every car and leaves evidence it was done. A trade-in form asking sellers to clear their data is the runner-up: it helps, but the dealer releases the car and cannot rely on sellers remembering or knowing how.",
       "wrong_explanations": {
-        "B": "Clearing the cars in stock fixes today's lot, but trade-ins keep arriving with sellers' data; with no step in the resale checks, the next sale repeats it.",
+        "B": "Clearing the cars in stock fixes today's lot, but trade-ins keep arriving with sellers' data; with no step in the resale process, the next sale repeats it.",
         "C": "Asking sellers helps, but some will forget or not know how; the dealer is the one releasing the car, so the task cannot rest on sellers.",
         "D": "A clause tells buyers to keep found data private, but the data still reaches them; contract terms govern use after disclosure, not the disclosure itself."
       },
@@ -5666,7 +5666,7 @@
         "Data lifecycle",
         "Personal data"
       ],
-      "_provenance": "Authored from concept: notes 4A4.2 (Retention and Sanitization: sanitization covers storage in any device leaving the firm's control, such as resold cars). Round 21, 12 Nov 2026: original scenario (a car dealer that resold a trade-in whose dashboard screen still held the seller's contacts and home address, with resale checks covering only mechanical faults) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Neighbours checked: crisc_d4_113 (wiping method by class and next use), crisc_d4_008 (scheduled deletion with logged runs), crisc_d4_068 (fix the life cycle, not only the leftover; its cue supports eliminating B), crisc_d4_103, crisc_d4_145 (data keeps its class when archived; paused family not used), crisc_d4_047 (clauses govern only what is sent; supports eliminating D), crisc_d4_126 (make the default secure instead of leaving a step to each customer; supports the key over C), crisc_d1_155 (a custodian wipes after the owner decides); CISA d4_251 and d4_282 (sanitization evidence and media that cannot be wiped), d5_099; CC and AAIA: none close. Judged distinct: no item covers personal data left in storage inside an asset the firm resells. Owner pattern: k=0 (car 'owners' avoided in every option so the cue counter is not misled). Round 21 asks: 'every' on a wrong option (B) with none in the key; a 'Which of the following' stem; key not strictly longest or shortest by words or characters (ties D on characters); no defer option. Audit 12 Nov 2026 (round 21 standards audit): runner-up C now ends 'before resale' instead of 'first': 'resale' was a stem word echoed only in the key. Meaning unchanged; the key stays tied shortest by characters with D (53), not strictly shortest.",
+      "_provenance": "Authored from concept: notes 4A4.2 (Retention and Sanitization: sanitization covers storage in any device leaving the firm's control, such as resold cars). Round 21, 12 Nov 2026: original scenario (a car dealer that resold a trade-in whose dashboard screen still held the seller's contacts and home address, with resale checks covering only mechanical faults) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Neighbours checked: crisc_d4_113 (wiping method by class and next use), crisc_d4_008 (scheduled deletion with logged runs), crisc_d4_068 (fix the life cycle, not only the leftover; its cue supports eliminating B), crisc_d4_103, crisc_d4_145 (data keeps its class when archived; paused family not used), crisc_d4_047 (clauses govern only what is sent; supports eliminating D), crisc_d4_126 (make the default secure instead of leaving a step to each customer; supports the key over C), crisc_d1_155 (a custodian wipes after the owner decides); CISA d4_251 and d4_282 (sanitization evidence and media that cannot be wiped), d5_099; CC and AAIA: none close. Judged distinct: no item covers personal data left in storage inside an asset the firm resells. Owner pattern: k=0 (car 'owners' avoided in every option so the cue counter is not misled). Round 21 asks: 'every' on a wrong option (B) with none in the key; a 'Which of the following' stem; key not strictly longest or shortest by words or characters (ties D on characters); no defer option. Audit 12 Nov 2026 (round 21 standards audit): runner-up C now ends 'before resale' instead of 'first': 'resale' was a stem word echoed only in the key. Meaning unchanged; the key stays tied shortest by characters with D (53), not strictly shortest. Review 12 Nov 2026 (round 21 concept and blind review): the stem says 'pre-sale inspection' and the key 'in the resale process', so no stem phrase is echoed only in the key; explanation and wrong explanation B match. Key stays neither strictly longest nor shortest. principle_id moved from transfer-keeps-accountability to root-cause-over-symptom (releasing a car is not a risk transfer; the fix is a step in the release process).",
       "style_version": 2
     },
     {
