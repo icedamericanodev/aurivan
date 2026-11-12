@@ -9480,6 +9480,302 @@
       ],
       "_provenance": "Authored from concept: notes 3C2.3 (Validating Data Before Reporting: currency, data dates match the reporting period; known limitations are stated) and 3C2.2 (aggregating risk data). Round 22, 12 Nov 2026: original scenario (a locksmith firm whose three of 12 branches send lost master key counts to the 15th of the month because their old system closes its month then), written for KaiSip in our own words; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D3 round 22 (crisc_d3_249 to 256). Round 22 asks: the batch's 'Ask' key (B); a lone owner on the runner-up (C); 'Share of' on an eliminated option (D). FIRST keys a data request, not assess, record or reassess. Not 'combining overlapping records', 'data dictionaries and figure lineage', 'count vs share or rate indicators' or 'recurring capture flaws fixed at source' (paused): the trigger is a reporting-period mismatch, and the share option is only an eliminated distractor. Neighbours checked (stems, options, key, key_concept, correct_explanation and Exam cue of every 3C2 item): crisc_d3_014, 040, 041 (missing data reported on time with the limit stated; ours is a mismatch that may be fixable, as in 205), 071 (one definition, source and formula), 072, 073, 105, 106, 124, 133, 139, 158, 166, 179, 187, 205 (fix a fixable flaw before reporting, state limits only for gaps that cannot be closed: consistent), 221, 231, 244; crisc_d3_195 (a monitoring feed gone quiet). TF-IDF scan of all four banks: top matches d3_032 0.28, d2_190, d5_284 (none a mirror). Audit 12 Nov 2026 (round 22 standards audit): runner-up C changed from 'Report the total to the risk owner with the branches' dates noted' (the skeleton and fix-versus-note lesson of crisc_d3_205's runner-up and Exam cue, same code 3C2) to having the risk owner agree to the offset counts; correct explanation, wrong explanation C, Final two and Exam cue now turn on the cut-off mismatch; 'Have' now sits on this runner-up (round 22 ask 7); C is still the lone owner on the runner-up (65 characters, 12 words; key 58 and 10).",
       "style_version": 2
+    },
+    {
+      "id": "crisc_d3_257",
+      "domain": 3,
+      "subtopic": "3A1 Risk response options. A ban on USB copying",
+      "principle_id": "analyze-before-acting",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A watchmaker's design director bans copying design files to USB drives and records the design-leak risk as avoided, though designers' PCs still accept USB drives. What should the risk analyst do FIRST?",
+      "options": {
+        "A": "Recommend a block on USB ports for the designers' PCs",
+        "B": "Mark the design-leak risk as closed in the risk register",
+        "C": "Re-rate the risk with the ban as a mitigating control",
+        "D": "Name the designers bound by the ban as the risk's owners"
+      },
+      "correct": "C",
+      "key_concept": "Avoidance removes the activity or exposure behind a risk; a ban that people can still break is a mitigating control, rated for its effect.",
+      "pre_read": "Read what the response changes in practice, not what the register calls it.",
+      "correct_explanation": "Avoidance removes the activity or exposure that creates a risk. Designers still handle the files on PCs that accept USB drives, so the exposure remains; the ban is a mitigating control that lowers likelihood only as far as people obey it. Re-rating the risk with the ban as a control comes first. Recommending a USB block is the runner-up: it may follow, but until the risk is rated, nobody knows whether it is needed.",
+      "wrong_explanations": {
+        "A": "A USB block may well be the right next step, but recommending it before the risk is re-rated skips the analysis that shows whether more treatment is needed.",
+        "B": "Closing the entry treats the risk as gone, yet designers can still copy files to USB drives, so the exposure the ban targets is still there.",
+        "D": "A risk is owned by one manager with authority over its treatment; staff bound by a rule follow it but do not own the risk it addresses."
+      },
+      "tips": [
+        "Eliminate: B closes a risk whose exposure is still there, and D makes rule-bound staff the owners, though one manager with authority over treatment owns a risk.",
+        "Final two: C beats A because the register calls a live risk avoided; rating it with the ban as a control shows whether a USB block is needed at all.",
+        "Exam cue: avoidance removes the activity or exposure itself; a rule telling people not to do something is a mitigating control, rated on how well it works."
+      ],
+      "framework_ref": "NIST SP 800-39 Section 3.3 (Responding to Risk: accept, avoid, mitigate, share or transfer); NIST IR 8286B-upd1 Section 2.3.4 (Risk Mitigation: preventive, deterrent, detective, corrective and compensating controls)",
+      "related_concepts": [
+        "Risk avoidance",
+        "Risk mitigation",
+        "Administrative controls"
+      ],
+      "_provenance": "Authored from concept: notes 3A1.1 (The Four Risk Responses: avoidance gives up the benefit and removes the exposure; a ban people can still break mitigates) and NIST SP 800-39 Section 3.3 (avoidance eliminates the activities or technologies that are the basis for the risk). Round 23, 12 Nov 2026: original scenario (a watchmaker's design director bans copying design files to USB drives and records the design-leak risk as avoided while designers' PCs still accept USB drives), written for KaiSip in our own words; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D3 round 23 (crisc_d3_257 to 264).",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d3_258",
+      "domain": 3,
+      "subtopic": "3A2 Risk and control ownership. Coordinator named as owner",
+      "principle_id": "match-decision-to-role",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "A property manager's facilities unit names its risk coordinator, a non-manager who compiles monthly updates, as owner of all 14 unit risks. Which of the following should concern the risk analyst MOST?",
+      "options": {
+        "A": "An owner with no authority to fund or accept the risk",
+        "B": "A coordinator who is not on the risk committee",
+        "C": "One owner named on 14 different unit risks",
+        "D": "A coordinator without technical knowledge of the risks"
+      },
+      "correct": "A",
+      "key_concept": "A risk owner holds the authority and accountability to fund treatment and accept risk; a coordinator who compiles updates facilitates but cannot own.",
+      "pre_read": "Weigh each concern against what a risk owner must be able to do.",
+      "correct_explanation": "A risk owner needs the authority to fund treatment and accept residual risk, as well as accountability for the outcome. A non-manager who compiles updates facilitates the process but cannot make those decisions, so the 14 risks have no one able to act on them. One owner named on many risks is the runner-up: it can be fine when that person holds authority over all of them, as a unit head often does.",
+      "wrong_explanations": {
+        "B": "Risk committee membership is not a condition of ownership; owners are named for their authority over the affected objectives, not for a committee seat.",
+        "C": "One manager can own many risks when they hold authority over them, as a unit head often does; the number matters less than who holds them.",
+        "D": "Owners draw on experts for technical detail; ownership rests on authority and accountability for the outcome, not on technical knowledge."
+      },
+      "tips": [
+        "Eliminate: B makes a committee seat a condition of ownership, and D asks for technical knowledge, though owners draw on experts and need authority instead.",
+        "Final two: A beats C because one person can own many risks within their authority; a non-manager who compiles updates holds none, so no one can act on these risks.",
+        "Exam cue: a risk owner is marked by authority to fund treatment and accept risk; a coordinator who gathers updates facilitates the process but cannot own the risks."
+      ],
+      "framework_ref": "ISACA Glossary (risk owner); NIST CSF 2.0 GV.RR-02 (roles, responsibilities and authorities related to cybersecurity risk management are established, communicated, understood and enforced)",
+      "related_concepts": [
+        "Risk ownership",
+        "Delegation of authority",
+        "Risk coordinators"
+      ],
+      "_provenance": "Authored from concept: notes 3A2.1 (Assigning Risk Owners: ownership follows accountability for the affected objective and authority over the budget; name one accountable person with authority to fund and accept) and the ISACA Glossary (risk owner: the person given authority and accountability for risk-based decisions). Round 23, 12 Nov 2026: original scenario (a property manager's facilities unit names its risk coordinator, a non-manager who compiles monthly updates, as owner of all 14 unit risks), written for KaiSip in our own words; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D3 round 23 (crisc_d3_257 to 264).",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d3_259",
+      "domain": 3,
+      "subtopic": "3A4 Issues, findings, exceptions and exemptions management. Exception tied to a replacement",
+      "principle_id": "advise-dont-decide",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A pasta maker's approved exception lets its old packing-line PCs skip the endpoint protection standard until the line is replaced; the replacement is unfunded and unscheduled. What is the risk analyst's BEST recommendation?",
+      "options": {
+        "A": "Track the start date of the replacement project in the register",
+        "B": "Ask the risk owner to give the exception a fixed expiry date",
+        "C": "Convert the exception into an exemption the risk owner reviews",
+        "D": "Tell senior management the exception is a breach"
+      },
+      "correct": "B",
+      "key_concept": "An exception needs a fixed expiry date; one tied to an unscheduled event can run indefinitely without a fresh decision.",
+      "pre_read": "Check each option against what makes an exception temporary.",
+      "correct_explanation": "An exception is a temporary, approved deviation, so it needs a date when it ends or is decided again. Ending it when the line is replaced ties it to an event with no funding or schedule, so in practice it never ends and is never reconsidered. Asking the risk owner to set a fixed expiry date restores that decision point. Tracking the replacement's start date is the runner-up: useful, but the exception stays open-ended.",
+      "wrong_explanations": {
+        "A": "Watching the replacement project is useful, but with no funding or schedule it may never start, so the exception still has no end and no point of fresh decision.",
+        "C": "An exemption fits a requirement that cannot apply; endpoint protection can apply once the line is replaced, so the gap stays a time-limited exception.",
+        "D": "The deviation was approved and recorded, so it is not a breach; the problem is its missing end date, not a missing approval."
+      },
+      "tips": [
+        "Eliminate: C uses an exemption, meant for a requirement that cannot apply, and D calls an approved, recorded deviation a breach.",
+        "Final two: B beats A because the replacement has no funding or date; tracking it leaves the exception without an end, while a fixed expiry forces a fresh decision.",
+        "Exam cue: an exception ends on a date, not an event; one tied to a project with no funding or schedule is open-ended in practice."
+      ],
+      "framework_ref": "NIST CSF 2.0 ID.RA-07 (changes and exceptions are managed, assessed for risk impact, recorded and tracked)",
+      "related_concepts": [
+        "Exceptions",
+        "Exemptions",
+        "Expiry dates"
+      ],
+      "_provenance": "Authored from concept: notes 3A4.2 (Exceptions and Exemptions: exceptions carry a fixed expiry date and a plan to comply, not an end tied to an unscheduled event; exemptions are reviewed periodically). Round 23, 12 Nov 2026: original scenario (a pasta maker's approved exception lets old packing-line PCs skip the endpoint protection standard until an unfunded, unscheduled line replacement), written for KaiSip in our own words; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D3 round 23 (crisc_d3_257 to 264).",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d3_260",
+      "domain": 3,
+      "subtopic": "3B3 Control testing methodologies. ML fraud model as a detective control",
+      "principle_id": "evidence-before-credit",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "A builders merchant credits an ML model that flags fraudulent trade-account applications as a detective control; its training data ends in March. Which of the following BEST shows the risk analyst that it works?",
+      "options": {
+        "A": "The vendor's accuracy results on cases held back from training",
+        "B": "A walkthrough of how staff clear the model's flags",
+        "C": "The share of applications the model has flagged",
+        "D": "Fraud cases confirmed since April, run through the model"
+      },
+      "correct": "D",
+      "key_concept": "An ML model credited as a detective control is tested on confirmed cases from after its training data, in the period it is relied on.",
+      "pre_read": "For each option, ask what it proves about the model catching fraud.",
+      "correct_explanation": "A detective control is credited on whether it catches what it targets in the period it is relied on. Fraud confirmed since April comes after the training data ends, so running those cases through the model shows whether it detects fraud it never learned from. The vendor's results on held-back cases are the runner-up: those cases come from the training period, so they show fit to older patterns, not detection now.",
+      "wrong_explanations": {
+        "A": "Held-back cases share the training period's patterns, so strong results on them can overstate how well the model catches fraud that has changed since March.",
+        "B": "A walkthrough shows how staff handle flags, a design point; it does not show whether the model flags the fraudulent applications at all.",
+        "C": "A flag count shows activity, not accuracy; the model could flag many genuine applications and still miss the fraud."
+      },
+      "tips": [
+        "Eliminate: B shows how staff handle flags, a design point, and C counts flags without showing whether any were fraud or fraud was missed.",
+        "Final two: D beats A because the held-back cases predate the March cut-off; only fraud confirmed since then tests the model on cases it never saw, in the period it is relied on.",
+        "Exam cue: test an ML detective control on confirmed cases from after its training data ends; results on data from its training period can overstate it."
+      ],
+      "framework_ref": "NIST AI 100-1 (AI RMF 1.0) MEASURE 2.5 (the AI system is demonstrated to be valid and reliable, and limits of generalizability beyond the conditions it was developed in are documented); NIST AI 100-1 (AI RMF 1.0) MEASURE 2.3 (AI system performance or assurance criteria are measured and demonstrated for conditions similar to deployment settings)",
+      "related_concepts": [
+        "Operating effectiveness",
+        "AI model validation",
+        "Detective controls"
+      ],
+      "_provenance": "Authored from concept: notes 3B3.1 (Testing Techniques and Evidence Strength: run an ML detector on cases confirmed after its training data) and 3B3.2 (operating effectiveness over the period relied on), with NIST AI 100-1 MEASURE 2.3 and 2.5. Round 23, 12 Nov 2026: original scenario (a builders merchant credits an ML model that flags fraudulent trade-account applications as a detective control; its training data ends in March), written for KaiSip in our own words; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D3 round 23 (crisc_d3_257 to 264).",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d3_261",
+      "domain": 3,
+      "subtopic": "3C3 Risk and control metrics. Sources for cold-store KRIs",
+      "principle_id": "kris-that-predict",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "A fish processor's risk analyst is choosing KRIs for the scenario of a cold-store control system outage spoiling stock, after four such outages in two years. What is the BEST source of candidate KRIs?",
+      "options": {
+        "A": "Metrics the cold-store system's owner already reports",
+        "B": "The causes behind the four past cold-store outages",
+        "C": "A published library of KRIs for food processors",
+        "D": "The share of outages the control owner fixed on time"
+      },
+      "correct": "B",
+      "key_concept": "Candidate KRIs come from the drivers of the scenario, found in the causes of its past events, before generic lists or data already collected.",
+      "pre_read": "Think about what a KRI must track before judging where to look for one.",
+      "correct_explanation": "A KRI earns its place by tracking a driver of its scenario that moves before the loss. The causes behind the four past outages show which conditions built up before each failure, so they point to leading indicators for this cold store. A published KRI library is the runner-up: it is a useful prompt, but its measures fit other firms' systems and may miss what caused these outages.",
+      "wrong_explanations": {
+        "A": "Metrics already reported were chosen for other purposes and are easy to collect; they may say nothing about the conditions that build up before an outage.",
+        "C": "A library suggests measures written for other firms' systems; it helps once this cold store's own causes are known, not as the starting point.",
+        "D": "Repairs fixed on time measure the repair process after an outage, a lagging performance measure, not an early warning of the next one."
+      },
+      "tips": [
+        "Eliminate: A starts from data already collected rather than what drives outages, and D measures repairs after the event, a lagging performance measure.",
+        "Final two: B beats C because a KRI must track this scenario's own drivers; the four outages show what built up before each failure, while a library reflects other firms' systems.",
+        "Exam cue: draw candidate KRIs from the causes of the scenario's past events, then test each for measurability; generic lists and existing reports come second."
+      ],
+      "framework_ref": "NIST SP 800-55v1 Section 4.4 (Evaluating Methods for Supporting Continuous Improvement: leading and lagging indicators); ISACA Glossary (key risk indicator)",
+      "related_concepts": [
+        "Key risk indicators",
+        "Leading indicators",
+        "Root cause analysis"
+      ],
+      "_provenance": "Authored from concept: notes 3C3.2 (Selecting Effective KRIs: relevant, the KRI tracks a driver of a specific scenario; find candidates in the causes of its past events, then check generic lists against them). Round 23, 12 Nov 2026: original scenario (a fish processor's risk analyst choosing KRIs for a cold-store control system outage scenario after four outages in two years), written for KaiSip in our own words; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D3 round 23 (crisc_d3_257 to 264).",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d3_262",
+      "domain": 3,
+      "subtopic": "3C4 Risk and control monitoring techniques. Outage inside the rated range",
+      "principle_id": "proportionate-response",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A vending machine operator rates card-reader outage risk on about six outages a year costing up to $3,000 each; the year's fifth, costing $1,800, came in November. What is the risk analyst's BEST action?",
+      "options": {
+        "A": "Reassess the outage risk's likelihood after the new outage",
+        "B": "Escalate the outage to the risk owner as a tolerance breach",
+        "C": "Log the outage against the risk for its scheduled review",
+        "D": "Add backup connections to the fleet's card readers"
+      },
+      "correct": "C",
+      "key_concept": "An event inside the frequency and size a rating assumed confirms the rating; it is logged for the scheduled review, not reassessed at once.",
+      "pre_read": "Compare the new event with what the rating already assumed.",
+      "correct_explanation": "The rating already expects about six outages a year costing up to $3,000 each; a fifth costing $1,800 in November falls inside that, so it confirms the rating rather than challenging it. Logging it against the risk keeps the event history for the scheduled review. Reassessing likelihood now is the runner-up: outages are evidence, but this one adds nothing the rating did not assume; one outside that range would call for it.",
+      "wrong_explanations": {
+        "A": "An outage is evidence, but this one sits inside the frequency and size the rating assumed, so reassessing now would re-rate a risk that nothing has changed.",
+        "B": "An outage inside the rated range breaches no tolerance; calling it a breach misuses escalation and spends the owner's time on an expected event.",
+        "D": "Backup connections are a treatment choice for the risk owner on an analyzed risk; one outage the rating expected gives no reason to change the response."
+      },
+      "tips": [
+        "Eliminate: B calls an expected outage a tolerance breach, and D jumps to new treatment, the risk owner's choice on an analyzed risk, after one expected outage.",
+        "Final two: C beats A because the fifth outage, costing $1,800, sits inside the six a year of up to $3,000 the rating assumed; it confirms the rating, so it waits for the scheduled review.",
+        "Exam cue: an event inside the frequency and size a rating assumed confirms it; log it for the scheduled review, and reassess when events run outside that range."
+      ],
+      "framework_ref": "NIST IR 8286 Rev. 1 Section 3.6.1 (Continuous Risk Monitoring: monitoring that shows a risk approaching its tolerance level triggers a review of the risk); NIST SP 800-39 Section 3.4 (Monitoring Risk: compliance, response effectiveness and risk-impacting changes)",
+      "related_concepts": [
+        "Reassessment triggers",
+        "Risk events",
+        "Scheduled reviews"
+      ],
+      "_provenance": "Authored from concept: notes 3C4.3 (Triggers for Reassessment: a change or incident that meets none of the policy's triggers, such as an event inside the rating's expected range, is noted for the risk's next scheduled review). Round 23, 12 Nov 2026: original scenario (a vending machine operator rates card-reader outage risk on about six outages a year costing up to $3,000 each; the year's fifth, costing $1,800, comes in November), written for KaiSip in our own words; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D3 round 23 (crisc_d3_257 to 264).",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d3_263",
+      "domain": 3,
+      "subtopic": "3C5 Risk and control reporting techniques. Flaw details in a wide report",
+      "principle_id": "report-for-the-decision",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "A tax adviser firm's monthly risk dashboard, emailed to 40 managers, most with no part in fixing them, lists unpatched client-portal flaws with server names. What is the risk analyst's BEST recommendation?",
+      "options": {
+        "A": "Mark the dashboard confidential before it goes to managers",
+        "B": "Add the flaws' CVSS scores to the managers' dashboard",
+        "C": "Report only patched flaws in the managers' dashboard",
+        "D": "Move flaw details to a restricted report for those fixing them"
+      },
+      "correct": "D",
+      "key_concept": "Reports carry the detail each audience needs; exploitable technical detail goes to the people who fix it, not to a wide management list.",
+      "pre_read": "Ask what each reader of the report needs in order to act.",
+      "correct_explanation": "Risk reports are built for what each audience must decide or do, and exploitable detail is kept to the people who need it. Managers with no part in fixing the flaws need the risk's position and trend, not server names an attacker could use; that detail belongs in a restricted report for the people patching. Marking the dashboard confidential is the runner-up: it signals care, but 40 readers still hold detail they do not need.",
+      "wrong_explanations": {
+        "A": "A confidential label asks readers to take care, but it still sends server names and flaw details to 40 managers, most of whom do not act on them.",
+        "B": "CVSS scores add technical detail for an audience that does not fix the flaws; managers need the risk in business terms, not more scanner data.",
+        "C": "Listing only patched flaws hides the open exposure the managers' dashboard exists to show; the fix is less detail, not less risk."
+      },
+      "tips": [
+        "Eliminate: B adds technical scores for an audience that does not fix the flaws, and C hides the open exposure by reporting only what is patched.",
+        "Final two: D beats A because most of the 40 managers play no part in fixing the flaws; a label leaves the server names with them, while a restricted report keeps them with those patching.",
+        "Exam cue: match each report's detail to its readers' roles; exploitable technical detail goes to the people who act on it, and others get the risk's position and trend."
+      ],
+      "framework_ref": "NIST SP 800-137 Section 3.4 (Analyze Data and Report Findings: recipients, content, format and frequency of reports)",
+      "related_concepts": [
+        "Risk reporting",
+        "Audience",
+        "Need to know"
+      ],
+      "_provenance": "Authored from concept: notes 3C5.2 (Reporting for the Audience and the Decision: control owners and operations get control failures and remediation tasks, with exploitable detail such as server names kept to those who fix them; leaders get the risk in business terms). Round 23, 12 Nov 2026: original scenario (a tax adviser firm's monthly risk dashboard, emailed to 40 managers, most with no part in fixing them, lists unpatched client-portal flaws with server names), written for KaiSip in our own words; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D3 round 23 (crisc_d3_257 to 264).",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d3_264",
+      "domain": 3,
+      "subtopic": "3C6 Monitoring and reporting of emerging risks. Study budget for nine signals",
+      "principle_id": "match-decision-to-role",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An armored cash transport firm's horizon review lists nine emerging risks, each with a proposed owner, but the budget funds deeper study of only three. Who is MOST appropriate to decide which three are studied?",
+      "options": {
+        "A": "Senior management, from the analyst's ranked shortlist",
+        "B": "The risk analyst, on the likelihood scores they assign",
+        "C": "Each emerging risk's proposed owner, for their own risk",
+        "D": "The security team, as the main source of the signals"
+      },
+      "correct": "A",
+      "key_concept": "Senior management decides which emerging risks to study or prepare for when they compete for limited funds; the analyst ranks and proposes.",
+      "pre_read": "Notice what the decision covers before matching it to a role.",
+      "correct_explanation": "Choosing which emerging risks get scarce study money is a decision across the enterprise's priorities, so senior management makes it; the risk analyst ranks the nine by relevance to objectives and proposes. Each proposed owner deciding for their own risk is the runner-up: owners decide how to prepare for their own emerging risk, but nine owners cannot each settle a share of one budget that funds three studies.",
+      "wrong_explanations": {
+        "B": "The analyst ranks and proposes, but choosing where scarce money goes is a management decision; a practitioner who settles it takes the business's choice.",
+        "C": "Owners decide how to prepare for their own emerging risk, but nine owners cannot each settle a share of one budget that funds three studies.",
+        "D": "The security team supplies many of the signals but answers for no business objective; where study money goes is a management decision."
+      },
+      "tips": [
+        "Eliminate: B has the analyst choose where money goes, a management decision, and D gives the choice to a source of signals that answers for no business objective.",
+        "Final two: A beats C because one budget funds three of nine studies; owners decide how to prepare for their own risk, but choosing among risks sits with senior management.",
+        "Exam cue: when emerging risks compete for limited study funds, senior management decides from the analyst's ranked shortlist; each owner then decides how to prepare for their own."
+      ],
+      "framework_ref": "NIST CSF 2.0 GV.RR-03 (adequate resources are allocated commensurate with the cybersecurity risk strategy, roles, responsibilities and policies); NIST CSF 2.0 GV.RR-02 (roles, responsibilities and authorities related to cybersecurity risk management are established, communicated, understood and enforced)",
+      "related_concepts": [
+        "Emerging risk",
+        "Horizon scanning",
+        "Risk prioritization"
+      ],
+      "_provenance": "Authored from concept: notes 3C6.1 (Horizon Scanning and Emerging Risk Sources: senior management decides which emerging risks to study or prepare for; the analyst screens and ranks) and 3C6.2 (the named business owner decides how to prepare for their own emerging risk). Round 23, 12 Nov 2026: original scenario (an armored cash transport firm's horizon review lists nine emerging risks, each with a proposed owner, but the budget funds deeper study of three), written for KaiSip in our own words; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D3 round 23 (crisc_d3_257 to 264).",
+      "style_version": 2
     }
   ]
 }

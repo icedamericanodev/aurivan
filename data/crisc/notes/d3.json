@@ -74,7 +74,7 @@
             "Every response starts from an analyzed risk compared with appetite and tolerance, not a favorite tool; if service is restored and a root-cause review is near, wait.",
             "Responses combine: controls cut likelihood, then insurance covers part of the remaining impact.",
             "Transfer moves money, not accountability, to another enterprise and only for covered losses: re-rate exposure an exclusion leaves retained; work moved within the group transfers nothing.",
-            "Avoidance gives up the benefit, so it fits when the activity is not needed for objectives or nothing else brings the risk within appetite.",
+            "Avoidance removes the activity or exposure, and its benefit; it fits when the activity is not needed or nothing else meets appetite. A ban people can still break mitigates.",
             "A response can bring new risks, such as reliance on one provider; weigh them first.",
             "For unexplained AI decisions, human review giving reasons on challenge treats the risk; a model summary does not."
           ],
@@ -282,7 +282,7 @@
           "how_it_works": [
             "Assign the owner by business accountability: the manager whose objectives, process or budget it affects.",
             "Match authority to reach and rating: the owner funds treatment and accepts residual risk across its reach; a department's low-rated risk sits with its process owner.",
-            "Name one accountable person, not a committee, department or joint owners; others, such as IT delivering treatment, act as action owners, stakeholders or control owners.",
+            "Name one accountable person with authority to fund and accept, not a committee, department, joint owners or a coordinator who compiles updates; others act as action or control owners.",
             "Revalidate ownership regularly and after reorganizations, departures or process changes.",
             "IT usually owns technology controls; the business owns the risk those controls treat.",
             "Ownership takes hold when the person given it accepts the role; then judge owners by response choices and approvals they signed, not by the register."
@@ -709,7 +709,7 @@
             "Requests come before deviating and state the requirement, reason and risk; a deviation already running is logged as an issue, not a backdated exception.",
             "The practitioner assesses the risk and proposes compensating controls to keep it within appetite.",
             "The risk owner approves, at a level that matches the risk; policy may require senior management for high ratings.",
-            "Exceptions carry an expiry date and a plan to comply; exemptions are reviewed periodically. One in date, within authority and compensated is reviewed then, not escalated early.",
+            "Exceptions carry a fixed expiry date, not an unscheduled event, and a plan; exemptions are reviewed periodically. One in date, within authority and compensated is reviewed then, not escalated.",
             "Keep all deviations in one register and report them in aggregate, so combined risk shows and repeated requests point to a cause to fix.",
             "An exemption covers only the assets assessed; a new asset needs its own request, and a change to a covered system or its data reopens it."
           ],
@@ -1231,7 +1231,7 @@
             "Inspection of records shows the control ran over time, if the records are complete and genuine; records made after the fact need system evidence from the period.",
             "Reperformance gives the strongest evidence, because the tester reaches the result independently.",
             "NIST SP 800-53A groups methods as examine, interview and test, with depth and coverage set by the assurance needed.",
-            "Job logs and sign-offs show a step ran, not that its result was right; recalculating a sample, or re-checking approved AI outputs, shows whether it was.",
+            "Logs and sign-offs show a step ran, not that it was right; recalculate samples, re-check AI outputs, or test an ML detector on confirmed cases newer than its training data.",
             "No exceptions shows little: when an automated control had nothing to act on, inspect its live setting and change log; when a check flagged nothing, run cases it should catch."
           ],
           "types": [
@@ -1860,7 +1860,7 @@
           "definition": "An effective KRI is relevant to a specific risk, reliably measurable, predictive of change, set against thresholds and owned by someone who acts on it.",
           "why_it_matters": "Too many indicators drown the signal, and lagging ones warn only after the loss. A few well-chosen leading KRIs give owners time to act.",
           "how_it_works": [
-            "Relevant: the KRI tracks a driver of a specific high-priority risk scenario.",
+            "Relevant: the KRI tracks a driver of a specific high-priority scenario; find candidates in the causes of its past events, then check generic lists against them.",
             "Measurable: the data is available, consistent and cheap to collect; count items when each is its own path to harm, as a share of a growing base can hide growth.",
             "Predictive: a leading indicator changes before the risk event, not after it.",
             "Thresholds and owner: each KRI has limits tied to tolerance and a person who acts on a breach.",
@@ -2121,7 +2121,7 @@
             "Link change management and incident processes to the risk function, so a trigger starts a reassessment.",
             "Reassess the affected scenarios, update the register and tell the risk owner of any change in rating.",
             "Keep scheduled reviews as a backstop, since not every change is announced.",
-            "A change that meets none of the policy's triggers needs no reassessment of its own; note it for the risk's next scheduled review."
+            "A change or incident that meets none of the policy's triggers, such as an event inside the rating's expected range, is noted for the risk's next scheduled review."
           ],
           "example": "An online retailer moves its checkout to a new payment provider in a weekend release. Lucas, the risk analyst, learns of it from the change calendar and finds that the card-data risk was last assessed against the old provider. They reassess the scenario with the e-commerce manager and update the register, rather than waiting for the next quarterly review.",
           "audit_focus": {
@@ -2259,7 +2259,7 @@
           "how_it_works": [
             "Board and senior management: the profile against appetite, accepted risks, breaches, trends and decisions needed, in business terms; AI risk as harm, not model scores.",
             "Risk owners: their risks, indicator status, overdue actions and acceptances due for review.",
-            "Control owners and operations: control failures, test results and remediation tasks.",
+            "Control owners and operations: control failures, test results and remediation tasks, with exploitable detail such as server names kept to those who fix them.",
             "Send each report to someone with authority to decide, stating the decision needed; escalate outside the cycle when a breach or critical risk cannot wait.",
             "Report ratings as assessed; if an owner disputes one without new evidence, show their view beside the unchanged rating.",
             "Share the risk profile with internal audit so its plan can cover the top risks; audit still sets its own plan, approved by the audit committee."
@@ -2330,7 +2330,7 @@
           "how_it_works": [
             "Use many sources: threat intelligence, regulators' consultations, industry groups, vendors, research and front-line staff; look as far ahead as the plans and assets the scan informs.",
             "Look for opportunities too, such as a new technology that could cut cost or risk.",
-            "Screen each signal for relevance to objectives and assets; judge the scan by how many new risks it flagged before harm, not items read or hours spent.",
+            "Screen signals for relevance to objectives and assets, and rank them for senior management's choice of what to study; judge the scan by risks flagged before harm.",
             "Treat as emerging only what is still uncertain, not merely distant; give each such risk an owner to watch it, and rate dated, understood changes normally.",
             "Evaluate new technologies, such as generative AI, for threats, vulnerabilities and opportunities before use spreads.",
             "A peer's incident on the same technology, or an industry report, is valid evidence to record an emerging risk; do not wait for an in-house event."
