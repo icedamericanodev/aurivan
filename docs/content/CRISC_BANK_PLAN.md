@@ -1,6 +1,6 @@
 # CRISC course plan: from the pilot to a sellable pack
 
-**Status:** plan, 30 Oct 2026; round 14 done 12 Nov 2026 (bank 600, on the outline weights). CRISC is a **paid course** learners buy in the
+**Status:** plan, 30 Oct 2026; round 15 done 12 Nov 2026 (bank 625, on the outline weights). CRISC is a **paid course** learners buy in the
 app (6-month access, one payment, never renews; see
 `docs/business/monetization/RECOMMENDATION.md`). Outline and sources:
 `docs/content/CRISC_BLUEPRINT.md`. Item standard:
@@ -20,7 +20,7 @@ it can be sold:
 |---|---|---|---|
 | Blueprint | `docs/content/CRISC_BLUEPRINT.md` | cert-blueprint-researcher | Done, 30 Oct 2026 |
 | Study notes | `data/crisc/notes/d{1..4}.json` + `_course.json` (strategy tips, cross-domain connections) | crisc-d{N}-domain-expert | All 43 outline sub-areas, 115 subtopics, Practice this concept links (`data/crisc/tools/sync_practice_ids.py`) |
-| Questions | `data/crisc/originals/d{1..4}.json` | crisc-d{N}-domain-expert | 600 reviewed (156 / 132 / 192 / 120) after round 14, each domain on its weight: a full 150-item mock and a short 50-item mock without repeats |
+| Questions | `data/crisc/originals/d{1..4}.json` | crisc-d{N}-domain-expert | 625 reviewed (163 / 137 / 200 / 125) after round 15, each domain on its weight: a full 150-item mock and a short 50-item mock without repeats |
 | Citation library | `data/crisc/originals/_framework_library.md` | domain experts | Started with the pilot |
 | Principles (mindset cards) | `data/crisc/mindset/principles.json` (schema `docs/content/PRINCIPLES_SCHEMA.md`) | isaca-mindset-coach | 19 principles; every item tagged |
 | Exam guide and final-review week | `data/crisc/exam/` (schema `docs/content/EXAM_GUIDE_SCHEMA.md`) | isaca-mindset-coach | Both done and reviewed |
@@ -618,6 +618,39 @@ risk owner (d4_118).
 - Settings ledger: no two items in a round share sector and activity; charity, NGO or refugee settings at most 2 per round; no library, museum, theater, cinema or sports settings; health at most 4. Each author gets a sector list that does not overlap the others'.
 - Openers: the next Estimate, Help, Obtain, Examine and State options go on wrong answers, and the next "Keep …" option is a wrong "no change" move. Ask/Have keys at 4–7 per round are fine.
 - Keep apart in practice sets: d1_154/d3_119/d1_026, d3_186/d1_025/d3_028/d4_077, d3_192/d3_084/d3_143/d3_176, d2_129/d2_041, d3_188/d1_105/d1_050.
+
+### Round 15 (12 Nov 2026): 25 items, bank 625
+
+Round 15 added 7 D1 (`crisc_d1_157`–`163`), 5 D2 (`crisc_d2_133`–`137`),
+8 D3 (`crisc_d3_193`–`200`) and 5 D4 (`crisc_d4_121`–`125`) items, one AI item
+per domain on a fresh angle. Highlights: a risk owner may set a stricter limit
+than the board's tolerance within their own authority and budget (d1_159), two
+plans one event can trigger must not share responders (d1_160), second-line
+challenge of AI ratings needs AI skills from outside the model teams (d1_161),
+the data that cannot be recreated sets the RPO (d2_133), a detective control's
+clean record proves little until a test shows it would catch an event (d2_135),
+membership inference on a shared model copy (d2_137), no one owns a check on
+their own work (d3_193), an exit plan for a vendor in financial trouble (d3_196),
+fixing a missing control that both raises likelihood and voids insurance
+(d3_198), and access rules that do not carry into a fine-tuned model (d4_123).
+
+| Stage | Result |
+|---|---|
+| Blind test | 25/25 picks matched the keys (23 sure); one Exam cue that half-argued for the runner-up rewritten (d1_162) |
+| Standards audit and concept review | 0 HARD ERRORS. All four keyed lone owners were also the longest option; three of those links broken. Deciding facts and stem echoes taken off keys (d2_133, d2_135, d4_124); a pre-read that gave d1_159 away rewritten. Overstated rules fixed in items and notes: a stricter limit is within the owner's authority and budget, not an "only looser limits go up" rule; RPO is set by vital data that cannot be recreated; action order allows for dependencies and resources; emergency changes keep proportionate testing and a back-out plan; counsel confirms a rule's reach only when it is unclear |
+| Fixed-period cue pass | 120 wrong options in 105 older items lost incidental period words (68 matching explanation and tip edits); the strike-period guesser fell from 34% to 25% where it applies. No key changed |
+| Re-blind of changed items | 23/23 sure (11 new items and 12 cue-pass items), then 6/6 after the cross-domain gate; three stale wordings fixed and d4_081 D now states its audit is after launch |
+| Cross-domain gate | 0 HARD ERRORS, 5 PRECISION: d3_198 re-angled off d1_103; d1_157 moved off d3_138's decoy; d3_193 follows notes 3A2.2; the last "KRI owner" options now say risk owner (d3_137, d3_160); two stale period words from the cue pass removed |
+| Gates | All lints 0 errors; practice links in sync; app pack dry run 0 problems; `verify_repo.sh` passes; no run of three identical keys; balance exactly 26/22/32/20 |
+
+**Next round (round 16, +25 to 650):** D1 +6, D2 +6, D3 +8, D4 +5 (169/143/208/130, exactly on weight).
+- Keys: D1 A1 B1 C2 D2, D2 A1 B2 C2 D1, D3 two of each, D4 A1 B1 C1 D2. Difficulty (F/A/An): D1 1/3/2, D2 1/5/0, D3 2/6/0, D4 2/1/2. One AI item per domain on a fresh angle.
+- Defer family: about 26 wrong "wait for the next or scheduled review" options against 2 keys. Key 2 options where waiting for the scheduled point is right (no trigger: a change inside every threshold, an exception in date and within authority), at least one with "next"; put one defer option on a runner-up; write no new wrong "wait for the review" option. Watch "written" (0/12 keyed).
+- Pause these families (no key or runner-up): a control owner wants to weaken a control and the risk owner decides; a sudden drop after a data-path change is a data failure; automated validation of AI output; insurance credit re-rated when cover fails; "ask legal counsel to confirm" FIRST; vendor exit planning; the board cannot see part of the profile. Round 15's paused list stays paused.
+- Neighbour checks: compare each new item's keyed action against the bank's key_concept and correct_explanation (three round 15 near-copies were found that way), and search CISA and AAIA for after-the-fix versions of any incident scenario.
+- Owner shapes: lone owners on easy distractors in at least half of lone-owner items, keyed in about a third (bank lone owner in the final two now 66%, target 65% or less). Openers: key one "Move", one "Rely", one "Number of …" and one "Keep" option where justified.
+- Settings: no hotel group, transport at most 2, health at most 4, no charity, NGO, refugee or leisure settings; non-overlapping sector lists per author.
+- Keep apart in practice sets: d1_157/d3_138/d1_050/d3_188, d3_195/d3_040, d3_194/d3_098, d3_198/d1_103, d3_200/d1_116, d1_163/d4_045, d3_196/d4_037, d1_159/d1_042/d3_125, d2_137/d2_025.
 
 **Open items:**
 - The `TO VERIFY` comment on the CRISC entry in `mobile/src/content/certifications.ts`
