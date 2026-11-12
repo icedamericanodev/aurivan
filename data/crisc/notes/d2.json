@@ -120,7 +120,7 @@
             "External sources include industry loss databases, sector information sharing groups, regulator notices, insurer data and public breach reports.",
             "External events are adjusted for differences in size, controls and exposure before they inform the enterprise's own ratings.",
             "Event data is recorded consistently, with date, scenario, cause, source and impact before insurance, recoveries shown apart; events logged in several places are matched and counted once.",
-            "Underreporting is a known weakness; a blame-free reporting culture raises the number of near misses staff report.",
+            "Underreporting is a known weakness; blame-free reporting helps, and system records of every transaction count events no one reports.",
             "A supplier outage that harms the enterprise, such as fees it must repay to staff, is its own loss event, recorded against its own scenario, not an external peer event."
           ],
           "example": "A university's internal logs show few payroll fraud losses, but the sector information sharing group reports a wave of salary diversion scams against universities. Tomás Ferreira, the risk practitioner, adds the external events to the payroll fraud scenario, notes that the university runs the same self-service payroll portal as the victims, and asks the finance director to review the scenario's likelihood.",
@@ -401,7 +401,7 @@
           "how_it_works": [
             "AI threats target three new assets: the prompt channel, the training data pipeline and the model's learned parameters.",
             "Indirect prompt injection is planted by a third party in content the model reads, such as an email; who can send it sets likelihood, and the tool's permissions set impact.",
-            "Poisoning can enter through third-party datasets and pre-trained models, so the AI supply chain is part of the threat surface.",
+            "Poisoning can enter through third-party datasets and pre-trained models, so the AI supply chain is part of the threat surface; a downloaded model's backdoor can survive fine-tuning.",
             "Extraction and inversion attacks need only query access, so a public interface is enough; membership inference, by query or on a shared copy, reveals whose records trained a model.",
             "NIST AI 100-2 E2025 names and classifies these attacks; the practitioner turns the relevant ones into scenarios with a business owner.",
             "Targeted and backdoor poisoning change outputs for a small set of inputs, so an overall accuracy check can look normal while chosen results are skewed."
@@ -832,7 +832,7 @@
             "Process and asset owners review each scenario's events, impacts and existing controls and sign off the description.",
             "A tabletop exercise is a facilitated, discussion-based walkthrough; no systems are touched, so a fallback claimed in play earns rating credit only after a drill shows it works.",
             "Participants include business owners, control owners, IT, communications and key suppliers; the exercise tests decisions, so the owners who would make them must take part.",
-            "Injects, new facts added during play, test decisions such as escalation, customer notice and recovery order.",
+            "Injects, new facts added during play, test decisions such as escalation, customer notice and recovery order; the base scenario is a severe but plausible one from owners' top risks.",
             "Findings become actions: new or revised scenarios, register updates and control changes, each with an owner and a date.",
             "Internal audit may later give independent assurance on how scenarios were built, but it does not replace validation by the business owners."
           ],
@@ -1091,7 +1091,7 @@
             "recommend": "Have process owners refresh the BIA after major changes, including new AI or cloud services.",
             "decides": "Senior management approves the critical process list and recovery priorities"
           },
-          "isaca_rule": "The BIA measures impact over time, not likelihood. Get impact from business owners, include every dependency, AI services and suppliers included, and use the results to rank recovery and inform risk ratings. Revise it when the business, its obligations or its dependencies change.",
+          "isaca_rule": "The BIA measures impact over time, not likelihood. Get impact from business owners, include every dependency, AI services and suppliers included, and use the results to rank recovery and inform risk ratings. Revise it when the business, its obligations or its dependencies change; otherwise at its scheduled update.",
           "exam_traps": [
             {
               "trap": "A completed BIA can replace the risk assessment for continuity risks.",
@@ -1727,7 +1727,7 @@
             "Operating effectiveness asks whether it actually ran as designed over the period, shown by testing or monitoring.",
             "Evidence includes control test results, key control indicators (KCIs), audit findings and incident history; a detective control's clean record proves little until a test shows it would catch an event.",
             "An untested or failed control earns little or no reduction in the current rating; one that repeated tests show working earns its credit without waiting for a review.",
-            "When test results or a control's scope change, such as a system replaced after the test, residual risk is re-rated and the risk owner is told.",
+            "When test results, a control's scope or the data it protects change, such as a replaced system or newly added sensitive records, residual risk is re-rated and the owner told.",
             "Design is judged first: a control that misses the scenario's cause earns little credit, and one that reaches only some items, such as a one-in-ten sample, earns credit for those."
           ],
           "example": "A broadband provider's register rates staff export of customer data as low residual risk because a data loss prevention tool is installed. Kwame Asante, the risk analyst, asks for its results: it has run in monitor-only mode for a year and blocked nothing. Kwame re-rates the residual risk without credit for blocking and sends the evidence to the customer data owner.",
