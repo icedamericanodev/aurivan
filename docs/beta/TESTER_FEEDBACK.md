@@ -34,6 +34,7 @@ cause in the app, and slots it into the plan below.
 | FB-005 | 2026-11-09 | Owner emulator review | Phone · Save backup | UX | Medium | Android backup export | Implemented; isolated native save/restore passed | 2.1 |
 | FB-004 | 2026-11-09 | Owner emulator review | Phone · Reset CISA progress | Bug/UX | High | Confirmed full CISA reset | Implemented; isolated native reset/restart passed | 2.1 |
 | FB-003 | 2026-11-06 | Beta reply email | Phone · Nickname setup | UX | Medium | New learners | Implemented, native keyboard/a11y checks pending | 2.1 |
+| FB-006 | 2026-11-12 | Closed-testing message (no report code) | Phone · every screen with serif text (questions, options, headings) | UX (typography) | Low | Whole app | Logged; reproducing | 2.1 (owner decision needed) |
 
 ## Next update plan (phone app, proposed 2.1.0)
 
@@ -128,3 +129,8 @@ FB-005 implementation checkpoint: explicit Android folder-picker save added alon
 Verification checkpoint (2026-11-09): integrated check passed (355 suites, 7,250 tests, 2 skipped), Android export passed. Native Android folder picker and truthful cancellation verified; no backup file written or user progress reset. Native provider write/restore and destructive reset acceptance remain outstanding.
 
 Isolated native follow-up: FB-004 reset and restart and FB-005 local Documents save/restore passed on a new blank emulator-5556, using synthetic nickname Acceptance and one answered question. Persisted reset state and restored answer equality were checked. Owner emulator-5554 data/files untouched. See docs/mobile/RELEASE_2_1.md for scope and screenshots; these fixes are not yet shipped.
+
+### FB-006 · The letter "f" looks different
+
+A closed-testing Android tester wrote: "Just an observation, does the letter 'f' look a bit different? I've seen this in many questions". The owner sees the same odd "f" on the website mockups and asked for it to be fixed across the whole phone app. No report footer came with the message (it was an observation, not an in-app report), so there is no Item, Part, App or Ref to copy.
+
