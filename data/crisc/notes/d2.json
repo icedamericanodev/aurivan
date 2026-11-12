@@ -311,7 +311,8 @@
             "crisc_d2_101",
             "crisc_d2_109",
             "crisc_d2_122",
-            "crisc_d2_157"
+            "crisc_d2_157",
+            "crisc_d2_164"
           ],
           "definition": "Threat intelligence is analyzed information about threat actors and their methods; threat modeling is a structured way to work out how a system could be attacked or fail.",
           "why_it_matters": "Intelligence shows what is happening outside; modeling shows whether it matters to this enterprise's assets. A feed nobody analyzes creates noise, not risk insight.",
@@ -319,7 +320,7 @@
             "Intelligence comes from vendors, sharing groups and alerts; reports on actors' aims, methods and targets inform scenarios, and indicators of compromise feed detection tools.",
             "Intelligence is filtered for relevance: does the actor target this sector, and does the enterprise use the targeted technology?",
             "STRIDE prompts six threat types against a design: spoofing, tampering, repudiation, information disclosure, denial of service and elevation of privilege; AI systems also need AI attack classes added.",
-            "Attack trees break an attacker's goal into paths, including through suppliers and transport; uncontrolled paths show where exposure sits, and a control blocking several is a key control.",
+            "Attack trees break an attacker's goal into paths, including through staff, suppliers and transport; uncontrolled paths show where exposure sits, and a control blocking several is a key control.",
             "MITRE ATT&CK catalogs tactics and techniques seen in real attacks; those used by groups that target the sector show which attack paths are credible.",
             "Modeling results feed risk scenarios, rated with the risk owner; a new technique that beats a credited control, such as live deepfake video, means re-rating the existing scenario."
           ],
@@ -696,7 +697,8 @@
             "crisc_d2_119",
             "crisc_d2_128",
             "crisc_d2_139",
-            "crisc_d2_150"
+            "crisc_d2_150",
+            "crisc_d2_161"
           ],
           "definition": "A risk scenario is a specific, assessable description of how a threat could cause an event that affects an asset and harms business objectives.",
           "why_it_matters": "A vague entry such as 'cyberattack' cannot be rated, owned or treated. A specific scenario shows which controls matter and lets the owner compare it with appetite.",
@@ -704,7 +706,7 @@
             "Actor: who or what causes it, such as a criminal group, a careless user or a failed cooling unit.",
             "Event: what happens, such as malicious encryption, disclosure, an error or an outage.",
             "Asset: the process, system, data or people affected; an AI bias scenario names the group the model treats unfairly, not just 'some applicants'.",
-            "Time: when or how long, such as payroll week or outages over four hours; when harm depends on timing, rate the credible time that hurts most.",
+            "Time: when or how long, such as payroll week, outages over four hours or AI drift until the next accuracy check; rate the credible time that hurts most.",
             "Consequence: the effect on objectives in business terms, such as lost revenue, fines or harm to patients; harm from altered data grows until someone notices.",
             "NIST IR 8286A Rev. 1 suggests a cause-and-effect sentence: an actor exploits a weakness in an asset, resulting in a business impact."
           ],
@@ -1048,12 +1050,13 @@
             "crisc_d2_106",
             "crisc_d2_113",
             "crisc_d2_141",
-            "crisc_d2_147"
+            "crisc_d2_147",
+            "crisc_d2_165"
           ],
           "definition": "A business impact analysis (BIA) finds the critical business processes, how their impact grows over time when disrupted, and the resources and dependencies they need to recover.",
           "why_it_matters": "Recovery money and effort are limited. The BIA tells the enterprise what to restore first, and it gives risk assessments the impact data they need.",
           "how_it_works": [
-            "Process owners rate the harm of losing each process at intervals such as an hour, a day and a week; a new system's BIA precedes its recovery design.",
+            "Process owners rate harm at intervals such as an hour, a day and a week, not a flat hourly rate; a new system's BIA precedes its recovery design.",
             "Impact includes lost revenue, regulatory breaches, safety, contract penalties and reputation; it rises as an outage lengthens and is rated for the process's peak period, not an average.",
             "Dependencies are traced: systems, data, people, facilities, suppliers and other processes, including cloud and AI services.",
             "A BIA assumes the disruption happens and skips likelihood, so it is not a risk assessment; its recovery ranks reflect outage harm, not leaks or tampering.",
@@ -1301,7 +1304,8 @@
             "crisc_d2_039",
             "crisc_d2_061",
             "crisc_d2_075",
-            "crisc_d2_152"
+            "crisc_d2_152",
+            "crisc_d2_162"
           ],
           "definition": "Keeping the register current means updating ratings, controls, responses and status whenever events, assessments, control tests or business changes alter a risk.",
           "why_it_matters": "Decisions are only as good as the register behind them. A stale register reports risks as treated that are not, and hides risks that have grown.",
@@ -1309,7 +1313,7 @@
             "Update triggers include incidents, near misses, control test results, audit findings, new threats, projects and reorganizations.",
             "Status follows evidence: an entry moves to treated only when the response is implemented and working, not when it is planned.",
             "Current and residual ratings credit a control only after it is implemented and tested, not on the day it is approved.",
-            "Each owner reviews their entries on a set cycle; a stated trigger, such as a KRI breach, calls for an earlier review, and a request alone is not one.",
+            "Owners review entries on a cycle set by rating; a stated trigger, such as a KRI breach, brings review forward, and a request alone is not one.",
             "Closing an entry needs a reason, such as the asset being retired or the risk avoided, and the owner's approval; closed entries stay in the register as history.",
             "A new or emerging risk, such as a newly launched AI system, is entered early with its rating's uncertainty stated and an early review date."
           ],
@@ -1505,7 +1509,8 @@
             "crisc_d2_016",
             "crisc_d2_043",
             "crisc_d2_107",
-            "crisc_d2_120"
+            "crisc_d2_120",
+            "crisc_d2_163"
           ],
           "definition": "Quantitative analysis expresses risk in money and probability. The classic method multiplies single loss expectancy (SLE) by annual rate of occurrence (ARO) to get annualized loss expectancy (ALE).",
           "why_it_matters": "Money values let owners weigh a control's cost against the loss it avoids, a cost-benefit test that word scales cannot support.",
@@ -1514,10 +1519,10 @@
             "ARO is the expected number of events a year; once every four years is 0.25.",
             "ALE equals SLE times ARO, the expected yearly loss; for rare, severe events, also show the SLE, as one event can far exceed ALE.",
             "Worked example: an $800,000 asset with a 25% exposure factor has an SLE of $200,000; at an ARO of 0.5, ALE is $100,000.",
-            "A control is cost-justified when the yearly drop in ALE, ALE before minus ALE after, exceeds the control's yearly cost.",
+            "A control is cost-justified when the yearly drop in ALE, before minus after, exceeds its yearly cost, with a one-off cost spread over its life.",
             "Results are only as good as the inputs: scale an outside rate to the enterprise's exposure, and state each figure's source and uncertainty."
           ],
-          "example": "Each crane control outage at a port terminal loses about $300,000; there were two in five years, an ARO of 0.4, so ALE is $120,000. A redundant controller costing $50,000 a year would cut the ARO to 0.1, giving $30,000. Mei Tanaka, the risk analyst, shows the terminal manager a $90,000 yearly reduction against $50,000 spent.",
+          "example": "Each crane control outage at a port terminal loses $300,000; two in five years give an ARO of 0.4, so ALE is $120,000. A redundant controller costing $50,000 a year would cut the ARO to 0.1, giving $30,000. Mei, the risk analyst, shows the manager a $90,000 yearly reduction against $50,000 a year.",
           "audit_focus": {
             "review": [
               "Recalculate SLE, ARO and ALE from the stated inputs",
@@ -1534,7 +1539,7 @@
           "exam_traps": [
             {
               "trap": "Compare the control's yearly cost with the SLE to decide whether it is worth buying.",
-              "why": "SLE covers one occurrence. The yearly cost must be compared with the yearly reduction in ALE, which accounts for how often the event happens."
+              "why": "SLE covers one occurrence; compare the yearly cost with the yearly reduction in ALE, which accounts for how often the event happens."
             }
           ],
           "key_terms": [

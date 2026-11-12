@@ -1,6 +1,6 @@
 # CRISC course plan: from the pilot to a sellable pack
 
-**Status:** plan, 30 Oct 2026; round 19 done 12 Nov 2026 (bank 725, on the outline weights). CRISC is a **paid course** learners buy in the
+**Status:** plan, 30 Oct 2026; round 20 done 12 Nov 2026 (bank 750, on the outline weights). CRISC is a **paid course** learners buy in the
 app (6-month access, one payment, never renews; see
 `docs/business/monetization/RECOMMENDATION.md`). Outline and sources:
 `docs/content/CRISC_BLUEPRINT.md`. Item standard:
@@ -20,7 +20,7 @@ it can be sold:
 |---|---|---|---|
 | Blueprint | `docs/content/CRISC_BLUEPRINT.md` | cert-blueprint-researcher | Done, 30 Oct 2026 |
 | Study notes | `data/crisc/notes/d{1..4}.json` + `_course.json` (strategy tips, cross-domain connections) | crisc-d{N}-domain-expert | All 43 outline sub-areas, 115 subtopics, Practice this concept links (`data/crisc/tools/sync_practice_ids.py`) |
-| Questions | `data/crisc/originals/d{1..4}.json` | crisc-d{N}-domain-expert | 725 reviewed (188 / 160 / 232 / 145) after round 19, each domain on its weight: a full 150-item mock and a short 50-item mock without repeats |
+| Questions | `data/crisc/originals/d{1..4}.json` | crisc-d{N}-domain-expert | 750 reviewed (195 / 165 / 240 / 150) after round 20, each domain on its weight: a full 150-item mock and a short 50-item mock without repeats |
 | Citation library | `data/crisc/originals/_framework_library.md` | domain experts | Started with the pilot |
 | Principles (mindset cards) | `data/crisc/mindset/principles.json` (schema `docs/content/PRINCIPLES_SCHEMA.md`) | isaca-mindset-coach | 19 principles; every item tagged |
 | Exam guide and final-review week | `data/crisc/exam/` (schema `docs/content/EXAM_GUIDE_SCHEMA.md`) | isaca-mindset-coach | Both done and reviewed |
@@ -791,6 +791,39 @@ planned review (d1_188), making eleven.
 - Settings (each once): D1 paper mill, building society, pest control firm, agricultural cooperative, jewelry retailer, reinsurer, plumbing contractor; D2 sawmill, dialysis provider, ready-mix concrete supplier, remittance firm, domain registrar; D3 pet food maker, bicycle maker, microfinance lender, garden center chain, bottling plant, nursing home operator, market research firm, car-sharing service; D4 web hosting firm, circuit board maker, vocational college, blood bank, student housing provider.
 - Pause (on top of rounds 17–19): common rating methods and scales; risk duties in role descriptions; class from the most sensitive data; profile-update triggers; a worst case beyond capacity; framework version changes; a supplier's AI rating for another use; late losses added to the event; threat models through suppliers; chained vulnerabilities; RTO plus catch-up; 100% effectiveness inputs; the rest in `r19_cross_domain.json`.
 - Keep apart in practice sets: the eleven keyed waits and their twins; d3_131/d1_188; d3_226/d3_005; d2_159/d2_035/d1_029; d2_160/d2_064/d3_087; d1_186/d1_016/d1_162; d4_141/d4_072.
+
+### Round 20 (12 Nov 2026): 25 items, bank 750
+
+Round 20 added 7 D1 (`crisc_d1_189`–`195`), 5 D2 (`crisc_d2_161`–`165`),
+8 D3 (`crisc_d3_233`–`240`) and 5 D4 (`crisc_d4_146`–`150`) items, taking the
+bank to 750, three quarters of the planned 1,000. One AI item per domain, so
+every outline code now has an AI stem: the business owner, not the builders, is
+accountable for an AI system's outcomes (d1_189); slow model drift built as a
+scenario with its time element (d2_161); repeated AI-output issues tracked as
+one finding with its cause (d3_233); harmful AI outputs can be incidents while
+the service is up (d4_146). Other highlights: internal audit's follow-up
+confirms a reported fix to its own finding (d1_195, the first internal-audit key
+in its assurance role for several rounds), an RPO judged at peak (d4_147), a
+blockchain that shows changes but cannot prove entries true (d4_148) and purpose
+set before collection (d4_150). One more keyed wait: a new control's operating
+test waits for enough runs to sample (d3_238), making twelve.
+
+| Stage | Result |
+|---|---|
+| Blind test | 25/25 picks matched the keys (22 sure); length and stem-echo cues in five items |
+| Standards audit and concept review | 0 HARD ERRORS. d3_239 left a paused family; d3_236's figures stopped twinning d2_163; d1_193's stem states why payroll comes first; d1_195 asks internal audit rather than directing it and its stem says the finding is audit's; "each" off three keys; overstated rules fixed (every wrong AI answer an incident; a ledger keeps entries unchanged; a KRI always replaced; "cost-justified" without its basis); notes restore "independent" assurance and "often" for walkthroughs |
+| Re-blind | 10/10, all sure |
+| Cross-domain gate | 0 HARD ERRORS, 7 PRECISION: notes 3A4.1 no longer key d1_195's runner-up; d3_136's independence point scoped; d4_013 and notes 4A7.1 call a ledger tamper-evident; d1_189 and d2_165 re-angled off near-copies; d1_193's Final two separates the BIA target from the seasonal order |
+| Gates | All lints 0 errors; practice links in sync; app pack dry run 0 problems; `verify_repo.sh` passes; keys level; balance exactly 26/22/32/20; longest-key floors 15.3–15.8% |
+
+**Next round (round 21, +25 to 775):** D1 +6, D2 +6, D3 +8, D4 +5 (201/171/248/155). Code placement, key letters, difficulty and settings are in `r20_cross_domain.json`.
+- Length floors: D1, D3 and D4 each need exactly one key naturally longest by characters, or each falls to about 14.9% and fails the lint; D2 at most one. No key strictly shortest by words in D1 or D2.
+- AI angles (codes with one AI stem): D1 1B5 vendor AI terms that conflict with customer confidentiality commitments; D2 2B4 loss frequency for an AI model from its validated error rate and volume; D3 3C4 trends in a model's human-override rate; D4 4A1.
+- Defer: one genuine keyed wait in D2 on a new lesson (for example a medium flaw on an isolated system goes in the scheduled patch cycle); no new wrong defer option.
+- Owner shapes: two three-owner items (the non-owner keyed in at most one); two eliminated owner pairs; lone owners keyed at most once.
+- Openers and words: key 4 Have/Ask (at least 2 "Ask", no "Have" key in D1) and put 3 "Have" on eliminated options; Tell-family, Take, "Share of" and only/just on wrong options; key one "Number of" where a count is right; in D1 key 2 options that naturally carry each/every/all.
+- Pause (on top of rounds 17–19): RACI accountability with the business owner; IT goals cascade; speak-up routes; vague standards made measurable; seasonal or peak impact; asset value from enabled revenue; who closes an audit finding; AI drift scenarios; review frequency by risk; cost-benefit time basis and full cost; and the rest in `r20_cross_domain.json`.
+- Neighbour checks: read each new item's runner-up and Final two beside its top same-code neighbour; read every notes line in the item's code and in the code of the rule it relies on; when a review narrows a rule, grep the bank, notes, principles and glossary for the absolute form.
 
 **Open items:**
 - The `TO VERIFY` comment on the CRISC entry in `mobile/src/content/certifications.ts`

@@ -118,7 +118,8 @@
             "crisc_d1_111",
             "crisc_d1_138",
             "crisc_d1_164",
-            "crisc_d1_177"
+            "crisc_d1_177",
+            "crisc_d1_190"
           ],
           "definition": "The COBIT 2019 goals cascade links stakeholder needs to enterprise goals, then to technology alignment goals, so every technology goal serves a business goal.",
           "why_it_matters": "IT goals set alone let spending drift from business needs; strategic change shifts the risk profile.",
@@ -341,7 +342,8 @@
             "crisc_d1_052",
             "crisc_d1_082",
             "crisc_d1_117",
-            "crisc_d1_144"
+            "crisc_d1_144",
+            "crisc_d1_189"
           ],
           "definition": "A RACI chart shows, for each activity, who is Responsible for doing it, Accountable for the outcome, Consulted before and Informed after; only one person is accountable.",
           "why_it_matters": "RACI turns roles into checkable assignments. New areas such as AI often involve many teams and no single accountable owner, which leaves risk decisions unmade.",
@@ -476,14 +478,15 @@
             "crisc_d1_097",
             "crisc_d1_122",
             "crisc_d1_146",
-            "crisc_d1_166"
+            "crisc_d1_166",
+            "crisc_d1_191"
           ],
           "definition": "Incentives are the rewards and pressures that shape risk-taking; speaking up means staff raise concerns without fear, through open channels and protected whistleblowing routes.",
           "why_it_matters": "Pay and targets that reward volume or speed alone push people to take risks outside appetite. If reporting brings blame, issues stay hidden until they become losses.",
           "how_it_works": [
             "Balanced scorecards pair performance targets with risk and control measures.",
             "Rewards for risk-taking roles can be deferred, and reduced if losses emerge later.",
-            "Several reporting channels exist, including an anonymous route that bypasses line managers.",
+            "Several reporting channels exist, including an anonymous route that bypasses line managers, open to contractors and suppliers' staff as well as employees.",
             "People who raise issues in good faith are protected from retaliation, and leaders thank them visibly; suspected retaliation goes first to the speak-up policy's owner, as it silences other reporters.",
             "Reported concerns are logged, assessed like any risk event and closed with feedback to the reporter; without feedback, people decide reporting is pointless.",
             "Review effort shapes behavior: when overriding an AI tool needs a sign-off and agreeing needs none, staff stop challenging it, so both get the same review."
@@ -604,7 +607,8 @@
             "crisc_d1_126",
             "crisc_d1_147",
             "crisc_d1_167",
-            "crisc_d1_179"
+            "crisc_d1_179",
+            "crisc_d1_192"
           ],
           "definition": "The policy hierarchy runs from policies (management intent) to standards (mandatory specifics), procedures (step-by-step tasks) and guidelines (advisory good practice).",
           "why_it_matters": "Each layer has a different approver and force. Confusing them leads to treating advice as a rule, or to IT approving what only senior management can.",
@@ -664,7 +668,7 @@
               "Policy library with owners, versions and review dates"
             ],
             "recommend": "Have policy owners map each standard to its policy and move mandatory practices out of guidelines.",
-            "decides": "Senior management approves policies; policy owners approve standards"
+            "decides": "Senior management approves policies; a standard's owner, often the policy owner, approves the standard"
           },
           "isaca_rule": "A policy is management's intent and needs senior management approval; standards and procedures make it mandatory in practice; guidelines advise. Judge compliance against the mandatory layers, and align each layer with risk appetite.",
           "exam_traps": [
@@ -822,13 +826,14 @@
             "crisc_d1_107",
             "crisc_d1_131",
             "crisc_d1_152",
-            "crisc_d1_180"
+            "crisc_d1_180",
+            "crisc_d1_193"
           ],
           "definition": "A business process is a set of activities that produces a business outcome; its process owner is accountable for its performance, risks and controls from end to end.",
           "why_it_matters": "Risk lands on processes, not on servers. Knowing which processes are critical, and who owns them, shows where disruption hurts most and who decides on resilience spending.",
           "how_it_works": [
             "Each critical process has one owner who answers for its outcome across departments.",
-            "Critical processes are those whose failure most harms objectives, customers, safety or compliance; the business impact analysis (BIA, see 2B2) ranks them.",
+            "Critical processes are those whose failure most harms objectives, customers, safety or compliance; the business impact analysis (BIA, see 2B2) ranks them, and the ranking can shift by season.",
             "Processes depend on people, suppliers, data and systems; mapping them end to end with the owner shows single points of failure a plan built around one system misses.",
             "Process owners set recovery needs, including the manual fallback if an AI service fails, that IT and suppliers meet; when owners clash, the plan's owner orders recovery by impact.",
             "A tested recovery slower than the target but within appetite can be accepted by the process owner on record, with the RTO and the plan updated to match.",
@@ -1046,13 +1051,14 @@
             "crisc_d1_058",
             "crisc_d1_119",
             "crisc_d1_165",
-            "crisc_d1_185"
+            "crisc_d1_185",
+            "crisc_d1_194"
           ],
           "definition": "Asset classification labels assets by sensitivity and criticality; valuation estimates what an asset is worth to the business. Both are inputs to rating risk.",
           "why_it_matters": "Impact cannot be rated without knowing an asset's value. Purchase cost understates assets such as customer data, whose loss can cost far more in fines, lost trust and downtime.",
           "how_it_works": [
             "The owner classifies the asset with the enterprise scheme, such as public, internal, confidential and restricted; a system takes the class of the most sensitive data it holds.",
-            "Valuation considers replacement cost, revenue dependence, legal exposure, reputation and the processes the asset supports.",
+            "Valuation considers replacement cost, revenue dependence, legal exposure, reputation and the processes the asset supports; an asset earning nothing itself can enable much of the revenue.",
             "Higher classification and value drive stronger protection and higher impact ratings in risk analysis.",
             "Values and classes are reviewed when an asset's use, data or regulation changes.",
             "An AI model is valued by the decisions it drives, not its build cost; a rating that rests on build or purchase cost is revalued before anyone accepts the risk.",
@@ -1346,17 +1352,18 @@
             "crisc_d1_078",
             "crisc_d1_102",
             "crisc_d1_121",
-            "crisc_d1_182"
+            "crisc_d1_182",
+            "crisc_d1_195"
           ],
           "definition": "The lines of defense model separates who owns and manages risk (first line), who oversees and challenges it (second line) and who gives independent assurance (third line).",
           "why_it_matters": "Clear lines prevent gaps and overlaps. When audit designs controls or the risk function owns business risk, independence and accountability are both lost.",
           "how_it_works": [
             "First line: business and operational management own risks and run controls day to day, their own control testers included; other lines' tests check these controls but do not replace them.",
             "Second line: risk management, compliance and similar functions set methods, monitor, challenge and report; challenge shows it works when ratings or plans change because of it.",
-            "Third line: internal audit gives independent, objective assurance to the board or audit committee.",
+            "Third line: internal audit gives independent, objective assurance to the board or audit committee; its follow-up confirms fixes to its own findings.",
             "The board oversees all three; senior management is accountable for the first and second lines.",
             "The IIA's 2020 update renamed the model and stresses cooperation; owning, overseeing and independently assuring risk stay distinct, though first- and second-line roles may combine within management.",
-            "Internal audit also gives the board independent assurance that the risk management process works, which the second line, as its operator, cannot give."
+            "Internal audit also gives the board independent assurance that risk management works, which the second line, as its operator, cannot."
           ],
           "compare": {
             "columns": [
@@ -1404,7 +1411,7 @@
             "recommend": "Have senior management return control ownership to the first line and keep the second line in oversight.",
             "decides": "Senior management assigns roles; the audit committee protects audit's independence"
           },
-          "isaca_rule": "The first line owns, the second line oversees and challenges, and the third line assures independently. On CRISC items, the risk practitioner usually sits in the second line: they advise and challenge but never take ownership away from the first line.",
+          "isaca_rule": "The first line owns, the second line oversees and challenges, and the third line assures independently. On CRISC items, the risk practitioner usually sits in the second line: they advise and challenge but never take over first-line ownership.",
           "exam_traps": [
             {
               "trap": "Internal audit should design the controls, since it knows what will pass review.",
@@ -1418,7 +1425,7 @@
           "key_terms": [
             {
               "term": "Three Lines Model",
-              "definition": "The IIA's 2020 update of the lines of defense model, which stresses roles and cooperation over strict separation."
+              "definition": "The IIA's 2020 update of the lines of defense model, stressing roles and cooperation over strict separation."
             },
             {
               "term": "Challenge",
