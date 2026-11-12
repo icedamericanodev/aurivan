@@ -1,6 +1,6 @@
 # CRISC course plan: from the pilot to a sellable pack
 
-**Status:** plan, 30 Oct 2026; round 25 done 12 Nov 2026 (bank 875, on the outline weights). CRISC is a **paid course** learners buy in the
+**Status:** plan, 30 Oct 2026; round 26 done 12 Nov 2026 (bank 900, exactly on the outline weights). CRISC is a **paid course** learners buy in the
 app (6-month access, one payment, never renews; see
 `docs/business/monetization/RECOMMENDATION.md`). Outline and sources:
 `docs/content/CRISC_BLUEPRINT.md`. Item standard:
@@ -20,7 +20,7 @@ it can be sold:
 |---|---|---|---|
 | Blueprint | `docs/content/CRISC_BLUEPRINT.md` | cert-blueprint-researcher | Done, 30 Oct 2026 |
 | Study notes | `data/crisc/notes/d{1..4}.json` + `_course.json` (strategy tips, cross-domain connections) | crisc-d{N}-domain-expert | All 43 outline sub-areas, 115 subtopics, Practice this concept links (`data/crisc/tools/sync_practice_ids.py`) |
-| Questions | `data/crisc/originals/d{1..4}.json` | crisc-d{N}-domain-expert | 875 reviewed (228 / 192 / 280 / 175) after round 25, each domain on its weight: a full 150-item mock and a short 50-item mock without repeats |
+| Questions | `data/crisc/originals/d{1..4}.json` | crisc-d{N}-domain-expert | 900 reviewed (234 / 198 / 288 / 180) after round 26, each domain on its weight: a full 150-item mock and a short 50-item mock without repeats |
 | Citation library | `data/crisc/originals/_framework_library.md` | domain experts | Started with the pilot |
 | Principles (mindset cards) | `data/crisc/mindset/principles.json` (schema `docs/content/PRINCIPLES_SCHEMA.md`) | isaca-mindset-coach | 19 principles; every item tagged |
 | Exam guide and final-review week | `data/crisc/exam/` (schema `docs/content/EXAM_GUIDE_SCHEMA.md`) | isaca-mindset-coach | Both done and reviewed |
@@ -999,6 +999,38 @@ no internal-audit key, and "Number of" on wrong options only.
 - Length floors: every domain needs exactly one key naturally longest by characters (D1 and D3 fail at 900 without one).
 - Opener tells to avoid on keys: Limit, Restrict, Isolation, Advise, Propos-.
 - Pause (on top of rounds 17–24): the round 25 lessons listed in `r25_cross_domain.json`.
+
+### Round 26 (12 Nov 2026): 25 items, bank 900
+
+Round 26 added 6 D1 (`crisc_d1_229`–`234`), 6 D2 (`crisc_d2_193`–`198`),
+8 D3 (`crisc_d3_281`–`288`) and 5 D4 (`crisc_d4_176`–`180`) items, taking the
+bank to 900, exactly on the outline weights. One AI item per domain: staff misusing
+an AI writing tool under sales pressure is conduct risk for the code of conduct's
+owner (d1_229); AI-written code stays in vulnerability scope, and a vendor's claim
+is not evidence (d2_195); an AI guardrail tested with attacks built from the
+firm's own support chats (d3_283); and an AI agent given its own identity with
+rights for its tasks (d4_177). Other highlights: a system owner is not the owner of
+the data on it (d1_230); a breach logged as an event while its risk stays open
+(d2_193); a BIA rates harm before insurance (d2_196); the first deterrent-control
+key in the bank (d3_282); a pass rate reported with the number of controls tested
+(d3_287); phishing lures of comparable difficulty (d4_179). The restrictive-word
+rule held: no option uses only, all, never, just, alone or limited to.
+
+| Stage | Result |
+|---|---|
+| Blind test | 25/25 (24 sure); review run twice after a container restart |
+| Standards audit | 0 HARD ERRORS, 6 PRECISION: no Ask on runners-up (d2_194, d2_196); same-opener pairs broken (d2_196, d3_281); "Share of" off a D3 key and a keyed "Number of" in its place (d3_287); a cue kept to stem facts (d3_284); a test input reworded as evidence (d3_283) |
+| Concept review | 0 HARD ERRORS, 7 PRECISION: duties "written into" supplier contracts (d1_234); loss-database and appetite notes narrowed (1B1, 1B4); the risk team validates an automated check (d3_286); agent logs show actions as the person's (4A7) |
+| Re-blind | 8/8, all sure; d3_287's stem now has the analyst find the coverage gap |
+| Cross-domain gate | 0 HARD ERRORS, 3 PRECISION: d1_090's profile cue kept to its trigger; one name for the conduct owner; d3_286's cue matches its explanation. Found the cause of a same-opener tell (below) |
+| Gates | All lints 0 errors; practice links in sync; app pack dry run 0 problems; `verify_repo.sh` passes; keys level; balance exactly 26/22/32/20; longest-key floors 15.3–16.1% |
+
+**Same-opener tell:** when two options open with the same verb, one of them is the key in 57.7% of items (D2 70.8%). The cause is the old rule "key a restricted opener only if a wrong option opens the same way": those pairs hold the key 16 of 16 times; all other pairs sit at 51.4%. From round 27 that exemption ends, and new same-opener pairs go on the runner-up plus an eliminated option, or on two eliminated options.
+
+**Next round (round 27, +25 to 925):** D1 +7, D2 +5, D3 +8, D4 +5 (241/203/296/185). Code placement, key letters, difficulty, AI angles and settings are in `r26_cross_domain.json`.
+- Length floors: D1, D2 and D3 each need one key naturally longest by characters; D4 needs none.
+- Owner shapes: one Eliminate pair, no split pairs (round 26 had six splits).
+- Words to watch: "beside" or "alongside" and "like … other" on wrong options only.
 
 **Open items:**
 - The `TO VERIFY` comment on the CRISC entry in `mobile/src/content/certifications.ts`
