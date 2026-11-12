@@ -1118,14 +1118,14 @@
           "definition": "Backups are protected copies of data and systems kept so they can be restored after loss, corruption or attack, including ransomware.",
           "why_it_matters": "Backups are often the last control against ransomware. If attackers reach or encrypt them, or restores fail, the organization faces long outages or pressure to pay.",
           "how_it_works": [
-            "A rule of thumb keeps three copies on two kinds of media, one offsite or offline; decryption keys sit apart from the main site but reachable.",
+            "The 3-2-1 rule keeps three copies on two kinds of media, one offsite or offline; decryption keys sit apart from the main site but reachable.",
             "Immutable or offline copies resist an attacker with administrator access; retention should outlast how long intruders may stay unnoticed.",
             "Backup frequency is set by the RPO and restore speed by the RTO; when backups miss the RPO, change the design; only the owner, weighing cost, may revisit the target.",
-            "In ransomware recovery, contain the attack, then verify backups are clean before restoring.",
+            "In ransomware recovery, contain, verify backups are clean, then restore; senior management approves beforehand who decides on paying ransoms, and on what criteria.",
             "Restores are tested, as a backup never restored is an untested assumption.",
             "A useful backup key control indicator is the share of test restores meeting the RTO and RPO, not of jobs completed."
           ],
-          "example": "A logistics firm's backups run nightly and the console shows green. Sam, the IT risk analyst, asks when a full restore was last tested: never. Sam records the dispatch system's RTO as unproven and proposes a restore test to the infrastructure manager.",
+          "example": "A logistics firm's nightly backups show green, but Sam, the risk analyst, finds no restore was ever tested. Sam records the dispatch RTO as unproven and proposes a restore test to the infrastructure manager.",
           "audit_focus": {
             "review": [
               "Inspect backup architecture for offline or immutable copies",
@@ -1274,7 +1274,7 @@
           "why_it_matters": "New technology can create advantage, exposure or both. The ISACA Glossary's enterprise risk management exploits risk as well as controlling it, to increase stakeholder value, so leaders weigh both instead of banning by reflex or adopting blind.",
           "how_it_works": [
             "Start from the objective it serves; known benefits belong in the business case, uncertain ones in the register as opportunities.",
-            "Identify new threats: weak integrations, vendor flaws, irreversible harms (stolen biometrics, public-blockchain personal data) and cloud paths to physical controls.",
+            "Identify new threats: weak integrations, vendor flaws, irreversible harms (stolen biometrics or signing keys, public-blockchain personal data) and cloud paths to physical controls.",
             "Check vendor claims, including patch support periods, through evidence, pilots and independent assessments; confirm lab figures by a trial in working conditions.",
             "Apps staff build on low-code platforms are inventoried with owners and data, not banned or ignored.",
             "Weigh exposure against appetite, propose conditions such as a pilot or exit terms, and reassess when the technology matures, use scales or an earlier rejection's reason changes.",
@@ -1291,14 +1291,14 @@
             },
             {
               "term": "Blockchain",
-              "meaning": "Tamper-evident shared records that show later changes to entries, not whether they were true; key management risk and errors that are hard to reverse."
+              "meaning": "Tamper-evident shared records that show later changes to entries, not whether they were true; stolen keys and errors are hard to reverse."
             },
             {
               "term": "Quantum computing",
               "meaning": "Future computing power that could break today's public-key encryption, so cryptography inventories and migration plans matter."
             }
           ],
-          "example": "A farm cooperative's operations head wants soil sensors linked to a cloud dashboard to cut fertilizer costs, while some board members want it blocked. Luca, the risk analyst, assesses the savings and the risks and proposes a limited pilot with conditions for the board.",
+          "example": "A farm cooperative's operations head wants soil sensors linked to a cloud dashboard to cut fertilizer costs, while some board members want it blocked. Luca, the risk analyst, assesses savings and risks and proposes a limited pilot with conditions for the board.",
           "audit_focus": {
             "review": [
               "Compare the technology's business case with its risk assessment",
@@ -1423,11 +1423,11 @@
             "CIA (confidentiality, integrity, availability) names what an event harms, shaping the impact rating; encryption mainly guards confidentiality, not integrity, which includes non-repudiation.",
             "Layered controls of different kinds mean one failure does not expose the asset; back an AI assistant's prompt filter with answer screening and retrieval limits.",
             "Each user, system and AI tool gets only the access its task needs, only while needed.",
-            "Critical tasks are split so no one can complete and hide a harmful action alone; otherwise compensating controls, such as independent review, reduce the risk.",
+            "Critical tasks are split so no one can complete and hide a harmful action alone; counting users with conflicting rights shows exposure; independent review compensates where splitting fails.",
             "Layers sharing a vendor, design or rule set can fail together, giving less depth than their number suggests; diversity costs effort, weighed against risk.",
             "Failing open keeps a service available; failing secure guards assets. With both costs known, the risk owner chooses, within any life-safety rule."
           ],
-          "example": "A credit union guards its member database mainly with a perimeter firewall; every staff account can read all records. Farah, the risk analyst, shows the chief operating officer one phished account would expose everything and proposes role-based access, database monitoring and multifactor authentication.",
+          "example": "A credit union guards its member database with a perimeter firewall; every staff account can read all records. Farah, the risk analyst, shows the chief operating officer one phished account would expose everything and proposes role-based access and monitoring.",
           "audit_focus": {
             "review": [
               "Compare access rights with job roles to find excess privilege",
@@ -1618,10 +1618,10 @@
             "Awareness reaches everyone with access, contractors included; role-based training gives deeper skills to people with specific risk duties, such as new risk owners learning the decisions their role holds.",
             "Training content follows the risk profile, such as payment fraud for finance staff, secure coding for developers or risk oversight for directors, in a language and format each audience follows.",
             "Reporting channels are easy and safe, and reports get visible follow-up.",
-            "Mistakes lead to process fixes first; discipline is for willful or repeated misconduct.",
+            "Mistakes lead to process fixes first; discipline is for willful or repeated misconduct; charging people who report a loss delays reports.",
             "A supplier's general course does not teach the organization's own policies, systems and reporting routes, so contractors with access join its program."
           ],
-          "example": "At a pharmaceutical distributor, help desk staff know that password resets skip identity checks at busy times, but they stopped reporting it after past reports led to blame for the shift. Rosa, the risk analyst, raises this with the service desk director as a culture risk and proposes a no-blame reporting channel with visible fixes.",
+          "example": "At a pharmaceutical distributor, help desk staff know password resets skip identity checks at busy times but stopped reporting it after past reports led to blame. Rosa, the risk analyst, raises this with the service desk director as a culture risk and proposes a no-blame reporting channel with visible fixes.",
           "audit_focus": {
             "review": [
               "Compare training content with the top risks for each role",
@@ -1891,7 +1891,7 @@
           "how_it_works": [
             "Check the lawful basis and purpose before using personal data to train or prompt an AI system.",
             "Minimize or de-identify data where the purpose allows, knowing de-identified data can sometimes be re-identified.",
-            "Assess AI outputs for privacy harm, such as inferences about health or exposure of training data.",
+            "Assess AI outputs for privacy harm, such as health inferences or exposed training data; the data owner decides a recorded erasure method for trained models, such as exclusion at retraining.",
             "Before transferring data abroad, confirm the legal mechanism and the protections at the destination.",
             "Contracts with AI and cloud providers set where data is stored, whether it trains their models and how it is deleted.",
             "Removing names is not enough when exact times, places or rare details remain, because those records can be linked back to the people involved."
