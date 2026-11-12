@@ -1119,19 +1119,20 @@
             "crisc_d4_071",
             "crisc_d4_097",
             "crisc_d4_117",
-            "crisc_d4_166"
+            "crisc_d4_166",
+            "crisc_d4_176"
           ],
-          "definition": "Backups are protected copies of data and systems kept so they can be restored after loss, corruption or attack, including ransomware.",
-          "why_it_matters": "Backups are often the last control against ransomware. If attackers reach or encrypt them, or restores fail, the organization faces long outages or pressure to pay.",
+          "definition": "Backups are protected copies of data and systems, kept for restoring after loss, corruption or attack, including ransomware.",
+          "why_it_matters": "Backups are often the last defense against ransomware; if attackers reach them or restores fail, outages run long and pressure to pay grows.",
           "how_it_works": [
             "The 3-2-1 rule keeps three copies on two kinds of media, one offsite or offline; decryption keys sit apart from the main site but reachable.",
             "Immutable or offline copies resist an attacker with administrator access; retention should outlast how long intruders may stay unnoticed.",
             "Backup frequency is set by the RPO and restore speed by the RTO; when backups miss the RPO, change the design; only the owner, weighing cost, may revisit the target.",
             "In ransomware recovery, contain, verify backups are clean, then restore; senior management approves beforehand who decides on paying ransoms, and on what criteria.",
-            "Restores are tested, as a backup never restored is an untested assumption.",
+            "Restores are tested, as a backup never restored is an untested assumption; new systems get backups before going live.",
             "A useful backup key control indicator is the share of test restores meeting the RTO and RPO, not of jobs completed."
           ],
-          "example": "A logistics firm's nightly backups show green, but Sam, the risk analyst, finds no restore was ever tested. Sam records the dispatch RTO as unproven and proposes a restore test to the infrastructure manager.",
+          "example": "A logistics firm's nightly backups show green, but Sam, the risk analyst, finds no restore was ever tested, records the dispatch RTO as unproven and proposes a restore test to the infrastructure manager.",
           "audit_focus": {
             "review": [
               "Inspect backup architecture for offline or immutable copies",
@@ -1350,7 +1351,8 @@
           "legacy_ids": [],
           "practice_ids": [
             "crisc_d4_014",
-            "crisc_d4_048"
+            "crisc_d4_048",
+            "crisc_d4_177"
           ],
           "definition": "AI adoption risk covers the threats and opportunities of using artificial intelligence (AI) and machine learning in business processes, from vendor tools to in-house models.",
           "why_it_matters": "AI can speed decisions and cut costs, but errors, bias, data leakage and opaque behavior can harm customers and breach law at scale. The risk sits with the business process that relies on the AI.",
@@ -1359,6 +1361,7 @@
             "Assessment covers data, accuracy, bias, security threats such as prompt injection, privacy and legal duties.",
             "Higher-impact uses need human oversight, such as review of AI decisions before they affect people.",
             "Third-party AI is assessed like any supplier, with contract terms on data use and model changes.",
+            "An AI agent acting through a person's login inherits that person's rights, and logs show its actions as the person's; give it its own identity with rights for its tasks.",
             "The NIST AI Risk Management Framework (AI RMF) structures the work in four functions: govern, map, measure and manage."
           ],
           "example": "A bank's contact center wants a generative AI assistant to draft replies to customers. Mina, the risk analyst, asks the contact center director, as process owner, to define what the assistant may answer, then assesses wrong-answer rates, prompt injection and what customer data the vendor keeps. Mina presents the findings with options for agent review before replies are sent.",
@@ -1423,19 +1426,20 @@
             "crisc_d4_118",
             "crisc_d4_155",
             "crisc_d4_158",
-            "crisc_d4_168"
+            "crisc_d4_168",
+            "crisc_d4_178"
           ],
-          "definition": "Core security principles are the design rules behind controls: protect confidentiality, integrity and availability, layer defenses, grant least privilege and separate duties.",
+          "definition": "Core security principles are the design rules behind controls: protect confidentiality, integrity and availability, layer defenses, grant least privilege, separate duties.",
           "why_it_matters": "These principles let a practitioner judge controls without knowing every product; one control guarding everything signals concentrated risk.",
           "how_it_works": [
             "CIA (confidentiality, integrity, availability) names what an event harms, shaping the impact rating; encryption mainly guards confidentiality, not integrity, which includes non-repudiation.",
             "Layered controls of different kinds mean one failure does not expose the asset; back an AI assistant's prompt filter with answer screening and retrieval limits.",
-            "Each user, system and AI tool gets only the access its task needs, only while needed.",
+            "Each user, system and AI tool gets only the access its task needs, only while needed; a secret address is not access control.",
             "Critical tasks are split so no one can complete and hide a harmful action alone; counting users with conflicting rights shows exposure; independent review compensates where splitting fails.",
             "Layers sharing a vendor, design or rule set can fail together, giving less depth than their number suggests; diversity costs effort, weighed against risk.",
             "Failing open keeps a service available; failing secure guards assets. With both costs known, the risk owner chooses, within any life-safety rule."
           ],
-          "example": "A credit union guards its member database with a perimeter firewall; every staff account can read all records. Farah, the risk analyst, shows the chief operating officer one phished account would expose everything and proposes role-based access and monitoring.",
+          "example": "A credit union guards its member database with a perimeter firewall; every staff account reads all records. Farah, the risk analyst, shows the chief operating officer one phished account exposes everything and proposes role-based access and monitoring.",
           "audit_focus": {
             "review": [
               "Compare access rights with job roles to find excess privilege",
@@ -1470,7 +1474,7 @@
             },
             {
               "term": "Need-to-know",
-              "definition": "Access to specific information only when a current task needs it, even if role or clearance allows more; least privilege limits actions once there."
+              "definition": "Access to information only when a current task needs it, even if role or clearance allows more; least privilege limits actions."
             },
             {
               "term": "Just-in-time access",
@@ -1675,14 +1679,15 @@
             "crisc_d4_099",
             "crisc_d4_109",
             "crisc_d4_140",
-            "crisc_d4_159"
+            "crisc_d4_159",
+            "crisc_d4_179"
           ],
           "definition": "Measuring awareness means tracking whether behavior changes after training, using measures such as reporting rates and simulation results, not just course completion.",
           "why_it_matters": "Completion rates show who clicked through a course, not who acts safely. Behavior measures show whether training reduces risk and where to focus, including new risks such as staff pasting data into public AI tools.",
           "how_it_works": [
             "Outcome measures include phishing report rates, repeat-click rates, policy exceptions, incidents caused by error and the share of independently detected mistakes that staff reported themselves.",
             "Fair simulations are announced as a program but not by date, avoid cruel lures, coach rather than shame and report trends, not names; random timing keeps results honest.",
-            "Results are compared over time and by role to target follow-up; awareness that fades between yearly courses needs activities through the year.",
+            "Results are compared over time on fresh lures of similar difficulty, and by role; awareness fading between yearly courses needs activities all year.",
             "Shadow AI, staff using unapproved AI tools, is an awareness topic: what data may go where and which tools are approved.",
             "Awareness works best paired with an approved alternative; bans without options push use underground.",
             "Awareness gives concrete examples of restricted data, because staff apply a rule like 'non-confidential only' through their own idea of confidential."
@@ -1749,13 +1754,14 @@
             "crisc_d4_120",
             "crisc_d4_142",
             "crisc_d4_150",
-            "crisc_d4_160"
+            "crisc_d4_160",
+            "crisc_d4_180"
           ],
           "definition": "Privacy principles are rules for fair handling of personal data, including purpose limitation, data minimization, a lawful basis such as consent, transparency and individual rights.",
           "why_it_matters": "Privacy harm affects people and brings regulatory, legal and trust consequences. A secure system can still breach privacy by collecting too much or using data for an undisclosed purpose.",
           "how_it_works": [
             "The purpose is decided and stated before collection, and data is not used later in ways incompatible with it.",
-            "Only data the purpose needs is collected, kept or disclosed; old records stay personal data at least while the people in them live.",
+            "Only data the purpose needs is collected, kept or disclosed, staff included; old records stay personal data at least while their subjects live.",
             "People are told what happens to their data, and the organization has a valid basis; consent counts only if people can refuse an unrelated use and still be served.",
             "People can access, correct or delete their data as law allows, and challenge data used in decisions about them.",
             "Rights requests can be met only when every system holding a person's data is known, analytics copies and vendor tools included.",

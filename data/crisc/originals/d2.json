@@ -7110,6 +7110,228 @@
       ],
       "_provenance": "Authored from concept: notes 2B4.3 (Choosing a Method: Data, Decisions, FAIR and Monte Carlo: event trees run forward from one event, fault trees back from one outcome). Round 25, 12 Nov 2026: original scenario (a sewage treatment operator's risk analyst must show every way a pumping-station power cut could end as its standby generator, high-level alarm and overflow tank work or fail) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Round 25 asks: the 2B4 item (application); sewage treatment operator setting (utilities); key C; a lone owner on eliminated D (the plant owner's ratings), wrong; no lens word in the key; key not the longest by characters (44 against 45 to 49) nor strictly the shortest by words (9 against 9); a 'Which technique' stem, not 'Which of the following'. Neighbours checked (stems, options, key concepts, explanations and Exam cues, all codes): crisc_d2_164 (an attack tree for an attacker's goal; its key overlaps B and its Exam cue points to attack trees for an attacker's routes to a goal, but this stem asks how a power cut could end, whatever caused it, which an attack tree does not trace; the paused attack-tree-versus-STRIDE family is not used as key or runner-up), crisc_d2_049 (an attack tree's open paths), crisc_d2_112 (two power scenarios each assuming the other works; the paused joint-failure family, not used: this item is about choosing a technique), crisc_d2_083, crisc_d2_115 and crisc_d2_129 (Monte Carlo inputs and outputs), crisc_d3_047 (a heat map is a snapshot; consistent with D's explanation), CISA d2_080 (FAIR inputs) and d4_189 (restore-time chains), AAIA and CC (no event-tree or fault-tree item); no mirror found. Each other new wrong option scored under 0.30 against every older Exam cue in all codes. Review 12 Nov 2026 (round 25 concept and blind review): A and C now name the same subject ('for the pumping-station power cut'), so the item tests which tree runs forward rather than matching the stem's direction words (blind note 1); wrong explanation A, the Final two and the correct explanation's runner-up sentence follow. A 46 characters, C 47 (ties B), D 49 still longest; A and C 8 words, so the key is not strictly shortest by words.",
       "style_version": 2
+    },
+    {
+      "id": "crisc_d2_193",
+      "domain": 2,
+      "subtopic": "2A1 Risk events. Breach entry closed at an animal shelter",
+      "principle_id": "rate-on-common-terms",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "An animal shelter's register lists 'Donor database breach, 12 March' as a risk, closed by IT once the breach was contained. Which of the following should the risk analyst recommend as BEST?",
+      "options": {
+        "A": "Reopen the entry until the security fix is tested",
+        "B": "Log the breach as an event under an open data-breach risk",
+        "C": "Keep the closed entry as the shelter's record of the breach",
+        "D": "Add the breach's costs to the entry and leave it closed"
+      },
+      "correct": "B",
+      "key_concept": "A register entry describes what could happen; a past event is logged as evidence against it, and containing it closes the incident, not the risk.",
+      "pre_read": "Ask whether the entry describes something that could happen or something that already did.",
+      "correct_explanation": "The entry records something that happened, not something that could happen, so closing it took the donor-data risk off the register. The breach belongs in the event log as evidence against an open data-breach risk, which stays open while a breach can recur. Reopening the entry until the fix is tested is the runner-up: it still describes the past event and would close again once the test passes, leaving the risk unrecorded.",
+      "wrong_explanations": {
+        "A": "Reopening keeps a past event in the risk's place; once the fix test passes, it would close again and the breach risk would leave the register.",
+        "C": "A closed entry for the breach leaves the register without the risk that it happens again; the event belongs in the event log.",
+        "D": "Costs are useful event data, but adding them to the entry and leaving it closed still leaves no open risk describing what could happen to donor data."
+      },
+      "tips": [
+        "Eliminate: C keeps a past event standing in for the risk, and D adds the event's costs to an entry that still describes the past.",
+        "Final two: B beats A because a risk stays open while it can recur; reopening the event entry until the fix is tested would close the risk again once the test passes.",
+        "Exam cue: a register entry describes what could happen; an event that happened is evidence logged against it, and containing the event closes the incident, not the risk."
+      ],
+      "framework_ref": "ISACA Glossary (risk register); ISACA Glossary (loss event); NIST SP 800-30 Rev. 1 Section 3.4 (Maintaining the Risk Assessment)",
+      "related_concepts": [
+        "Risk events",
+        "Risk register",
+        "Incident versus risk"
+      ],
+      "_provenance": "Authored from concept: notes 2A1.1 (Loss Events, Incidents and Near Misses: bullet reworded in round 26: fixing or containing an event closes the incident, not the risk entry, which names what could happen). Round 26, 12 Nov 2026: original scenario (an animal shelter's register lists 'Donor database breach, 12 March' as a risk, closed by IT once the breach was contained) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Round 26 asks: the 2A1 item and the batch's one foundational item; one of the batch's three 'Which of the following' stems; animal shelter setting (nonprofit); key B in the planned order B A D C A D; no owner option; no lens word in any option; no restrictive word (only, all, never, limited to, alone, just) in any option; key not the longest by characters (52 against 49 to 59) nor strictly the shortest by words (11 against 9 to 11). Neighbours checked (stems, options, key concepts, explanations and Exam cues, all codes): crisc_d2_001 (a near miss weighed in its scenario after a same-day fix; consistent), crisc_d2_022 (closing each ticket is not closing the risk; consistent), crisc_d2_175 (a risk stays in the register while its controls work; its entry closes when the risk itself ends; consistent), crisc_d2_118 (the register holds risks, not raw scanner findings, which link to scenarios; the parallel lesson for vulnerabilities, so this item is kept to events), crisc_d2_094 (entries naming a missing control are restated as event and harm), crisc_d2_013 (an entry closed on an approved tool), crisc_d2_038 (entries close with the risk owners' approval when the risk ends; consistent, as this risk has not ended), crisc_d2_072 (key 0.24 against its wrong B; a different lesson, the scenario an event is linked to), crisc_d3_001 (key 0.26 against its wrong B, a transferred breach risk leaving the register; consistent: the risk stays while the breach can happen), CC cc_d1_056 and cc_d2_023 (closure and review routing for register entries; no mirror), CISA d1_192 and d4_260 and AAIA (no item logs a past event against an open risk); no mirror found. Runner-up check: A (reopen until the fix is tested); closest older cues in lesson are crisc_d2_175 (entries close when the risk ends) and crisc_d2_013 (an entry is not closed on a planned control); the stem fact that rules A out is the entry's dated name, which describes a past event, so reopening it would still leave no open risk once the test passes. Each new wrong option was run against every older Exam cue in all codes (TF-IDF); none scored above 0.34, and none of those cues pulls toward it on meaning. Audit 12 Nov 2026 (round 26 standards audit): no content change. Checked against crisc_d2_038 (entries close with the risk owners' approval when the risk ends; consistent, this risk has not ended) and crisc_d2_001 (a contained near miss is weighed in its scenario's rating; consistent, logging the event against the open risk is what makes that reassessment possible). Review 12 Nov 2026 (round 26 concept and blind review): key B now reads 'Log the breach as an event under an open data-breach risk' so the open entry is clearly a risk, not a second 'breach' entry (blind fix 5). The blind wording 'donor-data risk' was not used: 'donor' would then appear only in the stem ('Donor database breach') and the key. B is 57 characters, 11 words: C (59) stays longest; no word count is strictly highest. Correct explanation says 'open data-breach risk' to match; tips unchanged.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d2_194",
+      "domain": 2,
+      "subtopic": "2A2 Threat modeling and threat landscape. Shared logins at a student loan servicer",
+      "principle_id": "analyze-before-acting",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A student loan servicer's portal threat model covers logins stolen by hackers, but debt-relief firms now sign in with logins borrowers gave them and change borrowers' contact details. What should the risk analyst do FIRST?",
+      "options": {
+        "A": "Add the debt-relief firms to the portal's threat model",
+        "B": "Recommend multifactor sign-in to the portal owner",
+        "C": "Have the portal owner re-rate the stolen-login threat",
+        "D": "Record every firm sign-in as access the borrowers approved"
+      },
+      "correct": "A",
+      "key_concept": "Third parties signing in with logins customers hand them are a threat source of their own; model them before anyone chooses controls.",
+      "pre_read": "Ask whether the existing threat model covers the actor now misusing the portal, and what has to come before any fix.",
+      "correct_explanation": "The model assumes a misused login was stolen, so firms signing in with logins borrowers handed over are a threat source it does not cover. Adding them, with the harm they cause, lets the risk be rated and controls chosen to fit. Multifactor sign-in is the runner-up: it picks a control before the new threat is analyzed, and a borrower willing to hand over a login can hand over a code too.",
+      "wrong_explanations": {
+        "B": "Multifactor sign-in picks a control before the new threat is analyzed, and borrowers who share logins with the firms can share the codes too.",
+        "C": "The firms did not steal the logins, so the stolen-login rating does not reflect them; their contact changes are a different threat event.",
+        "D": "Borrowers agreed to the sign-ins, not to missing the servicer's notices; recording the use as approved leaves that harm unrated."
+      },
+      "tips": [
+        "Eliminate: C has the owner re-rate the wrong threat, since no login was stolen, and D treats a borrower's consent to sign in as consent to the harm that follows.",
+        "Final two: A beats B because the new threat source is modeled before the owner picks controls; a borrower who shares a login can share a code too.",
+        "Exam cue: when someone misuses valid access in a way the threat model never assumed, add that source to the model before anyone picks controls."
+      ],
+      "framework_ref": "NIST SP 800-30 Rev. 1 Appendix D Table D-2 (Taxonomy of Threat Sources: adversarial, accidental, structural and environmental); NIST IR 8286A Rev. 1 Section 2.2.2.2 (Reducing Unwanted Bias in Threat Considerations: consider a broad array of threat sources and avoid dismissing threats prematurely)",
+      "related_concepts": [
+        "Threat sources",
+        "Threat modeling",
+        "Credential sharing"
+      ],
+      "_provenance": "Authored from concept: notes 2A2.1 (Threat Sources and Threat Events: one source can cause many events; bullet extended in round 26: third parties using logins customers hand them are threat sources too). Round 26, 12 Nov 2026: original scenario (a student loan servicer's portal threat model covers logins stolen by hackers, but debt-relief firms sign in with logins borrowers gave them and change borrowers' contact details) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Round 26 asks: the 2A2 item (application); student loan servicer setting (finance); key A; an owner pair split as runner-up plus eliminated (B and C name the portal owner; the key names none), so the batch's final two stays even; the D2 each/every/any word on eliminated D ('every'), key carrying none; no lens word in the key (the lens word 'owner' sits on runner-up B and eliminated C); key not the longest by characters (54 against 51 to 58) nor strictly the shortest by words (9 against 8 to 9). Neighbours checked: crisc_d2_066 (missing staff error among threat sources; a different gap), crisc_d2_024 (a new design gets a threat model; consistent), crisc_d2_157 (paused family, extending a model along an asset's path through suppliers; not used: here the actor is new, not the path), crisc_d2_109 (its cue re-rates the scenario that credits a beaten control before adding entries; distinguished in C's explanation: no login was stolen, so the stolen-login rating does not reflect the firms, and the key adds a threat source to the model, not a register entry), crisc_d2_023 and crisc_d2_177 (source, event and vulnerability kept apart; consistent), crisc_d2_049 (open attack paths analyzed with the owner before controls), CC cc_d1_003, cc_d3_108, cc_d3_159 and crisc_d1_166 (shared logins inside an organization; a different lesson), CISA and AAIA (no third-party credential-sharing threat item); no mirror found. Runner-up check: B (the owner requires multifactor sign-in); closest older cues in lesson are crisc_d2_004 (assess a new AI threat with its owner before switching features off) and crisc_d2_049 (analyze open paths before choosing controls); the stem facts that rule B out are that the model does not yet cover the firms and that borrowers hand their logins over, so they could hand over a code as well. Each new wrong option was run against every older Exam cue in all codes (TF-IDF); none scored above 0.34, and none of those cues pulls toward it on meaning. Audit 12 Nov 2026 (round 26 standards audit): runner-up B no longer opens 'Ask' (the brief keeps Have/Ask wrong options on eliminated options, never the runner-up); it now reads 'Recommend multifactor sign-in to the portal owner' (49 characters, 7 words; key A 54/9 stays neither longest nor shortest). The owner pair (B runner-up, C eliminated) is unchanged; explanations unchanged. Review 12 Nov 2026 (round 26 concept and blind review): wrong C now reads 'Have the portal owner re-rate the stolen-login threat' (53 characters, 8 words; neither longest nor shortest) so 'threat' from the stem's 'threat model' is no longer echoed by the key alone (blind fix 2); the Eliminate tip follows ('re-rate the wrong threat'). Runner-up B ('Recommend multifactor sign-in to the portal owner', from the standards audit) unchanged; owner pair B runner-up + C eliminated unchanged; wrong C explanation still fits.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d2_195",
+      "domain": 2,
+      "subtopic": "2A3 Vulnerability management. Code from an AI coding assistant",
+      "principle_id": "evidence-before-credit",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An identity verification provider's development lead wants code from its AI coding assistant kept out of code scanning, as the vendor says the assistant writes secure code. What should the risk analyst recommend as BEST?",
+      "options": {
+        "A": "Have the product owner approve the assistant for this service",
+        "B": "Scan a sample of the assistant's code to test the claim",
+        "C": "Add a vendor warranty that the assistant's code is secure",
+        "D": "Scan and review the assistant's code like the team's other code"
+      },
+      "correct": "D",
+      "key_concept": "Code an AI assistant writes stays in vulnerability scope and is scanned and reviewed like other code; a vendor's claim is not evidence.",
+      "pre_read": "Ask whether a claim about the tool changes which code needs scanning, and what a sample would leave out.",
+      "correct_explanation": "Code an AI assistant writes can carry flaws like any other, so it stays in the provider's code scanning and review, the routine that finds weaknesses whoever wrote the code. The vendor's statement is a claim, not evidence about this code. Scanning a sample is the runner-up: it turns routine scanning into a test of the claim, and whatever the sample shows, the unsampled code would still go unscanned.",
+      "wrong_explanations": {
+        "A": "Approving the tool settles who may use it, not whether its code has flaws; the code would still need the scanning the lead wants to skip.",
+        "B": "A sample tests the vendor's claim, but the code is in scope whatever the sample shows; the unsampled code would still skip routine scanning.",
+        "C": "A warranty may shift some cost to the vendor, but it finds no weakness in this code, and the service's flaws would still go unscanned."
+      },
+      "tips": [
+        "Eliminate: A approves the tool rather than examining its code, and C buys a promise about the code instead of finding its weaknesses.",
+        "Final two: D beats B because the code is in scope whatever a sample shows; sampling would leave the rest of the assistant's code out of routine scanning.",
+        "Exam cue: AI-written code stays in vulnerability scope; scan and review it like the team's other code, and treat a vendor's 'secure code' as a claim, not evidence."
+      ],
+      "framework_ref": "NIST SP 800-218 Version 1.1 PW.7 (Review and/or Analyze Human-Readable Code to Identify Vulnerabilities: code review or analysis covers source code and scripts, third-party code and in-house modules alike); NIST AI 600-1 MS-2.6-004 (review generative AI system outputs for validity and safety, including review of generated code); NIST CSF 2.0 ID.RA-01 (vulnerabilities in assets are identified, validated and recorded)",
+      "related_concepts": [
+        "AI-generated code",
+        "Vulnerability identification",
+        "Code review and analysis"
+      ],
+      "_provenance": "Authored from concept: notes 2A3.1 (Vulnerabilities in People, Process and Technology; rule extended in round 26: code an AI assistant writes is scanned and reviewed like any other). Round 26, 12 Nov 2026: original scenario (an identity verification provider's development lead wants code from its AI coding assistant kept out of code scanning, as the vendor says the assistant writes secure code) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Round 26 asks: the D2 AI item, in 2A3, on the planned angle (code an AI assistant writes is in vulnerability scope, scanned and reviewed like any code; a vendor's 'writes secure code' is a claim, not evidence); application; identity verification provider setting (technology); key D; the batch's floor key, naturally longest by characters (63 against 55 to 61, two over the next option), not strictly the wordiest (11, tied with B) and not the shortest; the batch's one lone owner, on eliminated A (the product owner approving the tool), wrong; the key opens 'Scan', so the 'Scan' wrong option B is allowed (a wrong option may open a rarely keyed word only when the key opens the same way); no lens word in the key; no restrictive word in any option. Not used, per the plan: crisc_d4_116 (a planted package the assistant names; its wrong B, code owner review of AI-written changes, overlaps this key at 0.52; distinguished there by the malware sitting inside the package, which review of written lines never opens, and here by the weaknesses sitting in the code itself), crisc_d2_183 (model files and ML libraries as software to scan; consistent) and crisc_d2_077 (an assistant searching with users' access). The vendor-benchmark runner-up was dropped while drafting so this item does not share D3's round 26 AI shape (a guardrail tested on the firm's own prompts rather than the vendor's benchmark). Neighbours checked: crisc_d2_105 (a sample verifies disputed scan findings before rating; distinguished in B's explanation: here the code is in scope whatever a sample shows, so the sample would replace routine scanning rather than validate data), crisc_d2_178 (a SaaS customer's own settings stay in scope), crisc_d4_130 (its wrong C scans pages for flaws tracking code adds; a privacy lesson), mirrors CC cc_d5_088 (AI-written code gets the same static analysis; consistent), CISA d3_123, d4_107 and d3_074 (generated code under the same review and testing; consistent, auditor lens), AAIA aaia_d1_080 (meet a vendor's claim with this model's own test results; consistent) and aaia_d3_072. Runner-up check: B (scan a sample to test the claim); closest older cues in lesson are crisc_d2_105 (check disputed data with a sample first) and crisc_d2_183 (AI parts are scanned like other software); the stem fact that rules B out is that the lead wants the code kept out of routine scanning, where it belongs whatever the vendor claims. Each new wrong option was run against every older Exam cue in all codes (TF-IDF); none scored above 0.34, and none of those cues pulls toward it on meaning. Audit 12 Nov 2026 (round 26 standards audit): no content change. The key and wrong B both open 'Scan', which the brief allows for a rarely keyed opener when the key opens the same way; B keeps 'Scan' because rewording it would leave the stem's 'scanning' echoed in the key alone. Key D stays the D2 floor key (63 characters against 61).",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d2_196",
+      "domain": 2,
+      "subtopic": "2B2 Business impact analysis (BIA). Impact netted of insurance",
+      "principle_id": "objectives-first",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A geothermal plant operator's BIA rates a turbine-control outage's impact net of what its business interruption insurance would repay. Which of the following should the risk analyst recommend as BEST?",
+      "options": {
+        "A": "Confirm with the insurer that the policy covers such outages",
+        "B": "Ask the generation owner to lower the system's recovery priority",
+        "C": "Have the generation owner rate the impact before insurance",
+        "D": "Set the system's RTO to the insurance waiting period"
+      },
+      "correct": "C",
+      "key_concept": "A BIA rates an outage's harm before insurance; a payout repays part of the cost later and is a response, not a smaller impact.",
+      "pre_read": "Ask what a BIA measures, and whether a payout that comes later changes the harm the outage does.",
+      "correct_explanation": "A BIA measures the harm an outage does and how fast it grows, which sets recovery priority. Insurance repays part of the cost later; it shortens no outage and restores no lost trust, so netting it out understates the harm and the urgency of recovery. The generation owner should rate impact before insurance, with the cover treated as a response. Confirming the policy is the runner-up: it checks the payout but leaves the impact understated.",
+      "wrong_explanations": {
+        "A": "Confirming the cover checks the payout, but the BIA would still rate impact net of insurance and understate how urgently the system must recover.",
+        "B": "Lowering the priority acts on the understated figure; an insured outage still halts generation for as long as the system is down.",
+        "D": "A waiting period sets when the insurer starts paying, not how long generation can be down; the RTO comes from the business's tolerance in the BIA."
+      },
+      "tips": [
+        "Eliminate: B lowers recovery priority on an understated figure, and D takes the RTO from the insurance terms instead of the business's tolerance.",
+        "Final two: C beats A because the BIA rates the harm before any payout; confirming the policy checks the cover but leaves the impact understated.",
+        "Exam cue: a BIA measures what an outage does to the business; insurance and other transfers are responses, recorded beside the impact, not netted out of it."
+      ],
+      "framework_ref": "ISACA Glossary (business impact analysis); NIST SP 800-34 Rev. 1 Section 3.2 (Conduct the Business Impact Analysis: recovery criticality rests on the impact of a system disruption and the downtime the process can tolerate); NIST IR 8286 Rev. 1 Section 3.5 Table 2 (Response types for negative cybersecurity risks: transfer shares a portion of the consequences, such as through cybersecurity insurance)",
+      "related_concepts": [
+        "Business impact analysis",
+        "Risk transfer",
+        "Recovery priority"
+      ],
+      "_provenance": "Authored from concept: notes 2B2.1 (BIA Purpose, Dependencies and AI Systems: a BIA measures impact over time and sets recovery priorities; bullet reworded in round 26: its ranks reflect outage harm before insurance). Round 26, 12 Nov 2026: original scenario (a geothermal plant operator's BIA rates a turbine-control outage's impact net of what its business interruption insurance would repay) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Round 26 asks: the 2B2 item (application); one of the batch's three 'Which of the following' stems; geothermal plant operator setting (utilities); key C; an owner pair split as key plus eliminated (B and C name the generation owner), so the batch keys an owner in one of its two pair items and its final two stays even (one item where only the key names an owner, one where only the runner-up does); the lens word 'owner' sits on eliminated B too; key not the longest by characters (58 against 52 to 62) nor strictly the shortest by words (9 against 9 to 10). Not the paused BIA families (intervals and harm over time, peak impact, revision triggers, timing for a new system, RTO plus catch-up within the MTO). Neighbours checked: crisc_d2_091 (an event's loss recorded before insurance, with the recovery shown; consistent), crisc_d1_103 (a policy whose condition is unmet is rated as if it would not pay; consistent), crisc_d3_086 and crisc_d1_012 (insurance shares part of the financial loss; consistent, and the key's 0.28 overlap with crisc_d1_012 D is a different question, the cause of a rating gap), crisc_d1_175 (insurance limits are not capacity), crisc_d2_012 (an RTO set by IT or a vendor goes to the process owner; consistent with D's explanation), crisc_d2_124 (an RTO revisited for a manual workaround), crisc_d2_011 and crisc_d2_097 (what a BIA does and does not measure; consistent), CISA d4_253 (legal and regulatory consequences in BIA impact criteria) and d4_120, AAIA and CC (no item nets insurance out of a BIA); no mirror found. Runner-up check: A (ask the insurer to confirm the cover); closest older cues in lesson are crisc_d1_103 (rate as if an uncertain policy would not pay) and crisc_d2_091 (record the loss before insurance); the stem fact that rules A out is that the BIA nets the payout out of impact, which stays wrong whether or not the cover holds. Each new wrong option was run against every older Exam cue in all codes (TF-IDF); none scored above 0.34, and none of those cues pulls toward it on meaning. Audit 12 Nov 2026 (round 26 standards audit): runner-up A no longer opens 'Ask' (Have/Ask stays off runner-ups) and reads 'Confirm with the insurer that the policy covers such outages'; eliminated B now opens 'Ask the generation owner to lower ...' so B and the key no longer share the 'Have the generation owner' opener (a same-opener pair held the key in 18 of 25 D2 items before this fix). Key C (58 characters, 9 words) is neither longest nor strictly shortest; owner pair B and C unchanged; explanations unchanged.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d2_197",
+      "domain": 2,
+      "subtopic": "2B4 Risk analysis methodologies. Harm with no credible price",
+      "principle_id": "report-for-the-decision",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "A tofu maker's ALE for a chilling-line control fault counts recall costs but not illness among consumers, which the firm cannot credibly price. Which of the following should the risk analyst recommend as BEST?",
+      "options": {
+        "A": "Rate illness on the impact scale beside the ALE",
+        "B": "Exclude illness until a reliable price can be set",
+        "C": "Price illness cases at the average court award",
+        "D": "Raise the ALE by a margin to allow for illness"
+      },
+      "correct": "A",
+      "key_concept": "Harm that cannot be credibly priced, such as illness, is rated on the impact scale beside the ALE, not dropped or given an invented price.",
+      "pre_read": "Ask how a real harm stays in the analysis when no reliable money figure exists for it.",
+      "correct_explanation": "An ALE that counts recall costs but leaves out consumers' illness understates the risk, yet the firm has no credible price for that harm. Rating the illness on the enterprise's impact scale beside the ALE keeps it in front of decision makers without false precision. Pricing cases at an average court award is the runner-up: it yields a number, but one that reflects lawsuits rather than the harm, with precision the firm's data cannot support.",
+      "wrong_explanations": {
+        "B": "Leaving illness out until it can be priced hides a real harm from the decision; a rating on the impact scale can carry it now.",
+        "C": "A court-award average prices lawsuits, not the illness itself, and puts a precise-looking figure on harm the firm cannot credibly price.",
+        "D": "An arbitrary margin folds a guess into the ALE and still does not show decision makers the illness on its own terms."
+      },
+      "tips": [
+        "Eliminate: B drops a real harm because it is hard to price, and D folds an unsupported guess into the ALE, which still shows nothing of the illness itself.",
+        "Final two: A beats C because the stem says no credible price exists; a court-award average adds false precision, while the impact scale shows the harm plainly.",
+        "Exam cue: when part of the impact cannot be credibly priced, keep it in the analysis on the qualitative scale beside the money figure; methods can be combined."
+      ],
+      "framework_ref": "NIST SP 800-30 Rev. 1 Appendix H Table H-2 (Examples of Adverse Impacts: harm to operations, assets, individuals, other organizations and the Nation); NIST SP 800-30 Rev. 1 Section 2.3.2 (Assessment Approaches: subjective inputs or high uncertainty lessen quantitative rigor)",
+      "related_concepts": [
+        "Quantitative and qualitative analysis",
+        "Annualized loss expectancy (ALE)",
+        "Harm to individuals"
+      ],
+      "_provenance": "Authored from concept: notes 2B4.3 (Choosing a Method: Data, Decisions, FAIR and Monte Carlo; bullet extended in round 26: harm with no credible price, such as illness, is rated beside the money figure). Round 26, 12 Nov 2026: original scenario (a tofu maker's ALE for a chilling-line control fault counts recall costs but not illness among consumers, which the firm cannot credibly price) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Round 26 asks: the 2B4 item (analysis); one of the batch's three 'Which of the following' stems; tofu maker setting (food and drink); key A; no owner option; no lens word in any option; no each/every/any and no restrictive word in any option; key not the longest by characters (47 against 46 to 49) nor strictly the shortest by words (9 against 8 to 10). The first draft (summing ordinal heat-map scores) was dropped because crisc_d3_079 already teaches it. Neighbours checked: crisc_d2_078 (impact rated high from harm to the people served; consistent), crisc_d1_120 (an impact scale that measures only money is fixed through its approvers; consistent, as this key rates the harm on the enterprise scale rather than a separate one, and its wrong C, a separate safety scale, overlaps this key at 0.27 only in wording), crisc_d2_017 (ranges or honest qualitative estimates over exact-looking numbers; consistent), crisc_d2_040 and crisc_d2_153 (methods combine; quantify where data supports it; consistent), crisc_d2_099 (fines as secondary losses weighted by how often they follow), crisc_d2_120 (single loss shown beside the ALE), crisc_d2_084 (a recorded basis for ratings), CISA d4_253, AAIA and CC (no item rates unpriced harm beside an ALE); no mirror found. Runner-up check: C (price cases at the average court award); closest older cues in lesson are crisc_d2_017 (precision must match the inputs) and crisc_d2_099 (secondary losses such as fines, weighted by how often they follow); the stem fact that rules C out is that the firm cannot credibly price illness, so a court-award figure would price lawsuits, not the harm, with false precision. Each new wrong option was run against every older Exam cue in all codes (TF-IDF); none scored above 0.34, and none of those cues pulls toward it on meaning.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d2_198",
+      "domain": 2,
+      "subtopic": "2B5 Inherent and residual risk. Inherent ratings at the top of the scale",
+      "principle_id": "residual-counts-working-controls",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "Before designing controls for a fastener maker's new plant, its engineers rated every IT scenario's inherent risk at the scale's top, as nothing is yet controlled. What is the risk analyst's GREATEST concern?",
+      "options": {
+        "A": "Top inherent ratings breach the board's risk appetite",
+        "B": "The ratings leave no room to show a risk worsening",
+        "C": "The ratings ignore the firewalls the new plant will have",
+        "D": "Equal ratings cannot show where controls matter most"
+      },
+      "correct": "D",
+      "key_concept": "Inherent risk rates each scenario realistically with no control credited; top ratings for every scenario erase the differences showing where controls matter.",
+      "pre_read": "Ask what the inherent ratings are for at this stage, and what identical ratings do to that use.",
+      "correct_explanation": "Inherent risk is still a realistic estimate of each scenario's likelihood and impact, with no control credited. Before design, its use is to rank where the strongest controls are needed, and identical top ratings leave nothing to rank. The ceiling concern is the runner-up: a top rating cannot rise further, which limits tracking later, but the design decision being made now loses its basis.",
+      "wrong_explanations": {
+        "A": "Before controls, inherent risk above appetite is expected; appetite is judged on current risk once controls work, so these ratings show no breach yet.",
+        "B": "A top rating cannot rise, which limits tracking later; the design decision being made now needs ratings that differ between scenarios.",
+        "C": "Inherent risk credits no control, planned firewalls included; their credit belongs in the target rating and, once working, in current risk."
+      },
+      "tips": [
+        "Eliminate: A worries that inherent risk exceeds appetite, which is expected before controls exist, and C would credit planned firewalls in a rating that credits no control.",
+        "Final two: D beats B because the ratings exist to rank where controls are needed before design; identical ratings rank nothing, while the ceiling matters later.",
+        "Exam cue: inherent risk is a realistic rating per scenario with no control credited, not the scale's top for every scenario; its differences show where controls matter most."
+      ],
+      "framework_ref": "ISACA Glossary (inherent risk); NIST CSF 2.0 ID.RA-05 (threats, vulnerabilities, likelihoods and impacts are used to understand inherent risk and inform risk response prioritization)",
+      "related_concepts": [
+        "Inherent risk",
+        "Control design priority",
+        "Risk rating scales"
+      ],
+      "_provenance": "Authored from concept: notes 2B5.1 (Inherent, Current and Residual Risk; bullet extended in round 26: before design, inherent risk, rated realistically per scenario rather than all at the top, ranks where controls matter most). Round 26, 12 Nov 2026: original scenario (before controls are designed for a fastener maker's new plant, its engineers rate every IT scenario's inherent risk at the scale's top, as nothing is yet controlled) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Round 26 asks: the 2B5 item (analysis); fastener maker setting (manufacturing); key D; no owner option; the lens word 'appetite' sits on eliminated A only; no restrictive word in any option; key not the longest by characters (52 against 50 to 56) nor strictly the shortest by words (8, tied with A). Not the paused current/target/inherent trio (no option asks which rating to use) and not the paused 'residual risk above zero' family. Neighbours checked: crisc_d2_104 (inherent risk ranks which scenarios need the strongest controls before design; this item applies that use to a rating method that defeats it, and its cue is consistent), crisc_d2_071 (inherent risk credits no control, standard ones included; consistent with C's explanation), crisc_d2_018 and crisc_d3_181 (current, not inherent, risk is compared with appetite; consistent with A's explanation), crisc_d2_044 (high inherent and low current risk mark a key control), crisc_d2_187 (loss history under today's controls is not inherent likelihood), crisc_d2_065 (one scale for inherent and residual), crisc_d2_176 (its wrong D overlaps this key at 0.22 only in wording), CC cc_d1_087, CISA, AAIA (no item on inherent ratings set at the scale's top); no mirror found. Runner-up check: B (no room to show a risk worsening); closest older cues in lesson are crisc_d2_104 (inherent ranks control needs before design) and crisc_d2_044 (the inherent-to-current gap marks key controls); the stem fact that rules B out is 'before designing controls': the decision being made now needs ratings that differ, while a ceiling matters only for tracking later. Each new wrong option was run against every older Exam cue in all codes (TF-IDF); none scored above 0.34, and none of those cues pulls toward it on meaning. Review 12 Nov 2026 (round 26 concept and blind review): wrong A and the Eliminate tip no longer say flatly that inherent risk is never weighed against appetite ('breach nothing'), the absolute the round 22 review softened: inherent risk above appetite is expected before controls, and appetite is judged on current risk once controls work (blind fix 1, also concept observation 2). Options and key unchanged.",
+      "style_version": 2
     }
   ]
 }

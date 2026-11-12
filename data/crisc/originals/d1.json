@@ -3326,7 +3326,7 @@
       "tips": [
         "Eliminate: C treats the normal mixing of owners as the issue, and D changes how often a weak measure is reported.",
         "Final two: B beats A because the count itself misleads about exposure; tracing the four risks that left the band would not fix that.",
-        "Exam cue: a profile shows aggregated exposure against appetite; counts of high-rated risks do not measure how much risk is carried."
+        "Exam cue: to show how much risk is carried, report aggregated exposure against appetite; counts of high-rated risks do not measure it."
       ],
       "framework_ref": "ISACA Glossary (risk aggregation); NIST IR 8286 Rev. 1 Section 4.1 (Applying the Enterprise Risk Register and Developing the Enterprise Risk Profile)",
       "related_concepts": [
@@ -3334,7 +3334,7 @@
         "Risk aggregation",
         "Exposure"
       ],
-      "_provenance": "Authored from concept: notes 1B3.2 (Aggregation and Keeping the Profile Current: do not just add or count scores; a count hides how large each risk is). Round 4, 4 Nov 2026: original scenario (a retailer's profile that counts high-rated risks per category) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Review fixes 4 Nov 2026 (standards audit and concept review): explanation wording clarified (the eight that remain could carry more exposure than all twelve did).",
+      "_provenance": "Authored from concept: notes 1B3.2 (Aggregation and Keeping the Profile Current: do not just add or count scores; a count hides how large each risk is). Round 4, 4 Nov 2026: original scenario (a retailer's profile that counts high-rated risks per category) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Review fixes 4 Nov 2026 (standards audit and concept review): explanation wording clarified (the eight that remain could carry more exposure than all twelve did). Cross-domain gate 12 Nov 2026 (round 26): Exam cue narrowed to its own trigger, showing how much risk is carried; read bare, it pulled toward crisc_d1_232's runner-up A (total exposure beside the previous total), where the board asks why exposure rose.",
       "style_version": 2
     },
     {
@@ -8441,6 +8441,228 @@
         "Third-party risk"
       ],
       "_provenance": "Authored from concept: notes 1B3.1 (Risk Register Versus Risk Profile: the profile combines register risks, outsourced work included, into exposure by objective or category) and 1B3.2. Round 25, 12 Nov 2026: original scenario (a jeweler's risk profile dropped its store's card-data and outage risks once the store moved to a SaaS platform) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Round 25 asks covered: the second of two D1 'Which of the following' stems, with noun-phrase options; owner shape lone owner eliminated (C); analysis item; key not strictly shortest by words (10, tied with A). Setting jeweler (retail). Not risk ownership moved from a support function to the business head (paused): C, which names the provider as owner, is eliminated. Neighbours checked: crisc_d1_174 (a sale changes the profile both ways; services run for the buyer add risks; consistent), crisc_d1_207 and crisc_d1_116 (accepted risks and risks in treatment stay in the profile; same 'still exposure' family, different trigger), crisc_d1_088 (thresholds on the enterprise scale), crisc_d1_087 (assets whose data sits with a supplier stay in the inventory; consistent), crisc_d2_178 (a SaaS shop stays in vulnerability identification; same provider trap in another task), crisc_d3_265 (supplier risks owned by the service heads; consistent with C wrong), crisc_d4_032, crisc_d3_169, CISA d5_059 (wording only). Audit 12 Nov 2026 (round 25 standards audit): stem says 'online store', so a store that moves to a SaaS platform reads plainly; options unchanged. Re-blind 12 Nov 2026 (round 25): option D names the jeweler so the word is not shared only by stem and key.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d1_229",
+      "domain": 1,
+      "subtopic": "1A3 Organizational culture and ethics. AI-written sales messages under target pressure",
+      "principle_id": "root-cause-over-symptom",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "Pressed by the sales director's monthly targets, a card issuer's staff prompt an approved AI writing tool to inflate card rewards in messages to prospects. What should the risk analyst do FIRST?",
+      "options": {
+        "A": "Add a filter that blocks unsupported reward claims in AI drafts",
+        "B": "Rate the risk of the inflated claims with the sales director",
+        "C": "Make the tool's owner bar reward figures from its prompts",
+        "D": "Report the inflated claims to the code of conduct's owner"
+      },
+      "correct": "D",
+      "key_concept": "Staff who use an AI tool to mislead customers under target pressure create conduct risk, taken first to the code of conduct's owner.",
+      "pre_read": "Ask who chose the misleading wording: the tool, or the people using it.",
+      "correct_explanation": "The tool writes what staff ask for; the staff are choosing to overstate rewards to meet targets. That is conduct risk, so the analyst reports it first to the code of conduct's owner, who can investigate, correct messages already sent and look at the targets. Rating the risk with the sales director is the runner-up: analysis helps, but the director sets the targets driving the conduct, and misconduct under way needs the conduct route.",
+      "wrong_explanations": {
+        "A": "A filter treats the tool as the cause; staff who choose to overstate rewards can reword drafts or write messages themselves, and the misled prospects stay uncorrected.",
+        "B": "The sales director sets the targets driving the conduct, so rating it with them leaves the source of the pressure judging it, while misconduct already under way goes uninvestigated.",
+        "C": "Restricting prompts is a tool fix for a people problem: it also blocks accurate reward details, and staff can still overstate rewards outside the tool."
+      },
+      "tips": [
+        "Eliminate: A and C fix the tool, a filter or a prompt rule, while the staff choosing to mislead can still word messages themselves.",
+        "Final two: D beats B because staff are already misleading prospects under the director's targets; the conduct route investigates, while rating it with the target-setter leaves the pressure judging itself.",
+        "Exam cue: when people knowingly misuse an AI tool to mislead customers, treat it as conduct risk and take it first to the code of conduct's owner; tool controls can follow."
+      ],
+      "framework_ref": "NIST SP 800-39 Section 2.7 (Organizational Culture: senior leaders set risk tolerance formally through strategy and guidance and informally through the actions they reward and penalize); NIST AI 100-1 (AI RMF 1.0) GOVERN 4.1 (organizational policies and practices foster a critical thinking and safety-first mindset in the design, development, deployment and uses of AI systems); ISACA Code of Professional Ethics (inform appropriate parties of all significant facts)",
+      "related_concepts": [
+        "Conduct risk",
+        "Risk culture",
+        "Generative AI use"
+      ],
+      "_provenance": "Authored from concept: notes 1A3.2 (Incentives, Speaking Up and Escalation: bullet 1 extended in round 26: staff using a tool, AI included, to mislead customers under target pressure is conduct risk for the conduct code's owner) and 1A3.3 (ethical AI use). Round 26, 12 Nov 2026: original scenario (pressed by the sales director's monthly targets, a card issuer's staff prompt an approved AI writing tool to inflate card rewards in messages to prospects) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Round 26 asks covered: the D1 AI item, in 1A3, on the planned angle (AI misuse under sales-target pressure is conduct risk taken to the code of conduct's owner, not an output filter); the filter (A) is an eliminated option, so the paused 'automated validation of AI output' family is neither key nor runner-up; application item; owner shape k=2, split key plus eliminated (D key, C eliminated); final two owner key against an ownerless runner-up; no wait, no Have/Ask, no restrictive word. Lens word 'owner' in the key also sits in C. Setting card issuer (finance). Avoided as planned: crisc_d1_113 (a fairness concern closed on accuracy), crisc_d1_146 (override friction), crisc_d1_178 and the paused 'leaders' sanctions' and 'removing a penalty' families. Neighbours checked: crisc_d1_122 and crisc_d1_006 (fix the incentive behind knowingly taken risks; no incentive option here, and the conduct owner can review the targets), crisc_d1_164 (an AI tool meets its own metric while harming an objective, paused; there the tool's design erred, here people chose the wording), crisc_d1_166 and crisc_d1_217 (misconduct or a known exposure goes first through the route that handles it; consistent), crisc_d1_046 D and crisc_d1_097 D (code of conduct options; unrelated), crisc_d3_098 (an automated check of AI summaries; there the tool erred), crisc_d4_057 (approved AI tool with rules); cross-bank: CC cc_d1_189 (the code of conduct routes a concern to the ethics hotline; consistent), CC cc_d4_056, AAIA aaia_d2_238 and CISA d2_158 (wording only); no AI-assisted mis-selling item in any bank. Runner-up B: the two older cues closest in lesson are crisc_d1_113 ('a concern raised in good faith is analyzed like any risk') and crisc_d1_164 ('rate the risk against the objective it serves before changing the tool'); the stem facts that rule B out are that the sales director sets the targets driving the conduct and that staff are already misleading prospects on purpose. Cross-domain gate 12 Nov 2026 (round 26): Exam cue and notes 1A3.2 now name the role as in the key, 'the code of conduct's owner', matching crisc_d1_166's 'speak-up policy's owner'. Family noted: misconduct or retaliation goes first to the owner of the policy that handles it (crisc_d1_166, crisc_d1_217).",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d1_230",
+      "domain": 1,
+      "subtopic": "1A6 Organizational asset management. Files held on another owner's platform",
+      "principle_id": "match-decision-to-role",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A management consultancy's head of knowledge, who owns its document platform, is asked to release a former client's files, owned by that client's engagement partner, for a pitch. What is the risk analyst's BEST advice?",
+      "options": {
+        "A": "Give the decision to IT as the platform's technical owner",
+        "B": "Give the decision to the engagement partner who owns the files",
+        "C": "Give the decision to the head of knowledge as the platform's owner",
+        "D": "Release the files once the former client's name is removed"
+      },
+      "correct": "B",
+      "key_concept": "A system's owner runs the platform, but data held on it keeps its own owner, who decides who may receive it.",
+      "pre_read": "Separate who owns the platform from who owns the files stored on it.",
+      "correct_explanation": "Owning a platform makes the head of knowledge answerable for the system, not for every file on it. The former client's files have their own owner, the engagement partner, who knows what the client agreed and decides who may receive them. Giving the decision to the head of knowledge is the runner-up: a system can hold many owners' data, and owning the system does not carry the right to release it.",
+      "wrong_explanations": {
+        "A": "IT runs and safeguards the platform as custodian; calling it the technical owner does not give it the business decision on who may receive a client's files.",
+        "C": "The head of knowledge owns the platform, not the files on it; the files' owner, the engagement partner, decides who may receive them.",
+        "D": "Removing the name decides the release without the files' owner; the files' content can still identify the client or break what the client was promised."
+      },
+      "tips": [
+        "Eliminate: A gives a custodian the owner's decision, and D releases the files after removing a name, deciding without the files' owner.",
+        "Final two: B beats C because the files have their own owner; owning the platform that stores them does not carry the decision on who may receive them.",
+        "Exam cue: a system and the data on it can have different owners; whoever owns the data decides who receives it, wherever it is stored."
+      ],
+      "framework_ref": "NIST SP 800-37 Rev. 2 Appendix D (Roles and Responsibilities: the information owner or steward sets the rules for the information's use and dissemination and may not be the system owner); ISACA Glossary (data owner); ISACA Glossary (data custodian)",
+      "related_concepts": [
+        "Data owner",
+        "System owner",
+        "Data custodian"
+      ],
+      "_provenance": "Authored from concept: notes 1A6.1 (Asset Inventory and Ownership: new bullet in round 26: a system's owner answers for the platform; data stored on it keeps its own owner, who decides who may receive it). Round 26, 12 Nov 2026: original scenario (a management consultancy's head of knowledge, who owns its document platform, is asked to release a former client's files, owned by that client's engagement partner, for a pitch) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Round 26 asks covered: 1A6; application item; owner shape k=2, split runner-up plus eliminated (C runner-up, A eliminated), the key naming no owner; final two ownerless key against an owner runner-up; no restrictive word. Setting management consultancy (professional services). Not the paused 'senior management assigns the owner', 'data keeping its class when moved' or RACI accountability families: both owners are given in the stem and nothing is reclassified. Neighbours checked: crisc_d1_076 (custodians decide how, owners decide who may use the data; consistent, its cue supports B), crisc_d1_155 (custodians carry out owners' decisions before disposing of, copying or sharing; consistent), crisc_d1_011 C (a hosting platform's owner is a custodian for a model's risk; consistent with C wrong), crisc_d1_185 and crisc_d1_087 (class of mixed data, supplier-held data; different trigger), crisc_d1_052 and crisc_d1_189 (RACI accountability, paused; not touched), crisc_d3_171 D and crisc_d2_123 D (a system's IT owner is not the risk's owner; consistent), crisc_d4_093 and crisc_d4_123 (the data owner classifies; restricted files kept out of training; consistent); cross-bank: AAIA aaia_d2_219 (client data used beyond its agreed purpose needs the clients' agreement; the auditor's side of the same rights point), CISA d1_211, d1_051, d4_091 and d5_237 (wording only). Runner-up C: the two older cues closest in lesson are crisc_d1_076 ('owners decide what is needed and who may use the data') and crisc_d1_011 ('a named business owner is the attribute everything else depends on'); the stem fact that rules C out is that the files are owned by the engagement partner, not by the platform's owner. Library: NIST SP 800-37 Rev. 2 Appendix D bullet added in the D1 round 26 block (the information owner or steward may not be the system owner). Audit 12 Nov 2026 (round 26 standards audit): no content change. Checked against the data-owner items crisc_d4_007 (the data owner approves access and new uses; IT is the custodian), crisc_d1_076, crisc_d1_155, crisc_d1_011 C, crisc_d4_058 and crisc_d4_093: consistent; the head of knowledge is a system owner, and NIST SP 800-37 Rev. 2 Appendix D (re-read 12 Nov 2026) says the information owner may not be the system owner.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d1_231",
+      "domain": 1,
+      "subtopic": "1B1 Enterprise risk management (ERM). IT loss records outside the enterprise loss data",
+      "principle_id": "rate-on-common-terms",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A window maker's IT team logs outage and data-loss costs only in its service desk tool; the enterprise loss database that calibrates every risk type's ratings holds none. What is the risk analyst's BEST recommendation?",
+      "options": {
+        "A": "Feed IT losses into the enterprise's shared loss database",
+        "B": "Calibrate IT ratings from the service desk's own loss records",
+        "C": "Estimate IT likelihoods from published industry loss surveys",
+        "D": "Take IT losses to the IT steering committee as a separate report"
+      },
+      "correct": "A",
+      "key_concept": "IT loss events belong in the enterprise's shared loss data, so IT risks are rated on the same evidence as other risks.",
+      "pre_read": "Notice which loss data the enterprise uses to rate its other risks, and what it holds about IT.",
+      "correct_explanation": "The enterprise calibrates every risk type from one loss database, and IT losses are missing from it, so IT ratings rest on different evidence and the enterprise view understates IT losses. Feeding IT losses into the shared database fixes both. Calibrating IT ratings from the service desk's records is the runner-up: it uses the window maker's own losses, but keeps IT on a separate evidence base, outside the data leaders use for every other risk.",
+      "wrong_explanations": {
+        "B": "The service desk records are real losses, but rating IT from them alone keeps IT on its own evidence base, and the enterprise database still shows no IT losses.",
+        "C": "Industry surveys can supplement internal data, but estimating from them sets aside the window maker's own recorded losses and leaves the enterprise database without IT events.",
+        "D": "A separate report to an IT committee keeps IT losses outside enterprise risk management, so they are not weighed beside other risks."
+      },
+      "tips": [
+        "Eliminate: C swaps the firm's own recorded losses for outside surveys, and D routes IT losses to an IT committee outside enterprise risk management.",
+        "Final two: A beats B because the enterprise rates every risk type from one loss database; rating IT from service desk records keeps IT on a separate evidence base.",
+        "Exam cue: IT risk is part of enterprise risk, so its loss events go into the same loss data the enterprise uses to rate every other risk."
+      ],
+      "framework_ref": "COBIT 2019 APO12.01 (Collect Data); NIST CSF 2.0 GV.RM-03 (cybersecurity risk management activities and outcomes are included in enterprise risk management processes); ISACA Glossary (enterprise risk management)",
+      "related_concepts": [
+        "Loss event data",
+        "ERM integration",
+        "Common risk data"
+      ],
+      "_provenance": "Authored from concept: notes 1B1.2 (Common Taxonomy and Rating Scales: bullet 3 extended in round 26: likelihood is calibrated from one enterprise loss database that holds IT losses too) and 1B1.1 (IT risk within enterprise risk). Round 26, 12 Nov 2026: original scenario (a window maker's IT team logs outage and data-loss costs in its service desk tool, while the enterprise loss database that calibrates every risk type's ratings holds none) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Round 26 asks covered: 1B1; application item; 'Take' on one eliminated wrong option (D), the only D1 'Take'; 'Estimate' on one eliminated wrong option (C); owner shape k=0; key not strictly shortest by words (9 against 8). Setting window maker (manufacturing). Not the paused 'combining overlapping records' or 'internal records over complaints for event frequency' families. Neighbours checked: crisc_d2_046 (a loss database with a $10,000 threshold omits near misses; different flaw), crisc_d2_088, crisc_d2_121 and crisc_d2_166 (what to record as a loss event; consistent), crisc_d2_047 (event records naming cause, impact and scenario), crisc_d3_139 (a rating that missed existing loss records is redone; its cue leans toward B, so the correct explanation names the deciding fact: the enterprise calibrates every risk type from one shared database that B leaves without IT losses), crisc_d3_205 (combining overlapping records, paused; not touched), crisc_d1_033 and crisc_d1_012 (an IT register and scales kept apart; same integration lesson, here for loss data), crisc_d1_183 (AI risks on the enterprise method; consistent), crisc_d2_103 (regional records when own history is short; consistent with C wrong, as the window maker has its own records); cross-bank: CISA d2_062 and d5_273 (wording only). Runner-up B: the two older cues closest in lesson are crisc_d3_139 ('when a rating proves to have missed data that exists, redo it') and crisc_d1_033 ('one enterprise view, one taxonomy, one set of scales'); the stem fact that rules B out is that the enterprise loss database calibrates every risk type's ratings and holds no IT losses. Audit 12 Nov 2026 (round 26 standards audit): no content change. Lesson sits beside the paused round 19 family 'common rating methods and scales' (crisc_d1_033, crisc_d1_183, crisc_d1_012): here the shared element is loss data, not a scale or method; flagged for the cross-domain gate. Review 12 Nov 2026 (round 26 concept and blind review): notes 1B1 bullet no longer states as a general rule that likelihood scales are calibrated from one enterprise loss database (the stem's set-up, not a universal rule; calibration also uses external data and judgment); it now says that where such a database calibrates ratings, IT losses belong in it too (concept PRECISION 2; worded to keep the 1B1.2 subtopic within 380 words). Wrong C no longer contradicts itself ('can supplement ... but they replace'): it now says estimating from surveys sets aside the window maker's own recorded losses (concept observation 1). Options unchanged.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d1_232",
+      "domain": 1,
+      "subtopic": "1B3 Risk profile. Board question on a rise in exposure",
+      "principle_id": "report-for-the-decision",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "A trout farm's board asks why technology risk exposure jumped in its latest risk profile. Which of the following should the risk analyst provide as the BEST answer?",
+      "options": {
+        "A": "Total technology exposure now beside its previous total",
+        "B": "A count of technology risks rated high, then and now",
+        "C": "Records of technology control tests and their results",
+        "D": "The risks whose ratings rose, and what made them rise"
+      },
+      "correct": "D",
+      "key_concept": "To explain a change in the profile, show which risks moved and why; a net total shows that exposure changed, not what drove it.",
+      "pre_read": "Note what the board asked: whether exposure rose, or why it did.",
+      "correct_explanation": "The board already knows exposure rose; it asked why. Naming the risks whose ratings rose, and what changed for each, such as a new threat, a failed control or a new activity, tells leaders where to act. Total exposure beside the previous total is the runner-up: it confirms and sizes the rise, but a net figure cannot say which risks drove it, and a large rise in one risk can hide behind small falls elsewhere.",
+      "wrong_explanations": {
+        "A": "Comparing totals restates what the board already saw; it cannot show which risks drove the rise or why, so leaders cannot tell where to act.",
+        "B": "A count of high-rated risks hides how large each one is; exposure can rise sharply with no change in how many risks are rated high.",
+        "C": "Control tests show activity, not exposure; a list of tests cannot say which risks rose or what caused them to rise."
+      },
+      "tips": [
+        "Eliminate: B counts high-rated risks, which says nothing of their size, and C lists control testing, which shows activity rather than exposure.",
+        "Final two: D beats A because the board asked why exposure rose; totals confirm the rise, while the risks that moved, and their causes, explain it.",
+        "Exam cue: when leaders ask why the profile changed, answer with the risks that moved and what moved them; net totals and counts show that it changed, not why."
+      ],
+      "framework_ref": "NIST IR 8286 Rev. 1 Section 4.2 (Translating the Risk Profile to Inform Leadership Decisions: the notional enterprise portfolio view sets each risk profile's current period beside the previous period); NIST IR 8286 Rev. 1 Section 4.3 (Information and Decision Flows in Support of ERM: enterprise risk officers and committees maintain a risk profile that includes recent trends); COBIT 2019 APO12.03 (Maintain a Risk Profile)",
+      "related_concepts": [
+        "Risk profile",
+        "Risk trends",
+        "Board reporting"
+      ],
+      "_provenance": "Authored from concept: notes 1B3.2 (Aggregation and Keeping the Profile Current: bullet 4 reworded in round 26: report trends and which risks moved and why). Round 26, 12 Nov 2026: original scenario (a trout farm's board asks why technology risk exposure rose sharply in its latest risk profile) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Round 26 asks covered: 1B3; the batch's foundational item; the first of two D1 'Which of the following' stems, with noun-phrase options; 'Records' on one eliminated wrong option (C); owner shape k=0; key neither longest nor strictly shortest. Setting trout farm (food and drink). Not the paused 'restating ratings after a scale or method change' (no method changed), 'the board cannot see part of the profile' or 'many small chances across units' families. Neighbours checked: crisc_d1_129 (compare the same risks' ratings across periods to show change; consistent, the key names those risks and adds the causes), crisc_d1_090 (counts of high-rated risks hide size; B reuses that misconception and is eliminated), crisc_d1_142 (restating after a method change, paused; not touched), crisc_d1_196 and crisc_d1_219 (what a profile shows), crisc_d1_051, crisc_d3_019 and crisc_d3_079 (board reports against appetite with trend; consistent), crisc_d4_024 B (a count of changes does not explain why they rose; consistent); cross-bank: CISA d1_139 and AAIA aaia_d1_096 (wording only). Runner-up A: the two older cues closest in lesson are crisc_d1_129 ('compare the same risks' ratings across periods') and crisc_d3_079 ('report the profile against appetite, with trend'); the stem fact that rules A out is that the board already saw the rise and asked why. Review 12 Nov 2026 (round 26 concept and blind review): stem says exposure 'jumped' rather than 'rose sharply', so 'rose' no longer appears only in the stem and the key (blind fix 4); stem 29 words. Options and explanations unchanged. Cross-domain gate 12 Nov 2026 (round 26): crisc_d1_090's generic cue (a profile shows aggregated exposure) pulled toward runner-up A; it is narrowed to its trigger, how much risk is carried. Neighbours added: crisc_d1_207 (a rating kept at acceptance), crisc_d1_038 (changes reported as risks to objectives, not counts).",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d1_233",
+      "domain": 1,
+      "subtopic": "1B4 Risk appetite and risk tolerance. Appetite stated as an incident count",
+      "principle_id": "objectives-first",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "An electoral commission's board proposes stating its cyber risk appetite as no more than five security incidents a year, of any kind. What is the risk analyst's BEST advice?",
+      "options": {
+        "A": "Compare the five-incident limit with peer commissions' counts",
+        "B": "Express the appetite as limits on harm to election delivery",
+        "C": "Have IT security set the incident limit in the appetite",
+        "D": "Treat the five-incident limit as the commission's risk capacity"
+      },
+      "correct": "B",
+      "key_concept": "Appetite states how much harm to objectives leaders will accept; a count of incidents of any kind weighs trivial and grave events alike.",
+      "pre_read": "Ask what the proposed limit measures, and whether that is what the commission must protect.",
+      "correct_explanation": "Appetite is the risk leaders will accept in pursuit of the mission, so it should speak to harm to objectives, here delivering elections voters trust. A count of incidents of any kind treats a blocked phishing email like a tampered results feed. The board still sets the appetite. Comparing the limit with peers is the runner-up: it tunes the number but keeps measuring events rather than harm.",
+      "wrong_explanations": {
+        "A": "Peer counts tune the number but keep the wrong measure: incidents of any kind, trivial or grave, still count the same against the limit.",
+        "C": "Appetite is set by the board and senior management; IT security applies it, so having it set the limit moves the decision to the wrong level.",
+        "D": "Capacity is the most loss the commission could survive, an outer bound for appetite; relabeling an incident count as capacity confuses the two."
+      },
+      "tips": [
+        "Eliminate: C hands appetite-setting to IT security, below the board, and D relabels an appetite limit as capacity, the outer bound appetite must sit within.",
+        "Final two: B beats A because appetite should measure harm to objectives; a peer-tuned count still weighs a blocked phishing email like a tampered results feed.",
+        "Exam cue: an appetite stated as a count of events of any kind measures activity, not harm; advise expressing it as limits on harm to objectives."
+      ],
+      "framework_ref": "ISACA Glossary (risk appetite); NIST CSF 2.0 GV.RM-02 (risk appetite and risk tolerance statements are established, communicated and maintained); NIST IR 8286 Rev. 1 Section 2.1 (Overview of ERM: enterprise risks are considered against the strategic and operational objectives in the organizational strategic plan)",
+      "related_concepts": [
+        "Risk appetite",
+        "Business objectives",
+        "Risk capacity"
+      ],
+      "_provenance": "Authored from concept: notes 1B4.2 (Setting and Expressing Risk Appetite: bullet 2 extended in round 26: appetite framed as harm to objectives rather than event counts). Round 26, 12 Nov 2026: original scenario (an electoral commission's board proposes stating its cyber risk appetite as no more than five security incidents a year, of any kind) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Round 26 asks covered: 1B4; analysis item; 'Have' on one eliminated option (C), the only D1 'Have'; 'Compare' on one wrong option (A, the runner-up); owner shape k=0; key neither longest nor strictly shortest. Setting electoral commission (public sector). Not the paused 'residual risk above zero after controls' (the lesson is the measure, not zero risk), 'basis for risk capacity' (D, which relabels the limit as capacity, is eliminated), 'practitioner proposes thresholds' or 'set it from the organization's own risk' families. Neighbours checked: crisc_d1_019 (the board sets appetite and the practitioner supplies analysis; consistent, the advice leaves the decision with the board), crisc_d1_017 (a measurable tolerance under a broad appetite), crisc_d1_054 (AI use tiers), crisc_d1_080 (appetite by risk type), crisc_d1_215 (words and limits disagree), crisc_d1_201 (an IT department's own appetite; consistent with C wrong), crisc_d1_071 D, crisc_d3_016 (a benchmark threshold is tied back to the organization's own tolerance; consistent with A wrong), crisc_d2_078 and crisc_d4_108 (harm to the people served is rated by that harm; consistent); cross-bank: AAIA aaia_d1_096 (classify AI risks by the harm they cause; mirror on the same principle) and aaia_d1_066 (a tolerance comes from appetite, not from what a model achieves), AAIA aaia_d3_077 (an electoral setting; unrelated lesson). Runner-up A: the two older cues closest in lesson are crisc_d3_016 ('tie it to the organization's own tolerance') and crisc_d1_017 ('tolerance is a measurable limit'); the stem fact that rules A out is that the limit counts incidents of any kind, so tuning the number keeps the wrong measure. Review 12 Nov 2026 (round 26 concept and blind review): notes 1B4 bullet no longer sets harm to objectives against 'event counts' in general (appetite metrics can be counts, such as no more than two severe incidents); it now rules out counts of events of any severity, the stem's flaw (concept PRECISION 3). Question unchanged.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d1_234",
+      "domain": 1,
+      "subtopic": "1B5 Risk frameworks, legal, regulatory and contractual requirements. Customer terms missing from a supplier contract",
+      "principle_id": "transfer-keeps-accountability",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "A hydroelectric operator's grid contract requires plant-system security controls; its maintenance contractor meets them now, though the contractor's contract, renewing soon, omits them. Which of the following is the risk analyst's BEST recommendation?",
+      "options": {
+        "A": "Obtain the contractor's signed statement that it meets the terms",
+        "B": "Name the contractor owner of the risk of missing the grid terms",
+        "C": "Write the grid contract's security terms into the renewed contract",
+        "D": "Limit the contractor's remote access to the plant systems"
+      },
+      "correct": "C",
+      "key_concept": "Duties an enterprise owes its customers are written into the contracts of suppliers doing the work, so the supplier is bound to keep meeting them.",
+      "pre_read": "Ask what binds the contractor to keep meeting the grid terms after today.",
+      "correct_explanation": "The operator stays answerable to the grid operator for the controls, but the contractor who maintains the plant systems has no duty to keep them. Writing the grid terms into the renewed contract binds the contractor and gives the operator remedies if they lapse. The signed statement is the runner-up: it confirms the controls are met now, but it creates no lasting duty, so the contractor could drop them without breaching anything.",
+      "wrong_explanations": {
+        "A": "A statement records that the controls are met today; it does not oblige the contractor to keep them or give the operator any remedy if they lapse.",
+        "B": "Outsourcing moves the work, not accountability; the operator still answers to the grid operator, so the contractor cannot own the risk of breaching those terms.",
+        "D": "Restricting access may reduce some risk, but it does not oblige the contractor to keep the controls the grid contract requires on systems it still maintains."
+      },
+      "tips": [
+        "Eliminate: B makes the contractor owner of a duty the operator still holds, and D restricts access without obliging the contractor to keep the required controls.",
+        "Final two: C beats A because a signed statement confirms today's position, while terms in the renewed contract bind the contractor to keep meeting them.",
+        "Exam cue: when a customer contract requires controls that a supplier operates, pass the terms into the supplier's contract; the enterprise stays accountable either way."
+      ],
+      "framework_ref": "NIST CSF 2.0 GV.SC-05 (requirements to address cybersecurity risks in supply chains are established, prioritized and integrated into contracts and other types of agreements with suppliers and other relevant third parties); NIST CSF 2.0 GV.OC-03 (legal, regulatory and contractual requirements, including privacy obligations, are understood and managed)",
+      "related_concepts": [
+        "Contract flow-down",
+        "Supplier contracts",
+        "Accountability"
+      ],
+      "_provenance": "Authored from concept: notes 1B5.3 (Contractual Requirements and Service Level Agreements: bullet 2 extended in round 26: duties owed to customers pass into the contracts of suppliers doing the work). Round 26, 12 Nov 2026: original scenario (a hydroelectric operator's grid contract requires plant-system security controls; its maintenance contractor meets them now, though the contractor's own contract, renewing soon, omits them) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Round 26 asks covered: 1B5; analysis item; the second of two D1 'Which of the following' stems; the D1 floor key, naturally longest by characters (66 against 64, 2 over the next option); 'Limit' on one eliminated wrong option (D); owner shape lone owner eliminated (B), the D1 lone owner this round; final two ownerless. Setting hydroelectric operator (utilities). Not the paused 'vendor exit planning', 'a legal minimum as a floor' or 'ask legal counsel to confirm FIRST' families. Neighbours checked: crisc_d3_054 (what a vendor contract needs is added before signing; consistent, here at renewal), crisc_d1_059 (customer contract commitments become owned obligations; consistent), crisc_d1_043 (a supplier SLA short of the RTO), crisc_d1_070 and crisc_d1_081 (outsourcing moves work, not accountability; consistent with B wrong), crisc_d1_198 (supplier terms clashing with customer commitments go to the commitments' owner; no option here routes the gap to an owner, so its cue keys nothing), crisc_d3_247 C (contract terms set before the board sees a new risk; there the terms were a new response, here they are a duty the operator already owes the grid operator, as the correct explanation states), crisc_d1_212 A (vendor terms without an inventory entry; different gap), crisc_d3_025 (independent assurance for critical vendors; consistent, a self-statement is not that), crisc_d3_055 and crisc_d3_162 (contractor access and an internal owner for a contractor-run control); cross-bank: CISA d5_018 and CC cc_d3_007 (wording only). Runner-up A: the two older cues closest in lesson are crisc_d3_025 ('critical vendors need independent evidence, written into the contract') and crisc_d3_054 ('what you need from a vendor goes into the contract before signing'); the stem fact that rules A out is that the contractor's contract omits the terms, so a statement of today's position binds it to nothing. Audit 12 Nov 2026 (round 26 standards audit): no content change. Twin move noted for the cross-domain gate: crisc_d3_281 (round 26) also keys contract terms added at renewal; different lessons (duties owed to a customer passed to a supplier here; subcontractor notice and approval there). Review 12 Nov 2026 (round 26 concept and blind review): key concept and notes 1B5 bullet say duties owed to customers 'are written into' the contracts of suppliers doing the work, not that they 'pass into' them, which read as if duties flow down automatically; the item's point is that they did not, because the contract left them out (concept PRECISION 1). Options unchanged; C stays the D1 floor key (66 characters against 64).",
       "style_version": 2
     }
   ]
