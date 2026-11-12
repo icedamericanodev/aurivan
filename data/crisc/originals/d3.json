@@ -3585,7 +3585,7 @@
       "tips": [
         "Eliminate: B gives up consistency for manual review, and C cleans up this incident without stopping the next.",
         "Final two: A beats D because the cause was an unchecked setting change; an alert finds approved orders after the fact.",
-        "Exam cue: automated controls fail consistently when misconfigured; protect their settings through change review."
+        "Exam cue: automated controls fail consistently when misconfigured; when a system change can reset their settings, review those settings at each change."
       ],
       "framework_ref": "NIST SP 800-53 Rev. 5 CM-3 (Configuration Change Control); NIST SP 800-53 Rev. 5 CM-4 (Impact Analyses)",
       "related_concepts": [
@@ -3593,7 +3593,7 @@
         "Configuration change",
         "Preventive control"
       ],
-      "_provenance": "Authored from concept: notes 3B1.2 (Control Categories by Nature: automated controls run the same way every time, but a wrong setting fails every time; new bullet on reviewing automated control settings after system changes). Round 4, 4 Nov 2026: original scenario (a distributor's automated credit check reset during an upgrade to approve orders up to $500,000 instead of $50,000 for three months), written for KaiSip in our own words; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D3 round 4 (crisc_d3_086 to 115).",
+      "_provenance": "Authored from concept: notes 3B1.2 (Control Categories by Nature: automated controls run the same way every time, but a wrong setting fails every time; new bullet on reviewing automated control settings after system changes). Round 4, 4 Nov 2026: original scenario (a distributor's automated credit check reset during an upgrade to approve orders up to $500,000 instead of $50,000 for three months), written for KaiSip in our own words; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D3 round 4 (crisc_d3_086 to 115). Cross-domain gate 12 Nov 2026 (round 25): Exam cue narrowed to its own trigger, a system change that can reset settings; crisc_d3_276 separates access when the people a check covers can change its settings.",
       "style_version": 2
     },
     {
@@ -10071,6 +10071,302 @@
         "Screening criteria"
       ],
       "_provenance": "Authored from concept: notes 3C6.1 (Horizon Scanning and Emerging Risk Sources: screen signals for relevance and potential impact on objectives, not likelihood alone). Round 24, 12 Nov 2026: original scenario (a national mapping agency's horizon scan forwards only signals analysts judge likely and this year dropped three high-impact ones, including solar storms disrupting satellite positioning), written for KaiSip in our own words; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D3 round 24 (crisc_d3_265 to 272). Round 24 asks: 3C6 slot (key B, analysis); 'every' on an eliminated option (A), the batch's one each/every option, with no key carrying one; a 'Review' opener on the runner-up (D); restrictive 'just' on an eliminated option (C), at the lead's request. Not 'emerging means uncertain, not distant', 'who chooses among competing emerging risks' or 'record the emerging risk now' (paused): the lesson is the screen's criteria. Neighbours checked (every 3C6 key and Exam cue): crisc_d3_083 (screen signals against objectives before recording; consistent, extended to impact), 128 (front-line sources), 182 (judge the scan by risks flagged before harm), 208, 216, 049, 114, 115, 247, 264; crisc_d1_037. TF-IDF top 0.31 crisc_d3_083 (same family, new trap: a likelihood-only screen).",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d3_273",
+      "domain": 3,
+      "subtopic": "3A1 Risk response options. An AI vendor's indemnity for wrong advice",
+      "principle_id": "transfer-keeps-accountability",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A chamber of commerce's AI assistant gives members export advice; the vendor indemnifies the chamber against members' legal claims over wrong advice. Which of the following register entries should the risk analyst recommend as BEST?",
+      "options": {
+        "A": "The vendor recorded as the owner of the wrong-advice risk",
+        "B": "A lower likelihood of wrong advice reaching members",
+        "C": "A partial transfer, the rest kept by its risk owner",
+        "D": "A note of the indemnity, with the rating left unchanged"
+      },
+      "correct": "C",
+      "key_concept": "An AI vendor's indemnity transfers only the legal costs it covers; the harm to customers and trust stays with the risk owner.",
+      "pre_read": "Ask which parts of the loss the contract would actually pay for.",
+      "correct_explanation": "An indemnity transfers only what it covers: here, members' legal claims. Wrong advice still harms members, whose goods may be held at a border, and their trust in the chamber, and neither moves to the vendor. A partial transfer credits the covered claim costs and keeps the rest with the risk owner. A note with the rating unchanged is the runner-up: it is cautious, but it ignores the claim costs that really have moved.",
+      "wrong_explanations": {
+        "A": "A contract moves some claim costs, not accountability; the chamber's risk owner still answers for the harm wrong advice does to members and to the chamber's standing.",
+        "B": "The indemnity pays once wrong advice has led to a claim; it does nothing to make wrong advice less likely, so the likelihood stays as rated.",
+        "D": "Leaving the rating unchanged ignores the members' legal claims the vendor now pays; the entry should credit that cost while keeping the harm that stays."
+      },
+      "tips": [
+        "Eliminate: A treats the indemnity as handing the risk to the vendor, though accountability stays, and B credits it against likelihood, though it pays only after a claim.",
+        "Final two: C beats D because the indemnity does move the cost of members' legal claims; a partial transfer credits that cost and keeps the harm to members and trust with the risk owner.",
+        "Exam cue: an AI vendor's indemnity is a partial transfer; credit the costs it covers, and keep the harm it cannot reach, such as lost trust, with the risk owner."
+      ],
+      "framework_ref": "ISACA Glossary (risk transfer); NIST IR 8286B-upd1 Section 2.3.3 Table 4 (Example of risk transfer: cover reimburses some direct losses, while reputational and other consequences remain); NIST AI 100-1 (AI RMF 1.0) MANAGE 1.3 (responses to high-priority AI risks are developed, planned and documented, including mitigating, transferring, avoiding or accepting)",
+      "related_concepts": [
+        "Risk transfer",
+        "Indemnity",
+        "Third-party AI"
+      ],
+      "_provenance": "Authored from concept: notes 3A1.1 (The Four Risk Responses: transfer moves money, not accountability, and only for covered losses; a vendor's indemnity covers part of the remaining impact, not harm to customers or trust). Round 25, 12 Nov 2026: original short stem (a chamber of commerce's AI assistant gives members export advice, and the vendor indemnifies the chamber against members' legal claims over wrong advice), written for KaiSip in our own words; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D3 round 25 (crisc_d3_273 to 280). Round 25 asks: the D3 AI item, in 3A1 (key C, application), on the assigned angle: an AI vendor's indemnity moves some legal cost but not the harm to members or their trust, so it is recorded as a partial transfer with the rest kept by the risk owner. One of D3's two 'Which of the following' stems. Owner pair split as key (C) and an eliminated option (A), the batch's one split of that kind. Not insurance credit re-rated when cover fails (paused), not crisc_d1_081's liability cap (there the cap limits the money; here the indemnity cannot reach the non-financial harm, and the runner-up is the opposite error, crediting nothing), not vendor training on inputs. Neighbours checked: crisc_d1_081 (a liability cap marked transferred; same rule that contracts shift some cost, not accountability, but there the cap limits the money, here the indemnity cannot reach harm to members or trust, and our runner-up is the opposite error of crediting nothing), crisc_d3_001 (insurance shifts money, not ownership; consistent), 004 (a vendor clause paying for wrong AI replies against output review; consistent: the contract pays afterward), 249 (work moved within the group transfers nothing), 086, 116, 198, 209, 257; AAIA and CC banks hold no indemnity item. TF-IDF top 0.25 crisc_d3_230 (no mirror); wrong options against older keys and cues: top 0.23 (crisc_d3_062), none above 0.30.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d3_274",
+      "domain": 3,
+      "subtopic": "3A2 Risk and control ownership. A risk re-rated beyond its owner's authority",
+      "principle_id": "match-decision-to-role",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A nut processor's allergen-labeling risk, owned by a plant manager who can accept risks up to medium, is re-rated critical after a five-year supermarket contract tripled volume. What should the risk analyst recommend as BEST?",
+      "options": {
+        "A": "Keep the plant manager as owner, referring each decision upward",
+        "B": "Re-rate the risk as medium, counting planned label checks",
+        "C": "Give the risk committee the risk to hold as a group",
+        "D": "Move the risk to an executive with authority for its rating"
+      },
+      "correct": "D",
+      "key_concept": "A risk owner needs authority that matches the risk's rating; when a lasting re-rating exceeds it, ownership moves up to someone who can decide.",
+      "pre_read": "Compare the owner's authority with the risk's new rating.",
+      "correct_explanation": "Ownership should match a risk's rating: the owner funds the response and accepts what remains. The five-year contract makes the critical rating lasting and beyond the plant manager's authority, so moving the risk to an executive with authority for that rating puts the decisions with someone who can make them. Keeping the plant manager as owner and referring each decision upward is the runner-up: it leaves an owner who can decide nothing.",
+      "wrong_explanations": {
+        "A": "Referring a decision upward suits a one-off acceptance; with a lasting critical rating, it leaves a named owner who can neither accept the risk nor fund its response.",
+        "B": "Planned checks give a target, not the current rating; re-rating on them to fit the owner's limit shrinks the risk to suit the authority.",
+        "C": "A committee can oversee and challenge, but a risk held by a group often means no one acts; one named executive should own it."
+      },
+      "tips": [
+        "Eliminate: B rates the risk on planned checks to fit the owner's limit, and C hands it to a committee, where shared holding leaves no one accountable.",
+        "Final two: D beats A because the five-year contract keeps the rating critical; an owner who must refer every decision upward holds the title while the executive above makes the decisions.",
+        "Exam cue: when a risk's rating rises beyond its owner's authority and stays there, move ownership to someone who can accept and fund it; refer one-off decisions upward."
+      ],
+      "framework_ref": "ISACA Glossary (risk owner); NIST IR 8286B-upd1 Section 2.4.3 (Risk Owner: risk escalation and elevation)",
+      "related_concepts": [
+        "Risk ownership",
+        "Risk elevation",
+        "Delegated authority"
+      ],
+      "_provenance": "Authored from concept: notes 3A2.1 (Assigning Risk Owners: match authority to reach and rating; the owner funds treatment and accepts residual risk, and lasting re-ratings beyond that authority move up). Round 25, 12 Nov 2026: original scenario (a nut processor's allergen-labeling risk, owned by a plant manager who can accept risks up to medium, is re-rated critical after a supermarket contract tripled volume), written for KaiSip in our own words; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D3 round 25 (crisc_d3_273 to 280). Round 25 asks: 3A2 slot (key D, application); a lone owner on the runner-up (A); the key opens 'Move' (not on the rarely-keyed list) and names no owner; 'Re-rate' opens an eliminated option only. Not 'senior management assigns the owner' or 'risk ownership moved from a support function to the business head' (paused): the owner here is already a business manager, and the lesson is ownership rising with a lasting rating change (the upward mirror of crisc_d3_201). Neighbours checked: crisc_d3_024 (an acceptance above delegated authority is referred to the executive who holds it; its cue 'elevate it to the level that holds the authority' fits our runner-up A, which the stem rules out: the critical rating is lasting, after a contract tripled volume, so referring each decision leaves an owner who can decide nothing), 201 (low-rated departmental risks moved down to process owners; the downward mirror, consistent), 258 (a coordinator who cannot fund or accept), 153, 117, 177, 023, 052, 089, 241. TF-IDF top 0.20 crisc_d3_024; wrong options against older keys and cues: top 0.21 (crisc_d1_049), none above 0.30. Audit 12 Nov 2026 (round 25 standards audit): stem now says the supermarket contract runs five years, so 'lasting', which the Final two and wrong A rely on, is a stem fact; key D re-worded from 'an executive able to accept critical risks', which echoed 'accept' and 'critical' from the stem in the key only, to 'an executive with authority for its rating' (59 characters, 11 words, still not the longest by characters); explanation and Final two updated. Neighbours added: crisc_d4_091 (a one-off acceptance above a director's authority is referred to an executive; consistent with A's one-off reading, which the five-year contract rules out here) and crisc_d4_134 (its cue, send a choice upward only when it would break the limits, fits a single decision, not a lasting rating). NIST IR 8286B-upd1 Section 2.4.3 re-read 12 Nov 2026: escalation and elevation are 'both types of risk owner transfer', which supports moving ownership.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d3_275",
+      "domain": 3,
+      "subtopic": "3A4 Issues, findings, exceptions and exemptions management. Compensation that misses the flaw",
+      "principle_id": "root-cause-over-symptom",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "A border agency cannot patch a critical, remotely exploitable e-gate flaw until the vendor certifies the fix; the exception request offers daily malware scans as compensation. What should the risk analyst recommend as BEST?",
+      "options": {
+        "A": "Limit network access to the flawed service until patched",
+        "B": "Run the scans hourly, with results sent to the system owner",
+        "C": "Compare the scans' cost with the risk they would reduce",
+        "D": "Install the uncertified patch with the system owner's consent"
+      },
+      "correct": "A",
+      "key_concept": "A compensating control for an exception must act on the risk the missing requirement addressed, such as the path to an unpatched flaw.",
+      "pre_read": "Ask what the missing patch was meant to stop.",
+      "correct_explanation": "A compensating control must reduce the risk the missing patch leaves: remote exploitation of the flaw. Limiting network access to the flawed service closes that path until the certified patch arrives. Malware scans look for harm after an attacker may already be in. Comparing the scans' cost with the risk they would reduce is the runner-up: cost-benefit matters, but the scans do not act on the flaw, so their cost is not yet the question.",
+      "wrong_explanations": {
+        "B": "Hourly scans find an infection sooner but still act after exploitation; the remote path to the flaw, which the patch would have closed, stays open.",
+        "C": "Cost-benefit weighs controls that treat the risk; scans do not block remote exploitation of the flaw, so comparing their cost settles nothing about the exception.",
+        "D": "The patch is held back for certification; installing it uncertified risks e-gate failures at the border, trading one risk for the one the exception exists to avoid."
+      },
+      "tips": [
+        "Eliminate: B runs a detective check more often, still after exploitation, and D installs the uncertified patch the exception exists to avoid, risking e-gate failures.",
+        "Final two: A beats C because a compensating control must act on the flaw's remote path; the scans look for malware afterward, so weighing their cost comes too early.",
+        "Exam cue: judge an exception's compensating control by whether it acts on the risk the missing requirement covered; a check that finds harm afterward rarely replaces one that prevents it."
+      ],
+      "framework_ref": "ISACA Glossary (compensating control); NIST CSF 2.0 ID.RA-07 (changes and exceptions are managed, assessed for risk impact, recorded and tracked)",
+      "related_concepts": [
+        "Exceptions",
+        "Compensating controls",
+        "Patch management"
+      ],
+      "_provenance": "Authored from concept: notes 3A4.2 (Exceptions and Exemptions: the practitioner assesses the risk and proposes compensating controls that act on the same risk the requirement covered). Round 25, 12 Nov 2026: original scenario (a border agency cannot patch a critical, remotely exploitable e-gate flaw until the vendor certifies the fix, and the exception request offers daily malware scans as compensation), written for KaiSip in our own words; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D3 round 25 (crisc_d3_273 to 280). Round 25 asks: 3A4 slot (key A, analysis); 'Compare' opens the runner-up (C), the round's one Compare option, keyed nowhere; owner pair on the two eliminated options (B, D). Not 'who approves exceptions', backdated exceptions or exemption scope (paused): the lesson is whether a proposed compensating control acts on the same risk. Neighbours checked: crisc_d3_007 (assess an exception request first; here the risk is already stated as a critical, remotely exploitable flaw), 146 (an exception in date with working compensating isolation waits for review; consistent), 031 (a compensating check keeps the gap open), 093, 119, 186, 211, 218, 259; crisc_d2_026 (TF-IDF top 0.28: scans cannot find process weaknesses; different lesson), CISA d5_125 (0.25, unauthenticated scans). Runner-up C against crisc_d1_086's cost cue (0.28): the stem fact that the scans look for malware rather than block the remote flaw rules it out; no other wrong option above 0.30. Audit 12 Nov 2026 (round 25 standards audit): no content change. The provenance's 'crisc_d1_086's cost cue' is mislabeled: that cue says to match each control to the part of the risk it changes, which supports A rather than C; no older cue on cost keys C above 0.30. Neighbours added: crisc_d4_101 (isolation beats scans for unpatchable controllers above appetite; same principle, here judged as an exception's offered compensation) and CISA d4_037 (defer a patch with compensating controls under business sign-off; consistent). Reviewed whether blocking network access could stop the e-gates: 'the flawed service' reads as the exposed network service, not the gates as a whole, so no stem change. Review 12 Nov 2026 (round 25 concept and blind review): key A 'Block network access' reworded to 'Restrict network access to the flawed service until patched' (concept item 1): 'block' could read as taking the e-gate service offline, which is avoidance with the same border-outage risk used against D; SA-22 speaks of isolation. 9 words, 59 characters (ties B, D still longest). Correct explanation and notes 3A4 bullet changed to 'restricting'; tips name no wording of A and still fit. Lead 12 Nov 2026: key opener 'Restrict' changed to 'Limit' because 'Restrict' would sit only on keys bank-wide.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d3_276",
+      "domain": 3,
+      "subtopic": "3B2 Control design, selection, implementation and analysis. Limits the checked can change",
+      "principle_id": "root-cause-over-symptom",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An actuarial consultancy's valuation system holds back client reports whose results fall outside set limits, but the actuaries whose reports it checks can change those limits. Which change should the risk analyst recommend as BEST?",
+      "options": {
+        "A": "Test the hold using results set just outside the limits",
+        "B": "Log limit changes for the chief actuary's monthly review",
+        "C": "Restrict limit changes to a role outside the actuarial teams",
+        "D": "Get each actuary to sign off the limits they set"
+      },
+      "correct": "C",
+      "key_concept": "An automated check's settings need protecting from the people it checks; separate who sets its limits from whose work it checks.",
+      "pre_read": "Ask who can change the check's settings and whose work the check covers.",
+      "correct_explanation": "A check is only as strong as the protection on its settings. While the actuaries it checks can change its limits, one can widen a limit to pass their own report. Restricting limit changes to a role outside the actuarial teams separates setting the check from being checked. Logging changes for the chief actuary's monthly review is the runner-up: it finds a widened limit only after the reports it passed have gone to clients.",
+      "wrong_explanations": {
+        "A": "The hold works as built; a test with out-of-limit results shows it fires, not that the limits it fires on are safe from the actuaries it checks.",
+        "B": "A monthly review of logged changes is detective; a limit widened today lets reports through to clients for weeks before anyone looks at the change.",
+        "D": "Actuaries signing off their own limits is still self-review; it records the choice without separating who sets the check from whose work it checks."
+      },
+      "tips": [
+        "Eliminate: A tests that the hold fires, which is not in doubt, and D has actuaries sign off their own limits, which is self-review rather than separation.",
+        "Final two: C beats B because stopping the checked from changing the check prevents a widened limit before any report goes out; a monthly review finds it after clients have the reports.",
+        "Exam cue: when analyzing an automated check, ask who can change its settings; if the people it checks can, separate that access rather than rely on reviews after the fact."
+      ],
+      "framework_ref": "ISACA Glossary (segregation/separation of duties); NIST SP 800-53 Rev. 5 CM-5 (Access Restrictions for Change)",
+      "related_concepts": [
+        "Segregation of duties",
+        "Automated controls",
+        "Change restrictions"
+      ],
+      "_provenance": "Authored from concept: notes 3B2.3 (Control Gap Analysis: design gaps include limits those checked can change) and the ISACA Glossary's segregation of duties entry. Round 25, 12 Nov 2026: original scenario (an actuarial consultancy's valuation system holds back client reports outside set limits, but the actuaries whose reports it checks can change those limits), written for KaiSip in our own words; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D3 round 25 (crisc_d3_273 to 280). Round 25 asks: 3B2 slot (key C, application); the D3 floor key (C is naturally longest by characters, 61 against 56); 'each' on an eliminated option (D), keyed nowhere; no option names an owner. Not a route around a control given its own preventive check, an unrecorded return path or builders deciding their own gate (paused): here the people checked can alter the check's own settings. Neighbours checked: crisc_d3_193 (an approver never owns the review of their own approvals; consistent, here it is the check's settings), crisc_d4_141 and crisc_d4_067 (builders deciding or switching off their own gate; paused family, different: the people checked change the check's limits), crisc_d2_006 (pharmacists able to approve their own dosage-limit changes, recorded as a vulnerability; consistent), crisc_d3_229, 253, 268 (paused design-gap families), 204, 100, 122. TF-IDF top 0.20 crisc_d2_080. Wrong option D against crisc_d3_157's cue (0.34, on the word 'sign-off' only): the stem makes the signers the actuaries the check covers, so their sign-off is self-review. Cross-domain gate 12 Nov 2026 (round 25): Neighbours added: crisc_d3_097 (settings reviewed after each system change; its cue narrowed to that trigger, as its generic form pulled toward runner-up B), crisc_d3_031 (a detective check kept as a compensating control while a gap stays open).",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d3_277",
+      "domain": 3,
+      "subtopic": "3B3 Control testing methodologies. An earlier test after staff changes",
+      "principle_id": "evidence-before-credit",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A shoe maker's ratings credit planners' daily check of production orders against approved materials lists, tested effective in January; half the planners have since been replaced. What is the risk analyst's BEST next step?",
+      "options": {
+        "A": "Obtain the control owner's word that it still runs",
+        "B": "Test a sample of checks the new planners have run",
+        "C": "Review the training records of the planners who joined",
+        "D": "Walk through the check's design again with a new planner"
+      },
+      "correct": "B",
+      "key_concept": "Earlier test results lose weight when conditions change; after turnover among the people running a control, test its operation since the change.",
+      "pre_read": "Notice what has changed since the control was last tested.",
+      "correct_explanation": "January's result was earned by the planners who ran the check then. With half of them replaced, the conditions behind that result have changed, so it no longer shows the check works today. Testing a sample of the checks the new planners have run gives current evidence of operation. Reviewing the new planners' training records is the runner-up: it shows they were taught the check, not that they perform it correctly.",
+      "wrong_explanations": {
+        "A": "A statement that the check still runs is inquiry, the weakest evidence on its own, and the owner may not see how new planners perform it.",
+        "C": "Training records show the new planners were taught the check; they do not show it has been performed, or performed correctly, since they started.",
+        "D": "Nothing in the check's design has changed; the people running it have, so a new walkthrough repeats a design test when operation is in question."
+      },
+      "tips": [
+        "Eliminate: A rests on the owner's word alone, the weakest evidence, and D retests a design that has not changed, when the people running it have.",
+        "Final two: B beats C because training records show what the new planners were taught; a sample of the checks they ran shows whether the control operates now.",
+        "Exam cue: an earlier test result holds only while the conditions behind it hold; after a material change, such as new people running a manual control, test the period since."
+      ],
+      "framework_ref": "NIST SP 800-53A Rev. 5 Section 3.2.3.5 (Reuse of Assessment Evidence: controls found effective earlier may have become ineffective under changing conditions, so changes since the last assessment are identified and reassessment may be required); NIST SP 800-53A Rev. 5 Section 2.4.2 (Assessment Methods: examine, interview and test, with depth and coverage)",
+      "related_concepts": [
+        "Operating effectiveness",
+        "Reuse of test results",
+        "Staff turnover"
+      ],
+      "_provenance": "Authored from concept: notes 3B3.2 (Design and Operating Effectiveness Testing: test operation over a period, including the time since the people running a control changed) and 3B3.1 (inquiry is weakest on its own). Round 25, 12 Nov 2026: original scenario (a shoe maker's ratings credit planners' daily check of production orders against approved materials lists, tested effective in January, and half the planners have since been replaced), written for KaiSip in our own words; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D3 round 25 (crisc_d3_273 to 280). Round 25 asks: 3B3 slot (key B, application); a 'Review' opener on the runner-up (C), keyed nowhere; restrictive 'only' on an eliminated option (A); a lone owner on an eliminated option (A). Not operating tests waiting for enough runs (paused; here months of runs exist), a manual control tested at each site or self-assessment evidence (paused). Neighbours checked: crisc_d3_148 (a control changed mid-period: test each version for the months it ran; consistent, the change here is the people), 012, 036, 134, 213 (paused multi-site family; not used), 238 (paused: a new control waiting for runs; here months of runs exist), 101, 189, 254; AAIA aaia_d2_103 (TF-IDF top 0.32: retired model scores still shown; different). Wrong options against older keys and cues: top 0.23 (crisc_d4_086), none above 0.30. Lead 12 Nov 2026: 'only' changed to 'just' on eliminated A to keep the exam-style lint at zero warnings. Review 12 Nov 2026 (round 25 concept and blind review): wrong A loses the limiting 'just' (concept observation and blind fix 1): 9 words, 50 characters; its wrong explanation (inquiry, the weakest evidence on its own) and Eliminate tip (the owner's word alone) still fit.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d3_278",
+      "domain": 3,
+      "subtopic": "3C3 Risk and control metrics. Indicators that skip the top risks",
+      "principle_id": "kris-that-predict",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "A landfill operator's risk committee receives 24 KRIs, all chosen for easy data; none covers its two biggest risks. Which of the following should the risk analyst recommend as BEST?",
+      "options": {
+        "A": "Note the two uncovered risks beside the 24 KRIs",
+        "B": "Cut the set to the 12 KRIs with the most reliable data",
+        "C": "Report the share of incidents caused by the two top risks",
+        "D": "Develop leading KRIs that track the two top-rated risks"
+      },
+      "correct": "D",
+      "key_concept": "KRIs are chosen for the top risks first and checked for data second; indicators picked for easy data can miss the risks that matter.",
+      "pre_read": "Check which risks the current indicators actually cover.",
+      "correct_explanation": "KRIs earn their place by warning of the risks that matter most. A set picked for easy data can be measurable and still blind to the two top-rated risks. Developing leading KRIs that track those risks puts early warning where exposure is greatest. Cutting the set to the 12 KRIs with the most reliable data is the runner-up: a smaller, cleaner set helps, but it still tracks neither of the top risks.",
+      "wrong_explanations": {
+        "A": "A note admits the gap but leaves the committee with no early warning on its two highest risks; the set still follows convenience, not exposure.",
+        "B": "Reliable data is one test of a KRI, but relevance to the top risks comes first; the 12 most reliable still track neither top-rated risk.",
+        "C": "Incident shares show how often the top risks have already caused harm; they lag the events and warn of nothing before the next one."
+      },
+      "tips": [
+        "Eliminate: A notes the gap without closing it, and C reports past incidents, which lag the events a KRI should warn of.",
+        "Final two: D beats B because relevance to the top risks comes before data quality; a cleaner set of the wrong indicators still gives no warning where exposure is greatest.",
+        "Exam cue: choose KRIs for the risks that matter most, then test their data and timing; a set built from whatever is easy to measure can be precise and still blind."
+      ],
+      "framework_ref": "ISACA Glossary (key risk indicator); NIST SP 800-55v1 Section 2.4 (Metrics: adopting any available data point can undermine reporting, so a quantitative metric is kept only if it shows a valid control's performance or tracks a material risk to objectives)",
+      "related_concepts": [
+        "Key risk indicators",
+        "KRI selection",
+        "Top risks"
+      ],
+      "_provenance": "Authored from concept: notes 3C3.2 (Selecting Effective KRIs: relevant to a specific high-priority scenario first, then measurable; keep the set focused on the top risks). Round 25, 12 Nov 2026: original short stem (a landfill operator's risk committee receives 24 KRIs, all chosen for easy data, and none tracks its two top-rated risks), written for KaiSip in our own words; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D3 round 25 (crisc_d3_273 to 280). Round 25 asks: the D3 foundational item, in 3C3 (key D); one of D3's two 'Which of the following' stems; 'share of' on an eliminated option (C), the D3 'Share of' option, keyed nowhere; no option names an owner. Not a KPI offered as a KRI, a KRI off the losses' path, KCI coverage against activity counts or a KRI timed to the response's lead time (paused). Neighbours checked: crisc_d3_074 (cutting 140 KRIs by how early each warns of a top-rated risk; same family, new trap: a set built from easy data that skips the top risks; its cue 'not for cost, habit or history' strikes our runner-up), 261 (KRI sources in past causes), 015, 107, 150, 190, 234, 271 (paused lead-time family; not used); CISA d2_015 (TF-IDF top 0.34: KPI, KRI and KCI definitions; different). Key against crisc_d3_074's key and cue 0.41 (consistent); wrong options top 0.27 (crisc_d3_078), none above 0.30. Audit 12 Nov 2026 (round 25 standards audit): no content change. Neighbours added: crisc_d3_261 (candidate KRIs from a scenario's past causes; consistent). Same lesson family as crisc_d3_074 (KRIs kept for warning on top risks, not data cost); different trigger (no KRI on the two top risks), noted for the cross-domain gate.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d3_279",
+      "domain": 3,
+      "subtopic": "3C4 Risk and control monitoring techniques. Teams choosing what they self-assess",
+      "principle_id": "lines-of-defense",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An app developer's nine product teams each choose which of their controls to rate in the yearly control self-assessment, and most pick their strongest. What should the risk analyst recommend as BEST?",
+      "options": {
+        "A": "Swap the self-assessment for risk-team tests of every control",
+        "B": "Base the scope on the key controls over the top risks",
+        "C": "Add last year's failed controls to the list each team chooses",
+        "D": "Train control owners to rate their controls more critically"
+      },
+      "correct": "B",
+      "key_concept": "A control self-assessment's scope is set from the key controls over the top risks, not left to teams, who tend to pick their strongest controls.",
+      "pre_read": "Ask who decided which controls the self-assessment covers.",
+      "correct_explanation": "A self-assessment is only as useful as its scope. When teams pick which controls to rate, they choose their strongest, and the weak ones stay out of sight. Basing the scope on the key controls over the top risks puts the controls that matter most in front of their owners. Adding last year's failed controls is the runner-up: it catches known failures but still lets teams leave out weak controls nobody has tested.",
+      "wrong_explanations": {
+        "A": "Second-line tests of every control are neither risk-based nor practical, and they drop the first line's ownership of its controls that self-assessment builds.",
+        "C": "Last year's failures widen the list, but teams still choose the rest, so weak key controls that never failed a test stay out of scope.",
+        "D": "Training improves how controls are rated, not which controls are rated; teams that choose their own scope can still leave their weakest controls out."
+      },
+      "tips": [
+        "Eliminate: A swaps self-assessment for second-line tests of every control, losing first-line ownership, and D trains people to rate better while they still choose what to rate.",
+        "Final two: B beats C because scope should follow the risks; adding past failures to a self-chosen list still leaves untested weak controls out of view.",
+        "Exam cue: in a control self-assessment, the risk function sets the scope from the key controls over the top risks; letting each area choose what to rate tends to hide its gaps."
+      ],
+      "framework_ref": "ISACA Glossary (control risk self-assessment); NIST SP 800-53 Rev. 5 CA-2 (Control Assessments)",
+      "related_concepts": [
+        "Control self-assessment",
+        "Assessment scope",
+        "Key controls"
+      ],
+      "_provenance": "Authored from concept: notes 3C4.2 (Control Self-Assessment and Trend Analysis: the risk function designs the questions and sets the scope from the key controls over top risks, then facilitates; managers answer for their own areas). Round 25, 12 Nov 2026: original scenario (an app developer's nine product teams each choose which of their controls to rate in the yearly control self-assessment, and most pick their strongest), written for KaiSip in our own words; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D3 round 25 (crisc_d3_273 to 280). Round 25 asks: 3C4 slot (key B, application); 'all' and 'each' on wrong options (A, C), keyed nowhere; a lone owner on an eliminated option (D); 'Train' opens an eliminated option only. Not self-assessment evidence (crisc_d3_235, crisc_d1_065, crisc_d3_077; paused) or common rating methods (paused): the lesson is who sets the scope. Neighbours checked: crisc_d3_077 (the risk team must not complete a self-assessment for managers), 235 and crisc_d1_065 (records behind self-ratings and second-line challenge; paused evidence family, not used), crisc_d1_035 (TF-IDF top 0.34: a combined assurance map; different), crisc_d3_078 (monitoring starts with controls over the top risks; our key matches its cue at 0.42, consistent), 111, 126. Wrong options against older keys and cues: top 0.24 (crisc_d3_077), none above 0.30. Lead 12 Nov 2026: 'all controls' changed to 'every control' on eliminated A to keep the exam-style lint at zero warnings. Review 12 Nov 2026 (round 25 concept and blind review): Exam cue no longer states as an absolute that a self-chosen scope 'shows its strengths and hides its gaps'; it now 'tends to hide its gaps' (concept observation).",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d3_280",
+      "domain": 3,
+      "subtopic": "3C5 Risk and control reporting techniques. A report that arrives after the budget",
+      "principle_id": "report-for-the-decision",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "An antique dealer's partners set spending each January; the risk analyst's yearly report, sent in April, has shown online fraud above appetite for two years, with no treatment funded. What is the analyst's BEST change?",
+      "options": {
+        "A": "Send the report before the partners set spending",
+        "B": "Estimate treatment spending for the April report",
+        "C": "Show the partners the fraud risk a band above its rating",
+        "D": "Send the April report to the shop managers as well"
+      },
+      "correct": "A",
+      "key_concept": "Risk reporting is timed to the decisions it informs, such as budget setting, so that risk shapes choices instead of reviewing them afterward.",
+      "pre_read": "Compare when the report arrives with when the decision is made.",
+      "correct_explanation": "A risk report serves decisions, and the partners make their spending decision in January. A report arriving in April describes a risk the budget has already passed over, which is why two years of above-appetite ratings funded nothing. Sending the report before the partners set spending puts the risk in front of the decision. Estimating treatment spending for the April report is the runner-up: costs help a decision, but by April the money is allocated.",
+      "wrong_explanations": {
+        "B": "Treatment costs make a report more useful for deciding, but in April the year's spending is already set; better content arriving after the decision changes nothing.",
+        "C": "Ratings are reported as assessed; inflating one to draw attention misleads the partners and undermines trust in every other rating in the report.",
+        "D": "Shop managers cannot set the dealer's spending; adding readers without that authority does not bring the risk to the decision that funds treatment."
+      },
+      "tips": [
+        "Eliminate: C inflates a rating to draw attention, which misleads, and D adds readers who cannot set spending, so neither reaches the decision.",
+        "Final two: A beats B because the partners decide spending in January; cost estimates help only if they arrive while the money is still unallocated.",
+        "Exam cue: a risk report must reach decision makers before the decision it should inform, such as the budget round; content that arrives afterward describes a choice already made."
+      ],
+      "framework_ref": "NIST IR 8286 Rev. 1 Section 3.8 (Creating and Maintaining an Enterprise-Level Cybersecurity Risk Register); NIST CSF 2.0 GV.RR-03 (adequate resources are allocated commensurate with the cybersecurity risk strategy, roles, responsibilities and policies)",
+      "related_concepts": [
+        "Risk reporting",
+        "Risk-based decision-making",
+        "Budget cycle"
+      ],
+      "_provenance": "Authored from concept: notes 3C5.2 (Reporting for the Audience and the Decision: send each report, stating the decision needed, to someone with authority to decide, before that decision is taken). Round 25, 12 Nov 2026: original scenario (an antique dealer's partners set spending each January, while the risk analyst's yearly report, sent in April, has shown online fraud above appetite for two years with no treatment funded), written for KaiSip in our own words; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. CRISC D3 round 25 (crisc_d3_273 to 280). Round 25 asks: 3C5 slot (key A, analysis); 'Estimate' opens the runner-up (B), keyed nowhere; no option names an owner. Not escalation routes set in advance, the board unable to see part of the profile, or technical scores restated in business terms (paused): the lesson is timing a report to the decision it informs (task 21). Neighbours checked: crisc_d3_048 (report to the level that can decide, with the decision needed; consistent, here the timing), 082 (decision and options for leaders), 127 (a breach escalated outside the cycle; paused escalation family, not used), 019, 081, 200, 239; crisc_d1_127 (0.22). TF-IDF top 0.27 crisc_d3_260 (dates only, no mirror). Wrong options against older keys and cues: top 0.26 (crisc_d3_104), none above 0.30. Audit 12 Nov 2026 (round 25 standards audit): no content change. Neighbours added: crisc_d3_247 (an emerging risk reported before a pending board decision; same timing principle in 3C6, consistent).",
       "style_version": 2
     }
   ]
