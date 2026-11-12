@@ -640,8 +640,8 @@
           "definition": "Issue management is logging each control weakness, audit finding or incident lesson with an owner, an action and a due date, then tracking it until closure is validated.",
           "why_it_matters": "Findings that are logged but never really fixed leave the same risk open while reports show progress. Overdue items are often where the next incident comes from.",
           "how_it_works": [
-            "Log every issue in one tracker, linked to the risk it affects and ranked by that risk's rating, since audits, regulators and reviews each rate on their own scale.",
-            "Give each issue one owner, an agreed action and a realistic due date.",
+            "Log every issue in one tracker, linked to the risk it affects and ranked by that risk's rating, since audits, regulators and reviews rate on their own scales.",
+            "Give each issue one owner, an agreed action and a due date; repeats of one problem, such as an AI tool's errors, become one finding at their cause.",
             "Escalate overdue or slipping items to the risk owner and, past a set point, to senior management.",
             "Close an issue on evidence the fix works, not the owner's word, or, within appetite, on the risk owner's recorded acceptance.",
             "Re-rate the risk once a fix is validated; a fix that differs from the agreed action is first evaluated for the risk it leaves, then agreed with the risk owner.",
@@ -965,8 +965,8 @@
           "definition": "Control frameworks are published models and catalogs, such as COBIT 2019, NIST SP 800-53 Rev. 5 and NIST CSF 2.0, that organizations tailor into their own control set.",
           "why_it_matters": "A framework gives a tested starting point and a common language with auditors and regulators. Adopting it whole, without tailoring, spends money on controls that do not fit the risks.",
           "how_it_works": [
-            "COBIT 2019 sets governance and management objectives for enterprise IT, tailored through design factors, such as strategy, size and threat landscape, that set objective priorities and target capability levels.",
-            "NIST SP 800-53 Rev. 5 is a catalog of security and privacy controls; its starting baselines are published separately in SP 800-53B.",
+            "COBIT 2019 sets governance and management objectives, tailored through design factors, such as strategy and threat landscape, that set objective priorities and target capability levels.",
+            "NIST SP 800-53 Rev. 5 is a security and privacy control catalog; SP 800-53B holds its baselines, and overlays, such as SP 800-82's for OT, tailor them.",
             "CSF 2.0 lists outcomes under six functions, Govern among them, without prescribing the controls that achieve them.",
             "Tailor by scoping out what does not apply, setting parameter values from the organization's own risk and operations, and adding controls for risks the baseline misses.",
             "Map internal controls to every framework and regulation that applies, so one control can meet several requirements; re-map when a revision materially changes content.",
@@ -1288,12 +1288,12 @@
           "definition": "Design testing asks whether a control could meet its objective as built; operating testing asks whether it actually worked consistently over a period, usually by sampling.",
           "why_it_matters": "A well-designed control can still be skipped in practice. Reporting a design test as proof of operation overstates assurance and leaves the risk owner relying on a control that may not run.",
           "how_it_works": [
-            "Test design first, often with a walkthrough of one transaction; a badly designed control needs no operating test.",
-            "Test operation over a defined period, covering the sites where people run it, with a sample sized to frequency and risk; sample each version of a control changed mid-period.",
+            "Test design first, by walking through one transaction; a badly designed control needs no operating test, and a new one waits for enough runs to sample.",
+            "Test operation over a period, covering the sites where people run it, with a sample sized to frequency and risk; sample each control version changed mid-period.",
             "Draw the sample from the complete population, ideally system-generated, with the tester choosing the items; test any system report the control relies on for completeness.",
             "Evaluate each failure: find its cause and decide whether the control can still be relied on.",
             "Owner-only tests are self-assessment, useful for monitoring; independent assurance needs internal audit or outside assessors; second-line tests are objective, not independent.",
-            "Start from recent internal audit results as independent evidence: check their scope and date fit, then aim further testing at their exceptions rather than repeating audit's work."
+            "Start from recent internal audit results: check scope and date fit, then aim further tests at their exceptions, not repeating audit's work."
           ],
           "compare": {
             "columns": [
@@ -1845,7 +1845,7 @@
             "Measurable: the data is available, consistent and cheap enough to collect regularly.",
             "Predictive: a leading indicator changes before the risk event, not after it.",
             "Thresholds and owner: each KRI has limits tied to tolerance and a person who acts on a breach.",
-            "Keep the set small and focused on the top risks, and review it as the risks change.",
+            "Keep the set small, focused on the top risks and reviewed as they change; a KRI that stayed green while its risk occurred is replaced, not retuned.",
             "Check the KRI sits on the scenario's own path: for data copied before staff leave, watch downloads during notice, not account removal afterward."
           ],
           "types": [
@@ -2047,7 +2047,7 @@
           "why_it_matters": "People who run a process see risks and workarounds that outside reviews miss. Trends show whether exposure is improving or slipping, which a single snapshot cannot.",
           "how_it_works": [
             "The risk function designs the questions and facilitates; managers answer for their own areas.",
-            "CSA builds ownership and awareness, but results are self-reported, so key answers are spot-checked independently.",
+            "CSA builds ownership and awareness, but results are self-reported: owners attach records behind key ratings, and the risk function spot-checks them independently.",
             "Trend analysis compares indicator values over several periods to show direction, speed and seasonal patterns; compare a rise with the same months of past years before calling it new.",
             "A worsening trend can justify action even before a threshold is breached.",
             "A worsening KCI goes to the control owner, who fixes the control; the risk function challenges and tracks it but does not take over running it.",
@@ -2164,7 +2164,7 @@
           "how_it_works": [
             "Heat maps show relative position but not trend; add trend arrows fed by each risk's KRI history, because a risk can hold its cell while its drivers worsen.",
             "Heat-map scores are ordinal, so cells cannot be added or averaged meaningfully.",
-            "Scorecards and dashboards show indicators against thresholds and trend, not raw counts alone.",
+            "Scorecards and dashboards show indicators against thresholds and trend, not raw counts alone, and control test results against the risks they protect, since a pass rate can hide failures.",
             "Every visual needs a date, a data source and a note of known limitations; after a rating scale changes, restate earlier periods on the new scale.",
             "Draw heat-map color bands from the approved appetite and tolerance, not a tool's default scoring, so a risk's color shows where it stands against appetite.",
             "Show each period's KRI value against its thresholds; a rolling average smooths single-period breaches away, so keep it as a trend line."
