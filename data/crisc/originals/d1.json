@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "comment": "Original CRISC practice questions for Domain 1 (Governance), written to the CRISC exam content outline effective 2025 (delivered since 3 Nov 2025). Every item is authored from public concepts and KaiSip's own CRISC study notes (data/crisc/notes/d1.json), with no reference to the CRISC Review Manual, ISACA's QAE database, ISACA's practice quiz or any prep bank. Schema: docs/content/QUESTION_SCHEMA.md; writing rules: docs/content/EXAM_STYLE_V2.md and .claude/agents/crisc-standards-auditor.md. Not affiliated with or endorsed by ISACA®. CRISC® is a registered trademark of ISACA. Pilot batch crisc_d1_001 to crisc_d1_020, 30 Oct 2026. Round 7 crisc_d1_104 to crisc_d1_110, 4 Nov 2026. Round 8 crisc_d1_111 to crisc_d1_117, 5 Nov 2026. Round 9 crisc_d1_118 to crisc_d1_124, 5 Nov 2026. Round 10 crisc_d1_125 to crisc_d1_130, 5 Nov 2026. Round 12 crisc_d1_138 to crisc_d1_143, 5 Nov 2026. Round 13 crisc_d1_144 to crisc_d1_150, 12 Nov 2026. Round 14 crisc_d1_151 to crisc_d1_156, 12 Nov 2026. Round 15 crisc_d1_157 to crisc_d1_163, 12 Nov 2026. Round 17 crisc_d1_170 to crisc_d1_176, 12 Nov 2026.",
+    "comment": "Original CRISC practice questions for Domain 1 (Governance), written to the CRISC exam content outline effective 2025 (delivered since 3 Nov 2025). Every item is authored from public concepts and KaiSip's own CRISC study notes (data/crisc/notes/d1.json), with no reference to the CRISC Review Manual, ISACA's QAE database, ISACA's practice quiz or any prep bank. Schema: docs/content/QUESTION_SCHEMA.md; writing rules: docs/content/EXAM_STYLE_V2.md and .claude/agents/crisc-standards-auditor.md. Not affiliated with or endorsed by ISACA®. CRISC® is a registered trademark of ISACA. Pilot batch crisc_d1_001 to crisc_d1_020, 30 Oct 2026. Round 7 crisc_d1_104 to crisc_d1_110, 4 Nov 2026. Round 8 crisc_d1_111 to crisc_d1_117, 5 Nov 2026. Round 9 crisc_d1_118 to crisc_d1_124, 5 Nov 2026. Round 10 crisc_d1_125 to crisc_d1_130, 5 Nov 2026. Round 12 crisc_d1_138 to crisc_d1_143, 5 Nov 2026. Round 13 crisc_d1_144 to crisc_d1_150, 12 Nov 2026. Round 14 crisc_d1_151 to crisc_d1_156, 12 Nov 2026. Round 15 crisc_d1_157 to crisc_d1_163, 12 Nov 2026. Round 17 crisc_d1_170 to crisc_d1_176, 12 Nov 2026. Round 18 crisc_d1_177 to crisc_d1_182, 12 Nov 2026.",
     "schema_version": 1
   },
   "domain": 1,
@@ -6517,6 +6517,228 @@
         "Reporting criteria"
       ],
       "_provenance": "Authored from concept: notes 1B5.2 (Compliance Obligations as a Source of Risk: each obligation has an owner and the controls that meet it; obligation owners decide how to meet each requirement; bullet added in round 17: a rule that leaves a test open needs criteria set by the obligation's owner). Round 17, 12 Nov 2026: original scenario (a new rule makes a law firm report significant cyber incidents to its regulator, but its incident procedure never defines significant, so handlers judge it differently) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Round 17 asks covered: owner shape k=2 split, with the key (C) and an easy distractor (B) naming an owner and the runner-up (A) naming none; a 'Have' key; 'Train' on the runner-up, a wrong option; 'report' also on two wrong options (B, D) so the key does not echo the stem alone; no legal-counsel option; no wait or defer option; no incidental periods; setting law firm. Neighbours checked: crisc_d1_059 (a signed client notice term the procedure must meet), crisc_d1_163 (IT's view that a new law does not apply; counsel confirms), crisc_d1_095 (new rules found too late; monitor drafts), crisc_d1_112 (obligations as risk sources), crisc_d1_045 (a new AI law's impact), crisc_d1_020 (a clean examination result), crisc_d3_054 (breach-notice and assurance terms added to a vendor contract before signing; a certificate-in-place-of-terms idea for this slot was dropped because its keyed action matched that item), CISA d4_143 (an availability figure that excludes planned maintenance; an SLA idea for this slot was dropped as a mirror), CISA d2_214 (management proposes not complying with a 72-hour breach-report law), CISA d5_164 (incident severity ranked by CVSS alone), CISA d5_179 (a vendor's breach notice). None keys the obligation's owner setting the firm's criteria for an open term in a reporting rule. Review 12 Nov 2026 (round 17 concept review and blind test): Eliminate tip drops the false absolute 'IT ... owns no obligations' (IT functions own some technical obligations); B is wrong because the reporting decision belongs to the obligation's owner.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d1_177",
+      "domain": 1,
+      "subtopic": "1A1 Strategy, goals and objectives. Online memorial pages and the privacy appetite",
+      "principle_id": "escalate-to-the-limit-setter",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "A funeral services company's board approved online memorial pages as a strategy; even with every planned control, the pages' target privacy risk exceeds the board's appetite. What should the risk analyst recommend as BEST?",
+      "options": {
+        "A": "Take the strategy's conflict with appetite to the board",
+        "B": "Narrow the strategy's scope with the pages' owner to fit appetite",
+        "C": "Reset the board's privacy appetite with the pages' owner",
+        "D": "Make the software vendor owner of the pages' privacy risk"
+      },
+      "correct": "A",
+      "key_concept": "When planned treatment cannot bring an approved strategy within appetite, the board that set both decides what changes: strategy, appetite or investment.",
+      "pre_read": "Notice which two decisions now conflict, and who made each of them.",
+      "correct_explanation": "The board approved both the strategy and the appetite, and the analysis shows they cannot both hold: with every planned control, the pages stay above appetite. Only the board can settle that, by changing the strategy, revisiting the appetite or funding more treatment. Narrowing the scope with the pages' owner is the runner-up: it may fit appetite, but it rewrites a strategy the board approved without the board.",
+      "wrong_explanations": {
+        "B": "A smaller scope may fit appetite, but changing an approved strategy is the board's decision; the owner and analyst would be rewriting it without the board.",
+        "C": "The board sets risk appetite; neither the pages' owner nor the analyst can reset it to make a strategy fit.",
+        "D": "A vendor can carry some costs, but accountability for families' data stays with the company; a vendor cannot own the company's risk."
+      },
+      "tips": [
+        "Eliminate: C resets an appetite that only the board can set, and D hands the company's accountability for families' data to a vendor.",
+        "Final two: A beats B because the conflict is between two board decisions, the strategy and the appetite; trimming the strategy without the board settles it at the wrong level.",
+        "Exam cue: when planned treatment cannot bring an approved strategy within appetite, take the conflict to the board that set both; never trim either yourself."
+      ],
+      "framework_ref": "NIST IR 8286 Rev. 1 Section 2.1 (Overview of ERM: risk appetite, set by the most senior leaders, is the guidepost for decisions such as setting strategy and selecting objectives); COBIT 2019 EDM03 (Ensured Risk Optimization); ISACA Glossary (risk appetite)",
+      "related_concepts": [
+        "Strategy and appetite alignment",
+        "Target risk",
+        "Board decisions"
+      ],
+      "_provenance": "Authored from concept: notes 1A1.2 (The Goals Cascade and Strategic Change: risk input supports setting strategy; bullet extended in round 18: a strategy that planned treatment cannot bring within appetite goes back to the board). Round 18, 12 Nov 2026: original scenario (a funeral services company's board approved online memorial pages as a strategy, but even with every planned control their target privacy risk exceeds the board's appetite) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Round 18 asks covered: the batch's three-owner item, keying its lone non-owner option (A), with owners on the runner-up (B) and both easy distractors (C, D); 'board' also on a wrong option (C) so the key does not echo the stem alone; 'appetite' on three options; no Have/Ask on wrong options; no wait or defer option; no incidental periods; setting funeral services company. Neighbours checked: crisc_d1_068 (combined exposure above appetite escalated to the board; a different trigger, each risk within appetite), crisc_d1_091 (capacity falls below appetite; board reviews appetite), crisc_d1_039 (exposure well below appetite), crisc_d1_083 (risk input while strategic options are compared), crisc_d1_021 (risks to a new strategy's objectives), crisc_d1_111 (treatment outlasting a shortened objective), crisc_d1_096 (within appetite, the owner accepts for launch), crisc_d1_170 (two owners' objectives; executive over both), crisc_d3_003 (a strategic service above appetite is mitigated, not closed; there treatment reaches appetite, here it cannot; keep apart in practice sets), aaia_d1_028 (an AI strategy that plans more automation than the board's appetite would accept; the auditor's concern, not the analyst's recommendation), CISA d2_054 (policies compiled from procedures). Wrong options read against older Exam cues: crisc_d3_003's cue (treat rather than avoid an activity that serves an objective) does not key B, which trims the board's strategy without the board. None keys taking an approved strategy whose planned treatment cannot reach appetite back to the board.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d1_178",
+      "domain": 1,
+      "subtopic": "1A3 Organizational culture and ethics. Automation proposals after a failed pilot",
+      "principle_id": "root-cause-over-symptom",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "A brick maker's plant managers reject every automation proposal since an approved kiln-automation pilot failed and cost its two sponsors their jobs; board appetite welcomes moderate efficiency risk. What is the risk analyst's BEST recommendation?",
+      "options": {
+        "A": "Rate each rejected automation proposal's risk with its business owner",
+        "B": "Name the CIO owner of automation decisions at the plants",
+        "C": "Train plant managers on the board's appetite statement",
+        "D": "Ask executives to judge failures by the decisions behind them"
+      },
+      "correct": "D",
+      "key_concept": "Leaders set the risk people actually take through what they punish; penalizing well-judged failures makes staff avoid risks the appetite welcomes.",
+      "pre_read": "Ask what changed the managers' behavior, and who controls that cause.",
+      "correct_explanation": "The rejections began when an approved pilot's failure cost its sponsors their jobs. Executives set the tolerance people act on through what they penalize, so managers now avoid risks the board's appetite welcomes. Asking executives to judge failures by the decisions behind them removes that cause. Rating each proposal is the runner-up: it shows a proposal fits appetite, but fear of sanctions, not missing ratings, drives the rejections.",
+      "wrong_explanations": {
+        "A": "A rating can show a proposal fits appetite, but managers reject proposals for fear of sanctions after the pilot, and a rating does not remove that fear.",
+        "B": "Plant automation serves production objectives, so its decisions belong to the business; naming IT their owner leaves the managers' fear in place.",
+        "C": "Training explains the written appetite, but managers act on what executives punished after the pilot, which outweighs the statement."
+      },
+      "tips": [
+        "Eliminate: B moves business decisions to IT and leaves the cause untouched, and C trains on a written appetite that the sanctions after the pilot already outweigh.",
+        "Final two: D beats A because the rejections come from how executives punished an approved failure; rating each proposal adds analysis but leaves that fear in place.",
+        "Exam cue: when people avoid risks the appetite welcomes, look at what leaders punished; culture follows how failure is treated more than the written appetite."
+      ],
+      "framework_ref": "NIST SP 800-39 Section 2.7 (Organizational Culture: senior leaders set risk tolerance formally through strategy and guidance and informally through the actions they reward and penalize); ISACA Glossary (risk culture)",
+      "related_concepts": [
+        "Risk culture",
+        "Response to failure",
+        "Tone at the top"
+      ],
+      "_provenance": "Authored from concept: notes 1A3.1 (Risk Culture and Tone at the Top: leaders signal priorities through what they reward and tolerate; bullet extended in round 18: punishing well-judged failures teaches staff to avoid risks the appetite welcomes). Round 18, 12 Nov 2026: original scenario (a brick maker's plant managers reject every automation proposal since an approved kiln-automation pilot failed and cost its two sponsors their jobs, while board appetite welcomes moderate efficiency risk) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Round 18 asks covered: owner shape k=2 split, with the runner-up (A) and an easy distractor (B) naming an owner and the key naming none; an 'Ask' key; 'Train' on a wrong option (C); 'each' on a wrong option (A) while the key carries none; no Have/Ask on wrong options; no wait or defer option; no incidental periods; setting brick maker. Neighbours checked: crisc_d1_024 (near-miss reports counted against ratings), crisc_d1_166 (shifts cut after a report), crisc_d1_055 (CEO praise for a skipped review), crisc_d1_109 (consequences at every level for deliberate breaches; this item is the counterpart for a well-judged failure), crisc_d1_146 (sign-off friction on AI overrides), crisc_d1_006 and crisc_d1_122 (incentives that reward bypassing controls), crisc_d1_125 (the status quo rated against the objective), crisc_d4_049 (executives exempted from sign-in checks), CISA d5_170, CISA d4_177, CISA d5_104 and cc_d2_015 (blame after incidents or phishing clicks makes staff hide mistakes; those key no-blame reviews of errors, this item keys judging risk decisions by their quality when a sanctioned risk fails). Wrong options read against older Exam cues: crisc_d1_125's cue (rate the status quo against the objective) does not key A, which rates the proposals while the stem gives the cause as fear of sanctions. None keys executives judging failed risks by the decisions behind them so staff take the risks the appetite welcomes.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d1_179",
+      "domain": 1,
+      "subtopic": "1A4 Policies and standards. Cloud ban after an appetite change",
+      "principle_id": "appetite-drives-response",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "Which of the following should the risk analyst recommend as BEST when an office cleaning contractor's board raises its technology risk appetite but its IT standard still bans all cloud apps?",
+      "options": {
+        "A": "Rate each requested cloud app's risk against the new appetite",
+        "B": "Refer the standard to its owner to match the new appetite",
+        "C": "Lift the standard's ban on cloud apps across the contractor",
+        "D": "Publish the new cloud-app rules as an advisory guideline for teams"
+      },
+      "correct": "B",
+      "key_concept": "Policies and standards trace back to risk appetite; when the board changes its appetite, standards set under the old one go back to their owners.",
+      "pre_read": "Compare what the board will now accept with what the standard still requires.",
+      "correct_explanation": "Standards should be as strict as the risk the board is willing to take. The board has raised its appetite, so a standard set under the old one now blocks risks the board accepts, and its owner should realign it. Rating each requested app is the runner-up: it measures apps against the new appetite, but the mandatory standard still bans them, so even an app that fits cannot be used until the rule changes.",
+      "wrong_explanations": {
+        "A": "A rating shows whether an app fits the new appetite, but the mandatory standard still bans every cloud app until its owner changes it.",
+        "C": "A higher appetite is not unlimited; dropping the ban leaves cloud apps with no rules, not with rules set to the new appetite.",
+        "D": "A guideline is advisory, so teams may depart from its cloud rules, and the mandatory standard would still ban the apps it describes."
+      },
+      "tips": [
+        "Eliminate: C drops the control instead of setting it to the new appetite, and D puts needed rules in an advisory guideline while the standard's ban stays.",
+        "Final two: B beats A because the mandatory standard still bans every cloud app; rating apps one by one cannot let teams use them until the rule itself is realigned.",
+        "Exam cue: when appetite moves, the rules beneath it move too, through their owners; a standard stricter or looser than appetite is the gap to fix."
+      ],
+      "framework_ref": "NIST CSF 2.0 GV.PO-02 (policy for managing cybersecurity risks is reviewed, updated, communicated and enforced to reflect changes); NIST CSF 2.0 GV.RM-02 (risk appetite and risk tolerance statements are established, communicated and maintained)",
+      "related_concepts": [
+        "Policy hierarchy",
+        "Risk appetite",
+        "Standard review"
+      ],
+      "_provenance": "Authored from concept: notes 1A4.1 (The Policy Hierarchy: every layer traces back to risk appetite; bullet extended in round 18: when the board changes its appetite, owners realign their layers, looser or stricter). Round 18, 12 Nov 2026: original scenario (an office cleaning contractor's board raises its technology risk appetite, but its IT standard still bans all cloud apps) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Round 18 asks covered: a short 'Which of the following' stem; owner shape k=1 with the lone owner option keyed (B), neither the longest nor the shortest option; 'each' on a wrong option (A) while the key carries none; 'appetite' also on two wrong options so the key does not echo the stem alone; no 'may' hedge on any option; no Have/Ask on wrong options; no wait or defer option; no incidental periods; setting office cleaning contractor. Neighbours checked: crisc_d1_026 (a standard scaled to system risk after delays; a different trigger, low-risk systems, not an appetite change), crisc_d1_069 (policy behind a business change), crisc_d1_067 (KRI thresholds after an appetite change; 1B4), crisc_d1_074 and CISA d5_205 (a needed control moved from a guideline into a standard), crisc_d1_126 (a guideline departure is not a finding), crisc_d1_154 (many exceptions to one rule), crisc_d1_009 (no AI policy; assess the exposure first), crisc_d4_057 (an approved AI tool after a block). Wrong options read against older Exam cues: crisc_d1_009's cue (when new technology outpaces policy, assess first) does not key A here, because the gap is a standard that lags a known appetite change, not an unassessed technology; crisc_d1_026's and crisc_d1_069's cues support the key. None keys referring a standard back to its owner after the board raises its appetite.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d1_180",
+      "domain": 1,
+      "subtopic": "1A5 Business processes and resilience. Tug dispatch on an AI service",
+      "principle_id": "match-decision-to-role",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A harbor tug operator assigns tugs to arriving ships through a vendor's AI scheduling service; its dispatch continuity plan says only to call IT if the service fails. What is the risk analyst's BEST recommendation?",
+      "options": {
+        "A": "Have the dispatch process owner decide the manual fallback",
+        "B": "Make the AI service's owner in IT design a fallback for dispatch",
+        "C": "Add a second AI scheduling vendor as a standby",
+        "D": "List the service's restore steps in the IT recovery plan"
+      },
+      "correct": "A",
+      "key_concept": "A process that depends on an AI service needs a manual fallback decided by the process owner; IT restores the service, not the process.",
+      "pre_read": "Ask what dispatchers would actually do during an outage, and who should decide it.",
+      "correct_explanation": "How dispatch carries on without the AI service, such as which ships get tugs first and what delay is acceptable, is a business decision, so the dispatch process owner decides the manual fallback and IT supports it. The service's owner in IT is the runner-up: IT can restore the service and advise, but it does not own the dispatch process or decide what service level the business can accept.",
+      "wrong_explanations": {
+        "B": "IT owns restoring the AI service, but how tugs are assigned without it, and at what service level, is the dispatch process owner's decision.",
+        "C": "A second service is a solution picked before the process owner has set what dispatch needs, and dispatchers still have no manual method if both fail.",
+        "D": "The IT recovery plan restores the service; it does not tell dispatchers how to keep assigning tugs while the service is down."
+      },
+      "tips": [
+        "Eliminate: C picks a technical standby before the process owner sets what dispatch needs, and D restores the service but leaves dispatchers with no way to work meanwhile.",
+        "Final two: A beats B because a fallback decides how the business runs without the service; that is the process owner's call, while IT restores and supports.",
+        "Exam cue: when an AI service a process depends on fails, the process owner decides the fallback and the service level it must keep; IT and vendors deliver the technology."
+      ],
+      "framework_ref": "NIST AI 100-1 (AI RMF 1.0) GOVERN 6.2 (contingency processes are in place to handle failures or incidents in third-party data or AI systems deemed to be high-risk); NIST SP 800-34 Rev. 1 Section 2.2 (Types of Plans: Business Continuity Plan and Disaster Recovery Plan); COBIT 2019 DSS04 (Managed Continuity)",
+      "related_concepts": [
+        "AI service dependency",
+        "Manual fallback",
+        "Process owner"
+      ],
+      "_provenance": "Authored from concept: notes 1A5.1 (Process Ownership and Critical Processes: process owners set recovery needs that IT and suppliers meet; bullet extended in round 18: that includes the manual fallback when an AI or other service fails). Round 18, 12 Nov 2026: original scenario (a harbor tug operator assigns tugs to arriving ships through a vendor's AI scheduling service; its dispatch continuity plan says only to call IT if the service fails) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Round 18 asks covered: the batch's AI item, on the assigned angle (the manual fallback when an AI service a process depends on fails, and who decides it); owner shape k=2 with the pair on the final two (key A, runner-up B), the batch's only pair on the final two; a 'Have' key; no Have/Ask on wrong options; no contract or availability-commitment option (crisc_d3_056's runner-up); no wait or defer option; no incidental periods; setting harbor tug operator. Neighbours checked: crisc_d3_056 (a vendor AI service failed for two days; the key is what the fallback is, a tested manual process; this item keys who decides it; keep apart in practice sets), crisc_d2_036 (an AI service missing from the BIA's dependencies), aaia_d1_067 (three vendors on one hosted model), aaia_d1_037 (escrow of model files), cc_d2_130 (a KRI for an AI provider's outages), crisc_d1_027 (a BCP organized around IT systems), crisc_d1_028 (plan after outsourcing), crisc_d1_131 (a supplier outage the plan never listed; the owner maps dependencies), crisc_d1_053 (one owner for a process spanning teams), crisc_d1_063 (interim workaround), crisc_d1_168 (where the runbooks are kept), crisc_d1_160 (shared responders). Wrong options read against older Exam cues: crisc_d1_027's cue (BCP owned by the business; DRP restores systems) and crisc_d3_056's cue (a contingency the business controls) support the key and rule out C and D. None keys the process owner deciding the manual fallback for an AI service a process depends on.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d1_181",
+      "domain": 1,
+      "subtopic": "1B1 Enterprise risk management (ERM). One IT entry in the enterprise register",
+      "principle_id": "objectives-first",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A honey cooperative's enterprise register lists one IT risk, 'systems failure', owned by the IT manager, though the systems run member payments and export certificates. Which of the following is the risk analyst's BEST recommendation?",
+      "options": {
+        "A": "Split it into one scenario for each IT system",
+        "B": "Add the finance manager as the entry's joint owner",
+        "C": "Rate it on the IT department's own impact scale",
+        "D": "Recast it as scenarios held by the affected process owners"
+      },
+      "correct": "D",
+      "key_concept": "In ERM, IT risk is stated by its effect on business objectives, as scenarios owned by the managers whose processes it threatens.",
+      "pre_read": "Ask what a leader reading this entry could compare or decide from it.",
+      "correct_explanation": "One 'systems failure' entry owned by IT hides what the cooperative stands to lose, such as late member payments and blocked exports. Recast as scenarios, each held by the manager whose process and objective it threatens, the risks can be rated on the enterprise scale, compared and decided. Splitting by system is the runner-up: it adds detail, but the entries still describe IT components owned by IT, not the business harm leaders weigh.",
+      "wrong_explanations": {
+        "A": "Entries per system add technical detail, but they still describe IT components owned by IT, not the payment and export harm leaders must weigh.",
+        "B": "Accountability for a risk sits with one owner; a joint owner blurs who decides, and the entry still hides which objectives are at risk.",
+        "C": "Enterprise risks are compared on one enterprise scale; an IT-only scale leaves this risk hard to rank against the rest of the register."
+      },
+      "tips": [
+        "Eliminate: B splits accountability between two owners, and C rates an enterprise entry on a scale the rest of the register does not use.",
+        "Final two: D beats A because enterprise risk is stated by its effect on business objectives; splitting by system adds detail but keeps the entry technical and IT-owned.",
+        "Exam cue: in an enterprise register, IT risk appears as business scenarios with business owners, not as one IT entry held by IT."
+      ],
+      "framework_ref": "NIST IR 8286 Rev. 1 Section 2.2 (The Gap Between CSRM Output and ERM Input: practitioners consider how cybersecurity risks influence the enterprise's strategic, operations, reporting and compliance objectives); ISACA Glossary (risk owner); ISACA Glossary (enterprise risk management)",
+      "related_concepts": [
+        "IT risk as business risk",
+        "Risk scenarios",
+        "Enterprise risk register"
+      ],
+      "_provenance": "Authored from concept: notes 1B1.1 (IT Risk Within Enterprise Risk: IT risk is expressed by its effect on enterprise objectives; bullet extended in round 18: one 'IT failure' entry held by IT is recast as business scenarios with business owners). Round 18, 12 Nov 2026: original scenario (a honey cooperative's enterprise register lists one IT risk, 'systems failure', owned by the IT manager, though the systems run member payments and export certificates) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Round 18 asks covered: a 'Which of the following' stem; owner shape k=2 split, with the key (D) and an easy distractor (B) naming an owner and the runner-up (A) naming none; 'scenario' also on the runner-up so the key does not carry it alone; 'each' on a wrong option (A); no Have/Ask on wrong options; no wait or defer option; no incidental periods; setting honey cooperative. Neighbours checked: crisc_d1_033 (an IT register kept apart from the enterprise one), crisc_d1_012 (IT ratings not normalized), crisc_d1_051 (one risk filed in two categories), crisc_d1_148 (IT treatments ranked by enterprise risks), crisc_d1_106 (Risk IT categories), crisc_d1_038 (AI risks mapped to objectives in the profile; 1B3), crisc_d1_052 (two accountable names; 1A2), crisc_d1_005 and crisc_d1_144 (unowned or under-authorized owners; 1A2), crisc_d1_174 (a sold division's risks), cc_d2_140 (IT and compliance keep separate lists). Wrong options read against older Exam cues: crisc_d1_033's cue (one taxonomy, one set of scales) supports the key and rules out C. None keys recasting a single IT-owned 'systems failure' entry as business scenarios held by the affected process owners.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d1_182",
+      "domain": 1,
+      "subtopic": "1B2 Lines of defense. Site managers' access reviews",
+      "principle_id": "lines-of-defense",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A quarry operator's site managers want to drop their reviews of who can edit weighbridge records, since the risk team and internal audit each test them yearly. What is the risk analyst's BEST advice?",
+      "options": {
+        "A": "Rely on the risk team's and internal audit's tests",
+        "B": "Move the site managers' reviews to the second-line risk team",
+        "C": "Keep the site managers' own reviews of weighbridge access",
+        "D": "Make internal audit the owner of weighbridge access reviews"
+      },
+      "correct": "C",
+      "key_concept": "Second- and third-line tests check first-line controls; they do not replace them, so management keeps running its own reviews.",
+      "pre_read": "Note who performs each activity in the stem and what each one is for.",
+      "correct_explanation": "The managers' reviews are the control itself, run by first-line management. The risk team and internal audit test whether that control works; if the reviews stopped, their yearly tests would find no control to test and access would go unreviewed between them. Relying on their tests is the runner-up: it looks efficient, but other lines check the first line's controls rather than replace them.",
+      "wrong_explanations": {
+        "A": "The other lines test whether the managers' reviews work; with the reviews stopped, their tests would find no control and access would go unreviewed for months.",
+        "B": "Running a first-line control would leave the risk team challenging its own work, and site managers would stop owning access to their records.",
+        "D": "Internal audit gives independent assurance; owning a control it also tests would end that independence."
+      },
+      "tips": [
+        "Eliminate: B has the second line run a first-line control it must challenge, and D makes internal audit own a control it independently assures.",
+        "Final two: C beats A because the other lines test the managers' reviews; they check the control, they do not replace it.",
+        "Exam cue: second- and third-line testing checks first-line controls and never stands in for them; the first line keeps running its own."
+      ],
+      "framework_ref": "ISACA Journal 2018 Volume 4 (Roles of Three Lines of Defense for Information Security and Governance); NIST CSF 2.0 GV.RR-02 (roles, responsibilities and authorities related to cybersecurity risk management are established, communicated, understood and enforced)",
+      "related_concepts": [
+        "Three lines",
+        "First-line controls",
+        "Access review"
+      ],
+      "_provenance": "Authored from concept: notes 1B2.1 (The Three Lines and Their Jobs: the first line owns risks and runs controls day to day; bullet extended in round 18: other lines' tests check these controls and never replace them). Round 18, 12 Nov 2026: original scenario (a quarry operator's site managers want to drop their reviews of who can edit weighbridge records, since the risk team and internal audit each test them yearly) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Round 18 asks covered: owner shape k=1 with the lone owner option wrong and on an easy distractor (D); 'Keep' key; no Have/Ask on wrong options; 'site managers' and 'weighbridge' also on wrong options so the key does not echo the stem alone; no wait or defer option; no incidental periods on options (the stem's yearly tests are the deciding fact); setting quarry operator. Neighbours checked: crisc_d1_036 (second line running firewall reviews), crisc_d1_035 (overlapping second- and third-line tests; combined assurance), crisc_d1_065 (unchallenged self-assessments), crisc_d1_121 (a control team inside IT), crisc_d1_128 (audit relying on second-line tests), crisc_d1_150 (second line asked to write management's audit response), crisc_d1_014 (audit offering to design controls), crisc_d1_078 (assurance over the risk process), CISA d2_002 (three lines role assignment). Wrong options read against older Exam cues: crisc_d1_035's cue (coordinate coverage instead of moving work to one line) and crisc_d1_036's cue support the key and rule out B. None keys keeping a first-line control when the other lines' periodic tests are offered in its place.",
       "style_version": 2
     }
   ]

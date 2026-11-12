@@ -57,7 +57,7 @@
             "EA describes layers: business processes, data, applications and technology, and the links between them; before an assessment relies on it, links changed since its last update are confirmed.",
             "An architecture review board checks proposed solutions against approved principles, standards and the target architecture before funding.",
             "Security and privacy requirements are built into the architecture, so each new system inherits them instead of reinventing them.",
-            "AI services are architecture components too: their data flows, model hosting and integrations belong in the EA.",
+            "AI services are architecture components: data flows, model hosting and integrations belong in the EA, and one added outside it escapes rules such as no vendor training on inputs.",
             "Deviations from the architecture are recorded as exceptions with an owner, a reason and an expiry date.",
             "A major architecture change, such as a cloud move or new integrations, leaves earlier ratings out of date, so affected risks are reassessed before any acceptance is renewed."
           ],
@@ -468,7 +468,7 @@
             "Requirements and design: define security, privacy and control requirements alongside functional ones; for a purchased system, put them in the selection criteria and contract.",
             "Build and test: verify requirements are met; business users, not developers, sign off acceptance testing.",
             "Implementation: before go-live, the owner accepts residual risk within appetite or orders more treatment; the assessment is updated first only if scope, data or threats changed.",
-            "Post-implementation review: check whether benefits arrived and risks stayed within appetite.",
+            "Post-implementation review: check whether benefits arrived, risks stayed within appetite and the controls the rating assumes work; months without incidents do not show that.",
             "Disposal is planned: the data owner has old data archived or securely destroyed, and servers and access are retired."
           ],
           "example": "A retailer is rebuilding its loyalty app, and the plan schedules the only security review two weeks before launch. Teo, the risk analyst, shows the sponsor that a late finding could force a costly redesign or a launch with open risk, and proposes adding security and privacy requirements to the design phase gate.",
@@ -1161,7 +1161,7 @@
           "how_it_works": [
             "Tests are chosen by risk and plan maturity, starting with low-disruption methods and building to realistic ones that cover the whole cycle, including the return to the main site.",
             "A test that could disrupt operations is a business decision: the owner of the affected process accepts or limits the disruption, informed by what a failed test could cost.",
-            "Each test has objectives tied to RTO, RPO and the scenarios in the risk register.",
+            "Each test has objectives tied to RTO, RPO and register scenarios; tests run on schedule and after set triggers, and an event meeting none waits for the next.",
             "Observers record what worked, what failed and how long recovery actually took.",
             "Findings go into a corrective action plan with owners and dates, and the plan is retested.",
             "A restore test times only the restore; under ransomware, containment and malware checks come first, so real recovery takes longer than the test shows."
@@ -1463,7 +1463,7 @@
             "NIST SP 800-207 tenets include that network location alone grants no trust and access to each resource is granted per session, so one stolen login cannot roam to other systems.",
             "Decisions use identity, device health, behavior and data sensitivity, and are re-checked over time.",
             "Least privilege and micro-segmentation keep each user, workload or AI agent to what it needs; a segment narrows reach, but each request is still verified.",
-            "Monitoring of assets and access feeds back into policy decisions.",
+            "Monitoring of assets and access feeds back into policy decisions; per-session checks enforce granted rights without judging them, so reviews still remove rights no longer needed.",
             "Adoption is incremental: NIST SP 800-207 describes moving one business process at a time, often piloting on a lower-risk process, to protect the highest-value data.",
             "Until a rollout covers a scenario's users and assets, the register credits only the coverage that is live and working; the finished rollout is target risk."
           ],
@@ -1645,7 +1645,7 @@
           "why_it_matters": "Completion rates show who clicked through a course, not who acts safely. Behavior measures show whether training reduces risk and where to focus, including new risks such as staff pasting data into public AI tools.",
           "how_it_works": [
             "Outcome measures include phishing report rates, repeat-click rates, policy exceptions, incidents caused by error and the share of independently detected mistakes that staff reported themselves.",
-            "Fair simulations are announced as a program, avoid cruel lures, coach rather than shame and report trends, not names.",
+            "Fair simulations are announced as a program but not by date, avoid cruel lures, coach rather than shame and report trends, not names; random timing keeps results honest.",
             "Results are compared over time and by role to target follow-up training.",
             "Shadow AI, staff using unapproved AI tools, is an awareness topic: what data may go where and which tools are approved.",
             "Awareness works best paired with an approved alternative, because bans without options push use underground.",
