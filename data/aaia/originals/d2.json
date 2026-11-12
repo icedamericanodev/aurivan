@@ -8637,25 +8637,25 @@
       "principle_id": "ai-changes-are-changes",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "An Austrian accounting firm's hosted staff assistant gained a 'memory' feature in a vendor update, switched on by default, that keeps client details across chats. What should the IS auditor recommend as BEST?",
+      "question": "An Austrian notary office's hosted staff assistant gained a 'memory' feature in a vendor update, switched on by default, that keeps client details across chats. What should the IS auditor recommend as BEST?",
       "options": {
         "A": "Accept it, since vendor updates fall under the vendor's testing",
-        "B": "Ask staff to switch the feature off in their own settings",
+        "B": "Pin the model version so that new vendor updates cannot apply",
         "C": "Review a sample of stored memories each quarter",
-        "D": "Turn it off firm-wide until assessed and approved as a change"
+        "D": "Turn it off office-wide until assessed and approved as a change"
       },
       "correct": "D",
       "key_concept": "Vendor updates can add capabilities, such as memory or tools, that change data flows and risks; treat them as changes before use.",
-      "pre_read": "Ask what is new in the system after the update, not only in the model.",
-      "correct_explanation": "A memory that keeps client details across chats changes what the assistant stores, who may see it later and how long it lasts, so it is a change for the firm to assess and approve, with the feature off for everyone until then. Asking each person to switch it off leaves the default on for anyone who forgets, and no one has judged the risk.",
+      "pre_read": "Ask what kind of change the update made to the service.",
+      "correct_explanation": "A memory that keeps client details across chats changes what the assistant stores, who may see it later and how long it lasts, so it is a change for the office to assess and approve, with the feature off office-wide until then. Pinning the model version only stops future model changes; it does not switch off a feature already running.",
       "wrong_explanations": {
-        "A": "Tempting because the vendor tests its releases. But vendor testing covers the vendor's product, not this firm's client data or duties.",
-        "B": "Tempting because it disables the feature quickly. But it relies on every person acting, leaves the default on, and skips any assessment.",
+        "A": "Tempting because the vendor tests its releases. But vendor testing covers the vendor's product, not this office's client data or duties.",
+        "B": "Tempting because pinning is a standard control for vendor model updates. But it stops future model changes; the memory feature has already arrived and stays on.",
         "C": "Tempting because it looks at what is stored. But quarterly review finds client details only after they have been kept and reused."
       },
       "tips": [
-        "Eliminate: A relies on the vendor's testing for the firm's own risks, and C reviews stored client details months after the fact.",
-        "Final two: D beats B because switching the feature off firm-wide until it is assessed sets a deliberate default; asking staff to opt out leaves it on for anyone who forgets.",
+        "Eliminate: A relies on the vendor's testing for the office's own risks, and C reviews stored client details months after the fact.",
+        "Final two: D beats B because the memory is a service feature already running; pinning the model version stops future model changes but leaves it on and unassessed.",
         "Exam cue: vendor updates can add features as well as change models. A new capability is a change for the deployer to assess."
       ],
       "framework_ref": "NIST AI 100-1 MANAGE 3.1 (Third-party AI risks monitored and controls applied); NIST SP 800-53 Rev. 5 CM-3 (Configuration Change Control)",
@@ -8664,7 +8664,7 @@
         "New AI features",
         "Change management"
       ],
-      "_provenance": "Authored from concept: notes 2C.3 Vendor Model Updates (a vendor update can add capabilities as well as change the model; new features are changes to assess before use). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 7, 12 Nov 2026.",
+      "_provenance": "Authored from concept: notes 2C.3 Vendor Model Updates (a vendor update can add capabilities as well as change the model; new features are changes to assess before use). Completeness round 1: setting moved from an accounting firm to a notary office (crisc_d4_057 uses an accounting firm with staff generative AI). Review round 2: runner-up B changed from a staff opt-out to model-version pinning, so the AI fact (an update can add a service feature, not only change the model) decides the item; pre_read made neutral. Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 7, 12 Nov 2026.",
       "style_version": 2
     },
     {
@@ -9005,17 +9005,17 @@
       "principle_id": "accuracy-is-not-assurance",
       "difficulty": "foundational",
       "bloom_level": "Foundational",
-      "question": "A Rwandan cooperative bank's loan team says its credit model needs no fairness testing because it uses no sex or age inputs. What should the IS auditor recommend as BEST?",
+      "question": "A Rwandan correctional service's team says its model recommending inmates for vocational training needs no fairness testing because it uses no sex or age inputs. What should the IS auditor recommend as BEST?",
       "options": {
         "A": "Also remove inputs that closely track sex or age",
-        "B": "Test loan outcomes and errors by sex and age anyway",
+        "B": "Compare selection and error rates by sex and age",
         "C": "Treat the model as fair because those traits are excluded",
         "D": "Publish the list of inputs the model uses"
       },
       "correct": "B",
       "key_concept": "Fairness is judged by outcomes; other inputs can stand in for missing traits, so leaving traits out proves nothing.",
       "pre_read": "Separate what the team claims from what has been tested.",
-      "correct_explanation": "Inputs such as job type, income pattern or account history can track sex and age, so a model can treat groups differently without seeing those traits. Only testing outcomes and error rates by sex and age shows whether it does. Removing correlated inputs too still leaves the outcomes untested, may weaken the model, and other proxies can remain.",
+      "correct_explanation": "Inputs such as sentence length, education level or prison wing can track sex and age, so a model can treat groups differently without seeing those traits. Only testing selections and error rates by sex and age shows whether it does. Removing correlated inputs too still leaves the outcomes untested, may weaken the model, and other proxies can remain.",
       "wrong_explanations": {
         "A": "Tempting because it targets proxies. But proxies are hard to find completely, and without testing outcomes no one knows whether unfairness remains.",
         "C": "Tempting because the traits are absent. But other inputs can stand in for them, so absence proves nothing about outcomes.",
@@ -9032,7 +9032,7 @@
         "Proxy variables",
         "Protected traits"
       ],
-      "_provenance": "Authored from concept: notes 2E.2 Fairness Testing Across Groups (leaving protected traits out of the inputs does not make a model fair; outcomes must be tested by group). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 7, 12 Nov 2026.",
+      "_provenance": "Authored from concept: notes 2E.2 Fairness Testing Across Groups (leaving protected traits out of the inputs does not make a model fair; outcomes must be tested by group). Completeness round 1: setting moved from a cooperative bank's credit model to a correctional service's training-place model (lending settings already used in aaia_d1_138, aaia_d1_123 and aaia_d3_031). Review round 2: key reworded to drop the emphasis word and the stem echo. Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 7, 12 Nov 2026.",
       "style_version": 2
     },
     {
@@ -9172,7 +9172,7 @@
         "Final two: C beats D because code hidden in a model file can run on load and often passes antivirus; isolation keeps patient data out of its reach.",
         "Exam cue: a model file is software. Some formats run code when opened, so isolate any outside model before it touches real data, whoever sent it."
       ],
-      "framework_ref": "NIST AI 100-2e2025 Section 3.2 (Supply Chain Attacks and Mitigations); MITRE ATLAS AML.T0010 (AI Supply Chain Compromise)",
+      "framework_ref": "NIST AI 100-2e2025 Section 3.2 (Supply Chain Attacks and Mitigations); MITRE ATLAS AML.T0011.000 (Unsafe AI Artifacts)",
       "related_concepts": [
         "Model supply chain",
         "Model file formats",
@@ -9282,7 +9282,7 @@
         "Final two: D beats C because encoding at display stops scripts whatever the model writes; a prompt instruction can be overridden.",
         "Exam cue: model output is untrusted input to the next system. Look for validation or encoding where the output is used."
       ],
-      "framework_ref": "NIST SP 800-53 Rev. 5 SI-10 (Information Input Validation); NIST AI 100-2e2025 Section 3.3 (Direct Prompting Attacks and Mitigations)",
+      "framework_ref": "NIST SP 800-53 Rev. 5 SI-15 (Information Output Filtering); NIST AI 100-2e2025 Section 3.3 (Direct Prompting Attacks and Mitigations)",
       "related_concepts": [
         "Output handling",
         "Prompt injection",
@@ -9356,7 +9356,7 @@
         "Final two: C beats B because pinned, reviewed descriptions stop a changed tool reaching the agent; a provider's certificate does not.",
         "Exam cue: for agents, outside tool definitions are part of the prompt. Treat changes to them like any other AI change."
       ],
-      "framework_ref": "NIST AI 100-2e2025 Section 3.5 (Security of Agents); NIST SP 800-53 Rev. 5 SR-3 (Supply Chain Controls and Processes)",
+      "framework_ref": "MITRE ATLAS AML.T0011.002 (Poisoned AI Agent Tool); NIST SP 800-53 Rev. 5 SR-3 (Supply Chain Controls and Processes)",
       "related_concepts": [
         "AI agents",
         "Tool poisoning",
@@ -9520,20 +9520,20 @@
       "principle_id": "fix-the-control-not-the-model",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "A Peruvian law firm's contract-review assistant misses clauses past about page 40; lawyers now check those pages by hand, and the team plans retraining on longer contracts. What should the IS auditor recommend FIRST?",
+      "question": "A Peruvian road agency's bid-review assistant misses commitments past about page 40 of proposals; evaluators now hand-check those pages, and the team plans retraining on longer bids. What should the IS auditor recommend FIRST?",
       "options": {
-        "A": "Check how much of each long contract the model receives",
-        "B": "Add more long contracts with late clauses to the retraining data",
+        "A": "Check how much of each long proposal the model receives",
+        "B": "Add more long proposals with late commitments to the retraining data",
         "C": "Switch to a model advertising a larger input limit",
-        "D": "Close the problem, as long contracts are a known limit"
+        "D": "Close the problem, as long proposals are a known limit"
       },
       "correct": "A",
       "key_concept": "When AI failures follow input position or size, check what the integration passes to the model, such as truncated text, before retraining.",
       "pre_read": "Ask what the pattern of failures says about where they start.",
-      "correct_explanation": "Misses that begin at a fixed point in long documents suggest the model never receives the later pages: the integration may cut text at a size or context limit. Checking how much of each contract reaches the model tests that cause directly. Retraining on long contracts treats a model weakness that may not exist; if the text is cut before the model sees it, no training fixes that.",
+      "correct_explanation": "Misses that begin at a fixed point in long documents suggest the model never receives the later pages: the integration may cut text at a size or context limit. Checking how much of each proposal reaches the model tests that cause directly. Retraining on long proposals treats a model weakness that may not exist; if the text is cut before the model sees it, no training fixes that.",
       "wrong_explanations": {
         "B": "Tempting because more examples often help. But if later pages never reach the model, no amount of training data fixes the misses.",
-        "C": "Tempting because a larger limit might fit long contracts. But the cause is unconfirmed, and the cut may sit in the firm's integration, not the model.",
+        "C": "Tempting because a larger limit might fit long proposals. But the cause is unconfirmed, and the cut may sit in the agency's integration, not the model.",
         "D": "Tempting because limits exist. But the limit may sit in the integration and be fixable; closing without a cause leaves the misses."
       },
       "tips": [
@@ -9547,7 +9547,7 @@
         "Context limits",
         "Integration faults"
       ],
-      "_provenance": "Authored from concept: notes 2G.3 Root Cause, Problem Management and Reporting (a failure pattern tied to input position points to the integration, such as truncation, before the model). Review round 1: interim manual checks moved into the stem, so containment is no longer a competing answer. Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 7, 12 Nov 2026.",
+      "_provenance": "Authored from concept: notes 2G.3 Root Cause, Problem Management and Reporting (a failure pattern tied to input position points to the integration, such as truncation, before the model). Review round 1: interim manual checks moved into the stem, so containment is no longer a competing answer. Completeness round 1: setting moved from a law firm's contract review to a road agency's bid review (crisc_d4_021 uses a law firm's contract-review tool). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 7, 12 Nov 2026.",
       "style_version": 2
     },
     {

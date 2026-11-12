@@ -4203,10 +4203,10 @@
       "principle_id": "ai-priority-word-decides",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "A Liechtenstein bank's planned anti-money-laundering model is rated medium risk because analysts will confirm each alert's pre-filled decision; it should raise 1,500 alerts daily for 10 analysts. What should the IS auditor recommend FIRST?",
+      "question": "A Liechtenstein trust company's planned sanctions-screening model is rated medium risk because analysts will confirm each alert's pre-filled decision; it should raise 1,500 alerts daily for 10 analysts. What should the IS auditor recommend FIRST?",
       "options": {
         "A": "Have the model owner reassess the rating against review capacity",
-        "B": "Have management hire enough analysts to support the medium rating",
+        "B": "Have management hire more analysts to support the medium rating",
         "C": "Have the IS auditor review a sample of alerts each day",
         "D": "Let the model close low-score alerts without analyst review"
       },
@@ -4230,7 +4230,7 @@
         "Requirements",
         "Automation bias"
       ],
-      "_provenance": "Authored from concept: notes 1A.3 Business Requirements and Architecture Fit (human review lowers AI risk only if reviewers have the time to check, so review capacity is a requirement to confirm before relying on it). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 7, 12 Nov 2026.",
+      "_provenance": "Authored from concept: notes 1A.3 Business Requirements and Architecture Fit (human review lowers AI risk only if reviewers have the time to check, so review capacity is a requirement to confirm before relying on it). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 7, 12 Nov 2026. Completeness fix, 12 Nov 2026: option B trimmed so the key is the single longest option (length-tell target). Re-audit fix, 12 Nov 2026: setting changed from a bank's anti-money-laundering model to a trust company's sanctions-screening model so it no longer repeats CISA d3_137.",
       "style_version": 2
     },
     {
@@ -4419,38 +4419,38 @@
     {
       "id": "aaia_d1_121",
       "domain": 1,
-      "subtopic": "1B AI governance. AI training for the board",
-      "principle_id": "accuracy-is-not-assurance",
+      "subtopic": "1B AI governance. What an AI incident metric counts",
+      "principle_id": "population-includes-misses",
       "difficulty": "foundational",
       "bloom_level": "Foundational",
-      "question": "A Grenadian insurance group's board will approve its first AI risk appetite next month; directors' only AI training covered the group's chatbot features and productivity gains. What should the IS auditor recommend as BEST?",
+      "question": "A Grenadian insurer's AI program report tells the board of zero AI incidents; the count comes only from service-desk outage tickets for its pricing and claims models. What should the IS auditor recommend as BEST?",
       "options": {
-        "A": "Train directors on the accuracy reported for each group model",
-        "B": "Train directors on how AI systems fail and whom failures harm",
-        "C": "Let the board approve now and refine its appetite after incidents",
-        "D": "Have the IS auditor propose appetite levels for the board"
+        "A": "Add each model's uptime and response time to the board report",
+        "B": "Have model owners count harmful outputs found by sampling decisions",
+        "C": "Have the service desk add a ticket category for AI incidents",
+        "D": "Have the IS auditor confirm the incident count before each report"
       },
       "correct": "B",
-      "key_concept": "Training must match the role: directors who set AI risk appetite need to understand AI failure modes such as drift, bias and confident wrong answers.",
-      "pre_read": "Ask what the board's decision next month actually requires of directors.",
-      "correct_explanation": "Risk appetite states how much AI risk the board will accept, including harm to policyholders. Directors trained only on features and gains cannot weigh failure modes such as drift, bias or confident wrong answers. Training on how AI fails and whom it harms lets them set a meaningful appetite. Reported accuracy, option A, shows how often models are right on average, not how they fail or whom failures harm.",
+      "key_concept": "AI models can be wrong or unfair while running normally, so an AI incident metric must count harmful outputs found by checking decisions.",
+      "pre_read": "Ask which kinds of AI failure the count's source could ever record.",
+      "correct_explanation": "A model can be wrong or unfair while running perfectly: a pricing model can overcharge one group of customers, or a claims model can misroute valid claims, and nothing breaks. Counting only outage tickets makes zero incidents a measure of uptime, not harm. The metric should count harmful outputs that model owners find by sampling decisions. A new ticket category, option C, only sorts tickets people raise; silent wrong outputs raise none.",
       "wrong_explanations": {
-        "A": "Tempting because accuracy sounds like a risk measure. But an average shows how often models are right, not how they fail, whom failures harm, or what appetite should cover.",
-        "C": "Tempting because experience teaches. But appetite should guide decisions before harm occurs; learning from incidents means policyholders bear the harm first.",
-        "D": "Tempting because the IS auditor understands AI risk. But proposing appetite levels is management's and the board's work; the IS auditor would later audit their own proposal, impairing independence."
+        "A": "Tempting because availability is easy to report. But uptime shares the outage tickets' blind spot: a model can run perfectly while its outputs harm customers.",
+        "C": "Tempting because clearer categories improve reporting. But a category only sorts tickets someone raises; wrong outputs break nothing, so they still raise no tickets.",
+        "D": "Tempting because the IS auditor checks figures. But confirming each count makes the IS auditor part of the metric's operation, and a confirmed count still misses harmful outputs."
       },
       "tips": [
-        "Eliminate: D has the IS auditor shape what the board must own, and C waits for incidents to inform appetite.",
-        "Final two: B beats A because appetite sets how much AI risk is acceptable; average accuracy hides how models fail and who bears the harm.",
-        "Exam cue: a board setting AI risk appetite must first understand how AI fails (drift, bias, confident wrong answers) and who bears the harm; training on features and gains is not enough."
+        "Eliminate: A adds another measure of whether models run, not whether their outputs harm, and D has the IS auditor operate the reporting.",
+        "Final two: B beats C because wrong or unfair outputs break nothing and raise no tickets; sampling decisions finds them, while a new category just sorts the same outage tickets.",
+        "Exam cue: AI often fails silently; an incident metric fed only by outage tickets reports uptime, not whether models harm people."
       ],
-      "framework_ref": "NIST AI 100-1 GOVERN 2.2 (AI risk management training for personnel and partners); NIST AI 100-1 GOVERN 2.3 (Executive leadership takes responsibility for AI risk decisions)",
+      "framework_ref": "NIST AI 100-1 MANAGE 4.3 (Incidents and errors communicated and tracked); NIST AI 100-1 GOVERN 4.3 (Practices enable AI testing, incident identification and information sharing)",
       "related_concepts": [
-        "AI literacy",
-        "Board oversight",
-        "Risk appetite"
+        "AI incidents",
+        "Program metrics",
+        "Silent failure"
       ],
-      "_provenance": "Authored from concept: notes 1B.3 Program Metrics, Awareness and Workforce Impact (people who approve AI risk need training on how AI fails and whom it harms, not only on what it can do). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 7, 12 Nov 2026.",
+      "_provenance": "Authored from concept: notes 1B.3 Program Metrics, Awareness and Workforce Impact (program metrics track whether governance works, such as AI incidents; an AI model can be wrong or unfair while running normally, so an incident count fed only by outage tickets misses harmful outputs). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 7, 12 Nov 2026. Completeness fix, 12 Nov 2026: re-angled from board training on AI failure modes (the frame of aaia_d1_032) to an AI incident metric fed only by outage tickets; setting kept, key letter B and foundational difficulty kept. Re-audit fix, 12 Nov 2026: option B names the model owners as the ones who sample, so the IS auditor's role is not in doubt (blind-test note); key letter B kept.",
       "style_version": 2
     },
     {
@@ -4518,7 +4518,7 @@
         "Final two: A beats B because the rating's reasoning fails when the same score is used everywhere; opacity is real but does not change how badly a shared error harms people.",
         "Exam cue: when many organizations use the same AI model, its errors repeat across them; rate impact on people at that scale."
       ],
-      "framework_ref": "NIST AI 600-1 Section 2.6 (Harmful Bias and Homogenization); NIST AI 100-1 MAP 5.1 (Likelihood and magnitude of impacts characterized)",
+      "framework_ref": "NIST AI 600-1 Section 2 (Overview of Risks Unique to or Exacerbated by GAI); NIST AI 100-1 MAP 5.1 (Likelihood and magnitude of impacts characterized)",
       "related_concepts": [
         "Homogenization",
         "Impact on people",
@@ -4534,34 +4534,34 @@
       "principle_id": "rank-ai-risk-by-harm",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "An Austrian tutoring firm's chemistry chatbot for secondary students, which students already trick past its rules, was risk-assessed for wrong answers, bias and privacy. Which missing risk should the IS auditor consider MOST important?",
+      "question": "An Austrian teen-fashion retailer's styling chatbot, which teenage shoppers already trick past its rules, was risk-assessed for wrong answers, bias and privacy. Which missing risk should the IS auditor consider MOST important?",
       "options": {
         "A": "Attackers stealing the chatbot's underlying model weights",
-        "B": "Students copying the chatbot's answers into graded homework",
-        "C": "Students getting instructions for making dangerous substances",
+        "B": "Teenagers getting it to promise discounts the retailer refuses",
+        "C": "Teenagers getting tips on starving themselves to lose weight fast",
         "D": "The provider updating the chatbot's model without notice"
       },
       "correct": "C",
       "key_concept": "Generative AI can be steered into harmful content; risk identification covers foreseeable misuse, ranked by likelihood and the severity of harm to people.",
-      "pre_read": "List what students could get the chatbot to produce, then weigh each by how likely it is and how badly it could hurt someone.",
-      "correct_explanation": "A generative chatbot that answers chemistry questions can be steered into harmful content, and students already get it past its rules, so instructions for making dangerous substances are a likely misuse as well as a severe one for users who are mostly minors. Foreseeable misuse belongs in the risk assessment beside accuracy and privacy. Copying answers into homework, option B, is likely too, but its harm is to learning, far below dangerous instructions.",
+      "pre_read": "Rate each option for likelihood and for severity of harm, using only facts the stem gives.",
+      "correct_explanation": "A generative styling chatbot can be steered into harmful content, and teenagers already get it past its rules, so tips on starving themselves are a likely misuse as well as a severe one for shoppers who include minors. Foreseeable misuse belongs in the risk assessment beside accuracy and privacy. Tricked discount promises, option B, are likely too, but they cost the retailer money, far below harm to a teenager's health.",
       "wrong_explanations": {
         "A": "Tempting because AI security matters. But treating AI risk as theft of model files misses the harm the chatbot's own outputs can cause.",
-        "B": "Tempting because cheating is likely and familiar. But its harm is to grades and learning, well below dangerous instructions reaching students who already bypass the rules.",
-        "D": "Tempting because silent vendor updates are a real AI risk. But an update changes how known risks behave; dangerous instructions reaching minors is a missing harm far more severe."
+        "B": "Tempting because tricked promises are likely and familiar. But their harm is a financial loss to the retailer, well below starvation advice reaching teenagers who already bypass the rules.",
+        "D": "Tempting because silent vendor updates are a real AI risk. But an update changes how known risks behave; self-harm advice reaching minors is a missing harm far more severe."
       },
       "tips": [
         "Eliminate: A treats AI risk as theft of model files, and D raises a change risk that leaves the most severe missing harm unassessed.",
-        "Final two: C beats B because students already bypass the chatbot's rules, so dangerous output is likely, and its harm to minors far exceeds copied homework.",
+        "Final two: C beats B because teenagers already bypass the chatbot's rules, so harmful advice is likely, and harm to minors' health far exceeds a discount the retailer loses.",
         "Exam cue: AI risk identification includes foreseeable misuse of generated output, ranked by likelihood and by harm to the people using or affected by it."
       ],
-      "framework_ref": "NIST AI 100-1 MAP 1.1 (Intended purposes, context and laws documented); NIST AI 100-1 MAP 5.1 (Likelihood and magnitude of impacts characterized)",
+      "framework_ref": "NIST AI 600-1 Section 2.3 (Dangerous, Violent, or Hateful Content); NIST AI 100-1 MAP 5.1 (Likelihood and magnitude of impacts characterized)",
       "related_concepts": [
         "Misuse",
         "Generative AI risk",
         "Minors"
       ],
-      "_provenance": "Authored from concept: notes 1C.1 Identifying and Assessing AI Risk (AI risk identification includes foreseeable misuse of generated output, ranked by likelihood and harm to the people using or affected by it). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 7, 12 Nov 2026.",
+      "_provenance": "Authored from concept: notes 1C.1 Identifying and Assessing AI Risk (AI risk identification includes foreseeable misuse of generated output, ranked by likelihood and harm to the people using or affected by it). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 7, 12 Nov 2026. Completeness fix, 12 Nov 2026: setting changed from a tutoring firm's chatbot for secondary students to a chemistry-kit seller's chatbot used by teenage buyers, so it no longer repeats aaia_d3_028; runner-up is now tricked discount promises (business harm). Re-audit fix, 12 Nov 2026: setting changed from a chemistry-kit seller to a teen-fashion retailer's styling chatbot so it no longer repeats aaia_d2_209 (dangerous chemical instructions); pre_read made neutral; key letter C kept.",
       "style_version": 2
     },
     {
@@ -4608,20 +4608,20 @@
       "principle_id": "ai-deciding-fact",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "A Cambodian hotel chain's tolerance lets its ordering agent order up to $2,000 unapproved; an indicator counts larger orders, and management says agents lack intent to split orders. What should concern the IS auditor MOST?",
+      "question": "A Cambodian hotel chain's tolerance lets its ordering agent, told to keep kitchens stocked without delay, order up to $2,000 unapproved; an indicator counts larger orders. What should concern the IS auditor MOST?",
       "options": {
         "A": "The agent's model has not been trained to respect the limit",
-        "B": "Requiring approval above $2,000 may slow down the agent's ordering",
+        "B": "Requiring approval above $2,000 may slow the agent's ordering",
         "C": "The agent may obey a supplier email telling it to order more",
         "D": "Several purchases under $2,000 can add up to far more than $2,000"
       },
       "correct": "D",
       "key_concept": "Agents pursue their task by whatever path their permissions allow; a per-action limit and indicator can miss exposure that builds up across actions.",
       "pre_read": "Read the tolerance and the indicator literally, then ask what they would miss.",
-      "correct_explanation": "An agent pursues its goal through whatever its permissions allow; it needs no intent to meet a $3,000 need with two $1,500 orders, which pass the limit and never show in an indicator counting larger orders. The tolerance and indicator need a cumulative measure, such as spend per supplier per day. Injected email instructions, option C, are a real agent risk, but nothing in the stem points to them.",
+      "correct_explanation": "An agent pursues its goal through whatever its permissions allow; told to avoid delay, it needs no intent to meet a $3,000 need with two $1,500 orders, which pass the limit and never show in an indicator counting larger orders. The tolerance and indicator need a cumulative measure, such as spend per supplier per day. Injected email instructions, option C, are a real agent risk, but nothing in the stem points to them.",
       "wrong_explanations": {
         "A": "Tempting because training shapes behavior. But limits belong in the ordering system, enforced outside the model; training cannot guarantee the agent respects them.",
-        "B": "Tempting because approvals add delay. But speed is not the risk to weigh here; requiring approval for large spending is the tolerance's purpose.",
+        "B": "Tempting because the agent is told to avoid delay. But that goal is the risk's driver, not a cost to weigh; approval for large spending is the tolerance's purpose.",
         "C": "Tempting because agents that read messages can be steered by injected text. But nothing in the stem says this agent reads supplier email; the gap is the per-order measure."
       },
       "tips": [
@@ -4635,7 +4635,7 @@
         "Risk tolerance",
         "Key risk indicators"
       ],
-      "_provenance": "Authored from concept: notes 1C.2 Risk Appetite, Tolerance and AI Key Risk Indicators (an agent working toward a goal can stay under a per-action limit while exceeding its purpose, so tolerances and indicators must see cumulative exposure). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 7, 12 Nov 2026.",
+      "_provenance": "Authored from concept: notes 1C.2 Risk Appetite, Tolerance and AI Key Risk Indicators (an agent working toward a goal can stay under a per-action limit while exceeding its purpose, so tolerances and indicators must see cumulative exposure). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 7, 12 Nov 2026. Completeness fix, 12 Nov 2026: option B trimmed so the key is the single longest option (length-tell target). Re-audit fix, 12 Nov 2026: stem no longer names order splitting; the agent's no-delay goal is now the deciding AI fact.",
       "style_version": 2
     },
     {
@@ -4908,7 +4908,7 @@
         "A": "Retraining each quarter is too seldom for a scooter rental app",
         "B": "The snapshot may be too old to reflect current riders' trips",
         "C": "Erasing trip histories may lower the model's pricing accuracy",
-        "D": "Trips riders asked to erase may train each new model version"
+        "D": "Trips riders asked to erase may train each new pricing model version"
       },
       "correct": "D",
       "key_concept": "A training snapshot is a frozen copy; cleaning the live model does not touch it, so each retrain from it brings erased data back.",
@@ -4930,7 +4930,7 @@
         "Training data copies",
         "Retraining"
       ],
-      "_provenance": "Authored from concept: notes 1D.3 Retention, Deletion and Model Memorization (erasure must reach every copy a model learns from, including frozen training snapshots, or each retrain undoes it). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 7, 12 Nov 2026.",
+      "_provenance": "Authored from concept: notes 1D.3 Retention, Deletion and Model Memorization (erasure must reach every copy a model learns from, including frozen training snapshots, or each retrain undoes it). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 7, 12 Nov 2026. Completeness fix, 12 Nov 2026: key gains 'pricing' so it is the single longest option (length-tell target).",
       "style_version": 2
     },
     {
@@ -4960,7 +4960,7 @@
         "Final two: C beats D because the RMF's reliable means performing as required over time; fairness is a separate characteristic, and parity can hold while every shortlist is wrong.",
         "Exam cue: in the NIST AI RMF, reliable means performing as required over time in real use; uptime and other characteristics, such as fairness, do not show it."
       ],
-      "framework_ref": "NIST AI 100-1 Section 3 (AI Risks and Trustworthiness); NIST AI 100-1 MEASURE 2.5 (System shown to be valid and reliable, limits documented)",
+      "framework_ref": "NIST AI 100-1 Section 3.1 (Valid and Reliable); NIST AI 100-1 MEASURE 2.5 (System shown to be valid and reliable, limits documented)",
       "related_concepts": [
         "Reliability",
         "Testable criteria",
@@ -4997,7 +4997,7 @@
         "Final two: A beats B because brokers already game quotes, so factor lists can guide their next edits; a partial explanation is a lesser, known limit.",
         "Exam cue: trustworthy characteristics trade off; explanations showing which inputs drive a score can help people game it, so weigh security too."
       ],
-      "framework_ref": "NIST AI 100-1 Section 3 (AI Risks and Trustworthiness); NIST AI 100-2e2025 Section 2.2 (Evasion Attacks and Mitigations)",
+      "framework_ref": "NIST AI 100-1 Section 3.3 (Secure and Resilient); NIST AI 100-2e2025 Section 2.2 (Evasion Attacks and Mitigations)",
       "related_concepts": [
         "Trustworthy-AI trade-offs",
         "Explainability",
@@ -5016,7 +5016,7 @@
       "options": {
         "A": "Have the owner add human review before scores are used",
         "B": "Have management stop the emotion scoring where the law applies",
-        "C": "Have the owner collect each worker's consent to emotion scoring",
+        "C": "Have the owner collect workers' consent to emotion scoring",
         "D": "Have counsel and the owner map the law's duties to controls"
       },
       "correct": "B",
@@ -5039,7 +5039,7 @@
         "Risk-based regulation",
         "Emotion recognition"
       ],
-      "_provenance": "Authored from concept: notes 1E.2 Risk-Based AI Regulation and Mapping Obligations (risk-based AI laws ban some uses outright; when counsel confirms a ban applies, stopping comes before control design). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 7, 12 Nov 2026.",
+      "_provenance": "Authored from concept: notes 1E.2 Risk-Based AI Regulation and Mapping Obligations (risk-based AI laws ban some uses outright; when counsel confirms a ban applies, stopping comes before control design). Original scenario and wording; no ISACA review manual, QAE, online course or prep-bank text used. AAIA batch 7, 12 Nov 2026. Completeness fix, 12 Nov 2026: option C trimmed so the key is the single longest option (length-tell target).",
       "style_version": 2
     },
     {
@@ -5105,7 +5105,7 @@
         "Final two: C beats A because the RMF treats valid and reliable as the base of the other characteristics; an unvalidated model's other ratings mean little.",
         "Exam cue: in the NIST AI RMF, valid and reliable is the base characteristic; check validity before trusting claims of fairness or explainability."
       ],
-      "framework_ref": "NIST AI 100-1 Section 3 (AI Risks and Trustworthiness); NIST AI 100-1 MEASURE 2.5 (System shown to be valid and reliable, limits documented)",
+      "framework_ref": "NIST AI 100-1 Section 3 (AI Risks and Trustworthiness); NIST AI 100-1 Section 3.1 (Valid and Reliable)",
       "related_concepts": [
         "Trustworthy AI",
         "Validity",

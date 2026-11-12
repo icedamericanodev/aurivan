@@ -649,8 +649,10 @@ funding treatment absorbs the side effect while the model stays unbounded);
 aaia_d2_237 moved from `real-human-oversight` to `ai-output-is-a-lead` (the
 runner-up, deference, is the oversight card's own trap; the review cutoff
 rests on confidence never checked against outcomes). Newly tagged:
-aaia_d1_121 `accuracy-is-not-assurance` (training on reported accuracy hides
-how models fail and whom failures harm); aaia_d2_229 and aaia_d2_234
+aaia_d1_121 `population-includes-misses` (re-angled in the completeness fix to
+an AI incident count fed only by outage tickets; the runner-up, a new ticket
+category, still sorts only what people report, and wrong outputs break nothing,
+so only sampling decisions finds them); aaia_d2_229 and aaia_d2_234
 `contain-and-preserve-ai` (the runner-up stops new harm only: blocking new
 downloads, a shorter cache expiry; copies and cached answers already out keep
 harming people). Three tags removed (below).

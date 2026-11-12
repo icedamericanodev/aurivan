@@ -636,7 +636,7 @@
           "why_it_matters": "When a provider swaps or retrains its model, the customer's own controls and decisions change without any internal change ticket. The organization still answers for the outcomes.",
           "how_it_works": [
             "Hosted model services may update the underlying model on their own schedule unless a fixed version is requested.",
-            "Version pinning, choosing a specific model version, keeps behavior stable until the customer decides to move.",
+            "Version pinning, choosing a specific model version, keeps the model fixed until the customer decides to move; it does not freeze server-side filters or new service features, such as memory.",
             "Contracts can require advance notice, release notes, a test window and the right to stay on a version for a set period.",
             "Before adopting an update, the model owner reruns regression tests, cases with known expected results, kept current as the inputs the model receives change.",
             "When one model serves several uses, the owner of each use tests an update on that use's own work and accepts it.",
