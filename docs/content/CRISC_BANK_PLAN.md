@@ -1,6 +1,6 @@
 # CRISC course plan: from the pilot to a sellable pack
 
-**Status:** plan, 30 Oct 2026; round 24 done 12 Nov 2026 (bank 850, exactly on the outline weights). CRISC is a **paid course** learners buy in the
+**Status:** plan, 30 Oct 2026; round 25 done 12 Nov 2026 (bank 875, on the outline weights). CRISC is a **paid course** learners buy in the
 app (6-month access, one payment, never renews; see
 `docs/business/monetization/RECOMMENDATION.md`). Outline and sources:
 `docs/content/CRISC_BLUEPRINT.md`. Item standard:
@@ -20,7 +20,7 @@ it can be sold:
 |---|---|---|---|
 | Blueprint | `docs/content/CRISC_BLUEPRINT.md` | cert-blueprint-researcher | Done, 30 Oct 2026 |
 | Study notes | `data/crisc/notes/d{1..4}.json` + `_course.json` (strategy tips, cross-domain connections) | crisc-d{N}-domain-expert | All 43 outline sub-areas, 115 subtopics, Practice this concept links (`data/crisc/tools/sync_practice_ids.py`) |
-| Questions | `data/crisc/originals/d{1..4}.json` | crisc-d{N}-domain-expert | 850 reviewed (221 / 187 / 272 / 170) after round 24, each domain on its weight: a full 150-item mock and a short 50-item mock without repeats |
+| Questions | `data/crisc/originals/d{1..4}.json` | crisc-d{N}-domain-expert | 875 reviewed (228 / 192 / 280 / 175) after round 25, each domain on its weight: a full 150-item mock and a short 50-item mock without repeats |
 | Citation library | `data/crisc/originals/_framework_library.md` | domain experts | Started with the pilot |
 | Principles (mindset cards) | `data/crisc/mindset/principles.json` (schema `docs/content/PRINCIPLES_SCHEMA.md`) | isaca-mindset-coach | 19 principles; every item tagged |
 | Exam guide and final-review week | `data/crisc/exam/` (schema `docs/content/EXAM_GUIDE_SCHEMA.md`) | isaca-mindset-coach | Both done and reviewed |
@@ -967,6 +967,38 @@ wait this round.
 - Pause new internal-audit keys (three now) and keyed waits; "Number of" on wrong options only; no new "Screen" or "Map" keys.
 - Openers and words: "Review" on 2 wrong options, only/just on 2 eliminated options, "Compare" on 1 wrong option; at most 1 owner pair split key plus eliminated; consider a justified training key in D1.
 - Pause (on top of rounds 17–23): the round 24 lessons listed in `r24_cross_domain.json`.
+
+### Round 25 (12 Nov 2026): 25 items, bank 875
+
+Round 25 added 7 D1 (`crisc_d1_222`–`228`), 5 D2 (`crisc_d2_188`–`192`),
+8 D3 (`crisc_d3_273`–`280`) and 5 D4 (`crisc_d4_171`–`175`) items, taking the
+bank to 875. One AI item per domain: validators inside the data science unit are
+first-line testers the risk team still challenges (d1_227); an AI risk assessment
+covers foreseeable misuse with the process owner (d2_190); an AI vendor's
+indemnity recorded as a partial transfer, the rest kept by its risk owner
+(d3_273); and a tested rollback, owned by the pipeline team, for a model that
+redeploys nightly (d4_172). Other highlights: a committee member sits out the vote
+on their own request (d1_223); a policy stays in force while its overdue review is
+finished (d1_224); event trees run forward and fault trees run back (d2_192); a
+compensating control limits network access to an unpatched flaw (d3_275); a legal
+hold pauses deletion once a lawsuit is filed or expected (d4_174). No keyed wait,
+no internal-audit key, and "Number of" on wrong options only.
+
+| Stage | Result |
+|---|---|
+| Blind test | 25/25 (20 sure); a "just" tell found on wrong options |
+| Standards audit | 0 HARD ERRORS, 11 PRECISION: stem-only facts (d3_274 five-year contract, d4_172 tests passed); restricted openers (Help, Lower) moved; d4_008's older cue narrowed for d4_174; notes 4A1.1 says "review board" |
+| Concept review | 0 HARD ERRORS, 8 PRECISION: "limit" not "block" access (d3_275); policy expiry hedged (d1_224); intent shaped by what the firm holds or does (d2_188); retest after material change (notes 3B3) |
+| Re-blind | 11/11 (10 sure); d4_172 rests on the three-day restore, not the passed tests |
+| Cross-domain gate | 0 HARD ERRORS, 2 PRECISION: d4_173's cue keeps its above-appetite condition; d3_097's change-review cue narrowed so it no longer keys d3_276's runner-up. Restrictive-word rule set (below) |
+| Gates | All lints 0 errors; practice links in sync; app pack dry run 0 problems; `verify_repo.sh` passes; keys level; balance 26/22/32/20; longest-key floors 15.4–16.0% |
+
+**Restrictive words (rule for rounds 26–30):** the exam-style lint warns on "only", "all" and "never" in wrong options but not in keys, so those words built up on keys (only 4/4, all 5/5) and "just" built up on wrong options (6 of 7). From round 26: no new "only", "all", "never", "limited to" or "alone" in any option; key exactly one "just" across rounds 26–30 (in D3) and add no wrong "just". A lint change to count these words on keys too is a later tooling task.
+
+**Next round (round 26, +25 to 900):** D1 +6, D2 +6, D3 +8, D4 +5 (234/198/288/180). Code placement, key letters, difficulty, AI angles and settings are in `r25_cross_domain.json`.
+- Length floors: every domain needs exactly one key naturally longest by characters (D1 and D3 fail at 900 without one).
+- Opener tells to avoid on keys: Limit, Restrict, Isolation, Advise, Propos-.
+- Pause (on top of rounds 17–24): the round 25 lessons listed in `r25_cross_domain.json`.
 
 **Open items:**
 - The `TO VERIFY` comment on the CRISC entry in `mobile/src/content/certifications.ts`
