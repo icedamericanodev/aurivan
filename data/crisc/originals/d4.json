@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "comment": "Original CRISC practice questions for Domain 4 (Technology and Security), written to the CRISC exam content outline effective 2025. Every item is authored from public concepts and KaiSip's own CRISC study notes (data/crisc/notes/d4.json), with no reference to the CRISC Review Manual, ISACA's QAE database, ISACA's practice quiz or any prior question bank. Schema: docs/content/QUESTION_SCHEMA.md; writing rules: docs/content/EXAM_STYLE_V2.md and .claude/agents/crisc-standards-auditor.md. Not affiliated with or endorsed by ISACA®. CRISC® is a registered trademark of ISACA. Pilot batch crisc_d4_001 to crisc_d4_020, 30 Oct 2026. Round 2 crisc_d4_021 to crisc_d4_045, 31 Oct 2026. Round 3 crisc_d4_046 to crisc_d4_065, 4 Nov 2026. Round 5 crisc_d4_066 to crisc_d4_075, 4 Nov 2026. Round 6 crisc_d4_076 to crisc_d4_079, 4 Nov 2026. Round 7 crisc_d4_080 to crisc_d4_085, 4 Nov 2026. Round 8 crisc_d4_086 to crisc_d4_090, 5 Nov 2026. Round 9 crisc_d4_091 to crisc_d4_095, 5 Nov 2026. Round 10 crisc_d4_096 to crisc_d4_100, 5 Nov 2026. Round 11 crisc_d4_101 to crisc_d4_105, 5 Nov 2026. Round 12 crisc_d4_106 to crisc_d4_110, 5 Nov 2026. Round 13 crisc_d4_111 to crisc_d4_115, 5 Nov 2026.",
+    "comment": "Original CRISC practice questions for Domain 4 (Technology and Security), written to the CRISC exam content outline effective 2025. Every item is authored from public concepts and KaiSip's own CRISC study notes (data/crisc/notes/d4.json), with no reference to the CRISC Review Manual, ISACA's QAE database, ISACA's practice quiz or any prior question bank. Schema: docs/content/QUESTION_SCHEMA.md; writing rules: docs/content/EXAM_STYLE_V2.md and .claude/agents/crisc-standards-auditor.md. Not affiliated with or endorsed by ISACA®. CRISC® is a registered trademark of ISACA. Pilot batch crisc_d4_001 to crisc_d4_020, 30 Oct 2026. Round 2 crisc_d4_021 to crisc_d4_045, 31 Oct 2026. Round 3 crisc_d4_046 to crisc_d4_065, 4 Nov 2026. Round 5 crisc_d4_066 to crisc_d4_075, 4 Nov 2026. Round 6 crisc_d4_076 to crisc_d4_079, 4 Nov 2026. Round 7 crisc_d4_080 to crisc_d4_085, 4 Nov 2026. Round 8 crisc_d4_086 to crisc_d4_090, 5 Nov 2026. Round 9 crisc_d4_091 to crisc_d4_095, 5 Nov 2026. Round 10 crisc_d4_096 to crisc_d4_100, 5 Nov 2026. Round 11 crisc_d4_101 to crisc_d4_105, 5 Nov 2026. Round 12 crisc_d4_106 to crisc_d4_110, 5 Nov 2026. Round 13 crisc_d4_111 to crisc_d4_115, 12 Nov 2026. Round 14 crisc_d4_116 to crisc_d4_120, 12 Nov 2026.",
     "schema_version": 1
   },
   "domain": 4,
@@ -4260,6 +4260,191 @@
         "Acquisition requirements"
       ],
       "_provenance": "Authored from concept: notes 4A7.1 (Evaluating Emerging Technologies: check vendor claims, including patch support periods, through evidence, and propose conditions before adoption; IoT patch support can end years before the devices retire). Round 13, 12 Nov 2026: original scenario (a smart-farm operator that plans to buy 8,000 wireless valve controllers it expects to run for ten years, from a vendor that patches their firmware for three) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Neighbours checked: crisc_d4_101 (installed lithography controllers the vendor no longer patches, where isolation is keyed), crisc_d4_002 (a legacy system that has never failed), crisc_d4_037 (exit terms for a young drone platform vendor), crisc_d4_013 (a tamper-proof claim), crisc_d4_036 (pause conditions for a headset pilot), crisc_d4_072 (scaling a 5G pilot), crisc_d4_095 (a digital twin with remote control), crisc_d4_048 (an AI agent's limits); CISA d4_060 (firewalls reaching end of support before their replacement), d4_145 (servers past end of support); CC cc_d5_070 (a ten-year VPN appliance and quantum risk), cc_d1_017 (a scanner firmware fix); AAIA: no item on a device support period. The vendor-certification decoy, used in six 4A7 items, was avoided. Judged distinct: no bank item compares a vendor's patch period with a device's planned life before purchase. Counterpart to crisc_d4_101: there the controllers are installed and unsupported, so isolation is right; here the purchase is still open, so the support term comes first. Keep the two together in teaching, apart in practice sets. Owner pattern: k=0, no option names an owner.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d4_116",
+      "domain": 4,
+      "subtopic": "4A3 System development life cycle (SDLC). Packages an AI assistant names",
+      "principle_id": "evidence-before-credit",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "A robot vacuum maker's firmware developers install packages their AI coding assistant names; one did not exist until an attacker published it with malware. What should the risk practitioner recommend to BEST prevent a repeat?",
+      "options": {
+        "A": "Scans of each build's packages for known vulnerabilities",
+        "B": "Code owner review of each change the assistant writes",
+        "C": "The product owner's ban on the AI coding assistant",
+        "D": "A vetting step for each new package before it enters the build"
+      },
+      "correct": "D",
+      "key_concept": "An AI assistant can name packages attackers then publish, so each new third-party component is vetted before it enters the build.",
+      "pre_read": "Trace how the malware got into the firmware before reading the options.",
+      "correct_explanation": "The assistant named a package that did not exist, and an attacker filled that name with malware, so the weak point is how new components enter the build. Vetting each new package before use, against sources the team trusts, stops that at entry, whoever suggested it. Scanning for known vulnerabilities is the runner-up: a useful build check, but a freshly published malicious package has no reported flaw for a scanner to match.",
+      "wrong_explanations": {
+        "A": "Known-vulnerability scans match components against reported flaws; a package an attacker has only just published has none on record, so it would pass the scan.",
+        "B": "A code owner sees only the lines that name the package; the malware sits inside the package itself, which this review never opens.",
+        "C": "A ban gives up the assistant's benefit and leaves the gap open: developers can still pull an unvetted or look-alike package from other sources."
+      },
+      "tips": [
+        "Eliminate: B reviews only the code that names the package, not what is inside it, and C bans a useful tool while unvetted packages can still arrive by other routes.",
+        "Final two: D beats A because vetting stops an untrusted package at entry; a known-vulnerability scan cannot flag malware nobody has reported yet.",
+        "Exam cue: treat an AI suggestion as unverified input; a component, source or fact an AI names is checked like any other before it is used."
+      ],
+      "framework_ref": "NIST SP 800-218 Version 1.1 PW.4.1 (acquire and maintain well-secured third-party software components, for example from repositories of sanctioned and vetted open-source components); NIST AI 600-1 Section 2.2 (Confabulation: generative AI confidently presents erroneous or false content, and risks arise when users believe and act on it)",
+      "related_concepts": [
+        "Software supply chain",
+        "AI coding assistants",
+        "Secure Software Development Framework (SSDF)"
+      ],
+      "_provenance": "Authored from concept: notes 4A3.2 (Secure Development and Testing: third-party and open-source components come from vetted sources; a package an AI assistant names may be fake or planted) with 4A3.3 (AI Models in the SDLC). Round 14, 12 Nov 2026: original scenario (a robot vacuum maker's firmware developers install packages their AI coding assistant names, and one name did not exist until an attacker published it with malware) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Neighbours checked: crisc_d4_052 (the same injection flaw in four releases, process root cause keyed), crisc_d4_096 (requirements copied from an offline game), crisc_d4_106 (a public route for outside flaw reports), crisc_d4_112 (an AI coding agent merging its own fixes), crisc_d4_026 (chatbot instruction edits as changes), crisc_d4_006 (a vendor's AI model swap), crisc_d4_027, crisc_d4_059; CISA d3_052 (hundreds of open-source libraries: dependency scanning for known flaws keyed, an approved library list wrong), d2_155 (continuous dependency scanning), d5_115 (rolling back a backdoored package already in production), d3_023 (an SBOM to answer customers), d3_147; CC cc_d5_088 (code an approved AI assistant writes gets the same static analysis), cc_d5_063 (software composition analysis for known flaws), cc_d4_016; AAIA aaia_d2_050 (a chatbot hallucination closed without root cause). Judged distinct: no bank item has an AI assistant naming a package an attacker then publishes. Consistent with CISA d3_052: scanning is the right control for components with known flaws; here the package is new and malicious, so it has none, and vetting at entry is what stops it. Owner pattern: k=2, the two easy distractors B (code owner review) and C (the product owner's ban) name an owner; the key D and the runner-up A name none.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d4_117",
+      "domain": 4,
+      "subtopic": "4A6 Technology resilience and disaster response/recovery. Registration data and its RPO",
+      "principle_id": "objectives-first",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A disaster-relief NGO's registration owner set a one-hour RPO, as lost entries mean finding displaced families again; IT backs the registration database up nightly to another region. What should the risk practitioner recommend as BEST?",
+      "options": {
+        "A": "Backups of the registration database at least hourly",
+        "B": "Restore tests of the backups held in the other region",
+        "C": "An offline copy of each registration backup",
+        "D": "The registration owner's review of the RPO"
+      },
+      "correct": "A",
+      "key_concept": "Backup frequency must meet the RPO the business set; when backups fall short, the backup design changes, not the owner's target.",
+      "pre_read": "Work out how much registration data the NGO could lose today, then read the options.",
+      "correct_explanation": "With nightly backups, a failure late in the day could lose almost a day of registrations, far beyond the one-hour RPO the owner set from the harm of finding families again. Backing up at least hourly brings the loss window inside the RPO, the basis CP-9 gives for backup frequency. The owner's review of the RPO is the runner-up: owners can revisit targets, but this one rests on stated harm, so the design must change.",
+      "wrong_explanations": {
+        "B": "Restore tests show the copies can be recovered, which is worth knowing, but a perfect restore still brings back data up to a day old.",
+        "C": "An offline copy guards backups against ransomware and site loss, but it holds the same nightly data, so the loss window stays near a day.",
+        "D": "The owner set the RPO from the harm of finding families again; asking them to loosen it bends a business need to fit IT's schedule."
+      },
+      "tips": [
+        "Eliminate: B proves the copies restore and C adds a safer copy, but both still bring back data up to a day old.",
+        "Final two: A beats D because the RPO rests on harm the owner has already weighed; when backups miss it, the design changes, not the target.",
+        "Exam cue: RPO sets how often data is copied and RTO how fast it comes back; close a data-loss gap with copy frequency, not restore tests or extra copies."
+      ],
+      "framework_ref": "NIST SP 800-53 Rev. 5 CP-9 (System Backup: backups are conducted at a frequency consistent with recovery time and recovery point objectives); NIST SP 800-34 Rev. 1 Section 3.2.1 (Determine Business Processes and Recovery Criticality: MTD, RTO and RPO)",
+      "related_concepts": [
+        "Recovery point objective (RPO)",
+        "Backup frequency",
+        "Business impact analysis"
+      ],
+      "_provenance": "Authored from concept: notes 4A6.2 (Backups and Ransomware Recovery: backup frequency is set by the RPO; when backups miss the RPO, the backup design changes, not the owner's target) with 4A6.1 (the strategy must meet RTO and RPO by design). Round 14, 12 Nov 2026: original scenario (a disaster-relief NGO whose registration owner set a one-hour RPO because lost entries mean finding displaced families again, while IT backs the database up nightly) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Neighbours checked: crisc_d4_033 (a charity-managed backup sized to the RPO for SaaS donor records), crisc_d4_035 (restore tests meeting RTO and RPO as the KCI), crisc_d4_071 (retention longer than intruders stay hidden), crisc_d4_097 (offsite backups with keys only at the main site), crisc_d4_088 (ransomware recovery longer than the RTO), crisc_d4_107 (an AI model kept only at the main site), crisc_d2_012 (an RTO set from the vendor's restore time), crisc_d2_124 (an RTO that ignores a paper process); CISA d4_110 (log backups every four hours against a 15-minute RPO: the GREATEST gap), d4_225, d4_278, d4_083 (RTO and RPO mapped to the BIA), d4_082; CC cc_d2_054 (copies every six hours against a 30-minute RPO; a hot site does not fix it), cc_d2_006 (naming the RPO); AAIA: no backup-frequency item. The faster-restore and hot-site decoy used in cc_d2_054 was avoided. Judged distinct: the CISA and CC items ask what the gap is; this one asks the practitioner's recommendation, with loosening the owner's RPO to fit IT's schedule as the runner-up. Round 14 fixed-period ask: the key's period (at least hourly) is the right answer, set by the RPO. Owner pattern: k=1, the runner-up D (the registration owner's review) is the lone owner option; the key A and the easy distractors B and C name none.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d4_118",
+      "domain": 4,
+      "subtopic": "4B1 Security concepts, frameworks and standards. Docks cut off from the server",
+      "principle_id": "advise-dont-decide",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A bike-share operator's docks release bikes freely when offline from its server; the risk analyst has costed theft under this setting and stranded-rider fines under a locked one. What should the analyst recommend as BEST?",
+      "options": {
+        "A": "Docks set to stay locked when cut off from the server",
+        "B": "Have the risk owner choose the docks' failure setting",
+        "C": "Senior management's choice of the docks' failure setting",
+        "D": "GPS trackers on bikes taken while the docks are offline"
+      },
+      "correct": "B",
+      "key_concept": "Failing open or failing secure trades availability against protection; once both costs are analyzed, the risk owner chooses the failure setting.",
+      "pre_read": "Note what has already been done and what is still undecided before reading the options.",
+      "correct_explanation": "Releasing bikes offline keeps the service available to riders; locking them protects the fleet. SC-24 ties the choice of failure state to mission and business needs, and the analyst has already costed both sides, so the decision now belongs to the risk owner. Locked docks are the runner-up: a secure default feels safe, but it swaps theft for stranded-rider fines, and recommending it would make the owner's trade-off for them.",
+      "wrong_explanations": {
+        "A": "Failing locked is not automatically safer: it swaps theft losses for stranded-rider fines, and weighing those two costs is a business decision, not a security default.",
+        "C": "Senior management, with the board, sets appetite and oversees risk, but choosing one service's failure setting within that appetite belongs to the service's risk owner.",
+        "D": "Trackers may recover some bikes, but they settle neither side of the trade-off; anyone could still take a bike during each outage."
+      },
+      "tips": [
+        "Eliminate: C hands one service's setting to senior management, beyond its role, and D adds trackers that recover bikes without settling the open-or-locked choice.",
+        "Final two: B beats A because both settings carry a business cost the analyst has priced; recommending locked docks would make the owner's trade-off for them.",
+        "Exam cue: fail open or fail secure trades availability against protection; once both costs are known, the risk owner chooses, not the security default."
+      ],
+      "framework_ref": "NIST SP 800-53 Rev. 5 SC-24 (Fail in Known State: failure in a known state addresses security concerns in accordance with the mission and business needs of organizations); ISACA Glossary (risk owner)",
+      "related_concepts": [
+        "Fail open and fail secure",
+        "Confidentiality, integrity and availability",
+        "Risk ownership"
+      ],
+      "_provenance": "Authored from concept: notes 4B1.1 (Core Security Principles: a failure setting trades availability against protection; the risk owner chooses it once both costs are known). Round 14, 12 Nov 2026: original scenario (a bike-share operator whose docks release bikes freely when cut off from the server, with theft and stranded-rider fines both costed by the analyst) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Neighbours checked: crisc_d4_108 (integrity harm rated with an archive's business owner), crisc_d4_053 (removing layers behind strong segmentation), crisc_d4_073 (two firewalls from one vendor), crisc_d4_015 (separation of duties), crisc_d4_039 (length of elevated access), crisc_d4_087; CISA d5_324 (an IPS set to fail open: the auditor verifies the business owner approved the trade-off, with fail closed as a wrong option); CC cc_d4_141 (an IPS whose system owner decided orders must keep flowing: the technician sets fail open), cc_d1_016 (fail-secure and fail-safe door locks), cc_d3_086 (a rescue console exempted from locking); AAIA aaia_d2_086 (an agent's door-unlocking rights). Judged distinct: the CISA item audits a fail-open decision already made and the CC items carry out an owner's decision; here nothing is decided yet, the analyst has costed both settings, and the move is to route the choice. Keep apart from CISA d5_324 in cross-course practice sets. Round 14 asks: a keyed 'Have' option, and 'senior management' in a wrong option where it overreaches (C, choosing one service's setting). Owner pattern: k=1, the key B is the lone owner option (calibration rule 21); the runner-up A and the easy distractors C and D name no owner.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d4_119",
+      "domain": 4,
+      "subtopic": "4B2 Security/risk awareness and training. Phishing clicks at five clinics",
+      "principle_id": "root-cause-over-symptom",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A rural clinic network's yearly security course is a video in English; at five clinics where most staff speak little English, phishing clicks run triple the average. What should the risk practitioner recommend as BEST?",
+      "options": {
+        "A": "The English course repeated until the staff pass its quiz",
+        "B": "Stricter email filtering for the five clinics",
+        "C": "Warnings for staff who click on phishing emails",
+        "D": "Awareness training in the staff's own language"
+      },
+      "correct": "D",
+      "key_concept": "Awareness changes behavior only when the audience can follow it, so content and delivery fit each group's language and work setting.",
+      "pre_read": "Ask why the course works at most clinics but not at these five.",
+      "correct_explanation": "The course reaches the five clinics, but most staff there cannot follow it, so it never changes how they handle email; that is the cause behind the triple click rate. Training in their own language fixes the cause, as SP 800-50 asks that material fit the learners' needs. Stricter email filtering is the runner-up: a sound extra layer, but some phishing always gets through, and these staff would meet it still untrained.",
+      "wrong_explanations": {
+        "A": "Repeating a course staff cannot follow adds hours, not understanding; passing a quiz on the third try does not show changed behavior.",
+        "B": "Filtering cuts how much phishing arrives, but none is complete; staff who receive what gets through would still have had no training they could follow.",
+        "C": "Warnings blame staff for a gap in the program; people never taught in a language they follow need teaching, not penalties."
+      },
+      "tips": [
+        "Eliminate: A repeats a course staff cannot follow, and C blames staff for a program that never reached them.",
+        "Final two: D beats B because the cause is training staff cannot follow; filtering adds a layer but leaves them untrained for what gets through.",
+        "Exam cue: when awareness fails in one group, ask whether that group could follow it; fit language and format to the audience before adding volume or penalties."
+      ],
+      "framework_ref": "NIST SP 800-50 Rev. 1 Section 2.6 (Determining Scope and Complexity: the goal is behavior change, not compliance alone, and material fits the learner's role and learning needs); NIST SP 800-53 Rev. 5 AT-2 (Literacy Training and Awareness)",
+      "related_concepts": [
+        "Security awareness program",
+        "Audience-based training",
+        "Risk-aware culture"
+      ],
+      "_provenance": "Authored from concept: notes 4B2.1 (Risk-Aware Culture and Role-Based Training: content follows the risk profile, in a language and format each audience can follow). Round 14, 12 Nov 2026: original scenario (a rural clinic network whose yearly course is an English video, while at five clinics most staff speak little English and phishing clicks run triple the average) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Neighbours checked: crisc_d4_017 (seasonal warehouse workers: role-based login training at onboarding), crisc_d4_042 (a clerk who followed the process: a verification step), crisc_d4_049 (executives exempt from sign-in checks), crisc_d4_057 (an approved AI tool after a block), crisc_d4_074 (contractors outside the program), crisc_d4_090 (topics from staff-dependent scenarios), crisc_d4_099 (examples of confidential files), crisc_d4_065, crisc_d4_109, crisc_d1_006 (an incentive that pays agents to skip checks); CISA d2_101 (role-based training with phishing simulations), d5_104 (disciplining clickers cut real reports), d4_122 (customer updates not translated); CC cc_d2_015, cc_d2_035, cc_d2_089, cc_d2_139; AAIA aaia_d2_122 (red-team tests run in English only for a multilingual chatbot). Judged distinct: no bank item has an awareness course its audience cannot follow; the keyed action (adapting delivery to the audience) differs from the process-fix, incentive and approved-tool keys of the same code. Owner pattern: k=0, no option names an owner.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d4_120",
+      "domain": 4,
+      "subtopic": "4B3 Data privacy and data protection principles. Putting an old register online",
+      "principle_id": "final-two",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "A national library plans to put a scanned 1970s school register online, with pupils' names, birth dates and disciplinary notes; most pupils are likely still alive. What should the risk practitioner recommend as BEST?",
+      "options": {
+        "A": "Online access limited to registered library readers",
+        "B": "The collection owner's approval to publish with a takedown route",
+        "C": "The collection owner's release with entries on living people withheld",
+        "D": "A page notice that the register is a historical record"
+      },
+      "correct": "C",
+      "key_concept": "Old records still hold personal data while the people in them live; release withholds what could harm them instead of waiting for takedown requests.",
+      "pre_read": "Picture one pupil named in the register today before reading the options.",
+      "correct_explanation": "The register links names and birth dates to disciplinary notes about people mostly still alive, so putting it online could harm them. Withholding living pupils' entries until release can no longer harm them protects those people; the collection owner decides, as data owner. Publishing with a takedown route is the runner-up: it helps, but the harm happens when the notes first appear, and most pupils would never know to ask.",
+      "wrong_explanations": {
+        "A": "Registration narrows who can open the register, but many readers could still see living people's disciplinary notes; privacy turns on what is disclosed, not only to whom.",
+        "B": "A takedown route acts only after a pupil finds their entry and asks; by then the notes have been seen and copied, and most will never know to look.",
+        "D": "A notice explains what the register is but does not change what it reveals; living pupils' disciplinary notes would be exposed all the same."
+      },
+      "tips": [
+        "Eliminate: A only narrows who can open the register and D labels it, but both still expose living pupils' disciplinary notes.",
+        "Final two: C beats B because withholding prevents the harm before release; a takedown route acts only after the notes have been seen.",
+        "Exam cue: for personal data in published or shared records, prefer limiting what is disclosed up front over reacting to complaints after release."
+      ],
+      "framework_ref": "NIST Privacy Framework Version 1.0 Section 1.2.1 Figure 3 (Relationship Between Privacy Risk and Organizational Risk: individuals experience the direct impact of problems from data processing, and organizational impacts such as noncompliance costs, customer abandonment and reputational harm follow); NIST SP 800-53 Rev. 5 SA-8(33) (Security and Privacy Engineering Principles | Minimization); ISACA Glossary (data owner)",
+      "related_concepts": [
+        "Data minimization",
+        "Privacy harm to individuals",
+        "Data owner"
+      ],
+      "_provenance": "Authored from concept: notes 4B3.1 (Privacy Principles: only the data the purpose needs is collected, kept or disclosed; old records still hold personal data while the people in them are alive). Round 14, 12 Nov 2026: original scenario (a national library that plans to put a scanned 1970s school register online, with pupils' names, birth dates and disciplinary notes, while most pupils are likely still alive) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Neighbours checked: crisc_d4_019 (inferring health from purchase history), crisc_d4_043 (privacy by design defaults), crisc_d4_044 (published trip records linkable to people), crisc_d4_060 (deletion requests missing two stores), crisc_d4_089 (PIA ratings starting from members' harm), crisc_d4_100 (separate consent for AI training), crisc_d4_110 (drone video processed on board), crisc_d4_047 and crisc_d4_103 (4A4); CISA d5_029 (onboarding fields collected in case analytics needs them), d2_210 (purchase histories kept past retention), d5_021, d2_086; CC cc_d1_120 (scanned passports raise breach impact), cc_d1_153 (hashes for a film archive); AAIA: no item on publishing historical records. An earlier draft (reader search histories kept for services not yet designed, with consent as runner-up) was dropped because it mirrored CISA d5_029. Judged distinct: no bank item publishes old records about living people; the final two is withholding before release against a takedown route after it. Owner pattern: k=2, the key C and the runner-up B are the two owner options (round 14 owner-shape ask); the easy distractors A and D name none.",
       "style_version": 2
     }
   ]
