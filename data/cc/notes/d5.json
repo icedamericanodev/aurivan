@@ -61,7 +61,8 @@
           "practice_ids": [
             "cc_d5_004",
             "cc_d5_066",
-            "cc_d5_091"
+            "cc_d5_091",
+            "cc_d5_139"
           ],
           "definition": "Data classification sorts information into sensitivity levels, such as public, internal, confidential and restricted, so each level gets protection that fits its value.",
           "why_it_matters": "Without classification, secrets get too little protection and public brochures too much. Labels make the level visible, so people and tools apply the right handling rules.",
@@ -70,7 +71,8 @@
             "Levels reflect the harm if the data were disclosed, altered or lost.",
             "A label shows the level to people and systems: a header, watermark, file tag or metadata field.",
             "Data loss prevention (DLP) tools read labels and warn or block when restricted data heads somewhere unsafe.",
-            "Automatic labeling tools, including AI classifiers, only suggest a label; the owner's decision still governs, and a label that looks wrong goes back to the owner."
+            "Automatic labeling tools, including AI classifiers, only suggest a label; the owner's decision still governs, and a label that looks wrong goes back to the owner.",
+            "Levels can change over time, such as after a product launches; only the owner changes a level, and the old one applies until then."
           ],
           "compare": {
             "columns": [
@@ -151,7 +153,8 @@
           "practice_ids": [
             "cc_d5_021",
             "cc_d5_067",
-            "cc_d5_116"
+            "cc_d5_116",
+            "cc_d5_140"
           ],
           "definition": "Data handling is the set of rules for how data at each classification level is created, stored, used, shared, archived and destroyed.",
           "why_it_matters": "Data often leaks while it is used or shared, not while stored. Rules for every stage close those gaps and keep the organization within the law.",
@@ -205,7 +208,8 @@
           "practice_ids": [
             "cc_d5_022",
             "cc_d5_046",
-            "cc_d5_092"
+            "cc_d5_092",
+            "cc_d5_141"
           ],
           "definition": "Data masking hides real values behind realistic fakes or partial views; tokenization swaps a sensitive value for a random token that only a secure vault can map back.",
           "why_it_matters": "Testing, support and analytics often need data but not the real sensitive values. Masking and tokenization let that work go ahead with less real data exposed.",
@@ -385,7 +389,8 @@
             "cc_d5_001",
             "cc_d5_025",
             "cc_d5_068",
-            "cc_d5_137"
+            "cc_d5_137",
+            "cc_d5_142"
           ],
           "definition": "Encryption turns readable plaintext into unreadable ciphertext using a key. Symmetric encryption uses one shared key; asymmetric encryption uses a public and private key pair.",
           "why_it_matters": "Encryption keeps stolen or intercepted data confidential, but the wrong type or lost keys leave data exposed or unrecoverable.",
@@ -483,7 +488,8 @@
           "practice_ids": [
             "cc_d5_023",
             "cc_d5_048",
-            "cc_d5_069"
+            "cc_d5_069",
+            "cc_d5_143"
           ],
           "definition": "A hash turns any input into a fixed-length, one-way digest; a digital signature applies the signer's private key to a hash to prove origin and integrity.",
           "why_it_matters": "Hashing shows whether data changed. Signatures and certificates prove who sent data or runs a website.",
@@ -582,7 +588,8 @@
           "practice_ids": [
             "cc_d5_024",
             "cc_d5_070",
-            "cc_d5_094"
+            "cc_d5_094",
+            "cc_d5_144"
           ],
           "definition": "Quantum-resistant, or post-quantum, cryptography uses new public-key algorithms designed to stay secure against a future quantum computer that could break today's methods.",
           "why_it_matters": "Attackers can record encrypted traffic now and decrypt it once a capable quantum computer exists. Data that must stay secret for years is already at risk.",
@@ -735,7 +742,8 @@
           "practice_ids": [
             "cc_d5_005",
             "cc_d5_031",
-            "cc_d5_117"
+            "cc_d5_117",
+            "cc_d5_145"
           ],
           "definition": "An event is anything observable on a system or network; an alert flags an event for review; an incident actually or imminently harms security or violates policy.",
           "why_it_matters": "Treating every event as an incident swamps the response team; treating a real incident as routine lets damage spread.",
@@ -805,7 +813,8 @@
           "practice_ids": [
             "cc_d5_027",
             "cc_d5_049",
-            "cc_d5_096"
+            "cc_d5_096",
+            "cc_d5_146"
           ],
           "definition": "Logging records who did what, when, where and with what result; monitoring reviews those records, often in a central tool, to spot problems quickly.",
           "why_it_matters": "Without logs, attacks go unseen and investigations have no evidence. Logs nobody reviews, or that attackers can erase, give false comfort.",
@@ -938,7 +947,8 @@
           "practice_ids": [
             "cc_d5_007",
             "cc_d5_032",
-            "cc_d5_097"
+            "cc_d5_097",
+            "cc_d5_147"
           ],
           "definition": "Artificial intelligence (AI) correlation uses machine learning to group, rank and summarize security alerts; alert fatigue is when too many alerts cause analysts to miss real ones.",
           "why_it_matters": "Overloaded analysts close alerts on instinct, and real attacks slip past. AI cuts the noise, but trusted blindly or manipulated, it can hide what matters.",
@@ -994,7 +1004,8 @@
           "practice_ids": [
             "cc_d5_028",
             "cc_d5_050",
-            "cc_d5_119"
+            "cc_d5_119",
+            "cc_d5_148"
           ],
           "definition": "A threat actor is a person or group that could harm an organization's systems or data; their motive, such as money, spying or protest, predicts what they target.",
           "why_it_matters": "Actors want different things and have very different skills. Knowing who is likely to attack, and why, tells defenders what to protect first.",
@@ -1002,7 +1013,8 @@
             "Actors differ in motive, skill, resources and whether they are inside or outside the organization.",
             "Motive predicts the target: criminals seek payment data or ransom, spies seek secrets, activists seek publicity.",
             "Insiders already have access; some act with intent, but many cause harm by mistake, such as misdirected emails.",
-            "Low-skill attackers use ready-made tools, yet still succeed against unpatched systems and weak passwords."
+            "Low-skill attackers use ready-made tools, yet still succeed against unpatched systems and weak passwords.",
+            "Trained AI models, their weights and their training data are valuable intellectual property, so spies and competitors may try to steal them."
           ],
           "types": [
             {
@@ -1072,7 +1084,8 @@
           "practice_ids": [
             "cc_d5_029",
             "cc_d5_072",
-            "cc_d5_120"
+            "cc_d5_120",
+            "cc_d5_149"
           ],
           "definition": "Cyber threat intelligence (CTI) is threat information that has been collected, analyzed and put in context, so defenders can make better decisions about likely attacks.",
           "why_it_matters": "Raw threat data is noise until someone judges what matters here.",
@@ -1235,7 +1248,8 @@
           "practice_ids": [
             "cc_d5_030",
             "cc_d5_051",
-            "cc_d5_121"
+            "cc_d5_121",
+            "cc_d5_150"
           ],
           "definition": "Malware, short for malicious software, is any program written to harm a system or its users, such as by stealing data, locking files or handing control to an attacker.",
           "why_it_matters": "Knowing how each kind spreads and what it does helps a practitioner spot the signs and take the right first step.",
@@ -1244,7 +1258,8 @@
             "Warning signs include slow or crashing systems, unknown programs, pop-ups, locked files and security tools switched off.",
             "Patching, endpoint protection, email filtering and offline backups stop or limit most malware.",
             "On finding malware: stop using the device, isolate it only as the playbook says, note what you saw and report at once.",
-            "Never run cleanup tools, wipe the device or answer a ransom demand; the incident response lead directs what happens next."
+            "Never run cleanup tools, wipe the device or answer a ransom demand; the incident response lead directs what happens next.",
+            "Many ransomware groups copy data before locking it; backups restore the files but cannot undo that theft, which stays an exposure."
           ],
           "types": [
             {
@@ -1448,7 +1463,8 @@
             "cc_d5_033",
             "cc_d5_055",
             "cc_d5_075",
-            "cc_d5_122"
+            "cc_d5_122",
+            "cc_d5_151"
           ],
           "definition": "An incident response plan is the approved document that says what counts as an incident, who responds, what authority they have, how to communicate and which steps to follow.",
           "why_it_matters": "In a crisis, people improvise, act alone or wait for permission. A plan approved in advance sets roles, authority and contacts, so the response is fast and coordinated.",
@@ -1482,7 +1498,7 @@
               "meaning": "Approves major business decisions, such as shutting down a service or hiring outside help."
             }
           ],
-          "example": "Late on a Friday, Sky, an IT technician at a community college, sees ransom notes appearing on a shared drive. Sky's instinct is to start restoring files, but the plan says staff report first. Sky calls the on-call number, describes what they saw and when, and keeps notes.",
+          "example": "Late on a Friday, Sky, a help desk technician at a community college, sees ransom notes appearing on a shared drive. Sky's instinct is to start restoring files, but the plan says staff report first. Sky calls the on-call number, describes what they saw and when, and keeps notes.",
           "audit_focus": {
             "review": [
               "Know the reporting number and channel before you ever need them",
@@ -1620,7 +1636,8 @@
             "cc_d5_009",
             "cc_d5_037",
             "cc_d5_100",
-            "cc_d5_101"
+            "cc_d5_101",
+            "cc_d5_152"
           ],
           "definition": "Containment stops an incident from spreading, eradication removes its cause, and recovery returns affected systems to normal, trusted operation, in that order.",
           "why_it_matters": "Cleaning up before containing lets an attacker move elsewhere; restoring before eradication puts the attacker straight back.",
@@ -1628,7 +1645,8 @@
             "Short-term containment acts fast, such as isolating an infected laptop or disabling a compromised account.",
             "Isolating a running machine, rather than powering it off, usually keeps memory evidence; the playbook may say otherwise for some threats.",
             "Eradication removes malware and attacker accounts, closes the exploited weakness and resets exposed credentials on every affected system.",
-            "Recovery restores from known-good backups or clean builds, patches them and checks them for signs of compromise before they go live, then watches closely for a return."
+            "Recovery restores from known-good backups or clean builds, patches them and checks them for signs of compromise before they go live, then watches closely for a return.",
+            "If a containment step would put people at risk, such as cutting a safety display, set up a safe fallback first, then contain."
           ],
           "example": "After a design studio's cloud storage account is taken over, the incident response lead has it locked and assigns eradication to Lee, a system administrator. Lee removes an access key and a public sharing link the attacker added, resets the password and multifactor authentication, and searches the other accounts for the same key before reporting back.",
           "audit_focus": {
@@ -1677,7 +1695,8 @@
             "cc_d5_011",
             "cc_d5_056",
             "cc_d5_077",
-            "cc_d5_123"
+            "cc_d5_123",
+            "cc_d5_153"
           ],
           "definition": "Evidence handling keeps digital and physical evidence reliable; chain of custody records everyone who handled it, when and why, from collection onward.",
           "why_it_matters": "Incidents can lead to discipline, insurance claims or court, where evidence that cannot be shown untouched may be rejected.",
@@ -1735,7 +1754,8 @@
             "cc_d5_012",
             "cc_d5_057",
             "cc_d5_102",
-            "cc_d5_124"
+            "cc_d5_124",
+            "cc_d5_154"
           ],
           "definition": "Data handling during an incident applies the organization's classification and handling rules to everything the response touches, including evidence, logs, reports and messages.",
           "why_it_matters": "Response copies of disks, logs and records can hold the very data the attacker wanted. Mishandling them, or speaking too soon, can cause a second breach.",
@@ -1788,7 +1808,8 @@
             "cc_d5_034",
             "cc_d5_078",
             "cc_d5_103",
-            "cc_d5_125"
+            "cc_d5_125",
+            "cc_d5_155"
           ],
           "definition": "Lessons learned is the review after an incident or exercise that asks what happened, what worked, what did not and what to change, then tracks the changes to completion.",
           "why_it_matters": "Without a review, the same weakness causes the next incident. Improvements also keep the plan current as systems, threats and people change.",
@@ -1927,7 +1948,8 @@
             "cc_d5_059",
             "cc_d5_079",
             "cc_d5_105",
-            "cc_d5_127"
+            "cc_d5_127",
+            "cc_d5_157"
           ],
           "definition": "An asset inventory is an up-to-date list of hardware, software, data, cloud services and artificial intelligence (AI) assets, each with a named owner.",
           "why_it_matters": "Unknown assets are not patched, monitored or backed up, so attackers often get in through them. The inventory underpins nearly every other control.",
@@ -1991,7 +2013,7 @@
             "Retirement removes the asset from access lists, firewall rules and monitoring.",
             "Disposal sanitizes or destroys storage and records the result, including for leased or returned equipment; a device sent off site for repair has its storage sanitized or removed first."
           ],
-          "example": "A grocery chain boxes its old warehouse handheld scanners for a recycler. Kim, an IT technician, notices they still hold cached delivery addresses and saved Wi-Fi passwords. Kim pauses the shipment, tells the asset manager, and sanitizes and records each device as the disposal procedure requires.",
+          "example": "A grocery chain boxes its old warehouse handheld scanners for a recycler. Kim, a help desk technician, notices they still hold cached delivery addresses and saved Wi-Fi passwords. Kim pauses the shipment, tells the asset manager, and sanitizes and records each device as the disposal procedure requires.",
           "audit_focus": {
             "review": [
               "Follow the disposal procedure for every retired device, including small ones",
@@ -2034,7 +2056,8 @@
             "cc_d5_014",
             "cc_d5_060",
             "cc_d5_081",
-            "cc_d5_110"
+            "cc_d5_110",
+            "cc_d5_158"
           ],
           "definition": "End-of-life (EOL) software or hardware no longer gets vendor support, including security patches, so newly found weaknesses stay unfixed for good.",
           "why_it_matters": "Attackers seek out unsupported products because every new flaw stays open, and these systems often run important processes.",
@@ -2042,7 +2065,7 @@
             "Vendors announce end-of-support dates in advance; for security, the key date is when patches stop.",
             "The inventory tracks support dates, so owners can plan upgrades in time.",
             "The preferred fix is to upgrade or replace the system before support ends.",
-            "If that is not yet possible, reduce exposure: isolate it on its own network segment, limit access, monitor it closely or buy extended support.",
+            "If that is not yet possible, keep it patched with the vendor's extended security updates where offered, and reduce exposure: isolate it, limit access and monitor it closely.",
             "Keeping it running needs a documented exception with an expiry date and a review."
           ],
           "example": "A port operator's crane scheduling workstation runs an unsupported operating system, kept online under a time-limited exception. Checking its conditions ahead of renewal, Sol, a junior security analyst, finds the monitoring it required stopped in the spring and the replacement has slipped a year. Sol writes up both gaps for the renewal decision and reports the stopped monitoring to the security manager at once.",
@@ -2058,7 +2081,7 @@
             "recommend": "Send EOL findings to the asset owner and security manager, with the support end date and the data at risk.",
             "decides": "The risk owner accepts the remaining risk; the policy owner approves a time-limited exception"
           },
-          "isaca_rule": "Plan for end of support before it arrives. Upgrade or replace when you can; when you cannot, isolate, restrict and monitor under a documented, time-limited exception.",
+          "isaca_rule": "Plan for end of support before it arrives. Upgrade or replace when you can; when you cannot, buy extended security updates if offered, and otherwise isolate, restrict and monitor under a documented, time-limited exception.",
           "exam_traps": [
             {
               "trap": "If an unsupported system still works, it is safe to leave as is.",
@@ -2155,7 +2178,7 @@
             "Urgent patches for actively exploited flaws use the emergency change route: faster, but still recorded.",
             "Rescans confirm each patch; systems that cannot be patched get compensating controls and an exception."
           ],
-          "example": "A vendor fixes a flaw that attackers are exploiting in the web browser a public library runs on 80 staff and catalog PCs. Devon, an IT technician, installs it under the approved change on five pilot PCs first, checks that catalog search and printing still work, then rolls it out to the rest that afternoon and rescans to confirm.",
+          "example": "A vendor fixes a flaw that attackers are exploiting in the web browser a public library runs on 80 staff and catalog PCs. Devon, a system administrator, installs it under the approved change on five pilot PCs first, checks that catalog search and printing still work, then rolls it out to the rest that afternoon and rescans to confirm.",
           "audit_focus": {
             "review": [
               "Match each new patch to affected systems in the inventory",
@@ -2199,7 +2222,8 @@
             "cc_d5_041",
             "cc_d5_084",
             "cc_d5_108",
-            "cc_d5_131"
+            "cc_d5_131",
+            "cc_d5_156"
           ],
           "definition": "Change management is the controlled process for requesting, assessing, approving, testing, making and reviewing changes to systems, so changes do not cause outages or security gaps.",
           "why_it_matters": "Unplanned, untested changes are a leading cause of outages, and an unapproved change can quietly open a security hole.",
@@ -2242,7 +2266,7 @@
             },
             {
               "term": "Rollback plan",
-              "definition": "Steps prepared in advance to undo a change if it fails or causes problems."
+              "definition": "Steps prepared in advance to undo a change if it fails or causes problems, starting from a backup taken before the change, not after it."
             }
           ]
         }
@@ -2267,7 +2291,8 @@
             "cc_d5_018",
             "cc_d5_062",
             "cc_d5_085",
-            "cc_d5_132"
+            "cc_d5_132",
+            "cc_d5_159"
           ],
           "definition": "A red team plays the attacker, a blue team defends and detects, and a purple team is red and blue working together to improve detection and response.",
           "why_it_matters": "Defenses that are never challenged give false confidence. Realistic attacks show whether people, processes and tools actually detect and stop what real attackers do.",
@@ -2275,7 +2300,8 @@
             "Red teams copy known attacker techniques to reach agreed goals, such as reading a test file in the payroll system.",
             "Blue teams, usually the security operations center, defend as normal and may not know a test is running.",
             "In purple teaming, red shares each step as it happens, so blue can confirm detection and close gaps at once.",
-            "A white team sets the rules, referees and can stop the exercise if something goes wrong."
+            "A white team sets the rules, referees and can stop the exercise if something goes wrong.",
+            "If testers find signs of a real attacker, they pause that work and tell the white team, who bring in incident response."
           ],
           "compare": {
             "columns": [
@@ -2354,7 +2380,8 @@
             "cc_d5_044",
             "cc_d5_086",
             "cc_d5_087",
-            "cc_d5_114"
+            "cc_d5_114",
+            "cc_d5_160"
           ],
           "definition": "A vulnerability scan uses automated tools to find known weaknesses; a penetration test is an authorized, mostly manual attempt to exploit weaknesses to show real impact.",
           "why_it_matters": "Scans show what might be wrong; penetration tests show what an attacker could actually do. A clean scan does not prove safety.",
@@ -2363,7 +2390,8 @@
             "Penetration testers chain weaknesses together to prove impact, within an agreed scope and time window.",
             "Findings are ranked with the Common Vulnerability Scoring System (CVSS), now version 4.0, plus asset value and active exploitation.",
             "Both need the system owner's approval, and fixes are verified by rescanning or retesting.",
-            "CVSS 4.0 metric groups: Base describes the flaw itself, Threat adds exploitation, Environmental adjusts for your system's importance, and Supplemental adds context without changing the score."
+            "CVSS 4.0 metric groups: Base describes the flaw itself, Threat adds exploitation, Environmental adjusts for your system's importance, and Supplemental adds context without changing the score.",
+            "Authenticated scans sign in with a dedicated account and see installed software and missing patches; scans that cannot sign in see only what each system exposes."
           ],
           "compare": {
             "columns": [
@@ -2449,7 +2477,8 @@
             "cc_d5_063",
             "cc_d5_088",
             "cc_d5_112",
-            "cc_d5_133"
+            "cc_d5_133",
+            "cc_d5_161"
           ],
           "definition": "Static application security testing (SAST) examines source code without running it; dynamic application security testing (DAST) probes the running application from outside, as an attacker would.",
           "why_it_matters": "Flaws are cheapest to fix while code is written and dearest in production. Each method finds problems the other misses, so applications need both.",
@@ -2540,7 +2569,8 @@
             "cc_d5_042",
             "cc_d5_064",
             "cc_d5_089",
-            "cc_d5_113"
+            "cc_d5_113",
+            "cc_d5_162"
           ],
           "definition": "Threat modeling is a structured way to find what could go wrong with a system's design, rank those threats, and choose defenses before the system is built or changed.",
           "why_it_matters": "Design flaws are costly to fix after building. Thinking like an attacker at the whiteboard finds them early.",
@@ -2619,12 +2649,13 @@
             "cc_d5_043",
             "cc_d5_065",
             "cc_d5_111",
-            "cc_d5_134"
+            "cc_d5_134",
+            "cc_d5_163"
           ],
           "definition": "Physical and social engineering penetration tests check, with written permission, whether people and premises resist tricks such as phishing, baiting, tailgating and impersonation.",
           "why_it_matters": "Attackers often find people and doors easier than firewalls. These tests show whether staff challenge strangers and report suspicious messages.",
           "how_it_works": [
-            "Phishing simulations send realistic but harmless emails and measure who clicks and, more importantly, who reports.",
+            "Phishing simulations send realistic but harmless emails and measure who clicks and, more importantly, who reports. Fake sign-in pages record that a password was entered, never the password.",
             "Tailgating and piggybacking tests check whether a tester can slip in behind staff unnoticed, or be let in without a badge.",
             "Impersonation tests use a pretext, such as a delivery driver or IT contractor, to see whether staff verify identity.",
             "Baiting tests leave tempting items, such as labeled memory sticks, to see whether staff plug them in or hand them to security (see 2.3.3).",

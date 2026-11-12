@@ -62,7 +62,8 @@
             "cc_d1_001",
             "cc_d1_026",
             "cc_d1_080",
-            "cc_d1_151"
+            "cc_d1_151",
+            "cc_d1_191"
           ],
           "definition": "The CIA triad is the three core goals of security: confidentiality (only the right people see data), integrity (data stays correct) and availability (it works when needed).",
           "why_it_matters": "Naming the goal an incident hurts points to the right response. The triad also shows trade-offs: tight lockdown can block people who need access.",
@@ -153,7 +154,8 @@
             "cc_d1_021",
             "cc_d1_046",
             "cc_d1_111",
-            "cc_d1_152"
+            "cc_d1_152",
+            "cc_d1_192"
           ],
           "definition": "Confidentiality means keeping information away from people, processes and devices not authorized to see it, whether stored, sent or in use.",
           "why_it_matters": "Leaked data cannot be pulled back. Disclosure can break laws, harm customers and help attackers, so prevention matters most.",
@@ -206,7 +208,8 @@
             "cc_d1_022",
             "cc_d1_076",
             "cc_d1_112",
-            "cc_d1_153"
+            "cc_d1_153",
+            "cc_d1_193"
           ],
           "definition": "Integrity means data stays accurate and complete, changed only through authorized means; authenticity means data truly comes from its claimed source.",
           "why_it_matters": "A silently changed payment, dose or setting can do more harm than a leak, because people keep trusting it.",
@@ -291,7 +294,8 @@
             "cc_d1_023",
             "cc_d1_048",
             "cc_d1_113",
-            "cc_d1_154"
+            "cc_d1_154",
+            "cc_d1_226"
           ],
           "definition": "Availability means authorized users can reach the systems, data and services they need, in a usable state, when they need them.",
           "why_it_matters": "A hospital that cannot open records, or a store that cannot take payments, is harmed even without a leak. Some outages endanger people.",
@@ -340,14 +344,15 @@
             "cc_d1_024",
             "cc_d1_049",
             "cc_d1_114",
-            "cc_d1_155"
+            "cc_d1_155",
+            "cc_d1_194"
           ],
           "definition": "Authentication is proving you are the identity you claim, using something you know, something you have or something you are.",
           "why_it_matters": "Every later access decision trusts the identity. If an attacker passes authentication, the system works for the attacker.",
           "how_it_works": [
             "Identification comes first: the user claims an identity, such as a username.",
             "Authentication then proves the claim with one or more factors.",
-            "Multifactor authentication (MFA) needs two or more different factor types; two passwords are still one type.",
+            "Multifactor authentication (MFA) needs two or more different factor types, so one lost or stolen factor alone opens nothing; two passwords are still one type.",
             "3.1.4 covers MFA methods and lost or replaced authenticators."
           ],
           "types": [
@@ -407,7 +412,8 @@
             "cc_d1_003",
             "cc_d1_027",
             "cc_d1_077",
-            "cc_d1_115"
+            "cc_d1_115",
+            "cc_d1_195"
           ],
           "definition": "Authorization decides what an authenticated identity may do; accounting records what it actually did, so actions can be traced to a person or process.",
           "why_it_matters": "Authorization limits the damage one account can cause. Accounting gives the evidence to spot misuse and hold people to answer for it.",
@@ -494,7 +500,8 @@
             "cc_d1_002",
             "cc_d1_047",
             "cc_d1_050",
-            "cc_d1_156"
+            "cc_d1_156",
+            "cc_d1_196"
           ],
           "definition": "Non-repudiation is evidence strong enough that a person cannot credibly deny sending a message, signing a document or performing an action.",
           "why_it_matters": "Contracts, payments and investigations depend on proof of who did what. Without it, anyone can claim someone else acted in their name.",
@@ -551,7 +558,8 @@
             "cc_d1_028",
             "cc_d1_078",
             "cc_d1_116",
-            "cc_d1_157"
+            "cc_d1_157",
+            "cc_d1_197"
           ],
           "definition": "Privacy is a person's right to control how information about them is collected, used, shared and kept.",
           "why_it_matters": "Privacy can be breached without any leak, just by using data for a purpose people never agreed to. Breaches bring fines and lost trust.",
@@ -634,13 +642,15 @@
             "cc_d1_051",
             "cc_d1_079",
             "cc_d1_117",
-            "cc_d1_158"
+            "cc_d1_158",
+            "cc_d1_198"
           ],
           "definition": "AI systems share the security goals of other software, plus new risks: poisoned training data, personal data exposed through models and hard-to-trace automated actions.",
           "why_it_matters": "Corrupted data, leaked secrets or untraceable actions make confidentiality, integrity and accountability fail in new ways.",
           "how_it_works": [
             "Poisoning corrupts training data or the model so it learns wrong or hidden behavior: an integrity attack.",
             "Training data and prompts can hold personal data the model later reveals: a confidentiality and privacy risk.",
+            "Training data can also carry sensitive details, such as where photos were taken; remove what the model does not need before the data is shared.",
             "Each AI agent needs its own identity, limited permissions and logs, tied to an accountable human owner."
           ],
           "compare": {
@@ -736,7 +746,8 @@
             "cc_d1_052",
             "cc_d1_081",
             "cc_d1_118",
-            "cc_d1_159"
+            "cc_d1_159",
+            "cc_d1_199"
           ],
           "definition": "Risk is the chance that a threat will exploit a vulnerability and harm an asset, judged by likelihood and impact.",
           "why_it_matters": "Clear terms let teams compare very different problems, such as phishing and a flood, and spend effort where it removes the most harm.",
@@ -823,9 +834,10 @@
             "cc_d1_053",
             "cc_d1_082",
             "cc_d1_119",
-            "cc_d1_160"
+            "cc_d1_160",
+            "cc_d1_200"
           ],
-          "definition": "The risk management lifecycle is the repeating cycle of identifying, assessing, treating and monitoring risks, with communication throughout.",
+          "definition": "The risk management lifecycle is the repeating cycle of framing the context, then identifying, assessing, treating and monitoring risks, with communication throughout.",
           "why_it_matters": "A one-time assessment goes stale as systems, threats and plans change. The cycle keeps decisions current.",
           "how_it_works": [
             "Frame the context: what the organization values, its legal duties and its risk appetite.",
@@ -834,7 +846,7 @@
             "Treat each risk: avoid, mitigate, transfer or accept.",
             "Monitor, and repeat on a schedule and after major changes or incidents."
           ],
-          "example": "A school district finished its risk assessment last spring, then moved student records to a cloud service over the summer. Ravi, a security technician, notices the risk register still describes the old on-site server and flags the outdated entries to the risk manager for reassessment.",
+          "example": "A school district finished its risk assessment last spring, then moved student records to a cloud service over the summer. Ravi, a security analyst, notices the risk register still describes the old on-site server and flags the outdated entries to the risk manager for reassessment.",
           "audit_focus": {
             "review": [
               "Flag register entries for systems that have changed or retired",
@@ -864,7 +876,7 @@
               "definition": "The seven-step process from the US National Institute of Standards and Technology (NIST) for managing a system's risk."
             }
           ],
-          "memory_aid": "Find it, size it, treat it, watch it, then repeat."
+          "memory_aid": "Frame it, find it, size it, treat it, watch it, then repeat."
         },
         {
           "id": "1.2.3",
@@ -932,7 +944,8 @@
             "cc_d1_084",
             "cc_d1_121",
             "cc_d1_162",
-            "cc_d1_165"
+            "cc_d1_165",
+            "cc_d1_202"
           ],
           "definition": "Qualitative analysis rates risks with levels such as low, medium and high; quantitative analysis estimates them in numbers, usually money lost per year.",
           "why_it_matters": "Descriptive ratings suit most decisions; numbers help justify spending on a costly control.",
@@ -1029,7 +1042,8 @@
             "cc_d1_057",
             "cc_d1_085",
             "cc_d1_122",
-            "cc_d1_163"
+            "cc_d1_163",
+            "cc_d1_203"
           ],
           "definition": "Risk treatment is choosing how to respond to an assessed risk: avoid, mitigate, transfer (share) or accept it.",
           "why_it_matters": "Every risk gets a response, even a documented decision to live with it.",
@@ -1102,7 +1116,8 @@
             "cc_d1_086",
             "cc_d1_123",
             "cc_d1_164",
-            "cc_d1_166"
+            "cc_d1_166",
+            "cc_d1_204"
           ],
           "definition": "Risk appetite is the broad amount and type of risk leaders will take on; risk tolerance is the measurable limit for a specific objective.",
           "why_it_matters": "They turn leaders' attitudes into limits that show when a remaining risk must be escalated.",
@@ -1155,7 +1170,9 @@
             "cc_d1_031",
             "cc_d1_056",
             "cc_d1_088",
-            "cc_d1_124"
+            "cc_d1_124",
+            "cc_d1_201",
+            "cc_d1_205"
           ],
           "definition": "A risk register is the shared record of known risks, each with a rating, an owner, a treatment and a status.",
           "why_it_matters": "A risk nobody owns usually goes untreated. The register makes ownership visible and proves the organization acted on what it knew.",
@@ -1261,7 +1278,9 @@
             "cc_d1_058",
             "cc_d1_089",
             "cc_d1_090",
-            "cc_d1_125"
+            "cc_d1_125",
+            "cc_d1_206",
+            "cc_d1_207"
           ],
           "definition": "Security governance is how leaders set direction, assign responsibility and oversee security so it supports business goals and meets legal duties.",
           "why_it_matters": "Without governance, security is a pile of disconnected tools. Governance gives every control a reason, an owner and leadership's authority.",
@@ -1408,12 +1427,13 @@
             "cc_d1_093",
             "cc_d1_128",
             "cc_d1_169",
-            "cc_d1_173"
+            "cc_d1_173",
+            "cc_d1_208"
           ],
           "definition": "A security framework is a published structure of practices or outcomes for building and measuring a security program; guidelines give recommended, not required, practice.",
           "why_it_matters": "Frameworks save inventing security from scratch. They are voluntary unless a law or contract requires one.",
           "how_it_works": [
-            "The Cybersecurity Framework (CSF) 2.0, from the US National Institute of Standards and Technology (NIST), groups outcomes into six functions.",
+            "The Cybersecurity Framework (CSF) 2.0, from the US National Institute of Standards and Technology (NIST), groups outcomes into six functions; each organization chooses how to reach them.",
             "In CSF 2.0, a Current Profile records the outcomes achieved now and a Target Profile the outcomes sought; Tiers rate how rigorous risk governance and management are.",
             "ISO/IEC 27001, from the International Organization for Standardization (ISO) and International Electrotechnical Commission (IEC), sets certifiable requirements for an information security management system (ISMS).",
             "The Center for Internet Security (CIS) Controls are 18 prioritized safeguards; Implementation Group 1 is the basic set.",
@@ -1500,7 +1520,8 @@
             "cc_d1_094",
             "cc_d1_129",
             "cc_d1_170",
-            "cc_d1_174"
+            "cc_d1_174",
+            "cc_d1_209"
           ],
           "definition": "A security policy is a high-level, mandatory statement, approved by senior management, of what the organization requires and why.",
           "why_it_matters": "Policy gives every rule its authority. When staff push back on a control, the policy shows leadership required it.",
@@ -1556,7 +1577,9 @@
             "cc_d1_062",
             "cc_d1_095",
             "cc_d1_130",
-            "cc_d1_171"
+            "cc_d1_171",
+            "cc_d1_210",
+            "cc_d1_211"
           ],
           "definition": "Standards set mandatory, specific requirements; procedures give mandatory steps; guidelines offer optional advice. All three sit under policy.",
           "why_it_matters": "Treating a guideline as mandatory blocks people; treating a standard as optional leaves gaps.",
@@ -1663,7 +1686,8 @@
             "cc_d1_096",
             "cc_d1_131",
             "cc_d1_132",
-            "cc_d1_172"
+            "cc_d1_172",
+            "cc_d1_212"
           ],
           "definition": "AI governance applies the laws and internal rules that already bind an organization, plus new AI-specific laws, to the AI tools it builds or uses.",
           "why_it_matters": "AI tools process personal data and decide things about people at scale, so unreviewed use can quietly break the law.",
@@ -1737,7 +1761,7 @@
             "Its yearly cost should not exceed the loss it is expected to prevent.",
             "Controls need owners, testing and monitoring, or they quietly stop working."
           ],
-          "example": "A chain of veterinary clinics worries that stolen laptops could expose client records. Femi, a security technician, compares options: guards would cost far more than the risk, while full-disk encryption is cheap and protects the data directly. Femi proposes encryption plus cable locks to the operations manager.",
+          "example": "A chain of veterinary clinics worries that stolen laptops could expose client records. Femi, a security analyst, compares options: guards would cost far more than the risk, while full-disk encryption is cheap and protects the data directly. Femi proposes encryption plus cable locks to the operations manager.",
           "audit_focus": {
             "review": [
               "Name the risk each control you run is meant to treat",
@@ -1777,7 +1801,8 @@
             "cc_d1_065",
             "cc_d1_098",
             "cc_d1_134",
-            "cc_d1_178"
+            "cc_d1_178",
+            "cc_d1_214"
           ],
           "definition": "Technical controls, also called logical controls, are safeguards built into hardware, software or firmware, such as firewalls, encryption and access permissions.",
           "why_it_matters": "They enforce rules automatically and consistently, so protection does not depend on people remembering a policy.",
@@ -1831,7 +1856,8 @@
             "cc_d1_066",
             "cc_d1_099",
             "cc_d1_135",
-            "cc_d1_176"
+            "cc_d1_176",
+            "cc_d1_215"
           ],
           "definition": "Administrative controls, also called managerial controls, are the policies, procedures, training and people practices that direct how security is handled.",
           "why_it_matters": "Many attacks target people, and most technical controls exist because a policy requires them. Administrative controls set the rules.",
@@ -1886,7 +1912,8 @@
             "cc_d1_100",
             "cc_d1_136",
             "cc_d1_177",
-            "cc_d1_182"
+            "cc_d1_182",
+            "cc_d1_216"
           ],
           "definition": "Physical controls are tangible measures that protect people, buildings and equipment, such as fences, locks, badge readers and fire suppression.",
           "why_it_matters": "Physical access can bypass many technical controls. Physical controls also protect the most important asset: people's lives.",
@@ -1926,7 +1953,7 @@
               }
             ]
           },
-          "example": "Crowds queue outside a concert venue's glass entrance beside a busy road, and a delivery van recently mounted the curb there. Ama, a security technician, proposes steel bollards between the road and the queue to keep vehicles away from people and the building. Ama sends the proposal, with the city's permit rules for sidewalks, to facilities management.",
+          "example": "Crowds queue outside a concert venue's glass entrance beside a busy road, and a delivery van recently mounted the curb there. Ama, a security analyst, proposes steel bollards between the road and the queue to keep vehicles away from people and the building. Ama sends the proposal, with the city's permit rules for sidewalks, to facilities management.",
           "audit_focus": {
             "review": [
               "Walk escape routes and confirm exit doors open freely",
@@ -1967,7 +1994,8 @@
             "cc_d1_101",
             "cc_d1_137",
             "cc_d1_138",
-            "cc_d1_179"
+            "cc_d1_179",
+            "cc_d1_217"
           ],
           "definition": "A control's function is what it does against a threat: prevent, detect, correct, deter, recover or compensate for a missing control.",
           "why_it_matters": "Knowing functions reveals gaps, such as alarms that detect a break-in with nothing to prevent it.",
@@ -2047,7 +2075,9 @@
             "cc_d1_042",
             "cc_d1_102",
             "cc_d1_139",
-            "cc_d1_180"
+            "cc_d1_180",
+            "cc_d1_213",
+            "cc_d1_218"
           ],
           "definition": "Layering means protecting an asset with several controls of different types and functions, so when one fails, others still protect it.",
           "why_it_matters": "Every control can fail. Mixing types means one mistake does not lead straight to a breach.",
@@ -2102,7 +2132,8 @@
             "cc_d1_103",
             "cc_d1_140",
             "cc_d1_141",
-            "cc_d1_181"
+            "cc_d1_181",
+            "cc_d1_219"
           ],
           "definition": "AI tools need the same three control types as any system: technical, administrative and physical safeguards for their data, models and actions.",
           "why_it_matters": "AI systems handle sensitive data and act automatically, so one gap can let a poisoned or tricked model cause harm at scale.",
@@ -2171,7 +2202,8 @@
             "cc_d1_105",
             "cc_d1_142",
             "cc_d1_183",
-            "cc_d1_189"
+            "cc_d1_189",
+            "cc_d1_220"
           ],
           "definition": "A professional code of conduct is a written set of expected behaviors, from an employer or professional body, covering honesty, conflicts of interest and confidentiality.",
           "why_it_matters": "Security staff hold powerful access. A code makes expectations clear and gives a basis for action when someone crosses the line.",
@@ -2179,6 +2211,7 @@
             "Employers publish codes of conduct that staff accept, often with the acceptable use policy.",
             "Professional bodies, such as ISC2, have codes members must follow to keep their certification.",
             "Common themes are honesty, avoiding conflicts of interest and protecting confidential information.",
+            "Confidentiality duties outlast a job: work done for an employer stays its property, so bring your skills to a new role, not its materials.",
             "When a personal link could sway your judgment, disclose it to your manager before you start, and let them decide whether to reassign the work.",
             "Use access only for assigned work, and raise concerns through proper channels."
           ],
@@ -2227,7 +2260,8 @@
             "cc_d1_075",
             "cc_d1_106",
             "cc_d1_143",
-            "cc_d1_184"
+            "cc_d1_184",
+            "cc_d1_221"
           ],
           "definition": "Due diligence is investigating risks and checking that safeguards work; due care is acting on that knowledge as a prudent person would.",
           "why_it_matters": "Courts, regulators and customers judge whether an organization acted reasonably. Falling short on either can count as negligence.",
@@ -2308,7 +2342,8 @@
             "cc_d1_107",
             "cc_d1_144",
             "cc_d1_145",
-            "cc_d1_185"
+            "cc_d1_185",
+            "cc_d1_222"
           ],
           "definition": "The ISC2 Code of Ethics is the set of mandatory principles every ISC2-certified member agrees to follow: a preamble and four canons.",
           "why_it_matters": "Following the code is a condition of certification, and a proven breach can cost the credential.",
@@ -2356,13 +2391,13 @@
             },
             {
               "trap": "Principals means only the company's leadership.",
-              "why": "Principals are those you serve professionally, such as employers and clients."
+              "why": "Principals are those you serve under an employment or contract relationship, such as employers and clients."
             }
           ],
           "key_terms": [
             {
               "term": "Principal",
-              "definition": "Anyone a professional serves under an agreement, such as an employer or client."
+              "definition": "Anyone a professional serves under an employment or contract relationship, such as an employer or a client."
             },
             {
               "term": "Preamble",
@@ -2382,7 +2417,8 @@
             "cc_d1_108",
             "cc_d1_146",
             "cc_d1_186",
-            "cc_d1_190"
+            "cc_d1_190",
+            "cc_d1_223"
           ],
           "definition": "Applying the canons means testing each possible action against all four and choosing one that protects the public while staying honest, legal and responsible.",
           "why_it_matters": "Real dilemmas pit loyalty to an employer against public safety or honesty, and ISC2 gives no ranking rule, so judgment is needed.",
@@ -2439,7 +2475,8 @@
             "cc_d1_109",
             "cc_d1_147",
             "cc_d1_148",
-            "cc_d1_187"
+            "cc_d1_187",
+            "cc_d1_224"
           ],
           "definition": "ISC2 enforces its code through a formal process: a written, sworn complaint is reviewed by an ethics committee and may lead to sanctions.",
           "why_it_matters": "The process gives the code real consequences and sets out who may complain about which canon.",
@@ -2496,7 +2533,8 @@
             "cc_d1_110",
             "cc_d1_149",
             "cc_d1_150",
-            "cc_d1_188"
+            "cc_d1_188",
+            "cc_d1_225"
           ],
           "definition": "Ethical AI use means bringing the same honesty, care and respect for people's data to AI tools as to any other work, with a person answerable for results.",
           "why_it_matters": "AI makes it easy to leak confidential data, pass off unchecked output or act on wrong answers. The canons still apply.",

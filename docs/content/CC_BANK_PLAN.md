@@ -286,6 +286,7 @@ Learned from two blind tests and two standards audits of the pilot.
 | Batch 4, all domains (4 Nov 2026) | +35 | +25 | +30 | +30 | +25 | 490 |
 | Batch 5, all domains (4 Nov 2026) | +40 | +25 | +30 | +30 | +25 | 640 |
 | Batch 6, all domains (5 Nov 2026) | +40 | +24 | +28 | +35 | +23 | 790 |
+| Batch 7, all domains (12 Nov 2026) | +36 | +24 | +30 | +35 | +25 | 940 |
 
 Batch 2: the first blind test matched the keys 25/25 in every domain, and
 re-tests of every changed item all matched. The audits found 7 hard errors
@@ -403,6 +404,47 @@ Batch 7 guidance from this round:
 - Avoid breach-notification scenarios for now; that cluster is full.
 - D1 needs 50 more (240), D4 49, D3 42, D2 34, D5 35: batch 7 closes the gap
   to about 940; batch 8 finishes.
+
+**Batch 7 (12 Nov 2026).** 150 new items on random key letters; the first blind
+test matched every key (150/150) and the audits and the cross-domain gate found
+no HARD errors. The cross-domain gate found three new kinds of tell, fixed in
+the final round:
+- Agree/Disagree overuse: 25 reply items (17% of the batch) with Disagree
+  keyed in 16 of 23. Some claims were flipped so Agree and Disagree are close
+  to even, and "a colleague" is right as often as wrong.
+- Word tells inside options, which the first-word gate cannot see: "named"
+  sat mostly on keys; "until" and "once" mostly on wrong options. Fixed in the
+  batch's items. `check_cc.py` now prints a bank-wide WARNING for any whole
+  word that predicts the key (under 0.01% by chance). The older bank still
+  carries some ("and", "with" and "or" win too often; "since", "so", "every"
+  and "until" lose too often): a dedicated sweep follows batch 8, after which
+  the warning becomes an error.
+- Items where the key was the only cautious option, and one superset key.
+Also re-angled near-duplicate lessons (framework certification, factor types,
+due care with vendor patches, training-data poisoning, control crosswalks, an
+RPO scenario), aligned who approves policy updates (the senior leader who owns
+the policy) and who reviews outside apps (the security team), swapped
+repeated settings, and swept legacy role names (IT lead, IT support analyst,
+metrics analyst, security officer, security technician). Auditor rule 11 now
+also lists security analyst, IT manager, and IT technician or IT coordinator
+for small offices.
+
+Batch 8 guidance from this round (the last ~60 items, to 1,000):
+- Per section: D1 +14 (1.5 +4; 1.2, 1.3, 1.4 +3 each; 1.1 +1); D2 +10 (2.2 +3,
+  2.4 +3, 2.1 +2, 2.3 +2); D3 +12 (3.1 +6 identity life cycle only, no
+  authentication mechanisms; 3.2 +6); D4 +14 (4.2 +7, 4.3 +4, 4.1 +3); D5 +10
+  (5.4 +4, 5.5 +3, 5.3 +2, 5.1 +1, 5.2 none).
+- At most two Agree/Disagree items per domain, half keyed Agree.
+- No new word tells: if the key joins two actions with "and", a distractor
+  does too; "since", "so", "every" and "until" also appear on keys.
+- Do not repeat these full lesson clusters: compensating controls must lower
+  the same risk; layering mixes control types; the cloud customer keeps data,
+  accounts and access in every model; a matching hash shows no change, not who
+  sent it; a phishing-simulation click gets no-blame teaching; an early-warning
+  KRI counts exposure, not harm; AI accuracy KRIs use live data; WPA3 covers
+  only the radio link. No more due care / due diligence classification items.
+- Avoid settings used in batch 7 (zoo, candle maker, ski, museum, insurance
+  broker, sawmill) and physical-access-first items in D3 (they belong in 1.4).
 
 ## 7. Follow-ups outside this plan's scope
 
