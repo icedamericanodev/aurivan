@@ -67,14 +67,14 @@
             "crisc_d3_198"
           ],
           "definition": "Risk responses are the four ways an organization deals with an analyzed risk: accept it, mitigate it with controls, transfer or share it, or avoid the activity causing it.",
-          "why_it_matters": "The response decides how much risk is left and what that costs. The wrong choice wastes money on a risk within appetite or leaves one above appetite untreated.",
+          "why_it_matters": "The response decides how much risk is left and at what cost. The wrong choice wastes money on risk within appetite or leaves risk above it untreated.",
           "how_it_works": [
             "Every response starts from an analyzed risk compared with appetite and tolerance, not a favorite tool; if service is restored and a root-cause review is near, wait.",
             "Responses combine: controls cut likelihood, then insurance covers part of the remaining impact.",
             "Transfer moves money, not accountability, and only for losses covered: re-rate exposure an exclusion leaves retained; an insured breach still harms customers and reputation.",
             "Avoidance gives up the benefit, so it fits when the activity is not needed for objectives or nothing else brings the risk within appetite.",
             "A response can bring new risks, such as reliance on one provider; weigh them first.",
-            "When people cannot have an AI decision explained, human review that gives reasons on challenge keeps the benefit; a model summary explains how it works, not why."
+            "Unexplained AI decisions: human review giving reasons on challenge treats them; a model summary does not."
           ],
           "types": [
             {
@@ -94,7 +94,7 @@
               "meaning": "The business stops, changes or never starts the activity that creates the risk, for good or until a fix is in place."
             }
           ],
-          "example": "A regional airline's loyalty team wants members to pay for flights with stored points in a new partner app. Amara, the risk analyst, rates the account-takeover fraud risk above appetite. They lay out four options, each with its cost and the target risk left: accept the risk (needing temporary acceptance from the level that set the appetite), add step-up authentication, insure fraud losses, or drop the feature. Amara presents the comparison to the loyalty director.",
+          "example": "An airline's loyalty team wants members to pay with points in a new partner app. Amara, the risk analyst, rates the fraud risk above appetite and lays out four options with their cost and target risk: accept it (with temporary acceptance from the level that set appetite), add step-up authentication, insure fraud losses or drop the feature. The loyalty director chooses.",
           "audit_focus": {
             "review": [
               "Compare each response in the register with the risk rating and appetite",
@@ -502,10 +502,10 @@
           "definition": "Ongoing vendor monitoring is reviewing a supplier's performance, controls and risk throughout the relationship, using assurance reports, SLA results, incidents and changes in its own suppliers.",
           "why_it_matters": "A vendor that was sound at onboarding can change owners, cut staff, add subcontractors or suffer a breach. Monitoring catches drift in time to respond.",
           "how_it_works": [
-            "Read assurance reports for scope and period: which services, locations and controls were tested, and when.",
+            "Read assurance reports for scope and period: which services, locations and controls were tested.",
             "Act on report exceptions and complementary user entity controls, the customer's own duties; when scope fits and neither is open, rely on the report rather than repeat its tests.",
             "Track fourth parties: the vendor's own subcontractors, especially those that host or process your data.",
-            "Watch concentration: critical services on one provider or region, even through different vendors, can fail together; rate that joint outage as one scenario.",
+            "Watch concentration: services on one provider or region, even via different vendors, fail together; rate it as one scenario.",
             "Scale review depth and frequency to criticality; reassess on events such as a breach, sale or merger, missed SLAs or a new subcontractor."
           ],
           "example": "An insurer relies on a claims vendor whose SOC 2 Type 2 report covers its main data center but not the overseas site now handling the insurer's claims. Chen, a risk analyst, notices the scope gap and two access-review exceptions. They update the vendor entry and ask the claims director to seek coverage of that site.",
@@ -696,7 +696,7 @@
             "The risk owner approves, at a level that matches the risk; policy may require senior management for high ratings.",
             "Exceptions carry an expiry date and a plan to comply; exemptions are reviewed periodically. One in date, within authority and compensated is reviewed then, not escalated early.",
             "Keep all deviations in one register and report them in aggregate, so combined risk shows and repeated requests point to a cause to fix.",
-            "An exemption covers only the assets assessed: a new asset needs its own request, and a change to a covered system or its data is reassessed before the scheduled review."
+            "An exemption covers only the assets assessed; a new asset needs its own request, and a change to a covered system or its data reopens it."
           ],
           "compare": {
             "columns": [
@@ -793,9 +793,9 @@
           "why_it_matters": "Calling a detective control preventive overstates protection and understates residual risk. Knowing the function shows which part of the risk a control actually reduces.",
           "how_it_works": [
             "Preventive and deterrent controls mainly reduce likelihood; corrective controls mainly reduce impact after an event.",
-            "Detective controls reduce impact only if someone acts on what they find, quickly enough to matter.",
+            "Detective controls reduce impact only if someone acts on findings quickly enough to matter.",
             "A layered set mixes functions so one failure is caught or contained by another; a corrective procedure sets how errors getting through are fixed.",
-            "Name the function by what the control does in this process, not by the tool: a log review or tamper-evident seal detects; an enforced approval prevents.",
+            "Name the function by what the control does here, not by the tool: a log review or tamper-evident seal detects; an enforced approval prevents.",
             "A compensating control is an alternative or interim measure; the gap it covers stays recorded and reviewed.",
             "Credit a control in the rating only for the function it performs: a firewall rule set to log traffic detects; it does not prevent."
           ],
@@ -1436,7 +1436,7 @@
           "how_it_works": [
             "Each action has one owner, a target date and the resources it needs, agreed with the risk owner; a resource conflict goes back to that owner.",
             "Sequence actions so the largest risk reductions come early, allowing for dependencies and cost; milestones break long work into checkpoints, so slippage shows early.",
-            "The plan states the target risk expected at completion, so success can be measured; report progress as risk reduced toward that target, not the share of actions done.",
+            "The plan states the target risk expected at completion, so success can be measured.",
             "Interim measures reduce the exposure while long actions are under way, and stay until the permanent control is shown to work.",
             "The plan links to its risk register entry, where action owners log progress, so the risk picture does not depend on a separate project tool.",
             "When a planned control, its cost or the risk changes, such as the target being met early, re-estimate the cost-benefit before the risk owner agrees any change."
@@ -1494,7 +1494,7 @@
           "how_it_works": [
             "Ask for evidence at each milestone, not only a status color, and watch the risk's indicators: if completed, working actions do not move them, check what drives the risk.",
             "Confirm the control is implemented, then that it operates, before treating the action as complete.",
-            "Re-rate the risk after validation; that residual rating is compared with the target the plan set.",
+            "Re-rate the risk after validation and report progress as risk reduced toward the plan's target, not the share of actions done.",
             "Escalate slipping or blocked actions to the risk owner, and past agreed limits to senior management.",
             "Close the plan once evidence and the owner's sign-off show the risk at target, or the owner records a new decision on the current rating, not the target.",
             "If validated actions leave the risk above target, report the shortfall to the risk owner, who decides on further treatment, acceptance within their authority or elevation."
@@ -2285,7 +2285,7 @@
             "Use many sources: threat intelligence, regulators' consultations, industry groups, vendors, research and front-line staff; look as far ahead as the plans and assets the scan informs.",
             "Look for opportunities too, such as a new technology that could cut cost or risk.",
             "Screen each signal for relevance to objectives and assets; judge the scan by how many new risks it flagged before harm, not items read or hours spent.",
-            "Give each relevant emerging risk an owner to watch it, even while it is uncertain.",
+            "Treat as emerging only what is still uncertain, not merely distant; give each such risk an owner to watch it, and rate dated, understood changes normally.",
             "Evaluate new technologies, such as generative AI, for threats, vulnerabilities and opportunities before use spreads.",
             "A peer's incident on the same technology, or an industry report, is valid evidence to record an emerging risk; do not wait for an in-house event."
           ],
@@ -2367,10 +2367,6 @@
             {
               "trap": "An emerging AI risk belongs to IT because AI is technology.",
               "why": "The business owner of the process using the AI owns its risk. IT may own the technical controls."
-            },
-            {
-              "trap": "A risk that lies years ahead is emerging, so it waits in the emerging section.",
-              "why": "Uncertainty, not distance in time, makes a risk emerging. A dated change with a known effect, such as a network closure, is rated and treated in the main register now."
             }
           ],
           "key_terms": [
