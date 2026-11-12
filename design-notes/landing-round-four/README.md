@@ -30,6 +30,15 @@ Preview from the repository root: `python3 -m http.server 8000`, then open
 - Feedback row fix: Resume now restarts the row while the button keeps focus.
   The row itself is a keyboard stop that pauses while focused.
 
+## The letter f
+
+The upright Fraunces "f" has a short, heavy hook in every cut of the font
+(optical size, SOFT and WONK were all tested), and a tester and the owner found
+it odd. `fonts/f-upright.woff2` is a one-letter file that swaps in a
+conventional upright f from Literata (OFL, licence beside it) through a
+`unicode-range` font face. Italic text keeps the Fraunces f. Quotes are set in
+italic. This is a landing-page workaround; a brand-wide decision is pending.
+
 ## Still true
 
 - Waitlist is a mockup. It validates in the browser and sends or saves nothing.

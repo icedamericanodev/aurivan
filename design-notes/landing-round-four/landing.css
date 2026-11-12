@@ -6,6 +6,10 @@
 @font-face{font-family:Figtree;src:url('../../assets/fonts/Figtree_600SemiBold.woff2') format('woff2');font-weight:600;font-display:swap}
 @font-face{font-family:Fraunces;src:url('../../assets/fonts/Fraunces_400Regular.woff2') format('woff2');font-weight:400;font-display:swap}
 @font-face{font-family:Fraunces;src:url('../../assets/fonts/Fraunces_400Regular_Italic.woff2') format('woff2');font-weight:400;font-style:italic;font-display:swap}
+/* The upright Fraunces "f" has a short, heavy hook that testers and the owner
+   found odd. This one-letter file swaps in a conventional upright f (taken from
+   Literata, OFL, see fonts/OFL-Literata.txt). Italic text keeps the Fraunces f. */
+@font-face{font-family:Fraunces;src:url('fonts/f-upright.woff2') format('woff2');font-weight:400;font-style:normal;font-display:swap;unicode-range:U+0066}
 
 /* ---------- Tokens ---------- */
 :root{
