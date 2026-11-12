@@ -156,7 +156,8 @@
             "crisc_d4_022",
             "crisc_d4_064",
             "crisc_d4_091",
-            "crisc_d4_101"
+            "crisc_d4_101",
+            "crisc_d4_133"
           ],
           "definition": "Technical debt is the future cost and risk created by shortcuts or aging technology, such as legacy systems that are hard to patch, change or support.",
           "why_it_matters": "Legacy systems often run critical processes, so their weaknesses are business risks. Because they still work, the risk is easy to overlook until a failure, breach or skills gap makes it urgent.",
@@ -230,7 +231,8 @@
             "crisc_d4_077",
             "crisc_d4_082",
             "crisc_d4_102",
-            "crisc_d4_122"
+            "crisc_d4_122",
+            "crisc_d4_132"
           ],
           "definition": "Change management is the controlled process for requesting, assessing, approving, testing, implementing and reviewing changes, with configuration management keeping an accurate record of approved settings.",
           "why_it_matters": "Many outages and incidents follow a change. Controlled change keeps risk within appetite: someone has judged the impact, can undo the change and knows what the system should look like.",
@@ -239,7 +241,7 @@
             "Emergency changes, including urgent fixes during a freeze, get emergency approval, proportionate testing and a back-out plan, then a full review as soon as practical.",
             "A configuration management database (CMDB) records configuration items and the dependencies impact assessments rely on; assets missing from it miss patching, change and backup, so counts are reconciled.",
             "Comparing live settings with the baseline finds unauthorized changes, which are investigated, not quietly reversed; a needed deviation is approved by its business owner, recorded and reviewed.",
-            "Low-risk, repeatable changes with a proven record can be pre-approved as standard changes, still tested and recorded, so review effort follows risk.",
+            "Proven, low-risk, repeatable changes can be pre-approved as standard changes, tested and recorded but not re-reviewed until a run fails, the system changes or a scheduled review.",
             "A growing share of emergency changes is analyzed for its cause, such as slow normal approvals or poor planning, before more approval steps are added."
           ],
           "types": [
@@ -256,7 +258,7 @@
               "meaning": "Made fast to restore service or stop harm through an expedited approval, then documented and reviewed after the fact."
             }
           ],
-          "example": "At a city council, Ines, a risk analyst, finds that a third of the month's changes were marked emergency, including routine firewall updates, and several have no after-the-fact review. Ines reports the pattern to the head of IT operations, with the risk that the emergency route avoids assessment.",
+          "example": "At a city council, Ines, a risk analyst, finds that a third of the month's changes were marked emergency, and several have no after-the-fact review. Ines reports it to the head of IT operations, with the risk that the emergency route avoids assessment.",
           "audit_focus": {
             "review": [
               "Sample emergency tickets and measure days until after-the-fact sign-off",
@@ -792,13 +794,14 @@
             "crisc_d4_029",
             "crisc_d4_058",
             "crisc_d4_085",
-            "crisc_d4_123"
+            "crisc_d4_123",
+            "crisc_d4_131"
           ],
           "definition": "AI training data management applies the data lifecycle to data used to train, test and tune models, from sourcing and labeling through retention and deletion.",
           "why_it_matters": "A model reflects its data. Poor, biased, poisoned or unlawfully sourced training data becomes poor or unlawful decisions, and personal data inside a model can be hard to remove later.",
           "how_it_works": [
-            "Sourcing: record where data came from, whether its license or terms allow training, and whether it contains personal data.",
-            "Preparation: check quality, labeling accuracy and coverage of real cases before training.",
+            "Sourcing: record where data came from, whether its license or terms allow training, and whether it contains personal data; synthetic data generated from real records can still leak it.",
+            "Preparation: check quality, labeling accuracy and coverage of real cases before training; tests can use hand-built synthetic records with planted cases, which expose no one and give known answers.",
             "Protection: restrict access to training sets and watch for tampering, which can poison the model.",
             "Lineage: link each model version to the exact data version used to train it.",
             "Retention and deletion: apply the retention schedule to training sets and plan how deletion requests affect trained models.",
@@ -919,19 +922,20 @@
             "crisc_d4_079",
             "crisc_d4_084",
             "crisc_d4_094",
-            "crisc_d4_124"
+            "crisc_d4_124",
+            "crisc_d4_134"
           ],
           "definition": "Project risk is uncertainty that can affect a project's scope, time, cost or quality; in Agile delivery it is managed in short, repeated cycles.",
           "why_it_matters": "Project risks often become operational IT risks after go-live. Tracked only inside the project, or dropped to meet a date, they leave exposure no one approved.",
           "how_it_works": [
-            "Project risks are logged with owners; those that may outlast the project or threaten enterprise objectives join the enterprise register, others stay in the project log.",
+            "Project risks are logged with owners; those that may outlast the project or threaten enterprise objectives join the enterprise register.",
             "Project risk covers delivery and the finished system's operating risks, even under a vendor's fixed-price contract; Agile backlogs prioritize work on both.",
-            "The definition of done includes security, privacy and control criteria.",
+            "The definition of done includes security, privacy and control criteria; within limits the risk owner sets, the product owner orders security work against features.",
             "Sprint reviews update risk status; growing deferred security work is an early warning.",
             "Agile reduces heavy documents, not risk records: decisions and accepted risks are still recorded.",
             "At closure, open risks continuing into operation move to the enterprise register with an operational owner."
           ],
-          "example": "A bank's mobile team works in two-week sprints and has postponed its fraud-control stories for four sprints to hit a launch date. Zara, the IT risk analyst, raises the deferred stories as a project risk that will become an operational fraud risk at launch, and asks the product owner to review it with the business sponsor.",
+          "example": "A bank's mobile team has postponed its fraud-control stories for four sprints to hit a launch date. Zara, the IT risk analyst, raises the deferred stories as a project risk that will become an operational fraud risk at launch, and asks the product owner to review it with the business owner of fraud risk.",
           "audit_focus": {
             "review": [
               "Trace deferred security and control stories to a recorded risk decision",
@@ -941,10 +945,10 @@
               "Backlog history showing deferred risk items and their age",
               "Enterprise register entries that originated in project logs"
             ],
-            "recommend": "Have the product owner record every deferred control as a risk and escalate it to the business owner before release.",
+            "recommend": "Log each deferred control as a risk; at release, take open ones to the risk owner with their ratings.",
             "decides": "The risk owner accepts project risk that reaches operations"
           },
-          "isaca_rule": "Agile changes how risk is handled, not whether. The practitioner looks for risk in the backlog, definition of done and register, and escalates deferred controls to the risk owner, the business manager whose process the system will serve; dropping risk work to meet a date is that owner's informed decision.",
+          "isaca_rule": "Agile changes how risk is handled, not whether. The practitioner looks for risk in the backlog, definition of done and register. Within the risk owner's limits the product owner orders the work; a control missing at release, or a deferral beyond those limits, is the risk owner's call.",
           "exam_traps": [
             {
               "trap": "Believing Agile projects do not need documented risk decisions.",
@@ -1242,7 +1246,8 @@
             "crisc_d4_095",
             "crisc_d4_105",
             "crisc_d4_115",
-            "crisc_d4_125"
+            "crisc_d4_125",
+            "crisc_d4_135"
           ],
           "definition": "Evaluating emerging technology means assessing a new technology's threats, vulnerabilities and opportunities for the business before and during adoption.",
           "why_it_matters": "New technology can create advantage, new exposure or both. The ISACA Glossary's enterprise risk management exploits risk as well as controlling it, to increase stakeholder value, so leaders weigh both instead of banning by reflex or adopting blind.",

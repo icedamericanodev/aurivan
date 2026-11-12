@@ -2273,8 +2273,8 @@
       "bloom_level": "Application",
       "question": "A state lottery operator's CIO asks the risk practitioner to decide which business process moves to Zero Trust access first, as this year's budget covers one process. What is the practitioner's BEST response?",
       "options": {
-        "A": "Rank the processes by risk for the CIO to choose from",
-        "B": "Pick the highest-risk process and set its move date",
+        "A": "Rank the processes by risk for the CIO to choose between",
+        "B": "Pick the highest-risk process and tell the CIO its move date",
         "C": "Wait until funds cover moving the whole estate together",
         "D": "Start with the process that the product vendor suggests"
       },
@@ -2298,7 +2298,7 @@
         "Phased adoption",
         "Risk-based prioritization"
       ],
-      "_provenance": "Authored from concept: notes 4B1.2 (Zero Trust Architecture: adoption is incremental, and the practitioner recommends a phased, risk-prioritized path while owners fund and sequence it). Round 3, 4 Nov 2026: original scenario (state lottery operator CIO asking which process moves to Zero Trust first) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used; checked against the CRISC, CISA, CC and AAIA banks for mirrored scenarios.",
+      "_provenance": "Authored from concept: notes 4B1.2 (Zero Trust Architecture: adoption is incremental, and the practitioner recommends a phased, risk-prioritized path while owners fund and sequence it). Round 3, 4 Nov 2026: original scenario (state lottery operator CIO asking which process moves to Zero Trust first) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used; checked against the CRISC, CISA, CC and AAIA banks for mirrored scenarios. Audit 12 Nov 2026 (round 17 standards audit): D4 by-words longest-option tell: runner-up B lengthened from 9 to 12 words with the same meaning and error (the practitioner deciding), so the 11-word key is no longer the longest option by words (it was already not the longest by characters). Re-blind 12 Nov 2026 (round 17): wording follows the edited options and stem.",
       "style_version": 2
     },
     {
@@ -3038,7 +3038,7 @@
         "Change advisory board (CAB)",
         "Risk-based review"
       ],
-      "_provenance": "Authored from concept: notes 4A2.1 (Change and Configuration Management: low-risk, repeatable changes can be pre-approved, so review effort follows risk). Round 7, 4 Nov 2026: original scenario (a bank's change board spending its weekly meeting on certificate renewals that have never failed, while complex changes it passed quickly caused two outages) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Neighbours checked: crisc_d4_003 (standard changes without board review are not the concern), crisc_d4_024 (rising emergency changes), crisc_d4_059 (a change called too small still has its impact assessed: pre-approval follows a proven low-risk record, not size), crisc_d4_077 (a baseline deviation), crisc_d3_035 (targets set by risk); AAIA aaia_d2_007 (prompt edits wrongly logged as pre-approved standard changes, consistent: only proven low-risk changes qualify); CC cc_d5_084 (which change fits the standard type); CISA d3_013 (a board that checks only description and timing), d4_185 (emergency fixes) and d4_271 (testing approved change records). Judged distinct: this keys moving board time to risky changes through pre-approval, with a separate meeting for renewals as the runner-up. Cue pass 12 Nov 2026 (fixed periods): option A dropped an incidental period word.",
+      "_provenance": "Authored from concept: notes 4A2.1 (Change and Configuration Management: low-risk, repeatable changes can be pre-approved, so review effort follows risk). Round 7, 4 Nov 2026: original scenario (a bank's change board spending its weekly meeting on certificate renewals that have never failed, while complex changes it passed quickly caused two outages) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Neighbours checked: crisc_d4_003 (standard changes without board review are not the concern), crisc_d4_024 (rising emergency changes), crisc_d4_059 (a change called too small still has its impact assessed: pre-approval follows a proven low-risk record, not size), crisc_d4_077 (a baseline deviation), crisc_d3_035 (targets set by risk); AAIA aaia_d2_007 (prompt edits wrongly logged as pre-approved standard changes, consistent: only proven low-risk changes qualify); CC cc_d5_084 (which change fits the standard type); CISA d3_013 (a board that checks only description and timing), d4_185 (emergency fixes) and d4_271 (testing approved change records). Judged distinct: this keys moving board time to risky changes through pre-approval, with a separate meeting for renewals as the runner-up. Cue pass 12 Nov 2026 (fixed periods): option A dropped an incidental period word. Cross-domain gate 12 Nov 2026 (round 17): neighbour added: crisc_d4_132 (round 17: a monthly fare-table load that meets its standard-change criteria keeps its routine path until the scheduled review), a keyed wait on the same rule. Keep apart in practice sets and short mocks.",
       "style_version": 2
     },
     {
@@ -4272,9 +4272,9 @@
       "question": "A robot vacuum maker's firmware developers install packages their AI coding assistant names; one did not exist until an attacker published it with malware. What should the risk practitioner recommend to BEST prevent a repeat?",
       "options": {
         "A": "Scans of each build's packages for known vulnerabilities",
-        "B": "Code owner review of each change the assistant writes",
+        "B": "Code owner review of each code change the AI assistant writes",
         "C": "The product owner's ban on the AI coding assistant",
-        "D": "A vetting step for each new package before it enters the build"
+        "D": "Vetting of each new package before it enters the build"
       },
       "correct": "D",
       "key_concept": "An AI assistant can name packages attackers then publish, so each new third-party component is vetted before it enters the build.",
@@ -4296,7 +4296,7 @@
         "AI coding assistants",
         "Secure Software Development Framework (SSDF)"
       ],
-      "_provenance": "Authored from concept: notes 4A3.2 (Secure Development and Testing: third-party and open-source components come from vetted sources; a package an AI assistant names may be fake or planted) with 4A3.3 (AI Models in the SDLC). Round 14, 12 Nov 2026: original scenario (a robot vacuum maker's firmware developers install packages their AI coding assistant names, and one name did not exist until an attacker published it with malware) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Neighbours checked: crisc_d4_052 (the same injection flaw in four releases, process root cause keyed), crisc_d4_096 (requirements copied from an offline game), crisc_d4_106 (a public route for outside flaw reports), crisc_d4_112 (an AI coding agent merging its own fixes), crisc_d4_026 (chatbot instruction edits as changes), crisc_d4_006 (a vendor's AI model swap), crisc_d4_027, crisc_d4_059; CISA d3_052 (hundreds of open-source libraries: dependency scanning for known flaws keyed, an approved library list wrong), d2_155 (continuous dependency scanning), d5_115 (rolling back a backdoored package already in production), d3_023 (an SBOM to answer customers), d3_147; CC cc_d5_088 (code an approved AI assistant writes gets the same static analysis), cc_d5_063 (software composition analysis for known flaws), cc_d4_016; AAIA aaia_d2_050 (a chatbot hallucination closed without root cause). Judged distinct: no bank item has an AI assistant naming a package an attacker then publishes. Consistent with CISA d3_052: scanning is the right control for components with known flaws; here the package is new and malicious, so it has none, and vetting at entry is what stops it. Owner pattern: k=2, the two easy distractors B (code owner review) and C (the product owner's ban) name an owner; the key D and the runner-up A name none.",
+      "_provenance": "Authored from concept: notes 4A3.2 (Secure Development and Testing: third-party and open-source components come from vetted sources; a package an AI assistant names may be fake or planted) with 4A3.3 (AI Models in the SDLC). Round 14, 12 Nov 2026: original scenario (a robot vacuum maker's firmware developers install packages their AI coding assistant names, and one name did not exist until an attacker published it with malware) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Neighbours checked: crisc_d4_052 (the same injection flaw in four releases, process root cause keyed), crisc_d4_096 (requirements copied from an offline game), crisc_d4_106 (a public route for outside flaw reports), crisc_d4_112 (an AI coding agent merging its own fixes), crisc_d4_026 (chatbot instruction edits as changes), crisc_d4_006 (a vendor's AI model swap), crisc_d4_027, crisc_d4_059; CISA d3_052 (hundreds of open-source libraries: dependency scanning for known flaws keyed, an approved library list wrong), d2_155 (continuous dependency scanning), d5_115 (rolling back a backdoored package already in production), d3_023 (an SBOM to answer customers), d3_147; CC cc_d5_088 (code an approved AI assistant writes gets the same static analysis), cc_d5_063 (software composition analysis for known flaws), cc_d4_016; AAIA aaia_d2_050 (a chatbot hallucination closed without root cause). Judged distinct: no bank item has an AI assistant naming a package an attacker then publishes. Consistent with CISA d3_052: scanning is the right control for components with known flaws; here the package is new and malicious, so it has none, and vetting at entry is what stops it. Owner pattern: k=2, the two easy distractors B (code owner review) and C (the product owner's ban) name an owner; the key D and the runner-up A name none. Audit 12 Nov 2026 (round 17 standards audit): D4 by-words longest-option tell: the key (12 words, the option cap) was the longest option by words and characters; it is trimmed to 10 words with the same meaning and wrong option B lengthened by two words (same error: the review never opens the package), so the key is no longer the longest by words or characters.",
       "style_version": 2
     },
     {
@@ -4715,9 +4715,9 @@
       "bloom_level": "Foundational",
       "question": "A home insurer's new AI claims agent will call its payments service, which accepts any request from inside the data center network. Which control should the risk practitioner recommend as BEST?",
       "options": {
-        "A": "The claims owner's sign-off on the agent before launch",
+        "A": "The claims owner's sign-off on the AI agent before it goes live",
         "B": "A separate network segment just for the claims agent's servers",
-        "C": "A check of the agent's own identity and rights on every call",
+        "C": "A check of the agent's identity and rights on each call",
         "D": "Encryption of traffic between the agent and the service"
       },
       "correct": "C",
@@ -4740,7 +4740,7 @@
         "Non-person entities",
         "AI agents"
       ],
-      "_provenance": "Authored from concept: notes 4B1.2 (Zero Trust Architecture: network location grants no trust; a segment narrows reach, but each request, from a user, workload or AI agent, is still verified). Round 16, 12 Nov 2026: original scenario (a home insurer's new AI claims agent that will call a payments service which accepts any request from inside the data center network) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. AI item for round 16 (fresh angle: an AI agent as a non-person caller under Zero Trust; not prompt injection, AI coding agents, AI-suggested packages, human review of AI output, vendor AI ranking, AI output validation, membership inference, fine-tuning on restricted files or second-line AI skills). Neighbours checked: crisc_d4_098 (which scenario's rating falls most under Zero Trust access: lateral movement), crisc_d4_040 (partial Zero Trust rollout), crisc_d4_062 (first process for Zero Trust), crisc_d4_087 (an AI assistant's write access to ratings: least privilege), crisc_d4_112 (an AI coding agent merging its own fixes), crisc_d4_101 (a separate segment keyed for unpatchable controllers: 4A1, legacy isolation), crisc_d2_077 (an AI assistant searching with each lawyer's access); CC cc_d4_012 (Zero Trust for a teacher on the staff network), cc_d4_190 (AI experiment servers reaching every database), cc_d3_044 (an AI assistant with an all-access account), cc_d4_026 (segments limit internal reach), cc_d4_088 (an AI scheduling agent reaching a database over an old path no Zero Trust enforcement point covers: the nearest neighbour, a CC 'which statement' item on a path that bypasses policy), cc_d3_125 (three agents sharing one service account); AAIA aaia_d1_094 (an agent's tool combinations), aaia_d2_021 (RAG through one service account), aaia_d2_017 and aaia_d2_169 (agents' service accounts trimmed to the rights each request needs); CISA d5_148 (east-west monitoring). Judged distinct: cc_d4_088 asks a network technician to name what is missing on an unenforced path, and the AAIA items trim an agent account's rights; no CRISC item keys per-request verification of a non-person caller by the service it calls, against a service that trusts network location; crisc_d4_101 keys a segment for legacy devices that cannot be patched, a different need, and here the segment is the runner-up because the called service still trusts location. Owner pattern: k=1, the lone owner option A is an easy distractor (an owner approving once, before launch); the key and runner-up name no owner. Round 16 asks: lone owner wrong on an easy distractor; key naturally the longest option (60 against 57 characters); no period word. Audit 12 Nov 2026 (round 16 standards audit): SP 800-207 Section 5.7 paraphrase no longer says agents 'must' authenticate: the section calls agent authentication an open issue and says most systems are assumed to authenticate (re-read 12 Nov 2026). Review 12 Nov 2026 (round 16 concept review and blind test): key concept follows SP 800-207 Section 2.1 tenet 3 (access granted per session) instead of 'on each request'; runner-up B lengthened (57 to 62 characters) so the key (60) is no longer the longest option. The audit's Section 5.7 'assumed to authenticate' wording is kept. Cross-domain gate 12 Nov 2026 (round 16): neighbours added: CISA d5_050 (an auditor recommends authorizing each application request by identity and device health) and CC cc_d4_187 (a payroll app that trusts office Wi-Fi goes to its system owner with a device check): the same per-request Zero Trust lesson in other lenses; no mirror of the AI-agent caller.",
+      "_provenance": "Authored from concept: notes 4B1.2 (Zero Trust Architecture: network location grants no trust; a segment narrows reach, but each request, from a user, workload or AI agent, is still verified). Round 16, 12 Nov 2026: original scenario (a home insurer's new AI claims agent that will call a payments service which accepts any request from inside the data center network) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. AI item for round 16 (fresh angle: an AI agent as a non-person caller under Zero Trust; not prompt injection, AI coding agents, AI-suggested packages, human review of AI output, vendor AI ranking, AI output validation, membership inference, fine-tuning on restricted files or second-line AI skills). Neighbours checked: crisc_d4_098 (which scenario's rating falls most under Zero Trust access: lateral movement), crisc_d4_040 (partial Zero Trust rollout), crisc_d4_062 (first process for Zero Trust), crisc_d4_087 (an AI assistant's write access to ratings: least privilege), crisc_d4_112 (an AI coding agent merging its own fixes), crisc_d4_101 (a separate segment keyed for unpatchable controllers: 4A1, legacy isolation), crisc_d2_077 (an AI assistant searching with each lawyer's access); CC cc_d4_012 (Zero Trust for a teacher on the staff network), cc_d4_190 (AI experiment servers reaching every database), cc_d3_044 (an AI assistant with an all-access account), cc_d4_026 (segments limit internal reach), cc_d4_088 (an AI scheduling agent reaching a database over an old path no Zero Trust enforcement point covers: the nearest neighbour, a CC 'which statement' item on a path that bypasses policy), cc_d3_125 (three agents sharing one service account); AAIA aaia_d1_094 (an agent's tool combinations), aaia_d2_021 (RAG through one service account), aaia_d2_017 and aaia_d2_169 (agents' service accounts trimmed to the rights each request needs); CISA d5_148 (east-west monitoring). Judged distinct: cc_d4_088 asks a network technician to name what is missing on an unenforced path, and the AAIA items trim an agent account's rights; no CRISC item keys per-request verification of a non-person caller by the service it calls, against a service that trusts network location; crisc_d4_101 keys a segment for legacy devices that cannot be patched, a different need, and here the segment is the runner-up because the called service still trusts location. Owner pattern: k=1, the lone owner option A is an easy distractor (an owner approving once, before launch); the key and runner-up name no owner. Round 16 asks: lone owner wrong on an easy distractor; key naturally the longest option (60 against 57 characters); no period word. Audit 12 Nov 2026 (round 16 standards audit): SP 800-207 Section 5.7 paraphrase no longer says agents 'must' authenticate: the section calls agent authentication an open issue and says most systems are assumed to authenticate (re-read 12 Nov 2026). Review 12 Nov 2026 (round 16 concept review and blind test): key concept follows SP 800-207 Section 2.1 tenet 3 (access granted per session) instead of 'on each request'; runner-up B lengthened (57 to 62 characters) so the key (60) is no longer the longest option. The audit's Section 5.7 'assumed to authenticate' wording is kept. Cross-domain gate 12 Nov 2026 (round 16): neighbours added: CISA d5_050 (an auditor recommends authorizing each application request by identity and device health) and CC cc_d4_187 (a payroll app that trusts office Wi-Fi goes to its system owner with a device check): the same per-request Zero Trust lesson in other lenses; no mirror of the AI-agent caller. Audit 12 Nov 2026 (round 17 standards audit): D4 by-words longest-option tell: the key (12 words, the option cap) was the longest by words; it drops 'own' and says 'each call' (in the bank, 'every' sat only on keys in all three items where it marked one option), and wrong option A gains three words with the same one-time-approval error, so the key is no longer the longest by words or characters.",
       "style_version": 2
     },
     {
@@ -4815,6 +4815,191 @@
         "Tracking code"
       ],
       "_provenance": "Authored from concept: notes 4B3.2 (Privacy by Design and Privacy Impact Assessment: third-party code on a page, such as ad tracking, receives what that page shows, so it stays off pages holding personal data). Round 16, 12 Nov 2026: original scenario (a tax agency whose communications team put an ad platform's tracking code on its online filing pages to measure a campaign, under terms that let the platform reuse what it collects) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Neighbours checked: crisc_d4_019 (a new use beyond the collection purpose: the principle identified, not a disclosure fixed), crisc_d4_047 (removing identifiers a research partner does not need; its encryption decoy not reused), crisc_d4_075 (a vendor AI tool training on customer emails; its encryption and name-removal decoys not reused), crisc_d4_100 (tied consent for AI training), crisc_d4_110 (drone video processed on board), crisc_d4_120 (an old register put online), crisc_d1_155 (a county tax office's old records: a different activity); CISA d5_029 (collect only fields with a documented purpose), d5_240 (production data in a test database); CC cc_d4_097 (remove card numbers before a cloud copy), cc_d1_127 (cross-border move); AAIA aaia_d1_041 (prompts carrying a full account record); CC cc_d4_038 (a 'Move' key for switch admin pages: a different lesson). A full-bank search for pixel, tracking code, tracker and ad platform found no item on third-party tracking code. Judged distinct. Owner pattern: k=1, the lone owner option B is an easy distractor (the wrong owner deciding: the campaign owner, not the data owner); the key and runner-up name no owner. Round 16 asks: a 'Move' key where it is genuinely right (the code moves to campaign pages, so measurement continues without taxpayer data); key naturally the longest option (58 against 54 characters); no period word; no defer option. Review 12 Nov 2026 (round 16 concept review and blind test): key concept says tracking code 'can pass' page data, not that it always discloses it; wrong option C names the tracking code (54 to 63 characters) so the key (58) is no longer the longest option.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d4_131",
+      "domain": 4,
+      "subtopic": "4A4 Data lifecycle management. Test data for a vendor's AI tool",
+      "principle_id": "answer-from-the-stem",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "To test a vendor's AI tool for spotting duplicate voter registrations, an election commission offers a roll copy with names randomized but birth dates and addresses intact. What should the risk practitioner recommend as BEST?",
+      "options": {
+        "A": "The roll copy with its birth dates and addresses masked as well",
+        "B": "The full roll, shared under the data owner's signed agreement",
+        "C": "Synthetic registrations that include a few pairs known to match",
+        "D": "The offered copy, deleted by the vendor once testing ends"
+      },
+      "correct": "C",
+      "key_concept": "Test data for an AI tool must protect the people behind it and still prove something; synthetic records with known answers do both.",
+      "pre_read": "For each test data option, ask what it exposes and what the test could still measure.",
+      "correct_explanation": "Birth dates and addresses still identify voters, and randomized names break the matches the tool must find, so the offered copy both exposes people and weakens the test. Synthetic registrations with planted duplicate pairs, including realistic spelling variants, expose no voter and give known answers to measure what the tool catches and misses. Masking birth dates and addresses too is the runner-up: it protects voters but erases the near-matches the test needs.",
+      "wrong_explanations": {
+        "A": "Masking every identifying field protects voters, but it erases the spelling variants and near-matches the tool must find, so the test cannot show how well it works.",
+        "B": "An agreement and the data owner's signature limit what the vendor may do, but every voter's real record still leaves the commission for a test that needs none.",
+        "D": "Deleting the copy afterward limits how long the vendor holds it, but birth dates and addresses still identify voters throughout the test, and random names still weaken it."
+      },
+      "tips": [
+        "Eliminate: B sends every voter's real record to the vendor for a test that needs none, and D leaves birth dates and addresses that identify voters during the test.",
+        "Final two: C beats A because planted duplicates give the test known answers to find; masking every field protects voters but erases the near-matches the tool must find.",
+        "Exam cue: good test data does two jobs, protecting the people behind it and letting the test prove something; choose the option that does both."
+      ],
+      "framework_ref": "NIST SP 800-53 Rev. 5 PM-25 (Minimization of Personally Identifiable Information Used in Testing, Training, and Research); NIST SP 800-53 Rev. 5 SA-3(2) (System Development Life Cycle | Use of Live or Operational Data)",
+      "related_concepts": [
+        "Synthetic data",
+        "Data masking",
+        "Test data"
+      ],
+      "_provenance": "Authored from concept: notes 4A4.3 (AI Training Data Through the Lifecycle: tests can use synthetic records with planted cases, which expose no one and give known answers). Round 17, 12 Nov 2026: original scenario (an election commission that offers a vendor, for a test of its AI duplicate-registration tool, a voter-roll copy with names randomized but birth dates and addresses intact) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Neighbours checked: crisc_d4_029, crisc_d4_058, crisc_d4_085 and crisc_d4_123 (the other 4A4 AI items: lineage, training copies kept past retention, a license that may not allow training, restricted matter files), crisc_d4_069 (joined data classed for what it reveals), crisc_d4_047 (identifiers a research partner does not need), crisc_d4_103 (copies deleted when their task ends: deletion is a wrong option here, D, because it does not stop exposure during the test), crisc_d4_044 (pseudonymous trip records), crisc_d4_130 (tracking code on filing pages); CISA d3_010 (masking before extraction), d3_144 (synthetic records for rare cases), d5_029; CC cc_d4_154 (synthetic records for a load test when the owner allows no real data), cc_d5_141 (a statically masked copy for staff training), cc_d1_152; AAIA aaia_d1_071 (testing a generator's records for close matches to real patients), aaia_d3_042 (planting synthetic anomalies to measure a detector: an audit-reliance lesson), aaia_d3_077 (an electoral commission's duplicate-flagging model whose precision fell: same activity, a monitoring lesson), aaia_d3_103 and aaia_d2_203 (synthetic data that may not show reality), aaia_d2_034. Judged distinct: no CRISC item weighs masked against synthetic test data, and here the offered mask fails both ways (birth dates and addresses still identify voters; random names leave the tool nothing to match), so the key is the option that protects voters and still lets the test measure something. Owner pattern: k=1, the lone owner option B (sharing the full roll under the data owner's signed agreement) is an easy distractor; the key C and the runner-up A name no owner. Round 17 asks: the D4 AI angle (synthetic or masked data for AI testing, 4A4); key neither the longest option by characters nor by words; no period word; no defer option; no Have or Ask opener on a wrong option. Audit 12 Nov 2026 (round 17 standards audit): provenance spelling made US ('license'). Review 12 Nov 2026 (round 17 concept review and blind test): option D had an unclear referent ('the masked registrations'; blind test) and is now the offered copy deleted after testing, which its explanation and the Eliminate tip already describe; explanations no longer say masking leaves 'nothing to match' (deterministic masking keeps exact matches; it erases the spelling variants and near-matches a duplicate detector must find). Key C no longer echoes the stem's 'duplicate' alone; with A lengthened by 'its', the key is neither the shortest nor the longest option by characters (it was strictly the shortest); by words it is still the fewest (9 against 10-12, was 7). Re-blind 12 Nov 2026 (round 17): wording follows the edited options and stem.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d4_132",
+      "domain": 4,
+      "subtopic": "4A2 Operations management. A recurring pre-approved change",
+      "principle_id": "proportionate-response",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A public transit authority's monthly fare-table load is a pre-approved standard change; this month's load meets every criterion, and nothing has failed or changed since approval. What should the risk practitioner recommend as BEST?",
+      "options": {
+        "A": "Send this standard change to the change board for full review",
+        "B": "Keep the load's standard route until its next scheduled review",
+        "C": "Get the fare system owner to approve this load before it runs",
+        "D": "Reclassify fare loads as normal changes, agreed with the system owner"
+      },
+      "correct": "B",
+      "key_concept": "A standard change that meets its criteria, with nothing failed or changed since approval, runs on its routine path until its scheduled review.",
+      "pre_read": "Before reading the options, list what has changed since this type of change was approved.",
+      "correct_explanation": "Standard changes are pre-approved because they are low risk and proven; each run is still tested and recorded but skips fresh review, so effort goes where risk is. This load meets every criterion, and nothing has failed or changed, so no trigger calls for more; the next scheduled review checks the type still qualifies. Owner approval before the run is the runner-up: it looks careful but re-decides what the pre-approval settled.",
+      "wrong_explanations": {
+        "A": "Full board review suits changes whose risk is unknown or high; sending a proven, pre-approved change there spends the board's time on low risk it has already judged.",
+        "C": "An extra approval before the run looks careful, but pre-approval already settled this type of change, and nothing has failed or changed to reopen that decision.",
+        "D": "Withdrawing standard status fits a change type that has failed or whose system has changed; with neither, it moves proven, low-risk work back to full review."
+      },
+      "tips": [
+        "Eliminate: A sends a proven standard change to the board, and D withdraws its standard status, yet nothing has failed or changed to call for either.",
+        "Final two: B beats C because the pre-approval already covers this run; with no trigger, the next scheduled review, not a fresh approval, is the check.",
+        "Exam cue: a pre-approved change that meets its criteria with no trigger keeps its routine path; extra review is for changes that fail, change or fall outside."
+      ],
+      "framework_ref": "NIST SP 800-128 Section 3.1.1 (Planning at the Organizational Level: define the types of changes that are preapproved and need not go to the configuration control board, while preapproved changes are still tested and documented); NIST SP 800-128 Section 3.3.2 (Implement the Configuration Change Control Process: a change that is exempt or pre-approved is noted on the change request and made without further analysis or approval)",
+      "related_concepts": [
+        "Standard change",
+        "Change advisory board (CAB)",
+        "Change management"
+      ],
+      "_provenance": "Authored from concept: notes 4A2.1 (Change and Configuration Management: pre-approved standard changes are tested and recorded but not re-reviewed until a run fails, the system changes or a scheduled review). Round 17, 12 Nov 2026: original scenario (a public transit authority whose monthly fare-table load is a pre-approved standard change; this month's load meets every criterion and nothing has failed or changed since approval) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Neighbours checked: the twins crisc_d4_122 (an urgent patch in a change freeze goes by the emergency route) and crisc_d4_024 (rising emergency changes analyzed for their cause); crisc_d4_082 (certificate renewals pre-approved as standard changes: the decision that creates the route this item keeps), crisc_d4_003 (standard changes without board review are not the concern), crisc_d4_059 (a payroll export called 'too small' is not a standard change), crisc_d4_050, crisc_d4_077, crisc_d4_102, crisc_d4_112; the keyed waits crisc_d3_207 (a server move meeting no reassessment trigger; its runner-up 'Reassess the risk with its owner before the move closes' is not reused: the runner-up here is an owner's approval of the run), crisc_d1_169, crisc_d1_123, crisc_d1_139, crisc_d3_146 and crisc_d3_161; CISA: no item keys leaving a qualifying standard change on its route; CC cc_d5_084 (which change fits the standard type); AAIA aaia_d2_007 (prompt edits wrongly logged as standard changes: the counter-case, where the criteria are not met) and aaia_d2_147 (weekly retraining as a standard change only with approved tests). Judged distinct: no bank item keys a qualifying standard change keeping its route when nothing triggers review. Owner pattern: k=2 split: the runner-up C (the fare system owner approves the run) and the easy distractor D (reclassify with the system owner) name an owner; the key B and the easy distractor A name none. Round 17 asks: the one keyed wait for D4 (the stem states the criteria are met and that nothing has failed or changed; 'next' and 'scheduled' in the key); a 'Keep' key; no new wrong defer option; no period word on any option ('this' change, not 'this month's'); key not the longest option. Cross-domain gate 12 Nov 2026 (round 17): Keyed-wait family, now eight (waiting for the scheduled point is right because the stem states no trigger is met): crisc_d1_123, crisc_d1_139, crisc_d1_169, crisc_d2_147, crisc_d3_146, crisc_d3_161, crisc_d3_207, crisc_d4_132. Keep these apart from each other in practice sets and short mocks, and apart from its standard-change neighbours crisc_d4_082 (renewals pre-approved as standard changes) and crisc_d4_003 (standard changes skip board review by design); the bank has no trigger-met twin yet (a standard change that failed, reclassified).",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d4_133",
+      "domain": 4,
+      "subtopic": "4A1 Technology roadmaps and enterprise architecture (EA). Timing a legacy replacement",
+      "principle_id": "advise-dont-decide",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "A customs broker's IT team will replace its unsupported declaration system after the import peak; the risk practitioner has rated replacing it before and after the peak. What should the practitioner recommend as BEST?",
+      "options": {
+        "A": "Have the declaration process owner choose the replacement timing",
+        "B": "Keep IT's plan to replace the system after the import peak ends",
+        "C": "Scan the unsupported system for new flaws until the replacement is live",
+        "D": "Move the replacement to before the peak to end the legacy exposure"
+      },
+      "correct": "A",
+      "key_concept": "When a legacy system's replacement timing trades one rated risk against another, the business owner of the process chooses; IT and the practitioner inform.",
+      "pre_read": "Ask which risk each timing carries, and whose objectives bear it.",
+      "correct_explanation": "Each timing carries a rated risk: replacing after the peak keeps the unsupported system in use through the busiest period, while replacing before it risks a new system failing as volumes rise. Choosing between them is a business risk decision, so the declaration process owner makes it on both ratings. Keeping IT's plan is the runner-up: it may prove the better date, but IT would be settling a business trade-off the owner has not seen.",
+      "wrong_explanations": {
+        "B": "IT's date may turn out right, but it settles which risk the business carries through the peak, a decision for the declaration process owner, not IT.",
+        "C": "Scanning finds flaws the vendor will no longer fix, so it lowers no risk on its own, and it leaves the timing choice unmade.",
+        "D": "Moving the date ends the legacy exposure sooner but takes on the rated risk of a cut-over close to the peak; that trade-off is the owner's to make."
+      },
+      "tips": [
+        "Eliminate: C only scans a system its vendor no longer patches, which leaves the timing unchosen, and D swaps one rated risk for the other without the owner.",
+        "Final two: A beats B because the timing decides which risk the business carries through its peak; IT's plan may be sound, but the owner decides.",
+        "Exam cue: when two options trade one rated risk for another, look for the business owner choosing with the ratings, not IT or the practitioner."
+      ],
+      "framework_ref": "NIST SP 800-53 Rev. 5 SA-22 (Unsupported System Components); ISACA Glossary (risk owner)",
+      "related_concepts": [
+        "Legacy systems",
+        "Technology roadmap",
+        "Risk ownership"
+      ],
+      "_provenance": "Authored from concept: notes 4A1.3 (Technical Debt and Legacy Systems: the practitioner presents options and the owner chooses, which includes when a replacement happens). Round 17, 12 Nov 2026: original scenario (a customs broker whose IT team plans to replace its unsupported declaration system after the import peak, with the risk of replacing before and after the peak already rated) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Neighbours checked: crisc_d4_002 (a legacy risk logged with an owner), crisc_d4_022 (a retirement slip re-rated), crisc_d4_023 (an unfunded fix's options taken to the payroll owner: the same who-decides rule on a different trigger), crisc_d4_064 (debt restated as business losses), crisc_d4_091 (acceptance above an owner's authority), crisc_d4_101 (isolation of unpatchable controllers: no isolation option here, so that key does not compete), crisc_d4_121 (interim stages of a move), crisc_d4_122 (a peak-season change freeze), crisc_d3_039 (interim controls during a 14-month replacement), crisc_d3_023 (who owns a peak-season risk); CISA d4_060 (extended support plus compensating controls), d4_255 (management acceptance with a funded exit plan), d4_038 (cloud against like-for-like replacement); CC cc_d5_110 (an unsupported alert PC left running and reported); AAIA aaia_d2_005 (a customs broker licensing a classification model: a different activity). Judged distinct: no bank item has two rated timings for a legacy replacement where the choice between them is the owner's. Owner pattern: k=1, the lone owner option is the key A (a keyed lone owner), not the longest option (64 characters and 9 words against 71 and 12); B, C and D name no owner. Round 17 asks: a 'Have' key where it is genuinely right; no Have or Ask opener on a wrong option; 'Keep' and 'Move' on wrong options; no period word; no defer option. Review 12 Nov 2026 (round 17 concept review and blind test): Eliminate tip drops 'which lowers no risk' (scanning feeds detection and compensating controls; the wrong explanation keeps 'on its own'); C is ruled out because it leaves the timing unchosen.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d4_134",
+      "domain": 4,
+      "subtopic": "4A5 Portfolio and project management. Ordering security stories in a backlog",
+      "principle_id": "match-decision-to-role",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A smart-meter installer's product owner orders the backlog within limits the risk owner set; two security stories, both rated inside those limits, compete for one sprint slot. What should the risk practitioner recommend as BEST?",
+      "options": {
+        "A": "Refer the choice between the two stories back to the risk owner",
+        "B": "Add both stories to the sprint, moving planned features out",
+        "C": "Leave the choice between the two stories to the product owner",
+        "D": "Rank the two stories for the team by their risk scores"
+      },
+      "correct": "C",
+      "key_concept": "Within the risk owner's limits, the product owner orders the backlog; only choices that would breach them go back to the risk owner.",
+      "pre_read": "Before choosing, note which decisions the stem says have already been made, and by whom.",
+      "correct_explanation": "The risk owner has already set the limits and left backlog order inside them to the product owner, who weighs security work against features. Both stories sit within those limits, so either order keeps risk acceptable, and the choice is the product owner's. Referring it to the risk owner is the runner-up: it looks cautious, but it sends back a decision the owner delegated; escalation is for choices that would breach the limits.",
+      "wrong_explanations": {
+        "A": "Referral fits a choice that would breach the risk owner's limits; both stories sit inside them, so this sends back a decision already delegated to the product owner.",
+        "B": "Taking both stories pushes out features the product owner planned, though neither story's risk calls for it; within the limits, that trade-off is the product owner's.",
+        "D": "Risk scores inform the choice, but ranking the stories for the team makes the practitioner the decider of a backlog order that belongs to the product owner."
+      },
+      "tips": [
+        "Eliminate: D has the practitioner order the backlog, and B takes both stories, pushing out planned features, when neither story's risk calls for it.",
+        "Final two: C beats A because both stories sit inside limits the risk owner already set; referral is for choices that would breach them.",
+        "Exam cue: delegation inside limits is a decision already made; send a choice upward only when it would break those limits."
+      ],
+      "framework_ref": "NIST CSF 2.0 GV.RR-02 (roles, responsibilities and authorities related to cybersecurity risk management are established, communicated, understood and enforced); ISACA Glossary (risk owner)",
+      "related_concepts": [
+        "Product owner",
+        "Delegated authority",
+        "Agile backlog"
+      ],
+      "_provenance": "Authored from concept: notes 4A5.2 (Project Risk and Agile Delivery: within limits the risk owner sets, the product owner orders security work against features). Round 17, 12 Nov 2026: original scenario (a smart-meter installer whose product owner orders the backlog within limits the risk owner set, with two security stories rated inside those limits competing for one sprint slot) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Neighbours checked: crisc_d4_010 (a scrum team's acceptance of a risk lasting past go-live goes to the risk owner: the counter-case, with no delegation covering it), crisc_d4_031 (security criteria in the definition of done; its security-sprint decoy not reused), crisc_d4_061 (deferred security backlog items as a KRI), crisc_d4_084 (unrecorded sprint-review acceptances), crisc_d4_094 (tests cut for a date), crisc_d4_124 (a vendor's fixed-price project), crisc_d4_047 (smart-meter extracts: a different activity); crisc_d1_159 (an owner's stricter limit within their own authority), crisc_d3_023; CISA d3_005 (a project manager escalates when residual exposure exceeds delegated tolerance: the same rule from the other side), d3_028 (scan findings fed into backlogs), d3_078; CC cc_d3_084 (a named delegate's approval under procedure), cc_d2_044; AAIA: no item on backlog order within delegated limits. Judged distinct: no bank item keys leaving a within-limits backlog choice with the product owner. Owner pattern: k=2, the key C (product owner) and the runner-up A (risk owner) both name an owner, so naming an owner cannot decide the final two; the easy distractors B and D name none. Round 17 asks: a permissive 'Leave' key where delegation genuinely supports it; key the shortest option; no period word; no defer option. Review 12 Nov 2026 (round 17 concept review and blind test): inverted length tell: the key was strictly the shortest option (50 against 54-59 characters); it now names the two stories (62) and runner-up A says the choice goes 'back' to the risk owner (63, as its explanation says), so the key is neither the shortest nor the longest. Cross-domain gate 12 Nov 2026 (round 17): notes 4A5.2 (rule and recommend line) now leave choices within the risk owner's limits to the product owner and send only deferrals beyond them to the risk owner, matching this key and crisc_d4_010; before, they sent every deferred control to the risk owner.",
+      "style_version": 2
+    },
+    {
+      "id": "crisc_d4_135",
+      "domain": 4,
+      "subtopic": "4A7 Emerging technologies. A virtual power plant platform",
+      "principle_id": "objectives-first",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A solar installer's leaders want to join a virtual power plant platform, which would control customers' home batteries, because three rivals have joined. What should the risk practitioner recommend FIRST?",
+      "options": {
+        "A": "Evaluate the threats from the platform's control of customers' home batteries",
+        "B": "Set out what business result the installer needs the platform to achieve",
+        "C": "Plan the platform's rollout with the field operations owner",
+        "D": "Join the platform now to keep pace with the three rival installers"
+      },
+      "correct": "B",
+      "key_concept": "Before weighing a new technology's threats and opportunities, establish which business objective it would serve; following rivals is not an objective.",
+      "pre_read": "Order the options by what each depends on, then pick the one nothing else can skip.",
+      "correct_explanation": "Risk is judged against objectives, so a technology can be weighed only against the business result the installer needs from it, such as new revenue or savings for customers. Here the only reason given is that rivals joined. Setting out the objective comes first; it frames which threats and opportunities matter. Evaluating the battery-control threats is the runner-up: it is needed, but without the objective there is no benefit to weigh them against.",
+      "wrong_explanations": {
+        "A": "Remote battery control is a real threat to assess, but without a stated objective there is no benefit to weigh it against, so the assessment cannot reach a decision.",
+        "C": "Planning the rollout with the field operations owner treats joining as decided, before anyone has set the objective or weighed the platform's risks.",
+        "D": "Joining because rivals did is adopting without analysis; their reasons and exposures may differ from the installer's, and nothing yet shows what joining would achieve."
+      },
+      "tips": [
+        "Eliminate: D adopts because rivals did, and C plans the rollout with an owner before anyone has decided to join or weighed the risks.",
+        "Final two: B beats A because threats can be weighed only against what the installer needs the platform to achieve; set that out first.",
+        "Exam cue: when the only reason for a new technology is that others use it, the FIRST step is to name the business objective it would serve."
+      ],
+      "framework_ref": "ISACA Glossary (opportunity); NIST IR 8286 Rev. 1 Section 2.1 (Overview of ERM: enterprise risks are considered against the strategic and operational objectives in the organizational strategic plan)",
+      "related_concepts": [
+        "Emerging technology",
+        "Business objectives",
+        "Virtual power plant"
+      ],
+      "_provenance": "Authored from concept: notes 4A7.1 (Evaluating Emerging Technologies: start from the objective it serves). Round 17, 12 Nov 2026: original scenario (a solar installer whose leaders want to join a virtual power plant platform that would control customers' home batteries, because three rivals have joined) written for KaiSip; no ISACA Review Manual, QAE, practice quiz or prep-bank text used. Neighbours checked: crisc_d4_013 (vendor claims: assess risks and benefits), crisc_d4_014, crisc_d4_036 (pilot pause conditions), crisc_d4_048, crisc_d4_055, crisc_d4_072, crisc_d4_083 (recording upside), crisc_d4_095 (a cloud path to heating controls: the threat the runner-up names, here not the first step), crisc_d4_105, crisc_d4_115, crisc_d4_125 (its 'Have the owner approve' decoy not reused: the owner option here plans a rollout), crisc_d4_054 (strategy and roadmap), crisc_d1_039 (rivals moving faster while risk sits below appetite), crisc_d3_152 (a solar-farm operator's inverter update: a different activity); CISA d4_041 (an availability target set from business impact), d2_169; CC cc_d1_206 and cc_d2_085 (a solar installer's framework choice and MTTR: different activities); AAIA aaia_d1_113 and aaia_d2_183 (solar settings with AI models). Judged distinct: no bank item keys naming the objective first when the only stated reason to adopt is that rivals did. Owner pattern: k=1, the lone owner option C (planning the rollout with the field operations owner) is an easy distractor; the key B and the runner-up A name no owner. Round 17 asks: an 'Evaluate' opener on the runner-up (a wrong option); key not the longest; a FIRST key that is not assess, record or reassess; no period word; no defer option. Review 12 Nov 2026 (round 17 concept review and blind test): explanation no longer opens with the ISO 31000 definition wording without attribution; key names the business result, so it is no longer strictly the shortest option (56 against 59-77 characters; now 72, not the longest). Cross-domain gate 12 Nov 2026 (round 17): neighbours added: crisc_d1_066 (1A1: the business objective a pilot serves is the first approval criterion for AI pilots) and crisc_d3_050 (3C6: present a new AI capability as an opportunity with its risks against objectives): the same objectives-first lesson for new technology; this item turns on rivals' adoption as the only stated reason. Keep apart in practice sets.",
       "style_version": 2
     }
   ]

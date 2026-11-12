@@ -111,7 +111,8 @@
             "crisc_d2_047",
             "crisc_d2_088",
             "crisc_d2_091",
-            "crisc_d2_132"
+            "crisc_d2_132",
+            "crisc_d2_148"
           ],
           "definition": "Event sources are where risk event data comes from: inside the enterprise, such as incident logs and audit findings, and outside it, such as peers, regulators and insurers.",
           "why_it_matters": "Internal data shows the enterprise's own controls and history; external data covers events too rare to have happened here yet. Relying on one source alone distorts likelihood.",
@@ -120,7 +121,7 @@
             "External sources include industry loss databases, sector information sharing groups, regulator notices, insurer data and public breach reports.",
             "External events are adjusted for differences in size, controls and exposure before they inform the enterprise's own ratings.",
             "Event data is recorded consistently, with date, scenario, cause, source and impact before insurance, recoveries shown apart; events logged in several places are matched and counted once.",
-            "Underreporting is a known weakness; a blame-free reporting culture raises the number of near misses staff report.",
+            "Underreporting is a known weakness; blame-free reporting helps, and system records of every transaction count events no one reports.",
             "A supplier outage that harms the enterprise, such as fees it must repay to staff, is its own loss event, recorded against its own scenario, not an external peer event."
           ],
           "example": "A university's internal logs show few payroll fraud losses, but the sector information sharing group reports a wave of salary diversion scams against universities. Tomás Ferreira, the risk practitioner, adds the external events to the payroll fraud scenario, notes that the university runs the same self-service payroll portal as the victims, and asks the finance director to review the scenario's likelihood.",
@@ -394,14 +395,15 @@
             "crisc_d2_050",
             "crisc_d2_076",
             "crisc_d2_127",
-            "crisc_d2_137"
+            "crisc_d2_137",
+            "crisc_d2_145"
           ],
           "definition": "AI-specific threats attack the parts unique to AI systems: the prompts they accept, the data they learn from and the trained model itself.",
           "why_it_matters": "Firewalls and malware tools do not see a malicious instruction hidden in a document an AI assistant reads. Missing these threats leaves AI scenarios out of the register.",
           "how_it_works": [
             "AI threats target three new assets: the prompt channel, the training data pipeline and the model's learned parameters.",
             "Indirect prompt injection is planted by a third party in content the model reads, such as an email; who can send it sets likelihood, and the tool's permissions set impact.",
-            "Poisoning can enter through third-party datasets and pre-trained models, so the AI supply chain is part of the threat surface.",
+            "Poisoning can enter through third-party datasets and pre-trained models, so the AI supply chain is part of the threat surface; a downloaded model's backdoor can survive fine-tuning.",
             "Extraction and inversion attacks need only query access, so a public interface is enough; membership inference, by query or on a shared copy, reveals whose records trained a model.",
             "NIST AI 100-2 E2025 names and classifies these attacks; the practitioner turns the relevant ones into scenarios with a business owner.",
             "Targeted and backdoor poisoning change outputs for a small set of inputs, so an overall accuracy check can look normal while chosen results are skewed."
@@ -824,7 +826,8 @@
             "crisc_d2_030",
             "crisc_d2_055",
             "crisc_d2_089",
-            "crisc_d2_102"
+            "crisc_d2_102",
+            "crisc_d2_146"
           ],
           "definition": "Validation confirms with business owners that a scenario is realistic and its impact is right; a tabletop exercise walks a team through a scenario to test plans and find gaps.",
           "why_it_matters": "Scenarios written by the risk team alone often misjudge business impact. Tabletop exercises reveal missing scenarios, unclear roles and weak responses before a real event does.",
@@ -832,7 +835,7 @@
             "Process and asset owners review each scenario's events, impacts and existing controls and sign off the description.",
             "A tabletop exercise is a facilitated, discussion-based walkthrough; no systems are touched, so a fallback claimed in play earns rating credit only after a drill shows it works.",
             "Participants include business owners, control owners, IT, communications and key suppliers; the exercise tests decisions, so the owners who would make them must take part.",
-            "Injects, new facts added during play, test decisions such as escalation, customer notice and recovery order.",
+            "Injects, new facts added during play, test decisions such as escalation, customer notice and recovery order; the base scenario is a severe but plausible one from owners' top risks.",
             "Findings become actions: new or revised scenarios, register updates and control changes, each with an owner and a date.",
             "Internal audit may later give independent assurance on how scenarios were built, but it does not replace validation by the business owners."
           ],
@@ -1037,7 +1040,8 @@
             "crisc_d2_097",
             "crisc_d2_106",
             "crisc_d2_113",
-            "crisc_d2_141"
+            "crisc_d2_141",
+            "crisc_d2_147"
           ],
           "definition": "A business impact analysis (BIA) finds the critical business processes, how their impact grows over time when disrupted, and the resources and dependencies they need to recover.",
           "why_it_matters": "Recovery money and effort are limited. The BIA tells the enterprise what to restore first, and it gives risk assessments the impact data they need.",
@@ -1091,7 +1095,7 @@
             "recommend": "Have process owners refresh the BIA after major changes, including new AI or cloud services.",
             "decides": "Senior management approves the critical process list and recovery priorities"
           },
-          "isaca_rule": "The BIA measures impact over time, not likelihood. Get impact from business owners, include every dependency, AI services and suppliers included, and use the results to rank recovery and inform risk ratings. Revise it when the business, its obligations or its dependencies change.",
+          "isaca_rule": "The BIA measures impact over time, not likelihood. Get impact from business owners, include every dependency, AI services and suppliers included, and use the results to rank recovery and inform risk ratings. Revise it when the business, its obligations or its dependencies change; otherwise at its scheduled update.",
           "exam_traps": [
             {
               "trap": "A completed BIA can replace the risk assessment for continuity risks.",
@@ -1718,7 +1722,8 @@
             "crisc_d2_063",
             "crisc_d2_086",
             "crisc_d2_110",
-            "crisc_d2_135"
+            "crisc_d2_135",
+            "crisc_d2_144"
           ],
           "definition": "Control effectiveness is how well a control actually reduces a risk's likelihood or impact; it sets the gap between inherent and residual risk.",
           "why_it_matters": "A residual rating that assumes controls work, without evidence, can hide a risk far above appetite. Effectiveness must be shown, not assumed.",
@@ -1727,7 +1732,7 @@
             "Operating effectiveness asks whether it actually ran as designed over the period, shown by testing or monitoring.",
             "Evidence includes control test results, key control indicators (KCIs), audit findings and incident history; a detective control's clean record proves little until a test shows it would catch an event.",
             "An untested or failed control earns little or no reduction in the current rating; one that repeated tests show working earns its credit without waiting for a review.",
-            "When test results or a control's scope change, such as a system replaced after the test, residual risk is re-rated and the risk owner is told.",
+            "When test results, a control's scope or the data it protects change, such as a replaced system or newly added sensitive records, residual risk is re-rated and the owner told.",
             "Design is judged first: a control that misses the scenario's cause earns little credit, and one that reaches only some items, such as a one-in-ten sample, earns credit for those."
           ],
           "example": "A broadband provider's register rates staff export of customer data as low residual risk because a data loss prevention tool is installed. Kwame Asante, the risk analyst, asks for its results: it has run in monitor-only mode for a year and blocked nothing. Kwame re-rates the residual risk without credit for blocking and sends the evidence to the customer data owner.",

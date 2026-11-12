@@ -64,16 +64,18 @@
             "crisc_d3_145",
             "crisc_d3_161",
             "crisc_d3_169",
-            "crisc_d3_198"
+            "crisc_d3_198",
+            "crisc_d3_209"
           ],
           "definition": "Risk responses are the four ways an organization deals with an analyzed risk: accept it, mitigate it with controls, transfer or share it, or avoid the activity causing it.",
-          "why_it_matters": "The response decides how much risk is left and what that costs. The wrong choice wastes money on a risk within appetite or leaves one above appetite untreated.",
+          "why_it_matters": "The response decides how much risk is left and at what cost. The wrong choice wastes money on risk within appetite or leaves risk above it untreated.",
           "how_it_works": [
             "Every response starts from an analyzed risk compared with appetite and tolerance, not a favorite tool; if service is restored and a root-cause review is near, wait.",
             "Responses combine: controls cut likelihood, then insurance covers part of the remaining impact.",
             "Transfer moves money, not accountability, and only for losses covered: re-rate exposure an exclusion leaves retained; an insured breach still harms customers and reputation.",
             "Avoidance gives up the benefit, so it fits when the activity is not needed for objectives or nothing else brings the risk within appetite.",
-            "A response can bring new risks, such as reliance on one provider; weigh them first."
+            "A response can bring new risks, such as reliance on one provider; weigh them first.",
+            "For unexplained AI decisions, human review giving reasons on challenge treats the risk; a model summary does not."
           ],
           "types": [
             {
@@ -93,7 +95,7 @@
               "meaning": "The business stops, changes or never starts the activity that creates the risk, for good or until a fix is in place."
             }
           ],
-          "example": "A regional airline's loyalty team wants members to pay for flights with stored points in a new partner app. Amara, the risk analyst, rates the account-takeover fraud risk above appetite. They lay out four options, each with its cost and the target risk left: accept the risk (needing temporary acceptance from the level that set the appetite), add step-up authentication, insure fraud losses, or drop the feature. Amara presents the comparison to the loyalty director.",
+          "example": "An airline's loyalty team wants members to pay with points in a new partner app. Amara, the risk analyst, rates the fraud risk above appetite and lays out four options with cost and target risk: accept (with temporary acceptance from the level that set appetite), add step-up authentication, insure fraud losses or drop the feature. The loyalty director chooses.",
           "audit_focus": {
             "review": [
               "Compare each response in the register with the risk rating and appetite",
@@ -496,16 +498,17 @@
             "crisc_d3_135",
             "crisc_d3_144",
             "crisc_d3_154",
-            "crisc_d3_183"
+            "crisc_d3_183",
+            "crisc_d3_210"
           ],
           "definition": "Ongoing vendor monitoring is reviewing a supplier's performance, controls and risk throughout the relationship, using assurance reports, SLA results, incidents and changes in its own suppliers.",
           "why_it_matters": "A vendor that was sound at onboarding can change owners, cut staff, add subcontractors or suffer a breach. Monitoring catches drift in time to respond.",
           "how_it_works": [
-            "Read assurance reports for scope and period: which services, locations and controls were tested, and when.",
+            "Read assurance reports for scope: which services, locations and controls were tested, over what period.",
             "Act on report exceptions and complementary user entity controls, the customer's own duties; when scope fits and neither is open, rely on the report rather than repeat its tests.",
             "Track fourth parties: the vendor's own subcontractors, especially those that host or process your data.",
-            "Watch concentration: many critical services on one provider or region create a single point of failure.",
-            "Scale review depth and frequency to criticality; reassess on events such as a breach, sale or merger, missed SLAs or a new subcontractor."
+            "Watch concentration: services on one provider or region, even via different vendors, can fail together; rate that as one scenario.",
+            "Scale review depth and frequency to criticality; reassess after a breach, sale or merger, missed SLAs or a new subcontractor."
           ],
           "example": "An insurer relies on a claims vendor whose SOC 2 Type 2 report covers its main data center but not the overseas site now handling the insurer's claims. Chen, a risk analyst, notices the scope gap and two access-review exceptions. They update the vendor entry and ask the claims director to seek coverage of that site.",
           "audit_focus": {
@@ -685,7 +688,8 @@
             "crisc_d3_093",
             "crisc_d3_119",
             "crisc_d3_146",
-            "crisc_d3_186"
+            "crisc_d3_186",
+            "crisc_d3_211"
           ],
           "definition": "An exception is a temporary, approved deviation from a policy or standard; an exemption is an approved exclusion from a requirement that does not apply or cannot apply.",
           "why_it_matters": "Business sometimes cannot meet a requirement on time. A managed deviation keeps that risk visible, compensated and time-bound; an unmanaged one becomes a permanent, hidden gap.",
@@ -695,7 +699,7 @@
             "The risk owner approves, at a level that matches the risk; policy may require senior management for high ratings.",
             "Exceptions carry an expiry date and a plan to comply; exemptions are reviewed periodically. One in date, within authority and compensated is reviewed then, not escalated early.",
             "Keep all deviations in one register and report them in aggregate, so combined risk shows and repeated requests point to a cause to fix.",
-            "An exemption rests on facts about its scope; when the system or its data changes, reassess whether it still applies without waiting for the scheduled review."
+            "An exemption covers only the assets assessed; a new asset needs its own request, and a change to a covered system or its data reopens it."
           ],
           "compare": {
             "columns": [
@@ -786,15 +790,16 @@
             "crisc_d3_032",
             "crisc_d3_096",
             "crisc_d3_155",
-            "crisc_d3_178"
+            "crisc_d3_178",
+            "crisc_d3_212"
           ],
           "definition": "Control types by function describe what a control does about a risk event: stop it, discourage it, find it, fix it, or stand in for a missing control.",
           "why_it_matters": "Calling a detective control preventive overstates protection and understates residual risk. Knowing the function shows which part of the risk a control actually reduces.",
           "how_it_works": [
             "Preventive and deterrent controls mainly reduce likelihood; corrective controls mainly reduce impact after an event.",
-            "Detective controls reduce impact only if someone acts on what they find, quickly enough to matter.",
+            "Detective controls reduce impact only if someone acts on findings quickly enough to matter.",
             "A layered set mixes functions so one failure is caught or contained by another; a corrective procedure sets how errors getting through are fixed.",
-            "Name the function by what the control does in this process, not by the tool: a log review detects, an enforced approval prevents.",
+            "Name the function by what the control does here, not by the tool: a log review or tamper-evident seal detects; an enforced approval prevents.",
             "A compensating control is an alternative or interim measure; the gap it covers stays recorded and reviewed.",
             "Credit a control in the rating only for the function it performs: a firewall rule set to log traffic detects; it does not prevent."
           ],
@@ -1268,13 +1273,14 @@
             "crisc_d3_102",
             "crisc_d3_122",
             "crisc_d3_148",
-            "crisc_d3_199"
+            "crisc_d3_199",
+            "crisc_d3_213"
           ],
           "definition": "Design testing asks whether a control could meet its objective as built; operating testing asks whether it actually worked consistently over a period, usually by sampling.",
           "why_it_matters": "A well-designed control can still be skipped in practice. Reporting a design test as proof of operation overstates assurance and leaves the risk owner relying on a control that may not run.",
           "how_it_works": [
             "Test design first, often with a walkthrough of one transaction; a badly designed control needs no operating test.",
-            "Test operation over a defined period, with a sample sized to the control's frequency and risk; if the control changed mid-period, sample each version for the months it ran.",
+            "Test operation over a defined period, covering the sites where people run it, with a sample sized to frequency and risk; sample each version of a control changed mid-period.",
             "Draw the sample from the complete population, ideally system-generated, with the tester choosing the items; test any system report the control relies on for completeness.",
             "Evaluate each failure: find its cause and decide whether the control can still be relied on.",
             "Tests by the control owner alone are self-assessment: useful for monitoring, but weaker than independent testing.",
@@ -1486,14 +1492,15 @@
             "crisc_d3_103",
             "crisc_d3_130",
             "crisc_d3_157",
-            "crisc_d3_165"
+            "crisc_d3_165",
+            "crisc_d3_214"
           ],
           "definition": "Validating execution is confirming, with evidence, that the actions in a risk plan were carried out as agreed and reduced the risk as expected.",
           "why_it_matters": "Status reports often say done when a control is installed but untested. Validation stops the register from showing a lower risk than really exists.",
           "how_it_works": [
             "Ask for evidence at each milestone, not only a status color, and watch the risk's indicators: if completed, working actions do not move them, check what drives the risk.",
             "Confirm the control is implemented, then that it operates, before treating the action as complete.",
-            "Re-rate the risk after validation; that residual rating is compared with the target the plan set.",
+            "Re-rate the risk after validation and report progress as risk reduced toward the plan's target, not the share of actions done.",
             "Escalate slipping or blocked actions to the risk owner, and past agreed limits to senior management.",
             "Close the plan once evidence and the owner's sign-off show the risk at target, or the owner records a new decision on the current rating, not the target.",
             "If validated actions leave the risk above target, report the shortfall to the risk owner, who decides on further treatment, acceptance within their authority or elevation."
@@ -2135,7 +2142,8 @@
             "crisc_d3_080",
             "crisc_d3_112",
             "crisc_d3_141",
-            "crisc_d3_160"
+            "crisc_d3_160",
+            "crisc_d3_215"
           ],
           "definition": "Risk reporting formats present risk and control information visually: heat maps plot likelihood against impact, scorecards rate results against targets, and dashboards combine indicators.",
           "why_it_matters": "The format shapes the decision. A good visual shows what needs attention at a glance; a poor one hides trends, ranges and risks sitting just outside the red cells.",
@@ -2143,7 +2151,7 @@
             "Heat maps show relative position but not trend; add trend arrows fed by each risk's KRI history, because a risk can hold its cell while its drivers worsen.",
             "Heat-map scores are ordinal, so cells cannot be added or averaged meaningfully.",
             "Scorecards and dashboards show indicators against thresholds and trend, not raw counts alone.",
-            "Every visual needs a date, a data source and a note of known limitations.",
+            "Every visual needs a date, a data source and a note of known limitations; after a rating scale changes, restate earlier periods on the new scale.",
             "Draw heat-map color bands from the approved appetite and tolerance, not a tool's default scoring, so a risk's color shows where it stands against appetite.",
             "Show each period's KRI value against its thresholds; a rolling average smooths single-period breaches away, so keep it as a trend line."
           ],
@@ -2276,7 +2284,8 @@
             "crisc_d3_128",
             "crisc_d3_152",
             "crisc_d3_182",
-            "crisc_d3_208"
+            "crisc_d3_208",
+            "crisc_d3_216"
           ],
           "definition": "Horizon scanning is the regular search for new or changing risks from technology, regulation, markets, threats and society, before they are well understood or measurable.",
           "why_it_matters": "Emerging risks give the least warning and the most surprise. Spotting them early leaves time to study them, prepare and take up any opportunity they bring.",
@@ -2284,7 +2293,7 @@
             "Use many sources: threat intelligence, regulators' consultations, industry groups, vendors, research and front-line staff; look as far ahead as the plans and assets the scan informs.",
             "Look for opportunities too, such as a new technology that could cut cost or risk.",
             "Screen each signal for relevance to objectives and assets; judge the scan by how many new risks it flagged before harm, not items read or hours spent.",
-            "Give each relevant emerging risk an owner to watch it, even while it is uncertain.",
+            "Treat as emerging only what is still uncertain, not merely distant; give each such risk an owner to watch it, and rate dated, understood changes normally.",
             "Evaluate new technologies, such as generative AI, for threats, vulnerabilities and opportunities before use spreads.",
             "A peer's incident on the same technology, or an industry report, is valid evidence to record an emerging risk; do not wait for an in-house event."
           ],
