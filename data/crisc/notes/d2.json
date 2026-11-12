@@ -497,7 +497,7 @@
           "how_it_works": [
             "People weaknesses include weak awareness, missing skills, key-person dependency and too few staff, weighed by what those people can reach.",
             "Process weaknesses include missing approvals, poor segregation of duties, untested recovery plans and undocumented procedures.",
-            "Technology weaknesses include unpatched software, misconfigurations, default passwords, unsupported systems and over-broad access, easy to reach through an AI assistant using users' rights.",
+            "Technology weaknesses include unpatched software, misconfigurations, including a SaaS customer's own settings, default passwords, unsupported systems and over-broad access, easy to reach through an AI assistant using users' rights.",
             "A control deficiency found in testing or audit is a vulnerability; one with a shared cause, such as a standard install, is recorded against that cause.",
             "Predisposing conditions, such as a flood-prone site, change likelihood even when nothing is broken.",
             "Walkthroughs and control tests find process and people weaknesses; documents and self-assessments show intent; uncredentialed scans miss many installed-software flaws; rare-item AI detectors are judged by misses."
@@ -527,7 +527,7 @@
               }
             ]
           },
-          "example": "A food manufacturer's control test finds that recipe changes in the production system need no second approval. Yusuf Haddad, the IT risk analyst, records the gap as a process vulnerability under the unauthorized recipe change scenario, attaches the test result as evidence, and asks the plant quality manager, who owns the scenario, to review its likelihood rating.",
+          "example": "A food manufacturer's control test finds that recipe changes in the production system need no second approval. Yusuf Haddad, the risk analyst, records the gap as a process vulnerability under the unauthorized recipe change scenario and asks the plant quality manager, who owns the scenario, to review its likelihood rating.",
           "audit_focus": {
             "review": [
               "Compare scenario vulnerability lists against scan, control test and audit results",
@@ -1148,7 +1148,7 @@
           "how_it_works": [
             "Process owners and leadership set the maximum tolerable outage (MTO; other sources say MTD) from impact-over-time results.",
             "The recovery time objective (RTO) for each supporting function or resource must normally be shorter than the MTO, leaving time to reprocess work.",
-            "The recovery point objective (RPO) is the earliest point data must be recoverable to; a four-hour RPO allows four hours' loss; vital data that cannot be recreated sets it.",
+            "The recovery point objective (RPO) is the earliest point data must be recoverable to; vital data that cannot be recreated, and the strictest process sharing it, set it.",
             "The service delivery objective (SDO) sets the service level, such as share of normal volume, needed in alternate mode.",
             "Shorter objectives cost more; a workable manual process lets a system's RTO run longer, and when tested recovery misses the MTO, the owner weighs cost against impact.",
             "Owners' outage limits rest on impact evidence; when nearly every process claims the shortest limit, the practitioner challenges each with its owner."
@@ -1323,7 +1323,7 @@
             "Current and residual ratings credit a control only after it is implemented and tested, not on the day it is approved.",
             "Owners review entries on a cycle set by rating; a stated trigger, such as a KRI breach, brings review forward, and a request alone is not one.",
             "An entry closes, with a reason and the owner's approval, once its risk ends, as with a retired asset; working controls do not end it. Closed entries stay as history.",
-            "A new or emerging risk, such as a newly launched AI system, is entered early with its rating's uncertainty stated and an early review date."
+            "A new or emerging risk, such as a new AI system or a vendor-added AI feature, gets its own entry early, linked to related ones, with its uncertainty stated."
           ],
           "example": "A pension fund's register shows member portal account takeover as treated because multifactor sign-in was approved in March. In September, Elif Yilmaz, the risk analyst, finds the rollout covers only 20% of members. Elif moves the status back to in treatment, re-scores the current risk on the control as it stands, and flags the gap to the member services director.",
           "audit_focus": {
@@ -1590,7 +1590,7 @@
           "why_it_matters": "A precise-looking number built on guesses misleads decision makers more than an honest qualitative rating. The method must fit the data and the decision.",
           "how_it_works": [
             "Ask what the decision needs: ranking many risks, funding one control, or capital and insurance planning.",
-            "Check the data: loss history, industry benchmarks and expert estimates, and how reliable each is; gather each expert's estimate privately before discussion, as in the Delphi technique.",
+            "Check data reliability: loss history, benchmarks, expert estimates; gather estimates privately first (Delphi), and judge experts by how often past ranges held actual results.",
             "FAIR, an Open Group standard, splits risk into loss event frequency and loss magnitude; secondary losses, such as fines, get their own frequency: the share of events that trigger them.",
             "Monte Carlo runs thousands of trials from estimated ranges; a yearly loss limit is tested on the tail of simulated yearly losses, not the mean or one event's loss.",
             "Ranges beat single points: with no loss history, validated error rate times volume gives a frequency range; if too wide, sensitivity analysis finds the input to improve.",
